@@ -1,5 +1,9 @@
 # Angular 1.x WebPack + Babel workflow
 
+> Forked from Foxandxss/angular-webpack-workflow
+
+My changes are the addition of Browsersync, the sass-loader, ngtemplates-loader, and much better font & html supoort.
+
 [![Dependency Status](https://david-dm.org/Foxandxss/angular-webpack-workflow/status.svg)](https://david-dm.org/Foxandxss/angular-webpack-workflow#info=dependencies) [![devDependency Status](https://david-dm.org/Foxandxss/angular-webpack-workflow/dev-status.svg)](https://david-dm.org/Foxandxss/angular-webpack-workflow#info=devDependencies)
 
 This workflow serves as a starting point for building Angular 1.x applications using WebPack. Should be noted that apart from the pre-installed angular package, this workflow is pretty much generic.
@@ -22,7 +26,7 @@ It is a direct port of the amazing [react workflow](https://github.com/cesarandr
 To use it, just clone this repo and install the npm dependencies:
 
 ```shell
-$ git clone https://github.com/Foxandxss/angular-webpack-workflow my_app
+$ git clone https://github.com/mike-allison/angular-webpack-workflow my_app
 $ cd my_app
 $ npm install
 ```

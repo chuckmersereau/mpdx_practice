@@ -4,23 +4,23 @@
   "description": "A workflow for Angular made with Webpack",
   "scripts": {
     "build": "webpack --config webpack.build.js --bail -p",
-    "dev": "webpack-dev-server --history-api-fallback --inline --progress",
+    "dev": "webpack --progress --config webpack.config.js --colors --watch",
     "test": "karma start",
     "test:live": "karma start --auto-watch --no-single-run"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Foxandxss/angular-webpack-workflow.git"
+    "url": "https://github.com/mike-allison/angular-webpack-workflow.git"
   },
-  "author": "Jesus Rodriguez",
+  "author": "Mike Allison",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Foxandxss/angular-webpack-workflow/issues"
+    "url": "https://github.com/mike-allison/angular-webpack-workflow/issues"
   },
   "babel": {
     "stage": 1
   },
-  "homepage": "https://github.com/Foxandxss/angular-webpack-workflow",
+  "homepage": "https://github.com/mike-allison/angular-webpack-workflow",
   "dependencies": {
     "angular": "^1.3.16"
   },
@@ -30,9 +30,13 @@
     "babel-core": "^5.5.8",
     "babel-loader": "^5.1.4",
     "babel-runtime": "^5.5.8",
+    "browser-sync": "^2.6.1",
+    "browser-sync-webpack-plugin": "^1.0.0",
+    "connect-modrewrite": "^0.8.2",
     "css-loader": "^0.18.0",
     "extract-text-webpack-plugin": "^0.8.2",
     "file-loader": "^0.8.4",
+    "html-loader": "^0.3.0",
     "html-webpack-plugin": "^1.5.2",
     "isparta-instrumenter-loader": "^0.2.1",
     "jasmine-core": "^2.3.4",
@@ -44,10 +48,12 @@
     "karma-spec-reporter": "0.0.20",
     "karma-webpack": "^1.5.1",
     "node-libs-browser": "^0.5.2",
+    "node-sass": "^3.3.3",
     "null-loader": "^0.1.1",
     "phantomjs": "^1.9.17",
     "postcss-loader": "^0.6.0",
     "raw-loader": "^0.5.1",
+    "sass-loader": "^2.0.1",
     "style-loader": "^0.12.3",
     "webpack": "^1.9.11",
     "webpack-dev-server": "^1.9.0"
