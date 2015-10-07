@@ -1,7 +1,12 @@
 # Angular 1.x WebPack + Babel workflow
 
-> Forked from Foxandxss/angular-webpack-workflow
-
+* **An in-progress fork with a few changes**
+	- Browser-sync
+	- Sass support via sass-loader 
+	- ng-templemptes-loader for html templates
+	- bower support (fallback after checking node_modules first)
+	- much better font & html support
+	
 My changes are the addition of Browsersync, the sass-loader, ngtemplates-loader, fallback on bower packages, and much better font & html supoort.
 
 [![Dependency Status](https://david-dm.org/Foxandxss/angular-webpack-workflow/status.svg)](https://david-dm.org/Foxandxss/angular-webpack-workflow#info=dependencies) [![devDependency Status](https://david-dm.org/Foxandxss/angular-webpack-workflow/dev-status.svg)](https://david-dm.org/Foxandxss/angular-webpack-workflow#info=devDependencies)
