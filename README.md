@@ -2,7 +2,7 @@
 
 > Forked from Foxandxss/angular-webpack-workflow
 
-My changes are the addition of Browsersync, the sass-loader, ngtemplates-loader, and much better font & html supoort.
+My changes are the addition of Browsersync, the sass-loader, ngtemplates-loader, fallback on bower packages, and much better font & html supoort.
 
 [![Dependency Status](https://david-dm.org/Foxandxss/angular-webpack-workflow/status.svg)](https://david-dm.org/Foxandxss/angular-webpack-workflow#info=dependencies) [![devDependency Status](https://david-dm.org/Foxandxss/angular-webpack-workflow/dev-status.svg)](https://david-dm.org/Foxandxss/angular-webpack-workflow#info=devDependencies)
 
