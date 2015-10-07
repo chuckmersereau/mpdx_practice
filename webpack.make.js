@@ -146,42 +146,46 @@ module.exports = function makeWebpackConfig(options) {
         })
     }
 
-    // CSS LOADER
-    // Reference: https://github.com/webpack/css-loader
-    // Allow loading css through js
-    //
-    // Reference: https://github.com/postcss/postcss-loader
-    // Postprocess your css with PostCSS plugins
-    var cssLoader = {
-        test: /\.css$/,
-        // Reference: https://github.com/webpack/extract-text-webpack-plugin
-        // Extract css files in production builds
+    if(!TEST) {
+        // CSS LOADER
+        // Reference: https://github.com/webpack/css-loader
+        // Allow loading css through js
         //
-        // Reference: https://github.com/webpack/style-loader
-        // Use style-loader in development for hot-loading
-        loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss')
-    };
+        // Reference: https://github.com/postcss/postcss-loader
+        // Postprocess your css with PostCSS plugins
+        var cssLoader = {
+            test: /\.css$/,
+            // Reference: https://github.com/webpack/extract-text-webpack-plugin
+            // Extract css files in production builds
+            //
+            // Reference: https://github.com/webpack/style-loader
+            // Use style-loader in development for hot-loading
+            loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss')
+        };
 
-    // SASS LOADER
-    // Reference: https://github.com/jtangelder/sass-loader
-    // Allow loading inline sass through js
-    //
-    var sassLoader = {
-        test: /\.scss$/,
-        loader: 'style!css!sass?includePaths[]=' + path.join(__dirname, "node_modules")
-    };
-
-    // Skip loading css in test mode
-    if (TEST) {
+        // SASS LOADER
+        // Reference: https://github.com/jtangelder/sass-loader
+        // Allow loading inline sass through js
+        //
+        var sassLoader = {
+            test: /\.scss$/,
+            loader: 'style!css!sass?includePaths[]=' + path.join(__dirname, "node_modules")
+        };
+        // Add cssLoader to the loader list
+        config.module.loaders.push(cssLoader);
+        config.module.loaders.push(sassLoader);
+    } else {
+        // Skip loading styles in test mode
         // Reference: https://github.com/webpack/null-loader
         // Return an empty module
-        cssLoader.loader = 'null'
-        sassLoader.loader = 'null';
+        var nullLoader = {
+            test: /\.css$|\.scss$/,
+            // Reference: https://github.com/webpack/style-loader
+            // Use style-loader in development for hot-loading
+            loader: 'null'
+        };
+        config.module.loaders.push(nullLoader);
     }
-
-    // Add cssLoader to the loader list
-    config.module.loaders.push(cssLoader);
-    config.module.loaders.push(sassLoader);
 
     /**
      * PostCSS
