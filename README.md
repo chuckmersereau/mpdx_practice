@@ -1,6 +1,6 @@
 # Angular 1.5 ES2015 WebPack + Babel workflow
 
-[![Dependency Status](https://david-dm.org/mike-allison/angular-webpack-workflow/status.svg)](https://david-dm.org/Foxandxss/angular-webpack-workflow#info=dependencies) [![devDependency Status](https://david-dm.org/mike-allison/angular-webpack-workflow/dev-status.svg)](https://david-dm.org/Foxandxss/angular-webpack-workflow#info=devDependencies)
+[![Dependency Status](https://david-dm.org/mike-allison/angular-webpack-workflow/status.svg)](https://david-dm.org/mike-allison/angular-webpack-workflow#info=dependencies) [![devDependency Status](https://david-dm.org/mike-allison/angular-webpack-workflow/dev-status.svg)](https://david-dm.org/mike-allison/angular-webpack-workflow#info=devDependencies)
 
 This workflow serves as a starting point for building Angular 1.5 applications using WebPack. 
 
