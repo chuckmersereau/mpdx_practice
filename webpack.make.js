@@ -35,7 +35,7 @@ module.exports = function makeWebpackConfig(options) {
         config.entry = {}
     } else {
         config.entry = {
-            app: './src/app.js'
+            app: './src/app.module.js'
         }
     }
 
@@ -105,14 +105,14 @@ module.exports = function makeWebpackConfig(options) {
             // Transpile .js files using babel-loader
             // Compiles ES6 and ES7 into ES5 code
             test: /\.js$/,
-            loader: 'babel?optional[]=runtime',
+            loaders: ['ng-annotate', 'babel'],
             exclude: /node_modules|bower_components/
         },{
             // HTML LOADER
             // Reference: https://github.com/WearyMonkey/ngtemplate-loader
             // Allow loading html through js
             test: /\.html$/,
-            loader: "ngtemplate?relativeTo=" + (path.resolve(__dirname, './src')) + "/!html-loader"
+            loader: "html"
         },{
             // ASSET LOADER
             // Reference: https://github.com/webpack/file-loader
@@ -169,8 +169,11 @@ module.exports = function makeWebpackConfig(options) {
         //
         var sassLoader = {
             test: /\.scss$/,
-            loader: 'style!css!sass?includePaths[]=' + path.join(__dirname, "node_modules")
+            loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss!sass?sourceMap&sourceMapContents&includePaths[]=' + encodeURIComponent(path.resolve(process.cwd(), "node_modules")))
         };
+        if (BUILD) {
+            sassLoader.loader = ExtractTextPlugin.extract('style', 'css!postcss!sass?includePaths[]=' + encodeURIComponent(path.resolve(process.cwd(), "node_modules")));
+        }
         // Add cssLoader to the loader list
         config.module.loaders.push(cssLoader);
         config.module.loaders.push(sassLoader);
@@ -211,6 +214,17 @@ module.exports = function makeWebpackConfig(options) {
             disable: !BUILD || TEST
         })
     ];
+
+	if (!TEST && !BUILD) {
+		config.eslint = {
+			parser: 'babel-eslint'
+		};
+		config.module.loaders.push({
+			test: /\.js$/,
+			exclude: /node_modules|bower_components|vendor/,
+			loaders: ['eslint']
+		});
+	}
 
     // Skip rendering index.html in test mode
     if (!TEST) {
