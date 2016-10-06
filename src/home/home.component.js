@@ -8,6 +8,6 @@ const Home = {
 	controller: HomeController
 };
 
-export default angular.module('app.home', [])
+export default angular.module('mpdx.home', [])
 	.component('home', Home)
 	.name;
