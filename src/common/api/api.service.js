@@ -1,10 +1,12 @@
+import config from 'config';
+
 class Api {
     constructor($http, $cacheFactory, $log, $q, _) {
         this.$http = $http;
         this.$log = $log;
         this.$q = $q;
 
-        this.apiUrl = '/api/v1/';
+        this.apiUrl = config.apiUrl;
         this.apiCache = $cacheFactory('api');
         this.account_list_id = null;
 

@@ -1,4 +1,4 @@
- class TasksService {
+class TasksService {
      constructor($modal, api) {
          this.$modal = $modal;
          this.api = api;

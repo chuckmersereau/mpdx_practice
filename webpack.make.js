@@ -18,6 +18,8 @@ module.exports = function makeWebpackConfig(options) {
     var BUILD = !!options.BUILD;
     var TEST = !!options.TEST;
 
+    var configEnv = options.CONFIG ? options.CONFIG : 'development';
+
     /**
      * Config
      * Reference: http://webpack.github.io/docs/configuration.html
@@ -72,6 +74,9 @@ module.exports = function makeWebpackConfig(options) {
      * Sets root to node_modules, but allows backup modules from bower_components
      */
     config.resolve = {
+        alias: {
+            config: path.join(__dirname, 'config', configEnv + '.js')
+        },
         root: [path.join(__dirname, "node_modules")],
         fallback: [path.join(__dirname, "bower_components")]
     };
