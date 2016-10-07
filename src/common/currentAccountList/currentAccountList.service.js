@@ -14,7 +14,6 @@ class CurrentAccountList {
         };
         this.get();
     }
-
     get() {
         this.$http.get('api/v1/current_account_list').then((resp) => {
             _.extend(this, resp.data);

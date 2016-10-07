@@ -15,6 +15,8 @@ const Home = {
 };
 
 import care from './care/care.component';
-export default angular.module('mpdx.home', [care])
-    .component('home', Home)
-    .name;
+import commitments from './commitments/commitments.component';
+export default angular.module('mpdx.home', [
+    care,
+    commitments
+]).component('home', Home).name;
