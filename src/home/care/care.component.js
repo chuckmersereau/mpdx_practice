@@ -20,5 +20,5 @@ const Care = {
 };
 
 export default angular.module('mpdx.home.care', [])
-    .component('home-care', Care)
+    .component('homeCare', Care)
     .name;

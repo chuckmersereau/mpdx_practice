@@ -1,0 +1,23 @@
+<div class="panel panel-default dash-panel panel-tasks">
+    <div class="panel-heading" translate>
+        Connect
+    </div>
+    <div class="panel-body dash-tasks">
+        <span translate>Tasks overdue or due today</span>
+        <ul class="plain-list">
+            <li ng-repeat="task in $ctrl.overdueTasks | orderBy: 'type'">
+                <a href="/tasks?filters%5BactionSelect%5D%5B%5D={{task.type}}">
+                    <span class="count">{{ task.count }}</span>
+                    {{ task.type }}
+                </a>
+            </li>
+        </ul>
+
+        <a href="/tasks" class="see-all see-all-tasks">
+            <i class="fa fa-plus-square-o"></i>
+            <span translate>See all {{ $ctrl.overdueCount }} tasks</span>
+        </a>
+
+        <a class="btn btn-blue btn-default btn-add-tasks" ng-click="$ctrl.addTask()"><i class="fa fa-plus-circle"></i> <span translate>Add a New Task</span></a>
+    </div>
+</div>

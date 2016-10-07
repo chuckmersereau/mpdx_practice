@@ -16,7 +16,9 @@ const Home = {
 
 import care from './care/care.component';
 import commitments from './commitments/commitments.component';
+import connect from './connect/connect.component';
 export default angular.module('mpdx.home', [
     care,
-    commitments
+    commitments,
+    connect
 ]).component('home', Home).name;

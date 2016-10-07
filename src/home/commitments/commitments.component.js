@@ -20,5 +20,5 @@ const Commitments = {
 };
 
 export default angular.module('mpdx.home.commitments', [])
-    .component('home-commitments', Commitments)
+    .component('homeCommitments', Commitments)
     .name;

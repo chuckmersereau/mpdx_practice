@@ -1,4 +1,4 @@
-class currentUser {
+class CurrentUser {
     constructor($http, $log) {
         this.$http = $http;
         this.$log = $log;
@@ -15,4 +15,4 @@ class currentUser {
 }
 
 export default angular.module('mpdxApp.services.currentUser', [])
-    .service('currentUser', currentUser).name;
+    .service('currentUser', CurrentUser).name;

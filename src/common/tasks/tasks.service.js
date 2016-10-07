@@ -1,19 +1,19 @@
 class TasksService {
-     constructor($modal, api) {
-         this.$modal = $modal;
-         this.api = api;
+    constructor($modal, api) {
+        this.$modal = $modal;
+        this.api = api;
 
-         this.data = {};
-         this.loading = true;
-     }
-     fetchUncompletedTasks(id) {
+        this.data = {};
+        this.loading = true;
+    }
+    fetchUncompletedTasks(id) {
         this.api.get('tasks/', {
             filters: {
-                completed: false,
-                contact_ids: [id],
-                page: 1,
-                per_page: 500,
-                order: 'start_at'
+               completed: false,
+               contact_ids: [id],
+               page: 1,
+               per_page: 500,
+               order: 'start_at'
             }
         }).then((data) => {
             if (data.tasks.length) {
@@ -88,9 +88,7 @@ class TasksService {
                 ],
                 completed: toComplete ? true : model.result ? true : false,
                 result: model.result,
-                tag_list: model.tagsList.map(function (tag) {
-                    return tag.text;
-                }).join()
+                tag_list: model.tagsList.map(tag => tag.text).join()
             }
         }).then(() => {
             cb();
@@ -131,9 +129,7 @@ class TasksService {
                         body: model.comment
                     }
                 ],
-                tag_list: model.tagsList.map(function (tag) {
-                    return tag.text;
-                }).join()
+                tag_list: model.tagsList.map(tag => tag.text).join()
             }
         }).then(() => {
             cb();
@@ -177,5 +173,5 @@ class TasksService {
     }
 }
 
-export default angular.module('mpdxApp.common.tasks',[])
+export default angular.module('mpdxApp.common.tasks', [])
         .service('contacts.tasksService', TasksService).name;
