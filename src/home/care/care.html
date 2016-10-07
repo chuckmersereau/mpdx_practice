@@ -1,0 +1,18 @@
+<div class="panel panel-default dash-panel">
+    <div class="panel-heading">
+        <span translate>Care</span>
+        <a class="badge badge-blue badge-right-well" ng-click="$ctrl.addNewsletter()" translate>Log Newsletter</a>
+    </div>
+    <div class="panel-body">
+        <div class="dash-stat">
+            <div ng-if="$ctrl.newsletter">
+                <span class="count-big" translate>{{ newsletter.completed_at | timeAgo }}</span> <span translate>since your last physical newsletter</span>
+            </div>
+            <div ng-if="!$ctrl.newsletter" translate>
+                You've never logged a physical newsletter
+            </div>
+        </div>
+        <birthdays></birthdays>
+        <anniversaries></anniversaries>
+    </div>
+</div>

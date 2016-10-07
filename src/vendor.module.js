@@ -15,23 +15,24 @@ import 'angular-localforage';
 import 'angular-ui-bootstrap-datetimepicker';
 import 'iso-currency';
 import 'ng-tags-input';
-
+//non-angular deps
+import 'lodash';
 
 export default angular.module('mpdx.vendor', [
-	deepBlur,
-	ngAnimate,
-	ngSanitize,
-	ngCsv,
-	uiBootstrap,
-	uiRouter,
-	checklistModel,
-	ngInfiniteScroll,
-	ngMap,
-	ngSortable,
-	'isoCurrency',
-	'LocalForageModule',
-	'localytics.directives',
-	'mgcrea.ngStrap',
-	'ngTagsInput',
-	'ui.bootstrap.datetimepicker',
+    deepBlur,
+    ngAnimate,
+    ngSanitize,
+    ngCsv,
+    uiBootstrap,
+    uiRouter,
+    checklistModel,
+    ngInfiniteScroll,
+    ngMap,
+    ngSortable,
+    'isoCurrency',
+    'LocalForageModule',
+    'localytics.directives',
+    'mgcrea.ngStrap',
+    'ngTagsInput',
+    'ui.bootstrap.datetimepicker',
 ]).name

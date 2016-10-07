@@ -1,3 +1,19 @@
-<div>
-	{{$ctrl.welcomeMessage}}
+<div id="contentbody">
+    <div class="wpp">
+        <welcome-header current-user="$ctrl.currentUser"></welcome-header>
+        <div class="row" id="dash-widgets">
+            <div class="col-md-4">
+                <home-connect></home-connect>
+            </div>
+            <div class="col-md-4">
+                <home-commitments></home-commitments>
+            </div>
+            <div class="col-md-4">
+                <home-care tasks="$ctrl.currentAccountList.tasks"></home-care>
+            </div>
+        </div>
+        <mpd-progress></mpd-progress>
+    </div>
 </div>
+<div id="generic_dialog"></div>
+<home-late-partners></home-late-partners>

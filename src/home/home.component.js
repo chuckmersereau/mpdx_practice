@@ -1,13 +1,20 @@
 class HomeController {
-	constructor() {
-		this.welcomeMessage = 'Hello World';
-	}
+    currentAccountList;
+    currentUser;
+    constructor(currentUser, currentAccountList) {
+        this.currentUser = currentUser;
+        this.currentAccountList = currentAccountList;
+    }
+    $onInit() {
+        this.currentAccountList.getTasks();
+    }
 }
 const Home = {
-	template: require('./home.html'),
-	controller: HomeController
+    template: require('./home.html'),
+    controller: HomeController
 };
 
-export default angular.module('mpdx.home', [])
-	.component('home', Home)
-	.name;
+import care from './care/care.component';
+export default angular.module('mpdx.home', [care])
+    .component('home', Home)
+    .name;

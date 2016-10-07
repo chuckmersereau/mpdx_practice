@@ -1,8 +1,4 @@
-# Angular 1.5 ES2015 WebPack + Babel workflow
-
-[![Dependency Status](https://david-dm.org/mike-allison/angular-webpack-workflow/status.svg)](https://david-dm.org/mike-allison/angular-webpack-workflow#info=dependencies) [![devDependency Status](https://david-dm.org/mike-allison/angular-webpack-workflow/dev-status.svg)](https://david-dm.org/mike-allison/angular-webpack-workflow#info=devDependencies)
-
-This workflow serves as a starting point for building Angular 1.5 applications using WebPack. 
+# MPDX angular front-end
 
 ## Features
 
@@ -23,8 +19,8 @@ This workflow serves as a starting point for building Angular 1.5 applications u
 To use it, just clone this repo and install the npm dependencies:
 
 ```shell
-$ git clone https://github.com/mike-allison/angular-webpack-workflow my_app
-$ cd my_app
+$ git clone https://github.com/CruGlobal/mpdx_web
+$ cd mpdx_web
 $ npm install
 ```
 
@@ -40,4 +36,4 @@ All scripts are run with `npm run [script]`, for example: `npm run test`.
 See what each script does by looking at the `scripts` section in [package.json](./package.json).
 
 ## Additional credits
-Initial version was a direct fork of https://github.com/Foxandxss/angular-webpack-workflow
+Initial version was a direct fork of https://github.com/mike-allison/angular-webpack-workflow
