@@ -36,6 +36,7 @@
     "angular-ui-bootstrap-datetimepicker": "^2.0.1",
     "angular-ui-router": "1.0.0-beta.3",
     "angular-xeditable": "0.4.0",
+    "bootstrap": "^3.3.7",
     "bootstrap-additions": "^0.3.1",
     "checklist-model": "0.10.0",
     "iso-currency": "0.2.7",
