@@ -1,7 +1,7 @@
 import config from 'config';
 
 class Api {
-    constructor($http, $cacheFactory, $log, $q, _) {
+    constructor($http, $cacheFactory, $log, $q) {
         this.$http = $http;
         this.$log = $log;
         this.$q = $q;
@@ -14,10 +14,10 @@ class Api {
         // It would be preferred to use promises in the future
     }
     call(method, url, data = {}, successFn, errorFn, cache, params) {
-        if(cache === true){
+        if (cache === true) {
             const cachedData = this.apiCache.get(url);
             if (angular.isDefined(cachedData)) {
-                if(_.isFunction(successFn)) {
+                if (_.isFunction(successFn)) {
                     successFn(cachedData, 304);
                 }
                 return this.$q.resolve(cachedData);
@@ -38,16 +38,16 @@ class Api {
             cache: false,
             timeout: 50000
         }).then((response) => {
-            if(_.isFunction(successFn)){
+            if (_.isFunction(successFn)) {
                 successFn(response.data, response.status);
             }
-            if(cache === true){
+            if (cache === true) {
                 this.apiCache.put(url, response.data);
             }
             return response.data;
         }).catch((response) => {
             this.$log.error('API ERROR:', response.status, response.data);
-            if(_.isFunction(errorFn)){
+            if (_.isFunction(errorFn)) {
                 errorFn(response);
             }
             return this.$q.reject(response);
@@ -65,7 +65,7 @@ class Api {
     delete(url, data, successFn, errorFn, cache) {
         return this.call('delete', url, data, successFn, errorFn, cache);
     }
-    encodeURLarray(array){
+    encodeURLarray(array) {
         return _.map(array, encodeURIComponent);
     }
 }

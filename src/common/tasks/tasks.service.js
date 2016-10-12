@@ -9,11 +9,11 @@ class TasksService {
     fetchUncompletedTasks(id) {
         this.api.get('tasks/', {
             filters: {
-               completed: false,
-               contact_ids: [id],
-               page: 1,
-               per_page: 500,
-               order: 'start_at'
+                completed: false,
+                contact_ids: [id],
+                page: 1,
+                per_page: 500,
+                order: 'start_at'
             }
         }).then((data) => {
             if (data.tasks.length) {
@@ -64,7 +64,7 @@ class TasksService {
         this.api.put('/tasks/' + task.id, {task: {starred: !task.starred}}, cb);
     }
     postBulkLogTask(ajaxAction, taskId, model, contactIds, toComplete, cb) {
-        const url = 'tasks/' + (taskId ? taskId : '');
+        const url = 'tasks/' + (taskId || '');
         this.api.call(ajaxAction, url, {
             add_task_contact_ids: contactIds.join(),
             task: {
@@ -86,7 +86,7 @@ class TasksService {
                         body: model.comment
                     }
                 ],
-                completed: toComplete ? true : model.result ? true : false,
+                completed: toComplete || model.result,
                 result: model.result,
                 tag_list: model.tagsList.map(tag => tag.text).join()
             }
@@ -174,4 +174,4 @@ class TasksService {
 }
 
 export default angular.module('mpdxApp.common.tasks', [])
-        .service('contacts.tasksService', TasksService).name;
+        .service('tasksService', TasksService).name;

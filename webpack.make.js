@@ -5,9 +5,11 @@ var webpack = require('webpack'),
     autoprefixer = require('autoprefixer'),
     HtmlWebpackPlugin = require('html-webpack-plugin'),
     ExtractTextPlugin = require('extract-text-webpack-plugin'),
-    path = require('path'),
-    modRewrite = require('connect-modrewrite'),
-    BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+    path = require('path');
+    // componentHotLoader = require('angular-hot-reloader/loaders/component-loader'),
+    // serviceHotLoader = require('angular-hot-reloader/loaders/service-loader'),
+    // jadeHotLoader = require.resolve('angular-hot-reloader/loaders/jade-loader');
+    //modRewrite = require('connect-modrewrite'),
 
 module.exports = function makeWebpackConfig(options) {
     /**
@@ -77,8 +79,7 @@ module.exports = function makeWebpackConfig(options) {
         alias: {
             config: path.join(__dirname, 'config', configEnv + '.js')
         },
-        root: [path.join(__dirname, "node_modules")],
-        fallback: [path.join(__dirname, "bower_components")]
+        modules: [path.join(__dirname), "node_modules", "bower_components"]
     };
 
     /**
@@ -103,8 +104,16 @@ module.exports = function makeWebpackConfig(options) {
 
         // Initialize module
     config.module = {
-        preLoaders: [],
+        // preLoaders: [
+
+            // { test: /\.service\.js$/, loader: serviceHotLoader, exclude: [/bower_components/, /node_modules/, /\.test\.js/] }
+        // ],
         loaders: [{
+        //     enforce: 'pre',
+        //     test: /\.component\.js$/,
+        //     loader: componentHotLoader,
+        //     exclude: [/bower_components/, /node_modules/, /\.test\.js/]
+        // },{
             // JS LOADER
             // Reference: https://github.com/babel/babel-loader
             // Transpile .js files using babel-loader
@@ -133,7 +142,10 @@ module.exports = function makeWebpackConfig(options) {
         },{
             test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
             loader: "file-loader"
-        }]
+        }],
+        // postLoaders: [
+            // { test: /\.html/, loader: jadeHotLoader }
+        // ]
     };
 
     // ISPARTA LOADER
@@ -165,7 +177,10 @@ module.exports = function makeWebpackConfig(options) {
             //
             // Reference: https://github.com/webpack/style-loader
             // Use style-loader in development for hot-loading
-            loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss')
+            loader: ExtractTextPlugin.extract({
+                loader: 'css!postcss',
+                fallback: 'style'
+            })
         };
 
         // SASS LOADER
@@ -174,10 +189,14 @@ module.exports = function makeWebpackConfig(options) {
         //
         var sassLoader = {
             test: /\.scss$/,
-            loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss!sass?sourceMap&sourceMapContents&includePaths[]=' + encodeURIComponent(path.resolve(process.cwd(), "node_modules")))
+            loader: ExtractTextPlugin.extract({
+                loader: 'css!postcss!sass',
+                fallback: 'style'
+            })
         };
-        if (BUILD) {
-            sassLoader.loader = ExtractTextPlugin.extract('style', 'css!postcss!sass?includePaths[]=' + encodeURIComponent(path.resolve(process.cwd(), "node_modules")));
+        if (!BUILD) {
+            cssLoader.loader = 'style!css!postcss'
+            sassLoader.loader = 'style!css!postcss!sass'
         }
         // Add cssLoader to the loader list
         config.module.loaders.push(cssLoader);
@@ -195,16 +214,14 @@ module.exports = function makeWebpackConfig(options) {
         config.module.loaders.push(nullLoader);
     }
 
-    /**
-     * PostCSS
-     * Reference: https://github.com/postcss/autoprefixer-core
-     * Add vendor prefixes to your css
-     */
-    config.postcss = [
-        autoprefixer({
-            browsers: ['last 2 version']
-        })
-    ];
+    if (!TEST && !BUILD) {
+        config.module.loaders.push({
+            enforce: "pre",
+            test: /\.js$/,
+            exclude: /node_modules|bower_components|vendor/,
+            loaders: ['eslint']
+        });
+    }
 
     /**
      * Plugins
@@ -215,39 +232,46 @@ module.exports = function makeWebpackConfig(options) {
         // Reference: https://github.com/webpack/extract-text-webpack-plugin
         // Extract css files
         // Disabled when in test mode or not in build mode
-        new ExtractTextPlugin('[name].[hash].css', {
+        new ExtractTextPlugin({
+            filename: '[name].[hash].css',
             disable: !BUILD || TEST
         })
     ];
 
-	if (!TEST && !BUILD) {
-		config.eslint = {
-			parser: 'babel-eslint'
-		};
-		config.module.loaders.push({
-			test: /\.js$/,
-			exclude: /node_modules|bower_components|vendor/,
-			loaders: ['eslint']
-		});
-	}
+	var loaderOptions = {
+        postcss: [
+            autoprefixer({
+                browsers: ['last 2 version']
+            })
+        ],
+        eslint: {
+            parser: 'babel-eslint'
+        },
+        sassLoader: {
+            includePaths: [path.resolve(__dirname, 'node_modules'), path.resolve(__dirname, 'bower_components')]
+        }
+        // ...other configs that used to directly on `modules.exports`
+    };
+    if (!BUILD && !TEST) {
+        loaderOptions.sassLoader.sourceMaps = true;
+        loaderOptions.sassLoader.sourceMapContents = true;
+        loaderOptions.cssLoader = {
+            sourceMaps: true
+        }
+    }
 
     // Skip rendering index.html in test mode
     if (!TEST) {
         // Reference: https://github.com/ampedandwired/html-webpack-plugin
         // Render index.html
         config.plugins.push(
+            new webpack.LoaderOptionsPlugin({
+                options: loaderOptions
+            }),
             new HtmlWebpackPlugin({
                 template: './src/index.html',
                 inject: 'body',
                 minify: BUILD
-            }),
-            new BrowserSyncPlugin({
-                host: 'localhost',
-                port: 8080,
-                server: { baseDir: ['public'] },
-                middleware: [
-                    modRewrite(['^[^\\.]*$ /index.html [L]'])
-                ]
             })
         )
     }

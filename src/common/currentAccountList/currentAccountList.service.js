@@ -4,13 +4,13 @@ class CurrentAccountList {
         this.$log = $log;
 
         this.contacts = {
-            getLatePledgeCount: this.getLatePledgeCount,
-            getLatePledgeDays: this.getLatePledgeDays
+            getLatePledgeCount: this.getLatePledgeCount.bind(this),
+            getLatePledgeDays: this.getLatePledgeDays.bind(this)
         };
         this.tasks = {
-            getFirstCompleteNewsletter: this.getFirstCompleteNewsletter,
-            getTasksOverdueCount: this.getTasksOverdueCount,
-            getTasksOverdueGroupByActivityType: this.getTasksOverdueGroupByActivityType
+            getFirstCompleteNewsletter: this.getFirstCompleteNewsletter.bind(this),
+            getTasksOverdueCount: this.getTasksOverdueCount.bind(this),
+            getTasksOverdueGroupByActivityType: this.getTasksOverdueGroupByActivityType.bind(this)
         };
         this.get();
     }
