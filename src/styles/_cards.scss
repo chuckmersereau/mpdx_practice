@@ -1,0 +1,11 @@
+.card {
+  border: 1px solid #D5D5D5;
+  background-color: #F7F7F7;
+  padding: 15px;
+  font-size: 16px;
+  line-height: 20px;
+  margin-bottom: 10px;
+  .pull-right a {
+    cursor: pointer;
+  }
+}

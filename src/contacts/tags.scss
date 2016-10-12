@@ -1,0 +1,15 @@
+.popover{
+  width: 197px;
+  text-align: center;
+  .tags-popover{
+    color: #3a3a3a;
+    button.btn{
+      padding: 2px 0;
+      width: 52%;
+    }
+  }
+}
+
+.tag{
+  user-select: none;
+}

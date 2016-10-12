@@ -1,0 +1,19 @@
+contact-details {
+}
+
+
+.repeat-row-group {
+  .row-group {
+    background: #eee;
+    padding: 8px 8px 0px 8px;
+    &:last-of-type {
+      padding-bottom: 8px;
+    }
+    .form-group {
+      margin-bottom: 5px;
+    }
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

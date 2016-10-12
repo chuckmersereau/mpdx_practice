@@ -1,0 +1,83 @@
+.modal {
+  .modal-dialog {
+    .modal-content {
+      .modal-body {
+        position: relative;
+        max-height: calc(100vh - 150px);
+        overflow: auto;
+        .empty-map {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+          z-index: 10;
+          height: 200px;
+          line-height: 200px;
+          text-align: center;
+          font-size: 75px;
+          background-color: #3a3a3a;
+          color: #fff;
+        }
+        ng-map {
+          margin: -15px -15px 15px -15px;
+          > div {
+            min-height: 200px;
+          }
+          &:first-child {
+            margin-top: -15px;
+          }
+        }
+      }
+      border-radius: 0;
+    }
+    .modal-header {
+      min-height: 56px;
+      a.close {
+        line-height: 25px;
+        font-size: 25px;
+      }
+    }
+    &.modal-small {
+      max-width: 400px;
+    }
+    .row {
+      margin: 0 0 5px 0;
+      [class*="col-"] {
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+    }
+    .form-control[type="text"] {
+      border-radius: 0;
+      border-color: #979797;
+      padding: 6px;
+      &.ng-dirty.ng-invalid {
+        border-color: #a94442;
+      }
+      &:focus {
+        border-color: rgb(0, 115, 152);
+      }
+    }
+    .form-control[type="checkbox"] {
+      display: inline-block;
+      width: auto;
+      height: auto;
+    }
+    .checkbox-label {
+      display: inline-block;
+    }
+    .chosen-container-active.chosen-with-drop .chosen-single, .chosen-container-active .chosen-single, .chosen-container .chosen-drop {
+      border-radius: 0;
+      box-shadow: none;
+    }
+    .chosen-single {
+      border-radius: 0;
+      border-color: #979797;
+    }
+  }
+
+  >.modal-big{
+    max-width: 80% !important;
+    width: 80% !important;
+  }
+}

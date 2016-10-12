@@ -1,0 +1,35 @@
+.account-list-dropdown{
+  float: left;
+  height: auto;
+  text-align: left;
+  line-height: 39px;
+
+  .chosen-container{
+    line-height: 14px;
+  }
+
+  .chosen-single{
+    background-color: rgb(245, 245, 245);
+    border-color: rgb(235, 235, 235);
+    min-width: 110px;
+
+    span{
+      font-size: 14px;
+      margin-right: 14px;
+    }
+  }
+  .chosen-drop{
+    background-color: rgb(245, 245, 245);
+  }
+  li.highlighted{
+    background-color: #666062 !important;
+  }
+}
+menu {
+  .account-list-dropdown {
+    .chosen-container {
+      border-radius: 0;
+      outline: none !important;
+    }
+  }
+}

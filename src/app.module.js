@@ -7,6 +7,8 @@ import vendor from './vendor.module';
 
 import appConfig from './app.config';
 
+require('./app.scss');
+
 export default angular.module('mpdx', [
     common,
     home,
