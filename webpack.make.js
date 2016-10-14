@@ -305,7 +305,8 @@ module.exports = function makeWebpackConfig(options) {
             cached: false,
             colors: true,
             chunk: false
-        }
+        },
+        historyApiFallback: true
     };
 
     return config;

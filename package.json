@@ -27,6 +27,7 @@
     "angular-chosen-localytics": "1.5.0",
     "angular-deep-blur": "1.0.10",
     "angular-gettext": "2.3.8",
+    "angular-jwt": "^0.1.6",
     "angular-localforage": "1.3.2",
     "angular-motion": "0.4.4",
     "angular-sanitize": "1.5.8",
