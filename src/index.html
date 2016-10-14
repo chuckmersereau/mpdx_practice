@@ -1,11 +1,49 @@
 <!doctype html>
 <html ng-app="mpdx" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Angular App</title>
-  <base href="/">
+    <meta charset="UTF-8">
+    <title>MPDX</title>
+    <base href="/">
 </head>
 <body>
-  <ui-view></ui-view>
+    <impersonation-bar></impersonation-bar>
+    <menu></menu>
+    <div id="body">
+        <div id="content" layout-settings
+             class="container"
+             ng-class="{'container-fluid': $layoutSettingsCtrl.layoutSettings.fullWidth, 'container': !$layoutSettingsCtrl.layoutSettings.fullWidth}">
+            <notices></notices>
+            <ui-view></ui-view>
+            <a href="#" id="exit-fullscreen">
+          <span class="icons">
+            <i class="fa fa-arrow-right"></i><i class="fa fa-arrow-left"></i>
+          </span>
+            </a>
+        </div>
+        <div id="footer" class="container brand-font">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="footer-border"></div>
+                    <img src="https://www.cru.org/images/cru-logo.svg" onerror="this.src='https://www.cru.org/images/cru-logo.png'; this.onerror=null;">
+                    <br/>
+                    <a href="/help_requests/new" target="_blank" translate>Support/Help</a>
+                    |
+                    <a href="/privacy" target="_blank" translate>Privacy Policy</a>
+                    <br/>
+                    © 2012 &ndash; {{ Date().getFullYear() }}, <span id="nice-fonts">Cru.</span> All Rights Reserved.
+                </div>
+            </div>
+            <% if session[:fullsite] == true %>
+            <%= link_to(_('Visit Mobile Version'), '/mobile/') %>
+            <% end %>
+        </div>
+    </div>
+    <div id="feedback" style="display: none;">
+        <h2 translate>Need Help?</h2>
+        <p translate>
+            Check out <a href="https://www.gcx.org/mpdxhelp" target="_blank">our MPDX Help Site</a> for training videos and FAQs.
+            If you can't find the answer you need there or need to report a bug, <a href="/help_requests/new">click here to let us know</a>.
+        </p>
+    </div>
 </body>
 </html>
