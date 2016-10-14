@@ -1,12 +1,12 @@
 class CurrentUser {
-    constructor($http, $log) {
-        this.$http = $http;
+    constructor(api, $log) {
+        this.api = api;
         this.$log = $log;
 
         this.get();
     }
     get() {
-        this.$http.get('api/v1/current_user').then((currentUser) => {
+        this.api.get('current_user').then((currentUser) => {
             _.extend(this, currentUser.data);
         }).catch((err) => {
             this.$log.debug(err);
