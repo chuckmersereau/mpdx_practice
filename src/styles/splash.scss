@@ -17,7 +17,7 @@ body {
 }
 
 body {
-  background: image-url('splash/splash_nz.jpg') fixed;
+  background: url('images/splash/splash_nz.jpg') fixed;
   background-size: cover;
   background-position: 50% 50%;
 }
@@ -190,7 +190,7 @@ $sidebarwidth: 400px;
  }
 }
 #logo {
-  background: image-url("splash/logo.png") no-repeat 50% 50%;
+  background: url("images/splash/logo.png") no-repeat 50% 50%;
   background-size:126px 50px;
   width: 126px;
   height: 50px;

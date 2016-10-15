@@ -4,7 +4,7 @@
 @import "jquery-ui";
 
 body {
-  background: image-url("splash/bg_blue.jpg");
+  background: url("images/splash/bg_blue.jpg");
 }
 
 .setupwrap {
@@ -64,7 +64,7 @@ body {
 }
 
 .continue {
-  background: image-url("splash/bg_gray.jpg");
+  background: url("images/splash/bg_gray.jpg");
   padding: 15px;
   text-align: left;
   border-top: 1px solid $color-white;
@@ -76,13 +76,13 @@ body {
 
 header#global {
   height: 100px;
-  background: image-url("splash/bg_gray.jpg");
+  background: url("images/splash/bg_gray.jpg");
   line-height: 100px;
   padding: 0 20px;
 }
 
 #logo {
-  background: image-url("splash/logo.png") no-repeat 50% 50%;
+  background: url("images/splash/logo.png") no-repeat 50% 50%;
   background-size:126px 50px;
   width: 126px;
   height: 50px;
@@ -101,12 +101,12 @@ header#global {
 }
 
 #callout {
-  background: image-url("callout_bg_blue.png") no-repeat;
+  background: url("images/callout_bg_blue.png") no-repeat;
   margin-left: -18px;
   height: 110px;
   width: 906px;
   .in {
-    background: image-url("bigcheck.png") no-repeat 0 21px;
+    background: url("images/bigcheck.png") no-repeat 0 21px;
     height: 47px;
     color: $color-white;
     font-size: 29px;

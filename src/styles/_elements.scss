@@ -81,7 +81,7 @@ span.menu_item,
 
 /* ************************************************************** */
 
-.logo {width: 83px; height: 21px; background: image-url("mpdx_logo_dark.png") no-repeat; background-size: 123px 48px;}
+.logo {width: 83px; height: 21px; background: url("images/mpdx_logo_dark.png") no-repeat; background-size: 123px 48px;}
 
 /* ************************************************************** */
 
@@ -97,7 +97,7 @@ span.menu_item,
   overflow: hidden;
 }
 .inlineaction.delete {
-  background-image: image-url("delete.png");
+  background-image: url("images/delete.png");
 }
 
 #select_more {

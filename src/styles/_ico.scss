@@ -1,5 +1,5 @@
-.ico {background: image-url("sprite.png") no-repeat 50% 0; width: 16px; height: 16px; display: inline-block; overflow: hidden; text-indent: -100000px;}
-.icos {background: image-url("sprite_social.png") no-repeat 50% 0; width: 16px; height: 16px; display: inline-block; overflow: hidden; text-indent: -100000px;}
+.ico {background: url("images/sprite.png") no-repeat 50% 0; width: 16px; height: 16px; display: inline-block; overflow: hidden; text-indent: -100000px;}
+.icos {background: url("images/sprite_social.png") no-repeat 50% 0; width: 16px; height: 16px; display: inline-block; overflow: hidden; text-indent: -100000px;}
 
 .fav {
   cursor: pointer;
@@ -24,7 +24,7 @@
 .ico_trash:hover .ico_trash:hover {color: $links;}
 
 .ico_individual {background-position: 50% -467px;}
-.ico_close {background-position: 0 0; background-image: image-url("close.png"); }
+.ico_close {background-position: 0 0; background-image: url("images/close.png"); }
 
 .ico_google {background-position: 0 0; }
 .ico_fb {background-position: 0 -103px; }

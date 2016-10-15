@@ -225,7 +225,7 @@ div.right {
   button {
     box-shadow: 0 0 8px rgba(0,0,0,.4) inset;
     border: 0px;
-    background: image-url('search.png') no-repeat 50% 50%;
+    background: url('images/search.png') no-repeat 50% 50%;
     height: 24px;
     width: 27px;
     text-indent: -1000px;
@@ -261,7 +261,7 @@ div.right {
     padding: 5px 10px 5px 30px;
     margin: 0;
     font-size: 13px;
-    background: image-url('smile.png') 10px 50% no-repeat;
+    background: url('images/smile.png') 10px 50% no-repeat;
   }
 
   p {
@@ -494,7 +494,7 @@ div.right {
 }
 
 .mapit {
-  background: image-url("pin.png") no-repeat 0 50%;
+  background: url("images/pin.png") no-repeat 0 50%;
   color: $color-black;
   padding-left: 14px;
   line-height: 16px;
@@ -592,10 +592,10 @@ h2.section {
     text-indent: -9999px;
     background: center center no-repeat;
   }
-  .facebook { background-image: image-url('soc_facebook.gif'); }
-  .twitter { background-image: image-url('soc_twitter.gif'); }
-  .linkedin { background-image: image-url('soc_linkedin.gif'); }
-  .website { background-image: image-url('soc_website.gif'); }
+  .facebook { background-image: url('images/soc_facebook.gif'); }
+  .twitter { background-image: url('images/soc_twitter.gif'); }
+  .linkedin { background-image: url('images/soc_linkedin.gif'); }
+  .website { background-image: url('images/soc_website.gif'); }
 }
 
 .small-person {
@@ -926,7 +926,7 @@ div.name {font-size: 14px; margin-bottom: 4px;}
   }
 }
 .corner_close {
-  background: image-url("close.png") no-repeat 50% 50% #999;
+  background: url("images/close.png") no-repeat 50% 50% #999;
   display: block;
   width: 15px;
   height: 15px;
@@ -1136,7 +1136,7 @@ table tbody.tasks {
   z-index: 10;
 
   a {
-    background: image-url("sprite.png") no-repeat 0 50%;
+    background: url("images/sprite.png") no-repeat 0 50%;
     line-height: 25px;
     height: 25px;
     padding-left: 25px;
@@ -1160,7 +1160,7 @@ table tbody.tasks {
   margin-top: 6px;
   border-radius: 5px;
   > * {background: $blue_comments;}
-  header {background: image-url("comment_head.png") no-repeat -1px 0; height: 7px;}
+  header {background: url("images/comment_head.png") no-repeat -1px 0; height: 7px;}
   .comment {
     padding: 5px 10px;
     border-bottom: 1px dotted $color-white;
@@ -1608,7 +1608,7 @@ table.meta {
 
 /* ************************************************************** */
 .qtip {
-  background: image-url("qmark.png") no-repeat;
+  background: url("images/qmark.png") no-repeat;
   width: 16px;
   height: 16px;
   display: inline-block;
@@ -1627,7 +1627,7 @@ table.meta {
   height: 16px;
   margin-top: 12px;
   overflow: hidden;
-  background: image-url("status-icon.png") -0px -0px repeat;
+  background: url("images/status-icon.png") -0px -0px repeat;
   background-repeat: no-repeat;
 }
 
