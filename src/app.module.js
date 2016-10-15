@@ -3,6 +3,7 @@ import angular from 'angular';
 import common from './common/index.module';
 import home from './home/home.component';
 import login from './login/login.component';
+import menu from './menu/menu.component';
 import vendor from './vendor.module';
 
 import appConfig from './app.config';
@@ -13,6 +14,7 @@ export default angular.module('mpdx', [
     common,
     home,
     login,
+    menu,
     vendor
 ])
     .config(appConfig).name;

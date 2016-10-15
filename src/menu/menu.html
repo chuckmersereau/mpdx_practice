@@ -1,0 +1,99 @@
+<div class="primary">
+    <nav class="navbar">
+        <div class="container">
+            <div class="pull-right navbar-quick">
+                <div class="section">
+                    <div class="dropdown">
+                        <a class="dropdown-toggle settings-drop" href="#" type="button" data-toggle="dropdown" aria-expanded="true" data-disabled="true">
+                            <i class="fa fa-cog"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="settings-drop">
+                            <li role="presentation"><a ui-sref="preferences.accounts" translate>Preferences</a></li>
+                            <li role="presentation"><a ui-sref="preferences.notifications" translate>Notifications</a></li>
+                            <li role="presentation"><a ui-sref="preferences.imports" translate>Import Contacts</a></li>
+                            <li role="presentation"><a ui-sref="preferences.integrations" translate>Connect Services</a></li>
+                            <li role="presentation"><a ui-sref="preferences.accounts" translate>Manage Account</a></li>
+                            <li role="presentation" ng-if="$ctrl.currentUser.admin">
+                                <a href="/admin" translate>Admin</a>
+                            </li>
+                            <li role="presentation"><a href="/logout" translate>Log out</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="section">
+                    <div class="dropdown">
+                        <a class="dropdown-toggle btn btn-secondary" href="#" type="button" id="quick-drop" data-toggle="dropdown" aria-expanded="true" data-disabled="true" translate>
+                            Quick Add
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="quick-drop">
+                            <li role="presentation"><a ui-sref="tasks.new" translate>Add Task</a></li>
+                            <li role="presentation"><a ui-sref="contacts.new" translate>Add Contact</a></li>
+                            <li role="presentation"><a ui-sref="contacts.multiple" translate>Multiple Contacts</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="section">
+                    <contacts-search dropdown="true"></contacts-search>
+                </div>
+                <div class="section">
+                    <account-lists></account-lists>
+                </div>
+            </div>
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div id="brand">
+                <a ui-sref="home" class="logo"></a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="item" ng-class="{active: vm.path == '/'}"><a ui-sref="home" translate>Dashboard</a></li>
+                    <li class="item" ng-class="{active: vm.path.startsWith('/contacts')}"><a ui-sref="contacts" translate>Contacts</a></li>
+                    <li class="item" ng-class="{active: vm.path.startsWith('/tasks')}" translate><a ui-sref="tasks" translate>Tasks</a></li>
+                    <li class="item" ng-class="{active: vm.path.startsWith('/donations')}" translate><a ui-sref="donations" translate>Donations</a></li>
+                    <li class="item" ng-class="{active: vm.path.startsWith('/reports')}" ng-if="vm.rollout.reports"><a href="/reports" translate>Reports</a></li>
+                    <li class="item" ng-class="{active: vm.path.startsWith('/research')}" ng-if="vm.rollout.research"><a href="/research" translate>Research</a></li>
+                    <li class="item" ng-class="{active: vm.path.startsWith('/insights')}" ng-if="vm.showInsights"><a href="/insights" translate>Insights</a></li>
+                    <li class="item last"><a href="/help" target="_blank" translate>Help</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="secondary">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="pull-left" ng-show="vm.path.startsWith('/contacts')">
+                    <div class="section"><a ui-sref="preferences.imports" translate>Import Contacts</a></div>
+                    <div class="section" translate><a href="/contacts/find_duplicates" translate>Find Duplicates</a></div>
+                </div>
+                <div class="pull-left" ng-show="vm.path.startsWith('/donations')">
+                    <div class="section"><a ui-sref="donations.new" class="'no-new-tab'" translate><i class="fa fa-plus-square"></i> Add a donation</a></div>
+                    <div class="section"><a ui-sref="reports.contributions" translate>Contribution Report</a></div>
+                    <div class="section">
+                        <a ui-sref="donations.sync">Sync Donations Now</a>
+                    </div>
+                </div>
+
+                <div class="pull-left" ng-show="vm.path.startsWith('/reports')">
+                    <div class="section" ng-class="{active: vm.path.startsWith('/reports/expected_monthly_totals')}">
+                        <a ui-sref="reports.monthly" translate>Expected Monthly Total</a>
+                    </div>
+                    <div class="section" ng-class="{active: vm.path.startsWith('/reports/salary_currency_donations')}">
+                        <a ui-sref="reports.salary" translate>Contributions by Salary Currency</a>
+                    </div>
+                    <div class="section" ng-class="{active: vm.path.startsWith('/reports/donor_currency_donations')}">
+                        <a ui-sref="reports.donor" translate>Contributions by Partner Currency</a>
+                    </div>
+                </div>
+                <menu-balances></menu-balances>
+            </div>
+        </div>
+    </div>
+</div>
