@@ -1,5 +1,6 @@
 import angular from 'angular';
 
+import app from './app.directive';
 import common from './common/index.module';
 import home from './home/home.component';
 import login from './login/login.component';
@@ -13,6 +14,7 @@ import appRun from './app.run';
 require('./app.scss');
 
 export default angular.module('mpdx', [
+    app,
     common,
     home,
     login,

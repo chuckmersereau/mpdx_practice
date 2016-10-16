@@ -1,7 +1,7 @@
 class Session {
-    ticket
+    fullsite;
     constructor() {
-        this.ticket = null;
+        this.fullsite = true;
     }
 }
 

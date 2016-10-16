@@ -1,5 +1,3 @@
-import config from "config";
-
 export default class Routes {
     static config($stateProvider) {
         $stateProvider.state({
@@ -12,12 +10,6 @@ export default class Routes {
             onEnter: ($state, $stateParams, $window) => {
                 $window.sessionStorage.ticket = $stateParams.ticket;
                 $state.go($stateParams.redirect || 'home');
-            }
-        }).state({
-            name: 'theKey',
-            url: '/theKey',
-            onEnter: ($window) => {
-                $window.location.href = config.theKeyUrl;
             }
         });
     }

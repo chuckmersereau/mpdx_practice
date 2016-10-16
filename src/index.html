@@ -5,7 +5,7 @@
     <title>MPDX</title>
     <base href="/">
 </head>
-<body>
+<body app>
     <impersonation-bar></impersonation-bar>
     <menu></menu>
     <div id="body">
@@ -30,12 +30,10 @@
                     |
                     <a href="/privacy" target="_blank" translate>Privacy Policy</a>
                     <br/>
-                    © 2012 &ndash; {{ Date().getFullYear() }}, <span id="nice-fonts">Cru.</span> All Rights Reserved.
+                    © 2012 &ndash; {{ $ctrl.year }}, <span id="nice-fonts">Cru.</span> All Rights Reserved.
                 </div>
             </div>
-            <% if session[:fullsite] == true %>
-            <%= link_to(_('Visit Mobile Version'), '/mobile/') %>
-            <% end %>
+            <a href="/mobile" ng-if="$ctrl.session.fullsite" translate>Visit Mobile Version</a>
         </div>
     </div>
     <div id="feedback" style="display: none;">

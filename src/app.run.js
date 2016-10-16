@@ -11,12 +11,12 @@ export default function($transitions, $q, $window) {
         return true;
     } }, () => {
         let deferred = $q.defer();
-       if (!$window.sessionStorage.ticket) {
-             deferred.reject();
-             $window.location.href = config.theKeyUrl + '?redirect=' + redirect;
-         } else {
-             deferred.resolve();
-         }
-         return deferred.promise;
+        if (!$window.sessionStorage.ticket) {
+            deferred.reject();
+            $window.location.href = config.theKeyUrl + '?redirect=' + redirect;
+        } else {
+            deferred.resolve();
+        }
+        return deferred.promise;
     });
 }
