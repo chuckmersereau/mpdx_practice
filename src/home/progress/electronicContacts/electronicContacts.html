@@ -1,0 +1,33 @@
+
+<div class="well">
+    <div class="progress-box-title">
+        <i class="fa fa-desktop"></i>
+        <span translate>Electronic Contacts</span>
+    </div>
+    <div class="progress-stat">
+        <span class="count-big">{{$ctrl.electronic.sent}}</span>
+        <span translate>Sent</span>
+    </div>
+    <div class="progress-stat">
+        <span class="count-big">{{$ctrl.electronic.received}}</span>
+        <span translate>Received</span>
+    </div>
+    <div class="progress-stat">
+        <span class="count-big">{{$ctrl.electronic.appointments}}</span>
+        <span translate>Appointments Produced</span>
+    </div>
+    <ul class="plain-list">
+        <li>
+            <span translate>Email</span>: {{$ctrl.email.sent}} <span translate>Sent</span> /
+            {{$ctrl.email.received}} <span translate>Received</span>
+        </li>
+        <li>
+            <span translate>Facebook</span>: {{$ctrl.facebook.sent}} <span translate>Sent</span> /
+            {{$ctrl.facebook.received}} <span translate>Received</span>
+        </li>
+        <li>
+            <span translate>Text Message</span>: {{$ctrl.data.textMessage.sent}} <span translate>Sent</span> /
+            {{$ctrl.textMessage.received}} <span translate>Received</span>
+        </li>
+    </ul>
+</div>

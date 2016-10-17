@@ -1,7 +1,4 @@
 class CorrespondenceController {
-    constructor() {
-
-    }
 }
 
 var progressCorrespondence = {
@@ -11,5 +8,6 @@ var progressCorrespondence = {
         correspondence: '<'
     }
 };
-angular.module('mpdx.home.progress.correspondence', [])
+
+export default angular.module('mpdx.home.progress.correspondence', [])
     .component('progressCorrespondence', progressCorrespondence).name;

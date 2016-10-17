@@ -1,0 +1,38 @@
+<div ng-if="$ctrl.errorOccurred" translate>
+    Error loading progress stats. Please try again or contact support.
+</div>
+<section id="dash-progress" ng-if="!$ctrl.errorOccurred">
+    <div class="page-filters-plain">
+        <div class="row">
+            <div class="col-md-6 col-sm-4">
+                <h3 translate>Progress</h3>
+            </div>
+            <div class="col-md-6 col-sm-8 text-right">
+              <span class="normal-weight ng-cloak">
+                {{$ctrl.starttDate | date:'MMM d'}} — {{$ctrl.endtDate | date:'MMM d'}}
+                <button class="previous_page btn btn-default btn-sm" title="{{ $ctrl.__('Previous') }}" ng-click="$ctrl.previousWeek()">
+                  <i class="fa fa-chevron-left"></i>
+                </button>
+                <button class="next_page btn btn-default btn-sm" title="{{ $ctrl.gettextCatalog.getString('Next') }}" ng-click="$ctrl.nextWeek()">
+                  <i class="fa fa-chevron-right"></i>
+                </button>
+              </span>
+                <a ng-if="$ctrl.currentUser.hasAnyUsAccounts" class="btn btn-sm btn-default btn-blue" href="https://staffweb.cru.org/mpd-donations/reports/mpd-weekly-update/" translate>
+                    Weekly Progress Report
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="row ng-cloak">
+        <div class="col-md-8">
+            <progress-contacts contacts="$ctrl.data.contacts"></progress-contacts>
+            <progress-phone-dials phone="$ctrl.data.phone"></progress-phone-dials>
+            <progress-electronic-contacts facebook="$ctrl.data.facebook" electronic="$ctrl.data.electronic" email="$ctrl.data.email" text-message="$ctrl.data.text_message"></progress-electronic-contacts>
+            <progress-correspondence correspondence="$ctrl.data.correspondence"></progress-correspondence>
+        </div>
+        <div class="col-md-4">
+            <progress-appointments appointments="$ctrl.data.appointments"></progress-appointments>
+            <progress-appeals></progress-appeals>
+        </div>
+    </div>
+</section>

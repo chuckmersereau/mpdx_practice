@@ -1,7 +1,4 @@
 class AppealsController {
-    constructor() {
-
-    }
 }
 
 const progressAppeals = {
@@ -10,4 +7,4 @@ const progressAppeals = {
 };
 
 export default angular.module('mpdx.home.progress.appeals', [])
-        .component('progressAppeals', progressAppeals).name
+    .component('progressAppeals', progressAppeals).name;

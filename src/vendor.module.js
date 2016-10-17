@@ -1,5 +1,6 @@
 import deepBlur from 'angular-deep-blur';
 import ngAnimate from 'angular-animate';
+import getText from 'angular-gettext';
 import jwt from 'angular-jwt';
 import ngSanitize from 'angular-sanitize';
 import uiBootstrap from 'angular-ui-bootstrap';
@@ -24,6 +25,7 @@ require('bootstrap-additions/dist/bootstrap-additions.css');
 
 export default angular.module('mpdx.vendor', [
     deepBlur,
+    getText,
     jwt,
     ngAnimate,
     ngSanitize,

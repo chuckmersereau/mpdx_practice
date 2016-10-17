@@ -1,15 +1,13 @@
 class ContactsController {
-    constructor() {
-
-    }
 }
 
-var progressContacts = {
+const progressContacts = {
     template: require('./contacts.html'),
     controller: ContactsController,
     bindings: {
         contacts: '<'
     }
 };
-angular.module('mpdx.home.progress.contacts', [])
-    .component('progressContacts', progressContacts)
+
+export default angular.module('mpdx.home.progress.contacts', [])
+    .component('progressContacts', progressContacts).name;

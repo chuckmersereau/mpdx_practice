@@ -1,6 +1,4 @@
 class AppointmentsController {
-    constructor() {
-    }
 }
 
 const progressAppointments = {
