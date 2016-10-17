@@ -1,7 +1,11 @@
 class CurrentAccountList {
+    api;
+
     constructor(api, $log) {
         this.api = api;
         this.$log = $log;
+
+        this.donations = {};
 
         this.contacts = {
             getLatePledgeCount: this.getLatePledgeCount.bind(this),
@@ -35,7 +39,7 @@ class CurrentAccountList {
             this.$log.debug(err);
         });
     }
-    getContactsWithAniversaries() {
+    getContactsWithAnniversaries() {
         this.api.get('current_account_list/contacts_with_anniversaries').then((resp) => {
             this.contacts_with_anniversaries = resp.data;
         }).catch((err) => {

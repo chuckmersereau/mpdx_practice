@@ -18,9 +18,12 @@ import care from './care/care.component';
 import commitments from './commitments/commitments.component';
 import connect from './connect/connect.component';
 import progress from './progress/progress.component';
+import welcomeHeader from './welcomeHeader/welcomeHeader.component';
+
 export default angular.module('mpdx.home', [
     care,
     commitments,
     connect,
-    progress
+    progress,
+    welcomeHeader
 ]).component('home', Home).name;

@@ -159,7 +159,7 @@ module.exports = function makeWebpackConfig(options) {
                 /node_modules/,
                 /\.test\.js$/
             ],
-            loader: 'isparta-instrumenter'
+            loader: 'isparta'
         })
     }
 

@@ -6,7 +6,7 @@ class anniversariesController {
     }
     $onInit() {
         if (!this.currentAccountList.contacts_with_anniversaries) {
-            this.currentAccountList.getContactsWithAniversaries();
+            this.currentAccountList.getContactsWithAnniversaries();
         }
     }
     $onChanges(e) {
