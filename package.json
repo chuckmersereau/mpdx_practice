@@ -53,6 +53,7 @@
     "twitter_cldr": "^2.1.1"
   },
   "devDependencies": {
+    "angular-gettext-tools": "^2.3.0",
     "angular-hot-reloader": "0.0.2",
     "angular-mocks": "1.5.8",
     "autoprefixer": "^6.4.1",

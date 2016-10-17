@@ -223,6 +223,14 @@ module.exports = function makeWebpackConfig(options) {
         });
     }
 
+    if (BUILD) {
+        // Build translations
+        config.module.loaders.push({
+            test: /\.po$/,
+            loader: 'filename=locale/[name].json!angular-gettext?format=json'
+        });
+    }
+
     /**
      * Plugins
      * Reference: http://webpack.github.io/docs/configuration.html#plugins
