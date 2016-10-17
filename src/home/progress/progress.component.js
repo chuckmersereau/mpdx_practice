@@ -23,26 +23,37 @@ class progressController {
                 active: '-', referrals_on_hand: '-', referrals: '-'
             },
             phone: {
-                completed: '-', attempted: '-', received: '-',
-                appointments: '-', talktoinperson: '-'
+                completed: '-',
+                attempted: '-',
+                received: '-',
+                appointments: '-',
+                talktoinperson: '-'
             },
             email: {
-                sent: '-', received: '-'
+                sent: '-',
+                received: '-'
             },
             facebook: {
-                sent: '-', received: '-'
+                sent: '-',
+                received: '-'
             },
             text_message: {
-                sent: '-', received: '-'
+                sent: '-',
+                received: '-'
             },
             electronic: {
-                sent: '-', received: '-', appointments: '-'
+                sent: '-',
+                received: '-',
+                appointments: '-'
             },
             appointments: {
                 completed: '-'
             },
             correspondence: {
-                precall: '-', support_letters: '-', thank_yous: '-', reminders: '-'
+                precall: '-',
+                support_letters: '-',
+                thank_yous: '-',
+                reminders: '-'
             }
         };
     }
@@ -61,8 +72,8 @@ class progressController {
 
     refreshData() {
         this.blankData();
-        var start_date_string = this.$filter('date')(this.startDate, 'yyyy-MM-dd');
-        var url = 'progress.json?start_date=' + start_date_string +
+        let startDateString = this.$filter('date')(this.startDate, 'yyyy-MM-dd');
+        const url = 'progress.json?start_date=' + startDateString +
             '&account_list_id=' + this.$state.current_account_list_id;
 
         this.api.get(url).then((newData) => {
