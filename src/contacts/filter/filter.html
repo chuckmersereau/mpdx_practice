@@ -1,0 +1,131 @@
+<a ng-click="$ctrl.resetFiltersAndTags()" class="btn btn-primary btn-xs btn-block btn-filter-left ng-cloak"
+   ng-show="$ctrl.showReset()"
+   onClick="_gaq.push(['_trackEvent', 'Contacts Events', 'Filter', 'Reset Filters']);">
+    <i class="fa fa-undo"></i> <span translate>Reset Filters</span>
+</a>
+<ul>
+    <contacts-tags></contacts-tags>
+    <li class="filters_section" ng-if="!$ctrl.insightFilterIsActive()">
+        <form>
+            <span class="filters_title menu_item" translate>Filters</span>
+            <div class="filter_hint">
+                <span  translate>Click the</span>
+                <span class="fa-stack">
+                    <i class="fa fa-circle fa-stack-2x text-danger"></i>
+                    <i class="fa fa-minus fa-stack-1x fa-inverse"></i>
+                </span>
+                <span  translate>to look up all contacts who do not have that filter.</span>
+            </div>
+            <ul class="filters">
+                <li class="filter_set" ng-repeat="filter in $ctrl.filterService.data | orderBy: 'priority'">
+                    <label id="filter_{{filter.name}}" class="filter_title">{{filter.title}}</label>
+                    <div class="filter_set_inner">
+                        <div ng-if="filter.type == 'container'" ng-repeat="child in filter.children | orderBy: 'priority'">
+                            <div class="filter_multiselect" ng-if="child.type == 'multiselect'">
+                                <label>
+                                    {{child.title}}
+                                    <a class="filter_invert_multiselect" ng-click="$ctrl.invertMultiselect(child)" title="{{ $ctrl.gettextCatalog.getString('Invert') }}">
+                                        <span class="fa-stack">
+                                          <i class="fa fa-circle fa-stack-2x text-danger"></i>
+                                          <i class="fa fa-minus fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                </label>
+                                <select class="form-control" ng-options="item.id as item.name for item in child.options" ng-model="$ctrl.filterService.params[child.name]" multiple></select>
+                            </div>
+                            <div class="filter_radio" ng-if="child.type == 'radio'">
+                                {{child.title}}
+                                <label ng-repeat="option in child.options">
+                                    <input id="_" name="{{child.name}}" type="radio" value="{{option.id}}" ng-model="$ctrl.filterService.params[child.name]">
+                                    {{option.name}}
+                                </label>
+                            </div>
+                            <label ng-if="child.type == 'single_checkbox'">
+                                <input name="{{child.name}}" type="checkbox" ng-model="$ctrl.filterService.params[child.name]"> {{child.title}}
+                            </label>
+                            <div class="filter_dates" ng-if="child.type == 'dates'">
+                                <label ng-repeat="option in child.options">
+                                    {{option.name}}<br>
+                                    <datetimepicker ng-model="$ctrl.filterService.params[child.name][option.id]" hidden-time="true" placeholder="{{ $ctrl.gettextCatalog.getString('None') }}"></datetimepicker>
+                                </label>
+                            </div>
+                            <div class="filter_dates" ng-if="child.type == 'daterange'">
+                                <label>
+                                    {{child.title}}<br>
+                                    <contacts-filter-daterange
+                                        model="$ctrl.filterService.params[child.name]"
+                                        locale="{ applyLabel: '{{ $ctrl.gettextCatalog.getString('Filter') }}', cancelLabel: '{{ $ctrl.gettextCatalog.getString('Clear') }}' }"
+                                        custom-options="child.options">
+                                    </contacts-filter-daterange>
+                                </label>
+                            </div>
+                            <div class="filter_text" ng-if="child.type == 'text'">
+                                <label ng-repeat="option in child.options">
+                                    {{option.name}}<br>
+                                    <input class="form-control" name="{{child.name}}" type="text" ng-model="$ctrl.filterService.params[child.name][option.id]" placeholder="{{option.placeholder}}">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="filter_multiselect" ng-if="filter.type == 'multiselect'">
+                            <label>
+                                <a class="filter_invert_multiselect" ng-click="$ctrl.invertMultiselect(filter)" title="{{ $ctrl.gettextCatalog.getString('Invert') }}">
+                                  <span class="fa-stack">
+                                    <i class="fa fa-circle fa-stack-2x text-danger"></i>
+                                    <i class="fa fa-minus fa-stack-1x fa-inverse"></i>
+                                  </span>
+                                </a>
+                            </label>
+                            <select class="form-control"  ng-options="item.id as item.name for item in filter.options" ng-model="$ctrl.filterService.params[filter.name]" multiple></select>
+                        </div>
+                        <div class="filter_radio" ng-if="filter.type == 'radio'">
+                            <label ng-repeat="option in filter.options">
+                                <input name="{{filter.name}}" type="radio" value="{{option.id}}" ng-model="$ctrl.filterService.params[filter.name]">
+                                {{option.name}}
+                            </label>
+                        </div>
+                        <label ng-if="filter.type == 'single_checkbox'">
+                            <input name="{{filter.name}}" type="checkbox" ng-model="$ctrl.filterService.params[filter.name]"> {{filter.title}}
+                        </label>
+                        <div class="filter_dates" ng-if="filter.type == 'dates'">
+                            <label ng-repeat="option in filter.options">
+                                {{option.name}}<br>
+                                <datetimepicker ng-model="$ctrl.filterService.params[filter.name][option.id]" hidden-time="true" placeholder="{{ $ctrl.gettextCatalog.getString('None') }}"></datetimepicker>
+                            </label>
+                        </div>
+                        <div class="filter_dates" ng-if="filter.type == 'daterange'">
+                            <contacts-filter-daterange
+                                model="$ctrl.filterService.params[filter.name]"
+                                locale="{ applyLabel: '{{ $ctrl.gettextCatalog.getString('Filter') }}', cancelLabel: '{{ $ctrl.gettextCatalog('Clear') }}' }"
+                                custom-options="filter.options">
+                            </contacts-filter-daterange>
+                        </div>
+                        <div class="filter_text" ng-if="filter.type == 'text'">
+                            <label ng-repeat="option in filter.options">
+                                {{option.name}}<br>
+                                <input class="form-control" name="{{filter.name}}" type="text" ng-model="$ctrl.filterService.params[filter.name][option.id]" placeholder="{{option.placeholder}}">
+                            </label>
+                        </div>
+                    </div>
+                </li>
+                <li class="controls map-contacts-btn">
+                    <a ng-click="$ctrl.openMapContactsModal()" class="btn btn-default btn-xs cursor-pointer" onclick="_gaq.push(['_trackEvent', 'Contacts Events', 'Filter', 'Map These Contacts']);">
+                        <i class="fa fa-map-marker"></i>
+                        Map Selected Contacts
+                    </a>
+                </li>
+            </ul>
+        </form>
+    </li>
+    <li ng-class="{'selected': $ctrl.insightFilterIsActive()}" ng-if="$ctrl.showInsights">
+        <span class="left_filters menu_item" translate>Insights</span>
+        <p style="text-indent:40px">
+            <a href="" ng-click="$ctrl.runInsight('recommendations')"
+               onClick="_gaq.push(['_trackEvent', 'Contacts Events', 'Filter', 'Increase Recommendations']);" translate>
+                Increase Recommendations
+            </a>
+        </p>
+    </li>
+    <li class="controls" ng-if="$ctrl.insightFilterIsActive()" ng-if="$ctrl.showInsights">
+        <a href="" ng-click="$ctrl.clearInsightFilter()" class="btn" translate>Clear Insight Filter</a>
+    </li>
+</ul>

@@ -17,8 +17,10 @@ const Contacts = {
     bindings: {}
 };
 
+import filter from './filter/filter.component';
 import list from './list/list.component';
 
 export default angular.module('mpdx.contacts', [
+    filter,
     list
 ]).component('contacts', Contacts).name;

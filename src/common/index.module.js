@@ -1,3 +1,4 @@
+import alerts from './alerts/alerts.component';
 import anniversaries from './anniversaries/anniversaries.component';
 import birthdays from './birthdays/birthdays.component';
 import contacts from './contacts/index.module';
@@ -7,6 +8,7 @@ import facebookLink from './facebookLink/facebookLink.component';
 import twitterLink from './twitterLink/twitterLink.component';
 
 export default angular.module('mpdx.common', [
+    alerts,
     anniversaries,
     birthdays,
     contacts,
