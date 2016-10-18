@@ -60,5 +60,8 @@ const Filter = {
     template: require('./filter.html')
 };
 
-export default angular.module('mpdx.contacts.filter', [])
-    .component('contactsFilter', Filter).name;
+import tags from './tags/tags.component';
+
+export default angular.module('mpdx.contacts.filter', [
+    tags
+]).component('contactsFilter', Filter).name;

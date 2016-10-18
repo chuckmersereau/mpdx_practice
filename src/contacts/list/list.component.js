@@ -141,6 +141,10 @@ const ContactList = {
         selected: '='
     }
 };
-export default angular.module('mpdx.contacts.list', [])
-    .component('contactsList', ContactList).name;
+
+import item from './item/item.component';
+
+export default angular.module('mpdx.contacts.list', [
+    item
+]).component('contactsList', ContactList).name;
 
