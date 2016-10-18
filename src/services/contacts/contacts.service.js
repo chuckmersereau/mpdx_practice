@@ -1,9 +1,10 @@
 class ContactsService {
     api;
+    cacheService;
     filterService;
     tagsService;
 
-    constructor($rootScope, filterService, tagsService, cacheService, api, filterFilter, $location) {
+    constructor($rootScope, filterService, tagsService, cacheService, api, $location) {
         this.api = api;
         this.cacheService = cacheService;
         this.filterService = filterService;
@@ -18,7 +19,7 @@ class ContactsService {
         this.params_watcher = $rootScope.$watch(() => {
             return this.filterService.params;
         }, this.watchCallback = (newVal, oldVal) => {
-            if (!$.isEmptyObject(newVal) && !$.isEmptyObject(oldVal)) {
+            if (!_.isEmpty(newVal) && !_.isEmpty(oldVal)) {
                 this.load(true);
             }
         }, true);

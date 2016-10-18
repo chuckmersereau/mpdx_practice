@@ -13,7 +13,7 @@ class ContactsController {
 const Contacts = {
     controller: ContactsController,
     controllerAs: 'vm',
-    templateUrl: '/templates/contacts/index.html',
+    template: require('./contacts.html'),
     bindings: {}
 };
 

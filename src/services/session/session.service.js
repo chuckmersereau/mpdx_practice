@@ -1,7 +1,16 @@
 class Session {
     fullsite;
-    constructor() {
+    constructor(api) {
+        this.api = api;
+
+        this.account_list_id = null;
+        this.data = {};
         this.fullsite = true;
+    }
+    updateField(key, value, cb) {
+        var body = {};
+        body[key] = value;
+        this.api.put('session', body).then(cb);
     }
 }
 
