@@ -11,6 +11,14 @@ export default class Routes {
                 $window.sessionStorage.ticket = $stateParams.ticket;
                 $state.go($stateParams.redirect || 'home');
             }
+        }).state({
+            name: 'contacts',
+            title: 'Contacts',
+            url: '/contacts',
+            component: 'contacts',
+            params: {
+                filters: null
+            }
         });
     }
 }

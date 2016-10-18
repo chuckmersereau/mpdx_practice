@@ -35,7 +35,7 @@ class Api {
             data: data,
             params: params,
             paramSerializer: '$httpParamSerializerJQLike',
-            cache: false,
+            cacheService: false,
             timeout: 50000
         }).then((response) => {
             if (_.isFunction(successFn)) {

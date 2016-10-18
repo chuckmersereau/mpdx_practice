@@ -70,10 +70,9 @@ function linkFn(scope) {
             return s;
         }
 
-        const chart = new Highcharts.Chart({
+        Highcharts.chart('donations_summary_chart', {
             chart: {
                 type: 'column',
-                renderTo: 'donations_summary_chart',
                 height: 250
             },
             title: {

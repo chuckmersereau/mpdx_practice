@@ -2,6 +2,7 @@ import angular from 'angular';
 
 import app from './app.directive';
 import common from './common/index.module';
+import contacts from './contacts/contacts.component';
 import home from './home/home.component';
 import login from './login/login.component';
 import menu from './menu/menu.component';
@@ -16,6 +17,7 @@ require('./app.scss');
 export default angular.module('mpdx', [
     app,
     common,
+    contacts,
     home,
     login,
     menu,

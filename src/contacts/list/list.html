@@ -1,0 +1,78 @@
+<div class="sticky-page-filters" data-offset-top="114" bs-affix  ng-hide="vm.view == 'minimal'">
+    <div class="page-filters">
+        <div class="row">
+            <div class="col-sm-7">
+                <contacts-search></contacts-search>
+            </div>
+            <div class="col-sm-5 text-right">
+                <input id="selected_ids" name="selected_ids" type="hidden" value="{{vm.contactsService.selection.toString()}}">
+                <div class="btn-group">
+                    <div class="btn-group">
+                        <div class="dropdown">
+                            <a href="#" class="btn btn-default dropdown-toggle"
+                               onclick="_gaq.push(['_trackEvent', 'Contacts Events', 'Click', 'Bulk Actions']);"
+                               type="button" data-toggle="dropdown" aria-expanded="true">
+                                <span  translate>Actions</span> <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop" ng-show="vm.contactsService.getSelectedContacts().length > 0">
+                                <li><a ng-click="vm.openAddTagModal()" translate>Add Tags</a></li>
+                                <li><a ng-click="vm.openRemoveTagModal()" translate>Remove Tags</a></li>
+                                <li><a ng-click="vm.openAddTaskModal()" translate>Add Task</a></li>
+                                <li><a ng-click="vm.openLogTaskModal()" translate>Log Task</a></li>
+                                <li><a ng-click="vm.openEditFieldsModal()" translate>Edit Fields</a></li>
+                                <li ng-click="vm.contactsService.bulkHideContacts()"><a translate>Hide Contacts</a></li>
+                            </ul>
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop" ng-show="vm.contactsService.getSelectedContacts().length === 0">
+                                <li class="dropdown-header" translate>Please select at least one contact</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <a class="btn btn-default" ng-click="vm.openMergeContactsModal()" translate>
+                        Merge
+                    </a>
+                    <a class="btn btn-default" ng-click="vm.openExportContactsModal()" translate>
+                        Export
+                    </a>
+                    <span class="btn btn-default" ng-click="vm.toggleAllContacts()">
+            Select All
+          </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row page-controls">
+        <div class="col-sm-5">
+            <span><span  translate>Showing</span> <strong>{{vm.contactsService.meta.to}}</strong> <span translate>of</span> <strong>{{vm.contactsService.meta.total}}</strong></span>
+            <span class="label label-primary" ng-if="vm.contactsService.getSelectedContacts().length > 0">
+        {{vm.contactsService.getSelectedContacts().length }} <span translate>Selected</span>
+        <a href="javascript:;" class="label-action" ng-click="vm.clearSelectedContacts()"><i class="fa fa-times"></i></a>
+      </span>
+        </div>
+    </div>
+</div>
+<div ng-if="vm.contactsService.data.length === 0 && !vm.contactsService.loading" class="contacts-empty">
+    <div ng-show="vm.contactsService.meta.has_contacts">
+        <p>
+            <strong translate>You have {{$ctrl.currentAccountList.contacts.active.length}} active contacts</strong>
+            (<span translate>{{$ctrl.currentAccountList.contacts.length}} total contacts</span>)
+            <span translate>Unfortunately none of them match your current search or filters.</span>
+        </p>
+        <a ng-click="vm.resetFilters()" class="btn btn-primary" translate>Reset All Search Filters</a>
+        <a ui-sref="contacts.new" class="btn btn-secondary" translate>Add New Contact</a>
+    </div>
+    <div ng-hide="vm.contactsService.meta.has_contacts">
+        <p translate>
+            Looks like you haven't added any contacts yet. You can add one or import some from another service.
+        </p>
+        <a ui-sref="accounts" class="btn btn-primary" translate>Import Contacts</a>
+        <a ui-sref="contacts.new" class="btn btn-secondary" translate>Add New Contact</a>
+    </div>
+</div>
+<div infinite-scroll="vm.loadMoreContacts()">
+    <contacts-list-item view="{{vm.view}}" ng-repeat="contact in vm.contactsService.data track by contact.id" hide="vm.hideContact(contactId)" contact="contact" id="contact_{{contact.id}}" data-hook="contact" selected="vm.selected"></contacts-list-item>
+    <div ng-show="vm.contactsService.loading" class="loading-spinner">
+        <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+        <span class="sr-only" translate>Loading</span>
+    </div>
+</div>
