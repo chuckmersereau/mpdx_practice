@@ -60,8 +60,10 @@ const Filter = {
     template: require('./filter.html')
 };
 
+import daterange from './daterange/daterange.component';
 import tags from './tags/tags.component';
 
 export default angular.module('mpdx.contacts.filter', [
+    daterange,
     tags
 ]).component('contactsFilter', Filter).name;
