@@ -22,5 +22,5 @@ class AlertsService {
     };
 }
 
-export default angular.module('mpdx.services.alert', [])
+export default angular.module('mpdx.common.alerts.service', [])
     .service('alertsService', AlertsService).name;

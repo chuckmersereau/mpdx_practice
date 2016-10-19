@@ -8,6 +8,7 @@ import login from './login/login.component';
 import menu from './menu/menu.component';
 import preferences from './preferences/index.module';
 import services from './services/index.module';
+import tasks from './tasks/index.module';
 import vendor from './vendor.module';
 
 import appConfig from './app.config';
@@ -24,6 +25,7 @@ export default angular.module('mpdx', [
     menu,
     preferences,
     services,
+    tasks,
     vendor
 ])
     .config(appConfig)

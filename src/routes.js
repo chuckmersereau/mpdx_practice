@@ -32,6 +32,16 @@ export default class Routes {
             title: 'Preferences',
             url: '/preferences',
             component: 'preferences'
+        }).state({
+            name: 'preferences.accounts',
+            title: 'Manage Accounts',
+            url: '/accounts',
+            component: 'accountPreferences'
+        }).state({
+            name: 'preferences.accounts.tab',
+            title: 'Manage Accounts',
+            url: '/{id}',
+            component: 'accountPreferences'
         });
     }
 }

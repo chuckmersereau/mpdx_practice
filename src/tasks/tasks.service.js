@@ -167,5 +167,5 @@ class TasksService {
     }
 }
 
-export default angular.module('mpdxApp.common.tasks', [])
-        .service('tasksService', TasksService).name;
+export default angular.module('mpdx.common.tasks', [])
+    .service('tasksService', TasksService).name;
