@@ -27,6 +27,11 @@ export default class Routes {
         }).state('contact.person', {
             url: '/people/{personId}',
             onEnter: openPeopleModal
+        }).state({
+            name: 'preferences',
+            title: 'Preferences',
+            url: '/preferences',
+            component: 'preferences'
         });
     }
 }

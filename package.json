@@ -40,6 +40,7 @@
     "bootstrap": "^3.3.7",
     "bootstrap-additions": "^0.3.1",
     "checklist-model": "0.10.0",
+    "font-awesome": "^4.6.3",
     "highcharts": "^v5.0.0",
     "iso-currency": "0.2.7",
     "lodash": "4.16.4",

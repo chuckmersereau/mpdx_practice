@@ -14,6 +14,10 @@
 @import "styles/_bootstrap_overrides";
 @import "styles/_chosen_bootstrap";
 
+$fa-font-path: "~font-awesome/fonts";
+@import "~font-awesome/scss/font-awesome";
+
+
 @import "menu/menu";
 @import "contacts/filter/tags/tags";
 @import "contacts/list/list";

@@ -7,9 +7,9 @@ import uiBootstrap from 'angular-ui-bootstrap';
 import uiRouter from 'angular-ui-router';
 import checklistModel from 'checklist-model';
 import ngInfiniteScroll from 'ng-infinite-scroll';
-import ngCsv from 'ng-csv'
+import ngCsv from 'ng-csv';
 import ngMap from 'ngmap';
-import ngSortable from 'ng-sortable'
+import ngSortable from 'ng-sortable';
 // deps with no default exports
 import 'angular-strap';
 import 'angular-chosen-localytics';
@@ -20,7 +20,7 @@ import 'ng-tags-input';
 //non-angular deps
 import 'lodash';
 // style deps
-require('bootstrap/dist/css/bootstrap-theme.css');
+//require('bootstrap/dist/css/bootstrap-theme.css');
 require('bootstrap-additions/dist/bootstrap-additions.css');
 
 export default angular.module('mpdx.vendor', [
@@ -41,5 +41,5 @@ export default angular.module('mpdx.vendor', [
     'localytics.directives',
     'mgcrea.ngStrap',
     'ngTagsInput',
-    'ui.bootstrap.datetimepicker',
-]).name
+    'ui.bootstrap.datetimepicker'
+]).name;
