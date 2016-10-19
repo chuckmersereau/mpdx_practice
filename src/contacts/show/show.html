@@ -1,0 +1,112 @@
+<alerts></alerts>
+<div class="row">
+    <div class="col-md-9">
+        <div class="contact-actions">
+            <div class="pull-right">
+                <a class="btn btn-secondary" ng-click="vm.goLeft()">
+                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                </a>
+                <a class="btn btn-secondary" ng-click="vm.goRight()">
+                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="contact-position hidden">
+                0 of 500
+            </div>
+            <a class="btn btn-default" ng-click="vm.openAddReferralsModal()">
+                <i class="fa fa-users" aria-hidden="true"></i>
+                Add Referrals
+            </a>
+            <a class="btn btn-default" ng-click="vm.openLogTaskModal()">
+                <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                Log Task
+            </a>
+            <a class="btn btn-default" ng-click="vm.openAddTaskModal()">
+                <i class="fa fa-square-o" aria-hidden="true"></i>
+                Add Task
+            </a>
+            <a class="btn btn-default" ng-click="vm.hideContact()">
+                <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                Hide Contact
+            </a>
+        </div>
+        <div class="contact-card">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="avatar" bg-img="{{vm.contact.square_avatar}}"></div>
+                    <div class="top-content">
+                        <contact-info contact="vm.contact" constants="vm.constants"></contact-info>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card" ng-repeat="address in vm.contact.addresses" ng-if="address.id == vm.contact.primary_address_id">
+                        <contact-address address="address"></contact-address>
+                    </div>
+                </div>
+            </div>
+            <div class="contacts-gray-line"></div>
+            <div>
+                <contact-people contact="vm.contact"></contact-people>
+            </div>
+
+            <div id="contact-tabs" class="horizontal-tab-sortable">
+                <div class="sortable-row left-tabs" as-sortable="vm.sortableOptions" data-ng-model="vm.tabsLabels">
+                    <div ng-repeat="item in vm.tabsLabels" as-sortable-item ng-class="{'active-item': vm.activeTab==item.key}">
+                        <a as-sortable-item-handle ng-click="vm.activeTab=item.key">{{ item.value }}</a>
+                    </div>
+                </div>
+
+                <div class="tabs-info">
+                    <a class="tip" data-trigger="hover" data-content="{{ vm.gettextCatalog.getString('You can reorder these tabs to your liking! Just Drag them left or right.') }}" data-placement="top" bs-popover><i class="fa fa-lock"></i></a>
+                </div>
+            </div>
+
+            <div ng-repeat="item in vm.tabsLabels">
+                <div ng-if="item['key']=='details'" ng-show="item['key']==vm.activeTab">
+                    <contact-details contact="vm.contact" constants="vm.constants"></contact-details>
+                </div>
+                <div ng-if="item['key']=='donations'" ng-show="item['key']==vm.activeTab">
+                    <contact-donations contact="vm.contact"></contact-donations>
+                </div>
+                <div ng-if="item['key']=='tasks'" ng-show="item['key']==vm.activeTab">
+                    <contact-tasks contact="vm.contact"
+                    ></contact-tasks>
+                    <button ng-click="vm.openAddTaskModal()" class="btn btn-primary">Add Task</button>
+                </div>
+                <div ng-if="item['key']=='history'" ng-show="item['key']==vm.activeTab">
+                    <contact-history contact="vm.contact"
+                    ></contact-history>
+                    <button ng-click="vm.openLogTaskModal()" class="btn btn-primary">Log Task</button>
+                </div>
+                <div ng-if="item['key']=='referrals'" ng-show="item['key']==vm.activeTab">
+                    <contact-referrals contact="vm.contact"
+                    ></contact-referrals>
+                    <button ng-click="vm.openAddReferralsModal()" class="btn btn-primary">Add Referrals</button>
+                </div>
+                <div ng-if="item['key']=='notes'" ng-show="item['key']==vm.activeTab">
+                    <contact-notes contact="vm.contact"></contact-notes>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="contact_drawer" class="col-md-3">
+        <div class="contact_drawer_inner">
+            <div class="edit-filters clearfix">
+                0 filters applied
+                <div class="pull-right">
+                    <button type="button" class="btn btn-primary btn-xs" ng-click="vm.showFilters = !vm.showFilters">
+                        <span ng-if="vm.showFilters"><i class="fa fa-users"></i> <span translate>Contacts</span></span>
+                        <span ng-if="!vm.showFilters"><i class="fa fa-list"></i> <span translate>Filters</span></span>
+                    </button>
+                </div>
+            </div>
+            <div ng-if="vm.showFilters">
+                <contacts-filter></contacts-filter>
+            </div>
+            <div ng-if="!vm.showFilters">
+                <contacts-search></contacts-search>
+                <contacts-list view="minimal" selected="vm.selected"></contacts-list>
+            </div>
+        </div>
+    </div>
+</div>

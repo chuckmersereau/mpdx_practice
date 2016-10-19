@@ -1,9 +1,9 @@
 class ListController {
     constructor(
-        $modal,
+        modal,
         contactsService, filterService, tagsService, alertsService, tasksService, currentAccountList
     ) {
-        this.$modal = $modal;
+        this.modal = modal;
         this.alertsService = alertsService;
         this.contactsService = contactsService;
         this.currentAccountList = currentAccountList;
@@ -36,11 +36,8 @@ class ListController {
         this.contactsService.hideContact(contactId);
     }
     openAddTagModal() {
-        this.$modal({
-            templateUrl: '/templates/modal.html',
-            contentTemplate: '/templates/common/bulk_add_tag.html',
-            animation: 'am-fade-and-scale',
-            placement: 'center',
+        this.modal.open({
+            contentTemplate: '/common/bulk_add_tag.html',
             controller: 'bulkAddTagController',
             controllerAs: 'vm',
             locals: {
@@ -50,11 +47,8 @@ class ListController {
         });
     }
     openRemoveTagModal() {
-        this.$modal({
-            templateUrl: '/templates/modal.html',
-            contentTemplate: '/templates/common/bulk_remove_tag.html',
-            animation: 'am-fade-and-scale',
-            placement: 'center',
+        this.modal.open({
+            contentTemplate: '/common/bulk_remove_tag.html',
             controller: 'bulkRemoveTagController',
             controllerAs: 'vm',
             locals: {
@@ -69,11 +63,8 @@ class ListController {
         });
     }
     openLogTaskModal() {
-        this.$modal({
-            templateUrl: '/templates/modal.html',
-            contentTemplate: '/templates/common/bulk_log_task.html',
-            animation: 'am-fade-and-scale',
-            placement: 'center',
+        this.modal.open({
+            contentTemplate: '/common/bulk_log_task.html',
             controller: 'bulkLogTaskController',
             controllerAs: 'vm',
             locals: {
@@ -87,11 +78,8 @@ class ListController {
         });
     }
     openEditFieldsModal() {
-        this.$modal({
-            templateUrl: '/templates/modal.html',
-            contentTemplate: '/templates/common/bulk_edit_fields.html',
-            animation: 'am-fade-and-scale',
-            placement: 'center',
+        this.modal.open({
+            contentTemplate: '/common/bulk_edit_fields.html',
             controller: 'bulkEditFieldsController',
             controllerAs: 'vm',
             locals: {
@@ -106,11 +94,8 @@ class ListController {
         } else if (selectedLength > 8) {
             this.alertsService.addAlert('You can only merge up to 8 contacts at a time.', 'danger');
         } else {
-            this.$modal({
-                templateUrl: '/templates/modal.html',
-                contentTemplate: '/templates/common/merge_contacts.html',
-                animation: 'am-fade-and-scale',
-                placement: 'center',
+            this.modal.open({
+                contentTemplate: '/common/merge_contacts.html',
                 controller: 'mergeContactsController',
                 controllerAs: 'vm',
                 locals: {
@@ -121,10 +106,8 @@ class ListController {
         }
     }
     openExportContactsModal() {
-        this.$modal({
-            templateUrl: '/templates/modal.html',
-            contentTemplate: '/templates/common/export_contacts.html',
-            animation: 'am-fade-and-scale',
+        this.modal.open({
+            contentTemplate: '/common/export_contacts.html',
             placement: 'center',
             controller: 'exportContactsController',
             controllerAs: 'vm'
@@ -142,9 +125,6 @@ const ContactList = {
     }
 };
 
-import item from './item/item.component';
-
-export default angular.module('mpdx.contacts.list', [
-    item
-]).component('contactsList', ContactList).name;
+export default angular.module('mpdx.contacts.list.component', [])
+    .component('contactsList', ContactList).name;
 

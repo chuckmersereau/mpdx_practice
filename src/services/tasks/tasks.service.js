@@ -1,6 +1,6 @@
 class TasksService {
-    constructor($modal, api) {
-        this.$modal = $modal;
+    constructor(modal, api) {
+        this.modal = modal;
         this.api = api;
 
         this.data = {};
@@ -136,11 +136,8 @@ class TasksService {
         });
     }
     openModal(params) {
-        this.$modal({
-            templateUrl: '/templates/modal.html',
-            contentTemplate: '/templates/common/bulk_add_task.html',
-            animation: 'am-fade-and-scale',
-            placement: 'center',
+        this.modal.open({
+            contentTemplate: '/common/bulk_add_task.html',
             controller: 'bulkAddTaskController',
             controllerAs: 'vm',
             locals: {
@@ -154,11 +151,8 @@ class TasksService {
         });
     }
     openNewsletterModal(params) {
-        this.$modal({
-            templateUrl: '/templates/modal.html',
-            contentTemplate: '/templates/common/newsletter/add/add.html',
-            animation: 'am-fade-and-scale',
-            placement: 'center',
+        this.modal.open({
+            contentTemplate: '/common/newsletter/add/add.html',
             controller: 'bulkAddTaskController',
             controllerAs: 'vm',
             locals: {

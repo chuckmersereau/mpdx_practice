@@ -3,8 +3,8 @@ class FilterController {
     filterService;
     tagsService;
 
-    constructor(filterService, tagsService, contactsService, $modal, gettextCatalog) {
-        this.$modal = $modal;
+    constructor(filterService, tagsService, contactsService, modal, gettextCatalog) {
+        this.modal = modal;
         this.contactsService = contactsService;
         this.filterService = filterService;
         this.gettextCatalog = gettextCatalog;
@@ -22,11 +22,8 @@ class FilterController {
         return this.tagsService.isResettable() || this.filterService.resettable;
     }
     openMapContactsModal() {
-        this.$modal({
-            templateUrl: '/templates/modal.html',
-            contentTemplate: '/templates/common/map_contacts.html',
-            animation: 'am-fade-and-scale',
-            placement: 'center',
+        this.modal.open({
+            contentTemplate: '/common/map_contacts.html',
             controller: 'mapContactsController',
             controllerAs: 'vm',
             locals: {
@@ -60,10 +57,5 @@ const Filter = {
     template: require('./filter.html')
 };
 
-import daterange from './daterange/daterange.component';
-import tags from './tags/tags.component';
-
-export default angular.module('mpdx.contacts.filter', [
-    daterange,
-    tags
-]).component('contactsFilter', Filter).name;
+export default angular.module('mpdx.contacts.filter.component', [])
+    .component('contactsFilter', Filter).name;

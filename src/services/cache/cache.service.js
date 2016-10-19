@@ -99,4 +99,4 @@ class CacheService {
 }
 
 export default angular.module('mpdx.services.cache', [])
-    .service('cacheService', CacheService).name;
+    .service('cache', CacheService).name;

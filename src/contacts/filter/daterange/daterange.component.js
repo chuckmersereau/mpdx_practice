@@ -20,7 +20,7 @@ class FilterDaterangeController {
     }
     parseCustomOptions() {
         this.ranges = {};
-        angular.forEach(this.customOptions, function(value, _key) {
+        _.each(this.customOptions, (value) => {
             this.ranges[value.name] = [moment(value.start), moment(value.end)];
         });
     }

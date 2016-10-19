@@ -94,18 +94,5 @@ const Progress = {
     template: require('./progress.html')
 };
 
-import appeals from './appeals/appeals.component';
-import appointments from './appointments/appointments.component';
-import contacts from './contacts/contacts.component';
-import correspondence from './correspondence/correspondence.component';
-import electronicContacts from './electronicContacts/electronicContacts.component';
-import phoneDials from './phoneDials/phoneDials.component';
-
-export default angular.module('mpdx.home.progress', [
-    appeals,
-    appointments,
-    contacts,
-    correspondence,
-    electronicContacts,
-    phoneDials
-]).component('homeProgress', Progress).name;
+export default angular.module('mpdx.home.progress.component', [])
+    .component('homeProgress', Progress).name;

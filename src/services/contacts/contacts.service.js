@@ -1,12 +1,12 @@
 class ContactsService {
     api;
-    cacheService;
+    cache;
     filterService;
     tagsService;
 
-    constructor($rootScope, filterService, tagsService, cacheService, api, $location) {
+    constructor($rootScope, filterService, tagsService, cache, api, $location) {
         this.api = api;
-        this.cacheService = cacheService;
+        this.cache = cache;
         this.filterService = filterService;
         this.tagsService = tagsService;
 
@@ -80,7 +80,7 @@ class ContactsService {
                 this.page = 1;
             }
             angular.forEach(data.contacts, (contact) => {
-                currentContact = this.cacheService.updateContact(contact, data);
+                currentContact = this.cache.updateContact(contact, data);
                 if (reset) {
                     newContacts.push(currentContact);
                 } else {
@@ -268,8 +268,8 @@ class ContactsService {
             contactObj['contact_referrals_to_me_attributes'] = contact.contact_referrals_to_me;
         }
 
-        this.api.call('put', 'contacts/' + contact.id, {contact: contactObj}, (data) => {
-            this.cacheService.updateContact(data.contact, data);
+        return this.api.call('put', 'contacts/' + contact.id, {contact: contactObj}, (data) => {
+            this.cache.updateContact(data.contact, data);
             if (angular.isFunction(callback)) {
                 callback();
             }
@@ -427,6 +427,6 @@ class ContactsService {
 
 import filterService from '../filter/filter.service';
 
-export default angular.module('mpdx.services.contacts', [filterService])
+export default angular.module('mpdx.services.contacts.service', [filterService])
     .service('contactsService', ContactsService).name;
 

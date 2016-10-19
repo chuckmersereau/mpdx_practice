@@ -2,8 +2,8 @@ import angular from 'angular';
 
 import app from './app.directive';
 import common from './common/index.module';
-import contacts from './contacts/contacts.component';
-import home from './home/home.component';
+import contacts from './contacts/index.module';
+import home from './home/index.module';
 import login from './login/login.component';
 import menu from './menu/menu.component';
 import services from './services/index.module';
