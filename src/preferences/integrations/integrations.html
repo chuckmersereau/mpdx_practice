@@ -1,0 +1,297 @@
+<p>&nbsp;</p>
+<div ng-show="vm.preferences.loading" class="loading-spinner">
+    <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+    <span class="sr-only" translate>Loading</span>
+</div>
+<div ng-hide="vm.preferences.loading">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 translate>Internal Services</h3>
+        </div>
+    </div>
+    <div class="panel-group">
+        <div class="panel panel-default pref-panel">
+            <div class="panel-heading pref-head" ng-click="vm.setTab('key')">
+                <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('key') }"></i>
+                <span translate>Key / Relay</span>
+                <div class="pull-right">
+                    <div class="accstatus accstatus-enabled" ng-show="vm.preferences.data.valid_key_account"><i class="fa fa-circle"></i></div>
+                    <div class="accstatus accstatus-disabled" ng-hide="vm.preferences.data.valid_key_account"><i class="fa fa-circle-o"></i></div>
+                </div>
+            </div>
+            <div class="panel-animate" ng-show="vm.tabSelected('key')">
+                <div class="panel-body pref-body">
+                    <div class="row pref-row">
+                        <div class="col-md-4 pref-lead">
+                            <div class="import_logo">
+                                <img src="../../images/logos/key_logo.png" alt="organization">
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="network_button network_connect">
+                                <div ng-repeat="account in vm.preferences.data.key_accounts" class="network_connections">
+                                    <div class="account_single">
+                                        <div class="actions">
+                                            <a class="inlineaction delete" ng-click="vm.disconnect('Key', account.id)" translate>Delete</a>
+                                        </div>
+                                        <span class="account_name">{{account.email}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default pref-panel">
+            <div class="panel-heading pref-head" ng-click="vm.setTab('organization')">
+                <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('organization') }"></i>
+                <span translate>Organization</span>
+                <div class="pull-right">
+                    <!-- Title Meta / Indicator -->
+                </div>
+            </div>
+            <div class="panel-animate" ng-show="vm.tabSelected('organization')">
+                <div class="panel-body pref-body">
+                    <div class="row pref-row">
+                        <div class="col-md-4 pref-lead">
+                            <div class="import_logo">
+                                <img src="../../images/logos/organization_logo.png" alt="organization">
+                            </div>
+                        </div>
+                        <div class="col-md-8 connections">
+                            <organization-integration-preferences></organization-integration-preferences>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h3 translate>External Services</h3>
+        </div>
+    </div>
+    <div class="panel-group">
+        <div class="panel panel-default pref-panel">
+            <div class="panel-heading pref-head" ng-click="vm.setTab('google')">
+                <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('google') }"></i>
+                <span translate>Google Contacts, Calendar and Mail</span>
+                <div class="pull-right">
+                    <div class="accstatus accstatus-enabled" ng-show="vm.preferences.data.valid_google_account"><i class="fa fa-circle"></i></div>
+                    <div class="accstatus accstatus-disabled" ng-hide="vm.preferences.data.valid_google_account"><i class="fa fa-circle-o"></i></div>
+                </div>
+            </div>
+            <div class="panel-animate" ng-show="vm.tabSelected('google')">
+                <div class="panel-body pref-body">
+                    <div class="row pref-row">
+                        <div class="col-md-4 pref-lead">
+                            <div class="network_logo">
+                                <img src="../../images/logos/google_logo.png" alt="Google">
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="network_button network_connect">
+                                <div ng-repeat="account in vm.preferences.data.google_accounts" class="network_connections">
+                                    <div class="account_single">
+                                        <div class="actions">
+                                            <a class="inlineaction delete" ng-click="vm.disconnect('Google', account.id)" translate>Delete</a>
+                                        </div>
+                                        <span class="account_name">{{account.email}}</span>
+
+                                        <div ng-show="account.token_expired == true">
+                                            <p translate>
+                                                The link between MPDX and your Google account stopped working.
+                                                Click "Refresh Google Account" to re-enable it. After that,
+                                                you'll need to manually re-enable any integrations that you had set already.
+                                            </p>
+                                            <%# new_account_path_opts = { provider: :google } %>
+                                            <%# new_account_path_opts[:redirect] =  google_integration_path(google_integration) if google_integration %>
+                                            <%#= link_to(_('Refresh Google Account'), new_account_path(new_account_path_opts), class: 'btn desired_action') %>
+                                        </div>
+                                        <div ng-show="account.token_expired == false">
+                                            <div ng-show="account.google_integration_id != null">
+                                                <a ng-href="/google_integrations/{{account.google_integration_id}}">
+                                                    <i class="fa fa-refresh"></i>
+                                                    <span translate>Configure synchronization</span>
+                                                </a>
+                                            </div>
+                                            <div ng-show="account.google_integration_id == null">
+                                                <a data-method="post" ng-href="/google_integrations?google_account_id={{account.id}}" rel="nofollow">
+                                                    <i class="fa fa-refresh"></i>
+                                                    <span translate>Configure synchronization</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-hide="vm.preferences.data.valid_google_account" translate>
+                                    You can keep Google in sync with your contacts, calendars, tasks and more. Click Add Account to begin.
+                                </div>
+                                <br />
+                                <a href="/auth/goggle" class="btn btn-primary" target="_blank" translate>Add Account</a>
+                                <a ng-show="vm.preferences.data.valid_google_account" ui-sref="preferences.imports.tab({id: 'google'})" class="btn btn-secondary" translate>Import Google Contacts</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default pref-panel">
+            <div class="panel-heading pref-head" ng-click="vm.setTab('mailchimp')">
+                <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('mailchimp') }"></i>
+                <span translate>Mailchimp</span>
+                <div class="pull-right">
+                    <div class="accstatus accstatus-enabled" ng-show="vm.mailchimpAccStatus == 'enabled'"><i class="fa fa-circle"></i></div>
+                    <div class="accstatus accstatus-error" ng-show="vm.mailchimpAccStatus == 'error'"><i class="fa fa-circle-o"></i></div>
+                    <div class="accstatus accstatus-disabled" ng-show="vm.mailchimpAccStatus == 'disabled'"><i class="fa fa-circle-o"></i></div>
+                </div>
+            </div>
+            <div class="panel-animate" ng-show="vm.tabSelected('mailchimp')">
+                <div class="panel-body pref-body">
+                    <div class="row pref-row">
+                        <div class="col-md-4 pref-lead">
+                            <div class="network_logo">
+                                <img src="../../images/logos/mailchimp_logo.png" alt="MailChimp">
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="network_button">
+                                <mailchimp-integration-preferences state="vm.mailchimpAccStatus"></mailchimp-integration-preferences>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default pref-panel">
+            <div class="panel-heading pref-head" ng-click="vm.setTab('prayerletters')">
+                <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('prayerletters') }"></i>
+                <span translate>PrayerLetters.com</span>
+                <div class="pull-right">
+                    <div ng-show="vm.preferences.data.prayer_letters_account">
+                        <div class="accstatus accstatus-enabled" ng-show="vm.preferences.data.valid_prayer_letters_account"><i class="fa fa-circle"></i></div>
+                        <div class="accstatus accstatus-error" ng-hide="vm.preferences.data.valid_prayer_letters_account"><i class="fa fa-circle-o"></i></div>
+                    </div>
+                    <div ng-hide="vm.preferences.data.prayer_letters_account">
+                        <div class="accstatus accstatus-disabled"><i class="fa fa-circle-o"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-animate" ng-show="vm.tabSelected('prayerletters')">
+                <div class="panel-body pref-body">
+                    <div class="row pref-row">
+                        <div class="col-md-4 pref-lead">
+                            <div class="network_logo">
+                                <img src="../../images/logos/prayer_letters_logo.png" alt="Prayer Letters"
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="network_button">
+                                <div ng-show="vm.preferences.data.valid_prayer_letters_account">
+                                    <div class="alert alert-warning" translate>
+                                        Enabling or Syncing will replace your prayerletters.com lists
+                                    </div>
+                                    <button type="submit" ng-click="vm.sync('Prayer Letters')" ng-disabled="vm.saving" class="btn btn-primary btn-actionable">
+                                        <span translate>Sync Now</span>&nbsp;
+                                        <div class="btn-progress" ng-show="vm.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></div>
+                                    </button>
+                                    <a class="btn btn-link" ng-click="vm.disconnect('Prayer Letters')">
+                                        <span translate>Disconnect</span>&nbsp;<i class="hidden fa fa-circle-o-notch fa-spin fa-fw"></i>
+                                    </a>
+                                </div>
+                                <div ng-hide="vm.preferences.data.valid_prayer_letters_account">
+                                    <p>
+                                        <strong translate>Send Prayer Letters Quickly and Easily</strong>
+                                        <br />
+                                        <span translate>Newsletter services are a significant way to save valuable ministry time while more effectively connecting with your partners. Keep your physical newsletter list (all partners marked as newsletter - physical or both) up to date in MPDX and then sync it to your pl.com account with this integration. This will replace your current pl.com list. Click Enable to get started.</span>
+                                    </p>
+                                    <div class="alert alert-warning" translate>
+                                        Enabling or Syncing will replace your prayerletters.com lists
+                                    </div>
+                                    <a href="/auth/prayer_letters" class="btn btn-primary" target="_blank" translate>Enable</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% if $rollout.active?(:pls_integration, current_account_list) %>
+        <div class="panel panel-default pref-panel">
+            <div class="panel-heading pref-head" ng-click="vm.setTab('myletterservice')">
+                <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('myletterservice') }"></i>
+                <span translate>MyLetterService.org</span>
+                <div class="pull-right">
+                    <div ng-show="vm.preferences.data.pls_account">
+                        <div class="accstatus accstatus-enabled" ng-show="vm.preferences.data.valid_pls_account"><i class="fa fa-circle"></i></div>
+                        <div class="accstatus accstatus-error" ng-hide="vm.preferences.data.valid_pls_account"><i class="fa fa-circle-o"></i></div>
+                    </div>
+                    <div ng-hide="vm.preferences.data.pls_account">
+                        <div class="accstatus accstatus-disabled"><i class="fa fa-circle-o"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-animate" ng-show="vm.tabSelected('myletterservice')">
+                <div class="panel-body pref-body">
+                    <div class="row pref-row">
+                        <div class="col-md-4 pref-lead">
+                            <div class="network_logo">
+                                <%= image_tag("logos/pls_logo.png", alt: 'Prayer Letters') %>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="network_button">
+                                <div class="alert alert-warning" translate>
+                                    Enabling or Syncing will replace your myletterservice.org lists
+                                </div>
+                                <div ng-show="vm.preferences.data.valid_pls_account">
+                                    <button type="submit" ng-click="vm.sync('PLS')" ng-disabled="vm.saving" class="btn btn-primary btn-actionable"><%= _('Sync Now') %>&nbsp;<div class="btn-progress" ng-show="vm.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></div></button>
+                                    <a class="btn btn-link" ng-click="vm.disconnect('PLS')"><span translate>Disconnect</span>&nbsp;<i class="hidden fa fa-circle-o-notch fa-spin fa-fw"></i></a>
+                                </div>
+                                <div ng-hide="vm.preferences.data.valid_pls_account">
+                                    <p translate>You can keep myletterservice.org updated with all your MPDX contacts. Click Enable to begin.</p>
+                                    <a href="/auth/pls" class="btn btn-primary" target="_blank" translate>Enable</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% end %>
+        <div class="panel panel-default pref-panel">
+            <div class="panel-heading pref-head" ng-click="vm.setTab('chalkline')">
+                <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('chalkline') }"></i>
+                <span translate>Chalkline</span>
+                <div class="pull-right">
+                    <div class="accstatus accstatus-disabled"><i class="fa fa-circle-o"></i></div>
+                </div>
+            </div>
+            <div class="panel-animate" ng-show="vm.tabSelected('chalkline')">
+                <div class="panel-body pref-body">
+                    <div class="row pref-row">
+                        <div class="col-md-4 pref-lead">
+                            <div class="network_logo">
+                                <img src="../../images/logos/chalkline_logo.png" alt="Chalk Line">
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="network_button">
+                                <p>
+                                    <strong translate>Let Chalkline Connect You and Your Ministry Partners"</strong>
+                                    <br />
+                                    <span translate>Newsletter services are a significant way to save valuable ministry time while more effectively connecting with your partners. Keep your physical newsletter list (all partners marked as newsletter - physical or both) up to date in MPDx and then email it each month to Chalkline with a press of a button. Set up your account in Chalkline, and then simply press the button below each time you want to send your newsletter.</span>
+                                </p>
+                                <div class="alert alert-warning" translate>
+                                    Clicking "Send Paper Newsletter List" will email Chalkline your newsletter list and open their order form in a new tab
+                                </div>
+                                <a href="#" class="btn btn-secondary" id="chalkline_send_list" translate>Send Paper Newsletter List</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

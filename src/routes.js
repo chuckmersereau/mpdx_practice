@@ -52,6 +52,16 @@ export default class Routes {
             title: 'Import Contacts',
             url: '/{id}',
             component: 'importPreferences'
+        }).state({
+            name: 'preferences.integrations',
+            title: 'Connect Services',
+            url: '/integrations',
+            component: 'integrationPreferences'
+        }).state({
+            name: 'preferences.integrations.tab',
+            title: 'Connect Services',
+            url: '/{id}',
+            component: 'integrationPreferences'
         });
     }
 }

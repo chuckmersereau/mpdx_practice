@@ -3,10 +3,8 @@ import anniversaries from './anniversaries/anniversaries.component';
 import birthdays from './birthdays/birthdays.component';
 import contacts from './contacts/index.module';
 import donationSummaryChart from './donationsSummaryChart/donationsSummaryChart.directive';
-import emailLink from './emailLink/emailLink.component';
-import facebookLink from './facebookLink/facebookLink.component';
+import links from './links/index.module';
 import modal from './modal/modal.service';
-import twitterLink from './twitterLink/twitterLink.component';
 
 export default angular.module('mpdx.common', [
     alerts,
@@ -14,8 +12,6 @@ export default angular.module('mpdx.common', [
     birthdays,
     contacts,
     donationSummaryChart,
-    emailLink,
-    facebookLink,
-    modal,
-    twitterLink
+    links,
+    modal
 ]).name;
