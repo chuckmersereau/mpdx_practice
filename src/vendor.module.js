@@ -8,6 +8,7 @@ import uiRouter from 'angular-ui-router';
 import checklistModel from 'checklist-model';
 import ngInfiniteScroll from 'ng-infinite-scroll';
 import ngCsv from 'ng-csv';
+import ngFileUpload from 'ng-file-upload';
 import ngMap from 'ngmap';
 import ngSortable from 'ng-sortable';
 // deps with no default exports
@@ -19,6 +20,9 @@ import 'iso-currency';
 import 'ng-tags-input';
 //non-angular deps
 import 'lodash';
+import jQuery from '!expose?jQuery!jquery';
+window.$ = jQuery;
+import 'chosen-js';
 // style deps
 //require('bootstrap/dist/css/bootstrap-theme.css');
 require('bootstrap-additions/dist/bootstrap-additions.css');
@@ -30,6 +34,7 @@ export default angular.module('mpdx.vendor', [
     ngAnimate,
     ngSanitize,
     ngCsv,
+    ngFileUpload,
     uiBootstrap,
     uiRouter,
     checklistModel,

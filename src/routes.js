@@ -42,6 +42,16 @@ export default class Routes {
             title: 'Manage Accounts',
             url: '/{id}',
             component: 'accountPreferences'
+        }).state({
+            name: 'preferences.imports',
+            title: 'Import Contacts',
+            url: '/imports',
+            component: 'importPreferences'
+        }).state({
+            name: 'preferences.imports.tab',
+            title: 'Import Contacts',
+            url: '/{id}',
+            component: 'importPreferences'
         });
     }
 }
