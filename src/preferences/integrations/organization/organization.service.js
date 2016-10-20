@@ -1,4 +1,6 @@
 class OrganizationService {
+    api;
+
     constructor(
         $rootScope, api
     ) {
