@@ -62,6 +62,11 @@ export default class Routes {
             title: 'Connect Services',
             url: '/{id}',
             component: 'integrationPreferences'
+        }).state({
+            name: 'preferences.notifications',
+            title: 'Notifications',
+            url: '/notifications',
+            component: 'notificationPreferences'
         });
     }
 }

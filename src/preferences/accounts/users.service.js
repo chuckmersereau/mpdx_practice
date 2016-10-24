@@ -4,9 +4,8 @@ class UsersService {
 
         this.data = {};
         this.loading = true;
-        this.account_list_id_watcher = $rootScope.$watch(() => {
-            return api.account_list_id;
-        }, () => {
+
+        $rootScope.$watch(() => api.account_list_id, () => {
             this.load();
         });
 
@@ -19,8 +18,8 @@ class UsersService {
             this.loading = false;
         });
     }
-    destroy(id, success, error) {
-        return this.api.delete('preferences/accounts/users/' + id).then(success).catch(error);
+    destroy(id) {
+        return this.api.delete('preferences/accounts/users/' + id);
     }
 }
 export default angular.module('mpdx.preferences.accounts.usersService', [])
