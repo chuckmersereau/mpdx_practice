@@ -3,11 +3,13 @@ import component from './preferences.component';
 import imports from './import/index.module';
 import integrations from './integrations/index.module';
 import notifications from './notifications/index.module';
+import sidebar from './sidebar/sidebar.component';
 
 export default angular.module('mpdx.preferences', [
     accounts,
     imports,
     integrations,
     component,
-    notifications
+    notifications,
+    sidebar
 ]).name;
