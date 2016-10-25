@@ -1,3 +1,5 @@
+import config from 'config';
+
 export default class Routes {
     static config($stateProvider) {
         $stateProvider.state({
@@ -10,6 +12,13 @@ export default class Routes {
             onEnter: ($state, $stateParams, $window) => {
                 $window.sessionStorage.ticket = $stateParams.ticket;
                 $state.go($stateParams.redirect || 'home');
+            }
+        }).state({
+            name: 'logout',
+            url: '/logout',
+            onEnter: ($window) => {
+                delete $window.sessionStorage.ticket;
+                $window.location.href = config.theKeyUrl;
             }
         }).state({
             name: 'contacts',

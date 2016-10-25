@@ -1,0 +1,25 @@
+<div class="section right" ng-if="$ctrl.currentAccountList.monthly_goal.present && $ctrl.currentAccountList.monthly_goal > 0">
+    <a id="mpd_progress_bar" ui-sref="contacts({ filters: {status: ['Partner - Financial'], pledge_received: false } }"
+       title="{{$ctrl.gettextCatalog.getString('{received} received/{pledged} committed of goal: {goal}. Click to see outstanding financial partners.',
+                  { pledged:$ctrl.currentAccountList.total_pledges,
+                    received: $ctrl.currentAccountList.received_pledges,
+                    goal: $ctrl.currentAccountList.monthly_goal
+                  }) }}"
+       data-toggle="tooltip" data-placement="bottom">
+        <div class="bar bar-pledged" ng-style="{ width: $ctrl.currentAccountList.pledged_percent + '%' }"></div>
+        <div class="bar bar-received" ng-style="{ width: $ctrl.currentAccountList.in_hand_percent + '%' }"></div>
+        <span class="value" ng-class="{ right: $ctrl.currentAccountList.in_hand_percent < 60 }">
+          {{ $ctrl.currentAccountList.in_hand_percent }}%/{{$ctrl.currentAccountList.pledged_percent }}%
+        </span>
+    </a>
+</div>
+<div class="section right">
+    <div class="navbar-quick hidden-sm hidden-xs">
+        <span ng-if="$ctrl.$rollout.active(multi_currency_balance, current_account_list)">
+            {{ $ctrl.account_list_exhibit.balances }}
+        </span>
+        <span ng-if="!$ctrl.$rollout.active(multi_currency_balance, current_account_list)">
+            {{ $ctrl.account_list_exhibit.old_balances_calc(current_user) }}
+        </span>
+    </div>
+</div>
