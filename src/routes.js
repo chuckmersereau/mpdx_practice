@@ -67,6 +67,16 @@ export default class Routes {
             title: 'Notifications',
             url: '/notifications',
             component: 'notificationPreferences'
+        }).state({
+            name: 'preferences.personal',
+            title: 'Preferences',
+            url: '/personal',
+            component: 'personalPreferences'
+        }).state({
+            name: 'preferences.personal.tab',
+            title: 'Preferences',
+            url: '/{id}',
+            component: 'personalPreferences'
         });
     }
 }
