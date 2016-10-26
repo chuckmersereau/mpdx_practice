@@ -2,7 +2,8 @@ import config from 'config';
 
 let redirect = '';
 /*@ngInject*/
-export default function appRun($transitions, $q, $window) {
+export default function appRun($transitions, $q, $window, $rootScope) {
+    $rootScope.googleMapsUrl = "https://maps.googleapis.com/maps/api/js?key=QF8dGA3a35KR61drl0zgxxT9kxE";
     $transitions.onBefore({ to: (state) => {
         if (state.name === 'login' || state.name === 'theKey') {
             return false;
