@@ -1,7 +1,8 @@
 import config from 'config';
 
 let redirect = '';
-export default function($transitions, $q, $window) {
+/*@ngInject*/
+export default function appRun($transitions, $q, $window) {
     $transitions.onBefore({ to: (state) => {
         if (state.name === 'login' || state.name === 'theKey') {
             return false;
