@@ -13,7 +13,7 @@ deploy:
     secure: "xAkFocsfQW5S93CJtIjA9cLalq/xdhpjQcigN3ZhgwGaPNNGQ3j1CMCXXw7BWdNieQARgXEIYwEJThj7wB00f7MSTB5tl8uoyHeGtZgfE3oQ9wJ0k276LtekajFWLx9TWlmPqFRdWcLKH0dbZUqGxKYyE7AX6BfST0u0MLktTApAI2q/Sjg5lMiqsTC9zFm+sfftCWbPNbfakskMeMhEfczb4eNIgy9n7+umpmfJxT2N8hOi4+3v4jghjq0WaWJuZLgVJjXBvMCHj3fxAkuS3fdkPG0owwuY9PSfViJBimmA2lFd0x0HWeAp7D583ds/FdKK5/6MgwvaCeN4l+WahBkdw1zJnX47tYr9rln8JdWaXWewmUS+/kC4kfGmLSR096aaYnJdgAawMfrFP34BHmUjfgbVoXZ+QsY8zDmJwb83MDdhPRTp4mejSRjfawBdWBAGdjopRgJ8tFs3FKKnSoQC+RgyeDhqWjoCTHEYZB7kyjtn9WXKVxMpHKN0GOkWpS8mxFVAn1scgHHbaP8sL7RbFV8h/qnHuPQGTh0lGzjx200Y4nMcdaDVJuZoNRM6JNW0PCJTJTJ3idTsVuMnfPKHitr6f96NW+g382GsVHTnWYyQm093r3SKanBJwN3X3Oe4BmMvNXVkzljDpJWKjvtx154D/escWteeGOxRb/0="
   bucket: cru-mpdx-web-prod
   skip_cleanup: true
-  local_dir: dist
+  local_dir: public
   acl: public_read
   on:
     repo: CruGlobal/mpdx_web
@@ -24,7 +24,7 @@ deploy:
     secure: "azelo7ICvOTaCf7isSReHp1TA6yTdy67YyH2pcyxYZMo8hoUgwTgromWgY8PfHl5lfIbXoupbvsAgMiROW5vG6A7AJuf7UeNP9tU7KBhzYEm3wKtWAQYqA+cp/66ZzE1CuWQF1ExfWkS0gekQ1/Ye0xF7p7CpNGt8Mw4rSzZllfvBnuJq0Tzw8eJ4GBgidY1evlEghK5mR6QnvVttScxzDeXEMJucaQeg3YUr4kkiQsmy9YmYiyqK2E0a+dj/SYEy0ufECQKngk3HRzE5GEkaZuo0T0/nlCgbEW7ML0HX7PizGhdwCvuYDqe7DUVFj994mWOxqKuEDVGDp+oenqJIctEUvrS3JWa9KQyqxR/sj1Sla1kx77NRXD3OVPT7dxJctmQbEwBCnwX7vShyhR7yGpfp174QFwoLsUrV/IFdJO+KzgA80LaGB6VHS4kP/FA3VjdlipJPsydJ5vY23yCZZYw7QXLJ3BuAp46cS2aAnfj82MHDETspCY2AaVJ5QnbDusdiKX45OlwHwyISIhqk/5vM5B33fK9nOlv86aDPGF4S31+BG7fUJ0ImKmDAwDM7uAAz6kaFDu2gvM7kn9LO4r9SQK47/E+unmTfcS42Azhdj5Af6GrzLEub+Xfibh0/IDXgeHlEGGN4cvYlgl2ZR2KM1HbMSkxOPGImnYhN9Y="
   bucket: cru-mpdx-web-stage
   skip_cleanup: true
-  local_dir: dist
+  local_dir: public
   acl: public_read
   on:
     repo: CruGlobal/mpdx_web
