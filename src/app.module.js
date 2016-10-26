@@ -32,6 +32,9 @@ export default angular.module('mpdx', [
 ])
     .config(appConfig)
     .run(appRun)
+    .value('layoutSettings', {
+        fullWidth: false
+    })
     .name;
 
 angular.module('infinite-scroll').value('THROTTLE_MILLISECONDS', 250);
