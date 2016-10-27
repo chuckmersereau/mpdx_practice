@@ -5,6 +5,7 @@ import contacts from './contacts/index.module';
 import donationSummaryChart from './donationsSummaryChart/donationsSummaryChart.directive';
 import links from './links/index.module';
 import modal from './modal/modal.service';
+import rawNumber from './rawNumber/rawNumber.directive';
 
 export default angular.module('mpdx.common', [
     alerts,
@@ -13,5 +14,6 @@ export default angular.module('mpdx.common', [
     contacts,
     donationSummaryChart,
     links,
-    modal
+    modal,
+    rawNumber
 ]).name;
