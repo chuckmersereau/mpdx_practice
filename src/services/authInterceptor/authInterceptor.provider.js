@@ -1,10 +1,17 @@
 function authInterceptor($q, $window) {
     return {
         request: (config) => {
-            config.headers = config.headers || {};
-            if ($window.sessionStorage.token) {
-                config.headers.Authorization = 'Bearer ' + $window.sessionStorage.token;
+            if (config.method === 'GET' && config.url.indexOf('?') > -1) {
+                config.url += '&access_token=' + $window.sessionStorage.token;
+            } else {
+                config.url += '?access_token=' + $window.sessionStorage.token;
             }
+
+            // For later use if we use bearers in MPDX API
+            // config.headers = config.headers || {};
+            // if ($window.sessionStorage.token) {
+            //     config.headers.Authorization = 'Bearer ' + $window.sessionStorage.token;
+            // }
             return config;
         },
         response: (response) => {

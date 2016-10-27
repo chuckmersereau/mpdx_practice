@@ -6,10 +6,7 @@ var autoprefixer = require('autoprefixer');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var path = require('path');
-    // componentHotLoader = require('angular-hot-reloader/loaders/component-loader'),
-    // serviceHotLoader = require('angular-hot-reloader/loaders/service-loader'),
-    // jadeHotLoader = require.resolve('angular-hot-reloader/loaders/jade-loader');
-    //modRewrite = require('connect-modrewrite'),
+
 
 module.exports = function makeWebpackConfig(options) {
     /**
@@ -20,7 +17,7 @@ module.exports = function makeWebpackConfig(options) {
     var BUILD = !!options.BUILD;
     var TEST = !!options.TEST;
 
-    var configEnv = options.CONFIG ? options.CONFIG : 'development';
+    var configEnv = options.CONFIG || process.env.ENV_VARIABLE || 'development';
 
     /**
      * Config
