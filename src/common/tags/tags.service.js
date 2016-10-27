@@ -11,9 +11,7 @@ class TagsService {
         this.anyTags = false;
         this.loading = true;
 
-        $rootScope.$watch(function() {
-            return accountsService.account_list_id;
-        }, function watchCallback(accountListId) {
+        $rootScope.$watch(() => accountsService.account_list_id, (accountListId) => {
             if (accountListId) {
                 this.load();
             }
@@ -87,5 +85,5 @@ class TagsService {
     }
 }
 
-export default angular.module('mpdx.services.tags', [])
+export default angular.module('mpdx.common.tags', [])
     .service('tagsService', TagsService).name;
