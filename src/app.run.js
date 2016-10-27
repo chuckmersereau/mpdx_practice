@@ -1,19 +1,21 @@
 import config from 'config';
 
-let redirect = '';
-export default function($transitions, $q, $window) {
-    $transitions.onBefore({ to: (state) => {
-        if (state.name === 'login' || state.name === 'theKey') {
-            return false;
-        } else {
-            redirect = state.name;
-        }
+/*@ngInject*/
+export default function appRun($transitions, $q, $window) {
+    $transitions.onBefore({ to: () => {
         return true;
     } }, () => {
         let deferred = $q.defer();
-        if (!$window.sessionStorage.ticket) {
-            deferred.reject();
-            $window.location.href = config.theKeyUrl + '?redirect=' + redirect;
+        if (!$window.sessionStorage.token) {
+            let searchParams = new URLSearchParams($window.location.search);
+            let token = searchParams.get('access_token');
+            if (token) {
+                deferred.resolve();
+                $window.sessionStorage.token = token;
+            } else {
+                deferred.reject();
+                $window.location.href = config.theKeyUrl;
+            }
         } else {
             deferred.resolve();
         }

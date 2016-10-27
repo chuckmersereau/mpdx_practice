@@ -5,13 +5,6 @@ export default class Routes {
             url: '/',
             component: 'home'
         }).state({
-            name: 'login',
-            url: '/login?ticket&redirect',
-            onEnter: ($state, $stateParams, $window) => {
-                $window.sessionStorage.ticket = $stateParams.ticket;
-                $state.go($stateParams.redirect || 'home');
-            }
-        }).state({
             name: 'contacts',
             title: 'Contacts',
             url: '/contacts',
@@ -81,6 +74,7 @@ export default class Routes {
     }
 }
 
+/*@ngInject*/
 function openPeopleModal($state, $stateParams, modal, cache) {
     cache.get($stateParams.contactId).then((contact) => {
         const person = _.find(contact.people, function(person) {
