@@ -5,10 +5,6 @@ export default class Routes {
             url: '/',
             component: 'home'
         }).state({
-            name: 'login',
-            url: '/login?ticket&redirect',
-            onEnter: login
-        }).state({
             name: 'contacts',
             title: 'Contacts',
             url: '/contacts',
@@ -61,12 +57,6 @@ export default class Routes {
             component: 'integrationPreferences'
         });
     }
-}
-
-/*@ngInject*/
-function login($state, $stateParams, $window) {
-    $window.sessionStorage.ticket = $stateParams.ticket;
-    $state.go($stateParams.redirect || 'home');
 }
 
 /*@ngInject*/
