@@ -1,6 +1,4 @@
 import accounts from './accounts/accounts.service';
-import authInterceptor from './authInterceptor/authInterceptor.provider';
-import cache from './cache/cache.service';
 import currentAccountList from './currentAccountList/currentAccountList.service';
 import currentUser from './currentUser/currentUser.service';
 import filter from './filter/filter.service';
@@ -12,8 +10,6 @@ import tags from './tags/tags.service';
 
 export default angular.module('mdpx.services', [
     accounts,
-    authInterceptor,
-    cache,
     currentAccountList,
     currentUser,
     filter,
