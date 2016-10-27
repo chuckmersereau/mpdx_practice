@@ -1,9 +1,22 @@
+import config from "config";
+
 export default class Routes {
     static config($stateProvider) {
         $stateProvider.state({
             name: 'home',
             url: '/',
             component: 'home'
+        }).state({
+            name: 'login',
+            url: '/login?access_token',
+            onEnter: login,
+            resolve: {
+                url: /*@ngInject*/ ($location) => $location.url($location.url().replace("#", "?"))
+            }
+        }).state({
+            name: 'logout',
+            url: '/logout',
+            onEnter: logout
         }).state({
             name: 'contacts',
             title: 'Contacts',
@@ -60,6 +73,23 @@ export default class Routes {
 }
 
 /*@ngInject*/
+function login($state, $stateParams, $window, $location) {
+    if (!_.isEmpty($stateParams.access_token)) {
+        $window.sessionStorage.token = $stateParams.access_token;
+        const redirect = angular.copy($window.sessionStorage.redirect || 'home');
+        delete $window.sessionStorage.redirect;
+        $location.$$search = {}; //clear querystring
+        $state.go(redirect, {reload: true});
+    }
+}
+
+/*@ngInject*/
+function logout($window) {
+    delete $window.sessionStorage.token;
+    $window.location.href = config.theKeyUrl;
+}
+
+/*@ngInject*/
 function openPeopleModal($state, $stateParams, modal, cache) {
     cache.get($stateParams.contactId).then((contact) => {
         const person = _.find(contact.people, function(person) {
@@ -79,3 +109,4 @@ function openPeopleModal($state, $stateParams, modal, cache) {
         });
     });
 }
+
