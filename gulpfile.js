@@ -1,7 +1,7 @@
 var gulp = require('gulp');
 var gettext = require('gulp-angular-gettext');
 
-gulp.task('extract', function () {
+gulp.task('extract', function() {
     return gulp.src(['src/**/*.html', 'src/**/*.js'])
         .pipe(gettext.extract('mpdx.pot', {
             // options to pass to angular-gettext-tools...
@@ -9,7 +9,7 @@ gulp.task('extract', function () {
         .pipe(gulp.dest('src/locale/'));
 });
 
-gulp.task('translations', function () {
+gulp.task('translations', function() {
     return gulp.src('locale/**/*.po')
         .pipe(gettext.compile({
             // options to pass to angular-gettext-tools...
