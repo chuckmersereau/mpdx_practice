@@ -1,4 +1,4 @@
-class BottomController {
+export class BottomController {
     constructor() {
         this.year = new Date().getFullYear();
     }
