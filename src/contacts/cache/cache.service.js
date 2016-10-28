@@ -98,5 +98,5 @@ class CacheService {
     }
 }
 
-export default angular.module('mpdx.services.cache', [])
+export default angular.module('mpdx.contacts.cache.service', [])
     .service('cache', CacheService).name;
