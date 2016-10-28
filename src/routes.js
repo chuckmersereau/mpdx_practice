@@ -68,6 +68,21 @@ export default class Routes {
             title: 'Connect Services',
             url: '/{id}',
             component: 'integrationPreferences'
+        }).state({
+            name: 'preferences.notifications',
+            title: 'Notifications',
+            url: '/notifications',
+            component: 'notificationPreferences'
+        }).state({
+            name: 'preferences.personal',
+            title: 'Preferences',
+            url: '/personal',
+            component: 'personalPreferences'
+        }).state({
+            name: 'preferences.personal.tab',
+            title: 'Preferences',
+            url: '/{id}',
+            component: 'personalPreferences'
         });
     }
 }

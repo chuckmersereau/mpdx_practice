@@ -26,7 +26,7 @@ class ImportsService {
     }
     load() {
         this.loading = true;
-        this.api.get('preferences/imports').then((data) => {
+        return this.api.get('preferences/imports').then((data) => {
             this.data = data.preferences;
             this.loading = false;
             if (this.data.google_accounts.length === 1) {
@@ -44,7 +44,7 @@ class ImportsService {
             });
         }
     }
-    saveGoogleImport(success, error) {
+    saveGoogleImport() {
         var data = angular.copy(this.google_contact_import);
         if (angular.isDefined(data) && data !== null) {
             for (var key in data.group_tags) {
@@ -53,15 +53,14 @@ class ImportsService {
                 }
             }
             data.tags = data.tags.map(tag => tag.text);
-            this.api.post('preferences/imports', { import: data }).then(() => {
+            return this.api.post('preferences/imports', { import: data }).then(() => {
                 this.selected_account = null;
                 if (this.data.google_accounts.length === 1) {
                     this.selected_account = this.data.google_accounts[0];
                     this.selectedAccountUpdated(this.selected_account);
                 }
                 this.selectedAccountUpdated(this.selected_account);
-                success();
-            }).catch(error);
+            });
         }
     }
 }
