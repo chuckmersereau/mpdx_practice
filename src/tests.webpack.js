@@ -3,6 +3,7 @@
 
 import 'angular';
 import 'angular-mocks/angular-mocks';
+import 'lodash';
 
 var testsContext = require.context(".", true, /.test$/);
 testsContext.keys().forEach(testsContext);
