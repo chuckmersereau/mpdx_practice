@@ -25,5 +25,5 @@ class CurrentUser {
     }
 }
 
-export default angular.module('mpdx.services.currentUser', [])
+export default angular.module('mpdx.common.currentUser', [])
     .service('currentUser', CurrentUser).name;
