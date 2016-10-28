@@ -15,6 +15,7 @@ import links from './links/index.module';
 import modal from './modal/modal.service';
 import serverConstants from './serverConstants/serverConstants.service';
 import session from './session/session.service';
+import state from './state/state.service';
 import tags from './tags/tags.service';
 
 export default angular.module('mpdx.common', [
@@ -35,5 +36,6 @@ export default angular.module('mpdx.common', [
     modal,
     serverConstants,
     session,
+    state,
     tags
 ]).name;
