@@ -10,13 +10,10 @@ export default function appRun($transitions, $q, $window) {
         }
         return true;
     } }, () => {
-        let deferred = $q.defer();
-        if (!$window.sessionStorage.token) {
-            deferred.reject();
-            $window.location.href = config.theKeyUrl;
-        } else {
-            deferred.resolve();
+        if ($window.sessionStorage.token) {
+            return $q.resolve();
         }
-        return deferred.promise;
+        $window.location.href = config.theKeyUrl;
+        return $q.reject();
     });
 }
