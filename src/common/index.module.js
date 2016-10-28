@@ -17,6 +17,7 @@ import serverConstants from './serverConstants/serverConstants.service';
 import session from './session/session.service';
 import state from './state/state.service';
 import tags from './tags/tags.service';
+import urlParameter from './urlParameter/urlParameter.service';
 
 export default angular.module('mpdx.common', [
     accounts,
@@ -37,5 +38,6 @@ export default angular.module('mpdx.common', [
     serverConstants,
     session,
     state,
-    tags
+    tags,
+    urlParameter
 ]).name;
