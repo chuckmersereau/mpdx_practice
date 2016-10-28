@@ -7,6 +7,7 @@ import bgImg from './bgImg/bgImg.directive';
 import birthdays from './birthdays/birthdays.component';
 import contacts from './contacts/index.module';
 import convertToNumber from './convertToNumber/convertToNumber.directive';
+import currencySelect from './currencySelect/currencySelect.component';
 import currentAccountList from './currentAccountList/currentAccountList.service';
 import currentUser from './currentUser/currentUser.service';
 import donationSummaryChart from './donationsSummaryChart/donationsSummaryChart.directive';
@@ -31,6 +32,7 @@ export default angular.module('mpdx.common', [
     birthdays,
     contacts,
     convertToNumber,
+    currencySelect,
     currentAccountList,
     currentUser,
     donationSummaryChart,
