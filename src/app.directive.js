@@ -15,6 +15,6 @@ function App() {
     };
 }
 
-import session from './services/session/session.service';
+import session from './common/session/session.service';
 export default angular.module('mpdx.app', [session])
     .directive('app', App).name;

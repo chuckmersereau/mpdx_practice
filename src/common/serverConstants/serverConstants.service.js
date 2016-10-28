@@ -92,5 +92,5 @@ class ServerConstantsService {
     }
 }
 
-export default angular.module('mpdx.services.serverConstants', [])
+export default angular.module('mpdx.common.serverConstants', [])
     .service('serverConstants', ServerConstantsService).name;

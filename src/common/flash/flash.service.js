@@ -14,5 +14,5 @@ class Flash {
     }
 }
 
-export default angular.module('mpdx.services.flash', [])
+export default angular.module('mpdx.common.flash', [])
     .service('flash', Flash).name;

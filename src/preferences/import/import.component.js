@@ -1,12 +1,15 @@
 class ImportPreferencesController {
+    alertsService;
+    importsService;
+
     constructor(
         $filter, $state, $stateParams, importsService, alertsService
     ) {
         this.$filter = $filter;
         this.$state = $state;
         this.$stateParams = $stateParams;
-        this.preferences = importsService;
-        this.alerts = alertsService;
+        this.importsService = importsService;
+        this.alertsService = alertsService;
 
         this.saving = false;
         this.tabId = '';
@@ -25,7 +28,7 @@ class ImportPreferencesController {
         } else {
             this.tabId = service;
             if (service === 'google') {
-                this.preferences.load();
+                this.importsService.load();
             }
             this.$state.go('preferences.imports.tab', { id: service }, { notify: false });
         }
@@ -34,24 +37,24 @@ class ImportPreferencesController {
         return this.tabId === service;
     }
     loadTags(query) {
-        return this.$filter('filter')(this.preferences.data.tags, { text: query });
+        return this.$filter('filter')(this.importsService.data.tags, { text: query });
     }
 
     checkAllGoogleContactGroups() {
-        this.preferences.google_contact_import.groups = this.preferences.selected_account.contact_groups.map(item => item.id);
+        this.importsService.google_contact_import.groups = this.importsService.selected_account.contact_groups.map(item => item.id);
     }
     uncheckAllGoogleContactGroups() {
-        this.preferences.google_contact_import.groups = [];
+        this.importsService.google_contact_import.groups = [];
     }
     saveGoogleImport() {
         this.saving = true;
-        this.preferences.saveGoogleImport(() => {
-            this.alerts.addAlert('MPDx is importing contacts from your Google Account', 'success');
+        this.importsService.saveGoogleImport().then(() => {
+            this.alertsService.addAlert('MPDx is importing contacts from your Google Account', 'success');
             this.setTab('');
             this.saving = false;
-        }, (data) => {
+        }).catch((data) => {
             _.each(data.errors, (value) => {
-                this.alerts.addAlert(value, 'danger');
+                this.alertsService.addAlert(value, 'danger');
             });
             this.saving = false;
         });
