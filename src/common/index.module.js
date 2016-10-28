@@ -10,6 +10,7 @@ import convertToNumber from './convertToNumber/convertToNumber.directive';
 import currentAccountList from './currentAccountList/currentAccountList.service';
 import currentUser from './currentUser/currentUser.service';
 import donationSummaryChart from './donationsSummaryChart/donationsSummaryChart.directive';
+import faCheckbox from './faCheckbox/faCheckbox.component';
 import filter from './filter/filter.service';
 import flash from './flash/flash.service';
 import layoutSettings from './layoutSettings/layoutSettings.directive';
@@ -33,6 +34,7 @@ export default angular.module('mpdx.common', [
     currentAccountList,
     currentUser,
     donationSummaryChart,
+    faCheckbox,
     filter,
     flash,
     layoutSettings,
