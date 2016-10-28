@@ -11,6 +11,7 @@ import currentUser from './currentUser/currentUser.service';
 import donationSummaryChart from './donationsSummaryChart/donationsSummaryChart.directive';
 import filter from './filter/filter.service';
 import flash from './flash/flash.service';
+import layoutSettings from './layoutSettings/layoutSettings.directive';
 import links from './links/index.module';
 import modal from './modal/modal.service';
 import rawNumber from './rawNumber/rawNumber.directive';
@@ -32,6 +33,7 @@ export default angular.module('mpdx.common', [
     donationSummaryChart,
     filter,
     flash,
+    layoutSettings,
     links,
     modal,
     rawNumber,
