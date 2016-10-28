@@ -1,13 +1,13 @@
 class InvitesService {
+    api;
+
     constructor($rootScope, api) {
         this.api = api;
 
         this.data = {};
         this.loading = true;
 
-        this.account_list_id_watcher = $rootScope.$watch(() => {
-            return api.account_list_id;
-        }, () => {
+        $rootScope.$watch(() => api.account_list_id, () => {
             this.load();
         });
 
@@ -20,11 +20,11 @@ class InvitesService {
             this.loading = false;
         });
     }
-    destroy(id, success, error) {
-        return this.api.delete('preferences/accounts/invites/' + id).then(success).catch(error);
+    destroy(id) {
+        return this.api.delete('preferences/accounts/invites/' + id);
     }
-    create(email, success, error) {
-        return this.api.post('preferences/accounts/invites', { invite: { email: email } }).then(success).catch(error);
+    create(email) {
+        return this.api.post('preferences/accounts/invites', { invite: { email: email } });
     }
 }
 
