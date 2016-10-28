@@ -5,6 +5,7 @@ import api from './api/api.service';
 import authInterceptor from './authInterceptor/authInterceptor.provider';
 import birthdays from './birthdays/birthdays.component';
 import contacts from './contacts/index.module';
+import convertToNumber from './convertToNumber/convertToNumber.directive';
 import currentAccountList from './currentAccountList/currentAccountList.service';
 import currentUser from './currentUser/currentUser.service';
 import donationSummaryChart from './donationsSummaryChart/donationsSummaryChart.directive';
@@ -24,6 +25,7 @@ export default angular.module('mpdx.common', [
     authInterceptor,
     birthdays,
     contacts,
+    convertToNumber,
     currentAccountList,
     currentUser,
     donationSummaryChart,

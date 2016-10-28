@@ -275,6 +275,7 @@ module.exports = function makeWebpackConfig(options) {
             }),
             new HtmlWebpackPlugin({
                 template: './src/index.html',
+                favicon: './src/images/mpdx-favicon.png',
                 inject: 'body',
                 minify: (BUILD ? {
                     html5: true

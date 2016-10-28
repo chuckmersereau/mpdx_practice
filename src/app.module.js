@@ -14,6 +14,7 @@ import appConfig from './app.config';
 import appRun from './app.run';
 
 require('./app.scss');
+require('./images/mpdx-favicon.png');
 
 export default angular.module('mpdx', [
     app,

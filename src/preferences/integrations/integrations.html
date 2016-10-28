@@ -217,8 +217,7 @@
                 </div>
             </div>
         </div>
-        <% if $rollout.active?(:pls_integration, current_account_list) %>
-        <div class="panel panel-default pref-panel">
+        <div class="panel panel-default pref-panel" ng-if="vm.$rollout.active(pls_integration, current_account_list)">
             <div class="panel-heading pref-head" ng-click="vm.setTab('myletterservice')">
                 <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('myletterservice') }"></i>
                 <span translate>MyLetterService.org</span>
@@ -259,7 +258,6 @@
                 </div>
             </div>
         </div>
-        <% end %>
         <div class="panel panel-default pref-panel">
             <div class="panel-heading pref-head" ng-click="vm.setTab('chalkline')">
                 <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('chalkline') }"></i>

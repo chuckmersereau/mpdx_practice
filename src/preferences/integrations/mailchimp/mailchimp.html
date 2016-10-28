@@ -1,0 +1,75 @@
+<div ng-show="!vm.preferences.loading">
+    <div ng-show="vm.showSettings">
+        <div ng-if="vm.preferences.data.api_key && !vm.preferences.data.active && !vm.preferences.data.validate_key">
+            {{vm.preferences.data.validation_error}}
+        </div>
+        <div class="form-group" ng-hide="vm.preferences.data.active">
+            <a href="http://www.gcx.org/mpdxhelp/sync-with-mailchimp/" target="_blank">
+                <i class="fa fa-play-circle-o"></i>
+                <span translate>Watch a video showing you how to link to Mailchimp</span>
+            </a>
+            <br />
+            <label for="apiKey" translate>Api Key</label>
+            <input type="text" id="apiKey" ng-model="vm.preferences.data.api_key" class="form-control">
+        </div>
+        <div class="form-group" ng-show="vm.preferences.data.active">
+            <div ng-show="vm.preferences.data.lists_present">
+                <div class="alert alert-warning" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span translate>Please choose a list to sync with MailChimp. If select a list with existing subscribers, MPDX
+                    will add those contacts and set them to receive the email newsletter. If some of the subscribers
+                    already exist in MPDX, their email addresses will be added and they will be set to receive the email
+                    newsletter (or Both if they already get the physical letter).</span>
+                </div>
+                <div class="field">
+                    <label for="primaryListId" translate>Pick a list to use for your newsletter</label>
+                    <select name="primaryListId" id="primaryListId" ng-model="vm.preferences.data.primary_list_id" class="form-control">
+                        <option ng-repeat="option in vm.preferences.data.lists_available_for_newsletters" value="{{option.id}}">{{option.name}}</option>
+                    </select>
+                    <div ng-if="vm.$rollout.active(mail_chimp_auto_log, current_account_list)">
+                        <br />
+                        <input type="checkbox" id="autoLogCampaigns" ng-model="vm.preferences.data.auto_log_campaigns">
+                        <label for="autoLogCampaigns" translate>Automatically log sent MailChimp campaigns in contact task history.</label>
+                    </div>
+                    <input id="syncAllActiveContacts" type="checkbox" ng-model="vm.preferences.data.sync_all_active_contacts">
+                    <label for="syncAllActiveContacts" translate>Sync with all active contacts with a valid email address</label>
+                </div>
+            </div>
+            <div ng-hide="vm.preferences.data.lists_present">
+                <span translate>You need to create a list on Mail Chimp that MPDX can use for your newsletter.</span><br />
+                <a ng-href="{{vm.preferences.data.lists_link}}" target="_blank">Go to Mail Chimp to create a list.</a>
+            </div>
+        </div>
+        <div class="actions form-group">
+            <button type="submit" ng-click="vm.save()" ng-disabled="vm.saving" class="btn btn-primary btn-actionable">
+                <span translate>Save</span>&nbsp;
+                <div class="btn-progress" ng-show="vm.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></div></button>
+            <a class="btn" ng-click="vm.hide()" translate>Cancel</a>
+        </div>
+    </div>
+    <div ng-hide="vm.showSettings">
+        <div ng-show="vm.preferences.data.active">
+            <p>
+                <span translate>You can now export your contacts to MailChimp.</span><br />
+                <span translate>MailChimp API key:</span> <strong>{{vm.preferences.data.api_key}}</strong><br />
+                <span translate>MailChimp list to use for your newsletter:</span> <strong>{{vm.preferences.data.primary_list_name}}</strong>
+                <div ng-show="vm.preferences.data.sync_all_active_contacts" translate>You are syncing to all active contacts.</div>
+                <div ng-hide="vm.preferences.data.sync_all_active_contacts" translate>You are only syncing to contacts in your newsletter</div>
+                <div ng-if="vm.$rollout.active(mail_chimp_auto_log, current_account_list)">
+                    <br /><span translate>Automatic logging of campaigns: </span><strong>{{vm.preferences.data.auto_log_campaigns ? vm.gettextCatalog.getString('On') : vm.gettextCatalog.getString('Off')}}</strong>
+                </div>
+            </p>
+            <p>
+                <button type="submit" ng-click="vm.sync()" ng-disabled="vm.saving" class="btn btn-primary btn-actionable">
+                    <span translate>Sync Now</span>&nbsp;
+                    <div class="btn-progress" ng-show="vm.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></div></button>
+                <a class="btn btn-default" ng-click="vm.showSettings = true" translate>Modify Settings</a>
+                <a class="btn btn-link" ng-click="vm.disconnect()" translate>Disconnect</a>
+            </p>
+        </div>
+        <div ng-hide="vm.preferences.data.active">
+            <p translate>You can synchronize MPDX and Mailchimp contacts to simplify your process and take advantage of all of Mailchimp's great features.</p>
+            <a class="btn btn-primary" ng-click="vm.showSettings = true" translate>Enable</a>
+        </div>
+    </div>
+</div>
