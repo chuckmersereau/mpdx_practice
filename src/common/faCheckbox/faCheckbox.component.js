@@ -1,8 +1,7 @@
 class FaCheckboxController {
     constructor() {
-
         var ngModel = this.ngModel;
-        ngModel.$render = onChange;
+        ngModel.$render = this.onChange.bind(this);
     }
     onChange() {
         this.checked = this.ngModel.$viewValue;
