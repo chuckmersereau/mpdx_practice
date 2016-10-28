@@ -3,6 +3,7 @@ import alerts from './alerts/index.module';
 import anniversaries from './anniversaries/anniversaries.component';
 import api from './api/api.service';
 import authInterceptor from './authInterceptor/authInterceptor.provider';
+import bgImg from './bgImg/bgImg.directive';
 import birthdays from './birthdays/birthdays.component';
 import contacts from './contacts/index.module';
 import convertToNumber from './convertToNumber/convertToNumber.directive';
@@ -26,6 +27,7 @@ export default angular.module('mpdx.common', [
     anniversaries,
     api,
     authInterceptor,
+    bgImg,
     birthdays,
     contacts,
     convertToNumber,
