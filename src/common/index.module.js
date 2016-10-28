@@ -7,6 +7,7 @@ import birthdays from './birthdays/birthdays.component';
 import contacts from './contacts/index.module';
 import currentAccountList from './currentAccountList/currentAccountList.service';
 import currentUser from './currentUser/currentUser.service';
+import designationAccounts from './designationAccounts/designationAccounts.service';
 import donationSummaryChart from './donationsSummaryChart/donationsSummaryChart.directive';
 import filter from './filter/filter.service';
 import flash from './flash/flash.service';
@@ -26,6 +27,7 @@ export default angular.module('mpdx.common', [
     contacts,
     currentAccountList,
     currentUser,
+    designationAccounts,
     donationSummaryChart,
     filter,
     flash,
