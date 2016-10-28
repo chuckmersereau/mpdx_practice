@@ -1,5 +1,5 @@
 import Routes from "./routes";
-
+/*@ngInject*/
 export default function appConfig($locationProvider, $stateProvider, $httpProvider) {
     $locationProvider.html5Mode({
         enabled: true,

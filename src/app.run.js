@@ -1,22 +1,20 @@
 import config from 'config';
 
-let redirect = '';
-export default function($transitions, $q, $window) {
+/*@ngInject*/
+export default function appRun($transitions, $q, $window, $rootScope) {
+    $rootScope.googleMapsUrl = "https://maps.googleapis.com/maps/api/js?key=QF8dGA3a35KR61drl0zgxxT9kxE";
     $transitions.onBefore({ to: (state) => {
-        if (state.name === 'login' || state.name === 'theKey') {
+        if (state.name === 'login') {
             return false;
-        } else {
-            redirect = state.name;
+        } else if (!$window.sessionStorage.token) {
+            $window.sessionStorage.redirect = state.name;
         }
         return true;
     } }, () => {
-        let deferred = $q.defer();
-        if (!$window.sessionStorage.ticket) {
-            deferred.reject();
-            $window.location.href = config.theKeyUrl + '?redirect=' + redirect;
-        } else {
-            deferred.resolve();
+        if ($window.sessionStorage.token) {
+            return $q.resolve();
         }
-        return deferred.promise;
+        $window.location.href = config.theKeyUrl;
+        return $q.reject();
     });
 }
