@@ -7,7 +7,6 @@ import bottom from './bottom/index.module';
 import home from './home/index.module';
 import menu from './menu/menu.component';
 import preferences from './preferences/index.module';
-import services from './services/index.module';
 import tasks from './tasks/index.module';
 import vendor from './vendor.module';
 
@@ -15,6 +14,7 @@ import appConfig from './app.config';
 import appRun from './app.run';
 
 require('./app.scss');
+require('./images/mpdx-favicon.png');
 
 export default angular.module('mpdx', [
     app,
@@ -24,12 +24,14 @@ export default angular.module('mpdx', [
     home,
     menu,
     preferences,
-    services,
     tasks,
     vendor
 ])
     .config(appConfig)
     .run(appRun)
+    .value('layoutSettings', {
+        fullWidth: false
+    })
     .name;
 
 angular.module('infinite-scroll').value('THROTTLE_MILLISECONDS', 250);
