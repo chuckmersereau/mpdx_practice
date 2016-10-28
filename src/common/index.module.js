@@ -13,6 +13,7 @@ import filter from './filter/filter.service';
 import flash from './flash/flash.service';
 import links from './links/index.module';
 import modal from './modal/modal.service';
+import rawNumber from './rawNumber/rawNumber.directive';
 import serverConstants from './serverConstants/serverConstants.service';
 import session from './session/session.service';
 import tags from './tags/tags.service';
@@ -33,6 +34,7 @@ export default angular.module('mpdx.common', [
     flash,
     links,
     modal,
+    rawNumber,
     serverConstants,
     session,
     tags
