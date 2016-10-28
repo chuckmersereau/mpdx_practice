@@ -1,4 +1,5 @@
 class Session {
+    api;
     fullsite;
     constructor(api) {
         this.api = api;
@@ -7,10 +8,10 @@ class Session {
         this.data = {};
         this.fullsite = true;
     }
-    updateField(key, value, cb) {
-        var body = {};
+    updateField(key, value) {
+        let body = {};
         body[key] = value;
-        this.api.put('session', body).then(cb);
+        return this.api.put('session', body);
     }
 }
 

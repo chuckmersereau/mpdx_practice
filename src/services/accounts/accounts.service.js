@@ -8,29 +8,21 @@ class AccountsService {
         this.loading = true;
         this.account_list_id = null;
 
-        $rootScope.$watch(() => {
-            return this.account_list_id;
-        }, (accountListId) => {
+        $rootScope.$watch(() =>  this.account_list_id, (accountListId) => {
             if (api.account_list_id) {
                 var stateName = $state.current.name;
-                session.updateField(
-                    'current_account_list_id',
-                    this.account_list_id,
-                    () => {
-                        if (!stateName) {
-                            location.reload();
-                        }
+                session.updateField('current_account_list_id', this.account_list_id).then(() => {
+                    if (!stateName) {
+                        location.reload();
                     }
-                );
+                });
             }
             api.account_list_id = accountListId;
         });
-
-        this.load();
     }
     load() {
         this.loading = true;
-        this.api.call('get', 'preferences/accounts', {}).then((data) => {
+        return this.api.get('preferences/accounts').then((data) => {
             this.data = data.preferences;
             this.account_list_id = data.preferences.account_list_id;
             this.account_list_id = data.preferences.account_list_id;
