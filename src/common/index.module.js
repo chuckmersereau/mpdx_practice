@@ -20,6 +20,7 @@ import layoutSettings from './layoutSettings/layoutSettings.directive';
 import links from './links/index.module';
 import modal from './modal/modal.service';
 import rawNumber from './rawNumber/rawNumber.directive';
+import selectionStore from './selectionStore/selectionStore.service';
 import serverConstants from './serverConstants/serverConstants.service';
 import session from './session/session.service';
 import state from './state/state.service';
@@ -49,6 +50,7 @@ export default angular.module('mpdx.common', [
     links,
     modal,
     rawNumber,
+    selectionStore,
     serverConstants,
     session,
     state,
