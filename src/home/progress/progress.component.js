@@ -1,10 +1,11 @@
 class progressController {
     api;
     currentUser;
+    state;
 
-    constructor(api, $filter, $state, currentUser, gettextCatalog) {
+    constructor(api, $filter, state, currentUser, gettextCatalog) {
         this.$filter = $filter;
-        this.$state = $state;
+        this.state = state;
         this.api = api;
         this.currentUser = currentUser;
         this.gettextCatalog = gettextCatalog;
@@ -16,7 +17,6 @@ class progressController {
         this.endDate.setDate(this.startDate.getDate() + 7);
         this.errorOccurred = false;
     }
-
     blankData() {
         this.data = {
             contacts: {
@@ -74,7 +74,7 @@ class progressController {
         this.blankData();
         let startDateString = this.$filter('date')(this.startDate, 'yyyy-MM-dd');
         const url = 'progress.json?start_date=' + startDateString +
-            '&account_list_id=' + this.$state.current_account_list_id;
+            '&account_list_id=' + this.state.current_account_list_id;
 
         this.api.get(url).then((newData) => {
             this.data = newData;

@@ -43,7 +43,6 @@ class CurrentAccountList {
     }
     getDonations() {
         return this.api.get('current_account_list/donations').then((resp) => {
-            //console.log(resp);
             this.donations = resp;
         }).catch((err) => {
             this.$log.debug(err);
