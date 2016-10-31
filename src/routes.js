@@ -83,6 +83,11 @@ export default class Routes {
             title: 'Preferences',
             url: '/{id}',
             component: 'personalPreferences'
+        }).state({
+            name: 'tasks',
+            title: 'Tasks',
+            url: '/tasks',
+            component: 'tasks'
         });
     }
 }
@@ -124,4 +129,3 @@ function openPeopleModal($state, $stateParams, modal, cache) {
         });
     });
 }
-

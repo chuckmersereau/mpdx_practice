@@ -1,0 +1,29 @@
+<a ng-click="vm.resetFilters()" class="btn btn-default btn-xs btn-block ng-cloak"
+   ng-hide="vm.isEmptyFilter()" translate>
+  Reset Filters
+</a>
+
+<li><span class="sort_title menu_item" translate>Sort</span></li>
+<ul class="sort_options">
+  <li ng-class="{'selected': vm.tasksService.sort === 'all'}" class="option">
+    <a class="inbox " ng-click="vm.tasksService.sort = 'all'" translate>All</a>
+  </li>
+  <li ng-class="{'selected': vm.tasksService.sort === 'today'}" class="option">
+    <a class="inbox" ng-click="vm.tasksService.sort = 'today'" translate>Today</a>
+  </li>
+  <li ng-class="{'selected': vm.tasksService.sort === 'overdue'}" class="option">
+    <a class="inbox" ng-click="vm.tasksService.sort = 'overdue'" translate>Overdue</a>
+  </li>
+  <li ng-class="{'selected': vm.tasksService.sort === 'upcoming'}" class="option">
+    <a class="inbox" ng-click="vm.tasksService.sort = 'upcoming'" translate>Upcoming</a>
+  </li>
+  <li ng-class="{'selected': vm.tasksService.sort === 'noDate'}" class="option">
+    <a class="inbox" ng-click="vm.tasksService.sort = 'noDate'" translate>No Due Date</a>
+  </li>
+  <li ng-class="{'selected': vm.tasksService.sort === 'starred'}" class="option">
+    <a class="starred" ng-click="vm.tasksService.sort = 'starred'" translate>Starred</a>
+  </li>
+  <li ng-class="{'selected': vm.tasksService.sort === 'history'}" class="option">
+    <a class="completed" ng-click="vm.tasksService.sort = 'history'" translate>History</a>
+  </li>
+</ul>
