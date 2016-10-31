@@ -1,5 +1,5 @@
 #!/bin/bash
-NODE_ENV=test npm test
+npm test
 eslint ./
 if [ "$TRAVIS_BRANCH" = "master" ]
 then

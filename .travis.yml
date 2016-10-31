@@ -6,6 +6,10 @@ cache:
     - node_modules
 script: ./script.sh
 after_deploy: aws/invalidate_cloudfront.sh
+branches:
+  only:
+  - master
+  - staging
 deploy:
 - provider: s3
   access_key_id: AKIAJTJ4YT7JED4DZJIA
