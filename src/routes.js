@@ -30,9 +30,30 @@ export default class Routes {
             title: 'Contact',
             url: '/contacts/{contactId:[0-9]+}',
             component: 'contact'
-        }).state('contact.person', {
+        }).state({
+            name: 'contact.person',
             url: '/people/{personId}',
             onEnter: openPeopleModal
+        }).state({
+            name: 'reports',
+            url: '/reports',
+            component: 'reports'
+        }).state({
+            name: 'reports.balances',
+            url: '/balances',
+            component: 'balancesReport'
+        }).state({
+            name: 'reports.donor',
+            url: '/donor',
+            component: 'donorReport'
+        }).state({
+            name: 'reports.monthly',
+            url: '/monthly',
+            component: 'monthlyReport'
+        }).state({
+            name: 'reports.salary',
+            url: '/salary',
+            component: 'salaryReport'
         }).state({
             name: 'preferences',
             title: 'Preferences',
