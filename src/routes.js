@@ -43,9 +43,9 @@ export default class Routes {
             url: '/balances',
             component: 'balancesReport'
         }).state({
-            name: 'reports.donor',
-            url: '/donor',
-            component: 'donorReport'
+            name: 'reports.donations',
+            url: '/donations',
+            component: 'currencyDonationsReport'
         }).state({
             name: 'reports.monthly',
             url: '/monthly',

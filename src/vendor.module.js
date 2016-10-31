@@ -3,7 +3,7 @@ import ngAnimate from 'angular-animate';
 import getText from 'angular-gettext';
 import jwt from 'angular-jwt';
 import ngSanitize from 'angular-sanitize';
-import uiBootstrap from 'angular-ui-bootstrap';
+
 import uiRouter from 'angular-ui-router';
 import checklistModel from 'checklist-model';
 import ngInfiniteScroll from 'ng-infinite-scroll';
@@ -15,11 +15,15 @@ import ngSortable from 'ng-sortable';
 import 'angular-strap';
 import 'angular-chosen-localytics';
 import 'angular-localforage';
+import uiBootstrap from 'angular-ui-bootstrap';
 import 'angular-ui-bootstrap-datetimepicker';
 import 'iso-currency';
 import 'ng-tags-input';
 //non-angular deps
 import 'lodash';
+import moment from 'moment';
+window.moment = moment;
+import 'moment-range';
 import jQuery from '!expose?jQuery!jquery';
 window.$ = jQuery;
 import 'twitter_cldr';
