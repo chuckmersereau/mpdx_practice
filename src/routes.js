@@ -5,10 +5,7 @@ export default class Routes {
         $stateProvider.state({
             name: 'home',
             url: '/',
-            component: 'home',
-            resolve: {
-
-            }
+            component: 'home'
         }).state({
             name: 'login',
             url: '/login?access_token',
