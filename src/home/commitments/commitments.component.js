@@ -7,10 +7,10 @@ class CommitmentsController {
     }
     $onInit() {
         this.currentAccountList.contacts.getLatePledgeCount().then((response) => {
-            this.noPledgeCount = response.data;
+            this.noPledgeCount = response;
         });
         this.currentAccountList.contacts.getLatePledgeDays().then((response) => {
-            this.lateContactCount = response.data;
+            this.lateContactCount = response;
         });
     }
 }

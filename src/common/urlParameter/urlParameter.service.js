@@ -10,4 +10,4 @@ class UrlParameterService {
     }
 }
 export default angular.module('mpdx.common.urlParameter.service', [])
-    .service('urlParameter', UrlParameterService);
+    .service('urlParameter', UrlParameterService).name;

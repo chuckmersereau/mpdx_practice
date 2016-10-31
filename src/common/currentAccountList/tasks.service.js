@@ -16,5 +16,5 @@ class Tasks {
     }
 }
 
-export default angular.module('mpdx.common.currentAccountList', [])
+export default angular.module('mpdx.common.currentAccountList.tasks.service', [])
     .service('currentAccountListTasks', Tasks).name;

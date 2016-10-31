@@ -1,19 +1,22 @@
 class ConnectController {
     currentAccountList;
     currentUser;
-    constructor(currentUser, currentAccountList) {
+    tasksService;
+
+    constructor(currentUser, currentAccountList, tasksService) {
         this.currentUser = currentUser;
         this.currentAccountList = currentAccountList;
+        this.tasksService = tasksService;
 
         this.overdueCount = null;
         this.overdueTasks = [];
     }
     $onInit() {
         this.currentAccountList.tasks.getTasksOverdueCount().then((response) => {
-            this.overdueCount = response.data;
+            this.overdueCount = response;
         });
         this.currentAccountList.tasks.getTasksOverdueGroupByActivityType().then((response) => {
-            this.overdueTasks = _.map(response.data, (count, task) => {
+            this.overdueTasks = _.map(response, (count, task) => {
                 return {type: task, count: count};
             });
         });

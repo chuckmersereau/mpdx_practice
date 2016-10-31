@@ -7,7 +7,7 @@ class CareController {
     }
     $onInit() {
         this.currentAccountList.tasks.getFirstCompleteNewsletter().then((reponse) => {
-            this.newsletter = reponse.data;
+            this.newsletter = reponse;
         });
     }
     addNewsletter() {
