@@ -14,6 +14,7 @@ import appConfig from './app.config';
 import appRun from './app.run';
 
 require('./app.scss');
+require('./images/mpdx-favicon.png');
 
 export default angular.module('mpdx', [
     app,
@@ -28,6 +29,9 @@ export default angular.module('mpdx', [
 ])
     .config(appConfig)
     .run(appRun)
+    .value('layoutSettings', {
+        fullWidth: false
+    })
     .name;
 
 angular.module('infinite-scroll').value('THROTTLE_MILLISECONDS', 250);

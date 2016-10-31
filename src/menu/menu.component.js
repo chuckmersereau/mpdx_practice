@@ -1,22 +1,14 @@
 class menuController {
-    path;
-    constructor($rootScope, $location, $state) {
+    constructor($state) {
         this.state = $state;
-        this.path = $location.path();
-
-        $rootScope.$watch(() => {
-            return $location.path();
-        }, () => {
-            this.path = $location.path();
-        });
+        this.isInState = (match) => $state.$current.name.indexOf(match) === 0;
     }
 }
 
 const menuComponent = {
     controller: menuController,
-    controllerAs: 'vm',
     template: require('./menu.html')
 };
 
-export default angular.module('mpdx.menu', [])
+export default angular.module('mpdx.menu.component', [])
     .component('menu', menuComponent).name;

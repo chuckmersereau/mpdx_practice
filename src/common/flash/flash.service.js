@@ -5,8 +5,8 @@ class Flash {
     }
     get(id) {
         this.api.get('flash/' + id).then((resp) => {
-            if (resp.data) {
-                this[id] = resp.data;
+            if (resp) {
+                this[id] = resp;
             }
         }).catch((err) => {
             this.$log.debug(err);
