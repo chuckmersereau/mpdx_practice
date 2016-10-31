@@ -20,35 +20,36 @@ class CurrentAccountList {
     }
     get() {
         this.api.get('current_account_list').then((resp) => {
-            _.extend(this, resp.data);
+            _.extend(this, resp);
         }).catch((err) => {
             this.$log.debug(err);
         });
     }
     getTasks() {
         this.api.get('current_account_list/tasks').then((resp) => {
-            this.tasks = resp.data;
+            this.tasks = resp;
         }).catch((err) => {
             this.$log.debug(err);
         });
     }
     getPeopleWithBirthdays() {
         this.api.get('current_account_list/people_with_birthdays').then((resp) => {
-            this.people_with_birthdays = resp.data;
+            this.people_with_birthdays = resp;
         }).catch((err) => {
             this.$log.debug(err);
         });
     }
     getContactsWithAnniversaries() {
         this.api.get('current_account_list/contacts_with_anniversaries').then((resp) => {
-            this.contacts_with_anniversaries = resp.data;
+            this.contacts_with_anniversaries = resp;
         }).catch((err) => {
             this.$log.debug(err);
         });
     }
     getDonations() {
         return this.api.get('current_account_list/donations').then((resp) => {
-            this.donations = resp.data;
+            //console.log(resp);
+            this.donations = resp;
         }).catch((err) => {
             this.$log.debug(err);
         });

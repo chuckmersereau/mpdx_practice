@@ -21,6 +21,7 @@ class donationSummaryChartController {
 
 function linkFn(scope) {
     scope.currentAccountList.getDonations().then(() => {
+        console.log(scope.currentAccountList)
         let seriesWithClickEvents = _.map(scope.currentAccountList.donations.series, (series) => {
             series.events = {
                 click: (event) => {
