@@ -16,8 +16,6 @@ class PersonalPreferencesController {
         this.default_account_string = '';
         this.salary_organization_string = '';
 
-        this.activate();
-
         // $scope.$watch('vm.personalService.data.locale', (newValue) => {
         //     this.locale_string = angular.element('#_locale option[value=' + newValue + ']').text();
         // });
@@ -30,7 +28,7 @@ class PersonalPreferencesController {
         //     this.salary_organization_string = angular.element('#salary_organization_id_ option[value=' + newValue + ']').text();
         // });
     }
-    activate() {
+    $onInit() {
         if (this.$stateParams.id) {
             this.setTab(this.$stateParams.id);
         }
