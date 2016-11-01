@@ -73,7 +73,6 @@ class PersonalPreferencesController {
 
 const Personal = {
     controller: PersonalPreferencesController,
-    controllerAs: 'vm',
     template: require('./personal.html')
 };
 

@@ -9,7 +9,6 @@ class GoogleImportController {
 
 const GoogleImport = {
     controller: GoogleImportController,
-    controllerAs: 'vm',
     template: require('./google.html'),
     bindings: {
         preferences: '<'

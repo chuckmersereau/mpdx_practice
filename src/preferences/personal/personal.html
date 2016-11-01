@@ -1,40 +1,40 @@
-<div ng-show="vm.preferences.loading" class="loading-spinner">
+<div ng-show="$ctrl.personalService.loading" class="loading-spinner">
     <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
     <span class="sr-only" translate>Loading</span>
 </div>
-<form ng-hide="vm.preferences.loading">
+<form ng-hide="$ctrl.personalService.loading">
     <div class="row spacer-top"></div>
     <div class="panel-group">
         <div class="panel panel-default pref-panel">
-            <div class="panel-heading pref-head" ng-click="vm.setTab('first_name')">
+            <div class="panel-heading pref-head" ng-click="$ctrl.setTab('first_name')">
                 <div class="row">
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('first_name') }"></i>
+                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('first_name') }"></i>
                         <span translate>First Name</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{vm.preferences.data.first_name}}
+                        {{$ctrl.personalService.data.first_name}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
-                            <span ng-hide="vm.tabSelected('first_name')" translate>Expand</span>
-                            <span ng-show="vm.tabSelected('first_name')" translate>Close
+                            <span ng-hide="$ctrl.tabSelected('first_name')" translate>Expand</span>
+                            <span ng-show="$ctrl.tabSelected('first_name')" translate>Close
                             </span>
                         </span>
                     </div>
                 </div>
             </div>
-            <div class="panel-animate" ng-show="vm.tabSelected('first_name')">
+            <div class="panel-animate" ng-show="$ctrl.tabSelected('first_name')">
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group">
                                 <label for="firstName" translate>Your first name</label>
-                                <input type="text" class="form-control" ng-model="vm.preferences.data.first_name">
+                                <input type="text" class="form-control" ng-model="$ctrl.personalService.data.first_name">
                             </div>
-                            <button type="submit" ng-click="vm.save()" ng-disabled="vm.saving" class="btn btn-primary btn-actionable">
+                            <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                                 <span translate>Save</span>&nbsp;
-                                <span class="btn-progress" ng-show="vm.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
                             </button>
                         </div>
                     </div>
@@ -42,34 +42,34 @@
             </div>
         </div>
         <div class="panel panel-default pref-panel">
-            <div class="panel-heading pref-head" ng-click="vm.setTab('last_name')">
+            <div class="panel-heading pref-head" ng-click="$ctrl.setTab('last_name')">
                 <div class="row">
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('last_name') }"></i>
+                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('last_name') }"></i>
                         <span translate>Last Name</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{vm.preferences.data.last_name}}
+                        {{$ctrl.personalService.data.last_name}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
-                            <span ng-hide="vm.tabSelected('last_name')" translate>Expand</span>
-                            <span ng-show="vm.tabSelected('last_name')" translate>Close</span>
+                            <span ng-hide="$ctrl.tabSelected('last_name')" translate>Expand</span>
+                            <span ng-show="$ctrl.tabSelected('last_name')" translate>Close</span>
                         </span>
                     </div>
                 </div>
             </div>
-            <div class="panel-animate" ng-show="vm.tabSelected('last_name')">
+            <div class="panel-animate" ng-show="$ctrl.tabSelected('last_name')">
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group">
                                 <label for="lastName" translate>Your last name</label>
-                                <input id="lastName" class="form-control" ng-model="vm.preferences.data.last_name">
+                                <input id="lastName" class="form-control" ng-model="$ctrl.personalService.data.last_name">
                             </div>
-                            <button type="submit" ng-click="vm.save()" ng-disabled="vm.saving" class="btn btn-primary btn-actionable">
+                            <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                                 <span translate>Save</span>&nbsp;
-                                <span class="btn-progress" ng-show="vm.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
                             </button>
                         </div>
                     </div>
@@ -77,35 +77,35 @@
             </div>
         </div>
         <div class="panel panel-default pref-panel">
-            <div class="panel-heading pref-head" ng-click="vm.setTab('email')">
+            <div class="panel-heading pref-head" ng-click="$ctrl.setTab('email')">
                 <div class="row">
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('email') }"></i>
+                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('email') }"></i>
                         <span translate>Email Address</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{vm.preferences.data.email}}
+                        {{$ctrl.personalService.data.email}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
-                            <span ng-hide="vm.tabSelected('email')" translate>Expand</span>
-                            <span ng-show="vm.tabSelected('email')" translate>Close</span>
+                            <span ng-hide="$ctrl.tabSelected('email')" translate>Expand</span>
+                            <span ng-show="$ctrl.tabSelected('email')" translate>Close</span>
                         </span>
                     </div>
                 </div>
             </div>
-            <div class="panel-animate" ng-show="vm.tabSelected('email')">
+            <div class="panel-animate" ng-show="$ctrl.tabSelected('email')">
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group">
                                 <label for="email" translate>Email Address</label>
                                 <p class="text-muted" translate>This is the email address where notifications will be sent.</p>
-                                <input id="email" type="email" class="form-control" ng-model="vm.preferences.data.email">
+                                <input id="email" type="email" class="form-control" ng-model="$ctrl.personalService.data.email">
                             </div>
-                            <button type="submit" ng-click="vm.save()" ng-disabled="vm.saving" class="btn btn-primary btn-actionable">
+                            <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                                 <span translate>Save</span>&nbsp;
-                                <span class="btn-progress" ng-show="vm.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
                             </button>
                         </div>
                     </div>
@@ -113,38 +113,38 @@
             </div>
         </div>
         <div class="panel panel-default pref-panel">
-            <div class="panel-heading pref-head" ng-click="vm.setTab('time_zone')">
+            <div class="panel-heading pref-head" ng-click="$ctrl.setTab('time_zone')">
                 <div class="row">
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('time_zone') }"></i>
+                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('time_zone') }"></i>
                         <span translate>Time zone</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{vm.preferences.data.time_zone}}
+                        {{$ctrl.personalService.data.time_zone}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
-                            <span ng-hide="vm.tabSelected('time_zone')" translate>Expand</span>
-                            <span ng-show="vm.tabSelected('time_zone')" translate>Close</span>
+                            <span ng-hide="$ctrl.tabSelected('time_zone')" translate>Expand</span>
+                            <span ng-show="$ctrl.tabSelected('time_zone')" translate>Close</span>
                         </span>
                     </div>
                 </div>
             </div>
-            <div class="panel-animate" ng-show="vm.tabSelected('time_zone')">
+            <div class="panel-animate" ng-show="$ctrl.tabSelected('time_zone')">
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group">
                                 <label for="timeZone" translate>Time zone</label>
                                 <p class="text-muted" translate>The timezone will be used in setting tasks, appointments, completion dates, etc. Please make sure it matches the one your computer is set to.</p>
-                                <select chosen ng-model="vm.preferences.data.time_zone" class="form-control" id="timeZone">
+                                <select chosen ng-model="$ctrl.personalService.data.time_zone" class="form-control" id="timeZone">
                                     <option value=""></option>
-                                    <option ng-repeat="timezone in vm.timezones">{{timezone}}</option>
+                                    <option ng-repeat="timezone in $ctrl.timezones">{{timezone}}</option>
                                 </select>
                             </div>
-                            <button type="submit" ng-click="vm.save()" ng-disabled="vm.saving" class="btn btn-primary btn-actionable">
+                            <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                                 <span translate>Save</span>&nbsp;
-                                <span class="btn-progress" ng-show="vm.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
                             </button>
                         </div>
                     </div>
@@ -152,37 +152,37 @@
             </div>
         </div>
         <div class="panel panel-default pref-panel">
-            <div class="panel-heading pref-head" ng-click="vm.setTab('locale')">
+            <div class="panel-heading pref-head" ng-click="$ctrl.setTab('locale')">
                 <div class="row">
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('locale') }"></i>
+                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('locale') }"></i>
                         <span translate>Locale</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{vm.locale_string}}
+                        {{$ctrl.locale_string}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
-                            <span ng-hide="vm.tabSelected('locale')" translate>Expand</span>
-                            <span ng-show="vm.tabSelected('locale')" translate>Close</span>
+                            <span ng-hide="$ctrl.tabSelected('locale')" translate>Expand</span>
+                            <span ng-show="$ctrl.tabSelected('locale')" translate>Close</span>
                         </span>
                     </div>
                 </div>
             </div>
-            <div class="panel-animate" ng-show="vm.tabSelected('locale')">
+            <div class="panel-animate" ng-show="$ctrl.tabSelected('locale')">
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group">
                                 <label for="locale" translate>Language</label>
                                 <p class="text-muted" translate>The locale determines your default language for MPDX as well as how numbers, dates and other information shows up in MPDX.</p>
-                                <select class="form-control" ng-model="vm.preferences.data.locale" id="locale" ng-change="vm.setLocale()" chosen>
-                                    <option ng-repeat=" option in vm.locale_select_options">{{option}}</option>
+                                <select class="form-control" ng-model="$ctrl.personalService.data.locale" id="locale" ng-change="$ctrl.setLocale()" chosen>
+                                    <option ng-repeat=" option in $ctrl.locale_select_options">{{option}}</option>
                                 </select>
                             </div>
-                            <button type="submit" ng-click="vm.save()" ng-disabled="vm.saving" class="btn btn-primary btn-actionable">
+                            <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                                 <span translate>Save</span>&nbsp;
-                                <span class="btn-progress" ng-show="vm.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
                             </button>
                         </div>
                     </div>
@@ -190,37 +190,37 @@
             </div>
         </div>
         <div class="panel panel-default pref-panel">
-            <div class="panel-heading pref-head" ng-click="vm.setTab('default_account_list')">
+            <div class="panel-heading pref-head" ng-click="$ctrl.setTab('default_account_list')">
                 <div class="row">
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('default_account_list') }"></i>
+                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('default_account_list') }"></i>
                         <span translate>Default Account</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{vm.default_account_string}}
+                        {{$ctrl.default_account_string}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
-                            <span ng-hide="vm.tabSelected('default_account_list')" translate>Expand</span>
-                            <span ng-show="vm.tabSelected('default_account_list')" translate>Close</span>
+                            <span ng-hide="$ctrl.tabSelected('default_account_list')" translate>Expand</span>
+                            <span ng-show="$ctrl.tabSelected('default_account_list')" translate>Close</span>
                         </span>
                     </div>
                 </div>
             </div>
-            <div class="panel-animate" ng-show="vm.tabSelected('default_account_list')">
+            <div class="panel-animate" ng-show="$ctrl.tabSelected('default_account_list')">
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group">
                                 <label for="defaultAccountList" translate>Default Account List</label>
                                 <p class="text-muted" translate>This sets which account you will land in whenever you login to MPDX.</p>
-                                <select id="defaultAccountList" class="form-control" ng-model="vm.preferences.data.default_account_list" ng-change="vm.setDefaultAccountList()" chosen>
-                                    <option ng-repeat="al in vm.currentUser.account_lists" ng-value="al.id">{{al.name}}</option>
+                                <select id="defaultAccountList" class="form-control" ng-model="$ctrl.personalService.data.default_account_list" ng-change="$ctrl.setDefaultAccountList()" chosen>
+                                    <option ng-repeat="al in $ctrl.currentUser.account_lists" ng-value="al.id">{{al.name}}</option>
                                 </select>
                             </div>
-                            <button type="submit" ng-click="vm.save()" ng-disabled="vm.saving" class="btn btn-primary btn-actionable">
+                            <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                                 <span translate>Save</span>&nbsp;
-                                <span class="btn-progress" ng-show="vm.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
                             </button>
                         </div>
                     </div>
@@ -235,35 +235,35 @@
     </div>
     <div class="panel-group">
         <div class="panel panel-default pref-panel">
-            <div class="panel-heading pref-head" ng-click="vm.setTab('account_list_name')">
+            <div class="panel-heading pref-head" ng-click="$ctrl.setTab('account_list_name')">
                 <div class="row">
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('account_list_name') }"></i>
+                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('account_list_name') }"></i>
                         <span tranlsate>Account Name</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{vm.preferences.data.account_list_name}}
+                        {{$ctrl.personalService.data.account_list_name}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
-                            <span ng-hide="vm.tabSelected('account_list_name')" translate>Expand</span>
-                            <span ng-show="vm.tabSelected('account_list_name')" translate>Close</span>
+                            <span ng-hide="$ctrl.tabSelected('account_list_name')" translate>Expand</span>
+                            <span ng-show="$ctrl.tabSelected('account_list_name')" translate>Close</span>
                         </span>
                     </div>
                 </div>
             </div>
-            <div class="panel-animate" ng-show="vm.tabSelected('account_list_name')">
+            <div class="panel-animate" ng-show="$ctrl.tabSelected('account_list_name')">
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group">
                                 <label for="accountListName" translate>Account Name</label>
                                 <p class="text-muted" translate>You can change the account name in MPDX into something that is more identifiable to you. This will not change the account name with your organization.</p>
-                                <input type="text" id="accountListName" class="form-control" ng-model="vm.preferences.data.account_list_name">
+                                <input type="text" id="accountListName" class="form-control" ng-model="$ctrl.personalService.data.account_list_name">
                             </div>
-                            <button type="submit" ng-click="vm.save()" ng-disabled="vm.saving" class="btn btn-primary btn-actionable">
+                            <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                                 <span translate>Save</span>&nbsp;
-                                <span class="btn-progress" ng-show="vm.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
                             </button>
                         </div>
                     </div>
@@ -271,35 +271,35 @@
             </div>
         </div>
         <div class="panel panel-default pref-panel">
-            <div class="panel-heading pref-head" ng-click="vm.setTab('monthly_goal')">
+            <div class="panel-heading pref-head" ng-click="$ctrl.setTab('monthly_goal')">
                 <div class="row">
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('monthly_goal') }"></i>
+                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('monthly_goal') }"></i>
                         <span translate>Monthly Goal</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{vm.preferences.data.monthly_goal}}
+                        {{$ctrl.personalService.data.monthly_goal}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
-                            <span ng-hide="vm.tabSelected('monthly_goal')" translate>Expand</span>
-                            <span ng-show="vm.tabSelected('monthly_goal')" translate>Close</span>
+                            <span ng-hide="$ctrl.tabSelected('monthly_goal')" translate>Expand</span>
+                            <span ng-show="$ctrl.tabSelected('monthly_goal')" translate>Close</span>
                         </span>
                     </div>
                 </div>
             </div>
-            <div class="panel-animate" ng-show="vm.tabSelected('monthly_goal')">
+            <div class="panel-animate" ng-show="$ctrl.tabSelected('monthly_goal')">
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group">
                                 <label for="monthlyGoal" translate>Monthly goal</label>
                                 <p class="text-muted" translate>This amount should be set to the amount your organization has determined is your target monthly goal. If you do not know, make your best guess for now. You can change it at any time.</p>
-                                <input type="text" id="monthlyGoal" class="form-control" ng-model="vm.preferences.data.monthly_goal">
+                                <input type="text" id="monthlyGoal" class="form-control" ng-model="$ctrl.personalService.data.monthly_goal">
                             </div>
-                            <button type="submit" ng-click="vm.save()" ng-disabled="vm.saving" class="btn btn-primary btn-actionable">
+                            <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                                 <span translate>Save</span>>&nbsp;
-                                <span class="btn-progress" ng-show="vm.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
                             </button>
                         </div>
                     </div>
@@ -307,112 +307,112 @@
             </div>
         </div>
         <div class="panel panel-default pref-panel">
-            <div class="panel-heading pref-head" ng-click="vm.setTab('home_country')">
+            <div class="panel-heading pref-head" ng-click="$ctrl.setTab('home_country')">
                 <div class="row">
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('home_country') }"></i>
+                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('home_country') }"></i>
                         <span translate>Home Country</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{vm.preferences.data.home_country}}
+                        {{$ctrl.personalService.data.home_country}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
-                            <span ng-hide="vm.tabSelected('home_country')" translate>Expand</span>
-                            <span ng-show="vm.tabSelected('home_country')" translate>Close</span>
+                            <span ng-hide="$ctrl.tabSelected('home_country')" translate>Expand</span>
+                            <span ng-show="$ctrl.tabSelected('home_country')" translate>Close</span>
                         </span>
                     </div>
                 </div>
             </div>
-            <div class="panel-animate" ng-show="vm.tabSelected('home_country')">
+            <div class="panel-animate" ng-show="$ctrl.tabSelected('home_country')">
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group">
                                 <label for="homeCountry" translate>Home Country</label>
                                 <p class="text-muted" translate>This should be the place you are living and sending out physical communications from. This will be used in exports for mailing address information.</p>
-                                <select id="homeCountry" class="country_select form-control" ng-model="vm.preferences.data.home_country" chosen>
-                                    <option ng-repeat="country in vm.countries">{{ country }}</option>
+                                <select id="homeCountry" class="country_select form-control" ng-model="$ctrl.personalService.data.home_country" chosen>
+                                    <option ng-repeat="country in $ctrl.countries">{{ country }}</option>
                                 </select>
                             </div>
-                            <button type="submit" ng-click="vm.save()" ng-disabled="vm.saving" class="btn btn-primary btn-actionable">
+                            <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                                 <span translate>Save</span>&nbsp;
-                                <span class="btn-progress" ng-show="vm.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="panel panel-default pref-panel" ng-if="vm.$rollout.active(currencies, current_account_list)">
-            <div class="panel-heading pref-head" ng-click="vm.setTab('currency')">
+        <div class="panel panel-default pref-panel" ng-if="$ctrl.$rollout.active(currencies, current_account_list)">
+            <div class="panel-heading pref-head" ng-click="$ctrl.setTab('currency')">
                 <div class="row">
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('currency') }"></i>
+                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('currency') }"></i>
                         <span translate>Default Currency</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{vm.preferences.data.currency}}
+                        {{$ctrl.personalService.data.currency}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
-                            <span ng-hide="vm.tabSelected('currency')" translate>Expand</span>
-                            <span ng-show="vm.tabSelected('currency')" translate>Close</span>
+                            <span ng-hide="$ctrl.tabSelected('currency')" translate>Expand</span>
+                            <span ng-show="$ctrl.tabSelected('currency')" translate>Close</span>
                         </span>
                     </div>
                 </div>
             </div>
-            <div class="panel-animate" ng-show="vm.tabSelected('currency')">
+            <div class="panel-animate" ng-show="$ctrl.tabSelected('currency')">
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group">
                                 <label for="currency" translate>Default Currency</label>
-                                <select id="currency" class="form-control" ng-model="vm.preferences.data.currency" chosen>
-                                    <option ng-repeat="currency in  vm.currencies">{{currency}}</option>
+                                <select id="currency" class="form-control" ng-model="$ctrl.personalService.data.currency" chosen>
+                                    <option ng-repeat="currency in  $ctrl.currencies">{{currency}}</option>
                                 </select>
                             </div>
-                            <button type="submit" ng-click="vm.save()" ng-disabled="vm.saving" class="btn btn-primary btn-actionable">
+                            <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                                 <span translate>Save</span>&nbsp;
-                                <span class="btn-progress" ng-show="vm.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="panel panel-default pref-panel" ng-if="vm.$rollout.active(multi_currency_balance, current_account_list) && vm.currentAccountList.designation_organizations.count > 1">
-            <div class="panel-heading pref-head" ng-click="vm.setTab('salary_organization_id')">
+        <div class="panel panel-default pref-panel" ng-if="$ctrl.$rollout.active(multi_currency_balance, current_account_list) && $ctrl.currentAccountList.designation_organizations.count > 1">
+            <div class="panel-heading pref-head" ng-click="$ctrl.setTab('salary_organization_id')">
                 <div class="row">
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('salary_organization_id') }"></i>
+                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('salary_organization_id') }"></i>
                         <span translate>Primary Organization</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{vm.salary_organization_string}}
+                        {{$ctrl.salary_organization_string}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
-                            <span ng-hide="vm.tabSelected('salary_organization_id')" translate>Expand</span>
-                            <span ng-show="vm.tabSelected('salary_organization_id')" translate>Close</span>
+                            <span ng-hide="$ctrl.tabSelected('salary_organization_id')" translate>Expand</span>
+                            <span ng-show="$ctrl.tabSelected('salary_organization_id')" translate>Close</span>
                         </span>
                     </div>
                 </div>
             </div>
-            <div class="panel-animate" ng-show="vm.tabSelected('salary_organization_id')">
+            <div class="panel-animate" ng-show="$ctrl.tabSelected('salary_organization_id')">
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group">
                                 <label for="salaryOrganizationId" translate>Primary Organization</label>
                                 <p class="text-muted" translate>This should be the organization you get paid from and most likely correspond to the country you are living and serving in. This will set your currency conversions for multi-currency accounts to the currency of this organization both on the dashboard and the corresponding contribution reports.</p>
-                                <select id="salaryOrganizationId" class="form-control" ng-model="vm.preferences.data.salary_organization_id" ng-change="vm.setSalaryOrg()" chosen>
-                                    <option ng-repeat="org in vm.salary_organization_select(current_account_list)">{{org}}</option>
+                                <select id="salaryOrganizationId" class="form-control" ng-model="$ctrl.personalService.data.salary_organization_id" ng-change="$ctrl.setSalaryOrg()" chosen>
+                                    <option ng-repeat="org in $ctrl.salary_organization_select(current_account_list)">{{org}}</option>
                                 </select>
                             </div>
-                            <button type="submit" ng-click="vm.save()" ng-disabled="vm.saving" class="btn btn-primary btn-actionable">
+                            <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                                 <span translate>Save</span>&nbsp;
-                                <span class="btn-progress" ng-show="vm.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
                             </button>
                         </div>
                     </div>
@@ -420,37 +420,37 @@
             </div>
         </div>
         <div class="panel panel-default pref-panel">
-            <div class="panel-heading pref-head" ng-click="vm.setTab('tester')">
+            <div class="panel-heading pref-head" ng-click="$ctrl.setTab('tester')">
                 <div class="row">
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('tester') }"></i>
+                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('tester') }"></i>
                         <span translate>Early Adopter</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{vm.preferences.data.tester ? vm.gettextCatalog.getString('Yes') : vm.gettextCatalog.getString('No')}}
+                        {{$ctrl.personalService.data.tester ? $ctrl.gettextCatalog.getString('Yes') : $ctrl.gettextCatalog.getString('No')}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
-                            <span ng-hide="vm.tabSelected('tester')" translate>Expand</span>
-                            <span ng-show="vm.tabSelected('tester')" translate>Close</span>
+                            <span ng-hide="$ctrl.tabSelected('tester')" translate>Expand</span>
+                            <span ng-show="$ctrl.tabSelected('tester')" translate>Close</span>
                         </span>
                     </div>
                 </div>
             </div>
-            <div class="panel-animate" ng-show="vm.tabSelected('tester')">
+            <div class="panel-animate" ng-show="$ctrl.tabSelected('tester')">
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-8 col-md-offset-4">
-                            <label><input type="checkbox" ng-model="vm.preferences.data.tester"><span translate>Early adopter</span></label>
+                            <label><input type="checkbox" ng-model="$ctrl.personalService.data.tester"><span translate>Early adopter</span></label>
                             <p translate>
                                 By checking this box, you are telling us that you'd like to test new features for bugs before they are
                                 rolled out to the full MPDx user base. We'll send you an email when new features are available on your
                                 account to test, and then ask for you to give us feedback - both if you experience bugs and also about
                                 your thoughts about the feature(s) you are testing.
                             </p>
-                            <button type="submit" ng-click="vm.save()" ng-disabled="vm.saving" class="btn btn-primary btn-actionable">
+                            <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                                 <span translate>Save</span>&nbsp;
-                                <span class="btn-progress" ng-show="vm.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
                             </button>
                         </div>
                     </div>
