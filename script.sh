@@ -7,9 +7,10 @@ eslint ./
 if [ "$TRAVIS_BRANCH" = "master" ]
 then
     echo '-- build production --'
-    set NODE_ENV=production
+    export NODE_ENV=production
 else
     echo '-- build staging --'
-    set NODE_ENV=staging
+    export NODE_ENV=staging
 fi
 npm run build
+echo '<!-- COMMIT:' $TRAVIS_COMMIT '-->' >> public/index.html
