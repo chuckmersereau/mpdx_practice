@@ -3,11 +3,10 @@ class FilterController {
     filterService;
     tagsService;
 
-    constructor(filterService, tagsService, contactsService, modal, gettextCatalog) {
+    constructor(filterService, tagsService, contactsService, modal) {
         this.modal = modal;
         this.contactsService = contactsService;
         this.filterService = filterService;
-        this.gettextCatalog = gettextCatalog;
         this.tagsService = tagsService;
     }
     resetFiltersAndTags() {

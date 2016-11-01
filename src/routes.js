@@ -49,7 +49,7 @@ export default class Routes {
         }).state({
             name: 'reports.monthly',
             url: '/monthly',
-            component: 'monthlyReport'
+            component: 'expectedMonthlyTotalsReport'
         }).state({
             name: 'reports.salary',
             url: '/salary',

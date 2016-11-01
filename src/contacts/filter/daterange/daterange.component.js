@@ -1,7 +1,5 @@
 class FilterDaterangeController {
-    constructor(gettextCatalog, $element) {
-        this.gettextCatalog = gettextCatalog;
-
+    constructor($element) {
         this.input = $element.find('input');
 
         this.parseCustomOptions();

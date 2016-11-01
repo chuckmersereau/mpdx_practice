@@ -1,7 +1,6 @@
 class CurrencyDonationsReportController {
-    constructor(api, state, monthRange, layoutSettings, gettextCatalog) {
+    constructor(api, state, monthRange, layoutSettings) {
         this.api = api;
-        this.gettextCatalog = gettextCatalog;
         this.layoutSettings = layoutSettings;
         this.monthRange = monthRange;
         this.state = state;

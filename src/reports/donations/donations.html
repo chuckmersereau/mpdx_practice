@@ -81,7 +81,7 @@
                 <th ng-if="$ctrl.expanded" translate>Min</th>
                 <th class="text-right" ng-repeat="date in $ctrl.allMonths track by $index">
                     <div
-                        uib-tooltip="{{$ctrl.gettextCatalog.getString('This last month is excluded from totals and averages') }}"
+                        uib-tooltip="{{ 'This last month is excluded from totals and averages' | translate }}"
                         tooltip-enable="$last" ng-class="{'excluded': $last}">
                         {{$ctrl.moment(date).format('MMM')}}
                     </div>
@@ -111,9 +111,9 @@
                     <span
                         ng-switch="late = donor.donorInfo.late_by_60_days ? 60 : (donor.donorInfo.late_by_30_days ? 30 : false)">
             <i class="fa fa-circle circle-late" ng-switch-when="30"
-               uib-tooltip="{{$ctrl.gettextCatalog.getString('30 days late') }}" aria-hidden="true"></i>
+               uib-tooltip="{{ '30 days late' | translate }}" aria-hidden="true"></i>
             <i class="fa fa-circle circle-very-late" ng-switch-when="60"
-               uib-tooltip="{{$ctrl.gettextCatalog.getString('60 days late')}}" aria-hidden="true"></i>
+               uib-tooltip="{{ '60 days late' | translate}}" aria-hidden="true"></i>
           </span>
                 </td>
 

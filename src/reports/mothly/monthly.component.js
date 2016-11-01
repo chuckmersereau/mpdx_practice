@@ -1,14 +1,11 @@
 class ExpectedMonthlyTotalsReportController {
-    constructor(api, gettextCatalog, state) {
+    constructor(api, state) {
         this.api = api;
-        this.gettextCatalog = gettextCatalog;
         this.state = state;
 
         this.sumOfAllCategories = 0;
 
         this.errorOccurred = false;
-        this.percentage = percentage;
-
     }
     $onInit() {
         this.loadExpectedMonthlyTotals();
@@ -50,7 +47,7 @@ class ExpectedMonthlyTotalsReportController {
 const Monthly = {
     controller: ExpectedMonthlyTotalsReportController,
     template: require('./monthly.html')
-}
+};
 
-export default angular.module('mpdx.reports.monthly.component',[])
+export default angular.module('mpdx.reports.monthly.component', [])
         .component('expectedMonthlyTotalsReport', Monthly).name;

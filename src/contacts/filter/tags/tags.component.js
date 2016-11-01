@@ -1,8 +1,7 @@
 class TagsController {
     tagsService;
 
-    constructor(tagsService, gettextCatalog) {
-        this.gettextCatalog = gettextCatalog;
+    constructor(tagsService) {
         this.tagsService = tagsService;
     }
     stopPropagation(e) {
