@@ -43,9 +43,12 @@ export default class Routes {
             url: '/balances',
             component: 'balancesReport'
         }).state({
-            name: 'reports.donations',
-            url: '/donations',
-            component: 'currencyDonationsReport'
+            name: 'reports.partner',
+            url: '/partner',
+            component: 'currencyDonationsReport',
+            resolve: {
+                type: () => 'donor'
+            }
         }).state({
             name: 'reports.monthly',
             url: '/monthly',
@@ -53,7 +56,10 @@ export default class Routes {
         }).state({
             name: 'reports.salary',
             url: '/salary',
-            component: 'salaryReport'
+            component: 'currencyDonationsReport',
+            resolve: {
+                type: () => 'salary'
+            }
         }).state({
             name: 'preferences',
             title: 'Preferences',

@@ -81,11 +81,14 @@
                     <div class="section" ng-class="{active: $ctrl.isInState('reports.monthly')}">
                         <a ui-sref="reports.monthly" translate>Expected Monthly Total</a>
                     </div>
+                    <div class="section" ng-class="{active: $ctrl.isInState('reports.balances')}">
+                        <a ui-sref="reports.balances" translate>Balances</a>
+                    </div>
                     <div class="section" ng-class="{active: $ctrl.isInState('reports.salary')}">
                         <a ui-sref="reports.salary" translate>Contributions by Salary Currency</a>
                     </div>
-                    <div class="section" ng-class="{active: $ctrl.isInState('reports.donor')}">
-                        <a ui-sref="reports.donor" translate>Contributions by Partner Currency</a>
+                    <div class="section" ng-class="{active: $ctrl.isInState('reports.partner')}">
+                        <a ui-sref="reports.partner" translate>Contributions by Partner Currency</a>
                     </div>
                 </div>
                 <menu-balances></menu-balances>
