@@ -1,9 +1,9 @@
 <p>&nbsp;</p>
-<div ng-show="vm.preferences.loading" class="loading-spinner">
+<div ng-show="$ctrl.preferences.loading" class="loading-spinner">
     <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
     <span class="sr-only" translate>Loading</span>
 </div>
-<div ng-hide="vm.preferences.loading">
+<div ng-hide="$ctrl.preferences.loading">
     <div class="row">
         <div class="col-md-12">
             <h3 translate>Internal Services</h3>
@@ -11,28 +11,28 @@
     </div>
     <div class="panel-group">
         <div class="panel panel-default pref-panel">
-            <div class="panel-heading pref-head" ng-click="vm.setTab('key')">
-                <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('key') }"></i>
+            <div class="panel-heading pref-head" ng-click="$ctrl.setTab('key')">
+                <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('key') }"></i>
                 <span translate>Key / Relay</span>
                 <div class="pull-right">
-                    <div class="accstatus accstatus-enabled" ng-show="vm.preferences.data.valid_key_account"><i class="fa fa-circle"></i></div>
-                    <div class="accstatus accstatus-disabled" ng-hide="vm.preferences.data.valid_key_account"><i class="fa fa-circle-o"></i></div>
+                    <div class="accstatus accstatus-enabled" ng-show="$ctrl.integrationsService.data.valid_key_account"><i class="fa fa-circle"></i></div>
+                    <div class="accstatus accstatus-disabled" ng-hide="$ctrl.integrationsService.data.valid_key_account"><i class="fa fa-circle-o"></i></div>
                 </div>
             </div>
-            <div class="panel-animate" ng-show="vm.tabSelected('key')">
+            <div class="panel-animate" ng-show="$ctrl.tabSelected('key')">
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-4 pref-lead">
                             <div class="import_logo">
-                                <img src="/images/logos/key_logo.png" alt="organization">
+                                <img src="../../images/logos/key_logo.png" alt="organization">
                             </div>
                         </div>
                         <div class="col-md-8">
                             <div class="network_button network_connect">
-                                <div ng-repeat="account in vm.preferences.data.key_accounts" class="network_connections">
+                                <div ng-repeat="account in $ctrl.integrationsService.data.key_accounts" class="network_connections">
                                     <div class="account_single">
                                         <div class="actions">
-                                            <a class="inlineaction delete" ng-click="vm.disconnect('Key', account.id)" translate>Delete</a>
+                                            <a class="inlineaction delete" ng-click="$ctrl.disconnect('Key', account.id)" translate>Delete</a>
                                         </div>
                                         <span class="account_name">{{account.email}}</span>
                                     </div>
@@ -44,19 +44,19 @@
             </div>
         </div>
         <div class="panel panel-default pref-panel">
-            <div class="panel-heading pref-head" ng-click="vm.setTab('organization')">
-                <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('organization') }"></i>
+            <div class="panel-heading pref-head" ng-click="$ctrl.setTab('organization')">
+                <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('organization') }"></i>
                 <span translate>Organization</span>
                 <div class="pull-right">
                     <!-- Title Meta / Indicator -->
                 </div>
             </div>
-            <div class="panel-animate" ng-show="vm.tabSelected('organization')">
+            <div class="panel-animate" ng-show="$ctrl.tabSelected('organization')">
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-4 pref-lead">
                             <div class="import_logo">
-                                <img src="/images/logos/organization_logo.png" alt="organization">
+                                <img src="../../images/logos/organization_logo.png" alt="organization">
                             </div>
                         </div>
                         <div class="col-md-8 connections">
@@ -74,28 +74,28 @@
     </div>
     <div class="panel-group">
         <div class="panel panel-default pref-panel">
-            <div class="panel-heading pref-head" ng-click="vm.setTab('google')">
-                <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('google') }"></i>
+            <div class="panel-heading pref-head" ng-click="$ctrl.setTab('google')">
+                <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('google') }"></i>
                 <span translate>Google Contacts, Calendar and Mail</span>
                 <div class="pull-right">
-                    <div class="accstatus accstatus-enabled" ng-show="vm.preferences.data.valid_google_account"><i class="fa fa-circle"></i></div>
-                    <div class="accstatus accstatus-disabled" ng-hide="vm.preferences.data.valid_google_account"><i class="fa fa-circle-o"></i></div>
+                    <div class="accstatus accstatus-enabled" ng-show="$ctrl.integrationsService.data.valid_google_account"><i class="fa fa-circle"></i></div>
+                    <div class="accstatus accstatus-disabled" ng-hide="$ctrl.integrationsService.data.valid_google_account"><i class="fa fa-circle-o"></i></div>
                 </div>
             </div>
-            <div class="panel-animate" ng-show="vm.tabSelected('google')">
+            <div class="panel-animate" ng-show="$ctrl.tabSelected('google')">
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-4 pref-lead">
                             <div class="network_logo">
-                                <img src="/images/logos/google_logo.png" alt="Google">
+                                <img src="../../images/logos/google_logo.png" alt="Google">
                             </div>
                         </div>
                         <div class="col-md-8">
                             <div class="network_button network_connect">
-                                <div ng-repeat="account in vm.preferences.data.google_accounts" class="network_connections">
+                                <div ng-repeat="account in $ctrl.integrationsService.data.google_accounts" class="network_connections">
                                     <div class="account_single">
                                         <div class="actions">
-                                            <a class="inlineaction delete" ng-click="vm.disconnect('Google', account.id)" translate>Delete</a>
+                                            <a class="inlineaction delete" ng-click="$ctrl.disconnect('Google', account.id)" translate>Delete</a>
                                         </div>
                                         <span class="account_name">{{account.email}}</span>
 
@@ -125,12 +125,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div ng-hide="vm.preferences.data.valid_google_account" translate>
+                                <div ng-hide="$ctrl.integrationsService.data.valid_google_account" translate>
                                     You can keep Google in sync with your contacts, calendars, tasks and more. Click Add Account to begin.
                                 </div>
                                 <br />
                                 <a href="/auth/goggle" class="btn btn-primary" target="_blank" translate>Add Account</a>
-                                <a ng-show="vm.preferences.data.valid_google_account" ui-sref="preferences.imports.tab({id: 'google'})" class="btn btn-secondary" translate>Import Google Contacts</a>
+                                <a ng-show="$ctrl.integrationsService.data.valid_google_account" ui-sref="preferences.imports.tab({id: 'google'})" class="btn btn-secondary" translate>Import Google Contacts</a>
                             </div>
                         </div>
                     </div>
@@ -138,26 +138,26 @@
             </div>
         </div>
         <div class="panel panel-default pref-panel">
-            <div class="panel-heading pref-head" ng-click="vm.setTab('mailchimp')">
-                <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('mailchimp') }"></i>
+            <div class="panel-heading pref-head" ng-click="$ctrl.setTab('mailchimp')">
+                <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('mailchimp') }"></i>
                 <span translate>Mailchimp</span>
                 <div class="pull-right">
-                    <div class="accstatus accstatus-enabled" ng-show="vm.mailchimpAccStatus == 'enabled'"><i class="fa fa-circle"></i></div>
-                    <div class="accstatus accstatus-error" ng-show="vm.mailchimpAccStatus == 'error'"><i class="fa fa-circle-o"></i></div>
-                    <div class="accstatus accstatus-disabled" ng-show="vm.mailchimpAccStatus == 'disabled'"><i class="fa fa-circle-o"></i></div>
+                    <div class="accstatus accstatus-enabled" ng-show="$ctrl.mailchimpAccStatus == 'enabled'"><i class="fa fa-circle"></i></div>
+                    <div class="accstatus accstatus-error" ng-show="$ctrl.mailchimpAccStatus == 'error'"><i class="fa fa-circle-o"></i></div>
+                    <div class="accstatus accstatus-disabled" ng-show="$ctrl.mailchimpAccStatus == 'disabled'"><i class="fa fa-circle-o"></i></div>
                 </div>
             </div>
-            <div class="panel-animate" ng-show="vm.tabSelected('mailchimp')">
+            <div class="panel-animate" ng-show="$ctrl.tabSelected('mailchimp')">
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-4 pref-lead">
                             <div class="network_logo">
-                                <img src="/images/logos/mailchimp_logo.png" alt="MailChimp">
+                                <img src="../../images/logos/mailchimp_logo.png" alt="MailChimp">
                             </div>
                         </div>
                         <div class="col-md-8">
                             <div class="network_button">
-                                <mailchimp-integration-preferences state="vm.mailchimpAccStatus"></mailchimp-integration-preferences>
+                                <mailchimp-integration-preferences state="$ctrl.mailchimpAccStatus"></mailchimp-integration-preferences>
                             </div>
                         </div>
                     </div>
@@ -165,42 +165,42 @@
             </div>
         </div>
         <div class="panel panel-default pref-panel">
-            <div class="panel-heading pref-head" ng-click="vm.setTab('prayerletters')">
-                <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('prayerletters') }"></i>
+            <div class="panel-heading pref-head" ng-click="$ctrl.setTab('prayerletters')">
+                <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('prayerletters') }"></i>
                 <span translate>PrayerLetters.com</span>
                 <div class="pull-right">
-                    <div ng-show="vm.preferences.data.prayer_letters_account">
-                        <div class="accstatus accstatus-enabled" ng-show="vm.preferences.data.valid_prayer_letters_account"><i class="fa fa-circle"></i></div>
-                        <div class="accstatus accstatus-error" ng-hide="vm.preferences.data.valid_prayer_letters_account"><i class="fa fa-circle-o"></i></div>
+                    <div ng-show="$ctrl.integrationsService.data.prayer_letters_account">
+                        <div class="accstatus accstatus-enabled" ng-show="$ctrl.integrationsService.data.valid_prayer_letters_account"><i class="fa fa-circle"></i></div>
+                        <div class="accstatus accstatus-error" ng-hide="$ctrl.integrationsService.data.valid_prayer_letters_account"><i class="fa fa-circle-o"></i></div>
                     </div>
-                    <div ng-hide="vm.preferences.data.prayer_letters_account">
+                    <div ng-hide="$ctrl.integrationsService.data.prayer_letters_account">
                         <div class="accstatus accstatus-disabled"><i class="fa fa-circle-o"></i></div>
                     </div>
                 </div>
             </div>
-            <div class="panel-animate" ng-show="vm.tabSelected('prayerletters')">
+            <div class="panel-animate" ng-show="$ctrl.tabSelected('prayerletters')">
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-4 pref-lead">
                             <div class="network_logo">
-                                <img src="/images/logos/prayer_letters_logo.png" alt="Prayer Letters">
+                                <img src="../../images/logos/prayer_letters_logo.png" alt="Prayer Letters">
                             </div>
                         </div>
                         <div class="col-md-8">
                             <div class="network_button">
-                                <div ng-show="vm.preferences.data.valid_prayer_letters_account">
+                                <div ng-show="$ctrl.integrationsService.data.valid_prayer_letters_account">
                                     <div class="alert alert-warning" translate>
                                         Enabling or Syncing will replace your prayerletters.com lists
                                     </div>
-                                    <button type="submit" ng-click="vm.sync('Prayer Letters')" ng-disabled="vm.saving" class="btn btn-primary btn-actionable">
+                                    <button type="submit" ng-click="$ctrl.sync('Prayer Letters')" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                                         <span translate>Sync Now</span>&nbsp;
-                                        <div class="btn-progress" ng-show="vm.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></div>
+                                        <div class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></div>
                                     </button>
-                                    <a class="btn btn-link" ng-click="vm.disconnect('Prayer Letters')">
+                                    <a class="btn btn-link" ng-click="$ctrl.disconnect('Prayer Letters')">
                                         <span translate>Disconnect</span>&nbsp;<i class="hidden fa fa-circle-o-notch fa-spin fa-fw"></i>
                                     </a>
                                 </div>
-                                <div ng-hide="vm.preferences.data.valid_prayer_letters_account">
+                                <div ng-hide="$ctrl.integrationsService.data.valid_prayer_letters_account">
                                     <p>
                                         <strong translate>Send Prayer Letters Quickly and Easily</strong>
                                         <br />
@@ -217,21 +217,21 @@
                 </div>
             </div>
         </div>
-        <div class="panel panel-default pref-panel" ng-if="vm.$rollout.active(pls_integration, current_account_list)">
-            <div class="panel-heading pref-head" ng-click="vm.setTab('myletterservice')">
-                <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('myletterservice') }"></i>
+        <div class="panel panel-default pref-panel" ng-if="$ctrl.$rollout.active(pls_integration, current_account_list)">
+            <div class="panel-heading pref-head" ng-click="$ctrl.setTab('myletterservice')">
+                <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('myletterservice') }"></i>
                 <span translate>MyLetterService.org</span>
                 <div class="pull-right">
-                    <div ng-show="vm.preferences.data.pls_account">
-                        <div class="accstatus accstatus-enabled" ng-show="vm.preferences.data.valid_pls_account"><i class="fa fa-circle"></i></div>
-                        <div class="accstatus accstatus-error" ng-hide="vm.preferences.data.valid_pls_account"><i class="fa fa-circle-o"></i></div>
+                    <div ng-show="$ctrl.integrationsService.data.pls_account">
+                        <div class="accstatus accstatus-enabled" ng-show="$ctrl.integrationsService.data.valid_pls_account"><i class="fa fa-circle"></i></div>
+                        <div class="accstatus accstatus-error" ng-hide="$ctrl.integrationsService.data.valid_pls_account"><i class="fa fa-circle-o"></i></div>
                     </div>
-                    <div ng-hide="vm.preferences.data.pls_account">
+                    <div ng-hide="$ctrl.integrationsService.data.pls_account">
                         <div class="accstatus accstatus-disabled"><i class="fa fa-circle-o"></i></div>
                     </div>
                 </div>
             </div>
-            <div class="panel-animate" ng-show="vm.tabSelected('myletterservice')">
+            <div class="panel-animate" ng-show="$ctrl.tabSelected('myletterservice')">
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-4 pref-lead">
@@ -244,11 +244,11 @@
                                 <div class="alert alert-warning" translate>
                                     Enabling or Syncing will replace your myletterservice.org lists
                                 </div>
-                                <div ng-show="vm.preferences.data.valid_pls_account">
-                                    <button type="submit" ng-click="vm.sync('PLS')" ng-disabled="vm.saving" class="btn btn-primary btn-actionable"><%= _('Sync Now') %>&nbsp;<div class="btn-progress" ng-show="vm.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></div></button>
-                                    <a class="btn btn-link" ng-click="vm.disconnect('PLS')"><span translate>Disconnect</span>&nbsp;<i class="hidden fa fa-circle-o-notch fa-spin fa-fw"></i></a>
+                                <div ng-show="$ctrl.integrationsService.data.valid_pls_account">
+                                    <button type="submit" ng-click="$ctrl.sync('PLS')" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable"><%= _('Sync Now') %>&nbsp;<div class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></div></button>
+                                    <a class="btn btn-link" ng-click="$ctrl.disconnect('PLS')"><span translate>Disconnect</span>&nbsp;<i class="hidden fa fa-circle-o-notch fa-spin fa-fw"></i></a>
                                 </div>
-                                <div ng-hide="vm.preferences.data.valid_pls_account">
+                                <div ng-hide="$ctrl.integrationsService.data.valid_pls_account">
                                     <p translate>You can keep myletterservice.org updated with all your MPDX contacts. Click Enable to begin.</p>
                                     <a href="/auth/pls" class="btn btn-primary" target="_blank" translate>Enable</a>
                                 </div>
@@ -259,19 +259,19 @@
             </div>
         </div>
         <div class="panel panel-default pref-panel">
-            <div class="panel-heading pref-head" ng-click="vm.setTab('chalkline')">
-                <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('chalkline') }"></i>
+            <div class="panel-heading pref-head" ng-click="$ctrl.setTab('chalkline')">
+                <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('chalkline') }"></i>
                 <span translate>Chalkline</span>
                 <div class="pull-right">
                     <div class="accstatus accstatus-disabled"><i class="fa fa-circle-o"></i></div>
                 </div>
             </div>
-            <div class="panel-animate" ng-show="vm.tabSelected('chalkline')">
+            <div class="panel-animate" ng-show="$ctrl.tabSelected('chalkline')">
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-4 pref-lead">
                             <div class="network_logo">
-                                <img src="/images/logos/chalkline_logo.png" alt="Chalk Line">
+                                <img src="../../images/logos/chalkline_logo.png" alt="Chalk Line">
                             </div>
                         </div>
                         <div class="col-md-8">
