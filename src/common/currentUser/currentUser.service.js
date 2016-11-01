@@ -17,7 +17,7 @@ class CurrentUser {
         });
     }
     getHasAnyUsAccounts() {
-        this.api.get('current_user/has_any_us_accounts').then((response) => {
+        this.api.get('current_user/us_accounts').then((response) => {
             this.hasAnyUsAccounts = response;
         }).catch((err) => {
             this.$log.debug(err);

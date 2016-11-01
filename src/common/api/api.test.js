@@ -9,14 +9,14 @@ describe('common.api.service', () => {
             $httpBackend = _$httpBackend_;
         });
     });
-    afterEach(() =>  {
+    afterEach(() => {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
     });
 
     describe('call', () => {
         describe('promise', () => {
-            it('should send a simple get request', () =>{
+            it('should send a simple get request', () => {
                 $httpBackend.expectGET('/api/v1/contacts').respond(200, 'Success');
 
                 service.call('get', 'contacts', {}, null, null, false).then((data) => {
@@ -52,7 +52,7 @@ describe('common.api.service', () => {
                 it('should make not make an XHR request the second time', () => {
                     $httpBackend.expectGET('/api/v1/contacts').respond(200, 'Success');
 
-                    function runApiCall(){
+                    function runApiCall() {
                         service.call('get', 'contacts', {}, null, null, true).then((data) => {
                             expect(data).toEqual('Success');
                         }).catch(() => {
@@ -105,7 +105,7 @@ describe('common.api.service', () => {
                 it('should make not make an XHR request the second time', () => {
                     $httpBackend.expectGET('/api/v1/contacts').respond(200, 'Success');
 
-                    function runApiCall(){
+                    function runApiCall() {
                         service.call('get', 'contacts', {}, (data) => {
                             expect(data).toEqual('Success');
                         }, () => {
@@ -126,10 +126,10 @@ describe('common.api.service', () => {
             $httpBackend.expectGET('/api/v1/contacts').respond(200, 'Success');
 
             service.get('contacts', {}, null, null, false).then((data) => {
-                    expect(data).toEqual('Success');
-                }).catch(() => {
-                    fail('should have returned Success');
-                });
+                expect(data).toEqual('Success');
+            }).catch(() => {
+                fail('should have returned Success');
+            });
             $httpBackend.flush();
         });
     });
