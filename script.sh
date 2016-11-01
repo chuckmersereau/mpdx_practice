@@ -1,9 +1,16 @@
 #!/bin/bash
+echo '-- run tests --'
 npm test
+echo '-- run eslint --'
 eslint ./
+
 if [ "$TRAVIS_BRANCH" = "master" ]
 then
-  NODE_ENV=production npm run build
+    echo '-- build production --'
+    export NODE_ENV=production
 else
-  NODE_ENV=staging npm run build
+    echo '-- build staging --'
+    export NODE_ENV=staging
 fi
+npm run build
+echo '<!-- COMMIT:' $TRAVIS_COMMIT '-->' >> public/index.html

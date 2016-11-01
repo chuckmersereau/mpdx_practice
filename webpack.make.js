@@ -17,7 +17,7 @@ module.exports = function makeWebpackConfig(options) {
     var BUILD = !!options.BUILD;
     var TEST = !!options.TEST;
 
-    var configEnv = options.CONFIG || process.env.ENV_VARIABLE || 'development';
+    var configEnv = options.CONFIG || process.env.NODE_ENV || 'development';
 
     /**
      * Config
