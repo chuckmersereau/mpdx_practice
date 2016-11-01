@@ -22,6 +22,7 @@ import 'ng-tags-input';
 import 'lodash';
 import jQuery from '!expose?jQuery!jquery';
 window.$ = jQuery;
+import 'chosen-js';
 // style deps
 //require('bootstrap/dist/css/bootstrap-theme.css');
 require('bootstrap-additions/dist/bootstrap-additions.css');

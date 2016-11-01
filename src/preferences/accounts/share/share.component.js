@@ -37,7 +37,6 @@ class SharePreferencesController {
 
 const Share = {
     controller: SharePreferencesController,
-    controllerAs: 'vm',
     template: require('./share.html')
 };
 
