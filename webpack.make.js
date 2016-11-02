@@ -119,6 +119,12 @@ module.exports = function makeWebpackConfig(options) {
             loaders: ['babel'],
             exclude: /node_modules|bower_components|vendor\//
         }, {
+            // HTML Modal Template LOADER
+            // Reference: https://github.com/WearyMonkey/ngtemplate-loader
+            // Allow loading html through js
+            test: /\.modal.html$/,
+            loaders: ["ngtemplate", "html"]
+        }, {
             // HTML LOADER
             // Reference: https://github.com/WearyMonkey/ngtemplate-loader
             // Allow loading html through js
