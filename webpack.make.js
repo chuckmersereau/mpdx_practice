@@ -143,7 +143,8 @@ module.exports = function makeWebpackConfig(options) {
     // Instrument JS files with Isparta for subsequent code coverage reporting
     // Skips node_modules and files that end with .test.js
     if (TEST) {
-        config.module.preLoaders.push({
+        config.module.loaders.push({
+            enforce: 'pre',
             test: /\.js$/,
             exclude: [
                 /node_modules/,
