@@ -3,12 +3,11 @@ class progressController {
     currentUser;
     state;
 
-    constructor(api, $filter, state, currentUser, gettextCatalog) {
+    constructor(api, $filter, state, currentUser) {
         this.$filter = $filter;
         this.state = state;
         this.api = api;
         this.currentUser = currentUser;
-        this.gettextCatalog = gettextCatalog;
 
         this.startDate = new Date();
         this.startDate.setHours(0, 0, 0, 0);
