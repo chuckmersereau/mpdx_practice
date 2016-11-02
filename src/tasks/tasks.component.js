@@ -1,9 +1,11 @@
 class TasksController {
+    constructor(tasksService) {
+        this.tasksService = tasksService;
+    }
 }
 
 const Tasks = {
     controller: TasksController,
-    controllerAs: 'vm',
     template: require('./tasks.html'),
     bindings: {}
 };

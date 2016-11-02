@@ -1,4 +1,7 @@
 class SortController {
+    constructor(tasksService) {
+        this.tasksService = tasksService;
+    }
 }
 
 const Sort = {

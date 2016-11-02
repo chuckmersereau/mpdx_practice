@@ -24,6 +24,7 @@ import session from './session/session.service';
 import tags from './tags/tags.service';
 import tasksTagsService from './tags/tasks.service';
 import tagsDecorator from './tags/tags.decorator';
+import pagination from './pagination/pagination.component';
 
 export default angular.module('mpdx.common', [
     accounts,
@@ -51,5 +52,6 @@ export default angular.module('mpdx.common', [
     session,
     tags,
     tasksTagsService,
-    tagsDecorator
+    tagsDecorator,
+    pagination
 ]).name;

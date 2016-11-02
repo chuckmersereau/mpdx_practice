@@ -1,0 +1,25 @@
+<div class="clearfix">
+  <strong translate>Showing</strong>
+  <strong>{{$ctrl.from}}</strong>
+  <strong translate>to</strong>
+  <strong>{{$ctrl.to}}</strong>
+  <strong translate>of</strong>
+  <strong>{{$ctrl.total}}</strong>
+  <nav aria-label="Page navigation" ng-show="$ctrl.totalPages > 1">
+    <ul class="pagination">
+      <li ng-class="{'disabled': $ctrl.page == 1}">
+        <a ng-click="$ctrl.previous()" aria-label="Previous">
+          <i class="fa fa-angle-double-left"></i>
+        </a>
+      </li>
+      <li ng-repeat="i in $ctrl.getTotalPages() track by $index" ng-class="{'active' : $index + 1 == $ctrl.page}">
+        <a ng-click="$ctrl.goto($index + 1)">{{$index + 1}}</a>
+      </li>
+      <li ng-class="{'disabled': $ctrl.page == $ctrl.totalPages}">
+        <a ng-click="$ctrl.next()" aria-label="Next">
+          <i class="fa fa-angle-double-right"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>

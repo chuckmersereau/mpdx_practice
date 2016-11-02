@@ -122,7 +122,7 @@ class TasksService {
                 meta.total = data.meta.total;
                 meta.total_pages = data.meta.total_pages;
                 console.log(this.data);
-            }
+            }.bind(this)
         );
     }
 
@@ -156,7 +156,7 @@ class TasksService {
     }
 
     submitNewComment(taskId, newComment, cb) {
-        this.api.put('/tasks/' + taskId, {
+        this.api.put('tasks/' + taskId, {
             task: {
                 activity_comments_attributes: [{
                     body: newComment
@@ -166,11 +166,11 @@ class TasksService {
     }
 
     deleteTask(taskId, cb) {
-        this.api.delete('/tasks/' + taskId, {}, cb);
+        this.api.delete('tasks/' + taskId, {}, cb);
     }
 
     starTask(task, cb) {
-        this.api.put('/tasks/' + task.id, {
+        this.api.put('tasks/' + task.id, {
             task: {
                 starred: !task.starred
             }
