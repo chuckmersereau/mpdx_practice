@@ -1,13 +1,13 @@
 class AppealsWizardController {
-    constructor($scope, api, railsConstants, state) {
+    constructor($scope, api, state) {
         this.$scope = $scope;
 
-        this.contactStatuses = railsConstants.contact.ACTIVE_STATUSES;
+        //this.contactStatuses = railsConstants.contact.ACTIVE_STATUSES; //TODO: IMPLEMENT RAILSCONSTANTS
 
         let defaultValidStatuses = {};
-        _.each(this.contactStatuses, (contactStatus) => {
-            defaultValidStatuses[contactStatus] = true;
-        });
+        // _.each(this.contactStatuses, (contactStatus) => {
+        //     defaultValidStatuses[contactStatus] = true;
+        // });
 
         this.goal = {
             adminPercent: 12
@@ -24,8 +24,12 @@ class AppealsWizardController {
                 doNotAskAppeals: true
             }
         };
-        api.get('contacts/tags?account_list_id=' + (state.current_account_list_id || '')).then((data) => {
-            this.contactTags = data.tags.sort();
+        let url = 'contacts/tags';
+        if (state.current_account_list_id) {
+            url += `?account_list_id=${state.current_account_list_id}`;
+        }
+        api.get(url).then((data) => {
+            this.contactTags = _.get(data, 'tags', []).sort();
         });
     }
     save() {

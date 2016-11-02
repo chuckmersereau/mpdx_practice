@@ -55,7 +55,7 @@ class AppealsController {
     }
     newAppeal() {
         this.modal.open({
-            contentTemplate: require('../../../common/appeals/wizard/wizard.modal.html'),
+            content: require('../../../common/appeals/wizard/wizard.modal.html'),
             big: true,
             controller: 'appealsWizardController',
             controllerAs: '$ctrl',
