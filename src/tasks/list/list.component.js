@@ -11,6 +11,7 @@ class ListController {
         this.star = tasksService.starTask;
         this.delete = tasksService.deleteTask;
         this.addComment = tasksService.submitNewComment;
+        this.tasksService = tasksService;
         this.selected = [];
         this.combinedFilters = Object.assign(
             {
@@ -19,50 +20,6 @@ class ListController {
             },
             this.filters
         );
-
-        this.$onChanges = function(changes) {
-            console.log(changes);
-            var newTags, newContactId, newFilters;
-            if (changes.tags) {
-                if (changes.tags.currentValue) {
-                    newTags = changes.tags.currentValue;
-                }
-            }
-            if (changes.contact) {
-                if (changes.contact.currentValue) {
-                    if (changes.contact.currentValue.id) {
-                        newContactId = changes.contact.currentValue.id;
-                    }
-                }
-            }
-            if (changes.filters) {
-                if (!_.isEmpty(_.xor(changes.filters.previousValue, changes.filters.currentValue)).length) {
-                    newFilters = changes.filters.currentValue;
-                }
-            }
-            if (newTags || newContactId || newFilters) {
-                Object.assign(
-                    this.combinedFilters, {
-                        tags: newTags || this.tags,
-                        contact_ids: newContactId ? [newContactId] : [this.contact ? this.contact.id : ''],
-                        filters: newFilters || this.filters
-                    }
-                );
-
-                console.log(changes);
-                this.load = tasksService.fetchTasks.bind(
-                    this,
-                    this.key,
-                    this.combinedFilters
-                );
-                this.loadPage = tasksService.fetchTasksForPage.bind(
-                    this,
-                    this.page,
-                    this.combinedFilters
-                );
-                this.load();
-            }
-        };
 
         this.onPageChange = function(pageNum) {
             this.meta.page = pageNum;
@@ -131,6 +88,59 @@ class ListController {
         //         controllerAs: 'vm'
         //     });
         // };
+    }
+
+    $onChanges(changes) {
+        console.log(changes);
+        if (this.setCombinedFilters(changes)) {
+            this.load();
+        }
+    }
+
+    setCombinedFilters(changes) {
+        var newTags, newContactId, newFilters;
+        if (changes.tags) {
+            if (changes.tags.currentValue) {
+                newTags = changes.tags.currentValue;
+            }
+        }
+        if (changes.contact) {
+            if (changes.contact.currentValue) {
+                if (changes.contact.currentValue.id) {
+                    newContactId = changes.contact.currentValue.id;
+                }
+            }
+        }
+        if (changes.filters) {
+            if (!_.isEmpty(_.xor(changes.filters.previousValue, changes.filters.currentValue)).length) {
+                newFilters = changes.filters.currentValue;
+            }
+        }
+        if (newTags || newContactId || newFilters) {
+            Object.assign(
+                this.combinedFilters, {
+                    tags: newTags || this.tags,
+                    contact_ids: newContactId ? [newContactId] : [this.contact ? this.contact.id : ''],
+                    filters: newFilters || this.filters
+                }
+            );
+            return true;
+        }
+        return false;
+    }
+
+    load() {
+        this.tasksService.fetchTasks.bind(
+            this.key,
+            this.combinedFilters
+        );
+    }
+
+    loadPage() {
+        this.tasksService.fetchTasksForPage.bind(
+            this.page,
+            this.combinedFilters
+        );
     }
 };
 

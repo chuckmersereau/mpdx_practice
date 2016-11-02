@@ -22,6 +22,8 @@ import rawNumber from './rawNumber/rawNumber.directive';
 import serverConstants from './serverConstants/serverConstants.service';
 import session from './session/session.service';
 import tags from './tags/tags.service';
+import tasksTagsService from './tags/tasks.service';
+import tagsDecorator from './tags/tags.decorator';
 
 export default angular.module('mpdx.common', [
     accounts,
@@ -47,5 +49,7 @@ export default angular.module('mpdx.common', [
     rawNumber,
     serverConstants,
     session,
-    tags
+    tags,
+    tasksTagsService,
+    tagsDecorator
 ]).name;
