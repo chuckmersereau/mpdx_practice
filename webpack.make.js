@@ -101,10 +101,6 @@ module.exports = function makeWebpackConfig(options) {
 
         // Initialize module
     config.module = {
-        preLoaders: [
-
-            // { test: /\.service\.js$/, loader: serviceHotLoader, exclude: [/bower_components/, /node_modules/, /\.test\.js/] }
-        ],
         loaders: [{
         //     enforce: 'pre',
         //     test: /\.component\.js$/,
@@ -139,10 +135,7 @@ module.exports = function makeWebpackConfig(options) {
         }, {
             test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
             loader: "file-loader"
-        }],
-        postLoaders: [
-            // { test: /\.html/, loader: jadeHotLoader }
-        ]
+        }]
     };
 
     // ISPARTA LOADER
