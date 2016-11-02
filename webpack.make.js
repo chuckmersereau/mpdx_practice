@@ -101,10 +101,6 @@ module.exports = function makeWebpackConfig(options) {
 
         // Initialize module
     config.module = {
-        preLoaders: [
-
-            // { test: /\.service\.js$/, loader: serviceHotLoader, exclude: [/bower_components/, /node_modules/, /\.test\.js/] }
-        ],
         loaders: [{
         //     enforce: 'pre',
         //     test: /\.component\.js$/,
@@ -145,10 +141,7 @@ module.exports = function makeWebpackConfig(options) {
         }, {
             test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
             loader: "file-loader"
-        }],
-        postLoaders: [
-            // { test: /\.html/, loader: jadeHotLoader }
-        ]
+        }]
     };
 
     // ISPARTA LOADER
@@ -156,7 +149,8 @@ module.exports = function makeWebpackConfig(options) {
     // Instrument JS files with Isparta for subsequent code coverage reporting
     // Skips node_modules and files that end with .test.js
     if (TEST) {
-        config.module.preLoaders.push({
+        config.module.loaders.push({
+            enforce: 'pre',
             test: /\.js$/,
             exclude: [
                 /node_modules/,
