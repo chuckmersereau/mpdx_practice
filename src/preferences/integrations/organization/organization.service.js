@@ -66,8 +66,10 @@ class OrganizationService {
     }
     updateAccount(username, password, accountId) {
         return this.api.put('preferences/integrations/organization_accounts/' + accountId, {
-            organization_account: { username: username,
-            password: password }
+            organization_account: {
+                username: username,
+                password: password
+            }
         });
     }
 }
