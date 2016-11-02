@@ -3,11 +3,10 @@ class MailchimpIntegrationPreferencesController {
     mailchimpService;
 
     constructor(
-        $scope, mailchimpService, alertsService, gettextCatalog
+        $scope, mailchimpService, alertsService
     ) {
         this.mailchimpService = mailchimpService;
         this.alertsService = alertsService;
-        this.gettextCatalog = gettextCatalog;
         this.saving = false;
         this.showSettings = false;
 
