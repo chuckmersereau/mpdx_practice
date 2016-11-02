@@ -2,6 +2,7 @@ import accounts from './accounts/accounts.service';
 import alerts from './alerts/index.module';
 import anniversaries from './anniversaries/anniversaries.component';
 import api from './api/api.service';
+import appeals from './appeals/index.module';
 import authInterceptor from './authInterceptor/authInterceptor.provider';
 import autoFocus from './autoFocus/autofocus.directive';
 import bgImg from './bgImg/bgImg.directive';
@@ -32,6 +33,7 @@ export default angular.module('mpdx.common', [
     accounts,
     alerts,
     anniversaries,
+    appeals,
     api,
     authInterceptor,
     autoFocus,
