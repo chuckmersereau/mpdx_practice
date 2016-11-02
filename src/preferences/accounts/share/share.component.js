@@ -3,8 +3,7 @@ class SharePreferencesController {
     invitesService;
     usersService;
 
-    constructor(invitesService, usersService, alertsService, gettextCatalog) {
-        this.gettextCatalog = gettextCatalog;
+    constructor(invitesService, usersService, alertsService) {
         this.invitesService = invitesService;
         this.usersService = usersService;
         this.alertsService = alertsService;

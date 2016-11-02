@@ -3,10 +3,10 @@
     <span translate>Tags</span>
     <ul class="nav nav-pills pull-right">
       <li ng-class="{ 'active': $ctrl.tagsService.anyTags }">
-        <a ng-click="$ctrl.tagsService.anyTags = true" title="{{$ctrl.gettextCatalog.getString('Look up contacts with Any of the tags selected (a or b or c).') }}">Any</a>
+        <a ng-click="$ctrl.tagsService.anyTags = true" title="{{'Look up contacts with Any of the tags selected (a or b or c).' | translate }}">Any</a>
       </li>
       <li ng-class="{ 'active': !$ctrl.tagsService.anyTags }">
-        <a ng-click="$ctrl.tagsService.anyTags = false" title="{{ $ctrl.gettextCatalog.getString('Look up contacts with ALL of the tags selected (a and b and c).') }}">All</a>
+        <a ng-click="$ctrl.tagsService.anyTags = false" title="{{ 'Look up contacts with ALL of the tags selected (a and b and c).' | translate }}">All</a>
       </li>
     </ul>
   </span>
