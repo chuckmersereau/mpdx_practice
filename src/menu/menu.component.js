@@ -1,4 +1,5 @@
 class menuController {
+    currentAccountList;
     state;
 
     constructor($state, currentAccountList) {
