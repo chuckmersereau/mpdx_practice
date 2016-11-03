@@ -1,5 +1,8 @@
 class menuController {
-    constructor($state) {
+    state;
+
+    constructor($state, currentAccountList) {
+        this.currentAccountList = currentAccountList;
         this.state = $state;
         this.isInState = (match) => $state.$current.name.indexOf(match) === 0;
     }

@@ -30,6 +30,7 @@ window.$ = jQuery;
 //require('bootstrap/dist/css/bootstrap-theme.css');
 require('./styles/angularModal.css');
 require('bootstrap-additions/dist/bootstrap-additions.css');
+require('./styles/fonts/freightsanspro/stylesheet.css');
 
 
 export default angular.module('mpdx.vendor', [
