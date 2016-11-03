@@ -107,10 +107,8 @@ class ListController {
     }
     openExportContactsModal() {
         this.modal.open({
-            contentTemplate: '/common/export_contacts.html',
-            placement: 'center',
-            controller: 'exportContactsController',
-            controllerAs: 'vm'
+            template: require('./exportContacts/exportContacts.html'),
+            controller: 'exportContactsController'
         });
     }
 }
