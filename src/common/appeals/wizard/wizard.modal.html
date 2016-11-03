@@ -1,7 +1,6 @@
 <modal-big>
     <modal-header title="Create New Appeal" on-close="$hide()"></modal-header>
-    <form>
-        <div class="form_wrapper">
+    <form class="modal-body">
             <div class="field">
                 <label for="name" translate>Name</label>
                 <input autofocus="autofocus" type="text" ng-model="$ctrl.appeal.name" id="name">
@@ -59,7 +58,6 @@
                     <label><input type="checkbox" ng-model="$ctrl.appeal.exclude['doNotAskAppeals']"> <span translate>Are marked as do not ask for appeals</span></label>
                 </div>
             </div>
-        </div>
     </form>
     <div class="modal-footer">
         <button ng-click="$ctrl.save()" class="btn btn-primary" translate>Create</button>
