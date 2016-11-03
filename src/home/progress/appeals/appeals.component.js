@@ -55,10 +55,8 @@ class AppealsController {
     }
     newAppeal() {
         this.modal.open({
-            content: require('../../../common/appeals/wizard/wizard.modal.html'),
-            big: true,
+            template: require('../../../common/appeals/wizard/wizard.modal.html'),
             controller: 'appealsWizardController',
-            controllerAs: '$ctrl',
             onHide: this.onHideModal.bind(this)
         });
     }

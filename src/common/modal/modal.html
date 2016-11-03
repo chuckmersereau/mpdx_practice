@@ -1,13 +1,5 @@
-<div class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-small">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="pull-right">
-                    <a class="close" ng-click="$hide()"><i class="fa fa-times"></i></a>
-                </div>
-                <h4 class="modal-title" ng-bind="modalTitle"></h4>
-            </div>
-            <div ng-bind-html="content"></div>
-        </div>
+<div class="modal-dialog modal-small">
+    <div class="modal-content">
+        <div ng-transclude></div>
     </div>
 </div>

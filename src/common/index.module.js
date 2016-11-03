@@ -19,7 +19,7 @@ import filter from './filter/filter.service';
 import flash from './flash/flash.service';
 import layoutSettings from './layoutSettings/layoutSettings.directive';
 import links from './links/index.module';
-import modal from './modal/modal.service';
+import modal from './modal/index.module';
 import monthRange from './monthRange/monthRange.service';
 import rawNumber from './rawNumber/rawNumber.directive';
 import selectionStore from './selectionStore/selectionStore.service';
