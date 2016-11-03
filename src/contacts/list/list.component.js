@@ -79,9 +79,8 @@ class ListController {
     }
     openEditFieldsModal() {
         this.modal.open({
-            contentTemplate: '/common/bulk_edit_fields.html',
-            controller: 'bulkEditFieldsController',
-            controllerAs: 'vm',
+            template: require('./editFields/editFields.html'),
+            controller: 'editFieldsController',
             locals: {
                 contacts: this.contactsService.getSelectedContactIds()
             }
