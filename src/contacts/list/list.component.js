@@ -37,22 +37,18 @@ class ListController {
     }
     openAddTagModal() {
         this.modal.open({
-            contentTemplate: '/common/bulk_add_tag.html',
-            controller: 'bulkAddTagController',
-            controllerAs: 'vm',
+            template: require('../../common/tags/add/add.html'),
+            controller: 'addTagController',
             locals: {
-                modalTitle: 'Add Tags',
                 contacts: this.contactsService.getSelectedContactIds()
             }
         });
     }
     openRemoveTagModal() {
         this.modal.open({
-            contentTemplate: '/common/bulk_remove_tag.html',
-            controller: 'bulkRemoveTagController',
-            controllerAs: 'vm',
+            template: require('../../common/tags/remove/remove.html'),
+            controller: 'removeTagController',
             locals: {
-                modalTitle: 'Remove Tags',
                 contacts: this.contactsService.getSelectedContactIds()
             }
         });
@@ -64,16 +60,14 @@ class ListController {
     }
     openLogTaskModal() {
         this.modal.open({
-            contentTemplate: '/common/bulk_log_task.html',
-            controller: 'bulkLogTaskController',
-            controllerAs: 'vm',
+            template: require('../logTask/logTask.html'),
+            controller: 'logTaskController',
             locals: {
                 contacts: this.contactsService.getSelectedContactIds(),
                 toComplete: true,
                 createNext: true,
                 specifiedTask: null,
-                ajaxAction: null,
-                modalTitle: 'Log Task'
+                ajaxAction: null
             }
         });
     }
