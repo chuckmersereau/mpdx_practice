@@ -39,4 +39,4 @@ class CompleteTaskController {
 }
 
 export default angular.module('mpdx.contacts.show.completeTask.controller', [])
-    .controller('completeTaskController', CompleteTaskController);
+    .controller('completeTaskController', CompleteTaskController).name;
