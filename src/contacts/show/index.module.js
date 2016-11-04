@@ -1,4 +1,5 @@
 import address from './address/address.component';
+import completeTask from './completeTask/completeTask.controller';
 import component from './show.component';
 import details from './details/index.module';
 import donations from './donations/index.module';
@@ -10,6 +11,7 @@ import tasks from './tasks/tasks.component';
 
 export default angular.module('mpdx.contacts.show', [
     address,
+    completeTask,
     component,
     details,
     donations,
