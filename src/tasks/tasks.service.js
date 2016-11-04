@@ -1,4 +1,7 @@
 class TasksService {
+    api;
+    modal;
+
     constructor(modal, api) {
         this.modal = modal;
         this.api = api;
@@ -7,7 +10,7 @@ class TasksService {
         this.loading = true;
     }
     fetchUncompletedTasks(id) {
-        this.api.get('tasks/', {
+        return this.api.get('tasks/', {
             filters: {
                 completed: false,
                 contact_ids: [id],
@@ -24,7 +27,7 @@ class TasksService {
         });
     }
     fetchCompletedTasks(id) {
-        this.api.get('tasks/', {
+        return this.api.get('tasks/', {
             filters: {
                 completed: true,
                 contact_ids: [id],
@@ -54,18 +57,18 @@ class TasksService {
             parent[childKey] = newObj;
         });
     }
-    submitNewComment(taskId, newComment, cb) {
-        this.api.put('/tasks/' + taskId, {task: {activity_comments_attributes: [{body: newComment}]}}, cb);
+    submitNewComment(taskId, newComment) {
+        return this.api.put(`/tasks/${taskId}`, {task: {activity_comments_attributes: [{body: newComment}]}});
     }
-    deleteTask(taskId, cb) {
-        this.api.delete('/tasks/' + taskId, {}, cb);
+    deleteTask(taskId) {
+        return this.api.delete(`/tasks/${taskId}`);
     }
-    starTask(task, cb) {
-        this.api.put('/tasks/' + task.id, {task: {starred: !task.starred}}, cb);
+    starTask(task) {
+        return this.api.put(`/tasks/${task.id}`, {task: {starred: !task.starred}});
     }
-    postBulkLogTask(ajaxAction, taskId, model, contactIds, toComplete, cb) {
+    postBulkLogTask(ajaxAction, taskId, model, contactIds, toComplete) {
         const url = 'tasks/' + (taskId || '');
-        this.api.call(ajaxAction, url, {
+        return this.api.call(ajaxAction, url, {
             add_task_contact_ids: contactIds.join(),
             task: {
                 subject: model.subject,
@@ -90,11 +93,9 @@ class TasksService {
                 result: model.result,
                 tag_list: model.tagsList.map(tag => tag.text).join()
             }
-        }).then(() => {
-            cb();
         });
     }
-    postLogTask(taskId, model, cb) {
+    postLogTask(taskId, model) {
         let objPayload = {
             task: {
                 activity_comment: {
@@ -110,10 +111,10 @@ class TasksService {
             objPayload.task.nextAction = model.nextAction;
         }
 
-        this.api.put('tasks/' + taskId, objPayload, cb);
+        return this.api.put(`tasks/${taskId}`, objPayload);
     }
-    postBulkAddTask(model, contactIds, cb) {
-        this.api.post('tasks', {
+    postBulkAddTask(model, contactIds) {
+        return this.api.post('tasks', {
             add_task_contact_ids: contactIds.join(),
             task: {
                 subject: model.subject,
@@ -131,8 +132,6 @@ class TasksService {
                 ],
                 tag_list: model.tagsList.map(tag => tag.text).join()
             }
-        }).then(() => {
-            cb();
         });
     }
     openModal(params) {

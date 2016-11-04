@@ -1,4 +1,6 @@
 class DonationsService {
+    api;
+
     constructor(
         api
     ) {

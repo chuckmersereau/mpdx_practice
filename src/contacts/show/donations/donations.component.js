@@ -15,10 +15,11 @@ class ContactDonationsController {
         this.loading = false;
     }
     $onInit() {
-        this.getDonations();
-        this.getDonationsGraph();
+        if (this.contact.id) {
+            this.getDonations();
+            this.getDonationsGraph();
+        }
     }
-
     getDonations(page) {
         this.loading = true;
         this.donationsService.getDonations(this.contact.id, page).then((data) => {
@@ -27,7 +28,6 @@ class ContactDonationsController {
             this.donationsMeta = data.meta;
         });
     }
-
     getDonationsGraph() {
         this.donationsService.getDonationsGraphForContact(this.contact.id).then((data) => {
             var subtitle = 'Average donations remain unchanged from last year';
@@ -96,7 +96,7 @@ class ContactDonationsController {
         });
     }
     $onChanges(changesObj) {
-        if (changesObj.contact) {
+        if (_.has(changesObj, 'contact.id')) {
             this.getDonations();
             this.getDonationsGraph();
         }
