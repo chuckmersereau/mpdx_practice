@@ -1,6 +1,5 @@
 <a ng-click="$ctrl.resetFiltersAndTags()" class="btn btn-primary btn-xs btn-block btn-filter-left ng-cloak"
-   ng-show="$ctrl.showReset()"
-   onClick="_gaq.push(['_trackEvent', 'Contacts Events', 'Filter', 'Reset Filters']);">
+   ng-show="$ctrl.showReset()" analytics-on analytics-event="Reset Filters" analytics-category="Contacts Events" analytics-label="Filter">
     <i class="fa fa-undo"></i> <span translate>Reset Filters</span>
 </a>
 <ul>
@@ -108,7 +107,8 @@
                     </div>
                 </li>
                 <li class="controls map-contacts-btn">
-                    <a ng-click="$ctrl.openMapContactsModal()" class="btn btn-default btn-xs cursor-pointer" onclick="_gaq.push(['_trackEvent', 'Contacts Events', 'Filter', 'Map These Contacts']);">
+                    <a ng-click="$ctrl.openMapContactsModal()" class="btn btn-default btn-xs cursor-pointer"
+                       analytics-on analytics-event="Map These Contacts" analytics-category="Contacts Events" analytics-label="Filter">
                         <i class="fa fa-map-marker"></i>
                         Map Selected Contacts
                     </a>
@@ -120,7 +120,7 @@
         <span class="left_filters menu_item" translate>Insights</span>
         <p style="text-indent:40px">
             <a href="" ng-click="$ctrl.runInsight('recommendations')"
-               onClick="_gaq.push(['_trackEvent', 'Contacts Events', 'Filter', 'Increase Recommendations']);" translate>
+               analytics-on="click" analytics-category="Contacts Events" analytics-label="Filter" analytics-event="Increase Recommendations" translate>
                 Increase Recommendations
             </a>
         </p>
