@@ -50,8 +50,8 @@ class ContactTasksController {
     openEditTaskModal(task) {
         var contactId = this.contact.id;
         this.modal.open({
-            templateUrl: '/templates/common/bulk_log_task.html',
-            controller: 'bulkLogTaskController',
+            template: require('../../logTask/logTask.html'),
+            controller: 'logTaskController',
             locals: {
                 modalTitle: 'Edit Task',
                 contacts: [contactId],
