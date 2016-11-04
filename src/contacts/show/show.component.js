@@ -84,10 +84,8 @@ class ContactController {
     }
     openAddReferralsModal() {
         this.modal.open({
-            big: true,
-            contentTemplate: '/contacts/show/add_referrals_modal.html',
+            template: require('./referrals/add/add.html'),
             controller: 'addReferralsModalController',
-            controllerAs: 'vm',
             locals: {
                 contactId: this.contact.id
             },
