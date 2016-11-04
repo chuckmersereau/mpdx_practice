@@ -38,7 +38,8 @@ class ContactTasksController {
     }
     openCompleteTaskModal(task) {
         this.modal.open({
-            templateUrl: '/templates/common/complete_task.html',
+            template: require('../completeTask/completeTask.html'),
+            controller: 'completeTaskController',
             locals: {
                 taskId: task.id,
                 contact: this.contact,
