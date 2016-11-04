@@ -5,6 +5,7 @@ import details from './details/index.module';
 import donations from './donations/index.module';
 import history from './history/history.component';
 import info from './info/info.component';
+import notes from './notes/notes.component';
 import people from './people/people.component';
 import person from './person/person.component';
 import personModal from './personModal/personModal.controller';
@@ -19,6 +20,7 @@ export default angular.module('mpdx.contacts.show', [
     donations,
     history,
     info,
+    notes,
     people,
     person,
     personModal,
