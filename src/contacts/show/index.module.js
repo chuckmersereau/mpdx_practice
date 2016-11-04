@@ -8,6 +8,7 @@ import info from './info/info.component';
 import people from './people/people.component';
 import person from './person/person.component';
 import personModal from './personModal/personModal.controller';
+import referrals from './referrals/index.module';
 import tasks from './tasks/tasks.component';
 
 export default angular.module('mpdx.contacts.show', [
@@ -21,5 +22,6 @@ export default angular.module('mpdx.contacts.show', [
     people,
     person,
     personModal,
+    referrals,
     tasks
 ]).name;
