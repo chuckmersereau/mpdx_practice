@@ -1,0 +1,11 @@
+<div>
+    <a class="pull-right edit" ui-sref=".address({addressId: $ctrl.address.id})" translate>Edit</a>
+    <p>
+        {{$ctrl.address.street}}<br />
+        {{$ctrl.address.city}} {{$ctrl.address.state}} {{$ctrl.address.postal_code}}<br />
+        {{$ctrl.address.country}}
+        <div ng-if="$ctrl.address.street">
+            <i class="fa fa-map-marker"></i> Google Maps
+        </div>
+    </p>
+</div>

@@ -1,25 +1,27 @@
 class ContactController {
+    cache;
     contact;
     contactsService;
     modal;
+    preferencesContactsService;
+    referralsService;
     tasksService;
 
     constructor(
-        $scope, $state, $stateParams, $location,
+        $scope, $state, $stateParams,
         modal, cache, contactsService, tasksService, referralsService, preferencesContactsService, serverConstants
     ) {
-        this.$location = $location;
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.cache = cache;
         this.contactsService = contactsService;
         this.modal = modal;
+        this.preferencesContactsService = preferencesContactsService;
         this.referralsService = referralsService;
         this.tasksService = tasksService;
 
         this.selected = $stateParams.contactId;
-        this.preferences = preferencesContactsService;
-        this.moveContact = {previous_contact: 0, following_contact: 0};
+        this.moveContact = { previous_contact: 0, following_contact: 0 };
         this.activeTab = '';
         this.contact = {};
         this.primaryAddress = {};
@@ -29,14 +31,14 @@ class ContactController {
         this.constants = serverConstants.data;
 
         this.tabsLabels = [];
-        $scope.$watch('vm.preferences.data.contact_tabs_labels', () => {
-            this.tabsLabels = this.preferences.data.contact_tabs_labels;
+        $scope.$watch('$ctrl.preferencesContactsService.data.contact_tabs_labels', () => {
+            this.tabsLabels = this.preferencesContactsService.data.contact_tabs_labels;
             if (angular.isDefined(this.tabsLabels)) {
                 this.activeTab = this.tabsLabels[0]['key'];
             }
         });
 
-        $scope.$watch('vm.selected', this.selectContact.bind(this));
+        $scope.$watch('$ctrl.selected', this.selectContact.bind(this));
         this.selectContact($stateParams.id);
         this.contactPosition = this.getContactPosition();
 
@@ -52,10 +54,8 @@ class ContactController {
                     newIndex = this.tabsLabels.length - 1;
                 }
 
-                this.preferences.data.contact_tabs_sort = this.tabsLabels.map(item => item['key']).join();
-                this.preferences.save(() => {
-                }, () => {
-                });
+                this.preferencesContactsService.data.contact_tabs_sort = this.tabsLabels.map(item => item['key']).join();
+                this.preferencesContactsService.save();
             },
             containerPositioning: 'relative'
         };
@@ -118,24 +118,24 @@ class ContactController {
     }
     hideContact() {
         if (this.contactsService.canGoRight(this.contact.id)) {
-            this.$location.url('/contacts/' + this.contactsService.getRightId(this.contact.id));
+            this.$state.go('contact', { contactId: this.contactsService.getRightId(this.contact.id) });
         } else if (this.contactsService.canGoLeft(this.contact.id)) {
-            this.$location.url('/contacts/' + this.contactsService.getLeftId(this.contact.id));
+            this.$state.go('contact', { contactId: this.contactsService.getLeftId(this.contact.id) });
         }
         this.contactsService.hideContact(this.contact.id);
     }
     goLeft() {
         if (this.contactsService.canGoLeft(this.contact.id)) {
-            this.$location.url('/contacts/' + this.contactsService.getLeftId(this.contact.id));
+            this.$state.go('contact', { contactId: this.contactsService.getLeftId(this.contact.id) });
         } else {
-            this.$location.url('/contacts/' + this.contactsService.data[this.contactsService.data.length - 1].contact.id);
+            this.$state.go('contact', { contactId: this.contactsService.data[this.contactsService.data.length - 1].contact.id });
         }
     }
     goRight() {
         if (this.contactsService.canGoRight(this.contact.id)) {
-            this.$location.url('/contacts/' + this.contactsService.getRightId(this.contact.id));
+            this.$state.go('contact', { contactId: this.contactsService.getRightId(this.contact.id) });
         } else {
-            this.$location.url('/contacts/' + this.contactsService.data[0].contact.id);
+            this.$state.go('contact', { contactId: this.contactsService.data[0].contact.id });
         }
     }
     hidePreviousContact() {
@@ -146,11 +146,11 @@ class ContactController {
     }
     switchToPreviousContact() {
         //this.selected = this.contact.id;
-        this.$state.transitionTo('contact', {id: this.moveContact.previous_contact});
+        this.$state.go('contact', { contactId: this.moveContact.previous_contact });
     }
     switchToNextContact() {
         //this.selected = this.contact.id;
-        this.$state.transitionTo('contact', {id: this.moveContact.following_contact});
+        this.$state.go('contact', { contactId: this.moveContact.following_contact });
     }
     callToSave() {
         this.save();
@@ -159,7 +159,6 @@ class ContactController {
 
 const Show = {
     controller: ContactController,
-    controllerAs: 'vm',
     template: require('./show.html')
 };
 
