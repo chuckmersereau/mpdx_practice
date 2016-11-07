@@ -24,7 +24,7 @@
                             <div class="filter_multiselect" ng-if="child.type == 'multiselect'">
                                 <label>
                                     {{child.title}}
-                                    <a class="filter_invert_multiselect" ng-click="$ctrl.invertMultiselect(child)" title="{{ $ctrl.gettextCatalog.getString('Invert') }}">
+                                    <a class="filter_invert_multiselect" ng-click="$ctrl.invertMultiselect(child)" title="{{ 'Invert' | translate }}">
                                         <span class="fa-stack">
                                           <i class="fa fa-circle fa-stack-2x text-danger"></i>
                                           <i class="fa fa-minus fa-stack-1x fa-inverse"></i>
@@ -46,7 +46,7 @@
                             <div class="filter_dates" ng-if="child.type == 'dates'">
                                 <label ng-repeat="option in child.options">
                                     {{option.name}}<br>
-                                    <datetimepicker ng-model="$ctrl.filterService.params[child.name][option.id]" hidden-time="true" placeholder="{{ $ctrl.gettextCatalog.getString('None') }}"></datetimepicker>
+                                    <datetimepicker ng-model="$ctrl.filterService.params[child.name][option.id]" hidden-time="true" placeholder="{{ 'None' | translate }}"></datetimepicker>
                                 </label>
                             </div>
                             <div class="filter_dates" ng-if="child.type == 'daterange'">
@@ -54,7 +54,7 @@
                                     {{child.title}}<br>
                                     <contacts-filter-daterange
                                         model="$ctrl.filterService.params[child.name]"
-                                        locale="{ applyLabel: '{{ $ctrl.gettextCatalog.getString('Filter') }}', cancelLabel: '{{ $ctrl.gettextCatalog.getString('Clear') }}' }"
+                                        locale="{ applyLabel: '{{ 'Filter' | translate }}', cancelLabel: '{{ 'Clear' | translate }}' }"
                                         custom-options="child.options">
                                     </contacts-filter-daterange>
                                 </label>
@@ -68,7 +68,7 @@
                         </div>
                         <div class="filter_multiselect" ng-if="filter.type == 'multiselect'">
                             <label>
-                                <a class="filter_invert_multiselect" ng-click="$ctrl.invertMultiselect(filter)" title="{{ $ctrl.gettextCatalog.getString('Invert') }}">
+                                <a class="filter_invert_multiselect" ng-click="$ctrl.invertMultiselect(filter)" title="{{ 'Invert' | translate }}">
                                   <span class="fa-stack">
                                     <i class="fa fa-circle fa-stack-2x text-danger"></i>
                                     <i class="fa fa-minus fa-stack-1x fa-inverse"></i>
@@ -89,13 +89,13 @@
                         <div class="filter_dates" ng-if="filter.type == 'dates'">
                             <label ng-repeat="option in filter.options">
                                 {{option.name}}<br>
-                                <datetimepicker ng-model="$ctrl.filterService.params[filter.name][option.id]" hidden-time="true" placeholder="{{ $ctrl.gettextCatalog.getString('None') }}"></datetimepicker>
+                                <datetimepicker ng-model="$ctrl.filterService.params[filter.name][option.id]" hidden-time="true" placeholder="{{ 'None' | translate }}"></datetimepicker>
                             </label>
                         </div>
                         <div class="filter_dates" ng-if="filter.type == 'daterange'">
                             <contacts-filter-daterange
                                 model="$ctrl.filterService.params[filter.name]"
-                                locale="{ applyLabel: '{{ $ctrl.gettextCatalog.getString('Filter') }}', cancelLabel: '{{ $ctrl.gettextCatalog('Clear') }}' }"
+                                locale="{ applyLabel: '{{ 'Filter' | translate }}', cancelLabel: '{{ 'Clear' | translate }}' }"
                                 custom-options="filter.options">
                             </contacts-filter-daterange>
                         </div>

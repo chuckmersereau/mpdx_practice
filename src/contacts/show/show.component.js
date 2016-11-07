@@ -5,7 +5,7 @@ class ContactController {
     tasksService;
 
     constructor(
-        $scope, $state, $stateParams, $location, gettextCatalog,
+        $scope, $state, $stateParams, $location,
         modal, cache, contactsService, tasksService, referralsService, preferencesContactsService, serverConstants
     ) {
         this.$location = $location;
@@ -13,7 +13,6 @@ class ContactController {
         this.$stateParams = $stateParams;
         this.cache = cache;
         this.contactsService = contactsService;
-        this.gettextCatalog = gettextCatalog;
         this.modal = modal;
         this.referralsService = referralsService;
         this.tasksService = tasksService;

@@ -426,8 +426,8 @@
                         <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('tester') }"></i>
                         <span translate>Early Adopter</span>
                     </div>
-                    <div class="col-sm-6 pref-current">
-                        {{$ctrl.personalService.data.tester ? $ctrl.gettextCatalog.getString('Yes') : $ctrl.gettextCatalog.getString('No')}}
+                    <div class="col-sm-6 pref-current" translate>
+                        {{$ctrl.personalService.data.tester ? 'Yes' : 'No'}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">

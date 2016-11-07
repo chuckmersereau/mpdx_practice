@@ -1,7 +1,4 @@
 class GoogleImportController {
-    constructor(gettextCatalog) {
-        this.gettextCatalog = gettextCatalog;
-    }
     save() {
 
     }

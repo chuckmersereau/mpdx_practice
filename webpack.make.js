@@ -7,7 +7,6 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var path = require('path');
 
-
 module.exports = function makeWebpackConfig(options) {
     /**
      * Environment type
@@ -101,10 +100,6 @@ module.exports = function makeWebpackConfig(options) {
 
         // Initialize module
     config.module = {
-        preLoaders: [
-
-            // { test: /\.service\.js$/, loader: serviceHotLoader, exclude: [/bower_components/, /node_modules/, /\.test\.js/] }
-        ],
         loaders: [{
         //     enforce: 'pre',
         //     test: /\.component\.js$/,
@@ -118,6 +113,12 @@ module.exports = function makeWebpackConfig(options) {
             test: /\.js$/,
             loaders: ['babel'],
             exclude: /node_modules|bower_components|vendor\//
+        // }, {
+        //     // HTML Modal Template LOADER
+        //     // Reference: https://github.com/WearyMonkey/ngtemplate-loader
+        //     // Allow loading html through js
+        //     test: /\.modal.html$/,
+        //     loaders: ["ngtemplate?relativeTo=" + encodeURIComponent(path.resolve(process.cwd(), './src/')), "html"]
         }, {
             // HTML LOADER
             // Reference: https://github.com/WearyMonkey/ngtemplate-loader
@@ -139,10 +140,7 @@ module.exports = function makeWebpackConfig(options) {
         }, {
             test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
             loader: "file"
-        }],
-        postLoaders: [
-            // { test: /\.html/, loader: jadeHotLoader }
-        ]
+        }]
     };
 
     // ISPARTA LOADER
@@ -150,7 +148,8 @@ module.exports = function makeWebpackConfig(options) {
     // Instrument JS files with Isparta for subsequent code coverage reporting
     // Skips node_modules and files that end with .test.js
     if (TEST) {
-        config.module.preLoaders.push({
+        config.module.loaders.push({
+            enforce: 'pre',
             test: /\.js$/,
             exclude: [
                 /node_modules/,

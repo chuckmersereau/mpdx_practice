@@ -16,13 +16,13 @@
                     {{user.first_name}}
                     {{user.last_name}}
                     ({{user.email}})
-                    <span ng-if="user.method.type == 'designation'" data-toggle="tooltip" data-placement="top" title="<{{ $ctrl.gettextCatalog.getString('Linked by designation') }}: {{user.method.name}}">
+                    <span ng-if="user.method.type == 'designation'" data-toggle="tooltip" data-placement="top" title="<{{ 'Linked by designation' | translate }}: {{user.method.name}}">
             <i class="fa fa-info-circle"></i>
           </span>
-                    <span ng-if="user.method.type == 'invite'" data-toggle="tooltip" data-placement="top" title="{{ $ctrl.gettextCatalog.getString('Invited by') }}: {{user.method.inviter.first_name}} {{user.method.inviter.last_name}}">
+                    <span ng-if="user.method.type == 'invite'" data-toggle="tooltip" data-placement="top" title="{{ 'Invited by' | translate }}: {{user.method.inviter.first_name}} {{user.method.inviter.last_name}}">
             <i class="fa fa-info-circle"></i>
           </span>
-                    <span ng-if="user.method.type == 'mpdx'" data-toggle="tooltip" data-placement="top" title="{{ $ctrl.gettextCatalog.getString('Manually added by MPDX support') }}">
+                    <span ng-if="user.method.type == 'mpdx'" data-toggle="tooltip" data-placement="top" title="{{ 'Manually added by MPDX support' | translate }}">
             <i class="fa fa-info-circle"></i>
           </span>
                     <span ng-if="$ctrl.usersService.data.manager && user.deletable">

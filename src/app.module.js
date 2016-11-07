@@ -6,6 +6,7 @@ import contacts from './contacts/index.module';
 import bottom from './bottom/index.module';
 import home from './home/index.module';
 import menu from './menu/menu.component';
+import reports from './reports/index.module';
 import preferences from './preferences/index.module';
 import tasks from './tasks/index.module';
 import vendor from './vendor.module';
@@ -23,6 +24,7 @@ export default angular.module('mpdx', [
     contacts,
     home,
     menu,
+    reports,
     preferences,
     tasks,
     vendor

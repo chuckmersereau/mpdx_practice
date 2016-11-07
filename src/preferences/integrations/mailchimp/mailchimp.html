@@ -56,7 +56,7 @@
                 <div ng-show="$ctrl.mailchimpService.data.sync_all_active_contacts" translate>You are syncing to all active contacts.</div>
                 <div ng-hide="$ctrl.mailchimpService.data.sync_all_active_contacts" translate>You are only syncing to contacts in your newsletter</div>
                 <div ng-if="$ctrl.$rollout.active(mail_chimp_auto_log, current_account_list)">
-                    <br /><span translate>Automatic logging of campaigns: </span><strong>{{$ctrl.mailchimpService.data.auto_log_campaigns ? $ctrl.gettextCatalog.getString('On') : $ctrl.gettextCatalog.getString('Off')}}</strong>
+                    <br /><span translate>Automatic logging of campaigns: </span><strong>{{$ctrl.mailchimpService.data.auto_log_campaigns ? ('On' | translate) : ('Off' | translate)}}</strong>
                 </div>
             </p>
             <p>

@@ -1,7 +1,6 @@
 class ContactListItemController {
-    constructor($state, state, gettextCatalog) {
+    constructor($state, state) {
         this.$state = $state;
-        this.gettextCatalog = gettextCatalog;
 
         this.current_currency_symbol = state.current_currency_symbol;
     }
