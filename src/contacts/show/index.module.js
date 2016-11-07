@@ -8,7 +8,7 @@ import info from './info/info.component';
 import notes from './notes/notes.component';
 import people from './people/people.component';
 import person from './person/person.component';
-import personModal from './personModal/personModal.controller';
+import personModal from './personModal/index.module';
 import referrals from './referrals/index.module';
 import tasks from './tasks/tasks.component';
 

@@ -139,13 +139,13 @@ function openPeopleModal($state, $stateParams, modal, cache) {
         });
 
         modal.open({
-            contentTemplate: '/contacts/show/personModal/personModal.html',
+            template: require('./contacts/show/personModal/personModal.html'),
             controller: 'personModalController',
             locals: {
                 contact: contact,
                 person: person
             },
-            onHide: function() {
+            onHide: () => {
                 $state.go('^');
             }
         });

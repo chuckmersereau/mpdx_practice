@@ -1,9 +1,9 @@
 class PersonModalController {
-    constructor($scope, contactsService, gettextCatalog, contact, person) {
-        this.$scope = $scope;
-        this.contactsService = contactsService;
-        this.gettextCatalog = gettextCatalog;
+    contactsService;
+    contact;
 
+    constructor(contactsService, contact, person) {
+        this.contactsService = contactsService;
         this.contact = contact;
         this.person = person;
 
@@ -13,10 +13,10 @@ class PersonModalController {
         this.activate();
     }
     activate() {
-        if (angular.isDefined(this.person)) {
-            this.$scope.modalTitle = this.gettextCatalog.getString('Edit Person');
+        if (_.has(this.person, 'id')) {
+            this.modalTitle = 'Edit Person';
         } else {
-            this.$scope.modalTitle = this.gettextCatalog.getString('Add Person');
+            this.modalTitle = 'Add Person';
             this.person = {
                 email_addresses: [],
                 phone_numbers: [],
@@ -79,6 +79,6 @@ class PersonModalController {
     }
 }
 
-export default angular.module('mpdx.contacts.show.personModal', [])
+export default angular.module('mpdx.contacts.show.personModal.controller', [])
     .controller('personModalController', PersonModalController).name;
 
