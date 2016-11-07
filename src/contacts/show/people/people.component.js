@@ -23,7 +23,7 @@ class ContactPeopleController {
         } else {
             this.isMerging = false;
             var ids = _.map(data, 'id').join();
-            this.$state.go('contact.mergePeople', { contactId: this.contact.id, peopleIds: ids });
+            this.$state.go('contact.merge_people', { contactId: this.contact.id, peopleIds: ids });
         }
     }
 }

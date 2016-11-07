@@ -31,6 +31,10 @@ export default class Routes {
             url: '/contacts/{contactId:[0-9]+}',
             component: 'contact'
         }).state({
+            name: 'contact.merge_people',
+            url: '/people/merge/:peopleIds',
+            onEnter: openMergePeopleModal
+        }).state({
             name: 'contact.person',
             url: '/people/{personId}',
             onEnter: openPeopleModal
@@ -139,7 +143,7 @@ function openPeopleModal($state, $stateParams, modal, cache) {
         });
 
         modal.open({
-            template: require('./contacts/show/personModal/personModal.html'),
+            template: require('./contacts/show/people/modal/modal.html'),
             controller: 'personModalController',
             locals: {
                 contact: contact,
@@ -152,3 +156,26 @@ function openPeopleModal($state, $stateParams, modal, cache) {
     });
 }
 
+/*@ngInject*/
+function openMergePeopleModal(
+    $state, $stateParams, modal, cache
+) {
+    cache.get($stateParams.contactId).then(function(contact) {
+        var peopleIds = $stateParams.peopleIds.split(',');
+        var people = _.filter(contact.people, function(person) {
+            return _.includes(peopleIds, person.id.toString());
+        });
+
+        modal.open({
+            template: require('./contacts/show/people/merge/merge.html'),
+            controller: 'mergePeopleModalController',
+            locals: {
+                contact: contact,
+                people: people
+            },
+            onHide: () => {
+                $state.go('^');
+            }
+        });
+    });
+}

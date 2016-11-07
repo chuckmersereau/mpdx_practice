@@ -75,8 +75,7 @@
                     <contact-donations contact="$ctrl.contact"></contact-donations>
                 </div>
                 <div ng-if="item['key']=='tasks'" ng-show="item['key']==$ctrl.activeTab">
-                    <contact-tasks contact="$ctrl.contact"
-                    ></contact-tasks>
+                    <contact-tasks contact="$ctrl.contact"></contact-tasks>
                     <button ng-click="$ctrl.openAddTaskModal()" class="btn btn-primary">Add Task</button>
                 </div>
                 <div ng-if="item['key']=='history'" ng-show="item['key']==$ctrl.activeTab">
