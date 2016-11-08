@@ -7,6 +7,11 @@
         <span class="tasks-title">
           {{ $ctrl.title }}
         </span>
+        <span class="actions task-actions" ng-show="$ctrl.selected.length">
+          <a class="btn btn-xs btn-secondary" ng-hide="$ctrl.key === 'allCompleted'">Complete</a>
+          <a class="btn btn-xs btn-secondary">Delete</a>
+          <a class="btn btn-xs btn-secondary">Edit</a>
+        </span>
         <select
           ng-model="$ctrl.meta.per_page"
           ng-change="$ctrl.load()"
@@ -18,11 +23,7 @@
           style="float: right">
           Show:
         </span>
-        <span class="actions task-actions" style="display:none">
-          <a class="btn btn-xs btn-secondary" data-behavior="bulk_complete" href="#" ng-hide="g.filter == &quot;history&quot;">Complete Selected</a>
-          <a class="btn btn-xs btn-secondary" data-behavior="bulk_delete" href="#">Delete Selected</a>
-          <a class="btn btn-xs btn-secondary" data-behavior="bulk_edit" href="#">Edit Selected</a>
-        </span>
+        <a class="btn btn-xs btn-secondary pull-right" ng-click="$ctrl.toggleAll()" style="margin-right: 12px">Select All</a>
       </th>
     </tr>
     <tr ng-hide="$ctrl.tasks[$ctrl.key].length">

@@ -64,6 +64,15 @@ class ListController {
         }
     };
 
+    toggleAll() {
+        let tasks = this.tasks[this.key];
+        if (tasks.length === this.selected.length) {
+            this.selected = [];
+        } else {
+            this.selected = tasks.map((task) => task.id);
+        }
+    }
+
     newComment(taskId) {
         if (this.models.comment) {
             this.tasksService.submitNewComment(taskId, this.models.comment, function() {
