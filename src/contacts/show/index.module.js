@@ -1,4 +1,4 @@
-import address from './address/address.component';
+import address from './address/index.module';
 import completeTask from './completeTask/completeTask.controller';
 import component from './show.component';
 import details from './details/index.module';

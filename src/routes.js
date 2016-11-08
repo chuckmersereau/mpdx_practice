@@ -31,6 +31,10 @@ export default class Routes {
             url: '/contacts/{contactId:[0-9]+}',
             component: 'contact'
         }).state({
+            name: 'contact.address',
+            url: '/addresses/{addressId}',
+            onEnter: openAddressModal
+        }).state({
             name: 'contact.merge_people',
             url: '/people/merge/:peopleIds',
             onEnter: openMergePeopleModal
@@ -134,6 +138,30 @@ function logout($window) {
     delete $window.sessionStorage.token;
     $window.location.href = config.theKeyUrl;
 }
+
+/*@ngInject*/
+function openAddressModal(
+    $stateParams, modal, cache, $state
+) {
+    cache.get($stateParams.contactId).then(function(contact) {
+        var address = _.find(contact.addresses, function(addressToFilter) {
+            return addressToFilter.id.toString() === $stateParams.addressId;
+        });
+
+        modal.open({
+            template: require('./contacts/show/address/modal/modal.html'),
+            controller: 'addressModalController',
+            locals: {
+                contact: contact,
+                address: address
+            },
+            onHide: () => {
+                $state.go('^');
+            }
+        });
+    });
+}
+
 
 /*@ngInject*/
 function openPeopleModal($state, $stateParams, modal, cache) {

@@ -38,6 +38,7 @@
     "checklist-model": "0.10.0",
     "font-awesome": "4.7.0",
     "highcharts": "5.0.2",
+    "imports-loader": "^0.6.5",
     "iso-currency": "0.2.7",
     "jquery": "^3.1.1",
     "lodash": "4.16.6",
