@@ -155,6 +155,14 @@ angular@^1.5.7, angular@>=1.0.8, angular@>=1.4.4, angular@~1.x, angular@1.5.8:
   version "1.5.8"
   resolved "https://registry.yarnpkg.com/angular/-/angular-1.5.8.tgz#925a5392b8c212d09572dc446db7e01264e094cb"
 
+angulartics:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/angulartics/-/angulartics-1.3.0.tgz#22186b60edf95a526541a3c093b0973202bda956"
+
+angulartics-google-analytics:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/angulartics-google-analytics/-/angulartics-google-analytics-0.3.0.tgz#1cf54ec958eb22639938decf6a30e1b5a44cd671"
+
 ansi-escapes@^1.1.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-1.4.0.tgz#d3a8a83b319aa67793662b13e761c7911422306e"
