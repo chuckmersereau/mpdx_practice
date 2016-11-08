@@ -1,9 +1,5 @@
 class TntImportController {
-    constructor(gettextCatalog) {
-        this.gettextCatalog = gettextCatalog;
-    }
     save() {
-
     }
 }
 

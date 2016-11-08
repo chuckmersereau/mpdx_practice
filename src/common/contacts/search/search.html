@@ -3,7 +3,7 @@
     <input type="text"
            name="q"
            class="search_filter form-control"
-           placeholder="{{ $ctrl.gettextCatalog.getString('Keywords') }}"
+           placeholder="{{ 'Keywords' | translate }}"
            autocomplete="off"
            ng-model="$ctrl.filters.params.wildcard_search"
            ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }"

@@ -1,8 +1,7 @@
 class ContactsSearchController {
-    constructor(filterService, contactsService, gettextCatalog) {
+    constructor(filterService, contactsService) {
         this.filterService = filterService;
         this.contactsService = contactsService;
-        this.gettextCatalog = gettextCatalog;
 
         this.searchParams = '';
     }

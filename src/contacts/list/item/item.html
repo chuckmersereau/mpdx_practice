@@ -8,11 +8,11 @@
             <h4 class="name">
                 <a ui-sref="contact({contactId: $ctrl.contact.id})">{{$ctrl.contact.name}}</a>
                 <i class="fa fa-envelope" ng-class="{'icon-error-red': $ctrl.hasSendNewsletterError()}"
-                   title="{{$ctrl.contact.send_newsletter | gettext}}" ng-show="$ctrl.contact.send_newsletter"></i>
-                <span title="{{ $ctrl.gettextCatalog.getString('Partner - Special') }}" ng-show="$ctrl.contact.status === 'Partner - Special'">
+                   title="{{$ctrl.contact.send_newsletter | translate}}" ng-show="$ctrl.contact.send_newsletter"></i>
+                <span title="{{ 'Partner - Special' | translate }}" ng-show="$ctrl.contact.status === 'Partner - Special'">
                 <span>{{$ctrl.contact.pledge_currency_symbol}}</span>
                 </span>
-                        <span title="{{ $ctrl.gettextCatalog.getString('Partner - Financial') }}" ng-show="$ctrl.contact.status === 'Partner - Financial'">
+                        <span title="{{ 'Partner - Financial' | translate }}" ng-show="$ctrl.contact.status === 'Partner - Financial'">
                   <span>{{$ctrl.contact.pledge_currency_symbol}}</span>
                   <span>{{$ctrl.contact.pledge_currency_symbol}}</span>
                 </span>
@@ -24,10 +24,10 @@
                         {{phone_number.number}}
                     </span>
                     <a ng-repeat="email_address in person.email_addresses" ng-if="email_address.primary && !email_address.historic" ng-href="mailto:{{email_address.email}}">
-                        <i class="fa fa-envelope-square" title="{{ $ctrl.gettextCatalog.getString('Email') }}"></i>
+                        <i class="fa fa-envelope-square" title="{{ 'Email' | translate }}"></i>
                     </a>
                     <a ng-repeat="facebook_account in person.facebook_accounts" ng-href="{{facebook_account.url}}" target="_blank">
-                        <i class="fa fa-facebook-square" title="{{ $ctrl.gettextCatalog.getString('Facebook profile') }}"></i>
+                        <i class="fa fa-facebook-square" title="{{ 'Facebook profile' | translate }}"></i>
                     </a>
                 </div>
             </div>
@@ -42,22 +42,31 @@
             </div>
         </div>
         <div class="col-sm-5 more-details">
-            <div ng-show="$ctrl.contact.status !== ''">{{$ctrl.contact.status | gettext}}</div>
+            <div ng-show="$ctrl.contact.status !== ''">{{$ctrl.contact.status | translate}}</div>
             <div ng-show="$ctrl.contact.pledge_amount > 0">
-                {{$ctrl.contact.pledge_amount | currency: $ctrl.contact.pledge_currency_symbol}} {{$ctrl.contact.pledge_frequency | pledgeFrequencyStr}}
+                {{$ctrl.contact.pledge_amount | currency: $ctrl.contact.pledge_currency_symbol}} {{$ctrl.contact.pledge_frequency }}
                 <div ng-if="$ctrl.contact.status == 'Partner - Financial'" ng-switch="$ctrl.contact.pledge_received">
                     <div ng-switch-when="true" class="text-success" translate>Commitment Received</div>
                     <div ng-switch-when="false" class="text-warning" translate>Commitment Not Received</div>
                 </div>
             </div>
+            <!-- div ng-show="$ctrl.contact.pledge_amount > 0">
+                {{$ctrl.contact.pledge_amount | currency: $ctrl.contact.pledge_currency_symbol}} {{$ctrl.contact.pledge_frequency | pledgeFrequencyStr}}
+                <div ng-if="$ctrl.contact.status == 'Partner - Financial'" ng-switch="$ctrl.contact.pledge_received">
+                    <div ng-switch-when="true" class="text-success" translate>Commitment Received</div>
+                    <div ng-switch-when="false" class="text-warning" translate>Commitment Not Received</div>
+                </div>
+            </div -->
+
+
             <a ng-href="/tasks?contact_ids={{$ctrl.contact.id}}" ng-show="$ctrl.contact.uncompleted_tasks_count > 0">
                 <span translate>Tasks</span>: {{$ctrl.contact.uncompleted_tasks_count}}
             </a>
         </div>
     </div>
     <div class="btn-group">
-        <a class="btn btn-sm btn-default" ui-sref="contact({contactId: $ctrl.contact.id})" title="{{ $ctrl.gettextCatalog.getString('View Contact') }}"><i class="fa fa-search"></i></a>
-        <a class="btn btn-sm btn-default" title="{{ $ctrl.gettextCatalog.getString('Hide Contact') }}" ng-click="$ctrl.hide({ contactId: $ctrl.contact.id })"><i class="fa fa-eye-slash"></i></a>
+        <a class="btn btn-sm btn-default" ui-sref="contact({contactId: $ctrl.contact.id})" title="{{ 'View Contact' | translate }}"><i class="fa fa-search"></i></a>
+        <a class="btn btn-sm btn-default" title="{{ 'Hide Contact' | translate }}" ng-click="$ctrl.hide({ contactId: $ctrl.contact.id })"><i class="fa fa-eye-slash"></i></a>
         <button class="btn btn-sm btn-default" ng-click="$ctrl.toggleCheckbox()">
             <input type="checkbox" ng-model="$ctrl.contact.selected" ng-click="$ctrl.stopPropagation($event)"/>
         </button>

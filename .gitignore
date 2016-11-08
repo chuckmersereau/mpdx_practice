@@ -3,5 +3,4 @@ public
 build
 .idea
 .iml
-yarn.lock
 npm-debug.log

@@ -1,7 +1,4 @@
 class CsvImportController {
-    constructor(gettextCatalog) {
-        this.gettextCatalog = gettextCatalog;
-    }
     save() {
 
     }

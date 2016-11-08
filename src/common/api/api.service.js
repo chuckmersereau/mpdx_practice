@@ -13,7 +13,7 @@ class Api {
         // This function supports both callbacks (successFn, errorFn) and returns a promise
         // It would be preferred to use promises in the future
     }
-    call(method, url, data = {}, successFn, errorFn, cache, params) {
+    call(method, url, data = {}, successFn, errorFn, cache, params, headers) {
         if (cache === true) {
             const cachedData = this.apiCache.get(url);
             if (angular.isDefined(cachedData)) {
@@ -34,6 +34,7 @@ class Api {
             url: this.apiUrl + url,
             data: data,
             params: params,
+            headers: headers,
             paramSerializer: '$httpParamSerializerJQLike',
             cacheService: false,
             timeout: 50000

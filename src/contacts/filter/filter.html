@@ -1,6 +1,5 @@
 <a ng-click="$ctrl.resetFiltersAndTags()" class="btn btn-primary btn-xs btn-block btn-filter-left ng-cloak"
-   ng-show="$ctrl.showReset()"
-   onClick="_gaq.push(['_trackEvent', 'Contacts Events', 'Filter', 'Reset Filters']);">
+   ng-show="$ctrl.showReset()" analytics-on analytics-event="Reset Filters" analytics-category="Contacts Events" analytics-label="Filter">
     <i class="fa fa-undo"></i> <span translate>Reset Filters</span>
 </a>
 <ul>
@@ -24,7 +23,7 @@
                             <div class="filter_multiselect" ng-if="child.type == 'multiselect'">
                                 <label>
                                     {{child.title}}
-                                    <a class="filter_invert_multiselect" ng-click="$ctrl.invertMultiselect(child)" title="{{ $ctrl.gettextCatalog.getString('Invert') }}">
+                                    <a class="filter_invert_multiselect" ng-click="$ctrl.invertMultiselect(child)" title="{{ 'Invert' | translate }}">
                                         <span class="fa-stack">
                                           <i class="fa fa-circle fa-stack-2x text-danger"></i>
                                           <i class="fa fa-minus fa-stack-1x fa-inverse"></i>
@@ -46,7 +45,7 @@
                             <div class="filter_dates" ng-if="child.type == 'dates'">
                                 <label ng-repeat="option in child.options">
                                     {{option.name}}<br>
-                                    <datetimepicker ng-model="$ctrl.filterService.params[child.name][option.id]" hidden-time="true" placeholder="{{ $ctrl.gettextCatalog.getString('None') }}"></datetimepicker>
+                                    <datetimepicker ng-model="$ctrl.filterService.params[child.name][option.id]" hidden-time="true" placeholder="{{ 'None' | translate }}"></datetimepicker>
                                 </label>
                             </div>
                             <div class="filter_dates" ng-if="child.type == 'daterange'">
@@ -54,7 +53,7 @@
                                     {{child.title}}<br>
                                     <contacts-filter-daterange
                                         model="$ctrl.filterService.params[child.name]"
-                                        locale="{ applyLabel: '{{ $ctrl.gettextCatalog.getString('Filter') }}', cancelLabel: '{{ $ctrl.gettextCatalog.getString('Clear') }}' }"
+                                        locale="{ applyLabel: '{{ 'Filter' | translate }}', cancelLabel: '{{ 'Clear' | translate }}' }"
                                         custom-options="child.options">
                                     </contacts-filter-daterange>
                                 </label>
@@ -68,7 +67,7 @@
                         </div>
                         <div class="filter_multiselect" ng-if="filter.type == 'multiselect'">
                             <label>
-                                <a class="filter_invert_multiselect" ng-click="$ctrl.invertMultiselect(filter)" title="{{ $ctrl.gettextCatalog.getString('Invert') }}">
+                                <a class="filter_invert_multiselect" ng-click="$ctrl.invertMultiselect(filter)" title="{{ 'Invert' | translate }}">
                                   <span class="fa-stack">
                                     <i class="fa fa-circle fa-stack-2x text-danger"></i>
                                     <i class="fa fa-minus fa-stack-1x fa-inverse"></i>
@@ -89,13 +88,13 @@
                         <div class="filter_dates" ng-if="filter.type == 'dates'">
                             <label ng-repeat="option in filter.options">
                                 {{option.name}}<br>
-                                <datetimepicker ng-model="$ctrl.filterService.params[filter.name][option.id]" hidden-time="true" placeholder="{{ $ctrl.gettextCatalog.getString('None') }}"></datetimepicker>
+                                <datetimepicker ng-model="$ctrl.filterService.params[filter.name][option.id]" hidden-time="true" placeholder="{{ 'None' | translate }}"></datetimepicker>
                             </label>
                         </div>
                         <div class="filter_dates" ng-if="filter.type == 'daterange'">
                             <contacts-filter-daterange
                                 model="$ctrl.filterService.params[filter.name]"
-                                locale="{ applyLabel: '{{ $ctrl.gettextCatalog.getString('Filter') }}', cancelLabel: '{{ $ctrl.gettextCatalog('Clear') }}' }"
+                                locale="{ applyLabel: '{{ 'Filter' | translate }}', cancelLabel: '{{ 'Clear' | translate }}' }"
                                 custom-options="filter.options">
                             </contacts-filter-daterange>
                         </div>
@@ -108,7 +107,8 @@
                     </div>
                 </li>
                 <li class="controls map-contacts-btn">
-                    <a ng-click="$ctrl.openMapContactsModal()" class="btn btn-default btn-xs cursor-pointer" onclick="_gaq.push(['_trackEvent', 'Contacts Events', 'Filter', 'Map These Contacts']);">
+                    <a ng-click="$ctrl.openMapContactsModal()" class="btn btn-default btn-xs cursor-pointer"
+                       analytics-on analytics-event="Map These Contacts" analytics-category="Contacts Events" analytics-label="Filter">
                         <i class="fa fa-map-marker"></i>
                         Map Selected Contacts
                     </a>
@@ -120,7 +120,7 @@
         <span class="left_filters menu_item" translate>Insights</span>
         <p style="text-indent:40px">
             <a href="" ng-click="$ctrl.runInsight('recommendations')"
-               onClick="_gaq.push(['_trackEvent', 'Contacts Events', 'Filter', 'Increase Recommendations']);" translate>
+               analytics-on analytics-category="Contacts Events" analytics-label="Filter" analytics-event="Increase Recommendations" translate>
                 Increase Recommendations
             </a>
         </p>

@@ -6,6 +6,14 @@ cache:
     - node_modules
 script: ./script.sh
 after_deploy: aws/invalidate_cloudfront.sh
+before_install:
+  - npm install -g yarn --cache-min 999999999
+install:
+  - yarn
+branches:
+  only:
+  - master
+  - staging
 deploy:
 - provider: s3
   access_key_id: AKIAJTJ4YT7JED4DZJIA

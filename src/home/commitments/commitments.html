@@ -5,7 +5,7 @@
     <div class="panel-body" ng-if="$ctrl.noPledgeCount !== null">
         <a ui-sref="contacts({filters: {status: ['Partner - Financial'], pledge_received: false} })" class="dash-stat">
             <span class="count-big" translate>
-                $ctrl.noPledgeCount
+                {{ $ctrl.noPledgeCount }}
             </span>
             <span translate>first gift not received</span>
         </a>

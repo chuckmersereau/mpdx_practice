@@ -22,7 +22,9 @@
                 </div>
                 <div class="section">
                     <div class="dropdown">
-                        <a bs-dropdown class="btn btn-secondary" href="#" type="button" id="quick-drop" aria-expanded="true" translate>
+                        <a bs-dropdown class="btn btn-secondary" href="#" type="button" id="quick-drop" aria-expanded="true"
+                           analytics-on analytics-category="Global Events" analytics-label="Actions"
+                           translate>
                             Quick Add
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="quick-drop">
@@ -55,7 +57,7 @@
                     <li class="item" ui-sref-active="active"><a ui-sref="contacts" translate>Contacts</a></li>
                     <li class="item" ui-sref-active="active"><a ui-sref="tasks" translate>Tasks</a></li>
                     <li class="item" ui-sref-active="active"><a ui-sref="donations" translate>Donations</a></li>
-                    <li class="item" ui-sref-active="active" ng-if="$ctrl.rollout.reports"><a ui-sref="reports" translate>Reports</a></li>
+                    <li class="item" ui-sref-active="active"><a ui-sref="reports.monthly" translate>Reports</a></li>
                     <li class="item" ui-sref-active="active" ng-if="$ctrl.rollout.research"><a ui-sref="research" translate>Research</a></li>
                     <li class="item" ui-sref-active="active" ng-if="$ctrl.showInsights"><a ui-sref="insights" translate>Insights</a></li>
                     <li class="item last" ui-sref-active="active"><a ui-sref="help" translate>Help</a></li>
@@ -81,11 +83,14 @@
                     <div class="section" ng-class="{active: $ctrl.isInState('reports.monthly')}">
                         <a ui-sref="reports.monthly" translate>Expected Monthly Total</a>
                     </div>
+                    <div class="section" ng-class="{active: $ctrl.isInState('reports.balances')}">
+                        <a ui-sref="reports.balances" translate>Balances</a>
+                    </div>
                     <div class="section" ng-class="{active: $ctrl.isInState('reports.salary')}">
                         <a ui-sref="reports.salary" translate>Contributions by Salary Currency</a>
                     </div>
-                    <div class="section" ng-class="{active: $ctrl.isInState('reports.donor')}">
-                        <a ui-sref="reports.donor" translate>Contributions by Partner Currency</a>
+                    <div class="section" ng-class="{active: $ctrl.isInState('reports.partner')}">
+                        <a ui-sref="reports.partner" translate>Contributions by Partner Currency</a>
                     </div>
                 </div>
                 <menu-balances></menu-balances>

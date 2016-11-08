@@ -1,8 +1,9 @@
 class BalancesController {
     currentAccountList;
 
-    constructor(currentAccountList) {
+    constructor(currentAccountList, gettextCatalog) {
         this.currentAccountList = currentAccountList;
+        this.gettextCatalog = gettextCatalog;
     }
 }
 
