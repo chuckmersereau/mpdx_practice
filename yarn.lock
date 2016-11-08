@@ -155,6 +155,14 @@ angular@^1.5.7, angular@>=1.0.8, angular@>=1.4.4, angular@~1.x, angular@1.5.8:
   version "1.5.8"
   resolved "https://registry.yarnpkg.com/angular/-/angular-1.5.8.tgz#925a5392b8c212d09572dc446db7e01264e094cb"
 
+angulartics:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/angulartics/-/angulartics-1.3.0.tgz#22186b60edf95a526541a3c093b0973202bda956"
+
+angulartics-google-analytics:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/angulartics-google-analytics/-/angulartics-google-analytics-0.3.0.tgz#1cf54ec958eb22639938decf6a30e1b5a44cd671"
+
 ansi-escapes@^1.1.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-1.4.0.tgz#d3a8a83b319aa67793662b13e761c7911422306e"
@@ -3513,7 +3521,7 @@ karma-jasmine@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/karma-jasmine/-/karma-jasmine-1.0.2.tgz#c0b3ab327bf207db60e17fa27db37cfdef5d8e6c"
 
-karma-phantomjs-launcher@^1.0.2:
+karma-phantomjs-launcher:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/karma-phantomjs-launcher/-/karma-phantomjs-launcher-1.0.2.tgz#19e1041498fd75563ed86730a22c1fe579fa8fb1"
   dependencies:
@@ -3657,7 +3665,7 @@ lodash._root@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/lodash._root/-/lodash._root-3.0.1.tgz#fba1c4524c19ee9a5f8136b4609f017cf4ded692"
 
-lodash.assign@^4.0.3, lodash.assign@^4.0.6, lodash.assign@^4.2.0:
+lodash.assign@^4.0.3, lodash.assign@^4.0.6:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/lodash.assign/-/lodash.assign-4.2.0.tgz#0d99f3ccd7a6d261d19bdaeb9245005d285808e7"
 
@@ -4037,9 +4045,9 @@ node-pre-gyp@^0.6.29:
     tar "~2.2.0"
     tar-pack "~3.1.0"
 
-node-sass@^3.9.3:
-  version "3.10.1"
-  resolved "https://registry.yarnpkg.com/node-sass/-/node-sass-3.10.1.tgz#c535b2e1a5439240591e06d7308cb663820d616c"
+node-sass@3.9.3:
+  version "3.9.3"
+  resolved "https://registry.yarnpkg.com/node-sass/-/node-sass-3.9.3.tgz#9bbc9183e98b88c8d2f7123518700562102cf31a"
   dependencies:
     async-foreach "^0.1.3"
     chalk "^1.1.1"
@@ -4048,7 +4056,6 @@ node-sass@^3.9.3:
     get-stdin "^4.0.1"
     glob "^7.0.3"
     in-publish "^2.0.0"
-    lodash.assign "^4.2.0"
     lodash.clonedeep "^4.3.2"
     meow "^3.7.0"
     mkdirp "^0.5.1"
