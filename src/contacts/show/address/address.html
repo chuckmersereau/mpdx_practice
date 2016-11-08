@@ -5,7 +5,7 @@
         {{$ctrl.address.city}} {{$ctrl.address.state}} {{$ctrl.address.postal_code}}<br />
         {{$ctrl.address.country}}
         <div ng-if="$ctrl.address.street">
-            <i class="fa fa-map-marker"></i> Google Maps
+            <a ui-sref=".address({addressId: $ctrl.address.id})"><i class="fa fa-map-marker"></i> Google Maps</a>
         </div>
     </p>
 </div>
