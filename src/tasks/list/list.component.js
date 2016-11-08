@@ -1,8 +1,7 @@
 import moment from 'moment';
 
 class ListController {
-    constructor($rootScope, tasksService) {
-        var vm = this;
+    constructor($rootScope, tasksService, $modal) {
         this.moment = moment;
         this.models = {};
         this.tasks = tasksService.data;

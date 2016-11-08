@@ -1,7 +1,7 @@
 class TagsService {
     constructor() {
-        this.singularCtx = 'contact';
-        this.pluralCtx = 'contacts';
+        this.singularCtx = 'task';
+        this.pluralCtx = 'tasks';
     }
 }
 
