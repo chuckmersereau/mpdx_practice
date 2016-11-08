@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "6"
+  - "7"
 cache:
   directories:
     - node_modules
@@ -10,6 +10,7 @@ before_install:
   - npm install -g yarn --cache-min 999999999
 install:
   - yarn
+  - npm rebuild node-sass
 branches:
   only:
   - master
