@@ -22,7 +22,6 @@ class AccountPreferencesController {
 
 const Preferences = {
     controller: AccountPreferencesController,
-    controllerAs: 'vm',
     template: require('./accounts.html')
 };
 
