@@ -73,9 +73,8 @@ class ListController {
     }
     openEditFieldsModal() {
         this.modal.open({
-            contentTemplate: '/common/bulk_edit_fields.html',
-            controller: 'bulkEditFieldsController',
-            controllerAs: 'vm',
+            template: require('./editFields/editFields.html'),
+            controller: 'editFieldsController',
             locals: {
                 contacts: this.contactsService.getSelectedContactIds()
             }
@@ -89,9 +88,8 @@ class ListController {
             this.alertsService.addAlert('You can only merge up to 8 contacts at a time.', 'danger');
         } else {
             this.modal.open({
-                contentTemplate: '/common/merge_contacts.html',
+                template: require('./mergeContacts/mergeContacts.html'),
                 controller: 'mergeContactsController',
-                controllerAs: 'vm',
                 locals: {
                     contactIds: this.contactsService.getSelectedContactIds(),
                     contactNames: this.contactsService.getSelectedContactNames()
