@@ -60,16 +60,14 @@ class ListController {
     }
     openLogTaskModal() {
         this.modal.open({
-            contentTemplate: '/common/bulk_log_task.html',
-            controller: 'bulkLogTaskController',
-            controllerAs: 'vm',
+            template: require('../logTask/logTask.html'),
+            controller: 'logTaskController',
             locals: {
                 contacts: this.contactsService.getSelectedContactIds(),
                 toComplete: true,
                 createNext: true,
                 specifiedTask: null,
-                ajaxAction: null,
-                modalTitle: 'Log Task'
+                ajaxAction: null
             }
         });
     }
