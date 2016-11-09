@@ -3,7 +3,6 @@ import ngAnimate from 'angular-animate';
 import getText from 'angular-gettext';
 import jwt from 'angular-jwt';
 import ngSanitize from 'angular-sanitize';
-
 import uiRouter from 'angular-ui-router';
 import checklistModel from 'checklist-model';
 import ngInfiniteScroll from 'ng-infinite-scroll';
@@ -12,6 +11,8 @@ import ngFileUpload from 'ng-file-upload';
 import ngMap from 'ngmap';
 import ngSortable from 'ng-sortable';
 // deps with no default exports
+import 'angulartics';
+import 'angulartics-google-analytics';
 import 'angular-strap';
 import 'angular-chosen-localytics';
 import 'angular-localforage';
@@ -46,6 +47,8 @@ export default angular.module('mpdx.vendor', [
     ngInfiniteScroll,
     ngMap,
     ngSortable,
+    'angulartics',
+    'angulartics.google.analytics',
     'isoCurrency',
     'LocalForageModule',
     'localytics.directives',
