@@ -6,14 +6,5 @@ gulp.task('extract', function() {
         .pipe(gettext.extract('mpdx.pot', {
             // options to pass to angular-gettext-tools...
         }))
-        .pipe(gulp.dest('src/locale/'));
-});
-
-gulp.task('translations', function() {
-    return gulp.src('locale/**/*.po')
-        .pipe(gettext.compile({
-            // options to pass to angular-gettext-tools...
-            format: 'json'
-        }))
-        .pipe(gulp.dest('dist/translations/'));
+        .pipe(gulp.dest('locale'));
 });

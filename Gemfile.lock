@@ -1,0 +1,26 @@
+GEM
+  specs:
+    domain_name (0.5.20160826)
+      unf (>= 0.0.5, < 1.0.0)
+    http-cookie (1.0.2)
+      domain_name (~> 0.5)
+    mime-types (1.25.1)
+    netrc (0.11.0)
+    onesky-ruby (1.0.1)
+      rest-client (~> 1.8)
+    rest-client (1.8.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 3.0)
+      netrc (~> 0.7)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  onesky-ruby
+
+BUNDLED WITH
+   1.13.2
