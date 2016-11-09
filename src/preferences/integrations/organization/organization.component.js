@@ -89,7 +89,6 @@ class OrganizationIntegrationPreferencesController {
 
 const Organization = {
     controller: OrganizationIntegrationPreferencesController,
-    controllerAs: 'vm',
     template: require('./organization.html')
 };
 

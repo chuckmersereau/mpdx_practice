@@ -23,7 +23,6 @@ class NotificationPreferencesController {
 
 const Notifications = {
     controller: NotificationPreferencesController,
-    controllerAs: 'vm',
     template: require('./notifications.html')
 };
 
