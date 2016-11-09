@@ -4,3 +4,4 @@ build
 .idea
 .iml
 npm-debug.log
+src/locale/**

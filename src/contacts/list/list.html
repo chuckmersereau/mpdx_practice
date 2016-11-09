@@ -9,12 +9,13 @@
                 <div class="btn-group">
                     <div class="btn-group">
                         <div class="dropdown">
-                            <a href="#" class="btn btn-default dropdown-toggle"
+                            <a class="btn btn-default dropdown-toggle"
                                analytics-on analytics-event="Click" analytics-category="Contacts Events" analytics-label="Bulk Actions"
                                type="button" data-toggle="dropdown" aria-expanded="true">
                                 <span  translate>Actions</span> <span class="caret"></span>
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop" ng-show="vm.contactsService.getSelectedContacts().length > 0">
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop"
+                                ng-show="vm.contactsService.getSelectedContacts().length > 0">
                                 <li><a ng-click="vm.openAddTagModal()" translate>Add Tags</a></li>
                                 <li><a ng-click="vm.openRemoveTagModal()" translate>Remove Tags</a></li>
                                 <li><a ng-click="vm.openAddTaskModal()" translate>Add Task</a></li>

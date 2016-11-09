@@ -1,9 +1,9 @@
 class FilterController {
     contactsService;
     filterService;
-    tagsService;
+    contactsTagsService;
 
-    constructor(filterService, tagsService, contactsService, modal) {
+    constructor(filterService, contactsTagsService, contactsService, modal) {
         this.modal = modal;
         this.contactsService = contactsService;
         this.filterService = filterService;

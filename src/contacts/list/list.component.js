@@ -1,13 +1,13 @@
 class ListController {
     constructor(
         modal,
-        contactsService, filterService, tagsService, alertsService, tasksService, currentAccountList
+        contactsService, filterService, contactsTagsService, alertsService, tasksService, currentAccountList
     ) {
         this.modal = modal;
         this.alertsService = alertsService;
         this.contactsService = contactsService;
         this.currentAccountList = currentAccountList;
-        this.tagsService = tagsService;
+        this.tagsService = contactsTagsService;
         this.tasksService = tasksService;
 
         this.models = {
@@ -37,11 +37,9 @@ class ListController {
     }
     openAddTagModal() {
         this.modal.open({
-            contentTemplate: '/common/bulk_add_tag.html',
-            controller: 'bulkAddTagController',
-            controllerAs: 'vm',
+            template: require('../../common/tags/add/add.html'),
+            controller: 'addTagController',
             locals: {
-                modalTitle: 'Add Tags',
                 contacts: this.contactsService.getSelectedContactIds()
             }
         });
@@ -127,4 +125,3 @@ const ContactList = {
 
 export default angular.module('mpdx.contacts.list.component', [])
     .component('contactsList', ContactList).name;
-

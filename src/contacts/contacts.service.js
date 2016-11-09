@@ -4,11 +4,11 @@ class ContactsService {
     filterService;
     tagsService;
 
-    constructor($rootScope, filterService, tagsService, cache, api, $location) {
+    constructor($rootScope, filterService, contactsTagsService, cache, api, $location) {
         this.api = api;
         this.cache = cache;
         this.filterService = filterService;
-        this.tagsService = tagsService;
+        this.tagsService = contactsTagsService;
 
         this.data = [];
         this.meta = {};
@@ -429,4 +429,3 @@ import filterService from '../common/filter/filter.service';
 
 export default angular.module('mpdx.contacts.service', [filterService])
     .service('contactsService', ContactsService).name;
-
