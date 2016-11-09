@@ -63,7 +63,6 @@ class ImportPreferencesController {
 
 const Import = {
     controller: ImportPreferencesController,
-    controllerAs: 'vm',
     template: require('./import.html')
 };
 

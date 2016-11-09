@@ -59,7 +59,6 @@ class MailchimpIntegrationPreferencesController {
 
 const Mailchimp = {
     controller: MailchimpIntegrationPreferencesController,
-    controllerAs: 'vm',
     template: require('./mailchimp.html'),
     bindings: {
         'state': '='

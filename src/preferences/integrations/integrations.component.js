@@ -71,7 +71,6 @@ class IntegrationPreferencesController {
 
 const Integrations = {
     controller: IntegrationPreferencesController,
-    controllerAs: 'vm',
     template: require('./integrations.html')
 };
 
