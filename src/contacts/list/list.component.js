@@ -37,11 +37,9 @@ class ListController {
     }
     openAddTagModal() {
         this.modal.open({
-            contentTemplate: '/common/bulk_add_tag.html',
-            controller: 'bulkAddTagController',
-            controllerAs: 'vm',
+            template: require('../../common/tags/add/add.html'),
+            controller: 'addTagController',
             locals: {
-                modalTitle: 'Add Tags',
                 contacts: this.contactsService.getSelectedContactIds()
             }
         });
