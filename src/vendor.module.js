@@ -29,7 +29,9 @@ import jQuery from '!expose?jQuery!jquery';
 window.$ = jQuery;
 // style deps
 //require('bootstrap/dist/css/bootstrap-theme.css');
+require('./styles/angularModal.css');
 require('bootstrap-additions/dist/bootstrap-additions.css');
+
 
 export default angular.module('mpdx.vendor', [
     deepBlur,

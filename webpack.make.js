@@ -7,7 +7,6 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var path = require('path');
 
-
 module.exports = function makeWebpackConfig(options) {
     /**
      * Environment type
@@ -114,6 +113,12 @@ module.exports = function makeWebpackConfig(options) {
             test: /\.js$/,
             loaders: ['babel'],
             exclude: /node_modules|bower_components|vendor\//
+        // }, {
+        //     // HTML Modal Template LOADER
+        //     // Reference: https://github.com/WearyMonkey/ngtemplate-loader
+        //     // Allow loading html through js
+        //     test: /\.modal.html$/,
+        //     loaders: ["ngtemplate?relativeTo=" + encodeURIComponent(path.resolve(process.cwd(), './src/')), "html"]
         }, {
             // HTML LOADER
             // Reference: https://github.com/WearyMonkey/ngtemplate-loader

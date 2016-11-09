@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "6"
+  - "7"
 cache:
   directories:
     - node_modules
@@ -11,6 +11,7 @@ before_install:
   - npm install -g gulp
 install:
   - yarn
+  - npm rebuild node-sass
 branches:
   only:
   - master
