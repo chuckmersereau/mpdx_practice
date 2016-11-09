@@ -13,5 +13,5 @@ resp = JSON.parse(project.show)
 p resp['data']
 
 # upload file
-resp = project.upload_file(file: 'locale/mpdx.pot', file_format: 'GNU_POT')
+resp = project.upload_file(file: 'src/locale/mpdx.pot', file_format: 'GNU_POT')
 resp.code # => 201
