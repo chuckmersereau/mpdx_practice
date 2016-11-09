@@ -26,7 +26,7 @@ import selectionStore from './selectionStore/selectionStore.service';
 import serverConstants from './serverConstants/serverConstants.service';
 import session from './session/session.service';
 import state from './state/state.service';
-import tags from './tags/tags.service';
+import tags from './tags/index.module';
 import urlParameter from './urlParameter/urlParameter.service';
 
 export default angular.module('mpdx.common', [
