@@ -1,16 +1,24 @@
 #!/bin/bash
+set -e
 echo '-- run tests --'
-npm test || exit 1
+npm test
 echo '-- run eslint --'
-eslint . || exit 1
+eslint .
 
 if [ "$TRAVIS_BRANCH" = "master" ]
 then
+
     echo '-- build production --'
     export NODE_ENV=production
 else
     echo '-- build staging --'
     export NODE_ENV=staging
 fi
-npm run build || exit 1
+echo '-- run translation --'
+gulp extract
+bundle install
+bundle exec ruby onesky/upload.rb
+bundle exec ruby onesky/download.rb
+echo '-- run build --'
+npm run build
 echo '<!-- COMMIT:' $TRAVIS_COMMIT '-->' >> public/index.html
