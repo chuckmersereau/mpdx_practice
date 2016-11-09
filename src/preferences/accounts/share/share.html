@@ -3,20 +3,20 @@
         <h5 translate>Share this ministry account with other team members</h5>
     </div>
     <div class="col-md-8 pref-content">
-        <div class="alert alert-warning" ng-if="vm.userPreferences.data.manager" translate>
+        <div class="alert alert-warning" ng-if="$ctrl.usersService.data.manager" translate>
             If you want to allow another mpdx user to have access to this ministry account,
             you can share access with them. Make sure you have the proper permissions and
             leadership consensus around this sharing before you do this. You will be able to remove access later.
         </div>
 
-        <div ng-if="vm.userPreferences.data.users.length > 0">
+        <div ng-if="$ctrl.usersService.data.users.length > 0">
             <strong translate>Account currently shared with</strong>
             <ul class="account-users">
-                <li ng-repeat="user in vm.userPreferences.data.users">
+                <li ng-repeat="user in $ctrl.usersService.data.users">
                     {{user.first_name}}
                     {{user.last_name}}
                     ({{user.email}})
-                    <span ng-if="user.method.type == 'designation'" data-toggle="tooltip" data-placement="top" title="{{ 'Linked by designation' | translate }}: {{user.method.name}}">
+                    <span ng-if="user.method.type == 'designation'" data-toggle="tooltip" data-placement="top" title="<{{ 'Linked by designation' | translate }}: {{user.method.name}}">
             <i class="fa fa-info-circle"></i>
           </span>
                     <span ng-if="user.method.type == 'invite'" data-toggle="tooltip" data-placement="top" title="{{ 'Invited by' | translate }}: {{user.method.inviter.first_name}} {{user.method.inviter.last_name}}">
@@ -25,26 +25,26 @@
                     <span ng-if="user.method.type == 'mpdx'" data-toggle="tooltip" data-placement="top" title="{{ 'Manually added by MPDX support' | translate }}">
             <i class="fa fa-info-circle"></i>
           </span>
-                    <span ng-if="vm.userPreferences.data.manager && user.deletable">
-            <button class="btn btn-xxs btn-danger" ng-click="vm.removeUser(user.id)" ng-disabled="vm.saving"><i class="fa fa-remove"></i> <%= _('Delete') %></button>
+                    <span ng-if="$ctrl.usersService.data.manager && user.deletable">
+            <button class="btn btn-xxs btn-danger" ng-click="$ctrl.removeUser(user.id)" ng-disabled="$ctrl.saving"><i class="fa fa-remove"></i> <span translate>Delete</span></button>
           </span>
                 </li>
             </ul>
         </div>
-        <div ng-if="vm.invitePreferences.data.users.length > 0">
+        <div ng-if="$ctrl.invitesService.data.users.length > 0">
             <strong translate>Pending Invites</strong>
             <ul class="account-users">
-                <li ng-repeat="user in vm.invitePreferences.data.users">
+                <li ng-repeat="user in $ctrl.invitesService.data.users">
                     {{user.email}}
                     <i>(<span translate>Sent by</span> {{user.inviter.first_name}} {{user.inviter.last_name}})</i>
-                    <span ng-if="vm.invitePreferences.data.manager">
-            <button class="btn btn-xxs btn-danger" ng-click="vm.cancelInvite(user.id)" ng-disabled="vm.saving"><i class="fa fa-remove"></i> <span translate>Cancel</span></button>
+                    <span ng-if="$ctrl.invitesService.data.manager">
+            <button class="btn btn-xxs btn-danger" ng-click="$ctrl.cancelInvite(user.id)" ng-disabled="$ctrl.saving"><i class="fa fa-remove"></i> <span translate>Cancel</span></button>
           </span>
                 </li>
             </ul>
         </div>
 
-        <div ng-if="vm.invitePreferences.data.manager" class="well">
+        <div ng-if="$ctrl.invitesService.data.manager" class="well">
             <strong translate>Invite someone to share this account:</strong>
             <invite-preferences></invite-preferences>
         </div>
