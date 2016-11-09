@@ -83,7 +83,7 @@ angular-deep-blur@1.0.10:
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/angular-deep-blur/-/angular-deep-blur-1.0.10.tgz#a2dd218021c0385d3a795f084971634a64658956"
 
-angular-gettext-tools@^2.3.0:
+angular-gettext-tools@^2.2.0, angular-gettext-tools@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/angular-gettext-tools/-/angular-gettext-tools-2.3.0.tgz#e0701b41d8f5d2c90a89007090b027556cbbe05a"
   dependencies:
@@ -3011,7 +3011,16 @@ graceful-fs@~1.2.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/graceful-readlink/-/graceful-readlink-1.0.1.tgz#4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
 
-gulp-util@^3.0.0:
+gulp-angular-gettext@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/gulp-angular-gettext/-/gulp-angular-gettext-2.2.0.tgz#90b5f38e89b4be491e8bb5cabaf69b0a71ddf95f"
+  dependencies:
+    angular-gettext-tools "^2.2.0"
+    gulp-util "^3.0.7"
+    lodash.isstring "^4.0.1"
+    through2 "^2.0.1"
+
+gulp-util@^3.0.0, gulp-util@^3.0.7:
   version "3.0.7"
   resolved "https://registry.yarnpkg.com/gulp-util/-/gulp-util-3.0.7.tgz#78925c4b8f8b49005ac01a011c557e6218941cbb"
   dependencies:
@@ -6103,7 +6112,7 @@ through2@^0.6.1, through2@^0.6.2, through2@^0.6.5:
     readable-stream ">=1.0.33-1 <1.1.0-0"
     xtend ">=4.0.0 <4.1.0-0"
 
-through2@^2.0.0:
+through2@^2.0.0, through2@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/through2/-/through2-2.0.1.tgz#384e75314d49f32de12eebb8136b8eb6b5d59da9"
   dependencies:
