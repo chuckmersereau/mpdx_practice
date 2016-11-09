@@ -1,5 +1,5 @@
 require 'onesky'
-require 'JSON'
+require 'json'
 
 # Create client
 client = Onesky::Client.new(ENV['ONESKY_API_KEY'], ENV['ONESKY_API_SECRET'])

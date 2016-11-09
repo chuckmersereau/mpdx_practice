@@ -1,5 +1,5 @@
 require 'onesky'
-require 'JSON'
+require 'json'
 require 'fileutils'
 
 # Create client
