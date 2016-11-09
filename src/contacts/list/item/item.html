@@ -44,12 +44,21 @@
         <div class="col-sm-5 more-details">
             <div ng-show="$ctrl.contact.status !== ''">{{$ctrl.contact.status | translate}}</div>
             <div ng-show="$ctrl.contact.pledge_amount > 0">
-                {{$ctrl.contact.pledge_amount | currency: $ctrl.contact.pledge_currency_symbol}} {{$ctrl.contact.pledge_frequency | pledgeFrequencyStr}}
+                {{$ctrl.contact.pledge_amount | currency: $ctrl.contact.pledge_currency_symbol}} {{$ctrl.contact.pledge_frequency }}
                 <div ng-if="$ctrl.contact.status == 'Partner - Financial'" ng-switch="$ctrl.contact.pledge_received">
                     <div ng-switch-when="true" class="text-success" translate>Commitment Received</div>
                     <div ng-switch-when="false" class="text-warning" translate>Commitment Not Received</div>
                 </div>
             </div>
+            <!-- div ng-show="$ctrl.contact.pledge_amount > 0">
+                {{$ctrl.contact.pledge_amount | currency: $ctrl.contact.pledge_currency_symbol}} {{$ctrl.contact.pledge_frequency | pledgeFrequencyStr}}
+                <div ng-if="$ctrl.contact.status == 'Partner - Financial'" ng-switch="$ctrl.contact.pledge_received">
+                    <div ng-switch-when="true" class="text-success" translate>Commitment Received</div>
+                    <div ng-switch-when="false" class="text-warning" translate>Commitment Not Received</div>
+                </div>
+            </div -->
+
+
             <a ng-href="/tasks?contact_ids={{$ctrl.contact.id}}" ng-show="$ctrl.contact.uncompleted_tasks_count > 0">
                 <span translate>Tasks</span>: {{$ctrl.contact.uncompleted_tasks_count}}
             </a>
