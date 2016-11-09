@@ -1,8 +1,8 @@
-<div ng-show="vm.preferences.loading" class="loading-spinner">
+<div ng-show="$ctrl.notificationsService.loading" class="loading-spinner">
     <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
     <span class="sr-only"><%= _('Loading') %></span>
 </div>
-<div ng-hide="vm.preferences.loading">
+<div ng-hide="$ctrl.notificationsService.loading">
     <div class="row">
         <div class="col-md-12">
             <div class="row spacer-top">
@@ -24,7 +24,7 @@
                     Select the types of notifications you'd like to receive.
                 </div>
                 <ul class="list-group">
-                    <li class="list-group-item" ng-repeat="notification in vm.notifications">
+                    <li class="list-group-item" ng-repeat="notification in $ctrl.notificationTypes">
                         <div class="row pref-row">
                             <div class="col-md-8" translate>
                                 {{ notification.description }}
@@ -32,11 +32,11 @@
                             <div class="col-md-4 text-right pref-lead">
                                 <div class="form-group">
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" ng-checked="vm.preferences.data[notification.field_name].actions.indexOf('email') !== -1" ng-click="vm.preferences.toggleNotification(notification.field_name, 'email')">
+                                        <input type="checkbox" ng-checked="$ctrl.notificationsService.data[notification.field_name].actions.indexOf('email') !== -1" ng-click="$ctrl.notificationsService.toggleNotification(notification.field_name, 'email')">
                                         <span translate>Email me</span>
                                     </label>
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" ng-checked="vm.preferences.data[notification.field_name].actions.indexOf('task') != -1" ng-click="vm.preferences.toggleNotification(notification.field_name, 'task')">
+                                        <input type="checkbox" ng-checked="$ctrl.notificationsService.data[notification.field_name].actions.indexOf('task') != -1" ng-click="$ctrl.notificationsService.toggleNotification(notification.field_name, 'task')">
                                         <span translate>Create a task</span>
                                     </label>
                                 </div>
@@ -48,9 +48,9 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="page-filters page-filters-close">
-                        <button type="submit" ng-click="vm.save()" ng-disabled="vm.saving" class="btn btn-primary btn-actionable">
+                        <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                             <span translate>Save Preferences</span>&nbsp;
-                            <div class="btn-progress" ng-show="vm.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></div>
+                            <div class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></div>
                         </button>
                     </div>
                 </div>

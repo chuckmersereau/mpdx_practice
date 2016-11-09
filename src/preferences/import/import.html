@@ -1,16 +1,16 @@
 <p>&nbsp;</p>
 <div class="panel-group">
     <div class="panel panel-default pref-panel">
-        <div class="panel-heading pref-head" ng-click="vm.setTab('tnt')">
-            <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('tnt') }"></i>
+        <div class="panel-heading pref-head" ng-click="$ctrl.setTab('tnt')">
+            <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('tnt') }"></i>
             <span translate>TntConnect</span>
         </div>
-        <div class="panel-animate" ng-show="vm.tabSelected('tnt')">
+        <div class="panel-animate" ng-show="$ctrl.tabSelected('tnt')">
             <div class="panel-body pref-body">
                 <div class="row pref-row">
                     <div class="col-md-4 pref-lead">
                         <div class="import_logo">
-                            <img src="/images/logos/tnt_logo.png"  alt="TntConnect">
+                            <img src="../../images/logos/tnt_logo.png"  alt="TntConnect">
                         </div>
                     </div>
                     <div class="col-md-8 connections" data-behavior="account">
@@ -25,11 +25,11 @@
         </div>
     </div>
     <div class="panel panel-default pref-panel">
-        <div class="panel-heading pref-head" ng-click="vm.setTab('csv')">
-            <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('csv') }"></i>
+        <div class="panel-heading pref-head" ng-click="$ctrl.setTab('csv')">
+            <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('csv') }"></i>
             <span translate>CSV File</span>
         </div>
-        <div class="panel-animate" ng-show="vm.tabSelected('csv')">
+        <div class="panel-animate" ng-show="$ctrl.tabSelected('csv')">
             <div class="panel-body pref-body">
                 <div class="row pref-row">
                     <div class="col-md-4 pref-lead">
@@ -49,27 +49,27 @@
         </div>
     </div>
     <div class="panel panel-default pref-panel">
-        <div class="panel-heading pref-head" ng-click="vm.setTab('google')">
-            <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('google') }"></i>
+        <div class="panel-heading pref-head" ng-click="$ctrl.setTab('google')">
+            <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('google') }"></i>
             <span translate>Google Contacts</span>
         </div>
-        <div class="panel-animate" ng-show="vm.tabSelected('google')" style="max-height: 3000px;">
-            <div ng-show="vm.preferences.loading" class="loading-spinner">
+        <div class="panel-animate" ng-show="$ctrl.tabSelected('google')" style="max-height: 3000px;">
+            <div ng-show="$ctrl.importsService.loading" class="loading-spinner">
                 <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
                 <span class="sr-only" translate>Loading</span>
             </div>
-            <div ng-hide="vm.preferences.loading">
+            <div ng-hide="$ctrl.importsService.loading">
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-4 pref-lead">
                             <div class="import_logo">
-                                <img src="/images/logos/google_logo.png" alt="Google">
+                                <img src="../../images/logos/google_logo.png" alt="Google">
                             </div>
                         </div>
                         <div class="col-md-8 connections" data-behavior="account">
                             <div class="import_button">
                                 <div class="importoptions" data-behavior="import_options">
-                                    <google-import-form preferences="vm.preferences"></google-import-form>
+                                    <google-import-form preferences="$ctrl.importsService"></google-import-form>
                                 </div>
                             </div>
                         </div>
