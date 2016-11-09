@@ -90,9 +90,8 @@ class ListController {
             this.alertsService.addAlert('You can only merge up to 8 contacts at a time.', 'danger');
         } else {
             this.modal.open({
-                contentTemplate: '/common/merge_contacts.html',
+                template: require('./mergeContacts/mergeContacts.html'),
                 controller: 'mergeContactsController',
-                controllerAs: 'vm',
                 locals: {
                     contactIds: this.contactsService.getSelectedContactIds(),
                     contactNames: this.contactsService.getSelectedContactNames()
