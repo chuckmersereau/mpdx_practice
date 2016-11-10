@@ -158,9 +158,9 @@ class TasksService {
     starTask(task, cb) {
         this.api.put('/tasks/' + task.id, {task: {starred: !task.starred}}, cb);
     }
-    postBulkLogTask(ajaxAction, taskId, model, contactIds, toComplete, cb) {
+    postBulkLogTask(ajaxAction, taskId, model, contactIds, toComplete) {
         const url = 'tasks/' + (taskId || '');
-        this.api.call(ajaxAction, url, {
+        return this.api.call(ajaxAction, url, {
             add_task_contact_ids: contactIds.join(),
             task: {
                 subject: model.subject,
@@ -185,8 +185,6 @@ class TasksService {
                 result: model.result,
                 tag_list: model.tagsList.map(tag => tag.text).join()
             }
-        }).then(() => {
-            cb();
         });
     }
     postLogTask(taskId, model, cb) {

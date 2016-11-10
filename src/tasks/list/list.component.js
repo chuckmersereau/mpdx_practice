@@ -1,13 +1,14 @@
 import moment from 'moment';
 
 class ListController {
-    constructor($rootScope, tasksService, $modal) {
+    constructor($rootScope, tasksService, modal) {
         this.moment = moment;
         this.models = {};
         this.tasks = tasksService.data;
         this.meta = tasksService.meta[this.key];
         this.defaultFilters = tasksService.defaultFilters[this.key];
         this.tasksService = tasksService;
+        this.modal = modal;
         this.selected = [];
         this.combinedFilters = Object.assign(
             {
@@ -34,26 +35,22 @@ class ListController {
         //     });
         // };
         //
-        // this.openEditTaskModal = function(task) {
-        //     $modal({
-        //         templateUrl: '/templates/modal.html',
-        //         contentTemplate: '/templates/common/bulk_log_task.html',
-        //         animation: 'am-fade-and-scale',
-        //         placement: 'center',
-        //         controller: 'bulkLogTaskController',
-        //         locals: {
-        //             modalTitle: 'Edit Task',
-        //             contacts: [vm.contact],
-        //             specifiedTask: task,
-        //             ajaxAction: 'put',
-        //             toComplete: this.completed,
-        //             createNext: false,
-        //             modalCallback: this.loadPage
-        //         },
-        //         controllerAs: 'vm'
-        //     });
-        // };
     }
+
+    openEditTaskModal(task) {
+        this.modal.open({
+            template: require('../edit/edit.html'),
+            controller: 'editTaskController',
+            locals: {
+                contacts: task.contacts,
+                specifiedTask: task,
+                ajaxAction: 'put',
+                toComplete: false,
+                createNext: false,
+                modalCallback: this.loadPage
+            }
+        });
+    };
 
     toggleSelected(taskId) {
         var index = this.selected.indexOf(taskId);
