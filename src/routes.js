@@ -36,10 +36,15 @@ export default class Routes {
             onEnter: openPeopleModal
         }).state({
             name: 'donations',
-            url: '/donations/{startDate}',
+            url: '/donations/{startDate}/{endDate}',
             component: 'donations',
             params: {
-                startDate: new Date().toDateString()
+                startDate: moment().startOf('month').format('l'),
+                endDate: moment().endOf('month').format('l')
+            },
+            resolve: {
+                startDate: /*@ngInject*/ ($stateParams) => $stateParams.startDate,
+                endDate: /*@ngInject*/ ($stateParams) => $stateParams.endDate
             }
         }).state({
             name: 'reports',
