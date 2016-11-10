@@ -137,9 +137,8 @@ class TasksService {
     }
     openModal(params) {
         this.modal.open({
-            contentTemplate: '/common/bulk_add_task.html',
-            controller: 'bulkAddTaskController',
-            controllerAs: 'vm',
+            template: require('./add/add.html'),
+            controller: 'addTaskController',
             locals: {
                 specifiedAction: params.specifiedAction || null,
                 specifiedSubject: params.specifiedSubject || null,
@@ -152,9 +151,8 @@ class TasksService {
     }
     openNewsletterModal(params) {
         this.modal.open({
-            contentTemplate: '/common/newsletter/add/add.html',
-            controller: 'bulkAddTaskController',
-            controllerAs: 'vm',
+            template: require('./add/newsletter.html'),
+            controller: 'addTaskController',
             locals: {
                 specifiedAction: params.specifiedAction || null,
                 specifiedSubject: params.specifiedSubject || null,
