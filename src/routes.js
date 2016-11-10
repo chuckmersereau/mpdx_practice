@@ -35,6 +35,13 @@ export default class Routes {
             url: '/people/{personId}',
             onEnter: openPeopleModal
         }).state({
+            name: 'donations',
+            url: '/donations/{startDate}',
+            component: 'donations',
+            params: {
+                startDate: new Date().toDateString()
+            }
+        }).state({
             name: 'reports',
             url: '/reports',
             component: 'reports'
