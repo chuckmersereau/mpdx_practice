@@ -2,11 +2,11 @@
 <div class="panel-group" id="accounts-group">
 
     <div class="panel panel-default pref-panel">
-        <div class="panel-heading pref-head" ng-click="vm.setTab('share_account')">
-            <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('share_account') }"></i>
+        <div class="panel-heading pref-head" ng-click="$ctrl.setTab('share_account')">
+            <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('share_account') }"></i>
             <span translate>Manage Account Access</span>
         </div>
-        <div class="panel-animate" ng-show="vm.tabSelected('share_account')">
+        <div class="panel-animate" ng-show="$ctrl.tabSelected('share_account')">
             <div class="panel-body pref-body">
                 <share-preferences></share-preferences>
             </div>
@@ -14,11 +14,11 @@
     </div>
 
     <div class="panel panel-default pref-panel">
-        <div class="panel-heading pref-head" ng-click="vm.setTab('merge_account')">
-            <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('merge_account') }"></i>
+        <div class="panel-heading pref-head" ng-click="$ctrl.setTab('merge_account')">
+            <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('merge_account') }"></i>
             <span translate>Merge Your Accounts</span>
         </div>
-        <div class="panel-animate" ng-show="vm.tabSelected('merge_account')">
+        <div class="panel-animate" ng-show="$ctrl.tabSelected('merge_account')">
             <div class="panel-body pref-body">
                 <div class="row pref-row">
                     <div class="col-md-4 pref-lead">
@@ -49,11 +49,11 @@
     </div>
 
     <div class="panel panel-default pref-panel">
-        <div class="panel-heading pref-head" ng-click="vm.setTab('merge_spouse_account')">
-            <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : vm.tabSelected('merge_spouse_account') }"></i>
+        <div class="panel-heading pref-head" ng-click="$ctrl.setTab('merge_spouse_account')">
+            <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('merge_spouse_account') }"></i>
             <span translate>Merge Spouse Accounts</span>
         </div>
-        <div class="panel-animate" ng-show="vm.tabSelected('merge_spouse_account')">
+        <div class="panel-animate" ng-show="$ctrl.tabSelected('merge_spouse_account')">
             <div class="panel-body pref-body">
                 <div class="row pref-row">
                     <div class="col-md-4 pref-lead">
