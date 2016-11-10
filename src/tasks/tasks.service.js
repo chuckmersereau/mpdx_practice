@@ -1,12 +1,11 @@
 class TasksService {
-    constructor(api) {
+    constructor(modal, api) {
+        this.modal = modal;
         this.api = api;
+
         this.loading = true;
         this.sort = 'all';
-        this.data = {
-            completed: [],
-            uncompleted: []
-        };
+        this.data = {};
         this.pages = {
             contactShow: ['completed', 'uncompleted'],
             tasksList: ['today', 'overdue', 'upcoming', 'tomorrow', 'noDueDate', 'starred', 'allCompleted']
@@ -92,7 +91,7 @@ class TasksService {
                 completed: true
             }
         };
-    };
+    }
 
     fetchTasks(
         collection,
@@ -137,48 +136,30 @@ class TasksService {
     }
 
     transformChild(parentObj, childKey, referredObj, oneToOne) {
-        parentObj.forEach(function(parent) {
+        _.each(parentObj, (parent) => {
             var newObj;
             if (oneToOne) {
-                newObj = referredObj.find(function(referredItem) {
-                    return referredItem.id === parent[childKey];
-                });
+                newObj = _.find(referredObj, referredItem => referredItem.id === parent[childKey]);
             } else {
                 newObj = [];
-                parent[childKey].forEach(function(id) {
-                    newObj.push(referredObj.find(function(referredItem) {
-                        return referredItem.id === id;
-                    }));
+                _.each(parent[childKey], (id) => {
+                    newObj.push(_.find(referredObj, referredItem => referredItem.id === id));
                 });
             }
             parent[childKey] = newObj;
         });
     }
-
     submitNewComment(taskId, newComment, cb) {
-        this.api.put('tasks/' + taskId, {
-            task: {
-                activity_comments_attributes: [{
-                    body: newComment
-                }]
-            }
-        }, cb);
+        this.api.put('/tasks/' + taskId, {task: {activity_comments_attributes: [{body: newComment}]}}, cb);
     }
-
     deleteTask(taskId, cb) {
-        this.api.delete('tasks/' + taskId, {}, cb);
+        this.api.delete('/tasks/' + taskId, {}, cb);
     }
-
     starTask(task, cb) {
-        this.api.put('tasks/' + task.id, {
-            task: {
-                starred: !task.starred
-            }
-        }, cb);
+        this.api.put('/tasks/' + task.id, {task: {starred: !task.starred}}, cb);
     }
-
     postBulkLogTask(ajaxAction, taskId, model, contactIds, toComplete, cb) {
-        var url = 'tasks/' + (taskId || '');
+        const url = 'tasks/' + (taskId || '');
         this.api.call(ajaxAction, url, {
             add_task_contact_ids: contactIds.join(),
             task: {
@@ -195,24 +176,21 @@ class TasksService {
                 'completed_at(3i)': model.completedAt.getDate() + '',
                 'completed_at(4i)': model.completedAt.getHours() + '',
                 'completed_at(5i)': model.completedAt.getMinutes() + '',
-                activity_comments_attributes: [{
-                    body: model.comment
-                }],
-                completed: toComplete ? true : model.result,
+                activity_comments_attributes: [
+                    {
+                        body: model.comment
+                    }
+                ],
+                completed: toComplete || model.result,
                 result: model.result,
-                tag_list: model.tagsList.map(function(tag) {
-                    return tag.text;
-                }).join()
+                tag_list: model.tagsList.map(tag => tag.text).join()
             }
-        }, function() {
-            if (angular.isFunction(cb)) {
-                cb();
-            }
+        }).then(() => {
+            cb();
         });
     }
-
     postLogTask(taskId, model, cb) {
-        var objPayload = {
+        let objPayload = {
             task: {
                 activity_comment: {
                     body: model.comment
@@ -229,7 +207,6 @@ class TasksService {
 
         this.api.put('tasks/' + taskId, objPayload, cb);
     }
-
     postBulkAddTask(model, contactIds, cb) {
         this.api.post('tasks', {
             add_task_contact_ids: contactIds.join(),
@@ -237,26 +214,51 @@ class TasksService {
                 subject: model.subject,
                 activity_type: model.action,
                 no_date: model.noDate,
-                location: model.location,
                 'start_at(1i)': model.date.getFullYear() + '',
                 'start_at(2i)': (model.date.getMonth() + 1) + '',
                 'start_at(3i)': model.date.getDate() + '',
                 'start_at(4i)': model.date.getHours() + '',
                 'start_at(5i)': model.date.getMinutes() + '',
-                activity_comments_attributes: [{
-                    body: model.comment
-                }],
-                tag_list: model.tagsList.map(function(tag) {
-                    return tag.text;
-                }).join()
+                activity_comments_attributes: [
+                    {
+                        body: model.comment
+                    }
+                ],
+                tag_list: model.tagsList.map(tag => tag.text).join()
             }
-        }, function() {
-            if (angular.isFunction(cb)) {
-                cb();
-            }
+        }).then(() => {
+            cb();
+        });
+    }
+    openModal(params) {
+        this.modal.open({
+            template: require('./add/add.html'),
+            controller: 'addTaskController',
+            locals: {
+                specifiedAction: params.specifiedAction || null,
+                specifiedSubject: params.specifiedSubject || null,
+                contacts: params.contact || [],
+                modalTitle: params.title || 'Add Task',
+                isNewsletter: false
+            },
+            onHide: params.onHide || _.noop
+        });
+    }
+    openNewsletterModal(params) {
+        this.modal.open({
+            template: require('./add/newsletter.html'),
+            controller: 'addTaskController',
+            locals: {
+                specifiedAction: params.specifiedAction || null,
+                specifiedSubject: params.specifiedSubject || null,
+                contacts: params.contact || [],
+                modalTitle: params.title || 'Add Newsletter',
+                isNewsletter: true
+            },
+            onHide: params.onHide || _.noop
         });
     }
 }
 
-export default angular.module('mpdx.common.tasks.service', [])
+export default angular.module('mpdx.common.tasks', [])
     .service('tasksService', TasksService).name;

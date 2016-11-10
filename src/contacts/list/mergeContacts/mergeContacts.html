@@ -1,0 +1,14 @@
+<modal>
+    <modal-header title="Merge Contacts" on-close="$hide()"></modal-header>
+    <form class="modal-body" name="addTaskForm" ng-submit="$ctrl.submit()">
+        <p translate>Are you sure you want to merge the selected contacts?</p>
+        <p class="warning-text" translate>This action cannot be undone!</p>
+        <ul>
+            <li ng-repeat="name in $ctrl.contactNames">{{ name }}</li>
+        </ul>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" translate>Merge</button>
+            <button type="button" class="btn btn-default" ng-click="$hide()" translate>Close</button>
+        </div>
+    </form>
+</modal>
