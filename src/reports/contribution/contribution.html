@@ -77,25 +77,17 @@
                 <span class="table-padding-left"><a ui-sref="contact({ contactId: donation.id})">{{donation.donor}}</a></span>
             </td>
             <td>{{donation.status}}</td>
-            <td><%= number_to_current_currency(row[:pledge_amount]) %></td>
-            <td><%= Contact.pledge_frequencies[row[:pledge_frequency]] %></td>
-            <td><span class="table-padding"><%= number_to_current_currency(row[:average]) %></span></td>
-            <td><span class="table-padding"><%= number_to_current_currency(row[:minimum]) %></span></td>
-            <% (0..11).reverse_each do |index| %>
-            <td class="right">
-                <% unless row[:amounts][index.month.ago(@end_date).strftime '%b %y'].nil? %>
-                <%= number_to_current_currency(
-                row[:amounts][index.month.ago(@end_date).strftime '%b %y'][:value],
-                currency: row[:amounts][index.month.ago(@end_date).strftime '%b %y'][:currency]) %>
-                <% end %>
+            <td>{{donation.pledge_amount}}</td>
+            <td>{{donation.pledge_frequency}}</td>
+            <td><span class="table-padding">{{donation.average}}</span></td>
+            <td><span class="table-padding">{{donation.minimum}}</span></td>
+            <td class="right" ng-repeat="month in $ctrl.months">
+                {{donation.amount[$index]}}
             </td>
-            <% end %>
             <td class="total right">
-                <span class="table-padding-right"><%= number_to_current_currency(row[:total]) %></span>
+                <span class="table-padding-right">{{donation.total}} %></span>
             </td>
         </tr>
-        <% end %>
-        <% sum_row %>
         </tbody>
     </table>
 </div>
