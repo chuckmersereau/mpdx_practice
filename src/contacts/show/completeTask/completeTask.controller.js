@@ -18,12 +18,13 @@ class CompleteTaskController {
         this.activate();
     }
     activate() {
-        this.serverConstants.fetchConstants(['nextActions', 'results', 'pledge_frequency']);
+        this.serverConstants.fetchConstants(['next_actions', 'results', 'pledge_frequency']);
         this.constants = this.serverConstants.data;
     }
     submit() {
         this.tasksService.postLogTask(this.taskId, this.models).then(() => {
             this.$scope.$hide();
+            //TODO: This should instead open the task followup modal
             this.modal.open({
                 template: require('../../../tasks/add/add.html'),
                 controller: 'addTaskController',

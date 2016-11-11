@@ -17,25 +17,20 @@ class ListController {
             },
             this.filters
         );
-
-        // this.openCompleteTaskModal = function(task) {
-        //     $modal({
-        //         templateUrl: '/templates/modal.html',
-        //         contentTemplate: '/templates/common/complete_task.html',
-        //         animation: 'am-fade-and-scale',
-        //         placement: 'center',
-        //         controller: 'completeTaskController',
-        //         controllerAs: 'vm',
-        //         locals: {
-        //             taskId: task.id,
-        //             contact: vm.contact,
-        //             taskAction: task.activity_type,
-        //             modalCallback: this.loadPage
-        //         }
-        //     });
-        // };
-        //
     }
+
+    openCompleteTaskModal(task) {
+        this.modal.open({
+            template: require('../../contacts/show/completeTask/completeTask.html'),
+            controller: 'completeTaskController',
+            locals: {
+                taskId: task.id,
+                contact: task.contacts[0],
+                taskAction: task.activity_type,
+                modalCallback: this.loadPage
+            }
+        });
+    };
 
     openEditTaskModal(task) {
         this.modal.open({
@@ -51,6 +46,29 @@ class ListController {
             }
         });
     };
+
+    openBulkEditTaskModal() {
+        this.modal.open({
+            template: require('../bulkEdit/bulkEdit.html'),
+            controller: 'bulkEditTaskController',
+            locals: {
+                taskIds: this.selected,
+                modalCallback: this.loadPage
+            }
+        });
+    }
+
+    deleteComment(taskId, commentId) {
+        this.tasksService.deleteComment(taskId, commentId).then(this.load);
+    }
+
+    bulkDeleteTasks() {
+        this.tasksService.bulkDeleteTasks(this.selected);
+    }
+
+    bulkCompleteTasks() {
+        this.tasksService.bulkCompleteTasks(this.selected);
+    }
 
     toggleSelected(taskId) {
         var index = this.selected.indexOf(taskId);
@@ -94,7 +112,6 @@ class ListController {
 
     $onChanges(changes) {
         if (this.setCombinedFilters(changes)) {
-            console.log('to load...');
             this.load();
         }
     }

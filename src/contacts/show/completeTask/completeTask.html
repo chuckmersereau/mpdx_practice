@@ -1,10 +1,9 @@
 <modal>
     <modal-header title="Finish Task" on-close="$hide"></modal-header>
-    <form class="modal-body" name="logTaskForm" ng-submit="$ctrl.submit()" novalidate>
+    <form class="modal-body" name="completeTaskForm" ng-submit="$ctrl.submit()" novalidate>
         <div class="form-group" ng-if="$ctrl.constants.results[ $ctrl.taskAction ]">
             <label for="result">Result</label>
-            <select chosen
-                    required
+            <select required
                     disable-search="true"
                     class="form-control"
                     id='result'
@@ -14,13 +13,12 @@
             </select>
         </div>
 
-        <div class="form-group" ng-if="$ctrl.constants.nextActions[ $ctrl.taskAction ]">
+        <div class="form-group" ng-if="$ctrl.constants.next_actions[ $ctrl.taskAction ]">
             <label for="nextActions">Next Action</label>
-            <select chosen
-                    disable-search="true"
+            <select disable-search="true"
                     class="form-control"
                     id='nextActions'
-                    ng-options="opt for opt in $ctrl.constants.nextActions[ $ctrl.taskAction ]"
+                    ng-options="opt for opt in $ctrl.constants.next_actions[ $ctrl.taskAction ]"
                     ng-model="$ctrl.models.nextAction">
                 <option value=""></option>
             </select>
@@ -32,7 +30,7 @@
         </div>
 
         <div class="modal-footer">
-            <button type="submit" class="btn btn-primary" ng-disabled="logTaskForm.$invalid" translate>Save</button>
+            <button type="submit" class="btn btn-primary" ng-disabled="completeTaskForm.$invalid" translate>Save</button>
             <button type="button" class="btn btn-default" ng-click="$hide()" translate>Close</button>
         </div>
     </form>

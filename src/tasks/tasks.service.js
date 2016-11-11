@@ -150,13 +150,50 @@ class TasksService {
         });
     }
     submitNewComment(taskId, newComment, cb) {
-        this.api.put('/tasks/' + taskId, {task: {activity_comments_attributes: [{body: newComment}]}}, cb);
+        this.api.put('tasks/' + taskId, {task: {activity_comments_attributes: [{body: newComment}]}}, cb);
     }
     deleteTask(taskId, cb) {
         this.api.delete('/tasks/' + taskId, {}, cb);
     }
+    deleteComment(taskId, commentId) {
+        return this.api.delete('activity_comments/' + commentId, { activity_id: taskId });
+    }
+    bulkDeleteTasks(taskIds) {
+        return this.api.delete('tasks/bulk_destroy', { ids: taskIds });
+    }
+    bulkCompleteTasks(taskIds) {
+        return this.api.post('tasks/bulk_update', {
+            bulk_task_update_ids: taskIds.join(),
+            _method: 'put',
+            task: {
+                completed: true
+            }
+        });
+    }
+    bulkEditTasks(taskIds, model) {
+        return this.api.post('tasks/bulk_update', {
+            bulk_task_update_ids: taskIds.join(),
+            _method: 'put',
+            task: {
+                subject: model.subject,
+                activity_type: model.action,
+                no_date: model.noDate,
+                'start_at(1i)': model.dueDate ? model.dueDate.getFullYear() + '' : undefined,
+                'start_at(2i)': model.dueDate ? (model.dueDate.getMonth() + 1) + '' : undefined,
+                'start_at(3i)': model.dueDate ? model.dueDate.getDate() + '' : undefined,
+                'start_at(4i)': model.dueDate ? model.dueDate.getHours() + '' : undefined,
+                'start_at(5i)': model.dueDate ? model.dueDate.getMinutes() + '' : undefined,
+                activity_comments_attributes: [
+                    {
+                        body: model.comment
+                    }
+                ],
+                tag_list: model.tagsList ? model.tagsList.map(tag => tag.text).join() : undefined
+            }
+        });
+    }
     starTask(task, cb) {
-        this.api.put('/tasks/' + task.id, {task: {starred: !task.starred}}, cb);
+        this.api.put('tasks/' + task.id, {task: {starred: !task.starred}}, cb);
     }
     postBulkLogTask(ajaxAction, taskId, model, contactIds, toComplete) {
         const url = 'tasks/' + (taskId || '');

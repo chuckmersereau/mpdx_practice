@@ -8,9 +8,9 @@
           {{ $ctrl.title }}
         </span>
         <span class="actions task-actions" ng-show="$ctrl.selected.length">
-          <a class="btn btn-xs btn-secondary" ng-hide="$ctrl.key === 'allCompleted'">Complete</a>
-          <a class="btn btn-xs btn-secondary">Delete</a>
-          <a class="btn btn-xs btn-secondary">Edit</a>
+          <a class="btn btn-xs btn-secondary" ng-click="$ctrl.bulkCompleteTasks()" ng-hide="$ctrl.key === 'allCompleted'">Complete</a>
+          <a class="btn btn-xs btn-secondary" ng-click="$ctrl.bulkDeleteTasks()">Delete</a>
+          <a class="btn btn-xs btn-secondary" ng-click="$ctrl.openBulkEditTaskModal()">Edit</a>
         </span>
         <select
           ng-model="$ctrl.meta.per_page"
@@ -73,7 +73,7 @@
       <td colspan="100">
         <div class="col-sm-6" ng-repeat="comment in task.comments">
           <span style="font-size: 16px">{{ comment.body }}</span>
-          <a ng-click=""><i class="fa fa-times pull-right" aria-hidden="true"></i></a>
+          <a ng-click="$ctrl.deleteComment(task.id, comment.id)"><i class="fa fa-times pull-right" aria-hidden="true"></i></a>
           <br/>
           <span style="color: #909b9c">
             - {{ comment.person_id.first_name }} {{ comment.person_id.last_name }}, {{ $ctrl.moment(comment.created_at).format('M-d-YYYY') }}
