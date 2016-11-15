@@ -1,10 +1,10 @@
 function authInterceptor($q, $window) {
     return {
         request: (config) => {
-            if (!$window.session.token) {
-                return $q.reject('noAuth');
-            }
             if (config.url.indexOf('http') === 0) { //ensure it is an api call
+                if (!$window.session.token) {
+                    return $q.reject('noAuth');
+                }
                 if (config.method === 'GET' && config.url.indexOf('?') > -1) {
                     config.url += '&access_token=' + $window.sessionStorage.token;
                 } else {
