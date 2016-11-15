@@ -9,6 +9,7 @@ import menu from './menu/menu.component';
 import reports from './reports/index.module';
 import preferences from './preferences/index.module';
 import tasks from './tasks/index.module';
+import unavailable from './unavailable/unavailable.component';
 import vendor from './vendor.module';
 
 import appConfig from './app.config';
@@ -27,6 +28,7 @@ export default angular.module('mpdx', [
     reports,
     preferences,
     tasks,
+    unavailable,
     vendor
 ])
     .config(appConfig)

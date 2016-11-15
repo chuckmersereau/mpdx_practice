@@ -2,6 +2,8 @@ import config from "config";
 
 export default class Routes {
     static config($stateProvider) {
+        //$urlRouterProvider.otherwise('/unavailable');
+
         $stateProvider.state({
             name: 'home',
             url: '/',
@@ -110,6 +112,11 @@ export default class Routes {
             title: 'Preferences',
             url: '/{id}',
             component: 'personalPreferences'
+        }).state({
+            name: 'unavailable',
+            title: 'Unavailable',
+            url: '/*path',
+            component: 'unavailable'
         });
     }
 }
