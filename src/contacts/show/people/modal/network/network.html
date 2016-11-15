@@ -1,0 +1,19 @@
+<div class="row" ng-hide="$ctrl.deleted">
+    <div class="col-sm-7">
+        <input class="form-control" type="text" name="network" ng-model="$ctrl.network.url" placeholder="URL *" ng-required="!$ctrl.deleted" />
+    </div>
+    <div class="col-sm-4">
+        <select class="form-control" ng-model="$ctrl.network.kind" data-placeholder="{{ 'Select an Option *' | translate}}"
+                ng-required="!$ctrl.deleted" chosen>
+            <option value="facebook">Facebook</option>
+            <option value="twitter">Twitter</option>
+            <option value="linkedIn">LinkedIn</option>
+            <option value="website">Website</option>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <button type="button" ng-click="$ctrl.remove()" class="btn btn-block btn-default">
+            <i class="fa fa-minus-circle"></i>
+        </button>
+    </div>
+</div>

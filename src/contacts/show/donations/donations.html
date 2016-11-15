@@ -1,0 +1,68 @@
+<highchart config="$ctrl.donationGraphData"></highchart>
+<table class="table tasks-table">
+    <thead>
+    <tr>
+        <th translate>Donor</th>
+        <th translate>Date</th>
+        <th translate>Amount</th>
+        <th translate>Method</th>
+        <th translate>Motivation</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="placeholders" ng-show="$ctrl.loading" ng-repeat="i in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]">
+        <td class="col-sm-3 placeholder">
+            <div class="text text-secondary text-long text-thin"></div>
+        </td>
+        <td class="col-sm-2 placeholder">
+            <div class="text text-primary text-long text-thin"></div>
+        </td>
+        <td class="col-sm-2 placeholder">
+            <div class="text text-secondary text-short text-thin"></div>
+        </td>
+        <td class="col-sm-2 placeholder">
+            <div class="text text-primary text-long text-thin"></div>
+        </td>
+        <td class="col-sm-2 placeholder">
+            <div class="text text-primary text-long text-thin"></div>
+        </td>
+        <td class="col-sm-1 placeholder">
+            <div class="text text-primary text-long text-thin"></div>
+        </td>
+    </tr>
+    <tr ng-hide="$ctrl.loading" ng-repeat="donation in $ctrl.donations">
+        <td class="col-sm-3">
+            {{donation.name}}
+        </td>
+        <td class="col-sm-2">
+            {{donation.donation_date}}
+        </td>
+        <td class="col-sm-2">
+            {{donation.amount}} {{donation.currency}}
+        </td>
+        <td class="col-sm-2">
+            {{donation.payment_method}}
+        </td>
+        <td class="col-sm-2">
+            {{donation.motivation}}
+        </td>
+        <td class="col-sm-1 text-right">
+            <i class="fa fa-edit" ng-click="$ctrl.openDonationModal(donation)"></i>
+        </td>
+    </tr>
+    <tr ng-hide="$ctrl.loading || $ctrl.donations.length > 0">
+        <td colspan="100" class="text-center" translate>
+            No donations received
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="text-center">
+    <pagination to="$ctrl.donationsMeta.to"
+                from="$ctrl.donationsMeta.from"
+                page="$ctrl.donationsMeta.page"
+                total-pages="$ctrl.donationsMeta.total_pages"
+                total="$ctrl.donationsMeta.total"
+                on-change="$ctrl.getDonations(page)"
+    ></pagination>
+</div>
