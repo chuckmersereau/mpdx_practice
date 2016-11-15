@@ -55,7 +55,7 @@
                                     {{child.title}}<br>
                                     <contacts-filter-daterange
                                         model="$ctrl.filterService.params[child.name]"
-                                        locale="{ applyLabel: '{{ 'Filter' | translate }}', cancelLabel: '{{ 'Clear' | translate }}' }"
+                                        locale="$ctrl.dateRangeLocale"
                                         custom-options="child.options">
                                     </contacts-filter-daterange>
                                 </label>
