@@ -1,4 +1,7 @@
 class InvitePreferencesController {
+    alertsService;
+    invitesService;
+
     constructor(invitesService, alertsService) {
         this.invitesService = invitesService;
         this.alertsService = alertsService;
@@ -21,7 +24,6 @@ class InvitePreferencesController {
 
 const Invites = {
     controller: InvitePreferencesController,
-    controllerAs: 'vm',
     template: require('./invites.html')
 };
 

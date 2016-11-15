@@ -27,9 +27,10 @@ window.moment = moment;
 import 'moment-range';
 import jQuery from '!expose?jQuery!jquery';
 window.$ = jQuery;
+import 'chosen-js';
 // style deps
-//require('bootstrap/dist/css/bootstrap-theme.css');
-require('bootstrap-additions/dist/bootstrap-additions.css');
+require('./styles/fonts/freightsanspro/stylesheet.css');
+
 
 export default angular.module('mpdx.vendor', [
     deepBlur,
