@@ -2,7 +2,7 @@ function authInterceptor($q, $window) {
     return {
         request: (config) => {
             if (config.url.indexOf('http') === 0) { //ensure it is an api call
-                if (!$window.session.token) {
+                if (!$window.sessionStorage.token) {
                     return $q.reject('noAuth');
                 }
                 if (config.method === 'GET' && config.url.indexOf('?') > -1) {
