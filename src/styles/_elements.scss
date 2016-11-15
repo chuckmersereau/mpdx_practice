@@ -27,6 +27,8 @@ $green_dark: #437C00;
 $green_darkest: #3C6B00;
 $error_red: #c63333;
 $btn_gray: #A8A8A8;
+$menu_bg: #909B9C;
+$icon_gray: #4A4A4A;
 
 $page_bg: $color-white;
 $content_bg: $color-white;
@@ -65,8 +67,8 @@ $data-font: "Helvetica Neue", "Helvetica", "Arial";
 .data-font {font-family: $data-font;}
 
 html {
-  font-family: $brand-font;
-  font-size: 14px;
+    font-family: $brand-font;
+    font-size: 14px;
 }
 
 .btn,
@@ -75,7 +77,7 @@ h1, h2, h3,
 span.menu_item,
 .dropdown,
 #global {
-  font-family: $brand-font;
+    font-family: $brand-font;
 }
 
 
@@ -86,25 +88,25 @@ span.menu_item,
 /* ************************************************************** */
 
 .actions {
-  display: inline-block;
+    display: inline-block;
 }
 .inlineaction {
-  width: 14px;
-  height: 14px;
-  background: no-repeat 50% 50%;
-  display: inline-block;
-  text-indent: -1000px;
-  overflow: hidden;
+    width: 14px;
+    height: 14px;
+    background: no-repeat 50% 50%;
+    display: inline-block;
+    text-indent: -1000px;
+    overflow: hidden;
 }
 .inlineaction.delete {
-  background-image: url("images/delete.png");
+    background-image: url("images/delete.png");
 }
 
 #select_more {
-  a {
-    text-decoration: underline;
-    cursor: pointer;
-  }
+    a {
+        text-decoration: underline;
+        cursor: pointer;
+    }
 }
 
 .green { color: $green; }
@@ -114,104 +116,104 @@ span.menu_item,
 
 input:read-only:not([type="submit"]):not([type="button"]),
 textarea:read-only {
-  background-color: #d3d3d3;
+    background-color: #d3d3d3;
 }
 
 $appealHeight: 20px;
 
 .appealThermometer {
-  height: $appealHeight;
-  line-height: $appealHeight;
-  font-size: 11px;
-  width: 100px;
-  margin: 0 10px;
-  padding: 0;
-  border: #cccccc solid 1px;
-  display: inline-block;
-  .level {
-    height: $appealHeight - 2;
-    line-height: $appealHeight - 2;
-    vertical-align: middle;
-    margin: 0;
-    padding: 0 3px 0 0;
-    border-right: 1px solid #666666;
-    background: #ffcccc;
-    text-align: right;
-  }
+    height: $appealHeight;
+    line-height: $appealHeight;
+    font-size: 11px;
+    width: 100px;
+    margin: 0 10px;
+    padding: 0;
+    border: #cccccc solid 1px;
+    display: inline-block;
+    .level {
+        height: $appealHeight - 2;
+        line-height: $appealHeight - 2;
+        vertical-align: middle;
+        margin: 0;
+        padding: 0 3px 0 0;
+        border-right: 1px solid #666666;
+        background: #ffcccc;
+        text-align: right;
+    }
 }
 
 .appealFilterCol {
-  width: 33%;
-  display: inline-block;
-  vertical-align: top;
-  height: 310px;
-  overflow-y: auto;
+    width: 33%;
+    display: inline-block;
+    vertical-align: top;
+    height: 310px;
+    overflow-y: auto;
 }
 
 .ui-dialog-responsive .appealFilterCol {
-  height: auto;
+    height: auto;
 }
 
 .filter_selector_title {
-  font-size: 1em;
-  line-height: 1.5em;
+    font-size: 1em;
+    line-height: 1.5em;
 }
 
 .filter_selector {
-  label {
-    font-weight: normal;
-    line-height: 1.25em;
-    margin-bottom: 0;
-  }
+    label {
+        font-weight: normal;
+        line-height: 1.25em;
+        margin-bottom: 0;
+    }
 }
 
 .btn-reverse {
-  background: $color-gray-dark;
-  color: $color-white
+    background: $color-gray-dark;
+    color: $color-white
 }
 
 .btn-blue {
-  background: $color-blue-deep;
-  color: $color-white;
+    background: $color-blue-deep;
+    color: $color-white;
 }
 
 .btn-xxs {
-  padding: 2px 6px;
-  font-size: 12px;
-  line-height: 1.25;
-  border-radius: 1px;
+    padding: 2px 6px;
+    font-size: 12px;
+    line-height: 1.25;
+    border-radius: 1px;
 }
 
 .avatar-add{
-  position: absolute;
-  color: #56AA00;
-  cursor: pointer;
-  top: 58px;
-  left: 74px;
+    position: absolute;
+    color: #56AA00;
+    cursor: pointer;
+    top: 58px;
+    left: 74px;
 }
 
 .color-primary {color: $color-primary;}
 
 .account-users {
-  td, th {
-    padding: 10px;
-    border: 1px solid $color-gray-light;
-  }
+    td, th {
+        padding: 10px;
+        border: 1px solid $color-gray-light;
+    }
 }
 
 .impersonation-bar {
-  color: $error_red;
-  background: $gray_light;
-  text-align: center;
-  font-weight: bold;
-  font-size: 20px;
+    color: $error_red;
+    background: $gray_light;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
 }
 
 .warning-text {
-  color: $error_red;
-  font-weight: bold;
+    color: $error_red;
+    font-weight: bold;
 }
 
 a{
-  cursor: pointer;
+    cursor: pointer;
 }
