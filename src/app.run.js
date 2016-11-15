@@ -2,7 +2,7 @@ import config from 'config';
 
 /*@ngInject*/
 export default function appRun($transitions, $q, $window, $rootScope) {
-    $rootScope.googleMapsUrl = "https://maps.googleapis.com/maps/api/js?key=QF8dGA3a35KR61drl0zgxxT9kxE";
+    $rootScope.googleMapsUrl = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBIUs23E_OsltKqLcIPD6B4rU11bfZKnM0";
     $transitions.onBefore({ to: (state) => {
         if (state.name === 'login') {
             return false;
