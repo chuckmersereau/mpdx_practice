@@ -1,14 +1,14 @@
 .popover {
-  font-family: "freight-sans-pro", "Helvetica Neue", Arial, Helvetica, sans-serif;
-  background-color: #fff;
-  border-radius: 0;
-  box-shadow: none;
-  .popover-content {
-    padding: 5px;
-    line-height: 15px;
-    font-size: 12px;
-  }
-  &:focus {
-    outline: none;
-  }
+    font-family: "freight-sans-pro", "Helvetica Neue", Arial, Helvetica, sans-serif;
+    background-color: #fff;
+    border-radius: 0;
+    box-shadow: none;
+    .popover-content {
+        padding: 5px;
+        line-height: 15px;
+        font-size: 12px;
+    }
+    &:focus {
+        outline: none;
+    }
 }
