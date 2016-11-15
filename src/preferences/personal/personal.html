@@ -173,17 +173,18 @@
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-8 col-md-offset-4">
-                            <div class="form-group">
-                                <label for="locale" translate>Language</label>
-                                <p class="text-muted" translate>The locale determines your default language for MPDX as well as how numbers, dates and other information shows up in MPDX.</p>
-                                <select class="form-control" ng-model="$ctrl.personalService.data.locale" id="locale" ng-change="$ctrl.setLocale()" chosen>
-                                    <option ng-repeat=" option in $ctrl.locale_select_options">{{option}}</option>
-                                </select>
-                            </div>
-                            <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
-                                <span translate>Save</span>&nbsp;
-                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                            </button>
+                            <unavailable-message></unavailable-message>
+                            <!--<div class="form-group">-->
+                                <!--<label for="locale" translate>Language</label>-->
+                                <!--<p class="text-muted" translate>The locale determines your default language for MPDX as well as how numbers, dates and other information shows up in MPDX.</p>-->
+                                <!--<select class="form-control" ng-model="$ctrl.personalService.data.locale" id="locale" ng-change="$ctrl.setLocale()" chosen>-->
+                                    <!--<option ng-repeat=" option in $ctrl.locale_select_options">{{option}}</option>-->
+                                <!--</select>-->
+                            <!--</div>-->
+                            <!--<button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">-->
+                                <!--<span translate>Save</span>&nbsp;-->
+                                <!--<span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>-->
+                            <!--</button>-->
                         </div>
                     </div>
                 </div>
@@ -211,17 +212,18 @@
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-8 col-md-offset-4">
-                            <div class="form-group">
-                                <label for="defaultAccountList" translate>Default Account List</label>
-                                <p class="text-muted" translate>This sets which account you will land in whenever you login to MPDX.</p>
-                                <select id="defaultAccountList" class="form-control" ng-model="$ctrl.personalService.data.default_account_list" ng-change="$ctrl.setDefaultAccountList()" chosen>
-                                    <option ng-repeat="al in $ctrl.currentUser.account_lists" ng-value="al.id">{{al.name}}</option>
-                                </select>
-                            </div>
-                            <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
-                                <span translate>Save</span>&nbsp;
-                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                            </button>
+                            <unavailable-message></unavailable-message>
+                            <!--<div class="form-group">-->
+                                <!--<label for="defaultAccountList" translate>Default Account List</label>-->
+                                <!--<p class="text-muted" translate>This sets which account you will land in whenever you login to MPDX.</p>-->
+                                <!--<select id="defaultAccountList" class="form-control" ng-model="$ctrl.personalService.data.default_account_list" ng-change="$ctrl.setDefaultAccountList()" chosen>-->
+                                    <!--<option ng-repeat="al in $ctrl.currentUser.account_lists" ng-value="al.id">{{al.name}}</option>-->
+                                <!--</select>-->
+                            <!--</div>-->
+                            <!--<button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">-->
+                                <!--<span translate>Save</span>&nbsp;-->
+                                <!--<span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>-->
+                            <!--</button>-->
                         </div>
                     </div>
                 </div>

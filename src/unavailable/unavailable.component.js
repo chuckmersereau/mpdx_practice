@@ -1,9 +1,5 @@
-class UnavailableController {
-}
-
 const Unavailable = {
-    template: require('./unavailable.html'),
-    controller: UnavailableController
+    template: require('./unavailable.html')
 };
 
 export default angular.module('mpdx.unavailable.component', [])
