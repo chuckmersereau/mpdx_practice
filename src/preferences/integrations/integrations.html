@@ -91,47 +91,48 @@
                             </div>
                         </div>
                         <div class="col-md-8">
-                            <div class="network_button network_connect">
-                                <div ng-repeat="account in $ctrl.integrationsService.data.google_accounts" class="network_connections">
-                                    <div class="account_single">
-                                        <div class="actions">
-                                            <a class="inlineaction delete" ng-click="$ctrl.disconnect('Google', account.id)" translate>Delete</a>
-                                        </div>
-                                        <span class="account_name">{{account.email}}</span>
+                            <unavailable></unavailable>
+                            <!--<div class="network_button network_connect">-->
+                                <!--<div ng-repeat="account in $ctrl.integrationsService.data.google_accounts" class="network_connections">-->
+                                    <!--<div class="account_single">-->
+                                        <!--<div class="actions">-->
+                                            <!--<a class="inlineaction delete" ng-click="$ctrl.disconnect('Google', account.id)" translate>Delete</a>-->
+                                        <!--</div>-->
+                                        <!--<span class="account_name">{{account.email}}</span>-->
 
-                                        <div ng-show="account.token_expired == true">
-                                            <p translate>
-                                                The link between MPDX and your Google account stopped working.
-                                                Click "Refresh Google Account" to re-enable it. After that,
-                                                you'll need to manually re-enable any integrations that you had set already.
-                                            </p>
-                                            <%# new_account_path_opts = { provider: :google } %>
-                                            <%# new_account_path_opts[:redirect] =  google_integration_path(google_integration) if google_integration %>
-                                            <%#= link_to(_('Refresh Google Account'), new_account_path(new_account_path_opts), class: 'btn desired_action') %>
-                                        </div>
-                                        <div ng-show="account.token_expired == false">
-                                            <div ng-show="account.google_integration_id != null">
-                                                <a ng-href="/google_integrations/{{account.google_integration_id}}">
-                                                    <i class="fa fa-refresh"></i>
-                                                    <span translate>Configure synchronization</span>
-                                                </a>
-                                            </div>
-                                            <div ng-show="account.google_integration_id == null">
-                                                <a data-method="post" ng-href="/google_integrations?google_account_id={{account.id}}" rel="nofollow">
-                                                    <i class="fa fa-refresh"></i>
-                                                    <span translate>Configure synchronization</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div ng-hide="$ctrl.integrationsService.data.valid_google_account" translate>
-                                    You can keep Google in sync with your contacts, calendars, tasks and more. Click Add Account to begin.
-                                </div>
-                                <br />
-                                <a href="/auth/goggle" class="btn btn-primary" target="_blank" translate>Add Account</a>
-                                <a ng-show="$ctrl.integrationsService.data.valid_google_account" ui-sref="preferences.imports.tab({id: 'google'})" class="btn btn-secondary" translate>Import Google Contacts</a>
-                            </div>
+                                        <!--<div ng-show="account.token_expired == true">-->
+                                            <!--<p translate>-->
+                                                <!--The link between MPDX and your Google account stopped working.-->
+                                                <!--Click "Refresh Google Account" to re-enable it. After that,-->
+                                                <!--you'll need to manually re-enable any integrations that you had set already.-->
+                                            <!--</p>-->
+                                            <!--<%# new_account_path_opts = { provider: :google } %>-->
+                                            <!--<%# new_account_path_opts[:redirect] =  google_integration_path(google_integration) if google_integration %>-->
+                                            <!--<%#= link_to(_('Refresh Google Account'), new_account_path(new_account_path_opts), class: 'btn desired_action') %>-->
+                                        <!--</div>-->
+                                        <!--<div ng-show="account.token_expired == false">-->
+                                            <!--<div ng-show="account.google_integration_id != null">-->
+                                                <!--<a ng-href="/google_integrations/{{account.google_integration_id}}">-->
+                                                    <!--<i class="fa fa-refresh"></i>-->
+                                                    <!--<span translate>Configure synchronization</span>-->
+                                                <!--</a>-->
+                                            <!--</div>-->
+                                            <!--<div ng-show="account.google_integration_id == null">-->
+                                                <!--<a data-method="post" ng-href="/google_integrations?google_account_id={{account.id}}" rel="nofollow">-->
+                                                    <!--<i class="fa fa-refresh"></i>-->
+                                                    <!--<span translate>Configure synchronization</span>-->
+                                                <!--</a>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div ng-hide="$ctrl.integrationsService.data.valid_google_account" translate>-->
+                                    <!--You can keep Google in sync with your contacts, calendars, tasks and more. Click Add Account to begin.-->
+                                <!--</div>-->
+                                <!--<br />-->
+                                <!--<a href="/auth/goggle" class="btn btn-primary" target="_blank" translate>Add Account</a>-->
+                                <!--<a ng-show="$ctrl.integrationsService.data.valid_google_account" ui-sref="preferences.imports.tab({id: 'google'})" class="btn btn-secondary" translate>Import Google Contacts</a>-->
+                            <!--</div>-->
                         </div>
                     </div>
                 </div>
