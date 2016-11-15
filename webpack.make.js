@@ -91,6 +91,11 @@ module.exports = function makeWebpackConfig(options) {
         config.devtool = 'eval';
     }
 
+    config.externals = [{
+        "window": "window",
+        "google": "window.google"
+    }];
+
     /**
      * Loaders
      * Reference: http://webpack.github.io/docs/configuration.html#module-loaders

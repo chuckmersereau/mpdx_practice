@@ -1,0 +1,17 @@
+<div class="row" ng-hide="$ctrl.deleted">
+    <div class="col-sm-7">
+        <input class="form-control" type="email" name="email" ng-model="$ctrl.email.email" placeholder="Email *" ng-required="!$ctrl.deleted" />
+    </div>
+    <div class="col-sm-4">
+        <select class="form-control" ng-model="$ctrl.email.location" data-placeholder="{{ 'Select an Option *' | translate}}"
+                ng-required="!$ctrl.deleted" chosen>
+            <option value="personal">Personal</option>
+            <option value="work">Work</option>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <button type="button" ng-click="$ctrl.remove()" class="btn btn-block btn-default">
+            <i class="fa fa-minus-circle"></i>
+        </button>
+    </div>
+</div>
