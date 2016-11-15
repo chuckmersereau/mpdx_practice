@@ -25,9 +25,9 @@ import 'lodash';
 import moment from 'moment';
 window.moment = moment;
 import 'moment-range';
-import jQuery from '!expose?jQuery!jquery';
-window.$ = jQuery;
 import 'chosen-js';
+import 'bootstrap-daterangepicker/daterangepicker';
+
 // style deps
 require('./styles/fonts/freightsanspro/stylesheet.css');
 
