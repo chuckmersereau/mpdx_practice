@@ -1,0 +1,181 @@
+<div class="placeholders hidden">
+    <div class="placeholder detail">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="field border-bottom">
+                    <div class="text text-primary text-tiny text-thin"></div>
+                    <div class="text text-secondary text-short text-thin"></div>
+                </div>
+                <div class="field border-bottom">
+                    <div class="text text-primary text-tiny text-thin"></div>
+                    <div class="text text-secondary text-long text-thin"></div>
+                </div>
+                <div class="field border-bottom">
+                    <div class="text text-primary text-tiny text-thin"></div>
+                    <div class="text text-secondary text-medium text-thin"></div>
+                </div>
+                <div class="field border-bottom">
+                    <div class="text text-primary text-tiny text-thin"></div>
+                    <div class="text text-secondary text-shorter text-thin"></div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="field border-bottom">
+                    <div class="text text-primary text-tiny text-thin"></div>
+                    <div class="text text-secondary text-long text-thin"></div>
+                </div>
+                <div class="field border-bottom">
+                    <div class="text text-primary text-tiny text-thin"></div>
+                    <div class="text text-secondary text-short text-thin"></div>
+                </div>
+                <div class="field border-bottom">
+                    <div class="text text-primary text-tiny text-thin"></div>
+                    <div class="text text-secondary text-short text-thin"></div>
+                </div>
+                <div class="field border-bottom">
+                    <div class="text text-primary text-tiny text-thin"></div>
+                    <div class="text text-secondary text-medium text-thin"></div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="field border-bottom">
+                    <div class="text text-primary text-tiny text-thin"></div>
+                    <div class="text text-secondary text-long text-thin"></div>
+                </div>
+                <div class="field border-bottom">
+                    <div class="text text-primary text-tiny text-thin"></div>
+                    <div class="text text-secondary text-short text-thin"></div>
+                </div>
+                <div class="field border-bottom">
+                    <div class="text text-primary text-tiny text-thin"></div>
+                    <div class="text text-secondary text-short text-thin"></div>
+                </div>
+                <div class="field border-bottom">
+                    <div class="text text-primary text-tiny text-thin"></div>
+                    <div class="text text-secondary text-medium text-thin"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-8">
+        <div class="fieldset">
+            <h3 translate>Financial</h3>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="field">
+                        <h4 class="attribute-header" translate>Last Donation</h4>
+                        <div class="inline-input disabled">
+                            <input type="text" ng-model="$ctrl.contact.last_donation" placeholder="{{ 'Never' | translate }}" readonly />
+                            <a class="tip" data-trigger="hover" data-content="{{ 'This field is updated live from donation services and cannot be edited directly here' | translate }}" data-placement="top" bs-popover><i class="fa fa-lock"></i></a>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <h4 class="attribute-header" translate>Giving Method</h4>
+                        <div class="inline-input disabled">
+                            <input type="text" ng-model="$ctrl.contact.giving_method" placeholder="{{ 'None' | translate }}" readonly />
+                            <a class="tip" data-trigger="hover" data-content="{{ 'This field is updated live from donation services and cannot be edited directly here' |  translate }}" data-placement="top" bs-popover><i class="fa fa-lock"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="field">
+                        <h4 class="attribute-header" translate>Lifetime Donations</h4>
+                        <div class="inline-input disabled">
+                            <input type="text" ng-model="$ctrl.contact.lifetime_donations" placeholder="{{ '0' | translate }}" readonly />
+                            <a class="tip" data-trigger="hover" data-content="{{ 'This field is updated live from donation services and cannot be edited directly here' | translate }}" data-placement="top" bs-popover><i class="fa fa-lock"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fieldset">
+            <h3 translate>Communications</h3>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="field">
+                        <h4 class="attribute-header" translate>Referred By</h4>
+                        <div class="inline-input">
+                            <select chosen
+                                    required
+                                    ng-change='$ctrl.save()' ng-model-options='{ debounce: 1000 }'
+                                    disable-search="false"
+                                    class="form-control"
+                                    ng-options="opt[1] as opt[0] for opt in $ctrl.constants.contacts"
+                                    ng-model="$ctrl.contact.referred_by">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <h4 class="attribute-header" translate>Appeals</h4>
+                        <div class="inline-input">
+                            <select chosen
+                                    required
+                                    ng-change='$ctrl.save()' ng-model-options='{ debounce: 1000 }'
+                                    disable-search="true"
+                                    class="form-control"
+                                    id='status'
+                                    ng-options="opt[1] as opt[0] for opt in $ctrl.constants.no_appeals_options"
+                                    ng-model="$ctrl.appeals">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="field">
+                        <h4 class="attribute-header" translate>Language</h4>
+                        <div class="inline-input">
+                            <select chosen
+                                    required
+                                    ng-change='$ctrl.save()' ng-model-options='{ debounce: 1000 }'
+                                    disable-search="true"
+                                    class="form-control"
+                                    id='status'
+                                    ng-options="opt[1] as opt[0] for opt in $ctrl.constants.mail_chimp_locale_options"
+                                    ng-model="$ctrl.contact.locale">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <h4 class="attribute-header" translate>Referrers</h4>
+                        <contact-referrer-wrapper contact="$ctrl.contact" constants="$ctrl.constants"></contact-referrer-wrapper>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row fieldset">
+            <div class="col-sm-12 spacing-below-xs">
+                <h4 class="attribute-header" translate>Tags</h4>
+                <div class="inline-input">
+                    <tags-input class="import_by_group import_contact_tags" ng-model="$ctrl.contact.tag_list" on-tag-added='$ctrl.save()' on-tag-removed='$ctrl.save()'>
+                        <auto-complete source="$ctrl.tagsService.getTagsByQuery($query)" min-length="0" select-first-match="false"></auto-complete>
+                    </tags-input>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="fieldset">
+            <h3 translate>Partner Accounts</h3>
+            <contact-donor-account ng-repeat="donorAccount in $ctrl.contact.donor_accounts" contact="$ctrl.contact" donor-account="donorAccount"></contact-donor-account>
+            <button type="button" class="btn btn-primary" ng-click="$ctrl.addPartnerAccount()">
+                <i class="fa fa-plus-circle"></i> <translate>Add Partner Account</translate>
+            </button>
+        </div>
+        <div class="fieldset">
+            <h3 translate>Addresses</h3>
+            <div class="card" ng-repeat="address in $ctrl.contact.addresses">
+                <contact-address address="address"></contact-address>
+            </div>
+            <button type="button" class="btn btn-primary" ui-sref=".address({addressId: 'new'})">
+                <i class="fa fa-plus-circle"></i> <translate>Add Address</translate>
+            </button>
+        </div>
+    </div>
+</div>
