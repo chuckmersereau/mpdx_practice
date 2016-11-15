@@ -54,7 +54,7 @@ class Api {
                 //wait 1s and retry up to 3 times
                 this.$timeout(() => {
                     return this.call(method, url, data, successFn, errorFn, cache, params, headers, attempts + 1);
-                }, 1000)
+                }, 1000);
             } else {
                 this.$log.error('API ERROR:', response.status, response.data);
                 if (_.isFunction(errorFn)) {
