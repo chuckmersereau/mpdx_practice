@@ -47,6 +47,7 @@ class Api {
             }
             return response.data;
         }).catch((response) => {
+            console.log(response);
             this.$log.error('API ERROR:', response.status, response.data);
             if (_.isFunction(errorFn)) {
                 errorFn(response);
