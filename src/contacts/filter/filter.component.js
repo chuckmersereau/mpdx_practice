@@ -22,9 +22,8 @@ class FilterController {
     }
     openMapContactsModal() {
         this.modal.open({
-            contentTemplate: '/common/map_contacts.html',
+            template: require('./mapContacts/mapContacts.html'),
             controller: 'mapContactsController',
-            controllerAs: 'vm',
             locals: {
                 contacts: this.contactsService.getSelectedContacts()
             }
