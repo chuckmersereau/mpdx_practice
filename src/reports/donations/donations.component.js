@@ -1,7 +1,9 @@
 class CurrencyDonationsReportController {
-    constructor(api, state, monthRange, layoutSettings) {
+    constructor(api, state, monthRange, layoutSettings, gettextCatalog) {
         this.api = api;
+        this.gettextCatalog = gettextCatalog;
         this.layoutSettings = layoutSettings;
+        this.moment = moment;
         this.monthRange = monthRange;
         this.state = state;
 
@@ -209,20 +211,20 @@ class CurrencyDonationsReportController {
     }
     currencyGroupsToCSV() {
         var columnHeaders = _.flatten([
-            this.getttextCatalog.getString('Partner'),
-            this.getttextCatalog.getString('Status'),
-            this.getttextCatalog.getString('Pledge'),
-            this.getttextCatalog.getString('Average'),
-            this.getttextCatalog.getString('Minimum'),
+            this.gettextCatalog.getString('Partner'),
+            this.gettextCatalog.getString('Status'),
+            this.gettextCatalog.getString('Pledge'),
+            this.gettextCatalog.getString('Average'),
+            this.gettextCatalog.getString('Minimum'),
             this.allMonths,
-            this.getttextCatalog.getString('Total (last month excluded from total)')
+            this.gettextCatalog.getString('Total (last month excluded from total)')
         ]);
         var converted = this.useConvertedValues ? 'Converted' : '';
 
         return _.flatMap(this.currencyGroups, (currencyGroup) => {
             var combinedHeaders = [
                 [
-                    this.getttextCatalog.getString('Currency'),
+                    this.gettextCatalog.getString('Currency'),
                     currencyGroup['currency' + converted],
                     currencyGroup['currencySymbol' + converted]
                 ],
@@ -243,7 +245,7 @@ class CurrencyDonationsReportController {
                 );
             });
             var totals = _.concat(
-                this.getttextCatalog.getString('Totals'),
+                this.gettextCatalog.getString('Totals'),
                 _.times(4, _.constant('')),
                 _.map(currencyGroup.monthlyTotals, 'amount' + converted),
                 currencyGroup['yearTotal' + converted]

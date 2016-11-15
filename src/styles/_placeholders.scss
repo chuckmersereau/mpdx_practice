@@ -1,53 +1,63 @@
 .placeholders {
-	.placeholder {
-		.text {
-			border-radius: 15rem;
-			display: block;
-			margin-bottom: .75rem;
-			height: .5rem;
-			background-color: rgb(238, 241, 246);
-			&:last-child {
-				margin-bottom: 0;
-			}
-		}
-		.text-thick {
-			height: 14px;
-			margin: 10px 0;
-		}
-		.text-thin {
-			height: 6px;
-			border-radius: 15rem;
-		}
-		.text-thinner {
-			height: 4px;
-			margin: 10px 0;
-			border-radius: .125rem;
-		}
-		.text-long {
-			width: 100%;
-		}
-		.text-medium {
-			width: 80%;
-		}
-		.text-short {
-			width: 60%;
-		}
-		.text-shorter {
-			width: 40%;
-		}
-		.text-tiny {
-			width: 20%;
-		}
-    .text-secondary {
-      background-color: rgb(224, 229, 238);
+    .placeholder {
+        .text {
+            border-radius: 15rem;
+            display: block;
+            margin-bottom: .75rem;
+            height: .5rem;
+            background-color: rgb(238, 241, 246);
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+        .text-thick {
+            height: 14px;
+            margin: 10px 0;
+        }
+        .text-thin {
+            height: 6px;
+            border-radius: 15rem;
+        }
+        .text-thinner {
+            height: 4px;
+            margin: 10px 0;
+            border-radius: .125rem;
+        }
+        .text-long {
+            width: 100%;
+        }
+        .text-medium {
+            width: 80%;
+        }
+        .text-short {
+            width: 60%;
+        }
+        .text-shorter {
+            width: 40%;
+        }
+        .text-tiny {
+            width: 20%;
+        }
+        .text-secondary {
+            background-color: rgb(224, 229, 238);
+        }
+        .border-bottom {
+            border-bottom: 1px solid rgb(216, 221, 230);
+        }
+        &.detail {
+            .field {
+                padding: 1.5rem 1rem;
+            }
+        }
     }
-    .border-bottom {
-      border-bottom: 1px solid rgb(216, 221, 230);
+    td.placeholder {
+        padding: 8px;
+        vertical-align: middle;
+        .text {
+            margin: 7px 0;
+            &:last-child {
+                margin: 7px 0;
+            }
+        }
     }
-    &.detail {
-      .field {
-        padding: 1.5rem 1rem;
-      }
-    }
-	}
 }
