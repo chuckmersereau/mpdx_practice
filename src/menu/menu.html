@@ -60,7 +60,7 @@
                     <li class="item" ui-sref-active="active"><a ui-sref="reports.monthly" translate>Reports</a></li>
                     <li class="item" ui-sref-active="active" ng-if="$ctrl.rollout.research"><a ui-sref="research" translate>Research</a></li>
                     <li class="item" ui-sref-active="active" ng-if="$ctrl.showInsights"><a ui-sref="insights" translate>Insights</a></li>
-                    <li class="item last" ui-sref-active="active"><a ui-sref="unavailable" translate>Help</a></li>
+                    <li class="item last" ui-sref-active="active"><a ng-click="$ctrl.showHelp()" translate>Help</a></li>
                 </ul>
             </div>
         </div>
@@ -93,7 +93,13 @@
                         <a ui-sref="reports.partner" translate>Contributions by Partner Currency</a>
                     </div>
                 </div>
-                <menu-balances></menu-balances>
+                <menu-balances
+                    inHandPercent="$ctrl.currentAccountList.account_list.in_hand_percent"
+                    monthly-goal="$ctrl.currentAccountList.account_list.monthly_goal"
+                    pledged-percent="$ctrl.currentAccountList.account_list.pledged_percent"
+                    total-pledges="$ctrl.currentAccountList.account_list.total_pledges"
+                    received-pledges="$ctrl.currentAccountList.account_list.received_pledges"
+                ></menu-balances>
             </div>
         </div>
     </div>

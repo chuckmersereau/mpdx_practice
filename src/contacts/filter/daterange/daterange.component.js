@@ -1,6 +1,6 @@
 class FilterDaterangeController {
     constructor($element) {
-        this.input = $element.find('input');
+        let input = $element.find('input');
 
         this.parseCustomOptions();
 
@@ -12,9 +12,9 @@ class FilterDaterangeController {
             ranges: this.ranges,
             locale: this.locale
         };
-        this.input.daterangepicker(this.options);
-        this.input.on('apply.daterangepicker', this.apply);
-        this.input.on('cancel.daterangepicker', this.cancel);
+        input.daterangepicker(this.options);
+        input.on('apply.daterangepicker', this.apply);
+        input.on('cancel.daterangepicker', this.cancel);
     }
     parseCustomOptions() {
         this.ranges = {};

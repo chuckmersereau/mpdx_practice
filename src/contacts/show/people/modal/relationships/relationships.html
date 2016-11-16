@@ -1,0 +1,36 @@
+<div class="row" ng-hide="$ctrl.deleted">
+    <div class="col-sm-7">
+        <select class="form-control" ng-model="$ctrl.familyRelationship.related_person_id" data-placeholder="{{ 'Select an Option *' | translate }}"
+                ng-required="!$ctrl.deleted" chosen>
+            <option ng-repeat="person in $ctrl.currentAccountList.active_people" ng-value="person.id">{{person.last_name}}, {{person.first_name}}</option>
+        </select>
+    </div>
+    <div class="col-sm-4">
+        <select class="form-control" ng-model="$ctrl.familyRelationship.relationship" data-placeholder="{{ 'Select an Option *' | translate }}"
+                ng-required='!$ctrl.deleted' chosen>
+            <option translate>Husband</option>
+            <option translate>Son</option>
+            <option translate>Father</option>
+            <option translate>Brother</option>
+            <option translate>Uncle</option>
+            <option translate>Nephew</option>
+            <option translate>Cousin Male</option>
+            <option translate>Grandfather</option>
+            <option translate>Grandson</option>
+            <option translate>Wife</option>
+            <option translate>Daughter</option>
+            <option translate>Mother</option>
+            <option translate>Sister</option>
+            <option translate>Aunt</option>
+            <option translate>Niece</option>
+            <option translate>Cousin Female</option>
+            <option translate>Grandmother</option>
+            <option translate>Granddaughter</option>
+        </select>
+    </div>
+    <div class="col-sm-1">
+        <button type="button" ng-click="$ctrl.remove()" class="btn btn-block btn-default">
+            <i class="fa fa-minus-circle"></i>
+        </button>
+    </div>
+</div>
