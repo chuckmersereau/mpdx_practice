@@ -1,0 +1,67 @@
+<modal-big>
+    <modal-header title="Add Referrals" on-close="$hide()"></modal-header>
+    <div class="table-wrapper table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Spouse</th>
+                <th>Last Name</th>
+                <th>Street Address</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Postal Code</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Spouse Phone</th>
+                <th>Spouse Email</th>
+                <th>Notes</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="table-row" ng-repeat="i in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]">
+                <td>
+                    <input class="form-control" type="text" ng-model="vm.models[i].first_name" />
+                </td>
+                <td>
+                    <input class="form-control" type="text" ng-model="vm.models[i].spouse_first_name" />
+                </td>
+                <td>
+                    <input class="form-control" type="text" ng-model="vm.models[i].last_name"/>
+                </td>
+                <td>
+                    <input class="form-control" type="text" ng-model="vm.models[i].street"/>
+                </td>
+                <td>
+                    <input class="form-control" type="text" ng-model="vm.models[i].city"/>
+                </td>
+                <td>
+                    <input class="form-control" type="text" ng-model="vm.models[i].state"/>
+                </td>
+                <td>
+                    <input class="form-control" type="text" ng-model="vm.models[i].postal_code"/>
+                </td>
+                <td>
+                    <input class="form-control" type="text" ng-model="vm.models[i].phone"/>
+                </td>
+                <td>
+                    <input class="form-control" type="text" ng-model="vm.models[i].email"/>
+                </td>
+                <td>
+                    <input class="form-control" type="text" ng-model="vm.models[i].spouse_phone"/>
+                </td>
+                <td>
+                    <input class="form-control" type="text" ng-model="vm.models[i].spouse_email"/>
+                </td>
+                <td>
+                    <input class="form-control" type="text" ng-model="vm.models[i].notes"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="vm.submit()" translate>Save</button>
+        <button type="button" class="btn btn-default" ng-click="$hide()" translate>Close</button>
+    </div>
+</modal-big>

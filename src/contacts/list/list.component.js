@@ -46,11 +46,9 @@ class ListController {
     }
     openRemoveTagModal() {
         this.modal.open({
-            contentTemplate: '/common/bulk_remove_tag.html',
-            controller: 'bulkRemoveTagController',
-            controllerAs: 'vm',
+            template: require('../../common/tags/remove/remove.html'),
+            controller: 'removeTagController',
             locals: {
-                modalTitle: 'Remove Tags',
                 contacts: this.contactsService.getSelectedContactIds()
             }
         });
@@ -62,24 +60,21 @@ class ListController {
     }
     openLogTaskModal() {
         this.modal.open({
-            contentTemplate: '/common/bulk_log_task.html',
-            controller: 'bulkLogTaskController',
-            controllerAs: 'vm',
+            template: require('../logTask/logTask.html'),
+            controller: 'logTaskController',
             locals: {
                 contacts: this.contactsService.getSelectedContactIds(),
                 toComplete: true,
                 createNext: true,
                 specifiedTask: null,
-                ajaxAction: null,
-                modalTitle: 'Log Task'
+                ajaxAction: null
             }
         });
     }
     openEditFieldsModal() {
         this.modal.open({
-            contentTemplate: '/common/bulk_edit_fields.html',
-            controller: 'bulkEditFieldsController',
-            controllerAs: 'vm',
+            template: require('./editFields/editFields.html'),
+            controller: 'editFieldsController',
             locals: {
                 contacts: this.contactsService.getSelectedContactIds()
             }
@@ -93,9 +88,8 @@ class ListController {
             this.alertsService.addAlert('You can only merge up to 8 contacts at a time.', 'danger');
         } else {
             this.modal.open({
-                contentTemplate: '/common/merge_contacts.html',
+                template: require('./mergeContacts/mergeContacts.html'),
                 controller: 'mergeContactsController',
-                controllerAs: 'vm',
                 locals: {
                     contactIds: this.contactsService.getSelectedContactIds(),
                     contactNames: this.contactsService.getSelectedContactNames()
@@ -105,10 +99,8 @@ class ListController {
     }
     openExportContactsModal() {
         this.modal.open({
-            contentTemplate: '/common/export_contacts.html',
-            placement: 'center',
-            controller: 'exportContactsController',
-            controllerAs: 'vm'
+            template: require('./exportContacts/exportContacts.html'),
+            controller: 'exportContactsController'
         });
     }
 }

@@ -22,7 +22,6 @@ class MergePreferencesController {
 
 const Merge = {
     controller: MergePreferencesController,
-    controllerAs: 'vm',
     template: require('./merge.html')
 };
 
