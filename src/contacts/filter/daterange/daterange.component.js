@@ -1,7 +1,6 @@
 class FilterDaterangeController {
     constructor($element) {
         let input = $element.find('input');
-        console.log(input);
 
         this.parseCustomOptions();
 
