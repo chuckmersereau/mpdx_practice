@@ -60,7 +60,7 @@
                     <li class="item" ui-sref-active="active"><a ui-sref="reports.monthly" translate>Reports</a></li>
                     <li class="item" ui-sref-active="active" ng-if="$ctrl.rollout.research"><a ui-sref="research" translate>Research</a></li>
                     <li class="item" ui-sref-active="active" ng-if="$ctrl.showInsights"><a ui-sref="insights" translate>Insights</a></li>
-                    <li class="item last" ui-sref-active="active"><a ui-sref="help" translate>Help</a></li>
+                    <li class="item last" ui-sref-active="active"><a ng-click="$ctrl.showHelp()" translate>Help</a></li>
                 </ul>
             </div>
         </div>
