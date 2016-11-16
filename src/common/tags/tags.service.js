@@ -21,41 +21,37 @@ class TagsService {
     }
     load() {
         this.loading = true;
-        this.api.get('contacts/tags', {}).then((data) => {
+        return this.api.get('contacts/tags', {}).then((data) => {
             this.data = data;
             this.loading = false;
         });
     }
     delete(tagName) {
-        this.api.delete('contacts/tags', { tags: [{ name: tagName, all_contacts: true }] }).then(() => {
+        return this.api.delete('contacts/tags', { tags: [{ name: tagName, all_contacts: true }] }).then(() => {
             this.selectedTags = _.without(tagName);
             this.rejectedTags = _.without(tagName);
             this.data.splice(this.data.indexOf(tagName), 1);
         });
     }
-    tagContact(contactIds, tag, cb) {
-        this.api.post('contacts/tags/bulk_create', {
+    tagContact(contactIds, tag) {
+        return this.api.post('contacts/tags/bulk_create', {
             add_tag_contact_ids: contactIds.join(),
             add_tag_name: tag
-        }).then(cb);
+        });
     }
-    untagContact(contactIds, tag, cb) {
-        this.api.delete('contacts/tags', {
+    untagContact(contactIds, tag) {
+        return this.api.delete('contacts/tags', {
             tags: [{
                 name: tag,
                 contact_ids: contactIds.join()
             }]
-        }).then(cb);
+        });
     }
     isTagActive(tag) {
         if (this.selectedTags.length === 0) {
             return true;
         } else {
-            if (this.selectedTags.indexOf(tag) >= 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return this.selectedTags.indexOf(tag) >= 0;
         }
     }
     isTagRejected(tag) {
@@ -85,5 +81,5 @@ class TagsService {
     }
 }
 
-export default angular.module('mpdx.common.tags', [])
+export default angular.module('mpdx.common.tags.service', [])
     .service('tagsService', TagsService).name;

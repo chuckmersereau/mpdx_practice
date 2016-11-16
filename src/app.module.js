@@ -1,3 +1,5 @@
+import jQuery from '!expose?jQuery!jquery'; //import before angular to replace jqlite
+window.$ = jQuery;
 import angular from 'angular';
 
 import app from './app.directive';
@@ -5,7 +7,7 @@ import common from './common/index.module';
 import contacts from './contacts/index.module';
 import bottom from './bottom/index.module';
 import home from './home/index.module';
-import menu from './menu/menu.component';
+import menu from './menu/index.module';
 import reports from './reports/index.module';
 import preferences from './preferences/index.module';
 import tasks from './tasks/index.module';

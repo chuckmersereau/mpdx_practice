@@ -91,6 +91,11 @@ module.exports = function makeWebpackConfig(options) {
         config.devtool = 'eval';
     }
 
+    config.externals = [{
+        "window": "window",
+        "google": "window.google"
+    }];
+
     /**
      * Loaders
      * Reference: http://webpack.github.io/docs/configuration.html#module-loaders
@@ -136,10 +141,10 @@ module.exports = function makeWebpackConfig(options) {
             loader: 'file'
         }, {
             test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-            loader: "url-loader?limit=10000&minetype=application/font-woff"
+            loader: "url-loader?limit=10000&mimetype=application/font-woff"
         }, {
             test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-            loader: "file-loader"
+            loader: "file"
         }]
     };
 

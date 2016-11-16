@@ -1,6 +1,10 @@
 /*global HS*/
 class menuController {
-    constructor($state) {
+    currentAccountList;
+    state;
+
+    constructor($state, currentAccountList) {
+        this.currentAccountList = currentAccountList;
         this.state = $state;
         this.isInState = (match) => $state.$current.name.indexOf(match) === 0;
     }

@@ -1,83 +1,108 @@
-.modal {
-  .modal-dialog {
-    .modal-content {
-      .modal-body {
+.modal, .modal.center {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    overflow-y: auto;
+    .modal-dialog {
+        margin: 0 auto;
         position: relative;
-        max-height: calc(100vh - 150px);
-        overflow: auto;
-        .empty-map {
-          position: absolute;
-          left: 0;
-          right: 0;
-          top: 0;
-          z-index: 10;
-          height: 200px;
-          line-height: 200px;
-          text-align: center;
-          font-size: 75px;
-          background-color: #3a3a3a;
-          color: #fff;
+        top: auto;
+        left: auto;
+        transform: none;
+        .modal-content {
+            margin: 3pc 0 5pc 0;
+            .modal-body {
+                position: relative;
+                .empty-map {
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    top: 0;
+                    z-index: 10;
+                    height: 200px;
+                    line-height: 200px;
+                    text-align: center;
+                    font-size: 75px;
+                    background-color: #3a3a3a;
+                    color: #fff;
+                }
+                ng-map {
+                    margin: -15px -15px 15px -15px;
+                    > div {
+                        min-height: 200px;
+                    }
+                    &:first-child {
+                        margin-top: -15px;
+                    }
+                }
+                input.form-control, div.tags{
+                    border-radius: 0px;
+                    border: 1px solid #979797;
+                }
+            }
+            border-radius: 0;
         }
-        ng-map {
-          margin: -15px -15px 15px -15px;
-          > div {
-            min-height: 200px;
-          }
-          &:first-child {
-            margin-top: -15px;
-          }
+        .modal-header {
+            min-height: 56px;
+            a.close {
+                line-height: 25px;
+                font-size: 25px;
+            }
         }
-      }
-      border-radius: 0;
+        .row {
+            margin: 0 0 5px 0;
+            [class*="col-"] {
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+        .form-control[type="text"] {
+            border-color: #979797;
+            padding: 6px;
+            &.ng-dirty.ng-invalid {
+                border-color: #a94442;
+            }
+            &:focus {
+                border-color: rgb(0, 115, 152);
+            }
+        }
+        .form-control[type="checkbox"] {
+            display: inline-block;
+            width: auto;
+            height: auto;
+        }
+        .checkbox-label {
+            display: inline-block;
+        }
+        .chosen-container-active.chosen-with-drop .chosen-single, .chosen-container-active .chosen-single, .chosen-container .chosen-drop {
+            border-radius: 0;
+            box-shadow: none;
+        }
+        .chosen-single {
+            border-radius: 0;
+            border-color: #979797;
+        }
     }
-    .modal-header {
-      min-height: 56px;
-      a.close {
-        line-height: 25px;
-        font-size: 25px;
-      }
-    }
-    &.modal-small {
-      max-width: 400px;
-    }
-    .row {
-      margin: 0 0 5px 0;
-      [class*="col-"] {
-        padding-left: 5px;
-        padding-right: 5px;
-      }
-    }
-    .form-control[type="text"] {
-      border-radius: 0;
-      border-color: #979797;
-      padding: 6px;
-      &.ng-dirty.ng-invalid {
-        border-color: #a94442;
-      }
-      &:focus {
-        border-color: rgb(0, 115, 152);
-      }
-    }
-    .form-control[type="checkbox"] {
-      display: inline-block;
-      width: auto;
-      height: auto;
-    }
-    .checkbox-label {
-      display: inline-block;
-    }
-    .chosen-container-active.chosen-with-drop .chosen-single, .chosen-container-active .chosen-single, .chosen-container .chosen-drop {
-      border-radius: 0;
-      box-shadow: none;
-    }
-    .chosen-single {
-      border-radius: 0;
-      border-color: #979797;
-    }
-  }
 
-  >.modal-big{
-    max-width: 80% !important;
-    width: 80% !important;
-  }
+    #contacts-map{
+        margin-right: 188px;
+    }
+
+    #contacts_map_modal{
+        height: 390px;
+        .contacts-map-markers{
+            top: 20px;
+        }
+    }
+
+    .excel_export{
+        margin-top: 17px;
+    }
+
+    >.modal-big{
+        max-width: 80% !important;
+        width: 80% !important;
+    }
 }

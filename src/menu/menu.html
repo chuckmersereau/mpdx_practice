@@ -8,7 +8,7 @@
                             <i class="fa fa-cog"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                            <li role="presentation"><a ui-sref="preferences.accounts" translate>Preferences</a></li>
+                            <li role="presentation"><a ui-sref="preferences.personal" translate>Preferences</a></li>
                             <li role="presentation"><a ui-sref="preferences.notifications" translate>Notifications</a></li>
                             <li role="presentation"><a ui-sref="preferences.imports" translate>Import Contacts</a></li>
                             <li role="presentation"><a ui-sref="preferences.integrations" translate>Connect Services</a></li>
@@ -93,7 +93,13 @@
                         <a ui-sref="reports.partner" translate>Contributions by Partner Currency</a>
                     </div>
                 </div>
-                <menu-balances></menu-balances>
+                <menu-balances
+                    inHandPercent="$ctrl.currentAccountList.account_list.in_hand_percent"
+                    monthly-goal="$ctrl.currentAccountList.account_list.monthly_goal"
+                    pledged-percent="$ctrl.currentAccountList.account_list.pledged_percent"
+                    total-pledges="$ctrl.currentAccountList.account_list.total_pledges"
+                    received-pledges="$ctrl.currentAccountList.account_list.received_pledges"
+                ></menu-balances>
             </div>
         </div>
     </div>
