@@ -11,7 +11,7 @@ class ContactDetailsController {
 
         this.appeals = 'false';
     }
-    $onInit() {
+    $onChanges() {
         if (this.contact.no_appeals === true) {
             this.appeals = 'true';
         } else {
