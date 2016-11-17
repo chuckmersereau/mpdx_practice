@@ -113,26 +113,19 @@ class ContactController {
         });
     }
     hideContact() {
-        if (this.contactsService.canGoRight(this.contact.id)) {
-            this.$state.go('contact', { contactId: this.contactsService.getRightId(this.contact.id) });
-        } else if (this.contactsService.canGoLeft(this.contact.id)) {
-            this.$state.go('contact', { contactId: this.contactsService.getLeftId(this.contact.id) });
-        }
-        this.contactsService.hideContact(this.contact.id);
+        this.contactsService.hideContact(this.contact.id).then(() => {
+            if (this.contactsService.canGoRight(this.contact.id)) {
+                this.$state.go('contact', {contactId: this.contactsService.getRightId(this.contact.id)});
+            } else if (this.contactsService.canGoLeft(this.contact.id)) {
+                this.$state.go('contact', {contactId: this.contactsService.getLeftId(this.contact.id)});
+            }
+        });
     }
     goLeft() {
-        if (this.contactsService.canGoLeft(this.contact.id)) {
-            this.$state.go('contact', { contactId: this.contactsService.getLeftId(this.contact.id) });
-        } else {
-            this.$state.go('contact', { contactId: this.contactsService.data[this.contactsService.data.length - 1].contact.id });
-        }
+        this.$state.go('contact', { contactId: this.contactsService.getLeftId(this.contact.id) });
     }
     goRight() {
-        if (this.contactsService.canGoRight(this.contact.id)) {
-            this.$state.go('contact', { contactId: this.contactsService.getRightId(this.contact.id) });
-        } else {
-            this.$state.go('contact', { contactId: this.contactsService.data[0].contact.id });
-        }
+        this.$state.go('contact', { contactId: this.contactsService.getRightId(this.contact.id) });
     }
     hidePreviousContact() {
         return this.moveContact.previous_contact === 0 || this.moveContact.previous_contact === '';

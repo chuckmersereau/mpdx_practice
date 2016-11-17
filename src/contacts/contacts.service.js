@@ -255,7 +255,7 @@ class ContactsService {
         };
 
         this.loading = true;
-        this.api.post('contacts', {contact: contactObj}).then(() => {
+        return this.api.post('contacts', {contact: contactObj}).then(() => {
             this.loading = false;
         });
     }
@@ -305,19 +305,25 @@ class ContactsService {
         this.setAllContacts('selected', true);
     }
     getContactPosition(id) {
-        return this.data.map((contact) => contact.id).indexOf(id);
+        return _.findIndex(this.data, { id: id });
     }
     canGoLeft(id) {
         return this.getContactPosition(id) > 0;
     }
     canGoRight(id) {
-        return this.getContactPosition(id) <= this.data.length;
+        return this.getContactPosition(id) < this.data.length - 1;
     }
     getLeftId(id) {
-        return this.data[this.getContactPosition(id) - 1].id;
+        if (this.canGoLeft(id)) {
+            return this.data[this.getContactPosition(id) - 1].id;
+        }
+        return this.data[this.data.length - 1].id;
     }
     getRightId(id) {
-        return this.data[this.getContactPosition(id) + 1].id;
+        if (this.canGoRight(id)) {
+            return this.data[this.getContactPosition(id) + 1].id;
+        }
+        return this.data[0].id;
     }
     setAllContacts(key, value) {
         _.each(this.data, (contact) => {
@@ -330,7 +336,7 @@ class ContactsService {
                 this.data.splice(i, 1);
             }
         });
-        this.api.delete(`/contacts/${contactId}`);
+        return this.api.delete(`/contacts/${contactId}`);
     }
     bulkHideContacts() {
         return this.api.delete('/contacts/bulk_destroy', {ids: this.getSelectedContactIds()}).then(() => {

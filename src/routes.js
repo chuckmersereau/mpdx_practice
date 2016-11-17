@@ -39,6 +39,10 @@ export default class Routes {
             url: '/people/merge/:peopleIds',
             onEnter: openMergePeopleModal
         }).state({
+            name: 'contacts.new',
+            url: '/new',
+            onEnter: openNewContactModal
+        }).state({
             name: 'contact.person',
             url: '/people/{personId}',
             onEnter: openPeopleModal
@@ -205,5 +209,20 @@ function openMergePeopleModal(
                 $state.go('^');
             }
         });
+    });
+}
+
+/*@ngInject*/
+function openNewContactModal(
+    modal, $state
+) {
+    modal.open({
+        template: require('./contacts/new/new.html'),
+        controller: 'contactNewModalController',
+        onHide: function() {
+            if ($state.current.name === 'contacts.new') {
+                $state.go('^');
+            }
+        }
     });
 }
