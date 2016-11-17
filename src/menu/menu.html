@@ -56,7 +56,7 @@
                     <li class="item" ui-sref-active="active"><a ui-sref="home" translate>Dashboard</a></li>
                     <li class="item" ui-sref-active="active"><a ui-sref="contacts" translate>Contacts</a></li>
                     <li class="item" ui-sref-active="active"><a ui-sref="tasks" translate>Tasks</a></li>
-                    <li class="item" ui-sref-active="active"><a ui-sref="donations" translate>Donations</a></li>
+                    <li class="item" ui-sref-active="active"><a ui-sref="unavailable" translate>Donations</a></li>
                     <li class="item" ui-sref-active="active"><a ui-sref="reports.monthly" translate>Reports</a></li>
                     <li class="item" ui-sref-active="active" ng-if="$ctrl.rollout.research"><a ui-sref="research" translate>Research</a></li>
                     <li class="item" ui-sref-active="active" ng-if="$ctrl.showInsights"><a ui-sref="insights" translate>Insights</a></li>
@@ -72,7 +72,7 @@
             <div class="col-md-12">
                 <div class="pull-left" ng-show="$ctrl.isInState('contact')">
                     <div class="section"><a ui-sref="preferences.imports" translate>Import Contacts</a></div>
-                    <div class="section" translate><a ui-sref="contacts.findDuplicates" translate>Find Duplicates</a></div>
+                    <div class="section" translate><a ui-sref="unavailable" translate>Find Duplicates</a></div>
                 </div>
                 <div class="pull-left" ng-show="$ctrl.isInState('donations')">
                     <div class="section"><a ui-sref="donations.new" class="no-new-tab" translate><i class="fa fa-plus-square"></i> Add a donation</a></div>
