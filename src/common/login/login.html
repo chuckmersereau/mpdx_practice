@@ -1,0 +1,43 @@
+<div class="background" style="background-image: url('{{$ctrl.background.url}}')">
+    <div class="brand"></div>
+    <div class="box-wrapper">
+        <div class="box">
+            <h1 translate>Log in to MPDX Next</h1>
+            <div class="row">
+                <div class="col-sm-6 text-center">
+                    <a class="btn btn-block btn-default btn-login" ng-href="{{$ctrl.loginUrl}}">
+                        <img src="../../images/logos/relay_logo.png" /><br />
+                        <span translate>Log into Relay</span>
+                    </a>
+                </div>
+                <div class="col-sm-6">
+                    <strong translate>Features recently added:</strong>
+                    <ul>
+                        <li translate>Manage &amp; Filter Contacts</li>
+                        <li translate>View Reports</li>
+                        <li translate>View Donations</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-sm-6">
+                    <strong translate>Or login with MPDX Original to:</strong>
+                    <ul>
+                        <li translate>Manage Accounts and Preferences</li>
+                        <li translate>Manage Tasks</li>
+                        <li translate>Log in with the Key</li>
+                    </ul>
+                </div>
+                <div class="col-sm-6">
+                    <a class="btn btn-block btn-secondary" translate>MPDX Original</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-copyright" translate>&copy; Copyright {{$ctrl.year}} by <a href="https://www.cru.org/" target="_blank">Cru</a></div>
+    <div class="image-copyright">
+        {{$ctrl.background.copyright}}
+    </div>
+</div>

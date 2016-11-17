@@ -19,6 +19,7 @@ import filter from './filter/filter.service';
 import flash from './flash/flash.service';
 import layoutSettings from './layoutSettings/layoutSettings.directive';
 import links from './links/index.module';
+import login from './login/index.module';
 import modal from './modal/index.module';
 import monthRange from './monthRange/monthRange.service';
 import rawNumber from './rawNumber/rawNumber.directive';
@@ -51,6 +52,7 @@ export default angular.module('mpdx.common', [
     flash,
     layoutSettings,
     links,
+    login,
     modal,
     monthRange,
     rawNumber,

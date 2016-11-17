@@ -1,0 +1,70 @@
+login .background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    background: #fff;
+    padding-top: 10vh;
+    font-size: 18px;
+    background-size: cover;
+    .btn {
+        font-size: 18px;
+        &.btn-login {
+            padding: 20px;
+            img {
+                display: inline-block;
+            }
+        }
+    }
+    h1 {
+        font-size: 18px;
+        font-weight: bold;
+        margin: 15px 0;
+    }
+    .brand {
+        margin: 20px 0;
+        width: 100%;
+        height: 80px;
+        background: url("../../images/mpdx_logo_light.png") no-repeat center center;
+        background-size: contain;
+    }
+    .main-copyright {
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+        font-size: 80%;
+        a, a:link {
+            color: #fff;
+            font-weight: bold;
+        }
+    }
+    .image-copyright {
+        position: fixed;
+        padding: 5px 10px;
+        bottom: 10px;
+        left: 10px;
+        background: rgba(0,0,0,0.4);
+        color: #fff;
+        font-size: 12px;
+    }
+    .box, .box-footer {
+        padding: 15px 30px;
+    }
+    .box {
+        background-color: #fff;
+        h1 {
+            border-bottom: 2px solid #f8ae0c;
+            padding: 4px 0 5px 1px;
+        }
+    }
+    .box-footer {
+        background-color: #ececec;
+    }
+    .box-wrapper {
+        max-width: 700px;
+        margin: 0 auto;
+        box-shadow: 0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24);
+    }
+}

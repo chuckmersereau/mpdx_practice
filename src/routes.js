@@ -1,5 +1,3 @@
-import config from "config";
-
 export default class Routes {
     static config($stateProvider) {
         $stateProvider.state({
@@ -8,8 +6,12 @@ export default class Routes {
             component: 'home'
         }).state({
             name: 'login',
-            url: '/login?access_token',
-            onEnter: login,
+            url: '/login',
+            component: 'login'
+        }).state({
+            name: 'auth',
+            url: '/auth?access_token',
+            onEnter: auth,
             resolve: {
                 url: /*@ngInject*/ ($location) => $location.url($location.url().replace("#", "?"))
             }
@@ -128,7 +130,7 @@ export default class Routes {
 }
 
 /*@ngInject*/
-function login($state, $stateParams, $window, $location) {
+function auth($state, $stateParams, $window, $location) {
     if (!_.isEmpty($stateParams.access_token)) {
         $window.sessionStorage.token = $stateParams.access_token;
         const redirect = angular.copy($window.sessionStorage.redirect || 'home');
@@ -139,9 +141,9 @@ function login($state, $stateParams, $window, $location) {
 }
 
 /*@ngInject*/
-function logout($window) {
+function logout($window, $state) {
     delete $window.sessionStorage.token;
-    $window.location.href = config.theKeyUrl;
+    $state.go('login', {reload: true});
 }
 
 /*@ngInject*/
