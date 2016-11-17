@@ -5,7 +5,7 @@ class Api {
         this.$http = $http;
         this.$log = $log;
         this.$q = $q;
-        this.$timeout - $timeout;
+        this.$timeout = $timeout;
 
         this.apiUrl = config.apiUrl;
         this.apiCache = $cacheFactory('api');
