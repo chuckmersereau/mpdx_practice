@@ -2,17 +2,15 @@
 
 ## Features
 
-* Heavily commented webpack configuration with reasonable defaults.
-* ES6, and ES7 support with babel.js.
+* Webpack 2
+* ES2016 support with babel.
 * Pre-configured CSS/Sass support (including bootstrap/fontawesome).
-* NPM and Bower fallback support.
-* Source maps included in all builds.
+* NPM & Yarn support
+* Bower and vendor module fallback support.
 * Automatic dependency annotation.
-* Development server with live reload.
+* Development server with hot reload.
 * Production builds with cache busting and asset minification.
 * Testing environment using karma to run tests and jasmine as the framework.
-* Code coverage when tests are run.
-* No gulp and no grunt, just npm run-scripts.
 
 ## Installation
 
@@ -32,8 +30,6 @@ All scripts are run with `npm run [script]`, for example: `npm run test`.
 * `start` - start development server, try it by opening `http://localhost:8080/`
 * `test` - run all tests
 * `test:live` - continuously run unit tests watching for changes
-
-See what each script does by looking at the `scripts` section in [package.json](./package.json).
 
 ## Additional credits
 Initial version was a direct fork of https://github.com/mike-allison/angular-webpack-workflow

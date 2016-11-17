@@ -7,7 +7,6 @@ import authInterceptor from './authInterceptor/authInterceptor.provider';
 import autoFocus from './autoFocus/autofocus.directive';
 import bgImg from './bgImg/bgImg.directive';
 import birthdays from './birthdays/birthdays.component';
-import contacts from './contacts/index.module';
 import convertToNumber from './convertToNumber/convertToNumber.directive';
 import currencySelect from './currencySelect/currencySelect.component';
 import currentAccountList from './currentAccountList/currentAccountList.service';
@@ -40,7 +39,6 @@ export default angular.module('mpdx.common', [
     autoFocus,
     bgImg,
     birthdays,
-    contacts,
     convertToNumber,
     currencySelect,
     currentAccountList,
