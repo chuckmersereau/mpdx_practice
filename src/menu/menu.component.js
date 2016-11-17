@@ -1,3 +1,4 @@
+/*global HS*/
 class menuController {
     currentAccountList;
     state;
@@ -6,6 +7,10 @@ class menuController {
         this.currentAccountList = currentAccountList;
         this.state = $state;
         this.isInState = (match) => $state.$current.name.indexOf(match) === 0;
+    }
+
+    showHelp() {
+        HS.beacon.open();
     }
 }
 
