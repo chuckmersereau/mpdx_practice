@@ -79,7 +79,9 @@ class ContactController {
             locals: {
                 contactId: this.contact.id
             },
-            onHide: this.referralsService.fetchReferrals.bind(this, this.contact.id)
+            onHide: () => {
+                this.referralsService.fetchReferrals(this.contact.id);
+            }
         });
     }
     openLogTaskModal() {
@@ -93,13 +95,17 @@ class ContactController {
                 specifiedTask: null,
                 ajaxAction: null
             },
-            onHide: this.tasksService.fetchCompletedTasks.bind(this, this.contact.id)
+            onHide: () => {
+                this.tasksService.fetchCompletedTasks(this.contact.id);
+            }
         });
     }
     openAddTaskModal() {
         this.tasksService.openModal({
             contacts: [this.contact.id],
-            onHide: this.tasksService.fetchUncompletedTasks.bind(this, this.contact.id)
+            onHide: () => {
+                this.tasksService.fetchUncompletedTasks(this.contact.id);
+            }
         });
     }
     hideContact() {
