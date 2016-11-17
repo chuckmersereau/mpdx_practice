@@ -1,5 +1,3 @@
-import config from "config";
-
 export default class Routes {
     static config($stateProvider) {
         $stateProvider.state({
@@ -8,8 +6,12 @@ export default class Routes {
             component: 'home'
         }).state({
             name: 'login',
-            url: '/login?access_token',
-            onEnter: login,
+            url: '/login',
+            component: 'login'
+        }).state({
+            name: 'auth',
+            url: '/auth?access_token',
+            onEnter: auth,
             resolve: {
                 url: /*@ngInject*/ ($location) => $location.url($location.url().replace("#", "?"))
             }
@@ -38,6 +40,10 @@ export default class Routes {
             name: 'contact.merge_people',
             url: '/people/merge/:peopleIds',
             onEnter: openMergePeopleModal
+        }).state({
+            name: 'contacts.new',
+            url: '/new',
+            onEnter: openNewContactModal
         }).state({
             name: 'contact.person',
             url: '/people/{personId}',
@@ -118,12 +124,17 @@ export default class Routes {
             title: 'Preferences',
             url: '/{id}',
             component: 'personalPreferences'
+        }).state({
+            name: 'unavailable',
+            title: 'Unavailable',
+            url: '/unavailable',
+            component: 'unavailable'
         });
     }
 }
 
 /*@ngInject*/
-function login($state, $stateParams, $window, $location) {
+function auth($state, $stateParams, $window, $location) {
     if (!_.isEmpty($stateParams.access_token)) {
         $window.sessionStorage.token = $stateParams.access_token;
         const redirect = angular.copy($window.sessionStorage.redirect || 'home');
@@ -134,9 +145,9 @@ function login($state, $stateParams, $window, $location) {
 }
 
 /*@ngInject*/
-function logout($window) {
+function logout($window, $state) {
     delete $window.sessionStorage.token;
-    $window.location.href = config.theKeyUrl;
+    $state.go('login', {reload: true});
 }
 
 /*@ngInject*/
@@ -205,5 +216,20 @@ function openMergePeopleModal(
                 $state.go('^');
             }
         });
+    });
+}
+
+/*@ngInject*/
+function openNewContactModal(
+    modal, $state
+) {
+    modal.open({
+        template: require('./contacts/new/new.html'),
+        controller: 'contactNewModalController',
+        onHide: function() {
+            if ($state.current.name === 'contacts.new') {
+                $state.go('^');
+            }
+        }
     });
 }
