@@ -1,12 +1,15 @@
 class CareController {
-    constructor(currentAccountList, tasksService) {
-        this.currentAccountList = currentAccountList;
+    currentAccountListTasks;
+    tasksService;
+
+    constructor(currentAccountListTasks, tasksService) {
+        this.currentAccountListTasks = currentAccountListTasks;
         this.tasksService = tasksService;
 
         this.newsletter = null;
     }
     $onInit() {
-        this.currentAccountList.tasks.getFirstCompleteNewsletter().then((reponse) => {
+        this.currentAccountListTasks.getFirstCompleteNewsletter().then((reponse) => {
             this.newsletter = reponse;
         });
     }
