@@ -21,7 +21,7 @@ class TagsService {
     }
     load() {
         this.loading = true;
-        return this.api.get('contacts/tags', {}).then((data) => {
+        return this.api.get('contacts/tags').then((data) => {
             this.data = data;
             this.loading = false;
         });
@@ -58,8 +58,8 @@ class TagsService {
         return this.rejectedTags.indexOf(tag) >= 0;
     }
     tagClick(tag) {
-        var selectedIndex = this.selectedTags.indexOf(tag);
-        var rejectedIndex = this.rejectedTags.indexOf(tag);
+        const selectedIndex = this.selectedTags.indexOf(tag);
+        const rejectedIndex = this.rejectedTags.indexOf(tag);
         if (selectedIndex >= 0) {
             this.selectedTags.splice(selectedIndex, 1);
             this.rejectedTags.push(tag);

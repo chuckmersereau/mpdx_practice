@@ -74,6 +74,11 @@ class ContactsService {
                 this.page = 1;
             }
             _.each(data.contacts, (contact) => {
+                // fix tag_list difference for list vs show
+                contact.tag_list = _.map(contact.tag_list, (tag) => {
+                    return { text: tag };
+                });
+                // end fix
                 const currentContact = this.cache.updateContact(contact, data);
                 if (reset) {
                     newContacts.push(currentContact);

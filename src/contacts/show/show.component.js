@@ -24,8 +24,6 @@ class ContactController {
         this.moveContact = { previous_contact: 0, following_contact: 0 };
         this.activeTab = '';
         this.contact = {};
-        this.primaryAddress = {};
-        this.primaryAddressIndex = '';
         serverConstants.fetchConstant('contacts', 'contacts/basic_list');
         serverConstants.fetchConstants(['assignable_send_newsletters', 'assignable_statuses', 'pledge_frequencies', 'pledge_currencies', 'assignable_locations']);
         this.constants = serverConstants.data;
@@ -64,14 +62,6 @@ class ContactController {
         this.cache.get(id).then((contact) => {
             if (!contact) return;
             this.contact = contact;
-            for (var i = 0; i < this.contact.addresses.length; i++) {
-                var address = this.contact.addresses[i];
-                if (address.primary_mailing_address === true) {
-                    this.primaryAddress = address;
-                    this.primaryAddressIndex = i;
-                    break;
-                }
-            }
         });
     };
     save() {
@@ -89,7 +79,9 @@ class ContactController {
             locals: {
                 contactId: this.contact.id
             },
-            onHide: this.referralsService.fetchReferrals.bind(this, this.contact.id)
+            onHide: () => {
+                this.referralsService.fetchReferrals(this.contact.id);
+            }
         });
     }
     openLogTaskModal() {
@@ -103,13 +95,17 @@ class ContactController {
                 specifiedTask: null,
                 ajaxAction: null
             },
-            onHide: this.tasksService.fetchCompletedTasks.bind(this, this.contact.id)
+            onHide: () => {
+                this.tasksService.fetchCompletedTasks(this.contact.id);
+            }
         });
     }
     openAddTaskModal() {
         this.tasksService.openModal({
             contacts: [this.contact.id],
-            onHide: this.tasksService.fetchUncompletedTasks.bind(this, this.contact.id)
+            onHide: () => {
+                this.tasksService.fetchUncompletedTasks(this.contact.id);
+            }
         });
     }
     hideContact() {
