@@ -346,7 +346,7 @@
                 </div>
             </div>
         </div>
-        <div class="panel panel-default pref-panel" ng-if="$ctrl.$rollout.active(currencies, current_account_list)">
+        <div class="panel panel-default pref-panel" ng-if="$ctrl.rolloutService.active('currencies')">
             <div class="panel-heading pref-head" ng-click="$ctrl.setTab('currency')">
                 <div class="row">
                     <div class="col-sm-4">
@@ -383,7 +383,7 @@
                 </div>
             </div>
         </div>
-        <div class="panel panel-default pref-panel" ng-if="$ctrl.$rollout.active(multi_currency_balance, current_account_list) && $ctrl.currentAccountList.designation_organizations.count > 1">
+        <div class="panel panel-default pref-panel" ng-if="$ctrl.rolloutService.active($ctrl.multi_currency_balance, $ctrl.currentAccountList) && $ctrl.currentAccountList.designation_organizations.count > 1">
             <div class="panel-heading pref-head" ng-click="$ctrl.setTab('salary_organization_id')">
                 <div class="row">
                     <div class="col-sm-4">
