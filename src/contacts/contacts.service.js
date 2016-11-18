@@ -68,7 +68,7 @@ class ContactsService {
         }
         filterParams.any_tags = this.tagsService.anyTags;
 
-        return this.api.call('post', 'contacts', {filters: filterParams, page: this.page}, null, null, null, null, {'X-HTTP-Method-Override': 'get'}).then((data) => {
+        return this.api.call('post', 'contacts', {filters: filterParams, page: this.page, per_page: 25}, null, null, null, null, {'X-HTTP-Method-Override': 'get'}).then((data) => {
             if (reset) {
                 newContacts = [];
                 this.page = 1;
@@ -390,4 +390,3 @@ import filterService from '../common/filter/filter.service';
 
 export default angular.module('mpdx.contacts.service', [filterService])
     .service('contactsService', ContactsService).name;
-

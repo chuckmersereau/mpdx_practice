@@ -1,22 +1,18 @@
-/*global HS*/
 class CurrentUser {
     api;
 
-    constructor(api, $log) {
+    constructor(api, $log, HelpService) {
+        this.helpService = HelpService;
         this.api = api;
         this.$log = $log;
         this.hasAnyUsAccounts = false;
         this.get();
     }
     get() {
-        this.api.get('current_user').then((currentUser) => {
+        return this.api.get('current_user').then((currentUser) => {
             _.extend(this, currentUser);
-            HS.beacon.ready(function() {
-                HS.beacon.identify({
-                    id: currentUser.id,
-                    name: `${currentUser.first_name} ${currentUser.last_name}`
-                });
-            });
+            console.log(this.currentUser);
+            this.helpService.updateUser(this.currentUser);
         }).catch((err) => {
             this.$log.debug(err);
         });

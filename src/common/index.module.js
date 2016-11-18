@@ -16,6 +16,7 @@ import donationSummaryChart from './donationsSummaryChart/donationsSummaryChart.
 import faCheckbox from './faCheckbox/faCheckbox.component';
 import filter from './filter/filter.service';
 import flash from './flash/flash.service';
+import help from './help/help.service';
 import layoutSettings from './layoutSettings/layoutSettings.directive';
 import links from './links/index.module';
 import login from './login/index.module';
@@ -48,6 +49,7 @@ export default angular.module('mpdx.common', [
     faCheckbox,
     filter,
     flash,
+    help,
     layoutSettings,
     links,
     login,
