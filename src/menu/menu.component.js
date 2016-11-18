@@ -1,16 +1,16 @@
-/*global HS*/
 class menuController {
     currentAccountList;
     state;
 
-    constructor($state, currentAccountList) {
+    constructor($state, currentAccountList, HelpService) {
         this.currentAccountList = currentAccountList;
+        this.helpService = HelpService;
         this.state = $state;
         this.isInState = (match) => $state.$current.name.indexOf(match) === 0;
     }
 
     showHelp() {
-        HS.beacon.open();
+        this.helpService.showHelp();
     }
 }
 
