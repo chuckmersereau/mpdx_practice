@@ -127,7 +127,7 @@
                 </div>
             </div>
             <div ng-repeat="familyRelationship in $ctrl.person.family_relationships track by $index" name="family_relationships">
-                <contact-family-relationship person="$ctrl.person" family-relationship="familyRelationship" on-remove="$ctrl.removeFamilyRelationship()"></contact-family-relationship>
+                <contact-family-relationship person="$ctrl.person" family-relationship="familyRelationship" on-remove="$ctrl.removeFamilyRelationship($index)" contact="$ctrl.contact"></contact-family-relationship>
             </div>
             <div class="row">
                 <div class="col-sm-12">

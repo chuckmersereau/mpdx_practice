@@ -2,7 +2,8 @@ class PersonModalController {
     contactsService;
     contact;
 
-    constructor(contactsService, contact, person) {
+    constructor($scope, contactsService, contact, person) {
+        this.$scope = $scope;
         this.contactsService = contactsService;
         this.contact = contact;
         this.person = person;
@@ -27,9 +28,9 @@ class PersonModalController {
     }
     save(isValid) {
         if (isValid) {
-            if (angular.isDefined(this.person.id)) {
-                var personIndex = _.findIndex(this.contact.people, person => person.id === this.person.id);
-                this.contact.people[personIndex] = angular.copy(this.person);
+            if (_.has(this.person, 'id')) {
+                var personIndex = _.findIndex(this.contact.people, { id: this.person.id });
+                this.contact.people[personIndex] = _.clone(this.person);
                 if (angular.element('#primary_person_id:checked').length === 1) {
                     this.contact.primary_person_id = this.person.id;
                 }
@@ -54,7 +55,9 @@ class PersonModalController {
     addFamilyRelationship() {
         this.person.family_relationships.push(this.familyRelationshipObject());
     }
-    removeFamilyRelationship() {
+    removeFamilyRelationship(index) {
+        this.person.family_relationships.splice(index, 1);
+        // this.person.family_relationships[index]._destroy = 1;
     }
     addNetwork() {
         this.person.networks.push(this.networkObject());

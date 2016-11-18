@@ -140,7 +140,7 @@ class ContactsService {
                     twitter_accounts_attributes: [],
                     linkedin_accounts_attributes: [],
                     websites_attributes: [],
-                    family_relationships_attributes: []
+                    family_relationships_attributes: person.family_relationships
                 };
 
                 if (person.birthday) {
@@ -202,9 +202,9 @@ class ContactsService {
                     });
                 }
 
-                if (peopleObj.family_relationships_attributes && person.family_relationships.length > 0) {
-                    peopleObj.family_relationships_attributes = person.family_relationships;
-                }
+                // if (peopleObj.family_relationships_attributes && person.family_relationships.length > 0) {
+                //     peopleObj.family_relationships_attributes = person.family_relationships;
+                // }
 
                 contactObj['people_attributes'].push(peopleObj);
             });
