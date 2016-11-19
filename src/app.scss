@@ -30,6 +30,7 @@ $fa-font-path: "~font-awesome/fonts";
 
 /* Components */
 @import "menu/menu";
+@import "contacts/filter/filter";
 @import "contacts/filter/tags/tags";
 @import "contacts/list/list";
 @import "contacts/list/item/item";

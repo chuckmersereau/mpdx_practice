@@ -53,13 +53,13 @@ contacts-filter {
             cursor: pointer;
             margin-right: 3px;
             &.selected, &.selected:hover {
-                // background: $color-gray;
+                background: $color-gray;
             }
             &.rejected, &.rejected:hover {
-                // background: $color-danger;
+                background: $color-danger;
             }
             &:hover {
-                // background-color: $color-blue-bright;
+                background-color: $color-blue-bright;
             }
             &:nth-child(-n+15) {
                 display: inline-block;

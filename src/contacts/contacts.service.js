@@ -391,7 +391,7 @@ class ContactsService {
     }
 }
 
-import filterService from '../common/filter/filter.service';
+import filterService from './filter/filter.service';
 
 export default angular.module('mpdx.contacts.service', [filterService])
     .service('contactsService', ContactsService).name;
