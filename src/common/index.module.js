@@ -15,7 +15,6 @@ import currentUser from './currentUser/currentUser.service';
 import designationAccounts from './designationAccounts/designationAccounts.service';
 import donationSummaryChart from './donationsSummaryChart/donationsSummaryChart.directive';
 import faCheckbox from './faCheckbox/faCheckbox.component';
-import filter from './filter/filter.service';
 import flash from './flash/flash.service';
 import help from './help/help.service';
 import layoutSettings from './layoutSettings/layoutSettings.directive';
@@ -50,7 +49,6 @@ export default angular.module('mpdx.common', [
     designationAccounts,
     donationSummaryChart,
     faCheckbox,
-    filter,
     flash,
     help,
     layoutSettings,

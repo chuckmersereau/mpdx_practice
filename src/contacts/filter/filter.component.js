@@ -1,5 +1,3 @@
-require('./filter.scss');
-
 class FilterController {
     contactsService;
     filterService;
