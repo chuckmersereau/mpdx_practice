@@ -51,7 +51,7 @@ class TagsService {
         if (this.selectedTags.length === 0) {
             return true;
         } else {
-            return this.selectedTags.indexOf(tag) >= 0;
+            return _.includes(this.selectedTags, tag);
         }
     }
     isTagRejected(tag) {
