@@ -1,0 +1,62 @@
+<div ng-if="$ctrl.donorAccounts">
+    <form ng-submit="$ctrl.submit(f)">
+        <div id="error_explanation" ng-if="$ctrl.errors">
+            <ul>
+                <li ng-repeat="error in $ctrl.errors">{{error}}</li>
+            </ul>
+        </div>
+
+        <div class="form-group">
+            <label for="donation_date" translate>Date</label>
+            <select ng-model="f.donation_date" id="donation_date"></select>
+        </div>
+
+        <div class="form-group">
+            <label for="tendered_amount" translate>Amount</label>
+            <input type="text" ng-model="f.tendered_amount" id="tendered_amount" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="currency" translate>Donation Currency</label>
+            <select ng-model="f.currency" id="currency" class="form-control">
+                <option ng-repeat="currency in $ctrl.currencies">{{currency}}</option>
+            </select>
+        </div>
+
+        <div class="form-group" ng-if="$ctrl.donorAccounts.length > 1">
+            <label for="donor_account_id" translate>Donor</label>
+            <select ng-model="f.donor_account_id" id="donor_account_id" class="form-control">
+                <option ng-repeat="donor in $ctrl.donorAccounts">{{donor}}</option>
+            </select>
+        </div>
+        <input type="hidden" ng-model="f.donor_account_id" ng-if="$ctrl.donorAccounts.length === 1" ng-value="$ctrl.donorAccounts[0]">
+
+        <div class="form-group">
+            <label for="appeal_id" translate>Appeal</label>
+            <select ng-model="f.appeal_id" id="appeal_id" class="form-control">
+                <option value=""></option>
+                <option ng-repeat="appeal in $ctrl.appeals" ng-value="appeal.id">{{appeal.name}}</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="appeal_amount" translate>Appeal Amount</label>
+            <input type="text" ng-model="f.appeal_amount" id="appeal_amount" class="form-control">
+            <translate>Leave empty to use full donation amount</translate>
+        </div>
+
+        <div class="form-group" ng-if="$ctrl.currentAccountList.multiple_designations">
+            <label for="designation_account_id" translate>Designation Account</label>
+            <select ng-model="f.designation_account_id" id="designation_account_id" class="form-control">
+                <option ng-repeat="account in $ctrl.currentAccountList.designation_accounts" ng-value="account.id">{{account.designation_number}}</option>
+            </select>
+        </div>
+
+        <div class="field" ng-if="$ctrl.donation.id">
+            <a ng-click="$ctrl.delete()" class="red delete_donation" translate>Click here to delete this donation</a>
+        </div>
+    </form>
+</div>
+<div ng-if="!$ctrl.donorAccounts" translate>
+    None of your contacts are associated with donor accounts. Please edit a contact and give them a Donor Account before trying to add a donation.
+</div>
