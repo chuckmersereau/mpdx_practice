@@ -19,6 +19,7 @@ import 'angular-strap';
 import 'angular-strap/dist/angular-strap.tpl';
 import 'angular-chosen-localytics';
 import 'angular-localforage';
+import 'angular-timeago';
 import 'angular-ui-bootstrap-datetimepicker';
 import 'iso-currency';
 import 'ng-tags-input';
@@ -55,5 +56,6 @@ export default angular.module('mpdx.vendor', [
     'localytics.directives',
     'mgcrea.ngStrap',
     'ngTagsInput',
-    'ui.bootstrap.datetimepicker'
+    'ui.bootstrap.datetimepicker',
+    'yaru22.angular-timeago'
 ]).name;
