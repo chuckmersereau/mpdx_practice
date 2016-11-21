@@ -373,6 +373,13 @@ div.right {
 }
 
 /* ************************************************************** */
+.scrollable_left {
+    border-right: 1px solid #929497;
+}
+.affix.scrollable_left {
+  bottom: 35px;
+  overflow: auto;
+}
 .affix + #affix-fix
 {
     min-height: 71px;
@@ -530,6 +537,7 @@ div.right {
 .tabgroup {margin-top: 2em; margin-bottom: 2em;}
 #content {
     margin-top: 30px;
+    margin-bottom: 40px;
     &.fullscreen {
         background-color: white;
         z-index: 1;

@@ -4,7 +4,7 @@
  * @author İsmail Demirbilek (@dbtek)
  * https://github.com/dbtek/chosen-bootstrap
  */
-$chosen-sprite: '~/chosen-js/chosen-sprite.png';
+$chosen-sprite: '../node_modules/chosen-js/chosen-sprite.png';
 
 .chosen-select {
     width: 100%;

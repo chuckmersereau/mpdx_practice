@@ -6,7 +6,7 @@
     <div class="panel-body">
         <div class="dash-stat">
             <div ng-if="$ctrl.newsletter">
-                <span class="count-big" translate>{{ newsletter.completed_at | timeAgo }}</span> <span translate>since your last physical newsletter</span>
+                <span class="count-big" translate>{{ $ctrl.newsletter.completed_at | timeAgo }}</span> <span translate>since your last physical newsletter</span>
             </div>
             <div ng-if="!$ctrl.newsletter" translate>
                 You've never logged a physical newsletter

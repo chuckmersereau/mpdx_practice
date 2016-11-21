@@ -26,6 +26,7 @@ class FilterController {
     showReset() {
         return this.tagsService.isResettable() || this.filterService.resettable;
     }
+
     openMapContactsModal() {
         this.modal.open({
             template: require('./mapContacts/mapContacts.html'),

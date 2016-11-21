@@ -1,10 +1,11 @@
 import config from 'config';
 
 class Api {
-    constructor($http, $cacheFactory, $log, $q) {
+    constructor($http, $cacheFactory, $log, $q, $timeout) {
         this.$http = $http;
         this.$log = $log;
         this.$q = $q;
+        this.$timeout = $timeout;
 
         this.apiUrl = config.apiUrl;
         this.apiCache = $cacheFactory('api');
@@ -13,7 +14,10 @@ class Api {
         // This function supports both callbacks (successFn, errorFn) and returns a promise
         // It would be preferred to use promises in the future
     }
-    call(method, url, data = {}, successFn, errorFn, cache, params, headers) {
+    call(method, url, data = {}, successFn, errorFn, cache, params, headers, promise = null, attempts = 0) {
+        if (!promise) {
+            promise = this.$q.defer();
+        }
         if (cache === true) {
             const cachedData = this.apiCache.get(url);
             if (angular.isDefined(cachedData)) {
@@ -29,7 +33,7 @@ class Api {
         if (method === 'get' || method === 'delete') {
             params = data;
         }
-        return this.$http({
+        const request = {
             method: method,
             url: this.apiUrl + url,
             data: data,
@@ -38,21 +42,32 @@ class Api {
             paramSerializer: '$httpParamSerializerJQLike',
             cacheService: false,
             timeout: 50000
-        }).then((response) => {
+        };
+        this.$http(request).then((response) => {
             if (_.isFunction(successFn)) {
                 successFn(response.data, response.status);
             }
             if (cache === true) {
                 this.apiCache.put(url, response.data);
             }
-            return response.data;
+            promise.resolve(response.data);
         }).catch((response) => {
-            this.$log.error('API ERROR:', response.status, response.data);
-            if (_.isFunction(errorFn)) {
-                errorFn(response);
+            //check that authentication has happened
+            if (response === 'noAuth' && attempts < 3) {
+                //wait 1s and retry up to 3 times
+                this.$timeout(() => {
+                    this.call(method, url, data, successFn, errorFn, cache, params, headers, promise, attempts + 1);
+                }, 1000);
+            } else {
+                this.$log.error('API ERROR:', response.status, response.data);
+                if (_.isFunction(errorFn)) {
+                    errorFn(response);
+                }
+                promise.reject(response);
             }
-            return this.$q.reject(response);
         });
+
+        return promise.promise;
     }
     get(url, data, successFn, errorFn, cache) {
         return this.call('get', url, data, successFn, errorFn, cache);

@@ -68,12 +68,17 @@ class ContactsService {
         }
         filterParams.any_tags = this.tagsService.anyTags;
 
-        return this.api.call('post', 'contacts', {filters: filterParams, page: this.page}, null, null, null, null, {'X-HTTP-Method-Override': 'get'}).then((data) => {
+        return this.api.call('post', 'contacts', {filters: filterParams, page: this.page, per_page: 25}, null, null, null, null, {'X-HTTP-Method-Override': 'get'}).then((data) => {
             if (reset) {
                 newContacts = [];
                 this.page = 1;
             }
             _.each(data.contacts, (contact) => {
+                // fix tag_list difference for list vs show
+                contact.tag_list = _.map(contact.tag_list, (tag) => {
+                    return { text: tag };
+                });
+                // end fix
                 const currentContact = this.cache.updateContact(contact, data);
                 if (reset) {
                     newContacts.push(currentContact);
@@ -255,7 +260,7 @@ class ContactsService {
         };
 
         this.loading = true;
-        this.api.post('contacts', {contact: contactObj}).then(() => {
+        return this.api.post('contacts', {contact: contactObj}).then(() => {
             this.loading = false;
         });
     }
@@ -305,19 +310,25 @@ class ContactsService {
         this.setAllContacts('selected', true);
     }
     getContactPosition(id) {
-        return this.data.map((contact) => contact.id).indexOf(id);
+        return _.findIndex(this.data, { id: id });
     }
     canGoLeft(id) {
         return this.getContactPosition(id) > 0;
     }
     canGoRight(id) {
-        return this.getContactPosition(id) <= this.data.length;
+        return this.getContactPosition(id) < this.data.length - 1;
     }
     getLeftId(id) {
-        return this.data[this.getContactPosition(id) - 1].id;
+        if (this.canGoLeft(id)) {
+            return this.data[this.getContactPosition(id) - 1].id;
+        }
+        return this.data[this.data.length - 1].id;
     }
     getRightId(id) {
-        return this.data[this.getContactPosition(id) + 1].id;
+        if (this.canGoRight(id)) {
+            return this.data[this.getContactPosition(id) + 1].id;
+        }
+        return this.data[0].id;
     }
     setAllContacts(key, value) {
         _.each(this.data, (contact) => {
@@ -330,7 +341,7 @@ class ContactsService {
                 this.data.splice(i, 1);
             }
         });
-        this.api.delete(`/contacts/${contactId}`);
+        return this.api.delete(`/contacts/${contactId}`);
     }
     bulkHideContacts() {
         return this.api.delete('/contacts/bulk_destroy', {ids: this.getSelectedContactIds()}).then(() => {
@@ -380,8 +391,7 @@ class ContactsService {
     }
 }
 
-import filterService from '../common/filter/filter.service';
+import filterService from './filter/filter.service';
 
 export default angular.module('mpdx.contacts.service', [filterService])
     .service('contactsService', ContactsService).name;
-

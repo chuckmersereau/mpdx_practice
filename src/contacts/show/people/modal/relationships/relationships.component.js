@@ -1,4 +1,7 @@
 class ContactFamilyRelationshipController {
+    currentAccountList;
+    familyRelationship;
+
     constructor(currentAccountList) {
         this.currentAccountList = currentAccountList;
 

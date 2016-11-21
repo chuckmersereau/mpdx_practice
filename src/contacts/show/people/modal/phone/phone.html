@@ -1,9 +1,9 @@
 <div class="row" ng-hide="$ctrl.deleted">
     <div class="col-sm-7">
-        <input class="form-control" type="text" name="number" ng-model="$ctrl.phone.number" placeholder="Phone *" ng-required="!$ctrl.deleted" />
+        <input class="form-control" type="text" name="number" ng-model="$ctrl.phone.number" placeholder="Phone *" ng-required="!$ctrl.deleted">
     </div>
     <div class="col-sm-4">
-        <select ng-model="$ctrl.phone.location" data-placeholder="{{ 'Select an Option *' | translate}}" ng-required=!$ctrl.deleted"
+        <select ng-model="$ctrl.phone.location" data-placeholder="{{ 'Select an Option *' | translate}}" ng-required="!$ctrl.deleted"
                 class="form-control" chosen>
             <option value="mobile">Mobile</option>
             <option value="home">Home</option>

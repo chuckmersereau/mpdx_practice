@@ -37,7 +37,23 @@ class AddTaskController {
     }
 
     submit() {
-        this.tasksService.postBulkAddTask(this.models, this.contacts).then(() => {
+        let promise;
+        if (this.newsletterBoth) {
+            this.models.action = "Newsletter - Physical";
+            promise = this.tasksService.postBulkAddTask(this.models, this.contacts).then(() => {
+                this.models.action = "Newsletter - Email";
+                return this.tasksService.postBulkAddTask(this.models, this.contacts);
+            });
+        } else if (this.newsletterPhysical) {
+            this.models.action = "Newsletter - Physical";
+            promise = this.tasksService.postBulkAddTask(this.models, this.contacts);
+        } else if (this.newsletterEmail) {
+            this.models.action = "Newsletter - Email";
+            promise = this.tasksService.postBulkAddTask(this.models, this.contacts);
+        } else {
+            promise = this.tasksService.postBulkAddTask(this.models, this.contacts);
+        }
+        return promise.then(() => {
             this.contactsService.load(true);
             this.tagsService.load();
             this.$scope.$hide();

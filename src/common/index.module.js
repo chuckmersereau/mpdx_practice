@@ -7,7 +7,7 @@ import authInterceptor from './authInterceptor/authInterceptor.provider';
 import autoFocus from './autoFocus/autofocus.directive';
 import bgImg from './bgImg/bgImg.directive';
 import birthdays from './birthdays/birthdays.component';
-import contacts from './contacts/index.module';
+import chosen from './chosen/chosen.directive';
 import convertToNumber from './convertToNumber/convertToNumber.directive';
 import currencySelect from './currencySelect/currencySelect.component';
 import currentAccountList from './currentAccountList/currentAccountList.service';
@@ -15,13 +15,15 @@ import currentUser from './currentUser/currentUser.service';
 import designationAccounts from './designationAccounts/designationAccounts.service';
 import donationSummaryChart from './donationsSummaryChart/donationsSummaryChart.directive';
 import faCheckbox from './faCheckbox/faCheckbox.component';
-import filter from './filter/filter.service';
 import flash from './flash/flash.service';
+import help from './help/help.service';
 import layoutSettings from './layoutSettings/layoutSettings.directive';
 import links from './links/index.module';
+import login from './login/index.module';
 import modal from './modal/index.module';
 import monthRange from './monthRange/monthRange.service';
 import rawNumber from './rawNumber/rawNumber.directive';
+import rollout from './rollout/rollout.service';
 import selectionStore from './selectionStore/selectionStore.service';
 import serverConstants from './serverConstants/serverConstants.service';
 import session from './session/session.service';
@@ -39,7 +41,7 @@ export default angular.module('mpdx.common', [
     autoFocus,
     bgImg,
     birthdays,
-    contacts,
+    chosen,
     convertToNumber,
     currencySelect,
     currentAccountList,
@@ -47,13 +49,15 @@ export default angular.module('mpdx.common', [
     designationAccounts,
     donationSummaryChart,
     faCheckbox,
-    filter,
     flash,
+    help,
     layoutSettings,
     links,
+    login,
     modal,
     monthRange,
     rawNumber,
+    rollout,
     selectionStore,
     serverConstants,
     session,
