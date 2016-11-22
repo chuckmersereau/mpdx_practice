@@ -1,59 +1,55 @@
-<div class="row page-controls" ng-if="$ctrl.startDate">
-    <div class="col-md-8 col-sm-8">
-        <a ui-sref="donations({ startDate: $ctrl.previousMonth})">
-            <i class="fa fa-chevron-left"></i>
-            <translate>Previous Month</translate>
-        </a>
-        &nbsp; &nbsp;
-        <a ui-sref="donations({ startDate: $ctrl.nextMonth})" ng-if="$ctrl.enableNext">
-            <translate>Next Month</translate>
-            <i class="fa fa-chevron-right"></i>
-        </a>
+<div block-ui="donations">
+    <div class="row page-controls" ng-if="$ctrl.startDate">
+        <div class="col-md-8 col-sm-8">
+            <a ng-click="$ctrl.gotoPrevMonth()">
+                <i class="fa fa-chevron-left"></i>
+                <translate>Previous Month</translate>
+            </a>
+            &nbsp; &nbsp;
+            <a ng-click="$ctrl.gotoNextMonth()" ng-if="$ctrl.enableNext">
+                <translate>Next Month</translate>
+                <i class="fa fa-chevron-right"></i>
+            </a>
+        </div>
+    </div>
+    <div class="clr"></div>
+    <h2 translate>Donations for {{$ctrl.startDate}} through {{$ctrl.endDate}}</h2>
+    <div class="table-responsive">
+        <table class="tablelist donations" id="donations_table">
+            <thead>
+            <tr>
+                <th ng-if="$ctrl.contact" translate>Donor</th>
+                <th class="date" translate>Date</th>
+                <th ng-if="!$ctrl.contact" translate>Donor</th>
+                <th class="right" translate>Amount</th>
+                <th></th>
+                <th ng-if="$ctrl.currentAccountList.designation_accounts.length > 0" translate>Designation</th>
+                <th translate>Method</th>
+                <th translate>Motivation</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="donation in $ctrl.donations[$ctrl.index]">
+                <td ng-if="$ctrl.contact">{{ donation.donor_account.name }}</td>
+                <td class="date">{{ donation.donation_date }}</td>
+                <td ng-if="!$ctrl.contact"><a ui-sref="contact({ contactId: donation.contact_id })">{{ donation.name }}</a></td>
+                <td class="right">{{ donation.amount }}</td>
+                <td>{{ donation.currency }}</td>
+                <td ng-if="$ctrl.currentAccountList.designation_accounts.length > 0">{{ donation.designation_number }}</td>
+                <td>{{ donation.payment_method }}</td>
+                <td>{{ donation.motivation }}</td>
+                <td><a ui-sref="donations.edit({ donationId: donation.id})"><i class="fa fa-pencil-square-o"></i></a></td>
+            </tr>
+            </tbody>
+            <tfoot ng-if="!$ctrl.contact">
+            <tr class="sum" ng-repeat="d in $ctrl.donationTotals[$ctrl.index] | toArray">
+                <td></td>
+                <td class="right"><strong translate>Total {{d.currency}} Donations {{d.count}}</strong></td>
+                <td class="right">{{d.amount}}</td>
+                <td colspan="4"></td>
+            </tr>
+            </tfoot>
+        </table>
     </div>
 </div>
-<div class="clr"></div>
-<h2 translate>Donations for {{$ctrl.startDate}} through {{$ctrl.endDate}}</h2>
-<div class="table-responsive">
-    <table class="tablelist donations" id="donations_table">
-        <thead>
-        <tr>
-            <th ng-if="$ctrl.contact" translate>Donor</th>
-            <th class="date" translate>Date</th>
-            <th ng-if="!$ctrl.contact" translate>Donor</th>
-            <th class="right" translate>Amount</th>
-            <th ng-if="$ctrl.currentAccountList.multi_currencies_for_same_symbol"></th>
-            <th ng-if="$ctrl.currentAccountList.multiple_designations" translate>Designation</th>
-            <th translate>Method</th>
-            <th translate>Motivation</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="donation in $ctrl.donations">
-            <td ng-if="$ctrl.contact">{{ donation.donor_account.name }}</td>
-            <td class="date">{{ donation.donation_date }}</td>
-            <td ng-if="!$ctrl.contact"><a ui-sref="contact({ contactId: donation.donor_account.contacts[0].id })">{{ donation.donor_account.contacts[0].name }}</a></td>
-            <td class="right"><%= donation_exhibit.tendered_amount %></td>
-            <td ng-if="$ctrl.currentAccountList.multi_currencies_for_same_symbol">{{ donation.currency }}</td>
-            <td ng-if="$ctrl.currentAccountList.multiple_designations">{{ donation.designation_account.designation_number }}</td>
-            <td>{{ donation_exhibit.payment_method }}</td>
-            <td>{{ donation_exhibit.motivation }}</td>
-            <td><a ui-sref="donations.edit({ donationId: donation.id})"><i class="fa fa-pencil-square-o"></i></a></td>
-        </tr>
-        </tbody>
-        <tfoot ng-if="!$ctrl.contact">
-        <tr class="sum" ng-repeat="d in $ctrl.donationTotals">
-            <td></td>
-            <td class="right"><strong translate>Total {{d.currency}} Donations {{d.count}}</strong></td>
-            <td class="right">{{d.sum}}</td>
-            <td colspan="4"></td>
-        </tr>
-        </tfoot>
-    </table>
-</div>
-
-<div id="js-edit_donation" style="display:none" title="{{'Edit Donation' | translate}}">
-    <%= spinner(extra: 'edit-donation') %>
-    <div class="form_wrapper"></div>
-</div>
-

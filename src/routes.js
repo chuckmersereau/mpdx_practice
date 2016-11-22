@@ -61,6 +61,10 @@ export default class Routes {
                 endDate: /*@ngInject*/ ($stateParams) => $stateParams.endDate
             }
         }).state({
+            name: 'donations.edit',
+            url: '/edit/{donationId}',
+            onEnter: openDonationModal
+        }).state({
             name: 'reports',
             url: '/reports',
             component: 'reports'
@@ -185,6 +189,19 @@ function openAddressModal(
     });
 }
 
+/*@ngInject*/
+function openDonationModal($state, $stateParams, modal) {
+    modal.open({
+        template: require('./donations/edit/edit.html'),
+        controller: 'editDonationController',
+        locals: {
+            donationId: $stateParams.donationId
+        },
+        onHide: () => {
+            $state.go('^');
+        }
+    });
+}
 
 /*@ngInject*/
 function openPeopleModal($state, $stateParams, modal, cache) {

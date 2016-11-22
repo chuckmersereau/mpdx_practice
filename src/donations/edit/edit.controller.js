@@ -1,8 +1,15 @@
 class EditDonationController {
     currentAccountList;
 
-    constructor(currentAccountList) {
+    constructor(
+        contactsService, currentAccountList, donationsService,
+        donationId
+    ) {
         this.currentAccountList = currentAccountList;
+        contactsService.getDonorAccounts();
+        this.donorAccounts = contactsService.donorAccounts;
+        this.donation = _.find(donationsService.data, { id: parseInt(donationId) });
+        console.log(this.donation);
     }
 }
 
