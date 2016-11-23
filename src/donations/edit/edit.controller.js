@@ -6,9 +6,19 @@ class EditDonationController {
         donationId
     ) {
         this.currentAccountList = currentAccountList;
+        this.donationId = donationId;
         contactsService.getDonorAccounts();
         this.donorAccounts = contactsService.donorAccounts;
-        this.donation = _.find(donationsService.data, { id: parseInt(donationId) });
+        if (donationsService.data === null) {
+            donationsService.getDonations().then((data) => {
+                this.loadingFinished(data);
+            });
+        } else {
+            this.loadingFinished(donationsService.data);
+        }
+    }
+    loadingFinished(data) {
+        this.donation = _.find(data.donations, { id: parseInt(this.donationId) });
         console.log(this.donation);
     }
 }

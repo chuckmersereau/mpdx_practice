@@ -1,4 +1,5 @@
 class DonationsController {
+    currencyService;
     currentAccountList;
     getDonations;
     donations;
@@ -6,8 +7,9 @@ class DonationsController {
 
     constructor(
         blockUI,
-        currentAccountList, donationsService
+        currentAccountList, currencyService, donationsService
     ) {
+        this.currencyService = currencyService;
         this.currentAccountList = currentAccountList;
         this.donationsService = donationsService;
 
@@ -19,11 +21,18 @@ class DonationsController {
         this.donationTotals = {};
     }
     $onChanges() {
-        this.donationsService.getDonations().then((data) => {
-            this.blockUI.stop();
-            this.allDonations = data.donations;
-            this.init();
-        });
+        if (this.donationsService.data === null) {
+            this.donationsService.getDonations().then((data) => {
+                this.loadingFinished(data);
+            });
+        } else {
+            this.loadingFinished(this.donationsService.data);
+        }
+    }
+    loadingFinished(data) {
+        this.blockUI.stop();
+        this.allDonations = data.donations;
+        this.init();
     }
     init() {
         this.previousMonth = moment(this.startDate, 'l').subtract(1, 'month').format('l');

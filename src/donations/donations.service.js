@@ -8,7 +8,7 @@ class DonationsService {
     getDonations(contactId, page) {
         return this.api.get('donations', { contact_id: contactId, page: page }).then((data) => {
             if (!contactId && !page) {
-                this.data = data.donations;
+                this.data = data;
             }
             return data;
         });
