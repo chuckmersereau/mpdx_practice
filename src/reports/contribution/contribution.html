@@ -1,93 +1,94 @@
-<div ng-if="$ctrl.startDate">
-    <div class="row page-controls">
-        <div class="col-md-8 col-sm-8">
-            <a ui-sref="reports.contribution({ startDate: $ctrl.previousYear})">
-                <i class="fa fa-chevron-left"></i>
-                <translate>Previous Year</translate>
-            </a>
-            &nbsp; &nbsp;
-            <a ui-sref="reports.contribution({startDate: $ctrl.nextYear})" ng-if="$ctrl.enableNext">
-                <translate>Next Year</translate>
-                <i class="fa fa-chevron-right"></i>
-            </a>
+<div block-ui="contributionReport">
+    <div ng-if="$ctrl.startDate">
+        <div class="row page-controls">
+            <div class="col-md-8 col-sm-8">
+                <a ng-click="$ctrl.gotoPrevYear()">
+                    <i class="fa fa-chevron-left"></i>
+                    <translate>Previous Year</translate>
+                </a>
+                &nbsp; &nbsp;
+                <a ng-click="$ctrl.gotoNextYear()" ng-if="$ctrl.enableNext">
+                    <translate>Next Year</translate>
+                    <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+            <div class="col-md-4 col-sm-4 text-right">
+                <a ui-sref="donations" translate>Donations</a>
+            </div>
         </div>
-        <div class="col-md-4 col-sm-4 text-right">
-            <a ui-sref="donations" translate>Donations</a>
+        <h2 translate>Contribution Report for {{$ctrl.startDate}} through {{$ctrl.endDate}}</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <a ng-click="$ctrl.export()" translate>Download as CSV spreadsheet file</a>
+            </div>
+            <div class="col-md-6 text-right">
+                <a ng-click="$ctrl.fullScreen()" translate>Fullscreen</a>
+            </div>
         </div>
     </div>
-    <h2 translate>Contribution Report for {{start_date}} through {{end_date}}</h2>
-    <div class="row">
-        <div class="col-md-6">
-            <a ng-click="$ctrl.export()" translate>Download as CSV spreadsheet file</a>
-        </div>
-        <div class="col-md-6 text-right">
-            <a ng-click="$ctrl.fullScreen()" translate>Fullscreen</a>
-        </div>
+    <div class="table-responsive">
+        <table class="tablelist donations donations-contribution-report" id="donations_table">
+            <thead>
+            <tr>
+                <th><span class="table-padding-left" translate>Donor</span></th>
+                <!--<th translate>Status</th>-->
+                <!--<th translate>Commitment Amount</th>-->
+                <!--<th translate>Commitment Frequency</th>-->
+                <th translate>Avg</th>
+                <th data-toggle="tooltip" data-container="body" title="{{'The lesser of a contact\'s pledge or monthly average' | translate }}" translate>
+                    Min
+                </th>
+                <th class="right" ng-repeat="month in $ctrl.months track by $index">
+                    <span class="table-padding">{{month}}</span>
+                </th>
+                <th class="total right">
+                    <span class="table-padding-right" translate>Total</span>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="sum" ng-repeat="total in $ctrl.donationTotals[$ctrl.index]">
+                <td><strong class="table-padding-left" translate>Total {{total.currency}} Donations</strong></td>
+                <!--<td></td>-->
+                <!--<td>{{total.count}}</td>-->
+                <!--<td></td>-->
+                <td>
+                    <span class="table-padding">{{$ctrl.currencyService.list[total.currency].symbol}}{{$ctrl._.round($ctrl._.mean(total.months))}}</span>
+                </td>
+                <td>
+                    <span class="table-padding">{{$ctrl.currencyService.list[total.currency].symbol}}{{$ctrl._.min(total.months)}}</span>
+                </td>
+                <td class="right" ng-repeat="month in total.months track by $index">
+                    <span class="table-padding">
+                      {{$ctrl.currencyService.list[total.currency].symbol}}{{month}}
+                    </span>
+                </td>
+                <td class="total">{{$ctrl.currencyService.list[total.currency].symbol}}{{total.total}}</td>
+            </tr>
+            <tr>
+                <td colspan="18">
+                    <span class="table-padding-left" translate>
+                      Not showing ministry partners without gifts in these 12 months which total to {{$ctrl.monthly_pledges_not_given}}/month
+                    </span>
+                </td>
+            </tr>
+            <tr ng-repeat="donor in $ctrl.donors[$ctrl.index] | toArray | orderBy : 'name'" ng-class="donation.status" ng-if="donor.total > 0">
+                <td>
+                    <span class="table-padding-left"><a ui-sref="contact({ contactId: donor.contactId})">{{donor.name}}</a></span>
+                </td>
+                <!--<td>{{donation.status}}</td>-->
+                <!--<td>{{donation.pledge_amount}}</td>-->
+                <!--<td>{{$ctrl._.round(donor.count/12, 1)}}</td>-->
+                <td><span class="table-padding">{{$ctrl.currencyService.list[donor.currency].symbol}}{{$ctrl._.round($ctrl._.mean(donor.months))}}</span></td>
+                <td><span class="table-padding">{{$ctrl.currencyService.list[donor.currency].symbol}}{{$ctrl._.min(donor.months)}}</span></td>
+                <td class="right" ng-repeat="month in donor.months track by $index">
+                    {{$ctrl.currencyService.list[donor.currency].symbol}}{{month}}
+                </td>
+                <td class="total right">
+                    <span class="table-padding-right">{{$ctrl.currencyService.list[donor.currency].symbol}}{{donor.total}}</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
-</div>
-<div class="table-responsive">
-    <table class="tablelist donations donations-contribution-report" id="donations_table">
-        <thead>
-        <tr>
-            <th><span class="table-padding-left" translate>Donor</span></th>
-            <th translate>Status</th>
-            <th translate>Commitment Amount</th>
-            <th translate>Commitment Frequency</th>
-            <th translate>Avg</th>
-            <th data-toggle="tooltip" data-container="body" title="{{'The lesser of a contact\'s pledge or monthly average' | translate }}" translate>
-                Min
-            </th>
-            <th class="right" ng-repeat="month in $ctrl.months">
-                <span class="table-padding">{{month}}</span>
-            </th>
-            <th class="total right">
-                <span class="table-padding-right" translate>Total</span>
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr class="sum">
-            <td><strong class="table-padding-left" translate>Total Donations</strong></td>
-            <td></td>
-            <td>{{$ctrl.totalPledges}}</td>
-            <td></td>
-            <td>
-                <span class="table-padding">{{$ctrl.totalAverage}}</span>
-            </td>
-            <td>
-                <span class="table-padding">{{$ctrl.totalMin}}</span>
-            </td>
-            <td class="right" ng-repeat="month in $ctrl.months">
-                <span class="table-padding">
-                  {{$ctrl.sums[$index]}}
-                </span>
-            </td>
-            <% end %>
-            <td class="total"></td>
-        </tr>
-        <tr>
-            <td colspan="18">
-                <span class="table-padding-left" translate>
-                  Not showing ministry partners without gifts in these 12 months which total to {{$ctrl.monthly_pledges_not_given}}/month
-                </span>
-            </td>
-        </tr>
-        <tr ng-repeat="donation in $ctrl.donations" ng-class="donation.status">
-            <td>
-                <span class="table-padding-left"><a ui-sref="contact({ contactId: donation.id})">{{donation.donor}}</a></span>
-            </td>
-            <td>{{donation.status}}</td>
-            <td>{{donation.pledge_amount}}</td>
-            <td>{{donation.pledge_frequency}}</td>
-            <td><span class="table-padding">{{donation.average}}</span></td>
-            <td><span class="table-padding">{{donation.minimum}}</span></td>
-            <td class="right" ng-repeat="month in $ctrl.months">
-                {{donation.amount[$index]}}
-            </td>
-            <td class="total right">
-                <span class="table-padding-right">{{donation.total}} %></span>
-            </td>
-        </tr>
-        </tbody>
-    </table>
 </div>

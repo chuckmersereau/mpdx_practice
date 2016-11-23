@@ -14,9 +14,9 @@
                             <li role="presentation"><a ui-sref="preferences.integrations" translate>Connect Services</a></li>
                             <li role="presentation"><a ui-sref="preferences.accounts" translate>Manage Account</a></li>
                             <li role="presentation" ng-if="$ctrl.currentUser.admin">
-                                <a ui-sref="admin" translate>Admin</a>
+                                <a ui-sref="unavailable" translate>Admin</a>
                             </li>
-                            <li role="presentation"><a ui-sref="logout" translate>Log out</li>
+                            <li role="presentation"><a ui-sref="logout" translate>Log out</a></li>
                         </ul>
                     </div>
                 </div>
@@ -76,7 +76,7 @@
                 </div>
                 <div class="pull-left" ng-show="$ctrl.isInState('donations')">
                     <div class="section"><a ui-sref="donations.edit({ donationId: 'new'})" class="no-new-tab" translate><i class="fa fa-plus-square"></i> Add a donation</a></div>
-                    <div class="section"><a ui-sref="reports.contributions" translate>Contribution Report</a></div>
+                    <div class="section"><a ui-sref="reports.contribution" translate>Contribution Report</a></div>
                     <div class="section"><a ui-sref="donations.sync">Sync Donations Now</a></div>
                 </div>
                 <div class="pull-left" ng-show="$ctrl.isInState('reports')">

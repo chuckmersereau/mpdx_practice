@@ -73,6 +73,18 @@ export default class Routes {
             url: '/balances',
             component: 'balancesReport'
         }).state({
+            name: 'reports.contribution',
+            url: '/contribution/{startDate}/{endDate}',
+            component: 'contributionReport',
+            params: {
+                startDate: moment().startOf('month').subtract(11, 'months').format('l'),
+                endDate: moment().endOf('month').format('l')
+            },
+            resolve: {
+                startDate: /*@ngInject*/ ($stateParams) => $stateParams.startDate,
+                endDate: /*@ngInject*/ ($stateParams) => $stateParams.endDate
+            }
+        }).state({
             name: 'reports.partner',
             url: '/partner',
             component: 'currencyDonationsReport',
