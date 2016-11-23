@@ -1,7 +1,7 @@
 <modal>
     <modal-header on-close="$hide()" title="Donation"></modal-header>
     <div ng-if="$ctrl.donorAccounts" class="modal-body">
-        <form ng-submit="$ctrl.submit(f)" block-ui="donationEdit">
+        <form ng-submit="$ctrl.submit($ctrl.donation)" block-ui="donationEdit">
             <div id="error_explanation" ng-if="$ctrl.errors">
                 <ul>
                     <li ng-repeat="error in $ctrl.errors">{{error}}</li>
@@ -28,7 +28,7 @@
                 <label for="currency" translate>Donation Currency</label>
                 <select ng-model="$ctrl.donation.currency" id="currency" class="form-control" chosen>
                     <option value=""></option>
-                    <option ng-repeat="currency in $ctrl.currencyService.list | toArray" value="{{currency.code}}" ng-selected="$ctrl.donation.currency === currency.code">{{currency.name}} ({{currency.symbol}})</option>
+                    <option ng-repeat="currency in $ctrl.currencyService.list | toArray" value="{{currency.code}}">{{currency.name}} ({{currency.symbol}})</option>
                 </select>
             </div>
 
@@ -44,7 +44,7 @@
                 <label for="appeal_id" translate>Appeal</label>
                 <select ng-model="$ctrl.donation.appeal_id" id="appeal_id" class="form-control">
                     <option value=""></option>
-                    <option ng-repeat="appeal in $ctrl.appeals" ng-value="appeal.id">{{appeal.name}}</option>
+                    <option ng-repeat="appeal in $ctrl.appealsService.appeals" ng-value="appeal.id">{{appeal.id}} {{appeal.name}}</option>
                 </select>
             </div>
 
@@ -63,6 +63,10 @@
 
             <div class="field" ng-if="$ctrl.donation.id">
                 <a ng-click="$ctrl.delete()" class="red delete_donation" translate>Click here to delete this donation</a>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" ng-click="$hide()" translate>Cancel</button>
+                <button type="submit" class="btn btn-primary" translate>Save</button>
             </div>
         </form>
     </div>

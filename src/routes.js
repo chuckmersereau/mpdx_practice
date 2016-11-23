@@ -198,7 +198,7 @@ function openDonationModal($state, $stateParams, modal) {
             donationId: $stateParams.donationId
         },
         onHide: () => {
-            $state.go('^');
+            $state.go('^', {}, { reload: true });
         }
     });
 }
