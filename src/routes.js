@@ -170,10 +170,8 @@ function logout($window, $state) {
 function openAddressModal(
     $stateParams, modal, cache, $state
 ) {
-    cache.get($stateParams.contactId).then(function(contact) {
-        var address = _.find(contact.addresses, function(addressToFilter) {
-            return addressToFilter.id.toString() === $stateParams.addressId;
-        });
+    cache.get($stateParams.contactId).then((contact) => {
+        const address = _.find(contact.addresses, addressToFilter => addressToFilter.id.toString() === $stateParams.addressId);
 
         modal.open({
             template: require('./contacts/show/address/modal/modal.html'),
@@ -206,9 +204,7 @@ function openDonationModal($state, $stateParams, modal) {
 /*@ngInject*/
 function openPeopleModal($state, $stateParams, modal, cache) {
     cache.get($stateParams.contactId).then((contact) => {
-        const person = _.find(contact.people, function(person) {
-            return person.id.toString() === $stateParams.personId;
-        });
+        const person = _.find(contact.people, person => person.id.toString() === $stateParams.personId);
 
         modal.open({
             template: require('./contacts/show/people/modal/modal.html'),
@@ -228,11 +224,9 @@ function openPeopleModal($state, $stateParams, modal, cache) {
 function openMergePeopleModal(
     $state, $stateParams, modal, cache
 ) {
-    cache.get($stateParams.contactId).then(function(contact) {
-        var peopleIds = $stateParams.peopleIds.split(',');
-        var people = _.filter(contact.people, function(person) {
-            return _.includes(peopleIds, person.id.toString());
-        });
+    cache.get($stateParams.contactId).then((contact) => {
+        const peopleIds = $stateParams.peopleIds.split(',');
+        const people = _.filter(contact.people, person => _.includes(peopleIds, person.id.toString()));
 
         modal.open({
             template: require('./contacts/show/people/merge/merge.html'),
@@ -255,7 +249,7 @@ function openNewContactModal(
     modal.open({
         template: require('./contacts/new/new.html'),
         controller: 'contactNewModalController',
-        onHide: function() {
+        onHide: () => {
             if ($state.current.name === 'contacts.new') {
                 $state.go('^');
             }
