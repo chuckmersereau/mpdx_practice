@@ -1,18 +1,13 @@
 class ContactController {
-    cache;
-    contact;
-    contactsService;
-    modal;
-    preferencesContactsService;
-    referralsService;
-    tasksService;
-
     constructor(
-        $scope, $state, $stateParams,
+        $scope, $state, $stateParams, $location, $anchorScroll,
         modal, cache, contactsService, tasksService, referralsService, preferencesContactsService, serverConstants
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
+        this.$location = $location;
+        this.$anchorScroll = $anchorScroll;
+
         this.cache = cache;
         this.contactsService = contactsService;
         this.modal = modal;
@@ -139,6 +134,11 @@ class ContactController {
     }
     callToSave() {
         this.save();
+    }
+    displayNotes() {
+        this.activeTab = 'notes';
+        this.$location.hash('contact-tabs');
+        this.$anchorScroll();
     }
 }
 

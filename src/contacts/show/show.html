@@ -38,7 +38,7 @@
                 <div class="col-md-4">
                     <div class="see_notes_box">
                         <a class="btn btn-secondary" ng-click="$ctrl.displayNotes()">
-                            <i class="fa"></i>
+                            <i class="fa fa-sticky-note-o"></i>
                             <translate>See Notes</translate>
                         </a>
                     </div>
@@ -85,7 +85,7 @@
                     ></contact-referrals>
                     <button ng-click="$ctrl.openAddReferralsModal()" class="btn btn-primary" translate>Add Referrals</button>
                 </div>
-                <div ng-if="item['key']=='notes'" ng-show="item['key']==$ctrl.activeTab" id="notes_tab">
+                <div ng-if="item['key']=='notes'" ng-show="item['key']==$ctrl.activeTab">
                     <contact-notes contact="$ctrl.contact"></contact-notes>
                 </div>
             </div>
