@@ -10,24 +10,21 @@
                     <i class="fa fa-chevron-right" aria-hidden="true"></i>
                 </a>
             </div>
-            <div class="contact-position hidden">
-                0 of 500
-            </div>
             <a class="btn btn-default" ng-click="$ctrl.openAddReferralsModal()">
                 <i class="fa fa-users" aria-hidden="true"></i>
-                Add Referrals
+                <translate>Add Referrals</translate>
             </a>
             <a class="btn btn-default" ng-click="$ctrl.openLogTaskModal()">
                 <i class="fa fa-check-square-o" aria-hidden="true"></i>
-                Log Task
+                <translate>Log Task</translate>
             </a>
             <a class="btn btn-default" ng-click="$ctrl.openAddTaskModal()">
                 <i class="fa fa-square-o" aria-hidden="true"></i>
-                Add Task
+                <translate>Add Task</translate>
             </a>
             <a class="btn btn-default" ng-click="$ctrl.hideContact()">
                 <i class="fa fa-eye-slash" aria-hidden="true"></i>
-                Hide Contact
+                <translate>Hide Contact</translate>
             </a>
         </div>
         <div class="contact-card">
@@ -76,17 +73,17 @@
                 </div>
                 <div ng-if="item['key']=='tasks'" ng-show="item['key']==$ctrl.activeTab">
                     <contact-tasks contact="$ctrl.contact"></contact-tasks>
-                    <button ng-click="$ctrl.openAddTaskModal()" class="btn btn-primary">Add Task</button>
+                    <button ng-click="$ctrl.openAddTaskModal()" class="btn btn-primary" translate>Add Task</button>
                 </div>
                 <div ng-if="item['key']=='history'" ng-show="item['key']==$ctrl.activeTab">
                     <contact-history contact="$ctrl.contact"
                     ></contact-history>
-                    <button ng-click="$ctrl.openLogTaskModal()" class="btn btn-primary">Log Task</button>
+                    <button ng-click="$ctrl.openLogTaskModal()" class="btn btn-primary" translate>Log Task</button>
                 </div>
                 <div ng-if="item['key']=='referrals'" ng-show="item['key']==$ctrl.activeTab">
                     <contact-referrals contact="$ctrl.contact"
                     ></contact-referrals>
-                    <button ng-click="$ctrl.openAddReferralsModal()" class="btn btn-primary">Add Referrals</button>
+                    <button ng-click="$ctrl.openAddReferralsModal()" class="btn btn-primary" translate>Add Referrals</button>
                 </div>
                 <div ng-if="item['key']=='notes'" ng-show="item['key']==$ctrl.activeTab" id="notes_tab">
                     <contact-notes contact="$ctrl.contact"></contact-notes>
