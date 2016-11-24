@@ -1,8 +1,4 @@
 class AddTagController {
-    contacts;
-    contactsService;
-    tagsService;
-
     constructor(
         $scope,
         tagsService, contactsService,
@@ -12,10 +8,11 @@ class AddTagController {
         this.contacts = contacts;
         this.contactsService = contactsService;
         this.tagsService = tagsService;
+        this.tags = '';
     }
     addTag(tag) {
-        const tagToAdd = tag || this.models.addTags.newTag;
-        if (!tag) {
+        const tagToAdd = tag || this.tags;
+        if (!tagToAdd) {
             return;
         }
         this.tagsService.tagContact(this.contacts, tagToAdd).then(() => {
