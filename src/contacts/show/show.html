@@ -94,7 +94,7 @@
     <div id="contact_drawer" class="col-md-3">
         <div class="contact_drawer_inner">
             <div class="edit-filters clearfix">
-                0 filters applied
+                {{$ctrl.filterCount()}} <translate>filter(s) applied</translate>
                 <div class="pull-right">
                     <button type="button" class="btn btn-primary btn-xs" ng-click="$ctrl.showFilters = !$ctrl.showFilters">
                         <span ng-if="$ctrl.showFilters"><i class="fa fa-users"></i> <span translate>Contacts</span></span>

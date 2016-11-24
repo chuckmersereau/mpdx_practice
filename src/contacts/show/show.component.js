@@ -1,7 +1,7 @@
 class ContactController {
     constructor(
         $scope, $state, $stateParams, $location, $anchorScroll,
-        modal, cache, contactsService, tasksService, referralsService, preferencesContactsService, serverConstants
+        modal, cache, contactsService, tasksService, referralsService, preferencesContactsService, filterService, serverConstants
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
@@ -13,6 +13,7 @@ class ContactController {
         this.modal = modal;
         this.preferencesContactsService = preferencesContactsService;
         this.referralsService = referralsService;
+        this.filterService = filterService;
         this.tasksService = tasksService;
 
         this.selected = $stateParams.contactId;
@@ -139,6 +140,9 @@ class ContactController {
         this.activeTab = 'notes';
         this.$location.hash('contact-tabs');
         this.$anchorScroll();
+    }
+    filterCount() {
+        return this.filterService.count();
     }
 }
 
