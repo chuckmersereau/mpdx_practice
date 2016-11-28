@@ -5,9 +5,12 @@ class Session {
         this.api = api;
 
         this.account_list_id = null;
+        this.alert = null;
         this.data = {};
+        this.downloading = false;
         this.fullsite = true;
         this.fullScreen = false;
+        this.notice = null;
     }
     updateField(key, value) {
         let body = {};

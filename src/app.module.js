@@ -9,8 +9,9 @@ import contacts from './contacts/index.module';
 import donations from './donations/index.module';
 import home from './home/index.module';
 import menu from './menu/index.module';
-import reports from './reports/index.module';
+import notices from './notices/notices.component';
 import preferences from './preferences/index.module';
+import reports from './reports/index.module';
 import tasks from './tasks/index.module';
 import unavailable from './unavailable/index.module';
 import vendor from './vendor.module';
@@ -29,8 +30,9 @@ export default angular.module('mpdx', [
     donations,
     home,
     menu,
-    reports,
+    notices,
     preferences,
+    reports,
     tasks,
     unavailable,
     vendor
