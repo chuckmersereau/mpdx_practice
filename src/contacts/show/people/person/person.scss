@@ -1,0 +1,50 @@
+contact-person {
+  .card {
+    margin-bottom: 15px;
+    .avatar {
+      width: 25px;
+      height: 25px;
+    }
+    .content {
+      padding-left: 35px;
+      .edit {
+        font-weight: 500;
+        color: $gray;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+      h1 {
+        margin-top: 3px;
+        font-size: 18px;
+        margin-bottom: 0;
+        font-weight: 500;
+      }
+      dl {
+        dd {
+          line-height: 20px;
+          &:first-child {
+            margin-top: 5px;
+          }
+          &.networks {
+            line-height: 30px;
+            a {
+              margin-right: 5px;
+              font-size: 20px;
+              color: $icon_gray;
+              &:hover {
+                text-decoration: none;
+              }
+            }
+          }
+        }
+      }
+    }
+    &.merging {
+      cursor: pointer;
+    }
+    &.selected {
+      background-color: #CCCCCC;
+    }
+  }
+}

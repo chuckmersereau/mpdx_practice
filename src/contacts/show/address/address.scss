@@ -1,0 +1,9 @@
+contact-address {
+  .edit {
+    font-weight: 500;
+    color: $gray;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}

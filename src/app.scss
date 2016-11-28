@@ -34,9 +34,13 @@ $fa-font-path: "~font-awesome/fonts";
 @import "contacts/filter/tags/tags";
 @import "contacts/list/list";
 @import "contacts/list/item/item";
+@import "contacts/search/search";
 @import "contacts/show/show";
 @import "contacts/show/horizontalTabsSortable";
 @import "contacts/show/details/details";
+@import "contacts/show/address/address";
+@import "contacts/show/people/people";
+@import "contacts/show/people/person/person";
 @import "reports/reports";
 
 /* Overrides */
