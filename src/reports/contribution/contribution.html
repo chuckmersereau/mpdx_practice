@@ -19,7 +19,11 @@
         <h2 translate>Contribution Report for {{$ctrl.startDate}} through {{$ctrl.endDate}}</h2>
         <div class="row">
             <div class="col-md-6">
-                <a ng-click="$ctrl.export()" translate>Download as CSV spreadsheet file</a>
+                <button class="btn btn-default" ng-csv="$ctrl.export()" lazy-load="true"
+                        filename="mpdx-{{$ctrl.type}}-contributions-export-{{$ctrl.moment().format('Y-MM-DD-HH:mm')}}.csv"
+                        translate>
+                    Download as CSV spreadsheet file
+                </button>
             </div>
             <div class="col-md-6 text-right">
                 <a ng-click="$ctrl.fullScreen()" translate>Fullscreen</a>

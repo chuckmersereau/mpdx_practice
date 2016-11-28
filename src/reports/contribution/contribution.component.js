@@ -1,12 +1,13 @@
 class ContributionReportController {
     constructor(
-        blockUI,
+        blockUI, gettextCatalog,
         currentAccountList, currencyService, donationsService
     ) {
         this._ = _;
         this.currencyService = currencyService;
         this.currentAccountList = currentAccountList;
         this.donationsService = donationsService;
+        this.gettextCatalog = gettextCatalog;
         this.moment = moment;
 
         this.blockUI = blockUI.instances.get('contributionReport');
@@ -48,7 +49,6 @@ class ContributionReportController {
         this.index = this.startDate.split('/').join('');
         if (!_.has(this.donations, this.index)) {
             this.donations[this.index] = _.filter(this.allDonations, donation => moment(donation.donation_date, 'YYYY-M-D').isBetween(startDate, endDate));
-            console.log(this.donations[this.index]);
             this.donors[this.index] = {};
             let donors = this.donors[this.index];
             this.donationTotals[this.index] = {};
@@ -82,7 +82,6 @@ class ContributionReportController {
                 this.donationTotals[this.index][donation.currency].total += donationAmount;
                 this.donationTotals[this.index][donation.currency].count++;
             });
-            console.log(this.donationTotals);
         }
     }
     gotoNextYear() {
@@ -94,6 +93,39 @@ class ContributionReportController {
         this.startDate = this.previousYear;
         this.endDate = null;
         this.init();
+    }
+    export() {
+        const columnHeaders = [[
+            this.gettextCatalog.getString('Donor'),
+            this.gettextCatalog.getString('Avg'),
+            this.gettextCatalog.getString('Min'),
+            ...this.months,
+            this.gettextCatalog.getString('Total')
+        ]];
+        const totals = _.map(this.donationTotals[this.index], (total) => {
+            return [
+                this.gettextCatalog.getString(`Total ${total.currency} Donations`),
+                `${this.currencyService.list[total.currency].symbol}${_.round(_.mean(total.months))}`,
+                `${this.currencyService.list[total.currency].symbol}${_.min(total.months)}`,
+                ..._.map(total.months, month => `${this.currencyService.list[total.currency].symbol}${month}`),
+                `${this.currencyService.list[total.currency].symbol}${total.total}`
+            ];
+        });
+        const donorRows = _.map(this.donors[this.index], (donor) => {
+            return [
+                donor.name,
+                `${this.currencyService.list[donor.currency].symbol}${_.round(_.mean(donor.months))}`,
+                `${this.currencyService.list[donor.currency].symbol}${_.min(donor.months)}`,
+                ..._.map(donor.months, month => `${this.currencyService.list[donor.currency].symbol}${month}`),
+                `${this.currencyService.list[donor.currency].symbol}${donor.total}`
+            ];
+        });
+
+        return [
+            ...columnHeaders,
+            ...totals,
+            ...donorRows
+        ];
     }
 }
 
