@@ -1,23 +1,19 @@
 class ContactController {
-    cache;
-    contact;
-    contactsService;
-    modal;
-    preferencesContactsService;
-    referralsService;
-    tasksService;
-
     constructor(
-        $scope, $state, $stateParams,
-        modal, cache, contactsService, tasksService, referralsService, preferencesContactsService, serverConstants
+        $scope, $state, $stateParams, $location, $anchorScroll,
+        modal, cache, contactsService, tasksService, referralsService, preferencesContactsService, filterService, serverConstants
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
+        this.$location = $location;
+        this.$anchorScroll = $anchorScroll;
+
         this.cache = cache;
         this.contactsService = contactsService;
         this.modal = modal;
         this.preferencesContactsService = preferencesContactsService;
         this.referralsService = referralsService;
+        this.filterService = filterService;
         this.tasksService = tasksService;
 
         this.selected = $stateParams.contactId;
@@ -25,7 +21,7 @@ class ContactController {
         this.activeTab = '';
         this.contact = {};
         serverConstants.fetchConstant('contacts', 'contacts/basic_list');
-        serverConstants.fetchConstants(['assignable_send_newsletters', 'assignable_statuses', 'pledge_frequencies', 'pledge_currencies', 'assignable_locations']);
+        serverConstants.fetchConstants(['assignable_send_newsletters', 'assignable_statuses', 'pledge_frequencies', 'pledge_currencies', 'assignable_locations', 'assignable_likely_to_gives']);
         this.constants = serverConstants.data;
 
         this.tabsLabels = [];
@@ -139,6 +135,14 @@ class ContactController {
     }
     callToSave() {
         this.save();
+    }
+    displayNotes() {
+        this.activeTab = 'notes';
+        this.$location.hash('contact-tabs');
+        this.$anchorScroll();
+    }
+    filterCount() {
+        return this.filterService.count();
     }
 }
 

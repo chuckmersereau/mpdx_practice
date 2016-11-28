@@ -62,11 +62,10 @@ class AddressModalController {
         this.activate();
     }
     activate() {
-        this.address.map = this.address.geo; //set initial map value
-
         this.serverConstants.fetchConstants(['assignable_locations']);
 
         if (angular.isDefined(this.address)) {
+            this.address.map = this.address.geo; //set initial map value
             this.modalTitle = 'Edit Address';
         } else {
             this.modalTitle = 'Add Address';
