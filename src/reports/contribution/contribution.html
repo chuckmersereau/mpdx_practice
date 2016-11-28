@@ -26,7 +26,7 @@
                 </button>
             </div>
             <div class="col-md-6 text-right">
-                <a ng-click="$ctrl.fullScreen()" translate>Fullscreen</a>
+                <a ng-click="$ctrl.session.fullScreen = true" ng-if="!$ctrl.session.fullScreen" translate>Fullscreen</a>
             </div>
         </div>
     </div>

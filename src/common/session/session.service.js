@@ -7,6 +7,7 @@ class Session {
         this.account_list_id = null;
         this.data = {};
         this.fullsite = true;
+        this.fullScreen = false;
     }
     updateField(key, value) {
         let body = {};

@@ -1,7 +1,7 @@
 class ContributionReportController {
     constructor(
         blockUI, gettextCatalog,
-        currentAccountList, currencyService, donationsService
+        currentAccountList, currencyService, donationsService, session
     ) {
         this._ = _;
         this.currencyService = currencyService;
@@ -9,6 +9,7 @@ class ContributionReportController {
         this.donationsService = donationsService;
         this.gettextCatalog = gettextCatalog;
         this.moment = moment;
+        this.session = session;
 
         this.blockUI = blockUI.instances.get('contributionReport');
         this.blockUI.start();
