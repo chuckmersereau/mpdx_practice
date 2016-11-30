@@ -46,7 +46,7 @@
     "iso-currency": "0.2.7",
     "jquery": "^3.1.1",
     "karma-phantomjs-launcher": "^1.0.2",
-    "langmap": "^0.0.8",
+    "langmap": "0.0.14",
     "lodash": "4.16.6",
     "markerclustererplus": "2.1.4",
     "moment": "2.15.2",

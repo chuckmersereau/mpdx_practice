@@ -3742,9 +3742,9 @@ klaw@^1.0.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/klaw/-/klaw-1.3.0.tgz#8857bfbc1d824badf13d3d0241d8bbe46fb12f73"
 
-langmap@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/langmap/-/langmap-0.0.8.tgz#7a770c9c124d60759cb300d6e94234ff6bdb7408"
+langmap@0.0.14:
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/langmap/-/langmap-0.0.14.tgz#8c86a37fed19a03a8ccb2a6f78afd4f69195a80e"
 
 lazy-cache@^1.0.3:
   version "1.0.4"
