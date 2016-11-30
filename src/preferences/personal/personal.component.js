@@ -4,31 +4,22 @@ class PersonalPreferencesController {
     personalService;
 
     constructor(
-        $state, $stateParams, $scope, personalService, alertsService, rolloutService
+        $state, $stateParams, $window,
+        personalService, alertsService, rolloutService
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
+        this.$window = $window;
         this.alertsService = alertsService;
         this.rolloutService = rolloutService;
         this.personalService = personalService;
 
         this.saving = false;
         this.tabId = '';
-        this.locale_string = '';
-        this.default_account_string = '';
-        this.salary_organization_string = '';
 
-        // $scope.$watch('vm.personalService.data.locale', (newValue) => {
-        //     this.locale_string = angular.element('#_locale option[value=' + newValue + ']').text();
-        // });
-
-        // $scope.$watch('vm.personalService.data.default_account_list', (newValue) => {
-        //     this.default_account_string = angular.element('#_default_account_list option[value=' + newValue + ']').text();
-        // });
-
-        // $scope.$watch('vm.personalService.data.salary_organization_id', (newValue) => {
-        //     this.salary_organization_string = angular.element('#salary_organization_id_ option[value=' + newValue + ']').text();
-        // });
+        this.languages = _.map(_.keys($window.languageMappingList), (key) => {
+            return _.extend({alias: key}, window.languageMappingList[key]);
+        });
     }
     $onInit() {
         if (this.$stateParams.id) {
@@ -63,11 +54,16 @@ class PersonalPreferencesController {
     setDefaultAccountList() {
         this.default_account_string = this.personalService.data.default_account_list;
     }
-    setLocale() {
-        this.locale_string = this.personalService.data.locale;
-    }
     setSalaryOrg() {
         this.salary_organization_string = this.personalService.data.salary_organization_id;
+    }
+    getCountry(locale) {
+        if (!locale) return;
+        const splitLocale = locale.split('-');
+        if (splitLocale.length > 1) {
+            return splitLocale[1].toLowerCase();
+        }
+        return locale;
     }
 }
 
