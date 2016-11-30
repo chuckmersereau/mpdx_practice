@@ -1,12 +1,9 @@
 class PersonModalController {
-    contactsService;
-    contact;
-
-    constructor(contactsService, contact, person) {
+    constructor($scope, contactsService, contact, person) {
         this.contactsService = contactsService;
         this.contact = contact;
         this.person = person;
-
+        this.$scope = $scope;
         this.personDetails = '';
         this.maps = [];
 
@@ -81,4 +78,3 @@ class PersonModalController {
 
 export default angular.module('mpdx.contacts.show.personModal.controller', [])
     .controller('personModalController', PersonModalController).name;
-

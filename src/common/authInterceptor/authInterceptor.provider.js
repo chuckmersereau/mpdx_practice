@@ -5,17 +5,7 @@ function authInterceptor($q, $window) {
                 if (!$window.sessionStorage.token) {
                     return $q.reject('noAuth');
                 }
-                if (config.method === 'GET' && config.url.indexOf('?') > -1) {
-                    config.url += '&access_token=' + $window.sessionStorage.token;
-                } else {
-                    config.url += '?access_token=' + $window.sessionStorage.token;
-                }
-
-                // For later use if we use bearers in MPDX API
-                // config.headers = config.headers || {};
-                // if ($window.sessionStorage.token) {
-                //     config.headers.Authorization = 'Bearer ' + $window.sessionStorage.token;
-                // }
+                config.headers['Authorization'] = `Bearer ${$window.sessionStorage.token}`;
             }
             return config;
         },

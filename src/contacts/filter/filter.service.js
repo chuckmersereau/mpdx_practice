@@ -1,5 +1,4 @@
 class FilterService {
-    api;
     constructor($rootScope, api, $location) {
         this.$location = $location;
         this.api = api;
@@ -69,6 +68,17 @@ class FilterService {
                 }
             }
         });
+    }
+    count() {
+        let count = 0;
+        for (var key in this.params) {
+            if (this.params.hasOwnProperty(key)) {
+                if (!_.isEqual(this.params[key], this.default_params[key])) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
     reset() {
         this.params = _.clone(this.default_params);
