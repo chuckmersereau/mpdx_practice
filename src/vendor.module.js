@@ -17,8 +17,6 @@ import 'angulartics';
 import 'angulartics-google-analytics';
 import lang from 'langmap'; //load before language-picker
 window.languageMappingList = lang;
-import 'angular-language-picker-0.3.3/dist/angular-language-picker';
-import 'angular-language-picker-0.3.3/dist/angular-language-picker.templates';
 import 'angular-strap';
 import 'angular-strap/dist/angular-strap.tpl';
 import 'angular-chosen-localytics';
@@ -56,7 +54,6 @@ export default angular.module('mpdx.vendor', [
     'angulartics',
     'angulartics.google.analytics',
     'isoCurrency',
-    'language-picker',
     'LocalForageModule',
     'localytics.directives',
     'mgcrea.ngStrap',

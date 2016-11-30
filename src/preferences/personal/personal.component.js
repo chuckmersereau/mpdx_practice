@@ -5,12 +5,13 @@ class PersonalPreferencesController {
 
     constructor(
         $state, $stateParams, $window,
-        personalService, alertsService, rolloutService
+        personalService, alertsService, gettextCatalog, rolloutService
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.$window = $window;
         this.alertsService = alertsService;
+        this.gettextCatalog = gettextCatalog;
         this.rolloutService = rolloutService;
         this.personalService = personalService;
 
@@ -59,11 +60,15 @@ class PersonalPreferencesController {
     }
     getCountry(locale) {
         if (!locale) return;
+        if (locale === 'en') return 'us';
         const splitLocale = locale.split('-');
         if (splitLocale.length > 1) {
             return splitLocale[1].toLowerCase();
         }
         return locale;
+    }
+    setLocale() {
+        this.personalService.changeLocale(this.personalService.data.locale);
     }
 }
 
