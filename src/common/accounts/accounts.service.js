@@ -25,7 +25,6 @@ class AccountsService {
         return this.api.get('preferences/accounts').then((data) => {
             this.data = data.preferences;
             this.account_list_id = data.preferences.account_list_id;
-            this.account_list_id = data.preferences.account_list_id;
             this.loading = false;
         });
     };

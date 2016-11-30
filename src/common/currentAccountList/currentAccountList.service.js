@@ -14,7 +14,7 @@ class CurrentAccountList {
         this.get();
     }
     get() {
-        return this.api.get('current_account_list').then((resp) => {
+        return this.api.get(`account_lists/${this.api.account_list_id}`).then((resp) => {
             _.extend(this, resp);
         }).catch((err) => {
             this.$log.debug(err);
