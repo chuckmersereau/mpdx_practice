@@ -3,10 +3,14 @@ class progressController {
     currentUser;
     state;
 
-    constructor(api, $filter, state, currentUser) {
+    constructor(
+        blockUI,
+        api, $filter, state, currentUser
+    ) {
         this.$filter = $filter;
         this.state = state;
         this.api = api;
+        this.blockUI = blockUI.instances.get('dashboardProgress');
         this.currentUser = currentUser;
 
         this.startDate = new Date();
@@ -17,6 +21,7 @@ class progressController {
         this.errorOccurred = false;
     }
     blankData() {
+        this.blockUI.start();
         this.data = {
             contacts: {
                 active: '-', referrals_on_hand: '-', referrals: '-'
@@ -56,19 +61,16 @@ class progressController {
             }
         };
     }
-
     nextWeek() {
         this.startDate.setDate(this.startDate.getDate() + 7);
         this.endDate.setDate(this.endDate.getDate() + 7);
         this.refreshData();
     }
-
     previousWeek() {
         this.startDate.setDate(this.startDate.getDate() - 7);
         this.endDate.setDate(this.endDate.getDate() - 7);
         this.refreshData();
     }
-
     refreshData() {
         this.blankData();
         let startDateString = this.$filter('date')(this.startDate, 'yyyy-MM-dd');
@@ -76,11 +78,11 @@ class progressController {
 
         this.api.get(url).then((newData) => {
             this.data = newData;
+            this.blockUI.stop();
         }).catch(() => {
             this.errorOccurred = true;
         });
     }
-
     $onInit() {
         this.refreshData();
         this.currentUser.getHasAnyUsAccounts();

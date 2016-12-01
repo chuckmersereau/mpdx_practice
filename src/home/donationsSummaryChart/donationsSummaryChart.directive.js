@@ -12,10 +12,13 @@ function donationSummaryChart() {
 }
 
 class donationSummaryChartController {
-    constructor(gettextCatalog, $scope, currentAccountList, $filter) {
+    constructor(gettextCatalog, $scope, currentAccountList, $filter, blockUI) {
         $scope.$filter = $filter;
         $scope.gettextCatalog = gettextCatalog;
         $scope.currentAccountList = currentAccountList;
+        $scope.blockUI = blockUI.instances.get('donationSummaryChart');
+        $scope.blockUI.start();
+        $scope.loaded = false;
     }
 }
 
@@ -127,6 +130,8 @@ function linkFn(scope) {
             },
             series: seriesWithClickEvents
         });
+        scope.blockUI.stop();
+        scope.loaded = true;
     });
 }
 
