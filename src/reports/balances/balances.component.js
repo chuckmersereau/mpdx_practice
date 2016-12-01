@@ -8,8 +8,7 @@ class BalancesReportController {
         this.errorOccurred = false;
     }
     $onInit() {
-        var url = 'reports/balances?account_list_id=' + this.state.current_account_list_id;
-        this.api.get(url).then((data) => {
+        this.api.get('reports/balances').then((data) => {
             this.designations = data.designations;
             _.each(this.designations, (d) => {
                 d.balanceIncluded = d.active;

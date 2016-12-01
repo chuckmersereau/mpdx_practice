@@ -1,8 +1,8 @@
 require('./bottom.scss');
 
 export class BottomController {
-    constructor(HelpService) {
-        this.helpService = HelpService;
+    constructor(helpService) {
+        this.helpService = helpService;
         this.year = new Date().getFullYear();
     }
 

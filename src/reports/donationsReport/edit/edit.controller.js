@@ -2,18 +2,18 @@ class EditDonationController {
     appealsService;
     currencyService;
     currentAccountList;
-    donationsService;
+    donationsReportService;
 
     constructor(
         $scope, blockUI,
-        appealsService, contactsService, currencyService, currentAccountList, donationsService,
+        appealsService, contactsService, currencyService, currentAccountList, donationsReportService,
         donationId
     ) {
         this.$scope = $scope;
         this.appealsService = appealsService;
         this.currencyService = currencyService;
         this.currentAccountList = currentAccountList;
-        this.donationsService = donationsService;
+        this.donationsReportService = donationsReportService;
         this.donationId = donationId;
 
         this.blockUI = blockUI.instances.get('donationEdit');
@@ -26,12 +26,12 @@ class EditDonationController {
             this.blockUI.stop();
             return;
         }
-        if (donationsService.data === null) {
-            donationsService.getDonations().then((data) => {
+        if (donationsReportService.data === null) {
+            donationsReportService.getDonations().then((data) => {
                 this.loadingFinished(data);
             });
         } else {
-            this.loadingFinished(donationsService.data);
+            this.loadingFinished(donationsReportService.data);
         }
     }
     loadingFinished(data) {
@@ -39,8 +39,8 @@ class EditDonationController {
         this.blockUI.stop();
     }
     submit(donation) {
-        this.donationsService.save(donation).then(() => {
-            this.donationsService.data = null;
+        this.donationsReportService.save(donation).then(() => {
+            this.donationsReportService.data = null;
             this.$scope.$hide();
         });
     }

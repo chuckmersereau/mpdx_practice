@@ -74,8 +74,7 @@ class progressController {
     refreshData() {
         this.blankData();
         let startDateString = this.$filter('date')(this.startDate, 'yyyy-MM-dd');
-        const url = 'progress.json?start_date=' + startDateString +
-            '&account_list_id=' + this.state.current_account_list_id;
+        const url = 'progress.json?start_date=' + startDateString;
 
         this.api.get(url).then((newData) => {
             this.data = newData;

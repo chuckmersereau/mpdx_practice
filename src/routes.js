@@ -49,9 +49,17 @@ export default class Routes {
             url: '/people/{personId}',
             onEnter: openPeopleModal
         }).state({
-            name: 'donations',
+            name: 'reports',
+            url: '/reports',
+            component: 'reports'
+        }).state({
+            name: 'reports.balances',
+            url: '/balances',
+            component: 'balancesReport'
+        }).state({
+            name: 'reports.donations',
             url: '/donations/{startDate}/{endDate}',
-            component: 'donations',
+            component: 'donationsReport',
             params: {
                 startDate: moment().startOf('month').format('l'),
                 endDate: moment().endOf('month').format('l')
@@ -61,44 +69,24 @@ export default class Routes {
                 endDate: /*@ngInject*/ ($stateParams) => $stateParams.endDate
             }
         }).state({
-            name: 'donations.edit',
+            name: 'reports.donations.edit',
             url: '/edit/{donationId}',
             onEnter: openDonationModal
-        }).state({
-            name: 'reports',
-            url: '/reports',
-            component: 'reports'
-        }).state({
-            name: 'reports.balances',
-            url: '/balances',
-            component: 'balancesReport'
-        }).state({
-            name: 'reports.contribution',
-            url: '/contribution/{startDate}/{endDate}',
-            component: 'contributionReport',
-            params: {
-                startDate: moment().startOf('month').subtract(11, 'months').format('l'),
-                endDate: moment().endOf('month').format('l')
-            },
-            resolve: {
-                startDate: /*@ngInject*/ ($stateParams) => $stateParams.startDate,
-                endDate: /*@ngInject*/ ($stateParams) => $stateParams.endDate
-            }
-        }).state({
-            name: 'reports.partner',
-            url: '/partner',
-            component: 'currencyDonationsReport',
-            resolve: {
-                type: () => 'donor'
-            }
         }).state({
             name: 'reports.monthly',
             url: '/monthly',
             component: 'expectedMonthlyTotalsReport'
         }).state({
+            name: 'reports.partner',
+            url: '/partner',
+            component: 'contributionsReport',
+            resolve: {
+                type: () => 'donor'
+            }
+        }).state({
             name: 'reports.salary',
             url: '/salary',
-            component: 'currencyDonationsReport',
+            component: 'contributionsReport',
             resolve: {
                 type: () => 'salary'
             }
@@ -202,7 +190,7 @@ function openAddressModal(
 /*@ngInject*/
 function openDonationModal($state, $stateParams, modal) {
     modal.open({
-        template: require('./donations/edit/edit.html'),
+        template: require('./reports/donationsReport/edit/edit.html'),
         controller: 'editDonationController',
         locals: {
             donationId: $stateParams.donationId

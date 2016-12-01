@@ -6,7 +6,6 @@ import app from './app.directive';
 import bottom from './bottom/index.module';
 import common from './common/index.module';
 import contacts from './contacts/index.module';
-import donations from './donations/index.module';
 import home from './home/index.module';
 import menu from './menu/index.module';
 import notices from './notices/notices.component';
@@ -27,7 +26,6 @@ export default angular.module('mpdx', [
     bottom,
     common,
     contacts,
-    donations,
     home,
     menu,
     notices,

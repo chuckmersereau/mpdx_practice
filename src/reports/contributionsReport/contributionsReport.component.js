@@ -1,4 +1,4 @@
-class CurrencyDonationsReportController {
+class ContributionsReportController {
     constructor(api, state, monthRange, layoutSettings, gettextCatalog) {
         this.api = api;
         this.gettextCatalog = gettextCatalog;
@@ -32,8 +32,7 @@ class CurrencyDonationsReportController {
         this.currencyGroups = [];
     }
     $onInit() {
-        var url = 'reports/year_donations?account_list_id=' + this.state.current_account_list_id;
-        this.api.get(url).then((data) => {
+        this.api.get('reports/year_donations').then((data) => {
             this.useConvertedValues = this.type === 'salary';
             this.currencyGroups = this.parseReportInfo(data.report_info, this.allMonths);
             this.sumOfAllCurrenciesConverted = _.sumBy(this.currencyGroups, 'yearTotalConverted');
@@ -256,14 +255,14 @@ class CurrencyDonationsReportController {
     }
 }
 
-const Donations = {
-    controller: CurrencyDonationsReportController,
-    template: require('./donations.html'),
+const ContributionsReport = {
+    controller: ContributionsReportController,
+    template: require('./contributionsReport.html'),
     bindings: {
         'type': '@',
         'expanded': '@'
     }
 };
 
-export default angular.module('mpdx.reports.donations.component', [])
-    .component('currencyDonationsReport', Donations).name;
+export default angular.module('mpdx.reports.contributions.component', [])
+    .component('contributionsReport', ContributionsReport).name;

@@ -11,8 +11,7 @@ class ExpectedMonthlyTotalsReportController {
         this.loadExpectedMonthlyTotals();
     }
     loadExpectedMonthlyTotals() {
-        const url = 'reports/expected_monthly_totals?account_list_id=' + this.state.current_account_list_id;
-        this.api.get(url).then((data) => {
+        this.api.get('reports/expected_monthly_totals').then((data) => {
             this.total_currency = data.total_currency;
             this.total_currency_symbol = data.total_currency_symbol;
 
