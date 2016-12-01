@@ -29,7 +29,7 @@ class FilterService {
     }
     load() {
         this.loading = true;
-        return this.api.get('contacts/filters').then((data) => {
+        return this.api.get(`accounts/${this.api.account_list_id}/filters`).then((data) => {
             this.data = data.filters;
             this.data = this.data.sort((a, b) => {
                 return (a.priority > b.priority) ? 1 : ((b.priority > a.priority) ? -1 : 0);

@@ -1,4 +1,5 @@
 class ContactsService {
+    analytics;
     api;
     cache;
     filterService;
@@ -10,6 +11,7 @@ class ContactsService {
         this.filterService = filterService;
         this.tagsService = tagsService;
 
+        this.analytics = null;
         this.data = [];
         this.meta = {};
         this.loading = true;
@@ -68,7 +70,7 @@ class ContactsService {
         }
         filterParams.any_tags = this.tagsService.anyTags;
 
-        return this.api.call('post', 'contacts', {filters: filterParams, page: this.page, per_page: 25}, null, null, null, null, {'X-HTTP-Method-Override': 'get'}).then((data) => {
+        return this.api.get('contacts', {filters: filterParams, page: this.page, per_page: 25}).then((data) => {
             if (reset) {
                 newContacts = [];
                 this.page = 1;
@@ -387,6 +389,16 @@ class ContactsService {
         return this.api.put('contacts/bulk_update', {
             contact: obj,
             bulk_edit_contact_ids: contactIds.join()
+        });
+    }
+    getAnalytics() {
+        if (this.analytics) {
+            return this.$q.resolve(this.analytics);
+        }
+        return this.api.get('contacts/analytics').then((data) => {
+            console.log(data);
+            this.analytics = data;
+            return this.analytics;
         });
     }
 }

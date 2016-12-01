@@ -12,14 +12,16 @@ class ConnectController {
         this.overdueTasks = [];
     }
     $onInit() {
-        this.currentAccountListTasks.getTasksOverdueCount().then((response) => {
+        console.error('home/connect: analytics not implemented');
+        this.tasksService.getAnalytics().then((response) => {
             this.overdueCount = response;
         });
-        this.currentAccountListTasks.getTasksOverdueGroupByActivityType().then((response) => {
-            this.overdueTasks = _.map(response, (count, task) => {
-                return {type: task, count: count};
-            });
-        });
+        // TODO: connect to above api call
+        // this.currentAccountListTasks.getTasksOverdueGroupByActivityType().then((response) => {
+        //     this.overdueTasks = _.map(response, (count, task) => {
+        //         return {type: task, count: count};
+        //     });
+        // });
     }
     addTask() {
         this.tasksService.openModal({});

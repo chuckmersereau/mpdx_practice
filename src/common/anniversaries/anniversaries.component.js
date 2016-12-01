@@ -1,18 +1,25 @@
 class anniversariesController {
-    constructor(currentAccountList) {
-        this.currentAccountList = currentAccountList;
+    anniversaries;
+    contactsService;
+
+    constructor(
+        contactsService
+    ) {
+        this.contactsService = contactsService;
 
         this.anniversaries = [];
     }
     $onInit() {
-        if (!this.currentAccountList.contacts_with_anniversaries) {
-            this.currentAccountList.getContactsWithAnniversaries();
-        }
+        this.getAnniversaries();
     }
-    $onChanges(e) {
-        if (e.currentAccountList) {
-            this.anniversaries = this.currentAccountList.contacts_with_anniversaries;
-        }
+    $onChanges() {
+        this.getAnniversaries();
+    }
+    getAnniversaries() {
+        console.error('common/anniversaries: analytics TBD');
+        this.contactsService.getAnalytics().then(() => {
+            //TODO: Connect this.anniversaries to V2 endpoint
+        });
     }
 }
 

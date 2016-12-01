@@ -1,18 +1,23 @@
 class birthdaysController {
-    constructor(currentAccountList) {
-        this.currentAccountList = currentAccountList;
+    birthdays;
+    contactsService;
+
+    constructor(contactsService) {
+        this.contactsService = contactsService;
 
         this.birthdays = [];
     }
     $onInit() {
-        if (!this.currentAccountList.people_with_birthdays) {
-            this.currentAccountList.getPeopleWithBirthdays();
-        }
+        this.getBirthdays();
     }
-    $onChanges(e) {
-        if (e.currentAccountList) {
-            this.birthdays = this.currentAccountList.people_with_birthdays;
-        }
+    $onChanges() {
+        this.getBirthdays();
+    }
+    getBirthdays() {
+        console.error('common/birthdays: analytics TBD');
+        this.contactsService.getAnalytics().then(() => {
+            //TODO: Connect this.birthdays to V2 endpoint
+        });
     }
 
 }

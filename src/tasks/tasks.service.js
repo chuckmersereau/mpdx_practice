@@ -6,6 +6,7 @@ class TasksService {
         this.modal = modal;
         this.api = api;
 
+        this.analytics = null;
         this.data = {};
         this.loading = true;
     }
@@ -27,7 +28,7 @@ class TasksService {
         });
     }
     fetchCompletedTasks(id) {
-        return this.api.get('tasks/', {
+        return this.api.get('tasks', {
             filters: {
                 completed: true,
                 contact_ids: [id],
@@ -160,6 +161,16 @@ class TasksService {
                 isNewsletter: true
             },
             onHide: params.onHide || _.noop
+        });
+    }
+    getAnalytics() {
+        if (this.analytics) {
+            return this.$q.resolve(this.analytics);
+        }
+        return this.api.get('tasks/analytics').then((data) => {
+            console.log(data);
+            this.analytics = data;
+            return this.analytics;
         });
     }
 }

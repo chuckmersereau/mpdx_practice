@@ -1,7 +1,10 @@
 class CurrentUser {
     api;
 
-    constructor(api, $log, HelpService) {
+    constructor(
+         $log,
+         api, HelpService
+    ) {
         this.helpService = HelpService;
         this.api = api;
         this.$log = $log;
@@ -9,7 +12,7 @@ class CurrentUser {
         this.get();
     }
     get() {
-        return this.api.get('current_user').then((currentUser) => {
+        return this.api.get('user').then((currentUser) => {
             _.extend(this, currentUser);
             console.log(this.currentUser);
             this.helpService.updateUser(this.currentUser);
@@ -18,11 +21,12 @@ class CurrentUser {
         });
     }
     getHasAnyUsAccounts() {
-        this.api.get('current_user/us_accounts').then((response) => {
-            this.hasAnyUsAccounts = response;
-        }).catch((err) => {
-            this.$log.debug(err);
-        });
+        console.error('common/currentUser: endpoint not yet defined');
+        // this.api.get('user/us_accounts').then((response) => {
+        //     this.hasAnyUsAccounts = response;
+        // }).catch((err) => {
+        //     this.$log.debug(err);
+        // });
     }
 }
 

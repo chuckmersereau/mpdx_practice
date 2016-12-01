@@ -1,6 +1,7 @@
 class CurrentAccountList {
     api;
     contacts;
+    donations;
     tasks;
 
     constructor(api, $log, currentAccountListContacts, currentAccountListTasks) {
@@ -9,6 +10,7 @@ class CurrentAccountList {
         this.contacts = currentAccountListContacts;
         this.tasks = currentAccountListTasks;
 
+        this.analytics = null;
         this.donations = {};
 
         this.get();
@@ -21,31 +23,27 @@ class CurrentAccountList {
         });
     }
     getTasks() {
-        return this.api.get('current_account_list/tasks').then((resp) => {
+        return this.api.get('tasks').then((resp) => {
             this.tasks = resp;
         }).catch((err) => {
             this.$log.debug(err);
         });
     }
-    getPeopleWithBirthdays() {
-        return this.api.get('current_account_list/people_with_birthdays').then((resp) => {
-            this.people_with_birthdays = resp;
-        }).catch((err) => {
-            this.$log.debug(err);
-        });
-    }
-    getContactsWithAnniversaries() {
-        return this.api.get('current_account_list/contacts_with_anniversaries').then((resp) => {
-            this.contacts_with_anniversaries = resp;
-        }).catch((err) => {
-            this.$log.debug(err);
-        });
-    }
     getDonations() {
-        return this.api.get('current_account_list/donations').then((resp) => {
+        return this.api.get(`accounts/${this.api.account_list_id}/donations`).then((resp) => {
             this.donations = resp;
         }).catch((err) => {
             this.$log.debug(err);
+        });
+    }
+    getAnalytics() {
+        if (this.analytics) {
+            return this.$q.resolve(this.analytics);
+        }
+        return this.api.get('accounts/analytics').then((data) => {
+            console.log(data);
+            this.analytics = data;
+            return this.analytics;
         });
     }
 }
