@@ -15,6 +15,8 @@ import uiBootstrap from 'angular-ui-bootstrap';
 // deps with no default exports
 import 'angulartics';
 import 'angulartics-google-analytics';
+import lang from 'langmap'; //load before language-picker
+window.languageMappingList = lang;
 import 'angular-block-ui';
 import 'angular-filter';
 import 'angular-strap';

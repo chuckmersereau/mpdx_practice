@@ -1,6 +1,7 @@
 import jQuery from '!expose?jQuery!jquery'; //import before angular to replace jqlite
 window.$ = jQuery;
 import angular from 'angular';
+window.angular = angular;
 
 import app from './app.directive';
 import bottom from './bottom/index.module';
