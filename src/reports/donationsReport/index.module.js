@@ -1,6 +1,6 @@
 import component from './donationsReport.component';
+import service from './donationsReport.service';
 import edit from './edit/edit.controller';
-import service from './DonationsReport.service';
 
 export default angular.module('mpdx.reports.donations', [
     component,
