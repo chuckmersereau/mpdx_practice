@@ -24,11 +24,7 @@ class AppealsWizardController {
                 doNotAskAppeals: true
             }
         };
-        let url = 'contacts/tags';
-        if (state.current_account_list_id) {
-            url += `?account_list_id=${state.current_account_list_id}`;
-        }
-        api.get(url).then((data) => {
+        api.get('contacts/tags').then((data) => {
             this.contactTags = _.get(data, 'tags', []).sort();
         });
     }
