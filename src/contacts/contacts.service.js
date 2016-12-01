@@ -391,6 +391,12 @@ class ContactsService {
             bulk_edit_contact_ids: contactIds.join()
         });
     }
+    getDonorAccounts() {
+        if (!this.donorAccounts) {
+            this.donorAccounts = [];
+            _.each(this.data, contact => _.union(this.donorAccounts, contact.donor_accounts));
+        }
+    }
 }
 
 import filterService from './filter/filter.service';

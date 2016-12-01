@@ -1,11 +1,13 @@
 import balances from './balances/balances.component';
 import component from './reports.component';
-import donations from './donations/donations.component';
-import monthly from './mothly/monthly.component';
+import monthly from './monthly/monthly.component';
+import contributionsReport from './contributionsReport/contributionsReport.component';
+import donationsReport from './donationsReport/index.module';
 
 export default angular.module('mpdx.reports', [
     balances,
     component,
-    donations,
+    contributionsReport,
+    donationsReport,
     monthly
 ]).name;
