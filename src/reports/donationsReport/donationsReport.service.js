@@ -1,4 +1,4 @@
-class DonationsService {
+class DonationsReportService {
     constructor(
         $state,
         api, session
@@ -36,5 +36,5 @@ class DonationsService {
         });
     }
 }
-export default angular.module('mpdx.donations.service', [])
-    .service('donationsService', DonationsService).name;
+export default angular.module('mpdx.reports.donations.service', [])
+    .service('donationsReportService', DonationsReportService).name;

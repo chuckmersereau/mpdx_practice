@@ -1,4 +1,4 @@
-class DonationsController {
+class DonationsReportController {
     currencyService;
     currentAccountList;
     getDonations;
@@ -7,11 +7,11 @@ class DonationsController {
 
     constructor(
         blockUI,
-        currentAccountList, currencyService, donationsService
+        currentAccountList, currencyService, donationsReportService
     ) {
         this.currencyService = currencyService;
         this.currentAccountList = currentAccountList;
-        this.donationsService = donationsService;
+        this.donationsReportService = donationsReportService;
 
         this.blockUI = blockUI.instances.get('donations');
         this.blockUI.start();
@@ -21,12 +21,12 @@ class DonationsController {
         this.donationTotals = {};
     }
     $onChanges() {
-        if (this.donationsService.data === null) {
-            this.donationsService.getDonations().then((data) => {
+        if (this.donationsReportService.data === null) {
+            this.donationsReportService.getDonations().then((data) => {
                 this.loadingFinished(data);
             });
         } else {
-            this.loadingFinished(this.donationsService.data);
+            this.loadingFinished(this.donationsReportService.data);
         }
     }
     loadingFinished(data) {
@@ -70,13 +70,13 @@ class DonationsController {
     }
 }
 
-const Donations = {
-    template: require('./donations.html'),
-    controller: DonationsController,
+const DonationsReport = {
+    template: require('./donationsReport.html'),
+    controller: DonationsReportController,
     bindings: {
         startDate: '<'
     }
 };
 
-export default angular.module('mpdx.donations.component', [])
-    .component('donations', Donations).name;
+export default angular.module('mpdx.reports.donations.component', [])
+    .component('donationsReport', DonationsReport).name;
