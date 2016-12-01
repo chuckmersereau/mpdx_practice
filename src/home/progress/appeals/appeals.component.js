@@ -11,11 +11,7 @@ class AppealsController {
         this.refreshAppeals();
     }
     refreshAppeals(callback) {
-        let url = 'appeals';
-        if (this.state.current_account_list_id) {
-            url += `?account_list_id=${this.state.current_account_list_id}`;
-        }
-        this.api.get(url).then((data) => {
+        this.api.get('appeals').then((data) => {
             this.appeals = data.appeals;
             if (_.isFunction(callback)) {
                 callback(data);
@@ -77,8 +73,7 @@ class AppealsController {
             amount: newAppeal.amount,
             contact_statuses: _.keys(newAppeal.validStatus),
             contact_tags: _.keys(newAppeal.validTags),
-            contact_exclude: newAppeal.exclude,
-            account_list_id: this.state.current_account_list_id || ''
+            contact_exclude: newAppeal.exclude
         }).then((data) => {
             this.refreshAppeals(() => {
                 this.editAppeal(data.appeal.id);
