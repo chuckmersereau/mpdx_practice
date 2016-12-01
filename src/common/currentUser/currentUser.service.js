@@ -1,8 +1,8 @@
 class CurrentUser {
     api;
 
-    constructor(api, $log, HelpService) {
-        this.helpService = HelpService;
+    constructor(api, $log, helpService) {
+        this.helpService = helpService;
         this.api = api;
         this.$log = $log;
         this.hasAnyUsAccounts = false;
