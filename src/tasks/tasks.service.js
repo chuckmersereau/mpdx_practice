@@ -1,9 +1,13 @@
 class TasksService {
+    api;
+    modal;
+
     constructor(modal, api) {
         this.modal = modal;
         this.api = api;
 
         this.loading = true;
+        this.sort = 'all';
         this.sort = 'all';
         this.data = {};
         this.pages = {
@@ -124,7 +128,40 @@ class TasksService {
             }.bind(this)
         );
     }
-
+    fetchUncompletedTasks(id) {
+        return this.api.get('tasks/', {
+            filters: {
+                completed: false,
+                contact_ids: [id],
+                page: 1,
+                per_page: 500,
+                order: 'start_at'
+            }
+        }).then((data) => {
+            if (data.tasks.length) {
+                this.transformChild(data.tasks, 'comments', data.comments);
+                this.transformChild(data.comments, 'person_id', data.people, true);
+            }
+            this.data.uncompleted = data.tasks;
+        });
+    }
+    fetchCompletedTasks(id) {
+        return this.api.get('tasks/', {
+            filters: {
+                completed: true,
+                contact_ids: [id],
+                page: 1,
+                per_page: 500,
+                order: 'completed_at desc'
+            }
+        }).then((data) => {
+            if (data.tasks.length) {
+                this.transformChild(data.tasks, 'comments', data.comments);
+                this.transformChild(data.comments, 'person_id', data.people, true);
+            }
+            this.data.completed = data.tasks;
+        });
+    }
     fetchTasksForPage(
         page,
         filters
@@ -149,12 +186,14 @@ class TasksService {
             parent[childKey] = newObj;
         });
     }
-    submitNewComment(taskId, newComment, cb) {
-        this.api.put('tasks/' + taskId, {task: {activity_comments_attributes: [{body: newComment}]}}, cb);
+    submitNewComment(taskId, newComment) {
+        return this.api.put(`/tasks/${taskId}`, {task: {activity_comments_attributes: [{body: newComment}]}});
     }
-    deleteTask(taskId, cb) {
-        this.api.delete('/tasks/' + taskId, {}, cb);
+    deleteTask(taskId) {
+        return this.api.delete(`/tasks/${taskId}`);
     }
+    starTask(task) {
+        return this.api.put(`/tasks/${task.id}`, {task: {starred: !task.starred}});
     deleteComment(taskId, commentId) {
         return this.api.delete('activity_comments/' + commentId, { activity_id: taskId });
     }
@@ -224,7 +263,7 @@ class TasksService {
             }
         });
     }
-    postLogTask(taskId, model, cb) {
+    postLogTask(taskId, model) {
         let objPayload = {
             task: {
                 activity_comment: {
@@ -240,10 +279,10 @@ class TasksService {
             objPayload.task.nextAction = model.nextAction;
         }
 
-        this.api.put('tasks/' + taskId, objPayload, cb);
+        return this.api.put(`tasks/${taskId}`, objPayload);
     }
-    postBulkAddTask(model, contactIds, cb) {
-        this.api.post('tasks', {
+    postBulkAddTask(model, contactIds) {
+        return this.api.post('tasks', {
             add_task_contact_ids: contactIds.join(),
             task: {
                 subject: model.subject,
@@ -261,8 +300,6 @@ class TasksService {
                 ],
                 tag_list: model.tagsList.map(tag => tag.text).join()
             }
-        }).then(() => {
-            cb();
         });
     }
     openModal(params) {

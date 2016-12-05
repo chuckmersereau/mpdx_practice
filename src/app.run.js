@@ -1,10 +1,8 @@
-import config from 'config';
-
 /*@ngInject*/
-export default function appRun($transitions, $q, $window, $rootScope) {
-    $rootScope.googleMapsUrl = "https://maps.googleapis.com/maps/api/js?key=QF8dGA3a35KR61drl0zgxxT9kxE";
+export default function appRun($transitions, $q, $window, $rootScope, $state) {
+    $rootScope.googleMapsUrl = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBIUs23E_OsltKqLcIPD6B4rU11bfZKnM0";
     $transitions.onBefore({ to: (state) => {
-        if (state.name === 'login') {
+        if (state.name === 'login' || state.name === 'auth') {
             return false;
         } else if (!$window.sessionStorage.token) {
             $window.sessionStorage.redirect = state.name;
@@ -14,7 +12,7 @@ export default function appRun($transitions, $q, $window, $rootScope) {
         if ($window.sessionStorage.token) {
             return $q.resolve();
         }
-        $window.location.href = config.theKeyUrl;
+        $state.go('login');
         return $q.reject();
     });
 }

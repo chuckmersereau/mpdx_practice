@@ -1,0 +1,112 @@
+<div>
+    <div class="inline-input header">
+        <input type="text" ng-change="$ctrl.save()" ng-model="$ctrl.contact.name" ng-model-options="{ debounce: 1000 }" />
+    </div>
+    <div class="row fieldset">
+        <div class="col-sm-6 spacing-below-xs">
+            <h4 class="attribute-header" translate>Envelope Name</h4>
+            <div class="inline-input">
+                <input type="text" ng-model="$ctrl.contact.full_name" placeholder="{{ 'Mr. J Smith' | translate }}" ng-change="$ctrl.save()" ng-model-options="{ debounce: 1000 }" />
+            </div>
+        </div>
+        <div class="col-sm-6 spacing-below-xs">
+            <h4 class="attribute-header" translate>Greeting</h4>
+            <div class="inline-input">
+                <input type="text" ng-model="$ctrl.contact.envelope_greeting" ng-change="$ctrl.save()" ng-model-options="{ debounce: 1000 }" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row fieldset">
+        <div class="col-sm-4 spacing-below-xs">
+            <h4 class="attribute-header" translate>Newsletter</h4>
+            <div class="inline-input">
+                <select chosen
+                        required
+                        ng-change="$ctrl.save()"
+                        ng-model-options="{ debounce: 1000 }"
+                        disable-search="true"
+                        allow-single-deselect="true"
+                        class="form-control"
+                        id="send_newsletter"
+                        ng-options="opt[1] as opt[0] for opt in $ctrl.constants.assignable_send_newsletters"
+                        ng-model="$ctrl.contact.send_newsletter">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-4 spacing-below-xs">
+            <h4 class="attribute-header" translate>Status</h4>
+            <div class="inline-input">
+                <select chosen
+                        required
+                        ng-change="$ctrl.save()"
+                        ng-model-options="{ debounce: 1000 }"
+                        disable-search="true"
+                        class="form-control"
+                        id="status"
+                        ng-options="opt[1] as opt[0] for opt in $ctrl.constants.assignable_statuses"
+                        ng-model="$ctrl.contact.status">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-4 spacing-below-xs">
+            <h4 class="attribute-header" translate>Likely to Give</h4>
+            <div class="inline-input">
+                <select chosen
+                        required
+                        ng-change="$ctrl.save()"
+                        ng-model-options="{ debounce: 1000 }"
+                        disable-search="true"
+                        class="form-control"
+                        id="status"
+                        ng-options="opt[1] as opt[0] for opt in $ctrl.constants.assignable_likely_to_gives"
+                        ng-model="$ctrl.contact.likely_to_give">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row fieldset">
+        <div class="col-sm-4 spacing-below-xs">
+            <h4 class="attribute-header" translate>Commitment</h4>
+            <div class="inline-input">
+                <input type="text" ng-model="$ctrl.contact.pledge_amount" ng-change="$ctrl.save()" ng-model-options="{ debounce: 1000 }" />
+            </div>
+        </div>
+        <div class="col-sm-4 spacing-below-xs">
+            <h4 class="attribute-header" translate>Currency</h4>
+            <div class="inline-input">
+                <select chosen
+                        required
+                        ng-change="$ctrl.save()"
+                        ng-model-options="{ debounce: 1000 }"
+                        class="form-control"
+                        allow-single-deselect="true"
+                        id="pledge_currency"
+                        ng-options="opt[1] as opt[0] for opt in $ctrl.constants.pledge_currencies"
+                        ng-model="$ctrl.contact.pledge_currency">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-4 spacing-below-xs">
+            <h4 class="attribute-header" translate>Freq.</h4>
+            <div class="inline-input">
+                <select chosen
+                        ng-change="$ctrl.save()"
+                        ng-model-options="{ debounce: 1000 }"
+                        disable-search="true"
+                        class="form-control"
+                        allow-single-deselect="true"
+                        id="pledge_frequency"
+                        ng-options="opt[1] as opt[0] for opt in $ctrl.constants.pledge_frequencies"
+                        ng-model="$ctrl.contact.pledge_frequency">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>

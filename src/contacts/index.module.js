@@ -3,7 +3,8 @@ import component from './contacts.component';
 import filter from './filter/index.module';
 import list from './list/index.module';
 import logTask from './logTask/logTask.controller';
-import referrals from './referrals/referrals.service';
+import newContact from './new/new.controller';
+import search from './search/search.component';
 import service from './contacts.service';
 import show from './show/index.module';
 
@@ -13,7 +14,8 @@ export default angular.module('mpdx.contacts', [
     filter,
     list,
     logTask,
-    referrals,
+    newContact,
+    search,
     service,
     show
 ]).name;

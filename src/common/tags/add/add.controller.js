@@ -12,10 +12,11 @@ class AddTagController {
         this.contacts = contacts;
         this.contactsService = contactsService;
         this.tagsService = contactsTagsService;
+        this.tags = '';
     }
     addTag(tag) {
-        const tagToAdd = tag || this.models.addTags.newTag;
-        if (!tag) {
+        const tagToAdd = tag || this.tags;
+        if (!tagToAdd) {
             return;
         }
         this.tagsService.addTag(this.contacts, tagToAdd).then(() => {

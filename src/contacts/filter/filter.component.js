@@ -3,11 +3,17 @@ class FilterController {
     filterService;
     contactsTagsService;
 
-    constructor(filterService, contactsTagsService, contactsService, modal) {
+    constructor(filterService, contactsTagsService, contactsService, modal, gettextCatalog) {
         this.modal = modal;
         this.contactsService = contactsService;
         this.filterService = filterService;
+        this.gettextCatalog = gettextCatalog;
         this.tagsService = tagsService;
+
+        this.dateRangeLocale = {
+            applyLabel: this.gettextCatalog.getString('Filter'),
+            cancelLabel: this.gettextCatalog.getString('Clear')
+        };
     }
     resetFiltersAndTags() {
         if (this.tagsService.isResettable()) {
@@ -20,11 +26,11 @@ class FilterController {
     showReset() {
         return this.tagsService.isResettable() || this.filterService.resettable;
     }
+
     openMapContactsModal() {
         this.modal.open({
-            contentTemplate: '/common/map_contacts.html',
+            template: require('./mapContacts/mapContacts.html'),
             controller: 'mapContactsController',
-            controllerAs: 'vm',
             locals: {
                 contacts: this.contactsService.getSelectedContacts()
             }

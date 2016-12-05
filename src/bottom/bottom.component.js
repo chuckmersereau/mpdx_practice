@@ -1,6 +1,13 @@
+require('./bottom.scss');
+
 export class BottomController {
-    constructor() {
+    constructor(helpService) {
+        this.helpService = helpService;
         this.year = new Date().getFullYear();
+    }
+
+    showHelp() {
+        this.helpService.showHelp();
     }
 }
 const Bottom = {

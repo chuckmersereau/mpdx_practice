@@ -1,17 +1,18 @@
 class CurrentUser {
     api;
 
-    constructor(api, $log) {
+    constructor(api, $log, helpService) {
+        this.helpService = helpService;
         this.api = api;
         this.$log = $log;
-
         this.hasAnyUsAccounts = false;
-
         this.get();
     }
     get() {
-        this.api.get('current_user').then((currentUser) => {
+        return this.api.get('current_user').then((currentUser) => {
             _.extend(this, currentUser);
+            console.log(this.currentUser);
+            this.helpService.updateUser(this.currentUser);
         }).catch((err) => {
             this.$log.debug(err);
         });

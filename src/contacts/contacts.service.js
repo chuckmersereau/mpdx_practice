@@ -16,18 +16,14 @@ class ContactsService {
 
         this.page = 1;
 
-        this.params_watcher = $rootScope.$watch(() => {
-            return this.filterService.params;
-        }, this.watchCallback = (newVal, oldVal) => {
+        $rootScope.$watch(() => this.filterService.params, (newVal, oldVal) => {
             if (!_.isEmpty(newVal) && !_.isEmpty(oldVal)) {
                 this.load(true);
             }
         }, true);
 
-        this.wildcard_search_watcher = $rootScope.$watch(() => {
-            return this.filterService.wildcard_search;
-        }, this.watchCallback = () => {
-            var query = $location.search().q;
+        $rootScope.$watch(() => this.filterService.wildcard_search, () => {
+            const query = $location.search().q;
             if (query) {
                 $location.search('q', null);
             } else {
@@ -35,21 +31,19 @@ class ContactsService {
             }
         });
 
-        this.account_list_id_watcher = $rootScope.$watch(() => {
-            return this.api.account_list_id;
-        }, this.watchCallback = (accountListId) => {
+        $rootScope.$watch(() => this.api.account_list_id, (accountListId) => {
             if (accountListId) {
                 this.load(true);
             }
         });
 
-        this.selected_tags_watcher = $rootScope.$watch(() => {
+        $rootScope.$watch(() => {
             return angular.toJson({
                 selected: this.tagsService.selectedTags.length,
                 rejected: this.tagsService.rejectedTags.length,
                 any: this.tagsService.anyTags
             });
-        }, this.watchCallback = (newVal, oldVal) => {
+        }, (newVal, oldVal) => {
             if (newVal !== oldVal) {
                 this.load(true);
             }
@@ -57,11 +51,11 @@ class ContactsService {
     }
     load(reset) {
         this.loading = true;
-        var newContacts, currentContact, filterParams;
+        let newContacts;
 
-        filterParams = this.findChangedFilters(filterService.default_params, filterService.params);
+        let filterParams = this.findChangedFilters(this.filterService.default_params, this.filterService.params);
 
-        var wildcardSearch = filterService.wildcard_search;
+        const wildcardSearch = this.filterService.wildcard_search;
         if (wildcardSearch) {
             filterParams.wildcard_search = wildcardSearch;
         }
@@ -74,13 +68,18 @@ class ContactsService {
         }
         filterParams.any_tags = this.tagsService.anyTags;
 
-        this.api.call('post', 'contacts', {filters: filterParams, page: this.page}, (data) => {
+        return this.api.call('post', 'contacts', {filters: filterParams, page: this.page, per_page: 25}, null, null, null, null, {'X-HTTP-Method-Override': 'get'}).then((data) => {
             if (reset) {
                 newContacts = [];
                 this.page = 1;
             }
-            angular.forEach(data.contacts, (contact) => {
-                currentContact = this.cache.updateContact(contact, data);
+            _.each(data.contacts, (contact) => {
+                // fix tag_list difference for list vs show
+                contact.tag_list = _.map(contact.tag_list, (tag) => {
+                    return { text: tag };
+                });
+                // end fix
+                const currentContact = this.cache.updateContact(contact, data);
                 if (reset) {
                     newContacts.push(currentContact);
                 } else {
@@ -92,19 +91,12 @@ class ContactsService {
             }
             this.meta = data.meta;
             this.loading = false;
-        }, null, null, null, {'X-HTTP-Method-Override': 'get'});
+        });
     }
+    save(contact) {
+        let tagList = _.map(contact.tag_list, tag => tag.text);
 
-
-    save(contact, callback) {
-        var tagList = [];
-        if (contact.tag_list) {
-            for (var tagCount = 0; tagCount < contact.tag_list.length; tagCount++) {
-                tagList.push(contact.tag_list[tagCount].text);
-            }
-        }
-
-        var contactObj = {
+        let contactObj = {
             name: contact.name,
             pledge_amount: contact.pledge_amount,
             status: contact.status,
@@ -135,10 +127,8 @@ class ContactsService {
         };
 
         if (contact.people) {
-            for (var personCount = 0; personCount < contact.people.length; personCount++) {
-                var person = contact.people[personCount];
-
-                var peopleObj = {
+            _.each(contact.people, (person) => {
+                let peopleObj = {
                     id: person.id,
                     first_name: person.first_name,
                     last_name: person.last_name,
@@ -171,35 +161,30 @@ class ContactsService {
                 }
 
                 if (person.email_addresses) {
-                    for (var emailAddressCount = 0; emailAddressCount < person.email_addresses.length; emailAddressCount++) {
-                        var email = person.email_addresses[emailAddressCount];
-                        var emailObj = {
+                    peopleObj.email_addresses_attributes = _.map(person.email_addresses, (email) => {
+                        return {
                             id: email.id,
                             email: email.email,
                             location: email.location,
                             _destroy: email._destroy
                         };
-                        peopleObj.email_addresses_attributes.push(emailObj);
-                    }
+                    });
                 }
 
                 if (person.phone_numbers) {
-                    for (var phoneNumberCount = 0; phoneNumberCount < person.phone_numbers.length; phoneNumberCount++) {
-                        var phone = person.phone_numbers[phoneNumberCount];
-                        var phoneObj = {
+                    peopleObj.phone_numbers_attributes = _.map(person.phone_numbers, (phone) => {
+                        return {
                             id: phone.id,
                             number: phone.number,
                             location: phone.location,
                             _destroy: phone._destroy
                         };
-                        peopleObj.phone_numbers_attributes.push(phoneObj);
-                    }
+                    });
                 }
 
                 if (person.networks) {
-                    for (var networkCount = 0; networkCount < person.networks.length; networkCount++) {
-                        var network = person.networks[networkCount];
-                        var result = {id: network.id, _destroy: network._destroy};
+                    _.each(person.networks, (network) => {
+                        let result = {id: network.id, _destroy: network._destroy};
                         if (network.kind === "twitter") {
                             result.screen_name = network.url;
                         } else {
@@ -219,7 +204,7 @@ class ContactsService {
                                 peopleObj.websites_attributes.push(result);
                                 break;
                         }
-                    }
+                    });
                 }
 
                 if (peopleObj.family_relationships_attributes && person.family_relationships.length > 0) {
@@ -227,13 +212,12 @@ class ContactsService {
                 }
 
                 contactObj['people_attributes'].push(peopleObj);
-            }
+            });
         }
 
         if (contact.addresses) {
-            for (var addressCount = 0; addressCount < contact.addresses.length; addressCount++) {
-                var address = contact.addresses[addressCount];
-                var addressObj = {
+            contactObj['addresses_attributes'] = _.map(contact.addresses, (address) => {
+                return {
                     location: address.location,
                     street: address.street,
                     city: address.city,
@@ -247,46 +231,37 @@ class ContactsService {
                     _destroy: address._destroy,
                     id: address.id
                 };
-                contactObj['addresses_attributes'].push(addressObj);
-            }
+            });
         }
 
         if (contact.donor_accounts && contact.donor_accounts.length > 0) {
-            for (var donorAccountCount = 0; donorAccountCount < contact.donor_accounts.length; donorAccountCount++) {
-                var donorAccount = contact.donor_accounts[donorAccountCount];
-                var donorAccountObj = {
+            contactObj['donor_accounts_attributes'] = _.map(contact.donor_accounts, (donorAccount) => {
+                return {
                     id: donorAccount.id,
                     account_number: donorAccount.account_number,
                     organization_id: donorAccount.organization_id,
                     _destroy: donorAccount._destroy
                 };
-                contactObj['donor_accounts_attributes'].push(donorAccountObj);
-            }
+            });
         }
 
         if (contact.contact_referrals_to_me && contact.contact_referrals_to_me.length > 0) {
             contactObj['contact_referrals_to_me_attributes'] = contact.contact_referrals_to_me;
         }
 
-        return this.api.call('put', 'contacts/' + contact.id, {contact: contactObj}, (data) => {
+        return this.api.put(`contacts/${contact.id}`, {contact: contactObj}).then((data) => {
             this.cache.updateContact(data.contact, data);
-            if (angular.isFunction(callback)) {
-                callback();
-            }
         });
     }
-    create(contact, callback) {
-        var contactObj = {
+    create(contact) {
+        let contactObj = {
             name: contact.name,
             prefill_attributes_on_create: true
         };
 
         this.loading = true;
-        this.api.call('post', 'contacts', {contact: contactObj}, (data) => {
+        return this.api.post('contacts', {contact: contactObj}).then(() => {
             this.loading = false;
-            if (angular.isFunction(callback)) {
-                callback(data);
-            }
         });
     }
     loadMoreContacts() {
@@ -297,12 +272,10 @@ class ContactsService {
     }
     findChangedFilters(defaultParams, params) {
         var filterParams = {};
-        var key, currentDefault;
-        for (key in params) {
-            if (filterService.params.hasOwnProperty(key)) {
-                currentDefault = defaultParams[key];
-                var filter = params[key];
-                if (filter instanceof Array) {
+        _.forIn(params, (filter, key) => {
+            if (_.has(this.filterService.params, key)) {
+                const currentDefault = defaultParams[key];
+                if (_.isArray(filter)) {
                     if (currentDefault.sort().join(',') !== filter.sort().join(',')) {
                         filterParams[key] = filter;
                     }
@@ -310,7 +283,7 @@ class ContactsService {
                     filterParams[key] = filter;
                 }
             }
-        }
+        });
         return filterParams;
     }
     resetFilters() {
@@ -322,19 +295,15 @@ class ContactsService {
         });
     }
     getSelectedContactIds() {
-        return this.getSelectedContacts().map((contact) => {
-            return contact.id;
-        });
+        return this.getSelectedContacts().map(contact => contact.id);
     }
     getSelectedContactNames() {
-        return this.getSelectedContacts().map((contact) => {
-            return contact.name;
-        });
+        return this.getSelectedContacts().map(contact => contact.name);
     }
     getTagsFromSelectedContacts() {
-        return this.getSelectedContacts().reduce((tagsList, contact) => {
-            return _.union(tagsList, contact.tag_list);
-        }, []).sort();
+        let tagsArray = this.getSelectedContacts().reduce((tagsList, contact) => _.union(tagsList, contact.tag_list), []).sort();
+        tagsArray = tagsArray.map((tag) => { return tag.text; });
+        return _.uniq(tagsArray);
     }
     clearSelectedContacts() {
         this.setAllContacts('selected', false);
@@ -343,44 +312,46 @@ class ContactsService {
         this.setAllContacts('selected', true);
     }
     getContactPosition(id) {
-        return this.data.map((contact) => {
-            return contact.id;
-        }).indexOf(id);
+        return _.findIndex(this.data, { id: id });
     }
     canGoLeft(id) {
-        var i = this.getContactPosition(id);
-        return i > 0;
+        return this.getContactPosition(id) > 0;
     }
     canGoRight(id) {
-        var i = this.getContactPosition(id);
-        return (i + 1) < this.data.length;
+        return this.getContactPosition(id) < this.data.length - 1;
     }
     getLeftId(id) {
-        return this.data[this.getContactPosition(id) - 1].id;
+        if (this.canGoLeft(id)) {
+            return this.data[this.getContactPosition(id) - 1].id;
+        }
+        return this.data[this.data.length - 1].id;
     }
     getRightId(id) {
-        return this.data[this.getContactPosition(id) + 1].id;
+        if (this.canGoRight(id)) {
+            return this.data[this.getContactPosition(id) + 1].id;
+        }
+        return this.data[0].id;
     }
     setAllContacts(key, value) {
-        this.data.forEach((contact) => {
+        _.each(this.data, (contact) => {
             contact[key] = value;
         });
     }
     hideContact(contactId) {
-        this.data.forEach((contact, i) => {
+        _.each(this.data, (contact, i) => {
             if (contact.id === contactId) {
                 this.data.splice(i, 1);
             }
         });
-        this.api.delete('/contacts/' + contactId);
+        return this.api.delete(`/contacts/${contactId}`);
     }
     bulkHideContacts() {
-        this.api.delete('/contacts/bulk_destroy', {ids: this.getSelectedContactIds()}, () => {
+        return this.api.delete('/contacts/bulk_destroy', {ids: this.getSelectedContactIds()}).then(() => {
             this.clearSelectedContacts();
             this.load(true);
         });
     }
-    bulkEditFields(model, pledgeCurrencies, contactIds, cb) {
+    bulkEditFields(model, pledgeCurrencies, contactIds) {
         var obj = {};
         if (model.likelyToGive) {
             obj.likely_to_give = model.likelyToGive;
@@ -415,17 +386,20 @@ class ContactsService {
         if (model.locale) {
             obj.locale = model.locale[1];
         }
-        this.api.put('contacts/bulk_update',
-            {
-                contact: obj,
-                bulk_edit_contact_ids: contactIds.join()
-            },
-            cb
-        );
+        return this.api.put('contacts/bulk_update', {
+            contact: obj,
+            bulk_edit_contact_ids: contactIds.join()
+        });
+    }
+    getDonorAccounts() {
+        if (!this.donorAccounts) {
+            this.donorAccounts = [];
+            _.each(this.data, contact => _.union(this.donorAccounts, contact.donor_accounts));
+        }
     }
 }
 
-import filterService from '../common/filter/filter.service';
+import filterService from './filter/filter.service';
 
 export default angular.module('mpdx.contacts.service', [filterService])
     .service('contactsService', ContactsService).name;

@@ -14,9 +14,9 @@
                             <li role="presentation"><a ui-sref="preferences.integrations" translate>Connect Services</a></li>
                             <li role="presentation"><a ui-sref="preferences.accounts" translate>Manage Account</a></li>
                             <li role="presentation" ng-if="$ctrl.currentUser.admin">
-                                <a ui-sref="admin" translate>Admin</a>
+                                <a ui-sref="unavailable" translate>Admin</a>
                             </li>
-                            <li role="presentation"><a ui-sref="logout" translate>Log out</li>
+                            <li role="presentation"><a ui-sref="logout" translate>Log out</a></li>
                         </ul>
                     </div>
                 </div>
@@ -56,11 +56,8 @@
                     <li class="item" ui-sref-active="active"><a ui-sref="home" translate>Dashboard</a></li>
                     <li class="item" ui-sref-active="active"><a ui-sref="contacts" translate>Contacts</a></li>
                     <li class="item" ui-sref-active="active"><a ui-sref="tasks" translate>Tasks</a></li>
-                    <li class="item" ui-sref-active="active"><a ui-sref="donations" translate>Donations</a></li>
-                    <li class="item" ui-sref-active="active"><a ui-sref="reports.monthly" translate>Reports</a></li>
-                    <li class="item" ui-sref-active="active" ng-if="$ctrl.rollout.research"><a ui-sref="research" translate>Research</a></li>
-                    <li class="item" ui-sref-active="active" ng-if="$ctrl.showInsights"><a ui-sref="insights" translate>Insights</a></li>
-                    <li class="item last" ui-sref-active="active"><a ui-sref="help" translate>Help</a></li>
+                    <li class="item" ng-class="{active: $ctrl.isInState('reports')}"><a ui-sref="reports.donations" translate>Reports</a></li>
+                    <li class="item last" ui-sref-active="active"><a ng-click="$ctrl.showHelp()" translate>Help</a></li>
                 </ul>
             </div>
         </div>
@@ -72,14 +69,12 @@
             <div class="col-md-12">
                 <div class="pull-left" ng-show="$ctrl.isInState('contact')">
                     <div class="section"><a ui-sref="preferences.imports" translate>Import Contacts</a></div>
-                    <div class="section" translate><a ui-sref="contacts.findDuplicates" translate>Find Duplicates</a></div>
-                </div>
-                <div class="pull-left" ng-show="$ctrl.isInState('donations')">
-                    <div class="section"><a ui-sref="donations.new" class="no-new-tab" translate><i class="fa fa-plus-square"></i> Add a donation</a></div>
-                    <div class="section"><a ui-sref="reports.contributions" translate>Contribution Report</a></div>
-                    <div class="section"><a ui-sref="donations.sync">Sync Donations Now</a></div>
+                    <div class="section" translate><a ui-sref="unavailable" translate>Find Duplicates</a></div>
                 </div>
                 <div class="pull-left" ng-show="$ctrl.isInState('reports')">
+                    <div class="section" ng-class="{active: $ctrl.isInState('reports.donations')}">
+                        <a ui-sref="reports.donations" translate>Donations</a>
+                    </div>
                     <div class="section" ng-class="{active: $ctrl.isInState('reports.monthly')}">
                         <a ui-sref="reports.monthly" translate>Expected Monthly Total</a>
                     </div>
@@ -93,7 +88,13 @@
                         <a ui-sref="reports.partner" translate>Contributions by Partner Currency</a>
                     </div>
                 </div>
-                <menu-balances></menu-balances>
+                <menu-balances
+                    inHandPercent="$ctrl.currentAccountList.account_list.in_hand_percent"
+                    monthly-goal="$ctrl.currentAccountList.account_list.monthly_goal"
+                    pledged-percent="$ctrl.currentAccountList.account_list.pledged_percent"
+                    total-pledges="$ctrl.currentAccountList.account_list.total_pledges"
+                    received-pledges="$ctrl.currentAccountList.account_list.received_pledges"
+                ></menu-balances>
             </div>
         </div>
     </div>

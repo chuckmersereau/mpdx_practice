@@ -1,10 +1,15 @@
+import config from 'config';
+
 class PersonalService {
     api;
 
     constructor(
-        $rootScope, api
+        $rootScope,
+        api, gettextCatalog
     ) {
         this.api = api;
+        this.gettextCatalog = gettextCatalog;
+
         this.data = {};
         this.loading = true;
 
@@ -18,11 +23,20 @@ class PersonalService {
         this.loading = true;
         return this.api.get('preferences/personal').then((data) => {
             this.data = data.preferences;
+            if (this.data.locale) {
+                this.changeLocale(this.data.locale);
+            }
             this.loading = false;
         });
     }
     save() {
         return this.api.put('preferences', { preference: this.data });
+    }
+    changeLocale(locale) {
+        this.gettextCatalog.setCurrentLanguage(locale);
+        if (config.env !== 'development' && locale !== 'en') {
+            this.gettextCatalog.loadRemote(`locale/${locale}.json`);
+        }
     }
 }
 

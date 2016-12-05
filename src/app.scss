@@ -1,27 +1,50 @@
-@import "styles/_crubrand";
-@import "styles/_elements";
-//@import "styles/_jquery-ui";
-@import "styles/_typography";
-@import "styles/_forms";
-@import "styles/_layout";
-@import "styles/_placeholders";
-@import "styles/_notices";
-@import "styles/_modals";
-@import "styles/_popovers";
-@import "styles/_cards";
-@import "styles/_ico";
-@import "styles/_errors";
-@import "styles/_bootstrap_overrides";
-@import "styles/_chosen_bootstrap";
-
+/* Dependencies */
 $fa-font-path: "~font-awesome/fonts";
 @import "~font-awesome/scss/font-awesome";
+@import "styles/angularModal";
+@import "styles/bootstrap-tagsinput";
+@import "styles/typeahead";
+@import "~ng-tags-input/build/ng-tags-input";
+@import "~ng-tags-input/build/ng-tags-input.bootstrap";
+@import "~angular-motion/dist/angular-motion";
+@import "~bootstrap-additions/dist/bootstrap-additions";
+@import "~angular-xeditable/dist/css/xeditable";
+@import "~ng-sortable/dist/ng-sortable";
+$flag-icon-css-path: "~flag-icon-css/flags";
+@import "~flag-icon-css/sass/flag-icon";
 
+/* Internal */
+@import "styles/crubrand";
+@import "styles/elements";
+//@import "styles/jquery-ui";
+@import "styles/typography";
+@import "styles/forms";
+@import "styles/layout";
+@import "styles/placeholders";
+@import "styles/notices";
+@import "styles/modals";
+@import "styles/popovers";
+@import "styles/cards";
+@import "styles/ico";
+@import "styles/errors";
+@import "styles/bootstrap_overrides";
+@import "styles/chosen_bootstrap";
 
+/* Components */
 @import "menu/menu";
+@import "contacts/filter/filter";
 @import "contacts/filter/tags/tags";
 @import "contacts/list/list";
 @import "contacts/list/item/item";
+@import "contacts/search/search";
 @import "contacts/show/show";
+@import "contacts/show/horizontalTabsSortable";
+@import "contacts/show/details/details";
+@import "contacts/show/address/address";
+@import "contacts/show/people/people";
+@import "contacts/show/people/person/person";
 @import "tasks/list/list";
 @import "reports/reports";
+
+/* Overrides */
+@import "styles/glyphicons";

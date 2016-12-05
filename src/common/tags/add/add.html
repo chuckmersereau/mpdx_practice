@@ -1,19 +1,19 @@
 <modal>
     <modal-header title="Add Tags" on-close="$hide()"></modal-header>
     <form class="modal-body">
-        <p>Choose an existing tag, or create new tag (separate multiple tags with commas):</p>
+        <p translate>Choose an existing tag</p>
         <ul>
             <li ng-repeat="tag in $ctrl.tagsService.data">
                 <a ng-click="$ctrl.addTag(tag)">{{ tag }}</a>
             </li>
         </ul>
         <div class="form-group">
-            <label for="new-tag">New Tag:</label>
-            <input class="form-control" id='new-tag' ng-model="$ctrl.models.addTags.newTag"/>
+            <label for="new-tag" translate>Create New Tags (separate multiple tags with commas)</label>
+            <input class="form-control" id='new-tag' ng-model="$ctrl.tags"/>
         </div>
         <div class="modal-footer">
-            <button ng-click="$ctrl.addTag($ctrl.models.addTags.newTag)" type="button" class="btn btn-primary">Add Tag</button>
-            <button ng-click="$hide()" type="button" class="btn btn-default">Close</button>
+            <button ng-click="$hide()" type="button" class="btn btn-default" translate>Close</button>
+            <button ng-click="$ctrl.addTag($ctrl.models.addTags.newTag)" type="button" class="btn btn-primary" translate>Add Tag</button>
         </div>
     </form>
 </modal>

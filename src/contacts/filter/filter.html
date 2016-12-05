@@ -1,7 +1,9 @@
+
 <a ng-click="$ctrl.resetFiltersAndTags()" class="btn btn-primary btn-xs btn-block btn-filter-left ng-cloak"
    ng-show="$ctrl.showReset()" analytics-on analytics-event="Reset Filters" analytics-category="Contacts Events" analytics-label="Filter">
     <i class="fa fa-undo"></i> <span translate>Reset Filters</span>
 </a>
+
 <ul>
     <contacts-tags></contacts-tags>
     <li class="filters_section" ng-if="!$ctrl.insightFilterIsActive()">
@@ -13,11 +15,11 @@
                     <i class="fa fa-circle fa-stack-2x text-danger"></i>
                     <i class="fa fa-minus fa-stack-1x fa-inverse"></i>
                 </span>
-                <span  translate>to look up all contacts who do not have that filter.</span>
+                <span translate>to look up all contacts who do not have that filter.</span>
             </div>
             <ul class="filters">
-                <li class="filter_set" ng-repeat="filter in $ctrl.filterService.data | orderBy: 'priority'">
-                    <label id="filter_{{filter.name}}" class="filter_title">{{filter.title}}</label>
+                <li class="filter_set" ng-repeat="filter in $ctrl.filterService.data | orderBy: 'priority'" ng-class="{ 'opened': filter.opened }">
+                    <label id="filter_{{filter.name}}" class="filter_title" ng-click="filter.opened = !filter.opened">{{filter.title}}</label>
                     <div class="filter_set_inner">
                         <div ng-if="filter.type == 'container'" ng-repeat="child in filter.children | orderBy: 'priority'">
                             <div class="filter_multiselect" ng-if="child.type == 'multiselect'">
@@ -53,7 +55,7 @@
                                     {{child.title}}<br>
                                     <contacts-filter-daterange
                                         model="$ctrl.filterService.params[child.name]"
-                                        locale="{ applyLabel: '{{ 'Filter' | translate }}', cancelLabel: '{{ 'Clear' | translate }}' }"
+                                        locale="$ctrl.dateRangeLocale"
                                         custom-options="child.options">
                                     </contacts-filter-daterange>
                                 </label>
