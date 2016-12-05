@@ -1,7 +1,12 @@
 import moment from 'moment';
 
 class ListController {
-    constructor($rootScope, tasksService, modal) {
+    contact;
+    modal;
+    tasks;
+    tasksService;
+
+    constructor(tasksService, modal) {
         this.moment = moment;
         this.models = {};
         this.tasks = tasksService.data;
@@ -18,7 +23,6 @@ class ListController {
             this.filters
         );
     }
-
     openCompleteTaskModal(task) {
         this.modal.open({
             template: require('../../contacts/show/completeTask/completeTask.html'),
@@ -30,8 +34,7 @@ class ListController {
                 modalCallback: this.loadPage
             }
         });
-    };
-
+    }
     openEditTaskModal(task) {
         this.modal.open({
             template: require('../edit/edit.html'),
@@ -45,8 +48,7 @@ class ListController {
                 modalCallback: this.loadPage
             }
         });
-    };
-
+    }
     openBulkEditTaskModal() {
         this.modal.open({
             template: require('../bulkEdit/bulkEdit.html'),
@@ -57,28 +59,23 @@ class ListController {
             }
         });
     }
-
     deleteComment(taskId, commentId) {
         this.tasksService.deleteComment(taskId, commentId).then(this.load);
     }
-
     bulkDeleteTasks() {
         this.tasksService.bulkDeleteTasks(this.selected);
     }
-
     bulkCompleteTasks() {
         this.tasksService.bulkCompleteTasks(this.selected);
     }
-
     toggleSelected(taskId) {
-        var index = this.selected.indexOf(taskId);
+        const index = this.selected.indexOf(taskId);
         if (index >= 0) {
             this.selected.splice(index, 1);
         } else {
             this.selected.push(taskId);
         }
-    };
-
+    }
     toggleAll() {
         let tasks = this.tasks[this.key];
         if (tasks.length === this.selected.length) {
@@ -87,7 +84,6 @@ class ListController {
             this.selected = tasks.map((task) => task.id);
         }
     }
-
     newComment(taskId) {
         if (this.models.comment) {
             this.tasksService.submitNewComment(taskId, this.models.comment, function() {
@@ -95,30 +91,24 @@ class ListController {
             }.bind(this));
             this.models.comment = '';
         }
-    };
-
+    }
     deleteTask(taskId) {
         this.tasksService.deleteTask(taskId, this.load);
-    };
-
+    }
     onPageChange(pageNum) {
         this.meta.page = pageNum;
         this.load();
-    };
-
+    }
     starTask(task) {
         this.tasksService.starTask(task, this.loadPage);
-    };
-
+    }
     $onChanges(changes) {
         if (this.setCombinedFilters(changes)) {
             this.load();
         }
     }
-
     setCombinedFilters(changes) {
-        console.log(changes);
-        var newTags, newContactId, newFilters;
+        let newTags, newContactId, newFilters;
         if (changes.tags) {
             if (changes.tags.currentValue) {
                 newTags = changes.tags.currentValue;
@@ -148,21 +138,19 @@ class ListController {
         }
         return false;
     }
-
     load() {
         this.tasksService.fetchTasks(
             this.key,
             this.combinedFilters
         );
     }
-
     loadPage() {
         this.tasksService.fetchTasksForPage(
             this.page,
             this.combinedFilters
         );
     }
-};
+}
 
 const Tasks = {
     controller: ListController,

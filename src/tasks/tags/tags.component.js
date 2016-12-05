@@ -1,5 +1,3 @@
-import uiBs from 'angular-ui-bootstrap';
-
 class TagsController {
     constructor(tasksTagsService) {
         this.tagsService = tasksTagsService;

@@ -97,36 +97,29 @@ class TasksService {
         };
     }
 
-    fetchTasks(
-        collection,
-        filters
-    ) {
-        var meta = this.meta[collection];
-        var defaultFilters = this.defaultFilters[collection];
-        var obj = Object.assign({
+    fetchTasks(collection, filters) {
+        const meta = this.meta[collection];
+        const defaultFilters = this.defaultFilters[collection];
+        const obj = Object.assign({
             filters: Object.assign(
                 Object.assign({}, defaultFilters),
                 filters
             )
         }, meta);
-        console.log('fetchTasks');
 
-        this.api.get('tasks/',
-            obj,
-            function(data) {
-                if (data.tasks.length) {
-                    this.transformChild(data.tasks, 'comments', data.comments);
-                    this.transformChild(data.comments, 'person_id', data.people, true);
-                }
-                this.data[collection] = data.tasks;
-                meta.from = data.meta.from;
-                meta.to = data.meta.to;
-                meta.page = data.meta.page;
-                meta.total = data.meta.total;
-                meta.total_pages = data.meta.total_pages;
-                console.log(this.data);
-            }.bind(this)
-        );
+        return this.api.get('tasks/', obj).then((data) => {
+            if (data.tasks.length) {
+                this.transformChild(data.tasks, 'comments', data.comments);
+                this.transformChild(data.comments, 'person_id', data.people, true);
+            }
+            this.data[collection] = data.tasks;
+            meta.from = data.meta.from;
+            meta.to = data.meta.to;
+            meta.page = data.meta.page;
+            meta.total = data.meta.total;
+            meta.total_pages = data.meta.total_pages;
+            return data;
+        });
     }
     fetchUncompletedTasks(id) {
         return this.api.get('tasks/', {
@@ -162,19 +155,15 @@ class TasksService {
             this.data.completed = data.tasks;
         });
     }
-    fetchTasksForPage(
-        page,
-        filters
-    ) {
-        console.log(this.pages, page);
-        this.pages[page].forEach(function(collection) {
+    fetchTasksForPage(page, filters) {
+        _.each(this.pages[page], (collection) => {
             this.fetchTasks(collection, filters);
         });
     }
 
     transformChild(parentObj, childKey, referredObj, oneToOne) {
         _.each(parentObj, (parent) => {
-            var newObj;
+            let newObj;
             if (oneToOne) {
                 newObj = _.find(referredObj, referredItem => referredItem.id === parent[childKey]);
             } else {
@@ -194,6 +183,7 @@ class TasksService {
     }
     starTask(task) {
         return this.api.put(`/tasks/${task.id}`, {task: {starred: !task.starred}});
+    }
     deleteComment(taskId, commentId) {
         return this.api.delete('activity_comments/' + commentId, { activity_id: taskId });
     }
@@ -230,9 +220,6 @@ class TasksService {
                 tag_list: model.tagsList ? model.tagsList.map(tag => tag.text).join() : undefined
             }
         });
-    }
-    starTask(task, cb) {
-        this.api.put('tasks/' + task.id, {task: {starred: !task.starred}}, cb);
     }
     postBulkLogTask(ajaxAction, taskId, model, contactIds, toComplete) {
         const url = 'tasks/' + (taskId || '');

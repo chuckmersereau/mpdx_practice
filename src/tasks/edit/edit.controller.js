@@ -21,7 +21,7 @@ class EditTaskController {
         this.modal = modal;
         this.serverConstants = serverConstants;
         this.specifiedTask = specifiedTask;
-        this.tagsService = contactsTagsService;
+        this.contactsTagsService = contactsTagsService;
         this.tasksService = tasksService;
         this.toComplete = toComplete;
 
@@ -33,7 +33,7 @@ class EditTaskController {
         this.serverConstants.fetchConstants(['actions', 'next_actions', 'results']);
         this.constants = this.serverConstants.data;
 
-        var inputTask = this.specifiedTask || {};
+        const inputTask = this.specifiedTask || {};
         this.models = {
             dueDate: inputTask.due_date ? new Date(inputTask.due_date) : new Date(),
             completedAt: inputTask.completed_at ? new Date(inputTask.completed_at) : new Date(),

@@ -1,4 +1,5 @@
 class FilterService {
+    api;
     constructor($rootScope, api, $location) {
         this.$location = $location;
         this.api = api;

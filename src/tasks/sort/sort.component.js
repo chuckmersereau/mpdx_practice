@@ -1,4 +1,5 @@
 class SortController {
+    tasksService;
     constructor(tasksService) {
         this.tasksService = tasksService;
     }
