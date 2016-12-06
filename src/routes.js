@@ -155,8 +155,7 @@ export default class Routes {
 function auth($state, $stateParams, $window, $location, $http) {
     if (!_.isEmpty($stateParams.access_token)) {
         $http.post(`${config.apiUrl}user/authentication`, {access_token: $stateParams.access_token}).then((data) => {
-            console.log(data);
-            $window.sessionStorage.token = data.json_web_token;
+            $window.sessionStorage.token = data.data.json_web_token;
             const redirect = angular.copy($window.sessionStorage.redirect || 'home');
             delete $window.sessionStorage.redirect;
             $location.$$search = {}; //clear querystring
