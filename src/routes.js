@@ -1,3 +1,5 @@
+import config from 'config';
+
 export default class Routes {
     static config($stateProvider) {
         $stateProvider.state({
@@ -134,13 +136,16 @@ export default class Routes {
 }
 
 /*@ngInject*/
-function auth($state, $stateParams, $window, $location) {
+function auth($state, $stateParams, $window, $location, $http) {
     if (!_.isEmpty($stateParams.access_token)) {
-        $window.sessionStorage.token = $stateParams.access_token;
-        const redirect = angular.copy($window.sessionStorage.redirect || 'home');
-        delete $window.sessionStorage.redirect;
-        $location.$$search = {}; //clear querystring
-        $state.go(redirect, {reload: true});
+        $http.post(`${config.apiUrl}user/authentication`, {access_token: $stateParams.access_token}).then((data) => {
+            console.log(data);
+            $window.sessionStorage.token = data.json_web_token;
+            const redirect = angular.copy($window.sessionStorage.redirect || 'home');
+            delete $window.sessionStorage.redirect;
+            $location.$$search = {}; //clear querystring
+            $state.go(redirect, {reload: true});
+        });
     }
 }
 
