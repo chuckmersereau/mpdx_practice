@@ -1,15 +1,17 @@
 import jQuery from '!expose?jQuery!jquery'; //import before angular to replace jqlite
 window.$ = jQuery;
 import angular from 'angular';
+window.angular = angular;
 
 import app from './app.directive';
+import bottom from './bottom/index.module';
 import common from './common/index.module';
 import contacts from './contacts/index.module';
-import bottom from './bottom/index.module';
 import home from './home/index.module';
 import menu from './menu/index.module';
-import reports from './reports/index.module';
+import notices from './notices/notices.component';
 import preferences from './preferences/index.module';
+import reports from './reports/index.module';
 import tasks from './tasks/index.module';
 import unavailable from './unavailable/index.module';
 import vendor from './vendor.module';
@@ -27,8 +29,9 @@ export default angular.module('mpdx', [
     contacts,
     home,
     menu,
-    reports,
+    notices,
     preferences,
+    reports,
     tasks,
     unavailable,
     vendor

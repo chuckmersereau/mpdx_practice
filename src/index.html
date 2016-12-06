@@ -9,9 +9,14 @@
     <impersonation-bar></impersonation-bar>
     <menu></menu>
     <div id="body">
-        <div id="content" class="container">
+        <div id="content" class="container" ng-class="{fullscreen: $ctrl.session.fullScreen}">
             <notices></notices>
             <ui-view></ui-view>
+            <a id="exit-fullscreen" ng-if="$ctrl.session.fullScreen" ng-click="$ctrl.session.fullScreen = false">
+                <span class="icons">
+                    <i class="fa fa-arrow-right"></i><i class="fa fa-arrow-left"></i>
+                </span>
+            </a>
         </div>
         <bottom></bottom>
     </div>

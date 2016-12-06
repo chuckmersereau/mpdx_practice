@@ -303,7 +303,9 @@ class ContactsService {
         return this.getSelectedContacts().map(contact => contact.name);
     }
     getTagsFromSelectedContacts() {
-        return this.getSelectedContacts().reduce((tagsList, contact) => _.union(tagsList, contact.tag_list), []).sort();
+        let tagsArray = this.getSelectedContacts().reduce((tagsList, contact) => _.union(tagsList, contact.tag_list), []).sort();
+        tagsArray = tagsArray.map((tag) => { return tag.text; });
+        return _.uniq(tagsArray);
     }
     clearSelectedContacts() {
         this.setAllContacts('selected', false);
@@ -390,6 +392,12 @@ class ContactsService {
             contact: obj,
             bulk_edit_contact_ids: contactIds.join()
         });
+    }
+    getDonorAccounts() {
+        if (!this.donorAccounts) {
+            this.donorAccounts = [];
+            _.each(this.data, contact => _.union(this.donorAccounts, contact.donor_accounts));
+        }
     }
     getAnalytics() {
         if (this.analytics) {

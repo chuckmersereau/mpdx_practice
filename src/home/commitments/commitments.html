@@ -3,7 +3,7 @@
         Commitments Unfulfilled
     </div>
     <div class="panel-body" ng-if="$ctrl.noPledgeCount !== null">
-        <a ui-sref="contacts({filters: {status: ['Partner - Financial'], pledge_received: false} })" class="dash-stat">
+        <a ui-sref="contacts({filters: {status: ['Partner - Financial'], pledge_received: 'false'} })" class="dash-stat">
             <span class="count-big" translate>
                 {{ $ctrl.noPledgeCount }}
             </span>
