@@ -22,9 +22,7 @@ class AccountsService {
     load() {
         this.loading = true;
         return this.api.get(`account_lists`).then((data) => {
-            console.log(data);
             this.data = data.data;
-            //this.account_list_id = data.preferences.account_list_id;
             this.loading = false;
         });
     };
