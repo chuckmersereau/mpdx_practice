@@ -2,7 +2,7 @@ class ModalService {
     constructor($modal) {
         this.$modal = $modal;
         this.defaultParams = {
-            animation: 'am-fade-and-scale',
+            animation: 'am-fade',
             placement: 'center',
             controllerAs: '$ctrl'
         };
