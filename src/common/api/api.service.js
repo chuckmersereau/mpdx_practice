@@ -27,9 +27,7 @@ class Api {
                 return this.$q.resolve(cachedData);
             }
         }
-        if (this.account_list_id !== null) {
-            data.account_list_id = this.account_list_id;
-        }
+
         if (method === 'get' || method === 'delete') {
             params = data;
         }

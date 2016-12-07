@@ -33,7 +33,7 @@ class ContactsService {
             }
         });
 
-        $rootScope.$watch(() => this.api.account_list_id, (accountListId) => {
+        $rootScope.$on('accountListUpdated', (accountListId) => {
             if (accountListId) {
                 this.load(true);
             }
