@@ -9,9 +9,9 @@ class AppealsService {
         this.appeals = [];
         this.loading = true;
 
-        this.load();
+        //this.load();
 
-        $rootScope.$watch(() => api.account_list_id, () => {
+        $rootScope.$on('accountListUpdated', () => {
             this.load();
         });
     }

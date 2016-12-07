@@ -2,6 +2,7 @@ class MailchimpIntegrationPreferencesController {
     alertsService;
     mailchimpService;
     rolloutService;
+    state;
 
     constructor(
         $scope, mailchimpService, alertsService, rolloutService

@@ -1,4 +1,6 @@
 class IntegrationsService {
+    api;
+
     constructor(
         $rootScope, api
     ) {
@@ -9,7 +11,7 @@ class IntegrationsService {
 
         this.load();
 
-        this.account_list_id_watcher = $rootScope.$watch(() => api.account_list_id, () => {
+        $rootScope.$on('accountListUpdated', () => {
             this.load();
         });
     }

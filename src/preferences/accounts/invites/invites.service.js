@@ -7,11 +7,11 @@ class InvitesService {
         this.data = {};
         this.loading = true;
 
-        $rootScope.$watch(() => api.account_list_id, () => {
+        $rootScope.$on('accountListUpdated', () => {
             this.load();
         });
 
-        this.load();
+        //this.load();
     }
     load() {
         this.loading = true;

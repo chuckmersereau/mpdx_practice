@@ -5,7 +5,7 @@ class UsersService {
         this.data = {};
         this.loading = true;
 
-        $rootScope.$watch(() => api.account_list_id, () => {
+        $rootScope.$on('accountListUpdated', () => {
             this.load();
         });
 

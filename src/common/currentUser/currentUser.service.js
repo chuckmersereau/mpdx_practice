@@ -3,21 +3,22 @@ class CurrentUser {
     helpService;
 
     constructor(
-         $log,
+         $log, $rootScope,
          api, helpService
     ) {
-        this.helpService = helpService;
-        this.api = api;
         this.$log = $log;
+        this.$rootScope = $rootScope;
+        this.api = api;
+        this.helpService = helpService;
+
         this.hasAnyUsAccounts = false;
         this.get();
     }
     get() {
         return this.api.get('user').then((response) => {
-            console.log(response.data);
             _.extend(this, response.data);
-            this.api.account_list_id = _.get(this, 'attributes.preferences.default_account_list');
-            console.log('api.account_list_id:', this.api.account_list_id);
+            this.api.account_list_id = _.get(this, 'attributes.preferences.default_account_list').toString();
+            this.$rootScope.$emit('accountListUpdated', this.api.account_list_id);
             this.helpService.updateUser(this);
             return response;
         }).catch((err) => {

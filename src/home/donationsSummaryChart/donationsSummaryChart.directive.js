@@ -23,6 +23,7 @@ class donationSummaryChartController {
 }
 
 function linkFn(scope) {
+    scope.$on('accountListUpdated', () => {
     scope.currentAccountList.getDonations().then(() => {
         let seriesWithClickEvents = _.map(scope.currentAccountList.donations.series, (series) => {
             series.events = {
@@ -132,6 +133,7 @@ function linkFn(scope) {
         });
         scope.blockUI.stop();
         scope.loaded = true;
+    });
     });
 }
 

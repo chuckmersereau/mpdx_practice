@@ -24,9 +24,10 @@ class AppealsWizardController {
                 doNotAskAppeals: true
             }
         };
-        api.get('contacts/tags').then((data) => {
-            this.contactTags = _.get(data, 'tags', []).sort();
-        });
+        console.error('appeals/wizard - no contact/tags endpoint yet');
+        // api.get('contacts/tags').then((data) => {
+        //     this.contactTags = _.get(data, 'tags', []).sort();
+        // });
     }
     save() {
         this.$scope.$hide(this.appeal);

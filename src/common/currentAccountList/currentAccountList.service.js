@@ -3,7 +3,8 @@ class CurrentAccountList {
     donations;
 
     constructor(
-        $log, api
+        $log, $rootScope,
+        api
     ) {
         this.api = api;
         this.$log = $log;
@@ -11,7 +12,9 @@ class CurrentAccountList {
         this.analytics = null;
         this.donations = {};
 
-        this.get();
+        $rootScope.$on('accountListUpdated', () => {
+            this.get();
+        });
     }
     get() {
         return this.api.get(`account_lists/${this.api.account_list_id}`).then((resp) => {
@@ -29,7 +32,7 @@ class CurrentAccountList {
         });
     }
     getDonations() {
-        return this.api.get(`accounts/${this.api.account_list_id}/donations`).then((resp) => {
+        return this.api.get(`account_lists/${this.api.account_list_id}/donations`).then((resp) => {
             this.donations = resp;
         }).catch((err) => {
             this.$log.debug(err);

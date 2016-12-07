@@ -21,13 +21,11 @@ class FilterService {
             this.resettable = !angular.equals(this.params, this.default_params);
         }, true);
 
-        $rootScope.$watch(() => api.account_list_id, (newVal, oldVal) => {
-            if (oldVal && newVal) {
-                this.load();
-            }
+        $rootScope.$on('accountListUpdated', () => {
+            this.load();
         });
 
-        this.load();
+        //this.load();
     }
     load() {
         this.loading = true;

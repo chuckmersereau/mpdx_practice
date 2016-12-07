@@ -9,7 +9,7 @@ class AccountsService {
         this.account_list_id = null;
         this.load();
 
-        $rootScope.$watch(() => this.account_list_id, (accountListId) => {
+        $rootScope.$on('accountListUpdated', (accountListId) => {
             if (api.account_list_id) {
                 let stateName = $state.current.name;
                 session.updateField('current_account_list_id', this.account_list_id).then(() => {

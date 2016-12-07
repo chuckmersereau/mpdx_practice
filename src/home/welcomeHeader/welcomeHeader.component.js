@@ -1,11 +1,14 @@
 class welcomeHeaderController {
+    flash;
+
     constructor(flash, gettextCatalog) {
         this._ = _;
         this.flash = flash;
         this.gettextCatalog = gettextCatalog;
     }
     $onInit() {
-        this.flash.get('tour_complete');
+        console.error('home/welcome - tour_complete endpoint needed');
+        //this.flash.get('tour_complete');
 
         this.sources = [
             ['TntMPD', 'Tnt'],

@@ -12,9 +12,9 @@ class MergesService {
         this.loading = true;
         this.selected_account_id = null;
 
-        this.load();
+        //this.load();
 
-        $rootScope.$watch(() => api.account_list_id, () => {
+        $rootScope.$on('accountListUpdated', () => {
             this.load();
         });
     }

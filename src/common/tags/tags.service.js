@@ -21,10 +21,11 @@ class TagsService {
     }
     load() {
         this.loading = true;
-        return this.api.get('contacts/tags').then((data) => {
-            this.data = data;
-            this.loading = false;
-        });
+        console.error('common/tags - no contact/tags enpoint yet');
+        // return this.api.get('contacts/tags').then((data) => {
+        //     this.data = data;
+        //     this.loading = false;
+        // });
     }
     delete(tagName) {
         return this.api.delete('contacts/tags', { tags: [{ name: tagName, all_contacts: true }] }).then(() => {
