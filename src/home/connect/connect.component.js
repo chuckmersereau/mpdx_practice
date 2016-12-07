@@ -1,11 +1,9 @@
 class ConnectController {
-    currentAccountListTasks;
     currentUser;
     tasksService;
 
-    constructor(currentUser, currentAccountListTasks, tasksService) {
+    constructor(currentUser, tasksService) {
         this.currentUser = currentUser;
-        this.currentAccountListTasks = currentAccountListTasks;
         this.tasksService = tasksService;
 
         this.overdueCount = null;
@@ -16,7 +14,7 @@ class ConnectController {
         this.tasksService.getAnalytics().then((response) => {
             this.overdueCount = response;
         });
-        // TODO: connect to above api call
+        // TODO: connect to above api call //tasks/overdue_and_today/group_by_activity_type
         // this.currentAccountListTasks.getTasksOverdueGroupByActivityType().then((response) => {
         //     this.overdueTasks = _.map(response, (count, task) => {
         //         return {type: task, count: count};

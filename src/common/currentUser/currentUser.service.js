@@ -1,5 +1,6 @@
 class CurrentUser {
     api;
+    helpService;
 
     constructor(
          $log,
@@ -12,10 +13,12 @@ class CurrentUser {
         this.get();
     }
     get() {
-        return this.api.get('user').then((currentUser) => {
-            _.extend(this, currentUser);
-            console.log(this.currentUser);
-            this.helpService.updateUser(this.currentUser);
+        return this.api.get('user').then((response) => {
+            console.log(response.data);
+            _.extend(this, response.data);
+            this.api.account_list_id = this.id;
+            this.helpService.updateUser(this);
+            return response;
         }).catch((err) => {
             this.$log.debug(err);
         });

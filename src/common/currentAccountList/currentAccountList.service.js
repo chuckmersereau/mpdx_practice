@@ -1,14 +1,12 @@
 class CurrentAccountList {
     api;
-    contacts;
     donations;
-    tasks;
 
-    constructor(api, $log, currentAccountListContacts, currentAccountListTasks) {
+    constructor(
+        $log, api
+    ) {
         this.api = api;
         this.$log = $log;
-        this.contacts = currentAccountListContacts;
-        this.tasks = currentAccountListTasks;
 
         this.analytics = null;
         this.donations = {};
@@ -49,10 +47,6 @@ class CurrentAccountList {
     }
 }
 
-import contacts from './contacts.service';
-import tasks from './tasks.service';
 
-export default angular.module('mpdx.common.currentAccountList', [
-    contacts,
-    tasks
-]).service('currentAccountList', CurrentAccountList).name;
+export default angular.module('mpdx.common.currentAccountList', [])
+    .service('currentAccountList', CurrentAccountList).name;
