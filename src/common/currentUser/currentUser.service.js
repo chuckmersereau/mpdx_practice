@@ -16,7 +16,8 @@ class CurrentUser {
         return this.api.get('user').then((response) => {
             console.log(response.data);
             _.extend(this, response.data);
-            this.api.account_list_id = this.id;
+            this.api.account_list_id = _.get(this, 'attributes.preferences.default_account_list');
+            console.log('api.account_list_id:', this.api.account_list_id);
             this.helpService.updateUser(this);
             return response;
         }).catch((err) => {

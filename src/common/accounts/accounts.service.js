@@ -7,10 +7,11 @@ class AccountsService {
         this.data = {};
         this.loading = true;
         this.account_list_id = null;
+        this.load();
 
         $rootScope.$watch(() => this.account_list_id, (accountListId) => {
             if (api.account_list_id) {
-                var stateName = $state.current.name;
+                let stateName = $state.current.name;
                 session.updateField('current_account_list_id', this.account_list_id).then(() => {
                     if (!stateName) {
                         location.reload();
@@ -22,9 +23,10 @@ class AccountsService {
     }
     load() {
         this.loading = true;
-        return this.api.get(`accounts/${this.api.account_list_id}`).then((data) => {
-            this.data = data.preferences;
-            this.account_list_id = data.preferences.account_list_id;
+        return this.api.get(`account_lists`).then((data) => {
+            console.log(data);
+            this.data = data.data;
+            //this.account_list_id = data.preferences.account_list_id;
             this.loading = false;
         });
     };
