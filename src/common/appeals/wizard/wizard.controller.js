@@ -1,5 +1,5 @@
 class AppealsWizardController {
-    constructor($scope, api) {
+    constructor($scope) {
         this.$scope = $scope;
 
         //this.contactStatuses = railsConstants.contact.ACTIVE_STATUSES; //TODO: IMPLEMENT RAILSCONSTANTS

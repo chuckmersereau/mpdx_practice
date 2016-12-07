@@ -12,11 +12,6 @@ class Session {
         this.fullScreen = false;
         this.notice = null;
     }
-    updateField(key, value) {
-        let body = {};
-        body[key] = value;
-        return this.api.put('session', body);
-    }
 }
 
 export default angular.module('mpdx.services.session', [])

@@ -1,7 +1,7 @@
 class AccountsService {
     api;
 
-    constructor($rootScope, api, $state, session) {
+    constructor($rootScope, api, $state) {
         this.api = api;
 
         this.data = {};
@@ -12,11 +12,9 @@ class AccountsService {
         $rootScope.$on('accountListUpdated', (accountListId) => {
             if (api.account_list_id) {
                 let stateName = $state.current.name;
-                session.updateField('current_account_list_id', this.account_list_id).then(() => {
-                    if (!stateName) {
-                        location.reload();
-                    }
-                });
+                if (!stateName) {
+                    location.reload();
+                }
             }
             api.account_list_id = accountListId;
         });

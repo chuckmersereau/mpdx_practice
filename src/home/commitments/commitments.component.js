@@ -9,10 +9,10 @@ class CommitmentsController {
     }
     $onInit() {
         console.error('home/commitments: endpoint not yet defined');
-        this.contactsService.getAnalytics().then((response) => {
-            this.noPledgeCount = response;
-            this.lateContactCount = response;
-        });
+        // this.contactsService.getAnalytics().then((response) => {
+        //     this.noPledgeCount = response;
+        //     this.lateContactCount = response;
+        // });
     }
 }
 const Commitments = {

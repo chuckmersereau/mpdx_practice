@@ -11,9 +11,9 @@ class ConnectController {
     }
     $onInit() {
         console.error('home/connect: analytics not implemented');
-        this.tasksService.getAnalytics().then((response) => {
-            this.overdueCount = response;
-        });
+        // this.tasksService.getAnalytics().then((response) => {
+        //     this.overdueCount = response;
+        // });
         // TODO: connect to above api call //tasks/overdue_and_today/group_by_activity_type
         // this.currentAccountListTasks.getTasksOverdueGroupByActivityType().then((response) => {
         //     this.overdueTasks = _.map(response, (count, task) => {

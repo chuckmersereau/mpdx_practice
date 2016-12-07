@@ -17,9 +17,9 @@ class anniversariesController {
     }
     getAnniversaries() {
         console.error('common/anniversaries: analytics TBD');
-        this.contactsService.getAnalytics().then(() => {
+        //this.contactsService.getAnalytics().then(() => {
             //TODO: Connect this.anniversaries to V2 endpoint
-        });
+        //});
     }
 }
 

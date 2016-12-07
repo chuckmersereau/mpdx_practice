@@ -73,15 +73,16 @@ class progressController {
     }
     refreshData() {
         this.blankData();
-        let startDateString = this.$filter('date')(this.startDate, 'yyyy-MM-dd');
-        const url = 'progress.json?start_date=' + startDateString;
+        //let startDateString = this.$filter('date')(this.startDate, 'yyyy-MM-dd');
+        //const url = 'progress.json?start_date=' + startDateString;
 
-        this.api.get(url).then((newData) => {
-            this.data = newData;
-            this.blockUI.stop();
-        }).catch(() => {
-            this.errorOccurred = true;
-        });
+        console.error('home/progress - replace progress.json with v2 calls');
+        // this.api.get(url).then((newData) => {
+        //     this.data = newData;
+        //     this.blockUI.stop();
+        // }).catch(() => {
+        //     this.errorOccurred = true;
+        // });
     }
     $onInit() {
         this.refreshData();

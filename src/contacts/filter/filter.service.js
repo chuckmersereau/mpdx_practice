@@ -24,13 +24,11 @@ class FilterService {
         $rootScope.$on('accountListUpdated', () => {
             this.load();
         });
-
-        //this.load();
     }
     load() {
         this.loading = true;
         return this.api.get(`account_lists/${this.api.account_list_id}/filters`).then((data) => {
-            this.data = data.filters;
+            this.data = data.contact_filters || [];
             this.data = this.data.sort((a, b) => {
                 return (a.priority > b.priority) ? 1 : ((b.priority > a.priority) ? -1 : 0);
             });

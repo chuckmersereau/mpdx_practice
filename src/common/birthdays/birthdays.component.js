@@ -15,9 +15,9 @@ class birthdaysController {
     }
     getBirthdays() {
         console.error('common/birthdays: analytics TBD');
-        this.contactsService.getAnalytics().then(() => {
+        //this.contactsService.getAnalytics().then(() => {
             //TODO: Connect this.birthdays to V2 endpoint
-        });
+        //});
     }
 
 }

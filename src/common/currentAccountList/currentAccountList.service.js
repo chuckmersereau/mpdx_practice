@@ -19,7 +19,6 @@ class CurrentAccountList {
     get() {
         return this.api.get(`account_lists/${this.api.account_list_id}`).then((resp) => {
             _.extend(this, resp);
-            this.api.account_list_id = this.account_list.id;
         }).catch((err) => {
             this.$log.debug(err);
         });
@@ -43,7 +42,6 @@ class CurrentAccountList {
             return this.$q.resolve(this.analytics);
         }
         return this.api.get('accounts/analytics').then((data) => {
-            console.log(data);
             this.analytics = data;
             return this.analytics;
         });
