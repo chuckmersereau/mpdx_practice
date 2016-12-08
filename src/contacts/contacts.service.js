@@ -70,7 +70,7 @@ class ContactsService {
         }
         filterParams.any_tags = this.tagsService.anyTags;
 
-        return this.api.get('contacts', {filters: filterParams, page: this.page, per_page: 25}).then((data) => {
+        return this.api.get('contacts', {filters: filterParams, page: this.page, per_page: 25, include: 'people'}).then((data) => {
             console.log(data);
             if (reset) {
                 newContacts = [];
