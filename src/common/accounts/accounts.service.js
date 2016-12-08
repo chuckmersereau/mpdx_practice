@@ -6,17 +6,15 @@ class AccountsService {
 
         this.data = {};
         this.loading = true;
-        this.account_list_id = null;
         this.load();
 
-        $rootScope.$on('accountListUpdated', (accountListId) => {
+        $rootScope.$on('accountListUpdated', () => {
             if (api.account_list_id) {
                 let stateName = $state.current.name;
                 if (!stateName) {
                     location.reload();
                 }
             }
-            api.account_list_id = accountListId;
         });
     }
     load() {

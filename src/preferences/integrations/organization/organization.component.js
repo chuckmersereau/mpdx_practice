@@ -13,7 +13,6 @@ class OrganizationIntegrationPreferencesController {
         this.selected = null;
         this.username = null;
         this.password = null;
-        this.account_list_id = organizationService.account_list_id;
     }
     save() {
         this.saving = true;

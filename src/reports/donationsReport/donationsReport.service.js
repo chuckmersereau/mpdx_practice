@@ -1,4 +1,7 @@
 class DonationsReportService {
+    api;
+    session;
+
     constructor(
         $state,
         api, session
@@ -8,8 +11,20 @@ class DonationsReportService {
         this.data = null;
         this.session = session;
     }
-    getDonations(contactId, page) {
-        return this.api.get('donations', { contact_id: contactId, page: page }).then((data) => {
+    getDonations({ startDate = null, endDate = null, contactId = null, page = null }) {
+        let params = {};
+        if (contactId) {
+            params.contactId = contactId;
+        }
+        if (page) {
+            params.page = page;
+        } else {
+            params.per_page = "10000";
+        }
+        if (startDate && endDate) {
+            //TODO: filter by date
+        }
+        return this.api.get(`account_lists/${this.api.account_list_id}/donations`, params).then((data) => {
             if (!contactId && !page) {
                 this.data = data;
             }

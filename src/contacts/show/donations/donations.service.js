@@ -13,7 +13,7 @@ class DonationsService {
         return this.api.get(`contacts/${contactId}/donations/graph`);
     }
     save(donation) {
-        var donationToCommit = angular.copy(donation);
+        let donationToCommit = angular.copy(donation);
         donationToCommit.amount = donation.amount.replace(/[^\d.-]/g, '');
         return this.api.put(`donations/${donationToCommit.id}`, { donation: donationToCommit });
     }

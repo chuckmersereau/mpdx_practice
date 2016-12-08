@@ -21,6 +21,7 @@ import layoutSettings from './layoutSettings/layoutSettings.directive';
 import links from './links/index.module';
 import login from './login/index.module';
 import modal from './modal/index.module';
+import momentFilter from './moment/moment.filter';
 import monthRange from './monthRange/monthRange.service';
 import rawNumber from './rawNumber/rawNumber.directive';
 import rollout from './rollout/rollout.service';
@@ -55,6 +56,7 @@ export default angular.module('mpdx.common', [
     links,
     login,
     modal,
+    momentFilter,
     monthRange,
     rawNumber,
     rollout,
