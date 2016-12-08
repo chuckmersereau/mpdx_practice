@@ -2,19 +2,19 @@
     <a ng-click="$ctrl.switchContact()" ng-class="{'active': $ctrl.selected == $ctrl.contact.id }">{{$ctrl.contact.name}}</a>
 </div>
 <div ng-hide="$ctrl.view == 'minimal'" class="contact-row">
-    <img class="avatar small" ng-src="{{$ctrl.contact.square_avatar}}">
+    <img class="avatar small" ng-src="{{$ctrl.contact.attributes.square_avatar}}">
     <div class="contact-details">
         <div class="col-sm-7 main-details">
             <h4 class="name">
-                <a ui-sref="contact({contactId: $ctrl.contact.id})">{{$ctrl.contact.name}}</a>
+                <a ui-sref="contact({contactId: $ctrl.contact.id})">{{$ctrl.contact.attributes.name}}</a>
                 <i class="fa fa-envelope" ng-class="{'icon-error-red': $ctrl.hasSendNewsletterError()}"
-                   title="{{$ctrl.contact.send_newsletter | translate}}" ng-show="$ctrl.contact.send_newsletter"></i>
-                <span title="{{ 'Partner - Special' | translate }}" ng-show="$ctrl.contact.status === 'Partner - Special'">
-                <span>{{$ctrl.contact.pledge_currency_symbol}}</span>
+                   title="{{$ctrl.contact.send_newsletter | translate}}" ng-show="$ctrl.contact.attributes.send_newsletter"></i>
+                <span title="{{ 'Partner - Special' | translate }}" ng-show="$ctrl.contact.attributes.status === 'Partner - Special'">
+                <span>{{$ctrl.contact.attributes.pledge_currency_symbol}}</span>
                 </span>
-                        <span title="{{ 'Partner - Financial' | translate }}" ng-show="$ctrl.contact.status === 'Partner - Financial'">
-                  <span>{{$ctrl.contact.pledge_currency_symbol}}</span>
-                  <span>{{$ctrl.contact.pledge_currency_symbol}}</span>
+                        <span title="{{ 'Partner - Financial' | translate }}" ng-show="$ctrl.contact.attributes.status === 'Partner - Financial'">
+                  <span>{{$ctrl.contact.attributes.pledge_currency_symbol}}</span>
+                  <span>{{$ctrl.contact.attributes.pledge_currency_symbol}}</span>
                 </span>
             </h4>
             <div class="people">
@@ -42,10 +42,10 @@
             </div>
         </div>
         <div class="col-sm-5 more-details">
-            <div ng-show="$ctrl.contact.status !== ''">{{$ctrl.contact.status | translate}}</div>
-            <div ng-show="$ctrl.contact.pledge_amount > 0">
-                {{$ctrl.contact.pledge_amount | currency: $ctrl.contact.pledge_currency_symbol}} {{$ctrl.contact.pledge_frequency }}
-                <div ng-if="$ctrl.contact.status == 'Partner - Financial'" ng-switch="$ctrl.contact.pledge_received">
+            <div ng-show="$ctrl.contact.attributes.status !== ''">{{$ctrl.contact.attributes.status | translate}}</div>
+            <div ng-show="$ctrl.contact.attributes.pledge_amount > 0">
+                {{$ctrl.contact.attributes.pledge_amount | currency: $ctrl.contact.attributes.pledge_currency_symbol}} {{$ctrl.contact.attributes.pledge_frequency }}
+                <div ng-if="$ctrl.contact.attributes.status == 'Partner - Financial'" ng-switch="$ctrl.contact.attributes.pledge_received">
                     <div ng-switch-when="true" class="text-success" translate>Commitment Received</div>
                     <div ng-switch-when="false" class="text-warning" translate>Commitment Not Received</div>
                 </div>
@@ -59,8 +59,8 @@
             </div -->
 
 
-            <a ng-href="/tasks?contact_ids={{$ctrl.contact.id}}" ng-show="$ctrl.contact.uncompleted_tasks_count > 0">
-                <span translate>Tasks</span>: {{$ctrl.contact.uncompleted_tasks_count}}
+            <a ng-href="/tasks?contact_ids={{$ctrl.contact.id}}" ng-show="$ctrl.contact.attributes.uncompleted_tasks_count > 0">
+                <span translate>Tasks</span>: {{$ctrl.contact.attributes.uncompleted_tasks_count}}
             </a>
         </div>
     </div>

@@ -71,11 +71,12 @@ class ContactsService {
         filterParams.any_tags = this.tagsService.anyTags;
 
         return this.api.get('contacts', {filters: filterParams, page: this.page, per_page: 25}).then((data) => {
+            console.log(data);
             if (reset) {
                 newContacts = [];
                 this.page = 1;
             }
-            _.each(data.contacts, (contact) => {
+            _.each(data.data, (contact) => {
                 // fix tag_list difference for list vs show
                 contact.tag_list = _.map(contact.tag_list, (tag) => {
                     return { text: tag };

@@ -1,12 +1,18 @@
 class ListController {
+    alertsService;
+    contactsService;
+    modal;
+    tagsService;
+    tasksService;
+
     constructor(
         modal,
-        contactsService, filterService, tagsService, alertsService, tasksService, currentAccountList
+        contactsService, tagsService, alertsService, tasksService, currentAccountList
     ) {
-        this.modal = modal;
         this.alertsService = alertsService;
         this.contactsService = contactsService;
         this.currentAccountList = currentAccountList;
+        this.modal = modal;
         this.tagsService = tagsService;
         this.tasksService = tasksService;
 
@@ -18,6 +24,7 @@ class ListController {
     }
     loadMoreContacts() {
         this.contactsService.loadMoreContacts();
+        console.log(this.contactsService);
     }
     resetFilters() {
         this.contactsService.resetFilters();
@@ -81,7 +88,7 @@ class ListController {
         });
     }
     openMergeContactsModal() {
-        var selectedLength = this.contactsService.getSelectedContacts().length;
+        const selectedLength = this.contactsService.getSelectedContacts().length;
         if (selectedLength < 2) {
             this.alertsService.addAlert('You must select at least 2 contacts to merge.', 'danger');
         } else if (selectedLength > 8) {
@@ -107,7 +114,6 @@ class ListController {
 
 const ContactList = {
     controller: ListController,
-    controllerAs: 'vm',
     template: require('./list.html'),
     bindings: {
         view: '@',
