@@ -14,16 +14,23 @@ class Api {
         // This function supports both callbacks (successFn, errorFn) and returns a promise
         // It would be preferred to use promises in the future
     }
-    call(method, url, data = {}, successFn, errorFn, cache, params, headers, promise = null, attempts = 0) {
+    call({
+        method,
+        url,
+        data = {},
+        cache,
+        params,
+        headers = {},
+        promise = null,
+        attempts = 0,
+        overrideGetAsPost = false
+    }) {
         if (!promise) {
             promise = this.$q.defer();
         }
         if (cache === true) {
             const cachedData = this.apiCache.get(url);
             if (angular.isDefined(cachedData)) {
-                if (_.isFunction(successFn)) {
-                    successFn(cachedData, 304);
-                }
                 return this.$q.resolve(cachedData);
             }
         }
@@ -39,6 +46,10 @@ class Api {
             params = data;
         }
 
+        if (overrideGetAsPost) {
+            headers['X-HTTP-Method-Override'] = 'POST';
+        }
+
         const request = {
             method: method,
             url: this.apiUrl + url,
@@ -50,9 +61,6 @@ class Api {
             timeout: 50000
         };
         this.$http(request).then((response) => {
-            if (_.isFunction(successFn)) {
-                successFn(response.data, response.status);
-            }
             if (cache === true) {
                 this.apiCache.put(url, response.data);
             }
@@ -62,30 +70,44 @@ class Api {
             if (response === 'noAuth' && attempts < 3) {
                 //wait 1s and retry up to 3 times
                 this.$timeout(() => {
-                    this.call(method, url, data, successFn, errorFn, cache, params, headers, promise, attempts + 1);
+                    this.call({ method: method, url: url, data: data, cache: cache, params: params, headers: headers, promise: promise, attempts: attempts + 1 });
                 }, 1000);
             } else {
                 this.$log.error('API ERROR:', response.status, response.data);
-                if (_.isFunction(errorFn)) {
-                    errorFn(response);
-                }
                 promise.reject(response);
             }
         });
 
         return promise.promise;
     }
-    get(url, data, successFn, errorFn, cache) {
-        return this.call('get', url, data, successFn, errorFn, cache);
+    get(...params) {
+        params = this.handleParamsAsOther(params);
+        _.extend(params, { method: 'get' });
+        return this.call(params);
     }
-    post(url, data, successFn, errorFn, cache) {
-        return this.call('post', url, data, successFn, errorFn, cache);
+    post(...params) {
+        params = this.handleParamsAsOther(params);
+        _.extend(params, { method: 'post' });
+        return this.call(params);
     }
-    put(url, data, successFn, errorFn, cache) {
-        return this.call('put', url, data, successFn, errorFn, cache);
+    put(...params) {
+        params = this.handleParamsAsOther(params);
+        _.extend(params, { method: 'put' });
+        return this.call(params);
     }
-    delete(url, data, successFn, errorFn, cache) {
-        return this.call('delete', url, data, successFn, errorFn, cache);
+    delete(...params) {
+        params = this.handleParamsAsOther(params);
+        _.extend(params, { method: 'delete' });
+        return this.call(params);
+    }
+    handleParamsAsOther(params) {
+        if (params.length === 1 && _.isObject(params[0])) {
+            return params[0];
+        }
+        if (_.isArray(params)) {
+            params = { url: params[0], data: params[1] || {} };
+        }
+        return params;
     }
     encodeURLarray(array) {
         return _.map(array, encodeURIComponent);

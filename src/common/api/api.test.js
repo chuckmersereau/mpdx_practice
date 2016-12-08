@@ -19,7 +19,7 @@ describe('common.api.service', () => {
             it('should send a simple get request', () => {
                 $httpBackend.expectGET('/api/v1/contacts').respond(200, 'Success');
 
-                service.call('get', 'contacts', {}, null, null, false).then((data) => {
+                service.get('contacts').then((data) => {
                     expect(data).toEqual('Success');
                 }).catch(() => {
                     fail('should have returned Success');
@@ -29,7 +29,7 @@ describe('common.api.service', () => {
             it('should handle an error in a get request', () => {
                 $httpBackend.expectGET('/api/v1/contacts').respond(500, 'Error');
 
-                service.call('get', 'contacts', {}, null, null, false).then(() => {
+                service.get('contacts').then(() => {
                     fail('should have returned an error');
                 }).catch((response) => {
                     expect(response.data).toEqual('Error');
@@ -41,7 +41,7 @@ describe('common.api.service', () => {
                 it('should make a XHR request since it is not cached', () => {
                     $httpBackend.expectGET('/api/v1/contacts').respond(200, 'Success');
 
-                    service.call('get', 'contacts', {}, null, null, true).then((data) => {
+                    service.get({ url: 'contacts', cache: false }).then((data) => {
                         expect(data).toEqual('Success');
                     }).catch(() => {
                         fail('should have returned Success');
@@ -53,64 +53,11 @@ describe('common.api.service', () => {
                     $httpBackend.expectGET('/api/v1/contacts').respond(200, 'Success');
 
                     function runApiCall() {
-                        service.call('get', 'contacts', {}, null, null, true).then((data) => {
+                        service.call({ method: 'get', url: 'contacts', cache: true }).then((data) => {
                             expect(data).toEqual('Success');
                         }).catch(() => {
                             fail('should have returned Success');
                         });
-                    }
-
-                    runApiCall();
-                    $httpBackend.flush();
-                    runApiCall();
-                });
-            });
-        });
-        describe('callback', () => {
-            it('should send a simple get request', () => {
-                $httpBackend.expectGET('/api/v1/contacts').respond(200, 'Success');
-
-                service.call('get', 'contacts', {}, (data) => {
-                    expect(data).toEqual('Success');
-                }, () => {
-                    fail('should have returned Success');
-                }, false);
-
-                $httpBackend.flush();
-            });
-            it('should handle an error in a get request', () => {
-                $httpBackend.expectGET('/api/v1/contacts').respond(500, 'Error');
-
-                service.call('get', 'contacts', {}, () => {
-                    fail('should have returned an error');
-                }, (response) => {
-                    expect(response.data).toEqual('Error');
-                }, false);
-
-                $httpBackend.flush();
-            });
-
-            describe('cache', () => {
-                it('should make a XHR request since it is not cached', () => {
-                    $httpBackend.expectGET('/api/v1/contacts').respond(200, 'Success');
-
-                    service.call('get', 'contacts', {}, (data) => {
-                        expect(data).toEqual('Success');
-                    }, () => {
-                        fail('should have returned Success');
-                    }, true);
-                    $httpBackend.flush();
-                });
-
-                it('should make not make an XHR request the second time', () => {
-                    $httpBackend.expectGET('/api/v1/contacts').respond(200, 'Success');
-
-                    function runApiCall() {
-                        service.call('get', 'contacts', {}, (data) => {
-                            expect(data).toEqual('Success');
-                        }, () => {
-                            fail('should have returned Success');
-                        }, true);
                     }
 
                     runApiCall();
@@ -125,7 +72,7 @@ describe('common.api.service', () => {
         it('should send a simple get request', () => {
             $httpBackend.expectGET('/api/v1/contacts').respond(200, 'Success');
 
-            service.get('contacts', {}, null, null, false).then((data) => {
+            service.get('contacts').then((data) => {
                 expect(data).toEqual('Success');
             }).catch(() => {
                 fail('should have returned Success');
@@ -138,7 +85,7 @@ describe('common.api.service', () => {
         it('should send a simple post request', () => {
             $httpBackend.expectPOST('/api/v1/contacts').respond(200, 'Success');
 
-            service.post('contacts', {}, null, null, false).then((data) => {
+            service.post('contacts').then((data) => {
                 expect(data).toEqual('Success');
             }).catch(() => {
                 fail('should have returned Success');

@@ -23,7 +23,7 @@ class ServerConstantsService {
     fetchConstant(constantName, url, cb) {
         if (!_.get(this.isFetching.constants, constantName, false)) {
             this.isFetching.constants[constantName] = true;
-            let promise = this.api.get(url, {}).then((data) => {
+            let promise = this.api.get(url).then((data) => {
                 this.data[constantName] = data;
                 if (cb) {
                     cb();

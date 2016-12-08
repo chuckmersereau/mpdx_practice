@@ -69,30 +69,34 @@ class TasksService {
     }
     postBulkLogTask(ajaxAction, taskId, model, contactIds, toComplete) {
         const url = 'tasks/' + (taskId || '');
-        return this.api.call(ajaxAction, url, {
-            add_task_contact_ids: contactIds.join(),
-            task: {
-                subject: model.subject,
-                activity_type: model.action,
-                no_date: model.noDate,
-                'start_at(1i)': model.dueDate.getFullYear() + '',
-                'start_at(2i)': (model.dueDate.getMonth() + 1) + '',
-                'start_at(3i)': model.dueDate.getDate() + '',
-                'start_at(4i)': model.dueDate.getHours() + '',
-                'start_at(5i)': model.dueDate.getMinutes() + '',
-                'completed_at(1i)': model.completedAt.getFullYear() + '',
-                'completed_at(2i)': (model.completedAt.getMonth() + 1) + '',
-                'completed_at(3i)': model.completedAt.getDate() + '',
-                'completed_at(4i)': model.completedAt.getHours() + '',
-                'completed_at(5i)': model.completedAt.getMinutes() + '',
-                activity_comments_attributes: [
-                    {
-                        body: model.comment
-                    }
-                ],
-                completed: toComplete || model.result,
-                result: model.result,
-                tag_list: model.tagsList.map(tag => tag.text).join()
+        return this.api.call({
+            methd: ajaxAction,
+            url: url,
+            data: {
+                add_task_contact_ids: contactIds.join(),
+                task: {
+                    subject: model.subject,
+                    activity_type: model.action,
+                    no_date: model.noDate,
+                    'start_at(1i)': model.dueDate.getFullYear() + '',
+                    'start_at(2i)': (model.dueDate.getMonth() + 1) + '',
+                    'start_at(3i)': model.dueDate.getDate() + '',
+                    'start_at(4i)': model.dueDate.getHours() + '',
+                    'start_at(5i)': model.dueDate.getMinutes() + '',
+                    'completed_at(1i)': model.completedAt.getFullYear() + '',
+                    'completed_at(2i)': (model.completedAt.getMonth() + 1) + '',
+                    'completed_at(3i)': model.completedAt.getDate() + '',
+                    'completed_at(4i)': model.completedAt.getHours() + '',
+                    'completed_at(5i)': model.completedAt.getMinutes() + '',
+                    activity_comments_attributes: [
+                        {
+                            body: model.comment
+                        }
+                    ],
+                    completed: toComplete || model.result,
+                    result: model.result,
+                    tag_list: model.tagsList.map(tag => tag.text).join()
+                }
             }
         });
     }
