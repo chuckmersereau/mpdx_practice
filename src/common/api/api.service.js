@@ -28,9 +28,17 @@ class Api {
             }
         }
 
+        if (data.filters) {
+            _.forIn(data.filters, (val, key) => {
+                data[`filter[${key}]`] = val;
+            });
+            delete data.filters;
+        }
+
         if (method === 'get' || method === 'delete') {
             params = data;
         }
+
         const request = {
             method: method,
             url: this.apiUrl + url,
