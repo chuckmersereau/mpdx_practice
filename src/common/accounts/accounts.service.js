@@ -1,21 +1,12 @@
 class AccountsService {
     api;
 
-    constructor($rootScope, api, $state) {
+    constructor(api) {
         this.api = api;
 
         this.data = {};
         this.loading = true;
         this.load();
-
-        $rootScope.$on('accountListUpdated', () => {
-            if (api.account_list_id) {
-                let stateName = $state.current.name;
-                if (!stateName) {
-                    location.reload();
-                }
-            }
-        });
     }
     load() {
         this.loading = true;
