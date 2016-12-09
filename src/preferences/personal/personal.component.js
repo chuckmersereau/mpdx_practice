@@ -80,7 +80,7 @@ class PersonalPreferencesController {
         this.users.current.attributes.preferences.default_account_list = parseInt(this.default_account_list);
     }
     setSalaryOrg() {
-        // this.salary_organization_string = this.personalService.data.salary_organization_id;
+        this.salary_organization_string = this.personalService.data.salary_organization_id;
     }
     getCountry(locale) {
         if (!locale) return;

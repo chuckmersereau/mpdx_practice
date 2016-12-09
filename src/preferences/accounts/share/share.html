@@ -9,13 +9,13 @@
             leadership consensus around this sharing before you do this. You will be able to remove access later.
         </div>
 
-        <div ng-if="$ctrl.users.data.users.length > 0">
+        <div ng-if="$ctrl.users.currentAccountList.length > 0">
             <strong translate>Account currently shared with</strong>
             <ul class="account-users">
-                <li ng-repeat="user in $ctrl.users.data.users">
-                    {{user.first_name}}
-                    {{user.last_name}}
-                    ({{user.email}})
+                <li ng-repeat="user in $ctrl.users.currentAccountList">
+                    {{user.attributes.first_name}}
+                    {{user.attributes.last_name}}
+                    ({{user.attributes.email}})
                     <span ng-if="user.method.type == 'designation'" data-toggle="tooltip" data-placement="top" title="<{{ 'Linked by designation' | translate }}: {{user.method.name}}">
             <i class="fa fa-info-circle"></i>
           </span>
@@ -25,7 +25,7 @@
                     <span ng-if="user.method.type == 'mpdx'" data-toggle="tooltip" data-placement="top" title="{{ 'Manually added by MPDX support' | translate }}">
             <i class="fa fa-info-circle"></i>
           </span>
-                    <span ng-if="$ctrl.users.data.manager && user.deletable">
+                    <span ng-if="$ctrl.users.current.manager && user.deletable">
             <button class="btn btn-xxs btn-danger" ng-click="$ctrl.removeUser(user.id)" ng-disabled="$ctrl.saving"><i class="fa fa-remove"></i> <span translate>Delete</span></button>
           </span>
                 </li>

@@ -3,6 +3,7 @@ import config from 'config';
 class Users {
     accountsService;
     api;
+    currentAccountList;
     helpService;
 
     constructor(
@@ -17,6 +18,7 @@ class Users {
         this.helpService = helpService;
 
         this.current = null;
+        this.currentAccountList = null;
         this.hasAnyUsAccounts = false;
     }
     getCurrent() {
@@ -46,6 +48,16 @@ class Users {
         if (config.env !== 'development' && locale !== 'en') {
             this.gettextCatalog.loadRemote('locale/' + locale + '-' + process.env.TRAVIS_COMMIT + '.json');
         }
+    }
+    destroy(id) {
+        return this.api.delete(`users/${id}`);
+    }
+    listForCurrentAccount() {
+        this.api.get(`account_lists/${this.api.account_list_id}/users`).then((data) => {
+            this.currentAccountList = data.data;
+            console.log('currentAccountList', this.currentAccountList);
+            this.loading = false;
+        });
     }
 }
 
