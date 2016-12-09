@@ -1,10 +1,8 @@
 class welcomeHeaderController {
-    flash;
     users;
 
-    constructor(flash, gettextCatalog, users) {
+    constructor(gettextCatalog, users) {
         this._ = _;
-        this.flash = flash;
         this.gettextCatalog = gettextCatalog;
         this.users = users;
         this.tourComplete = false;
