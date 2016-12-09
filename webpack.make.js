@@ -295,7 +295,7 @@ module.exports = function makeWebpackConfig(options) {
             // Create global constants which can be configured at compile time
             new webpack.DefinePlugin({
                 'process.env': {
-                    TRAVIS_COMMIT: process.env.TRAVIS_COMMIT
+                    TRAVIS_COMMIT: JSON.stringify(process.env.TRAVIS_COMMIT)
                 }
             }),
 
