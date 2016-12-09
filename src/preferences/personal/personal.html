@@ -178,7 +178,7 @@
                                 <p class="text-muted" translate>The locale determines your default language for MPDX as well as how numbers, dates and other information shows up in MPDX.</p>
                                 <select class="form-control" ng-model="$ctrl.personalService.data.locale" id="locale" ng-change="$ctrl.setLocale()" chosen>
                                     <option ng-repeat="option in $ctrl.languages" value="{{option.alias}}">
-                                        {{option.nativeName}}
+                                        {{option.englishName}} ({{option.nativeName}} - {{option.alias}})
                                     </option>
                                 </select>
                             </div>
