@@ -35,7 +35,7 @@ class PersonalService {
     changeLocale(locale) {
         this.gettextCatalog.setCurrentLanguage(locale);
         if (config.env !== 'development' && locale !== 'en') {
-            this.gettextCatalog.loadRemote(`locale/${locale}.json`);
+            this.gettextCatalog.loadRemote('locale/' + locale + '-' + process.env.TRAVIS_COMMIT + '.json');
         }
     }
 }

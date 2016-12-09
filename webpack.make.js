@@ -291,6 +291,14 @@ module.exports = function makeWebpackConfig(options) {
     // Add build specific plugins
     if (BUILD) {
         config.plugins.push(
+            // Reference: http://webpack.github.io/docs/list-of-plugins.html#defineplugin
+            // Create global constants which can be configured at compile time
+            new webpack.DefinePlugin({
+                'process.env': {
+                    TRAVIS_COMMIT: process.env.TRAVIS_COMMIT
+                }
+            }),
+
             // Reference: http://webpack.github.io/docs/list-of-plugins.html#noerrorsplugin
             // Only emit files when there are no errors
             new webpack.NoErrorsPlugin(),

@@ -25,4 +25,5 @@ fi
 bundle exec ruby onesky/download.rb
 echo '-- run build --'
 npm run build
+gulp translations
 echo '<!-- COMMIT:' $TRAVIS_COMMIT '-->' >> public/index.html
