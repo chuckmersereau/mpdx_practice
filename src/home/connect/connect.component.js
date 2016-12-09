@@ -1,10 +1,10 @@
 class ConnectController {
-    currentUser;
     tasksService;
+    users;
 
-    constructor(currentUser, tasksService) {
-        this.currentUser = currentUser;
+    constructor(tasksService, users) {
         this.tasksService = tasksService;
+        this.users = users;
 
         this.overdueCount = null;
         this.overdueTasks = [];

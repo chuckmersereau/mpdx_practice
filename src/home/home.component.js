@@ -1,8 +1,8 @@
 class HomeController {
     currentAccountList;
-    currentUser;
-    constructor(currentUser, currentAccountList) {
-        this.currentUser = currentUser;
+    users;
+    constructor(currentAccountList, users) {
+        this.users = users;
         this.currentAccountList = currentAccountList;
     }
     $onInit() {

@@ -12,7 +12,6 @@ import convertToNumber from './convertToNumber/convertToNumber.directive';
 import currency from './currency/currency.service';
 import currencySelect from './currencySelect/currencySelect.component';
 import currentAccountList from './currentAccountList/currentAccountList.service';
-import currentUser from './currentUser/currentUser.service';
 import designationAccounts from './designationAccounts/designationAccounts.service';
 import faCheckbox from './faCheckbox/faCheckbox.component';
 import flash from './flash/flash.service';
@@ -31,6 +30,7 @@ import session from './session/session.service';
 import state from './state/state.service';
 import tags from './tags/index.module';
 import urlParameter from './urlParameter/urlParameter.service';
+import users from './users/users.service';
 
 export default angular.module('mpdx.common', [
     accounts,
@@ -47,7 +47,6 @@ export default angular.module('mpdx.common', [
     currency,
     currencySelect,
     currentAccountList,
-    currentUser,
     designationAccounts,
     faCheckbox,
     flash,
@@ -65,5 +64,6 @@ export default angular.module('mpdx.common', [
     session,
     state,
     tags,
-    urlParameter
+    urlParameter,
+    users
 ]).name;

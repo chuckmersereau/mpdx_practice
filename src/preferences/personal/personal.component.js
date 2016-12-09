@@ -4,11 +4,11 @@ class PersonalPreferencesController {
     alertsService;
     api;
     rolloutService;
-    currentUser;
+    users;
 
     constructor(
         $state, $stateParams, $window,
-        accountsService, api, currentUser, alertsService, gettextCatalog, rolloutService
+        accountsService, api, alertsService, gettextCatalog, rolloutService, users
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
@@ -16,9 +16,9 @@ class PersonalPreferencesController {
         this.accountsService = accountsService;
         this.alertsService = alertsService;
         this.api = api;
-        this.currentUser = currentUser;
         this.gettextCatalog = gettextCatalog;
         this.rolloutService = rolloutService;
+        this.users = users;
 
         this.saving = false;
         this.tabId = '';
@@ -31,7 +31,7 @@ class PersonalPreferencesController {
         _.each(this.accountsService.data, (account) => {
             this.accountsMap[account.id] = account;
         });
-        this.default_account_list = this.currentUser.attributes.preferences.default_account_list.toString();
+        this.default_account_list = this.users.current.attributes.preferences.default_account_list.toString();
     }
     $onInit() {
         if (this.$stateParams.id) {
@@ -40,12 +40,25 @@ class PersonalPreferencesController {
     }
     save() {
         this.saving = true;
-        return this.currentUser.save().then(() => {
+        return this.users.save(this.users.current).then(() => {
             this.alertsService.addAlert('Preferences saved successfully', 'success');
             this.setTab('');
             this.saving = false;
         }).catch((data) => {
-            angular.forEach(data.errors, (value) => {
+            _.each(data.errors, (value) => {
+                this.alertsService.addAlert(value, 'danger');
+            });
+            this.saving = false;
+        });
+    }
+    saveAccount() {
+        this.saving = true;
+        return this.accountsService.save(this.accountsMap[this.api.account_list_id]).then(() => {
+            this.alertsService.addAlert('Preferences saved successfully', 'success');
+            this.setTab('');
+            this.saving = false;
+        }).catch((data) => {
+            _.each(data.errors, (value) => {
                 this.alertsService.addAlert(value, 'danger');
             });
             this.saving = false;
@@ -64,7 +77,7 @@ class PersonalPreferencesController {
         return this.tabId === service;
     }
     setDefaultAccountList() {
-        this.currentUser.attributes.preferences.default_account_list = parseInt(this.default_account_list);
+        this.users.current.attributes.preferences.default_account_list = parseInt(this.default_account_list);
     }
     setSalaryOrg() {
         this.salary_organization_string = this.personalService.data.salary_organization_id;
@@ -79,7 +92,7 @@ class PersonalPreferencesController {
         return locale;
     }
     setLocale() {
-        this.currentUser.changeLocale(this.currentUser.attributes.preferences.locale);
+        this.users.changeLocale(this.users.current.attributes.preferences.locale);
     }
 }
 

@@ -1,10 +1,12 @@
 class welcomeHeaderController {
     flash;
+    users;
 
-    constructor(flash, gettextCatalog) {
+    constructor(flash, gettextCatalog, users) {
         this._ = _;
         this.flash = flash;
         this.gettextCatalog = gettextCatalog;
+        this.users = users;
     }
     $onInit() {
         console.error('home/welcome - tour_complete endpoint needed');
@@ -33,10 +35,7 @@ class welcomeHeaderController {
 
 const welcomeHeaderComponent = {
     controller: welcomeHeaderController,
-    template: require('./welcomeHeader.html'),
-    bindings: {
-        currentUser: '<'
-    }
+    template: require('./welcomeHeader.html')
 };
 
 export default angular.module('mpdx.home.welcomeHeader', [])

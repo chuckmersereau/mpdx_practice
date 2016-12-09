@@ -1,13 +1,14 @@
 import config from 'config';
 
-class CurrentUser {
+class Users {
+    accountsService;
     api;
     helpService;
     personalService;
 
     constructor(
-         $log, $rootScope, gettextCatalog,
-         accountsService, api, helpService, personalService
+        $log, $rootScope, gettextCatalog,
+        accountsService, api, helpService, personalService
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
@@ -17,17 +18,18 @@ class CurrentUser {
         this.helpService = helpService;
         this.personalService = personalService;
 
+        this.current = null;
         this.hasAnyUsAccounts = false;
     }
-    get() {
+    getCurrent() {
         return this.api.get('user').then((response) => {
-            _.extend(this, response.data);
-            console.log('current user:', this);
+            this.current = response.data;
+            console.log('current user:', this.current);
             this.api.account_list_id = _.get(response, 'data.attributes.preferences.default_account_list').toString();
             const locale = _.get(response, 'data.attributes.preferences.locale', 'en');
             this.changeLocale(locale);
             this.$rootScope.$emit('accountListUpdated', this.api.account_list_id);
-            this.helpService.updateUser(this);
+            this.helpService.updateUser(this.current);
             return this.accountsService.load(); // force load accounts in resolve
         }).catch((err) => {
             this.$log.debug(err);
@@ -49,5 +51,5 @@ class CurrentUser {
     }
 }
 
-export default angular.module('mpdx.common.currentUser', [])
-    .service('currentUser', CurrentUser).name;
+export default angular.module('mpdx.common.users.service', [])
+    .service('users', Users).name;

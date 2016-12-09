@@ -7,7 +7,7 @@ export default class Routes {
             abstract: true,
             template: '<div ui-view=""></div>',
             resolve: {
-                userResolve: /*@ngInject*/ (currentUser) => currentUser.get()
+                userResolve: /*@ngInject*/ (users) => users.getCurrent()
             }
         }).state({
             name: 'home',
@@ -164,14 +164,14 @@ export default class Routes {
 }
 
 /*@ngInject*/
-function auth($state, $stateParams, $window, $location, $http, currentUser, accountsService) {
+function auth($state, $stateParams, $window, $location, $http, users, accountsService) {
     if (!_.isEmpty($stateParams.access_token)) {
         $http.post(`${config.apiUrl}user/authentication`, {access_token: $stateParams.access_token}).then((data) => {
             $window.sessionStorage.token = data.data.json_web_token;
             const redirect = angular.copy($window.sessionStorage.redirect || 'home');
             delete $window.sessionStorage.redirect;
             $location.$$search = {}; //clear querystring
-            return currentUser.get().then(() => {
+            return users.getCurrent().then(() => {
                 accountsService.load();
                 $state.go(redirect, {reload: true});
             });

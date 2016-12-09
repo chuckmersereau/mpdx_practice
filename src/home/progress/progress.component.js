@@ -1,17 +1,17 @@
 class progressController {
     api;
-    currentUser;
     state;
+    users;
 
     constructor(
         blockUI,
-        api, $filter, state, currentUser
+        api, $filter, state, users
     ) {
         this.$filter = $filter;
         this.state = state;
         this.api = api;
         this.blockUI = blockUI.instances.get('dashboardProgress');
-        this.currentUser = currentUser;
+        this.users = users;
 
         this.startDate = new Date();
         this.startDate.setHours(0, 0, 0, 0);
