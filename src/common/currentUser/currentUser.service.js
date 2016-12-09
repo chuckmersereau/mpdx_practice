@@ -12,11 +12,11 @@ class CurrentUser {
         this.helpService = helpService;
 
         this.hasAnyUsAccounts = false;
-        // this.get();
     }
     get() {
         return this.api.get('user').then((response) => {
             _.extend(this, response.data);
+            console.log(this);
             this.api.account_list_id = _.get(response, 'data.attributes.preferences.default_account_list').toString();
             this.$rootScope.$emit('accountListUpdated', this.api.account_list_id);
             this.helpService.updateUser(this);

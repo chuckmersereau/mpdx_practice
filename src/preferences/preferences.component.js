@@ -1,9 +1,11 @@
 class PreferencesController {
+    constructor(accountsService) {
+        this.accountsService = accountsService;
+    }
 }
 
 const Preferences = {
     controller: PreferencesController,
-    controllerAs: 'vm',
     template: require('./preferences.html')
 };
 
