@@ -4,11 +4,10 @@ class Users {
     accountsService;
     api;
     helpService;
-    personalService;
 
     constructor(
         $log, $rootScope, gettextCatalog,
-        accountsService, api, helpService, personalService
+        accountsService, api, helpService
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
@@ -16,7 +15,6 @@ class Users {
         this.api = api;
         this.gettextCatalog = gettextCatalog;
         this.helpService = helpService;
-        this.personalService = personalService;
 
         this.current = null;
         this.hasAnyUsAccounts = false;
