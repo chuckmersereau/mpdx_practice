@@ -8,3 +8,12 @@ gulp.task('extract', function() {
         }))
         .pipe(gulp.dest('src/locale'));
 });
+
+gulp.task('translations', function() {
+    return gulp.src('locale/**/*.po')
+        .pipe(gettext.compile({
+            // options to pass to angular-gettext-tools...
+            format: 'json'
+        }))
+        .pipe(gulp.dest('public/locale/'));
+});
