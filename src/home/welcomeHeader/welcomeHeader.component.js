@@ -7,11 +7,9 @@ class welcomeHeaderController {
         this.flash = flash;
         this.gettextCatalog = gettextCatalog;
         this.users = users;
+        this.tourComplete = false;
     }
     $onInit() {
-        console.error('home/welcome - tour_complete endpoint needed');
-        //this.flash.get('tour_complete');
-
         this.sources = [
             ['TntMPD', 'Tnt'],
             [this.gettextCatalog.getString('.CSV File'), 'CSV']
