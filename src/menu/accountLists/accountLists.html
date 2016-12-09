@@ -1,4 +1,4 @@
-<div class="account-list-dropdown" ng-if="!$ctrl.accountsService.loading && $ctrl.accountsService.data.length > 1">
+<div class="account-list-dropdown" ng-if="$ctrl.accountsService.data.length > 1">
     <select ng-model="$ctrl.api.account_list_id" class="form-control" disable-search="true" chosen>
         <option ng-repeat="account in $ctrl.accountsService.data" value="{{account.id}}">{{account.attributes.name}}</option>
     </select>

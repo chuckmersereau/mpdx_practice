@@ -5,12 +5,10 @@ class AccountsService {
         this.api = api;
 
         this.data = {};
-        this.loading = true;
-        this.load();
     }
     load() {
-        this.loading = true;
         return this.api.get(`account_lists`).then((data) => {
+            console.log('accounts:', data.data);
             this.data = data.data;
             this.loading = false;
         });

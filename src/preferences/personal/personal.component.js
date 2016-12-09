@@ -1,19 +1,22 @@
 class PersonalPreferencesController {
+    accountsMap;
+    accountsService;
     alertsService;
     rolloutService;
-    personalService;
+    currentUser;
 
     constructor(
         $state, $stateParams, $window,
-        personalService, alertsService, gettextCatalog, rolloutService
+        accountsService, currentUser, alertsService, gettextCatalog, rolloutService
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.$window = $window;
+        this.accountsService = accountsService;
         this.alertsService = alertsService;
+        this.currentUser = currentUser;
         this.gettextCatalog = gettextCatalog;
         this.rolloutService = rolloutService;
-        this.personalService = personalService;
 
         this.saving = false;
         this.tabId = '';
@@ -21,6 +24,15 @@ class PersonalPreferencesController {
         this.languages = _.map(_.keys($window.languageMappingList), (key) => {
             return _.extend({alias: key}, window.languageMappingList[key]);
         });
+
+        this.accountsMap = {};
+        _.each(this.accountsService.data, (account) => {
+            this.accountsMap[account.id] = {
+                name: account.attributes.name,
+                id: account.id
+            };
+        });
+        this.default_account_list = this.currentUser.attributes.preferences.default_account_list.toString();
     }
     $onInit() {
         if (this.$stateParams.id) {
@@ -29,7 +41,7 @@ class PersonalPreferencesController {
     }
     save() {
         this.saving = true;
-        return this.personalService.save().then(() => {
+        return this.currentUser.save().then(() => {
             this.alertsService.addAlert('Preferences saved successfully', 'success');
             this.setTab('');
             this.saving = false;
@@ -53,7 +65,7 @@ class PersonalPreferencesController {
         return this.tabId === service;
     }
     setDefaultAccountList() {
-        this.default_account_string = this.personalService.data.default_account_list;
+        this.currentUser.attributes.preferences.default_account_list = parseInt(this.default_account_list);
     }
     setSalaryOrg() {
         this.salary_organization_string = this.personalService.data.salary_organization_id;
@@ -68,7 +80,7 @@ class PersonalPreferencesController {
         return locale;
     }
     setLocale() {
-        this.personalService.changeLocale(this.personalService.data.locale);
+        this.currentUser.changeLocale(this.currentUser.attributes.preferences.locale);
     }
 }
 

@@ -1,10 +1,7 @@
-import config from 'config';
-
 class PersonalService {
     api;
 
     constructor(
-        $rootScope,
         api, gettextCatalog
     ) {
         this.api = api;
@@ -13,11 +10,10 @@ class PersonalService {
         this.data = {};
         this.loading = true;
 
-        //this.load();
-
-        $rootScope.$on('accountListUpdated', () => {
-            this.load();
-        });
+        //TODO: figure out if this is needed in api v2 (don't think it is)
+        // $rootScope.$on('accountListUpdated', () => {
+        //     this.load();
+        // });
     }
     load() {
         this.loading = true;
@@ -32,12 +28,7 @@ class PersonalService {
     save() {
         return this.api.put('preferences', { preference: this.data });
     }
-    changeLocale(locale) {
-        this.gettextCatalog.setCurrentLanguage(locale);
-        if (config.env !== 'development' && locale !== 'en') {
-            this.gettextCatalog.loadRemote('locale/' + locale + '-' + process.env.TRAVIS_COMMIT + '.json');
-        }
-    }
+
 }
 
 export default angular.module('mpdx.preferences.personal.service', [])
