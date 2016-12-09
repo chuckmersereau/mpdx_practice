@@ -27,7 +27,7 @@ class FilterService {
     }
     load() {
         this.loading = true;
-        return this.api.get(`account_lists/${this.api.account_list_id}/filters`).then((data) => {
+        return this.api.get(`contacts/filters`).then((data) => {
             this.data = data.contact_filters || [];
             this.data = this.data.sort((a, b) => {
                 return (a.priority > b.priority) ? 1 : ((b.priority > a.priority) ? -1 : 0);
@@ -53,6 +53,9 @@ class FilterService {
             this.params = params;
             this.mergeParamsFromLocation();
             this.loading = false;
+        }).catch((ex) => {
+            console.error('contacts/filter.service');
+            return ex;
         });
     }
     mergeParamsFromLocation() {
