@@ -2,18 +2,20 @@ class PersonalPreferencesController {
     accountsMap;
     accountsService;
     alertsService;
+    api;
     rolloutService;
     currentUser;
 
     constructor(
         $state, $stateParams, $window,
-        accountsService, currentUser, alertsService, gettextCatalog, rolloutService
+        accountsService, api, currentUser, alertsService, gettextCatalog, rolloutService
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.$window = $window;
         this.accountsService = accountsService;
         this.alertsService = alertsService;
+        this.api = api;
         this.currentUser = currentUser;
         this.gettextCatalog = gettextCatalog;
         this.rolloutService = rolloutService;
@@ -27,10 +29,7 @@ class PersonalPreferencesController {
 
         this.accountsMap = {};
         _.each(this.accountsService.data, (account) => {
-            this.accountsMap[account.id] = {
-                name: account.attributes.name,
-                id: account.id
-            };
+            this.accountsMap[account.id] = account;
         });
         this.default_account_list = this.currentUser.attributes.preferences.default_account_list.toString();
     }
