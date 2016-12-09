@@ -15,4 +15,5 @@ resp['data'].each do |locale|
     resp = project.export_translation(source_file_name: 'mpdx.pot', locale: locale['code'])
     FileUtils::mkdir_p('locale')
     File.open("locale/#{locale['code']}-#{ENV['TRAVIS_COMMIT']}.po", 'w') { |file| file.write(resp)}
+    puts "#{locale['code']} => locale/#{locale['code']}-#{ENV['TRAVIS_COMMIT']}.po"
 end
