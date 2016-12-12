@@ -33,7 +33,7 @@ class PersonalService {
         return this.api.put('preferences', { preference: this.data });
     }
     changeLocale(locale) {
-        this.gettextCatalog.setCurrentLanguage(locale);
+        this.gettextCatalog.setCurrentLanguage(locale.replace(/-/g, '_'));
         if (config.env !== 'development' && locale !== 'en') {
             this.gettextCatalog.loadRemote('locale/' + locale + '-' + process.env.TRAVIS_COMMIT + '.json');
         }
