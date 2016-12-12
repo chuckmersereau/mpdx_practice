@@ -23,6 +23,6 @@ const Care = {
     controller: CareController
 };
 
-export default angular.module('mpdx.home.care', [])
+export default angular.module('mpdx.home.care.component', [])
     .component('homeCare', Care)
     .name;
