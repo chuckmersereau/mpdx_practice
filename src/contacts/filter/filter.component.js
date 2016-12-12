@@ -4,7 +4,7 @@ class FilterController {
     contactsTagsService;
     modal;
 
-    constructor(filterService, contactsTagsService, contactsService, modal, gettextCatalog) {
+    constructor($stateParams, filterService, tagsService, contactsTagsService, contactsService, modal, gettextCatalog) {
         this.modal = modal;
         this.contactsService = contactsService;
         this.filterService = filterService;
@@ -15,6 +15,10 @@ class FilterController {
             applyLabel: this.gettextCatalog.getString('Filter'),
             cancelLabel: this.gettextCatalog.getString('Clear')
         };
+
+        if (angular.isObject($stateParams.filters)) {
+            _.extend(this.filterService.params, $stateParams.filters);
+        }
     }
     resetFiltersAndTags() {
         if (this.contactsTagsService.isResettable()) {
