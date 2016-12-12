@@ -3,12 +3,12 @@ class PersonalPreferencesController {
     accounts;
     alerts;
     api;
-    rolloutService;
+    rollout;
     users;
 
     constructor(
         $state, $stateParams, $window,
-        accounts, api, alerts, gettextCatalog, rolloutService, users
+        accounts, api, alerts, gettextCatalog, rollout, users
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
@@ -17,7 +17,7 @@ class PersonalPreferencesController {
         this.alerts = alerts;
         this.api = api;
         this.gettextCatalog = gettextCatalog;
-        this.rolloutService = rolloutService;
+        this.rollout = rollout;
         this.users = users;
 
         this.saving = false;

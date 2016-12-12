@@ -5,4 +5,4 @@ class Rollout {
 }
 
 export default angular.module('mpdx.common.rollout.service', [])
-    .service('rolloutService', Rollout).name;
+    .service('rollout', Rollout).name;

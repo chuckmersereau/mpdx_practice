@@ -26,7 +26,7 @@
                     <select name="primaryListId" id="primaryListId" ng-model="$ctrl.mailchimpService.data.primary_list_id" class="form-control">
                         <option ng-repeat="option in $ctrl.mailchimpService.data.lists_available_for_newsletters" value="{{option.id}}">{{option.name}}</option>
                     </select>
-                    <div ng-if="$ctrl.rolloutService.active('mail_chimp_auto_log')">
+                    <div ng-if="$ctrl.rollout.active('mail_chimp_auto_log')">
                         <br />
                         <input type="checkbox" id="autoLogCampaigns" ng-model="$ctrl.mailchimpService.data.auto_log_campaigns">
                         <label for="autoLogCampaigns" translate>Automatically log sent MailChimp campaigns in contact task history.</label>
@@ -55,7 +55,7 @@
                 <span translate>MailChimp list to use for your newsletter:</span> <strong>{{$ctrl.mailchimpService.data.primary_list_name}}</strong>
                 <div ng-show="$ctrl.mailchimpService.data.sync_all_active_contacts" translate>You are syncing to all active contacts.</div>
                 <div ng-hide="$ctrl.mailchimpService.data.sync_all_active_contacts" translate>You are only syncing to contacts in your newsletter</div>
-                <div ng-if="$ctrl.rolloutService.active('mail_chimp_auto_log')">
+                <div ng-if="$ctrl.rollout.active('mail_chimp_auto_log')">
                     <br /><span translate>Automatic logging of campaigns: </span><strong>{{$ctrl.mailchimpService.data.auto_log_campaigns ? ('On' | translate) : ('Off' | translate)}}</strong>
                 </div>
             </p>

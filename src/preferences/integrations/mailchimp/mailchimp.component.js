@@ -1,15 +1,15 @@
 class MailchimpIntegrationPreferencesController {
     alerts;
     mailchimpService;
-    rolloutService;
+    rollout;
     state;
 
     constructor(
-        $scope, mailchimpService, alerts, rolloutService
+        $scope, mailchimpService, alerts, rollout
     ) {
         this.mailchimpService = mailchimpService;
         this.alerts = alerts;
-        this.rolloutService = rolloutService;
+        this.rollout = rollout;
         this.saving = false;
         this.showSettings = false;
 
