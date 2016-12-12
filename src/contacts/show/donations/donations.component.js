@@ -3,16 +3,16 @@ class ContactDonationsController {
     contact;
     donations;
     donationsMeta;
-    donationsService;
+    contactDonations;
     modal;
 
     constructor(
         $scope,
-        api, modal, donationsService
+        api, modal, contactDonations
     ) {
         this.$scope = $scope;
         this.api = api;
-        this.donationsService = donationsService;
+        this.contactDonations = contactDonations;
         this.modal = modal;
 
         this.donations = [];
@@ -43,14 +43,14 @@ class ContactDonationsController {
         }
     }
     getDonationsPromise(page) {
-        this.donationsService.getDonations(this.contact.id, page).then((data) => {
+        this.contactDonations.getDonations(this.contact.id, page).then((data) => {
             this.loading = false;
             this.donations = data.donations;
             this.donationsMeta = data.meta;
         });
     }
     getDonationsGraph() {
-        this.donationsService.getDonationsGraphForContact(this.contact.id).then((data) => {
+        this.contactDonations.getDonationsGraphForContact(this.contact.id).then((data) => {
             let subtitle = 'Average donations remain unchanged from last year';
             if (data.amount > 0) {
                 subtitle = 'Average donations up <span style="color:green">' + data.amount + '</span> from last year';

@@ -20,4 +20,4 @@ class DonationsService {
 }
 
 export default angular.module('mpdx.contacts.show.donations.service', [])
-    .service('donationsService', DonationsService).name;
+    .service('contactDonations', DonationsService).name;
