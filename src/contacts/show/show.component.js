@@ -1,19 +1,25 @@
 class ContactController {
+    contact;
+    contactsService;
+    filterService;
+    modal;
+    preferencesContactsService;
+    referralsService;
+    tasksService;
+
     constructor(
         $scope, $state, $stateParams, $location, $anchorScroll,
-        modal, cache, contactsService, tasksService, referralsService, preferencesContactsService, filterService, serverConstants
+        modal, contactsService, tasksService, referralsService, preferencesContactsService, filterService, serverConstants
     ) {
+        this.$anchorScroll = $anchorScroll;
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.$location = $location;
-        this.$anchorScroll = $anchorScroll;
-
-        this.cache = cache;
         this.contactsService = contactsService;
+        this.filterService = filterService;
         this.modal = modal;
         this.preferencesContactsService = preferencesContactsService;
         this.referralsService = referralsService;
-        this.filterService = filterService;
         this.tasksService = tasksService;
 
         this.selected = $stateParams.contactId;
@@ -32,7 +38,7 @@ class ContactController {
             }
         });
 
-        $scope.$watch('$ctrl.selected', this.selectContact.bind(this));
+        // $scope.$watch('$ctrl.selected', this.selectContact.bind(this));
         this.selectContact($stateParams.id);
         this.contactPosition = this.getContactPosition();
 
@@ -55,6 +61,7 @@ class ContactController {
         };
     }
     selectContact(id) {
+        if (_.isNullOrEmpty(id)) return;
         this.contactsService.get(id).then((contact) => {
             this.contact = contact;
         });
