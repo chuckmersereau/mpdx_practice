@@ -61,7 +61,7 @@ class ContactController {
         };
     }
     selectContact(id) {
-        if (_.isNullOrEmpty(id)) return;
+        if (!id) return;
         this.contactsService.get(id).then((contact) => {
             this.contact = contact;
         });

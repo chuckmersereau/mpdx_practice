@@ -172,7 +172,7 @@ class TasksService {
             return this.$q.resolve(this.analytics);
         }
         return this.api.get('tasks/analytics').then((data) => {
-            console.log(data);
+            // console.log('tasks/analytics', data);
             this.analytics = data;
             return this.analytics;
         });

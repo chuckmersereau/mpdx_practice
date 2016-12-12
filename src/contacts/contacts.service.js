@@ -409,7 +409,7 @@ class ContactsService {
             return this.$q.resolve(this.analytics);
         }
         return this.api.get('contacts/analytics').then((data) => {
-            console.log(data);
+            // console.log('contacts/analytics', data);
             this.analytics = data;
             return this.analytics;
         });

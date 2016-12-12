@@ -1,4 +1,4 @@
-import care from './care/care.component';
+import care from './care/index.module';
 import commitments from './commitments/commitments.component';
 import component from './home.component';
 import connect from './connect/connect.component';

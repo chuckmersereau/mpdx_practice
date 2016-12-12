@@ -24,7 +24,7 @@ class Users {
     getCurrent() {
         return this.api.get('user').then((response) => {
             this.current = response.data;
-            console.log('current user:', this.current);
+            // console.log('current user:', this.current);
             this.api.account_list_id = _.get(response, 'data.attributes.preferences.default_account_list').toString();
             const locale = _.get(response, 'data.attributes.preferences.locale', 'en');
             this.changeLocale(locale);
@@ -55,7 +55,7 @@ class Users {
     listForCurrentAccount() {
         this.api.get(`account_lists/${this.api.account_list_id}/users`).then((data) => {
             this.currentAccountList = data.data;
-            console.log('currentAccountList', this.currentAccountList);
+            // console.log('currentAccountList', this.currentAccountList);
             this.loading = false;
         });
     }

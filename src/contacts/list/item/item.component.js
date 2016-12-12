@@ -5,7 +5,6 @@ class ContactListItemController {
         this.current_currency_symbol = state.current_currency_symbol;
     }
     switchContact() {
-        console.log(this.contact);
         this.selected = this.contact.id;
         this.$state.transitionTo('contact', { contactId: this.contact.id }, { notify: false });
     }

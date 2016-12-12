@@ -21,7 +21,7 @@ class TagsService {
     }
     load() {
         this.loading = true;
-        console.error('common/tags - no contact/tags enpoint yet');
+        console.error('common/tags - no contacts/tags enpoint yet');
         // return this.api.get('contacts/tags').then((data) => {
         //     this.data = data;
         //     this.loading = false;

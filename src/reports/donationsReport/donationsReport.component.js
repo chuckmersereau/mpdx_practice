@@ -47,7 +47,6 @@ class DonationsReportController {
         this.watcher();
     }
     loadingFinished(data) {
-        console.log(data);
         this.blockUI.stop();
         this.allDonations = data.data;
         this.init();

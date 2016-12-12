@@ -24,7 +24,6 @@ class ListController {
     }
     loadMoreContacts() {
         this.contactsService.loadMoreContacts();
-        console.log(this.contactsService);
     }
     resetFilters() {
         this.contactsService.resetFilters();

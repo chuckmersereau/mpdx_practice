@@ -8,7 +8,7 @@ class AccountsService {
     }
     load() {
         return this.api.get(`account_lists`).then((data) => {
-            console.log('accounts:', data.data);
+            // console.log('accounts:', data.data);
             this.data = data.data;
             this.loading = false;
         });
