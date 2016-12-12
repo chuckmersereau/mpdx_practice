@@ -4,7 +4,7 @@ class FilterController {
     contactsTagsService;
     modal;
 
-    constructor($stateParams, filterService, tagsService, contactsTagsService, contactsService, modal, gettextCatalog) {
+    constructor($stateParams, filterService, contactsTagsService, contactsService, modal, gettextCatalog) {
         this.modal = modal;
         this.contactsService = contactsService;
         this.filterService = filterService;
