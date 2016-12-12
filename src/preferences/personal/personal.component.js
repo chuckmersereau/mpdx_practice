@@ -1,6 +1,6 @@
 class PersonalPreferencesController {
     accountsMap;
-    accountsService;
+    accounts;
     alertsService;
     api;
     rolloutService;
@@ -8,12 +8,12 @@ class PersonalPreferencesController {
 
     constructor(
         $state, $stateParams, $window,
-        accountsService, api, alertsService, gettextCatalog, rolloutService, users
+        accounts, api, alertsService, gettextCatalog, rolloutService, users
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.$window = $window;
-        this.accountsService = accountsService;
+        this.accounts = accounts;
         this.alertsService = alertsService;
         this.api = api;
         this.gettextCatalog = gettextCatalog;
@@ -28,7 +28,7 @@ class PersonalPreferencesController {
         });
 
         this.accountsMap = {};
-        _.each(this.accountsService.data, (account) => {
+        _.each(this.accounts.data, (account) => {
             this.accountsMap[account.id] = account;
         });
         this.default_account_list = this.users.current.attributes.preferences.default_account_list.toString();
@@ -53,7 +53,7 @@ class PersonalPreferencesController {
     }
     saveAccount() {
         this.saving = true;
-        return this.accountsService.save(this.accountsMap[this.api.account_list_id]).then(() => {
+        return this.accounts.save(this.accountsMap[this.api.account_list_id]).then(() => {
             this.alertsService.addAlert('Preferences saved successfully', 'success');
             this.setTab('');
             this.saving = false;

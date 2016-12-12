@@ -1,24 +1,22 @@
 import config from 'config';
 
 class Users {
-    accountsService;
+    accounts;
     api;
-    currentAccountList;
     helpService;
 
     constructor(
         $log, $rootScope, gettextCatalog,
-        accountsService, api, helpService
+        accounts, api, helpService
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
-        this.accountsService = accountsService;
+        this.accounts = accounts;
         this.api = api;
         this.gettextCatalog = gettextCatalog;
         this.helpService = helpService;
 
         this.current = null;
-        this.currentAccountList = null;
         this.hasAnyUsAccounts = false;
     }
     getCurrent() {
@@ -30,7 +28,7 @@ class Users {
             this.changeLocale(locale);
             this.$rootScope.$emit('accountListUpdated', this.api.account_list_id);
             this.helpService.updateUser(this.current);
-            return this.accountsService.load(); // force load accounts in resolve
+            return this.accounts.load(); // force load accounts in resolve
         }).catch((err) => {
             this.$log.debug(err);
         });

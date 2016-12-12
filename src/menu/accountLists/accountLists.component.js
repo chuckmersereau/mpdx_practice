@@ -1,11 +1,11 @@
 class AccountListsController {
-    accountsService;
+    accounts;
     api;
 
     constructor(
-        accountsService, api
+        accounts, api
     ) {
-        this.accountsService = accountsService;
+        this.accounts = accounts;
         this.api = api;
 
         this.showAllTags = false;

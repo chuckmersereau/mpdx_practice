@@ -1,6 +1,8 @@
 class PreferencesController {
-    constructor(accountsService) {
-        this.accountsService = accountsService;
+    accounts;
+
+    constructor(accounts) {
+        this.accounts = accounts;
     }
 }
 

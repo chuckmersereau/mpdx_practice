@@ -9,10 +9,10 @@
             leadership consensus around this sharing before you do this. You will be able to remove access later.
         </div>
 
-        <div ng-if="$ctrl.users.currentAccountList.length > 0">
+        <div ng-if="$ctrl.accounts.userList.length > 0">
             <strong translate>Account currently shared with</strong>
             <ul class="account-users">
-                <li ng-repeat="user in $ctrl.users.currentAccountList">
+                <li ng-repeat="user in $ctrl.accounts.userList">
                     {{user.attributes.first_name}}
                     {{user.attributes.last_name}}
                     ({{user.attributes.email}})
@@ -31,20 +31,20 @@
                 </li>
             </ul>
         </div>
-        <div ng-if="$ctrl.invitesService.data.users.length > 0">
+        <div ng-if="$ctrl.accounts.inviteList.length > 0">
             <strong translate>Pending Invites</strong>
             <ul class="account-users">
-                <li ng-repeat="user in $ctrl.invitesService.data.users">
-                    {{user.email}}
+                <li ng-repeat="user in $ctrl.accounts.inviteList">
+                    {{user.attributes.recipient_email}}
                     <i>(<span translate>Sent by</span> {{user.inviter.first_name}} {{user.inviter.last_name}})</i>
-                    <span ng-if="$ctrl.invitesService.data.manager">
-            <button class="btn btn-xxs btn-danger" ng-click="$ctrl.cancelInvite(user.id)" ng-disabled="$ctrl.saving"><i class="fa fa-remove"></i> <span translate>Cancel</span></button>
-          </span>
+                    <span ng-if="$ctrl.users.current.manager">
+                        <button class="btn btn-xxs btn-danger" ng-click="$ctrl.cancelInvite(user.id)" ng-disabled="$ctrl.saving"><i class="fa fa-remove"></i> <translate>Cancel</translate></button>
+                    </span>
                 </li>
             </ul>
         </div>
 
-        <div ng-if="$ctrl.invitesService.data.manager" class="well">
+        <div ng-if="$ctrl.users.current.manager" class="well">
             <strong translate>Invite someone to share this account:</strong>
             <invite-preferences></invite-preferences>
         </div>

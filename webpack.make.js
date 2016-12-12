@@ -125,10 +125,6 @@ module.exports = function makeWebpackConfig(options) {
         //     test: /\.modal.html$/,
         //     loaders: ["ngtemplate?relativeTo=" + encodeURIComponent(path.resolve(process.cwd(), './src/')), "html"]
         }, {
-            //JSON LOADER
-            test: /\.json$/,
-            loader: "json"
-        }, {
             // HTML LOADER
             // Reference: https://github.com/WearyMonkey/ngtemplate-loader
             // Allow loading html through js

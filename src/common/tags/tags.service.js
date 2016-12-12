@@ -1,7 +1,7 @@
 class TagsService {
     api;
 
-    constructor($rootScope, api, accountsService, $filter) {
+    constructor($rootScope, api, $filter) {
         this.$filter = $filter;
         this.api = api;
 
