@@ -10,7 +10,7 @@ class TasksService {
         this.loading = true;
     }
     fetchUncompletedTasks(id) {
-        return this.api.get('tasks/', {
+        return this.api.get('tasks', {
             filters: {
                 completed: false,
                 contact_ids: [id],
@@ -27,7 +27,7 @@ class TasksService {
         });
     }
     fetchCompletedTasks(id) {
-        return this.api.get('tasks/', {
+        return this.api.get('tasks', {
             filters: {
                 completed: true,
                 contact_ids: [id],
