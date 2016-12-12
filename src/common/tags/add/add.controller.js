@@ -1,13 +1,13 @@
 class AddTagController {
     constructor(
         $scope,
-        tagsService, contactsService,
+        tags, contactsService,
         contacts
     ) {
         this.$scope = $scope;
         this.contacts = contacts;
         this.contactsService = contactsService;
-        this.tagsService = tagsService;
+        this.tags = tags;
         this.tags = '';
     }
     addTag(tag) {
@@ -15,9 +15,9 @@ class AddTagController {
         if (!tagToAdd) {
             return;
         }
-        this.tagsService.tagContact(this.contacts, tagToAdd).then(() => {
+        this.tags.tagContact(this.contacts, tagToAdd).then(() => {
             this.contactsService.load(true);
-            this.tagsService.load();
+            this.tags.load();
             this.$scope.$hide();
         });
     }

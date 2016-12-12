@@ -1,13 +1,13 @@
 class ContactDetailsController {
     contact;
     contactsService;
-    tagsService;
+    tags;
 
     constructor(
-        tagsService, contactsService
+        tags, contactsService
     ) {
         this.contactsService = contactsService;
-        this.tagsService = tagsService;
+        this.tags = tags;
 
         this.appeals = 'false';
     }

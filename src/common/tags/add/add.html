@@ -3,7 +3,7 @@
     <form class="modal-body">
         <p translate>Choose an existing tag</p>
         <ul>
-            <li ng-repeat="tag in $ctrl.tagsService.data">
+            <li ng-repeat="tag in $ctrl.tags.data">
                 <a ng-click="$ctrl.addTag(tag)">{{ tag }}</a>
             </li>
         </ul>

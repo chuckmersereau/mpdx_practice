@@ -1,14 +1,14 @@
 class FilterController {
     contactsService;
     filterService;
-    tagsService;
+    tags;
 
-    constructor($stateParams, filterService, tagsService, contactsService, modal, gettextCatalog) {
+    constructor($stateParams, filterService, tags, contactsService, modal, gettextCatalog) {
         this.modal = modal;
         this.contactsService = contactsService;
         this.filterService = filterService;
         this.gettextCatalog = gettextCatalog;
-        this.tagsService = tagsService;
+        this.tags = tags;
 
         this.dateRangeLocale = {
             applyLabel: this.gettextCatalog.getString('Filter'),
@@ -20,15 +20,15 @@ class FilterController {
         }
     }
     resetFiltersAndTags() {
-        if (this.tagsService.isResettable()) {
-            this.tagsService.reset();
+        if (this.tags.isResettable()) {
+            this.tags.reset();
         }
         if (this.filterService.resettable) {
             this.filterService.reset();
         }
     }
     showReset() {
-        return this.tagsService.isResettable() || this.filterService.resettable;
+        return this.tags.isResettable() || this.filterService.resettable;
     }
 
     openMapContactsModal() {
