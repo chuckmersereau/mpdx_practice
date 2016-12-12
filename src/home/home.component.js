@@ -1,12 +1,7 @@
 class HomeController {
-    currentAccountList;
     users;
-    constructor(currentAccountList, users) {
+    constructor(users) {
         this.users = users;
-        this.currentAccountList = currentAccountList;
-    }
-    $onInit() {
-        this.currentAccountList.getTasks();
     }
 }
 const Home = {

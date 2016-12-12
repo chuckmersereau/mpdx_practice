@@ -1,19 +1,19 @@
 class DonationsReportController {
     api;
-    currencyService;
-    currentAccountList;
+    currency;
+    designationAccounts;
     getDonations;
     donations;
     donationsReportService;
 
     constructor(
         $rootScope, blockUI,
-        api, currentAccountList, currencyService, donationsReportService
+        api, designationAccounts, currency, donationsReportService
     ) {
         console.error('donations report - fix endpoint date filtering, add contact name to result');
         this.api = api;
-        this.currencyService = currencyService;
-        this.currentAccountList = currentAccountList;
+        this.currency = currency;
+        this.designationAccounts = designationAccounts;
         this.donationsReportService = donationsReportService;
 
         this.blockUI = blockUI.instances.get('donations');

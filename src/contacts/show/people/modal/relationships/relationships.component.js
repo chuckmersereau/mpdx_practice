@@ -1,10 +1,8 @@
 class ContactFamilyRelationshipController {
-    currentAccountList;
     familyRelationship;
 
-    constructor(currentAccountList) {
-        this.currentAccountList = currentAccountList;
-
+    constructor() {
+        console.error('get list of active people for account, was on currentAccountList endpoint');
         this.deleted = false;
     }
     $onInit() {

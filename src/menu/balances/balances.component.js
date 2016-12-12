@@ -1,6 +1,4 @@
 class BalancesController {
-    currentAccountList;
-
     constructor(gettextCatalog) {
         this.gettextCatalog = gettextCatalog;
     }

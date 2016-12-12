@@ -1,15 +1,15 @@
 class IntegrationPreferencesController {
-    alertsService;
+    alerts;
     integrationsService;
     rolloutService;
 
     constructor(
-        $window, $state, $stateParams, integrationsService, alertsService, rolloutService
+        $window, $state, $stateParams, integrationsService, alerts, rolloutService
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.$window = $window;
-        this.alertsService = alertsService;
+        this.alerts = alerts;
         this.integrationsService = integrationsService;
         this.rolloutService = rolloutService;
 
@@ -32,10 +32,10 @@ class IntegrationPreferencesController {
         this.service = service;
         return this.integrationsService.sync(service).then(() => {
             this.saving = false;
-            this.alertsService.addAlert('MPDX is now syncing your newsletter recipients with ' + this.service, 'success');
+            this.alerts.addAlert('MPDX is now syncing your newsletter recipients with ' + this.service, 'success');
         }).catch(() => {
             this.saving = false;
-            this.alertsService.addAlert('MPDX couldn\'t save your configuration changes for ' + this.service, 'danger');
+            this.alerts.addAlert('MPDX couldn\'t save your configuration changes for ' + this.service, 'danger');
         });
     }
     disconnect(service, id) {
@@ -43,10 +43,10 @@ class IntegrationPreferencesController {
         this.service = service;
         return this.integrationsService.disconnect(service).then(() => {
             this.saving = false;
-            this.alertsService.addAlert('MPDX removed your integration with ' + this.service, 'success');
+            this.alerts.addAlert('MPDX removed your integration with ' + this.service, 'success');
             this.integrationsService.load();
         }).catch((data) => {
-            this.alertsService.addAlert('MPDX couldn\'t save your configuration changes for ' + this.service + '. ' + data.error, 'danger');
+            this.alerts.addAlert('MPDX couldn\'t save your configuration changes for ' + this.service + '. ' + data.error, 'danger');
             this.saving = false;
         }, id);
     }

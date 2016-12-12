@@ -1,12 +1,12 @@
 class OrganizationIntegrationPreferencesController {
-    alertsService;
+    alerts;
     organizationService;
 
     constructor(
-        organizationService, alertsService
+        organizationService, alerts
     ) {
         this.organizationService = organizationService;
-        this.alertsService = alertsService;
+        this.alerts = alerts;
 
         this.saving = false;
         this.page = 'org_list';
@@ -17,14 +17,14 @@ class OrganizationIntegrationPreferencesController {
     save() {
         this.saving = true;
         this.organizationService.save().then(() => {
-            this.alertsService.addAlert('Preferences saved successfully', 'success');
+            this.alerts.addAlert('Preferences saved successfully', 'success');
             this.saving = false;
             if (this.organizationService.data.primary_list_id !== null) {
                 this.hide();
             }
         }).catch((data) => {
             _.each(data.errors, (value) => {
-                this.alertsService.addAlert(value, 'danger');
+                this.alerts.addAlert(value, 'danger');
             });
             this.saving = false;
         });
@@ -38,10 +38,10 @@ class OrganizationIntegrationPreferencesController {
         this.saving = true;
         return this.organizationService.disconnect(id).then(() => {
             this.saving = false;
-            this.alertsService.addAlert('MPDX removed your organization integration', 'success');
+            this.alerts.addAlert('MPDX removed your organization integration', 'success');
             return this.organizationService.load();
         }).catch(() => {
-            this.alertsService.addAlert('MPDX couldn\'t save your configuration changes for that organization', 'danger');
+            this.alerts.addAlert('MPDX couldn\'t save your configuration changes for that organization', 'danger');
             this.saving = false;
         });
     }
@@ -51,10 +51,10 @@ class OrganizationIntegrationPreferencesController {
             this.saving = false;
             this.organizationService.load();
             this.revert();
-            this.alertsService.addAlert('MPDX added your organization account', 'success');
+            this.alerts.addAlert('MPDX added your organization account', 'success');
         }).catch((data) => {
             _.each(data.errors, (value) => {
-                this.alertsService.addAlert(value, 'danger');
+                this.alerts.addAlert(value, 'danger');
             });
             this.saving = false;
         });
@@ -65,10 +65,10 @@ class OrganizationIntegrationPreferencesController {
             this.saving = false;
             this.organizationService.load();
             this.revert();
-            this.alertsService.addAlert('MPDX updated your organization account', 'success');
+            this.alerts.addAlert('MPDX updated your organization account', 'success');
         }).catch((data) => {
             _.each(data.errors, (value) => {
-                this.alertsService.addAlert(value, 'danger');
+                this.alerts.addAlert(value, 'danger');
             });
             this.saving = false;
         });

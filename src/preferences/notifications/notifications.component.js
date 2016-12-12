@@ -1,20 +1,20 @@
 class NotificationPreferencesController {
     constructor(
-        notificationsService, alertsService
+        notificationsService, alerts
     ) {
         this.notificationsService = notificationsService;
-        this.alertsService = alertsService;
+        this.alerts = alerts;
         this.saving = false;
     }
     save() {
         this.saving = true;
         return this.notificationsService.save().then(() => {
-            this.alertsService.addAlert('Notifications saved successfully', 'success');
+            this.alerts.addAlert('Notifications saved successfully', 'success');
             this.saving = false;
             this.saving = false;
         }).catch((data) => {
             angular.forEach(data.errors, function(value) {
-                this.alertsService.addAlert(value, 'danger');
+                this.alerts.addAlert(value, 'danger');
             });
             this.saving = false;
         });

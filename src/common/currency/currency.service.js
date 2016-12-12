@@ -1068,4 +1068,4 @@ class CurrencyService {
 }
 
 export default angular.module('mpdx.common.currency.service', [])
-    .service('currencyService', CurrencyService).name;
+    .service('currency', CurrencyService).name;

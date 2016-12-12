@@ -1,15 +1,14 @@
 class AppealsService {
     api;
+    data;
 
     constructor(
         $rootScope, api
     ) {
         this.api = api;
 
-        this.appeals = [];
+        this.data = [];
         this.loading = true;
-
-        //this.load();
 
         $rootScope.$on('accountListUpdated', () => {
             this.load();
@@ -18,14 +17,14 @@ class AppealsService {
     load() {
         this.loading = true;
         this.api.get('appeals').then((data) => {
-            while (this.appeals.length > 0) {
-                this.appeals.pop();
+            while (this.data.length > 0) {
+                this.data.pop();
             }
-            Array.prototype.push.apply(this.appeals, data.appeals);
+            Array.prototype.push.apply(this.data, data.appeals);
             this.loading = false;
         });
     }
 }
 
 export default angular.module('mpdx.common.appeals.service', [])
-    .service('appealsService', AppealsService).name;
+    .service('appeals', AppealsService).name;

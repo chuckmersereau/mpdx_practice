@@ -1,20 +1,20 @@
 class PersonalPreferencesController {
     accountsMap;
     accounts;
-    alertsService;
+    alerts;
     api;
     rolloutService;
     users;
 
     constructor(
         $state, $stateParams, $window,
-        accounts, api, alertsService, gettextCatalog, rolloutService, users
+        accounts, api, alerts, gettextCatalog, rolloutService, users
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.$window = $window;
         this.accounts = accounts;
-        this.alertsService = alertsService;
+        this.alerts = alerts;
         this.api = api;
         this.gettextCatalog = gettextCatalog;
         this.rolloutService = rolloutService;
@@ -41,12 +41,12 @@ class PersonalPreferencesController {
     save() {
         this.saving = true;
         return this.users.save(this.users.current).then(() => {
-            this.alertsService.addAlert('Preferences saved successfully', 'success');
+            this.alerts.addAlert('Preferences saved successfully', 'success');
             this.setTab('');
             this.saving = false;
         }).catch((data) => {
             _.each(data.errors, (value) => {
-                this.alertsService.addAlert(value, 'danger');
+                this.alerts.addAlert(value, 'danger');
             });
             this.saving = false;
         });
@@ -54,12 +54,12 @@ class PersonalPreferencesController {
     saveAccount() {
         this.saving = true;
         return this.accounts.save(this.accountsMap[this.api.account_list_id]).then(() => {
-            this.alertsService.addAlert('Preferences saved successfully', 'success');
+            this.alerts.addAlert('Preferences saved successfully', 'success');
             this.setTab('');
             this.saving = false;
         }).catch((data) => {
             _.each(data.errors, (value) => {
-                this.alertsService.addAlert(value, 'danger');
+                this.alerts.addAlert(value, 'danger');
             });
             this.saving = false;
         });

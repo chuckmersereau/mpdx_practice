@@ -50,13 +50,6 @@ class Users {
     destroy(id) {
         return this.api.delete(`users/${id}`);
     }
-    listForCurrentAccount() {
-        this.api.get(`account_lists/${this.api.account_list_id}/users`).then((data) => {
-            this.currentAccountList = data.data;
-            // console.log('currentAccountList', this.currentAccountList);
-            this.loading = false;
-        });
-    }
 }
 
 export default angular.module('mpdx.common.users.service', [])

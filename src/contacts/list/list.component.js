@@ -1,5 +1,5 @@
 class ListController {
-    alertsService;
+    alerts;
     contactsService;
     modal;
     tagsService;
@@ -7,11 +7,11 @@ class ListController {
 
     constructor(
         modal,
-        contactsService, tagsService, alertsService, tasksService, currentAccountList
+        contactsService, tagsService, alerts, tasksService
     ) {
-        this.alertsService = alertsService;
+        console.error('contacts/list: need replacement for currentAccountList.contacts.length');
+        this.alerts = alerts;
         this.contactsService = contactsService;
-        this.currentAccountList = currentAccountList;
         this.modal = modal;
         this.tagsService = tagsService;
         this.tasksService = tasksService;
@@ -89,9 +89,9 @@ class ListController {
     openMergeContactsModal() {
         const selectedLength = this.contactsService.getSelectedContacts().length;
         if (selectedLength < 2) {
-            this.alertsService.addAlert('You must select at least 2 contacts to merge.', 'danger');
+            this.alerts.addAlert('You must select at least 2 contacts to merge.', 'danger');
         } else if (selectedLength > 8) {
-            this.alertsService.addAlert('You can only merge up to 8 contacts at a time.', 'danger');
+            this.alerts.addAlert('You can only merge up to 8 contacts at a time.', 'danger');
         } else {
             this.modal.open({
                 template: require('./mergeContacts/mergeContacts.html'),

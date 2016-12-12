@@ -12,10 +12,10 @@ function donationSummaryChart() {
 }
 
 class donationSummaryChartController {
-    constructor(gettextCatalog, $scope, currentAccountList, $filter, blockUI) {
+    constructor(gettextCatalog, $scope, accounts, $filter, blockUI) {
         $scope.$filter = $filter;
         $scope.gettextCatalog = gettextCatalog;
-        $scope.currentAccountList = currentAccountList;
+        $scope.accounts = accounts;
         $scope.blockUI = blockUI.instances.get('donationSummaryChart');
         $scope.blockUI.start();
         $scope.loaded = false;
@@ -24,11 +24,11 @@ class donationSummaryChartController {
 
 function linkFn(scope) {
     scope.$on('accountListUpdated', () => {
-        scope.currentAccountList.getDonations().then(() => {
-            let seriesWithClickEvents = _.map(scope.currentAccountList.donations.series, (series) => {
+        scope.accounts.getDonations().then(() => {
+            let seriesWithClickEvents = _.map(scope.accounts.donations.series, (series) => {
                 series.events = {
                     click: (event) => {
-                        window.location.href = '/donations?start_date=' + scope.currentAccountList.donations.months_to_dates[event.point.x];
+                        window.location.href = '/donations?start_date=' + scope.accounts.donations.months_to_dates[event.point.x];
                     }
                 };
                 return series;
@@ -36,13 +36,13 @@ function linkFn(scope) {
 
             function tooltipFormatter() {
                 const totalConverted = this.total;
-                const monthlyGoal = scope.currentAccountList.donations.monthly_goal || 0;
+                const monthlyGoal = scope.accounts.donations.monthly_goal || 0;
                 const percentOfGoal = Math.round(Number(totalConverted) / monthlyGoal * 100) + '%';
-                const percentOfAverage = Math.round(Number(totalConverted) / (scope.currentAccountList.donations.monthly_average || 0) * 100) + '%';
+                const percentOfAverage = Math.round(Number(totalConverted) / (scope.accounts.donations.monthly_average || 0) * 100) + '%';
 
                 const numberFilter = scope.$filter("number");
-                const formattedTotal = scope.currentAccountList.donations.salary_currency_symbol +
-                    numberFilter(totalConverted, 0) + ' ' + scope.currentAccountList.donations.salary_currency;
+                const formattedTotal = scope.accounts.donations.salary_currency_symbol +
+                    numberFilter(totalConverted, 0) + ' ' + scope.accounts.donations.salary_currency;
 
                 let s = `
                     <table>
@@ -53,7 +53,7 @@ function linkFn(scope) {
                         </thead>
                         <tbody>
                             <tr>
-                                <td>${scope.currentAccountList.donations.multi_currency}</td>
+                                <td>${scope.accounts.donations.multi_currency}</td>
                                 <td class="text-right">${formattedTotal}</td>
                             </tr>`;
                 if (monthlyGoal > 0) {
@@ -80,30 +80,30 @@ function linkFn(scope) {
                     height: 250
                 },
                 title: {
-                    text: scope.currentAccountList.donations.title_text,
+                    text: scope.accounts.donations.title_text,
                     useHTML: true,
                     style: {
                         fontSize: '12px'
                     }
                 },
                 xAxis: {
-                    categories: scope.currentAccountList.donations.x_axis_categories
+                    categories: scope.accounts.donations.x_axis_categories
                 },
                 yAxis: {
                     min: 0,
                     title: {
-                        text: scope.currentAccountList.donations.y_axis_title
+                        text: scope.accounts.donations.y_axis_title
                     },
                     plotLines: [{
-                        value: scope.currentAccountList.donations.pledges,
+                        value: scope.accounts.donations.pledges,
                         width: 2,
                         color: "#007398"
                     }, {
-                        value: scope.currentAccountList.donations.monthly_goal || 0,
+                        value: scope.accounts.donations.monthly_goal || 0,
                         width: 2,
                         color: "#3eb1c8"
                     }, {
-                        value: scope.currentAccountList.donations.monthly_average,
+                        value: scope.accounts.donations.monthly_average,
                         width: 2,
                         color: "#666062"
                     }]

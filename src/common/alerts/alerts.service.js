@@ -1,20 +1,22 @@
 class AlertsService {
+    data;
+
     constructor($timeout) {
         this.$timeout = $timeout;
 
-        this.alerts = [];
+        this.data = [];
         this.timeout = null;
     }
     removeAlert(alert) {
-        var index = this.alerts.indexOf(alert);
-        this.alerts.splice(index, 1);
+        const index = this.data.indexOf(alert);
+        this.data.splice(index, 1);
     };
 
     addAlert(message, type, displayTime) {
-        this.alerts = [];
+        this.data = [];
         displayTime = angular.isDefined(displayTime) ? displayTime : 5000;
-        var alert = { message: message, type: 'alert-' + type };
-        this.alerts.push(alert);
+        const alert = {message: message, type: 'alert-' + type};
+        this.data.push(alert);
         if (this.timeout !== null) {
             this.$timeout.cancel(this.timeout);
         }
@@ -23,4 +25,4 @@ class AlertsService {
 }
 
 export default angular.module('mpdx.common.alerts.service', [])
-    .service('alertsService', AlertsService).name;
+    .service('alerts', AlertsService).name;
