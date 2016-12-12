@@ -1,11 +1,14 @@
 class ContactsController {
-    constructor($stateParams, filterService) {
+    contactFilter;
+    constructor(
+        $stateParams, contactFilter
+    ) {
         this.$stateParams = $stateParams;
-        this.filterService = filterService;
+        this.contactFilter = contactFilter;
     }
     $onInit() {
         if (this.$stateParams.filter) {
-            _.assign(this.filterService.params, this.filterService.params, this.$stateParams.filter);
+            _.assign(this.contactFilter.params, this.contactFilter.params, this.$stateParams.filter);
         }
     }
 }

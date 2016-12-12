@@ -1,13 +1,16 @@
 class FilterController {
     contacts;
-    filterService;
+    contactFilter;
     modal;
     tags;
 
-    constructor($stateParams, filterService, tags, contacts, modal, gettextCatalog) {
+    constructor(
+        $stateParams, gettextCatalog,
+        contactFilter, tags, contacts, modal
+    ) {
         this.modal = modal;
         this.contacts = contacts;
-        this.filterService = filterService;
+        this.contactFilter = contactFilter;
         this.gettextCatalog = gettextCatalog;
         this.tags = tags;
 
@@ -17,19 +20,19 @@ class FilterController {
         };
 
         if (angular.isObject($stateParams.filters)) {
-            _.extend(this.filterService.params, $stateParams.filters);
+            _.extend(this.contactFilter.params, $stateParams.filters);
         }
     }
     resetFiltersAndTags() {
         if (this.tags.isResettable()) {
             this.tags.reset();
         }
-        if (this.filterService.resettable) {
-            this.filterService.reset();
+        if (this.contactFilter.resettable) {
+            this.contactFilter.reset();
         }
     }
     showReset() {
-        return this.tags.isResettable() || this.filterService.resettable;
+        return this.tags.isResettable() || this.contactFilter.resettable;
     }
 
     openMapContactsModal() {
@@ -44,7 +47,7 @@ class FilterController {
     // Invert the selected options of a multiselect filter
     invertMultiselect(filter) {
         const allOptions = _.map(filter.options, option => option.id);
-        const selectedOptions = this.filterService.params[filter.name];
+        const selectedOptions = this.contactFilter.params[filter.name];
 
         let allOption = '';
         if (filter.name === 'status') {
@@ -53,12 +56,12 @@ class FilterController {
 
         // If all options are selected other than 'All', then the inverse is 'All'
         if (_.isEqual(_.difference(allOptions, selectedOptions), [allOption])) {
-            this.filterService.params[filter.name] = [''];
+            this.contactFilter.params[filter.name] = [''];
             return;
         }
 
         selectedOptions.push(allOption); // Exclude the 'All' option when inverting
-        this.filterService.params[filter.name] = _.difference(allOptions, selectedOptions);
+        this.contactFilter.params[filter.name] = _.difference(allOptions, selectedOptions);
     }
 }
 
