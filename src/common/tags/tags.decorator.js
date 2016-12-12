@@ -1,5 +1,7 @@
 function TagsDecorator($provide) {
     $provide.decorator('contactsTagsService', decoratorFunction);
+    $provide.decorator('tasksTagsService', decoratorFunction);
+
     function decoratorFunction($delegate, $rootScope, $filter, api, accountsService) {
         let svc = $delegate;
         svc.data = [];
@@ -102,10 +104,12 @@ function TagsDecorator($provide) {
         };
 
         svc.addTag = function(ids, tag) {
-            return api.post(this.pluralCtx + '/tags/bulk_create', {
-                add_tag_contact_ids: ids.join(),
+            var obj = {
                 add_tag_name: tag
-            });
+            };
+            obj['add_tag_' + singularCtx + '_ids'] = ids.join();
+
+            return api.post(this.pluralCtx + '/tags/bulk_create', obj);
         };
 
         svc.load();

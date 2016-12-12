@@ -4,10 +4,10 @@ class ContactDetailsController {
     tagsService;
 
     constructor(
-        tagsService, contactsService
+        contactsTagsService, contactsService
     ) {
         this.contactsService = contactsService;
-        this.tagsService = tagsService;
+        this.tagsService = contactsTagsService;
 
         this.appeals = 'false';
     }

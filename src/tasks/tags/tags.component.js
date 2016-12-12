@@ -6,9 +6,7 @@ class TagsController {
 
 const Tags = {
     controller: TagsController,
-    controllerAs: 'vm',
-    template: require('./tags.html'),
-    bindings: {}
+    template: require('./tags.html')
 };
 
 export default angular.module('mpdx.tasks.tags.component', [])

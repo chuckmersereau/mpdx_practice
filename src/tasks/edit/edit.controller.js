@@ -5,12 +5,12 @@ class EditTaskController {
     createNext;
     modal;
     serverConstants;
-    contactsTagsService;
+    tagsService;
     tasksService;
 
     constructor(
         $scope,
-        modal, contactsService, contactsTagsService, tasksService, serverConstants,
+        modal, contactsService, tasksTagsService, tasksService, serverConstants,
         contacts, specifiedTask, ajaxAction, toComplete, createNext
     ) {
         this.$scope = $scope;
@@ -21,7 +21,7 @@ class EditTaskController {
         this.modal = modal;
         this.serverConstants = serverConstants;
         this.specifiedTask = specifiedTask;
-        this.contactsTagsService = contactsTagsService;
+        this.tagsService = tasksTagsService;
         this.tasksService = tasksService;
         this.toComplete = toComplete;
 

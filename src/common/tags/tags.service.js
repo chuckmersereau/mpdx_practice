@@ -20,6 +20,7 @@ class TagsService {
         this.load();
     }
     load() {
+        console.log("TagsService.load");
         this.loading = true;
         return this.api.get('contacts/tags').then((data) => {
             this.data = data;

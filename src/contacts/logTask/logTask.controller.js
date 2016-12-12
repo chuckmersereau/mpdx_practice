@@ -5,7 +5,7 @@ class LogTaskController {
     createNext;
     modal;
     serverConstants;
-    contactsTagsService;
+    tagsService;
     tasksService;
 
     constructor(

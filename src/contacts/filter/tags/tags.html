@@ -1,25 +1,25 @@
 <li>
-  <span class="tags_title menu_item">
-    <span translate>Tags</span>
-    <ul class="nav nav-pills pull-right">
-      <li ng-class="{ 'active': $ctrl.tagsService.anyTags }">
-        <a ng-click="$ctrl.tagsService.anyTags = true" title="{{'Look up contacts with Any of the tags selected (a or b or c).' | translate }}">Any</a>
-      </li>
-      <li ng-class="{ 'active': !$ctrl.tagsService.anyTags }">
-        <a ng-click="$ctrl.tagsService.anyTags = false" title="{{ 'Look up contacts with ALL of the tags selected (a and b and c).' | translate }}">All</a>
-      </li>
-    </ul>
-  </span>
+    <span class="tags_title menu_item">
+        <span translate>Tags</span>
+        <ul class="nav nav-pills pull-right">
+            <li ng-class="{ 'active': $ctrl.tagsService.anyTags }">
+                <a ng-click="$ctrl.tagsService.anyTags = true" title="{{'Look up contacts with Any of the tags selected (a or b or c).' | translate }}">Any</a>
+            </li>
+            <li ng-class="{ 'active': !$ctrl.tagsService.anyTags }">
+                <a ng-click="$ctrl.tagsService.anyTags = false" title="{{ 'Look up contacts with ALL of the tags selected (a and b and c).' | translate }}">All</a>
+            </li>
+        </ul>
+    </span>
     <div class="filter_hint" translate>Click a tag twice to look up all contacts who do not have that tag.</div>
     <ul class="left_tag_list tags" ng-class="{'show_all_tags': $ctrl.showAllTags}">
         <li>
-      <span class="tag"
-            ng-class="{ 'selected': !$ctrl.tagsService.isTagActive(tag), 'rejected': $ctrl.tagsService.isTagRejected(tag) }"
-            ng-click="$ctrl.tagsService.tagClick(tag, $event)"
-            ng-repeat="tag in $ctrl.tagsService.data">
-        {{ tag }}
-        <a ng-click="$event.stopPropagation()" uib-popover-template="'myPopoverTemplate.html'" popover-trigger="outsideClick" class="tag_remove"></a>
-      </span>
+            <span class="tag"
+                    ng-class="{ 'selected': !$ctrl.tagsService.isTagActive(tag), 'rejected': $ctrl.tagsService.isTagRejected(tag) }"
+                    ng-click="$ctrl.tagsService.tagClick(tag, $event)"
+                    ng-repeat="tag in $ctrl.tagsService.data">
+                {{ tag }}
+                <a ng-click="$event.stopPropagation()" uib-popover-template="'myPopoverTemplate.html'" popover-trigger="outsideClick" class="tag_remove"></a>
+            </span>
             <a class="show_all_tags_btn">
                 <div ng-click="$ctrl.showAllTags = !$ctrl.showAllTags" ng-if="$ctrl.tagsService.data.length > 25">
                     <div ng-show="!$ctrl.showAllTags">

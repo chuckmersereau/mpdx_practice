@@ -7,7 +7,7 @@ class AddTaskController {
 
     constructor(
         $scope,
-        tagsService, serverConstants, tasksService, contactsService,
+        tasksTagsService, serverConstants, tasksService, contactsService,
         contacts, specifiedAction, specifiedSubject, modalTitle
     ) {
         this.$scope = $scope;
@@ -16,7 +16,7 @@ class AddTaskController {
         this.serverConstants = serverConstants;
         this.specifiedAction = specifiedAction;
         this.specifiedSubject = specifiedSubject;
-        this.tagsService = tagsService;
+        this.tagsService = tasksTagsService;
         this.tasksService = tasksService;
 
         this.modalTitle = modalTitle;

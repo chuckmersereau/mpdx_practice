@@ -5,5 +5,5 @@ class TagsService {
     }
 }
 
-export default angular.module('mpdx.tags.tasks.service', [])
+export default angular.module('mpdx.common.tags.tasks.service', [])
     .service('tasksTagsService', TagsService).name;

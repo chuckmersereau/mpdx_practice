@@ -2,17 +2,17 @@ class EditTaskController {
     ajaxAction;
     contacts;
     serverConstants;
-    contactsTagsService;
+    tagsService;
     tasksService;
 
     constructor(
         $scope,
-        contactsTagsService, tasksService, serverConstants,
+        tasksTagsService, tasksService, serverConstants,
         taskIds, modalCallback
     ) {
         this.$scope = $scope;
         this.serverConstants = serverConstants;
-        this.tagsService = contactsTagsService;
+        this.tagsService = tasksTagsService;
         this.tasksService = tasksService;
         this.taskIds = taskIds;
         this.modalCallback = modalCallback;
@@ -37,5 +37,5 @@ class EditTaskController {
         });
     }
 }
-export default angular.module('mpdx.tasks.edit.controller', [])
+export default angular.module('mpdx.tasks.bulkEdit.controller', [])
     .controller('bulkEditTaskController', EditTaskController).name;
