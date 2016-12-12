@@ -41,7 +41,7 @@ class ContactHistoryController {
             template: require('../../logTask/logTask.html'),
             locals: {
                 modalTitle: 'Edit Task',
-                contacts: [contactId],
+                selectedContacts: [contactId],
                 specifiedTask: task,
                 ajaxAction: 'put',
                 toComplete: true,

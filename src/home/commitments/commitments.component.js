@@ -1,15 +1,17 @@
 class CommitmentsController {
+    contacts;
+
     constructor(
-        contactsService
+        contacts
     ) {
-        this.contactsService = contactsService;
+        this.contacts = contacts;
 
         this.noPledgeCount = null;
         this.lateContactCount = null;
     }
     $onInit() {
         console.error('home/commitments: endpoint not yet defined');
-        // this.contactsService.getAnalytics().then((response) => {
+        // this.contacts.getAnalytics().then((response) => {
         //     this.noPledgeCount = response;
         //     this.lateContactCount = response;
         // });

@@ -1,11 +1,11 @@
 class anniversariesController {
     anniversaries;
-    contactsService;
+    contacts;
 
     constructor(
-        contactsService
+        contacts
     ) {
-        this.contactsService = contactsService;
+        this.contacts = contacts;
 
         this.anniversaries = [];
     }
@@ -17,7 +17,7 @@ class anniversariesController {
     }
     getAnniversaries() {
         console.error('common/anniversaries: analytics TBD');
-        //this.contactsService.getAnalytics().then(() => {
+        //this.contacts.getAnalytics().then(() => {
             //TODO: Connect this.anniversaries to V2 endpoint
         //});
     }

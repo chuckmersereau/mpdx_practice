@@ -10,11 +10,11 @@
            ng-focus="$ctrl.focused = true"
            ng-change="$ctrl.paramChanged()"
     >
-    <div class="dropdown-content" ng-if="$ctrl.dropdown && $ctrl.filterService.params.wildcard_search != '' && !$ctrl.contactsService.loading && $ctrl.focused">
-        <a ng-repeat="contact in $ctrl.contactsService.data track by $index | limitTo : 5" ui-sref="contact({contactId: contact.id})" ng-if="$ctrl.filterService.params.wildcard_search != ''">
+    <div class="dropdown-content" ng-if="$ctrl.dropdown && $ctrl.filterService.params.wildcard_search != '' && !$ctrl.contacts.loading && $ctrl.focused">
+        <a ng-repeat="contact in $ctrl.contacts.data track by $index | limitTo : 5" ui-sref="contact({contactId: contact.id})" ng-if="$ctrl.filterService.params.wildcard_search != ''">
             {{contact.attributes.name}}
         </a>
-        <a ng-show="$ctrl.contactsService.data.length == 0" translate>
+        <a ng-show="$ctrl.contacts.data.length == 0" translate>
             No Matches
         </a>
     </div>

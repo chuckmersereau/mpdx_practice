@@ -1,9 +1,9 @@
 class birthdaysController {
     birthdays;
-    contactsService;
+    contacts;
 
-    constructor(contactsService) {
-        this.contactsService = contactsService;
+    constructor(contacts) {
+        this.contacts = contacts;
 
         this.birthdays = [];
     }
@@ -15,7 +15,7 @@ class birthdaysController {
     }
     getBirthdays() {
         console.error('common/birthdays: analytics TBD');
-        //this.contactsService.getAnalytics().then(() => {
+        //this.contacts.getAnalytics().then(() => {
             //TODO: Connect this.birthdays to V2 endpoint
         //});
     }

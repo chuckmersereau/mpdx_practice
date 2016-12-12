@@ -1,10 +1,11 @@
 class ContactInfoController {
     contact;
+    contacts;
 
     constructor(
-        contactsService
+        contacts
     ) {
-        this.contactsService = contactsService;
+        this.contacts = contacts;
     }
     $onChange(obj) {
         if (obj.contact) {
@@ -14,7 +15,7 @@ class ContactInfoController {
         }
     }
     save() {
-        this.contactsService.save(this.contact);
+        this.contacts.save(this.contact);
     }
 }
 const Info = {

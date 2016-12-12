@@ -1,11 +1,11 @@
 class MapContactsController {
-    contacts;
+    selectedContacts;
     constructor(
-        $window, $timeout, contacts
+        $window, $timeout, selectedContacts
     ) {
         this.$timeout = $timeout;
         this.$window = $window;
-        this.contacts = contacts;
+        this.selectedContacts = selectedContacts;
 
         this.activate();
     }
@@ -13,15 +13,15 @@ class MapContactsController {
         this.$timeout(this.mapContacts.bind(this), 1000);
     }
     generateContactMarker(contact) {
-        var cc = contact;
-        var marker;
+        const cc = contact;
+        let marker;
         if (cc && cc.addresses && cc.addresses.length > 0) {
-            var geo = cc.addresses[0].geo;
+            const geo = cc.addresses[0].geo;
             if (geo) {
                 marker = {
                     'lat': geo.split(',')[0],
                     'lng': geo.split(',')[1],
-                    'infowindow': `<a href="/contacts/${contact.id}">${contact.name}</a>`,
+                    'infowindow': `<a href="/selectedContacts/${contact.id}">${contact.name}</a>`,
                     'picture': {
                         'url': this.markerURL(contact.status),
                         'width': 20,
@@ -34,7 +34,7 @@ class MapContactsController {
         return marker;
     }
     markerURL(statusToMark) {
-        var base = 'https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|';
+        const base = 'https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|';
         switch (statusToMark) {
             case '':
             case 'Never Contacted':
@@ -60,12 +60,12 @@ class MapContactsController {
         return base + '757575';
     }
     mapContacts() {
-        var newMarkers = [];
-        var contactsCounts = {
+        const newMarkers = [];
+        const contactsCounts = {
             noAddress: 0
         };
-        angular.forEach(this.contacts, (contact) => {
-            var marker = this.generateContactMarker(contact);
+        angular.forEach(this.selectedContacts, (contact) => {
+            const marker = this.generateContactMarker(contact);
             if (marker) {
                 newMarkers.push(marker);
             } else {
@@ -80,14 +80,14 @@ class MapContactsController {
             this.mapHandler.fitMapToBounds();
         };
         this.singleMap(addMarkers.bind(this));
-        angular.element('.contacts_counts').text(contactsCounts.noAddress + '/' + this.contacts.length);
+        angular.element('.contacts_counts').text(contactsCounts.noAddress + '/' + this.selectedContacts.length);
     }
     singleMap(callback) {
-        var methodToExec = callback;
+        let methodToExec = callback;
         if (angular.isFunction(methodToExec)) {
             methodToExec = _.noop;
         }
-        var mapOptions = { streetViewControl: false };
+        const mapOptions = {streetViewControl: false};
         if (this.mapHandler) {
             methodToExec();
         } else {

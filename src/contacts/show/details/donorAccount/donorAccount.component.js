@@ -1,14 +1,14 @@
 class ContactDonorAccountController {
     accounts;
     contact;
-    contactsService;
+    contacts;
     donorAccount;
 
     constructor(
-        accounts, contactsService
+        accounts, contacts
     ) {
         this.accounts = accounts;
-        this.contactsService = contactsService;
+        this.contacts = contacts;
     }
     remove() {
         this.donorAccount._destroy = '1';
@@ -19,7 +19,7 @@ class ContactDonorAccountController {
         if (!this.donorAccount.organization_id || this.donorAccount.organization_id === 0) {
             this.donorAccount.organization_id = this.accounts.current.atributes.default_organization_id;
         }
-        this.contactsService.save(this.contact);
+        this.contacts.save(this.contact);
     }
 }
 const DonorAccount = {

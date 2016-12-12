@@ -1,11 +1,12 @@
 class FilterController {
-    contactsService;
+    contacts;
     filterService;
+    modal;
     tags;
 
-    constructor($stateParams, filterService, tags, contactsService, modal, gettextCatalog) {
+    constructor($stateParams, filterService, tags, contacts, modal, gettextCatalog) {
         this.modal = modal;
-        this.contactsService = contactsService;
+        this.contacts = contacts;
         this.filterService = filterService;
         this.gettextCatalog = gettextCatalog;
         this.tags = tags;
@@ -36,16 +37,16 @@ class FilterController {
             template: require('./mapContacts/mapContacts.html'),
             controller: 'mapContactsController',
             locals: {
-                contacts: this.contactsService.getSelectedContacts()
+                selectedContacts: this.contacts.getSelectedContacts()
             }
         });
     }
     // Invert the selected options of a multiselect filter
     invertMultiselect(filter) {
-        var allOptions = _.map(filter.options, option => option.id);
-        var selectedOptions = this.filterService.params[filter.name];
+        const allOptions = _.map(filter.options, option => option.id);
+        const selectedOptions = this.filterService.params[filter.name];
 
-        var allOption = '';
+        let allOption = '';
         if (filter.name === 'status') {
             allOption = 'active';
         }

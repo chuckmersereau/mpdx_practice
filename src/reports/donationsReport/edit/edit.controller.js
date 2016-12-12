@@ -6,7 +6,7 @@ class EditDonationController {
 
     constructor(
         $scope, blockUI,
-        appeals, contactsService, currency, accounts, donationsReportService,
+        appeals, contacts, currency, accounts, donationsReportService,
         donationId
     ) {
         this.$scope = $scope;
@@ -19,8 +19,8 @@ class EditDonationController {
         this.blockUI = blockUI.instances.get('donationEdit');
         this.blockUI.start();
 
-        contactsService.getDonorAccounts();
-        this.donorAccounts = contactsService.donorAccounts;
+        contacts.getDonorAccounts();
+        this.donorAccounts = contacts.donorAccounts;
 
         if (donationId === 'new') {
             this.blockUI.stop();

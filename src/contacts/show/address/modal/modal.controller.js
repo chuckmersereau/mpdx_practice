@@ -1,17 +1,17 @@
 class AddressModalController {
     contact;
-    contactsService;
+    contacts;
     serverConstants;
 
     constructor(
-        $scope, $timeout, $window, contactsService, serverConstants, contact, address
+        $scope, $timeout, $window, contacts, serverConstants, contact, address
     ) {
         this.$scope = $scope;
         this.$timeout = $timeout;
         this.$window = $window;
         this.address = address;
         this.contact = contact;
-        this.contactsService = contactsService;
+        this.contacts = contacts;
         this.serverConstants = serverConstants;
 
         this.constants = serverConstants.data;
@@ -87,7 +87,7 @@ class AddressModalController {
             } else {
                 this.contact.addresses.push(this.address);
             }
-            this.contactsService.save(this.contact).then(() => {
+            this.contacts.save(this.contact).then(() => {
                 this.$scope.$hide();
             });
         }
