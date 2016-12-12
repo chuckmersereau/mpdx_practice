@@ -18,7 +18,7 @@ class CacheService {
             promise.resolve(this.cache[path]);
         } else {
             this.api.get(path).then((data) => {
-                promise.resolve(this.updateContact(data.contact, data));
+                promise.resolve(this.updateContact(data.data, data));
             });
         }
         return promise.promise;
@@ -68,7 +68,7 @@ class CacheService {
     }
     convertFromWebsite(values, kind) {
         return _.map(values, (value) => {
-            var result = {id: value.id, kind: kind, _destroy: 0};
+            const result = {id: value.id, kind: kind, _destroy: 0};
             if (kind === 'twitter') {
                 result.url = value.screen_name;
             } else {

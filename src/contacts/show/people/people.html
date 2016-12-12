@@ -8,7 +8,7 @@
 </a>
 <div class="row people-row">
     <div class="col-sm-6" ng-repeat="remainder in [0,1]">
-        <contact-person is-merging="$ctrl.isMerging" ng-repeat="person in $ctrl.contact.people" ng-if="$index % 2 == remainder" person="person">
+        <contact-person is-merging="$ctrl.isMerging" ng-repeat="person in $ctrl.people" ng-if="$index % 2 == remainder" person="person">
         </contact-person>
     </div>
 </div>

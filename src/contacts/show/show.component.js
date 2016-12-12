@@ -55,8 +55,7 @@ class ContactController {
         };
     }
     selectContact(id) {
-        this.cache.get(id).then((contact) => {
-            if (!contact) return;
+        this.contactsService.get(id).then((contact) => {
             this.contact = contact;
         });
     };

@@ -12,14 +12,14 @@ class ContactDetailsController {
         this.appeals = 'false';
     }
     $onChanges() {
-        if (this.contact.no_appeals === true) {
+        if (this.contact.attributes.no_appeals === true) {
             this.appeals = 'true';
         } else {
             this.appeals = 'false';
         }
     }
     addPartnerAccount() {
-        this.contact.donor_accounts.push({ account_number: '', organization_id: this.organization_id, _destroy: 0 });
+        this.contact.attributes.donor_accounts.push({ account_number: '', organization_id: this.organization_id, _destroy: 0 });
     }
     save() {
         this.contact.no_appeals = this.appeals;

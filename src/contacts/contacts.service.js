@@ -51,6 +51,11 @@ class ContactsService {
             }
         });
     }
+    get(id) {
+        return this.api.get(`contacts/${id}`, {include: 'people'}).then((response) => {
+            return response.data;
+        });
+    }
     load(reset) {
         this.loading = true;
         let newContacts;
@@ -71,7 +76,6 @@ class ContactsService {
         filterParams.any_tags = this.tagsService.anyTags;
 
         return this.api.get('contacts', {filters: filterParams, page: this.page, per_page: 25, include: 'people'}).then((data) => {
-            console.log(data);
             if (reset) {
                 newContacts = [];
                 this.page = 1;
