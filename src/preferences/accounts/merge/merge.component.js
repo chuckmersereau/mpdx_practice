@@ -1,18 +1,18 @@
 class MergePreferencesController {
-    mergesService;
+    preferencesMerges;
     alerts;
 
-    constructor(mergesService, alerts) {
-        this.mergesService = mergesService;
+    constructor(preferencesMerges, alerts) {
+        this.preferencesMerges = preferencesMerges;
         this.alerts = alerts;
         this.saving = false;
     }
     merge() {
         this.saving = true;
-        this.mergesService.create().then(() => {
+        this.preferencesMerges.create().then(() => {
             this.saving = false;
             this.alerts.addAlert('MPDX merged your account successfully', 'success');
-            this.mergesService.load();
+            this.preferencesMerges.load();
         }).catch(() => {
             this.alerts.addAlert('MPDX couldn\'t merge your account', 'danger');
             this.saving = false;

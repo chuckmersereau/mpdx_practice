@@ -33,4 +33,4 @@ class MergesService {
 }
 
 export default angular.module('mpdx.preferences.accounts.merge.service', [])
-    .service('mergesService', MergesService).name;
+    .service('preferencesMerges', MergesService).name;
