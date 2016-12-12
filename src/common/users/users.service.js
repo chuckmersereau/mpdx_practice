@@ -3,18 +3,18 @@ import config from 'config';
 class Users {
     accounts;
     api;
-    helpService;
+    help;
 
     constructor(
         $log, $rootScope, gettextCatalog,
-        accounts, api, helpService
+        accounts, api, help
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
         this.accounts = accounts;
         this.api = api;
         this.gettextCatalog = gettextCatalog;
-        this.helpService = helpService;
+        this.help = help;
 
         this.current = null;
         this.hasAnyUsAccounts = false;
@@ -27,7 +27,7 @@ class Users {
             const locale = _.get(response, 'data.attributes.preferences.locale', 'en');
             this.changeLocale(locale);
             this.$rootScope.$emit('accountListUpdated', this.api.account_list_id);
-            this.helpService.updateUser(this.current);
+            this.help.updateUser(this.current);
             return this.accounts.load(); // force load accounts in resolve
         }).catch((err) => {
             this.$log.debug(err);
