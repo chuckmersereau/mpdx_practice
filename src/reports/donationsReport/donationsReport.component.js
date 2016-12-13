@@ -4,17 +4,17 @@ class DonationsReportController {
     designationAccounts;
     getDonations;
     donations;
-    donationsReportService;
+    donationsReport;
 
     constructor(
         $rootScope, blockUI,
-        api, designationAccounts, currency, donationsReportService
+        api, designationAccounts, currency, donationsReport
     ) {
         console.error('donations report - fix endpoint date filtering, add contact name to result');
         this.api = api;
         this.currency = currency;
         this.designationAccounts = designationAccounts;
-        this.donationsReportService = donationsReportService;
+        this.donationsReport = donationsReport;
 
         this.blockUI = blockUI.instances.get('donations');
         this.blockUI.start();
@@ -24,8 +24,8 @@ class DonationsReportController {
         this.donationTotals = {};
 
         this.watcher = $rootScope.$on('accountListUpdated', () => {
-            if (this.donationsReportService.data === null) {
-                this.donationsReportService.getDonations({ startData: this.startDate, endDate: this.endDate }).then((data) => {
+            if (this.donationsReport.data === null) {
+                this.donationsReport.getDonations({ startData: this.startDate, endDate: this.endDate }).then((data) => {
                     this.loadingFinished(data);
                 });
             }
@@ -33,14 +33,14 @@ class DonationsReportController {
     }
     $onChanges() {
         this.setMonths();
-        if (this.donationsReportService.data === null) {
+        if (this.donationsReport.data === null) {
             if (this.api.account_list_id) {
-                this.donationsReportService.getDonations({ startData: this.startDate, endDate: this.endDate }).then((data) => {
+                this.donationsReport.getDonations({ startData: this.startDate, endDate: this.endDate }).then((data) => {
                     this.loadingFinished(data);
                 });
             }
         } else {
-            this.loadingFinished(this.donationsReportService.data);
+            this.loadingFinished(this.donationsReport.data);
         }
     }
     $onDestroy() {
