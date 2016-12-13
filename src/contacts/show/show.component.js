@@ -1,6 +1,6 @@
 class ContactController {
     constructor(
-        $scope, $state, $stateParams, $location, $anchorScroll,
+        $scope, $state, $stateParams, $location, $anchorScroll, helpService,
         modal, cache, contactsService, tasksService, referralsService, preferencesContactsService, filterService, serverConstants
     ) {
         this.$state = $state;
@@ -53,6 +53,19 @@ class ContactController {
             },
             containerPositioning: 'relative'
         };
+
+        helpService.suggest([
+            '5845aab3c6979106d373a576',
+            '5845995e90336006981769bb',
+            '584ac7f39033602d65f6e131',
+            '5845ac509033600698176a62',
+            '58459880c6979106d373a4c2',
+            '5845990290336006981769b1',
+            '58459756903360069817698b',
+            '584597e6903360069817699d',
+            '584597a1c6979106d373a4b5',
+            '58471fd6903360069817752e'
+        ]);
     }
     selectContact(id) {
         this.cache.get(id).then((contact) => {

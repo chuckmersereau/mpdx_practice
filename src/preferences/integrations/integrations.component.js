@@ -4,7 +4,7 @@ class IntegrationPreferencesController {
     rolloutService;
 
     constructor(
-        $window, $state, $stateParams, integrationsService, alertsService, rolloutService
+        $window, $state, $stateParams, integrationsService, alertsService, rolloutService, helpService
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
@@ -19,6 +19,20 @@ class IntegrationPreferencesController {
         this.mailchimpAccStatus = 'disabled';
 
         $window.openerCallback = this.reload;
+
+        helpService.suggest([
+            '5845aa229033600698176a54',
+            '5845ae09c6979106d373a589',
+            '5845a7f49033600698176a48',
+            '5845a6de9033600698176a43',
+            '5845af08c6979106d373a593',
+            '5845ae86c6979106d373a58c',
+            '5845af809033600698176a8c',
+            '584717b1c6979106d373afab',
+            '5848254b9033600698177ac7',
+            '57e1810ec697910d0784c3e1',
+            '584718e390336006981774ee'
+        ]);
 
         this.activate();
     }

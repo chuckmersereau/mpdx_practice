@@ -6,13 +6,21 @@ class HelpService {
 
     updateUser(user) {
         if (angular.isUndefined(user)) { return; }
-        HS.beacon.ready(function() {
+        HS.beacon.ready(() => {
             HS.beacon.identify({
                 id: user.id,
                 name: `${user.first_name} ${user.last_name}`
             });
         });
     }
+
+    suggest(articleIds) {
+        HS.beacon.ready(() => {
+            console.log(articleIds);
+            HS.beacon.suggest(articleIds);
+        });
+    }
+
 }
 
 export default angular.module('mpdx.common.help', [])
