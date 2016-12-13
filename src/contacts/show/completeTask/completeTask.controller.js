@@ -5,9 +5,10 @@ class CompleteTaskController {
     tasksService;
 
     constructor(
-        modal, serverConstants, tasksService,
+        $scope, modal, serverConstants, tasksService,
         taskId, contact, taskAction
     ) {
+        this.$scope = $scope;
         this.contact = contact;
         this.modal = modal;
         this.serverConstants = serverConstants;
@@ -24,14 +25,19 @@ class CompleteTaskController {
     submit() {
         this.tasksService.postLogTask(this.taskId, this.models).then(() => {
             this.$scope.$hide();
-            //TODO: This should instead open the task followup modal
+
+            var contactIds = [];
+            if (this.contact) {
+                contactIds = [this.contact.id];
+            }
+
             this.modal.open({
                 template: require('../../../tasks/add/add.html'),
                 controller: 'addTaskController',
                 locals: {
                     specifiedAction: this.models.nextAction,
                     specifiedSubject: this.models.nextAction,
-                    contacts: [this.contact.id],
+                    contacts: contactIds,
                     modalTitle: 'Follow up Task'
                 }
             });

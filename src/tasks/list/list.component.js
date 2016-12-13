@@ -6,7 +6,7 @@ class ListController {
     tasks;
     tasksService;
 
-    constructor(tasksService, modal) {
+    constructor(tasksService, tasksFilterService, modal) {
         this.moment = moment;
         this.models = {};
         this.tasks = tasksService.data;

@@ -1,16 +1,17 @@
 <div class="row">
   <!-- <alerts></alerts> -->
-  <div class="col-md-3 col-sm-12 hidden-sm hidden-xs mobile_filters_wrap">
-    <aside id="leftmenu" class="filters_menu" data-spy="affix" data-offset-top="182" data-offset-bottom="180">
-      <span class="toggle-mobile-filters close-filters hidden-lg hidden-md"><i class="fa fa-times"></i> Close Filters</span>
-      <ul>
-        <tasks-sort></tasks-sort>
-        <tasks-tags></tasks-tags>
-        <!-- <tasks-filters></tasks-filters> -->
-      </ul>
+  <div class="col-xs-3">
+    <aside class="scrollable_left" data-offset-top="128" bs-affix>
+      <tasks-filter></tasks-filter>
     </aside>
   </div>
-  <div class="col-md-9 col-sm-12">
+  <div class="col-xs-9">
+    <div class="sticky-page-filters" data-offset-top="114" bs-affix>
+      <div class="page-filters">
+        <tasks-search></tasks-search>
+      </div>
+    </div>
+
     <tasks-list
         key="'overdue'"
         title="'Overdue'"

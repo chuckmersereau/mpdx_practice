@@ -7,8 +7,7 @@ class TasksController {
 
 const Tasks = {
     controller: TasksController,
-    template: require('./tasks.html'),
-    bindings: {}
+    template: require('./tasks.html')
 };
 
 export default angular.module('mpdx.tasks.component', [])

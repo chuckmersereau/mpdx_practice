@@ -1,13 +1,16 @@
 class TasksService {
     api;
     modal;
+    filterService;
+    tagsService;
 
-    constructor(modal, api) {
+    constructor(modal, api, tasksFilterService, tasksTagsService) {
         this.modal = modal;
         this.api = api;
+        this.filterService = tasksFilterService;
+        this.tagsService = tasksTagsService;
 
         this.loading = true;
-        this.sort = 'all';
         this.sort = 'all';
         this.data = {};
         this.pages = {
@@ -100,6 +103,12 @@ class TasksService {
     fetchTasks(collection, filters) {
         const meta = this.meta[collection];
         const defaultFilters = this.defaultFilters[collection];
+
+        const wildcardSearch = this.filterService.wildcard_search;
+        if (wildcardSearch) {
+            filters.wildcard_search = wildcardSearch;
+        }
+
         const obj = Object.assign({
             filters: Object.assign(
                 Object.assign({}, defaultFilters),

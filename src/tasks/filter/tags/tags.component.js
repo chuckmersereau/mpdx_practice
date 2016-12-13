@@ -9,5 +9,5 @@ const Tags = {
     template: require('./tags.html')
 };
 
-export default angular.module('mpdx.tasks.tags.component', [])
+export default angular.module('mpdx.tasks.tags', [])
     .component('tasksTags', Tags).name;
