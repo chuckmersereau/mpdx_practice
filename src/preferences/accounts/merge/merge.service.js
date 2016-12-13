@@ -12,8 +12,6 @@ class MergesService {
         this.loading = true;
         this.selected_account_id = null;
 
-        //this.load();
-
         $rootScope.$on('accountListUpdated', () => {
             this.load();
         });
