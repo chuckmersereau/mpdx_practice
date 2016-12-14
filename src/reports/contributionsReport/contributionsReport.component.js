@@ -1,5 +1,14 @@
 class ContributionsReportController {
-    constructor(api, state, monthRange, layoutSettings, gettextCatalog) {
+    api;
+    layoutSettings;
+    moment;
+    monthRange;
+    state;
+
+    constructor(
+        gettextCatalog,
+        api, state, monthRange, layoutSettings
+    ) {
         this.api = api;
         this.gettextCatalog = gettextCatalog;
         this.layoutSettings = layoutSettings;
@@ -135,22 +144,20 @@ class ContributionsReportController {
             .value();
     }
     aggregateDonorDonationsByYear(donors) {
-        return _.map(donors, function(donor) {
+        return _.map(donors, (donor) => {
             // Filter out current month which may not be complete for every donor
-            var donationsWithoutCurrentMonth = _.filter(donor.donations, function(donation) {
-                return !moment().isSame(donation.donation_date, 'month');
-            });
+            const donationsWithoutCurrentMonth = _.filter(donor.donations, donation => !moment().isSame(donation.donation_date, 'month'));
 
             // Calculate the average based on the first gift the partner made this year
             // which works better for people who started giving recently.
-            var firstDonationMonth = _.minBy(donor.donations, 'donation_date').donation_date;
+            const firstDonationMonth = _.minBy(donor.donations, 'donation_date').donation_date;
             // Diff purposely excludes current month
-            var donationMonths = moment().diff(firstDonationMonth, 'months');
+            const donationMonths = moment().diff(firstDonationMonth, 'months');
 
-            var sum = _.sumBy(donationsWithoutCurrentMonth, 'amount');
-            var sumConverted = _.sumBy(donationsWithoutCurrentMonth, 'amountConverted');
-            var minDonation = _.minBy(donor.donations, 'amount');
-            var minDonationConverted = _.minBy(donor.donations, 'amountConverted');
+            const sum = _.sumBy(donationsWithoutCurrentMonth, 'amount');
+            const sumConverted = _.sumBy(donationsWithoutCurrentMonth, 'amountConverted');
+            const minDonation = _.minBy(donor.donations, 'amount');
+            const minDonationConverted = _.minBy(donor.donations, 'amountConverted');
 
             return _.assign(donor, {
                 aggregates: {
@@ -168,7 +175,7 @@ class ContributionsReportController {
     }
     addMissingMonths(donations, allMonths) {
         return _.map(allMonths, (date) => {
-            var existingDonation = _.find(donations, (donation) => moment(donation.donation_date).isSame(date, 'month'));
+            const existingDonation = _.find(donations, (donation) => moment(donation.donation_date).isSame(date, 'month'));
             if (existingDonation) {
                 return existingDonation;
             }
@@ -181,7 +188,7 @@ class ContributionsReportController {
         });
     }
     sumMonths(donors, allMonths) {
-        var emptyMonthlyTotals = _.map(allMonths, () => {
+        const emptyMonthlyTotals = _.map(allMonths, () => {
             return {
                 amount: 0,
                 amountConverted: 0
@@ -209,7 +216,7 @@ class ContributionsReportController {
         this.layoutSettings.fullWidth = this.expanded;
     }
     currencyGroupsToCSV() {
-        var columnHeaders = _.flatten([
+        const columnHeaders = _.flatten([
             this.gettextCatalog.getString('Partner'),
             this.gettextCatalog.getString('Status'),
             this.gettextCatalog.getString('Pledge'),
@@ -218,10 +225,10 @@ class ContributionsReportController {
             this.allMonths,
             this.gettextCatalog.getString('Total (last month excluded from total)')
         ]);
-        var converted = this.useConvertedValues ? 'Converted' : '';
+        const converted = this.useConvertedValues ? 'Converted' : '';
 
         return _.flatMap(this.currencyGroups, (currencyGroup) => {
-            var combinedHeaders = [
+            const combinedHeaders = [
                 [
                     this.gettextCatalog.getString('Currency'),
                     currencyGroup['currency' + converted],
@@ -229,7 +236,7 @@ class ContributionsReportController {
                 ],
                 columnHeaders
             ];
-            var donorRows = _.map(currencyGroup.donors, (donor) => {
+            const donorRows = _.map(currencyGroup.donors, (donor) => {
                 return _.concat(
                     donor.donorInfo.name,
                     donor.donorInfo.status,
@@ -243,7 +250,7 @@ class ContributionsReportController {
                     donor['aggregates' + converted].sum
                 );
             });
-            var totals = _.concat(
+            const totals = _.concat(
                 this.gettextCatalog.getString('Totals'),
                 _.times(4, _.constant('')),
                 _.map(currencyGroup.monthlyTotals, 'amount' + converted),
