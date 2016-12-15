@@ -54,11 +54,11 @@
             <span translate>Google Contacts</span>
         </div>
         <div class="panel-animate" ng-show="$ctrl.tabSelected('google')" style="max-height: 3000px;">
-            <div ng-show="$ctrl.importsService.loading" class="loading-spinner">
+            <div ng-show="$ctrl.preferencesImports.loading" class="loading-spinner">
                 <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
                 <span class="sr-only" translate>Loading</span>
             </div>
-            <div ng-hide="$ctrl.importsService.loading">
+            <div ng-hide="$ctrl.preferencesImports.loading">
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-4 pref-lead">
@@ -69,7 +69,7 @@
                         <div class="col-md-8 connections" data-behavior="account">
                             <div class="import_button">
                                 <div class="importoptions" data-behavior="import_options">
-                                    <google-import-form preferences="$ctrl.importsService"></google-import-form>
+                                    <google-import-form preferences="$ctrl.preferencesImports"></google-import-form>
                                 </div>
                             </div>
                         </div>
