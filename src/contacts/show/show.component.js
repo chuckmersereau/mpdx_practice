@@ -4,13 +4,13 @@ class ContactController {
     contactFilter;
     contactReferrals;
     modal;
-    preferencesContactsService;
+    preferencesContacts;
     tasksService;
     contact;
 
     constructor(
         $scope, $state, $stateParams, $location, $anchorScroll, help,
-        modal, cache, contacts, tasksService, contactReferrals, preferencesContactsService, contactFilter, serverConstants
+        modal, cache, contacts, tasksService, contactReferrals, preferencesContacts, contactFilter, serverConstants
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
@@ -21,7 +21,7 @@ class ContactController {
         this.contactReferrals = contactReferrals;
         this.contacts = contacts;
         this.modal = modal;
-        this.preferencesContactsService = preferencesContactsService;
+        this.preferencesContacts = preferencesContacts;
         this.tasksService = tasksService;
 
         this.selected = $stateParams.contactId;
@@ -33,8 +33,8 @@ class ContactController {
         this.constants = serverConstants.data;
 
         this.tabsLabels = [];
-        $scope.$watch('$ctrl.preferencesContactsService.data.contact_tabs_labels', () => {
-            this.tabsLabels = this.preferencesContactsService.data.contact_tabs_labels;
+        $scope.$watch('$ctrl.preferencesContacts.data.contact_tabs_labels', () => {
+            this.tabsLabels = this.preferencesContacts.data.contact_tabs_labels;
             if (angular.isDefined(this.tabsLabels)) {
                 this.activeTab = this.tabsLabels[0]['key'];
             }
@@ -56,8 +56,8 @@ class ContactController {
                     newIndex = this.tabsLabels.length - 1;
                 }
 
-                this.preferencesContactsService.data.contact_tabs_sort = this.tabsLabels.map(item => item['key']).join();
-                this.preferencesContactsService.save();
+                this.preferencesContacts.data.contact_tabs_sort = this.tabsLabels.map(item => item['key']).join();
+                this.preferencesContacts.save();
             },
             containerPositioning: 'relative'
         };
