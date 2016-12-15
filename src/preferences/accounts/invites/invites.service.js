@@ -29,4 +29,4 @@ class InvitesService {
 }
 
 export default angular.module('mpdx.preferences.accounts.invites.service', [])
-    .service('invitesService', InvitesService).name;
+    .service('invites', InvitesService).name;

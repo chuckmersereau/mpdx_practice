@@ -31,20 +31,20 @@
                 </li>
             </ul>
         </div>
-        <div ng-if="$ctrl.invitesService.data.users.length > 0">
+        <div ng-if="$ctrl.invites.data.users.length > 0">
             <strong translate>Pending Invites</strong>
             <ul class="account-users">
-                <li ng-repeat="user in $ctrl.invitesService.data.users">
+                <li ng-repeat="user in $ctrl.invites.data.users">
                     {{user.email}}
                     <i>(<span translate>Sent by</span> {{user.inviter.first_name}} {{user.inviter.last_name}})</i>
-                    <span ng-if="$ctrl.invitesService.data.manager">
+                    <span ng-if="$ctrl.invites.data.manager">
             <button class="btn btn-xxs btn-danger" ng-click="$ctrl.cancelInvite(user.id)" ng-disabled="$ctrl.saving"><i class="fa fa-remove"></i> <span translate>Cancel</span></button>
           </span>
                 </li>
             </ul>
         </div>
 
-        <div ng-if="$ctrl.invitesService.data.manager" class="well">
+        <div ng-if="$ctrl.invites.data.manager" class="well">
             <strong translate>Invite someone to share this account:</strong>
             <invite-preferences></invite-preferences>
         </div>
