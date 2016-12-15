@@ -75,4 +75,4 @@ class OrganizationService {
 }
 
 export default angular.module('mpdx.preferences.integrations.organization.service', [])
-    .service('organizationService', OrganizationService).name;
+    .service('preferencesOrganization', OrganizationService).name;

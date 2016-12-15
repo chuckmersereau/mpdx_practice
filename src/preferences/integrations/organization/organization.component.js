@@ -1,11 +1,11 @@
 class OrganizationIntegrationPreferencesController {
     alerts;
-    organizationService;
+    preferencesOrganization;
 
     constructor(
-        organizationService, alerts
+        preferencesOrganization, alerts
     ) {
-        this.organizationService = organizationService;
+        this.preferencesOrganization = preferencesOrganization;
         this.alerts = alerts;
 
         this.saving = false;
@@ -13,14 +13,14 @@ class OrganizationIntegrationPreferencesController {
         this.selected = null;
         this.username = null;
         this.password = null;
-        this.account_list_id = organizationService.account_list_id;
+        this.account_list_id = preferencesOrganization.account_list_id;
     }
     save() {
         this.saving = true;
-        this.organizationService.save().then(() => {
+        this.preferencesOrganization.save().then(() => {
             this.alerts.addAlert('Preferences saved successfully', 'success');
             this.saving = false;
-            if (this.organizationService.data.primary_list_id !== null) {
+            if (this.preferencesOrganization.data.primary_list_id !== null) {
                 this.hide();
             }
         }).catch((data) => {
@@ -31,16 +31,16 @@ class OrganizationIntegrationPreferencesController {
         });
     }
     hide() {
-        this.organizationService.loading = true;
-        this.organizationService.load();
+        this.preferencesOrganization.loading = true;
+        this.preferencesOrganization.load();
         this.showSettings = false;
     }
     disconnect(id) {
         this.saving = true;
-        return this.organizationService.disconnect(id).then(() => {
+        return this.preferencesOrganization.disconnect(id).then(() => {
             this.saving = false;
             this.alerts.addAlert('MPDX removed your organization integration', 'success');
-            return this.organizationService.load();
+            return this.preferencesOrganization.load();
         }).catch(() => {
             this.alerts.addAlert('MPDX couldn\'t save your configuration changes for that organization', 'danger');
             this.saving = false;
@@ -48,9 +48,9 @@ class OrganizationIntegrationPreferencesController {
     }
     createAccount() {
         this.saving = true;
-        return this.organizationService.createAccount(this.username, this.password, this.selected.id).then(() => {
+        return this.preferencesOrganization.createAccount(this.username, this.password, this.selected.id).then(() => {
             this.saving = false;
-            this.organizationService.load();
+            this.preferencesOrganization.load();
             this.revert();
             this.alerts.addAlert('MPDX added your organization account', 'success');
         }).catch((data) => {
@@ -62,9 +62,9 @@ class OrganizationIntegrationPreferencesController {
     }
     updateAccount() {
         this.saving = true;
-        return this.organizationService.updateAccount(this.username, this.password, this.selected.id).then(() => {
+        return this.preferencesOrganization.updateAccount(this.username, this.password, this.selected.id).then(() => {
             this.saving = false;
-            this.organizationService.load();
+            this.preferencesOrganization.load();
             this.revert();
             this.alerts.addAlert('MPDX updated your organization account', 'success');
         }).catch((data) => {
