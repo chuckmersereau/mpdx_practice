@@ -4,11 +4,12 @@ class ContactsService {
     filterService;
     tagsService;
 
-    constructor($rootScope, filterService, tagsService, cache, api, $location) {
+    constructor($location, $q, $rootScope, filterService, tagsService, cache, api) {
         this.api = api;
         this.cache = cache;
         this.filterService = filterService;
         this.tagsService = tagsService;
+        this.$q = $q;
 
         this.data = [];
         this.meta = {};
@@ -254,15 +255,20 @@ class ContactsService {
         });
     }
     create(contact) {
+        let deffered = this.$q.defer();
         let contactObj = {
             name: contact.name,
             prefill_attributes_on_create: true
         };
 
-        this.loading = true;
-        return this.api.post('contacts', {contact: contactObj}).then(() => {
-            this.loading = false;
+        this.api.post('contacts', {contact: contactObj}).then((data) => {
+            this.cache.updateContact(data.contact, data);
+            this.cache.get(data.contact.id).then((contact) => {
+                deffered.resolve(contact);
+            });
         });
+
+        return deffered.promise;
     }
     loadMoreContacts() {
         if (this.loading) return;
