@@ -1,8 +1,8 @@
-<div ng-show="$ctrl.personalService.loading" class="loading-spinner">
+<div ng-show="$ctrl.personal.loading" class="loading-spinner">
     <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
     <span class="sr-only" translate>Loading</span>
 </div>
-<form ng-if="!$ctrl.personalService.loading">
+<form ng-if="!$ctrl.personal.loading">
     <div class="row spacer-top"></div>
     <div class="panel-group">
         <div class="panel panel-default pref-panel">
@@ -13,7 +13,7 @@
                         <span translate>First Name</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{$ctrl.personalService.data.first_name}}
+                        {{$ctrl.personal.data.first_name}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
@@ -30,7 +30,7 @@
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group">
                                 <label for="firstName" translate>Your first name</label>
-                                <input type="text" class="form-control" ng-model="$ctrl.personalService.data.first_name" id="firstName">
+                                <input type="text" class="form-control" ng-model="$ctrl.personal.data.first_name" id="firstName">
                             </div>
                             <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                                 <span translate>Save</span>&nbsp;
@@ -49,7 +49,7 @@
                         <span translate>Last Name</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{$ctrl.personalService.data.last_name}}
+                        {{$ctrl.personal.data.last_name}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
@@ -65,7 +65,7 @@
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group">
                                 <label for="lastName" translate>Your last name</label>
-                                <input id="lastName" class="form-control" ng-model="$ctrl.personalService.data.last_name">
+                                <input id="lastName" class="form-control" ng-model="$ctrl.personal.data.last_name">
                             </div>
                             <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                                 <span translate>Save</span>&nbsp;
@@ -84,7 +84,7 @@
                         <span translate>Email Address</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{$ctrl.personalService.data.email}}
+                        {{$ctrl.personal.data.email}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
@@ -101,7 +101,7 @@
                             <div class="form-group">
                                 <label for="email" translate>Email Address</label>
                                 <p class="text-muted" translate>This is the email address where notifications will be sent.</p>
-                                <input id="email" type="email" class="form-control" ng-model="$ctrl.personalService.data.email">
+                                <input id="email" type="email" class="form-control" ng-model="$ctrl.personal.data.email">
                             </div>
                             <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                                 <span translate>Save</span>&nbsp;
@@ -120,7 +120,7 @@
                         <span translate>Time zone</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{$ctrl.personalService.data.time_zone}}
+                        {{$ctrl.personal.data.time_zone}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
@@ -137,7 +137,7 @@
                             <div class="form-group">
                                 <label for="timeZone" translate>Time zone</label>
                                 <p class="text-muted" translate>The timezone will be used in setting tasks, appointments, completion dates, etc. Please make sure it matches the one your computer is set to.</p>
-                                <select chosen ng-model="$ctrl.personalService.data.time_zone" class="form-control" id="timeZone">
+                                <select chosen ng-model="$ctrl.personal.data.time_zone" class="form-control" id="timeZone">
                                     <option value=""></option>
                                     <option ng-repeat="timezone in $ctrl.timezones">{{timezone}}</option>
                                 </select>
@@ -159,7 +159,7 @@
                         <span translate>Locale</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        <span class="flag-icon flag-icon-{{$ctrl.getCountry($ctrl.personalService.data.locale)}}" ></span> {{$ctrl.$window.languageMappingList[$ctrl.personalService.data.locale].nativeName}}
+                        <span class="flag-icon flag-icon-{{$ctrl.getCountry($ctrl.personal.data.locale)}}" ></span> {{$ctrl.$window.languageMappingList[$ctrl.personal.data.locale].nativeName}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
@@ -176,7 +176,7 @@
                             <div class="form-group">
                                 <label for="locale" translate>Language</label>
                                 <p class="text-muted" translate>The locale determines your default language for MPDX as well as how numbers, dates and other information shows up in MPDX.</p>
-                                <select class="form-control" ng-model="$ctrl.personalService.data.locale" id="locale" ng-change="$ctrl.setLocale()" chosen>
+                                <select class="form-control" ng-model="$ctrl.personal.data.locale" id="locale" ng-change="$ctrl.setLocale()" chosen>
                                     <option ng-repeat="option in $ctrl.languages" value="{{option.alias}}">
                                         {{option.englishName}} ({{option.nativeName}} - {{option.alias}})
                                     </option>
@@ -217,7 +217,7 @@
                             <!--<div class="form-group">-->
                                 <!--<label for="defaultAccountList" translate>Default Account List</label>-->
                                 <!--<p class="text-muted" translate>This sets which account you will land in whenever you login to MPDX.</p>-->
-                                <!--<select id="defaultAccountList" class="form-control" ng-model="$ctrl.personalService.data.default_account_list" ng-change="$ctrl.setDefaultAccountList()" chosen>-->
+                                <!--<select id="defaultAccountList" class="form-control" ng-model="$ctrl.personal.data.default_account_list" ng-change="$ctrl.setDefaultAccountList()" chosen>-->
                                     <!--<option ng-repeat="al in $ctrl.currentUser.account_lists" ng-value="al.id">{{al.name}}</option>-->
                                 <!--</select>-->
                             <!--</div>-->
@@ -245,7 +245,7 @@
                         <span tranlsate>Account Name</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{$ctrl.personalService.data.account_list_name}}
+                        {{$ctrl.personal.data.account_list_name}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
@@ -262,7 +262,7 @@
                             <div class="form-group">
                                 <label for="accountListName" translate>Account Name</label>
                                 <p class="text-muted" translate>You can change the account name in MPDX into something that is more identifiable to you. This will not change the account name with your organization.</p>
-                                <input type="text" id="accountListName" class="form-control" ng-model="$ctrl.personalService.data.account_list_name">
+                                <input type="text" id="accountListName" class="form-control" ng-model="$ctrl.personal.data.account_list_name">
                             </div>
                             <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                                 <span translate>Save</span>&nbsp;
@@ -281,7 +281,7 @@
                         <span translate>Monthly Goal</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{$ctrl.personalService.data.monthly_goal}}
+                        {{$ctrl.personal.data.monthly_goal}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
@@ -298,7 +298,7 @@
                             <div class="form-group">
                                 <label for="monthlyGoal" translate>Monthly goal</label>
                                 <p class="text-muted" translate>This amount should be set to the amount your organization has determined is your target monthly goal. If you do not know, make your best guess for now. You can change it at any time.</p>
-                                <input type="text" id="monthlyGoal" class="form-control" ng-model="$ctrl.personalService.data.monthly_goal">
+                                <input type="text" id="monthlyGoal" class="form-control" ng-model="$ctrl.personal.data.monthly_goal">
                             </div>
                             <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                                 <span translate>Save</span>>&nbsp;
@@ -317,7 +317,7 @@
                         <span translate>Home Country</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{$ctrl.personalService.data.home_country}}
+                        {{$ctrl.personal.data.home_country}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
@@ -334,7 +334,7 @@
                             <div class="form-group">
                                 <label for="homeCountry" translate>Home Country</label>
                                 <p class="text-muted" translate>This should be the place you are living and sending out physical communications from. This will be used in exports for mailing address information.</p>
-                                <select id="homeCountry" class="country_select form-control" ng-model="$ctrl.personalService.data.home_country" chosen>
+                                <select id="homeCountry" class="country_select form-control" ng-model="$ctrl.personal.data.home_country" chosen>
                                     <option ng-repeat="country in $ctrl.countries">{{ country }}</option>
                                 </select>
                             </div>
@@ -355,7 +355,7 @@
                         <span translate>Default Currency</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{$ctrl.personalService.data.currency}}
+                        {{$ctrl.personal.data.currency}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
@@ -371,7 +371,7 @@
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group">
                                 <label for="currency" translate>Default Currency</label>
-                                <select id="currency" class="form-control" ng-model="$ctrl.personalService.data.currency" chosen>
+                                <select id="currency" class="form-control" ng-model="$ctrl.personal.data.currency" chosen>
                                     <option ng-repeat="currency in  $ctrl.currencies">{{currency}}</option>
                                 </select>
                             </div>
@@ -409,7 +409,7 @@
                             <div class="form-group">
                                 <label for="salaryOrganizationId" translate>Primary Organization</label>
                                 <p class="text-muted" translate>This should be the organization you get paid from and most likely correspond to the country you are living and serving in. This will set your currency conversions for multi-currency accounts to the currency of this organization both on the dashboard and the corresponding contribution reports.</p>
-                                <select id="salaryOrganizationId" class="form-control" ng-model="$ctrl.personalService.data.salary_organization_id" ng-change="$ctrl.setSalaryOrg()" chosen>
+                                <select id="salaryOrganizationId" class="form-control" ng-model="$ctrl.personal.data.salary_organization_id" ng-change="$ctrl.setSalaryOrg()" chosen>
                                     <option ng-repeat="org in $ctrl.salary_organization_select(current_account_list)">{{org}}</option>
                                 </select>
                             </div>
@@ -430,7 +430,7 @@
                         <span translate>Early Adopter</span>
                     </div>
                     <div class="col-sm-6 pref-current" translate>
-                        {{$ctrl.personalService.data.tester ? 'Yes' : 'No'}}
+                        {{$ctrl.personal.data.tester ? 'Yes' : 'No'}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
@@ -444,7 +444,7 @@
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-8 col-md-offset-4">
-                            <label><input type="checkbox" ng-model="$ctrl.personalService.data.tester"><span translate>Early adopter</span></label>
+                            <label><input type="checkbox" ng-model="$ctrl.personal.data.tester"><span translate>Early adopter</span></label>
                             <p translate>
                                 By checking this box, you are telling us that you'd like to test new features for bugs before they are
                                 rolled out to the full MPDx user base. We'll send you an email when new features are available on your

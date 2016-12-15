@@ -1,14 +1,17 @@
 class NotificationPreferencesController {
+    alerts;
+    notifications;
+
     constructor(
-        notificationsService, alerts
+        notifications, alerts
     ) {
-        this.notificationsService = notificationsService;
+        this.notifications = notifications;
         this.alerts = alerts;
         this.saving = false;
     }
     save() {
         this.saving = true;
-        return this.notificationsService.save().then(() => {
+        return this.notifications.save().then(() => {
             this.alerts.addAlert('Notifications saved successfully', 'success');
             this.saving = false;
             this.saving = false;

@@ -41,4 +41,4 @@ class PersonalService {
 }
 
 export default angular.module('mpdx.preferences.personal.service', [])
-    .service('personalService', PersonalService).name;
+    .service('personal', PersonalService).name;
