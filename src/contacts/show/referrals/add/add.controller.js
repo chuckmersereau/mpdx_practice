@@ -1,12 +1,12 @@
 class AddReferralsModalController {
-    alertsService;
+    alerts;
     api;
 
     constructor(
-        $scope, api, alertsService, contactId
+        $scope, api, alerts, contactId
     ) {
         this.$scope = $scope;
-        this.alertsService = alertsService;
+        this.alerts = alerts;
         this.api = api;
         this.contactId = contactId;
 
@@ -27,7 +27,7 @@ class AddReferralsModalController {
                 alertType = 'warning';
             }
 
-            this.alertsService.addAlert(successMessage + failedMessage, alertType, 10000);
+            this.alerts.addAlert(successMessage + failedMessage, alertType, 10000);
         });
     }
 }

@@ -1,6 +1,6 @@
-<div ng-repeat="alert in $ctrl.alertsService.alerts">
+<div ng-repeat="alert in $ctrl.alerts.alerts">
     <div class="alert" ng-class="alert.type" role="alert">
-        <button type="button" class="close" ng-click="$ctrl.alertsService.removeAlert(alert)">
+        <button type="button" class="close" ng-click="$ctrl.alerts.removeAlert(alert)">
             <span aria-hidden="true">×</span>
         </button>
         {{alert.message}}

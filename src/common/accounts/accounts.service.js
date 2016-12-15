@@ -31,4 +31,4 @@ class AccountsService {
     };
 }
 export default angular.module('mpdx.common.accounts.service', [])
-    .service('accountsService', AccountsService).name;
+    .service('accounts', AccountsService).name;

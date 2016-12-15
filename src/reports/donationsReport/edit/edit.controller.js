@@ -1,17 +1,17 @@
 class EditDonationController {
-    appealsService;
-    currencyService;
+    appeals;
+    currency;
     currentAccountList;
     donationsReportService;
 
     constructor(
         $scope, blockUI,
-        appealsService, contactsService, currencyService, currentAccountList, donationsReportService,
+        appeals, contactsService, currency, currentAccountList, donationsReportService,
         donationId
     ) {
         this.$scope = $scope;
-        this.appealsService = appealsService;
-        this.currencyService = currencyService;
+        this.appeals = appeals;
+        this.currency = currency;
         this.currentAccountList = currentAccountList;
         this.donationsReportService = donationsReportService;
         this.donationId = donationId;

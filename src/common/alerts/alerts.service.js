@@ -23,4 +23,4 @@ class AlertsService {
 }
 
 export default angular.module('mpdx.common.alerts.service', [])
-    .service('alertsService', AlertsService).name;
+    .service('alerts', AlertsService).name;

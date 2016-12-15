@@ -1,7 +1,7 @@
 class TagsService {
     api;
 
-    constructor($rootScope, api, accountsService, $filter) {
+    constructor($rootScope, api, accounts, $filter) {
         this.$filter = $filter;
         this.api = api;
 
@@ -11,7 +11,7 @@ class TagsService {
         this.anyTags = false;
         this.loading = true;
 
-        $rootScope.$watch(() => accountsService.account_list_id, (accountListId) => {
+        $rootScope.$watch(() => accounts.account_list_id, (accountListId) => {
             if (accountListId) {
                 this.load();
             }

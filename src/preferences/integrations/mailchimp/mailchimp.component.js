@@ -1,13 +1,13 @@
 class MailchimpIntegrationPreferencesController {
-    alertsService;
+    alerts;
     mailchimpService;
     state;
 
     constructor(
-        $scope, mailchimpService, alertsService
+        $scope, mailchimpService, alerts
     ) {
         this.mailchimpService = mailchimpService;
-        this.alertsService = alertsService;
+        this.alerts = alerts;
         this.saving = false;
         this.showSettings = false;
 
@@ -18,14 +18,14 @@ class MailchimpIntegrationPreferencesController {
     save() {
         this.saving = true;
         this.mailchimpService.save().then(() => {
-            this.alertsService.addAlert('Preferences saved successfully', 'success');
+            this.alerts.addAlert('Preferences saved successfully', 'success');
             this.saving = false;
             if (this.mailchimpService.data.primary_list_id !== null) {
                 this.hide();
             }
         }).catch((data) => {
             _.each(data.errors, (value) => {
-                this.alertsService.addAlert(value, 'danger');
+                this.alerts.addAlert(value, 'danger');
             });
             this.saving = false;
         });
@@ -39,20 +39,20 @@ class MailchimpIntegrationPreferencesController {
         this.saving = true;
         return this.mailchimpService.sync().then(() => {
             this.saving = false;
-            this.alertsService.addAlert('MPDX is now syncing your newsletter recipients with Mailchimp', 'success');
+            this.alerts.addAlert('MPDX is now syncing your newsletter recipients with Mailchimp', 'success');
         }).catch(() => {
             this.saving = false;
-            this.alertsService.addAlert('MPDX couldn\'t save your configuration changes for Mailchimp', 'danger');
+            this.alerts.addAlert('MPDX couldn\'t save your configuration changes for Mailchimp', 'danger');
         });
     }
     disconnect() {
         this.saving = true;
         return this.mailchimpService.disconnect().then(() => {
             this.saving = false;
-            this.alertsService.addAlert('MPDX removed your integration with MailChimp', 'success');
+            this.alerts.addAlert('MPDX removed your integration with MailChimp', 'success');
             this.mailchimpService.load();
         }).catch(() => {
-            this.alertsService.addAlert('MPDX couldn\'t save your configuration changes for MailChimp', 'danger');
+            this.alerts.addAlert('MPDX couldn\'t save your configuration changes for MailChimp', 'danger');
             this.saving = false;
         });
     }

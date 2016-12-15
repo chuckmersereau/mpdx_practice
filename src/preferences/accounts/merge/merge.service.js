@@ -1,11 +1,11 @@
 class MergesService {
-    accountsService;
+    accounts;
     api;
 
     constructor(
-        $rootScope, api, accountsService
+        $rootScope, api, accounts
     ) {
-        this.accountsService = accountsService;
+        this.accounts = accounts;
         this.api = api;
 
         this.data = {};
@@ -27,7 +27,7 @@ class MergesService {
     }
     create() {
         return this.api.post('preferences/accounts/merges', { merge: { id: this.selected_account_id } }).then(() => {
-            return this.accountsService.load();
+            return this.accounts.load();
         });
     }
 }

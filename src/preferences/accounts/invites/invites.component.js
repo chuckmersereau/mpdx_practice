@@ -1,10 +1,10 @@
 class InvitePreferencesController {
-    alertsService;
+    alerts;
     invitesService;
 
-    constructor(invitesService, alertsService) {
+    constructor(invitesService, alerts) {
         this.invitesService = invitesService;
-        this.alertsService = alertsService;
+        this.alerts = alerts;
         this.saving = false;
         this.email = '';
     }
@@ -12,11 +12,11 @@ class InvitePreferencesController {
         this.saving = true;
         this.invitesService.create(this.email).then(() => {
             this.saving = false;
-            this.alertsService.addAlert('MPDX sent an invite to ' + this.email, 'success');
+            this.alerts.addAlert('MPDX sent an invite to ' + this.email, 'success');
             this.email = '';
             this.invitesService.load();
         }).catch(() => {
-            this.alertsService.addAlert("MPDX couldn't send an invite (check to see if email address is valid)", 'danger');
+            this.alerts.addAlert("MPDX couldn't send an invite (check to see if email address is valid)", 'danger');
             this.saving = false;
         });
     };

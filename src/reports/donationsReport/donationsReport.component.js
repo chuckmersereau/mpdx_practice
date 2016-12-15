@@ -1,15 +1,15 @@
 class DonationsReportController {
-    currencyService;
+    currency;
     currentAccountList;
     getDonations;
     donations;
-    donationsService;
+    donationsReportService;
 
     constructor(
         blockUI,
-        currentAccountList, currencyService, donationsReportService
+        currentAccountList, currency, donationsReportService
     ) {
-        this.currencyService = currencyService;
+        this.currency = currency;
         this.currentAccountList = currentAccountList;
         this.donationsReportService = donationsReportService;
 

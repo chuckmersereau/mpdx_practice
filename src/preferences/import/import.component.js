@@ -1,15 +1,15 @@
 class ImportPreferencesController {
-    alertsService;
+    alerts;
     importsService;
 
     constructor(
-        $filter, $state, $stateParams, importsService, alertsService, helpService
+        $filter, $state, $stateParams, importsService, alerts, helpService
     ) {
         this.$filter = $filter;
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.importsService = importsService;
-        this.alertsService = alertsService;
+        this.alerts = alerts;
 
         this.saving = false;
         this.tabId = '';
@@ -61,12 +61,12 @@ class ImportPreferencesController {
     saveGoogleImport() {
         this.saving = true;
         this.importsService.saveGoogleImport().then(() => {
-            this.alertsService.addAlert('MPDx is importing contacts from your Google Account', 'success');
+            this.alerts.addAlert('MPDx is importing contacts from your Google Account', 'success');
             this.setTab('');
             this.saving = false;
         }).catch((data) => {
             _.each(data.errors, (value) => {
-                this.alertsService.addAlert(value, 'danger');
+                this.alerts.addAlert(value, 'danger');
             });
             this.saving = false;
         });

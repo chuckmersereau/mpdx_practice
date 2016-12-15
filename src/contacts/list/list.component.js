@@ -1,10 +1,17 @@
 class ListController {
+    alerts;
+    contactsService;
+    currentAccountList;
+    modal;
+    tagsService;
+    tasksService;
+
     constructor(
         modal,
-        contactsService, filterService, tagsService, alertsService, tasksService, currentAccountList
+        contactsService, filterService, tagsService, alerts, tasksService, currentAccountList
     ) {
         this.modal = modal;
-        this.alertsService = alertsService;
+        this.alerts = alerts;
         this.contactsService = contactsService;
         this.currentAccountList = currentAccountList;
         this.tagsService = tagsService;
@@ -83,9 +90,9 @@ class ListController {
     openMergeContactsModal() {
         var selectedLength = this.contactsService.getSelectedContacts().length;
         if (selectedLength < 2) {
-            this.alertsService.addAlert('You must select at least 2 contacts to merge.', 'danger');
+            this.alerts.addAlert('You must select at least 2 contacts to merge.', 'danger');
         } else if (selectedLength > 8) {
-            this.alertsService.addAlert('You can only merge up to 8 contacts at a time.', 'danger');
+            this.alerts.addAlert('You can only merge up to 8 contacts at a time.', 'danger');
         } else {
             this.modal.open({
                 template: require('./mergeContacts/mergeContacts.html'),

@@ -53,7 +53,7 @@
                 <tr class="sum" ng-repeat="d in $ctrl.donationTotals[$ctrl.index] | toArray">
                     <td></td>
                     <td class="right"><strong translate>Total {{d.currency}} Donations {{d.count}}</strong></td>
-                    <td class="right">{{d.amount}} {{$ctrl.currencyService.list[d.currency].symbol}}</td>
+                    <td class="right">{{d.amount}} {{$ctrl.currency.list[d.currency].symbol}}</td>
                     <td colspan="4"></td>
                 </tr>
             </tfoot>

@@ -1,15 +1,15 @@
 class PersonalPreferencesController {
-    alertsService;
+    alerts;
     personalService;
 
     constructor(
         $state, $stateParams, $window, gettextCatalog,
-        alertsService, personalService
+        alerts, personalService
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.$window = $window;
-        this.alertsService = alertsService;
+        this.alerts = alerts;
         this.gettextCatalog = gettextCatalog;
         this.personalService = personalService;
 
@@ -28,12 +28,12 @@ class PersonalPreferencesController {
     save() {
         this.saving = true;
         return this.personalService.save().then(() => {
-            this.alertsService.addAlert('Preferences saved successfully', 'success');
+            this.alerts.addAlert('Preferences saved successfully', 'success');
             this.setTab('');
             this.saving = false;
         }).catch((data) => {
             angular.forEach(data.errors, (value) => {
-                this.alertsService.addAlert(value, 'danger');
+                this.alerts.addAlert(value, 'danger');
             });
             this.saving = false;
         });

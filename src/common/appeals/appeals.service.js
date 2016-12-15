@@ -28,4 +28,4 @@ class AppealsService {
 }
 
 export default angular.module('mpdx.common.appeals.service', [])
-    .service('appealsService', AppealsService).name;
+    .service('appeals', AppealsService).name;
