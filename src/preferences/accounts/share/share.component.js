@@ -1,11 +1,11 @@
 class SharePreferencesController {
     alerts;
     invites;
-    usersService;
+    users;
 
-    constructor(invites, usersService, alerts) {
+    constructor(invites, users, alerts) {
         this.invites = invites;
-        this.usersService = usersService;
+        this.users = users;
         this.alerts = alerts;
         this.saving = false;
         this.inviteEmail = '';
@@ -23,10 +23,10 @@ class SharePreferencesController {
     }
     removeUser(id) {
         this.saving = true;
-        this.usersService.destroy(id).then(() => {
+        this.users.destroy(id).then(() => {
             this.saving = false;
             this.alerts.addAlert('MPDX removed the user successfully', 'info');
-            this.usersService.load();
+            this.users.load();
         }).catch(() => {
             this.alerts.addAlert("MPDX couldn't remove the user", 'danger');
             this.saving = false;
