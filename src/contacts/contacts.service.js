@@ -1,14 +1,15 @@
 class ContactsService {
     api;
     cache;
+    contactsTags;
     filterService;
-    tagsService;
 
-    constructor($rootScope, filterService, tagsService, cache, api, $location) {
+    constructor($rootScope, filterService, contactsTags, cache, api, $location) {
         this.api = api;
         this.cache = cache;
+        this.contactsTags = contactsTags;
         this.filterService = filterService;
-        this.tagsService = tagsService;
+
 
         this.data = [];
         this.meta = {};
@@ -39,9 +40,9 @@ class ContactsService {
 
         $rootScope.$watch(() => {
             return angular.toJson({
-                selected: this.tagsService.selectedTags.length,
-                rejected: this.tagsService.rejectedTags.length,
-                any: this.tagsService.anyTags
+                selected: this.contactsTags.selectedTags.length,
+                rejected: this.contactsTags.rejectedTags.length,
+                any: this.contactsTags.anyTags
             });
         }, (newVal, oldVal) => {
             if (newVal !== oldVal) {
@@ -60,13 +61,13 @@ class ContactsService {
             filterParams.wildcard_search = wildcardSearch;
         }
 
-        if (this.tagsService.selectedTags.length > 0) {
-            filterParams.tags = this.tagsService.selectedTags;
+        if (this.contactsTags.selectedTags.length > 0) {
+            filterParams.tags = this.contactsTags.selectedTags;
         }
-        if (this.tagsService.rejectedTags.length > 0) {
-            filterParams.exclude_tags = this.tagsService.rejectedTags;
+        if (this.contactsTags.rejectedTags.length > 0) {
+            filterParams.exclude_tags = this.contactsTags.rejectedTags;
         }
-        filterParams.any_tags = this.tagsService.anyTags;
+        filterParams.any_tags = this.contactsTags.anyTags;
 
         return this.api.call('post', 'contacts', {filters: filterParams, page: this.page, per_page: 25}, null, null, null, null, {'X-HTTP-Method-Override': 'get'}).then((data) => {
             if (reset) {

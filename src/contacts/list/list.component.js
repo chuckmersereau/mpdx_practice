@@ -1,20 +1,20 @@
 class ListController {
     alerts;
     contactsService;
+    contactsTags;
     currentAccountList;
     modal;
-    tagsService;
     tasksService;
 
     constructor(
         modal,
-        contactsService, filterService, tagsService, alerts, tasksService, currentAccountList
+        contactsService, filterService, contactsTags, alerts, tasksService, currentAccountList
     ) {
         this.modal = modal;
         this.alerts = alerts;
         this.contactsService = contactsService;
+        this.contactsTags = contactsTags;
         this.currentAccountList = currentAccountList;
-        this.tagsService = tagsService;
         this.tasksService = tasksService;
 
         this.models = {

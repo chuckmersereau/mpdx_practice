@@ -2,18 +2,18 @@ class EditFieldsController {
     contacts;
     contactsService;
     serverConstants;
-    tagsService;
+    contactsTags;
 
     constructor(
         $scope,
-        tagsService, serverConstants, contactsService,
+        contactsTags, serverConstants, contactsService,
         contacts
     ) {
         this.$scope = $scope;
         this.contacts = contacts;
         this.contactsService = contactsService;
         this.serverConstants = serverConstants;
-        this.tagsService = tagsService;
+        this.contactsTags = contactsTags;
 
         this.models = {};
         this.constants = {};
