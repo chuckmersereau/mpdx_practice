@@ -18,7 +18,7 @@
             ng-click="$ctrl.contactsTags.tagClick(tag, $event)"
             ng-repeat="tag in $ctrl.contactsTags.data">
         {{ tag }}
-        <a ng-click="$event.stopPropagation()" uib-popover-template="'myPopoverTemplate.html'" popover-trigger="outsideClick" class="tag_remove"></a>
+        <a ng-click="$event.stopPropagation()" data-template-url="tags_delete_popover.html" class="tag_remove" bs-popover></a>
       </span>
             <a class="show_all_tags_btn">
                 <div ng-click="$ctrl.showAllTags = !$ctrl.showAllTags" ng-if="$ctrl.contactsTags.data.length > 25">
@@ -32,14 +32,18 @@
                     </div>
                 </div>
             </a>
-            <script type="text/ng-template" id="myPopoverTemplate.html">
-                <div ng-click="$event.stopPropagation()" class="tags-popover">
-                    Remove tag permanently?
-                    <div>
-                        <button class="btn btn-primary" ng-click="$ctrl.contactsTags.delete(tag)">Ok</button>
-                    </div>
-                </div>
-            </script>
         </li>
     </ul>
 </li>
+
+<script type="text/ng-template" id="tags_delete_popover.html">
+    <div class="popover tags-popover" tabindex="-1">
+        <div class="arrow"></div>
+        <h3 class="popover-title" translate>Delete Tag?</h3>
+        <div class="popover-content">
+            <div translate>Are you sure you want to completely delete this tag and remove it from all contacts?</div>
+            <div class="text-muted" translate>To remove a tag from selected contacts only, use the action menu.</div>
+            <button class="btn btn-danger btn-block btn-xs" ng-click="$ctrl.tagsService.delete(tag)" translate>Delete Tag</button>
+        </div>
+    </div>
+</script>
