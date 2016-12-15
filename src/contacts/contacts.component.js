@@ -1,9 +1,11 @@
 class ContactsController {
-    constructor($stateParams, filterService, helpService) {
+    filterService;
+
+    constructor($stateParams, filterService, help) {
         this.$stateParams = $stateParams;
         this.filterService = filterService;
 
-        helpService.suggest([
+        help.suggest([
             '5845aa229033600698176a54',
             '5841bd789033600698175e62',
             '584715b890336006981774d2',

@@ -3,7 +3,7 @@ class ImportPreferencesController {
     importsService;
 
     constructor(
-        $filter, $state, $stateParams, importsService, alerts, helpService
+        $filter, $state, $stateParams, importsService, alerts, help
     ) {
         this.$filter = $filter;
         this.$state = $state;
@@ -14,7 +14,7 @@ class ImportPreferencesController {
         this.saving = false;
         this.tabId = '';
 
-        helpService.suggest([
+        help.suggest([
             '5845aa229033600698176a54',
             '5845ae09c6979106d373a589',
             '5845a6de9033600698176a43',

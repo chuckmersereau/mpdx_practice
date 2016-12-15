@@ -1,6 +1,15 @@
 class ContactController {
+    cache;
+    contactsService;
+    modal;
+    preferencesContactsService;
+    referralsService;
+    filterService;
+    tasksService;
+    contact;
+
     constructor(
-        $scope, $state, $stateParams, $location, $anchorScroll, helpService,
+        $scope, $state, $stateParams, $location, $anchorScroll, help,
         modal, cache, contactsService, tasksService, referralsService, preferencesContactsService, filterService, serverConstants
     ) {
         this.$state = $state;
@@ -54,7 +63,7 @@ class ContactController {
             containerPositioning: 'relative'
         };
 
-        helpService.suggest([
+        help.suggest([
             '5845aab3c6979106d373a576',
             '5845995e90336006981769bb',
             '584ac7f39033602d65f6e131',

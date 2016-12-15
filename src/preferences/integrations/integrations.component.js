@@ -3,7 +3,7 @@ class IntegrationPreferencesController {
     integrationsService;
 
     constructor(
-        $window, $state, $stateParams, integrationsService, alerts, helpService
+        $window, $state, $stateParams, integrationsService, alerts, help
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
@@ -18,7 +18,7 @@ class IntegrationPreferencesController {
 
         $window.openerCallback = this.reload;
 
-        helpService.suggest([
+        help.suggest([
             '5845aa229033600698176a54',
             '5845ae09c6979106d373a589',
             '5845a7f49033600698176a48',
