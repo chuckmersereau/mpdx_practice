@@ -3,15 +3,15 @@ class DonationsReportController {
     currentAccountList;
     getDonations;
     donations;
-    donationsReportService;
+    donationsReport;
 
     constructor(
         blockUI,
-        currentAccountList, currency, donationsReportService
+        currentAccountList, currency, donationsReport
     ) {
         this.currency = currency;
         this.currentAccountList = currentAccountList;
-        this.donationsReportService = donationsReportService;
+        this.donationsReport = donationsReport;
 
         this.blockUI = blockUI.instances.get('donations');
         this.blockUI.start();
@@ -21,12 +21,12 @@ class DonationsReportController {
         this.donationTotals = {};
     }
     $onChanges() {
-        if (this.donationsReportService.data === null) {
-            this.donationsReportService.getDonations().then((data) => {
+        if (this.donationsReport.data === null) {
+            this.donationsReport.getDonations().then((data) => {
                 this.loadingFinished(data);
             });
         } else {
-            this.loadingFinished(this.donationsReportService.data);
+            this.loadingFinished(this.donationsReport.data);
         }
     }
     loadingFinished(data) {
