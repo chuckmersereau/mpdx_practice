@@ -1,17 +1,17 @@
 class ContactReferralsController {
-    referralsService;
+    contactReferrals;
 
     constructor(
-        $state, referralsService
+        $state, contactReferrals
     ) {
         this.$state = $state;
         this.moment = moment;
-        this.referralsService = referralsService;
+        this.contactReferrals = contactReferrals;
     }
     $onChanges(changesObj) {
         if (changesObj.contact) {
             if (changesObj.contact.currentValue.id !== changesObj.contact.previousValue.id) {
-                this.referralsService.fetchReferrals(changesObj.contact.currentValue.id);
+                this.contactReferrals.fetchReferrals(changesObj.contact.currentValue.id);
             }
         }
     }
