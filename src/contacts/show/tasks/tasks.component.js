@@ -55,7 +55,7 @@ class ContactTasksController {
             controller: 'logTaskController',
             locals: {
                 modalTitle: 'Edit Task',
-                contacts: [contactId],
+                selectedContacts: [contactId],
                 specifiedTask: task,
                 ajaxAction: 'put',
                 toComplete: false,

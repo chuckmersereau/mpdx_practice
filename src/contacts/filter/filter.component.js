@@ -1,15 +1,15 @@
 class FilterController {
-    contactsService;
+    contacts;
     contactFilter;
     contactsTags;
     modal;
 
     constructor(
         $stateParams, gettextCatalog,
-        contactFilter, contactsTags, contactsService, modal
+        contactFilter, contactsTags, contacts, modal
     ) {
         this.modal = modal;
-        this.contactsService = contactsService;
+        this.contacts = contacts;
         this.contactFilter = contactFilter;
         this.contactsTags = contactsTags;
         this.gettextCatalog = gettextCatalog;
@@ -40,7 +40,7 @@ class FilterController {
             template: require('./mapContacts/mapContacts.html'),
             controller: 'mapContactsController',
             locals: {
-                contacts: this.contactsService.getSelectedContacts()
+                selectedContacts: this.contacts.getSelectedContacts()
             }
         });
     }

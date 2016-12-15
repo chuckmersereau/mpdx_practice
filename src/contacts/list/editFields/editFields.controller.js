@@ -1,17 +1,17 @@
 class EditFieldsController {
+    selectedContacts;
     contacts;
-    contactsService;
     serverConstants;
     contactsTags;
 
     constructor(
         $scope,
-        contactsTags, serverConstants, contactsService,
-        contacts
+        contactsTags, serverConstants, contacts,
+        selectedContacts
     ) {
         this.$scope = $scope;
+        this.selectedContacts = selectedContacts;
         this.contacts = contacts;
-        this.contactsService = contactsService;
         this.serverConstants = serverConstants;
         this.contactsTags = contactsTags;
 
@@ -25,13 +25,13 @@ class EditFieldsController {
         this.constants = this.serverConstants.data;
     }
     submit() {
-        this.contactsService.bulkEditFields(
+        this.contacts.bulkEditFields(
             this.models,
             this.constants.bulk_update_options.pledge_currency,
-            this.contacts
+            this.selectedContacts
         ).then(() => {
             this.$scope.$hide();
-            this.contactsService.load(true);
+            this.contacts.load(true);
         });
     }
     isInvalid() {

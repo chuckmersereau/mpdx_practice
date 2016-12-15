@@ -1,14 +1,14 @@
 class ContactNotesController {
-    contactsService;
+    contacts;
 
     constructor(
-        contactsService
+        contacts
     ) {
-        this.contactsService = contactsService;
+        this.contacts = contacts;
         this.moment = moment;
     }
     save() {
-        this.contactsService.save(this.contact);
+        this.contacts.save(this.contact);
     }
 }
 

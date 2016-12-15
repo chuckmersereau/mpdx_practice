@@ -406,4 +406,4 @@ class ContactsService {
 import contactFilter from './filter/filter.service';
 
 export default angular.module('mpdx.contacts.service', [contactFilter])
-    .service('contactsService', ContactsService).name;
+    .service('contacts', ContactsService).name;

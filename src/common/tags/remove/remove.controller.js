@@ -1,21 +1,21 @@
 class RemoveTagController {
+    selectedContacts;
     contacts;
-    contactsService;
     contactsTags;
 
     constructor(
         $scope,
-        contactsTags, contactsService,
-        contacts
+        contactsTags, contacts,
+        selectedContacts
     ) {
         this.$scope = $scope;
+        this.selectedContacts = selectedContacts;
         this.contacts = contacts;
-        this.contactsService = contactsService;
         this.contactsTags = contactsTags;
     }
     removeTag(tag) {
-        this.contactsTags.untagContact(this.contacts, tag).then(() => {
-            this.contactsService.load(true);
+        this.contactsTags.untagContact(this.selectedContacts, tag).then(() => {
+            this.contacts.load(true);
             this.contactsTags.load();
             this.$scope.$hide();
         });

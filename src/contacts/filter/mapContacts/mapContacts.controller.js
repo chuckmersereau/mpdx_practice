@@ -1,11 +1,11 @@
 class MapContactsController {
-    contacts;
+    selectedContacts;
     constructor(
-        $window, $timeout, contacts
+        $window, $timeout, selectedContacts
     ) {
         this.$timeout = $timeout;
         this.$window = $window;
-        this.contacts = contacts;
+        this.selectedContacts = selectedContacts;
 
         this.activate();
     }
@@ -64,7 +64,7 @@ class MapContactsController {
         var contactsCounts = {
             noAddress: 0
         };
-        angular.forEach(this.contacts, (contact) => {
+        angular.forEach(this.selectedContacts, (contact) => {
             var marker = this.generateContactMarker(contact);
             if (marker) {
                 newMarkers.push(marker);
@@ -80,7 +80,7 @@ class MapContactsController {
             this.mapHandler.fitMapToBounds();
         };
         this.singleMap(addMarkers.bind(this));
-        angular.element('.contacts_counts').text(contactsCounts.noAddress + '/' + this.contacts.length);
+        angular.element('.contacts_counts').text(contactsCounts.noAddress + '/' + this.selectedContacts.length);
     }
     singleMap(callback) {
         var methodToExec = callback;

@@ -1,13 +1,13 @@
 class ContactDetailsController {
     appeals;
     contact;
-    contactsService;
+    contacts;
     contactsTags;
 
     constructor(
-        contactsTags, contactsService
+        contactsTags, contacts
     ) {
-        this.contactsService = contactsService;
+        this.contacts = contacts;
         this.contactsTags = contactsTags;
 
         this.appeals = 'false';
@@ -24,7 +24,7 @@ class ContactDetailsController {
     }
     save() {
         this.contact.no_appeals = this.appeals;
-        this.contactsService.save(this.contact);
+        this.contacts.save(this.contact);
     }
 }
 const Details = {

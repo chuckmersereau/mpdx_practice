@@ -1,6 +1,6 @@
 class ContactController {
     cache;
-    contactsService;
+    contacts;
     contactFilter;
     contactReferrals;
     modal;
@@ -10,7 +10,7 @@ class ContactController {
 
     constructor(
         $scope, $state, $stateParams, $location, $anchorScroll, help,
-        modal, cache, contactsService, tasksService, contactReferrals, preferencesContactsService, contactFilter, serverConstants
+        modal, cache, contacts, tasksService, contactReferrals, preferencesContactsService, contactFilter, serverConstants
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
@@ -19,7 +19,7 @@ class ContactController {
         this.cache = cache;
         this.contactFilter = contactFilter;
         this.contactReferrals = contactReferrals;
-        this.contactsService = contactsService;
+        this.contacts = contacts;
         this.modal = modal;
         this.preferencesContactsService = preferencesContactsService;
         this.tasksService = tasksService;
@@ -82,12 +82,12 @@ class ContactController {
         });
     };
     save() {
-        this.contactsService.save(this.contact).then(() => {
+        this.contacts.save(this.contact).then(() => {
             this.selectContact(this.$stateParams.contactId);
         });
     }
     getContactPosition() {
-        return this.contactsService.getContactPosition(this.$stateParams.contactId) + 1;
+        return this.contacts.getContactPosition(this.$stateParams.contactId) + 1;
     }
     openAddReferralsModal() {
         this.modal.open({
@@ -106,7 +106,7 @@ class ContactController {
             template: require('../logTask/logTask.html'),
             controller: 'logTaskController',
             locals: {
-                contacts: [this.contact.id],
+                selectedContacts: [this.contact.id],
                 toComplete: true,
                 createNext: true,
                 specifiedTask: null,
@@ -119,26 +119,26 @@ class ContactController {
     }
     openAddTaskModal() {
         this.tasksService.openModal({
-            contacts: [this.contact.id],
+            selectedContacts: [this.contact.id],
             onHide: () => {
                 this.tasksService.fetchUncompletedTasks(this.contact.id);
             }
         });
     }
     hideContact() {
-        this.contactsService.hideContact(this.contact.id).then(() => {
-            if (this.contactsService.canGoRight(this.contact.id)) {
-                this.$state.go('contact', {contactId: this.contactsService.getRightId(this.contact.id)});
-            } else if (this.contactsService.canGoLeft(this.contact.id)) {
-                this.$state.go('contact', {contactId: this.contactsService.getLeftId(this.contact.id)});
+        this.contacts.hideContact(this.contact.id).then(() => {
+            if (this.contacts.canGoRight(this.contact.id)) {
+                this.$state.go('contact', {contactId: this.contacts.getRightId(this.contact.id)});
+            } else if (this.contacts.canGoLeft(this.contact.id)) {
+                this.$state.go('contact', {contactId: this.contacts.getLeftId(this.contact.id)});
             }
         });
     }
     goLeft() {
-        this.$state.go('contact', { contactId: this.contactsService.getLeftId(this.contact.id) });
+        this.$state.go('contact', { contactId: this.contacts.getLeftId(this.contact.id) });
     }
     goRight() {
-        this.$state.go('contact', { contactId: this.contactsService.getRightId(this.contact.id) });
+        this.$state.go('contact', { contactId: this.contacts.getRightId(this.contact.id) });
     }
     hidePreviousContact() {
         return this.moveContact.previous_contact === 0 || this.moveContact.previous_contact === '';

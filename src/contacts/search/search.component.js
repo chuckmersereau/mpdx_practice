@@ -1,9 +1,9 @@
 class ContactsSearchController {
-    contactsService;
+    contacts;
     contactFilter;
 
-    constructor(contactFilter, contactsService) {
-        this.contactsService = contactsService;
+    constructor(contactFilter, contacts) {
+        this.contacts = contacts;
         this.contactFilter = contactFilter;
 
         this.searchParams = '';

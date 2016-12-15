@@ -1,7 +1,7 @@
 class LogTaskController {
     ajaxAction;
+    selectedContacts;
     contacts;
-    contactsService;
     contactsTags;
     createNext;
     modal;
@@ -10,13 +10,13 @@ class LogTaskController {
 
     constructor(
         $scope,
-        modal, contactsService, contactsTags, tasksService, serverConstants,
-        contacts, specifiedTask, ajaxAction, toComplete, createNext
+        modal, contacts, contactsTags, tasksService, serverConstants,
+        selectedContacts, specifiedTask, ajaxAction, toComplete, createNext
     ) {
         this.$scope = $scope;
         this.ajaxAction = ajaxAction;
+        this.selectedContacts = selectedContacts;
         this.contacts = contacts;
-        this.contactsService = contactsService;
         this.contactsTags = contactsTags;
         this.createNext = createNext;
         this.modal = modal;
@@ -50,7 +50,7 @@ class LogTaskController {
             this.ajaxAction || 'post',
             this.specifiedTask ? this.specifiedTask.id : null,
             this.models,
-            this.contacts,
+            this.selectedContacts,
             this.toComplete
         ).then(() => {
             this.$scope.$hide();
@@ -61,14 +61,14 @@ class LogTaskController {
                     locals: {
                         specifiedAction: this.models.nextAction,
                         specifiedSubject: this.models.nextAction,
-                        contacts: this.contacts,
+                        selectedContacts: this.selectedContacts,
                         modalTitle: 'Follow up Task'
                     },
                     onHide: () => {
-                        if (this.contacts.length === 1) {
-                            this.tasksService.fetchUncompletedTasks(this.contacts[0]);
+                        if (this.selectedContacts.length === 1) {
+                            this.tasksService.fetchUncompletedTasks(this.selectedContacts[0]);
                         }
-                        this.contactsService.load(true);
+                        this.contacts.load(true);
                     }
                 });
             }

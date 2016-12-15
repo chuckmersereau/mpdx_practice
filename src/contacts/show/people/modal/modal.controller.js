@@ -1,6 +1,6 @@
 class PersonModalController {
-    constructor($scope, contactsService, contact, person) {
-        this.contactsService = contactsService;
+    constructor($scope, contacts, contact, person) {
+        this.contacts = contacts;
         this.contact = contact;
         this.person = person;
         this.$scope = $scope;
@@ -33,7 +33,7 @@ class PersonModalController {
             } else {
                 this.contact.people.push(this.person);
             }
-            this.contactsService.save(this.contact).then(() => {
+            this.contacts.save(this.contact).then(() => {
                 this.$scope.$hide();
             });
         }

@@ -1,6 +1,6 @@
 class ListController {
     alerts;
-    contactsService;
+    contacts;
     contactsTags;
     currentAccountList;
     modal;
@@ -8,11 +8,11 @@ class ListController {
 
     constructor(
         modal,
-        contactsService, contactsTags, alerts, tasksService, currentAccountList
+        contacts, contactsTags, alerts, tasksService, currentAccountList
     ) {
         this.modal = modal;
         this.alerts = alerts;
-        this.contactsService = contactsService;
+        this.contacts = contacts;
         this.contactsTags = contactsTags;
         this.currentAccountList = currentAccountList;
         this.tasksService = tasksService;
@@ -24,30 +24,30 @@ class ListController {
         };
     }
     loadMoreContacts() {
-        this.contactsService.loadMoreContacts();
+        this.contacts.loadMoreContacts();
     }
     resetFilters() {
-        this.contactsService.resetFilters();
+        this.contacts.resetFilters();
     }
     clearSelectedContacts() {
-        this.contactsService.clearSelectedContacts();
+        this.contacts.clearSelectedContacts();
     }
     toggleAllContacts() {
-        if (this.contactsService.getSelectedContacts().length < this.contactsService.data.length) {
-            this.contactsService.selectAllContacts();
+        if (this.contacts.getSelectedContacts().length < this.contacts.data.length) {
+            this.contacts.selectAllContacts();
         } else {
-            this.contactsService.clearSelectedContacts();
+            this.contacts.clearSelectedContacts();
         }
     }
     hideContact(contactId) {
-        this.contactsService.hideContact(contactId);
+        this.contacts.hideContact(contactId);
     }
     openAddTagModal() {
         this.modal.open({
             template: require('../../common/tags/add/add.html'),
             controller: 'addTagController',
             locals: {
-                contacts: this.contactsService.getSelectedContactIds()
+                selectedContacts: this.contacts.getSelectedContactIds()
             }
         });
     }
@@ -56,13 +56,13 @@ class ListController {
             template: require('../../common/tags/remove/remove.html'),
             controller: 'removeTagController',
             locals: {
-                contacts: this.contactsService.getSelectedContactIds()
+                selectedContacts: this.contacts.getSelectedContactIds()
             }
         });
     }
     openAddTaskModal() {
         this.tasksService.openModal({
-            contacts: this.contactsService.getSelectedContactIds()
+            selectedContacts: this.contacts.getSelectedContactIds()
         });
     }
     openLogTaskModal() {
@@ -70,7 +70,7 @@ class ListController {
             template: require('../logTask/logTask.html'),
             controller: 'logTaskController',
             locals: {
-                contacts: this.contactsService.getSelectedContactIds(),
+                selectedContacts: this.contacts.getSelectedContactIds(),
                 toComplete: true,
                 createNext: true,
                 specifiedTask: null,
@@ -83,12 +83,12 @@ class ListController {
             template: require('./editFields/editFields.html'),
             controller: 'editFieldsController',
             locals: {
-                contacts: this.contactsService.getSelectedContactIds()
+                selectedContacts: this.contacts.getSelectedContactIds()
             }
         });
     }
     openMergeContactsModal() {
-        var selectedLength = this.contactsService.getSelectedContacts().length;
+        var selectedLength = this.contacts.getSelectedContacts().length;
         if (selectedLength < 2) {
             this.alerts.addAlert('You must select at least 2 contacts to merge.', 'danger');
         } else if (selectedLength > 8) {
@@ -98,8 +98,8 @@ class ListController {
                 template: require('./mergeContacts/mergeContacts.html'),
                 controller: 'mergeContactsController',
                 locals: {
-                    contactIds: this.contactsService.getSelectedContactIds(),
-                    contactNames: this.contactsService.getSelectedContactNames()
+                    contactIds: this.contacts.getSelectedContactIds(),
+                    contactNames: this.contacts.getSelectedContactNames()
                 }
             });
         }
