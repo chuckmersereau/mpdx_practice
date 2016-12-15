@@ -26,4 +26,4 @@ class DesignationAccountsService {
 }
 
 export default angular.module('mpdx.common.designationAccounts.service', [])
-    .service('designationAccountsService', DesignationAccountsService).name;
+    .service('designationAccounts', DesignationAccountsService).name;
