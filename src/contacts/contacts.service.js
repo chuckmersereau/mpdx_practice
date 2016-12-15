@@ -1,14 +1,17 @@
 class ContactsService {
     api;
     cache;
+    contactFilter;
     contactsTags;
-    filterService;
 
-    constructor($rootScope, filterService, contactsTags, cache, api, $location) {
+    constructor(
+        $location, $rootScope,
+        api, cache, contactFilter, contactsTags
+    ) {
         this.api = api;
         this.cache = cache;
+        this.contactFilter = contactFilter;
         this.contactsTags = contactsTags;
-        this.filterService = filterService;
 
 
         this.data = [];
@@ -17,13 +20,13 @@ class ContactsService {
 
         this.page = 1;
 
-        $rootScope.$watch(() => this.filterService.params, (newVal, oldVal) => {
+        $rootScope.$watch(() => this.contactFilter.params, (newVal, oldVal) => {
             if (!_.isEmpty(newVal) && !_.isEmpty(oldVal)) {
                 this.load(true);
             }
         }, true);
 
-        $rootScope.$watch(() => this.filterService.wildcard_search, () => {
+        $rootScope.$watch(() => this.contactFilter.wildcard_search, () => {
             const query = $location.search().q;
             if (query) {
                 $location.search('q', null);
@@ -54,9 +57,9 @@ class ContactsService {
         this.loading = true;
         let newContacts;
 
-        let filterParams = this.findChangedFilters(this.filterService.default_params, this.filterService.params);
+        let filterParams = this.findChangedFilters(this.contactFilter.default_params, this.contactFilter.params);
 
-        const wildcardSearch = this.filterService.wildcard_search;
+        const wildcardSearch = this.contactFilter.wildcard_search;
         if (wildcardSearch) {
             filterParams.wildcard_search = wildcardSearch;
         }
@@ -274,7 +277,7 @@ class ContactsService {
     findChangedFilters(defaultParams, params) {
         var filterParams = {};
         _.forIn(params, (filter, key) => {
-            if (_.has(this.filterService.params, key)) {
+            if (_.has(this.contactFilter.params, key)) {
                 const currentDefault = defaultParams[key];
                 if (_.isArray(filter)) {
                     if (currentDefault.sort().join(',') !== filter.sort().join(',')) {
@@ -288,7 +291,7 @@ class ContactsService {
         return filterParams;
     }
     resetFilters() {
-        this.filterService.reset();
+        this.contactFilter.reset();
     }
     getSelectedContacts() {
         return this.data.filter((contact) => {
@@ -400,7 +403,7 @@ class ContactsService {
     }
 }
 
-import filterService from './filter/filter.service';
+import contactFilter from './filter/filter.service';
 
-export default angular.module('mpdx.contacts.service', [filterService])
+export default angular.module('mpdx.contacts.service', [contactFilter])
     .service('contactsService', ContactsService).name;

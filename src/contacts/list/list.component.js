@@ -8,7 +8,7 @@ class ListController {
 
     constructor(
         modal,
-        contactsService, filterService, contactsTags, alerts, tasksService, currentAccountList
+        contactsService, contactsTags, alerts, tasksService, currentAccountList
     ) {
         this.modal = modal;
         this.alerts = alerts;

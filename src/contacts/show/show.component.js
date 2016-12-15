@@ -1,28 +1,27 @@
 class ContactController {
     cache;
     contactsService;
+    contactFilter;
     modal;
     preferencesContactsService;
     referralsService;
-    filterService;
     tasksService;
     contact;
 
     constructor(
         $scope, $state, $stateParams, $location, $anchorScroll, help,
-        modal, cache, contactsService, tasksService, referralsService, preferencesContactsService, filterService, serverConstants
+        modal, cache, contactsService, tasksService, referralsService, preferencesContactsService, contactFilter, serverConstants
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.$location = $location;
         this.$anchorScroll = $anchorScroll;
-
         this.cache = cache;
+        this.contactFilter = contactFilter;
         this.contactsService = contactsService;
         this.modal = modal;
         this.preferencesContactsService = preferencesContactsService;
         this.referralsService = referralsService;
-        this.filterService = filterService;
         this.tasksService = tasksService;
 
         this.selected = $stateParams.contactId;
@@ -164,7 +163,7 @@ class ContactController {
         this.$anchorScroll();
     }
     filterCount() {
-        return this.filterService.count();
+        return this.contactFilter.count();
     }
 }
 

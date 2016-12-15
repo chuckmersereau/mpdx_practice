@@ -85,4 +85,4 @@ class FilterService {
     }
 }
 export default angular.module('mpdx.services.filter', [])
-    .service('filterService', FilterService).name;
+    .service('contactFilter', FilterService).name;

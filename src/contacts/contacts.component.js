@@ -1,9 +1,9 @@
 class ContactsController {
-    filterService;
+    contactFilter;
 
-    constructor($stateParams, filterService, help) {
+    constructor($stateParams, contactFilter, help) {
         this.$stateParams = $stateParams;
-        this.filterService = filterService;
+        this.contactFilter = contactFilter;
 
         help.suggest([
             '5845aa229033600698176a54',
@@ -22,7 +22,7 @@ class ContactsController {
     }
     $onInit() {
         if (this.$stateParams.filter) {
-            _.assign(this.filterService.params, this.filterService.params, this.$stateParams.filter);
+            _.assign(this.contactFilter.params, this.contactFilter.params, this.$stateParams.filter);
         }
     }
 }
