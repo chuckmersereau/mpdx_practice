@@ -8,7 +8,7 @@ class ContactController {
     tasksService;
 
     constructor(
-        $scope, $state, $stateParams, $location, $anchorScroll, help
+        $scope, $state, $stateParams, $location, $anchorScroll, help,
         modal, contacts, tasksService, contactReferrals, preferencesContacts, contactFilter, serverConstants
     ) {
         this.$anchorScroll = $anchorScroll;
