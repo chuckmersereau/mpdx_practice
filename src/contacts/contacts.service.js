@@ -255,20 +255,15 @@ class ContactsService {
         });
     }
     create(contact) {
-        let deffered = this.$q.defer();
         let contactObj = {
             name: contact.name,
             prefill_attributes_on_create: true
         };
 
-        this.api.post('contacts', {contact: contactObj}).then((data) => {
+        return this.api.post('contacts', {contact: contactObj}).then((data) => {
             this.cache.updateContact(data.contact, data);
-            this.cache.get(data.contact.id).then((contact) => {
-                deffered.resolve(contact);
-            });
+            return this.cache.get(data.contact.id);
         });
-
-        return deffered.promise;
     }
     loadMoreContacts() {
         if (this.loading) return;
