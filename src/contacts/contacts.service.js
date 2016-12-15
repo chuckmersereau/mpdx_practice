@@ -3,16 +3,17 @@ class ContactsService {
     api;
     cache;
     contactFilter;
-    tags;
+    contactsTags;
 
     constructor(
-        $rootScope, $location,
-        contactFilter, tags, cache, api
+        $location, $rootScope,
+        api, cache, contactFilter, contactsTags
     ) {
         this.api = api;
         this.cache = cache;
         this.contactFilter = contactFilter;
-        this.tags = tags;
+        this.contactsTags = contactsTags;
+
 
         this.analytics = null;
         this.data = [];
@@ -44,9 +45,9 @@ class ContactsService {
 
         $rootScope.$watch(() => {
             return angular.toJson({
-                selected: this.tags.selectedTags.length,
-                rejected: this.tags.rejectedTags.length,
-                any: this.tags.anyTags
+                selected: this.contactsTags.selectedTags.length,
+                rejected: this.contactsTags.rejectedTags.length,
+                any: this.contactsTags.anyTags
             });
         }, (newVal, oldVal) => {
             if (newVal !== oldVal) {
@@ -70,13 +71,13 @@ class ContactsService {
             filterParams.wildcard_search = wildcardSearch;
         }
 
-        if (this.tags.selectedTags.length > 0) {
-            filterParams.tags = this.tags.selectedTags;
+        if (this.contactsTags.selectedTags.length > 0) {
+            filterParams.tags = this.contactsTags.selectedTags;
         }
-        if (this.tags.rejectedTags.length > 0) {
-            filterParams.exclude_tags = this.tags.rejectedTags;
+        if (this.contactsTags.rejectedTags.length > 0) {
+            filterParams.exclude_tags = this.contactsTags.rejectedTags;
         }
-        filterParams.any_tags = this.tags.anyTags;
+        filterParams.any_tags = this.contactsTags.anyTags;
 
         return this.api.get('contacts', {filters: filterParams, page: this.page, per_page: 25, include: 'people'}).then((data) => {
             if (reset) {

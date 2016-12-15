@@ -2,26 +2,26 @@ class LogTaskController {
     ajaxAction;
     selectedContacts;
     contacts;
+    contactsTags;
     createNext;
     modal;
     serverConstants;
-    tags;
     tasksService;
 
     constructor(
         $scope,
-        modal, contacts, tags, tasksService, serverConstants,
+        modal, contacts, contactsTags, tasksService, serverConstants,
         selectedContacts, specifiedTask, ajaxAction, toComplete, createNext
     ) {
         this.$scope = $scope;
         this.ajaxAction = ajaxAction;
         this.selectedContacts = selectedContacts;
         this.contacts = contacts;
+        this.contactsTags = contactsTags;
         this.createNext = createNext;
         this.modal = modal;
         this.serverConstants = serverConstants;
         this.specifiedTask = specifiedTask;
-        this.tags = tags;
         this.tasksService = tasksService;
         this.toComplete = toComplete;
 

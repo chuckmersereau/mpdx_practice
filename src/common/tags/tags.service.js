@@ -83,4 +83,4 @@ class TagsService {
 }
 
 export default angular.module('mpdx.common.tags.service', [])
-    .service('tags', TagsService).name;
+    .service('contactsTags', TagsService).name;

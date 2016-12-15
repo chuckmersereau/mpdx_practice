@@ -241,7 +241,8 @@ function openPeopleModal($state, $stateParams, modal, cache) {
 
 /*@ngInject*/
 function openMergePeopleModal(
-    $state, $stateParams, modal, cache
+    $state, $stateParams,
+    modal, cache, contacts
 ) {
     cache.get($stateParams.contactId).then((contact) => {
         const peopleIds = $stateParams.peopleIds.split(',');
@@ -255,6 +256,7 @@ function openMergePeopleModal(
                 people: people
             },
             onHide: () => {
+                contacts.load(true);
                 $state.go('^');
             }
         });

@@ -19,7 +19,6 @@ import modal from './modal/index.module';
 import momentFilter from './moment/moment.filter';
 import monthRange from './monthRange/monthRange.service';
 import rawNumber from './rawNumber/rawNumber.directive';
-import rollout from './rollout/rollout.service';
 import selectionStore from './selectionStore/selectionStore.service';
 import serverConstants from './serverConstants/serverConstants.service';
 import session from './session/session.service';
@@ -50,7 +49,6 @@ export default angular.module('mpdx.common', [
     momentFilter,
     monthRange,
     rawNumber,
-    rollout,
     selectionStore,
     serverConstants,
     session,

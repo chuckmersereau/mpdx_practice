@@ -1,6 +1,5 @@
 class ContactNotesController {
     contacts;
-    moment;
 
     constructor(
         contacts

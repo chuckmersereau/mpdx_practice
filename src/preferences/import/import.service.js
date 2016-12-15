@@ -66,4 +66,4 @@ class ImportsService {
 }
 
 export default angular.module('mpdx.preferences.import.service', [])
-    .service('importsService', ImportsService).name;
+    .service('preferencesImports', ImportsService).name;

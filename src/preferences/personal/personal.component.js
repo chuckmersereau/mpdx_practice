@@ -3,12 +3,11 @@ class PersonalPreferencesController {
     accounts;
     alerts;
     api;
-    rollout;
     users;
 
     constructor(
-        $state, $stateParams, $window,
-        accounts, api, alerts, gettextCatalog, rollout, users
+        $state, $stateParams, $window, gettextCatalog,
+        accounts, api, alerts, users
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
@@ -17,7 +16,6 @@ class PersonalPreferencesController {
         this.alerts = alerts;
         this.api = api;
         this.gettextCatalog = gettextCatalog;
-        this.rollout = rollout;
         this.users = users;
 
         this.saving = false;
@@ -80,7 +78,7 @@ class PersonalPreferencesController {
         this.users.current.attributes.preferences.default_account_list = parseInt(this.default_account_list);
     }
     setSalaryOrg() {
-        this.salary_organization_string = this.personalService.data.salary_organization_id;
+        this.salary_organization_string = this.personal.data.salary_organization_id;
     }
     getCountry(locale) {
         if (!locale) return;

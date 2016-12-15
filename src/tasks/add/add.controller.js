@@ -1,22 +1,22 @@
 class AddTaskController {
     selectedContacts;
     contacts;
+    contactsTags;
     serverConstants;
-    tags;
     tasksService;
 
     constructor(
         $scope,
-        tags, serverConstants, tasksService, contacts,
+        contactsTags, serverConstants, tasksService, contacts,
         selectedContacts, specifiedAction, specifiedSubject, modalTitle
     ) {
         this.$scope = $scope;
         this.selectedContacts = selectedContacts;
         this.contacts = contacts;
+        this.contactsTags = contactsTags;
         this.serverConstants = serverConstants;
         this.specifiedAction = specifiedAction;
         this.specifiedSubject = specifiedSubject;
-        this.tags = tags;
         this.tasksService = tasksService;
 
         this.modalTitle = modalTitle;
@@ -55,7 +55,7 @@ class AddTaskController {
         }
         return promise.then(() => {
             this.contacts.load(true);
-            this.tags.load();
+            this.contactsTags.load();
             this.$scope.$hide();
         });
     }

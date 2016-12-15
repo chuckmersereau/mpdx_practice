@@ -21,10 +21,7 @@ class AddressModalController {
         let $ctrl = this;
         this.updateAddress = function() { //workaround for weird bindings in google places
             let updatedAddress = this.getPlace();
-            $ctrl.address = {id: $ctrl.address.id, street: '', location: $ctrl.address.location || 'Home'};
-            if (_.has(updatedAddress, 'geometry.location')) {
-                $ctrl.address.map = '[' + updatedAddress.geometry.location.lat() + ',' + updatedAddress.geometry.location.lng() + ']';
-            }
+            $ctrl.address = {id: $ctrl.address.id, street: '', location: $ctrl.address.location || 'Home', gmap: updatedAddress};
             $ctrl.refreshMap();
             _.each(updatedAddress.address_components, (component) => {
                 switch (component.types[0]) {
@@ -59,20 +56,27 @@ class AddressModalController {
             });
         };
 
-        this.activate();
-    }
-    activate() {
         this.serverConstants.fetchConstants(['assignable_locations']);
 
         if (angular.isDefined(this.address)) {
-            this.address.map = this.address.geo; //set initial map value
             this.modalTitle = 'Edit Address';
+            let geocoder = new this.$window.google.maps.Geocoder();
+            geocoder.geocode({
+                address: `${this.address.street} ${this.address.city}`
+            }, (results, status) => {
+                if (status === 'OK' && results.length > 0) {
+                    this.address.gmap = results[0];
+                    this.refreshMap();
+                }
+            });
         } else {
             this.modalTitle = 'Add Address';
             this.address = { street: '', location: 'Home' };
         }
-
-        this.$timeout(this.refreshMap.bind(this), 500);
+        this.$scope.$on('mapInitialized', function(evt, evtMap) {
+            this.maps.push(evtMap);
+            this.refreshMap();
+        }.bind(this));
     }
     save(isValid) {
         if (isValid) {
@@ -105,8 +109,18 @@ class AddressModalController {
         return '';
     }
     refreshMap() {
-        _.each(this.maps, (index) => {
-            this.$window.google.maps.event.trigger(index, 'resize');
+        _.each(this.maps, (map) => {
+            if (angular.isDefined(this.address.gmap)) {
+                if (angular.isDefined(this.marker)) {
+                    this.marker.setMap(null);
+                }
+                this.marker = new this.$window.google.maps.Marker({
+                    map: map,
+                    position: this.address.gmap.geometry.location
+                });
+                this.$window.google.maps.event.trigger(map, 'resize');
+                map.setCenter(this.address.gmap.geometry.location);
+            }
         });
     }
     remove() {

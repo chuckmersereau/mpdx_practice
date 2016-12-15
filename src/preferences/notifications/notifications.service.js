@@ -36,4 +36,4 @@ class NotificationsService {
 }
 
 export default angular.module('mpdx.preferences.notifications.service', [])
-    .service('notificationsService', NotificationsService).name;
+    .service('notifications', NotificationsService).name;

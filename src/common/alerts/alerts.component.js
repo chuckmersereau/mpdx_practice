@@ -1,4 +1,5 @@
 class AlertsController {
+    alerts;
     constructor(alerts) {
         this.alerts = alerts;
     }

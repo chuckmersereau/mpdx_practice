@@ -1,18 +1,18 @@
 class FilterController {
     contacts;
     contactFilter;
+    contactsTags;
     modal;
-    tags;
 
     constructor(
         $stateParams, gettextCatalog,
-        contactFilter, tags, contacts, modal
+        contactFilter, contactsTags, contacts, modal
     ) {
         this.modal = modal;
         this.contacts = contacts;
         this.contactFilter = contactFilter;
+        this.contactsTags = contactsTags;
         this.gettextCatalog = gettextCatalog;
-        this.tags = tags;
 
         this.dateRangeLocale = {
             applyLabel: this.gettextCatalog.getString('Filter'),
@@ -24,15 +24,15 @@ class FilterController {
         }
     }
     resetFiltersAndTags() {
-        if (this.tags.isResettable()) {
-            this.tags.reset();
+        if (this.contactsTags.isResettable()) {
+            this.contactsTags.reset();
         }
         if (this.contactFilter.resettable) {
             this.contactFilter.reset();
         }
     }
     showReset() {
-        return this.tags.isResettable() || this.contactFilter.resettable;
+        return this.contactsTags.isResettable() || this.contactFilter.resettable;
     }
 
     openMapContactsModal() {
@@ -46,8 +46,8 @@ class FilterController {
     }
     // Invert the selected options of a multiselect filter
     invertMultiselect(filter) {
-        const allOptions = _.map(filter.options, option => option.id);
-        const selectedOptions = this.contactFilter.params[filter.name];
+        var allOptions = _.map(filter.options, option => option.id);
+        var selectedOptions = this.contactFilter.params[filter.name];
 
         let allOption = '';
         if (filter.name === 'status') {

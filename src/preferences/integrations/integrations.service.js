@@ -51,4 +51,4 @@ class IntegrationsService {
     }
 }
 export default angular.module('mpdx.preferences.integrations.service', [])
-    .service('integrationsService', IntegrationsService).name;
+    .service('integrations', IntegrationsService).name;

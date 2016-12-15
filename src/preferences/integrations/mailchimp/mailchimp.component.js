@@ -1,28 +1,26 @@
 class MailchimpIntegrationPreferencesController {
     alerts;
-    mailchimpService;
-    rollout;
+    mailchimp;
     state;
 
     constructor(
-        $scope, mailchimpService, alerts, rollout
+        $scope, mailchimp, alerts
     ) {
-        this.mailchimpService = mailchimpService;
+        this.mailchimp = mailchimp;
         this.alerts = alerts;
-        this.rollout = rollout;
         this.saving = false;
         this.showSettings = false;
 
-        $scope.$watch(() => this.mailchimpService.state, () => {
-            this.state = this.mailchimpService.state;
+        $scope.$watch(() => this.mailchimp.state, () => {
+            this.state = this.mailchimp.state;
         });
     }
     save() {
         this.saving = true;
-        this.mailchimpService.save().then(() => {
+        this.mailchimp.save().then(() => {
             this.alerts.addAlert('Preferences saved successfully', 'success');
             this.saving = false;
-            if (this.mailchimpService.data.primary_list_id !== null) {
+            if (this.mailchimp.data.primary_list_id !== null) {
                 this.hide();
             }
         }).catch((data) => {
@@ -33,13 +31,13 @@ class MailchimpIntegrationPreferencesController {
         });
     }
     hide() {
-        this.mailchimpService.loading = true;
-        this.mailchimpService.load();
+        this.mailchimp.loading = true;
+        this.mailchimp.load();
         this.showSettings = false;
     }
     sync() {
         this.saving = true;
-        return this.mailchimpService.sync().then(() => {
+        return this.mailchimp.sync().then(() => {
             this.saving = false;
             this.alerts.addAlert('MPDX is now syncing your newsletter recipients with Mailchimp', 'success');
         }).catch(() => {
@@ -49,10 +47,10 @@ class MailchimpIntegrationPreferencesController {
     }
     disconnect() {
         this.saving = true;
-        return this.mailchimpService.disconnect().then(() => {
+        return this.mailchimp.disconnect().then(() => {
             this.saving = false;
             this.alerts.addAlert('MPDX removed your integration with MailChimp', 'success');
-            this.mailchimpService.load();
+            this.mailchimp.load();
         }).catch(() => {
             this.alerts.addAlert('MPDX couldn\'t save your configuration changes for MailChimp', 'danger');
             this.saving = false;
