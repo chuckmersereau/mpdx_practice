@@ -7,24 +7,24 @@ class monthRangeService {
     /** Get the month that is at the start of a X month range before and including the current month in format YYYY-MM-DD where DD is the first day of the month */
     getStartingMonth(numberOfMonths) {
         // We subtract 1 so that the current month is included
-        return moment().subtract(numberOfMonths - 1, 'months').format('YYYY-MM') + '-01';
+        return moment().subtract(numberOfMonths - 1, 'months').startOf('month').format('YYYY-MM-DD');
     }
 
     /** Get array of months from any number of months before */
     getPastMonths(numberOfMonths) {
-        var numberOfMonthsToGet = numberOfMonths || 12;
+        const numberOfMonthsToGet = numberOfMonths || 12;
 
         return this.generateMonthRange(this.getStartingMonth(numberOfMonthsToGet), this.getEndOfThisMonth());
     }
 
     /** Get array of months between dateFrom and dateTo */
     generateMonthRange(startDate, endDate) {
-        var formattedStartDate = moment(startDate, 'YYYY-MM-DD');
-        var formattedEndDate = moment(endDate, 'YYYY-MM-DD');
-        var range = moment.range(formattedStartDate, formattedEndDate);
-        var allMonths = [];
-        range.by('months', () => {
-            allMonths.push(moment().format('YYYY-MM'));
+        const formattedStartDate = moment(startDate, 'YYYY-MM-DD');
+        const formattedEndDate = moment(endDate, 'YYYY-MM-DD');
+        const range = moment.range(formattedStartDate, formattedEndDate);
+        const allMonths = [];
+        range.by('months', (moment) => {
+            allMonths.push(moment.format('YYYY-MM-DD'));
         }, true);
 
         return allMonths;
