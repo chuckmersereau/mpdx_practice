@@ -68,7 +68,7 @@ class CacheService {
     }
     convertFromWebsite(values, kind) {
         return _.map(values, (value) => {
-            const result = {id: value.id, kind: kind, _destroy: 0};
+            let result = {id: value.id, kind: kind, _destroy: 0};
             if (kind === 'twitter') {
                 result.url = value.screen_name;
             } else {
