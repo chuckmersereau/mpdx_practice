@@ -4,12 +4,11 @@ class ContactsService {
     filterService;
     tagsService;
 
-    constructor($location, $q, $rootScope, filterService, tagsService, cache, api) {
+    constructor($location, $rootScope, filterService, tagsService, cache, api) {
         this.api = api;
         this.cache = cache;
         this.filterService = filterService;
         this.tagsService = tagsService;
-        this.$q = $q;
 
         this.data = [];
         this.meta = {};
