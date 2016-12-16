@@ -46,10 +46,10 @@ class FilterController {
     }
     // Invert the selected options of a multiselect filter
     invertMultiselect(filter) {
-        var allOptions = _.map(filter.options, option => option.id);
-        var selectedOptions = this.contactFilter.params[filter.name];
+        const allOptions = _.map(filter.options, option => option.id);
+        let selectedOptions = this.contactFilter.params[filter.name];
 
-        var allOption = '';
+        let allOption = '';
         if (filter.name === 'status') {
             allOption = 'active';
         }
