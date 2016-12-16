@@ -1,5 +1,6 @@
 class OrganizationService {
     api;
+    state;
 
     constructor(
         $rootScope, api
@@ -11,10 +12,7 @@ class OrganizationService {
 
         this.activate();
 
-        this.account_list_id = api.account_list_id;
-
         $rootScope.$watch(() => api.account_list_id, () => {
-            this.account_list_id = api.account_list_id;
             this.load();
         });
     }

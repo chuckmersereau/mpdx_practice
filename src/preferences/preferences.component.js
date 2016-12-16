@@ -11,7 +11,6 @@ class PreferencesController {
 
 const Preferences = {
     controller: PreferencesController,
-    controllerAs: 'vm',
     template: require('./preferences.html')
 };
 

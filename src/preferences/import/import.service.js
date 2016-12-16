@@ -45,9 +45,9 @@ class ImportsService {
         }
     }
     saveGoogleImport() {
-        var data = angular.copy(this.google_contact_import);
+        const data = angular.copy(this.google_contact_import);
         if (angular.isDefined(data) && data !== null) {
-            for (var key in data.group_tags) {
+            for (let key in data.group_tags) {
                 if (data.group_tags.hasOwnProperty(key)) {
                     data.group_tags[key] = data.group_tags[key].map(tagArr => tagArr.text);
                 }
