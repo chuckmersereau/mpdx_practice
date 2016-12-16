@@ -20,14 +20,11 @@ class ServerConstantsService {
         this.fetchPromises = {};
     }
     //tasks/next_actions   tasks/actions   tasks/results
-    fetchConstant(constantName, url, cb) {
+    fetchConstant(constantName, url) {
         if (!_.get(this.isFetching.constants, constantName, false)) {
             this.isFetching.constants[constantName] = true;
-            let promise = this.api.get(url, {}).then((data) => {
+            let promise = this.api.get(url).then((data) => {
                 this.data[constantName] = data;
-                if (cb) {
-                    cb();
-                }
                 this.isFetching.constants[constantName] = false;
             });
             this.fetchPromises[constantName] = promise;
@@ -35,7 +32,7 @@ class ServerConstantsService {
         }
         return this.fetchPromises[constantName];
     }
-    fetchConstants(constantsNames, cb) {
+    fetchConstants(constantsNames) {
         if (this.isFetching.all === true) {
             return this.fetchPromises.all;
         }
@@ -76,10 +73,6 @@ class ServerConstantsService {
                     this.isFetching.all = false;
                 }
             });
-
-            if (cb) {
-                cb();
-            }
         });
         const keys = _.difference(fetchConstantsNames, excludeConstantsNames);
         _.each(keys, (key) => {
