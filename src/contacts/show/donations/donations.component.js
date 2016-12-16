@@ -1,5 +1,7 @@
 class ContactDonationsController {
     contact;
+    donations;
+    donationsMeta;
     contactDonations;
     modal;
 
@@ -14,8 +16,14 @@ class ContactDonationsController {
         this.donationMeta = {page: 0};
         this.loading = false;
     }
-    $onInit() {
-        if (this.contact.id) {
+    // $onInit() {
+    //     if (this.contact.id) {
+    //         this.getDonations();
+    //         this.getDonationsGraph();
+    //     }
+    // }
+    $onChanges(changesObj) {
+        if (_.has(changesObj, 'contact.id')) {
             this.getDonations();
             this.getDonationsGraph();
         }
@@ -30,7 +38,7 @@ class ContactDonationsController {
     }
     getDonationsGraph() {
         this.contactDonations.getDonationsGraphForContact(this.contact.id).then((data) => {
-            var subtitle = 'Average donations remain unchanged from last year';
+            let subtitle = 'Average donations remain unchanged from last year';
             if (data.amount > 0) {
                 subtitle = 'Average donations up <span style="color:green">' + data.amount + '</span> from last year';
             } else if (data.amount < 0) {
@@ -94,12 +102,6 @@ class ContactDonationsController {
                 donation: donation
             }
         });
-    }
-    $onChanges(changesObj) {
-        if (_.has(changesObj, 'contact.id')) {
-            this.getDonations();
-            this.getDonationsGraph();
-        }
     }
 }
 
