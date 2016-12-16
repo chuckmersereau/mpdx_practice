@@ -1,10 +1,13 @@
 class DesignationAccountsService {
+    api;
+    data;
+
     constructor(
         $rootScope, api
     ) {
         this.api = api;
 
-        this.designationAccounts = [];
+        this.data = [];
         this.loading = true;
 
         this.load();
@@ -16,10 +19,10 @@ class DesignationAccountsService {
     load() {
         this.loading = true;
         this.api.get('designation_accounts').then((data) => {
-            while (this.designationAccounts.length > 0) {
-                this.designationAccounts.pop();
+            while (this.data.length > 0) {
+                this.data.pop();
             }
-            Array.prototype.push.apply(this.designationAccounts, data.designation_accounts);
+            Array.prototype.push.apply(this.data, data.designation_accounts);
             this.loading = false;
         });
     }
