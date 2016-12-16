@@ -16,7 +16,6 @@ class HelpService {
 
     suggest(articleIds) {
         HS.beacon.ready(() => {
-            console.log(articleIds);
             HS.beacon.suggest(articleIds);
         });
     }

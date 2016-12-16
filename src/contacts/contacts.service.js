@@ -4,7 +4,7 @@ class ContactsService {
     filterService;
     tagsService;
 
-    constructor($rootScope, filterService, tagsService, cache, api, $location) {
+    constructor($location, $rootScope, filterService, tagsService, cache, api) {
         this.api = api;
         this.cache = cache;
         this.filterService = filterService;
@@ -259,9 +259,9 @@ class ContactsService {
             prefill_attributes_on_create: true
         };
 
-        this.loading = true;
-        return this.api.post('contacts', {contact: contactObj}).then(() => {
-            this.loading = false;
+        return this.api.post('contacts', {contact: contactObj}).then((data) => {
+            this.cache.updateContact(data.contact, data);
+            return this.cache.get(data.contact.id);
         });
     }
     loadMoreContacts() {
