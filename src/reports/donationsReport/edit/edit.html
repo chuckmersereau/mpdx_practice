@@ -44,7 +44,7 @@
                     <label for="appeal_id" translate>Appeal</label>
                     <select ng-model="$ctrl.donation.appeal_id" id="appeal_id" class="form-control">
                         <option value=""></option>
-                        <option ng-repeat="appeal in $ctrl.appeals.appeals" ng-value="appeal.id">{{appeal.id}} {{appeal.name}}</option>
+                        <option ng-repeat="appeal in $ctrl.appeals.data" ng-value="appeal.id">{{appeal.id}} {{appeal.name}}</option>
                     </select>
                 </div>
 
