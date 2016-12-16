@@ -1,7 +1,8 @@
 class AddTagController {
-    selectedContacts;
     contacts;
     contactsTags;
+    selectedContacts;
+
     constructor(
         $scope,
         contactsTags, contacts,
