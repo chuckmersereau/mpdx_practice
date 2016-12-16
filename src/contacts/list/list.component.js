@@ -88,7 +88,7 @@ class ListController {
         });
     }
     openMergeContactsModal() {
-        var selectedLength = this.contacts.getSelectedContacts().length;
+        const selectedLength = this.contacts.getSelectedContacts().length;
         if (selectedLength < 2) {
             this.alerts.addAlert('You must select at least 2 contacts to merge.', 'danger');
         } else if (selectedLength > 8) {
@@ -114,7 +114,6 @@ class ListController {
 
 const ContactList = {
     controller: ListController,
-    controllerAs: 'vm',
     template: require('./list.html'),
     bindings: {
         view: '@',
