@@ -21,7 +21,7 @@ class MapContactsController {
                 marker = {
                     'lat': geo.split(',')[0],
                     'lng': geo.split(',')[1],
-                    'infowindow': `<a href="/selectedContacts/${contact.id}">${contact.name}</a>`,
+                    'infowindow': `<a href="/contacts/${contact.id}">${contact.name}</a>`,
                     'picture': {
                         'url': this.markerURL(contact.status),
                         'width': 20,
