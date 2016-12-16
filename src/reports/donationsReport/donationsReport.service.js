@@ -1,4 +1,7 @@
 class DonationsReportService {
+    api;
+    session;
+
     constructor(
         $state,
         api, session
