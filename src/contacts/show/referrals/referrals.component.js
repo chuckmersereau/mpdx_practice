@@ -1,5 +1,6 @@
 class ContactReferralsController {
     contactReferrals;
+    moment;
 
     constructor(
         $state, contactReferrals

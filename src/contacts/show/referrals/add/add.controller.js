@@ -15,9 +15,9 @@ class AddReferralsModalController {
     submit() {
         this.api.post(`contacts/${this.contactId}/save_referrals`, { contacts_attributes: this.models }).then((data) => {
             this.$scope.$hide();
-            var successMessage;
-            var failedMessage;
-            var alertType = '';
+            let successMessage;
+            let failedMessage;
+            let alertType = '';
             if (data.success.length) {
                 successMessage = `Successfully added: ${_.map(data.success.map, c => c.greeting).join(', ')}.  `;
                 alertType = 'success';
