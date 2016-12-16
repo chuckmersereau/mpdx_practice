@@ -1,7 +1,10 @@
 class AccountsService {
     api;
 
-    constructor($rootScope, api, $state, session) {
+    constructor(
+        $rootScope, $state,
+        api, session
+    ) {
         this.api = api;
 
         this.data = {};
