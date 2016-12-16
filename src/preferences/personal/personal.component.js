@@ -1,18 +1,16 @@
 class PersonalPreferencesController {
     alertsService;
-    rolloutService;
     personalService;
 
     constructor(
-        $state, $stateParams, $window,
-        personalService, alertsService, gettextCatalog, rolloutService
+        $state, $stateParams, $window, gettextCatalog,
+        alertsService, personalService
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.$window = $window;
         this.alertsService = alertsService;
         this.gettextCatalog = gettextCatalog;
-        this.rolloutService = rolloutService;
         this.personalService = personalService;
 
         this.saving = false;

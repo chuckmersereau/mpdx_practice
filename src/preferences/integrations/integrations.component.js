@@ -1,17 +1,15 @@
 class IntegrationPreferencesController {
     alertsService;
     integrationsService;
-    rolloutService;
 
     constructor(
-        $window, $state, $stateParams, integrationsService, alertsService, rolloutService, helpService
+        $window, $state, $stateParams, integrationsService, alertsService, helpService
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.$window = $window;
         this.alertsService = alertsService;
         this.integrationsService = integrationsService;
-        this.rolloutService = rolloutService;
 
         this.saving = false;
         this.tabId = '';
