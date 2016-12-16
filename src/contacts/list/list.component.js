@@ -14,8 +14,6 @@ class ListController {
         this.alerts = alerts;
         this.contacts = contacts;
         this.modal = modal;
-        this.alerts = alerts;
-        this.contacts = contacts;
         this.contactsTags = contactsTags;
         this.currentAccountList = currentAccountList;
         this.tasksService = tasksService;
