@@ -1,4 +1,7 @@
 class PersonModalController {
+    contact;
+    contacts;
+
     constructor($scope, contacts, contact, person) {
         this.contacts = contacts;
         this.contact = contact;
