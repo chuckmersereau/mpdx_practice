@@ -1,5 +1,6 @@
 class ContactInfoController {
     contact;
+    contacts;
 
     constructor(
         contacts
