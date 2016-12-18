@@ -1,15 +1,16 @@
 class CurrentUser {
     api;
-    helpService;
+    help;
+    personal;
 
     constructor(
         $log,
-        api, helpService, personalService
+        api, help, personal
     ) {
-        this.helpService = helpService;
+        this.help = help;
         this.api = api;
         this.$log = $log;
-        this.personalService = personalService;
+        this.personal = personal;
 
         this.hasAnyUsAccounts = false;
         this.get();
@@ -17,8 +18,8 @@ class CurrentUser {
     get() {
         return this.api.get('current_user').then((currentUser) => {
             _.extend(this, currentUser);
-            this.personalService.load(); //TODO: handle better in api v2,
-            this.helpService.updateUser(this.currentUser);
+            this.personal.load(); //TODO: handle better in api v2,
+            this.help.updateUser(this.currentUser);
         }).catch((err) => {
             this.$log.debug(err);
         });

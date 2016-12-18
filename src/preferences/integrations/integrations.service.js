@@ -1,4 +1,6 @@
 class IntegrationsService {
+    api;
+
     constructor(
         $rootScope, api
     ) {
@@ -20,33 +22,33 @@ class IntegrationsService {
             this.loading = false;
         });
     }
-    sync(service, success, error) {
+    sync(service) {
         var serviceToSync = service.toLowerCase();
         if (serviceToSync === 'prayer letters') {
-            return this.api.get('preferences/integrations/prayer_letters_account/sync').then(success).catch(error);
+            return this.api.get('preferences/integrations/prayer_letters_account/sync');
         }
         if (serviceToSync === 'pls') {
-            return this.api.get('preferences/integrations/pls_account/sync').then(success).catch(error);
+            return this.api.get('preferences/integrations/pls_account/sync');
         }
     }
-    sendToChalkline(success, error) {
-        return this.api.post('preferences/integrations/send_to_chalkline', { }).then(success).catch(error);
+    sendToChalkline() {
+        return this.api.post('preferences/integrations/send_to_chalkline');
     }
-    disconnect(service, success, error, id) {
+    disconnect(service, id) {
         var serviceToDisconnect = service.toLowerCase();
         if (serviceToDisconnect === 'google') {
-            return this.api.delete('preferences/integrations/google_accounts/' + id, { }).then(success).catch(error);
+            return this.api.delete('preferences/integrations/google_accounts/' + id);
         }
         if (serviceToDisconnect === 'key') {
-            return this.api.delete('preferences/integrations/key_accounts/' + id, { }).then(success).catch(error);
+            return this.api.delete('preferences/integrations/key_accounts/' + id);
         }
         if (serviceToDisconnect === 'prayer letters') {
-            return this.api.delete('preferences/integrations/prayer_letters_account', { }).then(success).catch(error);
+            return this.api.delete('preferences/integrations/prayer_letters_account');
         }
         if (serviceToDisconnect === 'pls') {
-            return this.api.delete('preferences/integrations/pls_account', { }).then(success).catch(error);
+            return this.api.delete('preferences/integrations/pls_account');
         }
     }
 }
 export default angular.module('mpdx.preferences.integrations.service', [])
-    .service('integrationsService', IntegrationsService).name;
+    .service('integrations', IntegrationsService).name;

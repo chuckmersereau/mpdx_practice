@@ -17,4 +17,4 @@ class LoginService {
 }
 
 export default angular.module('mpdx.common.login.service', [])
-    .service('loginService', LoginService).name;
+    .service('login', LoginService).name;

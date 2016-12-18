@@ -23,4 +23,4 @@ class HelpService {
 }
 
 export default angular.module('mpdx.common.help', [])
-    .service('helpService', HelpService).name;
+    .service('help', HelpService).name;

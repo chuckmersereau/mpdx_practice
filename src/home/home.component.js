@@ -1,11 +1,11 @@
 class HomeController {
     currentAccountList;
     currentUser;
-    constructor(currentUser, currentAccountList, helpService) {
+    constructor(currentUser, currentAccountList, help) {
         this.currentUser = currentUser;
         this.currentAccountList = currentAccountList;
 
-        helpService.suggest([
+        help.suggest([
             '584aced8c697912ffd6bc297',
             '58496f15c6979106d373bb65',
             '58481fd3c6979106d373b4f6',

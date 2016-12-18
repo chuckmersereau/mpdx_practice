@@ -141,7 +141,7 @@ class TasksService {
             locals: {
                 specifiedAction: params.specifiedAction || null,
                 specifiedSubject: params.specifiedSubject || null,
-                contacts: params.contact || [],
+                selectedContacts: params.contact || [],
                 modalTitle: params.title || 'Add Task',
                 isNewsletter: false
             },
@@ -155,7 +155,7 @@ class TasksService {
             locals: {
                 specifiedAction: params.specifiedAction || null,
                 specifiedSubject: params.specifiedSubject || null,
-                contacts: params.contact || [],
+                selectedContacts: params.contact || [],
                 modalTitle: params.title || 'Add Newsletter',
                 isNewsletter: true
             },

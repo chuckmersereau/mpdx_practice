@@ -3,12 +3,12 @@ import config from 'config';
 require('./login.scss');
 
 class LoginController {
-    constructor($state, $window, loginService) {
+    constructor($state, $window, login) {
         if ($window.sessionStorage.token) {
             $state.go('home');
         }
         this.year = new Date().getFullYear();
-        this.background = loginService.backgrounds[Math.floor(Math.random() * loginService.backgrounds.length)];
+        this.background = login.backgrounds[Math.floor(Math.random() * login.backgrounds.length)];
         this.loginUrl = config.theKeyUrl;
     }
 }

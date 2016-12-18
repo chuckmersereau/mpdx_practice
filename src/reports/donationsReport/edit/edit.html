@@ -28,7 +28,7 @@
                     <label for="currency" translate>Donation Currency</label>
                     <select ng-model="$ctrl.donation.currency" id="currency" class="form-control" chosen>
                         <option value=""></option>
-                        <option ng-repeat="currency in $ctrl.currencyService.list | toArray" value="{{currency.code}}">{{currency.name}} ({{currency.symbol}})</option>
+                        <option ng-repeat="currency in $ctrl.currency.list | toArray" value="{{currency.code}}">{{currency.name}} ({{currency.symbol}})</option>
                     </select>
                 </div>
 
@@ -44,7 +44,7 @@
                     <label for="appeal_id" translate>Appeal</label>
                     <select ng-model="$ctrl.donation.appeal_id" id="appeal_id" class="form-control">
                         <option value=""></option>
-                        <option ng-repeat="appeal in $ctrl.appealsService.appeals" ng-value="appeal.id">{{appeal.id}} {{appeal.name}}</option>
+                        <option ng-repeat="appeal in $ctrl.appeals.data" ng-value="appeal.id">{{appeal.id}} {{appeal.name}}</option>
                     </select>
                 </div>
 

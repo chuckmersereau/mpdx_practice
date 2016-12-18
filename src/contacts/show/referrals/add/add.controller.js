@@ -1,12 +1,12 @@
 class AddReferralsModalController {
-    alertsService;
+    alerts;
     api;
 
     constructor(
-        $scope, api, alertsService, contactId
+        $scope, api, alerts, contactId
     ) {
         this.$scope = $scope;
-        this.alertsService = alertsService;
+        this.alerts = alerts;
         this.api = api;
         this.contactId = contactId;
 
@@ -15,9 +15,9 @@ class AddReferralsModalController {
     submit() {
         this.api.post(`contacts/${this.contactId}/save_referrals`, { contacts_attributes: this.models }).then((data) => {
             this.$scope.$hide();
-            var successMessage;
-            var failedMessage;
-            var alertType = '';
+            let successMessage;
+            let failedMessage;
+            let alertType = '';
             if (data.success.length) {
                 successMessage = `Successfully added: ${_.map(data.success.map, c => c.greeting).join(', ')}.  `;
                 alertType = 'success';
@@ -27,7 +27,7 @@ class AddReferralsModalController {
                 alertType = 'warning';
             }
 
-            this.alertsService.addAlert(successMessage + failedMessage, alertType, 10000);
+            this.alerts.addAlert(successMessage + failedMessage, alertType, 10000);
         });
     }
 }

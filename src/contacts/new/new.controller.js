@@ -1,19 +1,19 @@
 class ContactNewModalController {
     contact;
-    contactsService;
+    contacts;
 
     constructor(
-        gettextCatalog, $scope, $state, contactsService
+        gettextCatalog, $scope, $state, contacts
     ) {
         this.$scope = $scope;
         this.$state = $state;
-        this.contactsService = contactsService;
+        this.contacts = contacts;
         this.gettextCatalog = gettextCatalog;
 
         this.contact = {name: ''};
     }
     save() {
-        this.contactsService.create(this.contact).then((contact) => {
+        this.contacts.create(this.contact).then((contact) => {
             if (contact) {
                 this.$state.go('contact', { contactId: contact.id });
                 this.$scope.$hide();

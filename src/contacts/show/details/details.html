@@ -154,7 +154,7 @@
                 <h4 class="attribute-header" translate>Tags</h4>
                 <div class="inline-input">
                     <tags-input class="import_by_group import_contact_tags" ng-model="$ctrl.contact.tag_list" on-tag-added='$ctrl.save()' on-tag-removed='$ctrl.save()'>
-                        <auto-complete source="$ctrl.tagsService.getTagsByQuery($query)" min-length="0" select-first-match="false"></auto-complete>
+                        <auto-complete source="$ctrl.contactsTags.getTagsByQuery($query)" min-length="0" select-first-match="false"></auto-complete>
                     </tags-input>
                 </div>
             </div>

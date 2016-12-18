@@ -49,13 +49,13 @@ class ContactTasksController {
         });
     }
     openEditTaskModal(task) {
-        var contactId = this.contact.id;
+        const contactId = this.contact.id;
         this.modal.open({
             template: require('../../logTask/logTask.html'),
             controller: 'logTaskController',
             locals: {
                 modalTitle: 'Edit Task',
-                contacts: [contactId],
+                selectedContacts: [contactId],
                 specifiedTask: task,
                 ajaxAction: 'put',
                 toComplete: false,

@@ -1,14 +1,18 @@
 class FilterController {
-    contactsService;
-    filterService;
-    tagsService;
+    contacts;
+    contactFilter;
+    contactsTags;
+    modal;
 
-    constructor($stateParams, filterService, tagsService, contactsService, modal, gettextCatalog) {
+    constructor(
+        $stateParams, gettextCatalog,
+        contactFilter, contactsTags, contacts, modal
+    ) {
         this.modal = modal;
-        this.contactsService = contactsService;
-        this.filterService = filterService;
+        this.contacts = contacts;
+        this.contactFilter = contactFilter;
+        this.contactsTags = contactsTags;
         this.gettextCatalog = gettextCatalog;
-        this.tagsService = tagsService;
 
         this.dateRangeLocale = {
             applyLabel: this.gettextCatalog.getString('Filter'),
@@ -16,19 +20,19 @@ class FilterController {
         };
 
         if (angular.isObject($stateParams.filters)) {
-            _.extend(this.filterService.params, $stateParams.filters);
+            _.extend(this.contactFilter.params, $stateParams.filters);
         }
     }
     resetFiltersAndTags() {
-        if (this.tagsService.isResettable()) {
-            this.tagsService.reset();
+        if (this.contactsTags.isResettable()) {
+            this.contactsTags.reset();
         }
-        if (this.filterService.resettable) {
-            this.filterService.reset();
+        if (this.contactFilter.resettable) {
+            this.contactFilter.reset();
         }
     }
     showReset() {
-        return this.tagsService.isResettable() || this.filterService.resettable;
+        return this.contactsTags.isResettable() || this.contactFilter.resettable;
     }
 
     openMapContactsModal() {
@@ -36,28 +40,28 @@ class FilterController {
             template: require('./mapContacts/mapContacts.html'),
             controller: 'mapContactsController',
             locals: {
-                contacts: this.contactsService.getSelectedContacts()
+                selectedContacts: this.contacts.getSelectedContacts()
             }
         });
     }
     // Invert the selected options of a multiselect filter
     invertMultiselect(filter) {
-        var allOptions = _.map(filter.options, option => option.id);
-        var selectedOptions = this.filterService.params[filter.name];
+        const allOptions = _.map(filter.options, option => option.id);
+        let selectedOptions = this.contactFilter.params[filter.name];
 
-        var allOption = '';
+        let allOption = '';
         if (filter.name === 'status') {
             allOption = 'active';
         }
 
         // If all options are selected other than 'All', then the inverse is 'All'
         if (_.isEqual(_.difference(allOptions, selectedOptions), [allOption])) {
-            this.filterService.params[filter.name] = [''];
+            this.contactFilter.params[filter.name] = [''];
             return;
         }
 
         selectedOptions.push(allOption); // Exclude the 'All' option when inverting
-        this.filterService.params[filter.name] = _.difference(allOptions, selectedOptions);
+        this.contactFilter.params[filter.name] = _.difference(allOptions, selectedOptions);
     }
 }
 
