@@ -93,7 +93,11 @@ class ListController {
         }
     }
     deleteTask(taskId) {
-        this.tasksService.deleteTask(taskId, this.load);
+        this.tasksService.deleteTask(taskId).then(function cb(status) {
+            if (status) {
+                this.load();
+            }
+        }.bind(this));
     }
     onPageChange(pageNum) {
         this.meta.page = pageNum;

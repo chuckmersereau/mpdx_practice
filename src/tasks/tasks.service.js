@@ -188,7 +188,9 @@ class TasksService {
         return this.api.put(`/tasks/${taskId}`, {task: {activity_comments_attributes: [{body: newComment}]}});
     }
     deleteTask(taskId) {
-        return this.api.delete(`/tasks/${taskId}`);
+        return this.api.delete(`/tasks/${taskId}`, [], () => {
+            return true;
+        });
     }
     starTask(task) {
         return this.api.put(`/tasks/${task.id}`, {task: {starred: !task.starred}});
