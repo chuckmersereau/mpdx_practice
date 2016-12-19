@@ -270,9 +270,9 @@ class ContactsService {
             prefill_attributes_on_create: true
         };
 
-        this.loading = true;
-        return this.api.post('contacts', {contact: contactObj}).then(() => {
-            this.loading = false;
+        return this.api.post('contacts', {contact: contactObj}).then((data) => {
+            this.cache.updateContact(data.contact, data);
+            return this.cache.get(data.contact.id);
         });
     }
     loadMoreContacts() {

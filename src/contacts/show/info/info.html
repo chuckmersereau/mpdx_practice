@@ -4,15 +4,15 @@
     </div>
     <div class="row fieldset">
         <div class="col-sm-6 spacing-below-xs">
-            <h4 class="attribute-header" translate>Envelope Name</h4>
+            <h4 class="attribute-header" translate>Envelope Name Line</h4>
             <div class="inline-input">
-                <input type="text" ng-model="$ctrl.contact.attributes.full_name" placeholder="{{ 'Mr. J Smith' | translate }}" ng-change="$ctrl.save()" ng-model-options="{ debounce: 1000 }" />
+                <input type="text" ng-model="$ctrl.contact.attributes.envelope_greeting" placeholder="{{ 'Mr. J Smith' | translate }}" ng-change="$ctrl.save()" ng-model-options="{ debounce: 1000 }" />
             </div>
         </div>
         <div class="col-sm-6 spacing-below-xs">
-            <h4 class="attribute-header" translate>Greeting</h4>
+            <h4 class="attribute-header" translate>Greeting (used in export)</h4>
             <div class="inline-input">
-                <input type="text" ng-model="$ctrl.contact.attributes.envelope_greeting" ng-change="$ctrl.save()" ng-model-options="{ debounce: 1000 }" />
+                <input type="text" ng-model="$ctrl.contact.attributes.greeting" ng-change="$ctrl.save()" ng-model-options="{ debounce: 1000 }" />
             </div>
         </div>
     </div>

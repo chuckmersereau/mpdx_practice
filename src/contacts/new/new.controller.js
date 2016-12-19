@@ -13,9 +13,9 @@ class ContactNewModalController {
         this.contact = {name: ''};
     }
     save() {
-        this.contacts.create(this.contact).then((data) => {
-            if (data.contact) {
-                this.$state.go('contact', { contactId: data.contact.id });
+        this.contacts.create(this.contact).then((contact) => {
+            if (contact) {
+                this.$state.go('contact', { contactId: contact.id });
                 this.$scope.$hide();
             } else {
                 alert(this.gettextCatalog.getString('There was an error while trying to create the contact'));
