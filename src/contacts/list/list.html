@@ -43,7 +43,7 @@
     </div>
     <div class="row page-controls">
         <div class="col-sm-5">
-            <span><span  translate>Showing</span> <strong>{{$ctrl.contacts.meta.to}}</strong> <span translate>of</span> <strong>{{$ctrl.contacts.meta.total}}</strong></span>
+            <span><span  translate>Showing</span> <strong>{{$ctrl.contacts.meta.pagination.total_count}}</strong> <span translate>of</span> <strong>{{$ctrl.contacts.meta.pagination.total_count}}</strong></span>
             <span class="label label-primary" ng-if="$ctrl.contacts.getSelectedContacts().length > 0">
         {{$ctrl.contacts.getSelectedContacts().length }} <span translate>Selected</span>
         <a href="javascript:;" class="label-action" ng-click="$ctrl.clearSelectedContacts()"><i class="fa fa-times"></i></a>

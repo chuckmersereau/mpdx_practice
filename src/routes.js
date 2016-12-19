@@ -41,7 +41,7 @@ export default class Routes {
         }).state({
             name: 'contact',
             title: 'Contact',
-            url: '/contacts/{contactId:[0-9]+}',
+            url: '/contacts/{contactId}',
             component: 'contact',
             parent: 'root'
         }).state({

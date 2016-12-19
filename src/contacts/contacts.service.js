@@ -78,7 +78,7 @@ class ContactsService {
         }
         filterParams.any_tags = this.contactsTags.anyTags;
 
-        return this.api.get('contacts', {filters: filterParams, page: this.page, per_page: 25, include: 'people'}).then((data) => {
+        return this.api.get('contacts', {filters: filterParams, page: this.page, per_page: 25, include: 'people,addresses', sort: 'name'}).then((data) => {
             console.log(data);
             if (reset) {
                 newContacts = [];
@@ -277,7 +277,7 @@ class ContactsService {
     }
     loadMoreContacts() {
         if (this.loading) return;
-        if (this.page >= this.meta.total_pages) return;
+        if (this.page >= this.meta.pagination.total_pages) return;
         this.page = this.page + 1;
         this.load(false);
     }
