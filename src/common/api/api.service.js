@@ -68,7 +68,9 @@ class Api {
             params: params,
             headers: headers,
             paramSerializer: '$httpParamSerializerJQLike',
-            // transformRequest: () => {},
+            transformRequest: (data) => {
+                return angular.toJson(new japi.Serializer(null, {keyForAttribute: 'underscore_case'}).serialize(data));
+            },
             transformResponse: appendTransform(this.$http.defaults.transformResponse, (data) => {
                 const meta = data.meta || {};
                 if (!_.isString(data)) {
