@@ -55,18 +55,18 @@ class DonationsReportController {
         this.setMonths();
         this.index = this.startDate.split('/').join('');
         if (!_.has(this.donations, this.index)) {
-            this.donations[this.index] = _.filter(this.allDonations, donation => moment(donation.attributes.donation_date, 'YYYY-M-D').startOf('month').format('l') === this.startDate);
+            this.donations[this.index] = _.filter(this.allDonations, donation => moment(donation.donation_date, 'YYYY-M-D').startOf('month').format('l') === this.startDate);
             this.donationTotals[this.index] = {};
             _.each(this.donations[this.index], (donation) => {
-                if (!this.donationTotals[this.index][donation.attributes.currency]) {
-                    this.donationTotals[this.index][donation.attributes.currency] = {
+                if (!this.donationTotals[this.index][donation.currency]) {
+                    this.donationTotals[this.index][donation.currency] = {
                         amount: parseFloat(0),
                         count: 0,
-                        currency: donation.attributes.currency
+                        currency: donation.currency
                     };
                 }
-                this.donationTotals[this.index][donation.attributes.currency].amount += parseFloat(donation.attributes.amount.replace(/[^\d.]/, ''));
-                this.donationTotals[this.index][donation.attributes.currency].count++;
+                this.donationTotals[this.index][donation.currency].amount += parseFloat(donation.amount.replace(/[^\d.]/, ''));
+                this.donationTotals[this.index][donation.currency].count++;
             });
         }
     }

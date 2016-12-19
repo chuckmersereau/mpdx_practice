@@ -29,7 +29,7 @@ class PersonalPreferencesController {
         _.each(this.accounts.data, (account) => {
             this.accountsMap[account.id] = account;
         });
-        this.default_account_list = this.users.current.attributes.preferences.default_account_list.toString();
+        this.default_account_list = this.users.current.preferences.default_account_list.toString();
     }
     $onInit() {
         if (this.$stateParams.id) {
@@ -75,7 +75,7 @@ class PersonalPreferencesController {
         return this.tabId === service;
     }
     setDefaultAccountList() {
-        this.users.current.attributes.preferences.default_account_list = parseInt(this.default_account_list);
+        this.users.current.preferences.default_account_list = parseInt(this.default_account_list);
     }
     setSalaryOrg() {
         this.salary_organization_string = this.personal.data.salary_organization_id;
@@ -90,7 +90,7 @@ class PersonalPreferencesController {
         return locale;
     }
     setLocale() {
-        this.users.changeLocale(this.users.current.attributes.preferences.locale);
+        this.users.changeLocale(this.users.current.preferences.locale);
     }
 }
 

@@ -1,7 +1,18 @@
 import config from 'config';
+import japi from 'jsonapi-serializer';
+
+function appendTransform(defaults, transform) {
+    // We can't guarantee that the default transformation is an array
+    defaults = _.isArray(defaults) ? defaults : [defaults];
+
+    // Append the new transformation to the defaults
+    return defaults.concat(transform);
+}
 
 class Api {
-    constructor($http, $cacheFactory, $log, $q, $timeout) {
+    constructor(
+        $http, $cacheFactory, $log, $q, $timeout,
+    ) {
         this.$http = $http;
         this.$log = $log;
         this.$q = $q;
@@ -57,6 +68,18 @@ class Api {
             params: params,
             headers: headers,
             paramSerializer: '$httpParamSerializerJQLike',
+            // transformRequest: () => {},
+            transformResponse: appendTransform(this.$http.defaults.transformResponse, (data) => {
+                const meta = data.meta || {};
+                if (!_.isString(data)) {
+                    return new japi.Deserializer({keyForAttribute: 'underscore_case'}).deserialize(data).then((data) => {
+                        data.meta = meta;
+                        return data;
+                    });
+                } else {
+                    return {};
+                }
+            }),
             cacheService: false,
             timeout: 50000
         };

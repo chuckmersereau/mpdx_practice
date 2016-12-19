@@ -54,8 +54,8 @@
 <div ng-if="$ctrl.contacts.data.length === 0 && !$ctrl.contacts.loading" class="contacts-empty">
     <div ng-show="$ctrl.contacts.meta.has_contacts">
         <p>
-            <strong translate>You have {{$ctrl.currentAccountList.contacts.active.length}} active contacts</strong>
-            (<span translate>{{$ctrl.currentAccountList.contacts.length}} total contacts</span>)
+            <strong translate>You have {{$ctrl.accounts.current.contacts.active.length}} active contacts</strong>
+            (<span translate>{{$ctrl.accounts.current.contacts.length}} total contacts</span>)
             <span translate>Unfortunately none of them match your current search or filters.</span>
         </p>
         <a ng-click="$ctrl.resetFilters()" class="btn btn-primary" translate>Reset All Search Filters</a>

@@ -54,10 +54,10 @@
                     <translate>Leave empty to use full donation amount</translate>
                 </div>
 
-                <div class="form-group" ng-if="$ctrl.currentAccountList.multiple_designations">
+                <div class="form-group" ng-if="$ctrl.accounts.current.multiple_designations">
                     <label for="designation_account_id" translate>Designation Account</label>
                     <select ng-model="f.designation_account_id" id="designation_account_id" class="form-control">
-                        <option ng-repeat="account in $ctrl.currentAccountList.designation_accounts" ng-value="account.id">{{account.designation_number}}</option>
+                        <option ng-repeat="account in $ctrl.accounts.current.designation_accounts" ng-value="account.id">{{account.designation_number}}</option>
                     </select>
                 </div>
 

@@ -13,9 +13,9 @@
             <strong translate>Account currently shared with</strong>
             <ul class="account-users">
                 <li ng-repeat="user in $ctrl.accounts.userList">
-                    {{user.attributes.first_name}}
-                    {{user.attributes.last_name}}
-                    ({{user.attributes.email}})
+                    {{user.first_name}}
+                    {{user.last_name}}
+                    ({{user.email}})
                     <span ng-if="user.method.type == 'designation'" data-toggle="tooltip" data-placement="top" title="<{{ 'Linked by designation' | translate }}: {{user.method.name}}">
             <i class="fa fa-info-circle"></i>
           </span>
@@ -35,7 +35,7 @@
             <strong translate>Pending Invites</strong>
             <ul class="account-users">
                 <li ng-repeat="user in $ctrl.accounts.inviteList">
-                    {{user.attributes.recipient_email}}
+                    {{user.recipient_email}}
                     <i>(<span translate>Sent by</span> {{user.inviter.first_name}} {{user.inviter.last_name}})</i>
                     <span ng-if="$ctrl.users.current.manager">
                         <button class="btn btn-xxs btn-danger" ng-click="$ctrl.cancelInvite(user.id)" ng-disabled="$ctrl.saving"><i class="fa fa-remove"></i> <translate>Cancel</translate></button>

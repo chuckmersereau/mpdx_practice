@@ -21,10 +21,10 @@ class Users {
     }
     getCurrent() {
         return this.api.get('user').then((response) => {
-            this.current = response.data;
-            // console.log('current user:', this.current);
-            this.api.account_list_id = _.get(response, 'data.attributes.preferences.default_account_list').toString();
-            const locale = _.get(response, 'data.attributes.preferences.locale', 'en');
+            this.current = response;
+            // console.log('current user:', response);
+            this.api.account_list_id = _.get(response, 'preferences.default_account_list').toString();
+            const locale = _.get(response, 'preferences.locale', 'en');
             this.changeLocale(locale);
             this.$rootScope.$emit('accountListUpdated', this.api.account_list_id);
             this.help.updateUser(this.current);
