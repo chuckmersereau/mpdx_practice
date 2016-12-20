@@ -27,4 +27,4 @@ class ContactsService {
 }
 
 export default angular.module('mpdx.services.preferences.contacts', [])
-    .service('preferencesContactsService', ContactsService).name;
+    .service('preferencesContacts', ContactsService).name;

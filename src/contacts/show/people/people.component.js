@@ -22,7 +22,7 @@ class ContactPeopleController {
             alert(this.gettextCatalog.getString('First select at least 2 people to merge'));
         } else {
             this.isMerging = false;
-            var ids = _.map(data, 'id').join();
+            const ids = _.map(data, 'id').join();
             this.$state.go('contact.merge_people', { contactId: this.contact.id, peopleIds: ids });
         }
     }

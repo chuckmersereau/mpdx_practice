@@ -4,7 +4,7 @@
         <div>
             <p>Click on a tag to remove it from selected contacts:</p>
             <ul>
-                <li ng-repeat="tag in $ctrl.contactsService.getTagsFromSelectedContacts()">
+                <li ng-repeat="tag in $ctrl.contacts.getTagsFromSelectedContacts()">
                     <a ng-click="$ctrl.removeTag(tag)">{{ tag }}</a>
                 </li>
             </ul>

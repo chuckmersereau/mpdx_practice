@@ -23,5 +23,5 @@ class UsersService {
     }
 }
 export default angular.module('mpdx.preferences.accounts.usersService', [])
-    .service('usersService', UsersService).name;
+    .service('users', UsersService).name;
 

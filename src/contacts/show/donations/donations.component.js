@@ -1,12 +1,14 @@
 class ContactDonationsController {
     contact;
-    donationsService;
+    donations;
+    donationsMeta;
+    contactDonations;
     modal;
 
     constructor(
-        modal, donationsService
+        modal, contactDonations
     ) {
-        this.donationsService = donationsService;
+        this.contactDonations = contactDonations;
         this.modal = modal;
 
         this.donations = [];
@@ -14,23 +16,29 @@ class ContactDonationsController {
         this.donationMeta = {page: 0};
         this.loading = false;
     }
-    $onInit() {
-        if (this.contact.id) {
+    // $onInit() {
+    //     if (this.contact.id) {
+    //         this.getDonations();
+    //         this.getDonationsGraph();
+    //     }
+    // }
+    $onChanges(changesObj) {
+        if (_.has(changesObj, 'contact.id')) {
             this.getDonations();
             this.getDonationsGraph();
         }
     }
     getDonations(page) {
         this.loading = true;
-        this.donationsService.getDonations(this.contact.id, page).then((data) => {
+        this.contactDonations.getDonations(this.contact.id, page).then((data) => {
             this.loading = false;
             this.donations = data.donations;
             this.donationsMeta = data.meta;
         });
     }
     getDonationsGraph() {
-        this.donationsService.getDonationsGraphForContact(this.contact.id).then((data) => {
-            var subtitle = 'Average donations remain unchanged from last year';
+        this.contactDonations.getDonationsGraphForContact(this.contact.id).then((data) => {
+            let subtitle = 'Average donations remain unchanged from last year';
             if (data.amount > 0) {
                 subtitle = 'Average donations up <span style="color:green">' + data.amount + '</span> from last year';
             } else if (data.amount < 0) {
@@ -94,12 +102,6 @@ class ContactDonationsController {
                 donation: donation
             }
         });
-    }
-    $onChanges(changesObj) {
-        if (_.has(changesObj, 'contact.id')) {
-            this.getDonations();
-            this.getDonationsGraph();
-        }
     }
 }
 

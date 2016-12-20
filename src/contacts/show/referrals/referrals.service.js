@@ -15,4 +15,4 @@ class ReferralsService {
 }
 
 export default angular.module('mpdx.contacts.show.referrals.service', [])
-    .service('referralsService', ReferralsService).name;
+    .service('contactReferrals', ReferralsService).name;

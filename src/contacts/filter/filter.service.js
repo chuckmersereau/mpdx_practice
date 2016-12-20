@@ -1,5 +1,6 @@
 class FilterService {
     api;
+
     constructor($rootScope, api, $location) {
         this.$location = $location;
         this.api = api;
@@ -86,4 +87,4 @@ class FilterService {
     }
 }
 export default angular.module('mpdx.services.filter', [])
-    .service('filterService', FilterService).name;
+    .service('contactFilter', FilterService).name;

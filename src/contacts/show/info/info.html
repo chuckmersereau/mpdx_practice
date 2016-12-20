@@ -4,15 +4,15 @@
     </div>
     <div class="row fieldset">
         <div class="col-sm-6 spacing-below-xs">
-            <h4 class="attribute-header" translate>Envelope Name</h4>
+            <h4 class="attribute-header" translate>Envelope Name Line</h4>
             <div class="inline-input">
-                <input type="text" ng-model="$ctrl.contact.full_name" placeholder="{{ 'Mr. J Smith' | translate }}" ng-change="$ctrl.save()" ng-model-options="{ debounce: 1000 }" />
+                <input type="text" ng-model="$ctrl.contact.envelope_greeting" placeholder="{{ 'Mr. J Smith' | translate }}" ng-change="$ctrl.save()" ng-model-options="{ debounce: 1000 }" />
             </div>
         </div>
         <div class="col-sm-6 spacing-below-xs">
-            <h4 class="attribute-header" translate>Greeting</h4>
+            <h4 class="attribute-header" translate>Greeting (used in export)</h4>
             <div class="inline-input">
-                <input type="text" ng-model="$ctrl.contact.envelope_greeting" ng-change="$ctrl.save()" ng-model-options="{ debounce: 1000 }" />
+                <input type="text" ng-model="$ctrl.contact.greeting" ng-change="$ctrl.save()" ng-model-options="{ debounce: 1000 }" />
             </div>
         </div>
     </div>
@@ -60,7 +60,7 @@
                         ng-model-options="{ debounce: 1000 }"
                         disable-search="true"
                         class="form-control"
-                        id="status"
+                        id="likely_to_give"
                         ng-options="opt[1] as opt[0] for opt in $ctrl.constants.assignable_likely_to_gives"
                         ng-model="$ctrl.contact.likely_to_give">
                     <option value=""></option>

@@ -1,7 +1,10 @@
 class AccountsService {
     api;
 
-    constructor($rootScope, api, $state, session) {
+    constructor(
+        $rootScope, $state,
+        api, session
+    ) {
         this.api = api;
 
         this.data = {};
@@ -31,4 +34,4 @@ class AccountsService {
     };
 }
 export default angular.module('mpdx.common.accounts.service', [])
-    .service('accountsService', AccountsService).name;
+    .service('accounts', AccountsService).name;

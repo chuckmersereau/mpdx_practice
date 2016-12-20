@@ -37,7 +37,7 @@ class CompleteTaskController {
                 locals: {
                     specifiedAction: this.models.nextAction,
                     specifiedSubject: this.models.nextAction,
-                    contacts: contactIds,
+                    selectedContacts: contactIds,
                     modalTitle: 'Follow up Task'
                 }
             });

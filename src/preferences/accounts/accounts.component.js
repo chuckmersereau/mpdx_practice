@@ -1,12 +1,12 @@
 class AccountPreferencesController {
-    constructor($state, $stateParams, helpService) {
+    constructor($state, $stateParams, help) {
         this.$state = $state;
 
         if ($stateParams.id) {
             this.setTab($stateParams.id);
         }
 
-        helpService.suggest([
+        help.suggest([
             '57e2f280c697910d0784d307'
         ]);
     }

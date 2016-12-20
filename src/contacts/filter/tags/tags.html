@@ -1,30 +1,30 @@
 <li>
-    <span class="tags_title menu_item">
-        <span translate>Tags</span>
-        <ul class="nav nav-pills pull-right">
-            <li ng-class="{ 'active': $ctrl.tagsService.anyTags }">
-                <a ng-click="$ctrl.tagsService.anyTags = true" title="{{'Look up contacts with Any of the tags selected (a or b or c).' | translate }}">Any</a>
-            </li>
-            <li ng-class="{ 'active': !$ctrl.tagsService.anyTags }">
-                <a ng-click="$ctrl.tagsService.anyTags = false" title="{{ 'Look up contacts with ALL of the tags selected (a and b and c).' | translate }}">All</a>
-            </li>
-        </ul>
-    </span>
+  <span class="tags_title menu_item">
+    <span translate>Tags</span>
+    <ul class="nav nav-pills pull-right">
+      <li ng-class="{ 'active': $ctrl.contactsTags.anyTags }">
+        <a ng-click="$ctrl.contactsTags.anyTags = true" title="{{'Look up contacts with Any of the tags selected (a or b or c).' | translate }}">Any</a>
+      </li>
+      <li ng-class="{ 'active': !$ctrl.contactsTags.anyTags }">
+        <a ng-click="$ctrl.contactsTags.anyTags = false" title="{{ 'Look up contacts with ALL of the tags selected (a and b and c).' | translate }}">All</a>
+      </li>
+    </ul>
+  </span>
     <div class="filter_hint" translate>Click a tag twice to look up all contacts who do not have that tag.</div>
     <ul class="left_tag_list tags" ng-class="{'show_all_tags': $ctrl.showAllTags}">
         <li>
-            <span class="tag"
-                    ng-class="{ 'selected': !$ctrl.tagsService.isTagActive(tag), 'rejected': $ctrl.tagsService.isTagRejected(tag) }"
-                    ng-click="$ctrl.tagsService.tagClick(tag, $event)"
-                    ng-repeat="tag in $ctrl.tagsService.data">
-                {{ tag }}
-                <a ng-click="$event.stopPropagation()" uib-popover-template="'myPopoverTemplate.html'" popover-trigger="outsideClick" class="tag_remove"></a>
-            </span>
+      <span class="tag"
+            ng-class="{ 'selected': !$ctrl.contactsTags.isTagActive(tag), 'rejected': $ctrl.contactsTags.isTagRejected(tag) }"
+            ng-click="$ctrl.contactsTags.tagClick(tag, $event)"
+            ng-repeat="tag in $ctrl.contactsTags.data">
+        {{ tag }}
+        <a ng-click="$event.stopPropagation()" data-template-url="tags_delete_popover.html" class="tag_remove" bs-popover></a>
+      </span>
             <a class="show_all_tags_btn">
-                <div ng-click="$ctrl.showAllTags = !$ctrl.showAllTags" ng-if="$ctrl.tagsService.data.length > 25">
+                <div ng-click="$ctrl.showAllTags = !$ctrl.showAllTags" ng-if="$ctrl.contactsTags.data.length > 25">
                     <div ng-show="!$ctrl.showAllTags">
                         <i class="fa fa-plus"></i>
-                        <span><span translate>Show all</span> {{$ctrl.tagsService.data.length}} <span translate>tags</span></span>
+                        <span><span translate>Show all</span> {{$ctrl.contactsTags.data.length}} <span translate>tags</span></span>
                     </div>
                     <div ng-show="$ctrl.showAllTags">
                         <i class="fa fa-minus"></i>
@@ -32,14 +32,18 @@
                     </div>
                 </div>
             </a>
-            <script type="text/ng-template" id="myPopoverTemplate.html">
-                <div ng-click="$event.stopPropagation()" class="tags-popover">
-                    Remove tag permanently?
-                    <div>
-                        <button class="btn btn-primary" ng-click="$ctrl.tagsService.delete(tag)">Ok</button>
-                    </div>
-                </div>
-            </script>
         </li>
     </ul>
 </li>
+
+<script type="text/ng-template" id="tags_delete_popover.html">
+    <div class="popover tags-popover" tabindex="-1">
+        <div class="arrow"></div>
+        <h3 class="popover-title" translate>Delete Tag?</h3>
+        <div class="popover-content">
+            <div translate>Are you sure you want to completely delete this tag and remove it from all contacts?</div>
+            <div class="text-muted" translate>To remove a tag from selected contacts only, use the action menu.</div>
+            <button class="btn btn-danger btn-block btn-xs" ng-click="$ctrl.tagsService.delete(tag)" translate>Delete Tag</button>
+        </div>
+    </div>
+</script>

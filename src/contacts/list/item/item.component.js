@@ -1,4 +1,5 @@
 class ContactListItemController {
+    contact;
     constructor($state, state) {
         this.$state = $state;
 
@@ -9,11 +10,11 @@ class ContactListItemController {
         this.$state.transitionTo('contact', { contactId: this.contact.id }, { notify: false });
     }
     hasSendNewsletterError() {
-        if (angular.isDefined(this.contact.addresses) || angular.isDefined(this.contact.email_addresses)) {
+        if (!angular.isDefined(this.contact.addresses) || angular.isDefined(this.contact.email_addresses)) {
             return false;
         }
-        var missingAddress = this.contact.addresses.length === 0;
-        var missingEmailAddress = this.contact.email_addresses.length === 0;
+        const missingAddress = this.contact.addresses.length === 0;
+        const missingEmailAddress = this.contact.email_addresses.length === 0;
         switch (this.contact.contact.send_newsletter) {
             case 'Both':
                 return missingAddress || missingEmailAddress;

@@ -1,22 +1,22 @@
 class AddTaskController {
+    selectedContacts;
     contacts;
-    contactsService;
+    contactsTags;
     serverConstants;
-    tagsService;
     tasksService;
 
     constructor(
         $scope,
-        tasksTagsService, serverConstants, tasksService, contactsService,
-        contacts, specifiedAction, specifiedSubject, modalTitle
+        contactsTags, serverConstants, tasksService, contacts,
+        selectedContacts, specifiedAction, specifiedSubject, modalTitle
     ) {
         this.$scope = $scope;
+        this.selectedContacts = selectedContacts;
         this.contacts = contacts;
-        this.contactsService = contactsService;
+        this.contactsTags = contactsTags;
         this.serverConstants = serverConstants;
         this.specifiedAction = specifiedAction;
         this.specifiedSubject = specifiedSubject;
-        this.tagsService = tasksTagsService;
         this.tasksService = tasksService;
 
         this.modalTitle = modalTitle;
@@ -40,22 +40,22 @@ class AddTaskController {
         let promise;
         if (this.newsletterBoth) {
             this.models.action = "Newsletter - Physical";
-            promise = this.tasksService.postBulkAddTask(this.models, this.contacts).then(() => {
+            promise = this.tasksService.postBulkAddTask(this.models, this.selectedContacts).then(() => {
                 this.models.action = "Newsletter - Email";
-                return this.tasksService.postBulkAddTask(this.models, this.contacts);
+                return this.tasksService.postBulkAddTask(this.models, this.selectedContacts);
             });
         } else if (this.newsletterPhysical) {
             this.models.action = "Newsletter - Physical";
-            promise = this.tasksService.postBulkAddTask(this.models, this.contacts);
+            promise = this.tasksService.postBulkAddTask(this.models, this.selectedContacts);
         } else if (this.newsletterEmail) {
             this.models.action = "Newsletter - Email";
-            promise = this.tasksService.postBulkAddTask(this.models, this.contacts);
+            promise = this.tasksService.postBulkAddTask(this.models, this.selectedContacts);
         } else {
-            promise = this.tasksService.postBulkAddTask(this.models, this.contacts);
+            promise = this.tasksService.postBulkAddTask(this.models, this.selectedContacts);
         }
         return promise.then(() => {
-            this.contactsService.load(true);
-            this.tagsService.load();
+            this.contacts.load(true);
+            this.contactsTags.load();
             this.$scope.$hide();
         });
     }

@@ -1,17 +1,15 @@
 class IntegrationPreferencesController {
-    alertsService;
-    integrationsService;
-    rolloutService;
+    alerts;
+    integrations;
 
     constructor(
-        $window, $state, $stateParams, integrationsService, alertsService, rolloutService, helpService
+        $window, $state, $stateParams, integrations, alerts, help
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.$window = $window;
-        this.alertsService = alertsService;
-        this.integrationsService = integrationsService;
-        this.rolloutService = rolloutService;
+        this.alerts = alerts;
+        this.integrations = integrations;
 
         this.saving = false;
         this.tabId = '';
@@ -20,7 +18,7 @@ class IntegrationPreferencesController {
 
         $window.openerCallback = this.reload;
 
-        helpService.suggest([
+        help.suggest([
             '5845aa229033600698176a54',
             '5845ae09c6979106d373a589',
             '5845a7f49033600698176a48',
@@ -44,31 +42,31 @@ class IntegrationPreferencesController {
     sync(service) {
         this.saving = true;
         this.service = service;
-        return this.integrationsService.sync(service).then(() => {
+        return this.integrations.sync(service).then(() => {
             this.saving = false;
-            this.alertsService.addAlert('MPDX is now syncing your newsletter recipients with ' + this.service, 'success');
+            this.alerts.addAlert('MPDX is now syncing your newsletter recipients with ' + this.service, 'success');
         }).catch(() => {
             this.saving = false;
-            this.alertsService.addAlert('MPDX couldn\'t save your configuration changes for ' + this.service, 'danger');
+            this.alerts.addAlert('MPDX couldn\'t save your configuration changes for ' + this.service, 'danger');
         });
     }
     disconnect(service, id) {
         this.saving = true;
         this.service = service;
-        return this.integrationsService.disconnect(service).then(() => {
+        return this.integrations.disconnect(service).then(() => {
             this.saving = false;
-            this.alertsService.addAlert('MPDX removed your integration with ' + this.service, 'success');
-            this.integrationsService.load();
+            this.alerts.addAlert('MPDX removed your integration with ' + this.service, 'success');
+            this.integrations.load();
         }).catch((data) => {
-            this.alertsService.addAlert('MPDX couldn\'t save your configuration changes for ' + this.service + '. ' + data.error, 'danger');
+            this.alerts.addAlert('MPDX couldn\'t save your configuration changes for ' + this.service + '. ' + data.error, 'danger');
             this.saving = false;
         }, id);
     }
     reload() {
-        this.integrationsService.load();
+        this.integrations.load();
     }
     sendToChalkline() {
-        this.integrationsService.sendToChalkline();
+        this.integrations.sendToChalkline();
         this.$window.open('http://www.chalkline.org/order_mpdx.html', '_blank');
     }
     setTab(service) {

@@ -1,9 +1,11 @@
 class ContactsController {
-    constructor($stateParams, filterService, helpService) {
-        this.$stateParams = $stateParams;
-        this.filterService = filterService;
+    contactFilter;
 
-        helpService.suggest([
+    constructor($stateParams, contactFilter, help) {
+        this.$stateParams = $stateParams;
+        this.contactFilter = contactFilter;
+
+        help.suggest([
             '5845aa229033600698176a54',
             '5841bd789033600698175e62',
             '584715b890336006981774d2',
@@ -20,7 +22,7 @@ class ContactsController {
     }
     $onInit() {
         if (this.$stateParams.filter) {
-            _.assign(this.filterService.params, this.filterService.params, this.$stateParams.filter);
+            _.assign(this.contactFilter.params, this.contactFilter.params, this.$stateParams.filter);
         }
     }
 }

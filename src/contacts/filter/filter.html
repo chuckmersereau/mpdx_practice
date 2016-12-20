@@ -18,7 +18,7 @@
                 <span translate>to look up all contacts who do not have that filter.</span>
             </div>
             <ul class="filters">
-                <li class="filter_set" ng-repeat="filter in $ctrl.filterService.data | orderBy: 'priority'" ng-class="{ 'opened': filter.opened }">
+                <li class="filter_set" ng-repeat="filter in $ctrl.contactFilter.data | orderBy: 'priority'" ng-class="{ 'opened': filter.opened }">
                     <label id="filter_{{filter.name}}" class="filter_title" ng-click="filter.opened = !filter.opened">{{filter.title}}</label>
                     <div class="filter_set_inner">
                         <div ng-if="filter.type == 'container'" ng-repeat="child in filter.children | orderBy: 'priority'">
@@ -32,29 +32,29 @@
                                         </span>
                                     </a>
                                 </label>
-                                <select class="form-control" ng-options="item.id as item.name for item in child.options" ng-model="$ctrl.filterService.params[child.name]" multiple></select>
+                                <select class="form-control" ng-options="item.id as item.name for item in child.options" ng-model="$ctrl.contactFilter.params[child.name]" multiple></select>
                             </div>
                             <div class="filter_radio" ng-if="child.type == 'radio'">
                                 {{child.title}}
                                 <label ng-repeat="option in child.options">
-                                    <input id="_" name="{{child.name}}" type="radio" value="{{option.id}}" ng-model="$ctrl.filterService.params[child.name]">
+                                    <input id="_" name="{{child.name}}" type="radio" value="{{option.id}}" ng-model="$ctrl.contactFilter.params[child.name]">
                                     {{option.name}}
                                 </label>
                             </div>
                             <label ng-if="child.type == 'single_checkbox'">
-                                <input name="{{child.name}}" type="checkbox" ng-model="$ctrl.filterService.params[child.name]"> {{child.title}}
+                                <input name="{{child.name}}" type="checkbox" ng-model="$ctrl.contactFilter.params[child.name]"> {{child.title}}
                             </label>
                             <div class="filter_dates" ng-if="child.type == 'dates'">
                                 <label ng-repeat="option in child.options">
                                     {{option.name}}<br>
-                                    <datetimepicker ng-model="$ctrl.filterService.params[child.name][option.id]" hidden-time="true" placeholder="{{ 'None' | translate }}"></datetimepicker>
+                                    <datetimepicker ng-model="$ctrl.contactFilter.params[child.name][option.id]" hidden-time="true" placeholder="{{ 'None' | translate }}"></datetimepicker>
                                 </label>
                             </div>
                             <div class="filter_dates" ng-if="child.type == 'daterange'">
                                 <label>
                                     {{child.title}}<br>
                                     <contacts-filter-daterange
-                                        model="$ctrl.filterService.params[child.name]"
+                                        model="$ctrl.contactFilter.params[child.name]"
                                         locale="$ctrl.dateRangeLocale"
                                         custom-options="child.options">
                                     </contacts-filter-daterange>
@@ -63,7 +63,7 @@
                             <div class="filter_text" ng-if="child.type == 'text'">
                                 <label ng-repeat="option in child.options">
                                     {{option.name}}<br>
-                                    <input class="form-control" name="{{child.name}}" type="text" ng-model="$ctrl.filterService.params[child.name][option.id]" placeholder="{{option.placeholder}}">
+                                    <input class="form-control" name="{{child.name}}" type="text" ng-model="$ctrl.contactFilter.params[child.name][option.id]" placeholder="{{option.placeholder}}">
                                 </label>
                             </div>
                         </div>
@@ -76,26 +76,26 @@
                                   </span>
                                 </a>
                             </label>
-                            <select class="form-control"  ng-options="item.id as item.name for item in filter.options" ng-model="$ctrl.filterService.params[filter.name]" multiple></select>
+                            <select class="form-control"  ng-options="item.id as item.name for item in filter.options" ng-model="$ctrl.contactFilter.params[filter.name]" multiple></select>
                         </div>
                         <div class="filter_radio" ng-if="filter.type == 'radio'">
                             <label ng-repeat="option in filter.options">
-                                <input name="{{filter.name}}" type="radio" value="{{option.id}}" ng-model="$ctrl.filterService.params[filter.name]">
+                                <input name="{{filter.name}}" type="radio" value="{{option.id}}" ng-model="$ctrl.contactFilter.params[filter.name]">
                                 {{option.name}}
                             </label>
                         </div>
                         <label ng-if="filter.type == 'single_checkbox'">
-                            <input name="{{filter.name}}" type="checkbox" ng-model="$ctrl.filterService.params[filter.name]"> {{filter.title}}
+                            <input name="{{filter.name}}" type="checkbox" ng-model="$ctrl.contactFilter.params[filter.name]"> {{filter.title}}
                         </label>
                         <div class="filter_dates" ng-if="filter.type == 'dates'">
                             <label ng-repeat="option in filter.options">
                                 {{option.name}}<br>
-                                <datetimepicker ng-model="$ctrl.filterService.params[filter.name][option.id]" hidden-time="true" placeholder="{{ 'None' | translate }}"></datetimepicker>
+                                <datetimepicker ng-model="$ctrl.contactFilter.params[filter.name][option.id]" hidden-time="true" placeholder="{{ 'None' | translate }}"></datetimepicker>
                             </label>
                         </div>
                         <div class="filter_dates" ng-if="filter.type == 'daterange'">
                             <contacts-filter-daterange
-                                model="$ctrl.filterService.params[filter.name]"
+                                model="$ctrl.contactFilter.params[filter.name]"
                                 locale="{ applyLabel: '{{ 'Filter' | translate }}', cancelLabel: '{{ 'Clear' | translate }}' }"
                                 custom-options="filter.options">
                             </contacts-filter-daterange>
@@ -103,7 +103,7 @@
                         <div class="filter_text" ng-if="filter.type == 'text'">
                             <label ng-repeat="option in filter.options">
                                 {{option.name}}<br>
-                                <input class="form-control" name="{{filter.name}}" type="text" ng-model="$ctrl.filterService.params[filter.name][option.id]" placeholder="{{option.placeholder}}">
+                                <input class="form-control" name="{{filter.name}}" type="text" ng-model="$ctrl.contactFilter.params[filter.name][option.id]" placeholder="{{option.placeholder}}">
                             </label>
                         </div>
                     </div>

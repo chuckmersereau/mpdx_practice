@@ -1,19 +1,17 @@
 class PersonalPreferencesController {
-    alertsService;
-    rolloutService;
-    personalService;
+    alerts;
+    personal;
 
     constructor(
-        $state, $stateParams, $window,
-        personalService, alertsService, gettextCatalog, rolloutService
+        $state, $stateParams, $window, gettextCatalog,
+        alerts, personal
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.$window = $window;
-        this.alertsService = alertsService;
+        this.alerts = alerts;
         this.gettextCatalog = gettextCatalog;
-        this.rolloutService = rolloutService;
-        this.personalService = personalService;
+        this.personal = personal;
 
         this.saving = false;
         this.tabId = '';
@@ -29,13 +27,13 @@ class PersonalPreferencesController {
     }
     save() {
         this.saving = true;
-        return this.personalService.save().then(() => {
-            this.alertsService.addAlert('Preferences saved successfully', 'success');
+        return this.personal.save().then(() => {
+            this.alerts.addAlert('Preferences saved successfully', 'success');
             this.setTab('');
             this.saving = false;
         }).catch((data) => {
             angular.forEach(data.errors, (value) => {
-                this.alertsService.addAlert(value, 'danger');
+                this.alerts.addAlert(value, 'danger');
             });
             this.saving = false;
         });
@@ -53,10 +51,10 @@ class PersonalPreferencesController {
         return this.tabId === service;
     }
     setDefaultAccountList() {
-        this.default_account_string = this.personalService.data.default_account_list;
+        this.default_account_string = this.personal.data.default_account_list;
     }
     setSalaryOrg() {
-        this.salary_organization_string = this.personalService.data.salary_organization_id;
+        this.salary_organization_string = this.personal.data.salary_organization_id;
     }
     getCountry(locale) {
         if (!locale) return;
@@ -68,7 +66,7 @@ class PersonalPreferencesController {
         return locale;
     }
     setLocale() {
-        this.personalService.changeLocale(this.personalService.data.locale);
+        this.personal.changeLocale(this.personal.data.locale);
     }
 }
 

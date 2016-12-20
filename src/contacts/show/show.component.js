@@ -1,19 +1,27 @@
 class ContactController {
+    cache;
+    contacts;
+    contactFilter;
+    contactReferrals;
+    modal;
+    preferencesContacts;
+    tasksService;
+    contact;
+
     constructor(
-        $scope, $state, $stateParams, $location, $anchorScroll, helpService,
-        modal, cache, contactsService, tasksService, referralsService, preferencesContactsService, filterService, serverConstants
+        $scope, $state, $stateParams, $location, $anchorScroll, help,
+        modal, cache, contacts, tasksService, contactReferrals, preferencesContacts, contactFilter, serverConstants
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.$location = $location;
         this.$anchorScroll = $anchorScroll;
-
         this.cache = cache;
-        this.contactsService = contactsService;
+        this.contactFilter = contactFilter;
+        this.contactReferrals = contactReferrals;
+        this.contacts = contacts;
         this.modal = modal;
-        this.preferencesContactsService = preferencesContactsService;
-        this.referralsService = referralsService;
-        this.filterService = filterService;
+        this.preferencesContacts = preferencesContacts;
         this.tasksService = tasksService;
 
         this.selected = $stateParams.contactId;
@@ -25,8 +33,8 @@ class ContactController {
         this.constants = serverConstants.data;
 
         this.tabsLabels = [];
-        $scope.$watch('$ctrl.preferencesContactsService.data.contact_tabs_labels', () => {
-            this.tabsLabels = this.preferencesContactsService.data.contact_tabs_labels;
+        $scope.$watch('$ctrl.preferencesContacts.data.contact_tabs_labels', () => {
+            this.tabsLabels = this.preferencesContacts.data.contact_tabs_labels;
             if (angular.isDefined(this.tabsLabels)) {
                 this.activeTab = this.tabsLabels[0]['key'];
             }
@@ -48,13 +56,13 @@ class ContactController {
                     newIndex = this.tabsLabels.length - 1;
                 }
 
-                this.preferencesContactsService.data.contact_tabs_sort = this.tabsLabels.map(item => item['key']).join();
-                this.preferencesContactsService.save();
+                this.preferencesContacts.data.contact_tabs_sort = this.tabsLabels.map(item => item['key']).join();
+                this.preferencesContacts.save();
             },
             containerPositioning: 'relative'
         };
 
-        helpService.suggest([
+        help.suggest([
             '5845aab3c6979106d373a576',
             '5845995e90336006981769bb',
             '584ac7f39033602d65f6e131',
@@ -74,12 +82,12 @@ class ContactController {
         });
     };
     save() {
-        this.contactsService.save(this.contact).then(() => {
+        this.contacts.save(this.contact).then(() => {
             this.selectContact(this.$stateParams.contactId);
         });
     }
     getContactPosition() {
-        return this.contactsService.getContactPosition(this.$stateParams.contactId) + 1;
+        return this.contacts.getContactPosition(this.$stateParams.contactId) + 1;
     }
     openAddReferralsModal() {
         this.modal.open({
@@ -89,7 +97,7 @@ class ContactController {
                 contactId: this.contact.id
             },
             onHide: () => {
-                this.referralsService.fetchReferrals(this.contact.id);
+                this.contactReferrals.fetchReferrals(this.contact.id);
             }
         });
     }
@@ -98,7 +106,7 @@ class ContactController {
             template: require('../logTask/logTask.html'),
             controller: 'logTaskController',
             locals: {
-                contacts: [this.contact.id],
+                selectedContacts: [this.contact.id],
                 toComplete: true,
                 createNext: true,
                 specifiedTask: null,
@@ -111,26 +119,26 @@ class ContactController {
     }
     openAddTaskModal() {
         this.tasksService.openModal({
-            contacts: [this.contact.id],
+            selectedContacts: [this.contact.id],
             onHide: () => {
                 this.tasksService.fetchUncompletedTasks(this.contact.id);
             }
         });
     }
     hideContact() {
-        this.contactsService.hideContact(this.contact.id).then(() => {
-            if (this.contactsService.canGoRight(this.contact.id)) {
-                this.$state.go('contact', {contactId: this.contactsService.getRightId(this.contact.id)});
-            } else if (this.contactsService.canGoLeft(this.contact.id)) {
-                this.$state.go('contact', {contactId: this.contactsService.getLeftId(this.contact.id)});
+        this.contacts.hideContact(this.contact.id).then(() => {
+            if (this.contacts.canGoRight(this.contact.id)) {
+                this.$state.go('contact', {contactId: this.contacts.getRightId(this.contact.id)});
+            } else if (this.contacts.canGoLeft(this.contact.id)) {
+                this.$state.go('contact', {contactId: this.contacts.getLeftId(this.contact.id)});
             }
         });
     }
     goLeft() {
-        this.$state.go('contact', { contactId: this.contactsService.getLeftId(this.contact.id) });
+        this.$state.go('contact', { contactId: this.contacts.getLeftId(this.contact.id) });
     }
     goRight() {
-        this.$state.go('contact', { contactId: this.contactsService.getRightId(this.contact.id) });
+        this.$state.go('contact', { contactId: this.contacts.getRightId(this.contact.id) });
     }
     hidePreviousContact() {
         return this.moveContact.previous_contact === 0 || this.moveContact.previous_contact === '';
@@ -155,7 +163,7 @@ class ContactController {
         this.$anchorScroll();
     }
     filterCount() {
-        return this.filterService.count();
+        return this.contactFilter.count();
     }
 }
 
