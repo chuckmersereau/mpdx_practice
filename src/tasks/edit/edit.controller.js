@@ -11,7 +11,7 @@ class EditTaskController {
     constructor(
         $scope,
         modal, contacts, tasksTagsService, tasksService, serverConstants,
-        selectedContacts, specifiedTask, ajaxAction, toComplete, createNext
+        selectedContacts, specifiedTask, ajaxAction, toComplete, createNext, modalCallback
     ) {
         this.$scope = $scope;
         this.ajaxAction = ajaxAction;
@@ -24,6 +24,7 @@ class EditTaskController {
         this.tagsService = tasksTagsService;
         this.tasksService = tasksService;
         this.toComplete = toComplete;
+        this.modalCallback = modalCallback;
 
         this.constants = {};
 
@@ -73,6 +74,14 @@ class EditTaskController {
                 });
             }
         });
+    }
+    deleteTask() {
+        this.tasksService.deleteTask(this.specifiedTask.id).then(function cb(status) {
+            if (status) {
+                this.$scope.$hide();
+                this.modalCallback();
+            }
+        }.bind(this));
     }
 }
 export default angular.module('mpdx.tasks.edit.controller', [])

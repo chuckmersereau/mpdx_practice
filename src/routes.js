@@ -278,7 +278,7 @@ function openNewTaskModal(
         locals: {
             specifiedAction: null,
             specifiedSubject: null,
-            contacts: [],
+            selectedContacts: [],
             modalTitle: 'Add Task'
         },
         onHide: () => {

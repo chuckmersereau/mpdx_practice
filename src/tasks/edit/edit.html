@@ -85,6 +85,7 @@
             <input class="form-control" id='comment' ng-model="$ctrl.models.comment"/>
         </div>
         <div class="modal-footer">
+            <button type="button" class="btn btn-danger pull-left" ng-click="$ctrl.deleteTask(task.id); $event.stopPropagation();" translate>Delete</button>
             <button type="submit" class="btn btn-primary" ng-disabled="bulkLogTaskForm.$invalid" translate>Save</button>
             <button type="button" class="btn btn-default" ng-click="$hide()" translate>Close</button>
         </div>
