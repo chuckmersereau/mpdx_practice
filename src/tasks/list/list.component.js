@@ -40,7 +40,7 @@ class ListController {
             template: require('../edit/edit.html'),
             controller: 'editTaskController',
             locals: {
-                contacts: task.contacts,
+                selectedContacts: task.contacts,
                 specifiedTask: task,
                 ajaxAction: 'put',
                 toComplete: false,
