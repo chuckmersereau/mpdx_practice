@@ -2,8 +2,8 @@ class PersonModalController {
     contact;
     contacts;
 
-    constructor($scope, contacts, contact, person) {
-        this.contacts = contacts;
+    constructor($scope, contactPerson, contact, person) {
+        this.contactPerson = contactPerson;
         this.contact = contact;
         this.person = person;
         this.$scope = $scope;
@@ -27,16 +27,17 @@ class PersonModalController {
     }
     save(isValid) {
         if (isValid) {
-            if (angular.isDefined(this.person.id)) {
-                var personIndex = _.findIndex(this.contact.people, person => person.id === this.person.id);
-                this.contact.people[personIndex] = angular.copy(this.person);
-                if (angular.element('#primary_person_id:checked').length === 1) {
-                    this.contact.primary_person_id = this.person.id;
+            this.contactPerson.save(this.contact.id, this.person).then(() => {
+                if (angular.isDefined(this.person.id)) {
+                    const personIndex = _.findIndex(this.contact.people, person => person.id === this.person.id);
+                    this.contact.people[personIndex] = angular.copy(this.person);
+                    if (angular.element('#primary_person_id:checked').length === 1) {
+                        this.contact.primary_person_id = this.person.id;
+                    }
+                } else {
+                    this.contact.people.push(this.person);
                 }
-            } else {
-                this.contact.people.push(this.person);
-            }
-            this.contacts.save(this.contact).then(() => {
+
                 this.$scope.$hide();
             });
         }

@@ -21,6 +21,7 @@ class Api {
         this.apiUrl = config.apiUrl;
         this.apiCache = $cacheFactory('api');
         this.account_list_id = null;
+        this.entityAttributes = new entityAttributes().attributes;
 
         // This function supports both callbacks (successFn, errorFn) and returns a promise
         // It would be preferred to use promises in the future
@@ -69,7 +70,17 @@ class Api {
             headers: headers,
             paramSerializer: '$httpParamSerializerJQLike',
             transformRequest: (data) => {
-                return angular.toJson(new japi.Serializer(null, {keyForAttribute: 'underscore_case'}).serialize(data));
+                let key = null;
+                let params = {keyForAttribute: 'underscore_case'};
+                if (method === 'put') {
+                    let arr = url.split('/');
+                    key = arr[arr.length - 2];
+                    params.attributes = _.get(this.entityAttributes, key, null);
+                    if (!params.attributes) {
+                        this.$log.error(`undefined attributes for model: ${key} in api.service`);
+                    }
+                }
+                return angular.toJson(new japi.Serializer(key, params).serialize(data));
             },
             transformResponse: appendTransform(this.$http.defaults.transformResponse, (data) => {
                 const meta = data.meta || {};
@@ -136,6 +147,18 @@ class Api {
     }
     encodeURLarray(array) {
         return _.map(array, encodeURIComponent);
+    }
+}
+
+class entityAttributes {
+    constructor() {
+        this.attributes = {
+            'people': ["first_name", "legal_first_name", "last_name", "birthday_month", "birthday_year", "birthday_day", "anniversary_month", "anniversary_year", "anniversary_day", "title",
+                "suffix", "gender", "marital_status", "preferences", "sign_in_count", "current_sign_in_at", "last_sign_in_at", "current_sign_in_ip", "last_sign_in_ip", "created_at", "updated_at",
+                "master_person_id", "middle_name", "access_token", "profession", "deceased", "subscribed_to_updates", "optout_enewsletter", "occupation", "employer", "not_duplicated_with"],
+            'tasks': ["account_list_id", "starred", "location", "subject", "start_at", "end_at", "type", "created_at", "updated_at", "completed", "activity_comments_count", "activity_type", "result",
+                "completed_at", "notification_id", "remote_id", "source", "next_action", "no_date", "notification_type", "notification_time_before", "notification_time_unit", "notification_scheduled"]
+        };
     }
 }
 

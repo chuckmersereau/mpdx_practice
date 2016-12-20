@@ -22,6 +22,9 @@ class PersonService {
             return data;
         });
     }
+    save(contactId, person) {
+        return this.api.put(`contacts/${contactId}/people/${person.id}`, person);
+    }
 }
 export default angular.module('mpdx.contacts.show.people.person.service', [])
     .service('contactPerson', PersonService).name;
