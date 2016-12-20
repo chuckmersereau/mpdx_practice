@@ -86,7 +86,7 @@ class ListController {
     }
     newComment(taskId) {
         if (this.models.comment) {
-            this.tasksService.submitNewComment(taskId, this.models.comment, function() {
+            this.tasksService.submitNewComment(taskId, this.models.comment).then(function() {
                 this.load();
             }.bind(this));
             this.models.comment = '';
