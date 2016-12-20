@@ -55,9 +55,7 @@ class ContactsService {
         });
     }
     get(id) {
-        return this.api.get(`contacts/${id}`, {include: 'people'}).then((response) => {
-            return response.data;
-        });
+        return this.api.get(`contacts/${id}`, {include: 'people,addresses'});
     }
     load(reset) {
         this.loading = true;

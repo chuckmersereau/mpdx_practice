@@ -8,10 +8,11 @@ class ContactController {
     tasksService;
 
     constructor(
-        $scope, $state, $stateParams, $location, $anchorScroll, help,
+        $log, $scope, $state, $stateParams, $location, $anchorScroll, help,
         modal, contacts, tasksService, contactReferrals, preferencesContacts, contactFilter, serverConstants
     ) {
         this.$anchorScroll = $anchorScroll;
+        this.$log = $log;
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.$location = $location;
@@ -39,8 +40,6 @@ class ContactController {
         });
 
         // $scope.$watch('$ctrl.selected', this.selectContact.bind(this));
-        this.selectContact($stateParams.id);
-        this.contactPosition = this.getContactPosition();
 
         this.sortableOptions = {
             containment: '#contact-tabs',
@@ -73,9 +72,15 @@ class ContactController {
             '58471fd6903360069817752e'
         ]);
     }
+    $onChanges() {
+        this.selectContact(this.$stateParams.contactId);
+        this.contactPosition = this.getContactPosition();
+    }
     selectContact(id) {
+        this.$log.debug('select contact: ', id);
         if (!id) return;
         this.contacts.get(id).then((contact) => {
+            this.$log.debug('selected contact: ', contact);
             this.contact = contact;
         });
     };

@@ -1,5 +1,6 @@
 function stripMpdx() {
     return function(val) {
+        if (!_.isString(val)) return '';
         return val.replace('https://mpdx.org', '');
     };
 }
