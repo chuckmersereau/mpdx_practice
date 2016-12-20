@@ -2,7 +2,7 @@
     <a ng-click="$ctrl.switchContact()" ng-class="{'active': $ctrl.selected == $ctrl.contact.id }">{{$ctrl.contact.name}}</a>
 </div>
 <div ng-hide="$ctrl.view == 'minimal'" class="contact-row">
-    <img class="avatar small" ng-src="{{$ctrl.contact.square_avatar}}">
+    <img class="avatar small" ng-src="{{$ctrl.contact.square_avatar | stripMpdx}}">
     <div class="contact-details">
         <div class="col-sm-7 main-details">
             <h4 class="name">

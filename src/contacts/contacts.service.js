@@ -79,10 +79,12 @@ class ContactsService {
         filterParams.any_tags = this.contactsTags.anyTags;
 
         return this.api.get('contacts', {filters: filterParams, page: this.page, per_page: 25, include: 'people,addresses', sort: 'name'}).then((data) => {
-            console.log(data);
+            //console.log(data);
+            let count = this.meta.to || 0;
             if (reset) {
                 newContacts = [];
                 this.page = 1;
+                count = 0;
             }
             _.each(data, (contact) => {
                 // fix tag_list difference for list vs show
@@ -101,6 +103,8 @@ class ContactsService {
                 this.data = newContacts;
             }
             this.meta = data.meta;
+            count += data.length;
+            this.meta.to = count;
             this.loading = false;
         });
     }

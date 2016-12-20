@@ -44,5 +44,5 @@ const Item = {
     }
 };
 
-export default angular.module('mpdx.contacts.list.item', [])
+export default angular.module('mpdx.contacts.list.item.component', [])
     .component('contactsListItem', Item).name;
