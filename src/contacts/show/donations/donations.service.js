@@ -7,7 +7,7 @@ class DonationsService {
         this.api = api;
     }
     getDonations(contactId, page) {
-        return this.api.get('donations', { contact_id: contactId, page: page });
+        return this.api.get('donations', { contact_id: contactId, page: page, per_page: 25 });
     }
     getDonationsGraphForContact(contactId) {
         return this.api.get(`contacts/${contactId}/donations/graph`);
