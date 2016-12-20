@@ -102,7 +102,7 @@
                                     ng-change='$ctrl.save()' ng-model-options='{ debounce: 1000 }'
                                     disable-search="false"
                                     class="form-control"
-                                    ng-options="opt[1] as opt[0] for opt in $ctrl.constants.contacts"
+                                    ng-options="opt[1] as opt[0] for opt in $ctrl.contacts.data track by contact.id"
                                     ng-model="$ctrl.contact.referred_by">
                                 <option value=""></option>
                             </select>
@@ -133,10 +133,12 @@
                                     ng-change='$ctrl.save()' ng-model-options='{ debounce: 1000 }'
                                     disable-search="true"
                                     class="form-control"
-                                    id='status'
-                                    ng-options="opt[1] as opt[0] for opt in $ctrl.constants.mail_chimp_locale_options"
+                                    id='locale'
                                     ng-model="$ctrl.contact.locale">
                                 <option value=""></option>
+                                <option ng-repeat="option in $ctrl.languages" value="{{option.alias}}">
+                                    {{option.englishName}} ({{option.nativeName}} - {{option.alias}})
+                                </option>
                             </select>
                         </div>
                     </div>

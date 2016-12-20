@@ -14,34 +14,30 @@ class TasksService {
         return this.api.get('tasks', {
             filters: {
                 completed: false,
-                contact_ids: [id],
-                page: 1,
-                per_page: 500,
-                order: 'start_at'
-            }
+                contact_ids: [id]
+            },
+            page: 1,
+            per_page: 500,
+            include: 'comments',
+            order: 'start_at'
         }).then((data) => {
-            if (data.tasks.length) {
-                this.transformChild(data.tasks, 'comments', data.comments);
-                this.transformChild(data.comments, 'person_id', data.people, true);
-            }
-            this.data.uncompleted = data.tasks;
+            this.uncompleted = data;
+            return data;
         });
     }
     fetchCompletedTasks(id) {
         return this.api.get('tasks', {
             filters: {
                 completed: true,
-                contact_ids: [id],
-                page: 1,
-                per_page: 500,
-                order: 'completed_at desc'
-            }
+                contact_ids: [id]
+            },
+            include: 'comments',
+            page: 1,
+            per_page: 500,
+            sort: 'completed_at'
         }).then((data) => {
-            if (data.tasks.length) {
-                this.transformChild(data.tasks, 'comments', data.comments);
-                this.transformChild(data.comments, 'person_id', data.people, true);
-            }
-            this.data.completed = data.tasks;
+            this.completed = data;
+            return data;
         });
     }
     transformChild(parentObj, childKey, referredObj, oneToOne) {

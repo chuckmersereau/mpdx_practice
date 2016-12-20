@@ -303,9 +303,7 @@ class ContactsService {
         this.contactFilter.reset();
     }
     getSelectedContacts() {
-        return this.data.filter((contact) => {
-            return contact.selected;
-        });
+        return _.filter(this.data, { selected: true });
     }
     getSelectedContactIds() {
         return this.getSelectedContacts().map(contact => contact.id);

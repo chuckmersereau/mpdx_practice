@@ -5,7 +5,11 @@ class ServerConstantsService {
         this.$q = $q;
         this.api = api;
 
-        this.data = {};
+        this.data = {
+            contacts: {},
+            no_appeals_options: {},
+            mail_chimp_locale_options: {}
+        };
         this.loading = true;
 
         this.isFetching = {

@@ -22,7 +22,7 @@ class Users {
     getCurrent() {
         return this.api.get('user').then((response) => {
             this.current = response;
-            // console.log('current user:', response);
+            this.$log.debug('current user: ', response);
             this.api.account_list_id = _.get(response, 'preferences.default_account_list').toString();
             const locale = _.get(response, 'preferences.locale', 'en');
             this.changeLocale(locale);

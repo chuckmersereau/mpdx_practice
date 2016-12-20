@@ -27,7 +27,7 @@ class AccountsService {
     }
     getCurrent() {
         return this.api.get(`account_lists/${this.api.account_list_id}`).then((resp) => {
-            // console.log('accounts/current', resp);
+            this.$log.debug('accounts/current: ', resp);
             this.current = resp.data;
         }).catch((err) => {
             this.$log.debug(err);

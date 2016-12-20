@@ -31,13 +31,22 @@ class ContactController {
         serverConstants.fetchConstants(['assignable_send_newsletters', 'assignable_statuses', 'pledge_frequencies', 'pledge_currencies', 'assignable_locations', 'assignable_likely_to_gives']);
         this.constants = serverConstants.data;
 
-        this.tabsLabels = [];
-        $scope.$watch('$ctrl.preferencesContacts.data.contact_tabs_labels', () => {
-            this.tabsLabels = this.preferencesContacts.data.contact_tabs_labels;
-            if (angular.isDefined(this.tabsLabels)) {
-                this.activeTab = this.tabsLabels[0]['key'];
-            }
-        });
+        this.tabsLabels = [
+            { key: 'details', value: 'Details' },
+            { key: 'donations', value: 'Donations' },
+            { key: 'tasks', value: 'Tasks' },
+            { key: 'history', value: 'History' },
+            { key: 'referrals', value: 'Referrals' },
+            { key: 'notes', value: 'Notes' }
+        ];
+        this.activeTab = this.tabsLabels[0]['key'];
+
+        // $scope.$watch('$ctrl.preferencesContacts.data.contact_tabs_labels', () => {
+        //     this.tabsLabels = this.preferencesContacts.data.contact_tabs_labels;
+        //     if (angular.isDefined(this.tabsLabels)) {
+        //         this.activeTab = this.tabsLabels[0]['key'];
+        //     }
+        // });
 
         // $scope.$watch('$ctrl.selected', this.selectContact.bind(this));
 
