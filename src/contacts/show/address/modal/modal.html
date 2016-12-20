@@ -74,8 +74,12 @@
         </div>
         <div class="modal-footer">
             <div class="pull-left">
-                <button type="button" class="btn btn-default" ng-click="$hide()" translate>Close</button>
-                <button type="button" class="btn btn-danger" ng-click="$ctrl.remove()" ng-if="$ctrl.address.id" translate>Remove this Address</button>
+                <button type="button" class="btn btn-default" ng-click="$hide()" translate>Cancel</button>
+                <button type="button" class="btn btn-danger" ng-click="$ctrl.remove()" ng-if="$ctrl.address.id">
+                    <i class="fa fa-trash"></i>
+                    &nbsp;
+                    <span translate>Remove</span>
+                </button>
             </div>
             <button type="submit" class="btn btn-primary" ng-disabled="addressForm.$invalid" translate>Save</button>
         </div>

@@ -1,12 +1,11 @@
-class pledgeFrequencyStr {
+class PledgeFrequencyToStr {
 
     constructor(val) {
-        this.val = val;
+        this.val = parseFloat(val);
     }
 
-    showReset(val) {
-        val = parseFloat(val);
-        switch (val) {
+    filterFloatToStr() {
+        switch (this.val) {
             case 0.23076923076923:
                 return ('Weekly');
             case 0.46153846153846:
@@ -27,12 +26,14 @@ class pledgeFrequencyStr {
                 return ('Every 2 Years');
         }
     }
+
+    static pledgeFrequencyToStrFactory(input) {
+        let filter = new PledgeFrequencyToStr(input);
+        return filter.filterFloatToStr();
+    }
 }
 
-const Filter = {
-    controller: pledgeFrequencyStr
-};
+PledgeFrequencyToStr.pledgeFrequencyToStrFactory.$inject = ['input'];
 
-export default angular.module('mpdx.contacts.list.item.pledgeFrequencyStr', [])
-  .component('pledgeFrequencyStr', Filter).name;
-
+export default angular.module('mpdx.contacts.list.item.pledgeFrequencyToStr', [])
+  .filter('pledgeFrequencyToStr', () => PledgeFrequencyToStr.pledgeFrequencyToStrFactory).name;

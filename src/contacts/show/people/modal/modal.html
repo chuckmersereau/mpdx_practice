@@ -1,4 +1,4 @@
-<modal-big>
+<modal>
     <modal-header title="{{$ctrl.modalTitle}}" on-close="$hide()"></modal-header>
     <form name="personForm" ng-submit="$ctrl.save(personForm.$valid)" novalidate>
         <div class="modal-body">
@@ -154,9 +154,15 @@
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-default pull-left" ng-click="$hide()" translate>Close</button>
-            <button type="button" class="btn btn-danger pull-left" ng-click="$ctrl.remove()" ng-if="$ctrl.person.id" translate>Remove this Person</button>
+            <div class="pull-left">
+                <button type="button" class="btn btn-default" ng-click="$hide()" translate>Cancel</button>
+                <button type="button" class="btn btn-danger" ng-click="$ctrl.remove()" ng-if="$ctrl.person.id">
+                    <i class="fa fa-trash"></i>
+                    &nbsp;
+                    <span translate>Remove</span>
+                </button>
+            </div>
             <button type="submit" class="btn btn-primary" ng-disabled="personForm.$invalid" translate>Save</button>
         </div>
     </form>
-</modal-big>
+</modal>
