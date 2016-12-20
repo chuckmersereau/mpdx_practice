@@ -2,7 +2,7 @@ function TagsDecorator($provide) {
     $provide.decorator('contactsTagsService', decoratorFunction);
     $provide.decorator('tasksTagsService', decoratorFunction);
 
-    function decoratorFunction($delegate, $rootScope, $filter, api, accountsService) {
+    function decoratorFunction($delegate, $rootScope, $filter, api, accounts) {
         let svc = $delegate;
         svc.data = [];
         svc.selectedTags = [];
@@ -115,7 +115,7 @@ function TagsDecorator($provide) {
         svc.load();
 
         $rootScope.$watch(function() {
-            return accountsService.account_list_id;
+            return accounts.account_list_id;
         }, function watchCallback(accountListId) {
             if (accountListId) {
                 svc.load();
