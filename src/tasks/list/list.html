@@ -1,5 +1,5 @@
 <div class="tasks-component">
-  <table class="table tasks-table" bs-collapse data-start-collapsed="true" ng-show="$ctrl.meta.total">
+  <table class="table tasks-table" bs-collapse data-start-collapsed="true" ng-show="$ctrl.meta.total || $ctrl.tasksService.sort == $ctrl.sortkey">
     <tr class="header-row">
       <th ng-style="{'border-bottom': '4px solid ' + $ctrl.color}"
           colspan="100"

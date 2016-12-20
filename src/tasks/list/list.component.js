@@ -166,6 +166,7 @@ const Tasks = {
         key: '<',
         title: '<',
         color: '<',
+        sortkey: '<',
         page: '<'
     }
 };

@@ -20,6 +20,7 @@
         tags="$ctrl.tagsService.selectedTags"
         contact="''"
         filters="''"
+        sortkey="'overdue'"
         ng-show="['all', 'overdue'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
     <tasks-list
         key="'today'"
@@ -29,6 +30,7 @@
         tags="$ctrl.tagsService.selectedTags"
         contact="''"
         filters="''"
+        sortkey="'today'"
         ng-show="['all', 'today'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
     <tasks-list
         key="'starred'"
@@ -38,6 +40,7 @@
         tags="$ctrl.tagsService.selectedTags"
         contact="''"
         filters="''"
+        sortkey="'starred'"
         ng-show="['all', 'starred'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
     <tasks-list
         key="'tomorrow'"
@@ -47,6 +50,7 @@
         tags="$ctrl.tagsService.selectedTags"
         contact="''"
         filters="''"
+        sortkey="'upcoming'"
         ng-show="['all', 'upcoming'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
     <tasks-list
         key="'upcoming'"
@@ -56,6 +60,7 @@
         tags="$ctrl.tagsService.selectedTags"
         contact="''"
         filters="''"
+        sortkey="'upcoming'"
         ng-show="['all', 'upcoming'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
     <tasks-list
         key="'noDueDate'"
@@ -65,6 +70,7 @@
         tags="$ctrl.tagsService.selectedTags"
         contact="''"
         filters="''"
+        sortkey="'noDate'"
         ng-show="['all', 'noDate'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
     <tasks-list
         key="'allCompleted'"
@@ -74,6 +80,7 @@
         tags="$ctrl.tagsService.selectedTags"
         contact="''"
         filters="''"
+        sortkey="'history'"
         ng-show="['all', 'history'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
   </div>
 </div>
