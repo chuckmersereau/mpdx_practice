@@ -101,6 +101,8 @@ class TasksService {
     }
 
     fetchTasks(collection, filters) {
+        this.data[collection] = [];
+
         const meta = this.meta[collection];
         const defaultFilters = this.defaultFilters[collection];
 
