@@ -100,6 +100,51 @@
             border-radius: 0;
             border-color: #979797;
         }
+        .modal-panel-container {
+            margin: -15px;
+            .modal-panel-title {
+                text-align: center;
+                text-transform: uppercase;
+                letter-spacing: 0.025em;
+                line-height: 40px;
+                font-size: 1.25rem;
+                border-bottom: 1px solid $gray_light;
+                background-color: #fff;
+            }
+            .modal-panel-left {
+                border-right: 1px solid $gray_light;
+                padding: 0;
+            }
+            .modal-panel-right {
+                padding: 0;
+                background-color: #f9fafa;
+            }
+            .modal-panel-content {
+                padding: 15px;
+                ul.nav.nav-tabs {
+                    margin: -15px;
+                    margin-bottom: 15px;
+                    background-color: #fff;
+                    border-bottom: 1px solid $gray_light;
+                    text-align: center;
+                    > li {
+                        float: none;
+                        > a {
+                            line-height: 38px;
+                            font-size: 1.2em;
+                            border: none;
+                            background-color: transparent;
+                            padding: 0 15px;
+                            border-bottom: 2px solid transparent;
+                            color: $base-text-color;
+                        }
+                        &.active a {
+                            border-bottom-color: #f9b625;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     #contacts-map{

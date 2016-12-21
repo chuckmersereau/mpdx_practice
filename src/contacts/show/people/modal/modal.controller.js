@@ -9,6 +9,7 @@ class PersonModalController {
         this.$scope = $scope;
         this.personDetails = '';
         this.maps = [];
+        this.activeTab = 'contact-info';
 
         this.activate();
     }
