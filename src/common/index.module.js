@@ -10,7 +10,6 @@ import convertToNumber from './convertToNumber/convertToNumber.directive';
 import currency from './currency/currency.service';
 import currencySelect from './currencySelect/currencySelect.component';
 import pagination from './pagination/pagination.component';
-import currentUser from './currentUser/currentUser.service';
 import designationAccounts from './designationAccounts/designationAccounts.service';
 import faCheckbox from './faCheckbox/faCheckbox.component';
 import help from './help/help.service';
@@ -42,7 +41,6 @@ export default angular.module('mpdx.common', [
     currency,
     currencySelect,
     pagination,
-    currentUser,
     designationAccounts,
     faCheckbox,
     help,
