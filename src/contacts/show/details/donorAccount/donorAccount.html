@@ -1,4 +1,4 @@
-<div class="field">
+<div class="field" ng-if="$ctrl.donorAccount._destroy !== '1'">
     <div class="inline-input with-tip">
         <input class="form-control" type="text" name="donor_account" ng-model="$ctrl.donorAccount.account_number" required ng-change='$ctrl.save()' ng-model-options='{ debounce: 1000 }' />
         <a ng-click="$ctrl.remove()" class="tip"><i class="fa fa-times"></i></a>

@@ -16,14 +16,11 @@ class CompleteTaskController {
         this.taskAction = taskAction;
         this.tasksService = tasksService;
 
-        this.activate();
-    }
-    activate() {
         this.serverConstants.fetchConstants(['next_actions', 'results', 'pledge_frequency']);
         this.constants = this.serverConstants.data;
     }
-    submit() {
-        this.tasksService.postLogTask(this.taskId, this.models).then(() => {
+    save() {
+        return this.tasksService.postLogTask(this.taskId, this.models).then(() => {
             this.$scope.$hide();
 
             var contactIds = [];

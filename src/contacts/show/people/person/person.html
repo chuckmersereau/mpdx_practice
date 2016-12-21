@@ -7,7 +7,10 @@
         <dl>
             <dd ng-repeat="email in $ctrl.person.email_addresses">{{ email.email }}</dd>
             <dd ng-if="$ctrl.person.optout_enewsletter" translate>opted out of newsletter</dd>
-            <dd ng-repeat="phone in $ctrl.person.phone_numbers">{{ phone.number + ' - ' + phone.location }}</dd>
+            <dd ng-repeat="phone in $ctrl.person.phone_numbers">
+                {{ phone.number }}
+                <span ng-if="phone.location">{{ ' - ' + phone.location }}</span>
+            </dd>
             <dd ng-if="$ctrl.person.marital_status">
                 <span>{{ $ctrl.person.marital_status }}</span>
                 <span ng-if="$ctrl.person.anniversary">{{ $ctrl.anniversary }}</span>

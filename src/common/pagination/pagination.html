@@ -1,10 +1,5 @@
 <div class="clearfix">
-  <strong translate>Showing</strong>
-  <strong>{{$ctrl.from}}</strong>
-  <strong translate>to</strong>
-  <strong>{{$ctrl.to}}</strong>
-  <strong translate>of</strong>
-  <strong>{{$ctrl.total}}</strong>
+  <h4 translate>{{$ctrl.from}} to {{$ctrl.to}} of {{$ctrl.total}}</h4>
   <nav aria-label="Page navigation" ng-show="$ctrl.totalPages > 1">
     <ul class="pagination">
       <li ng-class="{'disabled': $ctrl.page == 1}">
@@ -22,4 +17,5 @@
       </li>
     </ul>
   </nav>
+  <br>
 </div>

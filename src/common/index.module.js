@@ -11,6 +11,7 @@ import chosen from './chosen/chosen.directive';
 import convertToNumber from './convertToNumber/convertToNumber.directive';
 import currency from './currency/currency.service';
 import currencySelect from './currencySelect/currencySelect.component';
+import pagination from './pagination/pagination.component';
 import currentAccountList from './currentAccountList/currentAccountList.service';
 import currentUser from './currentUser/currentUser.service';
 import designationAccounts from './designationAccounts/designationAccounts.service';
@@ -45,6 +46,7 @@ export default angular.module('mpdx.common', [
     convertToNumber,
     currency,
     currencySelect,
+    pagination,
     currentAccountList,
     currentUser,
     designationAccounts,

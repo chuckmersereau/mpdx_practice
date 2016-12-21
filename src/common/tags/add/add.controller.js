@@ -14,12 +14,12 @@ class AddTagController {
         this.contactsTags = contactsTags;
         this.tags = '';
     }
-    addTag(tag) {
+    save(tag) {
         const tagToAdd = tag || this.tags;
         if (!tagToAdd) {
             return;
         }
-        this.contactsTags.tagContact(this.selectedContacts, tagToAdd).then(() => {
+        return this.contactsTags.tagContact(this.selectedContacts, tagToAdd).then(() => {
             this.contacts.load(true);
             this.contactsTags.load();
             this.$scope.$hide();

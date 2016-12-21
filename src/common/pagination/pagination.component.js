@@ -17,7 +17,7 @@ class PaginationController {
         if (this.page === 1) { return; }
         this.goto(this.page - 1);
     }
-};
+}
 
 const Pagination = {
     controller: PaginationController,

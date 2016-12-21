@@ -29,14 +29,11 @@ class AddTaskController {
             tagsList: []
         };
 
-        this.activate();
-    }
-    activate() {
         this.serverConstants.fetchConstants(['actions']);
         this.constants = this.serverConstants.data;
     }
 
-    submit() {
+    save() {
         let promise;
         if (this.newsletterBoth) {
             this.models.action = "Newsletter - Physical";
