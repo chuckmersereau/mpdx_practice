@@ -1,10 +1,9 @@
 import component from './item.component';
-import pledgeFrequencyStr from './plegeFrequency/pledgeFrequencyStr';
+import pledgeFrequencyToStr from './pledgeFrequencyToStr.filter';
 import stripMpdx from './stripMpdx.filter';
-
 
 export default angular.module('mpdx.contacts.list.item', [
     component,
-    pledgeFrequencyStr,
+    pledgeFrequencyToStr,
     stripMpdx
 ]).name;
