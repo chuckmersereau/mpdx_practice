@@ -27,9 +27,6 @@ class LogTaskController {
 
         this.constants = {};
 
-        this.activate();
-    }
-    activate() {
         this.serverConstants.fetchConstants(['actions', 'next_actions', 'results']);
         this.constants = this.serverConstants.data;
 
@@ -45,8 +42,8 @@ class LogTaskController {
             tagsList: inputTask.tag_list ? inputTask.tag_list : []
         };
     }
-    submit() {
-        this.tasksService.postBulkLogTask(
+    save() {
+        return this.tasksService.postBulkLogTask(
             this.ajaxAction || 'post',
             this.specifiedTask ? this.specifiedTask.id : null,
             this.models,

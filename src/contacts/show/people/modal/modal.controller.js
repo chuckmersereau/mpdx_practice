@@ -25,21 +25,19 @@ class PersonModalController {
             };
         }
     }
-    save(isValid) {
-        if (isValid) {
-            if (angular.isDefined(this.person.id)) {
-                var personIndex = _.findIndex(this.contact.people, person => person.id === this.person.id);
-                this.contact.people[personIndex] = angular.copy(this.person);
-                if (angular.element('#primary_person_id:checked').length === 1) {
-                    this.contact.primary_person_id = this.person.id;
-                }
-            } else {
-                this.contact.people.push(this.person);
+    save() {
+        if (angular.isDefined(this.person.id)) {
+            var personIndex = _.findIndex(this.contact.people, person => person.id === this.person.id);
+            this.contact.people[personIndex] = angular.copy(this.person);
+            if (angular.element('#primary_person_id:checked').length === 1) {
+                this.contact.primary_person_id = this.person.id;
             }
-            this.contacts.save(this.contact).then(() => {
-                this.$scope.$hide();
-            });
+        } else {
+            this.contact.people.push(this.person);
         }
+        return this.contacts.save(this.contact).then(() => {
+            this.$scope.$hide();
+        });
     }
     addEmailAddress() {
         this.person.email_addresses.push(this.emailObject());
@@ -73,9 +71,9 @@ class PersonModalController {
     familyRelationshipObject() {
         return {related_person_id: 0, relationship: '', _destroy: 0};
     }
-    remove() {
+    delete() {
         this.person._destroy = 1;
-        this.save(true);
+        return this.save();
     }
 }
 

@@ -1,54 +1,47 @@
-<modal>
-    <modal-header title="{{$ctrl.modalTitle}}" on-close="$hide"></modal-header>
-    <form class="modal-body" name="addTaskForm" ng-submit="$ctrl.submit()" novalidate>
-        <div class="form-group">
-            <label for="subject">Subject</label>
-            <input class="form-control" id='subject' ng-model="$ctrl.models.subject" required/>
+<modal title="{{$ctrl.modalTitle}}" save="$ctrl.save" cancel="$hide()">
+    <div class="form-group">
+        <label for="subject"><translate>Subject</translate> <span class="text-danger">*</span></label>
+        <input class="form-control" id='subject' ng-model="$ctrl.models.subject" required />
+    </div>
+    <div class="form-group">
+        <label for="action"><translate>Action</translate> <span class="text-danger">*</span></label>
+        <select chosen
+                required
+                disable-search="true"
+                class="form-control"
+                id='action'
+                ng-options="opt for opt in $ctrl.constants.actions"
+                ng-model="$ctrl.models.action">
+            <option value=""></option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="due-date" translate>Due Date</label>
+        <div ng-hide="$ctrl.models.noDate">
+            <datetimepicker ng-model="$ctrl.models.date"
+                            hour-step="1"
+                            minute-step="1"
+                            date-options="{ showWeeks: false, showButtonBar: false}"
+                            date-format="dd-MMM-yyyy"
+                            date-options="dateOptions"
+                            show-spinners="true">
+            </datetimepicker>
         </div>
-        <div class="form-group">
-            <label for="action">Action</label>
-            <select chosen
-                    required
-                    disable-search="true"
-                    class="form-control"
-                    id='action'
-                    ng-options="opt for opt in $ctrl.constants.actions"
-                    ng-model="$ctrl.models.action">
-                <option value=""></option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="due-date">Due Date</label>
-            <div ng-hide="$ctrl.models.noDate">
-                <datetimepicker ng-model="$ctrl.models.date"
-                                hour-step="1"
-                                minute-step="1"
-                                date-options="{ showWeeks: false, showButtonBar: false}"
-                                date-format="dd-MMM-yyyy"
-                                date-options="dateOptions"
-                                show-spinners="true">
-                </datetimepicker>
-            </div>
-        </div>
-        <div class="checkbox">
-            <label for="no-due-date">
-                <input id='no-due-date' ng-model="$ctrl.models.noDate" type="checkbox"/>
-                No Due Date
-            </label>
-        </div>
-        <div>
-            <label>Tags</label>
-            <tags-input class="import_by_group import_contacttags" ng-model="$ctrl.models.tagsList">
-                <auto-complete source="$ctrl.contactsTags.data" min-length="0" select-first-match="false"></auto-complete>
-            </tags-input>
-        </div>
-        <div class="form-group">
-            <label for="comment">Comment</label>
-            <input class="form-control" id='comment' ng-model="$ctrl.models.comment"/>
-        </div>
-        <div class="modal-footer">
-            <button type="submit" class="btn btn-primary" ng-disabled="addTaskForm.$invalid" translate>Save</button>
-            <button type="button" class="btn btn-default" ng-click="$hide()" translate>Close</button>
-        </div>
-    </form>
+    </div>
+    <div class="checkbox">
+        <label for="no-due-date">
+            <input id='no-due-date' ng-model="$ctrl.models.noDate" type="checkbox"/>
+            <translate>No Due Date</translate>
+        </label>
+    </div>
+    <div>
+        <label translate>Tags</label>
+        <tags-input class="import_by_group import_contacttags" ng-model="$ctrl.models.tagsList">
+            <auto-complete source="$ctrl.contactsTags.data" min-length="0" select-first-match="false"></auto-complete>
+        </tags-input>
+    </div>
+    <div class="form-group">
+        <label for="comment" translate>Comment</label>
+        <input class="form-control" id='comment' ng-model="$ctrl.models.comment"/>
+    </div>
 </modal>

@@ -12,8 +12,8 @@ class AddReferralsModalController {
 
         this.models = {};
     }
-    submit() {
-        this.api.post(`contacts/${this.contactId}/save_referrals`, { contacts_attributes: this.models }).then((data) => {
+    save() {
+        return this.api.post(`contacts/${this.contactId}/save_referrals`, { contacts_attributes: this.models }).then((data) => {
             this.$scope.$hide();
             let successMessage;
             let failedMessage;

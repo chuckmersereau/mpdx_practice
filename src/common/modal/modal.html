@@ -1,5 +1,25 @@
-<div class="modal-dialog">
-    <div class="modal-content">
-        <div ng-transclude></div>
-    </div>
+<div class="modal-dialog modal-size-{{$ctrl.size}}">
+    <form name="modalForm" ng-submit="modalForm.$valid && $ctrl.saveAndBlock()" novalidate>
+        <div class="modal-content" block-ui="modalBlockUI">
+            <div class="modal-header">
+                <div class="pull-right">
+                    <a class="close" ng-click="$ctrl.cancel()"><i class="fa fa-times"></i></a>
+                </div>
+                <h4 class="modal-title" translate>{{$ctrl.title}}</h4>
+            </div>
+            <div class="modal-body" ng-transclude></div>
+            <div class="modal-footer">
+                <div class="pull-left">
+                    <button type="button" class="btn btn-danger" ng-click="$ctrl.deleteAndBlock()" ng-if="$ctrl.$attrs.delete && $ctrl.showDelete">
+                        <i class="fa fa-trash"></i>
+                        &nbsp;
+                        <span translate>Remove</span>
+                    </button>
+                </div>
+                <button type="button" class="btn btn-link" ng-click="$ctrl.cancel()" ng-if="$ctrl.$attrs.cancel && $ctrl.$attrs.save" translate>Cancel</button>
+                <button type="button" class="btn btn-secondary" ng-click="$ctrl.cancel()" ng-if="$ctrl.$attrs.cancel && !$ctrl.$attrs.save" translate>Close</button>
+                <button type="submit" class="btn btn-primary" ng-disabled="!modalForm.$valid" ng-if="$ctrl.$attrs.save" translate>Save</button>
+            </div>
+        </div>
+    </form>
 </div>

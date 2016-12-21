@@ -1,4 +1,4 @@
-.modal, .modal.center {
+.modal.center {
     position: fixed;
     left: 0;
     top: 0;
@@ -13,6 +13,11 @@
         transform: none;
         .modal-content {
             margin: 3pc 0 5pc 0;
+            .modal-title {
+                text-align: center;
+                text-transform: uppercase;
+                letter-spacing: 0.025em;
+            }
             .modal-body {
                 position: relative;
                 .empty-map {
@@ -49,6 +54,17 @@
             a.close {
                 line-height: 25px;
                 font-size: 25px;
+            }
+        }
+        .modal-footer {
+            .btn-link {
+                color: $gray_dark;
+                &:hover {
+                    text-decoration: none;
+                }
+                &:focus {
+                    outline: none;
+                }
             }
         }
         .row {
@@ -101,7 +117,7 @@
         margin-top: 17px;
     }
 
-    >.modal-big{
+    >.modal-size-lg{
         max-width: 80% !important;
         width: 80% !important;
     }

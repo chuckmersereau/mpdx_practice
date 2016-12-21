@@ -22,7 +22,6 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "styles/layout";
 @import "styles/placeholders";
 @import "styles/notices";
-@import "styles/modals";
 @import "styles/popovers";
 @import "styles/cards";
 @import "styles/ico";
@@ -31,7 +30,9 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "styles/chosen_bootstrap";
 
 /* Components */
+@import "blockUI/blockUI";
 @import "menu/menu";
+@import "common/modal/modal";
 @import "contacts/filter/filter";
 @import "contacts/filter/tags/tags";
 @import "contacts/list/list";

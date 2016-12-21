@@ -78,23 +78,21 @@ class AddressModalController {
             this.refreshMap();
         }.bind(this));
     }
-    save(isValid) {
-        if (isValid) {
-            if (angular.isDefined(this.address.id)) {
-                var addressIndex = _.findIndex(this.contact.addresses, addressToFilter => addressToFilter.id === this.address.id);
-                this.contact.addresses[addressIndex] = angular.copy(this.address);
-                if (angular.element('#primary_address:checked').length === 1) {
-                    _.each(this.contact.addresses, (address) => {
-                        address.primary_mailing_address = address.id === this.address.id;
-                    });
-                }
-            } else {
-                this.contact.addresses.push(this.address);
+    save() {
+        if (angular.isDefined(this.address.id)) {
+            var addressIndex = _.findIndex(this.contact.addresses, addressToFilter => addressToFilter.id === this.address.id);
+            this.contact.addresses[addressIndex] = angular.copy(this.address);
+            if (angular.element('#primary_address:checked').length === 1) {
+                _.each(this.contact.addresses, (address) => {
+                    address.primary_mailing_address = address.id === this.address.id;
+                });
             }
-            this.contacts.save(this.contact).then(() => {
-                this.$scope.$hide();
-            });
+        } else {
+            this.contact.addresses.push(this.address);
         }
+        return this.contacts.save(this.contact).then(() => {
+            this.$scope.$hide();
+        });
     }
     reqUpdateEmailBodyRequest() {
         if (this.address.remote_id) {
@@ -123,9 +121,9 @@ class AddressModalController {
             }
         });
     }
-    remove() {
+    delete() {
         this.address._destroy = 1;
-        this.save(true);
+        return this.save();
     }
 }
 

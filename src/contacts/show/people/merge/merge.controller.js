@@ -13,15 +13,12 @@ class MergePeopleModalController {
         this.selectedPerson = people[0].id;
         this.currentlyMerging = false;
     }
-    mergePeople() {
-        this.currentlyMerging = true;
+    save() {
         const peopleToMerge = _.map(this.people, 'id');
-        this.contactPerson.mergePeople(this.contact.id, this.selectedPerson, peopleToMerge).then(() => {
+        return this.contactPerson.mergePeople(this.contact.id, this.selectedPerson, peopleToMerge).then(() => {
             this.$scope.$hide();
         }).catch(() => {
             alert('There was an error while trying to merge the people');
-        }).finally(() => {
-            this.currentlyMerging = false;
         });
     }
 }
