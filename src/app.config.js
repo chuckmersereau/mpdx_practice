@@ -14,5 +14,6 @@ export default function appConfig($analyticsProvider, $locationProvider, $logPro
     Routes.config($stateProvider);
     $httpProvider.interceptors.push('authInterceptor');
     blockUIConfig.autoBlock = false;
+    blockUIConfig.template = require('./blockUI/blockUI.html');
     $logProvider.debugEnabled(config.env === 'development');
 }

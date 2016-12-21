@@ -207,16 +207,19 @@ function openAddressModal(
 }
 
 /*@ngInject*/
-function openDonationModal($state, $stateParams, modal) {
-    modal.open({
-        template: require('./reports/donationsReport/edit/edit.html'),
-        controller: 'editDonationController',
-        locals: {
-            donationId: $stateParams.donationId
-        },
-        onHide: () => {
-            $state.go('^', {}, { reload: true });
-        }
+function openDonationModal($state, $stateParams, modal, donationsReport) {
+    donationsReport.getDonations().then((data) => {
+        let donation = _.find(data.donations, { id: parseInt($stateParams.donationId) });
+        modal.open({
+            template: require('./reports/donationsReport/edit/edit.html'),
+            controller: 'donationModalController',
+            locals: {
+                donation: donation
+            },
+            onHide: () => {
+                $state.go('^', {}, { reload: true });
+            }
+        });
     });
 }
 

@@ -349,11 +349,7 @@ class ContactsService {
         });
     }
     hideContact(contactId) {
-        _.each(this.data, (contact, i) => {
-            if (contact.id === contactId) {
-                this.data.splice(i, 1);
-            }
-        });
+        _.remove(this.data, (contact) => contact.id === contactId);
         return this.api.delete(`/contacts/${contactId}`);
     }
     bulkHideContacts() {

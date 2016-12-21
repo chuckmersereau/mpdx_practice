@@ -38,8 +38,8 @@ class EditDonationController {
         this.donation = _.find(data.donations, { id: parseInt(this.donationId) });
         this.blockUI.stop();
     }
-    submit(donation) {
-        this.donationsReport.save(donation).then(() => {
+    save() {
+        return this.donationsReport.save(this.donation).then(() => {
             this.donationsReport.data = null;
             this.$scope.$hide();
         });

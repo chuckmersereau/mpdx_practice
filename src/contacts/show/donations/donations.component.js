@@ -1,3 +1,5 @@
+import Highcharts from 'highcharts';
+
 class ContactDonationsController {
     api;
     contact;
@@ -20,14 +22,8 @@ class ContactDonationsController {
         this.donationMeta = {page: 0};
         this.loading = false;
     }
-    // $onInit() {
-    //     if (this.contact.id) {
-    //         this.getDonations();
-    //         this.getDonationsGraph();
-    //     }
-    // }
     $onChanges(changesObj) {
-        if (_.has(changesObj, 'contact.id')) {
+        if (_.has(changesObj, 'contact.currentValue.id')) {
             this.getDonations();
             this.getDonationsGraph();
         }
@@ -57,7 +53,7 @@ class ContactDonationsController {
             } else if (data.amount < 0) {
                 subtitle = 'Average donations down <span style="color:red">' + Math.abs(data.amount) + '</span> from last year';
             }
-            this.donationGraphData = {
+            Highcharts.chart('contact_donations_summary_chart', {
                 options: {
                     chart: {
                         height: 250
@@ -103,7 +99,7 @@ class ContactDonationsController {
                     type: 'column',
                     color: '#FDB800'
                 }]
-            };
+            });
         });
     }
     openDonationModal(donation) {

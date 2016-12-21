@@ -15,6 +15,7 @@ class PersonModalController {
         this.$scope = $scope;
         this.personDetails = '';
         this.maps = [];
+        this.activeTab = 'contact-info';
 
         this.activate();
     }
@@ -31,22 +32,20 @@ class PersonModalController {
             };
         }
     }
-    save(isValid) {
-        if (isValid) {
-            if (this.person.id) {
-                this.contactPerson.save(this.contactId, this.person).then(() => {
-                    this.$log.debug('person saved:', this.person);
-                    this.$rootScope.$emit('contactPersonUpdated', this.contactId);
+    save() {
+        if (this.person.id) {
+            return this.contactPerson.save(this.contactId, this.person).then(() => {
+                this.$log.debug('person saved:', this.person);
+                this.$rootScope.$emit('contactPersonUpdated', this.contactId);
 
-                    this.$scope.$hide();
-                });
-            } else {
-                this.contactPerson.create(this.contactId, this.person).then(() => {
-                    this.$log.debug('person created:', this.person);
-                    this.$rootScope.$emit('contactPersonUpdated', this.contactId);
-                    this.$scope.$hide();
-                });
-            }
+                this.$scope.$hide();
+            });
+        } else {
+            return this.contactPerson.create(this.contactId, this.person).then(() => {
+                this.$log.debug('person created:', this.person);
+                this.$rootScope.$emit('contactPersonUpdated', this.contactId);
+                this.$scope.$hide();
+            });
         }
     }
     addEmailAddress() {
@@ -81,9 +80,9 @@ class PersonModalController {
     familyRelationshipObject() {
         return {related_person_id: 0, relationship: '', _destroy: 0};
     }
-    remove() {
+    delete() {
         this.person._destroy = 1;
-        this.save(true);
+        return this.save();
     }
 }
 

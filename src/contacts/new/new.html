@@ -1,17 +1,8 @@
-<modal>
-    <modal-header title="New Contact" on-close="$hide()"></modal-header>
-    <form name="contactForm" ng-submit="$ctrl.save(contactForm.$valid)" novalidate>
-        <div class="modal-body">
-            <div class="row">
-                <div class="col-sm-12">
-                    <label><translate>Name</translate> <span class="text-danger">*</span></label>
-                    <input class="form-control" type="text" name="name" ng-model="$ctrl.contact.name" placeholder="{{'Last Name, First Name' | translate }}" required />
-                </div>
-            </div>
+<modal title="{{'New Contact' | translate}}" save="$ctrl.save()" cancel="$hide()">
+    <div class="row">
+        <div class="col-sm-12">
+            <label><translate>Name</translate> <span class="text-danger">*</span></label>
+            <input class="form-control" type="text" name="name" ng-model="$ctrl.contact.name" placeholder="{{'Last Name, First Name' | translate }}" required />
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default pull-left" ng-click="$hide()" translate>Cancel</button>
-            <button type="submit" class="btn btn-primary" ng-disabled="contactForm.$invalid" translate>Save</button>
-        </div>
-    </form>
+    </div>
 </modal>

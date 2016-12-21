@@ -44,20 +44,12 @@
         <div class="col-sm-5 more-details">
             <div ng-show="$ctrl.contact.status !== ''">{{$ctrl.contact.status | translate}}</div>
             <div ng-show="$ctrl.contact.pledge_amount > 0">
-                {{$ctrl.contact.pledge_amount | currency: $ctrl.contact.pledge_currency_symbol}} {{$ctrl.contact.pledge_frequency }}
+                {{$ctrl.contact.pledge_amount | currency: $ctrl.contact.pledge_currency_symbol}} {{$ctrl.contact.pledge_frequency | pledgeFrequencyToStr | translate}}
                 <div ng-if="$ctrl.contact.status == 'Partner - Financial'" ng-switch="$ctrl.contact.pledge_received">
                     <div ng-switch-when="true" class="text-success" translate>Commitment Received</div>
                     <div ng-switch-when="false" class="text-warning" translate>Commitment Not Received</div>
                 </div>
             </div>
-            <!-- div ng-show="$ctrl.contact.pledge_amount > 0">
-                {{$ctrl.contact.pledge_amount | currency: $ctrl.contact.pledge_currency_symbol}} {{$ctrl.contact.pledge_frequency | pledgeFrequencyStr}}
-                <div ng-if="$ctrl.contact.status == 'Partner - Financial'" ng-switch="$ctrl.contact.pledge_received">
-                    <div ng-switch-when="true" class="text-success" translate>Commitment Received</div>
-                    <div ng-switch-when="false" class="text-warning" translate>Commitment Not Received</div>
-                </div>
-            </div -->
-
 
             <a ng-href="/tasks?contact_ids={{$ctrl.contact.id}}" ng-show="$ctrl.contact.uncompleted_tasks_count > 0">
                 <span translate>Tasks</span>: {{$ctrl.contact.uncompleted_tasks_count}}
@@ -65,8 +57,12 @@
         </div>
     </div>
     <div class="btn-group">
-        <a class="btn btn-sm btn-default" ui-sref="contact({contactId: $ctrl.contact.id})" title="{{ 'View Contact' | translate }}"><i class="fa fa-search"></i></a>
-        <a class="btn btn-sm btn-default" title="{{ 'Hide Contact' | translate }}" ng-click="$ctrl.hide({ contactId: $ctrl.contact.id })"><i class="fa fa-eye-slash"></i></a>
+        <a class="btn btn-sm btn-default" ui-sref="contact({contactId: $ctrl.contact.id})" title="{{ 'View Contact' | translate }}">
+            <i class="fa fa-search"></i>
+        </a>
+        <a class="btn btn-sm btn-default" title="{{ 'Hide Contact' | translate }}" ng-hide="$ctrl.contact.status == 'Never Ask'" ng-click="$ctrl.hide({ contactId: $ctrl.contact.id })">
+            <i class="fa fa-eye-slash"></i>
+        </a>
         <button class="btn btn-sm btn-default" ng-click="$ctrl.toggleCheckbox()">
             <input type="checkbox" ng-model="$ctrl.contact.selected" ng-click="$ctrl.stopPropagation($event)"/>
         </button>
