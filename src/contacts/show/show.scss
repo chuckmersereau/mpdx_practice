@@ -78,6 +78,17 @@ contact {
                             transition: 0.3s ease-in-out;
                         }
                     }
+                    .search-choice-close {
+                        background: none;
+                        top: 0;
+                        right: 18px;
+                        &:before {
+                            font-family: 'FontAwesome';
+                            font-size: 12px;
+                            color: $icon_gray;
+                            content: "\f00d";
+                        }
+                    }
                 }
                 &.chosen-with-drop {
                     .chosen-single {
@@ -92,7 +103,28 @@ contact {
                 .chosen-drop {
                     margin-top: 5px;
                     border: 1px solid rgba(82, 168, 236, 0.8);
-                    border-radius: 4px;
+                    border-radius: 0;
+                    box-shadow: none;
+                    .chosen-search {
+                        input[type="text"] {
+                            background: none;
+                            &:focus {
+                                border: 1px solid rgba(82, 168, 236, 0.8);
+                                outline: 0;
+                            }
+                        }
+                        &:after {
+                            content: "\f002";
+                            font-family: FontAwesome;
+                            position: absolute;
+                            color: $icon_gray;
+                            right: 10px;
+                            top: 3px;
+                        }
+                    }
+                }
+                &.chosen-container-single-nosearch .chosen-drop .chosen-search:after {
+                    content: '';
                 }
                 &.chosen-container-active {
                     .chosen-single {
@@ -112,6 +144,7 @@ contact {
                 transition: border-bottom-color 0.3s ease-in;
                 position: relative;
                 background: transparent;
+                outline: 0;
                 width: 100%;
                 &:focus {
                     border-bottom: 1px solid rgb(0, 115, 152);
@@ -313,10 +346,20 @@ contact {
     }
     #contact-tabs {
         margin-bottom: 10px;
+        .tabs-info {
+            a {
+                color: $icon_gray;
+            }
+        }
     }
 
-    .see_notes_box{
+    .see-notes{
         text-align: right;
-        margin-bottom: 5px;
+        margin-bottom: 10px;
     }
+
+    .add-partner-account {
+        margin-top: 10px;
+    }
+
 }

@@ -18,14 +18,12 @@ class EditFieldsController {
         this.models = {};
         this.constants = {};
 
-        this.activate();
-    }
-    activate() {
         this.serverConstants.fetchConstants(['bulk_update_options']);
         this.constants = this.serverConstants.data;
     }
-    submit() {
-        this.contacts.bulkEditFields(
+
+    save() {
+        return this.contacts.bulkEditFields(
             this.models,
             this.constants.bulk_update_options.pledge_currency,
             this.selectedContacts
@@ -33,14 +31,6 @@ class EditFieldsController {
             this.$scope.$hide();
             this.contacts.load(true);
         });
-    }
-    isInvalid() {
-        return !Object.keys(this.models).length;
-    }
-    reset() {
-        this.models = {};
-        angular.element('div.datetimepicker-wrapper td.hours input').val('');
-        angular.element('div.datetimepicker-wrapper td.minutes input').val('');
     }
 }
 

@@ -3,7 +3,7 @@ import editFields from './editFields/editFields.controller';
 import exportContacts from './exportContacts/exportContacts.controller';
 import item from './item/item.component';
 import mergeContacts from './mergeContacts/mergeContacts.controller';
-import pledgeFrequencyStr from './item/plegeFrequency/pledgeFrequencyStr';
+import pledgeFrequencyToStr from './item/plegeFrequencyToStr/pledgeFrequencyToStr.filter';
 
 export default angular.module('mpdx.contacts.list', [
     component,
@@ -11,5 +11,5 @@ export default angular.module('mpdx.contacts.list', [
     exportContacts,
     item,
     mergeContacts,
-    pledgeFrequencyStr
+    pledgeFrequencyToStr
 ]).name;

@@ -1,36 +1,29 @@
-<modal>
-    <modal-header title="{{$ctrl.modalTitle}}" on-close="$hide()"></modal-header>
-    <form class="modal-body" name="addTaskForm" ng-submit="$ctrl.submit()" novalidate>
-        <div class="form-group">
-            <label for="subject">Subject</label>
-            <input class="form-control" id='subject' ng-model="$ctrl.models.subject" required/>
+<modal title="{{$ctrl.modalTitle}}" save="$ctrl.save()" cancel="$hide()">
+    <div class="form-group">
+        <label for="subject" translate>Subject</label>
+        <input class="form-control" id='subject' ng-model="$ctrl.models.subject" required/>
+    </div>
+    <div class="form-group">
+        <label for="action" translate>Action</label>
+        <input type="checkbox" ng-model="$ctrl.newsletterPhysical" ng-disabled="$ctrl.newsletterBoth"> <label for="" translate>Newsletter - Physical</label>
+        <input type="checkbox" ng-model="$ctrl.newsletterEmail" ng-disabled="$ctrl.newsletterBoth"> <label for="" translate>Newslettter - Email</label>
+        <input type="checkbox" ng-model="$ctrl.newsletterBoth" ng-change="$ctrl.onBoth()"> <label for="" translate>Both</label>
+    </div>
+    <div class="form-group">
+        <label for="due-date" translate>Completed On</label>
+        <div ng-hide="$ctrl.models.noDate">
+            <datetimepicker ng-model="$ctrl.models.date"
+                            hour-step="1"
+                            minute-step="1"
+                            date-options="{ showWeeks: false, showButtonBar: false}"
+                            date-format="dd-MMM-yyyy"
+                            date-options="dateOptions"
+                            show-spinners="true">
+            </datetimepicker>
         </div>
-        <div class="form-group">
-            <label for="action">Action</label>
-            <input type="checkbox" ng-model="$ctrl.newsletterPhysical" ng-disabled="$ctrl.newsletterBoth"> Newsletter - Physical
-            <input type="checkbox" ng-model="$ctrl.newsletterEmail" ng-disabled="$ctrl.newsletterBoth"> Newslettter - Email
-            <input type="checkbox" ng-model="$ctrl.newsletterBoth" ng-change="$ctrl.onBoth()"> Both
-        </div>
-        <div class="form-group">
-            <label for="due-date">Completed On</label>
-            <div ng-hide="$ctrl.models.noDate">
-                <datetimepicker ng-model="$ctrl.models.date"
-                                hour-step="1"
-                                minute-step="1"
-                                date-options="{ showWeeks: false, showButtonBar: false}"
-                                date-format="dd-MMM-yyyy"
-                                date-options="dateOptions"
-                                show-spinners="true">
-                </datetimepicker>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="comment">Comment</label>
-            <input class="form-control" id='comment' ng-model="$ctrl.models.comment"/>
-        </div>
-        <div class="modal-footer">
-            <button type="submit" class="btn btn-primary" ng-disabled="addTaskForm.$invalid" translate>Save</button>
-            <button type="button" class="btn btn-default" ng-click="$hide()" tranlate>Close</button>
-        </div>
-    </form>
+    </div>
+    <div class="form-group">
+        <label for="comment" translate>Comment</label>
+        <input class="form-control" id='comment' ng-model="$ctrl.models.comment"/>
+    </div>
 </modal>

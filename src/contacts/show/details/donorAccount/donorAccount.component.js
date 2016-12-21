@@ -12,12 +12,14 @@ class ContactDonorAccountController {
     }
     remove() {
         this.donorAccount._destroy = '1';
-        this.save();
+        if (angular.isDefined(this.donorAccount.id)) {
+            this.save();
+        }
     }
     save() {
         if (this.donorAccount.account_number === '') { return; }
         if (!this.donorAccount.organization_id || this.donorAccount.organization_id === 0) {
-            this.donorAccount.organization_id = this.currentAccountList.data.default_organization_id;
+            this.donorAccount.organization_id = this.currentAccountList.account_list.default_organization_id;
         }
         this.contacts.save(this.contact);
     }

@@ -1,24 +1,21 @@
-<modal>
-    <modal-header title="Export Contacts" on-close="$hide()"></modal-header>
-    <div class="modal-body">
-        <div class="row">
-            <div class="col-sm-4">
-                <a ng-href="{{$ctrl.mailingCSVLink()}}" class="btn btn-primary btn-block" translate>CSV for Mail Merge</a>
+<modal title="{{'Export Contacts' | translate}}" cancel="$hide()">
+    <div class="row">
+        <div class="col-sm-4">
+            <a ng-href="{{$ctrl.mailingCSVLink()}}" class="btn btn-primary btn-block" translate>CSV for Mail Merge</a>
 
-                <p translate>Best for making mailing labels. Addresses will be formatted based on country.</p>
-            </div>
-            <div class="col-sm-4">
-                <a ng-href="{{$ctrl.primaryCSVLink()}}" class="btn btn-primary btn-block" translate>Advanced CSV</a>
-                <p translate>
-                    All of the information for your contacts, best for advanced sorting/filtering and importing into other software.
-                </p>
-            </div>
-            <div class="col-sm-4">
-                <a ng-href="{{$ctrl.primaryXLSXLink()}}" class="btn btn-primary btn-block" translate>Advanced XLSX</a>
-                <p translate>
-                    All of the information for your contacts in Excel's default XLSX format.
-                </p>
-            </div>
+            <p translate>Best for making mailing labels. Addresses will be formatted based on country.</p>
+        </div>
+        <div class="col-sm-4">
+            <a ng-href="{{$ctrl.primaryCSVLink()}}" class="btn btn-primary btn-block" translate>Advanced CSV</a>
+            <p translate>
+                All of the information for your contacts, best for advanced sorting/filtering and importing into other software.
+            </p>
+        </div>
+        <div class="col-sm-4">
+            <a ng-href="{{$ctrl.primaryXLSXLink()}}" class="btn btn-primary btn-block" translate>Advanced XLSX</a>
+            <p translate>
+                All of the information for your contacts in Excel's default XLSX format.
+            </p>
         </div>
     </div>
 </modal>

@@ -8,8 +8,8 @@ class MergeContactsController {
         this.contactNames = contactNames;
         this.contactIds = contactIds;
     }
-    submit() {
-        this.api.post('contacts/merge', { merge_contact_ids: this.contactIds.join() }).then(() => {
+    save() {
+        return this.api.post('contacts/merge', { merge_contact_ids: this.contactIds.join() }).then(() => {
             this.$scope.$hide();
             location.reload();
         });
