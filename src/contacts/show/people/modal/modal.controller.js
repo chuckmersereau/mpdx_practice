@@ -1,10 +1,16 @@
 class PersonModalController {
     contact;
+    contactPerson;
     contacts;
 
-    constructor($scope, contactPerson, contact, person) {
+    constructor(
+        $log, $rootScope, $scope,
+        contactPerson, contactId, person
+    ) {
+        this.$log = $log;
+        this.$rootScope = $rootScope;
         this.contactPerson = contactPerson;
-        this.contact = contact;
+        this.contactId = contactId;
         this.person = person;
         this.$scope = $scope;
         this.personDetails = '';
@@ -27,19 +33,20 @@ class PersonModalController {
     }
     save(isValid) {
         if (isValid) {
-            this.contactPerson.save(this.contact.id, this.person).then(() => {
-                if (angular.isDefined(this.person.id)) {
-                    const personIndex = _.findIndex(this.contact.people, person => person.id === this.person.id);
-                    this.contact.people[personIndex] = angular.copy(this.person);
-                    if (angular.element('#primary_person_id:checked').length === 1) {
-                        this.contact.primary_person_id = this.person.id;
-                    }
-                } else {
-                    this.contact.people.push(this.person);
-                }
+            if (this.person.id) {
+                this.contactPerson.save(this.contactId, this.person).then(() => {
+                    this.$log.debug('person saved:', this.person);
+                    this.$rootScope.$emit('contactPersonUpdated', this.contactId);
 
-                this.$scope.$hide();
-            });
+                    this.$scope.$hide();
+                });
+            } else {
+                this.contactPerson.create(this.contactId, this.person).then(() => {
+                    this.$log.debug('person created:', this.person);
+                    this.$rootScope.$emit('contactPersonUpdated', this.contactId);
+                    this.$scope.$hide();
+                });
+            }
         }
     }
     addEmailAddress() {

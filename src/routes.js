@@ -221,22 +221,27 @@ function openDonationModal($state, $stateParams, modal) {
 }
 
 /*@ngInject*/
-function openPeopleModal($state, $stateParams, modal, cache) {
-    cache.get($stateParams.contactId).then((contact) => {
-        const person = _.find(contact.people, person => person.id.toString() === $stateParams.personId);
-
+function openPeopleModal($state, $stateParams, modal, contactPerson) {
+    function modalOpen(contactId, person) {
         modal.open({
             template: require('./contacts/show/people/modal/modal.html'),
             controller: 'personModalController',
             locals: {
-                contact: contact,
+                contactId: contactId,
                 person: person
             },
             onHide: () => {
                 $state.go('^');
             }
         });
-    });
+    }
+    if ($stateParams.personId === 'new') {
+        modalOpen($stateParams.contactId, {});
+    } else {
+        contactPerson.get($stateParams.contactId, $stateParams.personId).then((person) => {
+            modalOpen($stateParams.contactId, person);
+        });
+    }
 }
 
 /*@ngInject*/

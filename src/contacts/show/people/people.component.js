@@ -1,18 +1,20 @@
 class ContactPeopleController {
     api;
     contact;
+    contactPerson;
 
     constructor(
-        $log, $state,
-        api, gettextCatalog
+        $log, $state, $rootScope,
+        api, contactPerson, gettextCatalog
     ) {
         this.$log = $log;
+        this.$rootScope = $rootScope;
         this.$state = $state;
         this.api = api;
+        this.contactPerson = contactPerson;
         this.gettextCatalog = gettextCatalog;
 
         this.isMerging = false;
-        this.people = [];
     }
     $onInit() {
         this.init();
@@ -24,10 +26,8 @@ class ContactPeopleController {
         if (!_.has(this, 'contact.id')) {
             return;
         }
-        this.$log.debug('contacts/show/people - nested includes would be nice here');
-        this.api.get(`contacts/${this.contact.id}/people`, {include: 'email_addresses,facebook_accounts,family_relationships,linkedin_accounts,master_person,phone_numbers,twitter_accounts,websites'}).then((data) => {
+        this.contactPerson.list(this.contact.id).then((data) => {
             this.$log.debug('selected people: ', data);
-            this.people = data;
         });
     }
     openMergeModal() {
