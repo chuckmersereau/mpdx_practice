@@ -50,6 +50,9 @@ class Users {
     destroy(id) {
         return this.api.delete(`users/${id}`);
     }
+    save(user) {
+        return this.api.put('users', user);
+    }
 }
 
 export default angular.module('mpdx.common.users.service', [])

@@ -80,7 +80,7 @@
                         <span translate>Email Address</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{$ctrl.users.current.preferences.email}}
+                        {{$ctrl.users.current.email}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
@@ -97,7 +97,7 @@
                             <div class="form-group">
                                 <label for="email" translate>Email Address</label>
                                 <p class="text-muted" translate>This is the email address where notifications will be sent.</p>
-                                <input id="email" type="email" class="form-control" ng-model="$ctrl.users.current.preferences.email">
+                                <input id="email" type="email" class="form-control" ng-model="$ctrl.users.current.email">
                             </div>
                             <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                                 <span translate>Save</span>&nbsp;

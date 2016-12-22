@@ -74,7 +74,7 @@ class Api {
                 let params = {keyForAttribute: 'underscore_case'};
                 if (method === 'put' || method === 'post') {
                     let arr = url.split('/');
-                    if (method === 'put') {
+                    if (method === 'put' && arr.length % 2 === 0) {
                         key = arr[arr.length - 2];
                     } else {
                         key = arr[arr.length - 1];
