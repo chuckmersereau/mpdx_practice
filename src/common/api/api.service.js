@@ -195,10 +195,14 @@ class EntityAttributes {
             people: {
                 attributes: ["first_name", "legal_first_name", "last_name", "birthday_month", "birthday_year", "birthday_day", "anniversary_month", "anniversary_year", "anniversary_day", "title",
                     "suffix", "gender", "marital_status", "preferences", "sign_in_count", "current_sign_in_at", "last_sign_in_at", "current_sign_in_ip", "last_sign_in_ip", "created_at", "updated_at",
-                    "master_person_id", "middle_name", "access_token", "profession", "deceased", "subscribed_to_updates", "optout_enewsletter", "occupation", "employer", "not_duplicated_with", "phone_numbers"],
+                    "master_person_id", "middle_name", "access_token", "profession", "deceased", "subscribed_to_updates", "optout_enewsletter", "occupation", "employer", "not_duplicated_with",
+                    "phone_numbers", "email_addresses", "facebook_accounts", "family_relationships", "linkedin_accounts", "websites"],
                 email_addresses: () => _.extend({ ref: 'id' }, this.attributes.email_addresses),
                 facebook_accounts: () => _.extend({ ref: 'id' }, this.attributes.person_facebook_accounts),
-                phone_numbers: () => _.extend({ ref: 'id' }, this.attributes.phone_numbers)
+                family_relationships: () => _.extend({ ref: 'id' }, this.attributes.family_relationships),
+                linkedin_accounts: () => _.extend({ ref: 'id' }, this.attributes.person_linkedin_accounts),
+                phone_numbers: () => _.extend({ ref: 'id' }, this.attributes.phone_numbers),
+                websites: () => _.extend({ ref: 'id' }, this.attributes.person_websites)
             },
             person_facebook_accounts: {
                 attributes: ["person_id", "remote_id", "token", "token_expires_at", "created_at", "updated_at", "valid_token", "first_name", "last_name", "authenticated", "downloading", "last_download", "username"]
