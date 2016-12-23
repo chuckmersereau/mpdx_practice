@@ -15,10 +15,6 @@ class AccountsService {
         this.donations = null;
         this.inviteList = null;
         this.userList = null;
-
-        // $rootScope.$on('accountListUpdated', () => {
-        //     this.getCurrent();
-        // });
     }
     load() {
         return this.api.get(`account_lists`).then((data) => {
@@ -30,8 +26,8 @@ class AccountsService {
         return this.api.get(`account_lists/${id}`).then((resp) => {
             this.current = resp;
             this.api.account_list_id = id;
-            this.$rootScope.$emit('accountListUpdated', this.api.account_list_id);
             this.$log.debug('account swapped: ', resp);
+            this.$rootScope.$emit('accountListUpdated', this.api.account_list_id);
             return resp;
         });
     }
