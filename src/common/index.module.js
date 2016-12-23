@@ -11,7 +11,6 @@ import chosen from './chosen/chosen.directive';
 import convertToNumber from './convertToNumber/convertToNumber.directive';
 import currency from './currency/currency.service';
 import currencySelect from './currencySelect/currencySelect.component';
-import pagination from './pagination/pagination.component';
 import currentAccountList from './currentAccountList/currentAccountList.service';
 import currentUser from './currentUser/currentUser.service';
 import designationAccounts from './designationAccounts/designationAccounts.service';
@@ -29,6 +28,7 @@ import serverConstants from './serverConstants/serverConstants.service';
 import session from './session/session.service';
 import state from './state/state.service';
 import tags from './tags/index.module';
+import pagination from './pagination/pagination.component';
 import urlParameter from './urlParameter/urlParameter.service';
 
 export default angular.module('mpdx.common', [
@@ -45,7 +45,6 @@ export default angular.module('mpdx.common', [
     convertToNumber,
     currency,
     currencySelect,
-    pagination,
     currentAccountList,
     currentUser,
     designationAccounts,
@@ -61,7 +60,8 @@ export default angular.module('mpdx.common', [
     selectionStore,
     serverConstants,
     session,
-    state,
     tags,
+    pagination,
+    state,
     urlParameter
 ]).name;
