@@ -1,6 +1,5 @@
 <div class="account-list-dropdown" ng-if="$ctrl.accounts.data.length > 1">
-    <select ng-model="$ctrl.api.account_list_id" class="form-control" disable-search="true" chosen>
+    <select ng-model="$ctrl.api.account_list_id" class="form-control" disable-search="true" ng-change="$ctrl.accounts.getCurrent()" chosen>
         <option ng-repeat="account in $ctrl.accounts.data" value="{{account.id}}">{{account.name}}</option>
     </select>
-
 </div>

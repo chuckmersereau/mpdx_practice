@@ -61,6 +61,8 @@ class Api {
         if (overrideGetAsPost) {
             headers['X-HTTP-Method-Override'] = 'POST';
         }
+        //set jsonapi content type
+        headers['Content-Type'] = 'application/vnd.api+json';
 
         const request = {
             method: method,
@@ -80,6 +82,8 @@ class Api {
                         key = arr[arr.length - 1];
                     }
                     if (_.has(this.entityAttributes, key)) {
+                        this.$log.debug('entity:', key);
+                        this.$log.debug('attributes:', this.entityAttributes[key]);
                         _.extend(params, this.entityAttributes[key]);
                     } else {
                         this.$log.error(`undefined attributes for model: ${key} in api.service`);
@@ -160,7 +164,7 @@ class EntityAttributes {
     constructor() {
         this.attributes = {
             account_list_invites: {
-                attributes: ["created_at", "updated_at", "accepted_at", "accepted_by_user_id", "account_list_id", "cancelled_by_user_id", "code", "invited_by_user_id", "recipient_email"]
+                attributes: ["created_at", "updated_at", "accepted_at", "accepted_by_user_id", "account_list_id", "cancelled_by_user_id", "code", "invited_by_user_id", "recipient_email", "updated_at"]
             },
             account_lists: {
                 attributes: ["name", "creator_id", "created_at", "updated_at", "settings"]
@@ -232,7 +236,7 @@ class EntityAttributes {
                 attributes: ["account_list_id", "starred", "location", "subject", "start_at", "end_at", "type", "created_at", "updated_at", "completed", "activity_comments_count", "activity_type", "result",
                     "completed_at", "notification_id", "remote_id", "source", "next_action", "no_date", "notification_type", "notification_time_before", "notification_time_unit", "notification_scheduled"]
             },
-            users: {
+            user: {
                 attributes: ["first_name", "preferences", "setup", "email", "access_token", "time_zone", "locale"]
             }
         };

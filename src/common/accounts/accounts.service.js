@@ -7,6 +7,7 @@ class AccountsService {
         api
     ) {
         this.$log = $log;
+        this.$rootScope = $rootScope;
         this.api = api;
 
         this.current = null;
@@ -15,23 +16,27 @@ class AccountsService {
         this.inviteList = null;
         this.userList = null;
 
-        $rootScope.$on('accountListUpdated', () => {
-            this.getCurrent();
-        });
+        // $rootScope.$on('accountListUpdated', () => {
+        //     this.getCurrent();
+        // });
     }
     load() {
         return this.api.get(`account_lists`).then((data) => {
-            // console.log('accounts:', data.data);
+            this.$log.debug('accounts:', data);
             this.data = data;
         });
     }
-    getCurrent() {
-        return this.api.get(`account_lists/${this.api.account_list_id}`).then((resp) => {
-            this.$log.debug('accounts/current: ', resp);
-            this.current = resp.data;
-        }).catch((err) => {
-            this.$log.debug(err);
+    swap(id) {
+        return this.api.get(`account_lists/${id}`).then((resp) => {
+            this.current = resp;
+            this.api.account_list_id = id;
+            this.$rootScope.$emit('accountListUpdated', this.api.account_list_id);
+            this.$log.debug('account swapped: ', resp);
+            return resp;
         });
+    }
+    getCurrent() {
+        return this.swap(this.api.account_list_id);
     }
     getDonations() {
         return this.api.get(`account_lists/${this.api.account_list_id}/donations`).then((resp) => {
