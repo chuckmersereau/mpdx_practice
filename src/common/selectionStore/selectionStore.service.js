@@ -1,10 +1,10 @@
 class SelectionStore {
     constructor(
-        $localForage, $log, state, api
+        $localForage, $log, users, api
     ) {
         this.$localForage = $localForage;
         this.$log = $log;
-        this.state = state;
+        this.users = users;
         this.api = api;
     }
     // This returns a promise from localForage for the retrieved contacts.
@@ -21,7 +21,7 @@ class SelectionStore {
         });
     }
     selectedContactsStorageKey() {
-        return 'selectedContacts-userId:' + this.state.current_user_id + '-accountListId:' + this.api.account_list_id;
+        return 'selectedContacts-userId:' + this.users.current.id + '-accountListId:' + this.api.account_list_id;
     }
 
 }

@@ -3,18 +3,16 @@ class ContributionsReportController {
     layoutSettings;
     moment;
     monthRange;
-    state;
 
     constructor(
         gettextCatalog,
-        api, state, monthRange, layoutSettings
+        api, monthRange, layoutSettings
     ) {
         this.api = api;
         this.gettextCatalog = gettextCatalog;
         this.layoutSettings = layoutSettings;
         this.moment = moment;
         this.monthRange = monthRange;
-        this.state = state;
 
         /**
          Report Types

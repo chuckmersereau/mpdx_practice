@@ -1,14 +1,12 @@
 class progressController {
     api;
-    state;
     users;
 
     constructor(
         blockUI,
-        api, $filter, state, users
+        api, $filter, users
     ) {
         this.$filter = $filter;
-        this.state = state;
         this.api = api;
         this.blockUI = blockUI.instances.get('dashboardProgress');
         this.users = users;

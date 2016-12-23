@@ -1,9 +1,9 @@
 class ContactListItemController {
     contact;
-    constructor($state, state) {
+    constructor($state, users) {
         this.$state = $state;
 
-        this.current_currency_symbol = state.current_currency_symbol;
+        this.current_currency_symbol = users.current.currency_symbol;
     }
     switchContact() {
         this.selected = this.contact.id;
