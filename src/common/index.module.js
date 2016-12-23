@@ -9,7 +9,6 @@ import chosen from './chosen/chosen.directive';
 import convertToNumber from './convertToNumber/convertToNumber.directive';
 import currency from './currency/currency.service';
 import currencySelect from './currencySelect/currencySelect.component';
-import pagination from './pagination/pagination.component';
 import designationAccounts from './designationAccounts/designationAccounts.service';
 import faCheckbox from './faCheckbox/faCheckbox.component';
 import help from './help/help.service';
@@ -25,6 +24,7 @@ import serverConstants from './serverConstants/serverConstants.service';
 import session from './session/session.service';
 import state from './state/state.service';
 import tags from './tags/index.module';
+import pagination from './pagination/pagination.component';
 import urlParameter from './urlParameter/urlParameter.service';
 import users from './users/users.service';
 
@@ -40,7 +40,6 @@ export default angular.module('mpdx.common', [
     convertToNumber,
     currency,
     currencySelect,
-    pagination,
     designationAccounts,
     faCheckbox,
     help,
@@ -50,11 +49,11 @@ export default angular.module('mpdx.common', [
     modal,
     momentFilter,
     monthRange,
+    pagination,
     rawNumber,
     selectionStore,
     serverConstants,
     session,
-    state,
     tags,
     urlParameter,
     users

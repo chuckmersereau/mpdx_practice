@@ -155,6 +155,15 @@ export default class Routes {
             url: '/{id}',
             component: 'personalPreferences'
         }).state({
+            name: 'tasks',
+            title: 'Tasks',
+            url: '/tasks',
+            component: 'tasks'
+        }).state({
+            name: 'tasks.new',
+            url: '/new',
+            onEnter: openNewTaskModal
+        }).state({
             name: 'unavailable',
             title: 'Unavailable',
             url: '/unavailable',
@@ -280,6 +289,27 @@ function openNewContactModal(
         controller: 'contactNewModalController',
         onHide: () => {
             if ($state.current.name === 'contacts.new') {
+                $state.go('^');
+            }
+        }
+    });
+}
+
+/*@ngInject*/
+function openNewTaskModal(
+  modal, $state
+) {
+    modal.open({
+        template: require('./tasks/add/add.html'),
+        controller: 'addTaskController',
+        locals: {
+            specifiedAction: null,
+            specifiedSubject: null,
+            selectedContacts: [],
+            modalTitle: 'Add Task'
+        },
+        onHide: () => {
+            if ($state.current.name === 'tasks.new') {
                 $state.go('^');
             }
         }

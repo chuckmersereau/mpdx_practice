@@ -123,4 +123,3 @@ const ContactList = {
 
 export default angular.module('mpdx.contacts.list.component', [])
     .component('contactsList', ContactList).name;
-
