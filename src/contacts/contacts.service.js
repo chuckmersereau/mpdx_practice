@@ -6,9 +6,10 @@ class ContactsService {
     contactsTags;
 
     constructor(
-        $location, $rootScope,
+        $location, $log, $rootScope,
         api, cache, contactFilter, contactsTags
     ) {
+        this.$log = $log;
         this.api = api;
         this.cache = cache;
         this.contactFilter = contactFilter;
@@ -17,17 +18,23 @@ class ContactsService {
         this.analytics = null;
         this.data = [];
         this.meta = {};
+        this.lastAccountId = null; //Hack to stop dupe calls on repeat account swap
         this.loading = true;
 
         this.page = 1;
 
         $rootScope.$watch(() => this.contactFilter.params, (newVal, oldVal) => {
             if (!_.isEmpty(newVal) && !_.isEmpty(oldVal)) {
+                $log.debug('contacts service: contact parameter change');
                 this.load(true);
             }
         }, true);
 
-        $rootScope.$watch(() => this.contactFilter.wildcard_search, () => {
+        $rootScope.$watch(() => this.contactFilter.wildcard_search, (newVal, oldVal) => {
+            if (!oldVal) {
+                return;
+            }
+            $log.debug('contacts service: contact search change');
             const query = $location.search().q;
             if (query) {
                 $location.search('q', null);
@@ -36,8 +43,10 @@ class ContactsService {
             }
         });
 
-        $rootScope.$on('accountListUpdated', (accountListId) => {
-            if (accountListId) {
+        $rootScope.$on('accountListUpdated', (e, accountId) => {
+            if (accountId && this.lastAccountId !== accountId) {
+                $log.debug('contacts service: current account switched:', accountId);
+                this.lastAccountId = accountId;
                 this.load(true);
             }
         });
@@ -49,7 +58,8 @@ class ContactsService {
                 any: this.contactsTags.anyTags
             });
         }, (newVal, oldVal) => {
-            if (newVal !== oldVal) {
+            if (oldVal && newVal !== oldVal) {
+                $log.debug('contacts service: contacts tags changed');
                 this.load(true);
             }
         });
@@ -77,7 +87,7 @@ class ContactsService {
         filterParams.any_tags = this.contactsTags.anyTags;
 
         return this.api.get('contacts', {filters: filterParams, page: this.page, per_page: 25, include: 'people,addresses', sort: 'name'}).then((data) => {
-            //console.log(data);
+            this.$log.debug('contacts page ' + data.meta.pagination.page, data);
             let count = this.meta.to || 0;
             if (reset) {
                 newContacts = [];
@@ -284,7 +294,7 @@ class ContactsService {
         this.load(false);
     }
     findChangedFilters(defaultParams, params) {
-        var filterParams = {};
+        let filterParams = {};
         _.forIn(params, (filter, key) => {
             if (_.has(this.contactFilter.params, key)) {
                 const currentDefault = defaultParams[key];
@@ -359,7 +369,7 @@ class ContactsService {
         });
     }
     bulkEditFields(model, pledgeCurrencies, contactIds) {
-        var obj = {};
+        let obj = {};
         if (model.likelyToGive) {
             obj.likely_to_give = model.likelyToGive;
         }
@@ -409,9 +419,11 @@ class ContactsService {
             return this.$q.resolve(this.analytics);
         }
         return this.api.get('contacts/analytics').then((data) => {
-            // console.log('contacts/analytics', data);
+            this.$log.debug('contacts/analytics', data);
             this.analytics = data;
             return this.analytics;
+        }).catch((err) => {
+            this.$log.error('contacts/analytics not implemented.', err);
         });
     }
 }

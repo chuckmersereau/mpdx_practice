@@ -4,7 +4,8 @@ class TasksService {
     filterService;
     tagsService;
 
-    constructor(modal, api, tasksFilterService, tasksTagsService) {
+    constructor($log, modal, api, tasksFilterService, tasksTagsService) {
+        this.$log = $log;
         this.modal = modal;
         this.api = api;
         this.filterService = tasksFilterService;
@@ -337,9 +338,11 @@ class TasksService {
             return this.$q.resolve(this.analytics);
         }
         return this.api.get('tasks/analytics').then((data) => {
-            // console.log('tasks/analytics', data);
+            this.$log.debug('tasks/analytics', data);
             this.analytics = data;
             return this.analytics;
+        }).catch((err) => {
+            this.$log.error('tasks/analytics not implemented.', err);
         });
     }
 }

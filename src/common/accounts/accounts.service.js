@@ -23,6 +23,9 @@ class AccountsService {
         });
     }
     swap(id) {
+        if (id === _.get(this.current, 'id')) {
+            return;
+        }
         return this.api.get(`account_lists/${id}`).then((resp) => {
             this.current = resp;
             this.api.account_list_id = id;

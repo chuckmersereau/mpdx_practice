@@ -1,6 +1,14 @@
 class HomeController {
+    contacts;
+    tasksService;
     users;
-    constructor(users, help) {
+    constructor(
+        $log,
+        contacts, help, tasksService, users
+    ) {
+        this.$log = $log;
+        this.contacts = contacts;
+        this.tasksService = tasksService;
         this.users = users;
 
         help.suggest([
@@ -15,6 +23,11 @@ class HomeController {
             '58496d4ec6979106d373bb57',
             '58496bf1903360069817816c'
         ]);
+    }
+    $onInit() {
+        this.contacts.getAnalytics();
+        this.tasksService.getAnalytics();
+        // TODO: connect to above api call
     }
 }
 const Home = {
