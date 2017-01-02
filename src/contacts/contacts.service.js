@@ -69,6 +69,10 @@ class ContactsService {
     }
     load(reset) {
         this.loading = true;
+        if (reset) {
+            this.meta = {};
+            this.data = null;
+        }
         let newContacts;
 
         let filterParams = this.findChangedFilters(this.contactFilter.default_params, this.contactFilter.params);
