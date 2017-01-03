@@ -22,14 +22,19 @@ class CompleteTaskController {
     save() {
         return this.tasksService.postLogTask(this.taskId, this.models).then(() => {
             this.$scope.$hide();
-            this.$scope.$hide();
+
+            var contactIds = [];
+            if (this.contact) {
+                contactIds = [this.contact.id];
+            }
+
             this.modal.open({
                 template: require('../../../tasks/add/add.html'),
                 controller: 'addTaskController',
                 locals: {
                     specifiedAction: this.models.nextAction,
                     specifiedSubject: this.models.nextAction,
-                    selectedContacts: [this.contact.id],
+                    selectedContacts: contactIds,
                     modalTitle: 'Follow up Task'
                 }
             });

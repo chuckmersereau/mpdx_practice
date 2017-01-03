@@ -1,0 +1,96 @@
+<div class="tasks-component">
+  <table class="table tasks-table" bs-collapse data-start-collapsed="true" ng-show="$ctrl.meta.total || $ctrl.tasksService.sort == $ctrl.sortkey">
+    <tr class="header-row">
+      <th ng-style="{'border-bottom': '4px solid ' + $ctrl.color}"
+          colspan="100"
+          class="ng-binding">
+        <span class="tasks-title">
+          {{ $ctrl.title }}
+        </span>
+        <span class="actions task-actions" ng-show="$ctrl.selected.length">
+          <a class="btn btn-xs btn-secondary" ng-click="$ctrl.bulkCompleteTasks()" ng-hide="$ctrl.key === 'allCompleted'">Complete</a>
+          <a class="btn btn-xs btn-secondary" ng-click="$ctrl.bulkDeleteTasks()">Delete</a>
+          <a class="btn btn-xs btn-secondary" ng-click="$ctrl.openBulkEditTaskModal()">Edit</a>
+        </span>
+        <select
+          ng-model="$ctrl.meta.per_page"
+          ng-change="$ctrl.load()"
+          ng-options="i as i for i in [10, 25, 50, 100, 500]"
+          class="form-control ng-pristine ng-untouched ng-valid ng-not-empty tasks-per-page form-inline">
+        </select>
+        <span
+          class="tasks-per-page-description"
+          style="float: right">
+          Show:
+        </span>
+        <a class="btn btn-xs btn-secondary pull-right" ng-click="$ctrl.toggleAll()" style="margin-right: 12px">Select All</a>
+      </th>
+    </tr>
+    <tr ng-hide="$ctrl.tasks[$ctrl.key].length">
+      <td class="text-center" colspan="100">
+        Task list empty
+      </td>
+    </tr>
+    <tr class="task-row"
+        ng-repeat-start="task in $ctrl.tasks[$ctrl.key]"
+        ng-click="$ctrl.toggleSelected(task.id)"
+        ng-class="$ctrl.selected.indexOf(task.id) >= 0 ? 'selected-task-row' : ''"
+        >
+      <td class="col-sm-1">
+        <i class="fa fa-lg fa-square-o complete_task"
+           ng-click="$ctrl.openCompleteTaskModal(task); $event.stopPropagation();"
+           data-behaviour="Done"
+           />
+      </td>
+      <td class="col-sm-1">
+        <i class="fa fa-lg starred" ng-class="task.starred ? 'fa-star' : 'fa-star-o'" ng-click="$ctrl.starTask(task); $event.stopPropagation();" />
+      </td>
+      <td class="col-sm-2">
+        {{ task.activity_type }}
+      </td>
+      <td class="col-sm-2">
+          {{ task.no_date ? '' : $ctrl.moment(task.due_date).format('M-D-YY h:m a') }}
+      </td>
+      <td class="col-sm-4">
+        <a ng-click="$ctrl.openEditTaskModal(task); $event.stopPropagation();"><b>{{ task.subject }}</b>
+          <a ng-click="$event.stopPropagation();" ng-repeat="contact in task.contacts" ui-sref="'contacts/' + contact.id">
+            ({{ contact.name }})
+          </a>
+        </a>
+      </td>
+
+      <td class="col-sm-1 comments-count"
+          ng-class="task.comments.length ? 'comments-count-has-comments' : ''"
+          bs-collapse-toggle>
+        <i class="fa fa-commenting-o"/>
+        {{ task.comments.length }}
+      </td>
+      <td class="col-sm-1">
+        <i class="fa fa-trash-o trash" ng-click="$ctrl.deleteTask(task.id); $event.stopPropagation();" aria-hidden="true"/>
+      </td>
+    </tr>
+    <tr class="comments-section" ng-repeat-end bs-collapse-target>
+      <td colspan="100">
+        <div class="col-sm-6 col-sm-offset-6" ng-repeat="comment in task.comments">
+          <span style="font-size: 16px">{{ comment.body }}</span>
+          <a ng-click="$ctrl.deleteComment(task.id, comment.id)"><i class="fa fa-times pull-right" aria-hidden="true"></i></a>
+          <br/>
+          <span style="color: #909b9c">
+            - {{ comment.person_id.first_name }} {{ comment.person_id.last_name }}, {{ $ctrl.moment(comment.created_at).format('M-d-YYYY') }}
+          </span>
+        </div>
+        <form class="form-inline">
+          <input style="width: 85%" class="form-control" ng-model="$ctrl.models.comment"/>
+          <button class="btn btn-primary" ng-click="$ctrl.newComment(task.id)">Add Comment</button>
+        </form>
+      </td>
+    </tr>
+  </table>
+  <pagination ng-show="$ctrl.tasks[$ctrl.key].length"
+              to="$ctrl.meta.to"
+              from="$ctrl.meta.from"
+              total="$ctrl.meta.total"
+              total-pages="$ctrl.meta.total_pages"
+              page="$ctrl.meta.page"
+              on-change="$ctrl.onPageChange(page)"></pagination>
+</div>

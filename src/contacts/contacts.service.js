@@ -13,7 +13,6 @@ class ContactsService {
         this.contactFilter = contactFilter;
         this.contactsTags = contactsTags;
 
-
         this.data = [];
         this.meta = {};
         this.loading = true;
