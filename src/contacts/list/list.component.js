@@ -1,20 +1,20 @@
 class ListController {
+    accounts;
     alerts;
     contacts;
     contactsTags;
-    currentAccountList;
     modal;
     tasksService;
 
     constructor(
-        modal,
-        contacts, contactsTags, alerts, tasksService, currentAccountList
+        modal, contacts, contactsTags, alerts, tasksService, accounts
     ) {
+        console.error('contacts/list: need replacement for currentAccountList.contacts.length');
+        this.accounts = accounts;
         this.alerts = alerts;
         this.contacts = contacts;
         this.modal = modal;
         this.contactsTags = contactsTags;
-        this.currentAccountList = currentAccountList;
         this.tasksService = tasksService;
 
         this.models = {

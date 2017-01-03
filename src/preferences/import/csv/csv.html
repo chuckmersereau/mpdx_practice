@@ -1,55 +1,55 @@
-<unavailable-message></unavailable-message>
-<!--<ol>-->
-    <!--<li translate>-->
-        <!--Download the <a href="/imports/sample.csv">sample MPDX csv import file</a>. - Use a spreadsheet program to edit your CSV file. Be sure to save your file as CSV before continuing.-->
-    <!--</li>-->
-    <!--<li translate>Format your data to match the sample:-->
-        <!--<ul>-->
-            <!--<li>-->
-                <!--<strong translate>The headers in the first row <em class="gold">-->
-                    <!--must exactly match</em> the sample.</strong>-->
-            <!--</li>-->
-            <!--<li>-->
-                <!--<strong translate>The Status, Commitment Frequency, and Newsletter values-->
-                    <!--<em class="gold">must also exactly match</em> one of the-->
-                    <!--"Cell Options" in the sample.</strong>-->
-            <!--</li>-->
-            <!--<li translate>-->
-                <!--The Spouse Last Name, Greeting and Envelope Greeting fields will get-->
-                <!--automatic defaults if you leave them blank.-->
-            <!--</li>-->
-        <!--</ul>-->
-    <!--</li>-->
-    <!--<li>-->
-        <!--<strong translate>When you finish formatting your data, remove any blank or sample rows at the bottom.</strong>-->
-        <!--<span translate>Then upload your file below, optionally specify a tag, and click "Preview Import.</span>-->
-    <!--</li>-->
-    <!--<li translate>-->
-        <!--You can then review the import to ensure it is correct and re-upload as needed.-->
-        <!--Note that the sample itself isn't fully valid because we included instructions at the bottom.-->
-    <!--</li>-->
-    <!--<li translate>-->
-        <!--Once you have a CSV import with valid and correct data <strong>-->
-        <!--click "Run import"</strong> from the preview page.-->
-    <!--</li>-->
-<!--</ol>-->
+<!--<unavailable-message></unavailable-message>-->
+<ol>
+    <li translate>
+        Download the <a href="/imports/sample.csv">sample MPDX csv import file</a>. - Use a spreadsheet program to edit your CSV file. Be sure to save your file as CSV before continuing.
+    </li>
+    <li translate>Format your data to match the sample:
+        <ul>
+            <li>
+                <strong translate>The headers in the first row <em class="gold">
+                    must exactly match</em> the sample.</strong>
+            </li>
+            <li>
+                <strong translate>The Status, Commitment Frequency, and Newsletter values
+                    <em class="gold">must also exactly match</em> one of the
+                    "Cell Options" in the sample.</strong>
+            </li>
+            <li translate>
+                The Spouse Last Name, Greeting and Envelope Greeting fields will get
+                automatic defaults if you leave them blank.
+            </li>
+        </ul>
+    </li>
+    <li>
+        <strong translate>When you finish formatting your data, remove any blank or sample rows at the bottom.</strong>
+        <span translate>Then upload your file below, optionally specify a tag, and click "Preview Import.</span>
+    </li>
+    <li translate>
+        You can then review the import to ensure it is correct and re-upload as needed.
+        Note that the sample itself isn't fully valid because we included instructions at the bottom.
+    </li>
+    <li translate>
+        Once you have a CSV import with valid and correct data <strong>
+        click "Run import"</strong> from the preview page.
+    </li>
+</ol>
 
-<!--<form ng-submit="$ctrl.save(f)">-->
-    <!--<div class="field">-->
-        <!--<div class="form-group btn btn-default" ng-model="f.file" ngf-select translate>-->
-            <!--Choose File-->
-        <!--</div>-->
-    <!--</div>-->
+<form ng-submit="$ctrl.save(f)">
+    <div class="field">
+        <div class="form-group btn btn-default" ng-model="f.file" ngf-select translate>
+            Choose File
+        </div>
+    </div>
 
-    <!--<div class="field">-->
-        <!--<div class="importtags">-->
-            <!--<input type="text" ng-model="f.tags" placeholder="{{ 'Add tags to these contacts' | translate }}" />-->
-        <!--</div>-->
-    <!--</div>-->
-    <!--<button type="submit" class="btn btn-primary" translate>Preview Import</button>-->
-<!--</form>-->
+    <div class="field">
+        <div class="importtags">
+            <input type="text" ng-model="f.tags" placeholder="{{ 'Add tags to these contacts' | translate }}" />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary" translate>Preview Import</button>
+</form>
 
-<!--<h4>-->
-    <!--<i class="fa fa-exclamation-triangle"></i>-->
-    <!--<span translate>Follow these instructions EXACTLY or your import will not work.</span>-->
-<!--</h4>-->
+<h4>
+    <i class="fa fa-exclamation-triangle"></i>
+    <span translate>Follow these instructions EXACTLY or your import will not work.</span>
+</h4>

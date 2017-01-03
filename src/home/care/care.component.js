@@ -1,17 +1,18 @@
 class CareController {
-    currentAccountListTasks;
     tasksService;
 
-    constructor(currentAccountListTasks, tasksService) {
-        this.currentAccountListTasks = currentAccountListTasks;
+    constructor(
+        tasksService
+    ) {
         this.tasksService = tasksService;
 
         this.newsletter = null;
     }
     $onInit() {
-        this.currentAccountListTasks.getFirstCompleteNewsletter().then((reponse) => {
-            this.newsletter = reponse;
-        });
+        console.error('home/care: analytics to first newsletter');
+        // this.tasksService.getAnalytics().then((reponse) => {
+        //     this.newsletter = reponse;
+        // });
     }
     addNewsletter() {
         this.tasksService.openNewsletterModal({});
@@ -22,6 +23,6 @@ const Care = {
     controller: CareController
 };
 
-export default angular.module('mpdx.home.care', [])
+export default angular.module('mpdx.home.care.component', [])
     .component('homeCare', Care)
     .name;

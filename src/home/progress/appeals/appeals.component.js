@@ -1,12 +1,11 @@
 class AppealsController {
     constructor(
         gettextCatalog,
-        api, modal, state
+        api, modal
     ) {
         this.api = api;
         this.gettextCatalog = gettextCatalog;
         this.modal = modal;
-        this.state = state;
 
         this.refreshAppeals();
     }

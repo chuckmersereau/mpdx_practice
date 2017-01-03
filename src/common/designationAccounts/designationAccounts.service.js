@@ -10,19 +10,17 @@ class DesignationAccountsService {
         this.data = [];
         this.loading = true;
 
-        this.load();
-
-        $rootScope.$watch(() => api.account_list_id, () => {
+        $rootScope.$on('accountListUpdated', () => {
             this.load();
         });
     }
     load() {
         this.loading = true;
-        this.api.get('designation_accounts').then((data) => {
+        this.api.get(`account_lists/${this.api.account_list_id}/designation_accounts`).then((data) => {
             while (this.data.length > 0) {
                 this.data.pop();
             }
-            Array.prototype.push.apply(this.data, data.designation_accounts);
+            Array.prototype.push.apply(this.data, data.data);
             this.loading = false;
         });
     }

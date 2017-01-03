@@ -5,6 +5,7 @@ var webpack = require('webpack');
 var autoprefixer = require('autoprefixer');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 var path = require('path');
 
 module.exports = function makeWebpackConfig(options) {
@@ -125,7 +126,9 @@ module.exports = function makeWebpackConfig(options) {
         //     test: /\.modal.html$/,
         //     loaders: ["ngtemplate?relativeTo=" + encodeURIComponent(path.resolve(process.cwd(), './src/')), "html"]
         }, {
-            // HTML LOADER
+            test: /\.json/,
+            loader: "json"
+        }, {            // HTML LOADER
             // Reference: https://github.com/WearyMonkey/ngtemplate-loader
             // Allow loading html through js
             test: /\.html$/,
@@ -284,7 +287,10 @@ module.exports = function makeWebpackConfig(options) {
                 minify: (BUILD ? {
                     html5: true
                 } : false)
-            })
+            }),
+            new CopyWebpackPlugin([
+                { from: 'assets' }
+            ])
         );
     }
 

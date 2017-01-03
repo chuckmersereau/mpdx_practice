@@ -1,6 +1,6 @@
 <div class="tasks-tab">
-    <table ng-show="$ctrl.uncompletedTasks.length" class="table tasks-table" bs-collapse data-start-collapsed="true">
-        <tr ng-repeat-start="task in $ctrl.uncompletedTasks" bs-collapse-toggle>
+    <table ng-show="$ctrl.tasksService.uncompleted.length" class="table tasks-table" bs-collapse data-start-collapsed="true">
+        <tr ng-repeat-start="task in $ctrl.tasksService.uncompleted" bs-collapse-toggle>
             <td class="col-sm-1">
                 <i class="fa fa-lg fa-square-o complete_task" ng-click="$ctrl.openCompleteTaskModal(task); $event.stopPropagation();" data-behaviour="Done"></i>
             </td>
@@ -28,7 +28,7 @@
         </tr>
         <tr class="comments-section" ng-repeat-end bs-collapse-target>
             <td colspan="100">
-                <div class="col-sm-6" ng-repeat="comment in task.comments">
+                <div class="col-sm-6" ng-repeat="comment in task.comments track by comment.id">
                     <span style="font-size: 16px">{{ comment.body }}</span>
                     <br/>
                     <span style="color: #909b9c">
@@ -42,7 +42,7 @@
             </td>
         </tr>
     </table>
-    <div ng-hide="$ctrl.uncompletedTasks.length">
+    <div ng-hide="$ctrl.tasksService.uncompleted.length">
         There are currently no tasks linked to this contact.
     </div>
 </div>

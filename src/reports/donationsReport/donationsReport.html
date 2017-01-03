@@ -27,7 +27,7 @@
                     <th ng-if="!$ctrl.contact" translate>Donor</th>
                     <th class="right" translate>Amount</th>
                     <th></th>
-                    <th ng-if="$ctrl.currentAccountList.designation_accounts.length > 0" translate>Designation</th>
+                    <th ng-if="$ctrl.designationAccounts.data.length > 0" translate>Designation</th>
                     <th translate>Method</th>
                     <th translate>Motivation</th>
                     <th></th>
@@ -36,11 +36,11 @@
             <tbody>
                 <tr ng-repeat="donation in $ctrl.donations[$ctrl.index]">
                     <td ng-if="$ctrl.contact">{{ donation.donor_account.name }}</td>
-                    <td class="date">{{ donation.donation_date }}</td>
+                    <td class="date">{{ donation.donation_date | moment: 'l' }}</td>
                     <td ng-if="!$ctrl.contact"><a ui-sref="contact({ contactId: donation.contact_id })">{{ donation.name }}</a></td>
                     <td class="right">{{ donation.amount }}</td>
                     <td>{{ donation.currency }}</td>
-                    <td ng-if="$ctrl.currentAccountList.designation_accounts.length > 0">{{ donation.designation_number }}</td>
+                    <td ng-if="$ctrl.designationAccounts.data.length > 0">{{ donation.designation_account_id }}</td>
                     <td>{{ donation.payment_method }}</td>
                     <td>{{ donation.motivation }}</td>
                     <td><a ui-sref="reports.donations.edit({ donationId: donation.id})"><i class="fa fa-pencil-square-o"></i></a></td>

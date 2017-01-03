@@ -1,6 +1,7 @@
 import Highcharts from 'highcharts';
 
 class ContactDonationsController {
+    api;
     contact;
     donations;
     donationsMeta;
@@ -8,8 +9,11 @@ class ContactDonationsController {
     modal;
 
     constructor(
-        modal, contactDonations
+        $scope,
+        api, modal, contactDonations
     ) {
+        this.$scope = $scope;
+        this.api = api;
         this.contactDonations = contactDonations;
         this.modal = modal;
 
@@ -26,6 +30,15 @@ class ContactDonationsController {
     }
     getDonations(page) {
         this.loading = true;
+        if (this.api.account_list_id) {
+            return this.getDonationsPromise(page);
+        } else {
+            this.$scope.$on('accountListUpdated', () => {
+                this.getDonationsPromise(page);
+            });
+        }
+    }
+    getDonationsPromise(page) {
         this.contactDonations.getDonations(this.contact.id, page).then((data) => {
             this.loading = false;
             this.donations = data.donations;

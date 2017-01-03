@@ -13,7 +13,7 @@
                             <li role="presentation"><a ui-sref="preferences.imports" translate>Import Contacts</a></li>
                             <li role="presentation"><a ui-sref="preferences.integrations" translate>Connect Services</a></li>
                             <li role="presentation"><a ui-sref="preferences.accounts" translate>Manage Account</a></li>
-                            <li role="presentation" ng-if="$ctrl.currentUser.admin">
+                            <li role="presentation" ng-if="$ctrl.users.current.admin">
                                 <a ui-sref="unavailable" translate>Admin</a>
                             </li>
                             <li role="presentation"><a ui-sref="logout" translate>Log out</a></li>
@@ -89,11 +89,11 @@
                     </div>
                 </div>
                 <menu-balances
-                    inHandPercent="$ctrl.currentAccountList.account_list.in_hand_percent"
-                    monthly-goal="$ctrl.currentAccountList.account_list.monthly_goal"
-                    pledged-percent="$ctrl.currentAccountList.account_list.pledged_percent"
-                    total-pledges="$ctrl.currentAccountList.account_list.total_pledges"
-                    received-pledges="$ctrl.currentAccountList.account_list.received_pledges"
+                    inHandPercent="$ctrl.accounts.current.in_hand_percent"
+                    monthly-goal="$ctrl.accounts.current.monthly_goal"
+                    pledged-percent="$ctrl.accounts.current.pledged_percent"
+                    total-pledges="$ctrl.accounts.current.total_pledges"
+                    received-pledges="$ctrl.accounts.current.received_pledges"
                 ></menu-balances>
             </div>
         </div>

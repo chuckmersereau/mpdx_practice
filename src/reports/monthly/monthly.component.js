@@ -1,7 +1,6 @@
 class ExpectedMonthlyTotalsReportController {
-    constructor(api, state) {
+    constructor(api) {
         this.api = api;
-        this.state = state;
 
         this.sumOfAllCategories = 0;
 

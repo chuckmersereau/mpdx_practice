@@ -1,20 +1,13 @@
 function chosenDirective(
-    $timeout
 ) {
-    function update(element) {
-        $timeout(() => {
-            element.trigger('chosen:updated');
-        }, 0, false);
-    }
-
     return {
         link: (scope, element) => {
-            scope.$watch('vm.contact', () => {
-                update(element);
-            }, true);
-            scope.$watch('$ctrl.contact', () => {
-                update(element);
-            }, true);
+            //bad index fix
+            scope.$watch(() => element[0].length, (newvalue, oldvalue) => {
+                if (newvalue !== oldvalue) {
+                    element.trigger("chosen:updated");
+                }
+            });
         }
     };
 }

@@ -1,17 +1,15 @@
 class progressController {
     api;
-    currentUser;
-    state;
+    users;
 
     constructor(
         blockUI,
-        api, $filter, state, currentUser
+        api, $filter, users
     ) {
         this.$filter = $filter;
-        this.state = state;
         this.api = api;
         this.blockUI = blockUI.instances.get('dashboardProgress');
-        this.currentUser = currentUser;
+        this.users = users;
 
         this.startDate = new Date();
         this.startDate.setHours(0, 0, 0, 0);
@@ -73,19 +71,20 @@ class progressController {
     }
     refreshData() {
         this.blankData();
-        let startDateString = this.$filter('date')(this.startDate, 'yyyy-MM-dd');
-        const url = 'progress.json?start_date=' + startDateString;
+        //let startDateString = this.$filter('date')(this.startDate, 'yyyy-MM-dd');
+        //const url = 'progress.json?start_date=' + startDateString;
 
-        this.api.get(url).then((newData) => {
-            this.data = newData;
-            this.blockUI.stop();
-        }).catch(() => {
-            this.errorOccurred = true;
-        });
+        console.error('home/progress - replace progress.json with v2 calls');
+        // this.api.get(url).then((newData) => {
+        //     this.data = newData;
+        //     this.blockUI.stop();
+        // }).catch(() => {
+        //     this.errorOccurred = true;
+        // });
     }
     $onInit() {
         this.refreshData();
-        this.currentUser.getHasAnyUsAccounts();
+        this.users.getHasAnyUsAccounts();
     }
 }
 

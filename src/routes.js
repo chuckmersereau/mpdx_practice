@@ -1,9 +1,19 @@
+import config from 'config';
+
 export default class Routes {
     static config($stateProvider) {
         $stateProvider.state({
+            name: 'root',
+            abstract: true,
+            template: '<div ui-view=""></div>',
+            resolve: {
+                userResolve: /*@ngInject*/ (users) => users.getCurrent()
+            }
+        }).state({
             name: 'home',
             url: '/',
-            component: 'home'
+            component: 'home',
+            parent: 'root'
         }).state({
             name: 'login',
             url: '/login',
@@ -26,12 +36,14 @@ export default class Routes {
             component: 'contacts',
             params: {
                 filters: null
-            }
+            },
+            parent: 'root'
         }).state({
             name: 'contact',
             title: 'Contact',
-            url: '/contacts/{contactId:[0-9]+}',
-            component: 'contact'
+            url: '/contacts/{contactId}',
+            component: 'contact',
+            parent: 'root'
         }).state({
             name: 'contact.address',
             url: '/addresses/{addressId}',
@@ -51,7 +63,8 @@ export default class Routes {
         }).state({
             name: 'reports',
             url: '/reports',
-            component: 'reports'
+            component: 'reports',
+            parent: 'root'
         }).state({
             name: 'reports.balances',
             url: '/balances',
@@ -94,7 +107,8 @@ export default class Routes {
             name: 'preferences',
             title: 'Preferences',
             url: '/preferences',
-            component: 'preferences'
+            component: 'preferences',
+            parent: 'root'
         }).state({
             name: 'preferences.accounts',
             title: 'Manage Accounts',
@@ -159,13 +173,18 @@ export default class Routes {
 }
 
 /*@ngInject*/
-function auth($state, $stateParams, $window, $location) {
+function auth($state, $stateParams, $window, $location, $http, users, accounts) {
     if (!_.isEmpty($stateParams.access_token)) {
-        $window.sessionStorage.token = $stateParams.access_token;
-        const redirect = angular.copy($window.sessionStorage.redirect || 'home');
-        delete $window.sessionStorage.redirect;
-        $location.$$search = {}; //clear querystring
-        $state.go(redirect, {reload: true});
+        $http.post(`${config.apiUrl}user/authentication`, {access_token: $stateParams.access_token}).then((data) => {
+            $window.sessionStorage.token = data.data.json_web_token;
+            const redirect = angular.copy($window.sessionStorage.redirect || 'home');
+            delete $window.sessionStorage.redirect;
+            $location.$$search = {}; //clear querystring
+            return users.getCurrent().then(() => {
+                accounts.load();
+                $state.go(redirect, {reload: true});
+            });
+        });
     }
 }
 
@@ -214,22 +233,27 @@ function openDonationModal($state, $stateParams, modal, donationsReport) {
 }
 
 /*@ngInject*/
-function openPeopleModal($state, $stateParams, modal, cache) {
-    cache.get($stateParams.contactId).then((contact) => {
-        const person = _.find(contact.people, person => person.id.toString() === $stateParams.personId);
-
+function openPeopleModal($state, $stateParams, modal, contactPerson) {
+    function modalOpen(contactId, person) {
         modal.open({
             template: require('./contacts/show/people/modal/modal.html'),
             controller: 'personModalController',
             locals: {
-                contact: contact,
+                contactId: contactId,
                 person: person
             },
             onHide: () => {
                 $state.go('^');
             }
         });
-    });
+    }
+    if ($stateParams.personId === 'new') {
+        modalOpen($stateParams.contactId, {});
+    } else {
+        contactPerson.get($stateParams.contactId, $stateParams.personId).then((person) => {
+            modalOpen($stateParams.contactId, person);
+        });
+    }
 }
 
 /*@ngInject*/

@@ -1,9 +1,9 @@
 class BalancesReportController {
+    api;
     constructor(
-        api, state
+        api
     ) {
         this.api = api;
-        this.state = state;
 
         this.errorOccurred = false;
     }

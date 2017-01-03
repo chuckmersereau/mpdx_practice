@@ -4,7 +4,7 @@ import contacts from './contacts/contacts.service';
 import imports from './import/index.module';
 import integrations from './integrations/index.module';
 import notifications from './notifications/index.module';
-import personal from './personal/index.module';
+import personal from './personal/personal.component';
 import sidebar from './sidebar/sidebar.component';
 
 

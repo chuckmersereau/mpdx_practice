@@ -10,10 +10,10 @@ class OrganizationService {
         this.loading = true;
         this.state = 'disabled';
 
-        this.activate();
+        // this.activate();
 
-        $rootScope.$watch(() => api.account_list_id, () => {
-            this.load();
+        $rootScope.$on('accountListUpdated', () => {
+            this.activate();
         });
     }
     activate() {

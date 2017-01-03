@@ -1,25 +1,23 @@
 class ContactDonorAccountController {
+    accounts;
     contact;
     contacts;
-    currentAccountList;
     donorAccount;
 
     constructor(
-        contacts, currentAccountList
+        accounts, contacts
     ) {
+        this.accounts = accounts;
         this.contacts = contacts;
-        this.currentAccountList = currentAccountList;
     }
     remove() {
         this.donorAccount._destroy = '1';
-        if (angular.isDefined(this.donorAccount.id)) {
-            this.save();
-        }
+        this.save();
     }
     save() {
         if (this.donorAccount.account_number === '') { return; }
         if (!this.donorAccount.organization_id || this.donorAccount.organization_id === 0) {
-            this.donorAccount.organization_id = this.currentAccountList.account_list.default_organization_id;
+            this.donorAccount.organization_id = this.accounts.current.atributes.default_organization_id;
         }
         this.contacts.save(this.contact);
     }

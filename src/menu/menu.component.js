@@ -1,14 +1,14 @@
 class menuController {
-    currentAccountList;
+    accounts;
     contactDonations;
     help;
     state;
 
     constructor(
         $state,
-        currentAccountList, contactDonations, help
+        accounts, contactDonations, help
     ) {
-        this.currentAccountList = currentAccountList;
+        this.accounts = accounts;
         this.contactDonations = contactDonations;
         this.help = help;
         this.state = $state;

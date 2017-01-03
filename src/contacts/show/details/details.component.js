@@ -5,12 +5,17 @@ class ContactDetailsController {
     contactsTags;
 
     constructor(
+        $window,
         contactsTags, contacts
     ) {
         this.contacts = contacts;
         this.contactsTags = contactsTags;
 
         this.appeals = 'false';
+
+        this.languages = _.map(_.keys($window.languageMappingList), (key) => {
+            return _.extend({alias: key}, window.languageMappingList[key]);
+        });
     }
     $onChanges() {
         if (this.contact.no_appeals === true) {

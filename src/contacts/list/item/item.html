@@ -2,7 +2,7 @@
     <a ng-click="$ctrl.switchContact()" ng-class="{'active': $ctrl.selected == $ctrl.contact.id }">{{$ctrl.contact.name}}</a>
 </div>
 <div ng-hide="$ctrl.view == 'minimal'" class="contact-row">
-    <img class="avatar small" ng-src="{{$ctrl.contact.square_avatar}}">
+    <img class="avatar small" ng-src="{{$ctrl.contact.square_avatar | stripMpdx}}">
     <div class="contact-details">
         <div class="col-sm-7 main-details">
             <h4 class="name">
@@ -18,7 +18,7 @@
                 </span>
             </h4>
             <div class="people">
-                <div ng-repeat="person in $ctrl.contact.people" ng-if="!person.deceased" class="people-single-contact">
+                <div ng-repeat="person in $ctrl.contact.includes" ng-if="!person.deceased" class="people-single-contact">
                     <a ui-sref="contact.people({ contactId: $ctrl.contact.id, personId: person.id})">{{person.first_name}} {{person.last_name}}</a>
                     <span ng-repeat="phone_number in person.phone_numbers" ng-if="phone_number.primary && !phone_number.historic" class="phone-type phone-type-{{phone_number.location}}">
                         {{phone_number.number}}
@@ -31,7 +31,7 @@
                     </a>
                 </div>
             </div>
-            <address class="address" ng-repeat="address in $ctrl.contact.addresses" ng-if="address.primary_mailing_address">
+            <address class="address" ng-repeat="address in $ctrl.contact.addresses track by address.id" ng-if="address.primary_mailing_address">
                 <span ng-if="address.street">{{address.street}}<br></span>
                 <span ng-if="address.city">{{address.city}},</span>
                 {{address.state}}
