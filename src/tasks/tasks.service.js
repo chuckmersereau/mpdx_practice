@@ -24,6 +24,7 @@ class TasksService {
                 this.transformChild(data.comments, 'person_id', data.people, true);
             }
             this.data.uncompleted = data.tasks;
+            return this.data.uncompleted;
         });
     }
     fetchCompletedTasks(id) {
@@ -41,6 +42,7 @@ class TasksService {
                 this.transformChild(data.comments, 'person_id', data.people, true);
             }
             this.data.completed = data.tasks;
+            return this.data.completed;
         });
     }
     transformChild(parentObj, childKey, referredObj, oneToOne) {
@@ -141,7 +143,7 @@ class TasksService {
             locals: {
                 specifiedAction: params.specifiedAction || null,
                 specifiedSubject: params.specifiedSubject || null,
-                selectedContacts: params.contact || [],
+                selectedContacts: params.selectedContacts || params.contact || [],
                 modalTitle: params.title || 'Add Task',
                 isNewsletter: false
             },

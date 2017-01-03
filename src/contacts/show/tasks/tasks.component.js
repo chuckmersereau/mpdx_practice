@@ -9,27 +9,29 @@ class ContactTasksController {
         this.modal = modal;
         this.moment = moment;
         this.tasksService = tasksService;
-
         this.models = {};
+        this.uncompletedTasks = [];
     }
     $onChanges(changesObj) {
         if (_.has(changesObj.contact, 'currentValue.id') && changesObj.contact.currentValue.id !== changesObj.contact.previousValue.id) {
-            this.load(changesObj.contact.currentValue.id);
+            this.load();
         }
     }
-    load(id) {
-        this.tasksService.fetchUncompletedTasks(id);
+    load() {
+        this.tasksService.fetchUncompletedTasks(this.contact.id).then((tasks) => {
+            this.uncompletedTasks = tasks;
+        });
     }
     newComment(taskId) {
         if (this.models.comment) {
             this.tasksService.submitNewComment(taskId, this.models.comment).then(() => {
-                this.load(this.contact.id);
+                this.load();
             });
             this.models.comment = '';
         }
     }
     deleteTask(taskId) {
-        this.tasksService.deleteTask(taskId).then(this.load.bind(this, this.contact.id));
+        this.tasksService.deleteTask(taskId).then(this.load.bind(this));
     }
     starTask(task) {
         this.tasksService.starTask(task).then(() => {
@@ -45,7 +47,7 @@ class ContactTasksController {
                 contact: this.contact,
                 taskAction: task.activity_type
             },
-            onHide: this.load.bind(this, this.contact.id)
+            onHide: this.load
         });
     }
     openEditTaskModal(task) {
@@ -61,7 +63,7 @@ class ContactTasksController {
                 toComplete: false,
                 createNext: false
             },
-            onHide: this.load.bind(this, this.contact.id)
+            onHide: this.load
         });
     }
 }

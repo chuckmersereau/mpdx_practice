@@ -5,9 +5,10 @@ class CompleteTaskController {
     tasksService;
 
     constructor(
-        modal, serverConstants, tasksService,
+        $scope, modal, serverConstants, tasksService,
         taskId, contact, taskAction
     ) {
+        this.$scope = $scope;
         this.contact = contact;
         this.modal = modal;
         this.serverConstants = serverConstants;
@@ -15,11 +16,12 @@ class CompleteTaskController {
         this.taskAction = taskAction;
         this.tasksService = tasksService;
 
-        this.serverConstants.fetchConstants(['nextActions', 'results', 'pledge_frequency']);
+        this.serverConstants.fetchConstants(['next_actions', 'results', 'pledge_frequency']);
         this.constants = this.serverConstants.data;
     }
     save() {
         return this.tasksService.postLogTask(this.taskId, this.models).then(() => {
+            this.$scope.$hide();
             this.$scope.$hide();
             this.modal.open({
                 template: require('../../../tasks/add/add.html'),
