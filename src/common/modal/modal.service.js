@@ -1,6 +1,7 @@
 class ModalService {
-    constructor($modal) {
+    constructor($modal, $q) {
         this.$modal = $modal;
+        this.$q = $q;
         this.defaultParams = {
             animation: 'am-fade',
             placement: 'center',
@@ -8,8 +9,21 @@ class ModalService {
         };
     }
     open(params) {
+        var deffered = this.$q.defer();
         let openParams = _.assign(this.defaultParams, params);
-        return this.$modal(openParams);
+        openParams.onHide = () => {
+            if (openParams.success) {
+                deffered.resolve();
+            } else {
+                deffered.reject();
+            }
+        };
+        if (!angular.isDefined(openParams.locals)) {
+            openParams.locals = {};
+        }
+        openParams.locals.success = false;
+        this.$modal(openParams);
+        return deffered.promise;
     }
 }
 

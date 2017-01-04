@@ -60,13 +60,12 @@ class LogTaskController {
                         specifiedSubject: this.models.nextAction,
                         selectedContacts: this.selectedContacts,
                         modalTitle: 'Follow up Task'
-                    },
-                    onHide: () => {
-                        if (this.selectedContacts.length === 1) {
-                            this.tasksService.fetchUncompletedTasks(this.selectedContacts[0]);
-                        }
-                        this.contacts.load(true);
                     }
+                }).then(() => {
+                    if (this.selectedContacts.length === 1) {
+                        this.tasksService.fetchUncompletedTasks(this.selectedContacts[0]);
+                    }
+                    this.contacts.load(true);
                 });
             }
         });
