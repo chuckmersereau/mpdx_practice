@@ -1,4 +1,4 @@
-<modal title="{{$ctrl.modalTitle}}" save="$ctrl.save" cancel="$hide()">
+<modal title="{{$ctrl.modalTitle}}" save="$ctrl.save()" cancel="$hide()">
     <div class="form-group">
         <label for="subject"><translate>Subject</translate> <span class="text-danger">*</span></label>
         <input class="form-control" id='subject' ng-model="$ctrl.models.subject" required />
