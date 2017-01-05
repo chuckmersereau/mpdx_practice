@@ -9,6 +9,18 @@ function appendTransform(defaults, transform) {
     return defaults.concat(transform);
 }
 
+const jsonApiParams = {keyForAttribute: 'underscore_case'};
+function deserialize(data, meta) {
+    if (_.isObject(data) && data.data) {
+        return new japi.Deserializer(jsonApiParams).deserialize(data).then((data) => {
+            data.meta = meta;
+            return data;
+        });
+    } else {
+        return data;
+    }
+}
+
 class Api {
     constructor(
         $http, $cacheFactory, $log, $q, $timeout,
@@ -22,11 +34,6 @@ class Api {
         this.apiCache = $cacheFactory('api');
         this.account_list_id = null;
         this.entityAttributes = new EntityAttributes().attributes;
-        // add updated_in_db_at to all entities (for server sync)
-        // _.each(this.entityAttributes, entity => entity.attributes.push("updated_in_db_at"));
-
-        // This function supports both callbacks (successFn, errorFn) and returns a promise
-        // It would be preferred to use promises in the future
     }
     call({
         method,
@@ -74,8 +81,8 @@ class Api {
             headers: headers,
             paramSerializer: '$httpParamSerializerJQLike',
             transformRequest: (data) => {
-                let key = null;
-                let params = {keyForAttribute: 'underscore_case'};
+                let key;
+                let params = _.clone(jsonApiParams);
                 if (method === 'put' || method === 'post') {
                     let arr = url.split('/');
                     if (method === 'put' && arr.length % 2 === 0) {
@@ -84,25 +91,23 @@ class Api {
                         key = arr[arr.length - 1];
                     }
                     if (_.has(this.entityAttributes, key)) {
-                        this.$log.debug('entity:', key);
-                        this.$log.debug('attributes:', this.entityAttributes[key]);
                         _.extend(params, this.entityAttributes[key]);
                     } else {
                         this.$log.error(`undefined attributes for model: ${key} in api.service`);
                     }
                 }
-                return angular.toJson(new japi.Serializer(key, params).serialize(data));
+                if (_.isArray(data)) {
+                    return angular.toJson(_.map(data, item => new japi.Serializer(key, params).serialize(item)));
+                } else {
+                    return angular.toJson(new japi.Serializer(key, params).serialize(data));
+                }
             },
             transformResponse: appendTransform(this.$http.defaults.transformResponse, (data) => {
                 const meta = data.meta || {};
-                if (!_.isString(data) && data.data) {
-                    return new japi.Deserializer({keyForAttribute: 'underscore_case'}).deserialize(data).then((data) => {
-                        data.meta = meta;
-                        // data = this.addServerUpdateNested(data); //add updated_in_db_at timestamps
-                        return data;
-                    });
+                if (_.isArray(data)) {
+                    return _.map(data, item => deserialize(data, item));
                 } else {
-                    return data;
+                    return deserialize(data, meta);
                 }
             }),
             cacheService: false,
@@ -159,17 +164,6 @@ class Api {
     }
     encodeURLarray(array) {
         return _.map(array, encodeURIComponent);
-    }
-    addServerUpdateNested(obj) {
-        if (_.has(obj, 'updated_at')) {
-            obj.updated_in_db_at = obj.updated_at;
-        }
-        _.each(_.keys(obj), (key) => {
-            if (_.isArray(obj[key])) {
-                this.addServerUpdateNested(obj[key]);
-            }
-        });
-        return obj;
     }
 }
 
