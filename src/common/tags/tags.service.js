@@ -11,7 +11,7 @@ class TagsService {
         this.anyTags = false;
         this.loading = true;
 
-        $rootScope.$watch(() => api.account_list_id, (accountListId) => {
+        $rootScope.$on('accountListUpdated', (e, accountListId) => {
             if (accountListId) {
                 this.load();
             }
