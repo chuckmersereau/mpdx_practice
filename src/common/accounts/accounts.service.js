@@ -53,15 +53,15 @@ class AccountsService {
     listInvites() {
         this.inviteList = null;
         return this.api.get(`account_lists/${this.api.account_list_id}/invites`).then((data) => {
-            this.inviteList = data.data;
-            console.log('inviteList', this.inviteList);
+            this.inviteList = data;
+            this.$log.debug('account_lists/invites', this.inviteList);
         });
     }
     listUsers() {
         this.userList = null;
         this.api.get(`account_lists/${this.api.account_list_id}/users`).then((data) => {
-            this.userList = data.data;
-            console.log('userList', this.userList);
+            this.userList = data;
+            this.$log.debug('account_lists/users:', this.userList);
         });
     }
 }
