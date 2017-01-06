@@ -95,14 +95,14 @@ class Api {
             },
             transformResponse: appendTransform(this.$http.defaults.transformResponse, (data) => {
                 const meta = data.meta || {};
-                if (!_.isString(data)) {
+                if (!_.isString(data) && data.data) {
                     return new japi.Deserializer({keyForAttribute: 'underscore_case'}).deserialize(data).then((data) => {
                         data.meta = meta;
                         // data = this.addServerUpdateNested(data); //add updated_in_db_at timestamps
                         return data;
                     });
                 } else {
-                    return {};
+                    return data;
                 }
             }),
             cacheService: false,

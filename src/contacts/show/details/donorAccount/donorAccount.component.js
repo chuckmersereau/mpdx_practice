@@ -17,7 +17,7 @@ class ContactDonorAccountController {
     save() {
         if (this.donorAccount.account_number === '') { return; }
         if (!this.donorAccount.organization_id || this.donorAccount.organization_id === 0) {
-            this.donorAccount.organization_id = this.accounts.current.atributes.default_organization_id;
+            this.donorAccount.organization_id = this.accounts.current.default_organization_id;
         }
         this.contacts.save(this.contact);
     }

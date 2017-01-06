@@ -26,11 +26,10 @@ class FilterService {
         });
     }
     load() {
-        this.loading = true;
         return this.api.get(`contacts/filters`).then((data) => {
-            this.data = data.contact_filters || [];
+            this.data = data || [];
             this.data = this.data.sort((a, b) => {
-                return (a.priority > b.priority) ? 1 : ((b.priority > a.priority) ? -1 : 0);
+                return (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0);
             });
             let params = {};
             _.each(this.data, (obj) => {
@@ -52,7 +51,6 @@ class FilterService {
             this.default_params = _.clone(params);
             this.params = params;
             this.mergeParamsFromLocation();
-            this.loading = false;
         }).catch((ex) => {
             console.error('contacts/filter.service');
             return ex;
