@@ -1,8 +1,12 @@
 class FilterService {
     api;
 
-    constructor($rootScope, api, $location) {
+    constructor(
+        $location, $log, $rootScope,
+        api
+    ) {
         this.$location = $location;
+        this.$log = $log;
         this.api = api;
 
         this.data = [];
@@ -10,6 +14,7 @@ class FilterService {
         this.wildcard_search = '';
         this.default_params = {};
         this.resettable = false;
+        this.lastAccountId = null; //Hack to stop dupe calls on repeat account swap
         this.loading = true;
 
         let query = $location.search().q;
@@ -18,22 +23,25 @@ class FilterService {
         }
 
         $rootScope.$watch(() => this.params, () => {
-            this.resettable = !angular.equals(this.params, this.default_params);
+            this.resettable = !_.eq(this.params, this.default_params);
         }, true);
 
-        $rootScope.$on('accountListUpdated', () => {
-            this.load();
+        $rootScope.$on('accountListUpdated', (e, accountId) => {
+            if (accountId && this.lastAccountId !== accountId) {
+                this.lastAccountId = accountId;
+                this.load();
+            }
         });
     }
     load() {
         return this.api.get(`contacts/filters`).then((data) => {
             this.data = data || [];
-            this.data = this.data.sort((a, b) => {
-                return (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0);
-            });
+            this.data = _.sortBy(this.data, ['id']);
+            this.$log.debug('contacts/filters:', data);
+
             let params = {};
             _.each(this.data, (obj) => {
-                if (obj.multiple === true && !_.isArray(obj.default_selection)) {
+                if (obj.multiple && !_.isArray(obj.default_selection)) {
                     params[obj.name] = [obj.default_selection];
                 } else {
                     params[obj.name] = obj.default_selection;
@@ -45,7 +53,7 @@ class FilterService {
                         this.data.push(parentObj);
                     }
                     parentObj.children.push(obj);
-                    this.data = _.reject(this.data, (comparator) => angular.equals(obj, comparator));
+                    this.data = _.reject(this.data, comparator => _.eq(obj, comparator));
                 }
             });
             this.default_params = _.clone(params);
