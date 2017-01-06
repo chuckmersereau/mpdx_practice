@@ -14,7 +14,7 @@
         </span>
         <select
           ng-model="$ctrl.meta.per_page"
-          ng-change="$ctrl.load()"
+          ng-change="$ctrl.meta.page = 1; $ctrl.load()"
           ng-options="i as i for i in [10, 25, 50, 100, 500]"
           class="form-control ng-pristine ng-untouched ng-valid ng-not-empty tasks-per-page form-inline">
         </select>
@@ -87,10 +87,9 @@
     </tr>
   </table>
   <pagination ng-show="$ctrl.tasks[$ctrl.key].length"
-              to="$ctrl.meta.to"
-              from="$ctrl.meta.from"
               total="$ctrl.meta.total"
               total-pages="$ctrl.meta.total_pages"
+              per-page="$ctrl.meta.per_page"
               page="$ctrl.meta.page"
               on-change="$ctrl.onPageChange(page)"></pagination>
 </div>

@@ -118,20 +118,16 @@ class TasksService {
             filters: Object.assign(
                 Object.assign({}, defaultFilters),
                 filters
-            )
+            ),
+            include: 'comments'
         }, meta);
 
-        return this.api.get('tasks/', obj).then((data) => {
-            if (data.tasks.length) {
-                this.transformChild(data.tasks, 'comments', data.comments);
-                this.transformChild(data.comments, 'person_id', data.people, true);
-            }
-            this.data[collection] = data.tasks;
-            meta.from = data.meta.from;
-            meta.to = data.meta.to;
-            meta.page = data.meta.page;
-            meta.total = data.meta.total;
-            meta.total_pages = data.meta.total_pages;
+        return this.api.get('tasks', obj).then((data) => {
+            this.data[collection] = data;
+            meta.page = parseInt(data.meta.pagination.page, 10);
+            meta.per_page = parseInt(data.meta.pagination.per_page, 10);
+            meta.total = parseInt(data.meta.pagination.total_count, 10);
+            meta.total_pages = parseInt(data.meta.pagination.total_pages, 10);
             return data;
         });
     }
@@ -171,20 +167,6 @@ class TasksService {
         });
     }
 
-    transformChild(parentObj, childKey, referredObj, oneToOne) {
-        _.each(parentObj, (parent) => {
-            let newObj;
-            if (oneToOne) {
-                newObj = _.find(referredObj, referredItem => referredItem.id === parent[childKey]);
-            } else {
-                newObj = [];
-                _.each(parent[childKey], (id) => {
-                    newObj.push(_.find(referredObj, referredItem => referredItem.id === id));
-                });
-            }
-            parent[childKey] = newObj;
-        });
-    }
     submitNewComment(taskId, newComment) {
         return this.api.put(`/tasks/${taskId}`, {task: {activity_comments_attributes: [{body: newComment}]}});
     }
