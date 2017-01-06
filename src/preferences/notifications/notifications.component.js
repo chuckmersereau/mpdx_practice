@@ -13,12 +13,11 @@ class NotificationPreferencesController {
         this.saving = true;
         return this.notifications.save().then(() => {
             this.alerts.addAlert('Notifications saved successfully', 'success');
-            this.saving = false;
-            this.saving = false;
         }).catch((data) => {
-            angular.forEach(data.errors, function(value) {
+            _.each(data.errors, (value) => {
                 this.alerts.addAlert(value, 'danger');
             });
+        }).finally(() => {
             this.saving = false;
         });
     }
