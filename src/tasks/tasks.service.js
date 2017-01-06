@@ -312,7 +312,7 @@ class TasksService {
             locals: {
                 specifiedAction: params.specifiedAction || null,
                 specifiedSubject: params.specifiedSubject || null,
-                selectedContacts: params.contact || [],
+                selectedContacts: params.selectedContacts || params.contact || [],
                 modalTitle: params.title || 'Add Task',
                 isNewsletter: false
             },
