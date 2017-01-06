@@ -1,17 +1,20 @@
 class CommitmentsController {
-    constructor(currentAccountList) {
-        this.currentAccountList = currentAccountList;
+    contacts;
+
+    constructor(
+        contacts
+    ) {
+        this.contacts = contacts;
 
         this.noPledgeCount = null;
         this.lateContactCount = null;
     }
     $onInit() {
-        this.currentAccountList.contacts.getLatePledgeCount().then((response) => {
-            this.noPledgeCount = response;
-        });
-        this.currentAccountList.contacts.getLatePledgeDays().then((response) => {
-            this.lateContactCount = response;
-        });
+        console.error('home/commitments: endpoint not yet defined');
+        // this.contacts.getAnalytics().then((response) => {
+        //     this.noPledgeCount = response;
+        //     this.lateContactCount = response;
+        // });
     }
 }
 const Commitments = {

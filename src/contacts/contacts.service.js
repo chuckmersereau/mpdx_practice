@@ -1,31 +1,40 @@
 class ContactsService {
+    analytics;
     api;
     cache;
     contactFilter;
     contactsTags;
 
     constructor(
-        $location, $rootScope,
+        $location, $log, $rootScope,
         api, cache, contactFilter, contactsTags
     ) {
+        this.$log = $log;
         this.api = api;
         this.cache = cache;
         this.contactFilter = contactFilter;
         this.contactsTags = contactsTags;
 
+        this.analytics = null;
         this.data = [];
         this.meta = {};
+        this.lastAccountId = null; //Hack to stop dupe calls on repeat account swap
         this.loading = true;
 
         this.page = 1;
 
         $rootScope.$watch(() => this.contactFilter.params, (newVal, oldVal) => {
             if (!_.isEmpty(newVal) && !_.isEmpty(oldVal)) {
+                $log.debug('contacts service: contact parameter change');
                 this.load(true);
             }
         }, true);
 
-        $rootScope.$watch(() => this.contactFilter.wildcard_search, () => {
+        $rootScope.$watch(() => this.contactFilter.wildcard_search, (newVal, oldVal) => {
+            if (!oldVal) {
+                return;
+            }
+            $log.debug('contacts service: contact search change');
             const query = $location.search().q;
             if (query) {
                 $location.search('q', null);
@@ -34,8 +43,10 @@ class ContactsService {
             }
         });
 
-        $rootScope.$watch(() => this.api.account_list_id, (accountListId) => {
-            if (accountListId) {
+        $rootScope.$on('accountListUpdated', (e, accountId) => {
+            if (accountId && this.lastAccountId !== accountId) {
+                $log.debug('contacts service: current account switched:', accountId);
+                this.lastAccountId = accountId;
                 this.load(true);
             }
         });
@@ -47,13 +58,21 @@ class ContactsService {
                 any: this.contactsTags.anyTags
             });
         }, (newVal, oldVal) => {
-            if (newVal !== oldVal) {
+            if (oldVal && newVal !== oldVal) {
+                $log.debug('contacts service: contacts tags changed');
                 this.load(true);
             }
         });
     }
+    get(id) {
+        return this.api.get(`contacts/${id}`, {include: 'people,addresses'});
+    }
     load(reset) {
         this.loading = true;
+        if (reset) {
+            this.meta = {};
+            this.data = null;
+        }
         let newContacts;
 
         let filterParams = this.findChangedFilters(this.contactFilter.default_params, this.contactFilter.params);
@@ -71,12 +90,15 @@ class ContactsService {
         }
         filterParams.any_tags = this.contactsTags.anyTags;
 
-        return this.api.call('post', 'contacts', {filters: filterParams, page: this.page, per_page: 25}, null, null, null, null, {'X-HTTP-Method-Override': 'get'}).then((data) => {
+        return this.api.get('contacts', {filters: filterParams, page: this.page, per_page: 25, include: 'people,addresses', sort: 'name'}).then((data) => {
+            this.$log.debug('contacts page ' + data.meta.pagination.page, data);
+            let count = this.meta.to || 0;
             if (reset) {
                 newContacts = [];
                 this.page = 1;
+                count = 0;
             }
-            _.each(data.contacts, (contact) => {
+            _.each(data, (contact) => {
                 // fix tag_list difference for list vs show
                 contact.tag_list = _.map(contact.tag_list, (tag) => {
                     return { text: tag };
@@ -93,166 +115,13 @@ class ContactsService {
                 this.data = newContacts;
             }
             this.meta = data.meta;
+            count += data.length;
+            this.meta.to = count;
             this.loading = false;
         });
     }
     save(contact) {
-        let tagList = _.map(contact.tag_list, tag => tag.text);
-
-        let contactObj = {
-            name: contact.name,
-            pledge_amount: contact.pledge_amount,
-            status: contact.status,
-            notes: contact.notes,
-            full_name: contact.full_name,
-            envelope_greeting: contact.envelope_greeting,
-            website: contact.website,
-            pledge_frequency: contact.pledge_frequency,
-            pledge_start_date: contact.pledge_start_date,
-            next_ask: contact.next_ask,
-            likely_to_give: contact.likely_to_give,
-            church_name: contact.church_name,
-            send_newsletter: contact.send_newsletter,
-            no_appeals: contact.no_appeals,
-            user_changed: contact.user_changed,
-            direct_deposit: contact.direct_deposit,
-            magazine: contact.magazine,
-            pledge_received: contact.pledge_received,
-            not_duplicated_with: contact.not_duplicated_with,
-            tag_list: tagList,
-            primary_person_id: contact.primary_person_id,
-            timezone: contact.timezone,
-            pledge_currency: contact.pledge_currency,
-            locale: contact.locale,
-            addresses_attributes: [],
-            donor_accounts_attributes: [],
-            people_attributes: []
-        };
-
-        if (contact.people) {
-            _.each(contact.people, (person) => {
-                let peopleObj = {
-                    id: person.id,
-                    first_name: person.first_name,
-                    last_name: person.last_name,
-                    marital_status: person.marital_status,
-                    gender: person.gender,
-                    occupation: person.occupation,
-                    employer: person.employer,
-                    optout_enewsletter: person.optout_enewsletter,
-                    deceased: person.deceased,
-                    _destroy: person._destroy,
-                    email_addresses_attributes: [],
-                    phone_numbers_attributes: [],
-                    facebook_accounts_attributes: [],
-                    twitter_accounts_attributes: [],
-                    linkedin_accounts_attributes: [],
-                    websites_attributes: [],
-                    family_relationships_attributes: []
-                };
-
-                if (person.birthday) {
-                    peopleObj.birthday_month = (person.birthday.getMonth() + 1) + '';
-                    peopleObj.birthday_year = person.birthday.getFullYear() + '';
-                    peopleObj.birthday_day = person.birthday.getDate() + '';
-                }
-
-                if (person.anniversary) {
-                    peopleObj.anniversary_month = (person.anniversary.getMonth() + 1) + '';
-                    peopleObj.anniversary_year = person.anniversary.getFullYear() + '';
-                    peopleObj.anniversary_day = person.anniversary.getDate() + '';
-                }
-
-                if (person.email_addresses) {
-                    peopleObj.email_addresses_attributes = _.map(person.email_addresses, (email) => {
-                        return {
-                            id: email.id,
-                            email: email.email,
-                            location: email.location,
-                            _destroy: email._destroy
-                        };
-                    });
-                }
-
-                if (person.phone_numbers) {
-                    peopleObj.phone_numbers_attributes = _.map(person.phone_numbers, (phone) => {
-                        return {
-                            id: phone.id,
-                            number: phone.number,
-                            location: phone.location,
-                            _destroy: phone._destroy
-                        };
-                    });
-                }
-
-                if (person.networks) {
-                    _.each(person.networks, (network) => {
-                        let result = {id: network.id, _destroy: network._destroy};
-                        if (network.kind === "twitter") {
-                            result.screen_name = network.url;
-                        } else {
-                            result.url = network.url;
-                        }
-                        switch (network.kind) {
-                            case 'facebook':
-                                peopleObj.facebook_accounts_attributes.push(result);
-                                break;
-                            case 'linkedin':
-                                peopleObj.linkedin_accounts_attributes.push(result);
-                                break;
-                            case 'twitter':
-                                peopleObj.twitter_accounts_attributes.push(result);
-                                break;
-                            case 'website':
-                                peopleObj.websites_attributes.push(result);
-                                break;
-                        }
-                    });
-                }
-
-                if (peopleObj.family_relationships_attributes && person.family_relationships.length > 0) {
-                    peopleObj.family_relationships_attributes = person.family_relationships;
-                }
-
-                contactObj['people_attributes'].push(peopleObj);
-            });
-        }
-
-        if (contact.addresses) {
-            contactObj['addresses_attributes'] = _.map(contact.addresses, (address) => {
-                return {
-                    location: address.location,
-                    street: address.street,
-                    city: address.city,
-                    state: address.state,
-                    postal_code: address.postal_code,
-                    region: address.region,
-                    metro_area: address.metro,
-                    country: address.country,
-                    historic: address.address_invalid,
-                    primary_mailing_address: address.primary_address,
-                    _destroy: address._destroy,
-                    id: address.id
-                };
-            });
-        }
-
-        if (contact.donor_accounts && contact.donor_accounts.length > 0) {
-            contactObj['donor_accounts_attributes'] = _.map(contact.donor_accounts, (donorAccount) => {
-                return {
-                    id: donorAccount.id,
-                    account_number: donorAccount.account_number,
-                    organization_id: donorAccount.organization_id,
-                    _destroy: donorAccount._destroy
-                };
-            });
-        }
-
-        if (contact.contact_referrals_to_me && contact.contact_referrals_to_me.length > 0) {
-            contactObj['contact_referrals_to_me_attributes'] = contact.contact_referrals_to_me;
-        }
-
-        return this.api.put(`contacts/${contact.id}`, {contact: contactObj}).then((data) => {
+        return this.api.put(`contacts/${contact.id}`, contact).then((data) => {
             this.cache.updateContact(data.contact, data);
         });
     }
@@ -268,13 +137,14 @@ class ContactsService {
         });
     }
     loadMoreContacts() {
-        if (this.loading) return;
-        if (this.page >= this.meta.total_pages) return;
-        this.page = this.page + 1;
+        if (this.loading || this.page >= this.meta.pagination.total_pages) {
+            return;
+        }
+        this.page++;
         this.load(false);
     }
     findChangedFilters(defaultParams, params) {
-        var filterParams = {};
+        let filterParams = {};
         _.forIn(params, (filter, key) => {
             if (_.has(this.contactFilter.params, key)) {
                 const currentDefault = defaultParams[key];
@@ -293,9 +163,7 @@ class ContactsService {
         this.contactFilter.reset();
     }
     getSelectedContacts() {
-        return this.data.filter((contact) => {
-            return contact.selected;
-        });
+        return _.filter(this.data, { selected: true });
     }
     getSelectedContactIds() {
         return this.getSelectedContacts().map(contact => contact.id);
@@ -351,7 +219,7 @@ class ContactsService {
         });
     }
     bulkEditFields(model, pledgeCurrencies, contactIds) {
-        var obj = {};
+        let obj = {};
         if (model.likelyToGive) {
             obj.likely_to_give = model.likelyToGive;
         }
@@ -395,6 +263,18 @@ class ContactsService {
             this.donorAccounts = [];
             _.each(this.data, contact => _.union(this.donorAccounts, contact.donor_accounts));
         }
+    }
+    getAnalytics() {
+        if (this.analytics) {
+            return this.$q.resolve(this.analytics);
+        }
+        return this.api.get('contacts/analytics').then((data) => {
+            this.$log.debug('contacts/analytics', data);
+            this.analytics = data;
+            return this.analytics;
+        }).catch((err) => {
+            this.$log.error('contacts/analytics not implemented.', err);
+        });
     }
 }
 

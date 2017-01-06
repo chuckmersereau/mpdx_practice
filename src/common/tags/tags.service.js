@@ -1,7 +1,7 @@
 class TagsService {
     api;
 
-    constructor($rootScope, api, accounts, $filter) {
+    constructor($rootScope, api, $filter) {
         this.$filter = $filter;
         this.api = api;
 
@@ -11,7 +11,7 @@ class TagsService {
         this.anyTags = false;
         this.loading = true;
 
-        $rootScope.$watch(() => accounts.account_list_id, (accountListId) => {
+        $rootScope.$on('accountListUpdated', (e, accountListId) => {
             if (accountListId) {
                 this.load();
             }
@@ -21,10 +21,11 @@ class TagsService {
     }
     load() {
         this.loading = true;
-        return this.api.get('contacts/tags').then((data) => {
-            this.data = data;
-            this.loading = false;
-        });
+        console.error('common/tags - no contacts/tags enpoint yet');
+        // return this.api.get('contacts/tags').then((data) => {
+        //     this.data = data;
+        //     this.loading = false;
+        // });
     }
     delete(tagName) {
         return this.api.delete('contacts/tags', { tags: [{ name: tagName, all_contacts: true }] }).then(() => {

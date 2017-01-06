@@ -43,7 +43,12 @@
     </div>
     <div class="row page-controls">
         <div class="col-sm-5">
-            <span><span  translate>Showing</span> <strong>{{$ctrl.contacts.meta.to}}</strong> <span translate>of</span> <strong>{{$ctrl.contacts.meta.total}}</strong></span>
+            <span ng-if="$ctrl.contacts.meta.to && $ctrl.contacts.meta.pagination.total_count">
+                <span  translate>Showing</span>
+                <strong>{{$ctrl.contacts.meta.to}}</strong>
+                <span translate>of</span>
+                <strong>{{$ctrl.contacts.meta.pagination.total_count}}</strong>
+            </span>
             <span class="label label-primary" ng-if="$ctrl.contacts.getSelectedContacts().length > 0">
         {{$ctrl.contacts.getSelectedContacts().length }} <span translate>Selected</span>
         <a href="javascript:;" class="label-action" ng-click="$ctrl.clearSelectedContacts()"><i class="fa fa-times"></i></a>
@@ -54,8 +59,8 @@
 <div ng-if="$ctrl.contacts.data.length === 0 && !$ctrl.contacts.loading" class="contacts-empty">
     <div ng-show="$ctrl.contacts.meta.has_contacts">
         <p>
-            <strong translate>You have {{$ctrl.currentAccountList.contacts.active.length}} active contacts</strong>
-            (<span translate>{{$ctrl.currentAccountList.contacts.length}} total contacts</span>)
+            <strong translate>You have {{$ctrl.accounts.current.contacts.active.length}} active contacts</strong>
+            (<span translate>{{$ctrl.accounts.current.contacts.length}} total contacts</span>)
             <span translate>Unfortunately none of them match your current search or filters.</span>
         </p>
         <a ng-click="$ctrl.resetFilters()" class="btn btn-primary" translate>Reset All Search Filters</a>

@@ -1,16 +1,19 @@
 class DonationsReportController {
+    api;
     currency;
-    currentAccountList;
+    designationAccounts;
     getDonations;
     donations;
     donationsReport;
 
     constructor(
-        blockUI,
-        currentAccountList, currency, donationsReport
+        $rootScope, blockUI,
+        api, designationAccounts, currency, donationsReport
     ) {
+        console.error('donations report - fix endpoint date filtering, add contact name to result');
+        this.api = api;
         this.currency = currency;
-        this.currentAccountList = currentAccountList;
+        this.designationAccounts = designationAccounts;
         this.donationsReport = donationsReport;
 
         this.blockUI = blockUI.instances.get('donations');
@@ -19,28 +22,37 @@ class DonationsReportController {
         this.donations = {};
         this.allDonations = [];
         this.donationTotals = {};
+
+        this.watcher = $rootScope.$on('accountListUpdated', () => {
+            if (this.donationsReport.data === null) {
+                this.donationsReport.getDonations({ startData: this.startDate, endDate: this.endDate }).then((data) => {
+                    this.loadingFinished(data);
+                });
+            }
+        });
     }
     $onChanges() {
+        this.setMonths();
         if (this.donationsReport.data === null) {
-            this.donationsReport.getDonations().then((data) => {
-                this.loadingFinished(data);
-            });
+            if (this.api.account_list_id) {
+                this.donationsReport.getDonations({ startData: this.startDate, endDate: this.endDate }).then((data) => {
+                    this.loadingFinished(data);
+                });
+            }
         } else {
             this.loadingFinished(this.donationsReport.data);
         }
     }
+    $onDestroy() {
+        this.watcher();
+    }
     loadingFinished(data) {
         this.blockUI.stop();
-        this.allDonations = data.donations;
+        this.allDonations = data.data;
         this.init();
     }
     init() {
-        this.previousMonth = moment(this.startDate, 'l').subtract(1, 'month').format('l');
-        this.nextMonth = moment(this.startDate, 'l').add(1, 'month').format('l');
-        if (!this.endDate) {
-            this.endDate = moment(this.startDate, 'l').endOf('month').format('l');
-        }
-        this.enableNext = moment(this.nextMonth, 'l').isBefore(moment());
+        this.setMonths();
         this.index = this.startDate.split('/').join('');
         if (!_.has(this.donations, this.index)) {
             this.donations[this.index] = _.filter(this.allDonations, donation => moment(donation.donation_date, 'YYYY-M-D').startOf('month').format('l') === this.startDate);
@@ -57,6 +69,14 @@ class DonationsReportController {
                 this.donationTotals[this.index][donation.currency].count++;
             });
         }
+    }
+    setMonths() {
+        this.previousMonth = moment(this.startDate, 'l').subtract(1, 'month').format('l');
+        this.nextMonth = moment(this.startDate, 'l').add(1, 'month').format('l');
+        if (!this.endDate) {
+            this.endDate = moment(this.startDate, 'l').endOf('month').format('l');
+        }
+        this.enableNext = moment(this.nextMonth, 'l').isBefore(moment());
     }
     gotoNextMonth() {
         this.startDate = this.nextMonth;

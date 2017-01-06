@@ -5,7 +5,11 @@ class ServerConstantsService {
         this.$q = $q;
         this.api = api;
 
-        this.data = {};
+        this.data = {
+            contacts: {},
+            no_appeals_options: {},
+            mail_chimp_locale_options: {}
+        };
         this.loading = true;
 
         this.isFetching = {
@@ -63,7 +67,7 @@ class ServerConstantsService {
         }
 
         let promise = this.api.get('constants',
-            {include: fetchConstantsNames, exclude: excludeConstantsNames}
+            {include: fetchConstantsNames.join(','), exclude: excludeConstantsNames.join(',')}
         ).then((data) => {
             _.mapKeys(data, (val, key) => {
                 this.data[key] = val;

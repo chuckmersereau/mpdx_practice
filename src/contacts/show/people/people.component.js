@@ -1,13 +1,34 @@
 class ContactPeopleController {
+    api;
     contact;
+    contactPerson;
 
     constructor(
-        $state, gettextCatalog
+        $log, $state, $rootScope,
+        api, contactPerson, gettextCatalog
     ) {
+        this.$log = $log;
+        this.$rootScope = $rootScope;
         this.$state = $state;
+        this.api = api;
+        this.contactPerson = contactPerson;
         this.gettextCatalog = gettextCatalog;
 
         this.isMerging = false;
+    }
+    $onInit() {
+        this.init();
+    }
+    $onChanges() {
+        this.init();
+    }
+    init() {
+        if (!_.has(this, 'contact.id')) {
+            return;
+        }
+        this.contactPerson.list(this.contact.id).then((data) => {
+            this.$log.debug('selected people: ', data);
+        });
     }
     openMergeModal() {
         let data = [];

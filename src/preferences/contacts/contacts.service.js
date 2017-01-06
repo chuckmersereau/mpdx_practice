@@ -4,13 +4,11 @@ class ContactsService {
 
         this.data = {};
         this.loading = false;
-        this.account_list_id_watcher = $rootScope.$watch(() => {
-            return api.account_list_id;
-        }, () => {
+        $rootScope.$on('accountListUpdated', () => {
             this.load();
         });
 
-        this.load();
+        //this.load();
     }
     load() {
         this.loading = true;

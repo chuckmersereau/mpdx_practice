@@ -1,13 +1,15 @@
+import config from 'config';
+
 function authInterceptor($q, $window) {
     return {
-        request: (config) => {
-            if (config.url.indexOf('http') === 0) { //ensure it is an api call
-                if (!$window.sessionStorage.token) {
+        request: (request) => {
+            if (request.url.indexOf('http') === 0) { //ensure it is an api call
+                if (!$window.sessionStorage.token && request.url !== `${config.apiUrl}user/authentication`) {
                     return $q.reject('noAuth');
                 }
-                config.headers['Authorization'] = `Bearer ${$window.sessionStorage.token}`;
+                request.headers['Authorization'] = `Bearer ${$window.sessionStorage.token}`;
             }
-            return config;
+            return request;
         },
         response: (response) => {
             if (response.status === 401) {

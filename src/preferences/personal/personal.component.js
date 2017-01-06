@@ -1,17 +1,22 @@
 class PersonalPreferencesController {
+    accountsMap;
+    accounts;
     alerts;
-    personal;
+    api;
+    users;
 
     constructor(
         $state, $stateParams, $window, gettextCatalog,
-        alerts, personal
+        accounts, api, alerts, users
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.$window = $window;
+        this.accounts = accounts;
         this.alerts = alerts;
+        this.api = api;
         this.gettextCatalog = gettextCatalog;
-        this.personal = personal;
+        this.users = users;
 
         this.saving = false;
         this.tabId = '';
@@ -19,6 +24,12 @@ class PersonalPreferencesController {
         this.languages = _.map(_.keys($window.languageMappingList), (key) => {
             return _.extend({alias: key}, window.languageMappingList[key]);
         });
+
+        this.accountsMap = {};
+        _.each(this.accounts.data, (account) => {
+            this.accountsMap[account.id] = account;
+        });
+        this.default_account_list = this.users.current.preferences.default_account_list.toString();
     }
     $onInit() {
         if (this.$stateParams.id) {
@@ -27,12 +38,25 @@ class PersonalPreferencesController {
     }
     save() {
         this.saving = true;
-        return this.personal.save().then(() => {
+        return this.users.save(this.users.current).then(() => {
             this.alerts.addAlert('Preferences saved successfully', 'success');
             this.setTab('');
             this.saving = false;
         }).catch((data) => {
-            angular.forEach(data.errors, (value) => {
+            _.each(data.errors, (value) => {
+                this.alerts.addAlert(value, 'danger');
+            });
+            this.saving = false;
+        });
+    }
+    saveAccount() {
+        this.saving = true;
+        return this.accounts.save(this.accountsMap[this.api.account_list_id]).then(() => {
+            this.alerts.addAlert('Preferences saved successfully', 'success');
+            this.setTab('');
+            this.saving = false;
+        }).catch((data) => {
+            _.each(data.errors, (value) => {
                 this.alerts.addAlert(value, 'danger');
             });
             this.saving = false;
@@ -51,7 +75,7 @@ class PersonalPreferencesController {
         return this.tabId === service;
     }
     setDefaultAccountList() {
-        this.default_account_string = this.personal.data.default_account_list;
+        this.users.current.preferences.default_account_list = parseInt(this.default_account_list);
     }
     setSalaryOrg() {
         this.salary_organization_string = this.personal.data.salary_organization_id;
@@ -66,7 +90,7 @@ class PersonalPreferencesController {
         return locale;
     }
     setLocale() {
-        this.personal.changeLocale(this.personal.data.locale);
+        this.users.changeLocale(this.users.current.preferences.locale);
     }
 }
 

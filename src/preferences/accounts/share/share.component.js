@@ -1,21 +1,22 @@
 class SharePreferencesController {
+    accounts;
     alerts;
-    invites;
     users;
 
-    constructor(invites, users, alerts) {
-        this.invites = invites;
-        this.users = users;
+    constructor(accounts, alerts) {
+        this.accounts = accounts;
         this.alerts = alerts;
         this.saving = false;
         this.inviteEmail = '';
+        this.accounts.listUsers();
+        this.accounts.listInvites();
     }
     cancelInvite(id) {
         this.saving = true;
-        this.invites.destroy(id).then(() => {
+        this.accounts.destroyInvite(id).then(() => {
             this.saving = false;
             this.alerts.addAlert('MPDX removed the invite successfully', 'info');
-            this.invites.load();
+            this.accounts.listInvites();
         }).catch(() => {
             this.alerts.addAlert("MPDX couldn't remove the invite", 'danger');
             this.saving = false;
@@ -23,10 +24,10 @@ class SharePreferencesController {
     }
     removeUser(id) {
         this.saving = true;
-        this.users.destroy(id).then(() => {
+        this.accounts.destroyUser(id).then(() => {
             this.saving = false;
             this.alerts.addAlert('MPDX removed the user successfully', 'info');
-            this.users.load();
+            this.accounts.listUsers();
         }).catch(() => {
             this.alerts.addAlert("MPDX couldn't remove the user", 'danger');
             this.saving = false;
