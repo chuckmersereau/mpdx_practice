@@ -86,7 +86,7 @@ class ContactsService {
             filterParams.tags = _.map(this.contactsTags.selectedTags, tag => tag.name).join(',');
         }
         if (this.contactsTags.rejectedTags.length > 0) {
-            filterParams.exclude_tags = this.contactsTags.rejectedTags;
+            filterParams.exclude_tags = _.map(this.contactsTags.rejectedTags, tag => tag.name).join(',');
         }
         filterParams.any_tags = this.contactsTags.anyTags;
 
