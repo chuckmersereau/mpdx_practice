@@ -176,7 +176,7 @@ class TasksService {
         });
     }
     starTask(task) {
-        return this.api.put(`/tasks/${task.id}`, {task: {starred: !task.starred}});
+        return this.api.put(`tasks/${task.id}`, {updated_in_db_at: task.updated_in_db_at, starred: !task.starred});
     }
     deleteComment(taskId, commentId) {
         return this.api.delete('activity_comments/' + commentId, { activity_id: taskId });
