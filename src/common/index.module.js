@@ -22,7 +22,6 @@ import rawNumber from './rawNumber/rawNumber.directive';
 import selectionStore from './selectionStore/selectionStore.service';
 import serverConstants from './serverConstants/serverConstants.service';
 import session from './session/session.service';
-import tags from './tags/index.module';
 import pagination from './pagination/pagination.component';
 import urlParameter from './urlParameter/urlParameter.service';
 import users from './users/users.service';
@@ -53,7 +52,6 @@ export default angular.module('mpdx.common', [
     selectionStore,
     serverConstants,
     session,
-    tags,
     urlParameter,
     users
 ]).name;

@@ -7,12 +7,12 @@ class EditTaskController {
 
     constructor(
         $scope,
-        tasksTagsService, tasksService, serverConstants,
+        tasksTags, tasksService, serverConstants,
         taskIds, modalCallback
     ) {
         this.$scope = $scope;
         this.serverConstants = serverConstants;
-        this.tagsService = tasksTagsService;
+        this.tagsService = tasksTags;
         this.tasksService = tasksService;
         this.taskIds = taskIds;
         this.modalCallback = modalCallback;

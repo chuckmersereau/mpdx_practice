@@ -1,15 +1,18 @@
 class TasksService {
     api;
     modal;
-    filterService;
+    tasksFilter;
     tagsService;
 
-    constructor($log, modal, api, tasksFilterService, tasksTagsService) {
+    constructor(
+        $log,
+        modal, api, tasksFilter, tasksTags
+    ) {
         this.$log = $log;
         this.modal = modal;
         this.api = api;
-        this.filterService = tasksFilterService;
-        this.tagsService = tasksTagsService;
+        this.tasksFilter = tasksFilter;
+        this.tagsService = tasksTags;
 
         this.analytics = null;
         this.data = {};
@@ -109,23 +112,19 @@ class TasksService {
         const meta = this.meta[collection];
         const defaultFilters = this.defaultFilters[collection];
 
-        const wildcardSearch = this.filterService.wildcard_search;
+        const wildcardSearch = this.tasksFilter.wildcard_search;
         if (wildcardSearch) {
             filters.wildcard_search = wildcardSearch;
         }
+        filters = _.assign(defaultFilters, filters);
 
-        const obj = Object.assign({
-            filters: Object.assign(
-                Object.assign({}, defaultFilters),
-                filters
-            )
-        }, meta);
 
-        return this.api.get('tasks/', obj).then((data) => {
-            if (data.tasks.length) {
-                this.transformChild(data.tasks, 'comments', data.comments);
-                this.transformChild(data.comments, 'person_id', data.people, true);
-            }
+        return this.api.get('tasks', { filters: filters, include: 'comments', meta: meta }).then((data) => {
+            this.$log.debug('tasks page ' + data.meta.pagination.page, data);
+            // if (data.length) {
+            //     this.transformChild(data, 'comments', data.comments);
+            //     this.transformChild(data.comments, 'person_id', data.people, true);
+            // }
             this.data[collection] = data.tasks;
             meta.from = data.meta.from;
             meta.to = data.meta.to;
