@@ -167,9 +167,14 @@ class TasksService {
         });
     }
 
+    save(task) {
+        return this.api.put(`tasks/${task.id}`, task);
+    }
+
     submitNewComment(task, newComment) {
         return this.api.put(`tasks/${task.id}`, {updated_in_db_at: task.updated_in_db_at, activity_comment: {body: newComment}});
     }
+    // FIXME need review
     deleteTask(taskId) {
         return this.api.delete(`/tasks/${taskId}`, [], () => {
             return true;
@@ -178,12 +183,15 @@ class TasksService {
     starTask(task) {
         return this.api.put(`tasks/${task.id}`, {updated_in_db_at: task.updated_in_db_at, starred: !task.starred});
     }
+    // FIXME need review
     deleteComment(taskId, commentId) {
         return this.api.delete('activity_comments/' + commentId, { activity_id: taskId });
     }
+    // FIXME need review
     bulkDeleteTasks(taskIds) {
         return this.api.delete('tasks/bulk_destroy', { ids: taskIds });
     }
+    // FIXME need review
     bulkCompleteTasks(taskIds) {
         return this.api.post('tasks/bulk_update', {
             bulk_task_update_ids: taskIds.join(),
@@ -193,6 +201,7 @@ class TasksService {
             }
         });
     }
+    // FIXME need review
     bulkEditTasks(taskIds, model) {
         return this.api.post('tasks/bulk_update', {
             bulk_task_update_ids: taskIds.join(),
@@ -215,39 +224,42 @@ class TasksService {
             }
         });
     }
+    // FIXME need review
     postBulkLogTask(ajaxAction, taskId, model, contactIds, toComplete) {
         const url = 'tasks/' + (taskId || '');
-        return this.api.call({
-            methd: ajaxAction,
-            url: url,
-            data: {
-                add_task_contact_ids: contactIds.join(),
-                task: {
-                    subject: model.subject,
-                    activity_type: model.action,
-                    no_date: model.noDate,
-                    'start_at(1i)': model.dueDate.getFullYear() + '',
-                    'start_at(2i)': (model.dueDate.getMonth() + 1) + '',
-                    'start_at(3i)': model.dueDate.getDate() + '',
-                    'start_at(4i)': model.dueDate.getHours() + '',
-                    'start_at(5i)': model.dueDate.getMinutes() + '',
-                    'completed_at(1i)': model.completedAt.getFullYear() + '',
-                    'completed_at(2i)': (model.completedAt.getMonth() + 1) + '',
-                    'completed_at(3i)': model.completedAt.getDate() + '',
-                    'completed_at(4i)': model.completedAt.getHours() + '',
-                    'completed_at(5i)': model.completedAt.getMinutes() + '',
-                    activity_comments_attributes: [
-                        {
-                            body: model.comment
-                        }
-                    ],
-                    completed: toComplete || model.result,
-                    result: model.result,
-                    tag_list: model.tagsList.map(tag => tag.text).join()
+        let taskData = {
+            subject: model.subject,
+            activity_type: model.action,
+            no_date: model.noDate,
+            'start_at(1i)': model.dueDate.getFullYear() + '',
+            'start_at(2i)': (model.dueDate.getMonth() + 1) + '',
+            'start_at(3i)': model.dueDate.getDate() + '',
+            'start_at(4i)': model.dueDate.getHours() + '',
+            'start_at(5i)': model.dueDate.getMinutes() + '',
+            'completed_at(1i)': model.completedAt.getFullYear() + '',
+            'completed_at(2i)': (model.completedAt.getMonth() + 1) + '',
+            'completed_at(3i)': model.completedAt.getDate() + '',
+            'completed_at(4i)': model.completedAt.getHours() + '',
+            'completed_at(5i)': model.completedAt.getMinutes() + '',
+            activity_comments_attributes: [
+                {
+                    body: model.comment
                 }
-            }
+            ],
+            completed: toComplete || model.result !== null,
+            result: model.result,
+            tag_list: model.tagsList.map(tag => tag.text).join(),
+            updated_in_db_at: model.updated_in_db_at
+        };
+
+        return this.api.call({
+            method: ajaxAction,
+            url: url,
+            // add_task_contact_ids: contactIds.join(),
+            data: taskData
         });
     }
+    // FIXME need review
     postLogTask(task, model) {
         let objPayload = {
             updated_in_db_at: task.updated_in_db_at,
@@ -265,26 +277,28 @@ class TasksService {
 
         return this.api.put(`tasks/${task.id}`, objPayload);
     }
+    // FIXME need review
     postBulkAddTask(model, contactIds) {
-        return this.api.post('tasks', {
-            add_task_contact_ids: contactIds.join(),
-            task: {
-                subject: model.subject,
-                activity_type: model.action,
-                no_date: model.noDate,
-                'start_at(1i)': model.date.getFullYear() + '',
-                'start_at(2i)': (model.date.getMonth() + 1) + '',
-                'start_at(3i)': model.date.getDate() + '',
-                'start_at(4i)': model.date.getHours() + '',
-                'start_at(5i)': model.date.getMinutes() + '',
-                activity_comments_attributes: [
-                    {
-                        body: model.comment
-                    }
-                ],
-                tag_list: model.tagsList.map(tag => tag.text).join()
-            }
-        });
+        return this.api.post('tasks', model);
+        // return this.api.post('tasks', {
+        //     add_task_contact_ids: contactIds.join(),
+        //     task: {
+        //         subject: model.subject,
+        //         activity_type: model.action,
+        //         no_date: model.noDate,
+        //         'start_at(1i)': model.date.getFullYear() + '',
+        //         'start_at(2i)': (model.date.getMonth() + 1) + '',
+        //         'start_at(3i)': model.date.getDate() + '',
+        //         'start_at(4i)': model.date.getHours() + '',
+        //         'start_at(5i)': model.date.getMinutes() + '',
+        //         activity_comments_attributes: [
+        //             {
+        //                 body: model.comment
+        //             }
+        //         ],
+        //         tag_list: model.tagsList.map(tag => tag.text).join()
+        //     }
+        // });
     }
     openModal(params) {
         this.modal.open({
@@ -314,6 +328,7 @@ class TasksService {
             onHide: params.onHide || _.noop
         });
     }
+    // FIXME need review
     getAnalytics() {
         if (this.analytics) {
             return this.$q.resolve(this.analytics);

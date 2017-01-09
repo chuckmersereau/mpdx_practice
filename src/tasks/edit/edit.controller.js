@@ -47,6 +47,10 @@ class EditTaskController {
         };
     }
     submit() {
+        if (this.specifiedTask) {
+            this.models.updated_in_db_at = this.specifiedTask.updated_in_db_at;
+        }
+
         this.tasksService.postBulkLogTask(
             this.ajaxAction || 'post',
             this.specifiedTask ? this.specifiedTask.id : null,
