@@ -13,13 +13,13 @@
     <div class="filter_hint" translate>Click a tag twice to look up all contacts who do not have that tag.</div>
     <ul class="left_tag_list tags" ng-class="{'show_all_tags': $ctrl.showAllTags}">
         <li>
-      <span class="tag"
-            ng-class="{ 'selected': !$ctrl.contactsTags.isTagActive(tag), 'rejected': $ctrl.contactsTags.isTagRejected(tag) }"
-            ng-click="$ctrl.contactsTags.tagClick(tag, $event)"
-            ng-repeat="tag in $ctrl.contactsTags.data">
-        {{ tag }}
-        <a ng-click="$event.stopPropagation()" data-template-url="tags_delete_popover.html" class="tag_remove" bs-popover></a>
-      </span>
+            <span class="tag"
+                ng-class="{ 'selected': !$ctrl.contactsTags.isTagActive(tag), 'rejected': $ctrl.contactsTags.isTagRejected(tag) }"
+                ng-click="$ctrl.contactsTags.tagClick(tag, $event)"
+                ng-repeat="tag in $ctrl.contactsTags.data">
+            {{ tag.name }}
+            <a ng-click="$event.stopPropagation()" data-template-url="tags_delete_popover.html" class="tag_remove" bs-popover></a>
+            </span>
             <a class="show_all_tags_btn">
                 <div ng-click="$ctrl.showAllTags = !$ctrl.showAllTags" ng-if="$ctrl.contactsTags.data.length > 25">
                     <div ng-show="!$ctrl.showAllTags">

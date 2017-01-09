@@ -83,7 +83,7 @@ class ContactsService {
         }
 
         if (this.contactsTags.selectedTags.length > 0) {
-            filterParams.tags = this.contactsTags.selectedTags;
+            filterParams.tag_list = _.map(this.contactsTags.selectedTags, tag => tag.id).join(',');
         }
         if (this.contactsTags.rejectedTags.length > 0) {
             filterParams.exclude_tags = this.contactsTags.rejectedTags;
@@ -108,7 +108,7 @@ class ContactsService {
                 if (reset) {
                     newContacts.push(currentContact);
                 } else {
-                    this.data.push(currentContact);
+                    this.data = _.unionBy(this.data, [currentContact], 'id');
                 }
             });
             if (reset) {
