@@ -83,14 +83,24 @@ class ContactsService {
         }
 
         if (this.contactsTags.selectedTags.length > 0) {
-            filterParams.tag_list = _.map(this.contactsTags.selectedTags, tag => tag.id).join(',');
+            filterParams.tags = _.map(this.contactsTags.selectedTags, tag => tag.name).join(',');
         }
         if (this.contactsTags.rejectedTags.length > 0) {
             filterParams.exclude_tags = this.contactsTags.rejectedTags;
         }
         filterParams.any_tags = this.contactsTags.anyTags;
 
-        return this.api.get('contacts', {filters: filterParams, page: this.page, per_page: 25, include: 'people,addresses', sort: 'name'}).then((data) => {
+        return this.api.get({
+            url: 'contacts',
+            data: {
+                filters: filterParams,
+                page: this.page,
+                per_page: 25,
+                include: 'people,addresses',
+                sort: 'name'
+            },
+            overrideGetAsPost: true
+        }).then((data) => {
             this.$log.debug('contacts page ' + data.meta.pagination.page, data);
             let count = this.meta.to || 0;
             if (reset) {
