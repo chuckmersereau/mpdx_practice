@@ -37,6 +37,14 @@ class ServerConstantsService {
         return this.fetchPromises[constantName];
     }
     fetchConstants(constantsNames) {
+        // FIXME temporary hack. remove when the endpoint '/constants' is working.
+        if (constantsNames[0] === 'actions') {
+            this.data['actions'] = ['Call', 'Appointment', 'Email', 'Text Message', 'Facebook Message',
+                'Letter', 'Newsletter', 'Pre Call Letter', 'Reminder Letter',
+                'Support Letter', 'Thank', 'To Do', 'Talk to In Person', 'Prayer Request'];
+            return;
+        }
+
         if (this.isFetching.all === true) {
             return this.fetchPromises.all;
         }
