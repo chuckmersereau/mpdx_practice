@@ -248,23 +248,22 @@ class TasksService {
             }
         });
     }
-    postLogTask(taskId, model) {
+    postLogTask(task, model) {
         let objPayload = {
-            task: {
-                activity_comment: {
-                    body: model.comment
-                },
-                completed: true
-            }
+            updated_in_db_at: task.updated_in_db_at,
+            activity_comment: {
+                body: model.comment
+            },
+            completed: true
         };
         if (model.result) {
-            objPayload.task.result = model.result;
+            objPayload.result = model.result;
         }
         if (model.nextAction) {
-            objPayload.task.nextAction = model.nextAction;
+            objPayload.nextAction = model.nextAction;
         }
 
-        return this.api.put(`tasks/${taskId}`, objPayload);
+        return this.api.put(`tasks/${task.id}`, objPayload);
     }
     postBulkAddTask(model, contactIds) {
         return this.api.post('tasks', {

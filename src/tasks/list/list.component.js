@@ -28,7 +28,7 @@ class ListController {
             template: require('../../contacts/show/completeTask/completeTask.html'),
             controller: 'completeTaskController',
             locals: {
-                taskId: task.id,
+                task: task,
                 contact: task.contacts[0],
                 taskAction: task.activity_type,
                 modalCallback: this.loadPage
