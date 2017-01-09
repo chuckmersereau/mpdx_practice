@@ -97,8 +97,8 @@ class Api {
                 const meta = data.meta || {};
                 if (!_.isString(data) && data.data) {
                     return new japi.Deserializer({keyForAttribute: 'underscore_case'}).deserialize(data).then((data) => {
+                        data = this.addServerUpdateNested(data); //add updated_in_db_at timestamps
                         data.meta = meta;
-                        // data = this.addServerUpdateNested(data); //add updated_in_db_at timestamps
                         return data;
                     });
                 } else {
@@ -247,7 +247,7 @@ class EntityAttributes {
                 attributes: ["person_id", "number", "country_code", "location", "primary", "created_at", "updated_at", "remote_id", "historic", "updated_in_db_at"]
             },
             tasks: {
-                attributes: ["account_list_id", "starred", "location", "subject", "start_at", "end_at", "type", "created_at", "updated_at", "completed", "activity_comments_count", "activity_type", "result",
+                attributes: ["account_list_id", "starred", "location", "subject", "start_at", "end_at", "type", "created_at", "updated_at", "completed", "activity_comments_count", "activity_comment", "activity_type", "result",
                     "completed_at", "notification_id", "remote_id", "source", "next_action", "no_date", "notification_type", "notification_time_before", "notification_time_unit", "notification_scheduled", "updated_in_db_at"]
             },
             user: {

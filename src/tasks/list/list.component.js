@@ -84,9 +84,9 @@ class ListController {
             this.selected = tasks.map((task) => task.id);
         }
     }
-    newComment(taskId) {
+    newComment(task) {
         if (this.models.comment) {
-            this.tasksService.submitNewComment(taskId, this.models.comment).then(function() {
+            this.tasksService.submitNewComment(task, this.models.comment).then(function() {
                 this.load();
             }.bind(this));
             this.models.comment = '';
