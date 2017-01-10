@@ -247,8 +247,9 @@ class EntityAttributes {
                 attributes: ["person_id", "number", "country_code", "location", "primary", "created_at", "updated_at", "remote_id", "historic", "updated_in_db_at"]
             },
             tasks: {
-                attributes: ["account_list_id", "starred", "location", "subject", "start_at", "end_at", "type", "created_at", "updated_at", "completed", "activity_comments_count", "activity_comment", "activity_type", "result",
-                    "completed_at", "notification_id", "remote_id", "source", "next_action", "no_date", "notification_type", "notification_time_before", "notification_time_unit", "notification_scheduled", "updated_in_db_at"]
+                attributes: ["account_list_id", "starred", "location", "subject", "start_at", "start_at(1i)", "start_at(2i)", "start_at(3i)", "start_at(4i)", "start_at(5i)", "end_at", "type", "created_at", "updated_at", "completed", "activity_comments_count", "activity_comment", "activity_contacts_attributes", "activity_type", "result",
+                    "completed_at", "completed_at(1i)", "completed_at(2i)", "completed_at(3i)", "completed_at(4i)", "completed_at(5i)", "notification_id", "remote_id", "source", "next_action", "no_date", "notification_type", "notification_time_before",
+                    "notification_time_unit", "notification_scheduled", "updated_in_db_at"]
             },
             user: {
                 attributes: ["first_name", "preferences", "setup", "email", "access_token", "time_zone", "locale", "updated_at", "updated_in_db_at"]

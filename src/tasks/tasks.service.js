@@ -215,11 +215,7 @@ class TasksService {
                 'start_at(3i)': model.dueDate ? model.dueDate.getDate() + '' : undefined,
                 'start_at(4i)': model.dueDate ? model.dueDate.getHours() + '' : undefined,
                 'start_at(5i)': model.dueDate ? model.dueDate.getMinutes() + '' : undefined,
-                activity_comments_attributes: [
-                    {
-                        body: model.comment
-                    }
-                ],
+                activity_comment: {body: model.comment},
                 tag_list: model.tagsList ? model.tagsList.map(tag => tag.text).join() : undefined
             }
         });
@@ -227,6 +223,10 @@ class TasksService {
     // FIXME need review
     postBulkLogTask(ajaxAction, taskId, model, contactIds, toComplete) {
         const url = 'tasks/' + (taskId || '');
+        let contactsData = [];
+        _.each(contactIds, (contactId) => {
+            contactsData.push({contact_id: contactId});
+        });
         let taskData = {
             subject: model.subject,
             activity_type: model.action,
@@ -241,11 +241,8 @@ class TasksService {
             'completed_at(3i)': model.completedAt.getDate() + '',
             'completed_at(4i)': model.completedAt.getHours() + '',
             'completed_at(5i)': model.completedAt.getMinutes() + '',
-            activity_comments_attributes: [
-                {
-                    body: model.comment
-                }
-            ],
+            activity_comment: {body: model.comment},
+            activity_contacts_attributes: contactsData,
             completed: toComplete || model.result !== null,
             result: model.result,
             tag_list: model.tagsList.map(tag => tag.text).join(),
@@ -255,7 +252,6 @@ class TasksService {
         return this.api.call({
             method: ajaxAction,
             url: url,
-            // add_task_contact_ids: contactIds.join(),
             data: taskData
         });
     }
@@ -263,9 +259,7 @@ class TasksService {
     postLogTask(task, model) {
         let objPayload = {
             updated_in_db_at: task.updated_in_db_at,
-            activity_comment: {
-                body: model.comment
-            },
+            activity_comment: {body: model.comment},
             completed: true
         };
         if (model.result) {
@@ -279,26 +273,26 @@ class TasksService {
     }
     // FIXME need review
     postBulkAddTask(model, contactIds) {
-        return this.api.post('tasks', model);
-        // return this.api.post('tasks', {
-        //     add_task_contact_ids: contactIds.join(),
-        //     task: {
-        //         subject: model.subject,
-        //         activity_type: model.action,
-        //         no_date: model.noDate,
-        //         'start_at(1i)': model.date.getFullYear() + '',
-        //         'start_at(2i)': (model.date.getMonth() + 1) + '',
-        //         'start_at(3i)': model.date.getDate() + '',
-        //         'start_at(4i)': model.date.getHours() + '',
-        //         'start_at(5i)': model.date.getMinutes() + '',
-        //         activity_comments_attributes: [
-        //             {
-        //                 body: model.comment
-        //             }
-        //         ],
-        //         tag_list: model.tagsList.map(tag => tag.text).join()
-        //     }
-        // });
+        let contactsData = [];
+        _.each(contactIds, (contactId) => {
+            contactsData.push({contact_id: contactId});
+        });
+
+        let taskData = {
+            subject: model.subject,
+            activity_type: model.action,
+            no_date: model.noDate,
+            'start_at(1i)': model.date.getFullYear() + '',
+            'start_at(2i)': (model.date.getMonth() + 1) + '',
+            'start_at(3i)': model.date.getDate() + '',
+            'start_at(4i)': model.date.getHours() + '',
+            'start_at(5i)': model.date.getMinutes() + '',
+            activity_comment: {body: model.comment},
+            activity_contacts_attributes: contactsData,
+            tag_list: model.tagsList.map(tag => tag.text).join()
+        };
+
+        return this.api.post('tasks', taskData);
     }
     openModal(params) {
         this.modal.open({
