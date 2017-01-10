@@ -38,6 +38,16 @@ class ServerConstantsService {
         options['Support Letter'] = ['Call to Follow Up', 'Email', 'Text', 'Message', 'Talk to In Person', 'None'];
         options['default'] = ['None'];
         this.data['next_actions'] = options;
+        options = {};
+        options['Call'] = ['Attempted - Left Message', 'Attempted', 'Completed', 'Received'];
+        options['Appointment'] = ['Completed', 'Attempted'];
+        options['Email'] = ['Completed', 'Received'];
+        options['Facebook Message'] = ['Completed', 'Received'];
+        options['Text Message'] = ['Completed', 'Received'];
+        options['Talk to In Person'] = ['Completed'];
+        options['Prayer Request'] = ['Completed'];
+        options['default'] = ['Done'];
+        this.data['results'] = options;
         // FIXME END
     }
     //tasks/next_actions   tasks/actions   tasks/results
