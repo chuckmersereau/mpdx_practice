@@ -220,9 +220,11 @@ class TasksService {
             }
         });
     }
-    // FIXME need review
     postBulkLogTask(ajaxAction, taskId, model, contactIds, toComplete) {
-        const url = 'tasks/' + (taskId || '');
+        let url = 'tasks';
+        if (taskId) {
+            url += '/' + taskId;
+        }
         let contactsData = [];
         _.each(contactIds, (contactId) => {
             contactsData.push({contact_id: contactId});
