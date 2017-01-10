@@ -119,7 +119,7 @@ class TasksService {
                 Object.assign({}, defaultFilters),
                 filters
             ),
-            include: 'comments'
+            include: 'comments,contacts'
         }, meta);
 
         return this.api.get('tasks', obj).then((data) => {
@@ -139,7 +139,7 @@ class TasksService {
             },
             page: 1,
             per_page: 500,
-            include: 'comments',
+            include: 'comments,contacts',
             order: 'start_at'
         }).then((data) => {
             this.uncompleted = data;
@@ -152,7 +152,7 @@ class TasksService {
                 completed: true,
                 contact_ids: [id]
             },
-            include: 'comments',
+            include: 'comments,contacts',
             page: 1,
             per_page: 500,
             sort: 'completed_at'
