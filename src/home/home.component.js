@@ -3,13 +3,17 @@ class HomeController {
     tasksService;
     users;
     constructor(
-        $log,
+        $log, $q, blockUI,
         contacts, help, tasksService, users
     ) {
         this.$log = $log;
+        this.$q = $q;
+        this.blockUI = blockUI.instances.get('homeMid');
         this.contacts = contacts;
         this.tasksService = tasksService;
         this.users = users;
+
+        this.blockUI.start();
 
         help.suggest([
             '584aced8c697912ffd6bc297',
@@ -25,9 +29,12 @@ class HomeController {
         ]);
     }
     $onInit() {
-        this.contacts.getAnalytics();
-        this.tasksService.getAnalytics();
-        // TODO: connect to above api call
+        this.$q.all([
+            this.contacts.getAnalytics(),
+            this.tasksService.getAnalytics()
+        ]).then(() => {
+            this.blockUI.stop();
+        });
     }
 }
 const Home = {
