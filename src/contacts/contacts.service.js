@@ -84,14 +84,24 @@ class ContactsService {
         }
 
         if (this.contactsTags.selectedTags.length > 0) {
-            filterParams.tags = this.contactsTags.selectedTags;
+            filterParams.tags = _.map(this.contactsTags.selectedTags, tag => tag.name).join(',');
         }
         if (this.contactsTags.rejectedTags.length > 0) {
-            filterParams.exclude_tags = this.contactsTags.rejectedTags;
+            filterParams.exclude_tags = _.map(this.contactsTags.rejectedTags, tag => tag.name).join(',');
         }
         filterParams.any_tags = this.contactsTags.anyTags;
 
-        return this.api.get('contacts', {filters: filterParams, page: this.page, per_page: 25, include: 'people,addresses', sort: 'name'}).then((data) => {
+        return this.api.get({
+            url: 'contacts',
+            data: {
+                filters: filterParams,
+                page: this.page,
+                per_page: 25,
+                include: 'people,addresses',
+                sort: 'name'
+            },
+            overrideGetAsPost: true
+        }).then((data) => {
             this.$log.debug('contacts page ' + data.meta.pagination.page, data);
             let count = this.meta.to || 0;
             if (reset) {
@@ -109,7 +119,7 @@ class ContactsService {
                 if (reset) {
                     newContacts.push(currentContact);
                 } else {
-                    this.data.push(currentContact);
+                    this.data = _.unionBy(this.data, [currentContact], 'id');
                 }
             });
             if (reset) {
