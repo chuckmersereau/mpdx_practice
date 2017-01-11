@@ -26,7 +26,7 @@ class Users {
         });
     }
     getCurrent() {
-        return this.api.get('user').then((response) => {
+        return this.api.get('user', {include: 'email_addresses'}).then((response) => {
             this.current = response;
             this.$log.debug('current user: ', response);
             const locale = _.get(response, 'preferences.locale', 'en');
