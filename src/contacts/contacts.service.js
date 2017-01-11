@@ -6,10 +6,11 @@ class ContactsService {
     contactsTags;
 
     constructor(
-        $location, $log, $rootScope,
+        $location, $log, $q, $rootScope,
         api, cache, contactFilter, contactsTags
     ) {
         this.$log = $log;
+        this.$q = $q;
         this.api = api;
         this.cache = cache;
         this.contactFilter = contactFilter;
