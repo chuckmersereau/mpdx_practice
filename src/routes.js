@@ -175,7 +175,17 @@ export default class Routes {
 /*@ngInject*/
 function auth($state, $stateParams, $window, $location, $http, users, accounts) {
     if (!_.isEmpty($stateParams.access_token)) {
-        $http.post(`${config.apiUrl}user/authentication`, {access_token: $stateParams.access_token}).then((data) => {
+        $http({
+            url: `${config.apiUrl}user/authentication`,
+            method: 'post',
+            headers: {
+                Accept: 'application/vnd.api+json',
+                'Content-Type': 'application/vnd.api+json'
+            },
+            data: {
+                access_token: $stateParams.access_token
+            }
+        }).then((data) => {
             $window.sessionStorage.token = data.data.json_web_token;
             const redirect = angular.copy($window.sessionStorage.redirect || 'home');
             delete $window.sessionStorage.redirect;
