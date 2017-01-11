@@ -18,7 +18,7 @@
                 <span translate>to look up all tasks who do not have that filter.</span>
             </div>
             <ul class="filters">
-                <li class="filter_set" ng-repeat="filter in $ctrl.filterService.data | orderBy: 'priority'" ng-class="{ 'opened': filter.opened }">
+                <li class="filter_set" ng-repeat="filter in $ctrl.tasksFilter.data | orderBy: 'id'" ng-class="{ 'opened': filter.opened }">
                     <label id="filter_{{filter.name}}" class="filter_title" ng-click="filter.opened = !filter.opened">{{filter.title}}</label>
                     <div class="filter_set_inner">
                         <div ng-if="filter.type == 'container'" ng-repeat="child in filter.children | orderBy: 'priority'">
