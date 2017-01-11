@@ -65,6 +65,7 @@ class Api {
         }
         //set jsonapi content type
         headers['Content-Type'] = 'application/vnd.api+json';
+        headers['Accept'] = 'application/vnd.api+json';
 
         const request = {
             method: method,
