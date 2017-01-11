@@ -1,6 +1,6 @@
 <h4 class="title" translate>Anniversaries This Week</h4>
 
-<ul class="plain-list anniversaries-list" ng-if="$ctrl.anniversaries.length">
+<ul class="plain-list anniversaries-list" ng-if="$ctrl.contacts.analytics.anniversaries_this_week.length">
     <li ng-repeat="contact in $ctrl.anniversaries" ui-sref="contact({ contactId: contact.id })">
         {{ contact.people.first().anniversary_month }}-{{ contact.people.first().anniversary_day }}
         <span ng-repeat="person in contact.people">
@@ -11,10 +11,10 @@
     </span>
     </li>
 </ul>
-<a href="#LINKTO_more_anniversaries" ng-if="$ctrl.anniversaries.length > 5" class="see-all see-all-anniversaries">
+<a href="#LINKTO_more_anniversaries" ng-if="$ctrl.contacts.analytics.anniversaries_this_week.length > 5" class="see-all see-all-anniversaries">
     <i class="fa fa-plus-square-o"></i>
-    <translate>See all {{ $ctrl.anniversaries.length }} Anniversaries</translate>
+    <translate>See all {{ $ctrl.contacts.analytics.anniversaries_this_week.length }} Anniversaries</translate>
 </a>
-<span ng-if="$ctrl.anniversaries.length === 0" translate>
+<span ng-if="$ctrl.contacts.analytics.anniversaries_this_week.length === 0" translate>
     No anniversaries this week!
 </span>

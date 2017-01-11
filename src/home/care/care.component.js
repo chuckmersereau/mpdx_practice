@@ -9,7 +9,7 @@ class CareController {
         this.newsletter = null;
     }
     $onInit() {
-        console.error('home/care: analytics to first newsletter');
+        console.error('home/care: analytics to first newsletter (tasks/analytics)');
         // this.tasksService.getAnalytics().then((reponse) => {
         //     this.newsletter = reponse;
         // });
