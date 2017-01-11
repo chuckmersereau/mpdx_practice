@@ -14,7 +14,6 @@ class FilterService {
         this.wildcard_search = '';
         this.default_params = {};
         this.resettable = false;
-        this.lastAccountId = null; //Hack to stop dupe calls on repeat account swap
         this.loading = true;
 
         let query = $location.search().q;
@@ -26,11 +25,8 @@ class FilterService {
             this.resettable = !_.eq(this.params, this.default_params);
         }, true);
 
-        $rootScope.$on('accountListUpdated', (e, accountId) => {
-            if (accountId && this.lastAccountId !== accountId) {
-                this.lastAccountId = accountId;
-                this.load();
-            }
+        $rootScope.$on('accountListUpdated', () => {
+            this.load();
         });
     }
     load() {
