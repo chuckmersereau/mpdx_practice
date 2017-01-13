@@ -22,11 +22,6 @@ class Api {
         this.apiCache = $cacheFactory('api');
         this.account_list_id = null;
         this.entityAttributes = new EntityAttributes().attributes;
-        // add updated_in_db_at to all entities (for server sync)
-        // _.each(this.entityAttributes, entity => entity.attributes.push("updated_in_db_at"));
-
-        // This function supports both callbacks (successFn, errorFn) and returns a promise
-        // It would be preferred to use promises in the future
     }
     call({
         method,
@@ -99,7 +94,6 @@ class Api {
                 if (!_.isString(data) && data.data) {
                     return new japi.Deserializer({keyForAttribute: 'underscore_case'}).deserialize(data).then((data) => {
                         data.meta = meta;
-                        // data = this.addServerUpdateNested(data); //add updated_in_db_at timestamps
                         return data;
                     });
                 } else {
@@ -160,17 +154,6 @@ class Api {
     }
     encodeURLarray(array) {
         return _.map(array, encodeURIComponent);
-    }
-    addServerUpdateNested(obj) {
-        if (_.has(obj, 'updated_at')) {
-            obj.updated_in_db_at = obj.updated_at;
-        }
-        _.each(_.keys(obj), (key) => {
-            if (_.isArray(obj[key])) {
-                this.addServerUpdateNested(obj[key]);
-            }
-        });
-        return obj;
     }
 }
 
@@ -248,11 +231,13 @@ class EntityAttributes {
                 attributes: ["person_id", "number", "country_code", "location", "primary", "created_at", "updated_at", "remote_id", "historic", "updated_in_db_at"]
             },
             tasks: {
-                attributes: ["account_list_id", "starred", "location", "subject", "start_at", "end_at", "type", "created_at", "updated_at", "completed", "activity_comments_count", "activity_type", "result",
-                    "completed_at", "notification_id", "remote_id", "source", "next_action", "no_date", "notification_type", "notification_time_before", "notification_time_unit", "notification_scheduled", "updated_in_db_at"]
+                attributes: ["account_list_id", "starred", "location", "subject", "start_at", "start_at(1i)", "start_at(2i)", "start_at(3i)", "start_at(4i)", "start_at(5i)", "end_at", "type", "created_at", "updated_at", "completed", "activity_comments_count", "activity_comment", "activity_contacts_attributes", "activity_type", "result",
+                    "completed_at", "completed_at(1i)", "completed_at(2i)", "completed_at(3i)", "completed_at(4i)", "completed_at(5i)", "notification_id", "remote_id", "source", "next_action", "no_date", "notification_type", "notification_time_before",
+                    "notification_time_unit", "notification_scheduled", "updated_in_db_at"]
             },
             user: {
-                attributes: ["first_name", "preferences", "setup", "email", "access_token", "time_zone", "locale", "updated_at", "updated_in_db_at"]
+                attributes: ["first_name", "preferences", "setup", "email_addresses", "access_token", "time_zone", "locale", "updated_at", "updated_in_db_at"],
+                email_addresses: () => _.extend({ ref: 'id' }, this.attributes.email_addresses)
             }
         };
     }

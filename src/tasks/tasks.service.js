@@ -119,18 +119,13 @@ class TasksService {
         filters = _.assign(defaultFilters, filters);
 
 
-        return this.api.get('tasks', { filters: filters, include: 'comments', meta: meta }).then((data) => {
+        return this.api.get('tasks/', { filters: filters, include: 'comments', meta: meta }).then((data) => {
             this.$log.debug('tasks page ' + data.meta.pagination.page, data);
-            // if (data.length) {
-            //     this.transformChild(data, 'comments', data.comments);
-            //     this.transformChild(data.comments, 'person_id', data.people, true);
-            // }
-            this.data[collection] = data.tasks;
-            meta.from = data.meta.from;
-            meta.to = data.meta.to;
-            meta.page = data.meta.page;
-            meta.total = data.meta.total;
-            meta.total_pages = data.meta.total_pages;
+            this.data[collection] = data;
+            meta.page = parseInt(data.meta.pagination.page, 10);
+            meta.per_page = parseInt(data.meta.pagination.per_page, 10);
+            meta.total = parseInt(data.meta.pagination.total_count, 10);
+            meta.total_pages = parseInt(data.meta.pagination.total_pages, 10);
             return data;
         });
     }
@@ -142,7 +137,7 @@ class TasksService {
             },
             page: 1,
             per_page: 500,
-            include: 'comments',
+            include: 'comments,contacts',
             order: 'start_at'
         }).then((data) => {
             this.uncompleted = data;
@@ -155,7 +150,7 @@ class TasksService {
                 completed: true,
                 contact_ids: [id]
             },
-            include: 'comments',
+            include: 'comments,contacts',
             page: 1,
             per_page: 500,
             sort: 'completed_at'
@@ -170,37 +165,31 @@ class TasksService {
         });
     }
 
-    transformChild(parentObj, childKey, referredObj, oneToOne) {
-        _.each(parentObj, (parent) => {
-            let newObj;
-            if (oneToOne) {
-                newObj = _.find(referredObj, referredItem => referredItem.id === parent[childKey]);
-            } else {
-                newObj = [];
-                _.each(parent[childKey], (id) => {
-                    newObj.push(_.find(referredObj, referredItem => referredItem.id === id));
-                });
-            }
-            parent[childKey] = newObj;
-        });
+    save(task) {
+        return this.api.put(`tasks/${task.id}`, task);
     }
-    submitNewComment(taskId, newComment) {
-        return this.api.put(`/tasks/${taskId}`, {task: {activity_comments_attributes: [{body: newComment}]}});
+
+    submitNewComment(task, newComment) {
+        return this.api.put(`tasks/${task.id}`, {updated_in_db_at: task.updated_in_db_at, activity_comment: {body: newComment}});
     }
+    // FIXME need review
     deleteTask(taskId) {
         return this.api.delete(`/tasks/${taskId}`, [], () => {
             return true;
         });
     }
     starTask(task) {
-        return this.api.put(`/tasks/${task.id}`, {task: {starred: !task.starred}});
+        return this.api.put(`tasks/${task.id}`, {updated_in_db_at: task.updated_in_db_at, starred: !task.starred});
     }
+    // FIXME need review
     deleteComment(taskId, commentId) {
         return this.api.delete('activity_comments/' + commentId, { activity_id: taskId });
     }
+    // FIXME need review
     bulkDeleteTasks(taskIds) {
         return this.api.delete('tasks/bulk_destroy', { ids: taskIds });
     }
+    // FIXME need review
     bulkCompleteTasks(taskIds) {
         return this.api.post('tasks/bulk_update', {
             bulk_task_update_ids: taskIds.join(),
@@ -210,6 +199,7 @@ class TasksService {
             }
         });
     }
+    // FIXME need review
     bulkEditTasks(taskIds, model) {
         return this.api.post('tasks/bulk_update', {
             bulk_task_update_ids: taskIds.join(),
@@ -223,86 +213,86 @@ class TasksService {
                 'start_at(3i)': model.dueDate ? model.dueDate.getDate() + '' : undefined,
                 'start_at(4i)': model.dueDate ? model.dueDate.getHours() + '' : undefined,
                 'start_at(5i)': model.dueDate ? model.dueDate.getMinutes() + '' : undefined,
-                activity_comments_attributes: [
-                    {
-                        body: model.comment
-                    }
-                ],
+                activity_comment: {body: model.comment},
                 tag_list: model.tagsList ? model.tagsList.map(tag => tag.text).join() : undefined
             }
         });
     }
     postBulkLogTask(ajaxAction, taskId, model, contactIds, toComplete) {
-        const url = 'tasks/' + (taskId || '');
+        let url = 'tasks';
+        if (taskId) {
+            url += '/' + taskId;
+        }
+        let contactsData = [];
+        _.each(contactIds, (contactId) => {
+            contactsData.push({contact_id: contactId});
+        });
+        let taskData = {
+            subject: model.subject,
+            activity_type: model.action,
+            no_date: model.noDate,
+            'start_at(1i)': model.dueDate.getFullYear() + '',
+            'start_at(2i)': (model.dueDate.getMonth() + 1) + '',
+            'start_at(3i)': model.dueDate.getDate() + '',
+            'start_at(4i)': model.dueDate.getHours() + '',
+            'start_at(5i)': model.dueDate.getMinutes() + '',
+            'completed_at(1i)': model.completedAt.getFullYear() + '',
+            'completed_at(2i)': (model.completedAt.getMonth() + 1) + '',
+            'completed_at(3i)': model.completedAt.getDate() + '',
+            'completed_at(4i)': model.completedAt.getHours() + '',
+            'completed_at(5i)': model.completedAt.getMinutes() + '',
+            activity_comment: {body: model.comment},
+            activity_contacts_attributes: contactsData,
+            completed: toComplete || model.result !== null,
+            result: model.result,
+            tag_list: model.tagsList.map(tag => tag.text).join(),
+            updated_in_db_at: model.updated_in_db_at
+        };
+
         return this.api.call({
-            methd: ajaxAction,
+            method: ajaxAction,
             url: url,
-            data: {
-                add_task_contact_ids: contactIds.join(),
-                task: {
-                    subject: model.subject,
-                    activity_type: model.action,
-                    no_date: model.noDate,
-                    'start_at(1i)': model.dueDate.getFullYear() + '',
-                    'start_at(2i)': (model.dueDate.getMonth() + 1) + '',
-                    'start_at(3i)': model.dueDate.getDate() + '',
-                    'start_at(4i)': model.dueDate.getHours() + '',
-                    'start_at(5i)': model.dueDate.getMinutes() + '',
-                    'completed_at(1i)': model.completedAt.getFullYear() + '',
-                    'completed_at(2i)': (model.completedAt.getMonth() + 1) + '',
-                    'completed_at(3i)': model.completedAt.getDate() + '',
-                    'completed_at(4i)': model.completedAt.getHours() + '',
-                    'completed_at(5i)': model.completedAt.getMinutes() + '',
-                    activity_comments_attributes: [
-                        {
-                            body: model.comment
-                        }
-                    ],
-                    completed: toComplete || model.result,
-                    result: model.result,
-                    tag_list: model.tagsList.map(tag => tag.text).join()
-                }
-            }
+            data: taskData
         });
     }
-    postLogTask(taskId, model) {
+    // FIXME need review
+    postLogTask(task, model) {
         let objPayload = {
-            task: {
-                activity_comment: {
-                    body: model.comment
-                },
-                completed: true
-            }
+            updated_in_db_at: task.updated_in_db_at,
+            activity_comment: {body: model.comment},
+            completed: true
         };
         if (model.result) {
-            objPayload.task.result = model.result;
+            objPayload.result = model.result;
         }
         if (model.nextAction) {
-            objPayload.task.nextAction = model.nextAction;
+            objPayload.nextAction = model.nextAction;
         }
 
-        return this.api.put(`tasks/${taskId}`, objPayload);
+        return this.api.put(`tasks/${task.id}`, objPayload);
     }
+    // FIXME need review
     postBulkAddTask(model, contactIds) {
-        return this.api.post('tasks', {
-            add_task_contact_ids: contactIds.join(),
-            task: {
-                subject: model.subject,
-                activity_type: model.action,
-                no_date: model.noDate,
-                'start_at(1i)': model.date.getFullYear() + '',
-                'start_at(2i)': (model.date.getMonth() + 1) + '',
-                'start_at(3i)': model.date.getDate() + '',
-                'start_at(4i)': model.date.getHours() + '',
-                'start_at(5i)': model.date.getMinutes() + '',
-                activity_comments_attributes: [
-                    {
-                        body: model.comment
-                    }
-                ],
-                tag_list: model.tagsList.map(tag => tag.text).join()
-            }
+        let contactsData = [];
+        _.each(contactIds, (contactId) => {
+            contactsData.push({contact_id: contactId});
         });
+
+        let taskData = {
+            subject: model.subject,
+            activity_type: model.action,
+            no_date: model.noDate,
+            'start_at(1i)': model.date.getFullYear() + '',
+            'start_at(2i)': (model.date.getMonth() + 1) + '',
+            'start_at(3i)': model.date.getDate() + '',
+            'start_at(4i)': model.date.getHours() + '',
+            'start_at(5i)': model.date.getMinutes() + '',
+            activity_comment: {body: model.comment},
+            activity_contacts_attributes: contactsData,
+            tag_list: model.tagsList.map(tag => tag.text).join()
+        };
+
+        return this.api.post('tasks', taskData);
     }
     openModal(params) {
         this.modal.open({
@@ -332,6 +322,7 @@ class TasksService {
             onHide: params.onHide || _.noop
         });
     }
+    // FIXME need review
     getAnalytics() {
         if (this.analytics) {
             return this.$q.resolve(this.analytics);

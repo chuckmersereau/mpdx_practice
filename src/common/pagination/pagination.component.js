@@ -17,15 +17,26 @@ class PaginationController {
         if (this.page === 1) { return; }
         this.goto(this.page - 1);
     }
+
+    from() {
+        return Math.ceil((this.page - 1) * this.perPage + 1);
+    }
+
+    to() {
+        if (this.page === this.totalPages) {
+            return this.total;
+        }
+
+        return this.perPage * this.page;
+    }
 }
 
 const Pagination = {
     controller: PaginationController,
     template: require('./pagination.html'),
     bindings: {
-        to: '<',
-        from: '<',
         totalPages: '<',
+        perPage: '<',
         total: '<',
         page: '=',
         onChange: '&'

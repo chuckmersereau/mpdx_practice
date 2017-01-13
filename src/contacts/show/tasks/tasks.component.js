@@ -43,7 +43,7 @@ class ContactTasksController {
             template: require('../completeTask/completeTask.html'),
             controller: 'completeTaskController',
             locals: {
-                taskId: task.id,
+                task: task,
                 contact: this.contact,
                 taskAction: task.activity_type
             },
