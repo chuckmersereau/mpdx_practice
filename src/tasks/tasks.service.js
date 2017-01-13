@@ -19,50 +19,35 @@ class TasksService {
         this.loading = true;
         this.sort = 'all';
         this.data = {};
+
+        this.init();
+    }
+    init() {
         this.pages = {
             contactShow: ['completed', 'uncompleted'],
             tasksList: ['today', 'overdue', 'upcoming', 'tomorrow', 'noDueDate', 'starred', 'allCompleted']
         };
-        let DEFAULT_PER_PAGE = 10;
-        this.meta = {
-            completed: {
+        const DEFAULT_PAGINATION = {
+            pagination: {
                 page: 1,
-                per_page: DEFAULT_PER_PAGE,
-                order: 'no_date DESC, start_at'
-            },
-            uncompleted: {
-                page: 1,
-                per_page: DEFAULT_PER_PAGE,
-                order: 'no_date DESC, start_at'
-            },
-            today: {
-                page: 1,
-                per_page: DEFAULT_PER_PAGE
-            },
-            overdue: {
-                page: 1,
-                per_page: DEFAULT_PER_PAGE
-            },
-            upcoming: {
-                page: 1,
-                per_page: DEFAULT_PER_PAGE
-            },
-            tomorrow: {
-                page: 1,
-                per_page: DEFAULT_PER_PAGE
-            },
-            noDueDate: {
-                page: 1,
-                per_page: DEFAULT_PER_PAGE
-            },
-            starred: {
-                page: 1,
-                per_page: DEFAULT_PER_PAGE
-            },
-            allCompleted: {
-                page: 1,
-                per_page: DEFAULT_PER_PAGE
+                per_page: 10
             }
+        };
+
+        this.meta = {
+            completed: _.assign(DEFAULT_PAGINATION, {
+                order: 'no_date DESC, start_at'
+            }),
+            uncompleted: _.assign(DEFAULT_PAGINATION, {
+                order: 'no_date DESC, start_at'
+            }),
+            today: DEFAULT_PAGINATION,
+            overdue: DEFAULT_PAGINATION,
+            upcoming: DEFAULT_PAGINATION,
+            tomorrow: DEFAULT_PAGINATION,
+            noDueDate: DEFAULT_PAGINATION,
+            starred: DEFAULT_PAGINATION,
+            allCompleted: DEFAULT_PAGINATION
         };
         this.defaultFilters = {
             completed: {
@@ -105,27 +90,29 @@ class TasksService {
             }
         };
     }
-
-    fetchTasks(collection, filters) {
+    fetchTasks(collection) {
         this.data[collection] = [];
-
-        const meta = this.meta[collection];
         const defaultFilters = this.defaultFilters[collection];
-
         const wildcardSearch = this.tasksFilter.wildcard_search;
+        let filters = _.assign(defaultFilters, this.tasksFilter.params);
         if (wildcardSearch) {
             filters.wildcard_search = wildcardSearch;
         }
-        filters = _.assign(defaultFilters, filters);
 
-
-        return this.api.get('tasks/', { filters: filters, include: 'comments', meta: meta }).then((data) => {
-            this.$log.debug('tasks page ' + data.meta.pagination.page, data);
+        return this.api.get({
+            url: 'tasks',
+            data: {
+                filters: filters,
+                include: 'comments',
+                page: this.meta[collection].pagination.page,
+                per_page: this.meta[collection].pagination.per_page,
+                sort: this.meta[collection].pagination.order
+            },
+            overrideGetAsPost: true
+        }).then((data) => {
+            this.$log.debug(`${collection} tasks page ${data.meta.pagination.page}`, data);
             this.data[collection] = data;
-            meta.page = parseInt(data.meta.pagination.page, 10);
-            meta.per_page = parseInt(data.meta.pagination.per_page, 10);
-            meta.total = parseInt(data.meta.pagination.total_count, 10);
-            meta.total_pages = parseInt(data.meta.pagination.total_pages, 10);
+            this.meta[collection] = data.meta;
             return data;
         });
     }
@@ -164,11 +151,9 @@ class TasksService {
             this.fetchTasks(collection, filters);
         });
     }
-
     save(task) {
         return this.api.put(`tasks/${task.id}`, task);
     }
-
     submitNewComment(task, newComment) {
         return this.api.put(`tasks/${task.id}`, {updated_in_db_at: task.updated_in_db_at, activity_comment: {body: newComment}});
     }

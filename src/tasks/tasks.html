@@ -19,7 +19,7 @@
         page="'tasksList'"
         tags="$ctrl.tagsService.selectedTags"
         contact="''"
-        filters="''"
+        filters="$ctrl.filters"
         sortkey="'overdue'"
         ng-show="['all', 'overdue'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
     <tasks-list
@@ -29,7 +29,7 @@
         page="'tasksList'"
         tags="$ctrl.tagsService.selectedTags"
         contact="''"
-        filters="''"
+        filters="$ctrl.filters"
         sortkey="'today'"
         ng-show="['all', 'today'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
     <tasks-list
@@ -39,7 +39,8 @@
         page="'tasksList'"
         tags="$ctrl.tagsService.selectedTags"
         contact="''"
-        filters="''"
+        filters="$ctrl.filters"
+        filterChanged="$ctrl.filterChanged"
         sortkey="'starred'"
         ng-show="['all', 'starred'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
     <tasks-list
@@ -49,7 +50,7 @@
         page="'tasksList'"
         tags="$ctrl.tagsService.selectedTags"
         contact="''"
-        filters="''"
+        filters="$ctrl.filters"
         sortkey="'upcoming'"
         ng-show="['all', 'upcoming'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
     <tasks-list
@@ -59,7 +60,7 @@
         page="'tasksList'"
         tags="$ctrl.tagsService.selectedTags"
         contact="''"
-        filters="''"
+        filters="$ctrl.filters"
         sortkey="'upcoming'"
         ng-show="['all', 'upcoming'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
     <tasks-list
@@ -69,7 +70,7 @@
         page="'tasksList'"
         tags="$ctrl.tagsService.selectedTags"
         contact="''"
-        filters="''"
+        filters="$ctrl.filters"
         sortkey="'noDate'"
         ng-show="['all', 'noDate'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
     <tasks-list
@@ -79,7 +80,7 @@
         page="'tasksList'"
         tags="$ctrl.tagsService.selectedTags"
         contact="''"
-        filters="''"
+        filters="$ctrl.filters"
         sortkey="'history'"
         ng-show="['all', 'history'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
   </div>

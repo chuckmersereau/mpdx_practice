@@ -6,6 +6,7 @@ class TasksFilterService {
     ) {
         this.$location = $location;
         this.$log = $log;
+        this.$rootScope = $rootScope;
         this.api = api;
 
         this.data = [];
@@ -18,10 +19,6 @@ class TasksFilterService {
         if (query) {
             this.wildcard_search = query;
         }
-
-        $rootScope.$watch(() => this.params, () => {
-            this.resettable = !_.eq(this.params, this.default_params);
-        }, true);
 
         $rootScope.$on('accountListUpdated', () => {
             this.load();
@@ -59,7 +56,7 @@ class TasksFilterService {
     mergeParamsFromLocation() {
         _.each(this.$location.search(), (value, param) => {
             if (param.indexOf('filters[') === 0) {
-                var filter = param.slice(param.indexOf('[') + 1, param.indexOf(']'));
+                const filter = param.slice(param.indexOf('[') + 1, param.indexOf(']'));
                 if (this.default_params[filter] instanceof Array && !(value instanceof Array)) {
                     this.params[filter] = value.split();
                 } else {
@@ -68,19 +65,15 @@ class TasksFilterService {
             }
         });
     }
-    count() {
-        let count = 0;
-        for (var key in this.params) {
-            if (this.params.hasOwnProperty(key)) {
-                if (!_.isEqual(this.params[key], this.default_params[key])) {
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
+    // count() {
+    //     return _.filter(_.keys(this.params), key => !_.isEqual(this.params[key], this.default_params[key])).length;
+    // }
     reset() {
         this.params = _.clone(this.default_params);
+        this.change(this.params);
+    }
+    change(params) {
+        this.$rootScope.$emit('taskFilterChange', params);
     }
     isResettable() {
         return !_.eq(this.params, this.default_params);
