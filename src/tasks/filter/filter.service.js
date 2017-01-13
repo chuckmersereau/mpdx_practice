@@ -32,6 +32,8 @@ class TasksFilterService {
         this.loading = true;
         return this.api.get('tasks/filters').then((data) => {
             this.data = data.filters;
+            // TODO fix this
+            this.data = [];
             this.data = this.data.sort((a, b) => {
                 return (a.priority > b.priority) ? 1 : ((b.priority > a.priority) ? -1 : 0);
             });

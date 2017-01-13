@@ -22,6 +22,33 @@ class ServerConstantsService {
         };
 
         this.fetchPromises = {};
+
+        // FIXME temporary hack. remove when the endpoint '/constants' is working.
+        this.data['actions'] = ['Call', 'Appointment', 'Email', 'Text Message', 'Facebook Message', 'Letter', 'Newsletter', 'Pre Call Letter', 'Reminder Letter', 'Support Letter', 'Thank', 'To Do', 'Talk to In Person', 'Prayer Request'];
+        let options = {};
+        options['Call'] = ['Call Again', 'Email', 'Text', 'Message', 'Talk to In Person', 'Cultivate Relationship', 'Appointment Scheduled', 'Partner - Financial', 'Partner - Special', 'Partner - Pray', 'Ask in Future', 'Not Interested', 'None', 'Prayer Request', 'Thank'];
+        options['Appointment'] = ['Call for Decision', 'Call', 'Email', 'Text', 'Message', 'Talk to In Person', 'Cultivate Relationship', 'Partner - Financial', 'Partner - Special', 'Partner - Pray', 'Ask in Future', 'Not Interested', 'Reschedule', 'None', 'Prayer Request', 'Thank'];
+        options['Email'] = ['Email Again', 'Call', 'Text', 'Message', 'Talk to In Person', 'Cultivate Relationship', 'Appointment Scheduled', 'Partner - Financial', 'Partner - Special', 'Partner - Pray', 'Ask in Future', 'Not Interested', 'None', 'Prayer Request', 'Thank'];
+        options['Facebook Message'] = ['Message Again', 'Call', 'Email', 'Text', 'Talk to In Person', 'Cultivate Relationship', 'Appointment Scheduled', 'Partner - Financial', 'Partner - Special', 'Partner - Pray', 'Ask in Future', 'Not Interested', 'None', 'Prayer Request', 'Thank'];
+        options['Text Message'] = ['Text Again', 'Call', 'Email', 'Message', 'Talk to In Person', 'Cultivate Relationship', 'Appointment Scheduled', 'Partner - Financial', 'Partner - Special', 'Partner - Pray', 'Ask in Future', 'Not Interested', 'None', 'Prayer Request', 'Thank'];
+        options['Talk to In Person'] = ['Talk to In Person Again', 'Call', 'Email', 'Message', 'Text', 'Cultivate Relationship', 'Appointment Scheduled', 'Partner - Financial', 'Partner - Special', 'Partner - Pray', 'Ask in Future', 'Not Interested', 'None', 'Prayer Request', 'Thank'];
+        options['Prayer Request'] = ['Prayer Request', 'Call', 'Email', 'Message', 'Text', 'Talk to In Person', 'Cultivate Relationship', 'Appointment Scheduled', 'Partner - Financial', 'Partner - Special', 'Partner - Pray', 'Ask in Future', 'Not Interested', 'None', 'Thank'];
+        options['Pre Call Letter'] = ['Call to Follow Up', 'Email', 'Text', 'Message', 'Talk to In Person', 'None'];
+        options['Reminder Letter'] = ['Call to Follow Up', 'Email', 'Text', 'Message', 'Talk to In Person', 'None'];
+        options['Support Letter'] = ['Call to Follow Up', 'Email', 'Text', 'Message', 'Talk to In Person', 'None'];
+        options['default'] = ['None'];
+        this.data['next_actions'] = options;
+        options = {};
+        options['Call'] = ['Attempted - Left Message', 'Attempted', 'Completed', 'Received'];
+        options['Appointment'] = ['Completed', 'Attempted'];
+        options['Email'] = ['Completed', 'Received'];
+        options['Facebook Message'] = ['Completed', 'Received'];
+        options['Text Message'] = ['Completed', 'Received'];
+        options['Talk to In Person'] = ['Completed'];
+        options['Prayer Request'] = ['Completed'];
+        options['default'] = ['Done'];
+        this.data['results'] = options;
+        // FIXME END
     }
     //tasks/next_actions   tasks/actions   tasks/results
     fetchConstant(constantName, url) {
