@@ -65,9 +65,9 @@ class TasksFilterService {
             }
         });
     }
-    // count() {
-    //     return _.filter(_.keys(this.params), key => !_.isEqual(this.params[key], this.default_params[key])).length;
-    // }
+    count() {
+        return _.filter(_.keys(this.params), key => !_.isEqual(this.params[key], this.default_params[key])).length;
+    }
     reset() {
         this.params = _.clone(this.default_params);
         this.change(this.params);

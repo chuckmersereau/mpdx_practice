@@ -69,15 +69,7 @@ class FilterService {
         });
     }
     count() {
-        let count = 0;
-        for (var key in this.params) {
-            if (this.params.hasOwnProperty(key)) {
-                if (!_.isEqual(this.params[key], this.default_params[key])) {
-                    count++;
-                }
-            }
-        }
-        return count;
+        return _.filter(_.keys(this.params), key => !_.isEqual(this.params[key], this.default_params[key])).length;
     }
     reset() {
         this.params = _.clone(this.default_params);
