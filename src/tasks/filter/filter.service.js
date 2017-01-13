@@ -1,7 +1,11 @@
 class TasksFilterService {
     api;
-    constructor($rootScope, api, $location) {
+    constructor(
+        $location, $log, $rootScope,
+        api
+    ) {
         this.$location = $location;
+        this.$log = $log;
         this.api = api;
 
         this.data = [];
@@ -15,21 +19,21 @@ class TasksFilterService {
             this.wildcard_search = query;
         }
 
-        $rootScope.$watch(() => api.account_list_id, (newVal, oldVal) => {
-            if (oldVal && newVal) {
-                this.load();
-            }
+        $rootScope.$watch(() => this.params, () => {
+            this.resettable = !_.eq(this.params, this.default_params);
+        }, true);
+
+        $rootScope.$on('accountListUpdated', () => {
+            this.load();
         });
 
         this.load();
     }
     load() {
-        this.loading = true;
         return this.api.get('tasks/filters').then((data) => {
-            this.data = data.filters;
-            this.data = this.data.sort((a, b) => {
-                return (a.priority > b.priority) ? 1 : ((b.priority > a.priority) ? -1 : 0);
-            });
+            this.data = data;
+            this.data = _.sortBy(this.data, ['id']);
+            this.$log.debug('tasks/filters', this.data);
             let params = {};
             _.each(this.data, (obj) => {
                 if (obj.multiple === true && !_.isArray(obj.default_selection)) {
@@ -50,7 +54,6 @@ class TasksFilterService {
             this.default_params = _.clone(params);
             this.params = params;
             this.mergeParamsFromLocation();
-            this.loading = false;
         });
     }
     mergeParamsFromLocation() {
@@ -84,4 +87,4 @@ class TasksFilterService {
     }
 }
 export default angular.module('mpdx.tasks.filter.service', [])
-    .service('tasksFilterService', TasksFilterService).name;
+    .service('tasksFilter', TasksFilterService).name;

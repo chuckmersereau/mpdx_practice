@@ -1,15 +1,15 @@
 class FilterController {
     tasksService;
-    filterService;
-    tasksTagsService;
+    tasksFilter;
+    tasksTags;
     modal;
 
-    constructor($stateParams, tasksFilterService, tasksTagsService, tasksService, modal, gettextCatalog) {
+    constructor($stateParams, tasksFilter, tasksTags, tasksService, modal, gettextCatalog) {
         this.modal = modal;
         this.tasksService = tasksService;
-        this.filterService = tasksFilterService;
+        this.tasksFilter = tasksFilter;
         this.gettextCatalog = gettextCatalog;
-        this.tasksTagsService = tasksTagsService;
+        this.tasksTags = tasksTags;
 
         this.dateRangeLocale = {
             applyLabel: this.gettextCatalog.getString('Filter'),
@@ -17,25 +17,25 @@ class FilterController {
         };
 
         if (angular.isObject($stateParams.filters)) {
-            _.extend(this.filterService.params, $stateParams.filters);
+            _.extend(this.tasksFilter.params, $stateParams.filters);
         }
     }
     resetFiltersAndTags() {
-        if (this.tasksTagsService.isResettable()) {
-            this.tasksTagsService.reset();
+        if (this.tasksTags.isResettable()) {
+            this.tasksTags.reset();
         }
-        if (this.filterService.isResettable()) {
-            this.filterService.reset();
+        if (this.tasksFilter.isResettable()) {
+            this.tasksFilter.reset();
         }
     }
     showReset() {
-        return this.tasksTagsService.isResettable() || this.filterService.isResettable();
+        return this.tasksTags.isResettable() || this.tasksFilter.isResettable();
     }
 
     // Invert the selected options of a multiselect filter
     invertMultiselect(filter) {
         var allOptions = _.map(filter.options, option => option.id);
-        var selectedOptions = this.filterService.params[filter.name];
+        var selectedOptions = this.tasksFilter.params[filter.name];
 
         var allOption = '';
         if (filter.name === 'status') {
@@ -44,12 +44,12 @@ class FilterController {
 
         // If all options are selected other than 'All', then the inverse is 'All'
         if (_.isEqual(_.difference(allOptions, selectedOptions), [allOption])) {
-            this.filterService.params[filter.name] = [''];
+            this.tasksFilter.params[filter.name] = [''];
             return;
         }
 
         selectedOptions.push(allOption); // Exclude the 'All' option when inverting
-        this.filterService.params[filter.name] = _.difference(allOptions, selectedOptions);
+        this.tasksFilter.params[filter.name] = _.difference(allOptions, selectedOptions);
     }
 }
 

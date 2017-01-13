@@ -20,7 +20,6 @@ class ContactsService {
         this.analytics = null;
         this.data = [];
         this.meta = {};
-        this.lastAccountId = null; //Hack to stop dupe calls on repeat account swap
         this.loading = true;
 
         this.page = 1;
@@ -43,12 +42,8 @@ class ContactsService {
             }
         });
 
-        $rootScope.$on('accountListUpdated', (e, accountId) => {
-            if (accountId && this.lastAccountId !== accountId) {
-                $log.debug('contacts service: current account switched:', accountId);
-                this.lastAccountId = accountId;
-                this.load(true);
-            }
+        $rootScope.$on('accountListUpdated', () => {
+            this.load(true);
         });
 
         $rootScope.$watch(() => {
