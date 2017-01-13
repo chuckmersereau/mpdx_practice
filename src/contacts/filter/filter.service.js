@@ -10,17 +10,12 @@ class FilterService {
         this.params = {};
         this.wildcard_search = '';
         this.default_params = {};
-        this.resettable = false;
         this.loading = true;
 
         let query = $location.search().q;
         if (query) {
             this.wildcard_search = query;
         }
-
-        $rootScope.$watch(() => this.params, () => {
-            this.resettable = !angular.equals(this.params, this.default_params);
-        }, true);
 
         $rootScope.$on('accountListUpdated', () => {
             this.load();
@@ -86,6 +81,9 @@ class FilterService {
     }
     change(params) {
         this.$rootScope.$emit('contactParamChange', params);
+    }
+    isResettable() {
+        return !_.eq(this.params, this.default_params);
     }
 }
 export default angular.module('mpdx.services.filter', [])
