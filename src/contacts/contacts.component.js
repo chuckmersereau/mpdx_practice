@@ -23,6 +23,7 @@ class ContactsController {
     $onInit() {
         if (this.$stateParams.filter) {
             _.assign(this.contactFilter.params, this.contactFilter.params, this.$stateParams.filter);
+            this.contactFilter.change(this.contactFilter.params);
         }
     }
 }

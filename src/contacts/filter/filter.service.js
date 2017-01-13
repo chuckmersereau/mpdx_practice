@@ -3,6 +3,7 @@ class FilterService {
 
     constructor($rootScope, api, $location) {
         this.$location = $location;
+        this.$rootScope = $rootScope;
         this.api = api;
 
         this.data = [];
@@ -81,6 +82,10 @@ class FilterService {
     }
     reset() {
         this.params = _.clone(this.default_params);
+        this.change(this.params);
+    }
+    change(params) {
+        this.$rootScope.$emit('contactParamChange', params);
     }
 }
 export default angular.module('mpdx.services.filter', [])
