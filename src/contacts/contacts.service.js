@@ -6,10 +6,11 @@ class ContactsService {
     contactsTags;
 
     constructor(
-        $location, $log, $rootScope,
+        $location, $log, $q, $rootScope,
         api, cache, contactFilter, contactsTags
     ) {
         this.$log = $log;
+        this.$q = $q;
         this.api = api;
         this.cache = cache;
         this.contactFilter = contactFilter;
@@ -18,7 +19,6 @@ class ContactsService {
         this.analytics = null;
         this.data = [];
         this.meta = {};
-        this.lastAccountId = null; //Hack to stop dupe calls on repeat account swap
         this.loading = true;
 
         this.page = 1;
@@ -43,12 +43,8 @@ class ContactsService {
             }
         });
 
-        $rootScope.$on('accountListUpdated', (e, accountId) => {
-            if (accountId && this.lastAccountId !== accountId) {
-                $log.debug('contacts service: current account switched:', accountId);
-                this.lastAccountId = accountId;
-                this.load(true);
-            }
+        $rootScope.$on('accountListUpdated', () => {
+            this.load(true);
         });
 
         $rootScope.$watch(() => {
@@ -83,14 +79,24 @@ class ContactsService {
         }
 
         if (this.contactsTags.selectedTags.length > 0) {
-            filterParams.tags = this.contactsTags.selectedTags;
+            filterParams.tags = _.map(this.contactsTags.selectedTags, tag => tag.name).join(',');
         }
         if (this.contactsTags.rejectedTags.length > 0) {
-            filterParams.exclude_tags = this.contactsTags.rejectedTags;
+            filterParams.exclude_tags = _.map(this.contactsTags.rejectedTags, tag => tag.name).join(',');
         }
         filterParams.any_tags = this.contactsTags.anyTags;
 
-        return this.api.get('contacts', {filters: filterParams, page: this.page, per_page: 25, include: 'people,addresses', sort: 'name'}).then((data) => {
+        return this.api.get({
+            url: 'contacts',
+            data: {
+                filters: filterParams,
+                page: this.page,
+                per_page: 25,
+                include: 'people,addresses',
+                sort: 'name'
+            },
+            overrideGetAsPost: true
+        }).then((data) => {
             this.$log.debug('contacts page ' + data.meta.pagination.page, data);
             let count = this.meta.to || 0;
             if (reset) {
@@ -108,7 +114,7 @@ class ContactsService {
                 if (reset) {
                     newContacts.push(currentContact);
                 } else {
-                    this.data.push(currentContact);
+                    this.data = _.unionBy(this.data, [currentContact], 'id');
                 }
             });
             if (reset) {

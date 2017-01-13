@@ -3,10 +3,11 @@ class AccountsService {
     donations;
 
     constructor(
-        $rootScope, $log,
+        $rootScope, $log, $q,
         api
     ) {
         this.$log = $log;
+        this.$q = $q;
         this.$rootScope = $rootScope;
         this.api = api;
 
@@ -23,8 +24,8 @@ class AccountsService {
         });
     }
     swap(id) {
-        if (id === _.get(this.current, 'id')) {
-            return;
+        if (id == null || id === _.get(this.current, 'id')) {
+            return this.$q.reject();
         }
         return this.api.get(`account_lists/${id}`).then((resp) => {
             this.current = resp;

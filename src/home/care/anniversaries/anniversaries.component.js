@@ -6,21 +6,8 @@ class anniversariesController {
         contacts
     ) {
         this.contacts = contacts;
+    }
 
-        this.anniversaries = [];
-    }
-    $onInit() {
-        this.getAnniversaries();
-    }
-    $onChanges() {
-        this.getAnniversaries();
-    }
-    getAnniversaries() {
-        console.error('common/anniversaries: analytics TBD');
-        //this.contacts.getAnalytics().then(() => {
-            //TODO: Connect this.anniversaries to V2 endpoint
-        //});
-    }
 }
 
 const anniversariesComponent = {

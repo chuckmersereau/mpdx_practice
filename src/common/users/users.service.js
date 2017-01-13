@@ -26,17 +26,16 @@ class Users {
         });
     }
     getCurrent() {
-        return this.api.get('user').then((response) => {
+        return this.api.get('user', {include: 'email_addresses'}).then((response) => {
             this.current = response;
             this.$log.debug('current user: ', response);
             const locale = _.get(response, 'preferences.locale', 'en');
             this.changeLocale(locale);
             const defaultAccountListId = _.get(response, 'preferences.default_account_list').toString();
-            this.api.account_list_id = defaultAccountListId;
-            this.$rootScope.$emit('accountListUpdated', defaultAccountListId);
-            this.accounts.swap(defaultAccountListId);
-            this.help.updateUser(this.current);
-            return this.accounts.load(); // force load accounts in resolve
+            this.accounts.swap(defaultAccountListId).then(() => {
+                this.help.updateUser(this.current);
+                return this.accounts.load(); // force load accounts in resolve
+            });
         }).catch((err) => {
             this.$log.debug(err);
         });

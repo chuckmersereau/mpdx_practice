@@ -253,7 +253,8 @@ class EntityAttributes {
                     "notification_time_unit", "notification_scheduled", "updated_in_db_at"]
             },
             user: {
-                attributes: ["first_name", "preferences", "setup", "email", "access_token", "time_zone", "locale", "updated_at", "updated_in_db_at"]
+                attributes: ["first_name", "preferences", "setup", "email_addresses", "access_token", "time_zone", "locale", "updated_at", "updated_in_db_at"],
+                email_addresses: () => _.extend({ ref: 'id' }, this.attributes.email_addresses)
             }
         };
     }

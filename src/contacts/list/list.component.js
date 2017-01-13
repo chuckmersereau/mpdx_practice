@@ -44,7 +44,7 @@ class ListController {
     }
     openAddTagModal() {
         this.modal.open({
-            template: require('../../common/tags/add/add.html'),
+            template: require('../tags/add/add.html'),
             controller: 'addTagController',
             locals: {
                 selectedContacts: this.contacts.getSelectedContactIds()
@@ -53,7 +53,7 @@ class ListController {
     }
     openRemoveTagModal() {
         this.modal.open({
-            template: require('../../common/tags/remove/remove.html'),
+            template: require('../tags/remove/remove.html'),
             controller: 'removeTagController',
             locals: {
                 selectedContacts: this.contacts.getSelectedContactIds()
