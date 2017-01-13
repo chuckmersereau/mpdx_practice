@@ -22,11 +22,6 @@ class Api {
         this.apiCache = $cacheFactory('api');
         this.account_list_id = null;
         this.entityAttributes = new EntityAttributes().attributes;
-        // add updated_in_db_at to all entities (for server sync)
-        // _.each(this.entityAttributes, entity => entity.attributes.push("updated_in_db_at"));
-
-        // This function supports both callbacks (successFn, errorFn) and returns a promise
-        // It would be preferred to use promises in the future
     }
     call({
         method,
@@ -98,7 +93,6 @@ class Api {
                 const meta = data.meta || {};
                 if (!_.isString(data) && data.data) {
                     return new japi.Deserializer({keyForAttribute: 'underscore_case'}).deserialize(data).then((data) => {
-                        data = this.addServerUpdateNested(data); //add updated_in_db_at timestamps
                         data.meta = meta;
                         return data;
                     });
@@ -160,17 +154,6 @@ class Api {
     }
     encodeURLarray(array) {
         return _.map(array, encodeURIComponent);
-    }
-    addServerUpdateNested(obj) {
-        if (_.has(obj, 'updated_at')) {
-            obj.updated_in_db_at = obj.updated_at;
-        }
-        _.each(_.keys(obj), (key) => {
-            if (_.isArray(obj[key])) {
-                this.addServerUpdateNested(obj[key]);
-            }
-        });
-        return obj;
     }
 }
 
