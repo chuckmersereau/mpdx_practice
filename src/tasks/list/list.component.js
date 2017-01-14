@@ -1,7 +1,6 @@
 import moment from 'moment';
 
 class ListController {
-    contact;
     modal;
     moment;
     tasksService;
@@ -115,13 +114,12 @@ const Tasks = {
     controller: ListController,
     template: require('./list.html'),
     bindings: {
-        contact: '<',
-        filters: '<',
+        changed: '<',
         tags: '<',
-        key: '<',
-        title: '<',
-        color: '<',
-        sortkey: '<',
+        key: '@',
+        title: '@',
+        color: '@',
+        sortKey: '@',
         parentComponent: '<'
     }
 };

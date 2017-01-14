@@ -42,7 +42,7 @@
                                 </label>
                             </div>
                             <label ng-if="child.type == 'single_checkbox'">
-                                <input name="{{child.name}}" type="checkbox" ng-model="$ctrl.contactFilter.params[child.name]" ng-change="$ctrl.contactFilter.change($ctrl.contactFilter.params)"> {{child.title}}
+                                <input name="{{child.name}}" type="checkbox" ng-model="$ctrl.contactFilter.params[child.name]" ng-checked="$ctrl.contactFilter.change($ctrl.contactFilter.params)"> {{child.title}}
                             </label>
                             <div class="filter_dates" ng-if="child.type == 'dates'">
                                 <label ng-repeat="option in child.options">
@@ -86,7 +86,7 @@
                             </label>
                         </div>
                         <label ng-if="filter.type == 'single_checkbox'">
-                            <input name="{{filter.name}}" type="checkbox" ng-model="$ctrl.contactFilter.params[filter.name]" ng-change="$ctrl.contactFilter.change($ctrl.contactFilter.params)"> {{filter.title}}
+                            <input name="{{filter.name}}" type="checkbox" ng-model="$ctrl.contactFilter.params[filter.name]" ng-checked="$ctrl.contactFilter.change($ctrl.contactFilter.params)"> {{filter.title}}
                         </label>
                         <div class="filter_dates" ng-if="filter.type == 'dates'">
                             <label ng-repeat="option in filter.options">

@@ -128,9 +128,11 @@ class ContactsService {
             count += data.length;
             this.meta.to = count;
             this.loading = false;
-            this.$timeout(() => {
-                this.loadMoreContacts();
-            }, 1000);
+
+            //uncomment to add lazy contact loading
+            // this.$timeout(() => {
+            //     this.loadMoreContacts();
+            // }, 1000);
         });
     }
     save(contact) {

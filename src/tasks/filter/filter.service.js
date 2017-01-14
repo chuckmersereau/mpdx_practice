@@ -33,7 +33,7 @@ class TasksFilterService {
             this.$log.debug('tasks/filters', this.data);
             let params = {};
             _.each(this.data, (obj) => {
-                if (obj.multiple === true && !_.isArray(obj.default_selection)) {
+                if (obj.multiple && !_.isArray(obj.default_selection)) {
                     params[obj.name] = [obj.default_selection];
                 } else {
                     params[obj.name] = obj.default_selection;
@@ -45,7 +45,7 @@ class TasksFilterService {
                         this.data.push(parentObj);
                     }
                     parentObj.children.push(obj);
-                    this.data = _.reject(this.data, (comparator) => angular.equals(obj, comparator));
+                    this.data = _.reject(this.data, comparator => _.eq(obj, comparator));
                 }
             });
             this.default_params = _.clone(params);

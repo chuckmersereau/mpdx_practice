@@ -6,11 +6,11 @@ class TasksController {
     ) {
         this.tasksService = tasksService;
 
-        this.filters = tasksService.default_params;
+        this.changed = 0;
 
         $rootScope.$on('taskFilterChange', (event, filters) => {
-            $log.debug('tasks service: filter change', filters);
-            this.filters = filters;
+            $log.debug('tasks component: filter change', filters);
+            this.changed++;
         });
     }
 }
