@@ -2,7 +2,7 @@ class TasksService {
     api;
     modal;
     tasksFilter;
-    tagsService;
+    tasksTags;
 
     constructor(
         $log,
@@ -12,7 +12,7 @@ class TasksService {
         this.modal = modal;
         this.api = api;
         this.tasksFilter = tasksFilter;
-        this.tagsService = tasksTags;
+        this.tasksTags = tasksTags;
 
         this.analytics = null;
         this.data = {};
@@ -98,6 +98,13 @@ class TasksService {
         if (wildcardSearch) {
             filters.wildcard_search = wildcardSearch;
         }
+        if (this.tasksTags.selectedTags.length > 0) {
+            filters.tags = _.map(this.tasksTags.selectedTags, tag => tag.name).join(',');
+        }
+        if (this.tasksTags.rejectedTags.length > 0) {
+            filters.exclude_tags = _.map(this.tasksTags.rejectedTags, tag => tag.name).join(',');
+        }
+        filters.any_tags = this.tasksTags.anyTags;
 
         return this.api.get({
             url: 'tasks',

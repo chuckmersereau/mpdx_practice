@@ -1,22 +1,27 @@
 class TagsService {
+    api;
+
     constructor(
         $filter, $log, $rootScope,
         api
     ) {
         this.$filter = $filter;
         this.$log = $log;
+        this.$rootScope = $rootScope;
         this.api = api;
 
-        this.data = null;
+        this.data = [];
         this.selectedTags = [];
         this.rejectedTags = [];
         this.anyTags = false;
 
-        this.load();
-
-        $rootScope.$on('accountListUpdated', () => {
-            this.load();
+        $rootScope.$on('accountListUpdated', (e, accountListId) => {
+            if (accountListId) {
+                this.load();
+            }
         });
+
+        this.load();
     }
     load() {
         return this.api.get('tasks/tags').then((data) => {
@@ -26,53 +31,48 @@ class TagsService {
         });
     }
     delete(tagName) {
-        const obj = {
-            tags: [{
-                all_tasks: true,
-                name: tagName
-            }]
-        };
-        return this.api.delete('tasks', obj).then(() => {
+        return this.api.delete('tasks', { tags: [{ all_tasks: true, name: tagName }] }).then(() => {
             this.selectedTags = _.without(tagName);
             this.rejectedTags = _.without(tagName);
             this.data.splice(this.data.indexOf(tagName), 1);
         });
     }
     tag(contextIds, tag) {
-        const obj = {
+        return this.api.post('tasks/bulk_create', {
             add_tag_task_ids: contextIds.join(),
             add_tag_name: tag
-        };
-        return this.api.post('tasks/bulk_create', obj);
+        });
     }
     untag(contextIds, tag) {
-        const obj = {
+        return this.api.delete('tasks', {
             tags: [{
-                task_ids: contextIds.join(),
-                name: tag
+                name: tag,
+                task_ids: contextIds.join()
             }]
-        };
-        return this.api.delete('tasks', obj);
+        });
     }
     isTagActive(tag) {
         if (this.selectedTags.length === 0) {
             return true;
         } else {
-            return this.selectedTags.indexOf(tag) >= 0;
+            return _.includes(this.selectedTags, tag);
         }
     }
     isTagRejected(tag) {
         return this.rejectedTags.indexOf(tag) >= 0;
     }
     tagClick(tag) {
-        if (this.selectedTags.indexOf(tag) >= 0) {
-            this.selectedTags = _.without(this.selectedTags, tag);
-            this.rejectedTags = _.concat(this.rejectedTags, tag);
-        } else if (this.rejectedTags.indexOf(tag) >= 0) {
-            this.rejectedTags = _.without(this.rejectedTags, tag);
+        const selectedIndex = this.selectedTags.indexOf(tag);
+        const rejectedIndex = this.rejectedTags.indexOf(tag);
+        if (selectedIndex >= 0) {
+            this.selectedTags.splice(selectedIndex, 1);
+            this.rejectedTags.push(tag);
+        } else if (rejectedIndex >= 0) {
+            this.rejectedTags.splice(rejectedIndex, 1);
         } else {
-            this.selectedTags = _.concat(this.selectedTags, tag);
+            this.selectedTags.push(tag);
         }
+        this.$rootScope.$emit('tasksTagsChanged');
     }
     isResettable() {
         return (this.selectedTags.length > 0 || this.rejectedTags.length > 0);

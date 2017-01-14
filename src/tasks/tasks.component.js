@@ -12,6 +12,11 @@ class TasksController {
             $log.debug('tasks component: filter change', filters);
             this.changed++;
         });
+
+        $rootScope.$on('tasksTagsChanged', (event, filters) => {
+            $log.debug('tasks component: tag change', filters);
+            this.changed++;
+        });
     }
 }
 

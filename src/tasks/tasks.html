@@ -17,7 +17,7 @@
         title="Overdue"
         color="#f9b625"
         parent-component="'tasksList'"
-        tags="$ctrl.tagsService.selectedTags"
+        tags="$ctrl.tasksTags.selectedTags"
         changed="$ctrl.changed"
         sort-key="overdue"
         ng-if="['all', 'overdue'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
@@ -26,7 +26,7 @@
         title="Today"
         color="#f6921e"
         parent-component="'tasksList'"
-        tags="$ctrl.tagsService.selectedTags"
+        tags="$ctrl.tasksTags.selectedTags"
         changed="$ctrl.changed"
         sort-key="today"
         ng-if="['all', 'today'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
@@ -35,7 +35,7 @@
         title="Starred"
         color="#56aa00"
         parent-component="'tasksList'"
-        tags="$ctrl.tagsService.selectedTags"
+        tags="$ctrl.tasksTags.selectedTags"
         changed="$ctrl.changed"
         filterChanged="$ctrl.filterChanged"
         sort-key="starred"
@@ -45,7 +45,7 @@
         title="Tomorrow"
         color="#007398"
         parent-component="'tasksList'"
-        tags="$ctrl.tagsService.selectedTags"
+        tags="$ctrl.tasksTags.selectedTags"
         changed="$ctrl.changed"
         sort-key="upcoming"
         ng-if="['all', 'upcoming'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
@@ -54,7 +54,7 @@
         title="Upcoming"
         color="#007398"
         parent-component="'tasksList'"
-        tags="$ctrl.tagsService.selectedTags"
+        tags="$ctrl.tasksTags.selectedTags"
         changed="$ctrl.changed"
         sort-key="upcoming"
         ng-if="['all', 'upcoming'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
@@ -63,7 +63,7 @@
         title="No Date"
         color="#3eb1c8"
         pageparent-component="'tasksList'"
-        tags="$ctrl.tagsService.selectedTags"
+        tags="$ctrl.tasksTags.selectedTags"
         changed="$ctrl.changed"
         sort-key="noDate"
         ng-if="['all', 'noDate'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
@@ -72,7 +72,7 @@
         title="History"
         color="#999999"
         parent-component="'tasksList'"
-        tags="$ctrl.tagsService.selectedTags"
+        tags="$ctrl.tasksTags.selectedTags"
         changed="$ctrl.changed"
         sort-key="history"
         ng-if="['all', 'history'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>

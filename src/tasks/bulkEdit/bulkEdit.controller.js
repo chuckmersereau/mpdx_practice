@@ -3,7 +3,7 @@ class EditTaskController {
     contacts;
     serverConstants;
     tagsService;
-    tasksService;
+    tasksTags;
 
     constructor(
         $scope,
@@ -12,7 +12,7 @@ class EditTaskController {
     ) {
         this.$scope = $scope;
         this.serverConstants = serverConstants;
-        this.tagsService = tasksTags;
+        this.tasksTags = tasksTags;
         this.tasksService = tasksService;
         this.taskIds = taskIds;
         this.modalCallback = modalCallback;
