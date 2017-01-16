@@ -1,13 +1,15 @@
 class HomeController {
+    accounts;
     contacts;
     tasksService;
     users;
     constructor(
         $log, $q, blockUI,
-        contacts, help, tasksService, users
+        accounts, contacts, help, tasksService, users
     ) {
         this.$log = $log;
         this.$q = $q;
+        this.accounts = accounts;
         this.blockUI = blockUI.instances.get('homeMid');
         this.contacts = contacts;
         this.tasksService = tasksService;
@@ -31,7 +33,8 @@ class HomeController {
     $onInit() {
         this.$q.all([
             this.contacts.getAnalytics(),
-            this.tasksService.getAnalytics()
+            this.tasksService.getAnalytics(),
+            this.accounts.getAnalytics()
         ]).then(() => {
             this.blockUI.stop();
         });
