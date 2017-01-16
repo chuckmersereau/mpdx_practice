@@ -76,7 +76,7 @@ class TasksFilterService {
         this.$rootScope.$emit('taskFilterChange', params);
     }
     isResettable() {
-        return !_.eq(this.params, this.default_params);
+        return !angular.equals(this.params, this.default_params);
     }
 }
 export default angular.module('mpdx.tasks.filter.service', [])

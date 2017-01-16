@@ -79,7 +79,7 @@ class FilterService {
         this.$rootScope.$emit('contactParamChange');
     }
     isResettable() {
-        return !_.eq(this.params, this.default_params);
+        return !angular.equals(this.params, this.default_params);
     }
 }
 export default angular.module('mpdx.services.filter', [])

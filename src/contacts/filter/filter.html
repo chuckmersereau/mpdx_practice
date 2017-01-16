@@ -1,6 +1,6 @@
 
 <a ng-click="$ctrl.resetFiltersAndTags()" class="btn btn-primary btn-xs btn-block btn-filter-left ng-cloak"
-   ng-show="$ctrl.showReset()" analytics-on analytics-event="Reset Filters" analytics-category="Contacts Events" analytics-label="Filter">
+   ng-if="$ctrl.contactFilter.isResettable()" analytics-on analytics-event="Reset Filters" analytics-category="Contacts Events" analytics-label="Filter">
     <i class="fa fa-undo"></i> <span translate>Reset Filters</span>
 </a>
 
