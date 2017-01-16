@@ -143,9 +143,9 @@ angular-timeago@0.4.3:
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/angular-timeago/-/angular-timeago-0.4.3.tgz#c3902dc4f6491cf92cb2c66527daca75442f9679"
 
-angular-ui-bootstrap-datetimepicker@2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/angular-ui-bootstrap-datetimepicker/-/angular-ui-bootstrap-datetimepicker-2.0.1.tgz#b7013db707a7451a843a5e4e8ccc453bf1f07a10"
+angular-ui-bootstrap-datetimepicker@latest:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/angular-ui-bootstrap-datetimepicker/-/angular-ui-bootstrap-datetimepicker-2.0.2.tgz#cb58ba6bf8f0ea25b7abf68bb0e4b4afaf410c0b"
   dependencies:
     angular ">=1.4.4"
     angular-ui-bootstrap ">=1.2.4"
@@ -167,11 +167,7 @@ angular-xeditable@0.5.0:
     jquery "^1.11.1"
     moment "^2.5.0"
 
-angular@*, angular@>=1.0.8, angular@>=1.4.4, angular@^1.5.7, angular@~1.x:
-  version "1.5.8"
-  resolved "https://registry.yarnpkg.com/angular/-/angular-1.5.8.tgz#925a5392b8c212d09572dc446db7e01264e094cb"
-
-angular@1.6.1:
+angular@*, angular@1.6.1, angular@>=1.0.8, angular@>=1.4.4, angular@^1.5.7, angular@~1.x:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/angular/-/angular-1.6.1.tgz#a7b6d763a74c157325692619e97257e69d9b6a27"
 
