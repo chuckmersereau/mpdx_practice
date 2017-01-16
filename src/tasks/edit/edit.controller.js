@@ -10,7 +10,7 @@ class EditTaskController {
 
     constructor(
         $scope,
-        modal, contacts, tasksTagsService, tasksService, serverConstants,
+        modal, contacts, tasksTags, tasksService, serverConstants,
         selectedContacts, specifiedTask, ajaxAction, toComplete, createNext, modalCallback
     ) {
         this.$scope = $scope;
@@ -21,7 +21,7 @@ class EditTaskController {
         this.modal = modal;
         this.serverConstants = serverConstants;
         this.specifiedTask = specifiedTask;
-        this.tagsService = tasksTagsService;
+        this.tagsService = tasksTags;
         this.tasksService = tasksService;
         this.toComplete = toComplete;
         this.modalCallback = modalCallback;
@@ -47,6 +47,10 @@ class EditTaskController {
         };
     }
     submit() {
+        if (this.specifiedTask) {
+            this.models.updated_in_db_at = this.specifiedTask.updated_in_db_at;
+        }
+
         this.tasksService.postBulkLogTask(
             this.ajaxAction || 'post',
             this.specifiedTask ? this.specifiedTask.id : null,

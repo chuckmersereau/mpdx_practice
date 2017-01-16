@@ -6,7 +6,7 @@ class ListController {
     tasks;
     tasksService;
 
-    constructor(tasksService, tasksFilterService, modal) {
+    constructor(tasksService, modal) {
         this.moment = moment;
         this.models = {};
         this.tasks = tasksService.data;
@@ -28,7 +28,7 @@ class ListController {
             template: require('../../contacts/show/completeTask/completeTask.html'),
             controller: 'completeTaskController',
             locals: {
-                taskId: task.id,
+                task: task,
                 contact: task.contacts[0],
                 taskAction: task.activity_type,
                 modalCallback: this.loadPage
@@ -84,9 +84,9 @@ class ListController {
             this.selected = tasks.map((task) => task.id);
         }
     }
-    newComment(taskId) {
+    newComment(task) {
         if (this.models.comment) {
-            this.tasksService.submitNewComment(taskId, this.models.comment).then(function() {
+            this.tasksService.submitNewComment(task, this.models.comment).then(function() {
                 this.load();
             }.bind(this));
             this.models.comment = '';

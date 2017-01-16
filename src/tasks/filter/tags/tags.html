@@ -17,7 +17,7 @@
             ng-class="{ 'selected': !$ctrl.tagsService.isTagActive(tag), 'rejected': $ctrl.tagsService.isTagRejected(tag) }"
             ng-click="$ctrl.tagsService.tagClick(tag, $event)"
             ng-repeat="tag in $ctrl.tagsService.data">
-        {{ tag }}
+        {{ tag.name }}
         <a ng-click="$event.stopPropagation()" uib-popover-template="'myPopoverTemplate.html'" popover-trigger="outsideClick" class="tag_remove" />
       </span>
       <a class="show_all_tags_btn">
