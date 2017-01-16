@@ -32,22 +32,22 @@
                                         </span>
                                     </a>
                                 </label>
-                                <select class="form-control" ng-options="item.id as item.name for item in child.options" ng-model="$ctrl.contactFilter.params[child.name]" ng-change="$ctrl.contactFilter.change($ctrl.contactFilter.params)" multiple></select>
+                                <select class="form-control" ng-options="item.id as item.name for item in child.options" ng-model="$ctrl.contactFilter.params[child.name]" ng-change="$ctrl.contactFilter.change()" multiple></select>
                             </div>
                             <div class="filter_radio" ng-if="child.type == 'radio'">
                                 {{child.title}}
                                 <label ng-repeat="option in child.options">
-                                    <input id="_" name="{{child.name}}" type="radio" value="{{option.id}}" ng-model="$ctrl.contactFilter.params[child.name]" ng-change="$ctrl.contactFilter.change($ctrl.contactFilter.params)">
+                                    <input id="_" name="{{child.name}}" type="radio" value="{{option.id}}" ng-model="$ctrl.contactFilter.params[child.name]" ng-change="$ctrl.contactFilter.change()">
                                     {{option.name}}
                                 </label>
                             </div>
                             <label ng-if="child.type == 'single_checkbox'">
-                                <input name="{{child.name}}" type="checkbox" ng-model="$ctrl.contactFilter.params[child.name]" ng-checked="$ctrl.contactFilter.change($ctrl.contactFilter.params)"> {{child.title}}
+                                <input name="{{child.name}}" type="checkbox" ng-model="$ctrl.contactFilter.params[child.name]"> {{child.title}}
                             </label>
                             <div class="filter_dates" ng-if="child.type == 'dates'">
                                 <label ng-repeat="option in child.options">
                                     {{option.name}}<br>
-                                    <datetimepicker ng-model="$ctrl.contactFilter.params[child.name][option.id]" hidden-time="true" placeholder="{{ 'None' | translate }}" when-closed="$ctrl.contactFilter.change($ctrl.contactFilter.params)"></datetimepicker>
+                                    <datetimepicker ng-model="$ctrl.contactFilter.params[child.name][option.id]" hidden-time="true" placeholder="{{ 'None' | translate }}" when-closed="$ctrl.contactFilter.change()"></datetimepicker>
                                 </label>
                             </div>
                             <div class="filter_dates" ng-if="child.type == 'daterange'">
@@ -57,14 +57,14 @@
                                         model="$ctrl.contactFilter.params[child.name]"
                                         locale="$ctrl.dateRangeLocale"
                                         custom-options="child.options"
-                                        on-change="$ctrl.contactFilter.change($ctrl.contactFilter.params)">
+                                        on-change="$ctrl.contactFilter.change()">
                                     </contacts-filter-daterange>
                                 </label>
                             </div>
                             <div class="filter_text" ng-if="child.type == 'text'">
                                 <label ng-repeat="option in child.options">
                                     {{option.name}}<br>
-                                    <input class="form-control" name="{{child.name}}" type="text" ng-model="$ctrl.contactFilter.params[child.name][option.id]" placeholder="{{option.placeholder}}" ng-change="$ctrl.contactFilter.change($ctrl.contactFilter.params)">
+                                    <input class="form-control" name="{{child.name}}" type="text" ng-model="$ctrl.contactFilter.params[child.name][option.id]" placeholder="{{option.placeholder}}" ng-change="$ctrl.contactFilter.change()">
                                 </label>
                             </div>
                         </div>
@@ -77,16 +77,16 @@
                                   </span>
                                 </a>
                             </label>
-                            <select class="form-control"  ng-options="item.id as item.name for item in filter.options" ng-model="$ctrl.contactFilter.params[filter.name]" ng-change="$ctrl.contactFilter.change($ctrl.contactFilter.params)" multiple></select>
+                            <select class="form-control"  ng-options="item.id as item.name for item in filter.options" ng-model="$ctrl.contactFilter.params[filter.name]" ng-change="$ctrl.contactFilter.change()" multiple></select>
                         </div>
                         <div class="filter_radio" ng-if="filter.type == 'radio'">
                             <label ng-repeat="option in filter.options">
-                                <input name="{{filter.name}}" type="radio" value="{{option.id}}" ng-model="$ctrl.contactFilter.params[filter.name]" ng-change="$ctrl.contactFilter.change($ctrl.contactFilter.params)">
+                                <input name="{{filter.name}}" type="radio" value="{{option.id}}" ng-model="$ctrl.contactFilter.params[filter.name]" ng-change="$ctrl.contactFilter.change()">
                                 {{option.name}}
                             </label>
                         </div>
                         <label ng-if="filter.type == 'single_checkbox'">
-                            <input name="{{filter.name}}" type="checkbox" ng-model="$ctrl.contactFilter.params[filter.name]" ng-checked="$ctrl.contactFilter.change($ctrl.contactFilter.params)"> {{filter.title}}
+                            <input name="{{filter.name}}" type="checkbox" ng-model="$ctrl.contactFilter.params[filter.name]"> {{filter.title}}
                         </label>
                         <div class="filter_dates" ng-if="filter.type == 'dates'">
                             <label ng-repeat="option in filter.options">
@@ -104,7 +104,7 @@
                         <div class="filter_text" ng-if="filter.type == 'text'">
                             <label ng-repeat="option in filter.options">
                                 {{option.name}}<br>
-                                <input class="form-control" name="{{filter.name}}" type="text" ng-model="$ctrl.contactFilter.params[filter.name][option.id]" placeholder="{{option.placeholder}}" ng-change="$ctrl.contactFilter.change($ctrl.contactFilter.params)">
+                                <input class="form-control" name="{{filter.name}}" type="text" ng-model="$ctrl.contactFilter.params[filter.name][option.id]" placeholder="{{option.placeholder}}" ng-change="$ctrl.contactFilter.change()">
                             </label>
                         </div>
                     </div>

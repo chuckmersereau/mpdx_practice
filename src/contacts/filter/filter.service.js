@@ -75,8 +75,8 @@ class FilterService {
         this.params = _.clone(this.default_params);
         this.change(this.params);
     }
-    change(params) {
-        this.$rootScope.$emit('contactParamChange', params);
+    change() {
+        this.$rootScope.$emit('contactParamChange');
     }
     isResettable() {
         return !_.eq(this.params, this.default_params);
