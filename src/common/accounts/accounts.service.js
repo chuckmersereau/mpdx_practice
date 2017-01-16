@@ -72,7 +72,7 @@ class AccountsService {
             return this.$q.resolve(this.analytics);
         }
         console.log(this.api);
-        return this.api.get(`account_lists/144b83e8-b7f6-48c8-9c0e-688785bf6164/analytics`, {filter: {end_date: moment().toISOString(), start_date: moment().subtract(1, 'week').toISOString()} }).then((data) => {
+        return this.api.get(`account_lists/144b83e8-b7f6-48c8-9c0e-688785bf6164/analytics`, { filter: { end_date: moment().toISOString(), start_date: moment().subtract(1, 'week').toISOString() } }).then((data) => {
             this.$log.debug('account_lists/analytics', data);
             this.analytics = data;
             return this.analytics;
