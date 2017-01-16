@@ -1,4 +1,5 @@
 class AccountsService {
+    analytics;
     api;
     donations;
 
@@ -11,6 +12,7 @@ class AccountsService {
         this.$rootScope = $rootScope;
         this.api = api;
 
+        this.analytics = null;
         this.current = null;
         this.data = {};
         this.donations = null;
@@ -63,6 +65,19 @@ class AccountsService {
         this.api.get(`account_lists/${this.api.account_list_id}/users`).then((data) => {
             this.userList = data;
             this.$log.debug('account_lists/users:', this.userList);
+        });
+    }
+    getAnalytics() {
+        if (this.analytics) {
+            return this.$q.resolve(this.analytics);
+        }
+        console.log(this.api);
+        return this.api.get(`account_lists/144b83e8-b7f6-48c8-9c0e-688785bf6164/analytics`, { filter: { end_date: moment().toISOString(), start_date: moment().subtract(1, 'week').toISOString() } }).then((data) => {
+            this.$log.debug('account_lists/analytics', data);
+            this.analytics = data;
+            return this.analytics;
+        }).catch((err) => {
+            this.$log.error('contacts/analytics not implemented.', err);
         });
     }
 }
