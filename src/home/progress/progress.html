@@ -10,7 +10,7 @@
             <div class="col-md-6 col-sm-8 text-right">
               <span class="normal-weight ng-cloak">
                 {{$ctrl.startDate | date:'MMM d'}} — {{$ctrl.endDate | date:'MMM d'}}
-                <button class="previous_page btn btn-default btn-sm" title="{{ $ctrl.__('Previous') }}" ng-click="$ctrl.previousWeek()">
+                <button class="previous_page btn btn-default btn-sm" title="{{ 'Previous' | translate }}" ng-click="$ctrl.previousWeek()">
                   <i class="fa fa-chevron-left"></i>
                 </button>
                 <button class="next_page btn btn-default btn-sm" title="{{ 'Next' | translate }}" ng-click="$ctrl.nextWeek()">

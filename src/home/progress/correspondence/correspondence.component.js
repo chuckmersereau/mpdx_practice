@@ -1,12 +1,15 @@
 class CorrespondenceController {
+    accounts;
+    constructor(
+        accounts
+    ) {
+        this.accounts = accounts;
+    }
 }
 
 var progressCorrespondence = {
     template: require('./correspondence.html'),
-    controller: CorrespondenceController,
-    bindings: {
-        correspondence: '<'
-    }
+    controller: CorrespondenceController
 };
 
 export default angular.module('mpdx.home.progress.correspondence', [])

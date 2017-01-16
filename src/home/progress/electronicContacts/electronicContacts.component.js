@@ -1,15 +1,15 @@
 class ElectronicContactsController {
+    accounts;
+    constructor(
+        accounts
+    ) {
+        this.accounts = accounts;
+    }
 }
 
 const progressElectronicContacts = {
     template: require('./electronicContacts.html'),
-    controller: ElectronicContactsController,
-    bindings: {
-        electronic: '<',
-        email: '<',
-        facebook: '<',
-        textMessage: '<'
-    }
+    controller: ElectronicContactsController
 };
 
 export default angular.module('mpdx.home.progress.electronicContacts', [])

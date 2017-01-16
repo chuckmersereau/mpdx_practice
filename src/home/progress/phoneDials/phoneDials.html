@@ -5,20 +5,20 @@
         <span translate>Phone Dials</span>
     </div>
     <div class="progress-stat">
-        <span class="count-big">{{$ctrl.phone.attempted + $ctrl.phone.completed}}</span>
+        <span class="count-big">{{$ctrl.accounts.analytics.phone.attempted + $ctrl.accounts.analytics.phone.completed}}</span>
         <span translate>Outgoing</span>
     </div>
     <div class="progress-stat">
-        <span class="count-big">{{$ctrl.phone.completed + $ctrl.phone.received}}</span>
+        <span class="count-big">{{$ctrl.accounts.analytics.phone.completed + $ctrl.accounts.analytics.phone.received}}</span>
         <span translate>Talked To</span>
     </div>
     <div class="progress-stat">
-        <span class="count-big">{{$ctrl.phone.appointments}}</span>
+        <span class="count-big">{{$ctrl.accounts.analytics.phone.appointments}}</span>
         <span translate>Appointments Produced</span>
     </div>
     <ul class="plain-list">
-        <li><span translate>Completed</span>: {{$ctrl.phone.completed}}</li>
-        <li><span translate>Attempted</span>: {{$ctrl.phone.attempted}}</li>
-        <li><span translate>Received</span>: {{$ctrl.phone.received}}</li>
+        <li><span translate>Completed</span>: {{$ctrl.accounts.analytics.phone.completed}}</li>
+        <li><span translate>Attempted</span>: {{$ctrl.accounts.analytics.phone.attempted}}</li>
+        <li><span translate>Received</span>: {{$ctrl.accounts.analytics.phone.received}}</li>
     </ul>
 </div>
