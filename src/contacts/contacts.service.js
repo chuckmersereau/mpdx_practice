@@ -6,12 +6,11 @@ class ContactsService {
     contactsTags;
 
     constructor(
-        $location, $log, $q, $rootScope, $timeout,
+        $location, $log, $q, $rootScope,
         api, cache, contactFilter, contactsTags
     ) {
         this.$log = $log;
         this.$q = $q;
-        this.$timeout = $timeout;
         this.api = api;
         this.cache = cache;
         this.contactFilter = contactFilter;
@@ -128,11 +127,6 @@ class ContactsService {
             count += data.length;
             this.meta.to = count;
             this.loading = false;
-
-            //uncomment to add lazy contact loading
-            // this.$timeout(() => {
-            //     this.loadMoreContacts();
-            // }, 1000);
         });
     }
     save(contact) {
