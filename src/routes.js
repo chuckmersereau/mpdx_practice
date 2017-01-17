@@ -71,16 +71,8 @@ export default class Routes {
             component: 'balancesReport'
         }).state({
             name: 'reports.donations',
-            url: '/donations/{startDate}/{endDate}',
-            component: 'donationsReport',
-            params: {
-                startDate: moment().startOf('month').format('l'),
-                endDate: moment().endOf('month').format('l')
-            },
-            resolve: {
-                startDate: /*@ngInject*/ ($stateParams) => $stateParams.startDate,
-                endDate: /*@ngInject*/ ($stateParams) => $stateParams.endDate
-            }
+            url: '/donations',
+            component: 'donationsReport'
         }).state({
             name: 'reports.donations.edit',
             url: '/edit/{donationId}',
@@ -230,7 +222,7 @@ function openDonationModal($state, $stateParams, modal, donationsReport) {
     donationsReport.getDonations().then((data) => {
         let donation = _.find(data.donations, { id: parseInt($stateParams.donationId) });
         modal.open({
-            template: require('./reports/donationsReport/edit/edit.html'),
+            template: require('./reports/donations/edit/edit.html'),
             controller: 'donationModalController',
             locals: {
                 donation: donation
