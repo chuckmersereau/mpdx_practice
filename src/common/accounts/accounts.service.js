@@ -43,8 +43,6 @@ class AccountsService {
     getDonations() {
         return this.api.get(`account_lists/${this.api.account_list_id}/donations`).then((resp) => {
             this.donations = resp;
-        }).catch((err) => {
-            this.$log.debug(err);
         });
     }
     destroyInvite(id) {
