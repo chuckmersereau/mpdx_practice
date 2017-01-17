@@ -1,15 +1,18 @@
 class BalancesReportController {
     api;
     constructor(
+        $log,
         api
     ) {
+        this.$log = $log;
         this.api = api;
 
         this.errorOccurred = false;
     }
     $onInit() {
         this.api.get('reports/balances').then((data) => {
-            this.designations = data.designations;
+            this.$log.debug('reports/balances', data);
+            this.designations = data.designation_accounts;
             _.each(this.designations, (d) => {
                 d.balanceIncluded = d.active;
             });

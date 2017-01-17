@@ -1,9 +1,9 @@
 <h2 translate>Balances by Organization</h2>
-<div ng-if="$ctrl.errorOccurred" translate>
+<div ng-if="!$ctrl.designations" translate>
     Report data could not load due to an error. Please try again or contact support.
 </div>
 
-<div class="panel panel-default panel-report" ng-if="!$ctrl.errorOccurred">
+<div class="panel panel-default panel-report" ng-if="$ctrl.designations">
     <div class="panel-body panel-report-heading">
         <div class="row">
             <div class="col-xs-6">
