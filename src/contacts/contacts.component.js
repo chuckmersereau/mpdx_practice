@@ -23,15 +23,14 @@ class ContactsController {
     $onInit() {
         if (this.$stateParams.filter) {
             _.assign(this.contactFilter.params, this.contactFilter.params, this.$stateParams.filter);
+            this.contactFilter.change();
         }
     }
 }
 
 const Contacts = {
     controller: ContactsController,
-    controllerAs: 'vm',
-    template: require('./contacts.html'),
-    bindings: {}
+    template: require('./contacts.html')
 };
 
 export default angular.module('mpdx.contacts.component', [])

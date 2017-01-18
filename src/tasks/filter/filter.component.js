@@ -24,12 +24,12 @@ class FilterController {
         if (this.tasksTags.isResettable()) {
             this.tasksTags.reset();
         }
-        if (this.tasksFilter.resettable) {
+        if (this.tasksFilter.isResettable()) {
             this.tasksFilter.reset();
         }
     }
     showReset() {
-        return this.tasksTags.isResettable() || this.tasksFilter.resettable;
+        return this.tasksTags.isResettable() || this.tasksFilter.isResettable();
     }
 
     // Invert the selected options of a multiselect filter

@@ -1,5 +1,5 @@
 <div class="tasks-component">
-  <table class="table tasks-table" bs-collapse data-start-collapsed="true" ng-show="$ctrl.meta.total || $ctrl.tasksService.sort == $ctrl.sortkey">
+  <table class="table tasks-table" bs-collapse data-start-collapsed="true" ng-show="$ctrl.tasksService.meta[$ctrl.key].pagination.total_count || $ctrl.tasksService.sort == $ctrl.sortkey">
     <tr class="header-row">
       <th ng-style="{'border-bottom': '4px solid ' + $ctrl.color}"
           colspan="100"
@@ -13,10 +13,10 @@
           <a class="btn btn-xs btn-secondary" ng-click="$ctrl.openBulkEditTaskModal()">Edit</a>
         </span>
         <select
-          ng-model="$ctrl.meta.per_page"
-          ng-change="$ctrl.meta.page = 1; $ctrl.load()"
-          ng-options="i as i for i in [10, 25, 50, 100, 500]"
+          ng-model="$ctrl.tasksService.meta[$ctrl.key].pagination.per_page"
+          ng-change="$ctrl.tasksService.meta[$ctrl.key].pagination.page = 1; $ctrl.load()"
           class="form-control ng-pristine ng-untouched ng-valid ng-not-empty tasks-per-page form-inline">
+            <option ng-repeat="i in [10, 25, 50, 100, 500]" value="{{i}}" ng-selected="$ctrl.tasksService.meta[$ctrl.key].pagination.per_page == i">{{i}}</option>
         </select>
         <span
           class="tasks-per-page-description"
@@ -26,13 +26,13 @@
         <a class="btn btn-xs btn-secondary pull-right" ng-click="$ctrl.toggleAll()" style="margin-right: 12px">Select All</a>
       </th>
     </tr>
-    <tr ng-hide="$ctrl.tasks[$ctrl.key].length">
+    <tr ng-if="$ctrl.tasksService.data[$ctrl.key].length === 0">
       <td class="text-center" colspan="100">
         Task list empty
       </td>
     </tr>
     <tr class="task-row"
-        ng-repeat-start="task in $ctrl.tasks[$ctrl.key]"
+        ng-repeat-start="task in $ctrl.tasksService.data[$ctrl.key]"
         ng-click="$ctrl.toggleSelected(task.id)"
         ng-class="$ctrl.selected.indexOf(task.id) >= 0 ? 'selected-task-row' : ''"
         >
@@ -86,10 +86,11 @@
       </td>
     </tr>
   </table>
-  <pagination ng-show="$ctrl.tasks[$ctrl.key].length"
-              total="$ctrl.meta.total"
-              total-pages="$ctrl.meta.total_pages"
-              per-page="$ctrl.meta.per_page"
-              page="$ctrl.meta.page"
-              on-change="$ctrl.onPageChange(page)"></pagination>
+  <pagination ng-show="$ctrl.tasksService.data[$ctrl.key].length"
+              total="$ctrl.tasksService.meta[$ctrl.key].pagination.total_count"
+              total-pages="$ctrl.tasksService.meta[$ctrl.key].pagination.total_pages"
+              per-page="$ctrl.tasksService.meta[$ctrl.key].pagination.per_page"
+              page="$ctrl.tasksService.meta[$ctrl.key].pagination.page"
+              on-change="$ctrl.onPageChange(page)">
+  </pagination>
 </div>

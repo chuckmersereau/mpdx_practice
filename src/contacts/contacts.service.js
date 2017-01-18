@@ -23,12 +23,10 @@ class ContactsService {
 
         this.page = 1;
 
-        $rootScope.$watch(() => this.contactFilter.params, (newVal, oldVal) => {
-            if (!_.isEmpty(newVal) && !_.isEmpty(oldVal)) {
-                $log.debug('contacts service: contact parameter change');
-                this.load(true);
-            }
-        }, true);
+        $rootScope.$on('contactParamChange', () => {
+            $log.debug('contacts service: contact parameter change');
+            this.load(true);
+        });
 
         $rootScope.$watch(() => this.contactFilter.wildcard_search, (newVal, oldVal) => {
             if (!oldVal) {
@@ -66,6 +64,7 @@ class ContactsService {
     load(reset) {
         this.loading = true;
         if (reset) {
+            this.page = 1;
             this.meta = {};
             this.data = null;
         }
@@ -99,10 +98,15 @@ class ContactsService {
         }).then((data) => {
             this.$log.debug('contacts page ' + data.meta.pagination.page, data);
             let count = this.meta.to || 0;
+            this.meta = data.meta;
             if (reset) {
                 newContacts = [];
                 this.page = 1;
                 count = 0;
+            }
+            if (data.length === 0) {
+                this.loading = false;
+                return;
             }
             _.each(data, (contact) => {
                 // fix tag_list difference for list vs show
@@ -120,7 +124,6 @@ class ContactsService {
             if (reset) {
                 this.data = newContacts;
             }
-            this.meta = data.meta;
             count += data.length;
             this.meta.to = count;
             this.loading = false;

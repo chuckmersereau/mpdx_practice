@@ -1,6 +1,7 @@
 class TagsController {
+    tasksTags;
     constructor(tasksTags) {
-        this.tagsService = tasksTags;
+        this.tasksTags = tasksTags;
     }
 }
 

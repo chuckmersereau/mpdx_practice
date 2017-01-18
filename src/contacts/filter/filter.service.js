@@ -7,23 +7,19 @@ class FilterService {
     ) {
         this.$location = $location;
         this.$log = $log;
+        this.$rootScope = $rootScope;
         this.api = api;
 
         this.data = [];
         this.params = {};
         this.wildcard_search = '';
         this.default_params = {};
-        this.resettable = false;
         this.loading = true;
 
         let query = $location.search().q;
         if (query) {
             this.wildcard_search = query;
         }
-
-        $rootScope.$watch(() => this.params, () => {
-            this.resettable = !_.eq(this.params, this.default_params);
-        }, true);
 
         $rootScope.$on('accountListUpdated', () => {
             this.load();
@@ -73,18 +69,17 @@ class FilterService {
         });
     }
     count() {
-        let count = 0;
-        for (var key in this.params) {
-            if (this.params.hasOwnProperty(key)) {
-                if (!_.isEqual(this.params[key], this.default_params[key])) {
-                    count++;
-                }
-            }
-        }
-        return count;
+        return _.filter(_.keys(this.params), key => !_.isEqual(this.params[key], this.default_params[key])).length;
     }
     reset() {
         this.params = _.clone(this.default_params);
+        this.change(this.params);
+    }
+    change() {
+        this.$rootScope.$emit('contactParamChange');
+    }
+    isResettable() {
+        return !angular.equals(this.params, this.default_params);
     }
 }
 export default angular.module('mpdx.services.filter', [])
