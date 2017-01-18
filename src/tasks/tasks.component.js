@@ -9,6 +9,7 @@ class TasksController {
         this.changed = 0;
 
         $rootScope.$on('taskFilterChange', () => {
+            $log.debug('tasks component: filter change');
             this.changed++;
         });
 
