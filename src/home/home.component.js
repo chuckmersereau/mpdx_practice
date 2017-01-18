@@ -33,8 +33,7 @@ class HomeController {
     $onInit() {
         this.$q.all([
             this.contacts.getAnalytics(),
-            this.tasksService.getAnalytics(),
-            this.accounts.getAnalytics()
+            this.tasksService.getAnalytics()
         ]).then(() => {
             this.blockUI.stop();
         });
