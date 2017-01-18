@@ -5,7 +5,7 @@ class EditTaskController {
     createNext;
     modal;
     serverConstants;
-    tagsService;
+    tasksTags;
     tasksService;
 
     constructor(
@@ -21,7 +21,7 @@ class EditTaskController {
         this.modal = modal;
         this.serverConstants = serverConstants;
         this.specifiedTask = specifiedTask;
-        this.tagsService = tasksTags;
+        this.tasksTags = tasksTags;
         this.tasksService = tasksService;
         this.toComplete = toComplete;
         this.modalCallback = modalCallback;

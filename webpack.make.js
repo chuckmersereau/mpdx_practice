@@ -117,7 +117,7 @@ module.exports = function makeWebpackConfig(options) {
             // Transpile .js files using babel-loader
             // Compiles ES6 and ES7 into ES5 code
             test: /\.js$/,
-            loaders: ['babel'],
+            loaders: ['babel-loader'],
             exclude: /node_modules|bower_components|vendor\//
         // }, {
         //     // HTML Modal Template LOADER
@@ -127,12 +127,12 @@ module.exports = function makeWebpackConfig(options) {
         //     loaders: ["ngtemplate?relativeTo=" + encodeURIComponent(path.resolve(process.cwd(), './src/')), "html"]
         }, {
             test: /\.json/,
-            loader: "json"
+            loader: "json-loader"
         }, {            // HTML LOADER
             // Reference: https://github.com/WearyMonkey/ngtemplate-loader
             // Allow loading html through js
             test: /\.html$/,
-            loader: "html"
+            loader: "html-loader"
         }, {
             // ASSET LOADER
             // Reference: https://github.com/webpack/file-loader
@@ -141,13 +141,13 @@ module.exports = function makeWebpackConfig(options) {
             // Pass along the updated reference to your code
             // You can add here any file extension you want to get copied to your output
             test: /\.(png|jpg|jpeg|gif)$/,
-            loader: 'file'
+            loader: 'file-loader'
         }, {
             test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
             loader: "url-loader?limit=10000&mimetype=application/font-woff"
         }, {
             test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-            loader: "file"
+            loader: "file-loader"
         }]
     };
 
@@ -163,7 +163,7 @@ module.exports = function makeWebpackConfig(options) {
                 /node_modules/,
                 /\.test\.js$/
             ],
-            loader: 'isparta'
+            loader: 'isparta-loader'
         });
     }
 
@@ -182,8 +182,8 @@ module.exports = function makeWebpackConfig(options) {
             // Reference: https://github.com/webpack/style-loader
             // Use style-loader in development for hot-loading
             loader: ExtractTextPlugin.extract({
-                loader: 'css!postcss',
-                fallback: 'style'
+                loader: 'css-loader!postcss-loader',
+                fallback: 'style-loader'
             })
         };
 
@@ -194,13 +194,13 @@ module.exports = function makeWebpackConfig(options) {
         var sassLoader = {
             test: /\.scss$/,
             loader: ExtractTextPlugin.extract({
-                loader: 'css!postcss!sass',
-                fallback: 'style'
+                loader: 'css-loader!postcss-loader!sass-loader',
+                fallback: 'style-loader'
             })
         };
         if (!BUILD) {
-            cssLoader.loader = 'style!css!postcss';
-            sassLoader.loader = 'style!css!postcss!sass';
+            cssLoader.loader = 'style-loader!css-loader!postcss-loader';
+            sassLoader.loader = 'style-loader!css-loader!postcss-loader!sass-loader';
         }
         // Add cssLoader to the loader list
         config.module.loaders.push(cssLoader);
@@ -213,7 +213,7 @@ module.exports = function makeWebpackConfig(options) {
             test: /\.css$|\.scss$/,
             // Reference: https://github.com/webpack/style-loader
             // Use style-loader in development for hot-loading
-            loader: 'null'
+            loader: 'null-loader'
         };
         config.module.loaders.push(nullLoader);
     }
@@ -223,7 +223,7 @@ module.exports = function makeWebpackConfig(options) {
             enforce: "pre",
             test: /\.js$/,
             exclude: /node_modules|bower_components|vendor\//,
-            loaders: ['eslint']
+            loaders: ['eslint-loader']
         });
     }
 
