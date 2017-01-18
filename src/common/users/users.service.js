@@ -38,14 +38,6 @@ class Users {
             });
         });
     }
-    getHasAnyUsAccounts() {
-        console.error('common/currentUser: endpoint not yet defined');
-        // this.api.get('user/us_accounts').then((response) => {
-        //     this.hasAnyUsAccounts = response;
-        // }).catch((err) => {
-        //     this.$log.debug(err);
-        // });
-    }
     listOrganizationAccounts() {
         return this.api.get(`user/organization_accounts`).then((data) => {
             this.$log.debug('user/organization_accounts: ', data);

@@ -10,9 +10,10 @@ class ContactDonationsController {
 
     constructor(
         $scope,
-        api, modal, contactDonations
+        api, modal, contactDonations, accounts
     ) {
         this.$scope = $scope;
+        this.accounts = accounts;
         this.api = api;
         this.contactDonations = contactDonations;
         this.modal = modal;
@@ -22,12 +23,13 @@ class ContactDonationsController {
         this.donationMeta = {page: 0};
         this.loading = false;
     }
-    $onChanges(changesObj) {
-        if (_.has(changesObj, 'contact.currentValue.id')) {
-            this.getDonations();
-            this.getDonationsGraph();
-        }
-    }
+    // commented out until api available
+    // $onChanges(changesObj) {
+    //     if (_.has(changesObj, 'contact.currentValue.id')) {
+    //         this.getDonations();
+    //         this.getDonationsGraph();
+    //     }
+    // }
     getDonations(page) {
         this.loading = true;
         if (this.api.account_list_id) {
@@ -39,9 +41,9 @@ class ContactDonationsController {
         }
     }
     getDonationsPromise(page) {
-        this.contactDonations.getDonations(this.contact.id, page).then((data) => {
+        this.accounts.getDonations({ filter: { contact_id: this.contact.id }, page: page }).then((data) => {
             this.loading = false;
-            this.donations = data.donations;
+            this.donations = data;
             this.donationsMeta = data.meta;
         });
     }

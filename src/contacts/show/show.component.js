@@ -21,15 +21,19 @@ class ContactController {
         this.modal = modal;
         this.preferencesContacts = preferencesContacts;
         this.contactReferrals = contactReferrals;
+        this.serverConstants = serverConstants;
         this.tasksService = tasksService;
 
         this.selected = $stateParams.contactId;
         this.moveContact = { previous_contact: 0, following_contact: 0 };
         this.activeTab = '';
         this.contact = {};
-        serverConstants.fetchConstant('contacts', 'contacts/basic_list');
-        serverConstants.fetchConstants(['assignable_send_newsletters', 'assignable_statuses', 'pledge_frequencies', 'pledge_currencies', 'assignable_locations', 'assignable_likely_to_gives']);
-        this.constants = serverConstants.data;
+        // serverConstants.list().then(() => {
+        //     this.constants = serverConstants.data;
+        // });
+        // serverConstants.fetchConstant('contacts', 'contacts/basic_list');
+        // serverConstants.fetchConstants(['assignable_send_newsletters', 'assignable_statuses', 'pledge_frequencies', 'pledge_currencies', 'assignable_locations', 'assignable_likely_to_gives']);
+
 
         this.tabsLabels = [
             { key: 'details', value: 'Details' },

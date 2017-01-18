@@ -56,7 +56,7 @@ class AddressModalController {
             });
         };
 
-        this.serverConstants.fetchConstants(['assignable_locations']);
+        // this.serverConstants.fetchConstants(['assignable_locations']);
 
         if (angular.isDefined(this.address)) {
             this.modalTitle = 'Edit Address';

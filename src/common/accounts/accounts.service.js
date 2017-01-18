@@ -40,9 +40,11 @@ class AccountsService {
     getCurrent() {
         return this.swap(this.api.account_list_id);
     }
-    getDonations() {
-        return this.api.get(`account_lists/${this.api.account_list_id}/donations`).then((resp) => {
+    getDonations(params) {
+        return this.api.get(`account_lists/${this.api.account_list_id}/donations`, params || {}).then((resp) => {
+            this.$log.debug(`accounts.getDonations - account_lists/${this.api.account_list_id}/donations`, resp);
             this.donations = resp;
+            return resp;
         });
     }
     destroyInvite(id) {
