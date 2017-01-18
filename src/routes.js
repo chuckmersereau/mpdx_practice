@@ -150,7 +150,8 @@ export default class Routes {
             name: 'tasks',
             title: 'Tasks',
             url: '/tasks',
-            component: 'tasks'
+            component: 'tasks',
+            parent: 'root'
         }).state({
             name: 'tasks.new',
             url: '/new',
@@ -159,7 +160,8 @@ export default class Routes {
             name: 'unavailable',
             title: 'Unavailable',
             url: '/unavailable',
-            component: 'unavailable'
+            component: 'unavailable',
+            parent: 'root'
         });
     }
 }
