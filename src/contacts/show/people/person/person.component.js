@@ -3,7 +3,8 @@ class ContactPersonController {
         $sce
     ) {
         this.$sce = $sce;
-
+    }
+    $onInit() {
         this.person.selected_for_merge = false;
     }
     selectCard() {
