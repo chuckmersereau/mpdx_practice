@@ -5,6 +5,7 @@ class ContactController {
     modal;
     preferencesContacts;
     contactReferrals;
+    serverConstants;
     tasksService;
 
     constructor(
@@ -33,7 +34,6 @@ class ContactController {
         // });
         // serverConstants.fetchConstant('contacts', 'contacts/basic_list');
         // serverConstants.fetchConstants(['assignable_send_newsletters', 'assignable_statuses', 'pledge_frequencies', 'pledge_currencies', 'assignable_locations', 'assignable_likely_to_gives']);
-
 
         this.tabsLabels = [
             { key: 'details', value: 'Details' },

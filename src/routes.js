@@ -213,7 +213,7 @@ function openAddressModal(
                 address: address
             },
             onHide: () => {
-                $state.go('^');
+                $state.go('^', {}, { reload: true });
             }
         });
     });
@@ -247,7 +247,7 @@ function openPeopleModal($state, $stateParams, modal, contactPerson) {
                 person: person
             },
             onHide: () => {
-                $state.go('^');
+                $state.go('contact', {contactId: contactId}, { reload: true });
             }
         });
     }
@@ -278,7 +278,7 @@ function openMergePeopleModal(
             },
             onHide: () => {
                 contacts.load(true);
-                $state.go('^');
+                $state.go('^', {}, { reload: true });
             }
         });
     });
@@ -293,7 +293,7 @@ function openNewContactModal(
         controller: 'contactNewModalController',
         onHide: () => {
             if ($state.current.name === 'contacts.new') {
-                $state.go('^');
+                $state.go('^', {}, { reload: true });
             }
         }
     });
@@ -314,7 +314,7 @@ function openNewTaskModal(
         },
         onHide: () => {
             if ($state.current.name === 'tasks.new') {
-                $state.go('^');
+                $state.go('^', {}, { reload: true });
             }
         }
     });
