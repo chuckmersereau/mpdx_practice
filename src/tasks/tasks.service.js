@@ -17,7 +17,6 @@ class TasksService {
 
         this.analytics = null;
         this.data = {};
-        this.loading = true;
         this.sort = 'all';
         this.data = {};
 

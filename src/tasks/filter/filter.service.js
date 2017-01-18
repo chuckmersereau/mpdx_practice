@@ -72,8 +72,8 @@ class TasksFilterService {
         this.params = _.clone(this.default_params);
         this.change(this.params);
     }
-    change(params) {
-        this.$rootScope.$emit('taskFilterChange', params);
+    change() {
+        this.$rootScope.$emit('taskFilterChange');
     }
     isResettable() {
         return !angular.equals(this.params, this.default_params);
