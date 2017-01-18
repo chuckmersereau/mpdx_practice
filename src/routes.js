@@ -37,13 +37,19 @@ export default class Routes {
             params: {
                 filters: null
             },
-            parent: 'root'
+            parent: 'root',
+            resolve: {
+                resolution: /*@ngInject*/ (contactFilter) => contactFilter.load()
+            }
         }).state({
             name: 'contact',
             title: 'Contact',
             url: '/contacts/{contactId}',
             component: 'contact',
-            parent: 'root'
+            parent: 'root',
+            resolve: {
+                resolution: /*@ngInject*/ (contactFilter) => contactFilter.load()
+            }
         }).state({
             name: 'contact.address',
             url: '/addresses/{addressId}',
@@ -151,7 +157,10 @@ export default class Routes {
             title: 'Tasks',
             url: '/tasks',
             component: 'tasks',
-            parent: 'root'
+            parent: 'root',
+            resolve: {
+                resolution: /*@ngInject*/ (tasksFilter) => tasksFilter.load()
+            }
         }).state({
             name: 'tasks.new',
             url: '/new',

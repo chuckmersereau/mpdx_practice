@@ -1,15 +1,16 @@
 class TasksFilterService {
     api;
     constructor(
-        $location, $log, $rootScope,
+        $location, $log, $q, $rootScope,
         api
     ) {
         this.$location = $location;
         this.$log = $log;
+        this.$q = $q;
         this.$rootScope = $rootScope;
         this.api = api;
 
-        this.data = [];
+        this.data = null;
         this.params = {};
         this.wildcard_search = '';
         this.default_params = {};
@@ -19,14 +20,11 @@ class TasksFilterService {
         if (query) {
             this.wildcard_search = query;
         }
-
-        $rootScope.$on('accountListUpdated', () => {
-            this.load();
-        });
-
-        this.load();
     }
     load() {
+        if (this.data) {
+            return this.$q.resolve();
+        }
         return this.api.get('tasks/filters').then((data) => {
             this.data = data;
             this.data = _.sortBy(this.data, ['id']);

@@ -281,8 +281,6 @@ class ContactsService {
             this.$log.debug('contacts/analytics', data);
             this.analytics = data;
             return this.analytics;
-        }).catch((err) => {
-            this.$log.error('contacts/analytics not implemented.', err);
         });
     }
 }
