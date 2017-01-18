@@ -6,7 +6,7 @@
 
 <ul>
     <contacts-tags></contacts-tags>
-    <li class="filters_section" ng-if="!$ctrl.insightFilterIsActive()">
+    <li class="filters_section">
         <form ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }">
             <span class="filters_title menu_item" translate>Filters</span>
             <div class="filter_hint">
@@ -118,17 +118,5 @@
                 </li>
             </ul>
         </form>
-    </li>
-    <li ng-class="{'selected': $ctrl.insightFilterIsActive()}" ng-if="$ctrl.showInsights">
-        <span class="left_filters menu_item" translate>Insights</span>
-        <p style="text-indent:40px">
-            <a href="" ng-click="$ctrl.runInsight('recommendations')"
-               analytics-on analytics-category="Contacts Events" analytics-label="Filter" analytics-event="Increase Recommendations" translate>
-                Increase Recommendations
-            </a>
-        </p>
-    </li>
-    <li class="controls" ng-if="$ctrl.insightFilterIsActive()" ng-if="$ctrl.showInsights">
-        <a href="" ng-click="$ctrl.clearInsightFilter()" class="btn" translate>Clear Insight Filter</a>
     </li>
 </ul>
