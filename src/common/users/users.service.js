@@ -32,12 +32,10 @@ class Users {
             const locale = _.get(response, 'preferences.locale', 'en');
             this.changeLocale(locale);
             const defaultAccountListId = _.get(response, 'preferences.default_account_list').toString();
-            this.accounts.swap(defaultAccountListId).then(() => {
+            return this.accounts.swap(defaultAccountListId).then(() => {
                 this.help.updateUser(this.current);
                 return this.accounts.load(); // force load accounts in resolve
             });
-        }).catch((err) => {
-            this.$log.debug(err);
         });
     }
     getHasAnyUsAccounts() {

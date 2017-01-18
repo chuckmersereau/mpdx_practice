@@ -43,8 +43,6 @@ class AccountsService {
     getDonations() {
         return this.api.get(`account_lists/${this.api.account_list_id}/donations`).then((resp) => {
             this.donations = resp;
-        }).catch((err) => {
-            this.$log.debug(err);
         });
     }
     destroyInvite(id) {
@@ -71,7 +69,7 @@ class AccountsService {
         if (this.analytics) {
             return this.$q.resolve(this.analytics);
         }
-        return this.api.get(`account_lists/144b83e8-b7f6-48c8-9c0e-688785bf6164/analytics`, { filter: { end_date: params.endDate.toISOString(), start_date: params.startDate.toISOString() } }).then((data) => {
+        return this.api.get(`account_lists/${this.api.account_list_id}/analytics`, { filter: { end_date: params.endDate.toISOString(), start_date: params.startDate.toISOString() } }).then((data) => {
             this.$log.debug('account_lists/analytics', data);
             this.analytics = data;
             return this.analytics;

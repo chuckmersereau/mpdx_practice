@@ -110,7 +110,7 @@ class TasksService {
             url: 'tasks',
             data: {
                 filters: filters,
-                include: 'comments',
+                include: 'comments,contacts,comments.people',
                 page: this.meta[collection].pagination.page,
                 per_page: this.meta[collection].pagination.per_page,
                 sort: this.meta[collection].pagination.order
