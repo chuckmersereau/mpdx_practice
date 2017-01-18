@@ -5,10 +5,11 @@ class TasksService {
     tasksTags;
 
     constructor(
-        $log,
+        $log, $q,
         modal, api, tasksFilter, tasksTags
     ) {
         this.$log = $log;
+        this.$q = $q;
         this.modal = modal;
         this.api = api;
         this.tasksFilter = tasksFilter;
