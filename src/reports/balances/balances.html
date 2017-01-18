@@ -1,9 +1,9 @@
 <h2 translate>Balances by Organization</h2>
-<div ng-if="$ctrl.errorOccurred" translate>
+<div ng-if="!$ctrl.designations" translate>
     Report data could not load due to an error. Please try again or contact support.
 </div>
 
-<div class="panel panel-default panel-report" ng-if="!$ctrl.errorOccurred">
+<div class="panel panel-default panel-report" ng-if="$ctrl.designations">
     <div class="panel-body panel-report-heading">
         <div class="row">
             <div class="col-xs-6">
@@ -39,7 +39,7 @@
             <td>{{designation.balance_updated_at | date : format : shortDate}}</td>
             <td class="text-right">
                 {{designation.currency_symbol}}
-                {{designation.balance | number : 0}}
+                {{designation.balance || 0  | number : 0}}
                 {{designation.currency}}
             </td>
             <td class="text-right">
@@ -55,7 +55,7 @@
                 {{$ctrl.total_currency}}
             </td>
             <td class="text-right">
-                <fa-checkbox checked="designation.balanceIncluded" on-toggle="$ctrl.onToggle(designation)"></fa-checkbox>
+                <fa-checkbox checked="designation.active" on-toggle="$ctrl.onToggle(designation)"></fa-checkbox>
             </td>
         </tr>
         </tbody>
