@@ -142,7 +142,7 @@ class ContactController {
         });
     }
     hideContact() {
-        this.contacts.hideContact(this.contact.id).then(() => {
+        this.contacts.hideContact(this.contact).then(() => {
             if (this.contacts.canGoRight(this.contact.id)) {
                 this.$state.go('contact', {contactId: this.contacts.getRightId(this.contact.id)});
             } else if (this.contacts.canGoLeft(this.contact.id)) {

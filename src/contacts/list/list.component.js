@@ -38,8 +38,8 @@ class ListController {
             this.contacts.clearSelectedContacts();
         }
     }
-    hideContact(contactId) {
-        this.contacts.hideContact(contactId);
+    hideContact(contact) {
+        this.contacts.hideContact(contact);
     }
     openAddTagModal() {
         this.modal.open({

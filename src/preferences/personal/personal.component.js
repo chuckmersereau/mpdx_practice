@@ -24,12 +24,6 @@ class PersonalPreferencesController {
         this.languages = _.map(_.keys($window.languageMappingList), (key) => {
             return _.extend({alias: key}, window.languageMappingList[key]);
         });
-
-        this.accountsMap = {};
-        _.each(this.accounts.data, (account) => {
-            this.accountsMap[account.id] = account;
-        });
-        this.default_account_list = this.users.current.preferences.default_account_list.toString();
     }
     $onInit() {
         if (this.$stateParams.id) {
@@ -51,7 +45,7 @@ class PersonalPreferencesController {
     }
     saveAccount() {
         this.saving = true;
-        return this.accounts.save(this.accountsMap[this.api.account_list_id]).then(() => {
+        return this.accounts.saveCurrent().then(() => {
             this.alerts.addAlert('Preferences saved successfully', 'success');
             this.setTab('');
             this.saving = false;
@@ -73,9 +67,6 @@ class PersonalPreferencesController {
     }
     tabSelected(service) {
         return this.tabId === service;
-    }
-    setDefaultAccountList() {
-        this.users.current.preferences.default_account_list = parseInt(this.default_account_list);
     }
     setSalaryOrg() {
         this.salary_organization_string = this.personal.data.salary_organization_id;
