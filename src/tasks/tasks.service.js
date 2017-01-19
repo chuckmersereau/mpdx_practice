@@ -91,7 +91,7 @@ class TasksService {
         };
     }
     fetchTasks(collection) {
-        this.data[collection] = [];
+        this.data[collection] = null;
         const defaultFilters = this.defaultFilters[collection];
         const wildcardSearch = this.tasksFilter.wildcard_search;
         let filters = _.assign(defaultFilters, this.tasksFilter.params);
@@ -100,9 +100,13 @@ class TasksService {
         }
         if (this.tasksTags.selectedTags.length > 0) {
             filters.tags = _.map(this.tasksTags.selectedTags, tag => tag.name).join(',');
+        } else {
+            delete filters.tags;
         }
         if (this.tasksTags.rejectedTags.length > 0) {
             filters.exclude_tags = _.map(this.tasksTags.rejectedTags, tag => tag.name).join(',');
+        } else {
+            delete filters.exclude_tags;
         }
         filters.any_tags = this.tasksTags.anyTags;
 
