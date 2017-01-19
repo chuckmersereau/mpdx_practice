@@ -8,13 +8,14 @@
         </span>
     </p>
 </div>
-<div ng-if="$ctrl.preferencesMerges.data.mergeable_accounts.length > 0">
+<div ng-if="$ctrl.accounts.data.length > 0">
     <p translate>
         You are merging the account below into your currently selected account. Merges are irreversible. We recommend that you are logged into the primary account.
     </p>
     <div class="form-group">
-        <select ng-options="account.id as account.name for account in $ctrl.preferencesMerges.data.mergeable_accounts" ng-model="$ctrl.preferencesMerges.selected_account_id" chosen>
+        <select ng-model="$ctrl.preferencesMerges.selected_account_id" chosen>
             <option style="display:none" value="" translate>Select an Account</option>
+            <option value="{{account.id}}" ng-repeat="account in $ctrl.accounts.data" ng-if="account.id !== $ctrl.api.account_list_id">{{account.name}}</option>
         </select>
         <button type="submit" ng-click="$ctrl.merge()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
             <span translate>Merge</span>&nbsp;
