@@ -136,7 +136,7 @@ class ContactsService {
                     if (val) {
                         _.assign(val, val, data); //add missing contact to data
                     } else {
-                        this.data.push(val);
+                        this.data.push(contact);
                     }
                 }
             });
