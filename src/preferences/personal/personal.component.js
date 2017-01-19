@@ -38,7 +38,7 @@ class PersonalPreferencesController {
     }
     save() {
         this.saving = true;
-        return this.users.save(this.users.current).then(() => {
+        return this.users.saveCurrent().then(() => {
             this.alerts.addAlert('Preferences saved successfully', 'success');
             this.setTab('');
             this.saving = false;

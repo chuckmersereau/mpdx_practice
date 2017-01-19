@@ -33,12 +33,20 @@ class Users {
         return this.api.get('user', {include: 'email_addresses'}).then((response) => {
             this.current = response;
             this.$log.debug('current user: ', response);
+
+            if (reset) {
+                return this.current;
+            }
+
             const locale = _.get(response, 'preferences.locale', 'en');
             this.changeLocale(locale);
             const defaultAccountListId = _.get(response, 'preferences.default_account_list').toString();
+
             return this.accounts.swap(defaultAccountListId).then(() => {
                 this.help.updateUser(this.current);
-                return this.accounts.load(); // force load accounts in resolve
+                return this.accounts.load().then(() => { // force load accounts in resolve
+                    return this.current;
+                });
             });
         });
     }
@@ -58,9 +66,13 @@ class Users {
     destroy(id) {
         return this.api.delete(`users/${id}`);
     }
-    save(user) {
-        this.$log.debug('user put', user);
-        return this.api.put('user', user);
+    saveCurrent() {
+        this.$log.debug('user put', this.current);
+        return this.api.put('user', this.current).then(() => {
+            return this.getCurrent(true).then((data) => { //force relead to reconcile as put response is incomplete
+                return data;
+            });
+        });
     }
 }
 
