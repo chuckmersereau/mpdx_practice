@@ -46,6 +46,9 @@ class Api {
 
         if (data.filters) {
             _.forIn(data.filters, (val, key) => {
+                if (_.isArray(val)) {
+                    val = val.join(',');
+                }
                 data[`filter[${key}]`] = val;
             });
             delete data.filters;
@@ -90,11 +93,10 @@ class Api {
                 return angular.toJson(new japi.Serializer(key, params).serialize(data));
             },
             transformResponse: appendTransform(this.$http.defaults.transformResponse, (data) => {
-                const meta = data.meta || {};
-                if (!_.isString(data) && data.data) {
-                    return new japi.Deserializer({keyForAttribute: 'underscore_case'}).deserialize(data).then((data) => {
-                        data.meta = meta;
-                        return data;
+                if (!_.isString(data) && _.get(data, 'data', false)) {
+                    return new japi.Deserializer({keyForAttribute: 'underscore_case'}).deserialize(data).then((deserializedData) => {
+                        deserializedData.meta = data.meta || {};
+                        return deserializedData;
                     });
                 } else {
                     return data;
@@ -165,7 +167,7 @@ class EntityAttributes {
                 attributes: ["created_at", "updated_at", "accepted_at", "accepted_by_user_id", "account_list_id", "cancelled_by_user_id", "code", "invited_by_user_id", "recipient_email", "updated_at", "updated_in_db_at"]
             },
             account_lists: {
-                attributes: ["name", "creator_id", "created_at", "updated_at", "settings", "updated_in_db_at"]
+                attributes: ["name", "creator_id", "created_at", "preferences_notifications", "updated_at", "settings", "updated_in_db_at"]
             },
             addresses: {
                 attributes: ["street", "city", "country", "end_date", "geo", "historic", "location", "postal_code", "primary_mailing_address", "start_date", "state", "updated_in_db_at"]
@@ -236,7 +238,7 @@ class EntityAttributes {
                     "notification_time_unit", "notification_scheduled", "updated_in_db_at"]
             },
             user: {
-                attributes: ["first_name", "preferences", "setup", "email_addresses", "access_token", "time_zone", "locale", "updated_at", "updated_in_db_at"],
+                attributes: ["first_name", "last_name", "preferences", "setup", "email_addresses", "access_token", "time_zone", "locale", "updated_at", "updated_in_db_at"],
                 email_addresses: () => _.extend({ ref: 'id' }, this.attributes.email_addresses)
             }
         };

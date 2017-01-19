@@ -1,18 +1,17 @@
 class ContactsService {
     analytics;
     api;
-    cache;
     contactFilter;
     contactsTags;
 
     constructor(
         $location, $log, $q, $rootScope,
-        api, cache, contactFilter, contactsTags
+        alerts, api, contactFilter, contactsTags
     ) {
         this.$log = $log;
         this.$q = $q;
+        this.alerts = alerts;
         this.api = api;
-        this.cache = cache;
         this.contactFilter = contactFilter;
         this.contactsTags = contactsTags;
 
@@ -60,6 +59,22 @@ class ContactsService {
     }
     get(id) {
         return this.api.get(`contacts/${id}`, {include: 'people,addresses'});
+    }
+    find(id) {
+        let contact = _.find(this.data, { id: id });
+        if (contact) {
+            this.$q.resolve(contact);
+        } else {
+            return this.get(id).then((data) => {
+                let contact = _.find(this.data, {id: data.id});
+                if (contact) {
+                    _.assign(contact, contact, data); //add missing contact to data
+                } else {
+                    this.data.push(contact);
+                }
+                return data;
+            });
+        }
     }
     load(reset) {
         this.loading = true;
@@ -114,9 +129,8 @@ class ContactsService {
                     return { text: tag };
                 });
                 // end fix
-                const currentContact = this.cache.updateContact(contact, data);
                 if (reset) {
-                    newContacts.push(currentContact);
+                    newContacts.push(contact);
                 } else {
                     let val = _.find(this.data, {id: contact.id});
                     if (val) {
@@ -136,7 +150,13 @@ class ContactsService {
     }
     save(contact) {
         return this.api.put(`contacts/${contact.id}`, contact).then((data) => {
-            this.cache.updateContact(data.contact, data);
+            let contact = _.find(this.data, {id: data.id});
+            if (contact) {
+                _.assign(contact, contact, data); //add missing contact to data
+            } else {
+                this.data.push(contact);
+            }
+            return data;
         });
     }
     create(contact) {
@@ -146,8 +166,13 @@ class ContactsService {
         };
 
         return this.api.post('contacts', {contact: contactObj}).then((data) => {
-            this.cache.updateContact(data.contact, data);
-            return this.cache.get(data.contact.id);
+            let contact = _.find(this.data, {id: data.id});
+            if (contact) {
+                _.assign(contact, contact, data); //add missing contact to data
+            } else {
+                this.data.push(contact);
+            }
+            return this.find(data.contact.id);
         });
     }
     loadMoreContacts() {
@@ -222,56 +247,60 @@ class ContactsService {
             contact[key] = value;
         });
     }
-    hideContact(contactId) {
-        _.remove(this.data, (contact) => contact.id === contactId);
-        return this.api.delete(`/contacts/${contactId}`);
+    hideContact(contact) {
+        contact.status = 'Never Ask';
+        this.save(contact).then(() => {
+            _.remove(this.data, { id: contact.id });
+        });
     }
     bulkHideContacts() {
-        return this.api.delete('/contacts/bulk_destroy', {ids: this.getSelectedContactIds()}).then(() => {
-            this.clearSelectedContacts();
-            this.load(true);
-        });
+        this.alerts.addAlert('This functionality is not yet available on MPDX NEXT', 'danger'); //Needs bulk save
+        // return this.api.delete('/contacts/bulk_destroy', {ids: this.getSelectedContactIds()}).then(() => {
+        //     this.clearSelectedContacts();
+        //     this.load(true);
+        // });
     }
-    bulkEditFields(model, pledgeCurrencies, contactIds) {
-        let obj = {};
-        if (model.likelyToGive) {
-            obj.likely_to_give = model.likelyToGive;
-        }
-        if (model.nextAsk) {
-            obj['next_ask(1i)'] = model.nextAsk.getFullYear() + '';
-            obj['next_ask(2i)'] = (model.nextAsk.getMonth() + 1) + '';
-            obj['next_ask(3i)'] = model.nextAsk.getDate() + '';
-        }
-        if (model.status) {
-            obj.status = model.status;
-        }
-        if (model.sendNewsletter) {
-            obj.send_newsletter = model.sendNewsletter;
-        }
-        if (model.churchName) {
-            obj.church_name = model.churchName;
-        }
-        if (model.website) {
-            obj.website = model.website;
-        }
-        if (model.pledgeReceived) {
-            if (model.pledgeReceived === 'Yes') {
-                obj.pledge_received = '1';
-            } else {
-                obj.pledge_received = '0';
-            }
-        }
-        if (model.pledgeCurrency) {
-            obj.pledge_currency = pledgeCurrencies[model.pledgeCurrency];
-        }
-        if (model.locale) {
-            obj.locale = model.locale[1];
-        }
-        return this.api.put('contacts/bulk_update', {
-            contact: obj,
-            bulk_edit_contact_ids: contactIds.join()
-        });
-    }
+    // Needs bulk save
+    // bulkEditFields(model, pledgeCurrencies, contactIds) {
+    //     let obj = {};
+    //     if (model.likelyToGive) {
+    //         obj.likely_to_give = model.likelyToGive;
+    //     }
+    //     if (model.nextAsk) {
+    //         obj['next_ask(1i)'] = model.nextAsk.getFullYear() + '';
+    //         obj['next_ask(2i)'] = (model.nextAsk.getMonth() + 1) + '';
+    //         obj['next_ask(3i)'] = model.nextAsk.getDate() + '';
+    //     }
+    //     if (model.status) {
+    //         obj.status = model.status;
+    //     }
+    //     if (model.sendNewsletter) {
+    //         obj.send_newsletter = model.sendNewsletter;
+    //     }
+    //     if (model.churchName) {
+    //         obj.church_name = model.churchName;
+    //     }
+    //     if (model.website) {
+    //         obj.website = model.website;
+    //     }
+    //     if (model.pledgeReceived) {
+    //         if (model.pledgeReceived === 'Yes') {
+    //             obj.pledge_received = '1';
+    //         } else {
+    //             obj.pledge_received = '0';
+    //         }
+    //     }
+    //     if (model.pledgeCurrency) {
+    //         obj.pledge_currency = pledgeCurrencies[model.pledgeCurrency];
+    //     }
+    //     if (model.locale) {
+    //         obj.locale = model.locale[1];
+    //     }
+    //     return this.api.put('contacts/bulk_update', {
+    //         contact: obj,
+    //         bulk_edit_contact_ids: contactIds.join()
+    //     });
+    // }
     getDonorAccounts() {
         if (!this.donorAccounts) {
             this.donorAccounts = [];
@@ -286,8 +315,6 @@ class ContactsService {
             this.$log.debug('contacts/analytics', data);
             this.analytics = data;
             return this.analytics;
-        }).catch((err) => {
-            this.$log.error('contacts/analytics not implemented.', err);
         });
     }
 }

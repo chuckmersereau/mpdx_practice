@@ -10,6 +10,7 @@ class TasksSearchController {
     }
     paramChanged() {
         this.tasksFilter.params.wildcard_search = this.searchParams;
+        this.tasksFilter.change();
     }
 }
 const Search = {

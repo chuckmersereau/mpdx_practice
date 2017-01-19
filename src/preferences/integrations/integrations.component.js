@@ -39,6 +39,9 @@ class IntegrationPreferencesController {
             this.setTab(this.$stateParams.id);
         }
     }
+    $onInit() {
+        this.integrations.load();
+    }
     sync(service) {
         this.saving = true;
         this.service = service;

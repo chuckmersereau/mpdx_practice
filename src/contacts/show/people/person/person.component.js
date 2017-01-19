@@ -4,15 +4,9 @@ class ContactPersonController {
     ) {
         this.$sce = $sce;
     }
-    $onInit() {
-        this.person.selected_for_merge = false;
-    }
     selectCard() {
-        if (this.isMerging === true) {
-            this.person.selected_for_merge = !this.person.selected_for_merge;
-        } else {
-            this.person.selected_for_merge = false;
-        }
+        if (!this.isMerging) return;
+        this.onSelectPerson({person: this.person});
     }
     trustSrc(src) {
         return this.$sce.trustAsResourceUrl(src);
@@ -24,7 +18,8 @@ const Person = {
     template: require('./person.html'),
     bindings: {
         person: '<',
-        isMerging: '='
+        isMerging: '<',
+        onSelectPerson: '&'
     }
 };
 
