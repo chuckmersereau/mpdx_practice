@@ -14,7 +14,11 @@ class Filters {
     }
     load({data, defaultParams, params, url}) {
         if (data) {
-            return this.$q.resolve();
+            return this.$q.resolve({
+                data: data,
+                params: params,
+                defaultParams: defaultParams
+            });
         }
         return this.api.get(url).then((response) => {
             data = response || [];
