@@ -20,7 +20,10 @@ class IntegrationsService {
         this.loading = true;
         this.$q.all([
             // this.api.get(`account_lists/${this.api.account_list_id}/prayer_letters_account`), //TODO: reimplement once API doesn't 404
-            this.api.get(`user/google_accounts`),
+            this.api.get(`user/google_accounts`).then((data) => {
+                this.$log.debug('user/google_accounts', data);
+                this.data.google_accounts = data;
+            }),
             this.api.get('user/key_accounts').then((data) => {
                 this.$log.debug('user/key_accounts', data);
                 this.data.key_accounts = data;

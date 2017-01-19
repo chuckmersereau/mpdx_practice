@@ -55,16 +55,16 @@ class AccountsService {
     }
     listInvites() {
         this.inviteList = null;
-        return this.api.get(`account_lists/${this.api.account_list_id}/invites`).then((data) => {
+        return this.api.get(`account_lists/${this.api.account_list_id}/invites`, {include: 'invited_by_user'}).then((data) => {
             this.inviteList = data;
             this.$log.debug('account_lists/invites', this.inviteList);
         });
     }
     listUsers() {
         this.userList = null;
-        this.api.get(`account_lists/${this.api.account_list_id}/users`).then((data) => {
+        this.api.get(`account_lists/${this.api.account_list_id}/users`, {include: 'email_addresses'}).then((data) => {
+            this.$log.debug('account_lists/users:', data);
             this.userList = data;
-            this.$log.debug('account_lists/users:', this.userList);
         });
     }
     getAnalytics(params) {

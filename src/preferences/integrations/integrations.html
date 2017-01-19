@@ -15,8 +15,8 @@
                 <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('key') }"></i>
                 <span translate>Key / Relay</span>
                 <div class="pull-right">
-                    <div class="accstatus accstatus-enabled" ng-show="$ctrl.integrations.data.valid_key_account"><i class="fa fa-circle"></i></div>
-                    <div class="accstatus accstatus-disabled" ng-hide="$ctrl.integrations.data.valid_key_account"><i class="fa fa-circle-o"></i></div>
+                    <div class="accstatus accstatus-enabled" ng-if="$ctrl.integrations.data.length > 0"><i class="fa fa-circle"></i></div>
+                    <div class="accstatus accstatus-disabled" ng-if="$ctrl.integrations.data.length === 0"><i class="fa fa-circle-o"></i></div>
                 </div>
             </div>
             <div class="panel-animate" ng-show="$ctrl.tabSelected('key')">
@@ -78,8 +78,8 @@
                 <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('google') }"></i>
                 <span translate>Google Contacts, Calendar and Mail</span>
                 <div class="pull-right">
-                    <div class="accstatus accstatus-enabled" ng-show="$ctrl.integrations.data.valid_google_account"><i class="fa fa-circle"></i></div>
-                    <div class="accstatus accstatus-disabled" ng-hide="$ctrl.integrations.data.valid_google_account"><i class="fa fa-circle-o"></i></div>
+                    <div class="accstatus accstatus-enabled" ng-if="$ctrl.integrations.data.google_accounts.length > 0"><i class="fa fa-circle"></i></div>
+                    <div class="accstatus accstatus-disabled" ng-if="$ctrl.integrations.data.google_accounts.length === 0"><i class="fa fa-circle-o"></i></div>
                 </div>
             </div>
             <div class="panel-animate" ng-show="$ctrl.tabSelected('google')">
@@ -171,8 +171,8 @@
                 <span translate>PrayerLetters.com</span>
                 <div class="pull-right">
                     <div ng-show="$ctrl.integrations.data.prayer_letters_account">
-                        <div class="accstatus accstatus-enabled" ng-show="$ctrl.integrations.data.valid_prayer_letters_account"><i class="fa fa-circle"></i></div>
-                        <div class="accstatus accstatus-error" ng-hide="$ctrl.integrations.data.valid_prayer_letters_account"><i class="fa fa-circle-o"></i></div>
+                        <div class="accstatus accstatus-enabled" ng-if="$ctrl.integrations.data.prayer_letters_accounts.length > 0"><i class="fa fa-circle"></i></div>
+                        <div class="accstatus accstatus-error" ng-if="$ctrl.integrations.data.prayer_letters_accounts.length === 0"><i class="fa fa-circle-o"></i></div>
                     </div>
                     <div ng-hide="$ctrl.integrations.data.prayer_letters_account">
                         <div class="accstatus accstatus-disabled"><i class="fa fa-circle-o"></i></div>
