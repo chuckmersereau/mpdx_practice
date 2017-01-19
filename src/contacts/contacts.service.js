@@ -260,6 +260,7 @@ class ContactsService {
         //     this.load(true);
         // });
     }
+    // Needs bulk save
     // bulkEditFields(model, pledgeCurrencies, contactIds) {
     //     let obj = {};
     //     if (model.likelyToGive) {
