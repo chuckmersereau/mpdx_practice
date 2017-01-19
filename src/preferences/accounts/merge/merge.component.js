@@ -10,11 +10,13 @@ class MergePreferencesController {
         this.accounts = accounts;
         this.alerts = alerts;
         this.api = api;
+
         this.saving = false;
+        this.selected_account_id = null;
     }
     merge() {
         this.saving = true;
-        return this.api.post('preferences/accounts/merges', { merge: { id: this.selected_account_id } }).then(() => {
+        return this.api.post(`account_lists/${this.api.account_list_id}/merge`, { id: this.selected_account_id }).then(() => {
             this.saving = false;
             this.alerts.addAlert('MPDX merged your account successfully', 'success');
             return this.accounts.load();

@@ -13,7 +13,7 @@
         You are merging the account below into your currently selected account. Merges are irreversible. We recommend that you are logged into the primary account.
     </p>
     <div class="form-group">
-        <select ng-model="$ctrl.preferencesMerges.selected_account_id" chosen>
+        <select ng-model="$ctrl.selected_account_id" chosen>
             <option style="display:none" value="" translate>Select an Account</option>
             <option value="{{account.id}}" ng-repeat="account in $ctrl.accounts.data" ng-if="account.id !== $ctrl.api.account_list_id">{{account.name}}</option>
         </select>
