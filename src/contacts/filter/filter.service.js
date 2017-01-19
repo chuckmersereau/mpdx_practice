@@ -1,15 +1,15 @@
 class FilterService {
     api;
+    filters;
 
     constructor(
-        $location, $log, $q, $rootScope, $state,
-        api
+        $location, $rootScope,
+        api, filters
     ) {
         this.$location = $location;
-        this.$log = $log;
-        this.$q = $q;
         this.$rootScope = $rootScope;
         this.api = api;
+        this.filters = filters;
 
         this.data = null;
         this.params = {};
@@ -23,57 +23,23 @@ class FilterService {
         }
     }
     load() {
-        if (this.data) {
-            return this.$q.resolve();
-        }
-        return this.api.get(`contacts/filters`).then((data) => {
-            this.data = data || [];
-            this.data = _.sortBy(this.data, ['id']);
-            this.$log.debug('contacts/filters:', data);
-
-            let params = {};
-            _.each(this.data, (obj) => {
-                if (obj.multiple && !_.isArray(obj.default_selection)) {
-                    params[obj.name] = [obj.default_selection];
-                } else {
-                    params[obj.name] = obj.default_selection;
-                }
-                if (obj.parent !== null) {
-                    let parentObj = _.find(this.data, parent => parent.title === obj.parent && parent.type === 'container');
-                    if (!parentObj) {
-                        parentObj = {title: obj.parent, type: 'container', priority: obj.priority, children: []};
-                        this.data.push(parentObj);
-                    }
-                    parentObj.children.push(obj);
-                    this.data = _.reject(this.data, comparator => _.eq(obj, comparator));
-                }
-            });
-            this.default_params = _.clone(params);
+        return this.filters.load({
+            data: this.data,
+            defaultParams: this.default_params,
+            params: this.params,
+            url: 'contacts/filters'
+        }).then(({data, defaultParams, params}) => {
+            this.data = data;
+            this.default_params = defaultParams;
             this.params = params;
-            this.mergeParamsFromLocation();
-        }).catch((ex) => {
-            console.error('contacts/filter.service');
-            return ex;
-        });
-    }
-    mergeParamsFromLocation() {
-        _.each(this.$location.search(), (value, param) => {
-            if (param.indexOf('filters[') === 0) {
-                var filter = param.slice(param.indexOf('[') + 1, param.indexOf(']'));
-                if (this.default_params[filter] instanceof Array && !(value instanceof Array)) {
-                    this.params[filter] = value.split();
-                } else {
-                    this.params[filter] = value;
-                }
-            }
         });
     }
     count() {
-        return _.filter(_.keys(this.params), key => !_.isEqual(this.params[key], this.default_params[key])).length;
+        return this.filters.count({ defaultParams: this.default_params, params: this.params });
     }
     reset() {
         this.params = _.clone(this.default_params);
-        this.change(this.params);
+        this.change();
     }
     change() {
         this.$rootScope.$emit('contactParamChange');

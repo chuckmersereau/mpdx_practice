@@ -209,9 +209,9 @@ function logout($window, $state) {
 
 /*@ngInject*/
 function openAddressModal(
-    $stateParams, modal, cache, $state
+    $stateParams, modal, contacts, $state
 ) {
-    cache.get($stateParams.contactId).then((contact) => {
+    contacts.find($stateParams.contactId).then((contact) => {
         const address = _.find(contact.addresses, addressToFilter => addressToFilter.id.toString() === $stateParams.addressId);
 
         modal.open({
@@ -272,9 +272,9 @@ function openPeopleModal($state, $stateParams, modal, contactPerson) {
 /*@ngInject*/
 function openMergePeopleModal(
     $state, $stateParams,
-    modal, cache, contacts
+    modal, contacts
 ) {
-    cache.get($stateParams.contactId).then((contact) => {
+    contacts.find($stateParams.contactId).then((contact) => {
         const peopleIds = $stateParams.peopleIds.split(',');
         const people = _.filter(contact.people, person => _.includes(peopleIds, person.id.toString()));
 

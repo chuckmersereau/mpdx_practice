@@ -29,7 +29,7 @@ class AccountsService {
         if (id == null || id === _.get(this.current, 'id')) {
             return this.$q.reject();
         }
-        return this.api.get(`account_lists/${id}`).then((resp) => {
+        return this.api.get(`account_lists/${id}`, { include: 'notification_preferences' }).then((resp) => {
             this.current = resp;
             this.api.account_list_id = id;
             this.$log.debug('account swapped: ', resp);
@@ -76,6 +76,9 @@ class AccountsService {
             this.analytics = data;
             return this.analytics;
         });
+    }
+    save(account) {
+        return this.api.put(`account_lists/${account.id}`, account);
     }
 }
 export default angular.module('mpdx.common.accounts.service', [])

@@ -11,6 +11,7 @@ import currency from './currency/currency.service';
 import currencySelect from './currencySelect/currencySelect.component';
 import designationAccounts from './designationAccounts/designationAccounts.service';
 import faCheckbox from './faCheckbox/faCheckbox.component';
+import filters from './filters/filters.service';
 import help from './help/help.service';
 import layoutSettings from './layoutSettings/layoutSettings.directive';
 import links from './links/index.module';
@@ -40,6 +41,7 @@ export default angular.module('mpdx.common', [
     currencySelect,
     designationAccounts,
     faCheckbox,
+    filters,
     help,
     layoutSettings,
     links,
