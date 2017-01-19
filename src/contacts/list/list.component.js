@@ -9,7 +9,6 @@ class ListController {
     constructor(
         modal, contacts, contactsTags, alerts, tasksService, accounts
     ) {
-        console.error('contacts/list: need replacement for currentAccountList.contacts.length');
         this.accounts = accounts;
         this.alerts = alerts;
         this.contacts = contacts;

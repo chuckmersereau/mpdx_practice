@@ -39,7 +39,6 @@ class progressController {
     }
     $onInit() {
         this.refreshData();
-        this.users.getHasAnyUsAccounts();
     }
 }
 

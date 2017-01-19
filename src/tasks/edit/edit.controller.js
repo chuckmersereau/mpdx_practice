@@ -31,7 +31,7 @@ class EditTaskController {
         this.activate();
     }
     activate() {
-        this.serverConstants.fetchConstants(['actions', 'next_actions', 'results']);
+        // this.serverConstants.fetchConstants(['actions', 'next_actions', 'results']);
         this.constants = this.serverConstants.data;
 
         const inputTask = this.specifiedTask || {};

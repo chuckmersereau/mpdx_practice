@@ -10,6 +10,7 @@ class ContactsSearchController {
     }
     paramChanged() {
         this.contactFilter.params.wildcard_search = this.searchParams;
+        this.contactFilter.change();
     }
 }
 const Search = {

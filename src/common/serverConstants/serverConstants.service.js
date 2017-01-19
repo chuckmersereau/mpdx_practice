@@ -1,7 +1,11 @@
 class ServerConstantsService {
     api;
 
-    constructor(api, $q) {
+    constructor(
+        api,
+        $log, $q
+    ) {
+        this.$log = $log;
         this.$q = $q;
         this.api = api;
 
@@ -113,6 +117,19 @@ class ServerConstantsService {
     }
     _shouldFetch(constantName) {
         return !(this.data[constantName] || this.isFetching.constants[constantName]);
+    }
+    list() {
+        return this.api.get('constants').then((data) => {
+            this.$log.debug('constants', data);
+            // _.mapKeys(data, (val, key) => {
+            //     this.data[key] = val;
+            //     this.isFetching.constants[key] = false;
+            //
+            //     if (fetchConstantsNames.length === 0) {
+            //         this.isFetching.all = false;
+            //     }
+            // });
+        });
     }
 }
 

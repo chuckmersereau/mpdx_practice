@@ -37,13 +37,21 @@ export default class Routes {
             params: {
                 filters: null
             },
-            parent: 'root'
+            parent: 'root',
+            resolve: {
+                resolution: /*@ngInject*/ (contactFilter) => contactFilter.load(),
+                another: /*@ngInject*/ (contactsTags) => contactsTags.load()
+            }
         }).state({
             name: 'contact',
             title: 'Contact',
             url: '/contacts/{contactId}',
             component: 'contact',
-            parent: 'root'
+            parent: 'root',
+            resolve: {
+                resolution: /*@ngInject*/ (contactFilter) => contactFilter.load(),
+                another: /*@ngInject*/ (contactsTags) => contactsTags.load()
+            }
         }).state({
             name: 'contact.address',
             url: '/addresses/{addressId}',
@@ -151,7 +159,11 @@ export default class Routes {
             title: 'Tasks',
             url: '/tasks',
             component: 'tasks',
-            parent: 'root'
+            parent: 'root',
+            resolve: {
+                resolution: /*@ngInject*/ (tasksFilter) => tasksFilter.load(),
+                another: /*@ngInject*/ (tasksTags) => tasksTags.load()
+            }
         }).state({
             name: 'tasks.new',
             url: '/new',
@@ -167,7 +179,9 @@ export default class Routes {
 }
 
 /*@ngInject*/
-function auth($state, $stateParams, $window, $location, $http, users, accounts) {
+function auth(
+    $state, $stateParams, $window, $http, $log
+) {
     if (!_.isEmpty($stateParams.access_token)) {
         $http({
             url: `${config.apiUrl}user/authentication`,
@@ -180,14 +194,11 @@ function auth($state, $stateParams, $window, $location, $http, users, accounts) 
                 access_token: $stateParams.access_token
             }
         }).then((data) => {
+            $log.debug('user/authentication', data);
             $window.sessionStorage.token = data.data.json_web_token;
             const redirect = angular.copy($window.sessionStorage.redirect || 'home');
             delete $window.sessionStorage.redirect;
-            $location.$$search = {}; //clear querystring
-            return users.getCurrent().then(() => {
-                accounts.load();
-                $state.go(redirect, {reload: true});
-            });
+            $state.go(redirect, {}, {reload: true});
         });
     }
 }
@@ -195,14 +206,14 @@ function auth($state, $stateParams, $window, $location, $http, users, accounts) 
 /*@ngInject*/
 function logout($window, $state) {
     delete $window.sessionStorage.token;
-    $state.go('login', {reload: true});
+    $state.go('login', {}, {reload: true});
 }
 
 /*@ngInject*/
 function openAddressModal(
-    $stateParams, modal, cache, $state
+    $stateParams, modal, contacts, $state
 ) {
-    cache.get($stateParams.contactId).then((contact) => {
+    contacts.find($stateParams.contactId).then((contact) => {
         const address = _.find(contact.addresses, addressToFilter => addressToFilter.id.toString() === $stateParams.addressId);
 
         modal.open({
@@ -213,7 +224,7 @@ function openAddressModal(
                 address: address
             },
             onHide: () => {
-                $state.go('^');
+                $state.go('^', {}, { reload: true });
             }
         });
     });
@@ -247,7 +258,7 @@ function openPeopleModal($state, $stateParams, modal, contactPerson) {
                 person: person
             },
             onHide: () => {
-                $state.go('^');
+                $state.go('contact', {contactId: contactId}, { reload: true });
             }
         });
     }
@@ -263,9 +274,9 @@ function openPeopleModal($state, $stateParams, modal, contactPerson) {
 /*@ngInject*/
 function openMergePeopleModal(
     $state, $stateParams,
-    modal, cache, contacts
+    modal, contacts
 ) {
-    cache.get($stateParams.contactId).then((contact) => {
+    contacts.find($stateParams.contactId).then((contact) => {
         const peopleIds = $stateParams.peopleIds.split(',');
         const people = _.filter(contact.people, person => _.includes(peopleIds, person.id.toString()));
 
@@ -278,7 +289,7 @@ function openMergePeopleModal(
             },
             onHide: () => {
                 contacts.load(true);
-                $state.go('^');
+                $state.go('^', {}, { reload: true });
             }
         });
     });
@@ -293,7 +304,7 @@ function openNewContactModal(
         controller: 'contactNewModalController',
         onHide: () => {
             if ($state.current.name === 'contacts.new') {
-                $state.go('^');
+                $state.go('^', {}, { reload: true });
             }
         }
     });
@@ -314,7 +325,7 @@ function openNewTaskModal(
         },
         onHide: () => {
             if ($state.current.name === 'tasks.new') {
-                $state.go('^');
+                $state.go('^', {}, { reload: true });
             }
         }
     });

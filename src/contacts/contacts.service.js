@@ -1,18 +1,16 @@
 class ContactsService {
     analytics;
     api;
-    cache;
     contactFilter;
     contactsTags;
 
     constructor(
         $location, $log, $q, $rootScope,
-        api, cache, contactFilter, contactsTags
+        api, contactFilter, contactsTags
     ) {
         this.$log = $log;
         this.$q = $q;
         this.api = api;
-        this.cache = cache;
         this.contactFilter = contactFilter;
         this.contactsTags = contactsTags;
 
@@ -60,6 +58,22 @@ class ContactsService {
     }
     get(id) {
         return this.api.get(`contacts/${id}`, {include: 'people,addresses'});
+    }
+    find(id) {
+        let contact = _.find(this.data, { id: id });
+        if (contact) {
+            this.$q.resolve(contact);
+        } else {
+            return this.get(id).then((data) => {
+                let contact = _.find(this.data, {id: data.id});
+                if (contact) {
+                    _.assign(contact, contact, data); //add missing contact to data
+                } else {
+                    this.data.push(contact);
+                }
+                return data;
+            });
+        }
     }
     load(reset) {
         this.loading = true;
@@ -114,11 +128,15 @@ class ContactsService {
                     return { text: tag };
                 });
                 // end fix
-                const currentContact = this.cache.updateContact(contact, data);
                 if (reset) {
-                    newContacts.push(currentContact);
+                    newContacts.push(contact);
                 } else {
-                    this.data = _.unionBy(this.data, [currentContact], 'id');
+                    let val = _.find(this.data, {id: contact.id});
+                    if (val) {
+                        _.assign(val, val, data); //add missing contact to data
+                    } else {
+                        this.data.push(val);
+                    }
                 }
             });
             if (reset) {
@@ -131,7 +149,8 @@ class ContactsService {
     }
     save(contact) {
         return this.api.put(`contacts/${contact.id}`, contact).then((data) => {
-            this.cache.updateContact(data.contact, data);
+            let contact = _.find(this.data, {id: data.id});
+            _.assign(contact, contact, data); //add missing contact to data
         });
     }
     create(contact) {
@@ -141,8 +160,13 @@ class ContactsService {
         };
 
         return this.api.post('contacts', {contact: contactObj}).then((data) => {
-            this.cache.updateContact(data.contact, data);
-            return this.cache.get(data.contact.id);
+            let contact = _.find(this.data, {id: data.id});
+            if (contact) {
+                _.assign(contact, contact, data); //add missing contact to data
+            } else {
+                this.data.push(contact);
+            }
+            return this.find(data.contact.id);
         });
     }
     loadMoreContacts() {
@@ -281,8 +305,6 @@ class ContactsService {
             this.$log.debug('contacts/analytics', data);
             this.analytics = data;
             return this.analytics;
-        }).catch((err) => {
-            this.$log.error('contacts/analytics not implemented.', err);
         });
     }
 }
