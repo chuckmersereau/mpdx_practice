@@ -3,14 +3,13 @@ class ContactController {
     contacts;
     contactFilter;
     modal;
-    preferencesContacts;
     contactReferrals;
     serverConstants;
     tasksService;
 
     constructor(
         $log, $state, $stateParams, $location, $anchorScroll, help,
-        modal, contacts, tasksService, contactReferrals, preferencesContacts, contactFilter, serverConstants
+        modal, contacts, tasksService, contactReferrals, contactFilter, serverConstants
     ) {
         this.$anchorScroll = $anchorScroll;
         this.$log = $log;
@@ -20,7 +19,6 @@ class ContactController {
         this.contacts = contacts;
         this.contactFilter = contactFilter;
         this.modal = modal;
-        this.preferencesContacts = preferencesContacts;
         this.contactReferrals = contactReferrals;
         this.serverConstants = serverConstants;
         this.tasksService = tasksService;
@@ -66,8 +64,8 @@ class ContactController {
                     newIndex = this.tabsLabels.length - 1;
                 }
 
-                this.preferencesContacts.data.contact_tabs_sort = this.tabsLabels.map(item => item['key']).join();
-                this.preferencesContacts.save();
+                //this.preferencesContacts.data.contact_tabs_sort = this.tabsLabels.map(item => item['key']).join(); // TODO: Get tab sort data
+                // this.preferencesContacts.save(); // TODO: save tab sort data
             },
             containerPositioning: 'relative'
         };
@@ -142,7 +140,7 @@ class ContactController {
         });
     }
     hideContact() {
-        this.contacts.hideContact(this.contact.id).then(() => {
+        this.contacts.hideContact(this.contact).then(() => {
             if (this.contacts.canGoRight(this.contact.id)) {
                 this.$state.go('contact', {contactId: this.contacts.getRightId(this.contact.id)});
             } else if (this.contacts.canGoLeft(this.contact.id)) {

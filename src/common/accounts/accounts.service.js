@@ -74,8 +74,16 @@ class AccountsService {
             return this.analytics;
         });
     }
-    save(account) {
-        return this.api.put(`account_lists/${account.id}`, account);
+    saveCurrent() {
+        return this.api.put(`account_lists/${this.current.id}`, this.current).then(() => {
+            return this.getCurrent().then((data) => { //reconcile obj with db
+                let account = _.find(this.data, { id: data.id }); //reconcile w/ account list
+                if (account) {
+                    _.assign(account, account, data);
+                }
+                return data;
+            });
+        });
     }
 }
 export default angular.module('mpdx.common.accounts.service', [])

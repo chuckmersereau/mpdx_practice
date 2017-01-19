@@ -17,8 +17,7 @@ class NotificationPreferencesController {
         _.each(this.accounts.current.preferences_notifications, (notification) => {
             notification.actions = this.notifications[notification.field_name].actions;
         });
-        return this.accounts.save(this.accounts.current).then((data) => {
-            this.accounts.current = data;
+        return this.accounts.saveCurrent().then((data) => {
             _.unionBy(this.accounts.data, [data], 'id');
             this.alerts.addAlert('Notifications saved successfully', 'success');
         }).catch((data) => {

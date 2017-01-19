@@ -345,7 +345,7 @@
                         <span translate>Default Account</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{$ctrl.accountsMap[$ctrl.default_account_list].name}}
+                        {{$ctrl.accounts.current.name}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
@@ -362,8 +362,8 @@
                             <div class="form-group">
                                 <label for="defaultAccountList" translate>Default Account List</label>
                                 <p class="text-muted" translate>This sets which account you will land in whenever you login to MPDX.</p>
-                                <select id="defaultAccountList" class="form-control" ng-model="$ctrl.default_account_list" ng-change="$ctrl.setDefaultAccountList()"
-                                        ng-options="al.id as al.name for al in $ctrl.accountsMap | toArray" chosen>
+                                <select id="defaultAccountList" class="form-control" ng-model="$ctrl.users.current.preferences.default_account_list"
+                                        ng-options="al.id as al.name for al in $ctrl.accounts.data | toArray" chosen>
                                 </select>
                             </div>
                             <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
@@ -390,7 +390,7 @@
                         <span tranlsate>Account Name</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{$ctrl.accountsMap[$ctrl.api.account_list_id].name}}
+                        {{$ctrl.accounts.current.name}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
@@ -407,7 +407,7 @@
                             <div class="form-group">
                                 <label for="accountListName" translate>Account Name</label>
                                 <p class="text-muted" translate>You can change the account name in MPDX into something that is more identifiable to you. This will not change the account name with your organization.</p>
-                                <input type="text" id="accountListName" class="form-control" ng-model="$ctrl.accountsMap[$ctrl.api.account_list_id].name">
+                                <input type="text" id="accountListName" class="form-control" ng-model="$ctrl.accounts.current.name">
                             </div>
                             <button type="submit" ng-click="$ctrl.saveAccount()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                                 <span translate>Save</span>&nbsp;
@@ -426,7 +426,7 @@
                         <span translate>Monthly Goal</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{$ctrl.accountsMap[$ctrl.api.account_list_id].monthly_goal}}
+                        {{$ctrl.accounts.current.monthly_goal}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
@@ -443,7 +443,7 @@
                             <div class="form-group">
                                 <label for="monthlyGoal" translate>Monthly goal</label>
                                 <p class="text-muted" translate>This amount should be set to the amount your organization has determined is your target monthly goal. If you do not know, make your best guess for now. You can change it at any time.</p>
-                                <input type="text" id="monthlyGoal" class="form-control" ng-model="$ctrl.accountsMap[$ctrl.api.account_list_id].monthly_goal">
+                                <input type="text" id="monthlyGoal" class="form-control" ng-model="$ctrl.accounts.current.monthly_goal">
                             </div>
                             <button type="submit" ng-click="$ctrl.saveAccount()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                                 <span translate>Save</span>>&nbsp;
@@ -462,7 +462,7 @@
                         <span translate>Home Country</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{$ctrl.accountsMap[$ctrl.api.account_list_id].home_country}}
+                        {{$ctrl.accounts.current.home_country}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
@@ -479,7 +479,7 @@
                             <div class="form-group">
                                 <label for="homeCountry" translate>Home Country</label>
                                 <p class="text-muted" translate>This should be the place you are living and sending out physical communications from. This will be used in exports for mailing address information.</p>
-                                <select id="homeCountry" class="country_select form-control" ng-model="$ctrl.users.current.preferences.home_country" chosen>
+                                <select id="homeCountry" class="country_select form-control" ng-model="$ctrl.accounts.current.home_country" chosen>
                                     <option ng-repeat="country in $ctrl.countries">{{ country }}</option>
                                 </select>
                             </div>

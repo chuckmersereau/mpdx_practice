@@ -38,53 +38,58 @@ class ListController {
             this.contacts.clearSelectedContacts();
         }
     }
-    hideContact(contactId) {
-        this.contacts.hideContact(contactId);
+    hideContact(contact) {
+        this.contacts.hideContact(contact);
     }
     openAddTagModal() {
-        this.modal.open({
-            template: require('../tags/add/add.html'),
-            controller: 'addTagController',
-            locals: {
-                selectedContacts: this.contacts.getSelectedContactIds()
-            }
-        });
+        this.alerts.addAlert('This functionality is not yet available on MPDX NEXT', 'danger'); //Needs bulk save
+        // this.modal.open({
+        //     template: require('../tags/add/add.html'),
+        //     controller: 'addTagController',
+        //     locals: {
+        //         selectedContacts: this.contacts.getSelectedContactIds()
+        //     }
+        // });
     }
     openRemoveTagModal() {
-        this.modal.open({
-            template: require('../tags/remove/remove.html'),
-            controller: 'removeTagController',
-            locals: {
-                selectedContacts: this.contacts.getSelectedContactIds()
-            }
-        });
+        this.alerts.addAlert('This functionality is not yet available on MPDX NEXT', 'danger'); //Needs bulk save
+        // this.modal.open({
+        //     template: require('../tags/remove/remove.html'),
+        //     controller: 'removeTagController',
+        //     locals: {
+        //         selectedContacts: this.contacts.getSelectedContactIds()
+        //     }
+        // });
     }
     openAddTaskModal() {
-        this.tasksService.openModal({
-            selectedContacts: this.contacts.getSelectedContactIds()
-        });
+        this.alerts.addAlert('This functionality is not yet available on MPDX NEXT', 'danger'); //Needs bulk save
+        // this.tasksService.openModal({
+        //     selectedContacts: this.contacts.getSelectedContactIds()
+        // });
     }
     openLogTaskModal() {
-        this.modal.open({
-            template: require('../logTask/logTask.html'),
-            controller: 'logTaskController',
-            locals: {
-                selectedContacts: this.contacts.getSelectedContactIds(),
-                toComplete: true,
-                createNext: true,
-                specifiedTask: null,
-                ajaxAction: null
-            }
-        });
+        this.alerts.addAlert('This functionality is not yet available on MPDX NEXT', 'danger'); //Needs bulk save
+        // this.modal.open({
+        //     template: require('../logTask/logTask.html'),
+        //     controller: 'logTaskController',
+        //     locals: {
+        //         selectedContacts: this.contacts.getSelectedContactIds(),
+        //         toComplete: true,
+        //         createNext: true,
+        //         specifiedTask: null,
+        //         ajaxAction: null
+        //     }
+        // });
     }
     openEditFieldsModal() {
-        this.modal.open({
-            template: require('./editFields/editFields.html'),
-            controller: 'editFieldsController',
-            locals: {
-                selectedContacts: this.contacts.getSelectedContactIds()
-            }
-        });
+        this.alerts.addAlert('This functionality is not yet available on MPDX NEXT', 'danger'); //Needs bulk save
+        // this.modal.open({
+        //     template: require('./editFields/editFields.html'),
+        //     controller: 'editFieldsController',
+        //     locals: {
+        //         selectedContacts: this.contacts.getSelectedContactIds()
+        //     }
+        // });
     }
     openMergeContactsModal() {
         const selectedLength = this.contacts.getSelectedContacts().length;
