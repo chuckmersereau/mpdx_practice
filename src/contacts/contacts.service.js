@@ -66,7 +66,11 @@ class ContactsService {
         } else {
             return this.get(id).then((data) => {
                 let contact = _.find(this.data, {id: data.id});
-                _.assign(contact, contact, data); //add missing contact to data
+                if (contact) {
+                    _.assign(contact, contact, data); //add missing contact to data
+                } else {
+                    this.data.push(contact);
+                }
                 return data;
             });
         }
@@ -128,8 +132,11 @@ class ContactsService {
                     newContacts.push(contact);
                 } else {
                     let val = _.find(this.data, {id: contact.id});
-                    _.assign(val, val, data); //add missing contact to data
-                    // this.data = _.unionBy([contact], this.data, 'id');
+                    if (val) {
+                        _.assign(val, val, data); //add missing contact to data
+                    } else {
+                        this.data.push(val);
+                    }
                 }
             });
             if (reset) {
@@ -144,7 +151,6 @@ class ContactsService {
         return this.api.put(`contacts/${contact.id}`, contact).then((data) => {
             let contact = _.find(this.data, {id: data.id});
             _.assign(contact, contact, data); //add missing contact to data
-            // this.data = _.unionBy([data], this.data, 'id');
         });
     }
     create(contact) {
@@ -155,8 +161,11 @@ class ContactsService {
 
         return this.api.post('contacts', {contact: contactObj}).then((data) => {
             let contact = _.find(this.data, {id: data.id});
-            _.assign(contact, contact, data); //add missing contact to data
-            // _.unionBy(this.data, [data], 'id');
+            if (contact) {
+                _.assign(contact, contact, data); //add missing contact to data
+            } else {
+                this.data.push(contact);
+            }
             return this.find(data.contact.id);
         });
     }

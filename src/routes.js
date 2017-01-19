@@ -176,7 +176,9 @@ export default class Routes {
 }
 
 /*@ngInject*/
-function auth($state, $stateParams, $window, $location, $http, users, accounts) {
+function auth(
+    $state, $stateParams, $window, $http, $log
+) {
     if (!_.isEmpty($stateParams.access_token)) {
         $http({
             url: `${config.apiUrl}user/authentication`,
@@ -189,14 +191,11 @@ function auth($state, $stateParams, $window, $location, $http, users, accounts) 
                 access_token: $stateParams.access_token
             }
         }).then((data) => {
+            $log.debug('user/authentication', data);
             $window.sessionStorage.token = data.data.json_web_token;
             const redirect = angular.copy($window.sessionStorage.redirect || 'home');
             delete $window.sessionStorage.redirect;
-            $location.$$search = {}; //clear querystring
-            return users.getCurrent().then(() => {
-                accounts.load();
-                $state.go(redirect, {reload: true});
-            });
+            $state.go(redirect, {}, {reload: true});
         });
     }
 }
@@ -204,7 +203,7 @@ function auth($state, $stateParams, $window, $location, $http, users, accounts) 
 /*@ngInject*/
 function logout($window, $state) {
     delete $window.sessionStorage.token;
-    $state.go('login', {reload: true});
+    $state.go('login', {}, {reload: true});
 }
 
 /*@ngInject*/

@@ -7,10 +7,11 @@ class Users {
     organizationAccounts;
 
     constructor(
-        $log, $rootScope, gettextCatalog,
+        $log, $q, $rootScope, gettextCatalog,
         accounts, api, help
     ) {
         this.$log = $log;
+        this.$q = $q;
         this.$rootScope = $rootScope;
         this.accounts = accounts;
         this.api = api;
@@ -25,13 +26,17 @@ class Users {
             this.listOrganizationAccounts();
         });
     }
-    getCurrent() {
+    getCurrent(reset = false) {
+        if (this.current && !reset) {
+            return this.$q.resolve();
+        }
         return this.api.get('user', {include: 'email_addresses'}).then((response) => {
             this.current = response;
             this.$log.debug('current user: ', response);
             const locale = _.get(response, 'preferences.locale', 'en');
             this.changeLocale(locale);
             const defaultAccountListId = _.get(response, 'preferences.default_account_list').toString();
+            this.accounts.load();
             return this.accounts.swap(defaultAccountListId).then(() => {
                 this.help.updateUser(this.current);
                 return this.accounts.load(); // force load accounts in resolve
