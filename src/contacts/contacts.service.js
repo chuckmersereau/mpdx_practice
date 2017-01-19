@@ -118,7 +118,12 @@ class ContactsService {
                 if (reset) {
                     newContacts.push(currentContact);
                 } else {
-                    this.data = _.unionBy(this.data, [currentContact], 'id');
+                    let val = _.find(this.data, {id: contact.id});
+                    if (val) {
+                        _.assign(val, val, data); //add missing contact to data
+                    } else {
+                        this.data.push(contact);
+                    }
                 }
             });
             if (reset) {
