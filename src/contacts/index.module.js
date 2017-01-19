@@ -6,7 +6,6 @@ import newContact from './new/new.controller';
 import search from './search/search.component';
 import service from './contacts.service';
 import show from './show/index.module';
-import tags from './tags/index.module';
 
 export default angular.module('mpdx.contacts', [
     component,
@@ -16,6 +15,5 @@ export default angular.module('mpdx.contacts', [
     newContact,
     search,
     service,
-    show,
-    tags
+    show
 ]).name;

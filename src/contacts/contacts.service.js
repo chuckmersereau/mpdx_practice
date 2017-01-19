@@ -94,9 +94,13 @@ class ContactsService {
 
         if (this.contactsTags.selectedTags.length > 0) {
             filterParams.tags = _.map(this.contactsTags.selectedTags, tag => tag.name).join(',');
+        } else {
+            delete filterParams.tags;
         }
         if (this.contactsTags.rejectedTags.length > 0) {
             filterParams.exclude_tags = _.map(this.contactsTags.rejectedTags, tag => tag.name).join(',');
+        } else {
+            delete filterParams.exclude_tags;
         }
         filterParams.any_tags = this.contactsTags.anyTags;
 
