@@ -16,6 +16,7 @@ class OrganizationIntegrationPreferencesController {
     }
     $onInit() {
         this.preferencesOrganization.load();
+        this.preferencesOrganization.loadOrganizations();
     }
     save() {
         this.saving = true;

@@ -35,8 +35,9 @@ class OrganizationService {
         return this.api.delete(`user/organization_accounts/${id}`);
     }
     loadOrganizations() {
-        return this.api.get('preferences/integrations/organizations').then((data) => {
-            this.data.organizations = data;
+        return this.api.get('constants/organizations').then((data) => {
+            this.$log.debug(`constants/organizations`, data);
+            this.data.organizations = data.organizations;
         });
     }
     updateState() {
