@@ -2,14 +2,15 @@ class IntegrationsService {
     api;
 
     constructor(
-        $rootScope, api
+        $q, $log, $rootScope,
+        api
     ) {
+        this.$q = $q;
+        this.$log = $log;
         this.api = api;
 
         this.data = {};
         this.loading = true;
-
-        this.load();
 
         $rootScope.$on('accountListUpdated', () => {
             this.load();
@@ -17,36 +18,33 @@ class IntegrationsService {
     }
     load() {
         this.loading = true;
-        this.api.get('preferences/integrations').then((data) => {
-            this.data = data.preferences;
+        this.$q.all([
+            // this.api.get(`account_lists/${this.api.account_list_id}/prayer_letters_account`), //TODO: reimplement once API doesn't 404
+            this.api.get(`user/google_accounts`),
+            this.api.get('user/key_accounts').then((data) => {
+                this.$log.debug('user/key_accounts', data);
+                this.data.key_accounts = data;
+            })
+        ]).then(() => {
             this.loading = false;
         });
     }
-    sync(service) {
-        var serviceToSync = service.toLowerCase();
-        if (serviceToSync === 'prayer letters') {
-            return this.api.get('preferences/integrations/prayer_letters_account/sync');
-        }
-        if (serviceToSync === 'pls') {
-            return this.api.get('preferences/integrations/pls_account/sync');
-        }
+    sync() {
+        return this.api.get(`account_lists/${this.api.account_list_id}/prayer_letters_account/sync`);
     }
     sendToChalkline() {
-        return this.api.post('preferences/integrations/send_to_chalkline');
+        return this.api.post(`account_lists/${this.api.account_list_id}/send_to_chalkline`);
     }
     disconnect(service, id) {
-        var serviceToDisconnect = service.toLowerCase();
+        const serviceToDisconnect = service.toLowerCase();
         if (serviceToDisconnect === 'google') {
-            return this.api.delete('preferences/integrations/google_accounts/' + id);
+            return this.api.delete(`user/google_accounts/${id}`);
         }
         if (serviceToDisconnect === 'key') {
-            return this.api.delete('preferences/integrations/key_accounts/' + id);
+            return this.api.delete('user/key_accounts/' + id);
         }
         if (serviceToDisconnect === 'prayer letters') {
-            return this.api.delete('preferences/integrations/prayer_letters_account');
-        }
-        if (serviceToDisconnect === 'pls') {
-            return this.api.delete('preferences/integrations/pls_account');
+            return this.api.delete(`account_lists/${this.api.account_list_id}/prayer_letters_account`);
         }
     }
 }

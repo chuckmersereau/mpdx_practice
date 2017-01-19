@@ -54,11 +54,11 @@
             <span translate>Google Contacts</span>
         </div>
         <div class="panel-animate" ng-show="$ctrl.tabSelected('google')" style="max-height: 3000px;">
-            <div ng-show="$ctrl.preferencesImports.loading" class="loading-spinner">
+            <div ng-if="!$ctrl.preferencesImports.data" class="loading-spinner">
                 <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
                 <span class="sr-only" translate>Loading</span>
             </div>
-            <div ng-hide="$ctrl.preferencesImports.loading">
+            <div ng-if="$ctrl.preferencesImports.data">
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-4 pref-lead">

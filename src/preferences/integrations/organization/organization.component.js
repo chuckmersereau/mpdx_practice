@@ -14,6 +14,9 @@ class OrganizationIntegrationPreferencesController {
         this.username = null;
         this.password = null;
     }
+    $onInit() {
+        this.preferencesOrganization.load();
+    }
     save() {
         this.saving = true;
         this.preferencesOrganization.save().then(() => {
