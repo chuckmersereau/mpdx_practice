@@ -39,7 +39,8 @@ export default class Routes {
             },
             parent: 'root',
             resolve: {
-                resolution: /*@ngInject*/ (contactFilter) => contactFilter.load()
+                resolution: /*@ngInject*/ (contactFilter) => contactFilter.load(),
+                another: /*@ngInject*/ (contactsTags) => contactsTags.load()
             }
         }).state({
             name: 'contact',
@@ -48,7 +49,8 @@ export default class Routes {
             component: 'contact',
             parent: 'root',
             resolve: {
-                resolution: /*@ngInject*/ (contactFilter) => contactFilter.load()
+                resolution: /*@ngInject*/ (contactFilter) => contactFilter.load(),
+                another: /*@ngInject*/ (contactsTags) => contactsTags.load()
             }
         }).state({
             name: 'contact.address',
@@ -159,7 +161,8 @@ export default class Routes {
             component: 'tasks',
             parent: 'root',
             resolve: {
-                resolution: /*@ngInject*/ (tasksFilter) => tasksFilter.load()
+                resolution: /*@ngInject*/ (tasksFilter) => tasksFilter.load(),
+                another: /*@ngInject*/ (tasksTags) => tasksTags.load()
             }
         }).state({
             name: 'tasks.new',

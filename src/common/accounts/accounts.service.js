@@ -68,9 +68,6 @@ class AccountsService {
         });
     }
     getAnalytics(params) {
-        if (this.analytics) {
-            return this.$q.resolve(this.analytics);
-        }
         return this.api.get(`account_lists/${this.api.account_list_id}/analytics`, { filter: { end_date: params.endDate.toISOString(), start_date: params.startDate.toISOString() } }).then((data) => {
             this.$log.debug('account_lists/analytics', data);
             this.analytics = data;
