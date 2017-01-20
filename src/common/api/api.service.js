@@ -9,6 +9,18 @@ function appendTransform(defaults, transform) {
     return defaults.concat(transform);
 }
 
+const jsonApiParams = {keyForAttribute: 'underscore_case'};
+function deserialize(data) {
+    if (_.isObject(data) && data.data) {
+        return new japi.Deserializer(jsonApiParams).deserialize(data).then((deserializedData) => {
+            deserializedData.meta = data.meta || {};
+            return deserializedData;
+        });
+    } else {
+        return data;
+    }
+}
+
 class Api {
     constructor(
         $http, $cacheFactory, $log, $q, $timeout,
@@ -73,8 +85,8 @@ class Api {
             headers: headers,
             paramSerializer: '$httpParamSerializerJQLike',
             transformRequest: (data) => {
-                let key = null;
-                let params = {keyForAttribute: 'underscore_case'};
+                let key;
+                let params = _.clone(jsonApiParams);
                 if (method === 'put' || method === 'post') {
                     let arr = url.split('/');
                     if (method === 'put' && arr.length % 2 === 0) {
@@ -83,23 +95,22 @@ class Api {
                         key = arr[arr.length - 1];
                     }
                     if (_.has(this.entityAttributes, key)) {
-                        this.$log.debug('entity:', key);
-                        this.$log.debug('attributes:', this.entityAttributes[key]);
                         _.extend(params, this.entityAttributes[key]);
                     } else {
                         this.$log.error(`undefined attributes for model: ${key} in api.service`);
                     }
                 }
-                return angular.toJson(new japi.Serializer(key, params).serialize(data));
+                if (_.isArray(data)) {
+                    return angular.toJson(_.map(data, item => new japi.Serializer(key, params).serialize(item)));
+                } else {
+                    return angular.toJson(new japi.Serializer(key, params).serialize(data));
+                }
             },
             transformResponse: appendTransform(this.$http.defaults.transformResponse, (data) => {
-                if (!_.isString(data) && _.get(data, 'data', false)) {
-                    return new japi.Deserializer({keyForAttribute: 'underscore_case'}).deserialize(data).then((deserializedData) => {
-                        deserializedData.meta = data.meta || {};
-                        return deserializedData;
-                    });
+                if (_.isArray(data)) {
+                    return _.map(data, item => deserialize(item));
                 } else {
-                    return data;
+                    return deserialize(data);
                 }
             }),
             cacheService: false,
