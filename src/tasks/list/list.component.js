@@ -17,9 +17,11 @@ class ListController {
         this.models = {};
         this.selected = [];
     }
-    $onChanges() {
-        this.tasksService.meta[this.key].pagination.page = 1;
-        this.load();
+    $onChanges(changes) {
+        if (changes.changed) {
+            this.tasksService.meta[this.key].pagination.page = 1;
+            this.load();
+        }
     }
     openCompleteTaskModal(task) {
         this.modal.open({
@@ -57,11 +59,6 @@ class ListController {
         //         modalCallback: () => this.loadPage()
         //     }
         // });
-    }
-    deleteComment(taskId, commentId) {
-        this.tasksService.deleteComment(taskId, commentId).then(() => {
-            this.load();
-        });
     }
     bulkDeleteTasks() {
         this.alerts.addAlert('This functionality is not yet available on MPDX NEXT', 'danger'); //Needs bulk save
@@ -111,7 +108,6 @@ class ListController {
             task.updated_in_db_at = data.updated_in_db_at;
         });
     }
-
     load() {
         this.tasksService.fetchTasks(this.key);
     }
