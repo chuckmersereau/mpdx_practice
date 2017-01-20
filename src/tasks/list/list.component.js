@@ -50,15 +50,14 @@ class ListController {
         });
     }
     openBulkEditTaskModal() {
-        this.alerts.addAlert('This functionality is not yet available on MPDX NEXT', 'danger'); //Needs bulk save
-        // this.modal.open({
-        //     template: require('../bulkEdit/bulkEdit.html'),
-        //     controller: 'bulkEditTaskController',
-        //     locals: {
-        //         taskIds: this.selected,
-        //         modalCallback: () => this.loadPage()
-        //     }
-        // });
+        this.modal.open({
+            template: require('../bulkEdit/bulkEdit.html'),
+            controller: 'bulkEditTaskController',
+            locals: {
+                selectedTasks: this.selected,
+                modalCallback: () => this.loadPage()
+            }
+        });
     }
     bulkDeleteTasks() {
         this.alerts.addAlert('This functionality is not yet available on MPDX NEXT', 'danger'); //Needs bulk save
@@ -66,7 +65,7 @@ class ListController {
     }
     bulkCompleteTasks() {
         this.tasksService.bulkCompleteTasks(this.selected).then(() => {
-            this.load();
+            this.loadPage();
         });
     }
     toggleSelected(task) {

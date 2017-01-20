@@ -191,18 +191,17 @@ class TasksService {
         return this.api.put('tasks/bulk', tasks);
     }
     // FIXME need review
-    bulkEditTasks(taskIds, model) {
-        const data = _.map(taskIds, (id) => {
-            return {
-                id: id,
+    bulkEditTasks(tasks, model) {
+        _.each(tasks, (task) => {
+            _.assign(task, task, {
                 activity_type: model.action,
                 no_date: model.noDate,
                 start_at: model.dueDate ? moment(model.dueDate).toISOString() : undefined,
                 comments: [{body: model.comment}],
                 tag_list: model.tagsList ? model.tagsList.map(tag => tag.text).join() : undefined
-            };
+            });
         });
-        return this.api.put('tasks/bulk', data);
+        return this.api.put('tasks/bulk', tasks);
     }
     postBulkLogTask(ajaxAction, taskId, model, contactIds, toComplete) {
         let url = 'tasks';
