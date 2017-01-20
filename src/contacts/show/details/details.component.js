@@ -14,7 +14,8 @@ class ContactDetailsController {
         this.appeals = 'false';
 
         this.languages = _.map(_.keys($window.languageMappingList), (key) => {
-            return _.extend({alias: key}, window.languageMappingList[key]);
+            const language = window.languageMappingList[key];
+            return {alias: key, value: `${language.englishName} (${language.nativeName} - ${key}`};
         });
     }
     $onChanges() {
