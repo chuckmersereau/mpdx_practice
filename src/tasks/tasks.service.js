@@ -247,7 +247,6 @@ class TasksService {
 
         return this.api.put(`tasks/${task.id}`, objPayload);
     }
-    // FIXME need review
     postBulkAddTask(model, contactIds) {
         let contactsData = _.map(contactIds, (contactId) => {
             return {id: contactId};
