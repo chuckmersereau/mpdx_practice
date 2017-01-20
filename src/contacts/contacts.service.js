@@ -164,6 +164,7 @@ class ContactsService {
         });
     }
     create(contact) {
+        contact.account_list = { id: this.api.account_list_id };
         return this.api.post('contacts', contact).then((data) => {
             return this.find(data.id).then((found) => {
                 this.data.push(found);
