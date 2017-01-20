@@ -258,53 +258,57 @@ class ContactsService {
         });
     }
     bulkHideContacts() {
-        this.alerts.addAlert('This functionality is not yet available on MPDX NEXT', 'danger'); //Needs bulk save
-        // return this.api.delete('/contacts/bulk_destroy', {ids: this.getSelectedContactIds()}).then(() => {
-        //     this.clearSelectedContacts();
-        //     this.load(true);
-        // });
+        let contacts = this.getSelectedContacts();
+        _.each(contacts, contact => {
+            contact.status = 'Never Ask';
+        });
+        return this.api.put('contacts/bulk', contacts).then(() => {
+            this.clearSelectedContacts();
+            this.load(true);
+        });
     }
     // Needs bulk save
-    // bulkEditFields(model, pledgeCurrencies, contactIds) {
-    //     let obj = {};
-    //     if (model.likelyToGive) {
-    //         obj.likely_to_give = model.likelyToGive;
-    //     }
-    //     if (model.nextAsk) {
-    //         obj['next_ask(1i)'] = model.nextAsk.getFullYear() + '';
-    //         obj['next_ask(2i)'] = (model.nextAsk.getMonth() + 1) + '';
-    //         obj['next_ask(3i)'] = model.nextAsk.getDate() + '';
-    //     }
-    //     if (model.status) {
-    //         obj.status = model.status;
-    //     }
-    //     if (model.sendNewsletter) {
-    //         obj.send_newsletter = model.sendNewsletter;
-    //     }
-    //     if (model.churchName) {
-    //         obj.church_name = model.churchName;
-    //     }
-    //     if (model.website) {
-    //         obj.website = model.website;
-    //     }
-    //     if (model.pledgeReceived) {
-    //         if (model.pledgeReceived === 'Yes') {
-    //             obj.pledge_received = '1';
-    //         } else {
-    //             obj.pledge_received = '0';
-    //         }
-    //     }
-    //     if (model.pledgeCurrency) {
-    //         obj.pledge_currency = pledgeCurrencies[model.pledgeCurrency];
-    //     }
-    //     if (model.locale) {
-    //         obj.locale = model.locale[1];
-    //     }
-    //     return this.api.put('contacts/bulk_update', {
-    //         contact: obj,
-    //         bulk_edit_contact_ids: contactIds.join()
-    //     });
-    // }
+    bulkEditFields(model, pledgeCurrencies, contacts) {
+        let obj = {};
+        if (model.likelyToGive) {
+            obj.likely_to_give = model.likelyToGive;
+        }
+        if (model.nextAsk) {
+            obj['next_ask(1i)'] = model.nextAsk.getFullYear() + '';
+            obj['next_ask(2i)'] = (model.nextAsk.getMonth() + 1) + '';
+            obj['next_ask(3i)'] = model.nextAsk.getDate() + '';
+        }
+        if (model.status) {
+            obj.status = model.status;
+        }
+        if (model.sendNewsletter) {
+            obj.send_newsletter = model.sendNewsletter;
+        }
+        if (model.churchName) {
+            obj.church_name = model.churchName;
+        }
+        if (model.website) {
+            obj.website = model.website;
+        }
+        if (model.pledgeReceived) {
+            if (model.pledgeReceived === 'Yes') {
+                obj.pledge_received = '1';
+            } else {
+                obj.pledge_received = '0';
+            }
+        }
+        if (model.pledgeCurrency) {
+            obj.pledge_currency = pledgeCurrencies[model.pledgeCurrency];
+        }
+        if (model.locale) {
+            obj.locale = model.locale[1];
+        }
+
+        _.each(contacts, (contact) => {
+            _.assign(contact, contact, obj);
+        });
+        return this.api.put('contacts/bulk', contacts);
+    }
     getDonorAccounts() {
         if (!this.donorAccounts) {
             this.donorAccounts = [];
