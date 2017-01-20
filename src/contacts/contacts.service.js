@@ -111,7 +111,7 @@ class ContactsService {
                 page: this.page,
                 per_page: 25,
                 include: 'people,addresses',
-                sort: 'name'
+                sort: 'name ASC'
             },
             overrideGetAsPost: true
         }).then((data) => {
