@@ -253,6 +253,7 @@ class TasksService {
         });
 
         let taskData = {
+            account_list: { id: this.api.account_list_id },
             subject: model.subject,
             activity_type: model.action,
             no_date: model.noDate,
