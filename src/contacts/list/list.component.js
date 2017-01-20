@@ -82,14 +82,13 @@ class ListController {
         // });
     }
     openEditFieldsModal() {
-        this.alerts.addAlert('This functionality is not yet available on MPDX NEXT', 'danger'); //Needs bulk save
-        // this.modal.open({
-        //     template: require('./editFields/editFields.html'),
-        //     controller: 'editFieldsController',
-        //     locals: {
-        //         selectedContacts: this.contacts.getSelectedContactIds()
-        //     }
-        // });
+        this.modal.open({
+            template: require('./editFields/editFields.html'),
+            controller: 'editFieldsController',
+            locals: {
+                selectedContacts: this.contacts.getSelectedContacts()
+            }
+        });
     }
     openMergeContactsModal() {
         const selectedLength = this.contacts.getSelectedContacts().length;

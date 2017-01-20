@@ -25,7 +25,7 @@ class EditFieldsController {
     save() {
         return this.contacts.bulkEditFields(
             this.models,
-            this.constants.bulk_update_options.pledge_currency,
+            this.constants.currencies,
             this.selectedContacts
         ).then(() => {
             this.$scope.$hide();
