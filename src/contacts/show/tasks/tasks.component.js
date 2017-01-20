@@ -10,7 +10,6 @@ class ContactTasksController {
         this.moment = moment;
         this.tasksService = tasksService;
         this.models = {};
-        this.uncompletedTasks = [];
     }
     $onChanges(changesObj) {
         if (_.has(changesObj.contact, 'currentValue.id') && changesObj.contact.currentValue.id !== changesObj.contact.previousValue.id) {
@@ -18,9 +17,7 @@ class ContactTasksController {
         }
     }
     load() {
-        this.tasksService.fetchUncompletedTasks(this.contact.id).then((tasks) => {
-            this.uncompletedTasks = tasks;
-        });
+        this.tasksService.fetchUncompletedTasks(this.contact.id);
     }
     newComment(taskId) {
         if (this.models.comment) {
@@ -31,11 +28,14 @@ class ContactTasksController {
         }
     }
     deleteTask(taskId) {
-        this.tasksService.deleteTask(taskId).then(this.load.bind(this));
+        this.tasksService.deleteTask(taskId).then(() => {
+            this.load();
+        });
     }
     starTask(task) {
-        this.tasksService.starTask(task).then(() => {
-            task.starred = !task.starred;
+        return this.tasksService.starTask(task).then((data) => {
+            task.starred = data.starred;
+            task.updated_in_db_at = data.updated_in_db_at;
         });
     }
     openCompleteTaskModal(task) {
