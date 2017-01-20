@@ -33,8 +33,8 @@
     </tr>
     <tr class="task-row"
         ng-repeat-start="task in $ctrl.tasksService.data[$ctrl.key]"
-        ng-click="$ctrl.toggleSelected(task.id)"
-        ng-class="$ctrl.selected.indexOf(task.id) >= 0 ? 'selected-task-row' : ''"
+        ng-click="$ctrl.toggleSelected(task)"
+        ng-class="$ctrl.selected.indexOf(task) >= 0 ? 'selected-task-row' : ''"
         >
       <td class="col-sm-1">
         <i class="fa fa-lg fa-square-o complete_task"

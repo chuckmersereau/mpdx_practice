@@ -184,11 +184,11 @@ class TasksService {
     bulkDeleteTasks(taskIds) {
         return this.api.delete('tasks/bulk', { ids: taskIds });
     }
-    bulkCompleteTasks(taskIds) {
-        const data = _.map(taskIds, (id) => {
-            return { id: id, completed: true };
+    bulkCompleteTasks(tasks) {
+        _.each(tasks, task => {
+            task.completed = true;
         });
-        return this.api.put('tasks/bulk', data);
+        return this.api.put('tasks/bulk', tasks);
     }
     // FIXME need review
     bulkEditTasks(taskIds, model) {

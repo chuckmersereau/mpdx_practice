@@ -65,15 +65,16 @@ class ListController {
         // this.tasksService.bulkDeleteTasks(this.selected);
     }
     bulkCompleteTasks() {
-        // this.alerts.addAlert('This functionality is not yet available on MPDX NEXT', 'danger'); //Needs bulk save
-        this.tasksService.bulkCompleteTasks(this.selected);
+        this.tasksService.bulkCompleteTasks(this.selected).then(() => {
+            this.load();
+        });
     }
-    toggleSelected(taskId) {
-        const index = this.selected.indexOf(taskId);
+    toggleSelected(task) {
+        const index = _.findIndex(this.selected, { id: task.id });
         if (index >= 0) {
             this.selected.splice(index, 1);
         } else {
-            this.selected.push(taskId);
+            this.selected.push(task);
         }
     }
     toggleAll() {
@@ -81,7 +82,7 @@ class ListController {
         if (this.selected.length === tasks.length) {
             this.selected = [];
         } else {
-            this.selected = tasks.map((task) => task.id);
+            this.selected = tasks;
         }
     }
     newComment(task) {
