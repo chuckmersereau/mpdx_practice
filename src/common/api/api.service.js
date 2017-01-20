@@ -245,9 +245,10 @@ class EntityAttributes {
                 attributes: ["person_id", "number", "country_code", "location", "primary", "created_at", "updated_at", "remote_id", "historic", "updated_in_db_at"]
             },
             tasks: {
-                attributes: ["account_list_id", "starred", "location", "subject", "start_at", "end_at", "type", "created_at", "updated_at", "completed", "comments", "activity_type", "result",
+                attributes: ["account_list", "starred", "location", "subject", "start_at", "end_at", "type", "created_at", "updated_at", "completed", "comments", "activity_type", "result",
                     "completed_at", "notification_id", "remote_id", "source", "next_action", "no_date", "notification_type", "notification_time_before",
-                    "notification_time_unit", "notification_scheduled", "updated_in_db_at"]
+                    "notification_time_unit", "notification_scheduled", "updated_in_db_at"],
+                account_list: { ref: 'id' }
             },
             user: {
                 attributes: ["first_name", "last_name", "preferences", "setup", "email_addresses", "access_token", "time_zone", "locale", "updated_at", "updated_in_db_at"],
