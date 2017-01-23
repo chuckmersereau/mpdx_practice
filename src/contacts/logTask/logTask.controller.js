@@ -27,7 +27,7 @@ class LogTaskController {
 
         this.constants = {};
 
-        this.serverConstants.fetchConstants(['actions', 'next_actions', 'results']);
+        // this.serverConstants.fetchConstants(['actions', 'next_actions', 'results']);
         this.constants = this.serverConstants.data;
 
         var inputTask = this.specifiedTask || {};

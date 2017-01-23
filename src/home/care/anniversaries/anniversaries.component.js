@@ -1,11 +1,11 @@
 class anniversariesController {
-    anniversaries;
     contacts;
 
     constructor(
         contacts
     ) {
         this.contacts = contacts;
+        this.limit = 5;
     }
 
 }

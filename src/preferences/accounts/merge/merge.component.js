@@ -1,18 +1,25 @@
 class MergePreferencesController {
-    preferencesMerges;
+    accounts;
+    api;
     alerts;
+    preferencesMerges;
 
-    constructor(preferencesMerges, alerts) {
-        this.preferencesMerges = preferencesMerges;
+    constructor(
+        accounts, api, alerts
+    ) {
+        this.accounts = accounts;
         this.alerts = alerts;
+        this.api = api;
+
         this.saving = false;
+        this.selected_account_id = null;
     }
     merge() {
         this.saving = true;
-        this.preferencesMerges.create().then(() => {
+        return this.api.post(`account_lists/${this.api.account_list_id}/merge`, { id: this.selected_account_id }).then(() => {
             this.saving = false;
             this.alerts.addAlert('MPDX merged your account successfully', 'success');
-            this.preferencesMerges.load();
+            return this.accounts.load();
         }).catch(() => {
             this.alerts.addAlert('MPDX couldn\'t merge your account', 'danger');
             this.saving = false;

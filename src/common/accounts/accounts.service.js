@@ -29,7 +29,7 @@ class AccountsService {
         if (id == null || id === _.get(this.current, 'id')) {
             return this.$q.reject();
         }
-        return this.api.get(`account_lists/${id}`).then((resp) => {
+        return this.api.get(`account_lists/${id}`, { include: 'notification_preferences' }).then((resp) => {
             this.current = resp;
             this.api.account_list_id = id;
             this.$log.debug('account swapped: ', resp);
@@ -40,9 +40,11 @@ class AccountsService {
     getCurrent() {
         return this.swap(this.api.account_list_id);
     }
-    getDonations() {
-        return this.api.get(`account_lists/${this.api.account_list_id}/donations`).then((resp) => {
+    getDonations(params) {
+        return this.api.get(`account_lists/${this.api.account_list_id}/donations`, params || {}).then((resp) => {
+            this.$log.debug(`accounts.getDonations - account_lists/${this.api.account_list_id}/donations`, resp);
             this.donations = resp;
+            return resp;
         });
     }
     destroyInvite(id) {
@@ -53,26 +55,34 @@ class AccountsService {
     }
     listInvites() {
         this.inviteList = null;
-        return this.api.get(`account_lists/${this.api.account_list_id}/invites`).then((data) => {
+        return this.api.get(`account_lists/${this.api.account_list_id}/invites`, {include: 'invited_by_user'}).then((data) => {
             this.inviteList = data;
             this.$log.debug('account_lists/invites', this.inviteList);
         });
     }
     listUsers() {
         this.userList = null;
-        this.api.get(`account_lists/${this.api.account_list_id}/users`).then((data) => {
+        this.api.get(`account_lists/${this.api.account_list_id}/users`, {include: 'email_addresses'}).then((data) => {
+            this.$log.debug('account_lists/users:', data);
             this.userList = data;
-            this.$log.debug('account_lists/users:', this.userList);
         });
     }
     getAnalytics(params) {
-        if (this.analytics) {
-            return this.$q.resolve(this.analytics);
-        }
-        return this.api.get(`account_lists/144b83e8-b7f6-48c8-9c0e-688785bf6164/analytics`, { filter: { end_date: params.endDate.toISOString(), start_date: params.startDate.toISOString() } }).then((data) => {
+        return this.api.get(`account_lists/${this.api.account_list_id}/analytics`, { filter: { end_date: params.endDate.toISOString(), start_date: params.startDate.toISOString() } }).then((data) => {
             this.$log.debug('account_lists/analytics', data);
             this.analytics = data;
             return this.analytics;
+        });
+    }
+    saveCurrent() {
+        return this.api.put(`account_lists/${this.current.id}`, this.current).then(() => {
+            return this.getCurrent().then((data) => { //reconcile obj with db
+                let account = _.find(this.data, { id: data.id }); //reconcile w/ account list
+                if (account) {
+                    _.assign(account, account, data);
+                }
+                return data;
+            });
         });
     }
 }

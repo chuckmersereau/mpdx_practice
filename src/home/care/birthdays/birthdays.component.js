@@ -1,9 +1,9 @@
 class birthdaysController {
-    birthdays;
     contacts;
 
     constructor(contacts) {
         this.contacts = contacts;
+        this.limit = 5;
     }
 }
 

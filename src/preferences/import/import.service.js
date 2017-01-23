@@ -2,12 +2,13 @@ class ImportsService {
     api;
 
     constructor(
-        $rootScope, api
+        $log, $rootScope,
+        api
     ) {
+        this.$log = $log;
         this.api = api;
 
-        this.data = {};
-        this.loading = true;
+        this.data = null;
         this.default_google_contact_import = {
             source: 'google',
             source_account_id: null,
@@ -22,13 +23,14 @@ class ImportsService {
 
         this.load();
 
-        this.selected_account_watcher = $rootScope.$watch(() => this.selected_account, this.selectedAccountUpdated.bind(this));
+        $rootScope.$watch(() => this.selected_account, this.selectedAccountUpdated.bind(this));
     }
     load() {
-        this.loading = true;
-        return this.api.get('preferences/imports').then((data) => {
-            this.data = data.preferences;
-            this.loading = false;
+        return this.api.get('user/google_accounts').then((data) => {
+            this.$log.debug('user/google_accounts', data);
+            this.data = {
+                google_accounts: data
+            };
             if (this.data.google_accounts.length === 1) {
                 this.selected_account = this.data.google_accounts[0];
                 this.selectedAccountUpdated(this.selected_account);
@@ -53,7 +55,7 @@ class ImportsService {
                 }
             }
             data.tags = data.tags.map(tag => tag.text);
-            return this.api.post('preferences/imports', { import: data }).then(() => {
+            return this.api.post('user/google_accounts', data).then(() => {
                 this.selected_account = null;
                 if (this.data.google_accounts.length === 1) {
                     this.selected_account = this.data.google_accounts[0];

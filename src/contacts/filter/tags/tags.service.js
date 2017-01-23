@@ -2,52 +2,43 @@ class TagsService {
     api;
 
     constructor(
-        $filter, $log, $rootScope,
+        $filter, $log,
         api
     ) {
         this.$filter = $filter;
         this.$log = $log;
-        this.$rootScope = $rootScope;
         this.api = api;
 
         this.data = [];
         this.selectedTags = [];
         this.rejectedTags = [];
         this.anyTags = false;
-
-        $rootScope.$on('accountListUpdated', (e, accountListId) => {
-            if (accountListId) {
-                this.load();
-            }
-        });
-
-        this.load();
     }
     load() {
-        return this.api.get('tasks/tags').then((data) => {
-            this.$log.debug('tasks/tags', data);
+        return this.api.get('contacts/tags').then((data) => {
+            this.$log.debug('contact/tags:', data);
             this.data = data;
             return data;
         });
     }
     delete(tagName) {
-        return this.api.delete('tasks', { tags: [{ all_tasks: true, name: tagName }] }).then(() => {
+        return this.api.delete('contacts/tags', { tags: [{ name: tagName, all_contacts: true }] }).then(() => {
             this.selectedTags = _.without(tagName);
             this.rejectedTags = _.without(tagName);
             this.data.splice(this.data.indexOf(tagName), 1);
         });
     }
-    tag(contextIds, tag) {
-        return this.api.post('tasks/bulk_create', {
-            add_tag_task_ids: contextIds.join(),
+    tagContact(contactIds, tag) {
+        return this.api.post('contacts/tags/bulk_create', {
+            add_tag_contact_ids: contactIds.join(),
             add_tag_name: tag
         });
     }
-    untag(contextIds, tag) {
-        return this.api.delete('tasks', {
+    untagContact(contactIds, tag) {
+        return this.api.delete('contacts/tags', {
             tags: [{
                 name: tag,
-                task_ids: contextIds.join()
+                contact_ids: contactIds.join()
             }]
         });
     }
@@ -72,7 +63,6 @@ class TagsService {
         } else {
             this.selectedTags.push(tag);
         }
-        this.$rootScope.$emit('tasksTagsChanged');
     }
     isResettable() {
         return (this.selectedTags.length > 0 || this.rejectedTags.length > 0);
@@ -84,14 +74,7 @@ class TagsService {
     getTagsByQuery(query) {
         return this.$filter('filter')(this.data, query);
     }
-    addTag(ids, tag) {
-        const obj = {
-            add_tag_task_ids: ids.join(),
-            add_tag_name: tag
-        };
-        return this.api.post('tasks/tags/bulk_create', obj);
-    }
 }
 
-export default angular.module('mpdx.tasks.tags.service', [])
-    .service('tasksTags', TagsService).name;
+export default angular.module('mpdx.common.tags.service', [])
+    .service('contactsTags', TagsService).name;

@@ -29,7 +29,7 @@ class AddTaskController {
             tagsList: []
         };
 
-        this.serverConstants.fetchConstants(['actions']);
+        // this.serverConstants.fetchConstants(['actions']);
         this.constants = this.serverConstants.data;
     }
 

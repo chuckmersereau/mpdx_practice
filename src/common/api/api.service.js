@@ -9,6 +9,18 @@ function appendTransform(defaults, transform) {
     return defaults.concat(transform);
 }
 
+const jsonApiParams = {keyForAttribute: 'underscore_case'};
+function deserialize(data) {
+    if (_.isObject(data) && data.data) {
+        return new japi.Deserializer(jsonApiParams).deserialize(data).then((deserializedData) => {
+            deserializedData.meta = data.meta || {};
+            return deserializedData;
+        });
+    } else {
+        return data;
+    }
+}
+
 class Api {
     constructor(
         $http, $cacheFactory, $log, $q, $timeout,
@@ -46,6 +58,9 @@ class Api {
 
         if (data.filters) {
             _.forIn(data.filters, (val, key) => {
+                if (_.isArray(val)) {
+                    val = val.join(',');
+                }
                 data[`filter[${key}]`] = val;
             });
             delete data.filters;
@@ -70,8 +85,8 @@ class Api {
             headers: headers,
             paramSerializer: '$httpParamSerializerJQLike',
             transformRequest: (data) => {
-                let key = null;
-                let params = {keyForAttribute: 'underscore_case'};
+                let key;
+                let params = _.clone(jsonApiParams);
                 if (method === 'put' || method === 'post') {
                     let arr = url.split('/');
                     if (method === 'put' && arr.length % 2 === 0) {
@@ -80,24 +95,22 @@ class Api {
                         key = arr[arr.length - 1];
                     }
                     if (_.has(this.entityAttributes, key)) {
-                        this.$log.debug('entity:', key);
-                        this.$log.debug('attributes:', this.entityAttributes[key]);
                         _.extend(params, this.entityAttributes[key]);
                     } else {
                         this.$log.error(`undefined attributes for model: ${key} in api.service`);
                     }
                 }
-                return angular.toJson(new japi.Serializer(key, params).serialize(data));
+                if (_.isArray(data)) {
+                    return angular.toJson({ data: _.map(data, item => new japi.Serializer(key, params).serialize(item)) });
+                } else {
+                    return angular.toJson(new japi.Serializer(key, params).serialize(data));
+                }
             },
             transformResponse: appendTransform(this.$http.defaults.transformResponse, (data) => {
-                const meta = data.meta || {};
-                if (!_.isString(data) && data.data) {
-                    return new japi.Deserializer({keyForAttribute: 'underscore_case'}).deserialize(data).then((data) => {
-                        data.meta = meta;
-                        return data;
-                    });
+                if (_.isArray(data)) {
+                    return _.map(data, item => deserialize(item));
                 } else {
-                    return data;
+                    return deserialize(data);
                 }
             }),
             cacheService: false,
@@ -165,7 +178,7 @@ class EntityAttributes {
                 attributes: ["created_at", "updated_at", "accepted_at", "accepted_by_user_id", "account_list_id", "cancelled_by_user_id", "code", "invited_by_user_id", "recipient_email", "updated_at", "updated_in_db_at"]
             },
             account_lists: {
-                attributes: ["name", "creator_id", "created_at", "updated_at", "settings", "updated_in_db_at"]
+                attributes: ["name", "creator_id", "created_at", "preferences_notifications", "updated_at", "settings", "updated_in_db_at"]
             },
             addresses: {
                 attributes: ["street", "city", "country", "end_date", "geo", "historic", "location", "postal_code", "primary_mailing_address", "start_date", "state", "updated_in_db_at"]
@@ -231,12 +244,12 @@ class EntityAttributes {
                 attributes: ["person_id", "number", "country_code", "location", "primary", "created_at", "updated_at", "remote_id", "historic", "updated_in_db_at"]
             },
             tasks: {
-                attributes: ["account_list_id", "starred", "location", "subject", "start_at", "start_at(1i)", "start_at(2i)", "start_at(3i)", "start_at(4i)", "start_at(5i)", "end_at", "type", "created_at", "updated_at", "completed", "activity_comments_count", "activity_comment", "activity_contacts_attributes", "activity_type", "result",
-                    "completed_at", "completed_at(1i)", "completed_at(2i)", "completed_at(3i)", "completed_at(4i)", "completed_at(5i)", "notification_id", "remote_id", "source", "next_action", "no_date", "notification_type", "notification_time_before",
+                attributes: ["account_list_id", "starred", "location", "subject", "start_at", "end_at", "type", "created_at", "updated_at", "completed", "comments", "activity_type", "result",
+                    "completed_at", "notification_id", "remote_id", "source", "next_action", "no_date", "notification_type", "notification_time_before",
                     "notification_time_unit", "notification_scheduled", "updated_in_db_at"]
             },
             user: {
-                attributes: ["first_name", "preferences", "setup", "email_addresses", "access_token", "time_zone", "locale", "updated_at", "updated_in_db_at"],
+                attributes: ["first_name", "last_name", "preferences", "setup", "email_addresses", "access_token", "time_zone", "locale", "updated_at", "updated_in_db_at"],
                 email_addresses: () => _.extend({ ref: 'id' }, this.attributes.email_addresses)
             }
         };

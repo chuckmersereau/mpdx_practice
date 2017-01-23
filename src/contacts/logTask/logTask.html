@@ -74,7 +74,7 @@
     </div>
     <div>
         <label translate>Tags</label>
-        <tags-input class="import_by_group import_contacttags" ng-model="$ctrl.models.tagsList">
+        <tags-input class="import_by_group import_contacttags" ng-model="$ctrl.models.tagsList" display-property="name">
             <auto-complete source="$ctrl.contactsTags.data" min-length="0" select-first-match="false"></auto-complete>
         </tags-input>
     </div>

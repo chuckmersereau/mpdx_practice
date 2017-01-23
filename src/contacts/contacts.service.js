@@ -1,18 +1,17 @@
 class ContactsService {
     analytics;
     api;
-    cache;
     contactFilter;
     contactsTags;
 
     constructor(
         $location, $log, $q, $rootScope,
-        api, cache, contactFilter, contactsTags
+        alerts, api, contactFilter, contactsTags
     ) {
         this.$log = $log;
         this.$q = $q;
+        this.alerts = alerts;
         this.api = api;
-        this.cache = cache;
         this.contactFilter = contactFilter;
         this.contactsTags = contactsTags;
 
@@ -61,6 +60,22 @@ class ContactsService {
     get(id) {
         return this.api.get(`contacts/${id}`, {include: 'people,addresses'});
     }
+    find(id) {
+        let contact = _.find(this.data, { id: id });
+        if (contact) {
+            this.$q.resolve(contact);
+        } else {
+            return this.get(id).then((data) => {
+                let contact = _.find(this.data, {id: data.id});
+                if (contact) {
+                    _.assign(contact, contact, data); //add missing contact to data
+                } else {
+                    this.data.push(contact);
+                }
+                return data;
+            });
+        }
+    }
     load(reset) {
         this.loading = true;
         if (reset) {
@@ -79,9 +94,13 @@ class ContactsService {
 
         if (this.contactsTags.selectedTags.length > 0) {
             filterParams.tags = _.map(this.contactsTags.selectedTags, tag => tag.name).join(',');
+        } else {
+            delete filterParams.tags;
         }
         if (this.contactsTags.rejectedTags.length > 0) {
             filterParams.exclude_tags = _.map(this.contactsTags.rejectedTags, tag => tag.name).join(',');
+        } else {
+            delete filterParams.exclude_tags;
         }
         filterParams.any_tags = this.contactsTags.anyTags;
 
@@ -92,7 +111,7 @@ class ContactsService {
                 page: this.page,
                 per_page: 25,
                 include: 'people,addresses',
-                sort: 'name'
+                sort: 'name ASC'
             },
             overrideGetAsPost: true
         }).then((data) => {
@@ -114,11 +133,15 @@ class ContactsService {
                     return { text: tag };
                 });
                 // end fix
-                const currentContact = this.cache.updateContact(contact, data);
                 if (reset) {
-                    newContacts.push(currentContact);
+                    newContacts.push(contact);
                 } else {
-                    this.data = _.unionBy(this.data, [currentContact], 'id');
+                    let val = _.find(this.data, {id: contact.id});
+                    if (val) {
+                        _.assign(val, val, data); //add missing contact to data
+                    } else {
+                        this.data.push(contact);
+                    }
                 }
             });
             if (reset) {
@@ -131,7 +154,13 @@ class ContactsService {
     }
     save(contact) {
         return this.api.put(`contacts/${contact.id}`, contact).then((data) => {
-            this.cache.updateContact(data.contact, data);
+            let contact = _.find(this.data, {id: data.id});
+            if (contact) {
+                _.assign(contact, contact, data); //add missing contact to data
+            } else {
+                this.data.push(contact);
+            }
+            return data;
         });
     }
     create(contact) {
@@ -141,8 +170,13 @@ class ContactsService {
         };
 
         return this.api.post('contacts', {contact: contactObj}).then((data) => {
-            this.cache.updateContact(data.contact, data);
-            return this.cache.get(data.contact.id);
+            let contact = _.find(this.data, {id: data.id});
+            if (contact) {
+                _.assign(contact, contact, data); //add missing contact to data
+            } else {
+                this.data.push(contact);
+            }
+            return this.find(data.contact.id);
         });
     }
     loadMoreContacts() {
@@ -217,17 +251,24 @@ class ContactsService {
             contact[key] = value;
         });
     }
-    hideContact(contactId) {
-        _.remove(this.data, (contact) => contact.id === contactId);
-        return this.api.delete(`/contacts/${contactId}`);
+    hideContact(contact) {
+        contact.status = 'Never Ask';
+        this.save(contact).then(() => {
+            _.remove(this.data, { id: contact.id });
+        });
     }
     bulkHideContacts() {
-        return this.api.delete('/contacts/bulk_destroy', {ids: this.getSelectedContactIds()}).then(() => {
+        let contacts = this.getSelectedContacts();
+        _.each(contacts, contact => {
+            contact.status = 'Never Ask';
+        });
+        return this.api.put('contacts/bulk', contacts).then(() => {
             this.clearSelectedContacts();
             this.load(true);
         });
     }
-    bulkEditFields(model, pledgeCurrencies, contactIds) {
+    // Needs bulk save
+    bulkEditFields(model, pledgeCurrencies, contacts) {
         let obj = {};
         if (model.likelyToGive) {
             obj.likely_to_give = model.likelyToGive;
@@ -262,10 +303,11 @@ class ContactsService {
         if (model.locale) {
             obj.locale = model.locale[1];
         }
-        return this.api.put('contacts/bulk_update', {
-            contact: obj,
-            bulk_edit_contact_ids: contactIds.join()
+
+        _.each(contacts, (contact) => {
+            _.assign(contact, contact, obj);
         });
+        return this.api.put('contacts/bulk', contacts);
     }
     getDonorAccounts() {
         if (!this.donorAccounts) {
@@ -277,12 +319,10 @@ class ContactsService {
         if (this.analytics) {
             return this.$q.resolve(this.analytics);
         }
-        return this.api.get('contacts/analytics').then((data) => {
+        return this.api.get('contacts/analytics', { include: 'anniversaries_this_week,birthdays_this_week' }).then((data) => {
             this.$log.debug('contacts/analytics', data);
             this.analytics = data;
             return this.analytics;
-        }).catch((err) => {
-            this.$log.error('contacts/analytics not implemented.', err);
         });
     }
 }

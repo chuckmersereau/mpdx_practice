@@ -9,8 +9,6 @@ class NotificationsService {
         this.data = {};
         this.loading = true;
 
-        //this.load();
-
         $rootScope.$on('accountListUpdated', () => {
             this.load();
         });
@@ -22,14 +20,7 @@ class NotificationsService {
             this.loading = false;
         });
     }
-    toggleNotification(fieldName, notificationType) {
-        const index = this.data[fieldName].actions.indexOf(notificationType);
-        if (index === -1) {
-            this.data[fieldName].actions.push(notificationType);
-        } else {
-            this.data[fieldName].actions.splice(index, 1);
-        }
-    }
+
     save() {
         return this.api.put('put', 'preferences', { preference: this.data });
     }
