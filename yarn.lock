@@ -72,7 +72,7 @@ angular-animate@1.6.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/angular-animate/-/angular-animate-1.6.1.tgz#19e3b82b7392e2bbdd83af33c0af0d85437f3a14"
 
-angular-block-ui@^0.2.2:
+angular-block-ui@0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/angular-block-ui/-/angular-block-ui-0.2.2.tgz#466613cd80ad286eb4b588cfced00fec6ac5e975"
 
@@ -1074,7 +1074,7 @@ bootstrap-additions@0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/bootstrap-additions/-/bootstrap-additions-0.3.1.tgz#9ab976c2d88b9ab747c376c757a80031f2ccf83e"
 
-bootstrap-daterangepicker@^2.1.25:
+bootstrap-daterangepicker@2.1.25:
   version "2.1.25"
   resolved "https://registry.yarnpkg.com/bootstrap-daterangepicker/-/bootstrap-daterangepicker-2.1.25.tgz#fcd8ba0b755a054d330d7a3b7c4dd8bb855cffb7"
   dependencies:
@@ -3589,7 +3589,7 @@ json5@^0.5.0:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/json5/-/json5-0.5.1.tgz#1eade7acc012034ad84e2396767ead9fa5495821"
 
-jsonapi-serializer@^3.4.2:
+jsonapi-serializer@3.4.2:
   version "3.4.2"
   resolved "https://registry.yarnpkg.com/jsonapi-serializer/-/jsonapi-serializer-3.4.2.tgz#c9f4f6ef5239a2063161bfe8907b2686382e4911"
   dependencies:
@@ -6240,7 +6240,7 @@ webpack-dev-middleware@^1.0.11, webpack-dev-middleware@^1.9.0:
     path-is-absolute "^1.0.0"
     range-parser "^1.0.3"
 
-webpack-dev-server@^2.2.0-rc.0:
+webpack-dev-server@2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/webpack-dev-server/-/webpack-dev-server-2.2.0.tgz#364967eccaf8ff1d7e1681b7a8cc24fab4ced8a6"
   dependencies:
@@ -6267,7 +6267,7 @@ webpack-sources@^0.1.0, webpack-sources@^0.1.4:
     source-list-map "~0.1.7"
     source-map "~0.5.3"
 
-webpack@^2.2.0-rc.7:
+webpack@2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/webpack/-/webpack-2.2.0.tgz#09246336b5581c9002353f75bcadb598a648f977"
   dependencies:
