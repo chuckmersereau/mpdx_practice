@@ -17,7 +17,6 @@ class DatetimepickerController {
         this.ngModel.$render = () => {
             this.model = moment(this.ngModel.$viewValue);
             this.date = this.model.toDate();
-            this.time = this.model.toDate();
         };
         this.$scope.$watch(() => this.date, () => {
             this.model = moment(this.date).hour(this.model.hour()).minute(this.model.minute());
