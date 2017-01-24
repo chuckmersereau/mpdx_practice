@@ -1,12 +1,19 @@
 <div class="row">
     <div class="col-sm-6">
-        <input type="text" class="form-control" bs-datepicker ng-model="$ctrl.date" data-date-format="{{$ctrl.locale.dateTimeFormat}}" name="dp_{{::$id}}">
+        <input bs-datepicker type="text" class="form-control"
+               ng-model="$ctrl.date"
+               data-date-format="{{$ctrl.locale.dateTimeFormat}}"
+               name="dp_{{::$id}}"
+               data-autoclose="1">
         <div ng-if="$ctrl.form['dp_' + $id].$invalid" translate>
             Invalid date format
         </div>
     </div>
     <div class="col-sm-6">
-        <input type="text" class="form-control" bs-timepicker ng-model="$ctrl.time" name="tp_{{::$id}}" data-length="{{$ctrl.hourStep}}" data-minute-step="{{$ctrl.minuteStep}}">
+        <input type="text" class="form-control" bs-timepicker
+               ng-model="$ctrl.time" name="tp_{{::$id}}"
+               data-length="{{$ctrl.hourStep}}"
+               data-minute-step="{{$ctrl.minuteStep}}">
         <div ng-if="$ctrl.form['tp_' + $id].$invalid" translate>
             Invalid time format
         </div>
