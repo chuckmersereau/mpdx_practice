@@ -47,7 +47,10 @@
                             <div class="filter_dates" ng-if="child.type == 'dates'">
                                 <label ng-repeat="option in child.options">
                                     {{option.name}}<br>
-                                    <datetimepicker ng-model="$ctrl.tasksFilter.params[child.name][option.id]" hidden-time="true" placeholder="{{ 'None' | translate }}" when-closed="$ctrl.tasksFilter.change()"></datetimepicker>
+                                    <input bs-datepicker
+                                           ng-model="$ctrl.tasksFilter.params[child.name][option.id]"
+                                           placeholder="{{ 'None' | translate }}"
+                                           ng-change="$ctrl.tasksFilter.change()">
                                 </label>
                             </div>
                             <div class="filter_dates" ng-if="child.type == 'daterange'">
@@ -91,7 +94,10 @@
                         <div class="filter_dates" ng-if="filter.type == 'dates'">
                             <label ng-repeat="option in filter.options">
                                 {{option.name}}<br>
-                                <datetimepicker ng-model="$ctrl.tasksFilter.params[filter.name][option.id]" hidden-time="true" placeholder="{{ 'None' | translate }}" when-closed="$ctrl.tasksFilter.change()"></datetimepicker>
+                                <input bs-datepicker
+                                       ng-model="$ctrl.tasksFilter.params[filter.name][option.id]"
+                                       placeholder="{{ 'None' | translate }}"
+                                       ng-change="$ctrl.tasksFilter.change()">
                             </label>
                         </div>
                         <div class="filter_dates" ng-if="filter.type == 'daterange'">
