@@ -41,18 +41,18 @@ class AddTaskController {
         let promise;
         if (this.newsletterBoth) {
             this.models.action = "Newsletter - Physical";
-            promise = this.tasksService.postBulkAddTask(this.models, this.selectedContacts).then(() => {
+            promise = this.tasksService.create(this.models, this.selectedContacts).then(() => {
                 this.models.action = "Newsletter - Email";
-                return this.tasksService.postBulkAddTask(this.models, this.selectedContacts);
+                return this.tasksService.create(this.models, this.selectedContacts);
             });
         } else if (this.newsletterPhysical) {
             this.models.action = "Newsletter - Physical";
-            promise = this.tasksService.postBulkAddTask(this.models, this.selectedContacts);
+            promise = this.tasksService.create(this.models, this.selectedContacts);
         } else if (this.newsletterEmail) {
             this.models.action = "Newsletter - Email";
-            promise = this.tasksService.postBulkAddTask(this.models, this.selectedContacts);
+            promise = this.tasksService.create(this.models, this.selectedContacts);
         } else {
-            promise = this.tasksService.postBulkAddTask(this.models, this.selectedContacts);
+            promise = this.tasksService.create(this.models, this.selectedContacts);
         }
         return promise.then(() => {
             this.contacts.load(true);

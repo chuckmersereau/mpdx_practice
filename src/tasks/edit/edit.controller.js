@@ -71,11 +71,9 @@ class EditTaskController {
         });
     }
     deleteTask() {
-        this.tasksService.deleteTask(this.specifiedTask.id).then((status) => {
-            if (status) {
-                this.$scope.$hide();
-                this.modalCallback();
-            }
+        this.tasksService.deleteTask(this.specifiedTask.id).then(() => {
+            this.$scope.$hide();
+            this.modalCallback();
         });
     }
 }
