@@ -2,10 +2,11 @@ class PersonService {
     api;
 
     constructor(
-        $filter, $rootScope,
+        $filter, $q, $rootScope,
         api
     ) {
         this.$filter = $filter;
+        this.$q = $q;
         this.api = api;
         this.includes = 'email_addresses,facebook_accounts,family_relationships,linkedin_accounts,master_person,phone_numbers,twitter_accounts,websites';
         this.selected = null;
@@ -34,13 +35,17 @@ class PersonService {
         });
     }
     mergePeople(contactId, winner, people) {
-        const obj = {contact_id: contactId, winner: winner, people_ids: people};
-        return this.api.post('people/merge', obj).then((data) => {
-            if (_.isFunction(data.success)) {
-                data.success();
+        const promises = _.map(people, person => {
+            if (person !== winner) {
+                return this.api.post(`contacts/${contactId}/people/merge`, {winner_id: winner, loser_id: person}).then((data) => {
+                    if (_.isFunction(data.success)) {
+                        data.success();
+                    }
+                    return data;
+                });
             }
-            return data;
         });
+        return this.$q.all(promises);
     }
     save(contactId, person) {
         return this.api.put(`contacts/${contactId}/people/${person.id}`, person); //reload after use, otherwise add reconcile

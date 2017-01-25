@@ -214,6 +214,9 @@ class EntityAttributes {
             family_relationships: {
                 attributes: ["person_id", "related_person_id", "relationship", "created_at", "updated_at", "updated_in_db_at"]
             },
+            merge: {
+                attributes: ["winner_id", "loser_id"]
+            },
             notifications: {
                 attributes: ["contact_id", "notification_type_id", "event_date", "cleared", "created_at", "updated_at", "donation_id", "updated_in_db_at"]
             },

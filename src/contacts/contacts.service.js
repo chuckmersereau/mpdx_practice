@@ -63,13 +63,13 @@ class ContactsService {
     find(id) {
         let contact = _.find(this.data, { id: id });
         if (contact) {
-            this.$q.resolve(contact);
+            return this.$q.resolve(contact);
         } else {
             return this.get(id).then((data) => {
                 let contact = _.find(this.data, {id: data.id});
                 if (contact) {
                     _.assign(contact, contact, data); //add missing contact to data
-                } else {
+                } else if (this.data) {
                     this.data.push(contact);
                 }
                 return data;
