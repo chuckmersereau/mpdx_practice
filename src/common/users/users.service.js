@@ -58,9 +58,17 @@ class Users {
         });
     }
     changeLocale(locale) {
+        const temp = _.clone(locale);
+        //hardcoded until the data is fixed
+        if (locale === 'fr-FR') {
+            locale = 'fr_FR';
+        } else if (locale === 'es-419') {
+            locale = 'es_419';
+        }
         this.gettextCatalog.setCurrentLanguage(locale);
+
         if (config.env !== 'development' && locale !== 'en') {
-            this.gettextCatalog.loadRemote('locale/' + locale + '-' + process.env.TRAVIS_COMMIT + '.json');
+            this.gettextCatalog.loadRemote(`locale/${temp}-${process.env.TRAVIS_COMMIT}.json`);
         }
     }
     destroy(id) {
