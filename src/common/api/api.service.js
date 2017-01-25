@@ -21,6 +21,14 @@ function deserialize(data) {
     }
 }
 
+function serialize(key, params, item, method) {
+    let serialized = new japi.Serializer(key, params).serialize(item);
+    if (method === 'post' && serialized.data.id === 'undefined') {
+        delete serialized.data.id;
+    }
+    return serialized;
+}
+
 class Api {
     constructor(
         $http, $cacheFactory, $log, $q, $timeout,
@@ -102,20 +110,10 @@ class Api {
                 }
                 if (_.isArray(data)) {
                     return angular.toJson({
-                        data: _.map(data, item => {
-                            let serialized = new japi.Serializer(key, params).serialize(item);
-                            if (method === 'post' && serialized.data.id === 'undefined') {
-                                delete serialized.data.id;
-                            }
-                            return angular.toJson(serialized);
-                        })
+                        data: _.map(data, item => serialize(key, params, item, method))
                     });
                 } else {
-                    let serialized = new japi.Serializer(key, params).serialize(data);
-                    if (method === 'post' && serialized.data.id === 'undefined') {
-                        delete serialized.data.id;
-                    }
-                    return angular.toJson(serialized);
+                    return angular.toJson(serialize(key, params, data, method));
                 }
             },
             transformResponse: appendTransform(this.$http.defaults.transformResponse, (data) => {
