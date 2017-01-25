@@ -208,27 +208,15 @@ class TasksService {
         if (taskId) {
             url += '/' + taskId;
         }
-        const contactsData = _.map(contactIds, contactId => {
+        model.contacts = _.map(contactIds, contactId => {
             return {id: contactId};
         });
-        let taskData = {
-            subject: model.subject,
-            activity_type: model.action,
-            no_date: model.noDate,
-            start_at: moment(model.dueDate).toISOString(),
-            completed_at: moment(model.completedAt).toISOString(),
-            comments: [{body: model.comment}],
-            contacts: contactsData,
-            completed: toComplete || model.result !== null,
-            result: model.result,
-            tag_list: model.tagsList.map(tag => tag.text).join(),
-            updated_in_db_at: model.updated_in_db_at
-        };
+        model.completed = toComplete || model.result !== null;
 
         return this.api.call({
             method: ajaxAction,
             url: url,
-            data: taskData
+            data: model
         });
     }
     // FIXME need review
@@ -248,22 +236,13 @@ class TasksService {
         return this.api.put(`tasks/${task.id}`, objPayload);
     }
     postBulkAddTask(model, contactIds) {
-        let contactsData = _.map(contactIds, (contactId) => {
+        model.contacts = _.map(contactIds, (contactId) => {
             return {id: contactId};
         });
 
-        let taskData = {
-            account_list: { id: this.api.account_list_id },
-            subject: model.subject,
-            activity_type: model.action,
-            no_date: model.noDate,
-            start_at: moment(model.date).toISOString(),
-            comments: [{body: model.comment}],
-            contacts: contactsData,
-            tag_list: model.tagsList.map(tag => tag.text).join()
-        };
+        model.account_list =  { id: this.api.account_list_id };
 
-        return this.api.post('tasks', taskData);
+        return this.api.post('tasks', model);
     }
     openModal(params) {
         this.modal.open({
@@ -275,6 +254,9 @@ class TasksService {
                 selectedContacts: params.selectedContacts || params.contact || [],
                 modalTitle: params.title || 'Add Task',
                 isNewsletter: false
+            },
+            resolve: {
+                tags: () => this.tasksTags.load()
             },
             onHide: params.onHide || _.noop
         });

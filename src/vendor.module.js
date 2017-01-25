@@ -10,7 +10,6 @@ import ngCsv from 'ng-csv';
 import ngFileUpload from 'ng-file-upload';
 import ngMap from 'ngmap';
 import ngSortable from 'ng-sortable';
-import uiBootstrap from 'angular-ui-bootstrap';
 
 // deps with no default exports
 import 'angulartics';
@@ -24,7 +23,6 @@ import 'angular-strap/dist/angular-strap.tpl';
 import 'angular-chosen-localytics';
 import 'angular-localforage';
 import 'angular-timeago';
-import 'angular-ui-bootstrap-datetimepicker';
 import 'iso-currency';
 import 'ng-tags-input';
 //non-angular deps
@@ -48,7 +46,6 @@ export default angular.module('mpdx.vendor', [
     ngSanitize,
     ngCsv,
     ngFileUpload,
-    uiBootstrap,
     uiRouter,
     checklistModel,
     ngInfiniteScroll,
@@ -63,6 +60,5 @@ export default angular.module('mpdx.vendor', [
     'localytics.directives',
     'mgcrea.ngStrap',
     'ngTagsInput',
-    'ui.bootstrap.datetimepicker',
     'yaru22.angular-timeago'
 ]).name;

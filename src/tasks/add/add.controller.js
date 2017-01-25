@@ -7,13 +7,13 @@ class AddTaskController {
 
     constructor(
         $scope,
-        contactsTags, serverConstants, tasksService, contacts,
+        tasksTags, serverConstants, tasksService, contacts,
         selectedContacts, specifiedAction, specifiedSubject, modalTitle
     ) {
         this.$scope = $scope;
         this.selectedContacts = selectedContacts;
         this.contacts = contacts;
-        this.contactsTags = contactsTags;
+        this.tasksTags = tasksTags;
         this.serverConstants = serverConstants;
         this.specifiedAction = specifiedAction;
         this.specifiedSubject = specifiedSubject;
@@ -22,11 +22,12 @@ class AddTaskController {
         this.modalTitle = modalTitle;
 
         this.models = {
-            date: new Date(),
-            noDate: false,
-            action: this.specifiedAction,
+            start_at: moment().toISOString(),
+            no_date: false,
+            activity_type: this.specifiedAction,
             subject: this.specifiedSubject,
-            tagsList: []
+            tag_list: [],
+            comments: []
         };
 
         // this.serverConstants.fetchConstants(['actions']);
@@ -34,6 +35,9 @@ class AddTaskController {
     }
 
     save() {
+        if (this.comment) {
+            this.models.comments.push({body: this.comment});
+        }
         let promise;
         if (this.newsletterBoth) {
             this.models.action = "Newsletter - Physical";

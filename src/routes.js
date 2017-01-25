@@ -167,7 +167,10 @@ export default class Routes {
         }).state({
             name: 'tasks.new',
             url: '/new',
-            onEnter: openNewTaskModal
+            onEnter: openNewTaskModal,
+            resolve: {
+                tags: /*@ngInject*/ (tasksTags) => tasksTags.load()
+            }
         }).state({
             name: 'unavailable',
             title: 'Unavailable',

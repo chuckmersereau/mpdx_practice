@@ -1,22 +1,21 @@
-import config from 'config';
-
 class Users {
     accounts;
     api;
     help;
+    locale;
     organizationAccounts;
 
     constructor(
-        $log, $q, $rootScope, gettextCatalog,
-        accounts, api, help
+        $log, $q, $rootScope,
+        accounts, api, help, locale
     ) {
         this.$log = $log;
         this.$q = $q;
         this.$rootScope = $rootScope;
         this.accounts = accounts;
         this.api = api;
-        this.gettextCatalog = gettextCatalog;
         this.help = help;
+        this.locale = locale;
 
         this.current = null;
         this.hasAnyUsAccounts = false;
@@ -39,7 +38,7 @@ class Users {
             }
 
             const locale = _.get(response, 'preferences.locale', 'en');
-            this.changeLocale(locale);
+            this.locale.change(locale);
             const defaultAccountListId = _.get(response, 'preferences.default_account_list').toString();
 
             return this.accounts.swap(defaultAccountListId).then(() => {
@@ -56,12 +55,6 @@ class Users {
             this.organizationAccounts = data;
             return data;
         });
-    }
-    changeLocale(locale) {
-        this.gettextCatalog.setCurrentLanguage(locale);
-        if (config.env !== 'development' && locale !== 'en') {
-            this.gettextCatalog.loadRemote('locale/' + locale + '-' + process.env.TRAVIS_COMMIT + '.json');
-        }
     }
     destroy(id) {
         return this.api.delete(`users/${id}`);
