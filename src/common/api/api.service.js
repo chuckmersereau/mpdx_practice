@@ -257,7 +257,8 @@ class EntityAttributes {
             tasks: {
                 attributes: ["account_list", "activity_type", "location", "start_at", "end_at", "type", "created_at", "updated_at", "completed", "completed_at", "comments", "due_date",
                     "notification_id", "next_action", "no_date", "notification_type", "notification_time_before", "remote_id", "result", "source", "starred", "subject",
-                    "notification_time_unit", "notification_scheduled", "updated_in_db_at"]
+                    "notification_time_unit", "notification_scheduled", "updated_in_db_at"],
+                account_list: { ref: 'id' }
             },
             user: {
                 attributes: ["first_name", "last_name", "preferences", "setup", "email_addresses", "access_token", "time_zone", "locale", "updated_at", "updated_in_db_at"],
