@@ -240,7 +240,7 @@ class TasksService {
             return {id: contactId};
         });
 
-        model.account_list =  { id: this.api.account_list_id };
+        model.account_list = { id: this.api.account_list_id };
 
         return this.api.post('tasks', model);
     }
