@@ -19,7 +19,7 @@ class CompleteTaskController {
         this.constants = this.serverConstants.data;
 
         this.models = _.clone(task);
-        this.models.complete = true;
+        this.models.completed = true;
     }
     save() {
         if (this.comment) {

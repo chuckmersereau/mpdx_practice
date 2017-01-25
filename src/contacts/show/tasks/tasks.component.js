@@ -19,9 +19,9 @@ class ContactTasksController {
     load() {
         this.tasksService.fetchUncompletedTasks(this.contact.id);
     }
-    newComment(taskId) {
+    newComment(task) {
         if (this.models.comment) {
-            this.tasksService.submitNewComment(taskId, this.models.comment).then(() => {
+            this.tasksService.submitNewComment(task, this.models.comment).then(() => {
                 this.load();
             });
             this.models.comment = '';
