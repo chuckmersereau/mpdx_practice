@@ -15,19 +15,19 @@
                 <li ng-repeat="user in $ctrl.accounts.userList">
                     {{user.first_name}}
                     {{user.last_name}}
-                    ({{user.email}})
-                    <span ng-if="user.method.type == 'designation'" data-toggle="tooltip" data-placement="top" title="<{{ 'Linked by designation' | translate }}: {{user.method.name}}">
-            <i class="fa fa-info-circle"></i>
-          </span>
+                    <span ng-repeat="email in user.email_addresses" ng-if="email.primary">({{email.email}})</span>
+                    <span ng-if="user.method.type == 'designation'" data-toggle="tooltip" data-placement="top" title="{{ 'Linked by designation' | translate }}: {{user.method.name}}">
+                        <i class="fa fa-info-circle"></i>
+                    </span>
                     <span ng-if="user.method.type == 'invite'" data-toggle="tooltip" data-placement="top" title="{{ 'Invited by' | translate }}: {{user.method.inviter.first_name}} {{user.method.inviter.last_name}}">
-            <i class="fa fa-info-circle"></i>
-          </span>
+                        <i class="fa fa-info-circle"></i>
+                    </span>
                     <span ng-if="user.method.type == 'mpdx'" data-toggle="tooltip" data-placement="top" title="{{ 'Manually added by MPDX support' | translate }}">
-            <i class="fa fa-info-circle"></i>
-          </span>
+                        <i class="fa fa-info-circle"></i>
+                    </span>
                     <span ng-if="$ctrl.users.current.manager && user.deletable">
-            <button class="btn btn-xxs btn-danger" ng-click="$ctrl.removeUser(user.id)" ng-disabled="$ctrl.saving"><i class="fa fa-remove"></i> <span translate>Delete</span></button>
-          </span>
+                        <button class="btn btn-xxs btn-danger" ng-click="$ctrl.removeUser(user.id)" ng-disabled="$ctrl.saving"><i class="fa fa-remove"></i> <span translate>Delete</span></button>
+                    </span>
                 </li>
             </ul>
         </div>
@@ -36,7 +36,7 @@
             <ul class="account-users">
                 <li ng-repeat="user in $ctrl.accounts.inviteList">
                     {{user.recipient_email}}
-                    <i>(<span translate>Sent by</span> {{user.inviter.first_name}} {{user.inviter.last_name}})</i>
+                    <i>(<span translate>Sent by</span> {{user.invited_by_user.first_name}} {{user.invited_by_user.last_name}})</i>
                     <span ng-if="$ctrl.users.current.manager">
                         <button class="btn btn-xxs btn-danger" ng-click="$ctrl.cancelInvite(user.id)" ng-disabled="$ctrl.saving"><i class="fa fa-remove"></i> <translate>Cancel</translate></button>
                     </span>

@@ -9,11 +9,14 @@ import chosen from './chosen/chosen.directive';
 import convertToNumber from './convertToNumber/convertToNumber.directive';
 import currency from './currency/currency.service';
 import currencySelect from './currencySelect/currencySelect.component';
+import datetimepicker from './datetimepicker/datetimepicker.component';
 import designationAccounts from './designationAccounts/designationAccounts.service';
 import faCheckbox from './faCheckbox/faCheckbox.component';
+import filters from './filters/filters.service';
 import help from './help/help.service';
 import layoutSettings from './layoutSettings/layoutSettings.directive';
 import links from './links/index.module';
+import locale from './locale/locale.service';
 import login from './login/index.module';
 import modal from './modal/index.module';
 import momentFilter from './moment/moment.filter';
@@ -22,7 +25,6 @@ import rawNumber from './rawNumber/rawNumber.directive';
 import selectionStore from './selectionStore/selectionStore.service';
 import serverConstants from './serverConstants/serverConstants.service';
 import session from './session/session.service';
-import tags from './tags/index.module';
 import pagination from './pagination/pagination.component';
 import urlParameter from './urlParameter/urlParameter.service';
 import users from './users/users.service';
@@ -39,11 +41,14 @@ export default angular.module('mpdx.common', [
     convertToNumber,
     currency,
     currencySelect,
+    datetimepicker,
     designationAccounts,
     faCheckbox,
+    filters,
     help,
     layoutSettings,
     links,
+    locale,
     login,
     modal,
     momentFilter,
@@ -53,7 +58,6 @@ export default angular.module('mpdx.common', [
     selectionStore,
     serverConstants,
     session,
-    tags,
     urlParameter,
     users
 ]).name;

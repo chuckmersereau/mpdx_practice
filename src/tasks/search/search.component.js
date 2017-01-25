@@ -1,15 +1,16 @@
 class TasksSearchController {
     tasksService;
-    filterService;
+    tasksFilter;
 
-    constructor(tasksFilterService, tasksService) {
+    constructor(tasksFilter, tasksService) {
         this.tasksService = tasksService;
-        this.filterService = tasksFilterService;
+        this.tasksFilter = tasksFilter;
 
         this.searchParams = '';
     }
     paramChanged() {
-        this.filterService.params.wildcard_search = this.searchParams;
+        this.tasksFilter.params.wildcard_search = this.searchParams;
+        this.tasksFilter.change();
     }
 }
 const Search = {

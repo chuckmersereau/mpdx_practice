@@ -1,5 +1,10 @@
 class ExpectedMonthlyTotalsReportController {
-    constructor(api) {
+    api;
+    constructor(
+        $log,
+        api
+    ) {
+        this.$log = $log;
         this.api = api;
 
         this.sumOfAllCategories = 0;
@@ -11,12 +16,13 @@ class ExpectedMonthlyTotalsReportController {
     }
     loadExpectedMonthlyTotals() {
         this.api.get('reports/expected_monthly_totals').then((data) => {
+            this.$log.debug('reports/expected_monthly_totals', data);
             this.total_currency = data.total_currency;
             this.total_currency_symbol = data.total_currency_symbol;
 
-            var availableDonationTypes = ['received', 'likely', 'unlikely'];
+            const availableDonationTypes = ['received', 'likely', 'unlikely'];
 
-            this.donationsByType = _(data.donations)
+            this.donationsByType = _(data.expected_donations)
                 .groupBy('type')
                 .defaults(_.zipObject(availableDonationTypes))
                 .map((donationsForType, type) => {

@@ -9,7 +9,6 @@ class ListController {
     constructor(
         modal, contacts, contactsTags, alerts, tasksService, accounts
     ) {
-        console.error('contacts/list: need replacement for currentAccountList.contacts.length');
         this.accounts = accounts;
         this.alerts = alerts;
         this.contacts = contacts;
@@ -39,12 +38,12 @@ class ListController {
             this.contacts.clearSelectedContacts();
         }
     }
-    hideContact(contactId) {
-        this.contacts.hideContact(contactId);
+    hideContact(contact) {
+        this.contacts.hideContact(contact);
     }
     openAddTagModal() {
         this.modal.open({
-            template: require('../../common/tags/add/add.html'),
+            template: require('../filter/tags/add/add.html'),
             controller: 'addTagController',
             locals: {
                 selectedContacts: this.contacts.getSelectedContactIds()
@@ -53,7 +52,7 @@ class ListController {
     }
     openRemoveTagModal() {
         this.modal.open({
-            template: require('../../common/tags/remove/remove.html'),
+            template: require('../filter/tags/remove/remove.html'),
             controller: 'removeTagController',
             locals: {
                 selectedContacts: this.contacts.getSelectedContactIds()
@@ -83,7 +82,7 @@ class ListController {
             template: require('./editFields/editFields.html'),
             controller: 'editFieldsController',
             locals: {
-                selectedContacts: this.contacts.getSelectedContactIds()
+                selectedContacts: this.contacts.getSelectedContacts()
             }
         });
     }

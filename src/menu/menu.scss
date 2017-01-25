@@ -1,103 +1,121 @@
 menu {
-  padding: 0;
-  margin: 0;
-  .primary {
-    $primary-menu-height: 48px;
-    height: auto;
-    background: $color-gray-keyline;
-    border-top: 5px solid $color-gold;
-    .account_balances {
-      padding-top: 0px;
-      padding-right: 14px;
-      line-height: $primary-menu-height;
-      font-size: 14px;
-      right: 0;
-    }
-    .item {
-      float: left;
-      a {
-        line-height: $primary-menu-height;
-        height: $primary-menu-height;
-        padding: 0 10px;
-        font-size: .85em;
-        font-weight: bold;
-        display: block;
-        color: $color-gray-text;
-        transition: color 0.2s ease-out;
-        &:active, &:focus {
-          background: transparent;
+    padding: 0;
+    margin: 0;
+    .primary {
+        $primary-menu-height: 48px;
+        height: auto;
+        background: $color-gray-keyline;
+        border-top: 5px solid $color-gold;
+        .account_balances {
+            padding-top: 0px;
+            padding-right: 14px;
+            line-height: $primary-menu-height;
+            font-size: 14px;
+            right: 0;
         }
-        &:hover {
-          color: $color-text;
-          background: transparent;
+        .item {
+            float: left;
+            a {
+                line-height: $primary-menu-height;
+                height: $primary-menu-height;
+                padding: 0 10px;
+                font-size: .85em;
+                font-weight: bold;
+                display: block;
+                color: $color-gray-text;
+                transition: color 0.2s ease-out;
+                &:active, &:focus {
+                    background: transparent;
+                }
+                &:hover {
+                    color: $color-text;
+                    background: transparent;
+                }
+            }
+            &.active {
+                margin: 0 -1px 0 -1px;
+                border: none;
+                a {
+                    background: transparent url('images/menuselected.png') no-repeat 50% 100%;
+                    background-size: 18px;
+                    color: $color-text;
+                }
+            }
+            &:first-child {
+                border-left: none;
+            }
+            &.search {
+                border: none;
+                float: right;
+            }
         }
-      }
-      &.active {
-        margin: 0 -1px 0 -1px;
-        border: none;
-        a {
-          background: transparent url('images/menuselected.png') no-repeat 50% 100%;
-          background-size: 18px;
-          color: $color-text;
+        .navbar-quick {
+            .section {
+                margin-left: 10px;
+                line-height: 34px;
+                height: $primary-menu-height;
+                padding: 7px 0;
+                float:right;
+            }
+            .btn {
+                display: block;
+                height: 34px;
+                background-color: $btn_gray;
+                border: 0;
+                font-weight: bold;
+            }
+            a.dropdown-toggle i.fa {
+                line-height: 34px;
+            }
+            .dropdown {
+                input[type=text] {
+                    border: 0;
+                    display: block;
+                }
+            }
         }
-      }
-      &:first-child {
-        border-left: none;
-      }
-      &.search {
-        border: none;
-        float: right;
-      }
-    }
-    .navbar-quick {
-      .section {
-        margin-left: 10px;
-        line-height: 34px;
-        height: $primary-menu-height;
-        padding: 7px 0;
-        float:right;
-      }
-      .btn {
-        display: block;
-        height: 34px;
-        background-color: $btn_gray;
-        border: 0;
-        font-weight: bold;
-      }
-      a.dropdown-toggle i.fa {
-        line-height: 34px;
-      }
-      .dropdown {
-        input[type=text] {
-          border: 0;
-          display: block;
+        .navbar-collapse {
+            padding-left: 0;
         }
-      }
+        .chosen-single {
+            border-radius: 0;
+            border-color: #fff;
+            box-shadow: none;
+            margin-top: -2px;
+        }
+        .chosen-container-active.chosen-with-drop {
+            .chosen-single, .chosen-drop {
+                border-radius: 0;
+                box-shadow: none;
+            }
+        }
+        .settings-drop {
+            color: $color-gray-text;
+            transition: color 0.2s ease-out;
+            &:hover {
+                color: $color-text;
+            }
+        }
+        @media screen and (min-width: 0px) and (max-width: 550px) {
+            .item {
+                float: none;
+                display: block;
+            }
+        }
     }
-    .navbar-collapse {
-      padding-left: 0;
+    .secondary {
+        $secondary-menu-height: 42px;
+        background: none;
+        border-bottom: 1px solid $color-gray-keyline;
+        .section {
+            display: inline-block;
+            height: $secondary-menu-height;
+            line-height: $secondary-menu-height;
+            margin-right: 24px;
+        }
+        .section.right {
+            margin-right: 0px;
+            margin-left: 12px;
+        }
     }
-
-    @media screen and (min-width: 0px) and (max-width: 550px) {
-      .item {
-        float: none;
-        display: block;
-      }
-    }
-  }
-  .secondary {
-    $secondary-menu-height: 42px;
-    background: none;
-    border-bottom: 1px solid $color-gray-keyline;
-    .section {
-      display: inline-block;
-      height: $secondary-menu-height;
-      line-height: $secondary-menu-height;
-      margin-right: 24px;
-    }
-    .section.right {
-      margin-right: 0px;
-      margin-left: 12px;
-    }
-  }
 }

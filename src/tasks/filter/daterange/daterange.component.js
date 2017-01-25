@@ -41,7 +41,8 @@ const Daterange = {
     bindings: {
         model: '=',
         locale: '<',
-        customOptions: '<'
+        customOptions: '<',
+        onChange: '&'
     }
 };
 

@@ -21,32 +21,29 @@ class LogTaskController {
         this.createNext = createNext;
         this.modal = modal;
         this.serverConstants = serverConstants;
-        this.specifiedTask = specifiedTask;
         this.tasksService = tasksService;
         this.toComplete = toComplete;
 
+        this.model = _.clone(specifiedTask);
         this.constants = {};
 
-        this.serverConstants.fetchConstants(['actions', 'next_actions', 'results']);
+        this.activate();
+    }
+    activate() {
+        // this.serverConstants.fetchConstants(['actions', 'next_actions', 'results']);
         this.constants = this.serverConstants.data;
-
-        var inputTask = this.specifiedTask || {};
-        this.models = {
-            dueDate: inputTask.due_date ? new Date(inputTask.due_date) : new Date(),
-            completedAt: inputTask.completed_at ? new Date(inputTask.completed_at) : new Date(),
-            noDate: inputTask.no_date !== false,
-            subject: inputTask.subject,
-            action: inputTask.activity_type,
-            result: inputTask.result,
-            nextAction: inputTask.next_action,
-            tagsList: inputTask.tag_list ? inputTask.tag_list : []
-        };
     }
     save() {
+        if (this.comment) {
+            if (!this.model.comments) {
+                this.model.comments = [];
+            }
+            this.model.comments.push({body: this.comment});
+        }
         return this.tasksService.postBulkLogTask(
             this.ajaxAction || 'post',
-            this.specifiedTask ? this.specifiedTask.id : null,
-            this.models,
+            this.model.id ? this.model.id : null,
+            this.model,
             this.selectedContacts,
             this.toComplete
         ).then(() => {
@@ -60,12 +57,13 @@ class LogTaskController {
                         specifiedSubject: this.models.nextAction,
                         selectedContacts: this.selectedContacts,
                         modalTitle: 'Follow up Task'
+                    },
+                    onHide: () => {
+                        if (this.selectedContacts.length === 1) {
+                            this.tasksService.fetchUncompletedTasks(this.selectedContacts[0]);
+                        }
+                        this.contacts.load(true);
                     }
-                }).then(() => {
-                    if (this.selectedContacts.length === 1) {
-                        this.tasksService.fetchUncompletedTasks(this.selectedContacts[0]);
-                    }
-                    this.contacts.load(true);
                 });
             }
         });

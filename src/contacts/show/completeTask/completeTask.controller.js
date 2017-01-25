@@ -6,21 +6,21 @@ class CompleteTaskController {
 
     constructor(
         $scope, modal, serverConstants, tasksService,
-        taskId, contact, taskAction
+        task, contact, taskAction
     ) {
         this.$scope = $scope;
         this.contact = contact;
         this.modal = modal;
         this.serverConstants = serverConstants;
-        this.taskId = taskId;
+        this.task = task;
         this.taskAction = taskAction;
         this.tasksService = tasksService;
 
-        this.serverConstants.fetchConstants(['next_actions', 'results', 'pledge_frequency']);
+        // this.serverConstants.fetchConstants(['next_actions', 'results', 'pledge_frequency']);
         this.constants = this.serverConstants.data;
     }
     save() {
-        return this.tasksService.postLogTask(this.taskId, this.models).then(() => {
+        return this.tasksService.postLogTask(this.task, this.models).then(() => {
             this.$scope.$hide();
 
             var contactIds = [];

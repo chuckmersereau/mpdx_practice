@@ -13,13 +13,13 @@
     <div class="filter_hint" translate>Click a tag twice to look up all contacts who do not have that tag.</div>
     <ul class="left_tag_list tags" ng-class="{'show_all_tags': $ctrl.showAllTags}">
         <li>
-      <span class="tag"
-            ng-class="{ 'selected': !$ctrl.contactsTags.isTagActive(tag), 'rejected': $ctrl.contactsTags.isTagRejected(tag) }"
-            ng-click="$ctrl.contactsTags.tagClick(tag, $event)"
-            ng-repeat="tag in $ctrl.contactsTags.data">
-        {{ tag }}
-        <a ng-click="$event.stopPropagation()" data-template-url="tags_delete_popover.html" class="tag_remove" bs-popover></a>
-      </span>
+            <span class="tag"
+                ng-class="{ 'selected': !$ctrl.contactsTags.isTagActive(tag), 'rejected': $ctrl.contactsTags.isTagRejected(tag) }"
+                ng-click="$ctrl.contactsTags.tagClick(tag, $event)"
+                ng-repeat="tag in $ctrl.contactsTags.data">
+            {{ tag.name }}
+            <a ng-click="$event.stopPropagation()" data-template-url="tags_delete_popover.html" class="tag_remove" bs-popover></a>
+            </span>
             <a class="show_all_tags_btn">
                 <div ng-click="$ctrl.showAllTags = !$ctrl.showAllTags" ng-if="$ctrl.contactsTags.data.length > 25">
                     <div ng-show="!$ctrl.showAllTags">
@@ -43,7 +43,7 @@
         <div class="popover-content">
             <div translate>Are you sure you want to completely delete this tag and remove it from all contacts?</div>
             <div class="text-muted" translate>To remove a tag from selected contacts only, use the action menu.</div>
-            <button class="btn btn-danger btn-block btn-xs" ng-click="$ctrl.tagsService.delete(tag)" translate>Delete Tag</button>
+            <button class="btn btn-danger btn-block btn-xs" ng-click="$ctrl.contactsTags.delete(tag)" translate>Delete Tag</button>
         </div>
     </div>
 </script>

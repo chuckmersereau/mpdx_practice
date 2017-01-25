@@ -1,20 +1,18 @@
 class EditTaskController {
-    ajaxAction;
     contacts;
     serverConstants;
-    tagsService;
-    tasksService;
+    tasksTags;
 
     constructor(
         $scope,
-        tasksTagsService, tasksService, serverConstants,
-        taskIds, modalCallback
+        tasksTags, tasksService, serverConstants,
+        selectedTasks, modalCallback
     ) {
         this.$scope = $scope;
         this.serverConstants = serverConstants;
-        this.tagsService = tasksTagsService;
+        this.tasksTags = tasksTags;
         this.tasksService = tasksService;
-        this.taskIds = taskIds;
+        this.selectedTasks = selectedTasks;
         this.modalCallback = modalCallback;
 
         this.constants = {};
@@ -22,14 +20,20 @@ class EditTaskController {
         this.activate();
     }
     activate() {
-        this.serverConstants.fetchConstants(['actions', 'next_actions', 'results']);
+        // this.serverConstants.fetchConstants(['actions', 'next_actions', 'results']);
         this.constants = this.serverConstants.data;
 
         this.models = {};
     }
     submit() {
+        if (this.comment) {
+            if (!this.models.comments) {
+                this.models.comments = [];
+            }
+            this.models.comments.push({body: this.comment});
+        }
         this.tasksService.bulkEditTasks(
-            this.taskIds,
+            this.selectedTasks,
             this.models
         ).then(() => {
             this.$scope.$hide();

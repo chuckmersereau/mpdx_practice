@@ -4,7 +4,7 @@
         <div class="panel-body panel-report-heading">
             <div class="row">
                 <div class="col-xs-6">
-                    <h4 translate>Donations for {{$ctrl.startDate}} through {{$ctrl.endDate}}</h4>
+                    <h4 translate>Donations for {{$ctrl.startDate.format('l')}} through {{$ctrl.endDate.format('l')}}</h4>
                 </div>
                 <div class="col-xs-6 text-right">
                     <button ng-click="$ctrl.gotoPrevMonth()" class="btn btn-default btn-sm">
@@ -34,7 +34,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="donation in $ctrl.donations[$ctrl.index]">
+                <tr ng-repeat="donation in $ctrl.donations">
                     <td ng-if="$ctrl.contact">{{ donation.donor_account.name }}</td>
                     <td class="date">{{ donation.donation_date | moment: 'l' }}</td>
                     <td ng-if="!$ctrl.contact"><a ui-sref="contact({ contactId: donation.contact_id })">{{ donation.name }}</a></td>
@@ -45,12 +45,12 @@
                     <td>{{ donation.motivation }}</td>
                     <td><a ui-sref="reports.donations.edit({ donationId: donation.id})"><i class="fa fa-pencil-square-o"></i></a></td>
                 </tr>
-                <tr ng-if="$ctrl.donations[$ctrl.index].length == 0">
+                <tr ng-if="$ctrl.donations.length == 0">
                     <td colspan="100" class="text-center" translate>No donations this month.</td>
                 </tr>
             </tbody>
             <tfoot ng-if="!$ctrl.contact">
-                <tr class="sum" ng-repeat="d in $ctrl.donationTotals[$ctrl.index] | toArray">
+                <tr class="sum" ng-repeat="d in $ctrl.donationTotals | toArray">
                     <td></td>
                     <td class="right"><strong translate>Total {{d.currency}} Donations {{d.count}}</strong></td>
                     <td class="right">{{d.amount}} {{$ctrl.currency.list[d.currency].symbol}}</td>

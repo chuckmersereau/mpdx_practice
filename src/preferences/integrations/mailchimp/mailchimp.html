@@ -1,4 +1,4 @@
-<div ng-show="!$ctrl.mailchimp.loading">
+<div ng-show="$ctrl.mailchimp.data">
     <div ng-show="$ctrl.showSettings">
         <div ng-if="$ctrl.mailchimp.data.api_key && !$ctrl.mailchimp.data.active && !$ctrl.mailchimp.data.validate_key">
             {{$ctrl.mailchimp.data.validation_error}}

@@ -1,90 +1,44 @@
 class progressController {
+    accounts;
     api;
     users;
 
     constructor(
-        blockUI,
+        blockUI, accounts,
         api, $filter, users
     ) {
         this.$filter = $filter;
+        this.accounts = accounts;
         this.api = api;
         this.blockUI = blockUI.instances.get('dashboardProgress');
         this.users = users;
 
-        this.startDate = new Date();
-        this.startDate.setHours(0, 0, 0, 0);
-        this.startDate.setDate(this.startDate.getDate() - this.startDate.getDay() + 1);
-        this.endDate = new Date(this.startDate);
-        this.endDate.setDate(this.startDate.getDate() + 7);
+        this.endDate = moment().subtract(1, 'day');
+        this.startDate = moment(this.endDate).subtract(1, 'week');
         this.errorOccurred = false;
     }
     blankData() {
         this.blockUI.start();
-        this.data = {
-            contacts: {
-                active: '-', referrals_on_hand: '-', referrals: '-'
-            },
-            phone: {
-                completed: '-',
-                attempted: '-',
-                received: '-',
-                appointments: '-',
-                talktoinperson: '-'
-            },
-            email: {
-                sent: '-',
-                received: '-'
-            },
-            facebook: {
-                sent: '-',
-                received: '-'
-            },
-            text_message: {
-                sent: '-',
-                received: '-'
-            },
-            electronic: {
-                sent: '-',
-                received: '-',
-                appointments: '-'
-            },
-            appointments: {
-                completed: '-'
-            },
-            correspondence: {
-                precall: '-',
-                support_letters: '-',
-                thank_yous: '-',
-                reminders: '-'
-            }
-        };
+        this.accounts.analytics = null;
     }
     nextWeek() {
-        this.startDate.setDate(this.startDate.getDate() + 7);
-        this.endDate.setDate(this.endDate.getDate() + 7);
+        this.startDate.add(1, 'week');
+        this.endDate.add(1, 'week');
         this.refreshData();
     }
     previousWeek() {
-        this.startDate.setDate(this.startDate.getDate() - 7);
-        this.endDate.setDate(this.endDate.getDate() - 7);
+        this.startDate.subtract(1, 'week');
+        this.endDate.subtract(1, 'week');
         this.refreshData();
     }
     refreshData() {
         this.blankData();
-        //let startDateString = this.$filter('date')(this.startDate, 'yyyy-MM-dd');
-        //const url = 'progress.json?start_date=' + startDateString;
-
-        console.error('home/progress - replace progress.json with v2 calls');
-        // this.api.get(url).then((newData) => {
-        //     this.data = newData;
-        //     this.blockUI.stop();
-        // }).catch(() => {
-        //     this.errorOccurred = true;
-        // });
+        this.accounts.getAnalytics({startDate: this.startDate, endDate: this.endDate}).then(() => {
+            this.blockUI.stop();
+        });
     }
     $onInit() {
         this.refreshData();
-        this.users.getHasAnyUsAccounts();
     }
 }
 

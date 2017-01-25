@@ -5,14 +5,6 @@ class CareController {
         tasksService
     ) {
         this.tasksService = tasksService;
-
-        this.newsletter = null;
-    }
-    $onInit() {
-        console.error('home/care: analytics to first newsletter');
-        // this.tasksService.getAnalytics().then((reponse) => {
-        //     this.newsletter = reponse;
-        // });
     }
     addNewsletter() {
         this.tasksService.openNewsletterModal({});

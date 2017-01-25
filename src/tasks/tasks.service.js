@@ -1,65 +1,52 @@
 class TasksService {
     api;
     modal;
-    filterService;
-    tagsService;
+    tasksFilter;
+    tasksTags;
 
-    constructor($log, modal, api, tasksFilterService, tasksTagsService) {
+    constructor(
+        $log, $q,
+        modal, api, tasksFilter, tasksTags
+    ) {
         this.$log = $log;
+        this.$q = $q;
         this.modal = modal;
         this.api = api;
-        this.filterService = tasksFilterService;
-        this.tagsService = tasksTagsService;
+        this.tasksFilter = tasksFilter;
+        this.tasksTags = tasksTags;
 
         this.analytics = null;
         this.data = {};
-        this.loading = true;
         this.sort = 'all';
-        this.data = {};
+
+        this.init();
+    }
+    init() {
         this.pages = {
             contactShow: ['completed', 'uncompleted'],
             tasksList: ['today', 'overdue', 'upcoming', 'tomorrow', 'noDueDate', 'starred', 'allCompleted']
         };
-        let DEFAULT_PER_PAGE = 10;
-        this.meta = {
-            completed: {
+        const DEFAULT_PAGINATION = {
+            pagination: {
                 page: 1,
-                per_page: DEFAULT_PER_PAGE,
-                order: 'no_date DESC, start_at'
-            },
-            uncompleted: {
-                page: 1,
-                per_page: DEFAULT_PER_PAGE,
-                order: 'no_date DESC, start_at'
-            },
-            today: {
-                page: 1,
-                per_page: DEFAULT_PER_PAGE
-            },
-            overdue: {
-                page: 1,
-                per_page: DEFAULT_PER_PAGE
-            },
-            upcoming: {
-                page: 1,
-                per_page: DEFAULT_PER_PAGE
-            },
-            tomorrow: {
-                page: 1,
-                per_page: DEFAULT_PER_PAGE
-            },
-            noDueDate: {
-                page: 1,
-                per_page: DEFAULT_PER_PAGE
-            },
-            starred: {
-                page: 1,
-                per_page: DEFAULT_PER_PAGE
-            },
-            allCompleted: {
-                page: 1,
-                per_page: DEFAULT_PER_PAGE
+                per_page: 10
             }
+        };
+
+        this.meta = {
+            completed: _.assign(DEFAULT_PAGINATION, {
+                order: 'no_date DESC, start_at'
+            }),
+            uncompleted: _.assign(DEFAULT_PAGINATION, {
+                order: 'no_date DESC, start_at'
+            }),
+            today: DEFAULT_PAGINATION,
+            overdue: DEFAULT_PAGINATION,
+            upcoming: DEFAULT_PAGINATION,
+            tomorrow: DEFAULT_PAGINATION,
+            noDueDate: DEFAULT_PAGINATION,
+            starred: DEFAULT_PAGINATION,
+            allCompleted: DEFAULT_PAGINATION
         };
         this.defaultFilters = {
             completed: {
@@ -102,36 +89,40 @@ class TasksService {
             }
         };
     }
-
-    fetchTasks(collection, filters) {
-        this.data[collection] = [];
-
-        const meta = this.meta[collection];
+    fetchTasks(collection) {
+        this.data[collection] = null;
         const defaultFilters = this.defaultFilters[collection];
-
-        const wildcardSearch = this.filterService.wildcard_search;
+        const wildcardSearch = this.tasksFilter.wildcard_search;
+        let filters = _.assign(defaultFilters, this.tasksFilter.params);
         if (wildcardSearch) {
             filters.wildcard_search = wildcardSearch;
         }
+        if (this.tasksTags.selectedTags.length > 0) {
+            filters.tags = _.map(this.tasksTags.selectedTags, tag => tag.name).join(',');
+        } else {
+            delete filters.tags;
+        }
+        if (this.tasksTags.rejectedTags.length > 0) {
+            filters.exclude_tags = _.map(this.tasksTags.rejectedTags, tag => tag.name).join(',');
+        } else {
+            delete filters.exclude_tags;
+        }
+        filters.any_tags = this.tasksTags.anyTags;
 
-        const obj = Object.assign({
-            filters: Object.assign(
-                Object.assign({}, defaultFilters),
-                filters
-            )
-        }, meta);
-
-        return this.api.get('tasks/', obj).then((data) => {
-            if (data.tasks.length) {
-                this.transformChild(data.tasks, 'comments', data.comments);
-                this.transformChild(data.comments, 'person_id', data.people, true);
-            }
-            this.data[collection] = data.tasks;
-            meta.from = data.meta.from;
-            meta.to = data.meta.to;
-            meta.page = data.meta.page;
-            meta.total = data.meta.total;
-            meta.total_pages = data.meta.total_pages;
+        return this.api.get({
+            url: 'tasks',
+            data: {
+                filters: filters,
+                include: 'comments,contacts,comments.people',
+                page: this.meta[collection].pagination.page,
+                per_page: this.meta[collection].pagination.per_page,
+                sort: this.meta[collection].pagination.order
+            },
+            overrideGetAsPost: true
+        }).then((data) => {
+            this.$log.debug(`${collection} tasks page ${data.meta.pagination.page}`, data);
+            this.data[collection] = data;
+            this.meta[collection] = data.meta;
             return data;
         });
     }
@@ -143,7 +134,7 @@ class TasksService {
             },
             page: 1,
             per_page: 500,
-            include: 'comments',
+            include: 'comments,contacts',
             order: 'start_at'
         }).then((data) => {
             this.uncompleted = data;
@@ -156,7 +147,7 @@ class TasksService {
                 completed: true,
                 contact_ids: [id]
             },
-            include: 'comments',
+            include: 'comments,contacts',
             page: 1,
             per_page: 500,
             sort: 'completed_at'
@@ -170,140 +161,86 @@ class TasksService {
             this.fetchTasks(collection, filters);
         });
     }
-
-    transformChild(parentObj, childKey, referredObj, oneToOne) {
-        _.each(parentObj, (parent) => {
-            let newObj;
-            if (oneToOne) {
-                newObj = _.find(referredObj, referredItem => referredItem.id === parent[childKey]);
-            } else {
-                newObj = [];
-                _.each(parent[childKey], (id) => {
-                    newObj.push(_.find(referredObj, referredItem => referredItem.id === id));
-                });
-            }
-            parent[childKey] = newObj;
-        });
+    save(task) {
+        return this.api.put(`tasks/${task.id}`, task);
     }
-    submitNewComment(taskId, newComment) {
-        return this.api.put(`/tasks/${taskId}`, {task: {activity_comments_attributes: [{body: newComment}]}});
+    submitNewComment(task, newComment) {
+        return this.api.put(`tasks/${task.id}`, {updated_in_db_at: task.updated_in_db_at, activity_comment: {body: newComment}});
     }
+    // FIXME need review
     deleteTask(taskId) {
         return this.api.delete(`/tasks/${taskId}`, [], () => {
             return true;
         });
     }
     starTask(task) {
-        return this.api.put(`/tasks/${task.id}`, {task: {starred: !task.starred}});
+        return this.api.put(`tasks/${task.id}`, {updated_in_db_at: task.updated_in_db_at, starred: !task.starred});
     }
-    deleteComment(taskId, commentId) {
-        return this.api.delete('activity_comments/' + commentId, { activity_id: taskId });
+    deleteComment(task, commentId) {
+        task.comments = _.reject(task.comments, {id: commentId});
+        return this.save(task);
     }
+    // FIXME need review
     bulkDeleteTasks(taskIds) {
-        return this.api.delete('tasks/bulk_destroy', { ids: taskIds });
+        return this.api.delete('tasks/bulk', { ids: taskIds });
     }
-    bulkCompleteTasks(taskIds) {
-        return this.api.post('tasks/bulk_update', {
-            bulk_task_update_ids: taskIds.join(),
-            _method: 'put',
-            task: {
-                completed: true
-            }
+    bulkCompleteTasks(tasks) {
+        _.each(tasks, task => {
+            task.completed = true;
         });
+        return this.api.put('tasks/bulk', tasks);
     }
-    bulkEditTasks(taskIds, model) {
-        return this.api.post('tasks/bulk_update', {
-            bulk_task_update_ids: taskIds.join(),
-            _method: 'put',
-            task: {
-                subject: model.subject,
+    // FIXME need review
+    bulkEditTasks(tasks, model) {
+        _.each(tasks, (task) => {
+            _.assign(task, task, {
                 activity_type: model.action,
                 no_date: model.noDate,
-                'start_at(1i)': model.dueDate ? model.dueDate.getFullYear() + '' : undefined,
-                'start_at(2i)': model.dueDate ? (model.dueDate.getMonth() + 1) + '' : undefined,
-                'start_at(3i)': model.dueDate ? model.dueDate.getDate() + '' : undefined,
-                'start_at(4i)': model.dueDate ? model.dueDate.getHours() + '' : undefined,
-                'start_at(5i)': model.dueDate ? model.dueDate.getMinutes() + '' : undefined,
-                activity_comments_attributes: [
-                    {
-                        body: model.comment
-                    }
-                ],
+                start_at: model.dueDate ? moment(model.dueDate).toISOString() : undefined,
+                comments: [{body: model.comment}],
                 tag_list: model.tagsList ? model.tagsList.map(tag => tag.text).join() : undefined
-            }
+            });
         });
+        return this.api.put('tasks/bulk', tasks);
     }
     postBulkLogTask(ajaxAction, taskId, model, contactIds, toComplete) {
-        const url = 'tasks/' + (taskId || '');
+        let url = 'tasks';
+        if (taskId) {
+            url += '/' + taskId;
+        }
+        model.contacts = _.map(contactIds, contactId => {
+            return {id: contactId};
+        });
+        model.completed = toComplete || model.result !== null;
+
         return this.api.call({
-            methd: ajaxAction,
+            method: ajaxAction,
             url: url,
-            data: {
-                add_task_contact_ids: contactIds.join(),
-                task: {
-                    subject: model.subject,
-                    activity_type: model.action,
-                    no_date: model.noDate,
-                    'start_at(1i)': model.dueDate.getFullYear() + '',
-                    'start_at(2i)': (model.dueDate.getMonth() + 1) + '',
-                    'start_at(3i)': model.dueDate.getDate() + '',
-                    'start_at(4i)': model.dueDate.getHours() + '',
-                    'start_at(5i)': model.dueDate.getMinutes() + '',
-                    'completed_at(1i)': model.completedAt.getFullYear() + '',
-                    'completed_at(2i)': (model.completedAt.getMonth() + 1) + '',
-                    'completed_at(3i)': model.completedAt.getDate() + '',
-                    'completed_at(4i)': model.completedAt.getHours() + '',
-                    'completed_at(5i)': model.completedAt.getMinutes() + '',
-                    activity_comments_attributes: [
-                        {
-                            body: model.comment
-                        }
-                    ],
-                    completed: toComplete || model.result,
-                    result: model.result,
-                    tag_list: model.tagsList.map(tag => tag.text).join()
-                }
-            }
+            data: model
         });
     }
-    postLogTask(taskId, model) {
+    // FIXME need review
+    postLogTask(task, model) {
         let objPayload = {
-            task: {
-                activity_comment: {
-                    body: model.comment
-                },
-                completed: true
-            }
+            updated_in_db_at: task.updated_in_db_at,
+            activity_comment: {body: model.comment},
+            completed: true
         };
         if (model.result) {
-            objPayload.task.result = model.result;
+            objPayload.result = model.result;
         }
         if (model.nextAction) {
-            objPayload.task.nextAction = model.nextAction;
+            objPayload.nextAction = model.nextAction;
         }
 
-        return this.api.put(`tasks/${taskId}`, objPayload);
+        return this.api.put(`tasks/${task.id}`, objPayload);
     }
     postBulkAddTask(model, contactIds) {
-        return this.api.post('tasks', {
-            add_task_contact_ids: contactIds.join(),
-            task: {
-                subject: model.subject,
-                activity_type: model.action,
-                no_date: model.noDate,
-                'start_at(1i)': model.date.getFullYear() + '',
-                'start_at(2i)': (model.date.getMonth() + 1) + '',
-                'start_at(3i)': model.date.getDate() + '',
-                'start_at(4i)': model.date.getHours() + '',
-                'start_at(5i)': model.date.getMinutes() + '',
-                activity_comments_attributes: [
-                    {
-                        body: model.comment
-                    }
-                ],
-                tag_list: model.tagsList.map(tag => tag.text).join()
-            }
+        model.contacts = _.map(contactIds, (contactId) => {
+            return {id: contactId};
         });
+
+        return this.api.post('tasks', model);
     }
     openModal(params) {
         this.modal.open({
@@ -312,9 +249,12 @@ class TasksService {
             locals: {
                 specifiedAction: params.specifiedAction || null,
                 specifiedSubject: params.specifiedSubject || null,
-                selectedContacts: params.contact || [],
+                selectedContacts: params.selectedContacts || params.contact || [],
                 modalTitle: params.title || 'Add Task',
                 isNewsletter: false
+            },
+            resolve: {
+                tags: () => this.tasksTags.load()
             },
             onHide: params.onHide || _.noop
         });
@@ -333,16 +273,14 @@ class TasksService {
             onHide: params.onHide || _.noop
         });
     }
-    getAnalytics() {
-        if (this.analytics) {
+    getAnalytics(reset = false) {
+        if (this.analytics && !reset) {
             return this.$q.resolve(this.analytics);
         }
         return this.api.get('tasks/analytics').then((data) => {
             this.$log.debug('tasks/analytics', data);
             this.analytics = data;
             return this.analytics;
-        }).catch((err) => {
-            this.$log.error('tasks/analytics not implemented.', err);
         });
     }
 }

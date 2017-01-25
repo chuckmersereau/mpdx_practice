@@ -27,12 +27,12 @@ class FilterController {
         if (this.contactsTags.isResettable()) {
             this.contactsTags.reset();
         }
-        if (this.contactFilter.resettable) {
+        if (this.contactFilter.isResettable()) {
             this.contactFilter.reset();
         }
     }
     showReset() {
-        return this.contactsTags.isResettable() || this.contactFilter.resettable;
+        return this.contactsTags.isResettable() || this.contactFilter.isResettable();
     }
 
     openMapContactsModal() {

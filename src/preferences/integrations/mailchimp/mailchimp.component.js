@@ -15,6 +15,9 @@ class MailchimpIntegrationPreferencesController {
             this.state = this.mailchimp.state;
         });
     }
+    $onInit() {
+        this.mailchimp.load();
+    }
     save() {
         this.saving = true;
         this.mailchimp.save().then(() => {
@@ -31,7 +34,6 @@ class MailchimpIntegrationPreferencesController {
         });
     }
     hide() {
-        this.mailchimp.loading = true;
         this.mailchimp.load();
         this.showSettings = false;
     }

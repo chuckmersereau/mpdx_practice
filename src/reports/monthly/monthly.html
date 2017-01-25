@@ -56,8 +56,8 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="donation in donationType.donations | orderBy : 'donor'">
-                    <td><a href="/contacts/{{donation.contact_id}}" target="_blank">{{donation.donor}}</a></td>
-                    <td>{{donation.status}}</td>
+                    <td><a ui-sref="contact({contactId: donation.contact_id})" target="_blank">{{donation.contact_name}}</a></td>
+                    <td>{{donation.contact_status}}</td>
                     <td class="text-right">
                         <div ng-if="donation.pledge_amount !== null">
                             {{donation.pledge_currency_symbol}}{{donation.pledge_amount | number : 0}}

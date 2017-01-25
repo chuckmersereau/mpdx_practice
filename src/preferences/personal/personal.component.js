@@ -1,13 +1,13 @@
 class PersonalPreferencesController {
-    accountsMap;
     accounts;
     alerts;
     api;
+    locale;
     users;
 
     constructor(
         $state, $stateParams, $window, gettextCatalog,
-        accounts, api, alerts, users
+        accounts, api, alerts, locale, users
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
@@ -15,6 +15,7 @@ class PersonalPreferencesController {
         this.accounts = accounts;
         this.alerts = alerts;
         this.api = api;
+        this.locale = locale;
         this.gettextCatalog = gettextCatalog;
         this.users = users;
 
@@ -24,12 +25,6 @@ class PersonalPreferencesController {
         this.languages = _.map(_.keys($window.languageMappingList), (key) => {
             return _.extend({alias: key}, window.languageMappingList[key]);
         });
-
-        this.accountsMap = {};
-        _.each(this.accounts.data, (account) => {
-            this.accountsMap[account.id] = account;
-        });
-        this.default_account_list = this.users.current.preferences.default_account_list.toString();
     }
     $onInit() {
         if (this.$stateParams.id) {
@@ -38,7 +33,7 @@ class PersonalPreferencesController {
     }
     save() {
         this.saving = true;
-        return this.users.save(this.users.current).then(() => {
+        return this.users.saveCurrent().then(() => {
             this.alerts.addAlert('Preferences saved successfully', 'success');
             this.setTab('');
             this.saving = false;
@@ -51,7 +46,7 @@ class PersonalPreferencesController {
     }
     saveAccount() {
         this.saving = true;
-        return this.accounts.save(this.accountsMap[this.api.account_list_id]).then(() => {
+        return this.accounts.saveCurrent().then(() => {
             this.alerts.addAlert('Preferences saved successfully', 'success');
             this.setTab('');
             this.saving = false;
@@ -74,9 +69,6 @@ class PersonalPreferencesController {
     tabSelected(service) {
         return this.tabId === service;
     }
-    setDefaultAccountList() {
-        this.users.current.preferences.default_account_list = parseInt(this.default_account_list);
-    }
     setSalaryOrg() {
         this.salary_organization_string = this.personal.data.salary_organization_id;
     }
@@ -90,7 +82,7 @@ class PersonalPreferencesController {
         return locale;
     }
     setLocale() {
-        this.users.changeLocale(this.users.current.preferences.locale);
+        this.locale.change(this.users.current.preferences.locale);
     }
 }
 

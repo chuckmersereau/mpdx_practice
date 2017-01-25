@@ -1,50 +1,45 @@
 class TagsService {
     api;
 
-    constructor($rootScope, api, $filter) {
+    constructor(
+        $filter, $log, $rootScope,
+        api
+    ) {
         this.$filter = $filter;
+        this.$log = $log;
+        this.$rootScope = $rootScope;
         this.api = api;
 
         this.data = [];
         this.selectedTags = [];
         this.rejectedTags = [];
         this.anyTags = false;
-        this.loading = true;
-
-        $rootScope.$on('accountListUpdated', (e, accountListId) => {
-            if (accountListId) {
-                this.load();
-            }
-        });
-
-        this.load();
     }
     load() {
-        this.loading = true;
-        console.error('common/tags - no contacts/tags enpoint yet');
-        // return this.api.get('contacts/tags').then((data) => {
-        //     this.data = data;
-        //     this.loading = false;
-        // });
+        return this.api.get('tasks/tags').then((data) => {
+            this.$log.debug('tasks/tags', data);
+            this.data = data;
+            return data;
+        });
     }
     delete(tagName) {
-        return this.api.delete('contacts/tags', { tags: [{ name: tagName, all_contacts: true }] }).then(() => {
+        return this.api.delete('tasks', { tags: [{ all_tasks: true, name: tagName }] }).then(() => {
             this.selectedTags = _.without(tagName);
             this.rejectedTags = _.without(tagName);
             this.data.splice(this.data.indexOf(tagName), 1);
         });
     }
-    tagContact(contactIds, tag) {
-        return this.api.post('contacts/tags/bulk_create', {
-            add_tag_contact_ids: contactIds.join(),
+    tag(contextIds, tag) {
+        return this.api.post('tasks/bulk_create', {
+            add_tag_task_ids: contextIds.join(),
             add_tag_name: tag
         });
     }
-    untagContact(contactIds, tag) {
-        return this.api.delete('contacts/tags', {
+    untag(contextIds, tag) {
+        return this.api.delete('tasks', {
             tags: [{
                 name: tag,
-                contact_ids: contactIds.join()
+                task_ids: contextIds.join()
             }]
         });
     }
@@ -69,6 +64,7 @@ class TagsService {
         } else {
             this.selectedTags.push(tag);
         }
+        this.$rootScope.$emit('tasksTagsChanged');
     }
     isResettable() {
         return (this.selectedTags.length > 0 || this.rejectedTags.length > 0);
@@ -80,7 +76,14 @@ class TagsService {
     getTagsByQuery(query) {
         return this.$filter('filter')(this.data, query);
     }
+    addTag(ids, tag) {
+        const obj = {
+            add_tag_task_ids: ids.join(),
+            add_tag_name: tag
+        };
+        return this.api.post('tasks/tags/bulk_create', obj);
+    }
 }
 
-export default angular.module('mpdx.common.tags.service', [])
-    .service('contactsTags', TagsService).name;
+export default angular.module('mpdx.tasks.tags.service', [])
+    .service('tasksTags', TagsService).name;

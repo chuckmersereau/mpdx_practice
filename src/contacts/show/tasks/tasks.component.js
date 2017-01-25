@@ -9,31 +9,33 @@ class ContactTasksController {
         this.modal = modal;
         this.moment = moment;
         this.tasksService = tasksService;
-
         this.models = {};
     }
     $onChanges(changesObj) {
         if (_.has(changesObj.contact, 'currentValue.id') && changesObj.contact.currentValue.id !== changesObj.contact.previousValue.id) {
-            this.load(changesObj.contact.currentValue.id);
+            this.load();
         }
     }
-    load(id) {
-        this.tasksService.fetchUncompletedTasks(id);
+    load() {
+        this.tasksService.fetchUncompletedTasks(this.contact.id);
     }
     newComment(taskId) {
         if (this.models.comment) {
             this.tasksService.submitNewComment(taskId, this.models.comment).then(() => {
-                this.load(this.contact.id);
+                this.load();
             });
             this.models.comment = '';
         }
     }
     deleteTask(taskId) {
-        this.tasksService.deleteTask(taskId).then(this.load.bind(this, this.contact.id));
+        this.tasksService.deleteTask(taskId).then(() => {
+            this.load();
+        });
     }
     starTask(task) {
-        this.tasksService.starTask(task).then(() => {
-            task.starred = !task.starred;
+        return this.tasksService.starTask(task).then((data) => {
+            task.starred = data.starred;
+            task.updated_in_db_at = data.updated_in_db_at;
         });
     }
     openCompleteTaskModal(task) {
@@ -41,11 +43,11 @@ class ContactTasksController {
             template: require('../completeTask/completeTask.html'),
             controller: 'completeTaskController',
             locals: {
-                taskId: task.id,
+                task: task,
                 contact: this.contact,
                 taskAction: task.activity_type
             },
-            onHide: this.load.bind(this, this.contact.id)
+            onHide: this.load
         });
     }
     openEditTaskModal(task) {
@@ -61,7 +63,7 @@ class ContactTasksController {
                 toComplete: false,
                 createNext: false
             },
-            onHide: this.load.bind(this, this.contact.id)
+            onHide: this.load
         });
     }
 }

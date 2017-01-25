@@ -1,34 +1,31 @@
 class ContactsService {
     analytics;
     api;
-    cache;
     contactFilter;
     contactsTags;
 
     constructor(
-        $location, $log, $rootScope,
-        api, cache, contactFilter, contactsTags
+        $location, $log, $q, $rootScope,
+        alerts, api, contactFilter, contactsTags
     ) {
         this.$log = $log;
+        this.$q = $q;
+        this.alerts = alerts;
         this.api = api;
-        this.cache = cache;
         this.contactFilter = contactFilter;
         this.contactsTags = contactsTags;
 
         this.analytics = null;
         this.data = [];
         this.meta = {};
-        this.lastAccountId = null; //Hack to stop dupe calls on repeat account swap
         this.loading = true;
 
         this.page = 1;
 
-        $rootScope.$watch(() => this.contactFilter.params, (newVal, oldVal) => {
-            if (!_.isEmpty(newVal) && !_.isEmpty(oldVal)) {
-                $log.debug('contacts service: contact parameter change');
-                this.load(true);
-            }
-        }, true);
+        $rootScope.$on('contactParamChange', () => {
+            $log.debug('contacts service: contact parameter change');
+            this.load(true);
+        });
 
         $rootScope.$watch(() => this.contactFilter.wildcard_search, (newVal, oldVal) => {
             if (!oldVal) {
@@ -43,12 +40,8 @@ class ContactsService {
             }
         });
 
-        $rootScope.$on('accountListUpdated', (e, accountId) => {
-            if (accountId && this.lastAccountId !== accountId) {
-                $log.debug('contacts service: current account switched:', accountId);
-                this.lastAccountId = accountId;
-                this.load(true);
-            }
+        $rootScope.$on('accountListUpdated', () => {
+            this.load(true);
         });
 
         $rootScope.$watch(() => {
@@ -67,9 +60,26 @@ class ContactsService {
     get(id) {
         return this.api.get(`contacts/${id}`, {include: 'people,addresses'});
     }
+    find(id) {
+        let contact = _.find(this.data, { id: id });
+        if (contact) {
+            this.$q.resolve(contact);
+        } else {
+            return this.get(id).then((data) => {
+                let contact = _.find(this.data, {id: data.id});
+                if (contact) {
+                    _.assign(contact, contact, data); //add missing contact to data
+                } else {
+                    this.data.push(contact);
+                }
+                return data;
+            });
+        }
+    }
     load(reset) {
         this.loading = true;
         if (reset) {
+            this.page = 1;
             this.meta = {};
             this.data = null;
         }
@@ -83,20 +93,39 @@ class ContactsService {
         }
 
         if (this.contactsTags.selectedTags.length > 0) {
-            filterParams.tags = this.contactsTags.selectedTags;
+            filterParams.tags = _.map(this.contactsTags.selectedTags, tag => tag.name).join(',');
+        } else {
+            delete filterParams.tags;
         }
         if (this.contactsTags.rejectedTags.length > 0) {
-            filterParams.exclude_tags = this.contactsTags.rejectedTags;
+            filterParams.exclude_tags = _.map(this.contactsTags.rejectedTags, tag => tag.name).join(',');
+        } else {
+            delete filterParams.exclude_tags;
         }
         filterParams.any_tags = this.contactsTags.anyTags;
 
-        return this.api.get('contacts', {filters: filterParams, page: this.page, per_page: 25, include: 'people,addresses', sort: 'name'}).then((data) => {
+        return this.api.get({
+            url: 'contacts',
+            data: {
+                filters: filterParams,
+                page: this.page,
+                per_page: 25,
+                include: 'people,addresses',
+                sort: 'name ASC'
+            },
+            overrideGetAsPost: true
+        }).then((data) => {
             this.$log.debug('contacts page ' + data.meta.pagination.page, data);
             let count = this.meta.to || 0;
+            this.meta = data.meta;
             if (reset) {
                 newContacts = [];
                 this.page = 1;
                 count = 0;
+            }
+            if (data.length === 0) {
+                this.loading = false;
+                return;
             }
             _.each(data, (contact) => {
                 // fix tag_list difference for list vs show
@@ -104,17 +133,20 @@ class ContactsService {
                     return { text: tag };
                 });
                 // end fix
-                const currentContact = this.cache.updateContact(contact, data);
                 if (reset) {
-                    newContacts.push(currentContact);
+                    newContacts.push(contact);
                 } else {
-                    this.data.push(currentContact);
+                    let val = _.find(this.data, {id: contact.id});
+                    if (val) {
+                        _.assign(val, val, data); //add missing contact to data
+                    } else {
+                        this.data.push(contact);
+                    }
                 }
             });
             if (reset) {
                 this.data = newContacts;
             }
-            this.meta = data.meta;
             count += data.length;
             this.meta.to = count;
             this.loading = false;
@@ -122,7 +154,13 @@ class ContactsService {
     }
     save(contact) {
         return this.api.put(`contacts/${contact.id}`, contact).then((data) => {
-            this.cache.updateContact(data.contact, data);
+            let contact = _.find(this.data, {id: data.id});
+            if (contact) {
+                _.assign(contact, contact, data); //add missing contact to data
+            } else {
+                this.data.push(contact);
+            }
+            return data;
         });
     }
     create(contact) {
@@ -132,8 +170,13 @@ class ContactsService {
         };
 
         return this.api.post('contacts', {contact: contactObj}).then((data) => {
-            this.cache.updateContact(data.contact, data);
-            return this.cache.get(data.contact.id);
+            let contact = _.find(this.data, {id: data.id});
+            if (contact) {
+                _.assign(contact, contact, data); //add missing contact to data
+            } else {
+                this.data.push(contact);
+            }
+            return this.find(data.contact.id);
         });
     }
     loadMoreContacts() {
@@ -208,17 +251,24 @@ class ContactsService {
             contact[key] = value;
         });
     }
-    hideContact(contactId) {
-        _.remove(this.data, (contact) => contact.id === contactId);
-        return this.api.delete(`/contacts/${contactId}`);
+    hideContact(contact) {
+        contact.status = 'Never Ask';
+        this.save(contact).then(() => {
+            _.remove(this.data, { id: contact.id });
+        });
     }
     bulkHideContacts() {
-        return this.api.delete('/contacts/bulk_destroy', {ids: this.getSelectedContactIds()}).then(() => {
+        let contacts = this.getSelectedContacts();
+        _.each(contacts, contact => {
+            contact.status = 'Never Ask';
+        });
+        return this.api.put('contacts/bulk', contacts).then(() => {
             this.clearSelectedContacts();
             this.load(true);
         });
     }
-    bulkEditFields(model, pledgeCurrencies, contactIds) {
+    // Needs bulk save
+    bulkEditFields(model, pledgeCurrencies, contacts) {
         let obj = {};
         if (model.likelyToGive) {
             obj.likely_to_give = model.likelyToGive;
@@ -253,10 +303,11 @@ class ContactsService {
         if (model.locale) {
             obj.locale = model.locale[1];
         }
-        return this.api.put('contacts/bulk_update', {
-            contact: obj,
-            bulk_edit_contact_ids: contactIds.join()
+
+        _.each(contacts, (contact) => {
+            _.assign(contact, contact, obj);
         });
+        return this.api.put('contacts/bulk', contacts);
     }
     getDonorAccounts() {
         if (!this.donorAccounts) {
@@ -268,12 +319,10 @@ class ContactsService {
         if (this.analytics) {
             return this.$q.resolve(this.analytics);
         }
-        return this.api.get('contacts/analytics').then((data) => {
+        return this.api.get('contacts/analytics', { include: 'anniversaries_this_week,birthdays_this_week' }).then((data) => {
             this.$log.debug('contacts/analytics', data);
             this.analytics = data;
             return this.analytics;
-        }).catch((err) => {
-            this.$log.error('contacts/analytics not implemented.', err);
         });
     }
 }

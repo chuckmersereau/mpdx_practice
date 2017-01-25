@@ -1,7 +1,22 @@
 class TasksController {
     tasksService;
-    constructor(tasksService) {
+    constructor(
+        $log, $rootScope,
+        tasksService
+    ) {
         this.tasksService = tasksService;
+
+        this.changed = 0;
+
+        $rootScope.$on('taskFilterChange', () => {
+            $log.debug('tasks component: filter change');
+            this.changed++;
+        });
+
+        $rootScope.$on('tasksTagsChanged', (event, filters) => {
+            $log.debug('tasks component: tag change', filters);
+            this.changed++;
+        });
     }
 }
 

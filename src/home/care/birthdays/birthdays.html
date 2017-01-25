@@ -1,6 +1,6 @@
 <h4 class="title" translate>Birthdays This Week</h4>
-<ul class="plain-list birthdays-list" ng-if="$ctrl.birthdays.length">
-    <li ng-repeat="person in $ctrl.birthdays">
+<ul class="plain-list birthdays-list" ng-if="$ctrl.contacts.analytics.birthdays_this_week.length">
+    <li ng-repeat="person in $ctrl.contacts.analytics.birthdays_this_week track by person.id | limitTo: $ctrl.limit">
         <a href="/person/{{ person.id }}">{{person.first_name}} {{person.last_name}}</a>
         {{ person.birthday_month }}-{{ person.birthday_day }}
         <facebook-link facebook-account="person.facebook_account"></facebook-link>
@@ -8,10 +8,10 @@
         <email-link email-address="person.primary_email_address"></email-link>
     </li>
 </ul>
-<a href="#LINKTO_more_bdays" class="see-all see-all-birthdays" ng-if="$ctrl.birthdays.length > 5">
+<a ng-click="$ctrl.limit = $ctrl.contacts.analytics.birthdays_this_week.length" class="see-all see-all-birthdays" ng-if="$ctrl.contacts.analytics.birthdays_this_week.length > 5">
     <i class="fa fa-plus-square-o"></i>
-    <translate>See all {{ $ctrl.birthdays.length }} Birthdays</translate>
+    <translate>See all {{ $ctrl.contacts.analytics.birthdays_this_week.length }} Birthdays</translate>
 </a>
-<span ng-if="$ctrl.birthdays.length === 0" translate>
+<span ng-if="$ctrl.contacts.analytics.birthdays_this_week.length === 0" translate>
     No birthdays this week!
 </span>
