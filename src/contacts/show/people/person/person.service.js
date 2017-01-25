@@ -35,17 +35,15 @@ class PersonService {
         });
     }
     mergePeople(contactId, winner, people) {
-        const promises = _.map(people, person => {
-            if (person !== winner) {
-                return this.api.post(`contacts/${contactId}/people/merge`, {winner_id: winner, loser_id: person}).then((data) => {
-                    if (_.isFunction(data.success)) {
-                        data.success();
-                    }
-                    return data;
-                });
-            }
+        const bulk = _.map(people, person => {
+            return {winner_id: winner, loser_id: person};
         });
-        return this.$q.all(promises);
+        return this.api.post(`contacts/${contactId}/people/merge`, bulk).then((data) => {
+            if (_.isFunction(data.success)) {
+                data.success();
+            }
+            return data;
+        });
     }
     save(contactId, person) {
         return this.api.put(`contacts/${contactId}/people/${person.id}`, person); //reload after use, otherwise add reconcile
