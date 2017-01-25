@@ -1,0 +1,85 @@
+<modal title="{{'Edit Task' | translate}}" on-close="$hide()">
+    <form class="modal-body" name="bulkLogTaskForm" ng-submit="$ctrl.submit()">
+    <div class="form-group">
+        <label for="subject" translate>Subject</label>
+        <input class="form-control" id='subject' ng-model="$ctrl.model.subject" required/>
+    </div>
+    <div class="form-group">
+        <label for="action" translate>Action</label>
+        <select chosen
+                required
+                disable-search="true"
+                class="form-control"
+                id="action"
+                name="action"
+                ng-options="opt for opt in $ctrl.constants.actions"
+                ng-model="$ctrl.model.activity_type">
+            <option value=""></option>
+        </select>
+    </div>
+    <div ng-if="!$ctrl.toComplete" class="form-group">
+        <label for="due-date" translate>Due Date</label>
+        <div ng-hide="$ctrl.model.no_date">
+            <datetimepicker ng-model="$ctrl.model.start_at"
+                            hour-step="1"
+                            minute-step="1"
+                            id="due-date">
+            </datetimepicker>
+        </div>
+    </div>
+    <div ng-if="$ctrl.toComplete" class="form-group">
+        <label for="completed" translate>Completed On</label>
+        <div ng-hide="$ctrl.model.no_date">
+            <datetimepicker ng-model="$ctrl.model.completed_at"
+                            hour-step="1"
+                            minute-step="1"
+                            id="completed">
+            </datetimepicker>
+        </div>
+    </div>
+    <div class="checkbox">
+        <label for="no-due-date">
+            <input id='no-due-date' ng-model="$ctrl.model.no_date" type="checkbox"/>
+            <translate>No Due Date</translate>
+        </label>
+    </div>
+    <div ng-if="$ctrl.toComplete" class="form-group">
+        <label for="result" translate>Result</label>
+        <select chosen
+                ng-required="$ctrl.toComplete"
+                disable-search="true"
+                class="form-control"
+                id='result'
+                ng-options="opt for opt in $ctrl.constants.results[$ctrl.model.activity_type] || $ctrl.constants.results['default']"
+                ng-model="$ctrl.model.result">
+            <option value=""></option>
+        </select>
+    </div>
+    <div ng-if="$ctrl.toComplete" class="form-group">
+        <label for="nextAction" translate>Next Action</label>
+        <select chosen
+                disable-search="true"
+                class="form-control"
+                id='nextAction'
+                ng-options="opt for opt in $ctrl.constants.next_actions[$ctrl.model.activity_type] || $ctrl.constants.next_actions['default']"
+                ng-model="$ctrl.model.next_action">
+            <option value=""></option>
+        </select>
+    </div>
+    <div>
+        <label translate>Tags</label>
+        <tags-input class="import_by_group import_contacttags" ng-model="$ctrl.model.tag_list" display-property="name" key-property="name">
+            <auto-complete source="$ctrl.tasksTags.data" min-length="0" select-first-match="false"></auto-complete>
+        </tags-input>
+    </div>
+    <div class="form-group">
+        <label for="comment" translate>Comment</label>
+        <input class="form-control" id='comment' ng-model="$ctrl.comment"/>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger pull-left" ng-click="$ctrl.deleteTask(task.id); $event.stopPropagation();" translate>Delete</button>
+        <button type="submit" class="btn btn-primary" ng-disabled="bulkLogTaskForm.$invalid" translate>Save</button>
+        <button type="button" class="btn btn-default" ng-click="$hide()" translate>Close</button>
+    </div>
+    </form>
+</modal>

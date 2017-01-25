@@ -1,16 +1,21 @@
 class menuController {
-    currentAccountList;
+    accounts;
+    contactDonations;
+    help;
     state;
 
-    constructor($state, currentAccountList, HelpService) {
-        this.currentAccountList = currentAccountList;
-        this.helpService = HelpService;
+    constructor(
+        $state,
+        accounts, contactDonations, help
+    ) {
+        this.accounts = accounts;
+        this.contactDonations = contactDonations;
+        this.help = help;
         this.state = $state;
         this.isInState = (match) => $state.$current.name.indexOf(match) === 0;
     }
-
     showHelp() {
-        this.helpService.showHelp();
+        this.help.showHelp();
     }
 }
 

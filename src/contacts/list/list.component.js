@@ -1,13 +1,19 @@
 class ListController {
+    accounts;
+    alerts;
+    contacts;
+    contactsTags;
+    modal;
+    tasksService;
+
     constructor(
-        modal,
-        contactsService, filterService, tagsService, alertsService, tasksService, currentAccountList
+        modal, contacts, contactsTags, alerts, tasksService, accounts
     ) {
+        this.accounts = accounts;
+        this.alerts = alerts;
+        this.contacts = contacts;
         this.modal = modal;
-        this.alertsService = alertsService;
-        this.contactsService = contactsService;
-        this.currentAccountList = currentAccountList;
-        this.tagsService = tagsService;
+        this.contactsTags = contactsTags;
         this.tasksService = tasksService;
 
         this.models = {
@@ -17,45 +23,45 @@ class ListController {
         };
     }
     loadMoreContacts() {
-        this.contactsService.loadMoreContacts();
+        this.contacts.loadMoreContacts();
     }
     resetFilters() {
-        this.contactsService.resetFilters();
+        this.contacts.resetFilters();
     }
     clearSelectedContacts() {
-        this.contactsService.clearSelectedContacts();
+        this.contacts.clearSelectedContacts();
     }
     toggleAllContacts() {
-        if (this.contactsService.getSelectedContacts().length < this.contactsService.data.length) {
-            this.contactsService.selectAllContacts();
+        if (this.contacts.getSelectedContacts().length < this.contacts.data.length) {
+            this.contacts.selectAllContacts();
         } else {
-            this.contactsService.clearSelectedContacts();
+            this.contacts.clearSelectedContacts();
         }
     }
-    hideContact(contactId) {
-        this.contactsService.hideContact(contactId);
+    hideContact(contact) {
+        this.contacts.hideContact(contact);
     }
     openAddTagModal() {
         this.modal.open({
-            template: require('../../common/tags/add/add.html'),
+            template: require('../filter/tags/add/add.html'),
             controller: 'addTagController',
             locals: {
-                contacts: this.contactsService.getSelectedContactIds()
+                selectedContacts: this.contacts.getSelectedContactIds()
             }
         });
     }
     openRemoveTagModal() {
         this.modal.open({
-            template: require('../../common/tags/remove/remove.html'),
+            template: require('../filter/tags/remove/remove.html'),
             controller: 'removeTagController',
             locals: {
-                contacts: this.contactsService.getSelectedContactIds()
+                selectedContacts: this.contacts.getSelectedContactIds()
             }
         });
     }
     openAddTaskModal() {
         this.tasksService.openModal({
-            contacts: this.contactsService.getSelectedContactIds()
+            selectedContacts: this.contacts.getSelectedContactIds()
         });
     }
     openLogTaskModal() {
@@ -63,7 +69,7 @@ class ListController {
             template: require('../logTask/logTask.html'),
             controller: 'logTaskController',
             locals: {
-                contacts: this.contactsService.getSelectedContactIds(),
+                selectedContacts: this.contacts.getSelectedContactIds(),
                 toComplete: true,
                 createNext: true,
                 specifiedTask: null,
@@ -76,23 +82,23 @@ class ListController {
             template: require('./editFields/editFields.html'),
             controller: 'editFieldsController',
             locals: {
-                contacts: this.contactsService.getSelectedContactIds()
+                selectedContacts: this.contacts.getSelectedContacts()
             }
         });
     }
     openMergeContactsModal() {
-        var selectedLength = this.contactsService.getSelectedContacts().length;
+        const selectedLength = this.contacts.getSelectedContacts().length;
         if (selectedLength < 2) {
-            this.alertsService.addAlert('You must select at least 2 contacts to merge.', 'danger');
+            this.alerts.addAlert('You must select at least 2 contacts to merge.', 'danger');
         } else if (selectedLength > 8) {
-            this.alertsService.addAlert('You can only merge up to 8 contacts at a time.', 'danger');
+            this.alerts.addAlert('You can only merge up to 8 contacts at a time.', 'danger');
         } else {
             this.modal.open({
                 template: require('./mergeContacts/mergeContacts.html'),
                 controller: 'mergeContactsController',
                 locals: {
-                    contactIds: this.contactsService.getSelectedContactIds(),
-                    contactNames: this.contactsService.getSelectedContactNames()
+                    contactIds: this.contacts.getSelectedContactIds(),
+                    contactNames: this.contacts.getSelectedContactNames()
                 }
             });
         }
@@ -107,7 +113,6 @@ class ListController {
 
 const ContactList = {
     controller: ListController,
-    controllerAs: 'vm',
     template: require('./list.html'),
     bindings: {
         view: '@',
@@ -117,4 +122,3 @@ const ContactList = {
 
 export default angular.module('mpdx.contacts.list.component', [])
     .component('contactsList', ContactList).name;
-

@@ -5,11 +5,25 @@
     </div>
     <div class="panel-body">
         <div class="dash-stat">
-            <div ng-if="$ctrl.newsletter">
-                <span class="count-big" translate>{{ $ctrl.newsletter.completed_at | timeAgo }}</span> <span translate>since your last physical newsletter</span>
+            <div ng-if="$ctrl.tasksService.last_electronic_newsletter_completed_at || $ctrl.tasksService.last_physical_newsletter_completed_at">
+                <span ng-if="$ctrl.tasksService.last_electronic_newsletter_completed_at == $ctrl.tasksService.last_physical_newsletter_completed_at" translate>
+                    <translate>It has been</translate>
+                    <span class="count-big">{{ $ctrl.tasksService.last_electronic_newsletter_completed_at | timeAgo }}</span>
+                    <translate>since your last email and physical newsletter.</translate>
+                </span>
+                <span ng-if="$ctrl.tasksService.last_electronic_newsletter_completed_at > $ctrl.tasksService.last_physical_newsletter_completed_at" translate>
+                    <translate>It has been</translate>
+                    <span class="count-big">{{ $ctrl.tasksService.last_electronic_newsletter_completed_at | timeAgo }}</span>
+                    <translate>since your last email newsletter.</translate>
+                </span>
+                <span ng-if="$ctrl.tasksService.last_electronic_newsletter_completed_at < $ctrl.tasksService.last_physical_newsletter_completed_at" translate>
+                    <translate>It has been</translate>
+                    <span class="count-big">{{ $ctrl.tasksService.last_electronic_newsletter_completed_at | timeAgo }}</span>
+                    <translate>since your last physical newsletter.</translate>
+                </span>
             </div>
-            <div ng-if="!$ctrl.newsletter" translate>
-                You've never logged a physical newsletter
+            <div ng-if="!$ctrl.$ctrl.tasksService.last_electronic_newsletter_completed_at && !$ctrl.tasksService.last_physical_newsletter_completed_at" translate>
+                You have never logged a physical or email newsletter.
             </div>
         </div>
         <birthdays></birthdays>

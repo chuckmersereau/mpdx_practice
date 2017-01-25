@@ -1,7 +1,7 @@
 <div id="contentbody">
     <div class="wpp">
-        <welcome-header current-user="$ctrl.currentUser"></welcome-header>
-        <div class="row" id="dash-widgets">
+        <welcome-header></welcome-header>
+        <div class="row" id="dash-widgets" block-ui="homeMid">
             <div class="col-md-4">
                 <home-connect></home-connect>
             </div>
@@ -9,7 +9,7 @@
                 <home-commitments></home-commitments>
             </div>
             <div class="col-md-4">
-                <home-care tasks="$ctrl.currentAccountList.tasks"></home-care>
+                <home-care></home-care>
             </div>
         </div>
         <home-progress></home-progress>

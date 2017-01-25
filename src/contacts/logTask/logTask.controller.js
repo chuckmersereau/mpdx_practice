@@ -1,56 +1,50 @@
 class LogTaskController {
     ajaxAction;
+    selectedContacts;
     contacts;
-    contactsService;
+    contactsTags;
     createNext;
     modal;
     serverConstants;
-    tagsService;
     tasksService;
 
     constructor(
         $scope,
-        modal, contactsService, tagsService, tasksService, serverConstants,
-        contacts, specifiedTask, ajaxAction, toComplete, createNext
+        modal, contacts, contactsTags, tasksService, serverConstants,
+        selectedContacts, specifiedTask, ajaxAction, toComplete, createNext
     ) {
         this.$scope = $scope;
         this.ajaxAction = ajaxAction;
+        this.selectedContacts = selectedContacts;
         this.contacts = contacts;
-        this.contactsService = contactsService;
+        this.contactsTags = contactsTags;
         this.createNext = createNext;
         this.modal = modal;
         this.serverConstants = serverConstants;
-        this.specifiedTask = specifiedTask;
-        this.tagsService = tagsService;
         this.tasksService = tasksService;
         this.toComplete = toComplete;
 
+        this.model = _.clone(specifiedTask);
         this.constants = {};
 
         this.activate();
     }
     activate() {
-        this.serverConstants.fetchConstants(['actions', 'next_actions', 'results']);
+        // this.serverConstants.fetchConstants(['actions', 'next_actions', 'results']);
         this.constants = this.serverConstants.data;
-
-        var inputTask = this.specifiedTask || {};
-        this.models = {
-            dueDate: inputTask.due_date ? new Date(inputTask.due_date) : new Date(),
-            completedAt: inputTask.completed_at ? new Date(inputTask.completed_at) : new Date(),
-            noDate: inputTask.no_date !== false,
-            subject: inputTask.subject,
-            action: inputTask.activity_type,
-            result: inputTask.result,
-            nextAction: inputTask.next_action,
-            tagsList: inputTask.tag_list ? inputTask.tag_list : []
-        };
     }
-    submit() {
-        this.tasksService.postBulkLogTask(
+    save() {
+        if (this.comment) {
+            if (!this.model.comments) {
+                this.model.comments = [];
+            }
+            this.model.comments.push({body: this.comment});
+        }
+        return this.tasksService.postBulkLogTask(
             this.ajaxAction || 'post',
-            this.specifiedTask ? this.specifiedTask.id : null,
-            this.models,
-            this.contacts,
+            this.model.id ? this.model.id : null,
+            this.model,
+            this.selectedContacts,
             this.toComplete
         ).then(() => {
             this.$scope.$hide();
@@ -61,14 +55,14 @@ class LogTaskController {
                     locals: {
                         specifiedAction: this.models.nextAction,
                         specifiedSubject: this.models.nextAction,
-                        contacts: this.contacts,
+                        selectedContacts: this.selectedContacts,
                         modalTitle: 'Follow up Task'
                     },
                     onHide: () => {
-                        if (this.contacts.length === 1) {
-                            this.tasksService.fetchUncompletedTasks(this.contacts[0]);
+                        if (this.selectedContacts.length === 1) {
+                            this.tasksService.fetchUncompletedTasks(this.selectedContacts[0]);
                         }
-                        this.contactsService.load(true);
+                        this.contacts.load(true);
                     }
                 });
             }

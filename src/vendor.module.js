@@ -10,16 +10,19 @@ import ngCsv from 'ng-csv';
 import ngFileUpload from 'ng-file-upload';
 import ngMap from 'ngmap';
 import ngSortable from 'ng-sortable';
-import uiBootstrap from 'angular-ui-bootstrap';
 
 // deps with no default exports
 import 'angulartics';
 import 'angulartics-google-analytics';
+import lang from 'langmap'; //load before language-picker
+window.languageMappingList = lang;
+import 'angular-block-ui';
+import 'angular-filter';
 import 'angular-strap';
 import 'angular-strap/dist/angular-strap.tpl';
 import 'angular-chosen-localytics';
 import 'angular-localforage';
-import 'angular-ui-bootstrap-datetimepicker';
+import 'angular-timeago';
 import 'iso-currency';
 import 'ng-tags-input';
 //non-angular deps
@@ -32,6 +35,7 @@ import 'bootstrap-daterangepicker/daterangepicker';
 
 // style deps
 require('./styles/fonts/freightsanspro/stylesheet.css');
+require('angular-block-ui/dist/angular-block-ui.css');
 
 
 export default angular.module('mpdx.vendor', [
@@ -42,7 +46,6 @@ export default angular.module('mpdx.vendor', [
     ngSanitize,
     ngCsv,
     ngFileUpload,
-    uiBootstrap,
     uiRouter,
     checklistModel,
     ngInfiniteScroll,
@@ -50,10 +53,12 @@ export default angular.module('mpdx.vendor', [
     ngSortable,
     'angulartics',
     'angulartics.google.analytics',
+    'angular.filter',
+    'blockUI',
     'isoCurrency',
     'LocalForageModule',
     'localytics.directives',
     'mgcrea.ngStrap',
     'ngTagsInput',
-    'ui.bootstrap.datetimepicker'
+    'yaru22.angular-timeago'
 ]).name;

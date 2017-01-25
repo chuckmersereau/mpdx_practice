@@ -1,5 +1,5 @@
 class AppealsWizardController {
-    constructor($scope, api, state) {
+    constructor($scope) {
         this.$scope = $scope;
 
         //this.contactStatuses = railsConstants.contact.ACTIVE_STATUSES; //TODO: IMPLEMENT RAILSCONSTANTS
@@ -24,13 +24,10 @@ class AppealsWizardController {
                 doNotAskAppeals: true
             }
         };
-        let url = 'contacts/tags';
-        if (state.current_account_list_id) {
-            url += `?account_list_id=${state.current_account_list_id}`;
-        }
-        api.get(url).then((data) => {
-            this.contactTags = _.get(data, 'tags', []).sort();
-        });
+        console.error('appeals/wizard - no contact/tags endpoint yet');
+        // api.get('contacts/tags').then((data) => {
+        //     this.contactTags = _.get(data, 'tags', []).sort();
+        // });
     }
     save() {
         this.$scope.$hide(this.appeal);

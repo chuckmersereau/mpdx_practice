@@ -1,32 +1,30 @@
 class PersonalPreferencesController {
-    alertsService;
-    personalService;
+    accounts;
+    alerts;
+    api;
+    locale;
+    users;
 
     constructor(
-        $state, $stateParams, $scope, personalService, alertsService
+        $state, $stateParams, $window, gettextCatalog,
+        accounts, api, alerts, locale, users
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
-        this.alertsService = alertsService;
-        this.personalService = personalService;
+        this.$window = $window;
+        this.accounts = accounts;
+        this.alerts = alerts;
+        this.api = api;
+        this.locale = locale;
+        this.gettextCatalog = gettextCatalog;
+        this.users = users;
 
         this.saving = false;
         this.tabId = '';
-        this.locale_string = '';
-        this.default_account_string = '';
-        this.salary_organization_string = '';
 
-        // $scope.$watch('vm.personalService.data.locale', (newValue) => {
-        //     this.locale_string = angular.element('#_locale option[value=' + newValue + ']').text();
-        // });
-
-        // $scope.$watch('vm.personalService.data.default_account_list', (newValue) => {
-        //     this.default_account_string = angular.element('#_default_account_list option[value=' + newValue + ']').text();
-        // });
-
-        // $scope.$watch('vm.personalService.data.salary_organization_id', (newValue) => {
-        //     this.salary_organization_string = angular.element('#salary_organization_id_ option[value=' + newValue + ']').text();
-        // });
+        this.languages = _.map(_.keys($window.languageMappingList), (key) => {
+            return _.extend({alias: key}, window.languageMappingList[key]);
+        });
     }
     $onInit() {
         if (this.$stateParams.id) {
@@ -35,13 +33,26 @@ class PersonalPreferencesController {
     }
     save() {
         this.saving = true;
-        return this.personalService.save().then(() => {
-            this.alertsService.addAlert('Preferences saved successfully', 'success');
+        return this.users.saveCurrent().then(() => {
+            this.alerts.addAlert('Preferences saved successfully', 'success');
             this.setTab('');
             this.saving = false;
         }).catch((data) => {
-            angular.forEach(data.errors, (value) => {
-                this.alertsService.addAlert(value, 'danger');
+            _.each(data.errors, (value) => {
+                this.alerts.addAlert(value, 'danger');
+            });
+            this.saving = false;
+        });
+    }
+    saveAccount() {
+        this.saving = true;
+        return this.accounts.saveCurrent().then(() => {
+            this.alerts.addAlert('Preferences saved successfully', 'success');
+            this.setTab('');
+            this.saving = false;
+        }).catch((data) => {
+            _.each(data.errors, (value) => {
+                this.alerts.addAlert(value, 'danger');
             });
             this.saving = false;
         });
@@ -58,14 +69,20 @@ class PersonalPreferencesController {
     tabSelected(service) {
         return this.tabId === service;
     }
-    setDefaultAccountList() {
-        this.default_account_string = this.personalService.data.default_account_list;
+    setSalaryOrg() {
+        this.salary_organization_string = this.personal.data.salary_organization_id;
+    }
+    getCountry(locale) {
+        if (!locale) return;
+        if (locale === 'en') return 'us';
+        const splitLocale = locale.split('-');
+        if (splitLocale.length > 1) {
+            return splitLocale[1].toLowerCase();
+        }
+        return locale;
     }
     setLocale() {
-        this.locale_string = this.personalService.data.locale;
-    }
-    setSalaryOrg() {
-        this.salary_organization_string = this.personalService.data.salary_organization_id;
+        this.locale.change(this.users.current.preferences.locale);
     }
 }
 

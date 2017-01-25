@@ -1,18 +1,30 @@
 class ImportPreferencesController {
-    alertsService;
-    importsService;
+    alerts;
+    preferencesImports;
 
     constructor(
-        $filter, $state, $stateParams, importsService, alertsService
+        $filter, $state, $stateParams, preferencesImports, alerts, help
     ) {
         this.$filter = $filter;
         this.$state = $state;
         this.$stateParams = $stateParams;
-        this.importsService = importsService;
-        this.alertsService = alertsService;
+        this.alerts = alerts;
+        this.preferencesImports = preferencesImports;
 
         this.saving = false;
         this.tabId = '';
+
+        help.suggest([
+            '5845aa229033600698176a54',
+            '5845ae09c6979106d373a589',
+            '5845a6de9033600698176a43',
+            '5845af08c6979106d373a593',
+            '5845af809033600698176a8c',
+            '584717b1c6979106d373afab',
+            '584715b890336006981774d2',
+            '57e1810ec697910d0784c3e1',
+            '584718e390336006981774ee'
+        ]);
 
         this.activate();
     }
@@ -28,7 +40,7 @@ class ImportPreferencesController {
         } else {
             this.tabId = service;
             if (service === 'google') {
-                this.importsService.load();
+                this.preferencesImports.load();
             }
             this.$state.go('preferences.imports.tab', { id: service }, { notify: false });
         }
@@ -37,24 +49,24 @@ class ImportPreferencesController {
         return this.tabId === service;
     }
     loadTags(query) {
-        return this.$filter('filter')(this.importsService.data.tags, { text: query });
+        return this.$filter('filter')(this.preferencesImports.data.tags, { text: query });
     }
 
     checkAllGoogleContactGroups() {
-        this.importsService.google_contact_import.groups = this.importsService.selected_account.contact_groups.map(item => item.id);
+        this.preferencesImports.google_contact_import.groups = this.preferencesImports.selected_account.contact_groups.map(item => item.id);
     }
     uncheckAllGoogleContactGroups() {
-        this.importsService.google_contact_import.groups = [];
+        this.preferencesImports.google_contact_import.groups = [];
     }
     saveGoogleImport() {
         this.saving = true;
-        this.importsService.saveGoogleImport().then(() => {
-            this.alertsService.addAlert('MPDx is importing contacts from your Google Account', 'success');
+        this.preferencesImports.saveGoogleImport().then(() => {
+            this.alerts.addAlert('MPDx is importing contacts from your Google Account', 'success');
             this.setTab('');
             this.saving = false;
         }).catch((data) => {
             _.each(data.errors, (value) => {
-                this.alertsService.addAlert(value, 'danger');
+                this.alerts.addAlert(value, 'danger');
             });
             this.saving = false;
         });

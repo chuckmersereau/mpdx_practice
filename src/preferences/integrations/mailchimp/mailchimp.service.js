@@ -1,33 +1,34 @@
 class mailchimpService {
+    api;
+
     constructor(
+        $log,
         api
     ) {
+        this.$log = $log;
         this.api = api;
-        this.data = {};
-        this.loading = true;
-        this.state = 'disabled';
 
-        this.load();
+        this.data = null;
+        this.state = 'disabled';
     }
     load() {
-        this.loading = true;
-        return this.api.get('preferences/integrations/mail_chimp_account').then((data) => {
-            this.data = data.mail_chimp;
+        return this.api.get(`account_lists/${this.api.account_list_id}/mail_chimp_account`).then((data) => {
+            this.$log.debug(`account_lists/${this.api.account_list_id}/mail_chimp_account`, data);
+            this.data = data;
             this.updateState();
-            this.loading = false;
         });
     }
     save() {
-        return this.api.put('preferences/integrations/mail_chimp_account', { mail_chimp: this.data }).then((data) => {
-            this.data = data.mail_chimp;
+        return this.api.put(`account_lists/${this.api.account_list_id}/mail_chimp_account`, this.data).then((data) => {
+            this.data = data;
             this.updateState();
         });
     }
     sync() {
-        return this.api.get('preferences/integrations/mail_chimp_account/sync');
+        return this.api.get(`account_lists/${this.api.account_list_id}/mail_chimp_account`);
     }
     disconnect() {
-        return this.api.delete('preferences/integrations/mail_chimp_account');
+        return this.api.delete(`account_lists/${this.api.account_list_id}/mail_chimp_account`);
     }
     updateState() {
         if (this.data.active) {
@@ -43,4 +44,4 @@ class mailchimpService {
 }
 
 export default angular.module('mpdx.preferences.accounts.integrations.mailchimp.service', [])
-    .service('mailchimpService', mailchimpService).name;
+    .service('mailchimp', mailchimpService).name;

@@ -1,9 +1,19 @@
+import config from 'config';
+
 export default class Routes {
     static config($stateProvider) {
         $stateProvider.state({
+            name: 'root',
+            abstract: true,
+            template: '<div ui-view=""></div>',
+            resolve: {
+                userResolve: /*@ngInject*/ (users) => users.getCurrent()
+            }
+        }).state({
             name: 'home',
             url: '/',
-            component: 'home'
+            component: 'home',
+            parent: 'root'
         }).state({
             name: 'login',
             url: '/login',
@@ -26,12 +36,22 @@ export default class Routes {
             component: 'contacts',
             params: {
                 filters: null
+            },
+            parent: 'root',
+            resolve: {
+                resolution: /*@ngInject*/ (contactFilter) => contactFilter.load(),
+                another: /*@ngInject*/ (contactsTags) => contactsTags.load()
             }
         }).state({
             name: 'contact',
             title: 'Contact',
-            url: '/contacts/{contactId:[0-9]+}',
-            component: 'contact'
+            url: '/contacts/{contactId}',
+            component: 'contact',
+            parent: 'root',
+            resolve: {
+                resolution: /*@ngInject*/ (contactFilter) => contactFilter.load(),
+                another: /*@ngInject*/ (contactsTags) => contactsTags.load()
+            }
         }).state({
             name: 'contact.address',
             url: '/addresses/{addressId}',
@@ -51,26 +71,35 @@ export default class Routes {
         }).state({
             name: 'reports',
             url: '/reports',
-            component: 'reports'
+            component: 'reports',
+            parent: 'root'
         }).state({
             name: 'reports.balances',
             url: '/balances',
             component: 'balancesReport'
         }).state({
-            name: 'reports.partner',
-            url: '/partner',
-            component: 'currencyDonationsReport',
-            resolve: {
-                type: () => 'donor'
-            }
+            name: 'reports.donations',
+            url: '/donations',
+            component: 'donationsReport'
+        }).state({
+            name: 'reports.donations.edit',
+            url: '/edit/{donationId}',
+            onEnter: openDonationModal
         }).state({
             name: 'reports.monthly',
             url: '/monthly',
             component: 'expectedMonthlyTotalsReport'
         }).state({
+            name: 'reports.partner',
+            url: '/partner',
+            component: 'contributionsReport',
+            resolve: {
+                type: () => 'donor'
+            }
+        }).state({
             name: 'reports.salary',
             url: '/salary',
-            component: 'currencyDonationsReport',
+            component: 'contributionsReport',
             resolve: {
                 type: () => 'salary'
             }
@@ -78,7 +107,8 @@ export default class Routes {
             name: 'preferences',
             title: 'Preferences',
             url: '/preferences',
-            component: 'preferences'
+            component: 'preferences',
+            parent: 'root'
         }).state({
             name: 'preferences.accounts',
             title: 'Manage Accounts',
@@ -125,39 +155,69 @@ export default class Routes {
             url: '/{id}',
             component: 'personalPreferences'
         }).state({
+            name: 'tasks',
+            title: 'Tasks',
+            url: '/tasks',
+            component: 'tasks',
+            parent: 'root',
+            resolve: {
+                resolution: /*@ngInject*/ (tasksFilter) => tasksFilter.load(),
+                another: /*@ngInject*/ (tasksTags) => tasksTags.load()
+            }
+        }).state({
+            name: 'tasks.new',
+            url: '/new',
+            onEnter: openNewTaskModal,
+            resolve: {
+                tags: /*@ngInject*/ (tasksTags) => tasksTags.load()
+            }
+        }).state({
             name: 'unavailable',
             title: 'Unavailable',
             url: '/unavailable',
-            component: 'unavailable'
+            component: 'unavailable',
+            parent: 'root'
         });
     }
 }
 
 /*@ngInject*/
-function auth($state, $stateParams, $window, $location) {
+function auth(
+    $state, $stateParams, $window, $http, $log
+) {
     if (!_.isEmpty($stateParams.access_token)) {
-        $window.sessionStorage.token = $stateParams.access_token;
-        const redirect = angular.copy($window.sessionStorage.redirect || 'home');
-        delete $window.sessionStorage.redirect;
-        $location.$$search = {}; //clear querystring
-        $state.go(redirect, {reload: true});
+        $http({
+            url: `${config.apiUrl}user/authentication`,
+            method: 'post',
+            headers: {
+                Accept: 'application/vnd.api+json',
+                'Content-Type': 'application/vnd.api+json'
+            },
+            data: {
+                access_token: $stateParams.access_token
+            }
+        }).then((data) => {
+            $log.debug('user/authentication', data);
+            $window.sessionStorage.token = data.data.json_web_token;
+            const redirect = angular.copy($window.sessionStorage.redirect || 'home');
+            delete $window.sessionStorage.redirect;
+            $state.go(redirect, {}, {reload: true});
+        });
     }
 }
 
 /*@ngInject*/
 function logout($window, $state) {
     delete $window.sessionStorage.token;
-    $state.go('login', {reload: true});
+    $state.go('login', {}, {reload: true});
 }
 
 /*@ngInject*/
 function openAddressModal(
-    $stateParams, modal, cache, $state
+    $stateParams, modal, contacts, $state
 ) {
-    cache.get($stateParams.contactId).then(function(contact) {
-        var address = _.find(contact.addresses, function(addressToFilter) {
-            return addressToFilter.id.toString() === $stateParams.addressId;
-        });
+    contacts.find($stateParams.contactId).then((contact) => {
+        const address = _.find(contact.addresses, addressToFilter => addressToFilter.id.toString() === $stateParams.addressId);
 
         modal.open({
             template: require('./contacts/show/address/modal/modal.html'),
@@ -167,43 +227,61 @@ function openAddressModal(
                 address: address
             },
             onHide: () => {
-                $state.go('^');
+                $state.go('^', {}, { reload: true });
             }
         });
     });
 }
 
+/*@ngInject*/
+function openDonationModal($state, $stateParams, modal, donationsReport) {
+    donationsReport.getDonations().then((data) => {
+        let donation = _.find(data.donations, { id: parseInt($stateParams.donationId) });
+        modal.open({
+            template: require('./reports/donations/edit/edit.html'),
+            controller: 'donationModalController',
+            locals: {
+                donation: donation
+            },
+            onHide: () => {
+                $state.go('^', {}, { reload: true });
+            }
+        });
+    });
+}
 
 /*@ngInject*/
-function openPeopleModal($state, $stateParams, modal, cache) {
-    cache.get($stateParams.contactId).then((contact) => {
-        const person = _.find(contact.people, function(person) {
-            return person.id.toString() === $stateParams.personId;
-        });
-
+function openPeopleModal($state, $stateParams, modal, contactPerson) {
+    function modalOpen(contactId, person) {
         modal.open({
             template: require('./contacts/show/people/modal/modal.html'),
             controller: 'personModalController',
             locals: {
-                contact: contact,
+                contactId: contactId,
                 person: person
             },
             onHide: () => {
-                $state.go('^');
+                $state.go('contact', {contactId: contactId}, { reload: true });
             }
         });
-    });
+    }
+    if ($stateParams.personId === 'new') {
+        modalOpen($stateParams.contactId, {});
+    } else {
+        contactPerson.get($stateParams.contactId, $stateParams.personId).then((person) => {
+            modalOpen($stateParams.contactId, person);
+        });
+    }
 }
 
 /*@ngInject*/
 function openMergePeopleModal(
-    $state, $stateParams, modal, cache
+    $state, $stateParams,
+    modal, contacts
 ) {
-    cache.get($stateParams.contactId).then(function(contact) {
-        var peopleIds = $stateParams.peopleIds.split(',');
-        var people = _.filter(contact.people, function(person) {
-            return _.includes(peopleIds, person.id.toString());
-        });
+    contacts.find($stateParams.contactId).then((contact) => {
+        const peopleIds = $stateParams.peopleIds.split(',');
+        const people = _.filter(contact.people, person => _.includes(peopleIds, person.id.toString()));
 
         modal.open({
             template: require('./contacts/show/people/merge/merge.html'),
@@ -213,7 +291,8 @@ function openMergePeopleModal(
                 people: people
             },
             onHide: () => {
-                $state.go('^');
+                contacts.load(true);
+                $state.go('^', {}, { reload: true });
             }
         });
     });
@@ -226,9 +305,30 @@ function openNewContactModal(
     modal.open({
         template: require('./contacts/new/new.html'),
         controller: 'contactNewModalController',
-        onHide: function() {
+        onHide: () => {
             if ($state.current.name === 'contacts.new') {
-                $state.go('^');
+                $state.go('^', {}, { reload: true });
+            }
+        }
+    });
+}
+
+/*@ngInject*/
+function openNewTaskModal(
+  modal, $state
+) {
+    modal.open({
+        template: require('./tasks/add/add.html'),
+        controller: 'addTaskController',
+        locals: {
+            specifiedAction: null,
+            specifiedSubject: null,
+            selectedContacts: [],
+            modalTitle: 'Add Task'
+        },
+        onHide: () => {
+            if ($state.current.name === 'tasks.new') {
+                $state.go('^', {}, { reload: true });
             }
         }
     });

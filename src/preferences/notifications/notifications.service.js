@@ -9,9 +9,7 @@ class NotificationsService {
         this.data = {};
         this.loading = true;
 
-        this.load();
-
-        $rootScope.$watch(() => api.account_list_id, () => {
+        $rootScope.$on('accountListUpdated', () => {
             this.load();
         });
     }
@@ -22,18 +20,11 @@ class NotificationsService {
             this.loading = false;
         });
     }
-    toggleNotification(fieldName, notificationType) {
-        const index = this.data[fieldName].actions.indexOf(notificationType);
-        if (index === -1) {
-            this.data[fieldName].actions.push(notificationType);
-        } else {
-            this.data[fieldName].actions.splice(index, 1);
-        }
-    }
+
     save() {
         return this.api.put('put', 'preferences', { preference: this.data });
     }
 }
 
 export default angular.module('mpdx.preferences.notifications.service', [])
-    .service('notificationsService', NotificationsService).name;
+    .service('notifications', NotificationsService).name;

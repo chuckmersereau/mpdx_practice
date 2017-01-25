@@ -1,152 +1,75 @@
-<modal>
-    <modal-header title="Edit Fields" on-close="$hide()"></modal-header>
-    <form class="modal-body" name="addTaskForm" ng-submit="$ctrl.submit()">
-        <div class="form-group">
-            <label for="action">Likely to Give</label>
-            <select chosen
-                    disable-search="true"
-                    class="form-control"
-                    id="action"
-                    ng-options="opt for opt in $ctrl.constants.bulk_update_options.likely_to_give"
-                    ng-model="$ctrl.models.likelyToGive">
-                <option value=""></option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="status">Status</label>
-            <select chosen
-                    disable-search="true"
-                    class="form-control"
-                    id="status"
-                    ng-options="opt for opt in $ctrl.constants.bulk_update_options.status"
-                    ng-model="$ctrl.models.status">
-                <option value=""></option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="newsletter">Newsletter</label>
-            <select chosen
-                    disable-search="true"
-                    class="form-control"
-                    id="newsletter"
-                    ng-options="opt for opt in $ctrl.constants.bulk_update_options.send_newsletter"
-                    ng-model="$ctrl.models.sendNewsletter">
-                <option value=""></option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="due-date">Next Ask</label>
-            <div class="input-group">
-                <div class="input-group-addon">
-                    <i class="fa fa-calendar"></i>
-                </div>
-                <input type="text"
-                       class="form-control"
-                       ng-model="$ctrl.models.nextAsk"
-                       name="date"
-                       id="due-date"
-                       data-date-format="yyyy-MM-dd"
-                       bs-datepicker/>
+<modal title="{{'Edit Fields' | translate}}" save="$ctrl.save()" cancel="$hide()">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="action" translate>Likely to Give</label>
+                <select chosen disable-search="true" class="form-control" id="action" ng-options="opt for opt in $ctrl.constants.bulk_update_options.likely_to_give" ng-model="$ctrl.models.likelyToGive">
+                    <option value=""></option>
+                </select>
             </div>
         </div>
-
-        <div class="form-group ">
-            <label for="church">Church</label>
-            <input class="form-control"
-                   id='church'
-                   ng-model="$ctrl.models.churchName"/>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="status" translate>Status</label>
+                <select chosen disable-search="true" class="form-control" id="status" ng-options="opt for opt in $ctrl.constants.bulk_update_options.status" ng-model="$ctrl.models.status">
+                    <option value=""></option>
+                </select>
+            </div>
         </div>
-
-        <div class="form-group">
-            <label for="website">Website</label>
-            <input class="form-control"
-                   id='website'
-                   ng-model="$ctrl.models.website"
-                   placeholder="http://"/>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="newsletter" translate>Newsletter</label>
+                <select chosen disable-search="true" class="form-control" id="newsletter" ng-options="opt for opt in $ctrl.constants.bulk_update_options.send_newsletter" ng-model="$ctrl.models.sendNewsletter">
+                    <option value=""></option>
+                </select>
+            </div>
         </div>
-
-        <div class="form-group">
-            <label for="commitment-received">Commitment Received</label>
-            <select chosen
-                    disable-search="true"
-                    class="form-control"
-                    id="commitment-received"
-                    ng-options="opt for opt in $ctrl.constants.bulk_update_options.pledge_received"
-                    ng-model="$ctrl.models.pledgeReceived">
-                <option value=""></option>
-            </select>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="due-date" translate>Next Ask</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                    <input type="text" class="form-control" ng-model="$ctrl.models.nextAsk" name="date" id="due-date" data-date-format="yyyy-MM-dd" bs-datepicker/>
+                </div>
+            </div>
         </div>
-
-        <div class="form-group">
-            <label for="commitment-currency">Commitment Currency</label>
-            <select chosen
-                    disable-search="true"
-                    class="form-control"
-                    id="commitment-currency"
-                    ng-options="k as k for (k, v) in $ctrl.constants.bulk_update_options.pledge_currency"
-                    ng-model="$ctrl.models.pledgeCurrency">
-                <option value=""></option>
-            </select>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="commitment-received" translate>Commitment Received</label>
+                <select chosen disable-search="true" class="form-control" id="commitment-received" ng-options="opt for opt in $ctrl.constants.bulk_update_options.pledge_received" ng-model="$ctrl.models.pledgeReceived">
+                    <option value=""></option>
+                </select>
+            </div>
         </div>
-
-        <div class="form-group">
-            <label for="language">Language</label>
-            <select chosen
-                    disable-search="true"
-                    class="form-control"
-                    id="language"
-                    ng-options="opt[0] for opt in $ctrl.constants.bulk_update_options.locale"
-                    ng-model="$ctrl.models.locale">
-                <option value=""></option>
-            </select>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="commitment-currency" translate>Commitment Currency</label>
+                <select chosen disable-search="true" class="form-control" id="commitment-currency" ng-options="k as k for (k, v) in $ctrl.constants.bulk_update_options.pledge_currency" ng-model="$ctrl.models.pledgeCurrency">
+                    <option value=""></option>
+                </select>
+            </div>
         </div>
-
-        <!-- <div class="form-group">
-          <label for="action">Action</label>
-          <select chosen
-                  required
-                  disable-search="true"
-                  class="form-control"
-                  id='action'
-                  ng-options="opt for opt in $ctrl.taskTypes"
-                  ng-model="$ctrl.models.action">
-            <option value=""></option>
-          </select>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="language" translate>Language</label>
+                <select chosen disable-search="true" class="form-control" id="language" ng-options="opt[0] for opt in $ctrl.constants.bulk_update_options.locale" ng-model="$ctrl.models.locale">
+                    <option value=""></option>
+                </select>
+            </div>
         </div>
-        <div class="form-group">
-          <label for="due-date">Due Date</label>
-          <div ng-hide="$ctrl.models.noDate">
-            <datetimepicker ng-model="$ctrl.models.date"
-                            hour-step="1"
-                            minute-step="1"
-                            date-options="{ showWeeks: false, showButtonBar: false}"
-                            date-format="dd-MMM-yyyy"
-                            date-options="dateOptions"
-                            show-spinners="true">
-            </datetimepicker>
-          </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="church" translate>Church</label>
+                <input class="form-control" id="church" ng-model="$ctrl.models.churchName"/>
+            </div>
         </div>
-        <div class="checkbox">
-          <label for="no-due-date">
-            <input id='no-due-date' ng-model="$ctrl.models.noDate" type="checkbox"/>
-            No Due Date
-          </label>
-        </div>
-        <div>
-          <label>Tags</label>
-          <tags-input class="import_by_group import_contacttags" ng-model="$ctrl.models.tagsList">
-            <auto-complete source="$ctrl.tagsService.data" min-length="0" select-first-match="false"></auto-complete>
-          </tags-input>
-        </div>
-        <div class="form-group">
-          <label for="comment">Comment</label>
-          <input class="form-control" id='comment' ng-model="$ctrl.models.comment"/>
-        </div> -->
-        <div class="modal-footer">
-            <button type="submit" class="btn btn-primary" ng-disabled="$ctrl.isInvalid()" translate>Save</button>
-            <button type="button" class="btn btn-default" ng-click="$ctrl.reset(); select(null, $event);" translate>Reset</button>
-            <button type="button" class="btn btn-default" ng-click="$hide()" translate>Close</button>
-        </div>
-    </form>
+    </div>
 </modal>

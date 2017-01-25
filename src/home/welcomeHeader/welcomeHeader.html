@@ -1,34 +1,34 @@
-<div ng-if="$ctrl.flash.tour_complete || $ctrl._.has($ctrl.currentUser, 'setup')">
+<div ng-if="$ctrl.tourComplete">
     <div class="welcome-container">
-        <div class="row fadable" ng-class="{ 'faded': $ctrl.flash.tour_complete }">
+        <div class="row fadable" ng-class="{ 'faded': $ctrl.tourComplete }">
             <div class="getting_started_title col-md-6 col-md-offset-3">
                 <h1>
-                    {{ $ctrl.currentUser.stale ? ('Welcome back' | translate) : ('Hi' | translate) }}
-                    {{ $ctrl.currentUser.first_name }}
+                    {{ $ctrl.users.current.stale ? ('Welcome back' | translate) : ('Hi' | translate) }}
+                    {{ $ctrl.users.current.first_name }}
                 </h1>
                 <h3 translate>While there's a lot you can do in MPDX, here's a few easy steps to get you up and going:</h3>
             </div>
         </div>
-        <div class="row welcome-completed-row" ng-class="{'uncompleted': !flash.tour_complete }">
+        <div class="row welcome-completed-row" ng-class="{'uncompleted': !$ctrl.tourComplete }">
             <div class="col-lg-8 col-lg-offset-2 col-md-12 col-md-offset-0">
                 <i class="fa fa-times welcome-completed-dismiss"></i>
                 <h1 translate>Great job! Check out some more tutorials videos and help articles to learn about some of our other cool features.</h1>
                 <hr>
                 <div class="tutorial-links">
-                    <a ng-href="tutorial[0]" ng-repeat="tutorial in $ctrl.tutorials"><i class="fa fa-youtube-play"></i><span translate>{{ tutorial[1] }}</span></a>
+                    <a ng-href="tutorial[0]" ng-repeat="tutorial in $ctrl.tutorials"><i class="fa fa-youtube-play"></i><translate>{{ tutorial[1] }}</translate></a>
                     <a href="https://www.gcx.org/mpdxhelp/training-videos/">
-                        <i class="fa fa-share"></i><span translate>Many More On Our Help Site</span>
+                        <i class="fa fa-share"></i><translate>Many More On Our Help Site</translate>
                     </a>
                 </div>
                 <h2>
-                    <span translate>Find more anytime at</span> <a href="https://www.gcx.org/mpdxhelp">www.gcx.org/mpdxhelp</a>
+                    <translate>Find more anytime at</translate> <a href="https://www.gcx.org/mpdxhelp">www.gcx.org/mpdxhelp</a>
                     <br>
-                    <span translate>or by clicking 'Help' in the top menu bar</span>
+                    <translate>or by clicking 'Help' in the top menu bar</translate>
                 </h2>
             </div>
         </div>
-        <div class="row fadable" ng-class="{ 'faded': $ctrl.flash.tour_complete }">
-            <div class="col-md-4 getting-started-panel" ng-class="{ 'completed': !$ctrl._.has($ctrl.currentUser, 'setup.import') }" data-panel="import">
+        <div class="row fadable" ng-class="{ 'faded': $ctrl.tourComplete }">
+            <div class="col-md-4 getting-started-panel" ng-class="{ 'completed': !$ctrl._.has($ctrl.users.current.preferences, 'setup.import') }" data-panel="import">
                 <div class="getting_started_number">1</div>
                 <i class="fa fa-check welcome-panel-completed"></i>
                 <div class="panel panel-default">
@@ -39,10 +39,10 @@
                                     <h3>Google</h3>
                                 </td>
                                 <td class="connections" data-behavior="account">
-                                    <div class="account_single" ng-repeat="account in $ctrl.currentUser.googleAccounts">
+                                    <div class="account_single" ng-repeat="account in $ctrl.users.current.googleAccounts">
                                         <span class="account_name">{{ account }}</span>
                                         <a ng-if="account.token_expired && !account.refresh_token" class="btn btn-xs btn-secondary desired_action" href="/preferences/integrations/google" translate>Refresh Google Account</a>
-                                        <a ng-if="!account.token_expired || account.refresh_token" class="btn btn-xs btn-secondary" href="/preferences/integrations/google"><i class="fa fa-cloud-download"></i> <span translate>Import Contacts</span></a>
+                                        <a ng-if="!account.token_expired || account.refresh_token" class="btn btn-xs btn-secondary" href="/preferences/integrations/google"><i class="fa fa-cloud-download"></i> <translate>Import Contacts</translate></a>
                                     </div>
                                     <!-- STUB auth_link('google') -->
                                 </td>
@@ -63,7 +63,7 @@
                 </div>
                 <h2 translate>Import Contacts</h2>
             </div>
-            <div class="col-md-4 getting-started-panel" ng-class="{ 'completed': !$ctrl._.has($ctrl.currentUser, 'setup.goal') }" data-panel="goal">
+            <div class="col-md-4 getting-started-panel" ng-class="{ 'completed': !$ctrl._.has($ctrl.users.current.preferences, 'setup.goal') }" data-panel="goal">
                 <div class="getting_started_number">2</div>
                 <i class="fa fa-check welcome-panel-completed"></i>
                 <div class="panel panel-default">
@@ -87,7 +87,7 @@
                 </div>
                 <h2 translate>Setup Your Support Goal And&nbsp;Notifications</h2>
             </div>
-            <div class="col-md-4 getting-started-panel" ng-class="{ 'completed': !$ctrl._.has($ctrl.currentUser, 'setup.contacts') }" data-panel="contacts">
+            <div class="col-md-4 getting-started-panel" ng-class="{ 'completed': !$ctrl._.has($ctrl.users.current.preferences, 'setup.contacts') }" data-panel="contacts">
                 <div class="getting_started_number">3</div>
                 <i class="fa fa-check welcome-panel-completed"></i>
                 <div class="panel panel-default">
@@ -126,13 +126,14 @@
         </div>
     </div>
 </div>
-<div ng-if="!$ctrl.flash.tour_complete && !$ctrl._.any($ctrl.currentUser.setup)">
+<div ng-if="!$ctrl.tourComplete && !$ctrl._.any($ctrl.users.current.preferences.setup)">
     <h1>
-        <span translate>Hi</span>
-        {{ $ctrl.currentUser.first_name }}!
+        <translate>Hi</translate>
+        {{ $ctrl.users.current.first_name }}!
         <span class="smallhead" translate>Here's whats happening...</span>
     </h1>
     <div class="row">
-        <donation-summary-chart></donation-summary-chart>
+        <unavailable></unavailable>
+        <!--<donation-summary-chart></donation-summary-chart>-->
     </div>
 </div>

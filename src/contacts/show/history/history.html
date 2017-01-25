@@ -1,6 +1,6 @@
 <div class="history-tab">
-    <table ng-show="$ctrl.tasksService.data.completed.length" class="table tasks-table" bs-collapse data-start-collapsed="true">
-        <tr ng-repeat-start="task in $ctrl.tasksService.data.completed" bs-collapse-toggle>
+    <table ng-show="$ctrl.tasksService.completed.length" class="table tasks-table" bs-collapse data-start-collapsed="true">
+        <tr ng-repeat-start="task in $ctrl.tasksService.completed" bs-collapse-toggle>
             <td class="col-sm-2 text-center">
                 <i class="fa fa-check-square-o complete_task" data-behaviour="Done"></i>
             </td>
@@ -25,7 +25,7 @@
         </tr>
         <tr class="comments-section" ng-repeat-end bs-collapse-target>
             <td colspan="100">
-                <div class="col-sm-6" ng-repeat="comment in task.comments">
+                <div class="col-sm-6" ng-repeat="comment in task.comments track by comment.id">
                     <span style="font-size: 16px">{{ comment.body }}</span>
                     <br/>
                     <span style="color: #909b9c">
@@ -39,7 +39,7 @@
             </td>
         </tr>
     </table>
-    <div ng-hide="$ctrl.tasksService.data.completed.length" translate>
+    <div ng-hide="$ctrl.tasksService.completed.length" translate>
         There are currently no completed tasks linked to this contact.
     </div>
 </div>

@@ -1,46 +1,56 @@
 class ContactController {
-    cache;
     contact;
-    contactsService;
+    contacts;
+    contactFilter;
     modal;
-    preferencesContactsService;
-    referralsService;
+    contactReferrals;
+    serverConstants;
     tasksService;
 
     constructor(
-        $scope, $state, $stateParams,
-        modal, cache, contactsService, tasksService, referralsService, preferencesContactsService, serverConstants
+        $log, $state, $stateParams, $location, $anchorScroll, help,
+        modal, contacts, tasksService, contactReferrals, contactFilter, serverConstants
     ) {
+        this.$anchorScroll = $anchorScroll;
+        this.$log = $log;
         this.$state = $state;
         this.$stateParams = $stateParams;
-        this.cache = cache;
-        this.contactsService = contactsService;
+        this.$location = $location;
+        this.contacts = contacts;
+        this.contactFilter = contactFilter;
         this.modal = modal;
-        this.preferencesContactsService = preferencesContactsService;
-        this.referralsService = referralsService;
+        this.contactReferrals = contactReferrals;
+        this.serverConstants = serverConstants;
         this.tasksService = tasksService;
 
         this.selected = $stateParams.contactId;
         this.moveContact = { previous_contact: 0, following_contact: 0 };
         this.activeTab = '';
         this.contact = {};
-        this.primaryAddress = {};
-        this.primaryAddressIndex = '';
-        serverConstants.fetchConstant('contacts', 'contacts/basic_list');
-        serverConstants.fetchConstants(['assignable_send_newsletters', 'assignable_statuses', 'pledge_frequencies', 'pledge_currencies', 'assignable_locations']);
-        this.constants = serverConstants.data;
+        // serverConstants.list().then(() => {
+        //     this.constants = serverConstants.data;
+        // });
+        // serverConstants.fetchConstant('contacts', 'contacts/basic_list');
+        // serverConstants.fetchConstants(['assignable_send_newsletters', 'assignable_statuses', 'pledge_frequencies', 'pledge_currencies', 'assignable_locations', 'assignable_likely_to_gives']);
 
-        this.tabsLabels = [];
-        $scope.$watch('$ctrl.preferencesContactsService.data.contact_tabs_labels', () => {
-            this.tabsLabels = this.preferencesContactsService.data.contact_tabs_labels;
-            if (angular.isDefined(this.tabsLabels)) {
-                this.activeTab = this.tabsLabels[0]['key'];
-            }
-        });
+        this.tabsLabels = [
+            { key: 'details', value: 'Details' },
+            { key: 'donations', value: 'Donations' },
+            { key: 'tasks', value: 'Tasks' },
+            { key: 'history', value: 'History' },
+            { key: 'referrals', value: 'Referrals' },
+            { key: 'notes', value: 'Notes' }
+        ];
+        this.activeTab = this.tabsLabels[0]['key'];
 
-        $scope.$watch('$ctrl.selected', this.selectContact.bind(this));
-        this.selectContact($stateParams.id);
-        this.contactPosition = this.getContactPosition();
+        // $scope.$watch('$ctrl.preferencesContacts.data.contact_tabs_labels', () => {
+        //     this.tabsLabels = this.preferencesContacts.data.contact_tabs_labels;
+        //     if (angular.isDefined(this.tabsLabels)) {
+        //         this.activeTab = this.tabsLabels[0]['key'];
+        //     }
+        // });
+
+        // $scope.$watch('$ctrl.selected', this.selectContact.bind(this));
 
         this.sortableOptions = {
             containment: '#contact-tabs',
@@ -54,33 +64,44 @@ class ContactController {
                     newIndex = this.tabsLabels.length - 1;
                 }
 
-                this.preferencesContactsService.data.contact_tabs_sort = this.tabsLabels.map(item => item['key']).join();
-                this.preferencesContactsService.save();
+                //this.preferencesContacts.data.contact_tabs_sort = this.tabsLabels.map(item => item['key']).join(); // TODO: Get tab sort data
+                // this.preferencesContacts.save(); // TODO: save tab sort data
             },
             containerPositioning: 'relative'
         };
+
+        help.suggest([
+            '5845aab3c6979106d373a576',
+            '5845995e90336006981769bb',
+            '584ac7f39033602d65f6e131',
+            '5845ac509033600698176a62',
+            '58459880c6979106d373a4c2',
+            '5845990290336006981769b1',
+            '58459756903360069817698b',
+            '584597e6903360069817699d',
+            '584597a1c6979106d373a4b5',
+            '58471fd6903360069817752e'
+        ]);
+    }
+    $onChanges() {
+        this.selectContact(this.$stateParams.contactId);
+        this.contactPosition = this.getContactPosition();
     }
     selectContact(id) {
-        this.cache.get(id).then((contact) => {
-            if (!contact) return;
+        this.$log.debug('select contact: ', id);
+        if (!id) return;
+        this.contacts.get(id).then((contact) => {
+            this.$log.debug('selected contact: ', contact);
             this.contact = contact;
-            for (var i = 0; i < this.contact.addresses.length; i++) {
-                var address = this.contact.addresses[i];
-                if (address.primary_mailing_address === true) {
-                    this.primaryAddress = address;
-                    this.primaryAddressIndex = i;
-                    break;
-                }
-            }
         });
     };
     save() {
-        this.contactsService.save(this.contact).then(() => {
+        this.contacts.save(this.contact).then(() => {
             this.selectContact(this.$stateParams.contactId);
         });
     }
     getContactPosition() {
-        return this.contactsService.getContactPosition(this.$stateParams.contactId) + 1;
+        return this.contacts.getContactPosition(this.$stateParams.contactId) + 1;
     }
     openAddReferralsModal() {
         this.modal.open({
@@ -89,7 +110,9 @@ class ContactController {
             locals: {
                 contactId: this.contact.id
             },
-            onHide: this.referralsService.fetchReferrals.bind(this, this.contact.id)
+            onHide: () => {
+                this.contactReferrals.fetchReferrals(this.contact.id);
+            }
         });
     }
     openLogTaskModal() {
@@ -97,35 +120,39 @@ class ContactController {
             template: require('../logTask/logTask.html'),
             controller: 'logTaskController',
             locals: {
-                contacts: [this.contact.id],
+                selectedContacts: [this.contact.id],
                 toComplete: true,
                 createNext: true,
                 specifiedTask: null,
                 ajaxAction: null
             },
-            onHide: this.tasksService.fetchCompletedTasks.bind(this, this.contact.id)
+            onHide: () => {
+                this.tasksService.fetchCompletedTasks(this.contact.id);
+            }
         });
     }
     openAddTaskModal() {
         this.tasksService.openModal({
-            contacts: [this.contact.id],
-            onHide: this.tasksService.fetchUncompletedTasks.bind(this, this.contact.id)
+            selectedContacts: [this.contact.id],
+            onHide: () => {
+                this.tasksService.fetchUncompletedTasks(this.contact.id);
+            }
         });
     }
     hideContact() {
-        this.contactsService.hideContact(this.contact.id).then(() => {
-            if (this.contactsService.canGoRight(this.contact.id)) {
-                this.$state.go('contact', {contactId: this.contactsService.getRightId(this.contact.id)});
-            } else if (this.contactsService.canGoLeft(this.contact.id)) {
-                this.$state.go('contact', {contactId: this.contactsService.getLeftId(this.contact.id)});
+        this.contacts.hideContact(this.contact).then(() => {
+            if (this.contacts.canGoRight(this.contact.id)) {
+                this.$state.go('contact', {contactId: this.contacts.getRightId(this.contact.id)});
+            } else if (this.contacts.canGoLeft(this.contact.id)) {
+                this.$state.go('contact', {contactId: this.contacts.getLeftId(this.contact.id)});
             }
         });
     }
     goLeft() {
-        this.$state.go('contact', { contactId: this.contactsService.getLeftId(this.contact.id) });
+        this.$state.go('contact', { contactId: this.contacts.getLeftId(this.contact.id) });
     }
     goRight() {
-        this.$state.go('contact', { contactId: this.contactsService.getRightId(this.contact.id) });
+        this.$state.go('contact', { contactId: this.contacts.getRightId(this.contact.id) });
     }
     hidePreviousContact() {
         return this.moveContact.previous_contact === 0 || this.moveContact.previous_contact === '';
@@ -143,6 +170,14 @@ class ContactController {
     }
     callToSave() {
         this.save();
+    }
+    displayNotes() {
+        this.activeTab = 'notes';
+        this.$location.hash('contact-tabs');
+        this.$anchorScroll();
+    }
+    filterCount() {
+        return this.contactFilter.count();
     }
 }
 

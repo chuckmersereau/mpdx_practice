@@ -1,12 +1,15 @@
 class AppointmentsController {
+    accounts;
+    constructor(
+        accounts
+    ) {
+        this.accounts = accounts;
+    }
 }
 
 const progressAppointments = {
     template: require('./appointments.html'),
-    controller: AppointmentsController,
-    bindings: {
-        appointments: '<'
-    }
+    controller: AppointmentsController
 };
 
 export default angular.module('mpdx.home.progress.appointments', [])

@@ -1,15 +1,16 @@
 class ContactsSearchController {
-    contactsService;
-    filterService;
+    contacts;
+    contactFilter;
 
-    constructor(filterService, contactsService) {
-        this.contactsService = contactsService;
-        this.filterService = filterService;
+    constructor(contactFilter, contacts) {
+        this.contacts = contacts;
+        this.contactFilter = contactFilter;
 
         this.searchParams = '';
     }
     paramChanged() {
-        this.filterService.params.wildcard_search = this.searchParams;
+        this.contactFilter.params.wildcard_search = this.searchParams;
+        this.contactFilter.change();
     }
 }
 const Search = {

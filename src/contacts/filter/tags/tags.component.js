@@ -1,8 +1,8 @@
 class TagsController {
-    tagsService;
+    contactsTags;
 
-    constructor(tagsService) {
-        this.tagsService = tagsService;
+    constructor(contactsTags) {
+        this.contactsTags = contactsTags;
     }
     stopPropagation(e) {
         e.stopPropagation();
@@ -14,5 +14,5 @@ const Tags = {
     template: require('./tags.html')
 };
 
-export default angular.module('mpdx.contacts.filter.tags', [])
+export default angular.module('mpdx.contacts.filter.tags.component', [])
     .component('contactsTags', Tags).name;

@@ -1,0 +1,96 @@
+<div class="tasks-component">
+  <table class="table tasks-table" bs-collapse data-start-collapsed="true" ng-show="$ctrl.tasksService.meta[$ctrl.key].pagination.total_count || $ctrl.tasksService.sort == $ctrl.sortkey">
+    <tr class="header-row">
+      <th ng-style="{'border-bottom': '4px solid ' + $ctrl.color}"
+          colspan="100"
+          class="ng-binding">
+        <span class="tasks-title">
+          {{ $ctrl.title }}
+        </span>
+        <span class="actions task-actions" ng-show="$ctrl.selected.length">
+          <a class="btn btn-xs btn-secondary" ng-click="$ctrl.bulkCompleteTasks()" ng-hide="$ctrl.key === 'allCompleted'">Complete</a>
+          <a class="btn btn-xs btn-secondary" ng-click="$ctrl.bulkDeleteTasks()">Delete</a>
+          <a class="btn btn-xs btn-secondary" ng-click="$ctrl.openBulkEditTaskModal()">Edit</a>
+        </span>
+        <select
+          ng-model="$ctrl.tasksService.meta[$ctrl.key].pagination.per_page"
+          ng-change="$ctrl.tasksService.meta[$ctrl.key].pagination.page = 1; $ctrl.load()"
+          class="form-control ng-pristine ng-untouched ng-valid ng-not-empty tasks-per-page form-inline">
+            <option ng-repeat="i in [10, 25, 50, 100, 500]" value="{{i}}" ng-selected="$ctrl.tasksService.meta[$ctrl.key].pagination.per_page == i">{{i}}</option>
+        </select>
+        <span
+          class="tasks-per-page-description"
+          style="float: right">
+          Show:
+        </span>
+        <a class="btn btn-xs btn-secondary pull-right" ng-click="$ctrl.toggleAll()" style="margin-right: 12px">Select All</a>
+      </th>
+    </tr>
+    <tr ng-if="$ctrl.tasksService.data[$ctrl.key].length === 0">
+      <td class="text-center" colspan="100">
+        Task list empty
+      </td>
+    </tr>
+    <tr class="task-row"
+        ng-repeat-start="task in $ctrl.tasksService.data[$ctrl.key]"
+        ng-click="$ctrl.toggleSelected(task)"
+        ng-class="$ctrl.selected.indexOf(task) >= 0 ? 'selected-task-row' : ''"
+        >
+      <td class="col-sm-1">
+        <i class="fa fa-lg fa-square-o complete_task"
+           ng-click="$ctrl.openCompleteTaskModal(task); $event.stopPropagation();"
+           data-behaviour="Done">
+        </i>
+      </td>
+      <td class="col-sm-1">
+        <a ng-click="$ctrl.starTask(task)"><i class="fa fa-lg starred" ng-class="task.starred ? 'fa-star' : 'fa-star-o'" ></i></a>
+      </td>
+      <td class="col-sm-2">
+        {{ task.activity_type }}
+      </td>
+      <td class="col-sm-2">
+          {{ task.no_date ? '' : $ctrl.moment(task.due_date).format('l hh:mm a') }}
+      </td>
+      <td class="col-sm-4">
+        <a ng-click="$ctrl.openEditTaskModal(task); $event.stopPropagation();"><b>{{ task.subject }}</b>
+          <a ng-click="$event.stopPropagation();" ng-repeat="contact in task.contacts" ui-sref="'contacts/' + contact.id">
+            ({{ contact.name }})
+          </a>
+        </a>
+      </td>
+
+      <td class="col-sm-1 comments-count"
+          ng-class="task.comments.length ? 'comments-count-has-comments' : ''"
+          bs-collapse-toggle>
+        <i class="fa fa-commenting-o"></i>
+        {{ task.comments.length }}
+      </td>
+      <td class="col-sm-1">
+        <i class="fa fa-trash-o trash" ng-click="$ctrl.deleteTask(task.id); $event.stopPropagation();" aria-hidden="true"></i>
+      </td>
+    </tr>
+    <tr class="comments-section" ng-repeat-end bs-collapse-target>
+      <td colspan="100">
+        <div class="col-sm-6 col-sm-offset-6" ng-repeat="comment in task.comments">
+          <span style="font-size: 16px">{{ comment.body }}</span>
+          <a ng-click="$ctrl.tasks.deleteComment(task, comment.id)"><i class="fa fa-times pull-right" aria-hidden="true"></i></a>
+          <br/>
+          <span style="color: #909b9c">
+            - {{ comment.person_name }}, {{ $ctrl.moment(comment.created_at).format('l') }}
+          </span>
+        </div>
+        <form class="form-inline">
+          <input style="width: 85%" class="form-control" ng-model="$ctrl.models.comment"/>
+          <button class="btn btn-primary" ng-click="$ctrl.newComment(task)">Add Comment</button>
+        </form>
+      </td>
+    </tr>
+  </table>
+  <pagination ng-show="$ctrl.tasksService.data[$ctrl.key].length"
+              total="$ctrl.tasksService.meta[$ctrl.key].pagination.total_count"
+              total-pages="$ctrl.tasksService.meta[$ctrl.key].pagination.total_pages"
+              per-page="$ctrl.tasksService.meta[$ctrl.key].pagination.per_page"
+              page="$ctrl.tasksService.meta[$ctrl.key].pagination.page"
+              on-change="$ctrl.onPageChange(page)">
+  </pagination>
+</div>

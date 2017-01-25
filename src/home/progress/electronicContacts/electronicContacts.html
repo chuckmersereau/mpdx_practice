@@ -5,29 +5,29 @@
         <span translate>Electronic Contacts</span>
     </div>
     <div class="progress-stat">
-        <span class="count-big">{{$ctrl.electronic.sent}}</span>
+        <span class="count-big">{{$ctrl.accounts.analytics.electronic.sent}}</span>
         <span translate>Sent</span>
     </div>
     <div class="progress-stat">
-        <span class="count-big">{{$ctrl.electronic.received}}</span>
+        <span class="count-big">{{$ctrl.accounts.analytics.electronic.received}}</span>
         <span translate>Received</span>
     </div>
     <div class="progress-stat">
-        <span class="count-big">{{$ctrl.electronic.appointments}}</span>
+        <span class="count-big">{{$ctrl.accounts.analytics.electronic.appointments}}</span>
         <span translate>Appointments Produced</span>
     </div>
     <ul class="plain-list">
         <li>
-            <span translate>Email</span>: {{$ctrl.email.sent}} <span translate>Sent</span> /
-            {{$ctrl.email.received}} <span translate>Received</span>
+            <span translate>Email</span>: {{$ctrl.accounts.analytics.email.sent}} <span translate>Sent</span> /
+            {{$ctrl.accounts.analytics.email.received}} <span translate>Received</span>
         </li>
         <li>
-            <span translate>Facebook</span>: {{$ctrl.facebook.sent}} <span translate>Sent</span> /
-            {{$ctrl.facebook.received}} <span translate>Received</span>
+            <span translate>Facebook</span>: {{$ctrl.accounts.analytics.facebook.sent}} <span translate>Sent</span> /
+            {{$ctrl.accounts.analytics.facebook.received}} <span translate>Received</span>
         </li>
         <li>
-            <span translate>Text Message</span>: {{$ctrl.data.textMessage.sent}} <span translate>Sent</span> /
-            {{$ctrl.textMessage.received}} <span translate>Received</span>
+            <span translate>Text Message</span>: {{$ctrl.accounts.analytics.textMessage.sent}} <span translate>Sent</span> /
+            {{$ctrl.accounts.analytics.textMessage.received}} <span translate>Received</span>
         </li>
     </ul>
 </div>

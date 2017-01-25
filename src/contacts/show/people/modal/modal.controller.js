@@ -1,15 +1,21 @@
 class PersonModalController {
-    contactsService;
     contact;
+    contactPerson;
+    contacts;
 
-    constructor($scope, contactsService, contact, person) {
-        this.$scope = $scope;
-        this.contactsService = contactsService;
-        this.contact = contact;
+    constructor(
+        $log, $rootScope, $scope,
+        contactPerson, contactId, person
+    ) {
+        this.$log = $log;
+        this.$rootScope = $rootScope;
+        this.contactPerson = contactPerson;
+        this.contactId = contactId;
         this.person = person;
-
+        this.$scope = $scope;
         this.personDetails = '';
         this.maps = [];
+        this.activeTab = 'contact-info';
 
         this.activate();
     }
@@ -26,18 +32,18 @@ class PersonModalController {
             };
         }
     }
-    save(isValid) {
-        if (isValid) {
-            if (_.has(this.person, 'id')) {
-                var personIndex = _.findIndex(this.contact.people, { id: this.person.id });
-                this.contact.people[personIndex] = _.clone(this.person);
-                if (angular.element('#primary_person_id:checked').length === 1) {
-                    this.contact.primary_person_id = this.person.id;
-                }
-            } else {
-                this.contact.people.push(this.person);
-            }
-            this.contactsService.save(this.contact).then(() => {
+    save() {
+        if (_.has(this.person, 'id')) {
+            return this.contactPerson.save(this.contactId, this.person).then(() => {
+                this.$log.debug('person saved:', this.person);
+                this.$rootScope.$emit('contactPersonUpdated', this.contactId);
+
+                this.$scope.$hide();
+            });
+        } else {
+            return this.contactPerson.create(this.contactId, this.person).then(() => {
+                this.$log.debug('person created:', this.person);
+                this.$rootScope.$emit('contactPersonUpdated', this.contactId);
                 this.$scope.$hide();
             });
         }
@@ -57,7 +63,6 @@ class PersonModalController {
     }
     removeFamilyRelationship(index) {
         this.person.family_relationships.splice(index, 1);
-        // this.person.family_relationships[index]._destroy = 1;
     }
     addNetwork() {
         this.person.networks.push(this.networkObject());
@@ -76,12 +81,11 @@ class PersonModalController {
     familyRelationshipObject() {
         return {related_person_id: 0, relationship: '', _destroy: 0};
     }
-    remove() {
+    delete() {
         this.person._destroy = 1;
-        this.save(true);
+        return this.save();
     }
 }
 
 export default angular.module('mpdx.contacts.show.personModal.controller', [])
     .controller('personModalController', PersonModalController).name;
-

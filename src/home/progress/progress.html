@@ -1,7 +1,7 @@
 <div ng-if="$ctrl.errorOccurred" translate>
     Error loading progress stats. Please try again or contact support.
 </div>
-<section id="dash-progress" ng-if="!$ctrl.errorOccurred">
+<section id="dash-progress" ng-if="!$ctrl.errorOccurred" block-ui="dashboardProgress">
     <div class="page-filters-plain">
         <div class="row">
             <div class="col-md-6 col-sm-4">
@@ -9,15 +9,15 @@
             </div>
             <div class="col-md-6 col-sm-8 text-right">
               <span class="normal-weight ng-cloak">
-                {{$ctrl.startDate | date:'MMM d'}} — {{$ctrl.endDate | date:'MMM d'}}
-                <button class="previous_page btn btn-default btn-sm" title="{{ $ctrl.__('Previous') }}" ng-click="$ctrl.previousWeek()">
+                {{$ctrl.startDate.format('MMM D')}} — {{$ctrl.endDate.format('MMM D')}}
+                <button class="previous_page btn btn-default btn-sm" title="{{ 'Previous' | translate }}" ng-click="$ctrl.previousWeek()">
                   <i class="fa fa-chevron-left"></i>
                 </button>
                 <button class="next_page btn btn-default btn-sm" title="{{ 'Next' | translate }}" ng-click="$ctrl.nextWeek()">
                   <i class="fa fa-chevron-right"></i>
                 </button>
               </span>
-                <a ng-if="$ctrl.currentUser.hasAnyUsAccounts" class="btn btn-sm btn-default btn-blue" href="https://staffweb.cru.org/mpd-donations/reports/mpd-weekly-update/" translate>
+                <a ng-if="$ctrl.users.current.hasAnyUsAccounts" class="btn btn-sm btn-default btn-blue" href="https://staffweb.cru.org/mpd-donations/reports/mpd-weekly-update/" translate>
                     Weekly Progress Report
                 </a>
             </div>

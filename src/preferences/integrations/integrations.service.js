@@ -1,52 +1,55 @@
 class IntegrationsService {
+    api;
+
     constructor(
-        $rootScope, api
+        $q, $log, $rootScope,
+        api
     ) {
+        this.$q = $q;
+        this.$log = $log;
         this.api = api;
 
         this.data = {};
         this.loading = true;
 
-        this.load();
-
-        this.account_list_id_watcher = $rootScope.$watch(() => api.account_list_id, () => {
+        $rootScope.$on('accountListUpdated', () => {
             this.load();
         });
     }
     load() {
         this.loading = true;
-        this.api.get('preferences/integrations').then((data) => {
-            this.data = data.preferences;
+        this.$q.all([
+            // this.api.get(`account_lists/${this.api.account_list_id}/prayer_letters_account`), //TODO: reimplement once API doesn't 404
+            this.api.get(`user/google_accounts`).then((data) => {
+                this.$log.debug('user/google_accounts', data);
+                this.data.google_accounts = data;
+            }),
+            this.api.get('user/key_accounts').then((data) => {
+                this.$log.debug('user/key_accounts', data);
+                this.data.key_accounts = data;
+            })
+        ]).then(() => {
             this.loading = false;
         });
     }
-    sync(service, success, error) {
-        var serviceToSync = service.toLowerCase();
-        if (serviceToSync === 'prayer letters') {
-            return this.api.get('preferences/integrations/prayer_letters_account/sync').then(success).catch(error);
-        }
-        if (serviceToSync === 'pls') {
-            return this.api.get('preferences/integrations/pls_account/sync').then(success).catch(error);
-        }
+    sync() {
+        return this.api.get(`account_lists/${this.api.account_list_id}/prayer_letters_account/sync`);
     }
-    sendToChalkline(success, error) {
-        return this.api.post('preferences/integrations/send_to_chalkline', { }).then(success).catch(error);
+    sendToChalkline() {
+        return this.api.post(`account_lists/${this.api.account_list_id}/send_to_chalkline`);
     }
-    disconnect(service, success, error, id) {
-        var serviceToDisconnect = service.toLowerCase();
+    disconnect(service, id) {
+        const serviceToDisconnect = service.toLowerCase();
         if (serviceToDisconnect === 'google') {
-            return this.api.delete('preferences/integrations/google_accounts/' + id, { }).then(success).catch(error);
+            return this.api.delete(`user/google_accounts/${id}`);
         }
         if (serviceToDisconnect === 'key') {
-            return this.api.delete('preferences/integrations/key_accounts/' + id, { }).then(success).catch(error);
+            return this.api.delete('user/key_accounts/' + id);
         }
         if (serviceToDisconnect === 'prayer letters') {
-            return this.api.delete('preferences/integrations/prayer_letters_account', { }).then(success).catch(error);
-        }
-        if (serviceToDisconnect === 'pls') {
-            return this.api.delete('preferences/integrations/pls_account', { }).then(success).catch(error);
+            return this.api.delete(`account_lists/${this.api.account_list_id}/prayer_letters_account`);
         }
     }
 }
 export default angular.module('mpdx.preferences.integrations.service', [])
-    .service('integrationsService', IntegrationsService).name;
+    .service('integrations', IntegrationsService).name;

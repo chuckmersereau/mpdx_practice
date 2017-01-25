@@ -1,46 +1,36 @@
 class EditFieldsController {
+    selectedContacts;
     contacts;
-    contactsService;
     serverConstants;
-    tagsService;
+    contactsTags;
 
     constructor(
         $scope,
-        tagsService, serverConstants, contactsService,
-        contacts
+        contactsTags, serverConstants, contacts,
+        selectedContacts
     ) {
         this.$scope = $scope;
+        this.selectedContacts = selectedContacts;
         this.contacts = contacts;
-        this.contactsService = contactsService;
         this.serverConstants = serverConstants;
-        this.tagsService = tagsService;
+        this.contactsTags = contactsTags;
 
         this.models = {};
         this.constants = {};
 
-        this.activate();
-    }
-    activate() {
-        this.serverConstants.fetchConstants(['bulk_update_options']);
+        // this.serverConstants.fetchConstants(['bulk_update_options']);
         this.constants = this.serverConstants.data;
     }
-    submit() {
-        this.contactsService.bulkEditFields(
+
+    save() {
+        return this.contacts.bulkEditFields(
             this.models,
-            this.constants.bulk_update_options.pledge_currency,
-            this.contacts
+            this.constants.currencies,
+            this.selectedContacts
         ).then(() => {
             this.$scope.$hide();
-            this.contactsService.load(true);
+            this.contacts.load(true);
         });
-    }
-    isInvalid() {
-        return !Object.keys(this.models).length;
-    }
-    reset() {
-        this.models = {};
-        angular.element('div.datetimepicker-wrapper td.hours input').val('');
-        angular.element('div.datetimepicker-wrapper td.minutes input').val('');
     }
 }
 

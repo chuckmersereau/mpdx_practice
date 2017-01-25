@@ -100,9 +100,8 @@
                             <select chosen
                                     required
                                     ng-change='$ctrl.save()' ng-model-options='{ debounce: 1000 }'
-                                    disable-search="false"
                                     class="form-control"
-                                    ng-options="opt[1] as opt[0] for opt in $ctrl.constants.contacts"
+                                    ng-options="opt.id as opt.name for opt in $ctrl.contacts.data track by contact.id"
                                     ng-model="$ctrl.contact.referred_by">
                                 <option value=""></option>
                             </select>
@@ -131,19 +130,13 @@
                             <select chosen
                                     required
                                     ng-change='$ctrl.save()' ng-model-options='{ debounce: 1000 }'
-                                    disable-search="true"
                                     class="form-control"
-                                    id='status'
-                                    ng-options="opt[1] as opt[0] for opt in $ctrl.constants.mail_chimp_locale_options"
-                                    ng-model="$ctrl.contact.locale">
+                                    id='locale'
+                                    ng-options="option.alias as option.value for option in $ctrl.languages"
+                                    ng-model="$ctrl.contact.locale" >
                                 <option value=""></option>
                             </select>
                         </div>
-                    </div>
-
-                    <div class="field">
-                        <h4 class="attribute-header" translate>Referrers</h4>
-                        <contact-referrer-wrapper contact="$ctrl.contact" constants="$ctrl.constants"></contact-referrer-wrapper>
                     </div>
                 </div>
             </div>
@@ -153,8 +146,8 @@
             <div class="col-sm-12 spacing-below-xs">
                 <h4 class="attribute-header" translate>Tags</h4>
                 <div class="inline-input">
-                    <tags-input class="import_by_group import_contact_tags" ng-model="$ctrl.contact.tag_list" on-tag-added='$ctrl.save()' on-tag-removed='$ctrl.save()'>
-                        <auto-complete source="$ctrl.tagsService.getTagsByQuery($query)" min-length="0" select-first-match="false"></auto-complete>
+                    <tags-input class="import_by_group import_contact_tags" ng-model="$ctrl.contact.tag_list" on-tag-added='$ctrl.save()' on-tag-removed='$ctrl.save()' display-property="name">
+                        <auto-complete source="$ctrl.contactsTags.data" min-length="0" select-first-match="false"></auto-complete>
                     </tags-input>
                 </div>
             </div>
@@ -164,9 +157,11 @@
         <div class="fieldset">
             <h3 translate>Partner Accounts</h3>
             <contact-donor-account ng-repeat="donorAccount in $ctrl.contact.donor_accounts" contact="$ctrl.contact" donor-account="donorAccount"></contact-donor-account>
-            <button type="button" class="btn btn-primary" ng-click="$ctrl.addPartnerAccount()">
-                <i class="fa fa-plus-circle"></i> <translate>Add Partner Account</translate>
-            </button>
+            <div class="add-partner-account">
+                <button type="button" class="btn btn-primary" ng-click="$ctrl.addPartnerAccount()">
+                    <i class="fa fa-plus-circle"></i> <translate>Add Partner Account</translate>
+                </button>
+            </div>
         </div>
         <div class="fieldset">
             <h3 translate>Addresses</h3>

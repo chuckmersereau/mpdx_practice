@@ -23,13 +23,12 @@ class FilterDaterangeController {
         });
     }
     apply(event, daterangepicker) {
-        var scope = angular.element(daterangepicker.element[0]).scope();
-        var newValue = daterangepicker.startDate.format('MM/DD/YYYY') + ' - ' + daterangepicker.endDate.format('MM/DD/YYYY');
-        scope.this.model = newValue;
+        let scope = angular.element(daterangepicker.element[0]).scope();
+        scope.this.model = daterangepicker.startDate.format('MM/DD/YYYY') + ' - ' + daterangepicker.endDate.format('MM/DD/YYYY');
         scope.$apply();
     }
     cancel(event, daterangepicker) {
-        var scope = angular.element(daterangepicker.element[0]).scope();
+        let scope = angular.element(daterangepicker.element[0]).scope();
         scope.this.model = '';
         scope.$apply();
     }
@@ -41,7 +40,8 @@ const Daterange = {
     bindings: {
         model: '=',
         locale: '<',
-        customOptions: '<'
+        customOptions: '<',
+        onChange: '&'
     }
 };
 

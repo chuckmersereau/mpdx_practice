@@ -2,7 +2,7 @@
     <a ng-click="$ctrl.switchContact()" ng-class="{'active': $ctrl.selected == $ctrl.contact.id }">{{$ctrl.contact.name}}</a>
 </div>
 <div ng-hide="$ctrl.view == 'minimal'" class="contact-row">
-    <img class="avatar small" ng-src="{{$ctrl.contact.square_avatar}}">
+    <img class="avatar small" ng-src="{{$ctrl.contact.square_avatar | stripMpdx}}">
     <div class="contact-details">
         <div class="col-sm-7 main-details">
             <h4 class="name">
@@ -18,7 +18,7 @@
                 </span>
             </h4>
             <div class="people">
-                <div ng-repeat="person in $ctrl.contact.people" ng-if="!person.deceased" class="people-single-contact">
+                <div ng-repeat="person in $ctrl.contact.includes" ng-if="!person.deceased" class="people-single-contact">
                     <a ui-sref="contact.people({ contactId: $ctrl.contact.id, personId: person.id})">{{person.first_name}} {{person.last_name}}</a>
                     <span ng-repeat="phone_number in person.phone_numbers" ng-if="phone_number.primary && !phone_number.historic" class="phone-type phone-type-{{phone_number.location}}">
                         {{phone_number.number}}
@@ -31,33 +31,25 @@
                     </a>
                 </div>
             </div>
-            <address class="address" ng-repeat="address in $ctrl.contact.addresses" ng-if="address.primary_mailing_address">
+            <address class="address" ng-repeat="address in $ctrl.contact.addresses track by address.id" ng-if="address.primary_mailing_address">
                 <span ng-if="address.street">{{address.street}}<br></span>
                 <span ng-if="address.city">{{address.city}},</span>
                 {{address.state}}
                 {{address.postal_code}}
             </address>
             <div class="tags">
-                <a class="tag" ng-repeat-start="tag in $ctrl.contact.tag_list">{{tag}}</a><span style="display:inline;" ng-repeat-end> </span>
+                <a class="tag" ng-repeat-start="tag in $ctrl.contact.tag_list">{{tag.text}}</a><span style="display:inline;" ng-repeat-end> </span>
             </div>
         </div>
         <div class="col-sm-5 more-details">
             <div ng-show="$ctrl.contact.status !== ''">{{$ctrl.contact.status | translate}}</div>
             <div ng-show="$ctrl.contact.pledge_amount > 0">
-                {{$ctrl.contact.pledge_amount | currency: $ctrl.contact.pledge_currency_symbol}} {{$ctrl.contact.pledge_frequency }}
+                {{$ctrl.contact.pledge_amount | currency: $ctrl.contact.pledge_currency_symbol}} {{$ctrl.contact.pledge_frequency | pledgeFrequencyToStr | translate}}
                 <div ng-if="$ctrl.contact.status == 'Partner - Financial'" ng-switch="$ctrl.contact.pledge_received">
                     <div ng-switch-when="true" class="text-success" translate>Commitment Received</div>
                     <div ng-switch-when="false" class="text-warning" translate>Commitment Not Received</div>
                 </div>
             </div>
-            <!-- div ng-show="$ctrl.contact.pledge_amount > 0">
-                {{$ctrl.contact.pledge_amount | currency: $ctrl.contact.pledge_currency_symbol}} {{$ctrl.contact.pledge_frequency | pledgeFrequencyStr}}
-                <div ng-if="$ctrl.contact.status == 'Partner - Financial'" ng-switch="$ctrl.contact.pledge_received">
-                    <div ng-switch-when="true" class="text-success" translate>Commitment Received</div>
-                    <div ng-switch-when="false" class="text-warning" translate>Commitment Not Received</div>
-                </div>
-            </div -->
-
 
             <a ng-href="/tasks?contact_ids={{$ctrl.contact.id}}" ng-show="$ctrl.contact.uncompleted_tasks_count > 0">
                 <span translate>Tasks</span>: {{$ctrl.contact.uncompleted_tasks_count}}
@@ -65,8 +57,12 @@
         </div>
     </div>
     <div class="btn-group">
-        <a class="btn btn-sm btn-default" ui-sref="contact({contactId: $ctrl.contact.id})" title="{{ 'View Contact' | translate }}"><i class="fa fa-search"></i></a>
-        <a class="btn btn-sm btn-default" title="{{ 'Hide Contact' | translate }}" ng-click="$ctrl.hide({ contactId: $ctrl.contact.id })"><i class="fa fa-eye-slash"></i></a>
+        <a class="btn btn-sm btn-default" ui-sref="contact({contactId: $ctrl.contact.id})" title="{{ 'View Contact' | translate }}">
+            <i class="fa fa-search"></i>
+        </a>
+        <a class="btn btn-sm btn-default" title="{{ 'Hide Contact' | translate }}" ng-hide="$ctrl.contact.status == 'Never Ask'" ng-click="$ctrl.hide({ contactId: $ctrl.contact.id })">
+            <i class="fa fa-eye-slash"></i>
+        </a>
         <button class="btn btn-sm btn-default" ng-click="$ctrl.toggleCheckbox()">
             <input type="checkbox" ng-model="$ctrl.contact.selected" ng-click="$ctrl.stopPropagation($event)"/>
         </button>

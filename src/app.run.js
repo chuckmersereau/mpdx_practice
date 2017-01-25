@@ -1,7 +1,11 @@
 /*@ngInject*/
-export default function appRun($transitions, $q, $window, $rootScope, $state) {
+export default function appRun(
+    $q, $log, $rootScope, $state, $transitions, $window
+) {
     $rootScope.googleMapsUrl = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBIUs23E_OsltKqLcIPD6B4rU11bfZKnM0";
+    //check for Auth
     $transitions.onBefore({ to: (state) => {
+        $log.debug('navigating to:', state.name);
         if (state.name === 'login' || state.name === 'auth') {
             return false;
         } else if (!$window.sessionStorage.token) {

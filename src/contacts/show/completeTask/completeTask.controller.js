@@ -5,32 +5,36 @@ class CompleteTaskController {
     tasksService;
 
     constructor(
-        modal, serverConstants, tasksService,
-        taskId, contact, taskAction
+        $scope, modal, serverConstants, tasksService,
+        task, contact, taskAction
     ) {
+        this.$scope = $scope;
         this.contact = contact;
         this.modal = modal;
         this.serverConstants = serverConstants;
-        this.taskId = taskId;
+        this.task = task;
         this.taskAction = taskAction;
         this.tasksService = tasksService;
 
-        this.activate();
-    }
-    activate() {
-        this.serverConstants.fetchConstants(['nextActions', 'results', 'pledge_frequency']);
+        // this.serverConstants.fetchConstants(['next_actions', 'results', 'pledge_frequency']);
         this.constants = this.serverConstants.data;
     }
-    submit() {
-        this.tasksService.postLogTask(this.taskId, this.models).then(() => {
+    save() {
+        return this.tasksService.postLogTask(this.task, this.models).then(() => {
             this.$scope.$hide();
+
+            var contactIds = [];
+            if (this.contact) {
+                contactIds = [this.contact.id];
+            }
+
             this.modal.open({
                 template: require('../../../tasks/add/add.html'),
                 controller: 'addTaskController',
                 locals: {
                     specifiedAction: this.models.nextAction,
                     specifiedSubject: this.models.nextAction,
-                    contacts: [this.contact.id],
+                    selectedContacts: contactIds,
                     modalTitle: 'Follow up Task'
                 }
             });

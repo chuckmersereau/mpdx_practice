@@ -1,0 +1,79 @@
+<div class="row">
+   <alerts></alerts>
+  <div class="col-xs-3">
+    <aside class="scrollable_left" data-offset-top="128" bs-affix>
+      <tasks-filter></tasks-filter>
+    </aside>
+  </div>
+  <div class="col-xs-9">
+    <div class="sticky-page-filters" data-offset-top="114" bs-affix>
+      <div class="page-filters">
+        <tasks-search></tasks-search>
+      </div>
+    </div>
+    <tasks-list
+        key="overdue"
+        title="Overdue"
+        color="#f9b625"
+        parent-component="'tasksList'"
+        tags="$ctrl.tasksTags.selectedTags"
+        changed="$ctrl.changed"
+        sort-key="overdue"
+        ng-if="['all', 'overdue'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
+    <tasks-list
+        key="today"
+        title="Today"
+        color="#f6921e"
+        parent-component="'tasksList'"
+        tags="$ctrl.tasksTags.selectedTags"
+        changed="$ctrl.changed"
+        sort-key="today"
+        ng-if="['all', 'today'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
+    <tasks-list
+        key="starred"
+        title="Starred"
+        color="#56aa00"
+        parent-component="'tasksList'"
+        tags="$ctrl.tasksTags.selectedTags"
+        changed="$ctrl.changed"
+        filterChanged="$ctrl.filterChanged"
+        sort-key="starred"
+        ng-if="['all', 'starred'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
+    <tasks-list
+        key="tomorrow"
+        title="Tomorrow"
+        color="#007398"
+        parent-component="'tasksList'"
+        tags="$ctrl.tasksTags.selectedTags"
+        changed="$ctrl.changed"
+        sort-key="upcoming"
+        ng-if="['all', 'upcoming'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
+    <tasks-list
+        key="upcoming"
+        title="Upcoming"
+        color="#007398"
+        parent-component="'tasksList'"
+        tags="$ctrl.tasksTags.selectedTags"
+        changed="$ctrl.changed"
+        sort-key="upcoming"
+        ng-if="['all', 'upcoming'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
+    <tasks-list
+        key="noDueDate"
+        title="No Date"
+        color="#3eb1c8"
+        pageparent-component="'tasksList'"
+        tags="$ctrl.tasksTags.selectedTags"
+        changed="$ctrl.changed"
+        sort-key="noDate"
+        ng-if="['all', 'noDate'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
+    <tasks-list
+        key="allCompleted"
+        title="History"
+        color="#999999"
+        parent-component="'tasksList'"
+        tags="$ctrl.tasksTags.selectedTags"
+        changed="$ctrl.changed"
+        sort-key="history"
+        ng-if="['all', 'history'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
+  </div>
+</div>

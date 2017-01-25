@@ -1,12 +1,13 @@
 class welcomeHeaderController {
-    constructor(flash, gettextCatalog) {
+    users;
+
+    constructor(gettextCatalog, users) {
         this._ = _;
-        this.flash = flash;
         this.gettextCatalog = gettextCatalog;
+        this.users = users;
+        this.tourComplete = false;
     }
     $onInit() {
-        this.flash.get('tour_complete');
-
         this.sources = [
             ['TntMPD', 'Tnt'],
             [this.gettextCatalog.getString('.CSV File'), 'CSV']
@@ -30,10 +31,7 @@ class welcomeHeaderController {
 
 const welcomeHeaderComponent = {
     controller: welcomeHeaderController,
-    template: require('./welcomeHeader.html'),
-    bindings: {
-        currentUser: '<'
-    }
+    template: require('./welcomeHeader.html')
 };
 
 export default angular.module('mpdx.home.welcomeHeader', [])

@@ -1,6 +1,7 @@
 class AlertsController {
-    constructor(alertsService) {
-        this.alertsService = alertsService;
+    alerts;
+    constructor(alerts) {
+        this.alerts = alerts;
     }
 }
 

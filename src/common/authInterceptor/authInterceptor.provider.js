@@ -1,23 +1,15 @@
+import config from 'config';
+
 function authInterceptor($q, $window) {
     return {
-        request: (config) => {
-            if (config.url.indexOf('http') === 0) { //ensure it is an api call
-                if (!$window.sessionStorage.token) {
+        request: (request) => {
+            if (request.url.indexOf('http') === 0) { //ensure it is an api call
+                if (!$window.sessionStorage.token && request.url !== `${config.apiUrl}user/authentication`) {
                     return $q.reject('noAuth');
                 }
-                if (config.method === 'GET' && config.url.indexOf('?') > -1) {
-                    config.url += '&access_token=' + $window.sessionStorage.token;
-                } else {
-                    config.url += '?access_token=' + $window.sessionStorage.token;
-                }
-
-                // For later use if we use bearers in MPDX API
-                // config.headers = config.headers || {};
-                // if ($window.sessionStorage.token) {
-                //     config.headers.Authorization = 'Bearer ' + $window.sessionStorage.token;
-                // }
+                request.headers['Authorization'] = `Bearer ${$window.sessionStorage.token}`;
             }
-            return config;
+            return request;
         },
         response: (response) => {
             if (response.status === 401) {

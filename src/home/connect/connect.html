@@ -5,15 +5,15 @@
     <div class="panel-body dash-tasks">
         <span translate>Tasks overdue or due today</span>
         <ul class="plain-list">
-            <li ng-repeat="task in $ctrl.overdueTasks | orderBy: 'type'">
-                <a href="/tasks?filters%5BactionSelect%5D%5B%5D={{task.type}}">
+            <li ng-repeat="task in $ctrl.tasksService.analytics.tasks_overdue_or_due_today_counts | orderBy: 'count' : true | limitTo : 2">
+                <a ui-sref="tasks({ filters: { activity_type: [task.type] } })">
                     <span class="count">{{ task.count }}</span>
-                    {{ task.type }}
+                    {{ task.label }}
                 </a>
             </li>
         </ul>
 
-        <a href="/tasks" class="see-all see-all-tasks">
+        <a ui-sref="tasks" class="see-all see-all-tasks">
             <i class="fa fa-plus-square-o"></i>
             <span translate>See all {{ $ctrl.overdueCount }} tasks</span>
         </a>

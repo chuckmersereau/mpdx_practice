@@ -1,0 +1,19 @@
+<div id="dismissable" ng-if="$ctrl.session.downloading">
+    <div class="item" id="data_downloading">
+        <a href="" class="dismiss_item corner_close" ng-click="$ctrl.session.downloading = false">Close</a>
+        <div class="dismiss_content" translate>
+            MPDX is currently downloading your data from the donation system. This message will go away when the download is complete.
+        </div>
+    </div>
+</div>
+
+<div class="mwrap" ng-if="$ctrl.session.notice">
+    <div class="inside notice">
+        <p>{{ $ctrl.notice }}</p>
+    </div>
+</div>
+<div class="mwrap" ng-if="$ctrl.session.alert">
+    <div class="inside alert">
+        <p>{{ $ctrl.alert }}</p>
+    </div>
+</div>

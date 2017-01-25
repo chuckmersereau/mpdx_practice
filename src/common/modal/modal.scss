@@ -1,0 +1,183 @@
+.modal.center {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    overflow-y: auto;
+    .modal-dialog {
+        margin: 0 auto;
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        .modal-content {
+            margin: 3pc 0 5pc 0;
+            .modal-body {
+                position: relative;
+                .empty-map {
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    top: 0;
+                    z-index: 10;
+                    height: 200px;
+                    line-height: 200px;
+                    text-align: center;
+                    font-size: 75px;
+                    background-color: #3a3a3a;
+                    color: #fff;
+                }
+                ng-map {
+                    margin: -15px -15px 15px -15px;
+                    > div {
+                        min-height: 200px;
+                    }
+                    &:first-child {
+                        margin-top: -15px;
+                    }
+                }
+                input.form-control, div.tags{
+                    border-radius: 0px;
+                    border: 1px solid #979797;
+                }
+            }
+            border-radius: 0;
+        }
+        .modal-header {
+            padding: 0;
+            .modal-title {
+                text-align: center;
+                text-transform: uppercase;
+                letter-spacing: 0.025em;
+                line-height: 56px;
+            }
+            a.close {
+                border-left: 1px solid #e5e5e5;
+                font-size: 25px;
+                line-height: 56px;
+                padding: 0 20px;
+                margin: 0;
+                opacity: 1;
+                letter-spacing: 0.025em;
+                color: $gray_light;
+                transition: color 0.2s;
+                i.fa-angle-left {
+                    margin-left: -5px;
+                }
+                &:hover {
+                    color: $gray_dark;
+                }
+            }
+        }
+        .modal-footer {
+            .btn-link {
+                color: $gray_dark;
+                &:hover {
+                    text-decoration: none;
+                }
+                &:focus {
+                    outline: none;
+                }
+            }
+        }
+        .row {
+            margin: 0 0 5px 0;
+            [class*="col-"] {
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+        .form-control[type="text"] {
+            border-color: #979797;
+            padding: 6px;
+            &.ng-dirty.ng-invalid {
+                border-color: #a94442;
+            }
+            &:focus {
+                border-color: rgb(0, 115, 152);
+            }
+        }
+        .form-control[type="checkbox"] {
+            display: inline-block;
+            width: auto;
+            height: auto;
+        }
+        .checkbox-label {
+            display: inline-block;
+        }
+        .chosen-container-active.chosen-with-drop .chosen-single, .chosen-container-active .chosen-single, .chosen-container .chosen-drop {
+            border-radius: 0;
+            box-shadow: none;
+        }
+        .chosen-single {
+            border-radius: 0;
+            border-color: #979797;
+        }
+        .modal-panel-container {
+            margin: -15px;
+            .modal-panel-title {
+                text-align: center;
+                text-transform: uppercase;
+                letter-spacing: 0.025em;
+                line-height: 40px;
+                font-size: 1.25rem;
+                border-bottom: 1px solid $gray_light;
+                background-color: #fff;
+            }
+            .modal-panel-left {
+                border-right: 1px solid $gray_light;
+                padding: 0;
+            }
+            .modal-panel-right {
+                padding: 0;
+                background-color: #f9fafa;
+            }
+            .modal-panel-content {
+                padding: 15px;
+                ul.nav.nav-tabs {
+                    margin: -15px;
+                    margin-bottom: 15px;
+                    background-color: #fff;
+                    border-bottom: 1px solid $gray_light;
+                    text-align: center;
+                    > li {
+                        float: none;
+                        > a {
+                            line-height: 38px;
+                            font-size: 1.2em;
+                            border: none;
+                            background-color: transparent;
+                            padding: 0 15px;
+                            border-bottom: 2px solid transparent;
+                            color: $base-text-color;
+                        }
+                        &.active a {
+                            border-bottom-color: #f9b625;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #contacts-map{
+        margin-right: 188px;
+    }
+
+    #contacts_map_modal{
+        height: 390px;
+        .contacts-map-markers{
+            top: 20px;
+        }
+    }
+
+    .excel_export{
+        margin-top: 17px;
+    }
+
+    >.modal-size-lg{
+        max-width: 80% !important;
+        width: 80% !important;
+    }
+}

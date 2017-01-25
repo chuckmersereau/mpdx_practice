@@ -1,22 +1,16 @@
 class OrganizationService {
     api;
+    state;
 
     constructor(
-        $rootScope, api
+        $log, $rootScope,
+        api
     ) {
+        this.$log = $log;
         this.api = api;
         this.data = {};
         this.loading = true;
         this.state = 'disabled';
-
-        this.activate();
-
-        this.account_list_id = api.account_list_id;
-
-        $rootScope.$watch(() => api.account_list_id, () => {
-            this.account_list_id = api.account_list_id;
-            this.load();
-        });
     }
     activate() {
         this.load();
@@ -24,23 +18,25 @@ class OrganizationService {
     }
     load() {
         this.loading = true;
-        return this.api.get('preferences/integrations/organization_accounts').then((data) => {
-            this.data.organization_accounts = data.organization_accounts;
+        return this.api.get(`user/organization_accounts`).then((data) => {
+            this.$log.debug(`user/organization_accounts`, data);
+            this.data.organization_accounts = data;
             this.updateState();
             this.loading = false;
         });
     }
     save() {
-        this.api.put('preferences/integrations/organization_account', { organization: this.data }).then((data) => {
-            this.data.organization_accounts = data.organizations;
+        this.api.put(`user/organization_accounts`, this.data).then((data) => {
+            this.data.organization_accounts = data;
             return this.updateState();
         });
     }
     disconnect(id) {
-        return this.api.delete('preferences/integrations/organization_accounts/' + id);
+        return this.api.delete(`user/organization_accounts/${id}`);
     }
     loadOrganizations() {
-        return this.api.get('preferences/integrations/organizations').then((data) => {
+        return this.api.get('constants/organizations').then((data) => {
+            this.$log.debug(`constants/organizations`, data);
             this.data.organizations = data.organizations;
         });
     }
@@ -56,23 +52,19 @@ class OrganizationService {
         }
     }
     createAccount(username, password, organizationId) {
-        return this.api.post('preferences/integrations/organization_accounts', {
-            organization_account: {
-                username: username,
-                password: password,
-                organization_id: organizationId
-            }
+        return this.api.post(`user/organization_accounts`, {
+            username: username,
+            password: password,
+            organization_id: organizationId
         });
     }
     updateAccount(username, password, accountId) {
-        return this.api.put('preferences/integrations/organization_accounts/' + accountId, {
-            organization_account: {
-                username: username,
-                password: password
-            }
+        return this.api.put(`user/organization_accounts/${accountId}`, {
+            username: username,
+            password: password
         });
     }
 }
 
 export default angular.module('mpdx.preferences.integrations.organization.service', [])
-    .service('organizationService', OrganizationService).name;
+    .service('preferencesOrganization', OrganizationService).name;

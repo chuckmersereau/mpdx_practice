@@ -1,17 +1,10 @@
 class CommitmentsController {
-    constructor(currentAccountList) {
-        this.currentAccountList = currentAccountList;
+    contacts;
 
-        this.noPledgeCount = null;
-        this.lateContactCount = null;
-    }
-    $onInit() {
-        this.currentAccountList.contacts.getLatePledgeCount().then((response) => {
-            this.noPledgeCount = response;
-        });
-        this.currentAccountList.contacts.getLatePledgeDays().then((response) => {
-            this.lateContactCount = response;
-        });
+    constructor(
+        contacts
+    ) {
+        this.contacts = contacts;
     }
 }
 const Commitments = {

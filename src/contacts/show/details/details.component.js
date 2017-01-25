@@ -1,17 +1,24 @@
 class ContactDetailsController {
+    appeals;
     contact;
-    contactsService;
-    tagsService;
+    contacts;
+    contactsTags;
 
     constructor(
-        tagsService, contactsService
+        $window,
+        contactsTags, contacts
     ) {
-        this.contactsService = contactsService;
-        this.tagsService = tagsService;
+        this.contacts = contacts;
+        this.contactsTags = contactsTags;
 
         this.appeals = 'false';
+
+        this.languages = _.map(_.keys($window.languageMappingList), (key) => {
+            const language = window.languageMappingList[key];
+            return {alias: key, value: `${language.englishName} (${language.nativeName} - ${key}`};
+        });
     }
-    $onInit() {
+    $onChanges() {
         if (this.contact.no_appeals === true) {
             this.appeals = 'true';
         } else {
@@ -23,7 +30,7 @@ class ContactDetailsController {
     }
     save() {
         this.contact.no_appeals = this.appeals;
-        this.contactsService.save(this.contact);
+        this.contacts.save(this.contact);
     }
 }
 const Details = {

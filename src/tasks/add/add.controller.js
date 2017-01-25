@@ -1,45 +1,62 @@
 class AddTaskController {
+    selectedContacts;
     contacts;
-    contactsService;
+    contactsTags;
     serverConstants;
-    tagsService;
     tasksService;
 
     constructor(
         $scope,
-        tagsService, serverConstants, tasksService, contactsService,
-        contacts, specifiedAction, specifiedSubject, modalTitle
+        tasksTags, serverConstants, tasksService, contacts,
+        selectedContacts, specifiedAction, specifiedSubject, modalTitle
     ) {
         this.$scope = $scope;
+        this.selectedContacts = selectedContacts;
         this.contacts = contacts;
-        this.contactsService = contactsService;
+        this.tasksTags = tasksTags;
         this.serverConstants = serverConstants;
         this.specifiedAction = specifiedAction;
         this.specifiedSubject = specifiedSubject;
-        this.tagsService = tagsService;
         this.tasksService = tasksService;
 
         this.modalTitle = modalTitle;
 
         this.models = {
-            date: new Date(),
-            noDate: false,
-            action: this.specifiedAction,
+            start_at: moment().toISOString(),
+            no_date: false,
+            activity_type: this.specifiedAction,
             subject: this.specifiedSubject,
-            tagsList: []
+            tag_list: [],
+            comments: []
         };
 
-        this.activate();
-    }
-    activate() {
-        this.serverConstants.fetchConstants(['actions']);
+        // this.serverConstants.fetchConstants(['actions']);
         this.constants = this.serverConstants.data;
     }
 
-    submit() {
-        this.tasksService.postBulkAddTask(this.models, this.contacts).then(() => {
-            this.contactsService.load(true);
-            this.tagsService.load();
+    save() {
+        if (this.comment) {
+            this.models.comments.push({body: this.comment});
+        }
+        let promise;
+        if (this.newsletterBoth) {
+            this.models.action = "Newsletter - Physical";
+            promise = this.tasksService.postBulkAddTask(this.models, this.selectedContacts).then(() => {
+                this.models.action = "Newsletter - Email";
+                return this.tasksService.postBulkAddTask(this.models, this.selectedContacts);
+            });
+        } else if (this.newsletterPhysical) {
+            this.models.action = "Newsletter - Physical";
+            promise = this.tasksService.postBulkAddTask(this.models, this.selectedContacts);
+        } else if (this.newsletterEmail) {
+            this.models.action = "Newsletter - Email";
+            promise = this.tasksService.postBulkAddTask(this.models, this.selectedContacts);
+        } else {
+            promise = this.tasksService.postBulkAddTask(this.models, this.selectedContacts);
+        }
+        return promise.then(() => {
+            this.contacts.load(true);
+            this.contactsTags.load();
             this.$scope.$hide();
         });
     }

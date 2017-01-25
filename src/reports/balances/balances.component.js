@@ -1,33 +1,28 @@
 class BalancesReportController {
+    api;
     constructor(
-        api, state
+        $log,
+        api
     ) {
+        this.$log = $log;
         this.api = api;
-        this.state = state;
-
-        this.errorOccurred = false;
     }
     $onInit() {
-        var url = 'reports/balances?account_list_id=' + this.state.current_account_list_id;
-        this.api.get(url).then((data) => {
-            this.designations = data.designations;
-            _.each(this.designations, (d) => {
-                d.balanceIncluded = d.active;
-            });
+        this.api.get('reports/balances', {include: 'designation_accounts'}).then((data) => {
+            this.$log.debug('reports/balances', data);
+            this.designations = data.designation_accounts;
             this.total_currency = data.total_currency;
             this.total_currency_symbol = data.total_currency_symbol;
             this.updateTotal();
-        }).catch(() => {
-            this.errorOccurred = true;
         });
     }
     onToggle(designation) {
-        designation.balanceIncluded = !designation.balanceIncluded;
+        designation.active = !designation.active;
         this.updateTotal();
     }
     updateTotal() {
         this.converted_total = _.reduce(this.designations, (sum, designation) =>
-            sum + (designation.balanceIncluded ? designation.converted_balance : 0)
+            sum + (designation.active ? designation.converted_balance : 0)
         , 0);
     }
 }

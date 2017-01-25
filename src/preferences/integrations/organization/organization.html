@@ -3,14 +3,14 @@
         Add or change the organizations that sync donation information with this mpdx account. Removing an organization will not remove past information, but will prevent future donations and contacts from syncing.
     </p>
     <div ng-show="$ctrl.page == 'org_list'">
-        <div ng-show="$ctrl.organizationService.data.organization_accounts.length == 0">
+        <div ng-show="$ctrl.preferencesOrganization.data.organization_accounts.length == 0">
             <h3 translate>Let's start by connecting to your organizations</h3>
             <div class="import_button">
-                <a class="btn btn-primary" ng-click="$ctrl.page = 'select_org'"><%= _('Add Account') %></a>
+                <a class="btn btn-primary" ng-click="$ctrl.page = 'select_org'" translate>Add Account</a>
             </div>
         </div>
-        <div ng-show="$ctrl.organizationService.data.organization_accounts.length != 0">
-            <div ng-repeat="account in $ctrl.organizationService.data.organization_accounts" class="network_connections">
+        <div ng-show="$ctrl.preferencesOrganization.data.organization_accounts.length != 0">
+            <div ng-repeat="account in $ctrl.preferencesOrganization.data.organization_accounts" class="network_connections">
                 <div class="account_single">
                     <div class="actions">
                         <a class="inlineaction delete" ng-click="$ctrl.disconnect(account.id)" translate>Delete</a>
@@ -22,7 +22,7 @@
                         </span>
                     </span>
                     <div ng-show="account.api_class == 'OfflineOrg'" class="importoptions formstyles" data-behavior="org_import_options">
-                        <a ng-click="account.tntImportToggle = !account.tntImportToggle"><%= _('Import TNTConnect DataSync file') %></a>
+                        <a ng-click="account.tntImportToggle = !account.tntImportToggle" translate>Import TNTConnect DataSync file</a>
                         <div ng-show="account.tntImportToggle">
                             <form ng-submit="$ctrl.save(f)">
                             <div class="field">
@@ -49,7 +49,7 @@
     <div ng-show="$ctrl.page == 'select_org'">
         <h3 translate>Add Account</h3>
         <p>
-            <select ng-model="$ctrl.selected" ng-disabled="$ctrl.saving" ng-options="item as item.name for item in $ctrl.organizationService.data.organizations track by item.id" chosen>
+            <select ng-model="$ctrl.selected" ng-disabled="$ctrl.saving" ng-options="item[1] as item[0] for item in $ctrl.preferencesOrganization.data.organizations track by item.id" chosen>
             </select>
         </p>
         <div ng-show="$ctrl.selected.api_class === undefined">
@@ -101,7 +101,7 @@
         <button type="submit" ng-click="$ctrl.createAccount()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
             <span translate>Add Account</span>&nbsp;<div class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></div>
         </button>
-        <a class="btn" ng-click="$ctrl.revert()"><%= _('Cancel') %></a>
+        <a class="btn" ng-click="$ctrl.revert()" translate>Cancel</a>
     </form>
 </div>
 <div ng-show="$ctrl.selected.api_class == 'OfflineOrg'">

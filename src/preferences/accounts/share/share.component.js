@@ -1,34 +1,35 @@
 class SharePreferencesController {
-    alertsService;
-    invitesService;
-    usersService;
+    accounts;
+    alerts;
+    users;
 
-    constructor(invitesService, usersService, alertsService) {
-        this.invitesService = invitesService;
-        this.usersService = usersService;
-        this.alertsService = alertsService;
+    constructor(accounts, alerts) {
+        this.accounts = accounts;
+        this.alerts = alerts;
         this.saving = false;
         this.inviteEmail = '';
+        this.accounts.listUsers();
+        this.accounts.listInvites();
     }
     cancelInvite(id) {
         this.saving = true;
-        this.invitesService.destroy(id).then(() => {
+        this.accounts.destroyInvite(id).then(() => {
             this.saving = false;
-            this.alertsService.addAlert('MPDX removed the invite successfully', 'info');
-            this.invitesService.load();
+            this.alerts.addAlert('MPDX removed the invite successfully', 'info');
+            this.accounts.listInvites();
         }).catch(() => {
-            this.alertsService.addAlert("MPDX couldn't remove the invite", 'danger');
+            this.alerts.addAlert("MPDX couldn't remove the invite", 'danger');
             this.saving = false;
         });
     }
     removeUser(id) {
         this.saving = true;
-        this.usersService.destroy(id).then(() => {
+        this.accounts.destroyUser(id).then(() => {
             this.saving = false;
-            this.alertsService.addAlert('MPDX removed the user successfully', 'info');
-            this.usersService.load();
+            this.alerts.addAlert('MPDX removed the user successfully', 'info');
+            this.accounts.listUsers();
         }).catch(() => {
-            this.alertsService.addAlert("MPDX couldn't remove the user", 'danger');
+            this.alerts.addAlert("MPDX couldn't remove the user", 'danger');
             this.saving = false;
         });
     }
