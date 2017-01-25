@@ -1,0 +1,130 @@
+<div class="contacts-find-duplicates">
+    <h1>Reconcile Individual Details</h1>
+
+    <div ng-if="$ctrl.duplicatePeople.length">
+        <p>You have 45 possible individual detail conflicts caused when imported data into MPDx. We recommend reconciling these as soon as possible. MPDx has made it’s best guess at the correct individual detail. Please confirm or change the setting for each conflict below. No data will be lost.</p>
+
+        <p class="warning">This cannot be undone.</p>
+
+        <a href="">I’ll reconcile conflicts later, take me to MPDx</a>
+
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1">
+                <div class="row" ng-repeat="duplicatePerson in $ctrl.duplicatePeople">
+                    <div class="col-sm-5 contact selected">
+                        <div class="row">
+                            <img class="avatar small img-circle pull-left" ng-src="{{duplicatePerson.person.avatar | stripMpdx}}">
+
+                            <div class="contact-info pull-left">
+                                <span>{{duplicatePerson.person.title}} {{duplicatePerson.person.first_name}} {{duplicatePerson.person.last_name}}</span>
+                                <br>
+                                <span>{{duplicatePerson.person.phone_numbers}}</span>
+                                <br>
+                                <span>{{duplicatePerson.person.email_addresses}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2 text-center choices">
+                        <i class="fa fa-arrow-left choice-left selected"></i>
+                        <i class="fa fa-arrow-right choice-right"></i>
+                        <i class="fa fa-close choice-cancel selected"></i>
+                    </div>
+
+                    <div class="col-sm-5 contact dont-merge">
+                        <div class="row">
+                            <img class="avatar small img-circle pull-left" ng-src="{{duplicatePerson.dup_person.avatar | stripMpdx}}">
+
+                            <div class="contact-info pull-left">
+                                <span>{{duplicatePerson.dup_person.title}} {{duplicatePerson.dup_person.first_name}} {{duplicatePerson.dup_person.last_name}}</span>
+                                <br>
+                                <span>{{duplicatePerson.dup_person.phone_numbers}}</span>
+                                <br>
+                                <span>{{duplicatePerson.dup_person.email_addresses}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3 text-center actions">
+                <button class="btn btn-warning">Confirm These 5 And Continue</button>
+                <span>OR</span>
+                <button class="btn btn-warning">Confirm These 5 And Quit Reconciling</button>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="!$ctrl.duplicatePeople.length">
+        <p>We weren't able to detect any duplicates on your account.</p>
+    </div>
+
+
+
+
+    <div ng-if="$ctrl.duplicateContacts.length">
+        <p>You have 45 possible individual detail conflicts caused when imported data into MPDx. We recommend reconciling these as soon as possible. MPDx has made it’s best guess at the correct individual detail. Please confirm or change the setting for each conflict below. No data will be lost.</p>
+
+        <p class="warning">This cannot be undone.</p>
+
+        <a href="">I’ll reconcile conflicts later, take me to MPDx</a>
+
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1">
+                <div class="row" ng-repeat="duplicateContact in $ctrl.duplicateContacts" ng-if="duplicateContact.contacts.length == 2">
+                    <div class="col-sm-5 contact selected">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <img class="avatar small img-circle" ng-src="{{duplicateContact.contacts[0].square_avatar | stripMpdx}}">
+                            </div>
+
+                            <div class="col-sm-9">
+                                <span>{{duplicateContact.contacts[0].name}}</span>
+                                <br>
+                                <span>{{duplicateContact.contacts[0].phone}}</span>
+                                <br>
+                                <span>{{duplicateContact.contacts[0].email}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2 text-center choices">
+                        <i class="fa fa-arrow-left choice-left selected"></i>
+                        <i class="fa fa-arrow-right choice-right"></i>
+                        <i class="fa fa-close choice-cancel selected"></i>
+                    </div>
+
+                    <div class="col-sm-5 contact dont-merge">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <img class="avatar small img-circle" ng-src="{{duplicateContact.contacts[1].square_avatar | stripMpdx}}">
+                            </div>
+
+                            <div class="col-sm-9">
+                                <span>{{duplicateContact.contacts[1].name}}</span>
+                                <br>
+                                <span>{{duplicateContact.contacts[1].phone}}</span>
+                                <br>
+                                <span>{{duplicateContact.contacts[1].email}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3 text-center actions">
+                <button class="btn btn-warning">Confirm These 5 And Continue</button>
+                <span>OR</span>
+                <button class="btn btn-warning">Confirm These 5 And Quit Reconciling</button>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="!$ctrl.duplicateContacts.length">
+        <p>We weren't able to detect any duplicates on your account.</p>
+    </div>
+</div>
