@@ -1,8 +1,8 @@
 <div class="row" ng-if="!$ctrl.deleted">
     <div class="col-sm-7">
-        <select class="form-control" ng-model="$ctrl.familyRelationship.related_person_id" data-placeholder="{{ 'Select an Option *' | translate }}"
+        <select class="form-control" ng-model="$ctrl.familyRelationship.id" data-placeholder="{{ 'Select an Option *' | translate }}"
                 chosen>
-            <option ng-repeat="person in $ctrl.contact.people" ng-value="person.id" ng-selected="person.id == $ctrl.familyRelationship.related_person_id"
+            <option ng-repeat="person in $ctrl.contact.people" ng-value="person.id"
                 ng-hide="person.id == $ctrl.person.id">
                 {{person.last_name}}, {{person.first_name}}
             </option>

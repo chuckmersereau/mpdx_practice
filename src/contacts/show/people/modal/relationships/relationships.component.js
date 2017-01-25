@@ -6,7 +6,6 @@ class ContactFamilyRelationshipController {
         this.deleted = false;
     }
     $onInit() {
-        this.familyRelationship.related_person_id = this.familyRelationship.related_person_id.toString();
     }
     remove() {
         this.deleted = true;

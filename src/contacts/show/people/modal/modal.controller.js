@@ -5,12 +5,12 @@ class PersonModalController {
 
     constructor(
         $log, $rootScope, $scope,
-        contactPerson, contactId, person
+        contactPerson, contact, person
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
         this.contactPerson = contactPerson;
-        this.contactId = contactId;
+        this.contact = contact;
         this.person = person;
         this.$scope = $scope;
         this.personDetails = '';
@@ -34,16 +34,16 @@ class PersonModalController {
     }
     save() {
         if (_.has(this.person, 'id')) {
-            return this.contactPerson.save(this.contactId, this.person).then(() => {
+            return this.contactPerson.save(this.contact.id, this.person).then(() => {
                 this.$log.debug('person saved:', this.person);
-                this.$rootScope.$emit('contactPersonUpdated', this.contactId);
+                this.$rootScope.$emit('contactPersonUpdated', this.contact.id);
 
                 this.$scope.$hide();
             });
         } else {
-            return this.contactPerson.create(this.contactId, this.person).then(() => {
+            return this.contactPerson.create(this.contact.id, this.person).then(() => {
                 this.$log.debug('person created:', this.person);
-                this.$rootScope.$emit('contactPersonUpdated', this.contactId);
+                this.$rootScope.$emit('contactPersonUpdated', this.contact.id);
                 this.$scope.$hide();
             });
         }
