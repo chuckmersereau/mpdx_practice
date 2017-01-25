@@ -26,6 +26,12 @@ class EditTaskController {
         this.models = {};
     }
     submit() {
+        if (this.comment) {
+            if (!this.models.comments) {
+                this.models.comments = [];
+            }
+            this.models.comments.push({body: this.comment});
+        }
         this.tasksService.bulkEditTasks(
             this.selectedTasks,
             this.models

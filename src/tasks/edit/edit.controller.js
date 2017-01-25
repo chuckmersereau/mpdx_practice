@@ -9,10 +9,11 @@ class EditTaskController {
     tasksService;
 
     constructor(
-        $scope,
+        $log, $scope,
         modal, contacts, tasksTags, tasksService, serverConstants,
         selectedContacts, specifiedTask, ajaxAction, toComplete, createNext, modalCallback
     ) {
+        this.$log = $log;
         this.$scope = $scope;
         this.ajaxAction = ajaxAction;
         this.selectedContacts = selectedContacts;
@@ -20,12 +21,12 @@ class EditTaskController {
         this.createNext = createNext;
         this.modal = modal;
         this.serverConstants = serverConstants;
-        this.specifiedTask = specifiedTask;
         this.tasksTags = tasksTags;
         this.tasksService = tasksService;
-        this.toComplete = toComplete;
+        this.toComplete = toComplete || false;
         this.modalCallback = modalCallback;
 
+        this.model = _.clone(specifiedTask);
         this.constants = {};
 
         this.activate();
@@ -33,28 +34,18 @@ class EditTaskController {
     activate() {
         // this.serverConstants.fetchConstants(['actions', 'next_actions', 'results']);
         this.constants = this.serverConstants.data;
-
-        const inputTask = this.specifiedTask || {};
-        this.models = {
-            dueDate: inputTask.due_date ? new Date(inputTask.due_date) : new Date(),
-            completedAt: inputTask.completed_at ? new Date(inputTask.completed_at) : new Date(),
-            noDate: inputTask.no_date !== false,
-            subject: inputTask.subject,
-            action: inputTask.activity_type,
-            result: inputTask.result,
-            nextAction: inputTask.next_action,
-            tagsList: inputTask.tag_list ? inputTask.tag_list : []
-        };
     }
     submit() {
-        if (this.specifiedTask) {
-            this.models.updated_in_db_at = this.specifiedTask.updated_in_db_at;
+        if (this.comment) {
+            if (!this.model.comments) {
+                this.model.comments = [];
+            }
+            this.model.comments.push({body: this.comment});
         }
-
         this.tasksService.postBulkLogTask(
             this.ajaxAction || 'post',
-            this.specifiedTask ? this.specifiedTask.id : null,
-            this.models,
+            this.model.id ? this.model.id : null,
+            this.model,
             this.selectedContacts,
             this.toComplete
         ).then(() => {
@@ -66,7 +57,7 @@ class EditTaskController {
                     locals: {
                         specifiedAction: this.models.nextAction,
                         specifiedSubject: this.models.nextAction,
-                        contacts: this.selectedContacts,
+                        selectedContacts: this.selectedContacts,
                         modalTitle: 'Follow up Task'
                     },
                     onHide: () => {
@@ -80,12 +71,12 @@ class EditTaskController {
         });
     }
     deleteTask() {
-        this.tasksService.deleteTask(this.specifiedTask.id).then(function cb(status) {
+        this.tasksService.deleteTask(this.specifiedTask.id).then((status) => {
             if (status) {
                 this.$scope.$hide();
                 this.modalCallback();
             }
-        }.bind(this));
+        });
     }
 }
 export default angular.module('mpdx.tasks.edit.controller', [])

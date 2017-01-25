@@ -11,37 +11,33 @@
                 class="form-control"
                 id='action'
                 ng-options="opt for opt in $ctrl.constants.actions"
-                ng-model="$ctrl.models.action">
+                ng-model="$ctrl.models.activity_type">
             <option value=""></option>
         </select>
     </div>
     <div class="form-group">
         <label for="due-date" translate>Due Date</label>
-        <div ng-hide="$ctrl.models.noDate">
-            <datetimepicker ng-model="$ctrl.models.date"
+        <div ng-hide="$ctrl.models.no_date">
+            <datetimepicker ng-model="$ctrl.models.start_at" id="due-date"
                             hour-step="1"
-                            minute-step="1"
-                            date-options="{ showWeeks: false, showButtonBar: false}"
-                            date-format="dd-MMM-yyyy"
-                            date-options="dateOptions"
-                            show-spinners="true">
+                            minute-step="1">
             </datetimepicker>
         </div>
     </div>
     <div class="checkbox">
         <label for="no-due-date">
-            <input id='no-due-date' ng-model="$ctrl.models.noDate" type="checkbox"/>
+            <input id='no-due-date' ng-model="$ctrl.models.no_date" type="checkbox"/>
             <translate>No Due Date</translate>
         </label>
     </div>
     <div>
         <label translate>Tags</label>
-        <tags-input class="import_by_group import_contacttags" ng-model="$ctrl.models.tagsList" display-property="name">
+        <tags-input class="import_by_group import_contacttags" ng-model="$ctrl.models.tag_list" display-property="name" key-property="name">
             <auto-complete source="$ctrl.tasksTags.data" min-length="0" select-first-match="false"></auto-complete>
         </tags-input>
     </div>
     <div class="form-group">
         <label for="comment" translate>Comment</label>
-        <input class="form-control" id='comment' ng-model="$ctrl.models.comment"/>
+        <input class="form-control" id='comment' ng-model="$ctrl.comment"/>
     </div>
 </modal>
