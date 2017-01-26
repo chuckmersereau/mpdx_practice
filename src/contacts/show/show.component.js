@@ -8,7 +8,7 @@ class ContactController {
     tasksService;
 
     constructor(
-        $log, $state, $stateParams, $location, $anchorScroll, help,
+        $log, $state, $stateParams, $location, $anchorScroll, blockUI, help,
         modal, contacts, tasksService, contactFilter, serverConstants
     ) {
         this.$anchorScroll = $anchorScroll;
@@ -16,6 +16,7 @@ class ContactController {
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.$location = $location;
+        this.blockUI = blockUI.instances.get('contactShow');
         this.contacts = contacts;
         this.contactFilter = contactFilter;
         this.modal = modal;
@@ -26,11 +27,6 @@ class ContactController {
         this.moveContact = { previous_contact: 0, following_contact: 0 };
         this.activeTab = '';
         this.contact = {};
-        // serverConstants.list().then(() => {
-        //     this.constants = serverConstants.data;
-        // });
-        // serverConstants.fetchConstant('contacts', 'contacts/basic_list');
-        // serverConstants.fetchConstants(['assignable_send_newsletters', 'assignable_statuses', 'pledge_frequencies', 'pledge_currencies', 'assignable_locations', 'assignable_likely_to_gives']);
 
         this.tabsLabels = [
             { key: 'details', value: 'Details' },
@@ -56,7 +52,7 @@ class ContactController {
             //restrict move across columns. move only within column.
             accept: (sourceItemHandleScope, destSortableScope) => sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id,
             orderChanged: (event) => {
-                var newIndex = event.dest.index;
+                let newIndex = event.dest.index;
                 this.activeTab = this.tabsLabels[newIndex]['key'];
 
                 if (newIndex >= this.tabsLabels.length) {
@@ -82,9 +78,11 @@ class ContactController {
             '58471fd6903360069817752e'
         ]);
     }
+    $onInit() {
+        this.blockUI.start();
+    }
     $onChanges() {
         this.selectContact(this.$stateParams.contactId);
-        this.contactPosition = this.getContactPosition();
     }
     selectContact(id) {
         this.$log.debug('select contact: ', id);
@@ -92,15 +90,13 @@ class ContactController {
         this.contacts.get(id).then((contact) => {
             this.$log.debug('selected contact: ', contact);
             this.contact = contact;
+            this.blockUI.stop();
         });
     };
     save() {
         this.contacts.save(this.contact).then(() => {
             this.selectContact(this.$stateParams.contactId);
         });
-    }
-    getContactPosition() {
-        return this.contacts.getContactPosition(this.$stateParams.contactId) + 1;
     }
     openAddReferralsModal() {
         this.modal.open({
@@ -148,27 +144,10 @@ class ContactController {
         });
     }
     goLeft() {
-        this.$state.go('contact', { contactId: this.contacts.getLeftId(this.contact.id) });
+        this.$state.go('contact', { contactId: this.contacts.getLeftId(this.contact.id) }, {reload: true});
     }
     goRight() {
-        this.$state.go('contact', { contactId: this.contacts.getRightId(this.contact.id) });
-    }
-    hidePreviousContact() {
-        return this.moveContact.previous_contact === 0 || this.moveContact.previous_contact === '';
-    }
-    hideNextContact() {
-        return this.moveContact.following_contact === 0 || this.moveContact.following_contact === '';
-    }
-    switchToPreviousContact() {
-        //this.selected = this.contact.id;
-        this.$state.go('contact', { contactId: this.moveContact.previous_contact });
-    }
-    switchToNextContact() {
-        //this.selected = this.contact.id;
-        this.$state.go('contact', { contactId: this.moveContact.following_contact });
-    }
-    callToSave() {
-        this.save();
+        this.$state.go('contact', { contactId: this.contacts.getRightId(this.contact.id) }, {reload: true});
     }
     displayNotes() {
         this.activeTab = 'notes';
