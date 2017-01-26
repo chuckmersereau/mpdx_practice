@@ -1,18 +1,19 @@
-<div ng-show="$ctrl.view == 'minimal'" class="contact-row">
+<div ng-if="$ctrl.view == 'minimal'" class="contact-row">
     <a ng-click="$ctrl.switchContact()" ng-class="{'active': $ctrl.selected == $ctrl.contact.id }">{{$ctrl.contact.name}}</a>
 </div>
-<div ng-hide="$ctrl.view == 'minimal'" class="contact-row">
+<div ng-if="$ctrl.view !== 'minimal'" class="contact-row">
     <img class="avatar small" ng-src="{{$ctrl.contact.square_avatar | stripMpdx}}">
     <div class="contact-details">
         <div class="col-sm-7 main-details">
             <h4 class="name">
                 <a ui-sref="contact({contactId: $ctrl.contact.id})">{{$ctrl.contact.name}}</a>
-                <i class="fa fa-envelope" ng-class="{'icon-error-red': $ctrl.hasSendNewsletterError()}"
-                   title="{{$ctrl.contact.send_newsletter | translate}}" ng-show="$ctrl.contact.send_newsletter"></i>
-                <span title="{{ 'Partner - Special' | translate }}" ng-show="$ctrl.contact.status === 'Partner - Special'">
+                <span style="width: 16px; height: 16px; display: inline-block" ng-class="{'icon-error-red': $ctrl.hasSendNewsletterError()}"
+                      ng-style="{'background-image': 'url(' + $ctrl.letterIcon + ')'}"
+                      title="{{$ctrl.contact.send_newsletter | translate}}" ng-if="$ctrl.contact.send_newsletter"></span>
+                <span title="{{ 'Partner - Special' | translate }}" ng-if="$ctrl.contact.status === 'Partner - Special'">
                 <span>{{$ctrl.contact.pledge_currency_symbol}}</span>
                 </span>
-                        <span title="{{ 'Partner - Financial' | translate }}" ng-show="$ctrl.contact.status === 'Partner - Financial'">
+                        <span title="{{ 'Partner - Financial' | translate }}" ng-if="$ctrl.contact.status === 'Partner - Financial'">
                   <span>{{$ctrl.contact.pledge_currency_symbol}}</span>
                   <span>{{$ctrl.contact.pledge_currency_symbol}}</span>
                 </span>
@@ -24,7 +25,7 @@
                         {{phone_number.number}}
                     </span>
                     <a ng-repeat="email_address in person.email_addresses" ng-if="email_address.primary && !email_address.historic" ng-href="mailto:{{email_address.email}}">
-                        <i class="fa fa-envelope-square" title="{{ 'Email' | translate }}"></i>
+                        <span style="width: 16px; height: 16px; display: inline-block"  ng-style="{'background-image': 'url(' + $ctrl.emailIcon + ')'}"title="{{ 'Email' | translate }}"></span>
                     </a>
                     <a ng-repeat="facebook_account in person.facebook_accounts" ng-href="{{facebook_account.url}}" target="_blank">
                         <i class="fa fa-facebook-square" title="{{ 'Facebook profile' | translate }}"></i>
@@ -42,8 +43,8 @@
             </div>
         </div>
         <div class="col-sm-5 more-details">
-            <div ng-show="$ctrl.contact.status !== ''">{{$ctrl.contact.status | translate}}</div>
-            <div ng-show="$ctrl.contact.pledge_amount > 0">
+            <div ng-if="$ctrl.contact.status !== ''">{{$ctrl.contact.status | translate}}</div>
+            <div ng-if="$ctrl.contact.pledge_amount > 0">
                 {{$ctrl.contact.pledge_amount | currency: $ctrl.contact.pledge_currency_symbol}} {{$ctrl.contact.pledge_frequency | pledgeFrequencyToStr | translate}}
                 <div ng-if="$ctrl.contact.status == 'Partner - Financial'" ng-switch="$ctrl.contact.pledge_received">
                     <div ng-switch-when="true" class="text-success" translate>Commitment Received</div>
@@ -51,7 +52,7 @@
                 </div>
             </div>
 
-            <a ng-href="/tasks?contact_ids={{$ctrl.contact.id}}" ng-show="$ctrl.contact.uncompleted_tasks_count > 0">
+            <a ng-href="/tasks?contact_ids={{$ctrl.contact.id}}" ng-if="$ctrl.contact.uncompleted_tasks_count > 0">
                 <span translate>Tasks</span>: {{$ctrl.contact.uncompleted_tasks_count}}
             </a>
         </div>
@@ -60,7 +61,7 @@
         <a class="btn btn-sm btn-default" ui-sref="contact({contactId: $ctrl.contact.id})" title="{{ 'View Contact' | translate }}">
             <i class="fa fa-search"></i>
         </a>
-        <a class="btn btn-sm btn-default" title="{{ 'Hide Contact' | translate }}" ng-hide="$ctrl.contact.status == 'Never Ask'" ng-click="$ctrl.hide({ contactId: $ctrl.contact.id })">
+        <a class="btn btn-sm btn-default" title="{{ 'Hide Contact' | translate }}" ng-if="$ctrl.contact.status !== 'Never Ask'" ng-click="$ctrl.hide({ contactId: $ctrl.contact.id })">
             <i class="fa fa-eye-slash"></i>
         </a>
         <button class="btn btn-sm btn-default" ng-click="$ctrl.toggleCheckbox()">

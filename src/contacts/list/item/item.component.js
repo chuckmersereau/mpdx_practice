@@ -1,7 +1,15 @@
+const letterIcon = require('../../../images/letter_icon.svg');
+const emailIcon = require('../../../images/email_icon.svg');
+
 class ContactListItemController {
     contact;
+    emailIcon;
+    letterIcon;
     constructor($state, users) {
         this.$state = $state;
+
+        this.emailIcon = emailIcon;
+        this.letterIcon = letterIcon;
 
         this.current_currency_symbol = users.current.currency_symbol;
     }
