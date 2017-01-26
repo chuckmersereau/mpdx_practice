@@ -160,6 +160,9 @@ export default class Routes {
             url: '/tasks',
             component: 'tasks',
             parent: 'root',
+            params: {
+                filters: null
+            },
             resolve: {
                 resolution: /*@ngInject*/ (tasksFilter) => tasksFilter.load(),
                 another: /*@ngInject*/ (tasksTags) => tasksTags.load()
