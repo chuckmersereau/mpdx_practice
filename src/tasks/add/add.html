@@ -36,6 +36,20 @@
             <auto-complete source="$ctrl.tasksTags.data" min-length="0" select-first-match="false"></auto-complete>
         </tags-input>
     </div>
+    <div>
+        <label for="emailNotify">
+            <input id='emailNotify' ng-model="$ctrl.emailNotification" type="checkbox"/>
+            <translate>Email Notification</translate>
+        </label>
+    </div>
+    <div ng-if="$ctrl.emailNotification">
+        <label for="notification_type" translate>Notify in</label>
+        <input type="number" ng-model="$ctrl.models.notification_type" id="notification_type">
+        <select chosen ng-model="$ctrl.models.notification_time_unit" ng-required="$ctrl.emailNotification">
+            <option value="minutes">Minutes</option>
+            <option value="hours">Hours</option>
+        </select>
+    </div>
     <div class="form-group">
         <label for="comment" translate>Comment</label>
         <input class="form-control" id='comment' ng-model="$ctrl.comment"/>
