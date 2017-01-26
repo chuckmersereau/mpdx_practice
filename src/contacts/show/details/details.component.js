@@ -50,7 +50,9 @@ class ContactDetailsController {
     }
     save() {
         this.contact.no_appeals = this.appeals === 'true';
-        this.contacts.save(this.contact);
+        this.contacts.save(this.contact).then((data) => {
+            this.contact.updated_in_db_at = data.updated_in_db_at;
+        });
     }
 }
 const Details = {

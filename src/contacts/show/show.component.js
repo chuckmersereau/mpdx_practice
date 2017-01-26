@@ -9,7 +9,7 @@ class ContactController {
 
     constructor(
         $log, $state, $stateParams, $location, $anchorScroll, help,
-        modal, contacts, tasksService, contactReferrals, contactFilter, serverConstants
+        modal, contacts, tasksService, contactFilter, serverConstants
     ) {
         this.$anchorScroll = $anchorScroll;
         this.$log = $log;
@@ -19,7 +19,6 @@ class ContactController {
         this.contacts = contacts;
         this.contactFilter = contactFilter;
         this.modal = modal;
-        this.contactReferrals = contactReferrals;
         this.serverConstants = serverConstants;
         this.tasksService = tasksService;
 
@@ -111,7 +110,7 @@ class ContactController {
                 contactId: this.contact.id
             },
             onHide: () => {
-                this.contactReferrals.fetchReferrals(this.contact.id);
+                this.selectContact(this.contact.id);
             }
         });
     }

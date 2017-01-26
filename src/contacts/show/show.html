@@ -69,7 +69,7 @@
                     <contact-details contact="$ctrl.contact" constants="$ctrl.constants" donor-accounts="$ctrl.contact.donor_accounts"></contact-details>
                 </div>
                 <div ng-if="item['key']=='donations'" ng-show="item['key']==$ctrl.activeTab">
-                    <contact-donations contact="$ctrl.contact"></contact-donations>
+                    <contact-donations contact-id="$ctrl.contact.id"></contact-donations>
                 </div>
                 <div ng-if="item['key']=='tasks'" ng-show="item['key']==$ctrl.activeTab">
                     <contact-tasks contact="$ctrl.contact"></contact-tasks>
