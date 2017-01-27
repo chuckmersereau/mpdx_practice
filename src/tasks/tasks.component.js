@@ -1,9 +1,11 @@
 class TasksController {
+    tasksFilter;
     tasksService;
     constructor(
         $log, $rootScope,
-        tasksService
+        tasksFilter, tasksService
     ) {
+        this.tasksFilter = tasksFilter;
         this.tasksService = tasksService;
 
         this.changed = 0;
@@ -17,6 +19,12 @@ class TasksController {
             $log.debug('tasks component: tag change', filters);
             this.changed++;
         });
+    }
+    $onInit() {
+        if (this.$stateParams.filters) {
+            _.assign(this.tasksFilter.params, this.tasksFilter.params, this.$stateParams.filters);
+            this.tasksFilter.change();
+        }
     }
 }
 

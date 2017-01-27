@@ -5,7 +5,7 @@ class ContactsService {
     contactsTags;
 
     constructor(
-        $location, $log, $q, $rootScope,
+        $log, $q, $rootScope,
         alerts, api, contactFilter, contactsTags
     ) {
         this.$log = $log;
@@ -32,12 +32,7 @@ class ContactsService {
                 return;
             }
             $log.debug('contacts service: contact search change');
-            const query = $location.search().q;
-            if (query) {
-                $location.search('q', null);
-            } else {
-                this.load(true);
-            }
+            this.load(true);
         });
 
         $rootScope.$on('accountListUpdated', () => {
