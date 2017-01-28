@@ -25,13 +25,12 @@ class LogTaskController {
         this.toComplete = toComplete;
 
         this.model = _.clone(specifiedTask);
-        this.constants = {};
 
         this.activate();
     }
     activate() {
-        // this.serverConstants.fetchConstants(['actions', 'next_actions', 'results']);
-        this.constants = this.serverConstants.data;
+        // this.serverConstants.fetchConstants(['next_actions', 'results']);
+        this.constants = this.serverConstants.data; //TODO: delete once corrected
     }
     save() {
         if (this.comment) {

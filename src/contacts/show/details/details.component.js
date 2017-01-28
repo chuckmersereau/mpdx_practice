@@ -3,13 +3,15 @@ class ContactDetailsController {
     contact;
     contacts;
     contactsTags;
+    serverConstants;
 
     constructor(
         $window,
-        contactsTags, contacts
+        contactsTags, contacts, serverConstants
     ) {
         this.contacts = contacts;
         this.contactsTags = contactsTags;
+        this.serverConstants = serverConstants;
 
         this.appeals = 'false';
 
@@ -37,8 +39,7 @@ const Details = {
     controller: ContactDetailsController,
     template: require('./details.html'),
     bindings: {
-        contact: '=',
-        constants: '='
+        contact: '='
     }
 };
 

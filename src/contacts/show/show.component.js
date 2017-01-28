@@ -27,11 +27,9 @@ class ContactController {
         this.moveContact = { previous_contact: 0, following_contact: 0 };
         this.activeTab = '';
         this.contact = {};
-        // serverConstants.list().then(() => {
-        //     this.constants = serverConstants.data;
-        // });
+
         // serverConstants.fetchConstant('contacts', 'contacts/basic_list');
-        // serverConstants.fetchConstants(['assignable_send_newsletters', 'assignable_statuses', 'pledge_frequencies', 'pledge_currencies', 'assignable_locations', 'assignable_likely_to_gives']);
+        // serverConstants.fetchConstants(['assignable_statuses' 'assignable_locations'']);
 
         this.tabsLabels = [
             { key: 'details', value: 'Details' },
