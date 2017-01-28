@@ -11,13 +11,14 @@ class ContactDetailsController {
     ) {
         this.contacts = contacts;
         this.contactsTags = contactsTags;
-        this.serverConstants = serverConstants;
 
         this.appeals = 'false';
 
-        this.languages = _.map(_.keys($window.languageMappingList), (key) => {
-            const language = window.languageMappingList[key];
-            return {alias: key, value: `${language.englishName} (${language.nativeName} - ${key}`};
+        this.languages = _.map(serverConstants.data.locales, (locale) => {
+            const language = $window.languageMappingList[locale[1]];
+            if (language) {
+                return {alias: locale[1], value: `${language.englishName} (${language.nativeName} - ${locale[1]})`};
+            }
         });
     }
     $onChanges() {
