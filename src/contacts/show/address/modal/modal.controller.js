@@ -14,8 +14,6 @@ class AddressModalController {
         this.contacts = contacts;
         this.serverConstants = serverConstants;
 
-        this.constants = serverConstants.data;
-
         this.maps = [];
 
         let $ctrl = this;
