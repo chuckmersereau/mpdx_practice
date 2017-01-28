@@ -7,7 +7,7 @@ class EditDonationController {
     constructor(
         $scope, blockUI,
         appeals, contacts, currency, accounts, donationsReport,
-        donationId
+        contactId, donationId
     ) {
         this.$scope = $scope;
         this.appeals = appeals;

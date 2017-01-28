@@ -1,5 +1,5 @@
 <alerts></alerts>
-<div class="row">
+<div class="row" block-ui="contactShow">
     <div class="col-md-9">
         <div class="contact-actions">
             <div class="pull-right">
@@ -66,10 +66,10 @@
 
             <div ng-repeat="item in $ctrl.tabsLabels">
                 <div ng-if="item['key']=='details'" ng-show="item['key']==$ctrl.activeTab">
-                    <contact-details contact="$ctrl.contact"></contact-details>
+                    <contact-details contact="$ctrl.contact" donor-accounts="$ctrl.contact.donor_accounts"></contact-details>
                 </div>
                 <div ng-if="item['key']=='donations'" ng-show="item['key']==$ctrl.activeTab">
-                    <contact-donations contact="$ctrl.contact"></contact-donations>
+                    <contact-donations contact-id="$ctrl.contact.id"></contact-donations>
                 </div>
                 <div ng-if="item['key']=='tasks'" ng-show="item['key']==$ctrl.activeTab">
                     <contact-tasks contact="$ctrl.contact"></contact-tasks>
