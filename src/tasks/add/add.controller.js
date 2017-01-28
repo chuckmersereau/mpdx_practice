@@ -29,9 +29,6 @@ class AddTaskController {
             tag_list: [],
             comments: []
         };
-
-        // this.serverConstants.fetchConstants(['actions']);
-        this.constants = this.serverConstants.data;
     }
 
     save() {
