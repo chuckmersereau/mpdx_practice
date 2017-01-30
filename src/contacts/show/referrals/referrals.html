@@ -1,12 +1,12 @@
 <div>
-    <div ng-if='$ctrl.contactReferrals.data.referrals.length'>
+    <div ng-if='$ctrl.contact.referrals_by_me.length'>
         <ul>
-            <li ng-repeat="ref in $ctrl.contactReferrals.data.referrals">
-                <a ng-click="$ctrl.switchContact(ref.referral_id)">{{ ref.referral_name }}</a> on {{ $ctrl.moment(ref.created_at).format('M/D/YYYY') }}
+            <li ng-repeat="ref in $ctrl.contact.referrals_by_me">
+                <a ng-click="$ctrl.switchContact(ref.id)">{{ ref.name }}</a> on {{ $ctrl.moment(ref.created_at).format('M/D/YYYY') }}
             </li>
         </ul>
     </div>
-    <div ng-if='!$ctrl.contactReferrals.data.referrals.length'>
+    <div ng-if='!$ctrl.contact.referrals_by_me.length'>
         There are no referrals by this contact.
     </div>
 </div>
