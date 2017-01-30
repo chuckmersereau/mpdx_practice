@@ -29,7 +29,7 @@
                         allow-single-deselect="true"
                         class="form-control"
                         id="send_newsletter"
-                        ng-options="opt[1] as opt[0] for opt in $ctrl.constants.assignable_send_newsletters"
+                        ng-options="opt[1] as opt[0] for opt in $ctrl.serverConstants.data.assignable_send_newsletter"
                         ng-model="$ctrl.contact.send_newsletter">
                     <option value=""></option>
                 </select>
@@ -45,7 +45,7 @@
                         disable-search="true"
                         class="form-control"
                         id="status"
-                        ng-options="opt[1] as opt[0] for opt in $ctrl.constants.assignable_statuses"
+                        ng-options="opt[1] as opt[0] for opt in $ctrl.serverConstants.data.assignable_statuses"
                         ng-model="$ctrl.contact.status">
                     <option value=""></option>
                 </select>
@@ -61,7 +61,7 @@
                         disable-search="true"
                         class="form-control"
                         id="likely_to_give"
-                        ng-options="opt[1] as opt[0] for opt in $ctrl.constants.assignable_likely_to_gives"
+                        ng-options="opt[1] as opt[0] for opt in $ctrl.serverConstants.data.assignable_likely_to_give"
                         ng-model="$ctrl.contact.likely_to_give">
                     <option value=""></option>
                 </select>
@@ -86,7 +86,7 @@
                         class="form-control"
                         allow-single-deselect="true"
                         id="pledge_currency"
-                        ng-options="opt[1] as opt[0] for opt in $ctrl.constants.pledge_currencies"
+                        ng-options="opt[1] as opt[0] for opt in $ctrl.serverConstants.data.pledge_currencies"
                         ng-model="$ctrl.contact.pledge_currency">
                     <option value=""></option>
                 </select>
@@ -102,7 +102,7 @@
                         class="form-control"
                         allow-single-deselect="true"
                         id="pledge_frequency"
-                        ng-options="opt[1] as opt[0] for opt in $ctrl.constants.pledge_frequencies"
+                        ng-options="opt[1] as opt[0] for opt in $ctrl.serverConstants.data.pledge_frequencies"
                         ng-model="$ctrl.contact.pledge_frequency">
                     <option value=""></option>
                 </select>

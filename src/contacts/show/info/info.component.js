@@ -1,11 +1,13 @@
 class ContactInfoController {
     contact;
     contacts;
+    serverConstants;
 
     constructor(
-        contacts
+        contacts, serverConstants
     ) {
         this.contacts = contacts;
+        this.serverConstants = serverConstants;
     }
     $onChange(obj) {
         if (obj.contact) {
@@ -15,15 +17,16 @@ class ContactInfoController {
         }
     }
     save() {
-        this.contacts.save(this.contact);
+        this.contacts.save(this.contact).then((data) => {
+            this.contact.updated_in_db_at = data.updated_in_db_at;
+        });
     }
 }
 const Info = {
     controller: ContactInfoController,
     template: require('./info.html'),
     bindings: {
-        contact: '=',
-        constants: '='
+        contact: '='
     }
 };
 

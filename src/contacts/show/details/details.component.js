@@ -3,22 +3,45 @@ class ContactDetailsController {
     contact;
     contacts;
     contactsTags;
+    serverConstants;
 
     constructor(
         $window,
-        contactsTags, contacts
+        contactsTags, contacts, serverConstants
     ) {
         this.contacts = contacts;
         this.contactsTags = contactsTags;
 
         this.appeals = 'false';
 
-        this.languages = _.map(_.keys($window.languageMappingList), (key) => {
-            const language = window.languageMappingList[key];
-            return {alias: key, value: `${language.englishName} (${language.nativeName} - ${key}`};
+        this.languages = _.map(serverConstants.data.locales, (locale) => {
+            const language = $window.languageMappingList[locale[1]];
+            if (language) {
+                return {alias: locale[1], value: `${language.englishName} (${language.nativeName} - ${locale[1]})`};
+            }
         });
     }
     $onChanges() {
+        // Maybe calculate this way?
+        // this.last_donation = null;
+        // this.lifetime_donations = 0;
+        // if (this.donorAccounts) {
+        //     _.each(this.donorAccounts, account => {
+        //         const date = moment(account.last_donation_date, "YYYY-MM-DD");
+        //         if (!this.last_donation && this.last_donation < date) {
+        //             this.last_donation = date;
+        //         }
+        //         this.lifetime_donations += parseFloat(account.total_donations);
+        //     });
+        // }
+        // if (this.last_donation) {
+        //     this.last_donation = this.last_donation.format('l');
+        // }
+
+        //get contact reference data
+        if (this.contact.referred_by) {
+            this.contacts.find(this.contact.referred_by);
+        }
         if (this.contact.no_appeals === true) {
             this.appeals = 'true';
         } else {
@@ -29,16 +52,18 @@ class ContactDetailsController {
         this.contact.donor_accounts.push({ account_number: '', organization_id: this.organization_id, _destroy: 0 });
     }
     save() {
-        this.contact.no_appeals = this.appeals;
-        this.contacts.save(this.contact);
+        this.contact.no_appeals = this.appeals === 'true';
+        this.contacts.save(this.contact).then((data) => {
+            this.contact.updated_in_db_at = data.updated_in_db_at;
+        });
     }
 }
 const Details = {
     controller: ContactDetailsController,
     template: require('./details.html'),
     bindings: {
-        contact: '=',
-        constants: '='
+        donorAccounts: '<', //for change detection
+        contact: '='
     }
 };
 
