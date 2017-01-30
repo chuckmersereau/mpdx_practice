@@ -53,7 +53,7 @@ class ContactsService {
         });
     }
     get(id) {
-        return this.api.get(`contacts/${id}`, {include: 'people,addresses'});
+        return this.api.get(`contacts/${id}`, {include: 'addresses,appeals,donor_accounts,people,referrals_by_me,referrals_to_me'});
     }
     find(id) {
         let contact = _.find(this.data, { id: id });
