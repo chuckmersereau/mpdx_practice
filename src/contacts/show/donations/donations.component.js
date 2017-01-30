@@ -1,10 +1,10 @@
 import Highcharts from 'highcharts';
 
 class ContactDonationsController {
+    accounts;
     api;
     contact;
     donations;
-    donationsMeta;
     contactDonations;
     modal;
 
@@ -20,40 +20,30 @@ class ContactDonationsController {
 
         this.donations = [];
         this.donationGraphData = {};
-        this.donationMeta = {page: 0};
         this.loading = false;
+        console.error('missing donation graph endpoint');
+        console.error('missing account donation filter by id');
     }
     // commented out until api available
-    // $onChanges(changesObj) {
-    //     if (_.has(changesObj, 'contact.currentValue.id')) {
-    //         this.getDonations();
-    //         this.getDonationsGraph();
-    //     }
-    // }
-    getDonations(page) {
-        this.loading = true;
-        if (this.api.account_list_id) {
-            return this.getDonationsPromise(page);
-        } else {
-            this.$scope.$on('accountListUpdated', () => {
-                this.getDonationsPromise(page);
-            });
+    $onChanges(changesObj) {
+        if (_.get(changesObj, 'contactId.currentValue', false)) {
+            this.getDonations(0);
+            // this.getDonationsGraph();
         }
     }
-    getDonationsPromise(page) {
-        this.accounts.getDonations({ filter: { contact_id: this.contact.id }, page: page }).then((data) => {
+    getDonations(page) {
+        return this.accounts.getDonations({ filter: { contact_id: this.contactId }, page: page }).then((data) => {
             this.loading = false;
             this.donations = data;
-            this.donationsMeta = data.meta;
         });
     }
     getDonationsGraph() {
-        this.contactDonations.getDonationsGraphForContact(this.contact.id).then((data) => {
+        this.contactDonations.getDonationsGraphForContact(this.contactId).then((data) => {
             let subtitle = 'Average donations remain unchanged from last year';
             if (data.amount > 0) {
-                subtitle = 'Average donations up <span style="color:green">' + data.amount + '</span> from last year';
+                subtitle = `Average donations up <span style="color:green">${data.amount}</span> from last year`;
             } else if (data.amount < 0) {
-                subtitle = 'Average donations down <span style="color:red">' + Math.abs(data.amount) + '</span> from last year';
+                subtitle = `Average donations down <span style="color:red">${Math.abs(data.amount)}</span> from last year`;
             }
             Highcharts.chart('contact_donations_summary_chart', {
                 options: {
@@ -109,7 +99,7 @@ class ContactDonationsController {
             templateUrl: '/templates/common/edit_donation.html',
             controller: 'editDonationController',
             locals: {
-                contact: this.contact,
+                contactId: this.contactId,
                 donation: donation
             }
         });
@@ -120,7 +110,7 @@ const Donations = {
     controller: ContactDonationsController,
     template: require('./donations.html'),
     bindings: {
-        contact: '<'
+        contactId: '<'
     }
 };
 
