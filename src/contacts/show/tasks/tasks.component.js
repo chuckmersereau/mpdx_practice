@@ -12,7 +12,7 @@ class ContactTasksController {
         this.models = {};
     }
     $onChanges(changesObj) {
-        if (_.has(changesObj.contact, 'currentValue.id') && changesObj.contact.currentValue.id !== changesObj.contact.previousValue.id) {
+        if (_.get(changesObj, 'contact.currentValue.id', false)) {
             this.load();
         }
     }
