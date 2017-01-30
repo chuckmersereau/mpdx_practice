@@ -7,9 +7,9 @@
         <div class="col-sm-7 main-details">
             <h4 class="name">
                 <a ui-sref="contact({contactId: $ctrl.contact.id})">{{$ctrl.contact.name}}</a>
-                <span style="width: 16px; height: 16px; display: inline-block" ng-class="{'icon-error-red': $ctrl.hasSendNewsletterError()}"
-                      ng-style="{'background-image': 'url(' + $ctrl.letterIcon + ')'}"
-                      title="{{$ctrl.contact.send_newsletter | translate}}" ng-if="$ctrl.contact.send_newsletter"></span>
+                <i ng-class="{'icon-error-red': $ctrl.hasSendNewsletterError()}"
+                      class="ci ci-letter_icon"
+                      title="{{$ctrl.contact.send_newsletter | translate}}" ng-if="$ctrl.contact.send_newsletter"></i>
                 <span title="{{ 'Partner - Special' | translate }}" ng-if="$ctrl.contact.status === 'Partner - Special'">
                 <span>{{$ctrl.contact.pledge_currency_symbol}}</span>
                 </span>
@@ -25,7 +25,7 @@
                         {{phone_number.number}}
                     </span>
                     <a ng-repeat="email_address in person.email_addresses" ng-if="email_address.primary && !email_address.historic" ng-href="mailto:{{email_address.email}}">
-                        <span style="width: 16px; height: 16px; display: inline-block"  ng-style="{'background-image': 'url(' + $ctrl.emailIcon + ')'}"title="{{ 'Email' | translate }}"></span>
+                        <i class="ci ci-email_icon" title="{{ 'Email' | translate }}"></i>
                     </a>
                     <a ng-repeat="facebook_account in person.facebook_accounts" ng-href="{{facebook_account.url}}" target="_blank">
                         <i class="fa fa-facebook-square" title="{{ 'Facebook profile' | translate }}"></i>
