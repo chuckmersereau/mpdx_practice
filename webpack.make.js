@@ -181,7 +181,7 @@ module.exports = function makeWebpackConfig(options) {
             // Use style-loader in development for hot-loading
             loader: ExtractTextPlugin.extract({
                 loader: 'css-loader!postcss-loader',
-                fallback: 'style-loader'
+                fallbackLoader: 'style-loader'
             })
         };
 
@@ -193,7 +193,7 @@ module.exports = function makeWebpackConfig(options) {
             test: /\.scss$/,
             loader: ExtractTextPlugin.extract({
                 loader: 'css-loader!postcss-loader!sass-loader',
-                fallback: 'style-loader'
+                fallbackLoader: 'style-loader'
             })
         };
         if (!BUILD) {

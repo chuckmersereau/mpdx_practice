@@ -67,7 +67,7 @@
                     <div class="field">
                         <h4 class="attribute-header" translate>Last Donation</h4>
                         <div class="inline-input disabled">
-                            <input type="text" ng-model="$ctrl.contact.last_donation" placeholder="{{ 'Never' | translate }}" readonly />
+                            <input type="text" ng-model="$ctrl.last_donation.amount" placeholder="{{ 'Never' | translate }}" readonly />
                             <a class="tip" data-trigger="hover" data-content="{{ 'This field is updated live from donation services and cannot be edited directly here' | translate }}" data-placement="top" bs-popover><i class="fa fa-lock"></i></a>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                     <div class="field">
                         <h4 class="attribute-header" translate>Lifetime Donations</h4>
                         <div class="inline-input disabled">
-                            <input type="text" ng-model="$ctrl.contact.lifetime_donations" placeholder="{{ '0' | translate }}" readonly />
+                            <input type="text" ng-model="$ctrl.lifetime_donations" placeholder="{{ '0' | translate }}" readonly />
                             <a class="tip" data-trigger="hover" data-content="{{ 'This field is updated live from donation services and cannot be edited directly here' | translate }}" data-placement="top" bs-popover><i class="fa fa-lock"></i></a>
                         </div>
                     </div>
@@ -116,9 +116,10 @@
                                     disable-search="true"
                                     class="form-control"
                                     id='status'
-                                    ng-options="opt[1] as opt[0] for opt in $ctrl.constants.no_appeals_options"
                                     ng-model="$ctrl.appeals">
                                 <option value=""></option>
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
                             </select>
                         </div>
                     </div>
@@ -165,7 +166,7 @@
         </div>
         <div class="fieldset">
             <h3 translate>Addresses</h3>
-            <div class="card" ng-repeat="address in $ctrl.contact.addresses">
+            <div class="card" ng-repeat="address in $ctrl.contact.addresses track by address.id">
                 <contact-address address="address"></contact-address>
             </div>
             <button type="button" class="btn btn-primary" ui-sref=".address({addressId: 'new'})">
