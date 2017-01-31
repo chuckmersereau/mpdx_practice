@@ -1,6 +1,7 @@
 import component from './contacts.component';
 import filter from './filter/index.module';
-import findDuplicates from './findDuplicates/findDuplicates.component';
+import reconcileIndividuals from './reconcileIndividuals/index.module';
+import reconcilePartners from './reconcilePartners/index.module';
 import list from './list/index.module';
 import logTask from './logTask/logTask.controller';
 import newContact from './new/new.controller';
@@ -11,7 +12,8 @@ import show from './show/index.module';
 export default angular.module('mpdx.contacts', [
     component,
     filter,
-    findDuplicates,
+    reconcileIndividuals,
+    reconcilePartners,
     list,
     logTask,
     newContact,

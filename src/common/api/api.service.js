@@ -94,8 +94,11 @@ class Api {
                     } else {
                         key = arr[arr.length - 1];
                     }
+
+                    key = data['api_key'] || key;
                     if (_.has(this.entityAttributes, key)) {
                         _.extend(params, this.entityAttributes[key]);
+                        key = params['api_resource_type'] || key;
                     } else {
                         this.$log.error(`undefined attributes for model: ${key} in api.service`);
                     }
@@ -203,6 +206,14 @@ class EntityAttributes {
             },
             family_relationships: {
                 attributes: ["person_id", "related_person_id", "relationship", "created_at", "updated_at", "updated_in_db_at"]
+            },
+            people_merges: {
+                api_resource_type: "person",
+                attributes: ["winner_id", "loser_id"]
+            },
+            contacts_merges: {
+                api_resource_type: "contact",
+                attributes: ["winner_id", "loser_id"]
             },
             notifications: {
                 attributes: ["contact_id", "notification_type_id", "event_date", "cleared", "created_at", "updated_at", "donation_id", "updated_in_db_at"]

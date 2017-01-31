@@ -43,9 +43,13 @@ export default class Routes {
                 another: /*@ngInject*/ (contactsTags) => contactsTags.load()
             }
         }).state({
-            name: 'contacts.find_duplicates',
-            url: '/find-duplicates',
-            component: 'contactsFindDuplicates'
+            name: 'contacts.reconcile_partners',
+            url: '/reconcile-partners',
+            component: 'contactsReconcilePartners'
+        }).state({
+            name: 'contacts.reconcile_individuals',
+            url: '/reconcile-individuals',
+            component: 'contactsReconcileIndividuals'
         }).state({
             name: 'contact',
             title: 'Contact',
