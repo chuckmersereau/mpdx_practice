@@ -36,14 +36,27 @@ class ContactsReconcileIndividualsController {
         });
 
         this.$q.all(promises).then(() => {
-            if (confirmAndContine) {
-                this.blockUI.stop();
-                this.contactReconciler.fetchDuplicatePeople(true);
-            } else {
-                this.blockUI.stop();
+            this.blockUI.stop();
+            this.contactReconciler.fetchDuplicatePeople(true);
+
+            if (!confirmAndContine) {
                 this.$state.go('home');
             }
         });
+    }
+
+    confirmButtonText(confirmAndContinue) {
+        let count = _.filter(this.contactReconciler.duplicatePeople, duplicatePerson => (duplicatePerson.mergeChoice !== -1)).length;
+        if (count === 0) {
+            return `No Selection`;
+        } else {
+            return `Confirm ${count > 1 ? 'These' : 'This'} ${count} ${confirmAndContinue ? 'And Continue' : 'And Quit Reconciling'}`;
+        }
+    }
+
+    confirmButtonDisabled() {
+        let count = _.filter(this.contactReconciler.duplicatePeople, duplicatePerson => (duplicatePerson.mergeChoice !== -1)).length;
+        return count === 0;
     }
 }
 const ReconcileIndividuals = {

@@ -29,25 +29,34 @@ class ContactsReconcilePartnersController {
 
         var promises = [];
 
-        var yes = true;
         _.each(this.contactReconciler.duplicateContacts, (duplicateContact) => {
-            if (yes) {
-                if (duplicateContact.mergeChoice !== -1) {
-                    promises.push(this.contactReconciler.confirmDuplicateContact(duplicateContact));
-                }
+            if (duplicateContact.mergeChoice !== -1) {
+                promises.push(this.contactReconciler.confirmDuplicateContact(duplicateContact));
             }
-            yes = true;
         });
 
         this.$q.all(promises).then(() => {
-            if (confirmAndContine) {
-                this.blockUI.stop();
-                this.contactReconciler.fetchDuplicateContacts(true);
-            } else {
-                this.blockUI.stop();
+            this.blockUI.stop();
+            this.contactReconciler.fetchDuplicateContacts(true);
+
+            if (!confirmAndContine) {
                 this.$state.go('home');
             }
         });
+    }
+
+    confirmButtonText(confirmAndContinue) {
+        let count = _.filter(this.contactReconciler.duplicateContacts, duplicateContact => (duplicateContact.mergeChoice !== -1)).length;
+        if (count === 0) {
+            return `No Selection`;
+        } else {
+            return `Confirm ${count > 1 ? 'These' : 'This'} ${count} ${confirmAndContinue ? 'And Continue' : 'And Quit Reconciling'}`;
+        }
+    }
+
+    confirmButtonDisabled() {
+        let count = _.filter(this.contactReconciler.duplicateContacts, duplicateContact => (duplicateContact.mergeChoice !== -1)).length;
+        return count === 0;
     }
 }
 const ReconcilePartners = {
