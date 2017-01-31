@@ -1,14 +1,18 @@
 class ReconcilerService {
     api;
+    contactPerson;
+    contacts;
     duplicateContactsTotal;
     duplicatePeopleTotal;
 
     constructor(
         $log,
-        api
+        api, contactPerson, contacts
     ) {
         this.$log = $log;
         this.api = api;
+        this.contacts = contacts;
+        this.contactPerson = contactPerson;
 
         this.perPage = 5;
 
@@ -139,15 +143,13 @@ class ReconcilerService {
     }
 
     mergeContacts(winner, loser) {
-        this.api.post(`contacts/merges`, {api_key: 'contacts_merges', winner_id: winner.id, loser_id: loser.id}).then((data) => {
-            this.$log.debug('contacts/merges', data);
-        });
+        let contacts = [{winner_id: winner.id, loser_id: loser.id}];
+        this.contacts.merge(contacts);
     }
 
     mergePeople(contact, winner, loser) {
-        this.api.post(`contacts/${contact.id}/people/merges`, {api_key: 'people_merges', winner_id: winner.id, loser_id: loser.id}).then((data) => {
-            this.$log.debug('contacts/people/merges', data);
-        });
+        const people = [{winner_id: winner.id, loser_id: loser.id}];
+        this.contactPerson.merge(contact, people);
     }
 
     ignoreDuplicateContacts(duplicateContact) {

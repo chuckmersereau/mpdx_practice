@@ -33,9 +33,8 @@ class PersonService {
             return data;
         });
     }
-    mergePeople(contactId, winner, people) {
-        const obj = {contact_id: contactId, winner: winner, people_ids: people};
-        return this.api.post('people/merge', obj).then((data) => {
+    merge(contact, people) {
+        return this.api.post(`contacts/${contact.id}/people/merge`, people).then((data) => {
             if (_.isFunction(data.success)) {
                 data.success();
             }
