@@ -42,44 +42,40 @@ class ListController {
         this.contacts.hideContact(contact);
     }
     openAddTagModal() {
-        this.alerts.addAlert('This functionality is not yet available on MPDX NEXT', 'danger'); //Needs bulk save
-        // this.modal.open({
-        //     template: require('../tags/add/add.html'),
-        //     controller: 'addTagController',
-        //     locals: {
-        //         selectedContacts: this.contacts.getSelectedContactIds()
-        //     }
-        // });
+        this.modal.open({
+            template: require('../filter/tags/add/add.html'),
+            controller: 'addTagController',
+            locals: {
+                selectedContacts: this.contacts.getSelectedContactIds()
+            }
+        });
     }
     openRemoveTagModal() {
-        this.alerts.addAlert('This functionality is not yet available on MPDX NEXT', 'danger'); //Needs bulk save
-        // this.modal.open({
-        //     template: require('../tags/remove/remove.html'),
-        //     controller: 'removeTagController',
-        //     locals: {
-        //         selectedContacts: this.contacts.getSelectedContactIds()
-        //     }
-        // });
+        this.modal.open({
+            template: require('../filter/tags/remove/remove.html'),
+            controller: 'removeTagController',
+            locals: {
+                selectedContacts: this.contacts.getSelectedContactIds()
+            }
+        });
     }
     openAddTaskModal() {
-        this.alerts.addAlert('This functionality is not yet available on MPDX NEXT', 'danger'); //Needs bulk save
-        // this.tasksService.openModal({
-        //     selectedContacts: this.contacts.getSelectedContactIds()
-        // });
+        this.tasksService.openModal({
+            selectedContacts: this.contacts.getSelectedContactIds()
+        });
     }
     openLogTaskModal() {
-        this.alerts.addAlert('This functionality is not yet available on MPDX NEXT', 'danger'); //Needs bulk save
-        // this.modal.open({
-        //     template: require('../logTask/logTask.html'),
-        //     controller: 'logTaskController',
-        //     locals: {
-        //         selectedContacts: this.contacts.getSelectedContactIds(),
-        //         toComplete: true,
-        //         createNext: true,
-        //         specifiedTask: null,
-        //         ajaxAction: null
-        //     }
-        // });
+        this.modal.open({
+            template: require('../logTask/logTask.html'),
+            controller: 'logTaskController',
+            locals: {
+                selectedContacts: this.contacts.getSelectedContactIds(),
+                toComplete: true,
+                createNext: true,
+                specifiedTask: null,
+                ajaxAction: null
+            }
+        });
     }
     openEditFieldsModal() {
         this.modal.open({

@@ -1,13 +1,13 @@
 class PersonalPreferencesController {
-    accountsMap;
     accounts;
     alerts;
     api;
+    locale;
     users;
 
     constructor(
         $state, $stateParams, $window, gettextCatalog,
-        accounts, api, alerts, users
+        accounts, api, alerts, locale, users
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
@@ -15,6 +15,7 @@ class PersonalPreferencesController {
         this.accounts = accounts;
         this.alerts = alerts;
         this.api = api;
+        this.locale = locale;
         this.gettextCatalog = gettextCatalog;
         this.users = users;
 
@@ -81,7 +82,7 @@ class PersonalPreferencesController {
         return locale;
     }
     setLocale() {
-        this.users.changeLocale(this.users.current.preferences.locale);
+        this.locale.change(this.users.current.preferences.locale);
     }
 }
 

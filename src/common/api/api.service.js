@@ -21,6 +21,14 @@ function deserialize(data) {
     }
 }
 
+function serialize(key, params, item, method) {
+    let serialized = new japi.Serializer(key, params).serialize(item);
+    if (method === 'post' && serialized.data.id === 'undefined') {
+        delete serialized.data.id;
+    }
+    return serialized;
+}
+
 class Api {
     constructor(
         $http, $cacheFactory, $log, $q, $timeout,
@@ -104,9 +112,11 @@ class Api {
                     }
                 }
                 if (_.isArray(data)) {
-                    return angular.toJson({ data: _.map(data, item => new japi.Serializer(key, params).serialize(item)) });
+                    return angular.toJson({
+                        data: _.map(data, item => serialize(key, params, item, method))
+                    });
                 } else {
-                    return angular.toJson(new japi.Serializer(key, params).serialize(data));
+                    return angular.toJson(serialize(key, params, data, method));
                 }
             },
             transformResponse: appendTransform(this.$http.defaults.transformResponse, (data) => {
@@ -255,8 +265,8 @@ class EntityAttributes {
                 attributes: ["person_id", "number", "country_code", "location", "primary", "created_at", "updated_at", "remote_id", "historic", "updated_in_db_at"]
             },
             tasks: {
-                attributes: ["account_list_id", "starred", "location", "subject", "start_at", "end_at", "type", "created_at", "updated_at", "completed", "comments", "activity_type", "result",
-                    "completed_at", "notification_id", "remote_id", "source", "next_action", "no_date", "notification_type", "notification_time_before",
+                attributes: ["account_list_id", "activity_type", "location", "start_at", "end_at", "type", "created_at", "updated_at", "completed", "completed_at", "comments", "due_date",
+                    "notification_id", "next_action", "no_date", "notification_type", "notification_time_before", "remote_id", "result", "source", "starred", "subject",
                     "notification_time_unit", "notification_scheduled", "updated_in_db_at"]
             },
             user: {
