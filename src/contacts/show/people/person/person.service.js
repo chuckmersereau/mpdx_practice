@@ -34,7 +34,7 @@ class PersonService {
         });
     }
     merge(contact, people) {
-        return this.api.post(`contacts/${contact.id}/people/merge`, people).then((data) => {
+        return this.api.put(`contacts/${contact.id}/people/merge`, people).then((data) => {
             if (_.isFunction(data.success)) {
                 data.success();
             }

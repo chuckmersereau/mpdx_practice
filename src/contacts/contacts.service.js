@@ -326,7 +326,7 @@ class ContactsService {
         });
     }
     merge(contacts) {
-        this.api.post(`contacts/merges`, contacts).then((data) => {
+        this.api.put(`contacts/merges`, contacts).then((data) => {
             this.$log.debug('contacts/merges', data);
         });
     }
