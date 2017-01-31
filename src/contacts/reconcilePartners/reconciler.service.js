@@ -26,9 +26,9 @@ class ReconcilerService {
         this.shouldFetchPeople = true;
     }
 
-    fetchAll(force = false) {
-        this.fetchDuplicateContacts(force);
-        this.fetchDuplicatePeople(force);
+    fetchAll() { //force = false) {
+        // this.fetchDuplicateContacts(force);
+        // this.fetchDuplicatePeople(force);
     }
 
     fetchDuplicateContacts(force = false) {
@@ -36,11 +36,10 @@ class ReconcilerService {
             return;
         }
 
-        this.api.get('contacts/duplicates', {include: 'contacts'}).then((data) => {
+        this.api.get('contacts/duplicates', {include: 'contacts', per_page: this.perPage}).then((data) => {
             this.$log.debug('contacts/duplicates', data);
 
             this.duplicateContactsTotal = data.length;
-            this.duplicateContacts = data.slice(0, this.perPage);
             this.shouldFetchContacts = false;
 
             _.each(this.duplicateContacts, (duplicateContact) => {
@@ -74,11 +73,10 @@ class ReconcilerService {
             return;
         }
 
-        this.api.get('contacts/people/duplicates', {include: 'people,shared_contact'}).then((data) => {
+        this.api.get('contacts/people/duplicates', {include: 'people,shared_contact', per_page: this.perPage}).then((data) => {
             this.$log.debug('contacts/people/duplicates', data);
 
             this.duplicatePeopleTotal = data.length;
-            this.duplicatePeople = data.slice(0, this.perPage);
             this.shouldFetchPeople = false;
 
             _.each(this.duplicatePeople, (duplicatePerson) => {
