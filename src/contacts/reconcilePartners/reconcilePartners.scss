@@ -1,0 +1,124 @@
+.contacts-find-duplicates {
+  span.warning {
+    color: #d33a44;
+  }
+
+  #duplicate-contacts, #duplicate-people {
+    margin-top: 20px;
+  }
+
+  .contact {
+    height: 112.5px;
+    border: solid 2px #dbdbdb;
+    margin-bottom: 38.5px;
+    position: relative;
+    overflow: hidden;
+
+    &.selected {
+      border-color: #bbcd5c;
+    }
+
+    &.dont-merge {
+      border-color: #e55b36;
+    }
+
+    .avatar {
+      margin: 14px;
+      display: inline;
+    }
+
+    .contact-details {
+      margin-top: 16px;
+      max-width: 75%;
+
+      div {
+        font-size: 14px;
+        line-height: 18px;
+
+        &.field-list {
+          span:not(:last-child)::after {
+            content: '/';
+          }
+          span.no-slash::after {
+            content: none;
+          }
+        }
+      }
+
+      i.fa {
+        display: none;
+        color: #f9b625;
+      }
+
+      .highlight {
+        font-weight: bold;
+
+        i.fa {
+          display: inline;
+        }
+      }
+    }
+
+    .merge-info {
+      display: none;
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 2px 4px;
+      color: white;
+      text-align: center;
+      font-size: 12px;
+      font-weight:500;
+
+      &.merge-use {
+        background-color: #bbcd5c;
+      }
+
+      &.merge-dont {
+        background-color: #e55b36;
+      }
+    }
+  }
+
+  .contact.selected {
+    .merge-info.merge-use {
+      display: block;
+    }
+  }
+  .contact.dont-merge {
+    .merge-info.merge-dont {
+      display: block;
+    }
+  }
+
+  .choices {
+    i {
+      font-size: 32px;
+      margin-bottom: 9px;
+      display: block;
+      color: #d8d8d8;
+    }
+
+    .choice-left, .choice-right {
+      cursor: pointer;
+
+      &.selected {
+        color: #bbcd5c;
+      }
+    }
+
+    .choice-cancel {
+      cursor: pointer;
+
+      &.selected {
+        color: #e55b36;
+      }
+    }
+  }
+
+  .actions {
+    span {
+      margin: 0 10px;
+    }
+  }
+}
