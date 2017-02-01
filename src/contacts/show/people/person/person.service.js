@@ -34,11 +34,8 @@ class PersonService {
             return data;
         });
     }
-    mergePeople(contactId, winner, people) {
-        const bulk = _.map(people, person => {
-            return {winner_id: winner, loser_id: person};
-        });
-        return this.api.post(`contacts/${contactId}/people/merge`, bulk).then((data) => {
+    merge(contact, people) {
+        return this.api.put(`contacts/${contact.id}/people/merge`, people).then((data) => {
             if (_.isFunction(data.success)) {
                 data.success();
             }

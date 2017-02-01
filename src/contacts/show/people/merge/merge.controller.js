@@ -14,8 +14,13 @@ class MergePeopleModalController {
         this.currentlyMerging = false;
     }
     save() {
-        const peopleToMerge = _.reject(_.map(this.people, 'id'), this.selectedPerson);
-        return this.contactPerson.mergePeople(this.contact.id, this.selectedPerson, peopleToMerge).then(() => {
+        const peopleToMerge = _.map(this.people, (person) => {
+            if (!person.id === this.selectedPerson.id) {
+                return {winner_id: this.selectedPerson.id, loser_id: person.id};
+            }
+        });
+
+        return this.contactPerson.merge(this.contact, peopleToMerge).then(() => {
             this.$scope.$hide();
         }).catch(() => {
             alert('There was an error while trying to merge the people');
