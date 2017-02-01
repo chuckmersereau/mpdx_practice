@@ -13,7 +13,7 @@ class ContactsReconcilePartnersController {
         this.api = api;
         this.contactReconciler = contactReconciler;
 
-        // this.contactReconciler.fetchDuplicateContacts();
+        this.contactReconciler.fetchDuplicateContacts();
     }
 
     useThisOne(duplicateContact, mergeChoice = -1) {
@@ -37,7 +37,7 @@ class ContactsReconcilePartnersController {
 
         this.$q.all(promises).then(() => {
             this.blockUI.stop();
-            // this.contactReconciler.fetchDuplicateContacts(true);
+            this.contactReconciler.fetchDuplicateContacts(true);
 
             if (!confirmAndContine) {
                 this.$state.go('home');
