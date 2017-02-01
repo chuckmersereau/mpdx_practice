@@ -325,6 +325,11 @@ class ContactsService {
             return this.analytics;
         });
     }
+    merge(contacts) {
+        this.api.put(`contacts/merges`, contacts).then((data) => {
+            this.$log.debug('contacts/merges', data);
+        });
+    }
 }
 
 import contactFilter from './filter/filter.service';
