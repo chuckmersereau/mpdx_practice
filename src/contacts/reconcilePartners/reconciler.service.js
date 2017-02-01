@@ -71,7 +71,8 @@ class ReconcilerService {
             return;
         }
 
-        this.api.get('contacts/people/duplicates', {include: 'people,shared_contact,people.phone_numbers,people.email_addresses', per_page: this.perPage}).then((data) => {
+        //TODO add people.email_addresses once api include recursion is fixed
+        this.api.get('contacts/people/duplicates', {include: 'people,shared_contact,people.phone_numbers', per_page: this.perPage}).then((data) => {
             this.$log.debug('contacts/people/duplicates', data);
 
             this.duplicatePeopleTotal = data.length;
