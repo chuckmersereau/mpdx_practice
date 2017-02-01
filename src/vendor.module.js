@@ -35,6 +35,7 @@ import 'bootstrap-daterangepicker/daterangepicker';
 
 // style deps
 require('./styles/fonts/freightsanspro/stylesheet.css');
+require('./styles/fonts/cru/ci.css');
 require('angular-block-ui/dist/angular-block-ui.css');
 
 
