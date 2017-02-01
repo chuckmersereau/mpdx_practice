@@ -49,8 +49,6 @@ class ReconcilerService {
                 let origAddresses = [];
 
                 _.each(duplicateContact.contacts, (contact, index) => {
-                    contact.addresses = data.addresses;
-
                     if (index === 0) {
                         origName = contact.name;
                         origAddresses = _.map(_.filter(contact.addresses, address => address.primary), address => `${address.street} ${address.city} ${address.state} ${address.postal_code}`);

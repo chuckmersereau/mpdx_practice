@@ -15,8 +15,6 @@ class menuController {
         this.contactReconciler = contactReconciler;
         this.state = $state;
         this.isInState = (match) => $state.$current.name.indexOf(match) === 0;
-
-        this.contactReconciler.fetchAll();
     }
     showHelp() {
         this.help.showHelp();
