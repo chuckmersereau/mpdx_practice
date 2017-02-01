@@ -43,6 +43,14 @@ export default class Routes {
                 another: /*@ngInject*/ (contactsTags) => contactsTags.load()
             }
         }).state({
+            name: 'contacts.reconcile_partners',
+            url: '/reconcile-partners',
+            component: 'contactsReconcilePartners'
+        }).state({
+            name: 'contacts.reconcile_individuals',
+            url: '/reconcile-individuals',
+            component: 'contactsReconcileIndividuals'
+        }).state({
             name: 'contact',
             title: 'Contact',
             url: '/contacts/{contactId}',
