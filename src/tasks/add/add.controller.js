@@ -29,11 +29,16 @@ class AddTaskController {
             tag_list: [],
             comments: []
         };
+
+        this.emailNotification = false;
     }
 
     save() {
         if (this.comment) {
             this.models.comments.push({body: this.comment});
+        }
+        if (this.emailNotification) {
+            this.models.notification_type = 'email';
         }
         let promise;
         if (this.newsletterBoth) {

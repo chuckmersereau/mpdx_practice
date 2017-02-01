@@ -33,7 +33,7 @@ export default class Routes {
         }).state({
             name: 'contacts',
             title: 'Contacts',
-            url: '/contacts',
+            url: '/contacts?filters',
             component: 'contacts',
             params: {
                 filters: null
@@ -43,6 +43,14 @@ export default class Routes {
                 resolution: /*@ngInject*/ (contactFilter) => contactFilter.load(),
                 another: /*@ngInject*/ (contactsTags) => contactsTags.load()
             }
+        }).state({
+            name: 'contacts.reconcile_partners',
+            url: '/reconcile-partners',
+            component: 'contactsReconcilePartners'
+        }).state({
+            name: 'contacts.reconcile_individuals',
+            url: '/reconcile-individuals',
+            component: 'contactsReconcileIndividuals'
         }).state({
             name: 'contact',
             title: 'Contact',
@@ -158,9 +166,12 @@ export default class Routes {
         }).state({
             name: 'tasks',
             title: 'Tasks',
-            url: '/tasks',
+            url: '/tasks?filters',
             component: 'tasks',
             parent: 'root',
+            params: {
+                filters: null
+            },
             resolve: {
                 resolution: /*@ngInject*/ (tasksFilter) => tasksFilter.load(),
                 another: /*@ngInject*/ (tasksTags) => tasksTags.load()

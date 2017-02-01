@@ -102,6 +102,7 @@ class Api {
                     } else {
                         key = arr[arr.length - 1];
                     }
+
                     if (_.has(this.entityAttributes, key)) {
                         _.extend(params, this.entityAttributes[key]);
                     } else {
@@ -201,7 +202,7 @@ class EntityAttributes {
                 attributes: ["name", "account_list_id", "created_at", "updated_at", "pledge_amount", "status", "total_donations", "last_donation_date", "first_donation_date", "notes", "notes_saved_at",
                     "full_name", "greeting", "website", "pledge_frequency", "pledge_start_date", "next_ask", "likely_to_give", "church_name", "send_newsletter", "direct_deposit", "magazine", "last_activity",
                     "last_appointment", "last_letter", "last_phone_call", "last_pre_call", "last_thank", "pledge_received", "tnt_id", "not_duplicated_with", "uncompleted_tasks_count", "prayer_letters_id",
-                    "timezone", "envelope_greeting", "no_appeals", "prayer_letters_params", "pls_id", "pledge_currency", "locale", "late_at", "people", "addresses", "updated_in_db_at"],
+                    "timezone", "envelope_greeting", "no_appeals", "prayer_letters_params", "pls_id", "pledge_currency", "locale", "late_at", "people", "addresses", "updated_in_db_at", "winner_id", "loser_id"],
                 addresses: () => _.extend({ ref: 'id' }, this.attributes.addresses),
                 people: () => _.extend({ ref: 'id' }, this.attributes.people)
             },
@@ -222,7 +223,7 @@ class EntityAttributes {
                 attributes: ["first_name", "legal_first_name", "last_name", "birthday_month", "birthday_year", "birthday_day", "anniversary_month", "anniversary_year", "anniversary_day", "title",
                     "suffix", "gender", "marital_status", "preferences", "sign_in_count", "current_sign_in_at", "last_sign_in_at", "current_sign_in_ip", "last_sign_in_ip", "created_at", "updated_at",
                     "master_person_id", "middle_name", "access_token", "profession", "deceased", "subscribed_to_updates", "optout_enewsletter", "occupation", "employer", "not_duplicated_with",
-                    "phone_numbers", "email_addresses", "facebook_accounts", "family_relationships", "linkedin_accounts", "websites", "updated_in_db_at"],
+                    "phone_numbers", "email_addresses", "facebook_accounts", "family_relationships", "linkedin_accounts", "websites", "updated_in_db_at", "winner_id", "loser_id"],
                 email_addresses: () => _.extend({ ref: 'id' }, this.attributes.email_addresses),
                 facebook_accounts: () => _.extend({ ref: 'id' }, this.attributes.person_facebook_accounts),
                 family_relationships: () => _.extend({ ref: 'id' }, this.attributes.family_relationships),
