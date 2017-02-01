@@ -32,7 +32,7 @@ export default class Routes {
         }).state({
             name: 'contacts',
             title: 'Contacts',
-            url: '/contacts',
+            url: '/contacts?filters',
             component: 'contacts',
             params: {
                 filters: null
@@ -165,9 +165,12 @@ export default class Routes {
         }).state({
             name: 'tasks',
             title: 'Tasks',
-            url: '/tasks',
+            url: '/tasks?filters',
             component: 'tasks',
             parent: 'root',
+            params: {
+                filters: null
+            },
             resolve: {
                 resolution: /*@ngInject*/ (tasksFilter) => tasksFilter.load(),
                 another: /*@ngInject*/ (tasksTags) => tasksTags.load()
