@@ -110,7 +110,7 @@ class ContactsService {
                 filters: filterParams,
                 page: this.page,
                 per_page: 25,
-                include: 'people,addresses',
+                include: 'people,addresses,people.facebook_accounts,people.phone_numbers',
                 sort: 'name ASC'
             },
             overrideGetAsPost: true
