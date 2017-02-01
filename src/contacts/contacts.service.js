@@ -5,7 +5,7 @@ class ContactsService {
     contactsTags;
 
     constructor(
-        $location, $log, $q, $rootScope,
+        $log, $q, $rootScope,
         alerts, api, contactFilter, contactsTags
     ) {
         this.$log = $log;
@@ -32,12 +32,7 @@ class ContactsService {
                 return;
             }
             $log.debug('contacts service: contact search change');
-            const query = $location.search().q;
-            if (query) {
-                $location.search('q', null);
-            } else {
-                this.load(true);
-            }
+            this.load(true);
         });
 
         $rootScope.$on('accountListUpdated', () => {
@@ -110,7 +105,7 @@ class ContactsService {
                 filters: filterParams,
                 page: this.page,
                 per_page: 25,
-                include: 'people,addresses',
+                include: 'people,addresses,people.facebook_accounts,people.phone_numbers',
                 sort: 'name ASC'
             },
             overrideGetAsPost: true
