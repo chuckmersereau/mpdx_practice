@@ -62,9 +62,7 @@ class Users {
     saveCurrent() {
         this.$log.debug('user put', this.current);
         return this.api.put('user', this.current).then(() => {
-            return this.getCurrent(true).then((data) => { //force relead to reconcile as put response is incomplete
-                return data;
-            });
+            return this.getCurrent(true); //force relead to reconcile as put response is incomplete
         });
     }
 }

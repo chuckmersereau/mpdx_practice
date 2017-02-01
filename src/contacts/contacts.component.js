@@ -21,8 +21,8 @@ class ContactsController {
         ]);
     }
     $onInit() {
-        if (this.$stateParams.filter) {
-            _.assign(this.contactFilter.params, this.contactFilter.params, this.$stateParams.filter);
+        if (this.$stateParams.filters) {
+            _.assign(this.contactFilter.params, this.contactFilter.params, this.$stateParams.filters);
             this.contactFilter.change();
         }
     }
