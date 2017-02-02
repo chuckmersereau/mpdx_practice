@@ -44,7 +44,7 @@ function linkFn(scope) {
             scope.$log.debug('reports/monthly_giving_graph', data);
             scope.series = _.map(data.totals, (total, index) => {
                 return {
-                    name: scope.currency.list[total.currency].name,
+                    name: scope.currency.list[total.currency].code,
                     color: currencyColors[data.totals.length - index - 1],
                     data: _.map(total.month_totals, (val) => parseFloat(val.converted)),
                     cursor: 'pointer'
@@ -58,10 +58,10 @@ function linkFn(scope) {
                 };
                 return series;
             });
-            // const titleText = `
-            //     <span style="color:#007398"><%= ${scope.gettextCatalog.getString('Commitments:')} ${number_to_current_currency(pledges, currency: salary_currency)}</span> |
-            //     <span style="color:#3eb1c8"><%= j _('Monthly Goal:') %> <%= number_to_current_currency(current_account_list.monthly_goal, currency: salary_currency) %></span> |
-            //     <span style="color:#666062"><%= j _('Monthly Average:') %> <%= number_to_current_currency(monthly_average, currency: salary_currency) %></span>`;
+            const titleText = `
+                <span style="color:#007398">${scope.gettextCatalog.getString('Commitments:')} ${data.pledges}</span> |
+                <span style="color:#3eb1c8">${scope.gettextCatalog.getString('Monthly Goal:')}  ${data.monthly_goal}</span> |
+                <span style="color:#666062">${scope.gettextCatalog.getString('Monthly Average:')} ${data.monthly_average}</span>`;
 
             function tooltipFormatter() {
                 const totalConverted = this.total;
@@ -109,19 +109,19 @@ function linkFn(scope) {
                     height: 250
                 },
                 title: {
-                    text: scope.accounts.donations.title_text,
+                    text: titleText,
                     useHTML: true,
                     style: {
                         fontSize: '12px'
                     }
                 },
                 xAxis: {
-                    categories: scope.accounts.donations.x_axis_categories
+                    categories: _.map(data.months_to_dates, month => moment(month, 'YYYY-MM-DD').format('M')).join(',')
                 },
                 yAxis: {
                     min: 0,
                     title: {
-                        text: scope.accounts.donations.y_axis_title
+                        text: `${scope.gettextCatalog.getString('Amount')} ${data.salary_currency}`
                     },
                     plotLines: [{
                         value: data.pledges,
