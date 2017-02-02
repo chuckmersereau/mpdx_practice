@@ -116,7 +116,7 @@ function linkFn(scope) {
                     }
                 },
                 xAxis: {
-                    categories: _.map(data.months_to_dates, month => moment(month, 'YYYY-MM-DD').format('M')).join(',')
+                    categories: _.map(data.months_to_dates, month => moment(month, 'YYYY-MM-DD').format('MMM'))
                 },
                 yAxis: {
                     min: 0,
