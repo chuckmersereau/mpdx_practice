@@ -166,7 +166,8 @@ export default class Routes {
             name: 'setup',
             title: 'Setup',
             url: '/setup',
-            component: 'setup'
+            component: 'setup',
+            parent: 'root'
         }).state({
             name: 'setup.connect',
             title: 'Get Connected',
