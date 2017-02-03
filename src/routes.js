@@ -163,6 +163,21 @@ export default class Routes {
             url: '/{id}',
             component: 'personalPreferences'
         }).state({
+            name: 'setup',
+            title: 'Setup',
+            url: '/setup',
+            component: 'setup'
+        }).state({
+            name: 'setup.connect',
+            title: 'Get Connected',
+            url: '/connect',
+            component: 'setupConnect'
+        }).state({
+            name: 'setup.start',
+            title: 'Get Started',
+            url: '/start',
+            component: 'setupStart'
+        }).state({
             name: 'tasks',
             title: 'Tasks',
             url: '/tasks?filters',
