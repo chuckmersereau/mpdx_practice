@@ -13,7 +13,7 @@
     </h2>
     <p translate>{{$ctrl.lastAdded}}</p>
     <p>
-        <button ng-click="$ctrl.next()" class="btn btn-primary">Hooray! Take me into MPDX</button>
+        <button ng-click="$ctrl.next()" class="btn btn-primary" translate>Hooray! Take me into MPDX</button>
     </p>
     <h2 translate>
         Do you receive donations in any other country or from any other organizations?
@@ -41,7 +41,7 @@
 
 </div>
 <p>
-    <button ng-click="$ctrl.connect()" class="btn btn-primary" ng-if="!$ctrl.connecting">Connect</button>
-    <button ng-click="$ctrl.add()" class="btn btn-primary" ng-if="$ctrl.connecting">Add Account</button>
-    <button ng-click="$ctrl.reset()" class="btn btn-default" ng-if="$ctrl.connecting">Cancel</button>
+    <button ng-click="$ctrl.connect()" class="btn btn-primary" ng-if="!$ctrl.connecting" translate>Connect</button>
+    <button ng-click="$ctrl.add()" class="btn btn-primary" ng-if="$ctrl.connecting" translate>Add Account</button>
+    <button ng-click="$ctrl.reset()" class="btn btn-default" ng-if="$ctrl.connecting" translate>Cancel</button>
 </p>

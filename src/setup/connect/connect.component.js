@@ -1,8 +1,11 @@
 class SetupConnectController {
+    accounts;
     constructor(
-        $state
+        $state,
+        accounts
     ) {
         this.$state = $state;
+        this.accounts = accounts;
 
         this.lastAdded = null;
         this.reset();
@@ -16,7 +19,11 @@ class SetupConnectController {
         this.lastAdded = 'Insert Data here';
     }
     next() {
-        this.$state.go('setup.somewhere');
+        if (this.accounts.data.length > 1) {
+            this.$state.go('setup.merge');
+        } else {
+            this.$state.go('setup.somewhereelse');
+        }
     }
     reset() {
         this.connecting = false;
