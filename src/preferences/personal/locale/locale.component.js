@@ -18,7 +18,7 @@ class PreferencesLocaleController {
     }
     save() {
         this.saving = true;
-        this.onSave({locale: this.locale}).then(() => {
+        this.onSave().then(() => {
             this.saving = false;
         });
     }

@@ -1,11 +1,13 @@
 class SetupConnectController {
     accounts;
+    serverConstants;
     constructor(
         $state,
-        accounts
+        accounts, serverConstants
     ) {
         this.$state = $state;
         this.accounts = accounts;
+        this.serverConstants = serverConstants;
 
         this.lastAdded = null;
         this.reset();
@@ -22,7 +24,7 @@ class SetupConnectController {
         if (this.accounts.data.length > 1) {
             this.$state.go('setup.merge');
         } else {
-            this.$state.go('setup.somewhereelse');
+            this.$state.go('setup.preferences');
         }
     }
     reset() {
