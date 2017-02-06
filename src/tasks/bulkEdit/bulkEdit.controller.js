@@ -15,14 +15,9 @@ class EditTaskController {
         this.selectedTasks = selectedTasks;
         this.modalCallback = modalCallback;
 
-        this.constants = {};
-
         this.activate();
     }
     activate() {
-        // this.serverConstants.fetchConstants(['actions', 'next_actions', 'results']);
-        this.constants = this.serverConstants.data;
-
         this.models = {};
     }
     submit() {

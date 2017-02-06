@@ -4,12 +4,11 @@ class ContactController {
     contactFilter;
     modal;
     contactReferrals;
-    serverConstants;
     tasksService;
 
     constructor(
         $log, $state, $stateParams, $location, $anchorScroll, blockUI, help,
-        modal, contacts, tasksService, contactFilter, serverConstants
+        modal, contacts, tasksService, contactFilter
     ) {
         this.$anchorScroll = $anchorScroll;
         this.$log = $log;
@@ -20,13 +19,15 @@ class ContactController {
         this.contacts = contacts;
         this.contactFilter = contactFilter;
         this.modal = modal;
-        this.serverConstants = serverConstants;
         this.tasksService = tasksService;
 
         this.selected = $stateParams.contactId;
         this.moveContact = { previous_contact: 0, following_contact: 0 };
         this.activeTab = '';
         this.contact = {};
+
+        // serverConstants.fetchConstant('contacts', 'contacts/basic_list');
+        // serverConstants.fetchConstants(['assignable_statuses' 'assignable_locations'']);
 
         this.tabsLabels = [
             { key: 'details', value: 'Details' },

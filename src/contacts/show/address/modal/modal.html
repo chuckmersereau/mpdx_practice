@@ -24,7 +24,7 @@
                     disable-search="true"
                     class="form-control"
                     id='send_newsletter'
-                    ng-options="opt[1] as opt[0] for opt in $ctrl.constants.assignable_locations"
+                    ng-options="opt[1] as opt[0] for opt in $ctrl.serverConstants.data.assignable_locations"
                     ng-model="$ctrl.address.location"
                     ng-disabled='$ctrl.address.remote_id'>
                 <option value=""></option>

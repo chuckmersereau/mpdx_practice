@@ -3,19 +3,22 @@ class ContactDetailsController {
     contact;
     contacts;
     contactsTags;
+    serverConstants;
 
     constructor(
         $window,
-        contactsTags, contacts
+        contactsTags, contacts, serverConstants
     ) {
         this.contacts = contacts;
         this.contactsTags = contactsTags;
 
         this.appeals = 'false';
 
-        this.languages = _.map(_.keys($window.languageMappingList), (key) => {
-            const language = window.languageMappingList[key];
-            return {alias: key, value: `${language.englishName} (${language.nativeName} - ${key}`};
+        this.languages = _.map(serverConstants.data.locales, (locale) => {
+            const language = $window.languageMappingList[locale[1]];
+            if (language) {
+                return {alias: locale[1], value: `${language.englishName} (${language.nativeName} - ${locale[1]})`};
+            }
         });
     }
     $onChanges() {
@@ -60,8 +63,7 @@ const Details = {
     template: require('./details.html'),
     bindings: {
         donorAccounts: '<', //for change detection
-        contact: '=',
-        constants: '='
+        contact: '='
     }
 };
 
