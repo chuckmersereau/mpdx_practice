@@ -1,0 +1,28 @@
+<h1 ng-if="$ctrl.nav === 0">Let's set your locale!</h1>
+<h1 ng-if="$ctrl.nav === 1">Great progress comes from great goals!</h1>
+<div class="panel-group" role="tablist" ng-model="$ctrl.nav" aria-multiselectable="false" bs-collapse>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab">
+            <h4 class="panel-title">
+                <a bs-collapse-toggle>Locale</a>
+            </h4>
+        </div>
+        <div class="panel-collapse" role="tabpanel" bs-collapse-target>
+            <div class="panel-body">
+                <preferences-locale></preferences-locale>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab">
+            <h4 class="panel-title">
+                <a bs-collapse-toggle>Monthly Goal</a>
+            </h4>
+        </div>
+        <div class="panel-collapse" role="tabpanel" bs-collapse-target>
+            <div class="panel-body">
+                <preferences-monthly></preferences-monthly>
+            </div>
+        </div>
+    </div>
+</div>

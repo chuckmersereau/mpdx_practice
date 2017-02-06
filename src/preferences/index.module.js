@@ -3,7 +3,7 @@ import component from './preferences.component';
 import imports from './import/index.module';
 import integrations from './integrations/index.module';
 import notifications from './notifications/index.module';
-import personal from './personal/personal.component';
+import personal from './personal/index.module';
 import sidebar from './sidebar/sidebar.component';
 
 

@@ -179,6 +179,11 @@ export default class Routes {
             url: '/merge',
             component: 'setupMerge'
         }).state({
+            name: 'setup.preferences',
+            title: 'Preferences',
+            url: '/preferences',
+            component: 'setupPreferences'
+        }).state({
             name: 'setup.start',
             title: 'Get Started',
             url: '/start',
