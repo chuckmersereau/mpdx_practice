@@ -25,11 +25,8 @@
 </div>
 
 <div>
-    <select ng-model="$ctrl.organization" chosen>
+    <select ng-model="$ctrl.organization" ng-options="organization.id as organization.val for organization in $ctrl.organizations" chosen>
         <option value=""></option>
-        <option ng-repeat="option in $ctrl.languages" value="{{option.alias}}">
-            {{option.englishName}} ({{option.nativeName}} - {{option.alias}})
-        </option>
     </select>
 </div>
 <div ng-if="$ctrl.connecting">

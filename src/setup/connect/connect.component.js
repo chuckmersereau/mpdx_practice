@@ -1,24 +1,36 @@
 class SetupConnectController {
     accounts;
+    api;
     serverConstants;
     constructor(
         $state,
-        accounts, serverConstants
+        accounts, api, serverConstants, users
     ) {
         this.$state = $state;
         this.accounts = accounts;
+        this.api = api;
         this.serverConstants = serverConstants;
 
-        this.lastAdded = null;
+        this.lastAdded = _.get(_.last(users.organizationAccounts), 'name', null);
+
+        this.organizations = _.map(_.keys(serverConstants.data.organizations), (key) => {
+            return {id: key, val: serverConstants.data.organizations[key]};
+        });
         this.reset();
     }
     connect() {
         this.connecting = true;
     }
     add() {
-        this.connecting = false;
-        //save stuff
-        this.lastAdded = 'Insert Data here';
+        this.api.post(`user/organization_accounts`, {
+            username: this.username,
+            password: this.password,
+            organization_id: this.organization
+        }).then(() => {
+            this.connecting = false;
+            //save stuff
+            this.lastAdded = 'Insert Data here';
+        });
     }
     next() {
         if (this.accounts.data.length > 1) {
