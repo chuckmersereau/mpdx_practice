@@ -14,10 +14,12 @@ class ContactDetailsController {
 
         this.appeals = 'false';
 
-        this.languages = _.map(serverConstants.data.locales, (locale) => {
-            const language = $window.languageMappingList[locale[1]];
+        this.languages = _.map(_.keys(serverConstants.data.locales), (locale) => {
+            const language = $window.languageMappingList[locale];
             if (language) {
-                return {alias: locale[1], value: `${language.englishName} (${language.nativeName} - ${locale[1]})`};
+                return {alias: locale, value: `${language.englishName} (${language.nativeName} - ${locale})`};
+            } else {
+                return {alias: locale, value: serverConstants.data.locales[locale]};
             }
         });
     }
