@@ -39,7 +39,8 @@ class ReconcilerService {
         this.api.get('contacts/duplicates', {include: 'contacts,contacts.addresses', per_page: this.perPage}).then((data) => {
             this.$log.debug('contacts/duplicates', data);
 
-            this.duplicateContactsTotal = data.length;
+            this.duplicateContacts = data;
+            this.duplicateContactsTotal = data.meta.pagination.total_count;
             this.shouldFetchContacts = false;
 
             _.each(this.duplicateContacts, (duplicateContact) => {
@@ -73,7 +74,8 @@ class ReconcilerService {
         this.api.get('contacts/people/duplicates', {include: 'people,shared_contact,people.phone_numbers', per_page: this.perPage}).then((data) => {
             this.$log.debug('contacts/people/duplicates', data);
 
-            this.duplicatePeopleTotal = data.length;
+            this.duplicatePeople = data;
+            this.duplicatePeopleTotal = data.meta.pagination.total_count;
             this.shouldFetchPeople = false;
 
             _.each(this.duplicatePeople, (duplicatePerson) => {
@@ -84,6 +86,8 @@ class ReconcilerService {
                 let origEmailAddresses = [];
 
                 _.each(duplicatePerson.people, (person, index) => {
+                    //TODO remove once api include recursion is fixed
+                    person.email_addresses = [];
                     if (index === 0) {
                         origName = `${person.first_name} ${person.last_name}`;
                         origPhoneNumbers = _.map(_.filter(person.phone_numbers, phoneNumber => phoneNumber.primary), phoneNumber => phoneNumber.number);
@@ -131,9 +135,8 @@ class ReconcilerService {
         }
     }
 
-    mergeContacts(winner, loser) {
-        let contacts = [{winner_id: winner.id, loser_id: loser.id}];
-        this.contacts.merge(contacts);
+    mergeContacts(winnersAndLosers) {
+        this.contacts.merge(winnersAndLosers);
     }
 
     mergePeople(contact, winner, loser) {
