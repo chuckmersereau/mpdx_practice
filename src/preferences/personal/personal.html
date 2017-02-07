@@ -427,15 +427,7 @@
                 <div class="panel-body pref-body">
                     <div class="row pref-row">
                         <div class="col-md-8 col-md-offset-4">
-                            <div class="form-group">
-                                <label for="monthlyGoal" translate>Monthly goal</label>
-                                <p class="text-muted" translate>This amount should be set to the amount your organization has determined is your target monthly goal. If you do not know, make your best guess for now. You can change it at any time.</p>
-                                <input type="text" id="monthlyGoal" class="form-control" ng-model="$ctrl.accounts.current.monthly_goal">
-                            </div>
-                            <button type="submit" ng-click="$ctrl.saveAccount()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
-                                <span translate>Save</span>>&nbsp;
-                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                            </button>
+                            <preferences-monthly-goal on-save="$ctrl.saveAccount()"></preferences-monthly-goal>
                         </div>
                     </div>
                 </div>

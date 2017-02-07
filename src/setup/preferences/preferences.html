@@ -9,7 +9,7 @@
         </div>
         <div class="panel-collapse" role="tabpanel" bs-collapse-target>
             <div class="panel-body">
-                <preferences-locale></preferences-locale>
+                <preferences-locale on-save="$ctrl.save()"></preferences-locale>
             </div>
         </div>
     </div>
@@ -21,7 +21,7 @@
         </div>
         <div class="panel-collapse" role="tabpanel" bs-collapse-target>
             <div class="panel-body">
-                <preferences-monthly></preferences-monthly>
+                <preferences-monthly-goal on-save="$ctrl.saveAccount()"></preferences-monthly-goal>
             </div>
         </div>
     </div>
