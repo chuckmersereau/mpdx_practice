@@ -214,6 +214,8 @@ class TasksService {
             return {id: contactId};
         });
 
+        task.account_list = { id: this.api.account_list_id };
+
         return this.api.post('tasks', task);
     }
     openModal(params) {

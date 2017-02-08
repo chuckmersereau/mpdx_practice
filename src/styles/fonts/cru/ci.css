@@ -1,0 +1,29 @@
+@font-face {
+	font-family: "ci";
+	src: url("ci.eot?4a291018abeb9e7a7fc8681e940d1139?#iefix") format("embedded-opentype"),
+url("ci.woff?4a291018abeb9e7a7fc8681e940d1139") format("woff");
+}
+
+.ci {
+	line-height: 1;
+}
+
+.ci:before {
+	font-family: ci !important;
+	font-style: normal;
+	font-weight: normal !important;
+	vertical-align: top;
+}
+
+.ci-email_icon:before {
+	content: "\f101";
+}
+.ci-filter_icon:before {
+	content: "\f102";
+}
+.ci-letter_icon:before {
+	content: "\f103";
+}
+.ci-neg_filter_icon:before {
+	content: "\f104";
+}

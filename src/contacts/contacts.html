@@ -1,11 +1,13 @@
-<div class="row">
-    <alerts></alerts>
-    <div class="col-xs-3">
-        <aside class="scrollable_left" data-offset-top="128" bs-affix>
-            <contacts-filter></contacts-filter>
-        </aside>
+<ui-view>
+    <div class="row">
+        <alerts></alerts>
+        <div class="col-xs-3">
+            <aside class="scrollable_left" data-offset-top="128" bs-affix>
+                <contacts-filter></contacts-filter>
+            </aside>
+        </div>
+        <div class="col-xs-9">
+            <contacts-list></contacts-list>
+        </div>
     </div>
-    <div class="col-xs-9">
-        <contacts-list></contacts-list>
-    </div>
-</div>
+</ui-view>

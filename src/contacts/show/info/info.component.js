@@ -15,7 +15,9 @@ class ContactInfoController {
         }
     }
     save() {
-        this.contacts.save(this.contact);
+        this.contacts.save(this.contact).then((data) => {
+            this.contact.updated_in_db_at = data.updated_in_db_at;
+        });
     }
 }
 const Info = {

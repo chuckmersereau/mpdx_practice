@@ -5,7 +5,7 @@ class ContactsService {
     contactsTags;
 
     constructor(
-        $location, $log, $q, $rootScope,
+        $log, $q, $rootScope,
         alerts, api, contactFilter, contactsTags
     ) {
         this.$log = $log;
@@ -32,12 +32,7 @@ class ContactsService {
                 return;
             }
             $log.debug('contacts service: contact search change');
-            const query = $location.search().q;
-            if (query) {
-                $location.search('q', null);
-            } else {
-                this.load(true);
-            }
+            this.load(true);
         });
 
         $rootScope.$on('accountListUpdated', () => {
@@ -58,7 +53,7 @@ class ContactsService {
         });
     }
     get(id) {
-        return this.api.get(`contacts/${id}`, {include: 'people,addresses'});
+        return this.api.get(`contacts/${id}`, {include: 'addresses,appeals,donor_accounts,people,referrals_by_me,referrals_to_me'});
     }
     find(id) {
         let contact = _.find(this.data, { id: id });
@@ -110,7 +105,7 @@ class ContactsService {
                 filters: filterParams,
                 page: this.page,
                 per_page: 25,
-                include: 'people,addresses',
+                include: 'people,addresses,people.facebook_accounts,people.phone_numbers',
                 sort: 'name ASC'
             },
             overrideGetAsPost: true
@@ -164,19 +159,12 @@ class ContactsService {
         });
     }
     create(contact) {
-        let contactObj = {
-            name: contact.name,
-            prefill_attributes_on_create: true
-        };
-
-        return this.api.post('contacts', {contact: contactObj}).then((data) => {
-            let contact = _.find(this.data, {id: data.id});
-            if (contact) {
-                _.assign(contact, contact, data); //add missing contact to data
-            } else {
-                this.data.push(contact);
-            }
-            return this.find(data.contact.id);
+        contact.account_list = { id: this.api.account_list_id };
+        return this.api.post('contacts', contact).then((data) => {
+            return this.find(data.id).then((found) => {
+                this.data.push(found);
+                return data;
+            });
         });
     }
     loadMoreContacts() {
@@ -323,6 +311,11 @@ class ContactsService {
             this.$log.debug('contacts/analytics', data);
             this.analytics = data;
             return this.analytics;
+        });
+    }
+    merge(contacts) {
+        this.api.put(`contacts/merges`, contacts).then((data) => {
+            this.$log.debug('contacts/merges', data);
         });
     }
 }
