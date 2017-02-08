@@ -1,6 +1,24 @@
 class PaginationController {
+    constructor() {
+        this.windowSize = 5;
+        this.page = parseInt(this.page);
+    }
+
     getTotalPages() {
-        return Array(this.totalPages);
+        let pageArray = _.range(this.totalPages);
+
+        if (this.page > this.windowSize + 1) {
+            pageArray = pageArray.slice(this.page - this.windowSize, pageArray.length);
+            pageArray.unshift(-1);
+            pageArray.unshift(0);
+        }
+        if (this.totalPages > this.page + this.windowSize) {
+            pageArray = pageArray.slice(0, pageArray.indexOf(this.page) + this.windowSize - 1);
+            pageArray.push(-1);
+            pageArray.push(this.totalPages - 1);
+        }
+
+        return pageArray;
     }
 
     goto(page) {

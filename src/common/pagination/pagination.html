@@ -7,8 +7,9 @@
           <i class="fa fa-angle-double-left"></i>
         </a>
       </li>
-      <li ng-repeat="i in $ctrl.getTotalPages() track by $index" ng-class="{'active' : $index + 1 == $ctrl.page}">
-        <a ng-click="$ctrl.goto($index + 1)">{{$index + 1}}</a>
+      <li ng-repeat="i in $ctrl.getTotalPages() track by $index" ng-class="{'active' : i + 1 == $ctrl.page}">
+        <a ng-if="i >= 0" ng-click="$ctrl.goto(i + 1)">{{i + 1}}</a>
+        <label ng-if="i < 0">...</label>
       </li>
       <li ng-class="{'disabled': $ctrl.page == $ctrl.totalPages}">
         <a ng-click="$ctrl.next()" aria-label="Next">
