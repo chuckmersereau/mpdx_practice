@@ -152,7 +152,7 @@ export default class Routes {
             name: 'preferences.notifications',
             title: 'Notifications',
             url: '/notifications',
-            component: 'notificationPreferences'
+            component: 'preferencesNotifications'
         }).state({
             name: 'preferences.personal',
             title: 'Preferences',
@@ -179,6 +179,11 @@ export default class Routes {
             title: 'Merge Accounts',
             url: '/merge',
             component: 'setupMerge'
+        }).state({
+            name: 'setup.notifications',
+            title: 'Notifications',
+            url: '/notifications',
+            component: 'setupNotifications'
         }).state({
             name: 'setup.preferences',
             title: 'Preferences',

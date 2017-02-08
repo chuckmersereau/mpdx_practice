@@ -2,13 +2,17 @@ class NotificationPreferencesController {
     accounts;
     alerts;
     notifications;
+    serverConstants;
+    setup;
 
     constructor(
-        $rootScope,
-        accounts, alerts
+        $rootScope, $state,
+        accounts, alerts, serverConstants
     ) {
+        this.$state = $state;
         this.accounts = accounts;
         this.alerts = alerts;
+        this.serverConstants = serverConstants;
 
         this.saving = false;
 
@@ -18,18 +22,10 @@ class NotificationPreferencesController {
             this.init();
         });
 
-        console.error('preferences/notifications: TODO: constants from API');
-        this.notificationTypes = [
-            {type: 'NotificationType::SpecialGift', description: 'Partner gave a Special Gift'},
-            {type: 'NotificationType::StoppedGiving', description: 'Partner missed a gift'},
-            {type: 'NotificationType::StartedGiving', description: 'Partner started giving'},
-            {type: 'NotificationType::SmallerGift', description: 'Partner gave less than commitment'},
-            {type: 'NotificationType::RecontinuingGift', description: 'Partner recontinued giving'},
-            {type: 'NotificationType::LongTimeFrameGift', description: 'Partner gave with commitment of semi-annual or more'},
-            {type: 'NotificationType::LargerGift', description: 'Partner gave a larger gift than commitment'},
-            {type: 'NotificationType::CallPartnerOncePerYear', description: 'Partner have not had an attempted call logged in the past year'},
-            {type: 'NotificationType::ThankPartnerOncePerYear', description: 'Partner have not had a thank you note logged in the past year'}
-        ];
+        console.error('preferences/notifications: TODO: FIX constants from API');
+        this.notificationTypes = _.map(_.keys(serverConstants.data.notifications), (key) => {
+            return {id: key, value: serverConstants.data.notifications[key]};
+        });
     }
     init() {
         this.notifications = _.keyBy(this.accounts.current.notification_preferences, 'type');
@@ -41,7 +37,11 @@ class NotificationPreferencesController {
         });
         return this.accounts.saveCurrent().then(() => {
             this.alerts.addAlert('Notifications saved successfully', 'success');
-            return this.accounts.getCurrent();
+            return this.accounts.getCurrent().then(() => {
+                if (this.setup) {
+                    this.next();
+                }
+            });
         }).catch((data) => {
             _.each(data.errors, (value) => {
                 this.alerts.addAlert(value, 'danger');
@@ -58,12 +58,18 @@ class NotificationPreferencesController {
             this.notifications[fieldName].actions.splice(index, 1);
         }
     }
+    next() {
+        this.$state.go('setup.google');
+    }
 }
 
 const Notifications = {
     controller: NotificationPreferencesController,
-    template: require('./notifications.html')
+    template: require('./notifications.html'),
+    bindings: {
+        setup: '<'
+    }
 };
 
 export default angular.module('mpdx.preferences.notifications.component', [])
-    .component('notificationPreferences', Notifications).name;
+    .component('preferencesNotifications', Notifications).name;
