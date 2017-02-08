@@ -1,3 +1,5 @@
+const numberOfControls = 3;
+
 class SetupPreferencesController {
     constructor(
         $state
@@ -20,12 +22,15 @@ class SetupPreferencesController {
         });
     }
     saveAccount() {
+        this.nav++;
         this.saving = true;
         return this.accounts.saveCurrent().then(() => {
             this.alerts.addAlert('Preferences saved successfully', 'success');
             this.setTab('');
             this.saving = false;
-            this.$state.go('setup.notifications');
+            if (this.nav === numberOfControls) {
+                this.$state.go('setup.notifications');
+            }
         }).catch((data) => {
             _.each(data.errors, (value) => {
                 this.alerts.addAlert(value, 'danger');

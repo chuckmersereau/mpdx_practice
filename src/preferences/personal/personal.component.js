@@ -21,10 +21,6 @@ class PersonalPreferencesController {
 
         this.saving = false;
         this.tabId = '';
-
-        this.languages = _.map(_.keys($window.languageMappingList), (key) => {
-            return _.extend({alias: key}, window.languageMappingList[key]);
-        });
     }
     $onInit() {
         if (this.$stateParams.id) {

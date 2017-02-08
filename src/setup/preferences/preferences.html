@@ -1,10 +1,10 @@
 <h1 ng-if="$ctrl.nav === 0">Let's set your locale!</h1>
 <h1 ng-if="$ctrl.nav === 1">Great progress comes from great goals!</h1>
 <div class="panel-group" role="tablist" ng-model="$ctrl.nav" aria-multiselectable="false" bs-collapse>
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab">
+    <div class="panel panel-default pref-panel">
+        <div class="panel-heading pref-head " role="tab">
             <h4 class="panel-title">
-                <a bs-collapse-toggle>Locale</a>
+                <a bs-collapse-toggle translate>Locale</a>
             </h4>
         </div>
         <div class="panel-collapse" role="tabpanel" bs-collapse-target>
@@ -13,15 +13,27 @@
             </div>
         </div>
     </div>
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab">
+    <div class="panel panel-default pref-panel">
+        <div class="panel-heading pref-head" role="tab">
             <h4 class="panel-title">
-                <a bs-collapse-toggle>Monthly Goal</a>
+                <a bs-collapse-toggle translate>Monthly Goal</a>
             </h4>
         </div>
         <div class="panel-collapse" role="tabpanel" bs-collapse-target>
             <div class="panel-body">
                 <preferences-monthly-goal on-save="$ctrl.saveAccount()"></preferences-monthly-goal>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default pref-panel">
+        <div class="panel-heading pref-head" role="tab">
+            <h4 class="panel-title">
+                <a bs-collapse-toggle translate>Home Country</a>
+            </h4>
+        </div>
+        <div class="panel-collapse" role="tabpanel" bs-collapse-target>
+            <div class="panel-body">
+                <preferences-home-country on-save="$ctrl.saveAccount()"></preferences-home-country>
             </div>
         </div>
     </div>
