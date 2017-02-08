@@ -2,6 +2,7 @@ class PaginationController {
     constructor() {
         this.windowSize = 5;
         this.page = parseInt(this.page);
+        this.totalPages = parseInt(this.totalPages);
     }
 
     getTotalPages() {
