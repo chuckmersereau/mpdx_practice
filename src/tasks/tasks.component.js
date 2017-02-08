@@ -2,9 +2,10 @@ class TasksController {
     tasksFilter;
     tasksService;
     constructor(
-        $log, $rootScope,
+        $log, $rootScope, $stateParams,
         tasksFilter, tasksService
     ) {
+        this.$stateParams = $stateParams;
         this.tasksFilter = tasksFilter;
         this.tasksService = tasksService;
 

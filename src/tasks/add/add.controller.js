@@ -1,16 +1,22 @@
+import uuid from 'uuid/v1';
+
 class AddTaskController {
     selectedContacts;
     contacts;
-    contactsTags;
+    newsletterBoth;
+    newsletterEmail;
+    newsletterPhysical;
     serverConstants;
     tasksService;
+    tasksTags;
 
     constructor(
-        $scope,
+        $scope, $state,
         tasksTags, serverConstants, tasksService, contacts,
         selectedContacts, specifiedAction, specifiedSubject, modalTitle
     ) {
         this.$scope = $scope;
+        this.$state = $state;
         this.selectedContacts = selectedContacts;
         this.contacts = contacts;
         this.tasksTags = tasksTags;
@@ -37,7 +43,7 @@ class AddTaskController {
 
     save() {
         if (this.comment) {
-            this.models.comments.push({body: this.comment});
+            this.models.comments.push({id: uuid(), body: this.comment});
         }
         if (this.emailNotification) {
             this.models.notification_type = 'email';
@@ -60,8 +66,9 @@ class AddTaskController {
         }
         return promise.then(() => {
             this.contacts.load(true);
-            this.contactsTags.load();
+            this.tasksTags.load();
             this.$scope.$hide();
+            this.$state.go('tasks');
         });
     }
 }

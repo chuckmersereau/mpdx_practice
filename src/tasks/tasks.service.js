@@ -164,8 +164,8 @@ class TasksService {
     save(task) {
         return this.api.put(`tasks/${task.id}`, task);
     }
-    submitNewComment(task, newComment) {
-        return this.api.put(`tasks/${task.id}`, {updated_in_db_at: task.updated_in_db_at, activity_comment: {body: newComment}});
+    addComment(task, newComment) {
+        return this.api.post(`tasks/${task.id}/comments`, { body: newComment });
     }
     deleteTask(taskId) {
         return this.api.delete(`tasks/${taskId}`);

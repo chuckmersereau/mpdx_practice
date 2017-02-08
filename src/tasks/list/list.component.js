@@ -86,7 +86,7 @@ class ListController {
     }
     newComment(task) {
         if (this.models.comment) {
-            this.tasksService.submitNewComment(task, this.models.comment).then((data) => {
+            this.tasksService.addComment(task, this.models.comment).then((data) => {
                 task.updated_in_db_at = data.updated_in_db_at;
                 task.comments.push(this.models.comment);
                 this.models.comment = '';

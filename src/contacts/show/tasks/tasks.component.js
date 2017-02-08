@@ -21,7 +21,7 @@ class ContactTasksController {
     }
     newComment(task) {
         if (this.models.comment) {
-            this.tasksService.submitNewComment(task, this.models.comment).then(() => {
+            this.tasksService.addComment(task, this.models.comment).then(() => {
                 this.load();
             });
             this.models.comment = '';
