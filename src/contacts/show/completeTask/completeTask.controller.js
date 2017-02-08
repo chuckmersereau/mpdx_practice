@@ -23,7 +23,7 @@ class CompleteTaskController {
         return this.tasksService.postLogTask(this.task, this.models).then(() => {
             this.$scope.$hide();
 
-            var contactIds = [];
+            let contactIds = [];
             if (this.contact) {
                 contactIds = [this.contact.id];
             }
