@@ -8,7 +8,8 @@ const GoogleImport = {
     controller: GoogleImportController,
     template: require('./google.html'),
     bindings: {
-        preferences: '<'
+        preferences: '<',
+        setup: '<'
     }
 };
 

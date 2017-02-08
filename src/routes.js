@@ -175,6 +175,11 @@ export default class Routes {
             url: '/connect',
             component: 'setupConnect'
         }).state({
+            name: 'setup.google',
+            title: 'Setup Google',
+            url: '/google',
+            component: 'setupGoogle'
+        }).state({
             name: 'setup.merge',
             title: 'Merge Accounts',
             url: '/merge',
