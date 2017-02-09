@@ -1,3 +1,5 @@
+import uuid from 'uuid/v1';
+
 class CompleteTaskController {
     contact;
     modal;
@@ -29,7 +31,7 @@ class CompleteTaskController {
             if (!this.models.comments) {
                 this.models.comments = [];
             }
-            this.models.comments.push({body: this.comment, person: { id: this.users.current.id }});
+            this.models.comments.push({id: uuid(), body: this.comment, person: { id: this.users.current.id }});
         }
         return this.tasksService.save(this.models).then(() => {
             this.$scope.$hide();

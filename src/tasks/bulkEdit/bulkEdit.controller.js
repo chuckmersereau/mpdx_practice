@@ -1,11 +1,14 @@
+import uuid from 'uuid/v1';
+
 class EditTaskController {
     contacts;
     serverConstants;
     tasksTags;
+    users;
 
     constructor(
         $scope,
-        tasksTags, tasksService, serverConstants,
+        tasksTags, tasksService, serverConstants, users,
         selectedTasks, modalCallback
     ) {
         this.$scope = $scope;
@@ -14,6 +17,7 @@ class EditTaskController {
         this.tasksService = tasksService;
         this.selectedTasks = selectedTasks;
         this.modalCallback = modalCallback;
+        this.users = users;
 
         this.constants = {};
 
@@ -30,7 +34,7 @@ class EditTaskController {
             if (!this.models.comments) {
                 this.models.comments = [];
             }
-            this.models.comments.push({body: this.comment});
+            this.models.comments.push({id: uuid(), body: this.comment, person: { id: this.users.current.id }});
         }
         this.tasksService.bulkEditTasks(
             this.selectedTasks,
