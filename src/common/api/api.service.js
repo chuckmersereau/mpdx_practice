@@ -265,7 +265,8 @@ class EntityAttributes {
                 account_list: { ref: 'id' },
                 comments: {
                     ref: 'id',
-                    attributes: ["body", "updated_in_db_at"]
+                    attributes: ["body", "updated_in_db_at", "person"],
+                    person: { ref: 'id' }
                 }
             },
             user: {

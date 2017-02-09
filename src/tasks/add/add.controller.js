@@ -12,7 +12,7 @@ class AddTaskController {
 
     constructor(
         $scope, $state,
-        tasksTags, serverConstants, tasksService, contacts,
+        tasksTags, serverConstants, tasksService, contacts, users,
         selectedContacts, specifiedAction, specifiedSubject, modalTitle
     ) {
         this.$scope = $scope;
@@ -24,6 +24,7 @@ class AddTaskController {
         this.specifiedAction = specifiedAction;
         this.specifiedSubject = specifiedSubject;
         this.tasksService = tasksService;
+        this.users = users;
 
         this.modalTitle = modalTitle;
 
@@ -43,7 +44,7 @@ class AddTaskController {
 
     save() {
         if (this.comment) {
-            this.models.comments.push({id: uuid(), body: this.comment});
+            this.models.comments.push({id: uuid(), body: this.comment, person: { id: this.users.current.id }});
         }
         if (this.emailNotification) {
             this.models.notification_type = 'email';

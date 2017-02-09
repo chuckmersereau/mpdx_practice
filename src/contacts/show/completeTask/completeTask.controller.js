@@ -3,9 +3,11 @@ class CompleteTaskController {
     modal;
     serverConstants;
     tasksService;
+    users;
 
     constructor(
-        $scope, modal, serverConstants, tasksService,
+        $scope,
+        modal, serverConstants, tasksService, users,
         task, contact, taskAction
     ) {
         this.$scope = $scope;
@@ -14,6 +16,7 @@ class CompleteTaskController {
         this.serverConstants = serverConstants;
         this.taskAction = taskAction;
         this.tasksService = tasksService;
+        this.users = users;
 
         // this.serverConstants.fetchConstants(['next_actions', 'results', 'pledge_frequency']);
         this.constants = this.serverConstants.data;
@@ -26,7 +29,7 @@ class CompleteTaskController {
             if (!this.models.comments) {
                 this.models.comments = [];
             }
-            this.models.comments.push({body: this.comment});
+            this.models.comments.push({body: this.comment, person: { id: this.users.current.id }});
         }
         return this.tasksService.save(this.models).then(() => {
             this.$scope.$hide();
