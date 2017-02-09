@@ -3,10 +3,11 @@ class TasksService {
     modal;
     tasksFilter;
     tasksTags;
+    users;
 
     constructor(
         $log, $q,
-        modal, api, tasksFilter, tasksTags
+        modal, api, tasksFilter, tasksTags, users
     ) {
         this.$log = $log;
         this.$q = $q;
@@ -14,6 +15,7 @@ class TasksService {
         this.api = api;
         this.tasksFilter = tasksFilter;
         this.tasksTags = tasksTags;
+        this.users = users;
 
         this.analytics = null;
         this.data = {};
@@ -165,7 +167,8 @@ class TasksService {
         return this.api.put(`tasks/${task.id}`, task);
     }
     addComment(task, newComment) {
-        return this.api.post(`tasks/${task.id}/comments`, { body: newComment });
+        console.error(this.users.current.id);
+        return this.api.post(`tasks/${task.id}/comments`, { body: newComment, person: { id: this.users.current.id } });
     }
     deleteTask(taskId) {
         return this.api.delete(`tasks/${taskId}`);
@@ -174,8 +177,9 @@ class TasksService {
         return this.api.put(`tasks/${task.id}`, {updated_in_db_at: task.updated_in_db_at, starred: !task.starred});
     }
     deleteComment(task, commentId) {
-        task.comments = _.reject(task.comments, {id: commentId});
-        return this.save(task);
+        return this.api.delete(`tasks/${task.id}/comments/${commentId}`).then(() => {
+            task.comments = _.reject(task.comments, {id: commentId});
+        });
     }
     // TODO: API missing
     bulkDeleteTasks(taskIds) {

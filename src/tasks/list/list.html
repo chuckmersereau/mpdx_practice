@@ -73,7 +73,7 @@
       <td colspan="100">
         <div class="col-sm-6 col-sm-offset-6" ng-repeat="comment in task.comments">
           <span style="font-size: 16px">{{ comment.body }}</span>
-          <a ng-click="$ctrl.tasks.deleteComment(task, comment.id)"><i class="fa fa-times pull-right" aria-hidden="true"></i></a>
+          <a ng-click="$ctrl.tasksService.deleteComment(task, comment.id)"><i class="fa fa-times pull-right" aria-hidden="true"></i></a>
           <br/>
           <span style="color: #909b9c">
             - {{ comment.person_name }}, {{ $ctrl.moment(comment.created_at).format('l') }}

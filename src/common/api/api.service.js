@@ -197,7 +197,8 @@ class EntityAttributes {
                 attributes: ["created_at", "updated_at", "amount", "currencies", "description", "donations", "end_date", "name", "total_currency", "contacts", "updated_in_db_at"]
             },
             comments: {
-                attributes: ["body", "updated_in_db_at"]
+                attributes: ["body", "updated_in_db_at", "person"],
+                person: { ref: 'id', pluralizeType: false }
             },
             contacts: {
                 attributes: ["name", "account_list", "created_at", "updated_at", "pledge_amount", "status", "total_donations", "last_donation_date", "first_donation_date", "notes", "notes_saved_at",
