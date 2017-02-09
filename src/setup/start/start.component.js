@@ -6,8 +6,6 @@ class SetupStartController {
     ) {
         this.$state = $state;
         this.users = users;
-
-        this.users.current.preferences.locale = navigator.language || navigator.browserLanguage || navigator.systemLanguage || navigator.userLanguage || 'en-us';
     }
     begin() {
         this.users.saveCurrent().then(() => {
