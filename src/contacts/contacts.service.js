@@ -106,7 +106,7 @@ class ContactsService {
                 page: this.page,
                 per_page: 25,
                 include: 'people,addresses,people.facebook_accounts,people.phone_numbers',
-                sort: 'name ASC'
+                sort: 'name'
             },
             overrideGetAsPost: true
         }).then((data) => {
