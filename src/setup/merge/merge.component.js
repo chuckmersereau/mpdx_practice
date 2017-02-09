@@ -1,4 +1,13 @@
-class SetupMergeController {}
+class SetupMergeController {
+    constructor(
+        $state
+    ) {
+        this.$state = $state;
+    }
+    skip() {
+        this.$state.go('setup.preferences');
+    }
+}
 
 const SetupMerge = {
     template: require('./merge.html'),

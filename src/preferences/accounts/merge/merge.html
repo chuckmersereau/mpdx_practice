@@ -34,7 +34,7 @@
         <input type="checkbox" ng-model="accept"> This account merge cannot be undone, I accept.
     </label>
     </p>
-    <button type="submit" ng-click="$ctrl.merge()" ng-disabled="$ctrl.saving || !accept" class="btn btn-primary btn-actionable">
+    <button type="submit" ng-click="$ctrl.merge()" ng-disabled="$ctrl.saving || !accept || !$ctrl.selected_account_id" class="btn btn-primary btn-actionable">
         <span translate>Merge</span>&nbsp;
         <span class="btn-progress ng-hide" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
     </button>
