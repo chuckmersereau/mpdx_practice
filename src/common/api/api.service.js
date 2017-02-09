@@ -210,7 +210,7 @@ class EntityAttributes {
                     "donation_date", "created_at", "updated_at", "payment_type", "channel", "appeal_id", "appeal_amount", "updated_in_db_at"]
             },
             email_addresses: {
-                attributes: ["person_id", "email", "primary", "created_at", "updated_at", "remote_id", "location", "historic", "email", "updated_in_db_at"]
+                attributes: ["person_id", "email", "primary", "created_at", "updated_at", "remote_id", "location", "historic", "updated_in_db_at"]
             },
             family_relationships: {
                 attributes: ["person_id", "related_person_id", "relationship", "created_at", "updated_at", "updated_in_db_at"]
@@ -223,12 +223,30 @@ class EntityAttributes {
                     "suffix", "gender", "marital_status", "preferences", "sign_in_count", "current_sign_in_at", "last_sign_in_at", "current_sign_in_ip", "last_sign_in_ip", "created_at", "updated_at",
                     "master_person_id", "middle_name", "access_token", "profession", "deceased", "subscribed_to_updates", "optout_enewsletter", "occupation", "employer", "not_duplicated_with",
                     "phone_numbers", "email_addresses", "facebook_accounts", "family_relationships", "linkedin_accounts", "websites", "updated_in_db_at", "winner_id", "loser_id"],
-                email_addresses: { ref: 'id' },
-                facebook_accounts: { ref: 'id' },
-                family_relationships: { ref: 'id' },
-                linkedin_accounts: { ref: 'id' },
-                phone_numbers: { ref: 'id' },
-                websites: { ref: 'id' }
+                email_addresses: {
+                    ref: 'id',
+                    attributes: ["email", "primary", "created_at", "updated_at", "remote_id", "location", "historic", "updated_in_db_at"]
+                },
+                facebook_accounts: {
+                    ref: 'id',
+                    attributes: ["remote_id", "token", "token_expires_at", "created_at", "updated_at", "valid_token", "first_name", "last_name", "authenticated", "downloading", "last_download", "username", "updated_in_db_at"]
+                },
+                family_relationships: {
+                    ref: 'id',
+                    attributes: ["related_person_id", "relationship", "created_at", "updated_at", "updated_in_db_at"]
+                },
+                linkedin_accounts: {
+                    ref: 'id',
+                    attributes: ["remote_id", "token", "secret", "token_expires_at", "created_at", "updated_at", "valid_token", "first_name", "last_name", "authenticated", "downloading", "last_download", "public_url", "updated_in_db_at"]
+                },
+                phone_numbers: {
+                    ref: 'id',
+                    attributes: ["number", "country_code", "location", "primary", "created_at", "updated_at", "remote_id", "historic", "updated_in_db_at"]
+                },
+                websites: {
+                    ref: 'id',
+                    attributes: ["url", "primary", "created_at", "updated_at", "updated_in_db_at"]
+                }
             },
             person_facebook_accounts: {
                 attributes: ["person_id", "remote_id", "token", "token_expires_at", "created_at", "updated_at", "valid_token", "first_name", "last_name", "authenticated", "downloading", "last_download", "username", "updated_in_db_at"]

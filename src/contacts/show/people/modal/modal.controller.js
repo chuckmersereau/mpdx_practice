@@ -1,3 +1,5 @@
+import uuid from 'uuid/v1';
+
 class PersonModalController {
     contact;
     contactPerson;
@@ -70,16 +72,16 @@ class PersonModalController {
     removeNetwork() {
     }
     emailObject() {
-        return {email: '', location: '', _destroy: 0};
+        return {id: uuid(), email: '', location: '', _destroy: 0};
     }
     phoneObject() {
-        return {number: '', location: '', _destroy: 0};
+        return {id: uuid(), number: '', location: '', _destroy: 0};
     }
     networkObject() {
-        return {url: '', kind: '', _destroy: 0};
+        return {id: uuid(), url: '', kind: '', _destroy: 0};
     }
     familyRelationshipObject() {
-        return {related_person_id: 0, relationship: '', _destroy: 0};
+        return {id: uuid(), related_person_id: 0, relationship: '', _destroy: 0};
     }
     delete() {
         this.person._destroy = 1;
