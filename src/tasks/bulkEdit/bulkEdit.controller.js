@@ -4,11 +4,12 @@ class EditTaskController {
     tasksTags;
 
     constructor(
-        $scope,
+        $scope, gettextCatalog,
         tasksTags, tasksService, serverConstants,
         selectedTasks, modalCallback
     ) {
         this.$scope = $scope;
+        this.gettextCatalog = gettextCatalog;
         this.serverConstants = serverConstants;
         this.tasksTags = tasksTags;
         this.tasksService = tasksService;
@@ -39,6 +40,9 @@ class EditTaskController {
             this.$scope.$hide();
             this.modalCallback();
         });
+    }
+    translate(str) {
+        return this.gettextCatalog.getString(str);
     }
 }
 export default angular.module('mpdx.tasks.bulkEdit.controller', [])

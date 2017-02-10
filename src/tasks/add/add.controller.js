@@ -6,11 +6,12 @@ class AddTaskController {
     tasksService;
 
     constructor(
-        $scope,
+        $scope, gettextCatalog,
         tasksTags, serverConstants, tasksService, contacts,
         selectedContacts, specifiedAction, specifiedSubject, modalTitle
     ) {
         this.$scope = $scope;
+        this.gettextCatalog = gettextCatalog;
         this.selectedContacts = selectedContacts;
         this.contacts = contacts;
         this.tasksTags = tasksTags;
@@ -63,6 +64,10 @@ class AddTaskController {
             this.contactsTags.load();
             this.$scope.$hide();
         });
+    }
+
+    translate(str) {
+        return this.gettextCatalog.getString(str);
     }
 }
 export default angular.module('mpdx.tasks.add.controller', [])
