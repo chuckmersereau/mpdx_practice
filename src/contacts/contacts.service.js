@@ -106,7 +106,7 @@ class ContactsService {
                 page: this.page,
                 per_page: 25,
                 include: 'people,addresses,people.facebook_accounts,people.phone_numbers',
-                sort: 'name ASC'
+                sort: 'name'
             },
             overrideGetAsPost: true
         }).then((data) => {
@@ -159,19 +159,12 @@ class ContactsService {
         });
     }
     create(contact) {
-        let contactObj = {
-            name: contact.name,
-            prefill_attributes_on_create: true
-        };
-
-        return this.api.post('contacts', {contact: contactObj}).then((data) => {
-            let contact = _.find(this.data, {id: data.id});
-            if (contact) {
-                _.assign(contact, contact, data); //add missing contact to data
-            } else {
-                this.data.push(contact);
-            }
-            return this.find(data.contact.id);
+        contact.account_list = { id: this.api.account_list_id };
+        return this.api.post('contacts', contact).then((data) => {
+            return this.find(data.id).then((found) => {
+                this.data.push(found);
+                return data;
+            });
         });
     }
     loadMoreContacts() {
