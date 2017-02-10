@@ -70,8 +70,7 @@ class ReconcilerService {
             return;
         }
 
-        //TODO add people.email_addresses once api include recursion is fixed
-        this.api.get('contacts/people/duplicates', {include: 'people,shared_contact,people.phone_numbers', per_page: this.perPage}).then((data) => {
+        this.api.get('contacts/people/duplicates', {include: 'people,shared_contact,people.phone_numbers,people.email_addresses', per_page: this.perPage}).then((data) => {
             this.$log.debug('contacts/people/duplicates', data);
 
             this.duplicatePeople = data;
@@ -86,8 +85,6 @@ class ReconcilerService {
                 let origEmailAddresses = [];
 
                 _.each(duplicatePerson.people, (person, index) => {
-                    //TODO remove once api include recursion is fixed
-                    person.email_addresses = [];
                     if (index === 0) {
                         origName = `${person.first_name} ${person.last_name}`;
                         origPhoneNumbers = _.map(_.filter(person.phone_numbers, phoneNumber => phoneNumber.primary), phoneNumber => phoneNumber.number);
@@ -131,7 +128,7 @@ class ReconcilerService {
         } else if (mergeChoice === 1) {
             this.mergePeople(sharedContact, people[1], people[0]);
         } else if (mergeChoice === 2) {
-            this.ignoreDuplicatePeople(sharedContact, people[0], people[1]);
+            this.ignoreDuplicatePeople(duplicatePerson);
         }
     }
 
@@ -140,17 +137,15 @@ class ReconcilerService {
     }
 
     mergePeople(contact, winner, loser) {
-        const people = [{winner_id: winner.id, loser_id: loser.id}];
-        this.contactPerson.merge(contact, people);
+        this.contactPerson.merge(contact, winner.id, loser.id);
     }
 
     ignoreDuplicateContacts(duplicateContact) {
         this.api.delete(`contacts/duplicates/${duplicateContact.id}`);
     }
 
-    ignoreDuplicatePeople(contact, person1, person2) {
-        let id = `${person1.id}~${person2.id}`;
-        this.api.delete(`contacts/${contact.id}/people/duplicates/${id}/`);
+    ignoreDuplicatePeople(duplicatePerson) {
+        this.api.delete(`contacts/people/duplicates/${duplicatePerson.id}/`);
     }
 }
 export default angular.module('mpdx.services.reconciler', [])
