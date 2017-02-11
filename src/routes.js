@@ -363,7 +363,7 @@ function openNewContactModal(
 
 /*@ngInject*/
 function openNewTaskModal(
-  modal, $state
+  modal, $state, gettextCatalog
 ) {
     modal.open({
         template: require('./tasks/add/add.html'),
@@ -372,7 +372,7 @@ function openNewTaskModal(
             specifiedAction: null,
             specifiedSubject: null,
             selectedContacts: [],
-            modalTitle: 'Add Task'
+            modalTitle: gettextCatalog.getString('Add Task')
         },
         onHide: () => {
             if ($state.current.name === 'tasks.new') {

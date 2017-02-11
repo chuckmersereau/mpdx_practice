@@ -8,6 +8,7 @@
         <select chosen
                 required
                 disable-search="true"
+                data-placeholder-text-single="'Select an Option' | translate"
                 class="form-control"
                 id="action"
                 name="action"
@@ -47,6 +48,7 @@
         <select chosen
                 ng-required="$ctrl.toComplete"
                 disable-search="true"
+                data-placeholder-text-single="'Select an Option' | translate"
                 class="form-control"
                 id='result'
                 ng-options="opt for opt in $ctrl.serverConstants.data.results[$ctrl.model.activity_type] || $ctrl.serverConstants.data.results['default']"
@@ -58,6 +60,7 @@
         <label for="nextAction" translate>Next Action</label>
         <select chosen
                 disable-search="true"
+                data-placeholder-text-single="'Select an Option' | translate"
                 class="form-control"
                 id='nextAction'
                 ng-options="opt for opt in $ctrl.serverConstants.data.next_actions[$ctrl.model.activity_type] || $ctrl.serverConstants.data.next_actions['default']"
