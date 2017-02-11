@@ -44,12 +44,13 @@ class Users {
 
             const promises = [
                 this.accounts.swap(defaultAccountListId),
-                this.accounts.load(), // force load accounts in resolve
-                this.getOptions(true)
+                this.accounts.load() // force load accounts in resolve
             ];
             return this.$q.all(promises).then(() => {
-                this.help.updateUser(this.current);
-                return this.current;
+                return this.getOptions(true).then(() => {
+                    this.help.updateUser(this.current);
+                    return this.current;
+                });
             });
         });
     }
@@ -64,10 +65,10 @@ class Users {
                 return this.createOption('setup_position', 'start').then(() => {
                     data.setup = {};
                     this.current.options = this.mapOptions(data);
-                    this.$state.go('setup.start');
+                    return this.$q.reject({ redirect: 'setup.start' });
                 });
             } else if (this.current.options.setup_position.value !== '') {
-                this.$state.go(`setup.${this.current.options.setup_position.value}`);
+                return this.$q.reject({ redirect: `setup.${this.current.options.setup_position.value}` });
             }
             return this.current.options;
         });

@@ -7,7 +7,7 @@ export default class Routes {
             abstract: true,
             template: '<div ui-view=""></div>',
             resolve: {
-                userResolve: /*@ngInject*/ (users) => users.getCurrent(),
+                //userResolve: /*@ngInject*/ (users) => users.getCurrent(), // handled in app.run now
                 constants: /*@ngInject*/ (serverConstants) => serverConstants.load()
             }
         }).state({
