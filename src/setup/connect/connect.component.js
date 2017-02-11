@@ -10,6 +10,7 @@ class SetupConnectController {
         this.accounts = accounts;
         this.api = api;
         this.serverConstants = serverConstants;
+        this.users = users;
 
         this.lastAdded = _.get(_.last(users.organizationAccounts), 'name', null);
 
@@ -17,6 +18,10 @@ class SetupConnectController {
             return {id: key, val: serverConstants.data.organizations[key]};
         });
         this.reset();
+    }
+    $onInit() {
+        this.users.current.options.setup_position.value = 'start';
+        this.users.setOption(this.users.current.options.setup_position);
     }
     connect() {
         this.connecting = true;

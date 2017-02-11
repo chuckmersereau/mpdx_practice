@@ -52,7 +52,8 @@ class Api {
         headers = {},
         promise = null,
         attempts = 0,
-        overrideGetAsPost = false
+        overrideGetAsPost = false,
+        type = null
     }) {
         if (!promise) {
             promise = this.$q.defer();
@@ -93,27 +94,28 @@ class Api {
             headers: headers,
             paramSerializer: '$httpParamSerializerJQLike',
             transformRequest: (data) => {
-                let key;
                 let params = _.clone(jsonApiParams);
                 if (method === 'put' || method === 'post') {
-                    let arr = url.split('/');
-                    if (method === 'put' && arr.length % 2 === 0) {
-                        key = arr[arr.length - 2];
-                    } else {
-                        key = arr[arr.length - 1];
+                    if (!type) {
+                        let arr = url.split('/');
+                        if (method === 'put' && arr.length % 2 === 0) {
+                            type = arr[arr.length - 2];
+                        } else {
+                            type = arr[arr.length - 1];
+                        }
                     }
-                    if (_.has(this.entityAttributes, key)) {
-                        _.extend(params, this.entityAttributes[key]);
+                    if (_.has(this.entityAttributes, type)) {
+                        _.extend(params, this.entityAttributes[type]);
                     } else {
-                        this.$log.error(`undefined attributes for model: ${key} in api.service`);
+                        this.$log.error(`undefined attributes for model: ${type} in api.service`);
                     }
                 }
                 if (_.isArray(data)) {
                     return angular.toJson({
-                        data: _.map(data, item => serialize(key, params, item, method))
+                        data: _.map(data, item => serialize(type, params, item, method))
                     });
                 } else {
-                    return angular.toJson(serialize(key, params, data, method));
+                    return angular.toJson(serialize(type, params, data, method));
                 }
             },
             transformResponse: appendTransform(this.$http.defaults.transformResponse, (data) => {
@@ -267,6 +269,9 @@ class EntityAttributes {
             user: {
                 attributes: ["first_name", "last_name", "preferences", "setup", "email_addresses", "access_token", "time_zone", "locale", "updated_at", "updated_in_db_at"],
                 email_addresses: { ref: 'id' }
+            },
+            user_options: {
+                attributes: ["key", "value", "updated_in_db_at"]
             }
         };
     }

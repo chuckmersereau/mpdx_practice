@@ -6,12 +6,13 @@ class Users {
     organizationAccounts;
 
     constructor(
-        $log, $q, $rootScope,
+        $log, $q, $rootScope, $state,
         accounts, api, help, locale
     ) {
         this.$log = $log;
         this.$q = $q;
         this.$rootScope = $rootScope;
+        this.$state = $state;
         this.accounts = accounts;
         this.api = api;
         this.help = help;
@@ -41,13 +42,50 @@ class Users {
             this.locale.change(locale);
             const defaultAccountListId = _.get(response, 'preferences.default_account_list').toString();
 
-            return this.accounts.swap(defaultAccountListId).then(() => {
+            const promises = [
+                this.accounts.swap(defaultAccountListId),
+                this.accounts.load(), // force load accounts in resolve
+                this.getOptions(true)
+            ];
+            return this.$q.all(promises).then(() => {
                 this.help.updateUser(this.current);
-                return this.accounts.load().then(() => { // force load accounts in resolve
-                    return this.current;
-                });
+                return this.current;
             });
         });
+    }
+    getOptions(reset = false) {
+        if (this.current.options && !reset) {
+            return this.$q.resolve();
+        }
+        return this.api.get('user/options').then((data) => {
+            this.current.options = this.mapOptions(data);
+            this.$log.debug('user/options', this.current.options);
+            if (!_.has(this.current.options, 'setup_position')) { //force first time setup
+                return this.createOption('setup_position', 'start').then(() => {
+                    data.setup = {};
+                    this.current.options = this.mapOptions(data);
+                    this.$state.go('setup.start');
+                });
+            } else if (this.current.options.setup_position.value !== '') {
+                this.$state.go(`setup.${this.current.options.setup_position.value}`);
+            }
+            return this.current.options;
+        });
+    }
+    mapOptions(options) {
+        return _.keyBy(options, 'key');
+    }
+    createOption(key, value) {
+        return this.api.post({ url: `user/options`, data: {key: key, value: value}, type: 'user_options' }); //use jsonapi key here since it doesn't match endpoint
+    }
+    deleteOption(option) {
+        return this.api.delete(`user/options/${option}`);
+    }
+    getOption(key) {
+        return this.api.get(`user/options/${key}`);
+    }
+    setOption(option) {
+        return this.api.put({ url: `user/options/${option.key}`, data: option, type: 'user_options' }); //use jsonapi key here since it doesn't match endpoint
     }
     listOrganizationAccounts() {
         return this.api.get(`user/organization_accounts`).then((data) => {

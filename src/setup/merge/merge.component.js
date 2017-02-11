@@ -1,8 +1,12 @@
 class SetupMergeController {
     constructor(
-        $state
+        $state,
+        users
     ) {
         this.$state = $state;
+
+        users.current.options.setup_position.value = 'merge';
+        users.setOption(users.current.options.setup_position);
     }
     skip() {
         this.$state.go('setup.preferences');
