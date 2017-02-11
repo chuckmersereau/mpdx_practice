@@ -8,9 +8,9 @@
           {{ $ctrl.title }}
         </span>
         <span class="actions task-actions" ng-show="$ctrl.selected.length">
-          <a class="btn btn-xs btn-secondary" ng-click="$ctrl.bulkCompleteTasks()" ng-hide="$ctrl.key === 'allCompleted'">Complete</a>
-          <a class="btn btn-xs btn-secondary" ng-click="$ctrl.bulkDeleteTasks()">Delete</a>
-          <a class="btn btn-xs btn-secondary" ng-click="$ctrl.openBulkEditTaskModal()">Edit</a>
+          <a class="btn btn-xs btn-secondary" ng-click="$ctrl.bulkCompleteTasks()" ng-hide="$ctrl.key === 'allCompleted'" translate>Complete</a>
+          <a class="btn btn-xs btn-secondary" ng-click="$ctrl.bulkDeleteTasks()" translate>Delete</a>
+          <a class="btn btn-xs btn-secondary" ng-click="$ctrl.openBulkEditTaskModal()" translate>Edit</a>
         </span>
         <select
           ng-model="$ctrl.tasksService.meta[$ctrl.key].pagination.per_page"
@@ -20,14 +20,14 @@
         </select>
         <span
           class="tasks-per-page-description"
-          style="float: right">
+          style="float: right" translate>
           Show:
         </span>
-        <a class="btn btn-xs btn-secondary pull-right" ng-click="$ctrl.toggleAll()" style="margin-right: 12px">Select All</a>
+        <a class="btn btn-xs btn-secondary pull-right" ng-click="$ctrl.toggleAll()" style="margin-right: 12px" translate>Select All</a>
       </th>
     </tr>
     <tr ng-if="$ctrl.tasksService.data[$ctrl.key].length === 0">
-      <td class="text-center" colspan="100">
+      <td class="text-center" colspan="100" translate>
         Task list empty
       </td>
     </tr>
@@ -46,7 +46,7 @@
         <a ng-click="$ctrl.starTask(task)"><i class="fa fa-lg starred" ng-class="task.starred ? 'fa-star' : 'fa-star-o'" ></i></a>
       </td>
       <td class="col-sm-2">
-        {{ task.activity_type }}
+        {{ task.activity_type | translate }}
       </td>
       <td class="col-sm-2">
           {{ task.no_date ? '' : $ctrl.moment(task.due_date).format('l hh:mm a') }}
@@ -81,7 +81,7 @@
         </div>
         <form class="form-inline">
           <input style="width: 85%" class="form-control" ng-model="$ctrl.models.comment"/>
-          <button class="btn btn-primary" ng-click="$ctrl.newComment(task)">Add Comment</button>
+          <button class="btn btn-primary" ng-click="$ctrl.newComment(task)" translate>Add Comment</button>
         </form>
       </td>
     </tr>

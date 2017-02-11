@@ -3,7 +3,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="action" translate>Likely to Give</label>
-                <select chosen disable-search="true" class="form-control" id="action" ng-options="opt for opt in $ctrl.constants.bulk_update_options.likely_to_give" ng-model="$ctrl.models.likelyToGive">
+                <select chosen disable-search="true" data-placeholder-text-single="'Select an Option' | translate" class="form-control" id="action" ng-options="opt for opt in $ctrl.constants.bulk_update_options.likely_to_give" ng-model="$ctrl.models.likelyToGive">
                     <option value=""></option>
                 </select>
             </div>
@@ -11,7 +11,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="status" translate>Status</label>
-                <select chosen disable-search="true" class="form-control" id="status" ng-options="opt for opt in $ctrl.constants.bulk_update_options.status" ng-model="$ctrl.models.status">
+                <select chosen disable-search="true" data-placeholder-text-single="'Select an Option' | translate" class="form-control" id="status" ng-options="opt for opt in $ctrl.constants.bulk_update_options.status" ng-model="$ctrl.models.status">
                     <option value=""></option>
                 </select>
             </div>
@@ -21,7 +21,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="newsletter" translate>Newsletter</label>
-                <select chosen disable-search="true" class="form-control" id="newsletter" ng-options="opt for opt in $ctrl.constants.bulk_update_options.send_newsletter" ng-model="$ctrl.models.sendNewsletter">
+                <select chosen disable-search="true" data-placeholder-text-single="'Select an Option' | translate" class="form-control" id="newsletter" ng-options="opt for opt in $ctrl.constants.bulk_update_options.send_newsletter" ng-model="$ctrl.models.sendNewsletter">
                     <option value=""></option>
                 </select>
             </div>
@@ -42,7 +42,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="commitment-received" translate>Commitment Received</label>
-                <select chosen disable-search="true" class="form-control" id="commitment-received" ng-options="opt for opt in $ctrl.constants.bulk_update_options.pledge_received" ng-model="$ctrl.models.pledgeReceived">
+                <select chosen disable-search="true" data-placeholder-text-single="'Select an Option' | translate" class="form-control" id="commitment-received" ng-options="opt for opt in $ctrl.constants.bulk_update_options.pledge_received" ng-model="$ctrl.models.pledgeReceived">
                     <option value=""></option>
                 </select>
             </div>
@@ -50,7 +50,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="commitment-currency" translate>Commitment Currency</label>
-                <select chosen disable-search="true" class="form-control" id="commitment-currency" ng-options="k as k for (k, v) in $ctrl.constants.bulk_update_options.pledge_currency" ng-model="$ctrl.models.pledgeCurrency">
+                <select chosen disable-search="true" data-placeholder-text-single="'Select an Option' | translate" class="form-control" id="commitment-currency" ng-options="k as k for (k, v) in $ctrl.constants.bulk_update_options.pledge_currency" ng-model="$ctrl.models.pledgeCurrency">
                     <option value=""></option>
                 </select>
             </div>
@@ -60,7 +60,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="language" translate>Language</label>
-                <select chosen disable-search="true" class="form-control" id="language" ng-options="opt[0] for opt in $ctrl.constants.bulk_update_options.locale" ng-model="$ctrl.models.locale">
+                <select chosen disable-search="true" data-placeholder-text-single="'Select an Option' | translate" class="form-control" id="language" ng-options="opt[0] for opt in $ctrl.constants.bulk_update_options.locale" ng-model="$ctrl.models.locale">
                     <option value=""></option>
                 </select>
             </div>

@@ -69,14 +69,14 @@
             <div class="col-md-12">
                 <div class="pull-left" ng-show="$ctrl.isInState('contact')">
                     <div class="section"><a ui-sref="preferences.imports" translate>Import Contacts</a></div>
-                    <div class="section" translate>
-                        <a class="reconcile-contacts" ui-sref="contacts.reconcile_partners" translate>
-                            Reconcile Partners <span class="badge">{{$ctrl.contactReconciler.duplicateContactsTotal}}</span>
+                    <div class="section">
+                        <a class="reconcile-contacts" ui-sref="contacts.reconcile_partners">
+                            <translate>Reconcile Partners</translate> <span class="badge">{{$ctrl.contactReconciler.duplicateContactsTotal}}</span>
                         </a>
                     </div>
-                    <div class="section" translate>
-                        <a class="reconcile-contacts" ui-sref="contacts.reconcile_individuals" translate>
-                            Reconcile Individuals <span class="badge">{{$ctrl.contactReconciler.duplicatePeopleTotal}}</span>
+                    <div class="section">
+                        <a class="reconcile-contacts" ui-sref="contacts.reconcile_individuals">
+                            <translate>Reconcile Individuals</translate> <span class="badge">{{$ctrl.contactReconciler.duplicatePeopleTotal}}</span>
                         </a>
                     </div>
                 </div>

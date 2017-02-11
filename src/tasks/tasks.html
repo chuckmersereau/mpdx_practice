@@ -13,7 +13,7 @@
     </div>
     <tasks-list
         key="overdue"
-        title="Overdue"
+        title="{{ 'Overdue' | translate }}"
         color="#f9b625"
         parent-component="'tasksList'"
         tags="$ctrl.tasksTags.selectedTags"
@@ -22,7 +22,7 @@
         ng-if="['all', 'overdue'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
     <tasks-list
         key="today"
-        title="Today"
+        title="{{ 'Today' | translate }}"
         color="#f6921e"
         parent-component="'tasksList'"
         tags="$ctrl.tasksTags.selectedTags"
@@ -31,7 +31,7 @@
         ng-if="['all', 'today'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
     <tasks-list
         key="starred"
-        title="Starred"
+        title="{{ 'Starred' | translate }}"
         color="#56aa00"
         parent-component="'tasksList'"
         tags="$ctrl.tasksTags.selectedTags"
@@ -41,7 +41,7 @@
         ng-if="['all', 'starred'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
     <tasks-list
         key="tomorrow"
-        title="Tomorrow"
+        title="{{ 'Tomorrow' | translate }}"
         color="#007398"
         parent-component="'tasksList'"
         tags="$ctrl.tasksTags.selectedTags"
@@ -50,7 +50,7 @@
         ng-if="['all', 'upcoming'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
     <tasks-list
         key="upcoming"
-        title="Upcoming"
+        title="{{ 'Upcoming' | translate }}"
         color="#007398"
         parent-component="'tasksList'"
         tags="$ctrl.tasksTags.selectedTags"
@@ -59,7 +59,7 @@
         ng-if="['all', 'upcoming'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
     <tasks-list
         key="noDueDate"
-        title="No Date"
+        title="{{ 'No Date' | translate }}"
         color="#3eb1c8"
         pageparent-component="'tasksList'"
         tags="$ctrl.tasksTags.selectedTags"
@@ -68,7 +68,7 @@
         ng-if="['all', 'noDate'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
     <tasks-list
         key="allCompleted"
-        title="History"
+        title="{{ 'History' | translate }}"
         color="#999999"
         parent-component="'tasksList'"
         tags="$ctrl.tasksTags.selectedTags"
