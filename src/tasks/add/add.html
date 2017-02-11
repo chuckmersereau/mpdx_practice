@@ -10,7 +10,7 @@
                 disable-search="true"
                 class="form-control"
                 id='action'
-                ng-options="opt as $ctrl.translate(opt) for opt in $ctrl.constants.actions"
+                ng-options="opt as opt for opt in $ctrl.constants.actions"
                 ng-model="$ctrl.models.activity_type">
             <option value=""></option>
         </select>

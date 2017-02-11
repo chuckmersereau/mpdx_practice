@@ -2,11 +2,9 @@ class TasksController {
     tasksFilter;
     tasksService;
     constructor(
-        $log, $rootScope, gettextCatalog,
+        $log, $rootScope,
         tasksFilter, tasksService
     ) {
-        this.gettextCatalog = gettextCatalog;
-
         this.tasksFilter = tasksFilter;
         this.tasksService = tasksService;
 
@@ -27,9 +25,6 @@ class TasksController {
             _.assign(this.tasksFilter.params, this.tasksFilter.params, this.$stateParams.filters);
             this.tasksFilter.change();
         }
-    }
-    translate(str) {
-        return this.gettextCatalog.getString(str);
     }
 }
 
