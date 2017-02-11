@@ -55,7 +55,7 @@
             <div id="contact-tabs" class="horizontal-tab-sortable">
                 <div class="sortable-row left-tabs" as-sortable="$ctrl.sortableOptions" data-ng-model="$ctrl.tabsLabels">
                     <div ng-repeat="item in $ctrl.tabsLabels" as-sortable-item ng-class="{'active-item': $ctrl.activeTab==item.key}">
-                        <a as-sortable-item-handle ng-click="$ctrl.activeTab=item.key">{{ item.value }}</a>
+                        <a as-sortable-item-handle ng-click="$ctrl.activeTab=item.key">{{ item.value | translate }}</a>
                     </div>
                 </div>
 
