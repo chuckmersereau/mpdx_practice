@@ -8,9 +8,8 @@ class SetupStartController {
         this.users = users;
     }
     $onInit() {
-        console.log(this.users.current.options);
-        // this.users.current.options.setup_position.value = 'start';
-        // this.users.setOption(this.users.current.options.setup_position);
+        this.users.current.options.setup_position.value = 'start';
+        this.users.setOption(this.users.current.options.setup_position);
     }
     begin() {
         this.users.saveCurrent().then(() => {

@@ -1,15 +1,18 @@
 const numberOfControls = 3;
 
 class SetupPreferencesController {
+    users;
     constructor(
         $state,
         users
     ) {
         this.$state = $state;
+        this.users = users;
         this.nav = 0;
-
-        users.current.options.setup_position.value = 'preferences';
-        users.setOption(users.current.options.setup_position);
+    }
+    $onInit() {
+        this.users.current.options.setup_position.value = 'preferences';
+        this.users.setOption(this.users.current.options.setup_position);
     }
     save() {
         this.nav++;

@@ -1,9 +1,13 @@
 class SetupNotificationsController {
+    users;
     constructor(
         users
     ) {
-        users.current.options.setup_position.value = 'notifications';
-        users.setOption(users.current.options.setup_position);
+        this.users = users;
+    }
+    $onInit() {
+        this.users.current.options.setup_position.value = 'notifications';
+        this.users.setOption(this.users.current.options.setup_position);
     }
 }
 

@@ -26,7 +26,7 @@ class Users {
             this.listOrganizationAccounts();
         });
     }
-    getCurrent(reset = false) {
+    getCurrent(reset = false, forRouting = false) {
         if (this.current && !reset) {
             return this.$q.resolve();
         }
@@ -35,7 +35,9 @@ class Users {
             this.$log.debug('current user: ', response);
 
             if (reset) {
-                return this.current;
+                return this.getOptions(reset, forRouting).then(() => {
+                    return this.current;
+                });
             }
 
             const locale = _.get(response, 'preferences.locale', 'en');
@@ -47,28 +49,30 @@ class Users {
                 this.accounts.load() // force load accounts in resolve
             ];
             return this.$q.all(promises).then(() => {
-                return this.getOptions(true).then(() => {
+                return this.getOptions(true, forRouting).then(() => {
                     this.help.updateUser(this.current);
                     return this.current;
                 });
             });
         });
     }
-    getOptions(reset = false) {
+    getOptions(reset = false, forRouting = false) {
         if (this.current.options && !reset) {
             return this.$q.resolve();
         }
         return this.api.get('user/options').then((data) => {
             this.current.options = this.mapOptions(data);
             this.$log.debug('user/options', this.current.options);
-            if (!_.has(this.current.options, 'setup_position')) { //force first time setup
-                return this.createOption('setup_position', 'start').then(() => {
-                    data.setup = {};
-                    this.current.options = this.mapOptions(data);
-                    return this.$q.reject({ redirect: 'setup.start' });
-                });
-            } else if (this.current.options.setup_position.value !== '') {
-                return this.$q.reject({ redirect: `setup.${this.current.options.setup_position.value}` });
+            if (forRouting) {
+                if (!_.has(this.current.options, 'setup_position')) { //force first time setup
+                    return this.createOption('setup_position', 'start').then(() => {
+                        data.setup = {};
+                        this.current.options = this.mapOptions(data);
+                        return this.$q.reject({redirect: 'setup.start'});
+                    });
+                } else if (this.current.options.setup_position.value !== '') {
+                    return this.$q.reject({redirect: `setup.${this.current.options.setup_position.value}`});
+                }
             }
             return this.current.options;
         });

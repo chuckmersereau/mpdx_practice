@@ -4,9 +4,11 @@ class SetupMergeController {
         users
     ) {
         this.$state = $state;
-
-        users.current.options.setup_position.value = 'merge';
-        users.setOption(users.current.options.setup_position);
+        this.users = users;
+    }
+    $onInit() {
+        this.users.current.options.setup_position.value = 'merge';
+        this.users.setOption(this.users.current.options.setup_position);
     }
     skip() {
         this.$state.go('setup.preferences');

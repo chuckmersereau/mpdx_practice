@@ -222,7 +222,8 @@ class EntityAttributes {
                 attributes: ["contact_id", "notification_type_id", "event_date", "cleared", "created_at", "updated_at", "donation_id", "updated_in_db_at"]
             },
             organization_accounts: {
-                attributes: ["organization_id", "password", "username"]
+                attributes: ["organization", "password", "username"],
+                organization: {ref: 'id'}
             },
             people: {
                 attributes: ["first_name", "legal_first_name", "last_name", "birthday_month", "birthday_year", "birthday_day", "anniversary_month", "anniversary_year", "anniversary_day", "title",

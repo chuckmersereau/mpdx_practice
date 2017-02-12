@@ -2,6 +2,7 @@ class SetupConnectController {
     accounts;
     api;
     serverConstants;
+    users;
     constructor(
         $state,
         accounts, api, serverConstants, users
@@ -12,16 +13,15 @@ class SetupConnectController {
         this.serverConstants = serverConstants;
         this.users = users;
 
-        this.lastAdded = _.get(_.last(users.organizationAccounts), 'name', null);
-
         this.organizations = _.map(_.keys(serverConstants.data.organizations), (key) => {
             return {id: key, val: serverConstants.data.organizations[key]};
         });
         this.reset();
     }
     $onInit() {
-        this.users.current.options.setup_position.value = 'start';
+        this.users.current.options.setup_position.value = 'connect';
         this.users.setOption(this.users.current.options.setup_position);
+        this.lastAdded = _.get(_.last(this.users.organizationAccounts), 'name', null);
     }
     connect() {
         this.connecting = true;
@@ -30,7 +30,9 @@ class SetupConnectController {
         this.api.post(`user/organization_accounts`, {
             username: this.username,
             password: this.password,
-            organization_id: this.organization
+            organization: {
+                id: this.organization.id
+            }
         }).then(() => {
             this.connecting = false;
             //save stuff

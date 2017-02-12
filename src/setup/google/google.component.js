@@ -1,9 +1,13 @@
 class SetupGoogleController {
+    users;
     constructor(
         users
     ) {
-        users.current.options.setup_position.value = 'google';
-        users.setOption(users.current.options.setup_position);
+        this.users = users;
+    }
+    $onInit() {
+        this.users.current.options.setup_position.value = 'google';
+        this.users.setOption(this.users.current.options.setup_position);
     }
 }
 
