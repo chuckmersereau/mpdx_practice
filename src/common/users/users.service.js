@@ -66,7 +66,7 @@ class Users {
             if (forRouting) {
                 if (!_.has(this.current.options, 'setup_position')) { //force first time setup
                     return this.createOption('setup_position', 'start').then(() => {
-                        data.setup = {};
+                        data.setup_position = {};
                         this.current.options = this.mapOptions(data);
                         return this.$q.reject({redirect: 'setup.start'});
                     });

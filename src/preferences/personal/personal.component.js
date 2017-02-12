@@ -7,7 +7,7 @@ class PersonalPreferencesController {
 
     constructor(
         $state, $stateParams, $window, gettextCatalog,
-        accounts, api, alerts, locale, users
+        accounts, api, alerts, locale, serverConstants, users
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
@@ -21,6 +21,10 @@ class PersonalPreferencesController {
 
         this.saving = false;
         this.tabId = '';
+
+        this.currencies = _.map(_.keys(serverConstants.data.pledge_currencies), key => {
+            return { key: key.toString().toUpperCase(), value: serverConstants.data.pledge_currencies[key] };
+        });
     }
     $onInit() {
         if (this.$stateParams.id) {

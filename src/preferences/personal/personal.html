@@ -469,7 +469,7 @@
                         <span translate>Default Currency</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{$ctrl.users.current.preferences.currency}}
+                        {{$ctrl.accounts.current.currency}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
@@ -485,9 +485,11 @@
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group">
                                 <label for="currency" translate>Default Currency</label>
-                                <select id="currency" class="form-control" ng-model="$ctrl.users.current.preferences.currency" chosen>
-                                    <option ng-repeat="currency in  $ctrl.currencies">{{currency}}</option>
+                                <select id="currency" class="form-control" ng-model="$ctrl.accounts.current.currency"
+                                        ng-options="currency.key as currency.value for currency in $ctrl.currencies" chosen>
+                                    <option value=""></option>
                                 </select>
+
                             </div>
                             <button type="submit" ng-click="$ctrl.saveAccount()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                                 <span translate>Save</span>&nbsp;
