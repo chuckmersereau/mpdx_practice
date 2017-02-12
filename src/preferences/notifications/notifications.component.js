@@ -7,12 +7,13 @@ class NotificationPreferencesController {
 
     constructor(
         $rootScope, $state,
-        accounts, alerts, serverConstants
+        accounts, alerts, serverConstants, users
     ) {
         this.$state = $state;
         this.accounts = accounts;
         this.alerts = alerts;
         this.serverConstants = serverConstants;
+        this.users = users;
 
         this.saving = false;
 
@@ -59,7 +60,10 @@ class NotificationPreferencesController {
         }
     }
     next() {
-        this.$state.go('setup.google');
+        this.users.current.options.setup_position.value = '';
+        this.users.setOption(this.users.current.options.setup_position).then(() => {
+            this.$state.go('home');
+        });
     }
 }
 
