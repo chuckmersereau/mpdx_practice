@@ -90,7 +90,9 @@ class Users {
         return this.api.get(`user/options/${key}`);
     }
     setOption(option) {
-        return this.api.put({ url: `user/options/${option.key}`, data: option, type: 'user_options' }); //use jsonapi key here since it doesn't match endpoint
+        return this.api.put({ url: `user/options/${option.key}`, data: option, type: 'user_options' }).then((data) => {
+            option.updated_in_db_at = data.updated_in_db_at;
+        }); //use jsonapi key here since it doesn't match endpoint
     }
     listOrganizationAccounts() {
         return this.api.get(`user/organization_accounts`).then((data) => {

@@ -40,14 +40,15 @@ class SetupPreferencesController {
             this.alerts.addAlert('Preferences saved successfully', 'success');
             this.setTab('');
             this.saving = false;
-            if (this.nav === numberOfControls) {
-                this.$state.go('setup.notifications');
-            }
         }).catch((data) => {
             _.each(data.errors, (value) => {
                 this.alerts.addAlert(value, 'danger');
             });
             this.saving = false;
+        }).finally(() => {
+            if (this.nav === numberOfControls) {
+                this.$state.go('setup.notifications');
+            }
         });
     }
 }
