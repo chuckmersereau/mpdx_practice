@@ -1,13 +1,18 @@
 const numberOfControls = 3;
 
 class SetupPreferencesController {
+    accounts;
+    alerts;
     users;
     constructor(
         $state,
-        users
+        accounts, alerts, users
     ) {
         this.$state = $state;
+        this.accounts = accounts;
+        this.alerts = alerts;
         this.users = users;
+
         this.nav = 0;
     }
     $onInit() {
