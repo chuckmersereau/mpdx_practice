@@ -4,6 +4,7 @@ class NotificationPreferencesController {
     notifications;
     serverConstants;
     setup;
+    users;
 
     constructor(
         $rootScope, $state,
@@ -23,13 +24,13 @@ class NotificationPreferencesController {
             this.init();
         });
 
-        console.error('preferences/notifications: TODO: FIX constants from API');
         this.notificationTypes = _.map(_.keys(serverConstants.data.notifications), (key) => {
             return {id: key, value: serverConstants.data.notifications[key]};
         });
     }
     init() {
-        this.notifications = _.keyBy(this.accounts.current.notification_preferences, 'type');
+        this.notifications = _.keyBy(this.accounts.current.notification_preferences, 'id');
+        console.log(this.notifications);
     }
     save() {
         this.saving = true;
@@ -51,13 +52,21 @@ class NotificationPreferencesController {
             this.saving = false;
         });
     }
-    toggleNotification(fieldName, notificationType) {
-        const index = this.notifications[fieldName].actions.indexOf(notificationType);
-        if (index === -1) {
-            this.notifications[fieldName].actions.push(notificationType);
-        } else {
-            this.notifications[fieldName].actions.splice(index, 1);
+    toggleNotification(e, id, notificationType) {
+        console.log(e);
+        console.log(id);
+        const index = _.findIndex(this.notifications[id].actions, notificationType);
+        if (e.target.checked && index !== null) {
+            this.notifications[id].actions.push(notificationType);
+        } else if (index !== null) {
+            this.notifications[id].actions.splice(index, 1);
         }
+
+        // if (index === -1) {
+        //     this.notifications[fieldName].actions.push(notificationType);
+        // } else {
+        //     this.notifications[fieldName].actions.splice(index, 1);
+        // }
     }
     next() {
         this.users.current.options.setup_position.value = '';
