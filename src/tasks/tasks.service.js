@@ -1,3 +1,5 @@
+import uuid from 'uuid/v1';
+
 class TasksService {
     api;
     modal;
@@ -115,7 +117,8 @@ class TasksService {
             url: 'tasks',
             data: {
                 filters: filters,
-                include: 'comments,contacts,comments.people',
+                include: 'comments,contacts',
+                'fields[contacts]': 'name',
                 page: this.meta[collection].pagination.page,
                 per_page: this.meta[collection].pagination.per_page,
                 sort: this.meta[collection].pagination.order
@@ -191,8 +194,14 @@ class TasksService {
         });
         return this.api.put('tasks/bulk', tasks);
     }
-    bulkEditTasks(tasks, model) {
+    bulkEditTasks(tasks, model, comment) {
         _.each(tasks, (task) => {
+            if (comment) {
+                if (!task.comments) {
+                    task.comments = [];
+                }
+                task.comments.push({id: uuid(), body: comment, person: { id: this.users.current.id }});
+            }
             _.assign(task, task, model);
         });
         return this.api.put('tasks/bulk', tasks);

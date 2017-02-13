@@ -190,7 +190,7 @@ class EntityAttributes {
                 attributes: ["created_at", "updated_at", "accepted_at", "accepted_by_user_id", "account_list_id", "cancelled_by_user_id", "code", "invited_by_user_id", "recipient_email", "updated_at", "updated_in_db_at"]
             },
             account_lists: {
-                attributes: ["creator_id", "created_at", "default_organization_id", "monthly_goal", "name", "notification_preferences", "settings", "total_pledges", "updated_at", "updated_in_db_at"],
+                attributes: ["creator_id", "created_at", "monthly_goal", "name", "notification_preferences", "settings", "total_pledges", "updated_at", "updated_in_db_at"],
                 notification_preferences: { ref: 'id' }
             },
             addresses: {
