@@ -199,6 +199,10 @@ class EntityAttributes {
             appeals: {
                 attributes: ["created_at", "updated_at", "amount", "currencies", "description", "donations", "end_date", "name", "total_currency", "contacts", "updated_in_db_at"]
             },
+            comments: {
+                attributes: ["body", "updated_in_db_at", "person"],
+                person: { ref: 'id', pluralizeType: false }
+            },
             contacts: {
                 attributes: ["name", "account_list", "created_at", "updated_at", "pledge_amount", "status", "total_donations", "last_donation_date", "first_donation_date", "notes", "notes_saved_at",
                     "full_name", "greeting", "website", "pledge_frequency", "pledge_start_date", "next_ask", "likely_to_give", "church_name", "send_newsletter", "direct_deposit", "magazine", "last_activity",
@@ -265,7 +269,12 @@ class EntityAttributes {
                 attributes: ["account_list", "activity_type", "location", "start_at", "end_at", "type", "created_at", "updated_at", "completed", "completed_at", "comments", "due_date",
                     "notification_id", "next_action", "no_date", "notification_type", "notification_time_before", "remote_id", "result", "source", "starred", "subject",
                     "notification_time_unit", "notification_scheduled", "updated_in_db_at"],
-                account_list: { ref: 'id' }
+                account_list: { ref: 'id' },
+                comments: {
+                    ref: 'id',
+                    attributes: ["body", "updated_in_db_at", "person"],
+                    person: { ref: 'id' }
+                }
             },
             user: {
                 attributes: ["first_name", "last_name", "preferences", "setup", "email_addresses", "access_token", "time_zone", "locale", "updated_at", "updated_in_db_at"],

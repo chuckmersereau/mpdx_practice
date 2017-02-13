@@ -20,12 +20,12 @@
                 class="form-control"
                 id='nextActions'
                 ng-options="opt for opt in $ctrl.serverConstants.data.nextActions[ $ctrl.taskAction ]"
-                ng-model="$ctrl.models.nextAction">
+                ng-model="$ctrl.models.next_action">
             <option value=""></option>
         </select>
     </div>
     <div class="form-group">
         <label for="comment" translate>Comment</label>
-        <input class="form-control" id='comment' ng-model="$ctrl.models.comment"/>
+        <input class="form-control" id='comment' ng-model="$ctrl.comment"/>
     </div>
 </modal>

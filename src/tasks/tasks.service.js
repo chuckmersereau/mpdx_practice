@@ -3,10 +3,11 @@ class TasksService {
     modal;
     tasksFilter;
     tasksTags;
+    users;
 
     constructor(
         $log, $q,
-        modal, api, tasksFilter, tasksTags
+        modal, api, tasksFilter, tasksTags, users
     ) {
         this.$log = $log;
         this.$q = $q;
@@ -14,6 +15,7 @@ class TasksService {
         this.api = api;
         this.tasksFilter = tasksFilter;
         this.tasksTags = tasksTags;
+        this.users = users;
 
         this.analytics = null;
         this.data = {};
@@ -156,31 +158,30 @@ class TasksService {
             return data;
         });
     }
-    fetchTasksForPage(page, filters) {
+    fetchTasksForPage(page) {
         _.each(this.pages[page], (collection) => {
-            this.fetchTasks(collection, filters);
+            this.fetchTasks(collection);
         });
     }
     save(task) {
         return this.api.put(`tasks/${task.id}`, task);
     }
-    submitNewComment(task, newComment) {
-        return this.api.put(`tasks/${task.id}`, {updated_in_db_at: task.updated_in_db_at, activity_comment: {body: newComment}});
+    addComment(task, newComment) {
+        console.error(this.users.current.id);
+        return this.api.post(`tasks/${task.id}/comments`, { body: newComment, person: { id: this.users.current.id } });
     }
-    // FIXME need review
     deleteTask(taskId) {
-        return this.api.delete(`/tasks/${taskId}`, [], () => {
-            return true;
-        });
+        return this.api.delete(`tasks/${taskId}`);
     }
     starTask(task) {
         return this.api.put(`tasks/${task.id}`, {updated_in_db_at: task.updated_in_db_at, starred: !task.starred});
     }
     deleteComment(task, commentId) {
-        task.comments = _.reject(task.comments, {id: commentId});
-        return this.save(task);
+        return this.api.delete(`tasks/${task.id}/comments/${commentId}`).then(() => {
+            task.comments = _.reject(task.comments, {id: commentId});
+        });
     }
-    // FIXME need review
+    // TODO: API missing
     bulkDeleteTasks(taskIds) {
         return this.api.delete('tasks/bulk', { ids: taskIds });
     }
@@ -190,16 +191,9 @@ class TasksService {
         });
         return this.api.put('tasks/bulk', tasks);
     }
-    // FIXME need review
     bulkEditTasks(tasks, model) {
         _.each(tasks, (task) => {
-            _.assign(task, task, {
-                activity_type: model.action,
-                no_date: model.noDate,
-                start_at: model.dueDate ? moment(model.dueDate).toISOString() : undefined,
-                comments: [{body: model.comment}],
-                tag_list: model.tagsList ? model.tagsList.map(tag => tag.text).join() : undefined
-            });
+            _.assign(task, task, model);
         });
         return this.api.put('tasks/bulk', tasks);
     }
@@ -219,30 +213,14 @@ class TasksService {
             data: model
         });
     }
-    // FIXME need review
-    postLogTask(task, model) {
-        let objPayload = {
-            updated_in_db_at: task.updated_in_db_at,
-            activity_comment: {body: model.comment},
-            completed: true
-        };
-        if (model.result) {
-            objPayload.result = model.result;
-        }
-        if (model.nextAction) {
-            objPayload.nextAction = model.nextAction;
-        }
-
-        return this.api.put(`tasks/${task.id}`, objPayload);
-    }
-    postBulkAddTask(model, contactIds) {
-        model.contacts = _.map(contactIds, (contactId) => {
+    create(task, contactIds) {
+        task.contacts = _.map(contactIds, (contactId) => {
             return {id: contactId};
         });
 
-        model.account_list = { id: this.api.account_list_id };
+        task.account_list = { id: this.api.account_list_id };
 
-        return this.api.post('tasks', model);
+        return this.api.post('tasks', task);
     }
     openModal(params) {
         this.modal.open({
