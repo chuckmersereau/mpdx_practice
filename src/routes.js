@@ -288,27 +288,30 @@ function openDonationModal($state, $stateParams, modal, donationsReport) {
 }
 
 /*@ngInject*/
-function openPeopleModal($state, $stateParams, modal, contactPerson) {
-    function modalOpen(contactId, person) {
+function openPeopleModal($state, $stateParams, modal, contactPerson, contacts) {
+    function modalOpen(contact, person) {
         modal.open({
             template: require('./contacts/show/people/modal/modal.html'),
             controller: 'personModalController',
             locals: {
-                contactId: contactId,
+                contact: contact,
                 person: person
             },
             onHide: () => {
-                $state.go('contact', {contactId: contactId}, { reload: true });
+                $state.go('contact', {contactId: contact.id}, { reload: true });
             }
         });
     }
-    if ($stateParams.personId === 'new') {
-        modalOpen($stateParams.contactId, {});
-    } else {
-        contactPerson.get($stateParams.contactId, $stateParams.personId).then((person) => {
-            modalOpen($stateParams.contactId, person);
-        });
-    }
+
+    contacts.get($stateParams.contactId).then((contact) => {
+        if ($stateParams.personId === 'new') {
+            modalOpen(contact, {});
+        } else {
+            contactPerson.get($stateParams.contactId, $stateParams.personId).then((person) => {
+                modalOpen(contact, person);
+            });
+        }
+    });
 }
 
 /*@ngInject*/
@@ -352,7 +355,7 @@ function openNewContactModal(
 
 /*@ngInject*/
 function openNewTaskModal(
-  modal, $state
+  modal, $state, gettextCatalog
 ) {
     modal.open({
         template: require('./tasks/add/add.html'),
@@ -361,7 +364,7 @@ function openNewTaskModal(
             specifiedAction: null,
             specifiedSubject: null,
             selectedContacts: [],
-            modalTitle: 'Add Task'
+            modalTitle: gettextCatalog.getString('Add Task')
         },
         onHide: () => {
             if ($state.current.name === 'tasks.new') {

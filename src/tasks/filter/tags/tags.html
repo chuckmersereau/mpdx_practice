@@ -3,10 +3,10 @@
     <span translate>Tags</span>
     <ul class="nav nav-pills pull-right">
       <li ng-class="{ 'active': $ctrl.tasksTags.anyTags }">
-        <a ng-click="$ctrl.tasksTags.anyTags = true" title="Look up contacts with Any of the tags selected (a or b or c).">Any</a>
+        <a ng-click="$ctrl.tasksTags.anyTags = true" title="Look up contacts with Any of the tags selected (a or b or c)." translate>Any</a>
       </li>
       <li ng-class="{ 'active': !$ctrl.tasksTags.anyTags }">
-        <a ng-click="$ctrl.tasksTags.anyTags = false" title="Look up contacts with ALL of the tags selected (a and b and c).">All</a>
+        <a ng-click="$ctrl.tasksTags.anyTags = false" title="Look up contacts with ALL of the tags selected (a and b and c)." translate>All</a>
       </li>
     </ul>
   </span>
@@ -34,9 +34,9 @@
       </a>
       <script type="text/ng-template" id="myPopoverTemplate.html">
         <div ng-click="$event.stopPropagation()" class="tags-popover">
-          Remove tag permanently?
+          <translate>Remove tag permanently?</translate>
           <div>
-          <button class="btn btn-primary" ng-click="$ctrl.tasksTags.delete(tag)">Ok</button>
+          <button class="btn btn-primary" ng-click="$ctrl.tasksTags.delete(tag)" translate>Ok</button>
           </div>
         </div>
       </script>
