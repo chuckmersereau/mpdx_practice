@@ -1,4 +1,4 @@
-<h1 translate>It's time to get started</h1>
+<h1 translate><i class="ci ci-alert text-primary"></i> It's time to get started</h1>
 <hr style="width: 100%">
 <p translate>
     Developing a healthy team of ministry partners sets your ministry up to thrive.
@@ -11,11 +11,6 @@
 <div>
     <span translate>It looks like you speak</span>
     <span style="width: 400px; display: inline-block">
-        <select ng-model="$ctrl.locale" id="locale" ng-change="$ctrl.setLocale()" chosen>
-            <option value=""></option>
-            <option ng-repeat="option in $ctrl.languages" value="{{option.alias}}">
-                {{option.englishName}} ({{option.nativeName}} - {{option.alias}})
-            </option>
-        </select>
+        <preferences-locale list-only="true"></preferences-locale>
     </span>
 </div>

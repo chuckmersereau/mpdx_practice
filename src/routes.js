@@ -7,7 +7,8 @@ export default class Routes {
             abstract: true,
             template: '<div ui-view=""></div>',
             resolve: {
-                userResolve: /*@ngInject*/ (users) => users.getCurrent()
+                //userResolve: /*@ngInject*/ (users) => users.getCurrent(), // handled in app.run now
+                constants: /*@ngInject*/ (serverConstants) => serverConstants.load()
             }
         }).state({
             name: 'home',
@@ -151,7 +152,7 @@ export default class Routes {
             name: 'preferences.notifications',
             title: 'Notifications',
             url: '/notifications',
-            component: 'notificationPreferences'
+            component: 'preferencesNotifications'
         }).state({
             name: 'preferences.personal',
             title: 'Preferences',
@@ -174,10 +175,20 @@ export default class Routes {
             url: '/connect',
             component: 'setupConnect'
         }).state({
+            name: 'setup.google',
+            title: 'Setup Google',
+            url: '/google',
+            component: 'setupGoogle'
+        }).state({
             name: 'setup.merge',
             title: 'Merge Accounts',
             url: '/merge',
             component: 'setupMerge'
+        }).state({
+            name: 'setup.notifications',
+            title: 'Notifications',
+            url: '/notifications',
+            component: 'setupNotifications'
         }).state({
             name: 'setup.preferences',
             title: 'Preferences',

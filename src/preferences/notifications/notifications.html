@@ -1,3 +1,7 @@
+<div ng-if="$ctrl.setup">
+    <h1><i class="ci ci-alert text-primary"></i> Get notified about important partner information!</h1>
+    <button class="btn btn-default" ng-click="$ctrl.next()">Skip this step</button>
+</div>
 <div>
     <div class="row">
         <div class="col-md-12">
@@ -23,16 +27,16 @@
                     <li class="list-group-item" ng-repeat="notification in $ctrl.notificationTypes">
                         <div class="row pref-row">
                             <div class="col-md-8" translate>
-                                {{ notification.description }}
+                                {{ notification.value }}
                             </div>
                             <div class="col-md-4 text-right pref-lead">
                                 <div class="form-group">
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" ng-checked="$ctrl.notifications.data[notification.field_name].actions.indexOf('email') !== -1" ng-click="$ctrl.toggleNotification(notification.field_name, 'email')">
+                                        <input type="checkbox" ng-checked="$ctrl.notifications[notification.id].actions.indexOf('email') !== -1" ng-click="$ctrl.toggleNotification(notification.id, 'email')">
                                         <span translate>Email me</span>
                                     </label>
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" ng-checked="$ctrl.notifications.data[notification.field_name].actions.indexOf('task') != -1" ng-click="$ctrl.toggleNotification(notification.field_name, 'task')">
+                                        <input type="checkbox" ng-checked="$ctrl.notifications[notification.id].actions.indexOf('task') != -1" ng-click="$ctrl.toggleNotification(notification.id, 'task')">
                                         <span translate>Create a task</span>
                                     </label>
                                 </div>

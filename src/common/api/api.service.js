@@ -52,7 +52,8 @@ class Api {
         headers = {},
         promise = null,
         attempts = 0,
-        overrideGetAsPost = false
+        overrideGetAsPost = false,
+        type = null
     }) {
         if (!promise) {
             promise = this.$q.defer();
@@ -93,27 +94,28 @@ class Api {
             headers: headers,
             paramSerializer: '$httpParamSerializerJQLike',
             transformRequest: (data) => {
-                let key;
                 let params = _.clone(jsonApiParams);
                 if (method === 'put' || method === 'post') {
-                    let arr = url.split('/');
-                    if (method === 'put' && arr.length % 2 === 0) {
-                        key = arr[arr.length - 2];
-                    } else {
-                        key = arr[arr.length - 1];
+                    if (!type) {
+                        let arr = url.split('/');
+                        if (method === 'put' && arr.length % 2 === 0) {
+                            type = arr[arr.length - 2];
+                        } else {
+                            type = arr[arr.length - 1];
+                        }
                     }
-                    if (_.has(this.entityAttributes, key)) {
-                        _.extend(params, this.entityAttributes[key]);
+                    if (_.has(this.entityAttributes, type)) {
+                        _.extend(params, this.entityAttributes[type]);
                     } else {
-                        this.$log.error(`undefined attributes for model: ${key} in api.service`);
+                        this.$log.error(`undefined attributes for model: ${type} in api.service`);
                     }
                 }
                 if (_.isArray(data)) {
                     return angular.toJson({
-                        data: _.map(data, item => serialize(key, params, item, method))
+                        data: _.map(data, item => serialize(type, params, item, method))
                     });
                 } else {
-                    return angular.toJson(serialize(key, params, data, method));
+                    return angular.toJson(serialize(type, params, data, method));
                 }
             },
             transformResponse: appendTransform(this.$http.defaults.transformResponse, (data) => {
@@ -188,7 +190,8 @@ class EntityAttributes {
                 attributes: ["created_at", "updated_at", "accepted_at", "accepted_by_user_id", "account_list_id", "cancelled_by_user_id", "code", "invited_by_user_id", "recipient_email", "updated_at", "updated_in_db_at"]
             },
             account_lists: {
-                attributes: ["name", "creator_id", "created_at", "preferences_notifications", "updated_at", "settings", "updated_in_db_at"]
+                attributes: ["creator_id", "created_at", "default_organization_id", "monthly_goal", "name", "notification_preferences", "settings", "total_pledges", "updated_at", "updated_in_db_at"],
+                notification_preferences: { ref: 'id' }
             },
             addresses: {
                 attributes: ["street", "city", "country", "end_date", "geo", "historic", "location", "postal_code", "primary_mailing_address", "start_date", "state", "updated_in_db_at"]
@@ -217,6 +220,10 @@ class EntityAttributes {
             },
             notifications: {
                 attributes: ["contact_id", "notification_type_id", "event_date", "cleared", "created_at", "updated_at", "donation_id", "updated_in_db_at"]
+            },
+            organization_accounts: {
+                attributes: ["organization", "password", "username"],
+                organization: {ref: 'id'}
             },
             people: {
                 attributes: ["first_name", "legal_first_name", "last_name", "birthday_month", "birthday_year", "birthday_day", "anniversary_month", "anniversary_year", "anniversary_day", "title",
@@ -281,6 +288,9 @@ class EntityAttributes {
             user: {
                 attributes: ["first_name", "last_name", "preferences", "setup", "email_addresses", "access_token", "time_zone", "locale", "updated_at", "updated_in_db_at"],
                 email_addresses: { ref: 'id' }
+            },
+            user_options: {
+                attributes: ["key", "value", "updated_in_db_at"]
             }
         };
     }

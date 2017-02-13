@@ -16,8 +16,7 @@ class CompleteTaskController {
         this.taskAction = taskAction;
         this.tasksService = tasksService;
 
-        // this.serverConstants.fetchConstants(['next_actions', 'results', 'pledge_frequency']);
-        this.constants = this.serverConstants.data;
+        // this.serverConstants.fetchConstants(['next_actions', 'results']);
     }
     save() {
         return this.tasksService.postLogTask(this.task, this.models).then(() => {

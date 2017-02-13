@@ -32,7 +32,7 @@
                 <div class="col-md-8">
                     <div class="avatar" bg-img="{{$ctrl.contact.square_avatar | stripMpdx }}"></div>
                     <div class="top-content">
-                        <contact-info contact="$ctrl.contact" constants="$ctrl.constants"></contact-info>
+                        <contact-info contact="$ctrl.contact"></contact-info>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -66,7 +66,7 @@
 
             <div ng-repeat="item in $ctrl.tabsLabels">
                 <div ng-if="item['key']=='details'" ng-show="item['key']==$ctrl.activeTab">
-                    <contact-details contact="$ctrl.contact" constants="$ctrl.constants" donor-accounts="$ctrl.contact.donor_accounts"></contact-details>
+                    <contact-details contact="$ctrl.contact" donor-accounts="$ctrl.contact.donor_accounts"></contact-details>
                 </div>
                 <div ng-if="item['key']=='donations'" ng-show="item['key']==$ctrl.activeTab">
                     <contact-donations contact-id="$ctrl.contact.id"></contact-donations>

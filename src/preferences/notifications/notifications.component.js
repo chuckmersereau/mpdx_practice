@@ -2,24 +2,47 @@ class NotificationPreferencesController {
     accounts;
     alerts;
     notifications;
+    serverConstants;
+    setup;
 
     constructor(
-        accounts, alerts
+        $rootScope, $state,
+        accounts, alerts, serverConstants, users
     ) {
+        this.$state = $state;
         this.accounts = accounts;
         this.alerts = alerts;
+        this.serverConstants = serverConstants;
+        this.users = users;
 
         this.saving = false;
-        this.notifications = _.keyBy(accounts.current.preferences_notifications, 'field_name');
+
+        this.init();
+
+        $rootScope.$on('accountListUpdated', () => {
+            this.init();
+        });
+
+        console.error('preferences/notifications: TODO: FIX constants from API');
+        this.notificationTypes = _.map(_.keys(serverConstants.data.notifications), (key) => {
+            return {id: key, value: serverConstants.data.notifications[key]};
+        });
+    }
+    init() {
+        this.notifications = _.keyBy(this.accounts.current.notification_preferences, 'type');
     }
     save() {
         this.saving = true;
-        _.each(this.accounts.current.preferences_notifications, (notification) => {
-            notification.actions = this.notifications[notification.field_name].actions;
+        _.each(this.accounts.current.notification_preferences, (notification) => {
+            notification.actions = this.notifications[notification.type].actions;
         });
-        return this.accounts.saveCurrent().then((data) => {
-            _.unionBy(this.accounts.data, [data], 'id');
+        return this.accounts.saveCurrent().then(() => {
             this.alerts.addAlert('Notifications saved successfully', 'success');
+            return this.accounts.getCurrent().then(() => {
+                if (this.setup) {
+                    this.next();
+                }
+            });
         }).catch((data) => {
             _.each(data.errors, (value) => {
                 this.alerts.addAlert(value, 'danger');
@@ -36,12 +59,21 @@ class NotificationPreferencesController {
             this.notifications[fieldName].actions.splice(index, 1);
         }
     }
+    next() {
+        this.users.current.options.setup_position.value = '';
+        this.users.setOption(this.users.current.options.setup_position).then(() => {
+            this.$state.go('home');
+        });
+    }
 }
 
 const Notifications = {
     controller: NotificationPreferencesController,
-    template: require('./notifications.html')
+    template: require('./notifications.html'),
+    bindings: {
+        setup: '<'
+    }
 };
 
 export default angular.module('mpdx.preferences.notifications.component', [])
-    .component('notificationPreferences', Notifications).name;
+    .component('preferencesNotifications', Notifications).name;

@@ -1,13 +1,13 @@
-<h1 ng-if="!$ctrl.lastAdded" translate>It's time to connect!</h1>
-<h1 ng-if="$ctrl.lastAdded" translate>It's time for awesome!</h1>
+<h1 ng-if="$ctrl.users.organizationAccounts.length === 0" translate><i class="ci ci-alert text-primary"></i> It's time to connect!</h1>
+<h1 ng-if="$ctrl.users.organizationAccounts.length > 0" translate><i class="ci ci-alert text-primary"></i> It's time for awesome!</h1>
 <hr style="width: 100%">
-<div ng-if="!$ctrl.lastAdded">
+<div ng-if="$ctrl.users.organizationAccounts.length === 0">
     <h2 translate>
         First, connect your organization to your MPDX account.
     </h2>
     <p translate>This will allow MPDX to automatically synchronize your donation information.</p>
 </div>
-<div ng-if="$ctrl.lastAdded">
+<div ng-if="$ctrl.users.organizationAccounts.length > 0">
     <h2 translate>
         Sweet! You're connected.
     </h2>
@@ -25,11 +25,8 @@
 </div>
 
 <div>
-    <select ng-model="$ctrl.organization" chosen>
+    <select ng-model="$ctrl.organization" ng-options="organization.id as organization.val for organization in $ctrl.organizations" chosen>
         <option value=""></option>
-        <option ng-repeat="option in $ctrl.languages" value="{{option.alias}}">
-            {{option.englishName}} ({{option.nativeName}} - {{option.alias}})
-        </option>
     </select>
 </div>
 <div ng-if="$ctrl.connecting">
@@ -40,8 +37,9 @@
     <input type="password" class="form-control" id="password" ng-model="$ctrl.password">
 
 </div>
-<p>
+<div>&nbsp;</div>
+<div>
     <button ng-click="$ctrl.connect()" class="btn btn-primary" ng-if="!$ctrl.connecting" translate>Connect</button>
     <button ng-click="$ctrl.add()" class="btn btn-primary" ng-if="$ctrl.connecting" translate>Add Account</button>
     <button ng-click="$ctrl.reset()" class="btn btn-default" ng-if="$ctrl.connecting" translate>Cancel</button>
-</p>
+</div>

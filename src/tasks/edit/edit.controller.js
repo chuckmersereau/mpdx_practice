@@ -27,13 +27,11 @@ class EditTaskController {
         this.modalCallback = modalCallback;
 
         this.model = _.clone(specifiedTask);
-        this.constants = {};
 
         this.activate();
     }
     activate() {
-        // this.serverConstants.fetchConstants(['actions', 'next_actions', 'results']);
-        this.constants = this.serverConstants.data;
+        // this.serverConstants.fetchConstants(['next_actions', 'results']);
     }
     submit() {
         if (this.comment) {

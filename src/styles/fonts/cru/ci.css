@@ -1,7 +1,7 @@
 @font-face {
 	font-family: "ci";
-	src: url("ci.eot?4a291018abeb9e7a7fc8681e940d1139?#iefix") format("embedded-opentype"),
-url("ci.woff?4a291018abeb9e7a7fc8681e940d1139") format("woff");
+	src: url("ci.eot?83ed11a0a4a10e6a33b4d815133a15b8?#iefix") format("embedded-opentype"),
+url("ci.woff?83ed11a0a4a10e6a33b4d815133a15b8") format("woff");
 }
 
 .ci {
@@ -15,15 +15,18 @@ url("ci.woff?4a291018abeb9e7a7fc8681e940d1139") format("woff");
 	vertical-align: top;
 }
 
-.ci-email_icon:before {
+.ci-alert:before {
 	content: "\f101";
 }
-.ci-filter_icon:before {
+.ci-email_icon:before {
 	content: "\f102";
 }
-.ci-letter_icon:before {
+.ci-filter_icon:before {
 	content: "\f103";
 }
-.ci-neg_filter_icon:before {
+.ci-letter_icon:before {
 	content: "\f104";
+}
+.ci-neg_filter_icon:before {
+	content: "\f105";
 }

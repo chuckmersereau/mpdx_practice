@@ -1,7 +1,7 @@
 <form ng-if="$ctrl.users.current">
     <div class="row spacer-top"></div>
     <div class="panel-group">
-        <div class="panel panel-default pref-panel">
+        <div class="panel panel-default">
             <div class="panel-heading pref-head" ng-click="$ctrl.setTab('first_name')">
                 <div class="row">
                     <div class="col-sm-4">
@@ -21,8 +21,8 @@
                 </div>
             </div>
             <div class="panel-animate" ng-show="$ctrl.tabSelected('first_name')">
-                <div class="panel-body pref-body">
-                    <div class="row pref-row">
+                <div class="panel-body">
+                    <div class="row">
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group">
                                 <label for="firstName" translate>Your first name</label>
@@ -37,7 +37,7 @@
                 </div>
             </div>
         </div>
-        <div class="panel panel-default pref-panel">
+        <div class="panel panel-default">
             <div class="panel-heading pref-head" ng-click="$ctrl.setTab('last_name')">
                 <div class="row">
                     <div class="col-sm-4">
@@ -56,8 +56,8 @@
                 </div>
             </div>
             <div class="panel-animate" ng-show="$ctrl.tabSelected('last_name')">
-                <div class="panel-body pref-body">
-                    <div class="row pref-row">
+                <div class="panel-body">
+                    <div class="row">
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group">
                                 <label for="lastName" translate>Your last name</label>
@@ -72,7 +72,7 @@
                 </div>
             </div>
         </div>
-        <div class="panel panel-default pref-panel">
+        <div class="panel panel-default">
             <div class="panel-heading pref-head" ng-click="$ctrl.setTab('email')">
                 <div class="row">
                     <div class="col-sm-4">
@@ -91,8 +91,8 @@
                 </div>
             </div>
             <div class="panel-animate" ng-show="$ctrl.tabSelected('email')">
-                <div class="panel-body pref-body">
-                    <div class="row pref-row" ng-repeat="email in $ctrl.users.current.email_addresses" ng-if="email.primary">
+                <div class="panel-body">
+                    <div class="row" ng-repeat="email in $ctrl.users.current.email_addresses" ng-if="email.primary">
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group">
                                 <label for="email" translate>Email Address</label>
@@ -108,7 +108,7 @@
                 </div>
             </div>
         </div>
-        <div class="panel panel-default pref-panel">
+        <div class="panel panel-default">
             <div class="panel-heading pref-head" ng-click="$ctrl.setTab('time_zone')">
                 <div class="row">
                     <div class="col-sm-4">
@@ -127,8 +127,8 @@
                 </div>
             </div>
             <div class="panel-animate" ng-show="$ctrl.tabSelected('time_zone')">
-                <div class="panel-body pref-body">
-                    <div class="row pref-row">
+                <div class="panel-body">
+                    <div class="row">
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group">
                                 <label for="timeZone" translate>Time zone</label>
@@ -296,7 +296,7 @@
                 </div>
             </div>
         </div>
-        <div class="panel panel-default pref-panel">
+        <div class="panel panel-default">
             <div class="panel-heading pref-head" ng-click="$ctrl.setTab('locale')">
                 <div class="row">
                     <div class="col-sm-4">
@@ -315,16 +315,16 @@
                 </div>
             </div>
             <div class="panel-animate" ng-show="$ctrl.tabSelected('locale')">
-                <div class="panel-body pref-body">
-                    <div class="row pref-row">
+                <div class="panel-body">
+                    <div class="row">
                         <div class="col-md-8 col-md-offset-4">
-
+                            <preferences-locale on-save="$ctrl.save()"></preferences-locale>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="panel panel-default pref-panel">
+        <div class="panel panel-default">
             <div class="panel-heading pref-head" ng-click="$ctrl.setTab('default_account_list')">
                 <div class="row">
                     <div class="col-sm-4">
@@ -343,8 +343,8 @@
                 </div>
             </div>
             <div class="panel-animate" ng-show="$ctrl.tabSelected('default_account_list')">
-                <div class="panel-body pref-body">
-                    <div class="row pref-row">
+                <div class="panel-body">
+                    <div class="row">
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group">
                                 <label for="defaultAccountList" translate>Default Account List</label>
@@ -369,7 +369,7 @@
         </div>
     </div>
     <div class="panel-group">
-        <div class="panel panel-default pref-panel">
+        <div class="panel panel-default">
             <div class="panel-heading pref-head" ng-click="$ctrl.setTab('account_list_name')">
                 <div class="row">
                     <div class="col-sm-4">
@@ -388,8 +388,8 @@
                 </div>
             </div>
             <div class="panel-animate" ng-show="$ctrl.tabSelected('account_list_name')">
-                <div class="panel-body pref-body">
-                    <div class="row pref-row">
+                <div class="panel-body">
+                    <div class="row">
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group">
                                 <label for="accountListName" translate>Account Name</label>
@@ -405,7 +405,7 @@
                 </div>
             </div>
         </div>
-        <div class="panel panel-default pref-panel">
+        <div class="panel panel-default">
             <div class="panel-heading pref-head" ng-click="$ctrl.setTab('monthly_goal')">
                 <div class="row">
                     <div class="col-sm-4">
@@ -424,24 +424,16 @@
                 </div>
             </div>
             <div class="panel-animate" ng-show="$ctrl.tabSelected('monthly_goal')">
-                <div class="panel-body pref-body">
-                    <div class="row pref-row">
+                <div class="panel-body">
+                    <div class="row">
                         <div class="col-md-8 col-md-offset-4">
-                            <div class="form-group">
-                                <label for="monthlyGoal" translate>Monthly goal</label>
-                                <p class="text-muted" translate>This amount should be set to the amount your organization has determined is your target monthly goal. If you do not know, make your best guess for now. You can change it at any time.</p>
-                                <input type="text" id="monthlyGoal" class="form-control" ng-model="$ctrl.accounts.current.monthly_goal">
-                            </div>
-                            <button type="submit" ng-click="$ctrl.saveAccount()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
-                                <span translate>Save</span>>&nbsp;
-                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                            </button>
+                            <preferences-monthly-goal on-save="$ctrl.saveAccount()"></preferences-monthly-goal>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="panel panel-default pref-panel">
+        <div class="panel panel-default">
             <div class="panel-heading pref-head" ng-click="$ctrl.setTab('home_country')">
                 <div class="row">
                     <div class="col-sm-4">
@@ -460,26 +452,16 @@
                 </div>
             </div>
             <div class="panel-animate" ng-show="$ctrl.tabSelected('home_country')">
-                <div class="panel-body pref-body">
-                    <div class="row pref-row">
+                <div class="panel-body">
+                    <div class="row">
                         <div class="col-md-8 col-md-offset-4">
-                            <div class="form-group">
-                                <label for="homeCountry" translate>Home Country</label>
-                                <p class="text-muted" translate>This should be the place you are living and sending out physical communications from. This will be used in exports for mailing address information.</p>
-                                <select id="homeCountry" class="country_select form-control" ng-model="$ctrl.accounts.current.home_country" chosen>
-                                    <option ng-repeat="country in $ctrl.countries">{{ country }}</option>
-                                </select>
-                            </div>
-                            <button type="submit" ng-click="$ctrl.saveAccount()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
-                                <span translate>Save</span>&nbsp;
-                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                            </button>
+                            <preferences-home-country on-save="$ctrl.saveAccount()"></preferences-home-country>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="panel panel-default pref-panel">
+        <div class="panel panel-default">
             <div class="panel-heading pref-head" ng-click="$ctrl.setTab('currency')">
                 <div class="row">
                     <div class="col-sm-4">
@@ -487,7 +469,7 @@
                         <span translate>Default Currency</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{$ctrl.users.current.preferences.currency}}
+                        {{$ctrl.accounts.current.currency}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">
@@ -498,14 +480,16 @@
                 </div>
             </div>
             <div class="panel-animate" ng-show="$ctrl.tabSelected('currency')">
-                <div class="panel-body pref-body">
-                    <div class="row pref-row">
+                <div class="panel-body">
+                    <div class="row">
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group">
                                 <label for="currency" translate>Default Currency</label>
-                                <select id="currency" class="form-control" ng-model="$ctrl.users.current.preferences.currency" chosen>
-                                    <option ng-repeat="currency in  $ctrl.currencies">{{currency}}</option>
+                                <select id="currency" class="form-control" ng-model="$ctrl.accounts.current.currency"
+                                        ng-options="currency.key as currency.value for currency in $ctrl.currencies" chosen>
+                                    <option value=""></option>
                                 </select>
+
                             </div>
                             <button type="submit" ng-click="$ctrl.saveAccount()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                                 <span translate>Save</span>&nbsp;
@@ -516,7 +500,7 @@
                 </div>
             </div>
         </div>
-        <div class="panel panel-default pref-panel" ng-if="$ctrl.accounts.current.designation_organizations.count > 1">
+        <div class="panel panel-default" ng-if="$ctrl.accounts.current.designation_organizations.count > 1">
             <div class="panel-heading pref-head" ng-click="$ctrl.setTab('salary_organization_id')">
                 <div class="row">
                     <div class="col-sm-4">
@@ -535,8 +519,8 @@
                 </div>
             </div>
             <div class="panel-animate" ng-show="$ctrl.tabSelected('salary_organization_id')">
-                <div class="panel-body pref-body">
-                    <div class="row pref-row">
+                <div class="panel-body">
+                    <div class="row">
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group">
                                 <label for="salaryOrganizationId" translate>Primary Organization</label>
@@ -554,7 +538,7 @@
                 </div>
             </div>
         </div>
-        <div class="panel panel-default pref-panel">
+        <div class="panel panel-default">
             <div class="panel-heading pref-head" ng-click="$ctrl.setTab('tester')">
                 <div class="row">
                     <div class="col-sm-4">
@@ -573,8 +557,8 @@
                 </div>
             </div>
             <div class="panel-animate" ng-show="$ctrl.tabSelected('tester')">
-                <div class="panel-body pref-body">
-                    <div class="row pref-row">
+                <div class="panel-body">
+                    <div class="row">
                         <div class="col-md-8 col-md-offset-4">
                             <label><input type="checkbox" ng-model="$ctrl.users.current.preferences.tester"><span translate>Early adopter</span></label>
                             <p translate>
@@ -597,7 +581,7 @@
         <div class="col-md-12">
             <div class="page-filters page-filters-close">
                 <div class="pull-right">
-                    <button class="btn btn-link" id="preference_reset_welcome" translate>Reset Welcome Tour</button>
+                    <button class="btn btn-link" id="preference_reset_welcome" ui-sref="setup.start" translate>Reset Welcome Tour</button>
                 </div>
             </div>
         </div>
