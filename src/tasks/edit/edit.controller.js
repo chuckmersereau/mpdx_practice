@@ -31,11 +31,6 @@ class EditTaskController {
         this.users = users;
 
         this.model = _.clone(specifiedTask);
-
-        this.activate();
-    }
-    activate() {
-        // this.serverConstants.fetchConstants(['next_actions', 'results']);
     }
     submit() {
         if (this.comment) {

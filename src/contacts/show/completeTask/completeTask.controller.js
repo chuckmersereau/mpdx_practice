@@ -20,7 +20,6 @@ class CompleteTaskController {
         this.tasksService = tasksService;
         this.users = users;
 
-        // this.serverConstants.fetchConstants(['next_actions', 'results', 'pledge_frequency']);
         this.models = _.clone(task);
         this.models.completed = true;
     }

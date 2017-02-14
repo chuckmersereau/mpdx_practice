@@ -29,12 +29,6 @@ class LogTaskController {
         this.users = users;
 
         this.model = _.clone(specifiedTask);
-
-        this.activate();
-    }
-    activate() {
-        // this.serverConstants.fetchConstants(['next_actions', 'results']);
-        this.constants = this.serverConstants.data; //TODO: delete once corrected
     }
     save() {
         if (this.comment) {
