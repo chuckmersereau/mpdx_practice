@@ -38,7 +38,7 @@ class AccountsService {
         });
     }
     getCurrent(reset = false) {
-        return this.swap(this.api.account_list_id);
+        return this.swap(this.api.account_list_id, reset);
     }
     getDonations(params) {
         return this.api.get(`account_lists/${this.api.account_list_id}/donations`, params || {}).then((resp) => {

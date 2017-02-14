@@ -56,7 +56,7 @@ class Users {
             });
         });
     }
-    getOptions(reset = false, forRouting = false) {
+    getOptions(reset = false) { //STUB till api fix, forRouting = false) {
         if (this.current.options && !reset) {
             return this.$q.resolve();
         }
