@@ -95,10 +95,10 @@ class Api {
             paramSerializer: '$httpParamSerializerJQLike',
             transformRequest: (data) => {
                 let params = _.clone(jsonApiParams);
-                if (method === 'put' || method === 'post') {
+                if (method === 'put' || method === 'post' || method === 'delete') {
                     if (!type) {
                         let arr = url.split('/');
-                        if (method === 'put' && arr.length % 2 === 0) {
+                        if ((method === 'put' || method === 'delete') && arr.length % 2 === 0) {
                             type = arr[arr.length - 2];
                         } else {
                             type = arr[arr.length - 1];
@@ -284,7 +284,7 @@ class EntityAttributes {
                 attributes: ["person_id", "number", "country_code", "location", "primary", "created_at", "updated_at", "remote_id", "historic", "updated_in_db_at"]
             },
             tasks: {
-                attributes: ["account_list", "activity_type", "location", "start_at", "end_at", "type", "created_at", "updated_at", "completed", "completed_at", "comments", "due_date",
+                attributes: ["account_list", "activity_type", "location", "start_at", "end_at", "type", "created_at", "updated_at", "completed", "completed_at", "comments", "contacts", "due_date",
                     "notification_id", "next_action", "no_date", "notification_type", "notification_time_before", "remote_id", "result", "source", "starred", "subject",
                     "notification_time_unit", "notification_scheduled", "updated_in_db_at"],
                 account_list: { ref: 'id' },
@@ -292,7 +292,8 @@ class EntityAttributes {
                     ref: 'id',
                     attributes: ["body", "updated_in_db_at", "person"],
                     person: { ref: 'id' }
-                }
+                },
+                contacts: { ref: 'id' }
             },
             user: {
                 attributes: ["first_name", "last_name", "preferences", "setup", "email_addresses", "access_token", "time_zone", "locale", "updated_at", "updated_in_db_at"],

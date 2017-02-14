@@ -174,7 +174,7 @@ class TasksService {
         return this.api.post(`tasks/${task.id}/comments`, { body: newComment, person: { id: this.users.current.id } });
     }
     deleteTask(taskId) {
-        return this.api.delete(`tasks/${taskId}`);
+        return this.api.delete(`tasks/${taskId}`, {id: taskId});
     }
     starTask(task) {
         return this.api.put(`tasks/${task.id}`, {updated_in_db_at: task.updated_in_db_at, starred: !task.starred});
@@ -223,10 +223,7 @@ class TasksService {
         });
     }
     create(task, contactIds) {
-        task.contacts = _.map(contactIds, (contactId) => {
-            return {id: contactId};
-        });
-
+        task.contacts = _.map(contactIds, contactId => { return {id: contactId}; });
         task.account_list = { id: this.api.account_list_id };
 
         return this.api.post('tasks', task);
