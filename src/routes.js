@@ -62,10 +62,6 @@ export default class Routes {
                 another: /*@ngInject*/ (contactsTags) => contactsTags.load()
             }
         }).state({
-            name: 'contact.address',
-            url: '/addresses/{addressId}',
-            onEnter: openAddressModal
-        }).state({
             name: 'contact.merge_people',
             url: '/people/merge/:peopleIds',
             onEnter: openMergePeopleModal
@@ -258,27 +254,6 @@ function auth(
 function logout($window, $state) {
     delete $window.sessionStorage.token;
     $state.go('login', {}, {reload: true});
-}
-
-/*@ngInject*/
-function openAddressModal(
-    $stateParams, modal, contacts, $state
-) {
-    contacts.find($stateParams.contactId).then((contact) => {
-        const address = _.find(contact.addresses, addressToFilter => addressToFilter.id.toString() === $stateParams.addressId);
-
-        modal.open({
-            template: require('./contacts/show/address/modal/modal.html'),
-            controller: 'addressModalController',
-            locals: {
-                contact: contact,
-                address: address
-            },
-            onHide: () => {
-                $state.go('^', {}, { reload: true });
-            }
-        });
-    });
 }
 
 /*@ngInject*/

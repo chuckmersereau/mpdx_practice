@@ -4,7 +4,9 @@ class AddressModalController {
     serverConstants;
 
     constructor(
-        $scope, $timeout, $window, contacts, serverConstants, contact, address
+        $scope, $timeout, $window,
+        contacts, serverConstants,
+        contact, address
     ) {
         this.$scope = $scope;
         this.$timeout = $timeout;
@@ -54,8 +56,6 @@ class AddressModalController {
             });
         };
 
-        // this.serverConstants.fetchConstants(['assignable_locations']);
-
         if (angular.isDefined(this.address)) {
             this.modalTitle = 'Edit Address';
             let geocoder = new this.$window.google.maps.Geocoder();
@@ -78,7 +78,7 @@ class AddressModalController {
     }
     save() {
         if (angular.isDefined(this.address.id)) {
-            var addressIndex = _.findIndex(this.contact.addresses, addressToFilter => addressToFilter.id === this.address.id);
+            const addressIndex = _.findIndex(this.contact.addresses, {id: this.address.id});
             this.contact.addresses[addressIndex] = angular.copy(this.address);
             if (angular.element('#primary_address:checked').length === 1) {
                 _.each(this.contact.addresses, (address) => {
@@ -94,9 +94,9 @@ class AddressModalController {
     }
     reqUpdateEmailBodyRequest() {
         if (this.address.remote_id) {
-            var donorAccount = this.contact.donor_accounts.filter(da => da.id === this.address.source_donor_account_id);
+            const donorAccount = this.contact.donor_accounts.filter(da => da.id === this.address.source_donor_account_id);
 
-            var donorName = donorAccount.length > 0 ? donorAccount.name + ' (donor #' + donorAccount.account_number + ')' : this.contact.name;
+            const donorName = donorAccount.length > 0 ? donorAccount.name + ' (donor #' + donorAccount.account_number + ')' : this.contact.name;
             return `Dear Donation Services,\n\n One of my donors, ${donorName} has a new current address.\n\n
                 Please update their address to:\n\n REPLACE WITH NEW STREET\n REPLACE WITH NEW CITY, STATE, ZIP\n\n
                 Thanks!\n\n`;
