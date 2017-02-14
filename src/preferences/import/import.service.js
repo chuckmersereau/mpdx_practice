@@ -21,21 +21,7 @@ class ImportsService {
         this.google_contact_import = null;
         this.selected_account = null;
 
-        this.load();
-
         $rootScope.$watch(() => this.selected_account, this.selectedAccountUpdated.bind(this));
-    }
-    load() {
-        return this.api.get('user/google_accounts').then((data) => {
-            this.$log.debug('user/google_accounts', data);
-            this.data = {
-                google_accounts: data
-            };
-            if (this.data.google_accounts.length === 1) {
-                this.selected_account = this.data.google_accounts[0];
-                this.selectedAccountUpdated(this.selected_account);
-            }
-        });
     }
     selectedAccountUpdated(account) {
         this.google_contact_import = angular.copy(this.default_google_contact_import);

@@ -2,10 +2,11 @@ class EditTaskController {
     contacts;
     serverConstants;
     tasksTags;
+    users;
 
     constructor(
         $scope,
-        tasksTags, tasksService, serverConstants,
+        tasksTags, tasksService, serverConstants, users,
         selectedTasks, modalCallback
     ) {
         this.$scope = $scope;
@@ -14,27 +15,18 @@ class EditTaskController {
         this.tasksService = tasksService;
         this.selectedTasks = selectedTasks;
         this.modalCallback = modalCallback;
-
-        this.constants = {};
+        this.users = users;
 
         this.activate();
     }
     activate() {
-        // this.serverConstants.fetchConstants(['actions', 'next_actions', 'results']);
-        this.constants = this.serverConstants.data;
-
         this.models = {};
     }
     submit() {
-        if (this.comment) {
-            if (!this.models.comments) {
-                this.models.comments = [];
-            }
-            this.models.comments.push({body: this.comment});
-        }
         this.tasksService.bulkEditTasks(
             this.selectedTasks,
-            this.models
+            this.models,
+            this.comment
         ).then(() => {
             this.$scope.$hide();
             this.modalCallback();

@@ -120,8 +120,8 @@
                                     id='status'
                                     ng-model="$ctrl.appeals">
                                 <option value=""></option>
-                                <option value="true">Yes</option>
-                                <option value="false">No</option>
+                                <option value="boolean:true">Yes</option>
+                                <option value="boolean:false">No</option>
                             </select>
                         </div>
                     </div>
@@ -170,7 +170,7 @@
         <div class="fieldset">
             <h3 translate>Addresses</h3>
             <div class="card" ng-repeat="address in $ctrl.contact.addresses track by address.id">
-                <contact-address address="address"></contact-address>
+                <contact-address address="address" contact-id="$ctrl.contact.id"></contact-address>
             </div>
             <button type="button" class="btn btn-primary" ui-sref=".address({addressId: 'new'})">
                 <i class="fa fa-plus-circle"></i> <translate>Add Address</translate>

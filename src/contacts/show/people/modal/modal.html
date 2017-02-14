@@ -127,7 +127,7 @@
                             <div class="col-md-12">
                                 <label translate>Relationships</label>
                                 <div ng-repeat="familyRelationship in $ctrl.person.family_relationships track by $index" name="family_relationships">
-                                    <contact-family-relationship person="$ctrl.person" family-relationship="familyRelationship" on-remove="$ctrl.removeFamilyRelationship()"></contact-family-relationship>
+                                    <contact-family-relationship person="$ctrl.person" family-relationship="familyRelationship" on-remove="$ctrl.removeFamilyRelationship()" contact="$ctrl.contact"></contact-family-relationship>
                                 </div>
                                 <a type="button" class="btn btn-default btn-block btn-xs" ng-click="$ctrl.addFamilyRelationship()">
                                     <i class="fa fa-plus-circle"></i> <translate>Add Relationship</translate>

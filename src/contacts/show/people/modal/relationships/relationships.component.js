@@ -1,16 +1,8 @@
 class ContactFamilyRelationshipController {
-    familyRelationship;
-
     constructor() {
-        console.error('get list of active people for account, was on currentAccountList endpoint');
         this.deleted = false;
     }
-    $onInit() {
-        this.familyRelationship.related_person_id = this.familyRelationship.related_person_id.toString();
-        angular.element('[ng-model="this.familyRelationship.related_person_id"] option[value="' + this.person.id + '"]').attr('disabled', 'disabled');
-    }
     remove() {
-        this.familyRelationship._destroy = 1;
         this.deleted = true;
         this.onRemove();
     }
@@ -20,6 +12,7 @@ const Relationships = {
     controller: ContactFamilyRelationshipController,
     template: require('./relationships.html'),
     bindings: {
+        contact: '<',
         familyRelationship: '=',
         person: '=',
         onRemove: '&'
