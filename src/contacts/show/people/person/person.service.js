@@ -2,10 +2,11 @@ class PersonService {
     api;
 
     constructor(
-        $filter, $rootScope,
+        $filter, $log, $rootScope,
         api
     ) {
         this.$filter = $filter;
+        this.$log = $log;
         this.api = api;
         this.includes = 'email_addresses,facebook_accounts,family_relationships,linkedin_accounts,master_person,phone_numbers,twitter_accounts,websites';
         this.selected = null;
@@ -24,7 +25,10 @@ class PersonService {
         return [];
     }
     get(contactId, personId) {
-        return this.api.get(`contacts/${contactId}/people/${personId}`, {include: this.includes});
+        return this.api.get(`contacts/${contactId}/people/${personId}`, {include: this.includes}).then((data) => {
+            this.$log.debug(`contacts/${contactId}/people/${personId}`, data);
+            return data;
+        });
     }
     list(contactId) {
         this.selected = null;

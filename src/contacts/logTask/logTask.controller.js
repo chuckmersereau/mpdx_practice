@@ -1,3 +1,5 @@
+import uuid from 'uuid/v1';
+
 class LogTaskController {
     ajaxAction;
     selectedContacts;
@@ -7,10 +9,11 @@ class LogTaskController {
     modal;
     serverConstants;
     tasksService;
+    users;
 
     constructor(
         $scope,
-        modal, contacts, contactsTags, tasksService, serverConstants,
+        modal, contacts, contactsTags, tasksService, serverConstants, users,
         selectedContacts, specifiedTask, ajaxAction, toComplete, createNext
     ) {
         this.$scope = $scope;
@@ -23,22 +26,16 @@ class LogTaskController {
         this.serverConstants = serverConstants;
         this.tasksService = tasksService;
         this.toComplete = toComplete;
+        this.users = users;
 
         this.model = _.clone(specifiedTask);
-        this.constants = {};
-
-        this.activate();
-    }
-    activate() {
-        // this.serverConstants.fetchConstants(['actions', 'next_actions', 'results']);
-        this.constants = this.serverConstants.data;
     }
     save() {
         if (this.comment) {
             if (!this.model.comments) {
                 this.model.comments = [];
             }
-            this.model.comments.push({body: this.comment});
+            this.model.comments.push({id: uuid(), body: this.comment, person: { id: this.users.current.id }});
         }
         return this.tasksService.postBulkLogTask(
             this.ajaxAction || 'post',

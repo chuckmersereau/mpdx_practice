@@ -8,11 +8,11 @@
                             <i class="fa fa-cog"></i>
                         </a>
                         <ul class="dropdown-menu" role="menu">
-                            <li role="presentation"><a ui-sref="preferences.personal" translate>Preferences</a></li>
-                            <li role="presentation"><a ui-sref="preferences.notifications" translate>Notifications</a></li>
-                            <li role="presentation"><a ui-sref="preferences.imports" translate>Import Contacts</a></li>
-                            <li role="presentation"><a ui-sref="preferences.integrations" translate>Connect Services</a></li>
-                            <li role="presentation"><a ui-sref="preferences.accounts" translate>Manage Account</a></li>
+                            <li role="presentation" ng-if="!$ctrl.isInSetup()"><a ui-sref="preferences.personal" translate>Preferences</a></li>
+                            <li role="presentation" ng-if="!$ctrl.isInSetup()"><a ui-sref="preferences.notifications" translate>Notifications</a></li>
+                            <li role="presentation" ng-if="!$ctrl.isInSetup()"><a ui-sref="preferences.imports" translate>Import Contacts</a></li>
+                            <li role="presentation" ng-if="!$ctrl.isInSetup()"><a ui-sref="preferences.integrations" translate>Connect Services</a></li>
+                            <li role="presentation" ng-if="!$ctrl.isInSetup()"><a ui-sref="preferences.accounts" translate>Manage Account</a></li>
                             <li role="presentation" ng-if="$ctrl.users.current.admin">
                                 <a ui-sref="unavailable" translate>Admin</a>
                             </li>
@@ -20,7 +20,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="section">
+                <div class="section"  ng-if="!$ctrl.isInSetup()">
                     <div class="dropdown">
                         <a bs-dropdown class="btn btn-secondary" href="#" type="button" id="quick-drop" aria-expanded="true"
                            analytics-on analytics-category="Global Events" analytics-label="Actions" data-placement="bottom-right"
@@ -33,11 +33,11 @@
                         </ul>
                     </div>
                 </div>
-                <div class="section">
+                <div class="section" ng-if="!$ctrl.isInSetup()">
                     <contacts-search dropdown="true"></contacts-search>
                 </div>
                 <div class="section">
-                    <account-lists></account-lists>
+                    <account-lists ng-if="!$ctrl.isInSetup()"></account-lists>
                 </div>
             </div>
             <div class="navbar-header">
@@ -51,7 +51,7 @@
             <div id="brand">
                 <a ui-sref="home" class="logo"></a>
             </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" ng-if="!$ctrl.isInSetup()">
                 <ul class="nav navbar-nav">
                     <li class="item" ui-sref-active="active"><a ui-sref="home" translate>Dashboard</a></li>
                     <li class="item" ng-class="{active: $ctrl.isInState('contact')}"><a ui-sref="contacts" translate>Contacts</a></li>
@@ -63,7 +63,7 @@
         </div>
     </nav>
 </div>
-<div class="secondary">
+<div class="secondary" ng-if="!$ctrl.isInSetup()">
     <div class="container">
         <div class="row">
             <div class="col-md-12">

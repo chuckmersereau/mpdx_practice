@@ -45,6 +45,7 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "contacts/show/address/address";
 @import "contacts/show/people/people";
 @import "contacts/show/people/person/person";
+@import "setup/setup";
 @import "tasks/list/list";
 @import "tasks/filter/filter";
 @import "tasks/search/search";
@@ -52,3 +53,12 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 
 /* Overrides */
 @import "styles/glyphicons";
+
+/* replace with sass variable once new style is ready */
+.border-primary {
+    border-color: #f9b625;
+}
+
+.border-success {
+    border-color: #3c763d;
+}
