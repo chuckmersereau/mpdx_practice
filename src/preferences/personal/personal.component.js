@@ -7,7 +7,7 @@ class PersonalPreferencesController {
 
     constructor(
         $state, $stateParams, $window, gettextCatalog,
-        accounts, api, alerts, locale, users
+        accounts, api, alerts, locale, serverConstants, users
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
@@ -22,8 +22,8 @@ class PersonalPreferencesController {
         this.saving = false;
         this.tabId = '';
 
-        this.languages = _.map(_.keys($window.languageMappingList), (key) => {
-            return _.extend({alias: key}, window.languageMappingList[key]);
+        this.currencies = _.map(_.keys(serverConstants.data.pledge_currencies), key => {
+            return { key: key.toString().toUpperCase(), value: serverConstants.data.pledge_currencies[key] };
         });
     }
     $onInit() {
@@ -80,9 +80,6 @@ class PersonalPreferencesController {
             return splitLocale[1].toLowerCase();
         }
         return locale;
-    }
-    setLocale() {
-        this.locale.change(this.users.current.preferences.locale);
     }
 }
 

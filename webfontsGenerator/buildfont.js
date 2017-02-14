@@ -5,6 +5,7 @@ const webfontsGenerator = require('webfonts-generator');
 webfontsGenerator({
     fontName: 'ci',
     files: [
+        'images/alert.svg',
         'images/email_icon.svg',
         'images/filter_icon.svg',
         'images/letter_icon.svg',

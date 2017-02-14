@@ -18,7 +18,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <label translate>Gender</label>
-                        <select chosen name="gender" ng-model="$ctrl.person.gender">
+                        <select chosen name="gender" data-placeholder-text-single="'Select an Option' | translate" ng-model="$ctrl.person.gender">
                             <option value=""></option>
                             <option value="male" translate>Male</option>
                             <option value="female" translate>Female</option>
@@ -112,7 +112,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label translate>Relationship Status</label>
-                                <select chosen name="marital_status" ng-model="$ctrl.person.marital_status">
+                                <select chosen name="marital_status" data-placeholder-text-single="'Select an Option' | translate" ng-model="$ctrl.person.marital_status">
                                     <option value=""></option>
                                     <option value="Single" translate>Single</option>
                                     <option value="Engaged" translate>Engaged</option>
@@ -127,7 +127,7 @@
                             <div class="col-md-12">
                                 <label translate>Relationships</label>
                                 <div ng-repeat="familyRelationship in $ctrl.person.family_relationships track by $index" name="family_relationships">
-                                    <contact-family-relationship person="$ctrl.person" family-relationship="familyRelationship" on-remove="$ctrl.removeFamilyRelationship()"></contact-family-relationship>
+                                    <contact-family-relationship person="$ctrl.person" family-relationship="familyRelationship" on-remove="$ctrl.removeFamilyRelationship()" contact="$ctrl.contact"></contact-family-relationship>
                                 </div>
                                 <a type="button" class="btn btn-default btn-block btn-xs" ng-click="$ctrl.addFamilyRelationship()">
                                     <i class="fa fa-plus-circle"></i> <translate>Add Relationship</translate>

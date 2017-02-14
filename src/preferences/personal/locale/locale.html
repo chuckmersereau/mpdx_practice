@@ -1,0 +1,16 @@
+<div class="form-group" ng-if="!$ctrl.listOnly">
+    <label for="locale" translate>Language</label>
+    <p class="text-muted" translate>The locale determines your default language for MPDX as well as how numbers, dates and other information shows up in MPDX.</p>
+    <select chosen class="form-control" ng-model="$ctrl.users.current.preferences.locale" id="locale" ng-change="$ctrl.setLocale()"
+            ng-options="option.alias as option.value for option in $ctrl.languages">
+        <option value=""></option>
+    </select>
+</div>
+<select chosen class="form-control" ng-model="$ctrl.users.current.preferences.locale" ng-change="$ctrl.setLocale()"  ng-if="$ctrl.listOnly"
+        ng-options="option.alias as option.value for option in $ctrl.languages">
+    <option value=""></option>
+</select>
+<button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable" ng-if="!$ctrl.listOnly">
+    <span translate>Save</span>&nbsp;
+    <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+</button>
