@@ -25,8 +25,8 @@ class AccountsService {
             this.data = data;
         });
     }
-    swap(id) {
-        if (id == null || id === _.get(this.current, 'id')) {
+    swap(id, reset = false) {
+        if (!reset && (id == null || id === _.get(this.current, 'id'))) {
             return this.$q.reject();
         }
         return this.api.get(`account_lists/${id}`, { include: 'notification_preferences' }).then((resp) => {
@@ -37,7 +37,7 @@ class AccountsService {
             return resp;
         });
     }
-    getCurrent() {
+    getCurrent(reset = false) {
         return this.swap(this.api.account_list_id);
     }
     getDonations(params) {
@@ -76,7 +76,7 @@ class AccountsService {
     }
     saveCurrent() {
         return this.api.put(`account_lists/${this.current.id}`, this.current).then(() => {
-            return this.getCurrent().then((data) => { //reconcile obj with db
+            return this.getCurrent(true).then((data) => { //reconcile obj with db
                 let account = _.find(this.data, { id: data.id }); //reconcile w/ account list
                 if (account) {
                     _.assign(account, account, data);

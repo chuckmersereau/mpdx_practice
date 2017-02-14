@@ -1,3 +1,5 @@
+import uuid from 'uuid/v1';
+
 class EditTaskController {
     ajaxAction;
     selectedContacts;
@@ -7,10 +9,11 @@ class EditTaskController {
     serverConstants;
     tasksTags;
     tasksService;
+    users;
 
     constructor(
         $log, $scope,
-        modal, contacts, tasksTags, tasksService, serverConstants,
+        modal, contacts, tasksTags, tasksService, serverConstants, users,
         selectedContacts, specifiedTask, ajaxAction, toComplete, createNext, modalCallback
     ) {
         this.$log = $log;
@@ -25,22 +28,16 @@ class EditTaskController {
         this.tasksService = tasksService;
         this.toComplete = toComplete || false;
         this.modalCallback = modalCallback;
+        this.users = users;
 
         this.model = _.clone(specifiedTask);
-        this.constants = {};
-
-        this.activate();
-    }
-    activate() {
-        // this.serverConstants.fetchConstants(['actions', 'next_actions', 'results']);
-        this.constants = this.serverConstants.data;
     }
     submit() {
         if (this.comment) {
             if (!this.model.comments) {
                 this.model.comments = [];
             }
-            this.model.comments.push({body: this.comment});
+            this.model.comments.push({id: uuid(), body: this.comment, person: { id: this.users.current.id }});
         }
         this.tasksService.postBulkLogTask(
             this.ajaxAction || 'post',
@@ -71,11 +68,9 @@ class EditTaskController {
         });
     }
     deleteTask() {
-        this.tasksService.deleteTask(this.specifiedTask.id).then((status) => {
-            if (status) {
-                this.$scope.$hide();
-                this.modalCallback();
-            }
+        this.tasksService.deleteTask(this.specifiedTask.id).then(() => {
+            this.$scope.$hide();
+            this.modalCallback();
         });
     }
 }
