@@ -25,7 +25,7 @@
 </div>
 
 <div>
-    <select ng-model="$ctrl.organization" ng-options="organization.id as organization.val for organization in $ctrl.organizations" chosen>
+    <select ng-model="$ctrl.organization" ng-options="key as val for (key, val) in $ctrl.serverConstants.data.organizations" chosen>
         <option value=""></option>
     </select>
 </div>

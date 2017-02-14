@@ -1,42 +1,38 @@
 class SetupConnectController {
     accounts;
     api;
+    preferencesOrganization;
     serverConstants;
     users;
     constructor(
         $state,
-        accounts, api, serverConstants, users
+        accounts, api, preferencesOrganization, serverConstants, users
     ) {
         this.$state = $state;
         this.accounts = accounts;
         this.api = api;
+        this.preferencesOrganization = preferencesOrganization;
         this.serverConstants = serverConstants;
         this.users = users;
 
-        this.organizations = _.map(_.keys(serverConstants.data.organizations), (key) => {
-            return {id: key, val: serverConstants.data.organizations[key]};
-        });
         this.reset();
     }
     $onInit() {
         this.users.current.options.setup_position.value = 'connect';
         this.users.setOption(this.users.current.options.setup_position);
-        this.lastAdded = _.get(_.last(this.users.organizationAccounts), 'name', null);
+        const lastId = _.get(_.last(this.users.organizationAccounts), 'id', null);
+        if (lastId) {
+            this.lastAdded = this.serverConstants.data.organizations[lastId];
+        }
     }
     connect() {
         this.connecting = true;
     }
     add() {
-        this.api.post(`user/organization_accounts`, {
-            username: this.username,
-            password: this.password,
-            organization: {
-                id: this.organization.id
-            }
-        }).then(() => {
+        this.preferencesOrganization.createAccount(this.username, this.password, this.organization.id).then(() => {
             this.connecting = false;
             //save stuff
-            this.lastAdded = 'Insert Data here';
+            this.lastAdded = this.serverConstants.data.organizations[this.organization.id];
         });
     }
     next() {
