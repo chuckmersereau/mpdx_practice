@@ -19,7 +19,7 @@
                 </span>
             </h4>
             <div class="people">
-                <div ng-repeat="person in $ctrl.contact.includes" ng-if="!person.deceased" class="people-single-contact">
+                <div ng-repeat="person in $ctrl.contact.people" ng-if="!person.deceased" class="people-single-contact">
                     <a ui-sref="contact.people({ contactId: $ctrl.contact.id, personId: person.id})">{{person.first_name}} {{person.last_name}}</a>
                     <span ng-repeat="phone_number in person.phone_numbers" ng-if="phone_number.primary && !phone_number.historic" class="phone-type phone-type-{{phone_number.location}}">
                         {{phone_number.number}}
