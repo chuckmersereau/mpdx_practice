@@ -18,8 +18,6 @@ class NotificationPreferencesController {
 
         this.saving = false;
 
-        this.init();
-
         $rootScope.$on('accountListUpdated', () => {
             this.init();
         });
@@ -28,15 +26,8 @@ class NotificationPreferencesController {
             return {id: key, value: serverConstants.data.notifications[key]};
         });
     }
-    init() {
-        this.notifications = _.keyBy(this.accounts.current.notification_preferences, 'id');
-        console.log(this.notifications);
-    }
     save() {
         this.saving = true;
-        _.each(this.accounts.current.notification_preferences, (notification) => {
-            notification.actions = this.notifications[notification.type].actions;
-        });
         return this.accounts.saveCurrent().then(() => {
             this.alerts.addAlert('Notifications saved successfully', 'success');
             return this.accounts.getCurrent().then(() => {
@@ -53,20 +44,16 @@ class NotificationPreferencesController {
         });
     }
     toggleNotification(e, id, notificationType) {
-        console.log(e);
-        console.log(id);
-        const index = _.findIndex(this.notifications[id].actions, notificationType);
-        if (e.target.checked && index !== null) {
-            this.notifications[id].actions.push(notificationType);
-        } else if (index !== null) {
-            this.notifications[id].actions.splice(index, 1);
+        let notification = _.find(this.accounts.current.notification_preferences, {id: id});
+        if (!notification) {
+            this.accounts.current.notification_preferences.push({id: id, actions: []});
+            notification = _.last(this.accounts.current.notification_preferences);
         }
-
-        // if (index === -1) {
-        //     this.notifications[fieldName].actions.push(notificationType);
-        // } else {
-        //     this.notifications[fieldName].actions.splice(index, 1);
-        // }
+        if (e.target.checked) {
+            notification.actions.push(notificationType);
+        } else {
+            notification.actions = _.reject(notification.actions, notificationType);
+        }
     }
     next() {
         this.users.current.options.setup_position.value = '';
