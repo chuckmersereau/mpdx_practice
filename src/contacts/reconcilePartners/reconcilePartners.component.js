@@ -27,7 +27,7 @@ class ContactsReconcilePartnersController {
     confirm(confirmAndContine = true) {
         this.blockUI.start();
 
-        var promises = [];
+        let promises = [];
 
         const contactsToMerge = _.filter(this.contactReconciler.duplicateContacts, duplicateContact => (duplicateContact.mergeChoice === 0 || duplicateContact.mergeChoice === 1));
         const contactsToIgnore = _.filter(this.contactReconciler.duplicateContacts, duplicateContact => duplicateContact.mergeChoice === 2);

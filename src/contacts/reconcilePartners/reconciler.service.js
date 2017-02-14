@@ -36,10 +36,14 @@ class ReconcilerService {
             return;
         }
 
-        this.api.get('contacts/duplicates', {include: 'contacts,contacts.addresses', per_page: this.perPage}).then((data) => {
+        return this.api.get('contacts/duplicates', {
+            include: 'contacts,contacts.addresses',
+            'fields[addresses]': 'primary,street,city,state,postal_code',
+            per_page: this.perPage
+        }).then((data) => {
+            this.duplicateContacts = data;
             this.$log.debug('contacts/duplicates', data);
 
-            this.duplicateContacts = data;
             this.duplicateContactsTotal = data.meta.pagination.total_count;
             this.shouldFetchContacts = false;
 
@@ -70,10 +74,16 @@ class ReconcilerService {
             return;
         }
 
-        this.api.get('contacts/people/duplicates', {include: 'people,shared_contact,people.phone_numbers,people.email_addresses', per_page: this.perPage}).then((data) => {
+        return this.api.get('contacts/people/duplicates', {
+            include: 'people,shared_contact,people.phone_numbers,people.email_addresses',
+            'fields[people]': 'email_addresses,phone_numbers,first_name,last_name',
+            'fields[phone_numbers]': 'primary,number',
+            'fields[email_addresses]': 'primary,email',
+            per_page: this.perPage
+        }).then((data) => {
+            this.duplicatePeople = data;
             this.$log.debug('contacts/people/duplicates', data);
 
-            this.duplicatePeople = data;
             this.duplicatePeopleTotal = data.meta.pagination.total_count;
             this.shouldFetchPeople = false;
 
@@ -83,7 +93,6 @@ class ReconcilerService {
                 let origName = '';
                 let origPhoneNumbers = [];
                 let origEmailAddresses = [];
-
                 _.each(duplicatePerson.people, (person, index) => {
                     if (index === 0) {
                         origName = `${person.first_name} ${person.last_name}`;

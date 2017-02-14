@@ -27,7 +27,7 @@ class ContactsReconcileIndividualsController {
     confirm(confirmAndContine = true) {
         this.blockUI.start();
 
-        var promises = [];
+        let promises = [];
 
         _.each(this.contactReconciler.duplicatePeople, (duplicatePerson) => {
             if (duplicatePerson.mergeChoice !== -1) {
