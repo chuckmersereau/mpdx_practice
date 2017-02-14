@@ -50,7 +50,7 @@
                 disable-search="true"
                 class="form-control"
                 id='result'
-                ng-options="opt for opt in $ctrl.serverConstants.data.results[$ctrl.model.activity_type] || $ctrl.serverConstants.data.results['default']"
+                ng-options="opt for opt in $ctrl.serverConstants.data.results[$ctrl.model.activity_type.toLowerCase()] || $ctrl.serverConstants.data.results['default']"
                 ng-model="$ctrl.model.result">
             <option value=""></option>
         </select>
