@@ -184,9 +184,9 @@ class TasksService {
             task.comments = _.reject(task.comments, {id: commentId});
         });
     }
-    // TODO: API missing
-    bulkDeleteTasks(taskIds) {
-        return this.api.delete('tasks/bulk', { ids: taskIds });
+    bulkDeleteTasks(tasks) {
+        tasks = _.map(tasks, task => { return { id: task.id }; });
+        return this.api.delete({url: 'tasks/bulk', data: tasks, type: 'tasks'});
     }
     bulkCompleteTasks(tasks) {
         _.each(tasks, task => {

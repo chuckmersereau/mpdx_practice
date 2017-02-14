@@ -60,8 +60,9 @@ class ListController {
         });
     }
     bulkDeleteTasks() {
-        this.alerts.addAlert('This functionality is not yet available on MPDX NEXT', 'danger'); //Needs bulk save
-        // this.tasksService.bulkDeleteTasks(this.selected);
+        this.tasksService.bulkDeleteTasks(this.selected).then(() => {
+            this.loadPage();
+        });
     }
     bulkCompleteTasks() {
         this.tasksService.bulkCompleteTasks(this.selected).then(() => {
