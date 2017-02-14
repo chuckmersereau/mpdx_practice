@@ -26,9 +26,6 @@ class ContactController {
         this.activeTab = '';
         this.contact = {};
 
-        // serverConstants.fetchConstant('contacts', 'contacts/basic_list');
-        // serverConstants.fetchConstants(['assignable_statuses' 'assignable_locations'']);
-
         this.tabsLabels = [
             { key: 'details', value: 'Details' },
             { key: 'donations', value: 'Donations' },

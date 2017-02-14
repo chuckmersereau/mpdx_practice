@@ -16,10 +16,6 @@ class EditFieldsController {
         this.contactsTags = contactsTags;
 
         this.models = {};
-        this.constants = {};
-
-        // this.serverConstants.fetchConstants(['bulk_update_options']);
-        this.constants = this.serverConstants.data;
     }
 
     save() {
