@@ -47,7 +47,7 @@
                         data-placeholder-text-single="'Select an Option' | translate"
                         class="form-control"
                         id="status"
-                        ng-options="opt[1] as opt[0] for opt in $ctrl.serverConstants.data.assignable_statuses"
+                        ng-options="opt as opt for opt in $ctrl.serverConstants.data.assignable_statuses"
                         ng-model="$ctrl.contact.status">
                     <option value=""></option>
                 </select>
