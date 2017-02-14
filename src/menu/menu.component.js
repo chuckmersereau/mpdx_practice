@@ -24,7 +24,8 @@ class menuController {
         this.help.showHelp();
     }
     isInSetup() {
-        return _.get(this.users, 'current.options.setup_position.value') !== '';
+        return false; //STUB until api is fixed
+        // return _.get(this.users, 'current.options.setup_position.value') !== '';
     }
 }
 
