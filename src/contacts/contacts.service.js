@@ -1,12 +1,14 @@
 class ContactsService {
+    alerts;
     analytics;
     api;
     contactFilter;
     contactsTags;
+    modal;
 
     constructor(
         $log, $q, $rootScope,
-        alerts, api, contactFilter, contactsTags
+        alerts, api, contactFilter, contactsTags, modal
     ) {
         this.$log = $log;
         this.$q = $q;
@@ -14,6 +16,7 @@ class ContactsService {
         this.api = api;
         this.contactFilter = contactFilter;
         this.contactsTags = contactsTags;
+        this.modal = modal;
 
         this.analytics = null;
         this.data = [];
@@ -58,7 +61,7 @@ class ContactsService {
     find(id) {
         let contact = _.find(this.data, { id: id });
         if (contact) {
-            this.$q.resolve(contact);
+            return this.$q.resolve(contact);
         } else {
             return this.get(id).then((data) => {
                 let contact = _.find(this.data, {id: data.id});
@@ -105,8 +108,13 @@ class ContactsService {
                 filters: filterParams,
                 page: this.page,
                 per_page: 25,
-                include: 'people,addresses,people.facebook_accounts,people.phone_numbers',
-                sort: 'name ASC'
+                include: 'people,addresses,people.facebook_accounts,people.phone_numbers,people.email_addresses',
+                'fields[people]': 'deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
+                'fields[addresses]': 'city,primary_mailing_address,postal_code,state,street',
+                'fields[email_addresses]': 'email,historic,primary',
+                'fields[phone_numbers]': 'historic,location,primary',
+                'fields[facebook_accounts]': 'url',
+                sort: 'name'
             },
             overrideGetAsPost: true
         }).then((data) => {
@@ -159,19 +167,12 @@ class ContactsService {
         });
     }
     create(contact) {
-        let contactObj = {
-            name: contact.name,
-            prefill_attributes_on_create: true
-        };
-
-        return this.api.post('contacts', {contact: contactObj}).then((data) => {
-            let contact = _.find(this.data, {id: data.id});
-            if (contact) {
-                _.assign(contact, contact, data); //add missing contact to data
-            } else {
-                this.data.push(contact);
-            }
-            return this.find(data.contact.id);
+        contact.account_list = { id: this.api.account_list_id };
+        return this.api.post('contacts', contact).then((data) => {
+            return this.find(data.id).then((found) => {
+                this.data.push(found);
+                return data;
+            });
         });
     }
     loadMoreContacts() {
@@ -323,6 +324,26 @@ class ContactsService {
     merge(contacts) {
         this.api.put(`contacts/merges`, contacts).then((data) => {
             this.$log.debug('contacts/merges', data);
+        });
+    }
+    openAddressModal(contactId, addressId) {
+        let promise = this.$q.defer();
+
+        return this.find(contactId).then((contact) => {
+            const address = _.find(contact.addresses, {id: addressId});
+
+            this.modal.open({
+                template: require('./show/address/modal/modal.html'),
+                controller: 'addressModalController',
+                locals: {
+                    contact: contact,
+                    address: address
+                },
+                onHide: () => {
+                    promise.resolve();
+                }
+            });
+            return promise.promise;
         });
     }
 }

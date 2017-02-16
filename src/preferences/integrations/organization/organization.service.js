@@ -3,27 +3,13 @@ class OrganizationService {
     state;
 
     constructor(
-        $log, $rootScope,
+        $log,
         api
     ) {
         this.$log = $log;
         this.api = api;
         this.data = {};
-        this.loading = true;
         this.state = 'disabled';
-    }
-    activate() {
-        this.load();
-        this.loadOrganizations();
-    }
-    load() {
-        this.loading = true;
-        return this.api.get(`user/organization_accounts`).then((data) => {
-            this.$log.debug(`user/organization_accounts`, data);
-            this.data.organization_accounts = data;
-            this.updateState();
-            this.loading = false;
-        });
     }
     save() {
         this.api.put(`user/organization_accounts`, this.data).then((data) => {
@@ -33,12 +19,6 @@ class OrganizationService {
     }
     disconnect(id) {
         return this.api.delete(`user/organization_accounts/${id}`);
-    }
-    loadOrganizations() {
-        return this.api.get('constants/organizations').then((data) => {
-            this.$log.debug(`constants/organizations`, data);
-            this.data.organizations = data.organizations;
-        });
     }
     updateState() {
         if (this.data.active) {
@@ -55,7 +35,9 @@ class OrganizationService {
         return this.api.post(`user/organization_accounts`, {
             username: username,
             password: password,
-            organization_id: organizationId
+            organization: {
+                id: organizationId
+            }
         });
     }
     updateAccount(username, password, accountId) {
