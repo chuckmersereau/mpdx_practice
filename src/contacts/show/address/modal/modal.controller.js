@@ -71,10 +71,10 @@ class AddressModalController {
             this.modalTitle = 'Add Address';
             this.address = { street: '', location: 'Home' };
         }
-        this.$scope.$on('mapInitialized', function(evt, evtMap) {
+        this.$scope.$on('mapInitialized', (evt, evtMap) => {
             this.maps.push(evtMap);
             this.refreshMap();
-        }.bind(this));
+        });
     }
     save() {
         if (angular.isDefined(this.address.id)) {
