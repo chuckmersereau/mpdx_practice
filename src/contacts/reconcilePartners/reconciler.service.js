@@ -39,6 +39,7 @@ class ReconcilerService {
         return this.api.get('contacts/duplicates', {
             include: 'contacts,contacts.addresses',
             'fields[addresses]': 'primary,street,city,state,postal_code',
+            filter: {account_list_id: this.api.account_list_id},
             per_page: this.perPage
         }).then((data) => {
             this.duplicateContacts = data;
@@ -79,6 +80,7 @@ class ReconcilerService {
             'fields[people]': 'email_addresses,phone_numbers,first_name,last_name',
             'fields[phone_numbers]': 'primary,number',
             'fields[email_addresses]': 'primary,email',
+            filter: {account_list_id: this.api.account_list_id},
             per_page: this.perPage
         }).then((data) => {
             this.duplicatePeople = data;
