@@ -85,6 +85,9 @@ class ContactsService {
 
         let filterParams = this.findChangedFilters(this.contactFilter.default_params, this.contactFilter.params);
 
+        // set account_list_id
+        filterParams.account_list_id = this.api.account_list_id;
+
         const wildcardSearch = this.contactFilter.wildcard_search;
         if (wildcardSearch) {
             filterParams.wildcard_search = wildcardSearch;
