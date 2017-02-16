@@ -56,24 +56,24 @@ class Users {
             });
         });
     }
-    getOptions(reset = false) { //STUB till api fix, forRouting = false) {
+    getOptions(reset = false, forRouting = false) {
         if (this.current.options && !reset) {
             return this.$q.resolve();
         }
         return this.api.get('user/options').then((data) => {
             this.current.options = this.mapOptions(data);
             this.$log.debug('user/options', this.current.options);
-            // if (forRouting) {
-            //     if (!_.has(this.current.options, 'setup_position')) { //force first time setup
-            //         return this.createOption('setup_position', 'start').then((pos) => {
-            //             this.current.options.setup_position = pos;
-            //             //  = this.mapOptions(data);
-            //             return this.$q.reject({redirect: 'setup.start'});
-            //         });
-            //     } else if (this.current.options.setup_position.value !== '') {
-            //         return this.$q.reject({redirect: `setup.${this.current.options.setup_position.value}`});
-            //     }
-            // }
+            if (forRouting) {
+                if (!_.has(this.current.options, 'setup_position')) { //force first time setup
+                    return this.createOption('setup_position', 'start').then((pos) => {
+                        this.current.options.setup_position = pos;
+                        //  = this.mapOptions(data);
+                        return this.$q.reject({redirect: 'setup.start'});
+                    });
+                } else if (this.current.options.setup_position.value !== '') {
+                    return this.$q.reject({redirect: `setup.${this.current.options.setup_position.value}`});
+                }
+            }
             return this.current.options;
         });
     }
