@@ -85,12 +85,15 @@ class AddressModalController {
                     address.primary_mailing_address = address.id === this.address.id;
                 });
             }
+            return this.contacts.saveAddress(this.contact.id, this.address).then(() => {
+                this.$scope.$hide();
+            });
         } else {
-            this.contact.addresses.push(this.address);
+            return this.contacts.addAddress(this.contact.id, this.address).then((data) => {
+                this.contact.addresses.push(data);
+                this.$scope.$hide();
+            });
         }
-        return this.contacts.saveAddress(this.contact.id, this.address).then(() => {
-            this.$scope.$hide();
-        });
     }
     reqUpdateEmailBodyRequest() {
         if (this.address.remote_id) {
