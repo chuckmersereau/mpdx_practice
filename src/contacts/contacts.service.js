@@ -346,6 +346,9 @@ class ContactsService {
             return promise.promise;
         });
     }
+    saveAddress(contactId, address) {
+        return this.api.put(`contacts/${contactId}/addresses/${address.id}`, address);
+    }
 }
 
 import contactFilter from './filter/filter.service';

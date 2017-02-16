@@ -88,7 +88,7 @@ class AddressModalController {
         } else {
             this.contact.addresses.push(this.address);
         }
-        return this.contacts.save(this.contact).then(() => {
+        return this.contacts.saveAddress(this.contact.id, this.address).then(() => {
             this.$scope.$hide();
         });
     }
