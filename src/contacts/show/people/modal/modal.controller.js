@@ -81,7 +81,7 @@ class PersonModalController {
         return {id: uuid(), url: '', kind: '', _destroy: 0};
     }
     familyRelationshipObject() {
-        return {id: uuid(), related_person_id: 0, relationship: '', _destroy: 0};
+        return {id: uuid(), related_person: {id: null}};
     }
     delete() {
         this.person._destroy = 1;

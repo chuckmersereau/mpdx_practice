@@ -253,7 +253,8 @@ class EntityAttributes {
                 },
                 family_relationships: {
                     ref: 'id',
-                    attributes: ["related_person_id", "relationship", "created_at", "updated_at", "updated_in_db_at"]
+                    attributes: ["related_person", "relationship", "created_at", "updated_at", "updated_in_db_at"],
+                    related_person: { ref: 'id' }
                 },
                 linkedin_accounts: {
                     ref: 'id',

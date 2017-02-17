@@ -15,7 +15,7 @@ class PersonService {
         this.contacts = contacts;
         this.modal = modal;
 
-        this.includes = 'email_addresses,facebook_accounts,family_relationships,linkedin_accounts,master_person,phone_numbers,twitter_accounts,websites';
+        this.includes = 'email_addresses,facebook_accounts,family_relationships,family_relationships.related_person,linkedin_accounts,master_person,phone_numbers,twitter_accounts,websites';
         this.selected = null;
 
         $rootScope.$on('contactPersonUpdated', (e, contactId) => {

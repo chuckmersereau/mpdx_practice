@@ -8,8 +8,8 @@ class ContactPersonController {
         this.$sce = $sce;
         this.people = people;
     }
-    edit() {
-        this.people.openPeopleModal(this.contact.id, this.person);
+    openModal() {
+        this.people.openPeopleModal(this.contact, this.person.id);
     }
     selectCard() {
         if (!this.isMerging) return;
