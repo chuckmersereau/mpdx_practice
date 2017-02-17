@@ -1,18 +1,19 @@
 class BalancesController {
     accounts;
     api;
+    designationAccounts;
+    reports;
     constructor(
         $log, $rootScope, gettextCatalog,
-        accounts, api
+        accounts, api, designationAccounts, reports
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
         this.accounts = accounts;
         this.api = api;
+        this.designationAccounts = designationAccounts;
         this.gettextCatalog = gettextCatalog;
-
-        this.balances = null;
-        this.goals = null;
+        this.reports = reports;
     }
     $onInit() {
         this.init();
@@ -21,21 +22,17 @@ class BalancesController {
         });
     }
     init() {
-        this.api.get('reports/goal_progress', {filter: {account_list_id: this.api.account_list_id}}).then((data) => {
-            this.$log.debug('reports/goal_progress', data);
-            this.goals = data;
+        this.reports.getGoals().then((data) => {
             this.title = this.gettextCatalog.getString(
                 '{{received}} received/{{pledged}} committed of goal: {{goal}}. Click to see outstanding financial partners.', {
-                    pledged: this.goals.total_pledges,
-                    received: this.goals.received_pledges,
-                    goal: this.goals.monthly_goal
+                    pledged: data.total_pledges,
+                    received: data.received_pledges,
+                    goal: data.monthly_goal
                 }
             );
         });
-        this.api.get('reports/balances', {filter: {account_list_id: this.api.account_list_id}, include: 'designation_accounts'}).then((data) => {
-            this.$log.debug('reports/account_balances', data);
-            this.balances = data;
-            this.balance = _.sum(_.map(data.designation_accounts, 'converted_balance'));
+        this.designationAccounts.load().then(() => {
+            this.balance = _.sum(_.map(this.designationAccounts.data, 'converted_balance'));
         });
     }
 }
