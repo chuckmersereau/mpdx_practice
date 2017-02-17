@@ -12,7 +12,7 @@
                 class="form-control"
                 id="action"
                 name="action"
-                ng-options="opt for opt in $ctrl.constants.actions"
+                ng-options="opt for opt in $ctrl.serverConstants.data.activities"
                 ng-model="$ctrl.model.activity_type">
             <option value=""></option>
         </select>
@@ -50,7 +50,7 @@
                 disable-search="true"
                 class="form-control"
                 id='result'
-                ng-options="opt for opt in $ctrl.constants.results[$ctrl.model.activity_type] || $ctrl.constants.results['default']"
+                ng-options="opt for opt in $ctrl.serverConstants.data.results[$ctrl.model.activity_type.toLowerCase()] || $ctrl.serverConstants.data.results['default']"
                 ng-model="$ctrl.model.result">
             <option value=""></option>
         </select>
@@ -61,7 +61,7 @@
                 disable-search="true"
                 class="form-control"
                 id='nextAction'
-                ng-options="opt for opt in $ctrl.constants.next_actions[$ctrl.model.activity_type] || $ctrl.constants.next_actions['default']"
+                ng-options="opt for opt in $ctrl.serverConstants.data.next_actions[$ctrl.model.activity_type.toLowerCase()] || $ctrl.serverConstants.data.next_actions['default']"
                 ng-model="$ctrl.model.next_action">
             <option value=""></option>
         </select>

@@ -1,13 +1,16 @@
-<div class="row" ng-hide="$ctrl.deleted">
+<div class="row" ng-if="!$ctrl.deleted">
     <div class="col-sm-7">
-        <select class="form-control" ng-model="$ctrl.familyRelationship.related_person_id" data-placeholder="{{ 'Select an Option *' | translate }}"
-                ng-required="!$ctrl.deleted" chosen>
-            <option ng-repeat="person in $ctrl.currentAccountList.active_people" ng-value="person.id">{{person.last_name}}, {{person.first_name}}</option>
+        <select class="form-control" ng-model="$ctrl.familyRelationship.id" data-placeholder="{{ 'Select an Option *' | translate }}"
+                chosen>
+            <option ng-repeat="person in $ctrl.contact.people" ng-value="person.id"
+                ng-hide="person.id == $ctrl.person.id">
+                {{person.last_name}}, {{person.first_name}}
+            </option>
         </select>
     </div>
     <div class="col-sm-4">
         <select class="form-control" ng-model="$ctrl.familyRelationship.relationship" data-placeholder="{{ 'Select an Option *' | translate }}"
-                ng-required="!$ctrl.deleted" chosen>
+                chosen>
             <option translate>Husband</option>
             <option translate>Son</option>
             <option translate>Father</option>

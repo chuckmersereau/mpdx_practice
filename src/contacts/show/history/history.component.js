@@ -24,9 +24,9 @@ class ContactHistoryController {
     load(id) {
         this.tasksService.fetchCompletedTasks(id);
     }
-    newComment(taskId) {
+    newComment(task) {
         if (this.models.comment) {
-            this.tasksService.submitNewComment(taskId, this.models.comment).then(() => {
+            this.tasksService.addComment(task, this.models.comment).then(() => {
                 this.load(this.contact.id);
             });
             this.models.comment = '';
@@ -47,7 +47,7 @@ class ContactHistoryController {
                 toComplete: true,
                 createNext: false
             },
-            onHide: this.load.bind(this, this.contact.id)
+            onHide: () => this.load(this.contact.id)
         });
     }
 }

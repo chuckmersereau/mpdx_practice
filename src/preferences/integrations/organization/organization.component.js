@@ -1,22 +1,22 @@
 class OrganizationIntegrationPreferencesController {
     alerts;
     preferencesOrganization;
+    serverConstants;
+    users;
 
     constructor(
-        preferencesOrganization, alerts
+        alerts, preferencesOrganization, serverConstants, users,
     ) {
-        this.preferencesOrganization = preferencesOrganization;
         this.alerts = alerts;
+        this.preferencesOrganization = preferencesOrganization;
+        this.serverConstants = serverConstants;
+        this.users = users;
 
         this.saving = false;
         this.page = 'org_list';
         this.selected = null;
         this.username = null;
         this.password = null;
-    }
-    $onInit() {
-        this.preferencesOrganization.load();
-        this.preferencesOrganization.loadOrganizations();
     }
     save() {
         this.saving = true;
