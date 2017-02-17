@@ -12,7 +12,7 @@ const Address = {
     template: require('./address.html'),
     bindings: {
         address: '<',
-        contactId: '<'
+        contact: '<'
     }
 };
 
