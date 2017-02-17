@@ -47,7 +47,7 @@ class PersonService {
     merge(contact, people) {
         console.log(people);
         return this.api.post({
-            url: `contacts/${contact.id}/people/merge`,
+            url: `contacts/${contact.id}/people/merges/bulk`,
             data: people,
             type: 'merges',
             doSerialization: false
