@@ -42,7 +42,7 @@ class MergePeopleModalController {
         });
 
         return this.people.merge(selectedPeopleToMerge).catch(() => {
-            this.alerts.addAlert('There was an error while trying to merge the people');
+            this.alerts.addAlert('There was an error while trying to merge the people', 'danger');
         }).finally(() => {
             this.$scope.$hide();
         });

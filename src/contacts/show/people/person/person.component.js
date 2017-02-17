@@ -9,7 +9,7 @@ class ContactPersonController {
         this.people = people;
     }
     edit() {
-        this.people.openPeopleModal(this.contact.id, this.person.id);
+        this.people.openPeopleModal(this.contact.id, this.person);
     }
     selectCard() {
         if (!this.isMerging) return;

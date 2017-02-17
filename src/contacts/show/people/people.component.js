@@ -1,15 +1,17 @@
 class ContactPeopleController {
+    alerts;
     api;
     contact;
     people;
 
     constructor(
         $log, $state, $rootScope,
-        api, people, gettextCatalog
+        alerts, api, people, gettextCatalog
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
         this.$state = $state;
+        this.alerts = alerts;
         this.api = api;
         this.people = people;
         this.gettextCatalog = gettextCatalog;
@@ -42,7 +44,7 @@ class ContactPeopleController {
     }
     openMergeModal() {
         if (this.selectedPeople.length < 2) {
-            alert(this.gettextCatalog.getString('First select at least 2 people to merge'));
+            this.alerts.addAlert(this.gettextCatalog.getString('First select at least 2 people to merge'), 'danger');
         } else {
             this.isMerging = false;
             this.people.openMergePeopleModal(this.contact, this.selectedPeople);
