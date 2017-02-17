@@ -44,8 +44,7 @@ class PersonService {
             return data;
         });
     }
-    merge(contact, people) {
-        console.log(people);
+    merge(people) {
         return this.api.post({
             url: `contacts/people/merges/bulk`,
             data: people,
@@ -89,7 +88,6 @@ class PersonService {
             template: require('./merge/merge.html'),
             controller: 'mergePeopleModalController',
             locals: {
-                contact: contact,
                 selectedPeople: selectedPeople
             },
             onHide: () => {

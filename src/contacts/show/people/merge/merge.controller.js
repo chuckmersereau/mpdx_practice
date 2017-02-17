@@ -4,12 +4,12 @@ class MergePeopleModalController {
     people;
 
     constructor(
-        $scope, people,
-        alerts, contact, selectedPeople
+        $scope,
+        people, alerts,
+        selectedPeople
     ) {
         this.alerts = alerts;
         this.$scope = $scope;
-        this.contact = contact;
         this.selectedPeople = selectedPeople;
         this.people = people;
 
@@ -41,7 +41,7 @@ class MergePeopleModalController {
             };
         });
 
-        return this.people.merge(this.contact, selectedPeopleToMerge).catch(() => {
+        return this.people.merge(selectedPeopleToMerge).catch(() => {
             this.alerts.addAlert('There was an error while trying to merge the people');
         }).finally(() => {
             this.$scope.$hide();
