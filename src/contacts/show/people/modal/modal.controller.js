@@ -24,6 +24,14 @@ class PersonModalController {
     activate() {
         if (_.has(this.person, 'id')) {
             this.modalTitle = 'Edit Person';
+            //bad data is bad
+            if (this.person.birthday_year) {
+                this.person.birthday = moment(`${this.person.birthday_year}-${this.person.birthday_month}-${this.person.birthday_day}`, 'YYYY-MM-DD').toDate();
+                console.log(this.person.birthday);
+            }
+            if (this.person.anniversary_year) {
+                this.person.anniversary = moment(`${this.person.anniversary_year}-${this.person.anniversary_month}-${this.person.anniversary_day}`, 'YYYY-MM-DD').toDate();
+            }
         } else {
             this.modalTitle = 'Add Person';
             this.person = {
@@ -35,6 +43,20 @@ class PersonModalController {
         }
     }
     save() {
+        //bad data is bad
+        if (this.person.birthday) {
+            const birthday = moment(this.person.birthday);
+            this.person.birthday_year = birthday.year();
+            this.person.birthday_month = birthday.month() + 1;
+            this.person.birthday_day = birthday.date();
+        }
+        if (this.person.anniversary) {
+            const anniversary = moment(this.person.anniversary);
+            this.person.anniversary_year = anniversary.year();
+            this.person.anniversary_month = anniversary.month() + 1;
+            this.person.anniversary_day = anniversary.date();
+        }
+
         if (_.has(this.person, 'id')) {
             return this.people.save(this.contact.id, this.person).then(() => {
                 this.$log.debug('person saved:', this.person);
