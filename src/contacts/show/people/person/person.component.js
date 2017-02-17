@@ -1,8 +1,15 @@
 class ContactPersonController {
+    contact;
+    people;
     constructor(
-        $sce
+        $sce,
+        people
     ) {
         this.$sce = $sce;
+        this.people = people;
+    }
+    edit() {
+        this.people.openPeopleModal(this.contact.id, this.person.id);
     }
     selectCard() {
         if (!this.isMerging) return;
@@ -17,6 +24,7 @@ const Person = {
     controller: ContactPersonController,
     template: require('./person.html'),
     bindings: {
+        contact: '<',
         person: '<',
         isMerging: '<',
         onSelectPerson: '&'

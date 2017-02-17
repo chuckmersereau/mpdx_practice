@@ -53,7 +53,8 @@ class Api {
         promise = null,
         attempts = 0,
         overrideGetAsPost = false,
-        type = null
+        type = null,
+        doSerialization = true
     }) {
         if (!promise) {
             promise = this.$q.defer();
@@ -110,19 +111,27 @@ class Api {
                         this.$log.error(`undefined attributes for model: ${type} in api.service`);
                     }
                 }
-                if (_.isArray(data)) {
-                    return angular.toJson({
-                        data: _.map(data, item => serialize(type, params, item, method))
-                    });
+                if (doSerialization) {
+                    if (_.isArray(data)) {
+                        return angular.toJson({
+                            data: _.map(data, item => serialize(type, params, item, method))
+                        });
+                    } else {
+                        return angular.toJson(serialize(type, params, data, method));
+                    }
                 } else {
-                    return angular.toJson(serialize(type, params, data, method));
+                    return angular.toJson(data);
                 }
             },
             transformResponse: appendTransform(this.$http.defaults.transformResponse, (data) => {
-                if (_.isArray(data)) {
-                    return _.map(data, item => deserialize(item));
+                if (doSerialization) {
+                    if (_.isArray(data)) {
+                        return _.map(data, item => deserialize(item));
+                    } else {
+                        return deserialize(data);
+                    }
                 } else {
-                    return deserialize(data);
+                    return data;
                 }
             }),
             cacheService: false,
@@ -221,9 +230,6 @@ class EntityAttributes {
             },
             family_relationships: {
                 attributes: ["person_id", "related_person_id", "relationship", "created_at", "updated_at", "updated_in_db_at"]
-            },
-            merge: {
-                attributes: ["winner_id", "loser_id"]
             },
             notifications: {
                 attributes: ["contact_id", "notification_type_id", "event_date", "cleared", "created_at", "updated_at", "donation_id", "updated_in_db_at"]

@@ -1,29 +1,50 @@
 class MergePeopleModalController {
+    alerts;
     contact;
-    contactPerson;
+    people;
 
     constructor(
-        $scope, contactPerson, contact, people
+        $scope, people,
+        alerts, contact, selectedPeople
     ) {
+        this.alerts = alerts;
         this.$scope = $scope;
         this.contact = contact;
+        this.selectedPeople = selectedPeople;
         this.people = people;
-        this.contactPerson = contactPerson;
 
-        this.selectedPerson = people[0].id;
+        this.selectedPerson = selectedPeople[0].id;
         this.currentlyMerging = false;
     }
     save() {
-        const peopleToMerge = _.map(this.people, (person) => {
-            if (!person.id === this.selectedPerson.id) {
-                return {winner_id: this.selectedPerson.id, loser_id: person.id};
-            }
+        const selectedPeople = _.reject(this.selectedPeople, {id: this.selectedPerson});
+        const selectedPeopleToMerge = _.map(selectedPeople, (person) => {
+            return {
+                data: {
+                    type: "merges",
+                    attributes: {},
+                    relationships: {
+                        loser: {
+                            data: {
+                                type: "contacts",
+                                id: person.id
+                            }
+                        },
+                        winner: {
+                            data: {
+                                type: "contacts",
+                                id: this.selectedPerson
+                            }
+                        }
+                    }
+                }
+            };
         });
 
-        return this.contactPerson.merge(this.contact, peopleToMerge).then(() => {
+        return this.people.merge(this.contact, selectedPeopleToMerge).catch(() => {
+            this.alerts.addAlert('There was an error while trying to merge the people');
+        }).finally(() => {
             this.$scope.$hide();
-        }).catch(() => {
-            alert('There was an error while trying to merge the people');
         });
     }
 }
