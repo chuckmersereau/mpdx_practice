@@ -47,7 +47,7 @@ class PersonService {
     merge(contact, people) {
         console.log(people);
         return this.api.post({
-            url: `contacts/${contact.id}/people/merges/bulk`,
+            url: `contacts/people/merges/bulk`,
             data: people,
             type: 'merges',
             doSerialization: false
@@ -76,7 +76,7 @@ class PersonService {
             });
         };
 
-        if (personId === null) {
+        if (personId == null) {
             modalOpen(contact, {});
         } else {
             this.get(contact.id, personId).then((person) => {

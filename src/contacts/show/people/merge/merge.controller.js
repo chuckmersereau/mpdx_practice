@@ -26,13 +26,13 @@ class MergePeopleModalController {
                     relationships: {
                         loser: {
                             data: {
-                                type: "contacts",
+                                type: "people",
                                 id: person.id
                             }
                         },
                         winner: {
                             data: {
-                                type: "contacts",
+                                type: "people",
                                 id: this.selectedPerson
                             }
                         }
