@@ -19,6 +19,7 @@ class ContactsService {
         this.modal = modal;
 
         this.analytics = null;
+        this.completeList = null;
         this.data = [];
         this.meta = {};
         this.loading = true;
@@ -39,6 +40,7 @@ class ContactsService {
         });
 
         $rootScope.$on('accountListUpdated', () => {
+            this.getList(true);
             this.load(true);
         });
 
@@ -57,6 +59,19 @@ class ContactsService {
     }
     get(id) {
         return this.api.get(`contacts/${id}`, {include: 'addresses,appeals,donor_accounts,people,referrals_by_me,referrals_to_me'});
+    }
+    getList(reset = false) {
+        if (!reset && this.completeList) {
+            return this.$q.resolve(this.completeList);
+        }
+        return this.api.get('contacts', {
+            filter: {account_list_id: this.api.account_list_id},
+            'fields[contacts]': 'name',
+            per_page: 25000
+        }).then((data) => {
+            this.$log.debug('contacts all', data);
+            this.completeList = data;
+        });
     }
     find(id) {
         let contact = _.find(this.data, { id: id });
@@ -84,6 +99,9 @@ class ContactsService {
         let newContacts;
 
         let filterParams = this.findChangedFilters(this.contactFilter.default_params, this.contactFilter.params);
+
+        // set account_list_id
+        filterParams.account_list_id = this.api.account_list_id;
 
         const wildcardSearch = this.contactFilter.wildcard_search;
         if (wildcardSearch) {
