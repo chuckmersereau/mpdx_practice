@@ -26,9 +26,9 @@ class ReconcilerService {
         this.shouldFetchPeople = true;
     }
 
-    fetchAll() { //force = false) {
-        // this.fetchDuplicateContacts(force);
-        // this.fetchDuplicatePeople(force);
+    fetchAll(force = false) {
+        this.fetchDuplicateContacts(force);
+        this.fetchDuplicatePeople(force);
     }
 
     fetchDuplicateContacts(force = false) {
@@ -36,10 +36,15 @@ class ReconcilerService {
             return;
         }
 
-        this.api.get('contacts/duplicates', {include: 'contacts', per_page: this.perPage}).then((data) => {
+        return this.api.get('contacts/duplicates', {
+            include: 'contacts,contacts.addresses',
+            'fields[addresses]': 'primary,street,city,state,postal_code',
+            per_page: this.perPage
+        }).then((data) => {
+            this.duplicateContacts = data;
             this.$log.debug('contacts/duplicates', data);
 
-            this.duplicateContactsTotal = data.length;
+            this.duplicateContactsTotal = data.meta.pagination.total_count;
             this.shouldFetchContacts = false;
 
             _.each(this.duplicateContacts, (duplicateContact) => {
@@ -49,20 +54,16 @@ class ReconcilerService {
                 let origAddresses = [];
 
                 _.each(duplicateContact.contacts, (contact, index) => {
-                    this.api.get(`contacts/${contact.id}`, {include: 'addresses'}).then((data) => {
-                        contact.addresses = data.addresses;
+                    if (index === 0) {
+                        origName = contact.name;
+                        origAddresses = _.map(_.filter(contact.addresses, address => address.primary), address => `${address.street} ${address.city} ${address.state} ${address.postal_code}`);
+                    } else {
+                        contact.duplicate_name = contact.name === origName;
 
-                        if (index === 0) {
-                            origName = contact.name;
-                            origAddresses = _.map(_.filter(contact.addresses, address => address.primary), address => `${address.street} ${address.city} ${address.state} ${address.postal_code}`);
-                        } else {
-                            contact.duplicate_name = contact.name === origName;
-
-                            _.each(contact.addresses, (address) => {
-                                address.duplicate = address.primary && _.includes(origAddresses, `${address.street} ${address.city} ${address.state} ${address.postal_code}`);
-                            });
-                        }
-                    });
+                        _.each(contact.addresses, (address) => {
+                            address.duplicate = address.primary && _.includes(origAddresses, `${address.street} ${address.city} ${address.state} ${address.postal_code}`);
+                        });
+                    }
                 });
             });
         });
@@ -73,10 +74,17 @@ class ReconcilerService {
             return;
         }
 
-        this.api.get('contacts/people/duplicates', {include: 'people,shared_contact', per_page: this.perPage}).then((data) => {
+        return this.api.get('contacts/people/duplicates', {
+            include: 'people,shared_contact,people.phone_numbers,people.email_addresses',
+            'fields[people]': 'email_addresses,phone_numbers,first_name,last_name',
+            'fields[phone_numbers]': 'primary,number',
+            'fields[email_addresses]': 'primary,email',
+            per_page: this.perPage
+        }).then((data) => {
+            this.duplicatePeople = data;
             this.$log.debug('contacts/people/duplicates', data);
 
-            this.duplicatePeopleTotal = data.length;
+            this.duplicatePeopleTotal = data.meta.pagination.total_count;
             this.shouldFetchPeople = false;
 
             _.each(this.duplicatePeople, (duplicatePerson) => {
@@ -85,29 +93,22 @@ class ReconcilerService {
                 let origName = '';
                 let origPhoneNumbers = [];
                 let origEmailAddresses = [];
-
                 _.each(duplicatePerson.people, (person, index) => {
-                    this.api.get(`contacts/${duplicatePerson.shared_contact.id}/people/${person.id}`, {include: 'phone_numbers,email_addresses'}).then((data) => {
-                        this.$log.debug('contacts/people', data);
-                        person.phone_numbers = data.phone_numbers;
-                        person.email_addresses = data.email_addresses;
+                    if (index === 0) {
+                        origName = `${person.first_name} ${person.last_name}`;
+                        origPhoneNumbers = _.map(_.filter(person.phone_numbers, phoneNumber => phoneNumber.primary), phoneNumber => phoneNumber.number);
+                        origEmailAddresses = _.map(_.filter(person.email_addresses, emailAddress => emailAddress.primary), emailAddress => emailAddress.email);
+                    } else {
+                        person.duplicate_name = `${person.first_name} ${person.last_name}` === origName;
 
-                        if (index === 0) {
-                            origName = `${person.first_name} ${person.last_name}`;
-                            origPhoneNumbers = _.map(_.filter(person.phone_numbers, phoneNumber => phoneNumber.primary), phoneNumber => phoneNumber.number);
-                            origEmailAddresses = _.map(_.filter(person.email_addresses, emailAddress => emailAddress.primary), emailAddress => emailAddress.email);
-                        } else {
-                            person.duplicate_name = `${person.first_name} ${person.last_name}` === origName;
+                        _.each(person.phone_numbers, (phoneNumber) => {
+                            phoneNumber.duplicate = phoneNumber.primary && _.includes(origPhoneNumbers, phoneNumber.number);
+                        });
 
-                            _.each(person.phone_numbers, (phoneNumber) => {
-                                phoneNumber.duplicate = phoneNumber.primary && _.includes(origPhoneNumbers, phoneNumber.number);
-                            });
-
-                            _.each(person.email_addresses, (emailAddress) => {
-                                emailAddress.duplicate = emailAddress.primary && _.includes(origEmailAddresses, emailAddress.email);
-                            });
-                        }
-                    });
+                        _.each(person.email_addresses, (emailAddress) => {
+                            emailAddress.duplicate = emailAddress.primary && _.includes(origEmailAddresses, emailAddress.email);
+                        });
+                    }
                 });
             });
         });
