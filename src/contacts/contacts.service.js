@@ -83,7 +83,7 @@ class ContactsService {
                 let contact = _.find(this.data, {id: data.id});
                 if (contact) {
                     _.assign(contact, contact, data); //add missing contact to data
-                } else {
+                } else if (this.data) {
                     this.data.push(contact);
                 }
                 return data;
