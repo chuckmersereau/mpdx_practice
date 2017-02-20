@@ -60,8 +60,9 @@ class ListController {
         });
     }
     bulkDeleteTasks() {
-        this.alerts.addAlert('This functionality is not yet available on MPDX NEXT', 'danger'); //Needs bulk save
-        // this.tasksService.bulkDeleteTasks(this.selected);
+        this.tasksService.bulkDeleteTasks(this.selected).then(() => {
+            this.loadPage();
+        });
     }
     bulkCompleteTasks() {
         this.tasksService.bulkCompleteTasks(this.selected).then(() => {
@@ -86,9 +87,8 @@ class ListController {
     }
     newComment(task) {
         if (this.models.comment) {
-            this.tasksService.submitNewComment(task, this.models.comment).then((data) => {
-                task.updated_in_db_at = data.updated_in_db_at;
-                task.comments.push(this.models.comment);
+            this.tasksService.addComment(task, this.models.comment).then((data) => {
+                task.comments.push(data);
                 this.models.comment = '';
             });
         }

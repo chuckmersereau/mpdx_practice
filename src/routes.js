@@ -7,7 +7,8 @@ export default class Routes {
             abstract: true,
             template: '<div ui-view=""></div>',
             resolve: {
-                userResolve: /*@ngInject*/ (users) => users.getCurrent()
+                //userResolve: /*@ngInject*/ (users) => users.getCurrent(), // handled in app.run now
+                constants: /*@ngInject*/ (serverConstants) => serverConstants.load()
             }
         }).state({
             name: 'home',
@@ -60,10 +61,6 @@ export default class Routes {
                 resolution: /*@ngInject*/ (contactFilter) => contactFilter.load(),
                 another: /*@ngInject*/ (contactsTags) => contactsTags.load()
             }
-        }).state({
-            name: 'contact.address',
-            url: '/addresses/{addressId}',
-            onEnter: openAddressModal
         }).state({
             name: 'contact.merge_people',
             url: '/people/merge/:peopleIds',
@@ -151,7 +148,7 @@ export default class Routes {
             name: 'preferences.notifications',
             title: 'Notifications',
             url: '/notifications',
-            component: 'notificationPreferences'
+            component: 'preferencesNotifications'
         }).state({
             name: 'preferences.personal',
             title: 'Preferences',
@@ -162,6 +159,42 @@ export default class Routes {
             title: 'Preferences',
             url: '/{id}',
             component: 'personalPreferences'
+        }).state({
+            name: 'setup',
+            title: 'Setup',
+            url: '/setup',
+            component: 'setup',
+            parent: 'root'
+        }).state({
+            name: 'setup.connect',
+            title: 'Get Connected',
+            url: '/connect',
+            component: 'setupConnect'
+        }).state({
+            name: 'setup.google',
+            title: 'Setup Google',
+            url: '/google',
+            component: 'setupGoogle'
+        }).state({
+            name: 'setup.merge',
+            title: 'Merge Accounts',
+            url: '/merge',
+            component: 'setupMerge'
+        }).state({
+            name: 'setup.notifications',
+            title: 'Notifications',
+            url: '/notifications',
+            component: 'setupNotifications'
+        }).state({
+            name: 'setup.preferences',
+            title: 'Preferences',
+            url: '/preferences',
+            component: 'setupPreferences'
+        }).state({
+            name: 'setup.start',
+            title: 'Get Started',
+            url: '/start',
+            component: 'setupStart'
         }).state({
             name: 'tasks',
             title: 'Tasks',
@@ -224,27 +257,6 @@ function logout($window, $state) {
 }
 
 /*@ngInject*/
-function openAddressModal(
-    $stateParams, modal, contacts, $state
-) {
-    contacts.find($stateParams.contactId).then((contact) => {
-        const address = _.find(contact.addresses, addressToFilter => addressToFilter.id.toString() === $stateParams.addressId);
-
-        modal.open({
-            template: require('./contacts/show/address/modal/modal.html'),
-            controller: 'addressModalController',
-            locals: {
-                contact: contact,
-                address: address
-            },
-            onHide: () => {
-                $state.go('^', {}, { reload: true });
-            }
-        });
-    });
-}
-
-/*@ngInject*/
 function openDonationModal($state, $stateParams, modal, donationsReport) {
     donationsReport.getDonations().then((data) => {
         let donation = _.find(data.donations, { id: parseInt($stateParams.donationId) });
@@ -262,27 +274,30 @@ function openDonationModal($state, $stateParams, modal, donationsReport) {
 }
 
 /*@ngInject*/
-function openPeopleModal($state, $stateParams, modal, contactPerson) {
-    function modalOpen(contactId, person) {
+function openPeopleModal($state, $stateParams, modal, contactPerson, contacts) {
+    function modalOpen(contact, person) {
         modal.open({
             template: require('./contacts/show/people/modal/modal.html'),
             controller: 'personModalController',
             locals: {
-                contactId: contactId,
+                contact: contact,
                 person: person
             },
             onHide: () => {
-                $state.go('contact', {contactId: contactId}, { reload: true });
+                $state.go('contact', {contactId: contact.id}, { reload: true });
             }
         });
     }
-    if ($stateParams.personId === 'new') {
-        modalOpen($stateParams.contactId, {});
-    } else {
-        contactPerson.get($stateParams.contactId, $stateParams.personId).then((person) => {
-            modalOpen($stateParams.contactId, person);
-        });
-    }
+
+    contacts.get($stateParams.contactId).then((contact) => {
+        if ($stateParams.personId === 'new') {
+            modalOpen(contact, {});
+        } else {
+            contactPerson.get($stateParams.contactId, $stateParams.personId).then((person) => {
+                modalOpen(contact, person);
+            });
+        }
+    });
 }
 
 /*@ngInject*/

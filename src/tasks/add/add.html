@@ -10,7 +10,7 @@
                 disable-search="true"
                 class="form-control"
                 id='action'
-                ng-options="opt as opt for opt in $ctrl.constants.actions"
+                ng-options="opt as opt for opt in $ctrl.serverConstants.data.activities"
                 ng-model="$ctrl.models.activity_type">
             <option value=""></option>
         </select>
@@ -48,6 +48,15 @@
                     <option value="hours">Hours</option>
                 </select>
             </div>
+        </div>
+    </div>
+    <div>
+        <label translate>Contacts</label>
+        <div ng-repeat="contact in $ctrl.selectedContacts track by $index">
+            <select chosen ng-options="opt.id as opt.name for opt in $ctrl.contacts.completeList" ng-model="contact"></select>
+        </div>
+        <div>
+            <a ng-click="$ctrl.addContact()"><i class="fa fa-plus-square"></i> Add Contact</a>
         </div>
     </div>
     <div>

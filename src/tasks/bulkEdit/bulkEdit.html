@@ -11,7 +11,7 @@
             <select disable-search="true"
                     class="form-control"
                     id='action'
-                    ng-options="opt as opt for opt in $ctrl.constants.actions"
+                    ng-options="opt as opt for opt in $ctrl.serverConstants.data.activities"
                     ng-model="$ctrl.models.activity_type">
                 <option value=""></option>
             </select>

@@ -1,0 +1,45 @@
+<h1 ng-if="$ctrl.users.organizationAccounts.length === 0" translate><i class="ci ci-alert text-primary"></i> It's time to connect!</h1>
+<h1 ng-if="$ctrl.users.organizationAccounts.length > 0" translate><i class="ci ci-alert text-primary"></i> It's time for awesome!</h1>
+<hr style="width: 100%">
+<div ng-if="$ctrl.users.organizationAccounts.length === 0">
+    <h2 translate>
+        First, connect your organization to your MPDX account.
+    </h2>
+    <p translate>This will allow MPDX to automatically synchronize your donation information.</p>
+</div>
+<div ng-if="$ctrl.users.organizationAccounts.length > 0">
+    <h2 translate>
+        Sweet! You're connected.
+    </h2>
+    <p translate>{{$ctrl.lastAdded}}</p>
+    <p>
+        <button ng-click="$ctrl.next()" class="btn btn-primary" translate>Hooray! Take me into MPDX</button>
+    </p>
+    <h2 translate>
+        Do you receive donations in any other country or from any other organizations?
+    </h2>
+    <p translate>
+        Now would be a great time to connect them to your MPDX Account.
+        Don't worry, you can always add them in later too.
+    </p>
+</div>
+
+<div>
+    <select ng-model="$ctrl.organization" ng-options="key as val for (key, val) in $ctrl.serverConstants.data.organizations" chosen>
+        <option value=""></option>
+    </select>
+</div>
+<div ng-if="$ctrl.connecting">
+    <label for="username" translate>Username</label>
+    <input type="text" class="form-control" id="username" ng-model="$ctrl.username">
+
+    <label for="password" translate>Password</label>
+    <input type="password" class="form-control" id="password" ng-model="$ctrl.password">
+
+</div>
+<div>&nbsp;</div>
+<div>
+    <button ng-click="$ctrl.connect()" class="btn btn-primary" ng-if="!$ctrl.connecting" translate>Connect</button>
+    <button ng-click="$ctrl.add()" class="btn btn-primary" ng-if="$ctrl.connecting" translate>Add Account</button>
+    <button ng-click="$ctrl.reset()" class="btn btn-default" ng-if="$ctrl.connecting" translate>Cancel</button>
+</div>

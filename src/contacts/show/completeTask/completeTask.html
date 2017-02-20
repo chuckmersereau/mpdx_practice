@@ -1,5 +1,5 @@
 <modal title="{{'Finish Task' | translate}}" save="$ctrl.save()" cancel="$hide()">
-    <div class="form-group" ng-if="$ctrl.constants.results[ $ctrl.taskAction ]">
+    <div class="form-group" ng-if="$ctrl.serverConstants.data.results[ $ctrl.taskAction ]">
         <label for="result" translate>Result</label>
         <select chosen
                 required
@@ -7,25 +7,25 @@
                 data-placeholder-text-single="'Select an Option' | translate"
                 class="form-control"
                 id='result'
-                ng-options="opt for opt in $ctrl.constants.results[ $ctrl.taskAction ]"
+                ng-options="opt for opt in $ctrl.serverConstants.data.results[ $ctrl.taskAction ]"
                 ng-model="$ctrl.models.result">
             <option value=""></option>
         </select>
     </div>
-    <div class="form-group" ng-if="$ctrl.constants.nextActions[ $ctrl.taskAction ]">
+    <div class="form-group" ng-if="$ctrl.serverConstants.data.nextActions[ $ctrl.taskAction ]">
         <label for="nextActions" translate>Next Action</label>
         <select chosen
                 disable-search="true"
                 data-placeholder-text-single="'Select an Option' | translate"
                 class="form-control"
                 id='nextActions'
-                ng-options="opt for opt in $ctrl.constants.nextActions[ $ctrl.taskAction ]"
-                ng-model="$ctrl.models.nextAction">
+                ng-options="opt for opt in $ctrl.serverConstants.data.nextActions[ $ctrl.taskAction ]"
+                ng-model="$ctrl.models.next_action">
             <option value=""></option>
         </select>
     </div>
     <div class="form-group">
         <label for="comment" translate>Comment</label>
-        <input class="form-control" id='comment' ng-model="$ctrl.models.comment"/>
+        <input class="form-control" id='comment' ng-model="$ctrl.comment"/>
     </div>
 </modal>

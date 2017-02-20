@@ -19,4 +19,12 @@ export default function appRun(
         $state.go('login');
         return $q.reject();
     });
+    $transitions.onStart({ to: state => state.name !== 'login' && state.name !== 'auth' }, (trans) => {
+        const users = trans.injector().get('users'); //load user service into transition
+        return users.getCurrent(false, true).catch((error) => {
+            if (error.redirect) {
+                return trans.router.stateService.target(error.redirect);
+            }
+        });
+    });
 }
