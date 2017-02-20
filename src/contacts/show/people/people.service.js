@@ -48,8 +48,7 @@ class PersonService {
         return this.api.post({
             url: `contacts/people/merges/bulk`,
             data: people,
-            type: 'merges',
-            doSerialization: false
+            type: 'people'
         }).then((data) => {
             if (_.isFunction(data.success)) {
                 data.success();

@@ -19,26 +19,7 @@ class MergePeopleModalController {
     save() {
         const selectedPeople = _.reject(this.selectedPeople, {id: this.selectedPerson});
         const selectedPeopleToMerge = _.map(selectedPeople, (person) => {
-            return {
-                data: {
-                    type: "merges",
-                    attributes: {},
-                    relationships: {
-                        loser: {
-                            data: {
-                                type: "people",
-                                id: person.id
-                            }
-                        },
-                        winner: {
-                            data: {
-                                type: "people",
-                                id: this.selectedPerson
-                            }
-                        }
-                    }
-                }
-            };
+            return { winner_id: this.selectedPerson, loser_id: person.id };
         });
 
         return this.people.merge(selectedPeopleToMerge).catch(() => {
