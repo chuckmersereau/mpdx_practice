@@ -70,8 +70,8 @@ function linkFn(scope) {
                 const percentOfAverage = Math.round(Number(totalConverted) / (data.monthly_average || 0) * 100) + '%';
 
                 const numberFilter = scope.$filter("number");
-                const formattedTotal = scope.accounts.donations.salary_currency_symbol +
-                    numberFilter(totalConverted, 0) + ' ' + scope.accounts.donations.salary_currency;
+                const formattedTotal = data.salary_currency_symbol +
+                    numberFilter(totalConverted, 0) + ' ' + data.salary_currency;
 
                 let s = `
                     <table>
@@ -82,7 +82,7 @@ function linkFn(scope) {
                         </thead>
                         <tbody>
                             <tr>
-                                <td>${scope.accounts.donations.multi_currency}</td>
+                                <td>${data.multi_currency}</td>
                                 <td class="text-right">${formattedTotal}</td>
                             </tr>`;
                 if (monthlyGoal > 0) {
