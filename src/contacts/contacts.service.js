@@ -1,12 +1,14 @@
 class ContactsService {
+    alerts;
     analytics;
     api;
     contactFilter;
     contactsTags;
+    modal;
 
     constructor(
         $log, $q, $rootScope,
-        alerts, api, contactFilter, contactsTags
+        alerts, api, contactFilter, contactsTags, modal
     ) {
         this.$log = $log;
         this.$q = $q;
@@ -14,8 +16,10 @@ class ContactsService {
         this.api = api;
         this.contactFilter = contactFilter;
         this.contactsTags = contactsTags;
+        this.modal = modal;
 
         this.analytics = null;
+        this.completeList = null;
         this.data = [];
         this.meta = {};
         this.loading = true;
@@ -36,6 +40,7 @@ class ContactsService {
         });
 
         $rootScope.$on('accountListUpdated', () => {
+            this.getList(true);
             this.load(true);
         });
 
@@ -54,6 +59,20 @@ class ContactsService {
     }
     get(id) {
         return this.api.get(`contacts/${id}`, {include: 'addresses,appeals,donor_accounts,people,referrals_by_me,referrals_to_me'});
+    }
+    getList(reset = false) {
+        if (!reset && this.completeList) {
+            return this.$q.resolve(this.completeList);
+        }
+        return this.api.get('contacts', {
+            filter: {account_list_id: this.api.account_list_id},
+            'fields[contacts]': 'name',
+            per_page: 25000,
+            sort: 'name'
+        }).then((data) => {
+            this.$log.debug('contacts all', data);
+            this.completeList = data;
+        });
     }
     find(id) {
         let contact = _.find(this.data, { id: id });
@@ -82,6 +101,9 @@ class ContactsService {
 
         let filterParams = this.findChangedFilters(this.contactFilter.default_params, this.contactFilter.params);
 
+        // set account_list_id
+        filterParams.account_list_id = this.api.account_list_id;
+
         const wildcardSearch = this.contactFilter.wildcard_search;
         if (wildcardSearch) {
             filterParams.wildcard_search = wildcardSearch;
@@ -105,8 +127,13 @@ class ContactsService {
                 filters: filterParams,
                 page: this.page,
                 per_page: 25,
-                include: 'people,addresses,people.facebook_accounts,people.phone_numbers',
-                sort: 'name ASC'
+                include: 'people,addresses,people.facebook_accounts,people.phone_numbers,people.email_addresses',
+                'fields[people]': 'deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
+                'fields[addresses]': 'city,primary_mailing_address,postal_code,state,street',
+                'fields[email_addresses]': 'email,historic,primary',
+                'fields[phone_numbers]': 'historic,location,number,primary',
+                'fields[facebook_accounts]': 'url',
+                sort: 'name'
             },
             overrideGetAsPost: true
         }).then((data) => {
@@ -316,6 +343,26 @@ class ContactsService {
     merge(contacts) {
         this.api.put(`contacts/merges`, contacts).then((data) => {
             this.$log.debug('contacts/merges', data);
+        });
+    }
+    openAddressModal(contactId, addressId) {
+        let promise = this.$q.defer();
+
+        return this.find(contactId).then((contact) => {
+            const address = _.find(contact.addresses, {id: addressId});
+
+            this.modal.open({
+                template: require('./show/address/modal/modal.html'),
+                controller: 'addressModalController',
+                locals: {
+                    contact: contact,
+                    address: address
+                },
+                onHide: () => {
+                    promise.resolve();
+                }
+            });
+            return promise.promise;
         });
     }
 }

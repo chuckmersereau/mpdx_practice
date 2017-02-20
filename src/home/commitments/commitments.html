@@ -4,19 +4,19 @@
     </div>
     <div class="panel-body" ng-if="$ctrl.contacts.analytics.first_gift_not_received_count !== null">
         <a ui-sref="contacts({filters: {status: ['Partner - Financial'], pledge_received: 'false'} })" class="dash-stat">
-            <span class="count-big" translate>
+            <span class="count-big">
                 {{ $ctrl.contacts.analytics.first_gift_not_received_count }}
             </span>
             <span translate>first gift not received</span>
         </a>
         <div ui-sref="contacts({filters: {status: ['Partner - Financial'], pledge_late_by: '0_30'} })" ng-if="$ctrl.contacts.analytics.partners_30_days_late_count !== null">
-            <a class="dash-stat late-partners-count" translate>
-                <span class="count-big">{{ $ctrl.contacts.analytics.partners_30_days_late_count }}</span> partners <strong>30</strong> days late
+            <a class="dash-stat late-partners-count">
+                <span class="count-big">{{ $ctrl.contacts.analytics.partners_30_days_late_count }}</span> <translate>partners <strong>30</strong> days late</translate>
             </a>
         </div>
         <div ui-sref="contacts({filters: {status: ['Partner - Financial'], pledge_late_by: '30_60'} })" ng-if="$ctrl.contacts.analytics.partners_60_days_late_count !== null">
-            <a class="dash-stat late-partners-count" translate>
-                <span class="count-big">{{ $ctrl.contacts.analytics.partners_60_days_late_count }}</span> partners <strong>60</strong> days late
+            <a class="dash-stat late-partners-count">
+                <span class="count-big">{{ $ctrl.contacts.analytics.partners_60_days_late_count }}</span> <translate>partners <strong>60</strong> days late</translate>
             </a>
         </div>
     </div>

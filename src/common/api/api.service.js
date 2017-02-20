@@ -52,7 +52,9 @@ class Api {
         headers = {},
         promise = null,
         attempts = 0,
-        overrideGetAsPost = false
+        overrideGetAsPost = false,
+        type = null,
+        doSerialization = true
     }) {
         if (!promise) {
             promise = this.$q.defer();
@@ -93,34 +95,43 @@ class Api {
             headers: headers,
             paramSerializer: '$httpParamSerializerJQLike',
             transformRequest: (data) => {
-                let key;
                 let params = _.clone(jsonApiParams);
-                if (method === 'put' || method === 'post') {
-                    let arr = url.split('/');
-                    if (method === 'put' && arr.length % 2 === 0) {
-                        key = arr[arr.length - 2];
-                    } else {
-                        key = arr[arr.length - 1];
+                if (method === 'put' || method === 'post' || method === 'delete') {
+                    if (!type) {
+                        let arr = url.split('/');
+                        if ((method === 'put' || method === 'delete') && arr.length % 2 === 0) {
+                            type = arr[arr.length - 2];
+                        } else {
+                            type = arr[arr.length - 1];
+                        }
                     }
-                    if (_.has(this.entityAttributes, key)) {
-                        _.extend(params, this.entityAttributes[key]);
+                    if (_.has(this.entityAttributes, type)) {
+                        _.extend(params, this.entityAttributes[type]);
                     } else {
-                        this.$log.error(`undefined attributes for model: ${key} in api.service`);
+                        this.$log.error(`undefined attributes for model: ${type} in api.service`);
                     }
                 }
-                if (_.isArray(data)) {
-                    return angular.toJson({
-                        data: _.map(data, item => serialize(key, params, item, method))
-                    });
+                if (doSerialization) {
+                    if (_.isArray(data)) {
+                        return angular.toJson({
+                            data: _.map(data, item => serialize(type, params, item, method))
+                        });
+                    } else {
+                        return angular.toJson(serialize(type, params, data, method));
+                    }
                 } else {
-                    return angular.toJson(serialize(key, params, data, method));
+                    return angular.toJson(data);
                 }
             },
             transformResponse: appendTransform(this.$http.defaults.transformResponse, (data) => {
-                if (_.isArray(data)) {
-                    return _.map(data, item => deserialize(item));
+                if (doSerialization) {
+                    if (_.isArray(data)) {
+                        return _.map(data, item => deserialize(item));
+                    } else {
+                        return deserialize(data);
+                    }
                 } else {
-                    return deserialize(data);
+                    return data;
                 }
             }),
             cacheService: false,
@@ -188,13 +199,18 @@ class EntityAttributes {
                 attributes: ["created_at", "updated_at", "accepted_at", "accepted_by_user_id", "account_list_id", "cancelled_by_user_id", "code", "invited_by_user_id", "recipient_email", "updated_at", "updated_in_db_at"]
             },
             account_lists: {
-                attributes: ["name", "creator_id", "created_at", "preferences_notifications", "updated_at", "settings", "updated_in_db_at"]
+                attributes: ["creator_id", "created_at", "monthly_goal", "name", "notification_preferences", "settings", "total_pledges", "updated_at", "updated_in_db_at"],
+                notification_preferences: { ref: 'id' }
             },
             addresses: {
                 attributes: ["street", "city", "country", "end_date", "geo", "historic", "location", "postal_code", "primary_mailing_address", "start_date", "state", "updated_in_db_at"]
             },
             appeals: {
                 attributes: ["created_at", "updated_at", "amount", "currencies", "description", "donations", "end_date", "name", "total_currency", "contacts", "updated_in_db_at"]
+            },
+            comments: {
+                attributes: ["body", "updated_in_db_at", "person"],
+                person: { ref: 'id', pluralizeType: false }
             },
             contacts: {
                 attributes: ["name", "account_list", "created_at", "updated_at", "pledge_amount", "status", "total_donations", "last_donation_date", "first_donation_date", "notes", "notes_saved_at",
@@ -210,28 +226,48 @@ class EntityAttributes {
                     "donation_date", "created_at", "updated_at", "payment_type", "channel", "appeal_id", "appeal_amount", "updated_in_db_at"]
             },
             email_addresses: {
-                attributes: ["person_id", "email", "primary", "created_at", "updated_at", "remote_id", "location", "historic", "email", "updated_in_db_at"]
+                attributes: ["person_id", "email", "primary", "created_at", "updated_at", "remote_id", "location", "historic", "updated_in_db_at"]
             },
             family_relationships: {
                 attributes: ["person_id", "related_person_id", "relationship", "created_at", "updated_at", "updated_in_db_at"]
             },
-            merge: {
-                attributes: ["winner_id", "loser_id"]
-            },
             notifications: {
                 attributes: ["contact_id", "notification_type_id", "event_date", "cleared", "created_at", "updated_at", "donation_id", "updated_in_db_at"]
+            },
+            organization_accounts: {
+                attributes: ["organization", "password", "username"],
+                organization: {ref: 'id'}
             },
             people: {
                 attributes: ["first_name", "legal_first_name", "last_name", "birthday_month", "birthday_year", "birthday_day", "anniversary_month", "anniversary_year", "anniversary_day", "title",
                     "suffix", "gender", "marital_status", "preferences", "sign_in_count", "current_sign_in_at", "last_sign_in_at", "current_sign_in_ip", "last_sign_in_ip", "created_at", "updated_at",
                     "master_person_id", "middle_name", "access_token", "profession", "deceased", "subscribed_to_updates", "optout_enewsletter", "occupation", "employer", "not_duplicated_with",
                     "phone_numbers", "email_addresses", "facebook_accounts", "family_relationships", "linkedin_accounts", "websites", "updated_in_db_at", "winner_id", "loser_id"],
-                email_addresses: { ref: 'id' },
-                facebook_accounts: { ref: 'id' },
-                family_relationships: { ref: 'id' },
-                linkedin_accounts: { ref: 'id' },
-                phone_numbers: { ref: 'id' },
-                websites: { ref: 'id' }
+                email_addresses: {
+                    ref: 'id',
+                    attributes: ["email", "primary", "created_at", "updated_at", "remote_id", "location", "historic", "updated_in_db_at"]
+                },
+                facebook_accounts: {
+                    ref: 'id',
+                    attributes: ["remote_id", "token", "token_expires_at", "created_at", "updated_at", "valid_token", "first_name", "last_name", "authenticated", "downloading", "last_download", "username", "updated_in_db_at"]
+                },
+                family_relationships: {
+                    ref: 'id',
+                    attributes: ["related_person", "relationship", "created_at", "updated_at", "updated_in_db_at"],
+                    related_person: { ref: 'id' }
+                },
+                linkedin_accounts: {
+                    ref: 'id',
+                    attributes: ["remote_id", "token", "secret", "token_expires_at", "created_at", "updated_at", "valid_token", "first_name", "last_name", "authenticated", "downloading", "last_download", "public_url", "updated_in_db_at"]
+                },
+                phone_numbers: {
+                    ref: 'id',
+                    attributes: ["number", "country_code", "location", "primary", "created_at", "updated_at", "remote_id", "historic", "updated_in_db_at"]
+                },
+                websites: {
+                    ref: 'id',
+                    attributes: ["url", "primary", "created_at", "updated_at", "updated_in_db_at"]
+                }
             },
             person_facebook_accounts: {
                 attributes: ["person_id", "remote_id", "token", "token_expires_at", "created_at", "updated_at", "valid_token", "first_name", "last_name", "authenticated", "downloading", "last_download", "username", "updated_in_db_at"]
@@ -258,14 +294,23 @@ class EntityAttributes {
                 attributes: ["person_id", "number", "country_code", "location", "primary", "created_at", "updated_at", "remote_id", "historic", "updated_in_db_at"]
             },
             tasks: {
-                attributes: ["account_list", "activity_type", "location", "start_at", "end_at", "type", "created_at", "updated_at", "completed", "completed_at", "comments", "due_date",
+                attributes: ["account_list", "activity_type", "location", "start_at", "end_at", "type", "created_at", "updated_at", "completed", "completed_at", "comments", "contacts", "due_date",
                     "notification_id", "next_action", "no_date", "notification_type", "notification_time_before", "remote_id", "result", "source", "starred", "subject",
                     "notification_time_unit", "notification_scheduled", "updated_in_db_at"],
-                account_list: { ref: 'id' }
+                account_list: { ref: 'id' },
+                comments: {
+                    ref: 'id',
+                    attributes: ["body", "updated_in_db_at", "person"],
+                    person: { ref: 'id' }
+                },
+                contacts: { ref: 'id' }
             },
             user: {
                 attributes: ["first_name", "last_name", "preferences", "setup", "email_addresses", "access_token", "time_zone", "locale", "updated_at", "updated_in_db_at"],
                 email_addresses: { ref: 'id' }
+            },
+            user_options: {
+                attributes: ["key", "value", "updated_in_db_at"]
             }
         };
     }

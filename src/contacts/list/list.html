@@ -34,9 +34,9 @@
                     <a class="btn btn-default" ng-click="$ctrl.openExportContactsModal()" translate>
                         Export
                     </a>
-                    <span class="btn btn-default" ng-click="$ctrl.toggleAllContacts()">
-            Select All
-          </span>
+                    <span class="btn btn-default" ng-click="$ctrl.toggleAllContacts()" translate>
+                        Select All
+                    </span>
                 </div>
             </div>
         </div>
@@ -75,7 +75,8 @@
     </div>
 </div>
 <div infinite-scroll="$ctrl.loadMoreContacts()">
-    <contacts-list-item view="{{$ctrl.view}}" ng-repeat="contact in $ctrl.contacts.data track by contact.id" hide="$ctrl.hideContact(contact)" contact="contact" id="contact_{{contact.id}}" data-hook="contact" selected="$ctrl.selected"></contacts-list-item>
+    <contacts-list-item ng-if="$ctrl.view !== 'minimal'" view="{{$ctrl.view}}" ng-repeat="contact in $ctrl.contacts.data track by contact.id" hide="$ctrl.hideContact(contact)" contact="contact" id="contact_{{contact.id}}" data-hook="contact" selected="$ctrl.selected"></contacts-list-item>
+    <contacts-list-item ng-if="$ctrl.view === 'minimal'" view="{{$ctrl.view}}" ng-repeat="contact in $ctrl.contacts.completeList | orderBy: 'name' track by contact.id" hide="$ctrl.hideContact(contact)" contact="contact" id="contact_{{contact.id}}" data-hook="contact" selected="$ctrl.selected"></contacts-list-item>
     <div ng-show="$ctrl.contacts.loading" class="loading-spinner">
         <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
         <span class="sr-only" translate>Loading</span>
