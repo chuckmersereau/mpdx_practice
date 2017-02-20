@@ -2,16 +2,16 @@ import uuid from 'uuid/v1';
 
 class PersonModalController {
     contact;
-    contactPerson;
+    people;
     contacts;
 
     constructor(
         $log, $rootScope, $scope,
-        contactPerson, contact, person
+        people, contact, person
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
-        this.contactPerson = contactPerson;
+        this.people = people;
         this.contact = contact;
         this.person = person;
         this.$scope = $scope;
@@ -24,6 +24,14 @@ class PersonModalController {
     activate() {
         if (_.has(this.person, 'id')) {
             this.modalTitle = 'Edit Person';
+            //bad data is bad
+            if (this.person.birthday_year) {
+                this.person.birthday = moment(`${this.person.birthday_year}-${this.person.birthday_month}-${this.person.birthday_day}`, 'YYYY-MM-DD').toDate();
+                console.log(this.person.birthday);
+            }
+            if (this.person.anniversary_year) {
+                this.person.anniversary = moment(`${this.person.anniversary_year}-${this.person.anniversary_month}-${this.person.anniversary_day}`, 'YYYY-MM-DD').toDate();
+            }
         } else {
             this.modalTitle = 'Add Person';
             this.person = {
@@ -35,17 +43,31 @@ class PersonModalController {
         }
     }
     save() {
+        //bad data is bad
+        if (this.person.birthday) {
+            const birthday = moment(this.person.birthday);
+            this.person.birthday_year = birthday.year();
+            this.person.birthday_month = birthday.month() + 1;
+            this.person.birthday_day = birthday.date();
+        }
+        if (this.person.anniversary) {
+            const anniversary = moment(this.person.anniversary);
+            this.person.anniversary_year = anniversary.year();
+            this.person.anniversary_month = anniversary.month() + 1;
+            this.person.anniversary_day = anniversary.date();
+        }
+
         if (_.has(this.person, 'id')) {
-            return this.contactPerson.save(this.contact.id, this.person).then(() => {
+            return this.people.save(this.contact.id, this.person).then(() => {
                 this.$log.debug('person saved:', this.person);
-                this.$rootScope.$emit('contactPersonUpdated', this.contact.id);
+                this.$rootScope.$emit('peopleUpdated', this.contact.id);
 
                 this.$scope.$hide();
             });
         } else {
-            return this.contactPerson.create(this.contact.id, this.person).then(() => {
+            return this.people.create(this.contact.id, this.person).then(() => {
                 this.$log.debug('person created:', this.person);
-                this.$rootScope.$emit('contactPersonUpdated', this.contact.id);
+                this.$rootScope.$emit('peopleUpdated', this.contact.id);
                 this.$scope.$hide();
             });
         }
@@ -81,7 +103,7 @@ class PersonModalController {
         return {id: uuid(), url: '', kind: '', _destroy: 0};
     }
     familyRelationshipObject() {
-        return {id: uuid(), related_person_id: 0, relationship: '', _destroy: 0};
+        return {id: uuid(), related_person: {id: null}};
     }
     delete() {
         this.person._destroy = 1;
