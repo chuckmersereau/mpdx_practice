@@ -137,13 +137,12 @@ class ReconcilerService {
         } else if (mergeChoice === 1) {
             this.mergePeople(sharedContact, people[1], people[0]);
         } else if (mergeChoice === 2) {
-            this.ignoreDuplicatePeople(sharedContact, people[0], people[1]);
+            this.ignoreDuplicatePeople(duplicatePerson);
         }
     }
 
-    mergeContacts(winner, loser) {
-        let contacts = [{winner_id: winner.id, loser_id: loser.id}];
-        this.contacts.merge(contacts);
+    mergeContacts(winnersAndLosers) {
+        return this.contacts.merge(winnersAndLosers);
     }
 
     mergePeople(contact, winner, loser) {
@@ -152,12 +151,11 @@ class ReconcilerService {
     }
 
     ignoreDuplicateContacts(duplicateContact) {
-        this.api.delete(`contacts/duplicates/${duplicateContact.id}`);
+        return this.api.delete({url: `contacts/duplicates/${duplicateContact.id}`, type: 'contacts'});
     }
 
-    ignoreDuplicatePeople(contact, person1, person2) {
-        let id = `${person1.id}~${person2.id}`;
-        this.api.delete(`contacts/${contact.id}/people/duplicates/${id}/`);
+    ignoreDuplicatePeople(duplicatePerson) {
+        return this.api.delete({url: `contacts/people/duplicates/${duplicatePerson.id}`, type: 'people'});
     }
 }
 export default angular.module('mpdx.services.reconciler', [])
