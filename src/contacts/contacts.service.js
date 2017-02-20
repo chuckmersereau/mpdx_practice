@@ -67,7 +67,8 @@ class ContactsService {
         return this.api.get('contacts', {
             filter: {account_list_id: this.api.account_list_id},
             'fields[contacts]': 'name',
-            per_page: 25000
+            per_page: 25000,
+            sort: 'name'
         }).then((data) => {
             this.$log.debug('contacts all', data);
             this.completeList = data;
@@ -130,7 +131,7 @@ class ContactsService {
                 'fields[people]': 'deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
                 'fields[addresses]': 'city,primary_mailing_address,postal_code,state,street',
                 'fields[email_addresses]': 'email,historic,primary',
-                'fields[phone_numbers]': 'historic,location,primary',
+                'fields[phone_numbers]': 'historic,location,number,primary',
                 'fields[facebook_accounts]': 'url',
                 sort: 'name'
             },
