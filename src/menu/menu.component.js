@@ -17,15 +17,12 @@ class menuController {
         this.state = $state;
         this.users = users;
         this.isInState = (match) => $state.$current.name.indexOf(match) === 0;
-
-        this.contactReconciler.fetchAll();
     }
     showHelp() {
         this.help.showHelp();
     }
     isInSetup() {
-        return false; //STUB until api is fixed
-        // return _.get(this.users, 'current.options.setup_position.value') !== '';
+        return _.get(this.users, 'current.options.setup_position.value') !== '';
     }
 }
 

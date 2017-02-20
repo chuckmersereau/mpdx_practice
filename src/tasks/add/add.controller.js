@@ -38,7 +38,9 @@ class AddTaskController {
         };
         this.emailNotification = false;
     }
-
+    addContact() {
+        this.selectedContacts.push('');
+    }
     save() {
         if (this.comment) {
             this.models.comments.push({id: uuid(), body: this.comment, person: { id: this.users.current.id }});
@@ -46,6 +48,8 @@ class AddTaskController {
         if (this.emailNotification) {
             this.models.notification_type = 'email';
         }
+        this.selectedContacts = _.reject(this.selectedContacts, ''); //dump empty contacts
+
         let promise;
         if (this.newsletterBoth) {
             this.models.action = "Newsletter - Physical";

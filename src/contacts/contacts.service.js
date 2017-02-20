@@ -19,6 +19,7 @@ class ContactsService {
         this.modal = modal;
 
         this.analytics = null;
+        this.completeList = null;
         this.data = [];
         this.meta = {};
         this.loading = true;
@@ -39,6 +40,7 @@ class ContactsService {
         });
 
         $rootScope.$on('accountListUpdated', () => {
+            this.getList(true);
             this.load(true);
         });
 
@@ -57,6 +59,20 @@ class ContactsService {
     }
     get(id) {
         return this.api.get(`contacts/${id}`, {include: 'addresses,appeals,donor_accounts,people,referrals_by_me,referrals_to_me'});
+    }
+    getList(reset = false) {
+        if (!reset && this.completeList) {
+            return this.$q.resolve(this.completeList);
+        }
+        return this.api.get('contacts', {
+            filter: {account_list_id: this.api.account_list_id},
+            'fields[contacts]': 'name',
+            per_page: 25000,
+            sort: 'name'
+        }).then((data) => {
+            this.$log.debug('contacts all', data);
+            this.completeList = data;
+        });
     }
     find(id) {
         let contact = _.find(this.data, { id: id });
@@ -85,6 +101,9 @@ class ContactsService {
 
         let filterParams = this.findChangedFilters(this.contactFilter.default_params, this.contactFilter.params);
 
+        // set account_list_id
+        filterParams.account_list_id = this.api.account_list_id;
+
         const wildcardSearch = this.contactFilter.wildcard_search;
         if (wildcardSearch) {
             filterParams.wildcard_search = wildcardSearch;
@@ -112,7 +131,7 @@ class ContactsService {
                 'fields[people]': 'deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
                 'fields[addresses]': 'city,primary_mailing_address,postal_code,state,street',
                 'fields[email_addresses]': 'email,historic,primary',
-                'fields[phone_numbers]': 'historic,location,primary',
+                'fields[phone_numbers]': 'historic,location,number,primary',
                 'fields[facebook_accounts]': 'url',
                 sort: 'name'
             },
@@ -321,9 +340,12 @@ class ContactsService {
             return this.analytics;
         });
     }
-    merge(contacts) {
-        this.api.put(`contacts/merges`, contacts).then((data) => {
-            this.$log.debug('contacts/merges', data);
+    merge(winnersAndLosers) {
+        return this.api.post({url: `contacts/merges/bulk`, data: winnersAndLosers, type: 'contacts'}).then((data) => {
+            if (_.isFunction(data.success)) {
+                data.success();
+            }
+            return data;
         });
     }
     openAddressModal(contactId, addressId) {
