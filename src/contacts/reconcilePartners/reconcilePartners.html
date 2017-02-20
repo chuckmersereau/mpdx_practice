@@ -27,10 +27,18 @@
         </div>
 
         <div class="row">
-            <div class="col-sm-6 col-sm-offset-3 text-center actions">
-                <button class="btn btn-warning" ng-click="$ctrl.confirm(true)" ng-disabled="$ctrl.confirmButtonDisabled()">{{$ctrl.confirmButtonText(true)}}</button>
-                <span translate>or</span>
-                <button class="btn btn-warning" ng-click="$ctrl.confirm(false)" ng-disabled="$ctrl.confirmButtonDisabled()">{{$ctrl.confirmButtonText(false)}}</button>
+            <div class="col-sm-8 col-sm-offset-2 actions">
+                <div class="row">
+                    <div class="col-sm-5 text-right">
+                        <button class="btn btn-warning" ng-click="$ctrl.confirm(true)" ng-disabled="$ctrl.confirmButtonDisabled()">{{$ctrl.confirmButtonText(true)}}</button>
+                    </div>
+                    <div class="col-sm-2 text-center">
+                        <span>OR</span>
+                    </div>
+                    <div class="col-sm-5">
+                        <button class="btn btn-warning" ng-click="$ctrl.confirm(false)" ng-disabled="$ctrl.confirmButtonDisabled()">{{$ctrl.confirmButtonText(false)}}</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
