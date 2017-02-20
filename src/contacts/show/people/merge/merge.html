@@ -6,7 +6,7 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <div class="row" ng-repeat="person in $ctrl.people">
+            <div class="row" ng-repeat="person in $ctrl.selectedPeople">
                 <input type="radio" ng-model="$ctrl.selectedPerson" ng-value="person.id" />
                 <span>{{ person.first_name + ' ' + person.last_name }}</span>
             </div>

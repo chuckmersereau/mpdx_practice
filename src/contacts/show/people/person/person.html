@@ -2,7 +2,7 @@
      ng-click="$ctrl.selectCard()">
     <div class="avatar" bg-img="{{$ctrl.person.avatar | stripMpdx}}"></div>
     <div class="content">
-        <a class="pull-right edit" ui-sref=".person({personId: $ctrl.person.id})" ng-if="!$ctrl.isMerging" translate>Edit</a>
+        <a class="pull-right edit" ng-click="$ctrl.openModal()" ng-if="!$ctrl.isMerging" translate>Edit</a>
         <h1>{{ $ctrl.person.first_name }} {{ $ctrl.person.last_name }}</h1>
         <dl>
             <dd ng-repeat="email in $ctrl.person.email_addresses">{{ email.email }}</dd>

@@ -9,7 +9,7 @@ class TasksSearchController {
         this.searchParams = '';
     }
     paramChanged() {
-        this.tasksFilter.params.wildcard_search = this.searchParams;
+        this.tasksFilter.wildcard_search = this.searchParams;
         this.tasksFilter.change();
     }
 }
