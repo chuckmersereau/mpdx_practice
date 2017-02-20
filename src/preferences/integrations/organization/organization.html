@@ -16,7 +16,7 @@
                         <a class="inlineaction delete" ng-click="$ctrl.disconnect(account.id)" translate>Delete</a>
                     </div>
                     <span class="account_name">
-                        <strong>{{$ctrl.serverConstants.data.organizations[account.id]}}</strong> {{account.username}}
+                        <strong>{{account.organization.name}}</strong> {{account.username}}
                         <span ng-show="account.api_class == 'DataServer'">
                           <a class="edit ico ico_edit no-new-tab" ng-click="$ctrl.editAccount(account)" translate>Edit</a>
                         </span>
