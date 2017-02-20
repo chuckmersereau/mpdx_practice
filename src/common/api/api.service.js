@@ -267,6 +267,12 @@ class EntityAttributes {
                 websites: {
                     ref: 'id',
                     attributes: ["url", "primary", "created_at", "updated_at", "updated_in_db_at"]
+                },
+                typeForAttribute: (key) => {
+                    if (key === 'related_person') {
+                        return 'people';
+                    }
+                    return key;
                 }
             },
             person_facebook_accounts: {
