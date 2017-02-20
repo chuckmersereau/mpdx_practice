@@ -90,10 +90,6 @@ export default class Routes {
             url: '/donations',
             component: 'donationsReport'
         }).state({
-            name: 'reports.donations.edit',
-            url: '/edit/{donationId}',
-            onEnter: openDonationModal
-        }).state({
             name: 'reports.monthly',
             url: '/monthly',
             component: 'expectedMonthlyTotalsReport'
@@ -236,23 +232,6 @@ function openAddressModal(
             locals: {
                 contact: contact,
                 address: address
-            },
-            onHide: () => {
-                $state.go('^', {}, { reload: true });
-            }
-        });
-    });
-}
-
-/*@ngInject*/
-function openDonationModal($state, $stateParams, modal, donationsReport) {
-    donationsReport.getDonations().then((data) => {
-        let donation = _.find(data.donations, { id: parseInt($stateParams.donationId) });
-        modal.open({
-            template: require('./reports/donations/edit/edit.html'),
-            controller: 'donationModalController',
-            locals: {
-                donation: donation
             },
             onHide: () => {
                 $state.go('^', {}, { reload: true });
