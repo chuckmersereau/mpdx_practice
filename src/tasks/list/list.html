@@ -8,9 +8,9 @@
           {{ $ctrl.title }}
         </span>
         <span class="actions task-actions" ng-show="$ctrl.selected.length">
-          <a class="btn btn-xs btn-secondary" ng-click="$ctrl.bulkCompleteTasks()" ng-hide="$ctrl.key === 'allCompleted'" translate>Complete</a>
-          <a class="btn btn-xs btn-secondary" ng-click="$ctrl.bulkDeleteTasks()" translate>Delete</a>
-          <a class="btn btn-xs btn-secondary" ng-click="$ctrl.openBulkEditTaskModal()" translate>Edit</a>
+          <a class="btn btn-xs btn-secondary" ng-click="$ctrl.bulkCompleteTasks()" ng-hide="$ctrl.key === 'allCompleted'" translate>Complete Selected</a>
+          <a class="btn btn-xs btn-secondary" ng-click="$ctrl.bulkDeleteTasks()" translate>Delete Selected</a>
+          <a class="btn btn-xs btn-secondary" ng-click="$ctrl.openBulkEditTaskModal()" translate>Edit Selected</a>
         </span>
         <select
           ng-model="$ctrl.tasksService.meta[$ctrl.key].pagination.per_page"
@@ -39,7 +39,7 @@
       <td class="col-sm-1">
         <i class="fa fa-lg fa-square-o complete_task"
            ng-click="$ctrl.openCompleteTaskModal(task); $event.stopPropagation();"
-           data-behaviour="Done">
+           data-behaviour="Done" title="{{'Done' | translate}}">
         </i>
       </td>
       <td class="col-sm-1">
