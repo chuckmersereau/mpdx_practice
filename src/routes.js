@@ -197,13 +197,6 @@ export default class Routes {
                 another: /*@ngInject*/ (tasksTags) => tasksTags.load()
             }
         }).state({
-            name: 'tasks.new',
-            url: '/new',
-            onEnter: openNewTaskModal,
-            resolve: {
-                tags: /*@ngInject*/ (tasksTags) => tasksTags.load()
-            }
-        }).state({
             name: 'unavailable',
             title: 'Unavailable',
             url: '/unavailable',
@@ -253,27 +246,6 @@ function openNewContactModal(
         controller: 'contactNewModalController',
         onHide: () => {
             if ($state.current.name === 'contacts.new') {
-                $state.go('^', {}, { reload: true });
-            }
-        }
-    });
-}
-
-/*@ngInject*/
-function openNewTaskModal(
-  modal, $state, gettextCatalog
-) {
-    modal.open({
-        template: require('./tasks/add/add.html'),
-        controller: 'addTaskController',
-        locals: {
-            specifiedAction: null,
-            specifiedSubject: null,
-            selectedContacts: [],
-            modalTitle: gettextCatalog.getString('Add Task')
-        },
-        onHide: () => {
-            if ($state.current.name === 'tasks.new') {
                 $state.go('^', {}, { reload: true });
             }
         }

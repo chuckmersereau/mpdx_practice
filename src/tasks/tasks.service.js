@@ -8,13 +8,14 @@ class TasksService {
     users;
 
     constructor(
-        $log, $q,
+        $log, $q, gettextCatalog,
         modal, api, tasksFilter, tasksTags, users
     ) {
         this.$log = $log;
         this.$q = $q;
         this.modal = modal;
         this.api = api;
+        this.gettextCatalog = gettextCatalog;
         this.tasksFilter = tasksFilter;
         this.tasksTags = tasksTags;
         this.users = users;
@@ -267,6 +268,21 @@ class TasksService {
             this.$log.debug('tasks/analytics', data);
             this.analytics = data;
             return this.analytics;
+        });
+    }
+    openNewTaskModal() {
+        this.modal.open({
+            template: require('./add/add.html'),
+            controller: 'addTaskController',
+            locals: {
+                specifiedAction: null,
+                specifiedSubject: null,
+                selectedContacts: [],
+                modalTitle: this.gettextCatalog.getString('Add Task')
+            },
+            resolve: {
+                tags: /*@ngInject*/ (tasksTags) => tasksTags.load()
+            }
         });
     }
 }
