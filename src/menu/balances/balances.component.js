@@ -22,16 +22,16 @@ class BalancesController {
         });
     }
     init() {
-        this.reports.getGoals().then((data) => {
+        this.reports.getGoals().then(() => {
             this.title = this.gettextCatalog.getString(
                 '{{received}} received/{{pledged}} committed of goal: {{goal}}. Click to see outstanding financial partners.', {
-                    pledged: data.total_pledges,
-                    received: data.received_pledges,
-                    goal: data.monthly_goal
+                    pledged: this.accounts.current.total_pledges,
+                    received: this.accounts.current.received_pledges,
+                    goal: this.accounts.current.monthly_goal
                 }
             );
         });
-        this.designationAccounts.load().then(() => {
+        this.designationAccounts.load(true).then(() => {
             this.balance = _.sum(_.map(this.designationAccounts.data, 'converted_balance'));
         });
     }

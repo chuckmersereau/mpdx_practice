@@ -95,7 +95,7 @@ class Users {
         }); //use jsonapi key here since it doesn't match endpoint
     }
     listOrganizationAccounts() {
-        return this.api.get(`user/organization_accounts`).then((data) => {
+        return this.api.get(`user/organization_accounts`, {include: 'organization'}).then((data) => {
             this.$log.debug('user/organization_accounts: ', data);
             this.organizationAccounts = data;
             return data;
