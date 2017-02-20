@@ -45,6 +45,14 @@ class PersonService {
             return data;
         });
     }
+    bulkMerge(winnersAndLosers) {
+        return this.api.post({url: `contacts/people/merges/bulk`, data: winnersAndLosers, type: 'people'}).then((data) => {
+            if (_.isFunction(data.success)) {
+                data.success();
+            }
+            return data;
+        });
+    }
     save(contactId, person) {
         return this.api.put(`contacts/${contactId}/people/${person.id}`, person); //reload after use, otherwise add reconcile
     }
