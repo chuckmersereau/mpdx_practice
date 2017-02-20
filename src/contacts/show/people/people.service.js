@@ -44,12 +44,16 @@ class PersonService {
             return data;
         });
     }
-    merge(people) {
-        return this.api.post({
-            url: `contacts/people/merges/bulk`,
-            data: people,
-            type: 'people'
-        }).then((data) => {
+    merge(contact, winnerId, loserId) {
+        return this.api.post(`contacts/${contact.id}/people/merges`, {winner_id: winnerId, loser_id: loserId}).then((data) => {
+            if (_.isFunction(data.success)) {
+                data.success();
+            }
+            return data;
+        });
+    }
+    bulkMerge(winnersAndLosers) {
+        return this.api.post({url: `contacts/people/merges/bulk`, data: winnersAndLosers, type: 'people'}).then((data) => {
             if (_.isFunction(data.success)) {
                 data.success();
             }
