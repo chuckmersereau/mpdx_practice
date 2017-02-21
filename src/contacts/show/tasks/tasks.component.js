@@ -47,7 +47,7 @@ class ContactTasksController {
                 contact: this.contact,
                 taskAction: task.activity_type
             },
-            onHide: this.load
+            onHide: () => this.load()
         });
     }
     openEditTaskModal(task) {
@@ -63,7 +63,7 @@ class ContactTasksController {
                 toComplete: false,
                 createNext: false
             },
-            onHide: this.load
+            onHide: () => this.load()
         });
     }
 }

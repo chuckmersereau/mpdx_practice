@@ -334,7 +334,7 @@ class ContactsService {
         if (this.analytics) {
             return this.$q.resolve(this.analytics);
         }
-        return this.api.get('contacts/analytics', { include: 'anniversaries_this_week,birthdays_this_week' }).then((data) => {
+        return this.api.get('contacts/analytics', { include: 'anniversaries_this_week,birthdays_this_week', filter: {account_list_id: this.api.account_list_id} }).then((data) => {
             this.$log.debug('contacts/analytics', data);
             this.analytics = data;
             return this.analytics;
@@ -348,24 +348,32 @@ class ContactsService {
             return data;
         });
     }
-    openAddressModal(contactId, addressId) {
+    openAddressModal(contact, address) {
         let promise = this.$q.defer();
 
-        return this.find(contactId).then((contact) => {
-            const address = _.find(contact.addresses, {id: addressId});
-
-            this.modal.open({
-                template: require('./show/address/modal/modal.html'),
-                controller: 'addressModalController',
-                locals: {
-                    contact: contact,
-                    address: address
-                },
-                onHide: () => {
-                    promise.resolve();
-                }
-            });
-            return promise.promise;
+        this.modal.open({
+            template: require('./show/address/modal/modal.html'),
+            controller: 'addressModalController',
+            locals: {
+                contact: contact,
+                address: address
+            },
+            onHide: () => {
+                promise.resolve();
+            }
+        });
+        return promise.promise;
+    }
+    saveAddress(contactId, address) {
+        return this.api.put(`contacts/${contactId}/addresses/${address.id}`, address);
+    }
+    addAddress(contactId, address) {
+        return this.api.put(`contacts/${contactId}/addresses`, address);
+    }
+    openNewContactModal() {
+        this.modal.open({
+            template: require('./new/new.html'),
+            controller: 'contactNewModalController'
         });
     }
 }
