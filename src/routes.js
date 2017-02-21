@@ -62,10 +62,6 @@ export default class Routes {
                 another: /*@ngInject*/ (contactsTags) => contactsTags.load()
             }
         }).state({
-            name: 'contacts.new',
-            url: '/new',
-            onEnter: openNewContactModal
-        }).state({
             name: 'reports',
             url: '/reports',
             component: 'reports',
@@ -235,19 +231,4 @@ function auth(
 function logout($window, $state) {
     delete $window.sessionStorage.token;
     $state.go('login', {}, {reload: true});
-}
-
-/*@ngInject*/
-function openNewContactModal(
-    modal, $state
-) {
-    modal.open({
-        template: require('./contacts/new/new.html'),
-        controller: 'contactNewModalController',
-        onHide: () => {
-            if ($state.current.name === 'contacts.new') {
-                $state.go('^', {}, { reload: true });
-            }
-        }
-    });
 }

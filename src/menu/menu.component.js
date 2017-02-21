@@ -9,9 +9,10 @@ class menuController {
 
     constructor(
         $state,
-        accounts, contactDonations, help, contactReconciler, tasksService, users
+        accounts, contacts, contactDonations, contactReconciler, help, tasksService, users
     ) {
         this.accounts = accounts;
+        this.contacts = contacts;
         this.contactDonations = contactDonations;
         this.help = help;
         this.contactReconciler = contactReconciler;
