@@ -263,7 +263,7 @@ class TasksService {
         if (this.analytics && !reset) {
             return this.$q.resolve(this.analytics);
         }
-        return this.api.get('tasks/analytics').then((data) => {
+        return this.api.get('tasks/analytics', {filter: {account_list_id: this.api.account_list_id}}).then((data) => {
             this.$log.debug('tasks/analytics', data);
             this.analytics = data;
             return this.analytics;

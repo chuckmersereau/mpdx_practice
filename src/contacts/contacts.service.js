@@ -334,7 +334,7 @@ class ContactsService {
         if (this.analytics) {
             return this.$q.resolve(this.analytics);
         }
-        return this.api.get('contacts/analytics', { include: 'anniversaries_this_week,birthdays_this_week' }).then((data) => {
+        return this.api.get('contacts/analytics', { include: 'anniversaries_this_week,birthdays_this_week', filter: {account_list_id: this.api.account_list_id} }).then((data) => {
             this.$log.debug('contacts/analytics', data);
             this.analytics = data;
             return this.analytics;
