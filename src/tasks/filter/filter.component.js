@@ -4,7 +4,10 @@ class FilterController {
     tasksTags;
     modal;
 
-    constructor($stateParams, tasksFilter, tasksTags, tasksService, modal, gettextCatalog) {
+    constructor(
+        gettextCatalog,
+        tasksFilter, tasksTags, tasksService, modal
+    ) {
         this.modal = modal;
         this.tasksService = tasksService;
         this.tasksFilter = tasksFilter;
@@ -15,10 +18,6 @@ class FilterController {
             applyLabel: this.gettextCatalog.getString('Filter'),
             cancelLabel: this.gettextCatalog.getString('Clear')
         };
-
-        if (angular.isObject($stateParams.filters)) {
-            _.extend(this.tasksFilter.params, $stateParams.filters);
-        }
     }
     resetFiltersAndTags() {
         if (this.tasksTags.isResettable()) {
@@ -34,10 +33,10 @@ class FilterController {
 
     // Invert the selected options of a multiselect filter
     invertMultiselect(filter) {
-        var allOptions = _.map(filter.options, option => option.id);
-        var selectedOptions = this.tasksFilter.params[filter.name];
+        const allOptions = _.map(filter.options, option => option.id);
+        let selectedOptions = this.tasksFilter.params[filter.name];
 
-        var allOption = '';
+        let allOption = '';
         if (filter.name === 'status') {
             allOption = 'active';
         }
