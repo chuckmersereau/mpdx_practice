@@ -43,7 +43,7 @@
                     <td ng-if="$ctrl.designationAccounts.data.length > 0">{{ donation.designation_account_id }}</td>
                     <td>{{ donation.payment_method }}</td>
                     <td>{{ donation.motivation }}</td>
-                    <td><a ui-sref="reports.donations.edit({ donationId: donation.id})"><i class="fa fa-pencil-square-o"></i></a></td>
+                    <td><a ng-click="$ctrl.donationsReport.openDonationModal(donation.id)"><i class="fa fa-pencil-square-o"></i></a></td>
                 </tr>
                 <tr ng-if="$ctrl.donations.length == 0">
                     <td colspan="100" class="text-center" translate>No donations this month.</td>

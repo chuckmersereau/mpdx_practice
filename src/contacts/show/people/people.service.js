@@ -71,9 +71,6 @@ class PersonService {
                 locals: {
                     contact: contact,
                     person: person
-                },
-                onHide: () => {
-                    this.$state.go('contact', {contactId: contact.id}, { reload: true });
                 }
             });
         };
@@ -94,8 +91,8 @@ class PersonService {
                 selectedPeople: selectedPeople
             },
             onHide: () => {
+                this.contacts.selectContact(contact.id);
                 this.contacts.load(true);
-                this.$state.go('contact', {contactId: contact.id}, { reload: true });
             }
         });
     }
