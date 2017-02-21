@@ -64,14 +64,14 @@
             <span translate>Unfortunately none of them match your current search or filters.</span>
         </p>
         <a ng-click="$ctrl.resetFilters()" class="btn btn-primary" translate>Reset All Search Filters</a>
-        <a ui-sref="contacts.new" class="btn btn-secondary" translate>Add New Contact</a>
+        <a ng-click="$ctrl.contacts.openNewContactModal()" class="btn btn-secondary" translate>Add New Contact</a>
     </div>
     <div ng-hide="$ctrl.contacts.meta.has_contacts">
         <p translate>
             Looks like you haven't added any contacts yet. You can add one or import some from another service.
         </p>
         <a ui-sref="accounts" class="btn btn-primary" translate>Import Contacts</a>
-        <a ui-sref="contacts.new" class="btn btn-secondary" translate>Add New Contact</a>
+        <a ng-click="$ctrl.contacts.openNewContactModal()" class="btn btn-secondary" translate>Add New Contact</a>
     </div>
 </div>
 <div infinite-scroll="$ctrl.loadMoreContacts()">

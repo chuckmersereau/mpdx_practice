@@ -4,19 +4,31 @@ class menuController {
     help;
     contactReconciler;
     state;
+    tasksService;
     users;
 
     constructor(
-        $state,
-        accounts, contactDonations, help, contactReconciler, users
+        $rootScope, $state,
+        accounts, contacts, contactDonations, contactReconciler, help, tasksService, users
     ) {
+        this.$rootScope = $rootScope;
         this.accounts = accounts;
+        this.contacts = contacts;
         this.contactDonations = contactDonations;
         this.help = help;
         this.contactReconciler = contactReconciler;
         this.state = $state;
+        this.tasksService = tasksService;
         this.users = users;
+
         this.isInState = (match) => $state.$current.name.indexOf(match) === 0;
+    }
+    $onInit() {
+        this.contactReconciler.fetchAll(true);
+
+        this.$rootScope.$on('accountListUpdated', () => {
+            this.contactReconciler.fetchAll(true);
+        });
     }
     showHelp() {
         this.help.showHelp();

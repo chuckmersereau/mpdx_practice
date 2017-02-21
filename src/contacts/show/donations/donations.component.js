@@ -94,16 +94,6 @@ class ContactDonationsController {
             });
         });
     }
-    openDonationModal(donation) {
-        this.modal.open({
-            templateUrl: '/templates/common/edit_donation.html',
-            controller: 'editDonationController',
-            locals: {
-                contactId: this.contactId,
-                donation: donation
-            }
-        });
-    }
 }
 
 const Donations = {
