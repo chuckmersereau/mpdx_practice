@@ -4,8 +4,8 @@ class progressController {
     users;
 
     constructor(
-        blockUI, accounts,
-        api, $filter, users
+        $filter, $rootScope, blockUI,
+        accounts, api, users
     ) {
         this.$filter = $filter;
         this.accounts = accounts;
@@ -16,6 +16,9 @@ class progressController {
         this.endDate = moment().subtract(1, 'day');
         this.startDate = moment(this.endDate).subtract(1, 'week');
         this.errorOccurred = false;
+        $rootScope.$on('accountListUpdated', () => {
+            this.refreshData();
+        });
     }
     blankData() {
         this.blockUI.start();

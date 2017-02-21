@@ -1,14 +1,21 @@
 class PersonService {
     api;
+    contacts;
+    modal;
 
     constructor(
-        $filter, $log, $rootScope,
-        api
+        $filter, $log, $q, $rootScope, $state,
+        api, contacts, modal
     ) {
         this.$filter = $filter;
         this.$log = $log;
+        this.$q = $q;
+        this.$state = $state;
         this.api = api;
-        this.includes = 'email_addresses,facebook_accounts,family_relationships,linkedin_accounts,master_person,phone_numbers,twitter_accounts,websites';
+        this.contacts = contacts;
+        this.modal = modal;
+
+        this.includes = 'email_addresses,facebook_accounts,family_relationships,family_relationships.related_person,linkedin_accounts,master_person,phone_numbers,twitter_accounts,websites';
         this.selected = null;
 
         $rootScope.$on('contactPersonUpdated', (e, contactId) => {
@@ -56,6 +63,39 @@ class PersonService {
     save(contactId, person) {
         return this.api.put(`contacts/${contactId}/people/${person.id}`, person); //reload after use, otherwise add reconcile
     }
+    openPeopleModal(contact, personId) {
+        let modalOpen = (contact, person) => {
+            this.modal.open({
+                template: require('./modal/modal.html'),
+                controller: 'personModalController',
+                locals: {
+                    contact: contact,
+                    person: person
+                }
+            });
+        };
+
+        if (personId == null) {
+            modalOpen(contact, {});
+        } else {
+            this.get(contact.id, personId).then((person) => {
+                modalOpen(contact, person);
+            });
+        }
+    }
+    openMergePeopleModal(contact, selectedPeople) {
+        this.modal.open({
+            template: require('./merge/merge.html'),
+            controller: 'mergePeopleModalController',
+            locals: {
+                selectedPeople: selectedPeople
+            },
+            onHide: () => {
+                this.contacts.selectContact(contact.id);
+                this.contacts.load(true);
+            }
+        });
+    }
 }
-export default angular.module('mpdx.contacts.show.people.person.service', [])
-    .service('contactPerson', PersonService).name;
+export default angular.module('mpdx.contacts.show.people.service', [])
+    .service('people', PersonService).name;

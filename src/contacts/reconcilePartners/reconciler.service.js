@@ -1,18 +1,18 @@
 class ReconcilerService {
     api;
-    contactPerson;
+    people;
     contacts;
     duplicateContactsTotal;
     duplicatePeopleTotal;
 
     constructor(
         $log,
-        api, contactPerson, contacts
+        api, people, contacts
     ) {
         this.$log = $log;
         this.api = api;
         this.contacts = contacts;
-        this.contactPerson = contactPerson;
+        this.people = people;
 
         this.perPage = 5;
 
@@ -147,8 +147,9 @@ class ReconcilerService {
         return this.contacts.merge(winnersAndLosers);
     }
 
-    mergePeople(winnersAndLosers) {
-        return this.contactPerson.bulkMerge(winnersAndLosers);
+    mergePeople(contact, winner, loser) {
+        const people = [{winner_id: winner.id, loser_id: loser.id}];
+        this.people.merge(contact, people);
     }
 
     ignoreDuplicateContacts(duplicateContact) {

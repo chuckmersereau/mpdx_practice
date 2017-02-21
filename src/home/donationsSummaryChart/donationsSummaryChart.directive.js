@@ -12,37 +12,66 @@ function donationSummaryChart() {
 }
 
 class donationSummaryChartController {
-    constructor(gettextCatalog, $scope, accounts, $filter, blockUI) {
+    constructor(
+        $filter, $log, $scope, gettextCatalog,
+        accounts, api, blockUI, currency
+    ) {
         $scope.$filter = $filter;
-        $scope.gettextCatalog = gettextCatalog;
+        $scope.$log = $log;
         $scope.accounts = accounts;
+        $scope.api = api;
+        $scope.currency = currency;
+        $scope.gettextCatalog = gettextCatalog;
+
         $scope.blockUI = blockUI.instances.get('donationSummaryChart');
-        $scope.blockUI.start();
         $scope.loaded = false;
     }
 }
 
 function linkFn(scope) {
-    scope.$on('accountListUpdated', () => {
-        scope.accounts.getDonations().then(() => {
-            let seriesWithClickEvents = _.map(scope.accounts.donations.series, (series) => {
+    const currencyColors = [
+        '#fdb800',
+        '#df7d00',
+        '#909b9c',
+        '#666062',
+        '#36b1ca',
+        '#00729a'
+    ];
+
+    function loadGraph() {
+        scope.blockUI.start();
+        scope.api.get('reports/monthly_giving_graph').then((data) => {
+            scope.$log.debug('reports/monthly_giving_graph', data);
+            scope.series = _.map(data.totals, (total, index) => {
+                return {
+                    name: scope.currency.list[total.currency].code,
+                    color: currencyColors[data.totals.length - index - 1],
+                    data: _.map(total.month_totals, (val) => parseFloat(val.converted)),
+                    cursor: 'pointer'
+                };
+            });
+            let seriesWithClickEvents = _.map(scope.series, (series) => {
                 series.events = {
                     click: (event) => {
-                        window.location.href = '/donations?start_date=' + scope.accounts.donations.months_to_dates[event.point.x];
+                        window.location.href = '/donations?start_date=' + data.months_to_dates[event.point.x];
                     }
                 };
                 return series;
             });
+            const titleText = `
+                <span style="color:#007398">${scope.gettextCatalog.getString('Commitments:')} ${data.pledges}</span> |
+                <span style="color:#3eb1c8">${scope.gettextCatalog.getString('Monthly Goal:')}  ${data.monthly_goal}</span> |
+                <span style="color:#666062">${scope.gettextCatalog.getString('Monthly Average:')} ${data.monthly_average}</span>`;
 
             function tooltipFormatter() {
                 const totalConverted = this.total;
-                const monthlyGoal = scope.accounts.donations.monthly_goal || 0;
+                const monthlyGoal = data.monthly_goal || 0;
                 const percentOfGoal = Math.round(Number(totalConverted) / monthlyGoal * 100) + '%';
-                const percentOfAverage = Math.round(Number(totalConverted) / (scope.accounts.donations.monthly_average || 0) * 100) + '%';
+                const percentOfAverage = Math.round(Number(totalConverted) / (data.monthly_average || 0) * 100) + '%';
 
                 const numberFilter = scope.$filter("number");
-                const formattedTotal = scope.accounts.donations.salary_currency_symbol +
-                    numberFilter(totalConverted, 0) + ' ' + scope.accounts.donations.salary_currency;
+                const formattedTotal = data.salary_currency_symbol +
+                    numberFilter(totalConverted, 0) + ' ' + data.salary_currency;
 
                 let s = `
                     <table>
@@ -53,7 +82,7 @@ function linkFn(scope) {
                         </thead>
                         <tbody>
                             <tr>
-                                <td>${scope.accounts.donations.multi_currency}</td>
+                                <td>${data.multi_currency}</td>
                                 <td class="text-right">${formattedTotal}</td>
                             </tr>`;
                 if (monthlyGoal > 0) {
@@ -80,30 +109,30 @@ function linkFn(scope) {
                     height: 250
                 },
                 title: {
-                    text: scope.accounts.donations.title_text,
+                    text: titleText,
                     useHTML: true,
                     style: {
                         fontSize: '12px'
                     }
                 },
                 xAxis: {
-                    categories: scope.accounts.donations.x_axis_categories
+                    categories: _.map(data.months_to_dates, month => moment(month, 'YYYY-MM-DD').format('MMM'))
                 },
                 yAxis: {
                     min: 0,
                     title: {
-                        text: scope.accounts.donations.y_axis_title
+                        text: `${scope.gettextCatalog.getString('Amount')} ${data.salary_currency}`
                     },
                     plotLines: [{
-                        value: scope.accounts.donations.pledges,
+                        value: data.pledges,
                         width: 2,
                         color: "#007398"
                     }, {
-                        value: scope.accounts.donations.monthly_goal || 0,
+                        value: data.monthly_goal || 0,
                         width: 2,
                         color: "#3eb1c8"
                     }, {
-                        value: scope.accounts.donations.monthly_average,
+                        value: data.monthly_average,
                         width: 2,
                         color: "#666062"
                     }]
@@ -134,6 +163,12 @@ function linkFn(scope) {
             scope.blockUI.stop();
             scope.loaded = true;
         });
+    }
+
+    loadGraph();
+
+    scope.$on('accountListUpdated', () => {
+        loadGraph();
     });
 }
 

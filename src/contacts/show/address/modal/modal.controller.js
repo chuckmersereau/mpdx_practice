@@ -71,10 +71,10 @@ class AddressModalController {
             this.modalTitle = 'Add Address';
             this.address = { street: '', location: 'Home' };
         }
-        this.$scope.$on('mapInitialized', function(evt, evtMap) {
+        this.$scope.$on('mapInitialized', (evt, evtMap) => {
             this.maps.push(evtMap);
             this.refreshMap();
-        }.bind(this));
+        });
     }
     save() {
         if (angular.isDefined(this.address.id)) {
@@ -85,12 +85,15 @@ class AddressModalController {
                     address.primary_mailing_address = address.id === this.address.id;
                 });
             }
+            return this.contacts.saveAddress(this.contact.id, this.address).then(() => {
+                this.$scope.$hide();
+            });
         } else {
-            this.contact.addresses.push(this.address);
+            return this.contacts.addAddress(this.contact.id, this.address).then((data) => {
+                this.contact.addresses.push(data);
+                this.$scope.$hide();
+            });
         }
-        return this.contacts.save(this.contact).then(() => {
-            this.$scope.$hide();
-        });
     }
     reqUpdateEmailBodyRequest() {
         if (this.address.remote_id) {

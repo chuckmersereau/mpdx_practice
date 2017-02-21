@@ -4,19 +4,23 @@ class menuController {
     help;
     contactReconciler;
     state;
+    tasksService;
     users;
 
     constructor(
         $rootScope, $state,
-        accounts, contactDonations, help, contactReconciler, users
+        accounts, contacts, contactDonations, contactReconciler, help, tasksService, users
     ) {
         this.$rootScope = $rootScope;
         this.accounts = accounts;
+        this.contacts = contacts;
         this.contactDonations = contactDonations;
         this.help = help;
         this.contactReconciler = contactReconciler;
         this.state = $state;
+        this.tasksService = tasksService;
         this.users = users;
+
         this.isInState = (match) => $state.$current.name.indexOf(match) === 0;
     }
     $onInit() {
