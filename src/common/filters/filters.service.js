@@ -20,7 +20,7 @@ class Filters {
                 defaultParams: defaultParams
             });
         }
-        return this.api.get(url).then((response) => {
+        return this.api.get(url, {filters: {account_list_id: this.api.account_list_id}}).then((response) => {
             data = response || [];
             data = _.sortBy(data, ['id']);
             this.$log.debug(url, data);
