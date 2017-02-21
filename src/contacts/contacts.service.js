@@ -340,9 +340,12 @@ class ContactsService {
             return this.analytics;
         });
     }
-    merge(contacts) {
-        this.api.put(`contacts/merges`, contacts).then((data) => {
-            this.$log.debug('contacts/merges', data);
+    merge(winnersAndLosers) {
+        return this.api.post({url: `contacts/merges/bulk`, data: winnersAndLosers, type: 'contacts'}).then((data) => {
+            if (_.isFunction(data.success)) {
+                data.success();
+            }
+            return data;
         });
     }
     openAddressModal(contactId, addressId) {

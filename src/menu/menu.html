@@ -67,7 +67,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div class="pull-left" ng-show="$ctrl.isInState('contact')">
+                <div class="pull-left" ng-if="$ctrl.isInState('contact')" ng-init="$ctrl.contactReconciler.fetchAll()">
                     <div class="section"><a ui-sref="preferences.imports" translate>Import Contacts</a></div>
                     <div class="section">
                         <a class="reconcile-contacts" ui-sref="contacts.reconcile_partners">

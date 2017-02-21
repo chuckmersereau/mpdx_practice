@@ -29,10 +29,25 @@ class ContactsReconcileIndividualsController {
 
         let promises = [];
 
-        _.each(this.contactReconciler.duplicatePeople, (duplicatePerson) => {
-            if (duplicatePerson.mergeChoice !== -1) {
-                promises.push(this.contactReconciler.confirmDuplicatePerson(duplicatePerson));
-            }
+        const peopleToMerge = _.filter(this.contactReconciler.duplicatePeople, duplicatePerson => (duplicatePerson.mergeChoice === 0 || duplicatePerson.mergeChoice === 1));
+        const peopleToIgnore = _.filter(this.contactReconciler.duplicatePeople, duplicatePerson => duplicatePerson.mergeChoice === 2);
+
+        if (peopleToMerge.length > 0) {
+            let winnersAndLosers = [];
+
+            _.each(peopleToMerge, (duplicatePerson) => {
+                if (duplicatePerson.mergeChoice === 0) {
+                    winnersAndLosers.push({winner_id: duplicatePerson.people[0].id, loser_id: duplicatePerson.people[1].id});
+                } else {
+                    winnersAndLosers.push({winner_id: duplicatePerson.people[1].id, loser_id: duplicatePerson.people[0].id});
+                }
+            });
+
+            promises.push(this.contactReconciler.mergePeople(winnersAndLosers));
+        }
+
+        _.each(peopleToIgnore, (duplicatePerson) => {
+            promises.push(this.contactReconciler.ignoreDuplicatePeople(duplicatePerson));
         });
 
         this.$q.all(promises).then(() => {
