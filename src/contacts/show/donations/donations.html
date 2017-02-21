@@ -48,7 +48,7 @@
             {{donation.motivation}}
         </td>
         <td class="col-sm-1 text-right">
-            <i class="fa fa-edit" ng-click="$ctrl.openDonationModal(donation)"></i>
+            <i class="fa fa-edit" ng-click="$ctrl.donationsReport.openDonationModal(donation.id)"></i>
         </td>
     </tr>
     <tr ng-if="!$ctrl.loading && $ctrl.donations.length === 0">

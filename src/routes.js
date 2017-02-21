@@ -62,10 +62,6 @@ export default class Routes {
                 another: /*@ngInject*/ (contactsTags) => contactsTags.load()
             }
         }).state({
-            name: 'contacts.new',
-            url: '/new',
-            onEnter: openNewContactModal
-        }).state({
             name: 'reports',
             url: '/reports',
             component: 'reports',
@@ -78,10 +74,6 @@ export default class Routes {
             name: 'reports.donations',
             url: '/donations',
             component: 'donationsReport'
-        }).state({
-            name: 'reports.donations.edit',
-            url: '/edit/{donationId}',
-            onEnter: openDonationModal
         }).state({
             name: 'reports.monthly',
             url: '/monthly',
@@ -201,13 +193,6 @@ export default class Routes {
                 another: /*@ngInject*/ (tasksTags) => tasksTags.load()
             }
         }).state({
-            name: 'tasks.new',
-            url: '/new',
-            onEnter: openNewTaskModal,
-            resolve: {
-                tags: /*@ngInject*/ (tasksTags) => tasksTags.load()
-            }
-        }).state({
             name: 'unavailable',
             title: 'Unavailable',
             url: '/unavailable',
@@ -246,57 +231,4 @@ function auth(
 function logout($window, $state) {
     delete $window.sessionStorage.token;
     $state.go('login', {}, {reload: true});
-}
-
-/*@ngInject*/
-function openDonationModal($state, $stateParams, modal, donationsReport) {
-    donationsReport.getDonations().then((data) => {
-        let donation = _.find(data.donations, { id: parseInt($stateParams.donationId) });
-        modal.open({
-            template: require('./reports/donations/edit/edit.html'),
-            controller: 'donationModalController',
-            locals: {
-                donation: donation
-            },
-            onHide: () => {
-                $state.go('^', {}, { reload: true });
-            }
-        });
-    });
-}
-
-/*@ngInject*/
-function openNewContactModal(
-    modal, $state
-) {
-    modal.open({
-        template: require('./contacts/new/new.html'),
-        controller: 'contactNewModalController',
-        onHide: () => {
-            if ($state.current.name === 'contacts.new') {
-                $state.go('^', {}, { reload: true });
-            }
-        }
-    });
-}
-
-/*@ngInject*/
-function openNewTaskModal(
-  modal, $state, gettextCatalog
-) {
-    modal.open({
-        template: require('./tasks/add/add.html'),
-        controller: 'addTaskController',
-        locals: {
-            specifiedAction: null,
-            specifiedSubject: null,
-            selectedContacts: [],
-            modalTitle: gettextCatalog.getString('Add Task')
-        },
-        onHide: () => {
-            if ($state.current.name === 'tasks.new') {
-                $state.go('^', {}, { reload: true });
-            }
-        }
-    });
 }

@@ -368,6 +368,12 @@ class ContactsService {
             return promise.promise;
         });
     }
+    openNewContactModal() {
+        this.modal.open({
+            template: require('./new/new.html'),
+            controller: 'contactNewModalController'
+        });
+    }
 }
 
 import contactFilter from './filter/filter.service';

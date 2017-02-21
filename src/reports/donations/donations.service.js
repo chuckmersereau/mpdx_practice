@@ -1,16 +1,19 @@
 class DonationsReportService {
     api;
+    modal;
     session;
 
     constructor(
         $log, $state,
-        api, session
+        api, modal, session
     ) {
         this.$log = $log;
         this.$state = $state;
         this.api = api;
-        this.data = null;
+        this.modal = modal;
         this.session = session;
+
+        this.data = null;
     }
     getDonations({ startDate = null, endDate = null, contactId = null, page = null }) {
         let params = {};
@@ -48,6 +51,22 @@ class DonationsReportService {
             this.$state.go('donations');
         }).finally(() => {
             this.session.downloading = false;
+        });
+    }
+    openDonationModal(donationId, contactId) {
+        this.getDonations().then((data) => {
+            let donation = _.find(data.donations, { id: donationId });
+            this.modal.open({
+                template: require('./edit/edit.html'),
+                controller: 'donationModalController',
+                locals: {
+                    donation: donation,
+                    contactId: contactId
+                },
+                onHide: () => {
+                    this.$state.go('^', {}, { reload: true });
+                }
+            });
         });
     }
 }
