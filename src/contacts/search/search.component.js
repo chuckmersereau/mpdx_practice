@@ -2,15 +2,19 @@ class ContactsSearchController {
     contacts;
     contactFilter;
 
-    constructor(contactFilter, contacts) {
+    constructor(
+        $state,
+        contacts
+    ) {
+        this.$state = $state;
         this.contacts = contacts;
-        this.contactFilter = contactFilter;
 
         this.searchParams = '';
     }
-    paramChanged() {
-        this.contactFilter.params.wildcard_search = this.searchParams;
-        this.contactFilter.change();
+    go(contactId) {
+        console.log('jkdskjdfskjhsdkjhdsfhjkdskhjdsf');
+        this.searchParams = '';
+        this.$state.go('contact', {contactId: contactId}, {reload: true});
     }
 }
 const Search = {
