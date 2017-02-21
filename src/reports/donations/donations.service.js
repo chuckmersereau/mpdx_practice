@@ -62,9 +62,6 @@ class DonationsReportService {
                 locals: {
                     donation: donation,
                     contactId: contactId
-                },
-                onHide: () => {
-                    this.$state.go('^', {}, { reload: true });
                 }
             });
         });
