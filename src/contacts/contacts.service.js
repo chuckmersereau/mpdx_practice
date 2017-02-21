@@ -348,25 +348,27 @@ class ContactsService {
             return data;
         });
     }
-    openAddressModal(contactId, addressId) {
+    openAddressModal(contact, address) {
         let promise = this.$q.defer();
 
-        return this.find(contactId).then((contact) => {
-            const address = _.find(contact.addresses, {id: addressId});
-
-            this.modal.open({
-                template: require('./show/address/modal/modal.html'),
-                controller: 'addressModalController',
-                locals: {
-                    contact: contact,
-                    address: address
-                },
-                onHide: () => {
-                    promise.resolve();
-                }
-            });
-            return promise.promise;
+        this.modal.open({
+            template: require('./show/address/modal/modal.html'),
+            controller: 'addressModalController',
+            locals: {
+                contact: contact,
+                address: address
+            },
+            onHide: () => {
+                promise.resolve();
+            }
         });
+        return promise.promise;
+    }
+    saveAddress(contactId, address) {
+        return this.api.put(`contacts/${contactId}/addresses/${address.id}`, address);
+    }
+    addAddress(contactId, address) {
+        return this.api.put(`contacts/${contactId}/addresses`, address);
     }
     openNewContactModal() {
         this.modal.open({
