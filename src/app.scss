@@ -16,7 +16,6 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 /* Internal */
 @import "styles/crubrand";
 @import "styles/elements";
-//@import "styles/jquery-ui";
 @import "styles/typography";
 @import "styles/forms";
 @import "styles/layout";
@@ -32,13 +31,13 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 /* Components */
 @import "blockUI/blockUI";
 @import "menu/menu";
+@import "menu/search/search";
 @import "common/modal/modal";
 @import "contacts/filter/filter";
 @import "contacts/filter/tags/tags";
 @import "contacts/reconcilePartners/reconcilePartners";
 @import "contacts/list/list";
 @import "contacts/list/item/item";
-@import "contacts/search/search";
 @import "contacts/show/show";
 @import "contacts/show/horizontalTabsSortable";
 @import "contacts/show/details/details";

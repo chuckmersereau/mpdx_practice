@@ -2,28 +2,20 @@ class ContactsSearchController {
     contacts;
     contactFilter;
 
-    constructor(
-        $state,
-        contacts
-    ) {
-        this.$state = $state;
+    constructor(contactFilter, contacts) {
         this.contacts = contacts;
+        this.contactFilter = contactFilter;
 
         this.searchParams = '';
     }
-    go(contactId) {
-        console.log('jkdskjdfskjhsdkjhdsfhjkdskhjdsf');
-        this.searchParams = '';
-        this.$state.go('contact', {contactId: contactId}, {reload: true});
+    paramChanged() {
+        this.contactFilter.params.wildcard_search = this.searchParams;
+        this.contactFilter.change();
     }
 }
 const Search = {
     controller: ContactsSearchController,
-    template: require('./search.html'),
-    bindings: {
-        dropdown: '<',
-        showFilters: '@'
-    }
+    template: require('./search.html')
 };
 
 export default angular.module('mpdx.common.contacts.search', [])

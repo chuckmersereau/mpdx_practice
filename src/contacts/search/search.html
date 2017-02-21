@@ -1,18 +1,10 @@
-<div class="dropdown"
-     deep-blur="$ctrl.focused = false">
+<div class="dropdown">
     <input type="text"
+           name="q"
            class="search_filter form-control"
            placeholder="{{ 'Keywords' | translate }}"
            autocomplete="off"
            ng-model="$ctrl.searchParams"
            ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }"
-           ng-blur="$ctrl.searchParams = ''"
-    >
-    <div class="dropdown-content" ng-if="$ctrl.dropdown && $ctrl.searchParams != ''">
-        <a ng-repeat="contact in $ctrl.contacts.completeList | filter: {name: $ctrl.searchParams} | limitTo : 5 track by contact.id"
-           ng-click="$ctrl.go(contact.id)"
-           ng-if="$ctrl.searchParams !== ''">
-            {{contact.name}}
-        </a>
-    </div>
+           ng-change="$ctrl.paramChanged()">
 </div>
