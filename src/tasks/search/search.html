@@ -10,7 +10,7 @@
            ng-focus="$ctrl.focused = true"
            ng-change="$ctrl.paramChanged()"
     >
-    <div class="dropdown-content" ng-if="$ctrl.dropdown && $ctrl.filterService.params.wildcard_search != '' && $ctrl.focused">
+    <div class="dropdown-content" ng-if="$ctrl.dropdown && $ctrl.tasksFilter.wildcard_search != '' && $ctrl.focused">
         <a ng-repeat="task in $ctrl.tasksService.data track by task.id | limitTo : 5" ui-sref="task({taskId: task.id})" ng-if="$ctrl.filterService.params.wildcard_search != ''">
             {{task.name}}
         </a>

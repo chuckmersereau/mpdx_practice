@@ -4,7 +4,7 @@ class HomeController {
     tasksService;
     users;
     constructor(
-        $log, $q, blockUI,
+        $log, $q, $rootScope, blockUI,
         accounts, contacts, help, tasksService, users
     ) {
         this.$log = $log;
@@ -29,6 +29,16 @@ class HomeController {
             '58496d4ec6979106d373bb57',
             '58496bf1903360069817816c'
         ]);
+
+        $rootScope.$on('accountListUpdated', () => {
+            this.blockUI.start();
+            this.$q.all([
+                this.tasksService.getAnalytics(true),
+                this.contacts.getAnalytics(true)
+            ]).then(() => {
+                this.blockUI.stop();
+            });
+        });
     }
     $onInit() {
         this.$q.all([

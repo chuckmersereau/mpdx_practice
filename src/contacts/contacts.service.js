@@ -83,7 +83,7 @@ class ContactsService {
                 let contact = _.find(this.data, {id: data.id});
                 if (contact) {
                     _.assign(contact, contact, data); //add missing contact to data
-                } else {
+                } else if (this.data) {
                     this.data.push(contact);
                 }
                 return data;
@@ -334,7 +334,7 @@ class ContactsService {
         if (this.analytics) {
             return this.$q.resolve(this.analytics);
         }
-        return this.api.get('contacts/analytics', { include: 'anniversaries_this_week,birthdays_this_week' }).then((data) => {
+        return this.api.get('contacts/analytics', { include: 'anniversaries_this_week,birthdays_this_week', filter: {account_list_id: this.api.account_list_id} }).then((data) => {
             this.$log.debug('contacts/analytics', data);
             this.analytics = data;
             return this.analytics;
@@ -369,6 +369,12 @@ class ContactsService {
     }
     addAddress(contactId, address) {
         return this.api.put(`contacts/${contactId}/addresses`, address);
+    }
+    openNewContactModal() {
+        this.modal.open({
+            template: require('./new/new.html'),
+            controller: 'contactNewModalController'
+        });
     }
 }
 

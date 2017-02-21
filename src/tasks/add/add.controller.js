@@ -9,6 +9,7 @@ class AddTaskController {
     serverConstants;
     tasksService;
     tasksTags;
+    users;
 
     constructor(
         $scope, $state,

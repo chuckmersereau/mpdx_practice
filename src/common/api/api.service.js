@@ -53,7 +53,8 @@ class Api {
         promise = null,
         attempts = 0,
         overrideGetAsPost = false,
-        type = null
+        type = null,
+        doSerialization = true
     }) {
         if (!promise) {
             promise = this.$q.defer();
@@ -110,19 +111,27 @@ class Api {
                         this.$log.error(`undefined attributes for model: ${type} in api.service`);
                     }
                 }
-                if (_.isArray(data)) {
-                    return angular.toJson({
-                        data: _.map(data, item => serialize(type, params, item, method))
-                    });
+                if (doSerialization) {
+                    if (_.isArray(data)) {
+                        return angular.toJson({
+                            data: _.map(data, item => serialize(type, params, item, method))
+                        });
+                    } else {
+                        return angular.toJson(serialize(type, params, data, method));
+                    }
                 } else {
-                    return angular.toJson(serialize(type, params, data, method));
+                    return angular.toJson(data);
                 }
             },
             transformResponse: appendTransform(this.$http.defaults.transformResponse, (data) => {
-                if (_.isArray(data)) {
-                    return _.map(data, item => deserialize(item));
+                if (doSerialization) {
+                    if (_.isArray(data)) {
+                        return _.map(data, item => deserialize(item));
+                    } else {
+                        return deserialize(data);
+                    }
                 } else {
-                    return deserialize(data);
+                    return data;
                 }
             }),
             cacheService: false,
@@ -244,7 +253,8 @@ class EntityAttributes {
                 },
                 family_relationships: {
                     ref: 'id',
-                    attributes: ["related_person_id", "relationship", "created_at", "updated_at", "updated_in_db_at"]
+                    attributes: ["related_person", "relationship", "created_at", "updated_at", "updated_in_db_at"],
+                    related_person: { ref: 'id' }
                 },
                 linkedin_accounts: {
                     ref: 'id',
@@ -257,6 +267,12 @@ class EntityAttributes {
                 websites: {
                     ref: 'id',
                     attributes: ["url", "primary", "created_at", "updated_at", "updated_in_db_at"]
+                },
+                typeForAttribute: (key) => {
+                    if (key === 'related_person') {
+                        return 'people';
+                    }
+                    return key;
                 }
             },
             person_facebook_accounts: {
