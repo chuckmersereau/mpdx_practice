@@ -13,11 +13,12 @@ function donationSummaryChart() {
 
 class donationSummaryChartController {
     constructor(
-        $filter, $log, $scope, gettextCatalog,
+        $filter, $log, $scope, gettextCatalog, $rootScope,
         accounts, api, blockUI, currency
     ) {
         $scope.$filter = $filter;
         $scope.$log = $log;
+        $scope.$rootScope = $rootScope;
         $scope.accounts = accounts;
         $scope.api = api;
         $scope.currency = currency;
@@ -40,7 +41,7 @@ function linkFn(scope) {
 
     function loadGraph() {
         scope.blockUI.start();
-        scope.api.get('reports/monthly_giving_graph').then((data) => {
+        scope.api.get('reports/monthly_giving_graph', {filter: {account_list_id: scope.api.account_list_id}}).then((data) => {
             scope.$log.debug('reports/monthly_giving_graph', data);
             scope.series = _.map(data.totals, (total, index) => {
                 return {
@@ -167,7 +168,7 @@ function linkFn(scope) {
 
     loadGraph();
 
-    scope.$on('accountListUpdated', () => {
+    scope.$rootScope.$on('accountListUpdated', () => {
         loadGraph();
     });
 }

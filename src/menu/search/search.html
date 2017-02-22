@@ -1,0 +1,16 @@
+<div class="dropdown">
+    <input type="text"
+           class="search_filter form-control"
+           placeholder="{{ 'Keywords' | translate }}"
+           autocomplete="off"
+           ng-model="$ctrl.searchParams"
+           ng-blur="$ctrl.reset()"
+    >
+    <div class="dropdown-content" ng-if="$ctrl.searchParams != ''">
+        <a ng-repeat="contact in $ctrl.contacts.completeList | filter: {name: $ctrl.searchParams} | limitTo : 5 track by contact.id"
+           ng-click="$ctrl.go(contact.id)"
+           ng-if="$ctrl.searchParams !== ''">
+            {{contact.name}}
+        </a>
+    </div>
+</div>
