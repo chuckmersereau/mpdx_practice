@@ -41,6 +41,11 @@ class PersonService {
         this.selected = null;
         return this.api.get(`contacts/${contactId}/people`, {include: this.includes}).then((data) => {
             this.selected = data;
+            _.each(data, person => {
+                if (person.anniversary_year) {
+                    person.anniversary = moment(`${person.anniversary_year}-${person.anniversary_month}-${person.anniversary_day}`, 'YYYY-MM-DD').format('l');
+                }
+            });
             return data;
         });
     }
@@ -71,6 +76,9 @@ class PersonService {
                 locals: {
                     contact: contact,
                     person: person
+                },
+                onHide: () => {
+                    this.list(contact.id);
                 }
             });
         };

@@ -2,14 +2,18 @@
      ng-click="$ctrl.selectCard()">
     <div class="avatar" bg-img="{{$ctrl.person.avatar | stripMpdx}}"></div>
     <div class="content">
-        <a class="pull-right edit" ng-click="$ctrl.openModal()" ng-if="!$ctrl.isMerging" translate>Edit</a>
-        <h1>{{ $ctrl.person.first_name }} {{ $ctrl.person.last_name }}</h1>
+        <a class="pull-right edit" ng-click="$ctrl.openModal()" translate>Edit</a>
+        <h1 ng-if="!$ctrl.isMerging" ng-class="{ strike: $ctrl.person.deceased }">{{ $ctrl.person.first_name }} {{ $ctrl.person.last_name }}</h1>
         <dl>
-            <dd ng-repeat="email in $ctrl.person.email_addresses">{{ email.email }}</dd>
+            <dd ng-repeat="email in $ctrl.person.email_addresses">
+                {{ email.email }}
+                <i ng-if="email.primary" class="fa fa-check text-success"></i>
+            </dd>
             <dd ng-if="$ctrl.person.optout_enewsletter" translate>opted out of newsletter</dd>
             <dd ng-repeat="phone in $ctrl.person.phone_numbers">
                 {{ phone.number }}
                 <span ng-if="phone.location">{{ ' - ' + phone.location }}</span>
+                <i ng-if="phone.primary" class="fa fa-check text-success"></i>
             </dd>
             <dd ng-if="$ctrl.person.marital_status">
                 <span>{{ $ctrl.person.marital_status }}</span>
