@@ -1,13 +1,13 @@
 <div class="well">
     <div class="progress-box-title"><i class="fa fa-users"></i> <span translate>Contacts</span></div>
     <div class="progress-stat">
-        <a ui-sref="contacts({ filters: { status: ['active'] } })">
+        <a ui-sref="contacts({ filters: { status: 'active' } })">
             <span class="count-big">{{$ctrl.accounts.analytics.contacts.active}}</span>
             <span translate>Active</span>
         </a>
     </div>
     <div class="progress-stat">
-        <a ui-sref="contacts({ filters: { referrer: ['any']} })">
+        <a ui-sref="contacts({ filters: { referrer: 'any'} })">
             <span class="count-big">{{$ctrl.accounts.analytics.contacts.referrals_on_hand}}</span>
             <span translate>Referrals On-hand</span>
         </a>
