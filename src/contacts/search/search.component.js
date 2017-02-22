@@ -15,11 +15,7 @@ class ContactsSearchController {
 }
 const Search = {
     controller: ContactsSearchController,
-    template: require('./search.html'),
-    bindings: {
-        dropdown: '<',
-        showFilters: '@'
-    }
+    template: require('./search.html')
 };
 
 export default angular.module('mpdx.common.contacts.search', [])

@@ -1,5 +1,4 @@
-<div class="dropdown"
-     deep-blur="$ctrl.focused = false">
+<div class="dropdown">
     <input type="text"
            name="q"
            class="search_filter form-control"
@@ -7,15 +6,5 @@
            autocomplete="off"
            ng-model="$ctrl.searchParams"
            ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }"
-           ng-focus="$ctrl.focused = true"
-           ng-change="$ctrl.paramChanged()"
-    >
-    <div class="dropdown-content" ng-if="$ctrl.dropdown && $ctrl.contactFilter.params.wildcard_search != '' && !$ctrl.contacts.loading && $ctrl.focused">
-        <a ng-repeat="contact in $ctrl.contacts.data track by contact.id | limitTo : 5" ui-sref="contact({contactId: contact.id})" ng-if="$ctrl.contactFilter.params.wildcard_search != ''">
-            {{contact.name}}
-        </a>
-        <a ng-show="$ctrl.contacts.data.length == 0" translate>
-            No Matches
-        </a>
-    </div>
+           ng-change="$ctrl.paramChanged()">
 </div>
