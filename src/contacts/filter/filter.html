@@ -8,13 +8,10 @@
     <contacts-tags></contacts-tags>
     <li class="filters_section">
         <form ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }">
-            <span class="filters_title menu_item" translate>Filters</span>
+            <span class="filters_title menu_item ci ci-filter_icon" translate>Filters</span>
             <div class="filter_hint">
                 <span  translate>Click the</span>
-                <span class="fa-stack">
-                    <i class="fa fa-circle fa-stack-2x text-danger"></i>
-                    <i class="fa fa-minus fa-stack-1x fa-inverse"></i>
-                </span>
+                <i class="ci ci-neg_filter_icon"></i>
                 <span translate>to look up all contacts who do not have that filter.</span>
             </div>
             <ul class="filters">
@@ -26,10 +23,7 @@
                                 <label>
                                     {{child.title}}
                                     <a class="filter_invert_multiselect" ng-click="$ctrl.invertMultiselect(child)" title="{{ 'Invert' | translate }}">
-                                        <span class="fa-stack">
-                                          <i class="fa fa-circle fa-stack-2x text-danger"></i>
-                                          <i class="fa fa-minus fa-stack-1x fa-inverse"></i>
-                                        </span>
+                                        <i class="ci ci-neg_filter_icon"></i>
                                     </a>
                                 </label>
                                 <select class="form-control" ng-options="item.id as item.name for item in child.options" ng-model="$ctrl.contactFilter.params[child.name]" ng-change="$ctrl.contactFilter.change()" multiple></select>
@@ -71,10 +65,7 @@
                         <div class="filter_multiselect" ng-if="filter.type == 'multiselect'">
                             <label>
                                 <a class="filter_invert_multiselect" ng-click="$ctrl.invertMultiselect(filter)" title="{{ 'Invert' | translate }}">
-                                  <span class="fa-stack">
-                                    <i class="fa fa-circle fa-stack-2x text-danger"></i>
-                                    <i class="fa fa-minus fa-stack-1x fa-inverse"></i>
-                                  </span>
+                                    <i class="ci ci-neg_filter_icon"></i>
                                 </a>
                             </label>
                             <select class="form-control"  ng-options="item.id as item.name for item in filter.options" ng-model="$ctrl.contactFilter.params[filter.name]" ng-change="$ctrl.contactFilter.change()" multiple></select>

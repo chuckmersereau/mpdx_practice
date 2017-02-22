@@ -62,6 +62,7 @@ class FilterController {
 
         selectedOptions.push(allOption); // Exclude the 'All' option when inverting
         this.contactFilter.params[filter.name] = _.difference(allOptions, selectedOptions);
+        this.contactFilter.change();
     }
 }
 
