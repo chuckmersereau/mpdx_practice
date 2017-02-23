@@ -33,7 +33,7 @@ export default class Routes {
         }).state({
             name: 'contacts',
             title: 'Contacts',
-            url: '/contacts?filters',
+            url: '/contacts',
             component: 'contacts',
             params: {
                 filters: null
@@ -182,7 +182,7 @@ export default class Routes {
         }).state({
             name: 'tasks',
             title: 'Tasks',
-            url: '/tasks?filters',
+            url: '/tasks',
             component: 'tasks',
             parent: 'root',
             params: {

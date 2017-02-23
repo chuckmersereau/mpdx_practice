@@ -6,7 +6,7 @@
         <span translate>Tasks overdue or due today</span>
         <ul class="plain-list">
             <li ng-repeat="task in $ctrl.tasksService.analytics.tasks_overdue_or_due_today_counts | orderBy: 'count' : true" ng-if="task.count > 0">
-                <a ui-sref="tasks({ filters: { activity_type: [task.type] } })">
+                <a ng-click="$ctrl.go(task.label)">
                     <span class="count">{{ task.count }}</span>
                     {{ task.label }}
                 </a>

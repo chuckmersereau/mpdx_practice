@@ -37,7 +37,10 @@ contacts-filter {
     .people {}
     .companies {}
     .tags_title:before {content: "\f02c";}
-    .filters_title:before {content: "\f0ca";}
+    .filters_title:before {
+        font-family: 'ci';
+        content: "\F103";
+}
     .sort_title:before {content: "\f1d8";}
 
     .filters_section {
