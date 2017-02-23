@@ -75,35 +75,48 @@ class PersonModalController {
     addEmailAddress() {
         this.person.email_addresses.push(this.emailObject());
     }
-    removeEmailAddress() {
+    emailObject() {
+        return {id: uuid(), email: '', location: ''};
+    }
+    removeEmailAddress(index) {
+        this.person.email_addresses.splice(index, 1);
     }
     addPhone() {
         this.person.phone_numbers.push(this.phoneObject());
     }
-    removePhone() {
+
+    phoneObject() {
+        return {id: uuid(), number: '', location: ''};
+    }
+    removePhone(index) {
+        this.person.phone_numbers.splice(index, 1);
     }
     addFamilyRelationship() {
         this.person.family_relationships.push(this.familyRelationshipObject());
     }
+    familyRelationshipObject() {
+        return {id: uuid(), related_person: {id: null}};
+    }
     removeFamilyRelationship(index) {
         this.person.family_relationships.splice(index, 1);
     }
-    addNetwork() {
-        this.person.networks.push(this.networkObject());
+    addFacebook() {
+        this.person.facebook_accounts.push(this.facebookObject());
     }
-    removeNetwork() {
+    facebookObject() {
+        return {id: uuid(), username: ''};
     }
-    emailObject() {
-        return {id: uuid(), email: '', location: '', _destroy: 0};
+    removeFacebook(index) {
+        this.person.facebook_accounts.splice(index, 1);
     }
-    phoneObject() {
-        return {id: uuid(), number: '', location: '', _destroy: 0};
+    addTwitter() {
+        this.person.twitter_accounts.push(this.twitterObject());
     }
-    networkObject() {
-        return {id: uuid(), url: '', kind: '', _destroy: 0};
+    twitterObject() {
+        return {id: uuid(), screen_name: ''};
     }
-    familyRelationshipObject() {
-        return {id: uuid(), related_person: {id: null}};
+    removeTwitter(index) {
+        this.person.twitter_accounts.splice(index, 1);
     }
     delete() {
         this.person._destroy = 1;

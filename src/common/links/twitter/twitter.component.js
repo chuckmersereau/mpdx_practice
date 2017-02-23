@@ -1,4 +1,7 @@
 class TwitterLinkController {
+    $onInit() {
+        this.url = `http://www.twitter.com/${this.twitterAccount.screen_name}`;
+    }
 }
 
 const twitterLink = {
