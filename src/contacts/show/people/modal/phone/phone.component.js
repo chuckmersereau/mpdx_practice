@@ -3,7 +3,6 @@ class ContactPhoneController {
         this.deleted = false;
     }
     remove() {
-        this.phone._destroy = 1;
         this.deleted = true;
         this.onRemove();
     }
@@ -14,7 +13,8 @@ const Phone = {
     template: require('./phone.html'),
     bindings: {
         phone: '=',
-        onRemove: '&'
+        onRemove: '&',
+        onPrimary: '&'
     }
 };
 

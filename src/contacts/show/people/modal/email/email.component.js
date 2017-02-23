@@ -18,7 +18,8 @@ const Email = {
     template: require('./email.html'),
     bindings: {
         email: '=',
-        onRemove: '&'
+        onRemove: '&',
+        onPrimary: '&'
     }
 };
 
