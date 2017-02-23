@@ -53,7 +53,7 @@
                             <div class="col-md-12">
                                 <label translate>Phone Numbers</label>
                                 <div ng-repeat="phone in $ctrl.person.phone_numbers track by $index" name="phones">
-                                    <contact-phone phone="phone" on-remove="$ctrl.removePhone()"></contact-phone>
+                                    <contact-phone phone="phone" on-remove="$ctrl.remove('phone_numbers', $index)"></contact-phone>
                                 </div>
                                 <a type="button" class="btn btn-default btn-block btn-xs" ng-click="$ctrl.addPhone()">
                                     <i class="fa fa-plus-circle"></i> <translate>Add Phone</translate>
@@ -64,7 +64,7 @@
                             <div class="col-md-12">
                                 <label translate>Email Addresses</label>
                                 <div ng-repeat="email in $ctrl.person.email_addresses track by $index" name="email_addresses">
-                                    <contact-email-address email="email" on-remove="$ctrl.removeEmailAddress($index)"></contact-email-address>
+                                    <contact-email-address email="email" on-remove="$ctrl.remove('email_accounts', $index)"></contact-email-address>
                                 </div>
                                 <a type="button" class="btn btn-default btn-block btn-xs" ng-click="$ctrl.addEmailAddress()">
                                     <i class="fa fa-plus-circle"></i> <translate>Add Email</translate>
@@ -80,7 +80,7 @@
                             <div class="col-md-12">
                                 <label translate>Facebook</label>
                                 <div ng-repeat="fb in $ctrl.person.facebook_accounts track by $index" name="facebook">
-                                    <people-facebook facebook-account="fb" on-remove="$ctrl.removeFacebook($index)"></people-facebook>
+                                    <people-facebook facebook-account="fb" on-remove="$ctrl.remove('facebook_accounts', $index)"></people-facebook>
                                 </div>
                                 <a type="button" class="btn btn-default btn-block btn-xs" ng-click="$ctrl.addFacebook()">
                                     <i class="fa fa-plus-circle"></i> <translate>Add Facebook account</translate>
@@ -91,7 +91,7 @@
                             <div class="col-md-12">
                                 <label translate>Twitter</label>
                                 <div ng-repeat="twit in $ctrl.person.twitter_accounts track by $index" name="twitter">
-                                    <people-twitter twitter-account="twit" on-remove="$ctrl.removeTwitter($index)"></people-twitter>
+                                    <people-twitter twitter-account="twit" on-remove="$ctrl.remove('twitter_accounts', $index)"></people-twitter>
                                 </div>
                                 <a type="button" class="btn btn-default btn-block btn-xs" ng-click="$ctrl.addTwitter()">
                                     <i class="fa fa-plus-circle"></i> <translate>Add Twitter account</translate>
@@ -101,10 +101,10 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <label translate>Linked In</label>
-                                <div ng-repeat="li in $ctrl.person.linkedin_accounts track by $index" name="facebook">
-                                    <contact-email-address email="email" on-remove="$ctrl.removeLinkedIn()"></contact-email-address>
+                                <div ng-repeat="li in $ctrl.person.linkedin_accounts track by $index" name="linkedin">
+                                    <people-linkedin linkedin-account="li" on-remove="$ctrl.remove('linkedin_accounts', $index)"></people-linkedin>
                                 </div>
-                                <a type="button" class="btn btn-default btn-block btn-xs" ng-click="$ctrl.addLinkedIn()">
+                                <a type="button" class="btn btn-default btn-block btn-xs" ng-click="$ctrl.addLinkedin()">
                                     <i class="fa fa-plus-circle"></i> <translate>Add Linked In account</translate>
                                 </a>
                             </div>
@@ -113,7 +113,7 @@
                             <div class="col-md-12">
                                 <label translate>Websites</label>
                                 <div ng-repeat="website in $ctrl.person.websites track by $index" name="website">
-                                    <people-website website="website" on-remove="$ctrl.removeWebsite($index)"></people-website>
+                                    <people-website website="website" on-remove="$ctrl.remove('websites', $index)"></people-website>
                                 </div>
                                 <a type="button" class="btn btn-default btn-block btn-xs" ng-click="$ctrl.addWebsite()">
                                     <i class="fa fa-plus-circle"></i> <translate>Add Website</translate>

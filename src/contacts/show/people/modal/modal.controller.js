@@ -72,51 +72,26 @@ class PersonModalController {
             });
         }
     }
+    remove(property, index) {
+        this.person[property].splice(index, 1);
+    }
     addEmailAddress() {
-        this.person.email_addresses.push(this.emailObject());
-    }
-    emailObject() {
-        return {id: uuid(), email: '', location: ''};
-    }
-    removeEmailAddress(index) {
-        this.person.email_addresses.splice(index, 1);
+        this.person.email_addresses.push({id: uuid(), email: '', location: ''});
     }
     addPhone() {
-        this.person.phone_numbers.push(this.phoneObject());
-    }
-
-    phoneObject() {
-        return {id: uuid(), number: '', location: ''};
-    }
-    removePhone(index) {
-        this.person.phone_numbers.splice(index, 1);
+        this.person.phone_numbers.push({id: uuid(), number: '', location: ''});
     }
     addFamilyRelationship() {
-        this.person.family_relationships.push(this.familyRelationshipObject());
-    }
-    familyRelationshipObject() {
-        return {id: uuid(), related_person: {id: null}};
-    }
-    removeFamilyRelationship(index) {
-        this.person.family_relationships.splice(index, 1);
+        this.person.family_relationships.push({id: uuid(), related_person: {id: null}});
     }
     addFacebook() {
-        this.person.facebook_accounts.push(this.facebookObject());
-    }
-    facebookObject() {
-        return {id: uuid(), username: ''};
-    }
-    removeFacebook(index) {
-        this.person.facebook_accounts.splice(index, 1);
+        this.person.facebook_accounts.push({id: uuid(), username: ''});
     }
     addTwitter() {
-        this.person.twitter_accounts.push(this.twitterObject());
+        this.person.twitter_accounts.push({id: uuid(), screen_name: ''});
     }
-    twitterObject() {
-        return {id: uuid(), screen_name: ''};
-    }
-    removeTwitter(index) {
-        this.person.twitter_accounts.splice(index, 1);
+    addLinkedin() {
+        this.person.linkedin_accounts.push({id: uuid(), username: ''});
     }
     delete() {
         this.person._destroy = 1;
