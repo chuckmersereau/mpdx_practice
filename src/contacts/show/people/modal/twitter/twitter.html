@@ -1,0 +1,10 @@
+<div class="row" ng-hide="$ctrl.deleted">
+    <div class="col-sm-11">
+        <input class="form-control" type="text" name="twitter_account" ng-model="$ctrl.twitterAccount.screen_name" placeholder="{{'Username' | translate}}" ng-required="!$ctrl.deleted">
+    </div>
+    <div class="col-sm-1">
+        <button type="button" ng-click="$ctrl.remove()" class="btn btn-block btn-default">
+            <i class="fa fa-minus-circle"></i>
+        </button>
+    </div>
+</div>

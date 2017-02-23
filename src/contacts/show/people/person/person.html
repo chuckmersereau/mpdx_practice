@@ -19,22 +19,11 @@
                 <span>{{ $ctrl.person.marital_status }}</span>
                 <span ng-if="$ctrl.person.anniversary">{{ $ctrl.person.anniversary }}</span>
             </dd>
-            <dd ng-if="$ctrl.person.networks" class="networks">
-            <span ng-repeat="network in $ctrl.person.networks">
-              <a ng-if="network.kind == 'facebook'" ng-href="{{$ctrl.trustSrc(network.url)}}" target="_blank">
-                <i class="fa fa-facebook-square"></i>
-              </a>
-              <a ng-if="network.kind == 'twitter'" ng-href="{{$ctrl.trustSrc('https://twitter.com/' + network.url)}}"
-                 target="_blank">
-                <i class="fa fa-twitter-square"></i>
-              </a>
-              <a ng-if="network.kind == 'linkedin'" ng-href="{{$ctrl.trustSrc(network.url)}}" target="_blank">
-                <i class="fa fa-linkedin-square"></i>
-              </a>
-              <a ng-if="network.kind == 'website'" ng-href="{{$ctrl.trustSrc(network.url)}}" target="_blank">
-                <i class="fa fa-globe"></i>
-              </a>
-            </span>
+            <dd ng-if="$ctrl.person.facebook_accounts.length > 0 || $ctrl.person.twitter_accounts.length" class="networks">
+                <facebook-link ng-repeat="fb in $ctrl.person.facebook_accounts" facebook-account="fb"></facebook-link>
+                <twitter-link ng-repeat="twit in $ctrl.person.twitter_accounts" twitter-account="twit"></twitter-link>
+                <linkedin-link ng-repeat="li in $ctrl.person.linkedin_accounts"></linkedin-link>
+                <website-link ng-repeat="website in $ctrl.person.websites" website="website"></website-link>
             </dd>
         </dl>
     </div>
