@@ -93,6 +93,15 @@ class PersonModalController {
     addLinkedin() {
         this.person.linkedin_accounts.push({id: uuid(), username: ''});
     }
+    changePrimary(property, index) {
+        _.forEach(this.person[property], (person, i) => {
+            if (i === index) {
+                person.primary = true;
+            } else {
+                person.primary = false;
+            }
+        });
+    }
     delete() {
         this.person._destroy = 1;
         return this.save();
