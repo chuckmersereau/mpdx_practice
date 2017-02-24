@@ -1,4 +1,7 @@
 class FacebookLinkController {
+    $onInit() {
+        this.url = `http://www.facebook.com/${this.facebookAccount.username}`;
+    }
 }
 
 const facebookLink = {

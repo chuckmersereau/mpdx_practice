@@ -72,38 +72,35 @@ class PersonModalController {
             });
         }
     }
-    addEmailAddress() {
-        this.person.email_addresses.push(this.emailObject());
+    remove(property, index) {
+        this.person[property].splice(index, 1);
     }
-    removeEmailAddress() {
+    addEmailAddress() {
+        this.person.email_addresses.push({id: uuid(), email: '', location: ''});
     }
     addPhone() {
-        this.person.phone_numbers.push(this.phoneObject());
-    }
-    removePhone() {
+        this.person.phone_numbers.push({id: uuid(), number: '', location: ''});
     }
     addFamilyRelationship() {
-        this.person.family_relationships.push(this.familyRelationshipObject());
+        this.person.family_relationships.push({id: uuid(), related_person: {id: null}});
     }
-    removeFamilyRelationship(index) {
-        this.person.family_relationships.splice(index, 1);
+    addFacebook() {
+        this.person.facebook_accounts.push({id: uuid(), username: ''});
     }
-    addNetwork() {
-        this.person.networks.push(this.networkObject());
+    addTwitter() {
+        this.person.twitter_accounts.push({id: uuid(), screen_name: ''});
     }
-    removeNetwork() {
+    addLinkedin() {
+        this.person.linkedin_accounts.push({id: uuid(), username: ''});
     }
-    emailObject() {
-        return {id: uuid(), email: '', location: '', _destroy: 0};
-    }
-    phoneObject() {
-        return {id: uuid(), number: '', location: '', _destroy: 0};
-    }
-    networkObject() {
-        return {id: uuid(), url: '', kind: '', _destroy: 0};
-    }
-    familyRelationshipObject() {
-        return {id: uuid(), related_person: {id: null}};
+    changePrimary(property, index) {
+        _.forEach(this.person[property], (person, i) => {
+            if (i === index) {
+                person.primary = true;
+            } else {
+                person.primary = false;
+            }
+        });
     }
     delete() {
         this.person._destroy = 1;
