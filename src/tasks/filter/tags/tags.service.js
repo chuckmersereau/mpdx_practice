@@ -14,9 +14,13 @@ class TagsService {
         this.selectedTags = [];
         this.rejectedTags = [];
         this.anyTags = false;
+
+        $rootScope.$on('accountListUpdated', () => {
+            this.load();
+        });
     }
     load() {
-        return this.api.get('tasks/tags').then((data) => {
+        return this.api.get('tasks/tags', {filter: {account_list_id: this.api.account_list_id}}).then((data) => {
             this.$log.debug('tasks/tags', data);
             this.data = data;
             return data;

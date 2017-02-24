@@ -2,7 +2,7 @@ class TagsService {
     api;
 
     constructor(
-        $filter, $log,
+        $filter, $log, $rootScope,
         api
     ) {
         this.$filter = $filter;
@@ -13,9 +13,13 @@ class TagsService {
         this.selectedTags = [];
         this.rejectedTags = [];
         this.anyTags = false;
+
+        $rootScope.$on('accountListUpdated', () => {
+            this.load();
+        });
     }
     load() {
-        return this.api.get('contacts/tags').then((data) => {
+        return this.api.get('contacts/tags', {filter: {account_list_id: this.api.account_list_id}}).then((data) => {
             this.$log.debug('contact/tags:', data);
             this.data = data;
             return data;
