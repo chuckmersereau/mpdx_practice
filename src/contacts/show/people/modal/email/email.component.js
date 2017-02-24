@@ -8,7 +8,6 @@ class ContactEmailAddressController {
         }
     }
     remove() {
-        this.email._destroy = 1;
         this.deleted = true;
         this.onRemove();
     }
