@@ -150,11 +150,6 @@ class ContactsService {
                 return;
             }
             _.each(data, (contact) => {
-                // fix tag_list difference for list vs show
-                contact.tag_list = _.map(contact.tag_list, (tag) => {
-                    return { text: tag };
-                });
-                // end fix
                 if (reset) {
                     newContacts.push(contact);
                 } else {
