@@ -1,9 +1,18 @@
 import config from 'config';
 import japi from 'jsonapi-serializer';
+import clone from 'lodash/fp/clone';
+import assign from 'lodash/fp/assign';
+import has from 'lodash/fp/has';
+import isArray from 'lodash/fp/isArray';
+import isObject from 'lodash/fp/isObject';
+import toString from 'lodash/fp/toString';
+import map from 'lodash/fp/map';
+import escapeComma from "../fp/escapeComma";
+import joinComma from "../fp/joinComma";
 
 function appendTransform(defaults, transform) {
     // We can't guarantee that the default transformation is an array
-    defaults = _.isArray(defaults) ? defaults : [defaults];
+    defaults = isArray(defaults) ? defaults : [defaults];
 
     // Append the new transformation to the defaults
     return defaults.concat(transform);
@@ -11,7 +20,7 @@ function appendTransform(defaults, transform) {
 
 const jsonApiParams = {keyForAttribute: 'underscore_case'};
 function deserialize(data) {
-    if (_.isObject(data) && data.data) {
+    if (isObject(data) && data.data) {
         return new japi.Deserializer(jsonApiParams).deserialize(data).then((deserializedData) => {
             deserializedData.meta = data.meta || {};
             return deserializedData;
@@ -68,8 +77,11 @@ class Api {
 
         if (data.filters) {
             _.forIn(data.filters, (val, key) => {
-                if (_.isArray(val)) {
-                    val = val.join(',');
+                if (isArray(val)) {
+                    //handles filter values passed as array with comma in the value
+                    val = joinComma(map(value => escapeComma(toString(value)), val));
+                } else {
+                    val = escapeComma(toString(val));
                 }
                 data[`filter[${key}]`] = val;
             });
@@ -95,7 +107,7 @@ class Api {
             headers: headers,
             paramSerializer: '$httpParamSerializerJQLike',
             transformRequest: (data) => {
-                let params = _.clone(jsonApiParams);
+                let params = clone(jsonApiParams);
                 if (method === 'put' || method === 'post' || method === 'delete') {
                     if (!type) {
                         let arr = url.split('/');
@@ -105,16 +117,16 @@ class Api {
                             type = arr[arr.length - 1];
                         }
                     }
-                    if (_.has(this.entityAttributes, type)) {
-                        _.extend(params, this.entityAttributes[type]);
+                    if (has(this.entityAttributes, type)) {
+                        params = assign(params, this.entityAttributes[type]);
                     } else {
                         this.$log.error(`undefined attributes for model: ${type} in api.service`);
                     }
                 }
                 if (doSerialization) {
-                    if (_.isArray(data)) {
+                    if (isArray(data)) {
                         return angular.toJson({
-                            data: _.map(data, item => serialize(type, params, item, method))
+                            data: map(item => serialize(type, params, item, method), data)
                         });
                     } else {
                         return angular.toJson(serialize(type, params, data, method));
@@ -125,8 +137,8 @@ class Api {
             },
             transformResponse: appendTransform(this.$http.defaults.transformResponse, (data) => {
                 if (doSerialization) {
-                    if (_.isArray(data)) {
-                        return _.map(data, item => deserialize(item));
+                    if (isArray(data)) {
+                        return map(item => deserialize(item), data);
                     } else {
                         return deserialize(data);
                     }
@@ -158,36 +170,32 @@ class Api {
         return promise.promise;
     }
     get(...params) {
-        params = this.handleParamsAsOther(params);
-        _.extend(params, { method: 'get' });
+        params = assign(this.handleParamsAsOther(params), { method: 'get' });
         return this.call(params);
     }
     post(...params) {
-        params = this.handleParamsAsOther(params);
-        _.extend(params, { method: 'post' });
+        params = assign(this.handleParamsAsOther(params), { method: 'post' });
         return this.call(params);
     }
     put(...params) {
-        params = this.handleParamsAsOther(params);
-        _.extend(params, { method: 'put' });
+        params = assign(this.handleParamsAsOther(params), { method: 'put' });
         return this.call(params);
     }
     delete(...params) {
-        params = this.handleParamsAsOther(params);
-        _.extend(params, { method: 'delete' });
+        params = assign(this.handleParamsAsOther(params), { method: 'delete' });
         return this.call(params);
     }
     handleParamsAsOther(params) {
-        if (params.length === 1 && _.isObject(params[0])) {
+        if (params.length === 1 && isObject(params[0])) {
             return params[0];
         }
-        if (_.isArray(params)) {
+        if (isArray(params)) {
             params = { url: params[0], data: params[1] || {} };
         }
         return params;
     }
     encodeURLarray(array) {
-        return _.map(array, encodeURIComponent);
+        return map(encodeURIComponent, array);
     }
 }
 
