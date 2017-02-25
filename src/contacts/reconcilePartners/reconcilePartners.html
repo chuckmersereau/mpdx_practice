@@ -13,7 +13,7 @@
         <div id="duplicate-contacts" block-ui="find-duplicates" class="row">
             <div class="col-sm-10 col-sm-offset-1">
                 <div class="row" ng-repeat="duplicateContact in $ctrl.contactReconciler.duplicateContacts" ng-if="duplicateContact.contacts.length == 2">
-                    <contacts-reconcile-partner-item contact="duplicateContact.contacts[0]" selected="duplicateContact.mergeChoice == 0" dont-merge="duplicateContact.mergeChoice == 2"></contacts-reconcile-partner-item>
+                    <contacts-reconcile-partner-item contact="duplicateContact.contacts[0]" on-click="$ctrl.useThisOne(duplicateContact, 0)" selected="duplicateContact.mergeChoice == 0" dont-merge="duplicateContact.mergeChoice == 2"></contacts-reconcile-partner-item>
 
                     <div class="col-sm-2 text-center choices">
                         <i class="fa fa-arrow-left choice-left" ng-class="{'selected': duplicateContact.mergeChoice == 0}" ng-click="$ctrl.useThisOne(duplicateContact, 0)"></i>
@@ -21,7 +21,7 @@
                         <i class="fa fa-close choice-cancel" ng-class="{'selected': duplicateContact.mergeChoice == 2}" ng-click="$ctrl.useThisOne(duplicateContact, 2)"></i>
                     </div>
 
-                    <contacts-reconcile-partner-item contact="duplicateContact.contacts[1]" selected="duplicateContact.mergeChoice == 1" dont-merge="duplicateContact.mergeChoice == 2"></contacts-reconcile-partner-item>
+                    <contacts-reconcile-partner-item contact="duplicateContact.contacts[1]" on-click="$ctrl.useThisOne(duplicateContact, 1)" selected="duplicateContact.mergeChoice == 1" dont-merge="duplicateContact.mergeChoice == 2"></contacts-reconcile-partner-item>
                 </div>
             </div>
         </div>
