@@ -7,6 +7,7 @@ const Item = {
     template: require('./item.html'),
     bindings: {
         person: '=',
+        onClick: '&',
         selected: '=',
         dontMerge: '='
     }

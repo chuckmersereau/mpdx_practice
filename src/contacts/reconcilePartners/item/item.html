@@ -1,4 +1,4 @@
-<div class="col-sm-5 contact" ng-class="{'selected': $ctrl.selected, 'dont-merge': $ctrl.dontMerge}">
+<div class="col-sm-5 contact" ng-click="$ctrl.onClick()" ng-class="{'selected': $ctrl.selected, 'dont-merge': $ctrl.dontMerge}">
     <div class="row">
         <img class="avatar small img-circle pull-left" ng-src="{{$ctrl.contact.square_avatar | stripMpdx}}">
 
@@ -6,10 +6,8 @@
             <div class="merge-info merge-use">Use This One</div>
             <div class="merge-info merge-dont">Dont' Merge</div>
 
-            <div ng-class="{'highlight': $ctrl.contact.duplicate_name}">
-                {{$ctrl.contact.name}}
-                <i class="fa fa-exclamation-triangle"></i>
-            </div>
+            <strong>{{$ctrl.contact.name}}</strong>
+
             <div class="field-list">
                 <span ng-repeat="address in $ctrl.contact.addresses track by address.id" ng-if="address.primary_mailing_address" ng-class="{'highlight': address.duplicate}">
                     <span class="no-slash" ng-if="address.street">{{address.street}}<br></span>

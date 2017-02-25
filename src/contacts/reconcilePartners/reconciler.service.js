@@ -50,22 +50,6 @@ class ReconcilerService {
 
             _.each(this.duplicateContacts, (duplicateContact) => {
                 duplicateContact.mergeChoice = -1;
-
-                let origName = '';
-                let origAddresses = [];
-
-                _.each(duplicateContact.contacts, (contact, index) => {
-                    if (index === 0) {
-                        origName = contact.name;
-                        origAddresses = _.map(_.filter(contact.addresses, address => address.primary), address => `${address.street} ${address.city} ${address.state} ${address.postal_code}`);
-                    } else {
-                        contact.duplicate_name = contact.name === origName;
-
-                        _.each(contact.addresses, (address) => {
-                            address.duplicate = address.primary && _.includes(origAddresses, `${address.street} ${address.city} ${address.state} ${address.postal_code}`);
-                        });
-                    }
-                });
             });
         });
     }
@@ -91,27 +75,6 @@ class ReconcilerService {
 
             _.each(this.duplicatePeople, (duplicatePerson) => {
                 duplicatePerson.mergeChoice = -1;
-
-                let origName = '';
-                let origPhoneNumbers = [];
-                let origEmailAddresses = [];
-                _.each(duplicatePerson.people, (person, index) => {
-                    if (index === 0) {
-                        origName = `${person.first_name} ${person.last_name}`;
-                        origPhoneNumbers = _.map(_.filter(person.phone_numbers, phoneNumber => phoneNumber.primary), phoneNumber => phoneNumber.number);
-                        origEmailAddresses = _.map(_.filter(person.email_addresses, emailAddress => emailAddress.primary), emailAddress => emailAddress.email);
-                    } else {
-                        person.duplicate_name = `${person.first_name} ${person.last_name}` === origName;
-
-                        _.each(person.phone_numbers, (phoneNumber) => {
-                            phoneNumber.duplicate = phoneNumber.primary && _.includes(origPhoneNumbers, phoneNumber.number);
-                        });
-
-                        _.each(person.email_addresses, (emailAddress) => {
-                            emailAddress.duplicate = emailAddress.primary && _.includes(origEmailAddresses, emailAddress.email);
-                        });
-                    }
-                });
             });
         });
     }
