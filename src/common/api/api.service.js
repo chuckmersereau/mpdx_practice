@@ -200,7 +200,10 @@ class EntityAttributes {
             },
             account_lists: {
                 attributes: ["creator_id", "created_at", "monthly_goal", "name", "notification_preferences", "settings", "total_pledges", "updated_at", "updated_in_db_at"],
-                notification_preferences: { ref: 'id' }
+                notification_preferences: {
+                    ref: 'id',
+                    attributes: ["actions"]
+                }
             },
             addresses: {
                 attributes: ["street", "city", "country", "end_date", "geo", "historic", "location", "postal_code", "primary_mailing_address", "start_date", "state", "updated_in_db_at"]
