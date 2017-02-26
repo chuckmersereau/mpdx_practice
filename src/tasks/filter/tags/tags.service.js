@@ -1,3 +1,5 @@
+import map from 'lodash/fp/map';
+
 class TagsService {
     api;
 
@@ -25,6 +27,9 @@ class TagsService {
             this.data = data;
             return data;
         });
+    }
+    mapDataAsNames() {
+        return map(data => data.name, this.data);
     }
     delete(tagName) {
         return this.api.delete('tasks', { tags: [{ all_tasks: true, name: tagName }] }).then(() => {

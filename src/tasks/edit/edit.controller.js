@@ -1,4 +1,6 @@
 import uuid from 'uuid/v1';
+import map from 'lodash/fp/map';
+import union from 'lodash/fp/union';
 
 class EditTaskController {
     ajaxAction;
@@ -19,7 +21,6 @@ class EditTaskController {
         this.$log = $log;
         this.$scope = $scope;
         this.ajaxAction = ajaxAction;
-        this.selectedContacts = selectedContacts;
         this.contacts = contacts;
         this.createNext = createNext;
         this.modal = modal;
@@ -30,7 +31,15 @@ class EditTaskController {
         this.modalCallback = modalCallback;
         this.users = users;
 
-        this.model = _.clone(specifiedTask);
+        this.model = angular.copy(specifiedTask);
+
+        const mapIds = map('id');
+        this.selectedContacts = union(mapIds(this.model.contacts), mapIds(selectedContacts));
+        if (this.model.notification_type) {
+            this.emailNotification = true;
+        }
+
+        $log.debug('edit taks', this.model);
     }
     submit() {
         if (this.comment) {
@@ -68,7 +77,7 @@ class EditTaskController {
         });
     }
     deleteTask() {
-        this.tasksService.deleteTask(this.specifiedTask.id).then(() => {
+        this.tasksService.deleteTask(this.model.id).then(() => {
             this.$scope.$hide();
             this.modalCallback();
         });

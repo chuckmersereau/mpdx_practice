@@ -27,6 +27,10 @@ class TasksController {
             this.tasksFilter.change();
         }
     }
+    onSearchChanged(wildcard) {
+        this.tasksFilter.wildcard_search = wildcard;
+        this.tasksFilter.change();
+    }
 }
 
 const Tasks = {

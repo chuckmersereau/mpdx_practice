@@ -1,3 +1,6 @@
+import map from 'lodash/fp/map';
+import sum from 'lodash/fp/sum';
+
 class BalancesController {
     accounts;
     api;
@@ -26,13 +29,15 @@ class BalancesController {
             this.title = this.gettextCatalog.getString(
                 '{{received}} received/{{pledged}} committed of goal: {{goal}}. Click to see outstanding financial partners.', {
                     pledged: this.accounts.current.total_pledges,
-                    received: this.accounts.current.received_pledges,
+                    received: this.reports.goals.received_pledges,
                     goal: this.accounts.current.monthly_goal
                 }
             );
         });
         this.designationAccounts.load(true).then(() => {
-            this.balance = _.sum(_.map(this.designationAccounts.data, 'converted_balance'));
+            const balances = map(acct => acct.converted_balance, this.designationAccounts.data);
+            console.log('balances', balances);
+            this.balance = sum(balances);
         });
     }
 }

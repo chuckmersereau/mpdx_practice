@@ -8,7 +8,7 @@
            ng-model="$ctrl.searchParams"
            ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }"
            ng-focus="$ctrl.focused = true"
-           ng-change="$ctrl.paramChanged()"
+           ng-change="$ctrl.onChange({wildcard: $ctrl.searchParams})"
     >
     <div class="dropdown-content" ng-if="$ctrl.dropdown && $ctrl.tasksFilter.wildcard_search != '' && $ctrl.focused">
         <a ng-repeat="task in $ctrl.tasksService.data track by task.id | limitTo : 5" ui-sref="task({taskId: task.id})" ng-if="$ctrl.filterService.params.wildcard_search != ''">

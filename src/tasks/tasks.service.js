@@ -112,14 +112,20 @@ class TasksService {
         } else {
             delete filters.exclude_tags;
         }
+        filters.account_list_id = this.api.account_list_id;
         filters.any_tags = this.tasksTags.anyTags;
 
         return this.api.get({
             url: 'tasks',
             data: {
                 filters: filters,
-                include: 'comments,contacts',
-                'fields[contacts]': 'name',
+                include: 'comments,contacts,contacts.people,contacts.addresses,contacts.people.email_addresses,contacts.people.phone_numbers,contacts.people.facebook_accounts',
+                'fields[contacts]': 'addresses,name,people,square_avatar',
+                'fields[addresses]': 'city,primary_mailing_address,postal_code,state,street',
+                'fields[people]': 'avatar,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
+                'fields[email_addresses]': 'email,historic,primary',
+                'fields[phone_numbers]': 'historic,location,number,primary',
+                'fields[facebook_accounts]': 'url',
                 page: this.meta[collection].pagination.page,
                 per_page: this.meta[collection].pagination.per_page,
                 sort: this.meta[collection].pagination.order
@@ -168,6 +174,7 @@ class TasksService {
         });
     }
     save(task) {
+        task.tag_list = task.tag_list.join(','); //fix for api mis-match
         return this.api.put(`tasks/${task.id}`, task);
     }
     addComment(task, newComment) {
@@ -203,6 +210,7 @@ class TasksService {
                 }
                 task.comments.push({id: uuid(), body: comment, person: { id: this.users.current.id }});
             }
+            task.tag_list = task.tag_list.join(','); //fix for api mis-match
             _.assign(task, task, model);
         });
         return this.api.put('tasks/bulk', tasks);
@@ -216,6 +224,7 @@ class TasksService {
             return {id: contactId};
         });
         model.completed = toComplete || model.result !== null;
+        model.tag_list = model.tag_list.join(','); //fix for api mis-match
 
         return this.api.call({
             method: ajaxAction,
@@ -226,6 +235,7 @@ class TasksService {
     create(task, contactIds) {
         task.contacts = _.map(contactIds, contactId => { return {id: contactId}; });
         task.account_list = { id: this.api.account_list_id };
+        task.tag_list = task.tag_list.join(','); //fix for api mis-match
 
         return this.api.post('tasks', task);
     }

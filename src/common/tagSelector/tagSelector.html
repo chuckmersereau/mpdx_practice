@@ -1,0 +1,9 @@
+<tags-input class="import_by_group import_contacttags"
+            ng-model="$ctrl.selectedTags"
+            display-property="name"
+            on-tag-adding="$ctrl.addTag($tag)"
+            on-tag-added="$ctrl.onTagAdded({$tag: $tag})"
+            on-tag-removing="$ctrl.removeTag($tag)"
+            on-tag-removed="$ctrl.onTagRemoved({$tag: $tag})">
+    <auto-complete source="$ctrl.tags" min-length="0" select-first-match="false"></auto-complete>
+</tags-input>

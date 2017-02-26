@@ -34,9 +34,7 @@
         </div>
         <div>
             <label translate>Tags</label>
-            <tags-input class="import_by_group import_contacttags" ng-model="$ctrl.models.tag_list" display-property="name"  key-property="name">
-                <auto-complete source="$ctrl.tasksTags.data" min-length="0" select-first-match="false"></auto-complete>
-            </tags-input>
+            <tag-selector ng-model="$ctrl.models.tag_list" tag-list="$ctrl.tasksTags.data"></tag-selector>
         </div>
         <div class="form-group">
             <label for="comment" translate>Comment</label>

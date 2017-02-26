@@ -2,6 +2,7 @@ import config from 'config';
 import japi from 'jsonapi-serializer';
 import clone from 'lodash/fp/clone';
 import assign from 'lodash/fp/assign';
+import forIn from 'lodash/fp/forIn';
 import has from 'lodash/fp/has';
 import isArray from 'lodash/fp/isArray';
 import isObject from 'lodash/fp/isObject';
@@ -74,17 +75,17 @@ class Api {
                 return this.$q.resolve(cachedData);
             }
         }
-
+        const fixFilters = (val, key) => {
+            if (isArray(val)) {
+                //handles filter values passed as array with comma in the value
+                val = joinComma(map(value => escapeComma(toString(value)), val));
+            } else {
+                val = escapeComma(toString(val));
+            }
+            data[`filter[${key}]`] = val;
+        };
         if (data.filters) {
-            _.forIn(data.filters, (val, key) => {
-                if (isArray(val)) {
-                    //handles filter values passed as array with comma in the value
-                    val = joinComma(map(value => escapeComma(toString(value)), val));
-                } else {
-                    val = escapeComma(toString(val));
-                }
-                data[`filter[${key}]`] = val;
-            });
+            forIn(fixFilters, data.filters);
             delete data.filters;
         }
 
@@ -312,7 +313,7 @@ class EntityAttributes {
             },
             tasks: {
                 attributes: ["account_list", "activity_type", "location", "start_at", "end_at", "type", "created_at", "updated_at", "completed", "completed_at", "comments", "contacts", "due_date",
-                    "notification_id", "next_action", "no_date", "notification_type", "notification_time_before", "remote_id", "result", "source", "starred", "subject",
+                    "notification_id", "next_action", "no_date", "notification_type", "notification_time_before", "remote_id", "result", "source", "starred", "subject", "tag_list",
                     "notification_time_unit", "notification_scheduled", "updated_in_db_at"],
                 account_list: { ref: 'id' },
                 comments: {

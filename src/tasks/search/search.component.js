@@ -5,12 +5,6 @@ class TasksSearchController {
     constructor(tasksFilter, tasksService) {
         this.tasksService = tasksService;
         this.tasksFilter = tasksFilter;
-
-        this.searchParams = '';
-    }
-    paramChanged() {
-        this.tasksFilter.wildcard_search = this.searchParams;
-        this.tasksFilter.change();
     }
 }
 const Search = {
@@ -18,7 +12,9 @@ const Search = {
     template: require('./search.html'),
     bindings: {
         dropdown: '<',
-        showFilters: '@'
+        showFilters: '@',
+        searchParams: '<',
+        onChange: '&'
     }
 };
 

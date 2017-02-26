@@ -148,9 +148,7 @@
             <div class="col-sm-12 spacing-below-xs">
                 <h4 class="attribute-header" translate>Tags</h4>
                 <div class="inline-input">
-                    <tags-input class="import_by_group import_contact_tags" ng-model="$ctrl.contact.tag_list" on-tag-added='$ctrl.save()' on-tag-removed='$ctrl.save()' display-property="name">
-                        <auto-complete source="$ctrl.contactsTags.data" min-length="0" select-first-match="false"></auto-complete>
-                    </tags-input>
+                    <tag-selector ng-model="$ctrl.contact.tag_list" tag-list="$ctrl.contactsTags.data" on-tag-added='$ctrl.save()' on-tag-removed='$ctrl.save()'></tag-selector>
                 </div>
             </div>
         </div>

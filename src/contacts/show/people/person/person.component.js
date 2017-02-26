@@ -27,7 +27,8 @@ const Person = {
         contact: '<',
         person: '<',
         isMerging: '<',
-        onSelectPerson: '&'
+        onSelectPerson: '&',
+        view: '<'
     }
 };
 

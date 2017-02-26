@@ -30,7 +30,6 @@ class FilterController {
     showReset() {
         return this.tasksTags.isResettable() || this.tasksFilter.isResettable();
     }
-
     // Invert the selected options of a multiselect filter
     invertMultiselect(filter) {
         const allOptions = _.map(filter.options, option => option.id);

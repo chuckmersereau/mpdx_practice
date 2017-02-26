@@ -7,9 +7,10 @@ class ListController {
     tasksService;
 
     constructor(
-        alerts, tasksService, modal
+        alerts, contacts, modal, tasksService
     ) {
         this.alerts = alerts;
+        this.contacts = contacts;
         this.modal = modal;
         this.moment = moment;
         this.tasksService = tasksService;

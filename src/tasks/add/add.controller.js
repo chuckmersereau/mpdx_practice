@@ -29,7 +29,7 @@ class AddTaskController {
 
         this.modalTitle = modalTitle;
 
-        this.models = {
+        this.model = {
             start_at: moment().toISOString(),
             no_date: false,
             activity_type: this.specifiedAction,
@@ -44,28 +44,28 @@ class AddTaskController {
     }
     save() {
         if (this.comment) {
-            this.models.comments.push({id: uuid(), body: this.comment, person: { id: this.users.current.id }});
+            this.model.comments.push({id: uuid(), body: this.comment, person: { id: this.users.current.id }});
         }
         if (this.emailNotification) {
-            this.models.notification_type = 'email';
+            this.model.notification_type = 'email';
         }
         this.selectedContacts = _.reject(this.selectedContacts, ''); //dump empty contacts
 
         let promise;
         if (this.newsletterBoth) {
-            this.models.action = "Newsletter - Physical";
-            promise = this.tasksService.create(this.models, this.selectedContacts).then(() => {
-                this.models.action = "Newsletter - Email";
-                return this.tasksService.create(this.models, this.selectedContacts);
+            this.model.action = "Newsletter - Physical";
+            promise = this.tasksService.create(this.model, this.selectedContacts).then(() => {
+                this.model.action = "Newsletter - Email";
+                return this.tasksService.create(this.model, this.selectedContacts);
             });
         } else if (this.newsletterPhysical) {
-            this.models.action = "Newsletter - Physical";
-            promise = this.tasksService.create(this.models, this.selectedContacts);
+            this.model.action = "Newsletter - Physical";
+            promise = this.tasksService.create(this.model, this.selectedContacts);
         } else if (this.newsletterEmail) {
-            this.models.action = "Newsletter - Email";
-            promise = this.tasksService.create(this.models, this.selectedContacts);
+            this.model.action = "Newsletter - Email";
+            promise = this.tasksService.create(this.model, this.selectedContacts);
         } else {
-            promise = this.tasksService.create(this.models, this.selectedContacts);
+            promise = this.tasksService.create(this.model, this.selectedContacts);
         }
         return promise.then(() => {
             this.contacts.load(true);
