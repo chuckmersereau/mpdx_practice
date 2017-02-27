@@ -27,7 +27,7 @@ class ContactDonationsController {
     // commented out until api available
     $onChanges(changesObj) {
         if (_.get(changesObj, 'contactId.currentValue', false)) {
-            this.getDonations(0);
+            // this.getDonations(0);
             // this.getDonationsGraph();
         }
     }
