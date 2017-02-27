@@ -1,6 +1,7 @@
 import config from 'config';
 import japi from 'jsonapi-serializer';
 import clone from 'lodash/fp/clone';
+import concat from 'lodash/fp/concat';
 import assign from 'lodash/fp/assign';
 import forIn from 'lodash/fp/forIn';
 import has from 'lodash/fp/has';
@@ -16,7 +17,7 @@ function appendTransform(defaults, transform) {
     defaults = isArray(defaults) ? defaults : [defaults];
 
     // Append the new transformation to the defaults
-    return defaults.concat(transform);
+    return concat(defaults, transform);
 }
 
 const jsonApiParams = {keyForAttribute: 'underscore_case'};
@@ -108,7 +109,7 @@ class Api {
             headers: headers,
             paramSerializer: '$httpParamSerializerJQLike',
             transformRequest: (data) => {
-                let params = clone(jsonApiParams);
+                let params = angular.copy(jsonApiParams);
                 if (method === 'put' || method === 'post' || method === 'delete') {
                     if (!type) {
                         let arr = url.split('/');
@@ -118,7 +119,7 @@ class Api {
                             type = arr[arr.length - 1];
                         }
                     }
-                    if (has(this.entityAttributes, type)) {
+                    if (has(type, this.entityAttributes)) {
                         params = assign(params, this.entityAttributes[type]);
                     } else {
                         this.$log.error(`undefined attributes for model: ${type} in api.service`);

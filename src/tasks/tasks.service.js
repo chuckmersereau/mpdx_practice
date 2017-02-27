@@ -40,10 +40,10 @@ class TasksService {
 
         this.meta = {
             completed: _.assign(DEFAULT_PAGINATION, {
-                order: 'no_date DESC, start_at'
+                sort: '-no_date,start_at'
             }),
             uncompleted: _.assign(DEFAULT_PAGINATION, {
-                order: 'no_date DESC, start_at'
+                sort: '-no_date, start_at'
             }),
             today: DEFAULT_PAGINATION,
             overdue: DEFAULT_PAGINATION,
@@ -147,7 +147,7 @@ class TasksService {
             page: 1,
             per_page: 500,
             include: 'comments,contacts',
-            order: 'start_at'
+            sort: 'start_at'
         }).then((data) => {
             this.uncompleted = data;
             return data;
@@ -161,8 +161,8 @@ class TasksService {
             },
             include: 'comments,contacts',
             page: 1,
-            per_page: 500,
-            sort: 'completed_at'
+            per_page: 500
+            // sort: 'completed_at'
         }).then((data) => {
             this.completed = data;
             return data;
