@@ -1,6 +1,5 @@
 import config from 'config';
 import japi from 'jsonapi-serializer';
-import clone from 'lodash/fp/clone';
 import concat from 'lodash/fp/concat';
 import assign from 'lodash/fp/assign';
 import forIn from 'lodash/fp/forIn';
