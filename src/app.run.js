@@ -10,6 +10,7 @@ export default function appRun(
             return false;
         } else if (!$window.sessionStorage.token) {
             $window.sessionStorage.redirect = state.name;
+            $window.sessionStorage.params = state.params;
         }
         return true;
     } }, () => {

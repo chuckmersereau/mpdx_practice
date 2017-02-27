@@ -221,8 +221,10 @@ function auth(
             $log.debug('user/authentication', data);
             $window.sessionStorage.token = data.data.json_web_token;
             const redirect = angular.copy($window.sessionStorage.redirect || 'home');
+            const params = angular.copy($window.sessionStorage.params || {});
             delete $window.sessionStorage.redirect;
-            $state.go(redirect, {}, {reload: true});
+            delete $window.sessionStorage.params;
+            $state.go(redirect, params, {reload: true});
         });
     }
 }

@@ -2,7 +2,7 @@ import config from 'config';
 import japi from 'jsonapi-serializer';
 import concat from 'lodash/fp/concat';
 import assign from 'lodash/fp/assign';
-import forIn from 'lodash/fp/forIn';
+import forIn from 'lodash/forIn'; //fp forin not calculating val currently
 import has from 'lodash/fp/has';
 import isArray from 'lodash/fp/isArray';
 import isObject from 'lodash/fp/isObject';
@@ -85,7 +85,7 @@ class Api {
             data[`filter[${key}]`] = val;
         };
         if (data.filters) {
-            forIn(fixFilters, data.filters);
+            forIn(data.filters, fixFilters);
             delete data.filters;
         }
 
@@ -228,9 +228,9 @@ class EntityAttributes {
                 attributes: ["name", "account_list", "created_at", "updated_at", "pledge_amount", "status", "total_donations", "last_donation_date", "first_donation_date", "notes", "notes_saved_at",
                     "full_name", "greeting", "website", "pledge_frequency", "pledge_start_date", "next_ask", "likely_to_give", "church_name", "send_newsletter", "direct_deposit", "magazine", "last_activity",
                     "last_appointment", "last_letter", "last_phone_call", "last_pre_call", "last_thank", "pledge_received", "tnt_id", "not_duplicated_with", "uncompleted_tasks_count", "prayer_letters_id",
-                    "timezone", "envelope_greeting", "no_appeals", "prayer_letters_params", "pls_id", "pledge_currency", "locale", "late_at", "people", "addresses", "updated_in_db_at", "winner_id", "loser_id"],
-                addresses: { ref: 'id' },
-                people: { ref: 'id' },
+                    "timezone", "envelope_greeting", "no_appeals", "prayer_letters_params", "pls_id", "pledge_currency", "locale", "late_at", "updated_in_db_at", "winner_id", "loser_id"],
+                // addresses: { ref: 'id' },
+                // people: { ref: 'id' },
                 account_list: { ref: 'id' }
             },
             donations: {
