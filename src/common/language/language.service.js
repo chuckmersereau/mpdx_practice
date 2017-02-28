@@ -18,7 +18,7 @@ class Language {
         this.gettextCatalog.setCurrentLanguage(language);
 
         if (config.env !== 'development' && language !== 'en') {
-            this.gettextCatalog.loadRemote(`language/${temp}-${process.env.TRAVIS_COMMIT}.json`);
+            this.gettextCatalog.loadRemote(`locale/${temp}-${process.env.TRAVIS_COMMIT}.json`);
         }
     }
 }
