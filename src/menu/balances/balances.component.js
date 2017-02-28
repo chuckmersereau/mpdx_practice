@@ -36,7 +36,6 @@ class BalancesController {
         });
         this.designationAccounts.load(true).then(() => {
             const balances = map(acct => acct.converted_balance, this.designationAccounts.data);
-            console.log('balances', balances);
             this.balance = sum(balances);
         });
     }

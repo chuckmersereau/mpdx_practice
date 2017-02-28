@@ -297,6 +297,34 @@
             </div>
         </div>
         <div class="panel panel-default">
+            <div class="panel-heading pref-head" ng-click="$ctrl.setTab('language')">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('language') }"></i>
+                        <span translate>Language</span>
+                    </div>
+                    <div class="col-sm-6 pref-current">
+                        <span class="flag-icon flag-icon-{{$ctrl.getCountry($ctrl.users.current.preferences.locale)}}" ></span> {{$ctrl.getLanguageOrLocaleNative($ctrl.users.current.preferences.locale)}}
+                    </div>
+                    <div class="col-sm-2 text-right">
+                        <span class="panel-open-btn">
+                            <span ng-hide="$ctrl.tabSelected('language')" translate>Expand</span>
+                            <span ng-show="$ctrl.tabSelected('language')" translate>Close</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-animate" ng-show="$ctrl.tabSelected('language')">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-4">
+                            <preferences-language on-save="$ctrl.save()"></preferences-language>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
             <div class="panel-heading pref-head" ng-click="$ctrl.setTab('locale')">
                 <div class="row">
                     <div class="col-sm-4">
@@ -304,7 +332,7 @@
                         <span translate>Locale</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        <span class="flag-icon flag-icon-{{$ctrl.getCountry($ctrl.users.current.preferences.locale)}}" ></span> {{$ctrl.$window.languageMappingList[$ctrl.users.current.preferences.locale].nativeName}}
+                        <span class="flag-icon flag-icon-{{$ctrl.getCountry($ctrl.users.current.preferences.locale_display)}}" ></span> {{$ctrl.getLanguageOrLocaleNative($ctrl.users.current.preferences.locale_display)}}
                     </div>
                     <div class="col-sm-2 text-right">
                         <span class="panel-open-btn">

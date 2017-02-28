@@ -1,8 +1,17 @@
+import each from 'lodash/fp/each';
+import has from 'lodash/fp/has';
+import keys from 'lodash/fp/keys';
+import map from 'lodash/fp/map';
+import split from 'lodash/fp/split';
+import toLower from 'lodash/fp/toLower';
+import toUpper from 'lodash/fp/toUpper';
+
 class PersonalPreferencesController {
     accounts;
     alerts;
     api;
     locale;
+    serverConstants;
     users;
 
     constructor(
@@ -17,14 +26,15 @@ class PersonalPreferencesController {
         this.api = api;
         this.locale = locale;
         this.gettextCatalog = gettextCatalog;
+        this.serverConstants = serverConstants;
         this.users = users;
 
         this.saving = false;
         this.tabId = '';
 
-        this.currencies = _.map(_.keys(serverConstants.data.pledge_currencies), key => {
-            return { key: key.toString().toUpperCase(), value: serverConstants.data.pledge_currencies[key] };
-        });
+        this.currencies = map(key => {
+            return { key: toUpper(key), value: serverConstants.data.pledge_currencies[key] };
+        }, keys(serverConstants.data.pledge_currencies));
     }
     $onInit() {
         if (this.$stateParams.id) {
@@ -38,9 +48,9 @@ class PersonalPreferencesController {
             this.setTab('');
             this.saving = false;
         }).catch((data) => {
-            _.each(data.errors, (value) => {
+            each((value) => {
                 this.alerts.addAlert(value, 'danger');
-            });
+            }, data.errors);
             this.saving = false;
         });
     }
@@ -51,9 +61,9 @@ class PersonalPreferencesController {
             this.setTab('');
             this.saving = false;
         }).catch((data) => {
-            _.each(data.errors, (value) => {
+            each((value) => {
                 this.alerts.addAlert(value, 'danger');
-            });
+            }, data.errors);
             this.saving = false;
         });
     }
@@ -75,11 +85,22 @@ class PersonalPreferencesController {
     getCountry(locale) {
         if (!locale) return;
         if (locale === 'en') return 'us';
-        const splitLocale = locale.split('-');
+        const splitLocale = split('-', locale);
         if (splitLocale.length > 1) {
-            return splitLocale[1].toLowerCase();
+            return toLower(splitLocale[1]);
         }
         return locale;
+    }
+    getLanguageOrLocaleNative(locale) {
+        if (!locale) return;
+        if (has(locale, this.$window.languageMappingList)) {
+            return this.$window.languageMappingList[locale].nativeName;
+        } else if (has(locale, this.serverConstants.data.locales)) {
+            return this.serverConstants.data.locales[locale].native_name;
+        } else if (has(locale, this.serverConstants.data.languages)) {
+            return this.serverConstants.data.languages[locale];
+        }
+        return '';
     }
 }
 

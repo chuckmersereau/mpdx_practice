@@ -14,6 +14,7 @@ import designationAccounts from './designationAccounts/designationAccounts.servi
 import faCheckbox from './faCheckbox/faCheckbox.component';
 import filters from './filters/filters.service';
 import help from './help/help.service';
+import language from './language/language.service';
 import layoutSettings from './layoutSettings/layoutSettings.directive';
 import links from './links/index.module';
 import locale from './locale/locale.service';
@@ -47,6 +48,7 @@ export default angular.module('mpdx.common', [
     faCheckbox,
     filters,
     help,
+    language,
     layoutSettings,
     links,
     locale,

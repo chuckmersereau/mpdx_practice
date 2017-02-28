@@ -1,3 +1,6 @@
+import keys from 'lodash/fp/keys';
+import map from 'lodash/fp/map';
+
 class PreferencesLocaleController {
     locale;
     saving;
@@ -15,27 +18,27 @@ class PreferencesLocaleController {
         this.saving = false;
     }
     $onChanges() {
-        if (!this.users.current.preferences.locale) {
-            this.users.current.preferences.locale = navigator.language || navigator.browserLanguage || navigator.systemLanguage || navigator.userLanguage || 'en-us';
+        if (!this.users.current.preferences.locale_display) {
+            this.users.current.preferences.locale_display = navigator.language || navigator.browserLanguage || navigator.systemLanguage || navigator.userLanguage || 'en-us';
         }
         let found = false;
-        this.languages = _.map(_.keys(this.serverConstants.data.locales), (locale) => {
+        this.languages = map((locale) => {
             const language = this.$window.languageMappingList[locale];
-            if (this.users.current.preferences.locale === locale) {
+            if (this.users.current.preferences.locale_display === locale) {
                 found = true;
             }
             if (language) {
                 return {alias: locale, value: `${language.englishName} (${language.nativeName} - ${locale})`};
             } else {
-                return {alias: locale, value: this.serverConstants.data.locales[locale]};
+                return {alias: locale, value: `${this.serverConstants.data.locales[locale].english_name} (${this.serverConstants.data.locales[locale].native_name} - ${locale})`};
             }
-        });
+        }, keys(this.serverConstants.data.locales));
         if (!found) {
-            this.users.current.preferences.locale = 'en';
+            this.users.current.preferences.locale_display = 'en';
         }
     }
     setLocale() {
-        this.locale.change(this.users.current.preferences.locale);
+        this.locale.change(this.users.current.preferences.locale_display);
     }
     save() {
         this.saving = true;
