@@ -10,7 +10,7 @@ class Language {
     change(language) {
         const temp = angular.copy(language);
         //hardcoded until the data is fixed
-        if (language === 'fr-FR') {
+        if (language === 'fr-fR') {
             language = 'fr_FR';
         } else if (language === 'es-419') {
             language = 'es_419';
