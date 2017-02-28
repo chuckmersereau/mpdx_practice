@@ -366,6 +366,9 @@ class ContactsService {
     addAddress(contactId, address) {
         return this.api.post(`contacts/${contactId}/addresses`, address);
     }
+    deleteAddress(contactId, addressId) {
+        return this.api.delete(`contacts/${contactId}/addresses/${addressId}`);
+    }
     openNewContactModal() {
         this.modal.open({
             template: require('./new/new.html'),

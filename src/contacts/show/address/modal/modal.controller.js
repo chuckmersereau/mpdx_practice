@@ -1,3 +1,5 @@
+import reject from 'lodash/fp/reject';
+
 class AddressModalController {
     contact;
     contacts;
@@ -123,8 +125,10 @@ class AddressModalController {
         });
     }
     delete() {
-        this.address._destroy = 1;
-        return this.save();
+        return this.contacts.deleteAddress(this.contact.id, this.address.id).then(() => {
+            this.contact.addresses = reject({id: this.address.id}, this.contact.addresses);
+            this.$scope.$hide();
+        });
     }
 }
 
