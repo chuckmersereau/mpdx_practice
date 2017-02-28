@@ -51,7 +51,7 @@ class ContactPeopleController {
         }
     }
     newPerson() {
-        this.people.openPeopleModal(this.contact.id);
+        this.people.openPeopleModal(this.contact);
     }
 }
 
