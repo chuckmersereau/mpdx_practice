@@ -24,7 +24,7 @@ class PreferencesLanguageController {
         let found = false;
         this.languages = map((lang) => {
             const language = this.$window.languageMappingList[lang];
-            if (this.users.current.preferences.locale === language) {
+            if (this.users.current.preferences.locale === lang) {
                 found = true;
             }
             if (language) {
