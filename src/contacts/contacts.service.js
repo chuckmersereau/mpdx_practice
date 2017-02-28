@@ -364,7 +364,7 @@ class ContactsService {
         return this.api.put(`contacts/${contactId}/addresses/${address.id}`, address);
     }
     addAddress(contactId, address) {
-        return this.api.put(`contacts/${contactId}/addresses`, address);
+        return this.api.post(`contacts/${contactId}/addresses`, address);
     }
     openNewContactModal() {
         this.modal.open({
