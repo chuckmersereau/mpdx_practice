@@ -8,10 +8,11 @@ class Language {
         this.dateTimeFormat = null;
     }
     change(language) {
-        const temp = angular.copy(language);
+        let temp = angular.copy(language);
         //hardcoded until the data is fixed
-        if (language === 'fr-fR') {
+        if (language === 'fr-fr') {
             language = 'fr_FR';
+            temp = 'fr-FR';
         } else if (language === 'es-419') {
             language = 'es_419';
         }
