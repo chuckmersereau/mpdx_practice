@@ -1,4 +1,5 @@
 import uuid from 'uuid/v1';
+import joinComma from "../common/fp/joinComma";
 
 class TasksService {
     api;
@@ -174,7 +175,7 @@ class TasksService {
         });
     }
     save(task) {
-        task.tag_list = task.tag_list.join(','); //fix for api mis-match
+        task.tag_list = joinComma(task.tag_list); //fix for api mis-match
         return this.api.put(`tasks/${task.id}`, task);
     }
     addComment(task, newComment) {

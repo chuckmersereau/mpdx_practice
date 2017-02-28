@@ -170,6 +170,7 @@ class ContactsService {
         });
     }
     save(contact) {
+        contact.tag_list = joinComma(contact.tag_list); //fix for api mis-match
         return this.api.put(`contacts/${contact.id}`, contact).then((data) => {
             let contact = _.find(this.data, {id: data.id});
             if (contact) {
@@ -374,6 +375,7 @@ class ContactsService {
 }
 
 import contactFilter from './filter/filter.service';
+import joinComma from "../common/fp/joinComma";
 
 export default angular.module('mpdx.contacts.service', [contactFilter])
     .service('contacts', ContactsService).name;
