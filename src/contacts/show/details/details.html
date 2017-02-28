@@ -117,9 +117,9 @@
                                     disable-search="true"
                                     data-placeholder-text-single="'Select an Option' | translate"
                                     class="form-control"
-                                    id='status'
-                                    ng-model="$ctrl.appeals"
-                                    ng-options="o.key as o.value for o in [{key: true, value: 'Yes'},{key: false, value: 'No'}]">
+                                    id="status"
+                                    ng-model="$ctrl.contact.no_appeals"
+                                    ng-options="o.key as o.value for o in [{key: false, value: 'Yes'},{key: true, value: 'No'}]">
                             </select>
                         </div>
                     </div>

@@ -12,8 +12,6 @@ class ContactDetailsController {
         this.contacts = contacts;
         this.contactsTags = contactsTags;
 
-        this.appeals = 'false';
-
         this.languages = _.map(_.keys(serverConstants.data.locales), (locale) => {
             const language = $window.languageMappingList[locale];
             if (language) {
