@@ -16,7 +16,7 @@ class Language {
         } else if (language === 'es-419') {
             language = 'es_419';
         } else if (language === 'zh-hans-cn') {
-            language = "zh_Hans_CN"
+            language = "zh_Hans_CN";
             temp = 'zh-Hans-CN';
         }
         this.gettextCatalog.setCurrentLanguage(language);
