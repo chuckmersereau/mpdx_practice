@@ -16,11 +16,12 @@ class Language {
         } else if (language === 'es-419') {
             language = 'es_419';
         } else if (language === 'zh-hans-cn') {
+            language = "zh_Hans_CN"
             temp = 'zh-Hans-CN';
         }
         this.gettextCatalog.setCurrentLanguage(language);
 
-        if (config.env !== 'development' && language !== 'en') {
+        if (config.env !== 'development' && language !== 'en-us') {
             this.gettextCatalog.loadRemote(`locale/${temp}-${process.env.TRAVIS_COMMIT}.json`);
         }
     }
