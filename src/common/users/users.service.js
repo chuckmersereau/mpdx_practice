@@ -2,12 +2,13 @@ class Users {
     accounts;
     api;
     help;
+    language;
     locale;
     organizationAccounts;
 
     constructor(
         $log, $q, $rootScope, $state,
-        accounts, api, help, locale
+        accounts, api, help, language, locale
     ) {
         this.$log = $log;
         this.$q = $q;
@@ -16,6 +17,7 @@ class Users {
         this.accounts = accounts;
         this.api = api;
         this.help = help;
+        this.language = language;
         this.locale = locale;
 
         this.current = null;
@@ -40,8 +42,11 @@ class Users {
                 });
             }
 
-            const locale = _.get(response, 'preferences.locale', 'en');
-            this.locale.change(locale);
+            const localeDisplay = _.get(response, 'preferences.locale_display', 'en-en');
+            this.locale.change(localeDisplay);
+            const locale = _.get(response, 'preferences.locale', 'en-us');
+            this.language.change(locale);
+
             const defaultAccountListId = _.get(response, 'preferences.default_account_list').toString();
 
             const promises = [
