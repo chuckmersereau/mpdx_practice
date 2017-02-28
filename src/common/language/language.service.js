@@ -18,6 +18,8 @@ class Language {
         } else if (language === 'zh-hans-cn') {
             language = "zh_Hans_CN";
             temp = 'zh-Hans-CN';
+        } else if (language === 'en-us') {
+            language = 'en_us';
         }
         this.gettextCatalog.setCurrentLanguage(language);
 
