@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 class progressController {
     accounts;
     api;
@@ -13,9 +15,10 @@ class progressController {
         this.blockUI = blockUI.instances.get('dashboardProgress');
         this.users = users;
 
-        this.endDate = moment().subtract(1, 'day');
-        this.startDate = moment(this.endDate).subtract(1, 'week');
+        this.endDate = moment().endOf('week').add(1, 'days');
+        this.startDate = moment(this.endDate).subtract(1, 'week').add(1, 'day');
         this.errorOccurred = false;
+
         $rootScope.$on('accountListUpdated', () => {
             this.refreshData();
         });
