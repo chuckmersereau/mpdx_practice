@@ -34,6 +34,7 @@ class ServerConstantsService {
             this.$log.debug('constants', data);
             data.languages = mapUnderscore(data.languages);
             data.locales = mapUnderscore(data.locales);
+            data.organizations = mapUnderscore(data.organizations);
             this.data = data;
             return data;
         });

@@ -27,6 +27,7 @@ import 'iso-currency';
 import 'ng-tags-input';
 //non-angular deps
 import 'lodash';
+import 'lodash/fp';
 import moment from 'moment';
 window.moment = moment;
 import 'moment-range';

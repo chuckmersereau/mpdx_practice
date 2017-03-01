@@ -1,3 +1,5 @@
+import assign from 'lodash/fp/assign';
+
 class Users {
     accounts;
     api;
@@ -21,6 +23,7 @@ class Users {
         this.locale = locale;
 
         this.current = null;
+        this.defaultIncludes = 'email_addresses';
         this.hasAnyUsAccounts = false;
         this.organizationAccounts = null;
 
@@ -32,7 +35,7 @@ class Users {
         if (this.current && !reset) {
             return this.$q.resolve();
         }
-        return this.api.get('user', {include: 'email_addresses'}).then((response) => {
+        return this.api.get('user', {include: this.defaultIncludes}).then((response) => {
             this.current = response;
             this.$log.debug('current user: ', response);
 
@@ -109,10 +112,13 @@ class Users {
     destroy(id) {
         return this.api.delete(`users/${id}`);
     }
-    saveCurrent() {
+    saveCurrent(reset = false) {
         this.$log.debug('user put', this.current);
-        return this.api.put('user', this.current).then(() => {
-            return this.getCurrent(true); //force relead to reconcile as put response is incomplete
+        return this.api.put('user', assign({}, this.current, { include: this.defaultIncludes })).then((data) => {
+            if (reset) {
+                return this.getCurrent(true); //force relead to reconcile as put response is incomplete
+            }
+            this.current = assign({}, this.current, data);
         });
     }
 }

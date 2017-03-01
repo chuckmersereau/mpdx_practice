@@ -1,13 +1,16 @@
 class OrganizationService {
     api;
     state;
+    users;
 
     constructor(
         $log,
-        api
+        api, users
     ) {
         this.$log = $log;
         this.api = api;
+        this.users = users;
+
         this.data = {};
         this.state = 'disabled';
     }
@@ -18,7 +21,7 @@ class OrganizationService {
         });
     }
     disconnect(id) {
-        return this.api.delete(`user/organization_accounts/${id}`);
+        return this.api.delete({ url: `user/organization_accounts/${id}`, type: 'organization_accounts' });
     }
     updateState() {
         if (this.data.active) {
@@ -37,6 +40,9 @@ class OrganizationService {
             password: password,
             organization: {
                 id: organizationId
+            },
+            person: {
+                id: this.users.current.id
             }
         });
     }

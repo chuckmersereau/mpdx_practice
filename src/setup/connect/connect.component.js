@@ -1,15 +1,20 @@
+import get from 'lodash/fp/get';
+import last from 'lodash/fp/last';
+
 class SetupConnectController {
     accounts;
+    alerts;
     api;
     preferencesOrganization;
     serverConstants;
     users;
     constructor(
         $state,
-        accounts, api, preferencesOrganization, serverConstants, users
+        accounts, alerts, api, preferencesOrganization, serverConstants, users
     ) {
         this.$state = $state;
         this.accounts = accounts;
+        this.alerts = alerts;
         this.api = api;
         this.preferencesOrganization = preferencesOrganization;
         this.serverConstants = serverConstants;
@@ -20,19 +25,22 @@ class SetupConnectController {
     $onInit() {
         this.users.current.options.setup_position.value = 'connect';
         this.users.setOption(this.users.current.options.setup_position);
-        const lastId = _.get(_.last(this.users.organizationAccounts), 'id', null);
-        if (lastId) {
-            this.lastAdded = this.serverConstants.data.organizations[lastId];
-        }
+        this.getLastAdded();
     }
     connect() {
         this.connecting = true;
     }
+    getLastAdded() {
+        this.lastAdded = get('organization.name', last(this.users.organizationAccounts));
+    }
     add() {
-        this.preferencesOrganization.createAccount(this.username, this.password, this.organization.id).then(() => {
-            this.connecting = false;
-            //save stuff
-            this.lastAdded = this.serverConstants.data.organizations[this.organization.id];
+        this.preferencesOrganization.createAccount(this.username, this.password, this.organization).then(() => {
+            this.users.listOrganizationAccounts().then(() => {
+                this.connecting = false;
+                this.getLastAdded();
+            });
+        }).catch(() => {
+            this.alerts.addAlert('Invalid username or password.');
         });
     }
     next() {
