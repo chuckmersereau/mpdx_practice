@@ -7,7 +7,7 @@
         </a>
     </div>
     <div class="progress-stat">
-        <a ui-sref="contacts({ filters: { referrer: 'any'} })">
+        <a ui-sref="contacts({ filters: { referrer: ['any'], status: ['null', 'Never Contacted', 'Cultivate Relationship', 'Ask in Future', 'Contact for Appointment'] } })">
             <span class="count-big">{{$ctrl.accounts.analytics.contacts.referrals_on_hand}}</span>
             <span translate>Referrals On-hand</span>
         </a>
