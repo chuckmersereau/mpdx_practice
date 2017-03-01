@@ -18,7 +18,7 @@
                 ng-click="$ctrl.contactsTags.tagClick(tag, $event)"
                 ng-repeat="tag in $ctrl.contactsTags.data">
             {{ tag.name }}
-            <a ng-click="$event.stopPropagation()" data-template-url="tags_delete_popover.html" class="tag_remove" bs-popover></a>
+            <a ng-click="$event.stopPropagation()" data-template-url="tags_delete_popover.html" data-auto-close="'outsideClick'" class="tag_remove" bs-popover></a>
             </span>
             <a class="show_all_tags_btn">
                 <div ng-click="$ctrl.showAllTags = !$ctrl.showAllTags" ng-if="$ctrl.contactsTags.data.length > 25">
@@ -37,7 +37,7 @@
 </li>
 
 <script type="text/ng-template" id="tags_delete_popover.html">
-    <div class="popover tags-popover" tabindex="-1">
+    <div class="popover tags-popover" style="cursor: default" tabindex="-1" ng-click="$event.stopPropagation()">
         <div class="arrow"></div>
         <h3 class="popover-title" translate>Delete Tag?</h3>
         <div class="popover-content">

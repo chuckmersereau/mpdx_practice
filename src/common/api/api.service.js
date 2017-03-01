@@ -220,6 +220,10 @@ class EntityAttributes {
             appeals: {
                 attributes: ["created_at", "updated_at", "amount", "currencies", "description", "donations", "end_date", "name", "total_currency", "contacts", "updated_in_db_at"]
             },
+            bulk: {
+                attributes: ["tag_name"],
+                pluralizeType: false
+            },
             comments: {
                 attributes: ["body", "updated_in_db_at", "person"],
                 person: { ref: 'id', pluralizeType: false }

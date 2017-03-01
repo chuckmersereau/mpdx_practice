@@ -25,11 +25,11 @@ class TagsService {
             return data;
         });
     }
-    delete(tagName) {
-        return this.api.delete('contacts/tags', { tags: [{ name: tagName, all_contacts: true }] }).then(() => {
-            this.selectedTags = _.without(tagName);
-            this.rejectedTags = _.without(tagName);
-            this.data.splice(this.data.indexOf(tagName), 1);
+    delete(tag) {
+        return this.api.delete({url: 'contacts/tags/bulk', data: { tag_name: tag.name }, type: 'bulk'}).then(() => {
+            this.selectedTags = _.reject(this.selectedTags, { name: tag.name });
+            this.rejectedTags = _.reject(this.rejectedTags, { name: tag.name });
+            this.data = _.reject(this.data, { name: tag.name });
         });
     }
     tagContact(contactIds, tag) {
