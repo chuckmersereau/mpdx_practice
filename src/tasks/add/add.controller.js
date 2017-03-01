@@ -1,4 +1,6 @@
 import uuid from 'uuid/v1';
+import isEmpty from 'lodash/fp/isEmpty';
+import reject from 'lodash/fp/reject';
 
 class AddTaskController {
     selectedContacts;
@@ -49,7 +51,7 @@ class AddTaskController {
         if (this.emailNotification) {
             this.model.notification_type = 'email';
         }
-        this.selectedContacts = _.reject(this.selectedContacts, ''); //dump empty contacts
+        this.selectedContacts = reject('', this.selectedContacts); //dump empty contacts
 
         let promise;
         if (this.newsletterBoth) {
@@ -64,8 +66,10 @@ class AddTaskController {
         } else if (this.newsletterEmail) {
             this.model.action = "Newsletter - Email";
             promise = this.tasksService.create(this.model, this.selectedContacts);
-        } else {
+        } else if (!isEmpty(this.model.action)) {
             promise = this.tasksService.create(this.model, this.selectedContacts);
+        } else {
+            return;
         }
         return promise.then(() => {
             this.contacts.load(true);
