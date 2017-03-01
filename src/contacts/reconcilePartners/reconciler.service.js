@@ -110,9 +110,8 @@ class ReconcilerService {
         return this.contacts.merge(winnersAndLosers);
     }
 
-    mergePeople(contact, winner, loser) {
-        const people = [{winner_id: winner.id, loser_id: loser.id}];
-        this.people.merge(contact, people);
+    mergePeople(winnersAndLosers) {
+        return this.people.bulkMerge(winnersAndLosers);
     }
 
     ignoreDuplicateContacts(duplicateContact) {
