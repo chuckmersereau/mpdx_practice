@@ -13,8 +13,8 @@ class ToolsService {
             {title: gettextCatalog.getString('Fix Partner Status'), icon: 'fa fa-usd', link: 'tools.fixPartnerStatus', description: gettextCatalog.getString('')},
             {title: gettextCatalog.getString('Fix Email Address'), icon: 'fa fa-envelope-o', link: 'tools.fixEmailAddress', description: gettextCatalog.getString('')},
             {title: gettextCatalog.getString('Fix Mailing Address'), icon: 'fa fa-map', link: 'tools.fixMailingAddress', description: gettextCatalog.getString('')},
-            {title: gettextCatalog.getString('Merge Contacts'), icon: 'fa fa-wrench', link: 'tools.mergeContacts', description: gettextCatalog.getString('Review and merge duplicate contacts in your database.'), enabled: true},
-            {title: gettextCatalog.getString('Merge People'), icon: 'fa fa-user-secret', link: 'tools.mergePeople', description: gettextCatalog.getString('Review and merge duplicate people in your database.'), enabled: true}
+            {title: gettextCatalog.getString('Merge Contacts'), icon: 'fa fa-wrench', link: 'contacts.reconcile_partners', description: gettextCatalog.getString('Review and merge duplicate contacts in your database.'), enabled: true},
+            {title: gettextCatalog.getString('Merge People'), icon: 'fa fa-user-secret', link: 'contacts.reconcile_individuals', description: gettextCatalog.getString('Review and merge duplicate people in your database.'), enabled: true}
         ];
     }
 }
