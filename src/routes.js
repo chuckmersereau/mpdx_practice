@@ -193,6 +193,22 @@ export default class Routes {
                 another: /*@ngInject*/ (tasksTags) => tasksTags.load()
             }
         }).state({
+            name: 'tools',
+            title: 'Tools',
+            url: '/tools',
+            component: 'tools',
+            parent: 'root'
+        }).state({
+            name: 'tools.importFromCSV',
+            title: 'Import from CSV',
+            url: '/import-from-csv',
+            component: 'csvImportForm'
+        }).state({
+            name: 'tools.importFromTNT',
+            title: 'Import from TNT',
+            url: '/import-from-tnt',
+            component: 'tntImportForm'
+        }).state({
             name: 'unavailable',
             title: 'Unavailable',
             url: '/unavailable',

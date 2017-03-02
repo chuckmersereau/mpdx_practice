@@ -57,6 +57,7 @@
                     <li class="item" ng-class="{active: $ctrl.isInState('contact')}"><a ui-sref="contacts" translate>Contacts</a></li>
                     <li class="item" ui-sref-active="active"><a ui-sref="tasks" translate>Tasks</a></li>
                     <li class="item" ng-class="{active: $ctrl.isInState('reports')}"><a ui-sref="reports.donations" translate>Reports</a></li>
+                    <li class="item" ng-class="{active: $ctrl.isInState('tools')}"><a ui-sref="tools" translate>Tools</a></li>
                     <li class="item last" ui-sref-active="active"><a ng-click="$ctrl.showHelp()" translate>Help</a></li>
                 </ul>
             </div>
@@ -95,6 +96,27 @@
                     </div>
                     <div class="section" ng-class="{active: $ctrl.isInState('reports.partner')}">
                         <a ui-sref="reports.partner" translate>Contributions by Partner Currency</a>
+                    </div>
+                </div>
+                <div class="pull-left" ng-show="$ctrl.isInState('tools')">
+                    <div class="section">
+                        <div class="dropdown">
+                            <a bs-dropdown type="button">
+                                <i class="fa fa-angle-down"></i>
+                                <translate>Tools</translate>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li role="presentation" ng-repeat="tool in $ctrl.tools.data" ng-if="tool.enabled">
+                                    <a ng-click="$ctrl.state.go(tool.link)">
+                                        <i class="{{tool.icon}}"></i>
+                                        {{tool.title}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="section" ng-if="$ctrl.state.$current.name != 'tools'">
+                        {{$ctrl.state.$current.title}}
                     </div>
                 </div>
                 <menu-balances></menu-balances>

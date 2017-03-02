@@ -1,0 +1,36 @@
+.tools {
+    .tool {
+        cursor: pointer;
+        background: #f3f3f3;
+        border: 1px solid #c6c6c6;
+        height: 190px;
+        text-align: center;
+        padding: 20px;
+        width: 256px;
+        margin: 0 auto 20px;
+        font-size: 14px;
+        line-height: 16px;
+
+        .title {
+            font-weight: 600;
+            font-size: 16px;
+            margin: 12px auto;
+        }
+
+        .icon {
+            border-radius: 100%;
+            border: 1px solid #c6c6c6;
+            background: #fbfbfb;
+            width: 56px;
+            height: 56px;
+            margin: 0 auto;
+
+            i {
+                color: #444444;
+                font-size: 24px;
+                line-height: 56px;
+            }
+        }
+    }
+}
+

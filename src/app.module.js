@@ -14,6 +14,7 @@ import preferences from './preferences/index.module';
 import reports from './reports/index.module';
 import setup from './setup/index.module';
 import tasks from './tasks/index.module';
+import tools from './tools/index.module';
 import unavailable from './unavailable/index.module';
 import vendor from './vendor.module';
 
@@ -35,6 +36,7 @@ export default angular.module('mpdx', [
     reports,
     setup,
     tasks,
+    tools,
     unavailable,
     vendor
 ])
