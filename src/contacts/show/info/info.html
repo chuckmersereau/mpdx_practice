@@ -90,7 +90,7 @@
                         allow-single-deselect="true"
                         data-placeholder-text-single="'Select an Option' | translate"
                         id="pledge_currency"
-                        ng-options="opt[1] as opt[0] for opt in $ctrl.serverConstants.data.pledge_currencies"
+                        ng-options="val as key for (val, key) in $ctrl.serverConstants.data.pledge_currencies"
                         ng-model="$ctrl.contact.pledge_currency">
                     <option value=""></option>
                 </select>
@@ -107,7 +107,7 @@
                         class="form-control"
                         allow-single-deselect="true"
                         id="pledge_frequency"
-                        ng-options="opt[1] as opt[0] for opt in $ctrl.serverConstants.data.pledge_frequencies"
+                        ng-options="val as key for (val, key) in $ctrl.serverConstants.data.pledge_frequencies"
                         ng-model="$ctrl.contact.pledge_frequency">
                     <option value=""></option>
                 </select>

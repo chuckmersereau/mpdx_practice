@@ -1,3 +1,6 @@
+import keys from 'lodash/fp/keys';
+import map from 'lodash/fp/map';
+
 class ContactDetailsController {
     appeals;
     contact;
@@ -12,20 +15,14 @@ class ContactDetailsController {
         this.contacts = contacts;
         this.contactsTags = contactsTags;
 
-        this.languages = _.map(_.keys(serverConstants.data.locales), (locale) => {
+        this.languages = map((locale) => {
             const language = $window.languageMappingList[locale];
             if (language) {
                 return {alias: locale, value: `${language.englishName} (${language.nativeName} - ${locale})`};
             } else {
-                return {alias: locale, value: serverConstants.data.locales[locale]};
+                return {alias: locale, value: `${serverConstants.data.locales[locale].english_name} (${serverConstants.data.locales[locale].native_name} - ${locale})`};
             }
-        });
-    }
-    $onChanges() {
-        //get contact reference data
-        // if (this.contact.referred_by) {
-        //     this.contacts.find(this.contact.referred_by);
-        // }
+        }, keys(serverConstants.data.locales));
     }
     addPartnerAccount() {
         this.contact.donor_accounts.push({ account_number: '', organization_id: this.organization_id, _destroy: 0 });
