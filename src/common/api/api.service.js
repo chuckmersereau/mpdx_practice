@@ -58,7 +58,7 @@ class Api {
         url,
         data = {},
         cache,
-        params,
+        params = {},
         headers = {},
         promise = null,
         attempts = 0,
@@ -91,6 +91,9 @@ class Api {
 
         if (method === 'get' || method === 'delete') {
             params = data;
+        }
+        if ((method === 'put' || method === 'put') && data.include) {
+            params.include = data.include;
         }
 
         if (overrideGetAsPost) {

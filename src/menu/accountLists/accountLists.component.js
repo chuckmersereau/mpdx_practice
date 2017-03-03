@@ -1,12 +1,14 @@
 class AccountListsController {
     accounts;
     api;
+    users;
 
     constructor(
-        accounts, api
+        accounts, api, users
     ) {
         this.accounts = accounts;
         this.api = api;
+        this.users = users;
 
         this.showAllTags = false;
     }

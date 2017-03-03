@@ -1,4 +1,8 @@
 import assign from 'lodash/fp/assign';
+import get from 'lodash/fp/get';
+import has from 'lodash/fp/has';
+import keyBy from 'lodash/fp/keyBy';
+import toString from 'lodash/fp/toString';
 
 class Users {
     accounts;
@@ -9,13 +13,14 @@ class Users {
     organizationAccounts;
 
     constructor(
-        $log, $q, $rootScope, $state,
+        $log, $q, $rootScope, $state, $window,
         accounts, api, help, language, locale
     ) {
         this.$log = $log;
         this.$q = $q;
         this.$rootScope = $rootScope;
         this.$state = $state;
+        this.$window = $window;
         this.accounts = accounts;
         this.api = api;
         this.help = help;
@@ -45,15 +50,16 @@ class Users {
                 });
             }
 
-            const localeDisplay = _.get(response, 'preferences.locale_display', 'en-en');
+            const localeDisplay = get(['preferences.locale_display', 'en-en'], response);
             this.locale.change(localeDisplay);
-            const locale = _.get(response, 'preferences.locale', 'en-us');
+            const locale = get(['preferences.locale', 'en-us'], response);
             this.language.change(locale);
 
-            const defaultAccountListId = _.get(response, 'preferences.default_account_list').toString();
-
+            const defaultAccountList = toString(get('preferences.default_account_list', response));
+            const accountListId = this.$window.sessionStorage.getItem(`${this.current.id}_accountListId`) || defaultAccountList;
+            console.log('accountListId', accountListId);
             const promises = [
-                this.accounts.swap(defaultAccountListId),
+                this.accounts.swap(accountListId, this.current.id),
                 this.accounts.load() // force load accounts in resolve
             ];
             return this.$q.all(promises).then(() => {
@@ -72,7 +78,7 @@ class Users {
             this.current.options = this.mapOptions(data);
             this.$log.debug('user/options', this.current.options);
             if (forRouting) {
-                if (!_.has(this.current.options, 'setup_position')) { //force first time setup
+                if (!has('setup_position', this.current.options)) { //force first time setup
                     return this.createOption('setup_position', 'start').then((pos) => {
                         this.current.options.setup_position = pos;
                         //  = this.mapOptions(data);
@@ -86,7 +92,7 @@ class Users {
         });
     }
     mapOptions(options) {
-        return _.keyBy(options, 'key');
+        return keyBy('key', options);
     }
     createOption(key, value) {
         return this.api.post({ url: `user/options`, data: {key: key, value: value}, type: 'user_options' }); //use jsonapi key here since it doesn't match endpoint
