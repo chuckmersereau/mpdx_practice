@@ -2,11 +2,11 @@
     <p translate>Choose an existing tag</p>
     <ul>
         <li ng-repeat="tag in $ctrl.contactsTags.data">
-            <a ng-click="$ctrl.save(tag)">{{ tag }}</a>
+            <a ng-click="$ctrl.save(tag)">{{ tag.name }}</a>
         </li>
     </ul>
     <div class="form-group">
-        <label for="new-tag"><translate>Create New Tags (separate multiple tags with commas)</translate> <span class="text-danger">*</span></label>
-        <input class="form-control" id="new-tag" ng-model="$ctrl.tags"/>
+        <label for="new-tag"><translate>Create New Tags (separate multiple tags with Enter key)</translate> <span class="text-danger">*</span></label>
+        <tag-selector ng-model="$ctrl.tags" tag-list="$ctrl.contactsTags.data" id="new-tag"></tag-selector>
     </div>
 </modal>
