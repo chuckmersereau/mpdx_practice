@@ -97,8 +97,7 @@ class ListController {
                 template: require('./mergeContacts/mergeContacts.html'),
                 controller: 'mergeContactsController',
                 locals: {
-                    contactIds: this.contacts.getSelectedContactIds(),
-                    contactNames: this.contacts.getSelectedContactNames()
+                    selectedContacts: this.contacts.getSelectedContacts()
                 }
             });
         }

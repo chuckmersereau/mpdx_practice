@@ -1,15 +1,32 @@
+import first from 'lodash/fp/first';
+import get from 'lodash/fp/get';
+import map from 'lodash/fp/map';
+import reject from 'lodash/fp/reject';
+
 class MergeContactsController {
     api;
+    contacts;
     constructor(
-        $scope, api, contactIds, contactNames
+        $scope,
+        api, contacts,
+        selectedContacts
     ) {
         this.$scope = $scope;
         this.api = api;
-        this.contactNames = contactNames;
-        this.contactIds = contactIds;
+        this.contacts = contacts;
+        this.selectedContacts = selectedContacts;
+
+        this.winner = get('id', first(selectedContacts));
     }
     save() {
-        return this.api.post('contacts/merge', { merge_contact_ids: this.contactIds.join() }).then(() => {
+        const filtered = reject({ id: this.winner }, this.selectedContacts);
+        const winnersAndLosers = map(val => {
+            return {
+                winner_id: this.winner,
+                loser_id: val.id
+            };
+        }, filtered);
+        return this.contacts.merge(winnersAndLosers).then(() => {
             this.$scope.$hide();
             location.reload();
         });

@@ -1,7 +1,17 @@
 <modal title="{{'Merge Contacts' | translate}}" cancel="$hide()" save="$ctrl.save()">
+    <div class="row">
+        <div class="col-sm-12" translate>
+            Data from the "losers" will get copied to the "winner". No data will be lost by merging.
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="row" ng-repeat="contact in $ctrl.selectedContacts">
+                <input type="radio" ng-model="$ctrl.winner" ng-value="contact.id" />
+                <span>{{ contact.name }}</span>
+            </div>
+        </div>
+    </div>
     <p translate>Are you sure you want to merge the selected contacts?</p>
     <div class="alert alert-danger" translate>This action cannot be undone!</div>
-    <ul>
-        <li ng-repeat="name in $ctrl.contactNames">{{ name }}</li>
-    </ul>
 </modal>
