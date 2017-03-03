@@ -54,7 +54,7 @@
                 </div>
             </div>
 
-            <a ng-href="/tasks?contact_ids={{$ctrl.contact.id}}" ng-if="$ctrl.contact.uncompleted_tasks_count > 0">
+            <a ui-sref="tasks({ filters: { contact_ids: $ctrl.contact.id } })" ng-if="$ctrl.contact.uncompleted_tasks_count > 0">
                 <span translate>Tasks</span>: {{$ctrl.contact.uncompleted_tasks_count}}
             </a>
         </div>
