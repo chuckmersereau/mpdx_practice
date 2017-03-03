@@ -31,5 +31,14 @@ All scripts are run with `npm run [script]`, for example: `npm run test`.
 * `test` - run all tests
 * `test:live` - continuously run unit tests watching for changes
 
+## Commonly used libraries
+
+#### Lodash FP: https://github.com/lodash/lodash/wiki/FP-Guide
+https://simonsmith.io/dipping-a-toe-into-functional-js-with-lodash-fp/
+https://gist.github.com/jfmengels/6b973b69c491375117dc
+#### UI-Router: https://ui-router.github.io/ng1/
+https://ui-router.github.io/guide/ng1/migrate-to-1_0
+
+
 ## Additional credits
 Initial version was a direct fork of https://github.com/mike-allison/angular-webpack-workflow
