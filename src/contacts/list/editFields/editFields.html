@@ -33,7 +33,13 @@
                     <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                     </div>
-                    <input type="text" class="form-control" ng-model="$ctrl.models.nextAsk" name="date" id="due-date" data-date-format="yyyy-MM-dd" bs-datepicker/>
+                    <input bs-datepicker
+                           class="form-control"
+                           ng-model="$ctrl.models.nextAsk"
+                           name="date"
+                           id="due-date"
+                           data-date-format="{{$ctrl.locale.dateTimeFormat}}"
+                           data-autoclose="1">
                 </div>
             </div>
         </div>
