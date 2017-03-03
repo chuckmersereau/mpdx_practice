@@ -32,8 +32,10 @@ class ServerConstantsService {
 
         return this.api.get('constants').then((data) => {
             this.$log.debug('constants', data);
+            data.dates = mapUnderscore(data.dates);
             data.languages = mapUnderscore(data.languages);
             data.locales = mapUnderscore(data.locales);
+            data.notifications = mapUnderscore(data.notifications);
             data.organizations = mapUnderscore(data.organizations);
             this.data = data;
             return data;
