@@ -114,4 +114,30 @@
             </div>
         </div>
     </div>
+
+    <div class="row fieldset">
+        <div class="col-sm-6 spacing-below-xs">
+            <h4 class="attribute-header" translate>Commitment Received</h4>
+            <div class="inline-input">
+                <select chosen
+                        disable-search="true"
+                        data-placeholder-text-single="'Select an Option' | translate"
+                        class="form-control"
+                        id="pledge_received"
+                        ng-change="$ctrl.save()"
+                        ng-model-options="{ debounce: 1000 }"
+                        ng-options="o.key as o.value for o in [{key: 'true', value: 'Yes'},{key: 'false', value: 'No'}]"
+                        ng-model="$ctrl.contact.pledge_received">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-sm-6 spacing-below-xs">
+            <h4 class="attribute-header" translate>Commitment Start Date</h4>
+            <div class="inline-input">
+                <input type="text" ng-model="$ctrl.contact.pledge_start_date" ng-change="$ctrl.save()" bs-datepicker>
+            </div>
+        </div>
+    </div>
 </div>
