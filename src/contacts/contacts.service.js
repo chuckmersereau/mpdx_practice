@@ -1,3 +1,7 @@
+import find from 'lodash/fp/find';
+import map from 'lodash/fp/map';
+import reject from 'lodash/fp/reject';
+
 class ContactsService {
     alerts;
     analytics;
@@ -185,6 +189,7 @@ class ContactsService {
         contact.account_list = { id: this.api.account_list_id };
         return this.api.post('contacts', contact).then((data) => {
             return this.find(data.id).then((found) => {
+                found.id = data.id; //
                 this.data.push(found);
                 return data;
             });
@@ -265,17 +270,16 @@ class ContactsService {
     hideContact(contact) {
         contact.status = 'Never Ask';
         this.save(contact).then(() => {
-            _.remove(this.data, { id: contact.id });
+            this.data = reject({ id: contact.id }, this.data);
         });
     }
     bulkHideContacts() {
-        let contacts = this.getSelectedContacts();
-        _.each(contacts, contact => {
+        const contacts = map(contact => {
             contact.status = 'Never Ask';
-        });
+            return contact;
+        }, this.getSelectedContacts());
         return this.api.put('contacts/bulk', contacts).then(() => {
-            this.clearSelectedContacts();
-            this.load(true);
+            this.data = reject(contact => find({id: contact.id}, contacts) != null, this.data);
         });
     }
     // Needs bulk save
