@@ -162,8 +162,8 @@ class TasksService {
             },
             include: 'comments,contacts',
             page: 1,
-            per_page: 500
-            // sort: 'completed_at'
+            per_page: 500,
+            sort: 'completed_at'
         }).then((data) => {
             this.completed = data;
             return data;
