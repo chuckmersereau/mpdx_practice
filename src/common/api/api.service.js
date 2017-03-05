@@ -241,8 +241,11 @@ class EntityAttributes {
                 account_list: { ref: 'id' }
             },
             donations: {
-                attributes: ["remote_id", "donor_account_id", "designation_account_id", "motivation", "payment_method", "tendered_currency", "tendered_amount", "currency", "amount", "memo",
-                    "donation_date", "created_at", "updated_at", "payment_type", "channel", "appeal_id", "appeal_amount", "updated_in_db_at"]
+                attributes: ["remote_id", "donor_account", "designation_account", "motivation", "payment_method", "tendered_currency", "tendered_amount", "currency", "amount", "memo",
+                    "donation_date", "created_at", "updated_at", "payment_type", "channel", "appeal", "appeal_amount", "updated_in_db_at"],
+                designation_account: { ref: 'id' },
+                donor_account: { ref: 'id' },
+                appeal: { ref: 'id' }
             },
             email_addresses: {
                 attributes: ["person_id", "email", "primary", "created_at", "updated_at", "remote_id", "location", "historic", "updated_in_db_at"]

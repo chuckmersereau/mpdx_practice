@@ -1,30 +1,33 @@
-class DonationsReportService {
+import has from 'lodash/fp/has';
+
+class DonationsService {
     api;
     modal;
     session;
 
     constructor(
-        $log, $state,
-        api, modal, session
+        $q, $log, $state,
+        api, modal
     ) {
+        this.$q = $q;
         this.$log = $log;
         this.$state = $state;
         this.api = api;
         this.modal = modal;
-        this.session = session;
-
-        this.data = null;
     }
+
     getDonations({ startDate = null, endDate = null, contactId = null, page = null }) {
-        let params = {};
-        params.filter = {};
+        let params = {
+            fields: { contacts: 'name', designation_account: 'name,designation_number', donor_account: 'account_number', appeal: 'name' },
+            filter: {},
+            include: 'designation_account,donor_account,contact,appeal',
+            sort: 'created_at'
+        };
         if (contactId) {
             params.filter.contactId = contactId;
         }
         if (page) {
             params.page = page;
-        } else {
-            params.per_page = "10000";
         }
         if (startDate && endDate) {
             params.filter.donation_date = `${startDate.format('YYYY-MM-DD')}..${endDate.format('YYYY-MM-DD')}`;
@@ -34,38 +37,48 @@ class DonationsReportService {
             return data;
         });
     }
+
+    getDonation(donationId) {
+        let params = {
+            include: 'donor_account,designation_account,appeal',
+            fields: {donor_account: 'id', designation_account: 'id', appeal: 'id'}
+        };
+        return this.api.get(`account_lists/${this.api.account_list_id}/donations/${donationId}`, params).then((data) => {
+            this.$log.debug(`account_lists/${this.api.account_list_id}/donations/${donationId}`, data);
+            return data;
+        });
+    }
+
     getDonationsGraphForContact(contactId) {
         return this.api.get(`contacts/${contactId}/donations/graph`);
     }
+
     save(donation) {
-        let donationToCommit = _.clone(donation);
-        donationToCommit.amount = donation.amount.replace(/[^\d.-]/g, '');
-        return this.api.put(`donations/${donationToCommit.id}`, { donation: donationToCommit });
-    }
-    sync() {
-        if (this.session.downloading) {
-            return;
+        donation.amount = donation.amount.replace(/[^\d.-]/g, '');
+        if (has('id', donation)) {
+            return this.api.put(`account_lists/${this.api.account_list_id}/donations/${donation.id}`, donation);
+        } else {
+            return this.api.post(`account_lists/${this.api.account_list_id}/donations`, donation);
         }
-        this.session.downloading = true;
-        this.api.get('donations/sync').then(() => {
-            this.$state.go('donations');
-        }).finally(() => {
-            this.session.downloading = false;
-        });
     }
-    openDonationModal(donationId, contactId) {
-        this.getDonations().then((data) => {
-            let donation = _.find(data.donations, { id: donationId });
-            this.modal.open({
-                template: require('./edit/edit.html'),
-                controller: 'donationModalController',
-                locals: {
-                    donation: donation,
-                    contactId: contactId
-                }
-            });
+
+    delete(donation) {
+        return this.api.delete(`account_lists/${this.api.account_list_id}/donations/${donation.id}`, { id: donation.id });
+    }
+
+    openNewDonationModal() {
+        return this.openDonationModal({ amount: '0' });
+    }
+
+    openDonationModal(donation) {
+        return this.modal.open({
+            template: require('./modal/modal.html'),
+            controller: 'donationModalController',
+            locals: {
+                donation: angular.copy(donation)
+            }
         });
     }
 }
 export default angular.module('mpdx.reports.donations.service', [])
-    .service('donationsReport', DonationsReportService).name;
+    .service('donations', DonationsService).name;

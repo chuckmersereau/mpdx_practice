@@ -11,6 +11,7 @@ import currency from './currency/currency.service';
 import currencySelect from './currencySelect/currencySelect.component';
 import datetimepicker from './datetimepicker/datetimepicker.component';
 import designationAccounts from './designationAccounts/designationAccounts.service';
+import donorAccounts from './donorAccounts/donorAccounts.service';
 import faCheckbox from './faCheckbox/faCheckbox.component';
 import filters from './filters/filters.service';
 import help from './help/help.service';
@@ -45,6 +46,7 @@ export default angular.module('mpdx.common', [
     currencySelect,
     datetimepicker,
     designationAccounts,
+    donorAccounts,
     faCheckbox,
     filters,
     help,

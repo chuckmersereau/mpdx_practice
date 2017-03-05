@@ -28,9 +28,9 @@ import 'ng-tags-input';
 //non-angular deps
 import 'lodash';
 import 'lodash/fp';
-import moment from 'moment';
-window.moment = moment;
-import 'moment-range';
+import Moment from 'moment';
+import { extendMoment } from 'moment-range';
+window.moment = extendMoment(Moment);
 import 'chosen-js';
 import 'bootstrap-daterangepicker/daterangepicker';
 

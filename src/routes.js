@@ -73,7 +73,7 @@ export default class Routes {
         }).state({
             name: 'reports.donations',
             url: '/donations',
-            component: 'donationsReport'
+            component: 'donations'
         }).state({
             name: 'reports.monthly',
             url: '/monthly',
@@ -81,14 +81,14 @@ export default class Routes {
         }).state({
             name: 'reports.partner',
             url: '/partner',
-            component: 'contributionsReport',
+            component: 'contributions',
             resolve: {
-                type: () => 'donor'
+                type: () => 'partner'
             }
         }).state({
             name: 'reports.salary',
             url: '/salary',
-            component: 'contributionsReport',
+            component: 'contributions',
             resolve: {
                 type: () => 'salary'
             }

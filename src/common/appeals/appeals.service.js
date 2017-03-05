@@ -3,25 +3,47 @@ class AppealsService {
     data;
 
     constructor(
-        $rootScope, api
+        $rootScope, $q, $log,
+        api
     ) {
+        this.$rootScope = $rootScope;
+        this.$q = $q;
+        this.$log = $log;
         this.api = api;
 
-        this.data = [];
-        this.loading = true;
+        this.list = [];
 
-        $rootScope.$on('accountListUpdated', () => {
-            this.load();
+        this.$rootScope.$on('accountListUpdated', () => {
+            this.getList(true);
         });
     }
-    load() {
-        this.loading = true;
-        this.api.get('appeals').then((data) => {
-            while (this.data.length > 0) {
-                this.data.pop();
-            }
-            Array.prototype.push.apply(this.data, data.appeals);
-            this.loading = false;
+    getAppeals() {
+        return this.api.get('appeals').then((data) => {
+            this.$log.debug(`appeals`, data);
+            return data;
+        });
+    }
+    getAppeal(appealId) {
+        return this.api.get(`appeals/${appealId}`).then((data) => {
+            this.$log.debug(`appeals/${appealId}`, data);
+            return data;
+        });
+    }
+    getList(reset = false) {
+        if (!reset && this.list.length > 0) {
+            return this.$q.resolve(this.list);
+        }
+
+        const params = {
+            fields: {appeals: 'name'},
+            filter: {account_list_id: this.api.account_list_id},
+            per_page: 1000
+        };
+
+        return this.api.get('appeals', params).then((data) => {
+            this.$log.debug(`appeals`, data);
+            this.list = data;
+            return this.list;
         });
     }
 }

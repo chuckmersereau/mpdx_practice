@@ -4,7 +4,7 @@
         <div class="panel-body panel-report-heading">
             <div class="row">
                 <div class="col-xs-6">
-                    <h4 translate>Donations for {{$ctrl.startDate.format('l')}} through {{$ctrl.endDate.format('l')}}</h4>
+                    <h4>{{$ctrl.startDate.format('MMMM YYYY')}}</h4>
                 </div>
                 <div class="col-xs-6 text-right">
                     <button ng-click="$ctrl.gotoPrevMonth()" class="btn btn-default btn-sm">
@@ -22,30 +22,31 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th ng-if="$ctrl.contact" translate>Donor</th>
                     <th class="date" translate>Date</th>
-                    <th ng-if="!$ctrl.contact" translate>Donor</th>
-                    <th class="right" translate>Amount</th>
+                    <th translate>Partner</th>
+                    <th class="text-right" translate>Amount</th>
                     <th></th>
                     <th ng-if="$ctrl.designationAccounts.data.length > 0" translate>Designation</th>
                     <th translate>Method</th>
-                    <th translate>Motivation</th>
+                    <th translate>Appeal</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="donation in $ctrl.donations">
-                    <td ng-if="$ctrl.contact">{{ donation.donor_account.name }}</td>
+                <tr ng-repeat="donation in $ctrl.donationsList">
                     <td class="date">{{ donation.donation_date | moment: 'l' }}</td>
-                    <td ng-if="!$ctrl.contact"><a ui-sref="contact({ contactId: donation.contact_id })">{{ donation.name }}</a></td>
-                    <td class="right">{{ donation.amount }}</td>
+                    <td ng-if="$ctrl.contact">{{ donation.donor_account.name }}</td>
+                    <td ng-if="!$ctrl.contact">
+                        <a ui-sref="contact({ contactId: donation.contact.id })">{{ donation.contact.name }} ({{ donation.donor_account.account_number }})</a>
+                    </td>
+                    <td class="text-right">{{ donation.amount }}</td>
                     <td>{{ donation.currency }}</td>
-                    <td ng-if="$ctrl.designationAccounts.data.length > 0">{{ donation.designation_account_id }}</td>
+                    <td ng-if="$ctrl.designationAccounts.data.length > 0">{{ donation.designation_account.name }} ({{ donation.designation_account.designation_number }})</td>
                     <td>{{ donation.payment_method }}</td>
-                    <td>{{ donation.motivation }}</td>
-                    <td><a ng-click="$ctrl.donationsReport.openDonationModal(donation.id)"><i class="fa fa-pencil-square-o"></i></a></td>
+                    <td>{{ donation.appeal.name }}</td>
+                    <td><a ng-click="$ctrl.openDonationModal(donation)"><i class="fa fa-pencil-square-o"></i></a></td>
                 </tr>
-                <tr ng-if="$ctrl.donations.length == 0">
+                <tr ng-if="$ctrl.donationsList.length == 0">
                     <td colspan="100" class="text-center" translate>No donations this month.</td>
                 </tr>
             </tbody>
@@ -59,4 +60,9 @@
             </tfoot>
         </table>
     </div>
+    <pagination ng-if="$ctrl.donationsList.length > 0"
+                meta="$ctrl.donationsList.meta.pagination"
+                on-change="$ctrl.load(page)"
+                class="text-center">
+    </pagination>
 </div>

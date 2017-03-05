@@ -99,10 +99,7 @@
     </tr>
   </table>
   <pagination ng-if="$ctrl.tasksService.data[$ctrl.key].length"
-              total="$ctrl.tasksService.meta[$ctrl.key].pagination.total_count"
-              total-pages="$ctrl.tasksService.meta[$ctrl.key].pagination.total_pages"
-              per-page="$ctrl.tasksService.meta[$ctrl.key].pagination.per_page"
-              page="$ctrl.tasksService.meta[$ctrl.key].pagination.page"
+              meta="$ctrl.tasksService.meta[$ctrl.key].pagination"
               on-change="$ctrl.onPageChange(page)">
   </pagination>
 </div>

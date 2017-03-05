@@ -11,11 +11,12 @@ class menuController {
 
     constructor(
         $rootScope, $state,
-        accounts, contacts, contactDonations, contactReconciler, help, tasksService, users, tools
+        accounts, contacts, contactDonations, contactReconciler, help, tasksService, users, donations, tools
     ) {
         this.$rootScope = $rootScope;
         this.accounts = accounts;
         this.contacts = contacts;
+        this.donations = donations;
         this.contactDonations = contactDonations;
         this.contactReconciler = contactReconciler;
         this.help = help;

@@ -1,55 +1,66 @@
 class DonationsReportController {
-    api;
-    currency;
+    $rootScope;
+    blockUI;
     designationAccounts;
-    getDonations;
+    currency;
     donations;
-    donationsReport;
 
     constructor(
-        $rootScope, blockUI,
-        designationAccounts, currency, donationsReport
+        $rootScope, blockUI, designationAccounts, currency, donations
     ) {
         this.currency = currency;
         this.designationAccounts = designationAccounts;
-        this.donationsReport = donationsReport;
+        this.donations = donations;
 
         this.blockUI = blockUI.instances.get('donations');
-        this.blockUI.start();
         this.enableNext = false;
-        this.donations = [];
-        this.donationTotals = {};
-
         this.startDate = moment().startOf('month');
-
+        this.donationsList = [];
+        this.page = 1;
         this.watcher = $rootScope.$on('accountListUpdated', () => {
-            this.init();
+            this.load(1);
         });
+
+        this.load(1);
     }
-    $onDestroy() {
-        this.watcher();
-    }
-    init() {
+
+    load(page) {
+        if (page) {
+            this.page = page;
+        }
         this.setMonths();
         this.blockUI.start();
-        this.donationsReport.getDonations({ startData: this.startDate, endDate: this.endDate }).then((data) => {
-            this.donations = data;
+        this.donations.getDonations({ startDate: this.startDate, endDate: this.endDate, page: this.page }).then((data) => {
+            this.donationsList = data;
             this.blockUI.stop();
         });
     }
+
+    $onDestroy() {
+        this.watcher();
+    }
+
     setMonths() {
         this.previousMonth = moment(this.startDate).subtract(1, 'month');
         this.nextMonth = moment(this.startDate).add(1, 'month');
         this.endDate = moment(this.startDate).endOf('month');
         this.enableNext = moment(this.nextMonth).isBefore(moment());
     }
+
     gotoNextMonth() {
         this.startDate = this.nextMonth;
-        this.init();
+        this.load(1);
     }
+
     gotoPrevMonth() {
         this.startDate = this.previousMonth;
-        this.init();
+        this.load(1);
+    }
+
+    openDonationModal(donation) {
+        this.donations.openDonationModal(donation).finally(() => {
+            this.load();
+        });
     }
 }
 
@@ -59,4 +70,4 @@ const DonationsReport = {
 };
 
 export default angular.module('mpdx.reports.donations.component', [])
-    .component('donationsReport', DonationsReport).name;
+    .component('donations', DonationsReport).name;

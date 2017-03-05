@@ -2,17 +2,16 @@ class BalancesReportController {
     api;
     constructor(
         $log,
-        api
+        designationAccounts
     ) {
         this.$log = $log;
-        this.api = api;
+        this.designationAccounts = designationAccounts;
     }
     $onInit() {
-        this.api.get('reports/balances', {include: 'designation_accounts'}).then((data) => {
-            this.$log.debug('reports/balances', data);
-            this.designations = data.designation_accounts;
-            this.total_currency = data.total_currency;
-            this.total_currency_symbol = data.total_currency_symbol;
+        this.designationAccounts.load().then((designationAccounts) => {
+            this.designations = designationAccounts;
+            // this.total_currency = data.total_currency;
+            // this.total_currency_symbol = data.total_currency_symbol;
             this.updateTotal();
         });
     }

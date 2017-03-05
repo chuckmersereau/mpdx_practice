@@ -1,9 +1,9 @@
 import component from './donations.component';
 import service from './donations.service';
-import edit from './edit/edit.controller';
+import modal from './modal/modal.controller';
 
 export default angular.module('mpdx.reports.donations', [
     component,
-    edit,
+    modal,
     service
 ]).name;
