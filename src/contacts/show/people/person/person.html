@@ -8,12 +8,14 @@
             <dd ng-repeat="email in $ctrl.person.email_addresses">
                 {{ email.email }}
                 <i ng-if="email.primary" class="fa fa-check text-success"></i>
+                <i ng-if="email.historic" class="fa fa-close text-danger"></i>
             </dd>
             <dd ng-if="$ctrl.person.optout_enewsletter" translate>opted out of newsletter</dd>
             <dd ng-repeat="phone in $ctrl.person.phone_numbers">
                 {{ phone.number }}
                 <span ng-if="phone.location">{{ ' - ' + phone.location }}</span>
                 <i ng-if="phone.primary" class="fa fa-check text-success"></i>
+                <i ng-if="phone.historic" class="fa fa-close text-danger"></i>
             </dd>
             <dd ng-if="$ctrl.person.marital_status">
                 <span>{{ $ctrl.person.marital_status }}</span>

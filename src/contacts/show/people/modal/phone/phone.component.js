@@ -14,7 +14,8 @@ const Phone = {
     bindings: {
         phone: '=',
         onRemove: '&',
-        onPrimary: '&'
+        onPrimary: '&',
+        onHistoric: '&'
     }
 };
 

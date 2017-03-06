@@ -102,6 +102,9 @@ class PersonModalController {
             }
         });
     }
+    changeHistoric(obj) {
+        obj.historic = !obj.historic;
+    }
     delete() {
         this.person._destroy = 1;
         return this.save();

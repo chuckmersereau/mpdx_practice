@@ -1,5 +1,5 @@
 <div class="row" ng-hide="$ctrl.deleted">
-    <div class="col-sm-6">
+    <div class="col-sm-5">
         <input class="form-control" type="email" name="email" ng-model="$ctrl.email.email" placeholder="{{'Email *' | translate}}" ng-required="!$ctrl.deleted">
     </div>
     <div class="col-sm-4">
@@ -13,6 +13,12 @@
         <button class="btn btn-block btn-default" title="{{Primary | translate}}" ng-click="$ctrl.onPrimary()">
             <i ng-if="$ctrl.email.primary" class="fa fa-check text-success"></i>
             <i ng-if="!$ctrl.email.primary" class="fa"></i>
+        </button>
+    </div>
+    <div class="col-sm-1">
+        <button class="btn btn-block btn-default" title="{{'No longer valid' | translate}}" ng-click="$ctrl.onHistoric()">
+            <i ng-if="$ctrl.email.historic" class="fa fa-close text-danger"></i>
+            <i ng-if="!$ctrl.email.historic" class="fa"></i>
         </button>
     </div>
     <div class="col-sm-1">

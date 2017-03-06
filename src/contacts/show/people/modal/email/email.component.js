@@ -19,7 +19,8 @@ const Email = {
     bindings: {
         email: '=',
         onRemove: '&',
-        onPrimary: '&'
+        onPrimary: '&',
+        onHistoric: '&'
     }
 };
 

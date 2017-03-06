@@ -88,7 +88,7 @@
                             <div class="col-md-12">
                                 <label translate>Phone Numbers</label>
                                 <div ng-repeat="phone in $ctrl.person.phone_numbers track by $index" name="phones">
-                                    <contact-phone phone="phone" on-remove="$ctrl.remove('phone_numbers', $index)" on-primary="$ctrl.changePrimary('phone_numbers', $index)"></contact-phone>
+                                    <contact-phone phone="phone" on-remove="$ctrl.remove('phone_numbers', $index)" on-primary="$ctrl.changePrimary('phone_numbers', $index)" on-historic="$ctrl.changeHistoric(phone)"></contact-phone>
                                 </div>
                                 <a type="button" class="btn btn-default btn-block btn-xs" ng-click="$ctrl.addPhone()">
                                     <i class="fa fa-plus-circle"></i> <translate>Add Phone</translate>
@@ -99,7 +99,7 @@
                             <div class="col-md-12">
                                 <label translate>Email Addresses</label>
                                 <div ng-repeat="email in $ctrl.person.email_addresses track by $index" name="email_addresses">
-                                    <contact-email-address email="email" on-remove="$ctrl.remove('email_addresses', $index)" on-primary="$ctrl.changePrimary('email_addresses', $index)"></contact-email-address>
+                                    <contact-email-address email="email" on-remove="$ctrl.remove('email_addresses', $index)" on-primary="$ctrl.changePrimary('email_addresses', $index)" on-historic="$ctrl.changeHistoric(email)"></contact-email-address>
                                 </div>
                                 <a type="button" class="btn btn-default btn-block btn-xs" ng-click="$ctrl.addEmailAddress()">
                                     <i class="fa fa-plus-circle"></i> <translate>Add Email</translate>
