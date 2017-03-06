@@ -235,7 +235,7 @@ class EntityAttributes {
                 attributes: ["name", "account_list", "created_at", "updated_at", "pledge_amount", "status", "total_donations", "last_donation_date", "first_donation_date", "notes", "notes_saved_at",
                     "full_name", "greeting", "website", "pledge_frequency", "pledge_start_date", "next_ask", "likely_to_give", "church_name", "send_newsletter", "direct_deposit", "magazine", "last_activity",
                     "last_appointment", "last_letter", "last_phone_call", "last_pre_call", "last_thank", "pledge_received", "tnt_id", "not_duplicated_with", "uncompleted_tasks_count", "prayer_letters_id",
-                    "timezone", "envelope_greeting", "no_appeals", "prayer_letters_params", "pls_id", "pledge_currency", "locale", "late_at", "updated_in_db_at", "winner_id", "loser_id"],
+                    "timezone", "envelope_greeting", "no_appeals", "prayer_letters_params", "pls_id", "pledge_currency", "locale", "late_at", "tag_list", "updated_in_db_at", "winner_id", "loser_id"],
                 // addresses: { ref: 'id' },
                 // people: { ref: 'id' },
                 account_list: { ref: 'id' }
@@ -252,6 +252,9 @@ class EntityAttributes {
             },
             family_relationships: {
                 attributes: ["person_id", "related_person_id", "relationship", "created_at", "updated_at", "updated_in_db_at"]
+            },
+            merges: {
+                attributes: ["winner_id", "loser_id"]
             },
             notifications: {
                 attributes: ["contact_id", "notification_type_id", "event_date", "cleared", "created_at", "updated_at", "donation_id", "updated_in_db_at"]

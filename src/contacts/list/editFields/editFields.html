@@ -3,7 +3,13 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="action" translate>Likely to Give</label>
-                <select chosen disable-search="true" data-placeholder-text-single="'Select an Option' | translate" class="form-control" id="action" ng-options="opt for opt in $ctrl.serverConstants.data.bulk_update_options.likely_to_give" ng-model="$ctrl.models.likelyToGive">
+                <select chosen
+                        disable-search="true"
+                        data-placeholder-text-single="'Select an Option' | translate"
+                        class="form-control"
+                        id="action"
+                        ng-options="opt for opt in $ctrl.serverConstants.data.bulk_update_options.likely_to_give"
+                        ng-model="$ctrl.models.likely_to_give">
                     <option value=""></option>
                 </select>
             </div>
@@ -11,7 +17,13 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="status" translate>Status</label>
-                <select chosen disable-search="true" data-placeholder-text-single="'Select an Option' | translate" class="form-control" id="status" ng-options="opt for opt in $ctrl.serverConstants.data.bulk_update_options.status" ng-model="$ctrl.models.status">
+                <select chosen
+                        disable-search="true"
+                        data-placeholder-text-single="'Select an Option' | translate"
+                        class="form-control"
+                        id="status"
+                        ng-options="opt for opt in $ctrl.serverConstants.data.bulk_update_options.status"
+                        ng-model="$ctrl.models.status">
                     <option value=""></option>
                 </select>
             </div>
@@ -21,7 +33,13 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="newsletter" translate>Newsletter</label>
-                <select chosen disable-search="true" data-placeholder-text-single="'Select an Option' | translate" class="form-control" id="newsletter" ng-options="opt for opt in $ctrl.serverConstants.data.bulk_update_options.send_newsletter" ng-model="$ctrl.models.sendNewsletter">
+                <select chosen
+                        disable-search="true"
+                        data-placeholder-text-single="'Select an Option' | translate"
+                        class="form-control"
+                        id="newsletter"
+                        ng-options="opt for opt in $ctrl.serverConstants.data.bulk_update_options.send_newsletter"
+                        ng-model="$ctrl.models.send_newsletter">
                     <option value=""></option>
                 </select>
             </div>
@@ -35,7 +53,7 @@
                     </div>
                     <input bs-datepicker
                            class="form-control"
-                           ng-model="$ctrl.models.nextAsk"
+                           ng-model="$ctrl.models.next_ask"
                            name="date"
                            id="due-date"
                            data-date-format="{{$ctrl.locale.dateTimeFormat}}"
@@ -48,7 +66,12 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="commitment-received" translate>Commitment Received</label>
-                <select chosen disable-search="true" data-placeholder-text-single="'Select an Option' | translate" class="form-control" id="commitment-received" ng-options="opt for opt in $ctrl.serverConstants.data.bulk_update_options.pledge_received" ng-model="$ctrl.models.pledgeReceived">
+                <select chosen
+                        disable-search="true"
+                        data-placeholder-text-single="'Select an Option' | translate"
+                        class="form-control" id="commitment-received"
+                        ng-options="opt for opt in $ctrl.serverConstants.data.bulk_update_options.pledge_received"
+                        ng-model="$ctrl.models.pledge_received">
                     <option value=""></option>
                 </select>
             </div>
@@ -56,7 +79,12 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="commitment-currency" translate>Commitment Currency</label>
-                <select chosen disable-search="true" data-placeholder-text-single="'Select an Option' | translate" class="form-control" id="commitment-currency" ng-options="k as k for (k, v) in $ctrl.serverConstants.data.bulk_update_options.pledge_currency" ng-model="$ctrl.models.pledgeCurrency">
+                <select chosen
+                        data-placeholder-text-single="'Select an Option' | translate"
+                        class="form-control"
+                        id="commitment-currency"
+                        ng-options="v as k for (v, k) in $ctrl.serverConstants.data.bulk_update_options.pledge_currency"
+                        ng-model="$ctrl.models.pledge_currency">
                     <option value=""></option>
                 </select>
             </div>
@@ -66,7 +94,13 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="language" translate>Language</label>
-                <select chosen disable-search="true" data-placeholder-text-single="'Select an Option' | translate" class="form-control" id="language" ng-options="opt[0] for opt in $ctrl.serverConstants.data.bulk_update_options.locale" ng-model="$ctrl.models.locale">
+                <select chosen
+                        disable-search="true"
+                        data-placeholder-text-single="'Select an Option' | translate"
+                        class="form-control"
+                        id="language"
+                        ng-options="opt[0] for opt in $ctrl.serverConstants.data.locale"
+                        ng-model="$ctrl.models.locale">
                     <option value=""></option>
                 </select>
             </div>
@@ -74,7 +108,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="church" translate>Church</label>
-                <input class="form-control" id="church" ng-model="$ctrl.models.churchName"/>
+                <input class="form-control" id="church" ng-model="$ctrl.models.church_name"/>
             </div>
         </div>
     </div>

@@ -1,5 +1,7 @@
+import assign from 'lodash/fp/assign';
 import find from 'lodash/fp/find';
 import map from 'lodash/fp/map';
+import reduce from 'lodash/fp/reduce';
 import reject from 'lodash/fp/reject';
 
 class ContactsService {
@@ -283,45 +285,44 @@ class ContactsService {
         });
     }
     // Needs bulk save
-    bulkEditFields(model, pledgeCurrencies, contacts) {
+    bulkEditFields(model, contacts) {
         let obj = {};
-        if (model.likelyToGive) {
-            obj.likely_to_give = model.likelyToGive;
+        if (model.likely_to_give) {
+            obj.likely_to_give = model.likely_to_give;
         }
-        if (model.nextAsk) {
-            obj['next_ask(1i)'] = model.nextAsk.getFullYear() + '';
-            obj['next_ask(2i)'] = (model.nextAsk.getMonth() + 1) + '';
-            obj['next_ask(3i)'] = model.nextAsk.getDate() + '';
+        if (model.next_ask) {
+            obj.next_ask = model.next_ask;
         }
         if (model.status) {
             obj.status = model.status;
         }
-        if (model.sendNewsletter) {
-            obj.send_newsletter = model.sendNewsletter;
+        if (model.send_newsletter) {
+            obj.send_newsletter = model.send_newsletter;
         }
-        if (model.churchName) {
-            obj.church_name = model.churchName;
+        if (model.church_name) {
+            obj.church_name = model.church_name;
         }
         if (model.website) {
             obj.website = model.website;
         }
-        if (model.pledgeReceived) {
-            if (model.pledgeReceived === 'Yes') {
+        if (model.pledge_received) {
+            if (model.pledge_received === 'Yes') {
                 obj.pledge_received = '1';
             } else {
                 obj.pledge_received = '0';
             }
         }
-        if (model.pledgeCurrency) {
-            obj.pledge_currency = pledgeCurrencies[model.pledgeCurrency];
+        if (model.pledge_currency) {
+            obj.pledge_currency = model.pledge_currency;
         }
         if (model.locale) {
             obj.locale = model.locale[1];
         }
 
-        _.each(contacts, (contact) => {
-            _.assign(contact, contact, obj);
-        });
+        contacts = reduce((result, contact) => {
+            result.push(assign({}, contact, obj));
+            return result;
+        }, [], contacts);
         return this.api.put('contacts/bulk', contacts);
     }
     getDonorAccounts() {

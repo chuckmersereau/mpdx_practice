@@ -148,7 +148,7 @@
             <div class="col-sm-12 spacing-below-xs">
                 <h4 class="attribute-header" translate>Tags</h4>
                 <div class="inline-input">
-                    <tag-selector ng-model="$ctrl.contact.tag_list" tag-list="$ctrl.contactsTags.data" on-tag-added='$ctrl.save()' on-tag-removed='$ctrl.save()'></tag-selector>
+                    <tag-selector ng-model="$ctrl.contact.tag_list" tag-list="$ctrl.contactsTags.data" on-tag-added="$ctrl.save()" on-tag-removed="$ctrl.save()"></tag-selector>
                 </div>
             </div>
         </div>
@@ -160,13 +160,13 @@
                     <div class="field">
                         <h4 class="attribute-header" translate>Church</h4>
                         <div class="inline-input disabled">
-                            <input type="text" ng-model="$ctrl.contact.church_name">
+                            <input type="text" ng-model="$ctrl.contact.church_name" ng-change="$ctrl.save()">
                         </div>
                     </div>
                     <div class="field">
                         <h4 class="attribute-header" translate>Website</h4>
                         <div class="inline-input disabled">
-                            <input type="text" ng-model="$ctrl.contact.website">
+                            <input type="text" ng-model="$ctrl.contact.website" ng-change="$ctrl.save()">
                         </div>
                     </div>
                 </div>
@@ -188,7 +188,7 @@
                     <div class="field">
                         <h4 class="attribute-header" translate>Next Ask</h4>
                         <div class="inline-input disabled">
-                            <input type="text" ng-model="$ctrl.contact.next_ask" bs-datepicker>
+                            <input type="text" ng-model="$ctrl.contact.next_ask" ng-change="$ctrl.save()" bs-datepicker>
                         </div>
                     </div>
                 </div>
