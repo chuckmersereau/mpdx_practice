@@ -66,7 +66,7 @@ class ListController {
     }
     openLogTaskModal() {
         this.modal.open({
-            template: require('../logTask/logTask.html'),
+            template: require('../../tasks/log/log.html'),
             controller: 'logTaskController',
             locals: {
                 selectedContacts: this.contacts.getSelectedContactIds(),

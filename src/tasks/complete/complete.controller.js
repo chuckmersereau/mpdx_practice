@@ -1,3 +1,4 @@
+import map from 'lodash/fp/map';
 import uuid from 'uuid/v1';
 
 class CompleteTaskController {
@@ -8,19 +9,19 @@ class CompleteTaskController {
     users;
 
     constructor(
-        $scope,
+        $log, $scope,
         modal, serverConstants, tasksService, users,
-        task, contact, taskAction
+        task, contact
     ) {
         this.$scope = $scope;
         this.contact = contact;
         this.modal = modal;
         this.serverConstants = serverConstants;
-        this.taskAction = taskAction;
         this.tasksService = tasksService;
         this.users = users;
 
-        this.models = _.clone(task);
+        this.models = angular.copy(task);
+        $log.debug('opened task:', this.models);
         this.models.completed = true;
     }
     save() {
@@ -33,18 +34,13 @@ class CompleteTaskController {
         return this.tasksService.save(this.models).then(() => {
             this.$scope.$hide();
 
-            let contactIds = [];
-            if (this.contact) {
-                contactIds = [this.contact.id];
-            }
-
             this.modal.open({
-                template: require('../../../tasks/add/add.html'),
+                template: require('../add/add.html'),
                 controller: 'addTaskController',
                 locals: {
-                    specifiedAction: this.models.nextAction,
-                    specifiedSubject: this.models.nextAction,
-                    selectedContacts: contactIds,
+                    specifiedAction: this.models.next_action,
+                    specifiedSubject: this.models.next_action,
+                    selectedContacts: map('id', this.models.contacts),
                     modalTitle: 'Follow up Task'
                 }
             });
@@ -52,5 +48,5 @@ class CompleteTaskController {
     }
 }
 
-export default angular.module('mpdx.contacts.show.completeTask.controller', [])
+export default angular.module('mpdx.tasks.complete.controller', [])
     .controller('completeTaskController', CompleteTaskController).name;

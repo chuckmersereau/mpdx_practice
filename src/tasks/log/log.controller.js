@@ -28,7 +28,7 @@ class LogTaskController {
         this.toComplete = toComplete;
         this.users = users;
 
-        this.model = _.clone(specifiedTask);
+        this.model = angular.copy(specifiedTask);
     }
     save() {
         if (this.comment) {
@@ -47,7 +47,7 @@ class LogTaskController {
             this.$scope.$hide();
             if (this.createNext && this.models.nextAction) {
                 this.modal.open({
-                    template: require('../../tasks/add/add.html'),
+                    template: require('../add/add.html'),
                     controller: 'addTaskController',
                     locals: {
                         specifiedAction: this.models.nextAction,

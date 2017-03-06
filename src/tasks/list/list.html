@@ -49,7 +49,7 @@
         {{ task.activity_type | translate }}
       </td>
       <td class="col-sm-2">
-          {{ task.no_date ? '' : $ctrl.moment(task.due_date).format('l hh:mm a') }}
+          {{ task.no_date ? '' : $ctrl.moment(task.start_at).format('l hh:mm a') }}
       </td>
       <td class="col-sm-4">
         <a ng-click="$ctrl.openEditTaskModal(task); $event.stopPropagation();">

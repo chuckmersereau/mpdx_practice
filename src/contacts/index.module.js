@@ -3,7 +3,6 @@ import filter from './filter/index.module';
 import reconcileIndividuals from './reconcileIndividuals/index.module';
 import reconcilePartners from './reconcilePartners/index.module';
 import list from './list/index.module';
-import logTask from './logTask/logTask.controller';
 import newContact from './new/new.controller';
 import search from './search/search.component';
 import service from './contacts.service';
@@ -15,7 +14,6 @@ export default angular.module('mpdx.contacts', [
     reconcileIndividuals,
     reconcilePartners,
     list,
-    logTask,
     newContact,
     search,
     service,

@@ -20,6 +20,10 @@ class TasksController {
             $log.debug('tasks component: tag change', filters);
             this.changed++;
         });
+
+        $rootScope.$on('accountListUpdated', () => {
+            this.changed++;
+        });
     }
     $onInit() {
         if (this.$stateParams.filters) {

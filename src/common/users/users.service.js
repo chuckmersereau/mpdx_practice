@@ -57,7 +57,7 @@ class Users {
 
             const defaultAccountList = toString(get('preferences.default_account_list', response));
             const accountListId = this.$window.sessionStorage.getItem(`${this.current.id}_accountListId`) || defaultAccountList;
-            console.log('accountListId', accountListId);
+
             const promises = [
                 this.accounts.swap(accountListId, this.current.id),
                 this.accounts.load() // force load accounts in resolve

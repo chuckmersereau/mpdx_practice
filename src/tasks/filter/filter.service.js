@@ -6,12 +6,13 @@ class TasksFilterService {
 
     constructor(
         $location, $rootScope,
-        api, filters
+        api, filters, tasksTags
     ) {
         this.$location = $location;
         this.$rootScope = $rootScope;
         this.api = api;
         this.filters = filters;
+        this.tasksTags = tasksTags;
 
         this.data = null;
         this.params = {};
@@ -34,8 +35,9 @@ class TasksFilterService {
         return this.filters.count({ defaultParams: this.default_params, params: this.params });
     }
     reset() {
-        this.params = _.clone(this.default_params);
+        this.params = angular.copy(this.default_params);
         this.wildcard_search = '';
+        this.tasksTags.reset();
         this.change();
     }
     change() {

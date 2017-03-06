@@ -26,12 +26,11 @@ class ListController {
     }
     openCompleteTaskModal(task) {
         this.modal.open({
-            template: require('../../contacts/show/completeTask/completeTask.html'),
+            template: require('../complete/complete.html'),
             controller: 'completeTaskController',
             locals: {
                 task: task,
                 contact: task.contacts[0],
-                taskAction: task.activity_type,
                 modalCallback: () => this.loadPage()
             }
         });

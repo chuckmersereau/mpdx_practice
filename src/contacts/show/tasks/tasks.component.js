@@ -40,12 +40,11 @@ class ContactTasksController {
     }
     openCompleteTaskModal(task) {
         this.modal.open({
-            template: require('../completeTask/completeTask.html'),
+            template: require('../../../tasks/complete/complete.html'),
             controller: 'completeTaskController',
             locals: {
                 task: task,
-                contact: this.contact,
-                taskAction: task.activity_type
+                contact: this.contact
             },
             onHide: () => this.load()
         });
@@ -53,7 +52,7 @@ class ContactTasksController {
     openEditTaskModal(task) {
         const contactId = this.contact.id;
         this.modal.open({
-            template: require('../../logTask/logTask.html'),
+            template: require('../../../tasks/log/log.html'),
             controller: 'logTaskController',
             locals: {
                 modalTitle: 'Edit Task',

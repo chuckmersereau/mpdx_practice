@@ -38,7 +38,7 @@ class ContactHistoryController {
     openEditTaskModal(task) {
         var contactId = this.contact.id;
         this.modal.open({
-            template: require('../../logTask/logTask.html'),
+            template: require('../../../tasks/log/log.html'),
             locals: {
                 modalTitle: 'Edit Task',
                 selectedContacts: [contactId],

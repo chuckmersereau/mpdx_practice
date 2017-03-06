@@ -81,6 +81,7 @@ class TagsService {
     reset() {
         this.selectedTags = [];
         this.rejectedTags = [];
+        this.$rootScope.$emit('tasksTagsChanged');
     }
     getTagsByQuery(query) {
         return this.$filter('filter')(this.data, query);

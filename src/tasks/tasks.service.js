@@ -36,7 +36,8 @@ class TasksService {
             pagination: {
                 page: 1,
                 per_page: 10
-            }
+            },
+            sort: 'start_at'
         };
 
         this.meta = {
@@ -44,7 +45,7 @@ class TasksService {
                 sort: '-no_date,start_at'
             }),
             uncompleted: _.assign(DEFAULT_PAGINATION, {
-                sort: '-no_date, start_at'
+                sort: '-no_date,start_at'
             }),
             today: DEFAULT_PAGINATION,
             overdue: DEFAULT_PAGINATION,
@@ -179,7 +180,6 @@ class TasksService {
         return this.api.put(`tasks/${task.id}`, task);
     }
     addComment(task, newComment) {
-        console.error(this.users.current.id);
         return this.api.post(`tasks/${task.id}/comments`, { body: newComment, person: { id: this.users.current.id } });
     }
     deleteTask(taskId) {
