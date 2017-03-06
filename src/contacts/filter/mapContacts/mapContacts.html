@@ -1,6 +1,10 @@
 <modal title="{{'Map Contacts' | translate}}" cancel="$hide()">
     <div id="contacts_map_modal" title="Contacts Map">
-        <div id="contacts-map"></div>
+        <div class="empty-map" ng-if="!$ctrl.loaded">
+            <i class="fa fa-map"></i>
+        </div>
+        <ng-map disable-default-u-i="true">
+        </ng-map>
         <div class="contacts-map-markers">
         <span>
           <img src="https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|dcdcdc" />
@@ -44,7 +48,7 @@
         </span>
             <span>
           <img src="https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=x|f2f2f2" />
-          <strong class="contacts_counts">0/0</strong> <span translate>with invalid addresses</span>
+          <strong class="contacts_counts">{{$ctrl.noContactCount}}/{{$ctrl.selectedContacts.length}}</strong> <span translate>with invalid addresses</span>
         </span>
         </div>
     </div>

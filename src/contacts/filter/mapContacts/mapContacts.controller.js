@@ -1,37 +1,45 @@
+import find from 'lodash/fp/find';
+import first from 'lodash/fp/first';
+import get from 'lodash/fp/get';
+import reduce from 'lodash/fp/reduce';
+
+const iconSize = new window.google.maps.Size(20, 36);
+
 class MapContactsController {
     selectedContacts;
     constructor(
-        $window, $timeout, selectedContacts
+        $window, $timeout,
+        NgMap,
+        selectedContacts
     ) {
         this.$timeout = $timeout;
         this.$window = $window;
+        this.NgMap = NgMap;
         this.selectedContacts = selectedContacts;
+
+        this.noContactCount = 0;
 
         this.activate();
     }
     activate() {
-        this.$timeout(this.mapContacts.bind(this), 1000);
+        this.$timeout(() => this.mapContacts(), 1000);
     }
-    generateContactMarker(contact) {
-        const cc = contact;
-        let marker;
-        if (cc && cc.addresses && cc.addresses.length > 0) {
-            const geo = cc.addresses[0].geo;
-            if (geo) {
-                marker = {
-                    'lat': geo.split(',')[0],
-                    'lng': geo.split(',')[1],
-                    'infowindow': `<a href="/contacts/${contact.id}">${contact.name}</a>`,
-                    'picture': {
-                        'url': this.markerURL(contact.status),
-                        'width': 20,
-                        'height': 36
-                    }
-                };
-            }
-        }
+    generateContactMarker(contact, evtMap) {
+        const geo = get('geo', find({ primary_mailing_address: true }, contact.addresses));
+        if (geo) {
+            const geoSplit = geo.split(',');
+            const position = new this.$window.google.maps.LatLng(geoSplit[0], geoSplit[1]);
+            const url = this.markerURL(contact.status);
 
-        return marker;
+            const icon = new this.$window.google.maps.MarkerImage(url, iconSize);
+            return new this.$window.google.maps.Marker({
+                position: position,
+                map: evtMap,
+                title: `${contact.name}`,
+                icon: icon
+            });
+        }
+        return null;
     }
     markerURL(statusToMark) {
         const base = 'https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|';
@@ -60,46 +68,23 @@ class MapContactsController {
         return base + '757575';
     }
     mapContacts() {
-        const newMarkers = [];
-        const contactsCounts = {
-            noAddress: 0
-        };
-        angular.forEach(this.selectedContacts, (contact) => {
-            const marker = this.generateContactMarker(contact);
-            if (marker) {
-                newMarkers.push(marker);
-            } else {
-                contactsCounts.noAddress += 1;
+        this.NgMap.getMap().then((evtMap) => {
+            this.newMarkers = reduce((result, contact) => {
+                const marker = this.generateContactMarker(contact, evtMap);
+                if (marker) {
+                    result.push(marker);
+                }
+                return result;
+            }, [], this.selectedContacts);
+            this.noContactCount = this.selectedContacts.length - this.newMarkers.length;
+            this.$window.google.maps.event.trigger(evtMap, 'resize');
+            const firstPosition = get('position', first(this.newMarkers));
+            if (firstPosition) {
+                this.loaded = true;
+                evtMap.setCenter(this.newMarkers[0].position);
             }
+            this.$window.google.maps.event.trigger(evtMap, 'resize');
         });
-        // angular.element('#contacts_map_modal').dialog({ width: 750, height: 615 });
-        const addMarkers = () => {
-            this.mapHandler.removeMarkers(this.mapMarkers);
-            this.mapMarkers = this.mapHandler.addMarkers(newMarkers);
-            this.mapHandler.bounds.extendWith(this.mapMarkers);
-            this.mapHandler.fitMapToBounds();
-        };
-        this.singleMap(addMarkers.bind(this));
-        angular.element('.contacts_counts').text(contactsCounts.noAddress + '/' + this.selectedContacts.length);
-    }
-    singleMap(callback) {
-        let methodToExec = callback;
-        if (angular.isFunction(methodToExec)) {
-            methodToExec = _.noop;
-        }
-        const mapOptions = {streetViewControl: false};
-        if (this.mapHandler) {
-            methodToExec();
-        } else {
-            this.mapHandler = this.$window.Gmaps.build('Google');
-            this.mapHandler.buildMap(
-                {
-                    provider: mapOptions,
-                    internal: { id: 'contacts-map' }
-                },
-                methodToExec.bind(this)
-            );
-        }
     }
 }
 

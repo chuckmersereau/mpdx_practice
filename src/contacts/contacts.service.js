@@ -135,7 +135,7 @@ class ContactsService {
                 per_page: 25,
                 include: 'people,addresses,people.facebook_accounts,people.phone_numbers,people.email_addresses',
                 'fields[people]': 'deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
-                'fields[addresses]': 'city,primary_mailing_address,postal_code,state,street',
+                'fields[addresses]': 'city,primary_mailing_address,postal_code,state,geo,street',
                 'fields[email_addresses]': 'email,historic,primary',
                 'fields[phone_numbers]': 'historic,location,number,primary',
                 'fields[facebook_accounts]': 'url',
