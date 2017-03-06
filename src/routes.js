@@ -223,24 +223,41 @@ function auth(
     $state, $stateParams, $window, $http, $log
 ) {
     if (!_.isEmpty($stateParams.access_token)) {
-        $http({
-            url: `${config.apiUrl}user/authentication`,
-            method: 'post',
-            headers: {
-                Accept: 'application/vnd.api+json',
-                'Content-Type': 'application/vnd.api+json'
-            },
-            data: {
-                access_token: $stateParams.access_token
+        $http.get(`${config.authUrl}api/oauth/ticket`,
+            {
+                headers: {
+                    Authorization: `Bearer ${$stateParams.access_token}`,
+                    Accept: 'application/json'
+                },
+                params: {
+                    service: `${config.apiUrl}user/authenticate`
+                }
             }
-        }).then((data) => {
-            $log.debug('user/authentication', data);
-            $window.sessionStorage.token = data.data.json_web_token;
-            const redirect = angular.copy($window.sessionStorage.redirect || 'home');
-            const params = angular.copy($window.sessionStorage.params || {});
-            delete $window.sessionStorage.redirect;
-            delete $window.sessionStorage.params;
-            $state.go(redirect, params, {reload: true});
+        ).then((data) => {
+            $http({
+                url: `${config.apiUrl}user/authenticate`,
+                method: 'post',
+                headers: {
+                    Accept: 'application/vnd.api+json',
+                    'Content-Type': 'application/vnd.api+json'
+                },
+                data: {
+                    data: {
+                        type: "authenticate",
+                        attributes: {
+                            cas_ticket: data.data.ticket
+                        }
+                    }
+                }
+            }).then((data) => {
+                $log.debug('user/authenticate', data);
+                $window.sessionStorage.token = data.data.data.attributes.json_web_token;
+                const redirect = angular.copy($window.sessionStorage.redirect || 'home');
+                const params = angular.copy($window.sessionStorage.params || {});
+                delete $window.sessionStorage.redirect;
+                delete $window.sessionStorage.params;
+                $state.go(redirect, params, {reload: true});
+            });
         });
     }
 }
@@ -248,5 +265,5 @@ function auth(
 /*@ngInject*/
 function logout($window, $state) {
     delete $window.sessionStorage.token;
-    $state.go('login', {}, {reload: true});
+    $window.location.href = `${config.authUrl}logout`;
 }

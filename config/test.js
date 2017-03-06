@@ -1,5 +1,6 @@
 export default {
     "env": "test",
     "apiUrl": "/api/v1/",
-    "theKeyUrl": "http://oauth.ccci.us/auth/cas/?client_id=2f8ae10120a1f8c088826f2fd5ec9b6fa6d3122a2b0f62b833ee9d6ced344278&redirect_uri=http://localhost:8080/auth"
+    "authUrl": "https://thekey.me/cas/",
+    "authLoginPath": "login?client_id=1151388713555353789&scope=fullticket&response_type=token&redirect_uri=http://localhost:8080/auth"
 };

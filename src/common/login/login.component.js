@@ -9,7 +9,7 @@ class LoginController {
         }
         this.year = new Date().getFullYear();
         this.background = login.backgrounds[Math.floor(Math.random() * login.backgrounds.length)];
-        this.loginUrl = config.theKeyUrl;
+        this.loginUrl = `${config.authUrl}${config.authLoginPath}`;
     }
 }
 
