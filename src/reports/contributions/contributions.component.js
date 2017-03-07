@@ -12,15 +12,14 @@ class ContributionsController {
     serverConstants;
 
     constructor(
-        gettextCatalog, contributions, serverConstants
+        gettextCatalog,
+        contributions, serverConstants
     ) {
         this.gettextCatalog = gettextCatalog;
         this.contributions = contributions;
         this.serverConstants = serverConstants;
-        this.loading = false;
 
         this.constantsList = {};
-        this.contributionsList = {};
         this.expanded = false;
     }
     $onInit() {
@@ -39,8 +38,7 @@ class ContributionsController {
     }
     load() {
         this.loading = true;
-        this.loadByType().then((data) => {
-            this.contributionsList = data;
+        this.loadByType().then(() => {
             this.loading = false;
         });
         this.serverConstants.load().then((data) => {
@@ -55,7 +53,7 @@ class ContributionsController {
         }
     }
     percentage(amount) {
-        return (amount / this.contributionsList.total) * 100;
+        return (amount / this.contributions.data.total) * 100;
     }
     contributionsToCSV() {
         const columnHeaders = flatten([
@@ -65,7 +63,7 @@ class ContributionsController {
             this.gettextCatalog.getString('Average'),
             this.gettextCatalog.getString('Minimum'),
             this.gettextCatalog.getString('Maximum'),
-            map((m) => m.format('MMM YY'), this.contributionsList.months),
+            map((m) => m.format('MMM YY'), this.contributions.data.months),
             this.gettextCatalog.getString('Total (last month excluded from total)')
         ]);
 
@@ -100,7 +98,7 @@ class ContributionsController {
             );
 
             return concat(combinedHeaders, donorRows, [totals], null);
-        }, this.contributionsList.currencies);
+        }, this.contributions.data.currencies);
     }
 }
 

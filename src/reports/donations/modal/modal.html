@@ -31,7 +31,7 @@
                     <div class="form-group">
                         <label for="appeal_id" translate>Appeal</label>
                         <select
-                            ng-options="appeal as appeal.name for appeal in $ctrl.appealsList track by appeal.id"
+                            ng-options="appeal as appeal.name for appeal in $ctrl.appeals.list track by appeal.id"
                             ng-model="$ctrl.donation.appeal"
                             class="form-control"
                             id="appeal_id"
@@ -55,7 +55,7 @@
                 <div class="col-md-6">
                     <label for="donor_account_id"><translate>Partner Account</translate> <span class="text-danger">*</span></label>
                     <select
-                        ng-options="donor_account as donor_account.name + ' (' + donor_account.account_number + ')' for donor_account in $ctrl.donorAccountsList track by donor_account.id"
+                        ng-options="donor_account as donor_account.name + ' (' + donor_account.account_number + ')' for donor_account in $ctrl.donorAccounts.list track by donor_account.id"
                         ng-model="$ctrl.donation.donor_account"
                         class="form-control"
                         id="donor_account_id"
@@ -65,7 +65,7 @@
                 <div class="col-md-6">
                     <label for="designation_account_id"><translate>Designation Account</translate> <span class="text-danger">*</span></label>
                     <select
-                        ng-options="designation_account as designation_account.name + ' (' + designation_account.designation_number + ')' for designation_account in $ctrl.designationAccountsList track by designation_account.id"
+                        ng-options="designation_account as designation_account.name + ' (' + designation_account.designation_number + ')' for designation_account in $ctrl.designationAccounts.list track by designation_account.id"
                         ng-model="$ctrl.donation.designation_account"
                         class="form-control"
                         id="designation_account_id"

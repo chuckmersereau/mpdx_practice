@@ -1,15 +1,21 @@
-class BalancesReportController {
+import reduce from 'lodash/fp/reduce';
+
+class BalancesController {
     api;
     constructor(
-        $log,
-        designationAccounts
+        $log, designationAccounts, blockUI
     ) {
         this.$log = $log;
         this.designationAccounts = designationAccounts;
+        this.blockUI = blockUI.instances.get('balances');
     }
     $onInit() {
-        this.designationAccounts.load().then((designationAccounts) => {
-            this.designations = designationAccounts;
+        this.load();
+    }
+    load() {
+        this.blockUI.start();
+        this.designationAccounts.load().then(() => {
+            this.blockUI.stop();
             // this.total_currency = data.total_currency;
             // this.total_currency_symbol = data.total_currency_symbol;
             this.updateTotal();
@@ -20,16 +26,16 @@ class BalancesReportController {
         this.updateTotal();
     }
     updateTotal() {
-        this.converted_total = _.reduce(this.designations, (sum, designation) =>
+        this.converted_total = reduce((sum, designation) =>
             sum + (designation.active ? designation.converted_balance : 0)
-        , 0);
+        , 0, this.designationAccounts.data);
     }
 }
 
 const Balances = {
-    controller: BalancesReportController,
+    controller: BalancesController,
     template: require('./balances.html')
 };
 
 export default angular.module('mpdx.reports.balances.component', [])
-    .component('balancesReport', Balances).name;
+    .component('balances', Balances).name;

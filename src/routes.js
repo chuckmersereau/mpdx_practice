@@ -69,7 +69,7 @@ export default class Routes {
         }).state({
             name: 'reports.balances',
             url: '/balances',
-            component: 'balancesReport'
+            component: 'balances'
         }).state({
             name: 'reports.donations',
             url: '/donations',
@@ -77,7 +77,7 @@ export default class Routes {
         }).state({
             name: 'reports.monthly',
             url: '/monthly',
-            component: 'expectedMonthlyTotalsReport'
+            component: 'monthly'
         }).state({
             name: 'reports.partner',
             url: '/partner',
@@ -263,7 +263,7 @@ function auth(
 }
 
 /*@ngInject*/
-function logout($window, $state) {
+function logout($window) {
     delete $window.sessionStorage.token;
     $window.location.href = `${config.authUrl}logout`;
 }

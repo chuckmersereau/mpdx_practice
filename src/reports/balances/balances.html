@@ -1,63 +1,61 @@
-<h2 translate>Balances by Organization</h2>
-<div ng-if="!$ctrl.designations" translate>
-    Report data could not load due to an error. Please try again or contact support.
-</div>
-
-<div class="panel panel-default panel-report" ng-if="$ctrl.designations">
-    <div class="panel-body panel-report-heading">
-        <div class="row">
-            <div class="col-xs-6">
-                <h4 translate>Account Balances</h4>
-            </div>
-            <div class="col-xs-6 text-right">
-                <h4>
+<div class="reports">
+    <h2 translate>Balances</h2>
+    <div block-ui="balances">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="pull-right">
                     <span translate>Converted Report Total</span>
                     {{$ctrl.total_currency_symbol}}
                     {{$ctrl.converted_total | number : 0}}
                     {{$ctrl.total_currency}}
                 </h4>
+                <h4 class="panel-title" translate>Balances by Organization</h4>
+            </div>
+            <div class="panel-body" ng-if="$ctrl.designationAccounts.data">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th translate>Organization</th>
+                        <th translate>Designation</th>
+                        <th translate>Last Synced</th>
+                        <th class="text-right" translate>Balance</th>
+                        <th class="text-right" translate>Exchange Rate</th>
+                        <th class="text-right" translate>Converted Balance</th>
+                        <th class="text-right" translate>Include in Report</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="designation in $ctrl.designationAccounts.data">
+                        <td>{{designation.organization_name}}</td>
+                        <td>{{designation.designation_number}}</td>
+                        <td>{{designation.balance_updated_at | date : format : shortDate}}</td>
+                        <td class="text-right">
+                            {{designation.currency_symbol}}
+                            {{designation.balance || 0  | number : 0}}
+                            {{designation.currency}}
+                        </td>
+                        <td class="text-right">
+                            {{designation.exchange_rate | number : 2}}
+                            {{$ctrl.total_currency_symbol}}
+                            /
+                            {{designation.currency_symbol}}
+                            {{designation.currency}}
+                        </td>
+                        <td class="text-right">
+                            {{$ctrl.total_currency_symbol}}
+                            {{designation.converted_balance | number : 0}}
+                            {{$ctrl.total_currency}}
+                        </td>
+                        <td class="text-right">
+                            <fa-checkbox checked="designation.active" on-toggle="$ctrl.onToggle(designation)"></fa-checkbox>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel-footer" ng-if="!$ctrl.designationAccounts.data" translate>
+                You have no organization accounts.
             </div>
         </div>
     </div>
-
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th translate>Organization</th>
-            <th translate>Designation</th>
-            <th translate>Last Synced</th>
-            <th class="text-right" translate>Balance</th>
-            <th class="text-right" translate>Exchange Rate</th>
-            <th class="text-right" translate>Converted Balance</th>
-            <th class="text-right" translate>Include in Report</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="designation in $ctrl.designations">
-            <td>{{designation.organization_name}}</td>
-            <td>{{designation.designation_number}}</td>
-            <td>{{designation.balance_updated_at | date : format : shortDate}}</td>
-            <td class="text-right">
-                {{designation.currency_symbol}}
-                {{designation.balance || 0  | number : 0}}
-                {{designation.currency}}
-            </td>
-            <td class="text-right">
-                {{designation.exchange_rate | number : 2}}
-                {{$ctrl.total_currency_symbol}}
-                /
-                {{designation.currency_symbol}}
-                {{designation.currency}}
-            </td>
-            <td class="text-right">
-                {{$ctrl.total_currency_symbol}}
-                {{designation.converted_balance | number : 0}}
-                {{$ctrl.total_currency}}
-            </td>
-            <td class="text-right">
-                <fa-checkbox checked="designation.active" on-toggle="$ctrl.onToggle(designation)"></fa-checkbox>
-            </td>
-        </tr>
-        </tbody>
-    </table>
 </div>

@@ -41,7 +41,6 @@ class DonorAccountsService {
                     };
                 }, contact.donor_accounts);
             }, data));
-
             this.$log.debug(`account_lists/${this.api.account_list_id}/donor_accounts`, this.list);
             return this.list;
         });

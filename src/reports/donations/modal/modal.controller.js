@@ -2,7 +2,9 @@ class DonationModalController {
     accounts;
     appeals;
     currency;
+    designationAccounts;
     donations;
+    donorAccounts;
 
     constructor(
         $scope, blockUI,
@@ -21,20 +23,9 @@ class DonationModalController {
 
         this.blockUI = blockUI.instances.get('donationModal');
 
-        this.appealsList = [];
-        this.appeals.getList().then((data) => {
-            this.appealsList = data;
-        });
-
-        this.donorAccountsList = [];
-        this.donorAccounts.getList().then((data) => {
-            this.donorAccountsList = data;
-        });
-
-        this.designationAccountsList = [];
-        this.designationAccounts.getList().then((data) => {
-            this.designationAccountsList = data;
-        });
+        this.appeals.getList();
+        this.donorAccounts.getList();
+        this.designationAccounts.getList();
     }
 
     save() {

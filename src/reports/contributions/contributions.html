@@ -1,9 +1,5 @@
-<div class="row">
-    <div class="col-sm-6">
-        <h2 ng-if="$ctrl.type === 'partner'" translate>Contributions by Partner Currency</h2>
-        <h2 ng-if="$ctrl.type === 'salary'" translate>Contributions by Salary Currency</h2>
-    </div>
-    <div class="col-sm-6 text-right report-action-buttons" ng-if="!$ctrl.loading">
+<div class="reports">
+    <div class="pull-right" ng-if="!$ctrl.loading">
         <button class="btn btn-primary" ng-click="$ctrl.expanded = !$ctrl.expanded">
             <span ng-if="!$ctrl.expanded">
                 <span translate>Expand partner info</span>
@@ -18,171 +14,176 @@
             Export CSV
         </button>
     </div>
-</div>
+    <h2>
+        <span ng-if="$ctrl.type === 'partner'" translate>Contributions by Partner Currency</span>
+        <span ng-if="$ctrl.type === 'salary'" translate>Contributions by Salary Currency</span>
+    </h2>
 
-<script type="text/ng-template" id="reports/contributions/popovers/name.tpl.html">
-    <div class="popover" tabindex="-1">
-        <div class="arrow"></div>
-        <div class="popover-content text-center">
-            <strong>{{donor.contact.status}}</strong>
-            <br />
-            <div ng-if="donor.contact.pledge_amount > 0">{{currency.symbol}}{{donor.contact.pledge_amount | number:0}} {{currency.code}} {{$ctrl.constantsList.pledge_frequencies[donor.contact.pledge_frequency]}}</div>
-            <div><strong translate>Avg</strong>: {{currency.symbol}}{{donor.average | number:0}} / <strong translate>Min</strong>: {{currency.symbol}}{{donor.minimum | number:0}}</div>
-        </div>
-    </div>
-</script>
-
-<script type="text/ng-template" id="reports/contributions/popovers/donations.tpl.html">
-    <div class="popover" tabindex="-1">
-        <div class="arrow"></div>
-        <div class="popover-content">
-            <strong translate>Monthly Total</strong>
-            <div>{{currency.symbol}}{{monthlyDonation.total | number:0}} {{currency.code}}</div>
-            <table class="table table-condensed">
-                <thead>
-                    <tr>
-                        <th translate>Date</th>
-                        <th class="text-right" translate>Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="donation in monthlyDonation.donations">
-                        <td>{{donation.date.format('MMM Do')}}</td>
-                        <td class="text-right">{{donation.currency.symbol_native}}{{donation.amount | number : 0}} {{donation.currency.code}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</script>
-
-<script type="text/ng-template" id="reports/contributions/popovers/progress.tpl.html">
-    <div class="popover" tabindex="-1">
-        <div class="arrow"></div>
-        <div class="popover-content">
-            <div>
-                {{currency.symbol_native}}{{currency.totals.year | number : 0}} {{currency.code}}
-            </div>
-            <div>
-                <span translate>Converted to</span>:
-                {{$ctrl.contributionsList.salaryCurrency.symbol_native}}{{currency.totals.year_converted | number : 0}}
-                {{$ctrl.contributionsList.salaryCurrency.code}})
-            </div>
-            <div>
-                ({{$ctrl.percentage(currency.totals.year_converted) | number:0}}%
-                <span translate>of total</span>
-                {{$ctrl.contributionsList.salaryCurrency.symbol_native}}{{$ctrl.contributionsList.total | number : 0}}
-                {{$ctrl.contributionsList.salaryCurrency.code}})
+    <script type="text/ng-template" id="reports/contributions/popovers/name.tpl.html">
+        <div class="popover" tabindex="-1">
+            <div class="arrow"></div>
+            <div class="popover-content text-center">
+                <strong>{{donor.contact.status}}</strong>
+                <br />
+                <div ng-if="donor.contact.pledge_amount > 0">{{currency.symbol}}{{donor.contact.pledge_amount | number:0}} {{currency.code}} {{$ctrl.constantsList.pledge_frequencies[donor.contact.pledge_frequency]}}</div>
+                <div><strong translate>Avg</strong>: {{currency.symbol}}{{donor.average | number:0}} / <strong translate>Min</strong>: {{currency.symbol}}{{donor.minimum | number:0}}</div>
             </div>
         </div>
-    </div>
-</script>
+    </script>
 
-<div ng-if="$ctrl.loading">
-    <div class="loading-box">
-        <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
-        <span class="sr-only" translate>Loading</span>
-    </div>
-</div>
+    <script type="text/ng-template" id="reports/contributions/popovers/donations.tpl.html">
+        <div class="popover" tabindex="-1">
+            <div class="arrow"></div>
+            <div class="popover-content">
+                <strong translate>Monthly Total</strong>
+                <div>{{currency.symbol}}{{monthlyDonation.total | number:0}} {{currency.code}}</div>
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th translate>Date</th>
+                            <th class="text-right" translate>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="donation in monthlyDonation.donations">
+                            <td>{{donation.date.format('MMM Do')}}</td>
+                            <td class="text-right">{{donation.currency.symbol_native}}{{donation.amount | number : 0}} {{donation.currency.code}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </script>
 
+    <script type="text/ng-template" id="reports/contributions/popovers/progress.tpl.html">
+        <div class="popover" tabindex="-1">
+            <div class="arrow"></div>
+            <div class="popover-content">
+                <div>
+                    {{currency.symbol_native}}{{currency.totals.year | number : 0}} {{currency.code}}
+                </div>
+                <div>
+                    <span translate>Converted to</span>:
+                    {{$ctrl.contributions.data.salaryCurrency.symbol_native}}{{currency.totals.year_converted | number : 0}}
+                    {{$ctrl.contributions.data.salaryCurrency.code}})
+                </div>
+                <div>
+                    ({{$ctrl.percentage(currency.totals.year_converted) | number:0}}%
+                    <span translate>of total</span>
+                    {{$ctrl.contributions.data.salaryCurrency.symbol_native}}{{$ctrl.contributions.data.total | number : 0}}
+                    {{$ctrl.contributions.data.salaryCurrency.code}})
+                </div>
+            </div>
+        </div>
+    </script>
 
-<div ng-if="!$ctrl.loading">
-    <div ng-if="$ctrl.type === 'partner'" class="progress">
-        <div ng-repeat="currency in $ctrl.contributionsList.currencies" class="progress-bar color-{{$index % 6}}" style="width: {{$ctrl.percentage(currency.totals.year_converted) }}%" data-template-url="reports/contributions/popovers/progress.tpl.html" data-trigger="hover" data-placement="bottom" bs-popover>
-            <span ng-if="$ctrl.percentage(currency.totals.year_converted) > 7">
-                {{currency.code}} ({{currency.symbol_native}})
-            </span>
+    <div ng-show="$ctrl.loading">
+        <div class="loading-box">
+            <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+            <span class="sr-only" translate>Loading</span>
         </div>
     </div>
-    <div class="panel panel-default panel-report" ng-repeat="currency in $ctrl.contributionsList.currencies">
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr class="year-header-row">
-                        <th class="currency-title" colspan="{{$ctrl.expanded ? 5 : 1}}">
-                            {{currency.code}} ({{currency.symbol_native}})
-                        </th>
-                        <th ng-repeat="(year, numberOfMonths) in $ctrl.contributionsList.years" colspan="{{numberOfMonths}}">
-                            <div class="year-header-range">{{year}}</div>
-                        </th>
-                        <th>
-                            <div class="year-header-range">&nbsp;</div>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th translate>Partner</th>
-                        <th ng-if="$ctrl.expanded" translate>Status</th>
-                        <th ng-if="$ctrl.expanded" translate>Pledge</th>
-                        <th ng-if="$ctrl.expanded" translate>Avg</th>
-                        <th ng-if="$ctrl.expanded" translate>Min</th>
-                        <th class="text-right" ng-repeat="date in $ctrl.contributionsList.months track by $index">
-                            <span data-title="{{ 'This last month is excluded from totals and averages' | translate }}" data-trigger="{{$last ? 'hover' : 'manual'}}" ng-class="{'text-muted': $last}" bs-tooltip>
-                                {{date.format('MMM')}}
-                            </span>
-                        </th>
-                        <th class="text-right" translate>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="donor in currency.donors">
-                        <td>
-                            <strong>
-                                <i class="fa fa-info-circle" ng-if="!$ctrl.expanded" data-template-url="reports/contributions/popovers/name.tpl.html" data-trigger="hover" data-placement="top" bs-popover></i>
-                                <a ui-sref="contact({contactId: donor.contact.contact_id})" >{{donor.contact.contact_name}}</a>
-                                <span ng-switch="late = donor.late_by_60_days ? 60 : (donor.late_by_30_days ? 30 : false)">
-                                    <i class="fa fa-circle circle-late" ng-switch-when="30" data-title="{{ '30 days late' | translate }}" bs-tooltip></i>
-                                    <i class="fa fa-circle circle-very-late" ng-switch-when="60" data-title="{{ '60 days late' | translate}}" bs-tooltip></i>
-                                </span>
-                            </strong>
-                        </td>
-                        <td ng-if="$ctrl.expanded">
-                            {{donor.contact.status}}
-                        </td>
-                        <td ng-if="$ctrl.expanded">
-                            <span ng-if="donor.contact.pledge_amount > 0">
-                                {{currency.symbol}}
-                                {{donor.contact.pledge_amount | number:0}}
-                                {{currency.code}}
-                                {{$ctrl.constantsList.pledge_frequencies[donor.contact.pledge_frequency]}}
-                            </span>
-                        </td>
-                        <td class="text-right" ng-if="$ctrl.expanded">
-                            {{donor.average | number:0}}
-                        </td>
-                        <td class="text-right" ng-if="$ctrl.expanded">
-                            {{donor.minimum | number:0}}
-                        </td>
 
-                        <td class="text-right" ng-repeat="monthlyDonation in donor.monthlyDonations track by $index" ng-class="{'text-muted': $last}">
-                            <span ng-if="monthlyDonation.total > 0" data-template-url="reports/contributions/popovers/donations.tpl.html" data-trigger="hover" data-placement="top" bs-popover>
-                                {{monthlyDonation.total | number : 0}}
-                            </span>
-                        </td>
-                        <td class="text-right">
-                            <strong>
-                                {{currency.symbol_native}}{{donor.total | number : 0}}
-                            </strong>
-                        </td>
-                    </tr>
-                    <tr class="row-total">
-                        <td colspan="{{$ctrl.expanded ? 5 : 1}}">
-                            <strong translate>
-                                Totals
-                            </strong>
-                        </td>
-                        <td class="text-right" ng-repeat="total in currency.totals.months track by $index">
-                            <strong ng-class="{'text-muted': $last}">
-                                {{currency.symbol_native}}{{total | number : 0}}
-                            </strong>
-                        </td>
-                        <td class="text-right" >
-                            <strong>
-                                {{currency.symbol_native}}{{currency.totals.year | number : 0}}
-                            </strong>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+    <div ng-show="!$ctrl.loading">
+        <div ng-if="$ctrl.type === 'partner'" class="progress">
+            <div ng-repeat="currency in $ctrl.contributions.data.currencies" class="progress-bar color-{{$index % 6}}" style="width: {{$ctrl.percentage(currency.totals.year_converted) }}%" data-template-url="reports/contributions/popovers/progress.tpl.html" data-trigger="hover" data-placement="bottom" bs-popover>
+                <span ng-if="$ctrl.percentage(currency.totals.year_converted) > 7">
+                    {{currency.code}} ({{currency.symbol_native}})
+                </span>
+            </div>
+        </div>
+        <div class="panel panel-default" ng-repeat="currency in $ctrl.contributions.data.currencies">
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="year-header-row">
+                                <th colspan="{{$ctrl.expanded ? 5 : 1}}">
+                                    {{currency.code}} ({{currency.symbol_native}})
+                                </th>
+                                <th ng-repeat="(year, numberOfMonths) in $ctrl.contributions.data.years" colspan="{{numberOfMonths}}">
+                                    <div>{{year}}</div>
+                                </th>
+                                <th>
+                                    <div></div>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th translate>Partner</th>
+                                <th ng-if="$ctrl.expanded" translate>Status</th>
+                                <th ng-if="$ctrl.expanded" translate>Pledge</th>
+                                <th ng-if="$ctrl.expanded" translate>Avg</th>
+                                <th ng-if="$ctrl.expanded" translate>Min</th>
+                                <th class="text-right" ng-repeat="date in $ctrl.contributions.data.months track by $index">
+                                    <span data-title="{{ 'This last month is excluded from totals and averages' | translate }}" data-trigger="{{$last ? 'hover' : 'manual'}}" ng-class="{'text-muted': $last}" bs-tooltip>
+                                        {{date.format('MMM')}}
+                                    </span>
+                                </th>
+                                <th class="text-right" translate>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="donor in currency.donors">
+                                <td>
+                                    <strong>
+                                        <i class="fa fa-info-circle" ng-if="!$ctrl.expanded" data-template-url="reports/contributions/popovers/name.tpl.html" data-trigger="hover" data-placement="top" bs-popover></i>
+                                        <a ui-sref="contact({contactId: donor.contact.contact_id})" >{{donor.contact.contact_name}}</a>
+                                        <span ng-switch="late = donor.late_by_60_days ? 60 : (donor.late_by_30_days ? 30 : false)">
+                                            <i class="fa fa-circle circle-late" ng-switch-when="30" data-title="{{ '30 days late' | translate }}" bs-tooltip></i>
+                                            <i class="fa fa-circle circle-very-late" ng-switch-when="60" data-title="{{ '60 days late' | translate}}" bs-tooltip></i>
+                                        </span>
+                                    </strong>
+                                </td>
+                                <td ng-if="$ctrl.expanded">
+                                    {{donor.contact.status}}
+                                </td>
+                                <td ng-if="$ctrl.expanded">
+                                    <span ng-if="donor.contact.pledge_amount > 0">
+                                        {{currency.symbol}}
+                                        {{donor.contact.pledge_amount | number:0}}
+                                        {{currency.code}}
+                                        {{$ctrl.constantsList.pledge_frequencies[donor.contact.pledge_frequency]}}
+                                    </span>
+                                </td>
+                                <td class="text-right" ng-if="$ctrl.expanded">
+                                    {{donor.average | number:0}}
+                                </td>
+                                <td class="text-right" ng-if="$ctrl.expanded">
+                                    {{donor.minimum | number:0}}
+                                </td>
+
+                                <td class="text-right" ng-repeat="monthlyDonation in donor.monthlyDonations track by $index" ng-class="{'text-muted': $last}">
+                                    <span ng-if="monthlyDonation.total > 0" data-template-url="reports/contributions/popovers/donations.tpl.html" data-trigger="hover" data-placement="top" bs-popover>
+                                        {{monthlyDonation.total | number : 0}}
+                                    </span>
+                                </td>
+                                <td class="text-right">
+                                    <strong>
+                                        {{currency.symbol_native}}{{donor.total | number : 0}}
+                                    </strong>
+                                </td>
+                            </tr>
+                            <tr class="row-total">
+                                <td colspan="{{$ctrl.expanded ? 5 : 1}}">
+                                    <strong translate>
+                                        Totals
+                                    </strong>
+                                </td>
+                                <td class="text-right" ng-repeat="total in currency.totals.months track by $index">
+                                    <strong ng-class="{'text-muted': $last}">
+                                        {{currency.symbol_native}}{{total | number : 0}}
+                                    </strong>
+                                </td>
+                                <td class="text-right">
+                                    <strong>
+                                        {{currency.symbol_native}}{{currency.totals.year | number : 0}}
+                                    </strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>

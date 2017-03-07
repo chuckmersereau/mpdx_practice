@@ -20,6 +20,7 @@ class ContributionsService {
         this.api = api;
         this.currency = currency;
 
+        this.data = null;
         this.salaryContributions = {};
         this.partnerContributions = {};
         this.currencyList = currency.list;
@@ -103,7 +104,7 @@ class ContributionsService {
 
             const salaryCurrency = this.currencyList[toUpper(data.salary_currency) || "USD"];
 
-            const returnableContributions = {
+            contributions = {
                 currencies: currencies,
                 years: years,
                 months: months,
@@ -111,7 +112,7 @@ class ContributionsService {
                 salaryCurrency: salaryCurrency
             };
 
-            contributions = angular.copy(returnableContributions);
+            this.data = contributions;
             this.$log.debug(path, contributions);
             return contributions;
         });
