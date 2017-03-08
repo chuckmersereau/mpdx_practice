@@ -1,3 +1,5 @@
+import has from 'lodash/fp/has';
+import moment from 'moment';
 import uuid from 'uuid/v1';
 
 class PersonModalController {
@@ -7,14 +9,16 @@ class PersonModalController {
 
     constructor(
         $log, $rootScope, $scope,
-        people, contact, person
+        people, contact, locale, person
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
-        this.people = people;
-        this.contact = contact;
-        this.person = person;
         this.$scope = $scope;
+        this.contact = contact;
+        this.locale = locale;
+        this.people = people;
+        this.person = person;
+
         this.personDetails = '';
         this.maps = [];
         this.activeTab = 'contact-info';
@@ -22,12 +26,11 @@ class PersonModalController {
         this.activate();
     }
     activate() {
-        if (_.has(this.person, 'id')) {
+        if (has('id', this.person)) {
             this.modalTitle = 'Edit Person';
             //bad data is bad
             if (this.person.birthday_year) {
                 this.person.birthday = moment(`${this.person.birthday_year}-${this.person.birthday_month}-${this.person.birthday_day}`, 'YYYY-MM-DD').toDate();
-                console.log(this.person.birthday);
             }
             if (this.person.anniversary_year) {
                 this.person.anniversary = moment(`${this.person.anniversary_year}-${this.person.anniversary_month}-${this.person.anniversary_day}`, 'YYYY-MM-DD').toDate();
@@ -57,7 +60,7 @@ class PersonModalController {
             this.person.anniversary_day = anniversary.date();
         }
 
-        if (_.has(this.person, 'id')) {
+        if (has('id', this.person)) {
             return this.people.save(this.contact.id, this.person).then(() => {
                 this.$log.debug('person saved:', this.person);
                 this.$rootScope.$emit('peopleUpdated', this.contact.id);
@@ -95,11 +98,7 @@ class PersonModalController {
     }
     changePrimary(property, index) {
         _.forEach(this.person[property], (person, i) => {
-            if (i === index) {
-                person.primary = true;
-            } else {
-                person.primary = false;
-            }
+            person.primary = i === index;
         });
     }
     changeHistoric(obj) {

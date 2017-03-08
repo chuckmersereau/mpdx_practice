@@ -1,3 +1,6 @@
+import map from 'lodash/fp/map';
+import reject from 'lodash/fp/reject';
+
 class MergePeopleModalController {
     alerts;
     contact;
@@ -17,12 +20,12 @@ class MergePeopleModalController {
         this.currentlyMerging = false;
     }
     save() {
-        const selectedPeople = _.reject(this.selectedPeople, {id: this.selectedPerson});
-        const selectedPeopleToMerge = _.map(selectedPeople, (person) => {
+        const selectedPeople = reject({id: this.selectedPerson}, this.selectedPeople);
+        const selectedPeopleToMerge = map((person) => {
             return { winner_id: this.selectedPerson, loser_id: person.id };
-        });
+        }, selectedPeople);
 
-        return this.people.merge(selectedPeopleToMerge).catch(() => {
+        return this.people.bulkMerge(selectedPeopleToMerge).catch(() => {
             this.alerts.addAlert('There was an error while trying to merge the people', 'danger');
         }).finally(() => {
             this.$scope.$hide();

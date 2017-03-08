@@ -3,7 +3,6 @@ class ContactController {
     contacts;
     contactFilter;
     modal;
-    contactReferrals;
     tasksService;
 
     constructor(

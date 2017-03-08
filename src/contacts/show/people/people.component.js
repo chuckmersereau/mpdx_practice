@@ -1,3 +1,8 @@
+import has from 'lodash/fp/has';
+import includes from 'lodash/fp/includes';
+import reduce from 'lodash/fp/reduce';
+import reject from 'lodash/fp/reject';
+
 class ContactPeopleController {
     alerts;
     api;
@@ -26,7 +31,7 @@ class ContactPeopleController {
         this.init();
     }
     init() {
-        if (!_.has(this, 'contact.id')) {
+        if (!has('contact.id', this)) {
             return;
         }
         this.people.list(this.contact.id).then((data) => {
@@ -34,9 +39,9 @@ class ContactPeopleController {
         });
     }
     selectPerson(person) {
-        if (_.includes(this.selectedPeople, person)) {
+        if (includes(person, this.selectedPeople)) {
             person.selected_for_merge = false;
-            _.reject(this.selectedPeople, person);
+            this.selectedPeople = reject(person, this.selectedPeople);
         } else {
             person.selected_for_merge = true;
             this.selectedPeople.push(person);
@@ -49,6 +54,15 @@ class ContactPeopleController {
             this.isMerging = false;
             this.people.openMergePeopleModal(this.contact, this.selectedPeople);
         }
+    }
+    cancelMerge() {
+        this.isMerging = false;
+        this.selectedPeople = [];
+        this.people.selected = reduce((result, person) => {
+            delete person.selected_for_merge;
+            result.push(person);
+            return result;
+        }, [], this.people.selected);
     }
     newPerson() {
         this.people.openPeopleModal(this.contact);

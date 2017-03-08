@@ -232,13 +232,24 @@ class EntityAttributes {
                 person: { ref: 'id', pluralizeType: false }
             },
             contacts: {
-                attributes: ["name", "account_list", "created_at", "updated_at", "pledge_amount", "status", "total_donations", "last_donation_date", "first_donation_date", "notes", "notes_saved_at",
-                    "full_name", "greeting", "website", "pledge_frequency", "pledge_start_date", "next_ask", "likely_to_give", "church_name", "send_newsletter", "direct_deposit", "magazine", "last_activity",
-                    "last_appointment", "last_letter", "last_phone_call", "last_pre_call", "last_thank", "pledge_received", "tnt_id", "not_duplicated_with", "uncompleted_tasks_count", "prayer_letters_id",
-                    "timezone", "envelope_greeting", "no_appeals", "prayer_letters_params", "pls_id", "pledge_currency", "locale", "late_at", "tag_list", "updated_in_db_at", "winner_id", "loser_id"],
+                attributes: ["account_list", "church_name", "contacts_referred_by_me", "contacts_that_referred_me", "created_at", "direct_deposit", "envelope_greeting",
+                    "first_donation_date", "full_name", "greeting",
+                    "last_activity", "last_appointment", "last_donation_date", "last_letter", "likely_to_give", "last_phone_call", "last_pre_call", "last_thank", "late_at", "locale", "loser_id",
+                    "magazine", "name", "next_ask", "no_appeals", "not_duplicated_with", "notes", "notes_saved_at",
+                    "pledge_amount", "pledge_currency", "pledge_frequency", "pledge_received", "pledge_start_date", "pls_id", "prayer_letters_id", "prayer_letters_params",
+                    "send_newsletter", "status", "tag_list", "timezone", "tnt_id", "total_donations", "uncompleted_tasks_count", "updated_at", "updated_in_db_at", "website", "winner_id"],
                 // addresses: { ref: 'id' },
                 // people: { ref: 'id' },
-                account_list: { ref: 'id' }
+                account_list: { ref: 'id' },
+                contacts_referred_by_me: { ref: 'id' },
+                contacts_that_referred_me: { ref: 'id' },
+                typeForAttribute: (key) => {
+                    if (key === 'contacts_referred_by_me' || key === 'contacts_that_referred_me') {
+                        return 'contacts';
+                    }
+                    return key;
+                }
+
             },
             donations: {
                 attributes: ["remote_id", "donor_account", "designation_account", "motivation", "payment_method", "tendered_currency", "tendered_amount", "currency", "amount", "memo",

@@ -1,3 +1,9 @@
+import assign from 'lodash/fp/assign';
+import concat from 'lodash/fp/concat';
+import difference from 'lodash/fp/difference';
+import isEqual from 'lodash/fp/isEqual';
+import map from 'lodash/fp/map';
+
 class FilterController {
     contacts;
     contactFilter;
@@ -20,7 +26,7 @@ class FilterController {
         };
 
         if (angular.isObject($stateParams.filters)) {
-            _.extend(this.contactFilter.params, $stateParams.filters);
+            this.contactFilter.params = assign({}, this.contactFilter.params, $stateParams.filters);
         }
     }
     resetFiltersAndTags() {
@@ -46,7 +52,7 @@ class FilterController {
     }
     // Invert the selected options of a multiselect filter
     invertMultiselect(filter) {
-        const allOptions = _.map(filter.options, option => option.id);
+        const allOptions = map('id', filter.options);
         let selectedOptions = this.contactFilter.params[filter.name];
 
         let allOption = '';
@@ -55,13 +61,13 @@ class FilterController {
         }
 
         // If all options are selected other than 'All', then the inverse is 'All'
-        if (_.isEqual(_.difference(allOptions, selectedOptions), [allOption])) {
+        if (isEqual(difference(allOptions, selectedOptions), [allOption])) {
             this.contactFilter.params[filter.name] = [''];
             return;
         }
 
-        selectedOptions.push(allOption); // Exclude the 'All' option when inverting
-        this.contactFilter.params[filter.name] = _.difference(allOptions, selectedOptions);
+        selectedOptions = concat(selectedOptions, allOption); // Exclude the 'All' option when inverting
+        this.contactFilter.params[filter.name] = difference(allOptions, selectedOptions);
         this.contactFilter.change();
     }
 }

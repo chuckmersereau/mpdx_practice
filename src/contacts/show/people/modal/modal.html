@@ -160,11 +160,15 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label translate>Birthday</label>
-                                <input ng-model="$ctrl.person.birthday" bs-datepicker>
+                                <input bs-datepicker
+                                       ng-model="$ctrl.person.birthday"
+                                       data-date-format="{{$ctrl.locale.dateTimeFormat}}">
                             </div>
                             <div class="col-md-6">
                                 <label translate>Anniversary</label>
-                                <input ng-model="$ctrl.person.anniversary" bs-datepicker>
+                                <input bs-datepicker
+                                       ng-model="$ctrl.person.anniversary"
+                                       data-date-format="{{$ctrl.locale.dateTimeFormat}}">
                             </div>
                         </div>
                     </div>

@@ -12,8 +12,11 @@ class ContactPersonController {
         this.people.openPeopleModal(this.contact, this.person.id);
     }
     selectCard() {
-        if (!this.isMerging) return;
-        this.onSelectPerson({person: this.person});
+        if (this.isMerging) {
+            this.onSelectPerson({person: this.person});
+        } else {
+            this.openModal();
+        }
     }
     trustSrc(src) {
         return this.$sce.trustAsResourceUrl(src);

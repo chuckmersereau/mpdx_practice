@@ -1,16 +1,19 @@
+import isFunction from 'lodash/fp/isFunction';
+import map from 'lodash/fp/map';
+import moment from 'moment';
+
 class PersonService {
     api;
     contacts;
     modal;
 
     constructor(
-        $filter, $log, $q, $rootScope, $state,
+        $filter, $log, $q, $rootScope,
         api, contacts, modal
     ) {
         this.$filter = $filter;
         this.$log = $log;
         this.$q = $q;
-        this.$state = $state;
         this.api = api;
         this.contacts = contacts;
         this.modal = modal;
@@ -40,18 +43,18 @@ class PersonService {
     list(contactId) {
         this.selected = null;
         return this.api.get(`contacts/${contactId}/people`, {include: this.includes}).then((data) => {
-            this.selected = data;
-            _.each(data, person => {
+            this.selected = map(person => {
                 if (person.anniversary_year) {
                     person.anniversary = moment(`${person.anniversary_year}-${person.anniversary_month}-${person.anniversary_day}`, 'YYYY-MM-DD').format('l');
                 }
-            });
-            return data;
+                return person;
+            }, data);
+            return this.selected;
         });
     }
     merge(contact, winnerId, loserId) {
         return this.api.post(`contacts/${contact.id}/people/merges`, {winner_id: winnerId, loser_id: loserId}).then((data) => {
-            if (_.isFunction(data.success)) {
+            if (isFunction(data.success)) {
                 data.success();
             }
             return data;
@@ -59,7 +62,7 @@ class PersonService {
     }
     bulkMerge(winnersAndLosers) {
         return this.api.post({url: `contacts/people/merges/bulk`, data: winnersAndLosers, type: 'people'}).then((data) => {
-            if (_.isFunction(data.success)) {
+            if (isFunction(data.success)) {
                 data.success();
             }
             return data;
@@ -69,18 +72,15 @@ class PersonService {
         return this.api.put(`contacts/${contactId}/people/${person.id}`, person); //reload after use, otherwise add reconcile
     }
     openPeopleModal(contact, personId) {
-        let modalOpen = (contact, person) => {
+        const modalOpen = (contact, person) => {
             this.modal.open({
                 template: require('./modal/modal.html'),
                 controller: 'personModalController',
                 locals: {
                     contact: contact,
                     person: person
-                },
-                onHide: () => {
-                    this.list(contact.id);
                 }
-            });
+            }).then(() => this.list(contact.id));
         };
 
         if (personId == null) {
@@ -97,12 +97,8 @@ class PersonService {
             controller: 'mergePeopleModalController',
             locals: {
                 selectedPeople: selectedPeople
-            },
-            onHide: () => {
-                this.contacts.selectContact(contact.id);
-                this.contacts.load(true);
             }
-        });
+        }).then(() => this.list(contact.id));
     }
 }
 export default angular.module('mpdx.contacts.show.people.service', [])

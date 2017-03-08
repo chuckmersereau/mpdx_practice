@@ -1,3 +1,5 @@
+import assign from 'lodash/fp/assign';
+
 class ModalService {
     constructor($modal, $q) {
         this.$modal = $modal;
@@ -5,25 +7,26 @@ class ModalService {
         this.defaultParams = {
             animation: 'am-fade',
             placement: 'center',
-            controllerAs: '$ctrl'
+            controllerAs: '$ctrl',
+            locals: {}
         };
     }
     open(params) {
-        var deffered = this.$q.defer();
-        let openParams = _.assign(this.defaultParams, params);
-        openParams.onHide = () => {
-            if (openParams.success) {
-                deffered.resolve();
+        let deferred = this.$q.defer();
+        let openParams = assign(this.defaultParams, params);
+        openParams.onHide = (value) => {
+            if (value) {
+                deferred.resolve(value);
             } else {
-                deffered.reject();
+                deferred.reject();
+            }
+            if (params.onHide) {
+                params.onHide(value);
             }
         };
-        if (!angular.isDefined(openParams.locals)) {
-            openParams.locals = {};
-        }
         openParams.locals.success = false;
         this.$modal(openParams);
-        return deffered.promise;
+        return deferred.promise;
     }
 }
 

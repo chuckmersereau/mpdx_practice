@@ -11,6 +11,7 @@ class ModalController {
         this.blockUI = blockUI.instances.get('modalBlockUI');
     }
     $onInit() {
+        this.hideFooter = this.hideFooter || false;
         this.size = this.size || 'md';
         this.valid = this.valid || true;
     }
@@ -38,6 +39,7 @@ const Modal = {
         'size': '@',
         'cancel': '&',
         'delete': '&',
+        'hideFooter': '<',
         'showDelete': '<',
         'save': '&',
         'valid': '<'

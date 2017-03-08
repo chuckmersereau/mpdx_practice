@@ -9,7 +9,7 @@
 <div class="row people-row">
     <div class="col-sm-6" ng-repeat="remainder in [0,1]">
         <contact-person is-merging="$ctrl.isMerging"
-                        ng-repeat="person in $ctrl.people.selected"
+                        ng-repeat="person in $ctrl.people.selected track by person.id"
                         ng-if="$index % 2 == remainder"
                         contact="$ctrl.contact"
                         person="person"
@@ -20,7 +20,7 @@
 <div class="text-right" ng-if="$ctrl.isMerging">
     <a class="tip ng-scope" data-trigger="hover" data-content="{{ 'Select people to merge by tapping on the person.' | translate }}" data-placement="top" bs-popover=""><i class="fa fa-question-circle"></i></a>
     &nbsp;
-    <a class="btn btn-default" ng-click="$ctrl.isMerging = false" translate>
+    <a class="btn btn-default" ng-click="$ctrl.cancelMerge()" translate>
         Cancel
     </a>
     <a class="btn btn-primary" ng-click="$ctrl.openMergeModal()">

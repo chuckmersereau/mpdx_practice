@@ -5,7 +5,7 @@
         {{$ctrl.address.city}} {{$ctrl.address.state}} {{$ctrl.address.postal_code}}<br />
         {{$ctrl.address.country}}
         <div ng-if="$ctrl.address.street">
-            <a ui-sref=".address({addressId: $ctrl.address.id})" class="btn btn-secondary btn-xs"><i class="fa fa-map-marker"></i> <translate>Google Maps</translate></a>
+            <a ng-click="$ctrl.contacts.openAddressModal(null, $ctrl.address)" class="btn btn-secondary btn-xs"><i class="fa fa-map-marker"></i> <translate>Google Maps</translate></a>
         </div>
     </p>
 </div>

@@ -1,8 +1,12 @@
 import assign from 'lodash/fp/assign';
+import concat from 'lodash/fp/concat';
 import find from 'lodash/fp/find';
+import findIndex from 'lodash/fp/findIndex';
 import map from 'lodash/fp/map';
 import reduce from 'lodash/fp/reduce';
 import reject from 'lodash/fp/reject';
+import sortBy from 'lodash/fp/sortBy';
+import unionBy from 'lodash/fp/unionBy';
 
 class ContactsService {
     alerts;
@@ -64,7 +68,13 @@ class ContactsService {
         });
     }
     get(id) {
-        return this.api.get(`contacts/${id}`, {include: 'addresses,appeals,donor_accounts,people,referrals_by_me,referrals_to_me'});
+        return this.api.get(`contacts/${id}`, {
+            include: 'addresses,appeals,donor_accounts,people,contacts_referred_by_me,contacts_that_referred_me',
+            fields: {
+                contacts_referred_by_me: 'id',
+                contacts_that_referred_me: 'id'
+            }
+        });
     }
     getList(reset = false) {
         if (!reset && this.completeList) {
@@ -80,22 +90,6 @@ class ContactsService {
             this.completeList = data;
         });
     }
-    find(id) {
-        let contact = _.find(this.data, { id: id });
-        if (contact) {
-            return this.$q.resolve(contact);
-        } else {
-            return this.get(id).then((data) => {
-                let contact = _.find(this.data, {id: data.id});
-                if (contact) {
-                    _.assign(contact, contact, data); //add missing contact to data
-                } else if (this.data) {
-                    this.data.push(contact);
-                }
-                return data;
-            });
-        }
-    }
     load(reset) {
         this.loading = true;
         if (reset) {
@@ -103,8 +97,6 @@ class ContactsService {
             this.meta = {};
             this.data = null;
         }
-        let newContacts;
-
         let filterParams = this.findChangedFilters(this.contactFilter.default_params, this.contactFilter.params);
 
         // set account_list_id
@@ -116,12 +108,12 @@ class ContactsService {
         }
 
         if (this.contactsTags.selectedTags.length > 0) {
-            filterParams.tags = _.map(this.contactsTags.selectedTags, tag => tag.name).join(',');
+            filterParams.tags = joinComma(mapByName(this.contactsTags.selectedTags));
         } else {
             delete filterParams.tags;
         }
         if (this.contactsTags.rejectedTags.length > 0) {
-            filterParams.exclude_tags = _.map(this.contactsTags.rejectedTags, tag => tag.name).join(',');
+            filterParams.exclude_tags = joinComma(mapByName(this.contactsTags.rejectedTags));
         } else {
             delete filterParams.exclude_tags;
         }
@@ -147,7 +139,6 @@ class ContactsService {
             let count = this.meta.to || 0;
             this.meta = data.meta;
             if (reset) {
-                newContacts = [];
                 this.page = 1;
                 count = 0;
             }
@@ -155,20 +146,14 @@ class ContactsService {
                 this.loading = false;
                 return;
             }
-            _.each(data, (contact) => {
-                if (reset) {
-                    newContacts.push(contact);
-                } else {
-                    let val = _.find(this.data, {id: contact.id});
-                    if (val) {
-                        _.assign(val, val, data); //add missing contact to data
-                    } else {
-                        this.data.push(contact);
-                    }
-                }
-            });
+            const newContacts = reduce((result, contact) => {
+                result.push(contact);
+                return result;
+            }, [], data);
             if (reset) {
                 this.data = newContacts;
+            } else {
+                this.data = unionBy('id', this.data, newContacts);
             }
             count += data.length;
             this.meta.to = count;
@@ -178,11 +163,15 @@ class ContactsService {
     save(contact) {
         contact.tag_list = joinComma(contact.tag_list); //fix for api mis-match
         return this.api.put(`contacts/${contact.id}`, contact).then((data) => {
-            let contact = _.find(this.data, {id: data.id});
-            if (contact) {
-                _.assign(contact, contact, data); //add missing contact to data
-            } else {
-                this.data.push(contact);
+            const completeIndex = findIndex({id: data.id}, this.completeList);
+            if (completeIndex > -1 && this.completeList[completeIndex].name !== data.name) {
+                this.completeList[completeIndex] = {name: data.name, id: data.id};
+                this.completeList = sortBy('name', concat(this.completeList, {name: data.name, id: data.id}));
+            }
+
+            const index = findIndex({id: data.id}, this.data);
+            if (index > -1) {
+                this.load(true); //refresh data list since it could conflict with api pagination
             }
             return data;
         });
@@ -190,11 +179,8 @@ class ContactsService {
     create(contact) {
         contact.account_list = { id: this.api.account_list_id };
         return this.api.post('contacts', contact).then((data) => {
-            return this.find(data.id).then((found) => {
-                found.id = data.id; //
-                this.data.push(found);
-                return data;
-            });
+            this.completeList = sortBy('name', concat(this.completeList, {name: data.name, id: data.id}));
+            this.load(true); //refresh data list since it could conflict with api pagination
         });
     }
     loadMoreContacts() {
@@ -380,10 +366,20 @@ class ContactsService {
             controller: 'contactNewModalController'
         });
     }
+    openMapContactsModal(selectedContacts) {
+        this.modal.open({
+            template: require('./filter/mapContacts/mapContacts.html'),
+            controller: 'mapContactsController',
+            locals: {
+                selectedContacts: selectedContacts
+            }
+        });
+    }
 }
 
 import contactFilter from './filter/filter.service';
 import joinComma from "../common/fp/joinComma";
+import mapByName from "../common/fp/mapByName";
 
 export default angular.module('mpdx.contacts.service', [contactFilter])
     .service('contacts', ContactsService).name;

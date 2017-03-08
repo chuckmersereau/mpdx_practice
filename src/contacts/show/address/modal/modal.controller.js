@@ -1,3 +1,8 @@
+import concat from 'lodash/fp/concat';
+import each from 'lodash/fp/each';
+import find from 'lodash/fp/find';
+import findIndex from 'lodash/fp/findIndex';
+import map from 'lodash/fp/map';
 import reject from 'lodash/fp/reject';
 
 class AddressModalController {
@@ -6,7 +11,7 @@ class AddressModalController {
     serverConstants;
 
     constructor(
-        $scope, $timeout, $window,
+        $scope, $timeout, $window, gettextCatalog,
         contacts, serverConstants,
         contact, address
     ) {
@@ -16,6 +21,7 @@ class AddressModalController {
         this.address = address;
         this.contact = contact;
         this.contacts = contacts;
+        this.gettextCatalog = gettextCatalog;
         this.serverConstants = serverConstants;
 
         this.maps = [];
@@ -25,7 +31,7 @@ class AddressModalController {
             let updatedAddress = this.getPlace();
             $ctrl.address = {id: $ctrl.address.id, street: '', location: $ctrl.address.location || 'Home', gmap: updatedAddress};
             $ctrl.refreshMap();
-            _.each(updatedAddress.address_components, (component) => {
+            each((component) => {
                 switch (component.types[0]) {
                     case 'subpremise':
                         $ctrl.address.street += component.long_name + '/';
@@ -55,12 +61,16 @@ class AddressModalController {
                         $ctrl.address.city = component.long_name;
                         break;
                 }
-            });
+            }, updatedAddress.address_components);
         };
 
-        if (angular.isDefined(this.address)) {
-            this.modalTitle = 'Edit Address';
-            let geocoder = new this.$window.google.maps.Geocoder();
+        if (this.address) {
+            if (this.contact) {
+                this.modalTitle = this.gettextCatalog.getString('Edit Address');
+            } else {
+                this.modalTitle = this.gettextCatalog.getString('Address');
+            }
+            const geocoder = new this.$window.google.maps.Geocoder();
             geocoder.geocode({
                 address: `${this.address.street} ${this.address.city}`
             }, (results, status) => {
@@ -70,7 +80,7 @@ class AddressModalController {
                 }
             });
         } else {
-            this.modalTitle = 'Add Address';
+            this.modalTitle = this.gettextCatalog.getString('Add Address');
             this.address = { street: '', location: 'Home' };
         }
         this.$scope.$on('mapInitialized', (evt, evtMap) => {
@@ -80,28 +90,28 @@ class AddressModalController {
     }
     save() {
         if (angular.isDefined(this.address.id)) {
-            const addressIndex = _.findIndex(this.contact.addresses, {id: this.address.id});
+            const addressIndex = findIndex({id: this.address.id}, this.contact.addresses);
             this.contact.addresses[addressIndex] = angular.copy(this.address);
             if (angular.element('#primary_address:checked').length === 1) {
-                _.each(this.contact.addresses, (address) => {
+                this.contact.addresses = map(address => {
                     address.primary_mailing_address = address.id === this.address.id;
-                });
+                    return address;
+                }, this.contact.addresses);
             }
             return this.contacts.saveAddress(this.contact.id, this.address).then(() => {
                 this.$scope.$hide();
             });
         } else {
             return this.contacts.addAddress(this.contact.id, this.address).then((data) => {
-                this.contact.addresses.push(data);
+                this.contact.addresses = concat(this.contact.addresses, data);
                 this.$scope.$hide();
             });
         }
     }
     reqUpdateEmailBodyRequest() {
         if (this.address.remote_id) {
-            const donorAccount = this.contact.donor_accounts.filter(da => da.id === this.address.source_donor_account_id);
-
-            const donorName = donorAccount.length > 0 ? donorAccount.name + ' (donor #' + donorAccount.account_number + ')' : this.contact.name;
+            const donorAccount = find({id: this.address.source_donor_account_id}, this.contact.donor_accounts);
+            const donorName = donorAccount ? donorAccount.name + ' (donor #' + donorAccount.account_number + ')' : this.contact.name;
             return `Dear Donation Services,\n\n One of my donors, ${donorName} has a new current address.\n\n
                 Please update their address to:\n\n REPLACE WITH NEW STREET\n REPLACE WITH NEW CITY, STATE, ZIP\n\n
                 Thanks!\n\n`;
@@ -110,9 +120,9 @@ class AddressModalController {
         return '';
     }
     refreshMap() {
-        _.each(this.maps, (map) => {
-            if (angular.isDefined(this.address.gmap)) {
-                if (angular.isDefined(this.marker)) {
+        each(map => {
+            if (this.address.gmap) {
+                if (this.marker) {
                     this.marker.setMap(null);
                 }
                 this.marker = new this.$window.google.maps.Marker({
@@ -122,7 +132,7 @@ class AddressModalController {
                 this.$window.google.maps.event.trigger(map, 'resize');
                 map.setCenter(this.address.gmap.geometry.location);
             }
-        });
+        }, this.maps);
     }
     delete() {
         return this.contacts.deleteAddress(this.contact.id, this.address.id).then(() => {

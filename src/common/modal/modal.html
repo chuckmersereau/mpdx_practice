@@ -10,7 +10,7 @@
                 <h4 class="modal-title">{{$ctrl.title}}</h4>
             </div>
             <div class="modal-body" ng-transclude></div>
-            <div class="modal-footer">
+            <div class="modal-footer" ng-if="!$ctrl.hideFooter">
                 <div class="pull-left">
                     <button type="button" class="btn btn-danger" ng-click="$ctrl.deleteAndBlock()" ng-if="$ctrl.$attrs.delete && $ctrl.showDelete">
                         <i class="fa fa-trash"></i>

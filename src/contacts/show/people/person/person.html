@@ -1,9 +1,9 @@
 <div class="card" ng-class="{'merging': $ctrl.isMerging, 'selected' : $ctrl.person.selected_for_merge === true}"
-     ng-click="$ctrl.selectCard()">
+     ng-click="$ctrl.selectCard()" style="cursor: pointer">
     <div class="avatar" bg-img="{{$ctrl.person.avatar | stripMpdx}}"></div>
     <div class="content">
         <a class="pull-right edit" ng-click="$ctrl.openModal()" ng-if="!$ctrl.view" translate>Edit</a>
-        <h1 ng-if="!$ctrl.isMerging" ng-class="{ strike: $ctrl.person.deceased }">{{ $ctrl.person.first_name }} {{ $ctrl.person.last_name }}</h1>
+        <h1 ng-class="{ strike: $ctrl.person.deceased }">{{ $ctrl.person.first_name }} {{ $ctrl.person.last_name }}</h1>
         <dl>
             <dd ng-repeat="email in $ctrl.person.email_addresses">
                 {{ email.email }}
