@@ -90,13 +90,7 @@ class ContactsService {
             this.completeList = data;
         });
     }
-    load(reset) {
-        this.loading = true;
-        if (reset) {
-            this.page = 1;
-            this.meta = {};
-            this.data = null;
-        }
+    buildFilterParams() {
         let filterParams = this.findChangedFilters(this.contactFilter.default_params, this.contactFilter.params);
 
         // set account_list_id
@@ -119,10 +113,22 @@ class ContactsService {
         }
         filterParams.any_tags = this.contactsTags.anyTags;
 
+        return filterParams;
+    }
+    load(reset) {
+        this.loading = true;
+        if (reset) {
+            this.page = 1;
+            this.meta = {};
+            this.data = null;
+        }
+
+        const filters = this.buildFilterParams();
+
         return this.api.get({
             url: 'contacts',
             data: {
-                filters: filterParams,
+                filters: filters,
                 page: this.page,
                 per_page: 25,
                 include: 'people,addresses,people.facebook_accounts,people.phone_numbers,people.email_addresses',
@@ -257,7 +263,8 @@ class ContactsService {
     }
     hideContact(contact) {
         contact.status = 'Never Ask';
-        this.save(contact).then(() => {
+        return this.save(contact).then(() => {
+            this.completeList = reject({ id: contact.id }, this.completeList);
             this.data = reject({ id: contact.id }, this.data);
         });
     }

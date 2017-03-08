@@ -4,8 +4,10 @@
         <input class="form-control" type="text" name="number" ng-model="$ctrl.phone.number" placeholder="Phone *" ng-required="!$ctrl.deleted">
     </div>
     <div class="col-sm-4">
-        <select ng-model="$ctrl.phone.location" data-placeholder="{{ 'Select an Option *' | translate}}" ng-required="!$ctrl.deleted"
-                class="form-control" chosen>
+        <select chosen
+                ng-model="$ctrl.phone.location"
+                data-placeholder="{{ 'Select an Option *' | translate}}"
+                class="form-control">
             <option value="mobile">Mobile</option>
             <option value="home">Home</option>
             <option value="work">Work</option>

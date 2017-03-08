@@ -3,8 +3,10 @@
         <input class="form-control" type="email" name="email" ng-model="$ctrl.email.email" placeholder="{{'Email *' | translate}}" ng-required="!$ctrl.deleted">
     </div>
     <div class="col-sm-4">
-        <select class="form-control" ng-model="$ctrl.email.location" data-placeholder="{{ 'Select an Option *' | translate}}"
-                ng-required="!$ctrl.deleted" chosen>
+        <select chosen
+                class="form-control"
+                ng-model="$ctrl.email.location"
+                data-placeholder="{{ 'Select an Option *' | translate}}">
             <option value="personal" translate>Personal</option>
             <option value="work" translate>Work</option>
         </select>

@@ -105,7 +105,10 @@ class ListController {
     openExportContactsModal() {
         this.modal.open({
             template: require('./exportContacts/exportContacts.html'),
-            controller: 'exportContactsController'
+            controller: 'exportContactsController',
+            locals: {
+                selectedContactIds: this.contacts.getSelectedContactIds()
+            }
         });
     }
 }

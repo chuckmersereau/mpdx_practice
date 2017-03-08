@@ -55,7 +55,7 @@ class ContactsReconcilePartnersController {
             this.contactReconciler.fetchDuplicateContacts(true);
 
             if (!confirmAndContine) {
-                this.$state.go('home');
+                this.$state.go('contacts');
             }
         });
     }

@@ -1,12 +1,12 @@
 <div ng-if="$ctrl.view == 'minimal'" class="contact-row">
     <a ng-click="$ctrl.switchContact()" ng-class="{'active': $ctrl.selected == $ctrl.contact.id }">{{$ctrl.contact.name}}</a>
 </div>
-<div ng-if="$ctrl.view !== 'minimal'" class="contact-row">
+<div ng-if="$ctrl.view !== 'minimal'" class="contact-row" ng-click="$ctrl.toggleCheckbox()">
     <img class="avatar small" ng-src="{{$ctrl.contact.square_avatar | stripMpdx}}">
     <div class="contact-details">
         <div class="col-sm-7 main-details">
             <h4 class="name">
-                <a ui-sref="contact({contactId: $ctrl.contact.id})">{{$ctrl.contact.name}}</a>
+                <a ui-sref="contact({contactId: $ctrl.contact.id})" ng-click="$event.stopPropagation()">{{$ctrl.contact.name}}</a>
                 <i ng-class="{'icon-error-red': $ctrl.hasSendNewsletterError()}"
                       class="ci ci-letter_icon"
                       title="{{$ctrl.contact.send_newsletter | translate}}" ng-if="$ctrl.contact.send_newsletter"></i>
@@ -20,7 +20,7 @@
             </h4>
             <div class="people" ng-if="$ctrl.view !== 'task'">
                 <div ng-repeat="person in $ctrl.contact.people" ng-if="!person.deceased" class="people-single-contact">
-                    <a ui-sref="contact.people({ contactId: $ctrl.contact.id, personId: person.id})">{{person.first_name}} {{person.last_name}}</a>
+                    <a ng-click="$ctrl.people.openPeopleModal($ctrl.contact, person.id); $event.stopPropagation()">{{person.first_name}} {{person.last_name}}</a>
                     <span ng-repeat="phone_number in person.phone_numbers" ng-if="phone_number.primary && !phone_number.historic" class="phone-type phone-type-{{phone_number.location}}">
                         {{phone_number.number}}
                     </span>
@@ -54,20 +54,18 @@
                 </div>
             </div>
 
-            <a ui-sref="tasks({ filters: { contact_ids: $ctrl.contact.id } })" ng-if="$ctrl.contact.uncompleted_tasks_count > 0">
+            <a ui-sref="tasks({ filters: { contact_ids: $ctrl.contact.id } })" ng-if="$ctrl.contact.uncompleted_tasks_count > 0" ng-click="$event.stopPropagation()">
                 <span translate>Tasks</span>: {{$ctrl.contact.uncompleted_tasks_count}}
             </a>
         </div>
     </div>
     <div class="btn-group">
-        <a class="btn btn-sm btn-default" ui-sref="contact({contactId: $ctrl.contact.id})" title="{{ 'View Contact' | translate }}">
+        <a class="btn btn-sm btn-default" ui-sref="contact({contactId: $ctrl.contact.id})" title="{{ 'View Contact' | translate }}" ng-click="$event.stopPropagation()">
             <i class="fa fa-search"></i>
         </a>
-        <a class="btn btn-sm btn-default" title="{{ 'Hide Contact' | translate }}" ng-if="$ctrl.contact.status !== 'Never Ask' && $ctrl.view !== 'task'" ng-click="$ctrl.hide({ contactId: $ctrl.contact.id })">
+        <a class="btn btn-sm btn-default" title="{{ 'Hide Contact' | translate }}" ng-if="$ctrl.contact.status !== 'Never Ask' && $ctrl.view !== 'task'"
+           ng-click="$ctrl.hide({ contactId: $ctrl.contact.id }); $event.stopPropagation()">
             <i class="fa fa-eye-slash"></i>
         </a>
-        <button class="btn btn-sm btn-default" ng-click="$ctrl.toggleCheckbox()">
-            <input type="checkbox" ng-model="$ctrl.contact.selected" ng-click="$ctrl.stopPropagation($event)" ng-if="$ctrl.view !== 'task'"/>
-        </button>
     </div>
 </div>

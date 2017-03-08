@@ -1,7 +1,12 @@
 class ContactListItemController {
     contact;
-    constructor($state, users) {
+    people;
+    constructor(
+        $state,
+        people, users
+    ) {
         this.$state = $state;
+        this.people = people;
 
         this.current_currency_symbol = users.current.currency_symbol;
     }
@@ -27,9 +32,6 @@ class ContactListItemController {
     }
     toggleCheckbox() {
         this.contact.selected = !this.contact.selected;
-    }
-    stopPropagation(e) {
-        e.stopPropagation();
     }
 }
 

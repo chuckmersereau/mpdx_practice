@@ -43,10 +43,10 @@
     </div>
     <div class="row page-controls">
         <div class="col-sm-5">
-            <span ng-if="$ctrl.contacts.meta.to && $ctrl.contacts.meta.pagination.total_count">
-                <span  translate>Showing</span>
-                <strong>{{$ctrl.contacts.meta.to}}</strong>
-                <span translate>of</span>
+            <span ng-if="!$ctrl.contacts.loading">
+                <translate>Showing</translate>
+                <strong>{{$ctrl.contacts.meta.to || 0}}</strong>
+                <translate>of</translate>
                 <strong>{{$ctrl.contacts.meta.pagination.total_count}}</strong>
             </span>
             <span class="label label-primary" ng-if="$ctrl.contacts.getSelectedContacts().length > 0">
@@ -56,27 +56,41 @@
         </div>
     </div>
 </div>
-<div ng-if="$ctrl.contacts.data.length === 0 && !$ctrl.contacts.loading" class="contacts-empty">
-    <div ng-show="$ctrl.contacts.meta.has_contacts">
+<div ng-if="!$ctrl.contacts.meta.to && !$ctrl.contacts.loading" class="contacts-empty">
+    <div ng-if="$ctrl.contacts.completeList.length > 0">
         <p>
-            <strong translate>You have {{$ctrl.accounts.current.contacts.active.length}} active contacts</strong>
-            (<span translate>{{$ctrl.accounts.current.contacts.length}} total contacts</span>)
+            <strong translate>You have {{$ctrl.contacts.completeList.length}} total contacts</strong>.
             <span translate>Unfortunately none of them match your current search or filters.</span>
         </p>
         <a ng-click="$ctrl.resetFilters()" class="btn btn-primary" translate>Reset All Search Filters</a>
         <a ng-click="$ctrl.contacts.openNewContactModal()" class="btn btn-secondary" translate>Add New Contact</a>
     </div>
-    <div ng-hide="$ctrl.contacts.meta.has_contacts">
+    <div ng-if="$ctrl.contacts.completeList.length === 0">
         <p translate>
             Looks like you haven't added any contacts yet. You can add one or import some from another service.
         </p>
-        <a ui-sref="accounts" class="btn btn-primary" translate>Import Contacts</a>
+        <a ui-sref="preferences.imports" class="btn btn-primary" translate>Import Contacts</a>
         <a ng-click="$ctrl.contacts.openNewContactModal()" class="btn btn-secondary" translate>Add New Contact</a>
     </div>
 </div>
-<div infinite-scroll="$ctrl.loadMoreContacts()">
-    <contacts-list-item ng-if="$ctrl.view !== 'minimal'" view="{{$ctrl.view}}" ng-repeat="contact in $ctrl.contacts.data track by contact.id" hide="$ctrl.hideContact(contact)" contact="contact" id="contact_{{contact.id}}" data-hook="contact" selected="$ctrl.selected"></contacts-list-item>
-    <contacts-list-item ng-if="$ctrl.view === 'minimal'" view="{{$ctrl.view}}" ng-repeat="contact in $ctrl.contacts.completeList | orderBy: 'name' track by contact.id" hide="$ctrl.hideContact(contact)" contact="contact" id="contact_{{contact.id}}" data-hook="contact" selected="$ctrl.selected"></contacts-list-item>
+<div ng-if="$ctrl.contacts.data.length > 0 || $ctrl.contacts.loading" infinite-scroll="$ctrl.loadMoreContacts()">
+    <contacts-list-item ng-if="$ctrl.view !== 'minimal'"
+                        view="{{$ctrl.view}}"
+                        ng-repeat="contact in $ctrl.contacts.data track by contact.id" hide="$ctrl.hideContact(contact)"
+                        contact="contact"
+                        id="contact_{{contact.id}}"
+                        data-hook="contact"
+                        selected="$ctrl.selected"
+                        ng-class="{ selected: contact.selected }"></contacts-list-item>
+    <contacts-list-item ng-if="$ctrl.view === 'minimal'"
+                        view="{{$ctrl.view}}"
+                        ng-repeat="contact in $ctrl.contacts.completeList | orderBy: 'name' track by contact.id"
+                        hide="$ctrl.hideContact(contact)"
+                        contact="contact"
+                        id="contact_{{contact.id}}"
+                        data-hook="contact"
+                        selected="$ctrl.selected"
+                        ng-class="{ selected: contact.selected }"></contacts-list-item>
     <div ng-show="$ctrl.contacts.loading" class="loading-spinner">
         <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
         <span class="sr-only" translate>Loading</span>

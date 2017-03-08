@@ -64,7 +64,9 @@ class Api {
         attempts = 0,
         overrideGetAsPost = false,
         type = null,
-        doSerialization = true
+        doSerialization = true,
+        doDeSerialization = true,
+        responseType = ''
     }) {
         if (!promise) {
             promise = this.$q.defer();
@@ -100,8 +102,12 @@ class Api {
             headers['X-HTTP-Method-Override'] = 'POST';
         }
         //set jsonapi content type
-        headers['Content-Type'] = 'application/vnd.api+json';
-        headers['Accept'] = 'application/vnd.api+json';
+        if (!headers['Content-Type']) {
+            headers['Content-Type'] = 'application/vnd.api+json';
+        }
+        if (!headers.Accept) {
+            headers.Accept = 'application/vnd.api+json';
+        }
 
         const request = {
             method: method,
@@ -110,6 +116,7 @@ class Api {
             params: params,
             headers: headers,
             paramSerializer: '$httpParamSerializerJQLike',
+            responseType: responseType,
             transformRequest: (data) => {
                 let params = angular.copy(jsonApiParams);
                 if (method === 'put' || method === 'post' || method === 'delete') {
@@ -140,7 +147,7 @@ class Api {
                 }
             },
             transformResponse: appendTransform(this.$http.defaults.transformResponse, (data) => {
-                if (doSerialization) {
+                if (doDeSerialization) {
                     if (isArray(data)) {
                         return map(item => deserialize(item), data);
                     } else {
