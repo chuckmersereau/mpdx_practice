@@ -85,7 +85,12 @@
     </div>
 
     <div ng-show="!$ctrl.loading">
-        <div ng-if="$ctrl.type === 'partner'" class="progress">
+        <div class="panel panel-default" ng-if="$ctrl.contributions.data.currencies.length == 0">
+            <div class="panel-footer" translate>
+                You have received no donations in the last thirteen months
+            </div>
+        </div>
+        <div ng-if="$ctrl.type === 'partner' && $ctrl.contributions.data.currencies.length > 0" class="progress">
             <div ng-repeat="currency in $ctrl.contributions.data.currencies" class="progress-bar color-{{$index % 6}}" style="width: {{$ctrl.percentage(currency.totals.year_converted) }}%" data-template-url="reports/contributions/popovers/progress.tpl.html" data-trigger="hover" data-placement="bottom" bs-popover>
                 <span ng-if="$ctrl.percentage(currency.totals.year_converted) > 7">
                     {{currency.code}} ({{currency.symbol_native}})
@@ -105,11 +110,11 @@
                                     <div>{{year}}</div>
                                 </th>
                                 <th>
-                                    <div></div>
+                                    <div>&nbsp;</div>
                                 </th>
                             </tr>
                             <tr>
-                                <th translate>Partner</th>
+                                <th class="col-md-3" translate>Partner</th>
                                 <th ng-if="$ctrl.expanded" translate>Status</th>
                                 <th ng-if="$ctrl.expanded" translate>Pledge</th>
                                 <th ng-if="$ctrl.expanded" translate>Avg</th>
@@ -119,7 +124,7 @@
                                         {{date.format('MMM')}}
                                     </span>
                                 </th>
-                                <th class="text-right" translate>Total</th>
+                                <th class="col-md-1 text-right" translate>Total</th>
                             </tr>
                         </thead>
                         <tbody>

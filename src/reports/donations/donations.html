@@ -20,14 +20,13 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th class="date" translate>Date</th>
-                            <th translate>Partner</th>
-                            <th class="text-right" translate>Amount</th>
-                            <th></th>
-                            <th ng-if="$ctrl.designationAccounts.data.length > 0" translate>Designation</th>
-                            <th translate>Method</th>
-                            <th translate>Appeal</th>
-                            <th></th>
+                            <th class="col-md-2 date" translate>Date</th>
+                            <th class="col-md-3" translate>Partner</th>
+                            <th class="col-md-1 text-right" translate>Amount</th>
+                            <th class="col-md-3" ng-if="$ctrl.designationAccounts.data.length > 0" translate>Designation</th>
+                            <th class="col-md-1" translate>Method</th>
+                            <th class="col-md-1" translate>Appeal</th>
+                            <th class="col-md-1"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -37,22 +36,13 @@
                             <td ng-if="!$ctrl.contact">
                                 <a ui-sref="contact({ contactId: donation.contact.id })">{{ donation.contact.name }} ({{ donation.donor_account.account_number }})</a>
                             </td>
-                            <td class="text-right">{{ donation.amount }}</td>
-                            <td>{{ donation.currency }}</td>
+                            <td class="text-right">{{ donation.amount }} {{ donation.currency }}</td>
                             <td ng-if="$ctrl.designationAccounts.data.length > 0">{{ donation.designation_account.name }} ({{ donation.designation_account.designation_number }})</td>
                             <td>{{ donation.payment_method }}</td>
                             <td>{{ donation.appeal.name }}</td>
                             <td class="text-right"><a ng-click="$ctrl.openDonationModal(donation)"><i class="fa fa-pencil-square-o"></i></a></td>
                         </tr>
                     </tbody>
-                    <tfoot ng-if="!$ctrl.contact">
-                        <tr class="sum" ng-repeat="d in $ctrl.donationTotals | toArray">
-                            <td></td>
-                            <td class="right"><strong translate>Total {{d.currency}} Donations {{d.count}}</strong></td>
-                            <td class="right">{{d.amount}} {{$ctrl.currency.list[d.currency].symbol}}</td>
-                            <td colspan="4"></td>
-                        </tr>
-                    </tfoot>
                 </table>
             </div>
             <div class="panel-footer" ng-if="$ctrl.donationsList.length == 0" translate>

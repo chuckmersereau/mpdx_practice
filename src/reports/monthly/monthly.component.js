@@ -1,7 +1,3 @@
-import zipObject from 'lodash/fp/zipObject';
-import sum from 'lodash/fp/sum';
-import indexOf from 'lodash/fp/indexOf';
-import map from 'lodash/fp/map';
 class MonthlyController {
     api;
     constructor(
@@ -37,20 +33,19 @@ class MonthlyController {
             this.total_currency_symbol = data.total_currency_symbol;
 
             const availableDonationTypes = ['received', 'likely', 'unlikely'];
-
             this.donationsByType = _(data.expected_donations)
                 .groupBy('type')
-                .defaults(zipObject(availableDonationTypes))
+                .defaults(_.zipObject(availableDonationTypes))
                 .map((donationsForType, type) => {
                     return {
                         type: type,
-                        order: indexOf(availableDonationTypes, type),
+                        order: _.indexOf(availableDonationTypes, type),
                         donations: donationsForType,
-                        sum: sum(map(donationsForType, 'converted_amount'))
+                        sum: _.sum(_.map(donationsForType, 'converted_amount'))
                     };
                 })
                 .value();
-            this.sumOfAllCategories = sum(map(this.donationsByType, 'sum'));
+            this.sumOfAllCategories = _.sum(_.map(this.donationsByType, 'sum'));
         }).catch(() => {
             this.errorOccurred = true;
         });
@@ -63,7 +58,7 @@ class MonthlyController {
         return donationType.sum / this.sumOfAllCategories * 100;
     }
     isOpen(index) {
-        return indexOf(this.activePanels, index) >= 0;
+        return _.indexOf(this.activePanels, index) >= 0;
     }
 }
 
