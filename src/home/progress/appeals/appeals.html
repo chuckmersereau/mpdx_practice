@@ -1,40 +1,14 @@
-<div class="">
-    <div class="panel panel-default dash-panel">
-        <div class="panel-heading" translate>
-            Appeals
-        </div>
-        <div class="panel-body">
-            <unavailable-message></unavailable-message>
-            <!--<div ng-class="{'show-all': show_all}">-->
-                <!--<a ng-repeat="appeal in $ctrl.appeals | orderBy: 'created_at': true"-->
-                   <!--class="appeal-single {{ $ctrl.progressClass(appeal) }}"-->
-                   <!--ui-sref="appeals({ appealId: appeal.id})">-->
-                    <!--<div class="dash-stat">-->
-                <!--<span class="progress-total-donations count-big">-->
-                    <!--{{ $ctrl.donationAggregates(appeal.donations).sum | currency : current_currency_symbol : 0 }}-->
-                <!--</span>-->
-                        <!--/{{appeal.amount | currency : current_currency_symbol : 0}}-->
-                    <!--</div>-->
-                    <!--<div class="dash-progress">-->
-                        <!--<div class="progress-bar"-->
-                             <!--ng-style="{'width': $ctrl.percentComplete(appeal) + '%'}"></div>-->
-                        <!--<span class="progress-count"-->
-                              <!--ng-class="{'progress-count-inside': $ctrl.percentComplete(appeal) > 80}">-->
-                      <!--{{$ctrl.percentComplete(appeal)}}%-->
-                <!--</span>-->
-                    <!--</div>-->
-                    <!--{{appeal.name}}-->
-                <!--</a>-->
-            <!--</div>-->
-            <!--<a href="" class="see-all" ng-show="appeals.length > 2 && !show_all" ng-click="show_all = true">-->
-                <!--<i class="fa fa-plus-square-o"></i> <span translate>See all {{$ctrl.appeals.length}} Appeals</span>-->
-            <!--</a>-->
-            <!--<a href="" class="see-all" ng-show="appeals.length > 2 && show_all" ng-click="show_all = false">-->
-                <!--<i class="fa fa-minus-square-o"></i> <span translate>See less appeals</span>-->
-            <!--</a>-->
-            <!--<div class="seemore">-->
-                <!--<button ng-click="$ctrl.newAppeal()" class="btn btn-primary btn-sm" translate>Create New Appeal</button>-->
-            <!--</div>-->
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <i class="fa fa-money"></i>
+        <translate>Appeals</translate>
+    </div>
+    <div class="panel-body statistics">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3>{{$ctrl.appeals.list.length || 0}}</h3>
+                <strong translate>Started</strong>
+            </div>
         </div>
     </div>
 </div>

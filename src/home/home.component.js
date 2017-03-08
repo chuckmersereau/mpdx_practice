@@ -10,9 +10,9 @@ class HomeController {
         this.$log = $log;
         this.$q = $q;
         this.accounts = accounts;
-        this.blockUI = blockUI.instances.get('homeMid');
         this.contacts = contacts;
         this.tasksService = tasksService;
+        this.blockUI = blockUI.instances.get('home');
         this.users = users;
 
         this.blockUI.start();
@@ -30,22 +30,23 @@ class HomeController {
             '58496bf1903360069817816c'
         ]);
 
-        $rootScope.$on('accountListUpdated', () => {
-            this.blockUI.start();
-            this.$q.all([
-                this.tasksService.getAnalytics(true),
-                this.contacts.getAnalytics(true)
-            ]).then(() => {
-                this.blockUI.stop();
-            });
+        this.watcher = $rootScope.$on('accountListUpdated', () => {
+            this.load();
         });
     }
     $onInit() {
+        this.load();
+    }
+    $onDestroy() {
+        this.watcher();
+    }
+    load() {
+        this.blockUI.start();
         this.$q.all([
-            this.contacts.getAnalytics(),
-            this.tasksService.getAnalytics()
+            this.tasksService.getAnalytics(true),
+            this.contacts.getAnalytics(true)
         ]).then(() => {
-            this.blockUI.stop();
+            this.blockUI.reset();
         });
     }
 }

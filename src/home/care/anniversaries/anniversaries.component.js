@@ -1,4 +1,4 @@
-class anniversariesController {
+class AnniversariesController {
     contacts;
 
     constructor(
@@ -10,12 +10,11 @@ class anniversariesController {
 
 }
 
-const anniversariesComponent = {
-    controller: anniversariesController,
+const Anniversaries = {
+    controller: AnniversariesController,
     template: require('./anniversaries.html')
 };
 
 
-export default angular.module('mpdx.common.anniversaries', [])
-    .component('anniversaries', anniversariesComponent).name;
-
+export default angular.module('mpdx.home.care.anniversaries', [])
+    .component('anniversaries', Anniversaries).name;

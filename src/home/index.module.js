@@ -4,7 +4,7 @@ import component from './home.component';
 import connect from './connect/connect.component';
 import donationChart from './donationsSummaryChart/donationsSummaryChart.directive';
 import progress from './progress/index.module';
-import welcomeHeader from './welcomeHeader/welcomeHeader.component';
+import welcome from './welcome/welcome.component';
 
 export default angular.module('mpdx.home', [
     care,
@@ -13,5 +13,5 @@ export default angular.module('mpdx.home', [
     connect,
     donationChart,
     progress,
-    welcomeHeader
+    welcome
 ]).name;

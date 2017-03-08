@@ -7,7 +7,7 @@ class CareController {
         this.tasksService = tasksService;
     }
     addNewsletter() {
-        this.tasksService.openNewsletterModal({});
+        this.tasksService.openNewsletterModal();
     }
 }
 const Care = {

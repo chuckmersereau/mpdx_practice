@@ -2017,7 +2017,7 @@ body.google_integrations_controller {
 
 #donations_summary_chart {
     border: 1px solid #ddd;
-    border-radius: 5px;
+    margin-bottom: 20px;
 }
 #dash-progress {
     .page-filters {
@@ -2234,21 +2234,6 @@ appeals-list .show-all {
 .count-big {
     font-size: 36px;
     font-weight: 500;
-}
-.progress-stat {
-    display: inline-block;
-    margin-right: 1em;
-}
-.progress-box-title {
-    text-transform: uppercase;
-    font-family: $brand-font;
-    font-weight: 600;
-    font-size: 16px;
-    i.fa {
-        margin-right: 5px;
-        color: $color-blue-deep;
-        font-size: 18px;
-    }
 }
 .plain-list {
     list-style: none;

@@ -317,15 +317,25 @@ class ContactsService {
             _.each(this.data, contact => _.union(this.donorAccounts, contact.donor_accounts));
         }
     }
-    getAnalytics() {
-        if (this.analytics) {
+    getAnalytics(reset = false) {
+        if (this.analytics && !reset) {
             return this.$q.resolve(this.analytics);
         }
-        return this.api.get('contacts/analytics', { include: 'anniversaries_this_week,birthdays_this_week', filter: {account_list_id: this.api.account_list_id} }).then((data) => {
-            this.$log.debug('contacts/analytics', data);
-            this.analytics = data;
-            return this.analytics;
-        });
+        return this.api.get('contacts/analytics',
+            { include:
+                'anniversaries_this_week,' +
+                'anniversaries_this_week.facebook_accounts,' +
+                'anniversaries_this_week.twitter_accounts,' +
+                'anniversaries_this_week.email_addresses,' +
+                'birthdays_this_week,' +
+                'birthdays_this_week.facebook_accounts,' +
+                'birthdays_this_week.twitter_accounts,' +
+                'birthdays_this_week.email_addresses',
+                filter: {account_list_id: this.api.account_list_id} }).then((data) => {
+                    this.$log.debug('contacts/analytics', data);
+                    this.analytics = data;
+                    return this.analytics;
+                });
     }
     merge(winnersAndLosers) {
         return this.api.post({url: `contacts/merges/bulk`, data: winnersAndLosers, type: 'contacts'}).then((data) => {

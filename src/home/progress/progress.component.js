@@ -12,7 +12,7 @@ class progressController {
         this.$filter = $filter;
         this.accounts = accounts;
         this.api = api;
-        this.blockUI = blockUI.instances.get('dashboardProgress');
+        this.blockUI = blockUI.instances.get('homeProgress');
         this.users = users;
 
         this.endDate = moment().endOf('week').add(1, 'days');

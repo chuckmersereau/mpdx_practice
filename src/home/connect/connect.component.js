@@ -1,21 +1,24 @@
 class ConnectController {
-    tasksFilter;
+    $state;
     tasksService;
 
     constructor(
         $state,
-        tasksService, tasksFilter
+        tasksService
     ) {
         this.$state = $state;
         this.tasksService = tasksService;
-        this.tasksFilter = tasksFilter;
+        this.limit = 5;
     }
     addTask() {
         this.tasksService.openModal({});
     }
-    go(type) {
-        this.tasksFilter.params.activity_type = type;
-        this.$state.go('tasks');
+    total() {
+        if (this.tasksService.analytics && this.tasksService.analytics.tasks_overdue_or_due_today_counts) {
+            return _.sumBy(this.tasksService.analytics.tasks_overdue_or_due_today_counts, 'count');
+        } else {
+            return 0;
+        }
     }
 }
 const Connect = {

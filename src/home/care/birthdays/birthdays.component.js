@@ -1,4 +1,4 @@
-class birthdaysController {
+class BirthdaysController {
     contacts;
 
     constructor(contacts) {
@@ -7,10 +7,10 @@ class birthdaysController {
     }
 }
 
-const birthdaysComponent = {
-    controller: birthdaysController,
+const Birthdays = {
+    controller: BirthdaysController,
     template: require('./birthdays.html')
 };
 
-export default angular.module('mpdx.common.birthdays', [])
-    .component('birthdays', birthdaysComponent).name;
+export default angular.module('mpdx.home.care.birthdays', [])
+    .component('birthdays', Birthdays).name;

@@ -1,6 +1,6 @@
 class FacebookLinkController {
     $onInit() {
-        this.url = `http://www.facebook.com/${this.facebookAccount.username}`;
+        this.url = `http://www.facebook.com/${this.facebookAccount.username || this.facebookAccount.remote_id}`;
     }
 }
 

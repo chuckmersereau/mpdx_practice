@@ -1,17 +1,21 @@
 <h4 class="title" translate>Birthdays This Week</h4>
-<ul class="plain-list birthdays-list" ng-if="$ctrl.contacts.analytics.birthdays_this_week.length">
-    <li ng-repeat="person in $ctrl.contacts.analytics.birthdays_this_week track by person.id | limitTo: $ctrl.limit">
-        <a href="/person/{{ person.id }}">{{person.first_name}} {{person.last_name}}</a>
+<ul class="plain-list" ng-if="$ctrl.contacts.analytics.birthdays_this_week.length">
+    <li ng-repeat="person in $ctrl.contacts.analytics.birthdays_this_week | limitTo: $ctrl.limit">
+        <a href="/person/{{ person.id }}">
+            {{person.first_name}} {{person.last_name}}
+        </a>
         {{ person.birthday_month }}-{{ person.birthday_day }}
-        <facebook-link facebook-account="person.facebook_account"></facebook-link>
-        <twitter-link twitter-account="person.twitter_account"></twitter-link>
-        <email-link email-address="person.primary_email_address"></email-link>
+        <facebook-link facebook-account="person.facebook_accounts[0]" ng-if="person.facebook_accounts[0]"></facebook-link>
+        <twitter-link twitter-account="person.twitter_accounts[0]" ng-if="person.twitter_accounts[0]"></twitter-link>
+        <email-link email-address="person.email_addresses[0]" ng-if="person.email_addresses[0]"></email-link>
+    </li>
+    <li ng-if="$ctrl.contacts.analytics.birthdays_this_week.length > $ctrl.limit">
+        <a ng-click="$ctrl.limit = $ctrl.contacts.analytics.birthdays_this_week.length">
+            <i class="fa fa-plus-square-o"></i>
+            <translate>See all {{ $ctrl.contacts.analytics.birthdays_this_week.length }} Birthdays</translate>
+        </a>
     </li>
 </ul>
-<a ng-click="$ctrl.limit = $ctrl.contacts.analytics.birthdays_this_week.length" class="see-all see-all-birthdays" ng-if="$ctrl.contacts.analytics.birthdays_this_week.length > 5">
-    <i class="fa fa-plus-square-o"></i>
-    <translate>See all {{ $ctrl.contacts.analytics.birthdays_this_week.length }} Birthdays</translate>
-</a>
-<span ng-if="$ctrl.contacts.analytics.birthdays_this_week.length === 0" translate>
-    No birthdays this week!
-</span>
+<p ng-if="$ctrl.contacts.analytics.birthdays_this_week.length === 0" translate>
+    No birthdays this week
+</p>

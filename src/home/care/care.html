@@ -1,32 +1,13 @@
-<div class="panel panel-default dash-panel">
+<div class="panel panel-default">
     <div class="panel-heading">
-        <span translate>Care</span>
-        <a class="badge badge-blue badge-right-well" ng-click="$ctrl.addNewsletter()" translate>Log Newsletter</a>
+        <a class="btn btn-secondary btn-xs pull-right" ng-click="$ctrl.addNewsletter()">
+            <translate>Log Newsletter</translate>
+        </a>
+        <translate>Care</translate>
     </div>
     <div class="panel-body">
-        <div class="dash-stat">
-            <div ng-if="$ctrl.tasksService.last_electronic_newsletter_completed_at || $ctrl.tasksService.last_physical_newsletter_completed_at">
-                <span ng-if="$ctrl.tasksService.last_electronic_newsletter_completed_at == $ctrl.tasksService.last_physical_newsletter_completed_at" translate>
-                    <translate>It has been</translate>
-                    <span class="count-big">{{ $ctrl.tasksService.last_electronic_newsletter_completed_at | timeAgo }}</span>
-                    <translate>since your last email and physical newsletter.</translate>
-                </span>
-                <span ng-if="$ctrl.tasksService.last_electronic_newsletter_completed_at > $ctrl.tasksService.last_physical_newsletter_completed_at" translate>
-                    <translate>It has been</translate>
-                    <span class="count-big">{{ $ctrl.tasksService.last_electronic_newsletter_completed_at | timeAgo }}</span>
-                    <translate>since your last email newsletter.</translate>
-                </span>
-                <span ng-if="$ctrl.tasksService.last_electronic_newsletter_completed_at < $ctrl.tasksService.last_physical_newsletter_completed_at" translate>
-                    <translate>It has been</translate>
-                    <span class="count-big">{{ $ctrl.tasksService.last_electronic_newsletter_completed_at | timeAgo }}</span>
-                    <translate>since your last physical newsletter.</translate>
-                </span>
-            </div>
-            <div ng-if="!$ctrl.$ctrl.tasksService.last_electronic_newsletter_completed_at && !$ctrl.tasksService.last_physical_newsletter_completed_at" translate>
-                You have never logged a physical or email newsletter.
-            </div>
-        </div>
         <birthdays></birthdays>
         <anniversaries></anniversaries>
+        <newsletters></newsletters>
     </div>
 </div>

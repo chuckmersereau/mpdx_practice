@@ -1,24 +1,38 @@
-
-<div class="well">
-    <div class="progress-box-title">
+<div class="panel panel-default">
+    <div class="panel-heading">
         <i class="fa fa-mobile"></i>
-        <span translate>Phone Dials</span>
+        <translate>Phone Calls</translate>
     </div>
-    <div class="progress-stat">
-        <span class="count-big">{{$ctrl.accounts.analytics.phone.attempted + $ctrl.accounts.analytics.phone.completed}}</span>
-        <span translate>Outgoing</span>
+    <div class="panel-body statistics">
+        <div class="row">
+            <div class="col-xs-4">
+                <h3>{{($ctrl.accounts.analytics.phone.attempted + $ctrl.accounts.analytics.phone.completed) || 0}}</h3>
+                <strong translate>Outgoing</strong>
+            </div>
+            <div class="col-xs-4">
+                <h3>{{($ctrl.accounts.analytics.phone.completed + $ctrl.accounts.analytics.phone.received) || 0}}</h3>
+                <strong translate>Talked To</strong>
+            </div>
+            <div class="col-xs-4">
+                <h3>{{$ctrl.accounts.analytics.phone.appointments || 0}}</h3>
+                <strong translate>Appts Produced</strong>
+            </div>
+        </div>
     </div>
-    <div class="progress-stat">
-        <span class="count-big">{{$ctrl.accounts.analytics.phone.completed + $ctrl.accounts.analytics.phone.received}}</span>
-        <span translate>Talked To</span>
+    <div class="panel-footer statistics">
+        <div class="row">
+            <div class="col-xs-4">
+                <strong translate>Completed</strong><br>
+                {{$ctrl.accounts.analytics.phone.completed || 0}}
+            </div>
+            <div class="col-xs-4">
+                <strong translate>Attempted</strong><br>
+                {{$ctrl.accounts.analytics.phone.attempted || 0}}
+            </div>
+            <div class="col-xs-4">
+                <strong translate>Received</strong><br>
+                {{$ctrl.accounts.analytics.phone.received || 0}}
+            </div>
+        </div>
     </div>
-    <div class="progress-stat">
-        <span class="count-big">{{$ctrl.accounts.analytics.phone.appointments}}</span>
-        <span translate>Appointments Produced</span>
-    </div>
-    <ul class="plain-list">
-        <li><span translate>Completed</span>: {{$ctrl.accounts.analytics.phone.completed}}</li>
-        <li><span translate>Attempted</span>: {{$ctrl.accounts.analytics.phone.attempted}}</li>
-        <li><span translate>Received</span>: {{$ctrl.accounts.analytics.phone.received}}</li>
-    </ul>
 </div>

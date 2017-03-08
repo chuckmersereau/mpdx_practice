@@ -1,33 +1,41 @@
-
-<div class="well">
-    <div class="progress-box-title">
-        <i class="fa fa-desktop"></i>
-        <span translate>Electronic Contacts</span>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <i class="fa fa-comment-o"></i>
+        <translate>Electronic Messages</translate>
     </div>
-    <div class="progress-stat">
-        <span class="count-big">{{$ctrl.accounts.analytics.electronic.sent}}</span>
-        <span translate>Sent</span>
+    <div class="panel-body statistics">
+        <div class="row">
+            <div class="col-xs-4">
+                <h3>{{$ctrl.accounts.analytics.electronic.sent || 0}}</h3>
+                <strong translate>Sent</strong>
+            </div>
+            <div class="col-xs-4">
+                <h3>{{$ctrl.accounts.analytics.electronic.received || 0}}</h3>
+                <strong translate>Received</strong>
+            </div>
+            <div class="col-xs-4">
+                <h3>{{$ctrl.accounts.analytics.electronic.appointments || 0}}</h3>
+                <strong translate>Appts Produced</strong>
+            </div>
+        </div>
     </div>
-    <div class="progress-stat">
-        <span class="count-big">{{$ctrl.accounts.analytics.electronic.received}}</span>
-        <span translate>Received</span>
+    <div class="panel-footer statistics">
+        <div class="row">
+            <div class="col-xs-4">
+                <strong translate>Email</strong><br>
+                {{$ctrl.accounts.analytics.email.sent || 0}} <span translate>Sent</span> /
+                {{$ctrl.accounts.analytics.email.received || 0}} <span translate>Received</span>
+            </div>
+            <div class="col-xs-4">
+                <strong translate>Facebook</strong><br>
+                {{$ctrl.accounts.analytics.facebook.sent || 0}} <span translate>Sent</span> /
+                {{$ctrl.accounts.analytics.facebook.received || 0}} <span translate>Received</span>
+            </div>
+            <div class="col-xs-4">
+                <strong translate>Text Message</strong><br>
+                {{$ctrl.accounts.analytics.text_message.sent || 0}} <span translate>Sent</span> /
+                {{$ctrl.accounts.analytics.text_message.received || 0}} <span translate>Received</span>
+            </div>
+        </div>
     </div>
-    <div class="progress-stat">
-        <span class="count-big">{{$ctrl.accounts.analytics.electronic.appointments}}</span>
-        <span translate>Appointments Produced</span>
-    </div>
-    <ul class="plain-list">
-        <li>
-            <span translate>Email</span>: {{$ctrl.accounts.analytics.email.sent}} <span translate>Sent</span> /
-            {{$ctrl.accounts.analytics.email.received}} <span translate>Received</span>
-        </li>
-        <li>
-            <span translate>Facebook</span>: {{$ctrl.accounts.analytics.facebook.sent}} <span translate>Sent</span> /
-            {{$ctrl.accounts.analytics.facebook.received}} <span translate>Received</span>
-        </li>
-        <li>
-            <span translate>Text Message</span>: {{$ctrl.accounts.analytics.textMessage.sent}} <span translate>Sent</span> /
-            {{$ctrl.accounts.analytics.textMessage.received}} <span translate>Received</span>
-        </li>
-    </ul>
 </div>
