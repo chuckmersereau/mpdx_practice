@@ -3,18 +3,18 @@
     <i class="fa fa-undo"></i> <span translate>Reset Filters</span>
 </a>
 
-<ul>
-    <tasks-sort></tasks-sort>
-    <tasks-tags></tasks-tags>
-    <li class="filters_section">
+<div class="filter">
+    <tasks-sort class="filter--filtergroup"></tasks-sort>
+    <tasks-tags class="filter--filtergroup"></tasks-tags>
+    <div class="filter--filtergroup">
         <form ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }">
-            <span class="filters_title menu_item ci ci-filter_icon" translate>Filters</span>
+            <span class="filter--filtergroup_title ci ci-filter_icon" translate>Filters</span>
             <div class="filter_hint">
                 <span  translate>Click the</span>
                 <i class="ci ci-neg_filter_icon"></i>
                 <span translate>to look up all tasks who do not have that filter.</span>
             </div>
-            <ul class="filters">
+            <ul class="filter--filtergroup_filters list-unstyled">
                 <li class="filter_set" ng-repeat="filter in $ctrl.tasksFilter.data | orderBy: 'id'" ng-class="{ 'opened': filter.opened }">
                     <label id="filter_{{filter.name}}" class="filter_title" ng-click="filter.opened = !filter.opened">{{filter.title}}</label>
                     <div class="filter_set_inner">
@@ -109,5 +109,5 @@
                 </li>
             </ul>
         </form>
-    </li>
-</ul>
+    </div>
+</div>

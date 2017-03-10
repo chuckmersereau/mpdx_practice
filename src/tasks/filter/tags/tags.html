@@ -1,5 +1,4 @@
-<li>
-  <span class="tags_title menu_item">
+  <span class="filter--filtergroup_title tags_title">
     <span translate>Tags</span>
     <ul class="nav nav-pills pull-right">
       <li ng-class="{ 'active': $ctrl.tasksTags.anyTags }">
@@ -11,8 +10,7 @@
     </ul>
   </span>
   <div class="filter_hint" translate>Click a tag twice to look up all contacts who do not have that tag.</div>
-  <ul class="left_tag_list tags" ng-class="{'show_all_tags': $ctrl.showAllTags}">
-    <li>
+  <div class="left_tag_list tags" ng-class="{'show_all_tags': $ctrl.showAllTags}">
       <span class="tag"
             ng-class="{ 'selected': !$ctrl.tasksTags.isTagActive(tag), 'rejected': $ctrl.tasksTags.isTagRejected(tag) }"
             ng-click="$ctrl.tasksTags.tagClick(tag, $event)"
@@ -40,6 +38,4 @@
           </div>
         </div>
       </script>
-    </li>
-  </ul>
-</li>
+  </div>

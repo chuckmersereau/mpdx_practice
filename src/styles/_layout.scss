@@ -768,52 +768,11 @@ div.name {font-size: 14px; margin-bottom: 4px;}
     }
 }
 
-.sort_options {
-    margin-top: .5em !important;
-    margin-bottom: 1em !important;
-    font-size: 16px;
-    font-family: $brand-font;
-    li.option {
-        padding-left: 8px;
-        a {
-            color: $base-text-color;
-        }
-        a.inbox:before,
-        a.starred:before {
-            content: "\f114";
-            display: block;
-            float: left;
-            font-family: "FontAwesome";
-            margin-right: 5px;
-            transition: .2s all;
-            font-size: 12px;
-            font-weight: 100;
-            line-height: 28px;
-        }
-        a.starred:before {
-            content: "\f006";
-        }
-    }
-    li.option.selected {
-        a.inbox:before {
-            content: "\f07c";
-        }
-        a.starred:before {
-            content: "\f005";
-        }
-        a {
-            color: $color-blue-deep;
-            font-weight: bold;
-            text-decoration: none;
-        }
-    }
-}
 
 .bootstrap-tagsinput,
 .tags {
     line-height: 1.3em;
     .tag {
-        font-family: "freight-sans-pro", "Helvetica Neue", Arial, Helvetica, sans-serif;
         font-weight: bold;
         background: #4A90E2;
         border: 0;

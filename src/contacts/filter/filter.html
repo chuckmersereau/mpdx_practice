@@ -4,17 +4,17 @@
     <i class="fa fa-undo"></i> <span translate>Reset Filters</span>
 </a>
 
-<ul>
-    <contacts-tags></contacts-tags>
-    <li class="filters_section">
+<div class="filter">
+    <contacts-tags class="filter--filtergroup"></contacts-tags>
+    <div class="filters_section filter--filtergroup">
         <form ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }">
-            <span class="filters_title menu_item ci ci-filter_icon" translate>Filters</span>
+            <span class="filter--filtergroup_title" translate>Filters</span>
             <div class="filter_hint">
                 <span  translate>Click the</span>
                 <i class="ci ci-neg_filter_icon"></i>
                 <span translate>to look up all contacts who do not have that filter.</span>
             </div>
-            <ul class="filters">
+            <ul class="filter--filtergroup_filters list-unstyled">
                 <li class="filter_set" ng-repeat="filter in $ctrl.contactFilter.data | orderBy: 'priority'" ng-class="{ 'opened': filter.opened }">
                     <label id="filter_{{filter.name}}" class="filter_title" ng-click="filter.opened = !filter.opened">{{filter.title}}</label>
                     <div class="filter_set_inner">
@@ -109,5 +109,5 @@
                 </li>
             </ul>
         </form>
-    </li>
+    </div>
 </ul>

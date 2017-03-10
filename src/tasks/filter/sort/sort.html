@@ -1,6 +1,8 @@
 
-<li><span class="sort_title menu_item" translate>Sort</span></li>
-<ul class="sort_options">
+<div>
+  <span class="filter--filtergroup_title" translate>Sort</span>
+</div>
+<ul class="filter--filtergroup_sort list-unstyled">
   <li ng-class="{'selected': vm.tasksService.sort === 'all'}" class="option">
     <a class="inbox " ng-click="vm.tasksService.sort = 'all'" translate>All</a>
   </li>

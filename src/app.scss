@@ -1,4 +1,6 @@
 /* Dependencies */
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700');
+
 $fa-font-path: "~font-awesome/fonts";
 @import "~font-awesome/scss/font-awesome";
 @import "styles/angularModal";
@@ -17,6 +19,7 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "styles/vars";
 @import "styles/elements";
 @import "styles/forms";
+@import "styles/filters";
 @import "styles/layout";
 @import "styles/placeholders";
 @import "styles/notices";
@@ -33,7 +36,6 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "menu/menu";
 @import "menu/search/search";
 @import "common/modal/modal";
-@import "contacts/filter/filter";
 @import "contacts/filter/mapContacts/mapContacts";
 @import "contacts/filter/tags/tags";
 @import "contacts/reconcilePartners/reconcilePartners";
@@ -49,7 +51,6 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "home/progress/progress";
 @import "setup/setup";
 @import "tasks/list/list";
-@import "tasks/filter/filter";
 @import "tasks/search/search";
 @import "tools/tools";
 @import "reports/reports";
