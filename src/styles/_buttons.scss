@@ -1,0 +1,66 @@
+
+.btn {
+    border-radius: 3px;
+    font-size: 14px;
+    font-weight: 400;
+    border-width: 1px;
+    -webkit-appearance: none !important;
+}
+
+.btn-block {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.btn-reverse {
+    background: $color-gray-dark;
+    color: $color-white;
+
+    &:active,
+    &:hover,
+    &:focus {
+      color: $color-white;
+    }
+}
+
+.btn-blue {
+    background: $color-blue-deep;
+    color: $color-white;
+}
+
+.btn-xxs {
+    padding: 2px 6px;
+    font-size: 12px;
+    line-height: 1.25;
+    border-radius: 1px;
+}
+
+.btn-actionable {
+    -webkit-transition: .3s cubic-bezier(.175,.885,.32,1.275) padding!important;
+    -moz-transition: .3s cubic-bezier(.175,.885,.32,1.275) padding!important;
+    -ms-transition: .3s cubic-bezier(.175,.885,.32,1.275) padding!important;
+    -o-transition: .3s cubic-bezier(.175,.885,.32,1.275) padding!important;
+    transition: .3s cubic-bezier(.175,.885,.32,1.275) padding!important;
+    position: relative;
+    .btn-progress {
+        position: absolute;
+        right: 10px;
+        top: 5px;
+        bottom: 5px;
+    }
+    &:disabled {
+        padding-right: 30px!important;
+    }
+}
+
+.btn-account-dropdown {
+    font-size: 16px !important;
+    margin-top: 15px;
+    line-height: 32px !important;
+}
+
+.btn-filter-left {
+    width: auto;
+    margin-right: 10px;
+    margin-left: 10px;
+}

@@ -14,9 +14,8 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "~flag-icon-css/sass/flag-icon";
 
 /* Internal */
-@import "styles/crubrand";
+@import "styles/vars";
 @import "styles/elements";
-@import "styles/typography";
 @import "styles/forms";
 @import "styles/layout";
 @import "styles/placeholders";
@@ -27,6 +26,7 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "styles/errors";
 @import "styles/bootstrap_overrides";
 @import "styles/chosen_bootstrap";
+@import "styles/buttons";
 
 /* Components */
 @import "blockUI/blockUI";
@@ -53,6 +53,7 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "tasks/search/search";
 @import "tools/tools";
 @import "reports/reports";
+@import "bottom/bottom";
 
 /* Overrides */
 @import "styles/glyphicons";

@@ -1,0 +1,19 @@
+$cru-blue:                  #05699B;
+$cru-light-blue:            #32C3D7;
+$cru-gold:                  #F5BE19;
+$cru-gray:                  #5A5A5A;
+$cru-white:                  #ffffff;
+
+$color-primary:             $cru-blue;
+$color-secondary:           $cru-gold;
+$color-text:                $cru-gray;
+$color-link:                $cru-gray;
+$color-reverse:             $cru-white;
+
+$color-menu-bg:             lighten($cru-gray, 60%);
+$color-menu-border:         lighten($cru-gray, 50%);
+
+$font-primary:              'Source Sans Pro', sans-serif;
+$font-data:                 $font-primary;
+$font-size:                 16px;
+$gutter:                    30px;

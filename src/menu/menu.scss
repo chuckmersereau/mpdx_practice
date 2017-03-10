@@ -1,10 +1,18 @@
 menu {
     padding: 0;
     margin: 0;
-    .primary {
+
+    .nav--logo {
+        background: url("images/mpdx-logo-svg.svg") no-repeat; 
+        background-size: contain;
+        background-position: 50%;
+        display: block;
+        width: 83px; 
+        height: 48px; 
+    }
+
+    .nav--global {
         $primary-menu-height: 48px;
-        height: auto;
-        background: $color-gray-keyline;
         border-top: 5px solid $color-gold;
         .account_balances {
             padding-top: 0px;
@@ -13,6 +21,24 @@ menu {
             font-size: 14px;
             right: 0;
         }
+
+        .notifications-link {
+            background: $color-secondary;
+            border-radius: 55px;
+            border: none;
+            color: $color-reverse;
+            height: 34px;
+            line-height: 34px;
+            padding: 0;
+            width: 34px;
+            .badge {
+                background: $color-reverse;
+                border: 1px solid $color-secondary;
+                color: $color-secondary;
+                position: absolute;
+            }
+        }
+
         .item {
             float: left;
             a {
@@ -41,38 +67,9 @@ menu {
                     color: $color-text;
                 }
             }
-            &:first-child {
-                border-left: none;
-            }
-            &.search {
-                border: none;
-                float: right;
-            }
         }
-        .navbar-quick {
-            .section {
-                margin-left: 10px;
-                line-height: 34px;
-                height: $primary-menu-height;
-                padding: 7px 0;
-                float:right;
-            }
-            .btn {
-                display: block;
-                height: 34px;
-                background-color: $btn_gray;
-                border: 0;
-                font-weight: bold;
-            }
-            a.dropdown-toggle i.fa {
-                line-height: 34px;
-            }
-            .dropdown {
-                input[type=text] {
-                    border: 0;
-                    display: block;
-                }
-            }
+        .section {
+            display: inline-block;
         }
         .navbar-collapse {
             padding-left: 0;
@@ -89,12 +86,12 @@ menu {
                 box-shadow: none;
             }
         }
-        .settings-drop {
-            color: $color-gray-text;
-            transition: color 0.2s ease-out;
-            &:hover {
-                color: $color-text;
-            }
+        .search_filter {
+            height: 35px;
+        }
+        .navbar-quick {
+            margin-top: 6px;
+            height: 35px;
         }
         @media screen and (min-width: 0px) and (max-width: 550px) {
             .item {
@@ -103,7 +100,82 @@ menu {
             }
         }
     }
-    .secondary {
+    .nav--menu {
+        background: $color-menu-bg;
+        text-transform: uppercase;
+
+        .navbar {
+            padding: 0;
+            margin-bottom: 0;
+            min-height: 0;
+        }
+
+        .item {
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: .5px;
+            a {
+                display: block;
+                padding: $gutter/3 $gutter*.65;
+            }
+            &.active {
+                a {
+                    background: rgba(0,0,0,.05);
+                }
+            }
+        }
+
+        menu-balances {
+            margin: 6px 0 6px 0;
+            .section {
+                display: inline-block;
+                vertical-align: top;
+                margin-left: $gutter/4;
+            }
+            .account_balances {
+                display: block;
+                font-size: 14px;
+                font-weight: 100;
+                line-height: 30px;
+                height: 30px;
+                text-transform: none;
+            }
+        }
+
+        #mpd_progress_bar {
+            background: $color-gray-progress;
+            display: block;
+            height: $progress-bar-height;
+            overflow: hidden;
+            width: 150px;
+            position: relative;
+            border-radius: 0;
+            font-size: 80%;
+            .bar {
+                background: $green_light;
+                /*border-right: 1px solid rgba(255,255,255,.35);*/
+            }
+            .bar-pledged {
+                background: $green
+            }
+            .value, .bar {
+                height: $progress-bar-height;
+                position: absolute;
+            }
+            .value {
+                line-height: normal;
+                padding: 0 10px;
+                line-height: $progress-bar-height;
+            }
+            .value.right {
+                right: 0;
+            }
+        }
+        .navbar-collapse {
+            padding-left: 0;
+        }
+    }
+    .nav--secondary {
         $secondary-menu-height: 42px;
         background: none;
         border-bottom: 1px solid $color-gray-keyline;

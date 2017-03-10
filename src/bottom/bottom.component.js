@@ -1,5 +1,3 @@
-require('./bottom.scss');
-
 export class BottomController {
     help;
     constructor(help) {

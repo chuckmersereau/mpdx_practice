@@ -1,71 +1,92 @@
-<div class="primary">
-    <nav class="navbar">
-        <div class="container">
-            <div class="pull-right navbar-quick">
-                <div class="section">
-                    <div class="dropdown">
-                        <a bs-dropdown class="settings-drop" type="button" data-placement="bottom-right">
-                            <i class="fa fa-cog"></i>
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li role="presentation" ng-if="!$ctrl.isInSetup()"><a ui-sref="preferences.personal" translate>Preferences</a></li>
-                            <li role="presentation" ng-if="!$ctrl.isInSetup()"><a ui-sref="preferences.notifications" translate>Notifications</a></li>
-                            <li role="presentation" ng-if="!$ctrl.isInSetup()"><a ui-sref="preferences.imports" translate>Import Contacts</a></li>
-                            <li role="presentation" ng-if="!$ctrl.isInSetup()"><a ui-sref="preferences.integrations" translate>Connect Services</a></li>
-                            <li role="presentation" ng-if="!$ctrl.isInSetup()"><a ui-sref="preferences.accounts" translate>Manage Account</a></li>
-                            <li role="presentation" ng-if="$ctrl.users.current.admin">
-                                <a ui-sref="unavailable" translate>Admin</a>
-                            </li>
-                            <li role="presentation"><a ui-sref="logout" translate>Log out</a></li>
-                        </ul>
+<div class="nav--global">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="pull-right navbar-quick">
+
+                    <div class="section" ng-if="!$ctrl.isInSetup()">
+                        <menu-search></menu-search>
+                    </div>
+                    <div class="section">
+                        <div class="dropdown">
+                            <a bs-dropdown class="settings-drop btn btn-default btn-block" type="button" data-placement="bottom-right">
+                                <i class="fa fa-cog"></i> Settings
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li role="presentation" ng-if="!$ctrl.isInSetup()"><a ui-sref="preferences.personal" translate>Preferences</a></li>
+                                <li role="presentation" ng-if="!$ctrl.isInSetup()"><a ui-sref="preferences.notifications" translate>Notifications</a></li>
+                                <li role="presentation" ng-if="!$ctrl.isInSetup()"><a ui-sref="preferences.imports" translate>Import Contacts</a></li>
+                                <li role="presentation" ng-if="!$ctrl.isInSetup()"><a ui-sref="preferences.integrations" translate>Connect Services</a></li>
+                                <li role="presentation" ng-if="!$ctrl.isInSetup()"><a ui-sref="preferences.accounts" translate>Manage Account</a></li>
+                                <li role="presentation" ng-if="$ctrl.users.current.admin">
+                                    <a ui-sref="unavailable" translate>Admin</a>
+                                </li>
+                                <li role="presentation"><a ui-sref="logout" translate>Log out</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <account-lists ng-if="!$ctrl.isInSetup()"></account-lists>
+                    </div>
+                    <div class="section"  ng-if="!$ctrl.isInSetup()">
+                        <div class="dropdown">
+                            <a bs-dropdown class="btn btn-reverse btn-block" href="#" type="button" id="quick-drop" aria-expanded="true"
+                               analytics-on analytics-category="Global Events" analytics-label="Actions" data-placement="bottom-right"
+                               translate>
+                                <i class="fa fa-plus"></i> Add
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="quick-drop">
+                                <li role="presentation"><a ng-click="$ctrl.contacts.openNewContactModal()" translate>Add Contact</a></li>
+                                <li role="presentation"><a ng-click="$ctrl.donations.openNewDonationModal()" translate>Add Donation</a></li>
+                                <li role="presentation"><a ng-click="$ctrl.tasksService.openNewTaskModal()" translate>Add Task</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <a href="" class="btn btn-block notifications-link"><i class=" fa fa-bell"></i> <span class="badge">4</span></a>
                     </div>
                 </div>
-                <div class="section"  ng-if="!$ctrl.isInSetup()">
-                    <div class="dropdown">
-                        <a bs-dropdown class="btn btn-secondary" href="#" type="button" id="quick-drop" aria-expanded="true"
-                           analytics-on analytics-category="Global Events" analytics-label="Actions" data-placement="bottom-right"
-                           translate>
-                            Quick Add
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="quick-drop">
-                            <li role="presentation"><a ng-click="$ctrl.contacts.openNewContactModal()" translate>Add Contact</a></li>
-                            <li role="presentation"><a ng-click="$ctrl.donations.openNewDonationModal()" translate>Add Donation</a></li>
-                            <li role="presentation"><a ng-click="$ctrl.tasksService.openNewTaskModal()" translate>Add Task</a></li>
-                        </ul>
-                    </div>
+                <div id="brand" class="pull-left">
+                    <a ui-sref="home" class="nav--logo"></a>
                 </div>
-                <div class="section" ng-if="!$ctrl.isInSetup()">
-                    <menu-search></menu-search>
-                </div>
-                <div class="section">
-                    <account-lists ng-if="!$ctrl.isInSetup()"></account-lists>
-                </div>
-            </div>
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <div id="brand">
-                <a ui-sref="home" class="logo"></a>
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" ng-if="!$ctrl.isInSetup()">
-                <ul class="nav navbar-nav">
-                    <li class="item" ui-sref-active="active"><a ui-sref="home" translate>Dashboard</a></li>
-                    <li class="item" ng-class="{active: $ctrl.isInState('contact')}"><a ui-sref="contacts" translate>Contacts</a></li>
-                    <li class="item" ui-sref-active="active"><a ui-sref="tasks" translate>Tasks</a></li>
-                    <li class="item" ng-class="{active: $ctrl.isInState('reports')}"><a ui-sref="reports.donations" translate>Reports</a></li>
-                    <li class="item" ng-class="{active: $ctrl.isInState('tools')}"><a ui-sref="tools" translate>Tools</a></li>
-                    <li class="item last" ui-sref-active="active"><a ng-click="$ctrl.showHelp()" translate>Help</a></li>
-                </ul>
             </div>
         </div>
-    </nav>
+    </div>
 </div>
-<div class="secondary" ng-if="!$ctrl.isInSetup()">
+
+<div class="nav--menu">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <nav class="navbar navbar-toggleable-md pull-left">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="mpdx-nav" ng-if="!$ctrl.isInSetup()">
+                        <ul class="nav navbar-nav">
+                            <li class="item" ui-sref-active="active"><a ui-sref="home" translate>Dashboard</a></li>
+                            <li class="item" ng-class="{active: $ctrl.isInState('contact')}"><a ui-sref="contacts" translate>Contacts</a></li>
+                            <li class="item" ui-sref-active="active"><a ui-sref="tasks" translate>Tasks</a></li>
+                            <li class="item" ng-class="{active: $ctrl.isInState('reports')}"><a ui-sref="reports.donations" translate>Reports</a></li>
+                            <li class="item" ng-class="{active: $ctrl.isInState('tools')}"><a ui-sref="tools" translate>Tools</a></li>
+                            <li class="item last" ui-sref-active="active"><a ng-click="$ctrl.showHelp()" translate>Help</a></li>
+                        </ul>
+                    </div>
+                </nav>
+                <menu-balances class="pull-right"></menu-balances>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="nav--secondary" ng-if="!$ctrl.isInSetup()">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -120,7 +141,6 @@
                         {{$ctrl.state.$current.title}}
                     </div>
                 </div>
-                <menu-balances></menu-balances>
             </div>
         </div>
     </div>
