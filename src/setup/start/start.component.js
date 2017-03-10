@@ -1,4 +1,4 @@
-class SetupStartController {
+class StartController {
     users;
     constructor(
         $state,
@@ -11,19 +11,15 @@ class SetupStartController {
         this.users.current.options.setup_position.value = 'start';
         this.users.setOption(this.users.current.options.setup_position);
     }
-    begin() {
-        this.users.saveCurrent().then(() => {
-            this.$state.go('setup.connect');
-        });
+    next() {
+        this.$state.go('setup.connect');
     }
 }
 
-const SetupStart = {
+const Start = {
     template: require('./start.html'),
-    controller: SetupStartController
+    controller: StartController
 };
 
 export default angular.module('mpdx.setup.start.component', [])
-    .component('setupStart', SetupStart).name;
-
-
+    .component('setupStart', Start).name;

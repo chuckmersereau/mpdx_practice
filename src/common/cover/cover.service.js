@@ -1,7 +1,7 @@
 
-class LoginService {
+class BackgroundService {
     constructor() {
-        this.backgrounds = [
+        this.covers = [
             {
                 'url': require('./images/bg_1.jpg'),
                 'copyright': 'Wichita Mountains National Wildlife Refuge, Oklahoma (© Tim Fitzharris/Minden Pictures)'
@@ -16,5 +16,5 @@ class LoginService {
     }
 }
 
-export default angular.module('mpdx.common.login.service', [])
-    .service('login', LoginService).name;
+export default angular.module('mpdx.common.cover.service', [])
+    .service('cover', BackgroundService).name;

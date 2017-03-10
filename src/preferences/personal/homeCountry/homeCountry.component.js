@@ -1,4 +1,4 @@
-class PreferencesHomeCountryController {
+class HomeCountryController {
     accounts;
     saving;
     constructor(
@@ -7,21 +7,12 @@ class PreferencesHomeCountryController {
         this.saving = false;
         this.accounts = accounts;
     }
-    save() {
-        this.saving = true;
-        this.onSave().then(() => {
-            this.saving = false;
-        });
-    }
 }
 
-const PreferencesHomeCountry = {
+const HomeCountry = {
     template: require('./homeCountry.html'),
-    controller: PreferencesHomeCountryController,
-    bindings: {
-        onSave: '&'
-    }
+    controller: HomeCountryController
 };
 
-export default angular.module('mpdx.preferences.personal.homeCountry', [])
-    .component('preferencesHomeCountry', PreferencesHomeCountry).name;
+export default angular.module('mpdx.preferences.personal.homeCountry.component', [])
+    .component('preferencesPersonalHomeCountry', HomeCountry).name;

@@ -7,20 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body app>
-    <impersonation-bar></impersonation-bar>
-    <menu></menu>
-    <div id="body">
-        <div id="content" class="container" ng-class="{fullscreen: $ctrl.session.fullScreen}">
-            <notices></notices>
-            <ui-view></ui-view>
-            <a id="exit-fullscreen" ng-if="$ctrl.session.fullScreen" ng-click="$ctrl.session.fullScreen = false">
-                <span class="icons">
-                    <i class="fa fa-arrow-right"></i><i class="fa fa-arrow-left"></i>
-                </span>
-            </a>
-        </div>
-        <bottom></bottom>
-    </div>
+    <ui-view></ui-view>
     <script src="https://maps.google.com/maps/api/js?key=AIzaSyBIUs23E_OsltKqLcIPD6B4rU11bfZKnM0&libraries=places"></script>
     <script type="text/javascript">
         var _gaq = _gaq || [];

@@ -1,0 +1,12 @@
+<div class="panel panel-default panel-selected">
+    <div class="panel-body">
+        <h1>
+            <i class="ci ci-alert text-primary"></i>
+            <translate>Setup your notifications here</translate>
+        </h1>
+    </div>
+    <div class="panel-footer text-right">
+        <a ng-click="$ctrl.next()" class="btn btn-default" translate>Skip Step</a>
+    </div>
+</div>
+<preferences-notifications on-save="$ctrl.onSave()"></preferences-notifications>

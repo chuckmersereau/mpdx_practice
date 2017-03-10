@@ -10,7 +10,3 @@
         ng-options="option.alias as option.value for option in $ctrl.languages">
     <option value=""></option>
 </select>
-<button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable" ng-if="!$ctrl.listOnly">
-    <span translate>Save</span>&nbsp;
-    <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-</button>

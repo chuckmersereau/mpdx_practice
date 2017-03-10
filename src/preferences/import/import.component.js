@@ -36,13 +36,11 @@ class ImportPreferencesController {
     setTab(service) {
         if (service === '' || this.tabId === service) {
             this.tabId = '';
-            this.$state.go('preferences.imports', {}, { notify: false });
         } else {
             this.tabId = service;
             if (service === 'google') {
                 this.preferencesImports.load();
             }
-            this.$state.go('preferences.imports.tab', { id: service }, { notify: false });
         }
     }
     tabSelected(service) {

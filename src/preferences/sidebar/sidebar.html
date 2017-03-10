@@ -1,19 +1,24 @@
-<aside id="leftmenu">
-    <ul class="nav nav-pills nav-stacked">
-        <li ui-sref-active="active">
-            <a ui-sref="preferences.personal" translate>Preferences</a>
-        </li>
-        <li ui-sref-active="active">
-            <a ui-sref="preferences.notifications" translate>Notifications</a>
-        </li>
-        <li ui-sref-active="active">
-            <a ui-sref="preferences.imports" translate>Import Contacts</a>
-        </li>
-        <li ui-sref-active="active">
-            <a ui-sref="preferences.integrations" translate>Connect Services</a>
-        </li>
-        <li ui-sref-active="active">
-            <a ui-sref="preferences.accounts" translate>Manage Accounts</a>
-        </li>
-    </ul>
-</aside>
+<h3 translate>Preferences</h3>
+<hr>
+<ul class="nav nav-pills nav-stacked">
+    <li ng-class="{'active' : $ctrl.$state.includes('**.personal') }">
+        <a ng-click="$ctrl.go('preferences.personal')" translate>Settings</a>
+    </li>
+    <li ng-class="{'active' : $ctrl.$state.includes('**.notifications') }">
+        <a ng-click="$ctrl.go('preferences.notifications')" translate>Notifications</a>
+    </li>
+    <li ng-class="{'active' : $ctrl.$state.includes('**.imports') }">
+        <a ng-click="$ctrl.go('preferences.imports')" translate>Import Contacts</a>
+    </li>
+    <li ng-class="{'active' : $ctrl.$state.includes('**.integrations') }">
+        <a ng-click="$ctrl.go('preferences.integrations')" translate>Connect Services</a>
+    </li>
+    <li ng-class="{'active' : $ctrl.$state.includes('**.accounts') }">
+        <a ng-click="$ctrl.go('preferences.accounts')" translate>Manage Accounts</a>
+    </li>
+</ul>
+<div ng-if="$ctrl.accounts.data.length > 1">
+    <hr>
+    <small translate>You are currently editing settings for</small>
+    <account-lists></account-lists>
+</div>

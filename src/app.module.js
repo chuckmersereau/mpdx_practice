@@ -12,6 +12,7 @@ import menu from './menu/index.module';
 import notices from './notices/notices.component';
 import preferences from './preferences/index.module';
 import reports from './reports/index.module';
+import root from './root/root.component';
 import setup from './setup/index.module';
 import tasks from './tasks/index.module';
 import tools from './tools/index.module';
@@ -34,6 +35,7 @@ export default angular.module('mpdx', [
     notices,
     preferences,
     reports,
+    root,
     setup,
     tasks,
     tools,

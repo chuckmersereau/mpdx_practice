@@ -7,6 +7,7 @@ import autoFocus from './autoFocus/autofocus.directive';
 import bgImg from './bgImg/bgImg.directive';
 import chosen from './chosen/chosen.directive';
 import convertToNumber from './convertToNumber/convertToNumber.directive';
+import cover from './cover/index.module';
 import currency from './currency/currency.service';
 import currencySelect from './currencySelect/currencySelect.component';
 import datetimepicker from './datetimepicker/datetimepicker.component';
@@ -19,7 +20,7 @@ import language from './language/language.service';
 import layoutSettings from './layoutSettings/layoutSettings.directive';
 import links from './links/index.module';
 import locale from './locale/locale.service';
-import login from './login/index.module';
+import login from './login/login.component';
 import modal from './modal/index.module';
 import momentFilter from './moment/moment.filter';
 import monthRange from './monthRange/monthRange.service';
@@ -42,6 +43,7 @@ export default angular.module('mpdx.common', [
     bgImg,
     chosen,
     convertToNumber,
+    cover,
     currency,
     currencySelect,
     datetimepicker,

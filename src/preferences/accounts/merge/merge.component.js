@@ -6,8 +6,7 @@ class MergePreferencesController {
     setup;
 
     constructor(
-        $state,
-        accounts, api, alerts
+        $state, accounts, api, alerts
     ) {
         this.$state = $state;
         this.accounts = accounts;
@@ -23,9 +22,7 @@ class MergePreferencesController {
             this.saving = false;
             this.alerts.addAlert('MPDX merged your account successfully', 'success');
             return this.accounts.load().then(() => {
-                if (this.setup) {
-                    this.$state.go('setup.preferences');
-                }
+                this.onSave();
             });
         }).catch(() => {
             this.alerts.addAlert('MPDX couldn\'t merge your account', 'danger');
@@ -38,7 +35,7 @@ const Merge = {
     controller: MergePreferencesController,
     template: require('./merge.html'),
     bindings: {
-        setup: '<'
+        onSave: '&'
     }
 };
 

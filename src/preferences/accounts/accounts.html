@@ -1,8 +1,7 @@
-<p>&nbsp;</p>
-<div class="panel-group" id="accounts-group">
-
-    <div class="panel panel-default pref-panel">
-        <div class="panel-heading pref-head" ng-click="$ctrl.setTab('share_account')">
+<h3 translate>Manage Accounts</h3>
+<div class="panel-group">
+    <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('share_account'), 'panel-disabled' : !$ctrl.tabSelectable('share_account') }">
+        <div class="panel-heading" ng-click="$ctrl.setTab('share_account')">
             <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('share_account') }"></i>
             <span translate>Manage Account Access</span>
         </div>
@@ -13,51 +12,35 @@
         </div>
     </div>
 
-    <div class="panel panel-default pref-panel">
-        <div class="panel-heading pref-head" ng-click="$ctrl.setTab('merge_account')">
+    <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('merge_account'), 'panel-disabled' : !$ctrl.tabSelectable('merge_account') }">
+        <div class="panel-heading" ng-click="$ctrl.setTab('merge_account')">
             <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('merge_account') }"></i>
             <span translate>Merge Your Accounts</span>
         </div>
         <div class="panel-animate" ng-show="$ctrl.tabSelected('merge_account')">
             <div class="panel-body">
-                <div class="row pref-row">
-                    <div class="col-md-4 pref-lead">
-                        <h5 translate>Merge multiple personal donation accounts into one. (Multi-currency support)</h5>
+                <div class="row">
+                    <div class="col-md-4 text-right" translate>
+                        Merge multiple personal donation accounts into one with Multi-currency support
                     </div>
                     <div class="col-md-8">
-                        <p translate>
-                            If you have personal donation accounts in different countries or organizations,
-                            you can bring them into one view in MPDX. Though the actual donation accounts will
-                            remain separate within their respective organizations, they will be merged together
-                            in MPDX permanently.
-                        </p>
-                        <div class="alert alert-danger">
-                            <i class="fa fa-warning"></i>
-                            <strong translate>THIS MERGE WILL AFFECT ALL PEOPLE WITH ACCESS TO THIS ACCOUNT AND CANNOT BE UNDONE.</strong>
-                            <br/>
-                            <i class="fa fa-warning"></i>
-                            <strong translate>DO NOT MERGE MINISTRY ACCOUNTS THROUGH MPDX.</strong>
-                        </div>
-
-                        <div class="well">
-                            <merge-preferences></merge-preferences>
-                        </div>
+                        <merge-preferences on-save="$ctrl.onSave()"></merge-preferences>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="panel panel-default pref-panel">
-        <div class="panel-heading pref-head" ng-click="$ctrl.setTab('merge_spouse_account')">
+    <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('merge_spouse_account'), 'panel-disabled' : !$ctrl.tabSelectable('merge_spouse_account') }">
+        <div class="panel-heading" ng-click="$ctrl.setTab('merge_spouse_account')">
             <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('merge_spouse_account') }"></i>
             <span translate>Merge Spouse Accounts</span>
         </div>
         <div class="panel-animate" ng-show="$ctrl.tabSelected('merge_spouse_account')">
             <div class="panel-body">
-                <div class="row pref-row">
-                    <div class="col-md-4 pref-lead">
-                        <h5 translate>Merge (Combine) your account with your spouse\'s account for a unifed view.</h5>
+                <div class="row">
+                    <div class="col-md-4 text-right" translate>
+                        Merge your account with your spouse's account for a unifed view
                     </div>
                     <div class="col-md-8">
                         <p translate>
@@ -66,21 +49,16 @@
                             lost when they are merged, and we can do it at any time regardless of the
                             status of your staff accounts being merged.
                         </p>
-
-                        <div class="well">
-                            <h4 translate>1. Share your accounts with each other.</h4>
-                            <invite-preferences></invite-preferences>
-                            <p translate>You will each get an email (you might need to check your spam) and will need to accept access to each other’s accounts.</p>
-                        </div>
-
-                        <div class="well">
-                            <h4 translate>2. Merge Accounts</h4>
-                            <merge-preferences></merge-preferences>
-                        </div>
+                        <hr>
+                        <h4 translate>1. Share your accounts with each other.</h4>
+                        <invite-preferences></invite-preferences>
+                        <p translate>You will each get an email (you might need to check your spam) and will need to accept access to each other’s accounts.</p>
+                        <hr>
+                        <h4 translate>2. Merge Accounts</h4>
+                        <merge-preferences></merge-preferences>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <account-reset ng-if="impersonator_user.present"></account-reset>
 </div>

@@ -75,10 +75,8 @@ class IntegrationPreferencesController {
     setTab(service) {
         if (service === '' || this.tabId === service) {
             this.tabId = '';
-            this.$state.go('preferences.integrations', {}, { notify: false });
         } else {
             this.tabId = service;
-            this.$state.go('preferences.integrations.tab', { id: service }, { notify: false });
         }
     }
     tabSelected(service) {

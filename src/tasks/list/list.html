@@ -8,9 +8,9 @@
           {{ $ctrl.title }}
         </span>
         <span class="actions task-actions" ng-show="$ctrl.selected.length">
-          <a class="btn btn-xs btn-secondary" ng-click="$ctrl.bulkCompleteTasks()" ng-hide="$ctrl.key === 'allCompleted'" translate>Complete Selected</a>
-          <a class="btn btn-xs btn-secondary" ng-click="$ctrl.bulkDeleteTasks()" translate>Delete Selected</a>
-          <a class="btn btn-xs btn-secondary" ng-click="$ctrl.openBulkEditTaskModal()" translate>Edit Selected</a>
+          <a class="btn btn-xs btn-reverse" ng-click="$ctrl.bulkCompleteTasks()" ng-hide="$ctrl.key === 'allCompleted'" translate>Complete Selected</a>
+          <a class="btn btn-xs btn-reverse" ng-click="$ctrl.bulkDeleteTasks()" translate>Delete Selected</a>
+          <a class="btn btn-xs btn-reverse" ng-click="$ctrl.openBulkEditTaskModal()" translate>Edit Selected</a>
         </span>
         <select
           ng-model="$ctrl.tasksService.meta[$ctrl.key].pagination.per_page"
@@ -23,7 +23,7 @@
           style="float: right" translate>
           Show:
         </span>
-        <a class="btn btn-xs btn-secondary pull-right" ng-click="$ctrl.toggleAll()" style="margin-right: 12px" translate>Select All</a>
+        <a class="btn btn-xs btn-reverse pull-right" ng-click="$ctrl.toggleAll()" style="margin-right: 12px" translate>Select All</a>
       </th>
     </tr>
     <tr ng-if="$ctrl.tasksService.data[$ctrl.key].length === 0">

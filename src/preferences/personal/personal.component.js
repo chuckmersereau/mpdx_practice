@@ -4,7 +4,7 @@ import map from 'lodash/fp/map';
 import split from 'lodash/fp/split';
 import toLower from 'lodash/fp/toLower';
 
-class PersonalPreferencesController {
+class PersonalController {
     accounts;
     alerts;
     api;
@@ -35,8 +35,13 @@ class PersonalPreferencesController {
         }, serverConstants.data.pledge_currencies);
     }
     $onInit() {
-        if (this.$stateParams.id) {
-            this.setTab(this.$stateParams.id);
+        if (this.$stateParams.id || this.selectedTab) {
+            this.setTab(this.$stateParams.id || this.selectedTab);
+        }
+    }
+    $onChanges(data) {
+        if (data.selectedTab) {
+            this.setTab(this.selectedTab);
         }
     }
     save() {
@@ -45,6 +50,7 @@ class PersonalPreferencesController {
             this.alerts.addAlert('Preferences saved successfully', 'success');
             this.setTab('');
             this.saving = false;
+            this.onSave();
         }).catch((data) => {
             each((value) => {
                 this.alerts.addAlert(value, 'danger');
@@ -58,6 +64,7 @@ class PersonalPreferencesController {
             this.alerts.addAlert('Preferences saved successfully', 'success');
             this.setTab('');
             this.saving = false;
+            this.onSave();
         }).catch((data) => {
             each((value) => {
                 this.alerts.addAlert(value, 'danger');
@@ -67,12 +74,24 @@ class PersonalPreferencesController {
     }
     setTab(service) {
         if (service === '' || this.tabId === service) {
-            this.tabId = '';
-            this.$state.go('preferences.personal', {}, { notify: false });
+            if (!this.selectedTab) {
+                this.tabId = '';
+            }
         } else {
-            this.tabId = service;
-            this.$state.go('preferences.personal.tab', { id: service }, { notify: false });
+            if (this.selectedTab) {
+                if (this.tabSelectable(service)) {
+                    this.tabId = service;
+                }
+            } else {
+                this.tabId = service;
+            }
         }
+    }
+    tabSelectable(service) {
+        if (this.selectedTab) {
+            return this.selectedTab === service;
+        }
+        return true;
     }
     tabSelected(service) {
         return this.tabId === service;
@@ -103,9 +122,13 @@ class PersonalPreferencesController {
 }
 
 const Personal = {
-    controller: PersonalPreferencesController,
-    template: require('./personal.html')
+    controller: PersonalController,
+    template: require('./personal.html'),
+    bindings: {
+        onSave: '&',
+        selectedTab: '<'
+    }
 };
 
 export default angular.module('mpdx.preferences.personal.component', [])
-    .component('personalPreferences', Personal).name;
+    .component('preferencesPersonal', Personal).name;

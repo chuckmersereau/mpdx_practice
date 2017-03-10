@@ -1,6 +1,52 @@
 setup {
-    hr {
-        margin-top: 7px;
-        margin-bottom: 7px;
+    cover {
+        color: #fff;
+        .panel {
+            color: #000;
+            text-align: center;
+            .panel-heading {
+                font-size: 1.75rem;
+                border-bottom: 1px #ccc solid;
+                padding: 20px;
+                margin: 0 20px;
+                text-transform: none;
+                font-weight: normal;
+                .ci {
+                    float: left;
+                    line-height: 45px;
+                }
+            }
+            .panel-body {
+                font-size: 18px;
+                padding: 20px;
+                hr {
+                    width: auto;
+                    margin: 20px 0 15px;
+                }
+                label {
+                    font-size: 16px;
+                    font-weight: normal;
+                    margin: 5px 0 0;
+                }
+                p {
+                    margin-bottom: 7px;
+                    line-height: 25px;
+                }
+                ul.plain-list {
+                    padding-bottom: 10px;
+                }
+                h3 {
+                    line-height: 30px;
+                }
+            }
+            .panel-footer {
+                a.btn {
+                    margin-bottom: 0;
+                }
+            }
+            a.btn {
+                font-size: 18px;
+            }
+        }
     }
 }

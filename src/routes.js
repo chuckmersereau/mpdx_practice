@@ -5,9 +5,8 @@ export default class Routes {
         $stateProvider.state({
             name: 'root',
             abstract: true,
-            template: '<div ui-view=""></div>',
+            component: 'root',
             resolve: {
-                //userResolve: /*@ngInject*/ (users) => users.getCurrent(), // handled in app.run now
                 constants: /*@ngInject*/ (serverConstants) => serverConstants.load()
             }
         }).state({
@@ -102,31 +101,16 @@ export default class Routes {
             name: 'preferences.accounts',
             title: 'Manage Accounts',
             url: '/accounts',
-            component: 'accountPreferences'
-        }).state({
-            name: 'preferences.accounts.tab',
-            title: 'Manage Accounts',
-            url: '/{id}',
-            component: 'accountPreferences'
+            component: 'preferencesAccounts'
         }).state({
             name: 'preferences.imports',
             title: 'Import Contacts',
             url: '/imports',
             component: 'importPreferences'
         }).state({
-            name: 'preferences.imports.tab',
-            title: 'Import Contacts',
-            url: '/{id}',
-            component: 'importPreferences'
-        }).state({
             name: 'preferences.integrations',
             title: 'Connect Services',
             url: '/integrations',
-            component: 'integrationPreferences'
-        }).state({
-            name: 'preferences.integrations.tab',
-            title: 'Connect Services',
-            url: '/{id}',
             component: 'integrationPreferences'
         }).state({
             name: 'preferences.notifications',
@@ -137,18 +121,15 @@ export default class Routes {
             name: 'preferences.personal',
             title: 'Preferences',
             url: '/personal',
-            component: 'personalPreferences'
-        }).state({
-            name: 'preferences.personal.tab',
-            title: 'Preferences',
-            url: '/{id}',
-            component: 'personalPreferences'
+            component: 'preferencesPersonal'
         }).state({
             name: 'setup',
             title: 'Setup',
             url: '/setup',
             component: 'setup',
-            parent: 'root'
+            resolve: {
+                constants: /*@ngInject*/ (serverConstants) => serverConstants.load()
+            }
         }).state({
             name: 'setup.connect',
             title: 'Get Connected',
@@ -160,25 +141,34 @@ export default class Routes {
             url: '/google',
             component: 'setupGoogle'
         }).state({
-            name: 'setup.merge',
-            title: 'Merge Accounts',
-            url: '/merge',
-            component: 'setupMerge'
-        }).state({
-            name: 'setup.notifications',
-            title: 'Notifications',
-            url: '/notifications',
-            component: 'setupNotifications'
-        }).state({
             name: 'setup.preferences',
-            title: 'Preferences',
-            url: '/preferences',
+            abstract: true,
             component: 'setupPreferences'
+        }).state({
+            name: 'setup.preferences.accounts',
+            title: 'Merge Accounts',
+            url: '/preferences/accounts',
+            component: 'setupPreferencesAccounts'
+        }).state({
+            name: 'setup.preferences.notifications',
+            title: 'Notifications',
+            url: '/preferences/notifications',
+            component: 'setupPreferencesNotifications'
+        }).state({
+            name: 'setup.preferences.personal',
+            title: 'Preferences',
+            url: '/preferences/personal',
+            component: 'setupPreferencesPersonal'
         }).state({
             name: 'setup.start',
             title: 'Get Started',
             url: '/start',
             component: 'setupStart'
+        }).state({
+            name: 'setup.finish',
+            title: 'Completed',
+            url: '/finish',
+            component: 'setupFinish'
         }).state({
             name: 'tasks',
             title: 'Tasks',

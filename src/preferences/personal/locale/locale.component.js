@@ -1,7 +1,7 @@
 import keys from 'lodash/fp/keys';
 import map from 'lodash/fp/map';
 
-class PreferencesLocaleController {
+class LocaleController {
     locale;
     saving;
     serverConstants;
@@ -40,17 +40,11 @@ class PreferencesLocaleController {
     setLocale() {
         this.locale.change(this.users.current.preferences.locale_display);
     }
-    save() {
-        this.saving = true;
-        this.onSave().then(() => {
-            this.saving = false;
-        });
-    }
 }
 
-const PreferencesLocale = {
+const Locale = {
     template: require('./locale.html'),
-    controller: PreferencesLocaleController,
+    controller: LocaleController,
     bindings: {
         onSave: '&',
         listOnly: '<'
@@ -58,4 +52,4 @@ const PreferencesLocale = {
 };
 
 export default angular.module('mpdx.preferences.personal.locale.component', [])
-    .component('preferencesLocale', PreferencesLocale).name;
+    .component('preferencesPersonalLocale', Locale).name;

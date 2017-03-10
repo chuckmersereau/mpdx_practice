@@ -1,25 +1,41 @@
+<p translate>
+    If you have personal donation accounts in different countries or organizations,
+    you can bring them into one view in MPDX. Though the actual donation accounts will
+    remain separate within their respective organizations, they will be merged together
+    in MPDX permanently.
+</p>
+<div class="alert alert-danger">
+    <i class="fa fa-warning"></i>
+    <strong translate>THIS MERGE WILL AFFECT ALL PEOPLE WITH ACCESS TO THIS ACCOUNT AND CANNOT BE UNDONE</strong>
+</div>
+<div class="alert alert-danger">
+    <i class="fa fa-warning"></i>
+    <strong translate>DO NOT MERGE MINISTRY ACCOUNTS THROUGH MPDX</strong>
+</div>
 <div ng-if="$ctrl.preferencesMerges.data.mergeable_accounts.length == 0">
     <p>
         <i class="fa-warning fa"></i>
-        <span translate>
+        <translate>
             You only have access to this account, so you cannot merge it with another one yet.
             Share this account with someone else first. Once they accept your share, you will be
             able to merge your accounts together.
-        </span>
+        </translate>
     </p>
 </div>
 <div ng-if="$ctrl.accounts.data.length > 0">
-    <div class="row">
+    <div class="row-fluid">
         <div class="col-sm-6 well border-primary">
             <label for="from" translate>
                 Merging From
             </label>
             <select id="from" ng-model="$ctrl.selected_account_id" chosen>
-                <option style="display:none" value="" translate>Select an Account</option>
+                <option value="" translate>Select an Account</option>
                 <option value="{{account.id}}" ng-repeat="account in $ctrl.accounts.data" ng-if="account.id !== $ctrl.api.account_list_id">{{account.name}}</option>
             </select>
         </div>
-        <div class="col-md-1" style="text-align: center; height: 140px; display: inline-block"><i class="fa fa-2x fa-arrow-right text-success" style="padding-top: 40px"></i></div>
+        <div class="col-md-1 text-center" style="line-height: 140px;">
+            <i class="fa fa-2x fa-angle-right text-success"></i>
+        </div>
         <div class="col-sm-5 well border-success">
             <label for="into" translate>
                 Merging Into
@@ -29,14 +45,11 @@
             </select>
         </div>
     </div>
-    <p>
     <label>
         <input type="checkbox" ng-model="accept"> This account merge cannot be undone, I accept.
     </label>
-    </p>
-    <button type="submit" ng-click="$ctrl.merge()" ng-disabled="$ctrl.saving || !accept || !$ctrl.selected_account_id" class="btn btn-primary btn-actionable">
-        <span translate>Merge</span>&nbsp;
-        <span class="btn-progress ng-hide" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+    <button type="submit" ng-click="$ctrl.merge()" ng-disabled="$ctrl.saving || !accept || !$ctrl.selected_account_id" class="btn btn-primary">
+        <translate>Merge</translate>
+        <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
     </button>
 </div>
-

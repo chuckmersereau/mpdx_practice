@@ -1,60 +1,46 @@
+<h3>Notifications</h3>
 <div ng-if="$ctrl.setup">
     <h1><i class="ci ci-alert text-primary"></i> Get notified about important partner information!</h1>
     <button class="btn btn-default" ng-click="$ctrl.next()">Skip this step</button>
 </div>
-<div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="row spacer-top">
-                <div class="col-md-12">
-                    <p translate>
-                        Based on an analysis of a partner's giving history, MPDX can notify you
-                        of events that you will probably want to follow up on. The detection logic
-                        is based on a set of rules that are right most of the time, but you will
-                        still want to verify an event manually before contacting the partner.
-                    </p>
-                    <p translate>For each event MPDX can notify you via email and also create a task entry
-                        reminding you to do something about it. The options below allow you to
-                        control that behavior.</p>
-                    <br />
+<p translate>
+    Based on an analysis of a partner's giving history, MPDX can notify you
+    of events that you will probably want to follow up on. The detection logic
+    is based on a set of rules that are right most of the time, but you will
+    still want to verify an event manually before contacting the partner.
+</p>
+<p translate>
+    For each event MPDX can notify you via email and also create a task entry
+    reminding you to do something about it. The options below allow you to
+    control that behavior.
+</p>
+<div class="panel panel-default">
+    <div class="panel-heading" translate>
+        Select the types of notifications you'd like to receive
+    </div>
+    <ul class="list-group">
+        <li class="list-group-item" ng-repeat="notification in $ctrl.notificationTypes">
+            <translate>
+                {{ notification.value }}
+            </translate>
+            <div class="pull-right">
+                <div class="form-group">
+                    <label class="checkbox-inline">
+                        <input type="checkbox" ng-checked="$ctrl.notifications[notification.id].actions.indexOf('email') !== -1" ng-click="$ctrl.toggleNotification($event, notification.id, 'email')">
+                        <span translate>Email me</span>
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" ng-checked="$ctrl.notifications[notification.id].actions.indexOf('task') != -1" ng-click="$ctrl.toggleNotification($event, notification.id, 'task')">
+                        <span translate>Create a task</span>
+                    </label>
                 </div>
             </div>
-            <div class="panel panel-default pref-panel">
-                <div class="panel-heading" translate>
-                    Select the types of notifications you'd like to receive.
-                </div>
-                <ul class="list-group">
-                    <li class="list-group-item" ng-repeat="notification in $ctrl.notificationTypes">
-                        <div class="row pref-row">
-                            <div class="col-md-8" translate>
-                                {{ notification.value }}
-                            </div>
-                            <div class="col-md-4 text-right pref-lead">
-                                <div class="form-group">
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" ng-checked="$ctrl.notifications[notification.id].actions.indexOf('email') !== -1" ng-click="$ctrl.toggleNotification($event, notification.id, 'email')">
-                                        <span translate>Email me</span>
-                                    </label>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" ng-checked="$ctrl.notifications[notification.id].actions.indexOf('task') != -1" ng-click="$ctrl.toggleNotification($event, notification.id, 'task')">
-                                        <span translate>Create a task</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="page-filters page-filters-close">
-                        <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
-                            <span translate>Save Preferences</span>&nbsp;
-                            <div class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></div>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </li>
+    </ul>
+    <div class="panel-footer text-right">
+        <a ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary">
+            <translate>Save</translate>
+            <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
+        </a>
     </div>
 </div>

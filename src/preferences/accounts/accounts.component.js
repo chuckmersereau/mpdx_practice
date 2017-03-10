@@ -1,33 +1,56 @@
-class AccountPreferencesController {
+class AccountsController {
     constructor($state, $stateParams, help) {
+        this.$stateParams = $stateParams;
         this.$state = $state;
-
-        if ($stateParams.id) {
-            this.setTab($stateParams.id);
-        }
 
         help.suggest([
             '57e2f280c697910d0784d307'
         ]);
     }
+    $onInit() {
+        if (this.$stateParams.id || this.selectedTab) {
+            this.setTab(this.$stateParams.id || this.selectedTab);
+        }
+    }
+    $onChanges(data) {
+        if (data.selectedTab) {
+            this.setTab(this.selectedTab);
+        }
+    }
     setTab(service) {
         if (service === '' || this.tabId === service) {
-            this.tabId = '';
-            this.$state.go('preferences.accounts', {}, { notify: false });
+            if (!this.selectedTab) {
+                this.tabId = '';
+            }
         } else {
-            this.tabId = service;
-            this.$state.go('preferences.accounts.tab', { id: service }, { notify: false });
+            if (this.selectedTab) {
+                if (this.tabSelectable(service)) {
+                    this.tabId = service;
+                }
+            } else {
+                this.tabId = service;
+            }
         }
+    }
+    tabSelectable(service) {
+        if (this.selectedTab) {
+            return this.selectedTab === service;
+        }
+        return true;
     }
     tabSelected(service) {
         return this.tabId === service;
     }
 }
 
-const Preferences = {
-    controller: AccountPreferencesController,
-    template: require('./accounts.html')
+const Accounts = {
+    controller: AccountsController,
+    template: require('./accounts.html'),
+    bindings: {
+        onSave: '&',
+        selectedTab: '<'
+    }
 };
 
 export default angular.module('mpdx.preferences.accounts.component', [])
-    .component('accountPreferences', Preferences).name;
+    .component('preferencesAccounts', Accounts).name;

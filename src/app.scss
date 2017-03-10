@@ -30,11 +30,13 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "styles/bootstrap_overrides";
 @import "styles/chosen_bootstrap";
 @import "styles/buttons";
+@import "styles/panels";
 
 /* Components */
 @import "blockUI/blockUI";
 @import "menu/menu";
 @import "menu/search/search";
+@import "common/cover/cover";
 @import "common/modal/modal";
 @import "contacts/filter/mapContacts/mapContacts";
 @import "contacts/filter/tags/tags";

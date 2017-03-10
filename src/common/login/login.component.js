@@ -1,14 +1,11 @@
 import config from 'config';
 
-require('./login.scss');
-
 class LoginController {
-    constructor($state, $window, login) {
+    constructor($state, $window) {
         if ($window.sessionStorage.token) {
             $state.go('home');
         }
         this.year = new Date().getFullYear();
-        this.background = login.backgrounds[Math.floor(Math.random() * login.backgrounds.length)];
         this.loginUrl = `${config.authUrl}${config.authLoginPath}`;
     }
 }

@@ -19,7 +19,7 @@
                     </button>
                 </div>
                 <button type="button" class="btn btn-link" ng-click="$ctrl.cancel()" ng-if="$ctrl.$attrs.cancel && $ctrl.$attrs.save" translate>Cancel</button>
-                <button type="button" class="btn btn-secondary" ng-click="$ctrl.cancel()" ng-if="$ctrl.$attrs.cancel && !$ctrl.$attrs.save" translate>Close</button>
+                <button type="button" class="btn btn-reverse" ng-click="$ctrl.cancel()" ng-if="$ctrl.$attrs.cancel && !$ctrl.$attrs.save" translate>Close</button>
                 <button type="submit" class="btn btn-primary" ng-disabled="!modalForm.$valid" ng-if="$ctrl.$attrs.save" translate>Save</button>
             </div>
         </div>

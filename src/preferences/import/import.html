@@ -1,14 +1,14 @@
-<p>&nbsp;</p>
+<h3 translate>Import Contacts</h3>
 <div class="panel-group">
-    <div class="panel panel-default pref-panel">
-        <div class="panel-heading pref-head" ng-click="$ctrl.setTab('tnt')">
+    <div class="panel panel-default">
+        <div class="panel-heading" ng-click="$ctrl.setTab('tnt')">
             <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('tnt') }"></i>
-            <span translate>TntConnect</span>
+            <translate>TntConnect</translate>
         </div>
         <div class="panel-animate" ng-show="$ctrl.tabSelected('tnt')">
             <div class="panel-body">
-                <div class="row pref-row">
-                    <div class="col-md-4 pref-lead">
+                <div class="row">
+                    <div class="col-md-4">
                         <div class="import_logo">
                             <img src="../../images/logos/tnt_logo.png"  alt="TntConnect">
                         </div>
@@ -24,15 +24,15 @@
             </div>
         </div>
     </div>
-    <div class="panel panel-default pref-panel">
-        <div class="panel-heading pref-head" ng-click="$ctrl.setTab('csv')">
+    <div class="panel panel-default">
+        <div class="panel-heading" ng-click="$ctrl.setTab('csv')">
             <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('csv') }"></i>
             <span translate>CSV File</span>
         </div>
         <div class="panel-animate" ng-show="$ctrl.tabSelected('csv')">
             <div class="panel-body">
-                <div class="row pref-row">
-                    <div class="col-md-4 pref-lead">
+                <div class="row">
+                    <div class="col-md-4">
                         <div class="import_logo" translate>
                             .CSV File
                         </div>
@@ -48,8 +48,8 @@
             </div>
         </div>
     </div>
-    <div class="panel panel-default pref-panel">
-        <div class="panel-heading pref-head" ng-click="$ctrl.setTab('google')">
+    <div class="panel panel-default">
+        <div class="panel-heading" ng-click="$ctrl.setTab('google')">
             <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('google') }"></i>
             <span translate>Google Contacts</span>
         </div>
@@ -60,8 +60,8 @@
             </div>
             <div ng-if="$ctrl.preferencesImports.data">
                 <div class="panel-body">
-                    <div class="row pref-row">
-                        <div class="col-md-4 pref-lead">
+                    <div class="row">
+                        <div class="col-md-4">
                             <div class="import_logo">
                                 <img src="../../images/logos/google_logo.png" alt="Google">
                             </div>

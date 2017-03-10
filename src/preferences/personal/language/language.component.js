@@ -1,7 +1,7 @@
 import keys from 'lodash/fp/keys';
 import map from 'lodash/fp/map';
 
-class PreferencesLanguageController {
+class LanguageController {
     language;
     saving;
     serverConstants;
@@ -40,17 +40,11 @@ class PreferencesLanguageController {
     setLanguage() {
         this.language.change(this.users.current.preferences.locale);
     }
-    save() {
-        this.saving = true;
-        this.onSave().then(() => {
-            this.saving = false;
-        });
-    }
 }
 
-const PreferencesLanguage = {
+const Language = {
     template: require('./language.html'),
-    controller: PreferencesLanguageController,
+    controller: LanguageController,
     bindings: {
         onSave: '&',
         listOnly: '<'
@@ -58,4 +52,4 @@ const PreferencesLanguage = {
 };
 
 export default angular.module('mpdx.preferences.personal.language.component', [])
-    .component('preferencesLanguage', PreferencesLanguage).name;
+    .component('preferencesPersonalLanguage', Language).name;

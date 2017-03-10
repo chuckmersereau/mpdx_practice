@@ -1,0 +1,23 @@
+.panel.panel-default {
+    transition: border-color 0.5s;
+    .panel-heading {
+        transition: background-color 0.5s;
+        cursor: pointer;
+    }
+    .panel-footer {
+        transition: background-color 0.5s;
+        text-align: right;
+    }
+    &.panel-disabled {
+        > .panel-heading {
+            color: #444;
+            cursor: default;
+        }
+    }
+    &.panel-selected {
+        .panel-heading, .panel-footer {
+            background-color: lighten($color-secondary, 35%);
+        }
+        border-color: $color-secondary;
+    }
+}

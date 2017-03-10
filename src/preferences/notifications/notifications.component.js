@@ -31,9 +31,7 @@ class NotificationPreferencesController {
         return this.accounts.saveCurrent().then(() => {
             this.alerts.addAlert('Notifications saved successfully', 'success');
             return this.accounts.getCurrent(this.users.current.id).then(() => {
-                if (this.setup) {
-                    this.next();
-                }
+                this.onSave();
             });
         }).catch((data) => {
             _.each(data.errors, (value) => {
@@ -67,7 +65,7 @@ const Notifications = {
     controller: NotificationPreferencesController,
     template: require('./notifications.html'),
     bindings: {
-        setup: '<'
+        onSave: '&'
     }
 };
 
