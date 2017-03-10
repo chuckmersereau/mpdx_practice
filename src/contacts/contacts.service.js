@@ -2,6 +2,7 @@ import assign from 'lodash/fp/assign';
 import concat from 'lodash/fp/concat';
 import find from 'lodash/fp/find';
 import findIndex from 'lodash/fp/findIndex';
+import isFunction from 'lodash/fp/isFunction';
 import map from 'lodash/fp/map';
 import reduce from 'lodash/fp/reduce';
 import reject from 'lodash/fp/reject';
@@ -82,7 +83,9 @@ class ContactsService {
         }
         return this.api.get('contacts', {
             filter: {account_list_id: this.api.account_list_id},
-            'fields[contacts]': 'name',
+            fields: {
+                contacts: 'name'
+            },
             per_page: 25000,
             sort: 'name'
         }).then((data) => {
@@ -132,11 +135,13 @@ class ContactsService {
                 page: this.page,
                 per_page: 25,
                 include: 'people,addresses,people.facebook_accounts,people.phone_numbers,people.email_addresses',
-                'fields[people]': 'deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
-                'fields[addresses]': 'city,primary_mailing_address,postal_code,state,geo,street',
-                'fields[email_addresses]': 'email,historic,primary',
-                'fields[phone_numbers]': 'historic,location,number,primary',
-                'fields[facebook_accounts]': 'url',
+                fields: {
+                    people: 'deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
+                    addresses: 'city,primary_mailing_address,postal_code,state,geo,street,updated_in_db_at',
+                    email_addresses: 'email,historic,primary',
+                    phone_numbers: 'historic,location,number,primary',
+                    facebook_accounts: 'url'
+                },
                 sort: 'name'
             },
             overrideGetAsPost: true
@@ -346,7 +351,7 @@ class ContactsService {
     }
     merge(winnersAndLosers) {
         return this.api.post({url: `contacts/merges/bulk`, data: winnersAndLosers, type: 'contacts'}).then((data) => {
-            if (_.isFunction(data.success)) {
+            if (isFunction(data.success)) {
                 data.success();
             }
             return data;

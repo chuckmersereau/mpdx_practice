@@ -2,7 +2,7 @@
      ng-click="$ctrl.selectCard()" style="cursor: pointer">
     <div class="avatar" bg-img="{{$ctrl.person.avatar | stripMpdx}}"></div>
     <div class="content">
-        <a class="pull-right edit" ng-click="$ctrl.openModal()" ng-if="!$ctrl.view" translate>Edit</a>
+        <a class="pull-right edit" ng-click="$ctrl.openModal(); $event.stopPropagation()" ng-if="!$ctrl.view" translate>Edit</a>
         <h1 ng-class="{ strike: $ctrl.person.deceased }">{{ $ctrl.person.first_name }} {{ $ctrl.person.last_name }}</h1>
         <dl>
             <dd ng-repeat="email in $ctrl.person.email_addresses">
@@ -21,7 +21,7 @@
                 <span>{{ $ctrl.person.marital_status }}</span>
                 <span ng-if="$ctrl.person.anniversary">{{ $ctrl.person.anniversary }}</span>
             </dd>
-            <dd ng-if="$ctrl.person.facebook_accounts.length > 0 || $ctrl.person.twitter_accounts.length" class="networks">
+            <dd ng-if="$ctrl.person.facebook_accounts.length > 0 || $ctrl.person.twitter_accounts.length > 0 || $ctrl.person.linkedin_accounts.length > 0 || $ctrl.person.websites.length > 0" class="networks">
                 <facebook-link ng-repeat="fb in $ctrl.person.facebook_accounts" facebook-account="fb"></facebook-link>
                 <twitter-link ng-repeat="twit in $ctrl.person.twitter_accounts" twitter-account="twit"></twitter-link>
                 <linkedin-link ng-repeat="li in $ctrl.person.linkedin_accounts"></linkedin-link>

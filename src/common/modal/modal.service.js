@@ -15,11 +15,7 @@ class ModalService {
         let deferred = this.$q.defer();
         let openParams = assign(this.defaultParams, params);
         openParams.onHide = (value) => {
-            if (value) {
-                deferred.resolve(value);
-            } else {
-                deferred.reject();
-            }
+            deferred.resolve(value);
             if (params.onHide) {
                 params.onHide(value);
             }

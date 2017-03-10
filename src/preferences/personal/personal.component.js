@@ -1,10 +1,8 @@
 import each from 'lodash/fp/each';
 import has from 'lodash/fp/has';
-import keys from 'lodash/fp/keys';
 import map from 'lodash/fp/map';
 import split from 'lodash/fp/split';
 import toLower from 'lodash/fp/toLower';
-import toUpper from 'lodash/fp/toUpper';
 
 class PersonalPreferencesController {
     accounts;
@@ -32,9 +30,9 @@ class PersonalPreferencesController {
         this.saving = false;
         this.tabId = '';
 
-        this.currencies = map(key => {
-            return { key: toUpper(key), value: serverConstants.data.pledge_currencies[key] };
-        }, keys(serverConstants.data.pledge_currencies));
+        this.currencies = map(pc => {
+            return { key: pc.code, value: `${pc.name} - ${pc.code_symbol_string}` };
+        }, serverConstants.data.pledge_currencies);
     }
     $onInit() {
         if (this.$stateParams.id) {

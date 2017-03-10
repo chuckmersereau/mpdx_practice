@@ -215,7 +215,7 @@ class EntityAttributes {
     constructor() {
         this.attributes = {
             account_list_invites: {
-                attributes: ["created_at", "updated_at", "accepted_at", "accepted_by_user_id", "account_list_id", "cancelled_by_user_id", "code", "invited_by_user_id", "recipient_email", "updated_at", "updated_in_db_at"]
+                attributes: ["accepted_at", "accepted_by_user_id", "account_list_id", "cancelled_by_user_id", "code", "created_at", "invited_by_user_id", "recipient_email", "updated_at", "updated_in_db_at"]
             },
             account_lists: {
                 attributes: ["creator_id", "created_at", "monthly_goal", "name", "notification_preferences", "settings", "total_pledges", "updated_at", "updated_in_db_at"],
@@ -225,21 +225,21 @@ class EntityAttributes {
                 }
             },
             addresses: {
-                attributes: ["street", "city", "country", "end_date", "geo", "historic", "location", "postal_code", "primary_mailing_address", "start_date", "state", "updated_in_db_at"]
+                attributes: ["city", "country", "end_date", "geo", "historic", "location", "postal_code", "primary_mailing_address", "start_date", "state", "street", "updated_in_db_at"]
             },
             appeals: {
-                attributes: ["created_at", "updated_at", "amount", "currencies", "description", "donations", "end_date", "name", "total_currency", "contacts", "updated_in_db_at"]
+                attributes: ["amount", "contacts", "created_at", "currencies", "description", "donations", "end_date", "name", "total_currency", "updated_at", "updated_in_db_at"]
             },
             bulk: {
                 attributes: ["tag_name"],
                 pluralizeType: false
             },
             comments: {
-                attributes: ["body", "updated_in_db_at", "person"],
+                attributes: ["body", "person", "updated_in_db_at"],
                 person: { ref: 'id', pluralizeType: false }
             },
             contacts: {
-                attributes: ["account_list", "church_name", "contacts_referred_by_me", "contacts_that_referred_me", "created_at", "direct_deposit", "envelope_greeting",
+                attributes: ["account_list", "church_name", "contacts_referred_by_me", "contacts_that_referred_me", "created_at", "direct_deposit", "donor_accounts", "envelope_greeting",
                     "first_donation_date", "full_name", "greeting",
                     "last_activity", "last_appointment", "last_donation_date", "last_letter", "likely_to_give", "last_phone_call", "last_pre_call", "last_thank", "late_at", "locale", "loser_id",
                     "magazine", "name", "next_ask", "no_appeals", "not_duplicated_with", "notes", "notes_saved_at",
@@ -247,6 +247,11 @@ class EntityAttributes {
                     "send_newsletter", "status", "tag_list", "timezone", "tnt_id", "total_donations", "uncompleted_tasks_count", "updated_at", "updated_in_db_at", "website", "winner_id"],
                 // addresses: { ref: 'id' },
                 // people: { ref: 'id' },
+                donor_accounts: {
+                    ref: 'id',
+                    attributes: ["account_number", "organization"],
+                    organization: {ref: 'id'}
+                },
                 account_list: { ref: 'id' },
                 contacts_referred_by_me: { ref: 'id' },
                 contacts_that_referred_me: { ref: 'id' },
@@ -259,8 +264,7 @@ class EntityAttributes {
 
             },
             donations: {
-                attributes: ["remote_id", "donor_account", "designation_account", "motivation", "payment_method", "tendered_currency", "tendered_amount", "currency", "amount", "memo",
-                    "donation_date", "created_at", "updated_at", "payment_type", "channel", "appeal", "appeal_amount", "updated_in_db_at"],
+                attributes: ["amount", "appeal", "appeal_amount", "channel", "created_at", "designation_account", "donation_date", "donor_account", "motivation", "payment_method", "payment_type", "remote_id", "tendered_currency", "tendered_amount", "currency", "memo", "updated_at", "updated_in_db_at"],
                 designation_account: { ref: 'id' },
                 donor_account: { ref: 'id' },
                 appeal: { ref: 'id' }
@@ -286,7 +290,7 @@ class EntityAttributes {
                 attributes: ["first_name", "legal_first_name", "last_name", "birthday_month", "birthday_year", "birthday_day", "anniversary_month", "anniversary_year", "anniversary_day", "title",
                     "suffix", "gender", "marital_status", "preferences", "sign_in_count", "current_sign_in_at", "last_sign_in_at", "current_sign_in_ip", "last_sign_in_ip", "created_at", "updated_at",
                     "master_person_id", "middle_name", "access_token", "profession", "deceased", "subscribed_to_updates", "optout_enewsletter", "occupation", "employer", "not_duplicated_with",
-                    "phone_numbers", "email_addresses", "facebook_accounts", "family_relationships", "linkedin_accounts", "websites", "updated_in_db_at", "winner_id", "loser_id"],
+                    "phone_numbers", "email_addresses", "facebook_accounts", "family_relationships", "linkedin_accounts", "twitter_accounts", "websites", "updated_in_db_at", "winner_id", "loser_id"],
                 email_addresses: {
                     ref: 'id',
                     attributes: ["email", "primary", "created_at", "updated_at", "remote_id", "location", "historic", "updated_in_db_at"]
@@ -307,6 +311,10 @@ class EntityAttributes {
                 phone_numbers: {
                     ref: 'id',
                     attributes: ["number", "country_code", "location", "primary", "created_at", "updated_at", "remote_id", "historic", "updated_in_db_at"]
+                },
+                twitter_accounts: {
+                    ref: 'id',
+                    attributes: ["screen_name", "updated_in_db_at"]
                 },
                 websites: {
                     ref: 'id',

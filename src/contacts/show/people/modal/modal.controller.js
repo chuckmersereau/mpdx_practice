@@ -1,4 +1,5 @@
 import has from 'lodash/fp/has';
+import map from 'lodash/fp/map';
 import moment from 'moment';
 import uuid from 'uuid/v1';
 
@@ -8,11 +9,10 @@ class PersonModalController {
     contacts;
 
     constructor(
-        $log, $rootScope, $scope,
+        $log, $scope,
         people, contact, locale, person
     ) {
         this.$log = $log;
-        this.$rootScope = $rootScope;
         this.$scope = $scope;
         this.contact = contact;
         this.locale = locale;
@@ -63,14 +63,11 @@ class PersonModalController {
         if (has('id', this.person)) {
             return this.people.save(this.contact.id, this.person).then(() => {
                 this.$log.debug('person saved:', this.person);
-                this.$rootScope.$emit('peopleUpdated', this.contact.id);
-
                 this.$scope.$hide();
             });
         } else {
             return this.people.create(this.contact.id, this.person).then(() => {
                 this.$log.debug('person created:', this.person);
-                this.$rootScope.$emit('peopleUpdated', this.contact.id);
                 this.$scope.$hide();
             });
         }
@@ -96,10 +93,14 @@ class PersonModalController {
     addLinkedin() {
         this.person.linkedin_accounts.push({id: uuid(), username: ''});
     }
-    changePrimary(property, index) {
-        _.forEach(this.person[property], (person, i) => {
-            person.primary = i === index;
-        });
+    addWebsite() {
+        this.person.websites.push({id: uuid(), url: ''});
+    }
+    changePrimary(property, id) {
+        this.person[property] = map(val => {
+            val.primary = val.id === id;
+            return val;
+        }, this.person[property]);
     }
     changeHistoric(obj) {
         obj.historic = !obj.historic;

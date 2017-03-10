@@ -1,6 +1,7 @@
 import get from 'lodash/fp/get';
 import keys from 'lodash/fp/keys';
 import map from 'lodash/fp/map';
+import uuid from 'uuid/v1';
 
 class ContactDetailsController {
     alerts
@@ -9,13 +10,17 @@ class ContactDetailsController {
     contacts;
     contactsTags;
     serverConstants;
+    users;
 
-    constructor($window, gettextCatalog,
-                alerts, contactsTags, contacts, serverConstants) {
+    constructor(
+        $window, gettextCatalog,
+        alerts, contactsTags, contacts, serverConstants, users
+    ) {
         this.alerts = alerts;
         this.contacts = contacts;
         this.contactsTags = contactsTags;
         this.gettextCatalog = gettextCatalog;
+        this.users = users;
 
         this.languages = map((locale) => {
             const language = $window.languageMappingList[locale];
@@ -36,7 +41,7 @@ class ContactDetailsController {
         this.referrer = get('[0]', this.contact.contacts_that_referred_me) || null;
     }
     addPartnerAccount() {
-        this.contact.donor_accounts.push({ account_number: '', organization_id: this.organization_id, _destroy: 0 });
+        this.contact.donor_accounts.push({id: uuid(), organization: { id: this.users.organizationAccounts[0].organization.id }, account_number: ''});
     }
     save() {
         if (this.referrer && this.contact.contacts_that_referred_me[0]) {

@@ -90,7 +90,7 @@
                         allow-single-deselect="true"
                         data-placeholder-text-single="'Select an Option' | translate"
                         id="pledge_currency"
-                        ng-options="val as key for (val, key) in $ctrl.serverConstants.data.pledge_currencies"
+                        ng-options="pc.code as pc.code_symbol_string for pc in $ctrl.serverConstants.data.pledge_currencies"
                         ng-model="$ctrl.contact.pledge_currency">
                     <option value=""></option>
                 </select>

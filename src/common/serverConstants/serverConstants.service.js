@@ -1,15 +1,22 @@
 import replaceUnderscore from '../fp/replaceUnderscore';
-import each from 'lodash/fp/each';
 import keys from 'lodash/fp/keys';
+import reduce from 'lodash/fp/reduce';
 import toString from 'lodash/fp/toString';
 
 const mapUnderscore = (obj) => {
-    let newObj = {};
     const objKeys = keys(obj);
-    each(key => {
-        newObj[toString(replaceUnderscore(key))] = obj[key];
-    }, objKeys);
-    return newObj;
+    return reduce((result, key) => {
+        result[toString(replaceUnderscore(key))] = obj[key];
+        return result;
+    }, {}, objKeys);
+};
+
+const mapFloats = (obj) => {
+    const objKeys = keys(obj);
+    return reduce((result, key) => {
+        result[toString(parseFloat(key))] = obj[key];
+        return result;
+    }, {}, objKeys);
 };
 
 class ServerConstantsService {
@@ -37,6 +44,7 @@ class ServerConstantsService {
             data.locales = mapUnderscore(data.locales);
             data.notifications = mapUnderscore(data.notifications);
             data.organizations = mapUnderscore(data.organizations);
+            data.pledge_frequencies = mapFloats(data.pledge_frequencies);
             this.data = data;
             return data;
         });
