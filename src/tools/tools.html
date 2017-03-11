@@ -1,3 +1,32 @@
+<div class="nav--secondary">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="pull-left">
+                    <div class="section">
+                        <div class="dropdown">
+                            <a bs-dropdown type="button">
+                                <i class="fa fa-angle-down"></i>
+                                <translate>Tools</translate>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li role="presentation" ng-repeat="tool in $ctrl.tools.data" ng-if="tool.enabled">
+                                    <a ng-click="$ctrl.state.go(tool.link)">
+                                        <i class="{{tool.icon}}"></i>
+                                        {{tool.title}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="section" ng-if="$ctrl.state.$current.name != 'tools'">
+                        {{$ctrl.state.$current.title}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <ui-view>
     <div class="tools row">
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="tool in $ctrl.tools.data" ng-if="tool.enabled">

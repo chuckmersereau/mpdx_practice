@@ -22,7 +22,7 @@
         </translate>
     </p>
 </div>
-<div ng-if="$ctrl.accounts.data.length > 0">
+<div ng-if="$ctrl.users.current.account_lists.length > 0">
     <div class="row-fluid">
         <div class="col-sm-6 well border-primary">
             <label for="from" translate>
@@ -30,7 +30,7 @@
             </label>
             <select id="from" ng-model="$ctrl.selected_account_id" chosen>
                 <option value="" translate>Select an Account</option>
-                <option value="{{account.id}}" ng-repeat="account in $ctrl.accounts.data" ng-if="account.id !== $ctrl.api.account_list_id">{{account.name}}</option>
+                <option value="{{account.id}}" ng-repeat="account in $ctrl.users.current.account_lists" ng-if="account.id !== $ctrl.api.account_list_id">{{account.name}}</option>
             </select>
         </div>
         <div class="col-md-1 text-center" style="line-height: 140px;">

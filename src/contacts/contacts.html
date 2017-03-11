@@ -1,3 +1,24 @@
+<div class="nav--secondary">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="pull-left">
+                    <div class="section"><a ui-sref="preferences.imports" translate>Import Contacts</a></div>
+                    <div class="section">
+                        <a class="reconcile-contacts" ui-sref="contacts.reconcile_partners">
+                            <translate>Merge Contacts</translate> <span class="badge">{{$ctrl.contactReconciler.duplicateContactsTotal}}</span>
+                        </a>
+                    </div>
+                    <div class="section">
+                        <a class="reconcile-contacts" ui-sref="contacts.reconcile_individuals">
+                            <translate>Merge People</translate> <span class="badge">{{$ctrl.contactReconciler.duplicatePeopleTotal}}</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <ui-view>
     <div class="row">
         <alerts></alerts>

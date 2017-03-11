@@ -34,7 +34,7 @@
                             <td class="date">{{ donation.donation_date | moment: 'l' }}</td>
                             <td ng-if="$ctrl.contact">{{ donation.donor_account.name }}</td>
                             <td ng-if="!$ctrl.contact">
-                                <a ui-sref="contact({ contactId: donation.contact.id })">{{ donation.contact.name }} ({{ donation.donor_account.account_number }})</a>
+                                <a ui-sref="contacts.show({ contactId: donation.contact.id })">{{ donation.contact.name }} ({{ donation.donor_account.account_number }})</a>
                             </td>
                             <td class="text-right">{{ donation.amount }} {{ donation.currency }}</td>
                             <td ng-if="$ctrl.designationAccounts.data.length > 0">{{ donation.designation_account.name }} ({{ donation.designation_account.designation_number }})</td>

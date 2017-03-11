@@ -1,3 +1,5 @@
+import map from 'lodash/fp/map';
+
 class ReconcilerService {
     api;
     people;
@@ -27,7 +29,7 @@ class ReconcilerService {
     }
 
     fetchAll(force = false) {
-        this.fetchDuplicateContacts(force);
+        // this.fetchDuplicateContacts(force);
         this.fetchDuplicatePeople(force);
     }
 
@@ -38,7 +40,10 @@ class ReconcilerService {
 
         return this.api.get('contacts/duplicates', {
             include: 'contacts,contacts.addresses',
-            'fields[addresses]': 'primary,street,city,state,postal_code',
+            fields: {
+                contacts: 'addresses,name,square_avatar',
+                addresses: 'primary,street,city,state,postal_code'
+            },
             filter: {account_list_id: this.api.account_list_id},
             per_page: this.perPage
         }).then((data) => {
@@ -48,9 +53,10 @@ class ReconcilerService {
             this.duplicateContactsTotal = data.meta.pagination.total_count;
             this.shouldFetchContacts = false;
 
-            _.each(this.duplicateContacts, (duplicateContact) => {
+            this.duplicateContacts = map(duplicateContact => {
                 duplicateContact.mergeChoice = -1;
-            });
+                return duplicateContact;
+            }, this.duplicateContacts);
         });
     }
 
@@ -61,21 +67,23 @@ class ReconcilerService {
 
         return this.api.get('contacts/people/duplicates', {
             include: 'people,shared_contact,people.phone_numbers,people.email_addresses',
-            'fields[people]': 'email_addresses,phone_numbers,first_name,last_name',
-            'fields[phone_numbers]': 'primary,number',
-            'fields[email_addresses]': 'primary,email',
+            fields: {
+                people: 'email_addresses,phone_numbers,first_name,last_name',
+                phone_numbers: 'primary,number',
+                email_addresses: 'primary,email',
+                shared_contact: 'id'
+            },
             filter: {account_list_id: this.api.account_list_id},
             per_page: this.perPage
         }).then((data) => {
-            this.duplicatePeople = data;
             this.$log.debug('contacts/people/duplicates', data);
+            this.duplicatePeople = map((duplicatePerson) => {
+                duplicatePerson.mergeChoice = -1;
+                return duplicatePerson;
+            }, data);
 
             this.duplicatePeopleTotal = data.meta.pagination.total_count;
             this.shouldFetchPeople = false;
-
-            _.each(this.duplicatePeople, (duplicatePerson) => {
-                duplicatePerson.mergeChoice = -1;
-            });
         });
     }
 

@@ -199,7 +199,7 @@
                                 <label for="defaultAccountList" translate>Default Account List</label>
                                 <p class="text-muted" translate>This sets which account you will land in whenever you login to MPDX.</p>
                                 <select id="defaultAccountList" class="form-control" ng-model="$ctrl.users.current.preferences.default_account_list"
-                                        ng-options="al.id as al.name for al in $ctrl.accounts.data | toArray" chosen>
+                                        ng-options="al.id as al.name for al in $ctrl.users.current.account_lists | toArray" chosen>
                                 </select>
                             </div>
                         </div>

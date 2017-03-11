@@ -3,12 +3,12 @@ menu {
     margin: 0;
 
     .nav--logo {
-        background: url("images/mpdx-logo-svg.svg") no-repeat; 
+        background: url("images/mpdx-logo-svg.svg") no-repeat;
         background-size: contain;
         background-position: 50%;
         display: block;
-        width: 83px; 
-        height: 48px; 
+        width: 83px;
+        height: 48px;
     }
 
     .nav--global {
@@ -173,21 +173,6 @@ menu {
         }
         .navbar-collapse {
             padding-left: 0;
-        }
-    }
-    .nav--secondary {
-        $secondary-menu-height: 42px;
-        background: none;
-        border-bottom: 1px solid $color-gray-keyline;
-        .section {
-            display: inline-block;
-            height: $secondary-menu-height;
-            line-height: $secondary-menu-height;
-            margin-right: 24px;
-        }
-        .section.right {
-            margin-right: 0px;
-            margin-left: 12px;
         }
     }
 

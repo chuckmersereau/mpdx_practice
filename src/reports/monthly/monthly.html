@@ -56,7 +56,7 @@
                                 </thead>
                                 <tbody>
                                 <tr ng-repeat="donation in donationType.donations | orderBy : 'donor'">
-                                    <td><a ui-sref="contact({contactId: donation.contact_id})">{{donation.contact_name}}</a></td>
+                                    <td><a ui-sref="contacts.show({contactId: donation.contact_id})">{{donation.contact_name}}</a></td>
                                     <td>{{donation.contact_status}}</td>
                                     <td class="text-right">
                                         <div ng-if="donation.pledge_amount !== null">

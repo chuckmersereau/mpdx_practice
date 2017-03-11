@@ -7,7 +7,8 @@ export default class Routes {
             abstract: true,
             component: 'root',
             resolve: {
-                constants: /*@ngInject*/ (serverConstants) => serverConstants.load()
+                constants: /*@ngInject*/ (serverConstants) => serverConstants.load(),
+                contactList: /*@ngInject*/ (contacts) => contacts.getList()
             }
         }).state({
             name: 'home',
@@ -39,8 +40,10 @@ export default class Routes {
             },
             parent: 'root',
             resolve: {
+                default: /*@ngInject*/ (contacts) => contacts.load(),
                 resolution: /*@ngInject*/ (contactFilter) => contactFilter.load(),
-                another: /*@ngInject*/ (contactsTags) => contactsTags.load()
+                another: /*@ngInject*/ (contactsTags) => contactsTags.load(),
+                again: /*@ngInject*/ (contactReconciler) => contactReconciler.fetchAll()
             }
         }).state({
             name: 'contacts.reconcile_partners',
@@ -51,14 +54,12 @@ export default class Routes {
             url: '/reconcile-individuals',
             component: 'contactsReconcileIndividuals'
         }).state({
-            name: 'contact',
+            name: 'contacts.show',
             title: 'Contact',
-            url: '/contacts/{contactId}',
+            url: '/{contactId}',
             component: 'contact',
-            parent: 'root',
             resolve: {
-                resolution: /*@ngInject*/ (contactFilter) => contactFilter.load(),
-                another: /*@ngInject*/ (contactsTags) => contactsTags.load()
+                again: /*@ngInject*/ (users) => users.listOrganizationAccounts()
             }
         }).state({
             name: 'reports',
@@ -111,7 +112,10 @@ export default class Routes {
             name: 'preferences.integrations',
             title: 'Connect Services',
             url: '/integrations',
-            component: 'integrationPreferences'
+            component: 'integrationPreferences',
+            resolve: {
+                resolution: /*@ngInject*/ (users) => users.listOrganizationAccounts()
+            }
         }).state({
             name: 'preferences.notifications',
             title: 'Notifications',
@@ -134,7 +138,10 @@ export default class Routes {
             name: 'setup.connect',
             title: 'Get Connected',
             url: '/connect',
-            component: 'setupConnect'
+            component: 'setupConnect',
+            resolve: {
+                resolution: /*@ngInject*/ (users) => users.listOrganizationAccounts()
+            }
         }).state({
             name: 'setup.google',
             title: 'Setup Google',

@@ -17,7 +17,7 @@
         <a ng-click="$ctrl.go('preferences.accounts')" translate>Manage Accounts</a>
     </li>
 </ul>
-<div ng-if="$ctrl.accounts.data.length > 1">
+<div ng-if="$ctrl.users.current.account_lists.length > 1">
     <hr>
     <small translate>You are currently editing settings for</small>
     <account-lists></account-lists>

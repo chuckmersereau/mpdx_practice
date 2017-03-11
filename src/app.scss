@@ -69,3 +69,19 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 .border-success {
     border-color: #3c763d;
 }
+
+.nav--secondary {
+    $secondary-menu-height: 42px;
+    background: none;
+    border-bottom: 1px solid $color-gray-keyline;
+    .section {
+        display: inline-block;
+        height: $secondary-menu-height;
+        line-height: $secondary-menu-height;
+        margin-right: 24px;
+    }
+    .section.right {
+        margin-right: 0px;
+        margin-left: 12px;
+    }
+}

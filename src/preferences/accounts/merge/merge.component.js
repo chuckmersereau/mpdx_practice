@@ -4,14 +4,16 @@ class MergePreferencesController {
     alerts;
     preferencesMerges;
     setup;
+    users;
 
     constructor(
-        $state, accounts, api, alerts
+        $state, accounts, api, alerts, users
     ) {
         this.$state = $state;
         this.accounts = accounts;
         this.alerts = alerts;
         this.api = api;
+        this.users = users;
 
         this.saving = false;
         this.selected_account_id = null;
@@ -21,7 +23,7 @@ class MergePreferencesController {
         return this.api.post(`account_lists/${this.api.account_list_id}/merge`, { id: this.selected_account_id }).then(() => {
             this.saving = false;
             this.alerts.addAlert('MPDX merged your account successfully', 'success');
-            return this.accounts.load().then(() => {
+            return this.user.getCurrent(true).then(() => {
                 this.onSave();
             });
         }).catch(() => {

@@ -28,7 +28,12 @@ class Users {
         this.locale = locale;
 
         this.current = null;
-        this.defaultIncludes = 'email_addresses';
+        this.defaultIncludes = 'account_lists,email_addresses';
+        this.defaultFields = {
+            user: 'account_lists,email_addresses,first_name,last_name,options,preferences,updated_in_db_at',
+            account_lists: 'name',
+            email_addresses: 'email,primary,updated_in_db_at'
+        };
         this.hasAnyUsAccounts = false;
         this.organizationAccounts = null;
 
@@ -40,7 +45,7 @@ class Users {
         if (this.current && !reset) {
             return this.$q.resolve();
         }
-        return this.api.get('user', {include: this.defaultIncludes}).then((response) => {
+        return this.api.get('user', {include: this.defaultIncludes, fields: this.defaultFields}).then((response) => {
             this.current = response;
             this.$log.debug('current user: ', response);
 
@@ -50,19 +55,15 @@ class Users {
                 });
             }
 
-            const localeDisplay = get(['preferences.locale_display', 'en-en'], response);
+            const localeDisplay = get('preferences.locale_display', response) || 'en-en';
             this.locale.change(localeDisplay);
-            const locale = get(['preferences.locale', 'en-us'], response);
+            const locale = get('preferences.locale', response) || 'en-us';
             this.language.change(locale);
 
             const defaultAccountList = toString(get('preferences.default_account_list', response));
             const accountListId = this.$window.sessionStorage.getItem(`${this.current.id}_accountListId`) || defaultAccountList;
 
-            const promises = [
-                this.accounts.swap(accountListId, this.current.id),
-                this.accounts.load() // force load accounts in resolve
-            ];
-            return this.$q.all(promises).then(() => {
+            this.accounts.swap(accountListId, this.current.id).then(() => {
                 return this.getOptions(true, forRouting).then(() => {
                     this.help.updateUser(this.current);
                     return this.current;
@@ -108,7 +109,10 @@ class Users {
             option.updated_in_db_at = data.updated_in_db_at;
         }); //use jsonapi key here since it doesn't match endpoint
     }
-    listOrganizationAccounts() {
+    listOrganizationAccounts(reset = false) {
+        if (this.organizationAccounts && !reset) {
+            return this.$q.resolve(this.organizationAccounts);
+        }
         return this.api.get(`user/organization_accounts`, {include: 'organization'}).then((data) => {
             this.$log.debug('user/organization_accounts: ', data);
             this.organizationAccounts = data;
@@ -120,7 +124,7 @@ class Users {
     }
     saveCurrent(reset = false) {
         this.$log.debug('user put', this.current);
-        return this.api.put('user', assign({}, this.current, { include: this.defaultIncludes })).then((data) => {
+        return this.api.put('user', assign({}, this.current)).then((data) => {
             if (reset) {
                 return this.getCurrent(true); //force relead to reconcile as put response is incomplete
             }

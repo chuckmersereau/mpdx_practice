@@ -1,9 +1,15 @@
 class ContactsController {
     contactFilter;
+    contactReconciler;
 
-    constructor($stateParams, contactFilter, help) {
+    constructor(
+        $rootScope, $stateParams,
+        contactFilter, contactReconciler, help
+    ) {
+        this.$rootScope = $rootScope;
         this.$stateParams = $stateParams;
         this.contactFilter = contactFilter;
+        this.contactReconciler = contactReconciler;
 
         help.suggest([
             '5845aa229033600698176a54',
@@ -25,6 +31,9 @@ class ContactsController {
             _.assign(this.contactFilter.params, this.contactFilter.params, this.$stateParams.filters);
             this.contactFilter.change();
         }
+        this.$rootScope.$on('accountListUpdated', () => {
+            this.contactReconciler.fetchAll(true);
+        });
     }
 }
 

@@ -1,8 +1,8 @@
+import get from 'lodash/fp/get';
+
 class menuController {
-    accounts;
     contacts;
-    contactDonations;
-    contactReconciler;
+    donations;
     help;
     state;
     tasksService;
@@ -11,34 +11,23 @@ class menuController {
 
     constructor(
         $rootScope, $state,
-        accounts, contacts, contactDonations, contactReconciler, help, tasksService, users, donations, tools
+        contacts, help, tasksService, users, donations
     ) {
         this.$rootScope = $rootScope;
-        this.accounts = accounts;
         this.contacts = contacts;
         this.donations = donations;
-        this.contactDonations = contactDonations;
-        this.contactReconciler = contactReconciler;
         this.help = help;
         this.state = $state;
         this.tasksService = tasksService;
-        this.tools = tools;
         this.users = users;
 
         this.isInState = (match) => $state.$current.name.indexOf(match) === 0;
-    }
-    $onInit() {
-        this.contactReconciler.fetchAll(true);
-
-        this.$rootScope.$on('accountListUpdated', () => {
-            this.contactReconciler.fetchAll(true);
-        });
     }
     showHelp() {
         this.help.showHelp();
     }
     isInSetup() {
-        return _.get(this.users, 'current.options.setup_position.value') !== '';
+        return get('current.options.setup_position.value', this.users) !== '';
     }
 }
 

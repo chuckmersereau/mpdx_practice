@@ -26,12 +26,6 @@ class AccountsService {
         this.inviteList = null;
         this.userList = null;
     }
-    load() {
-        return this.api.get(`account_lists`).then((data) => {
-            this.$log.debug('accounts:', data);
-            this.data = data;
-        });
-    }
     swap(id, userId, reset = false) {
         if (!reset && (id == null || id === get('id', this.current))) {
             return this.$q.reject();

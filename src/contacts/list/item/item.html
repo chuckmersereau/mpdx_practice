@@ -6,7 +6,7 @@
     <div class="contact-details">
         <div class="col-sm-5 main-details">
             <h4 class="name">
-                <a ui-sref="contact({contactId: $ctrl.contact.id})" ng-click="$event.stopPropagation()">{{$ctrl.contact.name}}</a>
+                <a ui-sref="contacts.show({contactId: $ctrl.contact.id})" ng-click="$event.stopPropagation()">{{$ctrl.contact.name}}</a>
                 <i ng-class="{'icon-error-red': $ctrl.hasSendNewsletterError()}" class="ci ci-letter_icon" title="{{$ctrl.contact.send_newsletter | translate}}" ng-if="$ctrl.contact.send_newsletter"></i>
                 <span title="{{ 'Partner - Special' | translate }}" ng-if="$ctrl.contact.status === 'Partner - Special'">
                     <span>{{$ctrl.contact.pledge_currency_symbol}}</span>
@@ -59,7 +59,7 @@
         </div>
         <div class="col-sm-2">
             <div class="btn-group">
-                <a class="btn btn-sm btn-default" ui-sref="contact({contactId: $ctrl.contact.id})" title="{{ 'View Contact' | translate }}" ng-click="$event.stopPropagation()">
+                <a class="btn btn-sm btn-default" ui-sref="contacts.show({contactId: $ctrl.contact.id})" title="{{ 'View Contact' | translate }}" ng-click="$event.stopPropagation()">
                     <i class="fa fa-search"></i>
                 </a>
                 <a class="btn btn-sm btn-default" title="{{ 'Hide Contact' | translate }}" ng-if="$ctrl.contact.status !== 'Never Ask' && $ctrl.view !== 'task'" ng-click="$ctrl.hide({ contactId: $ctrl.contact.id }); $event.stopPropagation()">

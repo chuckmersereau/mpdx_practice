@@ -2,6 +2,7 @@ import assign from 'lodash/fp/assign';
 import concat from 'lodash/fp/concat';
 import find from 'lodash/fp/find';
 import findIndex from 'lodash/fp/findIndex';
+import filter from 'lodash/fp/filter';
 import isFunction from 'lodash/fp/isFunction';
 import map from 'lodash/fp/map';
 import reduce from 'lodash/fp/reduce';
@@ -39,6 +40,7 @@ class ContactsService {
 
         $rootScope.$on('contactParamChange', () => {
             $log.debug('contacts service: contact parameter change');
+            this.getList(true);
             this.load(true);
         });
 
@@ -47,6 +49,7 @@ class ContactsService {
                 return;
             }
             $log.debug('contacts service: contact search change');
+            this.getList(true);
             this.load(true);
         });
 
@@ -78,6 +81,7 @@ class ContactsService {
         });
     }
     getList(reset = false) {
+        this.completeList = []; // to avoid double call
         if (!reset && this.completeList) {
             return this.$q.resolve(this.completeList);
         }
@@ -118,8 +122,13 @@ class ContactsService {
 
         return filterParams;
     }
-    load(reset) {
+    load(reset = false, page = 1) {
         this.loading = true;
+
+        if (!reset && page <= this.page) {
+            this.$q.resolve(this.data);
+        }
+
         if (reset) {
             this.page = 1;
             this.meta = {};
@@ -199,7 +208,7 @@ class ContactsService {
             return;
         }
         this.page++;
-        this.load(false);
+        this.load(false, this.page);
     }
     findChangedFilters(defaultParams, params) {
         let filterParams = {};
@@ -221,7 +230,7 @@ class ContactsService {
         this.contactFilter.reset();
     }
     getSelectedContacts() {
-        return _.filter(this.data, { selected: true });
+        return filter({ selected: true }, this.data);
     }
     getSelectedContactIds() {
         return this.getSelectedContacts().map(contact => contact.id);
