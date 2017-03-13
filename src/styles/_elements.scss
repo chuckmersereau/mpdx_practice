@@ -60,9 +60,6 @@ $leftmenuwidth: auto;
 
 .cols {float: left; margin-right: 2%; vertical-align: top;}
 .cols:last-child {margin-right: 0;}
-.col_50 {width: 48%;}
-.col_30 {width: 30%;}
-.col_33 {width: 30%;}
 
 @mixin listclear {list-style: none; margin: 0; padding: 0;}
 
@@ -75,21 +72,10 @@ $leftmenuwidth: auto;
 $brand-font:    $font-primary;
 $data-font:     $font-primary;
 
-.brand-font {font-family: $font-primary;}
-.data-font {font-family: $font-primary;}
 
 html,body {
     font-family: $font-primary;
     font-size: $font-size;
-}
-
-.btn,
-h1, h2, h3,
-.navbar,
-span.menu_item,
-.dropdown,
-#global {
-    font-family: $font-primary;
 }
 
 /* ************************************************************** */

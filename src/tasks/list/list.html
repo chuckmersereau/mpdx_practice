@@ -8,9 +8,9 @@
           {{ $ctrl.title }}
         </span>
         <span class="actions task-actions" ng-show="$ctrl.selected.length">
-          <a class="btn btn-xs btn-reverse" ng-click="$ctrl.bulkCompleteTasks()" ng-hide="$ctrl.key === 'allCompleted'" translate>Complete Selected</a>
-          <a class="btn btn-xs btn-reverse" ng-click="$ctrl.bulkDeleteTasks()" translate>Delete Selected</a>
-          <a class="btn btn-xs btn-reverse" ng-click="$ctrl.openBulkEditTaskModal()" translate>Edit Selected</a>
+          <a class="btn btn-xs btn-default" ng-click="$ctrl.bulkCompleteTasks()" ng-hide="$ctrl.key === 'allCompleted'" translate>Complete Selected</a>
+          <a class="btn btn-xs btn-default" ng-click="$ctrl.bulkDeleteTasks()" translate>Delete Selected</a>
+          <a class="btn btn-xs btn-default" ng-click="$ctrl.openBulkEditTaskModal()" translate>Edit Selected</a>
         </span>
         <select
           ng-model="$ctrl.tasksService.meta[$ctrl.key].pagination.per_page"
@@ -23,7 +23,7 @@
           style="float: right" translate>
           Show:
         </span>
-        <a class="btn btn-xs btn-reverse pull-right" ng-click="$ctrl.toggleAll()" style="margin-right: 12px" translate>Select All</a>
+        <a class="btn btn-xs btn-default pull-right" ng-click="$ctrl.toggleAll()" style="margin-right: 12px" translate>Select All</a>
       </th>
     </tr>
     <tr ng-if="$ctrl.tasksService.data[$ctrl.key].length === 0">
@@ -36,22 +36,22 @@
         ng-click="$ctrl.toggleSelected(task)"
         ng-class="$ctrl.selected.indexOf(task) >= 0 ? 'selected-task-row' : ''"
         >
-      <td class="col-sm-1">
+      <td>
         <i class="fa fa-lg fa-square-o complete_task"
            ng-click="$ctrl.openCompleteTaskModal(task); $event.stopPropagation();"
            data-behaviour="Done" title="{{'Done' | translate}}">
         </i>
       </td>
-      <td class="col-sm-1">
+      <td>
         <a ng-click="$ctrl.starTask(task)"><i class="fa fa-lg starred" ng-class="task.starred ? 'fa-star' : 'fa-star-o'" ></i></a>
       </td>
-      <td class="col-sm-2">
+      <td class="ut-nowrap">
         {{ task.activity_type | translate }}
       </td>
-      <td class="col-sm-2">
+      <td class="ut-nowrap">
           {{ task.no_date ? '' : $ctrl.moment(task.start_at).format('l hh:mm a') }}
       </td>
-      <td class="col-sm-4">
+      <td>
         <a ng-click="$ctrl.openEditTaskModal(task); $event.stopPropagation();">
             <b>{{ task.subject }}</b>
             <span class="tags"><span class="tag" ng-repeat="tag in task.tag_list">{{tag}}</span></span>
@@ -60,13 +60,13 @@
             </a>
         </a>
       </td>
-      <td class="col-sm-1 comments-count"
+      <td class="comments-count ut-nowrap"
           ng-class="task.comments.length ? 'comments-count-has-comments' : ''"
           ng-click="task.openComments = !task.openComments">
         <i class="fa fa-commenting-o"></i>
         {{ task.comments.length }}
       </td>
-      <td class="col-sm-1">
+      <td class="ut-nowrap">
         <i class="fa fa-trash-o trash" ng-click="$ctrl.deleteTask(task.id); $event.stopPropagation();" aria-hidden="true"></i>
       </td>
     </tr>

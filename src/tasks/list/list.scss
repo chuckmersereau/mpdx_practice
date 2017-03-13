@@ -12,15 +12,30 @@
     margin-right: 3px;
   }
 
+  pagination {
+    h4 {
+      font-size: 14px;
+    }
+  }
+
   .tasks-table{
+
+    font-size: 14px;
+
     tr>th{
       border-top: none;
+      line-height: 25px;
+    }
+
+    .ut-nowrap {
+      white-space: nowrap;
     }
 
     tr.task-row{
       transition: background-color 0.3s ease;
       >td{
         border-top: none;
+        border-bottom: 1px solid $color-menu-border;
         vertical-align: middle
       }
       &:hover{
