@@ -27,6 +27,13 @@
       line-height: 25px;
     }
 
+    .pl0 {
+      padding-left: 0;
+    }
+    .pr0 {
+      padding-right: 0;
+    }
+
     .ut-nowrap {
       white-space: nowrap;
     }
@@ -48,13 +55,6 @@
       &:hover{
         background-color: #f5f5f5;
       }
-    }
-
-    .comments-section{
-      >td{
-        border-top: none;
-      }
-      background-color: #FAFAFA;
     }
 
     margin-bottom: 0;
@@ -112,16 +112,37 @@
     }
   }
 
-  .comments-count{
-    &:hover{
-      color: #A8A8A8;
-    }
-  }
+}
 
-  .comments-count-has-comments{
-    color: #dd7d1b;
-    &:hover{
-      color: #EBBB8A;
+.comment {
+  &__single {
+    max-width: 60%;
+    background: $color-menu-bg;
+    border-bottom: 1px solid $color-menu-border;
+    margin-bottom: 0;
+    padding: $gutter/4 $gutter/2;
+  }
+  &__body {
+
+  }
+  &__meta {
+    font-size: $font-size*.85;
+    font-style: italic;
+    margin-bottom: 0;
+  }
+  &__form {
+    background: $color-menu-bg;
+    border-bottom: 4px solid $color-menu-border;
+    max-width: 60%;
+    padding: $gutter/2;
+
+    button {
+      margin-top: $gutter/4;
+    }
+
+    a {
+      margin-top: $gutter/4;
     }
   }
 }
+

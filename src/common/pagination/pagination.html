@@ -9,7 +9,7 @@
       </li>
       <li ng-repeat="i in $ctrl.getTotalPages() track by $index" ng-class="{'active' : i + 1 == $ctrl.meta.page}">
         <a ng-if="i >= 0" ng-click="$ctrl.goto(i + 1)">{{i + 1}}</a>
-        <label ng-if="i < 0">...</label>
+        <a ng-if="i < 0">...</a>
       </li>
       <li ng-class="{'disabled': $ctrl.meta.page == $ctrl.meta.total_pages}">
         <a ng-click="$ctrl.next()" aria-label="Next">
