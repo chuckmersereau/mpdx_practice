@@ -2,13 +2,11 @@ class DonationsReportController {
     $rootScope;
     blockUI;
     designationAccounts;
-    currency;
     donations;
 
     constructor(
-        $rootScope, blockUI, designationAccounts, currency, donations
+        $rootScope, blockUI, designationAccounts, donations
     ) {
-        this.currency = currency;
         this.designationAccounts = designationAccounts;
         this.donations = donations;
 

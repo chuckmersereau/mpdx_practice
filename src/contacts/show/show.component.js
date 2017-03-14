@@ -1,3 +1,4 @@
+import createPatch from "../../common/fp/createPatch";
 class ContactController {
     contact;
     contacts;
@@ -42,8 +43,6 @@ class ContactController {
         //     }
         // });
 
-        // $scope.$watch('$ctrl.selected', this.selectContact.bind(this));
-
         this.sortableOptions = {
             containment: '#contact-tabs',
             //restrict move across columns. move only within column.
@@ -75,25 +74,13 @@ class ContactController {
             '58471fd6903360069817752e'
         ]);
     }
-    $onInit() {
-        this.blockUI.start();
-    }
     $onChanges() {
-        this.selectContact(this.$stateParams.contactId);
+        this.$log.debug('selected contact: ', this.contact);
+        this.contactInitialState = angular.copy(this.contact);
     }
-    selectContact(id) {
-        this.$log.debug('select contact: ', id);
-        if (!id) return;
-        this.contacts.get(id).then((contact) => {
-            this.$log.debug('selected contact: ', contact);
-            this.contact = contact;
-            this.blockUI.stop();
-        });
-    };
     save() {
-        this.contacts.save(this.contact).then(() => {
-            this.selectContact(this.$stateParams.contactId);
-        });
+        const patch = createPatch(this.contact, this.contactInitialState);
+        this.contacts.save(patch);
     }
     openAddReferralsModal() {
         this.modal.open({
@@ -101,9 +88,6 @@ class ContactController {
             controller: 'addReferralsModalController',
             locals: {
                 contactId: this.contact.id
-            },
-            onHide: () => {
-                this.selectContact(this.contact.id);
             }
         });
     }
@@ -137,10 +121,10 @@ class ContactController {
         });
     }
     goLeft() {
-        this.$state.go('contact', { contactId: this.contacts.getLeftId(this.contact.id) }, {reload: true});
+        this.$state.go('contacts.show', { contactId: this.contacts.getLeftId(this.contact.id) });
     }
     goRight() {
-        this.$state.go('contact', { contactId: this.contacts.getRightId(this.contact.id) }, {reload: true});
+        this.$state.go('contacts.show', { contactId: this.contacts.getRightId(this.contact.id) });
     }
     displayNotes() {
         this.activeTab = 'notes';
@@ -154,7 +138,10 @@ class ContactController {
 
 const Show = {
     controller: ContactController,
-    template: require('./show.html')
+    template: require('./show.html'),
+    bindings: {
+        contact: '<'
+    }
 };
 
 export default angular.module('mpdx.contacts.show.component', [])

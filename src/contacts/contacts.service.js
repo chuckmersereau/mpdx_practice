@@ -9,6 +9,7 @@ import reduce from 'lodash/fp/reduce';
 import reject from 'lodash/fp/reject';
 import sortBy from 'lodash/fp/sortBy';
 import unionBy from 'lodash/fp/unionBy';
+import uniq from 'lodash/fp/uniq';
 
 class ContactsService {
     alerts;
@@ -73,7 +74,7 @@ class ContactsService {
     }
     get(id) {
         return this.api.get(`contacts/${id}`, {
-            include: 'addresses,appeals,donor_accounts,people,contacts_referred_by_me,contacts_that_referred_me',
+            include: 'addresses,appeals,donor_accounts,contacts_referred_by_me,contacts_that_referred_me',
             fields: {
                 contacts_referred_by_me: 'id',
                 contacts_that_referred_me: 'id'
@@ -181,7 +182,9 @@ class ContactsService {
         });
     }
     save(contact) {
-        contact.tag_list = joinComma(contact.tag_list); //fix for api mis-match
+        if (contact.tag_list) {
+            contact.tag_list = joinComma(contact.tag_list); //fix for api mis-match
+        }
         return this.api.put(`contacts/${contact.id}`, contact).then((data) => {
             const completeIndex = findIndex({id: data.id}, this.completeList);
             if (completeIndex > -1 && this.completeList[completeIndex].name !== data.name) {
@@ -200,6 +203,21 @@ class ContactsService {
         contact.account_list = { id: this.api.account_list_id };
         return this.api.post('contacts', contact).then((data) => {
             this.completeList = sortBy('name', concat(this.completeList, {name: data.name, id: data.id}));
+            this.load(true); //refresh data list since it could conflict with api pagination
+        });
+    }
+    addBulk(contacts) {
+        return this.api.post({url: 'contacts/bulk', data: contacts, type: 'contacts'}).then(() => {
+            this.getList(true);
+            this.load(true); //refresh data list since it could conflict with api pagination
+        });
+    }
+    addReferrals(contactId, contacts) {
+        return this.api.put(`contacts/${contactId}`, {
+            id: contactId,
+            contacts_referred_by_me: contacts
+        }).then(() => {
+            this.getList(true);
             this.load(true); //refresh data list since it could conflict with api pagination
         });
     }
@@ -241,7 +259,7 @@ class ContactsService {
     getTagsFromSelectedContacts() {
         let tagsArray = this.getSelectedContacts().reduce((tagsList, contact) => _.union(tagsList, contact.tag_list), []).sort();
         tagsArray = tagsArray.map((tag) => { return tag.text; });
-        return _.uniq(tagsArray);
+        return uniq(tagsArray);
     }
     clearSelectedContacts() {
         this.setAllContacts('selected', false);
@@ -250,30 +268,32 @@ class ContactsService {
         this.setAllContacts('selected', true);
     }
     getContactPosition(id) {
-        return _.findIndex(this.data, { id: id });
+        return findIndex({ id: id }, this.completeList);
     }
     canGoLeft(id) {
         return this.getContactPosition(id) > 0;
     }
     canGoRight(id) {
-        return this.getContactPosition(id) < this.data.length - 1;
+        return this.getContactPosition(id) < this.completeList.length - 1;
     }
     getLeftId(id) {
         if (this.canGoLeft(id)) {
-            return this.data[this.getContactPosition(id) - 1].id;
+            return this.completeList[this.getContactPosition(id) - 1].id;
         }
-        return this.data[this.data.length - 1].id;
+        return this.completeList[this.completeList.length - 1].id;
     }
     getRightId(id) {
         if (this.canGoRight(id)) {
-            return this.data[this.getContactPosition(id) + 1].id;
+            return this.completeList[this.getContactPosition(id) + 1].id;
         }
-        return this.data[0].id;
+        return this.completeList[0].id;
     }
     setAllContacts(key, value) {
-        _.each(this.data, (contact) => {
+        this.data = reduce((result, contact) => {
             contact[key] = value;
-        });
+            result.push(contact);
+            return result;
+        }, [], this.data);
     }
     hideContact(contact) {
         contact.status = 'Never Ask';
@@ -331,12 +351,6 @@ class ContactsService {
             return result;
         }, [], contacts);
         return this.api.put('contacts/bulk', contacts);
-    }
-    getDonorAccounts() {
-        if (!this.donorAccounts) {
-            this.donorAccounts = [];
-            _.each(this.data, contact => _.union(this.donorAccounts, contact.donor_accounts));
-        }
     }
     getAnalytics(reset = false) {
         if (this.analytics && !reset) {
@@ -404,6 +418,12 @@ class ContactsService {
             locals: {
                 selectedContacts: selectedContacts
             }
+        });
+    }
+    openMultipleAddModal() {
+        this.modal.open({
+            template: require('./multiple/multiple.html'),
+            controller: 'multipleContactController'
         });
     }
 }

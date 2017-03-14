@@ -1,4 +1,6 @@
 import Highcharts from 'highcharts';
+import map from 'lodash/fp/map';
+import toLower from 'lodash/fp/toLower';
 
 function donationSummaryChart() {
     return {
@@ -14,15 +16,15 @@ function donationSummaryChart() {
 class donationSummaryChartController {
     constructor(
         $filter, $log, $scope, gettextCatalog, $rootScope,
-        accounts, api, blockUI, currency
+        accounts, api, blockUI, serverConstants
     ) {
         $scope.$filter = $filter;
         $scope.$log = $log;
         $scope.$rootScope = $rootScope;
         $scope.accounts = accounts;
         $scope.api = api;
-        $scope.currency = currency;
         $scope.gettextCatalog = gettextCatalog;
+        $scope.serverConstants = serverConstants;
 
         $scope.blockUI = blockUI.instances.get('donationSummaryChart');
         $scope.loaded = false;
@@ -43,22 +45,22 @@ function linkFn(scope) {
         scope.blockUI.start();
         scope.api.get('reports/monthly_giving_graph', {filter: {account_list_id: scope.api.account_list_id}}).then((data) => {
             scope.$log.debug('reports/monthly_giving_graph', data);
-            scope.series = _.map(data.totals, (total, index) => {
+            scope.series = map((total, index) => {
                 return {
-                    name: scope.currency.list[total.currency].code,
+                    name: scope.serverConstants.data.pledge_currencies[toLower(total.currency)].code_symbol_string,
                     color: currencyColors[data.totals.length - index - 1],
-                    data: _.map(total.month_totals, (val) => parseFloat(val.converted)),
+                    data: map(val => parseFloat(val.converted), total.month_totals),
                     cursor: 'pointer'
                 };
-            });
-            let seriesWithClickEvents = _.map(scope.series, (series) => {
+            }, data.totals);
+            let seriesWithClickEvents = map((series) => {
                 series.events = {
                     click: (event) => {
                         window.location.href = '/donations?start_date=' + data.months_to_dates[event.point.x];
                     }
                 };
                 return series;
-            });
+            }, scope.series);
             const titleText = `
                 <span style="color:#007398">${scope.gettextCatalog.getString('Commitments:')} ${data.pledges}</span> |
                 <span style="color:#3eb1c8">${scope.gettextCatalog.getString('Monthly Goal:')}  ${data.monthly_goal}</span> |
@@ -117,7 +119,7 @@ function linkFn(scope) {
                     }
                 },
                 xAxis: {
-                    categories: _.map(data.months_to_dates, month => moment(month, 'YYYY-MM-DD').format('MMM'))
+                    categories: map(month => moment(month, 'YYYY-MM-DD').format('MMM'), data.months_to_dates)
                 },
                 yAxis: {
                     min: 0,
