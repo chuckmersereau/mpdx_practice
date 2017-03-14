@@ -117,7 +117,7 @@ menu {
             letter-spacing: .5px;
             a {
                 display: block;
-                padding: $gutter/3 $gutter*.65;
+                padding: $gutter/3 $gutter/2;
                 color: $cru-gray-dark;
             }
             &.active {

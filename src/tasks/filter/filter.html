@@ -8,10 +8,10 @@
     <tasks-tags class="filter--filtergroup"></tasks-tags>
     <div class="filter--filtergroup">
         <form ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }">
-            <span class="filter--filtergroup_title ci ci-filter_icon" translate><i class="fa fa-sliders"></i> Filters</span>
+            <span class="filter--filtergroup_title" translate><i class="fa fa-sliders"></i> Filters</span>
             <div class="filter_hint">
                 <span  translate>Click the</span>
-                <i class="ci ci-neg_filter_icon"></i>
+                <i class="fa fa-exchange"></i>
                 <span translate>to look up all tasks who do not have that filter.</span>
             </div>
             <ul class="filter--filtergroup_filters list-unstyled">
@@ -23,7 +23,8 @@
                                 <label>
                                     {{child.title}}
                                     <a class="filter_invert_multiselect" ng-click="$ctrl.invertMultiselect(child)" title="{{ 'Invert' | translate }}">
-                                        <i class="ci ci-neg_filter_icon"></i>
+                                        <i class="fa fa-exchange"></i>
+                                        <span translate>Reverse Filter</span>
                                     </a>
                                 </label>
                                 <select class="form-control" ng-options="item.id as item.name for item in child.options" ng-model="$ctrl.tasksFilter.params[child.name]" ng-change="$ctrl.tasksFilter.change()" multiple></select>
@@ -68,7 +69,8 @@
                         <div class="filter_multiselect" ng-if="filter.type == 'multiselect'">
                             <label>
                                 <a class="filter_invert_multiselect" ng-click="$ctrl.invertMultiselect(filter)" title="{{ 'Invert' | translate }}">
-                                    <i class="ci ci-neg_filter_icon"></i>
+                                    <i class="fa fa-exchange"></i>
+                                    <span translate>Reverse Filter</span>
                                 </a>
                             </label>
                             <select class="form-control"  ng-options="item.id as item.name for item in filter.options" ng-model="$ctrl.tasksFilter.params[filter.name]" ng-change="$ctrl.tasksFilter.change()" multiple></select>

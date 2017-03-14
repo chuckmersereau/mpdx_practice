@@ -11,7 +11,7 @@
             <span class="filter--filtergroup_title" translate><i class="fa fa-sliders"></i> Filters</span>
             <div class="filter_hint">
                 <span  translate>Click the</span>
-                <i class="ci ci-neg_filter_icon"></i>
+                <i class="fa fa-exchange" aria-hidden="true"></i>
                 <span translate>to look up all contacts who do not have that filter.</span>
             </div>
             <ul class="filter--filtergroup_filters list-unstyled">
@@ -65,7 +65,8 @@
                         <div class="filter_multiselect" ng-if="filter.type == 'multiselect'">
                             <label>
                                 <a class="filter_invert_multiselect" ng-click="$ctrl.invertMultiselect(filter)" title="{{ 'Invert' | translate }}">
-                                    <i class="ci ci-neg_filter_icon"></i>
+                                    <i class="fa fa-exchange" aria-hidden="true"></i>
+                                    <span translate>Reverse Filter</span>
                                 </a>
                             </label>
                             <select class="form-control"  ng-options="item.id as item.name for item in filter.options" ng-model="$ctrl.contactFilter.params[filter.name]" ng-change="$ctrl.contactFilter.change()" multiple></select>

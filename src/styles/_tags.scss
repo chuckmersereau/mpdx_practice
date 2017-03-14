@@ -33,10 +33,11 @@
         padding: 0px 0px;
     }
     &:hover:active, &:after {
-        opacity: .5;
+        opacity: .35;
         text-decoration: none;
     }
     &:hover:after, &:hover {
+        color: $color-reverse;
         opacity: 1;
         text-decoration: none;
     }

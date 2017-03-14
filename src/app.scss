@@ -4,7 +4,6 @@
 $fa-font-path: "~font-awesome/fonts";
 @import "~font-awesome/scss/font-awesome";
 @import "styles/angularModal";
-@import "styles/bootstrap-tagsinput";
 @import "styles/typeahead";
 @import "~ng-tags-input/build/ng-tags-input";
 @import "~ng-tags-input/build/ng-tags-input.bootstrap";
@@ -25,11 +24,13 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "styles/notices";
 @import "styles/popovers";
 @import "styles/cards";
+@import "styles/sidebar";
 @import "styles/ico";
 @import "styles/chosen_bootstrap";
 @import "styles/buttons";
 @import "styles/panels";
 @import "styles/fonts/cru/ci.css";
+@import "styles/tags";
 
 /* Components */
 @import "blockUI/blockUI";

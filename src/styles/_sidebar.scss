@@ -1,0 +1,86 @@
+.scrollable_left {
+    border-right: 1px solid $color-menu-border;
+}
+.affix.scrollable_left {
+  bottom: 35px;
+  overflow: auto;
+}
+.affix + #affix-fix
+{
+    min-height: 71px;
+}
+
+#affix-fix
+{
+    min-height: 0;
+}
+#leftmenu.filters_menu {
+    border-right: 1px solid #ccc;
+    .menu_item {
+        border-right: none;
+        .nav a {
+            padding: 3px 6px;
+            line-height: initial;
+            font-size: 12px;
+        }
+    }
+}
+#leftmenu.affix {
+    background: #fff;
+    top: 12px;
+    z-index: 10;
+    overflow: auto;
+    position: fixed !important;
+    margin-top: 10px;
+}
+#leftmenu.affix.scrollable_left {
+    height: 97%;
+}
+#leftmenu.affix-bottom {
+    height: auto;
+}
+.sticky-page-filters.affix {
+    top: 0;
+    padding-top: 12px;
+    z-index: 10;
+    background: #fff;
+}
+.contacts-scrollable.affix {
+    position: relative !important;
+    margin-top: 110px;
+}
+@media (min-width: 768px) and (max-width: 977px) {
+    #leftmenu.affix {
+        width: 213px;
+    }
+    .sticky-page-filters.affix {
+        width: 100%;
+        right: 0;
+        .row {
+            width: 750px;
+            margin: auto;
+        }
+        .page-controls div[class*='col-'] {
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+    }
+}
+
+@media (min-width: 978px) {
+    #leftmenu.affix {
+        width: 213px;
+    }
+    .sticky-page-filters.affix {
+        width: 698px;
+    }
+}
+
+@media (min-width: 1200px) {
+    #leftmenu.affix {
+        width: 263px;
+    }
+    .sticky-page-filters.affix {
+        width: 848px;
+    }
+}
