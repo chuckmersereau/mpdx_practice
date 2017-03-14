@@ -1,0 +1,36 @@
+<modal size="lg" title="{{'Add Multiple Contacts' | translate}}" save="$ctrl.save()" cancel="$hide()">
+    <div class="table-wrapper table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th translate>First</th>
+            <th translate>Spouse</th>
+            <th translate>Last</th>
+            <th translate>Street Address</th>
+            <th translate>City</th>
+            <th translate>State</th>
+            <th translate>Postal Code</th>
+            <th translate>Phone</th>
+            <th translate>Email</th>
+            <th translate>Spouse Phone</th>
+            <th translate>Spouse Email</th>
+            <th translate>Notes</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="table-row" ng-repeat="key in $ctrl.range(0, 14)">
+            <td><input class="form-control"  type="text" ng-model="$ctrl.models[key].first_name" class="form-control"></td>
+            <td><input class="form-control"  type="text" ng-model="$ctrl.models[key].spouse_first_name" class="form-control"></td>
+            <td><input class="form-control"  type="text" ng-model="$ctrl.models[key].last_name" class="form-control"></td>
+            <td><input class="form-control"  type="text" ng-model="$ctrl.models[key].street" class="form-control"></td>
+            <td><input class="form-control"  type="text" ng-model="$ctrl.models[key].city" class="form-control"></td>
+            <td><input class="form-control"  type="text" ng-model="$ctrl.models[key].state" class="form-control"></td>
+            <td><input class="form-control"  type="text" ng-model="$ctrl.models[key].postal_code" class="form-control"></td>
+            <td><input class="form-control"  type="text" ng-model="$ctrl.models[key].phone" class="form-control"></td>
+            <td><input class="form-control"  type="text" ng-model="$ctrl.models[key].email" class="form-control"></td>
+            <td><input class="form-control"  type="text" ng-model="$ctrl.models[key].spouse_phone" class="form-control"></td>
+            <td><input class="form-control"  type="text" ng-model="$ctrl.models[key].spouse_email" class="form-control"></td>
+            <td><input class="form-control"  type="text" ng-model="$ctrl.models[key].notes" class="form-control"></td>
+        </tr>
+    </table>
+</modal>

@@ -17,16 +17,15 @@ class ContactInfoController {
         }
     }
     save() {
-        this.contacts.save(this.contact).then((data) => {
-            this.contact.updated_in_db_at = data.updated_in_db_at;
-        });
+        this.onSave();
     }
 }
 const Info = {
     controller: ContactInfoController,
     template: require('./info.html'),
     bindings: {
-        contact: '='
+        contact: '=',
+        onSave: '&'
     }
 };
 

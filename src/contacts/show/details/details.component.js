@@ -1,4 +1,3 @@
-import get from 'lodash/fp/get';
 import keys from 'lodash/fp/keys';
 import map from 'lodash/fp/map';
 import uuid from 'uuid/v1';
@@ -34,11 +33,14 @@ class ContactDetailsController {
             }
         }, keys(serverConstants.data.locales));
     }
-    $onInit() {
-        if (!this.contact.contacts_that_referred_me) {
-            this.contact.contacts_that_referred_me = [];
+    $onChanges() {
+        if (this.contact.contacts_that_referred_me && !this.referrer) {
+            if (this.contact.contacts_that_referred_me.length === 0) {
+                this.contact.contacts_that_referred_me = [];
+            } else {
+                this.referrer = this.contact.contacts_that_referred_me[0].id || null;
+            }
         }
-        this.referrer = get('[0]', this.contact.contacts_that_referred_me) || null;
     }
     addPartnerAccount() {
         this.contact.donor_accounts.push({id: uuid(), organization: { id: this.users.organizationAccounts[0].organization.id }, account_number: ''});
@@ -51,7 +53,8 @@ class ContactDetailsController {
         } else {
             this.contact.contacts_that_referred_me = [];
         }
-        this.contacts.save(this.contact).then((data) => {
+
+        this.onSave().then((data) => {
             this.contact.updated_in_db_at = data.updated_in_db_at;
         }).catch(() => {
             this.alerts.addAlert(this.gettextCatalog.getString('There was an error updating this contact, please refresh your browser.'), 'danger');
@@ -63,7 +66,8 @@ const Details = {
     template: require('./details.html'),
     bindings: {
         donorAccounts: '<', //for change detection
-        contact: '='
+        contact: '=',
+        onSave: '&'
     }
 };
 

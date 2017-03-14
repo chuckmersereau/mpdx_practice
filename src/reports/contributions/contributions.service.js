@@ -4,26 +4,23 @@ import map from 'lodash/fp/map';
 const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 import reject from 'lodash/fp/reject';
 import sortBy from 'lodash/fp/sortBy';
-import toUpper from 'lodash/fp/toUpper';
-
 
 class ContributionsService {
     api;
-    currency;
+    serverConstants;
 
     constructor(
         $rootScope, $q, $log,
-        api, currency
+        api, serverConstants
     ) {
         this.$q = $q;
         this.$log = $log;
         this.api = api;
-        this.currency = currency;
+        this.serverConstants = serverConstants;
 
         this.data = null;
         this.salaryContributions = {};
         this.partnerContributions = {};
-        this.currencyList = currency.list;
 
         $rootScope.$on('accountListUpdated', () => {
             this.loadSalaryContributions(true);
@@ -54,7 +51,7 @@ class ContributionsService {
             // iterate through currency_groups
             let currencies = reduce((result, value, key) => {
                 // iterate through donation_infos
-                let currency = angular.copy(this.currencyList[toUpper(key) || "USD"]);
+                let currency = this.serverConstants.data.pledge_currencies[key];
 
                 currency.totals = value.totals;
                 currency.donors = map(donor => {
@@ -66,7 +63,7 @@ class ContributionsService {
                             return {
                                 amount: donation.amount,
                                 date: moment(donation.donation_date),
-                                currency: this.currencyList[donation.currency]
+                                currency: this.serverConstants.data.pledge_currencies[donation.currency]
                             };
                         }, monthlyDonation.donations);
                         return {
@@ -102,7 +99,7 @@ class ContributionsService {
                 return formattedMonth;
             }, data.months);
 
-            const salaryCurrency = this.currencyList[toUpper(data.salary_currency) || "USD"];
+            const salaryCurrency = this.serverConstants.data.pledge_currencies[data.salary_currency || 'USD'];
 
             contributions = {
                 currencies: currencies,

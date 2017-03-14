@@ -59,7 +59,8 @@ export default class Routes {
             url: '/{contactId}',
             component: 'contact',
             resolve: {
-                again: /*@ngInject*/ (users) => users.listOrganizationAccounts()
+                again: /*@ngInject*/ (users) => users.listOrganizationAccounts(),
+                contact: /*@ngInject*/ (contacts, $stateParams) => contacts.get($stateParams.contactId)
             }
         }).state({
             name: 'reports',

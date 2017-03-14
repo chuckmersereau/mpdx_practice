@@ -8,7 +8,6 @@ import bgImg from './bgImg/bgImg.directive';
 import chosen from './chosen/chosen.directive';
 import convertToNumber from './convertToNumber/convertToNumber.directive';
 import cover from './cover/index.module';
-import currency from './currency/currency.service';
 import currencySelect from './currencySelect/currencySelect.component';
 import datetimepicker from './datetimepicker/datetimepicker.component';
 import designationAccounts from './designationAccounts/designationAccounts.service';
@@ -44,7 +43,6 @@ export default angular.module('mpdx.common', [
     chosen,
     convertToNumber,
     cover,
-    currency,
     currencySelect,
     datetimepicker,
     designationAccounts,

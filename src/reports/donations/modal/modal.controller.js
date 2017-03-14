@@ -5,21 +5,22 @@ class DonationModalController {
     designationAccounts;
     donations;
     donorAccounts;
+    serverConstants;
 
     constructor(
         $scope, blockUI,
-        appeals, currency, accounts, donations,
-        donation, donorAccounts, designationAccounts
+        appeals, accounts, donations,
+        donation, donorAccounts, designationAccounts, serverConstants
     ) {
         this.$scope = $scope;
         this.appeals = appeals;
-        this.currency = currency;
         this.accounts = accounts;
         this.donations = donations;
         this.appeals = appeals;
         this.donation = donation;
         this.donorAccounts = donorAccounts;
         this.designationAccounts = designationAccounts;
+        this.serverConstants = serverConstants;
 
         this.blockUI = blockUI.instances.get('donationModal');
 

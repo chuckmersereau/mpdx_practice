@@ -1,4 +1,3 @@
-import clone from 'lodash/fp/clone';
 import isObject from 'lodash/fp/isObject';
 import map from 'lodash/fp/map';
 
@@ -11,6 +10,7 @@ class TagSelectorController {
         this.init();
     }
     init() {
+        console.log('tags', this.ngModel);
         const ifNotObject = (tag) => {
             if (!isObject(tag)) {
                 return {name: tag};
@@ -19,7 +19,7 @@ class TagSelectorController {
         };
         const tagList = this.tagList;
         this.tags = map(ifNotObject, tagList);
-        this.selectedTags = clone(this.ngModel);
+        this.selectedTags = angular.copy(this.ngModel);
     }
     addTag($tag) {
         this.ngModel.push($tag.name);
