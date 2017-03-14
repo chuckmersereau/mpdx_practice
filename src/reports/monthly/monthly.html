@@ -23,12 +23,7 @@
         <div class="panel-group" ng-model="$ctrl.activePanels" data-allow-multiple="true" role="tablist" aria-multiselectable="true" bs-collapse ng-if="!$ctrl.errorOccurred">
             <div class="panel panel-default" ng-repeat="donationType in $ctrl.donationsByType | orderBy: 'order'">
                 <div class="panel-heading" role="tab" bs-collapse-toggle ng-switch="donationType.type">
-                    <h4 class="pull-right">
-                        <span ng-switch-when="received" translate>Monthly Total So Far:</span>
-                        <span ng-switch-when="likely" translate>Likely Additional:</span>
-                        {{$ctrl.total_currency_symbol}}{{donationType.sum | number : 0}}
-                        {{$ctrl.total_currency}}
-                    </h4>
+                        
                     <h4 class="panel-title">
                         <i class="fa fa-angle-up" aria-hidden="true" ng-class="{ 'fa-rotate-180': $ctrl.isOpen($index) }"></i>
                         <span ng-switch-when="received" translate>Donations So Far This Month</span>
@@ -38,6 +33,12 @@
                         <small ng-if="!$ctrl.isOpen($index)" translate translate-n="donationType.donations.length || 0" translate-plural="Show {{$count}} partners">
                             Show 1 partner
                         </small>
+                        <div class="pull-right">
+                            <span ng-switch-when="received" translate>Monthly Total So Far:</span>
+                            <span ng-switch-when="likely" translate>Likely Additional:</span>
+                            {{$ctrl.total_currency_symbol}}{{donationType.sum | number : 0}}
+                            {{$ctrl.total_currency}}
+                        </div>
                     </h4>
                 </div>
                 <div class="panel-collapse" role="tabpanel" bs-collapse-target>

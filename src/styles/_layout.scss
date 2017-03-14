@@ -7,24 +7,16 @@ body {
     margin: 0;
 }
 
-.outer {max-width: $maxwidth; min-width: $maxwidth; margin: 0 auto;}
-.clr {clear: both;}
 .logo {margin-top: 4px; background-position: 0;}
 .network_logo img {max-width: 150px;}
 
 /* ************************************************************** */
 
-table {padding: 0; margin: 0; border-collapse: collapse;}
-td, th {text-align: left; vertical-align: top;}
 .table_select_filters {
     font-size: auto;
     label {display: inline-block;}
 }
 .table_select_check {padding-right: 4px;}
-hr.thin {margin: .5em 0; border: none; border-top: 1px solid $gray_mid;}
-hr.thick {margin: 1.5em 0; border: none; border-top: 6px solid $gray_mid; width: 100%;}
-hr.fullwidth {width: 100%;}
-img {max-width: 100%; height: auto;}
 ul.account-users {padding-left: 1.5em;}
 
 $progress-bar-height: 24px;
@@ -112,12 +104,7 @@ $userheight: 72px;
     }
 }
 
-
 /* ************************************************************** */
-
-.account-dropdown {
-    font-size: 14px;
-}
 
 .settings-sidebar {
     .nav {
@@ -128,76 +115,6 @@ $userheight: 72px;
 }
 
 /* ************************************************************** */
-
-#searchform {
-    .searchfield {
-        border: none;
-        background: none;
-        box-shadow: none;
-        width: 192px;
-        outline: none;
-        font-weight: normal;
-        line-height: 2em;
-        margin: 0;
-        border-right: 1px solid #DDD;
-    }
-    button {
-        box-shadow: 0 0 8px rgba(0,0,0,.4) inset;
-        border: 0px;
-        background: url('images/search.png') no-repeat 50% 50%;
-        height: 24px;
-        width: 27px;
-        text-indent: -1000px;
-        overflow: hidden;
-        cursor: pointer;
-        margin-left: -3px;
-    }
-}
-
-#feedback {
-    position: fixed;
-    bottom: 0;
-    background: #0b486b;
-    right: 0;
-    overflow: hidden;
-    height: 25px;
-    border: 2px solid #fff;
-    border-bottom: none;
-    border-right: none;
-    width: 140px;
-    -moz-box-shadow: 0 0 10px #000;
-    -webkit-box-shadow: 0 0 10px #000;
-    box-shadow: 0 0 10px #000;
-    cursor: default;
-
-    &:hover {
-        width: auto;
-        height: auto;
-    }
-
-    h2 {
-        color: #fff;
-        padding: 5px 10px 5px 30px;
-        margin: 0;
-        font-size: 13px;
-        background: url('images/smile.png') 10px 50% no-repeat;
-    }
-
-    p {
-        margin: 0;
-        padding: 0px 10px 10px 10px;
-        width: 220px;
-        color: #ddd;
-        line-height: 1.15em;
-    }
-
-    a {
-        color: #fff;
-        font-weight: bold;
-        text-decoration: underline;
-        cursor: pointer;
-    }
-}
 
 .ui-autocomplete {
     max-height: 200px;
@@ -1084,56 +1001,8 @@ table tbody.tasks {
     }
 }
 
-.top_50_no_call {
-    width: 100%;
-}
-
-.thirds_row { clear: both; margin-right: -1.25%; }
-.one_third_box {
-    border: 1px solid $gray_mid;
-    display: inline-block;
-    float: left;
-    height: 200px;
-    width: 30%;
-    margin-right: 1%;
-    margin-bottom: .5em;
-    overflow: scroll;
-    padding: 0 1% .5em 1%;
-}
-
 .addresses ul {
     list-style: none;
-}
-
-table.meta {
-    width: 100%;
-    .meta_name {
-        width: 5%;
-        font-weight: bold;
-        padding-right: 15px;
-    }
-    .meta_name_wide {
-        width: 32%;
-        font-weight: bold;
-        padding-right: 15px;
-        padding-left: 8px;
-    }
-    .meta_data {}
-    th {
-        padding-bottom: 8px;
-        border-bottom: 1px solid $gray_mid;
-        padding-left: 8px;
-        font-size: 16px;
-        font-weight: normal;
-    }
-    th,td {
-        line-height: 1.5em;
-        font-size: 1.0em;
-    }
-}
-.tabaction {
-    float: right;
-    margin-top: 6px;
 }
 
 /* ************************************************************** */
@@ -1227,32 +1096,6 @@ table.meta {
             margin-left: 5px;
         }
     }
-}
-
-.social_container {
-    padding-bottom: 40px;
-    position: relative;
-    .add_field, .social_text {
-        position: absolute;
-        bottom: 15px;
-    }
-    .add_field {
-        display: block;
-        content: "";
-        margin-bottom: 0;
-        line-height: 20px;
-        &:before {
-            font-size: 18px;
-        }
-        .add_title {
-            display: none;
-        }
-    }
-    .social_text { line-height: 20px; }
-    .add_facebook {margin-left: 36px; .add_field:before {content: "\f082"; }}
-    .add_twitter {margin-left: 56px; .add_field:before {content: "\f081"; }}
-    .add_linkedin {margin-left: 76px; .add_field:before {content: "\f08c"; }}
-    .add_website { margin-left: 96px; .add_field:before {content: "\f0ac";}}
 }
 
 /* ************************************************************** */
