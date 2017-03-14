@@ -1,26 +1,19 @@
 contact-person {
   .card {
     margin-bottom: 15px;
+    cursor: pointer;
     .avatar {
       width: 25px;
       height: 25px;
     }
     .content {
       padding-left: 35px;
-      .edit {
-        font-weight: 500;
-        color: $gray;
-        &:hover {
-          text-decoration: none;
-        }
-      }
-      h1 {
-        margin-top: 3px;
-        font-size: 18px;
+      h3 {
+        margin-top: 0;
         margin-bottom: 0;
-        font-weight: 500;
       }
       dl {
+        margin-bottom: 0;
         dd {
           line-height: 20px;
           &:first-child {

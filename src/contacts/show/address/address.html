@@ -4,8 +4,8 @@
         {{$ctrl.address.street}}<br />
         {{$ctrl.address.city}} {{$ctrl.address.state}} {{$ctrl.address.postal_code}}<br />
         {{$ctrl.address.country}}
-        <div ng-if="$ctrl.address.street">
-            <a ng-click="$ctrl.contacts.openAddressModal(null, $ctrl.address)" class="btn btn-reverse btn-xs"><i class="fa fa-map-marker"></i> <translate>Google Maps</translate></a>
-        </div>
     </p>
+    <div ng-if="$ctrl.address.street">
+        <a ng-click="$ctrl.contacts.openAddressModal(null, $ctrl.address)" class="btn btn-reverse btn-xs"><i class="fa fa-map-marker"></i> <translate>Google Maps</translate></a>
+    </div>
 </div>

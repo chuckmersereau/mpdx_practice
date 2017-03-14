@@ -1,7 +1,7 @@
 contacts-list-item {
     display: flex;
     padding: 15px 0;
-    font-size: .9em;
+    font-size: $font-size-sm;
     & + & { //all except first
         border-top: 1px solid $color-bg;
     }
@@ -54,8 +54,8 @@ contacts-list-item {
     a {
         transition: background-color 0.2s ease-in, color 0.2s ease-in;
         display: block;
-        line-height: 26px;
-        font-size: 14px;
+        line-height: 2.2em;
+        font-size: $font-size-sm;
         padding: 0 8px;
         color: #4c4749;
         text-overflow: ellipsis;
