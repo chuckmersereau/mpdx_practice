@@ -31,7 +31,7 @@ img {
 }
 
 .container-first {
-    border-top: 8px solid $color-gold;
+    border-top: 8px solid $color-secondary;
 }
 
 #brand {
@@ -66,7 +66,7 @@ img {
 
 .well-login-footer {
     background: rgba(0,115,153,.85);
-    color: $color-white;
+    color: $color-reverse;
     margin-top: 40px;
     margin-left: -19px;
     margin-right: -19px;
@@ -75,7 +75,7 @@ img {
     line-height: 2em;
     font-size: .85em;
     a {
-        color: $color-white;
+        color: $color-reverse;
         font-weight: 600;
     }
 }
@@ -140,7 +140,7 @@ $sidebarwidth: 400px;
     width: $sidebarwidth - 1px;
     float: right;
     margin-top: 210px;
-    background: $color-white;
+    background: $color-reverse;
     border: 1px solid #ddd;
     border-left: 0px;
     border-radius: 0 8px 8px 0;

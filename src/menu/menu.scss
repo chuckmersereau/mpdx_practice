@@ -13,7 +13,7 @@ menu {
 
     .nav--global {
         $primary-menu-height: 48px;
-        border-top: 5px solid $color-gold;
+        border-top: 5px solid $color-secondary;
         .account_balances {
             padding-top: 0px;
             padding-right: 14px;
@@ -48,7 +48,7 @@ menu {
                 font-size: .85em;
                 font-weight: bold;
                 display: block;
-                color: $color-gray-text;
+                color: $color-text;
                 transition: color 0.2s ease-out;
                 &:active, &:focus {
                     background: transparent;
@@ -101,22 +101,24 @@ menu {
         }
     }
     .nav--menu {
-        background: $color-menu-bg;
-        text-transform: uppercase;
+        background: $color-bg;
+        margin-bottom: 10px;
 
         .navbar {
             padding: 0;
             margin-bottom: 0;
             min-height: 0;
+            border: none;
         }
 
         .item {
-            font-weight: 600;
-            font-size: 14px;
+            font-weight: normal;
+            font-size: 16px;
             letter-spacing: .5px;
             a {
                 display: block;
                 padding: $gutter/3 $gutter*.65;
+                color: $cru-gray-dark;
             }
             &.active {
                 a {
@@ -126,7 +128,7 @@ menu {
         }
 
         menu-balances {
-            margin: 6px 0 6px 0;
+            margin: 8px 0 8px 0;
             .section {
                 display: inline-block;
                 vertical-align: top;
@@ -136,14 +138,14 @@ menu {
                 display: block;
                 font-size: 14px;
                 font-weight: 100;
-                line-height: 30px;
-                height: 30px;
+                line-height: $progress-bar-height;
+                height: $progress-bar-height;
                 text-transform: none;
             }
         }
 
         #mpd_progress_bar {
-            background: $color-gray-progress;
+            background: $cru-gray;
             display: block;
             height: $progress-bar-height;
             overflow: hidden;
@@ -166,6 +168,7 @@ menu {
                 line-height: normal;
                 padding: 0 10px;
                 line-height: $progress-bar-height;
+                color: $cru-white;
             }
             .value.right {
                 right: 0;

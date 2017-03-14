@@ -26,10 +26,10 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "styles/popovers";
 @import "styles/cards";
 @import "styles/ico";
-@import "styles/errors";
 @import "styles/chosen_bootstrap";
 @import "styles/buttons";
 @import "styles/panels";
+@import "styles/fonts/cru/ci.css";
 
 /* Components */
 @import "blockUI/blockUI";
@@ -70,9 +70,11 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 }
 
 .nav--secondary {
-    $secondary-menu-height: 42px;
+    $secondary-menu-height: 22px;
     background: none;
-    border-bottom: 1px solid $color-gray-keyline;
+    border-bottom: 1px solid $color-menu-border;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
     .section {
         display: inline-block;
         height: $secondary-menu-height;
@@ -83,4 +85,15 @@ $flag-icon-css-path: "~flag-icon-css/flags";
         margin-right: 0px;
         margin-left: 12px;
     }
+    a {
+        color: $cru-gray-dark;
+        font-size: 14px;
+        &:hover {
+            text-decoration: none;
+            cursor: pointer;
+            translate {text-decoration: underline;}
+        }
+    }
+    translate {vertical-align: top;}
+    .badge {vertical-align: text-top;}
 }

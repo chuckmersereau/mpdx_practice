@@ -1,16 +1,20 @@
 $cru-blue:                  #05699B;
 $cru-light-blue:            #32C3D7;
 $cru-gold:                  #F5BE19;
+$cru-white:                 #ffffff;
 $cru-gray:                  #5A5A5A;
-$cru-white:                  #ffffff;
+$cru-gray-silver:           #BEBEBE;
+$cru-gray-tint:             #E6E6E6;
+$cru-gray-dark:             #323232;
 
 $color-primary:             $cru-blue;
 $color-secondary:           $cru-gold;
 $color-text:                $cru-gray;
 $color-link:                $cru-gray;
 $color-reverse:             $cru-white;
+$color-bg:                  $cru-gray-tint;
 
-$color-menu-bg:             lighten($cru-gray, 60%);
+$color-menu-bg:             lighten($cru-gray, 60%);  // #f3f3f3
 $color-menu-border:         lighten($cru-gray, 50%);
 
 $font-primary:              'Source Sans Pro', sans-serif;

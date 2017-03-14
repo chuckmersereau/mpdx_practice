@@ -3,13 +3,13 @@
         <input type="text" ng-change="$ctrl.save()" ng-model="$ctrl.contact.name" ng-model-options="{ debounce: 1000 }" />
     </div>
     <div class="row fieldset">
-        <div class="col-sm-6 spacing-below-xs">
+        <div class="col-sm-6 ">
             <h4 class="attribute-header" translate>Envelope Name Line</h4>
             <div class="inline-input">
                 <input type="text" ng-model="$ctrl.contact.envelope_greeting" placeholder="{{ 'Mr. J Smith' | translate }}" ng-change="$ctrl.save()" ng-model-options="{ debounce: 1000 }" />
             </div>
         </div>
-        <div class="col-sm-6 spacing-below-xs">
+        <div class="col-sm-6 ">
             <h4 class="attribute-header" translate>Greeting (used in export)</h4>
             <div class="inline-input">
                 <input type="text" ng-model="$ctrl.contact.greeting" ng-change="$ctrl.save()" ng-model-options="{ debounce: 1000 }" />
@@ -18,7 +18,7 @@
     </div>
 
     <div class="row fieldset">
-        <div class="col-sm-4 spacing-below-xs">
+        <div class="col-sm-4 ">
             <h4 class="attribute-header" translate>Newsletter</h4>
             <div class="inline-input">
                 <select chosen
@@ -36,7 +36,7 @@
                 </select>
             </div>
         </div>
-        <div class="col-sm-4 spacing-below-xs">
+        <div class="col-sm-4 ">
             <h4 class="attribute-header" translate>Status</h4>
             <div class="inline-input">
                 <select chosen
@@ -53,7 +53,7 @@
                 </select>
             </div>
         </div>
-        <div class="col-sm-4 spacing-below-xs">
+        <div class="col-sm-4 ">
             <h4 class="attribute-header" translate>Likely to Give</h4>
             <div class="inline-input">
                 <select chosen
@@ -73,13 +73,13 @@
     </div>
 
     <div class="row fieldset">
-        <div class="col-sm-4 spacing-below-xs">
+        <div class="col-sm-4 ">
             <h4 class="attribute-header" translate>Commitment</h4>
             <div class="inline-input">
                 <input type="text" ng-model="$ctrl.contact.pledge_amount" ng-change="$ctrl.save()" ng-model-options="{ debounce: 1000 }" />
             </div>
         </div>
-        <div class="col-sm-4 spacing-below-xs">
+        <div class="col-sm-4 ">
             <h4 class="attribute-header" translate>Currency</h4>
             <div class="inline-input">
                 <select chosen
@@ -96,7 +96,7 @@
                 </select>
             </div>
         </div>
-        <div class="col-sm-4 spacing-below-xs">
+        <div class="col-sm-4 ">
             <h4 class="attribute-header" translate>Freq.</h4>
             <div class="inline-input">
                 <select chosen
@@ -116,7 +116,7 @@
     </div>
 
     <div class="row fieldset">
-        <div class="col-sm-6 spacing-below-xs">
+        <div class="col-sm-6 ">
             <h4 class="attribute-header" translate>Commitment Received</h4>
             <div class="inline-input">
                 <select chosen
@@ -133,7 +133,7 @@
             </div>
         </div>
 
-        <div class="col-sm-6 spacing-below-xs">
+        <div class="col-sm-6 ">
             <h4 class="attribute-header" translate>Commitment Start Date</h4>
             <div class="inline-input">
                 <input type="text" ng-model="$ctrl.contact.pledge_start_date" ng-change="$ctrl.save()" bs-datepicker>

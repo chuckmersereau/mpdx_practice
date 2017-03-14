@@ -27,7 +27,7 @@ hr.fullwidth {width: 100%;}
 img {max-width: 100%; height: auto;}
 ul.account-users {padding-left: 1.5em;}
 
-$progress-bar-height: 30px;
+$progress-bar-height: 24px;
 $userheight: 72px;
 
 /* ************************************************************** */
@@ -98,7 +98,7 @@ $userheight: 72px;
                         display: block;
                         height: 2em;
                         line-height: 2em;
-                        color: $color-white;
+                        color: $color-reverse;
                         font-size: 13px;
                     }
                 }
@@ -397,7 +397,7 @@ $userheight: 72px;
 .tipbox {
     margin-top: $sidebarmargins;
     border: 1px solid $borders;
-    background: $color-white;
+    background: $color-reverse;
     padding: $sidebarmargins;
     box-shadow: 1px 1px 5px #999;
     border-radius: 5px;
@@ -407,7 +407,6 @@ $userheight: 72px;
 
 .tabgroup {margin-top: 2em; margin-bottom: 2em;}
 #content {
-    margin-top: 8px;
     margin-bottom: 40px;
     &.fullscreen {
         background-color: white;
@@ -588,7 +587,7 @@ div.name {font-size: 14px; margin-bottom: 4px;}
                 background: $color-danger;
             }
             &:hover {
-                background-color: $color-blue-bright;
+                background-color: darken($cru-blue, 5%);
             }
             &:nth-child(-n+15) {
                 display: inline-block;
@@ -604,7 +603,7 @@ div.name {font-size: 14px; margin-bottom: 4px;}
         font-size: .9em;
         font-weight: 500;
         margin-top: 1em;
-        color: $color-blue-deep;
+        color: $color-primary;
         text-decoration: none;
     }
 
@@ -691,7 +690,7 @@ div.name {font-size: 14px; margin-bottom: 4px;}
         display: block !important;
 
         .close-filters {
-            color: $color-white;
+            color: $color-reverse;
             position: absolute;
             right: 5%;
             top: 1%;
@@ -745,7 +744,7 @@ div.name {font-size: 14px; margin-bottom: 4px;}
     line-height: 1.3em;
     .tag {
         font-weight: bold;
-        background: #4A90E2;
+        background: $cru-blue;
         border: 0;
         height: 22px;
         line-height: 22px;
@@ -754,7 +753,7 @@ div.name {font-size: 14px; margin-bottom: 4px;}
         margin-right: 4px;
         padding: 0 5px;
         border-radius: 5px;
-        color: $color-white;
+        color: $color-reverse;
         display: inline-block;
     }
 }
@@ -814,7 +813,7 @@ div.name {font-size: 14px; margin-bottom: 4px;}
     }
     .checks {width: 22px; line-height: 22px;}
     tr {
-        border-bottom: 1px solid $color-gray-light;
+        border-bottom: 1px solid $color-bg;
     }
     td {
         padding: 15px 4px 15px 4px;
@@ -962,7 +961,7 @@ table tbody.tasks {
     td {}
 
     tr.Partner-Financial {
-        background-color: lighten($color_gold, 38%);
+        background-color: lighten($color-secondary, 38%);
     }
     tr:hover {
         background-color: $gray_light;
@@ -995,7 +994,7 @@ table tbody.tasks {
 .qaction .quick_action_list, .action_list {
     @include listclear;
     padding: 4px;
-    background: $color-white;
+    background: $color-reverse;
     box-shadow: 0 0 6px #bbb;
     position: absolute;
     z-index: 10;
@@ -1013,8 +1012,8 @@ table tbody.tasks {
     a.fb {background-position: 0 -390px;}
     a.tweet {background-position: 0 -324px;}
     a.none {padding-left: 10px; background: none;}
-    a:hover {background-color: $green; color: $color-white;}
-    a:active {background-color: $green_dark;}
+    a:hover {background-color: $green; color: $color-reverse;}
+    a:active {}
 }
 
 /* ************************************************************** */
@@ -1028,7 +1027,7 @@ table tbody.tasks {
     header {background: url("images/comment_head.png") no-repeat -1px 0; height: 7px;}
     .comment {
         padding: 5px 10px;
-        border-bottom: 1px dotted $color-white;
+        border-bottom: 1px dotted $color-reverse;
         position: relative;
         font-size: 13px;
         .body p {
@@ -1308,7 +1307,7 @@ table.meta {
     display: block !important;
     margin: 0 !important;
     .selector {
-        background: $color-blue-deep;
+        background: $color-primary;
         padding: 0px 10px;
         display: inline-block;
         margin-left: 1.5em;
@@ -1405,26 +1404,25 @@ table.meta {
     @include listclear;
     height: 415px;
     overflow: auto;
-    background: $color-white;
+    background: $color-reverse;
     li {border-bottom: 1px dotted $gray_light;}
     li a {
         display: block;
         line-height: 1.85em;
         height: 1.85em;
         padding: 0 8px;
-        color: $base-text-color;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
     }
     li a:hover,
     li a:active {
-        background: $color-gray-light;
+        background: $color-bg;
         text-decoration: none;
     }
     li a.active {
         background: $color-primary;
-        color: $color-white;
+        color: $color-reverse;
     }
 }
 
@@ -1509,7 +1507,7 @@ table.meta {
     margin-top: 20px;
     text-align: center;
     .footer-border {
-        border-top:3px solid $color-gray-light;
+        border-top:3px solid $color-bg;
         margin-bottom: 20px;
         display: block;
         width: 100%;
@@ -1566,7 +1564,7 @@ body.google_integrations_controller {
         font-size: 1.5em;
         margin: 0 0 10px 0;
         .fa {
-            color: $color-blue-deep;
+            color: $color-primary;
             font-size: .95em;
             margin-right: 5px;
         }
@@ -1601,7 +1599,7 @@ body.google_integrations_controller {
     display: block;
     width: auto;
     margin-bottom: 2px;
-    background: $color-white;
+    background: $color-reverse;
 }
 
 /* ********************* Tabs ********************************** */
@@ -1624,7 +1622,7 @@ body.google_integrations_controller {
     }
     .ui-state-active {
         font-weight: normal;
-        background: $color-white;
+        background: $color-reverse;
         border: 1px solid #ccc;
         a {
             line-height: 40px;
@@ -1648,11 +1646,11 @@ body.google_integrations_controller {
     a:before:hover,
     .fav:hover {
         text-decoration: none;
-        color: $color-blue-deep;
+        color: $color-primary;
     }
     .tags {
         .tag:hover {
-            color: $color-white;
+            color: $color-reverse;
         }
     }
     .contact-task-address {
@@ -1741,8 +1739,7 @@ body.google_integrations_controller {
         border-radius: 60px;
         font-weight: bold;
         line-height: 52px;
-        border: 4px solid $color-brownish;
-        color: $color-brownish;
+        border: 4px solid;
         background-color: $color-primary;
         font-size: 35px;
         position: relative;
@@ -1771,7 +1768,7 @@ body.google_integrations_controller {
         cursor: pointer;
     }
     &.completed .welcome-panel-completed {
-        background-color: $color-white;
+        background-color: $color-reverse;
         color: $green;
         border-color: $green;
         margin-right: -30px;
@@ -1811,13 +1808,13 @@ body.google_integrations_controller {
                 display: inline-block;
                 width: 32%;
                 margin-bottom: 20px;
-                color: $color_gray_dark;
+                color: $color-link;
                 text-align: left;
             }
             .fa {
                 margin-right: 12px;
                 font-size: 20px;
-                color: $color_gold;
+                color: $color-secondary;
             }
         }
         .welcome-completed-dismiss {
@@ -1928,7 +1925,7 @@ appeals-list .show-all {
         position: relative;
         left: -3em;
         width: 0;
-        color: $color-white;
+        color: $color-reverse;
         margin-left: 0;
     }
 }

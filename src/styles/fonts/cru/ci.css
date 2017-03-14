@@ -1,0 +1,32 @@
+@font-face {
+	font-family: "ci";
+	src: url("ci.eot?83ed11a0a4a10e6a33b4d815133a15b8?#iefix") format("embedded-opentype"),
+url("ci.woff?83ed11a0a4a10e6a33b4d815133a15b8") format("woff");
+}
+
+.ci {
+	line-height: 1;
+}
+
+.ci:before {
+	font-family: ci !important;
+	font-style: normal;
+	font-weight: normal !important;
+	vertical-align: top;
+}
+
+.ci-alert:before {
+	content: "\f101";
+}
+.ci-email_icon:before {
+	content: "\f102";
+}
+.ci-filter_icon:before {
+	content: "\f103";
+}
+.ci-letter_icon:before {
+	content: "\f104";
+}
+.ci-neg_filter_icon:before {
+	content: "\f105";
+}

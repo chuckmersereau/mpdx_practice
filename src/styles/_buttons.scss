@@ -13,19 +13,19 @@
 }
 
 .btn-reverse {
-    background: $color-gray-dark;
-    color: $color-white;
+    background: $cru-gray-dark;
+    color: $color-reverse;
 
     &:active,
     &:hover,
     &:focus {
-      color: $color-white;
+      color: $color-reverse;
     }
 }
 
 .btn-blue {
-    background: $color-blue-deep;
-    color: $color-white;
+    background: $color-primary;
+    color: $color-reverse;
 }
 
 .btn-xxs {

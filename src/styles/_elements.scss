@@ -1,29 +1,16 @@
 /* CRU BRAND COLORS */
 $brand-primary:         $color-primary;
-$color-white: #fff;
-$color-blue-deep: blue;
-$color-gold: gold;
 $color-black: black;
 $color-gray: black;
 $color-background: black;
 $color-danger: red;
-$color-blue-bright: blue;
 $text-muted: #333;
 $screen-sm-min: 768px;
 $screen-sm-max: 992px;
 $screen-xs-max: 992px;
 
-$color-gray-keyline:    #e9e9e9;
-$color-gray-progress:   #D8D8D8;
-$color-gray-dark:       #4c4749;
-$color-gray-light:      #e2e2e2;
-$color-brownish:        #bd8500;
-$color-gray-text:       #828282;
-
-$base-text-color:       $color-gray-dark;
 
 $gray: #929497;
-$gray_lightest: #f5f5f5;;
 $gray_light: #E6E7E8;
 $gray_mid: #BBBDBF;
 $gray_dark: #58595B;
@@ -35,20 +22,17 @@ $blue_dark: #00566D;
 $blue_comments: #e7f8ff;
 $green: #56AA00;
 $green_light: #62A11A;
-$green_dark: #437C00;
-$green_darkest: #3C6B00;
-$error_red: #c63333;
 $btn_gray: #A8A8A8;
 $menu_bg: #909B9C;
 $icon_gray: #4A4A4A;
 
-$page_bg: $color-white;
-$content_bg: $color-white;
+$page_bg: $color-reverse;
+$content_bg: $color-reverse;
 
 $type: #58595B;
 $links: $blue;
-$menu_links: $color-white;
-$module_titles: $color-white;
+$menu_links: $color-reverse;
+$module_titles: $color-reverse;
 $border: #929497;
 
 $maxwidth: 960px/* 1200px */;
@@ -101,11 +85,6 @@ html,body {
         cursor: pointer;
     }
 }
-
-.green { color: $green; }
-.green_dark { color: $green_dark; }
-.green_darkest { color: $green_darkest; }
-.red { color: $error_red }
 
 input:read-only:not([type="submit"]):not([type="button"]),
 textarea:read-only {
@@ -168,17 +147,15 @@ $appealHeight: 20px;
     left: 74px;
 }
 
-.color-primary {color: $color-primary;}
 
 .account-users {
     td, th {
         padding: 10px;
-        border: 1px solid $color-gray-light;
+        border: 1px solid $color-bg;
     }
 }
 
 .impersonation-bar {
-    color: $error_red;
     background: $gray_light;
     text-align: center;
     font-weight: bold;
@@ -186,38 +163,9 @@ $appealHeight: 20px;
 }
 
 .warning-text {
-    color: $error_red;
     font-weight: bold;
 }
 
-a {
-    cursor: pointer;
-    color: $color-link;
-}
-
-.color-0 {
-    background-color: #f9b625
-}
-
-.color-1 {
-    background-color: #dd7d1b
-}
-
-.color-2 {
-    background-color: #909b9c
-}
-
-.color-3 {
-    background-color: #666062
-}
-
-.color-4 {
-    background-color: #3eb1c8
-}
-
-.color-5 {
-    background-color: #007398
-}
 .loading-box {
     color: $color-primary;
     width: 100%;

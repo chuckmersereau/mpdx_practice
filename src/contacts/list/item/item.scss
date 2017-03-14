@@ -3,7 +3,7 @@ contacts-list-item {
     padding: 15px 0;
     font-size: .9em;
     & + & { //all except first
-        border-top: 1px solid $color-gray-light;
+        border-top: 1px solid $color-bg;
     }
     .contact-row {
         display: flex;
@@ -64,7 +64,7 @@ contacts-list-item {
         width: 100%;
         cursor: pointer;
         &:hover {
-            background-color: $color-gray-light;
+            background-color: $color-bg;
             text-decoration: none;
         }
         &.active {
