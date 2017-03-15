@@ -12,17 +12,6 @@
           <a class="btn btn-xs btn-default" ng-click="$ctrl.bulkDeleteTasks()" translate>Delete Selected</a>
           <a class="btn btn-xs btn-default" ng-click="$ctrl.openBulkEditTaskModal()" translate>Edit Selected</a>
         </span>
-          <span class="label label-primary" ng-if="$ctrl.selected.length > 0">
-                {{$ctrl.selected.length }} <span translate>Selected</span>
-                <a href="javascript:;" class="label-action" ng-click="$ctrl.toggleAll()"><i class="fa fa-times"></i></a>
-          </span>&nbsp;
-          <small>
-              <a href="javascript:;"
-                 ng-if="$ctrl.selected.length > 0 && $ctrl.selected.length < $ctrl.tasks.completeList[$ctrl.key].length"
-                 ng-click="$ctrl.toggleAll(true)">
-                  <span translate>Select all {{$ctrl.tasks.completeList[$ctrl.key].length}} contacts</span>
-              </a>
-          </small>
         <select
           ng-model="$ctrl.tasks.meta[$ctrl.key].pagination.per_page"
           ng-change="$ctrl.tasks.meta[$ctrl.key].pagination.page = 1; $ctrl.load()"
@@ -45,7 +34,7 @@
     <tr class="task-row"
         ng-repeat-start="task in $ctrl.tasks.data[$ctrl.key]"
         ng-click="$ctrl.toggleSelected(task)"
-        ng-class="{ 'selected-task-row': $ctrl.isSelected(task) }"
+        ng-class="$ctrl.selected.indexOf(task) >= 0 ? 'selected-task-row' : ''"
         >
       <td>
         <i class="fa fa-lg fa-square-o complete_task"

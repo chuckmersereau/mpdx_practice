@@ -6,7 +6,6 @@ import map from "lodash/fp/map";
 import noop from "lodash/fp/noop";
 import reduce from "lodash/fp/reduce";
 import reject from "lodash/fp/reject";
-import union from "lodash/fp/union";
 import joinComma from "../common/fp/joinComma";
 
 class TasksService {
@@ -32,7 +31,6 @@ class TasksService {
         this.analytics = null;
         this.data = {};
         this.sort = 'all';
-        this.completeList = {};
 
         this.init();
     }
@@ -105,7 +103,8 @@ class TasksService {
             }
         };
     }
-    buildFilterParams(collection) {
+    fetchTasks(collection) {
+        this.data[collection] = null;
         const defaultFilters = this.defaultFilters[collection];
         const wildcardSearch = this.tasksFilter.wildcard_search;
         let filters = assign(defaultFilters, this.tasksFilter.params);
@@ -124,32 +123,11 @@ class TasksService {
         }
         filters.account_list_id = this.api.account_list_id;
         filters.any_tags = this.tasksTags.anyTags;
-        return filters;
-    }
-    getList(collection, reset = false) {
-        if (!reset && this.completeList[collection]) {
-            return this.$q.resolve(this.completeList);
-        }
-        this.completeList[collection] = []; // to avoid double call
-        return this.api.get('tasks', {
-            filter: this.buildFilterParams(collection),
-            fields: {
-                tasks: 'subject'
-            },
-            per_page: 25000,
-            sort: this.meta[collection].pagination.order
-        }).then((data) => {
-            this.$log.debug('tasks all', data);
-            this.completeList[collection] = data;
-        });
-    }
-    fetchTasks(collection) {
-        this.data[collection] = null;
 
         return this.api.get({
             url: 'tasks',
             data: {
-                filters: this.buildFilterParams(collection),
+                filters: filters,
                 include: 'comments,contacts,contacts.people,contacts.addresses,contacts.people.email_addresses,contacts.people.phone_numbers,contacts.people.facebook_accounts',
                 fields: {
                     contacts: 'addresses,name,people,square_avatar',
