@@ -1,15 +1,15 @@
 class FilterController {
-    tasksService;
+    tasks;
     tasksFilter;
     tasksTags;
     modal;
 
     constructor(
         gettextCatalog,
-        tasksFilter, tasksTags, tasksService, modal
+        tasksFilter, tasksTags, tasks, modal
     ) {
         this.modal = modal;
-        this.tasksService = tasksService;
+        this.tasks = tasks;
         this.tasksFilter = tasksFilter;
         this.gettextCatalog = gettextCatalog;
         this.tasksTags = tasksTags;

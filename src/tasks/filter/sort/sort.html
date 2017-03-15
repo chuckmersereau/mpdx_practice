@@ -3,25 +3,25 @@
   <span class="filter--filtergroup_title" translate><i class="fa fa-paper-plane"></i>  Sort</span>
 </div>
 <ul class="filter--filtergroup_sort list-unstyled">
-  <li ng-class="{'selected': vm.tasksService.sort === 'all'}" class="option">
-    <a class="inbox " ng-click="vm.tasksService.sort = 'all'" translate>All</a>
+  <li ng-class="{'selected': vm.tasks.sort === 'all'}" class="option">
+    <a class="inbox " ng-click="vm.tasks.sort = 'all'" translate>All</a>
   </li>
-  <li ng-class="{'selected': vm.tasksService.sort === 'today'}" class="option">
-    <a class="inbox" ng-click="vm.tasksService.sort = 'today'" translate>Today</a>
+  <li ng-class="{'selected': vm.tasks.sort === 'today'}" class="option">
+    <a class="inbox" ng-click="vm.tasks.sort = 'today'" translate>Today</a>
   </li>
-  <li ng-class="{'selected': vm.tasksService.sort === 'overdue'}" class="option">
-    <a class="inbox" ng-click="vm.tasksService.sort = 'overdue'" translate>Overdue</a>
+  <li ng-class="{'selected': vm.tasks.sort === 'overdue'}" class="option">
+    <a class="inbox" ng-click="vm.tasks.sort = 'overdue'" translate>Overdue</a>
   </li>
-  <li ng-class="{'selected': vm.tasksService.sort === 'upcoming'}" class="option">
-    <a class="inbox" ng-click="vm.tasksService.sort = 'upcoming'" translate>Upcoming</a>
+  <li ng-class="{'selected': vm.tasks.sort === 'upcoming'}" class="option">
+    <a class="inbox" ng-click="vm.tasks.sort = 'upcoming'" translate>Upcoming</a>
   </li>
-  <li ng-class="{'selected': vm.tasksService.sort === 'noDate'}" class="option">
-    <a class="inbox" ng-click="vm.tasksService.sort = 'noDate'" translate>No Due Date</a>
+  <li ng-class="{'selected': vm.tasks.sort === 'noDate'}" class="option">
+    <a class="inbox" ng-click="vm.tasks.sort = 'noDate'" translate>No Due Date</a>
   </li>
-  <li ng-class="{'selected': vm.tasksService.sort === 'starred'}" class="option">
-    <a class="starred" ng-click="vm.tasksService.sort = 'starred'" translate>Starred</a>
+  <li ng-class="{'selected': vm.tasks.sort === 'starred'}" class="option">
+    <a class="starred" ng-click="vm.tasks.sort = 'starred'" translate>Starred</a>
   </li>
-  <li ng-class="{'selected': vm.tasksService.sort === 'history'}" class="option">
-    <a class="completed" ng-click="vm.tasksService.sort = 'history'" translate>History</a>
+  <li ng-class="{'selected': vm.tasks.sort === 'history'}" class="option">
+    <a class="completed" ng-click="vm.tasks.sort = 'history'" translate>History</a>
   </li>
 </ul>

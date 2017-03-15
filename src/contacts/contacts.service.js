@@ -329,43 +329,9 @@ class ContactsService {
             this.data = reject(contact => find({id: contact.id}, contacts) != null, this.data);
         });
     }
-    // Needs bulk save
     bulkEditFields(model, contacts) {
-        let obj = {};
-        if (model.likely_to_give) {
-            obj.likely_to_give = model.likely_to_give;
-        }
-        if (model.next_ask) {
-            obj.next_ask = model.next_ask;
-        }
-        if (model.status) {
-            obj.status = model.status;
-        }
-        if (model.send_newsletter) {
-            obj.send_newsletter = model.send_newsletter;
-        }
-        if (model.church_name) {
-            obj.church_name = model.church_name;
-        }
-        if (model.website) {
-            obj.website = model.website;
-        }
-        if (model.pledge_received) {
-            if (model.pledge_received === 'Yes') {
-                obj.pledge_received = '1';
-            } else {
-                obj.pledge_received = '0';
-            }
-        }
-        if (model.pledge_currency) {
-            obj.pledge_currency = model.pledge_currency;
-        }
-        if (model.locale) {
-            obj.locale = model.locale[1];
-        }
-
         contacts = reduce((result, contact) => {
-            result.push(assign({}, contact, obj));
+            result.push(assign({id: contact.id}, model));
             return result;
         }, [], contacts);
         return this.api.put('contacts/bulk', contacts);

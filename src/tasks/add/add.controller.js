@@ -1,4 +1,5 @@
 import uuid from 'uuid/v1';
+import moment from 'moment';
 import isEmpty from 'lodash/fp/isEmpty';
 import reject from 'lodash/fp/reject';
 
@@ -9,15 +10,16 @@ class AddTaskController {
     newsletterEmail;
     newsletterPhysical;
     serverConstants;
-    tasksService;
+    tasks;
     tasksTags;
     users;
 
     constructor(
-        $scope, $state,
-        tasksTags, serverConstants, tasksService, contacts, users,
+        $q, $scope, $state,
+        tasksTags, serverConstants, tasks, contacts, users,
         selectedContacts, specifiedAction, specifiedSubject, modalTitle
     ) {
+        this.$q = $q;
         this.$scope = $scope;
         this.$state = $state;
         this.selectedContacts = selectedContacts;
@@ -26,7 +28,7 @@ class AddTaskController {
         this.serverConstants = serverConstants;
         this.specifiedAction = specifiedAction;
         this.specifiedSubject = specifiedSubject;
-        this.tasksService = tasksService;
+        this.tasks = tasks;
         this.users = users;
 
         this.modalTitle = modalTitle;
@@ -55,27 +57,28 @@ class AddTaskController {
 
         let promise;
         if (this.newsletterBoth) {
-            this.model.action = "Newsletter - Physical";
-            promise = this.tasksService.create(this.model, this.selectedContacts).then(() => {
-                this.model.action = "Newsletter - Email";
-                return this.tasksService.create(this.model, this.selectedContacts);
+            this.model.activity_type = "Newsletter - Physical";
+            promise = this.tasks.create(this.model, this.selectedContacts).then(() => {
+                this.model.activity_type = "Newsletter - Email";
+                return this.tasks.create(this.model, this.selectedContacts);
             });
         } else if (this.newsletterPhysical) {
-            this.model.action = "Newsletter - Physical";
-            promise = this.tasksService.create(this.model, this.selectedContacts);
+            this.model.activity_type = "Newsletter - Physical";
+            promise = this.tasks.create(this.model, this.selectedContacts);
         } else if (this.newsletterEmail) {
-            this.model.action = "Newsletter - Email";
-            promise = this.tasksService.create(this.model, this.selectedContacts);
-        } else if (!isEmpty(this.model.action)) {
-            promise = this.tasksService.create(this.model, this.selectedContacts);
+            this.model.activity_type = "Newsletter - Email";
+            promise = this.tasks.create(this.model, this.selectedContacts);
+        } else if (!isEmpty(this.model.activity_type)) {
+            promise = this.tasks.create(this.model, this.selectedContacts);
         } else {
-            return;
+            return this.$q.reject();
         }
         return promise.then(() => {
-            this.contacts.load(true);
+            if (this.selectedContacts.length > 0) {
+                this.contacts.load(true);
+            }
             this.tasksTags.load();
             this.$scope.$hide();
-            this.$state.go('tasks');
         });
     }
 }

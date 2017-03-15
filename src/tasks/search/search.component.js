@@ -1,9 +1,11 @@
 class TasksSearchController {
-    tasksService;
+    tasks;
     tasksFilter;
 
-    constructor(tasksFilter, tasksService) {
-        this.tasksService = tasksService;
+    constructor(
+        tasksFilter, tasks
+    ) {
+        this.tasks = tasks;
         this.tasksFilter = tasksFilter;
     }
 }

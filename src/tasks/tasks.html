@@ -19,7 +19,7 @@
         tags="$ctrl.tasksTags.selectedTags"
         changed="$ctrl.changed"
         sort-key="overdue"
-        ng-if="['all', 'overdue'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
+        ng-if="['all', 'overdue'].indexOf($ctrl.tasks.sort) + 1"></tasks-list>
     <tasks-list
         key="today"
         title="{{ 'Today' | translate }}"
@@ -28,7 +28,7 @@
         tags="$ctrl.tasksTags.selectedTags"
         changed="$ctrl.changed"
         sort-key="today"
-        ng-if="['all', 'today'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
+        ng-if="['all', 'today'].indexOf($ctrl.tasks.sort) + 1"></tasks-list>
     <tasks-list
         key="starred"
         title="{{ 'Starred' | translate }}"
@@ -38,7 +38,7 @@
         changed="$ctrl.changed"
         filterChanged="$ctrl.filterChanged"
         sort-key="starred"
-        ng-if="['all', 'starred'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
+        ng-if="['all', 'starred'].indexOf($ctrl.tasks.sort) + 1"></tasks-list>
     <tasks-list
         key="tomorrow"
         title="{{ 'Tomorrow' | translate }}"
@@ -47,7 +47,7 @@
         tags="$ctrl.tasksTags.selectedTags"
         changed="$ctrl.changed"
         sort-key="upcoming"
-        ng-if="['all', 'upcoming'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
+        ng-if="['all', 'upcoming'].indexOf($ctrl.tasks.sort) + 1"></tasks-list>
     <tasks-list
         key="upcoming"
         title="{{ 'Upcoming' | translate }}"
@@ -56,7 +56,7 @@
         tags="$ctrl.tasksTags.selectedTags"
         changed="$ctrl.changed"
         sort-key="upcoming"
-        ng-if="['all', 'upcoming'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
+        ng-if="['all', 'upcoming'].indexOf($ctrl.tasks.sort) + 1"></tasks-list>
     <tasks-list
         key="noDueDate"
         title="{{ 'No Date' | translate }}"
@@ -65,7 +65,7 @@
         tags="$ctrl.tasksTags.selectedTags"
         changed="$ctrl.changed"
         sort-key="noDate"
-        ng-if="['all', 'noDate'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
+        ng-if="['all', 'noDate'].indexOf($ctrl.tasks.sort) + 1"></tasks-list>
     <tasks-list
         key="allCompleted"
         title="{{ 'History' | translate }}"
@@ -74,6 +74,6 @@
         tags="$ctrl.tasksTags.selectedTags"
         changed="$ctrl.changed"
         sort-key="history"
-        ng-if="['all', 'history'].indexOf($ctrl.tasksService.sort) + 1"></tasks-list>
+        ng-if="['all', 'history'].indexOf($ctrl.tasks.sort) + 1"></tasks-list>
   </div>
 </div>

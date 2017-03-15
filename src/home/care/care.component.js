@@ -1,13 +1,13 @@
 class CareController {
-    tasksService;
+    tasks;
 
     constructor(
-        tasksService
+        tasks
     ) {
-        this.tasksService = tasksService;
+        this.tasks = tasks;
     }
     addNewsletter() {
-        this.tasksService.openNewsletterModal();
+        this.tasks.openNewsletterModal();
     }
 }
 const Care = {

@@ -1,5 +1,5 @@
 <div class="tasks-component">
-  <table class="table tasks-table" bs-collapse data-start-collapsed="true" ng-show="$ctrl.tasksService.meta[$ctrl.key].pagination.total_count || $ctrl.tasksService.sort == $ctrl.sortkey">
+  <table class="table tasks-table" bs-collapse data-start-collapsed="true" ng-show="$ctrl.tasks.meta[$ctrl.key].pagination.total_count || $ctrl.tasks.sort == $ctrl.sortkey">
     <tr class="header-row">
       <th ng-style="{'border-bottom': '4px solid ' + $ctrl.color}"
           colspan="100"
@@ -13,10 +13,10 @@
           <a class="btn btn-xs btn-default" ng-click="$ctrl.openBulkEditTaskModal()" translate>Edit Selected</a>
         </span>
         <select
-          ng-model="$ctrl.tasksService.meta[$ctrl.key].pagination.per_page"
-          ng-change="$ctrl.tasksService.meta[$ctrl.key].pagination.page = 1; $ctrl.load()"
+          ng-model="$ctrl.tasks.meta[$ctrl.key].pagination.per_page"
+          ng-change="$ctrl.tasks.meta[$ctrl.key].pagination.page = 1; $ctrl.load()"
           class="form-control ng-pristine ng-untouched ng-valid ng-not-empty tasks-per-page form-inline">
-            <option ng-repeat="i in [10, 25, 50, 100, 500]" value="{{i}}" ng-selected="$ctrl.tasksService.meta[$ctrl.key].pagination.per_page == i">{{i}}</option>
+            <option ng-repeat="i in [10, 25, 50, 100, 500]" value="{{i}}" ng-selected="$ctrl.tasks.meta[$ctrl.key].pagination.per_page == i">{{i}}</option>
         </select>
         <span
           class="tasks-per-page-description"
@@ -26,13 +26,13 @@
         <a class="btn btn-xs btn-default pull-right" ng-click="$ctrl.toggleAll()" style="margin-right: 12px" translate>Select All</a>
       </th>
     </tr>
-    <tr ng-if="$ctrl.tasksService.data[$ctrl.key].length === 0">
+    <tr ng-if="$ctrl.tasks.data[$ctrl.key].length === 0">
       <td class="text-center" colspan="100" translate>
         Task list empty
       </td>
     </tr>
     <tr class="task-row"
-        ng-repeat-start="task in $ctrl.tasksService.data[$ctrl.key]"
+        ng-repeat-start="task in $ctrl.tasks.data[$ctrl.key]"
         ng-click="$ctrl.toggleSelected(task)"
         ng-class="$ctrl.selected.indexOf(task) >= 0 ? 'selected-task-row' : ''"
         >
@@ -84,7 +84,7 @@
     <tr class="comment" ng-repeat-end ng-if="task.openComments">
       <td colspan="100">
         <div class="comment__single" ng-repeat="comment in task.comments">
-          <a ng-click="$ctrl.tasksService.deleteComment(task, comment.id)" title="Delete Comment"><i class="fa fa-times pull-right" aria-hidden="true"></i></a>
+          <a ng-click="$ctrl.tasks.deleteComment(task, comment.id)" title="Delete Comment"><i class="fa fa-times pull-right" aria-hidden="true"></i></a>
           <p class="comment__body">{{ comment.body }}</p>
           <p class="comment__meta">
             - {{ comment.person_name }}, {{ $ctrl.moment(comment.created_at).format('l') }}
@@ -98,8 +98,8 @@
       </td>
     </tr>
   </table>
-  <pagination ng-if="$ctrl.tasksService.data[$ctrl.key].length"
-              meta="$ctrl.tasksService.meta[$ctrl.key].pagination"
+  <pagination ng-if="$ctrl.tasks.data[$ctrl.key].length"
+              meta="$ctrl.tasks.meta[$ctrl.key].pagination"
               on-change="$ctrl.onPageChange(page)">
   </pagination>
 </div>

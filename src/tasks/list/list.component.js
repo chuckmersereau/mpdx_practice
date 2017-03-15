@@ -4,23 +4,23 @@ class ListController {
     alerts;
     modal;
     moment;
-    tasksService;
+    tasks;
 
     constructor(
-        alerts, contacts, modal, tasksService
+        alerts, contacts, modal, tasks
     ) {
         this.alerts = alerts;
         this.contacts = contacts;
         this.modal = modal;
         this.moment = moment;
-        this.tasksService = tasksService;
+        this.tasks = tasks;
 
         this.models = {};
         this.selected = [];
     }
     $onChanges(changes) {
         if (changes.changed) {
-            this.tasksService.meta[this.key].pagination.page = 1;
+            this.tasks.meta[this.key].pagination.page = 1;
             this.load();
         }
     }
@@ -60,12 +60,12 @@ class ListController {
         });
     }
     bulkDeleteTasks() {
-        this.tasksService.bulkDeleteTasks(this.selected).then(() => {
+        this.tasks.bulkDeleteTasks(this.selected).then(() => {
             this.loadPage();
         });
     }
     bulkCompleteTasks() {
-        this.tasksService.bulkCompleteTasks(this.selected).then(() => {
+        this.tasks.bulkCompleteTasks(this.selected).then(() => {
             this.loadPage();
         });
     }
@@ -78,7 +78,7 @@ class ListController {
         }
     }
     toggleAll() {
-        const tasks = this.tasksService.data[this.key];
+        const tasks = this.tasks.data[this.key];
         if (this.selected.length === tasks.length) {
             this.selected = [];
         } else {
@@ -87,32 +87,32 @@ class ListController {
     }
     newComment(task) {
         if (this.models.comment) {
-            this.tasksService.addComment(task, this.models.comment).then((data) => {
+            this.tasks.addComment(task, this.models.comment).then((data) => {
                 task.comments.push(data);
                 this.models.comment = '';
             });
         }
     }
     deleteTask(taskId) {
-        this.tasksService.deleteTask(taskId).then(() => {
-            this.tasksService.data[this.key] = _.reject(this.tasksService.data[this.key], {id: taskId});
+        this.tasks.deleteTask(taskId).then(() => {
+            this.tasks.data[this.key] = _.reject(this.tasks.data[this.key], {id: taskId});
         });
     }
     onPageChange(pageNum) {
-        this.tasksService.meta[this.key].pagination.page = pageNum;
+        this.tasks.meta[this.key].pagination.page = pageNum;
         this.load();
     }
     starTask(task) {
-        return this.tasksService.starTask(task).then((data) => {
+        return this.tasks.starTask(task).then((data) => {
             task.starred = data.starred;
             task.updated_in_db_at = data.updated_in_db_at;
         });
     }
     load() {
-        this.tasksService.fetchTasks(this.key);
+        this.tasks.fetchTasks(this.key);
     }
     loadPage() {
-        this.tasksService.fetchTasksForPage(
+        this.tasks.fetchTasksForPage(
             this.parentComponent
         );
     }

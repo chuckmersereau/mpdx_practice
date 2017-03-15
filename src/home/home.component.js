@@ -1,17 +1,17 @@
 class HomeController {
     accounts;
     contacts;
-    tasksService;
+    tasks;
     users;
     constructor(
         $log, $q, $rootScope, blockUI,
-        accounts, contacts, help, tasksService, users
+        accounts, contacts, help, tasks, users
     ) {
         this.$log = $log;
         this.$q = $q;
         this.accounts = accounts;
         this.contacts = contacts;
-        this.tasksService = tasksService;
+        this.tasks = tasks;
         this.blockUI = blockUI.instances.get('home');
         this.users = users;
 
@@ -43,7 +43,7 @@ class HomeController {
     load() {
         this.blockUI.start();
         this.$q.all([
-            this.tasksService.getAnalytics(true),
+            this.tasks.getAnalytics(true),
             this.contacts.getAnalytics(true)
         ]).then(() => {
             this.blockUI.reset();

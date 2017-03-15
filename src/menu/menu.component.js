@@ -5,20 +5,20 @@ class menuController {
     donations;
     help;
     state;
-    tasksService;
+    tasks;
     tools;
     users;
 
     constructor(
         $rootScope, $state,
-        contacts, help, tasksService, users, donations
+        contacts, help, tasks, users, donations
     ) {
         this.$rootScope = $rootScope;
         this.contacts = contacts;
         this.donations = donations;
         this.help = help;
         this.state = $state;
-        this.tasksService = tasksService;
+        this.tasks = tasks;
         this.users = users;
 
         this.isInState = (match) => $state.$current.name.indexOf(match) === 0;

@@ -6,13 +6,13 @@ class EditTaskController {
 
     constructor(
         $scope,
-        tasksTags, tasksService, serverConstants, users,
+        tasksTags, tasks, serverConstants, users,
         selectedTasks, modalCallback
     ) {
         this.$scope = $scope;
         this.serverConstants = serverConstants;
         this.tasksTags = tasksTags;
-        this.tasksService = tasksService;
+        this.tasks = tasks;
         this.selectedTasks = selectedTasks;
         this.modalCallback = modalCallback;
         this.users = users;
@@ -23,7 +23,7 @@ class EditTaskController {
         this.models = {};
     }
     submit() {
-        this.tasksService.bulkEditTasks(
+        this.tasks.bulkEditTasks(
             this.selectedTasks,
             this.models,
             this.comment

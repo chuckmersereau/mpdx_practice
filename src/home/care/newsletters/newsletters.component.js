@@ -1,10 +1,10 @@
 class NewslettersController {
-    contacts;
+    tasks;
 
     constructor(
-        tasksService
+        tasks
     ) {
-        this.tasksService = tasksService;
+        this.tasks = tasks;
     }
 
 }

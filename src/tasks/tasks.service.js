@@ -1,4 +1,11 @@
 import uuid from 'uuid/v1';
+import assign from "lodash/fp/assign";
+import each from "lodash/fp/each";
+import isEmpty from "lodash/fp/isEmpty";
+import map from "lodash/fp/map";
+import noop from "lodash/fp/noop";
+import reduce from "lodash/fp/reduce";
+import reject from "lodash/fp/reject";
 import joinComma from "../common/fp/joinComma";
 
 class TasksService {
@@ -41,10 +48,10 @@ class TasksService {
         };
 
         this.meta = {
-            completed: _.assign(DEFAULT_PAGINATION, {
+            completed: assign(DEFAULT_PAGINATION, {
                 sort: '-no_date,start_at'
             }),
-            uncompleted: _.assign(DEFAULT_PAGINATION, {
+            uncompleted: assign(DEFAULT_PAGINATION, {
                 sort: '-no_date,start_at'
             }),
             today: DEFAULT_PAGINATION,
@@ -100,17 +107,17 @@ class TasksService {
         this.data[collection] = null;
         const defaultFilters = this.defaultFilters[collection];
         const wildcardSearch = this.tasksFilter.wildcard_search;
-        let filters = _.assign(defaultFilters, this.tasksFilter.params);
+        let filters = assign(defaultFilters, this.tasksFilter.params);
         if (wildcardSearch) {
             filters.wildcard_search = wildcardSearch;
         }
         if (this.tasksTags.selectedTags.length > 0) {
-            filters.tags = _.map(this.tasksTags.selectedTags, tag => tag.name).join(',');
+            filters.tags = joinComma(map('name', this.tasksTags.selectedTags));
         } else {
             delete filters.tags;
         }
         if (this.tasksTags.rejectedTags.length > 0) {
-            filters.exclude_tags = _.map(this.tasksTags.rejectedTags, tag => tag.name).join(',');
+            filters.exclude_tags = joinComma(map('name', this.tasksTags.rejectedTags));
         } else {
             delete filters.exclude_tags;
         }
@@ -122,12 +129,14 @@ class TasksService {
             data: {
                 filters: filters,
                 include: 'comments,contacts,contacts.people,contacts.addresses,contacts.people.email_addresses,contacts.people.phone_numbers,contacts.people.facebook_accounts',
-                'fields[contacts]': 'addresses,name,people,square_avatar',
-                'fields[addresses]': 'city,primary_mailing_address,postal_code,state,street',
-                'fields[people]': 'avatar,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
-                'fields[email_addresses]': 'email,historic,primary',
-                'fields[phone_numbers]': 'historic,location,number,primary',
-                'fields[facebook_accounts]': 'url',
+                fields: {
+                    contacts: 'addresses,name,people,square_avatar',
+                    addresses: 'city,primary_mailing_address,postal_code,state,street',
+                    people: 'avatar,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
+                    email_addresses: 'email,historic,primary',
+                    phone_numbers: 'historic,location,number,primary',
+                    facebook_accounts: 'url'
+                },
                 page: this.meta[collection].pagination.page,
                 per_page: this.meta[collection].pagination.per_page,
                 sort: this.meta[collection].pagination.order
@@ -171,9 +180,9 @@ class TasksService {
         });
     }
     fetchTasksForPage(page) {
-        _.each(this.pages[page], (collection) => {
+        each(collection => {
             this.fetchTasks(collection);
-        });
+        }, this.pages[page]);
     }
     save(task) {
         task.tag_list = joinComma(task.tag_list); //fix for api mis-match
@@ -190,43 +199,59 @@ class TasksService {
     }
     deleteComment(task, commentId) {
         return this.api.delete(`tasks/${task.id}/comments/${commentId}`).then(() => {
-            task.comments = _.reject(task.comments, {id: commentId});
+            task.comments = reject({id: commentId}, task.comments);
         });
     }
     bulkDeleteTasks(tasks) {
-        tasks = _.map(tasks, task => { return { id: task.id }; });
+        tasks = map(task => { return { id: task.id }; }, tasks);
         return this.api.delete({url: 'tasks/bulk', data: tasks, type: 'tasks'});
     }
     bulkCompleteTasks(tasks) {
-        _.each(tasks, task => {
+        tasks = map(task => {
             task.completed = true;
-        });
+            return task;
+        }, tasks);
         return this.api.put('tasks/bulk', tasks);
     }
     bulkEditTasks(tasks, model, comment) {
-        _.each(tasks, (task) => {
+        tasks = reduce((result, task) => {
             if (comment) {
                 if (!task.comments) {
                     task.comments = [];
                 }
                 task.comments.push({id: uuid(), body: comment, person: { id: this.users.current.id }});
             }
-            task.tag_list = task.tag_list.join(','); //fix for api mis-match
-            _.assign(task, task, model);
-        });
+            task.tag_list = joinComma(task.tag_list); //fix for api mis-match
+            task = assign(task, model);
+            result.push(task);
+            return result;
+        }, [], tasks);
         return this.api.put('tasks/bulk', tasks);
     }
     postBulkLogTask(ajaxAction, taskId, model, contactIds, toComplete) {
         let url = 'tasks';
         if (taskId) {
-            url += '/' + taskId;
+            url += `/${taskId}`;
         }
-        model.contacts = _.map(contactIds, contactId => {
-            return {id: contactId};
-        });
+        model.account_list = { id: this.api.account_list_id };
         model.completed = toComplete || model.result !== null;
-        model.tag_list = model.tag_list.join(','); //fix for api mis-match
+        if (model.tag_list) {
+            model.tag_list = joinComma(model.tag_list); //fix for api mis-match
+        }
 
+        if (contactIds.length > 1) {
+            const tasks = reduce((result, contactId) => {
+                if (!isEmpty(contactId)) {
+                    result.push(assign(model, {id: uuid(), contacts: [{id: contactId}]}));
+                }
+                return result;
+            }, [], contactIds);
+            return this.api.post({ url: 'tasks/bulk', data: tasks, type: 'tasks' });
+        }
+
+        model.contacts = map(contactId => {
+            return {id: contactId};
+        }, contactIds);
         return this.api.call({
             method: ajaxAction,
             url: url,
@@ -234,10 +259,18 @@ class TasksService {
         });
     }
     create(task, contactIds) {
-        task.contacts = _.map(contactIds, contactId => { return {id: contactId}; });
         task.account_list = { id: this.api.account_list_id };
-        task.tag_list = task.tag_list.join(','); //fix for api mis-match
-
+        task.tag_list = joinComma(task.tag_list); //fix for api mis-match
+        if (contactIds.length > 1) {
+            const tasks = reduce((result, contactId) => {
+                if (!isEmpty(contactId)) {
+                    result.push(assign(task, {id: uuid(), contacts: [{id: contactId}]}));
+                }
+                return result;
+            }, [], contactIds);
+            return this.api.post({ url: 'tasks/bulk', data: tasks, type: 'tasks' });
+        }
+        task.contacts = map(contactId => { return {id: contactId}; }, contactIds);
         return this.api.post('tasks', task);
     }
     openModal(params) {
@@ -254,7 +287,7 @@ class TasksService {
             resolve: {
                 tags: () => this.tasksTags.load()
             },
-            onHide: params.onHide || _.noop
+            onHide: params.onHide || noop
         });
     }
     openNewsletterModal(params) {
@@ -268,7 +301,7 @@ class TasksService {
                 modalTitle: params.title || 'Add Newsletter',
                 isNewsletter: true
             },
-            onHide: params.onHide || _.noop
+            onHide: params.onHide || noop
         });
     }
     getAnalytics(reset = false) {
@@ -299,4 +332,4 @@ class TasksService {
 }
 
 export default angular.module('mpdx.tasks.service', [])
-    .service('tasksService', TasksService).name;
+    .service('tasks', TasksService).name;

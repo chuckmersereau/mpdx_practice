@@ -4,17 +4,17 @@ class ListController {
     contacts;
     contactsTags;
     modal;
-    tasksService;
+    tasks;
 
     constructor(
-        modal, contacts, contactsTags, alerts, tasksService, accounts
+        modal, contacts, contactsTags, alerts, tasks, accounts
     ) {
         this.accounts = accounts;
         this.alerts = alerts;
         this.contacts = contacts;
         this.modal = modal;
         this.contactsTags = contactsTags;
-        this.tasksService = tasksService;
+        this.tasks = tasks;
 
         this.models = {
             addTags: {
@@ -60,7 +60,7 @@ class ListController {
         });
     }
     openAddTaskModal() {
-        this.tasksService.openModal({
+        this.tasks.openModal({
             selectedContacts: this.contacts.selectedContacts
         });
     }

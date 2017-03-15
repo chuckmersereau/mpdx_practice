@@ -1,21 +1,23 @@
+import sumBy from 'lodash/fp/sumBy';
+
 class ConnectController {
     $state;
-    tasksService;
+    tasks;
 
     constructor(
         $state,
-        tasksService
+        tasks
     ) {
         this.$state = $state;
-        this.tasksService = tasksService;
+        this.tasks = tasks;
         this.limit = 5;
     }
     addTask() {
-        this.tasksService.openModal({});
+        this.tasks.openModal({});
     }
     total() {
-        if (this.tasksService.analytics && this.tasksService.analytics.tasks_overdue_or_due_today_counts) {
-            return _.sumBy(this.tasksService.analytics.tasks_overdue_or_due_today_counts, 'count');
+        if (this.tasks.analytics && this.tasks.analytics.tasks_overdue_or_due_today_counts) {
+            return sumBy('count', this.tasks.analytics.tasks_overdue_or_due_today_counts);
         } else {
             return 0;
         }

@@ -4,11 +4,11 @@ class ContactController {
     contacts;
     contactFilter;
     modal;
-    tasksService;
+    tasks;
 
     constructor(
         $log, $state, $stateParams, $location, $anchorScroll, blockUI, help,
-        modal, contacts, tasksService, contactFilter
+        modal, contacts, tasks, contactFilter
     ) {
         this.$anchorScroll = $anchorScroll;
         this.$log = $log;
@@ -19,7 +19,7 @@ class ContactController {
         this.contacts = contacts;
         this.contactFilter = contactFilter;
         this.modal = modal;
-        this.tasksService = tasksService;
+        this.tasks = tasks;
 
         this.selected = $stateParams.contactId;
         this.moveContact = { previous_contact: 0, following_contact: 0 };
@@ -106,15 +106,15 @@ class ContactController {
                 ajaxAction: null
             },
             onHide: () => {
-                this.tasksService.fetchCompletedTasks(this.contact.id);
+                this.tasks.fetchCompletedTasks(this.contact.id);
             }
         });
     }
     openAddTaskModal() {
-        this.tasksService.openModal({
+        this.tasks.openModal({
             selectedContacts: [this.contact.id],
             onHide: () => {
-                this.tasksService.fetchUncompletedTasks(this.contact.id);
+                this.tasks.fetchUncompletedTasks(this.contact.id);
             }
         });
     }

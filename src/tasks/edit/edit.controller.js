@@ -1,6 +1,7 @@
 import uuid from 'uuid/v1';
 import map from 'lodash/fp/map';
 import union from 'lodash/fp/union';
+import createPatch from "../../common/fp/createPatch";
 
 class EditTaskController {
     ajaxAction;
@@ -10,12 +11,12 @@ class EditTaskController {
     modal;
     serverConstants;
     tasksTags;
-    tasksService;
+    tasks;
     users;
 
     constructor(
         $log, $scope,
-        modal, contacts, tasksTags, tasksService, serverConstants, users,
+        modal, contacts, tasksTags, tasks, serverConstants, users,
         selectedContacts, specifiedTask, ajaxAction, toComplete, createNext, modalCallback
     ) {
         this.$log = $log;
@@ -26,11 +27,12 @@ class EditTaskController {
         this.modal = modal;
         this.serverConstants = serverConstants;
         this.tasksTags = tasksTags;
-        this.tasksService = tasksService;
+        this.tasks = tasks;
         this.toComplete = toComplete || false;
         this.modalCallback = modalCallback;
         this.users = users;
 
+        this.modelInitialState = angular.copy(specifiedTask);
         this.model = angular.copy(specifiedTask);
 
         const mapIds = map('id');
@@ -48,27 +50,29 @@ class EditTaskController {
             }
             this.model.comments.push({id: uuid(), body: this.comment, person: { id: this.users.current.id }});
         }
-        this.tasksService.postBulkLogTask(
+        const patch = createPatch(this.modelInitialState, this.model);
+        this.$log.debug('task patch', patch);
+        this.tasks.postBulkLogTask(
             this.ajaxAction || 'post',
             this.model.id ? this.model.id : null,
-            this.model,
+            patch,
             this.selectedContacts,
             this.toComplete
         ).then(() => {
             this.$scope.$hide();
-            if (this.createNext && this.models.nextAction) {
+            if (this.createNext && this.model.next_action) {
                 this.modal.open({
                     template: require('../../tasks/add/add.html'),
                     controller: 'addTaskController',
                     locals: {
-                        specifiedAction: this.models.nextAction,
-                        specifiedSubject: this.models.nextAction,
+                        specifiedAction: this.model.next_action,
+                        specifiedSubject: this.model.next_action,
                         selectedContacts: this.selectedContacts,
                         modalTitle: 'Follow up Task'
                     },
                     onHide: () => {
                         if (this.selectedContacts.length === 1) {
-                            this.tasksService.fetchUncompletedTasks(this.selectedContacts[0]);
+                            this.tasks.fetchUncompletedTasks(this.selectedContacts[0]);
                         }
                         this.contacts.load(true);
                     }
@@ -77,7 +81,7 @@ class EditTaskController {
         });
     }
     deleteTask() {
-        this.tasksService.deleteTask(this.model.id).then(() => {
+        this.tasks.deleteTask(this.model.id).then(() => {
             this.$scope.$hide();
             this.modalCallback();
         });

@@ -11,10 +11,10 @@
            ng-change="$ctrl.onChange({wildcard: $ctrl.searchParams})"
     >
     <div class="dropdown-content" ng-if="$ctrl.dropdown && $ctrl.tasksFilter.wildcard_search != '' && $ctrl.focused">
-        <a ng-repeat="task in $ctrl.tasksService.data track by task.id | limitTo : 5" ui-sref="task({taskId: task.id})" ng-if="$ctrl.filterService.params.wildcard_search != ''">
+        <a ng-repeat="task in $ctrl.tasks.data track by task.id | limitTo : 5" ui-sref="task({taskId: task.id})" ng-if="$ctrl.filterService.params.wildcard_search != ''">
             {{task.name}}
         </a>
-        <a ng-show="$ctrl.tasksService.data.length == 0" translate>
+        <a ng-show="$ctrl.tasks.data.length == 0" translate>
             No Matches
         </a>
     </div>

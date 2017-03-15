@@ -5,19 +5,19 @@ class CompleteTaskController {
     contact;
     modal;
     serverConstants;
-    tasksService;
+    tasks;
     users;
 
     constructor(
         $log, $scope,
-        modal, serverConstants, tasksService, users,
+        modal, serverConstants, tasks, users,
         task, contact
     ) {
         this.$scope = $scope;
         this.contact = contact;
         this.modal = modal;
         this.serverConstants = serverConstants;
-        this.tasksService = tasksService;
+        this.tasks = tasks;
         this.users = users;
 
         this.models = angular.copy(task);
@@ -31,7 +31,7 @@ class CompleteTaskController {
             }
             this.models.comments.push({id: uuid(), body: this.comment, person: { id: this.users.current.id }});
         }
-        return this.tasksService.save(this.models).then(() => {
+        return this.tasks.save(this.models).then(() => {
             this.$scope.$hide();
 
             this.modal.open({

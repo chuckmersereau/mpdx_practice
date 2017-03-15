@@ -1,18 +1,20 @@
+import moment from 'moment';
+
 class ContactHistoryController {
     contact;
     modal;
-    tasksService;
+    moment;
+    tasks;
+    tasks;
 
     constructor(
-        modal, tasksService
+        modal, tasks
     ) {
         this.modal = modal;
         this.moment = moment;
-        this.tasksService = tasksService;
+        this.tasks = tasks;
 
         this.models = {};
-
-        this.tasks = tasksService.data;
     }
     $onChanges(changesObj) {
         if (changesObj.contact) {
@@ -22,18 +24,18 @@ class ContactHistoryController {
         }
     }
     load(id) {
-        this.tasksService.fetchCompletedTasks(id);
+        this.tasks.fetchCompletedTasks(id);
     }
     newComment(task) {
         if (this.models.comment) {
-            this.tasksService.addComment(task, this.models.comment).then(() => {
+            this.tasks.addComment(task, this.models.comment).then(() => {
                 this.load(this.contact.id);
             });
             this.models.comment = '';
         }
     }
     deleteTask(taskId) {
-        this.tasksService.deleteTask(taskId).then(this.load.bind(this));
+        this.tasks.deleteTask(taskId).then(this.load.bind(this));
     }
     openEditTaskModal(task) {
         var contactId = this.contact.id;

@@ -8,12 +8,12 @@ class LogTaskController {
     createNext;
     modal;
     serverConstants;
-    tasksService;
+    tasks;
     users;
 
     constructor(
         $scope,
-        modal, contacts, contactsTags, tasksService, serverConstants, users,
+        modal, contacts, contactsTags, tasks, serverConstants, users,
         selectedContacts, specifiedTask, ajaxAction, toComplete, createNext
     ) {
         this.$scope = $scope;
@@ -24,7 +24,7 @@ class LogTaskController {
         this.createNext = createNext;
         this.modal = modal;
         this.serverConstants = serverConstants;
-        this.tasksService = tasksService;
+        this.tasks = tasks;
         this.toComplete = toComplete;
         this.users = users;
 
@@ -37,7 +37,7 @@ class LogTaskController {
             }
             this.model.comments.push({id: uuid(), body: this.comment, person: { id: this.users.current.id }});
         }
-        return this.tasksService.postBulkLogTask(
+        return this.tasks.postBulkLogTask(
             this.ajaxAction || 'post',
             this.model.id ? this.model.id : null,
             this.model,
@@ -57,7 +57,7 @@ class LogTaskController {
                     },
                     onHide: () => {
                         if (this.selectedContacts.length === 1) {
-                            this.tasksService.fetchUncompletedTasks(this.selectedContacts[0]);
+                            this.tasks.fetchUncompletedTasks(this.selectedContacts[0]);
                         }
                         this.contacts.load(true);
                     }

@@ -70,7 +70,7 @@
                         disable-search="true"
                         data-placeholder-text-single="'Select an Option' | translate"
                         class="form-control" id="commitment-received"
-                        ng-options="opt for opt in $ctrl.serverConstants.data.bulk_update_options.pledge_received"
+                        ng-options="o.key as o.value for o in [{key: 'true', value: 'Yes'},{key: 'false', value: 'No'}]"
                         ng-model="$ctrl.models.pledge_received">
                     <option value=""></option>
                 </select>

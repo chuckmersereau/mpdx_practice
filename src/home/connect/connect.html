@@ -12,16 +12,16 @@
             </a>
         </h4>
         <ul class="plain-list">
-            <li ng-repeat="task in $ctrl.tasksService.analytics.tasks_overdue_or_due_today_counts | orderBy: 'count' : true | limitTo: $ctrl.limit" ng-if="task.count > 0">
+            <li ng-repeat="task in $ctrl.tasks.analytics.tasks_overdue_or_due_today_counts | orderBy: 'count' : true | limitTo: $ctrl.limit" ng-if="task.count > 0">
                 <a ui-sref="tasks({ filters: { activity_type: task.label } })">
                     <span class="count">{{ task.count }}</span>
                     {{ task.label }}
                 </a>
             </li>
-            <li ng-if="$ctrl.limit < $ctrl.tasksService.analytics.tasks_overdue_or_due_today_counts.length">
-                <a ng-click="$ctrl.limit = $ctrl.tasksService.analytics.tasks_overdue_or_due_today_counts.length">
+            <li ng-if="$ctrl.limit < $ctrl.tasks.analytics.tasks_overdue_or_due_today_counts.length">
+                <a ng-click="$ctrl.limit = $ctrl.tasks.analytics.tasks_overdue_or_due_today_counts.length">
                     <i class="fa fa-plus-square-o"></i>
-                    <translate translate-n="$ctrl.total()" translate-plural="See all {{$ctrl.tasksService.analytics.tasks_overdue_or_due_today_counts.length}} task types">See 1 task type</translate>
+                    <translate translate-n="$ctrl.total()" translate-plural="See all {{$ctrl.tasks.analytics.tasks_overdue_or_due_today_counts.length}} task types">See 1 task type</translate>
                 </a>
             </li>
         </ul>

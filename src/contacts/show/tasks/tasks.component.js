@@ -1,14 +1,14 @@
 class ContactTasksController {
     contact;
     modal;
-    tasksService;
+    tasks;
 
     constructor(
-        modal, tasksService
+        modal, tasks
     ) {
         this.modal = modal;
         this.moment = moment;
-        this.tasksService = tasksService;
+        this.tasks = tasks;
         this.models = {};
     }
     $onChanges(changesObj) {
@@ -17,23 +17,23 @@ class ContactTasksController {
         }
     }
     load() {
-        this.tasksService.fetchUncompletedTasks(this.contact.id);
+        this.tasks.fetchUncompletedTasks(this.contact.id);
     }
     newComment(task) {
         if (this.models.comment) {
-            this.tasksService.addComment(task, this.models.comment).then(() => {
+            this.tasks.addComment(task, this.models.comment).then(() => {
                 this.load();
             });
             this.models.comment = '';
         }
     }
     deleteTask(taskId) {
-        this.tasksService.deleteTask(taskId).then(() => {
+        this.tasks.deleteTask(taskId).then(() => {
             this.load();
         });
     }
     starTask(task) {
-        return this.tasksService.starTask(task).then((data) => {
+        return this.tasks.starTask(task).then((data) => {
             task.starred = data.starred;
             task.updated_in_db_at = data.updated_in_db_at;
         });
