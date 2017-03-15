@@ -2,6 +2,7 @@ import has from 'lodash/fp/has';
 import map from 'lodash/fp/map';
 import moment from 'moment';
 import uuid from 'uuid/v1';
+import createPatch from "../../../../common/fp/createPatch";
 
 class PersonModalController {
     contact;
@@ -27,6 +28,7 @@ class PersonModalController {
     }
     activate() {
         if (has('id', this.person)) {
+            this.personInitialState = angular.copy(this.person);
             this.modalTitle = 'Edit Person';
             //bad data is bad
             if (this.person.birthday_year) {
@@ -61,7 +63,9 @@ class PersonModalController {
         }
 
         if (has('id', this.person)) {
-            return this.people.save(this.contact.id, this.person).then(() => {
+            const patch = createPatch(this.personInitialState, this.person);
+            this.$log.debug('person patch', patch);
+            return this.people.save(this.contact.id, patch).then(() => {
                 this.$log.debug('person saved:', this.person);
                 this.$scope.$hide();
             });

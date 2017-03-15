@@ -136,7 +136,11 @@
         <div class="col-sm-6 ">
             <h4 class="attribute-header" translate>Commitment Start Date</h4>
             <div class="inline-input">
-                <input type="text" ng-model="$ctrl.contact.pledge_start_date" ng-change="$ctrl.save()" bs-datepicker>
+                <input bs-datepicker
+                       type="text"
+                       ng-model="$ctrl.contact.pledge_start_date"
+                       ng-change="$ctrl.save()"
+                       data-autoclose="1">
             </div>
         </div>
     </div>

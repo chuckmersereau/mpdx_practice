@@ -45,7 +45,8 @@
                                     <input bs-datepicker
                                            ng-model="$ctrl.tasksFilter.params[child.name][option.id]"
                                            placeholder="{{ 'None' | translate }}"
-                                           ng-change="$ctrl.tasksFilter.change()">
+                                           ng-change="$ctrl.tasksFilter.change()"
+                                           data-autoclose="1">
                                 </label>
                             </div>
                             <div class="filter_dates" ng-if="child.type == 'daterange'">
@@ -90,7 +91,8 @@
                                 <input bs-datepicker
                                        ng-model="$ctrl.tasksFilter.params[filter.name][option.id]"
                                        placeholder="{{ 'None' | translate }}"
-                                       ng-change="$ctrl.tasksFilter.change()">
+                                       ng-change="$ctrl.tasksFilter.change()"
+                                       data-autoclose="1">
                             </label>
                         </div>
                         <div class="filter_dates" ng-if="filter.type == 'daterange'">

@@ -41,7 +41,11 @@
                             <div class="filter_dates" ng-if="child.type == 'dates'">
                                 <label ng-repeat="option in child.options">
                                     {{option.name}}<br>
-                                    <input ng-model="$ctrl.contactFilter.params[child.name][option.id]" bs-datepicker placeholder="{{ 'None' | translate }}" ng-change="$ctrl.contactFilter.change()">
+                                    <input bs-datepicker
+                                           ng-model="$ctrl.contactFilter.params[child.name][option.id]"
+                                           placeholder="{{ 'None' | translate }}"
+                                           ng-change="$ctrl.contactFilter.change()"
+                                           data-autoclose="1">
                                 </label>
                             </div>
                             <div class="filter_dates" ng-if="child.type == 'daterange'">
@@ -83,7 +87,10 @@
                         <div class="filter_dates" ng-if="filter.type == 'dates'">
                             <label ng-repeat="option in filter.options">
                                 {{option.name}}<br>
-                                <input bs-datepicker ng-model="$ctrl.contactFilter.params[filter.name][option.id]" placeholder="{{ 'None' | translate }}">
+                                <input bs-datepicker
+                                       ng-model="$ctrl.contactFilter.params[filter.name][option.id]"
+                                       placeholder="{{ 'None' | translate }}"
+                                       data-autoclose="1">
                             </label>
                         </div>
                         <div class="filter_dates" ng-if="filter.type == 'daterange'">

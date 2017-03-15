@@ -86,7 +86,17 @@
                     <div data-title="{{'Contact Info' | translate}}" name="contact-info" bs-pane>
                         <div class="row">
                             <div class="col-md-12">
-                                <label translate>Phone Numbers</label>
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <label translate>Phone Numbers</label>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label translate>Primary</label>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label translate>Invalid</label>
+                                    </div>
+                                </div>
                                 <div ng-repeat="phone in $ctrl.person.phone_numbers track by $index" name="phones">
                                     <contact-phone phone="phone" on-remove="$ctrl.remove('phone_numbers', $index)" on-primary="$ctrl.changePrimary('phone_numbers', phone.id)" on-historic="$ctrl.changeHistoric(phone)"></contact-phone>
                                 </div>
@@ -97,7 +107,17 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <label translate>Email Addresses</label>
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <label translate>Email Addresses</label>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label translate>Primary</label>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label translate>Invalid</label>
+                                    </div>
+                                </div>
                                 <div ng-repeat="email in $ctrl.person.email_addresses track by $index" name="email_addresses">
                                     <contact-email-address email="email" on-remove="$ctrl.remove('email_addresses', $index)" on-primary="$ctrl.changePrimary('email_addresses', email.id)" on-historic="$ctrl.changeHistoric(email)"></contact-email-address>
                                 </div>
@@ -163,14 +183,16 @@
                                 <input bs-datepicker
                                        id="birthday"
                                        ng-model="$ctrl.person.birthday"
-                                       data-date-format="{{$ctrl.locale.dateTimeFormat}}">
+                                       data-date-format="{{$ctrl.locale.dateTimeFormat}}"
+                                       data-autoclose="1">
                             </div>
                             <div class="col-md-6">
                                 <label for="anniversary" translate>Anniversary</label>
                                 <input bs-datepicker
                                        id="anniversary"
                                        ng-model="$ctrl.person.anniversary"
-                                       data-date-format="{{$ctrl.locale.dateTimeFormat}}">
+                                       data-date-format="{{$ctrl.locale.dateTimeFormat}}"
+                                       data-autoclose="1">
                             </div>
                         </div>
                     </div>

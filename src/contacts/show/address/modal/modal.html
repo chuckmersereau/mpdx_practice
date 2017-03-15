@@ -66,7 +66,11 @@
                 <input id="address_invalid" class="form-control" type="checkbox" name="address_invalid" ng-model="$ctrl.address.historic" />
                 <label class="checkbox-label" for="address_invalid" translate>Address no longer valid</label>
                 <br />
-                <input id="primary_address" class="form-control" type="checkbox" name="primary_mailing_address" ng-model="$ctrl.address.primary_mailing_address" ng-checked="$ctrl.address.id==$ctrl.contact.primary_address_id" />
+                <input id="primary_address"
+                       class="form-control"
+                       type="checkbox"
+                       name="primary_mailing_address"
+                       ng-model="$ctrl.address.primary_mailing_address">
                 <label class="checkbox-label" for="primary_address" translate>Primary Address</label>
             </div>
         </div>

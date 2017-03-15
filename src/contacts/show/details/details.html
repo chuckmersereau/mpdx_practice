@@ -191,7 +191,12 @@
                     <div class="field">
                         <h4 class="attribute-header" translate>Next Ask</h4>
                         <div class="inline-input disabled">
-                            <input type="text" ng-model="$ctrl.contact.next_ask" ng-change="$ctrl.save()" ng-model-options="{ debounce: 1000 }" bs-datepicker>
+                            <input bs-datepicker
+                                   type="text"
+                                   ng-model="$ctrl.contact.next_ask"
+                                   ng-change="$ctrl.save()"
+                                   ng-model-options="{ debounce: 1000 }"
+                                   data-autoclose="1">
                         </div>
                     </div>
                 </div>

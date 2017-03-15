@@ -288,12 +288,6 @@ class EntityAttributes {
                 donor_account: { ref: 'id' },
                 appeal: { ref: 'id' }
             },
-            email_addresses: {
-                attributes: ["person_id", "email", "primary", "created_at", "updated_at", "remote_id", "location", "historic", "updated_in_db_at"]
-            },
-            family_relationships: {
-                attributes: ["person_id", "related_person_id", "relationship", "created_at", "updated_at", "updated_in_db_at"]
-            },
             merges: {
                 attributes: ["winner_id", "loser_id"]
             },
@@ -312,24 +306,24 @@ class EntityAttributes {
                     "phone_numbers", "email_addresses", "facebook_accounts", "family_relationships", "linkedin_accounts", "twitter_accounts", "websites", "updated_in_db_at", "winner_id", "loser_id"],
                 email_addresses: {
                     ref: 'id',
-                    attributes: ["email", "primary", "created_at", "updated_at", "remote_id", "location", "historic", "updated_in_db_at"]
+                    attributes: ["email", "primary", "remote_id", "location", "historic", "updated_in_db_at"]
                 },
                 facebook_accounts: {
                     ref: 'id',
-                    attributes: ["remote_id", "token", "token_expires_at", "created_at", "updated_at", "valid_token", "first_name", "last_name", "authenticated", "downloading", "last_download", "username", "updated_in_db_at"]
+                    attributes: ["username", "updated_in_db_at"]
                 },
                 family_relationships: {
                     ref: 'id',
-                    attributes: ["related_person", "relationship", "created_at", "updated_at", "updated_in_db_at"],
+                    attributes: ["related_person", "relationship", "created_at", "updated_in_db_at"],
                     related_person: { ref: 'id' }
                 },
                 linkedin_accounts: {
                     ref: 'id',
-                    attributes: ["remote_id", "token", "secret", "token_expires_at", "created_at", "updated_at", "valid_token", "first_name", "last_name", "authenticated", "downloading", "last_download", "public_url", "updated_in_db_at"]
+                    attributes: ["public_url", "updated_in_db_at"]
                 },
                 phone_numbers: {
                     ref: 'id',
-                    attributes: ["number", "country_code", "location", "primary", "created_at", "updated_at", "remote_id", "historic", "updated_in_db_at"]
+                    attributes: ["number", "country_code", "location", "primary", "updated_at", "remote_id", "historic", "updated_in_db_at"]
                 },
                 twitter_accounts: {
                     ref: 'id',
@@ -337,7 +331,7 @@ class EntityAttributes {
                 },
                 websites: {
                     ref: 'id',
-                    attributes: ["url", "primary", "created_at", "updated_at", "updated_in_db_at"]
+                    attributes: ["url", "primary", "updated_in_db_at"]
                 },
                 typeForAttribute: (key) => {
                     if (key === 'related_person') {
@@ -345,30 +339,6 @@ class EntityAttributes {
                     }
                     return key;
                 }
-            },
-            person_facebook_accounts: {
-                attributes: ["person_id", "remote_id", "token", "token_expires_at", "created_at", "updated_at", "valid_token", "first_name", "last_name", "authenticated", "downloading", "last_download", "username", "updated_in_db_at"]
-            },
-            person_google_accounts: {
-                attributes: ["remote_id", "person_id", "token", "refresh_token", "expires_at", "valid_token", "created_at", "updated_at", "email", "authenticated", "primary", "downloading", "last_download", "last_email_sync", "notified_failure", "updated_in_db_at"]
-            },
-            person_key_accounts: {
-                attributes: ["person_id", "relay_remote_id", "first_name", "last_name", "email", "designation", "employee_id", "username", "authenticated", "created_at", "updated_at", "primary", "downloading", "last_download", "remote_id", "updated_in_db_at"]
-            },
-            person_linkedin_accounts: {
-                attributes: ["person_id", "remote_id", "token", "secret", "token_expires_at", "created_at", "updated_at", "valid_token", "first_name", "last_name", "authenticated", "downloading", "last_download", "public_url", "updated_in_db_at"]
-            },
-            person_organization_accounts: {
-                attributes: ["person_id", "organization_id", "username", "password", "created_at", "updated_at", "remote_id", "authenticated", "valid_credentials", "downloading", "last_download", "token", "locked_at", "disable_downloads", "updated_in_db_at"]
-            },
-            person_twitter_accounts: {
-                attributes: ["person_id", "remote_id", "screen_name", "token", "secret", "created_at", "updated_at", "valid_token", "authenticated", "primary", "downloading", "last_download", "updated_in_db_at"]
-            },
-            person_websites: {
-                attributes: ["person_id", "url", "primary", "created_at", "updated_at", "updated_in_db_at"]
-            },
-            phone_numbers: {
-                attributes: ["person_id", "number", "country_code", "location", "primary", "created_at", "updated_at", "remote_id", "historic", "updated_in_db_at"]
             },
             tasks: {
                 attributes: ["account_list", "activity_type", "location", "start_at", "end_at", "type", "created_at", "updated_at", "completed", "completed_at", "comments", "contacts", "due_date",

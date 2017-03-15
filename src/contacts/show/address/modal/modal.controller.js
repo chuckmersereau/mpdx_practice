@@ -2,8 +2,8 @@ import concat from 'lodash/fp/concat';
 import each from 'lodash/fp/each';
 import find from 'lodash/fp/find';
 import findIndex from 'lodash/fp/findIndex';
-import map from 'lodash/fp/map';
 import reject from 'lodash/fp/reject';
+import createPatch from "../../../../common/fp/createPatch";
 
 class AddressModalController {
     contact;
@@ -11,10 +11,11 @@ class AddressModalController {
     serverConstants;
 
     constructor(
-        $scope, $timeout, $window, gettextCatalog,
+        $log, $scope, $timeout, $window, gettextCatalog,
         contacts, serverConstants,
         contact, address
     ) {
+        this.$log = $log;
         this.$scope = $scope;
         this.$timeout = $timeout;
         this.$window = $window;
@@ -25,6 +26,7 @@ class AddressModalController {
         this.serverConstants = serverConstants;
 
         this.maps = [];
+        this.addressInitialState = angular.copy(address);
 
         let $ctrl = this;
         this.updateAddress = function() { //workaround for weird bindings in google places
@@ -92,13 +94,9 @@ class AddressModalController {
         if (angular.isDefined(this.address.id)) {
             const addressIndex = findIndex({id: this.address.id}, this.contact.addresses);
             this.contact.addresses[addressIndex] = angular.copy(this.address);
-            if (angular.element('#primary_address:checked').length === 1) {
-                this.contact.addresses = map(address => {
-                    address.primary_mailing_address = address.id === this.address.id;
-                    return address;
-                }, this.contact.addresses);
-            }
-            return this.contacts.saveAddress(this.contact.id, this.address).then(() => {
+            const patch = createPatch(this.addressInitialState, this.address);
+            this.$log.debug('address patch', patch);
+            return this.contacts.saveAddress(this.contact.id, patch).then(() => {
                 this.$scope.$hide();
             });
         } else {
