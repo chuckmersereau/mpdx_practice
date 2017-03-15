@@ -1,7 +1,7 @@
 <div ng-if="$ctrl.view == 'minimal'" class="contact-row">
     <a ng-click="$ctrl.switchContact()" ng-class="{'active': $ctrl.selected == $ctrl.contact.id }">{{$ctrl.contact.name}}</a>
 </div>
-<div ng-if="$ctrl.view !== 'minimal'" class="contact-row" ng-click="$ctrl.toggleCheckbox()">
+<div ng-if="$ctrl.view !== 'minimal'" class="contact-row" ng-click="$ctrl.contacts.selectContact($ctrl.contact.id)">
     <img class="avatar small" ng-src="{{$ctrl.contact.square_avatar | stripMpdx}}">
     <div class="contact-details">
         <div class="col-sm-5 main-details">

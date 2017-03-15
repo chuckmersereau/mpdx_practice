@@ -32,8 +32,8 @@ class ListController {
         this.contacts.clearSelectedContacts();
     }
     toggleAllContacts() {
-        if (this.contacts.getSelectedContacts().length < this.contacts.data.length) {
-            this.contacts.selectAllContacts();
+        if (this.contacts.selectedContacts.length < this.contacts.data.length) {
+            this.contacts.selectAllContacts(false);
         } else {
             this.contacts.clearSelectedContacts();
         }
@@ -46,7 +46,7 @@ class ListController {
             template: require('../filter/tags/add/add.html'),
             controller: 'addTagController',
             locals: {
-                selectedContacts: this.contacts.getSelectedContactIds()
+                selectedContacts: this.contacts.selectedContacts
             }
         });
     }
@@ -55,13 +55,13 @@ class ListController {
             template: require('../filter/tags/remove/remove.html'),
             controller: 'removeTagController',
             locals: {
-                selectedContacts: this.contacts.getSelectedContactIds()
+                selectedContacts: this.contacts.selectedContacts
             }
         });
     }
     openAddTaskModal() {
         this.tasksService.openModal({
-            selectedContacts: this.contacts.getSelectedContactIds()
+            selectedContacts: this.contacts.selectedContacts
         });
     }
     openLogTaskModal() {
@@ -69,7 +69,7 @@ class ListController {
             template: require('../../tasks/log/log.html'),
             controller: 'logTaskController',
             locals: {
-                selectedContacts: this.contacts.getSelectedContactIds(),
+                selectedContacts: this.contacts.selectedContacts,
                 toComplete: true,
                 createNext: true,
                 specifiedTask: null,
@@ -87,7 +87,7 @@ class ListController {
         });
     }
     openMergeContactsModal() {
-        const selectedLength = this.contacts.getSelectedContacts().length;
+        const selectedLength = this.contacts.selectedContacts.length;
         if (selectedLength < 2) {
             this.alerts.addAlert('You must select at least 2 contacts to merge.', 'danger');
         } else if (selectedLength > 8) {
@@ -107,7 +107,16 @@ class ListController {
             template: require('./exportContacts/exportContacts.html'),
             controller: 'exportContactsController',
             locals: {
-                selectedContactIds: this.contacts.getSelectedContactIds()
+                selectedContactIds: this.contacts.selectedContacts
+            }
+        });
+    }
+    openMapContactsModal() {
+        this.modal.open({
+            template: require('./mapContacts/mapContacts.html'),
+            controller: 'mapContactsController',
+            locals: {
+                selectedContacts: this.contacts.getSelectedContacts()
             }
         });
     }

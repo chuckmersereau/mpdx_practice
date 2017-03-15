@@ -14,15 +14,16 @@
                                type="button" data-toggle="dropdown" aria-expanded="true">
                                 <span  translate>Actions</span> <span class="caret"></span>
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop" ng-show="$ctrl.contacts.getSelectedContacts().length > 0">
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop" ng-show="$ctrl.contacts.selectedContacts.length > 0">
                                 <li><a ng-click="$ctrl.openAddTagModal()" translate>Add Tags</a></li>
                                 <li><a ng-click="$ctrl.openRemoveTagModal()" translate>Remove Tags</a></li>
                                 <li><a ng-click="$ctrl.openAddTaskModal()" translate>Add Task</a></li>
                                 <li><a ng-click="$ctrl.openLogTaskModal()" translate>Log Task</a></li>
                                 <li><a ng-click="$ctrl.openEditFieldsModal()" translate>Edit Fields</a></li>
                                 <li ng-click="$ctrl.contacts.bulkHideContacts()"><a translate>Hide Contacts</a></li>
+                                <li><a ng-click="$ctrl.openMapContactsModal()" translate>Map Contacts</a></li>
                             </ul>
-                            <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop" ng-show="$ctrl.contacts.getSelectedContacts().length === 0">
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop" ng-show="$ctrl.contacts.selectedContacts.length === 0">
                                 <li class="dropdown-header" translate>Please select at least one contact</li>
                             </ul>
                         </div>
@@ -42,17 +43,24 @@
         </div>
     </div>
     <div class="row page-controls">
-        <div class="col-sm-5">
+        <div class="col-sm-12">
             <span ng-if="!$ctrl.contacts.loading">
                 <translate>Showing</translate>
-                <strong>{{$ctrl.contacts.meta.to || 0}}</strong>
+                <strong>{{$ctrl.contacts.data.length || 0}}</strong>
                 <translate>of</translate>
                 <strong>{{$ctrl.contacts.meta.pagination.total_count}}</strong>
             </span>
-            <span class="label label-primary" ng-if="$ctrl.contacts.getSelectedContacts().length > 0">
-        {{$ctrl.contacts.getSelectedContacts().length }} <span translate>Selected</span>
-        <a href="javascript:;" class="label-action" ng-click="$ctrl.clearSelectedContacts()"><i class="fa fa-times"></i></a>
-      </span>
+            <span class="label label-primary" ng-if="$ctrl.contacts.selectedContacts.length > 0">
+                {{$ctrl.contacts.selectedContacts.length }} <span translate>Selected</span>
+                <a href="javascript:;" class="label-action" ng-click="$ctrl.clearSelectedContacts()"><i class="fa fa-times"></i></a>
+            </span>&nbsp;
+            <small>
+                <a href="javascript:;"
+                   ng-if="$ctrl.contacts.selectedContacts.length > 0 && $ctrl.contacts.selectedContacts.length < $ctrl.contacts.completeList.length"
+                   ng-click="$ctrl.contacts.selectAllContacts()">
+                    <span translate>Select all {{$ctrl.contacts.completeList.length}} contacts</span>
+                </a>
+            </small>
         </div>
     </div>
 </div>
@@ -81,7 +89,7 @@
                         id="contact_{{contact.id}}"
                         data-hook="contact"
                         selected="$ctrl.selected"
-                        ng-class="{ selected: contact.selected }"></contacts-list-item>
+                        ng-class="{ selected: $ctrl.contacts.isSelected(contact.id) }"></contacts-list-item>
     <contacts-list-item ng-if="$ctrl.view === 'minimal'"
                         view="{{$ctrl.view}}"
                         ng-repeat="contact in $ctrl.contacts.completeList | orderBy: 'name' track by contact.id"

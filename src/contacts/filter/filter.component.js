@@ -40,16 +40,6 @@ class FilterController {
     showReset() {
         return this.contactsTags.isResettable() || this.contactFilter.isResettable();
     }
-
-    openMapContactsModal() {
-        this.modal.open({
-            template: require('./mapContacts/mapContacts.html'),
-            controller: 'mapContactsController',
-            locals: {
-                selectedContacts: this.contacts.getSelectedContacts()
-            }
-        });
-    }
     // Invert the selected options of a multiselect filter
     invertMultiselect(filter) {
         const allOptions = map('id', filter.options);

@@ -2,14 +2,14 @@ import assign from 'lodash/fp/assign';
 import concat from 'lodash/fp/concat';
 import find from 'lodash/fp/find';
 import findIndex from 'lodash/fp/findIndex';
-import filter from 'lodash/fp/filter';
+import includes from 'lodash/fp/includes';
 import isFunction from 'lodash/fp/isFunction';
 import map from 'lodash/fp/map';
 import reduce from 'lodash/fp/reduce';
 import reject from 'lodash/fp/reject';
 import sortBy from 'lodash/fp/sortBy';
+import union from 'lodash/fp/union';
 import unionBy from 'lodash/fp/unionBy';
-import uniq from 'lodash/fp/uniq';
 
 class ContactsService {
     alerts;
@@ -36,6 +36,7 @@ class ContactsService {
         this.data = [];
         this.meta = {};
         this.loading = true;
+        this.selectedContacts = [];
 
         this.page = 1;
 
@@ -248,24 +249,39 @@ class ContactsService {
         this.contactFilter.reset();
     }
     getSelectedContacts() {
-        return filter({ selected: true }, this.data);
+        return reduce((result, contact) => {
+            if (includes(contact.id, this.selectedContacts)) {
+                result.push(contact);
+            }
+            return result;
+        }, [], this.data);
     }
-    getSelectedContactIds() {
-        return this.getSelectedContacts().map(contact => contact.id);
+    isSelected(contactId) {
+        return includes(contactId, this.selectedContacts);
     }
-    getSelectedContactNames() {
-        return this.getSelectedContacts().map(contact => contact.name);
+    selectContact(contactId) {
+        if (includes(contactId, this.selectedContacts)) {
+            this.selectedContacts = reject(this.selectedContacts, contactId);
+        } else {
+            this.selectedContacts = union(this.selectedContacts, [contactId]);
+        }
     }
     getTagsFromSelectedContacts() {
-        let tagsArray = this.getSelectedContacts().reduce((tagsList, contact) => _.union(tagsList, contact.tag_list), []).sort();
-        tagsArray = tagsArray.map((tag) => { return tag.text; });
-        return uniq(tagsArray);
+        // if more selected than data, use contactTags
+        if (this.selectedContacts > this.data.length) {
+            return map('name', this.contactsTags.data);
+        }
+        return reduce((result, contact) => union(result, contact.tag_list), [], this.getSelectedContacts()).sort();
     }
     clearSelectedContacts() {
-        this.setAllContacts('selected', false);
+        this.selectedContacts = [];
     }
-    selectAllContacts() {
-        this.setAllContacts('selected', true);
+    selectAllContacts(all = true) {
+        if (all) {
+            this.selectedContacts = map('id', this.completeList);
+        } else {
+            this.selectedContacts = map('id', this.data);
+        }
     }
     getContactPosition(id) {
         return findIndex({ id: id }, this.completeList);
@@ -303,10 +319,12 @@ class ContactsService {
         });
     }
     bulkHideContacts() {
-        const contacts = map(contact => {
-            contact.status = 'Never Ask';
-            return contact;
-        }, this.getSelectedContacts());
+        const contacts = map(id => {
+            return {
+                id: id,
+                status: 'Never Ask'
+            };
+        }, this.selectedContacts);
         return this.api.put('contacts/bulk', contacts).then(() => {
             this.data = reject(contact => find({id: contact.id}, contacts) != null, this.data);
         });
@@ -413,7 +431,7 @@ class ContactsService {
     }
     openMapContactsModal(selectedContacts) {
         this.modal.open({
-            template: require('./filter/mapContacts/mapContacts.html'),
+            template: require('./list/mapContacts/mapContacts.html'),
             controller: 'mapContactsController',
             locals: {
                 selectedContacts: selectedContacts

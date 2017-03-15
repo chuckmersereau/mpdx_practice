@@ -1,11 +1,13 @@
 class ContactListItemController {
     contact;
+    contacts;
     people;
     constructor(
         $state,
-        people, users
+        contacts, people, users
     ) {
         this.$state = $state;
+        this.contacts = contacts;
         this.people = people;
 
         this.current_currency_symbol = users.current.currency_symbol;
@@ -31,7 +33,11 @@ class ContactListItemController {
         return false;
     }
     toggleCheckbox() {
-        this.contact.selected = !this.contact.selected;
+        if (this.contacts.isSelected(this.contact.id)) {
+            this.contacts.selectContact(this.contact.id);
+        } else {
+            this.contacts.deSelectContact(this.contact.id);
+        }
     }
 }
 
