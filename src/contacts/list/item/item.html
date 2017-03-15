@@ -43,7 +43,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-4 more-details">
+        <div class="col-sm-5 more-details">
             <div ng-if="$ctrl.contact.status !== ''">{{$ctrl.contact.status | translate}}</div>
             <div ng-if="$ctrl.contact.pledge_amount > 0">
                 {{$ctrl.contact.pledge_amount | currency: $ctrl.contact.pledge_currency_symbol}} {{$ctrl.contact.pledge_frequency | pledgeFrequencyToStr | translate}}
@@ -57,7 +57,7 @@
                 <span translate>Tasks</span>: {{$ctrl.contact.uncompleted_tasks_count}}
             </a>
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-2 text-right">
             <div class="btn-group">
                 <a class="btn btn-sm btn-default" ui-sref="contacts.show({contactId: $ctrl.contact.id})" title="{{ 'View Contact' | translate }}" ng-click="$event.stopPropagation()">
                     <i class="fa fa-search"></i>
