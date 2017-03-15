@@ -304,13 +304,6 @@ class ContactsService {
         }
         return this.completeList[0].id;
     }
-    setAllContacts(key, value) {
-        this.data = reduce((result, contact) => {
-            contact[key] = value;
-            result.push(contact);
-            return result;
-        }, [], this.data);
-    }
     hideContact(contact) {
         contact.status = 'Never Ask';
         return this.save(contact).then(() => {
