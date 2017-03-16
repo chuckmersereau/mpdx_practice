@@ -1,4 +1,6 @@
 import moment from 'moment';
+import findIndex from 'lodash/fp/findIndex';
+import reject from 'lodash/fp/reject';
 
 class ListController {
     alerts;
@@ -70,19 +72,26 @@ class ListController {
         });
     }
     toggleSelected(task) {
-        const index = _.findIndex(this.selected, { id: task.id });
-        if (index >= 0) {
+        const index = findIndex({ id: task.id }, this.selected);
+        if (index > -1) {
             this.selected.splice(index, 1);
         } else {
             this.selected.push(task);
         }
     }
-    toggleAll() {
+    isSelected(task) {
+        return findIndex({id: task.id}, this.selected) > -1;
+    }
+    toggleAll(all = false) {
         const tasks = this.tasks.data[this.key];
-        if (this.selected.length === tasks.length) {
-            this.selected = [];
+        if (all) {
+            this.selected = this.tasks.completeList[this.key];
         } else {
-            this.selected = tasks;
+            if (this.selected.length >= tasks.length) {
+                this.selected = [];
+            } else {
+                this.selected = tasks;
+            }
         }
     }
     newComment(task) {
@@ -95,7 +104,7 @@ class ListController {
     }
     deleteTask(taskId) {
         this.tasks.deleteTask(taskId).then(() => {
-            this.tasks.data[this.key] = _.reject(this.tasks.data[this.key], {id: taskId});
+            this.tasks.data[this.key] = reject({id: taskId}, this.tasks.data[this.key]);
         });
     }
     onPageChange(pageNum) {
@@ -110,6 +119,7 @@ class ListController {
     }
     load() {
         this.tasks.fetchTasks(this.key);
+        this.tasks.getList(this.key, true);
     }
     loadPage() {
         this.tasks.fetchTasksForPage(
