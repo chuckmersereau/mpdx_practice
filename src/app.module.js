@@ -18,7 +18,6 @@ import tasks from './tasks/index.module';
 import tools from './tools/index.module';
 import unavailable from './unavailable/index.module';
 import vendor from './vendor.module';
-
 import appConfig from './app.config';
 import appRun from './app.run';
 

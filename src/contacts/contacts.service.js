@@ -10,6 +10,8 @@ import reject from 'lodash/fp/reject';
 import sortBy from 'lodash/fp/sortBy';
 import union from 'lodash/fp/union';
 import unionBy from 'lodash/fp/unionBy';
+import joinComma from "../common/fp/joinComma";
+import mapByName from "../common/fp/mapByName";
 
 class ContactsService {
     alerts;
@@ -406,8 +408,6 @@ class ContactsService {
 }
 
 import contactFilter from './filter/filter.service';
-import joinComma from "../common/fp/joinComma";
-import mapByName from "../common/fp/mapByName";
 
 export default angular.module('mpdx.contacts.service', [contactFilter])
     .service('contacts', ContactsService).name;

@@ -6,7 +6,6 @@ import map from "lodash/fp/map";
 import noop from "lodash/fp/noop";
 import reduce from "lodash/fp/reduce";
 import reject from "lodash/fp/reject";
-import union from "lodash/fp/union";
 import joinComma from "../common/fp/joinComma";
 
 class TasksService {
@@ -150,11 +149,12 @@ class TasksService {
             url: 'tasks',
             data: {
                 filters: this.buildFilterParams(collection),
-                include: 'comments,contacts,contacts.people,contacts.addresses,contacts.people.email_addresses,contacts.people.phone_numbers,contacts.people.facebook_accounts',
+                include: 'comments,comments.person,contacts,contacts.people,contacts.addresses,contacts.people.email_addresses,contacts.people.phone_numbers,contacts.people.facebook_accounts',
                 fields: {
                     contacts: 'addresses,name,people,square_avatar',
                     addresses: 'city,primary_mailing_address,postal_code,state,street',
                     people: 'avatar,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
+                    person: 'first_name,last_name',
                     email_addresses: 'email,historic,primary',
                     phone_numbers: 'historic,location,number,primary',
                     facebook_accounts: 'url'
@@ -295,7 +295,7 @@ class TasksService {
         task.contacts = map(contactId => { return {id: contactId}; }, contactIds);
         return this.api.post('tasks', task);
     }
-    openModal(params) {
+    openModal(params = {}) {
         this.modal.open({
             template: require('./add/add.html'),
             controller: 'addTaskController',
@@ -312,7 +312,7 @@ class TasksService {
             onHide: params.onHide || noop
         });
     }
-    openNewsletterModal(params) {
+    openNewsletterModal(params = {}) {
         this.modal.open({
             template: require('./add/newsletter.html'),
             controller: 'addTaskController',

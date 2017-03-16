@@ -1,4 +1,5 @@
 import moment from 'moment';
+import concat from 'lodash/fp/concat';
 import findIndex from 'lodash/fp/findIndex';
 import reject from 'lodash/fp/reject';
 
@@ -7,15 +8,17 @@ class ListController {
     modal;
     moment;
     tasks;
+    users;
 
     constructor(
-        alerts, contacts, modal, tasks
+        alerts, contacts, modal, tasks, users
     ) {
         this.alerts = alerts;
         this.contacts = contacts;
         this.modal = modal;
         this.moment = moment;
         this.tasks = tasks;
+        this.users = users;
 
         this.models = {};
         this.selected = [];
@@ -97,7 +100,12 @@ class ListController {
     newComment(task) {
         if (this.models.comment) {
             this.tasks.addComment(task, this.models.comment).then((data) => {
-                task.comments.push(data);
+                //assign person name since we only provide id
+                data.person = {
+                    first_name: this.users.current.first_name,
+                    last_name: this.users.current.last_name
+                };
+                task.comments = concat(data, task.comments);
                 this.models.comment = '';
             });
         }

@@ -19,7 +19,6 @@ class HelpService {
             HS.beacon.suggest(articleIds);
         });
     }
-
 }
 
 export default angular.module('mpdx.common.help', [])

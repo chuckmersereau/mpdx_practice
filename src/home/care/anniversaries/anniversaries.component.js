@@ -7,7 +7,6 @@ class AnniversariesController {
         this.contacts = contacts;
         this.limit = 5;
     }
-
 }
 
 const Anniversaries = {

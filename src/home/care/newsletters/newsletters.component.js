@@ -6,7 +6,6 @@ class NewslettersController {
     ) {
         this.tasks = tasks;
     }
-
 }
 
 const Newsletters = {

@@ -1,5 +1,4 @@
 class PledgeFrequencyToStr {
-
     constructor(val) {
         this.val = parseFloat(val);
     }

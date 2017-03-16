@@ -23,7 +23,6 @@ class SelectionStore {
     selectedContactsStorageKey() {
         return 'selectedContacts-userId:' + this.users.current.id + '-accountListId:' + this.api.account_list_id;
     }
-
 }
 
 export default angular.module('mpdx.common.selectionStore.service', [])

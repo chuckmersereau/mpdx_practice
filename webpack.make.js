@@ -107,7 +107,7 @@ module.exports = function makeWebpackConfig(options) {
         loaders: [{
         //     enforce: 'pre',
         //     test: /\.component\.js$/,
-        //     loader: componentHotLoader,
+        //     use: componentHotLoader,
         //     exclude: [/bower_components/, /node_modules/, /\.test\.js/]
         // },{
             // JS LOADER
@@ -125,12 +125,12 @@ module.exports = function makeWebpackConfig(options) {
         //     loaders: ["ngtemplate?relativeTo=" + encodeURIComponent(path.resolve(process.cwd(), './src/')), "html"]
         }, {
             test: /\.json/,
-            loader: "json-loader"
+            use: "json-loader"
         }, {            // HTML LOADER
             // Reference: https://github.com/WearyMonkey/ngtemplate-loader
             // Allow loading html through js
             test: /\.html$/,
-            loader: "html-loader"
+            use: "html-loader"
         }, {
             // ASSET LOADER
             // Reference: https://github.com/webpack/file-loader
@@ -139,13 +139,13 @@ module.exports = function makeWebpackConfig(options) {
             // Pass along the updated reference to your code
             // You can add here any file extension you want to get copied to your output
             test: /\.(png|jpg|jpeg|gif)$/,
-            loader: 'file-loader'
+            use: 'file-loader'
         }, {
             test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-            loader: "url-loader?limit=10000&mimetype=application/font-woff"
+            use: "url-loader?limit=10000&mimetype=application/font-woff"
         }, {
             test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-            loader: "file-loader"
+            use: "file-loader"
         }]
     };
 
@@ -161,7 +161,7 @@ module.exports = function makeWebpackConfig(options) {
                 /node_modules/,
                 /\.test\.js$/
             ],
-            loader: 'isparta-loader'
+            use: 'isparta-loader'
         });
     }
 
@@ -179,9 +179,9 @@ module.exports = function makeWebpackConfig(options) {
             //
             // Reference: https://github.com/webpack/style-loader
             // Use style-loader in development for hot-loading
-            loader: ExtractTextPlugin.extract({
-                loader: 'css-loader!postcss-loader',
-                fallbackLoader: 'style-loader'
+            use: ExtractTextPlugin.extract({
+                use: ['css-loader', 'postcss-loader'],
+                fallback: 'style-loader'
             })
         };
 
@@ -191,14 +191,14 @@ module.exports = function makeWebpackConfig(options) {
         //
         var sassLoader = {
             test: /\.scss$/,
-            loader: ExtractTextPlugin.extract({
-                loader: 'css-loader!postcss-loader!sass-loader',
-                fallbackLoader: 'style-loader'
+            use: ExtractTextPlugin.extract({
+                use: ['css-loader', 'postcss-loader', 'sass-loader'],
+                fallback: 'style-loader'
             })
         };
         if (!BUILD) {
-            cssLoader.loader = 'style-loader!css-loader!postcss-loader';
-            sassLoader.loader = 'style-loader!css-loader!postcss-loader!sass-loader';
+            cssLoader.use = ['style-loader', 'css-loader', 'postcss-loader'];
+            sassLoader.use = ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'];
         }
         // Add cssLoader to the loader list
         config.module.loaders.push(cssLoader);
@@ -211,7 +211,7 @@ module.exports = function makeWebpackConfig(options) {
             test: /\.css$|\.scss$/,
             // Reference: https://github.com/webpack/style-loader
             // Use style-loader in development for hot-loading
-            loader: 'null-loader'
+            use: 'null-loader'
         };
         config.module.loaders.push(nullLoader);
     }
@@ -222,14 +222,6 @@ module.exports = function makeWebpackConfig(options) {
             test: /\.js$/,
             exclude: /node_modules|bower_components|vendor\//,
             loaders: ['eslint-loader']
-        });
-    }
-
-    if (BUILD) {
-        // Build translations
-        config.module.loaders.push({
-            test: /\.po$/,
-            loader: 'filename=locale/[name].json!angular-gettext?format=json'
         });
     }
 
@@ -305,7 +297,7 @@ module.exports = function makeWebpackConfig(options) {
 
             // Reference: http://webpack.github.io/docs/list-of-plugins.html#noerrorsplugin
             // Only emit files when there are no errors
-            new webpack.NoErrorsPlugin(),
+            new webpack.NoEmitOnErrorsPlugin(),
 
             // Reference: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
             // Minify all javascript, switch loaders to minimizing mode
