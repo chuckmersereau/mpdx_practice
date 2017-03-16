@@ -1,12 +1,15 @@
-class DonationsReportController {
+class DonationsController {
     $rootScope;
     blockUI;
     designationAccounts;
+    currency;
     donations;
 
     constructor(
-        $rootScope, blockUI, designationAccounts, donations
+        $rootScope, blockUI, designationAccounts, currency, donations
     ) {
+        this.$rootScope = $rootScope;
+        this.currency = currency;
         this.designationAccounts = designationAccounts;
         this.donations = donations;
 
@@ -15,11 +18,21 @@ class DonationsReportController {
         this.startDate = moment().startOf('month');
         this.donationsList = [];
         this.page = 1;
-        this.watcher = $rootScope.$on('accountListUpdated', () => {
+    }
+
+    $onInit() {
+        this.watcher = this.$rootScope.$on('accountListUpdated', () => {
             this.load(1);
         });
-
         this.load(1);
+    }
+
+    $onChanges() {
+        this.load(1);
+    }
+
+    $onDestroy() {
+        this.watcher();
     }
 
     load(page) {
@@ -28,14 +41,18 @@ class DonationsReportController {
         }
         this.setMonths();
         this.blockUI.start();
-        this.donations.getDonations({ startDate: this.startDate, endDate: this.endDate, page: this.page }).then((data) => {
+        let params = {
+            startDate: this.startDate,
+            endDate: this.endDate,
+            page: this.page
+        };
+        if (this.contact && this.contact.donor_accounts) {
+            params.donorAccountId = _.map(this.contact.donor_accounts, 'id').join();
+        }
+        this.donations.getDonations(params).then((data) => {
             this.donationsList = data;
             this.blockUI.stop();
         });
-    }
-
-    $onDestroy() {
-        this.watcher();
     }
 
     setMonths() {
@@ -62,10 +79,13 @@ class DonationsReportController {
     }
 }
 
-const DonationsReport = {
+const Donations = {
+    controller: DonationsController,
     template: require('./donations.html'),
-    controller: DonationsReportController
+    bindings: {
+        contact: '<'
+    }
 };
 
 export default angular.module('mpdx.reports.donations.component', [])
-    .component('donations', DonationsReport).name;
+    .component('donations', Donations).name;

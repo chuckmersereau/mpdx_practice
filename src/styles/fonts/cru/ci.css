@@ -1,7 +1,8 @@
 @font-face {
 	font-family: "ci";
-	src: url("ci.eot?83ed11a0a4a10e6a33b4d815133a15b8?#iefix") format("embedded-opentype"),
-url("ci.woff?83ed11a0a4a10e6a33b4d815133a15b8") format("woff");
+	src: url("ci.eot?9a18e5e476f58491b929cf2fb817c9b6?#iefix") format("embedded-opentype"),
+url("ci.woff2?9a18e5e476f58491b929cf2fb817c9b6") format("woff2"),
+url("ci.woff?9a18e5e476f58491b929cf2fb817c9b6") format("woff");
 }
 
 .ci {

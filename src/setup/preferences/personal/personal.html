@@ -1,17 +1,17 @@
 <div class="panel panel-default panel-selected">
     <div class="panel-body">
-        <h1 ng-if="$ctrl.selectedTab === 'locale'">
+        <h2 ng-if="$ctrl.selectedTab === 'locale'">
             <i class="ci ci-alert text-primary"></i>
             <translate>Let's set your locale!</translate>
-        </h1>
-        <h1 ng-if="$ctrl.selectedTab === 'monthly_goal'">
+        </h2>
+        <h2 ng-if="$ctrl.selectedTab === 'monthly_goal'">
             <i class="ci ci-alert text-primary"></i>
             <translate>Great progress comes from great goals!</translate>
-        </h1>
-        <h1 ng-if="$ctrl.selectedTab === 'home_country'">
+        </h2>
+        <h2 ng-if="$ctrl.selectedTab === 'home_country'">
             <i class="ci ci-alert text-primary"></i>
             <translate>What Country are you in!</translate>
-        </h1>
+        </h2>
     </div>
     <div class="panel-footer text-right">
         <a ng-click="$ctrl.next()" class="btn btn-default" translate>Skip Step</a>

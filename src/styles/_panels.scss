@@ -3,6 +3,11 @@
     .panel-heading {
         transition: background-color 0.5s;
         cursor: pointer;
+        .btn {
+            line-height: 18px;
+            font-size: 12px;
+            padding: 1px 5px;
+        }
     }
     .panel-footer {
         transition: background-color 0.5s;

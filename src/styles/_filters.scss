@@ -123,7 +123,7 @@
             &.selected:hover {
                 background: $color-gray;
             }
-            &.rejected, 
+            &.rejected,
             &.rejected:hover {
                 background: $color-danger;
             }
@@ -139,10 +139,10 @@
         }
     }
 
-    .filter_radio, 
-    .filter_dates, 
-    .filter_text, 
-    .filter_multiselect, 
+    .filter_radio,
+    .filter_dates,
+    .filter_text,
+    .filter_multiselect,
     .filter_invert_multiselect {
         font-size: .8em;
         label {
@@ -163,7 +163,7 @@
         padding-left: 8px;
         padding-right: 8px;
     }
-    
+
 
     .filter_hint {
         font-size: .9em;
@@ -177,4 +177,3 @@
     }
   }
 }
-

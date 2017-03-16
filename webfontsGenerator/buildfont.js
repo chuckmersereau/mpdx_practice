@@ -14,7 +14,7 @@ webfontsGenerator({
     dest: '../src/styles/fonts/cru',
     templateOptions: {
         classPrefix: 'ci-',
-        baseClass: 'ci'
+        baseSelector: 'ci'
     }
 }, (error) => {
     if (error) console.log('Fail!', error);

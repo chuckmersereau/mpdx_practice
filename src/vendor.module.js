@@ -28,6 +28,9 @@ import 'ng-tags-input';
 //non-angular deps
 import 'lodash';
 import 'lodash/fp';
+import 'chart.js';
+import 'chartjs-plugin-annotation';
+import ngChartJs from 'angular-chart.js';
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 window.moment = extendMoment(Moment);
@@ -48,6 +51,7 @@ export default angular.module('mpdx.vendor', [
     ngFileUpload,
     uiRouter,
     checklistModel,
+    ngChartJs,
     ngInfiniteScroll,
     ngMap,
     ngSortable,
