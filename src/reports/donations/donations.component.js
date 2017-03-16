@@ -2,14 +2,12 @@ class DonationsController {
     $rootScope;
     blockUI;
     designationAccounts;
-    currency;
     donations;
 
     constructor(
-        $rootScope, blockUI, designationAccounts, currency, donations
+        $rootScope, blockUI, designationAccounts, donations
     ) {
         this.$rootScope = $rootScope;
-        this.currency = currency;
         this.designationAccounts = designationAccounts;
         this.donations = donations;
 

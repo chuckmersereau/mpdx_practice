@@ -1,7 +1,6 @@
 class DonationModalController {
     accounts;
     appeals;
-    currency;
     designationAccounts;
     donations;
     donorAccounts;

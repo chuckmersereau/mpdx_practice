@@ -1,7 +1,7 @@
 class ChartController {
     constructor(
         $state, $rootScope, $filter, $log, gettextCatalog,
-        accounts, donations, blockUI, currency
+        accounts, donations, blockUI
     ) {
         this.$state = $state;
         this.$rootScope = $rootScope;
@@ -9,7 +9,6 @@ class ChartController {
         this.$log = $log;
         this.accounts = accounts;
         this.donations = donations;
-        this.currency = currency;
         this.gettextCatalog = gettextCatalog;
 
         this.blockUI = blockUI.instances.get('donationsChart');
