@@ -46,7 +46,9 @@ class Users {
     }
     getCurrent(reset = false, forRouting = false) {
         if (this.current && !reset) {
-            return this.$q.resolve();
+            return this.getOptions(reset, forRouting).then(() => {
+                return this.current;
+            });
         }
         return this.api.get('user', {include: this.defaultIncludes, fields: this.defaultFields}).then((response) => {
             this.current = response;
@@ -67,7 +69,7 @@ class Users {
             const defaultAccountList = toString(get('preferences.default_account_list', response));
             const accountListId = this.$window.sessionStorage.getItem(`${this.current.id}_accountListId`) || defaultAccountList;
 
-            this.accounts.swap(accountListId, this.current.id).then(() => {
+            return this.accounts.swap(accountListId, this.current.id).then(() => {
                 return this.getOptions(true, forRouting).then(() => {
                     this.help.updateUser(this.current);
                     return this.current;

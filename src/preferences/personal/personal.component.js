@@ -50,6 +50,7 @@ class PersonalController {
             this.alerts.addAlert('Preferences saved successfully', 'success');
             this.setTab('');
             this.saving = false;
+            this.onSave();
         }).catch(data => {
             if (data) {
                 each((value) => {
@@ -64,6 +65,7 @@ class PersonalController {
         return this.accounts.saveCurrent().then(() => {
             this.alerts.addAlert('Preferences saved successfully', 'success');
             this.setTab('');
+            this.onSave();
             this.saving = false;
         }).catch((data) => {
             if (data) {
@@ -127,7 +129,9 @@ const Personal = {
     controller: PersonalController,
     template: require('./personal.html'),
     bindings: {
-        selectedTab: '<'
+        selectedTab: '<',
+        setup: '<',
+        onSave: '&'
     }
 };
 

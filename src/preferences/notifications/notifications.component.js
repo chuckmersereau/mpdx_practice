@@ -30,14 +30,7 @@ class NotificationPreferencesController {
         this.saving = true;
         return this.accounts.saveCurrent().then(() => {
             this.alerts.addAlert('Notifications saved successfully', 'success');
-            return this.accounts.getCurrent(this.users.current.id).then(() => {
-                this.onSave();
-            });
-        }).catch((data) => {
-            _.each(data.errors, (value) => {
-                this.alerts.addAlert(value, 'danger');
-            });
-        }).finally(() => {
+            this.onSave();
             this.saving = false;
         });
     }

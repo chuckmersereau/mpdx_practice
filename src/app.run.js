@@ -21,7 +21,7 @@ export default function appRun(
         return $q.reject();
     });
     $transitions.onStart({ to: state => state.name !== 'login' && state.name !== 'auth' }, (trans) => {
-        const users = trans.injector().get('users'); //load user service into transition
+        const users = trans.injector().get('users');
         return users.getCurrent(false, true).catch((error) => {
             if (error.redirect) {
                 return trans.router.stateService.target(error.redirect);

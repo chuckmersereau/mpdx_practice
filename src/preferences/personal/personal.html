@@ -1,5 +1,5 @@
 <div ng-if="$ctrl.users.current">
-    <h3 translate>Personal Settings</h3>
+    <h3 translate>Personal Preferences</h3>
     <div class="panel-group">
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('first_name'), 'panel-disabled' : !$ctrl.tabSelectable('first_name') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('first_name')">
@@ -25,10 +25,10 @@
                     </div>
                 </div>
                 <div class="panel-footer text-right">
-                    <a ng-click="$ctrl.save()" ng-disabled="firstNameForm.$pristine || $ctrl.saving" class="btn btn-primary">
+                    <button ng-click="$ctrl.save()" ng-disabled="(!$ctrl.setup && firstNameForm.$pristine) || $ctrl.saving" class="btn btn-primary">
                         <span translate>Save</span>&nbsp;
                         <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
@@ -56,10 +56,10 @@
                     </div>
                 </div>
                 <div class="panel-footer text-right">
-                    <a ng-click="$ctrl.save()" ng-disabled="lastNameForm.$pristine || $ctrl.saving" class="btn btn-primary">
+                    <button ng-click="$ctrl.save()" ng-disabled="(!$ctrl.setup && lastNameForm.$pristine) || $ctrl.saving" class="btn btn-primary">
                         <span translate>Save</span>&nbsp;
                         <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
@@ -88,10 +88,10 @@
                     </div>
                 </div>
                 <div class="panel-footer text-right">
-                    <a ng-click="$ctrl.save()" ng-disabled="emailForm.$pristine || $ctrl.saving" class="btn btn-primary">
+                    <button ng-click="$ctrl.save()" ng-disabled="(!$ctrl.setup && emailForm.$pristine) || $ctrl.saving" class="btn btn-primary">
                         <span translate>Save</span>&nbsp;
                         <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
@@ -116,10 +116,10 @@
                     </div>
                 </div>
                 <div class="panel-footer text-right">
-                    <a ng-click="$ctrl.save()" ng-disabled="tzForm.$pristine || $ctrl.saving" class="btn btn-primary">
+                    <button ng-click="$ctrl.save()" ng-disabled="(!$ctrl.setup && tzForm.$pristine) || $ctrl.saving" class="btn btn-primary">
                         <span translate>Save</span>&nbsp;
                         <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
@@ -144,10 +144,10 @@
                     </div>
                 </div>
                 <div class="panel-footer text-right">
-                    <a ng-click="$ctrl.save()" ng-disabled="languageForm.$pristine || $ctrl.saving" class="btn btn-primary">
+                    <button ng-click="$ctrl.save()" ng-disabled="(!$ctrl.setup && languageForm.$pristine) || $ctrl.saving" class="btn btn-primary">
                         <span translate>Save</span>&nbsp;
                         <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
@@ -172,10 +172,10 @@
                     </div>
                 </div>
                 <div class="panel-footer text-right">
-                    <a ng-click="$ctrl.save()" ng-disabled="localeForm.$pristine || $ctrl.saving" class="btn btn-primary">
+                    <button ng-click="$ctrl.save()" ng-disabled="(!$ctrl.setup && localeForm.$pristine) || $ctrl.saving" class="btn btn-primary">
                         <span translate>Save</span>&nbsp;
                         <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
@@ -206,15 +206,15 @@
                     </div>
                 </div>
                 <div class="panel-footer text-right">
-                    <a ng-click="$ctrl.saveAccsaveount()" ng-disabled="defaultAccountForm.$pristine || $ctrl.saving" class="btn btn-primary">
+                    <button ng-click="$ctrl.saveAccsaveount()" ng-disabled="(!$ctrl.setup && defaultAccountForm.$pristine) || $ctrl.saving" class="btn btn-primary">
                         <span translate>Save</span>&nbsp;
                         <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-    <h3>Account Settings</h3>
+    <h3>Account Preferences</h3>
     <div class="panel-group">
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('account_list_name'), 'panel-disabled' : !$ctrl.tabSelectable('account_list_name') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('account_list_name')">
@@ -241,10 +241,10 @@
                     </div>
                 </div>
                 <div class="panel-footer text-right">
-                    <a ng-click="$ctrl.saveAccount()" ng-disabled="accountNameForm.$pristine || $ctrl.saving" class="btn btn-primary">
+                    <button ng-click="$ctrl.saveAccount()" ng-disabled="(!$ctrl.setup && accountNameForm.$pristine) || $ctrl.saving" class="btn btn-primary">
                         <span translate>Save</span>&nbsp;
                         <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
@@ -273,10 +273,10 @@
                     </div>
                 </div>
                 <div class="panel-footer text-right">
-                    <a ng-click="$ctrl.saveAccount()" ng-disabled="monthlyGoalForm.$pristine || $ctrl.saving" class="btn btn-primary">
+                    <button ng-click="$ctrl.saveAccount()" ng-disabled="(!$ctrl.setup && monthlyGoalForm.$pristine) || $ctrl.saving" class="btn btn-primary">
                         <span translate>Save</span>&nbsp;
                         <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
@@ -301,10 +301,10 @@
                     </div>
                 </div>
                 <div class="panel-footer text-right">
-                    <a ng-click="$ctrl.saveAccount()" ng-disabled="homeCountryForm.$pristine || $ctrl.saving" class="btn btn-primary">
+                    <button ng-click="$ctrl.saveAccount()" ng-disabled="(!$ctrl.setup && homeCountryForm.$pristine) || $ctrl.saving" class="btn btn-primary">
                         <span translate>Save</span>&nbsp;
                         <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
@@ -335,10 +335,10 @@
                     </div>
                 </div>
                 <div class="panel-footer text-right">
-                    <a ng-click="$ctrl.saveAccount()" ng-disabled="defaultCurrencyForm.$pristine || $ctrl.saving" class="btn btn-primary">
+                    <button ng-click="$ctrl.saveAccount()" ng-disabled="(!$ctrl.setup && defaultCurrencyForm.$pristine) || $ctrl.saving" class="btn btn-primary">
                         <span translate>Save</span>&nbsp;
                         <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
@@ -369,10 +369,10 @@
                     </div>
                 </div>
                 <div class="panel-footer text-right">
-                    <a ng-click="$ctrl.saveAccount()" ng-disabled="salaryOrgForm.$pristine || $ctrl.saving" class="btn btn-primary">
+                    <button ng-click="$ctrl.saveAccount()" ng-disabled="(!$ctrl.setup && salaryOrgForm.$pristine) || $ctrl.saving" class="btn btn-primary">
                         <span translate>Save</span>&nbsp;
                         <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
@@ -406,10 +406,10 @@
                     </div>
                 </div>
                 <div class="panel-footer text-right">
-                    <a ng-click="$ctrl.saveAccount()" ng-disabled="earlyAdopterForm.$pristine || $ctrl.saving" class="btn btn-primary">
+                    <button ng-click="$ctrl.saveAccount()" ng-disabled="(!$ctrl.setup && earlyAdopterForm.$pristine) || $ctrl.saving" class="btn btn-primary">
                         <span translate>Save</span>&nbsp;
                         <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
