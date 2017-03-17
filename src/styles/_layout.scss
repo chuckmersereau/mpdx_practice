@@ -10,6 +10,19 @@ body {
 .logo {margin-top: 4px; background-position: 0;}
 .network_logo img {max-width: 150px;}
 
+.list-arrow {
+    padding-left: 1.5em;
+    li {
+        &:before {
+            content: "\f105";
+            display: block;
+            font-family: "fontawesome";
+            float: left;
+            margin-left: -1.25em;
+        }
+    }
+}
+
 /* ************************************************************** */
 
 .table_select_filters {
@@ -1815,11 +1828,6 @@ appeals-list .show-all {
 .count-big {
     font-size: 36px;
     font-weight: 500;
-}
-.plain-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
 }
 .see-all {
     font-size: 13px;

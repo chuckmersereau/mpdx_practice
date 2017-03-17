@@ -6,15 +6,12 @@ home {
         text-transform: none;
         margin: 0;
     }
-    .plain-list {
-        margin: 5px 0 0;
-    }
     hr {
         width: 100%;
         margin: 15px 0;
     }
     .panel-default > .panel-heading {
-        line-height: 22px;
+        line-height: 2em;
         padding: 10px 15px;
         text-transform: none;
         .btn-xs {

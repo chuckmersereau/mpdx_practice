@@ -10,7 +10,7 @@
                 First, connect your organization to your MPDX account. This will allow MPDX to automatically synchronize your donation information.
             </div>
             <div ng-if="$ctrl.users.organizationAccounts.length > 0">
-                <ul class="plain-list">
+                <ul class="list-unstyled">
                     <li ng-repeat="account in $ctrl.users.organizationAccounts">{{account.organization.name}}</li>
                 </ul>
                 <a ng-click="$ctrl.next()" class="btn btn-block btn-primary" translate>Hooray! Take me into MPDX</a>
