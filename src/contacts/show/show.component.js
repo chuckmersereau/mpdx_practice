@@ -90,7 +90,7 @@ class ContactController {
             template: require('./referrals/add/add.html'),
             controller: 'addReferralsModalController',
             locals: {
-                contactId: this.contact.id
+                contact: this.contact
             }
         });
     }

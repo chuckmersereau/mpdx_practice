@@ -209,6 +209,7 @@ class ContactsService {
         return this.api.post('contacts', contact).then((data) => {
             this.completeList = sortBy('name', concat(this.completeList, {name: data.name, id: data.id}));
             this.load(true); //refresh data list since it could conflict with api pagination
+            return data;
         });
     }
     addBulk(contacts) {
@@ -217,9 +218,10 @@ class ContactsService {
             this.load(true); //refresh data list since it could conflict with api pagination
         });
     }
-    addReferrals(contactId, contacts) {
-        return this.api.put(`contacts/${contactId}`, {
-            id: contactId,
+    addReferrals(contact, contacts) {
+        return this.api.put(`contacts/${contact.id}`, {
+            id: contact.id,
+            updated_in_db_at: contact.updated_in_db_at,
             contacts_referred_by_me: contacts
         }).then(() => {
             this.getList(true);

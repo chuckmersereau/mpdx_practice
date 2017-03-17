@@ -4,17 +4,18 @@ import uuid from 'uuid/v1';
 class AddReferralsModalController {
     alerts;
     api;
+    contact;
     contacts;
 
     constructor(
         $scope,
         api, alerts, contacts,
-        contactId
+        contact
     ) {
         this.$scope = $scope;
         this.alerts = alerts;
         this.api = api;
-        this.contactId = contactId;
+        this.contact = contact;
         this.contacts = contacts;
 
         this.models = {};
@@ -57,12 +58,13 @@ class AddReferralsModalController {
             }
             return result;
         }, [], this.models);
+        console.log(contacts);
         if (contacts.length === 0) {
-            return;
+            return this.$q.reject();
         }
-        return this.contacts.addReferrals(this.contactId, contacts).then((data) => {
+        return this.contacts.addReferrals(this.contact, contacts).then((data) => {
             this.$scope.$hide();
-            console.log(data);
+            return data;
             // let successMessage;
             // let failedMessage;
             // let alertType = '';

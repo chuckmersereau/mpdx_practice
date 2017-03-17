@@ -4,11 +4,12 @@ class ContactsSearchController {
 
     constructor(
         $state, $timeout,
-        contacts
+        contacts, contactFilter
     ) {
         this.$state = $state;
         this.$timeout = $timeout;
         this.contacts = contacts;
+        this.contactFilter = contactFilter;
 
         this.searchParams = '';
     }
@@ -19,7 +20,12 @@ class ContactsSearchController {
     }
     go(contactId) {
         this.searchParams = '';
-        this.$state.go('contact', {contactId: contactId}, {reload: true});
+        this.$state.go('contacts.show', {contactId: contactId});
+    }
+    gotoList() {
+        this.contactFilter.params.wildcard_search = angular.copy(this.searchParams);
+        this.$state.go('contacts', {}, {reload: true});
+        this.searchParams = '';
     }
 }
 const Search = {

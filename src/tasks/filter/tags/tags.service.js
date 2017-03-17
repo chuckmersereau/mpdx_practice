@@ -5,13 +5,15 @@ class TagsService {
     api;
 
     constructor(
-        $filter, $log, $rootScope,
-        api
+        $filter, $log, $rootScope, gettextCatalog,
+        api, modal
     ) {
         this.$filter = $filter;
         this.$log = $log;
         this.$rootScope = $rootScope;
         this.api = api;
+        this.gettextCatalog = gettextCatalog;
+        this.modal = modal;
 
         this.data = [];
         this.selectedTags = [];
