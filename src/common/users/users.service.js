@@ -2,7 +2,9 @@ import assign from 'lodash/fp/assign';
 import get from 'lodash/fp/get';
 import has from 'lodash/fp/has';
 import keyBy from 'lodash/fp/keyBy';
+import keys from 'lodash/fp/keys';
 import toString from 'lodash/fp/toString';
+import createPatch from "../fp/createPatch";
 
 class Users {
     accounts;
@@ -28,6 +30,7 @@ class Users {
         this.locale = locale;
 
         this.current = null;
+        this.currentInitialState = {};
         this.defaultIncludes = 'account_lists,email_addresses';
         this.defaultFields = {
             user: 'account_lists,email_addresses,first_name,last_name,options,preferences,updated_in_db_at',
@@ -47,6 +50,7 @@ class Users {
         }
         return this.api.get('user', {include: this.defaultIncludes, fields: this.defaultFields}).then((response) => {
             this.current = response;
+            this.currentInitialState = angular.copy(this.current);
             this.$log.debug('current user: ', response);
 
             if (reset) {
@@ -123,8 +127,12 @@ class Users {
         return this.api.delete(`users/${id}`);
     }
     saveCurrent(reset = false) {
-        this.$log.debug('user put', this.current);
-        return this.api.put('user', assign({}, this.current)).then((data) => {
+        const patch = createPatch(this.currentInitialState, this.current);
+        this.$log.debug('user patch', patch);
+        if (keys(patch).length < 2) {
+            return this.$q.resolve(this.current);
+        }
+        return this.api.put('user', patch).then((data) => {
             if (reset) {
                 return this.getCurrent(true); //force relead to reconcile as put response is incomplete
             }

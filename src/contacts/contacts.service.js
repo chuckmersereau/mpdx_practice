@@ -6,6 +6,7 @@ import includes from 'lodash/fp/includes';
 import isFunction from 'lodash/fp/isFunction';
 import map from 'lodash/fp/map';
 import reduce from 'lodash/fp/reduce';
+import pull from 'lodash/fp/pull';
 import reject from 'lodash/fp/reject';
 import sortBy from 'lodash/fp/sortBy';
 import union from 'lodash/fp/union';
@@ -22,7 +23,7 @@ class ContactsService {
     modal;
 
     constructor(
-        $log, $q, $rootScope,
+        $log, $q, $rootScope, gettextCatalog,
         alerts, api, contactFilter, contactsTags, modal
     ) {
         this.$log = $log;
@@ -31,6 +32,7 @@ class ContactsService {
         this.api = api;
         this.contactFilter = contactFilter;
         this.contactsTags = contactsTags;
+        this.gettextCatalog = gettextCatalog;
         this.modal = modal;
 
         this.analytics = null;
@@ -263,7 +265,7 @@ class ContactsService {
     }
     selectContact(contactId) {
         if (includes(contactId, this.selectedContacts)) {
-            this.selectedContacts = reject(this.selectedContacts, contactId);
+            this.selectedContacts = pull(contactId, this.selectedContacts);
         } else {
             this.selectedContacts = union(this.selectedContacts, [contactId]);
         }
@@ -307,21 +309,27 @@ class ContactsService {
         return this.completeList[0].id;
     }
     hideContact(contact) {
-        contact.status = 'Never Ask';
-        return this.save(contact).then(() => {
-            this.completeList = reject({ id: contact.id }, this.completeList);
-            this.data = reject({ id: contact.id }, this.data);
+        const message = this.gettextCatalog.getString('Are you sure you wish to hide the selected contact?');
+        return this.modal.confirm(message).then(() => {
+            contact.status = 'Never Ask';
+            return this.save(contact).then(() => {
+                this.completeList = reject({id: contact.id}, this.completeList);
+                this.data = reject({id: contact.id}, this.data);
+            });
         });
     }
     bulkHideContacts() {
-        const contacts = map(id => {
-            return {
-                id: id,
-                status: 'Never Ask'
-            };
-        }, this.selectedContacts);
-        return this.api.put('contacts/bulk', contacts).then(() => {
-            this.data = reject(contact => find({id: contact.id}, contacts) != null, this.data);
+        const message = this.gettextCatalog.getString('Are you sure you wish to hide the selected contacts?');
+        return this.modal.confirm(message).then(() => {
+            const contacts = map(id => {
+                return {
+                    id: id,
+                    status: 'Never Ask'
+                };
+            }, this.selectedContacts);
+            return this.api.put('contacts/bulk', contacts).then(() => {
+                this.data = reject(contact => find({id: contact.id}, contacts) != null, this.data);
+            });
         });
     }
     bulkEditFields(model, contacts) {
@@ -382,7 +390,10 @@ class ContactsService {
         return this.api.post(`contacts/${contactId}/addresses`, address);
     }
     deleteAddress(contactId, addressId) {
-        return this.api.delete(`contacts/${contactId}/addresses/${addressId}`);
+        const message = this.gettextCatalog.getString('Are you sure you wish to delete this address?');
+        return this.modal.confirm(message).then(() => {
+            return this.api.delete(`contacts/${contactId}/addresses/${addressId}`);
+        });
     }
     openNewContactModal() {
         this.modal.open({

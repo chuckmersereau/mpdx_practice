@@ -1,0 +1,7 @@
+<modal hide-footer="true" title="{{$ctrl.title || ('Confirm' | translate)}}">
+    <h3>{{$ctrl.message}}</h3>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-link" ng-click="$ctrl.no()" translate>No</button>
+        <button type="button" class="btn btn-reverse" ng-click="$ctrl.yes()" translate>Yes</button>
+    </div>
+</modal>

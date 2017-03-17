@@ -1,13 +1,19 @@
+import reject from 'lodash/fp/reject';
+import joinComma from "../../../common/fp/joinComma";
+
 class TagsService {
     api;
+    modal;
 
     constructor(
-        $filter, $log, $rootScope,
-        api
+        $filter, $log, $rootScope, gettextCatalog,
+        api, modal
     ) {
         this.$filter = $filter;
         this.$log = $log;
         this.api = api;
+        this.gettextCatalog = gettextCatalog;
+        this.modal = modal;
 
         this.data = [];
         this.selectedTags = [];
@@ -27,23 +33,28 @@ class TagsService {
     }
     delete(tag) {
         return this.api.delete({url: 'contacts/tags/bulk', data: { tag_name: tag.name }, type: 'bulk'}).then(() => {
-            this.selectedTags = _.reject(this.selectedTags, { name: tag.name });
-            this.rejectedTags = _.reject(this.rejectedTags, { name: tag.name });
-            this.data = _.reject(this.data, { name: tag.name });
+            this.selectedTags = reject({ name: tag.name }, this.selectedTags);
+            this.rejectedTags = reject({ name: tag.name }, this.rejectedTags);
+            this.data = reject({ name: tag.name }, this.data);
         });
     }
     tagContact(contactIds, tag) {
-        return this.api.post('contacts/tags/bulk_create', {
+        return this.api.post('contacts/tags/bulk', {
             add_tag_contact_ids: contactIds.join(),
             add_tag_name: tag
         });
     }
     untagContact(contactIds, tag) {
-        return this.api.delete('contacts/tags', {
-            tags: [{
-                name: tag,
-                contact_ids: contactIds.join()
-            }]
+        const params = {
+            filter: {
+                account_list_id: this.api.account_list_id,
+                contact_ids: joinComma(contactIds)
+            },
+            name: tag
+        };
+        const message = this.gettextCatalog.getString('Are you sure you wish to remove the selected tag?');
+        return this.modal.confirm(message).then(() => {
+            return this.api.delete({url: 'contacts/tags/bulk', data: params, type: 'tags'});
         });
     }
     isTagActive(tag) {

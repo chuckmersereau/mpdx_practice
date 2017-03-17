@@ -1,5 +1,8 @@
 class AccountsController {
-    constructor($state, $stateParams, help) {
+    constructor(
+        $state, $stateParams,
+        help
+    ) {
         this.$stateParams = $stateParams;
         this.$state = $state;
 

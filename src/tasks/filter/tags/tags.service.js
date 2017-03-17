@@ -1,4 +1,5 @@
 import map from 'lodash/fp/map';
+import joinComma from "../../../common/fp/joinComma";
 
 class TagsService {
     api;
@@ -45,11 +46,16 @@ class TagsService {
         });
     }
     untag(contextIds, tag) {
-        return this.api.delete('tasks', {
-            tags: [{
-                name: tag,
-                task_ids: contextIds.join()
-            }]
+        const params = {
+            filter: {
+                account_list_id: this.api.account_list_id,
+                contact_ids: joinComma(contextIds)
+            },
+            name: tag
+        };
+        const message = this.gettextCatalog.getString('Are you sure you wish to remove the selected tag?');
+        return this.modal.confirm(message).then(() => {
+            return this.api.delete({url: 'tasks/tags/bulk', data: params, type: 'tags'});
         });
     }
     isTagActive(tag) {

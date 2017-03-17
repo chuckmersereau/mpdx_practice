@@ -1,7 +1,9 @@
 class PreferencesController {
     accounts;
 
-    constructor(accounts, help) {
+    constructor(
+        accounts, help
+    ) {
         this.accounts = accounts;
 
         help.suggest([

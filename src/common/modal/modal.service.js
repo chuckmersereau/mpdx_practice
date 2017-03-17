@@ -15,13 +15,27 @@ class ModalService {
         let deferred = this.$q.defer();
         let openParams = assign(this.defaultParams, params);
         openParams.onHide = (value) => {
-            deferred.resolve(value);
+            deferred.resolve();
             if (params.onHide) {
                 params.onHide(value);
             }
         };
         openParams.locals.success = false;
         this.$modal(openParams);
+        return deferred.promise;
+    }
+    confirm(message, title = null) {
+        let deferred = this.$q.defer();
+        const params = {
+            template: require('./confirm/confirm.html'),
+            controller: 'confirmController',
+            locals: {
+                message: message,
+                confirmPromise: deferred,
+                title: title
+            }
+        };
+        this.open(params);
         return deferred.promise;
     }
 }

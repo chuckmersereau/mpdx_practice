@@ -50,11 +50,12 @@ class PersonalController {
             this.alerts.addAlert('Preferences saved successfully', 'success');
             this.setTab('');
             this.saving = false;
-            this.onSave();
-        }).catch((data) => {
-            each((value) => {
-                this.alerts.addAlert(value, 'danger');
-            }, data.errors);
+        }).catch(data => {
+            if (data) {
+                each((value) => {
+                    this.alerts.addAlert(value, 'danger');
+                }, data.errors);
+            }
             this.saving = false;
         });
     }
@@ -64,11 +65,12 @@ class PersonalController {
             this.alerts.addAlert('Preferences saved successfully', 'success');
             this.setTab('');
             this.saving = false;
-            this.onSave();
         }).catch((data) => {
-            each((value) => {
-                this.alerts.addAlert(value, 'danger');
-            }, data.errors);
+            if (data) {
+                each((value) => {
+                    this.alerts.addAlert(value, 'danger');
+                }, data.errors);
+            }
             this.saving = false;
         });
     }
@@ -125,7 +127,6 @@ const Personal = {
     controller: PersonalController,
     template: require('./personal.html'),
     bindings: {
-        onSave: '&',
         selectedTab: '<'
     }
 };

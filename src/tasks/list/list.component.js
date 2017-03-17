@@ -11,10 +11,12 @@ class ListController {
     users;
 
     constructor(
+        gettextCatalog,
         alerts, contacts, modal, tasks, users
     ) {
         this.alerts = alerts;
         this.contacts = contacts;
+        this.gettextCatalog = gettextCatalog;
         this.modal = modal;
         this.moment = moment;
         this.tasks = tasks;
@@ -65,8 +67,11 @@ class ListController {
         });
     }
     bulkDeleteTasks() {
-        this.tasks.bulkDeleteTasks(this.selected).then(() => {
-            this.loadPage();
+        const message = this.gettextCatalog.getString('Are you sure you wish to delete the selected tasks?');
+        this.modal.confirm(message).then(() => {
+            this.tasks.bulkDeleteTasks(this.selected).then(() => {
+                this.loadPage();
+            });
         });
     }
     bulkCompleteTasks() {
@@ -110,9 +115,18 @@ class ListController {
             });
         }
     }
+    deleteComment(...params) {
+        const message = this.gettextCatalog.getString('Are you sure you wish to delete the selected comment?');
+        this.modal.confirm(message).then(() => {
+            this.tasks.deleteComment(...params);
+        });
+    }
     deleteTask(taskId) {
-        this.tasks.deleteTask(taskId).then(() => {
-            this.tasks.data[this.key] = reject({id: taskId}, this.tasks.data[this.key]);
+        const message = this.gettextCatalog.getString('Are you sure you wish to delete the selected task?');
+        this.modal.confirm(message).then(() => {
+            this.tasks.deleteTask(taskId).then(() => {
+                this.tasks.data[this.key] = reject({id: taskId}, this.tasks.data[this.key]);
+            });
         });
     }
     onPageChange(pageNum) {

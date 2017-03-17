@@ -95,7 +95,7 @@
     <tr class="comment" ng-repeat-end ng-if="task.openComments">
       <td colspan="100">
         <div class="comment__single" ng-repeat="comment in task.comments">
-          <a ng-click="$ctrl.tasks.deleteComment(task, comment.id)" title="Delete Comment"><i class="fa fa-times pull-right" aria-hidden="true"></i></a>
+          <a ng-click="$ctrl.deleteComment(task, comment.id)" title="Delete Comment"><i class="fa fa-times pull-right" aria-hidden="true"></i></a>
           <p class="comment__body">{{ comment.body }}</p>
           <p class="comment__meta">
             - {{ comment.person.first_name }} {{ comment.person.last_name }}, {{ $ctrl.moment(comment.created_at).format('l') }}

@@ -71,6 +71,9 @@ class PersonService {
     save(contactId, person) {
         return this.api.put(`contacts/${contactId}/people/${person.id}`, person); //reload after use, otherwise add reconcile
     }
+    remove(contactId, personId) {
+        return this.api.delete(`contacts/${contactId}/people/${personId}`);
+    }
     openPeopleModal(contact, personId) {
         const modalOpen = (contact, person) => {
             this.modal.open({

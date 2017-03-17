@@ -10,13 +10,15 @@ class PersonModalController {
     contacts;
 
     constructor(
-        $log, $scope,
-        people, contact, locale, person
+        $log, $scope, gettextCatalog,
+        people, contact, locale, modal, person
     ) {
         this.$log = $log;
         this.$scope = $scope;
         this.contact = contact;
+        this.gettextCatalog = gettextCatalog;
         this.locale = locale;
+        this.modal = modal;
         this.people = people;
         this.person = person;
 
@@ -110,8 +112,12 @@ class PersonModalController {
         obj.historic = !obj.historic;
     }
     delete() {
-        this.person._destroy = 1;
-        return this.save();
+        const message = this.gettextCatalog.getString('Are you sure you wish to delete this person?');
+        return this.modal.confirm(message).then(() => {
+            return this.people.remove(this.contact.id, this.person.id).then(() => {
+                this.$scope.$hide();
+            });
+        });
     }
 }
 

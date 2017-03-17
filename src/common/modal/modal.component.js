@@ -3,12 +3,12 @@ class ModalController {
     $attrs;
 
     constructor(
-        $element, $attrs,
+        $element, $attrs, $scope,
         blockUI
     ) {
         this.$element = $element;
         this.$attrs = $attrs;
-        this.blockUI = blockUI.instances.get('modalBlockUI');
+        this.blockUI = blockUI.instances.get('modalBlockUI_' + $scope.$id);
     }
     $onInit() {
         this.hideFooter = this.hideFooter || false;

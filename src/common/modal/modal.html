@@ -1,6 +1,6 @@
 <div class="modal-dialog" ng-class="'modal-size-' + $ctrl.size">
     <form name="modalForm" ng-submit="modalForm.$valid && $ctrl.saveAndBlock()" novalidate>
-        <div class="modal-content" block-ui="modalBlockUI">
+        <div class="modal-content" block-ui="modalBlockUI_{{::$id}}">
             <div class="modal-header">
                 <div class="pull-right">
                     <a class="close" ng-click="$ctrl.cancel()">

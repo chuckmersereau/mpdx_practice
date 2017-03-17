@@ -352,6 +352,9 @@ class EntityAttributes {
                 },
                 contacts: { ref: 'id' }
             },
+            tags: {
+                attributes: ['name']
+            },
             user: {
                 attributes: ["first_name", "last_name", "preferences", "setup", "email_addresses", "access_token", "time_zone", "locale", "updated_at", "updated_in_db_at"],
                 email_addresses: { ref: 'id' }

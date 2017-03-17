@@ -1,7 +1,9 @@
 import assign from 'lodash/fp/assign';
 import findIndex from 'lodash/fp/findIndex';
 import get from 'lodash/fp/get';
+import keys from 'lodash/fp/keys';
 import toString from 'lodash/fp/toString';
+import createPatch from "../fp/createPatch";
 
 class AccountsService {
     analytics;
@@ -25,6 +27,7 @@ class AccountsService {
         this.donations = null;
         this.inviteList = null;
         this.userList = null;
+        this.currentInitialState = {};
     }
     swap(id, userId, reset = false) {
         if (!reset && (id == null || id === get('id', this.current))) {
@@ -33,6 +36,7 @@ class AccountsService {
         return this.api.get(`account_lists/${id}`, { include: this.defaultIncludes }).then((resp) => {
             this.$window.sessionStorage.setItem(`${userId}_accountListId`, toString(id));
             this.current = resp;
+            this.currentInitialState = angular.copy(this.current);
             this.api.account_list_id = id;
             this.$log.debug('account swapped: ', resp);
             this.$rootScope.$emit('accountListUpdated', this.api.account_list_id);
@@ -77,14 +81,19 @@ class AccountsService {
         });
     }
     saveCurrent() {
-        return this.api.put(`account_lists/${this.current.id}`, this.current).then(() => {
-            return this.getCurrent(true).then((data) => { //reconcile obj with db
-                const index = findIndex({id: data.id}, this.data); //reconcile w/ account list
-                if (index > 0) {
-                    this.data[index] = assign({}, this.data[index], data);
-                }
-                return this.current;
-            });
+        const patch = createPatch(this.currentInitialState, this.current);
+        this.$log.debug('account patch', patch);
+        if (keys(patch).length < 2) {
+            return this.$q.resolve(this.current);
+        }
+        return this.api.put(`account_lists/${this.current.id}`, patch).then((data) => {
+            this.current = assign(assign(this.current, patch), data);
+            this.currentInitialState = angular.copy(this.current);
+            const index = findIndex({id: data.id}, this.data); //reconcile w/ account list
+            if (index > 0) {
+                this.data[index] = assign(this.data[index], patch);
+            }
+            return this.current;
         });
     }
 }
