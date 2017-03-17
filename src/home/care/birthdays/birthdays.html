@@ -5,9 +5,9 @@
             {{person.first_name}} {{person.last_name}}
         </a>
         {{ person.birthday_month }}-{{ person.birthday_day }}
-        <facebook-link facebook-account="person.facebook_accounts[0]" ng-if="person.facebook_accounts[0]"></facebook-link>
-        <twitter-link twitter-account="person.twitter_accounts[0]" ng-if="person.twitter_accounts[0]"></twitter-link>
-        <email-link email-address="person.email_addresses[0]" ng-if="person.email_addresses[0]"></email-link>
+        <facebook-link facebook-account="person.facebook_accounts[0]" ng-if="person.facebook_accounts.length"></facebook-link>
+        <twitter-link twitter-account="person.twitter_accounts[0]" ng-if="person.twitter_accounts.length"></twitter-link>
+        <email-link ng-repeat="email in person.email_addresses" ng-if="email.primary" email-address="email"></email-link>
     </li>
     <li ng-if="$ctrl.contacts.analytics.birthdays_this_week.length > $ctrl.limit">
         <a ng-click="$ctrl.limit = $ctrl.contacts.analytics.birthdays_this_week.length">

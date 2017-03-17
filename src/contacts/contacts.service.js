@@ -155,7 +155,7 @@ class ContactsService {
                     addresses: 'city,primary_mailing_address,postal_code,state,geo,street,updated_in_db_at',
                     email_addresses: 'email,historic,primary',
                     phone_numbers: 'historic,location,number,primary',
-                    facebook_accounts: 'url'
+                    facebook_accounts: 'username'
                 },
                 sort: 'name'
             },
@@ -345,8 +345,10 @@ class ContactsService {
         if (this.analytics && !reset) {
             return this.$q.resolve(this.analytics);
         }
-        return this.api.get('contacts/analytics',
-            { include:
+        return this.api.get({
+            url: 'contacts/analytics',
+            data: {
+                include:
                 'anniversaries_this_week,' +
                 'anniversaries_this_week.facebook_accounts,' +
                 'anniversaries_this_week.twitter_accounts,' +
@@ -355,11 +357,20 @@ class ContactsService {
                 'birthdays_this_week.facebook_accounts,' +
                 'birthdays_this_week.twitter_accounts,' +
                 'birthdays_this_week.email_addresses',
-                filter: {account_list_id: this.api.account_list_id} }).then((data) => {
-                    this.$log.debug('contacts/analytics', data);
-                    this.analytics = data;
-                    return this.analytics;
-                });
+                fields: {
+                    people: 'anniversary_day,anniversary_month,birthday_day,birthday_month,facebook_accounts,first_name,last_name,twitter_accounts,email_addresses',
+                    email_addresses: 'email,primary',
+                    facebook_accounts: 'username',
+                    twitter_accounts: 'screen_name'
+                },
+                filter: {account_list_id: this.api.account_list_id}
+            },
+            overrideGetAsPost: true
+        }).then((data) => {
+            this.$log.debug('contacts/analytics', data);
+            this.analytics = data;
+            return this.analytics;
+        });
     }
     merge(winnersAndLosers) {
         return this.api.post({url: `contacts/merges/bulk`, data: winnersAndLosers, type: 'contacts'}).then((data) => {

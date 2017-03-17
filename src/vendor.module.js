@@ -23,7 +23,6 @@ import 'angular-strap/dist/angular-strap.tpl';
 import 'angular-chosen-localytics';
 import 'angular-localforage';
 import 'angular-timeago';
-import 'iso-currency';
 import 'ng-tags-input';
 //non-angular deps
 import 'lodash';
@@ -59,7 +58,6 @@ export default angular.module('mpdx.vendor', [
     'angulartics.google.analytics',
     'angular.filter',
     'blockUI',
-    'isoCurrency',
     'LocalForageModule',
     'localytics.directives',
     'mgcrea.ngStrap',

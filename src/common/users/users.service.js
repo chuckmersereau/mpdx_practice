@@ -3,6 +3,7 @@ import get from 'lodash/fp/get';
 import has from 'lodash/fp/has';
 import keyBy from 'lodash/fp/keyBy';
 import keys from 'lodash/fp/keys';
+const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 import toString from 'lodash/fp/toString';
 import createPatch from "../fp/createPatch";
 
@@ -102,7 +103,10 @@ class Users {
         return keyBy('key', options);
     }
     createOption(key, value) {
-        return this.api.post({ url: `user/options`, data: {key: key, value: value}, type: 'user_options' }); //use jsonapi key here since it doesn't match endpoint
+        return this.api.post({ url: `user/options`, data: {key: key, value: value}, type: 'user_options' }).then((data) => {
+            this.current.options[key] = data;
+            return data;
+        }); //use jsonapi key here since it doesn't match endpoint
     }
     deleteOption(option) {
         return this.api.delete(`user/options/${option}`);
@@ -112,7 +116,15 @@ class Users {
     }
     setOption(option) {
         return this.api.put({ url: `user/options/${option.key}`, data: option, type: 'user_options' }).then((data) => {
-            option.updated_in_db_at = data.updated_in_db_at;
+            this.current.options = reduce((result, val, key) => {
+                if (option.key === key) {
+                    result[key] = data;
+                } else {
+                    result[key] = val;
+                }
+                return result;
+            }, {}, this.current.options);
+            return data;
         }); //use jsonapi key here since it doesn't match endpoint
     }
     listOrganizationAccounts(reset = false) {

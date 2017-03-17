@@ -10,7 +10,6 @@ class TagSelectorController {
         this.init();
     }
     init() {
-        console.log('tags', this.ngModel);
         const ifNotObject = (tag) => {
             if (!isObject(tag)) {
                 return {name: tag};

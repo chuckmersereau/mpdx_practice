@@ -1,3 +1,11 @@
+import concat from 'lodash/fp/concat';
+import defaults from 'lodash/fp/defaults';
+import groupBy from 'lodash/fp/groupBy';
+import indexOf from 'lodash/fp/indexOf';
+const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
+import sumBy from 'lodash/fp/sumBy';
+import zipObject from 'lodash/fp/zipObject';
+
 class MonthlyController {
     api;
     constructor(
@@ -17,38 +25,37 @@ class MonthlyController {
         this.watcher = $rootScope.$on('accountListUpdated', () => {
             this.loadExpectedMonthlyTotals();
         });
-
-        this.loadExpectedMonthlyTotals();
     }
     $onDestroy() {
         this.watcher();
     }
     loadExpectedMonthlyTotals() {
         this.activePanels = [0, 1, 2];
-        this.loading = true;
-        this.api.get('reports/expected_monthly_totals', { filter: {account_list_id: this.api.account_list_id} }).then((data) => {
-            this.$log.debug('reports/expected_monthly_totals', data);
-            this.loading = false;
-            this.total_currency = data.total_currency;
-            this.total_currency_symbol = data.total_currency_symbol;
+        if (this.loading !== this.api.account_list_id) {
+            this.loading = this.api.account_list_id;
 
-            const availableDonationTypes = ['received', 'likely', 'unlikely'];
-            this.donationsByType = _(data.expected_donations)
-                .groupBy('type')
-                .defaults(_.zipObject(availableDonationTypes))
-                .map((donationsForType, type) => {
-                    return {
+            this.api.get('reports/expected_monthly_totals', {filter: {account_list_id: this.api.account_list_id}}).then((data) => {
+                this.$log.debug('reports/expected_monthly_totals', data);
+                this.total_currency = data.total_currency;
+                this.total_currency_symbol = data.total_currency_symbol;
+
+                const availableDonationTypes = zipObject(['received', 'likely', 'unlikely']);
+                const grouped = groupBy('type', data.expected_donations);
+                const donations = defaults(availableDonationTypes, grouped);
+                this.donationsByType = reduce((result, donationsForType, type) => {
+                    return concat(result, {
                         type: type,
-                        order: _.indexOf(availableDonationTypes, type),
+                        order: indexOf(type, availableDonationTypes),
                         donations: donationsForType,
-                        sum: _.sum(_.map(donationsForType, 'converted_amount'))
-                    };
-                })
-                .value();
-            this.sumOfAllCategories = _.sum(_.map(this.donationsByType, 'sum'));
-        }).catch(() => {
-            this.errorOccurred = true;
-        });
+                        sum: sumBy('converted_amount', donationsForType)
+                    });
+                }, [], donations);
+                this.sumOfAllCategories = sumBy('sum', this.donationsByType);
+                this.loading = false;
+            }).catch(() => {
+                this.errorOccurred = true;
+            });
+        }
     }
     percentage(donationType) {
         if (this.sumOfAllCategories === 0) {

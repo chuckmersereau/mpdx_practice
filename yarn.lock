@@ -1323,7 +1323,7 @@ chartjs-color@^2.0.0:
     chartjs-color-string "^0.4.0"
     color-convert "^0.5.3"
 
-chartjs-plugin-annotation@^0.5.2:
+chartjs-plugin-annotation@0.5.2:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/chartjs-plugin-annotation/-/chartjs-plugin-annotation-0.5.2.tgz#59ac42ffa3b025123adf3a7ee0413bde8aefeb46"
   dependencies:
@@ -3560,10 +3560,6 @@ isbinaryfile@^3.0.0:
 isexe@^1.1.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-1.1.2.tgz#36f3e22e60750920f5e7241a476a8c6a42275ad0"
-
-iso-currency@0.2.7:
-  version "0.2.7"
-  resolved "https://registry.yarnpkg.com/iso-currency/-/iso-currency-0.2.7.tgz#db9bd0950877825a1f0a57834454c4093bf866a4"
 
 isobject@^1.0.0:
   version "1.0.2"

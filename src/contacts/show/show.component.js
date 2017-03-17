@@ -1,14 +1,22 @@
 import createPatch from "../../common/fp/createPatch";
+import joinComma from "../../common/fp/joinComma";
+import concat from 'lodash/fp/concat';
+import find from 'lodash/fp/find';
+import forEachRight from 'lodash/fp/forEachRight';
+import map from 'lodash/fp/map';
+import reject from 'lodash/fp/reject';
+
 class ContactController {
     contact;
     contacts;
     contactFilter;
     modal;
     tasks;
+    users;
 
     constructor(
-        $log, $state, $stateParams, $location, $anchorScroll, blockUI, help,
-        modal, contacts, tasks, contactFilter
+        $log, $state, $stateParams, $location, $anchorScroll, blockUI, gettextCatalog, help,
+        modal, contacts, tasks, contactFilter, users
     ) {
         this.$anchorScroll = $anchorScroll;
         this.$log = $log;
@@ -20,28 +28,33 @@ class ContactController {
         this.contactFilter = contactFilter;
         this.modal = modal;
         this.tasks = tasks;
+        this.users = users;
 
         this.selected = $stateParams.contactId;
         this.moveContact = { previous_contact: 0, following_contact: 0 };
         this.activeTab = '';
         this.contact = {};
 
-        this.tabsLabels = [
-            { key: 'details', value: 'Details' },
-            { key: 'donations', value: 'Donations' },
-            { key: 'tasks', value: 'Tasks' },
-            { key: 'history', value: 'History' },
-            { key: 'referrals', value: 'Referrals' },
-            { key: 'notes', value: 'Notes' }
+        let tabsLabels = [
+            { key: 'details', value: gettextCatalog.getString('Details') },
+            { key: 'donations', value: gettextCatalog.getString('Donations') },
+            { key: 'tasks', value: gettextCatalog.getString('Tasks') },
+            { key: 'history', value: gettextCatalog.getString('History') },
+            { key: 'referrals', value: gettextCatalog.getString('Referrals') },
+            { key: 'notes', value: gettextCatalog.getString('Notes') }
         ];
-        this.activeTab = this.tabsLabels[0]['key'];
+        if (users.current.options.contact_tabs_sort) {
+            forEachRight(tab => {
+                const label = find({key: tab}, tabsLabels);
+                if (label) {
+                    tabsLabels = reject({key: tab}, tabsLabels);
+                    tabsLabels = concat(label, tabsLabels);
+                }
+            }, users.current.options.contact_tabs_sort.value.split(','));
+        }
 
-        // $scope.$watch('$ctrl.preferencesContacts.data.contact_tabs_labels', () => {
-        //     this.tabsLabels = this.preferencesContacts.data.contact_tabs_labels;
-        //     if (angular.isDefined(this.tabsLabels)) {
-        //         this.activeTab = this.tabsLabels[0]['key'];
-        //     }
-        // });
+        this.tabsLabels = tabsLabels;
+        this.activeTab = this.tabsLabels[0]['key'];
 
         this.sortableOptions = {
             containment: '#contact-tabs',
@@ -55,8 +68,16 @@ class ContactController {
                     newIndex = this.tabsLabels.length - 1;
                 }
 
-                //this.preferencesContacts.data.contact_tabs_sort = this.tabsLabels.map(item => item['key']).join(); // TODO: Get tab sort data
-                // this.preferencesContacts.save(); // TODO: save tab sort data
+                const contactTabsSort = {
+                    key: 'contact_tabs_sort',
+                    value: joinComma(map('key', this.tabsLabels))
+                };
+                if (users.current.options.contact_tabs_sort) {
+                    contactTabsSort.updated_in_db_at = users.current.options.contact_tabs_sort.updated_in_db_at;
+                    users.setOption(contactTabsSort);
+                } else {
+                    users.createOption(contactTabsSort.key, contactTabsSort.value);
+                }
             },
             containerPositioning: 'relative'
         };

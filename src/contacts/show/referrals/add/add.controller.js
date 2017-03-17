@@ -58,7 +58,6 @@ class AddReferralsModalController {
             }
             return result;
         }, [], this.models);
-        console.log(contacts);
         if (contacts.length === 0) {
             return this.$q.reject();
         }
