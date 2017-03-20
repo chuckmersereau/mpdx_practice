@@ -25,37 +25,36 @@ class MonthlyController {
         this.watcher = $rootScope.$on('accountListUpdated', () => {
             this.loadExpectedMonthlyTotals();
         });
+
+        this.loadExpectedMonthlyTotals();
     }
     $onDestroy() {
         this.watcher();
     }
     loadExpectedMonthlyTotals() {
         this.activePanels = [0, 1, 2];
-        if (this.loading !== this.api.account_list_id) {
-            this.loading = this.api.account_list_id;
+        this.loading = true;
+        this.api.get('reports/expected_monthly_totals', {filter: {account_list_id: this.api.account_list_id}}).then((data) => {
+            this.$log.debug('reports/expected_monthly_totals', data);
+            this.total_currency = data.total_currency;
+            this.total_currency_symbol = data.total_currency_symbol;
 
-            this.api.get('reports/expected_monthly_totals', {filter: {account_list_id: this.api.account_list_id}}).then((data) => {
-                this.$log.debug('reports/expected_monthly_totals', data);
-                this.total_currency = data.total_currency;
-                this.total_currency_symbol = data.total_currency_symbol;
-
-                const availableDonationTypes = zipObject(['received', 'likely', 'unlikely']);
-                const grouped = groupBy('type', data.expected_donations);
-                const donations = defaults(availableDonationTypes, grouped);
-                this.donationsByType = reduce((result, donationsForType, type) => {
-                    return concat(result, {
-                        type: type,
-                        order: indexOf(type, availableDonationTypes),
-                        donations: donationsForType,
-                        sum: sumBy('converted_amount', donationsForType)
-                    });
-                }, [], donations);
-                this.sumOfAllCategories = sumBy('sum', this.donationsByType);
-                this.loading = false;
-            }).catch(() => {
-                this.errorOccurred = true;
-            });
-        }
+            const availableDonationTypes = zipObject(['received', 'likely', 'unlikely']);
+            const grouped = groupBy('type', data.expected_donations);
+            const donations = defaults(availableDonationTypes, grouped);
+            this.donationsByType = reduce((result, donationsForType, type) => {
+                return concat(result, {
+                    type: type,
+                    order: indexOf(type, availableDonationTypes),
+                    donations: donationsForType,
+                    sum: sumBy('converted_amount', donationsForType)
+                });
+            }, [], donations);
+            this.sumOfAllCategories = sumBy('sum', this.donationsByType);
+            this.loading = false;
+        }).catch(() => {
+            this.errorOccurred = true;
+        });
     }
     percentage(donationType) {
         if (this.sumOfAllCategories === 0) {
