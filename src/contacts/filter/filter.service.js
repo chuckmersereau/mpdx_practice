@@ -38,7 +38,8 @@ class FilterService {
         return this.filters.count({ defaultParams: this.default_params, params: this.params });
     }
     reset() {
-        this.params = _.clone(this.default_params);
+        this.params = angular.copy(this.default_params);
+        this.$rootScope.$emit('contactSearchReset');
         this.change();
     }
     change() {
