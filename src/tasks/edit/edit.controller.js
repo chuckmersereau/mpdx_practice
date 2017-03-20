@@ -37,9 +37,6 @@ class EditTaskController {
 
         const mapIds = map('id');
         this.selectedContacts = union(mapIds(this.model.contacts), mapIds(selectedContacts));
-        if (this.model.notification_type) {
-            this.emailNotification = true;
-        }
 
         $log.debug('edit taks', this.model);
     }

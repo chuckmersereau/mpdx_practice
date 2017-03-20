@@ -4,7 +4,6 @@ import uuid from 'uuid/v1';
 
 class ContactDetailsController {
     alerts
-    appeals;
     contact;
     contacts;
     contactsTags;

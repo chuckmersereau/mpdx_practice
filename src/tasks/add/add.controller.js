@@ -38,10 +38,10 @@ class AddTaskController {
             no_date: false,
             activity_type: this.specifiedAction,
             subject: this.specifiedSubject,
+            notification_type: null,
             tag_list: [],
             comments: []
         };
-        this.emailNotification = false;
     }
     addContact() {
         this.selectedContacts.push('');
@@ -49,9 +49,6 @@ class AddTaskController {
     save() {
         if (this.comment) {
             this.model.comments.push({id: uuid(), body: this.comment, person: { id: this.users.current.id }});
-        }
-        if (this.emailNotification) {
-            this.model.notification_type = 'email';
         }
         this.selectedContacts = reject('', this.selectedContacts); //dump empty contacts
 

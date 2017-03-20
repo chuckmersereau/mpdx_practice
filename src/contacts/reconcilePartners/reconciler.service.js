@@ -29,7 +29,7 @@ class ReconcilerService {
     }
 
     fetchAll(force = false) {
-        // this.fetchDuplicateContacts(force);
+        this.fetchDuplicateContacts(force);
         this.fetchDuplicatePeople(force);
     }
 
@@ -65,16 +65,27 @@ class ReconcilerService {
             return;
         }
 
-        return this.api.get('contacts/people/duplicates', {
-            include: 'people,shared_contact,people.phone_numbers,people.email_addresses',
-            fields: {
-                people: 'email_addresses,phone_numbers,first_name,last_name',
-                phone_numbers: 'primary,number',
-                email_addresses: 'primary,email',
-                shared_contact: 'id'
+        return this.api.get({
+            url: 'contacts/people/duplicates',
+            data: {
+                include: 'people,people.phone_numbers,people.email_addresses',
+                fields: {
+                    people: 'email_addresses,phone_numbers,first_name,last_name',
+                    phone_numbers: 'primary,number',
+                    email_addresses: 'primary,email'
+                },
+                filter: {account_list_id: this.api.account_list_id},
+                per_page: this.perPage
             },
-            filter: {account_list_id: this.api.account_list_id},
-            per_page: this.perPage
+            deSerializationOptions: { //for shared_contact
+                contacts: {
+                    valueForRelationship: (relationship) => {
+                        return {
+                            id: relationship.id
+                        };
+                    }
+                }
+            }
         }).then((data) => {
             this.$log.debug('contacts/people/duplicates', data);
             this.duplicatePeople = map((duplicatePerson) => {

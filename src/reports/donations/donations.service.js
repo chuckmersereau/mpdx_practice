@@ -38,17 +38,6 @@ class DonationsService {
         });
     }
 
-    getDonation(donationId) {
-        let params = {
-            include: 'donor_account,designation_account,appeal',
-            fields: {donor_account: 'id', designation_account: 'id', appeal: 'id'}
-        };
-        return this.api.get(`account_lists/${this.api.account_list_id}/donations/${donationId}`, params).then((data) => {
-            this.$log.debug(`account_lists/${this.api.account_list_id}/donations/${donationId}`, data);
-            return data;
-        });
-    }
-
     save(donation) {
         donation.amount = donation.amount.replace(/[^\d.-]/g, '');
         if (has('id', donation)) {
