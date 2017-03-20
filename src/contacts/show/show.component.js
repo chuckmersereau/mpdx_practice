@@ -104,7 +104,7 @@ class ContactController {
         const target = angular.copy(this.contactInitialState); //to avoid onChanges changes
         const patch = createPatch(target, source);
         this.$log.debug('contact patch', patch);
-        this.contacts.save(patch);
+        return this.contacts.save(patch);
     }
     openAddReferralsModal() {
         this.modal.open({

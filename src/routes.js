@@ -105,11 +105,6 @@ export default class Routes {
             url: '/accounts',
             component: 'preferencesAccounts'
         }).state({
-            name: 'preferences.imports',
-            title: 'Import Contacts',
-            url: '/imports',
-            component: 'importPreferences'
-        }).state({
             name: 'preferences.integrations',
             title: 'Connect Services',
             url: '/integrations',
@@ -201,6 +196,11 @@ export default class Routes {
             title: 'Import from CSV',
             url: '/import-from-csv',
             component: 'csvImportForm'
+        }).state({
+            name: 'tools.importFromGoogle',
+            title: 'Import from Google',
+            url: '/import-from-google',
+            component: 'googleImportForm'
         }).state({
             name: 'tools.importFromTNT',
             title: 'Import from TNT',
