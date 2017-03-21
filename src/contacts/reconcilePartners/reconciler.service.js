@@ -1,4 +1,5 @@
 import map from 'lodash/fp/map';
+import relationshipId from "../../common/fp/relationshipId";
 
 class ReconcilerService {
     api;
@@ -77,15 +78,7 @@ class ReconcilerService {
                 filter: {account_list_id: this.api.account_list_id},
                 per_page: this.perPage
             },
-            deSerializationOptions: { //for shared_contact
-                contacts: {
-                    valueForRelationship: (relationship) => {
-                        return {
-                            id: relationship.id
-                        };
-                    }
-                }
-            }
+            deSerializationOptions: relationshipId('contacts') //for shared_contact
         }).then((data) => {
             this.$log.debug('contacts/people/duplicates', data);
             this.duplicatePeople = map((duplicatePerson) => {

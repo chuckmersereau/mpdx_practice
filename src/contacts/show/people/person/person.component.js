@@ -31,6 +31,7 @@ const Person = {
         person: '<',
         isMerging: '<',
         onSelectPerson: '&',
+        onPrimary: '&',
         view: '<'
     }
 };

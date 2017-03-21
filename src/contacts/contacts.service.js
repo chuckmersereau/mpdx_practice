@@ -2,10 +2,13 @@ import assign from 'lodash/fp/assign';
 import concat from 'lodash/fp/concat';
 import find from 'lodash/fp/find';
 import findIndex from 'lodash/fp/findIndex';
+import has from 'lodash/fp/has';
 import includes from 'lodash/fp/includes';
+import isArray from 'lodash/fp/isArray';
+import isEqual from 'lodash/fp/isEqual';
 import isFunction from 'lodash/fp/isFunction';
 import map from 'lodash/fp/map';
-import reduce from 'lodash/fp/reduce';
+const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 import pull from 'lodash/fp/pull';
 import reject from 'lodash/fp/reject';
 import sortBy from 'lodash/fp/sortBy';
@@ -13,6 +16,7 @@ import union from 'lodash/fp/union';
 import unionBy from 'lodash/fp/unionBy';
 import joinComma from "../common/fp/joinComma";
 import mapByName from "../common/fp/mapByName";
+import relationshipId from "../common/fp/relationshipId";
 
 class ContactsService {
     alerts;
@@ -81,17 +85,9 @@ class ContactsService {
         return this.api.get({
             url: `contacts/${id}`,
             data: {
-                include: 'addresses,donor_accounts'
+                include: 'addresses,donor_accounts,primary_person'
             },
-            deSerializationOptions: { //for referrals_by_me, referred_by_me
-                contacts: {
-                    valueForRelationship: (relationship) => {
-                        return {
-                            id: relationship.id
-                        };
-                    }
-                }
-            }
+            deSerializationOptions: relationshipId(['contacts', 'people']) //for contacts_referred_by_me, contacts_that_referred_me and primary_person
         });
     }
     getList(reset = false) {
@@ -123,7 +119,7 @@ class ContactsService {
         }
 
         if (this.contactsTags.selectedTags.length > 0) {
-            filterParams.tags = joinComma(mapByName(this.contactsTags.selectedTags));
+            filterParams.tags = mapByName(this.contactsTags.selectedTags);
         } else {
             delete filterParams.tags;
         }
@@ -244,20 +240,19 @@ class ContactsService {
         this.load(false, this.page);
     }
     findChangedFilters(defaultParams, params) {
-        let filterParams = {};
-        _.forIn(params, (filter, key) => {
-            if (_.has(this.contactFilter.params, key)) {
+        return reduce((result, filter, key) => {
+            if (has(key, this.contactFilter.params)) {
                 const currentDefault = defaultParams[key];
-                if (_.isArray(filter)) {
-                    if (currentDefault.sort().join(',') !== filter.sort().join(',')) {
-                        filterParams[key] = filter;
+                if (isArray(filter)) {
+                    if (!isEqual(currentDefault, filter)) {
+                        result[key] = filter;
                     }
                 } else if (filter !== currentDefault) {
-                    filterParams[key] = filter;
+                    result[key] = filter;
                 }
             }
-        });
-        return filterParams;
+            return result;
+        }, {}, params);
     }
     resetFilters() {
         this.contactFilter.reset();

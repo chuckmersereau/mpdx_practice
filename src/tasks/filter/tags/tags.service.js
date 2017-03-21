@@ -1,4 +1,5 @@
 import map from 'lodash/fp/map';
+import reject from 'lodash/fp/reject';
 import joinComma from "../../../common/fp/joinComma";
 
 class TagsService {
@@ -34,11 +35,17 @@ class TagsService {
     mapDataAsNames() {
         return map(data => data.name, this.data);
     }
-    delete(tagName) {
-        return this.api.delete('tasks', { tags: [{ all_tasks: true, name: tagName }] }).then(() => {
-            this.selectedTags = _.without(tagName);
-            this.rejectedTags = _.without(tagName);
-            this.data.splice(this.data.indexOf(tagName), 1);
+    delete(tag) {
+        const params = {
+            filter: {
+                account_list_id: this.api.account_list_id
+            },
+            name: tag.name
+        };
+        return this.api.delete({url: 'tasks/tags/bulk', data: params, type: 'tags'}).then(() => {
+            this.selectedTags = reject({ name: tag.name }, this.selectedTags);
+            this.rejectedTags = reject({ name: tag.name }, this.rejectedTags);
+            this.data = reject({ name: tag.name }, this.data);
         });
     }
     tag(contextIds, tag) {

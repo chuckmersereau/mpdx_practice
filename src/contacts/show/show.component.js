@@ -106,6 +106,11 @@ class ContactController {
         this.$log.debug('contact patch', patch);
         return this.contacts.save(patch);
     }
+    onPrimary(personId) {
+        this.$log.debug('change primary: ', personId);
+        this.contact.primary_person.id = personId;
+        // this.save();
+    }
     openAddReferralsModal() {
         this.modal.open({
             template: require('./referrals/add/add.html'),
