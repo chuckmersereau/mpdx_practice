@@ -20,9 +20,10 @@ function appendTransform(defaults, transform) {
 }
 
 const jsonApiParams = {keyForAttribute: 'underscore_case'};
-function deserialize(data) {
+function deserialize(data, deSerializationOptions) {
+    const options = assign(jsonApiParams, deSerializationOptions);
     if (isObject(data) && data.data) {
-        return new japi.Deserializer(jsonApiParams).deserialize(data).then((deserializedData) => {
+        return new japi.Deserializer(options).deserialize(data).then((deserializedData) => {
             deserializedData.meta = data.meta || {};
             return deserializedData;
         });
@@ -65,6 +66,7 @@ class Api {
         overrideGetAsPost = false,
         type = null,
         doSerialization = true,
+        deSerializationOptions = {},
         doDeSerialization = true,
         responseType = ''
     }) {
@@ -149,9 +151,9 @@ class Api {
             transformResponse: appendTransform(this.$http.defaults.transformResponse, (data) => {
                 if (doDeSerialization) {
                     if (isArray(data)) {
-                        return map(item => deserialize(item), data);
+                        return map(item => deserialize(item, deSerializationOptions), data);
                     } else {
-                        return deserialize(data);
+                        return deserialize(data, deSerializationOptions);
                     }
                 } else {
                     return data;

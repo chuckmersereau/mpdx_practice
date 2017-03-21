@@ -157,7 +157,7 @@ class TasksService {
                     person: 'first_name,last_name',
                     email_addresses: 'email,historic,primary',
                     phone_numbers: 'historic,location,number,primary',
-                    facebook_accounts: 'url'
+                    facebook_accounts: 'username'
                 },
                 page: this.meta[collection].pagination.page,
                 per_page: this.meta[collection].pagination.per_page,
@@ -172,30 +172,38 @@ class TasksService {
         });
     }
     fetchUncompletedTasks(id) {
-        return this.api.get('tasks', {
-            filters: {
-                completed: false,
-                contact_ids: [id]
+        return this.api.get({
+            url: 'tasks',
+            data: {
+                filters: {
+                    completed: false,
+                    contact_ids: [id]
+                },
+                page: 1,
+                per_page: 500,
+                include: 'comments',
+                sort: 'start_at'
             },
-            page: 1,
-            per_page: 500,
-            include: 'comments,contacts',
-            sort: 'start_at'
+            overrideGetAsPost: true
         }).then((data) => {
             this.uncompleted = data;
             return data;
         });
     }
     fetchCompletedTasks(id) {
-        return this.api.get('tasks', {
-            filters: {
-                completed: true,
-                contact_ids: [id]
+        return this.api.get({
+            url: 'tasks',
+            data: {
+                filters: {
+                    completed: true,
+                    contact_ids: [id]
+                },
+                include: 'comments',
+                page: 1,
+                per_page: 500,
+                sort: 'completed_at'
             },
-            include: 'comments,contacts',
-            page: 1,
-            per_page: 500,
-            sort: 'completed_at'
+            overrideGetAsPost: true
         }).then((data) => {
             this.completed = data;
             return data;

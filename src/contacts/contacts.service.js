@@ -78,17 +78,25 @@ class ContactsService {
         });
     }
     get(id) {
-        return this.api.get(`contacts/${id}`, {
-            include: 'addresses,appeals,donor_accounts,contacts_referred_by_me,contacts_that_referred_me',
-            fields: {
-                contacts_referred_by_me: 'id',
-                contacts_that_referred_me: 'id'
+        return this.api.get({
+            url: `contacts/${id}`,
+            data: {
+                include: 'addresses,donor_accounts'
+            },
+            deSerializationOptions: { //for referrals_by_me, referred_by_me
+                contacts: {
+                    valueForRelationship: (relationship) => {
+                        return {
+                            id: relationship.id
+                        };
+                    }
+                }
             }
         });
     }
     getList(reset = false) {
         this.completeList = []; // to avoid double call
-        if (!reset && this.completeList) {
+        if (!reset && this.completeList.length > 0) {
             return this.$q.resolve(this.completeList);
         }
         return this.api.get('contacts', {

@@ -28,20 +28,17 @@ class EditTaskController {
         this.serverConstants = serverConstants;
         this.tasksTags = tasksTags;
         this.tasks = tasks;
-        this.toComplete = toComplete || false;
         this.modalCallback = modalCallback;
         this.users = users;
 
         this.modelInitialState = angular.copy(specifiedTask);
         this.model = angular.copy(specifiedTask);
+        this.toComplete = toComplete || this.model.completed;
 
         const mapIds = map('id');
         this.selectedContacts = union(mapIds(this.model.contacts), mapIds(selectedContacts));
-        if (this.model.notification_type) {
-            this.emailNotification = true;
-        }
 
-        $log.debug('edit taks', this.model);
+        $log.debug('edit task', this.model);
     }
     submit() {
         if (this.comment) {
