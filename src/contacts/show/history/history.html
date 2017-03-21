@@ -29,7 +29,7 @@
                     <span style="font-size: 16px">{{ comment.body }}</span>
                     <br/>
                     <span style="color: #909b9c">
-                     - {{ comment.person_id.first_name }} {{ comment.person_id.last_name }}, {{ $ctrl.moment(comment.created_at).format('M-d-YYYY') }}
+                     - {{ comment.person_id.first_name }} {{ comment.person_id.last_name }}, {{ $ctrl.moment(comment.created_at).format($ctrl.locale.dateTimeFormat) }}
                     </span>
                 </div>
                 <form class="form-inline">

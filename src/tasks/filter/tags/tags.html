@@ -1,41 +1,49 @@
-  <span class="filter--filtergroup_title tags_title">
-    <span translate><i class="fa fa-tags"></i> Tags</span>
-    <ul class="nav nav-pills pull-right">
-      <li ng-class="{ 'active': $ctrl.tasksTags.anyTags }">
-        <a ng-click="$ctrl.tasksTags.anyTags = true" title="Look up contacts with Any of the tags selected (a or b or c)." translate>Any</a>
-      </li>
-      <li ng-class="{ 'active': !$ctrl.tasksTags.anyTags }">
-        <a ng-click="$ctrl.tasksTags.anyTags = false" title="Look up contacts with ALL of the tags selected (a and b and c)." translate>All</a>
-      </li>
-    </ul>
+<span class="filter--filtergroup_title tags_title">
+<span translate><i class="fa fa-tags"></i> Tags</span>
+<ul class="nav nav-pills pull-right">
+  <li ng-class="{ 'active': $ctrl.tasksTags.anyTags }">
+    <a ng-click="$ctrl.tasksTags.anyTags = true" title="Look up contacts with Any of the tags selected (a or b or c)."
+       translate>Any</a>
+  </li>
+  <li ng-class="{ 'active': !$ctrl.tasksTags.anyTags }">
+    <a ng-click="$ctrl.tasksTags.anyTags = false"
+       title="Look up contacts with ALL of the tags selected (a and b and c)." translate>All</a>
+  </li>
+</ul>
+</span>
+<div class="filter_hint" translate>Click a tag twice to look up all contacts who do not have that tag.</div>
+<div class="left_tag_list tags" ng-class="{'show_all_tags': $ctrl.showAllTags}">
+  <span class="tag"
+        ng-class="{ 'selected': !$ctrl.tasksTags.isTagActive(tag), 'rejected': $ctrl.tasksTags.isTagRejected(tag) }"
+        ng-click="$ctrl.tasksTags.tagClick(tag, $event)"
+        ng-repeat="tag in $ctrl.tasksTags.data">
+    {{ tag.name }}
+      <a ng-click="$event.stopPropagation()" data-template-url="task_tags_delete_popover.html" data-auto-close="'outsideClick'" class="tag_remove" bs-popover></a>
   </span>
-  <div class="filter_hint" translate>Click a tag twice to look up all contacts who do not have that tag.</div>
-  <div class="left_tag_list tags" ng-class="{'show_all_tags': $ctrl.showAllTags}">
-      <span class="tag"
-            ng-class="{ 'selected': !$ctrl.tasksTags.isTagActive(tag), 'rejected': $ctrl.tasksTags.isTagRejected(tag) }"
-            ng-click="$ctrl.tasksTags.tagClick(tag, $event)"
-            ng-repeat="tag in $ctrl.tasksTags.data">
-        {{ tag.name }}
-        <a ng-click="$event.stopPropagation()" uib-popover-template="'myPopoverTemplate.html'" popover-trigger="outsideClick" class="tag_remove" />
-      </span>
-      <a class="show_all_tags_btn">
+    <a class="show_all_tags_btn">
         <div ng-click="$ctrl.showAllTags = !$ctrl.showAllTags" ng-if="$ctrl.tasksTags.data.length > 25">
-          <div ng-show="!$ctrl.showAllTags">
-            <i class="fa fa-plus"></i>
-            <span translate>Show all</span> {{$ctrl.tasksTags.data.length}} <span translate>tags</span>
-          </div>
-          <div ng-show="$ctrl.showAllTags">
-            <i class="fa fa-minus"></i>
-            <span translate>Show fewer tags</span>
-          </div>
+            <div ng-show="!$ctrl.showAllTags">
+                <i class="fa fa-plus"></i>
+                <span translate>Show all</span> {{$ctrl.tasksTags.data.length}} <span translate>tags</span>
+            </div>
+            <div ng-show="$ctrl.showAllTags">
+                <i class="fa fa-minus"></i>
+                <span translate>Show fewer tags</span>
+            </div>
         </div>
-      </a>
-      <script type="text/ng-template" id="myPopoverTemplate.html">
-        <div ng-click="$event.stopPropagation()" class="tags-popover">
-          <translate>Remove tag permanently?</translate>
-          <div>
-          <button class="btn btn-primary" ng-click="$ctrl.tasksTags.delete(tag)" translate>Ok</button>
-          </div>
+    </a>
+</div>
+
+<script type="text/ng-template" id="task_tags_delete_popover.html">
+    <div class="popover tags-popover" style="cursor: default" tabindex="-1" ng-click="$event.stopPropagation()">
+        <div class="arrow"></div>
+        <h3 class="popover-title" translate>Delete Tag?</h3>
+        <div class="popover-content">
+            <div translate>Are you sure you want to completely delete this tag and remove it from all tasks?</div>
+            <div class="text-muted" translate>To remove a tag from selected tasks only, use the action menu.</div>
+            <button class="btn btn-danger btn-block btn-xs" ng-click="$ctrl.tasksTags.delete(tag); $hide()" translate>
+                Delete Tag
+            </button>
         </div>
-      </script>
-  </div>
+    </div>
+</script>

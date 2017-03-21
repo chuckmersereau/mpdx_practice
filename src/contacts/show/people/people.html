@@ -13,7 +13,8 @@
                         ng-if="$index % 2 == remainder"
                         contact="$ctrl.contact"
                         person="person"
-                        on-select-person="$ctrl.selectPerson(person)">
+                        on-select-person="$ctrl.selectPerson(person)"
+                        on-primary="$ctrl.onPrimary({$personId: $personId})">
         </contact-person>
     </div>
 </div>

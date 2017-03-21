@@ -1,11 +1,16 @@
+import moment from 'moment';
+
 class ContactTasksController {
     contact;
+    locale;
+    moment;
     modal;
     tasks;
 
     constructor(
-        modal, tasks
+        locale, modal, tasks
     ) {
+        this.locale = locale;
         this.modal = modal;
         this.moment = moment;
         this.tasks = tasks;

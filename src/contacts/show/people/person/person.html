@@ -29,4 +29,9 @@
             </dd>
         </dl>
     </div>
+    <div class="pull-right" style="cursor: pointer" ng-click="$ctrl.onPrimary({$personId: $ctrl.person.id}); $event.stopPropagation()">
+        <i class="fa fa-square-o" ng-if="$ctrl.contact.primary_person.id !== $ctrl.person.id"></i>
+        <i class="fa fa-check-square-o" ng-if="$ctrl.contact.primary_person.id === $ctrl.person.id"></i>
+        <translate>Primary</translate>
+    </div>
 </div>

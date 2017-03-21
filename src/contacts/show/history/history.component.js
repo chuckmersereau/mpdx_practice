@@ -2,14 +2,15 @@ import moment from 'moment';
 
 class ContactHistoryController {
     contact;
+    locale;
     modal;
     moment;
     tasks;
-    tasks;
 
     constructor(
-        modal, tasks
+        locale, modal, tasks
     ) {
+        this.locale = locale;
         this.modal = modal;
         this.moment = moment;
         this.tasks = tasks;
