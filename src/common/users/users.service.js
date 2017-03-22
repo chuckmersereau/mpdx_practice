@@ -140,17 +140,14 @@ class Users {
     destroy(id) {
         return this.api.delete(`users/${id}`);
     }
-    saveCurrent(reset = false) {
+    saveCurrent() {
         const patch = createPatch(this.currentInitialState, this.current);
         this.$log.debug('user patch', patch);
         if (keys(patch).length < 2) {
             return this.$q.resolve(this.current);
         }
-        return this.api.put('user', patch).then((data) => {
-            if (reset) {
-                return this.getCurrent(true); //force relead to reconcile as put response is incomplete
-            }
-            this.current = assign({}, this.current, data);
+        return this.api.put('user', patch).then(() => {
+            return this.getCurrent(true); //force reload to reconcile as put response is incomplete
         });
     }
 }

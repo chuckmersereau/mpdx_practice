@@ -1,3 +1,4 @@
+import includes from 'lodash/fp/includes';
 import reject from 'lodash/fp/reject';
 import joinComma from "../../../common/fp/joinComma";
 
@@ -11,6 +12,7 @@ class TagsService {
     ) {
         this.$filter = $filter;
         this.$log = $log;
+        this.$rootScope = $rootScope;
         this.api = api;
         this.gettextCatalog = gettextCatalog;
         this.modal = modal;
@@ -67,7 +69,7 @@ class TagsService {
         if (this.selectedTags.length === 0) {
             return true;
         } else {
-            return _.includes(this.selectedTags, tag);
+            return includes(tag, this.selectedTags);
         }
     }
     isTagRejected(tag) {
@@ -84,6 +86,11 @@ class TagsService {
         } else {
             this.selectedTags.push(tag);
         }
+        this.$rootScope.$emit('contactParamChange');
+    }
+    changeAny(val) {
+        this.anyTags = val;
+        this.$rootScope.$emit('contactParamChange');
     }
     isResettable() {
         return (this.selectedTags.length > 0 || this.rejectedTags.length > 0);

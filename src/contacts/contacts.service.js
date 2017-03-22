@@ -41,6 +41,7 @@ class ContactsService {
 
         this.analytics = null;
         this.completeList = null;
+        this.completeFilteredList = null;
         this.data = [];
         this.meta = {};
         this.loading = true;
@@ -50,35 +51,14 @@ class ContactsService {
 
         $rootScope.$on('contactParamChange', () => {
             $log.debug('contacts service: contact parameter change');
-            this.getList(true);
-            this.load(true);
-        });
-
-        $rootScope.$watch(() => this.contactFilter.wildcard_search, (newVal, oldVal) => {
-            if (!oldVal) {
-                return;
-            }
-            $log.debug('contacts service: contact search change');
-            this.getList(true);
+            this.getFilteredList(true);
             this.load(true);
         });
 
         $rootScope.$on('accountListUpdated', () => {
             this.getList(true);
+            this.getFilteredList(true);
             this.load(true);
-        });
-
-        $rootScope.$watch(() => {
-            return angular.toJson({
-                selected: this.contactsTags.selectedTags.length,
-                rejected: this.contactsTags.rejectedTags.length,
-                any: this.contactsTags.anyTags
-            });
-        }, (newVal, oldVal) => {
-            if (oldVal && newVal !== oldVal) {
-                $log.debug('contacts service: contacts tags changed');
-                this.load(true);
-            }
         });
     }
     get(id) {
@@ -91,12 +71,12 @@ class ContactsService {
         });
     }
     getList(reset = false) {
-        this.completeList = []; // to avoid double call
-        if (!reset && this.completeList.length > 0) {
+        if (!reset && this.completeList && this.completeList.length > 0) {
             return this.$q.resolve(this.completeList);
         }
+        this.completeList = []; // to avoid double call
         return this.api.get('contacts', {
-            filter: {account_list_id: this.api.account_list_id},
+            filters: {account_list_id: this.api.account_list_id},
             fields: {
                 contacts: 'name'
             },
@@ -105,6 +85,23 @@ class ContactsService {
         }).then((data) => {
             this.$log.debug('contacts all', data);
             this.completeList = data;
+        });
+    }
+    getFilteredList(reset = false) {
+        if (!reset && this.completeFilteredList && this.completeFilteredList.length > 0) {
+            return this.$q.resolve(this.completeFilteredList);
+        }
+        this.completeFilteredList = []; // to avoid double call
+        return this.api.get('contacts', {
+            filters: this.buildFilterParams(),
+            fields: {
+                contacts: 'name'
+            },
+            per_page: 25000,
+            sort: 'name'
+        }).then((data) => {
+            this.$log.debug('contacts all - filtered', data);
+            this.completeFilteredList = data;
         });
     }
     buildFilterParams() {
@@ -145,12 +142,10 @@ class ContactsService {
             this.data = null;
         }
 
-        const filters = this.buildFilterParams();
-
         return this.api.get({
             url: 'contacts',
             data: {
-                filters: filters,
+                filters: this.buildFilterParams(),
                 page: this.page,
                 per_page: 25,
                 include: 'people,addresses,people.facebook_accounts,people.phone_numbers,people.email_addresses',
@@ -190,21 +185,29 @@ class ContactsService {
             this.loading = false;
         });
     }
+    updateContactOrList(contact) {
+        const completeIndex = findIndex({id: contact.id}, this.completeList);
+        if (completeIndex > -1 && this.completeList[completeIndex].name !== contact.name) {
+            this.completeList[completeIndex] = {name: contact.name, id: contact.id};
+            this.completeList = sortBy('name', concat(this.completeList, {name: contact.name, id: contact.id}));
+        }
+        const completeFilteredIndex = findIndex({id: contact.id}, this.completeFilteredList);
+        if (completeFilteredIndex > -1 && this.completeFilteredList[completeFilteredIndex].name !== contact.name) {
+            this.completeFilteredList[completeFilteredIndex] = {name: contact.name, id: contact.id};
+            this.completeFilteredList = sortBy('name', concat(this.completeFilteredList, {name: contact.name, id: contact.id}));
+        }
+
+        const index = findIndex({id: contact.id}, this.data);
+        if (index > -1) {
+            this.load(true); //refresh data list since it could conflict with api pagination
+        }
+    }
     save(contact) {
         if (contact.tag_list) {
             contact.tag_list = joinComma(contact.tag_list); //fix for api mis-match
         }
         return this.api.put(`contacts/${contact.id}`, contact).then((data) => {
-            const completeIndex = findIndex({id: data.id}, this.completeList);
-            if (completeIndex > -1 && this.completeList[completeIndex].name !== data.name) {
-                this.completeList[completeIndex] = {name: data.name, id: data.id};
-                this.completeList = sortBy('name', concat(this.completeList, {name: data.name, id: data.id}));
-            }
-
-            const index = findIndex({id: data.id}, this.data);
-            if (index > -1) {
-                this.load(true); //refresh data list since it could conflict with api pagination
-            }
+            this.updateContactOrList(data);
             return data;
         });
     }
@@ -212,6 +215,7 @@ class ContactsService {
         contact.account_list = { id: this.api.account_list_id };
         return this.api.post('contacts', contact).then((data) => {
             this.completeList = sortBy('name', concat(this.completeList, {name: data.name, id: data.id}));
+            this.completeFilteredList = sortBy('name', concat(this.completeFilteredList, {name: data.name, id: data.id}));
             this.load(true); //refresh data list since it could conflict with api pagination
             return data;
         });
@@ -287,31 +291,31 @@ class ContactsService {
     }
     selectAllContacts(all = true) {
         if (all) {
-            this.selectedContacts = map('id', this.completeList);
+            this.selectedContacts = map('id', this.completeFilteredList);
         } else {
             this.selectedContacts = map('id', this.data);
         }
     }
     getContactPosition(id) {
-        return findIndex({ id: id }, this.completeList);
+        return findIndex({ id: id }, this.completeFilteredList);
     }
     canGoLeft(id) {
         return this.getContactPosition(id) > 0;
     }
     canGoRight(id) {
-        return this.getContactPosition(id) < this.completeList.length - 1;
+        return this.getContactPosition(id) < this.completeFilteredList.length - 1;
     }
     getLeftId(id) {
         if (this.canGoLeft(id)) {
-            return this.completeList[this.getContactPosition(id) - 1].id;
+            return this.completeFilteredList[this.getContactPosition(id) - 1].id;
         }
-        return this.completeList[this.completeList.length - 1].id;
+        return this.completeFilteredList[this.completeFilteredList.length - 1].id;
     }
     getRightId(id) {
         if (this.canGoRight(id)) {
-            return this.completeList[this.getContactPosition(id) + 1].id;
+            return this.completeFilteredList[this.getContactPosition(id) + 1].id;
         }
-        return this.completeList[0].id;
+        return this.completeFilteredList[0].id;
     }
     hideContact(contact) {
         const message = this.gettextCatalog.getString('Are you sure you wish to hide the selected contact?');
@@ -319,6 +323,7 @@ class ContactsService {
             contact.status = 'Never Ask';
             return this.save(contact).then(() => {
                 this.completeList = reject({id: contact.id}, this.completeList);
+                this.completeFilteredList = reject({id: contact.id}, this.completeFilteredList);
                 this.data = reject({id: contact.id}, this.data);
             });
         });

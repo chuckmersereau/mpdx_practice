@@ -19,16 +19,39 @@
         </div>
     </div>
 </div>
-<ui-view>
-    <div class="row">
-        <alerts></alerts>
-        <div class="col-xs-3">
-            <aside class="scrollable_left" role="complementary" bs-affix>
+<div class="row">
+    <div ng-class="{'col-md-9': $ctrl.isInState('contacts.show')}">
+        <ui-view>
+            <div class="row">
+                <div class="col-xs-3">
+                    <aside class="scrollable_left" role="complementary" bs-affix>
+                        <contacts-filter></contacts-filter>
+                    </aside>
+                </div>
+                <div class="col-xs-9">
+                    <contacts-list></contacts-list>
+                </div>
+            </div>
+        </ui-view>
+    </div>
+    <div id="contact_drawer" class="col-md-3"  ng-if="$ctrl.isInState('contacts.show')">
+        <div class="contact_drawer_inner" role="complementary" bs-affix>
+            <div class="edit-filters clearfix">
+                {{$ctrl.contactFilter.count()}} <translate>filter(s) applied</translate>
+                <div class="pull-right">
+                    <button type="button" class="btn btn-primary btn-xs" ng-click="$ctrl.showFilters = !$ctrl.showFilters">
+                        <span ng-if="$ctrl.showFilters"><i class="fa fa-users"></i> <span translate>Contacts</span></span>
+                        <span ng-if="!$ctrl.showFilters"><i class="fa fa-sliders"></i> <span translate>Filters</span></span>
+                    </button>
+                </div>
+            </div>
+            <div ng-if="$ctrl.showFilters">
                 <contacts-filter></contacts-filter>
-            </aside>
-        </div>
-        <div class="col-xs-9">
-            <contacts-list></contacts-list>
+            </div>
+            <div ng-if="!$ctrl.showFilters">
+                <menu-search></menu-search>
+                <contacts-list view="minimal" selected="$ctrl.selected"></contacts-list>
+            </div>
         </div>
     </div>
-</ui-view>
+</div>

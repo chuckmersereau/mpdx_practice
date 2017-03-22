@@ -1,12 +1,5 @@
-class LinkedInLinkController {
-    $onInit() {
-        this.url = `http://www.linkedin.com/${this.linkedinAccount.username}`;
-    }
-}
-
 const LinkedinLink = {
     template: require('./linkedin.html'),
-    controller: LinkedInLinkController,
     bindings: {
         linkedinAccount: '<'
     }
