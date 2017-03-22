@@ -22,7 +22,10 @@ class FilterService {
             this.wildcard_search = query;
         }
     }
-    load() {
+    load(reset = false) {
+        if (reset) {
+            this.data = null;
+        }
         return this.filters.load({
             data: this.data,
             defaultParams: this.default_params,

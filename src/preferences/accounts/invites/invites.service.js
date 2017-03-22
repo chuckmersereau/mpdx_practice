@@ -1,30 +1,20 @@
 class InvitesService {
     api;
 
-    constructor($rootScope, api) {
+    constructor(
+        api
+    ) {
         this.api = api;
-
-        this.data = {};
-        this.loading = true;
-
-        $rootScope.$on('accountListUpdated', () => {
-            this.load();
-        });
-
-        //this.load();
-    }
-    load() {
-        this.loading = true;
-        this.api.get('preferences/accounts/invites').then((data) => {
-            this.data = data.preferences;
-            this.loading = false;
-        });
     }
     destroy(id) {
-        return this.api.delete('preferences/accounts/invites/' + id);
+        return this.api.delete(`account_lists/${this.api.account_list_id}/invites/${id}`);
     }
     create(email) {
-        return this.api.post('preferences/accounts/invites', { invite: { email: email } });
+        return this.api.post({
+            url: `account_lists/${this.api.account_list_id}/invites`,
+            data: { recipient_email: email },
+            type: 'account_list_invites'
+        });
     }
 }
 
