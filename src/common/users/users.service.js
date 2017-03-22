@@ -1,4 +1,3 @@
-import assign from 'lodash/fp/assign';
 import get from 'lodash/fp/get';
 import has from 'lodash/fp/has';
 import keyBy from 'lodash/fp/keyBy';

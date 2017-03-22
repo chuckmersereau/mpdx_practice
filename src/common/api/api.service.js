@@ -298,6 +298,17 @@ class EntityAttributes {
                 donor_account: { ref: 'id' },
                 appeal: { ref: 'id' }
             },
+            merge: {
+                attributes: ['account_list_to_merge'],
+                typeForAttribute: (key) => {
+                    if (key === 'account_list_to_merge') {
+                        return 'account_lists';
+                    }
+                    return key;
+                },
+                account_list_to_merge: { ref: 'id' },
+                pluralizeType: false
+            },
             merges: {
                 attributes: ["winner_id", "loser_id"]
             },

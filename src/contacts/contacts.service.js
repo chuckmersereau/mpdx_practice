@@ -208,6 +208,7 @@ class ContactsService {
         }
         return this.api.put(`contacts/${contact.id}`, contact).then((data) => {
             this.updateContactOrList(data);
+            this.contactFilter.load(true); // since we don't know how this change could affect the filters
             return data;
         });
     }

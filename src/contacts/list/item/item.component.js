@@ -1,9 +1,12 @@
+import includes from 'lodash/fp/includes';
+import pull from 'lodash/fp/pull';
+
 class ContactListItemController {
     contact;
     contacts;
     people;
     constructor(
-        $state,
+        $rootScope, $state,
         contacts, people, users
     ) {
         this.$state = $state;
@@ -11,6 +14,12 @@ class ContactListItemController {
         this.people = people;
 
         this.current_currency_symbol = users.current.currency_symbol;
+
+        $rootScope.$on('contactTagDeleted', (e, val) => {
+            if (!val.contactIds || includes(this.contact.id, val.contactIds)) {
+                this.contact.tag_list = pull(val.tag, this.contact.tag_list);
+            }
+        });
     }
     switchContact() {
         this.selected = this.contact.id;

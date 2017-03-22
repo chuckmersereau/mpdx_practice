@@ -44,6 +44,7 @@ class TagsService {
             this.selectedTags = reject({ name: tag.name }, this.selectedTags);
             this.rejectedTags = reject({ name: tag.name }, this.rejectedTags);
             this.data = reject({ name: tag.name }, this.data);
+            this.$rootScope.$emit('contactTagDeleted', {tag: tag.name});
         });
     }
     tagContact(contactIds, tag) {
@@ -62,7 +63,10 @@ class TagsService {
         };
         const message = this.gettextCatalog.getString('Are you sure you wish to remove the selected tag?');
         return this.modal.confirm(message).then(() => {
-            return this.api.delete({url: 'contacts/tags/bulk', data: params, type: 'tags'});
+            return this.api.delete({url: 'contacts/tags/bulk', data: params, type: 'tags'}).then(() => {
+                this.$rootScope.$emit('contactTagDeleted', {tag: tag.name, contactIds: contactIds});
+                return this.load();
+            });
         });
     }
     isTagActive(tag) {

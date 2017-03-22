@@ -103,12 +103,13 @@ class ContactController {
         const target = angular.copy(this.contactInitialState); //to avoid onChanges changes
         const patch = createPatch(target, source);
         this.$log.debug('contact patch', patch);
+
         return this.contacts.save(patch);
     }
     onPrimary(personId) {
         this.$log.debug('change primary: ', personId);
         this.contact.primary_person.id = personId;
-        // this.save();
+        this.save();
     }
     openAddReferralsModal() {
         this.modal.open({
