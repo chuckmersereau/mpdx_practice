@@ -1,4 +1,4 @@
-<div class="panel panel-default">
+<div class="panel panel-default" block-ui="connect">
     <div class="panel-heading">
         <a class="btn btn-default btn-sm pull-right" ng-click="$ctrl.addTask()">
             <translate>Add a New Task</translate>
@@ -8,7 +8,7 @@
     <div class="panel-body">
         <h4 class="title" translate>
             <a ui-sref="tasks" translate>
-                {{$ctrl.total()}} Tasks overdue or due today
+                {{$ctrl.totalTasks()}} Tasks overdue or due today
             </a>
         </h4>
         <ul class="list-unstyled list-arrow">
@@ -18,12 +18,12 @@
                     {{ task.label }}
                 </a>
             </li>
-            <li ng-if="$ctrl.limit < $ctrl.tasks.analytics.tasks_overdue_or_due_today_counts.length">
-                <a ng-click="$ctrl.limit = $ctrl.tasks.analytics.tasks_overdue_or_due_today_counts.length">
-                    <i class="fa fa-plus-square-o"></i>
-                    <translate translate-n="$ctrl.total()" translate-plural="See all {{$ctrl.tasks.analytics.tasks_overdue_or_due_today_counts.length}} task types">See 1 task type</translate>
-                </a>
-            </li>
         </ul>
+        <div ng-if="$ctrl.limit < $ctrl.totalTypes()">
+            <a ng-click="$ctrl.limit = $ctrl.totalTypes()">
+                <i class="fa fa-plus-square-o"></i>
+                <translate translate-n="$ctrl.totalTypes()" translate-plural="See all {{$ctrl.totalTypes()}} task types">See 1 task type</translate>
+            </a>
+        </div>
     </div>
 </div>

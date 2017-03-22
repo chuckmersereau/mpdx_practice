@@ -2,9 +2,25 @@ class CommitmentsController {
     contacts;
 
     constructor(
-        contacts
+        $rootScope, contacts, blockUI
     ) {
         this.contacts = contacts;
+        this.blockUI = blockUI.instances.get('commitments');
+        this.watcher = $rootScope.$on('accountListUpdated', () => {
+            this.load();
+        });
+    }
+    $onInit() {
+        this.load();
+    }
+    $onDestroy() {
+        this.watcher();
+    }
+    load() {
+        this.blockUI.start();
+        this.contacts.getAnalytics(true).then(() => {
+            this.blockUI.reset();
+        });
     }
 }
 const Commitments = {

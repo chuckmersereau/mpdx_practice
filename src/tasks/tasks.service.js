@@ -328,7 +328,7 @@ class TasksService {
                 specifiedAction: params.specifiedAction || null,
                 specifiedSubject: params.specifiedSubject || null,
                 selectedContacts: params.contact || [],
-                modalTitle: params.title || 'Add Newsletter',
+                modalTitle: params.title || this.gettextCatalog.getString('Add Newsletter'),
                 isNewsletter: true
             },
             onHide: params.onHide || noop

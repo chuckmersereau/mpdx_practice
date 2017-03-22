@@ -20,6 +20,7 @@ class menuController {
         this.users = users;
 
         this.isInState = (match) => this.$state.$current.name.indexOf(match) === 0;
+        this.notifications = { count: 0 };
     }
     showHelp() {
         this.help.showHelp();
