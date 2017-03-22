@@ -43,7 +43,11 @@ export default class Routes {
                 default: /*@ngInject*/ (contacts) => contacts.load(),
                 resolution: /*@ngInject*/ (contactFilter) => contactFilter.load(),
                 another: /*@ngInject*/ (contactsTags) => contactsTags.load(),
-                again: /*@ngInject*/ (contactReconciler) => contactReconciler.fetchAll()
+                again: /*@ngInject*/ (contactReconciler) => contactReconciler.fetchAll(),
+                mas: /*@ngInject*/ (contacts) => {
+                    contacts.getFilteredList();
+                    return true;// make async
+                }
             }
         }).state({
             name: 'contacts.reconcile_partners',

@@ -30,7 +30,6 @@ class ContactController {
         this.tasks = tasks;
         this.users = users;
 
-        this.selected = $stateParams.contactId;
         this.moveContact = { previous_contact: 0, following_contact: 0 };
         this.activeTab = '';
         this.contact = {};
@@ -159,9 +158,6 @@ class ContactController {
         this.activeTab = 'notes';
         this.$location.hash('contact-tabs');
         this.$anchorScroll();
-    }
-    filterCount() {
-        return this.contactFilter.count();
     }
 }
 

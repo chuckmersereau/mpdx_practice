@@ -24,7 +24,7 @@
             <dd ng-if="$ctrl.person.facebook_accounts.length > 0 || $ctrl.person.twitter_accounts.length > 0 || $ctrl.person.linkedin_accounts.length > 0 || $ctrl.person.websites.length > 0" class="networks">
                 <facebook-link ng-repeat="fb in $ctrl.person.facebook_accounts" facebook-account="fb"></facebook-link>
                 <twitter-link ng-repeat="twit in $ctrl.person.twitter_accounts" twitter-account="twit"></twitter-link>
-                <linkedin-link ng-repeat="li in $ctrl.person.linkedin_accounts"></linkedin-link>
+                <linkedin-link ng-repeat="li in $ctrl.person.linkedin_accounts" linkedin-account="li"></linkedin-link>
                 <website-link ng-repeat="website in $ctrl.person.websites" website="website"></website-link>
             </dd>
         </dl>

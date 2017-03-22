@@ -56,9 +56,9 @@
             </span>&nbsp;
             <small>
                 <a href="javascript:;"
-                   ng-if="$ctrl.contacts.selectedContacts.length > 0 && $ctrl.contacts.selectedContacts.length < $ctrl.contacts.completeList.length"
+                   ng-if="$ctrl.contacts.selectedContacts.length > 0 && $ctrl.contacts.selectedContacts.length < $ctrl.contacts.completeFilteredList.length"
                    ng-click="$ctrl.contacts.selectAllContacts()">
-                    <span translate>Select all {{$ctrl.contacts.completeList.length}} contacts</span>
+                    <span translate>Select all {{$ctrl.contacts.completeFilteredList.length}} contacts</span>
                 </a>
             </small>
         </div>
@@ -92,7 +92,7 @@
                         ng-class="{ selected: $ctrl.contacts.isSelected(contact.id) }"></contacts-list-item>
     <contacts-list-item ng-if="$ctrl.view === 'minimal'"
                         view="{{$ctrl.view}}"
-                        ng-repeat="contact in $ctrl.contacts.completeList | orderBy: 'name' track by contact.id"
+                        ng-repeat="contact in $ctrl.contacts.completeFilteredList | orderBy: 'name' track by contact.id"
                         hide="$ctrl.hideContact(contact)"
                         contact="contact"
                         id="contact_{{contact.id}}"

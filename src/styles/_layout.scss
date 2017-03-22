@@ -1165,6 +1165,12 @@ table tbody.tasks {
             display: block;
         }
     }
+    .edit-filters {
+        border: 1px solid $color-menu-border;
+        margin-bottom: 10px;
+        padding: 5px;
+        line-height: 29px;
+    }
 }
 
 .contact_list {
