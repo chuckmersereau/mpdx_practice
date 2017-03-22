@@ -4,19 +4,8 @@ class HomeController {
     tasks;
     users;
     constructor(
-        $log, $q, $rootScope, blockUI,
-        accounts, contacts, help, tasks, users
+        help
     ) {
-        this.$log = $log;
-        this.$q = $q;
-        this.accounts = accounts;
-        this.contacts = contacts;
-        this.tasks = tasks;
-        this.blockUI = blockUI.instances.get('home');
-        this.users = users;
-
-        this.blockUI.start();
-
         help.suggest([
             '584aced8c697912ffd6bc297',
             '58496f15c6979106d373bb65',
@@ -29,25 +18,6 @@ class HomeController {
             '58496d4ec6979106d373bb57',
             '58496bf1903360069817816c'
         ]);
-
-        this.watcher = $rootScope.$on('accountListUpdated', () => {
-            this.load();
-        });
-    }
-    $onInit() {
-        this.load();
-    }
-    $onDestroy() {
-        this.watcher();
-    }
-    load() {
-        this.blockUI.start();
-        this.$q.all([
-            this.tasks.getAnalytics(true),
-            this.contacts.getAnalytics(true)
-        ]).then(() => {
-            this.blockUI.reset();
-        });
     }
 }
 const Home = {

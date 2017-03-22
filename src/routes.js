@@ -22,7 +22,7 @@ export default class Routes {
         }).state({
             name: 'auth',
             url: '/auth?access_token',
-            onEnter: auth,
+            component: 'auth',
             resolve: {
                 url: /*@ngInject*/ ($location) => $location.url($location.url().replace("#", "?"))
             }
@@ -212,50 +212,6 @@ export default class Routes {
             url: '/unavailable',
             component: 'unavailable',
             parent: 'root'
-        });
-    }
-}
-
-/*@ngInject*/
-function auth(
-    $state, $stateParams, $window, $http, $log
-) {
-    if (!_.isEmpty($stateParams.access_token)) {
-        $http.get(`${config.authUrl}api/oauth/ticket`,
-            {
-                headers: {
-                    Authorization: `Bearer ${$stateParams.access_token}`,
-                    Accept: 'application/json'
-                },
-                params: {
-                    service: `${config.apiUrl}user/authenticate`
-                }
-            }
-        ).then((data) => {
-            $http({
-                url: `${config.apiUrl}user/authenticate`,
-                method: 'post',
-                headers: {
-                    Accept: 'application/vnd.api+json',
-                    'Content-Type': 'application/vnd.api+json'
-                },
-                data: {
-                    data: {
-                        type: "authenticate",
-                        attributes: {
-                            cas_ticket: data.data.ticket
-                        }
-                    }
-                }
-            }).then((data) => {
-                $log.debug('user/authenticate', data);
-                $window.sessionStorage.token = data.data.data.attributes.json_web_token;
-                const redirect = angular.copy($window.sessionStorage.redirect || 'home');
-                const params = angular.copy($window.sessionStorage.params || {});
-                delete $window.sessionStorage.redirect;
-                delete $window.sessionStorage.params;
-                $state.go(redirect, params, {reload: true});
-            });
         });
     }
 }

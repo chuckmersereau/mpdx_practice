@@ -53,16 +53,16 @@ class AddTaskController {
         this.selectedContacts = reject('', this.selectedContacts); //dump empty contacts
 
         let promise;
-        if (this.newsletterBoth) {
+        if (this.newsletter === 'both') {
             this.model.activity_type = "Newsletter - Physical";
             promise = this.tasks.create(this.model, this.selectedContacts).then(() => {
                 this.model.activity_type = "Newsletter - Email";
                 return this.tasks.create(this.model, this.selectedContacts);
             });
-        } else if (this.newsletterPhysical) {
+        } else if (this.newsletter === 'physical') {
             this.model.activity_type = "Newsletter - Physical";
             promise = this.tasks.create(this.model, this.selectedContacts);
-        } else if (this.newsletterEmail) {
+        } else if (this.newsletter === 'email') {
             this.model.activity_type = "Newsletter - Email";
             promise = this.tasks.create(this.model, this.selectedContacts);
         } else if (!isEmpty(this.model.activity_type)) {
