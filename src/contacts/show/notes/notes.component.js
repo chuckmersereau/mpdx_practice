@@ -1,5 +1,8 @@
+import moment from 'moment';
+
 class ContactNotesController {
     contacts;
+    moment;
 
     constructor(
         contacts
@@ -8,7 +11,7 @@ class ContactNotesController {
         this.moment = moment;
     }
     save() {
-        this.contacts.save(this.contact);
+        this.onSave();
     }
 }
 
@@ -16,7 +19,8 @@ const Notes = {
     controller: ContactNotesController,
     template: require('./notes.html'),
     bindings: {
-        contact: '='
+        contact: '=',
+        onSave: '&'
     }
 };
 

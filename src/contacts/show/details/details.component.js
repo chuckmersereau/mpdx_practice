@@ -1,3 +1,4 @@
+import get from 'lodash/fp/get';
 import keys from 'lodash/fp/keys';
 import map from 'lodash/fp/map';
 import uuid from 'uuid/v1';
@@ -45,19 +46,11 @@ class ContactDetailsController {
         this.contact.donor_accounts.push({id: uuid(), organization: { id: this.users.organizationAccounts[0].organization.id }, account_number: ''});
     }
     save() {
-        if (this.referrer && this.contact.contacts_that_referred_me[0]) {
-            this.contact.contacts_that_referred_me[0].id = this.referrer;
-        } else if (this.referrer) {
-            this.contact.contacts_that_referred_me.push({id: this.referrer});
-        } else {
-            this.contact.contacts_that_referred_me = [];
+        if (this.referrer && this.referrer !== get(this.contact, 'contacts_that_referred_me[0].id')) {
+            this.contact.contact_referrals_to_me = [{id: uuid(), referred_by: {id: this.referrer}}];
         }
 
-        this.onSave().then((data) => {
-            this.contact.updated_in_db_at = data.updated_in_db_at;
-        }).catch(() => {
-            this.alerts.addAlert(this.gettextCatalog.getString('There was an error updating this contact, please refresh your browser.'), 'danger');
-        });
+        this.onSave();
     }
 }
 const Details = {

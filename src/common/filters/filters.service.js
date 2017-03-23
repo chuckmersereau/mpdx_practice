@@ -1,16 +1,24 @@
+import concat from 'lodash/fp/concat';
+import filter from 'lodash/fp/filter';
+import findIndex from 'lodash/fp/findIndex';
+import isArray from 'lodash/fp/isArray';
+import isEqual from 'lodash/fp/isEqual';
+import keys from 'lodash/fp/keys';
+import reduce from 'lodash/fp/reduce';
+import sortBy from 'lodash/fp/sortBy';
+
 class Filters {
     api;
     constructor(
-        $location, $q, $log,
+        $q, $log,
         api
     ) {
-        this.$location = $location;
         this.$log = $log;
         this.$q = $q;
         this.api = api;
     }
     count({params, defaultParams}) {
-        return _.filter(_.keys(params), key => !_.isEqual(params[key], defaultParams[key])).length;
+        return filter(key => !isEqual(params[key], defaultParams[key]), keys(params)).length;
     }
     load({data, defaultParams, params, url}) {
         if (data) {
@@ -22,29 +30,31 @@ class Filters {
         }
         return this.api.get(url, {filters: {account_list_id: this.api.account_list_id}}).then((response) => {
             data = response || [];
-            data = _.sortBy(data, ['id']);
+            data = sortBy('id', data);
             this.$log.debug(url, data);
-
-            let returnParams = {};
-            _.each(data, (obj) => {
-                if (obj.multiple && !_.isArray(obj.default_selection)) {
-                    returnParams[obj.name] = [obj.default_selection];
+            params = reduce((result, filter) => {
+                if (filter.multiple && !isArray(filter.default_selection)) {
+                    result[filter.name] = [filter.default_selection];
                 } else {
-                    returnParams[obj.name] = obj.default_selection;
+                    result[filter.name] = filter.default_selection;
                 }
-                if (obj.parent !== null) {
-                    let parentObj = _.find(data, parent => parent.title === obj.parent && parent.type === 'container');
-                    if (!parentObj) {
-                        parentObj = {title: obj.parent, type: 'container', priority: obj.priority, children: []};
-                        data.push(parentObj);
+                return result;
+            }, {}, data);
+            data = reduce((result, filter) => {
+                if (filter.parent !== null) {
+                    let parentIndex = findIndex(parent => parent.title === filter.parent && parent.type === 'container', result);
+                    if (parentIndex === -1) {
+                        const parentObj = {title: filter.parent, type: 'container', priority: filter.priority, children: [filter]};
+                        result = concat(result, parentObj);
+                    } else {
+                        result[parentIndex].children = concat(result[parentIndex].children, filter);
                     }
-                    parentObj.children.push(obj);
-                    data = _.reject(data, comparator => _.eq(obj, comparator));
+                } else {
+                    result = concat(result, filter);
                 }
-            });
-            defaultParams = _.clone(returnParams);
-            params = returnParams;
-            this.mergeParamsFromLocation(defaultParams, params);
+                return result;
+            }, [], data);
+            defaultParams = angular.copy(params);
             return {
                 data: data,
                 params: params,
@@ -52,20 +62,8 @@ class Filters {
             };
         });
     }
-    mergeParamsFromLocation(defaultParams, params) {
-        _.each(this.$location.search(), (value, param) => {
-            if (param.indexOf('filters[') === 0) {
-                const filter = param.slice(param.indexOf('[') + 1, param.indexOf(']'));
-                if (defaultParams[filter] instanceof Array && !(value instanceof Array)) {
-                    params[filter] = value.split();
-                } else {
-                    params[filter] = value;
-                }
-            }
-        });
-    }
     reset({defaultParams, params, onChange}) {
-        params = _.clone(defaultParams);
+        params = angular.copy(defaultParams);
         onChange(params);
         return params;
     }
