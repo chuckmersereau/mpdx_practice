@@ -82,7 +82,7 @@
                 <button ng-click="$ctrl.openAddReferralsModal()" class="btn btn-primary" translate>Add Referrals</button>
             </div>
             <div ng-if="item['key']=='notes'" ng-show="item['key']==$ctrl.activeTab">
-                <contact-notes contact="$ctrl.contact"></contact-notes>
+                <contact-notes contact="$ctrl.contact" on-save="$ctrl.save()"></contact-notes>
             </div>
         </div>
     </div>

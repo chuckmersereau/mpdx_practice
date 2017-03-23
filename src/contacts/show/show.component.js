@@ -7,6 +7,7 @@ import map from 'lodash/fp/map';
 import reject from 'lodash/fp/reject';
 
 class ContactController {
+    alerts;
     contact;
     contacts;
     contactFilter;
@@ -16,16 +17,18 @@ class ContactController {
 
     constructor(
         $log, $state, $stateParams, $location, $anchorScroll, blockUI, gettextCatalog, help,
-        modal, contacts, tasks, contactFilter, users
+        alerts, modal, contacts, tasks, contactFilter, users
     ) {
         this.$anchorScroll = $anchorScroll;
         this.$log = $log;
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.$location = $location;
+        this.alerts = alerts;
         this.blockUI = blockUI.instances.get('contactShow');
         this.contacts = contacts;
         this.contactFilter = contactFilter;
+        this.gettextCatalog = gettextCatalog;
         this.modal = modal;
         this.tasks = tasks;
         this.users = users;
@@ -104,7 +107,12 @@ class ContactController {
         const patch = createPatch(target, source);
         this.$log.debug('contact patch', patch);
 
-        return this.contacts.save(patch);
+        return this.contacts.save(patch).then((data) => {
+            this.contact.updated_in_db_at = data.updated_in_db_at;
+            this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
+        }).catch(() => {
+            this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'));
+        });
     }
     onPrimary(personId) {
         this.$log.debug('change primary: ', personId);

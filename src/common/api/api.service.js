@@ -241,7 +241,7 @@ class EntityAttributes {
                 person: { ref: 'id', pluralizeType: false }
             },
             contacts: {
-                attributes: ["account_list", "addresses", "church_name", "contacts_referred_by_me", "contacts_that_referred_me", "created_at", "direct_deposit", "donor_accounts", "envelope_greeting",
+                attributes: ["account_list", "addresses", "church_name", "contacts_referred_by_me", "contacts_that_referred_me", "contact_referrals_to_me", "created_at", "direct_deposit", "donor_accounts", "envelope_greeting",
                     "first_donation_date", "full_name", "greeting",
                     "last_activity", "last_appointment", "last_donation_date", "last_letter", "likely_to_give", "last_phone_call", "last_pre_call", "last_thank", "late_at", "locale", "loser_id",
                     "magazine", "name", "next_ask", "no_appeals", "not_duplicated_with", "notes", "notes_saved_at",
@@ -281,12 +281,19 @@ class EntityAttributes {
                     ],
                     account_list: { ref: 'id' }
                 },
+                contact_referrals_to_me: {
+                    ref: 'id',
+                    attributes: ['referred_by'],
+                    referred_by: { ref: 'id' }
+                },
                 contacts_that_referred_me: { ref: 'id' },
                 typeForAttribute: (key) => {
                     if (key === 'contacts_referred_by_me' || key === 'contacts_that_referred_me') {
                         return 'contacts';
                     } else if (key === 'primary_person') {
                         return 'people';
+                    } else if (key === 'contact_referrals_to_me') {
+                        return 'contact_referrals';
                     }
                     return key;
                 }
