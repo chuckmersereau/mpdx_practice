@@ -14,17 +14,18 @@
 
 ## Installation
 
-To use it, just clone this repo and install the npm dependencies:
+To use it, just clone this repo and install the dependencies:
 
 ```shell
 $ git clone https://github.com/CruGlobal/mpdx_web
 $ cd mpdx_web
-$ npm install
+$ npm install -g yarn
+$ yarn install
 ```
 
 ## Scripts
 
-All scripts are run with `npm run [script]`, for example: `npm run test`.
+All scripts are run with `yarn [script]`, for example: `yarn test`.
 
 * `build` - generate a minified build to dist folder
 * `start` - start development server, try it by opening `http://localhost:8080/`
