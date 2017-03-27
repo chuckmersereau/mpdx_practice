@@ -18,11 +18,16 @@ $color-menu-bg:             lighten($cru-gray, 60%);  // #f3f3f3
 $color-menu-border:         lighten($cru-gray, 50%);
 
 $color-panel-bg:            $cru-gray;
+$color-panel-border:        $cru-gray-silver;
+
+$color-text-dark:           $cru-gray-dark;
 
 $font-primary:              'Source Sans Pro', sans-serif;
 $font-data:                 $font-primary;
 $font-size:                 16px;
-$font-size-sm:              $font-size * .9;
-$font-size-xs:              $font-size * .75;
+$font-size-xl:              $font-size * 2.25;  // 36px
+$font-size-lg:              $font-size * 1.625; // 26px
+$font-size-sm:              $font-size * .9;    // 14.4px
+$font-size-xs:              $font-size * .75;   // 12px
 $gutter:                    30px;
 $border-radius:             3px;

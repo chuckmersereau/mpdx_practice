@@ -21,3 +21,8 @@
         border-color: $color-secondary;
     }
 }
+
+.panel {
+    border-radius: 0;
+    border-color: $color-panel-border;
+}
