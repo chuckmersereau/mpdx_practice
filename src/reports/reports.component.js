@@ -1,6 +1,7 @@
 class ReportsController {
     constructor(help) {
         help.suggest([
+            '58d3d70ddd8c8e7f5974d3ca',
             '584820bc9033600698177a95',
             '58496cc0c6979106d373bb52',
             '58496f15c6979106d373bb65',
