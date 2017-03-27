@@ -1,5 +1,6 @@
 import includes from 'lodash/fp/includes';
 import pull from 'lodash/fp/pull';
+import union from 'lodash/fp/union';
 
 class ContactListItemController {
     contact;
@@ -18,6 +19,11 @@ class ContactListItemController {
         $rootScope.$on('contactTagDeleted', (e, val) => {
             if (!val.contactIds || includes(this.contact.id, val.contactIds)) {
                 this.contact.tag_list = pull(val.tag, this.contact.tag_list);
+            }
+        });
+        $rootScope.$on('contactTagsAdded', (e, val) => {
+            if (!val.contactIds || includes(this.contact.id, val.contactIds)) {
+                this.contact.tag_list = union(this.contact.tag_list, val.tags);
             }
         });
     }

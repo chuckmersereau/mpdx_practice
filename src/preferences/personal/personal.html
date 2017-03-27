@@ -384,7 +384,7 @@
                         <span translate>Early Adopter</span>
                     </div>
                     <div class="col-sm-6 pref-current" translate>
-                        {{$ctrl.users.current.preferences.tester ? 'Yes' : 'No'}}
+                        {{$ctrl.accounts.current.tester ? 'Yes' : 'No'}}
                     </div>
                 </div>
             </div>
@@ -393,7 +393,7 @@
                     <div class="row">
                         <div class="col-md-8 col-md-offset-4" ng-form="earlyAdopterForm">
                             <label>
-                                <input type="checkbox" ng-model="$ctrl.users.current.preferences.tester">
+                                <input type="checkbox" ng-model="$ctrl.accounts.current.tester">
                                 <span translate>Early adopter</span>
                             </label>
                             <p translate>

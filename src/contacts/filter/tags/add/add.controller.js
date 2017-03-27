@@ -7,10 +7,11 @@ class AddTagController {
     selectedContacts;
 
     constructor(
-        $scope,
+        $rootScope, $scope,
         contactsTags, contacts,
         selectedContacts
     ) {
+        this.$rootScope = $rootScope;
         this.$scope = $scope;
         this.selectedContacts = selectedContacts;
         this.contacts = contacts;
@@ -22,12 +23,15 @@ class AddTagController {
         if (!tagToAdd) {
             return;
         }
+        let newTags;
         if (isArray(tagToAdd)) {
+            newTags = angular.copy(tagToAdd);
             tagToAdd = joinComma(tagToAdd);
+        } else {
+            newTags = [tagToAdd];
         }
         return this.contactsTags.tagContact(this.selectedContacts, tagToAdd).then(() => {
-            this.contacts.load(true);
-            this.contactsTags.load();
+            this.$rootScope.$emit('contactTagsAdded', {tags: newTags, contactIds: this.selectedContacts});
             this.$scope.$hide();
         });
     }

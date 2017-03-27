@@ -1,4 +1,5 @@
 import map from 'lodash/fp/map';
+import round from 'lodash/fp/round';
 import sum from 'lodash/fp/sum';
 
 class BalancesController {
@@ -36,7 +37,7 @@ class BalancesController {
         });
         this.designationAccounts.load(true).then(() => {
             const balances = map(acct => acct.converted_balance, this.designationAccounts.data);
-            this.balance = sum(balances);
+            this.balance = round(sum(balances));
         });
     }
 }

@@ -16,11 +16,12 @@ class ContactController {
     users;
 
     constructor(
-        $log, $state, $stateParams, $location, $anchorScroll, blockUI, gettextCatalog, help,
+        $log, $rootScope, $state, $stateParams, $location, $anchorScroll, blockUI, gettextCatalog, help,
         alerts, modal, contacts, tasks, contactFilter, users
     ) {
         this.$anchorScroll = $anchorScroll;
         this.$log = $log;
+        this.$rootScope = $rootScope;
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.$location = $location;
@@ -110,6 +111,10 @@ class ContactController {
 
         return this.contacts.save(patch).then((data) => {
             this.contact.updated_in_db_at = data.updated_in_db_at;
+            if (patch.tag_list) {
+                const tags = patch.tag_list.split(',');
+                this.$rootScope.$emit('contactTagsAdded', {tags: tags});
+            }
             this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
         }).catch(() => {
             this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'));

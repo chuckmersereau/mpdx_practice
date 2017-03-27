@@ -12,7 +12,7 @@
     <i class="fa fa-warning"></i>
     <strong translate>DO NOT MERGE MINISTRY ACCOUNTS THROUGH MPDX</strong>
 </div>
-<div ng-if="$ctrl.preferencesMerges.data.mergeable_accounts.length == 0">
+<div ng-if="$ctrl.users.current.account_lists.length == 1">
     <p>
         <i class="fa-warning fa"></i>
         <translate>
@@ -22,7 +22,7 @@
         </translate>
     </p>
 </div>
-<div ng-if="$ctrl.users.current.account_lists.length > 0">
+<div ng-if="$ctrl.users.current.account_lists.length > 1">
     <div class="row-fluid">
         <div class="col-sm-6 well border-primary">
             <label for="from" translate>

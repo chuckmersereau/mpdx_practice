@@ -23,7 +23,7 @@ class AccountsService {
         this.analytics = null;
         this.current = null;
         this.data = {};
-        this.defaultIncludes = 'notification_preferences';
+        this.defaultIncludes = 'notification_preferences,notification_preferences.notification_type';
         this.donations = null;
         this.inviteList = null;
         this.userList = null;

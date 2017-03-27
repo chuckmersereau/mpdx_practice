@@ -1,3 +1,9 @@
+import concat from 'lodash/fp/concat';
+import find from 'lodash/fp/find';
+import includes from 'lodash/fp/includes';
+const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
+import uuid from 'uuid/v1';
+
 class NotificationPreferencesController {
     accounts;
     alerts;
@@ -21,30 +27,41 @@ class NotificationPreferencesController {
         $rootScope.$on('accountListUpdated', () => {
             this.init();
         });
-
-        this.notificationTypes = _.map(_.keys(serverConstants.data.notifications), (key) => {
-            return {id: key, value: serverConstants.data.notifications[key]};
-        });
+    }
+    $onInit() {
+        this.init();
+    }
+    init() {
+        this.notifications = reduce((result, value, key) => {
+            const notificationType = find(pref => pref.notification_type.id === key, this.accounts.current.notification_preferences) || {id: uuid(), actions: []};
+            result = concat(result, {
+                id: notificationType.id,
+                key: key,
+                title: value,
+                email: includes('email', notificationType.actions),
+                task: includes('task', notificationType.actions)
+            });
+            return result;
+        }, [], this.serverConstants.data.notifications);
     }
     save() {
         this.saving = true;
+        this.accounts.current.notification_preferences = reduce((result, value) => {
+            let notificationType = find({id: value.id}, this.accounts.current.notification_preferences) || {id: uuid(), notification_type: {id: value.key}, actions: []};
+            notificationType.actions = [];
+            if (value.email) {
+                notificationType.actions = concat(notificationType.actions, 'email');
+            }
+            if (value.task) {
+                notificationType.actions = concat(notificationType.actions, 'task');
+            }
+            return concat(result, notificationType);
+        }, [], this.notifications);
         return this.accounts.saveCurrent().then(() => {
             this.alerts.addAlert('Notifications saved successfully', 'success');
             this.onSave();
             this.saving = false;
         });
-    }
-    toggleNotification(e, id, notificationType) {
-        let notification = _.find(this.accounts.current.notification_preferences, {id: id});
-        if (!notification) {
-            this.accounts.current.notification_preferences.push({id: id, actions: []});
-            notification = _.last(this.accounts.current.notification_preferences);
-        }
-        if (e.target.checked) {
-            notification.actions.push(notificationType);
-        } else {
-            notification.actions = _.reject(notification.actions, notificationType);
-        }
     }
     next() {
         this.users.current.options.setup_position.value = '';

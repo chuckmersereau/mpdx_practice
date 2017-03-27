@@ -48,9 +48,17 @@ class ContactDetailsController {
     save() {
         if (this.referrer && this.referrer !== get(this.contact, 'contacts_that_referred_me[0].id')) {
             this.contact.contact_referrals_to_me = [{id: uuid(), referred_by: {id: this.referrer}}];
+            this.onSave().then(() => {
+                this.contact.contacts_that_referred_me = [{id: this.referrer}];
+            });
+        } else if (get(this.contact, 'contacts_that_referred_me[0].id')) {
+            this.contact.contact_referrals_to_me = [];
+            this.onSave().then(() => {
+                this.contact.contacts_that_referred_me = [];
+            });
+        } else {
+            this.onSave();
         }
-
-        this.onSave();
     }
 }
 const Details = {
