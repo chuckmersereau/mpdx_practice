@@ -7,7 +7,7 @@ class HomeController {
         help
     ) {
         help.suggest([
-            '58d3d70ddd8c8e7f5974d3ca',            
+            '58d3d70ddd8c8e7f5974d3ca',
             '584aced8c697912ffd6bc297',
             '58496f15c6979106d373bb65',
             '58481fd3c6979106d373b4f6',
