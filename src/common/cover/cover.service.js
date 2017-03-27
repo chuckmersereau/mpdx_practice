@@ -3,14 +3,14 @@ class BackgroundService {
     constructor() {
         this.covers = [
             {
-                'url': require('./images/bg_1.jpg'),
-                'copyright': 'Wichita Mountains National Wildlife Refuge, Oklahoma (© Tim Fitzharris/Minden Pictures)'
+                'url': require('./images/splash_sf.jpg'),
+                'copyright': 'San Francisco, California'
             }, {
-                'url': require('./images/bg_2.jpg'),
-                'copyright': 'Kintamani, Bali, Indonesia (© Bobby Joshi/500px)'
+                'url': require('./images/splash_machu.jpg'),
+                'copyright': 'Machu Picchu, Peru'
             }, {
-                'url': require('./images/bg_3.jpg'),
-                'copyright': 'Aurora borealis over the Arctic Henge in Raufarhöfn, Iceland (© Stian Rekdal/Nimia)'
+                'url': require('./images/splash_china.jpg'),
+                'copyright': 'Guilin, China'
             }
         ];
     }

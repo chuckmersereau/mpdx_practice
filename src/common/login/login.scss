@@ -1,27 +1,56 @@
 login {
+
+    
+
     .btn.btn-login {
-        font-size: 18px;
+
         padding: 20px;
         img {
             display: inline-block;
             height: 60px;
+            margin-bottom: 10px;
         }
     }
     .brand {
-        margin: 20px 0;
+        margin: 0px;
+        padding: $gutter 0;
         width: 100%;
         height: 80px;
-        background: url("images/mpdx_logo_light.png") no-repeat center center;
-        background-size: contain;
+        background: $color-primary url("images/mpdx_logo_light.png") no-repeat center center;
+        background-size: 130px;
     }
     .main-copyright {
-        color: #fff;
         a, a:link {
-            color: #fff;
-            font-weight: bold;
+            color: $color-text;
         }
     }
     cover .cover .cover-item {
-        min-width: 550px;
+        min-width: 500px;
     }
+
+    h3 {
+        margin-top: 0;
+    }
+
+    .panel {
+        border: none;
+    }
+
+    .panel-footer {
+        border: none;
+        border-top: 3px solid $color-secondary;
+        padding-top: $gutter;
+        padding-bottom: $gutter;
+        p:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .panel-body {
+        padding-left: $gutter;
+        padding-right: $gutter;
+        padding-top: $gutter;
+        padding-bottom: $gutter;
+    }
+
 }
