@@ -1,6 +1,9 @@
 import includes from 'lodash/fp/includes';
+import map from 'lodash/fp/map';
 import reject from 'lodash/fp/reject';
+import unionBy from 'lodash/fp/unionBy';
 import joinComma from "../../../common/fp/joinComma";
+import uuid from 'uuid/v1';
 
 class TagsService {
     api;
@@ -24,6 +27,13 @@ class TagsService {
 
         $rootScope.$on('accountListUpdated', () => {
             this.load();
+        });
+
+        $rootScope.$on('contactTagsAdded', (e, val) => {
+            const tags = map(obj => {
+                return {id: uuid(), name: obj};
+            }, val.tags);
+            this.data = unionBy('name', this.data, tags);
         });
     }
     load() {

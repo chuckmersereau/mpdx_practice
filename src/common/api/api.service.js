@@ -220,10 +220,11 @@ class EntityAttributes {
                 attributes: ["accepted_at", "accepted_by_user_id", "account_list_id", "cancelled_by_user_id", "code", "created_at", "invited_by_user_id", "recipient_email", "updated_at", "updated_in_db_at"]
             },
             account_lists: {
-                attributes: ["creator_id", "created_at", "monthly_goal", "name", "notification_preferences", "settings", "total_pledges", "updated_at", "updated_in_db_at"],
+                attributes: ["creator_id", "created_at", "currency", "home_country", "monthly_goal", "name", "notification_preferences", "settings", "tester", "total_pledges", "updated_at", "updated_in_db_at"],
                 notification_preferences: {
                     ref: 'id',
-                    attributes: ["actions"]
+                    attributes: ["actions", "notification_type"],
+                    notification_type: { ref: 'id' }
                 }
             },
             addresses: {
@@ -241,7 +242,7 @@ class EntityAttributes {
                 person: { ref: 'id', pluralizeType: false }
             },
             contacts: {
-                attributes: ["account_list", "addresses", "church_name", "contacts_referred_by_me", "contacts_that_referred_me", "contact_referrals_to_me", "created_at", "direct_deposit", "donor_accounts", "envelope_greeting",
+                attributes: ["account_list", "addresses", "church_name", "contacts_referred_by_me", "contact_referrals_to_me", "created_at", "direct_deposit", "donor_accounts", "envelope_greeting",
                     "first_donation_date", "full_name", "greeting",
                     "last_activity", "last_appointment", "last_donation_date", "last_letter", "likely_to_give", "last_phone_call", "last_pre_call", "last_thank", "late_at", "locale", "loser_id",
                     "magazine", "name", "next_ask", "no_appeals", "not_duplicated_with", "notes", "notes_saved_at",
@@ -284,18 +285,20 @@ class EntityAttributes {
                 contact_referrals_to_me: {
                     ref: 'id',
                     attributes: ['referred_by'],
-                    referred_by: { ref: 'id' }
+                    contacts: { ref: 'id' }
                 },
-                contacts_that_referred_me: { ref: 'id' },
                 typeForAttribute: (key) => {
-                    if (key === 'contacts_referred_by_me' || key === 'contacts_that_referred_me') {
-                        return 'contacts';
-                    } else if (key === 'primary_person') {
-                        return 'people';
-                    } else if (key === 'contact_referrals_to_me') {
-                        return 'contact_referrals';
+                    switch (key) {
+                        case 'contacts_referred_by_me':
+                        case 'referred_by':
+                            return 'contacts';
+                        case 'primary_person':
+                            return 'people';
+                        case 'contact_referrals_to_me':
+                            return 'contact_referrals';
+                        default:
+                            return key;
                     }
-                    return key;
                 }
 
             },

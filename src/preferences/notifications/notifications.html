@@ -19,18 +19,18 @@
         Select the types of notifications you'd like to receive
     </div>
     <ul class="list-group">
-        <li class="list-group-item" ng-repeat="notification in $ctrl.notificationTypes">
+        <li class="list-group-item" ng-repeat="notification in $ctrl.notifications">
             <translate>
-                {{ notification.value }}
+                {{ notification.title }}
             </translate>
             <div class="pull-right">
                 <div class="form-group">
                     <label class="checkbox-inline">
-                        <input type="checkbox" ng-checked="$ctrl.notifications[notification.id].actions.indexOf('email') !== -1" ng-click="$ctrl.toggleNotification($event, notification.id, 'email')">
+                        <input type="checkbox" ng-model="notification.email">
                         <span translate>Email me</span>
                     </label>
                     <label class="checkbox-inline">
-                        <input type="checkbox" ng-checked="$ctrl.notifications[notification.id].actions.indexOf('task') != -1" ng-click="$ctrl.toggleNotification($event, notification.id, 'task')">
+                        <input type="checkbox" ng-model="notification.task">
                         <span translate>Create a task</span>
                     </label>
                 </div>
