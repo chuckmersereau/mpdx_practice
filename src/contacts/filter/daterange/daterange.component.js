@@ -1,8 +1,11 @@
-class FilterDaterangeController {
-    constructor($element) {
-        let input = $element.find('input');
+import reduce from 'lodash/fp/reduce';
+import moment from 'moment';
 
-        this.parseCustomOptions();
+class FilterDaterangeController {
+    constructor(
+        $element
+    ) {
+        let input = $element.find('input');
 
         this.options = {
             autoUpdateInput: false,
@@ -16,21 +19,26 @@ class FilterDaterangeController {
         input.on('apply.daterangepicker', this.apply);
         input.on('cancel.daterangepicker', this.cancel);
     }
+    $onInit() {
+        this.parseCustomOptions();
+    }
     parseCustomOptions() {
-        this.ranges = {};
-        _.each(this.customOptions, (value) => {
-            this.ranges[value.name] = [moment(value.start), moment(value.end)];
-        });
+        this.ranges = reduce((result, value) => {
+            result[value.name] = [moment(value.start), moment(value.end)];
+            return result;
+        }, {}, this.customOptions);
     }
     apply(event, daterangepicker) {
-        let scope = angular.element(daterangepicker.element[0]).scope();
-        scope.this.model = daterangepicker.startDate.format('MM/DD/YYYY') + ' - ' + daterangepicker.endDate.format('MM/DD/YYYY');
+        const scope = angular.element(daterangepicker.element[0]).scope();
+        scope.$ctrl.model = daterangepicker.startDate.format('YYYY-MM-DD') + '..' + daterangepicker.endDate.format('YYYY-MM-DD');
         scope.$apply();
+        scope.$ctrl.onChange();
     }
     cancel(event, daterangepicker) {
-        let scope = angular.element(daterangepicker.element[0]).scope();
-        scope.this.model = '';
+        const scope = angular.element(daterangepicker.element[0]).scope();
+        scope.$ctrl.model = '';
         scope.$apply();
+        scope.$ctrl.onChange();
     }
 }
 

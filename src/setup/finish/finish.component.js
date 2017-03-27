@@ -14,6 +14,12 @@ class FinishController {
     next() {
         this.users.current.options.setup_position.value = '';
         this.users.setOption(this.users.current.options.setup_position).then(() => {
+            this.$state.go('tools', {setup: true});
+        });
+    }
+    dashboard() {
+        this.users.current.options.setup_position.value = '';
+        this.users.setOption(this.users.current.options.setup_position).then(() => {
             this.$state.go('home');
         });
     }

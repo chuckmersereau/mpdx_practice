@@ -20,9 +20,14 @@ class PersonService {
 
         this.includes = 'email_addresses,facebook_accounts,family_relationships,family_relationships.related_person,linkedin_accounts,master_person,phone_numbers,twitter_accounts,websites';
         this.selected = null;
+        this.data = [];
 
         $rootScope.$on('contactPersonUpdated', (e, contactId) => {
             this.list(contactId);
+        });
+
+        $rootScope.$on('accountListUpdated', (e, contactId) => {
+            this.listAll(true);
         });
     }
     create(contactId, person) {
@@ -50,6 +55,20 @@ class PersonService {
                 return person;
             }, data);
             return this.selected;
+        });
+    }
+    listAll(reset = false) {
+        if (!reset && this.data.length > 0) {
+            return this.$q.resolve(this.data);
+        }
+        return this.api.get(`contacts//people`, {
+            fields: {
+                people: 'first_name,last_name'
+            },
+            per_page: 10000
+        }).then((data) => {
+            this.data = data;
+            return data;
         });
     }
     merge(contact, winnerId, loserId) {
@@ -82,6 +101,9 @@ class PersonService {
                 locals: {
                     contact: contact,
                     person: person
+                },
+                resolve: {
+                    peopleForRelationship: () => this.listAll()
                 }
             }).then(() => this.list(contact.id));
         };

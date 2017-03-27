@@ -1,11 +1,13 @@
 class ToolsController {
-    toolsService;
+    tools;
     constructor(
-        $state,
+        $state, $stateParams,
         tools
     ) {
         this.$state = $state;
         this.tools = tools;
+
+        this.setup = $stateParams.setup;
     }
 }
 

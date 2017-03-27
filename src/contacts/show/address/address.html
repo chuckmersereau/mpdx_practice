@@ -1,6 +1,6 @@
 <div>
     <a class="pull-right edit" ng-click="$ctrl.contacts.openAddressModal($ctrl.contact, $ctrl.address)" translate>Edit</a>
-    <p>
+    <p ng-class="{strike: $ctrl.address.historic}">
         {{$ctrl.address.street}}<br />
         {{$ctrl.address.city}} {{$ctrl.address.state}} {{$ctrl.address.postal_code}}<br />
         {{$ctrl.address.country}}

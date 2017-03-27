@@ -13,9 +13,10 @@ class ContactDetailsController {
 
     constructor(
         $window, gettextCatalog,
-        alerts, contactsTags, contacts, serverConstants, users
+        alerts, api, contactsTags, contacts, serverConstants, users
     ) {
         this.alerts = alerts;
+        this.api = api;
         this.contacts = contacts;
         this.contactsTags = contactsTags;
         this.gettextCatalog = gettextCatalog;
@@ -47,9 +48,52 @@ class ContactDetailsController {
     }
     save() {
         if (this.referrer && this.referrer !== get(this.contact, 'contacts_that_referred_me[0].id')) {
-            this.contact.contact_referrals_to_me = [{id: uuid(), referred_by: {id: this.referrer}}];
-            this.onSave().then(() => {
+            // this.contact.contact_referrals_to_me = [{id: uuid(), referred_by: {id: this.referrer}}];
+            //awful, but it just won't serialize all the custom types
+            const newId = uuid();
+            const request = {
+                "included": [
+                    {
+                        "type": "contact_referrals",
+                        "id": newId,
+                        "relationships": {
+                            "referred_by": {
+                                "data": {
+                                    "type": "contacts",
+                                    "id": this.referrer
+                                }
+                            }
+                        }
+                    }
+                ],
+                "data": {
+                    "type": "contacts",
+                    "id": this.contact.id,
+                    "attributes": {
+                        "updated_in_db_at": this.contact.updated_in_db_at
+                    },
+                    "relationships": {
+                        "contact_referrals_to_me": {
+                            "data": [
+                                {
+                                    "type": "contact_referrals",
+                                    "id": newId
+                                }
+                            ]
+                        }
+                    }
+                }
+            };
+            this.api.put({
+                url: `contacts/${this.contact.id}`,
+                data: request,
+                doSerialization: false
+            }).then((data) => {
+                this.contact.updated_in_db_at = data.updated_in_db_at;
                 this.contact.contacts_that_referred_me = [{id: this.referrer}];
+                this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
+            }).catch(() => {
+                this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'error');
             });
         } else if (get(this.contact, 'contacts_that_referred_me[0].id')) {
             this.contact.contact_referrals_to_me = [];

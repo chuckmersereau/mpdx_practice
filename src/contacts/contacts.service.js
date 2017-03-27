@@ -151,7 +151,7 @@ class ContactsService {
                 include: 'addresses,people,people.facebook_accounts,people.phone_numbers,people.email_addresses',
                 fields: {
                     people: 'deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
-                    addresses: 'city,primary_mailing_address,postal_code,state,geo,street,updated_in_db_at',
+                    addresses: 'city,historic,primary_mailing_address,postal_code,state,geo,street,updated_in_db_at',
                     email_addresses: 'email,historic,primary',
                     phone_numbers: 'historic,location,number,primary',
                     facebook_accounts: 'username'

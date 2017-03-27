@@ -5,21 +5,25 @@ import uuid from 'uuid/v1';
 import createPatch from "../../../../common/fp/createPatch";
 
 class PersonModalController {
+    alerts;
     contact;
     people;
     contacts;
 
     constructor(
         $log, $scope, gettextCatalog,
-        people, contact, locale, modal, person
+        alerts, people, locale, modal,
+        contact, peopleForRelationship, person
     ) {
         this.$log = $log;
         this.$scope = $scope;
+        this.alerts = alerts;
         this.contact = contact;
         this.gettextCatalog = gettextCatalog;
         this.locale = locale;
         this.modal = modal;
         this.people = people;
+        this.peopleForRelationship = peopleForRelationship;
         this.person = person;
 
         this.personDetails = '';
@@ -69,12 +73,18 @@ class PersonModalController {
             this.$log.debug('person patch', patch);
             return this.people.save(this.contact.id, patch).then(() => {
                 this.$log.debug('person saved:', this.person);
+                this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
                 this.$scope.$hide();
+            }).catch(() => {
+                this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'error');
             });
         } else {
             return this.people.create(this.contact.id, this.person).then(() => {
                 this.$log.debug('person created:', this.person);
+                this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
                 this.$scope.$hide();
+            }).catch(() => {
+                this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'error');
             });
         }
     }
