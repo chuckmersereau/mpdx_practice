@@ -1,4 +1,4 @@
-<modal title="{{'Edit Task' | translate}}" on-close="$hide()">
+<modal title="{{'Edit Task' | translate}}" on-close="$hide()" hide-footer='true'>
     <form class="modal-body" name="bulkLogTaskForm" ng-submit="$ctrl.submit()">
     <div class="form-group">
         <label for="subject"><translate>Subject</translate> <span class="text-danger">*</span></label>
@@ -105,9 +105,9 @@
         <input class="form-control" id='comment' ng-model="$ctrl.comment"/>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-danger pull-left" ng-click="$ctrl.deleteTask();" translate>Delete</button>
         <button type="submit" class="btn btn-primary" ng-disabled="bulkLogTaskForm.$invalid" translate>Save</button>
         <button type="button" class="btn btn-default" ng-click="$hide()" translate>Close</button>
+        <button type="button" class="btn btn-danger pull-right" ng-click="$ctrl.deleteTask();" translate>Delete</button>
     </div>
     </form>
 </modal>
