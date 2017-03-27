@@ -7,6 +7,7 @@ class AccountsController {
         this.$state = $state;
 
         help.suggest([
+            '58d3d70ddd8c8e7f5974d3ca',            
             '57e2f280c697910d0784d307'
         ]);
     }
