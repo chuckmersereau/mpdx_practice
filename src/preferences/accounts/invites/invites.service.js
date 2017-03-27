@@ -6,9 +6,6 @@ class InvitesService {
     ) {
         this.api = api;
     }
-    destroy(id) {
-        return this.api.delete(`account_lists/${this.api.account_list_id}/invites/${id}`);
-    }
     create(email) {
         return this.api.post({
             url: `account_lists/${this.api.account_list_id}/invites`,

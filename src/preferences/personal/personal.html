@@ -186,8 +186,8 @@
                         <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('default_account_list') }"></i>
                         <span translate>Default Account</span>
                     </div>
-                    <div class="col-sm-6 pref-current">
-                        {{$ctrl.accounts.current.name}}
+                    <div class="col-sm-6 pref-current" ng-repeat="account in $ctrl.users.current.account_lists" ng-if="account.id === $ctrl.users.current.preferences.default_account_list">
+                        {{account.name}}
                     </div>
                 </div>
             </div>

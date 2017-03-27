@@ -1,3 +1,7 @@
+import each from 'lodash/fp/each';
+import filter from 'lodash/fp/filter';
+import map from 'lodash/fp/map';
+
 class ContactsReconcilePartnersController {
     api;
     contactReconciler;
@@ -29,26 +33,22 @@ class ContactsReconcilePartnersController {
 
         let promises = [];
 
-        const contactsToMerge = _.filter(this.contactReconciler.duplicateContacts, duplicateContact => (duplicateContact.mergeChoice === 0 || duplicateContact.mergeChoice === 1));
-        const contactsToIgnore = _.filter(this.contactReconciler.duplicateContacts, duplicateContact => duplicateContact.mergeChoice === 2);
+        const contactsToMerge = filter(duplicateContact => (duplicateContact.mergeChoice === 0 || duplicateContact.mergeChoice === 1), this.contactReconciler.duplicateContacts);
+        const contactsToIgnore = filter(duplicateContact => duplicateContact.mergeChoice === 2, this.contactReconciler.duplicateContacts);
 
         if (contactsToMerge.length > 0) {
-            let winnersAndLosers = [];
-
-            _.each(contactsToMerge, (duplicateContact) => {
+            const winnersAndLosers = map(duplicateContact => {
                 if (duplicateContact.mergeChoice === 0) {
-                    winnersAndLosers.push({winner_id: duplicateContact.contacts[0].id, loser_id: duplicateContact.contacts[1].id});
-                } else {
-                    winnersAndLosers.push({winner_id: duplicateContact.contacts[1].id, loser_id: duplicateContact.contacts[0].id});
+                    return { winner_id: duplicateContact.contacts[0].id, loser_id: duplicateContact.contacts[1].id };
                 }
-            });
-
+                return { winner_id: duplicateContact.contacts[1].id, loser_id: duplicateContact.contacts[0].id };
+            }, contactsToMerge);
             promises.push(this.contactReconciler.mergeContacts(winnersAndLosers));
         }
 
-        _.each(contactsToIgnore, (duplicateContact) => {
+        each(duplicateContact => {
             promises.push(this.contactReconciler.ignoreDuplicateContacts(duplicateContact));
-        });
+        }, contactsToIgnore);
 
         this.$q.all(promises).then(() => {
             this.blockUI.stop();
@@ -61,7 +61,7 @@ class ContactsReconcilePartnersController {
     }
 
     confirmButtonText(confirmAndContinue) {
-        let count = _.filter(this.contactReconciler.duplicateContacts, duplicateContact => (duplicateContact.mergeChoice !== -1)).length;
+        let count = filter(duplicateContact => (duplicateContact.mergeChoice !== -1), this.contactReconciler.duplicateContacts).length;
         if (count === 0) {
             return `No Selection`;
         } else {
@@ -70,14 +70,13 @@ class ContactsReconcilePartnersController {
     }
 
     confirmButtonDisabled() {
-        let count = _.filter(this.contactReconciler.duplicateContacts, duplicateContact => (duplicateContact.mergeChoice !== -1)).length;
+        let count = filter(duplicateContact => (duplicateContact.mergeChoice !== -1), this.contactReconciler.duplicateContacts).length;
         return count === 0;
     }
 }
 const ReconcilePartners = {
     controller: ContactsReconcilePartnersController,
-    template: require('./reconcilePartners.html'),
-    bindings: {}
+    template: require('./reconcilePartners.html')
 };
 
 export default angular.module('mpdx.contacts.reconcilePartners.component', [])

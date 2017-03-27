@@ -1,3 +1,7 @@
+import each from 'lodash/fp/each';
+import filter from 'lodash/fp/filter';
+import map from 'lodash/fp/map';
+
 class ContactsReconcileIndividualsController {
     api;
     contactReconciler;
@@ -12,8 +16,6 @@ class ContactsReconcileIndividualsController {
         this.blockUI = blockUI.instances.get('find-duplicates');
         this.api = api;
         this.contactReconciler = contactReconciler;
-
-        this.contactReconciler.fetchDuplicatePeople();
     }
 
     useThisOne(duplicatePerson, mergeChoice = -1) {
@@ -29,26 +31,23 @@ class ContactsReconcileIndividualsController {
 
         let promises = [];
 
-        const peopleToMerge = _.filter(this.contactReconciler.duplicatePeople, duplicatePerson => (duplicatePerson.mergeChoice === 0 || duplicatePerson.mergeChoice === 1));
-        const peopleToIgnore = _.filter(this.contactReconciler.duplicatePeople, duplicatePerson => duplicatePerson.mergeChoice === 2);
+        const peopleToMerge = filter(duplicatePerson => (duplicatePerson.mergeChoice === 0 || duplicatePerson.mergeChoice === 1), this.contactReconciler.duplicatePeople);
+        const peopleToIgnore = filter({mergeChoice: 2}, this.contactReconciler.duplicatePeople);
 
         if (peopleToMerge.length > 0) {
-            let winnersAndLosers = [];
-
-            _.each(peopleToMerge, (duplicatePerson) => {
+            const winnersAndLosers = map(duplicatePerson => {
                 if (duplicatePerson.mergeChoice === 0) {
-                    winnersAndLosers.push({winner_id: duplicatePerson.people[0].id, loser_id: duplicatePerson.people[1].id});
-                } else {
-                    winnersAndLosers.push({winner_id: duplicatePerson.people[1].id, loser_id: duplicatePerson.people[0].id});
+                    return {winner_id: duplicatePerson.people[0].id, loser_id: duplicatePerson.people[1].id};
                 }
-            });
+                return {winner_id: duplicatePerson.people[1].id, loser_id: duplicatePerson.people[0].id};
+            }, peopleToMerge);
 
             promises.push(this.contactReconciler.mergePeople(winnersAndLosers));
         }
 
-        _.each(peopleToIgnore, (duplicatePerson) => {
+        each(duplicatePerson => {
             promises.push(this.contactReconciler.ignoreDuplicatePeople(duplicatePerson));
-        });
+        }, peopleToIgnore);
 
         this.$q.all(promises).then(() => {
             this.blockUI.stop();
@@ -61,7 +60,7 @@ class ContactsReconcileIndividualsController {
     }
 
     confirmButtonText(confirmAndContinue) {
-        let count = _.filter(this.contactReconciler.duplicatePeople, duplicatePerson => (duplicatePerson.mergeChoice !== -1)).length;
+        let count = filter(duplicatePerson => (duplicatePerson.mergeChoice !== -1), this.contactReconciler.duplicatePeople).length;
         if (count === 0) {
             return `No Selection`;
         } else {
@@ -70,14 +69,13 @@ class ContactsReconcileIndividualsController {
     }
 
     confirmButtonDisabled() {
-        let count = _.filter(this.contactReconciler.duplicatePeople, duplicatePerson => (duplicatePerson.mergeChoice !== -1)).length;
+        let count = filter(duplicatePerson => (duplicatePerson.mergeChoice !== -1), this.contactReconciler.duplicatePeople).length;
         return count === 0;
     }
 }
 const ReconcileIndividuals = {
     controller: ContactsReconcileIndividualsController,
-    template: require('./reconcileIndividuals.html'),
-    bindings: {}
+    template: require('./reconcileIndividuals.html')
 };
 
 export default angular.module('mpdx.contacts.reconcileIndividuals.component', [])
