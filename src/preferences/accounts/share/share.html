@@ -3,7 +3,7 @@
         Share this ministry account with other team members
     </div>
     <div class="col-md-8 pref-content">
-        <div class="alert alert-warning" ng-if="$ctrl.users.data.manager" translate>
+        <div class="alert alert-warning" translate>
             If you want to allow another mpdx user to have access to this ministry account,
             you can share access with them. Make sure you have the proper permissions and
             leadership consensus around this sharing before you do this. You will be able to remove access later.
@@ -25,7 +25,7 @@
                     <span ng-if="user.method.type == 'mpdx'" data-toggle="tooltip" data-placement="top" title="{{ 'Manually added by MPDX support' | translate }}">
                         <i class="fa fa-info-circle"></i>
                     </span>
-                    <span ng-if="$ctrl.users.current.manager && user.deletable">
+                    <span ng-if="user.id !== $ctrl.users.current.id">
                         <button class="btn btn-xxs btn-danger" ng-click="$ctrl.removeUser(user.id)" ng-disabled="$ctrl.saving"><i class="fa fa-remove"></i> <span translate>Delete</span></button>
                     </span>
                 </li>
@@ -37,14 +37,12 @@
                 <li ng-repeat="user in $ctrl.accounts.inviteList">
                     {{user.recipient_email}}
                     <i>(<span translate>Sent by</span> {{user.invited_by_user.first_name}} {{user.invited_by_user.last_name}})</i>
-                    <span ng-if="$ctrl.users.current.manager">
-                        <button class="btn btn-xxs btn-danger" ng-click="$ctrl.cancelInvite(user.id)" ng-disabled="$ctrl.saving"><i class="fa fa-remove"></i> <translate>Cancel</translate></button>
-                    </span>
+                    <button class="btn btn-xxs btn-danger" ng-click="$ctrl.cancelInvite(user.id)" ng-disabled="$ctrl.saving"><i class="fa fa-remove"></i> <translate>Cancel</translate></button>
                 </li>
             </ul>
         </div>
 
-        <div ng-if="$ctrl.users.current.manager" class="well">
+        <div class="well">
             <strong translate>Invite someone to share this account:</strong>
             <invite-preferences></invite-preferences>
         </div>

@@ -71,7 +71,7 @@ class ReconcilerService {
             data: {
                 include: 'people,people.phone_numbers,people.email_addresses',
                 fields: {
-                    people: 'email_addresses,phone_numbers,first_name,last_name',
+                    people: 'avatar,email_addresses,phone_numbers,first_name,last_name',
                     phone_numbers: 'primary,number',
                     email_addresses: 'primary,email'
                 },

@@ -54,21 +54,32 @@ class AccountsService {
         });
     }
     destroyInvite(id) {
-        return this.api.delete(`account_lists/${this.api.account_list_id}/invites/${id}`);
+        return this.api.delete({url: `account_lists/${this.api.account_list_id}/invites/${id}`, type: 'account_list_invites'});
     }
     destroyUser(id) {
         return this.api.delete(`account_lists/${this.api.account_list_id}/users/${id}`);
     }
     listInvites() {
         this.inviteList = null;
-        return this.api.get(`account_lists/${this.api.account_list_id}/invites`, {include: 'invited_by_user'}).then((data) => {
+        return this.api.get(`account_lists/${this.api.account_list_id}/invites`, {
+            include: 'invited_by_user',
+            fields: {
+                contacts: 'first_name, last_name'
+            }
+        }).then((data) => {
             this.inviteList = data;
             this.$log.debug('account_lists/invites', this.inviteList);
         });
     }
     listUsers() {
         this.userList = null;
-        this.api.get(`account_lists/${this.api.account_list_id}/users`, {include: 'email_addresses'}).then((data) => {
+        this.api.get(`account_lists/${this.api.account_list_id}/users`, {
+            include: 'email_addresses',
+            fields: {
+                email_addresses: 'email,primary',
+                users: 'email_addresses,first_name,last_name'
+            }
+        }).then((data) => {
             this.$log.debug('account_lists/users:', data);
             this.userList = data;
         });
