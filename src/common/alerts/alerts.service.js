@@ -12,7 +12,7 @@ class AlertsService {
         this.$alert({
             content: message,
             type: type || 'success',
-            duration: displayTime || 3,
+            duration: displayTime || 5,
             placement: 'top-right'
         });
     };

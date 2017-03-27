@@ -97,7 +97,8 @@
                             <contacts-filter-daterange
                                 model="$ctrl.contactFilter.params[filter.name]"
                                 locale="{ applyLabel: '{{ 'Filter' | translate }}', cancelLabel: '{{ 'Clear' | translate }}' }"
-                                custom-options="filter.options">
+                                custom-options="filter.options"
+                                on-change="$ctrl.contactFilter.change()">
                             </contacts-filter-daterange>
                         </div>
                         <div class="filter_text" ng-if="filter.type == 'text'">

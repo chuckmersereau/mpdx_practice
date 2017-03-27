@@ -251,7 +251,7 @@ class EntityAttributes {
                 ],
                 addresses: {
                     ref: 'id',
-                    attributes: ["city", "postal_code", "state", "street"]
+                    attributes: ["city", "historic", "postal_code", "state", "street"]
                 },
                 people: {
                     ref: 'id',
@@ -300,7 +300,6 @@ class EntityAttributes {
                             return key;
                     }
                 }
-
             },
             donations: {
                 attributes: ["amount", "appeal", "appeal_amount", "channel", "created_at", "designation_account", "donation_date", "donor_account", "motivation", "payment_method", "payment_type", "remote_id", "tendered_currency", "tendered_amount", "currency", "memo", "updated_at", "updated_in_db_at"],

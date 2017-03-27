@@ -194,7 +194,10 @@ export default class Routes {
             title: 'Tools',
             url: '/tools',
             component: 'tools',
-            parent: 'root'
+            parent: 'root',
+            params: {
+                setup: false
+            }
         }).state({
             name: 'tools.importFromCSV',
             title: 'Import from CSV',
@@ -209,7 +212,10 @@ export default class Routes {
             name: 'tools.importFromTNT',
             title: 'Import from TNT',
             url: '/import-from-tnt',
-            component: 'tntImportForm'
+            component: 'tntImportForm',
+            resolve: {
+                another: /*@ngInject*/ (contactsTags) => contactsTags.load()
+            }
         }).state({
             name: 'unavailable',
             title: 'Unavailable',

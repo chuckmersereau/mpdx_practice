@@ -15,7 +15,8 @@ const Relationships = {
         contact: '<',
         familyRelationship: '=',
         person: '=',
-        onRemove: '&'
+        onRemove: '&',
+        peopleForRelationship: '<'
     }
 };
 

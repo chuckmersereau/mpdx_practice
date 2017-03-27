@@ -28,9 +28,13 @@
     </div>
 </div>
 <ui-view>
+    <div ng-if="$ctrl.setup" class="setup">
+        <i class="ci ci-alert"></i>
+        <translate>Select one of the highlighted tools below to begin importing your data.</translate>
+    </div>
     <div class="tools row">
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="tool in $ctrl.tools.data" ng-if="tool.enabled">
-            <div class="tool" ng-click="$ctrl.$state.go(tool.link)">
+            <div class="tool" ng-click="$ctrl.$state.go(tool.link)" ng-class="{selected: $ctrl.setup && $index > 0 && $index < 4}">
                 <div class="icon">
                     <i class="{{tool.icon}}"></i>
                 </div>

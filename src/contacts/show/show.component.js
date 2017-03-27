@@ -17,7 +17,7 @@ class ContactController {
 
     constructor(
         $log, $rootScope, $state, $stateParams, $location, $anchorScroll, blockUI, gettextCatalog, help,
-        alerts, modal, contacts, tasks, contactFilter, users
+        alerts, modal, contacts, tasks, contactFilter, people, users
     ) {
         this.$anchorScroll = $anchorScroll;
         this.$log = $log;
@@ -31,6 +31,7 @@ class ContactController {
         this.contactFilter = contactFilter;
         this.gettextCatalog = gettextCatalog;
         this.modal = modal;
+        this.people = people;
         this.tasks = tasks;
         this.users = users;
 
@@ -99,6 +100,9 @@ class ContactController {
             '58471fd6903360069817752e'
         ]);
     }
+    $onInit() {
+        this.people.listAll(); //lazy load people so the people modal feels snappy
+    }
     $onChanges() {
         this.$log.debug('selected contact: ', this.contact);
         this.contactInitialState = angular.copy(this.contact);
@@ -117,7 +121,7 @@ class ContactController {
             }
             this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
         }).catch(() => {
-            this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'));
+            this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'error');
         });
     }
     onPrimary(personId) {
