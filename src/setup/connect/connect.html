@@ -1,30 +1,26 @@
 <cover>
     <div class="panel">
         <div class="panel-heading">
-            <i class="ci ci-alert text-primary"></i>
+            <img src="../../images/setup/icon_alert_2x.png" />
             <translate ng-if="$ctrl.users.organizationAccounts.length === 0">It's time to connect!</translate>
-            <translate ng-if="$ctrl.users.organizationAccounts.length > 0">Sweet! You're connected.</translate>
+            <translate ng-if="$ctrl.users.organizationAccounts.length > 0">It's time for awesome!</translate>
         </div>
-        <div class="panel-body">
-            <div ng-if="$ctrl.users.organizationAccounts.length === 0" translate>
-                First, connect your organization to your MPDX account. This will allow MPDX to automatically synchronize your donation information.
+        <div class="panel-body text-center">
+            <div ng-if="$ctrl.users.organizationAccounts.length === 0">
+                <h2 translate>First, connect your organization to your MPDX account.</h2>
+                <p>This will allow MPDX to automatically synchronize your donation information.</p>
             </div>
             <div ng-if="$ctrl.users.organizationAccounts.length > 0">
+                <h2 translate>Sweet! You're connected.</h2>
                 <ul class="list-unstyled">
                     <li ng-repeat="account in $ctrl.users.organizationAccounts">{{account.organization.name}}</li>
                 </ul>
-                <a ng-click="$ctrl.next()" class="btn btn-block btn-primary" translate>Hooray! Take me into MPDX</a>
-                <hr>
-                <h3 translate>
-                    Do you receive donations in any other country or from any other organizations?
-                </h3>
-                <p translate>
-                    Now would be a great time to connect them to your MPDX Account. Don't worry, you can always add them in later.
-                </p>
+                <p><a ng-click="$ctrl.next()" class="btn btn-block btn-primary" translate>Hooray! Take me into MPDX</a></p>
+                <h3 translate>Do you receive donations in any other country or from any other organizations?</h3>
+                <p translate>Now would be a great time to connect them to your MPDX Account. Don't worry, you can always add them in later.</p>
             </div>
-            <hr>
             <div class="text-left">
-                <label for="organization" translate>Organization</label>
+                <label for="organization" class="hide-desktop" translate>Organization</label>
                 <select ng-model="$ctrl.organization" id="organization" ng-options="key as val for (key, val) in $ctrl.serverConstants.data.organizations" chosen>
                     <option value=""></option>
                 </select>
@@ -39,17 +35,11 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="panel-footer text-right">
-            <a ng-click="$ctrl.reset()" class="btn btn-default pull-left" ng-if="$ctrl.connecting" translate>Cancel</a>
-            <a ng-click="$ctrl.connect()" class="btn btn-primary" ng-if="!$ctrl.connecting">
-                <translate>Connect</translate>
-                <i class="fa fa-angle-right"></i>
-            </a>
-            <a ng-click="$ctrl.add()" class="btn btn-primary" ng-if="$ctrl.connecting">
-                <translate>Add Account</translate>
-                <i class="fa fa-angle-right"></i>
-            </a>
+            <div class="panel__connect-links">
+                <a ng-click="$ctrl.reset()" class="btn btn-gray btn-sm pull-left" ng-if="$ctrl.connecting" translate>Cancel</a>
+                <a ng-click="$ctrl.connect()" class="btn btn-primary btn-sm" ng-if="!$ctrl.connecting" translate>Connect</a>
+                <a ng-click="$ctrl.add()" class="btn btn-primary btn-sm pull-right" ng-if="$ctrl.connecting" translate>Add Account</a>
+            </div>
         </div>
     </div>
 </cover>
