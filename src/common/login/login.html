@@ -1,10 +1,12 @@
 <cover>
     <div class="brand"></div>
-    <div class="panel">
-        <div class="panel-heading" translate>
-            Log in to Get Started
-        </div>
+    <div class="panel text-center">
         <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3 translate>Log in to Get Started</h3>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-sm-6 text-center">
                     <a class="btn btn-block btn-default btn-login" ng-href="{{$ctrl.loginUrl}}&theme=relay">
@@ -21,12 +23,15 @@
             </div>
         </div>
         <div class="panel-footer text-center">
-            <a href="http://mpdx.cru.org/" target="_blank" translate>Learn More About MPDX and How it can help you!</a>
-            <br />
-            <translate>Don't have a Key account?</translate>
-            <a href="https://thekey.me/cas/service/selfservice?service=https%3A%2F%2Fmpdx.org%2Fauth%2Fkey%2Fcallback%3Forigin%3Dlogin%26url%3Dhttps%253A%252F%252Fmpdx.org%252Flogin&target=signup" translate>
-                Create An Account
-            </a>
+            <p>
+                <a href="http://mpdx.cru.org/" target="_blank" translate>Learn More About MPDX and How it can help you!</a>
+            </p>
+            <p>
+                <translate>Don't have a Key account?</translate>
+                <a href="https://thekey.me/cas/service/selfservice?service=https%3A%2F%2Fmpdx.org%2Fauth%2Fkey%2Fcallback%3Forigin%3Dlogin%26url%3Dhttps%253A%252F%252Fmpdx.org%252Flogin&target=signup" translate>
+                    Create An Account
+                </a>
+            </p>
         </div>
     </div>
     <div class="main-copyright text-center"><a href="https://www.cru.org/" target="_blank">Cru</a> &copy; <translate>Copyright</translate> {{$ctrl.year}}</div>
