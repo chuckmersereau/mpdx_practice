@@ -1,4 +1,4 @@
-setup-start, setup-connect{
+setup-start, setup-connect, setup-finish {
 
     .h2, h2 {
         font-weight: 600;
@@ -53,6 +53,7 @@ setup-start, setup-connect{
         }
         p {
             margin-bottom: $font-size-lg;
+            &:last-child {margin-bottom: 0;}
         }
         .list-unstyled {
             border: $cru-gray-silver 1px solid;
@@ -105,3 +106,5 @@ setup-start, setup-connect{
     }
 
 }
+
+setup-finish .panel-heading {line-height: 44px;}
