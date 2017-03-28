@@ -1,116 +1,78 @@
-<div class="tasks-component">
-  <table class="table tasks-table" bs-collapse data-start-collapsed="true" ng-show="$ctrl.tasks.meta[$ctrl.key].pagination.total_count || $ctrl.tasks.sort == $ctrl.sortkey">
-    <tr class="header-row">
-      <th ng-style="{'border-bottom': '4px solid ' + $ctrl.color}"
-          colspan="100"
-          class="ng-binding pl0 pr0">
-        <span class="tasks-title">
-          {{ $ctrl.title }}
-        </span>
-        <span class="actions task-actions" ng-show="$ctrl.selected.length">
-          <a class="btn btn-xs btn-default" ng-click="$ctrl.bulkCompleteTasks()" ng-hide="$ctrl.key === 'allCompleted'" translate>Complete Selected</a>
-          <a class="btn btn-xs btn-default" ng-click="$ctrl.bulkDeleteTasks()" translate>Delete Selected</a>
-          <a class="btn btn-xs btn-default" ng-click="$ctrl.openBulkEditTaskModal()" translate>Edit Selected</a>
-        </span>
-          <span class="label label-primary" ng-if="$ctrl.selected.length > 0">
-                {{$ctrl.selected.length }} <span translate>Selected</span>
-                <a href="javascript:;" class="label-action" ng-click="$ctrl.toggleAll()"><i class="fa fa-times"></i></a>
-          </span>&nbsp;
-          <small>
-              <a href="javascript:;"
-                 ng-if="$ctrl.selected.length > 0 && $ctrl.selected.length < $ctrl.tasks.completeList[$ctrl.key].length"
-                 ng-click="$ctrl.toggleAll(true)">
-                  <span translate>Select all {{$ctrl.tasks.completeList[$ctrl.key].length}} contacts</span>
-              </a>
-          </small>
-        <select
-          ng-model="$ctrl.tasks.meta[$ctrl.key].pagination.per_page"
-          ng-change="$ctrl.tasks.meta[$ctrl.key].pagination.page = 1; $ctrl.load()"
-          class="form-control ng-pristine ng-untouched ng-valid ng-not-empty tasks-per-page form-inline">
-            <option ng-repeat="i in [10, 25, 50, 100, 500]" value="{{i}}" ng-selected="$ctrl.tasks.meta[$ctrl.key].pagination.per_page == i">{{i}}</option>
-        </select>
-        <span
-          class="tasks-per-page-description"
-          style="float: right" translate>
-          Show:
-        </span>
-        <a class="btn btn-xs btn-default pull-right" ng-click="$ctrl.toggleAll()" style="margin-right: 12px" translate>Select All</a>
-      </th>
-    </tr>
-    <tr ng-if="$ctrl.tasks.data[$ctrl.key].length === 0">
-      <td class="text-center" colspan="100" translate>
-        Task list empty
-      </td>
-    </tr>
-    <tr class="task-row"
-        ng-repeat-start="task in $ctrl.tasks.data[$ctrl.key]"
-        ng-click="$ctrl.toggleSelected(task)"
-        ng-class="{ 'selected-task-row': $ctrl.isSelected(task) }"
-        >
-      <td>
-        <i class="fa fa-lg fa-square-o complete_task"
-           ng-click="$ctrl.openCompleteTaskModal(task); $event.stopPropagation();"
-           data-behaviour="Done" title="{{'Done' | translate}}">
-        </i>
-      </td>
-      <td>
-        <a ng-click="$ctrl.starTask(task)"><i class="fa fa-lg starred" ng-class="task.starred ? 'fa-star' : 'fa-star-o'" ></i></a>
-      </td>
-      <td class="ut-nowrap">
-        {{ task.activity_type | translate }}
-      </td>
-      <td class="ut-nowrap">
-          {{ task.no_date ? '' : $ctrl.moment(task.start_at).format('l hh:mm a') }}
-      </td>
-      <td>
-        <a ng-click="$ctrl.openEditTaskModal(task); $event.stopPropagation();">
-            <strong>{{ task.subject }}</strong>
-            <span class="tags"><span class="tag" ng-repeat="tag in task.tag_list">{{tag}}</span></span>
-            <a ng-click="task.openContact = !task.openContact; $event.stopPropagation();" ng-repeat="contact in task.contacts">
-                ({{ contact.name }})
-            </a>
-        </a>
-      </td>
-      <td class="comments-count ut-nowrap"
-          ng-class="task.comments.length ? 'comments-count-has-comments' : ''"
-          ng-click="task.openComments = !task.openComments">
-        <i class="fa fa-commenting-o"></i>
-        {{ task.comments.length }}
-      </td>
-      <td class="ut-nowrap">
-        <i class="fa fa-trash-o trash" ng-click="$ctrl.deleteTask(task.id); $event.stopPropagation();" aria-hidden="true"></i>
-      </td>
-    </tr>
-      <tr class="comments-section" ng-if="task.openContact">
-          <td colspan="100">
-              <div class="col-sm-12" >
-                  <contacts-list-item ng-repeat="contact in task.contacts track by contact.id" view="task" contact="contact" id="contact_{{contact.id}}" data-hook="contact"></contacts-list-item>
-              </div>
-              <form class="form-inline">
-                  <input style="width: 85%" class="form-control" ng-model="$ctrl.models.comment"/>
-                  <button class="btn btn-primary" ng-click="$ctrl.newComment(task)" translate>Add Comment</button>
-              </form>
-          </td>
-      </tr>
-    <tr class="comment" ng-repeat-end ng-if="task.openComments">
-      <td colspan="100">
-        <div class="comment__single" ng-repeat="comment in task.comments">
-          <a ng-click="$ctrl.deleteComment(task, comment.id)" title="Delete Comment"><i class="fa fa-times pull-right" aria-hidden="true"></i></a>
-          <p class="comment__body">{{ comment.body }}</p>
-          <p class="comment__meta">
-            - {{ comment.person.first_name }} {{ comment.person.last_name }}, {{ $ctrl.moment(comment.created_at).format('l') }}
-          </p>
+<div class="columns columns--fixed">
+    <div class="column column--heading">
+        <div class="page-filters">
+            <div class="row">
+                <div class="col-sm-7">
+                    <tasks-search></tasks-search>
+                </div>
+                <div class="col-sm-5 text-right">
+                    <div class="btn-group">
+                        <a class="btn btn-default" ng-click="$ctrl.tasks.addModal($ctrl.contact.id)" translate>Add Task</a>
+                        <a class="btn btn-default" ng-click="$ctrl.tasks.logModal($ctrl.contact.id)" translate>Log Task</a>
+                        <div class="btn-group">
+                            <div class="dropdown">
+                                <a class="btn btn-default dropdown-toggle" bs-dropdown type="button" data-toggle="dropdown" aria-expanded="true">
+                                    <span  translate>Actions</span> <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop" ng-show="$ctrl.tasks.selected.length > 0">
+                                    <li><a ng-click="$ctrl.tasks.bulkComplete()" translate>Complete Tasks</a></li>
+                                    <li><a ng-click="$ctrl.tasks.bulkEditModal()" translate>Edit Tasks</a></li>
+                                    <li class="divider"></li>
+                                    <li><a ng-click="$ctrl.tasks.bulkDelete()" translate>Delete Tasks</a></li>
+                                </ul>
+                                <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop" ng-show="$ctrl.tasks.selected.length === 0">
+                                    <li class="dropdown-header" translate>Please select at least one task</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <a class="btn btn-default" ng-click="$ctrl.tasks.toggleAll()" translate>Select All</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <form class="form comment__form">
-          <input type="text" class="form-control" ng-model="$ctrl.models.comment"/>
-          <button class="btn btn-primary btn-xs" ng-click="$ctrl.newComment(task)" translate>Add Comment</button>
-          <a ng-click="task.openComments = !task.openComments" class="btn btn-xs btn-link">Close Comments</a>
-        </form>
-      </td>
-    </tr>
-  </table>
-  <pagination ng-if="$ctrl.tasks.data[$ctrl.key].length"
-              meta="$ctrl.tasks.meta[$ctrl.key].pagination"
-              on-change="$ctrl.onPageChange(page)">
-  </pagination>
+        <div class="row page-controls">
+            <div class="col-sm-12">
+                <translate>Showing</translate>
+                <strong>{{$ctrl.tasks.data.length || 0}}</strong>
+                <translate>of</translate>
+                <strong>{{$ctrl.tasks.completeList.length || 0}}</strong>
+                <span class="label label-primary" ng-if="$ctrl.tasks.selected.length > 0">
+                    {{$ctrl.tasks.selected.length }} <span translate>Selected</span>
+                    &nbsp;
+                    <a ng-click="$ctrl.tasks.clearSelected()"><i class="fa fa-times" ></i></a>
+                </span>&nbsp;
+                <small>
+                    <a ng-if="$ctrl.tasks.selected.length > 0 && $ctrl.tasks.selected.length < $ctrl.tasks.completeList.length" ng-click="$ctrl.tasks.selectAll()">
+                        <span translate>Select all {{$ctrl.tasks.completeList.length}} tasks</span>
+                    </a>
+                </small>
+            </div>
+            <div class="col-sm-12">
+                <tasks-list-add></tasks-list-add>
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <div ng-repeat="(name, tasks) in $ctrl.tasks.data | groupBy: 'state'" infinite-scroll="$ctrl.tasks.loadMoreTasks()">
+            <div class="panel panel-default">
+               <div class="panel-heading" ng-class="name">{{name}}</div>
+               <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="task in tasks">
+                        <tasks-list-item task="task"></tasks-list-item>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div ng-if="!$ctrl.tasks.loading && $ctrl.tasks.data.length < $ctrl.tasks.completeList.length">
+            <div class="panel panel-default">
+                <div class="panel-body text-center">
+                    <a ng-click="$ctrl.tasks.loadMoreTasks()" translate>Load More Tasks</a>
+                </div>
+            </div>
+        </div>
+        <div ng-if="$ctrl.tasks.loading" class="loading-spinner">
+            <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+            <span class="sr-only" translate>Loading</span>
+        </div>
+    </div>
 </div>

@@ -11,10 +11,12 @@ class ConfirmController {
     no() {
         this.confirmPromise.reject();
         this.$scope.$hide();
+        return this.confirmPromise.promise;
     }
     yes() {
         this.confirmPromise.resolve();
         this.$scope.$hide();
+        return this.confirmPromise.promise;
     }
 }
 

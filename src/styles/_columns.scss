@@ -1,0 +1,42 @@
+.filter-body {
+  &.without-subnav {
+    .filter-sidebar {
+      top: 103px;
+      margin-top: 0;
+    }
+    .filter-content {
+      margin-top: 0;
+    }
+  }
+
+  .filter-sidebar {
+      top: 136px;
+      bottom: 0;
+      margin-bottom: 30px;
+      margin-top: 10px;
+      position: fixed;
+      width: 265px;
+      overflow: scroll;
+  }
+
+  .nav-pills>li>a {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 14px;
+  }
+
+  .filter-content {
+    margin-top: 43px;
+  }
+
+}
+
+.nav-offset {
+  margin-top: $nav-height;
+}
+.subnav-offset {
+  margin-top: $subnav-height;
+}
+.fullnav-offset {
+  margin-top: $fullnav-height;
+}

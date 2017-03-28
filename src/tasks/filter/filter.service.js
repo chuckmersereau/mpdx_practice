@@ -1,4 +1,8 @@
 import isEmpty from 'lodash/fp/isEmpty';
+import assign from "lodash/fp/assign";
+import map from "lodash/fp/map";
+import omitBy from "lodash/fp/omitBy";
+import joinComma from "../../common/fp/joinComma";
 
 class TasksFilterService {
     api;
@@ -17,34 +21,107 @@ class TasksFilterService {
         this.data = null;
         this.params = {};
         this.wildcard_search = '';
-        this.default_params = {};
+        this.group = 'all';
+        this.defaultParamsForGroup = {
+            all: {
+                starred: null,
+                completed: null,
+                no_date: null,
+                date_range: null
+            },
+            today: {
+                starred: null,
+                completed: false,
+                no_date: false,
+                date_range: 'today'
+            },
+            overdue: {
+                starred: null,
+                completed: false,
+                no_date: false,
+                date_range: 'overdue'
+            },
+            upcoming: {
+                starred: null,
+                completed: false,
+                no_date: false,
+                date_range: 'upcoming'
+            },
+            noDueDate: {
+                starred: null,
+                completed: false,
+                no_date: true,
+                date_range: 'no_date'
+            },
+            starred: {
+                starred: true,
+                completed: null,
+                no_date: null,
+                date_range: null
+            },
+            history: {
+                starred: null,
+                completed: true,
+                no_date: null,
+                date_range: null
+            }
+        };
+        this.defaultParams = {};
     }
     load() {
         return this.filters.load({
             data: this.data,
-            defaultParams: this.default_params,
+            defaultParams: this.defaultParams,
             params: this.params,
             url: 'tasks/filters'
         }).then(({data, defaultParams, params}) => {
             this.data = data;
-            this.default_params = defaultParams;
+            this.defaultParams = defaultParams;
             this.params = params;
         });
     }
     count() {
-        return this.filters.count({ defaultParams: this.default_params, params: this.params });
-    }
-    reset() {
-        this.params = angular.copy(this.default_params);
-        this.wildcard_search = '';
-        this.tasksTags.reset();
-        this.change();
+        return this.filters.count({ defaultParams: this.defaultParams, params: this.params });
     }
     change() {
         this.$rootScope.$emit('taskFilterChange');
     }
+    reset() {
+        this.params = angular.copy(this.defaultParams);
+        this.wildcard_search = '';
+        this.tasksTags.reset();
+        this.change();
+    }
+    changeGroup(group) {
+        this.group = group;
+        const paramsForGroup = this.defaultParamsForGroup[this.group];
+        this.defaultParams = assign(this.defaultParams, paramsForGroup);
+        this.params = assign(this.params, paramsForGroup);
+        this.change();
+    }
     isResettable() {
-        return !angular.equals(this.params, this.default_params) || !isEmpty(this.wildcard_search);
+        return !angular.equals(this.params, this.defaultParams) || !isEmpty(this.wildcard_search);
+    }
+    toParams() {
+        let defaultParams = this.defaultParams || {};
+        let filters = assign(defaultParams, this.params);
+        if (this.wildcard_search) {
+            filters.wildcard_search = this.wildcard_search;
+        }
+        if (this.tasksTags.selectedTags.length > 0) {
+            filters.tags = joinComma(map('name', this.tasksTags.selectedTags));
+        } else {
+            delete filters.tags;
+        }
+        if (this.tasksTags.rejectedTags.length > 0) {
+            filters.exclude_tags = joinComma(map('name', this.tasksTags.rejectedTags));
+        } else {
+            delete filters.exclude_tags;
+        }
+        filters.account_list_id = this.api.account_list_id;
+        filters.any_tags = this.tasksTags.anyTags;
+        filters = omitBy(_.isNull, filters);
+        return filters;
     }
 }
 export default angular.module('mpdx.tasks.filter.service', [])

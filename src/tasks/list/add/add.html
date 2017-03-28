@@ -1,0 +1,9 @@
+<form ng-submit="$ctrl.save()">
+    <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-plus"></i></span>
+        <input class="form-control" type="text" placeholder="{{'New Task' | translate}}" ng-model="$ctrl.task.subject" required>
+        <span class="input-group-btn">
+            <button class="btn btn-primary" type="submit" translate>Save</button>
+        </span>
+    </div>
+</form>

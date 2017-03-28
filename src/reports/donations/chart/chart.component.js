@@ -12,6 +12,7 @@ class ChartController {
         this.gettextCatalog = gettextCatalog;
 
         this.blockUI = blockUI.instances.get('donationsChart');
+        this.noChart = true;
         this.colors = [
             { backgroundColor: '#fdb800' },
             { backgroundColor: '#df7d00' },
@@ -46,6 +47,12 @@ class ChartController {
         this.blockUI.start();
         this.donations.getDonationChart(params).then((data) => {
             this.blockUI.stop();
+            if (data.totals.length === 0) {
+                this.hasChart = false;
+                return;
+            } else {
+                this.hasChart = true;
+            }
             this.series = _.map(data.totals, (total) => total.currency);
             this.labels = _.map(data.months_to_dates, month => moment(month, 'YYYY-MM-DD').format('MMM YY'));
             this.data = _.map(data.totals, (total) => {

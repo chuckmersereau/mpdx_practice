@@ -1,78 +1,14 @@
-<div class="row">
-  <div class="col-xs-3">
-    <aside class="scrollable_left" bs-affix>
-      <tasks-filter></tasks-filter>
-    </aside>
-  </div>
-  <div class="col-xs-9">
-    <div class="sticky-page-filters" bs-affix>
-      <div class="page-filters">
-        <tasks-search search-params="$ctrl.tasksFilter.wildcard_search" on-change="$ctrl.onSearchChanged(wildcard)"></tasks-search>
+<div class="filter-body without-subnav">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="filter-sidebar">
+          <tasks-filter></tasks-filter>
       </div>
     </div>
-    <tasks-list
-        key="overdue"
-        title="{{ 'Overdue' | translate }}"
-        color="#f9b625"
-        parent-component="'tasksList'"
-        tags="$ctrl.tasksTags.selectedTags"
-        changed="$ctrl.changed"
-        sort-key="overdue"
-        ng-if="['all', 'overdue'].indexOf($ctrl.tasks.sort) + 1"></tasks-list>
-    <tasks-list
-        key="today"
-        title="{{ 'Today' | translate }}"
-        color="#f6921e"
-        parent-component="'tasksList'"
-        tags="$ctrl.tasksTags.selectedTags"
-        changed="$ctrl.changed"
-        sort-key="today"
-        ng-if="['all', 'today'].indexOf($ctrl.tasks.sort) + 1"></tasks-list>
-    <tasks-list
-        key="starred"
-        title="{{ 'Starred' | translate }}"
-        color="#56aa00"
-        parent-component="'tasksList'"
-        tags="$ctrl.tasksTags.selectedTags"
-        changed="$ctrl.changed"
-        filterChanged="$ctrl.filterChanged"
-        sort-key="starred"
-        ng-if="['all', 'starred'].indexOf($ctrl.tasks.sort) + 1"></tasks-list>
-    <tasks-list
-        key="tomorrow"
-        title="{{ 'Tomorrow' | translate }}"
-        color="#007398"
-        parent-component="'tasksList'"
-        tags="$ctrl.tasksTags.selectedTags"
-        changed="$ctrl.changed"
-        sort-key="upcoming"
-        ng-if="['all', 'upcoming'].indexOf($ctrl.tasks.sort) + 1"></tasks-list>
-    <tasks-list
-        key="upcoming"
-        title="{{ 'Upcoming' | translate }}"
-        color="#007398"
-        parent-component="'tasksList'"
-        tags="$ctrl.tasksTags.selectedTags"
-        changed="$ctrl.changed"
-        sort-key="upcoming"
-        ng-if="['all', 'upcoming'].indexOf($ctrl.tasks.sort) + 1"></tasks-list>
-    <tasks-list
-        key="noDueDate"
-        title="{{ 'No Date' | translate }}"
-        color="#3eb1c8"
-        pageparent-component="'tasksList'"
-        tags="$ctrl.tasksTags.selectedTags"
-        changed="$ctrl.changed"
-        sort-key="noDate"
-        ng-if="['all', 'noDate'].indexOf($ctrl.tasks.sort) + 1"></tasks-list>
-    <tasks-list
-        key="allCompleted"
-        title="{{ 'History' | translate }}"
-        color="#999999"
-        parent-component="'tasksList'"
-        tags="$ctrl.tasksTags.selectedTags"
-        changed="$ctrl.changed"
-        sort-key="history"
-        ng-if="['all', 'history'].indexOf($ctrl.tasks.sort) + 1"></tasks-list>
+    <div class="col-md-9">
+      <div class="filter-content">
+          <tasks-list></tasks-list>
+      </div>
+    </div>
   </div>
 </div>

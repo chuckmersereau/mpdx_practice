@@ -17,7 +17,7 @@ class CareController {
         this.watcher();
     }
     addNewsletter() {
-        this.tasks.openNewsletterModal({ onHide: () => this.load() });
+        this.tasks.newsletterModal().then(() => this.load());
     }
     load() {
         this.blockUI.start();

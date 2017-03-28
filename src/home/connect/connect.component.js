@@ -27,7 +27,7 @@ class ConnectController {
         });
     }
     addTask() {
-        this.tasks.openModal({});
+        this.tasks.addModal().then(() => this.load());
     }
     totalTasks() {
         if (this.tasks.analytics && this.tasks.analytics.tasks_overdue_or_due_today_counts) {

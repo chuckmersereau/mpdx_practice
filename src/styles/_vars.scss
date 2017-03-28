@@ -31,3 +31,7 @@ $font-size-sm:              $font-size * .9;    // 14.4px
 $font-size-xs:              $font-size * .75;   // 12px
 $gutter:                    30px;
 $border-radius:             3px;
+
+$nav-height: 103px;
+$subnav-height: 33px;
+$fullnav-height: $nav-height + $subnav-height;

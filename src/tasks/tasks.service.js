@@ -1,154 +1,128 @@
 import uuid from 'uuid/v1';
-import assign from "lodash/fp/assign";
-import each from "lodash/fp/each";
-import isEmpty from "lodash/fp/isEmpty";
-import map from "lodash/fp/map";
-import noop from "lodash/fp/noop";
-import reduce from "lodash/fp/reduce";
-import reject from "lodash/fp/reject";
-import joinComma from "../common/fp/joinComma";
+import concat from 'lodash/fp/concat';
+import assign from 'lodash/fp/assign';
+import each from 'lodash/fp/each';
+import find from 'lodash/fp/find';
+import includes from 'lodash/fp/includes';
+import isEmpty from 'lodash/fp/isEmpty';
+import map from 'lodash/fp/map';
+import pull from 'lodash/fp/pull';
+const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
+import reject from 'lodash/fp/reject';
+import joinComma from '../common/fp/joinComma';
+import union from 'lodash/fp/union';
+import unionBy from 'lodash/fp/unionBy';
 
 class TasksService {
-    api;
-    modal;
-    tasksFilter;
-    tasksTags;
-    users;
-
     constructor(
-        $log, $q, gettextCatalog,
-        modal, api, tasksFilter, tasksTags, users
+        $rootScope, $window, $log, $q, gettextCatalog, api, tasksFilter, tasksTags, users, modal, tasksModals
     ) {
+        this.moment = $window.moment;
         this.$log = $log;
         this.$q = $q;
-        this.modal = modal;
         this.api = api;
         this.gettextCatalog = gettextCatalog;
         this.tasksFilter = tasksFilter;
         this.tasksTags = tasksTags;
         this.users = users;
+        this.modal = modal;
+        this.tasksModals = tasksModals;
 
         this.analytics = null;
-        this.data = {};
-        this.sort = 'all';
-        this.completeList = {};
+        this.completeList = [];
+        this.data = [];
+        this.meta = {};
+        this.page = 1;
+        this.selected = [];
 
-        this.init();
-    }
-    init() {
-        this.pages = {
-            contactShow: ['completed', 'uncompleted'],
-            tasksList: ['today', 'overdue', 'upcoming', 'tomorrow', 'noDueDate', 'starred', 'allCompleted']
-        };
-        const DEFAULT_PAGINATION = {
-            pagination: {
-                page: 1,
-                per_page: 10
-            },
-            sort: 'start_at'
-        };
+        $rootScope.$on('taskFilterChange', () => {
+            $log.debug('tasks service: filter change');
+            this.getList(true);
+            this.getAnalytics(true);
+            this.load(true);
+        });
 
-        this.meta = {
-            completed: assign(DEFAULT_PAGINATION, {
-                sort: '-no_date,start_at'
-            }),
-            uncompleted: assign(DEFAULT_PAGINATION, {
-                sort: '-no_date,start_at'
-            }),
-            today: DEFAULT_PAGINATION,
-            overdue: DEFAULT_PAGINATION,
-            upcoming: DEFAULT_PAGINATION,
-            tomorrow: DEFAULT_PAGINATION,
-            noDueDate: DEFAULT_PAGINATION,
-            starred: DEFAULT_PAGINATION,
-            allCompleted: DEFAULT_PAGINATION
-        };
-        this.defaultFilters = {
-            completed: {
-                completed: true
-            },
-            uncompleted: {
-                completed: false
-            },
-            today: {
-                completed: false,
-                no_date: false,
-                date_range: 'today'
-            },
-            overdue: {
-                completed: false,
-                no_date: false,
-                date_range: 'overdue'
-            },
-            upcoming: {
-                completed: false,
-                no_date: false,
-                date_range: 'upcoming'
-            },
-            tomorrow: {
-                completed: false,
-                no_date: false,
-                date_range: 'tomorrow'
-            },
-            noDueDate: {
-                completed: false,
-                no_date: true,
-                date_range: 'no_date'
-            },
-            starred: {
-                starred: true,
-                completed: false
-            },
-            allCompleted: {
-                completed: true
-            }
-        };
+        $rootScope.$on('tasksTagsChanged', (event, filters) => {
+            $log.debug('tasks service: tag change', filters);
+            this.getList(true);
+            this.getAnalytics(true);
+            this.load(true);
+        });
+
+        $rootScope.$on('accountListUpdated', () => {
+            this.getList(true);
+            this.getAnalytics(true);
+            this.load(true);
+        });
+
+        this.getList(true);
+        this.load(true);
     }
-    buildFilterParams(collection) {
-        const defaultFilters = this.defaultFilters[collection];
-        const wildcardSearch = this.tasksFilter.wildcard_search;
-        let filters = assign(defaultFilters, this.tasksFilter.params);
-        if (wildcardSearch) {
-            filters.wildcard_search = wildcardSearch;
-        }
-        if (this.tasksTags.selectedTags.length > 0) {
-            filters.tags = joinComma(map('name', this.tasksTags.selectedTags));
-        } else {
-            delete filters.tags;
-        }
-        if (this.tasksTags.rejectedTags.length > 0) {
-            filters.exclude_tags = joinComma(map('name', this.tasksTags.rejectedTags));
-        } else {
-            delete filters.exclude_tags;
-        }
-        filters.account_list_id = this.api.account_list_id;
-        filters.any_tags = this.tasksTags.anyTags;
-        return filters;
-    }
-    getList(collection, reset = false) {
-        if (!reset && this.completeList[collection]) {
-            return this.$q.resolve(this.completeList);
-        }
-        this.completeList[collection] = []; // to avoid double call
-        return this.api.get('tasks', {
-            filter: this.buildFilterParams(collection),
+    get(id) {
+        return this.api.get(`tasks/${id}`, {
+            include: 'comments,comments.person,contacts,contacts.people,contacts.addresses,contacts.people.email_addresses,contacts.people.phone_numbers,contacts.people.facebook_accounts',
             fields: {
-                tasks: 'subject'
-            },
-            per_page: 25000,
-            sort: this.meta[collection].pagination.order
-        }).then((data) => {
-            this.$log.debug('tasks all', data);
-            this.completeList[collection] = data;
+                contacts: 'addresses,name,people,square_avatar',
+                addresses: 'city,primary_mailing_address,postal_code,state,street',
+                people: 'avatar,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
+                person: 'first_name,last_name',
+                email_addresses: 'email,historic,primary',
+                phone_numbers: 'historic,location,number,primary',
+                facebook_accounts: 'username'
+            }
+        }).then((task) => {
+            this.data = unionBy('id', [this.process(task)], this.data);
+            const listTask = { id: task.id, subject: task.subject, updated_in_db_at: task.updated_in_db_at };
+            this.completeList = unionBy('id', [listTask], this.completeList);
         });
     }
-    fetchTasks(collection) {
-        this.data[collection] = null;
+    getList(reset = false) {
+        if (!reset && this.completeList) {
+            return this.$q.resolve(this.completeList);
+        }
+        this.completeList = [];
+        return this.api.get('tasks', {
+            filters: this.tasksFilter.toParams(),
+            fields: {
+                tasks: 'subject,updated_in_db_at'
+            },
+            per_page: 25000,
+            sort: '-start_at'
+        }).then((data) => {
+            this.$log.debug('tasks all', data);
+            this.completeList = data;
+        });
+    }
+    getAnalytics(reset = false) {
+        if (this.analytics && !reset) {
+            return this.$q.resolve(this.analytics);
+        }
+        return this.api.get('tasks/analytics', {filter: {account_list_id: this.api.account_list_id}}).then((data) => {
+            this.$log.debug('tasks/analytics', data);
+            this.analytics = data;
+            return this.analytics;
+        });
+    }
+    load(reset = false, page = 0) {
+        this.loading = true;
+
+        if (!reset && page <= this.page) {
+            this.loading = false;
+            return this.$q.resolve(this.data);
+        }
+
+        if (reset) {
+            this.page = 0;
+            this.meta = {};
+            this.data = [];
+        }
 
         return this.api.get({
             url: 'tasks',
             data: {
-                filters: this.buildFilterParams(collection),
+                filters: this.tasksFilter.toParams(),
+                page: page,
+                per_page: 25,
                 include: 'comments,comments.person,contacts,contacts.people,contacts.addresses,contacts.people.email_addresses,contacts.people.phone_numbers,contacts.people.facebook_accounts',
                 fields: {
                     contacts: 'addresses,name,people,square_avatar',
@@ -159,92 +133,91 @@ class TasksService {
                     phone_numbers: 'historic,location,number,primary',
                     facebook_accounts: 'username'
                 },
-                page: this.meta[collection].pagination.page,
-                per_page: this.meta[collection].pagination.per_page,
-                sort: this.meta[collection].pagination.order
+                sort: '-start_at'
             },
             overrideGetAsPost: true
         }).then((data) => {
-            this.$log.debug(`${collection} tasks page ${data.meta.pagination.page}`, data);
-            this.data[collection] = data;
-            this.meta[collection] = data.meta;
-            return data;
+            this.$log.debug('tasks page ' + data.meta.pagination.page, data);
+            this.loading = false;
+            this.meta = data.meta;
+            const tasks = map((task) => this.process(task), data);
+            this.data = unionBy('id', tasks, this.data);
+            this.page = parseInt(this.meta.pagination.page);
         });
     }
-    fetchUncompletedTasks(id) {
-        return this.api.get({
-            url: 'tasks',
-            data: {
-                filters: {
-                    completed: false,
-                    contact_ids: [id]
-                },
-                page: 1,
-                per_page: 500,
-                include: 'comments',
-                sort: 'start_at'
-            },
-            overrideGetAsPost: true
-        }).then((data) => {
-            this.uncompleted = data;
-            return data;
-        });
+    process(task) {
+        const startAt = this.moment(task.start_at);
+        if (task.completed) {
+            task.state = this.gettextCatalog.getString('Completed');
+        } else if (this.moment().isSame(startAt, 'day')) {
+            task.state = this.gettextCatalog.getString('Today');
+        } else if (this.moment().isAfter(startAt, 'day')) {
+            task.state = this.gettextCatalog.getString('Overdue');
+        } else if (this.moment().isBefore(startAt, 'day')) {
+            task.state = this.gettextCatalog.getString('Upcoming');
+        } else {
+            task.state = this.gettextCatalog.getString('No Due Date');
+        }
+        return task;
     }
-    fetchCompletedTasks(id) {
-        return this.api.get({
-            url: 'tasks',
-            data: {
-                filters: {
-                    completed: true,
-                    contact_ids: [id]
-                },
-                include: 'comments',
-                page: 1,
-                per_page: 500,
-                sort: 'completed_at'
-            },
-            overrideGetAsPost: true
-        }).then((data) => {
-            this.completed = data;
-            return data;
-        });
+    loadMoreTasks() {
+        if (this.loading || this.page >= parseInt(this.meta.pagination.total_pages)) {
+            return;
+        }
+        this.load(false, this.page + 1);
     }
-    fetchTasksForPage(page) {
-        each(collection => {
-            this.fetchTasks(collection);
-        }, this.pages[page]);
-    }
-    save(task) {
+    save(task, comment = null) {
         task.tag_list = joinComma(task.tag_list); //fix for api mis-match
-        return this.api.put(`tasks/${task.id}`, task);
-    }
-    addComment(task, newComment) {
-        return this.api.post(`tasks/${task.id}/comments`, { body: newComment, person: { id: this.users.current.id } });
-    }
-    deleteTask(taskId) {
-        return this.api.delete(`tasks/${taskId}`, {id: taskId});
-    }
-    starTask(task) {
-        return this.api.put(`tasks/${task.id}`, {updated_in_db_at: task.updated_in_db_at, starred: !task.starred});
-    }
-    deleteComment(task, commentId) {
-        return this.api.delete(`tasks/${task.id}/comments/${commentId}`).then(() => {
-            task.comments = reject({id: commentId}, task.comments);
+        if (comment) {
+            if (!task.comments) {
+                task.comments = [];
+            }
+            task.comments.push({id: uuid(), body: comment, person: { id: this.users.current.id }});
+        }
+        return this.api.put(`tasks/${task.id}`, task).then(() => {
+            this.tasksTags.load();
+            this.get(task.id);
         });
     }
-    bulkDeleteTasks(tasks) {
-        tasks = map(task => { return { id: task.id }; }, tasks);
-        return this.api.delete({url: 'tasks/bulk', data: tasks, type: 'tasks'});
+    create(task, contactIds = []) {
+        task.account_list = { id: this.api.account_list_id };
+        contactIds = reject('', contactIds);
+        task.tag_list = joinComma(task.tag_list); //fix for api mis-match
+        if (contactIds.length > 1) {
+            const tasks = reduce((result, contactId) => {
+                if (!isEmpty(contactId)) {
+                    result.push(assign(task, {id: uuid(), contacts: [{id: contactId}]}));
+                }
+                return result;
+            }, [], contactIds);
+            return this.api.post({ url: 'tasks/bulk', data: tasks, type: 'tasks' }).then(() => {
+                if (this.selectedContacts.length > 0) {
+                    this.contacts.load(true);
+                }
+            });
+        }
+        task.contacts = map(contactId => { return {id: contactId}; }, contactIds);
+        return this.api.post('tasks', task).then((data) => {
+            return this.get(data.id);
+        });
     }
-    bulkCompleteTasks(tasks) {
-        tasks = map(task => {
+    bulkComplete() {
+        const tasks = map((task) => {
             task.completed = true;
             return task;
-        }, tasks);
-        return this.api.put('tasks/bulk', tasks);
+        }, this.getSelected());
+        return this.api.put('tasks/bulk', tasks).then(() => {
+            each((selectedTask) => {
+                let task = find({ id: selectedTask.id }, this.data);
+                if (task) {
+                    task.completed = true;
+                    task.state = this.gettextCatalog.getString('Completed');
+                }
+            }, tasks);
+        });
     }
-    bulkEditTasks(tasks, model, comment) {
-        tasks = reduce((result, task) => {
+    bulkEdit(model, comment) {
+        const tasks = reduce((result, task) => {
             if (comment) {
                 if (!task.comments) {
                     task.comments = [];
@@ -255,10 +228,10 @@ class TasksService {
             task = assign(task, model);
             result.push(task);
             return result;
-        }, [], tasks);
+        }, [], this.getSelected());
         return this.api.put('tasks/bulk', tasks);
     }
-    postBulkLogTask(ajaxAction, taskId, model, contactIds, toComplete) {
+    bulkLog(ajaxAction, taskId, model, contactIds, toComplete) {
         let url = 'tasks';
         if (taskId) {
             url += `/${taskId}`;
@@ -288,76 +261,99 @@ class TasksService {
             data: model
         });
     }
-    create(task, contactIds) {
-        task.account_list = { id: this.api.account_list_id };
-        task.tag_list = joinComma(task.tag_list); //fix for api mis-match
-        if (contactIds.length > 1) {
-            const tasks = reduce((result, contactId) => {
-                if (!isEmpty(contactId)) {
-                    result.push(assign(task, {id: uuid(), contacts: [{id: contactId}]}));
-                }
-                return result;
-            }, [], contactIds);
-            return this.api.post({ url: 'tasks/bulk', data: tasks, type: 'tasks' });
-        }
-        task.contacts = map(contactId => { return {id: contactId}; }, contactIds);
-        return this.api.post('tasks', task);
-    }
-    openModal(params = {}) {
-        this.modal.open({
-            template: require('./add/add.html'),
-            controller: 'addTaskController',
-            locals: {
-                specifiedAction: params.specifiedAction || null,
-                specifiedSubject: params.specifiedSubject || null,
-                selectedContacts: params.selectedContacts || params.contact || [],
-                modalTitle: params.title || 'Add Task',
-                isNewsletter: false
-            },
-            resolve: {
-                tags: () => this.tasksTags.load()
-            },
-            onHide: params.onHide || noop
+    addComment(task, comment) {
+        return this.api.post(`tasks/${task.id}/comments`, { body: comment, person: { id: this.users.current.id } }).then((data) => {
+            data.person = {
+                id: this.users.current.id,
+                first_name: this.users.current.first_name,
+                last_name: this.users.current.last_name
+            };
+            task.comments = concat(task.comments, data);
         });
     }
-    openNewsletterModal(params = {}) {
-        this.modal.open({
-            template: require('./add/newsletter.html'),
-            controller: 'addTaskController',
-            locals: {
-                specifiedAction: params.specifiedAction || null,
-                specifiedSubject: params.specifiedSubject || null,
-                selectedContacts: params.contact || [],
-                modalTitle: params.title || this.gettextCatalog.getString('Add Newsletter'),
-                isNewsletter: true
-            },
-            onHide: params.onHide || noop
+    deleteComment(task, comment) {
+        return this.api.delete(`tasks/${task.id}/comments/${comment.id}`).then(() => {
+            task.comments = reject({id: comment.id}, task.comments);
         });
     }
-    getAnalytics(reset = false) {
-        if (this.analytics && !reset) {
-            return this.$q.resolve(this.analytics);
-        }
-        return this.api.get('tasks/analytics', {filter: {account_list_id: this.api.account_list_id}}).then((data) => {
-            this.$log.debug('tasks/analytics', data);
-            this.analytics = data;
-            return this.analytics;
+    delete(task) {
+        const message = this.gettextCatalog.getString('Are you sure you wish to delete the selected task?');
+        return this.modal.confirm(message).then(() => {
+            return this.api.delete(`tasks/${task.id}`, {id: task.id}).then(() => {
+                this.completeList = reject({id: task.id}, this.completeList);
+                this.data = reject({id: task.id}, this.data);
+                this.selected = pull(task.id, this.selected);
+            });
         });
     }
-    openNewTaskModal() {
-        this.modal.open({
-            template: require('./add/add.html'),
-            controller: 'addTaskController',
-            locals: {
-                specifiedAction: null,
-                specifiedSubject: null,
-                selectedContacts: [],
-                modalTitle: this.gettextCatalog.getString('Add Task')
-            },
-            resolve: {
-                tags: /*@ngInject*/ (tasksTags) => tasksTags.load()
+    bulkDelete() {
+        const message = this.gettextCatalog.getString('Are you sure you wish to delete the selected tasks?');
+        return this.modal.confirm(message).then(() => {
+            const selected = this.getSelected();
+            return this.api.delete({url: 'tasks/bulk', data: selected, type: 'tasks'}).then(() => {
+                each((task) => {
+                    this.data = reject({id: task.id}, this.data);
+                    this.completeList = reject({id: task.id}, this.completeList);
+                    this.selected = pull(task.id, this.selected);
+                }, selected);
+            });
+        });
+    }
+    star(task) {
+        return this.api.put(`tasks/${task.id}`, {updated_in_db_at: task.updated_in_db_at, starred: !task.starred});
+    }
+    getSelected() {
+        return reduce((result, task) => {
+            if (includes(task.id, this.selected)) {
+                result.push({id: task.id, updated_in_db_at: task.updated_in_db_at});
             }
-        });
+            return result;
+        }, [], this.completeList);
+    }
+    isSelected(id) {
+        return includes(id, this.selected);
+    }
+    select(id) {
+        if (includes(id, this.selected)) {
+            this.selected = pull(id, this.selected);
+        } else {
+            this.selected = union(this.selected, [id]);
+        }
+    }
+    clearSelected() {
+        this.selected = [];
+    }
+    selectAll(all = true) {
+        if (all) {
+            this.selected = map('id', this.completeList);
+        } else {
+            this.selected = map('id', this.data);
+        }
+    }
+    toggleAll() {
+        if (this.selected.length < this.data.length) {
+            this.selectAll(false);
+        } else {
+            this.clearSelected();
+        }
+    }
+    addModal(contactsList = []) {
+        return this.tasksModals.add(contactsList);
+    }
+    newsletterModal() {
+        return this.tasksModals.newsletter();
+    }
+    logModal(contactsList = []) {
+        return this.tasksModals.log(contactsList);
+    }
+    bulkEditModal(tasks) {
+        return this.tasksModals.bulkEdit(tasks || this.selected);
+    }
+    editModal(task) {
+        return this.tasksModals.edit(task);
+    }
+    completeModal(task) {
+        return this.tasksModals.complete(task);
     }
 }
 

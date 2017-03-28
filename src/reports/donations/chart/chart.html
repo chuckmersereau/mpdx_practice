@@ -18,7 +18,7 @@
                 {{$ctrl.chartData.monthly_average || 0}}
             </span>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" ng-if="$ctrl.hasChart">
             <canvas class="chart chart-bar"
                     chart-data="$ctrl.data"
                     chart-labels="$ctrl.labels"
@@ -28,6 +28,9 @@
                     chart-dataset-override="$ctrl.datasetOverride"
                     height="250">
             </canvas>
+        </div>
+        <div class="panel-body text-center" ng-if="!$ctrl.hasChart">
+            <translate>No Donations Received</translate>
         </div>
     </div>
 </div>

@@ -1,6 +1,5 @@
 <div class="nav--global">
     <div class="container">
-
         <div class="row">
             <div class="col-sm-12">
                 <div id="brand" class="pull-left">
@@ -38,9 +37,10 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="quick-drop">
                                 <li role="presentation"><a ng-click="$ctrl.contacts.openNewContactModal()" translate>Add Contact</a></li>
-                                <li role="presentation"><a ng-click="$ctrl.donations.openNewDonationModal()" translate>Add Donation</a></li>
-                                <li role="presentation"><a ng-click="$ctrl.tasks.openNewTaskModal()" translate>Add Task</a></li>
                                 <li role="presentation"><a ng-click="$ctrl.contacts.openMultipleAddModal()" translate>Multiple Contacts</a></li>
+                                <li role="presentation"><a ng-click="$ctrl.donations.openNewDonationModal()" translate>Add Donation</a></li>
+                                <li role="presentation"><a ng-click="$ctrl.tasks.addModal()" translate>Add Task</a></li>
+                                <li role="presentation"><a ng-click="$ctrl.tasks.logModal()" translate>Log Task</a></li>
                             </ul>
                         </div>
                     </div>

@@ -1,0 +1,21 @@
+.split {
+    position: fixed;
+    top: 150px;
+    bottom: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items:stretch;
+    .split-item {
+        margin-right: 15px;
+        overflow: hidden;
+        position: relative;
+    }
+    .split-menu {
+        flex: 1 0 0;
+        max-width: 300px;
+        border-right: 1px solid $color-panel-bg;
+    }
+    .split-content {
+        flex: 3 0 0;
+    }
+}

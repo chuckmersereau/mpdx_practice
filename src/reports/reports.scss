@@ -1,4 +1,9 @@
 .reports {
+    margin-top: $subnav-height + $gutter/2;
+
+    h2 {
+        margin-top: 0;
+    }
     .panel {
         margin-bottom: 29px;
         .panel-heading {

@@ -5,8 +5,7 @@ class FilterController {
     modal;
 
     constructor(
-        gettextCatalog,
-        tasksFilter, tasksTags, tasks, modal
+        gettextCatalog, tasksFilter, tasksTags, tasks, modal
     ) {
         this.modal = modal;
         this.tasks = tasks;
