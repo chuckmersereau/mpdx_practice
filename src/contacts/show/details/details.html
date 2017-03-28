@@ -196,7 +196,10 @@
                                    ng-model="$ctrl.contact.next_ask"
                                    ng-change="$ctrl.save()"
                                    ng-model-options="{ debounce: 1000 }"
-                                   data-autoclose="1">
+                                   data-autoclose="true"
+                                   data-date-type="string"
+                                   data-date-format="{{$ctrl.locale.dateTimeFormat}}"
+                                   data-model-date-format="yyyy-mm-dd">
                         </div>
                     </div>
                 </div>

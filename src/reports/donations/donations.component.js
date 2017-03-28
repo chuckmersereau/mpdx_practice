@@ -1,3 +1,5 @@
+import map from 'lodash/fp/map';
+
 class DonationsController {
     $rootScope;
     blockUI;
@@ -44,8 +46,12 @@ class DonationsController {
             endDate: this.endDate,
             page: this.page
         };
-        if (this.contact && this.contact.donor_accounts) {
-            params.donorAccountId = _.map(this.contact.donor_accounts, 'id').join();
+        if (this.contact && this.contact.donor_accounts && this.contact.donor_accounts.length > 0) {
+            params.donorAccountId = map('id', this.contact.donor_accounts).join();
+        } else if (this.contact && (!this.contact.donor_accounts || this.contact.donor_accounts.length === 0)) {
+            //don't try to get donations for a contact if the contact has no donor accounts. causes filter to be blank and return all.
+            this.blockUI.stop();
+            return;
         }
         this.donations.getDonations(params).then((data) => {
             this.donationsList = data;

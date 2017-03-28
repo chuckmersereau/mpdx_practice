@@ -85,7 +85,7 @@ class AccountsService {
         });
     }
     getAnalytics(params) {
-        return this.api.get(`account_lists/${this.api.account_list_id}/analytics`, { filter: { date_range: `${params.endDate.format('YYYY-MM-DD')}..${params.startDate.format('YYYY-MM-DD')}` } }).then((data) => {
+        return this.api.get(`account_lists/${this.api.account_list_id}/analytics`, { filter: { date_range: `${params.startDate.format('YYYY-MM-DD')}..${params.endDate.format('YYYY-MM-DD')}` } }).then((data) => {
             this.$log.debug('account_lists/analytics', data);
             this.analytics = data;
             return this.analytics;

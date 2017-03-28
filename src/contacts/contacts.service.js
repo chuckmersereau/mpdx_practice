@@ -11,6 +11,7 @@ const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 import pull from 'lodash/fp/pull';
 import reject from 'lodash/fp/reject';
 import sortBy from 'lodash/fp/sortBy';
+import toInteger from 'lodash/fp/toInteger';
 import union from 'lodash/fp/union';
 import unionBy from 'lodash/fp/unionBy';
 import joinComma from "../common/fp/joinComma";
@@ -67,6 +68,9 @@ class ContactsService {
                 include: 'addresses,donor_accounts,primary_person'
             },
             deSerializationOptions: relationshipId(['contacts', 'people']) //for contacts_referred_by_me, contacts_that_referred_me and primary_person
+        }).then((data) => {
+            data.pledge_amount = toInteger(data.pledge_amount); //fix bad api serialization as string
+            return data;
         });
     }
     getList(reset = false) {
@@ -77,7 +81,7 @@ class ContactsService {
         return this.api.get('contacts', {
             filters: {account_list_id: this.api.account_list_id},
             fields: {
-                contacts: 'name'
+                contacts: 'created_at,name'
             },
             per_page: 25000,
             sort: 'name'
@@ -353,7 +357,7 @@ class ContactsService {
     }
     bulkEditFields(model, contacts) {
         contacts = reduce((result, contact) => {
-            result.push(assign({id: contact.id}, model));
+            result.push(assign({id: contact.id, updated_in_db_at: contact.updated_in_db_at}, model));
             return result;
         }, [], contacts);
         return this.api.put('contacts/bulk', contacts);
@@ -373,7 +377,6 @@ class ContactsService {
                 'birthdays_this_week,' +
                 'birthdays_this_week.facebook_accounts,' +
                 'birthdays_this_week.twitter_accounts,' +
-                // 'birthdays_this_week.parent_contact,' +
                 'birthdays_this_week.email_addresses',
                 fields: {
                     people: 'anniversary_day,anniversary_month,birthday_day,birthday_month,facebook_accounts,first_name,last_name,twitter_accounts,email_addresses,parent_contact',

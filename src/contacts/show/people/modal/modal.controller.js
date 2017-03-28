@@ -49,7 +49,10 @@ class PersonModalController {
                 email_addresses: [],
                 phone_numbers: [],
                 family_relationships: [],
-                networks: []
+                facebook_accounts: [],
+                twitter_accounts: [],
+                linkedin_accounts: [],
+                websites: []
             };
         }
     }
@@ -76,7 +79,7 @@ class PersonModalController {
                 this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
                 this.$scope.$hide();
             }).catch(() => {
-                this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'error');
+                this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger');
             });
         } else {
             return this.people.create(this.contact.id, this.person).then(() => {
@@ -84,7 +87,7 @@ class PersonModalController {
                 this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
                 this.$scope.$hide();
             }).catch(() => {
-                this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'error');
+                this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger');
             });
         }
     }

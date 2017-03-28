@@ -121,7 +121,7 @@ class ContactController {
             }
             this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
         }).catch(() => {
-            this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'error');
+            this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger');
         });
     }
     onPrimary(personId) {

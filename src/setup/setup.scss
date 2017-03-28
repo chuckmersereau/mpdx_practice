@@ -78,8 +78,9 @@ setup-start, setup-connect{
         font-size: 20px;
     }
     .panel--language-selector {
-        width: 100px;
+        width: 300px;
         display: inline-block;
+        text-align: left;
     }
     .panel__connect-links {
         margin-top: $font-size-lg;

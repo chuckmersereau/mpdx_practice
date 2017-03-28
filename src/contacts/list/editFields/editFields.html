@@ -56,8 +56,10 @@
                            ng-model="$ctrl.models.next_ask"
                            name="date"
                            id="due-date"
+                           data-autoclose="true"
+                           data-date-type="string"
                            data-date-format="{{$ctrl.locale.dateTimeFormat}}"
-                           data-autoclose="1">
+                           data-model-date-format="yyyy-mm-dd">
                 </div>
             </div>
         </div>

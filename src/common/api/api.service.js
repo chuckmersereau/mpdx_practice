@@ -391,7 +391,10 @@ class EntityAttributes {
             },
             user: {
                 attributes: ["first_name", "last_name", "preferences", "setup", "email_addresses", "access_token", "time_zone", "locale", "updated_at", "updated_in_db_at"],
-                email_addresses: { ref: 'id' }
+                email_addresses: {
+                    ref: 'id',
+                    attributes: ["email", "primary", "updated_in_db_at"]
+                }
             },
             user_options: {
                 attributes: ["key", "value", "updated_in_db_at"]
