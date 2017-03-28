@@ -26,7 +26,7 @@ class PersonService {
             this.list(contactId);
         });
 
-        $rootScope.$on('accountListUpdated', (e, contactId) => {
+        $rootScope.$on('accountListUpdated', () => {
             this.listAll(true);
         });
     }

@@ -2,5 +2,6 @@ export default {
     "env": "production",
     "apiUrl": "https://api.mpdx.org/api/v2/",
     "authUrl": "https://thekey.me/cas/",
-    "authLoginPath": "login?client_id=1151388713555353789&scope=fullticket&response_type=token&redirect_uri=https://next.mpdx.org/auth"
+    "authLoginPath": "login?client_id=1151388713555353789&scope=fullticket&response_type=token&redirect_uri=https://next.mpdx.org/auth",
+    "authLogout": "logout?service=http://https://next.mpdx.org/login"
 };

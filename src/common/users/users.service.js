@@ -69,6 +69,10 @@ class Users {
             const defaultAccountList = toString(get('preferences.default_account_list', response));
             const accountListId = this.$window.sessionStorage.getItem(`${this.current.id}_accountListId`) || defaultAccountList;
 
+            if (!accountListId) {
+                return this.$q.reject({redirect: 'setup.account'});
+            }
+
             return this.accounts.swap(accountListId, this.current.id).then(() => {
                 return this.getOptions(true, forRouting).then(() => {
                     this.help.updateUser(this.current);
