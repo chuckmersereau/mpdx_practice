@@ -1,6 +1,5 @@
 import assign from 'lodash/fp/assign';
 import concat from 'lodash/fp/concat';
-import find from 'lodash/fp/find';
 import findIndex from 'lodash/fp/findIndex';
 import has from 'lodash/fp/has';
 import includes from 'lodash/fp/includes';
@@ -321,8 +320,11 @@ class ContactsService {
     hideContact(contact) {
         const message = this.gettextCatalog.getString('Are you sure you wish to hide the selected contact?');
         return this.modal.confirm(message).then(() => {
-            contact.status = 'Never Ask';
-            return this.save(contact).then(() => {
+            return this.save({
+                id: contact.id,
+                status: 'Never Ask',
+                updated_in_db_at: contact.updated_in_db_at
+            }).then(() => {
                 this.completeList = reject({id: contact.id}, this.completeList);
                 this.completeFilteredList = reject({id: contact.id}, this.completeFilteredList);
                 this.data = reject({id: contact.id}, this.data);
@@ -332,14 +334,20 @@ class ContactsService {
     bulkHideContacts() {
         const message = this.gettextCatalog.getString('Are you sure you wish to hide the selected contacts?');
         return this.modal.confirm(message).then(() => {
-            const contacts = map(id => {
+            const contacts = map(contact => {
                 return {
-                    id: id,
-                    status: 'Never Ask'
+                    id: contact.id,
+                    status: 'Never Ask',
+                    updated_in_db_at: contact.updated_in_db_at
                 };
-            }, this.selectedContacts);
+            }, this.getSelectedContacts());
             return this.api.put('contacts/bulk', contacts).then(() => {
-                this.data = reject(contact => find({id: contact.id}, contacts) != null, this.data);
+                this.data = reduce((result, contact) => {
+                    if (!includes(contact.id, this.selectedContacts)) {
+                        return concat(result, contact);
+                    }
+                    return result;
+                }, [], this.data);
             });
         });
     }
@@ -365,14 +373,39 @@ class ContactsService {
                 'birthdays_this_week,' +
                 'birthdays_this_week.facebook_accounts,' +
                 'birthdays_this_week.twitter_accounts,' +
+                // 'birthdays_this_week.parent_contact,' +
                 'birthdays_this_week.email_addresses',
                 fields: {
-                    people: 'anniversary_day,anniversary_month,birthday_day,birthday_month,facebook_accounts,first_name,last_name,twitter_accounts,email_addresses',
+                    people: 'anniversary_day,anniversary_month,birthday_day,birthday_month,facebook_accounts,first_name,last_name,twitter_accounts,email_addresses,parent_contact',
                     email_addresses: 'email,primary',
                     facebook_accounts: 'username',
                     twitter_accounts: 'screen_name'
                 },
                 filter: {account_list_id: this.api.account_list_id}
+            },
+            deSerializationOptions: relationshipId('parent_contact'), //for parent_contact
+            beforeDeserializationTransform: (data) => {
+                //this avoids infinite recursion between people & contacts
+                return reduce((result, value, key) => {
+                    if (key === 'included') {
+                        result[key] = reduce((dataResult, dataValue) => {
+                            if (has('relationships.parent_contact.data.type', dataValue)) {
+                                dataValue.relationships.parent_contact.data.type = 'parent_contact';
+                            }
+                            if (dataValue.type === 'contacts') {
+                                //duplicate contact include for parent_contact type
+                                dataResult = concat(dataResult, {
+                                    id: dataValue.id,
+                                    type: 'parent_contact'
+                                });
+                            }
+                            return concat(dataResult, dataValue);
+                        }, [], value);
+                    } else {
+                        result[key] = value;
+                    }
+                    return result;
+                }, {}, data);
             },
             overrideGetAsPost: true
         }).then((data) => {

@@ -68,6 +68,7 @@ class Api {
         doSerialization = true,
         deSerializationOptions = {},
         doDeSerialization = true,
+        beforeDeserializationTransform = null,
         responseType = ''
     }) {
         if (!promise) {
@@ -149,6 +150,9 @@ class Api {
                 }
             },
             transformResponse: appendTransform(this.$http.defaults.transformResponse, (data) => {
+                if (beforeDeserializationTransform) {
+                    data = beforeDeserializationTransform(data);
+                }
                 if (doDeSerialization) {
                     if (isArray(data)) {
                         return map(item => deserialize(item, deSerializationOptions), data);

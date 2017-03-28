@@ -143,6 +143,11 @@ export default class Routes {
                 resolution: /*@ngInject*/ (users) => users.listOrganizationAccounts()
             }
         }).state({
+            name: 'setup.account',
+            title: 'Setup Default Account',
+            url: '/account',
+            component: 'setupAccount'
+        }).state({
             name: 'setup.google',
             title: 'Setup Google',
             url: '/google',
@@ -229,5 +234,5 @@ export default class Routes {
 /*@ngInject*/
 function logout($window) {
     delete $window.sessionStorage.token;
-    $window.location.href = `${config.authUrl}logout`;
+    $window.location.href = config.authUrl + config.authLogout;
 }

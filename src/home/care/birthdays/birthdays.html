@@ -1,7 +1,7 @@
 <h4 class="title" translate>Birthdays This Week</h4>
 <ul class="list-unstyled" ng-if="$ctrl.contacts.analytics.birthdays_this_week.length">
     <li ng-repeat="person in $ctrl.contacts.analytics.birthdays_this_week | limitTo: $ctrl.limit">
-        <a href="/person/{{ person.id }}">
+        <a ui-sref="contacts.show({ contactId: person.parent_contact.id })">
             {{person.first_name}} {{person.last_name}}
         </a>
         {{ person.birthday_month }}-{{ person.birthday_day }}

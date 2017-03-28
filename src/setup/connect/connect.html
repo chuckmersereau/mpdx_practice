@@ -15,7 +15,10 @@
                 <ul class="list-unstyled">
                     <li ng-repeat="account in $ctrl.users.organizationAccounts">{{account.organization.name}}</li>
                 </ul>
-                <p><a ng-click="$ctrl.next()" class="btn btn-block btn-primary" translate>Hooray! Take me into MPDX</a></p>
+                <p><a ng-click="$ctrl.next()" class="btn btn-block btn-primary">
+                    <translate>Hooray! Take me into MPDX</translate>
+                    <i class="fa fa-angle-right"></i>
+                </a></p>
                 <h3 translate>Do you receive donations in any other country or from any other organizations?</h3>
                 <p translate>Now would be a great time to connect them to your MPDX Account. Don't worry, you can always add them in later.</p>
             </div>
