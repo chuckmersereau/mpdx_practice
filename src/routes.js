@@ -110,7 +110,10 @@ export default class Routes {
             name: 'preferences.accounts',
             title: 'Manage Accounts',
             url: '/accounts',
-            component: 'preferencesAccounts'
+            component: 'preferencesAccounts',
+            resolve: {
+                resolution: /*@ngInject*/ (accounts) => accounts.load()
+            }
         }).state({
             name: 'preferences.integrations',
             title: 'Connect Services',
@@ -143,13 +146,17 @@ export default class Routes {
             url: '/connect',
             component: 'setupConnect',
             resolve: {
-                resolution: /*@ngInject*/ (users) => users.listOrganizationAccounts()
+                resolution: /*@ngInject*/ (users) => users.listOrganizationAccounts(),
+                another: /*@ngInject*/ (accounts) => accounts.load()
             }
         }).state({
             name: 'setup.account',
             title: 'Setup Default Account',
             url: '/account',
-            component: 'setupAccount'
+            component: 'setupAccount',
+            resolve: {
+                another: /*@ngInject*/ (accounts) => accounts.load()
+            }
         }).state({
             name: 'setup.google',
             title: 'Setup Google',

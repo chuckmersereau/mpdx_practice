@@ -107,6 +107,15 @@ class AccountsService {
             return this.current;
         });
     }
+    load(reset = false) {
+        if (!reset && this.data.length > 0) {
+            return this.$q.resolve(this.data);
+        }
+
+        return this.api.get('account_lists', { include: this.defaultIncludes }).then((data) => {
+            this.data = data;
+        });
+    }
 }
 export default angular.module('mpdx.common.accounts.service', [])
     .service('accounts', AccountsService).name;

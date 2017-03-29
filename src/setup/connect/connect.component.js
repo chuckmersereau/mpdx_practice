@@ -28,7 +28,7 @@ class SetupConnectController {
     }
     add() {
         this.preferencesOrganization.createAccount(this.username, this.password, this.organization).then(() => {
-            this.users.listOrganizationAccounts().then(() => {
+            this.users.listOrganizationAccounts(true).then(() => {
                 this.connecting = false;
             });
         }).catch(() => {
@@ -36,11 +36,13 @@ class SetupConnectController {
         });
     }
     next() {
-        if (this.accounts.data.length > 1) {
-            this.$state.go('setup.preferences.accounts');
-        } else {
-            this.$state.go('setup.preferences.personal');
-        }
+        this.accounts.load(true).then(() => {
+            if (this.accounts.data.length > 1) {
+                this.$state.go('setup.account');
+            } else {
+                this.$state.go('setup.preferences.personal');
+            }
+        });
     }
     reset() {
         this.organization = null;

@@ -40,7 +40,7 @@
             </div>
             <div class="panel__connect-links">
                 <a ng-click="$ctrl.reset()" class="btn btn-gray btn-sm pull-left" ng-if="$ctrl.connecting" translate>Cancel</a>
-                <a ng-click="$ctrl.connect()" class="btn btn-primary btn-sm" ng-if="!$ctrl.connecting" translate>Connect</a>
+                <button ng-click="$ctrl.connect()" ng-disabled="!$ctrl.organization" class="btn btn-primary btn-sm" ng-if="!$ctrl.connecting" translate>Connect</button>
                 <a ng-click="$ctrl.add()" class="btn btn-primary btn-sm pull-right" ng-if="$ctrl.connecting" translate>Add Account</a>
             </div>
         </div>

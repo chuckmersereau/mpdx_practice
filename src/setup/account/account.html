@@ -1,13 +1,21 @@
 <cover>
     <div class="panel">
-        <div class="panel-heading" translate>
-            No default account selected.
+        <div class="panel-heading">
+            <img src="../../images/setup/icon_alert_2x.png" />
+            <translate>Set Default Account</translate>
         </div>
         <div class="panel-body">
-            <div translate>
-                Please select an account to begin.
-            </div>
-            <account-lists></account-lists>
+            <label translate>Account</label>
+            <select ng-model="$ctrl.accountListId" class="form-control" disable-search="true" chosen>
+                <option value=""></option>
+                <option ng-repeat="account in $ctrl.accounts.data" value="{{account.id}}">{{account.name}}</option>
+            </select>
+            <br>
+            <br>
+            <p><button class="btn btn-block btn-primary" ng-disabled="!$ctrl.accountListId" ng-click="$ctrl.next()">
+                <translate>Continue Tour</translate>
+                <i class="fa fa-angle-right"></i>
+            </a></p>
         </div>
     </div>
 </cover>

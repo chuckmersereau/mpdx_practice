@@ -1,9 +1,24 @@
+import get from 'lodash/fp/get';
+
 class AccountController {
+    accountListId;
     constructor(
-        $rootScope, $state
+        $state,
+        users, accounts
     ) {
-        $rootScope.$on('accountListUpdated', () => {
-            $state.go('home');
+        this.$state = $state;
+        this.accounts = accounts;
+        this.users = users;
+
+        this.accountListId = get('current.preferences.default_account_list', this.users);
+    }
+    $onInit() {
+        this.users.current.options.setup_position.value = 'account';
+        this.users.setOption(this.users.current.options.setup_position);
+    }
+    next() {
+        return this.accounts.swap(this.accountListId, this.users.current.id, true).then(() => {
+            this.$state.go('setup.preferences.accounts');
         });
     }
 }
