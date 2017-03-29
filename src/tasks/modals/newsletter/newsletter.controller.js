@@ -13,16 +13,18 @@ class NewsletterTaskController {
         this.task = {};
     }
     save() {
-        if (this.task.activity_type === 'Newsletter - Both') {
-            this.task.activity_type = 'Newsletter - Physical';
-            return this.tasks.create(this.task).then(() => {
-                this.task.activity_type = 'Newsletter - Email';
-                return this.tasks.create(this.task).then(() => {
+        let task = angular.copy(this.task);
+        task.completed = true;
+        if (task.activity_type === 'Newsletter - Both') {
+            task.activity_type = 'Newsletter - Physical';
+            return this.tasks.create(task).then(() => {
+                task.activity_type = 'Newsletter - Email';
+                return this.tasks.create(task).then(() => {
                     this.$scope.$hide();
                 });
             });
         }
-        return this.tasks.create(this.task).then(() => {
+        return this.tasks.create(task).then(() => {
             this.$scope.$hide();
         });
     }

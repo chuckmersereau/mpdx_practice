@@ -1,5 +1,3 @@
-import assign from 'lodash/fp/assign';
-
 class TasksController {
     tasksFilter;
     tasks;
@@ -12,8 +10,12 @@ class TasksController {
         this.tasks = tasks;
     }
     $onInit() {
-        this.tasksFilter.params = this.$stateParams.filters || {};
-        this.tasksFilter.change();
+        if (this.$stateParams.filters) {
+            this.tasksFilter.params = this.$stateParams.filters;
+            this.tasksFilter.change();
+        } else {
+            this.tasksFilter.reset();
+        }
     }
 }
 
