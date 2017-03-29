@@ -95,10 +95,10 @@ class Api {
         }
 
         if (method === 'get' || method === 'delete') {
-            params = data;
+            params = assign(params, data);
         }
         if ((method === 'put' || method === 'put') && data.include) {
-            params.include = data.include;
+            params = assign(params, {include: data.include});
         }
 
         if (overrideGetAsPost) {

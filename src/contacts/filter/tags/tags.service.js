@@ -47,33 +47,44 @@ class TagsService {
         const params = {
             filter: {
                 account_list_id: this.api.account_list_id
-            },
-            name: tag.name
+            }
         };
-        return this.api.delete({url: 'contacts/tags/bulk', data: params, type: 'tags'}).then(() => {
+        const data = [{
+            name: tag.name
+        }];
+        return this.api.delete({url: 'contacts/tags/bulk', params: params, data: data, type: 'tags'}).then(() => {
             this.selectedTags = reject({ name: tag.name }, this.selectedTags);
             this.rejectedTags = reject({ name: tag.name }, this.rejectedTags);
             this.data = reject({ name: tag.name }, this.data);
             this.$rootScope.$emit('contactTagDeleted', {tag: tag.name});
         });
     }
-    tagContact(contactIds, tag) {
-        return this.api.post('contacts/tags/bulk', {
-            add_tag_contact_ids: contactIds.join(),
-            add_tag_name: tag
+    tagContact(contactIds, tags) {
+        return this.api.post({
+            url: 'contacts/tags/bulk',
+            data: tags,
+            params: {
+                filter: {
+                    account_list_id: this.api.account_list_id,
+                    contact_ids: contactIds.join()
+                }
+            },
+            type: 'tags'
         });
     }
     untagContact(contactIds, tag) {
-        const params = {
+        const params = [{
             filter: {
                 account_list_id: this.api.account_list_id,
                 contact_ids: joinComma(contactIds)
-            },
+            }
+        }];
+        const data = [{
             name: tag
-        };
+        }];
         const message = this.gettextCatalog.getString('Are you sure you wish to remove the selected tag?');
         return this.modal.confirm(message).then(() => {
-            return this.api.delete({url: 'contacts/tags/bulk', data: params, type: 'tags'}).then(() => {
+            return this.api.delete({url: 'contacts/tags/bulk', params: params, data: data, type: 'tags'}).then(() => {
                 this.$rootScope.$emit('contactTagDeleted', {tag: tag.name, contactIds: contactIds});
                 return this.load();
             });

@@ -1,5 +1,6 @@
 import isArray from 'lodash/fp/isArray';
-import joinComma from "../../../../common/fp/joinComma";
+import map from "lodash/fp/map";
+// import uuid from 'uuid/v1';
 
 class AddTagController {
     contacts;
@@ -16,22 +17,18 @@ class AddTagController {
         this.selectedContacts = selectedContacts;
         this.contacts = contacts;
         this.contactsTags = contactsTags;
-        this.tags = '';
+        this.tags = [];
     }
     save(tag) {
-        let tagToAdd = tag || this.tags;
+        let tagToAdd = tag || map(tag => { return { name: tag }; }, this.tags);
         if (!tagToAdd) {
             return;
         }
-        let newTags;
-        if (isArray(tagToAdd)) {
-            newTags = angular.copy(tagToAdd);
-            tagToAdd = joinComma(tagToAdd);
-        } else {
-            newTags = [tagToAdd];
+        if (!isArray(tagToAdd)) {
+            tagToAdd = [tagToAdd];
         }
         return this.contactsTags.tagContact(this.selectedContacts, tagToAdd).then(() => {
-            this.$rootScope.$emit('contactTagsAdded', {tags: newTags, contactIds: this.selectedContacts});
+            this.$rootScope.$emit('contactTagsAdded', {tags: map('name', tagToAdd), contactIds: this.selectedContacts});
             this.$scope.$hide();
         });
     }
