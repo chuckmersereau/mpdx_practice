@@ -12,6 +12,7 @@ import reject from 'lodash/fp/reject';
 import joinComma from '../common/fp/joinComma';
 import union from 'lodash/fp/union';
 import unionBy from 'lodash/fp/unionBy';
+import relationshipId from '../common/fp/relationshipId';
 
 class TasksService {
     constructor(
@@ -58,7 +59,7 @@ class TasksService {
         this.getList(true);
         this.load(true);
     }
-    get(id) {
+    get(id, updateLists = true) {
         return this.api.get(`tasks/${id}`, {
             include: 'comments,comments.person,contacts,contacts.people,contacts.addresses,contacts.people.email_addresses,contacts.people.phone_numbers,contacts.people.facebook_accounts',
             fields: {
@@ -71,9 +72,12 @@ class TasksService {
                 facebook_accounts: 'username'
             }
         }).then((task) => {
-            this.data = unionBy('id', [this.process(task)], this.data);
-            const listTask = { id: task.id, subject: task.subject, updated_in_db_at: task.updated_in_db_at };
-            this.completeList = unionBy('id', [listTask], this.completeList);
+            if (updateLists) {
+                this.data = unionBy('id', [this.process(task)], this.data);
+                const listTask = {id: task.id, subject: task.subject, updated_in_db_at: task.updated_in_db_at};
+                this.completeList = unionBy('id', [listTask], this.completeList);
+            }
+            return task;
         });
     }
     getList(reset = false) {
@@ -123,18 +127,15 @@ class TasksService {
                 filters: this.tasksFilter.toParams(),
                 page: page,
                 per_page: 25,
-                include: 'comments,comments.person,contacts,contacts.people,contacts.addresses,contacts.people.email_addresses,contacts.people.phone_numbers,contacts.people.facebook_accounts',
+                include: 'contacts',
                 fields: {
-                    contacts: 'addresses,name,people,square_avatar',
-                    addresses: 'city,primary_mailing_address,postal_code,state,street',
-                    people: 'avatar,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
-                    person: 'first_name,last_name',
-                    email_addresses: 'email,historic,primary',
-                    phone_numbers: 'historic,location,number,primary',
-                    facebook_accounts: 'username'
+                    tasks: 'activity_type,comments,completed,contacts,no_date,starred,start_at,subject,tag_list',
+                    contacts: 'name',
+                    comments: ''
                 },
                 sort: '-start_at'
             },
+            deSerializationOptions: relationshipId('comments'), //for comment count
             overrideGetAsPost: true
         }).then((data) => {
             this.$log.debug('tasks page ' + data.meta.pagination.page, data);

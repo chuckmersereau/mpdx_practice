@@ -53,7 +53,7 @@
         </div>
     </div>
     <div class="column">
-        <div ng-repeat="(name, tasks) in $ctrl.tasks.data | groupBy: 'state'" infinite-scroll="$ctrl.tasks.loadMoreTasks()">
+        <div ng-repeat="(name, tasks) in $ctrl.tasks.data | groupBy: 'state'" infinite-scroll="$ctrl.tasks.loadMoreTasks()" infinite-scroll-disabled="$ctrl.tasks.loading">
             <div class="panel panel-default">
                <div class="panel-heading" ng-class="name">{{name}}</div>
                <ul class="list-group">
