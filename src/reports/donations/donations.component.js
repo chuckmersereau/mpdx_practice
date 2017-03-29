@@ -7,7 +7,7 @@ class DonationsController {
     donations;
 
     constructor(
-        $rootScope, blockUI, designationAccounts, donations
+        $stateParams, $rootScope, blockUI, designationAccounts, donations
     ) {
         this.$rootScope = $rootScope;
         this.designationAccounts = designationAccounts;
@@ -16,6 +16,9 @@ class DonationsController {
         this.blockUI = blockUI.instances.get('donations');
         this.enableNext = false;
         this.startDate = moment().startOf('month');
+        if ($stateParams.startDate) {
+            this.startDate = $stateParams.startDate;
+        }
         this.donationsList = [];
         this.page = 1;
     }

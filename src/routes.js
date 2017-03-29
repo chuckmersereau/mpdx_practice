@@ -78,7 +78,10 @@ export default class Routes {
         }).state({
             name: 'reports.donations',
             url: '/donations',
-            component: 'donations'
+            component: 'donations',
+            params: {
+                startDate: null
+            }
         }).state({
             name: 'reports.monthly',
             url: '/monthly',

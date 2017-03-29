@@ -118,7 +118,7 @@ class ChartController {
     onClick(event, legendItem) {
         if (legendItem.length === 0) return;
         const startDate = moment(`01 ${legendItem[0]._model.label}`, 'DD MMM YY');
-        this.$state.go('reports.donations', { start_date: startDate, end_date: startDate.endOf('month') });
+        this.$state.go('reports.donations', { startDate: startDate });
     }
 }
 
