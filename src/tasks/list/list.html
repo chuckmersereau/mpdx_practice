@@ -2,10 +2,10 @@
     <div class="column column--heading">
         <div class="page-filters">
             <div class="row">
-                <div class="col-sm-7">
+                <div class="col-md-5 col-sm-4">
                     <tasks-search></tasks-search>
                 </div>
-                <div class="col-sm-5 text-right">
+                <div class="col-md-7 col-sm-8 text-right">
                     <div class="btn-group">
                         <a class="btn btn-default" ng-click="$ctrl.tasks.addModal($ctrl.contact.id)" translate>Add Task</a>
                         <a class="btn btn-default" ng-click="$ctrl.tasks.logModal($ctrl.contact.id)" translate>Log Task</a>
@@ -53,7 +53,7 @@
         </div>
     </div>
     <div class="column">
-        <div ng-repeat="(name, tasks) in $ctrl.tasks.data | groupBy: 'state'" infinite-scroll="$ctrl.tasks.loadMoreTasks()">
+        <div ng-repeat="(name, tasks) in $ctrl.tasks.data | groupBy: 'state'" infinite-scroll="$ctrl.tasks.loadMoreTasks()" infinite-scroll-disabled="$ctrl.tasks.loading">
             <div class="panel panel-default">
                <div class="panel-heading" ng-class="name">{{name}}</div>
                <ul class="list-group">

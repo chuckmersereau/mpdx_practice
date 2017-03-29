@@ -14,6 +14,7 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "~flag-icon-css/sass/flag-icon";
 
 /* Internal */
+@import "styles/responsive-utility";
 @import "styles/vars";
 @import "styles/elements";
 @import "styles/columns";

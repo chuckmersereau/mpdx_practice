@@ -15,8 +15,14 @@
       margin-bottom: 30px;
       margin-top: 10px;
       position: fixed;
-      width: 265px;
       overflow: scroll;
+
+      @include breakpoint(md) {
+        width: 215px;
+      }
+      @include breakpoint(lg) {
+        width: 265px;
+      }
   }
 
   .nav-pills>li>a {
