@@ -26,3 +26,9 @@
     border-radius: 0;
     border-color: $color-panel-border;
 }
+
+.panel-body {
+  .alert {
+    position: relative;
+  }
+}

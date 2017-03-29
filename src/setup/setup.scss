@@ -108,3 +108,9 @@ setup-start, setup-connect, setup-finish {
 }
 
 setup-finish .panel-heading {line-height: 44px;}
+
+setup-preferences {
+  #content {
+    margin-top: 70px;
+  }
+}
