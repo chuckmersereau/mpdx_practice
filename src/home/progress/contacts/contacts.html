@@ -6,7 +6,7 @@
     <div class="panel-body statistics">
         <div class="row">
             <div class="col-xs-4">
-                <a ui-sref="contacts({ filters: { status: 'active' } })">
+                <a ui-sref="contacts({ filters: { status: ['Never Contacted','Contact for Appointment'] } })">
                     <h3>{{$ctrl.accounts.analytics.contacts.active || 0}}</h3>
                     <strong translate>Active</strong>
                 </a>
