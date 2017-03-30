@@ -25,7 +25,7 @@ class TasksFilterService {
         this.defaultParamsForGroup = {
             all: {
                 starred: null,
-                completed: null,
+                completed: false,
                 no_date: null,
                 date_range: null
             },
