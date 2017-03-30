@@ -5,8 +5,12 @@ class SuccessController {
         this.$scope = $scope;
         this.$state = $state;
     }
+    setup() {
+        this.$state.go('tools', {setup: true});
+        this.$scope.$hide();
+    }
     done() {
-        this.$state.go('tools');
+        this.$state.go('home');
         this.$scope.$hide();
     }
 }

@@ -31,7 +31,20 @@
       </div>
       {{f.file.name}}
 
-      <p></p>
+      <div class="radio">
+        <label class="field radiocheck">
+            <input type="radio" ng-model="$ctrl.override" ng-value="false">
+            <span translate>This TntConnect import should only fill in the blanks in current contacts and/or add new contacts.</span>
+        </label>
+    </div>
+
+    <div class="radio">
+        <label>
+            <input type="radio" ng-model="$ctrl.override" ng-value="true">
+            <span translate>This TntConnect import should override the info in MPDX. (Contact info, notes, status, prayerletter settings, etc).</span>
+        </label>
+    </div>
+
       <div class="form-group importtags">
           <tag-selector ng-model="$ctrl.tags" tag-list="$ctrl.contactsTags.data">
       </div>

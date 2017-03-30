@@ -29,7 +29,8 @@ class TntImportController {
                     type: 'imports',
                     attributes: {
                         file: form.file,
-                        tags: this.tags
+                        tags: this.tags,
+                        override: this.override
                     }
                 }
             },
