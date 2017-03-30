@@ -209,7 +209,7 @@
     <div class="col-sm-4">
         <div class="fieldset">
             <h3 translate>Partner Accounts</h3>
-            <contact-donor-account ng-repeat="donorAccount in $ctrl.contact.donor_accounts" contact="$ctrl.contact" donor-account="donorAccount"></contact-donor-account>
+            <contact-donor-account ng-repeat="donorAccount in $ctrl.contact.donor_accounts" contact="$ctrl.contact" donor-account="donorAccount" on-save="$ctrl.onSave()"></contact-donor-account>
             <div class="add-partner-account">
                 <button type="button" class="btn btn-primary" ng-click="$ctrl.addPartnerAccount()">
                     <i class="fa fa-plus-circle"></i> <translate>Add Partner Account</translate>
