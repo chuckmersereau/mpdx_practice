@@ -43,6 +43,9 @@
 .subnav-offset {
   margin-top: $subnav-height;
 }
+.subnav-offset-padded {
+  margin-top: $subnav-height + $gutter;
+}
 .fullnav-offset {
   margin-top: $fullnav-height;
 }
