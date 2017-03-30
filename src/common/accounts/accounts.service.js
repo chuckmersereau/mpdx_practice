@@ -34,7 +34,7 @@ class AccountsService {
             return this.$q.reject();
         }
         return this.api.get(`account_lists/${id}`, { include: this.defaultIncludes }).then((resp) => {
-            this.$window.sessionStorage.setItem(`${userId}_accountListId`, toString(id));
+            this.$window.localStorage.setItem(`${userId}_accountListId`, toString(id));
             this.current = resp;
             this.currentInitialState = angular.copy(this.current);
             this.api.account_list_id = id;

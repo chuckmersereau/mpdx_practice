@@ -8,15 +8,16 @@ export default function appRun(
     $transitions.onBefore({ to: (state) => {
         block.start();
         $log.debug('navigating to:', state.name);
+        const token = $window.localStorage.getItem('token');
         if (state.name === 'login' || state.name === 'auth') {
             return false;
-        } else if (!$window.sessionStorage.token) {
-            $window.sessionStorage.redirect = state.name;
-            $window.sessionStorage.params = state.params;
+        } else if (!token) {
+            $window.$window.localStorage.setItem('redirect', state.name);
+            $window.$window.localStorage.setItem('params', state.params);
         }
         return true;
     } }, () => {
-        if ($window.sessionStorage.token) {
+        if ($window.localStorage.getItem('token')) {
             return $q.resolve();
         }
         $state.go('login');

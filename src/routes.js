@@ -242,7 +242,13 @@ export default class Routes {
 }
 
 /*@ngInject*/
-function logout($window) {
-    delete $window.sessionStorage.token;
+function logout(
+    $window,
+    users
+) {
+    $window.localStorage.removeItem('token');
+    if (users.current) {
+        $window.localStorage.removeItem(`${users.current.id}_accountListId`);
+    }
     $window.location.href = config.authUrl + config.authLogout;
 }

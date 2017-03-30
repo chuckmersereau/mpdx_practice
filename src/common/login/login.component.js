@@ -2,7 +2,7 @@ import config from 'config';
 
 class LoginController {
     constructor($state, $window) {
-        if ($window.sessionStorage.token) {
+        if ($window.localStorage.getItem('token')) {
             $state.go('home');
         }
         this.year = new Date().getFullYear();

@@ -39,11 +39,11 @@ class AuthController {
                     }
                 }).then((data) => {
                     this.$log.debug('user/authenticate', data);
-                    this.$window.sessionStorage.token = data.data.data.attributes.json_web_token;
-                    const redirect = angular.copy(this.$window.sessionStorage.redirect || 'home');
-                    const params = angular.copy(this.$window.sessionStorage.params || {});
-                    delete this.$window.sessionStorage.redirect;
-                    delete this.$window.sessionStorage.params;
+                    this.$window.localStorage.setItem('token', data.data.data.attributes.json_web_token);
+                    const redirect = angular.copy(this.$window.localStorage.getItem('redirect') || 'home');
+                    const params = angular.copy(this.$window.localStorage.getItem('params') || {});
+                    this.$window.localStorage.removeItem('redirect');
+                    this.$window.localStorage.removeItem('params');
                     this.$state.go(redirect, params, {reload: true});
                 });
             });

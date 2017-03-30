@@ -34,7 +34,7 @@ class TntImportController {
                 }
             },
             headers: {
-                Authorization: `Bearer ${this.$window.sessionStorage.token}`
+                Authorization: `Bearer ${this.$window.localStorage.getItem('token')}`
             }
         }).then(() => {
             this.importing = false;
