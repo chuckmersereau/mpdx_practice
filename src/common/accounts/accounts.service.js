@@ -103,7 +103,7 @@ class AccountsService {
         if (keys(patch).length < 2) {
             return this.$q.resolve(this.current);
         }
-        return this.api.put(`account_lists/${this.current.id}`, patch).then((data) => {
+        return this.api.put(`account_lists/${this.current.id}`, patch).then(() => {
             this.get(this.current.id).then((data) => { //get complete due to include object diffs
                 this.current = data;
                 this.currentInitialState = angular.copy(this.current);
