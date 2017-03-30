@@ -79,7 +79,7 @@ class ContactsService {
         }
         this.completeList = []; // to avoid double call
         return this.api.get('contacts', {
-            filters: {account_list_id: this.api.account_list_id},
+            filter: {account_list_id: this.api.account_list_id},
             fields: {
                 contacts: 'created_at,name'
             },
@@ -96,7 +96,7 @@ class ContactsService {
         }
         this.completeFilteredList = []; // to avoid double call
         return this.api.get('contacts', {
-            filters: this.buildFilterParams(),
+            filter: this.buildFilterParams(),
             fields: {
                 contacts: 'name'
             },
@@ -148,7 +148,7 @@ class ContactsService {
         return this.api.get({
             url: 'contacts',
             data: {
-                filters: this.buildFilterParams(),
+                filter: this.buildFilterParams(),
                 page: this.page,
                 per_page: 25,
                 include: 'addresses,people,people.facebook_accounts,people.phone_numbers,people.email_addresses',

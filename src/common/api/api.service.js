@@ -2,14 +2,10 @@ import config from 'config';
 import japi from 'jsonapi-serializer';
 import concat from 'lodash/fp/concat';
 import assign from 'lodash/fp/assign';
-import forIn from 'lodash/forIn'; //fp forin not calculating val currently
 import has from 'lodash/fp/has';
 import isArray from 'lodash/fp/isArray';
 import isObject from 'lodash/fp/isObject';
-import toString from 'lodash/fp/toString';
 import map from 'lodash/fp/map';
-import escapeComma from "../fp/escapeComma";
-import joinComma from "../fp/joinComma";
 
 function appendTransform(defaults, transform) {
     // We can't guarantee that the default transformation is an array
@@ -80,30 +76,23 @@ class Api {
                 return this.$q.resolve(cachedData);
             }
         }
-        const fixFilters = (val, key) => {
-            if (isArray(val)) {
-                //handles filter values passed as array with comma in the value
-                val = joinComma(map(value => escapeComma(toString(value)), val));
+
+        if (overrideGetAsPost) {
+            headers['X-HTTP-Method-Override'] = 'GET';
+            method = 'post';
+            doSerialization = false;
+            if (!type) {
+                let arr = url.split('/');
+                data.data = {type: arr[arr.length - 1]};
             } else {
-                val = escapeComma(toString(val));
+                data.data = {type: type};
             }
-            data[`filter[${key}]`] = val;
-        };
-        if (data.filters) {
-            forIn(data.filters, fixFilters);
-            delete data.filters;
         }
 
         if (method === 'get' || method === 'delete') {
             params = assign(params, data);
         }
-        if ((method === 'put' || method === 'put') && data.include) {
-            params = assign(params, {include: data.include});
-        }
 
-        if (overrideGetAsPost) {
-            headers['X-HTTP-Method-Override'] = 'POST';
-        }
         //set jsonapi content type
         if (!headers['Content-Type']) {
             headers['Content-Type'] = 'application/vnd.api+json';
@@ -122,7 +111,7 @@ class Api {
             responseType: responseType,
             transformRequest: (data) => {
                 let params = angular.copy(jsonApiParams);
-                if (method === 'put' || method === 'post' || method === 'delete') {
+                if (method === 'put' || (method === 'post' && !overrideGetAsPost) || method === 'delete') {
                     if (!type) {
                         let arr = url.split('/');
                         if ((method === 'put' || method === 'delete') && arr.length % 2 === 0) {

@@ -86,7 +86,7 @@ class TasksService {
         }
         this.completeList = [];
         return this.api.get('tasks', {
-            filters: this.tasksFilter.toParams(),
+            filter: this.tasksFilter.toParams(),
             fields: {
                 tasks: 'subject,updated_in_db_at'
             },
@@ -124,7 +124,7 @@ class TasksService {
         return this.api.get({
             url: 'tasks',
             data: {
-                filters: this.tasksFilter.toParams(),
+                filter: this.tasksFilter.toParams(),
                 page: page,
                 per_page: 25,
                 include: 'contacts',
