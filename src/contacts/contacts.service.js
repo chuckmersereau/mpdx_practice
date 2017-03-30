@@ -322,7 +322,7 @@ class ContactsService {
         return this.completeFilteredList[0].id;
     }
     hideContact(contact) {
-        const message = this.gettextCatalog.getString('Are you sure you wish to hide the selected contact?');
+        const message = this.gettextCatalog.getString('Are you sure you wish to hide the selected contact? Hiding a contact in MPDX actually sets the contact status to "Never Ask".');
         return this.modal.confirm(message).then(() => {
             return this.save({
                 id: contact.id,
@@ -336,7 +336,7 @@ class ContactsService {
         });
     }
     bulkHideContacts() {
-        const message = this.gettextCatalog.getString('Are you sure you wish to hide the selected contacts?');
+        const message = this.gettextCatalog.getString('Are you sure you wish to hide the selected contacts? Hiding a contact in MPDX actually sets the contact status to "Never Ask".');
         return this.modal.confirm(message).then(() => {
             const contacts = map(contact => {
                 return {
