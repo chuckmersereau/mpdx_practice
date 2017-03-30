@@ -311,6 +311,16 @@ class EntityAttributes {
                 donor_account: { ref: 'id' },
                 appeal: { ref: 'id' }
             },
+            imports: {
+                attributes: ["file_headers", "file_headers_mappings", "file_constants", "file_constants_mappings", "sample_contacts", "in_preview", "tag_list", "updated_in_db_at"],
+                sample_contacts: { ref: 'id' },
+                typeForAttribute: (key) => {
+                    if (key === 'sample_contacts') {
+                        return 'contacts';
+                    }
+                    return key;
+                }
+            },
             merge: {
                 attributes: ['account_list_to_merge'],
                 typeForAttribute: (key) => {

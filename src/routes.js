@@ -217,7 +217,7 @@ export default class Routes {
             name: 'tools.importFromCSV',
             title: 'Import from CSV',
             url: '/import-from-csv',
-            component: 'csvImportForm'
+            component: 'importFromCsv'
         }).state({
             name: 'tools.importFromGoogle',
             title: 'Import from Google',
