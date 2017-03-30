@@ -12,8 +12,8 @@ export default function appRun(
         if (state.name === 'login' || state.name === 'auth') {
             return false;
         } else if (!token) {
-            $window.$window.localStorage.setItem('redirect', state.name);
-            $window.$window.localStorage.setItem('params', state.params);
+            $window.localStorage.setItem('redirect', state.name);
+            $window.localStorage.setItem('params', state.params);
         }
         return true;
     } }, () => {
