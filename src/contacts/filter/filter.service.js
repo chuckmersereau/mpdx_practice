@@ -4,11 +4,12 @@ class FilterService {
 
     constructor(
         $location, $rootScope,
-        api, filters
+        api, contactsTags, filters
     ) {
         this.$location = $location;
         this.$rootScope = $rootScope;
         this.api = api;
+        this.contactsTags = contactsTags;
         this.filters = filters;
 
         this.data = null;
@@ -43,13 +44,14 @@ class FilterService {
     reset() {
         this.params = angular.copy(this.default_params);
         this.$rootScope.$emit('contactSearchReset');
+        this.contactsTags.reset();
         this.change();
     }
     change() {
         this.$rootScope.$emit('contactParamChange');
     }
     isResettable() {
-        return !angular.equals(this.params, this.default_params);
+        return !angular.equals(this.params, this.default_params) || this.contactsTags.isResettable();
     }
 }
 export default angular.module('mpdx.services.filter', [])
