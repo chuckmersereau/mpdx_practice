@@ -340,32 +340,32 @@ class EntityAttributes {
                     "phone_numbers", "email_addresses", "facebook_accounts", "family_relationships", "linkedin_accounts", "twitter_accounts", "websites", "updated_in_db_at", "winner_id", "loser_id"],
                 email_addresses: {
                     ref: 'id',
-                    attributes: ["email", "primary", "remote_id", "location", "historic", "updated_in_db_at"]
+                    attributes: ["_destroy", "email", "primary", "remote_id", "location", "historic", "updated_in_db_at"]
                 },
                 facebook_accounts: {
                     ref: 'id',
-                    attributes: ["username", "updated_in_db_at"]
+                    attributes: ["_destroy", "username", "updated_in_db_at"]
                 },
                 family_relationships: {
                     ref: 'id',
-                    attributes: ["related_person", "relationship", "created_at", "updated_in_db_at"],
+                    attributes: ["_destroy", "related_person", "relationship", "created_at", "updated_in_db_at"],
                     related_person: { ref: 'id' }
                 },
                 linkedin_accounts: {
                     ref: 'id',
-                    attributes: ["public_url", "updated_in_db_at"]
+                    attributes: ["_destroy", "public_url", "updated_in_db_at"]
                 },
                 phone_numbers: {
                     ref: 'id',
-                    attributes: ["number", "country_code", "location", "primary", "updated_at", "remote_id", "historic", "updated_in_db_at"]
+                    attributes: ["_destroy", "number", "country_code", "location", "primary", "updated_at", "remote_id", "historic", "updated_in_db_at"]
                 },
                 twitter_accounts: {
                     ref: 'id',
-                    attributes: ["screen_name", "updated_in_db_at"]
+                    attributes: ["_destroy", "screen_name", "updated_in_db_at"]
                 },
                 websites: {
                     ref: 'id',
-                    attributes: ["url", "primary", "updated_in_db_at"]
+                    attributes: ["_destroy", "url", "primary", "updated_in_db_at"]
                 },
                 typeForAttribute: (key) => {
                     if (key === 'related_person') {

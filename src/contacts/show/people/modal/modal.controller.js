@@ -92,7 +92,7 @@ class PersonModalController {
         }
     }
     remove(property, index) {
-        this.person[property].splice(index, 1);
+        this.person[property][index]._destroy = 1;
     }
     addEmailAddress() {
         this.person.email_addresses.push({id: uuid(), email: '', location: ''});
