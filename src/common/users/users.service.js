@@ -73,7 +73,6 @@ class Users {
                 return this.$q.reject({redirect: 'setup.account'});
             }
 
-
             return this.accounts.swap(accountListId, this.current.id).then(() => {
                 return this.getOptions(true, forRouting).then(() => {
                     this.help.updateUser(this.current);
