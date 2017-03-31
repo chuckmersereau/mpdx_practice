@@ -35,6 +35,13 @@ class TasksService {
         this.meta = {};
         this.page = 1;
         this.selected = [];
+        this.categories = {
+            'completed': this.gettextCatalog.getString('Completed'),
+            'today': this.gettextCatalog.getString('Today'),
+            'overdue': this.gettextCatalog.getString('Overdue'),
+            'upcoming': this.gettextCatalog.getString('Upcoming'),
+            'no-due-date': this.gettextCatalog.getString('No Due Date')
+        };
 
         $rootScope.$on('taskFilterChange', () => {
             $log.debug('tasks service: filter change');
@@ -90,8 +97,7 @@ class TasksService {
             fields: {
                 tasks: 'subject,updated_in_db_at'
             },
-            per_page: 25000,
-            sort: '-start_at'
+            per_page: 25000
         }).then((data) => {
             this.$log.debug('tasks all', data);
             this.completeList = data;
@@ -129,11 +135,10 @@ class TasksService {
                 per_page: 25,
                 include: 'contacts',
                 fields: {
-                    tasks: 'activity_type,comments,completed,contacts,no_date,starred,start_at,subject,tag_list',
+                    tasks: 'activity_type,comments,completed,contacts,no_date,starred,start_at,subject,tag_list,updated_in_db_at',
                     contacts: 'name',
                     comments: ''
-                },
-                sort: '-start_at'
+                }
             },
             deSerializationOptions: relationshipId('comments'), //for comment count
             overrideGetAsPost: true
@@ -149,15 +154,15 @@ class TasksService {
     process(task) {
         const startAt = this.moment(task.start_at);
         if (task.completed) {
-            task.state = this.gettextCatalog.getString('Completed');
+            task.category = { name: 'completed', id: 4 };
         } else if (this.moment().isSame(startAt, 'day')) {
-            task.state = this.gettextCatalog.getString('Today');
+            task.category = { name: 'today', id: 1 };
         } else if (this.moment().isAfter(startAt, 'day')) {
-            task.state = this.gettextCatalog.getString('Overdue');
+            task.category = { name: 'overdue', id: 0 };
         } else if (this.moment().isBefore(startAt, 'day')) {
-            task.state = this.gettextCatalog.getString('Upcoming');
+            task.category = { name: 'upcoming', id: 2 };
         } else {
-            task.state = this.gettextCatalog.getString('No Due Date');
+            task.category = { name: 'no-due-date', id: 3 };
         }
         return task;
     }
@@ -212,7 +217,7 @@ class TasksService {
                 let task = find({ id: selectedTask.id }, this.data);
                 if (task) {
                     task.completed = true;
-                    task.state = this.gettextCatalog.getString('Completed');
+                    task.category = 'completed';
                 }
             }, tasks);
         });
@@ -301,7 +306,7 @@ class TasksService {
         });
     }
     star(task) {
-        return this.api.put(`tasks/${task.id}`, {updated_in_db_at: task.updated_in_db_at, starred: !task.starred});
+        return this.api.put(`tasks/${task.id}`, {id: task.id, updated_in_db_at: task.updated_in_db_at, starred: !task.starred});
     }
     getSelected() {
         return reduce((result, task) => {

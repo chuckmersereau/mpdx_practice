@@ -5,13 +5,16 @@ tasks-list {
         }
         .panel-heading {
             border-bottom: 4px solid rgb(153, 153, 153);
-            &.Overdue {
-                border-color: #f9b625;
+            &.today {
+                border-color: #F9B625;
             }
-            &.Upcoming {
+            &.overdue {
+                border-color: #F6921E;
+            }
+            &.upcoming {
                 border-color: #56AA00;
             }
-            &.noDueDate {
+            &.no-due-date {
                 border-color: #3eb1c8;
             }
         }

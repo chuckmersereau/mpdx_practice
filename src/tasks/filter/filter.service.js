@@ -25,50 +25,59 @@ class TasksFilterService {
         this.defaultParamsForGroup = {
             all: {
                 starred: null,
-                completed: false,
+                completed: 'false',
                 no_date: null,
                 date_range: null
             },
             today: {
                 starred: null,
-                completed: false,
-                no_date: false,
+                completed: 'false',
+                no_date: 'false',
                 date_range: 'today'
             },
             overdue: {
                 starred: null,
-                completed: false,
-                no_date: false,
+                completed: 'false',
+                no_date: 'false',
                 date_range: 'overdue'
             },
             upcoming: {
                 starred: null,
-                completed: false,
-                no_date: false,
+                completed: 'false',
+                no_date: 'false',
                 date_range: 'upcoming'
             },
             noDueDate: {
                 starred: null,
-                completed: false,
-                no_date: true,
+                completed: 'false',
+                no_date: 'true',
                 date_range: 'no_date'
             },
             starred: {
-                starred: true,
-                completed: null,
+                starred: 'true',
+                completed: 'false',
                 no_date: null,
                 date_range: null
             },
-            history: {
+            completed: {
                 starred: null,
-                completed: true,
+                completed: 'true',
                 no_date: null,
                 date_range: null
             }
         };
         this.defaultParams = {};
+
+        $rootScope.$on('accountListUpdated', () => {
+            this.load(true);
+        });
     }
-    load() {
+    load(reset = false) {
+        if (!reset && this.data) {
+            this.loading = false;
+            return this.$q.resolve(this.data);
+        }
+
         return this.filters.load({
             data: this.data,
             defaultParams: this.defaultParams,
@@ -78,6 +87,7 @@ class TasksFilterService {
             this.data = data;
             this.defaultParams = defaultParams;
             this.params = params;
+            this.changeGroup(this.group);
         });
     }
     count() {

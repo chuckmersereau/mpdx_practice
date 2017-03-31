@@ -53,9 +53,9 @@
         </div>
     </div>
     <div class="column">
-        <div ng-repeat="(name, tasks) in $ctrl.tasks.data | groupBy: 'state'" infinite-scroll="$ctrl.tasks.loadMoreTasks()" infinite-scroll-disabled="$ctrl.tasks.loading">
+        <div ng-repeat="(category, tasks) in $ctrl.tasks.data | orderBy: 'category.id' | groupBy: 'category.name'" infinite-scroll="$ctrl.tasks.loadMoreTasks()" infinite-scroll-disabled="$ctrl.tasks.loading">
             <div class="panel panel-default">
-               <div class="panel-heading" ng-class="name">{{name}}</div>
+               <div class="panel-heading" ng-class="category">{{$ctrl.tasks.categories[category]}}</div>
                <ul class="list-group">
                     <li class="list-group-item" ng-repeat="task in tasks">
                         <tasks-list-item task="task"></tasks-list-item>
