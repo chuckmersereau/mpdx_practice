@@ -15,6 +15,8 @@ import unionBy from 'lodash/fp/unionBy';
 import relationshipId from '../common/fp/relationshipId';
 
 class TasksService {
+    contacts;
+    selectedContacts;
     constructor(
         $rootScope, $window, $log, $q, gettextCatalog, api, tasksFilter, tasksTags, users, modal, tasksModals
     ) {

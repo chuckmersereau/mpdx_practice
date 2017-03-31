@@ -1,7 +1,9 @@
 class LogTaskController {
+    comment;
+    task;
     constructor(
         $scope,
-        modal, contacts, tasks, tasksTags, serverConstants, users,
+        contacts, tasks, tasksTags, serverConstants, users,
         contactsList
     ) {
         this.$scope = $scope;
@@ -18,7 +20,7 @@ class LogTaskController {
     }
     save() {
         return this.tasks.create(
-            this.task,
+            this.model,
             this.contactsList,
             this.comment
         ).then(() => {
