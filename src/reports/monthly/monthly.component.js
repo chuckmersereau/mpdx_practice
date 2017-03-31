@@ -64,7 +64,7 @@ class MonthlyController {
         return donationType.sum / this.sumOfAllCategories * 100;
     }
     isOpen(index) {
-        return _.indexOf(this.activePanels, index) >= 0;
+        return indexOf(index, this.activePanels) > -1;
     }
 }
 

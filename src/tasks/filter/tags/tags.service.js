@@ -1,3 +1,4 @@
+import includes from 'lodash/fp/includes';
 import map from 'lodash/fp/map';
 import reject from 'lodash/fp/reject';
 import joinComma from "../../../common/fp/joinComma";
@@ -71,7 +72,7 @@ class TagsService {
         if (this.selectedTags.length === 0) {
             return true;
         } else {
-            return _.includes(this.selectedTags, tag);
+            return includes(tag, this.selectedTags);
         }
     }
     isTagRejected(tag) {

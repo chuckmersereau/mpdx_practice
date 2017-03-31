@@ -1,3 +1,5 @@
+const each = require('lodash/fp/each').convert({ 'cap': false });
+const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 import joinComma from "../../common/fp/joinComma";
 
 class ImportFromCsvService {
@@ -49,19 +51,18 @@ class ImportFromCsvService {
         }).then((data) => {
             this.data = data;
 
-            this.headers_to_fields_mapping = {};
-            _.each(this.data.file_headers_mappings, (value, key) => {
-                this.headers_to_fields_mapping[value] = key;
-            });
+            this.headers_to_fields_mapping = reduce((result, value, key) => {
+                result[value] = key;
+                return result;
+            }, {}, this.data.file_headers_mappings);
 
-            this.values_to_constants_mapping = {};
-            _.each(this.data.file_constants_mappings, (obj, constant) => {
-                this.values_to_constants_mapping[constant] = {};
-
-                _.each(obj, (value, key) => {
-                    this.values_to_constants_mapping[constant][value] = key;
-                });
-            });
+            this.values_to_constants_mapping = reduce((result, obj, constant) => {
+                result[constant] = {};
+                each((value, key) => {
+                    result[constant][value] = key;
+                }, obj);
+                return result;
+            }, {}, this.data.file_constants_mappings);
 
             this.$log.debug('import');
             this.$log.debug(this.data);
@@ -75,19 +76,18 @@ class ImportFromCsvService {
             this.data.tag_list = joinComma(this.data.tag_list); //fix for api mis-match
         }
 
-        this.data.file_headers_mappings = {};
-        _.each(this.headers_to_fields_mapping, (value, key) => {
-            this.data.file_headers_mappings[value] = key;
-        });
+        this.data.file_headers_mappings = reduce((result, value, key) => {
+            result[value] = key;
+            return result;
+        }, {}, this.headers_to_fields_mapping);
 
-        this.data.file_constants_mappings = {};
-        _.each(this.values_to_constants_mapping, (obj, constant) => {
-            this.data.file_constants_mappings[constant] = {};
-
-            _.each(obj, (value, key) => {
-                this.data.file_constants_mappings[constant][value] = key;
-            });
-        });
+        this.data.file_constants_mappings = reduce((result, obj, constant) => {
+            result[constant] = {};
+            each((value, key) => {
+                result[constant][value] = key;
+            }, obj);
+            return result;
+        }, {}, this.values_to_constants_mapping);
 
         let promise = this.$q.defer();
 

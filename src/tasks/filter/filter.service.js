@@ -1,4 +1,5 @@
 import isEmpty from 'lodash/fp/isEmpty';
+import isNull from 'lodash/fp/isNull';
 import assign from "lodash/fp/assign";
 import map from "lodash/fp/map";
 import omitBy from "lodash/fp/omitBy";
@@ -9,11 +10,12 @@ class TasksFilterService {
     filters;
 
     constructor(
-        $location, $rootScope,
+        $location, $q, $rootScope,
         api, filters, tasksTags
     ) {
         this.$location = $location;
         this.$rootScope = $rootScope;
+        this.$q = $q;
         this.api = api;
         this.filters = filters;
         this.tasksTags = tasksTags;
@@ -130,7 +132,7 @@ class TasksFilterService {
         }
         filters.account_list_id = this.api.account_list_id;
         filters.any_tags = this.tasksTags.anyTags;
-        filters = omitBy(_.isNull, filters);
+        filters = omitBy(isNull, filters);
         return filters;
     }
 }

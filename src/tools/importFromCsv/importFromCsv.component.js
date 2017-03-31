@@ -1,3 +1,9 @@
+const each = require('lodash/fp/each').convert({ 'cap': false });
+import intersection from 'lodash/fp/intersection';
+import isEmpty from 'lodash/fp/isEmpty';
+import keys from 'lodash/fp/keys';
+import values from 'lodash/fp/values';
+
 class ImportFromCsvController {
     alerts;
     modal;
@@ -33,7 +39,7 @@ class ImportFromCsvController {
             return;
         }
 
-        if (n === 3 && _.isEmpty(this.available_constants)) {
+        if (n === 3 && isEmpty(this.available_constants)) {
             this.importFromCsv.values_to_constants_mapping = {};
 
             if (this.step < 3) {
@@ -42,9 +48,9 @@ class ImportFromCsvController {
                 }, (error) => {
                     this.step = 2;
                     this.$log.error(error);
-                    _.each(error.data.errors, (err) => {
+                    each(err => {
                         this.alerts.addAlert(err.detail, 'danger', 10);
-                    });
+                    }, error.data.errors);
                 });
             } else {
                 this.step = 2;
@@ -75,18 +81,18 @@ class ImportFromCsvController {
     canAdvance() {
         switch (this.step) {
             case 2:
-                const headers = _.values(this.importFromCsv.data.file_headers);
-                const selectedHeaders = _.keys(this.importFromCsv.headers_to_fields_mapping);
-                return headers.length === selectedHeaders.length && _.intersection(headers, selectedHeaders).length === headers.length;
+                const headers = values(this.importFromCsv.data.file_headers);
+                const selectedHeaders = keys(this.importFromCsv.headers_to_fields_mapping);
+                return headers.length === selectedHeaders.length && intersection(headers, selectedHeaders).length === headers.length;
             case 3:
                 let valid = true;
-                _.each(this.available_constants, (obj, constant) => {
+                each((obj, constant) => {
                     if (valid) {
                         const constants = obj.values;
-                        const selectedConstants = _.keys(this.importFromCsv.values_to_constants_mapping[constant]);
-                        valid = constants.length === selectedConstants.length && _.intersection(constants, selectedConstants).length === constants.length;
+                        const selectedConstants = keys(this.importFromCsv.values_to_constants_mapping[constant]);
+                        valid = constants.length === selectedConstants.length && intersection(constants, selectedConstants).length === constants.length;
                     }
-                });
+                }, this.available_constants);
                 return valid;
             case 4:
                 return this.accept;
@@ -124,9 +130,9 @@ class ImportFromCsvController {
         this.importFromCsv.update().then(() => {
             this.blockUI.stop();
             this.available_constants = {};
-            _.each(this.importFromCsv.data.file_headers_mappings, (value, key) => {
+            each((value, key) => {
                 if (this.serverConstants.data.csv_import.constants[key] !== undefined) {
-                    const constantKey = _.keys(this.importFromCsv.data.file_constants)[this.importFromCsv.data.file_headers.indexOf(value)];
+                    const constantKey = keys(this.importFromCsv.data.file_constants)[this.importFromCsv.data.file_headers.indexOf(value)];
 
                     this.available_constants[key] = {
                         label: value,
@@ -134,15 +140,15 @@ class ImportFromCsvController {
                         opts: this.serverConstants.data.csv_import.constants[key]
                     };
                 }
-            });
+            }, this.importFromCsv.data.file_headers_mappings);
 
             this.advance();
         }, (error) => {
             this.blockUI.stop();
             this.$log.error(error);
-            _.each(error.data.errors, (err) => {
+            each(err => {
                 this.alerts.addAlert(err.detail, 'danger', 10);
-            });
+            }, error.data.errors);
         });
     }
 
@@ -161,9 +167,9 @@ class ImportFromCsvController {
         }, (error) => {
             this.blockUI.stop();
             this.$log.error(error);
-            _.each(error.data.errors, (err) => {
+            each(err => {
                 this.alerts.addAlert(err.detail, 'danger', 10);
-            });
+            }, error.data.errors);
         });
     }
 
@@ -184,9 +190,9 @@ class ImportFromCsvController {
         }, (error) => {
             this.blockUI.stop();
             this.$log.error(error);
-            _.each(error.data.errors, (err) => {
+            each(err => {
                 this.alerts.addAlert(err.detail, 'danger', 10);
-            });
+            }, error.data.errors);
         });
     }
 }
