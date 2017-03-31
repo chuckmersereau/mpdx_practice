@@ -155,7 +155,7 @@ export default class Routes {
             url: '/account',
             component: 'setupAccount',
             resolve: {
-                another: /*@ngInject*/ (accounts) => accounts.load()
+                resolution: /*@ngInject*/ (accounts) => accounts.load(true)
             }
         }).state({
             name: 'setup.google',

@@ -1,7 +1,9 @@
+import defaultTo from 'lodash/fp/defaultTo';
 import get from 'lodash/fp/get';
 
 class AccountController {
-    accountListId;
+    accounts;
+    users;
     constructor(
         $state,
         users, accounts
@@ -9,16 +11,22 @@ class AccountController {
         this.$state = $state;
         this.accounts = accounts;
         this.users = users;
-
-        this.accountListId = get('current.preferences.default_account_list', this.users);
     }
     $onInit() {
+        const firstAccount = get('data[0].id', this.accounts);
+        this.users.current.preferences.default_account_list = defaultTo(firstAccount, this.users.current.preferences.default_account_list);
         this.users.current.options.setup_position.value = 'account';
         this.users.setOption(this.users.current.options.setup_position);
     }
     next() {
-        return this.accounts.swap(this.accountListId, this.users.current.id, true).then(() => {
-            this.$state.go('setup.preferences.accounts');
+        return this.users.saveCurrent().then((data) => {
+            return this.accounts.swap(data.preferences.default_account_list, this.users.current.id, true).then(() => {
+                if (this.accounts.data.length > 1) {
+                    this.$state.go('setup.preferences.accounts');
+                } else {
+                    this.$state.go('setup.preferences.personal');
+                }
+            });
         });
     }
 }

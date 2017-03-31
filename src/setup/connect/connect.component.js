@@ -36,13 +36,7 @@ class SetupConnectController {
         });
     }
     next() {
-        this.accounts.load(true).then(() => {
-            if (this.accounts.data.length > 1) {
-                this.$state.go('setup.account');
-            } else {
-                this.$state.go('setup.preferences.personal');
-            }
-        });
+        this.$state.go('setup.account');
     }
     reset() {
         this.organization = null;

@@ -6,13 +6,13 @@
         </div>
         <div class="panel-body">
             <label translate>Account</label>
-            <select ng-model="$ctrl.accountListId" class="form-control" disable-search="true" chosen>
+            <select ng-model="$ctrl.users.current.preferences.default_account_list" class="form-control" disable-search="true" chosen>
                 <option value=""></option>
                 <option ng-repeat="account in $ctrl.accounts.data" value="{{account.id}}">{{account.name}}</option>
             </select>
             <br>
             <br>
-            <p><button class="btn btn-block btn-primary" ng-disabled="!$ctrl.accountListId" ng-click="$ctrl.next()">
+            <p><button class="btn btn-block btn-primary" ng-disabled="!$ctrl.users.current.preferences.default_account_list" ng-click="$ctrl.next()">
                 <translate>Continue Tour</translate>
                 <i class="fa fa-angle-right"></i>
             </button></p>
