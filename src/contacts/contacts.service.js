@@ -101,7 +101,8 @@ class ContactsService {
                 contacts: 'name'
             },
             per_page: 25000,
-            sort: 'name'
+            sort: 'name',
+            overrideGetAsPost: true
         }).then((data) => {
             this.$log.debug('contacts all - filtered', data);
             this.completeFilteredList = data;

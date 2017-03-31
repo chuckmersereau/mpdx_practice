@@ -94,7 +94,8 @@ class TasksService {
             fields: {
                 tasks: 'subject,updated_in_db_at'
             },
-            per_page: 25000
+            per_page: 25000,
+            overrideGetAsPost: true
         }).then((data) => {
             this.$log.debug('tasks all', data);
             this.completeList = data;
