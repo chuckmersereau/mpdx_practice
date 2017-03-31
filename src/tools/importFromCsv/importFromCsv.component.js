@@ -22,6 +22,7 @@ class ImportFromCsvController {
         this.step = 1;
         this.accept = false;
         this.available_constants = {};
+        this.selectedHeaders = [];
     }
 
     setStep(n) {
@@ -75,16 +76,16 @@ class ImportFromCsvController {
     canAdvance() {
         switch (this.step) {
             case 2:
-                const headers = _.values(this.importFromCsv.data.file_headers);
-                const selectedHeaders = _.keys(this.importFromCsv.headers_to_fields_mapping);
-                return headers.length === selectedHeaders.length && _.intersection(headers, selectedHeaders).length === headers.length;
+                return !_.isEmpty(this.importFromCsv.headers_to_fields_mapping);
             case 3:
                 let valid = true;
                 _.each(this.available_constants, (obj, constant) => {
                     if (valid) {
                         const constants = obj.values;
-                        const selectedConstants = _.keys(this.importFromCsv.values_to_constants_mapping[constant]);
-                        valid = constants.length === selectedConstants.length && _.intersection(constants, selectedConstants).length === constants.length;
+                        if (constants) {
+                            const selectedConstants = _.keys(this.importFromCsv.values_to_constants_mapping[constant]);
+                            valid = constants.length === selectedConstants.length && _.intersection(constants, selectedConstants).length === constants.length;
+                        }
                     }
                 });
                 return valid;
@@ -126,11 +127,9 @@ class ImportFromCsvController {
             this.available_constants = {};
             _.each(this.importFromCsv.data.file_headers_mappings, (value, key) => {
                 if (this.serverConstants.data.csv_import.constants[key] !== undefined) {
-                    const constantKey = _.keys(this.importFromCsv.data.file_constants)[this.importFromCsv.data.file_headers.indexOf(value)];
-
                     this.available_constants[key] = {
-                        label: value,
-                        values: this.importFromCsv.data.file_constants[constantKey],
+                        label: this.importFromCsv.data.file_headers[value],
+                        values: this.importFromCsv.data.file_constants[value],
                         opts: this.serverConstants.data.csv_import.constants[key]
                     };
                 }
@@ -187,6 +186,13 @@ class ImportFromCsvController {
             _.each(error.data.errors, (err) => {
                 this.alerts.addAlert(err.detail, 'danger', 10);
             });
+        });
+    }
+
+    updateSelectedHeaders() {
+        this.selectedHeaders = {};
+        _.each(this.importFromCsv.headers_to_fields_mapping, (value, key) => {
+            this.selectedHeaders[value] = key;
         });
     }
 }

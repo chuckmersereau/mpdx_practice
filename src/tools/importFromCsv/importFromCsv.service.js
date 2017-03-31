@@ -77,16 +77,23 @@ class ImportFromCsvService {
 
         this.data.file_headers_mappings = {};
         _.each(this.headers_to_fields_mapping, (value, key) => {
-            this.data.file_headers_mappings[value] = key;
+            if (value) {
+                this.data.file_headers_mappings[value] = key;
+            }
         });
 
         this.data.file_constants_mappings = {};
         _.each(this.values_to_constants_mapping, (obj, constant) => {
-            this.data.file_constants_mappings[constant] = {};
+            if (this.data.file_headers_mappings[constant]) {
+                this.data.file_constants_mappings[constant] = {};
 
-            _.each(obj, (value, key) => {
-                this.data.file_constants_mappings[constant][value] = key;
-            });
+                _.each(obj, (value, key) => {
+                    if (!this.data.file_constants_mappings[constant][value]) {
+                        this.data.file_constants_mappings[constant][value] = [];
+                    }
+                    this.data.file_constants_mappings[constant][value].push(key);
+                });
+            }
         });
 
         let promise = this.$q.defer();

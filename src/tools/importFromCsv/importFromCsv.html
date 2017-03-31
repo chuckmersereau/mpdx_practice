@@ -58,13 +58,15 @@
                     </thead>
 
                     <tbody>
-                    <tr ng-repeat="header in $ctrl.importFromCsv.data.file_headers">
+                    <tr ng-repeat="(header_key, header) in $ctrl.importFromCsv.data.file_headers">
                         <td class="text-left">{{header}}</td>
                         <td class="text-left">
                             <select chosen
                                     class="form-control"
-                                    ng-model='$ctrl.importFromCsv.headers_to_fields_mapping[header]'
-                                    ng-options="v as k for (v, k) in $ctrl.serverConstants.data.csv_import.supported_headers">
+                                    ng-model='$ctrl.importFromCsv.headers_to_fields_mapping[header_key]'
+                                    ng-options="v as k disable when ($ctrl.selectedHeaders[v] && $ctrl.selectedHeaders[v] !== header_key) for (v, k) in $ctrl.serverConstants.data.csv_import.supported_headers"
+                                    ng-change="$ctrl.updateSelectedHeaders()">
+                                <option value="">Do Not Import</option>
                             </select>
                         </td>
                     </tr>
@@ -90,7 +92,8 @@
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th colspan="2">{{obj.label}}</th>
+                                    <th>{{obj.label}}</th>
+                                    <th>{{$ctrl.serverConstants.data.csv_import.supported_headers[constant]}}</th>
                                 </tr>
                                 </thead>
 
