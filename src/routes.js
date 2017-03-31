@@ -79,6 +79,9 @@ export default class Routes {
             name: 'reports.donations',
             url: '/donations',
             component: 'donations',
+            resolve: {
+                byMonth: () => true
+            },
             params: {
                 startDate: null
             }

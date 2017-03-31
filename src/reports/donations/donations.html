@@ -1,6 +1,6 @@
 <div class="reports">
     <donations-chart contact="$ctrl.contact"></donations-chart>
-    <div class="pull-right">
+    <div class="pull-right" ng-if="$ctrl.byMonth">
         <button ng-click="$ctrl.gotoPrevMonth()" class="btn btn-default">
             <i class="fa fa-angle-left"></i>
             <translate>Previous Month</translate>
@@ -14,7 +14,7 @@
     <h2 translate>Donations</h2>
     <div block-ui="donations">
         <div class="panel panel-default">
-            <div class="panel-heading">
+            <div class="panel-heading" ng-if="$ctrl.byMonth">
                 <h4 class="panel-title">{{$ctrl.startDate.format('MMMM YYYY')}}</h4>
             </div>
             <div class="panel-body" ng-if="$ctrl.donationsList.length > 0">
@@ -48,7 +48,7 @@
                 </table>
             </div>
             <div class="panel-footer" ng-if="$ctrl.donationsList.length == 0" translate>
-                No donations this month
+                No donations
             </div>
         </div>
         <pagination ng-if="$ctrl.donationsList.length > 0"
