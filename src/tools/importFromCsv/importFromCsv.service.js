@@ -77,16 +77,20 @@ class ImportFromCsvService {
         }
 
         this.data.file_headers_mappings = reduce((result, value, key) => {
-            result[value] = key;
+            if (value) {
+                result[value] = key;
+            }
             return result;
         }, {}, this.headers_to_fields_mapping);
 
         this.data.file_constants_mappings = reduce((result, obj, constant) => {
-            result[constant] = {};
-            each((value, key) => {
-                result[constant][value] = key;
-            }, obj);
-            return result;
+            if (this.data.file_headers_mappings[constant]) {
+                result[constant] = {};
+                each((value, key) => {
+                    result[constant][value] = key;
+                }, obj);
+                return result;
+            }
         }, {}, this.values_to_constants_mapping);
 
         let promise = this.$q.defer();

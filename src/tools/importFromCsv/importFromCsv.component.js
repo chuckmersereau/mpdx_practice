@@ -2,7 +2,6 @@ const each = require('lodash/fp/each').convert({ 'cap': false });
 import intersection from 'lodash/fp/intersection';
 import isEmpty from 'lodash/fp/isEmpty';
 import keys from 'lodash/fp/keys';
-import values from 'lodash/fp/values';
 
 class ImportFromCsvController {
     alerts;
@@ -28,6 +27,7 @@ class ImportFromCsvController {
         this.step = 1;
         this.accept = false;
         this.available_constants = {};
+        this.selectedHeaders = [];
     }
 
     setStep(n) {
@@ -81,16 +81,16 @@ class ImportFromCsvController {
     canAdvance() {
         switch (this.step) {
             case 2:
-                const headers = values(this.importFromCsv.data.file_headers);
-                const selectedHeaders = keys(this.importFromCsv.headers_to_fields_mapping);
-                return headers.length === selectedHeaders.length && intersection(headers, selectedHeaders).length === headers.length;
+                return isEmpty(this.importFromCsv.headers_to_fields_mapping);
             case 3:
                 let valid = true;
                 each((obj, constant) => {
                     if (valid) {
                         const constants = obj.values;
-                        const selectedConstants = keys(this.importFromCsv.values_to_constants_mapping[constant]);
-                        valid = constants.length === selectedConstants.length && intersection(constants, selectedConstants).length === constants.length;
+                        if (constants) {
+                            const selectedConstants = keys(this.importFromCsv.values_to_constants_mapping[constant]);
+                            valid = constants.length === selectedConstants.length && intersection(constants, selectedConstants).length === constants.length;
+                        }
                     }
                 }, this.available_constants);
                 return valid;
@@ -132,11 +132,9 @@ class ImportFromCsvController {
             this.available_constants = {};
             each((value, key) => {
                 if (this.serverConstants.data.csv_import.constants[key] !== undefined) {
-                    const constantKey = keys(this.importFromCsv.data.file_constants)[this.importFromCsv.data.file_headers.indexOf(value)];
-
                     this.available_constants[key] = {
-                        label: value,
-                        values: this.importFromCsv.data.file_constants[constantKey],
+                        label: this.importFromCsv.data.file_headers[value],
+                        values: this.importFromCsv.data.file_constants[value],
                         opts: this.serverConstants.data.csv_import.constants[key]
                     };
                 }
@@ -193,6 +191,13 @@ class ImportFromCsvController {
             each(err => {
                 this.alerts.addAlert(err.detail, 'danger', 10);
             }, error.data.errors);
+        });
+    }
+
+    updateSelectedHeaders() {
+        this.selectedHeaders = {};
+        _.each(this.importFromCsv.headers_to_fields_mapping, (value, key) => {
+            this.selectedHeaders[value] = key;
         });
     }
 }

@@ -1,29 +1,35 @@
+import defaultTo from 'lodash/fp/defaultTo';
 import map from 'lodash/fp/map';
+import moment from 'moment';
 
 class DonationsController {
     $rootScope;
     blockUI;
+    byMonth;
+    contact;
     designationAccounts;
     donations;
 
     constructor(
-        $stateParams, $rootScope, blockUI, designationAccounts, donations
+        $stateParams, $rootScope, blockUI,
+        designationAccounts, donations
     ) {
         this.$rootScope = $rootScope;
         this.designationAccounts = designationAccounts;
         this.donations = donations;
-
+        this.$stateParams = $stateParams;
         this.blockUI = blockUI.instances.get('donations');
+
         this.enableNext = false;
-        this.startDate = moment().startOf('month');
-        if ($stateParams.startDate) {
-            this.startDate = $stateParams.startDate;
-        }
         this.donationsList = [];
         this.page = 1;
     }
 
     $onInit() {
+        if (this.byMonth) {
+            this.startDate = defaultTo(moment().startOf('month'), this.$stateParams.startDate);
+        }
+
         this.watcher = this.$rootScope.$on('accountListUpdated', () => {
             this.load(1);
         });
@@ -90,7 +96,8 @@ const Donations = {
     controller: DonationsController,
     template: require('./donations.html'),
     bindings: {
-        contact: '<'
+        contact: '<',
+        byMonth: '<'
     }
 };
 
