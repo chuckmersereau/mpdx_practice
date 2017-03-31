@@ -1,8 +1,13 @@
+import defaultTo from 'lodash/fp/defaultTo';
 import each from 'lodash/fp/each';
+import find from 'lodash/fp/find';
+import findIndex from 'lodash/fp/findIndex';
+import get from 'lodash/fp/get';
 import has from 'lodash/fp/has';
 import map from 'lodash/fp/map';
 import split from 'lodash/fp/split';
 import toLower from 'lodash/fp/toLower';
+import uuid from 'uuid/v1';
 
 class PersonalController {
     accounts;
@@ -27,6 +32,7 @@ class PersonalController {
         this.serverConstants = serverConstants;
         this.users = users;
 
+        this.email = '';
         this.saving = false;
         this.tabId = '';
 
@@ -38,11 +44,29 @@ class PersonalController {
         if (this.$stateParams.id || this.selectedTab) {
             this.setTab(this.$stateParams.id || this.selectedTab);
         }
+        this.email = this.getEmail(this.users.current);
+    }
+    getEmail(data) {
+        const primaryEmail = find({primary: true}, data.email_addresses);
+        const firstEmail = get('email_addresses[0]', data);
+        const newEmail = {id: uuid(), email: ''};
+        return defaultTo(defaultTo(newEmail, firstEmail), primaryEmail);
     }
     $onChanges(data) {
         if (data.selectedTab) {
             this.setTab(this.selectedTab);
         }
+        this.email = this.getEmail(this.users.current);
+    }
+    saveEmail() {
+        this.saving = true;
+        const index = findIndex(this.users.current.email_addresses);
+        if (index > -1) {
+            this.users.current.email_addresses[index].email = this.email.email;
+        } else {
+            this.users.current.email_addresses = [this.email];
+        }
+        this.save();
     }
     save() {
         this.saving = true;

@@ -2,14 +2,15 @@ import config from 'config';
 import japi from 'jsonapi-serializer';
 import concat from 'lodash/fp/concat';
 import assign from 'lodash/fp/assign';
-import forIn from 'lodash/forIn'; //fp forin not calculating val currently
 import has from 'lodash/fp/has';
 import isArray from 'lodash/fp/isArray';
+import isNil from 'lodash/fp/isNil';
 import isObject from 'lodash/fp/isObject';
-import toString from 'lodash/fp/toString';
 import map from 'lodash/fp/map';
-import escapeComma from "../fp/escapeComma";
-import joinComma from "../fp/joinComma";
+import pull from 'lodash/fp/pull';
+import value from 'lodash/fp/value';
+import joinComma from '../fp/joinComma';
+const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 
 function appendTransform(defaults, transform) {
     // We can't guarantee that the default transformation is an array
@@ -39,6 +40,23 @@ function serialize(key, params, item, method) {
     }
     return serialized;
 }
+
+function cleanFilters(filter) {
+    return reduce((result, value, key) => {
+        if (isArray(value)) {
+            value = pull('', value);
+            if (value.length > 0) {
+                result[key] = joinComma(value);
+            }
+        } else {
+            if (!isNil(value) && value !== '') {
+                result[key] = value;
+            }
+        }
+        return result;
+    }, {}, filter);
+}
+
 
 class Api {
     constructor(
@@ -80,30 +98,24 @@ class Api {
                 return this.$q.resolve(cachedData);
             }
         }
-        const fixFilters = (val, key) => {
-            if (isArray(val)) {
-                //handles filter values passed as array with comma in the value
-                val = joinComma(map(value => escapeComma(toString(value)), val));
+
+        if (overrideGetAsPost) {
+            headers['X-HTTP-Method-Override'] = 'GET';
+            method = 'post';
+            doSerialization = false;
+            if (!type) {
+                let arr = url.split('/');
+                data.data = {type: arr[arr.length - 1]};
             } else {
-                val = escapeComma(toString(val));
+                data.data = {type: type};
             }
-            data[`filter[${key}]`] = val;
-        };
-        if (data.filters) {
-            forIn(data.filters, fixFilters);
-            delete data.filters;
+            data.filter = cleanFilters(data.filter);
         }
 
         if (method === 'get' || method === 'delete') {
-            params = data;
-        }
-        if ((method === 'put' || method === 'put') && data.include) {
-            params.include = data.include;
+            params = assign(params, data);
         }
 
-        if (overrideGetAsPost) {
-            headers['X-HTTP-Method-Override'] = 'POST';
-        }
         //set jsonapi content type
         if (!headers['Content-Type']) {
             headers['Content-Type'] = 'application/vnd.api+json';
@@ -122,7 +134,7 @@ class Api {
             responseType: responseType,
             transformRequest: (data) => {
                 let params = angular.copy(jsonApiParams);
-                if (method === 'put' || method === 'post' || method === 'delete') {
+                if (method === 'put' || (method === 'post' && !overrideGetAsPost) || method === 'delete') {
                     if (!type) {
                         let arr = url.split('/');
                         if ((method === 'put' || method === 'delete') && arr.length % 2 === 0) {
@@ -311,6 +323,16 @@ class EntityAttributes {
                 donor_account: { ref: 'id' },
                 appeal: { ref: 'id' }
             },
+            imports: {
+                attributes: ["file_headers", "file_headers_mappings", "file_constants", "file_constants_mappings", "sample_contacts", "in_preview", "tag_list", "updated_in_db_at"],
+                sample_contacts: { ref: 'id' },
+                typeForAttribute: (key) => {
+                    if (key === 'sample_contacts') {
+                        return 'contacts';
+                    }
+                    return key;
+                }
+            },
             merge: {
                 attributes: ['account_list_to_merge'],
                 typeForAttribute: (key) => {
@@ -340,32 +362,32 @@ class EntityAttributes {
                     "phone_numbers", "email_addresses", "facebook_accounts", "family_relationships", "linkedin_accounts", "twitter_accounts", "websites", "updated_in_db_at", "winner_id", "loser_id"],
                 email_addresses: {
                     ref: 'id',
-                    attributes: ["email", "primary", "remote_id", "location", "historic", "updated_in_db_at"]
+                    attributes: ["_destroy", "email", "primary", "remote_id", "location", "historic", "updated_in_db_at"]
                 },
                 facebook_accounts: {
                     ref: 'id',
-                    attributes: ["username", "updated_in_db_at"]
+                    attributes: ["_destroy", "username", "updated_in_db_at"]
                 },
                 family_relationships: {
                     ref: 'id',
-                    attributes: ["related_person", "relationship", "created_at", "updated_in_db_at"],
+                    attributes: ["_destroy", "related_person", "relationship", "created_at", "updated_in_db_at"],
                     related_person: { ref: 'id' }
                 },
                 linkedin_accounts: {
                     ref: 'id',
-                    attributes: ["public_url", "updated_in_db_at"]
+                    attributes: ["_destroy", "public_url", "updated_in_db_at"]
                 },
                 phone_numbers: {
                     ref: 'id',
-                    attributes: ["number", "country_code", "location", "primary", "updated_at", "remote_id", "historic", "updated_in_db_at"]
+                    attributes: ["_destroy", "number", "country_code", "location", "primary", "updated_at", "remote_id", "historic", "updated_in_db_at"]
                 },
                 twitter_accounts: {
                     ref: 'id',
-                    attributes: ["screen_name", "updated_in_db_at"]
+                    attributes: ["_destroy", "screen_name", "updated_in_db_at"]
                 },
                 websites: {
                     ref: 'id',
-                    attributes: ["url", "primary", "updated_in_db_at"]
+                    attributes: ["_destroy", "url", "primary", "updated_in_db_at"]
                 },
                 typeForAttribute: (key) => {
                     if (key === 'related_person') {
@@ -391,7 +413,10 @@ class EntityAttributes {
             },
             user: {
                 attributes: ["first_name", "last_name", "preferences", "setup", "email_addresses", "access_token", "time_zone", "locale", "updated_at", "updated_in_db_at"],
-                email_addresses: { ref: 'id' }
+                email_addresses: {
+                    ref: 'id',
+                    attributes: ["email", "updated_in_db_at"]
+                }
             },
             user_options: {
                 attributes: ["key", "value", "updated_in_db_at"]

@@ -67,7 +67,7 @@ class Users {
             this.language.change(locale);
 
             const defaultAccountList = toString(get('preferences.default_account_list', response));
-            const accountListId = this.$window.sessionStorage.getItem(`${this.current.id}_accountListId`) || defaultAccountList;
+            const accountListId = this.$window.localStorage.getItem(`${this.current.id}_accountListId`) || defaultAccountList;
 
             if (!accountListId) {
                 return this.$q.reject({redirect: 'setup.account'});

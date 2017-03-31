@@ -1,18 +1,17 @@
 cover {
     .cover {
-        position: fixed;
+        position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        background: #fff;
+        background: $color-reverse;
         background-size: cover;
         background-position: center center;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        overflow: auto;
         .cover-item {
-            max-width: 450px;
+            max-width: 550px;
+            margin: $gutter*2 auto;
         }
     }
     .cover-copyright {

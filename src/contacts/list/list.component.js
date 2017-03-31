@@ -60,22 +60,10 @@ class ListController {
         });
     }
     openAddTaskModal() {
-        this.tasks.openModal({
-            selectedContacts: this.contacts.selectedContacts
-        });
+        this.tasks.addModal(this.contacts.selectedContacts);
     }
     openLogTaskModal() {
-        this.modal.open({
-            template: require('../../tasks/log/log.html'),
-            controller: 'logTaskController',
-            locals: {
-                selectedContacts: this.contacts.selectedContacts,
-                toComplete: true,
-                createNext: true,
-                specifiedTask: null,
-                ajaxAction: null
-            }
-        });
+        this.tasks.logModal(this.contacts.selectedContacts);
     }
     openEditFieldsModal() {
         this.modal.open({

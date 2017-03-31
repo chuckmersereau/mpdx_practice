@@ -1,4 +1,5 @@
 import reduce from 'lodash/fp/reduce';
+import toInteger from 'lodash/fp/toInteger';
 
 class BalancesController {
     api;
@@ -27,7 +28,7 @@ class BalancesController {
     }
     updateTotal() {
         this.converted_total = reduce((sum, designation) =>
-            sum + (designation.active ? designation.converted_balance : 0)
+            sum + toInteger(designation.active ? designation.converted_balance : 0)
         , 0, this.designationAccounts.data);
     }
 }

@@ -4,7 +4,34 @@
 </a>
 
 <div class="filter">
-    <tasks-sort class="filter--filtergroup"></tasks-sort>
+    <div class="filter--filtergroup_title">
+        <i class="fa fa-paper-plane"></i>
+        <translate>Sort</translate>
+    </div>
+    <ul class="filter--filtergroup_nav nav nav-pills nav-stacked">
+      <li ng-class="{'active': $ctrl.tasksFilter.group === 'all'}">
+        <a ng-click="$ctrl.tasksFilter.changeGroup('all')" translate>All</a>
+      </li>
+      <li ng-class="{'active': $ctrl.tasksFilter.group === 'today'}">
+        <a ng-click="$ctrl.tasksFilter.changeGroup('today')" translate>Today</a>
+      </li>
+      <li ng-class="{'active': $ctrl.tasksFilter.group === 'overdue'}">
+        <a ng-click="$ctrl.tasksFilter.changeGroup('overdue')" translate>Overdue</a>
+      </li>
+      <li ng-class="{'active': $ctrl.tasksFilter.group === 'upcoming'}">
+        <a ng-click="$ctrl.tasksFilter.changeGroup('upcoming')" translate>Upcoming</a>
+      </li>
+      <li ng-class="{'active': $ctrl.tasksFilter.group === 'noDueDate'}">
+        <a ng-click="$ctrl.tasksFilter.changeGroup('noDueDate')" translate>No Due Date</a>
+      </li>
+      <li ng-class="{'active': $ctrl.tasksFilter.group === 'starred'}">
+        <a ng-click="$ctrl.tasksFilter.changeGroup('starred')" translate>Starred</a>
+      </li>
+      <li ng-class="{'active': $ctrl.tasksFilter.group === 'completed'}">
+        <a ng-click="$ctrl.tasksFilter.changeGroup('completed')" translate>Completed</a>
+      </li>
+    </ul>
+
     <tasks-tags class="filter--filtergroup"></tasks-tags>
     <div class="filter--filtergroup">
         <form ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }">

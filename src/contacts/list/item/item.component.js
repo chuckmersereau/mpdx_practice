@@ -2,7 +2,7 @@ import includes from 'lodash/fp/includes';
 import pull from 'lodash/fp/pull';
 import union from 'lodash/fp/union';
 
-class ContactListItemController {
+class ItemController {
     contact;
     contacts;
     people;
@@ -57,7 +57,7 @@ class ContactListItemController {
 }
 
 const Item = {
-    controller: ContactListItemController,
+    controller: ItemController,
     template: require('./item.html'),
     bindings: {
         contact: '=',

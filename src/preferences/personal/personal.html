@@ -70,25 +70,25 @@
                         <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('email') }"></i>
                         <span translate>Email Address</span>
                     </div>
-                    <div class="col-sm-6 pref-current" ng-repeat="email in $ctrl.users.current.email_addresses" ng-if="email.primary">
-                        {{email.email}}
+                    <div class="col-sm-6 pref-current">
+                        {{$ctrl.email.email}}
                     </div>
                 </div>
             </div>
             <div class="panel-animate" ng-show="$ctrl.tabSelected('email')">
                 <div class="panel-body" ng-form="emailForm">
-                    <div class="row" ng-repeat="email in $ctrl.users.current.email_addresses" ng-if="email.primary">
+                    <div class="row">
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group">
                                 <label for="email" translate>Email Address</label>
                                 <p class="text-muted" translate>This is the email address where notifications will be sent.</p>
-                                <input id="email" type="email" class="form-control" ng-model="email.email">
+                                <input id="email" type="email" class="form-control" ng-model="$ctrl.email.email">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="panel-footer text-right">
-                    <button ng-click="$ctrl.save()" ng-disabled="(!$ctrl.setup && emailForm.$pristine) || $ctrl.saving" class="btn btn-primary">
+                    <button ng-click="$ctrl.saveEmail()" ng-disabled="(!$ctrl.setup && emailForm.$pristine) || $ctrl.saving" class="btn btn-primary">
                         <span translate>Save</span>&nbsp;
                         <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
                     </button>

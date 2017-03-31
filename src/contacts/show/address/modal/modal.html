@@ -1,7 +1,4 @@
 <modal title="{{$ctrl.modalTitle}}" cancel="$hide()" save="$ctrl.save()" delete="$ctrl.delete()" show-delete="$ctrl.address.id" hide-footer="!$ctrl.contact">
-    <div class="empty-map" ng-hide="$ctrl.address.gmap">
-        <i class="fa fa-map"></i>
-    </div>
     <ng-map disable-default-u-i="true"></ng-map>
     <div ng-if="$ctrl.contact">
         <div class="row" ng-if="$ctrl.address.remote_id">

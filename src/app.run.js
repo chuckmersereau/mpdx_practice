@@ -1,20 +1,23 @@
 /*@ngInject*/
 export default function appRun(
-    $q, $log, $rootScope, $state, $transitions, $window
+    $q, $log, $rootScope, $state, $transitions, $window, blockUI
 ) {
+    const block = blockUI.instances.get('root');
     $rootScope.googleMapsUrl = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBIUs23E_OsltKqLcIPD6B4rU11bfZKnM0";
     //check for Auth
     $transitions.onBefore({ to: (state) => {
+        block.start();
         $log.debug('navigating to:', state.name);
+        const token = $window.localStorage.getItem('token');
         if (state.name === 'login' || state.name === 'auth') {
             return false;
-        } else if (!$window.sessionStorage.token) {
-            $window.sessionStorage.redirect = state.name;
-            $window.sessionStorage.params = state.params;
+        } else if (!token) {
+            $window.localStorage.setItem('redirect', state.name);
+            $window.localStorage.setItem('params', state.params);
         }
         return true;
     } }, () => {
-        if ($window.sessionStorage.token) {
+        if ($window.localStorage.getItem('token')) {
             return $q.resolve();
         }
         $state.go('login');
@@ -27,5 +30,8 @@ export default function appRun(
                 return trans.router.stateService.target(error.redirect);
             }
         });
+    });
+    $transitions.onFinish(null, () => {
+        block.reset();
     });
 }

@@ -15,7 +15,7 @@ class progressController {
         this.blockUI = blockUI.instances.get('homeProgress');
         this.users = users;
 
-        this.endDate = moment().endOf('week').add(1, 'days');
+        this.endDate = moment().endOf('week');
         this.startDate = moment(this.endDate).subtract(1, 'week').add(1, 'day');
         this.errorOccurred = false;
 

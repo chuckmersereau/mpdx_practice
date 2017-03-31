@@ -1,4 +1,4 @@
-setup-start, setup-connect{
+setup-start, setup-connect, setup-account, setup-finish {
 
     .h2, h2 {
         font-weight: 600;
@@ -14,7 +14,7 @@ setup-start, setup-connect{
         border-style: solid;
     }
     .panel {
-        border-top-width: 0;
+        border: none;
         color: $color-text-dark;
         padding-top: $gutter*1.6 - 10px;
         padding-bottom: $gutter*1.6 - 15px;
@@ -53,6 +53,7 @@ setup-start, setup-connect{
         }
         p {
             margin-bottom: $font-size-lg;
+            &:last-child {margin-bottom: 0;}
         }
         .list-unstyled {
             border: $cru-gray-silver 1px solid;
@@ -78,8 +79,9 @@ setup-start, setup-connect{
         font-size: 20px;
     }
     .panel--language-selector {
-        width: 100px;
+        width: 300px;
         display: inline-block;
+        text-align: left;
     }
     .panel__connect-links {
         margin-top: $font-size-lg;
@@ -91,7 +93,7 @@ setup-start, setup-connect{
         padding: 20px;
         white-space: normal;
         &-primary {
-            @include cru-button-variant($color-reverse, $color-reverse, $color-secondary, $color-secondary, transparent, transparent);
+            @include cru-button-variant($color-reverse, $color-reverse, $color-primary, $color-primary, transparent, transparent);
         }
         &-gray {
             @include cru-button-variant($color-reverse, $color-reverse, $color-link, $color-link, transparent, transparent);
@@ -103,4 +105,12 @@ setup-start, setup-connect{
         }
     }
 
+}
+
+setup-finish .panel-heading {line-height: 44px;}
+
+setup-preferences {
+  #content {
+    margin-top: 70px;
+  }
 }

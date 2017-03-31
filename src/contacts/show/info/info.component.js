@@ -4,9 +4,10 @@ class ContactInfoController {
     serverConstants;
 
     constructor(
-        contacts, serverConstants
+        contacts, locale, serverConstants
     ) {
         this.contacts = contacts;
+        this.locale = locale;
         this.serverConstants = serverConstants;
     }
     $onChange(obj) {

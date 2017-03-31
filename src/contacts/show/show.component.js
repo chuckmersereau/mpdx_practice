@@ -43,7 +43,6 @@ class ContactController {
             { key: 'details', value: gettextCatalog.getString('Details') },
             { key: 'donations', value: gettextCatalog.getString('Donations') },
             { key: 'tasks', value: gettextCatalog.getString('Tasks') },
-            { key: 'history', value: gettextCatalog.getString('History') },
             { key: 'referrals', value: gettextCatalog.getString('Referrals') },
             { key: 'notes', value: gettextCatalog.getString('Notes') }
         ];
@@ -121,7 +120,7 @@ class ContactController {
             }
             this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
         }).catch(() => {
-            this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'error');
+            this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger');
         });
     }
     onPrimary(personId) {
@@ -139,28 +138,10 @@ class ContactController {
         });
     }
     openLogTaskModal() {
-        this.modal.open({
-            template: require('../../tasks/log/log.html'),
-            controller: 'logTaskController',
-            locals: {
-                selectedContacts: [this.contact.id],
-                toComplete: true,
-                createNext: true,
-                specifiedTask: null,
-                ajaxAction: null
-            },
-            onHide: () => {
-                this.tasks.fetchCompletedTasks(this.contact.id);
-            }
-        });
+        this.tasks.logModal(this.contact.id);
     }
     openAddTaskModal() {
-        this.tasks.openModal({
-            selectedContacts: [this.contact.id],
-            onHide: () => {
-                this.tasks.fetchUncompletedTasks(this.contact.id);
-            }
-        });
+        this.tasks.addModal(this.contact.id);
     }
     hideContact() {
         this.contacts.hideContact(this.contact).then(() => {

@@ -1,16 +1,28 @@
 <modal title="{{'Donation' | translate}}" cancel="$hide()" save="$ctrl.save()" delete="$ctrl.delete()" show-delete="$ctrl.donation.id">
     <div block-ui="donationModal">
         <div class="form-group">
-            <label for="donation_date"><translate>Date</translate> <span class="text-danger">*</span></label>
-            <input bs-datepicker
-                   type="text"
-                   class="form-control"
-                   ng-model="$ctrl.donation.donation_date"
-                   name="date"
-                   id="donation_date"
-                   data-date-format="yyyy-MM-dd"
-                   data-autoclose="1"
-                   required>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="donor_account_id"><translate>Partner Account</translate> <span class="text-danger">*</span></label>
+                    <select
+                        ng-options="donor_account as donor_account.name + ' (' + donor_account.account_number + ')' for donor_account in $ctrl.donorAccounts.list track by donor_account.id"
+                        ng-model="$ctrl.donation.donor_account"
+                        class="form-control"
+                        id="donor_account_id"
+                        chosen required>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="designation_account_id"><translate>Designation Account</translate> <span class="text-danger">*</span></label>
+                    <select
+                        ng-options="designation_account as designation_account.name + ' (' + designation_account.designation_number + ')' for designation_account in $ctrl.designationAccounts.list track by designation_account.id"
+                        ng-model="$ctrl.donation.designation_account"
+                        class="form-control"
+                        id="designation_account_id"
+                        chosen required>
+                    </select>
+                </div>
+            </div>
         </div>
         <div class="form-group">
             <div class="row">
@@ -33,6 +45,18 @@
             </div>
         </div>
         <div class="form-group">
+            <label for="donation_date"><translate>Date</translate> <span class="text-danger">*</span></label>
+            <input bs-datepicker
+                   type="text"
+                   class="form-control"
+                   ng-model="$ctrl.donation.donation_date"
+                   name="date"
+                   id="donation_date"
+                   data-date-format="yyyy-MM-dd"
+                   data-autoclose="1"
+                   required>
+        </div>
+        <div class="form-group">
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
@@ -42,7 +66,9 @@
                             ng-model="$ctrl.donation.appeal"
                             class="form-control"
                             id="appeal_id"
+                            allow-single-deselect="true"
                             chosen>
+                            <option value=""></option>
                         </select>
                     </div>
                 </div>
@@ -54,30 +80,6 @@
                            class="form-control"
                            placeholder="{{ 'Leave empty to use full donation amount' | translate }}"
                            ng-disabled="!$ctrl.donation.appeal">
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="row">
-                <div class="col-md-6">
-                    <label for="donor_account_id"><translate>Partner Account</translate> <span class="text-danger">*</span></label>
-                    <select
-                        ng-options="donor_account as donor_account.name + ' (' + donor_account.account_number + ')' for donor_account in $ctrl.donorAccounts.list track by donor_account.id"
-                        ng-model="$ctrl.donation.donor_account"
-                        class="form-control"
-                        id="donor_account_id"
-                        chosen required>
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <label for="designation_account_id"><translate>Designation Account</translate> <span class="text-danger">*</span></label>
-                    <select
-                        ng-options="designation_account as designation_account.name + ' (' + designation_account.designation_number + ')' for designation_account in $ctrl.designationAccounts.list track by designation_account.id"
-                        ng-model="$ctrl.donation.designation_account"
-                        class="form-control"
-                        id="designation_account_id"
-                        chosen required>
-                    </select>
                 </div>
             </div>
         </div>

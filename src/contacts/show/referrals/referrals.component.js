@@ -1,11 +1,18 @@
+import find from 'lodash/fp/find';
+
 class ContactReferralsController {
     moment;
 
     constructor(
-        $state
+        $state,
+        contacts, locale
     ) {
         this.$state = $state;
-        this.moment = moment;
+        this.contacts = contacts;
+        this.locale = locale;
+    }
+    getContact(id) {
+        return find({id: id}, this.contacts.completeList);
     }
     switchContact(id) {
         this.$state.go('contact', { contactId: id });

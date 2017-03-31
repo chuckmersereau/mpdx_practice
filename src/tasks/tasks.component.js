@@ -1,5 +1,3 @@
-import assign from 'lodash/fp/assign';
-
 class TasksController {
     tasksFilter;
     tasks;
@@ -10,32 +8,14 @@ class TasksController {
         this.$stateParams = $stateParams;
         this.tasksFilter = tasksFilter;
         this.tasks = tasks;
-
-        this.changed = 0;
-
-        $rootScope.$on('taskFilterChange', () => {
-            $log.debug('tasks component: filter change');
-            this.changed++;
-        });
-
-        $rootScope.$on('tasksTagsChanged', (event, filters) => {
-            $log.debug('tasks component: tag change', filters);
-            this.changed++;
-        });
-
-        $rootScope.$on('accountListUpdated', () => {
-            this.changed++;
-        });
     }
     $onInit() {
         if (this.$stateParams.filters) {
-            this.tasksFilter.params = assign(this.tasksFilter.params, this.$stateParams.filters);
+            this.tasksFilter.params = this.$stateParams.filters;
             this.tasksFilter.change();
+        } else {
+            this.tasksFilter.reset();
         }
-    }
-    onSearchChanged(wildcard) {
-        this.tasksFilter.wildcard_search = wildcard;
-        this.tasksFilter.change();
     }
 }
 

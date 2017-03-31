@@ -2,7 +2,8 @@
     transition: border-color 0.5s;
     .panel-heading {
         transition: background-color 0.5s;
-        cursor: pointer;
+        user-select: none;
+        cursor: default;
     }
     .panel-footer {
         transition: background-color 0.5s;
@@ -25,4 +26,10 @@
 .panel {
     border-radius: 0;
     border-color: $color-panel-border;
+}
+
+.panel-body {
+  .alert {
+    position: relative;
+  }
 }

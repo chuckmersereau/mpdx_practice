@@ -12,13 +12,13 @@
             <i class="fa fa-users" aria-hidden="true"></i>
             <translate>Add Referrals</translate>
         </a>
-        <a class="btn btn-default" ng-click="$ctrl.openLogTaskModal()">
-            <i class="fa fa-check-square-o" aria-hidden="true"></i>
-            <translate>Log Task</translate>
-        </a>
         <a class="btn btn-default" ng-click="$ctrl.openAddTaskModal()">
             <i class="fa fa-square-o" aria-hidden="true"></i>
             <translate>Add Task</translate>
+        </a>
+        <a class="btn btn-default" ng-click="$ctrl.openLogTaskModal()">
+            <i class="fa fa-check-square-o" aria-hidden="true"></i>
+            <translate>Log Task</translate>
         </a>
         <a class="btn btn-default" ng-click="$ctrl.hideContact()" ng-hide="$ctrl.contact.status == 'Never Ask'">
             <i class="fa fa-eye-slash" aria-hidden="true"></i>
@@ -49,7 +49,6 @@
         <div>
             <contact-people contact="$ctrl.contact" on-primary="$ctrl.onPrimary($personId)"></contact-people>
         </div>
-
         <div id="contact-tabs" class="horizontal-tab-sortable">
             <div class="sortable-row left-tabs" as-sortable="$ctrl.sortableOptions" data-ng-model="$ctrl.tabsLabels">
                 <div ng-repeat="item in $ctrl.tabsLabels" as-sortable-item ng-class="{'active-item': $ctrl.activeTab==item.key}">
@@ -61,7 +60,6 @@
                 <a class="tip" data-trigger="hover" data-title="{{ 'You can reorder these tabs to your liking! Just Drag them left or right.' | translate }}" data-placement="left" bs-tooltip><i class="fa fa-question-circle"></i></a>
             </div>
         </div>
-
         <div ng-repeat="item in $ctrl.tabsLabels">
             <div ng-if="item['key']=='details'" ng-show="item['key']==$ctrl.activeTab">
                 <contact-details contact="$ctrl.contact" donor-accounts="$ctrl.contact.donor_accounts" on-save="$ctrl.save()"></contact-details>
@@ -71,11 +69,6 @@
             </div>
             <div ng-if="item['key']=='tasks'" ng-show="item['key']==$ctrl.activeTab">
                 <contact-tasks contact="$ctrl.contact"></contact-tasks>
-                <button ng-click="$ctrl.openAddTaskModal()" class="btn btn-primary" translate>Add Task</button>
-            </div>
-            <div ng-if="item['key']=='history'" ng-show="item['key']==$ctrl.activeTab">
-                <contact-history contact="$ctrl.contact"></contact-history>
-                <button ng-click="$ctrl.openLogTaskModal()" class="btn btn-primary" translate>Log Task</button>
             </div>
             <div ng-if="item['key']=='referrals'" ng-show="item['key']==$ctrl.activeTab">
                 <contact-referrals contact="$ctrl.contact"></contact-referrals>

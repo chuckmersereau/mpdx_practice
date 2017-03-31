@@ -3,7 +3,6 @@
 
 $fa-font-path: "~font-awesome/fonts";
 @import "~font-awesome/scss/font-awesome";
-@import "styles/angularModal";
 @import "styles/typeahead";
 @import "~ng-tags-input/build/ng-tags-input";
 @import "~ng-tags-input/build/ng-tags-input.bootstrap";
@@ -15,8 +14,10 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "~flag-icon-css/sass/flag-icon";
 
 /* Internal */
+@import "styles/responsive-utility";
 @import "styles/vars";
 @import "styles/elements";
+@import "styles/columns";
 @import "styles/forms";
 @import "styles/filters";
 @import "styles/layout";
@@ -29,9 +30,11 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "styles/chosen_bootstrap";
 @import "styles/buttons";
 @import "styles/panels";
+@import "styles/split";
 @import "styles/fonts/cru/ci.css";
 @import "styles/tags";
 @import "styles/typography";
+@import "styles/horizontalTabsSortable";
 
 /* Components */
 @import "blockUI/blockUI";
@@ -47,7 +50,6 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "contacts/list/list";
 @import "contacts/list/item/item";
 @import "contacts/show/show";
-@import "contacts/show/horizontalTabsSortable";
 @import "contacts/show/details/details";
 @import "contacts/show/address/address";
 @import "contacts/show/people/people";
@@ -55,10 +57,11 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "home/home";
 @import "home/progress/progress";
 @import "setup/setup";
-@import "tasks/edit/edit";
 @import "tasks/list/list";
+@import "tasks/list/item/item";
 @import "tasks/search/search";
 @import "tools/tools";
+@import "tools/importFromCsv/importFromCsv";
 @import "reports/reports";
 @import "bottom/bottom";
 
@@ -76,15 +79,26 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 
 .nav--secondary {
     $secondary-menu-height: 22px;
-    background: none;
+    background: $color-reverse;
     border-bottom: 1px solid $color-menu-border;
     padding-bottom: 10px;
     margin-bottom: 10px;
+    position: fixed;
+    width: 1140px;
+    z-index: 1;
+    top: 103px;
+    @include breakpoint(md) {
+        width: 942px;
+    }
+    @include breakpoint(lg) {
+        width: 1140px;
+    }
     .section {
         display: inline-block;
         height: $secondary-menu-height;
         line-height: $secondary-menu-height;
         margin-right: 24px;
+        vertical-align: top;
     }
     .section.right {
         margin-right: 0px;

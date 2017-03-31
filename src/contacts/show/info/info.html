@@ -76,7 +76,7 @@
         <div class="col-sm-4 ">
             <h4 class="attribute-header" translate>Commitment</h4>
             <div class="inline-input">
-                <input type="text" ng-model="$ctrl.contact.pledge_amount" ng-change="$ctrl.save()" ng-model-options="{ debounce: 1000 }" />
+                <input type="number" ng-model="$ctrl.contact.pledge_amount" ng-change="$ctrl.save()" ng-model-options="{ debounce: 1000 }" />
             </div>
         </div>
         <div class="col-sm-4 ">
@@ -126,7 +126,7 @@
                         id="pledge_received"
                         ng-change="$ctrl.save()"
                         ng-model-options="{ debounce: 1000 }"
-                        ng-options="o.key as o.value for o in [{key: 'true', value: 'Yes'},{key: 'false', value: 'No'}]"
+                        ng-options="o.key as o.value for o in [{key: true, value: 'Yes'},{key: false, value: 'No'}]"
                         ng-model="$ctrl.contact.pledge_received">
                     <option value=""></option>
                 </select>
@@ -140,7 +140,10 @@
                        type="text"
                        ng-model="$ctrl.contact.pledge_start_date"
                        ng-change="$ctrl.save()"
-                       data-autoclose="1">
+                       data-autoclose="true"
+                       data-date-type="string"
+                       data-date-format="{{$ctrl.locale.dateTimeFormat}}"
+                       data-model-date-format="yyyy-mm-dd">
             </div>
         </div>
     </div>

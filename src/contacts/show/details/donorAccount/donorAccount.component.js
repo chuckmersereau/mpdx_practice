@@ -19,7 +19,7 @@ class ContactDonorAccountController {
         if (!this.donorAccount.organization_id || this.donorAccount.organization_id === 0) {
             this.donorAccount.organization_id = this.accounts.current.default_organization_id;
         }
-        this.contacts.save(this.contact);
+        this.onSave();
     }
 }
 const DonorAccount = {
@@ -27,7 +27,8 @@ const DonorAccount = {
     template: require('./donorAccount.html'),
     bindings: {
         contact: '<',
-        donorAccount: '='
+        donorAccount: '=',
+        onSave: '&'
     }
 };
 

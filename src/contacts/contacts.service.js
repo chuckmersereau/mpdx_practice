@@ -11,6 +11,7 @@ const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 import pull from 'lodash/fp/pull';
 import reject from 'lodash/fp/reject';
 import sortBy from 'lodash/fp/sortBy';
+import toInteger from 'lodash/fp/toInteger';
 import union from 'lodash/fp/union';
 import unionBy from 'lodash/fp/unionBy';
 import joinComma from "../common/fp/joinComma";
@@ -67,6 +68,9 @@ class ContactsService {
                 include: 'addresses,donor_accounts,primary_person'
             },
             deSerializationOptions: relationshipId(['contacts', 'people']) //for contacts_referred_by_me, contacts_that_referred_me and primary_person
+        }).then((data) => {
+            data.pledge_amount = toInteger(data.pledge_amount); //fix bad api serialization as string
+            return data;
         });
     }
     getList(reset = false) {
@@ -75,9 +79,9 @@ class ContactsService {
         }
         this.completeList = []; // to avoid double call
         return this.api.get('contacts', {
-            filters: {account_list_id: this.api.account_list_id},
+            filter: {account_list_id: this.api.account_list_id},
             fields: {
-                contacts: 'name'
+                contacts: 'created_at,name'
             },
             per_page: 25000,
             sort: 'name'
@@ -92,12 +96,13 @@ class ContactsService {
         }
         this.completeFilteredList = []; // to avoid double call
         return this.api.get('contacts', {
-            filters: this.buildFilterParams(),
+            filter: this.buildFilterParams(),
             fields: {
                 contacts: 'name'
             },
             per_page: 25000,
-            sort: 'name'
+            sort: 'name',
+            overrideGetAsPost: true
         }).then((data) => {
             this.$log.debug('contacts all - filtered', data);
             this.completeFilteredList = data;
@@ -144,13 +149,13 @@ class ContactsService {
         return this.api.get({
             url: 'contacts',
             data: {
-                filters: this.buildFilterParams(),
+                filter: this.buildFilterParams(),
                 page: this.page,
                 per_page: 25,
                 include: 'addresses,people,people.facebook_accounts,people.phone_numbers,people.email_addresses',
                 fields: {
                     people: 'deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
-                    addresses: 'city,historic,primary_mailing_address,postal_code,state,geo,street,updated_in_db_at',
+                    addresses: 'city,historic,primary_mailing_address,postal_code,state,geo,source,street,updated_in_db_at',
                     email_addresses: 'email,historic,primary',
                     phone_numbers: 'historic,location,number,primary',
                     facebook_accounts: 'username'
@@ -318,7 +323,7 @@ class ContactsService {
         return this.completeFilteredList[0].id;
     }
     hideContact(contact) {
-        const message = this.gettextCatalog.getString('Are you sure you wish to hide the selected contact?');
+        const message = this.gettextCatalog.getString('Are you sure you wish to hide the selected contact? Hiding a contact in MPDX actually sets the contact status to "Never Ask".');
         return this.modal.confirm(message).then(() => {
             return this.save({
                 id: contact.id,
@@ -332,7 +337,7 @@ class ContactsService {
         });
     }
     bulkHideContacts() {
-        const message = this.gettextCatalog.getString('Are you sure you wish to hide the selected contacts?');
+        const message = this.gettextCatalog.getString('Are you sure you wish to hide the selected contacts? Hiding a contact in MPDX actually sets the contact status to "Never Ask".');
         return this.modal.confirm(message).then(() => {
             const contacts = map(contact => {
                 return {
@@ -353,7 +358,7 @@ class ContactsService {
     }
     bulkEditFields(model, contacts) {
         contacts = reduce((result, contact) => {
-            result.push(assign({id: contact.id}, model));
+            result.push(assign({id: contact.id, updated_in_db_at: contact.updated_in_db_at}, model));
             return result;
         }, [], contacts);
         return this.api.put('contacts/bulk', contacts);
@@ -373,7 +378,6 @@ class ContactsService {
                 'birthdays_this_week,' +
                 'birthdays_this_week.facebook_accounts,' +
                 'birthdays_this_week.twitter_accounts,' +
-                // 'birthdays_this_week.parent_contact,' +
                 'birthdays_this_week.email_addresses',
                 fields: {
                     people: 'anniversary_day,anniversary_month,birthday_day,birthday_month,facebook_accounts,first_name,last_name,twitter_accounts,email_addresses,parent_contact',

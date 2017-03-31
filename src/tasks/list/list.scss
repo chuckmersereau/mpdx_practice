@@ -1,148 +1,27 @@
-.tasks-component{
-  margin-bottom: 10px;
-  .tasks-title{
-    font-size: 15px;
-    vertical-align: middle;
-  }
-
-  .tasks-per-page-description{
-    font-size: 15px;
-    vertical-align: middle;
-    font-weight: 300;
-    margin-right: 3px;
-  }
-
-  pagination {
-    h4 {
-      font-size: 14px;
-    }
-  }
-
-  .tasks-table{
-
-    font-size: 14px;
-
-    tr>th{
-      border-top: none;
-      line-height: 25px;
-    }
-
-    .pl0 {
-      padding-left: 0;
-    }
-    .pr0 {
-      padding-right: 0;
-    }
-
-    .ut-nowrap {
-      white-space: nowrap;
-    }
-
-    tr.task-row{
-      transition: background-color 0.3s ease;
-      >td{
-        border-top: none;
-        border-bottom: 1px solid $color-menu-border;
-        vertical-align: middle
-      }
-      &:hover{
-        background-color: #e9e9e9;
-      }
-    }
-
-    tr.selected-task-row{
-      background-color: #e9e9e9;
-      &:hover{
-        background-color: #f5f5f5;
-      }
-    }
-
-    margin-bottom: 0;
-  }
-
-  nav{
-    height: 30px;
-    margin-top: 7px;
-    margin-bottom: 10px;
-    ul.pagination{
-      >li{
-        >a{
-          padding: 3px 10px 6px;
-          background-color: #FAFAFA;
-          &:hover{
-            background-color: #989898;
-            border-color: #989898;
-            color: white;
-          }
+tasks-list {
+    .panel {
+        &.panel-default {
+            border: none;
         }
-      }
-      >li.active{
-        >a{
-          background-color: #666062;
-          border-color: #595455;
+        .panel-heading {
+            border-bottom: 4px solid rgb(153, 153, 153);
+            &.today {
+                border-color: #F9B625;
+            }
+            &.overdue {
+                border-color: #F6921E;
+            }
+            &.upcoming {
+                border-color: #56AA00;
+            }
+            &.no-due-date {
+                border-color: #3eb1c8;
+            }
         }
-      }
+        .list-group {
+            .list-group-item {
+                padding: 0;
+            }
+        }
     }
-  }
-
-  .tasks-per-page{
-    height: 27px;
-    float: right;
-    display: inline-block;
-    width: auto;
-    vertical-align: middle;
-  }
-
-  .comments-count, .starred, .complete_task, .trash{
-    cursor: pointer;
-  }
-
-  .trash, .starred{
-    &:hover{
-      color: #A8A8A8;
-    }
-  }
-
-  .complete_task{
-    &:hover{
-      &:before{
-        color: #A8A8A8;
-        content: "\f046";
-      }
-    }
-  }
-
 }
-
-.comment {
-  &__single {
-    max-width: 60%;
-    background: $color-menu-bg;
-    border-bottom: 1px solid $color-menu-border;
-    margin-bottom: 0;
-    padding: $gutter/4 $gutter/2;
-  }
-  &__body {
-
-  }
-  &__meta {
-    font-size: $font-size*.85;
-    font-style: italic;
-    margin-bottom: 0;
-  }
-  &__form {
-    background: $color-menu-bg;
-    border-bottom: 4px solid $color-menu-border;
-    max-width: 60%;
-    padding: $gutter/2;
-
-    button {
-      margin-top: $gutter/4;
-    }
-
-    a {
-      margin-top: $gutter/4;
-    }
-  }
-}
-

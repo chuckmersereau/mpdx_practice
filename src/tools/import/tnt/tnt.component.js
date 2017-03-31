@@ -3,15 +3,17 @@ import config from 'config';
 class TntImportController {
     alerts;
     api;
+    modal;
     constructor(
         $window, gettextCatalog, Upload,
-        alerts, api, contactsTags
+        alerts, api, contactsTags, modal
     ) {
         this.$window = $window;
         this.alerts = alerts;
         this.api = api;
         this.contactsTags = contactsTags;
         this.gettextCatalog = gettextCatalog;
+        this.modal = modal;
         this.Upload = Upload;
         this.importing = false;
 
@@ -27,21 +29,25 @@ class TntImportController {
                     type: 'imports',
                     attributes: {
                         file: form.file,
-                        tags: this.tags
+                        tags: this.tags,
+                        override: this.override
                     }
                 }
             },
             headers: {
-                Authorization: `Bearer ${this.$window.sessionStorage.token}`
+                Authorization: `Bearer ${this.$window.localStorage.getItem('token')}`
             }
         }).then(() => {
             this.importing = false;
-            this.alerts.addAlert(this.gettextCatalog.getString('File upload successful.'));
             this.tags = [];
             form.file = null;
+            this.modal.open({
+                template: require('./success/success.html'),
+                controller: 'tntSuccessController'
+            });
         }, () => {
             this.importing = false;
-            this.alerts.addAlert(this.gettextCatalog.getString('File upload failed.'), 'error');
+            this.alerts.addAlert(this.gettextCatalog.getString('File upload failed.'), 'danger');
         }, () => {
             // const progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
             // console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);

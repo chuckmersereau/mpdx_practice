@@ -30,15 +30,6 @@
                     </a>
                 </div>
             </div>
-            <div class="people" ng-if="$ctrl.view === 'task'">
-                <contact-person ng-repeat="person in $ctrl.contact.people track by person.id" ng-if="!person.deceased" contact="contact" person="person" view="'task'"></contact-person>
-                <address class="address" ng-repeat="address in $ctrl.contact.addresses track by address.id" ng-if="address.primary_mailing_address">
-                    <span ng-if="address.street">{{address.street}}<br></span>
-                    <span ng-if="address.city">{{address.city}},</span>
-                    {{address.state}}
-                    {{address.postal_code}}
-                </address>
-            </div>
             <div class="tags">
                 <span class="tag" ng-repeat="tag in $ctrl.contact.tag_list">{{tag}}</span>
             </div>
@@ -57,12 +48,12 @@
                 <span translate>Tasks</span>: {{$ctrl.contact.uncompleted_tasks_count}}
             </a>
         </div>
-        <div class="col-sm-2 text-right">
+        <div class="col-sm-2 text-right" ng-if="$ctrl.view !== 'task'">
             <div class="btn-group">
                 <a class="btn btn-sm btn-default" ui-sref="contacts.show({contactId: $ctrl.contact.id})" title="{{ 'View Contact' | translate }}" ng-click="$event.stopPropagation()">
                     <i class="fa fa-search"></i>
                 </a>
-                <a class="btn btn-sm btn-default" title="{{ 'Hide Contact' | translate }}" ng-if="$ctrl.contact.status !== 'Never Ask' && $ctrl.view !== 'task'" ng-click="$ctrl.hide({ contactId: $ctrl.contact.id }); $event.stopPropagation()">
+                <a class="btn btn-sm btn-default" title="{{ 'Hide Contact' | translate }}" ng-if="$ctrl.contact.status !== 'Never Ask'" ng-click="$ctrl.hide({ contactId: $ctrl.contact.id }); $event.stopPropagation()">
                 <i class="fa fa-eye-slash"></i>
             </a>
         </div>

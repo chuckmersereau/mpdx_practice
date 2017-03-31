@@ -78,7 +78,13 @@ export default class Routes {
         }).state({
             name: 'reports.donations',
             url: '/donations',
-            component: 'donations'
+            component: 'donations',
+            resolve: {
+                byMonth: () => true
+            },
+            params: {
+                startDate: null
+            }
         }).state({
             name: 'reports.monthly',
             url: '/monthly',
@@ -107,7 +113,10 @@ export default class Routes {
             name: 'preferences.accounts',
             title: 'Manage Accounts',
             url: '/accounts',
-            component: 'preferencesAccounts'
+            component: 'preferencesAccounts',
+            resolve: {
+                resolution: /*@ngInject*/ (accounts) => accounts.load()
+            }
         }).state({
             name: 'preferences.integrations',
             title: 'Connect Services',
@@ -140,13 +149,17 @@ export default class Routes {
             url: '/connect',
             component: 'setupConnect',
             resolve: {
-                resolution: /*@ngInject*/ (users) => users.listOrganizationAccounts()
+                resolution: /*@ngInject*/ (users) => users.listOrganizationAccounts(),
+                another: /*@ngInject*/ (accounts) => accounts.load()
             }
         }).state({
             name: 'setup.account',
             title: 'Setup Default Account',
             url: '/account',
-            component: 'setupAccount'
+            component: 'setupAccount',
+            resolve: {
+                resolution: /*@ngInject*/ (accounts) => accounts.load(true)
+            }
         }).state({
             name: 'setup.google',
             title: 'Setup Google',
@@ -207,7 +220,7 @@ export default class Routes {
             name: 'tools.importFromCSV',
             title: 'Import from CSV',
             url: '/import-from-csv',
-            component: 'csvImportForm'
+            component: 'importFromCsv'
         }).state({
             name: 'tools.importFromGoogle',
             title: 'Import from Google',
@@ -232,7 +245,13 @@ export default class Routes {
 }
 
 /*@ngInject*/
-function logout($window) {
-    delete $window.sessionStorage.token;
+function logout(
+    $window,
+    users
+) {
+    $window.localStorage.removeItem('token');
+    if (users.current) {
+        $window.localStorage.removeItem(`${users.current.id}_accountListId`);
+    }
     $window.location.href = config.authUrl + config.authLogout;
 }

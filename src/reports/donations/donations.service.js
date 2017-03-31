@@ -6,12 +6,13 @@ class DonationsService {
     session;
 
     constructor(
-        $q, $log, $state,
+        $q, $log, $state, gettextCatalog,
         api, modal
     ) {
         this.$q = $q;
         this.$log = $log;
         this.$state = $state;
+        this.gettextCatalog = gettextCatalog;
         this.api = api;
         this.modal = modal;
     }
@@ -21,7 +22,7 @@ class DonationsService {
             fields: { contacts: 'name', designation_account: 'name,designation_number', donor_account: 'account_number', appeal: 'name' },
             filter: {},
             include: 'designation_account,donor_account,contact,appeal',
-            sort: 'created_at'
+            sort: '-created_at'
         };
         if (donorAccountId) {
             params.filter.donor_account_id = donorAccountId;
@@ -48,7 +49,10 @@ class DonationsService {
     }
 
     delete(donation) {
-        return this.api.delete(`account_lists/${this.api.account_list_id}/donations/${donation.id}`, { id: donation.id });
+        const message = this.gettextCatalog.getString('Are you sure you wish to delete the selected donation?');
+        return this.modal.confirm(message).then(() => {
+            return this.api.delete(`account_lists/${this.api.account_list_id}/donations/${donation.id}`, { id: donation.id });
+        });
     }
 
     getDonationChart({ startDate = null, endDate = null, donorAccountId = null }) {

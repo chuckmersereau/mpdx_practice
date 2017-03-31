@@ -1,74 +1,10 @@
-import moment from 'moment';
-
 class ContactTasksController {
-    contact;
-    locale;
-    moment;
-    modal;
-    tasks;
-
-    constructor(
-        locale, modal, tasks
-    ) {
-        this.locale = locale;
-        this.modal = modal;
-        this.moment = moment;
-        this.tasks = tasks;
-        this.models = {};
+    constructor(tasksFilter) {
+        this.tasksFilter = tasksFilter;
     }
-    $onChanges(changesObj) {
-        if (_.get(changesObj, 'contact.currentValue.id', false)) {
-            this.load();
-        }
-    }
-    load() {
-        this.tasks.fetchUncompletedTasks(this.contact.id);
-    }
-    newComment(task) {
-        if (this.models.comment) {
-            this.tasks.addComment(task, this.models.comment).then(() => {
-                this.load();
-            });
-            this.models.comment = '';
-        }
-    }
-    deleteTask(taskId) {
-        this.tasks.deleteTask(taskId).then(() => {
-            this.load();
-        });
-    }
-    starTask(task) {
-        return this.tasks.starTask(task).then((data) => {
-            task.starred = data.starred;
-            task.updated_in_db_at = data.updated_in_db_at;
-        });
-    }
-    openCompleteTaskModal(task) {
-        this.modal.open({
-            template: require('../../../tasks/complete/complete.html'),
-            controller: 'completeTaskController',
-            locals: {
-                task: task,
-                contact: this.contact
-            },
-            onHide: () => this.load()
-        });
-    }
-    openEditTaskModal(task) {
-        const contactId = this.contact.id;
-        this.modal.open({
-            template: require('../../../tasks/log/log.html'),
-            controller: 'logTaskController',
-            locals: {
-                modalTitle: 'Edit Task',
-                selectedContacts: [contactId],
-                specifiedTask: task,
-                ajaxAction: 'put',
-                toComplete: false,
-                createNext: false
-            },
-            onHide: () => this.load()
-        });
+    $onInit() {
+        this.tasksFilter.params = { contact_ids: this.contact.id };
+        this.tasksFilter.change();
     }
 }
 

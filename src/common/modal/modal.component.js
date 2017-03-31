@@ -4,16 +4,21 @@ class ModalController {
 
     constructor(
         $element, $attrs, $scope,
-        blockUI
+        blockUI, gettextCatalog
     ) {
         this.$element = $element;
         this.$attrs = $attrs;
-        this.blockUI = blockUI.instances.get('modalBlockUI_' + $scope.$id);
+        this.$scope = $scope;
+        this.blockUI = blockUI.instances.get('modalBlockUI_' + this.$scope.$id);
+        this.gettextCatalog = gettextCatalog;
     }
     $onInit() {
         this.hideFooter = this.hideFooter || false;
         this.size = this.size || 'md';
         this.valid = this.valid || true;
+
+        this.cancelText = this.cancelText || this.gettextCatalog.getString('Cancel');
+        this.saveText = this.saveText || this.gettextCatalog.getString('Save');
     }
     $postLink() {
         this.$element.addClass('modal');
@@ -22,11 +27,11 @@ class ModalController {
     }
     saveAndBlock() {
         this.blockUI.start();
-        this.save().finally(() => this.blockUI.stop());
+        this.save().finally(() => this.blockUI.reset());
     }
     deleteAndBlock() {
         this.blockUI.start();
-        this.delete().finally(() => this.blockUI.stop());
+        this.delete().finally(() => this.blockUI.reset());
     }
 }
 
@@ -38,10 +43,12 @@ const Modal = {
         'title': '@',
         'size': '@',
         'cancel': '&',
+        'cancelText': '@',
         'delete': '&',
         'hideFooter': '<',
         'showDelete': '<',
         'save': '&',
+        'saveText': '@',
         'valid': '<'
     }
 };

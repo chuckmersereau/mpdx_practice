@@ -7,6 +7,11 @@ body {
     margin: 0;
 }
 
+// content body
+#body {
+    margin-top: 103px;
+}
+
 .logo {margin-top: 4px; background-position: 0;}
 .network_logo img {max-width: 150px;}
 
@@ -21,6 +26,10 @@ body {
             margin-left: -1.25em;
         }
     }
+}
+
+.alert {
+    position: absolute;
 }
 
 /* ************************************************************** */
@@ -858,60 +867,6 @@ table tbody.tasks {
 }
 
 /* ************************************************************** */
-
-.comments {
-    width: 400px;
-    margin-bottom: 0px;
-    margin-top: 6px;
-    border-radius: 5px;
-    > * {background: $blue_comments;}
-    header {background: url("images/comment_head.png") no-repeat -1px 0; height: 7px;}
-    .comment {
-        padding: 5px 10px;
-        border-bottom: 1px dotted $color-reverse;
-        position: relative;
-        font-size: 13px;
-        .body p {
-            white-space: pre-wrap;
-        }
-        .comment-icon {
-            margin-top: 5px;
-        }
-        .comment-meta {
-            font-weight: 600;
-        }
-    }
-    .comment:hover .corner_close {display: block;}
-    .comment:last-child {border-bottom: none;}
-    .comment_form {
-        padding: 8px 10px;
-        textarea {
-            resize: none;
-            width: 370px;
-            margin: 0;
-            height: 32px;
-            padding: 5px;
-        }
-    }
-
-    .comment_form.focus .buttons {display:block;}
-    .comment_form.focus textarea {height: 3em;}
-
-    .ico {float: left;}
-    .body,
-    .time {
-        margin-left: 25px;
-    }
-    .body {min-height: 16px;}
-    .corner_close {
-        right: 6px;
-        position: absolute;
-        display: none;
-    }
-}
-
-/* ************************************************************** */
-
 
 .contact-info{
     background: #e7f8ff;

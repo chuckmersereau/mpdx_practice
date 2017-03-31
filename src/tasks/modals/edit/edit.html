@@ -1,0 +1,105 @@
+<modal title="{{'Edit Task' | translate}}" save="$ctrl.save()" delete="$ctrl.delete()" cancel="$hide()" show-delete="true">
+    <div class="form-group">
+        <label for="subject"><translate>Subject</translate> <span class="text-danger">*</span></label>
+        <input class="form-control" id='subject' ng-model="$ctrl.task.subject" required>
+    </div>
+    <div class="form-group">
+        <label for="action"><translate>Action</translate></label>
+        <select chosen
+                disable-search="true"
+                class="form-control"
+                id="action"
+                name="action"
+                ng-options="opt as opt for opt in $ctrl.serverConstants.data.activities"
+                ng-model="$ctrl.task.activity_type">
+            <option value=""></option>
+        </select>
+    </div>
+    <div ng-if="!$ctrl.toComplete" class="form-group">
+        <label for="due-date" translate>Due Date</label>
+        <div ng-hide="$ctrl.task.no_date">
+            <datetimepicker ng-model="$ctrl.task.start_at"
+                            hour-step="1"
+                            minute-step="1"
+                            id="due-date">
+            </datetimepicker>
+        </div>
+    </div>
+    <div ng-if="$ctrl.toComplete" class="form-group">
+        <label for="completed" translate>Completed On</label>
+        <div ng-hide="$ctrl.task.no_date">
+            <datetimepicker ng-model="$ctrl.task.completed_at"
+                            hour-step="1"
+                            minute-step="1"
+                            id="completed">
+            </datetimepicker>
+        </div>
+    </div>
+    <div class="checkbox">
+        <label for="no-due-date">
+            <input id='no-due-date' ng-model="$ctrl.task.no_date" type="checkbox"/>
+            <translate>No Due Date</translate>
+        </label>
+    </div>
+    <div>
+        <label for="emailNotify">
+            <input id="emailNotify" ng-model="$ctrl.task.notification_type" type="checkbox" ng-true-value="'email'" ng-false-value="null"/>
+            <translate>Email Notification</translate>
+        </label>
+    </div>
+    <div ng-if="$ctrl.task.notification_type">
+        <label for="notification_type" translate>Notify in</label>
+        <div class="row">
+            <div class="col-sm-4">
+                <input type="number" class="form-control" ng-model="$ctrl.task.notification_time_before" id="notification_type" ng-required="$ctrl.task.notification_type" min="0">
+            </div>
+            <div class="col-sm-8">
+                <select chosen ng-model="$ctrl.task.notification_time_unit" ng-required="$ctrl.task.notification_type">
+                    <option value="minutes">Minutes</option>
+                    <option value="hours">Hours</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div ng-if="$ctrl.toComplete" class="form-group">
+        <label for="result" translate>Result</label>
+        <select chosen
+                ng-required="$ctrl.toComplete"
+                disable-search="true"
+                class="form-control"
+                id='result'
+                ng-options="opt for opt in $ctrl.serverConstants.data.results[$ctrl.task.activity_type.toLowerCase()] || $ctrl.serverConstants.data.results['default']"
+                ng-model="$ctrl.task.result">
+            <option value=""></option>
+        </select>
+    </div>
+    <div ng-if="$ctrl.toComplete" class="form-group">
+        <label for="nextAction" translate>Next Action</label>
+        <select chosen
+                disable-search="true"
+                class="form-control"
+                id='nextAction'
+                ng-options="opt for opt in $ctrl.serverConstants.data.next_actions[$ctrl.task.activity_type.toLowerCase()] || $ctrl.serverConstants.data.next_actions['default']"
+                ng-model="$ctrl.task.next_action">
+            <option value=""></option>
+        </select>
+    </div>
+
+    <div>
+        <label translate>Contacts</label>
+        <div ng-repeat="contact in $ctrl.selectedContacts track by $index">
+            <select chosen ng-options="opt.id as opt.name for opt in $ctrl.contacts.completeList" ng-model="$ctrl.selectedContacts[$index]"></select>
+        </div>
+        <div>
+            <a ng-click="$ctrl.addContact()"><i class="fa fa-plus-square"></i> Add Contact</a>
+        </div>
+    </div>
+    <div>
+        <label translate>Tags</label>
+        <tag-selector tag-list="$ctrl.tasksTags.data" ng-model="$ctrl.task.tag_list"></tag-selector>
+    </div>
+    <div class="form-group">
+        <label for="comment" translate>Comment</label>
+        <input class="form-control" id='comment' ng-model="$ctrl.comment"/>
+    </div>
+</modal>

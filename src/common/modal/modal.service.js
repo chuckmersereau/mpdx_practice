@@ -38,6 +38,23 @@ class ModalService {
         this.open(params);
         return deferred.promise;
     }
+    info(message, title = null) {
+        let deferred = this.$q.defer();
+        const params = {
+            template: require('./info/info.html'),
+            controller: 'infoController',
+            locals: {
+                message: message,
+                infoPromise: deferred,
+                title: title
+            },
+            onHide: () => {
+                deferred.resolve();
+            }
+        };
+        this.open(params);
+        return deferred.promise;
+    }
 }
 
 export default angular.module('mpdxApp.services.modal', [])

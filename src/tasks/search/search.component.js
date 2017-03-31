@@ -3,7 +3,7 @@ class TasksSearchController {
     tasksFilter;
 
     constructor(
-        tasksFilter, tasks
+        tasks, tasksFilter
     ) {
         this.tasks = tasks;
         this.tasksFilter = tasksFilter;
@@ -12,12 +12,7 @@ class TasksSearchController {
 const Search = {
     controller: TasksSearchController,
     template: require('./search.html'),
-    bindings: {
-        dropdown: '<',
-        showFilters: '@',
-        searchParams: '<',
-        onChange: '&'
-    }
+    bindings: {}
 };
 
 export default angular.module('mpdx.common.tasks.search', [])
