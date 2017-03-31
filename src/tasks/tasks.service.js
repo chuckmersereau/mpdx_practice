@@ -68,15 +68,10 @@ class TasksService {
     }
     get(id, updateLists = true) {
         return this.api.get(`tasks/${id}`, {
-            include: 'comments,comments.person,contacts,contacts.people,contacts.addresses,contacts.people.email_addresses,contacts.people.phone_numbers,contacts.people.facebook_accounts',
+            include: 'comments,comments.person,contacts',
             fields: {
-                contacts: 'addresses,name,people,square_avatar',
-                addresses: 'city,primary_mailing_address,postal_code,state,street',
-                people: 'avatar,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
-                person: 'first_name,last_name',
-                email_addresses: 'email,historic,primary',
-                phone_numbers: 'historic,location,number,primary',
-                facebook_accounts: 'username'
+                contacts: 'addresses,name,square_avatar',
+                person: 'first_name,last_name'
             }
         }).then((task) => {
             if (updateLists) {
