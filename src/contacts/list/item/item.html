@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="tags">
-                <span class="tag" ng-repeat="tag in $ctrl.contact.tag_list">{{tag}}</span>
+                <span class="tag" ng-repeat="tag in $ctrl.contact.tag_list">{{ tag |limitTo: 20 }}{{ tag.length > 20 ? '...' : '' }}</span>
             </div>
         </div>
         <div class="col-sm-5 more-details">
