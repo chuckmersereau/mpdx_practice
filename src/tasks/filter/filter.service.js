@@ -9,10 +9,11 @@ class TasksFilterService {
     filters;
 
     constructor(
-        $location, $rootScope,
+        $location, $q, $rootScope,
         api, filters, tasksTags
     ) {
         this.$location = $location;
+        this.$q = $q;
         this.$rootScope = $rootScope;
         this.api = api;
         this.filters = filters;

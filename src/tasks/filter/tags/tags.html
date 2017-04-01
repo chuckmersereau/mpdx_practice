@@ -17,7 +17,7 @@
         ng-class="{ 'selected': !$ctrl.tasksTags.isTagActive(tag), 'rejected': $ctrl.tasksTags.isTagRejected(tag) }"
         ng-click="$ctrl.tasksTags.tagClick(tag, $event)"
         ng-repeat="tag in $ctrl.tasksTags.data">
-    {{ tag.name }}
+      {{ tag.name |limitTo: 20 }}{{ tag.name.length > 20 ? '...' : '' }}
       <a ng-click="$event.stopPropagation()" data-template-url="task_tags_delete_popover.html" data-auto-close="'outsideClick'" class="tag_remove" bs-popover></a>
   </span>
     <a class="show_all_tags_btn">

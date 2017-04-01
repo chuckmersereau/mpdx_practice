@@ -8,7 +8,6 @@ import isNil from 'lodash/fp/isNil';
 import isObject from 'lodash/fp/isObject';
 import map from 'lodash/fp/map';
 import pull from 'lodash/fp/pull';
-import value from 'lodash/fp/value';
 import joinComma from '../fp/joinComma';
 const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 

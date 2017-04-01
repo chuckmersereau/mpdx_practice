@@ -5,6 +5,9 @@ html {
 body {
     background: $page_bg;
     margin: 0;
+    > div.alert {
+        position: absolute;
+    }
 }
 
 // content body
@@ -28,9 +31,9 @@ body {
     }
 }
 
-.alert {
-    position: absolute;
-}
+//.alert {
+//    position: absolute;
+//}
 
 /* ************************************************************** */
 
