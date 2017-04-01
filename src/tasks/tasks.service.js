@@ -47,6 +47,7 @@ class TasksService {
 
         $rootScope.$on('taskFilterChange', () => {
             $log.debug('tasks service: filter change');
+            this.selected = [];
             this.getList(true);
             this.getAnalytics(true);
             this.load(true);
@@ -54,12 +55,14 @@ class TasksService {
 
         $rootScope.$on('tasksTagsChanged', (event, filters) => {
             $log.debug('tasks service: tag change', filters);
+            this.selected = [];
             this.getList(true);
             this.getAnalytics(true);
             this.load(true);
         });
 
         $rootScope.$on('accountListUpdated', () => {
+            this.selected = [];
             this.getList(true);
             this.getAnalytics(true);
             this.load(true);

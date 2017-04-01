@@ -51,11 +51,13 @@ class ContactsService {
 
         $rootScope.$on('contactParamChange', () => {
             $log.debug('contacts service: contact parameter change');
+            this.selectedContacts = []; //reset selects to avoid bad counts
             this.getFilteredList(true);
             this.load(true);
         });
 
         $rootScope.$on('accountListUpdated', () => {
+            this.selectedContacts = []; //reset selects to avoid bad counts
             this.getList(true);
             this.getFilteredList(true);
             this.load(true);
