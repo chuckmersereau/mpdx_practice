@@ -1,54 +1,55 @@
-<div class="nav--secondary" id="subMenu">
+<div class="nav--secondary">
     <div class="row">
         <div class="col-md-12">
             <div class="pull-left">
-                <div class="section"><a ui-sref="preferences.imports" translate>Import Contacts</a></div>
                 <div class="section">
-                    <a class="reconcile-contacts" ui-sref="contacts.reconcile_partners">
-                        <translate>Merge Contacts</translate> <span class="badge">{{$ctrl.contactReconciler.duplicateContactsTotal}}</span>
-                    </a>
+                    <a ui-sref="preferences.imports" translate>Import Contacts</a>
                 </div>
                 <div class="section">
-                    <a class="reconcile-contacts" ui-sref="contacts.reconcile_individuals">
-                        <translate>Merge People</translate> <span class="badge">{{$ctrl.contactReconciler.duplicatePeopleTotal}}</span>
-                    </a>
+                    <a ui-sref="tools.mergeContacts" translate>Merge Contacts</a>
+                </div>
+                <div class="section">
+                    <a ui-sref="tools.mergePeople" translate>Merge People</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div class="filter-body">
-    <div class="row">
-        <div class="col-md-3">
-            <div class="filter-sidebar">
-                <contacts-filter ng-if="!$ctrl.isInState('contacts.show')"></contacts-filter>
-                <div id="contact_drawer" ng-if="$ctrl.isInState('contacts.show')">
-                    <div class="contact_drawer_inner" role="complementary">
-                        <div class="edit-filters clearfix">
-                            {{$ctrl.contactFilter.count()}} <translate>filter(s) applied</translate>
-                            <div class="pull-right">
-                                <button type="button" class="btn btn-primary btn-xs" ng-click="$ctrl.showFilters = !$ctrl.showFilters">
-                                    <span ng-if="$ctrl.showFilters"><i class="fa fa-users"></i> <span translate>Contacts</span></span>
-                                    <span ng-if="!$ctrl.showFilters"><i class="fa fa-sliders"></i> <span translate>Filters</span></span>
-                                </button>
+<div class="nav--secondary-padding"></div>
+<ui-view>
+    <div class="filter-body">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="filter-sidebar">
+                    <contacts-filter ng-if="!$ctrl.isInState('contacts.show')"></contacts-filter>
+                    <div id="contact_drawer" ng-if="$ctrl.isInState('contacts.show')">
+                        <div class="contact_drawer_inner" role="complementary">
+                            <div class="edit-filters clearfix">
+                                {{$ctrl.contactFilter.count()}} <translate>filter(s) applied</translate>
+                                <div class="pull-right">
+                                    <button type="button" class="btn btn-primary btn-xs" ng-click="$ctrl.showFilters = !$ctrl.showFilters">
+                                        <span ng-if="$ctrl.showFilters"><i class="fa fa-users"></i> <span translate>Contacts</span></span>
+                                        <span ng-if="!$ctrl.showFilters"><i class="fa fa-sliders"></i> <span translate>Filters</span></span>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <div ng-if="$ctrl.showFilters">
-                            <contacts-filter></contacts-filter>
-                        </div>
-                        <div ng-if="!$ctrl.showFilters">
-                            <menu-search></menu-search>
-                            <contacts-list view="minimal" selected="$ctrl.selected"></contacts-list>
+                            <div ng-if="$ctrl.showFilters">
+                                <contacts-filter></contacts-filter>
+                            </div>
+                            <div ng-if="!$ctrl.showFilters">
+                                <menu-search></menu-search>
+                                <contacts-list view="minimal" selected="$ctrl.selected"></contacts-list>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-9">
-            <div class="filter-content">
-                <ui-view>
-                    <contacts-list></contacts-list>
-                </ui-view>
+            <div class="col-md-9">
+                <div class="filter-content">
+                    <ui-view>
+                        <contacts-list></contacts-list>
+                    </ui-view>
+                </div>
             </div>
         </div>
     </div>

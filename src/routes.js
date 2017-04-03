@@ -44,20 +44,11 @@ export default class Routes {
                 default: /*@ngInject*/ (contacts) => contacts.load(),
                 resolution: /*@ngInject*/ (contactFilter) => contactFilter.load(),
                 another: /*@ngInject*/ (contactsTags) => contactsTags.load(),
-                again: /*@ngInject*/ (contactReconciler) => contactReconciler.fetchAll(),
                 mas: /*@ngInject*/ (contacts) => {
                     contacts.getFilteredList();
                     return true;// make async
                 }
             }
-        }).state({
-            name: 'contacts.reconcile_partners',
-            url: '/reconcile-partners',
-            component: 'contactsReconcilePartners'
-        }).state({
-            name: 'contacts.reconcile_individuals',
-            url: '/reconcile-individuals',
-            component: 'contactsReconcileIndividuals'
         }).state({
             name: 'contacts.show',
             title: 'Contact',
@@ -241,6 +232,20 @@ export default class Routes {
             component: 'tntImportForm',
             resolve: {
                 another: /*@ngInject*/ (contactsTags) => contactsTags.load()
+            }
+        }).state({
+            name: 'tools.mergeContacts',
+            url: '/merge-contacts',
+            component: 'mergeContacts',
+            resolve: {
+                0: /*@ngInject*/ (mergeContacts) => mergeContacts.load()
+            }
+        }).state({
+            name: 'tools.mergePeople',
+            url: '/merge-people',
+            component: 'mergePeople',
+            resolve: {
+                0: /*@ngInject*/ (mergePeople) => mergePeople.load()
             }
         }).state({
             name: 'unavailable',
