@@ -7,11 +7,12 @@ class TagsService {
     api;
 
     constructor(
-        $filter, $log, $rootScope, gettextCatalog,
+        $filter, $log, $q, $rootScope, gettextCatalog,
         api, modal
     ) {
         this.$filter = $filter;
         this.$log = $log;
+        this.$q = $q;
         this.$rootScope = $rootScope;
         this.api = api;
         this.gettextCatalog = gettextCatalog;
@@ -23,7 +24,7 @@ class TagsService {
         this.anyTags = false;
 
         $rootScope.$on('accountListUpdated', () => {
-            this.load();
+            this.load(true);
         });
     }
     change() {
