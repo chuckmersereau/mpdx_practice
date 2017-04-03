@@ -99,7 +99,7 @@ class TasksFilterService {
     }
     change() {
         this.$log.debug('task filters change');
-        this.$rootScope.$emit('taskFilterChange');
+        this.$rootScope.$emit('tasksFilterChange');
     }
     reset() {
         this.params = angular.copy(this.defaultParams);

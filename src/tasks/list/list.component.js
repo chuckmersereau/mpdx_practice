@@ -5,6 +5,7 @@ class ListController {
         tasks
     ) {
         this.tasks = tasks;
+        this.tasks.reset();
     }
 }
 

@@ -1,20 +1,4 @@
 class TasksController {
-    tasksFilter;
-    constructor(
-        $log, $rootScope, $stateParams,
-        tasksFilter
-    ) {
-        this.$stateParams = $stateParams;
-        this.tasksFilter = tasksFilter;
-    }
-    $onInit() {
-        // if (this.$stateParams.filters) {
-        //     this.tasksFilter.params = this.$stateParams.filters;
-        //     this.tasksFilter.change();
-        // } else {
-        //     this.tasksFilter.reset();
-        // }
-    }
 }
 
 const Tasks = {
