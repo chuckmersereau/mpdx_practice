@@ -45,30 +45,22 @@ class TasksService {
             'no-due-date': this.gettextCatalog.getString('No Due Date')
         };
 
-        $rootScope.$on('taskFilterChange', () => {
-            $log.debug('tasks service: filter change');
-            this.selected = [];
-            this.getList(true);
-            this.getAnalytics(true);
-            this.load(true);
+        $rootScope.$on('tasksFilterChange', () => {
+            this.reset();
         });
 
-        $rootScope.$on('tasksTagsChanged', (event, filters) => {
-            $log.debug('tasks service: tag change', filters);
-            this.selected = [];
-            this.getList(true);
-            this.getAnalytics(true);
-            this.load(true);
+        $rootScope.$on('tasksTagsChanged', () => {
+            this.reset();
         });
 
         $rootScope.$on('accountListUpdated', () => {
-            this.selected = [];
-            this.getList(true);
-            this.getAnalytics(true);
-            this.load(true);
+            this.reset();
         });
-
+    }
+    reset() {
+        this.selected = [];
         this.getList(true);
+        this.getAnalytics(true);
         this.load(true);
     }
     get(id, updateLists = true) {
@@ -92,12 +84,15 @@ class TasksService {
             return this.$q.resolve(this.completeList);
         }
         this.completeList = [];
-        return this.api.get('tasks', {
-            filter: this.tasksFilter.toParams(),
-            fields: {
-                tasks: 'subject,updated_in_db_at'
+        return this.api.get({
+            url: 'tasks',
+            data: {
+                filter: this.tasksFilter.toParams(),
+                fields: {
+                    tasks: 'subject,updated_in_db_at'
+                },
+                per_page: 25000
             },
-            per_page: 25000,
             overrideGetAsPost: true
         }).then((data) => {
             this.$log.debug('tasks all', data);
@@ -136,9 +131,8 @@ class TasksService {
                 per_page: 25,
                 include: 'contacts',
                 fields: {
-                    tasks: 'activity_type,comments,completed,contacts,no_date,starred,start_at,subject,tag_list,updated_in_db_at',
-                    contacts: 'name',
-                    comments: ''
+                    tasks: 'activity_type,completed,completed_at,contacts,no_date,starred,start_at,subject,tag_list,updated_in_db_at,comments_count',
+                    contacts: 'name'
                 }
             },
             deSerializationOptions: relationshipId('comments'), //for comment count
@@ -148,7 +142,7 @@ class TasksService {
             this.loading = false;
             this.meta = data.meta;
             const tasks = map((task) => this.process(task), data);
-            this.data = unionBy('id', tasks, this.data);
+            this.data = unionBy('id', this.data, tasks);
             this.page = parseInt(this.meta.pagination.page);
         });
     }

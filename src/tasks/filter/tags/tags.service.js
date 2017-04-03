@@ -7,11 +7,12 @@ class TagsService {
     api;
 
     constructor(
-        $filter, $log, $rootScope, gettextCatalog,
+        $filter, $log, $q, $rootScope, gettextCatalog,
         api, modal
     ) {
         this.$filter = $filter;
         this.$log = $log;
+        this.$q = $q;
         this.$rootScope = $rootScope;
         this.api = api;
         this.gettextCatalog = gettextCatalog;
@@ -23,13 +24,23 @@ class TagsService {
         this.anyTags = false;
 
         $rootScope.$on('accountListUpdated', () => {
-            this.load();
+            this.load(true);
         });
     }
-    load() {
+    change() {
+        this.$log.debug('task tags change');
+        this.$rootScope.$emit('tasksTagsChanged');
+    }
+    load(reset = true) {
+        if (!reset && this.data) {
+            this.loading = false;
+            return this.$q.resolve(this.data);
+        }
+
         return this.api.get('tasks/tags', {filter: {account_list_id: this.api.account_list_id}}).then((data) => {
             this.$log.debug('tasks/tags', data);
             this.data = data;
+            this.change();
             return data;
         });
     }
@@ -89,7 +100,7 @@ class TagsService {
         } else {
             this.selectedTags.push(tag);
         }
-        this.$rootScope.$emit('tasksTagsChanged');
+        this.change();
     }
     isResettable() {
         return (this.selectedTags.length > 0 || this.rejectedTags.length > 0);
@@ -97,7 +108,7 @@ class TagsService {
     reset() {
         this.selectedTags = [];
         this.rejectedTags = [];
-        this.$rootScope.$emit('tasksTagsChanged');
+        this.change();
     }
     getTagsByQuery(query) {
         return this.$filter('filter')(this.data, query);
