@@ -1,18 +1,14 @@
 <h4 class="title" translate>Newsletters</h4>
-<div ng-if="$ctrl.tasks.last_electronic_newsletter_completed_at || $ctrl.tasks.last_physical_newsletter_completed_at">
-    <span ng-if="$ctrl.tasks.last_electronic_newsletter_completed_at == $ctrl.tasks.last_physical_newsletter_completed_at">
-        {{ $ctrl.tasks.last_electronic_newsletter_completed_at | timeAgo }}
-        <translate>since your last email and physical newsletter</translate>
+<p ng-if="$ctrl.tasks.analytics.last_electronic_newsletter_completed_at || $ctrl.tasks.analytics.last_physical_newsletter_completed_at">
+    <span ng-if="$ctrl.tasks.analytics.last_electronic_newsletter_completed_at">
+        {{ $ctrl.tasks.analytics.last_electronic_newsletter_completed_at | timeAgo }}
+        <translate>since your last email newsletter.</translate>
     </span>
-    <span ng-if="$ctrl.tasks.last_electronic_newsletter_completed_at > $ctrl.tasks.last_physical_newsletter_completed_at">
-        {{ $ctrl.tasks.last_electronic_newsletter_completed_at | timeAgo }}
-        <translate>since your last email newsletter</translate>
+    <span ng-if="$ctrl.tasks.analytics.last_physical_newsletter_completed_at">
+        {{ $ctrl.tasks.analytics.last_physical_newsletter_completed_at | timeAgo }}
+        <translate>since your last physical newsletter.</translate>
     </span>
-    <span ng-if="$ctrl.tasks.last_electronic_newsletter_completed_at < $ctrl.tasks.last_physical_newsletter_completed_at">
-        {{ $ctrl.tasks.last_physical_newsletter_completed_at | timeAgo }}
-        <translate>since your last physical newsletter</translate>
-    </span>
-</div>
-<p ng-if="!$ctrl.tasks.last_electronic_newsletter_completed_at && !$ctrl.tasks.last_physical_newsletter_completed_at" translate>
+</p>
+<p ng-if="!$ctrl.tasks.analytics.last_electronic_newsletter_completed_at && !$ctrl.tasks.analytics.last_physical_newsletter_completed_at" translate>
     You have never logged a physical or email newsletter
 </p>
