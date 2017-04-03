@@ -49,25 +49,19 @@ class ContactsService {
 
         this.page = 1;
 
-        $rootScope.$on('contactsFilterChange', () => {
-            this.reset();
-        });
-
-        $rootScope.$on('contactTagsChanged', () => {
-            this.reset();
+        $rootScope.$on('contactParamChange', () => {
+            $log.debug('contacts service: contact parameter change');
+            this.selectedContacts = []; //reset selects to avoid bad counts
+            this.getFilteredList(true);
+            this.load(true);
         });
 
         $rootScope.$on('accountListUpdated', () => {
-            this.reset(true);
-        });
-    }
-    reset(full = false) {
-        this.selectedContacts = [];
-        this.getFilteredList(true);
-        this.load(true);
-        if (full) {
+            this.selectedContacts = []; //reset selects to avoid bad counts
             this.getList(true);
-        }
+            this.getFilteredList(true);
+            this.load(true);
+        });
     }
     get(id) {
         return this.api.get({
@@ -103,16 +97,13 @@ class ContactsService {
             return this.$q.resolve(this.completeFilteredList);
         }
         this.completeFilteredList = []; // to avoid double call
-        return this.api.get({
-            url: 'contacts',
-            data: {
-                filter: this.buildFilterParams(),
-                fields: {
-                    contacts: 'name'
-                },
-                per_page: 25000,
-                sort: 'name'
+        return this.api.get('contacts', {
+            filter: this.buildFilterParams(),
+            fields: {
+                contacts: 'name'
             },
+            per_page: 25000,
+            sort: 'name',
             overrideGetAsPost: true
         }).then((data) => {
             this.$log.debug('contacts all - filtered', data);
@@ -165,9 +156,8 @@ class ContactsService {
                 per_page: 25,
                 include: 'addresses,people,people.facebook_accounts,people.phone_numbers,people.email_addresses',
                 fields: {
-                    contact: 'name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,uncompleted_tasks_count,tag_list,pledge_amount,people,updated_in_db_at',
                     people: 'deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
-                    addresses: 'city,historic,primary_mailing_address,postal_code,state,source,street,updated_in_db_at',
+                    addresses: 'city,historic,primary_mailing_address,postal_code,state,geo,source,street,updated_in_db_at',
                     email_addresses: 'email,historic,primary',
                     phone_numbers: 'historic,location,number,primary',
                     facebook_accounts: 'username'
