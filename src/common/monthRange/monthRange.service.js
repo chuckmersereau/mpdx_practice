@@ -1,3 +1,7 @@
+import defaultTo from 'lodash/fp/defaultTo';
+import reduce from 'lodash/fp/reduce';
+import moment from 'moment';
+
 class monthRangeService {
     /** Get current date in format YYYY-MM-DD where DD is the last day of the month */
     getEndOfThisMonth() {
@@ -32,15 +36,11 @@ class monthRangeService {
 
     /** Get object of years with values that are the number of months for that year found in range */
     yearsWithMonthCounts(monthRange) {
-        return _.reduce(monthRange, (years, month) => {
-            var year = moment(month).format('YYYY');
-            if (years[year]) {
-                years[year] += 1;
-            }
-            years[year] = years[year] || 1;
-
-            return years;
-        }, {});
+        return reduce((result, month) => {
+            const year = moment(month).format('YYYY');
+            result[year] = defaultTo(0, result[year]) + 1;
+            return result;
+        }, {}, monthRange);
     }
 }
 

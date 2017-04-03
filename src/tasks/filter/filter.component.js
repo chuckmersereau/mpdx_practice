@@ -1,3 +1,7 @@
+import difference from 'lodash/fp/difference';
+import isEqual from 'lodash/fp/isEqual';
+import map from 'lodash/fp/map';
+
 class FilterController {
     tasks;
     tasksFilter;
@@ -31,7 +35,7 @@ class FilterController {
     }
     // Invert the selected options of a multiselect filter
     invertMultiselect(filter) {
-        const allOptions = _.map(filter.options, option => option.id);
+        const allOptions = map('id', filter.options);
         let selectedOptions = this.tasksFilter.params[filter.name];
 
         let allOption = '';
@@ -40,13 +44,13 @@ class FilterController {
         }
 
         // If all options are selected other than 'All', then the inverse is 'All'
-        if (_.isEqual(_.difference(allOptions, selectedOptions), [allOption])) {
+        if (isEqual(difference(selectedOptions, allOptions), [allOption])) {
             this.tasksFilter.params[filter.name] = [''];
             return;
         }
 
         selectedOptions.push(allOption); // Exclude the 'All' option when inverting
-        this.tasksFilter.params[filter.name] = _.difference(allOptions, selectedOptions);
+        this.tasksFilter.params[filter.name] = difference(selectedOptions, allOptions);
         this.tasksFilter.change();
     }
 }

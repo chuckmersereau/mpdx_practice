@@ -1,3 +1,5 @@
+import each from 'lodash/fp/each';
+
 class OrganizationIntegrationPreferencesController {
     alerts;
     preferencesOrganization;
@@ -27,9 +29,9 @@ class OrganizationIntegrationPreferencesController {
                 this.hide();
             }
         }).catch((data) => {
-            _.each(data.errors, (value) => {
+            each(value => {
                 this.alerts.addAlert(value, 'danger');
-            });
+            }, data.errors);
             this.saving = false;
         });
     }
@@ -57,9 +59,9 @@ class OrganizationIntegrationPreferencesController {
             this.revert();
             this.alerts.addAlert('MPDX added your organization account', 'success');
         }).catch((data) => {
-            _.each(data.errors, (value) => {
+            each(value => {
                 this.alerts.addAlert(value, 'danger');
-            });
+            }, data.errors);
             this.saving = false;
         });
     }
@@ -70,10 +72,10 @@ class OrganizationIntegrationPreferencesController {
             this.preferencesOrganization.load();
             this.revert();
             this.alerts.addAlert('MPDX updated your organization account', 'success');
-        }).catch((data) => {
-            _.each(data.errors, (value) => {
+        }).catch(data => {
+            each(value => {
                 this.alerts.addAlert(value, 'danger');
-            });
+            }, data.errors);
             this.saving = false;
         });
     }

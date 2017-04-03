@@ -1,10 +1,13 @@
+import each from 'lodash/fp/each';
+
 class MailchimpIntegrationPreferencesController {
     alerts;
     mailchimp;
     state;
 
     constructor(
-        $scope, mailchimp, alerts
+        $scope,
+        mailchimp, alerts
     ) {
         this.mailchimp = mailchimp;
         this.alerts = alerts;
@@ -27,9 +30,9 @@ class MailchimpIntegrationPreferencesController {
                 this.hide();
             }
         }).catch((data) => {
-            _.each(data.errors, (value) => {
+            each(value => {
                 this.alerts.addAlert(value, 'danger');
-            });
+            }, data.errors);
             this.saving = false;
         });
     }

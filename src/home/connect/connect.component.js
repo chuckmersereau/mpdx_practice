@@ -1,3 +1,4 @@
+import filter from 'lodash/fp/filter';
 import sumBy from 'lodash/fp/sumBy';
 
 class ConnectController {
@@ -38,8 +39,7 @@ class ConnectController {
     }
     totalTypes() {
         if (this.tasks.analytics && this.tasks.analytics.tasks_overdue_or_due_today_counts) {
-            const counts = _.filter(this.tasks.analytics.tasks_overdue_or_due_today_counts, function(c) { return c.count > 0; });
-            return counts.length;
+            return filter(c => c.count > 0, this.tasks.analytics.tasks_overdue_or_due_today_counts).length;
         } else {
             return 0;
         }

@@ -1,12 +1,14 @@
+import values from 'lodash/fp/values';
+
 class CurrencySelectController {
+    ngModel;
     constructor(
         twitterCldr
     ) {
-        this.currencies = _.values(twitterCldr.Currencies.currencies);
+        this.currencies = values(twitterCldr.Currencies.currencies);
     }
     $onInit() {
-        var ngModel = this.ngModel;
-        ngModel.$render = this.onChange;
+        this.ngModel.$render = this.onChange;
     }
     onChange() {
         this.selectedCurrency = this.ngModel.$viewValue;

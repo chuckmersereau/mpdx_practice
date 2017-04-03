@@ -1,3 +1,5 @@
+import indexOf from 'lodash/fp/indexOf';
+
 class PersonalController {
     accounts;
     alerts;
@@ -22,7 +24,7 @@ class PersonalController {
         this.next();
     }
     next() {
-        const nextNav = _.indexOf(this.selectableTabs, this.selectedTab) + 1;
+        const nextNav = indexOf(this.selectedTab, this.selectableTabs) + 1;
         if (this.selectableTabs.length === nextNav) {
             this.$state.go('setup.preferences.notifications');
         } else {
