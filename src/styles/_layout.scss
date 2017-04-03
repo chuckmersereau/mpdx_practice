@@ -194,9 +194,6 @@ $userheight: 72px;
     }
 }
 
-.spacer-top {margin-top: 30px;}
-.spacer-bottom {margin-bottom: 30px;}
-
 #contacts-map {
     margin-right: 170px;
     height: 100%;
@@ -231,29 +228,6 @@ $userheight: 72px;
     background: $color-text;
     padding: 4px 5px;
     border-radius: 3px;
-}
-
-.mapit {
-    background: url("images/pin.png") no-repeat 0 50%;
-    color: $color-text;
-    padding-left: 14px;
-    line-height: 16px;
-    height: 16px;
-    display: inline-block;
-}
-
-/* ************************************************************** */
-
-
-#tipside {width: $sidebarwidth - $sidebarmargins; float: right;}
-
-.tipbox {
-    margin-top: $sidebarmargins;
-    border: 1px solid $borders;
-    background: $color-reverse;
-    padding: $sidebarmargins;
-    box-shadow: 1px 1px 5px #999;
-    border-radius: 5px;
 }
 
 /* ************************************************************** */
@@ -296,11 +270,6 @@ $userheight: 72px;
     background: #fff;
     min-height: 800px;
 }
-.seemore {
-    border-top: 4px solid #BBBDBF;
-    padding-top: 6px;
-    padding-left: 0px;
-}
 
 h2.section {
     border-bottom: 2px solid $gray;
@@ -308,34 +277,9 @@ h2.section {
     padding-bottom: 8px;
 }
 
-.backline {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    background: $blue_light;
-    padding: 10px;
-    border-radius: 5px;
-    .back {
-        font-weight: bold;
-    }
-}
 .set {
     &.phone {margin-bottom:2px;}
     &.email {margin-bottom:3px;}
-}
-
-.social-icons {
-    float: right;
-    & > * {
-        display: inline-block;
-        height: 20px;
-        width: 20px;
-        text-indent: -9999px;
-        background: center center no-repeat;
-    }
-    .facebook { background-image: url('images/soc_facebook.gif'); }
-    .twitter { background-image: url('images/soc_twitter.gif'); }
-    .linkedin { background-image: url('images/soc_linkedin.gif'); }
-    .website { background-image: url('images/soc_website.gif'); }
 }
 
 .small-person {
@@ -613,35 +557,6 @@ div.name {font-size: 14px; margin-bottom: 4px;}
 
 /* ************************************************************** */
 
-.socstatus {
-    > li, td {
-        border-bottom: 1px solid $gray_light;
-        padding-bottom: 10px;
-        margin-bottom: 10px;
-    }
-    tr td {
-        padding-top: 5px;
-        margin-top: 5px;
-    }
-
-    > li:last-child, tr:last-child td  {
-        padding-bottom: 0;
-        border-bottom: none;
-    }
-    li {
-        .profile_name {
-            font-weight: normal;
-        }
-    }
-
-    .network_tags {
-        margin-top: 5px;
-        li {display: inline-block;}
-    }
-    .profile_close {
-        float: right;
-    }
-}
 .corner_close {
     background: url("images/close.png") no-repeat 50% 50% #999;
     display: block;
@@ -774,24 +689,6 @@ table tbody.tasks {
     }
 }
 
-.taskgroup {
-    background: #EC1C24;
-    width: 150px;
-    position: relative;
-    box-shadow: inset 0 1px 1px rgba(255,255,255,.75);
-    td {
-        padding: 8px;
-    }
-}
-
-.taskgroup--yellow {background-color: #f9b625;}
-.taskgroup--light-blue{background-color: #3eb1c8;}
-.taskgroup--dark-blue {background-color: #007398;}
-.taskgroup--orange {background: #F6921E; border-color: #A55E00;}
-.taskgroup--green {background: $green; border-color: green;}
-.taskgroup--red {background: #EC1C24; border-color: #AF1524;}
-.taskgroup--gray {background: #999; border-color: #666;}
-
 /* ************************************************************** */
 
 .donations {
@@ -840,33 +737,6 @@ table tbody.tasks {
 .donation-filters {
     text-align: right;
     margin-bottom: 8px;
-}
-
-/* ************************************************************** */
-
-.qaction .quick_action_list, .action_list {
-    @include listclear;
-    padding: 4px;
-    background: $color-reverse;
-    box-shadow: 0 0 6px #bbb;
-    position: absolute;
-    z-index: 10;
-
-    a {
-        background: url("images/sprite.png") no-repeat 0 50%;
-        line-height: 25px;
-        height: 25px;
-        padding-left: 25px;
-        padding-right: 10px;
-        display: block;
-    }
-    a.text {background-position: 0 -192px;}
-    a.email {background-position: 0 -259px;}
-    a.fb {background-position: 0 -390px;}
-    a.tweet {background-position: 0 -324px;}
-    a.none {padding-left: 10px; background: none;}
-    a:hover {background-color: $green; color: $color-reverse;}
-    a:active {}
 }
 
 /* ************************************************************** */
@@ -1042,37 +912,6 @@ table tbody.tasks {
 }
 
 /* ************************************************************** */
-
-.inside_person {
-    background: $baby_blue;
-    margin-bottom: 10px;
-    padding: 15px;
-    hr.thin {
-        margin: 1em 0;
-        border-color: $gray_light;
-    }
-}
-
-.primary_select {
-    background: $baby_blue;
-    display: block !important;
-    margin: 0 !important;
-    .selector {
-        background: $color-primary;
-        padding: 0px 10px;
-        display: inline-block;
-        margin-left: 1.5em;
-        label {
-            color: #fff;
-            margin-left: 5px;
-        }
-    }
-}
-
-/* ************************************************************** */
-#person_merge_winner ul {
-    @include listclear;
-}
 .contact_controls {
     border-bottom: 5px solid #ccc;
     display: block;
@@ -1082,18 +921,6 @@ table tbody.tasks {
 #contact_paging {
     display: inline-block;
     span { padding: 0 5px; }
-}
-
-.flatbtn {
-    background: $gray_light;
-    width: 15px;
-    height: 15px;
-    display: inline-block;
-    text-align: center;
-    border-radius: 4px;
-    line-height: 17px;
-    color: $gray;
-    border: 1px solid $gray_mid;
 }
 
 #contact_drawer {
@@ -1161,24 +988,6 @@ table tbody.tasks {
     opacity: .4;
 }
 
-#referrals_modal {
-    input[type=text],
-    input[type=email] {
-        width: 88px;
-        padding: 4px;
-        height: auto;
-    }
-    th {
-        line-height: 1.25em;
-        font-weight: normal;
-        font-size: 13px;
-    }
-    td {
-        padding-top: 2px;
-        padding-right: 2px;
-    }
-}
-
 /* duplicate merge page */
 .duplicate_contacts {
     margin-top: 10px;
@@ -1201,60 +1010,16 @@ table tbody.tasks {
 
 
 /* ************************************************************** */
-.qtip {
-    background: url("images/qmark.png") no-repeat;
-    width: 16px;
-    height: 16px;
-    display: inline-block;
-    margin-right: 5px;
-    /*vertical-align: bottom;*/
-}
 
 .tooltip {
-    font-family: $data-font;
     font-size: 13px;
 }
-
-.statusIcon {
-    float: left;
-    width: 23px;
-    height: 16px;
-    margin-top: 12px;
-    overflow: hidden;
-    background: url("images/status-icon.png") -0px -0px repeat;
-    background-repeat: no-repeat;
-}
-
-.statusIcon-enabled {background-position: -6px -56px;}
-.statusIcon-disabled {background-position: -6px -1px;}
-.statusIcon-error {background-position: -6px -27px;}
 
 .accstatus-enabled {color: green;}
 .accstatus-error {color: red;}
 .accstatus-disabled {color: #999;}
 
-#footer {
-    padding-bottom: 40px;
-    margin-top: 20px;
-    text-align: center;
-    .footer-border {
-        border-top:3px solid $color-bg;
-        margin-bottom: 20px;
-        display: block;
-        width: 100%;
-        height: 1px;
-    }
-    img {
-        display: inline-block;
-    }
-}
-
 /* ************************************************************** */
-
-.social_from {
-    color: #ff5400;
-    margin-left: 5px;
-}
 
 body.google_integrations_controller {
     ul {
@@ -1263,24 +1028,6 @@ body.google_integrations_controller {
 }
 
 /* ************************************************************** */
-
-.birthdays-list {
-    li {
-        display: none;
-    }
-    li:nth-child(-n+5), &.show_all li {
-        display: block;
-    }
-}
-
-.anniversaries-list {
-    li {
-        display: none;
-    }
-    li:nth-child(-n+3), &.show_all li {
-        display: block;
-    }
-}
 
 .progress-category {
     display: inline-block;
@@ -1409,169 +1156,6 @@ body.google_integrations_controller {
 }
 
 /* ************************************************************** */
-
-/* -------- Welcome -------- */
-.getting_started_title, .getting-started-panel {
-    text-align: center;
-    padding-bottom: 3em;
-}
-.getting-started-panel {
-    .panel {
-        margin-top: -20px;
-        margin-bottom: 1em;
-    }
-    &.completed .panel {
-        opacity: .5;
-    }
-    .imports-table {
-        margin-top: 1em;
-    }
-    .connections {
-        padding: 0 0 1.5em 1em;
-    }
-    tr:last-of-type {
-        .connections {
-            padding-bottom: 0;
-        }
-        h3 {
-            margin-bottom: 0;
-        }
-    }
-    .account_single {
-        margin-bottom: 1em;
-    }
-    form {
-        text-align: left;
-    }
-    hr {
-        width: auto;
-        margin: 7px 0;
-    }
-
-    .input-group {
-        margin-bottom: 0.5em;
-    }
-    .input-group-btn:last-child > .btn,
-    .input-group-btn:last-child > .btn-group {
-        box-shadow: none;
-        line-height: 24px;
-    }
-    .note {
-        color: $gray;
-        font-size: 11px;
-        margin-top: 1em;
-        text-align: left;
-    }
-    .getting_started_number,
-    &.completed .welcome-panel-completed {
-        display: inline-block;
-        width: 60px;
-        height: 60px;
-        border-radius: 60px;
-        font-weight: bold;
-        line-height: 52px;
-        border: 4px solid;
-        background-color: $color-primary;
-        font-size: 35px;
-        position: relative;
-        top: 0;
-        z-index: 1;
-    }
-    .getting_started_number {
-        transition: all .5s;
-    }
-    .welcome-panel-completed {
-        transition: all 0.5s;
-        float: right;
-        display: inline-block;
-        width: 40px;
-        height: 40px;
-        border-radius: 40px;
-        line-height: 35px;
-        font-size: 18px;
-        position: relative;
-        right: -20px;
-        top: 20px;
-        background-color: white;
-        color: $gray_light;
-        border: 3px solid $gray_light;
-        margin-left: -40px;
-        cursor: pointer;
-    }
-    &.completed .welcome-panel-completed {
-        background-color: $color-reverse;
-        color: $green;
-        border-color: $green;
-        margin-right: -30px;
-        right: 50%;
-        cursor: inherit;
-    }
-    &.completed .getting_started_number {
-        opacity: 0;
-    }
-}
-.welcome-container {
-    position: relative;
-    .welcome-completed-row {
-        text-align: center;
-        transition: all 1s ease;
-        z-index: 4;
-        position: absolute;
-        opacity: 1;
-        top: 100px;
-        &.uncompleted {
-            opacity: 0;
-            z-index: 0;
-            top: 220px; //for fade out down animation
-        }
-        h1 {
-            font-weight: 500;
-            font-size: 44px;
-        }
-        hr {
-            width: inherit;
-            margin: 20px auto;
-            border-width: 5px;
-        }
-        .tutorial-links {
-            font-size: 16px;
-            a {
-                display: inline-block;
-                width: 32%;
-                margin-bottom: 20px;
-                color: $color-link;
-                text-align: left;
-            }
-            .fa {
-                margin-right: 12px;
-                font-size: 20px;
-                color: $color-secondary;
-            }
-        }
-        .welcome-completed-dismiss {
-            float: right;
-            display: inline-block;
-            width: 50px;
-            height: 50px;
-            border-radius: 25px;
-            line-height: 42px;
-            background-color: white;
-            color: $gray_light;
-            border: 3px solid $gray_light;
-            font-size: 30px;
-            position: relative;
-            top: -20px;
-            cursor: pointer;
-        }
-    }
-}
-.fadable {
-    transition: opacity 0.5s ease;
-    &.faded {
-        opacity: .05;
-    }
-}
-
 
 #donations_summary_chart {
     border: 1px solid #ddd;
@@ -1800,7 +1384,6 @@ appeals-list .show-all {
 }
 h4.title {
     text-transform: uppercase;
-    font-family: $brand-font;
     font-size: 16px;
     font-weight: 600;
     margin-top: .5em;

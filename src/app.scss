@@ -3,7 +3,6 @@
 
 $fa-font-path: "~font-awesome/fonts";
 @import "~font-awesome/scss/font-awesome";
-@import "styles/typeahead";
 @import "~ng-tags-input/build/ng-tags-input";
 @import "~ng-tags-input/build/ng-tags-input.bootstrap";
 @import "~angular-motion/dist/angular-motion";
@@ -14,7 +13,7 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "~flag-icon-css/sass/flag-icon";
 
 /* Internal */
-@import "styles/responsive-utility";
+@import "styles/utility";
 @import "styles/vars";
 @import "styles/elements";
 @import "styles/columns";
@@ -25,12 +24,10 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "styles/notices";
 @import "styles/popovers";
 @import "styles/cards";
-@import "styles/sidebar";
 @import "styles/ico";
 @import "styles/chosen_bootstrap";
 @import "styles/buttons";
 @import "styles/panels";
-@import "styles/split";
 @import "styles/fonts/cru/ci.css";
 @import "styles/tags";
 @import "styles/merges";
@@ -75,51 +72,6 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 
 .border-success {
     border-color: #3c763d;
-}
-
-$secondary-menu-height: 22px;
-
-.nav--secondary {
-    background: $color-reverse;
-    border-bottom: 1px solid $color-menu-border;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-    position: fixed;
-    width: 1140px;
-    z-index: 1;
-    top: 103px;
-    @include breakpoint(md) {
-        width: 942px;
-    }
-    @include breakpoint(lg) {
-        width: 1140px;
-    }
-    .section {
-        display: inline-block;
-        height: $secondary-menu-height;
-        line-height: $secondary-menu-height;
-        margin-right: 24px;
-        vertical-align: top;
-    }
-    .section.right {
-        margin-right: 0px;
-        margin-left: 12px;
-    }
-    a {
-        color: $cru-gray-dark;
-        font-size: 14px;
-        &:hover {
-            text-decoration: none;
-            cursor: pointer;
-            translate {text-decoration: underline;}
-        }
-    }
-    translate {vertical-align: top;}
-    .badge {vertical-align: text-top;}
-}
-.nav--secondary-padding {
-    height: $secondary-menu-height;
-    margin-bottom: 20px;
 }
 
 .strike {
