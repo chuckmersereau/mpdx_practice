@@ -1,0 +1,64 @@
+$merge-selected: #bbcd5c;
+$merge-ignored: #e55b36;
+$merge-default: #dbdbdb;
+
+.merges {
+    .item {
+        height: 112.5px;
+        border: solid 2px $merge-default;
+        padding: 10px;
+        margin-bottom: 38.5px;
+        overflow: hidden;
+        position: relative;
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 100%;
+            float: left;
+            margin-right: 10px;
+        }
+        &.selected {
+            border-color: $merge-selected;
+        }
+        &.ignored {
+            border-color: $merge-ignored;
+        }
+        .merge-state {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 2px 4px;
+            color: white;
+            font-size: 12px;
+            &.selected {
+                background-color: $merge-selected;
+            }
+            &.ignored {
+                background-color: $merge-ignored;
+            }
+        }
+    }
+    .choices {
+        i {
+            cursor: pointer;
+            font-size: 32px;
+            margin-bottom: 9px;
+            display: block;
+            color: $merge-default;
+        }
+        .choice-left, .choice-right {
+            &.selected {
+                color: $merge-selected;
+            }
+        }
+        .choice-cancel {
+            &.selected {
+                color: $merge-ignored;
+            }
+        }
+    }
+    .confirm-or {
+        line-height: 34px;
+        font-weight: bold;
+    }
+}

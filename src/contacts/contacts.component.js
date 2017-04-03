@@ -1,18 +1,15 @@
-import assign from 'lodash/fp/assign';
-
 class ContactsController {
     contactFilter;
-    contactReconciler;
+    help;
 
     constructor(
         $rootScope, $state, $stateParams,
-        contactFilter, contactReconciler, help
+        contactFilter, help
     ) {
         this.$rootScope = $rootScope;
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.contactFilter = contactFilter;
-        this.contactReconciler = contactReconciler;
 
         help.suggest([
             '58d3d70ddd8c8e7f5974d3ca',
@@ -31,13 +28,6 @@ class ContactsController {
         ]);
     }
     $onInit() {
-        if (this.$stateParams.filters) {
-            this.contactFilter.params = assign(this.contactFilter.params, this.$stateParams.filters);
-            this.contactFilter.change();
-        }
-        this.$rootScope.$on('accountListUpdated', () => {
-            this.contactReconciler.fetchAll(true);
-        });
         this.selected = this.$stateParams.contactId;
     }
     isInState(match) {
