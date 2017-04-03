@@ -30,10 +30,6 @@ class ContactsController {
         ]);
     }
     $onInit() {
-        if (this.$stateParams.filters) {
-            this.contactFilter.params = assign(this.contactFilter.params, this.$stateParams.filters);
-            this.contactFilter.change();
-        }
         this.selected = this.$stateParams.contactId;
     }
     isInState(match) {

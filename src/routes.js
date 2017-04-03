@@ -41,13 +41,15 @@ export default class Routes {
             },
             parent: 'root',
             resolve: {
-                default: /*@ngInject*/ (contacts) => contacts.load(),
-                resolution: /*@ngInject*/ (contactFilter) => contactFilter.load(),
-                another: /*@ngInject*/ (contactsTags) => contactsTags.load(),
-                mas: /*@ngInject*/ (contacts) => {
-                    contacts.getFilteredList();
-                    return true;// make async
-                }
+                filter: /*@ngInject*/ ($stateParams, contactFilter) => {
+                    return contactFilter.load().then(() => {
+                        if ($stateParams.filters) {
+                            contactFilter.params = assign(contactFilter.params, $stateParams.filters);
+                            contactFilter.change();
+                        }
+                    });
+                },
+                tag: /*@ngInject*/ (contactsTags) => contactsTags.load()
             }
         }).state({
             name: 'contacts.show',
