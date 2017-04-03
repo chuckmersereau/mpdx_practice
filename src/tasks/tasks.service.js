@@ -37,7 +37,6 @@ class TasksService {
         this.meta = {};
         this.page = 1;
         this.selected = [];
-        this.loading = true;
         this.categories = {
             'completed': this.gettextCatalog.getString('Completed'),
             'today': this.gettextCatalog.getString('Today'),
