@@ -1,5 +1,3 @@
-import assign from 'lodash/fp/assign';
-
 class ContactsController {
     contactFilter;
     help;
