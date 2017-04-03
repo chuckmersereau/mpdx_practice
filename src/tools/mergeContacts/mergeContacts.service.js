@@ -4,13 +4,13 @@ import filter from 'lodash/fp/filter';
 
 class MergeContacts {
     api;
-    people;
     contacts;
 
     constructor(
-        $log,
-        api, people, contacts
+        $log, $q, $rootScope,
+        api, contacts
     ) {
+        this.$q = $q;
         this.$log = $log;
         this.api = api;
         this.contacts = contacts;
@@ -18,6 +18,10 @@ class MergeContacts {
         this.duplicates = [];
         this.perPage = 5;
         this.total = 0;
+
+        $rootScope.$on('accountListUpdated', () => {
+            this.load(true);
+        });
     }
 
     load(reset = false) {
