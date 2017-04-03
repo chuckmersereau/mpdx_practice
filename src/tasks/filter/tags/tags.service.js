@@ -28,12 +28,11 @@ class TagsService {
         });
     }
     change() {
-        this.$log.debug('task tags change');
+        this.$log.debug('task/tags: change');
         this.$rootScope.$emit('tasksTagsChanged');
     }
     load(reset = true) {
         if (!reset && this.data) {
-            this.loading = false;
             return this.$q.resolve(this.data);
         }
 
