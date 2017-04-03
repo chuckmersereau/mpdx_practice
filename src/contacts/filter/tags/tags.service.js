@@ -34,9 +34,18 @@ class TagsService {
                 return {id: uuid(), name: obj};
             }, val.tags);
             this.data = unionBy('name', this.data, tags);
+            this.change();
         });
     }
-    load() {
+    change() {
+        this.$log.debug('contact/tags: change');
+        this.$rootScope.$emit('contactsTagsChange');
+    }
+    load(reset = true) {
+        if (!reset && this.data) {
+            return this.$q.resolve(this.data);
+        }
+
         return this.api.get('contacts/tags', {filter: {account_list_id: this.api.account_list_id}}).then((data) => {
             this.$log.debug('contact/tags:', data);
             this.data = data;
@@ -111,11 +120,11 @@ class TagsService {
         } else {
             this.selectedTags.push(tag);
         }
-        this.$rootScope.$emit('contactParamChange');
+        this.change();
     }
     changeAny(val) {
         this.anyTags = val;
-        this.$rootScope.$emit('contactParamChange');
+        this.change();
     }
     isResettable() {
         return (this.selectedTags.length > 0 || this.rejectedTags.length > 0);
@@ -123,7 +132,7 @@ class TagsService {
     reset() {
         this.selectedTags = [];
         this.rejectedTags = [];
-        this.$rootScope.$emit('contactParamChange');
+        this.change();
     }
     getTagsByQuery(query) {
         return this.$filter('filter')(this.data, query);

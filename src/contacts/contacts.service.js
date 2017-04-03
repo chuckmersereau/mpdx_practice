@@ -49,19 +49,25 @@ class ContactsService {
 
         this.page = 1;
 
-        $rootScope.$on('contactParamChange', () => {
-            $log.debug('contacts service: contact parameter change');
-            this.selectedContacts = []; //reset selects to avoid bad counts
-            this.getFilteredList(true);
-            this.load(true);
+        $rootScope.$on('contactsFilterChange', () => {
+            this.reset();
+        });
+
+        $rootScope.$on('contactTagsChanged', () => {
+            this.reset();
         });
 
         $rootScope.$on('accountListUpdated', () => {
-            this.selectedContacts = []; //reset selects to avoid bad counts
-            this.getList(true);
-            this.getFilteredList(true);
-            this.load(true);
+            this.reset(true);
         });
+    }
+    reset(full = false) {
+        this.selectedContacts = [];
+        this.getFilteredList(true);
+        this.load(true);
+        if (full) {
+            this.getList(true);
+        }
     }
     get(id) {
         return this.api.get({
@@ -97,13 +103,16 @@ class ContactsService {
             return this.$q.resolve(this.completeFilteredList);
         }
         this.completeFilteredList = []; // to avoid double call
-        return this.api.get('contacts', {
-            filter: this.buildFilterParams(),
-            fields: {
-                contacts: 'name'
+        return this.api.get({
+            url: 'contacts',
+            data: {
+                filter: this.buildFilterParams(),
+                fields: {
+                    contacts: 'name'
+                },
+                per_page: 25000,
+                sort: 'name'
             },
-            per_page: 25000,
-            sort: 'name',
             overrideGetAsPost: true
         }).then((data) => {
             this.$log.debug('contacts all - filtered', data);
