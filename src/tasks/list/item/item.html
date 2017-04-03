@@ -14,7 +14,7 @@
             <a class="btn btn-xs btn-default" ng-click="$ctrl.toggleComments(); $event.stopPropagation();" title="{{ 'View Comments' | translate }}">
                 <i class="fa fa-commenting-o"></i>
                 &nbsp;
-                {{ $ctrl.task.comments.length }}
+                {{ $ctrl.task.comments.length || $ctrl.task.comments_count }}
             </a>
             <a class="btn btn-xs btn-danger" ng-click="$ctrl.delete(); $event.stopPropagation();" title="{{ 'Delete Task' | translate }}">
                 <i class="fa fa-trash-o trash"></i>

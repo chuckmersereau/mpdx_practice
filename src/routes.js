@@ -204,8 +204,8 @@ export default class Routes {
                 filters: null
             },
             resolve: {
-                resolution: /*@ngInject*/ (tasksFilter) => tasksFilter.load(),
-                another: /*@ngInject*/ (tasksTags) => tasksTags.load()
+                0: /*@ngInject*/ (tasksFilter) => tasksFilter.load(true),
+                1: /*@ngInject*/ (tasksTags) => tasksTags.load(true)
             }
         }).state({
             name: 'tools',
