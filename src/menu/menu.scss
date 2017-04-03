@@ -208,9 +208,8 @@ menu {
         }
     }
 }
-
+$secondary-menu-height: 22px;
 .nav--secondary {
-    $secondary-menu-height: 22px;
     background: $color-reverse;
     border-bottom: 1px solid $color-menu-border;
     padding-bottom: 10px;
@@ -247,4 +246,8 @@ menu {
     }
     translate {vertical-align: top;}
     .badge {vertical-align: text-top;}
+}
+.nav--secondary-padding {
+    height: $secondary-menu-height;
+    margin-bottom: 20px;
 }
