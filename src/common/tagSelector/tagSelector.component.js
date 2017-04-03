@@ -1,5 +1,15 @@
+import concat from 'lodash/fp/concat';
+import isArray from 'lodash/fp/isArray';
 import isObject from 'lodash/fp/isObject';
 import map from 'lodash/fp/map';
+import pull from 'lodash/fp/pull';
+
+const ifNotObject = (tag) => {
+    if (!isObject(tag)) {
+        return {name: tag};
+    }
+    return tag;
+};
 
 class TagSelectorController {
     tagList;
@@ -10,24 +20,20 @@ class TagSelectorController {
         this.init();
     }
     init() {
-        const ifNotObject = (tag) => {
-            if (!isObject(tag)) {
-                return {name: tag};
-            }
-            return tag;
-        };
+        //make sure ngModel is an array before we try to modify it
+        if (!isArray(this.ngModel)) {
+            this.ngModel = [];
+        }
         const tagList = this.tagList;
+        //map to tag object if array of names
         this.tags = map(ifNotObject, tagList);
         this.selectedTags = angular.copy(this.ngModel);
     }
     addTag($tag) {
-        this.ngModel.push($tag.name);
+        this.ngModel = concat(this.ngModel, $tag.name);
     }
     removeTag($tag) {
-        const index = this.ngModel.indexOf($tag.name);
-        if (index > -1) {
-            this.ngModel.splice(index, 1);
-        }
+        this.ngModel = pull($tag.name, this.ngModel);
     }
 }
 

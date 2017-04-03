@@ -15,6 +15,8 @@ import unionBy from 'lodash/fp/unionBy';
 import relationshipId from '../common/fp/relationshipId';
 
 class TasksService {
+    contacts;
+    selectedContacts;
     constructor(
         $rootScope, $window, $log, $q, gettextCatalog, api, tasksFilter, tasksTags, users, modal, tasksModals
     ) {
@@ -45,6 +47,7 @@ class TasksService {
 
         $rootScope.$on('taskFilterChange', () => {
             $log.debug('tasks service: filter change');
+            this.selected = [];
             this.getList(true);
             this.getAnalytics(true);
             this.load(true);
@@ -52,12 +55,14 @@ class TasksService {
 
         $rootScope.$on('tasksTagsChanged', (event, filters) => {
             $log.debug('tasks service: tag change', filters);
+            this.selected = [];
             this.getList(true);
             this.getAnalytics(true);
             this.load(true);
         });
 
         $rootScope.$on('accountListUpdated', () => {
+            this.selected = [];
             this.getList(true);
             this.getAnalytics(true);
             this.load(true);
@@ -68,15 +73,10 @@ class TasksService {
     }
     get(id, updateLists = true) {
         return this.api.get(`tasks/${id}`, {
-            include: 'comments,comments.person,contacts,contacts.people,contacts.addresses,contacts.people.email_addresses,contacts.people.phone_numbers,contacts.people.facebook_accounts',
+            include: 'comments,comments.person,contacts',
             fields: {
-                contacts: 'addresses,name,people,square_avatar',
-                addresses: 'city,primary_mailing_address,postal_code,state,street',
-                people: 'avatar,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
-                person: 'first_name,last_name',
-                email_addresses: 'email,historic,primary',
-                phone_numbers: 'historic,location,number,primary',
-                facebook_accounts: 'username'
+                contacts: 'addresses,name,square_avatar',
+                person: 'first_name,last_name'
             }
         }).then((task) => {
             if (updateLists) {
@@ -97,7 +97,8 @@ class TasksService {
             fields: {
                 tasks: 'subject,updated_in_db_at'
             },
-            per_page: 25000
+            per_page: 25000,
+            overrideGetAsPost: true
         }).then((data) => {
             this.$log.debug('tasks all', data);
             this.completeList = data;

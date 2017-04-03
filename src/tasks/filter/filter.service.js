@@ -14,6 +14,7 @@ class TasksFilterService {
         api, filters, tasksTags
     ) {
         this.$location = $location;
+        this.$q = $q;
         this.$rootScope = $rootScope;
         this.$q = $q;
         this.api = api;

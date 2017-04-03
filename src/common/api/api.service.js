@@ -4,8 +4,12 @@ import concat from 'lodash/fp/concat';
 import assign from 'lodash/fp/assign';
 import has from 'lodash/fp/has';
 import isArray from 'lodash/fp/isArray';
+import isNil from 'lodash/fp/isNil';
 import isObject from 'lodash/fp/isObject';
 import map from 'lodash/fp/map';
+import pull from 'lodash/fp/pull';
+import joinComma from '../fp/joinComma';
+const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 
 function appendTransform(defaults, transform) {
     // We can't guarantee that the default transformation is an array
@@ -35,6 +39,23 @@ function serialize(key, params, item, method) {
     }
     return serialized;
 }
+
+function cleanFilters(filter) {
+    return reduce((result, value, key) => {
+        if (isArray(value)) {
+            value = pull('', value);
+            if (value.length > 0) {
+                result[key] = joinComma(value);
+            }
+        } else {
+            if (!isNil(value) && value !== '') {
+                result[key] = value;
+            }
+        }
+        return result;
+    }, {}, filter);
+}
+
 
 class Api {
     constructor(
@@ -87,6 +108,7 @@ class Api {
             } else {
                 data.data = {type: type};
             }
+            data.filter = cleanFilters(data.filter);
         }
 
         if (method === 'get' || method === 'delete') {

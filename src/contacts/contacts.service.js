@@ -51,11 +51,13 @@ class ContactsService {
 
         $rootScope.$on('contactParamChange', () => {
             $log.debug('contacts service: contact parameter change');
+            this.selectedContacts = []; //reset selects to avoid bad counts
             this.getFilteredList(true);
             this.load(true);
         });
 
         $rootScope.$on('accountListUpdated', () => {
+            this.selectedContacts = []; //reset selects to avoid bad counts
             this.getList(true);
             this.getFilteredList(true);
             this.load(true);
@@ -101,7 +103,8 @@ class ContactsService {
                 contacts: 'name'
             },
             per_page: 25000,
-            sort: 'name'
+            sort: 'name',
+            overrideGetAsPost: true
         }).then((data) => {
             this.$log.debug('contacts all - filtered', data);
             this.completeFilteredList = data;
