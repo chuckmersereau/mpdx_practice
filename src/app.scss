@@ -30,6 +30,7 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "styles/panels";
 @import "styles/fonts/cru/ci.css";
 @import "styles/tags";
+@import "styles/merges";
 @import "styles/typography";
 @import "styles/horizontalTabsSortable";
 
@@ -43,7 +44,6 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "common/auth/auth";
 @import "contacts/list/mapContacts/mapContacts";
 @import "contacts/filter/tags/tags";
-@import "contacts/reconcilePartners/reconcilePartners";
 @import "contacts/list/list";
 @import "contacts/list/item/item";
 @import "contacts/show/show";

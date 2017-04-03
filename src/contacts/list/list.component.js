@@ -15,6 +15,7 @@ class ListController {
         this.modal = modal;
         this.contactsTags = contactsTags;
         this.tasks = tasks;
+        this.contacts.reset();
 
         this.models = {
             addTags: {
