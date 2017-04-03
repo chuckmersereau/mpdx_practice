@@ -208,3 +208,43 @@ menu {
         }
     }
 }
+
+.nav--secondary {
+    $secondary-menu-height: 22px;
+    background: $color-reverse;
+    border-bottom: 1px solid $color-menu-border;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    position: fixed;
+    width: 1140px;
+    z-index: 1;
+    top: 103px;
+    @include breakpoint(md) {
+        width: 942px;
+    }
+    @include breakpoint(lg) {
+        width: 1140px;
+    }
+    .section {
+        display: inline-block;
+        height: $secondary-menu-height;
+        line-height: $secondary-menu-height;
+        margin-right: 24px;
+        vertical-align: top;
+    }
+    .section.right {
+        margin-right: 0px;
+        margin-left: 12px;
+    }
+    a {
+        color: $cru-gray-dark;
+        font-size: 14px;
+        &:hover {
+            text-decoration: none;
+            cursor: pointer;
+            translate {text-decoration: underline;}
+        }
+    }
+    translate {vertical-align: top;}
+    .badge {vertical-align: text-top;}
+}
