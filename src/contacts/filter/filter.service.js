@@ -48,7 +48,7 @@ class FilterService {
         this.change();
     }
     change() {
-        this.$rootScope.$emit('contactsFilterChange');
+        this.$rootScope.$emit('contactParamChange');
     }
     isResettable() {
         return !angular.equals(this.params, this.default_params) || this.contactsTags.isResettable();

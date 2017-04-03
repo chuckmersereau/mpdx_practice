@@ -33,7 +33,6 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "styles/split";
 @import "styles/fonts/cru/ci.css";
 @import "styles/tags";
-@import "styles/merges";
 @import "styles/typography";
 @import "styles/horizontalTabsSortable";
 
@@ -47,6 +46,7 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "common/auth/auth";
 @import "contacts/list/mapContacts/mapContacts";
 @import "contacts/filter/tags/tags";
+@import "contacts/reconcilePartners/reconcilePartners";
 @import "contacts/list/list";
 @import "contacts/list/item/item";
 @import "contacts/show/show";
@@ -77,9 +77,8 @@ $flag-icon-css-path: "~flag-icon-css/flags";
     border-color: #3c763d;
 }
 
-$secondary-menu-height: 22px;
-
 .nav--secondary {
+    $secondary-menu-height: 22px;
     background: $color-reverse;
     border-bottom: 1px solid $color-menu-border;
     padding-bottom: 10px;
@@ -116,10 +115,6 @@ $secondary-menu-height: 22px;
     }
     translate {vertical-align: top;}
     .badge {vertical-align: text-top;}
-}
-.nav--secondary-padding {
-    height: $secondary-menu-height;
-    margin-bottom: 20px;
 }
 
 .strike {
