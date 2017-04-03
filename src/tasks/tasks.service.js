@@ -45,7 +45,7 @@ class TasksService {
             'no-due-date': this.gettextCatalog.getString('No Due Date')
         };
 
-        $rootScope.$on('taskFilterChange', () => {
+        $rootScope.$on('tasksFilterChange', () => {
             this.reset();
         });
 
@@ -56,8 +56,6 @@ class TasksService {
         $rootScope.$on('accountListUpdated', () => {
             this.reset();
         });
-
-        this.reset();
     }
     reset() {
         this.selected = [];
