@@ -1,6 +1,7 @@
 import uuid from 'uuid/v1';
 import concat from 'lodash/fp/concat';
 import assign from 'lodash/fp/assign';
+import defaultTo from 'lodash/fp/defaultTo';
 import each from 'lodash/fp/each';
 import find from 'lodash/fp/find';
 import includes from 'lodash/fp/includes';
@@ -18,11 +19,13 @@ class TasksService {
     contacts;
     selectedContacts;
     constructor(
-        $rootScope, $window, $log, $q, gettextCatalog, api, tasksFilter, tasksTags, users, modal, tasksModals
+        $rootScope, $window, $log, $q, gettextCatalog,
+        api, tasksFilter, tasksTags, users, modal, tasksModals
     ) {
         this.moment = $window.moment;
         this.$log = $log;
         this.$q = $q;
+        this.$rootScope = $rootScope;
         this.api = api;
         this.gettextCatalog = gettextCatalog;
         this.tasksFilter = tasksFilter;
@@ -218,20 +221,22 @@ class TasksService {
             }, tasks);
         });
     }
-    bulkEdit(model, comment) {
+    bulkEdit(model, comment, tags) {
         const tasks = reduce((result, task) => {
             if (comment) {
-                if (!task.comments) {
-                    task.comments = [];
-                }
-                task.comments.push({id: uuid(), body: comment, person: { id: this.users.current.id }});
+                task.comments = concat(defaultTo([], task.comments), {id: uuid(), body: comment, person: { id: this.users.current.id }});
             }
-            task.tag_list = joinComma(task.tag_list); //fix for api mis-match
             task = assign(task, model);
-            result.push(task);
-            return result;
+            if (tags.length > 0) {
+                task.tag_list = joinComma(tags);
+            }
+            return concat(result, task);
         }, [], this.getSelected());
-        return this.api.put('tasks/bulk', tasks);
+        return this.api.put('tasks/bulk', tasks).then((data) => {
+            this.tasksTags.change();
+            this.reset();
+            return data;
+        });
     }
     bulkLog(ajaxAction, taskId, model, contactIds, toComplete) {
         let url = 'tasks';

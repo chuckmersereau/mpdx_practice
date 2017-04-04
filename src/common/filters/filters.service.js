@@ -6,6 +6,7 @@ import isEqual from 'lodash/fp/isEqual';
 import keys from 'lodash/fp/keys';
 import reduce from 'lodash/fp/reduce';
 import sortBy from 'lodash/fp/sortBy';
+import toInteger from 'lodash/fp/toInteger';
 
 class Filters {
     api;
@@ -30,7 +31,7 @@ class Filters {
         }
         return this.api.get(url, {filter: {account_list_id: this.api.account_list_id}}).then((response) => {
             data = response || [];
-            data = sortBy('id', data);
+            data = sortBy(filter => toInteger(filter.id), data);
             this.$log.debug(url, data);
             params = reduce((result, filter) => {
                 if (filter.multiple && !isArray(filter.default_selection)) {

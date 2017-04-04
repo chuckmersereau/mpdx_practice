@@ -1,5 +1,4 @@
 import includes from 'lodash/fp/includes';
-import map from 'lodash/fp/map';
 import reject from 'lodash/fp/reject';
 import joinComma from "../../../common/fp/joinComma";
 
@@ -42,9 +41,6 @@ class TagsService {
             this.change();
             return data;
         });
-    }
-    mapDataAsNames() {
-        return map(data => data.name, this.data);
     }
     delete(tag) {
         const params = {

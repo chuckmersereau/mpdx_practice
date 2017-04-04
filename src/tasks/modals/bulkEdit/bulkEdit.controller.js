@@ -1,7 +1,8 @@
 class BulkEditTaskController {
+    comment;
     constructor(
         $scope,
-        tasksTags, serverConstants, tasks, contacts, users
+        tasksTags, serverConstants, tasks, users
     ) {
         this.$scope = $scope;
         this.serverConstants = serverConstants;
@@ -10,11 +11,13 @@ class BulkEditTaskController {
         this.users = users;
 
         this.task = {};
+        this.tags = [];
     }
     save() {
         return this.tasks.bulkEdit(
             this.task,
-            this.comment
+            this.comment,
+            this.tags
         ).then(() => {
             this.$scope.$hide();
         });
