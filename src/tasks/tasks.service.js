@@ -196,7 +196,7 @@ class TasksService {
                 return result;
             }, [], contactIds);
             return this.api.post({ url: 'tasks/bulk', data: tasks, type: 'tasks' }).then(() => {
-                if (this.selectedContacts.length > 0) {
+                if (contactIds.length > 0) {
                     this.contacts.load(true);
                 }
             });
