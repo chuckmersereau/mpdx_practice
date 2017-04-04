@@ -24,11 +24,11 @@ class MergePeopleController {
         }
     }
 
-    confirm(confirmAndRetire = true) {
+    confirm(confirmAndLeave = true) {
         this.blockUI.start();
         this.mergePeople.confirm().then(() => {
             this.blockUI.reset();
-            if (confirmAndRetire) {
+            if (confirmAndLeave) {
                 this.$state.go('contacts');
             }
         });

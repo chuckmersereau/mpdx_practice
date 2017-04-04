@@ -24,12 +24,12 @@ class MergeContactsController {
         }
     }
 
-    confirm(confirmAndRetire = true) {
+    confirm(confirmAndLeave = true) {
         this.blockUI.start();
         this.mergeContacts.confirm().then(() => {
             this.blockUI.reset();
-            if (confirmAndRetire) {
-                this.$state.go('contacts');
+            if (confirmAndLeave) {
+                this.$state.go('tools');
             }
         });
     }
