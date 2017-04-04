@@ -133,7 +133,7 @@ class TasksService {
                 include: 'contacts',
                 fields: {
                     tasks: 'activity_type,completed,completed_at,contacts,no_date,starred,start_at,subject,tag_list,updated_in_db_at,comments_count',
-                    contacts: 'name'
+                    contacts: 'name,updated_in_db_at'
                 }
             },
             deSerializationOptions: relationshipId('comments'), //for comment count
