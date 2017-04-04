@@ -165,7 +165,7 @@ class ContactsService {
                 per_page: 25,
                 include: 'addresses,people,people.facebook_accounts,people.phone_numbers,people.email_addresses',
                 fields: {
-                    contact: 'name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,uncompleted_tasks_count,tag_list,pledge_amount,people,updated_in_db_at',
+                    contact: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people,updated_in_db_at',
                     people: 'deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
                     addresses: 'city,historic,primary_mailing_address,postal_code,state,source,street,updated_in_db_at',
                     email_addresses: 'email,historic,primary',
