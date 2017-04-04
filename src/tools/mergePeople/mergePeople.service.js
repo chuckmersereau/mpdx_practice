@@ -8,7 +8,7 @@ class MergePeople {
     people;
 
     constructor(
-        $log, $q,
+        $log, $q, $rootScope,
         api, people
     ) {
         this.$q = $q;
@@ -19,7 +19,10 @@ class MergePeople {
         this.duplicates = [];
         this.perPage = 5;
         this.total = 0;
-        this.shouldFetch = true;
+
+        $rootScope.$on('accountListUpdated', () => {
+            this.load(true);
+        });
     }
 
     load(reset = false) {
