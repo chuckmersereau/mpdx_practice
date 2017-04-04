@@ -1,3 +1,12 @@
+setup {
+    margin-top: $nav-height;
+    display: block;
+
+    .icon_alert {
+        width: 50px;
+    }
+}
+
 setup-start, setup-connect, setup-account, setup-finish {
 
     .h2, h2 {
@@ -107,10 +116,42 @@ setup-start, setup-connect, setup-account, setup-finish {
 
 }
 
+
 setup-finish .panel-heading {line-height: 44px;}
 
-setup-preferences {
-  #content {
-    margin-top: 70px;
-  }
+setup-preferences  #content {margin-top: 70px;}
+
+setup-preferences, preferences, integration-preferences {
+    .panel-heading {
+        position: relative;
+        .row {position: relative;}
+        .fa-chevron-right {
+            position: absolute;
+            top: 50%;
+            right: 14px;
+            margin-top: -10px;
+            font-size: 12px;
+            color: $color-panel-border;
+            display: block;
+            width: 20px;
+            padding-left: 2px;
+            padding-top: 1px;
+            line-height: 15px;
+            text-align: center;
+            border-radius: 50%;
+            border: $color-panel-border 2px solid;
+        }
+    }
+    .panel-selected .panel-heading .fa-chevron-right {
+        color: $color-panel-bg;
+        border-color: $color-panel-bg;
+        line-height: 14px;
+        padding-top: 2px;
+    }
+}
+
+integration-preferences {
+    .panel-heading {
+        .pull-right {margin-right: 30px;}
+    }
 }
