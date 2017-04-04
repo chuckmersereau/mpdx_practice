@@ -24,6 +24,17 @@
             <option value=""></option>
         </select>
     </div>
+    <div class="form-group" ng-if="$ctrl.showPartnerStatus()">
+        <label translate>Partner Status</label>
+        <select chosen
+                disable-search="true"
+                data-placeholder-text-single="'Select an Option' | translate"
+                class="form-control"
+                ng-options="opt as opt for opt in $ctrl.serverConstants.data.assignable_statuses"
+                ng-model="$ctrl.status">
+            <option value=""></option>
+        </select>
+    </div>
     <div class="form-group">
         <label for="comment" translate>Comment</label>
         <input class="form-control" id='comment' ng-model="$ctrl.comment"/>
