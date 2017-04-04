@@ -53,7 +53,7 @@ class ContactsService {
             this.reset();
         });
 
-        $rootScope.$on('contactTagsChanged', () => {
+        $rootScope.$on('contactsTagsChange', () => {
             this.reset();
         });
 
