@@ -2,14 +2,16 @@ class mailchimpService {
     api;
 
     constructor(
-        $log, $rootScope,
+        $log, $q, $rootScope,
         api
     ) {
         this.$log = $log;
+        this.$q = $q;
+        this.$rootScope = $rootScope;
         this.api = api;
         this.state = 'disabled';
 
-        $rootScope.$on('accountListUpdated', () => {
+        this.$rootScope.$on('accountListUpdated', () => {
             this.load(true);
         });
 

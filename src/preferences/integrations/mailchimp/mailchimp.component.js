@@ -31,8 +31,9 @@ class MailchimpIntegrationPreferencesController {
         });
     }
     hide() {
-        this.mailchimp.load();
-        this.showSettings = false;
+        this.mailchimp.load(true).then(() => {
+            this.showSettings = false;
+        });
     }
     sync() {
         this.saving = true;
@@ -49,7 +50,6 @@ class MailchimpIntegrationPreferencesController {
         return this.mailchimp.disconnect().then(() => {
             this.saving = false;
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed your integration with MailChimp'), 'success');
-            this.mailchimp.load();
         }).catch(() => {
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for MailChimp'), 'danger');
             this.saving = false;

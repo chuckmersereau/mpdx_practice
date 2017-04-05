@@ -67,7 +67,10 @@
             </p>
         </div>
         <div ng-if="!$ctrl.mailchimp.data.valid">
-            Your configuration is FAIL.
+            <strong translate>Your configuration is invalid.</strong>
+            <br />
+            <p translate>Try Modifying your settings below to get things going again!</p>
+            <a class="btn btn-primary" ng-click="$ctrl.showSettings = true" translate>Modify Settings</a>
         </div>
         <div ng-if="!$ctrl.mailchimp.data.active">
             <p translate>You can synchronize MPDX and Mailchimp contacts to simplify your process and take advantage of all of Mailchimp's great features.</p>
