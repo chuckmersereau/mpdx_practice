@@ -34,4 +34,7 @@ export default function appRun(
     $transitions.onFinish(null, () => {
         block.reset();
     });
+    $transitions.onError(null, () => {
+        block.reset();
+    });
 }
