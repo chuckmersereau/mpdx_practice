@@ -1,6 +1,7 @@
 import uuid from 'uuid/v1';
 import concat from 'lodash/fp/concat';
 import assign from 'lodash/fp/assign';
+import defaultTo from 'lodash/fp/defaultTo';
 import each from 'lodash/fp/each';
 import find from 'lodash/fp/find';
 import includes from 'lodash/fp/includes';
@@ -19,11 +20,13 @@ class TasksService {
     contacts;
     selectedContacts;
     constructor(
-        $rootScope, $window, $log, $q, gettextCatalog, api, tasksFilter, tasksTags, users, modal, tasksModals
+        $rootScope, $window, $log, $q, gettextCatalog,
+        api, tasksFilter, tasksTags, users, modal, tasksModals
     ) {
         this.moment = $window.moment;
         this.$log = $log;
         this.$q = $q;
+        this.$rootScope = $rootScope;
         this.api = api;
         this.gettextCatalog = gettextCatalog;
         this.tasksFilter = tasksFilter;
@@ -46,6 +49,9 @@ class TasksService {
             'upcoming': this.gettextCatalog.getString('Upcoming'),
             'no-due-date': this.gettextCatalog.getString('No Due Date')
         };
+
+        this.listLoadCount = 0;
+        this.completeListLoadCount = 0;
 
         $rootScope.$on('tasksFilterChange', () => {
             this.reset();
@@ -87,6 +93,8 @@ class TasksService {
         if (!reset && this.completeList) {
             return this.$q.resolve(this.completeList);
         }
+        this.completeListLoadCount++;
+        const currentCount = angular.copy(this.completeListLoadCount);
         this.completeList = [];
         return this.api.get({
             url: 'tasks',
@@ -100,7 +108,9 @@ class TasksService {
             overrideGetAsPost: true
         }).then((data) => {
             this.$log.debug('tasks all', data);
-            this.completeList = data;
+            if (currentCount === this.completeListLoadCount) {
+                this.completeList = data;
+            }
         });
     }
     getAnalytics(reset = false) {
@@ -121,10 +131,13 @@ class TasksService {
             return this.$q.resolve(this.data);
         }
 
+        let currentCount;
         if (reset) {
             this.page = 0;
             this.meta = {};
             this.data = [];
+            this.completeListLoadCount++;
+            currentCount = angular.copy(this.completeListLoadCount);
         }
 
         return this.api.get({
@@ -136,13 +149,16 @@ class TasksService {
                 include: 'contacts',
                 fields: {
                     tasks: 'activity_type,completed,completed_at,contacts,no_date,starred,start_at,subject,tag_list,updated_in_db_at,comments_count',
-                    contacts: 'name'
+                    contacts: 'name,updated_in_db_at'
                 }
             },
             deSerializationOptions: relationshipId('comments'), //for comment count
             overrideGetAsPost: true
         }).then((data) => {
             this.$log.debug('tasks page ' + data.meta.pagination.page, data);
+            if (reset && currentCount !== this.completeListLoadCount) {
+                return;
+            }
             this.loading = false;
             this.meta = data.meta;
             const tasks = map((task) => this.process(task), data);
@@ -196,7 +212,7 @@ class TasksService {
                 return result;
             }, [], contactIds);
             return this.api.post({ url: 'tasks/bulk', data: tasks, type: 'tasks' }).then(() => {
-                if (this.selectedContacts.length > 0) {
+                if (contactIds.length > 0) {
                     this.contacts.load(true);
                 }
             });
@@ -221,20 +237,22 @@ class TasksService {
             }, tasks);
         });
     }
-    bulkEdit(model, comment) {
+    bulkEdit(model, comment, tags) {
         const tasks = reduce((result, task) => {
             if (comment) {
-                if (!task.comments) {
-                    task.comments = [];
-                }
-                task.comments.push({id: uuid(), body: comment, person: { id: this.users.current.id }});
+                task.comments = concat(defaultTo([], task.comments), {id: uuid(), body: comment, person: { id: this.users.current.id }});
             }
-            task.tag_list = joinComma(task.tag_list); //fix for api mis-match
             task = assign(task, model);
-            result.push(task);
-            return result;
+            if (tags.length > 0) {
+                task.tag_list = joinComma(tags);
+            }
+            return concat(result, task);
         }, [], this.getSelected());
-        return this.api.put('tasks/bulk', tasks);
+        return this.api.put('tasks/bulk', tasks).then((data) => {
+            this.tasksTags.change();
+            this.reset();
+            return data;
+        });
     }
     bulkLog(ajaxAction, taskId, model, contactIds, toComplete) {
         let url = 'tasks';

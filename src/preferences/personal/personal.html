@@ -4,8 +4,8 @@
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('first_name'), 'panel-disabled' : !$ctrl.tabSelectable('first_name') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('first_name')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('first_name') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('first_name') }"></i>
                         <span translate>First Name</span>
                     </div>
                     <div class="col-sm-6 pref-current">
@@ -35,8 +35,8 @@
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('last_name'), 'panel-disabled' : !$ctrl.tabSelectable('last_name') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('last_name')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('last_name') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('last_name') }"></i>
                         <span translate>Last Name</span>
                     </div>
                     <div class="col-sm-6 pref-current">
@@ -66,8 +66,8 @@
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('email'), 'panel-disabled' : !$ctrl.tabSelectable('email') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('email')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('email') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('email') }"></i>
                         <span translate>Email Address</span>
                     </div>
                     <div class="col-sm-6 pref-current">
@@ -98,8 +98,8 @@
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('time_zone'), 'panel-disabled' : !$ctrl.tabSelectable('time_zone') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('time_zone')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('time_zone') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('time_zone') }"></i>
                         <span translate>Time zone</span>
                     </div>
                     <div class="col-sm-6 pref-current">
@@ -126,8 +126,8 @@
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('language'), 'panel-disabled' : !$ctrl.tabSelectable('language') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('language')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('language') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('language') }"></i>
                         <span translate>Language</span>
                     </div>
                     <div class="col-sm-6 pref-current">
@@ -154,8 +154,8 @@
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('locale'), 'panel-disabled' : !$ctrl.tabSelectable('locale') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('locale')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('locale') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('locale') }"></i>
                         <span translate>Locale</span>
                     </div>
                     <div class="col-sm-6 pref-current">
@@ -182,8 +182,8 @@
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('default_account_list'), 'panel-disabled' : !$ctrl.tabSelectable('default_account_list') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('default_account_list')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('default_account_list') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('default_account_list') }"></i>
                         <span translate>Default Account</span>
                     </div>
                     <div class="col-sm-6 pref-current" ng-repeat="account in $ctrl.users.current.account_lists" ng-if="account.id === $ctrl.users.current.preferences.default_account_list">
@@ -219,8 +219,8 @@
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('account_list_name'), 'panel-disabled' : !$ctrl.tabSelectable('account_list_name') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('account_list_name')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('account_list_name') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('account_list_name') }"></i>
                         <span tranlsate>Account Name</span>
                     </div>
                     <div class="col-sm-6 pref-current">
@@ -251,8 +251,8 @@
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('monthly_goal'), 'panel-disabled' : !$ctrl.tabSelectable('monthly_goal') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('monthly_goal')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('monthly_goal') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('monthly_goal') }"></i>
                         <span translate>Monthly Goal</span>
                     </div>
                     <div class="col-sm-6 pref-current">
@@ -283,8 +283,8 @@
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('home_country'), 'panel-disabled' : !$ctrl.tabSelectable('home_country') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('home_country')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('home_country') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('home_country') }"></i>
                         <span translate>Home Country</span>
                     </div>
                     <div class="col-sm-6 pref-current">
@@ -311,8 +311,8 @@
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('currency'), 'panel-disabled' : !$ctrl.tabSelectable('currency') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('currency')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('currency') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('currency') }"></i>
                         <span translate>Default Currency</span>
                     </div>
                     <div class="col-sm-6 pref-current">
@@ -345,8 +345,8 @@
         <div class="panel panel-default" ng-if="$ctrl.accounts.current.designation_organizations.count > 1" ng-class="{ 'panel-selected' : $ctrl.tabSelected('salary_organization_id'), 'panel-disabled' : !$ctrl.tabSelectable('salary_organization_id') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('salary_organization_id')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('salary_organization_id') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('salary_organization_id') }"></i>
                         <span translate>Primary Organization</span>
                     </div>
                     <div class="col-sm-6 pref-current">
@@ -379,8 +379,8 @@
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('tester'), 'panel-disabled' : !$ctrl.tabSelectable('tester') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('tester')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('tester') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('tester') }"></i>
                         <span translate>Early Adopter</span>
                     </div>
                     <div class="col-sm-6 pref-current" translate>
