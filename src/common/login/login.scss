@@ -1,7 +1,5 @@
 login {
 
-    
-
     .btn.btn-login {
 
         padding: 20px;
@@ -11,21 +9,23 @@ login {
             margin-bottom: 10px;
         }
     }
+
     .brand {
-        margin: 0px;
-        padding: $gutter 0;
         width: 100%;
         height: 80px;
         background: $color-primary url("images/mpdx_logo_light.png") no-repeat center center;
         background-size: 130px;
     }
+
     .main-copyright {
         a, a:link {
             color: $color-text;
         }
     }
-    cover .cover .cover-item {
+
+    .cover-item {
         min-width: 500px;
+        border-top: none;
     }
 
     h3 {
