@@ -48,6 +48,8 @@ class ContactsService {
         this.selectedContacts = [];
 
         this.page = 1;
+        this.listLoadCount = 0;
+        this.completeListLoadCount = 0;
 
         $rootScope.$on('contactsFilterChange', () => {
             this.reset();
@@ -102,6 +104,8 @@ class ContactsService {
         if (!reset && this.completeFilteredList && this.completeFilteredList.length > 0) {
             return this.$q.resolve(this.completeFilteredList);
         }
+        this.completeListLoadCount++;
+        const currentCount = angular.copy(this.completeListLoadCount);
         this.completeFilteredList = []; // to avoid double call
         return this.api.get({
             url: 'contacts',
@@ -116,7 +120,9 @@ class ContactsService {
             overrideGetAsPost: true
         }).then((data) => {
             this.$log.debug('contacts all - filtered', data);
-            this.completeFilteredList = data;
+            if (currentCount === this.completeListLoadCount) {
+                this.completeFilteredList = data;
+            }
         });
     }
     buildFilterParams() {
@@ -151,10 +157,13 @@ class ContactsService {
             this.$q.resolve(this.data);
         }
 
+        let currentCount;
         if (reset) {
             this.page = 1;
             this.meta = {};
             this.data = null;
+            this.completeListLoadCount++;
+            currentCount = angular.copy(this.completeListLoadCount);
         }
 
         return this.api.get({
@@ -177,6 +186,9 @@ class ContactsService {
             overrideGetAsPost: true
         }).then((data) => {
             this.$log.debug('contacts page ' + data.meta.pagination.page, data);
+            if (reset && currentCount !== this.completeListLoadCount) {
+                return;
+            }
             let count = this.meta.to || 0;
             this.meta = data.meta;
             if (reset) {
