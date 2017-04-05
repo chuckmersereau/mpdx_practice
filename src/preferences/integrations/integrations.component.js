@@ -3,13 +3,15 @@ class IntegrationPreferencesController {
     integrations;
 
     constructor(
-        $window, $state, $stateParams, integrations, alerts, help
+        $window, $state, $stateParams,
+        integrations, alerts, help, mailchimp
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.$window = $window;
         this.alerts = alerts;
         this.integrations = integrations;
+        this.mailchimp = mailchimp;
 
         this.saving = false;
         this.tabId = '';

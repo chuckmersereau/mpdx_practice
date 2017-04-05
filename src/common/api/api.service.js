@@ -419,6 +419,9 @@ class EntityAttributes {
             },
             user_options: {
                 attributes: ["key", "value", "updated_in_db_at"]
+            },
+            mail_chimp_account: {
+                attributes: ["api_key", "primary_list_id", "sync_all_active_contacts", "auto_log_campaigns"]
             }
         };
     }
