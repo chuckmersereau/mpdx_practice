@@ -45,7 +45,7 @@
             <i class="fa fa-times"></i>
         </a>
     </div>
-    <contacts-list-item ng-repeat="contact in $ctrl.extendedInfo.contacts track by contact.id" contact="contact" id="contact_{{contact.id}}" data-hook="contact" view="task"></contacts-list-item>
+    <contacts-list-item ng-repeat="contact in $ctrl.task.contacts track by contact.id" contact="contact" id="contact_{{contact.id}}" data-hook="contact" view="task"></contacts-list-item>
 </div>
 <div class="comments" ng-if="$ctrl.showComments">
     <div class="links">
@@ -54,7 +54,7 @@
             <i class="fa fa-times"></i>
         </a>
     </div>
-    <div class="panel panel-default" ng-repeat="comment in $ctrl.extendedInfo.comments">
+    <div class="panel panel-default" ng-repeat="comment in $ctrl.task.comments">
         <div class="panel-body">
             <a class="btn btn-xs btn-danger pull-right" ng-click="$ctrl.deleteComment(comment)" title="{{'Delete Comment' | translate}}" ng-if="$ctrl.commentBelongsToUser(comment)">
                 <i class="fa fa-trash-o"></i>
