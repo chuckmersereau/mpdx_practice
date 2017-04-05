@@ -133,12 +133,13 @@ class TasksService {
         }
 
         let currentCount;
+        this.dataLoadCount++;
+        currentCount = angular.copy(this.dataLoadCount);
+
         if (reset) {
             this.page = 0;
             this.meta = {};
             this.data = [];
-            this.dataLoadCount++;
-            currentCount = angular.copy(this.dataLoadCount);
         }
 
         return this.api.get({
