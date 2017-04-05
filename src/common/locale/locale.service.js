@@ -77,7 +77,7 @@ class Locale {
             "ar-IQ": "dd/MM/yyyy",
             "zh-CN": "yyyy/M/d",
             "de-CH": "dd.MM.yyyy",
-            "en-GB": "dd/MM/yyyy",
+            "en-gb": "dd/MM/yyyy",
             "es-MX": "dd/MM/yyyy",
             "fr-BE": "d/MM/yyyy",
             "it-CH": "dd.MM.yyyy",
