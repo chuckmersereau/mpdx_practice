@@ -21,7 +21,7 @@ class AddTaskController {
         return this.tasks.create(
             this.task,
             this.contactsList,
-            this.comments
+            this.comment
         ).then(() => {
             this.$scope.$hide();
         });
