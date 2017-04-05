@@ -9,7 +9,6 @@ class ItemController {
         this.modal = modal;
         this.tasks = tasks;
         this.users = users;
-        this.extendedInfo = null; // save data here to avoid massive performance loss with larger data sets
     }
     $onInit() {
         this.showContacts = false;
@@ -17,26 +16,18 @@ class ItemController {
     }
     toggleContacts() {
         this.showContacts = !this.showContacts;
-        this.showComments = false;
-        if (this.showContacts && !this.extendedInfo) {
-            this.tasks.get(this.task.id, false).then(task => {
-                this.extendedInfo = task;
+        if (this.showContacts && !this.task.contacts) {
+            this.tasks.get(this.task.id, false).then((task) => {
+                this.task = task;
             });
-        } else if (!this.showContacts) {
-            //clear to save performance
-            this.extendedInfo = null;
         }
     }
     toggleComments() {
         this.showComments = !this.showComments;
-        this.showContacts = false;
-        if (this.showComments && !this.extendedInfo) {
-            this.tasks.get(this.task.id, false).then(task => {
-                this.extendedInfo = task;
+        if (this.showComments && !this.task.comments) {
+            this.tasks.get(this.task.id, false).then((task) => {
+                this.task = task;
             });
-        } else if (!this.showComments) {
-            //clear to save performance
-            this.extendedInfo = null;
         }
     }
     complete() {

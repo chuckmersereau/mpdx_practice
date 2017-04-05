@@ -1,8 +1,6 @@
-import concat from 'lodash/fp/concat';
 import isArray from 'lodash/fp/isArray';
 import isObject from 'lodash/fp/isObject';
 import map from 'lodash/fp/map';
-import pull from 'lodash/fp/pull';
 
 const ifNotObject = (tag) => {
     if (!isObject(tag)) {
@@ -29,11 +27,15 @@ class TagSelectorController {
         this.tags = map(ifNotObject, tagList);
         this.selectedTags = angular.copy(this.ngModel);
     }
+    // keep reference to this.ngModel, don't use fp below
     addTag($tag) {
-        this.ngModel = concat(this.ngModel, $tag.name);
+        this.ngModel.push($tag.name);
     }
     removeTag($tag) {
-        this.ngModel = pull($tag.name, this.ngModel);
+        const index = this.ngModel.indexOf($tag.name);
+        if (index > -1) {
+            this.ngModel.splice(index, 1);
+        }
     }
 }
 

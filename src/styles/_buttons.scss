@@ -4,6 +4,15 @@
     font-weight: 400;
     border-width: 1px;
     -webkit-appearance: none !important;
+    &-primary {
+        @include cru-button-variant($color-reverse, $color-reverse, $color-primary, $color-primary, transparent, transparent);
+    }
+    &-secondary {
+        @include cru-button-variant($color-reverse, $color-reverse, $color-secondary, $color-secondary, transparent, transparent);
+    }
+    &-gray {
+        @include cru-button-variant($color-reverse, $color-reverse, $color-link, $color-link, transparent, transparent);
+    }
 }
 
 .btn-block {
@@ -22,22 +31,11 @@
     }
 }
 
-.btn-blue {
-    background: $color-primary;
-    color: $color-reverse;
-}
-
 .btn-xxs {
     padding: 2px 6px;
     font-size: 12px;
     line-height: 1.25;
     border-radius: 1px;
-}
-
-.btn-account-dropdown {
-    font-size: 16px !important;
-    margin-top: 15px;
-    line-height: 32px !important;
 }
 
 .btn-filter-left {

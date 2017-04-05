@@ -1,26 +1,20 @@
 setup {
-    margin-top: $nav-height;
+    margin-top: 70px;
     display: block;
 
     .icon_alert {
         width: 50px;
+        vertical-align: top;
+        display: inline-block;
+        margin-right: 5px;
     }
 }
+
 
 setup-start, setup-connect, setup-account, setup-finish {
 
     .h2, h2 {
         font-weight: 600;
-    }
-    .cover {
-        .cover-item {
-            max-width: 550px;
-        }
-    }
-    .cover-item {
-        border-width: 16px 0 0;
-        border-color: $color-secondary;
-        border-style: solid;
     }
     .panel {
         border: none;
@@ -101,12 +95,6 @@ setup-start, setup-connect, setup-account, setup-finish {
         font-size: $font-size-lg;
         padding: 20px;
         white-space: normal;
-        &-primary {
-            @include cru-button-variant($color-reverse, $color-reverse, $color-primary, $color-primary, transparent, transparent);
-        }
-        &-gray {
-            @include cru-button-variant($color-reverse, $color-reverse, $color-link, $color-link, transparent, transparent);
-        }
         &-sm {
             min-width: 1px;
             font-size: $font-size*1.25;
@@ -117,41 +105,24 @@ setup-start, setup-connect, setup-account, setup-finish {
 }
 
 
-setup-finish .panel-heading {line-height: 44px;}
-
-setup-preferences  #content {margin-top: 70px;}
-
-setup-preferences, preferences, integration-preferences {
-    .panel-heading {
-        position: relative;
-        .row {position: relative;}
-        .fa-chevron-right {
-            position: absolute;
-            top: 50%;
-            right: 14px;
-            margin-top: -10px;
-            font-size: 12px;
-            color: $color-panel-border;
-            display: block;
-            width: 20px;
-            padding-left: 2px;
-            padding-top: 1px;
-            line-height: 15px;
-            text-align: center;
-            border-radius: 50%;
-            border: $color-panel-border 2px solid;
+setup-preferences {
+    @extend preferences;
+    .panel__prompt {
+        border-top: $color-secondary 5px solid;
+        .panel-body {
+            padding-top: 27px;
+            padding-bottom: 27px;
+        }
+        h2 {
+            font-size: 24px;
+            line-height: 39px;
+            margin-top: 0;
+            margin-bottom: 0;
         }
     }
-    .panel-selected .panel-heading .fa-chevron-right {
-        color: $color-panel-bg;
-        border-color: $color-panel-bg;
-        line-height: 14px;
-        padding-top: 2px;
-    }
 }
 
-integration-preferences {
-    .panel-heading {
-        .pull-right {margin-right: 30px;}
-    }
-}
+
+setup-finish .panel-heading {line-height: 44px;}
+
+
