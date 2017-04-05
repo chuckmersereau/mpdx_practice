@@ -49,6 +49,9 @@ class TasksService {
             'no-due-date': this.gettextCatalog.getString('No Due Date')
         };
 
+        this.listLoadCount = 0;
+        this.completeListLoadCount = 0;
+
         $rootScope.$on('tasksFilterChange', () => {
             this.reset();
         });
@@ -87,6 +90,8 @@ class TasksService {
         if (!reset && this.completeList) {
             return this.$q.resolve(this.completeList);
         }
+        this.completeListLoadCount++;
+        const currentCount = angular.copy(this.completeListLoadCount);
         this.completeList = [];
         return this.api.get({
             url: 'tasks',
@@ -100,7 +105,9 @@ class TasksService {
             overrideGetAsPost: true
         }).then((data) => {
             this.$log.debug('tasks all', data);
-            this.completeList = data;
+            if (currentCount === this.completeListLoadCount) {
+                this.completeList = data;
+            }
         });
     }
     getAnalytics(reset = false) {
@@ -121,10 +128,13 @@ class TasksService {
             return this.$q.resolve(this.data);
         }
 
+        let currentCount;
         if (reset) {
             this.page = 0;
             this.meta = {};
             this.data = [];
+            this.completeListLoadCount++;
+            currentCount = angular.copy(this.completeListLoadCount);
         }
 
         return this.api.get({
@@ -143,6 +153,9 @@ class TasksService {
             overrideGetAsPost: true
         }).then((data) => {
             this.$log.debug('tasks page ' + data.meta.pagination.page, data);
+            if (reset && currentCount !== this.completeListLoadCount) {
+                return;
+            }
             this.loading = false;
             this.meta = data.meta;
             const tasks = map((task) => this.process(task), data);
