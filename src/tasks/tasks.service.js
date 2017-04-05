@@ -14,6 +14,7 @@ import joinComma from '../common/fp/joinComma';
 import union from 'lodash/fp/union';
 import unionBy from 'lodash/fp/unionBy';
 import relationshipId from '../common/fp/relationshipId';
+import upsert from '../common/fp/upsert';
 
 class TasksService {
     contacts;
@@ -78,12 +79,14 @@ class TasksService {
                 person: 'first_name,last_name'
             }
         }).then((task) => {
+            const processedTask = this.process(task);
             if (updateLists) {
-                this.data = unionBy('id', [this.process(task)], this.data);
+                this.data = upsert('id', processedTask, this.data);
                 const listTask = {id: task.id, subject: task.subject, updated_in_db_at: task.updated_in_db_at};
-                this.completeList = unionBy('id', [listTask], this.completeList);
+                this.completeList = upsert('id', listTask, this.completeList);
+                this.$log.debug(`tasks/${task.id}`, processedTask);
             }
-            return task;
+            return processedTask;
         });
     }
     getList(reset = false) {
