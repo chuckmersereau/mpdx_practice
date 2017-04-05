@@ -9,10 +9,13 @@ cover {
         background-size: cover;
         background-position: center center;
         overflow: auto;
-        .cover-item {
-            max-width: 550px;
-            margin: $gutter*2 auto;
-        }
+    }
+    .cover-item {
+        max-width: 550px;
+        margin: $gutter*2 auto;
+        border-width: 16px 0 0;
+        border-color: $color-secondary;
+        border-style: solid;
     }
     .cover-copyright {
         position: fixed;

@@ -4,8 +4,8 @@
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('first_name'), 'panel-disabled' : !$ctrl.tabSelectable('first_name') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('first_name')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('first_name') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('first_name') }"></i>
                         <span translate>First Name</span>
                     </div>
                     <div class="col-sm-6 pref-current">
@@ -21,22 +21,20 @@
                                 <label for="firstName" translate>Your first name</label>
                                 <input type="text" class="form-control" ng-model="$ctrl.users.current.first_name" id="firstName">
                             </div>
+                            <button ng-click="$ctrl.save()" ng-disabled="(!$ctrl.setup && firstNameForm.$pristine) || $ctrl.saving" class="btn btn-primary">
+                                <span translate>Save</span>&nbsp;
+                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                            </button>
                         </div>
                     </div>
-                </div>
-                <div class="panel-footer text-right">
-                    <button ng-click="$ctrl.save()" ng-disabled="(!$ctrl.setup && firstNameForm.$pristine) || $ctrl.saving" class="btn btn-primary">
-                        <span translate>Save</span>&nbsp;
-                        <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </button>
                 </div>
             </div>
         </div>
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('last_name'), 'panel-disabled' : !$ctrl.tabSelectable('last_name') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('last_name')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('last_name') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('last_name') }"></i>
                         <span translate>Last Name</span>
                     </div>
                     <div class="col-sm-6 pref-current">
@@ -52,22 +50,20 @@
                                 <label for="lastName" translate>Your last name</label>
                                 <input id="lastName" class="form-control" ng-model="$ctrl.users.current.last_name">
                             </div>
+                            <button ng-click="$ctrl.save()" ng-disabled="(!$ctrl.setup && lastNameForm.$pristine) || $ctrl.saving" class="btn btn-primary">
+                                <span translate>Save</span>&nbsp;
+                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                            </button>
                         </div>
                     </div>
-                </div>
-                <div class="panel-footer text-right">
-                    <button ng-click="$ctrl.save()" ng-disabled="(!$ctrl.setup && lastNameForm.$pristine) || $ctrl.saving" class="btn btn-primary">
-                        <span translate>Save</span>&nbsp;
-                        <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </button>
                 </div>
             </div>
         </div>
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('email'), 'panel-disabled' : !$ctrl.tabSelectable('email') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('email')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('email') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('email') }"></i>
                         <span translate>Email Address</span>
                     </div>
                     <div class="col-sm-6 pref-current">
@@ -84,22 +80,20 @@
                                 <p class="text-muted" translate>This is the email address where notifications will be sent.</p>
                                 <input id="email" type="email" class="form-control" ng-model="$ctrl.email.email">
                             </div>
+                            <button ng-click="$ctrl.saveEmail()" ng-disabled="(!$ctrl.setup && emailForm.$pristine) || $ctrl.saving" class="btn btn-primary">
+                                <span translate>Save</span>&nbsp;
+                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                            </button>
                         </div>
                     </div>
-                </div>
-                <div class="panel-footer text-right">
-                    <button ng-click="$ctrl.saveEmail()" ng-disabled="(!$ctrl.setup && emailForm.$pristine) || $ctrl.saving" class="btn btn-primary">
-                        <span translate>Save</span>&nbsp;
-                        <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </button>
                 </div>
             </div>
         </div>
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('time_zone'), 'panel-disabled' : !$ctrl.tabSelectable('time_zone') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('time_zone')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('time_zone') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('time_zone') }"></i>
                         <span translate>Time zone</span>
                     </div>
                     <div class="col-sm-6 pref-current">
@@ -112,22 +106,20 @@
                     <div class="row">
                         <div class="col-md-8 col-md-offset-4" ng-form="tzForm">
                             <preferences-personal-time-zone></preferences-personal-time-zone>
+                            <button ng-click="$ctrl.save()" ng-disabled="(!$ctrl.setup && tzForm.$pristine) || $ctrl.saving" class="btn btn-primary">
+                                <span translate>Save</span>&nbsp;
+                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                            </button>
                         </div>
                     </div>
-                </div>
-                <div class="panel-footer text-right">
-                    <button ng-click="$ctrl.save()" ng-disabled="(!$ctrl.setup && tzForm.$pristine) || $ctrl.saving" class="btn btn-primary">
-                        <span translate>Save</span>&nbsp;
-                        <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </button>
                 </div>
             </div>
         </div>
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('language'), 'panel-disabled' : !$ctrl.tabSelectable('language') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('language')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('language') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('language') }"></i>
                         <span translate>Language</span>
                     </div>
                     <div class="col-sm-6 pref-current">
@@ -140,22 +132,20 @@
                     <div class="row">
                         <div class="col-md-8 col-md-offset-4" ng-form="languageForm">
                             <preferences-personal-language on-save="$ctrl.save()"></preferences-personal-language>
+                            <button ng-click="$ctrl.save()" ng-disabled="(!$ctrl.setup && languageForm.$pristine) || $ctrl.saving" class="btn btn-primary">
+                                <span translate>Save</span>&nbsp;
+                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                            </button>
                         </div>
                     </div>
-                </div>
-                <div class="panel-footer text-right">
-                    <button ng-click="$ctrl.save()" ng-disabled="(!$ctrl.setup && languageForm.$pristine) || $ctrl.saving" class="btn btn-primary">
-                        <span translate>Save</span>&nbsp;
-                        <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </button>
                 </div>
             </div>
         </div>
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('locale'), 'panel-disabled' : !$ctrl.tabSelectable('locale') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('locale')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('locale') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('locale') }"></i>
                         <span translate>Locale</span>
                     </div>
                     <div class="col-sm-6 pref-current">
@@ -168,22 +158,20 @@
                     <div class="row">
                         <div class="col-md-8 col-md-offset-4" ng-form="localeForm">
                             <preferences-personal-locale></preferences-personal-locale>
+                            <button ng-click="$ctrl.save()" ng-disabled="(!$ctrl.setup && localeForm.$pristine) || $ctrl.saving" class="btn btn-primary">
+                                <span translate>Save</span>&nbsp;
+                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                            </button>
                         </div>
                     </div>
-                </div>
-                <div class="panel-footer text-right">
-                    <button ng-click="$ctrl.save()" ng-disabled="(!$ctrl.setup && localeForm.$pristine) || $ctrl.saving" class="btn btn-primary">
-                        <span translate>Save</span>&nbsp;
-                        <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </button>
                 </div>
             </div>
         </div>
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('default_account_list'), 'panel-disabled' : !$ctrl.tabSelectable('default_account_list') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('default_account_list')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('default_account_list') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('default_account_list') }"></i>
                         <span translate>Default Account</span>
                     </div>
                     <div class="col-sm-6 pref-current" ng-repeat="account in $ctrl.users.current.account_lists" ng-if="account.id === $ctrl.users.current.preferences.default_account_list">
@@ -202,14 +190,12 @@
                                         ng-options="al.id as al.name for al in $ctrl.users.current.account_lists | toArray" chosen>
                                 </select>
                             </div>
+                            <button ng-click="$ctrl.save()" ng-disabled="(!$ctrl.setup && defaultAccountForm.$pristine) || $ctrl.saving" class="btn btn-primary">
+                                <span translate>Save</span>&nbsp;
+                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                            </button>
                         </div>
                     </div>
-                </div>
-                <div class="panel-footer text-right">
-                    <button ng-click="$ctrl.save()" ng-disabled="(!$ctrl.setup && defaultAccountForm.$pristine) || $ctrl.saving" class="btn btn-primary">
-                        <span translate>Save</span>&nbsp;
-                        <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </button>
                 </div>
             </div>
         </div>
@@ -219,8 +205,8 @@
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('account_list_name'), 'panel-disabled' : !$ctrl.tabSelectable('account_list_name') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('account_list_name')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('account_list_name') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('account_list_name') }"></i>
                         <span tranlsate>Account Name</span>
                     </div>
                     <div class="col-sm-6 pref-current">
@@ -237,22 +223,20 @@
                                 <p class="text-muted" translate>You can change the account name in MPDX into something that is more identifiable to you. This will not change the account name with your organization.</p>
                                 <input type="text" id="accountListName" class="form-control" ng-model="$ctrl.accounts.current.name">
                             </div>
+                            <button ng-click="$ctrl.saveAccount()" ng-disabled="(!$ctrl.setup && accountNameForm.$pristine) || $ctrl.saving" class="btn btn-primary">
+                                <span translate>Save</span>&nbsp;
+                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                            </button>
                         </div>
                     </div>
-                </div>
-                <div class="panel-footer text-right">
-                    <button ng-click="$ctrl.saveAccount()" ng-disabled="(!$ctrl.setup && accountNameForm.$pristine) || $ctrl.saving" class="btn btn-primary">
-                        <span translate>Save</span>&nbsp;
-                        <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </button>
                 </div>
             </div>
         </div>
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('monthly_goal'), 'panel-disabled' : !$ctrl.tabSelectable('monthly_goal') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('monthly_goal')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('monthly_goal') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('monthly_goal') }"></i>
                         <span translate>Monthly Goal</span>
                     </div>
                     <div class="col-sm-6 pref-current">
@@ -269,22 +253,20 @@
                                 <p class="text-muted" translate>This amount should be set to the amount your organization has determined is your target monthly goal. If you do not know, make your best guess for now. You can change it at any time.</p>
                                 <input type="text" id="monthlyGoal" class="form-control" ng-model="$ctrl.accounts.current.monthly_goal">
                             </div>
+                            <button ng-click="$ctrl.saveAccount()" ng-disabled="(!$ctrl.setup && monthlyGoalForm.$pristine) || $ctrl.saving" class="btn btn-primary">
+                                <span translate>Save</span>&nbsp;
+                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                            </button>
                         </div>
                     </div>
-                </div>
-                <div class="panel-footer text-right">
-                    <button ng-click="$ctrl.saveAccount()" ng-disabled="(!$ctrl.setup && monthlyGoalForm.$pristine) || $ctrl.saving" class="btn btn-primary">
-                        <span translate>Save</span>&nbsp;
-                        <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </button>
                 </div>
             </div>
         </div>
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('home_country'), 'panel-disabled' : !$ctrl.tabSelectable('home_country') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('home_country')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('home_country') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('home_country') }"></i>
                         <span translate>Home Country</span>
                     </div>
                     <div class="col-sm-6 pref-current">
@@ -297,22 +279,20 @@
                     <div class="row">
                         <div class="col-md-8 col-md-offset-4" ng-form="homeCountryForm">
                             <preferences-personal-home-country></preferences-personal-home-country>
+                            <button ng-click="$ctrl.saveAccount()" ng-disabled="(!$ctrl.setup && homeCountryForm.$pristine) || $ctrl.saving" class="btn btn-primary">
+                                <span translate>Save</span>&nbsp;
+                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                            </button>
                         </div>
                     </div>
-                </div>
-                <div class="panel-footer text-right">
-                    <button ng-click="$ctrl.saveAccount()" ng-disabled="(!$ctrl.setup && homeCountryForm.$pristine) || $ctrl.saving" class="btn btn-primary">
-                        <span translate>Save</span>&nbsp;
-                        <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </button>
                 </div>
             </div>
         </div>
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('currency'), 'panel-disabled' : !$ctrl.tabSelectable('currency') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('currency')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('currency') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('currency') }"></i>
                         <span translate>Default Currency</span>
                     </div>
                     <div class="col-sm-6 pref-current">
@@ -331,22 +311,20 @@
                                     <option value=""></option>
                                 </select>
                             </div>
+                            <button ng-click="$ctrl.saveAccount()" ng-disabled="(!$ctrl.setup && defaultCurrencyForm.$pristine) || $ctrl.saving" class="btn btn-primary">
+                                <span translate>Save</span>&nbsp;
+                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                            </button>
                         </div>
                     </div>
-                </div>
-                <div class="panel-footer text-right">
-                    <button ng-click="$ctrl.saveAccount()" ng-disabled="(!$ctrl.setup && defaultCurrencyForm.$pristine) || $ctrl.saving" class="btn btn-primary">
-                        <span translate>Save</span>&nbsp;
-                        <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </button>
                 </div>
             </div>
         </div>
         <div class="panel panel-default" ng-if="$ctrl.accounts.current.designation_organizations.count > 1" ng-class="{ 'panel-selected' : $ctrl.tabSelected('salary_organization_id'), 'panel-disabled' : !$ctrl.tabSelectable('salary_organization_id') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('salary_organization_id')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('salary_organization_id') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('salary_organization_id') }"></i>
                         <span translate>Primary Organization</span>
                     </div>
                     <div class="col-sm-6 pref-current">
@@ -365,22 +343,20 @@
                                     <option ng-repeat="org in $ctrl.salary_organization_select(current_account_list)">{{org}}</option>
                                 </select>
                             </div>
+                            <button ng-click="$ctrl.saveAccount()" ng-disabled="(!$ctrl.setup && salaryOrgForm.$pristine) || $ctrl.saving" class="btn btn-primary">
+                                <span translate>Save</span>&nbsp;
+                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                            </button>
                         </div>
                     </div>
-                </div>
-                <div class="panel-footer text-right">
-                    <button ng-click="$ctrl.saveAccount()" ng-disabled="(!$ctrl.setup && salaryOrgForm.$pristine) || $ctrl.saving" class="btn btn-primary">
-                        <span translate>Save</span>&nbsp;
-                        <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </button>
                 </div>
             </div>
         </div>
         <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('tester'), 'panel-disabled' : !$ctrl.tabSelectable('tester') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('tester')">
                 <div class="row">
+                    <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('tester') }"></i>
                     <div class="col-sm-4">
-                        <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('tester') }"></i>
                         <span translate>Early Adopter</span>
                     </div>
                     <div class="col-sm-6 pref-current" translate>
@@ -402,14 +378,12 @@
                                 account to test, and then ask for you to give us feedback - both if you experience bugs and also about
                                 your thoughts about the feature(s) you are testing.
                             </p>
+                            <button ng-click="$ctrl.saveAccount()" ng-disabled="(!$ctrl.setup && earlyAdopterForm.$pristine) || $ctrl.saving" class="btn btn-primary">
+                                <span translate>Save</span>&nbsp;
+                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                            </button>
                         </div>
                     </div>
-                </div>
-                <div class="panel-footer text-right">
-                    <button ng-click="$ctrl.saveAccount()" ng-disabled="(!$ctrl.setup && earlyAdopterForm.$pristine) || $ctrl.saving" class="btn btn-primary">
-                        <span translate>Save</span>&nbsp;
-                        <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                    </button>
                 </div>
             </div>
         </div>

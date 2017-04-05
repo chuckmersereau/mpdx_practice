@@ -5,6 +5,7 @@ import find from 'lodash/fp/find';
 import forEachRight from 'lodash/fp/forEachRight';
 import map from 'lodash/fp/map';
 import reject from 'lodash/fp/reject';
+import moment from 'moment';
 
 class ContactController {
     alerts;
@@ -113,7 +114,9 @@ class ContactController {
         this.$log.debug('contact patch', patch);
 
         return this.contacts.save(patch).then((data) => {
-            this.contact.updated_in_db_at = data.updated_in_db_at;
+            if (moment(data.updated_in_db_at).isAfter(this.contact.updated_in_db_at)) {
+                this.contact.updated_in_db_at = data.updated_in_db_at;
+            }
             if (patch.tag_list) {
                 const tags = patch.tag_list.split(',');
                 this.$rootScope.$emit('contactTagsAdded', {tags: tags});

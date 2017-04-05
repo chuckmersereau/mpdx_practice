@@ -1,25 +1,34 @@
+import indexOf from 'lodash/fp/indexOf';
+
 class CompleteTaskController {
     constructor(
-        $scope,
-        tasksTags, serverConstants, tasks, users,
+        $q, $scope,
+        serverConstants, tasks, contacts,
         task
     ) {
+        this.$q = $q;
         this.$scope = $scope;
         this.serverConstants = serverConstants;
-        this.tasksTags = tasksTags;
         this.tasks = tasks;
-        this.users = users;
+        this.contacts = contacts;
 
         this.task = angular.copy(task);
         this.task.completed = true;
     }
-    save() {
-        return this.tasks.save(
+    save(promises = []) {
+        if (this.status && this.task.contacts.length > 0) {
+            promises.push(this.contacts.bulkEditFields({ status: this.status }, this.task.contacts));
+        }
+        promises.push(this.tasks.save(
             this.task,
             this.comment
-        ).then(() => {
+        ));
+        return this.$q.all(promises).then(() => {
             this.$scope.$hide();
         });
+    }
+    showPartnerStatus() {
+        return this.task.contacts.length > 0 && indexOf(this.task.activity_type, ['Call', 'Appointment']) >= 0;
     }
 }
 

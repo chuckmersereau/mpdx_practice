@@ -1,4 +1,5 @@
 import config from 'config';
+import isEmpty from 'lodash/fp/isEmpty';
 
 class AuthController {
     constructor($state, $stateParams, $window, $http, $log) {
@@ -10,7 +11,7 @@ class AuthController {
         this.load();
     }
     load() {
-        if (!_.isEmpty(this.$stateParams.access_token)) {
+        if (!isEmpty(this.$stateParams.access_token)) {
             this.$http.get(`${config.authUrl}api/oauth/ticket`,
                 {
                     headers: {

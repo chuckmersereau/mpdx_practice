@@ -1,17 +1,20 @@
+setup {
+    margin-top: 70px;
+    display: block;
+
+    .icon_alert {
+        width: 50px;
+        vertical-align: top;
+        display: inline-block;
+        margin-right: 5px;
+    }
+}
+
+
 setup-start, setup-connect, setup-account, setup-finish {
 
     .h2, h2 {
         font-weight: 600;
-    }
-    .cover {
-        .cover-item {
-            max-width: 550px;
-        }
-    }
-    .cover-item {
-        border-width: 16px 0 0;
-        border-color: $color-secondary;
-        border-style: solid;
     }
     .panel {
         border: none;
@@ -92,12 +95,6 @@ setup-start, setup-connect, setup-account, setup-finish {
         font-size: $font-size-lg;
         padding: 20px;
         white-space: normal;
-        &-primary {
-            @include cru-button-variant($color-reverse, $color-reverse, $color-primary, $color-primary, transparent, transparent);
-        }
-        &-gray {
-            @include cru-button-variant($color-reverse, $color-reverse, $color-link, $color-link, transparent, transparent);
-        }
         &-sm {
             min-width: 1px;
             font-size: $font-size*1.25;
@@ -107,10 +104,25 @@ setup-start, setup-connect, setup-account, setup-finish {
 
 }
 
-setup-finish .panel-heading {line-height: 44px;}
 
 setup-preferences {
-  #content {
-    margin-top: 70px;
-  }
+    @extend preferences;
+    .panel__prompt {
+        border-top: $color-secondary 5px solid;
+        .panel-body {
+            padding-top: 27px;
+            padding-bottom: 27px;
+        }
+        h2 {
+            font-size: 24px;
+            line-height: 39px;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+    }
 }
+
+
+setup-finish .panel-heading {line-height: 44px;}
+
+

@@ -1,4 +1,10 @@
+const each = require('lodash/fp/each').convert({ 'cap': false });
+const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 import joinComma from "../../common/fp/joinComma";
+import difference from 'lodash/fp/difference';
+import flatMap from 'lodash/fp/flatMap';
+import values from 'lodash/fp/values';
+import union from 'lodash/fp/union';
 
 class ImportFromCsvService {
     api;
@@ -49,19 +55,18 @@ class ImportFromCsvService {
         }).then((data) => {
             this.data = data;
 
-            this.headers_to_fields_mapping = {};
-            _.each(this.data.file_headers_mappings, (value, key) => {
-                this.headers_to_fields_mapping[value] = key;
-            });
+            this.headers_to_fields_mapping = reduce((result, value, key) => {
+                result[value] = key;
+                return result;
+            }, {}, this.data.file_headers_mappings);
 
-            this.values_to_constants_mapping = {};
-            _.each(this.data.file_constants_mappings, (obj, constant) => {
-                this.values_to_constants_mapping[constant] = {};
-
-                _.each(obj, (value, key) => {
-                    this.values_to_constants_mapping[constant][value] = key;
-                });
-            });
+            this.values_to_constants_mapping = reduce((result, obj, constant) => {
+                result[constant] = {};
+                each((value, key) => {
+                    result[constant][value] = key;
+                }, obj);
+                return result;
+            }, {}, this.data.file_constants_mappings);
 
             this.$log.debug('import');
             this.$log.debug(this.data);
@@ -76,25 +81,44 @@ class ImportFromCsvService {
         }
 
         this.data.file_headers_mappings = {};
-        _.each(this.headers_to_fields_mapping, (value, key) => {
+        each((value, key) => {
             if (value) {
                 this.data.file_headers_mappings[value] = key;
             }
-        });
+        }, this.headers_to_fields_mapping);
 
         this.data.file_constants_mappings = {};
-        _.each(this.values_to_constants_mapping, (obj, constant) => {
+        each((obj, constant) => {
             if (this.data.file_headers_mappings[constant]) {
                 this.data.file_constants_mappings[constant] = {};
 
-                _.each(obj, (value, key) => {
+                each((value, key) => {
                     if (!this.data.file_constants_mappings[constant][value]) {
                         this.data.file_constants_mappings[constant][value] = [];
                     }
                     this.data.file_constants_mappings[constant][value].push(key);
-                });
+                }, obj);
             }
-        });
+        }, this.values_to_constants_mapping);
+
+        // add unmapped constants to empty key. eg: {'': ['a', 'b', 'c']}
+        each((obj, constant) => {
+            const constantKey = this.data.file_headers_mappings[constant];
+
+            if (constantKey) {
+                const constants = this.data.file_constants[constantKey];
+                const mappedConstants = flatMap(values(obj));
+                const unmappedCosntants = difference(constants, mappedConstants);
+
+                if (unmappedCosntants.length) {
+                    if (!obj['']) {
+                        obj[''] = [];
+                    }
+
+                    obj[''] = union(obj[''], unmappedCosntants);
+                }
+            }
+        }, this.data.file_constants_mappings);
 
         let promise = this.$q.defer();
 

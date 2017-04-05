@@ -1,4 +1,8 @@
+import map from 'lodash/fp/map';
+import moment from 'moment';
+
 class ChartController {
+    contact;
     constructor(
         $state, $rootScope, $filter, $log, gettextCatalog,
         accounts, donations, blockUI
@@ -42,7 +46,7 @@ class ChartController {
             endDate: this.endDate
         };
         if (this.contact && this.contact.donor_accounts) {
-            params.donorAccountId = _.map(this.contact.donor_accounts, 'id').join();
+            params.donorAccountId = map('id', this.contact.donor_accounts).join();
         }
         this.blockUI.start();
         this.donations.getDonationChart(params).then((data) => {
@@ -53,11 +57,11 @@ class ChartController {
             } else {
                 this.hasChart = true;
             }
-            this.series = _.map(data.totals, (total) => total.currency);
-            this.labels = _.map(data.months_to_dates, month => moment(month, 'YYYY-MM-DD').format('MMM YY'));
-            this.data = _.map(data.totals, (total) => {
-                return _.map(total.month_totals, (val) => parseFloat(val.converted).toFixed(2));
-            });
+            this.series = map('currency', data.totals);
+            this.labels = map(month => moment(month, 'YYYY-MM-DD').format('MMM YY'), data.months_to_dates);
+            this.data = map(total => {
+                return map(val => parseFloat(val.converted).toFixed(2), total.month_totals);
+            }, data.totals);
             this.options = {
                 responsive: true,
                 maintainAspectRatio: false,

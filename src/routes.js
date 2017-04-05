@@ -1,4 +1,5 @@
 import config from 'config';
+import assign from 'lodash/fp/assign';
 
 export default class Routes {
     static config($stateProvider) {
@@ -40,23 +41,16 @@ export default class Routes {
             },
             parent: 'root',
             resolve: {
-                default: /*@ngInject*/ (contacts) => contacts.load(),
-                resolution: /*@ngInject*/ (contactFilter) => contactFilter.load(),
-                another: /*@ngInject*/ (contactsTags) => contactsTags.load(),
-                again: /*@ngInject*/ (contactReconciler) => contactReconciler.fetchAll(),
-                mas: /*@ngInject*/ (contacts) => {
-                    contacts.getFilteredList();
-                    return true;// make async
-                }
+                filter: /*@ngInject*/ ($stateParams, contactFilter) => {
+                    return contactFilter.load().then(() => {
+                        if ($stateParams.filters) {
+                            contactFilter.params = assign(contactFilter.params, $stateParams.filters);
+                            contactFilter.change();
+                        }
+                    });
+                },
+                tag: /*@ngInject*/ (contactsTags) => contactsTags.load()
             }
-        }).state({
-            name: 'contacts.reconcile_partners',
-            url: '/reconcile-partners',
-            component: 'contactsReconcilePartners'
-        }).state({
-            name: 'contacts.reconcile_individuals',
-            url: '/reconcile-individuals',
-            component: 'contactsReconcileIndividuals'
         }).state({
             name: 'contacts.show',
             title: 'Contact',
@@ -204,8 +198,15 @@ export default class Routes {
                 filters: null
             },
             resolve: {
-                resolution: /*@ngInject*/ (tasksFilter) => tasksFilter.load(),
-                another: /*@ngInject*/ (tasksTags) => tasksTags.load()
+                filter: /*@ngInject*/ ($stateParams, tasksFilter) => {
+                    return tasksFilter.load().then(() => {
+                        if ($stateParams.filters) {
+                            tasksFilter.params = assign(tasksFilter.params, $stateParams.filters);
+                            tasksFilter.change();
+                        }
+                    });
+                },
+                tag: /*@ngInject*/ (tasksTags) => tasksTags.load()
             }
         }).state({
             name: 'tools',
@@ -233,6 +234,20 @@ export default class Routes {
             component: 'tntImportForm',
             resolve: {
                 another: /*@ngInject*/ (contactsTags) => contactsTags.load()
+            }
+        }).state({
+            name: 'tools.mergeContacts',
+            url: '/merge-contacts',
+            component: 'mergeContacts',
+            resolve: {
+                0: /*@ngInject*/ (mergeContacts) => mergeContacts.load()
+            }
+        }).state({
+            name: 'tools.mergePeople',
+            url: '/merge-people',
+            component: 'mergePeople',
+            resolve: {
+                0: /*@ngInject*/ (mergePeople) => mergePeople.load()
             }
         }).state({
             name: 'unavailable',

@@ -1,61 +1,18 @@
-@mixin cru-button-variant($color, $alt-color, $background, $alt-background, $border, $alt-border) {
-  color: $color;
-  background-color: $background;
-  border-color: $border;
-
-  &:focus,
-  &.focus {
-    color: $alt-color;
-    background-color: $alt-background;
-        border-color: $alt-border;
-  }
-  &:hover {
-    color: $alt-color;
-    background-color: $alt-background;
-        border-color: $alt-border;
-  }
-  &:active,
-  &.active,
-  .open > &.dropdown-toggle {
-    color: $alt-color;
-    box-shadow:       none;
-    background-image: none;
-    background-color: $alt-background;
-        border-color: $alt-border;
-
-    &:hover,
-    &:focus,
-    &.focus {
-      color: $alt-color;
-      background-color: $alt-background;
-          border-color: $alt-border;
-    }
-  }
-  &.disabled,
-  &[disabled],
-  fieldset[disabled] & {
-    &:hover,
-    &:focus,
-    &.focus {
-      background-color: $alt-background;
-          border-color: $alt-border;
-    }
-  }
-
-  .badge {
-    color: $background;
-    background-color: $color;
-  }
-}
-
-
-
 .btn {
     border-radius: $border-radius;
     font-size: 14px;
     font-weight: 400;
     border-width: 1px;
     -webkit-appearance: none !important;
+    &-primary {
+        @include cru-button-variant($color-reverse, $color-reverse, $color-primary, $color-primary, transparent, transparent);
+    }
+    &-secondary {
+        @include cru-button-variant($color-reverse, $color-reverse, $color-secondary, $color-secondary, transparent, transparent);
+    }
+    &-gray {
+        @include cru-button-variant($color-reverse, $color-reverse, $color-link, $color-link, transparent, transparent);
+    }
 }
 
 .btn-block {
@@ -74,22 +31,11 @@
     }
 }
 
-.btn-blue {
-    background: $color-primary;
-    color: $color-reverse;
-}
-
 .btn-xxs {
     padding: 2px 6px;
     font-size: 12px;
     line-height: 1.25;
     border-radius: 1px;
-}
-
-.btn-account-dropdown {
-    font-size: 16px !important;
-    margin-top: 15px;
-    line-height: 32px !important;
 }
 
 .btn-filter-left {

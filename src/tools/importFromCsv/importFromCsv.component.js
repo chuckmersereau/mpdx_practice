@@ -1,3 +1,10 @@
+const each = require('lodash/fp/each').convert({ 'cap': false });
+const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
+import isEmpty from 'lodash/fp/isEmpty';
+import difference from 'lodash/fp/difference';
+import keys from 'lodash/fp/keys';
+import values from 'lodash/fp/values';
+
 class ImportFromCsvController {
     alerts;
     modal;
@@ -6,7 +13,7 @@ class ImportFromCsvController {
     contactsTags;
 
     constructor(
-        $log, $state, alerts, modal, blockUI, gettextCatalog,
+        $log, $window, $scope, $transitions, $state, alerts, modal, blockUI, gettextCatalog,
         importFromCsv, serverConstants, contactsTags
     ) {
         this.$log = $log;
@@ -23,6 +30,22 @@ class ImportFromCsvController {
         this.accept = false;
         this.available_constants = {};
         this.selectedHeaders = [];
+        this.unmappedHeaders = [];
+
+        const message = this.gettextCatalog.getString('Wait! Are you sure you want to navigate away from the current page? If you leave you will lose all progress?');
+
+        $window.onbeforeunload = (e) => {
+            e.returnValue = message;
+            return message;
+        };
+
+        $scope.$on('$destroy', () => {
+            $window.onbeforeunload = undefined;
+        });
+
+        $transitions.onStart({from: 'tools.importFromCSV'}, () => {
+            return confirm(message);
+        });
     }
 
     setStep(n) {
@@ -34,7 +57,7 @@ class ImportFromCsvController {
             return;
         }
 
-        if (n === 3 && _.isEmpty(this.available_constants)) {
+        if (n === 3 && isEmpty(this.available_constants)) {
             this.importFromCsv.values_to_constants_mapping = {};
 
             if (this.step < 3) {
@@ -43,9 +66,9 @@ class ImportFromCsvController {
                 }, (error) => {
                     this.step = 2;
                     this.$log.error(error);
-                    _.each(error.data.errors, (err) => {
+                    each(err => {
                         this.alerts.addAlert(err.detail, 'danger', 10);
-                    });
+                    }, error.data.errors);
                 });
             } else {
                 this.step = 2;
@@ -76,19 +99,11 @@ class ImportFromCsvController {
     canAdvance() {
         switch (this.step) {
             case 2:
-                return !_.isEmpty(this.importFromCsv.headers_to_fields_mapping);
-            case 3:
-                let valid = true;
-                _.each(this.available_constants, (obj, constant) => {
-                    if (valid) {
-                        const constants = obj.values;
-                        if (constants) {
-                            const selectedConstants = _.keys(this.importFromCsv.values_to_constants_mapping[constant]);
-                            valid = constants.length === selectedConstants.length && _.intersection(constants, selectedConstants).length === constants.length;
-                        }
-                    }
-                });
-                return valid;
+                this.unmappedHeaders = difference(
+                    keys(this.serverConstants.data.csv_import.required_headers),
+                    values(this.importFromCsv.headers_to_fields_mapping));
+
+                return !isEmpty(this.importFromCsv.headers_to_fields_mapping) && this.unmappedHeaders.length === 0;
             case 4:
                 return this.accept;
         }
@@ -125,23 +140,51 @@ class ImportFromCsvController {
         this.importFromCsv.update().then(() => {
             this.blockUI.stop();
             this.available_constants = {};
-            _.each(this.importFromCsv.data.file_headers_mappings, (value, key) => {
-                if (this.serverConstants.data.csv_import.constants[key] !== undefined) {
+            each((value, key) => {
+                if (this.serverConstants.data.csv_import.constants[key]) {
+                    // fix for integer/float keys
+                    const pledgeFrequencies = reduce((result, v, k) => {
+                        if (k >= 1) {
+                            result[parseInt(k).toFixed(1)] = v;
+                        } else {
+                            result[k] = v;
+                        }
+                        return result;
+                    }, {}, this.serverConstants.data.pledge_frequencies);
+
+                    const opts = reduce((result, v, k) => {
+                        switch (key) {
+                            case 'commitment_frequency':
+                                result[k] = pledgeFrequencies[v];
+                                break;
+                            case 'send_appeals':
+                                if (v === 'true') {
+                                    result[k] = 'Yes';
+                                } else if (v === 'false') {
+                                    result[k] = 'No';
+                                }
+                                break;
+                            default:
+                                result[k] = v;
+                        }
+                        return result;
+                    }, {}, this.serverConstants.data.csv_import.constants[key]);
+
                     this.available_constants[key] = {
                         label: this.importFromCsv.data.file_headers[value],
                         values: this.importFromCsv.data.file_constants[value],
-                        opts: this.serverConstants.data.csv_import.constants[key]
+                        opts: opts
                     };
                 }
-            });
+            }, this.importFromCsv.data.file_headers_mappings);
 
             this.advance();
         }, (error) => {
             this.blockUI.stop();
             this.$log.error(error);
-            _.each(error.data.errors, (err) => {
+            each(err => {
                 this.alerts.addAlert(err.detail, 'danger', 10);
-            });
+            }, error.data.errors);
         });
     }
 
@@ -160,9 +203,9 @@ class ImportFromCsvController {
         }, (error) => {
             this.blockUI.stop();
             this.$log.error(error);
-            _.each(error.data.errors, (err) => {
+            each(err => {
                 this.alerts.addAlert(err.detail, 'danger', 10);
-            });
+            }, error.data.errors);
         });
     }
 
@@ -183,17 +226,17 @@ class ImportFromCsvController {
         }, (error) => {
             this.blockUI.stop();
             this.$log.error(error);
-            _.each(error.data.errors, (err) => {
+            each(err => {
                 this.alerts.addAlert(err.detail, 'danger', 10);
-            });
+            }, error.data.errors);
         });
     }
 
     updateSelectedHeaders() {
         this.selectedHeaders = {};
-        _.each(this.importFromCsv.headers_to_fields_mapping, (value, key) => {
+        each((value, key) => {
             this.selectedHeaders[value] = key;
-        });
+        }, this.importFromCsv.headers_to_fields_mapping);
     }
 }
 

@@ -1,4 +1,9 @@
+import reduce from 'lodash/fp/reduce';
+import moment from 'moment';
+
 class FilterDaterangeController {
+    customOptions;
+    locale;
     constructor($element) {
         let input = $element.find('input');
 
@@ -17,20 +22,20 @@ class FilterDaterangeController {
         input.on('cancel.daterangepicker', this.cancel);
     }
     parseCustomOptions() {
-        this.ranges = {};
-        _.each(this.customOptions, (value) => {
-            this.ranges[value.name] = [moment(value.start), moment(value.end)];
-        });
+        this.ranges = reduce((result, value) => {
+            result[value.name] = [moment(value.start), moment(value.end)];
+            return result;
+        }, {}, this.customOptions);
     }
     apply(event, daterangepicker) {
-        var scope = angular.element(daterangepicker.element[0]).scope();
-        var newValue = daterangepicker.startDate.format('MM/DD/YYYY') + ' - ' + daterangepicker.endDate.format('MM/DD/YYYY');
-        scope.this.model = newValue;
+        let scope = angular.element(daterangepicker.element[0]).scope();
+        const newValue = daterangepicker.startDate.format('MM/DD/YYYY') + ' - ' + daterangepicker.endDate.format('MM/DD/YYYY');
+        scope.$ctrl.model = newValue;
         scope.$apply();
     }
     cancel(event, daterangepicker) {
-        var scope = angular.element(daterangepicker.element[0]).scope();
-        scope.this.model = '';
+        let scope = angular.element(daterangepicker.element[0]).scope();
+        scope.$ctrl.model = '';
         scope.$apply();
     }
 }

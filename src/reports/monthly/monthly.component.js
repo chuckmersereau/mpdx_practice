@@ -1,10 +1,8 @@
 import concat from 'lodash/fp/concat';
-import defaults from 'lodash/fp/defaults';
 import groupBy from 'lodash/fp/groupBy';
 import indexOf from 'lodash/fp/indexOf';
 const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 import sumBy from 'lodash/fp/sumBy';
-import zipObject from 'lodash/fp/zipObject';
 
 class MonthlyController {
     api;
@@ -38,17 +36,19 @@ class MonthlyController {
             this.$log.debug('reports/expected_monthly_totals', data);
             this.total_currency = data.total_currency;
             this.total_currency_symbol = data.total_currency_symbol;
-
-            const availableDonationTypes = zipObject(['received', 'likely', 'unlikely']);
-            const grouped = groupBy('type', data.expected_donations);
-            const donations = defaults(availableDonationTypes, grouped);
+            const availableDonationTypes = ['received', 'likely', 'unlikely'];
+            const donations = groupBy('type', data.expected_donations);
             this.donationsByType = reduce((result, donationsForType, type) => {
-                return concat(result, {
-                    type: type,
-                    order: indexOf(type, availableDonationTypes),
-                    donations: donationsForType,
-                    sum: sumBy('converted_amount', donationsForType)
-                });
+                if (indexOf(type, availableDonationTypes)) {
+                    return concat(result, {
+                        type: type,
+                        order: indexOf(type, availableDonationTypes),
+                        donations: donationsForType,
+                        sum: sumBy('converted_amount', donationsForType)
+                    });
+                } else {
+                    return result;
+                }
             }, [], donations);
             this.sumOfAllCategories = sumBy('sum', this.donationsByType);
             this.loading = false;
@@ -64,7 +64,7 @@ class MonthlyController {
         return donationType.sum / this.sumOfAllCategories * 100;
     }
     isOpen(index) {
-        return _.indexOf(this.activePanels, index) >= 0;
+        return indexOf(index, this.activePanels) > -1;
     }
 }
 

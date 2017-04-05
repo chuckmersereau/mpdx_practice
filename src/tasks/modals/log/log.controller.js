@@ -1,5 +1,6 @@
 class LogTaskController {
     comment;
+    model;
     task;
     constructor(
         $scope,

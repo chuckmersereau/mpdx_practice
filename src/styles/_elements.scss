@@ -34,9 +34,6 @@ $menu_links: $color-reverse;
 $module_titles: $color-reverse;
 $border: #929497;
 
-$maxwidth: 960px/* 1200px */;
-$sidebarwidth: 330px;
-$sidebarmargins: 15px;
 $borders: #ccc;
 $bodywidth: 870px;
 $leftmenuwidth: auto;
@@ -51,10 +48,6 @@ $leftmenuwidth: auto;
 .avatar.large {width: 200px;}
 
 /* **************************************************************** */
-
-$brand-font:    $font-primary;
-$data-font:     $font-primary;
-
 
 html,body {
     font-family: $font-primary;
@@ -141,14 +134,6 @@ $appealHeight: 20px;
         line-height: 1.25em;
         margin-bottom: 0;
     }
-}
-
-.avatar-add{
-    position: absolute;
-    color: #56AA00;
-    cursor: pointer;
-    top: 58px;
-    left: 74px;
 }
 
 

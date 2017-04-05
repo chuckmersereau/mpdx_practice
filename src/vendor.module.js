@@ -25,8 +25,6 @@ import 'angular-localforage';
 import 'angular-timeago';
 import 'ng-tags-input';
 //non-angular deps
-import 'lodash';
-import 'lodash/fp';
 import 'chart.js';
 import 'chartjs-plugin-annotation';
 import ngChartJs from 'angular-chart.js';

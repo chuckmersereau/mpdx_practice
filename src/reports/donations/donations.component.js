@@ -36,8 +36,10 @@ class DonationsController {
         this.load(1);
     }
 
-    $onChanges() {
-        this.load(1);
+    $onChanges(changesObj) {
+        if (changesObj.contact && !changesObj.contact.isFirstChange()) {
+            this.load(1);
+        }
     }
 
     $onDestroy() {

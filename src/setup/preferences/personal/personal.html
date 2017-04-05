@@ -1,20 +1,24 @@
-<div class="panel panel-default panel-selected">
-    <div class="panel-body">
-        <h2 ng-if="$ctrl.selectedTab === 'locale'">
-            <i class="ci ci-alert text-primary"></i>
-            <translate>Let's set your locale!</translate>
-        </h2>
-        <h2 ng-if="$ctrl.selectedTab === 'monthly_goal'">
-            <i class="ci ci-alert text-primary"></i>
-            <translate>Great progress comes from great goals!</translate>
-        </h2>
-        <h2 ng-if="$ctrl.selectedTab === 'home_country'">
-            <i class="ci ci-alert text-primary"></i>
-            <translate>What Country are you in!</translate>
-        </h2>
-    </div>
-    <div class="panel-footer text-right">
-        <a ng-click="$ctrl.next()" class="btn btn-default" translate>Skip Step</a>
+<div class="panel panel-default panel-selected panel__prompt">
+    <div class="panel-body container-fluid">
+        <div class="row">
+            <div class="col-sm-9">
+                <h2 ng-if="$ctrl.selectedTab === 'locale'">
+                    <img src="../../../images/setup/icon_alert_2x.png" class="icon_alert" />
+                    <translate>Let's set your locale!</translate>
+                </h2>
+                <h2 ng-if="$ctrl.selectedTab === 'monthly_goal'">
+                    <img src="../../../images/setup/icon_alert_2x.png" class="icon_alert" />
+                    <translate>Great progress comes from great goals!</translate>
+                </h2>
+                <h2 ng-if="$ctrl.selectedTab === 'home_country'">
+                    <img src="../../../images/setup/icon_alert_2x.png" class="icon_alert" />
+                    <translate>What Country are you in!</translate>
+                </h2>
+            </div>
+            <div class="col-sm-3 text-right">
+                <a ng-click="$ctrl.next()" class="btn btn-primary" translate>Skip Step</a>
+            </div>
+        </div>
     </div>
 </div>
 <preferences-personal selected-tab="$ctrl.selectedTab" on-save="$ctrl.onSave()" setup="true"></preferences-personal>

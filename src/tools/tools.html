@@ -11,7 +11,7 @@
                             </a>
                             <ul class="dropdown-menu" role="menu">
                                 <li role="presentation" ng-repeat="tool in $ctrl.tools.data" ng-if="tool.enabled">
-                                    <a ng-click="$ctrl.state.go(tool.link)">
+                                    <a ui-sref="{{tool.link}}">
                                         <i class="{{tool.icon}}"></i>
                                         {{tool.title}}
                                     </a>
@@ -27,16 +27,17 @@
         </div>
     </div>
 </div>
+<div class="nav--secondary-padding"></div>
 <ui-view>
     <div class="filter-body">
         <div ng-if="$ctrl.setup" class="setup">
-          <i class="ci ci-alert"></i>
+          <img src="../images/setup/icon_alert_2x.png" class="icon_alert" />
           <translate>Select one of the highlighted tools below to begin importing your data.</translate>
             <span class="pull-right"><a ui-sref="home" class="btn btn-default">Skip this Step</a></span>
         </div>
         <div class="tools row filter-content">
             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="tool in $ctrl.tools.data" ng-if="tool.enabled">
-                <div class="tool" ng-click="$ctrl.$state.go(tool.link)" ng-class="{selected: $ctrl.setup && tool.imports}">
+                <div class="tool" ui-sref="{{tool.link}}" ng-class="{selected: $ctrl.setup && tool.imports}">
                     <div class="icon">
                         <i class="{{tool.icon}}"></i>
                     </div>

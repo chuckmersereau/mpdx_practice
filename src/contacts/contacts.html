@@ -1,22 +1,21 @@
-<div class="nav--secondary" id="subMenu">
+<div class="nav--secondary">
     <div class="row">
         <div class="col-md-12">
             <div class="pull-left">
-                <div class="section"><a ui-sref="preferences.imports" translate>Import Contacts</a></div>
                 <div class="section">
-                    <a class="reconcile-contacts" ui-sref="contacts.reconcile_partners">
-                        <translate>Merge Contacts</translate> <span class="badge">{{$ctrl.contactReconciler.duplicateContactsTotal}}</span>
-                    </a>
+                    <a ui-sref="preferences.imports" translate>Import Contacts</a>
                 </div>
                 <div class="section">
-                    <a class="reconcile-contacts" ui-sref="contacts.reconcile_individuals">
-                        <translate>Merge People</translate> <span class="badge">{{$ctrl.contactReconciler.duplicatePeopleTotal}}</span>
-                    </a>
+                    <a ui-sref="tools.mergeContacts" translate>Merge Contacts</a>
+                </div>
+                <div class="section">
+                    <a ui-sref="tools.mergePeople" translate>Merge People</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div class="nav--secondary-padding"></div>
 <div class="filter-body">
     <div class="row">
         <div class="col-md-3">
@@ -52,4 +51,4 @@
             </div>
         </div>
     </div>
-</div>
+</ui-view>
