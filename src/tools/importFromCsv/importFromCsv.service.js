@@ -1,6 +1,10 @@
 const each = require('lodash/fp/each').convert({ 'cap': false });
 const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 import joinComma from "../../common/fp/joinComma";
+import difference from 'lodash/fp/difference';
+import flatMap from 'lodash/fp/flatMap';
+import values from 'lodash/fp/values';
+import union from 'lodash/fp/union';
 
 class ImportFromCsvService {
     api;
@@ -76,22 +80,45 @@ class ImportFromCsvService {
             this.data.tag_list = joinComma(this.data.tag_list); //fix for api mis-match
         }
 
-        this.data.file_headers_mappings = reduce((result, value, key) => {
+        this.data.file_headers_mappings = {};
+        each((value, key) => {
             if (value) {
-                result[value] = key;
+                this.data.file_headers_mappings[value] = key;
             }
-            return result;
-        }, {}, this.headers_to_fields_mapping);
+        }, this.headers_to_fields_mapping);
 
-        this.data.file_constants_mappings = reduce((result, obj, constant) => {
+        this.data.file_constants_mappings = {};
+        each((obj, constant) => {
             if (this.data.file_headers_mappings[constant]) {
-                result[constant] = {};
+                this.data.file_constants_mappings[constant] = {};
+
                 each((value, key) => {
-                    result[constant][value] = key;
+                    if (!this.data.file_constants_mappings[constant][value]) {
+                        this.data.file_constants_mappings[constant][value] = [];
+                    }
+                    this.data.file_constants_mappings[constant][value].push(key);
                 }, obj);
-                return result;
             }
-        }, {}, this.values_to_constants_mapping);
+        }, this.values_to_constants_mapping);
+
+        // add unmapped constants to empty key. eg: {'': ['a', 'b', 'c']}
+        each((obj, constant) => {
+            const constantKey = this.data.file_headers_mappings[constant];
+
+            if (constantKey) {
+                const constants = this.data.file_constants[constantKey];
+                const mappedConstants = flatMap(values(obj));
+                const unmappedCosntants = difference(constants, mappedConstants);
+
+                if (unmappedCosntants.length) {
+                    if (!obj['']) {
+                        obj[''] = [];
+                    }
+
+                    obj[''] = union(obj[''], unmappedCosntants);
+                }
+            }
+        }, this.data.file_constants_mappings);
 
         let promise = this.$q.defer();
 
