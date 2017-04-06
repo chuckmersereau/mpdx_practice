@@ -32,10 +32,10 @@
         </div>
         <div class="row page-controls">
             <div class="col-sm-12">
-                <translate>Showing</translate>
-                <strong>{{$ctrl.tasks.data.length || 0}}</strong>
-                <translate>of</translate>
-                <strong>{{$ctrl.tasks.completeList.length || 0}}</strong>
+                <translate translate-params-from="$ctrl.tasks.data.length || 0"
+                           translate-params-to="$ctrl.tasks.completeList.length || 0">
+                    Showing <strong>{{from}}</strong> of <strong>{{to}}</strong>
+                </translate>
                 <span class="label label-primary" ng-if="$ctrl.tasks.selected.length > 0">
                     {{$ctrl.tasks.selected.length }} <span translate>Selected</span>
                     &nbsp;
@@ -43,7 +43,7 @@
                 </span>&nbsp;
                 <small>
                     <a ng-if="$ctrl.tasks.selected.length > 0 && $ctrl.tasks.selected.length < $ctrl.tasks.completeList.length" ng-click="$ctrl.tasks.selectAll()">
-                        <span translate>Select all {{$ctrl.tasks.completeList.length}} tasks</span>
+                        <span translate translate-plural="Select all {{$count}} tasks" translate-n="$ctrl.tasks.completeList.length">Select 1 task</span>
                     </a>
                 </small>
             </div>

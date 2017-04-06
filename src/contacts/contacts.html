@@ -24,7 +24,7 @@
                 <div id="contact_drawer" ng-if="$ctrl.isInState('contacts.show')">
                     <div class="contact_drawer_inner" role="complementary">
                         <div class="edit-filters clearfix">
-                            {{$ctrl.contactFilter.count()}} <translate>filter(s) applied</translate>
+                            <translate translate-plural="{{$count}} filters applied" translate-n="$ctrl.contactFilter.count()">1 filter applied</translate>
                             <div class="pull-right">
                                 <button type="button" class="btn btn-primary btn-xs" ng-click="$ctrl.showFilters = !$ctrl.showFilters">
                                     <span ng-if="$ctrl.showFilters"><i class="fa fa-users"></i> <span translate>Contacts</span></span>

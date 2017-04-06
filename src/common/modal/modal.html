@@ -18,8 +18,8 @@
                         <span translate>Remove</span>
                     </button>
                 </div>
-                <button type="button" class="btn btn-link" ng-click="$ctrl.cancel()" ng-if="$ctrl.$attrs.cancel && $ctrl.$attrs.save" translate>{{$ctrl.cancelText}}</button>
-                <button type="button" class="btn btn-primary" ng-disabled="!modalForm.$valid" ng-if="$ctrl.$attrs.save" ng-click="$ctrl.saveAndBlock()" translate>{{$ctrl.saveText}}</button>
+                <button type="button" class="btn btn-link" ng-click="$ctrl.cancel()" ng-if="$ctrl.$attrs.cancel && $ctrl.$attrs.save">{{$ctrl.cancelText}}</button>
+                <button type="button" class="btn btn-primary" ng-disabled="!modalForm.$valid" ng-if="$ctrl.$attrs.save" ng-click="$ctrl.saveAndBlock()">{{$ctrl.saveText}}</button>
             </div>
         </div>
     </form>

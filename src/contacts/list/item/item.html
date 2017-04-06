@@ -7,7 +7,10 @@
         <div class="col-sm-5 main-details">
             <h4 class="name">
                 <a ui-sref="contacts.show({contactId: $ctrl.contact.id})" ng-click="$event.stopPropagation()">{{$ctrl.contact.name}}</a>
-                <i ng-class="{'icon-error-red': $ctrl.hasSendNewsletterError()}" class="ci ci-letter_icon" title="{{$ctrl.contact.send_newsletter | translate}}" ng-if="$ctrl.contact.send_newsletter"></i>
+                <span ng-class="{'text-danger': $ctrl.hasSendNewsletterError()}" ng-if="$ctrl.contact.send_newsletter">
+                    <i class="ci ci-letter_icon" title="{{$ctrl.contact.send_newsletter | translate}}" ng-if="$ctrl.contact.send_newsletter == 'Both' || $ctrl.contact.send_newsletter == 'Physical'"></i>
+                    <i class="ci ci-email_icon" title="{{$ctrl.contact.send_newsletter | translate}}" ng-if="$ctrl.contact.send_newsletter == 'Both' || $ctrl.contact.send_newsletter == 'Email'"></i>
+                </span>
                 <span title="{{ 'Partner - Special' | translate }}" ng-if="$ctrl.contact.status === 'Partner - Special'">
                     <span>{{$ctrl.contact.pledge_currency_symbol}}</span>
                 </span>

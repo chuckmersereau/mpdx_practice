@@ -6,8 +6,8 @@
         <translate>Connect</translate>
     </div>
     <div class="panel-body">
-        <h4 class="title" translate>
-            {{$ctrl.totalTasks()}} Tasks overdue or due today
+        <h4 class="title" translate translate-plural="{{$count}} Tasks overdue or due today" translate-n="$ctrl.totalTasks()">
+            1 Task overdue or due today
         </h4>
         <ul class="list-unstyled list-arrow">
             <li ng-repeat="task in $ctrl.tasks.analytics.tasks_overdue_or_due_today_counts | orderBy: 'count' : true | limitTo: $ctrl.limit" ng-if="task.count > 0">
@@ -20,7 +20,7 @@
         <div ng-if="$ctrl.limit < $ctrl.totalTypes()">
             <a ng-click="$ctrl.limit = $ctrl.totalTypes()">
                 <i class="fa fa-plus-square-o"></i>
-                <translate translate-n="$ctrl.totalTypes()" translate-plural="See all {{$ctrl.totalTypes()}} task types">See 1 task type</translate>
+                <translate translate-n="$ctrl.totalTypes()" translate-plural="See all {{$count}} task types">See 1 task type</translate>
             </a>
         </div>
     </div>

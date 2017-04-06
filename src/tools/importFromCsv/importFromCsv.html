@@ -2,34 +2,34 @@
     <div class="import-from-csv">
         <div class="row steps">
             <div class="col-xs-3">
-                <div class="step" ng-class="{current: $ctrl.step === 1}" translate>
-                    <strong>Step 1</strong>
+                <div class="step" ng-class="{current: $ctrl.step === 1}">
+                    <strong translate>Step 1</strong>
 
-                    Upload your CSV File.
+                    <translate>Upload your CSV File.</translate>
                 </div>
             </div>
 
             <div class="col-xs-3">
-                <div class="step" ng-class="{current: $ctrl.step === 2}" translate>
-                    <strong>Step 2</strong>
+                <div class="step" ng-class="{current: $ctrl.step === 2}">
+                    <strong translate>Step 2</strong>
 
-                    Map your fields.
+                    <translate>Map your fields.</translate>
                 </div>
             </div>
 
             <div class="col-xs-3">
-                <div class="step" ng-class="{current: $ctrl.step === 3}" translate>
-                    <strong>Step 3</strong>
+                <div class="step" ng-class="{current: $ctrl.step === 3}">
+                    <strong translate>Step 3</strong>
 
-                    Map your values.
+                    <translate>Map your values.</translate>
                 </div>
             </div>
 
             <div class="col-xs-3">
-                <div class="step" ng-class="{current: $ctrl.step === 4}" translate>
-                    <strong>Step 4</strong>
+                <div class="step" ng-class="{current: $ctrl.step === 4}">
+                    <strong translate>Step 4</strong>
 
-                    Preview
+                    <translate>Preview</translate>
                 </div>
             </div>
         </div>
@@ -73,7 +73,7 @@
                     </tbody>
                 </table>
 
-                <div class='text-danger text-right' ng-repeat="header in $ctrl.unmappedHeaders" translate>{{header}} is required</div>
+                <div class='text-danger text-right' ng-repeat="header in $ctrl.unmappedHeaders">{{header}} <translate>is required</translate></div>
 
                 <a class="back" ng-click="$ctrl.back()" translate>Back</a>
                 <a class="confirm" ng-click="$ctrl.mapHeaders()" ng-class="{disabled: !$ctrl.canAdvance()}" translate>Next step</a>
@@ -151,7 +151,7 @@
                             <th translate>Commitment Frequency</th>
                             <th translate>Newsletter</th>
                             <th translate>Commitment Currency</th>
-                            <th translate>Likely To Give</th>
+                            <th translate>Likely to Give</th>
                             <th translate>Send Appeals?</th>
                             <th translate>Website</th>
 
