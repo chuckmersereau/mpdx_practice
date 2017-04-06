@@ -1,8 +1,4 @@
 import assign from 'lodash/fp/assign';
-import concat from 'lodash/fp/concat';
-import difference from 'lodash/fp/difference';
-import isEqual from 'lodash/fp/isEqual';
-import map from 'lodash/fp/map';
 
 class FilterController {
     contacts;
@@ -12,12 +8,13 @@ class FilterController {
 
     constructor(
         $stateParams, gettextCatalog,
-        contactFilter, contactsTags, contacts, modal
+        contactFilter, contactsTags, contacts, filters, modal
     ) {
-        this.modal = modal;
         this.contacts = contacts;
         this.contactFilter = contactFilter;
         this.contactsTags = contactsTags;
+        this.filters = filters;
+        this.modal = modal;
         this.gettextCatalog = gettextCatalog;
 
         this.dateRangeLocale = {
@@ -40,24 +37,8 @@ class FilterController {
     showReset() {
         return this.contactsTags.isResettable() || this.contactFilter.isResettable();
     }
-    // Invert the selected options of a multiselect filter
     invertMultiselect(filter) {
-        const allOptions = map('id', filter.options);
-        let selectedOptions = this.contactFilter.params[filter.name];
-
-        let allOption = '';
-        if (filter.name === 'status') {
-            allOption = 'active';
-        }
-
-        // If all options are selected other than 'All', then the inverse is 'All'
-        if (isEqual(difference(allOptions, selectedOptions), [allOption])) {
-            this.contactFilter.params[filter.name] = [''];
-            return;
-        }
-
-        selectedOptions = concat(selectedOptions, allOption); // Exclude the 'All' option when inverting
-        this.contactFilter.params[filter.name] = difference(allOptions, selectedOptions);
+        this.contactFilter.params[filter.name] = this.filters.invertMultiselect(filter, this.contactFilter.params);
         this.contactFilter.change();
     }
 }
