@@ -17,7 +17,7 @@
     </div>
     <div class="form-group">
         <label for="due-date" translate>Due Date</label>
-        <div ng-hide="$ctrl.task.no_date">
+        <div ng-hide="$ctrl.no_date">
             <datetimepicker ng-model="$ctrl.task.start_at" id="due-date"
                             hour-step="1"
                             minute-step="1">
@@ -26,7 +26,7 @@
     </div>
     <div class="checkbox">
         <label for="no-due-date">
-            <input id='no-due-date' ng-model="$ctrl.task.no_date" type="checkbox"/>
+            <input id='no-due-date' ng-model="$ctrl.no_date" type="checkbox"/>
             <translate>No Due Date</translate>
         </label>
     </div>
