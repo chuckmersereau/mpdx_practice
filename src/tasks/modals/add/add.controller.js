@@ -18,6 +18,9 @@ class AddTaskController {
         this.contactsList.push('');
     }
     save() {
+        if (this.no_date) {
+            this.task.start_at = null;
+        }
         return this.tasks.create(
             this.task,
             this.contactsList,
