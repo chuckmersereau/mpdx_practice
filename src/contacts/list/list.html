@@ -57,7 +57,7 @@
                         <a href="javascript:;"
                            ng-if="$ctrl.contacts.selectedContacts.length > 0 && $ctrl.contacts.selectedContacts.length < $ctrl.contacts.completeList.length"
                            ng-click="$ctrl.contacts.selectAllContacts()">
-                            <span translate translate-plural="Select all {{$count}} contacts" translate-n="$ctrl.contacts.completeList.length">Select 1 contact</span>
+                            <span translate translate-plural="Select all {{$count}} contacts" translate-n="$ctrl.contacts.meta.pagination.total_count">Select 1 contact</span>
                         </a>
                     </small>
                 </div>
