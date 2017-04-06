@@ -21,8 +21,9 @@ class TasksService {
     selectedContacts;
     constructor(
         $rootScope, $window, $log, $q, gettextCatalog,
-        api, tasksFilter, tasksTags, users, modal, tasksModals, contacts
+        alerts, api, tasksFilter, tasksTags, users, modal, tasksModals, contacts
     ) {
+        this.alerts = alerts;
         this.moment = $window.moment;
         this.$log = $log;
         this.$q = $q;
@@ -334,6 +335,8 @@ class TasksService {
                     this.completeList = reject({id: task.id}, this.completeList);
                     this.selected = pull(task.id, this.selected);
                 }, selected);
+            }, () => {
+                this.alerts.addAlert(this.gettextCatalog.getPlural(selected.length, 'Unable to delete that task.', 'Unable to delete {{$count}} tasks. Try deleting less tasks.', {}), 'danger');
             });
         });
     }
