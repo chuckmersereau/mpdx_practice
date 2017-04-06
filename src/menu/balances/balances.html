@@ -6,7 +6,7 @@
     </div>
 </div>
 <div class="section" ng-if="$ctrl.accounts.current.monthly_goal && $ctrl.accounts.current.monthly_goal > 0">
-    <a id="mpd_progress_bar" ui-sref="contacts({ filters: {status: ['Partner - Financial'], pledge_received: false } })"
+    <a id="mpd_progress_bar" ui-sref="contacts({ filters: {status: ['Partner - Financial'], pledge_received: 'false' } })"
        data-title="{{ $ctrl.title }}"
        bs-tooltip="tooltip" data-placement="bottom">
         <div class="bar bar-pledged" ng-style="{ width: $ctrl.reports.goals.pledged_percent + '%' }"></div>
