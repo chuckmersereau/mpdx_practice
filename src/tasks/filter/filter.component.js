@@ -1,3 +1,4 @@
+import concat from 'lodash/fp/concat';
 import difference from 'lodash/fp/difference';
 import isEqual from 'lodash/fp/isEqual';
 import map from 'lodash/fp/map';
@@ -44,13 +45,13 @@ class FilterController {
         }
 
         // If all options are selected other than 'All', then the inverse is 'All'
-        if (isEqual(difference(selectedOptions, allOptions), [allOption])) {
+        if (isEqual(difference(allOptions, selectedOptions), [allOption])) {
             this.tasksFilter.params[filter.name] = [''];
             return;
         }
 
-        selectedOptions.push(allOption); // Exclude the 'All' option when inverting
-        this.tasksFilter.params[filter.name] = difference(selectedOptions, allOptions);
+        selectedOptions = concat(selectedOptions, allOption); // Exclude the 'All' option when inverting
+        this.tasksFilter.params[filter.name] = difference(allOptions, selectedOptions);
         this.tasksFilter.change();
     }
 }
