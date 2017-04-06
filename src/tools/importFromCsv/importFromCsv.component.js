@@ -39,7 +39,7 @@ class ImportFromCsvController {
             return message;
         };
 
-        const deregisterTransitionHook = $transitions.onBefore({from: 'tools.importFromCSV'}, (trans) => {
+        const deregisterTransitionHook = $transitions.onBefore({from: 'tools.importFromCSV'}, () => {
             if (!this.importFromCsv.data) {
                 return;
             }

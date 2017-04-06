@@ -44,10 +44,10 @@
             <div class="row page-controls">
                 <div class="col-sm-12">
                     <span ng-if="!$ctrl.contacts.loading">
-                        <translate>Showing</translate>
-                        <strong>{{$ctrl.contacts.data.length || 0}}</strong>
-                        <translate>of</translate>
-                        <strong>{{$ctrl.contacts.meta.pagination.total_count}}</strong>
+                        <translate translate-params-from="$ctrl.contacts.data.length || 0"
+                                   translate-params-to="$ctrl.contacts.meta.pagination.total_count || 0">
+                            Showing <strong>{{from}}</strong> of <strong>{{to}}</strong>
+                        </translate>
                     </span>
                     <span class="label label-primary" ng-if="$ctrl.contacts.selectedContacts.length > 0">
                         {{$ctrl.contacts.selectedContacts.length }} <span translate>Selected</span>
@@ -57,7 +57,7 @@
                         <a href="javascript:;"
                            ng-if="$ctrl.contacts.selectedContacts.length > 0 && $ctrl.contacts.selectedContacts.length < $ctrl.contacts.completeList.length"
                            ng-click="$ctrl.contacts.selectAllContacts()">
-                            <span translate>Select all {{$ctrl.contacts.completeList.length}} contacts</span>
+                            <span translate translate-plural="Select all {{$count}} contacts" translate-n="$ctrl.contacts.completeList.length">Select 1 contact</span>
                         </a>
                     </small>
                 </div>
@@ -68,7 +68,7 @@
         <div ng-if="!$ctrl.contacts.meta.to && !$ctrl.contacts.loading" class="contacts-empty">
             <div ng-if="$ctrl.contacts.completeList.length > 0">
                 <p>
-                    <strong translate>You have {{$ctrl.contacts.completeList.length}} total contacts</strong>.
+                    <strong translate translate-plural="You have {{$count}} total contacts" translate-n="$ctrl.contacts.completeList.length">You have 1 total contact</strong>.
                     <span translate>Unfortunately none of them match your current search or filters.</span>
                 </p>
                 <a ng-click="$ctrl.resetFilters()" class="btn btn-primary" translate>Reset All Search Filters</a>

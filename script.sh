@@ -18,7 +18,7 @@ gulp extract
 bundle install
 if [ "$TRAVIS_PULL_REQUEST" = "false" ]
 then
-    bundle exec ruby onesky/upload.rb
+    node onesky/upload
 else
     echo 'Skipping translation upload because the current build is a pull request.'
 fi
