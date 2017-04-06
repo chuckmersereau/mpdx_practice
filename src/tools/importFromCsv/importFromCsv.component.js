@@ -121,15 +121,16 @@ class ImportFromCsvController {
         return true;
     }
 
-    upload(file) {
+    upload(form) {
         this.blockUI.start();
 
-        this.importFromCsv.upload(file).then(() => {
+        this.importFromCsv.upload(form.file).then(() => {
             this.blockUI.stop();
             this.$log.debug('Upload');
             this.$log.debug(this.importFromCsv.data);
             this.advance();
         }, (error) => {
+            form.file = null;
             this.blockUI.stop();
             this.$log.error(error);
             const title = this.gettextCatalog.getString('Invalid CSV file');
