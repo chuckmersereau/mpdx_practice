@@ -1,7 +1,7 @@
 <div class="contact-row" ng-click="$ctrl.contacts.selectContact($ctrl.contact.id)">
     <img class="avatar small" ng-src="{{$ctrl.contact.square_avatar | stripMpdx}}">
     <div class="contact-details">
-        <div class="col-sm-5 main-details">
+        <div class="col-sm-7 main-details">
             <h4 class="name">
                 <a ui-sref="contacts.show({contactId: $ctrl.contact.id})" ng-click="$event.stopPropagation()">{{$ctrl.contact.name}}</a>
                 <span ng-class="{'text-danger': $ctrl.hasSendNewsletterError()}" ng-if="$ctrl.contact.send_newsletter">
@@ -18,14 +18,6 @@
                     <span>{{$ctrl.contact.pledge_currency_symbol}}</span>
                 </span>
             </h4>
-            <div class="address" ng-if="$ctrl.view !== 'task'">
-                <address class="address" ng-repeat="address in $ctrl.contact.addresses track by address.id" ng-if="address.primary_mailing_address">
-                    <span ng-if="address.street">{{address.street}}<br></span>
-                    <span ng-if="address.city">{{address.city}},</span>
-                    {{address.state}}
-                    {{address.postal_code}}
-                </address>
-            </div>
             <div class="people" ng-if="$ctrl.view !== 'task'">
                 <div ng-repeat="person in $ctrl.contact.people track by person.id" ng-if="!person.deceased" class="people-single-contact">
                     <a ng-click="$ctrl.people.openPeopleModal($ctrl.contact, person.id); $event.stopPropagation()">{{person.first_name}} {{person.last_name}}</a>
@@ -40,11 +32,19 @@
                     </a>
                 </div>
             </div>
+            <div class="address" ng-if="$ctrl.view !== 'task'">
+                <address class="address" ng-repeat="address in $ctrl.contact.addresses track by address.id" ng-if="address.primary_mailing_address">
+                    <span ng-if="address.street">{{address.street}}<br></span>
+                    <span ng-if="address.city">{{address.city}},</span>
+                    {{address.state}}
+                    {{address.postal_code}}
+                </address>
+            </div>
             <div class="tags">
                 <span class="tag" ng-repeat="tag in $ctrl.contact.tag_list">{{ tag |limitTo: 20 }}{{ tag.length > 20 ? '...' : '' }}</span>
             </div>
         </div>
-        <div class="col-sm-5 more-details">
+        <div class="col-sm-3 more-details">
             <div ng-if="$ctrl.contact.status !== ''">{{$ctrl.contact.status | translate}}</div>
             <div ng-if="$ctrl.contact.pledge_amount > 0">
                 {{$ctrl.contact.pledge_amount | currency: $ctrl.contact.pledge_currency_symbol}} {{$ctrl.contact.pledge_frequency | pledgeFrequencyToStr | translate}}
