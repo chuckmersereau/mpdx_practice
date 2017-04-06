@@ -6,7 +6,7 @@ tasks-list {
         .panel-heading {
             border-bottom: 4px solid rgb(153, 153, 153);
             &.today {
-                border-color: #F9B625;
+                border-color: $color-secondary;
             }
             &.overdue {
                 border-color: #F6921E;

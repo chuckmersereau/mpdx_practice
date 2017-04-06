@@ -19,14 +19,7 @@
         </div>
         <div class="panel-animate" ng-show="$ctrl.tabSelected('merge_account')">
             <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-4 text-right" translate>
-                        Merge multiple personal donation accounts into one with Multi-currency support
-                    </div>
-                    <div class="col-md-8">
-                        <merge-preferences on-save="$ctrl.onSave()"></merge-preferences>
-                    </div>
-                </div>
+                <merge-preferences on-save="$ctrl.onSave()"></merge-preferences>
             </div>
         </div>
     </div>
@@ -38,26 +31,20 @@
         </div>
         <div class="panel-animate" ng-show="$ctrl.tabSelected('merge_spouse_account')">
             <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-4 text-right" translate>
-                        Merge your account with your spouse's account for a unified view
-                    </div>
-                    <div class="col-md-8">
-                        <p translate>
-                            If you are getting married and have two separate donation accounts,
-                            you can merge your MPDX accounts together at any time. No data will be
-                            lost when they are merged, and we can do it at any time regardless of the
-                            status of your staff accounts being merged.
-                        </p>
-                        <hr>
-                        <h4 translate>1. Share your accounts with each other.</h4>
-                        <invite-preferences></invite-preferences>
-                        <p translate>You will each get an email (you might need to check your spam) and will need to accept access to each other’s accounts.</p>
-                        <hr>
-                        <h4 translate>2. Merge Accounts</h4>
-                        <merge-preferences></merge-preferences>
-                    </div>
-                </div>
+                <p translate>Merge your account with your spouse's account for a unified view</p>
+                <p translate>
+                    If you are getting married and have two separate donation accounts,
+                    you can merge your MPDX accounts together at any time. No data will be
+                    lost when they are merged, and we can do it at any time regardless of the
+                    status of your staff accounts being merged.
+                </p>
+                <hr>
+                <h4 translate>1. Share your accounts with each other.</h4>
+                <invite-preferences></invite-preferences>
+                <p translate>You will each get an email (you might need to check your spam) and will need to accept access to each other’s accounts.</p>
+                <hr>
+                <h4 translate>2. Merge Accounts</h4>
+                <merge-preferences></merge-preferences>
             </div>
         </div>
     </div>
