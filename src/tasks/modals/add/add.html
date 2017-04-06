@@ -17,7 +17,7 @@
     </div>
     <div class="form-group">
         <label for="due-date" translate>Due Date</label>
-        <div ng-hide="$ctrl.task.no_date">
+        <div ng-hide="$ctrl.no_date">
             <datetimepicker ng-model="$ctrl.task.start_at" id="due-date"
                             hour-step="1"
                             minute-step="1">
@@ -26,7 +26,7 @@
     </div>
     <div class="checkbox">
         <label for="no-due-date">
-            <input id='no-due-date' ng-model="$ctrl.task.no_date" type="checkbox"/>
+            <input id='no-due-date' ng-model="$ctrl.no_date" type="checkbox"/>
             <translate>No Due Date</translate>
         </label>
     </div>
@@ -50,16 +50,14 @@
             </div>
         </div>
     </div>
-    <div>
-        <label translate>Contacts</label>
-        <div ng-repeat="contact in $ctrl.contactsList track by $index">
-            <select chosen ng-options="opt.id as opt.name for opt in $ctrl.contacts.completeList" ng-model="$ctrl.contactsList[$index]"></select>
-        </div>
-        <div>
-            <a ng-click="$ctrl.addContact()"><i class="fa fa-plus-square"></i> Add Contact</a>
-        </div>
+    <label translate>Contacts</label>
+    <div  class="form-group" ng-repeat="contact in $ctrl.contactsList track by $index">
+        <select chosen ng-options="opt.id as opt.name for opt in $ctrl.contacts.completeList" ng-model="$ctrl.contactsList[$index]"></select>
     </div>
-    <div>
+    <div class="form-group">
+        <a ng-click="$ctrl.addContact()"><i class="fa fa-plus-square"></i> Add Contact</a>
+    </div>
+    <div class="form-group">
         <label translate>Tags</label>
         <tag-selector ng-model="$ctrl.task.tag_list" tag-list="$ctrl.tasksTags.data"></tag-selector>
     </div>

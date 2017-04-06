@@ -14,6 +14,12 @@ $color-link:                $cru-gray;
 $color-reverse:             $cru-white;
 $color-bg:                  $cru-gray-tint;
 
+$color-red:                 #D0011B;
+$color-alert:               $color-red;
+
+$color-green:               #37A922;
+$color-success:             $color-green;
+
 $color-menu-bg:             lighten($cru-gray, 60%);  // #f3f3f3
 $color-menu-border:         lighten($cru-gray, 50%);
 

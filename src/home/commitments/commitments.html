@@ -11,12 +11,14 @@
         </a>
         <div ui-sref="contacts({filters: {status: ['Partner - Financial'], pledge_late_by: '0_30'} })" ng-if="$ctrl.contacts.analytics.partners_30_days_late_count !== null">
             <a class="dash-stat late-partners-count">
-                <span class="count-big">{{ $ctrl.contacts.analytics.partners_30_days_late_count }}</span> <translate>partners <strong>30</strong> days late</translate>
+                <span class="count-big">{{ $ctrl.contacts.analytics.partners_30_days_late_count }}</span>
+                <translate translate-plural="partners <strong>{{$count}}</strong> days late" translate-n="30">partners <strong>1</strong> day late</translate>
             </a>
         </div>
         <div ui-sref="contacts({filters: {status: ['Partner - Financial'], pledge_late_by: '30_60'} })" ng-if="$ctrl.contacts.analytics.partners_60_days_late_count !== null">
             <a class="dash-stat late-partners-count">
-                <span class="count-big">{{ $ctrl.contacts.analytics.partners_60_days_late_count }}</span> <translate>partners <strong>60</strong> days late</translate>
+                <span class="count-big">{{ $ctrl.contacts.analytics.partners_60_days_late_count }}</span>
+                <translate translate-plural="partners <strong>{{$count}}</strong> days late" translate-n="60">partners <strong>1</strong> day late</translate>
             </a>
         </div>
     </div>

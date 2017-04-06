@@ -243,7 +243,7 @@ class EntityAttributes {
                 }
             },
             addresses: {
-                attributes: ["city", "country", "end_date", "geo", "historic", "location", "postal_code", "primary_mailing_address", "start_date", "state", "street", "updated_in_db_at"]
+                attributes: ["city", "country", "end_date", "geo", "historic", "location", "metro_area", "postal_code", "primary_mailing_address", "region", "start_date", "state", "street", "updated_in_db_at"]
             },
             appeals: {
                 attributes: ["amount", "contacts", "created_at", "currencies", "description", "donations", "end_date", "name", "total_currency", "updated_at", "updated_in_db_at"]
@@ -419,6 +419,9 @@ class EntityAttributes {
             },
             user_options: {
                 attributes: ["key", "value", "updated_in_db_at"]
+            },
+            mail_chimp_account: {
+                attributes: ["api_key", "primary_list_id", "sync_all_active_contacts", "auto_log_campaigns"]
             }
         };
     }

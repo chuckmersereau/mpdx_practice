@@ -1,3 +1,4 @@
+<p translate>Merge multiple personal donation accounts into one with Multi-currency support</p>
 <p translate>
     If you have personal donation accounts in different countries or organizations,
     you can bring them into one view in MPDX. Though the actual donation accounts will
@@ -5,12 +6,14 @@
     in MPDX permanently.
 </p>
 <div class="alert alert-danger">
-    <i class="fa fa-warning"></i>
-    <strong translate>THIS MERGE WILL AFFECT ALL PEOPLE WITH ACCESS TO THIS ACCOUNT AND CANNOT BE UNDONE</strong>
-</div>
-<div class="alert alert-danger">
-    <i class="fa fa-warning"></i>
-    <strong translate>DO NOT MERGE MINISTRY ACCOUNTS THROUGH MPDX</strong>
+    <p>
+        <i class="fa fa-warning"></i>
+        <translate>THIS MERGE WILL AFFECT ALL PEOPLE WITH ACCESS TO THIS ACCOUNT AND CANNOT BE UNDONE</translate>
+    </p>
+    <p>
+        <i class="fa fa-warning"></i>
+        <translate>DO NOT MERGE MINISTRY ACCOUNTS THROUGH MPDX</translate>
+    </p>
 </div>
 <div ng-if="$ctrl.users.current.account_lists.length == 1">
     <p>
@@ -24,7 +27,7 @@
 </div>
 <div ng-if="$ctrl.users.current.account_lists.length > 1">
     <div class="row-fluid">
-        <div class="col-sm-6 well border-primary">
+        <div class="col-sm-6 well border-secondary">
             <label for="from" translate>
                 Merging From
             </label>
@@ -48,8 +51,10 @@
     <label>
         <input type="checkbox" ng-model="accept"> This account merge cannot be undone, I accept.
     </label>
-    <button type="submit" ng-click="$ctrl.merge()" ng-disabled="$ctrl.saving || !accept || !$ctrl.selected_account_id" class="btn btn-primary">
-        <translate>Merge</translate>
-        <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
-    </button>
+    <p>
+        <button type="submit" ng-click="$ctrl.merge()" ng-disabled="$ctrl.saving || !accept || !$ctrl.selected_account_id" class="btn btn-primary">
+            <translate>Merge</translate>
+            <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
+        </button>
+    </p>
 </div>

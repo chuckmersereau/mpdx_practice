@@ -14,8 +14,14 @@ class EditTaskController {
         this.users = users;
 
         this.task = angular.copy(task);
+        if (this.task.start_at == null) {
+            this.no_date = true;
+        }
     }
     save() {
+        if (this.no_date) {
+            this.task.start_at = null;
+        }
         return this.tasks.save(
             this.task,
             this.comment

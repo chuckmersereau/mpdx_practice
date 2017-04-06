@@ -1,4 +1,6 @@
+import flatten from 'lodash/fp/flatten';
 import includes from 'lodash/fp/includes';
+import map from 'lodash/fp/map';
 import pull from 'lodash/fp/pull';
 import union from 'lodash/fp/union';
 
@@ -27,16 +29,12 @@ class ItemController {
             }
         });
     }
-    switchContact() {
-        this.selected = this.contact.id;
-        this.$state.transitionTo('contacts.show', { contactId: this.contact.id }, { notify: false });
-    }
     hasSendNewsletterError() {
-        if (!angular.isDefined(this.contact.addresses) || !angular.isDefined(this.contact.email_addresses)) {
+        if (!this.contact.addresses || !this.contact.people) {
             return false;
         }
         const missingAddress = this.contact.addresses.length === 0;
-        const missingEmailAddress = this.contact.email_addresses.length === 0;
+        const missingEmailAddress = flatten(map('email_addresses', this.contact.people)).length === 0;
         switch (this.contact.send_newsletter) {
             case 'Both':
                 return missingAddress || missingEmailAddress;

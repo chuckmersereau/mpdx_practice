@@ -33,7 +33,7 @@
         <span ng-repeat="contact in $ctrl.task.contacts | limitTo : 4">
             <a ng-click="$ctrl.toggleContacts(); $event.stopPropagation();">
                 <span ng-if="$index < 3">{{ contact.name }}</span>
-                <span ng-if="$index === 3" translate>and {{$ctrl.task.contacts.length - 3}} others</span>
+                <span ng-if="$index === 3" translate translate-plural="and {{$count}} others" translate-n="$ctrl.task.contacts.length - 3">and 1 other</span>
             </a>
         </span>
         <span class="tags">

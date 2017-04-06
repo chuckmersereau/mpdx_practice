@@ -51,7 +51,7 @@ class AddressModalController {
                         $ctrl.address.region = component.long_name;
                         break;
                     case 'administrative_area_level_3':
-                        $ctrl.address.metro = component.long_name;
+                        $ctrl.address.metro_area = component.long_name;
                         break;
                     case 'country':
                         $ctrl.address.country = component.long_name;

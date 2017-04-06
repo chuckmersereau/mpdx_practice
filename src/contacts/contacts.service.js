@@ -320,7 +320,9 @@ class ContactsService {
     }
     selectAllContacts(all = true) {
         if (all) {
-            this.selectedContacts = map('id', this.completeFilteredList);
+            this.getFilteredList().then(() => { //ensure complete filtered list is loaded
+                this.selectedContacts = map('id', this.completeFilteredList);
+            });
         } else {
             this.selectedContacts = map('id', this.data);
         }
@@ -501,7 +503,7 @@ class ContactsService {
     }
 }
 
-import contactFilter from './filter/filter.service';
+import contactFilter from './sidebar/filter/filter.service';
 
 export default angular.module('mpdx.contacts.service', [contactFilter])
     .service('contacts', ContactsService).name;

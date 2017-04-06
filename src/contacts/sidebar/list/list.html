@@ -1,0 +1,7 @@
+<div class="columns columns--fixed">
+    <div class="column">
+        <div ng-repeat="contact in $ctrl.contacts.completeFilteredList track by contact.id" class="contact-row item" ng-class="{ selected: contact.selected }">
+            <a ng-click="$ctrl.switchContact(contact.id)" ng-class="{'active': $ctrl.selected == contact.id }">{{contact.name}}</a>
+        </div>
+    </div>
+</div>

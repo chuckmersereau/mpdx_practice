@@ -133,9 +133,9 @@
             <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('mailchimp') }"></i>
             <span translate>Mailchimp</span>
             <div class="pull-right">
-                <div class="accstatus accstatus-enabled" ng-show="$ctrl.mailchimpAccStatus == 'enabled'"><i class="fa fa-circle"></i></div>
-                <div class="accstatus accstatus-error" ng-show="$ctrl.mailchimpAccStatus == 'error'"><i class="fa fa-circle-o"></i></div>
-                <div class="accstatus accstatus-disabled" ng-show="$ctrl.mailchimpAccStatus == 'disabled'"><i class="fa fa-circle-o"></i></div>
+                <div class="accstatus accstatus-enabled" ng-show="$ctrl.mailchimp.state == 'enabled'"><i class="fa fa-circle"></i></div>
+                <div class="accstatus accstatus-error" ng-show="$ctrl.mailchimp.state == 'error'"><i class="fa fa-circle-o"></i></div>
+                <div class="accstatus accstatus-disabled" ng-show="$ctrl.mailchimp.state == 'disabled'"><i class="fa fa-circle-o"></i></div>
             </div>
         </div>
         <div class="panel-animate" ng-show="$ctrl.tabSelected('mailchimp')">
@@ -148,7 +148,7 @@
                     </div>
                     <div class="col-md-8">
                         <div class="network_button">
-                            <mailchimp-integration-preferences state="$ctrl.mailchimpAccStatus"></mailchimp-integration-preferences>
+                            <mailchimp-integration-preferences></mailchimp-integration-preferences>
                         </div>
                     </div>
                 </div>
@@ -227,7 +227,7 @@
                     <div class="col-md-8">
                         <div class="network_button">
                             <p>
-                                <strong translate>Let Chalkline Connect You and Your Ministry Partners"</strong>
+                                <strong translate>Let Chalkline Connect You and Your Ministry Partners</strong>
                                 <br />
                                 <span translate>Newsletter services are a significant way to save valuable ministry time while more effectively connecting with your partners. Keep your physical newsletter list (all partners marked as newsletter - physical or both) up to date in MPDx and then email it each month to Chalkline with a press of a button. Set up your account in Chalkline, and then simply press the button below each time you want to send your newsletter.</span>
                             </p>

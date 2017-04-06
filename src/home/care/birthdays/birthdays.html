@@ -12,7 +12,7 @@
     <li ng-if="$ctrl.contacts.analytics.birthdays_this_week.length > $ctrl.limit">
         <a ng-click="$ctrl.limit = $ctrl.contacts.analytics.birthdays_this_week.length">
             <i class="fa fa-plus-square-o"></i>
-            <translate>See all {{ $ctrl.contacts.analytics.birthdays_this_week.length }} Birthdays</translate>
+            <translate translate-n="$ctrl.contacts.analytics.birthdays_this_week.length" translate-plural="See all {{ $count }} Birthdays">See 1 Birthday</translate>
         </a>
     </li>
 </ul>

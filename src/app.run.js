@@ -6,7 +6,6 @@ export default function appRun(
     $rootScope.googleMapsUrl = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBIUs23E_OsltKqLcIPD6B4rU11bfZKnM0";
     //check for Auth
     $transitions.onBefore({ to: (state) => {
-        block.start();
         $log.debug('navigating to:', state.name);
         const token = $window.localStorage.getItem('token');
         if (state.name === 'login' || state.name === 'auth') {
@@ -24,6 +23,7 @@ export default function appRun(
         return $q.reject();
     });
     $transitions.onStart({ to: state => state.name !== 'login' && state.name !== 'auth' }, (trans) => {
+        block.start();
         const users = trans.injector().get('users');
         return users.getCurrent(false, true).catch((error) => {
             if (error.redirect) {

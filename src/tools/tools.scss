@@ -34,14 +34,14 @@ tools {
             }
         }
         .tool.selected {
-            border: 4px solid #F9B625;
+            border: 4px solid $color-secondary;
         }
     }
     .setup {
         width: 100%;
         height: 72px;
         background-color: #FFFFFF;
-        border: 2px solid #F9B625;
+        border: 2px solid $color-secondary;
         font-size: 24px;
         line-height: 24px;
         padding: 24px;

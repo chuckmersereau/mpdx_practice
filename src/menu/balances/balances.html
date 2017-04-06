@@ -1,12 +1,12 @@
 <div class="section">
     <div class="navbar-quick hidden-sm hidden-xs">
         <span>
-            <div class="account_balances tip" title="{{'May take a few days to update' | translate}}" translate>Balance: {{$ctrl.balance}} {{$ctrl.accounts.current.default_currency}}</div>
+            <div class="account_balances tip" title="{{'May take a few days to update' | translate}}"><translate>Balance</translate>: {{$ctrl.balance}} {{$ctrl.accounts.current.default_currency}}</div>
         </span>
     </div>
 </div>
 <div class="section" ng-if="$ctrl.accounts.current.monthly_goal && $ctrl.accounts.current.monthly_goal > 0">
-    <a id="mpd_progress_bar" ui-sref="contacts({ filters: {status: ['Partner - Financial'], pledge_received: false } })"
+    <a id="mpd_progress_bar" ui-sref="contacts({ filters: {status: ['Partner - Financial'], pledge_received: 'false' } })"
        data-title="{{ $ctrl.title }}"
        bs-tooltip="tooltip" data-placement="bottom">
         <div class="bar bar-pledged" ng-style="{ width: $ctrl.reports.goals.pledged_percent + '%' }"></div>

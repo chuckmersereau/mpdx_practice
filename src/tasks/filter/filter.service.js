@@ -30,43 +30,36 @@ class TasksFilterService {
             all: {
                 starred: null,
                 completed: 'false',
-                no_date: null,
                 date_range: null
             },
             today: {
                 starred: null,
                 completed: 'false',
-                no_date: 'false',
                 date_range: 'today'
             },
             overdue: {
                 starred: null,
                 completed: 'false',
-                no_date: 'false',
                 date_range: 'overdue'
             },
             upcoming: {
                 starred: null,
                 completed: 'false',
-                no_date: 'false',
                 date_range: 'upcoming'
             },
             noDueDate: {
                 starred: null,
                 completed: 'false',
-                no_date: 'true',
                 date_range: 'no_date'
             },
             starred: {
                 starred: 'true',
                 completed: 'false',
-                no_date: null,
                 date_range: null
             },
             completed: {
                 starred: null,
                 completed: 'true',
-                no_date: null,
                 date_range: null
             }
         };

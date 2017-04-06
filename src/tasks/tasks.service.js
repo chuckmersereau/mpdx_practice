@@ -21,8 +21,9 @@ class TasksService {
     selectedContacts;
     constructor(
         $rootScope, $window, $log, $q, gettextCatalog,
-        api, tasksFilter, tasksTags, users, modal, tasksModals
+        alerts, api, tasksFilter, tasksTags, users, modal, tasksModals, contacts
     ) {
+        this.alerts = alerts;
         this.moment = $window.moment;
         this.$log = $log;
         this.$q = $q;
@@ -32,6 +33,7 @@ class TasksService {
         this.tasksFilter = tasksFilter;
         this.tasksTags = tasksTags;
         this.users = users;
+        this.contacts = contacts;
         this.modal = modal;
         this.tasksModals = tasksModals;
 
@@ -50,7 +52,7 @@ class TasksService {
             'no-due-date': this.gettextCatalog.getString('No Due Date')
         };
 
-        this.listLoadCount = 0;
+        this.dataLoadCount = 0;
         this.completeListLoadCount = 0;
 
         $rootScope.$on('tasksFilterChange', () => {
@@ -132,12 +134,13 @@ class TasksService {
         }
 
         let currentCount;
+        this.dataLoadCount++;
+        currentCount = angular.copy(this.dataLoadCount);
+
         if (reset) {
             this.page = 0;
             this.meta = {};
             this.data = [];
-            this.completeListLoadCount++;
-            currentCount = angular.copy(this.completeListLoadCount);
         }
 
         return this.api.get({
@@ -156,7 +159,7 @@ class TasksService {
             overrideGetAsPost: true
         }).then((data) => {
             this.$log.debug('tasks page ' + data.meta.pagination.page, data);
-            if (reset && currentCount !== this.completeListLoadCount) {
+            if (reset && currentCount !== this.dataLoadCount) {
                 return;
             }
             this.loading = false;
@@ -200,14 +203,21 @@ class TasksService {
             this.get(task.id);
         });
     }
-    create(task, contactIds = []) {
+    create(task, contactIds = [], comment) {
         task.account_list = { id: this.api.account_list_id };
         contactIds = reject('', contactIds);
         task.tag_list = joinComma(task.tag_list); //fix for api mis-match
         if (contactIds.length > 1) {
             const tasks = reduce((result, contactId) => {
+                let contactTask = angular.copy(task);
+                if (comment) {
+                    if (!contactTask.comments) {
+                        contactTask.comments = [];
+                    }
+                    contactTask.comments.push({id: uuid(), body: comment, person: { id: this.users.current.id }});
+                }
                 if (!isEmpty(contactId)) {
-                    result.push(assign(task, {id: uuid(), contacts: [{id: contactId}]}));
+                    result.push(assign(contactTask, {id: uuid(), contacts: [{id: contactId}]}));
                 }
                 return result;
             }, [], contactIds);
@@ -216,6 +226,12 @@ class TasksService {
                     this.contacts.load(true);
                 }
             });
+        }
+        if (comment) {
+            if (!task.comments) {
+                task.comments = [];
+            }
+            task.comments.push({id: uuid(), body: comment, person: { id: this.users.current.id }});
         }
         task.contacts = map(contactId => { return {id: contactId}; }, contactIds);
         return this.api.post('tasks', task).then((data) => {
@@ -319,6 +335,8 @@ class TasksService {
                     this.completeList = reject({id: task.id}, this.completeList);
                     this.selected = pull(task.id, this.selected);
                 }, selected);
+            }, () => {
+                this.alerts.addAlert(this.gettextCatalog.getPlural(selected.length, 'Unable to delete that task.', 'Unable to delete {{$count}} tasks. Try deleting less tasks.', {}), 'danger');
             });
         });
     }
