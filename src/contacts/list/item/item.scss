@@ -52,27 +52,4 @@ contacts-list-item {
     }
 }
 
-.contact_drawer_inner contacts-list contacts-list-item {
-    padding: 0;
-    a {
-        transition: background-color 0.2s ease-in, color 0.2s ease-in;
-        display: block;
-        line-height: 2.2em;
-        font-size: $font-size-sm;
-        padding: 0 8px;
-        color: #4c4749;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        width: 100%;
-        cursor: pointer;
-        &:hover {
-            background-color: $color-bg;
-            text-decoration: none;
-        }
-        &.active {
-            background-color: #f9b625;
-            color: #fff;
-        }
-    }
-}
+

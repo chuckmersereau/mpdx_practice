@@ -15,13 +15,14 @@ class LogTaskController {
         this.users = users;
 
         this.contactsList = angular.copy(contactsList);
+        this.task = { completed: true };
     }
     addContact() {
         this.contactsList.push('');
     }
     save() {
         return this.tasks.create(
-            this.model,
+            this.task,
             this.contactsList,
             this.comment
         ).then(() => {

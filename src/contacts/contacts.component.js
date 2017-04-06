@@ -30,9 +30,6 @@ class ContactsController {
     $onInit() {
         this.selected = this.$stateParams.contactId;
     }
-    isInState(match) {
-        return this.$state.$current.name.indexOf(match) === 0;
-    }
 }
 
 const Contacts = {
