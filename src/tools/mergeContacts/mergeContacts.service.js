@@ -43,7 +43,7 @@ class MergeContacts {
             this.duplicates = map(duplicate => {
                 duplicate.mergeChoice = -1;
                 return duplicate;
-            }, this.duplicates);
+            }, data);
         });
     }
 
