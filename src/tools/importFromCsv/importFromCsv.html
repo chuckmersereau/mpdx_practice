@@ -36,11 +36,13 @@
 
         <div class="steps-container" block-ui="import-from-csv">
             <div class="step-1" ng-if="$ctrl.step === 1">
-                <div class="select-file-container" ngf-drop="$ctrl.upload($file)" ngf-accept="'text/csv'" ngf-pattern="'text/csv'">
-                    <a class="select-file" ngf-select="$ctrl.upload($file)" ngf-accept="'text/csv'" ngf-pattern="'text/csv'" translate>
-                        Select CSV file
-                    </a>
-                </div>
+                <form novalidate>
+                    <div class="select-file-container">
+                        <a class="select-file" ng-model="f.file" ngf-select="$ctrl.upload(f)" ngf-accept="'text/csv'" translate>
+                            Select CSV file
+                        </a>
+                    </div>
+                </form>
 
                 <p class="step-description" translate>
                     A CSV is a common spreadsheet format that can be created using any common spreadsheet tool such as Excel, Google Sheets, Google Contacts and Numbers.
