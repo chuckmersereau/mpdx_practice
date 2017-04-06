@@ -1,0 +1,78 @@
+<ui-view>
+    <div class="tools">
+        <div class="row">
+            <div class="col-sm-3">
+                <validation-tools-sidebar fix-phone="$ctrl.fixPhone" fix-email-address="$ctrl.fixEmailAddress" fix-mailing-address="$ctrl.fixMailingAddress"></validation-tools-sidebar>
+            </div>
+
+            <div class="col-sm-9">
+                <h1 translate>Bulk Fix Email Address</h1>
+
+                <div block-ui="fix-email-address">
+                    <div class="description">
+                        <p ng-if="$ctrl.fixEmailAddress.meta.pagination.total_count" translate>
+                            <strong>You have {{$ctrl.fixEmailAddress.meta.pagination.total_count}} email addresses to confirm.</strong><br>
+                            Choose below which email address will be set as primary. Primary emails will be used when exporting to Mailchimp.
+                        </p>
+
+                        <p ng-if="!$ctrl.fixEmailAddress.meta.pagination.total_count && !$ctrl.fixEmailAddress.blockUI.isBlocking()" translate>
+                            Great work! We weren't able to detect any more Partner Emails in your account needing reviewed.
+                        </p>
+                    </div>
+
+                    <div class="bulk" ng-if="$ctrl.fixEmailAddress.meta.pagination.total_count">
+                        <div>
+                            <translate>Set all</translate>
+                            <select style="display: inline" chosen
+                                    required
+                                    disable-search="true"
+                                    allow-single-deselect="true"
+                                    class="form-control"
+                                    id="bulk_source"
+                                    ng-options="opt for opt in $ctrl.serverConstants.data.sources.email_addresses"
+                                    ng-model="$ctrl.bulkSource">
+                            </select>
+                            <translate>as Primary</translate>
+
+                            <button class="btn btn-gray" ng-click="$ctrl.showBulkAlert = true">
+                                <i class="fa fa-check-circle"></i> <translate>Confirm All {{$ctrl.bulkSource}}</translate>
+                            </button>
+
+                            <div class="pagination">
+                                <span translate>
+                                    Show:
+                                </span>
+                                <select
+                                    ng-model="$ctrl.fixEmailAddress.perPage"
+                                    ng-change="$ctrl.fixEmailAddress.page = 1; $ctrl.fixEmailAddress.load(true)"
+                                    class="form-control ng-pristine ng-untouched ng-valid ng-not-empty tasks-per-page form-inline">
+                                    <option ng-repeat="i in [10, 25, 50, 100, 500]" value="{{i}}" ng-selected="$ctrl.fixEmailAddress.perPage == i">{{i}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="well" ng-if="$ctrl.showBulkAlert">
+                            <p translate>You are confirming all selected {{$ctrl.bulkSource}} Contacts. Are you sure?</p>
+
+                            <button class="btn btn-green" ng-click="$ctrl.bulkSave()">
+                                <i class="fa fa-check-circle"></i> <translate>Yes</translate>
+                            </button>
+
+                            <button class="btn btn-gray" ng-click="$ctrl.showBulkAlert = false" translate>Cancel</button>
+                        </div>
+                    </div>
+
+                    <div ng-if="$ctrl.fixEmailAddress.meta.pagination.total_count" infinite-scroll="$ctrl.fixEmailAddress.loadMore()">
+                        <fix-email-address-item
+                            ng-repeat="person in $ctrl.fixEmailAddress.data"
+                            ng-if="!person.hidden"
+                            person="person"
+                            service="$ctrl.fixEmailAddress"></fix-email-address-item>
+                    </div>
+
+                    <hr ng-if="$ctrl.fixEmailAddress.meta.pagination.total_count">
+                </div>
+            </div>
+        </div>
+    </div>
+</ui-view>

@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col-xs-10">
+        <div class="item">
+            <div class="row">
+                <div class="col-xs-2 col-md-1">
+                    <img class="avatar small img-circle" ng-src="{{$ctrl.person.avatar | stripMpdx}}">
+                </div>
+
+                <div class="col-xs-10 col-md-11 info">
+                    <h5 class="name">{{$ctrl.person.title}} {{$ctrl.person.first_name}} {{$ctrl.person.last_name}}</h5>
+
+                    <div class="items">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <label translate>Source</label>
+                            </div>
+                            <div class="col-xs-3 text-center">
+                                <label translate>Set As Primary</label>
+                            </div>
+                        </div>
+                        <div ng-repeat="phone in $ctrl.person.phone_numbers | filter: {_destroy: '!1'}" name="phones">
+                            <fix-phone-item-phone phone="phone" on-primary="$ctrl.changePrimary(phone.id)"></fix-phone-item-phone>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-2">
+        <button class="btn btn-gray btn-block confirm-item" ng-click="$ctrl.save()">
+            <i class="fa fa-check-circle"></i> <translate>Confirm</translate>
+        </button>
+    </div>
+</div>
+
