@@ -1,4 +1,5 @@
 <div class="reports">
+<div class="reports">
     <div class="pull-right" ng-if="!$ctrl.loading">
         <button class="btn btn-primary" ng-click="$ctrl.expanded = !$ctrl.expanded">
             <span ng-if="!$ctrl.expanded">
@@ -133,8 +134,8 @@
                                     <i class="fa fa-info-circle" ng-if="!$ctrl.expanded" data-template-url="reports/contributions/popovers/name.tpl.html" data-trigger="hover" data-placement="top" bs-popover></i>
                                     <a ui-sref="contacts.show({contactId: donor.contact.contact_id})" >{{donor.contact.contact_name}}</a>
                                     <span ng-switch="late = donor.late_by_60_days ? 60 : (donor.late_by_30_days ? 30 : false)">
-                                        <i class="fa fa-circle circle-late" ng-switch-when="30" data-title="{{ '30 days late' | translate }}" bs-tooltip></i>
-                                        <i class="fa fa-circle circle-very-late" ng-switch-when="60" data-title="{{ '60 days late' | translate}}" bs-tooltip></i>
+                                        <i class="fa fa-circle circle-late" ng-switch-when="30" data-title="30 days lat" bs-tooltip></i>
+                                        <i class="fa fa-circle circle-very-late" ng-switch-when="60" data-title="60 days late" bs-tooltip></i>
                                     </span>
                                 </td>
                                 <td ng-if="$ctrl.expanded">

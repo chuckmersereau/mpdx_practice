@@ -207,7 +207,7 @@
                 <div class="row">
                     <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('account_list_name') }"></i>
                     <div class="col-sm-4">
-                        <span tranlsate>Account Name</span>
+                        <span translate>Account Name</span>
                     </div>
                     <div class="col-sm-6 pref-current">
                         {{$ctrl.accounts.current.name}}
@@ -249,7 +249,7 @@
                     <div class="row">
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group" ng-form="monthlyGoalForm">
-                                <label for="monthlyGoal" translate>Monthly goal</label>
+                                <label for="monthlyGoal" translate>Monthly Goal</label>
                                 <p class="text-muted" translate>This amount should be set to the amount your organization has determined is your target monthly goal. If you do not know, make your best guess for now. You can change it at any time.</p>
                                 <input type="text" id="monthlyGoal" class="form-control" ng-model="$ctrl.accounts.current.monthly_goal">
                             </div>
@@ -359,8 +359,8 @@
                     <div class="col-sm-4">
                         <span translate>Early Adopter</span>
                     </div>
-                    <div class="col-sm-6 pref-current" translate>
-                        {{$ctrl.accounts.current.tester ? 'Yes' : 'No'}}
+                    <div class="col-sm-6 pref-current">
+                        {{$ctrl.accounts.current.tester ? 'Yes | translate' : 'No | translate'}}
                     </div>
                 </div>
             </div>
@@ -370,7 +370,7 @@
                         <div class="col-md-8 col-md-offset-4" ng-form="earlyAdopterForm">
                             <label>
                                 <input type="checkbox" ng-model="$ctrl.accounts.current.tester">
-                                <span translate>Early adopter</span>
+                                <span translate>Early Adopter</span>
                             </label>
                             <p translate>
                                 By checking this box, you are telling us that you'd like to test new features for bugs before they are

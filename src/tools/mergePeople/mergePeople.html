@@ -1,12 +1,16 @@
 <div class="merges">
     <h2 translate>Merge People</h2>
     <div ng-if="$ctrl.mergePeople.duplicates.length">
-        <p translate>
-            You have {{$ctrl.mergePeople.total}} possible duplicate people.
-            This is sometimes caused when you imported data into MPDX.
-            We recommend reconciling these as soon as possible.
-            Please select the duplicate that should win the merge.
-            No data will be lost.
+        <p>
+            <translate translate-plural="You have {{$count}} possible duplicate people." translate-n="$ctrl.mergePeople.total">
+                You have 1 possible duplicate person.
+            </translate>
+            <translate>
+                This is sometimes caused when you imported data into MPDX.
+                We recommend reconciling these as soon as possible.
+                Please select the duplicate that should win the merge.
+                No data will be lost.
+            </translate>
         </p>
         <p>
             <strong class="text-danger" translate>This cannot be undone.</strong>

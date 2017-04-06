@@ -39,12 +39,22 @@ class ImportFromCsvController {
             return message;
         };
 
-        $scope.$on('$destroy', () => {
-            $window.onbeforeunload = undefined;
+        const deregisterTransitionHook = $transitions.onBefore({from: 'tools.importFromCSV'}, () => {
+            if (!this.importFromCsv.data) {
+                return;
+            }
+
+            blockUI.instances.get('root').reset();
+
+            return this.modal.confirm(message);
         });
 
-        $transitions.onStart({from: 'tools.importFromCSV'}, () => {
-            return confirm(message);
+        $scope.$on('$destroy', () => {
+            $window.onbeforeunload = undefined;
+
+            if (deregisterTransitionHook) {
+                deregisterTransitionHook();
+            }
         });
     }
 
@@ -221,6 +231,7 @@ class ImportFromCsvController {
             this.blockUI.stop();
             const message = this.gettextCatalog.getString('Your import has started and your contacts will be in MPDX shortly.');
             return this.modal.info(message).then(() => {
+                this.importFromCsv.data = null;
                 this.$state.go('tools');
             });
         }, (error) => {
