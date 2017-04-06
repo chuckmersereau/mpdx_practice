@@ -40,7 +40,10 @@ class mailchimpService {
         return this.api.get(`account_lists/${this.api.account_list_id}/mail_chimp_account`);
     }
     disconnect() {
-        return this.api.delete(`account_lists/${this.api.account_list_id}/mail_chimp_account`);
+        return this.api.delete(`account_lists/${this.api.account_list_id}/mail_chimp_account`).then(() => {
+            this.data = null;
+            this.updateState();
+        });
     }
     updateState() {
         if (this.data && this.data.active) {
