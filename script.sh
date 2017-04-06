@@ -16,12 +16,12 @@ fi
 echo '-- run translation --'
 gulp extract
 bundle install
-# if [ "$TRAVIS_PULL_REQUEST" = "false" ]
-# then
+if [ "$TRAVIS_PULL_REQUEST" = "false" ]
+then
     node onesky/upload
-# else
-#    echo 'Skipping translation upload because the current build is a pull request.'
-# fi
+else
+    echo 'Skipping translation upload because the current build is a pull request.'
+fi
 bundle exec ruby onesky/download.rb
 echo '-- run build --'
 npm run build
