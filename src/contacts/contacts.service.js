@@ -320,7 +320,9 @@ class ContactsService {
     }
     selectAllContacts(all = true) {
         if (all) {
-            this.selectedContacts = map('id', this.completeFilteredList);
+            this.getFilteredList().then(() => { //ensure complete filtered list is loaded
+                this.selectedContacts = map('id', this.completeFilteredList);
+            });
         } else {
             this.selectedContacts = map('id', this.data);
         }
