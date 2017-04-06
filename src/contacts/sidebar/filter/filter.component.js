@@ -8,12 +8,13 @@ class FilterController {
 
     constructor(
         $stateParams, gettextCatalog,
-        contactFilter, contactsTags, contacts, modal
+        contactFilter, contactsTags, contacts, filters, modal
     ) {
-        this.modal = modal;
         this.contacts = contacts;
         this.contactFilter = contactFilter;
         this.contactsTags = contactsTags;
+        this.filters = filters;
+        this.modal = modal;
         this.gettextCatalog = gettextCatalog;
 
         this.dateRangeLocale = {
