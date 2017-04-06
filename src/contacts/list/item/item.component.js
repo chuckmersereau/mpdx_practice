@@ -27,10 +27,6 @@ class ItemController {
             }
         });
     }
-    switchContact() {
-        this.selected = this.contact.id;
-        this.$state.transitionTo('contacts.show', { contactId: this.contact.id }, { notify: false });
-    }
     hasSendNewsletterError() {
         if (!angular.isDefined(this.contact.addresses) || !angular.isDefined(this.contact.email_addresses)) {
             return false;
