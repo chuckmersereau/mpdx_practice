@@ -1,9 +1,11 @@
 import concat from 'lodash/fp/concat';
+import difference from 'lodash/fp/difference';
 import filter from 'lodash/fp/filter';
 import findIndex from 'lodash/fp/findIndex';
 import isArray from 'lodash/fp/isArray';
 import isEqual from 'lodash/fp/isEqual';
 import keys from 'lodash/fp/keys';
+import map from 'lodash/fp/map';
 import reduce from 'lodash/fp/reduce';
 import sortBy from 'lodash/fp/sortBy';
 import toInteger from 'lodash/fp/toInteger';
@@ -67,6 +69,24 @@ class Filters {
         params = angular.copy(defaultParams);
         onChange(params);
         return params;
+    }
+    // Invert the selected options of a multiselect filter
+    invertMultiselect(filter, params) {
+        const allOptions = map('id', filter.options);
+        let selectedOptions = params[filter.name];
+
+        let allOption = '';
+        if (filter.name === 'status') {
+            allOption = 'active';
+        }
+
+        // If all options are selected other than 'All', then the inverse is 'All'
+        if (isEqual(difference(allOptions, selectedOptions), [allOption])) {
+            return [''];
+        }
+
+        selectedOptions = concat(selectedOptions, allOption); // Exclude the 'All' option when inverting
+        return difference(allOptions, selectedOptions);
     }
 }
 
