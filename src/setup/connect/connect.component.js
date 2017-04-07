@@ -32,7 +32,7 @@ class SetupConnectController {
                 this.connecting = false;
             });
         }).catch(() => {
-            this.alerts.addAlert('Invalid username or password.');
+            this.alerts.addAlert('Invalid username or password.', 'danger');
         });
     }
     next() {

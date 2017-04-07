@@ -35,16 +35,21 @@ class OrganizationService {
         }
     }
     createAccount(username, password, organizationId) {
-        return this.api.post(`user/organization_accounts`, {
-            username: username,
-            password: password,
+        let org = {
             organization: {
                 id: organizationId
             },
             person: {
                 id: this.users.current.id
             }
-        });
+        };
+        if (username && username.length > 0) {
+            org.username = username;
+        }
+        if (password && password.length > 0) {
+            org.password = password;
+        }
+        return this.api.post(`user/organization_accounts`, org);
     }
     updateAccount(username, password, accountId) {
         return this.api.put(`user/organization_accounts/${accountId}`, {
