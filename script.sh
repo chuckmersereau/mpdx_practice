@@ -13,11 +13,11 @@ else
     export NODE_ENV=staging
 fi
 
-echo '-- extract translations from source --'
-gulp extract
-
 if [ "$TRAVIS_PULL_REQUEST" = "false" ]
 then
+    echo '-- extract translations from source --'
+    gulp extract
+
     echo '-- upload mpdx.pot to onesky --'
     node onesky/upload
 
