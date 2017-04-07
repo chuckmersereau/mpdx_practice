@@ -8,14 +8,17 @@ const oneskyOld = require('onesky')(process.env.ONESKY_API_KEY, process.env.ONES
 const onesky = require('onesky-utils'); // new platform api (missing list)
 const fs = require('fs');
 
-oneskyOld.platform.locales('190365', (err, data) => {
+function ifErrMsg(msg, err) {
     if (err) {
-        console.log('error downloading onesky languages');
+        console.log(msg);
         console.log(err);
         process.exit(1);
     }
+}
+
+oneskyOld.platform.locales('190365', (err, data) => {
+    ifErrMsg('error downloading onesky languages', err);
     const active = filter(lang => lang.completeness > 0, data.locales);
-    console.log(active);
     each((locale) => {
         const filename = `${locale.locale}${get('TRAVIS_COMMIT', process.env) || ''}.po`;
         const options = {
@@ -28,17 +31,11 @@ oneskyOld.platform.locales('190365', (err, data) => {
         console.log(`downloading ${locale.locale}`);
         onesky.getFile(options).then((content) => {
             fs.writeFile(`locale/${filename}`, content, (err) => {
-                if (err) {
-                    console.log(`unable to write file ${filename}`);
-                    console.log(err);
-                    process.exit(1);
-                }
+                ifErrMsg(`unable to write file ${filename}`, err);
                 console.log(`${locale.locale} saved`);
             });
         }).catch((error) => {
-            console.log(`error downloading ${locale.locale}`);
-            console.log(error);
-            process.exit(1);
+            ifErrMsg(`error downloading ${locale.locale}`, error);
         });
     }, active);
 });
