@@ -1,4 +1,5 @@
-import createPatch from '../../../common/fp/createPatch'
+import createPatch from '../../../common/fp/createPatch';
+
 class DonationModalController {
     accounts;
     appeals;

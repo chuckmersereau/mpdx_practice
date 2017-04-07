@@ -2,7 +2,6 @@ import get from 'lodash/fp/get';
 import has from 'lodash/fp/has';
 import keyBy from 'lodash/fp/keyBy';
 import keys from 'lodash/fp/keys';
-const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 import toString from 'lodash/fp/toString';
 import createPatch from "../fp/createPatch";
 
