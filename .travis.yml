@@ -1,8 +1,5 @@
 language: node_js
 cache:
-  bundler: true
-  directories:
-    - node_modules
   yarn: true
 script: ./script.sh
 after_deploy: aws/invalidate_cloudfront.sh
