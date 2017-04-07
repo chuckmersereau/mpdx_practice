@@ -18,16 +18,12 @@ class ExportContactsController {
 
         this.params = {
             data: {
-                filter: {
-                    account_list_id: api.account_list_id
-                }
+                filter: this.api.cleanFilters(this.contacts.buildFilterParams())
             },
             doDeSerialization: false
         };
         if (selectedContactIds.length > 0) {
             this.params.data.filter.ids = joinComma(selectedContactIds);
-        } else {
-            this.params.data.filter = assign(this.params.filter, this.contacts.buildFilterParams());
         }
     }
     sendDownload(blob, filename) {
