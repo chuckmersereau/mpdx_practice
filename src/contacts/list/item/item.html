@@ -24,7 +24,7 @@
                     <span ng-repeat="phone_number in person.phone_numbers" ng-if="phone_number.primary && !phone_number.historic" class="phone-type phone-type-{{phone_number.location}}">
                         {{phone_number.number}}
                     </span>
-                    <a ng-repeat="email_address in person.email_addresses" ng-if="email_address.primary && !email_address.historic" ng-href="mailto:{{email_address.email}}">
+                    <a ng-repeat="email_address in person.email_addresses" ng-if="email_address.primary && !email_address.historic" ng-href="mailto:{{email_address.email}}" target="_blank">
                         <i class="ci ci-email_icon" title="{{ 'Email' | translate }}"></i>
                     </a>
                     <a ng-repeat="facebook_account in person.facebook_accounts" ng-href="{{facebook_account.url}}" target="_blank">

@@ -192,6 +192,13 @@ $userheight: 72px;
     & > div > span + span {
         margin-left: 10px;
     }
+    .label-action {
+        color: #fff;
+        opacity: .5;
+        &:hover {
+            opacity: 1;
+        }
+    }
 }
 
 #contacts-map {
@@ -543,7 +550,7 @@ div.name {font-size: 14px; margin-bottom: 4px;}
         font-weight: 600;
         background: $cru-blue;
         border: 0;
-        height: 20px;
+        height: auto;
         line-height: 20px;
         font-size: 12px;
         margin-top: 3px;
@@ -552,6 +559,7 @@ div.name {font-size: 14px; margin-bottom: 4px;}
         border-radius: 5px;
         color: $color-reverse;
         display: inline-block;
+        word-break: break-all;
     }
 }
 
@@ -1157,6 +1165,16 @@ body.google_integrations_controller {
     border: 1px solid #ddd;
     margin-bottom: 20px;
 }
+#dash-progress {
+    .page-filters {
+        margin-bottom: 1.5em;
+        h3 {font-weight: 600; font-size: 1.6em; margin-bottom: 0; line-height: 35px;}
+        h3 .normal-weight {font-weight: 500;}
+    }
+    .well {
+        padding: 14px 19px;
+    }
+}
 .dash-tasks .see-all {
     margin-bottom: 5em;
 }
@@ -1167,6 +1185,10 @@ appeals-list :not(.show-all) :nth-child(2) {
     margin-bottom: 0;
 }
 appeals-list .show-all {
+    .dash-progress {
+        height: 20px;
+        line-height: 18px;
+    }
     .appeal-single {
         margin-bottom: 0.5em;
     }
@@ -1179,6 +1201,15 @@ appeals-list .show-all {
     }
     &:last-child {
         margin-bottom: 0;
+    }
+    .dash-progress {
+        display: block;
+        height: 30px;
+        line-height: 30px;
+        background-color: #ddd;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        position: relative;
     }
 
     &.progress-green {

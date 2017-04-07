@@ -1,5 +1,5 @@
-<div>
-    <a class="pull-right edit" ng-click="$ctrl.contacts.openAddressModal($ctrl.contact, $ctrl.address)" translate>
+<div class="card" ng-class="{ 'primary':$ctrl.address.primary_mailing_address }">
+    <a class="pull-right edit" ng-if="$ctrl.address.source === 'MPDX'" ng-click="$ctrl.contacts.openAddressModal($ctrl.contact, $ctrl.address)" translate>
         <span ng-if="!$ctrl.address.remote_id && $ctrl.address.source === 'MPDX'">Edit</span>
         <span ng-if="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'">View</span>
     </a>
