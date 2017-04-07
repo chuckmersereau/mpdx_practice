@@ -16,9 +16,6 @@ fi
 echo '-- extract translations from source --'
 gulp extract
 
-echo '-- run build --'
-npm run build
-
 if [ "$TRAVIS_PULL_REQUEST" = "false" ]
 then
     echo '-- upload mpdx.pot to onesky --'
@@ -30,5 +27,9 @@ else
     echo 'Skipping translation upload because the current build is a pull request.'
 fi
 
+echo '-- run build --'
+npm run build
+
+echo '-- extract language po into angular-gettext json --'
 gulp translations
 echo '<!-- COMMIT:' $TRAVIS_COMMIT '-->' >> public/index.html
