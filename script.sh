@@ -21,7 +21,7 @@ then
     echo '-- upload mpdx.pot to onesky --'
     node onesky/upload
 
-    echo '-- download translation po's from onesky --'
+    echo '-- download translation po from onesky --'
     node onesky/download
 else
     echo 'Skipping translation upload because the current build is a pull request.'
