@@ -33,6 +33,7 @@ import { extendMoment } from 'moment-range';
 window.moment = extendMoment(Moment);
 import 'chosen-js';
 import 'bootstrap-daterangepicker/daterangepicker';
+import 'ng-rollbar';
 
 // style deps
 require('angular-block-ui/dist/angular-block-ui.css');
@@ -60,5 +61,6 @@ export default angular.module('mpdx.vendor', [
     'localytics.directives',
     'mgcrea.ngStrap',
     'ngTagsInput',
-    'yaru22.angular-timeago'
+    'yaru22.angular-timeago',
+    'tandibar/ng-rollbar'
 ]).name;
