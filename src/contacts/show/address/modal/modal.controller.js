@@ -82,7 +82,7 @@ class AddressModalController {
             });
         } else {
             this.modalTitle = this.gettextCatalog.getString('Add Address');
-            this.address = { street: '', location: 'Home' };
+            this.address = { street: '', location: 'Home', source: 'MPDX' };
         }
         this.$scope.$on('mapInitialized', (evt, evtMap) => {
             this.maps.push(evtMap);
