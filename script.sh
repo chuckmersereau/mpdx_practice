@@ -6,24 +6,29 @@ echo '-- run eslint --'
 eslint .
 if [ "$TRAVIS_BRANCH" = "master" ]
 then
-
     echo '-- build production --'
     export NODE_ENV=production
 else
     echo '-- build staging --'
     export NODE_ENV=staging
 fi
-echo '-- run translation --'
+
+echo '-- extract translations from source --'
 gulp extract
-bundle install
+
+echo '-- run build --'
+npm run build
+
 if [ "$TRAVIS_PULL_REQUEST" = "false" ]
 then
+    echo '-- upload mpdx.pot to onesky --'
     node onesky/upload
+
+    echo '-- download translation po's from onesky --'
+    node onesky/download
 else
     echo 'Skipping translation upload because the current build is a pull request.'
 fi
-bundle exec ruby onesky/download.rb
-echo '-- run build --'
-npm run build
+
 gulp translations
 echo '<!-- COMMIT:' $TRAVIS_COMMIT '-->' >> public/index.html
