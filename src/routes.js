@@ -236,6 +236,26 @@ export default class Routes {
                 another: /*@ngInject*/ (contactsTags) => contactsTags.load()
             }
         }).state({
+            name: 'tools.fixCommitmentInfo',
+            title: 'Fix Commitment Info',
+            url: '/fix-commitment-info',
+            component: 'fixCommitmentInfo'
+        }).state({
+            name: 'tools.fixPhone',
+            title: 'Fix Phone',
+            url: '/fix-phone',
+            component: 'fixPhone'
+        }).state({
+            name: 'tools.fixEmailAddress',
+            title: 'Fix Email Address',
+            url: '/fix-email-address',
+            component: 'fixEmailAddress'
+        }).state({
+            name: 'tools.fixMailingAddress',
+            title: 'Fix Mailing Address',
+            url: '/fix-mailing-address',
+            component: 'fixMailingAddress'
+        }).state({
             name: 'tools.mergeContacts',
             url: '/merge-contacts',
             component: 'mergeContacts',
