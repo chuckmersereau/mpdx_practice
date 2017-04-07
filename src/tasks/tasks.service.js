@@ -75,9 +75,14 @@ class TasksService {
     }
     get(id, updateLists = true) {
         return this.api.get(`tasks/${id}`, {
-            include: 'comments,comments.person,contacts',
+            include: 'comments,comments.person,contacts,contacts.addresses,contacts.people,contacts.people.facebook_accounts,contacts.people.phone_numbers,contacts.people.email_addresses',
             fields: {
-                contacts: 'addresses,name,square_avatar',
+                contacts: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people',
+                people: 'deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
+                addresses: 'city,historic,primary_mailing_address,postal_code,state,source,street',
+                email_addresses: 'email,historic,primary',
+                phone_numbers: 'historic,location,number,primary',
+                facebook_accounts: 'username',
                 person: 'first_name,last_name'
             }
         }).then((task) => {
@@ -86,8 +91,8 @@ class TasksService {
                 this.data = upsert('id', processedTask, this.data);
                 const listTask = {id: task.id, subject: task.subject, updated_in_db_at: task.updated_in_db_at};
                 this.completeList = upsert('id', listTask, this.completeList);
-                this.$log.debug(`tasks/${task.id}`, processedTask);
             }
+            this.$log.debug(`tasks/${task.id}`, processedTask);
             return processedTask;
         });
     }

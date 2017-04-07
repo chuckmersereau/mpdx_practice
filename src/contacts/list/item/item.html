@@ -18,7 +18,7 @@
                     <span>{{$ctrl.contact.pledge_currency_symbol}}</span>
                 </span>
             </h4>
-            <div class="people" ng-if="$ctrl.view !== 'task'">
+            <div class="people">
                 <div ng-repeat="person in $ctrl.contact.people track by person.id" ng-if="!person.deceased" class="people-single-contact">
                     <a ng-click="$ctrl.people.openPeopleModal($ctrl.contact, person.id); $event.stopPropagation()">{{person.first_name}} {{person.last_name}}</a>
                     <span ng-repeat="phone_number in person.phone_numbers" ng-if="phone_number.primary && !phone_number.historic" class="phone-type phone-type-{{phone_number.location}}">
@@ -32,7 +32,7 @@
                     </a>
                 </div>
             </div>
-            <div class="address" ng-if="$ctrl.view !== 'task'">
+            <div class="address">
                 <address class="address" ng-repeat="address in $ctrl.contact.addresses track by address.id" ng-if="address.primary_mailing_address">
                     <span ng-if="address.street">{{address.street}}<br></span>
                     <span ng-if="address.city">{{address.city}},</span>
