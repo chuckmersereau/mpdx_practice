@@ -119,14 +119,7 @@ class Users {
     }
     setOption(option) {
         return this.api.put({ url: `user/options/${option.key}`, data: option, type: 'user_options' }).then((data) => {
-            this.current.options = reduce((result, val, key) => {
-                if (option.key === key) {
-                    result[key] = data;
-                } else {
-                    result[key] = val;
-                }
-                return result;
-            }, {}, this.current.options);
+            this.current.options[option.key] = data;
             return data;
         }); //use jsonapi key here since it doesn't match endpoint
     }
