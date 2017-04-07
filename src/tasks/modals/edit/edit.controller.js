@@ -1,4 +1,7 @@
+import createPatch from '../../../common/fp/createPatch';
+
 class EditTaskController {
+    comment;
     constructor(
         $log, $scope,
         modal, contacts, tasksTags, tasks, serverConstants, users,
@@ -14,6 +17,8 @@ class EditTaskController {
         this.users = users;
 
         this.task = angular.copy(task);
+        this.taskInitialState = angular.copy(task);
+
         if (this.task.start_at == null) {
             this.no_date = true;
         }
@@ -22,8 +27,10 @@ class EditTaskController {
         if (this.no_date) {
             this.task.start_at = null;
         }
+        const patch = createPatch(this.taskInitialState, this.task);
+        this.$log.debug('task patch', patch);
         return this.tasks.save(
-            this.task,
+            patch,
             this.comment
         ).then(() => {
             this.$scope.$hide();
