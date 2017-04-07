@@ -7,10 +7,11 @@ cache:
 script: ./script.sh
 after_deploy: aws/invalidate_cloudfront.sh
 before_install:
-  - npm install -g gulp
-install:
-  - npm rebuild node-sass
-  - npm install phantomjs-prebuilt
+  - yarn global add gulp
+#shouldn't be needed with yarn
+#install:
+#  - npm rebuild node-sass
+  #- npm install phantomjs-prebuilt
 branches:
   only:
   - master
