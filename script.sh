@@ -30,6 +30,10 @@ fi
 echo '-- run build --'
 npm run build
 
-echo '-- extract language po into angular-gettext json --'
-gulp translations
+if [ "$TRAVIS_PULL_REQUEST" = "false" ]
+then
+    echo '-- extract language po into angular-gettext json --'
+    gulp translations
+fi
+
 echo '<!-- COMMIT:' $TRAVIS_COMMIT '-->' >> public/index.html
