@@ -18,13 +18,13 @@
                     <span>{{$ctrl.contact.pledge_currency_symbol}}</span>
                 </span>
             </h4>
-            <div class="people" ng-if="$ctrl.view !== 'task'">
+            <div class="people">
                 <div ng-repeat="person in $ctrl.contact.people track by person.id" ng-if="!person.deceased" class="people-single-contact">
                     <a ng-click="$ctrl.people.openPeopleModal($ctrl.contact, person.id); $event.stopPropagation()">{{person.first_name}} {{person.last_name}}</a>
                     <span ng-repeat="phone_number in person.phone_numbers" ng-if="phone_number.primary && !phone_number.historic" class="phone-type phone-type-{{phone_number.location}}">
                         {{phone_number.number}}
                     </span>
-                    <a ng-repeat="email_address in person.email_addresses" ng-if="email_address.primary && !email_address.historic" ng-href="mailto:{{email_address.email}}">
+                    <a ng-repeat="email_address in person.email_addresses" ng-if="email_address.primary && !email_address.historic" ng-href="mailto:{{email_address.email}}" target="_blank">
                         <i class="ci ci-email_icon" title="{{ 'Email' | translate }}"></i>
                     </a>
                     <a ng-repeat="facebook_account in person.facebook_accounts" ng-href="{{facebook_account.url}}" target="_blank">
@@ -32,7 +32,7 @@
                     </a>
                 </div>
             </div>
-            <div class="address" ng-if="$ctrl.view !== 'task'">
+            <div class="address">
                 <address class="address" ng-repeat="address in $ctrl.contact.addresses track by address.id" ng-if="address.primary_mailing_address">
                     <span ng-if="address.street">{{address.street}}<br></span>
                     <span ng-if="address.city">{{address.city}},</span>

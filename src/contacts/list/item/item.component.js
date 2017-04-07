@@ -60,7 +60,6 @@ const Item = {
     bindings: {
         contact: '=',
         hide: '&',
-        view: '@',
         selected: '='
     }
 };

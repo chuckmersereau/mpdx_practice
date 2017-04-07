@@ -1,4 +1,9 @@
 import map from 'lodash/fp/map';
+import round from 'lodash/fp/round';
+import sum from 'lodash/fp/sum';
+import take from 'lodash/fp/take';
+import takeRight from 'lodash/fp/takeRight';
+import zip from 'lodash/zip';
 import moment from 'moment';
 
 class ChartController {
@@ -28,8 +33,6 @@ class ChartController {
     }
 
     $onInit() {
-        this.startDate = this.startDate || moment().startOf('month').subtract(11, 'months');
-        this.endDate = this.endDate || moment().endOf('month');
         this.load();
         this.$rootScope.$on('accountListUpdated', () => {
             this.load();
@@ -41,12 +44,19 @@ class ChartController {
     }
 
     load() {
+        if (this.contact) {
+            this.startDate = moment().startOf('month').subtract(23, 'months');
+        } else {
+            this.startDate = moment().startOf('month').subtract(11, 'months');
+        }
+        this.endDate = moment().endOf('month');
         let params = {
             startDate: this.startDate,
             endDate: this.endDate
         };
         if (this.contact && this.contact.donor_accounts) {
             params.donorAccountId = map('id', this.contact.donor_accounts).join();
+            if (params.donorAccountId === '') return;
         }
         this.blockUI.start();
         this.donations.getDonationChart(params).then((data) => {
@@ -57,11 +67,21 @@ class ChartController {
             } else {
                 this.hasChart = true;
             }
-            this.series = map('currency', data.totals);
-            this.labels = map(month => moment(month, 'YYYY-MM-DD').format('MMM YY'), data.months_to_dates);
             this.data = map(total => {
-                return map(val => parseFloat(val.converted).toFixed(2), total.month_totals);
+                return map(val => round(val.converted, 2), total.month_totals);
             }, data.totals);
+            if (this.contact) {
+                this.labels = map(month => moment(month, 'YYYY-MM-DD').format('MMM'), takeRight(12, data.months_to_dates));
+                this.series = [this.gettextCatalog.getString('Last Year'), this.gettextCatalog.getString('This Year')];
+                const primaryData = map(value => sum(value), zip(...this.data));
+                this.data = [
+                    take(12, primaryData),
+                    takeRight(12, primaryData)
+                ];
+            } else {
+                this.series = map('currency', data.totals);
+                this.labels = map(month => moment(month, 'YYYY-MM-DD').format('MMM YY'), data.months_to_dates);
+            }
             this.options = {
                 responsive: true,
                 maintainAspectRatio: false,
@@ -70,14 +90,14 @@ class ChartController {
                 },
                 scales: {
                     xAxes: [{
-                        stacked: true,
+                        stacked: !this.contact,
                         gridLines: {
                             display: false
                         },
-                        barThickness: 40
+                        barThickness: this.contact ? 20 : 40
                     }],
                     yAxes: [{
-                        stacked: true,
+                        stacked: !this.contact,
                         scaleLabel: {
                             display: true,
                             labelString: `${this.gettextCatalog.getString('Amount')} (${data.salary_currency})`
@@ -130,9 +150,7 @@ const Chart = {
     controller: ChartController,
     template: require('./chart.html'),
     bindings: {
-        contact: '<',
-        startDate: '<',
-        endDate: '<'
+        contact: '<'
     }
 };
 
