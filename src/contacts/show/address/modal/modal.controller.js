@@ -1,6 +1,5 @@
 import concat from 'lodash/fp/concat';
 import each from 'lodash/fp/each';
-import find from 'lodash/fp/find';
 import findIndex from 'lodash/fp/findIndex';
 import reject from 'lodash/fp/reject';
 import createPatch from "../../../../common/fp/createPatch";
@@ -12,7 +11,7 @@ class AddressModalController {
 
     constructor(
         $log, $scope, $timeout, $window, gettextCatalog,
-        contacts, serverConstants,
+        contacts, serverConstants, users,
         contact, address
     ) {
         this.$log = $log;
@@ -24,7 +23,7 @@ class AddressModalController {
         this.contacts = contacts;
         this.gettextCatalog = gettextCatalog;
         this.serverConstants = serverConstants;
-
+        this.users = users;
         this.maps = [];
         this.addressInitialState = angular.copy(address);
 
@@ -108,12 +107,10 @@ class AddressModalController {
         }
     }
     reqUpdateEmailBodyRequest() {
-        if (this.address.remote_id) {
-            const donorAccount = find({id: this.address.source_donor_account_id}, this.contact.donor_accounts);
-            const donorName = donorAccount ? donorAccount.name + ' (donor #' + donorAccount.account_number + ')' : this.contact.name;
-            return `Dear Donation Services,\n\n One of my donors, ${donorName} has a new current address.\n\n
-                Please update their address to:\n\n REPLACE WITH NEW STREET\n REPLACE WITH NEW CITY, STATE, ZIP\n\n
-                Thanks!\n\n`;
+        if (this.address.source === 'DataServer') {
+            const donorAccount = this.address.source_donor_account;
+            const donorName = donorAccount ? this.contact.name + ' (donor #' + donorAccount.account_number + ')' : this.contact.name;
+            return `Dear Donation Services,%0D%0A%0D%0AOne of my donors, ${donorName} has a new current address.%0D%0APlease update their address to:%0D%0AREPLACE WITH NEW STREET%0D%0AREPLACE WITH NEW CITY, STATE, ZIP%0D%0A%0D%0AThanks,%0D%0A${this.users.current.first_name}`;
         }
 
         return '';

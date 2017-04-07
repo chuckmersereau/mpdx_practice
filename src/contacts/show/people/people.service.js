@@ -88,7 +88,15 @@ class PersonService {
         });
     }
     save(contactId, person) {
-        return this.api.put(`contacts/${contactId}/people/${person.id}`, person); //reload after use, otherwise add reconcile
+        if (contactId !== null) {
+            return this.api.put(`contacts/${contactId}/people/${person.id}`, person); //reload after use, otherwise add reconcile
+        } else {
+            return this.api.put({
+                url: `contacts/people/${person.id}`,
+                data: person,
+                type: 'people'
+            }); //reload after use, otherwise add reconcile
+        }
     }
     remove(contactId, personId) {
         return this.api.delete(`contacts/${contactId}/people/${personId}`);

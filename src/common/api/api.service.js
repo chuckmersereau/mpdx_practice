@@ -266,18 +266,18 @@ class EntityAttributes {
                 ],
                 addresses: {
                     ref: 'id',
-                    attributes: ["city", "historic", "postal_code", "state", "street"]
+                    attributes: ["city", "historic", "postal_code", "state", "street", "primary_mailing_address", "metro_area", "valid_values", "_destroy"]
                 },
                 people: {
                     ref: 'id',
-                    attributes: ["email_addresses", "first_name", "last_name", "phone_numbers"],
+                    attributes: ["email_addresses", "first_name", "last_name", "phone_numbers", "updated_in_db_at"],
                     email_addresses: {
                         ref: 'id',
-                        attributes: ["email", "primary"]
+                        attributes: ["email", "primary", "source", "valid_values"]
                     },
                     phone_numbers: {
                         ref: 'id',
-                        attributes: ["number", "primary"]
+                        attributes: ["number", "primary", "source", "valid_values"]
                     }
                 },
                 primary_person: {
@@ -361,7 +361,7 @@ class EntityAttributes {
                     "phone_numbers", "email_addresses", "facebook_accounts", "family_relationships", "linkedin_accounts", "twitter_accounts", "websites", "updated_in_db_at", "winner_id", "loser_id"],
                 email_addresses: {
                     ref: 'id',
-                    attributes: ["_destroy", "email", "primary", "remote_id", "location", "historic", "updated_in_db_at"]
+                    attributes: ["email", "primary", "remote_id", "location", "historic", "source", "valid_values", "_destroy", "updated_in_db_at"]
                 },
                 facebook_accounts: {
                     ref: 'id',
@@ -378,7 +378,7 @@ class EntityAttributes {
                 },
                 phone_numbers: {
                     ref: 'id',
-                    attributes: ["_destroy", "number", "country_code", "location", "primary", "updated_at", "remote_id", "historic", "updated_in_db_at"]
+                    attributes: ["number", "country_code", "location", "primary", "updated_at", "remote_id", "historic", "source", "valid_values", "_destroy", "updated_in_db_at"]
                 },
                 twitter_accounts: {
                     ref: 'id',

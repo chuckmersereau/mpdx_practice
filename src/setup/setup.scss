@@ -1,13 +1,6 @@
 setup {
     margin-top: 70px;
     display: block;
-
-    .icon_alert {
-        width: 50px;
-        vertical-align: top;
-        display: inline-block;
-        margin-right: 5px;
-    }
 }
 
 
@@ -107,19 +100,6 @@ setup-start, setup-connect, setup-account, setup-finish {
 
 setup-preferences {
     @extend preferences;
-    .panel__prompt {
-        border-top: $color-secondary 5px solid;
-        .panel-body {
-            padding-top: 27px;
-            padding-bottom: 27px;
-        }
-        h2 {
-            font-size: 24px;
-            line-height: 39px;
-            margin-top: 0;
-            margin-bottom: 0;
-        }
-    }
 }
 
 

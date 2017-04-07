@@ -13,6 +13,9 @@
     &-gray {
         @include cru-button-variant($color-reverse, $color-reverse, $color-link, $color-link, transparent, transparent);
     }
+    &-green {
+        @include cru-button-variant($color-reverse, $color-reverse, $color-success, $color-success, transparent, transparent);
+    }
 }
 
 .btn-block {

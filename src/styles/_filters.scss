@@ -148,7 +148,11 @@
     .filter_multiselect,
     .filter_invert_multiselect {
         font-size: .8em;
+        .fa {
+            font-size: 1.35em;
+        }
         label {
+            display: block;
             font-weight: 400;
             margin-bottom: 0;
         }

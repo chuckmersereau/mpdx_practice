@@ -1,0 +1,23 @@
+<div class="row">
+    <div class="col-xs-3">
+        {{$ctrl.email.source}}
+        <i ng-if="$ctrl.email.created_at">
+            ({{$ctrl.moment($ctrl.email.created_at).format('MM/DD/YYYY')}})
+        </i>
+    </div>
+    <div class="col-xs-3 text-center">
+        <span class="fa-stack" ng-click="$ctrl.onPrimary()">
+            <i class="fa fa-circle-thin fa-stack-2x"></i>
+            <i class="fa fa-circle fa-stack-1x" ng-if="$ctrl.email.primary"></i>
+        </span>
+    </div>
+    <div class="col-xs-4">
+        <input class="form-control" type="text" name="email" ng-model="$ctrl.email.email" ng-if="$ctrl.email.source === 'MPDX'">
+        <span class="locked-source" ng-if="$ctrl.email.source !== 'MPDX'"><i class="fa fa-lock"></i> {{$ctrl.email.email}}</span>
+    </div>
+    <div class="col-xs-2">
+        <button type="button" ng-click="$ctrl.remove()" class="btn btn-block btn-default delete" title="{{Delete | translate}}">
+            <i class="fa fa-trash"></i>
+        </button>
+    </div>
+</div>

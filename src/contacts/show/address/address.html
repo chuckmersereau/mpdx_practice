@@ -1,10 +1,14 @@
 <div>
-    <a class="pull-right edit" ng-if="$ctrl.address.source === 'MPDX'" ng-click="$ctrl.contacts.openAddressModal($ctrl.contact, $ctrl.address)" translate>Edit</a>
+    <a class="pull-right edit" ng-click="$ctrl.contacts.openAddressModal($ctrl.contact, $ctrl.address)" translate>
+        <span ng-if="!$ctrl.address.remote_id && $ctrl.address.source === 'MPDX'">Edit</span>
+        <span ng-if="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'">View</span>
+    </a>
     <p ng-class="{strike: $ctrl.address.historic}">
         {{$ctrl.address.street}}<br />
         {{$ctrl.address.city}} {{$ctrl.address.state}} {{$ctrl.address.postal_code}}<br />
         {{$ctrl.address.country}}
     </p>
+
     <div ng-if="$ctrl.address.street">
         <a ng-click="$ctrl.contacts.openAddressModal(null, $ctrl.address)" class="btn btn-reverse btn-xs"><i class="fa fa-map-marker"></i> <translate>Google Maps</translate></a>
     </div>

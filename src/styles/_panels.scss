@@ -34,4 +34,29 @@
     &-group .panel {
         border-radius: 1px;
     }
+    &__prompt {
+        border-top: $color-secondary 5px solid;
+        .panel-body {
+            padding-top: 27px;
+            padding-bottom: 27px;
+        }
+        h2 {
+            font-size: 24px;
+            line-height: 39px;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        .icon_alert {
+            width: 50px;
+            vertical-align: top;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .btn-primary {
+            font-size: $font-size;
+            line-height: 25px;
+            min-width: 130px;
+        }
+    }
 }

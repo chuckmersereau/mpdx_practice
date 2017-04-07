@@ -5,7 +5,8 @@ bottom {
     left: 0;
     position: fixed;
     right: 0;
-    
+    z-index: 10003;
+
     .footer--nav {
         margin-bottom: 0;
         margin-left: 0;
