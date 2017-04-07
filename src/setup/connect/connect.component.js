@@ -27,9 +27,7 @@ class SetupConnectController {
         this.connecting = true;
     }
     add() {
-        const username = this.username.length > 0 ? this.username : null;
-        const password = this.password.length > 0 ? this.password : null;
-        this.preferencesOrganization.createAccount(username, password, this.organization).then(() => {
+        this.preferencesOrganization.createAccount(this.username, this.password, this.organization).then(() => {
             this.users.listOrganizationAccounts(true).then(() => {
                 this.connecting = false;
             });

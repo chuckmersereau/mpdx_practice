@@ -43,10 +43,10 @@ class OrganizationService {
                 id: this.users.current.id
             }
         };
-        if (username) {
+        if (username && username.length > 0) {
             org.username = username;
         }
-        if (password) {
+        if (password && password.length > 0) {
             org.password = password;
         }
         return this.api.post(`user/organization_accounts`, org);
