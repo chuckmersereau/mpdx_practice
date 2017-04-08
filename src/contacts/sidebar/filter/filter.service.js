@@ -1,3 +1,5 @@
+import assign from 'lodash/fp/assign';
+
 class FilterService {
     api;
     filters;
@@ -41,10 +43,13 @@ class FilterService {
     count() {
         return this.filters.count({ defaultParams: this.default_params, params: this.params });
     }
-    reset() {
+    reset(stateParams = null) {
         this.params = angular.copy(this.default_params);
         this.$rootScope.$emit('contactSearchReset');
         this.contactsTags.reset();
+        if (stateParams) {
+            this.params = assign(this.params, stateParams);
+        }
         this.change();
     }
     change() {

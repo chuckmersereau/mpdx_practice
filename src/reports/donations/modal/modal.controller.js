@@ -1,3 +1,5 @@
+import createPatch from '../../../common/fp/createPatch';
+
 class DonationModalController {
     accounts;
     appeals;
@@ -16,7 +18,8 @@ class DonationModalController {
         this.accounts = accounts;
         this.donations = donations;
         this.appeals = appeals;
-        this.donation = donation;
+        this.donation = angular.copy(donation);
+        this.donationInitialState = angular.copy(donation);
         this.donorAccounts = donorAccounts;
         this.designationAccounts = designationAccounts;
         this.serverConstants = serverConstants;
@@ -29,7 +32,8 @@ class DonationModalController {
     }
 
     save() {
-        return this.donations.save(this.donation).then(() => {
+        const patch = createPatch(this.donationInitialState, this.donation);
+        return this.donations.save(patch).then(() => {
             this.$scope.$hide();
         });
     }

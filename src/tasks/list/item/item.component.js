@@ -1,7 +1,3 @@
-import join from 'lodash/fp/join';
-import map from 'lodash/fp/map';
-import take from 'lodash/fp/take';
-
 class ItemController {
     task;
     constructor(

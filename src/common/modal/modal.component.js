@@ -1,6 +1,7 @@
 class ModalController {
     $element;
     $attrs;
+    delete;
 
     constructor(
         $element, $attrs, $scope,
@@ -40,16 +41,16 @@ const Modal = {
     controller: ModalController,
     transclude: true,
     bindings: {
-        'title': '@',
-        'size': '@',
-        'cancel': '&',
-        'cancelText': '@',
-        'delete': '&',
-        'hideFooter': '<',
-        'showDelete': '<',
-        'save': '&',
-        'saveText': '@',
-        'valid': '<'
+        title: '@',
+        size: '@',
+        cancel: '&',
+        cancelText: '@',
+        delete: '&',
+        hideFooter: '<',
+        showDelete: '<',
+        save: '&',
+        saveText: '@',
+        valid: '<'
     }
 };
 
