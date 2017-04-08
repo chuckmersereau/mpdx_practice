@@ -94,10 +94,13 @@ class TasksFilterService {
         this.$log.debug('task filters change');
         this.$rootScope.$emit('tasksFilterChange');
     }
-    reset() {
+    reset(stateParams = null) {
         this.params = angular.copy(this.defaultParams);
         this.wildcard_search = '';
         this.tasksTags.reset();
+        if (stateParams) {
+            this.params = assign(this.params, stateParams);
+        }
         this.change();
     }
     changeGroup(group) {
