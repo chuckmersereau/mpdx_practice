@@ -19,7 +19,7 @@
         <div block-ui="merge-contacts">
             <div class="row">
                 <div class="col-sm-10 col-sm-offset-1">
-                    <div class="row" ng-repeat="duplicate in $ctrl.mergeContacts.duplicates">
+                    <div class="row" ng-repeat="duplicate in $ctrl.mergeContacts.duplicates track by $index">
                         <div class="col-sm-5">
                             <merge-contacts-item contact="duplicate.contacts[0]" on-click="$ctrl.useThisOne(duplicate, 0)" selected="duplicate.mergeChoice == 0" ignored="duplicate.mergeChoice == 2"></merge-contacts-item>
                         </div>
