@@ -1,5 +1,4 @@
 import config from 'config';
-import assign from 'lodash/fp/assign';
 
 export default class Routes {
     static config($stateProvider) {
