@@ -252,6 +252,7 @@ class ContactsService {
     addBulk(contacts) {
         return this.api.post({url: 'contacts/bulk', data: contacts, type: 'contacts'}).then(() => {
             this.getList(true);
+            this.completeList = sortBy('name', concat(this.completeList, map(contact => { return {name: contact.name, id: contact.id}; })));
             this.load(true); //refresh data list since it could conflict with api pagination
         });
     }
