@@ -19,7 +19,7 @@ class EditTaskController {
 
         this.task = angular.copy(task);
         this.taskInitialState = angular.copy(task);
-          
+
         if (isNil(this.task.start_at)) {
             this.no_date = true;
         }
