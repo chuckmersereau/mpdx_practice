@@ -1,6 +1,8 @@
 import indexOf from 'lodash/fp/indexOf';
 
 class CompleteTaskController {
+    comment;
+    status;
     constructor(
         $q, $scope,
         serverConstants, tasks, contacts,

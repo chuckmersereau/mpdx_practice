@@ -1,4 +1,7 @@
+import isNil from 'lodash/fp/isNil';
+
 class EditTaskController {
+    comment;
     constructor(
         $log, $scope,
         modal, contacts, tasksTags, tasks, serverConstants, users,
@@ -14,7 +17,7 @@ class EditTaskController {
         this.users = users;
 
         this.task = angular.copy(task);
-        if (this.task.start_at == null) {
+        if (isNil(this.task.start_at)) {
             this.no_date = true;
         }
     }
