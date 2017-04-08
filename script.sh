@@ -7,17 +7,22 @@ npm test
 echo '-- run eslint --'
 eslint .
 
+if [ "$TRAVIS_BRANCH" = "master" ]
+then
+    echo '-- build production --'
+    export NODE_ENV=production
+else
+    echo '-- build staging --'
+    export NODE_ENV=staging
+fi
+
+echo '-- run build --'
+npm run build
+
+echo '<!-- COMMIT:' $TRAVIS_COMMIT '-->' >> public/index.html
+
 if [ "$TRAVIS_PULL_REQUEST" = "false" ]
 then
-    if [ "$TRAVIS_BRANCH" = "master" ]
-    then
-        echo '-- build production --'
-        export NODE_ENV=production
-    else
-        echo '-- build staging --'
-        export NODE_ENV=staging
-    fi
-
     echo '-- extract translations from source --'
     gulp extract
 
@@ -27,18 +32,8 @@ then
     echo '-- download translation po from onesky --'
     node onesky/download
 
-    echo '-- run build --'
-    npm run build
-
     echo '-- extract language po into angular-gettext json --'
     gulp translations
-
-    echo '<!-- COMMIT:' $TRAVIS_COMMIT '-->' >> public/index.html
 else
-    echo 'Skipping translation and build because the current build is a pull request.'
+    echo 'Skipping translation because the current build is a pull request.'
 fi
-
-
-
-
-
