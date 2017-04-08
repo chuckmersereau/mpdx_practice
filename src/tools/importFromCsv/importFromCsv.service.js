@@ -2,7 +2,7 @@ const each = require('lodash/fp/each').convert({ 'cap': false });
 const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 import joinComma from "../../common/fp/joinComma";
 import difference from 'lodash/fp/difference';
-import flatMap from 'lodash/fp/flatMap';
+import flatten from 'lodash/fp/flatten';
 import values from 'lodash/fp/values';
 import union from 'lodash/fp/union';
 
@@ -12,12 +12,13 @@ class ImportFromCsvService {
 
     constructor(
         $log, $q, Upload,
-        api
+        api, serverConstants
     ) {
         this.$log = $log;
         this.$q = $q;
         this.Upload = Upload;
         this.api = api;
+        this.serverConstants = serverConstants;
 
         this.data = null;
         this.headers_to_fields_mapping = {};
@@ -80,26 +81,34 @@ class ImportFromCsvService {
             this.data.tag_list = joinComma(this.data.tag_list); //fix for api mis-match
         }
 
-        this.data.file_headers_mappings = {};
-        each((value, key) => {
+        this.data.file_headers_mappings = reduce((result, value, key) => {
             if (value) {
-                this.data.file_headers_mappings[value] = key;
+                result[value] = key;
             }
-        }, this.headers_to_fields_mapping);
+            return result;
+        }, {}, this.headers_to_fields_mapping);
 
-        this.data.file_constants_mappings = {};
-        each((obj, constant) => {
+        this.data.file_constants_mappings = reduce((result, obj, constant) => {
             if (this.data.file_headers_mappings[constant]) {
-                this.data.file_constants_mappings[constant] = {};
+                result[constant] = {};
 
                 each((value, key) => {
-                    if (!this.data.file_constants_mappings[constant][value]) {
-                        this.data.file_constants_mappings[constant][value] = [];
+                    if (!result[constant][value]) {
+                        result[constant][value] = [];
                     }
-                    this.data.file_constants_mappings[constant][value].push(key);
+                    result[constant][value].push(key);
                 }, obj);
             }
-        }, this.values_to_constants_mapping);
+            return result;
+        }, {}, this.values_to_constants_mapping);
+
+        // add unselected constants
+        this.data.file_constants_mappings = reduce((result, value, key) => {
+            if (this.serverConstants.data.csv_import.constants[key] && !result[key]) {
+                result[key] = {'': []};
+            }
+            return result;
+        }, this.data.file_constants_mappings, this.data.file_headers_mappings);
 
         // add unmapped constants to empty key. eg: {'': ['a', 'b', 'c']}
         each((obj, constant) => {
@@ -107,7 +116,7 @@ class ImportFromCsvService {
 
             if (constantKey) {
                 const constants = this.data.file_constants[constantKey];
-                const mappedConstants = flatMap(values(obj));
+                const mappedConstants = flatten(values(obj));
                 const unmappedCosntants = difference(constants, mappedConstants);
 
                 if (unmappedCosntants.length) {

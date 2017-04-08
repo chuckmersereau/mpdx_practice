@@ -40,7 +40,7 @@
                         <translate>See Notes</translate>
                     </a>
                 </div>
-                <div class="card" ng-repeat="address in $ctrl.contact.addresses" ng-if="address.id == $ctrl.contact.primary_address_id">
+                <div ng-repeat="address in $ctrl.contact.addresses" ng-if="address.id == $ctrl.contact.primary_address_id">
                     <contact-address address="address"></contact-address>
                 </div>
             </div>

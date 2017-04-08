@@ -33,7 +33,7 @@ class MergeContacts {
             include: 'contacts,contacts.addresses',
             fields: {
                 contacts: 'addresses,name,square_avatar',
-                addresses: 'primary,street,city,state,postal_code'
+                addresses: 'city,postal_code,primary_mailing_address,state,street'
             },
             filter: {account_list_id: this.api.account_list_id},
             per_page: this.perPage

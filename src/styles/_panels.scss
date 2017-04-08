@@ -31,6 +31,9 @@
             position: relative;
         }
     }
+    &-empty {
+        line-height: 150px;
+    }
     &-group .panel {
         border-radius: 1px;
     }

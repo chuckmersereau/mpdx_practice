@@ -13,22 +13,25 @@ class ItemController {
     $onInit() {
         this.showContacts = false;
         this.showComments = false;
+        this.loaded = false;
     }
     toggleContacts() {
         this.showContacts = !this.showContacts;
-        if (this.showContacts && !this.task.contacts) {
-            this.tasks.get(this.task.id, false).then((task) => {
-                this.task = task;
-            });
+        if (this.showContacts && !this.loaded) {
+            this.load();
         }
     }
     toggleComments() {
         this.showComments = !this.showComments;
-        if (this.showComments && !this.task.comments) {
-            this.tasks.get(this.task.id, false).then((task) => {
-                this.task = task;
-            });
+        if (this.showComments && !this.loaded) {
+            this.load();
         }
+    }
+    load() {
+        this.tasks.get(this.task.id, false).then((task) => {
+            this.loaded = true;
+            this.task = task;
+        });
     }
     complete() {
         this.tasks.completeModal(this.task);
