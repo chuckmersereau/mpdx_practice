@@ -1,3 +1,5 @@
+import map from 'lodash/fp/map';
+
 class ImportsService {
     api;
 
@@ -37,10 +39,10 @@ class ImportsService {
         if (angular.isDefined(data) && data !== null) {
             for (let key in data.group_tags) {
                 if (data.group_tags.hasOwnProperty(key)) {
-                    data.group_tags[key] = data.group_tags[key].map(tagArr => tagArr.text);
+                    data.group_tags[key] = map('text', data.group_tags[key]);
                 }
             }
-            data.tags = data.tags.map(tag => tag.text);
+            data.tags = map(text, data.tags);
             return this.api.post('user/google_accounts', data).then(() => {
                 this.selected_account = null;
                 if (this.data.google_accounts.length === 1) {
