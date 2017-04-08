@@ -2,7 +2,6 @@ import get from 'lodash/fp/get';
 import has from 'lodash/fp/has';
 import keyBy from 'lodash/fp/keyBy';
 import keys from 'lodash/fp/keys';
-const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 import toString from 'lodash/fp/toString';
 import createPatch from "../fp/createPatch";
 
@@ -119,14 +118,7 @@ class Users {
     }
     setOption(option) {
         return this.api.put({ url: `user/options/${option.key}`, data: option, type: 'user_options' }).then((data) => {
-            this.current.options = reduce((result, val, key) => {
-                if (option.key === key) {
-                    result[key] = data;
-                } else {
-                    result[key] = val;
-                }
-                return result;
-            }, {}, this.current.options);
+            this.current.options[option.key] = data;
             return data;
         }); //use jsonapi key here since it doesn't match endpoint
     }
