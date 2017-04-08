@@ -4,10 +4,11 @@ import map from 'lodash/fp/map';
 import uuid from 'uuid/v1';
 
 class ContactDetailsController {
-    alerts
+    alerts;
     contact;
     contacts;
     contactsTags;
+    onSave;
     serverConstants;
     users;
 
@@ -70,9 +71,6 @@ class ContactDetailsController {
                 "data": {
                     "type": "contacts",
                     "id": this.contact.id,
-                    "attributes": {
-                        "updated_in_db_at": this.contact.updated_in_db_at
-                    },
                     "relationships": {
                         "contact_referrals_to_me": {
                             "data": [
@@ -89,8 +87,7 @@ class ContactDetailsController {
                 url: `contacts/${this.contact.id}`,
                 data: request,
                 doSerialization: false
-            }).then((data) => {
-                this.contact.updated_in_db_at = data.updated_in_db_at;
+            }).then(() => {
                 this.contact.contacts_that_referred_me = [{id: this.referrer}];
                 this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
             }).catch(() => {

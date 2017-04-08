@@ -232,10 +232,10 @@ class EntityAttributes {
     constructor() {
         this.attributes = {
             account_list_invites: {
-                attributes: ["accepted_at", "accepted_by_user_id", "account_list_id", "cancelled_by_user_id", "code", "created_at", "invited_by_user_id", "recipient_email", "updated_at", "updated_in_db_at"]
+                attributes: ["accepted_at", "accepted_by_user_id", "account_list_id", "cancelled_by_user_id", "code", "created_at", "invited_by_user_id", "recipient_email", "updated_at"]
             },
             account_lists: {
-                attributes: ["creator_id", "created_at", "currency", "home_country", "monthly_goal", "name", "notification_preferences", "settings", "tester", "total_pledges", "updated_at", "updated_in_db_at"],
+                attributes: ["creator_id", "created_at", "currency", "home_country", "monthly_goal", "name", "notification_preferences", "settings", "tester", "total_pledges", "updated_at"],
                 notification_preferences: {
                     ref: 'id',
                     attributes: ["actions", "notification_type"],
@@ -243,17 +243,17 @@ class EntityAttributes {
                 }
             },
             addresses: {
-                attributes: ["city", "country", "end_date", "geo", "historic", "location", "metro_area", "postal_code", "primary_mailing_address", "region", "start_date", "state", "street", "updated_in_db_at"]
+                attributes: ["city", "country", "end_date", "geo", "historic", "location", "metro_area", "postal_code", "primary_mailing_address", "region", "start_date", "state", "street"]
             },
             appeals: {
-                attributes: ["amount", "contacts", "created_at", "currencies", "description", "donations", "end_date", "name", "total_currency", "updated_at", "updated_in_db_at"]
+                attributes: ["amount", "contacts", "created_at", "currencies", "description", "donations", "end_date", "name", "total_currency", "updated_at"]
             },
             bulk: {
                 attributes: ["tag_name"],
                 pluralizeType: false
             },
             comments: {
-                attributes: ["body", "person", "updated_in_db_at"],
+                attributes: ["body", "person"],
                 person: { ref: 'id', pluralizeType: false }
             },
             contacts: {
@@ -262,7 +262,7 @@ class EntityAttributes {
                     "last_activity", "last_appointment", "last_donation_date", "last_letter", "likely_to_give", "last_phone_call", "last_pre_call", "last_thank", "late_at", "locale", "loser_id",
                     "magazine", "name", "next_ask", "no_appeals", "not_duplicated_with", "notes", "notes_saved_at",
                     "people", "pledge_amount", "pledge_currency", "pledge_frequency", "pledge_received", "pledge_start_date", "pls_id", "prayer_letters_id", "prayer_letters_params", "primary_person",
-                    "send_newsletter", "status", "tag_list", "timezone", "tnt_id", "total_donations", "uncompleted_tasks_count", "updated_at", "updated_in_db_at", "website", "winner_id"
+                    "send_newsletter", "status", "tag_list", "timezone", "tnt_id", "total_donations", "uncompleted_tasks_count", "updated_at", "website", "winner_id"
                 ],
                 addresses: {
                     ref: 'id',
@@ -270,7 +270,7 @@ class EntityAttributes {
                 },
                 people: {
                     ref: 'id',
-                    attributes: ["email_addresses", "first_name", "last_name", "phone_numbers", "updated_in_db_at"],
+                    attributes: ["email_addresses", "first_name", "last_name", "phone_numbers"],
                     email_addresses: {
                         ref: 'id',
                         attributes: ["email", "primary", "source", "valid_values"]
@@ -317,13 +317,13 @@ class EntityAttributes {
                 }
             },
             donations: {
-                attributes: ["amount", "appeal", "appeal_amount", "channel", "created_at", "designation_account", "donation_date", "donor_account", "motivation", "payment_method", "payment_type", "remote_id", "tendered_currency", "tendered_amount", "currency", "memo", "updated_at", "updated_in_db_at"],
+                attributes: ["amount", "appeal", "appeal_amount", "channel", "created_at", "designation_account", "donation_date", "donor_account", "motivation", "payment_method", "payment_type", "remote_id", "tendered_currency", "tendered_amount", "currency", "memo", "updated_at"],
                 designation_account: { ref: 'id' },
                 donor_account: { ref: 'id' },
                 appeal: { ref: 'id' }
             },
             imports: {
-                attributes: ["file_headers", "file_headers_mappings", "file_constants", "file_constants_mappings", "sample_contacts", "in_preview", "tag_list", "updated_in_db_at"],
+                attributes: ["file_headers", "file_headers_mappings", "file_constants", "file_constants_mappings", "sample_contacts", "in_preview", "tag_list"],
                 sample_contacts: { ref: 'id' },
                 typeForAttribute: (key) => {
                     if (key === 'sample_contacts') {
@@ -347,7 +347,7 @@ class EntityAttributes {
                 attributes: ["winner_id", "loser_id"]
             },
             notifications: {
-                attributes: ["contact_id", "notification_type_id", "event_date", "cleared", "created_at", "updated_at", "donation_id", "updated_in_db_at"]
+                attributes: ["contact_id", "notification_type_id", "event_date", "cleared", "created_at", "updated_at", "donation_id"]
             },
             organization_accounts: {
                 attributes: ["organization", "password", "username", "person"],
@@ -358,35 +358,35 @@ class EntityAttributes {
                 attributes: ["first_name", "legal_first_name", "last_name", "birthday_month", "birthday_year", "birthday_day", "anniversary_month", "anniversary_year", "anniversary_day", "title",
                     "suffix", "gender", "marital_status", "preferences", "sign_in_count", "current_sign_in_at", "last_sign_in_at", "current_sign_in_ip", "last_sign_in_ip", "created_at", "updated_at",
                     "master_person_id", "middle_name", "access_token", "profession", "deceased", "subscribed_to_updates", "optout_enewsletter", "occupation", "employer", "not_duplicated_with",
-                    "phone_numbers", "email_addresses", "facebook_accounts", "family_relationships", "linkedin_accounts", "twitter_accounts", "websites", "updated_in_db_at", "winner_id", "loser_id"],
+                    "phone_numbers", "email_addresses", "facebook_accounts", "family_relationships", "linkedin_accounts", "twitter_accounts", "websites", "winner_id", "loser_id"],
                 email_addresses: {
                     ref: 'id',
-                    attributes: ["email", "primary", "remote_id", "location", "historic", "source", "valid_values", "_destroy", "updated_in_db_at"]
+                    attributes: ["email", "primary", "remote_id", "location", "historic", "source", "valid_values", "_destroy"]
                 },
                 facebook_accounts: {
                     ref: 'id',
-                    attributes: ["_destroy", "username", "updated_in_db_at"]
+                    attributes: ["_destroy", "username"]
                 },
                 family_relationships: {
                     ref: 'id',
-                    attributes: ["_destroy", "related_person", "relationship", "created_at", "updated_in_db_at"],
+                    attributes: ["_destroy", "related_person", "relationship", "created_at"],
                     related_person: { ref: 'id' }
                 },
                 linkedin_accounts: {
                     ref: 'id',
-                    attributes: ["_destroy", "public_url", "updated_in_db_at"]
+                    attributes: ["_destroy", "public_url"]
                 },
                 phone_numbers: {
                     ref: 'id',
-                    attributes: ["number", "country_code", "location", "primary", "updated_at", "remote_id", "historic", "source", "valid_values", "_destroy", "updated_in_db_at"]
+                    attributes: ["number", "country_code", "location", "primary", "updated_at", "remote_id", "historic", "source", "valid_values", "_destroy"]
                 },
                 twitter_accounts: {
                     ref: 'id',
-                    attributes: ["_destroy", "screen_name", "updated_in_db_at"]
+                    attributes: ["_destroy", "screen_name"]
                 },
                 websites: {
                     ref: 'id',
-                    attributes: ["_destroy", "url", "primary", "updated_in_db_at"]
+                    attributes: ["_destroy", "url", "primary"]
                 },
                 typeForAttribute: (key) => {
                     if (key === 'related_person') {
@@ -398,11 +398,11 @@ class EntityAttributes {
             tasks: {
                 attributes: ["account_list", "activity_type", "location", "start_at", "end_at", "type", "created_at", "updated_at", "completed", "completed_at", "comments", "contacts", "due_date",
                     "notification_id", "next_action", "no_date", "notification_type", "notification_time_before", "remote_id", "result", "source", "starred", "subject", "tag_list",
-                    "notification_time_unit", "notification_scheduled", "updated_in_db_at"],
+                    "notification_time_unit", "notification_scheduled"],
                 account_list: { ref: 'id' },
                 comments: {
                     ref: 'id',
-                    attributes: ["body", "updated_in_db_at", "person"],
+                    attributes: ["body", "person"],
                     person: { ref: 'id' }
                 },
                 contacts: { ref: 'id' }
@@ -411,14 +411,14 @@ class EntityAttributes {
                 attributes: ['name']
             },
             user: {
-                attributes: ["first_name", "last_name", "preferences", "setup", "email_addresses", "access_token", "time_zone", "locale", "updated_at", "updated_in_db_at"],
+                attributes: ["first_name", "last_name", "preferences", "setup", "email_addresses", "access_token", "time_zone", "locale", "updated_at"],
                 email_addresses: {
                     ref: 'id',
-                    attributes: ["email", "updated_in_db_at"]
+                    attributes: ["email"]
                 }
             },
             user_options: {
-                attributes: ["key", "value", "updated_in_db_at"]
+                attributes: ["key", "value"]
             },
             mail_chimp_account: {
                 attributes: ["api_key", "primary_list_id", "sync_all_active_contacts", "auto_log_campaigns"]
