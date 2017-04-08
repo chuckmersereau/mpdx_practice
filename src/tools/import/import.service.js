@@ -42,7 +42,7 @@ class ImportsService {
                     data.group_tags[key] = map('text', data.group_tags[key]);
                 }
             }
-            data.tags = map(text, data.tags);
+            data.tags = map('text', data.tags);
             return this.api.post('user/google_accounts', data).then(() => {
                 this.selected_account = null;
                 if (this.data.google_accounts.length === 1) {
