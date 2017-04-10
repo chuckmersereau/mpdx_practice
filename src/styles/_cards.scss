@@ -1,5 +1,5 @@
 .card {
-    border: 1px solid #D5D5D5;
+    border: 1px solid $color-panel-border;
     background-color: #F7F7F7;
     padding: 15px;
     font-size: $font-size-sm;
@@ -7,5 +7,8 @@
     margin-bottom: 10px;
     .pull-right a {
         cursor: pointer;
+    }
+    &.primary {
+      border: 1px solid $color-primary;
     }
 }

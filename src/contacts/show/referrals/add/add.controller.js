@@ -64,19 +64,6 @@ class AddReferralsModalController {
         return this.contacts.addReferrals(this.contact, contacts).then((data) => {
             this.$scope.$hide();
             return data;
-            // let successMessage;
-            // let failedMessage;
-            // let alertType = '';
-            // if (data.success.length) {
-            //     successMessage = `Successfully added: ${_.map(data.success.map, c => c.greeting).join(', ')}.  `;
-            //     alertType = 'success';
-            // }
-            // if (data.failed) {
-            //     failedMessage = `Failed to add ${data.failed} ${data.failed > 1 ? 'referrals!' : 'referral!'}`;
-            //     alertType = 'warning';
-            // }
-            //
-            // this.alerts.addAlert(successMessage + failedMessage, alertType, 10000);
         });
     }
 }
