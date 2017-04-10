@@ -5,7 +5,6 @@ import find from 'lodash/fp/find';
 import forEachRight from 'lodash/fp/forEachRight';
 import map from 'lodash/fp/map';
 import reject from 'lodash/fp/reject';
-import moment from 'moment';
 
 class ContactController {
     alerts;

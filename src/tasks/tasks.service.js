@@ -337,12 +337,12 @@ class TasksService {
     bulkDelete() {
         const message = this.gettextCatalog.getString('Are you sure you wish to delete the selected tasks?');
         return this.modal.confirm(message).then(() => {
-            return this.api.delete({url: 'tasks/bulk', data: selected, type: 'tasks'}).then(() => {
+            return this.api.delete({url: 'tasks/bulk', data: this.selected, type: 'tasks'}).then(() => {
                 this.data = pullAllBy('id', this.selected, this.data);
                 this.completeList = pullAllBy('id', this.selected, this.completeList);
                 this.selected = [];
             }, () => {
-                this.alerts.addAlert(this.gettextCatalog.getPlural(selected.length, 'Unable to delete that task.', 'Unable to delete {{$count}} tasks. Try deleting less tasks.', {}), 'danger');
+                this.alerts.addAlert(this.gettextCatalog.getPlural(this.selected.length, 'Unable to delete that task.', 'Unable to delete {{$count}} tasks. Try deleting less tasks.', {}), 'danger');
             });
         });
     }

@@ -37,6 +37,10 @@ function serialize(key, params, item, method) {
     if (method === 'post' && serialized.data.id === 'undefined') {
         delete serialized.data.id;
     }
+    //enable overwrite for put/delete
+    if (method === 'put' || method === 'delete') {
+        serialized.data.attributes.overwrite = true;
+    }
     return serialized;
 }
 
@@ -79,11 +83,6 @@ class Api {
             if (angular.isDefined(cachedData)) {
                 return this.$q.resolve(cachedData);
             }
-        }
-
-        //enable overwrite for put/delete
-        if ((method === 'put' || method === 'delete') && doSerialization) {
-            data.overwrite = true;
         }
 
         if (overrideGetAsPost) {
