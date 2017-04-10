@@ -1,4 +1,5 @@
 import createPatch from '../../../common/fp/createPatch';
+import isNil from 'lodash/fp/isNil';
 
 class EditTaskController {
     comment;
@@ -19,7 +20,7 @@ class EditTaskController {
         this.task = angular.copy(task);
         this.taskInitialState = angular.copy(task);
 
-        if (this.task.start_at == null) {
+        if (isNil(this.task.start_at)) {
             this.no_date = true;
         }
     }

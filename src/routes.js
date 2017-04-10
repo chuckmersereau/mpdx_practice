@@ -1,5 +1,4 @@
 import config from 'config';
-import assign from 'lodash/fp/assign';
 
 export default class Routes {
     static config($stateProvider) {
@@ -44,8 +43,7 @@ export default class Routes {
                 filter: /*@ngInject*/ ($stateParams, contactFilter) => {
                     return contactFilter.load().then(() => {
                         if ($stateParams.filters) {
-                            contactFilter.params = assign(contactFilter.params, $stateParams.filters);
-                            contactFilter.change();
+                            contactFilter.reset($stateParams.filters);
                         }
                     });
                 },
@@ -201,8 +199,7 @@ export default class Routes {
                 filter: /*@ngInject*/ ($stateParams, tasksFilter) => {
                     return tasksFilter.load().then(() => {
                         if ($stateParams.filters) {
-                            tasksFilter.params = assign(tasksFilter.params, $stateParams.filters);
-                            tasksFilter.change();
+                            tasksFilter.reset($stateParams.filters);
                         }
                     });
                 },

@@ -40,23 +40,6 @@ function serialize(key, params, item, method) {
     return serialized;
 }
 
-function cleanFilters(filter) {
-    return reduce((result, value, key) => {
-        if (isArray(value)) {
-            value = pull('', value);
-            if (value.length > 0) {
-                result[key] = joinComma(value);
-            }
-        } else {
-            if (!isNil(value) && value !== '') {
-                result[key] = value;
-            }
-        }
-        return result;
-    }, {}, filter);
-}
-
-
 class Api {
     constructor(
         $http, $cacheFactory, $log, $q, $timeout,
@@ -113,7 +96,7 @@ class Api {
             } else {
                 data.data = {type: type};
             }
-            data.filter = cleanFilters(data.filter);
+            data.filter = this.cleanFilters(data.filter);
         }
 
         if (method === 'get' || method === 'delete') {
@@ -229,6 +212,21 @@ class Api {
     }
     encodeURLarray(array) {
         return map(encodeURIComponent, array);
+    }
+    cleanFilters(filter) {
+        return reduce((result, value, key) => {
+            if (isArray(value)) {
+                value = pull('', value);
+                if (value.length > 0) {
+                    result[key] = joinComma(value);
+                }
+            } else {
+                if (!isNil(value) && value !== '') {
+                    result[key] = value;
+                }
+            }
+            return result;
+        }, {}, filter);
     }
 }
 
