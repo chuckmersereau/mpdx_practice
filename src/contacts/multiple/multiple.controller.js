@@ -63,7 +63,7 @@ class MultipleController {
         if (contacts.length === 0) {
             return;
         }
-        this.contacts.addBulk(contacts).then(() => {
+        return this.contacts.addBulk(contacts).then(() => {
             this.$scope.$hide();
         });
     }

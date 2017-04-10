@@ -1,4 +1,5 @@
 class AddTaskController {
+    comment;
     constructor(
         $scope,
         tasksTags, serverConstants, tasks, contacts, users,

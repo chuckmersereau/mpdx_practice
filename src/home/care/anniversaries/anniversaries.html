@@ -2,7 +2,7 @@
 <ul class="list-unstyled" ng-if="$ctrl.contacts.analytics.anniversaries_this_week.length">
     <li ng-repeat="contact in $ctrl.contacts.analytics.anniversaries_this_week | limitTo: $ctrl.limit">
         <a ui-sref="contacts.show({ contactId: contact.id })">
-            <span ng-repeat="person in contact.people">
+            <span ng-repeat="person in contact.people track by people.id">
                 <span ng-if="$index === 0">{{ person.anniversary_month }}-{{ person.anniversary_day }}</span>
                 {{person.first_name}} {{person.last_name}}
                 <facebook-link facebook-account="person.facebook_accounts[0]" ng-if="person.facebook_accounts[0]"></facebook-link>

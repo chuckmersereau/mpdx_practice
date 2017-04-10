@@ -2,10 +2,14 @@ import config from 'config';
 
 import Routes from "./routes";
 /*@ngInject*/
-export default function appConfig($analyticsProvider, $locationProvider, $logProvider, $stateProvider, $httpProvider, $urlRouterProvider, blockUIConfig, RollbarProvider) {
+export default function appConfig(
+    $analyticsProvider, $locationProvider, $logProvider, $stateProvider, $httpProvider, $qProvider, $urlRouterProvider,
+    blockUIConfig, RollbarProvider
+) {
     if (config.env !== 'production') {
         $analyticsProvider.virtualPageviews(false);
     }
+    $qProvider.errorOnUnhandledRejections(false); // hide ui-router 'Possibly unhandled rejection' and no-catch conditions
     $urlRouterProvider.otherwise('/unavailable');
     $locationProvider.html5Mode({
         enabled: true,
