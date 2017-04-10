@@ -98,6 +98,11 @@ class Api {
             }
         }
 
+        //enable overwrite for put/delete
+        if ((method === 'put' || method === 'delete') && doSerialization) {
+            data.overwrite = true;
+        }
+
         if (overrideGetAsPost) {
             headers['X-HTTP-Method-Override'] = 'GET';
             method = 'post';
