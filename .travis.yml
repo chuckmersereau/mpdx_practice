@@ -22,6 +22,18 @@ deploy:
     repo: CruGlobal/mpdx_web
     branch: master
 - provider: s3
+  access_key_id: AKIAI4EEUDXF23GRIX4A
+  secret_access_key:
+    secure:
+      "AJ1JZOUXzi+DXcgMZd08RAXgu6tkICSg9VqOf3wYtsxT6MLGHONU1HOKSiNMC4zgM9OPoCKgxdZZYLQCA1O5M6Ah2G5qSFOuZ6mfwuz36aMLV+40oyceMo/mCQ83SBhu4tlDOiTgFokb7jXAQirqOUZqe4Hlg7LvK0T46QcBBhI47W8GUEn9CD7Y+XntX2YYDv+jm2KDFBNV5tv9Y/mrKn0qMvVvbRyY4zBirg/CedjGgNmU3SYtaC8TXtflYjm0oZZZ9+gzRx14OrWnHQ60jWR4gCsvePMURaMkXp7QAFg7KfI6rPiWzHU7RouYxRlo6DJLFhdDxuQewPSApI/2uxsvL58Gr5RzcvvQAzGT4ijnyqlGIwZEagxWw/Ifg7fspWQR63a/7a3NfEQiOJaMus1joYoDd+7RBfIQFjZy60xVU8jqHOdB/jkQP+DeTUMfo9kKdZKp2gbZ84xrkrLve+Ceo0jy74zoLuF7MpUFJp3yMSLm95SrT3avGW0QgK1orwAii/lW1IjqoMtH2IYFwfAYEfbfKkAOt7uCx6jqYW5v8MCkqtrLVJUFnGJVxJQCT60uFwXacU+eCb0IWTcJnziBIdFBlmgj/ehUPusNWjQ86sbtg8cvS3U3QvAMRKnjl41QaQBBixWqKy2EmFy1G0CJBUf5/lz8b1nXO6tfVus="
+  bucket: cru-mpdx-web-next
+  skip_cleanup: true
+  local_dir: public
+  acl: public_read
+  on:
+    repo: CruGlobal/mpdx_web
+    branch: next
+- provider: s3
   access_key_id: AKIAJCDUBSRAJGJTF5AA
   secret_access_key:
     secure: "azelo7ICvOTaCf7isSReHp1TA6yTdy67YyH2pcyxYZMo8hoUgwTgromWgY8PfHl5lfIbXoupbvsAgMiROW5vG6A7AJuf7UeNP9tU7KBhzYEm3wKtWAQYqA+cp/66ZzE1CuWQF1ExfWkS0gekQ1/Ye0xF7p7CpNGt8Mw4rSzZllfvBnuJq0Tzw8eJ4GBgidY1evlEghK5mR6QnvVttScxzDeXEMJucaQeg3YUr4kkiQsmy9YmYiyqK2E0a+dj/SYEy0ufECQKngk3HRzE5GEkaZuo0T0/nlCgbEW7ML0HX7PizGhdwCvuYDqe7DUVFj994mWOxqKuEDVGDp+oenqJIctEUvrS3JWa9KQyqxR/sj1Sla1kx77NRXD3OVPT7dxJctmQbEwBCnwX7vShyhR7yGpfp174QFwoLsUrV/IFdJO+KzgA80LaGB6VHS4kP/FA3VjdlipJPsydJ5vY23yCZZYw7QXLJ3BuAp46cS2aAnfj82MHDETspCY2AaVJ5QnbDusdiKX45OlwHwyISIhqk/5vM5B33fK9nOlv86aDPGF4S31+BG7fUJ0ImKmDAwDM7uAAz6kaFDu2gvM7kn9LO4r9SQK47/E+unmTfcS42Azhdj5Af6GrzLEub+Xfibh0/IDXgeHlEGGN4cvYlgl2ZR2KM1HbMSkxOPGImnYhN9Y="
