@@ -39,6 +39,18 @@ preferences {
     }
 }
 
+preferences-sidebar {
+    display: block;
+    margin-bottom: $gutter;
+}
+
+preferences-notifications {
+    .list-group {
+        .pull-right {margin-left: $gutter/2;}
+        .form-group {margin-bottom: 0;}
+    }
+}
+
 integration-preferences {
     .panel-heading {
         .pull-right {margin-right: 30px;}
@@ -48,3 +60,29 @@ integration-preferences {
 .accstatus-enabled {color: green;}
 .accstatus-error {color: red;}
 .accstatus-disabled {color: $color-panel-border;}
+
+.merge-direction {
+    @include breakpoint(xs) {
+        padding-bottom: 20px;
+    }
+    .fa {
+        line-height: 101px;
+        @include breakpoint(xs) {
+            -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=1)";
+            -webkit-transform: rotate(90deg);
+            -ms-transform: rotate(90deg);
+            transform: rotate(90deg);
+            font-size: 3em;
+            line-height: 1;
+        }
+    }
+}
+
+merge-preferences {
+    .well {
+        label {
+            display: block;
+            text-align: center;
+        }
+    }
+}

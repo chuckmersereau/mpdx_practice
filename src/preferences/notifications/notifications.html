@@ -16,7 +16,6 @@
     </div>
     <ul class="list-group">
         <li class="list-group-item" ng-repeat="notification in $ctrl.notifications">
-            {{ notification.title }}
             <div class="pull-right">
                 <div class="form-group">
                     <label class="checkbox-inline">
@@ -29,6 +28,7 @@
                     </label>
                 </div>
             </div>
+            {{ notification.title }}
         </li>
     </ul>
     <div class="panel-footer text-right">
