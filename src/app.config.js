@@ -6,7 +6,7 @@ export default function appConfig(
     $analyticsProvider, $locationProvider, $logProvider, $stateProvider, $httpProvider, $qProvider, $urlRouterProvider,
     blockUIConfig, RollbarProvider
 ) {
-    if (config.env !== 'production') {
+    if (config.env !== 'production' && config.env !== 'next') {
         $analyticsProvider.virtualPageviews(false);
     }
     $qProvider.errorOnUnhandledRejections(false); // hide ui-router 'Possibly unhandled rejection' and no-catch conditions
