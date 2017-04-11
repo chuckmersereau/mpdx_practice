@@ -8,6 +8,7 @@ before_install:
 branches:
   only:
   - master
+  - next
   - staging
 deploy:
 - provider: s3
