@@ -4,7 +4,7 @@ import Routes from "./routes";
 /*@ngInject*/
 export default function appConfig(
     $analyticsProvider, $locationProvider, $logProvider, $stateProvider, $httpProvider, $qProvider, $urlRouterProvider,
-    blockUIConfig, RollbarProvider
+    blockUIConfig, RollbarProvider, timeAgoSettings
 ) {
     if (config.env !== 'production' && config.env !== 'next') {
         $analyticsProvider.virtualPageviews(false);
@@ -31,4 +31,5 @@ export default function appConfig(
     } else {
         RollbarProvider.deinit();
     }
+    timeAgoSettings.strings['en_US'].suffixAgo = '';
 }
