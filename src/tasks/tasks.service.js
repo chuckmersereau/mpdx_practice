@@ -376,8 +376,8 @@ class TasksService {
             this.clearSelected();
         }
     }
-    addModal(contactsList = []) {
-        return this.tasksModals.add(contactsList);
+    addModal(contactsList = [], activityType = null) {
+        return this.tasksModals.add(contactsList, activityType);
     }
     newsletterModal() {
         return this.tasksModals.newsletter();

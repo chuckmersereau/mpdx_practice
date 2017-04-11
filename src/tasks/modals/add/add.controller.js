@@ -3,7 +3,7 @@ class AddTaskController {
     constructor(
         $scope,
         tasksTags, serverConstants, tasks, contacts, users,
-        contactsList
+        contactsList, activityType
     ) {
         this.$scope = $scope;
         this.contacts = contacts;
@@ -13,13 +13,14 @@ class AddTaskController {
         this.users = users;
 
         this.contactsList = angular.copy(contactsList);
-        this.task = {};
+        this.task = { activity_type: activityType };
+        this.setDueDate = true;
     }
     addContact() {
         this.contactsList.push('');
     }
     save() {
-        if (this.no_date) {
+        if (!this.setDueDate) {
             this.task.start_at = null;
         }
         return this.tasks.create(
