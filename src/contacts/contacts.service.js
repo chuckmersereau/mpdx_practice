@@ -7,8 +7,8 @@ import isArray from 'lodash/fp/isArray';
 import isEqual from 'lodash/fp/isEqual';
 import isFunction from 'lodash/fp/isFunction';
 import map from 'lodash/fp/map';
-const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 import pull from 'lodash/fp/pull';
+import pullAllBy from 'lodash/fp/pullAllBy';
 import reject from 'lodash/fp/reject';
 import sortBy from 'lodash/fp/sortBy';
 import toInteger from 'lodash/fp/toInteger';
@@ -17,6 +17,8 @@ import unionBy from 'lodash/fp/unionBy';
 import joinComma from "../common/fp/joinComma";
 import mapByName from "../common/fp/mapByName";
 import relationshipId from "../common/fp/relationshipId";
+const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
+
 
 class ContactsService {
     alerts;
@@ -174,9 +176,9 @@ class ContactsService {
                 per_page: 25,
                 include: 'addresses,people,people.facebook_accounts,people.phone_numbers,people.email_addresses',
                 fields: {
-                    contact: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people,updated_in_db_at',
+                    contact: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people',
                     people: 'deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
-                    addresses: 'city,historic,primary_mailing_address,postal_code,state,source,street,updated_in_db_at',
+                    addresses: 'city,historic,primary_mailing_address,postal_code,state,source,street',
                     email_addresses: 'email,historic,primary',
                     phone_numbers: 'historic,location,number,primary',
                     facebook_accounts: 'username'
@@ -243,26 +245,27 @@ class ContactsService {
     create(contact) {
         contact.account_list = { id: this.api.account_list_id };
         return this.api.post('contacts', contact).then((data) => {
-            this.completeList = sortBy('name', concat(this.completeList, {name: data.name, id: data.id}));
-            this.completeFilteredList = sortBy('name', concat(this.completeFilteredList, {name: data.name, id: data.id}));
+            this.getFilteredList(true);
             this.load(true); //refresh data list since it could conflict with api pagination
+            this.completeList = sortBy('name', concat(this.completeList, {name: data.name, id: data.id}));
             return data;
         });
     }
     addBulk(contacts) {
         return this.api.post({url: 'contacts/bulk', data: contacts, type: 'contacts'}).then(() => {
-            this.getList(true);
+            this.getFilteredList(true);
             this.load(true); //refresh data list since it could conflict with api pagination
+            this.completeList = sortBy('name', concat(this.completeList, map(contact => { return {name: contact.name, id: contact.id}; }, contacts)));
         });
     }
     addReferrals(contact, contacts) {
         return this.api.put(`contacts/${contact.id}`, {
             id: contact.id,
-            updated_in_db_at: contact.updated_in_db_at,
             contacts_referred_by_me: contacts
         }).then(() => {
-            this.getList(true);
+            this.getFilteredList(true);
             this.load(true); //refresh data list since it could conflict with api pagination
+            this.completeList = sortBy('name', concat(this.completeList, map(contact => { return {name: contact.name, id: contact.id}; }, contacts)));
         });
     }
     loadMoreContacts() {
@@ -293,7 +296,7 @@ class ContactsService {
     getSelectedContacts() {
         return reduce((result, contact) => {
             if (includes(contact.id, this.selectedContacts)) {
-                result.push(contact);
+                result = concat(result, contact);
             }
             return result;
         }, [], this.data);
@@ -353,8 +356,7 @@ class ContactsService {
         return this.modal.confirm(message).then(() => {
             return this.save({
                 id: contact.id,
-                status: 'Never Ask',
-                updated_in_db_at: contact.updated_in_db_at
+                status: 'Never Ask'
             }).then(() => {
                 this.completeList = reject({id: contact.id}, this.completeList);
                 this.completeFilteredList = reject({id: contact.id}, this.completeFilteredList);
@@ -368,25 +370,20 @@ class ContactsService {
             const contacts = map(contact => {
                 return {
                     id: contact.id,
-                    status: 'Never Ask',
-                    updated_in_db_at: contact.updated_in_db_at
+                    status: 'Never Ask'
                 };
             }, this.getSelectedContacts());
             return this.api.put('contacts/bulk', contacts).then(() => {
-                this.data = reduce((result, contact) => {
-                    if (!includes(contact.id, this.selectedContacts)) {
-                        return concat(result, contact);
-                    }
-                    return result;
-                }, [], this.data);
+                this.data = pullAllBy('id', contacts, this.data);
+                this.completeFilteredList = pullAllBy('id', contacts, this.completeFilteredList);
+                this.completeList = pullAllBy('id', contacts, this.completeList);
             });
         });
     }
     bulkEditFields(model, contacts) {
-        contacts = reduce((result, contact) => {
-            result.push(assign({id: contact.id, updated_in_db_at: contact.updated_in_db_at}, model));
-            return result;
-        }, [], contacts);
+        contacts = reduce((result, contact) =>
+            concat(result, assign({id: contact.id}, model))
+        , [], contacts);
         return this.api.put('contacts/bulk', contacts);
     }
     getAnalytics(reset = false) {

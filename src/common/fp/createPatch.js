@@ -3,7 +3,7 @@ const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 
 export default (target, source) => {
     return reduce((result, value, key) => {
-        if (key === 'id' || key === 'updated_in_db_at') {
+        if (key === 'id') {
             result[key] = value;
         }
         if (!isEqual(value, target[key])) {

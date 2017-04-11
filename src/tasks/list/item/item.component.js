@@ -39,7 +39,6 @@ class ItemController {
     star() {
         return this.tasks.star(this.task).then((data) => {
             this.task.starred = data.starred;
-            this.task.updated_in_db_at = data.updated_in_db_at;
         });
     }
     edit() {
