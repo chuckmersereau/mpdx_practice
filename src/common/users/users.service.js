@@ -32,9 +32,9 @@ class Users {
         this.currentInitialState = {};
         this.defaultIncludes = 'account_lists,email_addresses';
         this.defaultFields = {
-            user: 'account_lists,email_addresses,first_name,last_name,options,preferences,updated_in_db_at',
+            user: 'account_lists,email_addresses,first_name,last_name,options,preferences',
             account_lists: 'name',
-            email_addresses: 'email,primary,updated_in_db_at'
+            email_addresses: 'email,primary'
         };
         this.hasAnyUsAccounts = false;
         this.organizationAccounts = null;

@@ -5,7 +5,6 @@ import find from 'lodash/fp/find';
 import forEachRight from 'lodash/fp/forEachRight';
 import map from 'lodash/fp/map';
 import reject from 'lodash/fp/reject';
-import moment from 'moment';
 
 class ContactController {
     alerts;
@@ -77,7 +76,6 @@ class ContactController {
                     value: joinComma(map('key', this.tabsLabels))
                 };
                 if (users.current.options.contact_tabs_sort) {
-                    contactTabsSort.updated_in_db_at = users.current.options.contact_tabs_sort.updated_in_db_at;
                     users.setOption(contactTabsSort);
                 } else {
                     users.createOption(contactTabsSort.key, contactTabsSort.value);
@@ -113,10 +111,7 @@ class ContactController {
         const patch = createPatch(target, source);
         this.$log.debug('contact patch', patch);
 
-        return this.contacts.save(patch).then((data) => {
-            if (moment(data.updated_in_db_at).isAfter(this.contact.updated_in_db_at)) {
-                this.contact.updated_in_db_at = data.updated_in_db_at;
-            }
+        return this.contacts.save(patch).then(() => {
             if (patch.tag_list) {
                 const tags = patch.tag_list.split(',');
                 this.$rootScope.$emit('contactTagsAdded', {tags: tags});

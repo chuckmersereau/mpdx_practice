@@ -95,8 +95,7 @@ class AddressModalController {
             this.contact.addresses[addressIndex] = angular.copy(this.address);
             const patch = createPatch(this.addressInitialState, this.address);
             this.$log.debug('address patch', patch);
-            return this.contacts.saveAddress(this.contact.id, patch).then((data) => {
-                this.contact.addresses[addressIndex].updated_in_db_at = data.updated_in_db_at;
+            return this.contacts.saveAddress(this.contact.id, patch).then(() => {
                 this.$scope.$hide();
             });
         } else {

@@ -8,13 +8,14 @@ import includes from 'lodash/fp/includes';
 import isEmpty from 'lodash/fp/isEmpty';
 import map from 'lodash/fp/map';
 import pull from 'lodash/fp/pull';
-const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
+import pullAllBy from 'lodash/fp/pullAllBy';
 import reject from 'lodash/fp/reject';
 import joinComma from '../common/fp/joinComma';
 import union from 'lodash/fp/union';
 import unionBy from 'lodash/fp/unionBy';
 import relationshipId from '../common/fp/relationshipId';
 import upsert from '../common/fp/upsert';
+const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 
 class TasksService {
     contacts;
@@ -89,7 +90,7 @@ class TasksService {
             const processedTask = this.process(task);
             if (updateLists) {
                 this.data = upsert('id', processedTask, this.data);
-                const listTask = {id: task.id, subject: task.subject, updated_in_db_at: task.updated_in_db_at};
+                const listTask = {id: task.id, subject: task.subject};
                 this.completeList = upsert('id', listTask, this.completeList);
             }
             this.$log.debug(`tasks/${task.id}`, processedTask);
@@ -108,7 +109,7 @@ class TasksService {
             data: {
                 filter: this.tasksFilter.toParams(),
                 fields: {
-                    tasks: 'subject,updated_in_db_at'
+                    tasks: 'subject'
                 },
                 per_page: 25000
             },
@@ -156,8 +157,8 @@ class TasksService {
                 per_page: 25,
                 include: 'contacts',
                 fields: {
-                    tasks: 'activity_type,completed,completed_at,contacts,no_date,starred,start_at,subject,tag_list,updated_in_db_at,comments_count',
-                    contacts: 'name,updated_in_db_at'
+                    tasks: 'activity_type,completed,completed_at,contacts,no_date,starred,start_at,subject,tag_list,comments_count',
+                    contacts: 'name'
                 }
             },
             deSerializationOptions: relationshipId('comments'), //for comment count
@@ -244,10 +245,12 @@ class TasksService {
         });
     }
     bulkComplete() {
-        const tasks = map((task) => {
-            task.completed = true;
-            return task;
-        }, this.getSelected());
+        const tasks = map(id => {
+            return {
+                id: id,
+                completed: true
+            };
+        }, this.selected);
         return this.api.put('tasks/bulk', tasks).then(() => {
             each((selectedTask) => {
                 let task = find({ id: selectedTask.id }, this.data);
@@ -259,7 +262,8 @@ class TasksService {
         });
     }
     bulkEdit(model, comment, tags) {
-        const tasks = reduce((result, task) => {
+        const tasks = map(id => {
+            let task = {id: id};
             if (comment) {
                 task.comments = concat(defaultTo([], task.comments), {id: uuid(), body: comment, person: { id: this.users.current.id }});
             }
@@ -267,8 +271,8 @@ class TasksService {
             if (tags.length > 0) {
                 task.tag_list = joinComma(tags);
             }
-            return concat(result, task);
-        }, [], this.getSelected());
+            return task;
+        }, this.selected);
         return this.api.put('tasks/bulk', tasks).then((data) => {
             this.tasksTags.change();
             this.reset();
@@ -333,28 +337,17 @@ class TasksService {
     bulkDelete() {
         const message = this.gettextCatalog.getString('Are you sure you wish to delete the selected tasks?');
         return this.modal.confirm(message).then(() => {
-            const selected = this.getSelected();
-            return this.api.delete({url: 'tasks/bulk', data: selected, type: 'tasks'}).then(() => {
-                each((task) => {
-                    this.data = reject({id: task.id}, this.data);
-                    this.completeList = reject({id: task.id}, this.completeList);
-                    this.selected = pull(task.id, this.selected);
-                }, selected);
+            return this.api.delete({url: 'tasks/bulk', data: this.selected, type: 'tasks'}).then(() => {
+                this.data = pullAllBy('id', this.selected, this.data);
+                this.completeList = pullAllBy('id', this.selected, this.completeList);
+                this.selected = [];
             }, () => {
-                this.alerts.addAlert(this.gettextCatalog.getPlural(selected.length, 'Unable to delete that task.', 'Unable to delete {{$count}} tasks. Try deleting less tasks.', {}), 'danger');
+                this.alerts.addAlert(this.gettextCatalog.getPlural(this.selected.length, 'Unable to delete that task.', 'Unable to delete {{$count}} tasks. Try deleting less tasks.', {}), 'danger');
             });
         });
     }
     star(task) {
-        return this.api.put(`tasks/${task.id}`, {id: task.id, updated_in_db_at: task.updated_in_db_at, starred: !task.starred});
-    }
-    getSelected() {
-        return reduce((result, task) => {
-            if (includes(task.id, this.selected)) {
-                result.push({id: task.id, updated_in_db_at: task.updated_in_db_at});
-            }
-            return result;
-        }, [], this.completeList);
+        return this.api.put(`tasks/${task.id}`, {id: task.id, starred: !task.starred});
     }
     isSelected(id) {
         return includes(id, this.selected);
