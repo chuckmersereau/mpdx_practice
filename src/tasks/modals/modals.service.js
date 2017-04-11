@@ -5,7 +5,7 @@ class ModalsService {
         this.modal = modal;
         this.tasksTags = tasksTags;
     }
-    add(contactsList = []) {
+    add(contactsList = [], activityType = null) {
         if (!Array.isArray(contactsList)) {
             contactsList = [contactsList];
         }
@@ -16,7 +16,8 @@ class ModalsService {
                 tags: () => this.tasksTags.load()
             },
             locals: {
-                contactsList: contactsList
+                contactsList: contactsList,
+                activityType: activityType
             }
         });
     }
