@@ -11,6 +11,10 @@ if [ "$TRAVIS_BRANCH" = "master" ]
 then
     echo '-- build production --'
     export NODE_ENV=production
+elif [ "$TRAVIS_BRANCH" = "next" ]
+then
+    echo '-- build next --'
+    export NODE_ENV=next
 else
     echo '-- build staging --'
     export NODE_ENV=staging
