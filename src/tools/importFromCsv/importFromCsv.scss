@@ -1,136 +1,74 @@
-.import-from-csv {
-    .steps {
-        margin: 0 auto $gutter auto;
-        .step {
-            width: 194px;
-            background-color: #F6F6F6;
-            border: 2px solid #D4D4D4;
-            border-radius: 3px;
-            padding: 12px;
-            text-align: center;
-            color: #9B9B9B;
-            font-family: "Proxima Nova";
-            font-size: 16px;
-            line-height: 19px;
-            margin: 0 auto;
+import-from-csv {
+    .step {
+        width: 194px;
+        max-width: 100%;
+        border-width: 2px;
+        border-radius: $border-radius;
+        padding: 12px;
+        text-align: center;
+        color: darken($color-reverse, 40%);
+        margin: 0 auto $gutter;
+
+        strong {
+            display: block;
+            font-size: 24px;
+            font-weight: normal;
+        }
+
+        &.current {
+            background-color: rgba($color-success, .1);
+            border: 2px solid $color-success;
+            color: $color-text-dark;
 
             strong {
-                display: block;
-                font-size: 24px;
-                line-height: 29px;
-                font-weight: normal;
-            }
-
-            &.current {
-                background-color: #F4FFF1;
-                border: 2px solid #37A923;
-                color: #232323;
-
-                strong {
-                    font-weight: bold;
-                    color: #37A923;
-                }
+                font-weight: bold;
+                color: $color-success;
             }
         }
     }
+
+    /* .steps-container {
+        padding-bottom: 36px;
+    } */
 
     .step-description {
-        font-family: "Proxima Nova";
-        font-size: 16px;
-        text-align: center;
-        line-height: 24px;
-        color: #000000;
-        margin: 30px 94px;
+        margin: 30px 10%;
     }
 
-    a.confirm, a.back {
-        padding: 14px 28px;
-        font-family: "Proxima Nova";
-        font-size: 18px;
-        font-weight: 600;
-        text-align: center;
-        line-height: 22px;
-        color: #FFFFFF;
+    .alert {
+        margin-bottom: $gutter;
+        p {margin-top: 0;}
+    }
 
-        &:hover {
-            text-decoration: none;
+    .step-1 {
+        form {
+            border: 1px dashed $color-link;
+            padding: $gutter*2;
+            margin-bottom: $gutter;
         }
-    }
-
-    a.confirm {
-        background-color: #37A923;
-        display: inline-block;
-
-        &.disabled {
-            cursor: not-allowed;
-            background-color: #9B9B9B;
-        }
-    }
-
-    a.back {
-        background-color: #9B9B9B;
-        float: left;
     }
 
     table.table {
-        font-family: "Proxima Nova";
-        font-size: 16px;
-        line-height: 19px;
-        margin-bottom: 36px;
-        color: #3F3F3F;
+        margin-bottom: $gutter;
 
         td, th {
             width: 50%;
             vertical-align: middle;
+            white-space: nowrap;
+            text-align: left;
         }
 
         th {
-            background-color: #F3F3F3;
-            color: #3A3A3A;
+            background-color: darken($color-reverse, 5%);
+            color: $color-text-dark;
             font-weight: 600;
             border: none;
         }
 
         td {
             border-top: none;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid $color-panel-border;
         }
-
-        table.table {
-            margin-bottom: 12px;
-        }
-    }
-
-    .steps-container {
-        padding-bottom: 36px;
-    }
-
-    .step-1 {
-        .select-file-container {
-            border: 1px dashed #9B9B9B;
-            padding: 60px;
-            margin-bottom: 30px;
-            text-align: center;
-
-            .select-file {
-                background-color: #656565;
-                font-family: "Proxima Nova";
-                font-size: 18px;
-                font-weight: 600;
-                text-align: center;
-                line-height: 22px;
-                color: #FFFFFF;
-                padding: 12px 28px;
-
-                &:hover {
-                    text-decoration: none;
-                }
-            }
-        }
-    }
-
-    .step-2 {
-        text-align: center;
     }
 
     .step-3 {
@@ -153,9 +91,14 @@
         text-align: center;
         color: #3A3A3A;
 
+        .table-responsive {
+            margin-bottom: $gutter;
+            border: 1px solid $color-panel-border;
+        }
+
         table.table {
-            margin-bottom: 12px;
-            border: 1px solid #ddd;
+            border: none;
+            margin-bottom: 0;
 
             td {
                 border-bottom: none;

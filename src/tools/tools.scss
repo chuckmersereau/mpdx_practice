@@ -6,9 +6,6 @@
 }
 
 tools {
-    .tools {
-        margin-top: $subnav-height + $gutter/2;
-    }
     .tool.well {
         cursor: pointer;
         height: 190px;
@@ -46,14 +43,6 @@ tools {
 
     .block-ui {
         min-height: 200px;
-    }
-
-    p {
-        margin: 25.5px 0;
-
-        strong {
-            font-weight: 600;
-        }
     }
 
     .bulk {

@@ -1,25 +1,28 @@
 <div class="nav--secondary">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="pull-left">
-                <div class="section">
-                    <a ui-sref="preferences.imports" translate>Import Contacts</a>
-                </div>
-                <div class="section">
-                    <a ui-sref="tools.mergeContacts" translate>Merge Contacts</a>
-                </div>
-                <div class="section">
-                    <a ui-sref="tools.mergePeople" translate>Merge People</a>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="pull-left">
+                    <div class="section">
+                        <a ui-sref="preferences.imports" translate>Import Contacts</a>
+                    </div>
+                    <div class="section">
+                        <a ui-sref="tools.mergeContacts" translate>Merge Contacts</a>
+                    </div>
+                    <div class="section">
+                        <a ui-sref="tools.mergePeople" translate>Merge People</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div class="nav--secondary-padding"></div>
 <div class="filter-body">
     <div class="row">
         <div class="col-md-3">
-            <contacts-sidebar></contacts-sidebar>
+            <div class="filter-sidebar">
+                <contacts-sidebar></contacts-sidebar>
+            </div>
         </div>
         <div class="col-md-9">
             <div class="filter-content">
