@@ -1496,3 +1496,8 @@ span.best_in_place_once {
     margin: 0 -15px;
     display: flex;
 }
+
+//force gmaps auto-complete zindex +1 to modal
+.pac-container {
+    z-index: 1051;
+}

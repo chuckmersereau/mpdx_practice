@@ -50,7 +50,7 @@ class AddressModalController {
         let $ctrl = this;
         this.updateAddress = function() { //workaround for weird bindings in google places
             $ctrl.place = this.getPlace();
-            $ctrl.refreshMap();
+            $ctrl.address.street = '';
             each((component) => {
                 switch (component.types[0]) {
                     case 'subpremise':
@@ -82,6 +82,7 @@ class AddressModalController {
                         break;
                 }
             }, $ctrl.place.address_components);
+            $ctrl.refreshMap();
         };
 
         if (this.address) {
