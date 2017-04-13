@@ -55,6 +55,32 @@ integration-preferences {
     .panel-heading {
         .pull-right {margin-right: 30px;}
     }
+    .integration_subhead {
+        font-weight: 600;
+        margin-top: 0;
+    }
+    ol {
+        padding-left: $gutter/2;
+    }
+    .well {
+        border-radius: $border-radius;
+        .btn-link {
+            font-size: 18px;
+            padding: 0;
+            margin-right: 20px;
+            &:last-of-type {margin-right: 0;}
+            &.disabled {
+                opacity: 1;
+                color: $color-text;
+            }
+        }
+        p:not(:first-child) {margin-top: 10px;}
+    }
+}
+
+unavailable-message {
+    display: block;
+    margin-top: $gutter/2;
 }
 
 .accstatus-enabled {color: green;}
@@ -83,6 +109,65 @@ merge-preferences {
         label {
             display: block;
             text-align: center;
+        }
+    }
+}
+
+.network_connect {
+
+    display: block;
+
+    .identify {
+        width: 180px;
+        border-right: 1px solid silver;
+    }
+    .connections {
+        padding-left: 25px;
+    }
+
+    .network_logo {
+        text-align: center;
+        img {
+            max-height: 100px;
+            margin: 0 auto;
+        }
+    }
+
+    .network_connections {
+        .account_single {
+            background: $gray_light;
+            border-radius: 5px;
+            padding: 12px;
+            margin-bottom: 5px;
+            margin-right: 5px;
+            min-width: 300px;
+            .actions {
+                float: right;
+                a {vertical-align: middle;}
+            }
+        }
+        .account_name {
+            font-size: 14px;
+            margin-bottom: .5em;
+            display: block;
+            margin-right: 30px;
+        }
+        .importoptions {
+            margin-top: .25em;
+            label {font-size: 13px;}
+        }
+        .importtags {
+            margin-bottom: .25em;
+        }
+    }
+    .import-tags-table {
+        width: 100%;
+        .bootstrap-tagsinput {
+            width: auto;
+            display: block;
+        }
+        .google_import_group {
+            white-space: nowrap;
         }
     }
 }

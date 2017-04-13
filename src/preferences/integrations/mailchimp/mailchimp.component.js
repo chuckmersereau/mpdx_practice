@@ -6,23 +6,25 @@ class MailchimpIntegrationPreferencesController {
     state;
 
     constructor(
-        $scope, gettextCatalog,
-        mailchimp, alerts
+        gettextCatalog,
+        mailchimp, alerts, help
     ) {
         this.gettextCatalog = gettextCatalog;
+
         this.mailchimp = mailchimp;
+        this.help = help;
         this.alerts = alerts;
+
         this.saving = false;
         this.showSettings = false;
     }
-    save() {
+    save(showSettings = false) {
         this.saving = true;
         this.mailchimp.save().then(() => {
             this.alerts.addAlert(this.gettextCatalog.getString('Preferences saved successfully'), 'success');
             this.saving = false;
-            if (this.mailchimp.data.primary_list_id !== null) {
-                this.hide();
-            }
+            this.showSettings = showSettings;
+            return this.hide(showSettings);
         }).catch((data) => {
             each(value => {
                 this.alerts.addAlert(value, 'danger');
@@ -30,9 +32,9 @@ class MailchimpIntegrationPreferencesController {
             this.saving = false;
         });
     }
-    hide() {
-        this.mailchimp.load(true).then(() => {
-            this.showSettings = false;
+    hide(showSettings = false) {
+        return this.mailchimp.load(true).then(() => {
+            this.showSettings = showSettings;
         });
     }
     sync() {
@@ -48,12 +50,16 @@ class MailchimpIntegrationPreferencesController {
     disconnect() {
         this.saving = true;
         return this.mailchimp.disconnect().then(() => {
+            this.showSettings = false;
             this.saving = false;
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed your integration with MailChimp'), 'success');
         }).catch(() => {
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for MailChimp'), 'danger');
             this.saving = false;
         });
+    }
+    showHelp() {
+        this.help.showHelp();
     }
 }
 
