@@ -24,6 +24,7 @@ import 'angular-chosen-localytics';
 import 'angular-localforage';
 import 'angular-timeago';
 import 'ng-tags-input';
+import 'ng-rollbar';
 //non-angular deps
 import 'chart.js';
 import 'chartjs-plugin-annotation';
@@ -33,7 +34,7 @@ import { extendMoment } from 'moment-range';
 window.moment = extendMoment(Moment);
 import 'chosen-js';
 import 'bootstrap-daterangepicker/daterangepicker';
-import 'ng-rollbar';
+import 'js-marker-clusterer';
 
 // style deps
 require('angular-block-ui/dist/angular-block-ui.css');

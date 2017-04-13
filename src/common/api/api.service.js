@@ -37,8 +37,11 @@ function serialize(key, params, item, method) {
     if (method === 'post' && serialized.data.id === 'undefined') {
         delete serialized.data.id;
     }
-    //enable overwrite for put/delete
-    if (method === 'put' || method === 'delete') {
+    //enable overwrite for put
+    if (method === 'put') {
+        if (!serialized.data.attributes) {
+            serialized.data.attributes = {};
+        }
         serialized.data.attributes.overwrite = true;
     }
     return serialized;
@@ -275,11 +278,11 @@ class EntityAttributes {
                     attributes: ["email_addresses", "first_name", "last_name", "phone_numbers"],
                     email_addresses: {
                         ref: 'id',
-                        attributes: ["email", "primary", "source", "valid_values"]
+                        attributes: ["email", "primary", "source", "valid_values", "_destroy"]
                     },
                     phone_numbers: {
                         ref: 'id',
-                        attributes: ["number", "primary", "source", "valid_values"]
+                        attributes: ["number", "primary", "source", "valid_values", "_destroy"]
                     }
                 },
                 primary_person: {

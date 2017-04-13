@@ -8,18 +8,18 @@ class FinishController {
         this.users = users;
     }
     $onInit() {
-        this.users.current.options.setup_position.value = 'finish';
-        this.users.setOption(this.users.current.options.setup_position);
+        this.users.currentOptions.setup_position.value = 'finish';
+        this.users.setOption(this.users.currentOptions.setup_position);
     }
     next() {
-        this.users.current.options.setup_position.value = '';
-        this.users.setOption(this.users.current.options.setup_position).then(() => {
+        this.users.currentOptions.setup_position.value = '';
+        this.users.setOption(this.users.currentOptions.setup_position).then(() => {
             this.$state.go('tools', {setup: true});
         });
     }
     dashboard() {
-        this.users.current.options.setup_position.value = '';
-        this.users.setOption(this.users.current.options.setup_position).then(() => {
+        this.users.currentOptions.setup_position.value = '';
+        this.users.setOption(this.users.currentOptions.setup_position).then(() => {
             this.$state.go('home');
         });
     }

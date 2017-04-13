@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="col-xs-10">
+        <div class="panel" block-ui="fix-addresses-item-{{$ctrl.contact.id}}">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-2 col-md-1">
+                        <img class="avatar small img-circle" ng-src="{{$ctrl.contact.avatar | stripMpdx}}">
+                    </div>
+                    <div class="col-xs-10 col-md-11 info">
+                        <h4>{{$ctrl.contact.name}}</h4>
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <label translate>Source</label>
+                            </div>
+                            <div class="col-xs-2 text-center">
+                                <label translate>Primary</label>
+                            </div>
+                        </div>
+                        <fix-addresses-item-field
+                            ng-repeat="address in $ctrl.contact.addresses"
+                            contact="$ctrl.contact"
+                            address="address"></fix-addresses-item-field>
+                        <fix-addresses-item-field
+                            contact="$ctrl.contact"></fix-addresses-item-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-2">
+        <button class="btn btn-gray btn-block confirm-item" ng-click="$ctrl.save()">
+            <i class="fa fa-check-circle"></i> <translate>Confirm</translate>
+        </button>
+    </div>
+</div>

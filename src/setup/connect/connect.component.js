@@ -21,7 +21,7 @@ class SetupConnectController {
     }
     $onInit() {
         this.users.current.options.setup_position.value = 'connect';
-        this.users.setOption(this.users.current.options.setup_position);
+        this.users.setOption(this.users.currentOptions.setup_position);
     }
     connect() {
         this.connecting = true;

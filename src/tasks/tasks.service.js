@@ -327,7 +327,7 @@ class TasksService {
     delete(task) {
         const message = this.gettextCatalog.getString('Are you sure you wish to delete the selected task?');
         return this.modal.confirm(message).then(() => {
-            return this.api.delete(`tasks/${task.id}`, {id: task.id}).then(() => {
+            return this.api.delete(`tasks/${task.id}`).then(() => {
                 this.completeList = reject({id: task.id}, this.completeList);
                 this.data = reject({id: task.id}, this.data);
                 this.selected = pull(task.id, this.selected);
@@ -376,8 +376,8 @@ class TasksService {
             this.clearSelected();
         }
     }
-    addModal(contactsList = []) {
-        return this.tasksModals.add(contactsList);
+    addModal(contactsList = [], activityType = null) {
+        return this.tasksModals.add(contactsList, activityType);
     }
     newsletterModal() {
         return this.tasksModals.newsletter();

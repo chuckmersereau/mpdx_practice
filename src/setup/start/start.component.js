@@ -8,8 +8,8 @@ class StartController {
         this.users = users;
     }
     $onInit() {
-        this.users.current.options.setup_position.value = 'start';
-        this.users.setOption(this.users.current.options.setup_position);
+        this.users.currentOptions.setup_position.value = 'start';
+        this.users.setOption(this.users.currentOptions.setup_position);
     }
     next() {
         this.$state.go('setup.connect');

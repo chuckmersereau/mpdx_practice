@@ -66,7 +66,7 @@
     <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('google'), 'panel-disabled' : !$ctrl.tabSelectable('google') }">
         <div class="panel-heading" ng-click="$ctrl.setTab('google')">
             <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('google') }"></i>
-            <span translate>Google Contacts, Calendar and Mail</span>
+            <span translate>Google</span>
             <div class="pull-right">
                 <div class="accstatus accstatus-enabled" ng-if="$ctrl.integrations.data.google_accounts.length > 0"><i class="fa fa-circle"></i></div>
                 <div class="accstatus accstatus-disabled" ng-if="$ctrl.integrations.data.google_accounts.length === 0"><i class="fa fa-circle-o"></i></div>
@@ -81,48 +81,65 @@
                         </div>
                     </div>
                     <div class="col-md-8">
-                        <unavailable-message></unavailable-message>
-                        <!--<div class="network_button network_connect">-->
-                            <!--<div ng-repeat="account in $ctrl.integrations.data.google_accounts" class="network_connections">-->
-                                <!--<div class="account_single">-->
-                                    <!--<div class="actions">-->
-                                        <!--<a class="inlineaction delete" ng-click="$ctrl.disconnect('Google', account.id)" translate>Delete</a>-->
-                                    <!--</div>-->
-                                    <!--<span class="account_name">{{account.email}}</span>-->
+                        <div class="network_button network_connect">
+                            <!-- <div ng-repeat="account in $ctrl.integrations.data.google_accounts" class="network_connections">
+                                <div class="account_single">
+                                    <div class="actions">
+                                        <a class="inlineaction delete" ng-click="$ctrl.disconnect('Google', account.id)" translate>Delete</a>
+                                    </div>
+                                    <span class="account_name">{{account.email}}</span>
 
-                                    <!--<div ng-show="account.token_expired == true">-->
-                                        <!--<p translate>-->
-                                            <!--The link between MPDX and your Google account stopped working.-->
-                                            <!--Click "Refresh Google Account" to re-enable it. After that,-->
-                                            <!--you'll need to manually re-enable any integrations that you had set already.-->
-                                        <!--</p>-->
-                                        <!--<%# new_account_path_opts = { provider: :google } %>-->
-                                        <!--<%# new_account_path_opts[:redirect] =  google_integration_path(google_integration) if google_integration %>-->
-                                        <!--<%#= link_to(_('Refresh Google Account'), new_account_path(new_account_path_opts), class: 'btn desired_action') %>-->
-                                    <!--</div>-->
-                                    <!--<div ng-show="account.token_expired == false">-->
-                                        <!--<div ng-show="account.google_integration_id != null">-->
-                                            <!--<a ng-href="/google_integrations/{{account.google_integration_id}}">-->
-                                                <!--<i class="fa fa-refresh"></i>-->
-                                                <!--<span translate>Configure synchronization</span>-->
-                                            <!--</a>-->
-                                        <!--</div>-->
-                                        <!--<div ng-show="account.google_integration_id == null">-->
-                                            <!--<a data-method="post" ng-href="/google_integrations?google_account_id={{account.id}}" rel="nofollow">-->
-                                                <!--<i class="fa fa-refresh"></i>-->
-                                                <!--<span translate>Configure synchronization</span>-->
-                                            <!--</a>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div ng-hide="$ctrl.integrations.data.valid_google_account" translate>-->
-                                <!--You can keep Google in sync with your contacts, calendars, tasks and more. Click Add Account to begin.-->
-                            <!--</div>-->
-                            <!--<br />-->
-                            <!--<a href="/auth/goggle" class="btn btn-primary" target="_blank" translate>Add Account</a>-->
-                            <!--<a ng-show="$ctrl.integrations.data.valid_google_account" ui-sref="preferences.imports.tab({id: 'google'})" class="btn btn-default" translate>Import Google Contacts</a>-->
-                        <!--</div>-->
+                                    <div ng-show="account.token_expired == true">
+                                        <p translate>
+                                            The link between MPDX and your Google account stopped working.
+                                            Click "Refresh Google Account" to re-enable it. After that,
+                                            you'll need to manually re-enable any integrations that you had set already.
+                                        </p>
+                                        <%# new_account_path_opts = { provider: :google } %>
+                                        <%# new_account_path_opts[:redirect] =  google_integration_path(google_integration) if google_integration %>
+                                        <%#= link_to(_('Refresh Google Account'), new_account_path(new_account_path_opts), class: 'btn desired_action') %>
+                                    </div>
+                                    <div ng-show="account.token_expired == false">
+                                        <div ng-show="account.google_integration_id != null">
+                                            <a ng-href="/google_integrations/{{account.google_integration_id}}">
+                                                <i class="fa fa-refresh"></i>
+                                                <span translate>Configure synchronization</span>
+                                            </a>
+                                        </div>
+                                        <div ng-show="account.google_integration_id == null">
+                                            <a data-method="post" ng-href="/google_integrations?google_account_id={{account.id}}" rel="nofollow">
+                                                <i class="fa fa-refresh"></i>
+                                                <span translate>Configure synchronization</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div ng-hide="$ctrl.integrations.data.valid_google_account">
+                                <h4 class="integration_subhead" translate>Google Integration Overview</h4>
+                                <p translate>
+                                    Google’s suite of tools are great for keeping you connected to your Ministry Partners. By synchronizing your Google services with MPDX, you will be able to:
+                                </p>
+                                <p translate>
+                                    - See MPDX calendar events in your Google Calendar<br />
+                                    - Access MPDX contacts from Google Address Book<br />
+                                    - See Gmail interactions with your partners right inside MPDX
+                                </p>
+                                <p translate>
+                                    Connect your Google account to begin, and then setup specific settings for Google Calendar, Contacts and Gmail. MPDX leaves you in control of how each service stays in sync.
+                                </p>
+                                <div class="well">
+                                    <a href="#" class="btn btn-link disabled">Setup</a>
+                                    <a href="#" class="btn btn-link disabled">Calendar</a>
+                                    <a href="#" class="btn btn-link disabled">Contacts</a>
+                                    <a href="#" class="btn btn-link disabled">Email</a>
+                                    <p translate>We're sorry, but connecting to Google is not yet ready for everyday use. Please use <a href="http://mpdx.org" target="_blank">mpdx.org</a> to access this functionality.</p>
+                                    <!-- <unavailable-message></unavailable-message> -->
+                                </div>
+                            </div>
+                            <a href="/auth/goggle" class="btn btn-primary disabled" target="_blank" translate>Add Account</a>
+                            <a ng-show="$ctrl.integrations.data.valid_google_account" ui-sref="preferences.imports.tab({id: 'google'})" class="btn btn-default" translate>Import Google Contacts</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -131,7 +148,7 @@
     <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('mailchimp'), 'panel-disabled' : !$ctrl.tabSelectable('mailchimp') }">
         <div class="panel-heading" ng-click="$ctrl.setTab('mailchimp')">
             <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('mailchimp') }"></i>
-            <span translate>Mailchimp</span>
+            <span translate>MailChimp</span>
             <div class="pull-right">
                 <div class="accstatus accstatus-enabled" ng-show="$ctrl.mailchimp.state == 'enabled'"><i class="fa fa-circle"></i></div>
                 <div class="accstatus accstatus-error" ng-show="$ctrl.mailchimp.state == 'error'"><i class="fa fa-circle-o"></i></div>
@@ -158,7 +175,7 @@
     <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('prayerletters'), 'panel-disabled' : !$ctrl.tabSelectable('prayerletters') }">
         <div class="panel-heading" ng-click="$ctrl.setTab('prayerletters')">
             <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('prayerletters') }"></i>
-            <span translate>PrayerLetters.com</span>
+            <span translate>PrayerLetters</span>
             <div class="pull-right">
                 <div ng-show="$ctrl.integrations.data.prayer_letters_account">
                     <div class="accstatus accstatus-enabled" ng-if="$ctrl.integrations.data.prayer_letters_accounts.length > 0"><i class="fa fa-circle"></i></div>
@@ -192,15 +209,12 @@
                                 </a>
                             </div>
                             <div ng-hide="$ctrl.integrations.data.valid_prayer_letters_account">
-                                <p>
-                                    <strong translate>Send Prayer Letters Quickly and Easily</strong>
-                                    <br />
-                                    <span translate>Newsletter services are a significant way to save valuable ministry time while more effectively connecting with your partners. Keep your physical newsletter list (all partners marked as newsletter - physical or both) up to date in MPDX and then sync it to your prayerletters.com account with this integration. This will replace your current prayerletters.com list. Click Enable to get started.</span>
+                                <h4 class="integration_subhead" translate>PrayerLetters.com Overview</h4>
+                                <p translate>
+                                    PrayerLetters.com is a significant way to save valuable ministry time while more effectively connecting with your parnters. Keep your physical newsletter list up to date in MPDX and then sync it to your PrayerLetters.com account with this integration. 
                                 </p>
-                                <div class="alert alert-warning" translate>
-                                    Enabling or Syncing will replace your prayerletters.com lists
-                                </div>
-                                <a href="/auth/prayer_letters" class="btn btn-primary" target="_blank" translate>Enable</a>
+                                <p translate>This will replace your current PrayerLetters.com list.</p>
+                                <a href="/auth/prayer_letters" class="btn btn-primary" target="_blank" translate>Connect PrayerLetters</a>
                             </div>
                         </div>
                     </div>
@@ -226,15 +240,11 @@
                     </div>
                     <div class="col-md-8">
                         <div class="network_button">
-                            <p>
-                                <strong translate>Let Chalkline Connect You and Your Ministry Partners</strong>
-                                <br />
-                                <span translate>Newsletter services are a significant way to save valuable ministry time while more effectively connecting with your partners. Keep your physical newsletter list (all partners marked as newsletter - physical or both) up to date in MPDx and then email it each month to Chalkline with a press of a button. Set up your account in Chalkline, and then simply press the button below each time you want to send your newsletter.</span>
+                            <h4 class="integration_subhead" translate>Chalkline Overview</h4>
+                            <p translate>
+                                Chalkline is a significant way to save valuable ministry time while more effectively connecting with your parnters. Send physical newsletters to your current list using Chalkline with a simple click.  Chalkline is a one way send available anytime you’re ready to send a new newsletter out.
                             </p>
-                            <div class="alert alert-warning" translate>
-                                Clicking "Send Paper Newsletter List" will email Chalkline your newsletter list and open their order form in a new tab
-                            </div>
-                            <a href="#" class="btn btn-default" id="chalkline_send_list" translate>Send Paper Newsletter List</a>
+                            <a href="#" class="btn btn-primary" id="chalkline_send_list" translate>Send my current Contacts to Chalkline</a>
                         </div>
                     </div>
                 </div>

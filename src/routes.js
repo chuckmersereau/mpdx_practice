@@ -113,7 +113,7 @@ export default class Routes {
             name: 'preferences.integrations',
             title: 'Connect Services',
             url: '/integrations',
-            component: 'integrationPreferences',
+            component: 'preferencesIntegration',
             resolve: {
                 resolution: /*@ngInject*/ (users) => users.listOrganizationAccounts()
             }
@@ -166,6 +166,11 @@ export default class Routes {
             title: 'Merge Accounts',
             url: '/preferences/accounts',
             component: 'setupPreferencesAccounts'
+        }).state({
+            name: 'setup.preferences.integrations',
+            title: 'Integration',
+            url: '/preferences/integration',
+            component: 'setupPreferencesIntegrations'
         }).state({
             name: 'setup.preferences.notifications',
             title: 'Notifications',
@@ -238,20 +243,34 @@ export default class Routes {
             url: '/fix-commitment-info',
             component: 'fixCommitmentInfo'
         }).state({
-            name: 'tools.fixPhone',
-            title: 'Fix Phone',
-            url: '/fix-phone',
-            component: 'fixPhone'
+            name: 'tools.fix',
+            abstract: true,
+            component: 'fix',
+            url: '/fix'
         }).state({
-            name: 'tools.fixEmailAddress',
-            title: 'Fix Email Address',
-            url: '/fix-email-address',
-            component: 'fixEmailAddress'
+            name: 'tools.fix.phoneNumbers',
+            title: 'Fix Phone Numbers',
+            url: '/phone-numbers',
+            component: 'fixPhoneNumbers',
+            resolve: {
+                0: /*@ngInject*/ (fixPhoneNumbers) => fixPhoneNumbers.load()
+            }
         }).state({
-            name: 'tools.fixMailingAddress',
-            title: 'Fix Mailing Address',
-            url: '/fix-mailing-address',
-            component: 'fixMailingAddress'
+            name: 'tools.fix.emailAddresses',
+            title: 'Fix Email Addresses',
+            url: '/email-addresses',
+            component: 'fixEmailAddresses',
+            resolve: {
+                0: /*@ngInject*/ (fixEmailAddresses) => fixEmailAddresses.load()
+            }
+        }).state({
+            name: 'tools.fix.addresses',
+            title: 'Fix Addresses',
+            url: '/addresses',
+            component: 'fixAddresses',
+            resolve: {
+                0: /*@ngInject*/ (fixAddresses) => fixAddresses.load()
+            }
         }).state({
             name: 'tools.mergeContacts',
             url: '/merge-contacts',

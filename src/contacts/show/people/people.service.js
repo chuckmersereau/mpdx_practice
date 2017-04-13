@@ -8,12 +8,14 @@ class PersonService {
     modal;
 
     constructor(
-        $filter, $log, $q, $rootScope,
+        $filter, $log, $q, $rootScope, gettextCatalog,
         api, contacts, modal
     ) {
         this.$filter = $filter;
         this.$log = $log;
         this.$q = $q;
+        this.gettextCatalog = gettextCatalog;
+
         this.api = api;
         this.contacts = contacts;
         this.modal = modal;
@@ -98,8 +100,79 @@ class PersonService {
             }); //reload after use, otherwise add reconcile
         }
     }
+    bulkSave(people) {
+        return this.api.put({
+            url: 'contacts/people/bulk',
+            data: people,
+            type: 'people'
+        });
+    }
     remove(contactId, personId) {
         return this.api.delete(`contacts/${contactId}/people/${personId}`);
+    }
+    deleteEmailAddress(person, emailAddress) {
+        const message = this.gettextCatalog.getString('Are you sure you wish to delete this email address?');
+        return this.modal.confirm(message).then(() => {
+            // cannot delete phone object directly
+            return this.api.put({
+                url: `contacts/people/${person.id}`,
+                data: {
+                    id: person.id,
+                    email_addresses: [
+                        {
+                            id: emailAddress.id,
+                            _destroy: 1
+                        }
+                    ]
+                },
+                type: 'people'
+            });
+        });
+    }
+    saveEmailAddress(person, emailAddress) {
+        if (!emailAddress.email) { return this.$q.reject(); };
+        return this.api.put({
+            url: `contacts/people/${person.id}`,
+            data: {
+                id: person.id,
+                email_addresses: [
+                    emailAddress
+                ]
+            },
+            type: 'people'
+        });
+    }
+    deletePhoneNumber(person, phoneNumber) {
+        const message = this.gettextCatalog.getString('Are you sure you wish to delete this phone number?');
+        return this.modal.confirm(message).then(() => {
+            // cannot delete phone object directly
+            return this.api.put({
+                url: `contacts/people/${person.id}`,
+                data: {
+                    id: person.id,
+                    phone_numbers: [
+                        {
+                            id: phoneNumber.id,
+                            _destroy: 1
+                        }
+                    ]
+                },
+                type: 'people'
+            });
+        });
+    }
+    savePhoneNumber(person, phoneNumber) {
+        if (!phoneNumber.number) { return this.$q.reject(); };
+        return this.api.put({
+            url: `contacts/people/${person.id}`,
+            data: {
+                id: person.id,
+                phone_numbers: [
+                    phoneNumber
+                ]
+            },
+            type: 'people'
+        });
     }
     openPeopleModal(contact, personId) {
         const modalOpen = (contact, person) => {

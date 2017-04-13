@@ -15,8 +15,8 @@ class AccountController {
     $onInit() {
         const firstAccount = get('data[0].id', this.accounts);
         this.users.current.preferences.default_account_list = defaultTo(firstAccount, this.users.current.preferences.default_account_list);
-        this.users.current.options.setup_position.value = 'account';
-        this.users.setOption(this.users.current.options.setup_position);
+        this.users.currentOptions.setup_position.value = 'account';
+        this.users.setOption(this.users.currentOptions.setup_position);
     }
     next() {
         return this.users.saveCurrent().then((data) => {

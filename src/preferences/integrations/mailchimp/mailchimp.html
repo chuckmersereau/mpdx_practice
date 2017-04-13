@@ -2,15 +2,6 @@
     <div ng-if="$ctrl.mailchimp.data.api_key && !$ctrl.mailchimp.data.active && !$ctrl.mailchimp.data.validate_key">
         {{$ctrl.mailchimp.data.validation_error}}
     </div>
-    <div class="form-group" ng-if="!$ctrl.mailchimp.data.active">
-        <a href="http://www.gcx.org/mpdxhelp/sync-with-mailchimp/" target="_blank">
-            <i class="fa fa-play-circle-o"></i>
-            <span translate>Watch a video showing you how to link to Mailchimp</span>
-        </a>
-        <br />
-        <label for="apiKey" translate>Api Key</label>
-        <input type="text" id="apiKey" ng-model="$ctrl.mailchimp.data.api_key" class="form-control">
-    </div>
     <div class="form-group" ng-if="$ctrl.mailchimp.data.active">
         <div ng-if="$ctrl.mailchimp.data.lists_present">
             <div class="alert alert-warning" role="alert">
@@ -42,7 +33,7 @@
         <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
             <span translate>Save</span>&nbsp;
             <div class="btn-progress" ng-if="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></div></button>
-        <a class="btn" ng-click="$ctrl.hide()" translate>Cancel</a>
+            <a class="btn btn-link" ng-click="$ctrl.disconnect()" translate>Disconnect</a>
     </div>
 </div>
 <div ng-if="!$ctrl.showSettings">
@@ -66,13 +57,33 @@
         </p>
     </div>
     <div ng-if="$ctrl.mailchimp.state == 'error'">
-        <strong translate>Your configuration is invalid.</strong>
-        <br />
+        <h4 class="integration_subhead" translate>Your configuration is invalid.</h4>
         <p translate>Try Modifying your settings below to get things going again!</p>
         <a class="btn btn-primary" ng-click="$ctrl.showSettings = true" translate>Modify Settings</a>
     </div>
     <div ng-if="$ctrl.mailchimp.state == 'disabled'">
-        <p translate>You can synchronize MPDX and Mailchimp contacts to simplify your process and take advantage of all of Mailchimp's great features.</p>
-        <a class="btn btn-primary" ng-click="$ctrl.showSettings = true" translate>Enable</a>
+        <h4 class="integration_subhead" translate>MailChimp Overview</h4>
+        <p translate>MailChimp makes keeping in touch with your ministry partners easy and streamlined. Here’s how it works:</p>
+        <ol>
+            <li translate>Get your MailChimp API Key</li>
+            <li translate>Connect your MailChimp account to MPDX</li>
+            <li translate>If you have an existing MailChimp list you’d like to use, Great! Or, create a new one for your MPDX connection.</li>
+            <li translate>Select your MPDX MailChimp list to stream your MPDX contacts into.</li>
+        </ol>
+        <p translate>
+            That's it! Set it and leave it! Now your MailChimp list is continuously up to date with your MPDX Contacts. That's just the surface. Click over to the MPDX Help site for more in depth details.
+        </p>
+        <div class="well">
+            <h4 class="integration_subhead" translate>Enter your MailChimp API Key Below</h4>
+            <p class="small"><a href="http://www.gcx.org/mpdxhelp/sync-with-mailchimp/" target="_blank" translate>Get your MailChimp API Key</a> | <a ng-click="$ctrl.showHelp()" translate>Learn More</a></p>
+            <div class="form-group">
+                <label for="apiKey" class="sr-only" translate>Api Key</label>
+                <input type="text" id="apiKey" ng-model="$ctrl.mailchimp.data.api_key" class="form-control" placeholder="API KEY HERE">
+            </div>
+        </div>
+        <button type="submit" ng-click="$ctrl.save(true)" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
+            <span translate>Connect MailChimp</span>&nbsp;
+            <div class="btn-progress" ng-if="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></div>
+        </button>
     </div>
 </div>

@@ -16,6 +16,9 @@
     &-green {
         @include cru-button-variant($color-reverse, $color-reverse, $color-success, $color-success, transparent, transparent);
     }
+    &-lg {
+        font-size: $font-size*1.125;
+    }
 }
 
 .btn-block {
@@ -45,4 +48,8 @@
     width: auto;
     margin-right: 10px;
     margin-left: 10px;
+}
+
+.btn-squared {
+    border-radius: 0;
 }

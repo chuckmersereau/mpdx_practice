@@ -1,5 +1,10 @@
-<modal title="{{$ctrl.modalTitle}}" cancel="$hide()" save="$ctrl.save()" delete="$ctrl.delete()" show-delete="$ctrl.address.id" hide-footer="!$ctrl.contact">
-    <ng-map disable-default-u-i="true"></ng-map>
+<modal title="{{$ctrl.modalTitle}}" cancel="$hide()" save="$ctrl.save()" delete="$ctrl.delete()" show-delete="$ctrl.address.id && $ctrl.address.source === 'MPDX'" hide-footer="!$ctrl.contact">
+    <div class="empty-map" ng-if="!$ctrl.place">
+        <i class="fa fa-map"></i>
+    </div>
+    <ng-map disable-default-u-i="true" center="{{$ctrl.place.formatted_address}}">
+        <marker position="{{$ctrl.place.formatted_address}}" title="{{$ctrl.place.formatted_address}}"></marker>
+    </ng-map>
     <div ng-if="$ctrl.contact">
         <div class="row" ng-if="$ctrl.address.source === 'DataServer'">
             <div class="col-sm-12">
@@ -12,19 +17,19 @@
         </div>
         <div class="row">
             <div class="col-sm-9">
-                <label><translate>Street</translate> <span class="text-danger">*</span></label>
-                <input type="text" name="street" class="form-control"
-                       places-auto-complete on-place-changed="$ctrl.updateAddress(this)"
+                <label for="street"><translate>Street</translate> <span class="text-danger">*</span></label>
+                <input type="text" name="street" class="form-control" id="street"
+                       places-auto-complete on-place-changed="$ctrl.updateAddress()"
                        ng-model="$ctrl.address.street" required ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'">
             </div>
             <div class="col-sm-3">
-                <label><translate>Location</translate> <span class="text-danger">*</span></label>
+                <label for="location"><translate>Location</translate> <span class="text-danger">*</span></label>
                 <select chosen
                         required
                         disable-search="true"
                         data-placeholder-text-single="'Select an Option' | translate"
                         class="form-control"
-                        id='send_newsletter'
+                        id="location"
                         ng-options="opt as opt for opt in $ctrl.serverConstants.data.assignable_locations"
                         ng-model="$ctrl.address.location"
                         ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'">
@@ -34,30 +39,36 @@
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <label translate>City</label>
-                <input class="form-control" type="text" name="city" ng-model="$ctrl.address.city" ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'">
+                <label for="city" translate>City</label>
+                <input class="form-control" type="text" name="city" id="city"
+                       ng-model="$ctrl.address.city" ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'">
             </div>
             <div class="col-sm-3">
-                <label translate>State</label>
-                <input class="form-control" type="text" name="state" ng-model="$ctrl.address.state" ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'">
+                <label for="state" translate>State</label>
+                <input class="form-control" type="text" name="state" id="state"
+                       ng-model="$ctrl.address.state" ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'">
             </div>
             <div class="col-sm-3">
-                <label translate>Zip</label>
-                <input class="form-control" type="text" name="postal_code" ng-model="$ctrl.address.postal_code" ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'">
+                <label for="zip" translate>Zip</label>
+                <input class="form-control" type="text" name="postal_code" id="zip"
+                       ng-model="$ctrl.address.postal_code" ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'">
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <label translate>Country</label>
-                <input class="form-control" type="text" name="country" ng-model="$ctrl.address.country" ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'">
+                <label country translate>Country</label>
+                <input class="form-control" type="text" name="country" id="country"
+                       ng-model="$ctrl.address.country" ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'">
             </div>
             <div class="col-sm-3">
-                <label translate>Region</label>
-                <input class="form-control" type="text" name="region" ng-model="$ctrl.address.region" ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'">
+                <label for="region" translate>Region</label>
+                <input class="form-control" type="text" name="region" id="region"
+                       ng-model="$ctrl.address.region" ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'">
             </div>
             <div class="col-sm-3">
-                <label translate>Metro</label>
-                <input class="form-control" type="text" name="metro_area" ng-model="$ctrl.address.metro_area" ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'" />
+                <label for="metro" translate>Metro</label>
+                <input class="form-control" type="text" name="metro_area" id="metro"
+                       ng-model="$ctrl.address.metro_area" ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'" />
             </div>
         </div>
         <div class="row">

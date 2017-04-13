@@ -230,7 +230,7 @@ class ImportFromCsvController {
 
         this.importFromCsv.update().then(() => {
             this.blockUI.stop();
-            const message = this.gettextCatalog.getString('Your import has started and your contacts will be in MPDX shortly.');
+            const message = this.gettextCatalog.getString('Your import has started and your contacts will be in MPDX shortly. We will email you when your import is complete.');
             return this.modal.info(message).then(() => {
                 this.importFromCsv.data = null;
                 this.$state.go('tools');

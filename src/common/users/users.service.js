@@ -30,6 +30,7 @@ class Users {
 
         this.current = null;
         this.currentInitialState = {};
+        this.currentOptions = null;
         this.defaultIncludes = 'account_lists,email_addresses';
         this.defaultFields = {
             user: 'account_lists,email_addresses,first_name,last_name,options,preferences',
@@ -81,24 +82,24 @@ class Users {
         });
     }
     getOptions(reset = false, forRouting = false) {
-        if (this.current.options && !reset) {
+        if (this.currentOptions && !reset) {
             return this.$q.resolve();
         }
         return this.api.get('user/options').then((data) => {
-            this.current.options = this.mapOptions(data);
-            this.$log.debug('user/options', this.current.options);
+            this.currentOptions = this.mapOptions(data);
+            this.$log.debug('user/options', this.currentOptions);
             if (forRouting) {
-                if (!has('setup_position', this.current.options)) { //force first time setup
+                if (!has('setup_position', this.currentOptions)) { //force first time setup
                     return this.createOption('setup_position', 'start').then((pos) => {
-                        this.current.options.setup_position = pos;
+                        this.currentOptions.setup_position = pos;
                         //  = this.mapOptions(data);
                         return this.$q.reject({redirect: 'setup.start'});
                     });
-                } else if (this.current.options.setup_position.value !== '') {
-                    return this.$q.reject({redirect: `setup.${this.current.options.setup_position.value}`});
+                } else if (this.currentOptions.setup_position.value !== '') {
+                    return this.$q.reject({redirect: `setup.${this.currentOptions.setup_position.value}`});
                 }
             }
-            return this.current.options;
+            return this.currentOptions;
         });
     }
     mapOptions(options) {
@@ -106,7 +107,7 @@ class Users {
     }
     createOption(key, value) {
         return this.api.post({ url: `user/options`, data: {key: key, value: value}, type: 'user_options' }).then((data) => {
-            this.current.options[key] = data;
+            this.currentOptions[key] = data;
             return data;
         }); //use jsonapi key here since it doesn't match endpoint
     }
@@ -118,7 +119,7 @@ class Users {
     }
     setOption(option) {
         return this.api.put({ url: `user/options/${option.key}`, data: option, type: 'user_options' }).then((data) => {
-            this.current.options[option.key] = data;
+            this.currentOptions[option.key] = data;
             return data;
         }); //use jsonapi key here since it doesn't match endpoint
     }
