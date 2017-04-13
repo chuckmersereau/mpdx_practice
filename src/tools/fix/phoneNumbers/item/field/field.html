@@ -1,0 +1,26 @@
+<div class="field row">
+    <div class="col-xs-4">
+        {{ $ctrl.phoneNumber.source || 'MPDX' }}
+        <span class="text-muted" ng-if="$ctrl.phoneNumber.created_at">({{ $ctrl.phoneNumber.created_at | date : $ctrl.locale.dateTimeFormat }})</span>
+    </div>
+    <div class="col-xs-2 text-center">
+        <span class="fa-stack" ng-click="$ctrl.setPrimary()" ng-if="!$ctrl.phoneNumber.new">
+            <i class="fa fa-circle-thin fa-stack-2x"></i>
+            <i class="fa fa-circle fa-stack-1x" ng-if="$ctrl.phoneNumber.primary"></i>
+        </span>
+    </div>
+    <div class="col-xs-5">
+        <input class="form-control" type="text" name="number" ng-model="$ctrl.phoneNumber.number" ng-model-options="{ updateOn: 'blur' }" ng-change="$ctrl.save()" ng-disabled="$ctrl.phoneNumber.source !== 'MPDX'" required>
+    </div>
+    <div class="col-xs-1">
+        <button ng-click="$ctrl.remove()" class="btn btn-link btn-xs" title="{{ 'Locked' | translate }}" ng-if="!$ctrl.phoneNumber.new && $ctrl.phoneNumber.source !== 'MPDX'" disabled="disabled">
+            <i class="fa fa-lock"></i>
+        </button>
+        <button ng-click="$ctrl.remove()" class="btn btn-danger btn-xs" title="{{ 'Delete' | translate }}" ng-if="!$ctrl.phoneNumber.new && $ctrl.phoneNumber.source === 'MPDX'">
+            <i class="fa fa-trash"></i>
+        </button>
+        <button ng-click="" class="btn btn-xs btn-default" title="{{ 'Add' | translate }}" ng-if="$ctrl.phoneNumber.new" ng-disabled="!$ctrl.phoneNumber.number">
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
+</div>

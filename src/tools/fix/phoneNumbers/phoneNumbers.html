@@ -1,0 +1,34 @@
+<div block-ui="fix-phoneNumbers">
+    <h1 translate>Fix Phone Numbers</h1>
+    <p ng-if="!$ctrl.fixPhoneNumbers.meta.pagination.total_count" translate>
+        Great work! We weren't able to detect any phone numbers in your account needing reviewed.
+    </p>
+    <div ng-if="$ctrl.fixPhoneNumbers.meta.pagination.total_count">
+        <p>
+            <strong translate translate-params-count="$ctrl.fixPhoneNumbers.meta.pagination.total_count">You have {{count}} phone numbers to confirm.</strong>
+            <br>
+            <translate>Choose below which phone numbers will be set as primary..</translate>
+        </p>
+        <div class="bulk">
+            &nbsp;<translate>Default Primary Source</translate>&nbsp;
+            <select chosen
+                    disable-search="true"
+                    allow-single-deselect="true"
+                    class="form-control"
+                    ng-options="opt for opt in $ctrl.fixPhoneNumbers.sources"
+                    ng-model="$ctrl.source">
+                <option value=""></option>
+            </select>
+
+            <button class="btn btn-gray" ng-click="$ctrl.save()" disabled="disabled"> <!-- ng-disabled="!$ctrl.source" -->
+                <i class="fa fa-check-circle"></i> <translate translate-params-source="$ctrl.source">Confirm All as {{source}}</translate>
+            </button>
+        </div>
+        <fix-phone-numbers-item ng-repeat="person in $ctrl.fixPhoneNumbers.data" person="person"></fix-phone-numbers-item>
+        <pagination ng-if="$ctrl.fixPhoneNumbers.meta.pagination.total_count > 0"
+                    meta="$ctrl.fixPhoneNumbers.meta.pagination"
+                    on-change="$ctrl.load(page)"
+                    class="text-center">
+        </pagination>
+    </div>
+</div>

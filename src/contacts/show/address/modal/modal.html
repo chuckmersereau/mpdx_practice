@@ -1,4 +1,4 @@
-<modal title="{{$ctrl.modalTitle}}" cancel="$hide()" save="$ctrl.save()" delete="$ctrl.delete()" show-delete="$ctrl.address.id" hide-footer="!$ctrl.contact">
+<modal title="{{$ctrl.modalTitle}}" cancel="$hide()" save="$ctrl.save()" delete="$ctrl.delete()" show-delete="$ctrl.address.id && $ctrl.address.source === 'MPDX'" hide-footer="!$ctrl.contact">
     <div class="empty-map" ng-if="!$ctrl.place">
         <i class="fa fa-map"></i>
     </div>

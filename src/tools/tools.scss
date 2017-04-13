@@ -41,15 +41,11 @@ tools {
         border-bottom: 3px solid $color-panel-border;
     }
 
-    .block-ui {
-        min-height: 200px;
-    }
-
     .bulk {
         margin-bottom: 25px;
 
         .chosen-container {
-            width: auto !important;
+            width: 150px !important;
         }
 
         .well {
@@ -58,6 +54,28 @@ tools {
             max-width: 400px;
             text-align: center;
             border-style: dashed;
+        }
+    }
+
+    .field {
+        line-height: 34px;
+        .fa-stack {
+            font-size: 14px;
+        }
+        input[type="text"] {
+            border-style: dashed;
+            border-width: 0 0 1px 0;
+            border-color: #979797;
+            border-radius: 0;
+            box-shadow: none;
+            transition: border-bottom-color 0.3s ease-in;
+            position: relative;
+            background: transparent;
+            outline: 0;
+            width: 100%;
+            &:focus {
+                border-bottom: 1px solid rgb(0, 115, 152);
+            }
         }
     }
 
@@ -141,9 +159,7 @@ tools {
         margin-top: 50px;
 
         i {
-            font-size: 19px;
-            display: block;
-            margin-bottom: 3px;
+            margin-right: 5px;
         }
     }
 
@@ -152,7 +168,6 @@ tools {
     }
 
     .pagination {
-        float: right;
 
         span {
             float: left;

@@ -373,18 +373,21 @@ class ContactsService {
                     status: 'Never Ask'
                 };
             }, this.getSelectedContacts());
-            return this.api.put('contacts/bulk', contacts).then(() => {
+            return this.bulkSave(contacts).then(() => {
                 this.data = pullAllBy('id', contacts, this.data);
                 this.completeFilteredList = pullAllBy('id', contacts, this.completeFilteredList);
                 this.completeList = pullAllBy('id', contacts, this.completeList);
             });
         });
     }
+    bulkSave(contacts) {
+        return this.api.put('contacts/bulk', contacts);
+    }
     bulkEditFields(model, contacts) {
         contacts = reduce((result, contact) =>
             concat(result, assign({id: contact.id}, model))
         , [], contacts);
-        return this.api.put('contacts/bulk', contacts);
+        return this.bulkSave(contacts);
     }
     getAnalytics(reset = false) {
         if (this.analytics && !reset) {
