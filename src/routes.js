@@ -238,15 +238,18 @@ export default class Routes {
                 another: /*@ngInject*/ (contactsTags) => contactsTags.load()
             }
         }).state({
-            name: 'tools.fixCommitmentInfo',
-            title: 'Fix Commitment Info',
-            url: '/fix-commitment-info',
-            component: 'fixCommitmentInfo'
-        }).state({
             name: 'tools.fix',
             abstract: true,
             component: 'fix',
             url: '/fix'
+        }).state({
+            name: 'tools.fix.commitmentInfo',
+            title: 'Fix Commitment Info',
+            url: '/commitment-info',
+            component: 'fixCommitmentInfo',
+            resolve: {
+                0: /*@ngInject*/ (fixCommitmentInfo) => fixCommitmentInfo.load()
+            }
         }).state({
             name: 'tools.fix.phoneNumbers',
             title: 'Fix Phone Numbers',

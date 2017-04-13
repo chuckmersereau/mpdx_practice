@@ -1,6 +1,9 @@
 <ul class="nav nav-pills nav-stacked">
-    <li role="presentation">
-        <a ui-sref="unavailable">Fix Commitment Info</a>
+    <li role="presentation" ng-class="{'active' : $ctrl.$state.includes('tools.fix.commitmentInfo')}">
+        <a ui-sref="tools.fix.commitmentInfo">
+            <translate>Fix Commitment Info</translate>
+            <span class="badge" ng-if="$ctrl.fixCommitmentInfo.meta.pagination.total_count > 0">{{$ctrl.fixCommitmentInfo.meta.pagination.total_count}}</span>
+        </a>
     </li>
     <li role="presentation" ng-class="{'active' : $ctrl.$state.includes('tools.fix.phoneNumbers')}">
         <a ui-sref="tools.fix.phoneNumbers">

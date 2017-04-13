@@ -192,4 +192,22 @@ tools {
             margin-right: 4px;
         }
     }
+
+    .two-columns {
+        margin-top: 15px;
+
+        &:first-child {
+            padding-right: 0;
+        }
+
+        input {
+            width: 100%;
+            height: 34px;
+        }
+    }
+
+    .no-padding {
+        padding-left: 0;
+        padding-right: 0;
+    }
 }

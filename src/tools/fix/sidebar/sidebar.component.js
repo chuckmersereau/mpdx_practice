@@ -1,9 +1,10 @@
 class SidebarController {
     constructor(
         $state,
-        fixPhoneNumbers, fixEmailAddresses, fixAddresses
+        fixCommitmentInfo, fixPhoneNumbers, fixEmailAddresses, fixAddresses
     ) {
         this.$state = $state;
+        this.fixCommitmentInfo = fixCommitmentInfo;
         this.fixPhoneNumbers = fixPhoneNumbers;
         this.fixEmailAddresses = fixEmailAddresses;
         this.fixAddresses = fixAddresses;

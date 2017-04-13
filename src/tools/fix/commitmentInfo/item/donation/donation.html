@@ -1,0 +1,5 @@
+<div class="col-xs-2 no-padding">
+    <strong>{{$ctrl.donation.donation_date | moment : $ctrl.dateFormat()}}</strong>
+    <br>
+    {{$ctrl.currency_symbol}}{{$ctrl.donation.amount | number : 0}}
+</div>
