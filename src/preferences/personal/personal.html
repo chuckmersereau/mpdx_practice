@@ -360,7 +360,8 @@
                         <span translate>Early Adopter</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        {{$ctrl.accounts.current.tester ? 'Yes | translate' : 'No | translate'}}
+                        <translate ng-if="$ctrl.accounts.current.tester">Yes</translate>
+                        <translate ng-if="!$ctrl.accounts.current.tester">No</translate>
                     </div>
                 </div>
             </div>

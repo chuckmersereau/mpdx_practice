@@ -37,7 +37,11 @@ function serialize(key, params, item, method) {
     if (method === 'post' && serialized.data.id === 'undefined') {
         delete serialized.data.id;
     }
+    //enable overwrite for put
     if (method === 'put') {
+        if (!serialized.data.attributes) {
+            serialized.data.attributes = {};
+        }
         serialized.data.attributes.overwrite = true;
     }
     return serialized;
