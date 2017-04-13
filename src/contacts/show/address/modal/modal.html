@@ -6,7 +6,7 @@
         <marker position="{{$ctrl.place.formatted_address}}" title="{{$ctrl.place.formatted_address}}"></marker>
     </ng-map>
     <div ng-if="$ctrl.contact">
-        <div class="row" ng-if="$ctrl.address.source === 'DataServer'">
+        <div class="row" ng-if="$ctrl.address.source !== 'MPDX'">
             <div class="col-sm-12">
                 <div class="alert alert-info">
                     <strong translate>This address is provided by Donation Services</strong><br />
