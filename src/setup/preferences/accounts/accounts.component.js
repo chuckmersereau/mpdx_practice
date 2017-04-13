@@ -10,8 +10,8 @@ class AccountsController {
         this.selectedTab = 'merge_account';
     }
     $onInit() {
-        this.users.current.options.setup_position.value = 'preferences.accounts';
-        this.users.setOption(this.users.current.options.setup_position);
+        this.users.currentOptions.setup_position.value = 'preferences.accounts';
+        this.users.setOption(this.users.currentOptions.setup_position);
     }
     onSave() {
         this.next();

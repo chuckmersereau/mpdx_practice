@@ -1,6 +1,7 @@
 class IntegrationPreferencesController {
     alerts;
     integrations;
+    selectedTab;
 
     constructor(
         $window, $state, $stateParams,
@@ -33,16 +34,14 @@ class IntegrationPreferencesController {
             '57e1810ec697910d0784c3e1',
             '584718e390336006981774ee'
         ]);
-
-        this.activate();
-    }
-    activate() {
-        if (this.$stateParams.id) {
-            this.setTab(this.$stateParams.id);
-        }
     }
     $onInit() {
         this.integrations.load();
+    }
+    $onChanges(data) {
+        if (data.selectedTab) {
+            this.setTab(this.selectedTab);
+        }
     }
     sync(service) {
         this.saving = true;
@@ -88,8 +87,13 @@ class IntegrationPreferencesController {
 
 const Integrations = {
     controller: IntegrationPreferencesController,
-    template: require('./integrations.html')
+    template: require('./integrations.html'),
+    bindings: {
+        selectedTab: '<',
+        setup: '<',
+        onSave: '&'
+    }
 };
 
 export default angular.module('mpdx.preferences.integrations.component', [])
-        .component('integrationPreferences', Integrations).name;
+        .component('preferencesIntegration', Integrations).name;

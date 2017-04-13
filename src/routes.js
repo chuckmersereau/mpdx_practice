@@ -113,7 +113,7 @@ export default class Routes {
             name: 'preferences.integrations',
             title: 'Connect Services',
             url: '/integrations',
-            component: 'integrationPreferences',
+            component: 'preferencesIntegration',
             resolve: {
                 resolution: /*@ngInject*/ (users) => users.listOrganizationAccounts()
             }
@@ -166,6 +166,11 @@ export default class Routes {
             title: 'Merge Accounts',
             url: '/preferences/accounts',
             component: 'setupPreferencesAccounts'
+        }).state({
+            name: 'setup.preferences.integrations',
+            title: 'Integration',
+            url: '/preferences/integration',
+            component: 'setupPreferencesIntegrations'
         }).state({
             name: 'setup.preferences.notifications',
             title: 'Notifications',

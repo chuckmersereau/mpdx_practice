@@ -46,14 +46,14 @@ class ContactController {
             { key: 'referrals', value: gettextCatalog.getString('Referrals') },
             { key: 'notes', value: gettextCatalog.getString('Notes') }
         ];
-        if (users.current.options.contact_tabs_sort) {
+        if (users.currentOptions.contact_tabs_sort) {
             forEachRight(tab => {
                 const label = find({key: tab}, tabsLabels);
                 if (label) {
                     tabsLabels = reject({key: tab}, tabsLabels);
                     tabsLabels = concat(label, tabsLabels);
                 }
-            }, users.current.options.contact_tabs_sort.value.split(','));
+            }, users.currentOptions.contact_tabs_sort.value.split(','));
         }
 
         this.tabsLabels = tabsLabels;
@@ -75,7 +75,7 @@ class ContactController {
                     key: 'contact_tabs_sort',
                     value: joinComma(map('key', this.tabsLabels))
                 };
-                if (users.current.options.contact_tabs_sort) {
+                if (users.currentOptions.contact_tabs_sort) {
                     users.setOption(contactTabsSort);
                 } else {
                     users.createOption(contactTabsSort.key, contactTabsSort.value);
