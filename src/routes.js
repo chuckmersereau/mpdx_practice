@@ -56,8 +56,31 @@ export default class Routes {
             component: 'contact',
             resolve: {
                 again: /*@ngInject*/ (users) => users.listOrganizationAccounts(),
-                contact: /*@ngInject*/ (contacts, $stateParams) => contacts.get($stateParams.contactId)
+                contact: /*@ngInject*/ (contacts, $stateParams) => contacts.get($stateParams.contactId).then((data) => {
+                    contacts.current = data;
+                    contacts.initialState = angular.copy(data);
+                    return data;
+                })
             }
+        }).state({
+            name: 'contacts.show.donations',
+            url: '/donations',
+            component: 'donations',
+            resolve: {
+                inContact: () => true
+            }
+        }).state({
+            name: 'contacts.show.notes',
+            url: '/notes',
+            component: 'contactNotes'
+        }).state({
+            name: 'contacts.show.referrals',
+            url: '/referrals',
+            component: 'contactReferrals'
+        }).state({
+            name: 'contacts.show.tasks',
+            url: '/tasks',
+            component: 'contactTasks'
         }).state({
             name: 'reports',
             url: '/reports',

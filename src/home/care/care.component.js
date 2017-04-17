@@ -6,15 +6,12 @@ class CareController {
     ) {
         this.tasks = tasks;
         this.blockUI = blockUI.instances.get('care');
-        this.watcher = $rootScope.$on('accountListUpdated', () => {
+        $rootScope.$on('accountListUpdated', () => {
             this.load();
         });
     }
     $onInit() {
         this.load();
-    }
-    $onDestroy() {
-        this.watcher();
     }
     addNewsletter() {
         this.tasks.newsletterModal().then(() => this.load());

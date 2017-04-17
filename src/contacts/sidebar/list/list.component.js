@@ -1,19 +1,31 @@
 class ListController {
     constructor(
-        $state, $stateParams,
+        $rootScope, $state, $stateParams,
         contacts
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.contacts = contacts;
+
+        $rootScope.$on('contactCreated', () => {
+            contacts.getFilteredList(true);
+        });
+
+        $rootScope.$on('accountListUpdated', () => {
+            contacts.getFilteredList(true);
+        });
+
+        $rootScope.$on('contactsFilterChange', () => {
+            contacts.getFilteredList(true);
+        });
     }
     $onInit() {
-        this.contacts.getFilteredList(true);
         this.selected = this.$stateParams.contactId;
+        this.contacts.getFilteredList(true); //lazy load
     }
     switchContact(id) {
         this.selected = id;
-        this.$state.go('contacts.show', {contactId: id}, {notify: false});
+        this.$state.go('contacts.show', {contactId: id});
     }
 }
 

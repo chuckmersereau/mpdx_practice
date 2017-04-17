@@ -24,9 +24,6 @@ class ContactPeopleController {
         this.isMerging = false;
         this.selectedPeople = [];
     }
-    $onInit() {
-        this.init();
-    }
     $onChanges() {
         this.init();
     }

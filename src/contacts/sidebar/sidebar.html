@@ -1,5 +1,5 @@
-<contacts-filter ng-if="!$ctrl.isInState('contacts.show')"></contacts-filter>
-<div id="contact_drawer" ng-if="$ctrl.isInState('contacts.show')">
+<contacts-filter ng-if="!$ctrl.session.isInState('contacts.show')"></contacts-filter>
+<div id="contact_drawer" ng-if="$ctrl.session.isInState('contacts.show')">
     <div class="contact_drawer_inner" role="complementary">
         <div class="edit-filters clearfix">
             <translate translate-plural="{{$count}} filters applied" translate-n="$ctrl.contactFilter.count()">1 filter applied</translate>

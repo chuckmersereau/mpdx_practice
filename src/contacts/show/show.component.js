@@ -1,6 +1,7 @@
 import createPatch from "../../common/fp/createPatch";
 import joinComma from "../../common/fp/joinComma";
 import concat from 'lodash/fp/concat';
+import defaultTo from 'lodash/fp/defaultTo';
 import find from 'lodash/fp/find';
 import forEachRight from 'lodash/fp/forEachRight';
 import map from 'lodash/fp/map';
@@ -8,7 +9,6 @@ import reject from 'lodash/fp/reject';
 
 class ContactController {
     alerts;
-    contact;
     contacts;
     contactFilter;
     modal;
@@ -37,7 +37,6 @@ class ContactController {
 
         this.moveContact = { previous_contact: 0, following_contact: 0 };
         this.activeTab = '';
-        this.contact = {};
 
         let tabsLabels = [
             { key: 'details', value: gettextCatalog.getString('Details') },
@@ -57,7 +56,11 @@ class ContactController {
         }
 
         this.tabsLabels = tabsLabels;
-        this.activeTab = this.tabsLabels[0]['key'];
+        this.activeTab = defaultTo(this.tabsLabels[0]['key'], this.$state.$current.name.split('.')[2]);
+
+        if (this.activeTab !== 'details') {
+            this.$state.go(`contacts.show.${this.activeTab}`);
+        }
 
         this.sortableOptions = {
             containment: '#contact-tabs',
@@ -102,12 +105,11 @@ class ContactController {
         this.people.listAll(); //lazy load people so the people modal feels snappy
     }
     $onChanges() {
-        this.$log.debug('selected contact: ', this.contact);
-        this.contactInitialState = angular.copy(this.contact);
+        this.$log.debug('selected contact: ', this.contacts.current);
     }
     save() {
-        const source = angular.copy(this.contact); //to avoid onChanges changes
-        const target = angular.copy(this.contactInitialState); //to avoid onChanges changes
+        const source = angular.copy(this.contacts.current); //to avoid onChanges changes
+        const target = angular.copy(this.contacts.initialState); //to avoid onChanges changes
         const patch = createPatch(target, source);
         this.$log.debug('contact patch', patch);
 
@@ -123,48 +125,44 @@ class ContactController {
     }
     onPrimary(personId) {
         this.$log.debug('change primary: ', personId);
-        this.contact.primary_person.id = personId;
+        this.contacts.current.primary_person.id = personId;
         this.save();
     }
-    openAddReferralsModal() {
-        this.modal.open({
-            template: require('./referrals/add/add.html'),
-            controller: 'addReferralsModalController',
-            locals: {
-                contact: this.contact
-            }
-        });
-    }
     openLogTaskModal() {
-        this.tasks.logModal(this.contact.id);
+        this.tasks.logModal(this.contacts.current.id);
     }
     openAddTaskModal() {
-        this.tasks.addModal(this.contact.id);
+        this.tasks.addModal(this.contacts.current.id);
     }
     hideContact() {
-        this.contacts.hideContact(this.contact).then(() => {
+        this.contacts.hideContact(this.contacts.current).then(() => {
             this.$state.go('contacts');
         });
     }
     goLeft() {
-        this.$state.go('contacts.show', { contactId: this.contacts.getLeftId(this.contact.id) });
+        this.$state.go('contacts.show', { contactId: this.contacts.getLeftId(this.contacts.current.id) });
     }
     goRight() {
-        this.$state.go('contacts.show', { contactId: this.contacts.getRightId(this.contact.id) });
+        this.$state.go('contacts.show', { contactId: this.contacts.getRightId(this.contacts.current.id) });
     }
     displayNotes() {
         this.activeTab = 'notes';
         this.$location.hash('contact-tabs');
         this.$anchorScroll();
     }
+    setActiveTab(tab) {
+        this.activeTab = tab;
+        if (tab === 'details') {
+            this.$state.go(`contacts.show`);
+        } else {
+            this.$state.go(`contacts.show.${tab}`);
+        }
+    }
 }
 
 const Show = {
     controller: ContactController,
-    template: require('./show.html'),
-    bindings: {
-        contact: '<'
-    }
+    template: require('./show.html')
 };
 
 export default angular.module('mpdx.contacts.show.component', [])

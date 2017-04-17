@@ -1,5 +1,5 @@
 <div class="reports">
-    <donations-chart contact="$ctrl.contact"></donations-chart>
+    <donations-chart in-contact="$ctrl.inContact"></donations-chart>
     <div class="pull-right" ng-if="$ctrl.byMonth">
         <button ng-click="$ctrl.gotoPrevMonth()" class="btn btn-default">
             <i class="fa fa-angle-left"></i>
@@ -21,9 +21,9 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th ng-if="$ctrl.contact" class="col-md-2" translate>Partner No.</th>
+                            <th ng-if="$ctrl.inContact" class="col-md-2" translate>Partner No.</th>
                             <th class="col-md-2 date" translate>Date</th>
-                            <th ng-if="!$ctrl.contact" class="col-md-3" translate>Partner</th>
+                            <th ng-if="!$ctrl.inContact" class="col-md-3" translate>Partner</th>
                             <th class="col-md-1 text-right" translate>Amount</th>
                             <th class="col-md-3" ng-if="$ctrl.designationAccounts.data.length > 0" translate>Designation</th>
                             <th class="col-md-1" translate>Method</th>
@@ -33,9 +33,9 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="donation in $ctrl.donationsList">
-                            <td ng-if="$ctrl.contact">{{ donation.donor_account.account_number }}</td>
+                            <td ng-if="$ctrl.inContact">{{ donation.donor_account.account_number }}</td>
                             <td class="date">{{ donation.donation_date | moment: 'l' }}</td>
-                            <td ng-if="!$ctrl.contact">
+                            <td ng-if="!$ctrl.inContact">
                                 <a ui-sref="contacts.show({ contactId: donation.contact.id })">{{ donation.contact.name }} ({{ donation.donor_account.account_number }})</a>
                             </td>
                             <td class="text-right">{{ donation.amount | currency:'':0 }} {{ donation.currency }}</td>

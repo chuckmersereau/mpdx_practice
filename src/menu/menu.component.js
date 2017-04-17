@@ -9,17 +9,17 @@ class menuController {
 
     constructor(
         $rootScope, $state,
-        contacts, help, tasks, users, donations
+        contacts, help, session, tasks, users, donations
     ) {
         this.$rootScope = $rootScope;
         this.contacts = contacts;
         this.donations = donations;
         this.help = help;
         this.$state = $state;
+        this.session = session;
         this.tasks = tasks;
         this.users = users;
 
-        this.isInState = (match) => this.$state.$current.name.indexOf(match) === 0;
         this.notifications = { count: 0 };
     }
     showHelp() {

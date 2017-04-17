@@ -229,7 +229,7 @@ class TasksService {
             }, [], contactIds);
             return this.api.post({ url: 'tasks/bulk', data: tasks, type: 'tasks' }).then(() => {
                 if (contactIds.length > 0) {
-                    this.contacts.load(true);
+                    this.$rootScope.$emit('contactCreated');
                 }
             });
         }

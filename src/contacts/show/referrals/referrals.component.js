@@ -21,10 +21,7 @@ class ContactReferralsController {
 
 const Referrals = {
     controller: ContactReferralsController,
-    template: require('./referrals.html'),
-    bindings: {
-        contact: '<'
-    }
+    template: require('./referrals.html')
 };
 
 export default angular.module('mpdx.contacts.show.referrals.component', [])

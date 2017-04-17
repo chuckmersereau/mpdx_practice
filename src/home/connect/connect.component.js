@@ -10,16 +10,13 @@ class ConnectController {
     ) {
         this.tasks = tasks;
         this.blockUI = blockUI.instances.get('connect');
-        this.watcher = $rootScope.$on('accountListUpdated', () => {
+        $rootScope.$on('accountListUpdated', () => {
             this.load();
         });
         this.limit = 5;
     }
     $onInit() {
         this.load();
-    }
-    $onDestroy() {
-        this.watcher();
     }
     load() {
         this.blockUI.start();

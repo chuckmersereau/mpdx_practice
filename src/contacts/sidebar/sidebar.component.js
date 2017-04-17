@@ -1,13 +1,9 @@
 class SidebarController {
     constructor(
-        $state,
-        contactFilter
+        contactFilter, session
     ) {
-        this.$state = $state;
+        this.session = session;
         this.contactFilter = contactFilter;
-    }
-    isInState(match) {
-        return this.$state.$current.name.indexOf(match) === 0;
     }
 }
 

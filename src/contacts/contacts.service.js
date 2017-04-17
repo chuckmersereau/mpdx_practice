@@ -34,6 +34,7 @@ class ContactsService {
     ) {
         this.$log = $log;
         this.$q = $q;
+        this.$rootScope = $rootScope;
         this.alerts = alerts;
         this.api = api;
         this.contactFilter = contactFilter;
@@ -44,6 +45,7 @@ class ContactsService {
         this.analytics = null;
         this.completeList = null;
         this.completeFilteredList = null;
+        this.current = null;
         this.data = [];
         this.meta = {};
         this.loading = true;
@@ -67,8 +69,6 @@ class ContactsService {
     }
     reset(full = false) {
         this.selectedContacts = [];
-        this.getFilteredList(true);
-        this.load(true);
         if (full) {
             this.getList(true);
         }
@@ -216,20 +216,14 @@ class ContactsService {
         });
     }
     updateContactOrList(contact) {
+        if (!contact.name) {
+            return;
+        }
+        this.$rootScope.$emit('contactCreated');
         const completeIndex = findIndex({id: contact.id}, this.completeList);
         if (completeIndex > -1 && this.completeList[completeIndex].name !== contact.name) {
             this.completeList[completeIndex] = {name: contact.name, id: contact.id};
             this.completeList = sortBy('name', concat(this.completeList, {name: contact.name, id: contact.id}));
-        }
-        const completeFilteredIndex = findIndex({id: contact.id}, this.completeFilteredList);
-        if (completeFilteredIndex > -1 && this.completeFilteredList[completeFilteredIndex].name !== contact.name) {
-            this.completeFilteredList[completeFilteredIndex] = {name: contact.name, id: contact.id};
-            this.completeFilteredList = sortBy('name', concat(this.completeFilteredList, {name: contact.name, id: contact.id}));
-        }
-
-        const index = findIndex({id: contact.id}, this.data);
-        if (index > -1) {
-            this.load(true); //refresh data list since it could conflict with api pagination
         }
     }
     save(contact) {
@@ -245,16 +239,14 @@ class ContactsService {
     create(contact) {
         contact.account_list = { id: this.api.account_list_id };
         return this.api.post('contacts', contact).then((data) => {
-            this.getFilteredList(true);
-            this.load(true); //refresh data list since it could conflict with api pagination
+            this.$rootScope.$emit('contactCreated');
             this.completeList = sortBy('name', concat(this.completeList, {name: data.name, id: data.id}));
             return data;
         });
     }
     addBulk(contacts) {
         return this.api.post({url: 'contacts/bulk', data: contacts, type: 'contacts'}).then(() => {
-            this.getFilteredList(true);
-            this.load(true); //refresh data list since it could conflict with api pagination
+            this.$rootScope.$emit('contactCreated');
             this.completeList = sortBy('name', concat(this.completeList, map(contact => { return {name: contact.name, id: contact.id}; }, contacts)));
         });
     }
@@ -263,8 +255,7 @@ class ContactsService {
             id: contact.id,
             contacts_referred_by_me: contacts
         }).then(() => {
-            this.getFilteredList(true);
-            this.load(true); //refresh data list since it could conflict with api pagination
+            this.$rootScope.$emit('contactCreated');
             this.completeList = sortBy('name', concat(this.completeList, map(contact => { return {name: contact.name, id: contact.id}; }, contacts)));
         });
     }
@@ -486,6 +477,15 @@ class ContactsService {
         const message = this.gettextCatalog.getString('Are you sure you wish to delete this address?');
         return this.modal.confirm(message).then(() => {
             return this.api.delete(`contacts/${contactId}/addresses/${addressId}`);
+        });
+    }
+    openAddReferralsModal() {
+        this.modal.open({
+            template: require('./show/referrals/add/add.html'),
+            controller: 'addReferralsModalController',
+            locals: {
+                contact: this.current
+            }
         });
     }
     openNewContactModal() {
