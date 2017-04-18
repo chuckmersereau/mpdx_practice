@@ -56,32 +56,31 @@
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <label country translate>Country</label>
+                <label for="country" translate>Country</label>
                 <input class="form-control" type="text" name="country" id="country"
-                       ng-model="$ctrl.address.country" ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'">
+                       ng-model="$ctrl.address.country" ng-disabled="$ctrl.address.source === 'Siebel'">
             </div>
             <div class="col-sm-3">
                 <label for="region" translate>Region</label>
                 <input class="form-control" type="text" name="region" id="region"
-                       ng-model="$ctrl.address.region" ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'">
+                       ng-model="$ctrl.address.region">
             </div>
             <div class="col-sm-3">
                 <label for="metro" translate>Metro</label>
                 <input class="form-control" type="text" name="metro_area" id="metro"
-                       ng-model="$ctrl.address.metro_area" ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'" />
+                       ng-model="$ctrl.address.metro_area">
             </div>
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <input id="address_invalid" class="form-control" type="checkbox" name="address_invalid" ng-model="$ctrl.address.historic" ng-disabled="$ctrl.address.source !== 'MPDX'">
+                <input id="address_invalid" class="form-control" type="checkbox" name="address_invalid" ng-model="$ctrl.address.historic">
                 <label class="checkbox-label" for="address_invalid" translate>Address no longer valid</label>
                 <br />
                 <input id="primary_address"
                        class="form-control"
                        type="checkbox"
                        name="primary_mailing_address"
-                       ng-model="$ctrl.address.primary_mailing_address"
-                       ng-disabled="$ctrl.address.source !== 'MPDX'">
+                       ng-model="$ctrl.address.primary_mailing_address">
                 <label class="checkbox-label" for="primary_address" translate>Mailing Address</label>
             </div>
         </div>
