@@ -2,8 +2,10 @@ import createPatch from "../../common/fp/createPatch";
 import joinComma from "../../common/fp/joinComma";
 import concat from 'lodash/fp/concat';
 import defaultTo from 'lodash/fp/defaultTo';
+import eq from 'lodash/fp/eq';
 import find from 'lodash/fp/find';
 import forEachRight from 'lodash/fp/forEachRight';
+import isNil from 'lodash/fp/isNil';
 import map from 'lodash/fp/map';
 import reject from 'lodash/fp/reject';
 
@@ -124,6 +126,9 @@ class ContactController {
         });
     }
     onPrimary(personId) {
+        if (eq(this.contacts.current.primary_person.id, personId) || isNil(personId)) {
+            return;
+        }
         this.$log.debug('change primary: ', personId);
         this.contacts.current.primary_person.id = personId;
         this.save();
