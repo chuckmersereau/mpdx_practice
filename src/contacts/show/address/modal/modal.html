@@ -8,10 +8,13 @@
     <div ng-if="$ctrl.contact">
         <div class="row" ng-if="$ctrl.address.source !== 'MPDX'">
             <div class="col-sm-12">
-                <div class="alert alert-info">
+                <div class="alert alert-info" ng-if="$ctrl.address.source === 'Siebel'">
                     <strong translate>This address is provided by Donation Services</strong><br />
                     <translate>To make changes send them an email by</translate>
                     <a ng-if="$ctrl.address" ng-href="mailto:donation.services@cru.org?subject=Donor address change&body={{ $ctrl.reqUpdateEmailBodyRequest() }}" target='_blank' translate>clicking here.</a>
+                </div>
+                <div class="alert alert-info" ng-if="$ctrl.address.source === 'DataServer'">
+                    <strong translate>This address is from your organizations donor system. Please email them to make changes.</strong>
                 </div>
             </div>
         </div>
