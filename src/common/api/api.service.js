@@ -401,9 +401,9 @@ class EntityAttributes {
                 }
             },
             tasks: {
-                attributes: ["account_list", "activity_type", "location", "start_at", "end_at", "type", "created_at", "updated_at", "completed", "completed_at", "comments", "contacts", "due_date",
-                    "notification_id", "next_action", "no_date", "notification_type", "notification_time_before", "remote_id", "result", "source", "starred", "subject", "tag_list",
-                    "notification_time_unit", "notification_scheduled"],
+                attributes: ["account_list", "activity_type", "comments", "completed", "completed_at", "created_at", "contacts", "due_date", "end_at", "location",
+                    "next_action", "no_date", "notification_id", "notification_time_before", "notification_time_unit", "notification_scheduled", "notification_type",
+                    "remote_id", "result", "source", "starred", "start_at", "subject", "tag_list", "type", "updated_at"],
                 account_list: { ref: 'id' },
                 comments: {
                     ref: 'id',
