@@ -1,54 +1,55 @@
-<div class="subnav-offset-padded">
-  <form ng-submit="$ctrl.save(f)" novalidate>
-      <p translate>You can migrate all your contact information and history from TntConnect into MPDX. Most of your information will
-          import straight into MPDX, including contact info, task history (with notes), notes, user groups, and appeals. MPDX
-          hides contacts with any of the not interested statuses, including not interested and never ask in MPDX. These
-          contacts import in, but do not show up unless you search for hidden contacts.
-      </p>
+<unavailable></unavailable>
+<!--<div class="subnav-offset-padded">-->
+  <!--<form ng-submit="$ctrl.save(f)" novalidate>-->
+      <!--<p translate>You can migrate all your contact information and history from TntConnect into MPDX. Most of your information will-->
+          <!--import straight into MPDX, including contact info, task history (with notes), notes, user groups, and appeals. MPDX-->
+          <!--hides contacts with any of the not interested statuses, including not interested and never ask in MPDX. These-->
+          <!--contacts import in, but do not show up unless you search for hidden contacts.-->
+      <!--</p>-->
 
-      <div>
-          <strong translate>Export your Database from TntConnect:</strong>
-          <ul>
-              <li translate>Click on &quot;File&quot;, choose &quot;Utilities&quot; from the list. Then &quot;Maintenance&quot;.</li>
-              <li translate>In the popup box, choose the top button, &quot;Export Database to XML&quot;.</li>
-              <li translate>Then save to your computer.</li>
-          </ul>
-      </div>
-      <p>
-          <i class="fa fa-play-circle-o"></i>
-          <a href="http://www.youtube.com/watch?v=EoWFRFIYMkQ&list=UUTjqVT-m3YXICbwaIu9_Gqg&index=22" target="_blank" translate>
-              If you need help, watch this video.
-          </a>
-      </p>
+      <!--<div>-->
+          <!--<strong translate>Export your Database from TntConnect:</strong>-->
+          <!--<ul>-->
+              <!--<li translate>Click on &quot;File&quot;, choose &quot;Utilities&quot; from the list. Then &quot;Maintenance&quot;.</li>-->
+              <!--<li translate>In the popup box, choose the top button, &quot;Export Database to XML&quot;.</li>-->
+              <!--<li translate>Then save to your computer.</li>-->
+          <!--</ul>-->
+      <!--</div>-->
+      <!--<p>-->
+          <!--<i class="fa fa-play-circle-o"></i>-->
+          <!--<a href="http://www.youtube.com/watch?v=EoWFRFIYMkQ&list=UUTjqVT-m3YXICbwaIu9_Gqg&index=22" target="_blank" translate>-->
+              <!--If you need help, watch this video.-->
+          <!--</a>-->
+      <!--</p>-->
 
-      <p>
-          <span translate>Note: You must have at least TntConnect 3.0.</span> <span translate>To download the latest version,</span>
-          <a href="http://www.tntware.com/tntconnect/downloads/" target="_blank" translate>click here</a>.
-      </p>
+      <!--<p>-->
+          <!--<span translate>Note: You must have at least TntConnect 3.0.</span> <span translate>To download the latest version,</span>-->
+          <!--<a href="http://www.tntware.com/tntconnect/downloads/" target="_blank" translate>click here</a>.-->
+      <!--</p>-->
 
-      <div class="form-group btn btn-default" ng-model="f.file" ngf-select ngf-accept="'application/xml'" ngf-max-size="100MB">
-          <translate>Choose File</translate>
-      </div>
-      {{f.file.name}}
+      <!--<div class="form-group btn btn-default" ng-model="f.file" ngf-select ngf-accept="'application/xml'" ngf-max-size="100MB">-->
+          <!--<translate>Choose File</translate>-->
+      <!--</div>-->
+      <!--{{f.file.name}}-->
 
-      <div class="radio">
-        <label class="field radiocheck">
-            <input type="radio" ng-model="$ctrl.override" ng-value="false">
-            <span translate>This TntConnect import should only fill in the blanks in current contacts and/or add new contacts.</span>
-        </label>
-    </div>
+      <!--<div class="radio">-->
+        <!--<label class="field radiocheck">-->
+            <!--<input type="radio" ng-model="$ctrl.override" ng-value="false">-->
+            <!--<span translate>This TntConnect import should only fill in the blanks in current contacts and/or add new contacts.</span>-->
+        <!--</label>-->
+    <!--</div>-->
 
-    <div class="radio">
-        <label>
-            <input type="radio" ng-model="$ctrl.override" ng-value="true">
-            <span translate>This TntConnect import should override the info in MPDX. (Contact info, notes, status, prayerletter settings, etc).</span>
-        </label>
-    </div>
+    <!--<div class="radio">-->
+        <!--<label>-->
+            <!--<input type="radio" ng-model="$ctrl.override" ng-value="true">-->
+            <!--<span translate>This TntConnect import should override the info in MPDX. (Contact info, notes, status, prayerletter settings, etc).</span>-->
+        <!--</label>-->
+    <!--</div>-->
 
-      <div class="form-group importtags">
-          <tag-selector ng-model="$ctrl.tags" tag-list="$ctrl.contactsTags.data">
-      </div>
+      <!--<div class="form-group importtags">-->
+          <!--<tag-selector ng-model="$ctrl.tags" tag-list="$ctrl.contactsTags.data">-->
+      <!--</div>-->
 
-      <button type="submit" class="btn btn-primary" ng-disabled="!f.file || $ctrl.importing" translate>Import</button>
-  </form>
-</div>
+      <!--<button type="submit" class="btn btn-primary" ng-disabled="!f.file || $ctrl.importing" translate>Import</button>-->
+  <!--</form>-->
+<!--</div>-->
