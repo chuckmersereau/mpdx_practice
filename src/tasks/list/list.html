@@ -33,7 +33,7 @@
         <div class="row page-controls">
             <div class="col-sm-12">
                 <translate translate-params-from="$ctrl.tasks.data.length || 0"
-                           translate-params-to="$ctrl.tasks.completeList.length || 0">
+                           translate-params-to="$ctrl.tasks.meta.pagination.total_count || 0">
                     Showing <strong>{{from}}</strong> of <strong>{{to}}</strong>
                 </translate>
                 <span class="label label-primary" ng-if="$ctrl.tasks.selected.length > 0">
@@ -42,8 +42,8 @@
                     <a ng-click="$ctrl.tasks.clearSelected()"><i class="fa fa-times" ></i></a>
                 </span>&nbsp;
                 <small>
-                    <a ng-if="$ctrl.tasks.selected.length > 0 && $ctrl.tasks.selected.length < $ctrl.tasks.completeList.length" ng-click="$ctrl.tasks.selectAll()">
-                        <span translate translate-plural="Select all {{$count}} tasks" translate-n="$ctrl.tasks.completeList.length">Select 1 task</span>
+                    <a ng-if="$ctrl.tasks.selected.length > 0 && $ctrl.tasks.selected.length < $ctrl.tasks.meta.pagination.total_count" ng-click="$ctrl.tasks.selectAll()">
+                        <span translate translate-plural="Select all {{$count}} tasks" translate-n="$ctrl.tasks.meta.pagination.total_count">Select 1 task</span>
                     </a>
                 </small>
             </div>
@@ -63,7 +63,7 @@
                 </ul>
             </div>
         </div>
-        <div ng-if="!$ctrl.tasks.loading && $ctrl.tasks.data.length < $ctrl.tasks.completeList.length">
+        <div ng-if="!$ctrl.tasks.loading && $ctrl.tasks.data.length < $ctrl.tasks.meta.pagination.total_count">
             <div class="panel panel-default">
                 <div class="panel-body text-center">
                     <a ng-click="$ctrl.tasks.loadMoreTasks()" translate>Load More Tasks</a>

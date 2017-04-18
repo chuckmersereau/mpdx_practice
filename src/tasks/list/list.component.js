@@ -2,10 +2,19 @@ class ListController {
     tasks;
 
     constructor(
+        $rootScope,
         tasks
     ) {
         this.tasks = tasks;
+
+        $rootScope.$on('taskChange', () => {
+            this.tasks.load(true);
+        });
+
         this.tasks.reset();
+    }
+    $onInit() {
+        this.tasks.load(true);
     }
 }
 

@@ -54,7 +54,6 @@ class TasksService {
         };
 
         this.dataLoadCount = 0;
-        this.completeListLoadCount = 0;
 
         $rootScope.$on('tasksFilterChange', () => {
             this.reset();
@@ -70,9 +69,7 @@ class TasksService {
     }
     reset() {
         this.selected = [];
-        this.getList(true);
-        this.getAnalytics(true);
-        this.load(true);
+        this.change();
     }
     get(id, updateLists = true) {
         return this.api.get(`tasks/${id}`, {
@@ -90,19 +87,12 @@ class TasksService {
             const processedTask = this.process(task);
             if (updateLists) {
                 this.data = upsert('id', processedTask, this.data);
-                const listTask = {id: task.id, subject: task.subject};
-                this.completeList = upsert('id', listTask, this.completeList);
             }
             this.$log.debug(`tasks/${task.id}`, processedTask);
             return processedTask;
         });
     }
-    getList(reset = false) {
-        if (!reset && this.completeList) {
-            return this.$q.resolve(this.completeList);
-        }
-        this.completeListLoadCount++;
-        const currentCount = angular.copy(this.completeListLoadCount);
+    getList() {
         this.completeList = [];
         return this.api.get({
             url: 'tasks',
@@ -116,15 +106,10 @@ class TasksService {
             overrideGetAsPost: true
         }).then((data) => {
             this.$log.debug('tasks all', data);
-            if (currentCount === this.completeListLoadCount) {
-                this.completeList = data;
-            }
+            this.completeList = data;
         });
     }
-    getAnalytics(reset = false) {
-        if (this.analytics && !reset) {
-            return this.$q.resolve(this.analytics);
-        }
+    getAnalytics() {
         return this.api.get('tasks/analytics', {filter: {account_list_id: this.api.account_list_id}}).then((data) => {
             this.$log.debug('tasks/analytics', data);
             this.analytics = data;
@@ -205,9 +190,11 @@ class TasksService {
             task.comments.push({id: uuid(), body: comment, person: { id: this.users.current.id }});
         }
         return this.api.put(`tasks/${task.id}`, task).then(() => {
-            this.tasksTags.load();
-            this.get(task.id);
+            this.change();
         });
+    }
+    change() {
+        this.$rootScope.$emit('taskChange');
     }
     create(task, contactIds = [], comment) {
         task.account_list = { id: this.api.account_list_id };
@@ -275,7 +262,7 @@ class TasksService {
         }, this.selected);
         return this.api.put('tasks/bulk', tasks).then((data) => {
             this.tasksTags.change();
-            this.reset();
+            this.change();
             return data;
         });
     }
@@ -328,7 +315,6 @@ class TasksService {
         const message = this.gettextCatalog.getString('Are you sure you wish to delete the selected task?');
         return this.modal.confirm(message).then(() => {
             return this.api.delete(`tasks/${task.id}`).then(() => {
-                this.completeList = reject({id: task.id}, this.completeList);
                 this.data = reject({id: task.id}, this.data);
                 this.selected = pull(task.id, this.selected);
             });
@@ -339,7 +325,6 @@ class TasksService {
         return this.modal.confirm(message).then(() => {
             return this.api.delete({url: 'tasks/bulk', data: this.selected, type: 'tasks'}).then(() => {
                 this.data = pullAllBy('id', this.selected, this.data);
-                this.completeList = pullAllBy('id', this.selected, this.completeList);
                 this.selected = [];
             }, () => {
                 this.alerts.addAlert(this.gettextCatalog.getPlural(this.selected.length, 'Unable to delete that task.', 'Unable to delete {{$count}} tasks. Try deleting less tasks.', {}), 'danger');
@@ -364,7 +349,9 @@ class TasksService {
     }
     selectAll(all = true) {
         if (all) {
-            this.selected = map('id', this.completeList);
+            this.getList(true).then(() => {
+                this.selected = map('id', this.completeList);
+            });
         } else {
             this.selected = map('id', this.data);
         }
@@ -377,10 +364,14 @@ class TasksService {
         }
     }
     addModal(contactsList = [], activityType = null) {
-        return this.tasksModals.add(contactsList, activityType);
+        return this.tasksModals.add(contactsList, activityType).then(() => {
+            this.change();
+        });
     }
     newsletterModal() {
-        return this.tasksModals.newsletter();
+        return this.tasksModals.newsletter().then(() => {
+            this.change();
+        });
     }
     logModal(contactsList = []) {
         return this.tasksModals.log(contactsList);
