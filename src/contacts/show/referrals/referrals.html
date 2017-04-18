@@ -1,8 +1,12 @@
 <div>
-    <div ng-if='$ctrl.contacts.current.contacts_referred_by_me.length'>
+    <div ng-if="$ctrl.contacts.current.contacts_referred_by_me.length && $ctrl.contactList">
         <ul>
             <li ng-repeat="ref in $ctrl.contacts.current.contacts_referred_by_me">
-                <a ng-init="contact = $ctrl.getContact(ref.id)" ui-sref="contacts.show({ contactId: ref.id })">{{ contact.name }}</a> on {{ contact.created_at | date :$ctrl.locale.dateTimeFormat }}
+                <a ng-init="contact = $ctrl.getContact(ref.id)" ui-sref="contacts.show({ contactId: ref.id })">
+                    {{ contact.name }}
+                </a>
+                on
+                {{ contact.created_at | date :$ctrl.locale.dateTimeFormat }}
             </li>
         </ul>
     </div>

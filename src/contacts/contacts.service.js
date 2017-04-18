@@ -10,7 +10,6 @@ import map from 'lodash/fp/map';
 import pull from 'lodash/fp/pull';
 import pullAllBy from 'lodash/fp/pullAllBy';
 import reject from 'lodash/fp/reject';
-import sortBy from 'lodash/fp/sortBy';
 import toInteger from 'lodash/fp/toInteger';
 import union from 'lodash/fp/union';
 import unionBy from 'lodash/fp/unionBy';
@@ -43,7 +42,6 @@ class ContactsService {
         this.modal = modal;
 
         this.analytics = null;
-        this.completeList = null;
         this.completeFilteredList = null;
         this.current = null;
         this.data = [];
@@ -52,8 +50,8 @@ class ContactsService {
         this.selectedContacts = [];
 
         this.page = 1;
-        this.listLoadCount = 0;
         this.completeListLoadCount = 0;
+        this.totalContactCount = 0;
 
         $rootScope.$on('contactsFilterChange', () => {
             this.reset();
@@ -67,11 +65,8 @@ class ContactsService {
             this.reset(true);
         });
     }
-    reset(full = false) {
+    reset() {
         this.selectedContacts = [];
-        if (full) {
-            this.getList(true);
-        }
     }
     get(id) {
         return this.api.get({
@@ -85,21 +80,27 @@ class ContactsService {
             return data;
         });
     }
-    getList(reset = false) {
-        if (!reset && this.completeList && this.completeList.length > 0) {
-            return this.$q.resolve(this.completeList);
-        }
-        this.completeList = []; // to avoid double call
-        return this.api.get('contacts', {
-            filter: {account_list_id: this.api.account_list_id},
-            fields: {
-                contacts: 'created_at,name'
-            },
-            per_page: 25000,
-            sort: 'name'
-        }).then((data) => {
-            this.$log.debug('contacts all', data);
-            this.completeList = data;
+    getName(id) {
+        return this.api.get({
+            url: `contacts/${id}`,
+            data: {
+                fields: {
+                    contacts: 'name'
+                }
+            }
+        });
+    }
+    getNames(ids) {
+        return this.api.get({
+            url: 'contacts',
+            data: {
+                fields: {
+                    contacts: 'name'
+                },
+                filter: {
+                    ids: joinComma(ids)
+                }
+            }
         });
     }
     getFilteredList(reset = false) {
@@ -124,6 +125,22 @@ class ContactsService {
             this.$log.debug('contacts all - filtered', data);
             if (currentCount === this.completeListLoadCount) {
                 this.completeFilteredList = data;
+            }
+        });
+    }
+    search(keyword) {
+        return this.api.get({
+            url: 'contacts',
+            data: {
+                filter: {
+                    account_list_id: this.api.account_list_id,
+                    wildcard_search: keyword
+                },
+                fields: {
+                    contacts: 'name'
+                },
+                per_page: 6,
+                sort: 'name'
             }
         });
     }
@@ -198,6 +215,7 @@ class ContactsService {
                 count = 0;
             }
             if (data.length === 0) {
+                this.getTotalCount();
                 this.loading = false;
                 return;
             }
@@ -215,16 +233,21 @@ class ContactsService {
             this.loading = false;
         });
     }
+    getTotalCount() { //only used when search is empty
+        this.api.get('contacts', {
+            filter: {
+                account_list_id: this.api.account_list_id
+            },
+            per_page: 0
+        }).then((data) => {
+            this.totalContactCount = data.meta.pagination.total_count;
+        });
+    }
     updateContactOrList(contact) {
         if (!contact.name) {
             return;
         }
         this.$rootScope.$emit('contactCreated');
-        const completeIndex = findIndex({id: contact.id}, this.completeList);
-        if (completeIndex > -1 && this.completeList[completeIndex].name !== contact.name) {
-            this.completeList[completeIndex] = {name: contact.name, id: contact.id};
-            this.completeList = sortBy('name', concat(this.completeList, {name: contact.name, id: contact.id}));
-        }
     }
     save(contact) {
         if (contact.tag_list) {
@@ -240,14 +263,12 @@ class ContactsService {
         contact.account_list = { id: this.api.account_list_id };
         return this.api.post('contacts', contact).then((data) => {
             this.$rootScope.$emit('contactCreated');
-            this.completeList = sortBy('name', concat(this.completeList, {name: data.name, id: data.id}));
             return data;
         });
     }
     addBulk(contacts) {
         return this.api.post({url: 'contacts/bulk', data: contacts, type: 'contacts'}).then(() => {
             this.$rootScope.$emit('contactCreated');
-            this.completeList = sortBy('name', concat(this.completeList, map(contact => { return {name: contact.name, id: contact.id}; }, contacts)));
         });
     }
     addReferrals(contact, contacts) {
@@ -256,7 +277,6 @@ class ContactsService {
             contacts_referred_by_me: contacts
         }).then(() => {
             this.$rootScope.$emit('contactCreated');
-            this.completeList = sortBy('name', concat(this.completeList, map(contact => { return {name: contact.name, id: contact.id}; }, contacts)));
         });
     }
     loadMoreContacts() {
@@ -349,7 +369,6 @@ class ContactsService {
                 id: contact.id,
                 status: 'Never Ask'
             }).then(() => {
-                this.completeList = reject({id: contact.id}, this.completeList);
                 this.completeFilteredList = reject({id: contact.id}, this.completeFilteredList);
                 this.data = reject({id: contact.id}, this.data);
             });
@@ -367,7 +386,6 @@ class ContactsService {
             return this.bulkSave(contacts).then(() => {
                 this.data = pullAllBy('id', contacts, this.data);
                 this.completeFilteredList = pullAllBy('id', contacts, this.completeFilteredList);
-                this.completeList = pullAllBy('id', contacts, this.completeList);
             });
         });
     }

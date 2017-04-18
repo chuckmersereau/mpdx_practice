@@ -7,8 +7,7 @@ export default class Routes {
             abstract: true,
             component: 'root',
             resolve: {
-                constants: /*@ngInject*/ (serverConstants) => serverConstants.load(),
-                contactList: /*@ngInject*/ (contacts) => contacts.getList()
+                constants: /*@ngInject*/ (serverConstants) => serverConstants.load()
             }
         }).state({
             name: 'home',

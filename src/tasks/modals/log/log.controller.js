@@ -1,4 +1,5 @@
 import indexOf from 'lodash/fp/indexOf';
+import reduce from 'lodash/fp/reduce';
 
 class LogTaskController {
     comment;
@@ -18,9 +19,27 @@ class LogTaskController {
 
         this.contactsList = angular.copy(contactsList);
         this.task = { completed: true };
+        this.contactNames = null;
+
+        this.activate();
+    }
+    activate() {
+        this.contacts.getNames(this.contactsList).then((data) => {
+            this.contactNames = reduce((result, contact) => {
+                result[contact.id] = contact.name;
+                return result;
+            }, {}, data);
+        });
     }
     addContact() {
         this.contactsList.push('');
+    }
+    setContact(params, index) {
+        if (!params) {
+            return;
+        }
+        this.contactNames[params.id] = params.name; //set id if missing or out of date
+        this.contactsList[index] = params.id;
     }
     save(promises = []) {
         if (this.status && this.showPartnerStatus()) {
