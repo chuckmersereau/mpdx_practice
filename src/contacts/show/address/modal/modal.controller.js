@@ -113,7 +113,7 @@ class AddressModalController {
         }
     }
     reqUpdateEmailBodyRequest() {
-        if (this.address.source === 'DataServer') {
+        if (this.address.source === 'Siebel') {
             const donorAccount = this.address.source_donor_account;
             const donorName = donorAccount ? this.contact.name + ' (donor #' + donorAccount.account_number + ')' : this.contact.name;
             return `Dear Donation Services,%0D%0A%0D%0AOne of my donors, ${donorName} has a new current address.%0D%0APlease update their address to:%0D%0AREPLACE WITH NEW STREET%0D%0AREPLACE WITH NEW CITY, STATE, ZIP%0D%0A%0D%0AThanks,%0D%0A${this.users.current.first_name}`;

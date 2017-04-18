@@ -11,7 +11,7 @@
                 <div class="alert alert-info">
                     <strong translate>This address is provided by Donation Services</strong><br />
                     <translate>To make changes send them an email by</translate>
-                    <a href="mailto:donation.services@cru.org?subject=Donor address change&body={{ $ctrl.reqUpdateEmailBodyRequest() }}" target='_blank' translate>clicking here.</a>
+                    <a ng-if="$ctrl.address" ng-href="mailto:donation.services@cru.org?subject=Donor address change&body={{ $ctrl.reqUpdateEmailBodyRequest() }}" target='_blank' translate>clicking here.</a>
                 </div>
             </div>
         </div>
