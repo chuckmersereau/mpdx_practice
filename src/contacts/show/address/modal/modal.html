@@ -23,12 +23,11 @@
                 <label for="street"><translate>Street</translate> <span class="text-danger">*</span></label>
                 <input type="text" name="street" class="form-control" id="street"
                        places-auto-complete on-place-changed="$ctrl.updateAddress()"
-                       ng-model="$ctrl.address.street" required ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'">
+                       ng-model="$ctrl.address.street" ng-required="$ctrl.address.source === 'MPDX'" ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'">
             </div>
             <div class="col-sm-3">
-                <label for="location"><translate>Location</translate> <span class="text-danger">*</span></label>
+                <label for="location"><translate>Location</translate></label>
                 <select chosen
-                        required
                         disable-search="true"
                         data-placeholder-text-single="'Select an Option' | translate"
                         class="form-control"
