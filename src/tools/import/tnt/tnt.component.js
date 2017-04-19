@@ -1,3 +1,4 @@
+import joinComma from "../../../common/fp/joinComma";
 import config from 'config';
 
 class TntImportController {
@@ -29,7 +30,7 @@ class TntImportController {
                     type: 'imports',
                     attributes: {
                         file: form.file,
-                        tags: this.tags,
+                        tag_list: joinComma(this.tags),
                         override: this.override
                     }
                 }

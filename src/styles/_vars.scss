@@ -40,4 +40,6 @@ $border-radius:             3px;
 
 $nav-height: 103px;
 $subnav-height: 33px;
+$subnav-padding: 20px;
+$subnav-height-padded: $subnav-height + $subnav-padding;
 $fullnav-height: $nav-height + $subnav-height;

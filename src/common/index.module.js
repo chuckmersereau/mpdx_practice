@@ -7,6 +7,7 @@ import authInterceptor from './authInterceptor/authInterceptor.provider';
 import autoFocus from './autoFocus/autofocus.directive';
 import bgImg from './bgImg/bgImg.directive';
 import chosen from './chosen/chosen.directive';
+import contactSelector from './contactSelector/index.module';
 import convertToNumber from './convertToNumber/convertToNumber.directive';
 import cover from './cover/index.module';
 import currencySelect from './currencySelect/currencySelect.component';
@@ -43,6 +44,7 @@ export default angular.module('mpdx.common', [
     autoFocus,
     bgImg,
     chosen,
+    contactSelector,
     convertToNumber,
     cover,
     currencySelect,

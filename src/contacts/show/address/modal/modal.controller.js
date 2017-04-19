@@ -7,10 +7,11 @@ import createPatch from "../../../../common/fp/createPatch";
 class AddressModalController {
     contact;
     contacts;
+    map;
     serverConstants;
 
     constructor(
-        $log, $scope, $timeout, $window, gettextCatalog,
+        $log, $scope, $timeout, $window, gettextCatalog, NgMap,
         contacts, serverConstants, users,
         contact, address
     ) {
@@ -24,14 +25,32 @@ class AddressModalController {
         this.gettextCatalog = gettextCatalog;
         this.serverConstants = serverConstants;
         this.users = users;
-        this.maps = [];
+
+        this.place = null;
         this.addressInitialState = angular.copy(address);
+
+        NgMap.getMap().then((map) => {
+            this.map = map;
+            if (this.address) {
+                let address = `${this.address.street}`;
+                if (this.address.city) {
+                    address += `, ${this.address.city}`;
+                }
+                if (this.address.state) {
+                    address += `, ${this.address.state}`;
+                }
+                if (this.address.postal_code) {
+                    address += `, ${this.address.postal_code}`;
+                }
+                this.place = { formatted_address: address };
+            }
+            this.refreshMap();
+        });
 
         let $ctrl = this;
         this.updateAddress = function() { //workaround for weird bindings in google places
-            let updatedAddress = this.getPlace();
-            $ctrl.address = {id: $ctrl.address.id, street: '', location: $ctrl.address.location || 'Home', gmap: updatedAddress};
-            $ctrl.refreshMap();
+            $ctrl.place = this.getPlace();
+            $ctrl.address.street = '';
             each((component) => {
                 switch (component.types[0]) {
                     case 'subpremise':
@@ -62,7 +81,8 @@ class AddressModalController {
                         $ctrl.address.city = component.long_name;
                         break;
                 }
-            }, updatedAddress.address_components);
+            }, $ctrl.place.address_components);
+            $ctrl.refreshMap();
         };
 
         if (this.address) {
@@ -71,23 +91,10 @@ class AddressModalController {
             } else {
                 this.modalTitle = this.gettextCatalog.getString('Address');
             }
-            const geocoder = new this.$window.google.maps.Geocoder();
-            geocoder.geocode({
-                address: `${this.address.street} ${this.address.city}`
-            }, (results, status) => {
-                if (status === 'OK' && results.length > 0) {
-                    this.address.gmap = results[0];
-                    this.refreshMap();
-                }
-            });
         } else {
             this.modalTitle = this.gettextCatalog.getString('Add Address');
             this.address = { street: '', location: 'Home', source: 'MPDX' };
         }
-        this.$scope.$on('mapInitialized', (evt, evtMap) => {
-            this.maps.push(evtMap);
-            this.refreshMap();
-        });
     }
     save() {
         if (angular.isDefined(this.address.id)) {
@@ -106,7 +113,7 @@ class AddressModalController {
         }
     }
     reqUpdateEmailBodyRequest() {
-        if (this.address.source === 'DataServer') {
+        if (this.address.source === 'Siebel') {
             const donorAccount = this.address.source_donor_account;
             const donorName = donorAccount ? this.contact.name + ' (donor #' + donorAccount.account_number + ')' : this.contact.name;
             return `Dear Donation Services,%0D%0A%0D%0AOne of my donors, ${donorName} has a new current address.%0D%0APlease update their address to:%0D%0AREPLACE WITH NEW STREET%0D%0AREPLACE WITH NEW CITY, STATE, ZIP%0D%0A%0D%0AThanks,%0D%0A${this.users.current.first_name}`;
@@ -115,19 +122,16 @@ class AddressModalController {
         return '';
     }
     refreshMap() {
-        each(map => {
-            if (this.address.gmap) {
-                if (this.marker) {
-                    this.marker.setMap(null);
-                }
-                this.marker = new this.$window.google.maps.Marker({
-                    map: map,
-                    position: this.address.gmap.geometry.location
-                });
-                this.$window.google.maps.event.trigger(map, 'resize');
-                map.setCenter(this.address.gmap.geometry.location);
+        const geocoder = new this.$window.google.maps.Geocoder();
+        geocoder.geocode({
+            address: this.place.formatted_address
+        }, (results, status) => {
+            if (status === 'OK' && results.length > 0) {
+                this.place = results[0];
+                this.$window.google.maps.event.trigger(this.map, 'resize');
+                this.map.setCenter(this.place.geometry.location);
             }
-        }, this.maps);
+        });
     }
     delete() {
         return this.contacts.deleteAddress(this.contact.id, this.address.id).then(() => {

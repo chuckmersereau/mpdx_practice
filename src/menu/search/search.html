@@ -5,10 +5,12 @@
            placeholder="{{ 'Keywords' | translate }}"
            autocomplete="off"
            ng-model="$ctrl.searchParams"
+           ng-change="$ctrl.search()"
+           ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
            ng-blur="$ctrl.reset()"
     >
-    <div class="dropdown-content" ng-if="$ctrl.searchParams != ''">
-        <a ng-repeat="contact in $ctrl.contacts.completeList | filter: {name: $ctrl.searchParams} | limitTo : 5 track by contact.id"
+    <div class="dropdown-content" ng-if="$ctrl.searchParams != '' && $ctrl.contactList">
+        <a ng-repeat="contact in $ctrl.contactList track by contact.id"
            ng-click="$ctrl.go(contact.id)"
            ng-if="$ctrl.searchParams !== ''">
             {{contact.name}}

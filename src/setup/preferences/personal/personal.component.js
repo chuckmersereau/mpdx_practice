@@ -17,8 +17,8 @@ class PersonalController {
         this.selectedTab = this.selectableTabs[0];
     }
     $onInit() {
-        this.users.current.options.setup_position.value = 'preferences.personal';
-        this.users.setOption(this.users.current.options.setup_position);
+        this.users.currentOptions.setup_position.value = 'preferences.personal';
+        this.users.setOption(this.users.currentOptions.setup_position);
     }
     onSave() {
         this.next();

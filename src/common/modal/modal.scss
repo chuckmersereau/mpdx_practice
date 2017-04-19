@@ -15,6 +15,10 @@
             margin: 3pc 0 5pc 0;
             .modal-body {
                 position: relative;
+                small {
+                    font-size: 11px;
+                    font-weight: normal;
+                }
                 .empty-map {
                     position: absolute;
                     left: 0;
@@ -142,16 +146,16 @@
                     border-bottom: 1px solid $gray_light;
                     text-align: center;
                     > li {
-                        float: none;
                         > a {
-                            line-height: 38px;
-                            font-size: 1.2em;
+                            font-size: 1.0em;
+                            color: $color-link;
                             border: none;
                             background-color: transparent;
-                            padding: 0 15px;
+                            padding: 6px 16px 4px 16px;
                             border-bottom: 2px solid transparent;
                         }
                         &.active a {
+                            background-color: $color-bg;
                             border-bottom-color: $color-secondary;
                         }
                     }

@@ -1,18 +1,20 @@
 .filter-body {
   &.without-subnav {
     .filter-sidebar {
-      top: 103px;
-      margin-top: 0;
+      top: $nav-height;
+    }
+    .filter-content {
+      margin-top: $subnav-padding;
     }
   }
 
   .filter-sidebar {
-      top: 136px;
+      top: $fullnav-height;
       bottom: 0;
       margin-bottom: 30px;
-      margin-top: 10px;
+      padding-top: $subnav-padding;
       position: fixed;
-      overflow: scroll;
+      overflow-y: scroll;
 
       @include breakpoint(md) {
         width: 215px;
@@ -20,6 +22,17 @@
       @include breakpoint(lg) {
         width: 265px;
       }
+  }
+
+  @media (max-width: 991px) {
+    .filter-sidebar {
+      top: auto;
+      bottom: auto;
+      padding-top: 0;
+      position: relative;
+      overflow: auto;
+      max-height: 50vh;
+    }
   }
 
   .nav-pills>li>a {
@@ -34,10 +47,4 @@
 }
 .subnav-offset {
   margin-top: $subnav-height;
-}
-.subnav-offset-padded {
-  margin-top: $subnav-height + $gutter;
-}
-.fullnav-offset {
-  margin-top: $fullnav-height;
 }

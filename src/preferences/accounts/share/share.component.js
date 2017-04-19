@@ -3,22 +3,30 @@ import reject from 'lodash/fp/reject';
 class SharePreferencesController {
     accounts;
     alerts;
+    setup;
     users;
 
     constructor(
         $rootScope,
         accounts, alerts, users
     ) {
+        this.$rootScope = $rootScope;
         this.accounts = accounts;
         this.alerts = alerts;
         this.users = users;
 
         this.saving = false;
         this.inviteEmail = '';
+    }
+    $onInit() {
+        if (this.setup) { //don't load during setup
+            return;
+        }
+
         this.accounts.listUsers();
         this.accounts.listInvites();
 
-        $rootScope.$on('accountListUpdated', () => {
+        this.$rootScope.$on('accountListUpdated', () => {
             this.accounts.listInvites();
             this.accounts.listUsers();
         });
@@ -49,7 +57,10 @@ class SharePreferencesController {
 
 const Share = {
     controller: SharePreferencesController,
-    template: require('./share.html')
+    template: require('./share.html'),
+    bindings: {
+        setup: '<'
+    }
 };
 
 export default angular.module('mpdx.preferences.accounts.share', [])

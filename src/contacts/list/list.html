@@ -55,7 +55,7 @@
                     </span>&nbsp;
                     <small>
                         <a href="javascript:;"
-                           ng-if="$ctrl.contacts.selectedContacts.length > 0 && $ctrl.contacts.selectedContacts.length < $ctrl.contacts.completeList.length"
+                           ng-if="$ctrl.contacts.selectedContacts.length > 0 && $ctrl.contacts.selectedContacts.length < $ctrl.totalContactCount"
                            ng-click="$ctrl.contacts.selectAllContacts()">
                             <span translate translate-plural="Select all {{$count}} contacts" translate-n="$ctrl.contacts.meta.pagination.total_count">Select 1 contact</span>
                         </a>
@@ -66,19 +66,19 @@
     </div>
     <div class="column">
         <div ng-if="!$ctrl.contacts.meta.to && !$ctrl.contacts.loading" class="contacts-empty">
-            <div ng-if="$ctrl.contacts.completeList.length > 0">
+            <div ng-if="$ctrl.contacts.totalContactCount > 0">
                 <p>
-                    <strong translate translate-plural="You have {{$count}} total contacts" translate-n="$ctrl.contacts.completeList.length">You have 1 total contact</strong>.
+                    <strong translate translate-plural="You have {{$count}} total contacts" translate-n="$ctrl.contacts.totalContactCount">You have 1 total contact</strong>.
                     <span translate>Unfortunately none of them match your current search or filters.</span>
                 </p>
                 <a ng-click="$ctrl.resetFilters()" class="btn btn-primary" translate>Reset All Search Filters</a>
                 <a ng-click="$ctrl.contacts.openNewContactModal()" class="btn btn-reverse" translate>Add New Contact</a>
             </div>
-            <div ng-if="$ctrl.contacts.completeList.length === 0">
+            <div ng-if="$ctrl.contacts.totalContactCount === 0">
                 <p translate>
                     Looks like you haven't added any contacts yet. You can add one or import some from another service.
                 </p>
-                <a ui-sref="preferences.imports" class="btn btn-primary" translate>Import Contacts</a>
+                <a ui-sref="tools({setup: true})" class="btn btn-primary" translate>Import Contacts</a>
                 <a ng-click="$ctrl.contacts.openNewContactModal()" class="btn btn-reverse" translate>Add New Contact</a>
             </div>
         </div>

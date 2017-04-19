@@ -8,7 +8,7 @@
                 <i class="fa fa-chevron-right" aria-hidden="true"></i>
             </a>
         </div>
-        <a class="btn btn-default" ng-click="$ctrl.openAddReferralsModal()">
+        <a class="btn btn-default" ng-click="$ctrl.contacts.openAddReferralsModal()">
             <i class="fa fa-users" aria-hidden="true"></i>
             <translate>Add Referrals</translate>
         </a>
@@ -20,7 +20,7 @@
             <i class="fa fa-check-square-o" aria-hidden="true"></i>
             <translate>Log Task</translate>
         </a>
-        <a class="btn btn-default" ng-click="$ctrl.hideContact()" ng-hide="$ctrl.contact.status == 'Never Ask'">
+        <a class="btn btn-default" ng-click="$ctrl.hideContact()" ng-hide="$ctrl.contacts.current.status == 'Never Ask'">
             <i class="fa fa-eye-slash" aria-hidden="true"></i>
             <translate>Hide Contact</translate>
         </a>
@@ -28,9 +28,9 @@
     <div class="contact-card">
         <div class="row">
             <div class="col-md-10">
-                <div class="avatar" bg-img="{{$ctrl.contact.square_avatar | stripMpdx }}"></div>
+                <div class="avatar" bg-img="{{$ctrl.contacts.current.square_avatar | stripMpdx }}"></div>
                 <div class="top-content">
-                    <contact-info contact="$ctrl.contact" on-save="$ctrl.save()"></contact-info>
+                    <contact-info contact="$ctrl.contacts.current" on-save="$ctrl.save()"></contact-info>
                 </div>
             </div>
             <div class="col-md-2">
@@ -40,19 +40,19 @@
                         <translate>See Notes</translate>
                     </a>
                 </div>
-                <div ng-repeat="address in $ctrl.contact.addresses" ng-if="address.id == $ctrl.contact.primary_address_id">
+                <div ng-repeat="address in $ctrl.contacts.current.addresses" ng-if="address.id == $ctrl.contacts.current.primary_address_id">
                     <contact-address address="address"></contact-address>
                 </div>
             </div>
         </div>
         <div class="contacts-gray-line"></div>
         <div>
-            <contact-people contact="$ctrl.contact" on-primary="$ctrl.onPrimary($personId)"></contact-people>
+            <contact-people contact="$ctrl.contacts.current" on-primary="$ctrl.onPrimary($personId)"></contact-people>
         </div>
         <div id="contact-tabs" class="horizontal-tab-sortable">
             <div class="sortable-row left-tabs" as-sortable="$ctrl.sortableOptions" data-ng-model="$ctrl.tabsLabels">
-                <div ng-repeat="item in $ctrl.tabsLabels" as-sortable-item ng-class="{'active-item': $ctrl.activeTab==item.key}">
-                    <a as-sortable-item-handle ng-click="$ctrl.activeTab=item.key">{{ item.value | translate }}</a>
+                <div ng-repeat="item in $ctrl.tabsLabels" as-sortable-item ng-class="{'active-item': $ctrl.activeTab === item.key}">
+                    <a as-sortable-item-handle ng-click="$ctrl.setActiveTab(item.key)">{{ item.value | translate }}</a>
                 </div>
             </div>
 
@@ -60,23 +60,8 @@
                 <a class="tip" data-trigger="hover" data-title="{{ 'You can reorder these tabs to your liking! Just Drag them left or right.' | translate }}" data-placement="left" bs-tooltip><i class="fa fa-question-circle"></i></a>
             </div>
         </div>
-        <div ng-repeat="item in $ctrl.tabsLabels">
-            <div ng-if="item['key']=='details'" ng-show="item['key']==$ctrl.activeTab">
-                <contact-details contact="$ctrl.contact" donor-accounts="$ctrl.contact.donor_accounts" on-save="$ctrl.save()"></contact-details>
-            </div>
-            <div ng-if="item['key']=='donations'" ng-show="item['key']==$ctrl.activeTab">
-                <donations contact="$ctrl.contact"></donations>
-            </div>
-            <div ng-if="item['key']=='tasks'" ng-show="item['key']==$ctrl.activeTab">
-                <contact-tasks contact="$ctrl.contact"></contact-tasks>
-            </div>
-            <div ng-if="item['key']=='referrals'" ng-show="item['key']==$ctrl.activeTab">
-                <contact-referrals contact="$ctrl.contact"></contact-referrals>
-                <button ng-click="$ctrl.openAddReferralsModal()" class="btn btn-primary" translate>Add Referrals</button>
-            </div>
-            <div ng-if="item['key']=='notes'" ng-show="item['key']==$ctrl.activeTab">
-                <contact-notes contact="$ctrl.contact" on-save="$ctrl.save()"></contact-notes>
-            </div>
-        </div>
+        <ui-view>
+            <contact-details contact="$ctrl.contacts.current" donor-accounts="$ctrl.contacts.current.donor_accounts" on-save="$ctrl.save()"></contact-details>
+        </ui-view>
     </div>
 </div>

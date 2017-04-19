@@ -1,5 +1,9 @@
 class ReportsController {
-    constructor(help) {
+    constructor(
+        help, session
+    ) {
+        this.session = session;
+
         help.suggest([
             '58d3d70ddd8c8e7f5974d3ca',
             '584820bc9033600698177a95',

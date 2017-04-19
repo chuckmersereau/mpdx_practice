@@ -37,8 +37,11 @@ function serialize(key, params, item, method) {
     if (method === 'post' && serialized.data.id === 'undefined') {
         delete serialized.data.id;
     }
-    //enable overwrite for put/delete
-    if (method === 'put' || method === 'delete') {
+    //enable overwrite for put
+    if (method === 'put') {
+        if (!serialized.data.attributes) {
+            serialized.data.attributes = {};
+        }
         serialized.data.attributes.overwrite = true;
     }
     return serialized;
@@ -245,7 +248,7 @@ class EntityAttributes {
                 }
             },
             addresses: {
-                attributes: ["city", "country", "end_date", "geo", "historic", "location", "metro_area", "postal_code", "primary_mailing_address", "region", "start_date", "state", "street"]
+                attributes: ["city", "country", "end_date", "geo", "historic", "location", "metro_area", "postal_code", "primary_mailing_address", "region", "start_date", "state", "street", "valid_values"]
             },
             appeals: {
                 attributes: ["amount", "contacts", "created_at", "currencies", "description", "donations", "end_date", "name", "total_currency", "updated_at"]
@@ -264,7 +267,7 @@ class EntityAttributes {
                     "last_activity", "last_appointment", "last_donation_date", "last_letter", "likely_to_give", "last_phone_call", "last_pre_call", "last_thank", "late_at", "locale", "loser_id",
                     "magazine", "name", "next_ask", "no_appeals", "not_duplicated_with", "notes", "notes_saved_at",
                     "people", "pledge_amount", "pledge_currency", "pledge_frequency", "pledge_received", "pledge_start_date", "pls_id", "prayer_letters_id", "prayer_letters_params", "primary_person",
-                    "send_newsletter", "status", "tag_list", "timezone", "tnt_id", "total_donations", "uncompleted_tasks_count", "updated_at", "website", "winner_id"
+                    "send_newsletter", "status", "status_valid", "tag_list", "timezone", "tnt_id", "total_donations", "uncompleted_tasks_count", "updated_at", "website", "winner_id"
                 ],
                 addresses: {
                     ref: 'id',
@@ -275,11 +278,11 @@ class EntityAttributes {
                     attributes: ["email_addresses", "first_name", "last_name", "phone_numbers"],
                     email_addresses: {
                         ref: 'id',
-                        attributes: ["email", "primary", "source", "valid_values"]
+                        attributes: ["email", "primary", "source", "valid_values", "_destroy"]
                     },
                     phone_numbers: {
                         ref: 'id',
-                        attributes: ["number", "primary", "source", "valid_values"]
+                        attributes: ["number", "primary", "source", "valid_values", "_destroy"]
                     }
                 },
                 primary_person: {
@@ -398,9 +401,9 @@ class EntityAttributes {
                 }
             },
             tasks: {
-                attributes: ["account_list", "activity_type", "location", "start_at", "end_at", "type", "created_at", "updated_at", "completed", "completed_at", "comments", "contacts", "due_date",
-                    "notification_id", "next_action", "no_date", "notification_type", "notification_time_before", "remote_id", "result", "source", "starred", "subject", "tag_list",
-                    "notification_time_unit", "notification_scheduled"],
+                attributes: ["account_list", "activity_type", "comments", "completed", "completed_at", "created_at", "contacts", "due_date", "end_at", "location",
+                    "next_action", "no_date", "notification_id", "notification_time_before", "notification_time_unit", "notification_scheduled", "notification_type",
+                    "remote_id", "result", "source", "starred", "start_at", "subject", "tag_list", "type", "updated_at"],
                 account_list: { ref: 'id' },
                 comments: {
                     ref: 'id',

@@ -7,16 +7,17 @@ import zip from 'lodash/zip';
 import moment from 'moment';
 
 class ChartController {
-    contact;
+    inContact;
     constructor(
         $state, $rootScope, $filter, $log, gettextCatalog,
-        accounts, donations, blockUI
+        accounts, contacts, donations, blockUI
     ) {
         this.$state = $state;
         this.$rootScope = $rootScope;
         this.$filter = $filter;
         this.$log = $log;
         this.accounts = accounts;
+        this.contacts = contacts;
         this.donations = donations;
         this.gettextCatalog = gettextCatalog;
 
@@ -44,7 +45,7 @@ class ChartController {
     }
 
     load() {
-        if (this.contact) {
+        if (this.inContact) {
             this.startDate = moment().startOf('month').subtract(23, 'months');
         } else {
             this.startDate = moment().startOf('month').subtract(11, 'months');
@@ -54,8 +55,8 @@ class ChartController {
             startDate: this.startDate,
             endDate: this.endDate
         };
-        if (this.contact && this.contact.donor_accounts) {
-            params.donorAccountId = map('id', this.contact.donor_accounts).join();
+        if (this.inContact && this.contacts.current.donor_accounts) {
+            params.donorAccountId = map('id', this.contacts.current.donor_accounts).join();
             if (params.donorAccountId === '') return;
         }
         this.blockUI.start();
@@ -70,7 +71,7 @@ class ChartController {
             this.data = map(total => {
                 return map(val => round(val.converted, 2), total.month_totals);
             }, data.totals);
-            if (this.contact) {
+            if (this.inContact) {
                 this.labels = map(month => moment(month, 'YYYY-MM-DD').format('MMM'), takeRight(12, data.months_to_dates));
                 this.series = [this.gettextCatalog.getString('Last Year'), this.gettextCatalog.getString('This Year')];
                 const primaryData = map(value => sum(value), zip(...this.data));
@@ -90,14 +91,14 @@ class ChartController {
                 },
                 scales: {
                     xAxes: [{
-                        stacked: !this.contact,
+                        stacked: !this.inContact,
                         gridLines: {
                             display: false
                         },
-                        barThickness: this.contact ? 20 : 40
+                        barThickness: this.inContact ? 20 : 40
                     }],
                     yAxes: [{
-                        stacked: !this.contact,
+                        stacked: !this.inContact,
                         scaleLabel: {
                             display: true,
                             labelString: `${this.gettextCatalog.getString('Amount')} (${data.salary_currency})`
@@ -118,7 +119,7 @@ class ChartController {
                 onClick: (event, legendItem) => this.onClick(event, legendItem)
             };
 
-            if (!this.contact) {
+            if (!this.inContact) {
                 this.options.annotation.annotations = this.options.annotation.annotations.concat([{
                     type: 'line',
                     mode: 'horizontal',
@@ -150,7 +151,7 @@ const Chart = {
     controller: ChartController,
     template: require('./chart.html'),
     bindings: {
-        contact: '<'
+        inContact: '<'
     }
 };
 

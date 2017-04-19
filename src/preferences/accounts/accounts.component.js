@@ -51,6 +51,7 @@ const Accounts = {
     controller: AccountsController,
     template: require('./accounts.html'),
     bindings: {
+        setup: '<',
         onSave: '&',
         selectedTab: '<'
     }

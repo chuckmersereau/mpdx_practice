@@ -67,10 +67,10 @@
                     <div class="collapse navbar-collapse" id="mpdx-nav">
                         <ul class="nav navbar-nav">
                             <li class="item" ui-sref-active="active"><a ui-sref="home" translate>Dashboard</a></li>
-                            <li class="item" ng-class="{active: $ctrl.isInState('contact')}"><a ui-sref="contacts" translate>Contacts</a></li>
+                            <li class="item" ng-class="{active: $ctrl.session.isInState('contact')}"><a ui-sref="contacts" translate>Contacts</a></li>
                             <li class="item" ui-sref-active="active"><a ui-sref="tasks" translate>Tasks</a></li>
-                            <li class="item" ng-class="{active: $ctrl.isInState('reports')}"><a ui-sref="reports.donations" translate>Reports</a></li>
-                            <li class="item" ng-class="{active: $ctrl.isInState('tools')}"><a ui-sref="tools" translate>Tools</a></li>
+                            <li class="item" ng-class="{active: $ctrl.session.isInState('reports')}"><a ui-sref="reports.donations" translate>Reports</a></li>
+                            <li class="item" ng-class="{active: $ctrl.session.isInState('tools')}"><a ui-sref="tools" translate>Tools</a></li>
                             <li class="item last" ui-sref-active="active"><a ng-click="$ctrl.showHelp()" translate>Help</a></li>
                         </ul>
                     </div>

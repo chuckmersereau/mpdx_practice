@@ -6,10 +6,11 @@ class EditFieldsController {
     contactsTags;
 
     constructor(
-        $scope,
+        $rootScope, $scope,
         contactsTags, locale, serverConstants, contacts,
         selectedContacts
     ) {
+        this.$rootScope = $rootScope;
         this.$scope = $scope;
         this.selectedContacts = selectedContacts;
         this.contacts = contacts;
@@ -26,7 +27,7 @@ class EditFieldsController {
             this.selectedContacts
         ).then(() => {
             this.$scope.$hide();
-            this.contacts.load(true);
+            this.$rootScope.$emit('contactCreated');
         });
     }
 }

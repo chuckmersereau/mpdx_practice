@@ -96,18 +96,7 @@
                 <div class="col-sm-6">
                     <div class="field">
                         <h4 class="attribute-header" translate>Referred By</h4>
-                        <div class="inline-input">
-                            <select chosen
-                                    ng-change="$ctrl.save()"
-                                    ng-model-options="{ debounce: 1000 }"
-                                    class="form-control"
-                                    data-placeholder-text-single="'Select an Option' | translate"
-                                    ng-options="opt.id as opt.name for opt in $ctrl.contacts.completeList"
-                                    ng-model="$ctrl.referrer"
-                                    allow-single-deselect="true">
-                                <option value=""></option>
-                            </select>
-                        </div>
+                        <contact-selector contact-name="$ctrl.referrerName" return-fn="$ctrl.onContactSelected($params)"></contact-selector>
                     </div>
                     <div class="field">
                         <h4 class="attribute-header" translate>Send Appeals?</h4>

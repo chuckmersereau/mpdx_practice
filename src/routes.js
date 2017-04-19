@@ -7,8 +7,7 @@ export default class Routes {
             abstract: true,
             component: 'root',
             resolve: {
-                constants: /*@ngInject*/ (serverConstants) => serverConstants.load(),
-                contactList: /*@ngInject*/ (contacts) => contacts.getList()
+                constants: /*@ngInject*/ (serverConstants) => serverConstants.load()
             }
         }).state({
             name: 'home',
@@ -56,8 +55,31 @@ export default class Routes {
             component: 'contact',
             resolve: {
                 again: /*@ngInject*/ (users) => users.listOrganizationAccounts(),
-                contact: /*@ngInject*/ (contacts, $stateParams) => contacts.get($stateParams.contactId)
+                contact: /*@ngInject*/ (contacts, $stateParams) => contacts.get($stateParams.contactId).then((data) => {
+                    contacts.current = data;
+                    contacts.initialState = angular.copy(data);
+                    return data;
+                })
             }
+        }).state({
+            name: 'contacts.show.donations',
+            url: '/donations',
+            component: 'donations',
+            resolve: {
+                inContact: () => true
+            }
+        }).state({
+            name: 'contacts.show.notes',
+            url: '/notes',
+            component: 'contactNotes'
+        }).state({
+            name: 'contacts.show.referrals',
+            url: '/referrals',
+            component: 'contactReferrals'
+        }).state({
+            name: 'contacts.show.tasks',
+            url: '/tasks',
+            component: 'contactTasks'
         }).state({
             name: 'reports',
             url: '/reports',
@@ -113,7 +135,7 @@ export default class Routes {
             name: 'preferences.integrations',
             title: 'Connect Services',
             url: '/integrations',
-            component: 'integrationPreferences',
+            component: 'preferencesIntegration',
             resolve: {
                 resolution: /*@ngInject*/ (users) => users.listOrganizationAccounts()
             }
@@ -166,6 +188,11 @@ export default class Routes {
             title: 'Merge Accounts',
             url: '/preferences/accounts',
             component: 'setupPreferencesAccounts'
+        }).state({
+            name: 'setup.preferences.integrations',
+            title: 'Integration',
+            url: '/preferences/integration',
+            component: 'setupPreferencesIntegrations'
         }).state({
             name: 'setup.preferences.notifications',
             title: 'Notifications',
@@ -233,25 +260,42 @@ export default class Routes {
                 another: /*@ngInject*/ (contactsTags) => contactsTags.load()
             }
         }).state({
-            name: 'tools.fixCommitmentInfo',
+            name: 'tools.fix',
+            abstract: true,
+            component: 'fix',
+            url: '/fix'
+        }).state({
+            name: 'tools.fix.commitmentInfo',
             title: 'Fix Commitment Info',
-            url: '/fix-commitment-info',
-            component: 'fixCommitmentInfo'
+            url: '/commitment-info',
+            component: 'fixCommitmentInfo',
+            resolve: {
+                0: /*@ngInject*/ (fixCommitmentInfo) => fixCommitmentInfo.load()
+            }
         }).state({
-            name: 'tools.fixPhone',
-            title: 'Fix Phone',
-            url: '/fix-phone',
-            component: 'fixPhone'
+            name: 'tools.fix.phoneNumbers',
+            title: 'Fix Phone Numbers',
+            url: '/phone-numbers',
+            component: 'fixPhoneNumbers',
+            resolve: {
+                0: /*@ngInject*/ (fixPhoneNumbers) => fixPhoneNumbers.load()
+            }
         }).state({
-            name: 'tools.fixEmailAddress',
-            title: 'Fix Email Address',
-            url: '/fix-email-address',
-            component: 'fixEmailAddress'
+            name: 'tools.fix.emailAddresses',
+            title: 'Fix Email Addresses',
+            url: '/email-addresses',
+            component: 'fixEmailAddresses',
+            resolve: {
+                0: /*@ngInject*/ (fixEmailAddresses) => fixEmailAddresses.load()
+            }
         }).state({
-            name: 'tools.fixMailingAddress',
-            title: 'Fix Mailing Address',
-            url: '/fix-mailing-address',
-            component: 'fixMailingAddress'
+            name: 'tools.fix.addresses',
+            title: 'Fix Addresses',
+            url: '/addresses',
+            component: 'fixAddresses',
+            resolve: {
+                0: /*@ngInject*/ (fixAddresses) => fixAddresses.load()
+            }
         }).state({
             name: 'tools.mergeContacts',
             url: '/merge-contacts',
