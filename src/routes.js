@@ -7,8 +7,7 @@ export default class Routes {
             abstract: true,
             component: 'root',
             resolve: {
-                constants: /*@ngInject*/ (serverConstants) => serverConstants.load(),
-                contactList: /*@ngInject*/ (contacts) => contacts.getList()
+                constants: /*@ngInject*/ (serverConstants) => serverConstants.load()
             }
         }).state({
             name: 'home',
@@ -56,8 +55,31 @@ export default class Routes {
             component: 'contact',
             resolve: {
                 again: /*@ngInject*/ (users) => users.listOrganizationAccounts(),
-                contact: /*@ngInject*/ (contacts, $stateParams) => contacts.get($stateParams.contactId)
+                contact: /*@ngInject*/ (contacts, $stateParams) => contacts.get($stateParams.contactId).then((data) => {
+                    contacts.current = data;
+                    contacts.initialState = angular.copy(data);
+                    return data;
+                })
             }
+        }).state({
+            name: 'contacts.show.donations',
+            url: '/donations',
+            component: 'donations',
+            resolve: {
+                inContact: () => true
+            }
+        }).state({
+            name: 'contacts.show.notes',
+            url: '/notes',
+            component: 'contactNotes'
+        }).state({
+            name: 'contacts.show.referrals',
+            url: '/referrals',
+            component: 'contactReferrals'
+        }).state({
+            name: 'contacts.show.tasks',
+            url: '/tasks',
+            component: 'contactTasks'
         }).state({
             name: 'reports',
             url: '/reports',
@@ -238,15 +260,18 @@ export default class Routes {
                 another: /*@ngInject*/ (contactsTags) => contactsTags.load()
             }
         }).state({
-            name: 'tools.fixCommitmentInfo',
-            title: 'Fix Commitment Info',
-            url: '/fix-commitment-info',
-            component: 'fixCommitmentInfo'
-        }).state({
             name: 'tools.fix',
             abstract: true,
             component: 'fix',
             url: '/fix'
+        }).state({
+            name: 'tools.fix.commitmentInfo',
+            title: 'Fix Commitment Info',
+            url: '/commitment-info',
+            component: 'fixCommitmentInfo',
+            resolve: {
+                0: /*@ngInject*/ (fixCommitmentInfo) => fixCommitmentInfo.load()
+            }
         }).state({
             name: 'tools.fix.phoneNumbers',
             title: 'Fix Phone Numbers',

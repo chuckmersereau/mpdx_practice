@@ -16,16 +16,22 @@ class ContactsSearchController {
     reset() {
         this.$timeout(() => {
             this.searchParams = '';
+            this.contactList = null;
         }, 200);
     }
     go(contactId) {
-        this.searchParams = '';
+        this.reset();
         this.$state.go('contacts.show', {contactId: contactId});
     }
     gotoList() {
         this.contactFilter.params.wildcard_search = angular.copy(this.searchParams);
         this.$state.go('contacts', {}, {reload: true});
-        this.searchParams = '';
+        this.reset();
+    }
+    search() {
+        this.contacts.search(this.searchParams).then((data) => {
+            this.contactList = data;
+        });
     }
 }
 const Search = {

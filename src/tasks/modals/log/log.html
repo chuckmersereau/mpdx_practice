@@ -27,7 +27,7 @@
     </div>
     <label translate>Contacts</label>
     <div class="form-group" ng-repeat="contact in $ctrl.contactsList track by $index">
-        <select chosen ng-options="opt.id as opt.name for opt in $ctrl.contacts.completeList" ng-model="$ctrl.contactsList[$index]"></select>
+        <contact-selector return-fn="$ctrl.setContact($params, $index)" contact-name="$ctrl.contactNames[contact]"></contact-selector>
     </div>
     <div class="form-group">
         <a ng-click="$ctrl.addContact()" class="btn btn-default btn-block btn-xs"><i class="fa fa-plus-circle"></i> Add Contact</a>
@@ -51,6 +51,7 @@
                 disable-search="true"
                 data-placeholder-text-single="'Select an Option' | translate"
                 class="form-control"
+                id="nextActions"
                 ng-options="opt for opt in $ctrl.serverConstants.data.next_actions[ $ctrl.task.activity_type.toLowerCase() ]"
                 ng-model="$ctrl.task.next_action"
                 allow-single-deselect="true">

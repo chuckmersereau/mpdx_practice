@@ -1,224 +1,229 @@
-<modal size="lg" title="{{$ctrl.modalTitle}}" cancel="$hide()" save="$ctrl.save()" delete="$ctrl.delete()" show-delete="$ctrl.person.id">
+<modal size="md" title="{{$ctrl.modalTitle}}" cancel="$hide()" save="$ctrl.save()" delete="$ctrl.delete()" show-delete="$ctrl.person.id">
     <div class="row modal-panel-container">
-        <div class="modal-panel-left col-md-4">
-            <div class="modal-panel-title" translate>Person Details</div>
-            <div class="modal-panel-content">
-                <div class="row">
-                    <div class="col-md-12">
-                        <label for="title" translate>Title</label>
-                        <select class="form-control" type="text" id="title" ng-model="$ctrl.person.title">
-                            <option value=""></option>
-                            <option selected="selected" value="Mr.">Mr.</option>
-                            <option value="Mrs.">Mrs.</option>
-                            <option value="Miss">Miss</option>
-                            <option value="Ms.">Ms.</option>
-                            <option value="Rev.">Rev.</option>
-                            <option value="Hon.">Hon.</option>
-                            <option value="Dr.">Dr.</option>
-                        </select>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="modal-panel-content">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label for="title" translate>Title</label>
+                            <select class="form-control" type="text" id="title" ng-model="$ctrl.person.title">
+                                <option value=""></option>
+                                <option selected="selected" value="Mr.">Mr.</option>
+                                <option value="Mrs.">Mrs.</option>
+                                <option value="Miss">Miss</option>
+                                <option value="Ms.">Ms.</option>
+                                <option value="Rev.">Rev.</option>
+                                <option value="Hon.">Hon.</option>
+                                <option value="Dr.">Dr.</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="first_name"><translate>First Name</translate> <span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" id="first_name" ng-model="$ctrl.person.first_name" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="last_name"><translate>Last Name</translate> <span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" id="last_name" ng-model="$ctrl.person.last_name" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="suffix" translate>Suffix</label>
+                            <select class="form-control" type="text" id="suffix" ng-model="$ctrl.person.suffix">
+                                <option value=""></option>
+                                <option value="Jr.">Jr.</option>
+                                <option value="Sr.">Sr.</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <label for="first_name"><translate>First Name</translate> <span class="text-danger">*</span></label>
-                        <input class="form-control" type="text" id="first_name" ng-model="$ctrl.person.first_name" required>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <label for="legal_first_name" translate>Legal First Name</label>
-                        <input class="form-control" type="text" id="legal_first_name" ng-model="$ctrl.person.legal_first_name">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <label for="last_name"><translate>Last Name</translate> <span class="text-danger">*</span></label>
-                        <input class="form-control" type="text" id="last_name" ng-model="$ctrl.person.last_name" required>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <label for="suffix" translate>Suffix</label>
-                        <select class="form-control" type="text" id="suffix" ng-model="$ctrl.person.suffix">
-                            <option value=""></option>
-                            <option value="Jr.">Jr.</option>
-                            <option value="Sr.">Sr.</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <label for="gender" translate>Gender</label>
-                        <select chosen
-                                id="gender"
-                                name="gender"
-                                data-placeholder-text-single="'Select an Option' | translate"
-                                ng-model="$ctrl.person.gender">
-                            <option value=""></option>
-                            <option value="male" translate>Male</option>
-                            <option value="female" translate>Female</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <label class="checkbox-label" for="deceased">
-                            <input class="form-control" type="checkbox" id="deceased" ng-model="$ctrl.person.deceased" />
-                            &nbsp;
-                            <translate>Deceased</translate>
-                        </label>
-                    </div>
+                    
                 </div>
             </div>
         </div>
-        <div class="modal-panel-right col-md-8">
-            <div class="modal-panel-content">
-                <div bs-active-pane="$ctrl.activeTab" bs-tabs>
-                    <div data-title="{{'Contact Info' | translate}}" name="contact-info" bs-pane>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-sm-9">
-                                        <label translate>Phone Numbers</label>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="modal-panel-content">
+                    <div bs-active-pane="$ctrl.activeTab" bs-tabs>
+                        <div data-title="{{'Contact Info' | translate}}" name="contact-info" bs-pane>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-sm-9">
+                                            <label translate>Phone Numbers</label>
+                                        </div>
+                                        <div class="col-sm-1 text-center">
+                                            <label translate><small>Primary</small></label>
+                                        </div>
+                                        <div class="col-sm-1 text-center">
+                                            <label translate><small>Invalid</small></label>
+                                        </div>
                                     </div>
-                                    <div class="col-sm-1">
-                                        <label translate>Primary</label>
+                                    <div ng-repeat="phone in $ctrl.person.phone_numbers track by $index" name="phones">
+                                        <contact-phone phone="phone" on-remove="$ctrl.remove('phone_numbers', $index)" on-primary="$ctrl.changePrimary('phone_numbers', phone.id)" on-historic="$ctrl.changeHistoric(phone)"></contact-phone>
                                     </div>
-                                    <div class="col-sm-1">
-                                        <label translate>Invalid</label>
+                                    <a type="button" class="btn btn-default btn-xs" ng-click="$ctrl.addPhone()">
+                                        <i class="fa fa-plus-circle"></i> <translate>Add Phone</translate>
+                                    </a>
+                                </div>
+                            </div>
+                            <hr/>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-sm-9">
+                                            <label translate>Email Addresses</label>
+                                        </div>
+                                        <div class="col-sm-1 text-center">
+                                            <label translate><small>Primary</small></label>
+                                        </div>
+                                        <div class="col-sm-1 text-center">
+                                            <label translate><small>Invalid</small></label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div ng-repeat="phone in $ctrl.person.phone_numbers track by $index" name="phones">
-                                    <contact-phone phone="phone" on-remove="$ctrl.remove('phone_numbers', $index)" on-primary="$ctrl.changePrimary('phone_numbers', phone.id)" on-historic="$ctrl.changeHistoric(phone)"></contact-phone>
-                                </div>
-                                <a type="button" class="btn btn-default btn-block btn-xs" ng-click="$ctrl.addPhone()">
-                                    <i class="fa fa-plus-circle"></i> <translate>Add Phone</translate>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-sm-9">
-                                        <label translate>Email Addresses</label>
+                                    <div ng-repeat="email in $ctrl.person.email_addresses track by $index" name="email_addresses">
+                                        <contact-email-address email="email" on-remove="$ctrl.remove('email_addresses', $index)" on-primary="$ctrl.changePrimary('email_addresses', email.id)" on-historic="$ctrl.changeHistoric(email)"></contact-email-address>
                                     </div>
-                                    <div class="col-sm-1">
-                                        <label translate>Primary</label>
-                                    </div>
-                                    <div class="col-sm-1">
-                                        <label translate>Invalid</label>
-                                    </div>
+                                    <a type="button" class="btn btn-default btn-xs" ng-click="$ctrl.addEmailAddress()">
+                                        <i class="fa fa-plus-circle"></i> <translate>Add Email</translate>
+                                    </a>
+                                    <label class="checkbox-label pull-right" for="optout_enewsletter">
+                                        <input class="form-control" type="checkbox" id="optout_enewsletter" ng-model="$ctrl.person.optout_enewsletter" />
+                                        &nbsp;
+                                        <translate>Opt-out of Email Newsletter</translate>
+                                    </label>
                                 </div>
-                                <div ng-repeat="email in $ctrl.person.email_addresses track by $index" name="email_addresses">
-                                    <contact-email-address email="email" on-remove="$ctrl.remove('email_addresses', $index)" on-primary="$ctrl.changePrimary('email_addresses', email.id)" on-historic="$ctrl.changeHistoric(email)"></contact-email-address>
-                                </div>
-                                <a type="button" class="btn btn-default btn-block btn-xs" ng-click="$ctrl.addEmailAddress()">
-                                    <i class="fa fa-plus-circle"></i> <translate>Add Email</translate>
-                                </a>
-                                <label class="checkbox-label" for="optout_enewsletter">
-                                    <input class="form-control" type="checkbox" id="optout_enewsletter" ng-model="$ctrl.person.optout_enewsletter" />
-                                    &nbsp;
-                                    <translate>Opt-out of Email Newsletter</translate>
-                                </label>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label translate>Facebook</label>
-                                <div ng-repeat="fb in $ctrl.person.facebook_accounts track by $index" name="facebook">
-                                    <people-facebook facebook-account="fb" on-remove="$ctrl.remove('facebook_accounts', $index)"></people-facebook>
-                                </div>
-                                <a type="button" class="btn btn-default btn-block btn-xs" ng-click="$ctrl.addFacebook()">
-                                    <i class="fa fa-plus-circle"></i> <translate>Add Facebook account</translate>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label translate>Twitter</label>
-                                <div ng-repeat="twit in $ctrl.person.twitter_accounts track by $index" name="twitter">
-                                    <people-twitter twitter-account="twit" on-remove="$ctrl.remove('twitter_accounts', $index)"></people-twitter>
-                                </div>
-                                <a type="button" class="btn btn-default btn-block btn-xs" ng-click="$ctrl.addTwitter()">
-                                    <i class="fa fa-plus-circle"></i> <translate>Add Twitter account</translate>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label translate>Linked In</label>
-                                <div ng-repeat="li in $ctrl.person.linkedin_accounts track by $index" name="linkedin">
-                                    <people-linkedin linkedin-account="li" on-remove="$ctrl.remove('linkedin_accounts', $index)"></people-linkedin>
-                                </div>
-                                <a type="button" class="btn btn-default btn-block btn-xs" ng-click="$ctrl.addLinkedin()">
-                                    <i class="fa fa-plus-circle"></i> <translate>Add Linked In account</translate>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label translate>Websites</label>
-                                <div ng-repeat="website in $ctrl.person.websites track by $index" name="website">
-                                    <people-website website="website" on-remove="$ctrl.remove('websites', $index)"></people-website>
-                                </div>
-                                <a type="button" class="btn btn-default btn-block btn-xs" ng-click="$ctrl.addWebsite()">
-                                    <i class="fa fa-plus-circle"></i> <translate>Add Website</translate>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div data-title="{{'Key Dates' | translate}}" bs-pane>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label for="birthday" translate>Birthday</label>
-                                <input bs-datepicker
-                                       id="birthday"
-                                       ng-model="$ctrl.person.birthday"
-                                       data-date-format="{{$ctrl.locale.dateTimeFormat}}"
-                                       data-autoclose="1">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="anniversary" translate>Anniversary</label>
-                                <input bs-datepicker
-                                       id="anniversary"
-                                       ng-model="$ctrl.person.anniversary"
-                                       data-date-format="{{$ctrl.locale.dateTimeFormat}}"
-                                       data-autoclose="1">
-                            </div>
-                        </div>
-                    </div>
-                    <div data-title="{{'Relationships & Work' | translate}}" name="relationships" bs-pane>
-                        <div class="row">
+                        <div data-title="{{'Details' | translate}}" bs-pane>
+                          <div class="row">
+
                             <div class="col-md-4">
-                                <label translate>Occupation</label>
-                                <input class="form-control" type="text" name="occupation" ng-model="$ctrl.person.occupation" />
+                              <label for="legal_first_name" translate>Legal First Name</label>
+                              <input class="form-control" type="text" id="legal_first_name" ng-model="$ctrl.person.legal_first_name">
                             </div>
-                            <div class="col-md-4">
-                                <label translate>Employer</label>
-                                <input class="form-control" type="text" name="employer" ng-model="$ctrl.person.employer" />
+                            <div class="col-md-2">
+                              <label for="gender" translate>Gender</label>
+                              <select chosen
+                                      id="gender"
+                                      name="gender"
+                                      data-placeholder-text-single="'Select an Option' | translate"
+                                      ng-model="$ctrl.person.gender">
+                                  <option value=""></option>
+                                  <option value="male" translate>Male</option>
+                                  <option value="female" translate>Female</option>
+                              </select>
                             </div>
+
                             <div class="col-md-4">
-                                <label translate>Relationship Status</label>
-                                <select chosen name="marital_status" data-placeholder-text-single="'Select an Option' | translate" ng-model="$ctrl.person.marital_status">
-                                    <option value=""></option>
-                                    <option value="Single" translate>Single</option>
-                                    <option value="Engaged" translate>Engaged</option>
-                                    <option value="Married" translate>Married</option>
-                                    <option value="Separated" translate>Separated</option>
-                                    <option value="Divorced" translate>Divorced</option>
-                                    <option value="Widowed" translate>Widowed</option>
-                                </select>
+                              <div><label class="block">&nbsp;</label></div>
+                              <label class="checkbox-label" for="deceased">
+                                <input class="form-control" type="checkbox" id="deceased" ng-model="$ctrl.person.deceased" />
+                                &nbsp;
+                                <translate>Deceased</translate>
+                              </label>
+                            </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-4">
+                                  <label for="birthday" translate>Birthday</label>
+                                  <input bs-datepicker
+                                         id="birthday"
+                                         ng-model="$ctrl.person.birthday"
+                                         data-date-format="{{$ctrl.locale.dateTimeFormat}}"
+                                         data-autoclose="1"
+                                         class="form-control">
+                              </div>
+                              <div class="col-md-4">
+                                  <label for="anniversary" translate>Anniversary</label>
+                                  <input bs-datepicker
+                                         id="anniversary"
+                                         ng-model="$ctrl.person.anniversary"
+                                         data-date-format="{{$ctrl.locale.dateTimeFormat}}"
+                                         data-autoclose="1"
+                                         class="form-control">
+                              </div>
+                          </div>
+                        </div>
+                        <div data-title="{{'Social Connections' | translate}}" name="social-info" bs-pane>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div ng-repeat="fb in $ctrl.person.facebook_accounts track by $index" name="facebook">
+                                        <people-facebook facebook-account="fb" on-remove="$ctrl.remove('facebook_accounts', $index)"></people-facebook>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div ng-repeat="twit in $ctrl.person.twitter_accounts track by $index" name="twitter">
+                                        <people-twitter twitter-account="twit" on-remove="$ctrl.remove('twitter_accounts', $index)"></people-twitter>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div ng-repeat="li in $ctrl.person.linkedin_accounts track by $index" name="linkedin">
+                                        <people-linkedin linkedin-account="li" on-remove="$ctrl.remove('linkedin_accounts', $index)"></people-linkedin>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div ng-repeat="website in $ctrl.person.websites track by $index" name="website">
+                                        <people-website website="website" on-remove="$ctrl.remove('websites', $index)"></people-website>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <strong>Add:</strong> 
+                                    <a type="button" class="btn btn-default btn-xs" ng-click="$ctrl.addFacebook()">
+                                        <i class="fa fa-facebook-square"></i> <translate>Facebook</translate>
+                                    </a>
+                                    <a type="button" class="btn btn-default btn-xs" ng-click="$ctrl.addTwitter()">
+                                        <i class="fa fa-twitter"></i> <translate>Twitter</translate>
+                                    </a>
+                                    <a type="button" class="btn btn-default btn-xs" ng-click="$ctrl.addLinkedin()">
+                                        <i class="fa fa-linkedin"></i> <translate>Linked In</translate>
+                                    </a>
+                                    <a type="button" class="btn btn-default btn-xs" ng-click="$ctrl.addWebsite()">
+                                        <i class="fa fa-globe"></i> <translate>Website</translate>
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label translate>Relationships</label>
-                                <div ng-repeat="familyRelationship in $ctrl.person.family_relationships track by $index" name="family_relationships">
-                                    <contact-family-relationship person="$ctrl.person" family-relationship="familyRelationship" on-remove="$ctrl.removeFamilyRelationship()" contact="$ctrl.contact" people-for-relationship="$ctrl.peopleForRelationship"></contact-family-relationship>
+                        <div data-title="{{'Relationships & Work' | translate}}" name="relationships" bs-pane>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label translate>Occupation</label>
+                                    <input class="form-control" type="text" name="occupation" ng-model="$ctrl.person.occupation" />
                                 </div>
-                                <a type="button" class="btn btn-default btn-block btn-xs" ng-click="$ctrl.addFamilyRelationship()">
-                                    <i class="fa fa-plus-circle"></i> <translate>Add Relationship</translate>
-                                </a>
+                                <div class="col-md-4">
+                                    <label translate>Employer</label>
+                                    <input class="form-control" type="text" name="employer" ng-model="$ctrl.person.employer" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label translate>Relationship Status</label>
+                                    <select chosen name="marital_status" data-placeholder-text-single="'Select an Option' | translate" ng-model="$ctrl.person.marital_status">
+                                        <option value=""></option>
+                                        <option value="Single" translate>Single</option>
+                                        <option value="Engaged" translate>Engaged</option>
+                                        <option value="Married" translate>Married</option>
+                                        <option value="Separated" translate>Separated</option>
+                                        <option value="Divorced" translate>Divorced</option>
+                                        <option value="Widowed" translate>Widowed</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label translate>Relationships</label>
+                                    <div ng-repeat="familyRelationship in $ctrl.person.family_relationships track by $index" name="family_relationships">
+                                        <contact-family-relationship person="$ctrl.person" family-relationship="familyRelationship" on-remove="$ctrl.removeFamilyRelationship()" contact="$ctrl.contact" people-for-relationship="$ctrl.peopleForRelationship"></contact-family-relationship>
+                                    </div>
+                                    <a type="button" class="btn btn-default btn-xs" ng-click="$ctrl.addFamilyRelationship()">
+                                        <i class="fa fa-plus-circle"></i> <translate>Add Relationship</translate>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>

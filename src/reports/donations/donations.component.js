@@ -11,13 +11,15 @@ class DonationsController {
     donations;
 
     constructor(
-        $stateParams, $rootScope, blockUI,
-        designationAccounts, donations
+        $state, $stateParams, $rootScope, blockUI,
+        contacts, designationAccounts, donations
     ) {
         this.$rootScope = $rootScope;
+        this.$state = $state;
+        this.$stateParams = $stateParams;
+        this.contacts = contacts;
         this.designationAccounts = designationAccounts;
         this.donations = donations;
-        this.$stateParams = $stateParams;
         this.blockUI = blockUI.instances.get('donations');
 
         this.enableNext = false;
@@ -57,9 +59,9 @@ class DonationsController {
             endDate: this.endDate,
             page: this.page
         };
-        if (this.contact && this.contact.donor_accounts && this.contact.donor_accounts.length > 0) {
-            params.donorAccountId = map('id', this.contact.donor_accounts).join();
-        } else if (this.contact && (!this.contact.donor_accounts || this.contact.donor_accounts.length === 0)) {
+        if (this.inContact && this.contacts.current.donor_accounts && this.contacts.current.donor_accounts.length > 0) {
+            params.donorAccountId = map('id', this.contacts.current.donor_accounts).join();
+        } else if (this.inContact && (!this.contacts.current.donor_accounts || this.contacts.current.donor_accounts.length === 0)) {
             //don't try to get donations for a contact if the contact has no donor accounts. causes filter to be blank and return all.
             this.blockUI.stop();
             return;
@@ -98,7 +100,7 @@ const Donations = {
     controller: DonationsController,
     template: require('./donations.html'),
     bindings: {
-        contact: '<',
+        inContact: '<',
         byMonth: '<'
     }
 };

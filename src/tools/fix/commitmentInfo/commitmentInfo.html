@@ -1,0 +1,26 @@
+<div block-ui="fix-commitment-info">
+    <h1 translate>Fix Commitment Info</h1>
+    <p ng-if="!$ctrl.fixCommitmentInfo.meta.pagination.total_count" translate>
+        Great work! We weren't able to detect any more suggested Partner Status changes in your account needing review.
+    </p>
+    <div ng-if="$ctrl.fixCommitmentInfo.meta.pagination.total_count">
+        <p>
+            <strong translate translate-plural="You have {{$count}} partner statuses to confirm." translate-n="$ctrl.fixCommitmentInfo.meta.pagination.total_count">You have 1 partner status to confirm.</strong>
+            <br>
+            <translate>MPDX has assigned partnership statuses and giving frequencies based on your partner’s giving history.
+            MPDX has made its best attempt at matching the appropriate statuses for you.
+            However, you will need to confirm them to be sure MPDX’s matching was accurate.</translate>
+        </p>
+        <div class="bulk">
+            <button class="btn btn-gray" ng-click="$ctrl.save()">
+                <i class="fa fa-check-circle"></i> <translate>Confirm All</translate>
+            </button>
+        </div>
+        <fix-commitment-info-item ng-repeat="contact in $ctrl.fixCommitmentInfo.data" ng-if="!contact.hidden" contact="contact"></fix-commitment-info-item>
+        <pagination ng-if="$ctrl.fixCommitmentInfo.data.length > 0"
+                    meta="$ctrl.fixCommitmentInfo.meta.pagination"
+                    on-change="$ctrl.load(page)"
+                    class="text-center">
+        </pagination>
+    </div>
+</div>

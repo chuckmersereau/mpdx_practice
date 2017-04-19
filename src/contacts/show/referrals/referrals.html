@@ -1,12 +1,17 @@
 <div>
-    <div ng-if='$ctrl.contact.contacts_referred_by_me.length'>
+    <div ng-if="$ctrl.contacts.current.contacts_referred_by_me.length && $ctrl.contactList">
         <ul>
-            <li ng-repeat="ref in $ctrl.contact.contacts_referred_by_me">
-                <a ng-init="contact = $ctrl.getContact(ref.id)" ui-sref="contacts.show({ contactId: ref.id })">{{ contact.name }}</a> on {{ contact.created_at | date :$ctrl.locale.dateTimeFormat }}
+            <li ng-repeat="ref in $ctrl.contacts.current.contacts_referred_by_me">
+                <a ng-init="contact = $ctrl.getContact(ref.id)" ui-sref="contacts.show({ contactId: ref.id })">
+                    {{ contact.name }}
+                </a>
+                on
+                {{ contact.created_at | date :$ctrl.locale.dateTimeFormat }}
             </li>
         </ul>
     </div>
-    <div ng-if='!$ctrl.contact.contacts_referred_by_me.length' translate>
+    <div ng-if='!$ctrl.contacts.current.contacts_referred_by_me.length' translate>
         There are no referrals by this contact.
     </div>
 </div>
+<button ng-click="$ctrl.contacts.openAddReferralsModal()" class="btn btn-primary" translate>Add Referrals</button>

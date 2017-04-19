@@ -8,6 +8,7 @@ class ListController {
     view;
 
     constructor(
+        $rootScope,
         modal, contacts, contactsTags, alerts, tasks, accounts
     ) {
         this.accounts = accounts;
@@ -23,6 +24,21 @@ class ListController {
                 newTag: ''
             }
         };
+
+        $rootScope.$on('contactCreated', () => {
+            contacts.load(true);
+        });
+
+        $rootScope.$on('accountListUpdated', () => {
+            contacts.load(true);
+        });
+
+        $rootScope.$on('contactsFilterChange', () => {
+            contacts.load(true);
+        });
+    }
+    $onInit() {
+        this.contacts.load(true);
     }
     loadMoreContacts() {
         this.contacts.loadMoreContacts();

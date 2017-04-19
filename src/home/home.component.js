@@ -4,8 +4,14 @@ class HomeController {
     tasks;
     users;
     constructor(
-        help
+        $rootScope, blockUI,
+        help, tasks
     ) {
+        this.tasks = tasks;
+
+        this.blockUI = blockUI.instances.get('care');
+        this.blockUI2 = blockUI.instances.get('connect');
+
         help.suggest([
             '58d3d70ddd8c8e7f5974d3ca',
             '584aced8c697912ffd6bc297',
@@ -19,6 +25,21 @@ class HomeController {
             '58496d4ec6979106d373bb57',
             '58496bf1903360069817816c'
         ]);
+
+        $rootScope.$on('taskChange', () => {
+            this.load();
+        });
+    }
+    $onInit() {
+        this.load();
+    }
+    load() {
+        this.blockUI.start();
+        this.blockUI2.start();
+        this.tasks.getAnalytics().then(() => {
+            this.blockUI.reset();
+            this.blockUI2.reset();
+        });
     }
 }
 const Home = {

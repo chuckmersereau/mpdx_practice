@@ -8,13 +8,15 @@ class ContactDetailsController {
     contact;
     contacts;
     contactsTags;
+    modal;
     onSave;
+    referrerName;
     serverConstants;
     users;
 
     constructor(
         $window, gettextCatalog,
-        alerts, api, contactsTags, contacts, locale, serverConstants, users
+        alerts, api, contactsTags, contacts, locale, modal, serverConstants, users
     ) {
         this.alerts = alerts;
         this.api = api;
@@ -22,6 +24,7 @@ class ContactDetailsController {
         this.contactsTags = contactsTags;
         this.gettextCatalog = gettextCatalog;
         this.locale = locale;
+        this.modal = modal;
         this.users = users;
 
         this.languages = map((locale) => {
@@ -41,12 +44,25 @@ class ContactDetailsController {
             if (this.contact.contacts_that_referred_me.length === 0) {
                 this.contact.contacts_that_referred_me = [];
             } else {
-                this.referrer = this.contact.contacts_that_referred_me[0].id || null;
+                this.referrer = get('contacts_that_referred_me[0].id', this.contact);
+                if (this.referrer) {
+                    this.contacts.getName(this.referrer).then((data) => {
+                        this.referrerName = data.name;
+                    });
+                }
             }
         }
     }
     addPartnerAccount() {
         this.contact.donor_accounts.push({id: uuid(), organization: { id: this.users.organizationAccounts[0].organization.id }, account_number: ''});
+    }
+    onContactSelected(params) {
+        if (!params) {
+            return;
+        }
+        this.referrer = params.id;
+        this.referrerName = params.name;
+        this.save();
     }
     save() {
         if (this.referrer && this.referrer !== get('contacts_that_referred_me[0].id', this.contact)) {

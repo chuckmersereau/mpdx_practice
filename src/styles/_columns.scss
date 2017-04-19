@@ -14,7 +14,7 @@
       margin-bottom: 30px;
       padding-top: $subnav-padding;
       position: fixed;
-      overflow: scroll;
+      overflow-y: scroll;
 
       @include breakpoint(md) {
         width: 215px;
@@ -22,6 +22,17 @@
       @include breakpoint(lg) {
         width: 265px;
       }
+  }
+
+  @media (max-width: 991px) {
+    .filter-sidebar {
+      top: auto;
+      bottom: auto;
+      padding-top: 0;
+      position: relative;
+      overflow: auto;
+      max-height: 50vh;
+    }
   }
 
   .nav-pills>li>a {

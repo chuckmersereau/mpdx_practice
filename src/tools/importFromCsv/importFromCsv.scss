@@ -90,6 +90,10 @@ import-from-csv {
     .step-4 {
         text-align: center;
         color: #3A3A3A;
+        
+        .attribute-header {
+            text-align: left;
+        }
 
         .table-responsive {
             margin-bottom: $gutter;
