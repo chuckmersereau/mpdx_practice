@@ -121,12 +121,13 @@
                         <div class="inline-input">
                             <select chosen
                                     required
-                                    ng-change="$ctrl.save()"
+                                    ng-change="$ctrl.saveWithEmptyCheck('locale')"
                                     ng-model-options="{ debounce: 1000 }"
                                     data-placeholder-text-single="'Select an Option' | translate"
                                     class="form-control"
                                     id="locale"
                                     ng-options="option.alias as option.value for option in $ctrl.languages"
+                                    allow-single-deselect="true"
                                     ng-model="$ctrl.contact.locale" >
                                 <option value=""></option>
                             </select>

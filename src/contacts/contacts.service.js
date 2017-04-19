@@ -72,7 +72,7 @@ class ContactsService {
         return this.api.get({
             url: `contacts/${id}`,
             data: {
-                include: 'addresses,donor_accounts,primary_person'
+                include: 'addresses,donor_accounts,primary_person,contact_referrals_to_me'
             },
             deSerializationOptions: relationshipId(['contacts', 'people']) //for contacts_referred_by_me, contacts_that_referred_me and primary_person
         }).then((data) => {

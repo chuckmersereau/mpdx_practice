@@ -1,3 +1,6 @@
+import assign from 'lodash/fp/assign';
+import concat from 'lodash/fp/concat';
+import defaultTo from 'lodash/fp/defaultTo';
 import get from 'lodash/fp/get';
 import keys from 'lodash/fp/keys';
 import map from 'lodash/fp/map';
@@ -64,11 +67,22 @@ class ContactDetailsController {
         this.referrerName = params.name;
         this.save();
     }
+    saveWithEmptyCheck(property) {
+        this.contact[property] = defaultTo('', this.contact[property]);
+        this.save();
+    }
     save() {
         if (this.referrer && this.referrer !== get('contacts_that_referred_me[0].id', this.contact)) {
-            // this.contact.contact_referrals_to_me = [{id: uuid(), referred_by: {id: this.referrer}}];
+            //wipe out old referrals
+            this.contact.contact_referrals_to_me = this.destroyReferrals(this.contact.contact_referrals_to_me);
+
             //awful, but it just won't serialize all the custom types
+            const destroyOld = map(referee => {
+                return assign({type: 'contact_referrals'}, referee);
+            }, this.contact.contact_referrals_to_me);
             const newId = uuid();
+            const newRelationship = {type: "contact_referrals", id: newId};
+            const relationshipData = concat(destroyOld, newRelationship);
             const request = {
                 "included": [
                     {
@@ -87,14 +101,12 @@ class ContactDetailsController {
                 "data": {
                     "type": "contacts",
                     "id": this.contact.id,
+                    "attributes": {
+                        "overwrite": true
+                    },
                     "relationships": {
                         "contact_referrals_to_me": {
-                            "data": [
-                                {
-                                    "type": "contact_referrals",
-                                    "id": newId
-                                }
-                            ]
+                            "data": relationshipData
                         }
                     }
                 }
@@ -109,14 +121,19 @@ class ContactDetailsController {
             }).catch(() => {
                 this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger');
             });
-        } else if (get(this.contact, 'contacts_that_referred_me[0].id')) {
-            this.contact.contact_referrals_to_me = [];
+        } else if (!this.referrer && get(this.contact, 'contacts_that_referred_me[0].id')) {
+            this.contact.contact_referrals_to_me = this.destroyReferrals(this.contact.contact_referrals_to_me);
             this.onSave().then(() => {
                 this.contact.contacts_that_referred_me = [];
             });
         } else {
             this.onSave();
         }
+    }
+    destroyReferrals(referrals) {
+        return map(referee => {
+            return { id: referee.id, _destroy: 1 };
+        }, referrals);
     }
 }
 const Details = {

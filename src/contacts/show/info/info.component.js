@@ -1,3 +1,5 @@
+import defaultTo from 'lodash/fp/defaultTo';
+
 class ContactInfoController {
     contact;
     contacts;
@@ -16,6 +18,10 @@ class ContactInfoController {
                 this.contact.pledge_frequency = obj.contact.currentValue.pledge_frequency + '.0';
             }
         }
+    }
+    saveWithEmptyCheck(property) {
+        this.contact[property] = defaultTo('', this.contact[property]);
+        this.save();
     }
     save() {
         this.onSave();
