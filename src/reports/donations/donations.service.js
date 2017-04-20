@@ -22,7 +22,7 @@ class DonationsService {
             fields: { contacts: 'name', designation_account: 'name,designation_number', donor_account: 'account_number', appeal: 'name' },
             filter: {},
             include: 'designation_account,donor_account,contact,appeal',
-            sort: '-created_at'
+            sort: '-donation_date'
         };
         if (donorAccountId) {
             params.filter.donor_account_id = donorAccountId;
