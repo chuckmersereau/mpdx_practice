@@ -2,12 +2,15 @@ import config from 'config';
 import isEmpty from 'lodash/fp/isEmpty';
 
 class AuthController {
-    constructor($state, $stateParams, $window, $http, $log) {
+    constructor(
+        $http, $log, $state, $stateParams, $window, jwtHelper
+    ) {
+        this.$http = $http;
+        this.$log = $log;
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.$window = $window;
-        this.$http = $http;
-        this.$log = $log;
+        this.jwtHelper = jwtHelper;
         this.load();
     }
     load() {
@@ -20,7 +23,8 @@ class AuthController {
                     },
                     params: {
                         service: `${config.apiUrl}user/authenticate`
-                    }
+                    },
+                    skipAuthorization: true
                 }
             ).then((data) => {
                 this.$http({
@@ -37,7 +41,8 @@ class AuthController {
                                 cas_ticket: data.data.ticket
                             }
                         }
-                    }
+                    },
+                    skipAuthorization: true
                 }).then((data) => {
                     this.$log.debug('user/authenticate', data);
                     this.$window.localStorage.setItem('token', data.data.data.attributes.json_web_token);

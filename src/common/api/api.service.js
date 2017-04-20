@@ -69,7 +69,6 @@ class Api {
         params = {},
         headers = {},
         promise = null,
-        attempts = 0,
         overrideGetAsPost = false,
         type = null,
         doSerialization = true,
@@ -173,16 +172,8 @@ class Api {
             }
             promise.resolve(response.data);
         }).catch((response) => {
-            //check that authentication has happened
-            if (response === 'noAuth' && attempts < 3) {
-                //wait 1s and retry up to 3 times
-                this.$timeout(() => {
-                    this.call({ method: method, url: url, data: data, cache: cache, params: params, headers: headers, promise: promise, attempts: attempts + 1 });
-                }, 1000);
-            } else {
-                this.$log.error('API ERROR:', response.status, response.data);
-                promise.reject(response);
-            }
+            this.$log.error('API ERROR:', response.status, response.data);
+            promise.reject(response);
         });
 
         return promise.promise;

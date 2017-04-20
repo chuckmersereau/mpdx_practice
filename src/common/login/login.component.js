@@ -1,8 +1,10 @@
 import config from 'config';
 
 class LoginController {
-    constructor($state, $window) {
-        if ($window.localStorage.getItem('token')) {
+    constructor(
+        $state, authManager
+    ) {
+        if (authManager.isAuthenticated()) {
             $state.go('home');
         }
         this.year = new Date().getFullYear();
