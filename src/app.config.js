@@ -4,8 +4,19 @@ import Routes from "./routes";
 /*@ngInject*/
 export default function appConfig(
     $analyticsProvider, $locationProvider, $logProvider, $stateProvider, $httpProvider, $qProvider, $urlRouterProvider,
-    blockUIConfig, RollbarProvider, timeAgoSettings
+    blockUIConfig, jwtOptionsProvider, RollbarProvider, timeAgoSettings
 ) {
+    jwtOptionsProvider.config({
+        tokenGetter: () => {
+            return localStorage.getItem('token');
+        },
+        unauthenticatedRedirectPath: '/login',
+        unauthenticatedRedirector: /*@ngInject*/ ($state) => {
+            $state.go('login');
+        },
+        whiteListedDomains: ['api.stage.mpdx.org', 'api.mpdx.org', 'localhost']
+    });
+    $httpProvider.interceptors.push('jwtInterceptor');
     if (config.env !== 'production' && config.env !== 'next') {
         $analyticsProvider.virtualPageviews(false);
     }
@@ -16,7 +27,6 @@ export default function appConfig(
         rewriteLinks: false
     }).hashPrefix('!');
     Routes.config($stateProvider);
-    $httpProvider.interceptors.push('authInterceptor');
     blockUIConfig.autoBlock = false;
     blockUIConfig.template = require('./blockUI/blockUI.html');
     $logProvider.debugEnabled(config.env === 'development');
