@@ -2,59 +2,55 @@
     <div class="col-xs-10">
         <div class="panel" block-ui="fix-commitment-info-item-{{$ctrl.contact.id}}">
             <div class="panel-body">
-                <div class="row">
-                    <div class="col-xs-2 col-md-1">
-                        <img class="avatar small img-circle" ng-src="{{$ctrl.contact.avatar | stripMpdx}}">
-                    </div>
-                    <div class="col-xs-10 col-md-11 info">
-                        <div class="row">
-                            <div class="col-xs-7">
-                                <h4 class="name">{{$ctrl.contact.name}}</h4>
+                <avatar src="$ctrl.contact.avatar"></avatar>
+                <div class="avatar-on-left">
+                    <div class="row">
+                        <div class="col-xs-7">
+                            <h4 class="name">{{$ctrl.contact.name}}</h4>
 
-                                <div class="row">
-                                    <div class="col-xs-10 col-xs-offset-1">
-                                        <div class="row">
-                                            <fix-commitment-info-item-donation
-                                                ng-repeat="donation in $ctrl.contact.donations"
-                                                contact="$ctrl.contact"
-                                                donation="donation"></fix-commitment-info-item-donation>
-                                        </div>
+                            <div class="row">
+                                <div class="col-xs-10 col-xs-offset-1">
+                                    <div class="row">
+                                        <fix-commitment-info-item-donation
+                                            ng-repeat="donation in $ctrl.contact.donations"
+                                            contact="$ctrl.contact"
+                                            donation="donation"></fix-commitment-info-item-donation>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="col-xs-5">
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        <select chosen
-                                                required
-                                                disable-search="true"
-                                                data-placeholder-text-single="'Select an Option' | translate"
-                                                class="form-control"
-                                                id="status"
-                                                ng-options="opt as opt for opt in $ctrl.serverConstants.data.assignable_statuses"
-                                                ng-model="$ctrl.contact.status">
-                                            <option value=""></option>
-                                        </select>
-                                    </div>
+                        <div class="col-xs-5">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <select chosen
+                                            required
+                                            disable-search="true"
+                                            data-placeholder-text-single="'Select an Option' | translate"
+                                            class="form-control"
+                                            id="status"
+                                            ng-options="opt as opt for opt in $ctrl.serverConstants.data.assignable_statuses"
+                                            ng-model="$ctrl.contact.status">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xs-4 two-columns">
+                                    <input type="number" ng-model="$ctrl.contact.pledge_amount" />
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-xs-4 two-columns">
-                                        <input type="number" ng-model="$ctrl.contact.pledge_amount" />
-                                    </div>
-
-                                    <div class="col-xs-8 two-columns">
-                                        <select chosen
-                                                disable-search="true"
-                                                data-placeholder-text-single="'Select an Option' | translate"
-                                                class="form-control"
-                                                id="pledge_frequency"
-                                                ng-options="val as key for (val, key) in $ctrl.serverConstants.data.pledge_frequencies"
-                                                ng-model="$ctrl.contact.pledge_frequency">
-                                            <option value=""></option>
-                                        </select>
-                                    </div>
+                                <div class="col-xs-8 two-columns">
+                                    <select chosen
+                                            disable-search="true"
+                                            data-placeholder-text-single="'Select an Option' | translate"
+                                            class="form-control"
+                                            id="pledge_frequency"
+                                            ng-options="val as key for (val, key) in $ctrl.serverConstants.data.pledge_frequencies"
+                                            ng-model="$ctrl.contact.pledge_frequency">
+                                        <option value=""></option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -69,4 +65,3 @@
         </button>
     </div>
 </div>
-

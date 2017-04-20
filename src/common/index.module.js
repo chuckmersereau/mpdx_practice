@@ -5,6 +5,7 @@ import appeals from './appeals/index.module';
 import auth from './auth/auth.component';
 import authInterceptor from './authInterceptor/authInterceptor.provider';
 import autoFocus from './autoFocus/autofocus.directive';
+import avatar from './avatar/avatar.component';
 import bgImg from './bgImg/bgImg.directive';
 import chosen from './chosen/chosen.directive';
 import contactSelector from './contactSelector/index.module';
@@ -42,6 +43,7 @@ export default angular.module('mpdx.common', [
     auth,
     authInterceptor,
     autoFocus,
+    avatar,
     bgImg,
     chosen,
     contactSelector,

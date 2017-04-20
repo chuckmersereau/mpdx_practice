@@ -28,8 +28,8 @@
     <div class="contact-card">
         <div class="row">
             <div class="col-md-10">
-                <div class="avatar" bg-img="{{$ctrl.contacts.current.square_avatar | stripMpdx }}"></div>
-                <div class="top-content">
+                <avatar src="$ctrl.contacts.current.square_avatar"></avatar>
+                <div class="top-content avatar-on-left">
                     <contact-info contact="$ctrl.contacts.current" on-save="$ctrl.save()"></contact-info>
                 </div>
             </div>
