@@ -151,9 +151,8 @@ class ContactController {
         this.$state.go('contacts.show', { contactId: this.contacts.getRightId(this.contacts.current.id) });
     }
     displayNotes() {
-        this.activeTab = 'notes';
-        this.$location.hash('contact-tabs');
-        this.$anchorScroll();
+        this.$anchorScroll('contact-tabs');
+        this.setActiveTab('notes');
     }
     setActiveTab(tab) {
         this.activeTab = tab;
