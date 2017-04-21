@@ -55,6 +55,8 @@ class Users {
             this.currentInitialState = angular.copy(this.current);
             this.$log.debug('current user: ', response);
 
+            this.help.updateUser(this.current);
+
             if (reset) {
                 return this.getOptions(reset, forRouting).then(() => {
                     return this.current;
@@ -75,7 +77,6 @@ class Users {
 
             return this.accounts.swap(accountListId, this.current.id).then(() => {
                 return this.getOptions(true, forRouting).then(() => {
-                    this.help.updateUser(this.current);
                     return this.current;
                 });
             });

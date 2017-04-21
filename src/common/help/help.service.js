@@ -41,8 +41,13 @@ class HelpService {
             $log.debug('Help Service', err);
         }
     }
+
     showHelp() {
         HS.beacon.open();
+    }
+
+    showArticle(articleId) {
+        HS.beacon.show(articleId);
     }
 
     updateUser(user) {
