@@ -188,37 +188,7 @@
         </div>
         <div class="panel-animate" ng-show="$ctrl.tabSelected('prayerletters')">
             <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="network_logo">
-                            <img src="../../images/logos/prayer_letters_logo.png" alt="Prayer Letters">
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="network_button">
-                            <div ng-show="$ctrl.integrations.data.valid_prayer_letters_account">
-                                <div class="alert alert-warning" translate>
-                                    Enabling or Syncing will replace your prayerletters.com lists
-                                </div>
-                                <button type="submit" ng-click="$ctrl.sync('Prayer Letters')" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
-                                    <span translate>Sync Now</span>&nbsp;
-                                    <div class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></div>
-                                </button>
-                                <a class="btn btn-link" ng-click="$ctrl.disconnect('Prayer Letters')">
-                                    <span translate>Disconnect</span>&nbsp;<i class="hidden fa fa-circle-o-notch fa-spin fa-fw"></i>
-                                </a>
-                            </div>
-                            <div ng-hide="$ctrl.integrations.data.valid_prayer_letters_account">
-                                <h4 class="integration_subhead" translate>PrayerLetters.com Overview</h4>
-                                <p translate>
-                                    PrayerLetters.com is a significant way to save valuable ministry time while more effectively connecting with your partners. Keep your physical newsletter list up to date in MPDX and then sync it to your PrayerLetters.com account with this integration.
-                                </p>
-                                <p translate>This will replace your current PrayerLetters.com list.</p>
-                                <a href="/auth/prayer_letters" class="btn btn-primary" target="_blank" translate>Connect PrayerLetters</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <prayer-letters-integrations-preferences></prayer-letters-integrations-preferences>
             </div>
         </div>
     </div>

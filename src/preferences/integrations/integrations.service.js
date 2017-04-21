@@ -20,10 +20,6 @@ class IntegrationsService {
         this.loading = true;
         this.data.valid_prayer_letters_account = null;
         this.$q.all([
-            this.api.get(`account_lists/${this.api.account_list_id}/prayer_letters_account`).then((data) => {
-                this.$log.debug(`account_lists/${this.api.account_list_id}/prayer_letters_account`, data);
-                this.data.valid_prayer_letters_account = data;
-            }),
             this.api.get(`user/google_accounts`).then((data) => {
                 this.$log.debug('user/google_accounts', data);
                 this.data.google_accounts = data;
@@ -36,9 +32,6 @@ class IntegrationsService {
             this.loading = false;
         });
     }
-    sync() {
-        return this.api.get(`account_lists/${this.api.account_list_id}/prayer_letters_account/sync`);
-    }
     sendToChalkline() {
         return this.api.post(`account_lists/${this.api.account_list_id}/chalkline_mail`);
     }
@@ -49,9 +42,6 @@ class IntegrationsService {
         }
         if (serviceToDisconnect === 'key') {
             return this.api.delete('user/key_accounts/' + id);
-        }
-        if (serviceToDisconnect === 'prayer letters') {
-            return this.api.delete(`account_lists/${this.api.account_list_id}/prayer_letters_account`);
         }
     }
 }

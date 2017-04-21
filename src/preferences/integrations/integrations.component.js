@@ -45,17 +45,6 @@ class IntegrationPreferencesController {
             this.setTab(this.selectedTab);
         }
     }
-    sync(service) {
-        this.saving = true;
-        this.service = service;
-        return this.integrations.sync(service).then(() => {
-            this.saving = false;
-            this.alerts.addAlert(this.gettextCatalog.getString('MPDX is now syncing your newsletter recipients with {service}.', {service: this.service}), 'success');
-        }).catch(() => {
-            this.saving = false;
-            this.alerts.addAlert(this.gettextCatalog.getString(`MPDX couldn't save your configuration changes for {service}.`, {service: this.service}), 'danger');
-        });
-    }
     disconnect(service, id) {
         this.saving = true;
         this.service = service;
