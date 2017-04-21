@@ -77,7 +77,9 @@ class Users {
 
             return this.accounts.swap(accountListId, this.current.id).then(() => {
                 return this.getOptions(true, forRouting).then(() => {
-                    return this.current;
+                    return this.getKeyAccount().then(() => {
+                        return this.current;
+                    });
                 });
             });
         });
@@ -145,6 +147,11 @@ class Users {
         }
         return this.api.put('user', patch).then(() => {
             return this.getCurrent(true); //force reload to reconcile as put response is incomplete
+        });
+    }
+    getKeyAccount() {
+        return this.api.get(`user/key_accounts`).then((data) => {
+            this.current.key_uuid = data[0].remote_id;
         });
     }
 }

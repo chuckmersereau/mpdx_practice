@@ -36,6 +36,7 @@
     "angular-ui-router": "1.0.0-rc.1",
     "angular-xeditable": "0.6.0",
     "angulartics": "1.4.0",
+    "angulartics-adobe-analytics": "^1.0.3",
     "angulartics-google-analytics": "0.4.0",
     "bootstrap-additions": "0.3.1",
     "bootstrap-daterangepicker": "2.1.25",

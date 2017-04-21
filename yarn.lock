@@ -165,6 +165,10 @@ angular@*, angular@1.6.3, angular@1.x, angular@>=1.0.8, angular@^1.5.7, angular@
   version "1.6.3"
   resolved "https://registry.yarnpkg.com/angular/-/angular-1.6.3.tgz#5d34b799234e8fa17c6a3a14e0258733935f43e7"
 
+angulartics-adobe-analytics@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/angulartics-adobe-analytics/-/angulartics-adobe-analytics-1.0.3.tgz#8040cb6388f2dcd743daac42df3908ffcfaec9a4"
+
 angulartics-google-analytics@0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/angulartics-google-analytics/-/angulartics-google-analytics-0.4.0.tgz#af32db0d0aa704d05836acea72f069f0911b7a51"

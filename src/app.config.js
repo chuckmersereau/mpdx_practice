@@ -4,7 +4,7 @@ import Routes from "./routes";
 /*@ngInject*/
 export default function appConfig(
     $analyticsProvider, $locationProvider, $logProvider, $stateProvider, $httpProvider, $qProvider, $urlRouterProvider,
-    blockUIConfig, jwtOptionsProvider, RollbarProvider, timeAgoSettings
+    blockUIConfig, jwtOptionsProvider, RollbarProvider, timeAgoSettings, gettext
 ) {
     jwtOptionsProvider.config({
         tokenGetter: () => {
@@ -26,7 +26,7 @@ export default function appConfig(
         enabled: true,
         rewriteLinks: false
     }).hashPrefix('!');
-    Routes.config($stateProvider);
+    Routes.config($stateProvider, gettext);
     blockUIConfig.autoBlock = false;
     blockUIConfig.template = require('./blockUI/blockUI.html');
     $logProvider.debugEnabled(config.env === 'development');
