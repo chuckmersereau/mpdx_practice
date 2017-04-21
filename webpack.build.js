@@ -94,6 +94,7 @@ config = assign(config, {
 });
 
 if (process.env.TRAVIS_BRANCH === 'master' || process.env.TRAVIS_BRANCH === 'staging' || process.env.TRAVIS_BRANCH === 'next') {
+    console.log('Uploading sourcemaps to Rollbar');
     config.plugins.push(
         new RollbarSourceMapPlugin({
             accessToken: rollbarAccessToken,
