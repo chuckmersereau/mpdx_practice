@@ -2,10 +2,29 @@
 <html ng-app="mpdx" lang="en" ng-strict-di>
 <head>
     <meta charset="UTF-8">
-    <title>MPDX</title>
+    <title ng-bind="pageTitle ? 'MPDX | ' + (pageTitle  | translate) : 'MPDX'">MPDX</title>
     <base href="/">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        window.digitalData = {
+            page: {
+                pageInfo: {
+                    pageName: 'no pageName found'
+                }
+            },
+            user: {
+                profile: {
+                    profileInfo: {}
+                }
+            }
+        };
+    </script>
+    <% if(htmlWebpackPlugin.options.env === 'production' || htmlWebpackPlugin.options.env === 'next') { %>
+        <script src="//assets.adobedtm.com/3202ba9b02b459ee20779cfcd8e79eaf266be170/satelliteLib-7973047d2bbc9bb73f3d16528aa95985e95979d5.js"></script>
+    <% } else if(htmlWebpackPlugin.options.env === 'staging') { %>
+        <script src="//assets.adobedtm.com/3202ba9b02b459ee20779cfcd8e79eaf266be170/satelliteLib-7973047d2bbc9bb73f3d16528aa95985e95979d5-staging.js"></script>
+    <% } %>
 </head>
 <body app>
     <ui-view></ui-view>
@@ -25,5 +44,6 @@
         autoInit: false
     });
     </script>
+    <script type="text/javascript">window._satellite && window._satellite.pageBottom();</script>
 </body>
 </html>
