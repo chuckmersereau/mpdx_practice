@@ -44,6 +44,7 @@ class ServerConstantsService {
             data.locales = mapUnderscore(data.locales);
             data.notifications = mapUnderscore(data.notifications);
             data.organizations = mapUnderscore(data.organizations);
+            data.organizations_attributes = mapUnderscore(data.organizations_attributes);
             data.pledge_frequencies = mapFloats(data.pledge_frequencies);
             this.data = data;
             return data;

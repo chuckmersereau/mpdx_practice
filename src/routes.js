@@ -348,5 +348,5 @@ function logout(
         $window.localStorage.removeItem(`${users.current.id}_accountListId`);
     }
     $window.location.href = config.authUrl + config.authLogout;
-    delete $window.digitalData.user.profile.profileInfo.ssoGuid;
+    delete $window.digitalData.user[0].profile[0].profileInfo.ssoGuid;
 }

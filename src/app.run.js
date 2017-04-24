@@ -14,7 +14,7 @@ export default function appRun(
         const users = trans.injector().get('users');
         return users.getCurrent(false, true)
             .then(currentUser => {
-                $window.digitalData.user.profile.profileInfo.ssoGuid = currentUser.key_uuid;
+                $window.digitalData.user[0].profile[0].profileInfo.ssoGuid = currentUser.key_uuid;
                 $window.digitalData.page.pageInfo.language = currentUser.preferences.locale;
             })
             .catch((error) => {
