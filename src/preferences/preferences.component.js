@@ -2,16 +2,19 @@ class PreferencesController {
     accounts;
 
     constructor(
+        gettextCatalog,
         accounts, help
     ) {
+        this.gettextCatalog = gettextCatalog;
+
         this.accounts = accounts;
 
         help.suggest([
-            '58d3d70ddd8c8e7f5974d3ca',
-            '57e2f280c697910d0784d307',
-            '5845aa229033600698176a54',
-            '5845ae09c6979106d373a589',
-            '5845a6de9033600698176a43'
+            this.gettextCatalog.getString('58d3d70ddd8c8e7f5974d3ca'),
+            this.gettextCatalog.getString('57e2f280c697910d0784d307'),
+            this.gettextCatalog.getString('5845aa229033600698176a54'),
+            this.gettextCatalog.getString('5845ae09c6979106d373a589'),
+            this.gettextCatalog.getString('5845a6de9033600698176a43')
         ]);
     }
 }

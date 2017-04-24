@@ -35,7 +35,14 @@ export default function appConfig(
             accessToken: config.rollbarAccessToken,
             captureUncaught: true,
             payload: {
-                environment: config.env
+                environment: config.env,
+                client: {
+                    javascript: {
+                        source_map_enabled: true,
+                        code_version: process.env.TRAVIS_COMMIT,
+                        guess_uncaught_frames: true
+                    }
+                }
             }
         });
     } else {

@@ -1,14 +1,15 @@
 class AccountsController {
     constructor(
-        $state, $stateParams,
+        $state, $stateParams, gettextCatalog,
         help
     ) {
         this.$stateParams = $stateParams;
         this.$state = $state;
+        this.gettextCatalog = gettextCatalog;
 
         help.suggest([
-            '58d3d70ddd8c8e7f5974d3ca',
-            '57e2f280c697910d0784d307'
+            this.gettextCatalog.getString('58d3d70ddd8c8e7f5974d3ca'),
+            this.gettextCatalog.getString('57e2f280c697910d0784d307')
         ]);
     }
     $onInit() {

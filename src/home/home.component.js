@@ -4,26 +4,27 @@ class HomeController {
     tasks;
     users;
     constructor(
-        $rootScope, blockUI,
+        $rootScope, blockUI, gettextCatalog,
         help, tasks
     ) {
+        this.gettextCatalog = gettextCatalog;
         this.tasks = tasks;
 
         this.blockUI = blockUI.instances.get('care');
         this.blockUI2 = blockUI.instances.get('connect');
 
         help.suggest([
-            '58d3d70ddd8c8e7f5974d3ca',
-            '584aced8c697912ffd6bc297',
-            '58496f15c6979106d373bb65',
-            '58481fd3c6979106d373b4f6',
-            '57e3ecaec697910d0784d8b9',
-            '584820bc9033600698177a95',
-            '58481f069033600698177a78',
-            '58481e189033600698177a69',
-            '58482329c6979106d373b517',
-            '58496d4ec6979106d373bb57',
-            '58496bf1903360069817816c'
+            this.gettextCatalog.getString('58d3d70ddd8c8e7f5974d3ca'),
+            this.gettextCatalog.getString('584aced8c697912ffd6bc297'),
+            this.gettextCatalog.getString('58496f15c6979106d373bb65'),
+            this.gettextCatalog.getString('58481fd3c6979106d373b4f6'),
+            this.gettextCatalog.getString('57e3ecaec697910d0784d8b9'),
+            this.gettextCatalog.getString('584820bc9033600698177a95'),
+            this.gettextCatalog.getString('58481f069033600698177a78'),
+            this.gettextCatalog.getString('58481e189033600698177a69'),
+            this.gettextCatalog.getString('58482329c6979106d373b517'),
+            this.gettextCatalog.getString('58496d4ec6979106d373bb57'),
+            this.gettextCatalog.getString('58496bf1903360069817816c')
         ]);
 
         $rootScope.$on('taskChange', () => {
