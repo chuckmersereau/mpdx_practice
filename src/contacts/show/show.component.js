@@ -5,6 +5,7 @@ import defaultTo from 'lodash/fp/defaultTo';
 import eq from 'lodash/fp/eq';
 import find from 'lodash/fp/find';
 import forEachRight from 'lodash/fp/forEachRight';
+import has from 'lodash/fp/has';
 import isNil from 'lodash/fp/isNil';
 import map from 'lodash/fp/map';
 import reject from 'lodash/fp/reject';
@@ -47,7 +48,7 @@ class ContactController {
             { key: 'referrals', value: gettextCatalog.getString('Referrals') },
             { key: 'notes', value: gettextCatalog.getString('Notes') }
         ];
-        if (users.currentOptions.contact_tabs_sort) {
+        if (has('currentOptions.contact_tabs_sort', users)) {
             forEachRight(tab => {
                 const label = find({key: tab}, tabsLabels);
                 if (label) {
