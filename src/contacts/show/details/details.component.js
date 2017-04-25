@@ -1,6 +1,7 @@
 import assign from 'lodash/fp/assign';
 import concat from 'lodash/fp/concat';
 import defaultTo from 'lodash/fp/defaultTo';
+import eq from 'lodash/fp/eq';
 import get from 'lodash/fp/get';
 import keys from 'lodash/fp/keys';
 import map from 'lodash/fp/map';
@@ -18,9 +19,10 @@ class ContactDetailsController {
     users;
 
     constructor(
-        $window, gettextCatalog,
+        $log, $window, gettextCatalog,
         alerts, api, contactsTags, contacts, locale, modal, serverConstants, users
     ) {
+        this.$log = $log;
         this.alerts = alerts;
         this.api = api;
         this.contacts = contacts;
@@ -134,6 +136,24 @@ class ContactDetailsController {
         return map(referee => {
             return { id: referee.id, _destroy: 1 };
         }, referrals);
+    }
+    onAddressPrimary(addressId) {
+        this.$log.debug('change primary: ', addressId);
+        return this.modal.confirm(this.gettextCatalog.getString('This address will be used for your newsletters. Would you like to change to have this address as primary?')).then(() => {
+            const addresses = map(address => {
+                address.primary_mailing_address = eq(address.id, addressId);
+                return address;
+            }, this.contact.addresses);
+            const addressPatch = map(address => {
+                return {id: address.id, primary_mailing_address: address.primary_mailing_address};
+            }, addresses);
+            return this.contacts.save({id: this.contacts.current.id, addresses: addressPatch}).then(() => {
+                this.contact.addresses = addresses;
+                this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
+            }).catch(() => {
+                this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger');
+            });
+        });
     }
 }
 const Details = {
