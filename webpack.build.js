@@ -10,7 +10,9 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const RollbarSourceMapPlugin = require('rollbar-sourcemap-webpack-plugin');
-const rollbarAccessToken = 'b5fa42183785424198a13984ab2d2bd3';
+const BabiliPlugin = require("babili-webpack-plugin");
+
+const rollbarAccessToken = '9b953d96d0e145f9a4b70b41b1390c3b';
 
 let config = require('./webpack.make');
 
@@ -59,7 +61,10 @@ config = assign(config, {
             }
         }),
         new webpack.NoEmitOnErrorsPlugin(),
-        new webpack.optimize.UglifyJsPlugin(),
+        new BabiliPlugin({}, {
+            comments: false,
+            sourceMap: true
+        }),
         new webpack.LoaderOptionsPlugin({
             options: {
                 postcss: [

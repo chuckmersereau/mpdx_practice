@@ -1,3 +1,4 @@
+import concat from 'lodash/fp/concat';
 import range from 'lodash/fp/range';
 import reduce from 'lodash/fp/reduce';
 import uuid from 'uuid/v1';
@@ -20,26 +21,35 @@ class MultipleController {
                 let contact = {
                     id: uuid(),
                     account_list: {id: this.api.account_list_id},
-                    people: [{
-                        id: uuid(),
-                        first_name: model.first_name,
-                        last_name: model.last_name
-                    }],
                     name: `${model.last_name}, ${model.first_name}`,
                     notes: model.notes
                 };
+                let person = {
+                    id: uuid(),
+                    first_name: model.first_name,
+                    last_name: model.last_name
+                };
+                if (model.email) {
+                    person.email_addresses = [{id: uuid(), email: model.email, primary: true}];
+                }
+                if (model.phone) {
+                    person.phone_numbers = [{id: uuid(), number: model.phone, primary: true}];
+                }
+                contact.people = [person];
                 if (model.spouse_first_name) {
-                    contact.people.push({
+                    let spouse = {
+                        id: uuid(),
                         first_name: model.spouse_first_name,
                         last_name: model.last_name
-                    });
+                    };
                     contact.name += ` and ${model.spouse_first_name}`;
                     if (model.spouse_phone) {
-                        contact.people[1].phone_numbers = [{id: uuid(), number: model.spouse_phone, primary: true}];
+                        spouse.phone_numbers = [{id: uuid(), number: model.spouse_phone, primary: true}];
                     }
                     if (model.spouse_email) {
-                        contact.people[1].email_addresses = [{id: uuid(), email: model.spouse_email, primary: true}];
+                        spouse.email_addresses = [{id: uuid(), email: model.spouse_email, primary: true}];
                     }
+                    contact.people = concat(contact.people, spouse);
                 }
                 if (model.street && model.city && model.state && model.postal_code) {
                     contact.addresses = [{
@@ -50,13 +60,8 @@ class MultipleController {
                         street: model.street
                     }];
                 }
-                if (model.email) {
-                    contact.people[0].email_addresses = [{id: uuid(), email: model.email, primary: true}];
-                }
-                if (model.phone) {
-                    contact.people[0].phone_numbers = [{id: uuid(), number: model.phone, primary: true}];
-                }
-                result.push(contact);
+
+                result = concat(result, contact);
             }
             return result;
         }, [], this.models);

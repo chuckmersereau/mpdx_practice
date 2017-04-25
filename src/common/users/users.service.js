@@ -1,9 +1,12 @@
+import defaultTo from 'lodash/fp/defaultTo';
+import find from 'lodash/fp/find';
 import get from 'lodash/fp/get';
 import has from 'lodash/fp/has';
 import keyBy from 'lodash/fp/keyBy';
 import keys from 'lodash/fp/keys';
 import toString from 'lodash/fp/toString';
 import createPatch from "../fp/createPatch";
+import config from 'config';
 
 class Users {
     accounts;
@@ -14,7 +17,7 @@ class Users {
     organizationAccounts;
 
     constructor(
-        $log, $q, $rootScope, $state, $window,
+        $log, $q, $rootScope, $state, $window, Rollbar,
         accounts, api, help, language, locale
     ) {
         this.$log = $log;
@@ -27,6 +30,7 @@ class Users {
         this.help = help;
         this.language = language;
         this.locale = locale;
+        this.Rollbar = Rollbar;
 
         this.current = null;
         this.currentInitialState = {};
@@ -55,6 +59,7 @@ class Users {
             this.currentInitialState = angular.copy(this.current);
             this.$log.debug('current user: ', response);
 
+            this.configureRollbarPerson(response);
             this.help.updateUser(this.current);
 
             if (reset) {
@@ -82,6 +87,23 @@ class Users {
                     });
                 });
             });
+        });
+    }
+    configureRollbarPerson(data) {
+        if (!config.rollbarAccessToken) {
+            return;
+        }
+        const primaryEmail = find({primary: true}, data.email_addresses);
+        const firstEmail = get('email_addresses[0]', data);
+        const email = defaultTo(defaultTo('', firstEmail.email), primaryEmail.email);
+        this.Rollbar.configure({
+            payload: {
+                person: {
+                    id: data.id,
+                    email: email,
+                    username: `${data.first_name} ${data.last_name}`
+                }
+            }
         });
     }
     getOptions(reset = false, forRouting = false) {
