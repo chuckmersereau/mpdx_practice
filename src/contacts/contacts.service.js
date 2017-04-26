@@ -407,9 +407,10 @@ class ContactsService {
             data: {
                 include:
                 'anniversaries_this_week,' +
-                'anniversaries_this_week.facebook_accounts,' +
-                'anniversaries_this_week.twitter_accounts,' +
-                'anniversaries_this_week.email_addresses,' +
+                'anniversaries_this_week.people,' +
+                'anniversaries_this_week.people.facebook_accounts,' +
+                'anniversaries_this_week.people.twitter_accounts,' +
+                'anniversaries_this_week.people.email_addresses,' +
                 'birthdays_this_week,' +
                 'birthdays_this_week.facebook_accounts,' +
                 'birthdays_this_week.twitter_accounts,' +
