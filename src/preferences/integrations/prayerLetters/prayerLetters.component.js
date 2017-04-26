@@ -1,13 +1,17 @@
+import config from 'config';
+
 class PrayerLettersController {
     constructor(
-        $log, $rootScope, gettextCatalog,
+        $log, $rootScope, $window, gettextCatalog,
         alerts, api
     ) {
         this.$log = $log;
+        this.$window = $window;
         this.api = api;
         this.alerts = alerts;
         this.gettextCatalog = gettextCatalog;
         this.data = null;
+        this.plsOAuth = '';
 
         $rootScope.$on('accountListUpdated', () => {
             this.load();
@@ -15,6 +19,7 @@ class PrayerLettersController {
     }
     $onInit() {
         this.load();
+        this.plsOauth = `${config.oAuthUrl}prayer_letters?account_list_id=${this.api.account_list_id}&redirect_to=${this.$window.location.href}&access_token=${this.$window.localStorage.getItem('token')}`;
     }
     load() {
         this.api.get(`account_lists/${this.api.account_list_id}/prayer_letters_account`).then((data) => {
