@@ -10,10 +10,11 @@ import ngCsv from 'ng-csv';
 import ngFileUpload from 'ng-file-upload';
 import ngMap from 'ngmap';
 import ngSortable from 'ng-sortable';
+import angulartics from 'angulartics';
+import angularticsGoogleAnalytics from 'angulartics-google-analytics';
+import angularticsAdobeAnalytics from 'angulartics-adobe-analytics';
 
 // deps with no default exports
-import 'angulartics';
-import 'angulartics-google-analytics';
 import lang from 'langmap'; //load before language-picker
 window.languageMappingList = lang;
 import 'angular-block-ui';
@@ -54,8 +55,9 @@ export default angular.module('mpdx.vendor', [
     ngInfiniteScroll,
     ngMap,
     ngSortable,
-    'angulartics',
-    'angulartics.google.analytics',
+    angulartics,
+    angularticsGoogleAnalytics,
+    angularticsAdobeAnalytics,
     'angular.filter',
     'blockUI',
     'LocalForageModule',

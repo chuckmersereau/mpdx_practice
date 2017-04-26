@@ -1,9 +1,12 @@
+import defaultTo from 'lodash/fp/defaultTo';
+import find from 'lodash/fp/find';
 import get from 'lodash/fp/get';
 import has from 'lodash/fp/has';
 import keyBy from 'lodash/fp/keyBy';
 import keys from 'lodash/fp/keys';
 import toString from 'lodash/fp/toString';
 import createPatch from "../fp/createPatch";
+import config from 'config';
 
 class Users {
     accounts;
@@ -14,7 +17,7 @@ class Users {
     organizationAccounts;
 
     constructor(
-        $log, $q, $rootScope, $state, $window,
+        $log, $q, $rootScope, $state, $window, Rollbar,
         accounts, api, help, language, locale
     ) {
         this.$log = $log;
@@ -27,6 +30,7 @@ class Users {
         this.help = help;
         this.language = language;
         this.locale = locale;
+        this.Rollbar = Rollbar;
 
         this.current = null;
         this.currentInitialState = {};
@@ -55,6 +59,7 @@ class Users {
             this.currentInitialState = angular.copy(this.current);
             this.$log.debug('current user: ', response);
 
+            this.configureRollbarPerson(response);
             this.help.updateUser(this.current);
 
             if (reset) {
@@ -77,9 +82,28 @@ class Users {
 
             return this.accounts.swap(accountListId, this.current.id).then(() => {
                 return this.getOptions(true, forRouting).then(() => {
-                    return this.current;
+                    return this.getKeyAccount().then(() => {
+                        return this.current;
+                    });
                 });
             });
+        });
+    }
+    configureRollbarPerson(data) {
+        if (!config.rollbarAccessToken) {
+            return;
+        }
+        const primaryEmail = find({primary: true}, data.email_addresses);
+        const firstEmail = get('email_addresses[0]', data);
+        const email = defaultTo(defaultTo('', firstEmail.email), primaryEmail.email);
+        this.Rollbar.configure({
+            payload: {
+                person: {
+                    id: data.id,
+                    email: email,
+                    username: `${data.first_name} ${data.last_name}`
+                }
+            }
         });
     }
     getOptions(reset = false, forRouting = false) {
@@ -145,6 +169,11 @@ class Users {
         }
         return this.api.put('user', patch).then(() => {
             return this.getCurrent(true); //force reload to reconcile as put response is incomplete
+        });
+    }
+    getKeyAccount() {
+        return this.api.get(`user/key_accounts`).then((data) => {
+            this.current.key_uuid = data[0].remote_id;
         });
     }
 }

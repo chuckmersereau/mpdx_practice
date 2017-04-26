@@ -67,14 +67,14 @@
                     <div class="field">
                         <h4 class="attribute-header" translate>Last Donation</h4>
                         <div class="inline-input disabled">
-                            <input type="text" ng-model="$ctrl.last_donation.amount" placeholder="{{ 'Never' | translate }}" readonly />
+                            <input type="text" value="{{$ctrl.last_donation}}" readonly />
                             <a class="tip" data-trigger="hover" data-content="{{ 'This field is updated live from donation services and cannot be edited directly here' | translate }}" data-placement="top" bs-popover><i class="fa fa-lock"></i></a>
                         </div>
                     </div>
                     <div class="field">
                         <h4 class="attribute-header" translate>Giving Method</h4>
                         <div class="inline-input disabled">
-                            <input type="text" ng-model="$ctrl.contact.giving_method" placeholder="{{ 'None' | translate }}" readonly />
+                            <input type="text" value="{{$ctrl.giving_method}}" readonly />
                             <a class="tip" data-trigger="hover" data-content="{{ 'This field is updated live from donation services and cannot be edited directly here' |  translate }}" data-placement="top" bs-popover><i class="fa fa-lock"></i></a>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                     <div class="field">
                         <h4 class="attribute-header" translate>Lifetime Donations</h4>
                         <div class="inline-input disabled">
-                            <input type="text" ng-model="$ctrl.lifetime_donations" placeholder="0" readonly />
+                            <input type="text" value="{{$ctrl.lifetime_donations}}" readonly />
                             <a class="tip" data-trigger="hover" data-content="{{ 'This field is updated live from donation services and cannot be edited directly here' | translate }}" data-placement="top" bs-popover><i class="fa fa-lock"></i></a>
                         </div>
                     </div>
@@ -209,7 +209,7 @@
         <div class="fieldset">
             <h3 translate>Addresses</h3>
             <div ng-repeat="address in $ctrl.contact.addresses track by address.id">
-                <contact-address address="address" contact="$ctrl.contact"></contact-address>
+                <contact-address address="address" contact="$ctrl.contact" on-primary="$ctrl.onAddressPrimary(address.id)"></contact-address>
             </div>
             <button type="button" class="btn btn-primary" ng-click="$ctrl.contacts.openAddressModal($ctrl.contact)">
                 <i class="fa fa-plus-circle"></i> <translate>Add Address</translate>

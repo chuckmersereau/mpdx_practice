@@ -25,6 +25,25 @@ class PhoneNumbersService {
         });
     }
 
+    loadCount() {
+        if (this.meta) { return this.$q.resolve(); }
+        return this.api.get({
+            url: 'contacts/people',
+            data: {
+                filter: {
+                    phone_number_valid: false,
+                    account_list_id: this.api.account_list_id
+                },
+                page: 1,
+                per_page: 0
+            }
+        }).then((data) => {
+            if (!this.meta) {
+                this.meta = data.meta;
+            }
+        });
+    }
+
     load(reset = false, page = 1) {
         if (!reset && this.data && this.page === page) {
             return this.$q.resolve(this.data);

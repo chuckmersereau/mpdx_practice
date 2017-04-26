@@ -1,4 +1,5 @@
 import find from 'lodash/fp/find';
+import has from 'lodash/fp/has';
 import map from 'lodash/fp/map';
 import uniqBy from 'lodash/fp/uniqBy';
 
@@ -14,8 +15,11 @@ class ContactReferralsController {
         this.contactList = null;
         this.locale = locale;
     }
-    $onInit() {
-        const contactIds = map('id', uniqBy('id', this.contact.contacts_referred_by_me));
+    $onChanges() {
+        if (!has('contacts_referred_by_me', this.contacts.current)) {
+            return;
+        }
+        const contactIds = map('id', uniqBy('id', this.contacts.current.contacts_referred_by_me));
         if (contactIds.length < 1) {
             return;
         }

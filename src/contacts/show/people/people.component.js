@@ -1,6 +1,6 @@
+import concat from 'lodash/fp/concat';
 import has from 'lodash/fp/has';
 import includes from 'lodash/fp/includes';
-import reduce from 'lodash/fp/reduce';
 import reject from 'lodash/fp/reject';
 
 class ContactPeopleController {
@@ -22,9 +22,9 @@ class ContactPeopleController {
         this.gettextCatalog = gettextCatalog;
 
         this.isMerging = false;
-        this.selectedPeople = [];
     }
     $onChanges() {
+        this.selectedPeople = [];
         this.init();
     }
     init() {
@@ -41,7 +41,7 @@ class ContactPeopleController {
             this.selectedPeople = reject(person, this.selectedPeople);
         } else {
             person.selected_for_merge = true;
-            this.selectedPeople.push(person);
+            this.selectedPeople = concat(this.selectedPeople, person);
         }
     }
     openMergeModal() {
@@ -49,17 +49,14 @@ class ContactPeopleController {
             this.alerts.addAlert(this.gettextCatalog.getString('First select at least 2 people to merge'), 'danger');
         } else {
             this.isMerging = false;
-            this.people.openMergePeopleModal(this.contact, this.selectedPeople);
+            this.people.openMergePeopleModal(this.contact, this.selectedPeople).finally(() => {
+                this.selectedPeople = [];
+            });
         }
     }
     cancelMerge() {
         this.isMerging = false;
         this.selectedPeople = [];
-        this.people.selected = reduce((result, person) => {
-            delete person.selected_for_merge;
-            result.push(person);
-            return result;
-        }, [], this.people.selected);
     }
     newPerson() {
         this.people.openPeopleModal(this.contact);

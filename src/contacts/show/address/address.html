@@ -9,6 +9,11 @@
         {{$ctrl.address.country}}
     </p>
 
+    <div class="pull-right" style="cursor: pointer" ng-click="$ctrl.onPrimary()">
+        <i class="fa fa-square-o" ng-if="!$ctrl.address.primary_mailing_address"></i>
+        <i class="fa fa-check-square-o" ng-if="$ctrl.address.primary_mailing_address"></i>
+        <translate>Primary</translate>
+    </div>
     <div ng-if="$ctrl.address.street">
         <a ng-click="$ctrl.contacts.openAddressModal(null, $ctrl.address)" class="btn btn-reverse btn-xs"><i class="fa fa-map-marker"></i> <translate>Google Maps</translate></a>
     </div>

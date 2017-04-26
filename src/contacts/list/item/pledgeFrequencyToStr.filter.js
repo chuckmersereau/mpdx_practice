@@ -1,38 +1,37 @@
-class PledgeFrequencyToStr {
-    constructor(val) {
-        this.val = parseFloat(val);
+class PledgeFrequencyToStrFilter {
+    constructor(gettextCatalog) {
+        this.gettextCatalog = gettextCatalog;
+        return (val) => {
+            const frequency = parseFloat(val);
+            switch (frequency) {
+                case 0.23076923076923:
+                    return this.gettextCatalog.getString('Every Week');
+                case 0.46153846153846:
+                    return this.gettextCatalog.getString('Every 2 Weeks');
+                case 1:
+                    return this.gettextCatalog.getString('Every Month');
+                case 2:
+                    return this.gettextCatalog.getString('Every 2 Months');
+                case 3:
+                    return this.gettextCatalog.getString('Every Quarter');
+                case 4:
+                    return this.gettextCatalog.getString('Every 4 Months');
+                case 6:
+                    return this.gettextCatalog.getString('Every 6 Months');
+                case 12:
+                    return this.gettextCatalog.getString('Every Year');
+                case 24:
+                    return this.gettextCatalog.getString('Every 2 Years');
+            }
+        };
     }
 
-    filterFloatToStr() {
-        switch (this.val) {
-            case 0.23076923076923:
-                return ('Weekly');
-            case 0.46153846153846:
-                return ('Every 2 Weeks');
-            case 1:
-                return ('Monthly');
-            case 2:
-                return ('Every 2 Months');
-            case 3:
-                return ('Quarterly');
-            case 4:
-                return ('Every 4 Months');
-            case 6:
-                return ('Every 6 Months');
-            case 12:
-                return ('Annual');
-            case 24:
-                return ('Every 2 Years');
-        }
-    }
-
-    static pledgeFrequencyToStrFactory(input) {
-        let filter = new PledgeFrequencyToStr(input);
-        return filter.filterFloatToStr();
+    static pledgeFrequencyToStrFactory(gettextCatalog) {
+        return new PledgeFrequencyToStrFilter(gettextCatalog);
     }
 }
 
-PledgeFrequencyToStr.pledgeFrequencyToStrFactory.$inject = ['input'];
+PledgeFrequencyToStrFilter.pledgeFrequencyToStrFactory.$inject = ['gettextCatalog'];
 
 export default angular.module('mpdx.contacts.list.item.pledgeFrequencyToStr', [])
-  .filter('pledgeFrequencyToStr', () => PledgeFrequencyToStr.pledgeFrequencyToStrFactory).name;
+  .filter('pledgeFrequencyToStr', PledgeFrequencyToStrFilter.pledgeFrequencyToStrFactory).name;
