@@ -5,6 +5,7 @@ import eq from 'lodash/fp/eq';
 import get from 'lodash/fp/get';
 import keys from 'lodash/fp/keys';
 import map from 'lodash/fp/map';
+import round from 'lodash/fp/round';
 import uuid from 'uuid/v1';
 
 class ContactDetailsController {
@@ -57,6 +58,9 @@ class ContactDetailsController {
                 }
             }
         }
+        this.last_donation = this.contact.last_donation ? round(this.contact.last_donation.amount) : this.gettextCatalog.getString('Never');
+        this.giving_method = this.contact.last_donation.payment_method || this.gettextCatalog.getString('None');
+        this.lifetime_donations = round(this.contact.lifetime_donations || 0);
     }
     addPartnerAccount() {
         this.contact.donor_accounts.push({id: uuid(), organization: { id: this.users.organizationAccounts[0].organization.id }, account_number: ''});
