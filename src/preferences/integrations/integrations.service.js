@@ -19,16 +19,10 @@ class IntegrationsService {
     load() {
         this.loading = true;
         this.data.valid_prayer_letters_account = null;
-        this.$q.all([
-            this.api.get(`user/google_accounts`).then((data) => {
-                this.$log.debug('user/google_accounts', data);
-                this.data.google_accounts = data;
-            }),
-            this.api.get('user/key_accounts').then((data) => {
-                this.$log.debug('user/key_accounts', data);
-                this.data.key_accounts = data;
-            })
-        ]).then(() => {
+        this.api.get('user/key_accounts').then((data) => {
+            this.$log.debug('user/key_accounts', data);
+            this.data.key_accounts = data;
+        }).then(() => {
             this.loading = false;
         });
     }
@@ -37,9 +31,6 @@ class IntegrationsService {
     }
     disconnect(service, id) {
         const serviceToDisconnect = service.toLowerCase();
-        if (serviceToDisconnect === 'google') {
-            return this.api.delete(`user/google_accounts/${id}`);
-        }
         if (serviceToDisconnect === 'key') {
             return this.api.delete('user/key_accounts/' + id);
         }
