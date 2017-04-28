@@ -37,7 +37,9 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 /* Components */
 @import "blockUI/blockUI";
 @import "menu/menu";
+@import "menu/accountLists/accountLists";
 @import "menu/search/search";
+@import "common/avatar/avatar";
 @import "common/cover/cover";
 @import "common/modal/modal";
 @import "common/login/login";

@@ -59,5 +59,9 @@ class FilterService {
         return !angular.equals(this.params, this.default_params) || this.contactsTags.isResettable();
     }
 }
-export default angular.module('mpdx.services.filter', [])
-    .service('contactFilter', FilterService).name;
+
+import filters from '../../../common/filters/filters.service';
+
+export default angular.module('mpdx.services.filter', [
+    filters
+]).service('contactFilter', FilterService).name;

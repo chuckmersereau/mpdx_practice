@@ -1,14 +1,16 @@
 <div ng-click="$ctrl.onClick()" class="item" ng-class="{'selected': $ctrl.selected, 'ignored': $ctrl.ignored}">
     <div ng-if="$ctrl.selected" class="merge-state selected" translate>Use This One</div>
     <div ng-if="$ctrl.ignored" class="merge-state ignored" translate>Don't Merge</div>
-    <img class="avatar" ng-src="{{$ctrl.person.avatar | stripMpdx}}">
-    <strong>{{$ctrl.person.title}} {{$ctrl.person.first_name}} {{$ctrl.person.last_name}}</strong>
-    <div ng-repeat="phone_number in $ctrl.person.phone_numbers track by phone_number.id" ng-if="phone_number.primary">
-        {{phone_number.number}}
-        <i class="fa fa-exclamation-triangle" ng-if="phone_number.duplicate"></i>
-    </div>
-    <div ng-repeat="email_address in $ctrl.person.email_addresses track by email_address.id" ng-if="email_address.primary">
-        {{email_address.email}}
-        <i class="fa fa-exclamation-triangle" ng-if="email_address.duplicate"></i>
+    <avatar src="$ctrl.person.avatar"></avatar>
+    <div class="avatar-on-left">
+        <strong>{{$ctrl.person.title}} {{$ctrl.person.first_name}} {{$ctrl.person.last_name}}</strong>
+        <div ng-repeat="phone_number in $ctrl.person.phone_numbers track by phone_number.id" ng-if="phone_number.primary">
+            {{phone_number.number}}
+            <i class="fa fa-exclamation-triangle" ng-if="phone_number.duplicate"></i>
+        </div>
+        <div ng-repeat="email_address in $ctrl.person.email_addresses track by email_address.id" ng-if="email_address.primary">
+            {{email_address.email}}
+            <i class="fa fa-exclamation-triangle" ng-if="email_address.duplicate"></i>
+        </div>
     </div>
 </div>

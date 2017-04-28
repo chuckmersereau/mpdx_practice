@@ -1,7 +1,7 @@
 <div block-ui="fix-emailAddresses">
     <h1 translate>Fix Email Addresses</h1>
     <p ng-if="!$ctrl.fixEmailAddresses.meta.pagination.total_count" translate>
-        Great work! We weren't able to detect any email addresses in your account needing reviewed.
+        Great work! We weren't able to detect any email addresses in your account needing review.
     </p>
     <div ng-if="$ctrl.fixEmailAddresses.meta.pagination.total_count">
         <p>
@@ -20,7 +20,7 @@
                 <option value=""></option>
             </select>
 
-            <button class="btn btn-gray" ng-click="$ctrl.save()" disabled="disabled"> <!-- ng-disabled="!$ctrl.source" -->
+            <button class="btn btn-gray" ng-click="$ctrl.save()" ng-disabled="!$ctrl.source">
                 <i class="fa fa-check-circle"></i> <translate translate-params-source="$ctrl.source">Confirm All as {{source}}</translate>
             </button>
         </div>

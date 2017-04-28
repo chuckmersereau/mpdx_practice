@@ -1,11 +1,13 @@
 import concat from 'lodash/fp/concat';
 import groupBy from 'lodash/fp/groupBy';
+import includes from 'lodash/fp/includes';
 import indexOf from 'lodash/fp/indexOf';
 const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 import sumBy from 'lodash/fp/sumBy';
 
 class MonthlyController {
     api;
+    errorOccurred;
     constructor(
         $log,
         $rootScope,
@@ -39,16 +41,15 @@ class MonthlyController {
             const availableDonationTypes = ['received', 'likely', 'unlikely'];
             const donations = groupBy('type', data.expected_donations);
             this.donationsByType = reduce((result, donationsForType, type) => {
-                if (indexOf(type, availableDonationTypes)) {
-                    return concat(result, {
+                if (includes(type, availableDonationTypes)) {
+                    result = concat(result, {
                         type: type,
                         order: indexOf(type, availableDonationTypes),
                         donations: donationsForType,
                         sum: sumBy('converted_amount', donationsForType)
                     });
-                } else {
-                    return result;
                 }
+                return result;
             }, [], donations);
             this.sumOfAllCategories = sumBy('sum', this.donationsByType);
             this.loading = false;

@@ -36,7 +36,7 @@ class IntegrationsService {
         return this.api.get(`account_lists/${this.api.account_list_id}/prayer_letters_account/sync`);
     }
     sendToChalkline() {
-        return this.api.post(`account_lists/${this.api.account_list_id}/send_to_chalkline`);
+        return this.api.post(`account_lists/${this.api.account_list_id}/chalkline_mail`);
     }
     disconnect(service, id) {
         const serviceToDisconnect = service.toLowerCase();

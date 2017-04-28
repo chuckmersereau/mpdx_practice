@@ -23,7 +23,7 @@
             <div class="inline-input">
                 <select chosen
                         required
-                        ng-change="$ctrl.save()"
+                        ng-change="$ctrl.saveWithEmptyCheck('send_newsletter')"
                         ng-model-options="{ debounce: 1000 }"
                         disable-search="true"
                         data-placeholder-text-single="'Select an Option' | translate"
@@ -58,12 +58,13 @@
             <div class="inline-input">
                 <select chosen
                         required
-                        ng-change="$ctrl.save()"
+                        ng-change="$ctrl.saveWithEmptyCheck('likely_to_give')"
                         ng-model-options="{ debounce: 1000 }"
                         disable-search="true"
                         data-placeholder-text-single="'Select an Option' | translate"
                         class="form-control"
                         id="likely_to_give"
+                        allow-single-deselect="true"
                         ng-options="opt as opt for opt in $ctrl.serverConstants.data.assignable_likely_to_give"
                         ng-model="$ctrl.contact.likely_to_give">
                     <option value=""></option>

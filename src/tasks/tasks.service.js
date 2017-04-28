@@ -321,13 +321,19 @@ class TasksService {
         });
     }
     bulkDelete() {
-        const message = this.gettextCatalog.getString('Are you sure you wish to delete the selected tasks?');
+        if (this.selected.length > 25) {
+            this.alerts.addAlert(this.gettextCatalog.getString('Too many tasks selected, please select a maximum of 25 tasks.'), 'danger');
+            return this.$q.reject();
+        }
+        const tasks = map(id => { return {id: id}; }, this.selected);
+        const message = this.gettextCatalog.getPlural(this.selected.length, 'Are you sure you wish to delete the selected task?', 'Are you sure you wish to delete the {{$count}} selected tasks?', {});
         return this.modal.confirm(message).then(() => {
-            return this.api.delete({url: 'tasks/bulk', data: this.selected, type: 'tasks'}).then(() => {
-                this.data = pullAllBy('id', this.selected, this.data);
+            return this.api.delete({url: 'tasks/bulk', data: tasks, type: 'tasks'}).then(() => {
+                this.alerts.addAlert(this.gettextCatalog.getPlural(angular.copy(this.selected).length, '1 task successfully removed.', '{{$count}} tasks successfully removed.', {}));
+                this.data = pullAllBy('id', tasks, this.data);
                 this.selected = [];
-            }, () => {
-                this.alerts.addAlert(this.gettextCatalog.getPlural(this.selected.length, 'Unable to delete that task.', 'Unable to delete {{$count}} tasks. Try deleting less tasks.', {}), 'danger');
+            }).catch(() => {
+                this.alerts.addAlert(this.gettextCatalog.getPlural(this.selected.length, 'Unable to delete the selected task.', 'Unable to delete the {{$count}} selected tasks.', {}), 'danger');
             });
         });
     }
@@ -387,5 +393,11 @@ class TasksService {
     }
 }
 
-export default angular.module('mpdx.tasks.service', [])
-    .service('tasks', TasksService).name;
+import tasksModals from './modals/modals.service';
+import tasksFilter from './filter/filter.service';
+import tasksTags from './filter/tags/tags.service';
+import users from '../common/users/users.service';
+
+export default angular.module('mpdx.tasks.service', [
+    tasksFilter, tasksModals, tasksTags, users
+]).service('tasks', TasksService).name;

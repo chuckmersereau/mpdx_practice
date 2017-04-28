@@ -72,7 +72,7 @@ class ContactsService {
         return this.api.get({
             url: `contacts/${id}`,
             data: {
-                include: 'addresses,donor_accounts,primary_person'
+                include: 'addresses,donor_accounts,primary_person,contact_referrals_to_me'
             },
             deSerializationOptions: relationshipId(['contacts', 'people']) //for contacts_referred_by_me, contacts_that_referred_me and primary_person
         }).then((data) => {
@@ -407,9 +407,10 @@ class ContactsService {
             data: {
                 include:
                 'anniversaries_this_week,' +
-                'anniversaries_this_week.facebook_accounts,' +
-                'anniversaries_this_week.twitter_accounts,' +
-                'anniversaries_this_week.email_addresses,' +
+                'anniversaries_this_week.people,' +
+                'anniversaries_this_week.people.facebook_accounts,' +
+                'anniversaries_this_week.people.twitter_accounts,' +
+                'anniversaries_this_week.people.email_addresses,' +
                 'birthdays_this_week,' +
                 'birthdays_this_week.facebook_accounts,' +
                 'birthdays_this_week.twitter_accounts,' +
@@ -529,7 +530,13 @@ class ContactsService {
     }
 }
 
+import api from '../common/api/api.service';
 import contactFilter from './sidebar/filter/filter.service';
+import contactsTags from './sidebar/filter/tags/tags.service';
+import modal from '../common/modal/modal.service';
+import getText from 'angular-gettext';
 
-export default angular.module('mpdx.contacts.service', [contactFilter])
-    .service('contacts', ContactsService).name;
+export default angular.module('mpdx.contacts.service', [
+    getText,
+    api, contactFilter, contactsTags, modal
+]).service('contacts', ContactsService).name;

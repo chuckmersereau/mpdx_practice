@@ -34,9 +34,6 @@ class TntImportController {
                         override: this.override
                     }
                 }
-            },
-            headers: {
-                Authorization: `Bearer ${this.$window.localStorage.getItem('token')}`
             }
         }).then(() => {
             this.importing = false;
