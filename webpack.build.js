@@ -99,7 +99,7 @@ config = assign(config, {
     devtool: 'source-map'
 });
 
-if (process.env.TRAVIS_BRANCH === 'master' || process.env.TRAVIS_BRANCH === 'staging' || process.env.TRAVIS_BRANCH === 'next') {
+if (!process.env.TRAVIS_PULL_REQUEST && (process.env.TRAVIS_BRANCH === 'master' || process.env.TRAVIS_BRANCH === 'staging' || process.env.TRAVIS_BRANCH === 'next')) {
     console.log('Uploading sourcemaps to Rollbar');
     config.plugins.push(
         new RollbarSourceMapPlugin({

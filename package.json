@@ -42,6 +42,7 @@
     "bootstrap-daterangepicker": "2.1.25",
     "chartjs-plugin-annotation": "0.5.2",
     "checklist-model": "0.11.0",
+    "es6-promise": "^4.1.0",
     "flag-icon-css": "^2.8.0",
     "font-awesome": "4.7.0",
     "jquery": "^3.2.1",

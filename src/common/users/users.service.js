@@ -178,5 +178,14 @@ class Users {
     }
 }
 
-export default angular.module('mpdx.common.users.service', [])
-    .service('users', Users).name;
+import accounts from '../accounts/accounts.service';
+import help from '../help/help.service';
+import language from '../language/language.service';
+import locale from '../locale/locale.service';
+import uiRouter from 'angular-ui-router';
+
+export default angular.module('mpdx.common.users.service', [
+    'tandibar/ng-rollbar',
+    uiRouter,
+    accounts, help, language, locale
+]).service('users', Users).name;
