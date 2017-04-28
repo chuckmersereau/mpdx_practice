@@ -59,8 +59,8 @@ class ContactDetailsController {
             }
         }
         this.last_donation = this.contact.last_donation ? round(this.contact.last_donation.amount) : this.gettextCatalog.getString('Never');
-        this.giving_method = this.contact.last_donation.payment_method || this.gettextCatalog.getString('None');
-        this.lifetime_donations = round(this.contact.lifetime_donations || 0);
+        this.giving_method = defaultTo(this.gettextCatalog.getString('None'), get('payment_method', this.contact.last_donation));
+        this.lifetime_donations = round(defaultTo(0, this.contact.lifetime_donations));
     }
     addPartnerAccount() {
         this.contact.donor_accounts.push({id: uuid(), organization: { id: this.users.organizationAccounts[0].organization.id }, account_number: ''});
