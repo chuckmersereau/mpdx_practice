@@ -5,5 +5,5 @@ export default {
     "authLoginPath": "login?client_id=1151388713555353789&scope=fullticket&response_type=token&redirect_uri=https://next.stage.mpdx.org/auth",
     "authLogout": "logout?service=https://next.stage.mpdx.org/login",
     "rollbarAccessToken": "b5fa42183785424198a13984ab2d2bd3",
-    "oAuthUrl": "https://api.stage.mpdx.org/auth/user/"
+    "oAuthUrl": "https://auth.stage.mpdx.org/auth/user/"
 };

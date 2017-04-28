@@ -1,20 +1,21 @@
 <form ng-submit="$ctrl.gotoList()">
-<div class="dropdown">
-    <input type="text"
-           class="search_filter form-control"
-           placeholder="{{ 'Keywords' | translate }}"
-           autocomplete="off"
-           ng-model="$ctrl.searchParams"
-           ng-change="$ctrl.search()"
-           ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
-           ng-blur="$ctrl.reset()"
-    >
-    <div class="dropdown-content" ng-if="$ctrl.searchParams != '' && $ctrl.contactList">
-        <a ng-repeat="contact in $ctrl.contactList track by contact.id"
-           ng-click="$ctrl.go(contact.id)"
-           ng-if="$ctrl.searchParams !== ''">
-            {{contact.name}}
-        </a>
+    <div class="dropdown">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+            <input type="text"
+                   class="search_filter form-control"
+                   autocomplete="off"
+                   ng-model="$ctrl.searchParams"
+                   ng-change="$ctrl.search()"
+                   ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
+                   ng-blur="$ctrl.reset()">
+        </div>
+        <div class="dropdown-content" ng-if="$ctrl.searchParams != '' && $ctrl.contactList">
+            <a ng-repeat="contact in $ctrl.contactList track by contact.id"
+               ng-click="$ctrl.go(contact.id)"
+               ng-if="$ctrl.searchParams !== ''">
+                {{contact.name}}
+            </a>
+        </div>
     </div>
-</div>
 </form>
