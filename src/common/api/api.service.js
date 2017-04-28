@@ -9,7 +9,7 @@ import isObject from 'lodash/fp/isObject';
 import map from 'lodash/fp/map';
 import pull from 'lodash/fp/pull';
 import joinComma from '../fp/joinComma';
-const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
+import reduceObject from '../fp/reduceObject';
 
 function appendTransform(defaults, transform) {
     // We can't guarantee that the default transformation is an array
@@ -207,7 +207,7 @@ class Api {
         return map(encodeURIComponent, array);
     }
     cleanFilters(filter) {
-        return reduce((result, value, key) => {
+        return reduceObject((result, value, key) => {
             if (isArray(value)) {
                 value = pull('', value);
                 if (value.length > 0) {

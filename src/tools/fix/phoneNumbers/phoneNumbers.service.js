@@ -1,7 +1,7 @@
 import each from 'lodash/fp/each';
 import find from 'lodash/fp/find';
 import map from 'lodash/fp/map';
-const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
+import reduce from 'lodash/fp/reduce';
 import reject from 'lodash/fp/reject';
 import uniq from 'lodash/fp/uniq';
 
