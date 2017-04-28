@@ -3,13 +3,15 @@ import config from 'config';
 class PrayerLettersController {
     constructor(
         $log, $rootScope, $window, gettextCatalog,
-        alerts, api
+        alerts, api, modal
     ) {
         this.$log = $log;
         this.$window = $window;
         this.api = api;
         this.alerts = alerts;
         this.gettextCatalog = gettextCatalog;
+        this.modal = modal;
+
         this.data = null;
         this.plsOAuth = '';
 
@@ -30,22 +32,25 @@ class PrayerLettersController {
     sync() {
         this.saving = true;
         return this.api.get(`account_lists/${this.api.account_list_id}/prayer_letters_account/sync`).then(() => {
-            this.saving = false;
-            this.alerts.addAlert(this.gettextCatalog.getString('MPDX is now syncing your newsletter recipients with Prayer Letters.'), 'success');
+            this.alerts.addAlert(this.gettextCatalog.getString('MPDX is now syncing your newsletter recipients with Prayer Letters.'));
+            this.load();
         }).catch(() => {
-            this.saving = false;
             this.alerts.addAlert(this.gettextCatalog.getString(`MPDX couldn't save your configuration changes for Prayer Letters.`), 'danger');
+        }).finally(() => {
+            this.saving = false;
         });
     }
     disconnect() {
         this.saving = true;
-        return this.api.delete(`account_lists/${this.api.account_list_id}/prayer_letters_account`).then(() => {
-            this.saving = false;
-            this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed your integration with with Prayer Letters.'), 'success');
-            this.load();
-        }).catch((data) => {
-            this.alerts.addAlert(this.gettextCatalog.getString(`MPDX couldn't save your configuration changes for Prayer Letters. {error}`, {error: data.error}), 'danger');
-            this.saving = false;
+        return this.modal.confirm(this.gettextCatalog.getString('Are you sure you wish to disconnect your Prayer Letters account?')).then(() => {
+            return this.api.delete(`account_lists/${this.api.account_list_id}/prayer_letters_account`).then(() => {
+                this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed your integration with with Prayer Letters.'));
+                this.load();
+            }).catch((data) => {
+                this.alerts.addAlert(this.gettextCatalog.getString(`MPDX couldn't save your configuration changes for Prayer Letters. {error}`, {error: data.error}), 'danger');
+            }).finally(() => {
+                this.saving = false;
+            });
         });
     }
 }
