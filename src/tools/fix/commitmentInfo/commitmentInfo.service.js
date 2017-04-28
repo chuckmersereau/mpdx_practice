@@ -1,7 +1,5 @@
 const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 import each from 'lodash/fp/each';
-import map from 'lodash/fp/map';
-import reverse from 'lodash/fp/reverse';
 import reject from 'lodash/fp/reject';
 
 class CommitmentInfoService {
@@ -58,9 +56,9 @@ class CommitmentInfoService {
                     account_list_id: this.api.account_list_id
                 },
                 fields: {
-                    contact: 'status,pledge_currency,pledge_frequency,pledge_amount,name,avatar,suggested_changes'
+                    contact: 'status,pledge_currency,pledge_frequency,pledge_amount,name,avatar,suggested_changes,last_six_donations'
                 },
-                include: 'donor_accounts',
+                include: 'last_six_donations',
                 sort: 'name',
                 page: page,
                 per_page: 25
@@ -70,8 +68,6 @@ class CommitmentInfoService {
 
             this.data = data;
             this.meta = data.meta;
-
-            let promises = [];
 
             each((contact) => {
                 contact.original_pledge_amount = contact.pledge_amount;
@@ -96,32 +92,7 @@ class CommitmentInfoService {
                 if (contact.suggested_changes.hasOwnProperty('status')) {
                     contact.status = contact.suggested_changes['status'];
                 }
-
-                if (contact.donor_accounts && contact.donor_accounts.length > 0) {
-                    const donorAccountId = map('id', contact.donor_accounts).join();
-
-                    let params = {
-                        filter: {
-                            donor_account_id: donorAccountId
-                        },
-                        per_page: 6,
-                        sort: '-donation_date'
-                    };
-
-                    const donationPromise = this.api.get(`account_lists/${this.api.account_list_id}/donations`, params).then((data) => {
-                        contact.donations = reverse(data);
-                        this.$log.debug(`FixCommitmentInfo ${contact.name} donations`, contact.donations);
-                    });
-
-                    promises.push(donationPromise);
-                }
             }, data);
-
-            return this.$q.all(promises).then(() => {
-                this.$log.debug('FixCommitmentInfo all donations received');
-
-                this.loading = false;
-            });
         });
     }
 

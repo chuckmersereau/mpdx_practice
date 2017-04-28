@@ -393,5 +393,11 @@ class TasksService {
     }
 }
 
-export default angular.module('mpdx.tasks.service', [])
-    .service('tasks', TasksService).name;
+import tasksModals from './modals/modals.service';
+import tasksFilter from './filter/filter.service';
+import tasksTags from './filter/tags/tags.service';
+import users from '../common/users/users.service';
+
+export default angular.module('mpdx.tasks.service', [
+    tasksFilter, tasksModals, tasksTags, users
+]).service('tasks', TasksService).name;

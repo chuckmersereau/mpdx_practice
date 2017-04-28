@@ -530,7 +530,13 @@ class ContactsService {
     }
 }
 
+import api from '../common/api/api.service';
 import contactFilter from './sidebar/filter/filter.service';
+import contactsTags from './sidebar/filter/tags/tags.service';
+import modal from '../common/modal/modal.service';
+import getText from 'angular-gettext';
 
-export default angular.module('mpdx.contacts.service', [contactFilter])
-    .service('contacts', ContactsService).name;
+export default angular.module('mpdx.contacts.service', [
+    getText,
+    api, contactFilter, contactsTags, modal
+]).service('contacts', ContactsService).name;

@@ -141,5 +141,10 @@ const ContactList = {
     }
 };
 
-export default angular.module('mpdx.contacts.list.component', [])
-    .component('contactsList', ContactList).name;
+import alerts from '../../common/alerts/alerts.service';
+import contacts from '../contacts.service';
+import tasks from '../../tasks/tasks.service';
+
+export default angular.module('mpdx.contacts.list.component', [
+    alerts, contacts, tasks
+]).component('contactsList', ContactList).name;
