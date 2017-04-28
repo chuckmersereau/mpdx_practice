@@ -18,5 +18,7 @@ class AlertsService {
     };
 }
 
-export default angular.module('mpdx.common.alerts.service', [])
+export default angular.module('mpdx.common.alerts.service', [
+    'mgcrea.ngStrap'
+])
     .service('alerts', AlertsService).name;
