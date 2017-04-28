@@ -16,7 +16,7 @@ class GoogleController {
     }
     $onInit() {
         this.load();
-        this.googleOauth = `${config.oAuthUrl}google?account_list_id=${this.api.account_list_id}&redirect_to=${this.$window.location.href}&access_token=${this.$window.localStorage.getItem('token')}`;
+        this.googleOauth = `${config.oAuthUrl}google?redirect_to=${this.$window.location.href}&access_token=${this.$window.localStorage.getItem('token')}`;
     }
     load() {
         return this.api.get(`user/google_accounts`).then((data) => {
