@@ -37,7 +37,7 @@
 <div class="steps-container" block-ui="import-from-csv">
     <div class="step-1 text-center" ng-if="$ctrl.step === 1">
         <form novalidate>
-            <a class="btn btn-gray btn-squared btn-lg" ng-model="f.file" ngf-select="$ctrl.upload(f)" ngf-accept="'text/csv'" translate>Select CSV file</a>
+            <a class="btn btn-gray btn-squared btn-lg" ng-model="f.file" ngf-select="$ctrl.upload(f)" ngf-accept="'.csv, text/csv'" translate>Select CSV file</a>
         </form>
 
         <p class="step-description" translate>

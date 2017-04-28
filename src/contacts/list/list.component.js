@@ -36,6 +36,10 @@ class ListController {
         $rootScope.$on('contactsFilterChange', () => {
             contacts.load(true);
         });
+
+        $rootScope.$on('contactsTagsChange', () => {
+            contacts.load(true);
+        });
     }
     $onInit() {
         this.contacts.load(true);

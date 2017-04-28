@@ -67,7 +67,7 @@ class ContributionsController {
             this.gettextCatalog.getString('Total (last month excluded from total)')
         ]);
 
-        return flatMap((currency) => {
+        return flatMap(currency => {
             const combinedHeaders = [
                 [
                     this.gettextCatalog.getString('Currency'),
@@ -76,28 +76,28 @@ class ContributionsController {
                 ],
                 columnHeaders
             ];
-            const donorRows = map((donor) => {
-                return concat(
+            const donorRows = map(donor => {
+                const pledgeFreq = this.constantsList.pledge_frequencies[donor.contact.pledge_frequency];
+                const amount = pledgeFreq ? `${currency.symbol}${donor.contact.pledge_amount || 0} ${currency.code} ${pledgeFreq}` : '';
+                return [
                     donor.contact.contact_name,
                     donor.contact.status,
-                    this.constantsList.pledge_frequencies[donor.contact.pledge_frequency] === undefined ? ''
-                    : currency.symbol + (donor.contact.pledge_amount || 0) + ' ' + currency.code + ' ' +
-                    this.constantsList.pledge_frequencies[donor.contact.pledge_frequency],
+                    amount,
                     round(donor.average),
                     donor.minimum,
                     donor.maximum,
-                    map('total', donor.monthlyDonations),
+                    ...map('total', donor.monthlyDonations),
                     donor.total
-                );
+                ];
             }, currency.donors);
-            const totals = concat(
+            const totals = [
                 this.gettextCatalog.getString('Totals'),
-                times(constant(''), 4),
-                currency.totals.months,
-                currency.year
-            );
+                ...times(constant(''), 5),
+                ...currency.totals.months,
+                round(currency.totals.year_converted)
+            ];
 
-            return concat(combinedHeaders, donorRows, [totals], null);
+            return concat(concat(combinedHeaders, donorRows), [totals]);
         }, this.contributions.data.currencies);
     }
 }
