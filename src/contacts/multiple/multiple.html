@@ -26,10 +26,10 @@
             <td><input class="form-control"  type="text" ng-model="$ctrl.models[key].city"></td>
             <td><input class="form-control"  type="text" ng-model="$ctrl.models[key].state"></td>
             <td><input class="form-control"  type="text" ng-model="$ctrl.models[key].postal_code"></td>
-            <td><input class="form-control"  type="text" ng-model="$ctrl.models[key].phone"></td>
-            <td><input class="form-control"  type="text" ng-model="$ctrl.models[key].email"></td>
-            <td><input class="form-control"  type="text" ng-model="$ctrl.models[key].spouse_phone"></td>
-            <td><input class="form-control"  type="text" ng-model="$ctrl.models[key].spouse_email"></td>
+            <td><input class="form-control"  type="tel" ng-model="$ctrl.models[key].phone" pattern="[\d+\-\(\)]*"></td>
+            <td><input class="form-control"  type="email" ng-model="$ctrl.models[key].email"></td>
+            <td><input class="form-control"  type="tel" ng-model="$ctrl.models[key].spouse_phone" pattern="[\d+\-\(\)]*"></td>
+            <td><input class="form-control"  type="email" ng-model="$ctrl.models[key].spouse_email"></td>
             <td><input class="form-control"  type="text" ng-model="$ctrl.models[key].notes"></td>
         </tr>
     </table>

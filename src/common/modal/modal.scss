@@ -92,20 +92,23 @@
                 padding-right: 5px;
             }
         }
-        .form-control[type="text"] {
-            border-color: #979797;
-            padding: 6px;
-            &.ng-dirty.ng-invalid {
-                border-color: #a94442;
+        .form-control {
+            &[type="text"], &[type="tel"], &[type="email"] {
+                border-color: #979797;
+                padding: 6px;
+                &.ng-dirty.ng-invalid {
+                    border-color: red;
+                }
+                &:focus {
+                    outline: none;
+                    border-color: rgb(0, 115, 152);
+                }
             }
-            &:focus {
-                border-color: rgb(0, 115, 152);
+            &[type="checkbox"] {
+                display: inline-block;
+                width: auto;
+                height: auto;
             }
-        }
-        .form-control[type="checkbox"] {
-            display: inline-block;
-            width: auto;
-            height: auto;
         }
         .checkbox-label {
             display: inline-block;
