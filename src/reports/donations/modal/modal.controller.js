@@ -10,7 +10,7 @@ class DonationModalController {
 
     constructor(
         $scope, blockUI, gettextCatalog,
-        appeals, accounts, alerts, donations,
+        appeals, accounts, alerts, donations, locale,
         donation, donorAccounts, designationAccounts, serverConstants
     ) {
         this.$scope = $scope;
@@ -21,6 +21,7 @@ class DonationModalController {
         this.donorAccounts = donorAccounts;
         this.designationAccounts = designationAccounts;
         this.gettextCatalog = gettextCatalog;
+        this.locale = locale;
         this.serverConstants = serverConstants;
 
         this.blockUI = blockUI.instances.get('donationModal');
