@@ -30,6 +30,8 @@ export default function appRun(
     $transitions.onError(null, () => {
         block.reset();
     });
+
+    $window.digitalData.page.attributes.angularLoaded = true;
 }
 
 function changePageTitle(transition, $rootScope, $window) {
