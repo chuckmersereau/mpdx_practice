@@ -287,7 +287,7 @@ class EntityAttributes {
                 account_list: { ref: 'id' },
                 contacts_referred_by_me: {
                     ref: 'id',
-                    attributes: ["account_list", "name", "primary_person_first_name", "primary_person_last_name", "primary_person_email", "primary_person_phone",
+                    attributes: ["account_list", "name", "primary_person_first_name", "primary_person_last_name", "primary_person_email", "primary_person_phone", "notes",
                         "spouse_first_name", "spouse_last_name", "spouse_phone", "spouse_email",
                         "primary_address_city", "primary_address_state", "primary_address_postal_code", "primary_address_street"
                     ],
