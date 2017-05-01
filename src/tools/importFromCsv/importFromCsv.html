@@ -1,0 +1,243 @@
+<!--<div class="panel panel-default">-->
+    <!--<div class="panel-heading">Sorry</div>-->
+    <!--<div class="panel-body">-->
+        <!--We are currently experiencing issues with imports on MPDX. We are working hard to resolve these issues and will bring back this feature when they are fixed. Thanks for your patience and understanding.-->
+    <!--</div>-->
+<!--</div>-->
+<div class="row">
+    <div class="col-md-3 col-sm-6">
+        <div class="well step" ng-class="{current: $ctrl.step === 1}">
+            <strong translate>Step 1</strong>
+            <translate>Upload your CSV File.</translate>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+        <div class="well step" ng-class="{current: $ctrl.step === 2}">
+            <strong translate>Step 2</strong>
+            <translate>Map your fields.</translate>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+        <div class="well step" ng-class="{current: $ctrl.step === 3}">
+            <strong translate>Step 3</strong>
+            <translate>Map your values.</translate>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6">
+        <div class="well step" ng-class="{current: $ctrl.step === 4}">
+            <strong translate>Step 4</strong>
+            <translate>Preview</translate>
+        </div>
+    </div>
+</div>
+
+<div class="steps-container" block-ui="import-from-csv">
+    <div class="step-1 text-center" ng-if="$ctrl.step === 1">
+        <form novalidate>
+            <a class="btn btn-gray btn-squared btn-lg" ng-model="f.file" ngf-select="$ctrl.upload(f)" ngf-accept="'.csv, text/csv'" translate>Select CSV file</a>
+        </form>
+
+        <p class="step-description" translate>
+            A CSV is a comma-seperated spreadsheet format that can be created by many programs such as Excel, Google Sheets, Google Contacts or Numbers.
+        </p>
+    </div>
+
+    <div class="step-2 text-center" ng-if="$ctrl.step === 2">
+        <table class="table">
+            <thead>
+            <tr>
+                <th translate>Your CSV Column</th>
+                <th translate>MPDX destination field</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr ng-repeat="(header_key, header) in $ctrl.importFromCsv.data.file_headers">
+                <td class="text-left">{{header}}</td>
+                <td class="text-left">
+                    <select chosen
+                            class="form-control"
+                            ng-model='$ctrl.importFromCsv.headers_to_fields_mapping[header_key]'
+                            ng-options="v as k disable when ($ctrl.selectedHeaders[v] && $ctrl.selectedHeaders[v] !== header_key) for (v, k) in $ctrl.serverConstants.data.csv_import.supported_headers"
+                            ng-change="$ctrl.updateSelectedHeaders()">
+                        <option value="">Do Not Import</option>
+                    </select>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="alert alert-danger text-right" ng-if="$ctrl.unmappedHeaders.length !== 0">
+            <p ng-repeat="header in $ctrl.unmappedHeaders">{{header}} <translate>is required</translate></p>
+        </div>
+
+        <a class="btn btn-gray btn-lg btn-squared pull-left" ng-click="$ctrl.back()" translate>Back</a>
+        <a class="btn btn-green btn-lg btn-squared" ng-click="$ctrl.mapHeaders()" ng-class="{disabled: !$ctrl.canAdvance()}" translate>Next step</a>
+    </div>
+
+    <div class="step-3" ng-if="$ctrl.step === 3">
+        <table class="table">
+            <thead>
+            <tr>
+                <th translate>Your CSV Value</th>
+                <th translate>MPDX destination value</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr ng-repeat="(constant, obj) in $ctrl.available_constants">
+                <td colspan="2">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>{{obj.label}}</th>
+                            <th>{{$ctrl.serverConstants.data.csv_import.supported_headers[constant]}}</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr ng-repeat="value in obj.values">
+                            <td class="text-left">{{value}}</td>
+                            <td class="text-left">
+                                <select chosen
+                                        class="form-control"
+                                        ng-model='$ctrl.importFromCsv.values_to_constants_mapping[constant][value]'
+                                        ng-options="v as k for (v, k) in obj.opts">
+                                    <option value="">None</option>
+                                </select>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <a class="btn btn-gray btn-lg btn-squared pull-left" ng-click="$ctrl.back()" translate>Back</a>
+        <a class="btn btn-green btn-lg btn-squared" ng-click="$ctrl.mapValues()" ng-class="{disabled: !$ctrl.canAdvance()}" translate="">All set, show me a preview!</a>
+    </div>
+
+    <div class="step-4" ng-if="$ctrl.step === 4">
+        <p class="step-description" translate>
+            Please take a look at these sample rows that show how your CSV will import into MPDX.
+            If you would like to make changes, go back to Step 2 or back to Step 1 to reimport all over again.
+        </p>
+
+        <div class="row fieldset">
+            <div class="col-sm-12 ">
+                <h4 class="attribute-header" translate>Add Tags to all imported contacts</h4>
+                <div class="inline-input">
+                    <tag-selector ng-model="$ctrl.importFromCsv.data.tag_list" tag-list="$ctrl.contactsTags.data"></tag-selector>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th translate>Church</th>
+                    <th translate>Contact Name</th>
+                    <th translate>Greeting</th>
+                    <th translate>Envelope Greeting</th>
+                    <th translate>Status</th>
+                    <th translate>Commitment Amount</th>
+                    <th translate>Notes</th>
+                    <th translate>Commitment Frequency</th>
+                    <th translate>Newsletter</th>
+                    <th translate>Commitment Currency</th>
+                    <th translate>Likely to Give</th>
+                    <th translate>Send Appeals?</th>
+                    <th translate>Website</th>
+
+                    <th translate>Street</th>
+                    <th translate>City</th>
+                    <th translate>State</th>
+                    <th translate>Zip</th>
+                    <th translate>Country</th>
+                    <th translate>Metro Area</th>
+                    <th translate>Region</th>
+
+                    <th translate>Tags</th>
+
+                    <th translate>First Name</th>
+                    <th translate>Last Name</th>
+
+                    <th translate>Email 1</th>
+                    <th translate>Email 2</th>
+
+                    <th translate>Phone 1</th>
+                    <th translate>Phone 2</th>
+                    <th translate>Phone 3</th>
+
+                    <th translate>Spouse First Name</th>
+                    <th translate>Spouse Last Name</th>
+                    <th translate>Spouse Email</th>
+                    <th translate>Spouse Phone</th>
+
+                    <th translate>Referred By</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr ng-repeat="contact in $ctrl.importFromCsv.data.sample_contacts">
+                    <td>{{contact.church_name}}</td>
+                    <td>{{contact.name}}</td>
+                    <td>{{contact.greeting}}</td>
+                    <td>{{contact.envelope_greeting}}</td>
+                    <td>{{contact.status}}</td>
+                    <td>{{contact.pledge_amount}}</td>
+                    <td>{{contact.notes}}</td>
+                    <td>{{contact.pledge_frequency}}</td>
+                    <td>{{contact.send_newsletter}}</td>
+                    <td>{{contact.pledge_currency}}</td>
+                    <td>{{contact.likely_to_give}}</td>
+                    <td>{{contact.no_appeals}}</td>
+                    <td>{{contact.website}}</td>
+
+                    <td>{{contact.addresses[0].street}}</td>
+                    <td>{{contact.addresses[0].city}}</td>
+                    <td>{{contact.addresses[0].state}}</td>
+                    <td>{{contact.addresses[0].postal_code}}</td>
+                    <td>{{contact.addresses[0].country}}</td>
+                    <td>{{contact.addresses[0].metro_area}}</td>
+                    <td>{{contact.addresses[0].region}}</td>
+
+                    <td>{{contact.tag_list}}</td>
+
+                    <td>{{contact.primary_person.first_name}}</td>
+                    <td>{{contact.primary_person.last_name}}</td>
+
+                    <td>{{contact.primary_person.email_addresses[0].email}}</td>
+                    <td>{{contact.primary_person.email_addresses[1].email}}</td>
+
+                    <td>{{contact.primary_person.phone_numbers[0].number}}</td>
+                    <td>{{contact.primary_person.phone_numbers[1].number}}</td>
+                    <td>{{contact.primary_person.phone_numbers[2].number}}</td>
+
+                    <td>{{contact.spouse.first_name}}</td>
+                    <td>{{contact.spouse.last_name}}</td>
+                    <td>{{contact.spouse.email_addresses[0].email}}</td>
+                    <td>{{contact.spouse.phone_numbers[0].number}}</td>
+
+                    <td>{{contact.contacts_that_referred_me[0].name}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-center">
+            <label for="accept" translate>
+                This import cannot be undone, I accept.
+            </label>
+            <input id="accept" type="checkbox" ng-model="$ctrl.accept">
+        </div>
+
+        <a class="btn btn-gray btn-lg btn-squared pull-left" ng-click="$ctrl.back()" translate>Back</a>
+        <a class="btn btn-green btn-lg btn-squared" ng-click="$ctrl.confirm()" ng-class="{disabled: !$ctrl.canAdvance()}" translate>Looks good! Run the import!</a>
+    </div>
+</div>
