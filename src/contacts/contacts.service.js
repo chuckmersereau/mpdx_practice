@@ -80,6 +80,21 @@ class ContactsService {
             return data;
         });
     }
+    getReferrals(id) {
+        return this.api.get({
+            url: `contacts/${id}`,
+            data: {
+                include: 'contacts_referred_by_me',
+                fields: {
+                    contacts: 'contacts_referred_by_me,name,created_at'
+                }
+            }
+        }).then((data) => {
+            data = data.contacts_referred_by_me;
+            this.$log.debug('referrals by contact', id, data);
+            return data;
+        });
+    }
     getName(id) {
         return this.api.get({
             url: `contacts/${id}`,
@@ -498,7 +513,7 @@ class ContactsService {
         });
     }
     openAddReferralsModal() {
-        this.modal.open({
+        return this.modal.open({
             template: require('./show/referrals/add/add.html'),
             controller: 'addReferralsModalController',
             locals: {
@@ -507,13 +522,13 @@ class ContactsService {
         });
     }
     openNewContactModal() {
-        this.modal.open({
+        return this.modal.open({
             template: require('./new/new.html'),
             controller: 'contactNewModalController'
         });
     }
     openMapContactsModal(selectedContacts) {
-        this.modal.open({
+        return this.modal.open({
             template: require('./list/mapContacts/mapContacts.html'),
             controller: 'mapContactsController',
             locals: {
@@ -522,7 +537,7 @@ class ContactsService {
         });
     }
     openMultipleAddModal() {
-        this.modal.open({
+        return this.modal.open({
             template: require('./multiple/multiple.html'),
             controller: 'multipleContactController'
         });

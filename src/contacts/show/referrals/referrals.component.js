@@ -1,43 +1,29 @@
-import find from 'lodash/fp/find';
-import has from 'lodash/fp/has';
-import map from 'lodash/fp/map';
-import uniqBy from 'lodash/fp/uniqBy';
-
 class ContactReferralsController {
     contact;
 
     constructor(
-        $state,
+        $stateParams,
         contacts, locale
     ) {
-        this.$state = $state;
+        this.$stateParams = $stateParams;
         this.contacts = contacts;
-        this.contactList = null;
         this.locale = locale;
     }
-    $onChanges() {
-        if (!has('contacts_referred_by_me', this.contacts.current)) {
-            return;
-        }
-        const contactIds = map('id', uniqBy('id', this.contacts.current.contacts_referred_by_me));
-        if (contactIds.length < 1) {
-            return;
-        }
-        this.contacts.getNames(contactIds).then((data) => {
-            this.contactList = data;
+    openAddReferralsModal() {
+        this.contacts.openAddReferralsModal().then(() => {
+            this.contacts.getReferrals(this.$stateParams.contactId).then((data) => {
+                this.referrals = data;
+            });
         });
-    }
-    getContact(id) {
-        return find({id: id}, this.contactList);
-    }
-    switchContact(id) {
-        this.$state.go('contact', { contactId: id });
     }
 }
 
 const Referrals = {
     controller: ContactReferralsController,
-    template: require('./referrals.html')
+    template: require('./referrals.html'),
+    bindings: {
+        referrals: '<'
+    }
 };
 
 export default angular.module('mpdx.contacts.show.referrals.component', [])
