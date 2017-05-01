@@ -54,18 +54,6 @@ class TasksService {
         };
 
         this.dataLoadCount = 0;
-
-        $rootScope.$on('tasksFilterChange', () => {
-            this.reset();
-        });
-
-        $rootScope.$on('tasksTagsChanged', () => {
-            this.reset();
-        });
-
-        $rootScope.$on('accountListUpdated', () => {
-            this.reset();
-        });
     }
     reset() {
         this.selected = [];
@@ -212,7 +200,7 @@ class TasksService {
                     contactTask.comments.push({id: uuid(), body: comment, person: { id: this.users.current.id }});
                 }
                 if (!isEmpty(contactId)) {
-                    result.push(assign(contactTask, {id: uuid(), contacts: [{id: contactId}]}));
+                    result = concat(result, assign(contactTask, {id: uuid(), contacts: [{id: contactId}]}));
                 }
                 return result;
             }, [], contactIds);

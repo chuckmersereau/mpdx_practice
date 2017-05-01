@@ -1,22 +1,23 @@
+import defaultTo from 'lodash/fp/defaultTo';
 import isEmpty from 'lodash/fp/isEmpty';
-import isNull from 'lodash/fp/isNull';
+import isEqual from 'lodash/fp/isEqual';
+import isNil from 'lodash/fp/isNil';
 import assign from "lodash/fp/assign";
 import map from "lodash/fp/map";
 import omitBy from "lodash/fp/omitBy";
 import joinComma from "../../common/fp/joinComma";
+import emptyToNull from '../../common/fp/emptyToNull';
 
 class TasksFilterService {
     api;
     filters;
 
     constructor(
-        $location, $q, $rootScope, $log,
+        $q, $rootScope, $log,
         api, filters, tasksTags
     ) {
-        this.$location = $location;
         this.$q = $q;
         this.$rootScope = $rootScope;
-        this.$q = $q;
         this.$log = $log;
         this.api = api;
         this.filters = filters;
@@ -64,10 +65,6 @@ class TasksFilterService {
             }
         };
         this.defaultParams = {};
-
-        $rootScope.$on('accountListUpdated', () => {
-            this.load(true);
-        });
     }
     load(reset = false) {
         if (!reset && this.data) {
@@ -111,27 +108,20 @@ class TasksFilterService {
         this.change();
     }
     isResettable() {
-        return !angular.equals(this.params, this.defaultParams) || !isEmpty(this.wildcard_search);
+        return !isEqual(this.params, this.defaultParams) || !isEmpty(this.wildcard_search);
     }
     toParams() {
-        let defaultParams = this.defaultParams || {};
+        let defaultParams = defaultTo({}, this.defaultParams);
         let filters = assign(defaultParams, this.params);
-        if (this.wildcard_search) {
-            filters.wildcard_search = this.wildcard_search;
-        }
-        if (this.tasksTags.selectedTags.length > 0) {
-            filters.tags = joinComma(map('name', this.tasksTags.selectedTags));
-        } else {
-            delete filters.tags;
-        }
-        if (this.tasksTags.rejectedTags.length > 0) {
-            filters.exclude_tags = joinComma(map('name', this.tasksTags.rejectedTags));
-        } else {
-            delete filters.exclude_tags;
-        }
-        filters.account_list_id = this.api.account_list_id;
-        filters.any_tags = this.tasksTags.anyTags;
-        filters = omitBy(isNull, filters);
+        const convertTags = emptyToNull(joinComma(map('name')));
+        filters = assign(filters, {
+            any_tags: this.tasksTags.anyTags,
+            account_list_id: this.api.account_list_id,
+            tags: convertTags(this.tasksTags.selectedTags),
+            exclude_tags: convertTags(this.tasksTags.rejectedTags),
+            wildcard_search: this.wildcard_search
+        });
+        filters = omitBy(isNil, filters);
         return filters;
     }
 }

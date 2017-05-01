@@ -22,7 +22,7 @@ class DatetimepickerController {
             this.ngModel = this.model.toISOString();
         });
     }
-    $onChange() {
+    $onChanges() {
         this.init();
     }
     init() {
