@@ -1,8 +1,9 @@
+import curry from 'lodash/fp/curry';
 import isEqual from 'lodash/fp/isEqual';
-const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
+import reduceObject from './reduceObject';
 
-export default (target, source) => {
-    return reduce((result, value, key) => {
+export default curry((target, source) => {
+    return reduceObject((result, value, key) => {
         if (key === 'id') {
             result[key] = value;
         }
@@ -11,4 +12,4 @@ export default (target, source) => {
         }
         return result;
     }, {}, source);
-};
+});

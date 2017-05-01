@@ -2,8 +2,8 @@ import concat from 'lodash/fp/concat';
 import groupBy from 'lodash/fp/groupBy';
 import includes from 'lodash/fp/includes';
 import indexOf from 'lodash/fp/indexOf';
-const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 import sumBy from 'lodash/fp/sumBy';
+import reduceObject from '../../common/fp/reduceObject';
 
 class MonthlyController {
     api;
@@ -40,7 +40,7 @@ class MonthlyController {
             this.total_currency_symbol = data.total_currency_symbol;
             const availableDonationTypes = ['received', 'likely', 'unlikely'];
             const donations = groupBy('type', data.expected_donations);
-            this.donationsByType = reduce((result, donationsForType, type) => {
+            this.donationsByType = reduceObject((result, donationsForType, type) => {
                 if (includes(type, availableDonationTypes)) {
                     result = concat(result, {
                         type: type,

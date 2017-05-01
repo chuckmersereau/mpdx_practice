@@ -1,5 +1,5 @@
-const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 import each from 'lodash/fp/each';
+import reduce from 'lodash/fp/reduce';
 import reject from 'lodash/fp/reject';
 
 class CommitmentInfoService {

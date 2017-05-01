@@ -1,8 +1,10 @@
 import concat from 'lodash/fp/concat';
 import find from 'lodash/fp/find';
 import includes from 'lodash/fp/includes';
-const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
+import reduce from 'lodash/fp/reduce';
+import reduceObject from '../../common/fp/reduceObject';
 import uuid from 'uuid/v1';
+
 
 class NotificationPreferencesController {
     accounts;
@@ -32,7 +34,7 @@ class NotificationPreferencesController {
         this.init();
     }
     init() {
-        this.notifications = reduce((result, value, key) => {
+        this.notifications = reduceObject((result, value, key) => {
             const defaultActions = (this.setup && this.accounts.current.notification_preferences.length === 0) ? ['email', 'task'] : [''];
             const notificationType = find(pref => pref.notification_type.id === key, this.accounts.current.notification_preferences) || {id: uuid(), actions: defaultActions};
             result = concat(result, {

@@ -15,7 +15,7 @@ import union from 'lodash/fp/union';
 import unionBy from 'lodash/fp/unionBy';
 import relationshipId from '../common/fp/relationshipId';
 import upsert from '../common/fp/upsert';
-const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
+import reduce from 'lodash/fp/reduce';
 
 class TasksService {
     contacts;

@@ -16,8 +16,8 @@ import unionBy from 'lodash/fp/unionBy';
 import joinComma from "../common/fp/joinComma";
 import mapByName from "../common/fp/mapByName";
 import relationshipId from "../common/fp/relationshipId";
-const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
-
+import reduce from 'lodash/fp/reduce';
+import reduceObject from '../common/fp/reduceObject';
 
 class ContactsService {
     alerts;
@@ -219,10 +219,7 @@ class ContactsService {
                 this.loading = false;
                 return;
             }
-            const newContacts = reduce((result, contact) => {
-                result.push(contact);
-                return result;
-            }, [], data);
+            const newContacts = angular.copy(data);
             if (reset) {
                 this.data = newContacts;
             } else {
@@ -287,7 +284,7 @@ class ContactsService {
         this.load(false, this.page);
     }
     findChangedFilters(defaultParams, params) {
-        return reduce((result, filter, key) => {
+        return reduceObject((result, filter, key) => {
             if (has(key, this.contactFilter.params)) {
                 const currentDefault = defaultParams[key];
                 if (isArray(filter)) {
@@ -327,7 +324,9 @@ class ContactsService {
         if (this.selectedContacts > this.data.length) {
             return map('name', this.contactsTags.data);
         }
-        return reduce((result, contact) => union(result, contact.tag_list), [], this.getSelectedContacts()).sort();
+        return reduce((result, contact) =>
+            union(result, contact.tag_list)
+        , [], this.getSelectedContacts()).sort();
     }
     clearSelectedContacts() {
         this.selectedContacts = [];
@@ -426,7 +425,7 @@ class ContactsService {
             deSerializationOptions: relationshipId('parent_contact'), //for parent_contact
             beforeDeserializationTransform: (data) => {
                 //this avoids infinite recursion between people & contacts
-                return reduce((result, value, key) => {
+                return reduceObject((result, value, key) => {
                     if (key === 'included') {
                         result[key] = reduce((dataResult, dataValue) => {
                             if (has('relationships.parent_contact.data.type', dataValue)) {
