@@ -5,6 +5,7 @@ import defaultTo from 'lodash/fp/defaultTo';
 import eq from 'lodash/fp/eq';
 import find from 'lodash/fp/find';
 import forEachRight from 'lodash/fp/forEachRight';
+import get from 'lodash/fp/get';
 import has from 'lodash/fp/has';
 import isNil from 'lodash/fp/isNil';
 import map from 'lodash/fp/map';
@@ -127,7 +128,7 @@ class ContactController {
         });
     }
     onPrimary(personId) {
-        if (eq(this.contacts.current.primary_person.id, personId) || isNil(personId)) {
+        if (eq(get('primary_person.id', this.contacts.current), personId) || isNil(personId)) {
             return;
         }
         this.$log.debug('change primary: ', personId);
