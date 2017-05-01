@@ -182,7 +182,9 @@ class TasksService {
         this.load(false, this.page + 1);
     }
     save(task, comment = null) {
-        task.tag_list = joinComma(task.tag_list); //fix for api mis-match
+        if (task.tag_list) {
+            task.tag_list = joinComma(task.tag_list); //fix for api mis-match
+        }
         if (comment) {
             if (!task.comments) {
                 task.comments = [];
