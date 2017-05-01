@@ -34,7 +34,6 @@ class TagsService {
                 return {id: uuid(), name: obj};
             }, val.tags);
             this.data = unionBy('name', this.data, tags);
-            this.change();
         });
     }
     change() {
