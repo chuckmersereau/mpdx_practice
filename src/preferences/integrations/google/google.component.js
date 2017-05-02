@@ -16,10 +16,12 @@ class GoogleController {
     }
     $onInit() {
         this.load();
-        this.googleOauth = `${config.oAuthUrl}google?redirect_to=${this.$window.location.href}&access_token=${this.$window.localStorage.getItem('token')}`;
+        this.googleOauth = `${config.oAuthUrl}google?redirect_to=${this.$window.encodeURIComponent(config.baseUrl + 'preferences/integrations')}&access_token=${this.$window.localStorage.getItem('token')}`;
     }
     load() {
-        return this.api.get(`user/google_accounts`).then((data) => {
+        return this.api.get(`user/google_accounts`, {
+            sort: 'created_at'
+        }).then((data) => {
             this.$log.debug('user/google_accounts', data);
             this.data = data;
         });
@@ -45,4 +47,3 @@ const Google = {
 
 export default angular.module('mpdx.preferences.integrations.google.component', [])
     .component('googleIntegrationPreferences', Google).name;
-

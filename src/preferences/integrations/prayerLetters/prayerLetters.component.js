@@ -21,7 +21,7 @@ class PrayerLettersController {
     }
     $onInit() {
         this.load();
-        this.plsOauth = `${config.oAuthUrl}prayer_letters?account_list_id=${this.api.account_list_id}&redirect_to=${this.$window.location.href}&access_token=${this.$window.localStorage.getItem('token')}`;
+        this.plsOauth = `${config.oAuthUrl}prayer_letters?account_list_id=${this.api.account_list_id}&redirect_to=${this.$window.encodeURIComponent(config.baseUrl + 'preferences/integrations')}&access_token=${this.$window.localStorage.getItem('token')}`;
     }
     load() {
         this.api.get(`account_lists/${this.api.account_list_id}/prayer_letters_account`).then((data) => {
