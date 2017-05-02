@@ -29,6 +29,7 @@ import rawNumber from './rawNumber/rawNumber.directive';
 import selectionStore from './selectionStore/selectionStore.service';
 import serverConstants from './serverConstants/serverConstants.service';
 import session from './session/session.service';
+import sourceToStr from './sourceToStr/sourceToStr.filter';
 import pagination from './pagination/pagination.component';
 import tagSelector from './tagSelector/tagSelector.component';
 import urlParameter from './urlParameter/urlParameter.service';
@@ -67,6 +68,7 @@ export default angular.module('mpdx.common', [
     selectionStore,
     serverConstants,
     session,
+    sourceToStr,
     tagSelector,
     urlParameter,
     users
