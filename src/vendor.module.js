@@ -21,6 +21,8 @@ import 'angular-block-ui';
 import 'angular-filter';
 import 'angular-strap';
 import 'angular-strap/dist/angular-strap.tpl';
+import 'angular-strap/dist/modules/dimensions';
+import 'angular-strap/dist/modules/debounce';
 import 'angular-chosen-localytics';
 import 'angular-localforage';
 import 'angular-timeago';
@@ -63,6 +65,8 @@ export default angular.module('mpdx.vendor', [
     'LocalForageModule',
     'localytics.directives',
     'mgcrea.ngStrap',
+    'mgcrea.ngStrap.helpers.dimensions',
+    'mgcrea.ngStrap.helpers.debounce',
     'ngTagsInput',
     'yaru22.angular-timeago',
     'tandibar/ng-rollbar'
