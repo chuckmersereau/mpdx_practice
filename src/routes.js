@@ -82,7 +82,10 @@ export default class Routes {
             name: 'contacts.show.referrals',
             title: gettext('Contact - Referrals'),
             url: '/referrals',
-            component: 'contactReferrals'
+            component: 'contactReferrals',
+            resolve: {
+                referrals: /*@ngInject*/ (contacts, $stateParams) => contacts.getReferrals($stateParams.contactId)
+            }
         }).state({
             name: 'contacts.show.tasks',
             title: gettext('Contact - Tasks'),
@@ -148,10 +151,13 @@ export default class Routes {
         }).state({
             name: 'preferences.integrations',
             title: gettext('Preferences - Connect Services'),
-            url: '/integrations',
+            url: '/integrations?selectedTab',
             component: 'preferencesIntegration',
             resolve: {
                 resolution: /*@ngInject*/ (users) => users.listOrganizationAccounts()
+            },
+            params: {
+                selectedTab: null
             }
         }).state({
             name: 'preferences.notifications',
@@ -240,9 +246,7 @@ export default class Routes {
             resolve: {
                 filter: /*@ngInject*/ ($stateParams, tasksFilter) => {
                     return tasksFilter.load().then(() => {
-                        if ($stateParams.filters) {
-                            tasksFilter.reset($stateParams.filters);
-                        }
+                        tasksFilter.reset($stateParams.filters);
                     });
                 },
                 tag: /*@ngInject*/ (tasksTags) => tasksTags.load()

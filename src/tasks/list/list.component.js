@@ -3,18 +3,33 @@ class ListController {
 
     constructor(
         $rootScope,
-        tasks
+        tasks, tasksFilter, tasksTags
     ) {
         this.tasks = tasks;
+        this.tasksFilter = tasksFilter;
+        this.tasksTags = tasksTags;
 
         $rootScope.$on('taskChange', () => {
             this.tasks.load(true);
         });
 
-        this.tasks.reset();
+        $rootScope.$on('tasksFilterChange', () => {
+            this.tasks.load(true);
+        });
+
+        $rootScope.$on('tasksTagsChanged', () => {
+            this.tasks.reset();
+        });
+
+        $rootScope.$on('accountListUpdated', () => {
+            this.tasksFilter.reset();
+            this.tasksFilter.load(true);
+            this.tasksTags.load(true);
+            this.tasks.reset();
+        });
     }
-    $onInit() {
-        this.tasks.load(true);
+    $onChanges() {
+        this.tasks.reset();
     }
 }
 

@@ -12,7 +12,7 @@ class ContactInfoController {
         this.locale = locale;
         this.serverConstants = serverConstants;
     }
-    $onChange(obj) {
+    $onChanges(obj) {
         if (obj.contact) {
             if (parseInt(obj.contact.currentValue.pledge_frequency) > 0) {
                 this.contact.pledge_frequency = obj.contact.currentValue.pledge_frequency + '.0';

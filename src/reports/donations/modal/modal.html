@@ -52,7 +52,9 @@
                    ng-model="$ctrl.donation.donation_date"
                    name="date"
                    id="donation_date"
-                   data-date-format="yyyy-MM-dd"
+                   data-date-type="string"
+                   data-date-format="{{$ctrl.locale.dateTimeFormat}}"
+                   data-model-date-format="yyyy-MM-dd"
                    data-autoclose="1"
                    required>
         </div>

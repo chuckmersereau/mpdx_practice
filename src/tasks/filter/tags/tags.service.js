@@ -21,10 +21,6 @@ class TagsService {
         this.selectedTags = [];
         this.rejectedTags = [];
         this.anyTags = false;
-
-        $rootScope.$on('accountListUpdated', () => {
-            this.load(true);
-        });
     }
     change() {
         this.$log.debug('task/tags: change');
@@ -103,7 +99,6 @@ class TagsService {
     reset() {
         this.selectedTags = [];
         this.rejectedTags = [];
-        this.change();
     }
     getTagsByQuery(query) {
         return this.$filter('filter')(this.data, query);

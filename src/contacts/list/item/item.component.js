@@ -15,8 +15,8 @@ class ItemController {
         this.$state = $state;
         this.contacts = contacts;
         this.people = people;
+        this.users = users;
 
-        this.current_currency_symbol = users.current.currency_symbol;
 
         $rootScope.$on('contactTagDeleted', (e, val) => {
             if (!val.contactIds || includes(this.contact.id, val.contactIds)) {

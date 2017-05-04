@@ -1,6 +1,6 @@
-const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 import range from 'lodash/fp/range';
 import toInteger from 'lodash/fp/toInteger';
+import reduceObject from '../fp/reduceObject';
 
 class PaginationController {
     constructor($log) {
@@ -9,7 +9,7 @@ class PaginationController {
     }
 
     $onChanges(data) {
-        this.meta = reduce((result, value, key) => {
+        this.meta = reduceObject((result, value, key) => {
             result[key] = toInteger(value);
             return result;
         }, {}, data.meta.currentValue);

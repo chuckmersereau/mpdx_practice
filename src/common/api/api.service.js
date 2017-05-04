@@ -9,7 +9,7 @@ import isObject from 'lodash/fp/isObject';
 import map from 'lodash/fp/map';
 import pull from 'lodash/fp/pull';
 import joinComma from '../fp/joinComma';
-const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
+import reduceObject from '../fp/reduceObject';
 
 function appendTransform(defaults, transform) {
     // We can't guarantee that the default transformation is an array
@@ -207,7 +207,7 @@ class Api {
         return map(encodeURIComponent, array);
     }
     cleanFilters(filter) {
-        return reduce((result, value, key) => {
+        return reduceObject((result, value, key) => {
             if (isArray(value)) {
                 value = pull('', value);
                 if (value.length > 0) {
@@ -287,9 +287,10 @@ class EntityAttributes {
                 account_list: { ref: 'id' },
                 contacts_referred_by_me: {
                     ref: 'id',
-                    attributes: ["account_list", "name", "primary_person_first_name", "primary_person_last_name", "primary_person_email", "primary_person_phone",
+                    attributes: ["account_list", "name", "primary_person_first_name", "primary_person_last_name", "primary_person_email", "primary_person_phone", "notes",
                         "spouse_first_name", "spouse_last_name", "spouse_phone", "spouse_email",
-                        "primary_address_city", "primary_address_state", "primary_address_postal_code", "primary_address_street"
+                        "primary_address_city", "primary_address_state", "primary_address_postal_code", "primary_address_street",
+                        "name", "created_at"
                     ],
                     account_list: { ref: 'id' }
                 },

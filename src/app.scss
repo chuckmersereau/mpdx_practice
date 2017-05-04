@@ -59,6 +59,7 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "home/progress/progress";
 @import "preferences/preferences";
 @import "setup/setup";
+@import "setup/preferences/preferences";
 @import "tasks/list/list";
 @import "tasks/list/item/item";
 @import "tasks/search/search";
@@ -72,18 +73,6 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 
 /* replace with sass variable once new style is ready */
 .border-secondary {
-    border-color: $color-secondary;
-}
-
-.alert-danger {
-    color: $color-alert;
-    background-color: rgba($color-alert, 0.09);
-    border-color: $color-alert;
-    font-weight: 600;
-}
-
-.alert-warning {
-    background-color: rgba($color-secondary, 0.09);
     border-color: $color-secondary;
 }
 

@@ -1,9 +1,9 @@
 const each = require('lodash/fp/each').convert({ 'cap': false });
-const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 import isEmpty from 'lodash/fp/isEmpty';
 import difference from 'lodash/fp/difference';
 import keys from 'lodash/fp/keys';
 import values from 'lodash/fp/values';
+import reduceObject from '../../common/fp/reduceObject';
 
 class ImportFromCsvController {
     alerts;
@@ -154,7 +154,7 @@ class ImportFromCsvController {
             each((value, key) => {
                 if (this.serverConstants.data.csv_import.constants[key]) {
                     // fix for integer/float keys
-                    const pledgeFrequencies = reduce((result, v, k) => {
+                    const pledgeFrequencies = reduceObject((result, v, k) => {
                         if (k >= 1) {
                             result[parseInt(k).toFixed(1)] = v;
                         } else {
@@ -163,7 +163,7 @@ class ImportFromCsvController {
                         return result;
                     }, {}, this.serverConstants.data.pledge_frequencies);
 
-                    const opts = reduce((result, v, k) => {
+                    const opts = reduceObject((result, v, k) => {
                         switch (key) {
                             case 'commitment_frequency':
                                 result[k] = pledgeFrequencies[v];

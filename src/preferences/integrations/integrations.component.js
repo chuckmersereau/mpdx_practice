@@ -5,7 +5,7 @@ class IntegrationPreferencesController {
 
     constructor(
         $window, $state, $stateParams, gettextCatalog,
-        alerts, help, integrations, mailchimp, modal
+        alerts, help, integrations, modal, google, mailchimp, prayerLetters
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
@@ -13,8 +13,11 @@ class IntegrationPreferencesController {
         this.alerts = alerts;
         this.gettextCatalog = gettextCatalog;
         this.integrations = integrations;
-        this.mailchimp = mailchimp;
         this.modal = modal;
+
+        this.google = google;
+        this.mailchimp = mailchimp;
+        this.prayerLetters = prayerLetters;
 
         this.saving = false;
         this.tabId = '';
@@ -39,22 +42,14 @@ class IntegrationPreferencesController {
     }
     $onInit() {
         this.integrations.load();
+        if (this.$stateParams.selectedTab) {
+            this.setTab(this.$stateParams.selectedTab);
+        }
     }
     $onChanges(data) {
         if (data.selectedTab) {
             this.setTab(this.selectedTab);
         }
-    }
-    sync(service) {
-        this.saving = true;
-        this.service = service;
-        return this.integrations.sync(service).then(() => {
-            this.saving = false;
-            this.alerts.addAlert(this.gettextCatalog.getString('MPDX is now syncing your newsletter recipients with {service}.', {service: this.service}), 'success');
-        }).catch(() => {
-            this.saving = false;
-            this.alerts.addAlert(this.gettextCatalog.getString(`MPDX couldn't save your configuration changes for {service}.`, {service: this.service}), 'danger');
-        });
     }
     disconnect(service, id) {
         this.saving = true;

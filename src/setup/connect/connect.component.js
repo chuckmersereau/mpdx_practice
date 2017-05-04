@@ -28,6 +28,7 @@ class SetupConnectController {
     $onInit() {
         this.users.currentOptions.setup_position.value = 'connect';
         this.users.setOption(this.users.currentOptions.setup_position);
+        this.showOrgs = this.users.organizationAccounts.length === 0;
     }
     connect() {
         this.connecting = true;

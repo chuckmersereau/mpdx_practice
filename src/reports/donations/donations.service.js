@@ -40,7 +40,9 @@ class DonationsService {
     }
 
     save(donation) {
-        donation.amount = donation.amount.replace(/[^\d.-]/g, '');
+        if (donation.amount) {
+            donation.amount = donation.amount.replace(/[^\d.-]/g, '');
+        }
         if (has('id', donation)) {
             return this.api.put(`account_lists/${this.api.account_list_id}/donations/${donation.id}`, donation);
         } else {
