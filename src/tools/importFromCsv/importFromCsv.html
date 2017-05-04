@@ -1,9 +1,3 @@
-<!--<div class="panel panel-default">-->
-    <!--<div class="panel-heading">Sorry</div>-->
-    <!--<div class="panel-body">-->
-        <!--We are currently experiencing issues with imports on MPDX. We are working hard to resolve these issues and will bring back this feature when they are fixed. Thanks for your patience and understanding.-->
-    <!--</div>-->
-<!--</div>-->
 <div class="row">
     <div class="col-md-3 col-sm-6">
         <div class="well step" ng-class="{current: $ctrl.step === 1}">
@@ -36,8 +30,15 @@
 
 <div class="steps-container" block-ui="import-from-csv">
     <div class="step-1 text-center" ng-if="$ctrl.step === 1">
-        <form novalidate>
-            <a class="btn btn-gray btn-squared btn-lg" ng-model="f.file" ngf-select="$ctrl.upload(f)" ngf-accept="'.csv, text/csv'" translate>Select CSV file</a>
+        <form name="importForm" novalidate>
+            <a class="btn btn-gray btn-squared btn-lg"
+               ng-model="f.file"
+               ngf-select="$ctrl.upload(f)"
+               ngf-accept="'.csv, text/csv'"
+               ngf-max-size="{{$ctrl.maxSize}}"
+               name="file"
+               translate>Select CSV file</a>
+            <div ng-if="importForm.file.$error.maxSize" translate translate-params-size="$ctrl.maxSizeInMB" class="text-danger">File too large, {{size}}MB max</div>
         </form>
 
         <p class="step-description" translate>
