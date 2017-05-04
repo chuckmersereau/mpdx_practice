@@ -151,10 +151,13 @@ export default class Routes {
         }).state({
             name: 'preferences.integrations',
             title: gettext('Preferences - Connect Services'),
-            url: '/integrations',
+            url: '/integrations?selectedTab',
             component: 'preferencesIntegration',
             resolve: {
                 resolution: /*@ngInject*/ (users) => users.listOrganizationAccounts()
+            },
+            params: {
+                selectedTab: null
             }
         }).state({
             name: 'preferences.notifications',

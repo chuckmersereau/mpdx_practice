@@ -1,120 +1,114 @@
-<div class="network_button network_connect">
-    <p translate>
-        Add or change the organizations that sync donation information with this mpdx account. Removing an organization will not remove past information, but will prevent future donations and contacts from syncing.
-    </p>
-    <div ng-if="$ctrl.page == 'org_list'">
-        <div ng-if="$ctrl.users.organizationAccounts.length == 0">
-            <h3 translate>Let's start by connecting to your organizations</h3>
-            <div class="import_button">
-                <a class="btn btn-primary" ng-click="$ctrl.page = 'select_org'" translate>Add Account</a>
+<p translate>
+    Add or change the organizations that sync donation information with this MPDX account. Removing an organization will not remove past information, but will prevent future donations and contacts from syncing.
+</p>
+<div ng-if="$ctrl.page == 'org_list'">
+    <div ng-if="$ctrl.users.organizationAccounts.length == 0">
+        <h3 translate>Let's start by connecting to your first organization</h3>
+    </div>
+    <div ng-repeat="account in $ctrl.users.organizationAccounts" class="panel panel-default">
+        <div class="panel-heading">
+            <div class="pull-right">
+                <a class="btn btn-default btn-xs" ng-click="$ctrl.editAccount(account)" ng-if="$ctrl.serverConstants.data.organizations_attributes[account.organization.id].api_class === 'DataServer'">
+                    <i class="fa fa-pencil"></i>
+                </a>
+                &nbsp;
+                <a class="btn btn-danger btn-xs" ng-click="$ctrl.disconnect(account.id)">
+                    <i class="fa fa-trash"></i>
+                </a>
             </div>
+            <strong>{{account.organization.name}}</strong> {{account.username}}
         </div>
-        <div ng-if="$ctrl.users.organizationAccounts.length != 0">
-            <div ng-repeat="account in $ctrl.users.organizationAccounts" class="network_connections">
-                <div class="account_single">
-                    <div class="actions">
-                        <a class="inlineaction delete" ng-click="$ctrl.disconnect(account.id)" translate>Delete</a>
+        <form ng-if="$ctrl.serverConstants.data.organizations_attributes[account.organization.id].api_class === 'OfflineOrg'">
+            <div class="panel-body">
+                <a ng-click="account.tntImportToggle = !account.tntImportToggle" translate>Import TntConnect DataSync file</a>
+                <div ng-if="account.tntImportToggle">
+                    <div class="alert alert-info">
+                        <p translate>This file should be in a TntConnect DataSync file (.tntmpd) from your organization, not your local TntConnect database file (.mpddb).</p>
+                        <p translate>To import your TntConnect database, go to <a ui-sref="tools.importFromTNT">Import from TntConnect</a></p>
                     </div>
-                    <span class="account_name">
-                        <strong>{{account.organization.name}}</strong> {{account.username}}
-                        <span ng-if="$ctrl.serverConstants.data.organizations_attributes[account.organization.id].api_class === 'DataServer'">
-                          <a class="edit ico ico_edit no-new-tab" ng-click="$ctrl.editAccount(account)" translate>Edit</a>
-                        </span>
-                    </span>
-                    <div ng-if="$ctrl.serverConstants.data.organizations_attributes[account.organization.id].api_class === 'OfflineOrg'" class="importoptions formstyles">
-                        <a ng-click="account.tntImportToggle = !account.tntImportToggle" translate>Import TntConnect DataSync file</a>
-                        <div ng-if="account.tntImportToggle">
-                            <form ng-submit="$ctrl.save(f)">
-                            <div class="field">
-                                <div class="form-group btn btn-default" ng-model="f.file" ngf-select translate>
-                                    Choose File
-                                </div>
-                            </div>
-                            <div class="hint" translate>
-                                Note: this file should be in a TntConnect DataSync file (.tntmpd) from your organization, not your local TntConnect database file (.mpddb). To import your local TntConnect database, click "Import Contacts" below next to the TntConnect logo.
-                            </div>
-                            <div class="text-right">
-                                <button type="submit" class="btn btn-default" translate>Import</button>
-                            </div>
-                            </form>
-                        </div>
-                    </div>
+                    <a class="btn btn-default" ng-model="f.file" ngf-select translate>Choose File</a>
                 </div>
             </div>
-            <div class="import_button">
-                <a class="btn btn-primary" ng-click="$ctrl.page = 'select_org'" translate>Add another Account</a>
+            <div ng-if="account.tntImportToggle" class="panel-footer">
+                <button type="submit" class="btn btn-primary" ng-click="$ctrl.save(f)" ng-disabled="!f.file" translate>Import</button>
             </div>
-        </div>
+        </form>
     </div>
-    <div ng-if="$ctrl.page == 'select_org'">
-        <h3 translate>Add Account</h3>
-        <p>
+    <a class="btn btn-primary" ng-click="$ctrl.page = 'select_org'" translate>Add Account</a>
+</div>
+<div class="panel panel-default" ng-if="$ctrl.page == 'select_org'">
+    <div class="panel-heading" translate>
+        Add Account
+    </div>
+    <div class="panel-body">
+        <div class="form-group">
+            <label translate>Organization</label>
             <select chosen
+                    class="form-control"
                     ng-model="$ctrl.selectedKey"
                     ng-disabled="$ctrl.saving"
                     ng-change="$ctrl.select()"
                     ng-options="key as value.name for (key, value) in $ctrl.serverConstants.data.organizations_attributes track by key">
             </select>
-        </p>
+        </div>
         <div ng-if="!$ctrl.selected">
             <a ng-click="$ctrl.showOrganizationHelp()" translate>Can't find your organization?</a>
         </div>
-        <a class="btn btn-default" ng-if="!$ctrl.selected" ng-click="$ctrl.revert()" translate>Back</a>
-    </div>
-</div>
-<div ng-if="$ctrl.selected">
-    <div ng-if="$ctrl.selected.api_class === 'Siebel'">
-        <div class="well">
-            <h4 translate>You must log into MPDX with your ministry email</h4>
-            <p translate>This organization requires you to log into MPDX with your ministry email to access it.</p>
-            <p translate>First you need to <a href="https://thekey.me/cas/logout" target="_blank" translate>click here to log out of your personal Key account</a></p>
-            <p translate>Next, <a href="/logout" translate>click here to log out of MPDX</a> so you can log back in with your offical key account.</p>
+        <div ng-if="$ctrl.selected">
+            <div ng-if="$ctrl.selected.api_class === 'Siebel'">
+                <h4 translate>You must log into MPDX with your ministry email</h4>
+                <p translate>This organization requires you to log into MPDX with your ministry email to access it.</p>
+                <p translate>First you need to <a href="https://thekey.me/cas/logout" target="_blank" translate>click here to log out of your personal Key account</a></p>
+                <p translate>Next, <a href="/logout" translate>click here to log out of MPDX</a> so you can log back in with your offical key account.</p>
+            </div>
+            <div ng-if="$ctrl.selected.api_class === 'DataServer' || $ctrl.selected.api_class === 'DataServerPtc'">
+                <div class="form-group">
+                    <label translate>Username</label>
+                    <input class="form-control" ng-disabled="$ctrl.saving" type="text" ng-model="$ctrl.username">
+                </div>
+                <div class="form-group">
+                    <label translate>Password</label>
+                    <input class="form-control" ng-disabled="$ctrl.saving" type="password" ng-model="$ctrl.password">
+                </div>
+            </div>
+            <div ng-if="$ctrl.selected.api_class === 'OfflineOrg'">
+            </div>
         </div>
-        <a class="btn btn-default" ng-click="$ctrl.revert()" translate>Back</a>
     </div>
-    <div ng-if="$ctrl.selected.api_class === 'DataServer' || $ctrl.selected.api_class === 'DataServerPtc'">
-        <form>
-            <label for="organization_account_username" translate>Username</label>
-            <input id="organization_account_username" ng-disabled="$ctrl.saving" type="text" ng-model="$ctrl.username">
-            <label for="organization_account_password" translate>Password</label>
-            <input id="organization_account_password" ng-disabled="$ctrl.saving" type="password" ng-model="$ctrl.password">
-            <br />
-            <br />
-            <button type="submit" ng-click="$ctrl.createAccount()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
-                <span translate>Add Account</span>&nbsp;
-                <span class="btn-progress" ng-if="$ctrl.saving">
-                    <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
-                </span>
-            </button>
+    <div class="panel-footer">
+        <div ng-if="!$ctrl.selected">
+            <a class="btn btn-default" ng-if="!$ctrl.selected" ng-click="$ctrl.revert()" translate>Back</a>
+        </div>
+        <div ng-if="$ctrl.selected">
             <a class="btn" ng-click="$ctrl.revert()" translate>Cancel</a>
-        </form>
-    </div>
-    <div ng-if="$ctrl.selected.api_class === 'OfflineOrg'">
-        <button type="submit" ng-click="$ctrl.createAccount()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
-            <span translate>Add Account</span>&nbsp;
-            <span class="btn-progress" ng-if="$ctrl.saving">
-                <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
-            </span>
-        </button>
-        <a class="btn" ng-click="$ctrl.revert()" translate>Cancel</a>
+            <button ng-click="$ctrl.createAccount()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
+                <translate>Add</translate>
+                <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
+            </button>
+        </div>
     </div>
 </div>
-<div ng-if="$ctrl.page === 'edit_account'">
-    <h3 translate>Edit Account</h3>
-    <h4>{{$ctrl.selected.name}}</h4>
-    <form>
-        <label for="edit_organization_account_username" translate>Username</label>
-        <input id="edit_organization_account_username" ng-disabled="$ctrl.saving" name="organization_account[username]" type="text" ng-model="$ctrl.username">
-        <label for="edit_organization_account_password" translate>Password</label>
-        <input id="edit_organization_account_password" ng-disabled="$ctrl.saving" name="organization_account[password]" type="password" ng-model="$ctrl.password">
-        <br />
-        <br />
+<div class="panel panel-default" ng-if="$ctrl.page === 'edit_account'">
+    <div class="panel-heading">
+        <translate>Edit Account</translate>
+        |
+        <strong>{{$ctrl.selected.organization.name}}</strong>
+    </div>
+    <div class="panel-body">
+        <div class="form-group">
+            <label translate>Username</label>
+            <input class="form-control" ng-disabled="$ctrl.saving" type="text" ng-model="$ctrl.username">
+        </div>
+        <div class="form-group">
+            <label translate>Password</label>
+            <input class="form-control" ng-disabled="$ctrl.saving" type="password" ng-model="$ctrl.password">
+        </div>
+    </div>
+    <div class="panel-footer">
+        <a class="btn btn-link" ng-click="$ctrl.revert()" translate>Cancel</a>
         <button type="submit" ng-click="$ctrl.updateAccount()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
-            <span translate>Update Account</span>&nbsp;
-            <span class="btn-progress" ng-if="$ctrl.saving">
-                <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
-            </span>
+            <translate>Save</translate>
+            <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
         </button>
-        <a class="btn" ng-click="$ctrl.revert()" translate>Cancel</a>
-    </form>
+    </div>
 </div>

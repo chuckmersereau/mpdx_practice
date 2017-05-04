@@ -52,9 +52,14 @@ class OrganizationService {
         return this.api.post(`user/organization_accounts`, org);
     }
     updateAccount(username, password, accountId) {
-        return this.api.put(`user/organization_accounts/${accountId}`, {
-            username: username,
-            password: password
+        return this.api.put({
+            url: `user/organization_accounts/${accountId}`,
+            data: {
+                id: accountId,
+                username: username,
+                password: password
+            },
+            type: 'organization_accounts'
         });
     }
 }

@@ -68,6 +68,7 @@ class OrganizationIntegrationPreferencesController {
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX updated your organization account'));
         }).catch(() => {
             this.alerts.addAlert(this.gettextCatalog.getString('Unable to update your organization account'), 'danger');
+            this.saving = false;
         });
     }
     editAccount(account) {
@@ -76,10 +77,10 @@ class OrganizationIntegrationPreferencesController {
         this.username = account.username;
     }
     revert() {
-        this.page = 'org_list';
         this.selected = null;
         this.username = null;
         this.password = null;
+        this.page = 'org_list';
     }
     select() {
         this.selected = get(this.selectedKey, this.serverConstants.data.organizations_attributes);

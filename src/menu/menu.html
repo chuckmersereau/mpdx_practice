@@ -6,32 +6,15 @@
                     <a class="nav--logo" ng-click="$ctrl.go('home')"></a>
                 </div>
                 <div class="pull-right navbar-quick">
-                    <div class="section pull-left" ng-if="!$ctrl.setup" style="max-width: 200px; margin-right: 10px">
+                    <div class="section pull-left" ng-if="!$ctrl.setup" style="max-width: 200px; margin-right: 5px;">
                         <menu-search></menu-search>
-                    </div>
-                    <div class="section">
-                        <div class="dropdown">
-                            <a bs-dropdown class="settings-drop btn btn-default btn-block" type="button" data-placement="bottom-right">
-                                <i class="fa fa-cog"></i> <translate>Settings</translate>
-                            </a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="preferences.personal" translate>Preferences</a></li>
-                                <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="preferences.notifications" translate>Notifications</a></li>
-                                <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="tools" translate>Import Contacts</a></li>
-                                <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="preferences.integrations" translate>Connect Services</a></li>
-                                <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="preferences.accounts" translate>Manage Account</a></li>
-                                <li role="presentation" class="divider" ng-if="!$ctrl.setup"></li>
-                                <li role="presentation"><a ui-sref="logout" translate>Log out</a></li>
-                            </ul>
-                        </div>
                     </div>
                     <div class="section" ng-if="!$ctrl.setup">
                         <account-lists></account-lists>
                     </div>
-                    <div class="section"  ng-if="!$ctrl.setup">
+                    <div class="section" ng-if="!$ctrl.setup">
                         <div class="dropdown">
-                            <a bs-dropdown class="btn btn-reverse btn-block" href="#" type="button" id="quick-drop" aria-expanded="true"
-                               analytics-on analytics-category="Global Events" analytics-label="Actions" data-placement="bottom-right">
+                            <a bs-dropdown class="btn btn-default" type="button" data-placement="bottom-right">
                                 <i class="fa fa-plus"></i> <translate>Add</translate>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="quick-drop">
@@ -40,6 +23,22 @@
                                 <li role="presentation"><a ng-click="$ctrl.donations.openNewDonationModal()" translate>Add Donation</a></li>
                                 <li role="presentation"><a ng-click="$ctrl.tasks.addModal()" translate>Add Task</a></li>
                                 <li role="presentation"><a ng-click="$ctrl.tasks.logModal()" translate>Log Task</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <div class="dropdown">
+                            <a bs-dropdown class="settings-drop btn btn-reverse btn-block" type="button" data-placement="bottom-right">
+                                <i class="fa fa-cog"></i> <translate>Settings</translate>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="preferences.personal" translate>Preferences</a></li>
+                                <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="preferences.notifications" translate>Notifications</a></li>
+                                <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="tools" translate>Import Contacts</a></li>
+                                <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="preferences.integrations" translate>Connect Services</a></li>
+                                <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="preferences.accounts" translate>Manage Account</a></li>
+                                <li role="presentation" ng-if="!$ctrl.setup" class="divider"></li>
+                                <li role="presentation"><a ui-sref="logout" translate>Log out</a></li>
                             </ul>
                         </div>
                     </div>

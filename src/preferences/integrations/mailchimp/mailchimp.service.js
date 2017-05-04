@@ -1,39 +1,32 @@
-class mailchimpService {
+import config from 'config';
+
+class MailchimpService {
     api;
 
     constructor(
-        $log, $q, $rootScope,
+        $log, $q, $window,
         api
     ) {
         this.$log = $log;
         this.$q = $q;
-        this.$rootScope = $rootScope;
         this.api = api;
-        this.state = 'disabled';
-
-        this.$rootScope.$on('accountListUpdated', () => {
-            this.load(true);
-        });
-
-        this.load(true);
+        this.$window = $window;
     }
     load(reset = false) {
         if (!reset && this.data) {
             return this.$q.resolve(this.data);
         }
 
+        this.oAuth = `${config.oAuthUrl}mailchimp?account_list_id=${this.api.account_list_id}&redirect_to=${this.$window.encodeURIComponent(config.baseUrl + 'preferences/integrations?selectedTab=mailchimp')}&access_token=${this.$window.localStorage.getItem('token')}`;
         return this.api.get(`account_lists/${this.api.account_list_id}/mail_chimp_account`).then((data) => {
             this.$log.debug(`account_lists/${this.api.account_list_id}/mail_chimp_account`, data);
             this.data = data;
         }).finally(() => {
-            this.updateState();
         });
     }
     save() {
         return this.api.post({ url: `account_lists/${this.api.account_list_id}/mail_chimp_account`, data: this.data }).then((data) => {
             this.data = data;
-        }).finally(() => {
-            this.updateState();
         });
     }
     sync() {
@@ -42,21 +35,9 @@ class mailchimpService {
     disconnect() {
         return this.api.delete(`account_lists/${this.api.account_list_id}/mail_chimp_account`).then(() => {
             this.data = null;
-            this.updateState();
         });
-    }
-    updateState() {
-        if (this.data && this.data.active) {
-            if (this.data.valid) {
-                this.state = 'enabled';
-            } else {
-                this.state = 'error';
-            }
-        } else {
-            this.state = 'disabled';
-        }
     }
 }
 
 export default angular.module('mpdx.preferences.accounts.integrations.mailchimp.service', [])
-    .service('mailchimp', mailchimpService).name;
+    .service('mailchimp', MailchimpService).name;

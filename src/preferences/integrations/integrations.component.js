@@ -5,7 +5,7 @@ class IntegrationPreferencesController {
 
     constructor(
         $window, $state, $stateParams, gettextCatalog,
-        alerts, help, integrations, mailchimp, modal
+        alerts, help, integrations, modal, google, mailchimp, prayerLetters
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
@@ -13,8 +13,11 @@ class IntegrationPreferencesController {
         this.alerts = alerts;
         this.gettextCatalog = gettextCatalog;
         this.integrations = integrations;
-        this.mailchimp = mailchimp;
         this.modal = modal;
+
+        this.google = google;
+        this.mailchimp = mailchimp;
+        this.prayerLetters = prayerLetters;
 
         this.saving = false;
         this.tabId = '';
@@ -39,6 +42,9 @@ class IntegrationPreferencesController {
     }
     $onInit() {
         this.integrations.load();
+        if (this.$stateParams.selectedTab) {
+            this.setTab(this.$stateParams.selectedTab);
+        }
     }
     $onChanges(data) {
         if (data.selectedTab) {

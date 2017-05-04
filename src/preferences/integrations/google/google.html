@@ -5,64 +5,52 @@
         </div>
     </div>
     <div class="col-md-8">
-        <div class="network_button network_connect">
-            <div ng-repeat="account in $ctrl.data" class="network_connections">
-                <div class="account_single">
-                    <div class="actions">
-                        <a class="inlineaction delete" ng-click="$ctrl.disconnect(account.id)" translate>Delete</a>
-                    </div>
-                    <span class="account_name">{{account.email}}</span>
-
-                    <div ng-if="account.token_expired == true">
-                        <p translate>
-                            The link between MPDX and your Google account stopped working.
-                            Click "Refresh Google Account" to re-enable it. After that,
-                            you'll need to manually re-enable any integrations that you had set already.
-                        </p>
-                        <%# new_account_path_opts = { provider: :google } %>
-                        <%# new_account_path_opts[:redirect] =  google_integration_path(google_integration) if google_integration %>
-                        <%#= link_to(_('Refresh Google Account'), new_account_path(new_account_path_opts), class: 'btn desired_action') %>
-                    </div>
-                    <div ng-if="account.token_expired == false">
-                        <div ng-if="account.google_integration_id != null">
-                            <a ng-href="/google_integrations/{{account.google_integration_id}}">
-                                <i class="fa fa-refresh"></i>
-                                <span translate>Configure synchronization</span>
-                            </a>
-                        </div>
-                        <div ng-if="account.google_integration_id == null">
-                            <a data-method="post" ng-href="/google_integrations?google_account_id={{account.id}}" rel="nofollow">
-                                <i class="fa fa-refresh"></i>
-                                <span translate>Configure synchronization</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div ng-if="!$ctrl.data.valid_google_account">
-                <h4 class="integration_subhead" translate>Google Integration Overview</h4>
-                <p translate>
-                    Google’s suite of tools are great for keeping you connected to your Ministry Partners. By synchronizing your Google services with MPDX, you will be able to:
-                </p>
-                <p translate>
-                    - See MPDX calendar events in your Google Calendar<br />
-                    - Access MPDX contacts from Google Address Book<br />
-                    - See Gmail interactions with your partners right inside MPDX
-                </p>
-                <p translate>
-                    Connect your Google account to begin, and then setup specific settings for Google Calendar, Contacts and Gmail. MPDX leaves you in control of how each service stays in sync.
-                </p>
-                <div class="well">
-                    <a href="#" class="btn btn-link disabled">Setup</a>
-                    <a href="#" class="btn btn-link disabled">Calendar</a>
-                    <a href="#" class="btn btn-link disabled">Contacts</a>
-                    <a href="#" class="btn btn-link disabled">Email</a>
-                    <p translate>We're sorry, but connecting to Google is not yet ready for everyday use. Please use <a href="http://mpdx.org" target="_blank">mpdx.org</a> to access this functionality.</p>
-                    <!-- <unavailable-message></unavailable-message> -->
-                </div>
-            </div>
-            <a ng-href="{{ $ctrl.googleOauth }}" class="btn btn-primary" translate>Add Account</a>
-            <a ng-if="$ctrl.data.valid_google_account" ui-sref="preferences.imports.tab({id: 'google'})" class="btn btn-default" translate>Import Google Contacts</a>
+        <div ng-if="$ctrl.google.data.length == 0">
+            <h4 class="integration_subhead" translate>Google Integration Overview</h4>
+            <p translate>
+                Google’s suite of tools are great at connecting you to your Ministry Partners.
+            </p>
+            <p>
+                <translate>By synchronizing your Google services with MPDX, you will be able to:</translate>
+                <ul>
+                    <li translate>See MPDX calendar events in your Google Calendar</li>
+                    <li translate>Access MPDX contacts from Google Address Book</li>
+                    <li translate>See Gmail interactions with your partners right inside MPDX</li>
+                </ul>
+            </p>
+            <p translate>
+                Connect your Google account to begin, and then setup specific settings for Google Calendar, Contacts and Gmail. MPDX leaves you in control of how each service stays in sync.
+            </p>
         </div>
+        <div ng-repeat="account in $ctrl.google.data" class="panel panel-default">
+            <div class="panel-heading">
+                <a class="btn btn-danger btn-xs pull-right" ng-click="$ctrl.disconnect(account.id)">
+                    <i class="fa fa-trash"></i>
+                </a>
+                {{account.email}}
+            </div>
+            <div class="panel-body" ng-if="account.token_expired == true">
+                <p translate>
+                    The link between MPDX and your Google account stopped working.
+                    Click "Refresh Google Account" to re-enable it. After that,
+                    you'll need to manually re-enable any integrations that you had set already.
+                </p>
+            </div>
+            <div class="panel-body" ng-if="account.token_expired == false">
+                <div ng-if="account.google_integration_id != null">
+                    <a ng-href="/google_integrations/{{account.google_integration_id}}">
+                        <i class="fa fa-refresh"></i>
+                        <span translate>Configure synchronization</span>
+                    </a>
+                </div>
+                <div ng-if="account.google_integration_id == null">
+                    <a data-method="post" ng-href="/google_integrations?google_account_id={{account.id}}" rel="nofollow">
+                        <i class="fa fa-refresh"></i>
+                        <span translate>Configure synchronization</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <a ng-href="{{ $ctrl.google.oAuth }}" class="btn btn-primary" translate>Add Account</a>
     </div>
 </div>

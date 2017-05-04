@@ -3,10 +3,18 @@
     border-color: $color-panel-border;
     &.panel-default {
         transition: border-color 0.5s;
+        margin-bottom: 5px;
         .panel-heading {
             transition: background-color 0.5s;
             user-select: none;
             cursor: default;
+
+            .pull-right {
+                font-size: 12px;
+                .btn {
+                    padding: 0 5px;
+                }
+            }
         }
         .panel-footer {
             transition: background-color 0.5s;
@@ -19,7 +27,7 @@
             }
         }
         &.panel-selected {
-            .panel-heading, .panel-footer {
+            > .panel-heading, > .panel-footer {
                 background-color: rgba($color-secondary, .52);
                 border-color: $color-secondary;
             }

@@ -76,18 +76,6 @@ $flag-icon-css-path: "~flag-icon-css/flags";
     border-color: $color-secondary;
 }
 
-.alert-danger {
-    color: $color-alert;
-    background-color: rgba($color-alert, 0.09);
-    border-color: $color-alert;
-    font-weight: 600;
-}
-
-.alert-warning {
-    background-color: rgba($color-secondary, 0.09);
-    border-color: $color-secondary;
-}
-
 .text-success {color: $color-success;}
 .border-success {border-color: $color-success;}
 
