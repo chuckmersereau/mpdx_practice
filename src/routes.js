@@ -246,9 +246,7 @@ export default class Routes {
             resolve: {
                 filter: /*@ngInject*/ ($stateParams, tasksFilter) => {
                     return tasksFilter.load().then(() => {
-                        if ($stateParams.filters) {
-                            tasksFilter.reset($stateParams.filters);
-                        }
+                        tasksFilter.reset($stateParams.filters);
                     });
                 },
                 tag: /*@ngInject*/ (tasksTags) => tasksTags.load()
