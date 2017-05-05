@@ -8,7 +8,7 @@ class IntegrationsController {
         this.$state = $state;
         this.users = users;
 
-        this.selectableTabs = ['mailchimp', 'prayerletters'];
+        this.selectableTabs = ['google', 'mailchimp', 'prayerletters'];
         this.selectedTab = this.selectableTabs[0];
     }
     $onInit() {

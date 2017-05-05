@@ -83,11 +83,14 @@ setup-start, setup-connect, setup-account, setup-finish {
         margin-top: $font-size-lg;
     }
     .btn {
-        min-width: 388px;
+        min-width: 200px;
         max-width: 100%;
         font-size: $font-size-lg;
         padding: 20px;
         white-space: normal;
+        &-wide {
+            min-width: 388px;
+        }
         &-sm {
             min-width: 1px;
             font-size: $font-size*1.25;
