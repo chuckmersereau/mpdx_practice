@@ -39,6 +39,10 @@ class ContactController {
         this.tasks = tasks;
         this.users = users;
 
+        if ($stateParams['personId']) {
+            this.people.openPeopleModal(this.contacts.current, $stateParams['personId']);
+        }
+
         this.moveContact = { previous_contact: 0, following_contact: 0 };
         this.activeTab = '';
 

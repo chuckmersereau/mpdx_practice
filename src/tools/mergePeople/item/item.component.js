@@ -1,4 +1,11 @@
 class ItemController {
+    locale;
+
+    constructor(
+        locale
+    ) {
+        this.locale = locale;
+    }
 }
 
 const Item = {
@@ -6,6 +13,7 @@ const Item = {
     template: require('./item.html'),
     bindings: {
         person: '<',
+        contact: '<',
         onClick: '&',
         selected: '<',
         ignored: '<'

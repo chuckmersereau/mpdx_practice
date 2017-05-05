@@ -3,14 +3,19 @@
     <div ng-if="$ctrl.ignored" class="merge-state ignored" translate>Don't Merge</div>
     <avatar src="$ctrl.person.avatar"></avatar>
     <div class="avatar-on-left">
-        <strong>{{$ctrl.person.title}} {{$ctrl.person.first_name}} {{$ctrl.person.last_name}}</strong>
+        <a ui-sref="contacts.show({ contactId: $ctrl.contact.id, personId: $ctrl.person.id })" ng-click="$event.stopPropagation()" target="_blank">
+            <strong>{{$ctrl.person.title}} {{$ctrl.person.first_name}} {{$ctrl.person.last_name}}</strong>
+        </a>
         <div ng-repeat="phone_number in $ctrl.person.phone_numbers track by phone_number.id" ng-if="phone_number.primary">
             {{phone_number.number}}
+            <div translate translate-params-source="(phone_number.source | sourceToStr)">From: {{source}}</div>
             <i class="fa fa-exclamation-triangle" ng-if="phone_number.duplicate"></i>
         </div>
         <div ng-repeat="email_address in $ctrl.person.email_addresses track by email_address.id" ng-if="email_address.primary">
             {{email_address.email}}
+            <div translate translate-params-source="(email_address.source | sourceToStr)">From: {{source}}</div>
             <i class="fa fa-exclamation-triangle" ng-if="email_address.duplicate"></i>
         </div>
+        <div translate translate-params-date="($ctrl.person.created_at | date : $ctrl.locale.dateTimeFormat)">On: {{date}}</div>
     </div>
 </div>
