@@ -40,7 +40,7 @@ class DonationsService {
     }
 
     save(donation) {
-        if (donation.amount) {
+        if (has('amount', donation)) {
             donation.amount = donation.amount.replace(/[^\d.-]/g, '');
         }
         if (has('id', donation)) {

@@ -34,6 +34,9 @@ class DonationModalController {
     }
 
     save() {
+        if (this.donationInitialState.appeal && !this.donation.appeal) { //appeal removed case
+            this.donation.appeal = {id: 'none'}; //fudge around api shortcoming
+        }
         const patch = createPatch(this.donationInitialState, this.donation);
         return this.donations.save(patch).then(() => {
             this.$scope.$hide();
