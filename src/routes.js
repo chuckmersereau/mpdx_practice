@@ -55,8 +55,11 @@ export default class Routes {
         }).state({
             name: 'contacts.show',
             title: gettext('Contact'),
-            url: '/{contactId}',
+            url: '/{contactId}?personId',
             component: 'contact',
+            params: {
+                personId: null
+            },
             resolve: {
                 again: /*@ngInject*/ (users) => users.listOrganizationAccounts(),
                 contact: /*@ngInject*/ (contacts, $stateParams) => contacts.get($stateParams.contactId).then((data) => {

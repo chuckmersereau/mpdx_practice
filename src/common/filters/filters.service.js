@@ -1,4 +1,6 @@
+import assign from 'lodash/fp/assign';
 import concat from 'lodash/fp/concat';
+import defaultTo from 'lodash/fp/defaultTo';
 import difference from 'lodash/fp/difference';
 import filter from 'lodash/fp/filter';
 import findIndex from 'lodash/fp/findIndex';
@@ -32,10 +34,10 @@ class Filters {
             });
         }
         return this.api.get(url, {filter: {account_list_id: this.api.account_list_id}}).then((response) => {
-            data = response || [];
+            data = defaultTo([], response);
             data = sortBy(filter => toInteger(filter.id), data);
             this.$log.debug(url, data);
-            params = reduce((result, filter) => {
+            defaultParams = reduce((result, filter) => {
                 if (filter.multiple && !isArray(filter.default_selection)) {
                     result[filter.name] = [filter.default_selection];
                 } else {
@@ -57,7 +59,7 @@ class Filters {
                 }
                 return result;
             }, [], data);
-            defaultParams = angular.copy(params);
+            params = assign(defaultParams, params);
             return {
                 data: data,
                 params: params,

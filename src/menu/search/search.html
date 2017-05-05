@@ -5,6 +5,11 @@
             <input type="text"
                    class="search_filter form-control"
                    autocomplete="off"
+                   placeholder="{{ 'Search Contacts' | translate }}"
+                   bs-tooltip
+                   data-placement="bottom"
+                   data-title="{{ 'Search name, phone, email, notes, partner #' | translate }}"
+                   data-trigger="focus"
                    ng-model="$ctrl.searchParams"
                    ng-change="$ctrl.search()"
                    ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"

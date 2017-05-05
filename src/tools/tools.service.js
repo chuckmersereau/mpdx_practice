@@ -5,9 +5,9 @@ class ToolsService {
         gettextCatalog
     ) {
         this.data = [
-            {title: gettextCatalog.getString('Goals & Appeals'), icon: 'fa fa-trophy', link: 'tools.goalsAndAppeals', description: gettextCatalog.getString('Set goals, create asks, and track progress for one time needs'), enabled: true},
-            {title: gettextCatalog.getString('Import from Google'), icon: 'fa fa-google', link: 'tools.importFromGoogle', description: gettextCatalog.getString('Import your contact information from your Google account'), enabled: true, imports: true},
-            {title: gettextCatalog.getString('Import from CSV'), icon: 'fa fa-table', link: 'tools.importFromCSV', description: gettextCatalog.getString('Import contacts you have saved in a CSV file'), enabled: false, imports: true},
+            {title: gettextCatalog.getString('Goals & Appeals'), icon: 'fa fa-trophy', link: 'tools.goalsAndAppeals', description: gettextCatalog.getString('Set goals, create asks, and track progress for one time needs'), enabled: false},
+            {title: gettextCatalog.getString('Import from Google'), icon: 'fa fa-google', link: 'tools.importFromGoogle', description: gettextCatalog.getString('Import your contact information from your Google account'), enabled: false, imports: true},
+            {title: gettextCatalog.getString('Import from CSV'), icon: 'fa fa-table', link: 'tools.importFromCSV', description: gettextCatalog.getString('Import contacts you have saved in a CSV file'), enabled: true, imports: true},
             {title: gettextCatalog.getString('Import from TntConnect'), icon: 'fa fa-upload', link: 'tools.importFromTNT', description: gettextCatalog.getString('Import your contacts from your TntConnect database'), enabled: false, imports: true},
             {title: gettextCatalog.getString('Fix Commitment Info'), icon: 'fa fa-usd', link: 'tools.fix.commitmentInfo', description: gettextCatalog.getString('Set the correct contacts commitment info for each contact'), enabled: true},
             {title: gettextCatalog.getString('Fix Phone Numbers'), icon: 'fa fa-phone-square', link: 'tools.fix.phoneNumbers', description: gettextCatalog.getString('Set the correct primary phone number for each person'), enabled: true},

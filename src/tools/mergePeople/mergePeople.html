@@ -21,7 +21,7 @@
                 <div class="col-sm-10 col-sm-offset-1">
                     <div class="row" ng-repeat="duplicate in $ctrl.mergePeople.duplicates">
                         <div class="col-sm-5">
-                            <merge-people-item person="duplicate.people[0]" on-click="$ctrl.useThisOne(duplicate, 0)" selected="duplicate.mergeChoice == 0" ignored="duplicate.mergeChoice == 2"></merge-people-item>
+                            <merge-people-item person="duplicate.people[0]" contact="duplicate.shared_contact" on-click="$ctrl.useThisOne(duplicate, 0)" selected="duplicate.mergeChoice == 0" ignored="duplicate.mergeChoice == 2"></merge-people-item>
                         </div>
                         <div class="col-sm-2 text-center choices">
                             <i class="fa fa-arrow-left choice-left" ng-class="{'selected': duplicate.mergeChoice == 0}" ng-click="$ctrl.useThisOne(duplicate, 0)"></i>
@@ -29,7 +29,7 @@
                             <i class="fa fa-close choice-cancel" ng-class="{'selected': duplicate.mergeChoice == 2}" ng-click="$ctrl.useThisOne(duplicate, 2)"></i>
                         </div>
                         <div class="col-sm-5">
-                            <merge-people-item person="duplicate.people[1]" on-click="$ctrl.useThisOne(duplicate, 1)" selected="duplicate.mergeChoice == 1" ignored="duplicate.mergeChoice == 2"></merge-people-item>
+                            <merge-people-item person="duplicate.people[1]" contact="duplicate.shared_contact" on-click="$ctrl.useThisOne(duplicate, 1)" selected="duplicate.mergeChoice == 1" ignored="duplicate.mergeChoice == 2"></merge-people-item>
                         </div>
                     </div>
                     <div class="row">

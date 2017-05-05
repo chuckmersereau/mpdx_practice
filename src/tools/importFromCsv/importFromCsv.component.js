@@ -2,16 +2,18 @@ const each = require('lodash/fp/each').convert({ 'cap': false });
 import isEmpty from 'lodash/fp/isEmpty';
 import difference from 'lodash/fp/difference';
 import keys from 'lodash/fp/keys';
+import round from 'lodash/fp/round';
 import values from 'lodash/fp/values';
 import reduceObject from '../../common/fp/reduceObject';
 
 class ImportFromCsvController {
     alerts;
-    modal;
     importFromCsv;
-    serverConstants;
     contactsTags;
-
+    maxSize;
+    maxSizeInMB;
+    modal;
+    serverConstants;
     constructor(
         $log, $window, $scope, $transitions, $state, alerts, modal, blockUI, gettextCatalog,
         importFromCsv, serverConstants, contactsTags
@@ -57,7 +59,10 @@ class ImportFromCsvController {
             }
         });
     }
-
+    $onInit() {
+        this.maxSize = this.serverConstants.data.csv_import.max_file_size_in_bytes;
+        this.maxSizeInMB = round(this.maxSize / 1000000);
+    }
     setStep(n) {
         this.accept = false;
         this.importFromCsv.data.in_preview = true;

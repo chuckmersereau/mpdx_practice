@@ -1,4 +1,11 @@
 class ItemController {
+    locale;
+
+    constructor(
+        locale
+    ) {
+        this.locale = locale;
+    }
 }
 
 const Item = {

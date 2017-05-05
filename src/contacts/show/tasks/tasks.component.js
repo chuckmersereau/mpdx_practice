@@ -7,6 +7,7 @@ class ContactTasksController {
     }
     $onInit() {
         this.tasksFilter.params = { contact_ids: this.contacts.current.id };
+        this.tasksFilter.assignDefaultParamsAndGroup('all');
         this.tasksFilter.change();
     }
 }
@@ -16,5 +17,9 @@ const Tasks = {
     template: require('./tasks.html')
 };
 
-export default angular.module('mpdx.contacts.show.tasks.component', [])
-    .component('contactTasks', Tasks).name;
+import contacts from '../../contacts.service';
+import tasksFilter from '../../../tasks/filter/filter.service';
+
+export default angular.module('mpdx.contacts.show.tasks.component', [
+    contacts, tasksFilter
+]).component('contactTasks', Tasks).name;

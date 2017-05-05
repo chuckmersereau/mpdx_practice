@@ -91,21 +91,22 @@ class TasksFilterService {
         this.$log.debug('task filters change');
         this.$rootScope.$emit('tasksFilterChange');
     }
-    reset(stateParams = null) {
-        this.params = angular.copy(this.defaultParams);
+    reset(stateParams = {}) {
+        this.assignDefaultParamsAndGroup('all');
+        this.params = assign(this.defaultParams, stateParams);
         this.wildcard_search = '';
         this.tasksTags.reset();
-        if (stateParams) {
-            this.params = assign(this.params, stateParams);
-        }
         this.change();
     }
     changeGroup(group) {
+        this.assignDefaultParamsAndGroup(group);
+        this.change();
+    }
+    assignDefaultParamsAndGroup(group) {
         this.group = group;
         const paramsForGroup = this.defaultParamsForGroup[this.group];
         this.defaultParams = assign(this.defaultParams, paramsForGroup);
         this.params = assign(this.params, paramsForGroup);
-        this.change();
     }
     isResettable() {
         return !isEqual(this.params, this.defaultParams) || !isEmpty(this.wildcard_search);
@@ -125,5 +126,8 @@ class TasksFilterService {
         return filters;
     }
 }
-export default angular.module('mpdx.tasks.filter.service', [])
-    .service('tasksFilter', TasksFilterService).name;
+
+import tasksTags from './tags/tags.service';
+export default angular.module('mpdx.tasks.filter.service', [
+    tasksTags
+]).service('tasksFilter', TasksFilterService).name;

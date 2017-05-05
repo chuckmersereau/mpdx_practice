@@ -35,9 +35,9 @@ class MergePeople {
             data: {
                 include: 'people,people.phone_numbers,people.email_addresses',
                 fields: {
-                    people: 'avatar,email_addresses,phone_numbers,first_name,last_name',
-                    phone_numbers: 'primary,number',
-                    email_addresses: 'primary,email'
+                    people: 'avatar,email_addresses,phone_numbers,first_name,last_name,created_at',
+                    phone_numbers: 'primary,number,source',
+                    email_addresses: 'primary,email,source'
                 },
                 filter: {account_list_id: this.api.account_list_id},
                 per_page: this.perPage
