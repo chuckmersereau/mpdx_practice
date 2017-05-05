@@ -10,7 +10,6 @@
             <div class="pull-right">
                 <a class="btn btn-default btn-xs" ng-click="$ctrl.editAccount(account)" ng-if="$ctrl.serverConstants.data.organizations_attributes[account.organization.id].api_class === 'DataServer'">
                     <i class="fa fa-pencil"></i>
-                    <translate>Edit</translate>
                 </a>
                 &nbsp;
                 <a class="btn btn-danger btn-xs" ng-click="$ctrl.disconnect(account.id)">

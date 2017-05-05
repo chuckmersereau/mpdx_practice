@@ -319,10 +319,6 @@ class EntityAttributes {
                 donor_account: { ref: 'id' },
                 appeal: { ref: 'id' }
             },
-            google_integrations: {
-                attributes: ["account_list", "calendar_integration", "calendar_integrations", "calendar_id", "calendar_name", "email_integration", "contacts_integration"],
-                account_list: { ref: 'id' }
-            },
             imports: {
                 attributes: ["file_headers", "file_headers_mappings", "file_constants", "file_constants_mappings", "sample_contacts", "in_preview", "tag_list"],
                 sample_contacts: { ref: 'id' },

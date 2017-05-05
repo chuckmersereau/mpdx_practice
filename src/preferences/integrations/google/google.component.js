@@ -1,7 +1,7 @@
 class GoogleController {
     constructor(
         $rootScope, $log, $window, gettextCatalog,
-        alerts, modal, google, googleIntegrations
+        alerts, modal, google
     ) {
         this.$log = $log;
         this.$window = $window;
@@ -9,7 +9,6 @@ class GoogleController {
         this.gettextCatalog = gettextCatalog;
         this.modal = modal;
         this.google = google;
-        this.googleIntegrations = googleIntegrations;
 
         $rootScope.$on('accountListUpdated', () => {
             this.google.load(true);
