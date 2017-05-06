@@ -37,6 +37,7 @@ class SetupConnectController {
         this.preferencesOrganization.createAccount(this.username, this.password, this.selectedKey).then(() => {
             this.users.listOrganizationAccounts(true).then(() => {
                 this.connecting = false;
+                this.showOrgs = false;
             });
         }).catch(() => {
             this.alerts.addAlert('Invalid username or password.', 'danger');

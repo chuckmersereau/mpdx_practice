@@ -21,12 +21,11 @@ class AccountController {
     next() {
         return this.users.saveCurrent().then((data) => {
             return this.accounts.swap(data.preferences.default_account_list, this.users.current.id, true).then(() => {
-                //disabled for now
-                // if (this.accounts.data.length > 1) {
-                //     this.$state.go('setup.preferences.accounts');
-                // } else {
-                this.$state.go('setup.preferences.personal');
-                // }
+                if (this.accounts.data.length > 1 && this.users.organizationAccounts.length > 1) {
+                    this.$state.go('setup.preferences.accounts');
+                } else {
+                    this.$state.go('setup.preferences.personal');
+                }
             });
         });
     }

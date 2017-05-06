@@ -24,31 +24,25 @@
         </div>
         <div ng-repeat="account in $ctrl.google.data" class="panel panel-default">
             <div class="panel-heading">
-                <a class="btn btn-danger btn-xs pull-right" ng-click="$ctrl.disconnect(account.id)">
-                    <i class="fa fa-trash"></i>
-                </a>
+                <div class="pull-right">
+                    <a class="btn btn-default btn-xs" ng-click="$ctrl.googleIntegrations.openModal(account)">
+                        <i class="fa fa-pencil"></i>
+                        <translate>Edit</translate>
+                    </a>
+                    &nbsp;
+                    <a class="btn btn-danger btn-xs" ng-click="$ctrl.disconnect(account.id)">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </div>
                 {{account.email}}
             </div>
-            <div class="panel-body" ng-if="account.token_expired == true">
+            <div class="panel-body" ng-if="account.token_expired">
                 <p translate>
                     The link between MPDX and your Google account stopped working.
                     Click "Refresh Google Account" to re-enable it. After that,
                     you'll need to manually re-enable any integrations that you had set already.
                 </p>
-            </div>
-            <div class="panel-body" ng-if="account.token_expired == false">
-                <div ng-if="account.google_integration_id != null">
-                    <a ng-href="/google_integrations/{{account.google_integration_id}}">
-                        <i class="fa fa-refresh"></i>
-                        <span translate>Configure synchronization</span>
-                    </a>
-                </div>
-                <div ng-if="account.google_integration_id == null">
-                    <a data-method="post" ng-href="/google_integrations?google_account_id={{account.id}}" rel="nofollow">
-                        <i class="fa fa-refresh"></i>
-                        <span translate>Configure synchronization</span>
-                    </a>
-                </div>
+                <a ng-href="{{ $ctrl.google.oAuth }}" class="btn btn-primary" translate>Refresh Google Account</a>
             </div>
         </div>
         <a ng-href="{{ $ctrl.google.oAuth }}" class="btn btn-primary" translate>Add Account</a>
