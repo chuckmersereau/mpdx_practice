@@ -1,13 +1,4 @@
-import findIndex from 'lodash/fp/findIndex';
-import cloneDeep from 'lodash/fp/cloneDeep';
+import curry from 'lodash/fp/curry';
+import unionBy from 'lodash/fp/unionBy';
 
-export default (iteratee, object, collection) => {
-    let returnable = cloneDeep(collection);
-    const index = findIndex([iteratee, object[iteratee]], returnable);
-    if (index >= 0) {
-        returnable.splice(index, 1, object);
-    } else {
-        returnable.push(object);
-    }
-    return returnable;
-};
+export default curry((iteratee, object, collection) => unionBy(iteratee, collection, [object]));

@@ -1,3 +1,3 @@
 import replaceAll from './replaceAll';
 
-export default replaceAll('-', '_');
+export default replaceAll('_', '-');

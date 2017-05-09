@@ -1,12 +1,15 @@
 import assign from 'lodash/fp/assign';
 import concat from 'lodash/fp/concat';
 import findIndex from 'lodash/fp/findIndex';
+import flow from 'lodash/fp/flow';
 import has from 'lodash/fp/has';
 import includes from 'lodash/fp/includes';
 import isArray from 'lodash/fp/isArray';
 import isEqual from 'lodash/fp/isEqual';
 import isFunction from 'lodash/fp/isFunction';
+import isNil from 'lodash/fp/isNil';
 import map from 'lodash/fp/map';
+import omitBy from 'lodash/fp/omitBy';
 import pull from 'lodash/fp/pull';
 import pullAllBy from 'lodash/fp/pullAllBy';
 import reject from 'lodash/fp/reject';
@@ -14,10 +17,10 @@ import toInteger from 'lodash/fp/toInteger';
 import union from 'lodash/fp/union';
 import unionBy from 'lodash/fp/unionBy';
 import joinComma from "../common/fp/joinComma";
-import mapByName from "../common/fp/mapByName";
 import relationshipId from "../common/fp/relationshipId";
 import reduce from 'lodash/fp/reduce';
 import reduceObject from '../common/fp/reduceObject';
+import emptyToNull from '../common/fp/emptyToNull';
 
 class ContactsService {
     alerts;
@@ -161,28 +164,15 @@ class ContactsService {
     }
     buildFilterParams() {
         let filterParams = this.findChangedFilters(this.contactFilter.default_params, this.contactFilter.params);
-
-        // set account_list_id
-        filterParams.account_list_id = this.api.account_list_id;
-
-        const wildcardSearch = this.contactFilter.wildcard_search;
-        if (wildcardSearch) {
-            filterParams.wildcard_search = wildcardSearch;
-        }
-
-        if (this.contactsTags.selectedTags.length > 0) {
-            filterParams.tags = mapByName(this.contactsTags.selectedTags);
-        } else {
-            delete filterParams.tags;
-        }
-        if (this.contactsTags.rejectedTags.length > 0) {
-            filterParams.exclude_tags = joinComma(mapByName(this.contactsTags.rejectedTags));
-        } else {
-            delete filterParams.exclude_tags;
-        }
-        filterParams.any_tags = this.contactsTags.anyTags;
-
-        return filterParams;
+        const convertTags = flow(map('name'), joinComma, emptyToNull);
+        filterParams = assign(filterParams, {
+            account_list_id: this.api.account_list_id,
+            wildcard_search: emptyToNull(this.contactFilter.wildcard_search),
+            tags: convertTags(this.contactsTags.selectedTags),
+            exclude_tags: convertTags(this.contactsTags.rejectedTags),
+            any_tags: this.contactsTags.anyTags
+        });
+        return omitBy(isNil, filterParams);
     }
     load(reset = false, page = 1) {
         this.loading = true;
