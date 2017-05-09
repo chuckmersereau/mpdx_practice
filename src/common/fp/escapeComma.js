@@ -1,3 +1,3 @@
 import replaceAll from './replaceAll';
 
-export default replaceAll('\\,', ',');
+export default replaceAll(',', '\\,');

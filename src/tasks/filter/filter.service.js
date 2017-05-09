@@ -1,4 +1,5 @@
 import defaultTo from 'lodash/fp/defaultTo';
+import flow from 'lodash/fp/flow';
 import isEmpty from 'lodash/fp/isEmpty';
 import isEqual from 'lodash/fp/isEqual';
 import isNil from 'lodash/fp/isNil';
@@ -62,6 +63,11 @@ class TasksFilterService {
                 starred: null,
                 completed: 'true',
                 date_range: null
+            },
+            contact: {
+                starred: null,
+                completed: null,
+                date_range: null
             }
         };
         this.defaultParams = {};
@@ -114,7 +120,7 @@ class TasksFilterService {
     toParams() {
         let defaultParams = defaultTo({}, this.defaultParams);
         let filters = assign(defaultParams, this.params);
-        const convertTags = emptyToNull(joinComma(map('name')));
+        const convertTags = flow(map('name'), joinComma, emptyToNull);
         filters = assign(filters, {
             any_tags: this.tasksTags.anyTags,
             account_list_id: this.api.account_list_id,
@@ -122,12 +128,13 @@ class TasksFilterService {
             exclude_tags: convertTags(this.tasksTags.rejectedTags),
             wildcard_search: this.wildcard_search
         });
-        filters = omitBy(isNil, filters);
-        return filters;
+        return omitBy(isNil, filters);
     }
 }
 
 import tasksTags from './tags/tags.service';
+import filters from '../../common/filters/filters.service';
+
 export default angular.module('mpdx.tasks.filter.service', [
-    tasksTags
+    filters, tasksTags
 ]).service('tasksFilter', TasksFilterService).name;

@@ -54,5 +54,9 @@ class ServerConstantsService {
     }
 }
 
-export default angular.module('mpdx.common.serverConstants', [])
-    .service('serverConstants', ServerConstantsService).name;
+import pledgeFrequencyToStr from '../../contacts/list/item/pledgeFrequencyToStr.filter';
+
+export default angular.module('mpdx.common.serverConstants', [
+    pledgeFrequencyToStr
+]).service('serverConstants', ServerConstantsService).name;
+

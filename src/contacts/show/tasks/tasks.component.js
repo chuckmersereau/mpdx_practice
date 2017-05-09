@@ -7,7 +7,7 @@ class ContactTasksController {
     }
     $onInit() {
         this.tasksFilter.params = { contact_ids: this.contacts.current.id };
-        this.tasksFilter.assignDefaultParamsAndGroup('all');
+        this.tasksFilter.assignDefaultParamsAndGroup('contact');
         this.tasksFilter.change();
     }
 }

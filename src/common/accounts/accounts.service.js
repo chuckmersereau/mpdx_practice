@@ -125,5 +125,9 @@ class AccountsService {
         });
     }
 }
-export default angular.module('mpdx.common.accounts.service', [])
-    .service('accounts', AccountsService).name;
+
+import api from '../api/api.service';
+
+export default angular.module('mpdx.common.accounts.service', [
+    api
+]).service('accounts', AccountsService).name;
