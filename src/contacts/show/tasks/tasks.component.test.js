@@ -22,7 +22,7 @@ describe('contacts.show.tasks.component', () => {
         });
         it('should reset task Filters', () => {
             expect(tasksFilter.params).toEqual(assign(tasksFilter.defaultParams, { contact_ids: currentContact.id }));
-            expect(tasksFilter.assignDefaultParamsAndGroup).toHaveBeenCalledWith('all');
+            expect(tasksFilter.assignDefaultParamsAndGroup).toHaveBeenCalledWith('contact');
             expect(tasksFilter.change).toHaveBeenCalled();
         });
     });

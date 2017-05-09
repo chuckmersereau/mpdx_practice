@@ -63,6 +63,11 @@ class TasksFilterService {
                 starred: null,
                 completed: 'true',
                 date_range: null
+            },
+            contact: {
+                starred: null,
+                completed: null,
+                date_range: null
             }
         };
         this.defaultParams = {};
