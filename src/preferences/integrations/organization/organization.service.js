@@ -1,12 +1,14 @@
+import config from 'config';
 class OrganizationService {
     api;
-    state;
     users;
 
     constructor(
-        $log,
+        $log, Upload,
         api, users
     ) {
+        this.Upload = Upload;
+
         this.$log = $log;
         this.api = api;
         this.users = users;
@@ -60,6 +62,27 @@ class OrganizationService {
                 password: password
             },
             type: 'organization_accounts'
+        });
+    }
+    import(account) {
+        return this.Upload.upload({
+            url: `${config.apiUrl}account_lists/${this.api.account_list_id}/imports/tnt_data_sync`,
+            data: {
+                data: {
+                    type: 'imports',
+                    attributes: {
+                        file: account.file
+                    },
+                    relationships: {
+                        source_account: {
+                            data: {
+                                id: account.id,
+                                type: 'organization_accounts'
+                            }
+                        }
+                    }
+                }
+            }
         });
     }
 }

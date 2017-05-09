@@ -324,13 +324,18 @@ class EntityAttributes {
                 account_list: { ref: 'id' }
             },
             imports: {
-                attributes: ["file_headers", "file_headers_mappings", "file_constants", "file_constants_mappings", "sample_contacts", "in_preview", "tag_list"],
+                attributes: ["file_headers", "file_headers_mappings", "file_constants", "file_constants_mappings", "sample_contacts", "in_preview", "tag_list", "source_account"],
                 sample_contacts: { ref: 'id' },
+                source_account: { ref: 'id' },
                 typeForAttribute: (key) => {
-                    if (key === 'sample_contacts') {
-                        return 'contacts';
+                    switch (key) {
+                        case 'sample_contacts':
+                            return 'contacts';
+                        case 'source_account':
+                            return 'organization_accounts';
+                        default:
+                            return key;
                     }
-                    return key;
                 }
             },
             merge: {

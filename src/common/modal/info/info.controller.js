@@ -11,6 +11,7 @@ class InfoController {
     ok() {
         this.infoPromise.resolve();
         this.$scope.$hide();
+        return this.infoPromise.promise;
     }
 }
 

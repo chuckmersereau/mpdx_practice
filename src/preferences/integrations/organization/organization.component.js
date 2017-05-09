@@ -8,15 +8,16 @@ class OrganizationIntegrationPreferencesController {
     users;
 
     constructor(
-        gettextCatalog,
-        alerts, help, preferencesOrganization, serverConstants, users,
+        gettextCatalog, Upload,
+        alerts, help, modal, preferencesOrganization, serverConstants, users
     ) {
-        this.gettextCatalog = gettextCatalog;
-
         this.alerts = alerts;
+        this.gettextCatalog = gettextCatalog;
         this.help = help;
+        this.modal = modal;
         this.preferencesOrganization = preferencesOrganization;
         this.serverConstants = serverConstants;
+        this.Upload = Upload;
         this.users = users;
 
         this.saving = false;
@@ -87,6 +88,19 @@ class OrganizationIntegrationPreferencesController {
     }
     showOrganizationHelp() {
         this.help.showArticle(this.gettextCatalog.getString('58f96cc32c7d3a057f886e20'));
+    }
+    import(account) {
+        this.importing = true;
+        this.preferencesOrganization.import(account).then(() => {
+            account.showTntDataSync = false;
+            this.modal.info(
+                this.gettextCatalog.getString('File successfully uploaded. The import to {{ name }} will begin in the background.', { name: account.organization.name }, null), 'success');
+        }, () => {
+            this.alerts.addAlert(this.gettextCatalog.getString('File upload failed.'), 'danger');
+        }).finally(() => {
+            account.file = null;
+            this.importing = false;
+        });
     }
 }
 
