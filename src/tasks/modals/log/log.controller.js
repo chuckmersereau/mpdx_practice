@@ -26,7 +26,7 @@ class LogTaskController {
         this.activate();
     }
     activate() {
-        this.contacts.getNames(this.contactsList).then((data) => {
+        return this.contacts.getNames(this.contactsList).then((data) => {
             this.contactNames = reduce((result, contact) => {
                 result[contact.id] = contact.name;
                 return result;
@@ -63,5 +63,11 @@ class LogTaskController {
         return this.contactsList.length > 0 && this.task.activity_type && indexOf(this.task.activity_type, ['Pre Call Letter', 'Reminder Letter', 'Support Letter', 'Thank', 'To Do']) === -1;
     }
 }
-export default angular.module('mpdx.contacts.logTask.controller', [])
-    .controller('logTaskController', LogTaskController).name;
+
+import contacts from '../../../contacts/contacts.service';
+import serverConstants from '../../../common/serverConstants/serverConstants.service';
+import tasks from '../../tasks.service';
+
+export default angular.module('mpdx.contacts.logTask.controller', [
+    contacts, serverConstants, tasks
+]).controller('logTaskController', LogTaskController).name;

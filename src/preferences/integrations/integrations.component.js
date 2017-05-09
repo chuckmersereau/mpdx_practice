@@ -1,3 +1,5 @@
+import isNil from 'lodash/fp/isNil';
+
 class IntegrationPreferencesController {
     alerts;
     integrations;
@@ -74,7 +76,10 @@ class IntegrationPreferencesController {
         });
     }
     setTab(service) {
-        if (service === '' || this.tabId === service) {
+        if (!this.tabSelectable(service)) {
+            return;
+        }
+        if ((service === '' || this.tabId === service) && !this.selectedTab) {
             this.tabId = '';
         } else {
             this.tabId = service;
@@ -82,6 +87,9 @@ class IntegrationPreferencesController {
     }
     tabSelected(service) {
         return this.tabId === service;
+    }
+    tabSelectable(service) {
+        return (this.selectedTab && this.selectedTab === service) || isNil(this.selectedTab);
     }
 }
 
@@ -95,5 +103,16 @@ const Integrations = {
     }
 };
 
-export default angular.module('mpdx.preferences.integrations.component', [])
-        .component('preferencesIntegration', Integrations).name;
+import alerts from '../../common/alerts/alerts.service';
+import google from './google/google.service';
+import help from '../../common/help/help.service';
+import integrations from './integrations.service';
+import mailchimp from './mailchimp/mailchimp.service';
+import modal from '../../common/modal/modal.service';
+import prayerLetters from './prayerLetters/prayerLetters.service';
+import uiRouter from 'angular-ui-router';
+
+export default angular.module('mpdx.preferences.integrations.component', [
+    uiRouter,
+    alerts, help, google, integrations, mailchimp, modal, prayerLetters
+]).component('preferencesIntegration', Integrations).name;

@@ -133,6 +133,8 @@ class TasksFilterService {
 }
 
 import tasksTags from './tags/tags.service';
+import filters from '../../common/filters/filters.service';
+
 export default angular.module('mpdx.tasks.filter.service', [
-    tasksTags
+    filters, tasksTags
 ]).service('tasksFilter', TasksFilterService).name;

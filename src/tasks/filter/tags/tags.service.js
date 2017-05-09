@@ -112,5 +112,8 @@ class TagsService {
     }
 }
 
-export default angular.module('mpdx.tasks.tags.service', [])
-    .service('tasksTags', TagsService).name;
+import modal from '../../../common/modal/modal.service';
+
+export default angular.module('mpdx.tasks.tags.service', [
+    modal
+]).service('tasksTags', TagsService).name;

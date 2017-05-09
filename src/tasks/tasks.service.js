@@ -1,12 +1,13 @@
 import uuid from 'uuid/v1';
 import concat from 'lodash/fp/concat';
 import assign from 'lodash/fp/assign';
-import defaultTo from 'lodash/fp/defaultTo';
 import each from 'lodash/fp/each';
 import find from 'lodash/fp/find';
 import includes from 'lodash/fp/includes';
 import isEmpty from 'lodash/fp/isEmpty';
+import isNil from 'lodash/fp/isNil';
 import map from 'lodash/fp/map';
+import omitBy from 'lodash/fp/omitBy';
 import pull from 'lodash/fp/pull';
 import pullAllBy from 'lodash/fp/pullAllBy';
 import reject from 'lodash/fp/reject';
@@ -14,6 +15,7 @@ import joinComma from '../common/fp/joinComma';
 import union from 'lodash/fp/union';
 import unionBy from 'lodash/fp/unionBy';
 import relationshipId from '../common/fp/relationshipId';
+import emptyToNull from '../common/fp/emptyToNull';
 import upsert from '../common/fp/upsert';
 import reduce from 'lodash/fp/reduce';
 
@@ -240,50 +242,17 @@ class TasksService {
     }
     bulkEdit(model, comment, tags) {
         const tasks = map(id => {
-            let task = {id: id};
+            let task = assign({id: id}, model);
             if (comment) {
-                task.comments = concat(defaultTo([], task.comments), {id: uuid(), body: comment, person: { id: this.users.current.id }});
+                task.comments = [{id: uuid(), body: comment, person: { id: this.users.current.id }}];
             }
-            task = assign(task, model);
-            if (tags.length > 0) {
-                task.tag_list = joinComma(tags);
-            }
-            return task;
+            task.tag_list = emptyToNull(joinComma(tags));
+            return omitBy(isNil, task);
         }, this.selected);
-        return this.api.put('tasks/bulk', tasks).then((data) => {
+        return this.api.put('tasks/bulk', tasks).then(data => {
             this.tasksTags.change();
             this.change();
             return data;
-        });
-    }
-    bulkLog(ajaxAction, taskId, model, contactIds, toComplete) {
-        let url = 'tasks';
-        if (taskId) {
-            url += `/${taskId}`;
-        }
-        model.account_list = { id: this.api.account_list_id };
-        model.completed = toComplete || model.result !== null;
-        if (model.tag_list) {
-            model.tag_list = joinComma(model.tag_list); //fix for api mis-match
-        }
-
-        if (contactIds.length > 1) {
-            const tasks = reduce((result, contactId) => {
-                if (!isEmpty(contactId)) {
-                    result.push(assign(model, {id: uuid(), contacts: [{id: contactId}]}));
-                }
-                return result;
-            }, [], contactIds);
-            return this.api.post({ url: 'tasks/bulk', data: tasks, type: 'tasks' });
-        }
-
-        model.contacts = map(contactId => {
-            return {id: contactId};
-        }, contactIds);
-        return this.api.call({
-            method: ajaxAction,
-            url: url,
-            data: model
         });
     }
     addComment(task, comment) {
@@ -383,11 +352,16 @@ class TasksService {
     }
 }
 
+import alerts from '../common/alerts/alerts.service';
+import api from '../common/api/api.service';
+import contacts from '../contacts/contacts.service';
+import getText from 'angular-gettext';
 import tasksModals from './modals/modals.service';
 import tasksFilter from './filter/filter.service';
 import tasksTags from './filter/tags/tags.service';
 import users from '../common/users/users.service';
 
 export default angular.module('mpdx.tasks.service', [
-    tasksFilter, tasksModals, tasksTags, users
+    getText,
+    alerts, api, contacts, tasksFilter, tasksModals, tasksTags, users
 ]).service('tasks', TasksService).name;

@@ -69,5 +69,8 @@ class HelpService {
     }
 }
 
-export default angular.module('mpdx.common.help', [])
-    .service('help', HelpService).name;
+import gettext from 'angular-gettext';
+
+export default angular.module('mpdx.common.help', [
+    gettext
+]).service('help', HelpService).name;
