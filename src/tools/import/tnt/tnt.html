@@ -52,5 +52,16 @@
         <tag-selector ng-model="$ctrl.tags" tag-list="$ctrl.contactsTags.data">
     </div>
 
-    <button type="submit" class="btn btn-primary" ng-disabled="!f.file || $ctrl.importing" translate>Import</button>
+    <div class="row">
+        <div class="col-sm-3">
+            <button type="submit" class="btn btn-primary" ng-disabled="!f.file || $ctrl.importing" translate>Import</button>
+        </div>
+        <div class="col-sm-9" ng-if="$ctrl.importing">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="{{$ctrl.progressPercentage}}" aria-valuemin="0" aria-valuemax="100" ng-style="{width: $ctrl.progressPercentage + '%'}">
+                    <span class="sr-only" translate translate-params-percentage="$ctrl.progressPercentage">{{percentage}}% Complete</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </form>

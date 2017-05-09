@@ -54,9 +54,8 @@ class TntImportController {
         }, () => {
             this.importing = false;
             this.alerts.addAlert(this.gettextCatalog.getString('File upload failed.'), 'danger');
-        }, () => {
-            // const progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-            // console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+        }, (evt) => {
+            this.progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
         });
     }
 }
