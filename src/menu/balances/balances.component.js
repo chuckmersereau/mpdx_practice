@@ -1,6 +1,5 @@
-import map from 'lodash/fp/map';
-import round from 'lodash/fp/round';
-import sum from 'lodash/fp/sum';
+import reduce from 'lodash/fp/reduce';
+import toInteger from 'lodash/fp/toInteger';
 
 class BalancesController {
     accounts;
@@ -36,8 +35,9 @@ class BalancesController {
             );
         });
         this.designationAccounts.load(true).then(() => {
-            const balances = map(acct => acct.converted_balance, this.designationAccounts.data);
-            this.balance = round(sum(balances));
+            this.balance = reduce((sum, designation) =>
+                sum + toInteger(designation.active ? designation.converted_balance : 0)
+            , 0, this.designationAccounts.data);
         });
     }
 }
@@ -49,4 +49,3 @@ const Balances = {
 
 export default angular.module('mpdx.menu.balances.component', [])
     .component('menuBalances', Balances).name;
-
