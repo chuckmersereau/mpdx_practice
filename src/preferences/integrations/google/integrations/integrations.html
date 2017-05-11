@@ -53,7 +53,8 @@
                                 ng-options="calendar.id as calendar.name for calendar in $ctrl.googleIntegration.calendars"
                                 ng-model="$ctrl.googleIntegration.calendar_id"
                                 ng-change="$ctrl.save()"
-                                ng-model-options="{ debounce: 1000 }">
+                                ng-model-options="{ debounce: 1000 }"
+                                autofocus="$ctrl.googleIntegration.calendar_integration">
                         </select>
                     </div>
                     <p translate>Choose which of tasks below you'd like MPDX to put on your calendar:</p>

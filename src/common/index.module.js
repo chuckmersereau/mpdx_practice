@@ -3,7 +3,7 @@ import alerts from './alerts/index.module';
 import api from './api/api.service';
 import appeals from './appeals/index.module';
 import auth from './auth/auth.component';
-import autoFocus from './autoFocus/autofocus.directive';
+import autofocus from './autofocus/autofocus.directive';
 import avatar from './avatar/avatar.component';
 import bgImg from './bgImg/bgImg.directive';
 import chosen from './chosen/chosen.directive';
@@ -41,7 +41,7 @@ export default angular.module('mpdx.common', [
     appeals,
     api,
     auth,
-    autoFocus,
+    autofocus,
     avatar,
     bgImg,
     chosen,

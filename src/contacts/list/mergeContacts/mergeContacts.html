@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="row" ng-repeat="contact in $ctrl.selectedContacts">
-                <input type="radio" ng-model="$ctrl.winner" ng-value="contact.id" />
+                <input type="radio" ng-model="$ctrl.winner" ng-value="contact.id" autofocus="$index == 0">
                 <span>{{ contact.name }}</span>
             </div>
         </div>
