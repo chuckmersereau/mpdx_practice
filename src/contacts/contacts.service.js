@@ -204,7 +204,7 @@ class ContactsService {
         this.loading = true;
 
         if (!reset && page <= this.page) {
-            this.$q.resolve(this.data);
+            return this.$q.resolve(this.data);
         }
 
         let currentCount;
