@@ -16,10 +16,10 @@ class ContactsSearchController {
         });
     }
     $onInit() {
-        this.searchParams = angular.copy(this.contactFilter.params.wildcard_search);
+        this.searchParams = angular.copy(this.contactFilter.wildcard_search);
     }
     paramChanged() {
-        this.contactFilter.params.wildcard_search = this.searchParams;
+        this.contactFilter.wildcard_search = this.searchParams;
         this.contactFilter.change();
     }
 }
@@ -28,5 +28,8 @@ const Search = {
     template: require('./search.html')
 };
 
-export default angular.module('mpdx.common.contacts.search', [])
-    .component('contactsSearch', Search).name;
+import contacts from '../../contacts.service';
+
+export default angular.module('mpdx.contacts.list.search', [
+    contacts
+]).component('contactsListSearch', Search).name;

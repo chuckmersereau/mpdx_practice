@@ -83,18 +83,6 @@ menu {
         .navbar-collapse {
             padding-left: 0;
         }
-        .chosen-single {
-            border-radius: $border-radius;
-            border: 1px solid $color-menu-border;
-            box-shadow: none;
-            margin-top: -2px;
-        }
-        .chosen-container-active.chosen-with-drop {
-            .chosen-single, .chosen-drop {
-                border-radius: 0;
-                box-shadow: none;
-            }
-        }
         .search_filter {
             height: 35px;
         }

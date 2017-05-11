@@ -19,7 +19,7 @@
         </thead>
         <tbody>
         <tr class="table-row" ng-repeat="key in $ctrl.range(0, 14)">
-            <td><input class="form-control"  type="text" ng-model="$ctrl.models[key].first_name"></td>
+            <td><input class="form-control"  type="text" ng-model="$ctrl.models[key].first_name" autofocus="key === 0"></td>
             <td><input class="form-control"  type="text" ng-model="$ctrl.models[key].spouse_first_name"></td>
             <td><input class="form-control"  type="text" ng-model="$ctrl.models[key].last_name"></td>
             <td><input class="form-control"  type="text" ng-model="$ctrl.models[key].street"></td>

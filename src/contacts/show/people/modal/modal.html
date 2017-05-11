@@ -6,7 +6,12 @@
                     <div class="row">
                         <div class="col-md-2">
                             <label for="title" translate>Title</label>
-                            <select class="form-control" type="text" id="title" ng-model="$ctrl.person.title">
+                            <select class="form-control"
+                                    id="title"
+                                    ng-model="$ctrl.person.title"
+                                    disable-search="true"
+                                    allow-single-deselect="true"
+                                    chosen>
                                 <option value=""></option>
                                 <option selected="selected" value="Mr.">Mr.</option>
                                 <option value="Mrs.">Mrs.</option>
@@ -20,7 +25,7 @@
 
                         <div class="col-md-4">
                             <label for="first_name"><translate>First Name</translate> <span class="text-danger">*</span></label>
-                            <input class="form-control" type="text" id="first_name" ng-model="$ctrl.person.first_name" required>
+                            <input class="form-control" type="text" id="first_name" ng-model="$ctrl.person.first_name" autofocus required>
                         </div>
                         <div class="col-md-4">
                             <label for="last_name"><translate>Last Name</translate> <span class="text-danger">*</span></label>
@@ -28,14 +33,19 @@
                         </div>
                         <div class="col-md-2">
                             <label for="suffix" translate>Suffix</label>
-                            <select class="form-control" type="text" id="suffix" ng-model="$ctrl.person.suffix">
+                            <select class="form-control"
+                                    id="suffix"
+                                    ng-model="$ctrl.person.suffix"
+                                    disable-search="true"
+                                    allow-single-deselect="true"
+                                    chosen>
                                 <option value=""></option>
                                 <option value="Jr.">Jr.</option>
                                 <option value="Sr.">Sr.</option>
                             </select>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -105,8 +115,10 @@
                               <select chosen
                                       id="gender"
                                       name="gender"
-                                      data-placeholder-text-single="'Select an Option' | translate"
-                                      ng-model="$ctrl.person.gender">
+                                      ng-model="$ctrl.person.gender"
+                                      disable-search="true"
+                                      allow-single-deselect="true"
+                                      chosen>
                                   <option value=""></option>
                                   <option value="male" translate>Male</option>
                                   <option value="female" translate>Female</option>
@@ -175,7 +187,7 @@
 
                             <div class="row">
                                 <div class="col-md-12">
-                                    <strong>Add:</strong> 
+                                    <strong translate>Add:</strong>
                                     <a type="button" class="btn btn-default btn-xs" ng-click="$ctrl.addFacebook()">
                                         <i class="fa fa-facebook-square"></i> <translate>Facebook</translate>
                                     </a>

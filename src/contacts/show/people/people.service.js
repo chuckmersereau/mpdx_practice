@@ -190,15 +190,15 @@ class PersonService {
         };
 
         if (personId == null) {
-            modalOpen(contact, {});
+            return modalOpen(contact, {});
         } else {
-            this.get(contact.id, personId).then((person) => {
-                modalOpen(contact, person);
+            return this.get(contact.id, personId).then((person) => {
+                return modalOpen(contact, person);
             });
         }
     }
     openMergePeopleModal(contact, selectedPeople) {
-        this.modal.open({
+        return this.modal.open({
             template: require('./merge/merge.html'),
             controller: 'mergePeopleModalController',
             locals: {

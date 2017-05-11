@@ -9,7 +9,9 @@
                         ng-model="$ctrl.donation.donor_account"
                         class="form-control"
                         id="donor_account_id"
-                        chosen required>
+                        chosen
+                        autofocus
+                        required>
                     </select>
                 </div>
                 <div class="col-md-6" ng-if="$ctrl.designationAccounts.list.length > 0">

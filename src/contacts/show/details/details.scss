@@ -1,4 +1,20 @@
 contact-details {
+    .inline-input {
+        tags-input {
+            .tags {
+                border: 0;
+                border-radius: 0;
+                border-bottom: 1px dashed #979797;
+                .input {
+                    padding-left: 0;
+                    font-size: 14px;
+                }
+            }
+            .autocomplete {
+                border-radius: 0;
+            }
+        }
+    }
 }
 
 
