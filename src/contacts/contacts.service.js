@@ -1,5 +1,6 @@
 import assign from 'lodash/fp/assign';
 import concat from 'lodash/fp/concat';
+import defaultTo from 'lodash/fp/defaultTo';
 import findIndex from 'lodash/fp/findIndex';
 import flow from 'lodash/fp/flow';
 import has from 'lodash/fp/has';
@@ -121,6 +122,31 @@ class ContactsService {
             }
         });
     }
+    getCompleteFilteredList(reset = false) {
+        if (!reset && this.completeFilteredList && this.completeFilteredList.length > 0) {
+            return this.$q.resolve(this.completeFilteredList);
+        }
+        this.completeListLoadCount++;
+        const currentCount = angular.copy(this.completeListLoadCount);
+        this.completeFilteredList = []; // to avoid double call
+        return this.api.get({
+            url: 'contacts',
+            data: {
+                filter: this.buildFilterParams(),
+                fields: {
+                    contacts: 'name'
+                },
+                per_page: 25000,
+                sort: 'name'
+            },
+            overrideGetAsPost: true
+        }).then((data) => {
+            this.$log.debug('contacts all - filtered', data);
+            if (currentCount === this.completeListLoadCount) {
+                this.completeFilteredList = data;
+            }
+        });
+    }
     getFilteredList(reset = false) {
         if (!reset && this.completeFilteredList && this.completeFilteredList.length > 0) {
             return this.$q.resolve(this.completeFilteredList);
@@ -213,7 +239,7 @@ class ContactsService {
             if (reset && currentCount !== this.completeListLoadCount) {
                 return;
             }
-            let count = this.meta.to || 0;
+            let count = defaultTo(0, this.meta.to);
             this.meta = data.meta;
             if (reset) {
                 this.page = 1;
@@ -257,7 +283,6 @@ class ContactsService {
         }
         return this.api.put(`contacts/${contact.id}`, contact).then((data) => {
             this.updateContactOrList(data);
-            this.contactFilter.load(true); // since we don't know how this change could affect the filters
             return data;
         });
     }
@@ -338,7 +363,7 @@ class ContactsService {
     }
     selectAllContacts(all = true) {
         if (all) {
-            this.getFilteredList().then(() => { //ensure complete filtered list is loaded
+            this.getCompleteFilteredList().then(() => { //ensure complete filtered list is loaded
                 this.selectedContacts = map('id', this.completeFilteredList);
             });
         } else {

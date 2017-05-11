@@ -48,4 +48,4 @@ export default angular.module('mpdx', [
     })
     .name;
 
-angular.module('infinite-scroll').value('THROTTLE_MILLISECONDS', 250);
+angular.module('infinite-scroll').value('THROTTLE_MILLISECONDS', 500);
