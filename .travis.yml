@@ -31,7 +31,7 @@ deploy:
   on:
     repo: CruGlobal/mpdx_web
     branch: master
-    condition: "$RUN_BUILD" = "true"
+    condition: '"$RUN_BUILD" = "true"'
 - provider: s3
   access_key_id: AKIAI4EEUDXF23GRIX4A
   secret_access_key:
@@ -44,7 +44,7 @@ deploy:
   on:
     repo: CruGlobal/mpdx_web
     branch: next
-    condition: "$RUN_BUILD" = "true"
+    condition: '"$RUN_BUILD" = "true"'
 - provider: s3
   access_key_id: AKIAJCDUBSRAJGJTF5AA
   secret_access_key:
@@ -56,4 +56,4 @@ deploy:
   on:
     repo: CruGlobal/mpdx_web
     branch: staging
-    condition: "$RUN_BUILD" = "true"
+    condition: '"$RUN_BUILD" = "true"'
