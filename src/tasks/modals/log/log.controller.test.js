@@ -1,28 +1,34 @@
-import controller from './log.controller';
+import log from './log.controller';
 import assign from 'lodash/fp/assign';
 import concat from 'lodash/fp/concat';
 import each from 'lodash/fp/each';
 import isEqual from 'lodash/fp/isEqual';
+import union from 'lodash/fp/union';
 
 let contactList = [];
 const defaultTask = { completed: true };
 
 describe('tasks.modals.log.controller', () => {
-    let $ctrl, contacts, tasks, scope;
+    let $ctrl, controller, contacts, tasks, scope, state;
     beforeEach(() => {
-        angular.mock.module(controller);
-        inject(($controller, $rootScope, _contacts_, _tasks_) => {
+        angular.mock.module(log);
+        inject(($controller, $rootScope, _contacts_, _tasks_, $state) => {
             scope = $rootScope.$new();
+            state = $state;
             contacts = _contacts_;
             tasks = _tasks_;
-            $ctrl = $controller('logTaskController as $ctrl', {
-                $scope: scope,
-                contactsList: contactList
-            });
+            controller = $controller;
+            $ctrl = loadController();
             const result = [{id: 1, name: 'a'}];
             spyOn(contacts, 'getNames').and.callFake(() => new Promise(resolve => resolve(result)));
         });
     });
+    function loadController() {
+        return controller('logTaskController as $ctrl', {
+            $scope: scope,
+            contactsList: contactList
+        });
+    }
     function defaultPartnerStatus() {
         $ctrl.task = assign(defaultTask, {
             activity_type: 'Active'
@@ -34,8 +40,19 @@ describe('tasks.modals.log.controller', () => {
             expect(isEqual($ctrl.contactsList, contactList)).toBeTruthy();
             expect($ctrl.contactsList !== contactList).toBeTruthy();
         });
+
         it('should set the new task model to complete', () => {
             expect($ctrl.task).toEqual(defaultTask);
+        });
+    });
+    describe('called from a contact view page', () => {
+        beforeEach(() => {
+            state.current.name = 'contacts.show';
+            contacts.current = {id: 2};
+            loadController();
+        });
+        it('should add the current contact', () => {
+            expect($ctrl.contactsList).toEqual(union(contactList, 2));
         });
     });
     describe('activate', () => {

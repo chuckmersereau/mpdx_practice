@@ -41,10 +41,6 @@
                         margin-top: -15px;
                     }
                 }
-                input.form-control, div.tags{
-                    border-radius: 0px;
-                    border: 1px solid #979797;
-                }
                 .modal-footer {
                     margin: 0 -15px -15px -15px;
                 }
@@ -95,34 +91,8 @@
                 padding-right: 5px;
             }
         }
-        .form-control {
-            &[type="text"], &[type="tel"], &[type="email"] {
-                border-color: #979797;
-                padding: 6px;
-                &.ng-dirty.ng-invalid {
-                    border-color: red;
-                }
-                &:focus {
-                    outline: none;
-                    border-color: rgb(0, 115, 152);
-                }
-            }
-            &[type="checkbox"] {
-                display: inline-block;
-                width: auto;
-                height: auto;
-            }
-        }
         .checkbox-label {
             display: inline-block;
-        }
-        .chosen-container-active.chosen-with-drop .chosen-single, .chosen-container-active .chosen-single, .chosen-container .chosen-drop {
-            border-radius: 0;
-            box-shadow: none;
-        }
-        .chosen-single {
-            border-radius: 0;
-            border-color: #979797;
         }
         .modal-panel-container {
             margin: -15px;
@@ -343,14 +313,6 @@
                 &:last-child {
                     padding-right: 0;
                 }
-            }
-        }
-        .form-control[type="text"] {
-            border-radius: 0;
-            border-color: #979797;
-            padding: 6px;
-            &:focus {
-                border-color: rgb(0, 115, 152);
             }
         }
     }

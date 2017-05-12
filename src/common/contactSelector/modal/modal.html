@@ -7,7 +7,8 @@
                ng-model="$ctrl.searchText"
                ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
                ng-change="$ctrl.search()"
-               autocomplete="off">
+               autocomplete="off"
+               autofocus>
     </div>
     <table class="table table-responsive table-striped">
         <tr ng-repeat="contact in $ctrl.contactList"

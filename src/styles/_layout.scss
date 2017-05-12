@@ -743,53 +743,6 @@ table tbody.tasks {
 
 /* ************************************************************** */
 
-.contact-info{
-    background: #e7f8ff;
-    padding:12px;
-
-    .corner_close{
-        float:right;
-        margin:4px;
-    }
-
-    .column{
-        display: inline-block;
-        width: 328px;
-        margin: 3px;
-        vertical-align: top;
-    }
-
-    .person{
-        background-color: #e6e7e8;
-        border: 1px solid #bbbdbf;
-        vertical-align: top;
-        margin: 3px;
-        height: 100px;
-        width: 328px;
-        display: inline-block;
-
-        .name{
-            display: inline-block;
-            width: 190px;
-            vertical-align: top;
-            padding: 4px 0 0 0;
-        }
-
-        .column-inner{
-            display: inline-block;
-            width:219px;
-            vertical-align: top;
-            height: 72px;
-            overflow-y: auto;
-            margin: 0 2px 0 0;
-        }
-        .social{
-            padding:0;
-        }
-
-    }
-}
-
 .disabler {
     label {
         width: 20px;
@@ -1168,21 +1121,6 @@ appeals-list .show-all {
         width: 0;
         color: $color-reverse;
         margin-left: 0;
-    }
-}
-.edit-appeal-dialog-content {
-    .form_wrapper {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    }
-    .scroll {
-        flex: 1 1 auto;
-        overflow-y: auto;
-        padding:0 15px;
-    }
-    table {
-        width: 100%;
     }
 }
 .panel-action {

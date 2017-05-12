@@ -1,5 +1,7 @@
 import indexOf from 'lodash/fp/indexOf';
 import reduce from 'lodash/fp/reduce';
+import startsWith from 'lodash/fp/startsWith';
+import union from 'lodash/fp/union';
 
 class LogTaskController {
     comment;
@@ -7,12 +9,13 @@ class LogTaskController {
     status;
     task;
     constructor(
-        $q, $scope,
+        $q, $scope, $state,
         contacts, tasks, tasksTags, serverConstants, users,
         contactsList
     ) {
         this.$q = $q;
         this.$scope = $scope;
+        this.$state = $state;
         this.contacts = contacts;
         this.serverConstants = serverConstants;
         this.tasksTags = tasksTags;
@@ -20,6 +23,9 @@ class LogTaskController {
         this.users = users;
 
         this.contactsList = angular.copy(contactsList);
+        if (startsWith('contacts.show', $state.current.name)) {
+            this.contactsList = union(this.contactsList, [this.contacts.current.id]);
+        }
         this.task = { completed: true };
         this.contactNames = null;
 

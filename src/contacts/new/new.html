@@ -2,7 +2,12 @@
     <div class="row">
         <div class="col-sm-12">
             <label><translate>Name</translate> <span class="text-danger">*</span></label>
-            <input class="form-control" type="text" name="name" ng-model="$ctrl.contact.name" placeholder="{{'Last Name, First Name' | translate }}" required />
+            <input class="form-control"
+                   type="text"
+                   ng-model="$ctrl.contact.name"
+                   placeholder="{{'Last Name, First Name and Spouse Name' | translate }}"
+                   autofocus
+                   required>
         </div>
     </div>
 </modal>
