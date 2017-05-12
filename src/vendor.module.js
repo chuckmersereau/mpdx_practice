@@ -10,16 +10,19 @@ import ngCsv from 'ng-csv';
 import ngFileUpload from 'ng-file-upload';
 import ngMap from 'ngmap';
 import ngSortable from 'ng-sortable';
+import angulartics from 'angulartics';
+import angularticsGoogleAnalytics from 'angulartics-google-analytics';
+import angularticsAdobeAnalytics from 'angulartics-adobe-analytics';
 
 // deps with no default exports
-import 'angulartics';
-import 'angulartics-google-analytics';
 import lang from 'langmap'; //load before language-picker
 window.languageMappingList = lang;
 import 'angular-block-ui';
 import 'angular-filter';
 import 'angular-strap';
 import 'angular-strap/dist/angular-strap.tpl';
+import 'angular-strap/dist/modules/dimensions';
+import 'angular-strap/dist/modules/debounce';
 import 'angular-chosen-localytics';
 import 'angular-localforage';
 import 'angular-timeago';
@@ -54,13 +57,16 @@ export default angular.module('mpdx.vendor', [
     ngInfiniteScroll,
     ngMap,
     ngSortable,
-    'angulartics',
-    'angulartics.google.analytics',
+    angulartics,
+    angularticsGoogleAnalytics,
+    angularticsAdobeAnalytics,
     'angular.filter',
     'blockUI',
     'LocalForageModule',
     'localytics.directives',
     'mgcrea.ngStrap',
+    'mgcrea.ngStrap.helpers.dimensions',
+    'mgcrea.ngStrap.helpers.debounce',
     'ngTagsInput',
     'yaru22.angular-timeago',
     'tandibar/ng-rollbar'

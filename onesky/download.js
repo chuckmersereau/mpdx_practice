@@ -20,7 +20,7 @@ oneskyOld.platform.locales('190365', (err, data) => {
     ifErrMsg('error downloading onesky languages', err);
     const active = filter(lang => lang.completeness > 0, data.locales);
     each((locale) => {
-        const filename = `${locale.locale}${get('TRAVIS_COMMIT', process.env) || ''}.po`;
+        const filename = `${locale.locale}-${get('TRAVIS_COMMIT', process.env) || ''}.po`;
         const options = {
             language: locale.locale,
             secret: process.env.ONESKY_API_SECRET,

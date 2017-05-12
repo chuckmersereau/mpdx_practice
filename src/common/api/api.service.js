@@ -9,7 +9,7 @@ import isObject from 'lodash/fp/isObject';
 import map from 'lodash/fp/map';
 import pull from 'lodash/fp/pull';
 import joinComma from '../fp/joinComma';
-const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
+import reduceObject from '../fp/reduceObject';
 
 function appendTransform(defaults, transform) {
     // We can't guarantee that the default transformation is an array
@@ -69,7 +69,6 @@ class Api {
         params = {},
         headers = {},
         promise = null,
-        attempts = 0,
         overrideGetAsPost = false,
         type = null,
         doSerialization = true,
@@ -173,16 +172,8 @@ class Api {
             }
             promise.resolve(response.data);
         }).catch((response) => {
-            //check that authentication has happened
-            if (response === 'noAuth' && attempts < 3) {
-                //wait 1s and retry up to 3 times
-                this.$timeout(() => {
-                    this.call({ method: method, url: url, data: data, cache: cache, params: params, headers: headers, promise: promise, attempts: attempts + 1 });
-                }, 1000);
-            } else {
-                this.$log.error('API ERROR:', response.status, response.data);
-                promise.reject(response);
-            }
+            this.$log.error('API ERROR:', response.status, response.data);
+            promise.reject(response);
         });
 
         return promise.promise;
@@ -216,7 +207,7 @@ class Api {
         return map(encodeURIComponent, array);
     }
     cleanFilters(filter) {
-        return reduce((result, value, key) => {
+        return reduceObject((result, value, key) => {
             if (isArray(value)) {
                 value = pull('', value);
                 if (value.length > 0) {
@@ -296,9 +287,10 @@ class EntityAttributes {
                 account_list: { ref: 'id' },
                 contacts_referred_by_me: {
                     ref: 'id',
-                    attributes: ["account_list", "name", "primary_person_first_name", "primary_person_last_name", "primary_person_email", "primary_person_phone",
+                    attributes: ["account_list", "name", "primary_person_first_name", "primary_person_last_name", "primary_person_email", "primary_person_phone", "notes",
                         "spouse_first_name", "spouse_last_name", "spouse_phone", "spouse_email",
-                        "primary_address_city", "primary_address_state", "primary_address_postal_code", "primary_address_street"
+                        "primary_address_city", "primary_address_state", "primary_address_postal_code", "primary_address_street",
+                        "name", "created_at"
                     ],
                     account_list: { ref: 'id' }
                 },
@@ -327,14 +319,23 @@ class EntityAttributes {
                 donor_account: { ref: 'id' },
                 appeal: { ref: 'id' }
             },
+            google_integrations: {
+                attributes: ["account_list", "calendar_integration", "calendar_integrations", "calendar_id", "calendar_name", "email_integration", "contacts_integration"],
+                account_list: { ref: 'id' }
+            },
             imports: {
-                attributes: ["file_headers", "file_headers_mappings", "file_constants", "file_constants_mappings", "sample_contacts", "in_preview", "tag_list"],
+                attributes: ["file_headers", "file_headers_mappings", "file_constants", "file_constants_mappings", "sample_contacts", "in_preview", "tag_list", "source_account"],
                 sample_contacts: { ref: 'id' },
+                source_account: { ref: 'id' },
                 typeForAttribute: (key) => {
-                    if (key === 'sample_contacts') {
-                        return 'contacts';
+                    switch (key) {
+                        case 'sample_contacts':
+                            return 'contacts';
+                        case 'source_account':
+                            return 'organization_accounts';
+                        default:
+                            return key;
                     }
-                    return key;
                 }
             },
             merge: {

@@ -1,9 +1,9 @@
 import find from 'lodash/fp/find';
 import keys from 'lodash/fp/keys';
 import map from 'lodash/fp/map';
-const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 import reject from 'lodash/fp/reject';
 import sortBy from 'lodash/fp/sortBy';
+import reduceObject from '../../common/fp/reduceObject';
 
 class ContributionsService {
     api;
@@ -49,7 +49,7 @@ class ContributionsService {
             let total = 0;
 
             // iterate through currency_groups
-            let currencies = reduce((result, value, key) => {
+            let currencies = reduceObject((result, value, key) => {
                 // iterate through donation_infos
                 let currency = this.serverConstants.data.pledge_currencies[key];
 

@@ -3,22 +3,28 @@
         Commitments Unfulfilled
     </div>
     <div class="panel-body" ng-if="$ctrl.contacts.analytics.first_gift_not_received_count !== null">
-        <a ui-sref="contacts({filters: {status: ['Partner - Financial'], pledge_received: 'false'} })" class="dash-stat">
+        <a ui-sref="contacts({filters: {pledge_received: 'false', status: ['Partner - Financial']} })" class="dash-stat">
             <span class="count-big">
                 {{ $ctrl.contacts.analytics.first_gift_not_received_count }}
             </span>
             <span translate>first gift not received</span>
         </a>
-        <div ui-sref="contacts({filters: {status: ['Partner - Financial'], pledge_late_by: '30_60'} })" ng-if="$ctrl.contacts.analytics.partners_30_days_late_count !== null">
+        <div ui-sref="contacts({filters: {pledge_late_by: '30_60'} })" ng-if="$ctrl.contacts.analytics.partners_30_days_late_count !== null">
             <a class="dash-stat late-partners-count">
                 <span class="count-big">{{ $ctrl.contacts.analytics.partners_30_days_late_count }}</span>
                 <translate translate-plural="partners <strong>{{$count}}</strong> days late" translate-n="30">partners <strong>1</strong> day late</translate>
             </a>
         </div>
-        <div ui-sref="contacts({filters: {status: ['Partner - Financial'], pledge_late_by: '60_90'} })" ng-if="$ctrl.contacts.analytics.partners_60_days_late_count !== null">
+        <div ui-sref="contacts({filters: {pledge_late_by: '60_90'} })" ng-if="$ctrl.contacts.analytics.partners_60_days_late_count !== null">
             <a class="dash-stat late-partners-count">
                 <span class="count-big">{{ $ctrl.contacts.analytics.partners_60_days_late_count }}</span>
                 <translate translate-plural="partners <strong>{{$count}}</strong> days late" translate-n="60">partners <strong>1</strong> day late</translate>
+            </a>
+        </div>
+        <div ui-sref="contacts({filters: {pledge_late_by: '90'} })" ng-if="$ctrl.contacts.analytics.partners_90_days_late_count !== null">
+            <a class="dash-stat late-partners-count">
+                <span class="count-big">{{ $ctrl.contacts.analytics.partners_90_days_late_count }}</span>
+                <translate translate-plural="partners <strong>{{$count}}</strong> days late" translate-n="90">partners <strong>1</strong> day late</translate>
             </a>
         </div>
     </div>

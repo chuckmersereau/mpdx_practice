@@ -1,0 +1,17 @@
+<div class="dropdown">
+    <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+        <input type="text"
+               name="q"
+               class="search_filter form-control"
+               autocomplete="off"
+               placeholder="{{ 'Search Contacts' | translate }}"
+               bs-tooltip
+               data-placement="top"
+               data-title="{{ 'Search name, phone, email, notes, partner #' | translate }}"
+               data-trigger="focus"
+               ng-model="$ctrl.searchParams"
+               ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }"
+               ng-change="$ctrl.paramChanged()">
+    </div>
+</div>

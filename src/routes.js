@@ -1,7 +1,7 @@
 import config from 'config';
 
 export default class Routes {
-    static config($stateProvider) {
+    static config($stateProvider, gettext) {
         $stateProvider.state({
             name: 'root',
             abstract: true,
@@ -11,15 +11,18 @@ export default class Routes {
             }
         }).state({
             name: 'home',
+            title: gettext('Home'),
             url: '/',
             component: 'home',
             parent: 'root'
         }).state({
             name: 'login',
+            title: gettext('Login'),
             url: '/login',
             component: 'login'
         }).state({
             name: 'auth',
+            title: gettext('Auth'),
             url: '/auth?access_token',
             component: 'auth',
             resolve: {
@@ -27,11 +30,12 @@ export default class Routes {
             }
         }).state({
             name: 'logout',
+            title: gettext('Logout'),
             url: '/logout',
             onEnter: logout
         }).state({
             name: 'contacts',
-            title: 'Contacts',
+            title: gettext('Contacts'),
             url: '/contacts',
             component: 'contacts',
             params: {
@@ -50,9 +54,12 @@ export default class Routes {
             }
         }).state({
             name: 'contacts.show',
-            title: 'Contact',
-            url: '/{contactId}',
+            title: gettext('Contact'),
+            url: '/{contactId}?personId',
             component: 'contact',
+            params: {
+                personId: null
+            },
             resolve: {
                 again: /*@ngInject*/ (users) => users.listOrganizationAccounts(),
                 contact: /*@ngInject*/ (contacts, $stateParams) => contacts.get($stateParams.contactId).then((data) => {
@@ -63,6 +70,7 @@ export default class Routes {
             }
         }).state({
             name: 'contacts.show.donations',
+            title: gettext('Contact - Donations'),
             url: '/donations',
             component: 'donations',
             resolve: {
@@ -70,27 +78,36 @@ export default class Routes {
             }
         }).state({
             name: 'contacts.show.notes',
+            title: gettext('Contact - Notes'),
             url: '/notes',
             component: 'contactNotes'
         }).state({
             name: 'contacts.show.referrals',
+            title: gettext('Contact - Referrals'),
             url: '/referrals',
-            component: 'contactReferrals'
+            component: 'contactReferrals',
+            resolve: {
+                referrals: /*@ngInject*/ (contacts, $stateParams) => contacts.getReferrals($stateParams.contactId)
+            }
         }).state({
             name: 'contacts.show.tasks',
+            title: gettext('Contact - Tasks'),
             url: '/tasks',
             component: 'contactTasks'
         }).state({
             name: 'reports',
+            title: gettext('Reports'),
             url: '/reports',
             component: 'reports',
             parent: 'root'
         }).state({
             name: 'reports.balances',
+            title: gettext('Reports - Balances'),
             url: '/balances',
             component: 'balances'
         }).state({
             name: 'reports.donations',
+            title: gettext('Reports - Donations'),
             url: '/donations',
             component: 'donations',
             resolve: {
@@ -101,10 +118,12 @@ export default class Routes {
             }
         }).state({
             name: 'reports.monthly',
+            title: gettext('Reports - Monthly'),
             url: '/monthly',
             component: 'monthly'
         }).state({
             name: 'reports.partner',
+            title: gettext('Reports - Partner'),
             url: '/partner',
             component: 'contributions',
             resolve: {
@@ -112,6 +131,7 @@ export default class Routes {
             }
         }).state({
             name: 'reports.salary',
+            title: gettext('Reports - Salary'),
             url: '/salary',
             component: 'contributions',
             resolve: {
@@ -119,13 +139,13 @@ export default class Routes {
             }
         }).state({
             name: 'preferences',
-            title: 'Preferences',
+            title: gettext('Preferences'),
             url: '/preferences',
             component: 'preferences',
             parent: 'root'
         }).state({
             name: 'preferences.accounts',
-            title: 'Manage Accounts',
+            title: gettext('Preferences - Manage Accounts'),
             url: '/accounts',
             component: 'preferencesAccounts',
             resolve: {
@@ -133,25 +153,28 @@ export default class Routes {
             }
         }).state({
             name: 'preferences.integrations',
-            title: 'Connect Services',
-            url: '/integrations',
+            title: gettext('Preferences - Connect Services'),
+            url: '/integrations?selectedTab',
             component: 'preferencesIntegration',
             resolve: {
                 resolution: /*@ngInject*/ (users) => users.listOrganizationAccounts()
+            },
+            params: {
+                selectedTab: null
             }
         }).state({
             name: 'preferences.notifications',
-            title: 'Notifications',
+            title: gettext('Preferences - Notifications'),
             url: '/notifications',
             component: 'preferencesNotifications'
         }).state({
             name: 'preferences.personal',
-            title: 'Preferences',
+            title: gettext('Preferences - Personal'),
             url: '/personal',
             component: 'preferencesPersonal'
         }).state({
             name: 'setup',
-            title: 'Setup',
+            title: gettext('Setup'),
             url: '/setup',
             component: 'setup',
             resolve: {
@@ -159,7 +182,7 @@ export default class Routes {
             }
         }).state({
             name: 'setup.connect',
-            title: 'Get Connected',
+            title: gettext('Setup - Get Connected'),
             url: '/connect',
             component: 'setupConnect',
             resolve: {
@@ -168,7 +191,7 @@ export default class Routes {
             }
         }).state({
             name: 'setup.account',
-            title: 'Setup Default Account',
+            title: gettext('Setup - Default Account'),
             url: '/account',
             component: 'setupAccount',
             resolve: {
@@ -176,46 +199,47 @@ export default class Routes {
             }
         }).state({
             name: 'setup.google',
-            title: 'Setup Google',
+            title: gettext('Setup - Google'),
             url: '/google',
             component: 'setupGoogle'
         }).state({
             name: 'setup.preferences',
+            title: gettext('Setup - Preferences'),
             abstract: true,
             component: 'setupPreferences'
         }).state({
             name: 'setup.preferences.accounts',
-            title: 'Merge Accounts',
+            title: gettext('Setup - Preferences - Merge Accounts'),
             url: '/preferences/accounts',
             component: 'setupPreferencesAccounts'
         }).state({
             name: 'setup.preferences.integrations',
-            title: 'Integration',
+            title: gettext('Setup - Preferences - Integrations'),
             url: '/preferences/integration',
             component: 'setupPreferencesIntegrations'
         }).state({
             name: 'setup.preferences.notifications',
-            title: 'Notifications',
+            title: gettext('Setup - Preferences - Notifications'),
             url: '/preferences/notifications',
             component: 'setupPreferencesNotifications'
         }).state({
             name: 'setup.preferences.personal',
-            title: 'Preferences',
+            title: gettext('Setup - Preferences - Personal'),
             url: '/preferences/personal',
             component: 'setupPreferencesPersonal'
         }).state({
             name: 'setup.start',
-            title: 'Get Started',
+            title: gettext('Setup - Get Started'),
             url: '/start',
             component: 'setupStart'
         }).state({
             name: 'setup.finish',
-            title: 'Completed',
+            title: gettext('Setup - Completed'),
             url: '/finish',
             component: 'setupFinish'
         }).state({
             name: 'tasks',
-            title: 'Tasks',
+            title: gettext('Tasks'),
             url: '/tasks',
             component: 'tasks',
             parent: 'root',
@@ -225,16 +249,14 @@ export default class Routes {
             resolve: {
                 filter: /*@ngInject*/ ($stateParams, tasksFilter) => {
                     return tasksFilter.load().then(() => {
-                        if ($stateParams.filters) {
-                            tasksFilter.reset($stateParams.filters);
-                        }
+                        tasksFilter.reset($stateParams.filters);
                     });
                 },
                 tag: /*@ngInject*/ (tasksTags) => tasksTags.load()
             }
         }).state({
             name: 'tools',
-            title: 'Tools',
+            title: gettext('Tools'),
             url: '/tools',
             component: 'tools',
             parent: 'root',
@@ -243,17 +265,17 @@ export default class Routes {
             }
         }).state({
             name: 'tools.importFromCSV',
-            title: 'Import from CSV',
+            title: gettext('Tools - Import From CSV'),
             url: '/import-from-csv',
             component: 'importFromCsv'
         }).state({
             name: 'tools.importFromGoogle',
-            title: 'Import from Google',
+            title: gettext('Tools - Import From Google'),
             url: '/import-from-google',
             component: 'googleImportForm'
         }).state({
             name: 'tools.importFromTNT',
-            title: 'Import from TNT',
+            title: gettext('Tools - Import From TNT'),
             url: '/import-from-tnt',
             component: 'tntImportForm',
             resolve: {
@@ -261,12 +283,13 @@ export default class Routes {
             }
         }).state({
             name: 'tools.fix',
+            title: gettext('Tools - Fix'),
             abstract: true,
             component: 'fix',
             url: '/fix'
         }).state({
             name: 'tools.fix.commitmentInfo',
-            title: 'Fix Commitment Info',
+            title: gettext('Tools - Fix - Commitment Info'),
             url: '/commitment-info',
             component: 'fixCommitmentInfo',
             resolve: {
@@ -274,7 +297,7 @@ export default class Routes {
             }
         }).state({
             name: 'tools.fix.phoneNumbers',
-            title: 'Fix Phone Numbers',
+            title: gettext('Tools - Fix - Phone Numbers'),
             url: '/phone-numbers',
             component: 'fixPhoneNumbers',
             resolve: {
@@ -282,7 +305,7 @@ export default class Routes {
             }
         }).state({
             name: 'tools.fix.emailAddresses',
-            title: 'Fix Email Addresses',
+            title: gettext('Tools - Fix - Email Addresses'),
             url: '/email-addresses',
             component: 'fixEmailAddresses',
             resolve: {
@@ -290,7 +313,7 @@ export default class Routes {
             }
         }).state({
             name: 'tools.fix.addresses',
-            title: 'Fix Addresses',
+            title: gettext('Tools - Fix - Addresses'),
             url: '/addresses',
             component: 'fixAddresses',
             resolve: {
@@ -298,6 +321,7 @@ export default class Routes {
             }
         }).state({
             name: 'tools.mergeContacts',
+            title: gettext('Tools - Merge Contacts'),
             url: '/merge-contacts',
             component: 'mergeContacts',
             resolve: {
@@ -305,6 +329,7 @@ export default class Routes {
             }
         }).state({
             name: 'tools.mergePeople',
+            title: gettext('Tools - Merge People'),
             url: '/merge-people',
             component: 'mergePeople',
             resolve: {
@@ -312,7 +337,7 @@ export default class Routes {
             }
         }).state({
             name: 'unavailable',
-            title: 'Unavailable',
+            title: gettext('Unavailable'),
             url: '/unavailable',
             component: 'unavailable',
             parent: 'root'
@@ -330,4 +355,5 @@ function logout(
         $window.localStorage.removeItem(`${users.current.id}_accountListId`);
     }
     $window.location.href = config.authUrl + config.authLogout;
+    delete $window.digitalData.user[0].profile[0].profileInfo.ssoGuid;
 }

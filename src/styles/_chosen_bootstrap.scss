@@ -434,3 +434,19 @@ $chosen-sprite: '../node_modules/chosen-js/chosen-sprite.png';
         }
     }
 }
+
+/* CUSTOM STYLES */
+.chosen-container-active {
+    > .chosen-single, > .chosen-drop, &.chosen-with-drop > .chosen-single {
+        outline: none;
+        box-shadow: none;
+    }
+    .chosen-search input {
+        border-radius: 0;
+        &:focus {
+            box-shadow: none;
+            outline: none;
+            border-color: rgba(82, 168, 236, 0.8);
+        }
+    }
+}

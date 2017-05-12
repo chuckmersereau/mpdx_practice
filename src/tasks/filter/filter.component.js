@@ -20,12 +20,7 @@ class FilterController {
         };
     }
     resetFiltersAndTags() {
-        if (this.tasksTags.isResettable()) {
-            this.tasksTags.reset();
-        }
-        if (this.tasksFilter.isResettable()) {
-            this.tasksFilter.reset();
-        }
+        this.tasksFilter.reset();
     }
     showReset() {
         return this.tasksTags.isResettable() || this.tasksFilter.isResettable();

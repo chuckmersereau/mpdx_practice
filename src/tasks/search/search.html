@@ -1,9 +1,11 @@
-<input type="text"
-       class="form-control"
-       placeholder="{{ 'Keywords' | translate }}"
-       autocomplete="off"
-       ng-model="$ctrl.tasksFilter.wildcard_search"
-       ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }"
-       ng-change="$ctrl.tasksFilter.change()"
-       ng-focus="$ctrl.focused = true"
->
+<div class="input-group">
+    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+    <input type="text"
+           class="form-control"
+           autocomplete="off"
+           placeholder="{{ 'Search subject and tags' | translate }}"
+           ng-model="$ctrl.tasksFilter.wildcard_search"
+           ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }"
+           ng-change="$ctrl.tasksFilter.change()"
+           ng-focus="$ctrl.focused = true">
+</div>

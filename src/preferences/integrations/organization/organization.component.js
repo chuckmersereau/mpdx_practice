@@ -1,17 +1,23 @@
-import each from 'lodash/fp/each';
+import get from 'lodash/fp/get';
 
 class OrganizationIntegrationPreferencesController {
     alerts;
     preferencesOrganization;
+    selectedKey;
     serverConstants;
     users;
 
     constructor(
-        alerts, preferencesOrganization, serverConstants, users,
+        gettextCatalog, Upload,
+        alerts, help, modal, preferencesOrganization, serverConstants, users
     ) {
         this.alerts = alerts;
+        this.gettextCatalog = gettextCatalog;
+        this.help = help;
+        this.modal = modal;
         this.preferencesOrganization = preferencesOrganization;
         this.serverConstants = serverConstants;
+        this.Upload = Upload;
         this.users = users;
 
         this.saving = false;
@@ -23,45 +29,34 @@ class OrganizationIntegrationPreferencesController {
     save() {
         this.saving = true;
         this.preferencesOrganization.save().then(() => {
-            this.alerts.addAlert('Preferences saved successfully', 'success');
+            this.alerts.addAlert(this.gettextCatalog.getString('Preferences saved successfully'));
+            this.users.listOrganizationAccounts(true);
             this.saving = false;
-            if (this.preferencesOrganization.data.primary_list_id !== null) {
-                this.hide();
-            }
-        }).catch((data) => {
-            each(value => {
-                this.alerts.addAlert(value, 'danger');
-            }, data.errors);
+        }).catch(() => {
+            this.alerts.addAlert(this.gettextCatalog.getString('Unable to save preferences'), 'danger');
             this.saving = false;
         });
-    }
-    hide() {
-        this.preferencesOrganization.loading = true;
-        this.preferencesOrganization.load();
-        this.showSettings = false;
     }
     disconnect(id) {
         this.saving = true;
         return this.preferencesOrganization.disconnect(id).then(() => {
             this.saving = false;
-            this.alerts.addAlert('MPDX removed your organization integration', 'success');
-            return this.preferencesOrganization.load();
+            this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed your organization integration'));
+            this.users.listOrganizationAccounts(true);
         }).catch(() => {
-            this.alerts.addAlert('MPDX couldn\'t save your configuration changes for that organization', 'danger');
+            this.alerts.addAlert(this.gettextCatalog.getString(`MPDX couldn't save your configuration changes for that organization`), 'danger');
             this.saving = false;
         });
     }
     createAccount() {
         this.saving = true;
-        return this.preferencesOrganization.createAccount(this.username, this.password, this.selected.id).then(() => {
+        return this.preferencesOrganization.createAccount(this.username, this.password, this.selectedKey).then(() => {
             this.saving = false;
-            this.preferencesOrganization.load();
+            this.users.listOrganizationAccounts(true);
             this.revert();
-            this.alerts.addAlert('MPDX added your organization account', 'success');
-        }).catch((data) => {
-            each(value => {
-                this.alerts.addAlert(value, 'danger');
-            }, data.errors);
+            this.alerts.addAlert(this.gettextCatalog.getString('MPDX added your organization account'));
+        }).catch(() => {
+            this.alerts.addAlert(this.gettextCatalog.getString('Unable to add your organization account'), 'danger');
             this.saving = false;
         });
     }
@@ -69,13 +64,11 @@ class OrganizationIntegrationPreferencesController {
         this.saving = true;
         return this.preferencesOrganization.updateAccount(this.username, this.password, this.selected.id).then(() => {
             this.saving = false;
-            this.preferencesOrganization.load();
+            this.users.listOrganizationAccounts(true);
             this.revert();
-            this.alerts.addAlert('MPDX updated your organization account', 'success');
-        }).catch(data => {
-            each(value => {
-                this.alerts.addAlert(value, 'danger');
-            }, data.errors);
+            this.alerts.addAlert(this.gettextCatalog.getString('MPDX updated your organization account'));
+        }).catch(() => {
+            this.alerts.addAlert(this.gettextCatalog.getString('Unable to update your organization account'), 'danger');
             this.saving = false;
         });
     }
@@ -85,10 +78,29 @@ class OrganizationIntegrationPreferencesController {
         this.username = account.username;
     }
     revert() {
-        this.page = 'org_list';
         this.selected = null;
         this.username = null;
         this.password = null;
+        this.page = 'org_list';
+    }
+    select() {
+        this.selected = get(this.selectedKey, this.serverConstants.data.organizations_attributes);
+    }
+    showOrganizationHelp() {
+        this.help.showArticle(this.gettextCatalog.getString('58f96cc32c7d3a057f886e20'));
+    }
+    import(account) {
+        this.importing = true;
+        this.preferencesOrganization.import(account).then(() => {
+            account.showTntDataSync = false;
+            this.modal.info(
+                this.gettextCatalog.getString('File successfully uploaded. The import to {{ name }} will begin in the background.', { name: account.organization.name }, null), 'success');
+        }, () => {
+            this.alerts.addAlert(this.gettextCatalog.getString('File upload failed.'), 'danger');
+        }).finally(() => {
+            account.file = null;
+            this.importing = false;
+        });
     }
 }
 

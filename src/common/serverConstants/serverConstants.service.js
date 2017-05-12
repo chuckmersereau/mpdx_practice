@@ -3,32 +3,18 @@ import keys from 'lodash/fp/keys';
 import reduce from 'lodash/fp/reduce';
 import toString from 'lodash/fp/toString';
 
-const mapUnderscore = (obj) => {
-    const objKeys = keys(obj);
-    return reduce((result, key) => {
-        result[toString(replaceUnderscore(key))] = obj[key];
-        return result;
-    }, {}, objKeys);
-};
-
-const mapFloats = (obj) => {
-    const objKeys = keys(obj);
-    return reduce((result, key) => {
-        result[toString(parseFloat(key))] = obj[key];
-        return result;
-    }, {}, objKeys);
-};
-
 class ServerConstantsService {
     api;
 
     constructor(
-        api,
-        $log, $q
+        $log, $q,
+        api, pledgeFrequencyToStrFilter
     ) {
         this.$log = $log;
         this.$q = $q;
+
         this.api = api;
+        this.pledgeFrequencyToStrFilter = pledgeFrequencyToStrFilter;
 
         this.data = null;
     }
@@ -39,17 +25,38 @@ class ServerConstantsService {
 
         return this.api.get('constants').then((data) => {
             this.$log.debug('constants', data);
-            data.dates = mapUnderscore(data.dates);
-            data.languages = mapUnderscore(data.languages);
-            data.locales = mapUnderscore(data.locales);
-            data.notifications = mapUnderscore(data.notifications);
-            data.organizations = mapUnderscore(data.organizations);
-            data.pledge_frequencies = mapFloats(data.pledge_frequencies);
+            data.dates = this.mapUnderscore(data.dates);
+            data.languages = this.mapUnderscore(data.languages);
+            data.locales = this.mapUnderscore(data.locales);
+            data.notifications = this.mapUnderscore(data.notifications);
+            data.organizations = this.mapUnderscore(data.organizations);
+            data.organizations_attributes = this.mapUnderscore(data.organizations_attributes);
+            data.pledge_frequencies = this.mapFreqencies(data.pledge_frequencies);
             this.data = data;
             return data;
         });
     }
+
+    mapUnderscore(obj) {
+        const objKeys = keys(obj);
+        return reduce((result, key) => {
+            result[toString(replaceUnderscore(key))] = obj[key];
+            return result;
+        }, {}, objKeys);
+    }
+
+    mapFreqencies(obj) {
+        const objKeys = keys(obj);
+        return reduce((result, key) => {
+            result[toString(parseFloat(key))] = this.pledgeFrequencyToStrFilter(key);
+            return result;
+        }, {}, objKeys);
+    }
 }
 
-export default angular.module('mpdx.common.serverConstants', [])
-    .service('serverConstants', ServerConstantsService).name;
+import pledgeFrequencyToStr from '../../contacts/list/item/pledgeFrequencyToStr.filter';
+
+export default angular.module('mpdx.common.serverConstants', [
+    pledgeFrequencyToStr
+]).service('serverConstants', ServerConstantsService).name;
+

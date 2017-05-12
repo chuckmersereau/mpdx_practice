@@ -16,6 +16,9 @@
     &-green {
         @include cru-button-variant($color-reverse, $color-reverse, $color-success, $color-success, transparent, transparent);
     }
+    &-reverse {
+        @include cru-button-variant($color-reverse, $color-reverse, $cru-gray-dark, $cru-gray-dark, transparent, transparent);
+    }
     &-lg {
         font-size: $font-size*1.125;
     }
@@ -24,17 +27,6 @@
 .btn-block {
     display: block;
     margin-bottom: 8px;
-}
-
-.btn-reverse {
-    background: $cru-gray-dark;
-    color: $color-reverse;
-
-    &:active,
-    &:hover,
-    &:focus {
-      color: $color-reverse;
-    }
 }
 
 .btn-xxs {

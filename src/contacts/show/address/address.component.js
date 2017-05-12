@@ -12,7 +12,8 @@ const Address = {
     template: require('./address.html'),
     bindings: {
         address: '<',
-        contact: '<'
+        contact: '<',
+        onPrimary: '&'
     }
 };
 

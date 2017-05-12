@@ -9,22 +9,24 @@ class DonationModalController {
     serverConstants;
 
     constructor(
-        $scope, blockUI,
-        appeals, accounts, donations,
+        $scope, blockUI, gettextCatalog,
+        appeals, accounts, alerts, donations, locale,
         donation, donorAccounts, designationAccounts, serverConstants
     ) {
         this.$scope = $scope;
-        this.appeals = appeals;
         this.accounts = accounts;
-        this.donations = donations;
+        this.alerts = alerts;
         this.appeals = appeals;
-        this.donation = angular.copy(donation);
-        this.donationInitialState = angular.copy(donation);
+        this.donations = donations;
         this.donorAccounts = donorAccounts;
         this.designationAccounts = designationAccounts;
+        this.gettextCatalog = gettextCatalog;
+        this.locale = locale;
         this.serverConstants = serverConstants;
 
         this.blockUI = blockUI.instances.get('donationModal');
+        this.donation = angular.copy(donation);
+        this.donationInitialState = angular.copy(donation);
 
         this.appeals.getList();
         this.donorAccounts.getList();
@@ -32,15 +34,22 @@ class DonationModalController {
     }
 
     save() {
+        if (this.donationInitialState.appeal && !this.donation.appeal) { //appeal removed case
+            this.donation.appeal = {id: 'none'}; //fudge around api shortcoming
+        }
         const patch = createPatch(this.donationInitialState, this.donation);
         return this.donations.save(patch).then(() => {
             this.$scope.$hide();
+        }).catch(() => {
+            this.alerts.addAlert(this.gettextCatalog.getString('Unable to change donation'), 'danger');
         });
     }
 
     delete() {
         return this.donations.delete(this.donation).then(() => {
             this.$scope.$hide();
+        }).catch(() => {
+            this.alerts.addAlert(this.gettextCatalog.getString('Unable to remove donation'), 'danger');
         });
     }
 }

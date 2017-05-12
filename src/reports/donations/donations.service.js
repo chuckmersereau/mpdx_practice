@@ -22,7 +22,7 @@ class DonationsService {
             fields: { contacts: 'name', designation_account: 'name,designation_number', donor_account: 'account_number', appeal: 'name' },
             filter: {},
             include: 'designation_account,donor_account,contact,appeal',
-            sort: '-created_at'
+            sort: '-donation_date'
         };
         if (donorAccountId) {
             params.filter.donor_account_id = donorAccountId;
@@ -40,7 +40,9 @@ class DonationsService {
     }
 
     save(donation) {
-        donation.amount = donation.amount.replace(/[^\d.-]/g, '');
+        if (has('amount', donation)) {
+            donation.amount = donation.amount.replace(/[^\d.-]/g, '');
+        }
         if (has('id', donation)) {
             return this.api.put(`account_lists/${this.api.account_list_id}/donations/${donation.id}`, donation);
         } else {

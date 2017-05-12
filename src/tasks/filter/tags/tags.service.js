@@ -21,10 +21,6 @@ class TagsService {
         this.selectedTags = [];
         this.rejectedTags = [];
         this.anyTags = false;
-
-        $rootScope.$on('accountListUpdated', () => {
-            this.load(true);
-        });
     }
     change() {
         this.$log.debug('task/tags: change');
@@ -103,7 +99,6 @@ class TagsService {
     reset() {
         this.selectedTags = [];
         this.rejectedTags = [];
-        this.change();
     }
     getTagsByQuery(query) {
         return this.$filter('filter')(this.data, query);
@@ -117,5 +112,8 @@ class TagsService {
     }
 }
 
-export default angular.module('mpdx.tasks.tags.service', [])
-    .service('tasksTags', TagsService).name;
+import modal from '../../../common/modal/modal.service';
+
+export default angular.module('mpdx.tasks.tags.service', [
+    modal
+]).service('tasksTags', TagsService).name;

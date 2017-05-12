@@ -4,7 +4,7 @@
             <div class="page-filters">
                 <div class="row">
                     <div class="col-md-5 col-sm-7">
-                        <contacts-search></contacts-search>
+                        <contacts-list-search></contacts-list-search>
                     </div>
                     <div class="col-md-7 col-sm-5 text-right">
                         <div class="btn-group">
@@ -23,7 +23,7 @@
                                         <li><a ng-click="$ctrl.openMapContactsModal()" translate>Map Contacts</a></li>
                                     </ul>
                                     <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop" ng-show="$ctrl.contacts.selectedContacts.length === 0">
-                                        <li class="dropdown-header" translate>Please select at least one contact</li>
+                                        <li class="dropdown-header" translate>Please select at least one contact by clicking anywhere on that contact to continue.</li>
                                     </ul>
                                 </div>
                             </div>
@@ -55,7 +55,7 @@
                     </span>&nbsp;
                     <small>
                         <a href="javascript:;"
-                           ng-if="$ctrl.contacts.selectedContacts.length > 0 && $ctrl.contacts.selectedContacts.length < $ctrl.totalContactCount"
+                           ng-if="$ctrl.contacts.selectedContacts.length > 0 && $ctrl.contacts.selectedContacts.length < $ctrl.contacts.meta.pagination.total_count"
                            ng-click="$ctrl.contacts.selectAllContacts()">
                             <span translate translate-plural="Select all {{$count}} contacts" translate-n="$ctrl.contacts.meta.pagination.total_count">Select 1 contact</span>
                         </a>

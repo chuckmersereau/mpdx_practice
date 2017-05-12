@@ -1,12 +1,13 @@
 import uuid from 'uuid/v1';
 import concat from 'lodash/fp/concat';
 import assign from 'lodash/fp/assign';
-import defaultTo from 'lodash/fp/defaultTo';
 import each from 'lodash/fp/each';
 import find from 'lodash/fp/find';
 import includes from 'lodash/fp/includes';
 import isEmpty from 'lodash/fp/isEmpty';
+import isNil from 'lodash/fp/isNil';
 import map from 'lodash/fp/map';
+import omitBy from 'lodash/fp/omitBy';
 import pull from 'lodash/fp/pull';
 import pullAllBy from 'lodash/fp/pullAllBy';
 import reject from 'lodash/fp/reject';
@@ -14,8 +15,9 @@ import joinComma from '../common/fp/joinComma';
 import union from 'lodash/fp/union';
 import unionBy from 'lodash/fp/unionBy';
 import relationshipId from '../common/fp/relationshipId';
+import emptyToNull from '../common/fp/emptyToNull';
 import upsert from '../common/fp/upsert';
-const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
+import reduce from 'lodash/fp/reduce';
 
 class TasksService {
     contacts;
@@ -54,18 +56,6 @@ class TasksService {
         };
 
         this.dataLoadCount = 0;
-
-        $rootScope.$on('tasksFilterChange', () => {
-            this.reset();
-        });
-
-        $rootScope.$on('tasksTagsChanged', () => {
-            this.reset();
-        });
-
-        $rootScope.$on('accountListUpdated', () => {
-            this.reset();
-        });
     }
     reset() {
         this.selected = [];
@@ -182,7 +172,9 @@ class TasksService {
         this.load(false, this.page + 1);
     }
     save(task, comment = null) {
-        task.tag_list = joinComma(task.tag_list); //fix for api mis-match
+        if (task.tag_list) {
+            task.tag_list = joinComma(task.tag_list); //fix for api mis-match
+        }
         if (comment) {
             if (!task.comments) {
                 task.comments = [];
@@ -210,7 +202,7 @@ class TasksService {
                     contactTask.comments.push({id: uuid(), body: comment, person: { id: this.users.current.id }});
                 }
                 if (!isEmpty(contactId)) {
-                    result.push(assign(contactTask, {id: uuid(), contacts: [{id: contactId}]}));
+                    result = concat(result, assign(contactTask, {id: uuid(), contacts: [{id: contactId}]}));
                 }
                 return result;
             }, [], contactIds);
@@ -250,50 +242,17 @@ class TasksService {
     }
     bulkEdit(model, comment, tags) {
         const tasks = map(id => {
-            let task = {id: id};
+            let task = assign({id: id}, model);
             if (comment) {
-                task.comments = concat(defaultTo([], task.comments), {id: uuid(), body: comment, person: { id: this.users.current.id }});
+                task.comments = [{id: uuid(), body: comment, person: { id: this.users.current.id }}];
             }
-            task = assign(task, model);
-            if (tags.length > 0) {
-                task.tag_list = joinComma(tags);
-            }
-            return task;
+            task.tag_list = emptyToNull(joinComma(tags));
+            return omitBy(isNil, task);
         }, this.selected);
-        return this.api.put('tasks/bulk', tasks).then((data) => {
+        return this.api.put('tasks/bulk', tasks).then(data => {
             this.tasksTags.change();
             this.change();
             return data;
-        });
-    }
-    bulkLog(ajaxAction, taskId, model, contactIds, toComplete) {
-        let url = 'tasks';
-        if (taskId) {
-            url += `/${taskId}`;
-        }
-        model.account_list = { id: this.api.account_list_id };
-        model.completed = toComplete || model.result !== null;
-        if (model.tag_list) {
-            model.tag_list = joinComma(model.tag_list); //fix for api mis-match
-        }
-
-        if (contactIds.length > 1) {
-            const tasks = reduce((result, contactId) => {
-                if (!isEmpty(contactId)) {
-                    result.push(assign(model, {id: uuid(), contacts: [{id: contactId}]}));
-                }
-                return result;
-            }, [], contactIds);
-            return this.api.post({ url: 'tasks/bulk', data: tasks, type: 'tasks' });
-        }
-
-        model.contacts = map(contactId => {
-            return {id: contactId};
-        }, contactIds);
-        return this.api.call({
-            method: ajaxAction,
-            url: url,
-            data: model
         });
     }
     addComment(task, comment) {
@@ -321,13 +280,19 @@ class TasksService {
         });
     }
     bulkDelete() {
-        const message = this.gettextCatalog.getString('Are you sure you wish to delete the selected tasks?');
+        if (this.selected.length > 25) {
+            this.alerts.addAlert(this.gettextCatalog.getString('Too many tasks selected, please select a maximum of 25 tasks.'), 'danger');
+            return this.$q.reject();
+        }
+        const tasks = map(id => { return {id: id}; }, this.selected);
+        const message = this.gettextCatalog.getPlural(this.selected.length, 'Are you sure you wish to delete the selected task?', 'Are you sure you wish to delete the {{$count}} selected tasks?', {});
         return this.modal.confirm(message).then(() => {
-            return this.api.delete({url: 'tasks/bulk', data: this.selected, type: 'tasks'}).then(() => {
-                this.data = pullAllBy('id', this.selected, this.data);
+            return this.api.delete({url: 'tasks/bulk', data: tasks, type: 'tasks'}).then(() => {
+                this.alerts.addAlert(this.gettextCatalog.getPlural(angular.copy(this.selected).length, '1 task successfully removed.', '{{$count}} tasks successfully removed.', {}));
+                this.data = pullAllBy('id', tasks, this.data);
                 this.selected = [];
-            }, () => {
-                this.alerts.addAlert(this.gettextCatalog.getPlural(this.selected.length, 'Unable to delete that task.', 'Unable to delete {{$count}} tasks. Try deleting less tasks.', {}), 'danger');
+            }).catch(() => {
+                this.alerts.addAlert(this.gettextCatalog.getPlural(this.selected.length, 'Unable to delete the selected task.', 'Unable to delete the {{$count}} selected tasks.', {}), 'danger');
             });
         });
     }
@@ -387,5 +352,16 @@ class TasksService {
     }
 }
 
-export default angular.module('mpdx.tasks.service', [])
-    .service('tasks', TasksService).name;
+import alerts from '../common/alerts/alerts.service';
+import api from '../common/api/api.service';
+import contacts from '../contacts/contacts.service';
+import getText from 'angular-gettext';
+import tasksModals from './modals/modals.service';
+import tasksFilter from './filter/filter.service';
+import tasksTags from './filter/tags/tags.service';
+import users from '../common/users/users.service';
+
+export default angular.module('mpdx.tasks.service', [
+    getText,
+    alerts, api, contacts, tasksFilter, tasksModals, tasksTags, users
+]).service('tasks', TasksService).name;

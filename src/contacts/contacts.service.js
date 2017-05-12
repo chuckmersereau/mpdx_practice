@@ -1,12 +1,16 @@
 import assign from 'lodash/fp/assign';
 import concat from 'lodash/fp/concat';
+import defaultTo from 'lodash/fp/defaultTo';
 import findIndex from 'lodash/fp/findIndex';
+import flow from 'lodash/fp/flow';
 import has from 'lodash/fp/has';
 import includes from 'lodash/fp/includes';
 import isArray from 'lodash/fp/isArray';
 import isEqual from 'lodash/fp/isEqual';
 import isFunction from 'lodash/fp/isFunction';
+import isNil from 'lodash/fp/isNil';
 import map from 'lodash/fp/map';
+import omitBy from 'lodash/fp/omitBy';
 import pull from 'lodash/fp/pull';
 import pullAllBy from 'lodash/fp/pullAllBy';
 import reject from 'lodash/fp/reject';
@@ -14,10 +18,10 @@ import toInteger from 'lodash/fp/toInteger';
 import union from 'lodash/fp/union';
 import unionBy from 'lodash/fp/unionBy';
 import joinComma from "../common/fp/joinComma";
-import mapByName from "../common/fp/mapByName";
 import relationshipId from "../common/fp/relationshipId";
-const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
-
+import reduce from 'lodash/fp/reduce';
+import reduceObject from '../common/fp/reduceObject';
+import emptyToNull from '../common/fp/emptyToNull';
 
 class ContactsService {
     alerts;
@@ -72,11 +76,26 @@ class ContactsService {
         return this.api.get({
             url: `contacts/${id}`,
             data: {
-                include: 'addresses,donor_accounts,primary_person'
+                include: 'addresses,donor_accounts,primary_person,contact_referrals_to_me'
             },
             deSerializationOptions: relationshipId(['contacts', 'people']) //for contacts_referred_by_me, contacts_that_referred_me and primary_person
         }).then((data) => {
             data.pledge_amount = toInteger(data.pledge_amount); //fix bad api serialization as string
+            return data;
+        });
+    }
+    getReferrals(id) {
+        return this.api.get({
+            url: `contacts/${id}`,
+            data: {
+                include: 'contacts_referred_by_me',
+                fields: {
+                    contacts: 'contacts_referred_by_me,name,created_at'
+                }
+            }
+        }).then((data) => {
+            data = data.contacts_referred_by_me;
+            this.$log.debug('referrals by contact', id, data);
             return data;
         });
     }
@@ -100,6 +119,31 @@ class ContactsService {
                 filter: {
                     ids: joinComma(ids)
                 }
+            }
+        });
+    }
+    getCompleteFilteredList(reset = false) {
+        if (!reset && this.completeFilteredList && this.completeFilteredList.length > 0) {
+            return this.$q.resolve(this.completeFilteredList);
+        }
+        this.completeListLoadCount++;
+        const currentCount = angular.copy(this.completeListLoadCount);
+        this.completeFilteredList = []; // to avoid double call
+        return this.api.get({
+            url: 'contacts',
+            data: {
+                filter: this.buildFilterParams(),
+                fields: {
+                    contacts: 'name'
+                },
+                per_page: 25000,
+                sort: 'name'
+            },
+            overrideGetAsPost: true
+        }).then((data) => {
+            this.$log.debug('contacts all - filtered', data);
+            if (currentCount === this.completeListLoadCount) {
+                this.completeFilteredList = data;
             }
         });
     }
@@ -146,34 +190,21 @@ class ContactsService {
     }
     buildFilterParams() {
         let filterParams = this.findChangedFilters(this.contactFilter.default_params, this.contactFilter.params);
-
-        // set account_list_id
-        filterParams.account_list_id = this.api.account_list_id;
-
-        const wildcardSearch = this.contactFilter.wildcard_search;
-        if (wildcardSearch) {
-            filterParams.wildcard_search = wildcardSearch;
-        }
-
-        if (this.contactsTags.selectedTags.length > 0) {
-            filterParams.tags = mapByName(this.contactsTags.selectedTags);
-        } else {
-            delete filterParams.tags;
-        }
-        if (this.contactsTags.rejectedTags.length > 0) {
-            filterParams.exclude_tags = joinComma(mapByName(this.contactsTags.rejectedTags));
-        } else {
-            delete filterParams.exclude_tags;
-        }
-        filterParams.any_tags = this.contactsTags.anyTags;
-
-        return filterParams;
+        const convertTags = flow(map('name'), joinComma, emptyToNull);
+        filterParams = assign(filterParams, {
+            account_list_id: this.api.account_list_id,
+            wildcard_search: emptyToNull(this.contactFilter.wildcard_search),
+            tags: convertTags(this.contactsTags.selectedTags),
+            exclude_tags: convertTags(this.contactsTags.rejectedTags),
+            any_tags: this.contactsTags.anyTags
+        });
+        return omitBy(isNil, filterParams);
     }
     load(reset = false, page = 1) {
         this.loading = true;
 
         if (!reset && page <= this.page) {
-            this.$q.resolve(this.data);
+            return this.$q.resolve(this.data);
         }
 
         let currentCount;
@@ -208,7 +239,7 @@ class ContactsService {
             if (reset && currentCount !== this.completeListLoadCount) {
                 return;
             }
-            let count = this.meta.to || 0;
+            let count = defaultTo(0, this.meta.to);
             this.meta = data.meta;
             if (reset) {
                 this.page = 1;
@@ -219,10 +250,7 @@ class ContactsService {
                 this.loading = false;
                 return;
             }
-            const newContacts = reduce((result, contact) => {
-                result.push(contact);
-                return result;
-            }, [], data);
+            const newContacts = angular.copy(data);
             if (reset) {
                 this.data = newContacts;
             } else {
@@ -255,7 +283,6 @@ class ContactsService {
         }
         return this.api.put(`contacts/${contact.id}`, contact).then((data) => {
             this.updateContactOrList(data);
-            this.contactFilter.load(true); // since we don't know how this change could affect the filters
             return data;
         });
     }
@@ -287,7 +314,7 @@ class ContactsService {
         this.load(false, this.page);
     }
     findChangedFilters(defaultParams, params) {
-        return reduce((result, filter, key) => {
+        return reduceObject((result, filter, key) => {
             if (has(key, this.contactFilter.params)) {
                 const currentDefault = defaultParams[key];
                 if (isArray(filter)) {
@@ -327,14 +354,16 @@ class ContactsService {
         if (this.selectedContacts > this.data.length) {
             return map('name', this.contactsTags.data);
         }
-        return reduce((result, contact) => union(result, contact.tag_list), [], this.getSelectedContacts()).sort();
+        return reduce((result, contact) =>
+            union(result, contact.tag_list)
+        , [], this.getSelectedContacts()).sort();
     }
     clearSelectedContacts() {
         this.selectedContacts = [];
     }
     selectAllContacts(all = true) {
         if (all) {
-            this.getFilteredList().then(() => { //ensure complete filtered list is loaded
+            this.getCompleteFilteredList().then(() => { //ensure complete filtered list is loaded
                 this.selectedContacts = map('id', this.completeFilteredList);
             });
         } else {
@@ -407,9 +436,10 @@ class ContactsService {
             data: {
                 include:
                 'anniversaries_this_week,' +
-                'anniversaries_this_week.facebook_accounts,' +
-                'anniversaries_this_week.twitter_accounts,' +
-                'anniversaries_this_week.email_addresses,' +
+                'anniversaries_this_week.people,' +
+                'anniversaries_this_week.people.facebook_accounts,' +
+                'anniversaries_this_week.people.twitter_accounts,' +
+                'anniversaries_this_week.people.email_addresses,' +
                 'birthdays_this_week,' +
                 'birthdays_this_week.facebook_accounts,' +
                 'birthdays_this_week.twitter_accounts,' +
@@ -425,7 +455,7 @@ class ContactsService {
             deSerializationOptions: relationshipId('parent_contact'), //for parent_contact
             beforeDeserializationTransform: (data) => {
                 //this avoids infinite recursion between people & contacts
-                return reduce((result, value, key) => {
+                return reduceObject((result, value, key) => {
                     if (key === 'included') {
                         result[key] = reduce((dataResult, dataValue) => {
                             if (has('relationships.parent_contact.data.type', dataValue)) {
@@ -498,7 +528,7 @@ class ContactsService {
         });
     }
     openAddReferralsModal() {
-        this.modal.open({
+        return this.modal.open({
             template: require('./show/referrals/add/add.html'),
             controller: 'addReferralsModalController',
             locals: {
@@ -507,13 +537,13 @@ class ContactsService {
         });
     }
     openNewContactModal() {
-        this.modal.open({
+        return this.modal.open({
             template: require('./new/new.html'),
             controller: 'contactNewModalController'
         });
     }
     openMapContactsModal(selectedContacts) {
-        this.modal.open({
+        return this.modal.open({
             template: require('./list/mapContacts/mapContacts.html'),
             controller: 'mapContactsController',
             locals: {
@@ -522,14 +552,21 @@ class ContactsService {
         });
     }
     openMultipleAddModal() {
-        this.modal.open({
+        return this.modal.open({
             template: require('./multiple/multiple.html'),
             controller: 'multipleContactController'
         });
     }
 }
 
+import alerts from '../common/alerts/alerts.service';
+import api from '../common/api/api.service';
 import contactFilter from './sidebar/filter/filter.service';
+import contactsTags from './sidebar/filter/tags/tags.service';
+import modal from '../common/modal/modal.service';
+import getText from 'angular-gettext';
 
-export default angular.module('mpdx.contacts.service', [contactFilter])
-    .service('contacts', ContactsService).name;
+export default angular.module('mpdx.contacts.service', [
+    getText,
+    alerts, api, contactFilter, contactsTags, modal
+]).service('contacts', ContactsService).name;

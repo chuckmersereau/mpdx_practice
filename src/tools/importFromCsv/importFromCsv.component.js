@@ -1,17 +1,19 @@
 const each = require('lodash/fp/each').convert({ 'cap': false });
-const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 import isEmpty from 'lodash/fp/isEmpty';
 import difference from 'lodash/fp/difference';
 import keys from 'lodash/fp/keys';
+import round from 'lodash/fp/round';
 import values from 'lodash/fp/values';
+import reduceObject from '../../common/fp/reduceObject';
 
 class ImportFromCsvController {
     alerts;
-    modal;
     importFromCsv;
-    serverConstants;
     contactsTags;
-
+    maxSize;
+    maxSizeInMB;
+    modal;
+    serverConstants;
     constructor(
         $log, $window, $scope, $transitions, $state, alerts, modal, blockUI, gettextCatalog,
         importFromCsv, serverConstants, contactsTags
@@ -57,7 +59,10 @@ class ImportFromCsvController {
             }
         });
     }
-
+    $onInit() {
+        this.maxSize = this.serverConstants.data.csv_import.max_file_size_in_bytes;
+        this.maxSizeInMB = round(this.maxSize / 1000000);
+    }
     setStep(n) {
         this.accept = false;
         this.importFromCsv.data.in_preview = true;
@@ -154,7 +159,7 @@ class ImportFromCsvController {
             each((value, key) => {
                 if (this.serverConstants.data.csv_import.constants[key]) {
                     // fix for integer/float keys
-                    const pledgeFrequencies = reduce((result, v, k) => {
+                    const pledgeFrequencies = reduceObject((result, v, k) => {
                         if (k >= 1) {
                             result[parseInt(k).toFixed(1)] = v;
                         } else {
@@ -163,7 +168,7 @@ class ImportFromCsvController {
                         return result;
                     }, {}, this.serverConstants.data.pledge_frequencies);
 
-                    const opts = reduce((result, v, k) => {
+                    const opts = reduceObject((result, v, k) => {
                         switch (key) {
                             case 'commitment_frequency':
                                 result[k] = pledgeFrequencies[v];

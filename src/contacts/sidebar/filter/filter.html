@@ -20,13 +20,18 @@
                     <div class="filter_set_inner">
                         <div ng-if="filter.type == 'container'" ng-repeat="child in filter.children | orderBy: 'priority'">
                             <div class="filter_multiselect" ng-if="child.type == 'multiselect'">
-                                <label>
+                                <label for="multiselect" >
                                     <a class="filter_invert_multiselect" ng-click="$ctrl.invertMultiselect(child)" title="{{ 'Invert' | translate }}">
                                         <i class="fa fa-exchange"></i>
                                     </a>
                                     {{child.title}}
                                 </label>
-                                <select class="form-control" ng-options="item.id as item.name for item in child.options" ng-model="$ctrl.contactFilter.params[child.name]" ng-change="$ctrl.contactFilter.change()" multiple></select>
+                                <select id="multiselect"
+                                        class="form-control"
+                                        ng-options="item.id as item.name for item in child.options"
+                                        ng-model="$ctrl.contactFilter.params[child.name]"
+                                        ng-change="$ctrl.contactFilter.change()" multiple>
+                                </select>
                             </div>
                             <div class="filter_radio" ng-if="child.type == 'radio'">
                                 {{child.title}}

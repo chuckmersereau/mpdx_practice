@@ -10,25 +10,37 @@
             <div class="col-sm-12">
                 <div class="alert alert-info" ng-if="$ctrl.address.source === 'Siebel'">
                     <strong translate>This address is provided by Donation Services</strong><br />
-                    <translate>To make changes send them an email by</translate>
-                    <a ng-if="$ctrl.address" ng-href="mailto:donation.services@cru.org?subject=Donor address change&body={{ $ctrl.reqUpdateEmailBodyRequest() }}" target='_blank' translate>clicking here.</a>
+                    <translate>The address that syncs with donation services cannot be edited here. Please email donation services with the updated address, or you can create a new address and select it as your primary mailing address.</translate><br/>
+                    <strong>
+                        <a ng-if="$ctrl.address"
+                           ng-href="mailto:donation.services@cru.org?subject=Donor address change&body={{ $ctrl.reqUpdateEmailBodyRequest() }}"
+                           target='_blank'
+                           title="{{ 'Email donation services' | translate }}"
+                           translate>Email Donation Services here</a>
+                    </strong>
                 </div>
                 <div class="alert alert-info" ng-if="$ctrl.address.source === 'DataServer'">
-                    <strong translate>This address is from your organizations donor system. Please email them to make changes.</strong>
+                    <strong translate>This address is provided by your organization.</strong><br />
+                    <strong translate>The address that syncs with your organization’s donations cannot be edited here. Please email your donation department with the updated address, or you can create a new address and select it as your primary mailing address.</strong>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-9">
                 <label for="street"><translate>Street</translate> <span class="text-danger">*</span></label>
-                <input type="text" name="street" class="form-control" id="street"
-                       places-auto-complete on-place-changed="$ctrl.updateAddress()"
-                       ng-model="$ctrl.address.street" required ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'">
+                <input type="text"
+                       name="street"
+                       class="form-control" id="street"
+                       places-auto-complete
+                       on-place-changed="$ctrl.updateAddress()"
+                       ng-model="$ctrl.address.street"
+                       ng-required="$ctrl.address.source === 'MPDX'"
+                       ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'"
+                       autofocus="!$ctrl.address.remote_id && $ctrl.address.source === 'MPDX'">
             </div>
             <div class="col-sm-3">
-                <label for="location"><translate>Location</translate> <span class="text-danger">*</span></label>
+                <label for="location"><translate>Location</translate></label>
                 <select chosen
-                        required
                         disable-search="true"
                         data-placeholder-text-single="'Select an Option' | translate"
                         class="form-control"
@@ -78,13 +90,6 @@
             <div class="col-sm-12">
                 <input id="address_invalid" class="form-control" type="checkbox" name="address_invalid" ng-model="$ctrl.address.historic">
                 <label class="checkbox-label" for="address_invalid" translate>Address no longer valid</label>
-                <br />
-                <input id="primary_address"
-                       class="form-control"
-                       type="checkbox"
-                       name="primary_mailing_address"
-                       ng-model="$ctrl.address.primary_mailing_address">
-                <label class="checkbox-label" for="primary_address" translate>Mailing Address</label>
             </div>
         </div>
     </div>

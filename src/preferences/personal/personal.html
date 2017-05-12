@@ -19,7 +19,7 @@
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group" ng-form="firstNameForm">
                                 <label for="firstName" translate>Your first name</label>
-                                <input type="text" class="form-control" ng-model="$ctrl.users.current.first_name" id="firstName">
+                                <input type="text" class="form-control" ng-model="$ctrl.users.current.first_name" id="firstName" autofocus="$ctrl.tabSelected('first_name')">
                             </div>
                             <button ng-click="$ctrl.save()" ng-disabled="(!$ctrl.setup && firstNameForm.$pristine) || $ctrl.saving" class="btn btn-primary">
                                 <span translate>Save</span>&nbsp;
@@ -48,7 +48,7 @@
                         <div class="col-md-8 col-md-offset-4">
                             <div class="form-group" ng-form="lastNameForm">
                                 <label for="lastName" translate>Your last name</label>
-                                <input id="lastName" class="form-control" ng-model="$ctrl.users.current.last_name">
+                                <input id="lastName" class="form-control" ng-model="$ctrl.users.current.last_name" autofocus="$ctrl.tabSelected('last_name')">
                             </div>
                             <button ng-click="$ctrl.save()" ng-disabled="(!$ctrl.setup && lastNameForm.$pristine) || $ctrl.saving" class="btn btn-primary">
                                 <span translate>Save</span>&nbsp;
@@ -78,7 +78,7 @@
                             <div class="form-group">
                                 <label for="email" translate>Email Address</label>
                                 <p class="text-muted" translate>This is the email address where notifications will be sent.</p>
-                                <input id="email" type="email" class="form-control" ng-model="$ctrl.email.email">
+                                <input id="email" type="email" class="form-control" ng-model="$ctrl.email.email" autofocus="$ctrl.tabSelected('email')">
                             </div>
                             <button ng-click="$ctrl.saveEmail()" ng-disabled="(!$ctrl.setup && emailForm.$pristine) || $ctrl.saving" class="btn btn-primary">
                                 <span translate>Save</span>&nbsp;
@@ -221,7 +221,7 @@
                             <div class="form-group" ng-form="accountNameForm">
                                 <label for="accountListName" translate>Account Name</label>
                                 <p class="text-muted" translate>You can change the account name in MPDX into something that is more identifiable to you. This will not change the account name with your organization.</p>
-                                <input type="text" id="accountListName" class="form-control" ng-model="$ctrl.accounts.current.name">
+                                <input type="text" id="accountListName" class="form-control" ng-model="$ctrl.accounts.current.name" autofocus="$ctrl.tabSelected('account_list_name')">
                             </div>
                             <button ng-click="$ctrl.saveAccount()" ng-disabled="(!$ctrl.setup && accountNameForm.$pristine) || $ctrl.saving" class="btn btn-primary">
                                 <span translate>Save</span>&nbsp;
@@ -251,7 +251,7 @@
                             <div class="form-group" ng-form="monthlyGoalForm">
                                 <label for="monthlyGoal" translate>Monthly Goal</label>
                                 <p class="text-muted" translate>This amount should be set to the amount your organization has determined is your target monthly goal. If you do not know, make your best guess for now. You can change it at any time.</p>
-                                <input type="text" id="monthlyGoal" class="form-control" ng-model="$ctrl.accounts.current.monthly_goal">
+                                <input type="text" id="monthlyGoal" class="form-control" ng-model="$ctrl.accounts.current.monthly_goal" autofocus="$ctrl.tabSelected('monthly_goal')">
                             </div>
                             <button ng-click="$ctrl.saveAccount()" ng-disabled="(!$ctrl.setup && monthlyGoalForm.$pristine) || $ctrl.saving" class="btn btn-primary">
                                 <span translate>Save</span>&nbsp;
@@ -370,12 +370,12 @@
                     <div class="row">
                         <div class="col-md-8 col-md-offset-4" ng-form="earlyAdopterForm">
                             <label>
-                                <input type="checkbox" ng-model="$ctrl.accounts.current.tester">
+                                <input type="checkbox" ng-model="$ctrl.accounts.current.tester" autofocus="$ctrl.tabSelected('tester')">
                                 <span translate>Early Adopter</span>
                             </label>
                             <p translate>
                                 By checking this box, you are telling us that you'd like to test new features for bugs before they are
-                                rolled out to the full MPDx user base. We'll send you an email when new features are available on your
+                                rolled out to the full MPDX user base. We'll send you an email when new features are available on your
                                 account to test, and then ask for you to give us feedback - both if you experience bugs and also about
                                 your thoughts about the feature(s) you are testing.
                             </p>

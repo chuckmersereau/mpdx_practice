@@ -1,6 +1,6 @@
 <div class="field row">
     <div class="col-xs-4">
-        {{ $ctrl.phoneNumber.source || 'MPDX' }}
+        {{ $ctrl.phoneNumber.source || 'MPDX' | sourceToStr }}
         <span class="text-muted" ng-if="$ctrl.phoneNumber.created_at">({{ $ctrl.phoneNumber.created_at | date : $ctrl.locale.dateTimeFormat }})</span>
     </div>
     <div class="col-xs-2 text-center">

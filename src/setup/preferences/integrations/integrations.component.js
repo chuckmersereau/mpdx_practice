@@ -8,10 +8,10 @@ class IntegrationsController {
         this.$state = $state;
         this.users = users;
 
-        this.selectableTabs = ['mailchimp', 'prayerletters'];
-        this.selectedTab = this.selectableTabs[0];
+        this.selectableTabs = ['google', 'mailchimp', 'prayerletters'];
     }
     $onInit() {
+        this.selectedTab = this.selectableTabs[0];
         this.users.currentOptions.setup_position.value = 'preferences.integrations';
         this.users.setOption(this.users.currentOptions.setup_position);
     }
@@ -22,7 +22,7 @@ class IntegrationsController {
         const nextNav = indexOf(this.selectedTab, this.selectableTabs) + 1;
         if (this.selectableTabs.length === nextNav) {
             this.users.currentOptions.setup_position.value = 'finish';
-            this.users.setOption(this.users.currentOptions.setup_position).then(() => {
+            return this.users.setOption(this.users.currentOptions.setup_position).then(() => {
                 this.$state.go('setup.finish');
             });
         } else {
@@ -36,5 +36,10 @@ const Integrations = {
     controller: IntegrationsController
 };
 
-export default angular.module('mpdx.setup.preferences.integrations.component', [])
-    .component('setupPreferencesIntegrations', Integrations).name;
+import users from '../../../common/users/users.service';
+import uiRouter from 'angular-ui-router';
+
+export default angular.module('mpdx.setup.preferences.integrations.component', [
+    users,
+    uiRouter
+]).component('setupPreferencesIntegrations', Integrations).name;

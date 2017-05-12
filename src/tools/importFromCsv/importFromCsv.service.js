@@ -1,10 +1,10 @@
 const each = require('lodash/fp/each').convert({ 'cap': false });
-const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
 import joinComma from "../../common/fp/joinComma";
 import difference from 'lodash/fp/difference';
 import flatten from 'lodash/fp/flatten';
 import values from 'lodash/fp/values';
 import union from 'lodash/fp/union';
+import reduceObject from '../../common/fp/reduceObject';
 
 class ImportFromCsvService {
     api;
@@ -56,12 +56,12 @@ class ImportFromCsvService {
         }).then((data) => {
             this.data = data;
 
-            this.headers_to_fields_mapping = reduce((result, value, key) => {
+            this.headers_to_fields_mapping = reduceObject((result, value, key) => {
                 result[value] = key;
                 return result;
             }, {}, this.data.file_headers_mappings);
 
-            this.values_to_constants_mapping = reduce((result, obj, constant) => {
+            this.values_to_constants_mapping = reduceObject((result, obj, constant) => {
                 result[constant] = {};
                 each((value, key) => {
                     result[constant][value] = key;
@@ -81,14 +81,14 @@ class ImportFromCsvService {
             this.data.tag_list = joinComma(this.data.tag_list); //fix for api mis-match
         }
 
-        this.data.file_headers_mappings = reduce((result, value, key) => {
+        this.data.file_headers_mappings = reduceObject((result, value, key) => {
             if (value) {
                 result[value] = key;
             }
             return result;
         }, {}, this.headers_to_fields_mapping);
 
-        this.data.file_constants_mappings = reduce((result, obj, constant) => {
+        this.data.file_constants_mappings = reduceObject((result, obj, constant) => {
             if (this.data.file_headers_mappings[constant]) {
                 result[constant] = {};
 
@@ -103,7 +103,7 @@ class ImportFromCsvService {
         }, {}, this.values_to_constants_mapping);
 
         // add unselected constants
-        this.data.file_constants_mappings = reduce((result, value, key) => {
+        this.data.file_constants_mappings = reduceObject((result, value, key) => {
             if (this.serverConstants.data.csv_import.constants[key] && !result[key]) {
                 result[key] = {'': []};
             }

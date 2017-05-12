@@ -1,5 +1,7 @@
 import indexOf from 'lodash/fp/indexOf';
 import reduce from 'lodash/fp/reduce';
+import startsWith from 'lodash/fp/startsWith';
+import union from 'lodash/fp/union';
 
 class LogTaskController {
     comment;
@@ -7,12 +9,13 @@ class LogTaskController {
     status;
     task;
     constructor(
-        $q, $scope,
+        $q, $scope, $state,
         contacts, tasks, tasksTags, serverConstants, users,
         contactsList
     ) {
         this.$q = $q;
         this.$scope = $scope;
+        this.$state = $state;
         this.contacts = contacts;
         this.serverConstants = serverConstants;
         this.tasksTags = tasksTags;
@@ -20,13 +23,16 @@ class LogTaskController {
         this.users = users;
 
         this.contactsList = angular.copy(contactsList);
+        if (startsWith('contacts.show', $state.current.name)) {
+            this.contactsList = union(this.contactsList, [this.contacts.current.id]);
+        }
         this.task = { completed: true };
         this.contactNames = null;
 
         this.activate();
     }
     activate() {
-        this.contacts.getNames(this.contactsList).then((data) => {
+        return this.contacts.getNames(this.contactsList).then((data) => {
             this.contactNames = reduce((result, contact) => {
                 result[contact.id] = contact.name;
                 return result;
@@ -63,5 +69,11 @@ class LogTaskController {
         return this.contactsList.length > 0 && this.task.activity_type && indexOf(this.task.activity_type, ['Pre Call Letter', 'Reminder Letter', 'Support Letter', 'Thank', 'To Do']) === -1;
     }
 }
-export default angular.module('mpdx.contacts.logTask.controller', [])
-    .controller('logTaskController', LogTaskController).name;
+
+import contacts from '../../../contacts/contacts.service';
+import serverConstants from '../../../common/serverConstants/serverConstants.service';
+import tasks from '../../tasks.service';
+
+export default angular.module('mpdx.contacts.logTask.controller', [
+    contacts, serverConstants, tasks
+]).controller('logTaskController', LogTaskController).name;

@@ -1,7 +1,12 @@
-<div class="columns columns--fixed">
-    <div class="column">
-        <div ng-repeat="contact in $ctrl.contacts.completeFilteredList track by contact.id" class="contact-row item" ng-class="{ selected: contact.selected }">
+<div>
+    <div infinite-scroll="$ctrl.loadMoreContacts()" infinite-scroll-disabled="$ctrl.loading" infinite-scroll-use-document-bottom="false" infinite-scroll-container="$ctrl.scrollParent">
+        <div ng-repeat="contact in $ctrl.data track by contact.id" class="contact-row item" ng-class="{ selected: contact.selected }">
             <a ng-click="$ctrl.switchContact(contact.id)" ng-class="{'active': $ctrl.selected == contact.id }">{{contact.name}}</a>
         </div>
     </div>
+    <div ng-if="$ctrl.loading" class="loading-spinner">
+        <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+        <span class="sr-only" translate>Loading</span>
+    </div>
+    <div>&nbsp;</div>
 </div>

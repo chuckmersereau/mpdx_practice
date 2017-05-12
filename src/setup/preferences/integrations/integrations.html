@@ -1,4 +1,4 @@
-<div class="panel panel-default panel-selected panel__prompt">
+<div class="panel panel-default panel-selected panel__prompt" bs-affix>
     <div class="panel-body container-fluid">
         <div class="row">
             <div class="col-sm-9">
@@ -8,9 +8,10 @@
                 </h2>
             </div>
             <div class="col-sm-3 text-right">
-                <a ng-click="$ctrl.next()" class="btn btn-primary" translate>Skip Step</a>
+                <a ng-click="$ctrl.next()" class="btn btn-primary" translate>Next Step</a>
             </div>
         </div>
     </div>
 </div>
 <preferences-integration on-save="$ctrl.onSave()" setup="true" selected-tab="$ctrl.selectedTab"></preferences-integration>
+<a ng-click="$ctrl.next()" class="btn btn-primary pull-right" translate>Next Step</a>

@@ -1,3 +1,4 @@
+import round from "lodash/fp/round";
 import joinComma from "../../../common/fp/joinComma";
 import config from 'config';
 
@@ -5,9 +6,11 @@ class TntImportController {
     alerts;
     api;
     modal;
+    maxSize;
+    maxSizeInMB;
     constructor(
         $window, gettextCatalog, Upload,
-        alerts, api, contactsTags, modal
+        alerts, api, contactsTags, modal, serverConstants
     ) {
         this.$window = $window;
         this.alerts = alerts;
@@ -15,11 +18,16 @@ class TntImportController {
         this.contactsTags = contactsTags;
         this.gettextCatalog = gettextCatalog;
         this.modal = modal;
+        this.serverConstants = serverConstants;
         this.Upload = Upload;
-        this.importing = false;
 
+        this.importing = false;
         this.override = true;
         this.tags = [];
+    }
+    $onInit() {
+        this.maxSize = this.serverConstants.data.tnt_import.max_file_size_in_bytes;
+        this.maxSizeInMB = round(this.maxSize / 1000000);
     }
     save(form) {
         this.importing = true;
@@ -34,9 +42,6 @@ class TntImportController {
                         override: this.override
                     }
                 }
-            },
-            headers: {
-                Authorization: `Bearer ${this.$window.localStorage.getItem('token')}`
             }
         }).then(() => {
             this.importing = false;
@@ -49,9 +54,8 @@ class TntImportController {
         }, () => {
             this.importing = false;
             this.alerts.addAlert(this.gettextCatalog.getString('File upload failed.'), 'danger');
-        }, () => {
-            // const progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-            // console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+        }, (evt) => {
+            this.progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
         });
     }
 }

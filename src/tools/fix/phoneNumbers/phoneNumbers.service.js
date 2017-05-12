@@ -1,7 +1,7 @@
 import each from 'lodash/fp/each';
 import find from 'lodash/fp/find';
 import map from 'lodash/fp/map';
-const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
+import reduce from 'lodash/fp/reduce';
 import reject from 'lodash/fp/reject';
 import uniq from 'lodash/fp/uniq';
 
@@ -22,6 +22,25 @@ class PhoneNumbersService {
 
         $rootScope.$on('accountListUpdated', () => {
             this.load(true);
+        });
+    }
+
+    loadCount() {
+        if (this.meta) { return this.$q.resolve(); }
+        return this.api.get({
+            url: 'contacts/people',
+            data: {
+                filter: {
+                    phone_number_valid: false,
+                    account_list_id: this.api.account_list_id
+                },
+                page: 1,
+                per_page: 0
+            }
+        }).then((data) => {
+            if (!this.meta) {
+                this.meta = data.meta;
+            }
         });
     }
 

@@ -38,8 +38,13 @@ module.exports = function karmaConfig(config) {
 
         // Configure code coverage reporter
         coverageReporter: {
-            dir: 'build/coverage/',
-            type: 'html'
+            reporters: [
+                // generates ./coverage/lcov.info
+                {
+                    type: 'lcovonly',
+                    subdir: '.'
+                }
+            ]
         },
 
         webpack: require('./webpack.test'),

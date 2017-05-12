@@ -41,8 +41,13 @@ class HelpService {
             $log.debug('Help Service', err);
         }
     }
+
     showHelp() {
         HS.beacon.open();
+    }
+
+    showArticle(articleId) {
+        HS.beacon.show(articleId);
     }
 
     updateUser(user) {
@@ -64,5 +69,8 @@ class HelpService {
     }
 }
 
-export default angular.module('mpdx.common.help', [])
-    .service('help', HelpService).name;
+import gettext from 'angular-gettext';
+
+export default angular.module('mpdx.common.help', [
+    gettext
+]).service('help', HelpService).name;

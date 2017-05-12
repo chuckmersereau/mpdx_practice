@@ -18,12 +18,12 @@ preferences {
             border-radius: 50%;
             border: $color-panel-border 2px solid;
         }
-        .accstatus-disabled, .fa-chevron-right {
+        .fa-chevron-right {
             transition: transform 0.5s, color 0.5s, border-color 0.5s;
         }
     }
-    .panel-selected .panel-heading {
-        .fa-chevron-right, .accstatus-disabled {
+    .panel-selected > .panel-heading {
+        .fa-chevron-right {
             color: $color-panel-bg;
         }
         .fa-chevron-right {
@@ -53,7 +53,10 @@ preferences-notifications {
 
 preferences-integration {
     .panel-heading {
-        .pull-right {margin-right: 30px;}
+        .state {
+            margin-right: 30px;
+            float: right;
+        }
     }
     .integration_subhead {
         font-weight: 600;
@@ -83,10 +86,6 @@ unavailable-message {
     margin-top: $gutter/2;
 }
 
-.accstatus-enabled {color: green;}
-.accstatus-error {color: red;}
-.accstatus-disabled {color: $color-panel-border;}
-
 .merge-direction {
     @include breakpoint(xs) {
         padding-bottom: 20px;
@@ -109,65 +108,6 @@ merge-preferences {
         label {
             display: block;
             text-align: center;
-        }
-    }
-}
-
-.network_connect {
-
-    display: block;
-
-    .identify {
-        width: 180px;
-        border-right: 1px solid silver;
-    }
-    .connections {
-        padding-left: 25px;
-    }
-
-    .network_logo {
-        text-align: center;
-        img {
-            max-height: 100px;
-            margin: 0 auto;
-        }
-    }
-
-    .network_connections {
-        .account_single {
-            background: $gray_light;
-            border-radius: 5px;
-            padding: 12px;
-            margin-bottom: 5px;
-            margin-right: 5px;
-            min-width: 300px;
-            .actions {
-                float: right;
-                a {vertical-align: middle;}
-            }
-        }
-        .account_name {
-            font-size: 14px;
-            margin-bottom: .5em;
-            display: block;
-            margin-right: 30px;
-        }
-        .importoptions {
-            margin-top: .25em;
-            label {font-size: 13px;}
-        }
-        .importtags {
-            margin-bottom: .25em;
-        }
-    }
-    .import-tags-table {
-        width: 100%;
-        .bootstrap-tagsinput {
-            width: auto;
-            display: block;
-        }
-        .google_import_group {
-            white-space: nowrap;
         }
     }
 }

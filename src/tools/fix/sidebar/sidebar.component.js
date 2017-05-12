@@ -1,13 +1,26 @@
 class SidebarController {
     constructor(
         $state,
-        fixCommitmentInfo, fixPhoneNumbers, fixEmailAddresses, fixAddresses
+        fixAddresses, fixCommitmentInfo, fixEmailAddresses, fixPhoneNumbers
     ) {
         this.$state = $state;
-        this.fixCommitmentInfo = fixCommitmentInfo;
-        this.fixPhoneNumbers = fixPhoneNumbers;
-        this.fixEmailAddresses = fixEmailAddresses;
         this.fixAddresses = fixAddresses;
+        this.fixCommitmentInfo = fixCommitmentInfo;
+        this.fixEmailAddresses = fixEmailAddresses;
+        this.fixPhoneNumbers = fixPhoneNumbers;
+
+        if (this.$state.current.name !== 'tools.fix.addresses') {
+            this.fixAddresses.loadCount();
+        }
+        if (this.$state.current.name !== 'tools.fix.commitmentInfo') {
+            this.fixCommitmentInfo.loadCount();
+        }
+        if (this.$state.current.name !== 'tools.fix.emailAddresses') {
+            this.fixEmailAddresses.loadCount();
+        }
+        if (this.$state.current.name !== 'tools.fix.phoneNumbers') {
+            this.fixPhoneNumbers.loadCount();
+        }
     }
 }
 

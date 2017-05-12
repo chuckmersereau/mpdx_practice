@@ -5,10 +5,9 @@ class FilterService {
     filters;
 
     constructor(
-        $location, $rootScope,
+        $rootScope,
         api, contactsTags, filters
     ) {
-        this.$location = $location;
         this.$rootScope = $rootScope;
         this.api = api;
         this.contactsTags = contactsTags;
@@ -19,11 +18,6 @@ class FilterService {
         this.wildcard_search = '';
         this.default_params = {};
         this.loading = true;
-
-        let query = $location.search().q;
-        if (query) {
-            this.wildcard_search = query;
-        }
     }
     load(reset = false) {
         if (reset) {
@@ -41,7 +35,7 @@ class FilterService {
         });
     }
     count() {
-        return this.filters.count({ defaultParams: this.default_params, params: this.params });
+        return this.filters.count({ defaultParams: this.default_params, params: this.params }) + this.contactsTags.selectedTags.length + this.contactsTags.rejectedTags.length;
     }
     reset(stateParams = null) {
         this.params = angular.copy(this.default_params);
@@ -59,5 +53,9 @@ class FilterService {
         return !angular.equals(this.params, this.default_params) || this.contactsTags.isResettable();
     }
 }
-export default angular.module('mpdx.services.filter', [])
-    .service('contactFilter', FilterService).name;
+
+import filters from '../../../common/filters/filters.service';
+
+export default angular.module('mpdx.services.filter', [
+    filters
+]).service('contactFilter', FilterService).name;

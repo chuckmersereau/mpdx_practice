@@ -28,17 +28,6 @@ contact {
         }
     }
     .contact-card {
-        .avatar {
-            float: left;
-            width: 75px;
-            height: 75px;
-            border-radius: 100%;
-            border:1px solid #A5A5A5;
-            background-size: cover;
-        }
-        .top-content {
-            padding-left: 90px;
-        }
         h4.attribute-header {
             font-size: 12px;
             margin-bottom: 3px;
@@ -110,7 +99,7 @@ contact {
                             position: absolute;
                             color: $icon_gray;
                             right: 10px;
-                            top: 3px;
+                            top: 6px;
                         }
                     }
                 }
@@ -137,46 +126,9 @@ contact {
                 background: transparent;
                 outline: 0;
                 width: 100%;
+                font-size: 14px;
                 &:focus {
                     border-bottom: 1px solid rgb(0, 115, 152);
-                }
-            }
-            > tags-input {
-                .host:focus {
-                    outline: none;
-                }
-                .tags {
-                    box-shadow: none;
-                    border-radius: 0;
-                    border: 0;
-                    border-bottom: 1px dashed #979797;
-                    &.focused {
-                        border-bottom: 1px solid rgb(0, 115, 152);
-                    }
-                    input[type="text"] {
-                        box-shadow: none;
-                        padding: 0;
-                        margin-left: 0;
-                        &:focus {
-                            outline: none;
-                        }
-                    }
-                    .tag-item {
-                        font-weight: bold;
-                        background: #4A90E2;
-                        border: 0;
-                        height: 22px;
-                        line-height: 22px;
-                        font-size: 12px;
-                        margin-top: 4px;
-                        margin-right: 4px;
-                        &.selected {
-                            background: #d9534f;
-                        }
-                        .remove-button {
-                            color: #fff;
-                        }
-                    }
                 }
             }
             &.disabled, &.with-tip {
@@ -184,13 +136,14 @@ contact {
                 height: 25px;
                 input[type="text"] {
                     position: absolute;
+                    padding-left: 5px;
                     &:focus {
                         border-bottom: 1px dashed #979797;
                     }
                 }
                 a.tip {
                     position: absolute;
-                    right: 0;
+                    right: 5px;
                     color: $icon_gray;
                 }
             }

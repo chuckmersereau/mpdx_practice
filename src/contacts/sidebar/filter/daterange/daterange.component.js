@@ -1,18 +1,28 @@
+import defaultTo from 'lodash/fp/defaultTo';
 import reduce from 'lodash/fp/reduce';
 import moment from 'moment';
 
 class FilterDaterangeController {
     constructor(
-        $element
+        $element, gettextCatalog
     ) {
         let input = $element.find('input');
+
+        const defaultRanges = {
+            [gettextCatalog.getString('Today')]: [moment(), moment()],
+            [gettextCatalog.getString('Yesterday')]: [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            [gettextCatalog.getPlural(7, 'Last Day', 'Last {{$count}} Days', {})]: [moment().subtract(6, 'days'), moment()],
+            [gettextCatalog.getPlural(30, 'Last 1 Day', 'Last {{$count}} Days', {})]: [moment().subtract(29, 'days'), moment()],
+            [gettextCatalog.getString('This Month')]: [moment().startOf('month'), moment().endOf('month')],
+            [gettextCatalog.getString('Last Month')]: [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        };
 
         this.options = {
             autoUpdateInput: false,
             showDropdowns: true,
             alwaysShowCalendars: true,
             drops: 'up',
-            ranges: this.ranges,
+            ranges: defaultTo(defaultRanges, this.ranges),
             locale: this.locale
         };
         input.daterangepicker(this.options);

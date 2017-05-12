@@ -4,7 +4,7 @@
         <div class="panel-heading" ng-click="$ctrl.setTab('key')">
             <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('key') }"></i>
             <span translate>Key / Relay</span>
-            <div class="pull-right">
+            <div class="state">
                 <div class="accstatus accstatus-enabled" ng-if="$ctrl.integrations.data.length > 0"><i class="fa fa-circle"></i></div>
                 <div class="accstatus accstatus-disabled" ng-if="$ctrl.integrations.data.length === 0"><i class="fa fa-circle-o"></i></div>
             </div>
@@ -13,19 +13,17 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-4">
-                        <div class="import_logo">
+                        <div class="network_logo">
                             <img src="../../images/logos/key_logo.png" alt="organization">
                         </div>
                     </div>
                     <div class="col-md-8">
-                        <div class="network_button network_connect">
-                            <div ng-repeat="account in $ctrl.integrations.data.key_accounts" class="network_connections">
-                                <div class="account_single">
-                                    <div class="actions">
-                                        <a class="inlineaction delete" ng-click="$ctrl.disconnect('Key', account.id)" translate>Delete</a>
-                                    </div>
-                                    <span class="account_name">{{account.email}}</span>
-                                </div>
+                        <div ng-repeat="account in $ctrl.integrations.data.key_accounts" class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="btn btn-danger btn-xs pull-right" ng-click="$ctrl.disconnect('Key', account.id)">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                                {{account.email}}
                             </div>
                         </div>
                     </div>
@@ -37,9 +35,6 @@
         <div class="panel-heading" ng-click="$ctrl.setTab('organization')">
             <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('organization') }"></i>
             <span translate>Organization</span>
-            <div class="pull-right">
-                <!-- Title Meta / Indicator -->
-            </div>
         </div>
         <div class="panel-animate" ng-show="$ctrl.tabSelected('organization')">
             <div class="panel-body">
@@ -65,83 +60,16 @@
 <div class="panel-group">
     <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('google'), 'panel-disabled' : !$ctrl.tabSelectable('google') }">
         <div class="panel-heading" ng-click="$ctrl.setTab('google')">
-            <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('google') }"></i>
-            <span translate>Google</span>
-            <div class="pull-right">
-                <div class="accstatus accstatus-enabled" ng-if="$ctrl.integrations.data.google_accounts.length > 0"><i class="fa fa-circle"></i></div>
-                <div class="accstatus accstatus-disabled" ng-if="$ctrl.integrations.data.google_accounts.length === 0"><i class="fa fa-circle-o"></i></div>
+            <translate>Google</translate>
+            <div class="state">
+                <i class="fa fa-circle text-success" ng-show="$ctrl.google.data.length > 0"></i>
+                <i class="fa fa-circle-o text-muted" ng-show="$ctrl.google.data.length == 0"></i>
             </div>
+            <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('google') }"></i>
         </div>
         <div class="panel-animate" ng-show="$ctrl.tabSelected('google')">
             <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="network_logo">
-                            <img src="../../images/logos/google_logo.png" alt="Google">
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="network_button network_connect">
-                            <!-- <div ng-repeat="account in $ctrl.integrations.data.google_accounts" class="network_connections">
-                                <div class="account_single">
-                                    <div class="actions">
-                                        <a class="inlineaction delete" ng-click="$ctrl.disconnect('Google', account.id)" translate>Delete</a>
-                                    </div>
-                                    <span class="account_name">{{account.email}}</span>
-
-                                    <div ng-show="account.token_expired == true">
-                                        <p translate>
-                                            The link between MPDX and your Google account stopped working.
-                                            Click "Refresh Google Account" to re-enable it. After that,
-                                            you'll need to manually re-enable any integrations that you had set already.
-                                        </p>
-                                        <%# new_account_path_opts = { provider: :google } %>
-                                        <%# new_account_path_opts[:redirect] =  google_integration_path(google_integration) if google_integration %>
-                                        <%#= link_to(_('Refresh Google Account'), new_account_path(new_account_path_opts), class: 'btn desired_action') %>
-                                    </div>
-                                    <div ng-show="account.token_expired == false">
-                                        <div ng-show="account.google_integration_id != null">
-                                            <a ng-href="/google_integrations/{{account.google_integration_id}}">
-                                                <i class="fa fa-refresh"></i>
-                                                <span translate>Configure synchronization</span>
-                                            </a>
-                                        </div>
-                                        <div ng-show="account.google_integration_id == null">
-                                            <a data-method="post" ng-href="/google_integrations?google_account_id={{account.id}}" rel="nofollow">
-                                                <i class="fa fa-refresh"></i>
-                                                <span translate>Configure synchronization</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
-                            <div ng-hide="$ctrl.integrations.data.valid_google_account">
-                                <h4 class="integration_subhead" translate>Google Integration Overview</h4>
-                                <p translate>
-                                    Google’s suite of tools are great for keeping you connected to your Ministry Partners. By synchronizing your Google services with MPDX, you will be able to:
-                                </p>
-                                <p translate>
-                                    - See MPDX calendar events in your Google Calendar<br />
-                                    - Access MPDX contacts from Google Address Book<br />
-                                    - See Gmail interactions with your partners right inside MPDX
-                                </p>
-                                <p translate>
-                                    Connect your Google account to begin, and then setup specific settings for Google Calendar, Contacts and Gmail. MPDX leaves you in control of how each service stays in sync.
-                                </p>
-                                <div class="well">
-                                    <a href="#" class="btn btn-link disabled">Setup</a>
-                                    <a href="#" class="btn btn-link disabled">Calendar</a>
-                                    <a href="#" class="btn btn-link disabled">Contacts</a>
-                                    <a href="#" class="btn btn-link disabled">Email</a>
-                                    <p translate>We're sorry, but connecting to Google is not yet ready for everyday use. Please use <a href="http://mpdx.org" target="_blank">mpdx.org</a> to access this functionality.</p>
-                                    <!-- <unavailable-message></unavailable-message> -->
-                                </div>
-                            </div>
-                            <a href="/auth/goggle" class="btn btn-primary disabled" target="_blank" translate>Add Account</a>
-                            <a ng-show="$ctrl.integrations.data.valid_google_account" ui-sref="preferences.imports.tab({id: 'google'})" class="btn btn-default" translate>Import Google Contacts</a>
-                        </div>
-                    </div>
-                </div>
+                <google-integration-preferences></google-integration-preferences>
             </div>
         </div>
     </div>
@@ -149,10 +77,10 @@
         <div class="panel-heading" ng-click="$ctrl.setTab('mailchimp')">
             <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('mailchimp') }"></i>
             <span translate>MailChimp</span>
-            <div class="pull-right">
-                <div class="accstatus accstatus-enabled" ng-show="$ctrl.mailchimp.state == 'enabled'"><i class="fa fa-circle"></i></div>
-                <div class="accstatus accstatus-error" ng-show="$ctrl.mailchimp.state == 'error'"><i class="fa fa-circle-o"></i></div>
-                <div class="accstatus accstatus-disabled" ng-show="$ctrl.mailchimp.state == 'disabled'"><i class="fa fa-circle-o"></i></div>
+            <div class="state">
+                <i class="fa fa-circle text-success" ng-if="$ctrl.mailchimp.data.active && $ctrl.mailchimp.data.valid"></i>
+                <i class="fa fa-circle text-danger" ng-if="$ctrl.mailchimp.data.active && !$ctrl.mailchimp.data.valid"></i>
+                <i class="fa fa-circle-o text-muted" ng-if="!$ctrl.mailchimp.data.active"></i>
             </div>
         </div>
         <div class="panel-animate" ng-show="$ctrl.tabSelected('mailchimp')">
@@ -160,7 +88,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="network_logo">
-                            <img src="../../images/logos/mailchimp_logo.png" alt="MailChimp">
+                            <img src="../../images/logos/mailchimp_logo.svg" alt="MailChimp">
                         </div>
                     </div>
                     <div class="col-md-8">
@@ -175,50 +103,15 @@
     <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('prayerletters'), 'panel-disabled' : !$ctrl.tabSelectable('prayerletters') }">
         <div class="panel-heading" ng-click="$ctrl.setTab('prayerletters')">
             <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('prayerletters') }"></i>
-            <span translate>PrayerLetters</span>
-            <div class="pull-right">
-                <div ng-show="$ctrl.integrations.data.prayer_letters_account">
-                    <div class="accstatus accstatus-enabled" ng-if="$ctrl.integrations.data.prayer_letters_accounts.length > 0"><i class="fa fa-circle"></i></div>
-                    <div class="accstatus accstatus-error" ng-if="$ctrl.integrations.data.prayer_letters_accounts.length === 0"><i class="fa fa-circle-o"></i></div>
-                </div>
-                <div ng-hide="$ctrl.integrations.data.prayer_letters_account">
-                    <div class="accstatus accstatus-disabled"><i class="fa fa-circle-o"></i></div>
-                </div>
+            <span translate>Prayer Letters</span>
+            <div class="state">
+                <i class="fa fa-circle text-success" ng-if="$ctrl.prayerLetters.data"></i>
+                <i class="fa fa-circle-o text-muted" ng-if="!$ctrl.prayerLetters.data"></i>
             </div>
         </div>
         <div class="panel-animate" ng-show="$ctrl.tabSelected('prayerletters')">
             <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="network_logo">
-                            <img src="../../images/logos/prayer_letters_logo.png" alt="Prayer Letters">
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="network_button">
-                            <div ng-show="$ctrl.integrations.data.valid_prayer_letters_account">
-                                <div class="alert alert-warning" translate>
-                                    Enabling or Syncing will replace your prayerletters.com lists
-                                </div>
-                                <button type="submit" ng-click="$ctrl.sync('Prayer Letters')" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
-                                    <span translate>Sync Now</span>&nbsp;
-                                    <div class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></div>
-                                </button>
-                                <a class="btn btn-link" ng-click="$ctrl.disconnect('Prayer Letters')">
-                                    <span translate>Disconnect</span>&nbsp;<i class="hidden fa fa-circle-o-notch fa-spin fa-fw"></i>
-                                </a>
-                            </div>
-                            <div ng-hide="$ctrl.integrations.data.valid_prayer_letters_account">
-                                <h4 class="integration_subhead" translate>PrayerLetters.com Overview</h4>
-                                <p translate>
-                                    PrayerLetters.com is a significant way to save valuable ministry time while more effectively connecting with your parnters. Keep your physical newsletter list up to date in MPDX and then sync it to your PrayerLetters.com account with this integration. 
-                                </p>
-                                <p translate>This will replace your current PrayerLetters.com list.</p>
-                                <a href="/auth/prayer_letters" class="btn btn-primary" target="_blank" translate>Connect PrayerLetters</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <prayer-letters-integrations-preferences></prayer-letters-integrations-preferences>
             </div>
         </div>
     </div>
@@ -226,9 +119,6 @@
         <div class="panel-heading" ng-click="$ctrl.setTab('chalkline')">
             <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('chalkline') }"></i>
             <span translate>Chalkline</span>
-            <div class="pull-right">
-                <div class="accstatus accstatus-disabled"><i class="fa fa-circle-o"></i></div>
-            </div>
         </div>
         <div class="panel-animate" ng-show="$ctrl.tabSelected('chalkline')">
             <div class="panel-body">
@@ -242,9 +132,9 @@
                         <div class="network_button">
                             <h4 class="integration_subhead" translate>Chalkline Overview</h4>
                             <p translate>
-                                Chalkline is a significant way to save valuable ministry time while more effectively connecting with your parnters. Send physical newsletters to your current list using Chalkline with a simple click.  Chalkline is a one way send available anytime you’re ready to send a new newsletter out.
+                                Chalkline is a significant way to save valuable ministry time while more effectively connecting with your partners. Send physical newsletters to your current list using Chalkline with a simple click.  Chalkline is a one way send available anytime you’re ready to send a new newsletter out.
                             </p>
-                            <a href="#" class="btn btn-primary" id="chalkline_send_list" translate>Send my current Contacts to Chalkline</a>
+                            <a ng-click="$ctrl.sendToChalkline()" class="btn btn-primary" id="chalkline_send_list" translate>Send my current Contacts to Chalkline</a>
                         </div>
                     </div>
                 </div>

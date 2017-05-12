@@ -1,3 +1,5 @@
+import defaultTo from 'lodash/fp/defaultTo';
+
 class ContactInfoController {
     contact;
     contacts;
@@ -10,12 +12,16 @@ class ContactInfoController {
         this.locale = locale;
         this.serverConstants = serverConstants;
     }
-    $onChange(obj) {
+    $onChanges(obj) {
         if (obj.contact) {
             if (parseInt(obj.contact.currentValue.pledge_frequency) > 0) {
                 this.contact.pledge_frequency = obj.contact.currentValue.pledge_frequency + '.0';
             }
         }
+    }
+    saveWithEmptyCheck(property) {
+        this.contact[property] = defaultTo('', this.contact[property]);
+        this.save();
     }
     save() {
         this.onSave();

@@ -1,39 +1,41 @@
 /*@ngInject*/
 export default function appRun(
-    $q, $log, $rootScope, $state, $transitions, $window, blockUI
+    $q, $log, $rootScope, $state, $transitions, $window, authManager, blockUI
 ) {
     const block = blockUI.instances.get('root');
-    //check for Auth
-    $transitions.onBefore({ to: (state) => {
-        $log.debug('navigating to:', state.name);
-        const token = $window.localStorage.getItem('token');
-        if (state.name === 'login' || state.name === 'auth') {
-            return false;
-        } else if (!token) {
-            $window.localStorage.setItem('redirect', state.name);
-            $window.localStorage.setItem('params', state.params);
-        }
-        return true;
-    } }, () => {
-        if ($window.localStorage.getItem('token')) {
-            return $q.resolve();
-        }
-        $state.go('login');
-        return $q.reject();
-    });
+    authManager.checkAuthOnRefresh();
+    authManager.redirectWhenUnauthenticated();
+
     $transitions.onStart({ to: state => state.name !== 'login' && state.name !== 'auth' }, (trans) => {
+        if (!authManager.isAuthenticated()) {
+            return;
+        }
         block.start();
         const users = trans.injector().get('users');
-        return users.getCurrent(false, true).catch((error) => {
-            if (error.redirect) {
-                return trans.router.stateService.target(error.redirect);
-            }
-        });
+        return users.getCurrent(false, true)
+            .then(currentUser => {
+                $window.digitalData.user[0].profile[0].profileInfo.ssoGuid = currentUser.key_uuid;
+                $window.digitalData.page.pageInfo.language = currentUser.preferences.locale;
+            })
+            .catch((error) => {
+                if (error.redirect) {
+                    return trans.router.stateService.target(error.redirect);
+                }
+            });
     });
-    $transitions.onFinish(null, () => {
+    $transitions.onFinish(null, (trans) => {
+        changePageTitle(trans, $rootScope, $window);
         block.reset();
     });
     $transitions.onError(null, () => {
         block.reset();
     });
+
+    $window.digitalData.page.attributes.angularLoaded = true;
+}
+
+function changePageTitle(transition, $rootScope, $window) {
+    const newState = transition.$to();
+    $rootScope.pageTitle = newState.title;
+    $window.digitalData.page.pageInfo.pageName = newState.name.replace('.', ' : ');
 }

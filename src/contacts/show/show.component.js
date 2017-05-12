@@ -5,6 +5,8 @@ import defaultTo from 'lodash/fp/defaultTo';
 import eq from 'lodash/fp/eq';
 import find from 'lodash/fp/find';
 import forEachRight from 'lodash/fp/forEachRight';
+import get from 'lodash/fp/get';
+import has from 'lodash/fp/has';
 import isNil from 'lodash/fp/isNil';
 import map from 'lodash/fp/map';
 import reject from 'lodash/fp/reject';
@@ -37,6 +39,10 @@ class ContactController {
         this.tasks = tasks;
         this.users = users;
 
+        if ($stateParams['personId']) {
+            this.people.openPeopleModal(this.contacts.current, $stateParams['personId']);
+        }
+
         this.moveContact = { previous_contact: 0, following_contact: 0 };
         this.activeTab = '';
 
@@ -47,7 +53,7 @@ class ContactController {
             { key: 'referrals', value: gettextCatalog.getString('Referrals') },
             { key: 'notes', value: gettextCatalog.getString('Notes') }
         ];
-        if (users.currentOptions.contact_tabs_sort) {
+        if (has('currentOptions.contact_tabs_sort', users)) {
             forEachRight(tab => {
                 const label = find({key: tab}, tabsLabels);
                 if (label) {
@@ -90,17 +96,17 @@ class ContactController {
         };
 
         help.suggest([
-            '58d3d70ddd8c8e7f5974d3ca',
-            '5845aab3c6979106d373a576',
-            '5845995e90336006981769bb',
-            '584ac7f39033602d65f6e131',
-            '5845ac509033600698176a62',
-            '58459880c6979106d373a4c2',
-            '5845990290336006981769b1',
-            '58459756903360069817698b',
-            '584597e6903360069817699d',
-            '584597a1c6979106d373a4b5',
-            '58471fd6903360069817752e'
+            this.gettextCatalog.getString('58d3d70ddd8c8e7f5974d3ca'),
+            this.gettextCatalog.getString('5845aab3c6979106d373a576'),
+            this.gettextCatalog.getString('5845995e90336006981769bb'),
+            this.gettextCatalog.getString('584ac7f39033602d65f6e131'),
+            this.gettextCatalog.getString('5845ac509033600698176a62'),
+            this.gettextCatalog.getString('58459880c6979106d373a4c2'),
+            this.gettextCatalog.getString('5845990290336006981769b1'),
+            this.gettextCatalog.getString('58459756903360069817698b'),
+            this.gettextCatalog.getString('584597e6903360069817699d'),
+            this.gettextCatalog.getString('584597a1c6979106d373a4b5'),
+            this.gettextCatalog.getString('58471fd6903360069817752e')
         ]);
     }
     $onInit() {
@@ -126,7 +132,7 @@ class ContactController {
         });
     }
     onPrimary(personId) {
-        if (eq(this.contacts.current.primary_person.id, personId) || isNil(personId)) {
+        if (eq(get('primary_person.id', this.contacts.current), personId) || isNil(personId)) {
             return;
         }
         this.$log.debug('change primary: ', personId);
@@ -151,9 +157,8 @@ class ContactController {
         this.$state.go('contacts.show', { contactId: this.contacts.getRightId(this.contacts.current.id) });
     }
     displayNotes() {
-        this.activeTab = 'notes';
-        this.$location.hash('contact-tabs');
-        this.$anchorScroll();
+        this.$anchorScroll('contact-tabs');
+        this.setActiveTab('notes');
     }
     setActiveTab(tab) {
         this.activeTab = tab;

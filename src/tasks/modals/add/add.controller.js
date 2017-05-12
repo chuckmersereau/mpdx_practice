@@ -1,10 +1,12 @@
 import reduce from 'lodash/fp/reduce';
+import startsWith from 'lodash/fp/startsWith';
+import union from 'lodash/fp/union';
 
 class AddTaskController {
     comment;
     contactNames;
     constructor(
-        $scope,
+        $scope, $state,
         contacts, tasksTags, serverConstants, tasks, users,
         contactsList, activityType
     ) {
@@ -16,6 +18,9 @@ class AddTaskController {
         this.users = users;
 
         this.contactsList = angular.copy(contactsList);
+        if (startsWith('contacts.show', $state.current.name)) {
+            this.contactsList = union(this.contactsList, [this.contacts.current.id]);
+        }
         this.task = { activity_type: activityType };
         this.setDueDate = true;
         this.contactNames = null;
@@ -23,7 +28,7 @@ class AddTaskController {
         this.activate();
     }
     activate() {
-        this.contacts.getNames(this.contactsList).then((data) => {
+        return this.contacts.getNames(this.contactsList).then((data) => {
             this.contactNames = reduce((result, contact) => {
                 result[contact.id] = contact.name;
                 return result;
@@ -53,5 +58,11 @@ class AddTaskController {
         });
     }
 }
-export default angular.module('mpdx.tasks.add.controller', [])
-    .controller('addTaskController', AddTaskController).name;
+
+import contacts from '../../../contacts/contacts.service';
+import serverConstants from '../../../common/serverConstants/serverConstants.service';
+import tasks from '../../tasks.service';
+
+export default angular.module('mpdx.tasks.add.controller', [
+    contacts, serverConstants, tasks
+]).controller('addTaskController', AddTaskController).name;
