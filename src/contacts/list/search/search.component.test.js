@@ -3,13 +3,12 @@ import component from './search.component';
 const wildcardSearch = 'asdf';
 
 describe('contacts.list.search', () => {
-    let $ctrl, contacts, contactFilter, rootScope, scope;
+    let $ctrl, contactFilter, rootScope, scope;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _contacts_, _contactFilter_) => {
+        inject(($componentController, $rootScope, _contactFilter_) => {
             rootScope = $rootScope;
             scope = $rootScope.$new();
-            contacts = _contacts_;
             contactFilter = _contactFilter_;
             contactFilter.wildcard_search = wildcardSearch;
             $ctrl = $componentController('contactsListSearch', {$scope: scope}, {view: null, selected: null});

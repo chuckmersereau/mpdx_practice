@@ -52,7 +52,7 @@ class ContactDetailsController {
             } else {
                 this.referrer = get('contacts_that_referred_me[0].id', this.contact);
                 if (this.referrer) {
-                    this.contacts.getName(this.referrer).then((data) => {
+                    this.getName(this.referrer).then((data) => {
                         this.referrerName = data.name;
                     });
                 }
@@ -159,6 +159,13 @@ class ContactDetailsController {
             });
         });
     }
+    getName(id) {
+        return this.api.get(`contacts/${id}`, {
+            fields: {
+                contacts: 'name'
+            }
+        });
+    }
 }
 const Details = {
     controller: ContactDetailsController,
@@ -170,5 +177,10 @@ const Details = {
     }
 };
 
-export default angular.module('mpdx.contacts.show.details.component', [])
-    .component('contactDetails', Details).name;
+import contacts from '../../contacts.service';
+import serverConstants from '../../../common/serverConstants/serverConstants.service';
+import tasks from '../../../tasks/tasks.service';
+
+export default angular.module('mpdx.contacts.show.details.component', [
+    contacts, serverConstants, tasks
+]).component('contactDetails', Details).name;

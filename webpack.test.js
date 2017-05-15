@@ -2,10 +2,8 @@
  * Webpack config for tests
  */
 
-const webpack = require('webpack');
 const assign = require('lodash/fp/assign');
 const concat = require('lodash/fp/concat');
-const autoprefixer = require('autoprefixer');
 const path = require('path');
 
 let config = require('./webpack.make');
@@ -34,24 +32,7 @@ config = assign(config, {
                 use: 'null-loader'
             }
         ])
-    }),
-    plugins: concat(config.plugins, [
-        new webpack.LoaderOptionsPlugin({
-            options: {
-                postcss: [
-                    autoprefixer({
-                        browsers: ['last 2 version']
-                    })
-                ],
-                eslint: {
-                    parser: 'babel-eslint'
-                },
-                sassLoader: {
-                    includePaths: [path.resolve(__dirname, 'node_modules'), path.resolve(__dirname, 'bower_components')]
-                }
-            }
-        })
-    ])
+    })
 });
 
 module.exports = config;
