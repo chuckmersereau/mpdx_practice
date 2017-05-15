@@ -150,12 +150,6 @@ class ContactController {
             this.$state.go('contacts');
         });
     }
-    goLeft() {
-        this.$state.go('contacts.show', { contactId: this.contacts.getLeftId(this.contacts.current.id) });
-    }
-    goRight() {
-        this.$state.go('contacts.show', { contactId: this.contacts.getRightId(this.contacts.current.id) });
-    }
     displayNotes() {
         this.$anchorScroll('contact-tabs');
         this.setActiveTab('notes');

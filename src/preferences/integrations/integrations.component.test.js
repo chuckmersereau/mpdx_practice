@@ -1,5 +1,4 @@
 import component from './integrations.component';
-import assign from 'lodash/fp/assign';
 
 const defaultBindings = {
     selectedTab: null,

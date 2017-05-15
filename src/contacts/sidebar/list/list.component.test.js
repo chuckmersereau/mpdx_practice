@@ -3,14 +3,13 @@ import component from './list.component';
 const contactId = 123;
 
 describe('contacts.sidebar.list.component', () => {
-    let $ctrl, contacts, state, rootScope, scope, api, q;
+    let $ctrl, state, rootScope, scope, api;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _contacts_, $stateParams, $state, _api_) => {
+        inject(($componentController, $rootScope, $stateParams, $state, _api_) => {
             rootScope = $rootScope;
             scope = $rootScope.$new();
             api = _api_;
-            contacts = _contacts_;
             state = $state;
             $stateParams.contactId = contactId;
             $ctrl = $componentController('contactsSidebarList', {$scope: scope}, {});
