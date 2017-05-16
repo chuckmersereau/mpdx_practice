@@ -24,7 +24,7 @@ class ContactsSearchController {
         this.$state.go('contacts.show', {contactId: contactId});
     }
     gotoList() {
-        this.contactFilter.params.wildcard_search = angular.copy(this.searchParams);
+        this.contactFilter.wildcard_search = angular.copy(this.searchParams);
         this.$state.go('contacts', {}, {reload: true});
         this.reset();
     }
@@ -39,5 +39,11 @@ const Search = {
     template: require('./search.html')
 };
 
-export default angular.module('mpdx.menu.search.component', [])
-    .component('menuSearch', Search).name;
+import contacts from '../../contacts/contacts.service';
+import contactFilter from '../../contacts/sidebar/filter/filter.service';
+import uiRouter from 'angular-ui-router';
+
+export default angular.module('mpdx.menu.search.component', [
+    uiRouter,
+    contacts, contactFilter
+]).component('menuSearch', Search).name;

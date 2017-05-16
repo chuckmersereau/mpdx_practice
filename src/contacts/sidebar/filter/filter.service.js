@@ -54,8 +54,10 @@ class FilterService {
     }
 }
 
+import api from '../../../common/api/api.service';
+import contactsTags from './tags/tags.service';
 import filters from '../../../common/filters/filters.service';
 
 export default angular.module('mpdx.services.filter', [
-    filters
+    api, contactsTags, filters
 ]).service('contactFilter', FilterService).name;
