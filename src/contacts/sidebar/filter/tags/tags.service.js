@@ -138,5 +138,10 @@ class TagsService {
     }
 }
 
-export default angular.module('mpdx.common.tags.service', [])
-    .service('contactsTags', TagsService).name;
+import gettext from 'angular-gettext';
+import modal from '../../../../common/modal/modal.service';
+
+export default angular.module('mpdx.common.tags.service', [
+    gettext,
+    modal
+]).service('contactsTags', TagsService).name;
