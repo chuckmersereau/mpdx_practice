@@ -86,7 +86,7 @@
                         data-placeholder-text-single="'Select an Option' | translate"
                         class="form-control"
                         id="commitment-currency"
-                        ng-options="v as k for (v, k) in $ctrl.serverConstants.data.bulk_update_options.pledge_currency"
+                        ng-options="v as k.code_symbol_string for (v, k) in $ctrl.serverConstants.data.bulk_update_options.pledge_currency"
                         ng-model="$ctrl.models.pledge_currency">
                     <option value=""></option>
                 </select>
