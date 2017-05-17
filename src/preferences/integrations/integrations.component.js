@@ -6,7 +6,7 @@ class IntegrationPreferencesController {
     selectedTab;
 
     constructor(
-        $window, $state, $stateParams, gettextCatalog,
+        $window, $rootScope, $state, $stateParams, gettextCatalog,
         alerts, help, integrations, modal, google, mailchimp, prayerLetters
     ) {
         this.$state = $state;
@@ -41,6 +41,10 @@ class IntegrationPreferencesController {
             this.gettextCatalog.getString('57e1810ec697910d0784c3e1'),
             this.gettextCatalog.getString('584718e390336006981774ee')
         ]);
+
+        $rootScope.$on('accountListUpdated', () => {
+            this.integrations.load();
+        });
     }
     $onInit() {
         this.integrations.load();
