@@ -1,11 +1,23 @@
 class AppealsController {
     constructor(
-        $rootScope, appeals
+        $rootScope,
+        appeals
     ) {
         this.appeals = appeals;
         this.$rootScope = $rootScope;
         this.count = 0;
-        this.appeals.getList();
+
+        $rootScope.$on('accountListUpdated', () => {
+            this.getCount();
+        });
+    }
+    $onInit() {
+        this.getCount();
+    }
+    getCount() {
+        this.appeals.getCount().then((data) => {
+            this.count = data;
+        });
     }
 }
 
