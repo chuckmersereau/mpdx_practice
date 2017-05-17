@@ -8,7 +8,7 @@ class PersonService {
     modal;
 
     constructor(
-        $filter, $log, $q, $rootScope, gettextCatalog,
+        $filter, $log, $q, gettextCatalog,
         api, contacts, modal
     ) {
         this.$filter = $filter;
@@ -21,25 +21,10 @@ class PersonService {
         this.modal = modal;
 
         this.includes = 'email_addresses,facebook_accounts,family_relationships,family_relationships.related_person,linkedin_accounts,master_person,phone_numbers,twitter_accounts,websites';
-        this.selected = null;
         this.data = [];
-
-        $rootScope.$on('contactPersonUpdated', (e, contactId) => {
-            this.list(contactId);
-        });
-
-        $rootScope.$on('accountListUpdated', () => {
-            this.listAll(true);
-        });
     }
     create(contactId, person) {
         return this.api.post(`contacts/${contactId}/people`, person);
-    }
-    filterResponseById(values, ids) {
-        if (values && ids && values.length > 0 && ids.length > 0) {
-            return this.$filter('filter')(values, value => ids.indexOf(value.id) > -1);
-        }
-        return [];
     }
     get(contactId, personId) {
         return this.api.get(`contacts/${contactId}/people/${personId}`, {include: this.includes}).then((data) => {
@@ -48,15 +33,13 @@ class PersonService {
         });
     }
     list(contactId) {
-        this.selected = null;
         return this.api.get(`contacts/${contactId}/people`, {include: this.includes}).then((data) => {
-            this.selected = map(person => {
+            return map(person => {
                 if (person.anniversary_year) {
                     person.anniversary = moment(`${person.anniversary_year}-${person.anniversary_month}-${person.anniversary_day}`, 'YYYY-MM-DD').format('l');
                 }
                 return person;
             }, data);
-            return this.selected;
         });
     }
     listAll(reset = false) {
