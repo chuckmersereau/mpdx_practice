@@ -7,7 +7,7 @@ class MergeContacts {
     contacts;
 
     constructor(
-        $log, $q, $rootScope,
+        $log, $q,
         api, contacts
     ) {
         this.$q = $q;
@@ -18,10 +18,6 @@ class MergeContacts {
         this.duplicates = [];
         this.perPage = 5;
         this.total = 0;
-
-        $rootScope.$on('accountListUpdated', () => {
-            this.load(true);
-        });
     }
 
     load(reset = false) {
@@ -77,5 +73,10 @@ class MergeContacts {
         return this.$q.all(promises).then(() => this.load(true));
     }
 }
-export default angular.module('mpdx.tools.mergeContacts.service', [])
-    .service('mergeContacts', MergeContacts).name;
+
+import api from '../../common/api/api.service';
+import contacts from '../../contacts/contacts.service';
+
+export default angular.module('mpdx.tools.mergeContacts.service', [
+    api, contacts
+]).service('mergeContacts', MergeContacts).name;
