@@ -7,12 +7,13 @@ class ExportContactsController {
     contacts;
     moment;
     constructor(
-        $timeout,
+        $timeout, blockUI,
         api, contacts,
         selectedContactIds
     ) {
         this.$timeout = $timeout;
         this.api = api;
+        this.blockUI = blockUI.instances.get('contact-export');
         this.contacts = contacts;
         this.moment = moment;
 
@@ -46,6 +47,7 @@ class ExportContactsController {
         }
     }
     primaryCSVLink() {
+        this.blockUI.start();
         const params = assign(this.params, {
             url: 'contacts/exports.csv',
             headers: {
@@ -57,9 +59,12 @@ class ExportContactsController {
                 type: `text/csv;charset=utf-8;`
             });
             this.sendDownload(blob, `mpdx-contact-export-${moment().format('Y-MM-DD-HH:mm')}.csv`);
+        }).finally(() => {
+            this.blockUI.reset();
         });
     }
     primaryXLSXLink() {
+        this.blockUI.start();
         const params = assign(this.params, {
             url: 'contacts/exports.xlsx',
             headers: {
@@ -72,9 +77,12 @@ class ExportContactsController {
                 type: `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;`
             });
             this.sendDownload(blob, `mpdx-contact-export-${moment().format('Y-MM-DD-HH:mm')}.xlsx`);
+        }).finally(() => {
+            this.blockUI.reset();
         });
     }
     mailingCSVLink() {
+        this.blockUI.start();
         const params = assign(this.params, {
             url: 'contacts/exports/mailing.csv',
             headers: {
@@ -86,10 +94,16 @@ class ExportContactsController {
                 type: `text/csv;charset=utf-8;`
             });
             this.sendDownload(blob, `mpdx-mailing-export-${moment().format('Y-MM-DD-HH:mm')}.csv`);
+        }).finally(() => {
+            this.blockUI.reset();
         });
     }
 }
 
+import blockUI from 'angular-block-ui';
+import contacts from 'contacts/contacts.service';
 
-export default angular.module('mpdx.contacts.list.exportContacts.controller', [])
-    .controller('exportContactsController', ExportContactsController).name;
+export default angular.module('mpdx.contacts.list.exportContacts.controller', [
+    blockUI,
+    contacts
+]).controller('exportContactsController', ExportContactsController).name;
