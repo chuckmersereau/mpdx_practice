@@ -139,7 +139,7 @@ class TagsService {
 }
 
 import gettext from 'angular-gettext';
-import modal from '../../../../common/modal/modal.service';
+import modal from 'common/modal/modal.service';
 
 export default angular.module('mpdx.common.tags.service', [
     gettext,

@@ -1,4 +1,5 @@
 import assign from 'lodash/fp/assign';
+import isEmpty from 'lodash/fp/isEmpty';
 
 class FilterService {
     api;
@@ -44,20 +45,21 @@ class FilterService {
         if (stateParams) {
             this.params = assign(this.params, stateParams);
         }
+        this.wildcard_search = '';
         this.change();
     }
     change() {
         this.$rootScope.$emit('contactsFilterChange');
     }
     isResettable() {
-        return !angular.equals(this.params, this.default_params) || this.contactsTags.isResettable();
+        return !angular.equals(this.params, this.default_params) || this.contactsTags.isResettable() || !isEmpty(this.wildcard_search);
     }
 }
 
-import api from '../../../common/api/api.service';
+import api from 'common/api/api.service';
 import contactsTags from './tags/tags.service';
-import filters from '../../../common/filters/filters.service';
+import filters from 'common/filters/filters.service';
 
-export default angular.module('mpdx.services.filter', [
+export default angular.module('mpdx.contacts.sidebar.filter.service', [
     api, contactsTags, filters
 ]).service('contactFilter', FilterService).name;
