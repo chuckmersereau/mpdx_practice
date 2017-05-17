@@ -2,7 +2,8 @@ import includes from 'lodash/fp/includes';
 import map from 'lodash/fp/map';
 import reject from 'lodash/fp/reject';
 import unionBy from 'lodash/fp/unionBy';
-import joinComma from "../../../../common/fp/joinComma";
+import joinComma from "common/fp/joinComma";
+import emptyToNull from "common/fp/emptyToNull";
 import uuid from 'uuid/v1';
 
 class TagsService {
@@ -81,19 +82,19 @@ class TagsService {
         });
     }
     untagContact(contactIds, tag) {
-        const params = [{
+        const params = {
             filter: {
                 account_list_id: this.api.account_list_id,
-                contact_ids: joinComma(contactIds)
+                contact_ids: emptyToNull(joinComma(contactIds))
             }
-        }];
+        };
         const data = [{
             name: tag
         }];
         const message = this.gettextCatalog.getString('Are you sure you wish to remove the selected tag?');
         return this.modal.confirm(message).then(() => {
             return this.api.delete({url: 'contacts/tags/bulk', params: params, data: data, type: 'tags'}).then(() => {
-                this.$rootScope.$emit('contactTagDeleted', {tag: tag.name, contactIds: contactIds});
+                this.$rootScope.$emit('contactTagDeleted', {tag: tag, contactIds: contactIds});
                 return this.load();
             });
         });
@@ -138,10 +139,11 @@ class TagsService {
     }
 }
 
+import api from 'common/api/api.service';
 import gettext from 'angular-gettext';
 import modal from 'common/modal/modal.service';
 
 export default angular.module('mpdx.common.tags.service', [
     gettext,
-    modal
+    api, modal
 ]).service('contactsTags', TagsService).name;
