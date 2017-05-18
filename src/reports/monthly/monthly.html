@@ -9,8 +9,8 @@
 
     <div ng-if="!$ctrl.loading">
         <div ng-if="!$ctrl.errorOccurred" class="progress">
-            <div ng-repeat="donationType in $ctrl.donationsByType | orderBy: 'order'" class="progress-bar color-{{$index % 6}}" style="width: {{$ctrl.percentage(donationType) }}%" data-title="{{$ctrl.total_currency_symbol}}{{donationType.sum | number : 0}}" data-placement="bottom" bs-tooltip>
-                <span ng-if="$ctrl.percentage(donationType) > 7" ng-switch="donationType.type">
+            <div ng-repeat="donationType in $ctrl.donationsByType | orderBy: 'order'" class="progress-bar color-{{::$index % 6}}" style="width: {{::$ctrl.percentage(donationType) }}%" data-title="{{::$ctrl.total_currency_symbol}}{{::donationType.sum | number : 0}}" data-placement="bottom" bs-tooltip>
+                <span ng-if="::$ctrl.percentage(donationType) > 7" ng-switch="donationType.type">
                   <span ng-switch-when="received" translate>Received</span>
                   <span ng-switch-when="likely" translate>Likely</span>
                   <span ng-switch-when="unlikely" translate>Possible</span>
@@ -28,20 +28,20 @@
                         <span ng-switch-when="received" translate>Donations So Far This Month</span>
                         <span ng-switch-when="likely" translate>Likely Partners This Month</span>
                         <span ng-switch-when="unlikely" translate>Possible Partners This Month</span>
-                        <span ng-switch-default>{{ donationType.type }}</span>
-                        <small ng-if="!$ctrl.isOpen($index)" translate translate-n="donationType.donations.length || 0" translate-plural="Show {{$count}} partners">
+                        <span ng-switch-default>{{ ::donationType.type }}</span>
+                        <small ng-if="!$ctrl.isOpen($index)" translate translate-n="::donationType.donations.length || 0" translate-plural="Show {{$count}} partners">
                             Show 1 partner
                         </small>
                         <div class="pull-right">
                             <span ng-switch-when="received" translate>Monthly Total So Far:</span>
                             <span ng-switch-when="likely" translate>Likely Additional:</span>
-                            {{$ctrl.total_currency_symbol}}{{donationType.sum | number : 0}}
+                            {{$ctrl.total_currency_symbol}}{{::donationType.sum | number : 0}}
                             {{$ctrl.total_currency}}
                         </div>
                     </h4>
                 </div>
                 <div class="panel-collapse" role="tabpanel" bs-collapse-target>
-                    <div class="panel-body" ng-if="donationType.donations">
+                    <div class="panel-body" ng-if="::donationType.donations">
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <thead>
@@ -50,36 +50,36 @@
                                     <th style="width: 20%" translate>Status</th>
                                     <th style="width: 10%" class="text-right" translate>Commitment</th>
                                     <th style="width: 15%" class="text-right" translate>Frequency</th>
-                                    <th style="width: 15%" class="text-right"><span ng-if="donationType.type === 'received'" translate>Donation</span></th>
+                                    <th style="width: 15%" class="text-right"><span ng-if="::donationType.type === 'received'" translate>Donation</span></th>
                                     <th style="width: 10%" class="text-right" translate>Converted</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr ng-repeat="donation in donationType.donations | orderBy : 'donor'">
-                                    <td><a ui-sref="contacts.show({contactId: donation.contact_id})">{{donation.contact_name}}</a></td>
-                                    <td>{{donation.contact_status}}</td>
+                                    <td><a ui-sref="contacts.show({contactId: donation.contact_id})">{{::donation.contact_name}}</a></td>
+                                    <td>{{::donation.contact_status}}</td>
                                     <td class="text-right">
-                                        <div ng-if="donation.pledge_amount !== null">
-                                            {{donation.pledge_currency_symbol}}{{donation.pledge_amount | number : 0}}
-                                            {{donation.pledge_currency}}
+                                        <div ng-if="::donation.pledge_amount !== null">
+                                            {{::donation.pledge_currency_symbol}}{{::donation.pledge_amount | number : 0}}
+                                            {{::donation.pledge_currency}}
                                         </div>
                                     </td>
-                                    <td class="text-right">{{donation.pledge_frequency}}</td>
+                                    <td class="text-right">{{::donation.pledge_frequency}}</td>
                                     <td class="text-right">
                             <span ng-if="donationType.type === 'received'">
-                              {{donation.donation_currency_symbol}}{{donation.donation_amount | number : 0 }}
-                              {{donation.donation_currency}}
+                              {{::donation.donation_currency_symbol}}{{::donation.donation_amount | number : 0 }}
+                              {{::donation.donation_currency}}
                             </span>
                                     </td>
                                     <td class="text-right">
-                                        {{donation.converted_currency_symbol}}{{donation.converted_amount | number : 0}}
+                                        {{::donation.converted_currency_symbol}}{{::donation.converted_amount | number : 0}}
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <div class="panel-footer" ng-if="!donationType.donations" translate>
+                    <div class="panel-footer" ng-if="::!donationType.donations" translate>
                         No partners found in this category
                     </div>
                 </div>
