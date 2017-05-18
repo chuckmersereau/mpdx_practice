@@ -52,7 +52,7 @@ describe('common.datetimepicker.component', () => {
             loadController({ngModel: defaultModel});
             $ctrl.$onInit();
         });
-        xit('should change the time', () => {
+        it('should change the time', () => {
             $ctrl.time = moment(defaultModel).add(1, 'hour');
             scope.$digest();
             expect($ctrl.ngModel).toEqual(moment(defaultModel).add(1, 'hour').toISOString());
