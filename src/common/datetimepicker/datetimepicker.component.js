@@ -1,4 +1,5 @@
 import moment from 'moment';
+import isNil from 'lodash/fp/isNil';
 
 class DatetimepickerController {
     locale;
@@ -19,8 +20,8 @@ class DatetimepickerController {
             }
         });
         this.$scope.$watch('$ctrl.time', () => {
-            if (this.time) {
-                if (!this.model) {
+            if (!isNil(this.time)) {
+                if (isNil(this.model)) {
                     this.model = moment();
                 }
                 const time = moment(this.time);
