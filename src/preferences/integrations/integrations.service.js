@@ -2,7 +2,7 @@ class IntegrationsService {
     api;
 
     constructor(
-        $q, $log, $rootScope,
+        $q, $log,
         api
     ) {
         this.$q = $q;
@@ -11,10 +11,6 @@ class IntegrationsService {
 
         this.data = {};
         this.loading = true;
-
-        $rootScope.$on('accountListUpdated', () => {
-            this.load();
-        });
     }
     load() {
         this.loading = true;

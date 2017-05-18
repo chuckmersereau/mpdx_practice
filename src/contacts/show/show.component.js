@@ -109,9 +109,6 @@ class ContactController {
             this.gettextCatalog.getString('58471fd6903360069817752e')
         ]);
     }
-    $onInit() {
-        this.people.listAll(); //lazy load people so the people modal feels snappy
-    }
     $onChanges() {
         this.$log.debug('selected contact: ', this.contacts.current);
     }

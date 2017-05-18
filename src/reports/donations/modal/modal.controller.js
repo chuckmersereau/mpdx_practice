@@ -27,12 +27,17 @@ class DonationModalController {
         this.blockUI = blockUI.instances.get('donationModal');
         this.donation = angular.copy(donation);
         this.donationInitialState = angular.copy(donation);
+        this.appealsList = [];
 
-        this.appeals.getList();
+        this.activate();
+    }
+    activate() {
+        this.appeals.getList().then((data) => {
+            this.appealsList = data;
+        });
         this.donorAccounts.getList();
         this.designationAccounts.getList();
     }
-
     save() {
         if (this.donationInitialState.appeal && !this.donation.appeal) { //appeal removed case
             this.donation.appeal = {id: 'none'}; //fudge around api shortcoming

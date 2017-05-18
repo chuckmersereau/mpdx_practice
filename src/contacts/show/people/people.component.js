@@ -21,7 +21,15 @@ class ContactPeopleController {
         this.people = people;
         this.gettextCatalog = gettextCatalog;
 
+        this.data = [];
         this.isMerging = false;
+
+        $rootScope.$on('accountListUpdated', () => {
+            this.people.listAll(true);
+        });
+    }
+    $onInit() {
+        this.people.listAll(); //lazy load people so the people modal feels snappy
     }
     $onChanges() {
         this.selectedPeople = [];
@@ -33,6 +41,7 @@ class ContactPeopleController {
         }
         this.people.list(this.contact.id).then((data) => {
             this.$log.debug('selected people: ', data);
+            this.data = data;
         });
     }
     selectPerson(person) {

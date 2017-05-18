@@ -19,7 +19,7 @@ const config = {
         alias: {
             config: path.join(__dirname, 'config', configEnv + '.js')
         },
-        modules: [path.join(__dirname), "node_modules", "bower_components"]
+        modules: [path.join(__dirname), "node_modules", "bower_components", "src"]
     },
     module: {
         loaders: [{

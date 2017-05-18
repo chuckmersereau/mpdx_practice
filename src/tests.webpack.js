@@ -7,9 +7,9 @@ import 'angular-strap';
 import 'angular-strap/dist/angular-strap.tpl';
 import 'ng-rollbar';
 
-//add promise polyfill for karma
-import promise from "es6-promise";
-promise.polyfill();
+//add es6 polyfill (mostly for promises) for phantomjs
+require('es6-shim');
+require('promise.prototype.finally');
 
 //helpscout beacon
 /*eslint-disable */
