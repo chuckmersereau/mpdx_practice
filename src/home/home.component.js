@@ -30,6 +30,10 @@ class HomeController {
         $rootScope.$on('taskChange', () => {
             this.load();
         });
+
+        $rootScope.$on('accountListUpdated', () => {
+            this.load();
+        });
     }
     $onInit() {
         this.load();
