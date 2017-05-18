@@ -4,10 +4,10 @@
     <translate>Tags</translate>
     <ul class="nav nav-pills pull-right">
       <li ng-class="{ 'active': $ctrl.contactsTags.anyTags }">
-        <a ng-click="$ctrl.contactsTags.changeAny(true)" title="{{'Look up contacts with Any of the tags selected (a or b or c).' | translate }}" translate>Any</a>
+        <a ng-click="$ctrl.contactsTags.changeAny(true)" title="{{::'Look up contacts with Any of the tags selected (a or b or c).' | translate }}" translate>Any</a>
       </li>
       <li ng-class="{ 'active': !$ctrl.contactsTags.anyTags }">
-        <a ng-click="$ctrl.contactsTags.changeAny(false)" title="{{ 'Look up contacts with ALL of the tags selected (a and b and c).' | translate }}" translate>All</a>
+        <a ng-click="$ctrl.contactsTags.changeAny(false)" title="{{ ::'Look up contacts with ALL of the tags selected (a and b and c).' | translate }}" translate>All</a>
       </li>
     </ul>
 </div>
@@ -17,17 +17,17 @@
           ng-class="{ 'selected': !$ctrl.contactsTags.isTagActive(tag), 'rejected': $ctrl.contactsTags.isTagRejected(tag) }"
           ng-click="$ctrl.contactsTags.tagClick(tag, $event)"
           ng-repeat="tag in $ctrl.contactsTags.data"
-          title="{{tag.name}}">
-        {{ tag.name |limitTo: 20 }}{{ tag.name.length > 20 ? '...' : '' }}
+          title="{{::tag.name}}">
+        {{ ::tag.name |limitTo: 20 }}{{ ::tag.name.length > 20 ? '...' : '' }}
         <a ng-click="$event.stopPropagation()" data-template-url="tags_delete_popover.html" data-auto-close="'outsideClick'" class="tag_remove" bs-popover></a>
     </span>
     <a class="show_all_tags_btn">
         <div ng-click="$ctrl.showAllTags = !$ctrl.showAllTags" ng-if="$ctrl.contactsTags.data.length > 25">
-            <div ng-show="!$ctrl.showAllTags">
+            <div ng-if="!$ctrl.showAllTags">
                 <i class="fa fa-plus"></i>
                 <span><span translate>Show all</span> {{$ctrl.contactsTags.data.length}} <span translate>tags</span></span>
             </div>
-            <div ng-show="$ctrl.showAllTags">
+            <div ng-if="$ctrl.showAllTags">
                 <i class="fa fa-minus"></i>
                 <span translate>Show fewer tags</span>
             </div>
