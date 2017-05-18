@@ -1,43 +1,43 @@
 <div class="item" ng-class="{ 'item--selected' : $ctrl.tasks.isSelected($ctrl.task.id) }" ng-click="$ctrl.tasks.select($ctrl.task.id)">
     <div class="pull-left">
         <div class="btn-group">
-            <a class="btn btn-xs btn-default" ng-click="$ctrl.complete(); $event.stopPropagation();" title="{{'Completed' | translate}}">
+            <a class="btn btn-xs btn-default" ng-click="$ctrl.complete(); $event.stopPropagation();" title="{{::'Completed' | translate}}">
                 <i class="fa" ng-class="$ctrl.task.completed ? 'fa-check-square-o' : 'fa-square-o'" ></i>
             </a>
-            <a class="btn btn-xs btn-default" ng-click="$ctrl.star(); $event.stopPropagation();" title="{{'Starred' | translate}}">
+            <a class="btn btn-xs btn-default" ng-click="$ctrl.star(); $event.stopPropagation();" title="{{::'Starred' | translate}}">
                 <i class="fa" ng-class="$ctrl.task.starred ? 'fa-star' : 'fa-star-o'" ></i>
             </a>
         </div>
     </div>
     <div class="pull-right">
         <div class="btn-group">
-            <a class="btn btn-xs btn-default" ng-click="$ctrl.toggleComments(); $event.stopPropagation();" title="{{ 'View Comments' | translate }}">
+            <a class="btn btn-xs btn-default" ng-click="$ctrl.toggleComments(); $event.stopPropagation();" title="{{ ::'View Comments' | translate }}">
                 <i class="fa fa-commenting-o"></i>
                 &nbsp;
                 {{ $ctrl.task.comments.length || $ctrl.task.comments_count }}
             </a>
-            <a class="btn btn-xs btn-danger" ng-click="$ctrl.delete(); $event.stopPropagation();" title="{{ 'Delete Task' | translate }}">
+            <a class="btn btn-xs btn-danger" ng-click="$ctrl.delete(); $event.stopPropagation();" title="{{ ::'Delete Task' | translate }}">
                 <i class="fa fa-trash-o trash"></i>
             </a>
         </div>
     </div>
     <div class="item-title">
-        <strong>{{ $ctrl.task.activity_type | translate }}</strong>
-        <a ng-click="$ctrl.edit(); $event.stopPropagation();">{{ $ctrl.task.subject }}</a>
-        <span ng-if="!$ctrl.task.no_date && $ctrl.task.start_at && !$ctrl.task.completed">
-            {{ $ctrl.task.start_at | date : $ctrl.locale.dateTimeFormat + ' hh:mm a' }}
+        <strong>{{ ::$ctrl.task.activity_type | translate }}</strong>
+        <a ng-click="$ctrl.edit(); $event.stopPropagation();">{{ ::$ctrl.task.subject }}</a>
+        <span ng-if="::!$ctrl.task.no_date && $ctrl.task.start_at && !$ctrl.task.completed">
+            {{ ::$ctrl.task.start_at | date : $ctrl.locale.dateTimeFormat + ' hh:mm a' }}
         </span>
-        <span ng-if="!$ctrl.task.no_date && $ctrl.task.start_at && $ctrl.task.completed">
-            {{ $ctrl.task.completed_at | date : $ctrl.locale.dateTimeFormat + ' hh:mm a' }}
+        <span ng-if="::!$ctrl.task.no_date && $ctrl.task.start_at && $ctrl.task.completed">
+            {{ ::$ctrl.task.completed_at | date : $ctrl.locale.dateTimeFormat + ' hh:mm a' }}
         </span>
-        <span ng-repeat="contact in $ctrl.task.contacts | limitTo : 5">
+        <span ng-repeat="contact in ::$ctrl.task.contacts | limitTo : 5">
             <a ng-click="$ctrl.toggleContacts(); $event.stopPropagation();">
-                <span ng-if="$index < 4">{{ contact.name }}</span>
-                <span ng-if="$index === 4" translate translate-plural="and {{$count}} others" translate-n="$ctrl.task.contacts.length - 4">and 1 other</span>
+                <span ng-if="::$index < 4">{{ ::contact.name }}</span>
+                <span ng-if="::$index === 4" translate translate-plural="and {{$count}} others" translate-n="::$ctrl.task.contacts.length - 4">and 1 other</span>
             </a>
         </span>
         <span class="tags">
-            <span class="tag" ng-repeat="tag in $ctrl.task.tag_list">{{ tag |limitTo: 20 }}{{ tag.length > 20 ? '...' : '' }}</span>
+            <span class="tag" ng-repeat="tag in ::$ctrl.task.tag_list">{{ ::tag |limitTo: 20 }}{{ ::tag.length > 20 ? '...' : '' }}</span>
         </span>
     </div>
 </div>
@@ -48,7 +48,7 @@
             <i class="fa fa-times"></i>
         </a>
     </div>
-    <contacts-list-item ng-repeat="contact in $ctrl.task.contacts track by contact.id" contact="contact"></contacts-list-item>
+    <contacts-list-item ng-repeat="contact in ::$ctrl.task.contacts track by contact.id" contact="contact"></contacts-list-item>
 </div>
 <div class="comments" ng-if="$ctrl.showComments">
     <div class="links">
@@ -59,13 +59,13 @@
     </div>
     <div class="panel panel-default" ng-repeat="comment in $ctrl.task.comments">
         <div class="panel-body">
-            <a class="btn btn-xs btn-danger pull-right" ng-click="$ctrl.deleteComment(comment)" title="{{'Delete Comment' | translate}}" ng-if="$ctrl.commentBelongsToUser(comment)">
+            <a class="btn btn-xs btn-danger pull-right" ng-click="$ctrl.deleteComment(comment)" title="{{::'Delete Comment' | translate}}" ng-if="$ctrl.commentBelongsToUser(comment)">
                 <i class="fa fa-trash-o"></i>
             </a>
-            {{ comment.body }}
+            {{ ::comment.body }}
         </div>
         <div class="panel-footer">
-            <small><span ng-if="comment.person">{{ comment.person.first_name }} {{ comment.person.last_name }},</span> {{ comment.created_at | date : $ctrl.locale.dateTimeFormat }}</small>
+            <small><span ng-if="::comment.person">{{ ::comment.person.first_name }} {{ ::comment.person.last_name }},</span> {{ ::comment.created_at | date : $ctrl.locale.dateTimeFormat }}</small>
         </div>
     </div>
     <form class="input-group" ng-submit="$ctrl.addComment()">

@@ -2,12 +2,12 @@
 <span><i class="fa fa-tags"></i> <translate>Tags</translate></span>
 <ul class="nav nav-pills pull-right">
   <li ng-class="{ 'active': $ctrl.tasksTags.anyTags }">
-    <a ng-click="$ctrl.tasksTags.anyTags = true" title="Look up contacts with Any of the tags selected (a or b or c)."
+    <a ng-click="$ctrl.tasksTags.anyTags = true" title="{{ ::'Look up contacts with Any of the tags selected (a or b or c).' | translate }}"
        translate>Any</a>
   </li>
   <li ng-class="{ 'active': !$ctrl.tasksTags.anyTags }">
     <a ng-click="$ctrl.tasksTags.anyTags = false"
-       title="Look up contacts with ALL of the tags selected (a and b and c)." translate>All</a>
+       title="{{ ::'Look up contacts with ALL of the tags selected (a and b and c).' | translate }}" translate>All</a>
   </li>
 </ul>
 </span>
@@ -17,17 +17,17 @@
         ng-class="{ 'selected': !$ctrl.tasksTags.isTagActive(tag), 'rejected': $ctrl.tasksTags.isTagRejected(tag) }"
         ng-click="$ctrl.tasksTags.tagClick(tag, $event)"
         ng-repeat="tag in $ctrl.tasksTags.data"
-        title="{{tag.name}}">
-      {{ tag.name |limitTo: 20 }}{{ tag.name.length > 20 ? '...' : '' }}
+        title="{{::tag.name}}">
+      {{ ::tag.name |limitTo: 20 }}{{ ::tag.name.length > 20 ? '...' : '' }}
       <a ng-click="$event.stopPropagation()" data-template-url="task_tags_delete_popover.html" data-auto-close="'outsideClick'" class="tag_remove" bs-popover></a>
   </span>
     <a class="show_all_tags_btn">
         <div ng-click="$ctrl.showAllTags = !$ctrl.showAllTags" ng-if="$ctrl.tasksTags.data.length > 25">
-            <div ng-show="!$ctrl.showAllTags">
+            <div ng-if="!$ctrl.showAllTags">
                 <i class="fa fa-plus"></i>
                 <span translate>Show all</span> {{$ctrl.tasksTags.data.length}} <span translate>tags</span>
             </div>
-            <div ng-show="$ctrl.showAllTags">
+            <div ng-if="$ctrl.showAllTags">
                 <i class="fa fa-minus"></i>
                 <span translate>Show fewer tags</span>
             </div>
