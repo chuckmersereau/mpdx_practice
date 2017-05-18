@@ -1,4 +1,9 @@
 class GoogleImportController {
+    constructor(
+        contactsTags
+    ) {
+        this.contactsTags = contactsTags;
+    }
     save() {
 
     }
