@@ -35,11 +35,11 @@
                         <tr ng-repeat="donation in $ctrl.donationsList">
                             <td ng-if="::$ctrl.inContact">{{ ::donation.donor_account.account_number }}</td>
                             <td class="date">{{ ::donation.donation_date | moment: 'l' }}</td>
-                            <td ng-if="::!$ctrl.inContact">
-                                <a ui-sref="contacts.show({ contactId: donation.contact.id })">{{ ::donation.contact.name }} ({{ ::donation.donor_account.account_number }})</a>
+                            <td ng-if="!$ctrl.inContact">
+                                <a ui-sref="contacts.show({ contactId: donation.contact.id })">{{ ::donation.donor_account.display_name }}</a>
                             </td>
                             <td class="text-right">{{ ::donation.amount | currency:'':0 }} {{ ::donation.currency }}</td>
-                            <td>{{ ::donation.designation_account.name }} ({{ ::donation.designation_account.designation_number }})</td>
+                            <td>{{ ::donation.designation_account.display_name }}</td>
                             <td>{{ ::donation.payment_method }}</td>
                             <td>{{ ::donation.appeal.name }}</td>
                             <td class="text-right"><a ng-click="$ctrl.openDonationModal(donation)"><i class="fa fa-pencil-square-o"></i></a></td>

@@ -10,11 +10,14 @@ describe('common.appeals.service', () => {
             api.account_list_id = 123;
         });
     });
+
     describe('getCount', () => {
         const result = {meta: {pagination: {total_count: 1}}};
+
         beforeEach(() => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve(result));
         });
+
         it('should query api for a count and return it', (done) => {
             appeals.getCount().then(data => {
                 expect(data).toBe(1);
@@ -27,10 +30,12 @@ describe('common.appeals.service', () => {
             });
         });
     });
+
     describe('getCount - no results', () => {
         beforeEach(() => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve({}));
         });
+
         it('should query api for a count and return it', (done) => {
             appeals.getCount().then(data => {
                 expect(data).toBe(0);
@@ -43,21 +48,32 @@ describe('common.appeals.service', () => {
             });
         });
     });
-    describe('getList', () => {
-        const result = [];
+
+    describe('search', () => {
+        const keywords = 'my keywords';
         beforeEach(() => {
-            spyOn(api, 'get').and.callFake(() => Promise.resolve(result));
+            spyOn(api, 'get').and.callFake((url, data) => Promise.resolve(data));
         });
-        it('should query api for a list and return it', (done) => {
-            appeals.getList().then(data => {
-                expect(data).toBe(result);
-                done();
-            });
-            expect(api.get).toHaveBeenCalledWith('appeals', {
-                fields: {appeals: 'name'},
-                filter: {account_list_id: api.account_list_id},
-                per_page: 1000
-            });
+
+        it('should return a promise', () => {
+            expect(appeals.search(keywords)).toEqual(jasmine.any(Promise));
+        });
+
+        it('should call api.get', () => {
+            appeals.search(keywords);
+            expect(api.get).toHaveBeenCalledWith(
+                'appeals',
+                {
+                    filter: {
+                        wildcard_search: keywords,
+                        account_list_id: api.account_list_id
+                    },
+                    fields: {
+                        appeals: 'name'
+                    },
+                    per_page: 6
+                }
+            );
         });
     });
 });

@@ -1,0 +1,4 @@
+<button ng-click="$ctrl.openModal()" class="btn btn-default btn-block">
+    <translate translate-params-item="$ctrl.itemName" ng-if="!$ctrl.displayText">Select {{item}}</translate>
+    <span ng-if="$ctrl.displayText">{{ $ctrl.displayText }}</span>
+</button>

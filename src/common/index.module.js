@@ -7,7 +7,7 @@ import autofocus from './autofocus/autofocus.directive';
 import avatar from './avatar/avatar.component';
 import bgImg from './bgImg/bgImg.directive';
 import chosen from './chosen/chosen.directive';
-import contactSelector from './contactSelector/index.module';
+import collectionSelector from './collectionSelector/index.module';
 import convertToNumber from './convertToNumber/convertToNumber.directive';
 import cover from './cover/index.module';
 import currencySelect from './currencySelect/currencySelect.component';
@@ -45,7 +45,7 @@ export default angular.module('mpdx.common', [
     avatar,
     bgImg,
     chosen,
-    contactSelector,
+    collectionSelector,
     convertToNumber,
     cover,
     currencySelect,
