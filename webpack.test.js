@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Webpack config for tests
  */
