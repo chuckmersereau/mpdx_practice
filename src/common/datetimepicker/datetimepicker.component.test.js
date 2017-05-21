@@ -47,9 +47,19 @@ describe('common.datetimepicker.component', () => {
             expect($ctrl.init).toHaveBeenCalled();
         });
     });
+    describe('$onChanges', () => {
+        beforeEach(() => {
+            spyOn($ctrl, 'init').and.callFake(() => {});
+        });
+        it('should call init', () => {
+            $ctrl.$onChanges();
+            expect($ctrl.init).toHaveBeenCalled();
+        });
+    });
     describe('events', () => {
         beforeEach(() => {
             loadController({ngModel: defaultModel});
+            $ctrl.model = moment(defaultModel);
             $ctrl.$onInit();
         });
         it('should change the time', () => {

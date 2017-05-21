@@ -51,7 +51,20 @@ module.exports = function(wallaby) {
             window.__moduleBundler.loadTests();
         },
         compilers: {
-            'src/**/*.js*': wallaby.compilers.babel()
+            'src/**/*.js*': wallaby.compilers.babel({
+                "presets": [
+                    "es2015",
+                    "stage-0"
+                ],
+                "plugins": [
+                    "angularjs-annotate"
+                ],
+                "env": {
+                    "test": {
+                        "plugins": ["istanbul"]
+                    }
+                }
+            })
         }
     };
 };
