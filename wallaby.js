@@ -53,8 +53,8 @@ module.exports = function(wallaby) {
         compilers: {
             'src/**/*.js*': wallaby.compilers.babel({
                 "presets": [
-                    "es2015",
-                    "stage-0"
+                    "env",
+                    "stage-1"
                 ],
                 "plugins": [
                     "angularjs-annotate"
