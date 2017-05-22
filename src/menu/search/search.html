@@ -19,7 +19,7 @@
             <a ng-repeat="contact in $ctrl.contactList track by contact.id"
                ng-click="$ctrl.go(contact.id)"
                ng-if="$ctrl.searchParams !== ''">
-                {{contact.name}}
+                {{::contact.name}}
             </a>
         </div>
     </div>

@@ -26,7 +26,7 @@
     </div>
     <label translate>Contacts</label>
     <div class="form-group" ng-repeat="contact in $ctrl.contactsList track by $index">
-        <contact-selector return-fn="$ctrl.setContact($params, $index)" contact-name="$ctrl.contactNames[contact]"></contact-selector>
+        <collection-selector item-name="{{ 'contact' | translate }}" display-text="$ctrl.contactNames[contact]" search="$ctrl.contacts.search(text)" select="$ctrl.setContact(item, $index)"></collection-selector>
     </div>
     <div class="form-group">
         <button ng-click="$ctrl.addContact()" class="btn btn-default btn-block btn-xs"><i class="fa fa-plus-circle"></i> <translate>Add Contact</translate></button>

@@ -1,4 +1,5 @@
 import moment from 'moment';
+import defaultTo from 'lodash/fp/defaultTo';
 import isNil from 'lodash/fp/isNil';
 
 class DatetimepickerController {
@@ -21,9 +22,7 @@ class DatetimepickerController {
         });
         this.$scope.$watch('$ctrl.time', () => {
             if (!isNil(this.time)) {
-                if (isNil(this.model)) {
-                    this.model = moment();
-                }
+                this.model = defaultTo(moment(), this.model);
                 const time = moment(this.time);
                 this.model = this.model.hour(time.hour()).minute(time.minute());
                 this.ngModel = this.model.toISOString();

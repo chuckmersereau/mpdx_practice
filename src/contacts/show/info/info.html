@@ -88,7 +88,6 @@
                         ng-change="$ctrl.save()"
                         ng-model-options="{ debounce: 1000 }"
                         class="form-control"
-                        allow-single-deselect="true"
                         data-placeholder-text-single="'Select an Option' | translate"
                         id="pledge_currency"
                         ng-options="pc.code as pc.code_symbol_string for pc in $ctrl.serverConstants.data.pledge_currencies"

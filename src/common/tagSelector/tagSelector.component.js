@@ -11,7 +11,10 @@ const ifNotObject = (tag) => {
 
 class TagSelectorController {
     tagList;
-    constructor() {
+    constructor(
+        $filter
+    ) {
+        this.$filter = $filter;
         this.tags = [];
     }
     $onInit() {
@@ -36,6 +39,9 @@ class TagSelectorController {
         if (index > -1) {
             this.ngModel.splice(index, 1);
         }
+    }
+    filterTags($query) {
+        return this.$filter('filter')(this.tags, $query);
     }
 }
 

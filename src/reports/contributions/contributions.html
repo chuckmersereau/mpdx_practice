@@ -16,8 +16,8 @@
         </button>
     </div>
     <h2>
-        <span ng-if="$ctrl.type === 'partner'" translate>Contributions by Partner Currency</span>
-        <span ng-if="$ctrl.type === 'salary'" translate>Contributions by Salary Currency</span>
+        <span ng-if="::$ctrl.type === 'partner'" translate>Contributions by Partner Currency</span>
+        <span ng-if="::$ctrl.type === 'salary'" translate>Contributions by Salary Currency</span>
     </h2>
 
     <script type="text/ng-template" id="reports/contributions/popovers/name.tpl.html">
@@ -105,10 +105,10 @@
                         <thead>
                             <tr class="year-header-row">
                                 <th colspan="{{$ctrl.expanded ? 5 : 1}}">
-                                    {{currency.code}} ({{currency.symbol}})
+                                    {{::currency.code}} ({{::currency.symbol}})
                                 </th>
-                                <th ng-repeat="(year, numberOfMonths) in $ctrl.contributions.data.years" colspan="{{numberOfMonths}}">
-                                    <div>{{year}}</div>
+                                <th ng-repeat="(year, numberOfMonths) in $ctrl.contributions.data.years" colspan="{{::numberOfMonths}}">
+                                    <div>{{::year}}</div>
                                 </th>
                                 <th>
                                     <div>&nbsp;</div>
@@ -121,8 +121,8 @@
                                 <th ng-if="$ctrl.expanded" translate>Avg</th>
                                 <th ng-if="$ctrl.expanded" translate>Min</th>
                                 <th class="text-right" ng-repeat="date in $ctrl.contributions.data.months track by $index">
-                                    <span data-title="{{ 'This last month is excluded from totals and averages' | translate }}" data-trigger="{{$last ? 'hover' : 'manual'}}" ng-class="{'text-muted': $last}" bs-tooltip>
-                                        {{date.format('MMM')}}
+                                    <span data-title="{{ ::'This last month is excluded from totals and averages' | translate }}" data-trigger="{{::$last ? 'hover' : 'manual'}}" ng-class="::{'text-muted': $last}" bs-tooltip>
+                                        {{::date.format('MMM')}}
                                     </span>
                                 </th>
                                 <th class="col-md-1 text-right" translate>Total</th>
@@ -132,38 +132,38 @@
                             <tr ng-repeat="donor in currency.donors">
                                 <td>
                                     <i class="fa fa-info-circle" ng-if="!$ctrl.expanded" data-template-url="reports/contributions/popovers/name.tpl.html" data-trigger="hover" data-placement="top" bs-popover></i>
-                                    <a ui-sref="contacts.show({contactId: donor.contact.contact_id})" >{{donor.contact.contact_name}}</a>
+                                    <a ui-sref="contacts.show({contactId: donor.contact.contact_id})" >{{::donor.contact.contact_name}}</a>
                                     <span ng-switch="late = donor.late_by_60_days ? 60 : (donor.late_by_30_days ? 30 : false)">
                                         <i class="fa fa-circle circle-late" ng-switch-when="30" data-title="30 days lat" bs-tooltip></i>
                                         <i class="fa fa-circle circle-very-late" ng-switch-when="60" data-title="60 days late" bs-tooltip></i>
                                     </span>
                                 </td>
                                 <td ng-if="$ctrl.expanded">
-                                    {{donor.contact.status}}
+                                    {{::donor.contact.status}}
                                 </td>
                                 <td ng-if="$ctrl.expanded">
-                                    <span ng-if="donor.contact.pledge_amount > 0">
-                                        {{currency.symbol}}
-                                        {{donor.contact.pledge_amount | number:0}}
-                                        {{currency.code}}
-                                        {{$ctrl.constantsList.pledge_frequencies[donor.contact.pledge_frequency]}}
+                                    <span ng-if="::donor.contact.pledge_amount > 0">
+                                        {{::currency.symbol}}
+                                        {{::donor.contact.pledge_amount | number:0}}
+                                        {{::currency.code}}
+                                        {{::$ctrl.constantsList.pledge_frequencies[donor.contact.pledge_frequency]}}
                                     </span>
                                 </td>
                                 <td class="text-right" ng-if="$ctrl.expanded">
-                                    {{donor.average | number:0}}
+                                    {{::donor.average | number:0}}
                                 </td>
                                 <td class="text-right" ng-if="$ctrl.expanded">
-                                    {{donor.minimum | number:0}}
+                                    {{::donor.minimum | number:0}}
                                 </td>
 
-                                <td class="text-right" ng-repeat="monthlyDonation in donor.monthlyDonations track by $index" ng-class="{'text-muted': $last}">
-                                    <span ng-if="monthlyDonation.total > 0" data-template-url="reports/contributions/popovers/donations.tpl.html" data-trigger="hover" data-placement="top" bs-popover>
-                                        {{monthlyDonation.total | number : 0}}
+                                <td class="text-right" ng-repeat="monthlyDonation in ::donor.monthlyDonations track by $index" ng-class="::{'text-muted': $last}">
+                                    <span ng-if="::monthlyDonation.total > 0" data-template-url="reports/contributions/popovers/donations.tpl.html" data-trigger="hover" data-placement="top" bs-popover>
+                                        {{::monthlyDonation.total | number : 0}}
                                     </span>
                                 </td>
                                 <td class="text-right">
                                     <strong>
-                                        {{currency.symbol_native}}{{donor.total | number : 0}}
+                                        {{::currency.symbol_native}}{{::donor.total | number : 0}}
                                     </strong>
                                 </td>
                             </tr>
@@ -173,14 +173,14 @@
                                         Totals
                                     </strong>
                                 </td>
-                                <td class="text-right" ng-repeat="total in currency.totals.months track by $index">
-                                    <strong ng-class="{'text-muted': $last}">
-                                        {{currency.symbol}}{{total | number : 0}}
+                                <td class="text-right" ng-repeat="total in ::currency.totals.months track by $index">
+                                    <strong ng-class="::{'text-muted': $last}">
+                                        {{::currency.symbol}}{{::total | number : 0}}
                                     </strong>
                                 </td>
                                 <td class="text-right">
                                     <strong>
-                                        {{currency.symbol}}{{currency.totals.year | number : 0}}
+                                        {{::currency.symbol}}{{::currency.totals.year | number : 0}}
                                     </strong>
                                 </td>
                             </tr>

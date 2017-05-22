@@ -11,10 +11,5 @@ import 'ng-rollbar';
 require('es6-shim');
 require('promise.prototype.finally');
 
-//helpscout beacon
-/*eslint-disable */
-!function(e,o,n) {window.HSCW=o,window.HS=n,n.beacon=n.beacon||{};var t=n.beacon;t.userConfig={},t.readyQueue=[],t.config=function(e){this.userConfig=e},t.ready=function(e){this.readyQueue.push(e)},o.config={docs:{enabled:!0,baseUrl:"//mpdx.helpscoutdocs.com/"},contact:{enabled:!0,formId:"2388288c-07f9-11e7-b148-0ab63ef01522"}};var r=e.getElementsByTagName("script")[0],c=e.createElement("script");c.type="text/javascript",c.async=!0,c.src="https://djtflbt20bdde.cloudfront.net/",r.parentNode.insertBefore(c,r)}(document,window.HSCW||{},window.HS||{});
-/*eslint-enable */
-
 var testsContext = require.context(".", true, /.test$/);
 testsContext.keys().forEach(testsContext);

@@ -35,7 +35,8 @@ describe('common.datetimepicker.component', () => {
         });
         it('should set time to the ngModel', () => {
             $ctrl.init();
-            expect($ctrl.time).toEqual(moment($ctrl.model).toDate());
+            expect(moment($ctrl.time).format('h')).toEqual(moment($ctrl.model).format('h'));
+            expect(moment($ctrl.time).format('m')).toEqual(moment($ctrl.model).format('m'));
         });
     });
     describe('$onInit', () => {
@@ -47,12 +48,22 @@ describe('common.datetimepicker.component', () => {
             expect($ctrl.init).toHaveBeenCalled();
         });
     });
+    describe('$onChanges', () => {
+        beforeEach(() => {
+            spyOn($ctrl, 'init').and.callFake(() => {});
+        });
+        it('should call init', () => {
+            $ctrl.$onChanges();
+            expect($ctrl.init).toHaveBeenCalled();
+        });
+    });
     describe('events', () => {
         beforeEach(() => {
             loadController({ngModel: defaultModel});
+            $ctrl.model = moment(defaultModel);
             $ctrl.$onInit();
         });
-        xit('should change the time', () => {
+        it('should change the time', () => {
             $ctrl.time = moment(defaultModel).add(1, 'hour');
             scope.$digest();
             expect($ctrl.ngModel).toEqual(moment(defaultModel).add(1, 'hour').toISOString());

@@ -1,0 +1,31 @@
+<modal title="{{$ctrl.itemName}}" cancel="$hide()" save="$ctrl.save()" class="collection-selector-modal">
+    <label for="search" translate translate-params-item="$ctrl.itemName">Select {{item}}</label>
+    <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+        <input id="search"
+               class="form-control"
+               ng-model="$ctrl.searchText"
+               ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
+               ng-change="$ctrl.search()"
+               autocomplete="off"
+               autofocus>
+    </div>
+    <div class="list-group">
+        <a class="list-group-item"
+            ng-repeat="item in $ctrl.collection"
+            ng-click="$ctrl.selectedItem = item"
+            ng-class="{ active: $ctrl.selectedItem.id === item.id }">
+            {{ item.display_name || item.name }}
+        </a>
+        <div class="list-group-item list-group-item-info" ng-if="$ctrl.collection.length == 0 && $ctrl.searchText != '' && $ctrl.loading == false">
+            No results found
+        </div>
+        <div class="list-group-item" ng-if="$ctrl.loading">
+            <div class="loading-spinner">
+                <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+                <span class="sr-only" translate>Loading</span>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" ng-model="$ctrl.selectedItem.id" required>
+</modal>

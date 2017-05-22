@@ -2,23 +2,28 @@ import reduce from 'lodash/fp/reduce';
 import toInteger from 'lodash/fp/toInteger';
 
 class BalancesController {
-    api;
+    designationAccounts;
+
     constructor(
-        $log, designationAccounts, blockUI
+        $rootScope, blockUI,
+        designationAccounts
     ) {
-        this.$log = $log;
-        this.designationAccounts = designationAccounts;
+        this.$rootScope = $rootScope;
         this.blockUI = blockUI.instances.get('balances');
+
+        this.designationAccounts = designationAccounts;
+
+        this.$rootScope.$on('accountListUpdated', () => {
+            this.load();
+        });
     }
     $onInit() {
         this.load();
     }
     load() {
         this.blockUI.start();
-        this.designationAccounts.load().then(() => {
-            this.blockUI.stop();
-            // this.total_currency = data.total_currency;
-            // this.total_currency_symbol = data.total_currency_symbol;
+        return this.designationAccounts.load(true).then(() => {
+            this.blockUI.reset();
             this.updateTotal();
         });
     }
@@ -38,5 +43,8 @@ const Balances = {
     template: require('./balances.html')
 };
 
-export default angular.module('mpdx.reports.balances.component', [])
+import blockUI from 'angular-block-ui';
+import designationAccounts from 'common/designationAccounts/designationAccounts.service';
+
+export default angular.module('mpdx.reports.balances.component', [blockUI, designationAccounts])
     .component('balances', Balances).name;

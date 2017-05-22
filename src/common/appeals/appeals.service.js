@@ -24,15 +24,21 @@ class AppealsService {
             return count;
         });
     }
-    getList() {
-        return this.api.get('appeals', {
-            fields: {appeals: 'name'},
-            filter: {account_list_id: this.api.account_list_id},
-            per_page: 1000
-        }).then((data) => {
-            this.$log.debug(`appeals`, data);
-            return data;
-        });
+
+    search(keywords) {
+        return this.api.get(
+            `appeals`,
+            {
+                filter: {
+                    wildcard_search: keywords,
+                    account_list_id: this.api.account_list_id
+                },
+                fields: {
+                    appeals: 'name'
+                },
+                per_page: 6
+            }
+        );
     }
 }
 

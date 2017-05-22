@@ -28,25 +28,25 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="designation in $ctrl.designationAccounts.data">
-                        <td>{{designation.organization_name}}</td>
-                        <td>{{designation.designation_number}}</td>
-                        <td>{{designation.balance_updated_at | date : format : shortDate}}</td>
+                        <td>{{::designation.organization_name}}</td>
+                        <td>{{::designation.designation_number}}</td>
+                        <td>{{::designation.balance_updated_at | date : format : shortDate}}</td>
                         <td class="text-right">
-                            {{designation.currency_symbol}}
-                            {{designation.balance || 0  | number : 0}}
-                            {{designation.currency}}
+                            {{::designation.currency_symbol}}
+                            {{::designation.balance || 0  | number : 0}}
+                            {{::designation.currency}}
                         </td>
                         <td class="text-right">
-                            {{designation.exchange_rate | number : 2}}
-                            {{$ctrl.total_currency_symbol}}
+                            {{::designation.exchange_rate | number : 2}}
+                            {{::$ctrl.total_currency_symbol}}
                             /
-                            {{designation.currency_symbol}}
-                            {{designation.currency}}
+                            {{::designation.currency_symbol}}
+                            {{::designation.currency}}
                         </td>
                         <td class="text-right">
-                            {{$ctrl.total_currency_symbol}}
-                            {{designation.converted_balance | number : 0}}
-                            {{$ctrl.total_currency}}
+                            {{::$ctrl.total_currency_symbol}}
+                            {{::designation.converted_balance | number : 0}}
+                            {{::$ctrl.total_currency}}
                         </td>
                         <td class="text-right">
                             <fa-checkbox checked="designation.active" on-toggle="$ctrl.onToggle(designation)"></fa-checkbox>

@@ -282,7 +282,6 @@ const ContactList = {
     controller: ListController,
     template: require('./list.html'),
     bindings: {
-        view: '@',
         selected: '='
     }
 };

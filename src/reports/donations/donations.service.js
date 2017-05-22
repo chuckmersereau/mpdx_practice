@@ -1,25 +1,28 @@
 import has from 'lodash/fp/has';
+import moment from 'moment';
 
 class DonationsService {
     api;
     modal;
-    session;
 
     constructor(
-        $q, $log, $state, gettextCatalog,
+        $log, gettextCatalog,
         api, modal
     ) {
-        this.$q = $q;
         this.$log = $log;
-        this.$state = $state;
         this.gettextCatalog = gettextCatalog;
         this.api = api;
         this.modal = modal;
     }
 
-    getDonations({ startDate = null, endDate = null, donorAccountId = null, page = null }) {
+    getDonations({ startDate = null, endDate = null, donorAccountId = null, page = null } = {}) {
         let params = {
-            fields: { contacts: 'name', designation_account: 'name,designation_number', donor_account: 'account_number', appeal: 'name' },
+            fields: {
+                contacts: 'name',
+                designation_account: 'display_name,designation_number',
+                donor_account: 'display_name,account_number',
+                appeal: 'name'
+            },
             filter: {},
             include: 'designation_account,donor_account,contact,appeal',
             sort: '-donation_date'
@@ -30,7 +33,7 @@ class DonationsService {
         if (page) {
             params.page = page;
         }
-        if (startDate && endDate) {
+        if (startDate && endDate && moment.isMoment(startDate) && moment.isMoment(endDate)) {
             params.filter.donation_date = `${startDate.format('YYYY-MM-DD')}..${endDate.format('YYYY-MM-DD')}`;
         }
         return this.api.get(`account_lists/${this.api.account_list_id}/donations`, params).then((data) => {
@@ -57,7 +60,7 @@ class DonationsService {
         });
     }
 
-    getDonationChart({ startDate = null, endDate = null, donorAccountId = null }) {
+    getDonationChart({ startDate = null, endDate = null, donorAccountId = null } = {}) {
         let params = {
             filter: {
                 account_list_id: this.api.account_list_id
@@ -66,7 +69,7 @@ class DonationsService {
         if (donorAccountId) {
             params.filter.donor_account_id = donorAccountId;
         }
-        if (startDate && endDate) {
+        if (startDate && endDate && moment.isMoment(startDate) && moment.isMoment(endDate)) {
             params.filter.donation_date = `${startDate.format('YYYY-MM-DD')}..${endDate.format('YYYY-MM-DD')}`;
         }
         return this.api.get('reports/monthly_giving_graph', params).then((data) => {
@@ -75,11 +78,10 @@ class DonationsService {
         });
     }
 
-    openNewDonationModal() {
-        return this.openDonationModal({ amount: '0' });
-    }
-
     openDonationModal(donation) {
+        if (!donation) {
+            donation = { amount: '0' };
+        }
         return this.modal.open({
             template: require('./modal/modal.html'),
             controller: 'donationModalController',
@@ -89,5 +91,12 @@ class DonationsService {
         });
     }
 }
-export default angular.module('mpdx.reports.donations.service', [])
-    .service('donations', DonationsService).name;
+
+import gettextCatalog from 'angular-gettext';
+import api from 'common/api/api.service';
+import modal from 'common/modal/modal.service';
+
+export default angular.module('mpdx.reports.donations.service', [
+    gettextCatalog,
+    api, modal
+]).service('donations', DonationsService).name;

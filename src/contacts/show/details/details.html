@@ -96,7 +96,7 @@
                 <div class="col-sm-6">
                     <div class="field">
                         <h4 class="attribute-header" translate>Referred By</h4>
-                        <contact-selector contact-name="$ctrl.referrerName" return-fn="$ctrl.onContactSelected($params)"></contact-selector>
+                        <collection-selector item-name="{{ 'contact' | translate }}" display-text="$ctrl.referrerName" search="$ctrl.contacts.search(text)" select="$ctrl.onContactSelected(item)"></collection-selector>
                     </div>
                     <div class="field">
                         <h4 class="attribute-header" translate>Send Appeals?</h4>

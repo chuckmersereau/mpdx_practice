@@ -5,6 +5,7 @@
             on-tag-added="$ctrl.onTagAdded({$tag: $tag})"
             on-tag-removing="$ctrl.removeTag($tag)"
             on-tag-removed="$ctrl.onTagRemoved({$tag: $tag})"
+            replace-spaces-with-dashes="false"
             max-length="255">
-    <auto-complete source="$ctrl.tags" min-length="0" select-first-match="false"></auto-complete>
+    <auto-complete source="$ctrl.filterTags($query)" min-length="0" select-first-match="false"></auto-complete>
 </tags-input>

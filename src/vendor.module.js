@@ -17,14 +17,14 @@ import angularticsAdobeAnalytics from 'angulartics-adobe-analytics';
 // deps with no default exports
 import lang from 'langmap'; //load before language-picker
 window.languageMappingList = lang;
+import 'es6-shim';
+import 'promise.prototype.finally';
 import 'angular-block-ui';
 import 'angular-filter';
 import 'angular-strap';
 import 'angular-strap/dist/angular-strap.tpl';
 import 'angular-strap/dist/modules/dimensions';
 import 'angular-strap/dist/modules/debounce';
-import 'angular-strap/dist/modules/date-parser';
-import 'angular-strap/dist/modules/tooltip';
 import 'angular-chosen-localytics';
 import 'angular-localforage';
 import 'angular-timeago';
@@ -69,8 +69,6 @@ export default angular.module('mpdx.vendor', [
     'mgcrea.ngStrap',
     'mgcrea.ngStrap.helpers.dimensions',
     'mgcrea.ngStrap.helpers.debounce',
-    'mgcrea.ngStrap.helpers.dateParser',
-    'mgcrea.ngStrap.tooltip',
     'ngTagsInput',
     'yaru22.angular-timeago',
     'tandibar/ng-rollbar'

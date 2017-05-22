@@ -151,11 +151,10 @@ menu {
             border-radius: 0;
             font-size: 80%;
             .bar {
-                background: $green_light;
-                /*border-right: 1px solid rgba(255,255,255,.35);*/
+                background: $green;
             }
             .bar-pledged {
-                background: $green
+                background: $green_light;
             }
             .value, .bar {
                 height: $progress-bar-height;
