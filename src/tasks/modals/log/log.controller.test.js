@@ -120,19 +120,18 @@ describe('tasks.modals.log.controller', () => {
             $ctrl.save();
             expect(contacts.bulkEditFields).toHaveBeenCalledWith({ status: $ctrl.status }, $ctrl.task.contacts);
         });
-        xit('should hide the modal when finished', (done) => {
+        it('should hide the modal when finished', (done) => {
             $ctrl.save().then(() => {
+                expect(scope.$hide).toHaveBeenCalled();
                 done();
             });
-            expect(scope.$hide).toHaveBeenCalled();
         });
-        xit('should open next automation task if defined', (done) => {
+        it('should open next automation task if defined', (done) => {
             $ctrl.task.next_action = 'Call';
             $ctrl.save().then(() => {
                 expect(tasks.addModal).toHaveBeenCalledWith($ctrl.contactsList, $ctrl.task.next_action);
                 done();
             });
-            expect(scope.$hide).toHaveBeenCalled();
         });
     });
     describe('showPartnerStatus', () => {

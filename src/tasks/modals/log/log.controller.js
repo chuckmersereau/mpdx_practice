@@ -9,11 +9,10 @@ class LogTaskController {
     status;
     task;
     constructor(
-        $q, $scope, $state,
+        $scope, $state,
         contacts, tasks, tasksTags, serverConstants, users,
         contactsList
     ) {
-        this.$q = $q;
         this.$scope = $scope;
         this.$state = $state;
         this.contacts = contacts;
@@ -58,7 +57,7 @@ class LogTaskController {
             this.contactsList,
             this.comment
         ));
-        return this.$q.all(promises).then(() => {
+        return Promise.all(promises).then(() => {
             this.$scope.$hide();
             if (this.task.next_action) {
                 this.tasks.addModal(this.contactsList, this.task.next_action);
