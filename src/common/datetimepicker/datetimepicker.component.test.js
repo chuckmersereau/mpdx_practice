@@ -35,7 +35,8 @@ describe('common.datetimepicker.component', () => {
         });
         it('should set time to the ngModel', () => {
             $ctrl.init();
-            expect($ctrl.time).toEqual(moment($ctrl.model).toDate());
+            expect(moment($ctrl.time).format('h')).toEqual(moment($ctrl.model).format('h'));
+            expect(moment($ctrl.time).format('m')).toEqual(moment($ctrl.model).format('m'));
         });
     });
     describe('$onInit', () => {
