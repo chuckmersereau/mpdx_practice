@@ -43,9 +43,7 @@
                             </label>
                         </td>
                         <td class="google_import_tags">
-                            <tags-input class="import_by_group import_contact_tags" ng-model="$ctrl.preferences.google_contact_import.group_tags[group.id]">
-                                <auto-complete source="$ctrl.loadTags($query)" min-length="0" select-first-match="false"></auto-complete>
-                            </tags-input>
+                            <tag-selector ng-model="$ctrl.preferences.google_contact_import.group_tags[group.id]" tag-list="$ctrl.contactsTags.data"></tag-selector>
                         </td>
                     </tr>
                     </tbody>
@@ -59,9 +57,7 @@
         <br>
         <div class="importtags">
             <span translate>Tags for all imported Google contacts:</span>
-            <tags-input class="import_by_group import_contact_tags" ng-model="$ctrl.preferences.google_contact_import.tags">
-                <auto-complete source="$ctrl.loadTags($query)" min-length="0" select-first-match="false"></auto-complete>
-            </tags-input>
+            <tag-selector ng-model="$ctrl.preferences.google_contact_import.tags" tag-list="$ctrl.contactsTags.data"></tag-selector>
         </div>
         <br />
         <div class="field radiocheck">
@@ -76,7 +72,7 @@
         </div>
         <button type="submit" ng-click="$ctrl.saveGoogleImport()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
             <span translate>Import</span>&nbsp;
-            <div class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></div>
+            <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
         </button>
     </form>
 </div>

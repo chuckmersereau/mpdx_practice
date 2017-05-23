@@ -57,7 +57,7 @@
             <div class="panel panel-default">
                <div class="panel-heading" ng-class="category">{{$ctrl.tasks.categories[category]}}</div>
                <ul class="list-group">
-                    <li class="list-group-item" ng-repeat="task in tasks">
+                    <li class="list-group-item" ng-repeat="task in tasks | orderBy: ['task.completed','-task.completed_at','task.start_at','task.created_at']">
                         <tasks-list-item task="task"></tasks-list-item>
                     </li>
                 </ul>

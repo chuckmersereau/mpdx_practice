@@ -5,7 +5,7 @@ class MergeContactsController {
     mergeContacts;
 
     constructor(
-        $log, $q, $state, blockUI,
+        $log, $q, $rootScope, $state, blockUI,
         api, mergeContacts
     ) {
         this.$log = $log;
@@ -14,6 +14,10 @@ class MergeContactsController {
         this.blockUI = blockUI.instances.get('merge-contacts');
         this.api = api;
         this.mergeContacts = mergeContacts;
+
+        $rootScope.$on('accountListUpdated', () => {
+            mergeContacts.load(true);
+        });
     }
 
     useThisOne(duplicate, mergeChoice = -1) {
@@ -43,5 +47,11 @@ const MergeContacts = {
     template: require('./mergeContacts.html')
 };
 
-export default angular.module('mpdx.tools.mergeContacts.component', [])
-    .component('mergeContacts', MergeContacts).name;
+import blockUi from 'angular-block-ui';
+import mergeContacts from './mergeContacts.service';
+import uiRouter from 'angular-ui-router';
+
+export default angular.module('mpdx.tools.mergeContacts.component', [
+    blockUi, uiRouter,
+    mergeContacts
+]).component('mergeContacts', MergeContacts).name;

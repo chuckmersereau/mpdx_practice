@@ -57,5 +57,6 @@ class ModalService {
     }
 }
 
-export default angular.module('mpdxApp.services.modal', [])
-    .service('modal', ModalService).name;
+export default angular.module('mpdxApp.services.modal', [
+    'mgcrea.ngStrap'
+]).service('modal', ModalService).name;

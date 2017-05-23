@@ -1,5 +1,4 @@
 import component from './integrations.component';
-import assign from 'lodash/fp/assign';
 
 const defaultBindings = {
     selectedTab: null,
@@ -8,13 +7,15 @@ const defaultBindings = {
 };
 
 describe('preferences.integrations.component', () => {
-    let $ctrl, componentController, state, scope, help;
+    let $ctrl, componentController, state, scope, help, rootScope, integrations;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, $state, _help_) => {
+        inject(($componentController, $rootScope, $state, _help_, _integrations_) => {
             help = _help_;
-            scope = $rootScope.$new();
+            rootScope = $rootScope;
+            scope = rootScope.$new();
             state = $state;
+            integrations = _integrations_;
             componentController = $componentController;
             $ctrl = loadController(defaultBindings);
         });
@@ -30,6 +31,16 @@ describe('preferences.integrations.component', () => {
         });
         it('should have help', () => {
             expect(help.suggest).toHaveBeenCalled();
+        });
+    });
+    describe('events', () => {
+        beforeEach(() => {
+            spyOn(integrations, 'load').and.callFake(() => {});
+        });
+        it('should reload integration data on account list change', () => {
+            rootScope.$emit('accountListUpdated');
+            rootScope.$digest();
+            expect(integrations.load).toHaveBeenCalled();
         });
     });
     describe('tabSelectable', () => {

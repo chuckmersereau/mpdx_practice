@@ -109,9 +109,6 @@ class ContactController {
             this.gettextCatalog.getString('58471fd6903360069817752e')
         ]);
     }
-    $onInit() {
-        this.people.listAll(); //lazy load people so the people modal feels snappy
-    }
     $onChanges() {
         this.$log.debug('selected contact: ', this.contacts.current);
     }
@@ -149,12 +146,6 @@ class ContactController {
         this.contacts.hideContact(this.contacts.current).then(() => {
             this.$state.go('contacts');
         });
-    }
-    goLeft() {
-        this.$state.go('contacts.show', { contactId: this.contacts.getLeftId(this.contacts.current.id) });
-    }
-    goRight() {
-        this.$state.go('contacts.show', { contactId: this.contacts.getRightId(this.contacts.current.id) });
     }
     displayNotes() {
         this.$anchorScroll('contact-tabs');

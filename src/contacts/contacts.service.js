@@ -1,7 +1,5 @@
 import assign from 'lodash/fp/assign';
 import concat from 'lodash/fp/concat';
-import defaultTo from 'lodash/fp/defaultTo';
-import findIndex from 'lodash/fp/findIndex';
 import flow from 'lodash/fp/flow';
 import has from 'lodash/fp/has';
 import includes from 'lodash/fp/includes';
@@ -12,11 +10,8 @@ import isNil from 'lodash/fp/isNil';
 import map from 'lodash/fp/map';
 import omitBy from 'lodash/fp/omitBy';
 import pull from 'lodash/fp/pull';
-import pullAllBy from 'lodash/fp/pullAllBy';
-import reject from 'lodash/fp/reject';
 import toInteger from 'lodash/fp/toInteger';
 import union from 'lodash/fp/union';
-import unionBy from 'lodash/fp/unionBy';
 import joinComma from "../common/fp/joinComma";
 import relationshipId from "../common/fp/relationshipId";
 import reduce from 'lodash/fp/reduce';
@@ -46,31 +41,20 @@ class ContactsService {
         this.modal = modal;
 
         this.analytics = null;
-        this.completeFilteredList = null;
         this.current = null;
-        this.data = [];
-        this.meta = {};
-        this.loading = true;
         this.selectedContacts = [];
 
-        this.page = 1;
-        this.completeListLoadCount = 0;
-        this.totalContactCount = 0;
-
         $rootScope.$on('contactsFilterChange', () => {
-            this.reset();
+            this.clearSelectedContacts();
         });
 
         $rootScope.$on('contactsTagsChange', () => {
-            this.reset();
+            this.clearSelectedContacts();
         });
 
         $rootScope.$on('accountListUpdated', () => {
-            this.reset(true);
+            this.clearSelectedContacts();
         });
-    }
-    reset() {
-        this.selectedContacts = [];
     }
     get(id) {
         return this.api.get({
@@ -99,77 +83,10 @@ class ContactsService {
             return data;
         });
     }
-    getName(id) {
-        return this.api.get({
-            url: `contacts/${id}`,
-            data: {
-                fields: {
-                    contacts: 'name'
-                }
-            }
-        });
-    }
     getNames(ids) {
-        return this.api.get({
-            url: 'contacts',
-            data: {
-                fields: {
-                    contacts: 'name'
-                },
-                filter: {
-                    ids: joinComma(ids)
-                }
-            }
-        });
-    }
-    getCompleteFilteredList(reset = false) {
-        if (!reset && this.completeFilteredList && this.completeFilteredList.length > 0) {
-            return this.$q.resolve(this.completeFilteredList);
-        }
-        this.completeListLoadCount++;
-        const currentCount = angular.copy(this.completeListLoadCount);
-        this.completeFilteredList = []; // to avoid double call
-        return this.api.get({
-            url: 'contacts',
-            data: {
-                filter: this.buildFilterParams(),
-                fields: {
-                    contacts: 'name'
-                },
-                per_page: 25000,
-                sort: 'name'
-            },
-            overrideGetAsPost: true
-        }).then((data) => {
-            this.$log.debug('contacts all - filtered', data);
-            if (currentCount === this.completeListLoadCount) {
-                this.completeFilteredList = data;
-            }
-        });
-    }
-    getFilteredList(reset = false) {
-        if (!reset && this.completeFilteredList && this.completeFilteredList.length > 0) {
-            return this.$q.resolve(this.completeFilteredList);
-        }
-        this.completeListLoadCount++;
-        const currentCount = angular.copy(this.completeListLoadCount);
-        this.completeFilteredList = []; // to avoid double call
-        return this.api.get({
-            url: 'contacts',
-            data: {
-                filter: this.buildFilterParams(),
-                fields: {
-                    contacts: 'name'
-                },
-                per_page: 25000,
-                sort: 'name'
-            },
-            overrideGetAsPost: true
-        }).then((data) => {
-            this.$log.debug('contacts all - filtered', data);
-            if (currentCount === this.completeListLoadCount) {
-                this.completeFilteredList = data;
-            }
+        return this.api.get('contacts', {
+            fields: { contacts: 'name' },
+            filter: { ids: joinComma(ids) }
         });
     }
     search(keyword) {
@@ -200,89 +117,14 @@ class ContactsService {
         });
         return omitBy(isNil, filterParams);
     }
-    load(reset = false, page = 1) {
-        this.loading = true;
-
-        if (!reset && page <= this.page) {
-            return this.$q.resolve(this.data);
-        }
-
-        let currentCount;
-        if (reset) {
-            this.page = 1;
-            this.meta = {};
-            this.data = null;
-            this.completeListLoadCount++;
-            currentCount = angular.copy(this.completeListLoadCount);
-        }
-
-        return this.api.get({
-            url: 'contacts',
-            data: {
-                filter: this.buildFilterParams(),
-                page: this.page,
-                per_page: 25,
-                include: 'addresses,people,people.facebook_accounts,people.phone_numbers,people.email_addresses',
-                fields: {
-                    contact: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people',
-                    people: 'deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
-                    addresses: 'city,geo,historic,primary_mailing_address,postal_code,state,source,street',
-                    email_addresses: 'email,historic,primary',
-                    phone_numbers: 'historic,location,number,primary',
-                    facebook_accounts: 'username'
-                },
-                sort: 'name'
-            },
-            overrideGetAsPost: true
-        }).then((data) => {
-            this.$log.debug('contacts page ' + data.meta.pagination.page, data);
-            if (reset && currentCount !== this.completeListLoadCount) {
-                return;
-            }
-            let count = defaultTo(0, this.meta.to);
-            this.meta = data.meta;
-            if (reset) {
-                this.page = 1;
-                count = 0;
-            }
-            if (data.length === 0) {
-                this.getTotalCount();
-                this.loading = false;
-                return;
-            }
-            const newContacts = angular.copy(data);
-            if (reset) {
-                this.data = newContacts;
-            } else {
-                this.data = unionBy('id', this.data, newContacts);
-            }
-            count += data.length;
-            this.meta.to = count;
-            this.loading = false;
-        });
-    }
-    getTotalCount() { //only used when search is empty
-        this.api.get('contacts', {
-            filter: {
-                account_list_id: this.api.account_list_id
-            },
-            per_page: 0
-        }).then((data) => {
-            this.totalContactCount = data.meta.pagination.total_count;
-        });
-    }
-    updateContactOrList(contact) {
-        if (!contact.name) {
-            return;
-        }
-        this.$rootScope.$emit('contactCreated');
-    }
     save(contact) {
         if (contact.tag_list) {
             contact.tag_list = joinComma(contact.tag_list); //fix for api mis-match
         }
         return this.api.put(`contacts/${contact.id}`, contact).then((data) => {
-            this.updateContactOrList(data);
+            if (contact.name) {
+                this.$rootScope.$emit('contactCreated');
+            }
             return data;
         });
     }
@@ -306,13 +148,6 @@ class ContactsService {
             this.$rootScope.$emit('contactCreated');
         });
     }
-    loadMoreContacts() {
-        if (this.loading || this.page >= this.meta.pagination.total_pages) {
-            return;
-        }
-        this.page++;
-        this.load(false, this.page);
-    }
     findChangedFilters(defaultParams, params) {
         return reduceObject((result, filter, key) => {
             if (has(key, this.contactFilter.params)) {
@@ -328,17 +163,6 @@ class ContactsService {
             return result;
         }, {}, params);
     }
-    resetFilters() {
-        this.contactFilter.reset();
-    }
-    getSelectedContacts() {
-        return reduce((result, contact) => {
-            if (includes(contact.id, this.selectedContacts)) {
-                result = concat(result, contact);
-            }
-            return result;
-        }, [], this.data);
-    }
     isSelected(contactId) {
         return includes(contactId, this.selectedContacts);
     }
@@ -349,47 +173,8 @@ class ContactsService {
             this.selectedContacts = union(this.selectedContacts, [contactId]);
         }
     }
-    getTagsFromSelectedContacts() {
-        // if more selected than data, use contactTags
-        if (this.selectedContacts > this.data.length) {
-            return map('name', this.contactsTags.data);
-        }
-        return reduce((result, contact) =>
-            union(result, contact.tag_list)
-        , [], this.getSelectedContacts()).sort();
-    }
     clearSelectedContacts() {
         this.selectedContacts = [];
-    }
-    selectAllContacts(all = true) {
-        if (all) {
-            this.getCompleteFilteredList().then(() => { //ensure complete filtered list is loaded
-                this.selectedContacts = map('id', this.completeFilteredList);
-            });
-        } else {
-            this.selectedContacts = map('id', this.data);
-        }
-    }
-    getContactPosition(id) {
-        return findIndex({ id: id }, this.completeFilteredList);
-    }
-    canGoLeft(id) {
-        return this.getContactPosition(id) > 0;
-    }
-    canGoRight(id) {
-        return this.getContactPosition(id) < this.completeFilteredList.length - 1;
-    }
-    getLeftId(id) {
-        if (this.canGoLeft(id)) {
-            return this.completeFilteredList[this.getContactPosition(id) - 1].id;
-        }
-        return this.completeFilteredList[this.completeFilteredList.length - 1].id;
-    }
-    getRightId(id) {
-        if (this.canGoRight(id)) {
-            return this.completeFilteredList[this.getContactPosition(id) + 1].id;
-        }
-        return this.completeFilteredList[0].id;
     }
     hideContact(contact) {
         const message = this.gettextCatalog.getString('Are you sure you wish to hide the selected contact? Hiding a contact in MPDX actually sets the contact status to "Never Ask".');
@@ -397,24 +182,6 @@ class ContactsService {
             return this.save({
                 id: contact.id,
                 status: 'Never Ask'
-            }).then(() => {
-                this.completeFilteredList = reject({id: contact.id}, this.completeFilteredList);
-                this.data = reject({id: contact.id}, this.data);
-            });
-        });
-    }
-    bulkHideContacts() {
-        const message = this.gettextCatalog.getString('Are you sure you wish to hide the selected contacts? Hiding a contact in MPDX actually sets the contact status to "Never Ask".');
-        return this.modal.confirm(message).then(() => {
-            const contacts = map(contact => {
-                return {
-                    id: contact.id,
-                    status: 'Never Ask'
-                };
-            }, this.getSelectedContacts());
-            return this.bulkSave(contacts).then(() => {
-                this.data = pullAllBy('id', contacts, this.data);
-                this.completeFilteredList = pullAllBy('id', contacts, this.completeFilteredList);
             });
         });
     }

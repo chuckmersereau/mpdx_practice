@@ -3,6 +3,9 @@ public
 build
 coverage
 .idea
-.iml
+*.iml
+.nyc_output
 npm-debug.log
+yarn-error.log
 src/locale/**
+locale/*.po

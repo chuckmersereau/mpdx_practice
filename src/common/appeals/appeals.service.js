@@ -1,52 +1,49 @@
+import defaultTo from 'lodash/fp/defaultTo';
+import get from 'lodash/fp/get';
+
 class AppealsService {
     api;
     data;
 
     constructor(
-        $rootScope, $q, $log,
+        $rootScope, $log,
         api
     ) {
         this.$rootScope = $rootScope;
-        this.$q = $q;
         this.$log = $log;
         this.api = api;
-
-        this.list = [];
-
-        this.$rootScope.$on('accountListUpdated', () => {
-            this.getList(true);
-        });
     }
-    getAppeals() {
-        return this.api.get('appeals').then((data) => {
-            this.$log.debug(`appeals`, data);
-            return data;
-        });
-    }
-    getAppeal(appealId) {
-        return this.api.get(`appeals/${appealId}`).then((data) => {
-            this.$log.debug(`appeals/${appealId}`, data);
-            return data;
-        });
-    }
-    getList(reset = false) {
-        if (!reset && this.list.length > 0) {
-            return this.$q.resolve(this.list);
-        }
-
-        const params = {
-            fields: {appeals: 'name'},
+    getCount() {
+        return this.api.get('appeals', {
+            fields: {appeals: ''},
             filter: {account_list_id: this.api.account_list_id},
-            per_page: 1000
-        };
-
-        return this.api.get('appeals', params).then((data) => {
-            this.$log.debug(`appeals`, data);
-            this.list = data;
-            return this.list;
+            per_page: 0
+        }).then((data) => {
+            const count = defaultTo(0, get('meta.pagination.total_count', data));
+            this.$log.debug(`appeals count`, count);
+            return count;
         });
+    }
+
+    search(keywords) {
+        return this.api.get(
+            `appeals`,
+            {
+                filter: {
+                    wildcard_search: keywords,
+                    account_list_id: this.api.account_list_id
+                },
+                fields: {
+                    appeals: 'name'
+                },
+                per_page: 6
+            }
+        );
     }
 }
 
-export default angular.module('mpdx.common.appeals.service', [])
-    .service('appeals', AppealsService).name;
+import api from '../api/api.service';
+
+export default angular.module('mpdx.common.appeals.service', [
+    api
+]).service('appeals', AppealsService).name;

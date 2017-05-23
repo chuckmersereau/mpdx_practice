@@ -1,20 +1,21 @@
-import createPatch from '../../../common/fp/createPatch';
+import createPatch from 'common/fp/createPatch';
 
 class DonationModalController {
-    accounts;
     appeals;
-    designationAccounts;
+    alerts;
     donations;
+    locale;
     donorAccounts;
+    designationAccounts;
     serverConstants;
 
     constructor(
-        $scope, blockUI, gettextCatalog,
-        appeals, accounts, alerts, donations, locale,
-        donation, donorAccounts, designationAccounts, serverConstants
+        $scope, gettextCatalog,
+        appeals, alerts, donations, locale, donorAccounts, designationAccounts, serverConstants,
+        donation
     ) {
         this.$scope = $scope;
-        this.accounts = accounts;
+
         this.alerts = alerts;
         this.appeals = appeals;
         this.donations = donations;
@@ -24,20 +25,17 @@ class DonationModalController {
         this.locale = locale;
         this.serverConstants = serverConstants;
 
-        this.blockUI = blockUI.instances.get('donationModal');
+        this.initialDonation = donation;
         this.donation = angular.copy(donation);
-        this.donationInitialState = angular.copy(donation);
-
-        this.appeals.getList();
-        this.donorAccounts.getList();
-        this.designationAccounts.getList();
     }
 
     save() {
-        if (this.donationInitialState.appeal && !this.donation.appeal) { //appeal removed case
-            this.donation.appeal = {id: 'none'}; //fudge around api shortcoming
+        let donation = angular.copy(this.donation);
+
+        if (this.initialDonation.appeal && !donation.appeal) { //appeal removed case
+            donation.appeal = { id: 'none' }; //fudge around api shortcoming
         }
-        const patch = createPatch(this.donationInitialState, this.donation);
+        const patch = createPatch(this.initialDonation, donation);
         return this.donations.save(patch).then(() => {
             this.$scope.$hide();
         }).catch(() => {
@@ -52,7 +50,30 @@ class DonationModalController {
             this.alerts.addAlert(this.gettextCatalog.getString('Unable to remove donation'), 'danger');
         });
     }
+
+    onDonorAccountSelected(donorAccount) {
+        this.donation.donor_account = donorAccount;
+    }
+
+    onDesignationAccountSelected(designationAccount) {
+        this.donation.designation_account = designationAccount;
+    }
+
+    onAppealSelected(appeal) {
+        this.donation.appeal = appeal;
+    }
 }
 
-export default angular.module('mpdx.donation.modal.controller', [])
-    .controller('donationModalController', DonationModalController).name;
+import gettextCatalog from 'angular-gettext';
+import appeals from 'common/appeals/appeals.service';
+import alerts from 'common/alerts/alerts.service';
+import donations from 'reports/donations/donations.service';
+import locale from 'common/locale/locale.service';
+import donorAccounts from 'common/donorAccounts/donorAccounts.service';
+import designationAccounts from 'common/designationAccounts/designationAccounts.service';
+import serverConstants from 'common/serverConstants/serverConstants.service';
+
+export default angular.module('mpdx.donation.modal.controller', [
+    gettextCatalog,
+    appeals, alerts, donations, locale, donorAccounts, designationAccounts, serverConstants
+]).controller('donationModalController', DonationModalController).name;

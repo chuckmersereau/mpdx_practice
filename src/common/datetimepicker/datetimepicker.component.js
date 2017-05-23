@@ -1,4 +1,6 @@
 import moment from 'moment';
+import defaultTo from 'lodash/fp/defaultTo';
+import isNil from 'lodash/fp/isNil';
 
 class DatetimepickerController {
     locale;
@@ -13,13 +15,18 @@ class DatetimepickerController {
     $onInit() {
         this.init();
         this.$scope.$watch('$ctrl.date', () => {
-            this.model = moment(this.date).hour(this.model.hour()).minute(this.model.minute());
-            this.ngModel = this.model.toISOString();
+            if (this.date) {
+                this.model = this.model ? moment(this.date).hour(this.model.hour()).minute(this.model.minute()) : moment(this.date);
+                this.ngModel = this.model.toISOString();
+            }
         });
         this.$scope.$watch('$ctrl.time', () => {
-            const time = moment(this.time);
-            this.model = this.model.hour(time.hour()).minute(time.minute());
-            this.ngModel = this.model.toISOString();
+            if (!isNil(this.time)) {
+                this.model = defaultTo(moment(), this.model);
+                const time = moment(this.time);
+                this.model = this.model.hour(time.hour()).minute(time.minute());
+                this.ngModel = this.model.toISOString();
+            }
         });
     }
     $onChanges() {
@@ -33,9 +40,11 @@ class DatetimepickerController {
             this.minuteStep = 5;
         }
 
-        this.model = moment(this.ngModel);
-        this.date = this.model.toDate();
-        this.time = this.model.toDate();
+        if (this.ngModel) {
+            this.model = moment(this.ngModel);
+            this.date = this.model.toDate();
+            this.time = this.model.toDate();
+        }
     }
 }
 
@@ -51,5 +60,9 @@ const Datetimepicker = {
         minuteStep: '<'
     }
 };
-export default angular.module('mpdx.common.datetimepicker.component', [])
-    .component('datetimepicker', Datetimepicker).name;
+
+import locale from '../locale/locale.service';
+
+export default angular.module('mpdx.common.datetimepicker.component', [
+    locale
+]).component('datetimepicker', Datetimepicker).name;

@@ -1,4 +1,18 @@
 {
-  "presets": ["es2015", "stage-0"],
-  "plugins": ["angularjs-annotate"]
+    "presets": [
+        ["env", {
+            "targets": {
+                "browsers": ["last 2 versions"]
+            }
+        }],
+        "stage-1"
+    ],
+    "plugins": [
+        "angularjs-annotate"
+    ],
+    "env": {
+        "test": {
+            "plugins": ["istanbul"]
+        }
+    }
 }

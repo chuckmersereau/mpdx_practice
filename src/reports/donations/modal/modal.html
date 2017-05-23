@@ -1,33 +1,11 @@
-<modal title="{{'Donation' | translate}}" cancel="$hide()" save="$ctrl.save()" delete="$ctrl.delete()" show-delete="$ctrl.donation.id">
+<modal title="{{::'Donation' | translate}}" cancel="$hide()" save="$ctrl.save()" delete="$ctrl.delete()" show-delete="$ctrl.donation.id">
     <div block-ui="donationModal">
         <div class="form-group">
             <div class="row">
-                <div class="col-md-6">
-                    <label for="donor_account_id"><translate>Partner Account</translate> <span class="text-danger">*</span></label>
-                    <select
-                        ng-options="donor_account as donor_account.name + ' (' + donor_account.account_number + ')' for donor_account in $ctrl.donorAccounts.list track by donor_account.id"
-                        ng-model="$ctrl.donation.donor_account"
-                        class="form-control"
-                        id="donor_account_id"
-                        chosen
-                        autofocus
-                        required>
-                    </select>
+                <div class="col-md-8">
+                    <label for="tendered_amount"><translate>Amount</translate> <span class="text-danger">*</span></label>
+                    <input type="text" ng-model="$ctrl.donation.amount" id="tendered_amount" class="form-control" pattern="[0-9.,$]*" required autofocus>
                 </div>
-                <div class="col-md-6" ng-if="$ctrl.designationAccounts.list.length > 0">
-                    <label for="designation_account_id"><translate>Designation Account</translate> <span class="text-danger">*</span></label>
-                    <select
-                        ng-options="designation_account as designation_account.name + ' (' + designation_account.designation_number + ')' for designation_account in $ctrl.designationAccounts.list track by designation_account.id"
-                        ng-model="$ctrl.donation.designation_account"
-                        class="form-control"
-                        id="designation_account_id"
-                        chosen ng-required="$ctrl.designationAccounts.list.length > 0">
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="row">
                 <div class="col-md-4">
                     <label for="currency"><translate>Currency</translate> <span class="text-danger">*</span></label>
                     <select chosen
@@ -35,14 +13,11 @@
                             ng-options="pc.code as (pc.name + ' - ' + pc.code_symbol_string) for pc in $ctrl.serverConstants.data.pledge_currencies"
                             id="currency"
                             class="form-control"
-                            required>
+                            required
+                            >
                         <option value=""></option>
-                        <option ng-repeat="currency in $ctrl.serverConstants.data.pledge_currencies | toArray" value="{{currency.code}}">{{currency.name}} ({{currency.symbol}})</option>
+                        <option ng-repeat="currency in $ctrl.serverConstants.data.pledge_currencies | toArray" value="{{::currency.code}}">{{::currency.name}} ({{::currency.symbol}})</option>
                     </select>
-                </div>
-                <div class="col-md-8">
-                    <label for="tendered_amount"><translate>Amount</translate> <span class="text-danger">*</span></label>
-                    <input type="text" ng-model="$ctrl.donation.amount" id="tendered_amount" class="form-control" pattern="[0-9.,$]*" required>
                 </div>
             </div>
         </div>
@@ -55,25 +30,29 @@
                    name="date"
                    id="donation_date"
                    data-date-type="string"
-                   data-date-format="{{$ctrl.locale.dateTimeFormat}}"
+                   data-date-format="{{::$ctrl.locale.dateTimeFormat}}"
                    data-model-date-format="yyyy-MM-dd"
                    data-autoclose="1"
                    required>
         </div>
         <div class="form-group">
             <div class="row">
+                <div class="col-md-6">
+                    <label for="donor_account_id"><translate>Partner Account</translate> <span class="text-danger">*</span></label>
+                    <collection-selector item-name="{{ ::'Partner Account' | translate }}" display-text="$ctrl.donation.donor_account.display_name" search-text="$ctrl.donation.donor_account.account_number" search="$ctrl.donorAccounts.search(text)" select="$ctrl.onDonorAccountSelected(item)"></collection-selector>
+                </div>
+                <div class="col-md-6">
+                    <label for="designation_account_id"><translate>Designation Account</translate> <span class="text-danger">*</span></label>
+                    <collection-selector item-name="{{ ::'Designation Account' | translate }}" display-text="$ctrl.donation.designation_account.display_name" search-text="$ctrl.donation.donor_account.designation_number" search="$ctrl.designationAccounts.search(text)" select="$ctrl.onDesignationAccountSelected(item)"></collection-selector>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="appeal_id" translate>Appeal</label>
-                        <select
-                            ng-options="appeal as appeal.name for appeal in $ctrl.appeals.list track by appeal.id"
-                            ng-model="$ctrl.donation.appeal"
-                            class="form-control"
-                            id="appeal_id"
-                            allow-single-deselect="true"
-                            chosen>
-                            <option value=""></option>
-                        </select>
+                        <collection-selector item-name="{{ ::'Appeal' | translate }}" display-text="$ctrl.donation.appeal.name" search-text="$ctrl.donation.appeal.name" search="$ctrl.appeals.search(text)" select="$ctrl.onAppealSelected(item)"></collection-selector>
                     </div>
                 </div>
                 <div class="col-md-8">
@@ -82,7 +61,7 @@
                            ng-model="$ctrl.donation.appeal_amount"
                            id="appeal_amount"
                            class="form-control"
-                           placeholder="{{ 'Leave empty to use full donation amount' | translate }}"
+                           placeholder="{{ ::'Leave empty to use full donation amount' | translate }}"
                            ng-disabled="!$ctrl.donation.appeal">
                 </div>
             </div>

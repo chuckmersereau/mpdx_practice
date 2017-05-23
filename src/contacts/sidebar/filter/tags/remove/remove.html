@@ -1,7 +1,7 @@
 <modal title="{{'Remove Tags' | translate}}" cancel="$hide()">
     <p translate>Click on a tag to remove it from selected contacts:</p>
     <ul>
-        <li ng-repeat="tag in $ctrl.contacts.getTagsFromSelectedContacts()">
+        <li ng-repeat="tag in $ctrl.tags">
             <a href="javascript:;" ng-click="$ctrl.removeTag(tag)">{{ tag }}</a>
         </li>
     </ul>

@@ -46,21 +46,18 @@ class ContactDetailsController {
         }, keys(serverConstants.data.locales));
     }
     $onChanges() {
-        if (this.contact.contacts_that_referred_me && !this.referrer) {
-            if (this.contact.contacts_that_referred_me.length === 0) {
-                this.contact.contacts_that_referred_me = [];
-            } else {
-                this.referrer = get('contacts_that_referred_me[0].id', this.contact);
-                if (this.referrer) {
-                    this.contacts.getName(this.referrer).then((data) => {
-                        this.referrerName = data.name;
-                    });
-                }
+        this.last_donation = this.contact.last_donation ? round(this.contact.last_donation.amount) : this.gettextCatalog.getString('Never');
+        this.giving_method = defaultTo(this.gettextCatalog.getString('None'), get('last_donation.payment_method', this.contact));
+        this.lifetime_donations = round(defaultTo(0, this.contact.lifetime_donations));
+
+        if (!this.referrer) {
+            this.referrer = get('contacts_that_referred_me[0].id', this.contact);
+            if (this.referrer) {
+                return this.getName(this.referrer).then((data) => {
+                    this.referrerName = data.name;
+                });
             }
         }
-        this.last_donation = this.contact.last_donation ? round(this.contact.last_donation.amount) : this.gettextCatalog.getString('Never');
-        this.giving_method = defaultTo(this.gettextCatalog.getString('None'), get('payment_method', this.contact.last_donation));
-        this.lifetime_donations = round(defaultTo(0, this.contact.lifetime_donations));
     }
     addPartnerAccount() {
         this.contact.donor_accounts.push({id: uuid(), organization: { id: this.users.organizationAccounts[0].organization.id }, account_number: ''});
@@ -159,6 +156,13 @@ class ContactDetailsController {
             });
         });
     }
+    getName(id) {
+        return this.api.get(`contacts/${id}`, {
+            fields: {
+                contacts: 'name'
+            }
+        });
+    }
 }
 const Details = {
     controller: ContactDetailsController,
@@ -170,5 +174,10 @@ const Details = {
     }
 };
 
-export default angular.module('mpdx.contacts.show.details.component', [])
-    .component('contactDetails', Details).name;
+import contacts from '../../contacts.service';
+import serverConstants from '../../../common/serverConstants/serverConstants.service';
+import tasks from '../../../tasks/tasks.service';
+
+export default angular.module('mpdx.contacts.show.details.component', [
+    contacts, serverConstants, tasks
+]).component('contactDetails', Details).name;

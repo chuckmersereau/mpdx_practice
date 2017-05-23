@@ -1,9 +1,22 @@
 import find from 'lodash/fp/find';
+import config from 'config';
 
+const HSMock = {
+    beacon: {
+        config: () => {},
+        ready: () => {}
+    }
+};
 /*global HS*/
 class HelpService {
-    constructor($log, gettextCatalog) {
+    constructor(
+        $log, gettextCatalog
+    ) {
         this.gettextCatalog = gettextCatalog;
+        if (config.env === 'test') {
+            window.HS = HSMock;
+            return;
+        }
         HS.beacon.config({
             color: '#05699B',
             icon: 'question',

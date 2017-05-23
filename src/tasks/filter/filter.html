@@ -43,97 +43,98 @@
             </div>
             <ul class="filter--filtergroup_filters list-unstyled">
                 <li class="filter_set" ng-repeat="filter in $ctrl.tasksFilter.data | orderBy: 'id'" ng-class="{ 'opened': filter.opened }">
-                    <label id="filter_{{filter.name}}" class="filter_title" ng-click="filter.opened = !filter.opened">{{filter.title}}</label>
+                    <label id="filter_{{::filter.name}}" class="filter_title" ng-click="filter.opened = !filter.opened">{{::filter.title}}</label>
                     <div class="filter_set_inner">
-                        <div ng-if="filter.type == 'container'" ng-repeat="child in filter.children | orderBy: 'priority'">
-                            <div class="filter_multiselect" ng-if="child.type == 'multiselect'">
+                        <div ng-if="::filter.type == 'container'" ng-repeat="child in ::filter.children | orderBy: 'priority'">
+                            <div class="filter_multiselect" ng-if="::child.type == 'multiselect'">
                                 <label>
-                                    {{child.title}}
-                                    <a class="filter_invert_multiselect" ng-click="$ctrl.invertMultiselect(child)" title="{{ 'Invert' | translate }}">
+                                    {{::child.title}}
+                                    <a class="filter_invert_multiselect" ng-click="$ctrl.invertMultiselect(child)" title="{{ ::'Invert' | translate }}">
                                         <i class="fa fa-exchange"></i>
                                         <span translate>Reverse Filter</span>
                                     </a>
                                 </label>
-                                <select class="form-control" ng-options="item.id as item.name for item in child.options" ng-model="$ctrl.tasksFilter.params[child.name]" ng-change="$ctrl.tasksFilter.change()" multiple></select>
+                                <select class="form-control" ng-options="item.id as item.name for item in ::child.options" ng-model="$ctrl.tasksFilter.params[child.name]" ng-change="$ctrl.tasksFilter.change()" multiple></select>
                             </div>
-                            <div class="filter_radio" ng-if="child.type == 'radio'">
-                                {{child.title}}
-                                <label ng-repeat="option in child.options">
-                                    <input id="_" name="{{child.name}}" type="radio" value="{{option.id}}" ng-model="$ctrl.tasksFilter.params[child.name]" ng-change="$ctrl.tasksFilter.change()">
-                                    {{option.name}}
+                            <div class="filter_radio" ng-if="::child.type == 'radio'">
+                                {{::child.title}}
+                                <label ng-repeat="option in ::child.options">
+                                    <input id="_" name="{{::child.name}}" type="radio" value="{{::option.id}}" ng-model="$ctrl.tasksFilter.params[child.name]" ng-change="$ctrl.tasksFilter.change()">
+                                    {{::option.name}}
                                 </label>
                             </div>
-                            <label ng-if="child.type == 'single_checkbox'">
-                                <input name="{{child.name}}" type="checkbox" ng-model="$ctrl.tasksFilter.params[child.name]" ng-change="$ctrl.tasksFilter.change()"> {{child.title}}
+                            <label ng-if="::child.type == 'single_checkbox'">
+                                <input name="{{::child.name}}" type="checkbox" ng-model="$ctrl.tasksFilter.params[child.name]" ng-change="$ctrl.tasksFilter.change()">
+                                {{::child.title}}
                             </label>
-                            <div class="filter_dates" ng-if="child.type == 'dates'">
-                                <label ng-repeat="option in child.options">
-                                    {{option.name}}<br>
+                            <div class="filter_dates" ng-if="::child.type == 'dates'">
+                                <label ng-repeat="option in ::child.options">
+                                    {{::option.name}}<br>
                                     <input bs-datepicker
                                            ng-model="$ctrl.tasksFilter.params[child.name][option.id]"
-                                           placeholder="{{ 'None' | translate }}"
+                                           placeholder="{{ ::'None' | translate }}"
                                            ng-change="$ctrl.tasksFilter.change()"
                                            data-autoclose="1">
                                 </label>
                             </div>
-                            <div class="filter_dates" ng-if="child.type == 'daterange'">
+                            <div class="filter_dates" ng-if="::child.type == 'daterange'">
                                 <label>
-                                    {{child.title}}<br>
+                                    {{::child.title}}<br>
                                     <tasks-filter-daterange
                                         model="$ctrl.tasksFilter.params[child.name]"
-                                        locale="$ctrl.dateRangeLocale"
-                                        custom-options="child.options"
+                                        locale="::$ctrl.dateRangeLocale"
+                                        custom-options="::child.options"
                                         on-change="$ctrl.tasksFilter.change()">
                                     </tasks-filter-daterange>
                                 </label>
                             </div>
-                            <div class="filter_text" ng-if="child.type == 'text'">
-                                <label ng-repeat="option in child.options">
-                                    {{option.name}}<br>
-                                    <input class="form-control" name="{{child.name}}" type="text" ng-model="$ctrl.tasksFilter.params[child.name][option.id]" placeholder="{{option.placeholder}}" ng-change="$ctrl.tasksFilter.change()">
+                            <div class="filter_text" ng-if="::child.type == 'text'">
+                                <label ng-repeat="option in ::child.options">
+                                    {{::option.name}}<br>
+                                    <input class="form-control" name="{{::child.name}}" type="text" ng-model="$ctrl.tasksFilter.params[child.name][option.id]" placeholder="{{::option.placeholder}}" ng-change="$ctrl.tasksFilter.change()">
                                 </label>
                             </div>
                         </div>
-                        <div class="filter_multiselect" ng-if="filter.type == 'multiselect'">
+                        <div class="filter_multiselect" ng-if="::filter.type == 'multiselect'">
                             <label>
-                                <a class="filter_invert_multiselect" ng-click="$ctrl.invertMultiselect(filter)" title="{{ 'Invert' | translate }}">
+                                <a class="filter_invert_multiselect" ng-click="$ctrl.invertMultiselect(filter)" title="{{ ::'Invert' | translate }}">
                                     <i class="fa fa-exchange"></i>
                                     <span translate>Reverse Filter</span>
                                 </a>
                             </label>
-                            <select class="form-control"  ng-options="item.id as item.name for item in filter.options" ng-model="$ctrl.tasksFilter.params[filter.name]" ng-change="$ctrl.tasksFilter.change()" multiple></select>
+                            <select class="form-control" ng-options="item.id as item.name for item in ::filter.options" ng-model="$ctrl.tasksFilter.params[filter.name]" ng-change="$ctrl.tasksFilter.change()" multiple></select>
                         </div>
-                        <div class="filter_radio" ng-if="filter.type == 'radio'">
-                            <label ng-repeat="option in filter.options">
-                                <input name="{{filter.name}}" type="radio" value="{{option.id}}" ng-model="$ctrl.tasksFilter.params[filter.name]" ng-change="$ctrl.tasksFilter.change()">
-                                {{option.name}}
+                        <div class="filter_radio" ng-if="::filter.type == 'radio'">
+                            <label ng-repeat="option in ::filter.options">
+                                <input name="{{::filter.name}}" type="radio" value="{{::option.id}}" ng-model="$ctrl.tasksFilter.params[filter.name]" ng-change="$ctrl.tasksFilter.change()">
+                                {{::option.name}}
                             </label>
                         </div>
-                        <label ng-if="filter.type == 'single_checkbox'">
-                            <input name="{{filter.name}}" type="checkbox" ng-model="$ctrl.tasksFilter.params[filter.name]" ng-change="$ctrl.tasksFilter.change()"> {{filter.title}}
+                        <label ng-if="::filter.type == 'single_checkbox'">
+                            <input name="{{::filter.name}}" type="checkbox" ng-model="$ctrl.tasksFilter.params[filter.name]" ng-change="$ctrl.tasksFilter.change()"> {{::filter.title}}
                         </label>
-                        <div class="filter_dates" ng-if="filter.type == 'dates'">
-                            <label ng-repeat="option in filter.options">
-                                {{option.name}}<br>
+                        <div class="filter_dates" ng-if="::filter.type == 'dates'">
+                            <label ng-repeat="option in ::filter.options">
+                                {{::option.name}}<br>
                                 <input bs-datepicker
                                        ng-model="$ctrl.tasksFilter.params[filter.name][option.id]"
-                                       placeholder="{{ 'None' | translate }}"
+                                       placeholder="{{ ::'None' | translate }}"
                                        ng-change="$ctrl.tasksFilter.change()"
                                        data-autoclose="1">
                             </label>
                         </div>
-                        <div class="filter_dates" ng-if="filter.type == 'daterange'">
+                        <div class="filter_dates" ng-if="::filter.type == 'daterange'">
                             <tasks-filter-daterange
                                 model="$ctrl.tasksFilter.params[filter.name]"
-                                locale="{ applyLabel: '{{ 'Filter' | translate }}', cancelLabel: '{{ 'Clear' | translate }}' }"
-                                custom-options="filter.options"
+                                locale="{ applyLabel: '{{ ::'Filter' | translate }}', cancelLabel: '{{ ::'Clear' | translate }}' }"
+                                custom-options="::filter.options"
                                 on-change="$ctrl.tasksFilter.change()">
                             </tasks-filter-daterange>
                         </div>
-                        <div class="filter_text" ng-if="filter.type == 'text'">
-                            <label ng-repeat="option in filter.options">
-                                {{option.name}}<br>
-                                <input class="form-control" name="{{filter.name}}" type="text" ng-model="$ctrl.tasksFilter.params[filter.name][option.id]" placeholder="{{option.placeholder}}" ng-change="$ctrl.tasksFilter.change()">
+                        <div class="filter_text" ng-if="::filter.type == 'text'">
+                            <label ng-repeat="option in ::filter.options">
+                                {{::option.name}}<br>
+                                <input class="form-control" name="{{::filter.name}}" type="text" ng-model="$ctrl.tasksFilter.params[filter.name][option.id]" placeholder="{{::option.placeholder}}" ng-change="$ctrl.tasksFilter.change()">
                             </label>
                         </div>
                     </div>
