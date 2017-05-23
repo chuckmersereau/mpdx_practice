@@ -102,7 +102,7 @@
                         data-placeholder-text-single="'Select an Option' | translate"
                         class="form-control"
                         id="language"
-                        ng-options="opt[0] for opt in $ctrl.serverConstants.data.locale"
+                        ng-options="key as value for (key, value) in $ctrl.serverConstants.data.languages"
                         ng-model="$ctrl.models.locale">
                     <option value=""></option>
                 </select>

@@ -7,10 +7,11 @@
 * Pre-configured CSS/Sass support (including bootstrap/fontawesome).
 * NPM & Yarn support
 * Bower and vendor module fallback support.
-* Automatic dependency annotation.
+* Automatic angular dependency injection annotation.
 * Development server with hot reload.
 * Production builds with cache busting and asset minification.
 * Testing environment using karma to run tests and jasmine as the framework.
+* In-development testing/coverage using wallabyjs. 
 
 ## Installation
 
