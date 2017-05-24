@@ -1,5 +1,4 @@
 <div class="reports">
-<div class="reports">
     <div class="pull-right" ng-if="!$ctrl.loading">
         <button class="btn btn-primary" ng-click="$ctrl.expanded = !$ctrl.expanded">
             <span ng-if="!$ctrl.expanded">
@@ -11,7 +10,7 @@
                 <i class="fa fa-compress" aria-hidden="true"></i>
             </span>
         </button>
-        <button class="btn btn-default" ng-csv="$ctrl.contributionsToCSV()" lazy-load="true" filename="mpdx-{{$ctrl.type}}-contributions-export-{{$ctrl.moment().format('Y-MM-DD-HH:mm')}}.csv" translate>
+        <button class="btn btn-default" ng-csv="$ctrl.toCSV()" lazy-load="true" filename="mpdx-{{$ctrl.type}}-contributions-export-{{$ctrl.moment().format('Y-MM-DD-HH:mm')}}.csv" translate>
             Export CSV
         </button>
     </div>
@@ -25,8 +24,12 @@
             <div class="arrow"></div>
             <div class="popover-content text-center">
                 <strong>{{donor.contact.status}}</strong>
-                <br />
-                <div ng-if="donor.contact.pledge_amount > 0">{{currency.symbol}}{{donor.contact.pledge_amount | number:0}} {{currency.code}} {{$ctrl.constantsList.pledge_frequencies[donor.contact.pledge_frequency]}}</div>
+                <br>
+                <div ng-if="donor.contact.pledge_amount > 0">
+                    {{currency.symbol}}{{donor.contact.pledge_amount | number:0}}
+                    {{currency.code}}
+                    {{$ctrl.constantsList.pledge_frequencies[donor.contact.pledge_frequency]}}
+                </div>
                 <div><strong translate>Avg</strong>: {{currency.symbol}}{{donor.average | number:0}} / <strong translate>Min</strong>: {{currency.symbol}}{{donor.minimum | number:0}}</div>
             </div>
         </div>
@@ -37,7 +40,7 @@
             <div class="arrow"></div>
             <div class="popover-content">
                 <strong translate>Monthly Total</strong>
-                <div>{{currency.symbol}}{{monthlyDonation.total | number:0}} {{currency.code}}</div>
+                <div><translate>Salary Currency</translate> {{$ctrl.data.salaryCurrency.symbol}}{{monthlyDonation.convertedTotal | number:0}} {{$ctrl.data.salaryCurrency.code}}</div>
                 <table class="table table-condensed">
                     <thead>
                         <tr>
@@ -47,8 +50,8 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="donation in monthlyDonation.donations">
-                            <td>{{donation.date.format('MMM Do')}}</td>
-                            <td class="text-right">{{donation.currency.symbol}}{{donation.converted_amount | number : 0}} {{donation.converted_currency}}</td>
+                            <td>{{$ctrl.moment(donation.date).format('MMM Do')}}</td>
+                            <td class="text-right">{{donation.currency.symbol}}{{donation.amount | number : 0}} {{donation.currency.code}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -65,14 +68,14 @@
                 </div>
                 <div>
                     <span translate>Converted to</span>:
-                    {{$ctrl.contributions.data.salaryCurrency.symbol_native}}{{currency.totals.year_converted | number : 0}}
-                    {{$ctrl.contributions.data.salaryCurrency.code}})
+                    {{$ctrl.data.salaryCurrency.symbol_native}}{{currency.totals.year_converted | number : 0}}
+                    {{$ctrl.data.salaryCurrency.code}})
                 </div>
                 <div>
                     ({{$ctrl.percentage(currency.totals.year_converted) | number:0}}%
                     <span translate>of total</span>
-                    {{$ctrl.contributions.data.salaryCurrency.symbol_native}}{{$ctrl.contributions.data.total | number : 0}}
-                    {{$ctrl.contributions.data.salaryCurrency.code}})
+                    {{$ctrl.data.salaryCurrency.symbol_native}}{{$ctrl.data.total | number : 0}}
+                    {{$ctrl.data.salaryCurrency.code}})
                 </div>
             </div>
         </div>
@@ -86,19 +89,19 @@
     </div>
 
     <div ng-show="!$ctrl.loading">
-        <div class="panel panel-default" ng-if="$ctrl.contributions.data.currencies.length == 0">
+        <div class="panel panel-default" ng-if="$ctrl.data.currencies.length == 0">
             <div class="panel-footer" translate>
                 You have received no donations in the last thirteen months
             </div>
         </div>
-        <div ng-if="$ctrl.type === 'partner' && $ctrl.contributions.data.currencies.length > 0" class="progress">
-            <div ng-repeat="currency in $ctrl.contributions.data.currencies" class="progress-bar color-{{$index % 6}}" style="width: {{$ctrl.percentage(currency.totals.year_converted) }}%" data-template-url="reports/contributions/popovers/progress.tpl.html" data-trigger="hover" data-placement="bottom" bs-popover>
+        <div ng-if="$ctrl.type === 'partner' && $ctrl.data.currencies.length > 0" class="progress">
+            <div ng-repeat="currency in $ctrl.data.currencies" class="progress-bar color-{{$index % 6}}" style="width: {{$ctrl.percentage(currency.totals.year_converted) }}%" data-template-url="reports/contributions/popovers/progress.tpl.html" data-trigger="hover" data-placement="bottom" bs-popover>
                 <span ng-if="$ctrl.percentage(currency.totals.year_converted) > 7">
                     {{currency.code}} ({{currency.symbol}})
                 </span>
             </div>
         </div>
-        <div class="panel panel-default" ng-repeat="currency in $ctrl.contributions.data.currencies">
+        <div class="panel panel-default" ng-repeat="currency in $ctrl.data.currencies">
             <div class="panel-body">
                 <div class="table-responsive">
                     <table class="table table-striped">
@@ -107,7 +110,7 @@
                                 <th colspan="{{$ctrl.expanded ? 5 : 1}}">
                                     {{::currency.code}} ({{::currency.symbol}})
                                 </th>
-                                <th ng-repeat="(year, numberOfMonths) in $ctrl.contributions.data.years" colspan="{{::numberOfMonths}}">
+                                <th ng-repeat="(year, numberOfMonths) in $ctrl.data.years" colspan="{{::numberOfMonths}}">
                                     <div>{{::year}}</div>
                                 </th>
                                 <th>
@@ -120,9 +123,9 @@
                                 <th ng-if="$ctrl.expanded" translate>Pledge</th>
                                 <th ng-if="$ctrl.expanded" translate>Avg</th>
                                 <th ng-if="$ctrl.expanded" translate>Min</th>
-                                <th class="text-right" ng-repeat="date in $ctrl.contributions.data.months track by $index">
+                                <th class="text-right" ng-repeat="date in $ctrl.data.months track by $index">
                                     <span data-title="{{ ::'This last month is excluded from totals and averages' | translate }}" data-trigger="{{::$last ? 'hover' : 'manual'}}" ng-class="::{'text-muted': $last}" bs-tooltip>
-                                        {{::date.format('MMM')}}
+                                        {{$ctrl.moment(date).format('MMM')}}
                                     </span>
                                 </th>
                                 <th class="col-md-1 text-right" translate>Total</th>
@@ -146,7 +149,7 @@
                                         {{::currency.symbol}}
                                         {{::donor.contact.pledge_amount | number:0}}
                                         {{::currency.code}}
-                                        {{::$ctrl.constantsList.pledge_frequencies[donor.contact.pledge_frequency]}}
+                                        {{::donor.contact.pledge_frequency | pledgeFrequencyToStr}}
                                     </span>
                                 </td>
                                 <td class="text-right" ng-if="$ctrl.expanded">

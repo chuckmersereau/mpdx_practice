@@ -33,5 +33,8 @@ class PledgeFrequencyToStrFilter {
 
 PledgeFrequencyToStrFilter.pledgeFrequencyToStrFactory.$inject = ['gettextCatalog'];
 
-export default angular.module('mpdx.contacts.list.item.pledgeFrequencyToStr', [])
-  .filter('pledgeFrequencyToStr', PledgeFrequencyToStrFilter.pledgeFrequencyToStrFactory).name;
+import gettextCatalog from 'angular-gettext';
+
+export default angular.module('mpdx.contacts.list.item.pledgeFrequencyToStr', [
+    gettextCatalog
+]).filter('pledgeFrequencyToStr', PledgeFrequencyToStrFilter.pledgeFrequencyToStrFactory).name;
