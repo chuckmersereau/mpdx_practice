@@ -1,10 +1,9 @@
 import concat from 'lodash/fp/concat';
+import defaultTo from 'lodash/fp/defaultTo';
 import find from 'lodash/fp/find';
 import includes from 'lodash/fp/includes';
 import reduce from 'lodash/fp/reduce';
-import reduceObject from '../../common/fp/reduceObject';
 import uuid from 'uuid/v1';
-
 
 class NotificationPreferencesController {
     accounts;
@@ -34,18 +33,18 @@ class NotificationPreferencesController {
         this.init();
     }
     init() {
-        this.notifications = reduceObject((result, value, key) => {
+        this.notifications = reduce((result, value) => {
             const defaultActions = (this.setup && this.accounts.current.notification_preferences.length === 0) ? ['email', 'task'] : [''];
-            const notificationType = find(pref => pref.notification_type.id === key, this.accounts.current.notification_preferences) || {id: uuid(), actions: defaultActions};
+            const notificationType = defaultTo({id: uuid(), actions: defaultActions}, find(pref => pref.notification_type.id === value.key, this.accounts.current.notification_preferences));
             result = concat(result, {
                 id: notificationType.id,
-                key: key,
-                title: value,
+                key: value.key,
+                title: value.value,
                 email: includes('email', notificationType.actions),
                 task: includes('task', notificationType.actions)
             });
             return result;
-        }, [], this.serverConstants.data.notifications);
+        }, [], this.serverConstants.data.notification_translated_hashes);
     }
     save() {
         this.saving = true;
@@ -86,5 +85,11 @@ const Notifications = {
     }
 };
 
-export default angular.module('mpdx.preferences.notifications.component', [])
-    .component('preferencesNotifications', Notifications).name;
+import accounts from 'common/accounts/accounts.service';
+import alerts from 'common/alerts/alerts.service';
+import serverConstants from 'common/serverConstants/serverConstants.service';
+import users from 'common/users/users.service';
+
+export default angular.module('mpdx.preferences.notifications.component', [
+    accounts, alerts, serverConstants, users
+]).component('preferencesNotifications', Notifications).name;

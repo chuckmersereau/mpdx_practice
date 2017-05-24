@@ -30,7 +30,7 @@
                         allow-single-deselect="true"
                         class="form-control"
                         id="send_newsletter"
-                        ng-options="opt as opt for opt in $ctrl.serverConstants.data.assignable_send_newsletter"
+                        ng-options="opt.id as opt.value for opt in $ctrl.serverConstants.data.assignable_send_newsletter_hashes"
                         ng-model="$ctrl.contact.send_newsletter">
                     <option value=""></option>
                 </select>
@@ -65,7 +65,7 @@
                         class="form-control"
                         id="likely_to_give"
                         allow-single-deselect="true"
-                        ng-options="opt as opt for opt in $ctrl.serverConstants.data.assignable_likely_to_give"
+                        ng-options="opt.id as opt.value for opt in $ctrl.serverConstants.data.assignable_likely_to_give_hashes"
                         ng-model="$ctrl.contact.likely_to_give">
                     <option value=""></option>
                 </select>
