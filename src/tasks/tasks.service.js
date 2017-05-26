@@ -199,7 +199,7 @@ class TasksService {
                     if (!contactTask.comments) {
                         contactTask.comments = [];
                     }
-                    contactTask.comments.push({id: uuid(), body: comment, person: { id: this.users.current.id }});
+                    contactTask.comments = [{id: uuid(), body: comment, person: { id: this.users.current.id }}];
                 }
                 if (!isEmpty(contactId)) {
                     result = concat(result, assign(contactTask, {id: uuid(), contacts: [{id: contactId}]}));
@@ -216,10 +216,10 @@ class TasksService {
             if (!task.comments) {
                 task.comments = [];
             }
-            task.comments.push({id: uuid(), body: comment, person: { id: this.users.current.id }});
+            task.comments = [{id: uuid(), body: comment, person: { id: this.users.current.id }}];
         }
         task.contacts = map(contactId => { return {id: contactId}; }, contactIds);
-        return this.api.post('tasks', task).then((data) => {
+        return this.api.post('tasks', task).then(data => {
             return this.get(data.id);
         });
     }

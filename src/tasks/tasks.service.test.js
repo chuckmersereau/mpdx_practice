@@ -20,6 +20,36 @@ describe('tasks.service', () => {
             api.account_list_id = accountListId;
             users.current = currentUser;
         });
+        spyOn(api, 'post').and.callFake(() => Promise.resolve({id: 1}));
+        spyOn(api, 'get').and.callFake(() => Promise.resolve());
+    });
+    describe('create', () => {
+        beforeEach(() => {
+            spyOn(tasks, 'get').and.callFake(() => Promise.resolve());
+        });
+        it('should return a Promise', () => {
+            expect(tasks.create({})).toEqual(jasmine.any(Promise));
+        });
+        it('should only add 1 and only 1 comment on creation', done => {
+            tasks.create({}, [], 'comment').then(() => {
+                tasks.create({}, [], 'comment').then(() => {
+                    let task = api.post.calls.argsFor(1)[1];
+                    expect(task.comments.length).toEqual(1);
+                    expect(task.comments[0].body).toEqual('comment');
+                    done();
+                });
+            });
+        });
+        it('should only add 1 and only 1 comment on creation with contacts', done => {
+            tasks.create({}, ['1', '2'], 'comment').then(() => {
+                tasks.create({}, ['1', '2'], 'comment').then(() => {
+                    let task = api.post.calls.argsFor(1)[0].data[0];
+                    expect(task.comments.length).toEqual(1);
+                    expect(task.comments[0].body).toEqual('comment');
+                    done();
+                });
+            });
+        });
     });
     describe('bulkEdit', () => {
         beforeEach(() => {

@@ -20,7 +20,7 @@ describe('tasks.modals.log.controller', () => {
             controller = $controller;
             $ctrl = loadController();
             const result = [{id: 1, name: 'a'}];
-            spyOn(contacts, 'getNames').and.callFake(() => new Promise(resolve => resolve(result)));
+            spyOn(contacts, 'getNames').and.callFake(() => Promise.resolve(result));
         });
     });
     function loadController() {
@@ -104,9 +104,9 @@ describe('tasks.modals.log.controller', () => {
     });
     describe('save', () => {
         beforeEach(() => {
-            spyOn(tasks, 'create').and.callFake(() => new Promise(resolve => resolve({})));
-            spyOn(tasks, 'addModal').and.callFake(() => new Promise(resolve => resolve({})));
-            spyOn(contacts, 'bulkEditFields').and.callFake(() => new Promise(resolve => resolve({})));
+            spyOn(tasks, 'create').and.callFake(() => Promise.resolve({}));
+            spyOn(tasks, 'addModal').and.callFake(() => Promise.resolve({}));
+            spyOn(contacts, 'bulkSave').and.callFake(() => Promise.resolve({}));
             scope.$hide = () => {};
             spyOn(scope, '$hide');
         });
@@ -118,7 +118,7 @@ describe('tasks.modals.log.controller', () => {
             $ctrl.status = 'Active';
             defaultPartnerStatus();
             $ctrl.save();
-            expect(contacts.bulkEditFields).toHaveBeenCalledWith({ status: $ctrl.status }, $ctrl.task.contacts);
+            expect(contacts.bulkSave).toHaveBeenCalledWith([{ id: 1, status: $ctrl.status }]);
         });
         it('should hide the modal when finished', (done) => {
             $ctrl.save().then(() => {

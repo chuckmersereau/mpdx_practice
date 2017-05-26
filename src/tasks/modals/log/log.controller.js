@@ -1,4 +1,5 @@
-import indexOf from 'lodash/fp/indexOf';
+import concat from 'lodash/fp/concat';
+import contains from 'lodash/fp/contains';
 import reduce from 'lodash/fp/reduce';
 import startsWith from 'lodash/fp/startsWith';
 import union from 'lodash/fp/union';
@@ -50,7 +51,10 @@ class LogTaskController {
     }
     save(promises = []) {
         if (this.status && this.showPartnerStatus()) {
-            promises.push(this.contacts.bulkEditFields({ status: this.status }, this.task.contacts));
+            const contacts = reduce((result, contact) =>
+                    concat(result, {id: contact, status: this.status})
+                , [], this.contactsList);
+            promises.push(this.contacts.bulkSave(contacts));
         }
         promises.push(this.tasks.create(
             this.task,
@@ -65,7 +69,7 @@ class LogTaskController {
         });
     }
     showPartnerStatus() {
-        return this.contactsList.length > 0 && this.task.activity_type && indexOf(this.task.activity_type, ['Pre Call Letter', 'Reminder Letter', 'Support Letter', 'Thank', 'To Do']) === -1;
+        return this.contactsList.length > 0 && this.task.activity_type && !contains(this.task.activity_type, ['Pre Call Letter', 'Reminder Letter', 'Support Letter', 'Thank', 'To Do']);
     }
 }
 

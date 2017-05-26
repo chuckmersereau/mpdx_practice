@@ -28,11 +28,23 @@ class ModalController {
     }
     saveAndBlock() {
         this.blockUI.start();
-        this.save().finally(() => this.blockUI.reset());
+        return this.save().then(data => {
+            this.blockUI.reset();
+            return data;
+        }).catch(err => {
+            this.blockUI.reset();
+            return err;
+        });
     }
     deleteAndBlock() {
         this.blockUI.start();
-        this.delete().finally(() => this.blockUI.reset());
+        return this.delete().then(data => {
+            this.blockUI.reset();
+            return data;
+        }).catch(err => {
+            this.blockUI.reset();
+            return err;
+        });
     }
 }
 
@@ -54,5 +66,10 @@ const Modal = {
     }
 };
 
-export default angular.module('mpdx.common.modal.component', [])
+import blockUI from 'angular-block-ui';
+import gettext from 'angular-gettext';
+
+export default angular.module('mpdx.common.modal.component', [
+    blockUI, gettext
+])
     .component('modal', Modal).name;

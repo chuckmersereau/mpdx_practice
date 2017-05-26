@@ -1,7 +1,6 @@
 import defaultTo from 'lodash/fp/defaultTo';
 
 class CollectionSelectorController {
-    returnFn;
     constructor(
         modal
     ) {
