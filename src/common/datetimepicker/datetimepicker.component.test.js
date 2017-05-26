@@ -66,7 +66,7 @@ describe('common.datetimepicker.component', () => {
         it('should change the time', () => {
             $ctrl.time = moment(defaultModel).add(1, 'hour');
             scope.$digest();
-            expect($ctrl.ngModel).toEqual(moment(defaultModel).add(1, 'hour').toISOString());
+            expect(moment($ctrl.ngModel).hour()).toEqual(moment($ctrl.time).hour());
         });
         it('should change the date', () => {
             $ctrl.date = moment(defaultModel).add(1, 'day');
