@@ -1,4 +1,4 @@
-<div block-ui="fix-emailAddresses">
+<div block-ui="fix-email-addresses">
     <h1 translate>Fix Email Addresses</h1>
     <p ng-if="!$ctrl.fixEmailAddresses.meta.pagination.total_count" translate>
         Great work! We weren't able to detect any email addresses in your account needing review.
@@ -24,7 +24,15 @@
                 <i class="fa fa-check-circle"></i> <translate translate-params-source="$ctrl.source">Confirm All as {{source}}</translate>
             </button>
         </div>
-        <fix-email-addresses-item ng-repeat="person in $ctrl.fixEmailAddresses.data" person="person"></fix-email-addresses-item>
+        <div ng-show="$ctrl.fixEmailAddresses.loading">
+            <div class="loading-box">
+                <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+                <span class="sr-only" translate="">Loading</span>
+            </div>
+        </div>
+        <div ng-show="!$ctrl.fixEmailAddresses.loading">
+            <fix-email-addresses-item ng-repeat="person in $ctrl.fixEmailAddresses.data" person="person"></fix-email-addresses-item>
+        </div>
         <pagination ng-if="$ctrl.fixEmailAddresses.meta.pagination.total_count > 0"
                     meta="$ctrl.fixEmailAddresses.meta.pagination"
                     on-change="$ctrl.load(page)"

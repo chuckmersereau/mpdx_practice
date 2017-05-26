@@ -5,11 +5,8 @@ class FieldController {
     locale;
 
     constructor(
-        $q,
         fixEmailAddresses, locale
     ) {
-        this.$q = $q;
-
         this.fixEmailAddresses = fixEmailAddresses;
         this.locale = locale;
     }
@@ -26,12 +23,8 @@ class FieldController {
         }
     }
 
-    remove() {
-        this.fixEmailAddresses.removeEmailAddress(this.person, this.emailAddress);
-    }
-
     save() {
-        this.fixEmailAddresses.saveEmailAddress(this.person, this.emailAddress).then(() => {
+        return this.fixEmailAddresses.saveEmailAddress(this.person, this.emailAddress).then(() => {
             if (this.emailAddress.new) {
                 this.emailAddress.new = false;
                 this.person.email_addresses.push(this.emailAddress);
@@ -44,6 +37,10 @@ class FieldController {
                 };
             }
         });
+    }
+
+    remove() {
+        this.fixEmailAddresses.removeEmailAddress(this.person, this.emailAddress);
     }
 
     setPrimary() {
@@ -60,5 +57,9 @@ const Field = {
     }
 };
 
-export default angular.module('mpdx.tools.fix.emailAddresses.item.field.component', [])
-    .component('fixEmailAddressesItemField', Field).name;
+import fixEmailAddresses from '../../emailAddresses.service';
+import locale from 'common/locale/locale.service';
+
+export default angular.module('mpdx.tools.fix.emailAddresses.item.field.component', [
+    fixEmailAddresses, locale
+]).component('fixEmailAddressesItemField', Field).name;

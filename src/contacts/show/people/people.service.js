@@ -190,5 +190,14 @@ class PersonService {
         }).then(() => this.list(contact.id));
     }
 }
-export default angular.module('mpdx.contacts.show.people.service', [])
-    .service('people', PersonService).name;
+
+
+import gettextCatalog from 'angular-gettext';
+import api from 'common/api/api.service';
+import contacts from 'contacts/contacts.service';
+import modal from 'common/modal/modal.service';
+
+export default angular.module('mpdx.contacts.show.people.service', [
+    gettextCatalog,
+    api, contacts, modal
+]).service('people', PersonService).name;

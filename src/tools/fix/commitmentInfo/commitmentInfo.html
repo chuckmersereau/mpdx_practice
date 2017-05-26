@@ -11,13 +11,21 @@
             MPDX has made its best attempt at matching the appropriate statuses for you.
             However, you will need to confirm them to be sure MPDX’s matching was accurate.</translate>
         </p>
-        <div class="bulk">
+         <!-- <div class="bulk">
             <button class="btn btn-gray" ng-click="$ctrl.save()">
                 <i class="fa fa-check-circle"></i> <translate>Confirm All</translate>
             </button>
+        </div> -->
+        <div ng-show="$ctrl.fixCommitmentInfo.loading">
+            <div class="loading-box">
+                <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+                <span class="sr-only" translate="">Loading</span>
+            </div>
         </div>
-        <fix-commitment-info-item ng-repeat="contact in $ctrl.fixCommitmentInfo.data" ng-if="!contact.hidden" contact="contact"></fix-commitment-info-item>
-        <pagination ng-if="$ctrl.fixCommitmentInfo.data.length > 0"
+        <div ng-show="!$ctrl.fixCommitmentInfo.loading">
+            <fix-commitment-info-item ng-repeat="contact in $ctrl.fixCommitmentInfo.data" ng-if="!contact.hidden" contact="contact"></fix-commitment-info-item>
+        </div>
+        <pagination ng-if="$ctrl.fixCommitmentInfo.meta.pagination.total_count > 0"
                     meta="$ctrl.fixCommitmentInfo.meta.pagination"
                     on-change="$ctrl.load(page)"
                     class="text-center">

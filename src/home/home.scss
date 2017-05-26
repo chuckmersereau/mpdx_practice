@@ -21,4 +21,16 @@ home {
     .panel {
         height: 100%;
     }
+    .row-eq-height {
+        .col-md-4:first-child {
+            padding-right: 2.5px;
+        }
+        .col-md-4:nth-child(2) {
+            padding-left: 2.5px;
+            padding-right: 2.5px;
+        }
+        .col-md-4:last-child {
+            padding-left: 2.5px;
+        }
+    }
 }

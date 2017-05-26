@@ -1,4 +1,4 @@
-<div block-ui="fix-phoneNumbers">
+<div block-ui="fix-phone-numbers">
     <h1 translate>Fix Phone Numbers</h1>
     <p ng-if="!$ctrl.fixPhoneNumbers.meta.pagination.total_count" translate>
         Great work! We weren't able to detect any phone numbers in your account needing review.
@@ -24,7 +24,15 @@
                 <i class="fa fa-check-circle"></i> <translate translate-params-source="$ctrl.source">Confirm All as {{source}}</translate>
             </button>
         </div>
-        <fix-phone-numbers-item ng-repeat="person in $ctrl.fixPhoneNumbers.data" person="person"></fix-phone-numbers-item>
+        <div ng-show="$ctrl.fixPhoneNumbers.loading">
+            <div class="loading-box">
+                <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+                <span class="sr-only" translate="">Loading</span>
+            </div>
+        </div>
+        <div ng-show="!$ctrl.fixPhoneNumbers.loading">
+            <fix-phone-numbers-item ng-repeat="person in $ctrl.fixPhoneNumbers.data" person="person"></fix-phone-numbers-item>
+        </div>
         <pagination ng-if="$ctrl.fixPhoneNumbers.meta.pagination.total_count > 0"
                     meta="$ctrl.fixPhoneNumbers.meta.pagination"
                     on-change="$ctrl.load(page)"

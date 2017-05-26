@@ -2,25 +2,26 @@ class ItemController {
     fixEmailAddresses;
 
     constructor(
-        $log, $q, blockUI,
+        blockUI,
         fixEmailAddresses
     ) {
-        this.$log = $log;
-        this.$q = $q;
         this.blockUI = blockUI;
-
         this.fixEmailAddresses = fixEmailAddresses;
     }
 
     $onInit() {
-        this.blockUI = this.blockUI.instances.get(`fix-phone-numbers-item-${this.person.id}`);
+        this.blockUI = this.blockUI.instances.get(`fix-email-addresses-item-${this.person.id}`);
     }
 
     save() {
         this.blockUI.start();
-        return this.fixEmailAddresses.save(this.person).finally(() => {
+        return this.fixEmailAddresses.save(this.person).then(() => {
             this.blockUI.reset();
         });
+    }
+
+    hasPrimary() {
+        return this.fixEmailAddresses.hasPrimary(this.person);
     }
 }
 
@@ -32,5 +33,10 @@ const Item = {
     }
 };
 
-export default angular.module('mpdx.tools.fix.emailAddresses.item.component', [])
-    .component('fixEmailAddressesItem', Item).name;
+import blockUI from 'angular-block-ui';
+import fixEmailAddresses from '../emailAddresses.service';
+
+export default angular.module('mpdx.tools.fix.emailAddresses.item.component', [
+    blockUI,
+    fixEmailAddresses
+]).component('fixEmailAddressesItem', Item).name;

@@ -8,7 +8,9 @@ class SidebarController {
         this.fixCommitmentInfo = fixCommitmentInfo;
         this.fixEmailAddresses = fixEmailAddresses;
         this.fixPhoneNumbers = fixPhoneNumbers;
+    }
 
+    $onInit() {
         if (this.$state.current.name !== 'tools.fix.addresses') {
             this.fixAddresses.loadCount();
         }
@@ -29,5 +31,13 @@ const Sidebar = {
     template: require('./sidebar.html')
 };
 
-export default angular.module('mpdx.tools.fix.sidebar.component', [])
-    .component('fixSidebar', Sidebar).name;
+import uiRouter from 'angular-ui-router';
+import fixAddresses from '../addresses/addresses.service';
+import fixCommitmentInfo from '../commitmentInfo/commitmentInfo.service';
+import fixEmailAddresses from '../emailAddresses/emailAddresses.service';
+import fixPhoneNumbers from '../phoneNumbers/phoneNumbers.service';
+
+export default angular.module('mpdx.tools.fix.sidebar.component', [
+    uiRouter,
+    fixAddresses, fixCommitmentInfo, fixEmailAddresses, fixPhoneNumbers
+]).component('fixSidebar', Sidebar).name;

@@ -4,11 +4,8 @@ class FieldController {
     contacts;
 
     constructor(
-        $q,
         fixAddresses, locale, contacts
     ) {
-        this.$q = $q;
-
         this.fixAddresses = fixAddresses;
         this.contacts = contacts;
         this.locale = locale;
@@ -34,7 +31,7 @@ class FieldController {
     }
 
     remove() {
-        this.fixAddresses.remove(this.contact, this.address);
+        this.fixAddresses.removeAddress(this.contact, this.address);
     }
 
     setPrimary() {
@@ -51,5 +48,10 @@ const Field = {
     }
 };
 
-export default angular.module('mpdx.tools.fix.addresses.item.field.component', [])
-    .component('fixAddressesItemField', Field).name;
+import fixAddresses from '../../addresses.service';
+import contacts from 'contacts/contacts.service';
+import locale from 'common/locale/locale.service';
+
+export default angular.module('mpdx.tools.fix.addresses.item.field.component', [
+    fixAddresses, locale, contacts
+]).component('fixAddressesItemField', Field).name;
