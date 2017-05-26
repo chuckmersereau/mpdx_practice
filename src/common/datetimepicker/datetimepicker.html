@@ -4,6 +4,7 @@
                ng-model="$ctrl.date"
                data-date-format="{{::$ctrl.locale.dateTimeFormat}}"
                name="dp_{{::$id}}"
+               ng-focus="$ctrl.focus()"
                data-autoclose="1">
         <div ng-if="$ctrl.form['dp_' + $id].$invalid" translate>
             Invalid date format
@@ -13,7 +14,8 @@
         <input type="text" class="form-control" bs-timepicker
                ng-model="$ctrl.time" name="tp_{{::$id}}"
                data-length="{{::$ctrl.hourStep}}"
-               data-minute-step="{{::$ctrl.minuteStep}}">
+               data-minute-step="{{::$ctrl.minuteStep}}"
+               ng-focus="$ctrl.focus()">
         <div ng-if="$ctrl.form['tp_' + $id].$invalid" translate>
             Invalid time format
         </div>

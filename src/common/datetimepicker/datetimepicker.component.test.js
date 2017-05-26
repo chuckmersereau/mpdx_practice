@@ -82,4 +82,12 @@ describe('common.datetimepicker.component', () => {
             expect($ctrl.model).toBeUndefined();
         });
     });
+    describe('focus', () => {
+        it('should init on focus', () => {
+            spyOn($ctrl, 'init').and.callFake(() => {});
+            $ctrl.focus();
+            expect($ctrl.ngModel).toBeDefined();
+            expect($ctrl.init).toHaveBeenCalled();
+        });
+    });
 });
