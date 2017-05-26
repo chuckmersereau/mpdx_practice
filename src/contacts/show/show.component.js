@@ -96,7 +96,6 @@ class ContactController {
         };
 
         help.suggest([
-            this.gettextCatalog.getString('58d3d70ddd8c8e7f5974d3ca'),
             this.gettextCatalog.getString('5845aab3c6979106d373a576'),
             this.gettextCatalog.getString('5845995e90336006981769bb'),
             this.gettextCatalog.getString('584ac7f39033602d65f6e131'),

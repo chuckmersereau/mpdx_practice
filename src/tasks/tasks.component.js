@@ -7,7 +7,6 @@ class TasksController {
         this.gettextCatalog = gettextCatalog;
 
         help.suggest([
-            this.gettextCatalog.getString('58d3d70ddd8c8e7f5974d3ca'),
             this.gettextCatalog.getString('584acfaa9033602d65f6e191'),
             this.gettextCatalog.getString('58482329c6979106d373b517'),
             this.gettextCatalog.getString('584823979033600698177abb'),

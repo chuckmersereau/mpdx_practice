@@ -10,7 +10,6 @@ class PreferencesController {
         this.accounts = accounts;
 
         help.suggest([
-            this.gettextCatalog.getString('58d3d70ddd8c8e7f5974d3ca'),
             this.gettextCatalog.getString('57e2f280c697910d0784d307'),
             this.gettextCatalog.getString('5845aa229033600698176a54'),
             this.gettextCatalog.getString('5845ae09c6979106d373a589'),
