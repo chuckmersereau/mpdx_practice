@@ -48,7 +48,7 @@
             <i class="fa fa-times"></i>
         </a>
     </div>
-    <contacts-list-item ng-repeat="contact in ::$ctrl.task.contacts track by contact.id" contact="contact"></contacts-list-item>
+    <contacts-list-item ng-repeat="contact in $ctrl.task.contacts track by contact.id" contact="contact"></contacts-list-item>
 </div>
 <div class="comments" ng-if="$ctrl.showComments">
     <div class="links">
