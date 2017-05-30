@@ -128,6 +128,17 @@ describe('contacts.list.component', () => {
             $ctrl.toggleAllContacts();
             expect(contacts.clearSelectedContacts).toHaveBeenCalledWith();
         });
+        it('should call clearSelectedContacts if contacts are undefined', () => {
+            contacts.selectedContacts = null;
+            $ctrl.toggleAllContacts();
+            expect(contacts.clearSelectedContacts).toHaveBeenCalledWith();
+        });
+        it('should call clearSelectedContacts if no data', () => {
+            contacts.selectedContacts = [1];
+            $ctrl.data = null;
+            $ctrl.toggleAllContacts();
+            expect(contacts.clearSelectedContacts).toHaveBeenCalledWith();
+        });
     });
     describe('hideContact', () => {
         let contact = {id: 1, name: 'a'};

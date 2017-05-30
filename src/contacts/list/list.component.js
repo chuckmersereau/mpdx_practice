@@ -78,7 +78,7 @@ class ListController {
         this.load(this.page);
     }
     toggleAllContacts() {
-        if (this.contacts.selectedContacts.length < this.data.length) {
+        if (this.data && this.contacts.selectedContacts && this.contacts.selectedContacts.length < this.data.length) {
             this.selectAllContacts(false);
         } else {
             this.contacts.clearSelectedContacts();
