@@ -66,12 +66,11 @@ class TasksService {
             include: 'comments,comments.person,contacts,contacts.addresses,contacts.people,contacts.people.facebook_accounts,contacts.people.phone_numbers,contacts.people.email_addresses',
             fields: {
                 contacts: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people',
-                people: 'deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
                 addresses: 'city,historic,primary_mailing_address,postal_code,state,source,street',
                 email_addresses: 'email,historic,primary',
                 phone_numbers: 'historic,location,number,primary',
                 facebook_accounts: 'username',
-                person: 'first_name,last_name'
+                person: 'first_name,last_name,deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers'
             }
         }).then((task) => {
             const processedTask = this.process(task);
