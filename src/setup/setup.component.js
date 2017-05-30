@@ -1,9 +1,5 @@
-class SetupController {
-}
-
 const Setup = {
-    template: require('./setup.html'),
-    controller: SetupController
+    template: require('./setup.html')
 };
 
 export default angular.module('mpdx.setup.component', [])

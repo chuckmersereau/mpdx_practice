@@ -8,7 +8,7 @@ describe('common.datetimepicker.component', () => {
         angular.mock.module(component);
         inject(($componentController, $rootScope) => {
             rootScope = $rootScope;
-            scope = $rootScope.$new();
+            scope = rootScope.$new();
             componentController = $componentController;
             loadController({ngModel: defaultModel});
         });

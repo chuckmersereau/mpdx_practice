@@ -1,16 +1,13 @@
 import component from './notifications.component';
 
 describe('contacts.list.component', () => {
-    let $ctrl, accounts, serverConstants, rootScope, scope, componentController, users, alerts;
+    let $ctrl, accounts, serverConstants, scope, componentController;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _accounts_, _serverConstants_, _users_, _alerts_) => {
-            rootScope = $rootScope;
+        inject(($componentController, $rootScope, _accounts_, _serverConstants_) => {
             scope = $rootScope.$new();
-            alerts = _alerts_;
             accounts = _accounts_;
             serverConstants = _serverConstants_;
-            users = _users_;
             componentController = $componentController;
             loadController();
         });

@@ -2,8 +2,7 @@ class AddressesController {
     fixAddresses;
 
     constructor(
-        $rootScope,
-        gettextCatalog, blockUI,
+        $rootScope, gettextCatalog, blockUI,
         modal, fixAddresses
     ) {
         this.gettextCatalog = gettextCatalog;

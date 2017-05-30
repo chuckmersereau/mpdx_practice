@@ -26,10 +26,6 @@ class TagsService {
         this.rejectedTags = [];
         this.anyTags = false;
 
-        $rootScope.$on('accountListUpdated', () => {
-            this.load();
-        });
-
         $rootScope.$on('contactTagsAdded', (e, val) => {
             const tags = map(obj => {
                 return {id: uuid(), name: obj};

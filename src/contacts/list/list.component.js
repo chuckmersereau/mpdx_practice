@@ -54,14 +54,17 @@ class ListController {
 
         $rootScope.$on('accountListUpdated', () => {
             this.load();
+            this.contacts.clearSelectedContacts();
         });
 
         $rootScope.$on('contactsFilterChange', () => {
             this.load();
+            this.contacts.clearSelectedContacts();
         });
 
         $rootScope.$on('contactsTagsChange', () => {
             this.load();
+            this.contacts.clearSelectedContacts();
         });
     }
     $onInit() {

@@ -3,6 +3,7 @@ import concat from 'lodash/fp/concat';
 import assign from 'lodash/fp/assign';
 import each from 'lodash/fp/each';
 import find from 'lodash/fp/find';
+import get from 'lodash/fp/get';
 import includes from 'lodash/fp/includes';
 import isEmpty from 'lodash/fp/isEmpty';
 import isNil from 'lodash/fp/isNil';
@@ -18,18 +19,17 @@ import relationshipId from '../common/fp/relationshipId';
 import emptyToNull from '../common/fp/emptyToNull';
 import upsert from '../common/fp/upsert';
 import reduce from 'lodash/fp/reduce';
+import moment from 'moment';
 
 class TasksService {
     contacts;
     selectedContacts;
     constructor(
-        $rootScope, $window, $log, $q, gettextCatalog,
+        $rootScope, $log, gettextCatalog,
         alerts, api, tasksFilter, tasksTags, users, modal, tasksModals, contacts
     ) {
         this.alerts = alerts;
-        this.moment = $window.moment;
         this.$log = $log;
-        this.$q = $q;
         this.$rootScope = $rootScope;
         this.api = api;
         this.gettextCatalog = gettextCatalog;
@@ -43,10 +43,12 @@ class TasksService {
         this.analytics = null;
         this.completeList = [];
         this.data = [];
+        this.dataLoadCount = 0;
         this.meta = {};
         this.page = 1;
         this.selected = [];
-        this.loading = true;
+        this.loading = true; //TODO: maybe should become false until actually loading
+        //TODO: move to component (won't update in service)
         this.categories = {
             'completed': this.gettextCatalog.getString('Completed'),
             'today': this.gettextCatalog.getString('Today'),
@@ -54,8 +56,6 @@ class TasksService {
             'upcoming': this.gettextCatalog.getString('Upcoming'),
             'no-due-date': this.gettextCatalog.getString('No Due Date')
         };
-
-        this.dataLoadCount = 0;
     }
     reset() {
         this.selected = [];
@@ -78,6 +78,7 @@ class TasksService {
             if (updateLists) {
                 this.data = upsert('id', processedTask, this.data);
             }
+            /* istanbul ignore next */
             this.$log.debug(`tasks/${task.id}`, processedTask);
             return processedTask;
         });
@@ -95,33 +96,31 @@ class TasksService {
             },
             overrideGetAsPost: true
         }).then((data) => {
+            /* istanbul ignore next */
             this.$log.debug('tasks all', data);
             this.completeList = data;
         });
     }
     getAnalytics() {
         return this.api.get('tasks/analytics', {filter: {account_list_id: this.api.account_list_id}}).then((data) => {
+            /* istanbul ignore next */
             this.$log.debug('tasks/analytics', data);
             this.analytics = data;
             return this.analytics;
         });
     }
-    load(reset = false, page = 0) {
+    load(page = 1) {
+        const reset = page === 1;
         this.loading = true;
 
-        if (!reset && page <= this.page) {
-            this.loading = false;
-            return this.$q.resolve(this.data);
-        }
-
         let currentCount;
-        this.dataLoadCount++;
-        currentCount = angular.copy(this.dataLoadCount);
 
         if (reset) {
-            this.page = 0;
+            this.page = 1;
             this.meta = {};
             this.data = [];
+            this.dataLoadCount++;
+            currentCount = angular.copy(this.dataLoadCount);
         }
 
         return this.api.get({
@@ -138,30 +137,32 @@ class TasksService {
             },
             deSerializationOptions: relationshipId('comments'), //for comment count
             overrideGetAsPost: true
-        }).then((data) => {
+        }).then(data => {
+            /* istanbul ignore next */
             this.$log.debug('tasks page ' + data.meta.pagination.page, data);
-            if (reset && currentCount !== this.dataLoadCount) {
+            /* istanbul ignore next */
+            if (reset && currentCount !== this.dataLoadCount) { //case for slow prior query returning after faster newer query
                 return;
             }
             this.loading = false;
             this.meta = data.meta;
-            const tasks = map((task) => this.process(task), data);
+            const tasks = map(task => this.process(task), data);
             this.data = unionBy('id', this.data, tasks);
             this.page = parseInt(this.meta.pagination.page);
         });
     }
     process(task) {
-        const startAt = this.moment(task.start_at);
+        const startAt = moment(task.start_at);
         if (task.completed) {
             task.category = { name: 'completed', id: 4 };
-        } else if (this.moment().isSame(startAt, 'day')) {
-            task.category = { name: 'today', id: 1 };
-        } else if (this.moment().isAfter(startAt, 'day')) {
-            task.category = { name: 'overdue', id: 0 };
-        } else if (this.moment().isBefore(startAt, 'day')) {
-            task.category = { name: 'upcoming', id: 2 };
-        } else {
+        } else if (!get('start_at', task)) {
             task.category = { name: 'no-due-date', id: 3 };
+        } else if (moment().isSame(startAt, 'day')) {
+            task.category = { name: 'today', id: 1 };
+        } else if (moment().isAfter(startAt, 'day')) {
+            task.category = { name: 'overdue', id: 0 };
+        } else if (moment().isBefore(startAt, 'day')) {
+            task.category = { name: 'upcoming', id: 2 };
         }
         return task;
     }
@@ -169,7 +170,7 @@ class TasksService {
         if (this.loading || this.page >= parseInt(this.meta.pagination.total_pages)) {
             return;
         }
-        this.load(false, this.page + 1);
+        this.load(this.page + 1);
     }
     save(task, comment = null) {
         if (task.tag_list) {
@@ -281,8 +282,9 @@ class TasksService {
     }
     bulkDelete() {
         if (this.selected.length > 25) {
-            this.alerts.addAlert(this.gettextCatalog.getString('Too many tasks selected, please select a maximum of 25 tasks.'), 'danger');
-            return this.$q.reject();
+            const message = this.gettextCatalog.getString('Too many tasks selected, please select a maximum of 25 tasks.');
+            this.alerts.addAlert(message, 'danger');
+            return Promise.reject(new Error({message: message}));
         }
         const tasks = map(id => { return {id: id}; }, this.selected);
         const message = this.gettextCatalog.getPlural(this.selected.length, 'Are you sure you wish to delete the selected task?', 'Are you sure you wish to delete the {{$count}} selected tasks?', {});

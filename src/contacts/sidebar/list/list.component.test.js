@@ -49,7 +49,7 @@ describe('contacts.sidebar.list.component', () => {
         beforeEach(() => {
             spyOn($ctrl, 'load').and.callFake(() => {});
         });
-        xit('should load on accountListUpdated', () => { //contact tags event needs to be moved to component
+        it('should load on accountListUpdated', () => {
             rootScope.$emit('accountListUpdated');
             rootScope.$digest();
             expect($ctrl.load).toHaveBeenCalledWith(true);

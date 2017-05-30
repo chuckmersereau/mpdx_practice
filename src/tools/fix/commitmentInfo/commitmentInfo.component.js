@@ -2,8 +2,7 @@ class CommitmentInfoController {
     fixCommitmentInfo;
 
     constructor(
-        $rootScope,
-        gettextCatalog, blockUI,
+        $rootScope, gettextCatalog, blockUI,
         modal, fixCommitmentInfo
     ) {
         this.gettextCatalog = gettextCatalog;

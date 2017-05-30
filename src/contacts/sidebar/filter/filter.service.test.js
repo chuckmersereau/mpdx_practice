@@ -3,15 +3,12 @@ import service from './filter.service';
 const accountListId = 123;
 
 describe('contacts.sidebar.filter.service', () => {
-    let api, filters, contactFilter, contactsTags, rootScope;
+    let api, contactFilter;
     beforeEach(() => {
         angular.mock.module(service);
-        inject(($rootScope, _api_, _filters_, _contactFilter_, _contactsTags_) => {
-            rootScope = $rootScope;
+        inject(($rootScope, _api_, _filters_, _contactFilter_) => {
             api = _api_;
-            filters = _filters_;
             contactFilter = _contactFilter_;
-            contactsTags = _contactsTags_;
             api.account_list_id = accountListId;
         });
     });

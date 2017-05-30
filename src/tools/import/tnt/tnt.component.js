@@ -9,7 +9,7 @@ class TntImportController {
     maxSize;
     maxSizeInMB;
     constructor(
-        $window, gettextCatalog, Upload,
+        $rootScope, $window, gettextCatalog, Upload,
         alerts, api, contactsTags, modal, serverConstants
     ) {
         this.$window = $window;
@@ -24,6 +24,10 @@ class TntImportController {
         this.importing = false;
         this.override = true;
         this.tags = [];
+
+        $rootScope.$on('accountListUpdated', () => {
+            this.contactsTags.load();
+        });
     }
     $onInit() {
         this.maxSize = this.serverConstants.data.tnt_import.max_file_size_in_bytes;
@@ -65,5 +69,12 @@ const TntImport = {
     template: require('./tnt.html')
 };
 
-export default angular.module('mpdx.preferences.import.tnt.component', [])
-    .component('tntImportForm', TntImport).name;
+import alerts from 'common/alerts/alerts.service';
+import contactsTags from 'contacts/sidebar/filter/tags/tags.service';
+import serverConstants from 'common/serverConstants/serverConstants.service';
+import Upload from 'ng-file-upload';
+
+export default angular.module('mpdx.preferences.import.tnt.component', [
+    Upload,
+    alerts, contactsTags, serverConstants
+]).component('tntImportForm', TntImport).name;

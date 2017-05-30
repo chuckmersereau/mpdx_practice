@@ -15,14 +15,12 @@ const params = {
 };
 
 describe('contacts.list.exportContacts.controller', () => {
-    let $ctrl, controller, contacts, api, scope, blockUI;
+    let $ctrl, controller, api, scope;
     beforeEach(() => {
         angular.mock.module(exportContacts);
         inject(($controller, $timeout, $rootScope, _contacts_, _api_, _blockUI_, $q) => {
             scope = $rootScope.$new();
             api = _api_;
-            contacts = _contacts_;
-            blockUI = _blockUI_;
             controller = $controller;
             $ctrl = loadController(contactList);
             spyOn($ctrl, 'blockUI').and.callFake(() => fakeBlockUI);

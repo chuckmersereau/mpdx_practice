@@ -43,18 +43,6 @@ class ContactsService {
         this.analytics = null;
         this.current = null;
         this.selectedContacts = [];
-
-        $rootScope.$on('contactsFilterChange', () => {
-            this.clearSelectedContacts();
-        });
-
-        $rootScope.$on('contactsTagsChange', () => {
-            this.clearSelectedContacts();
-        });
-
-        $rootScope.$on('accountListUpdated', () => {
-            this.clearSelectedContacts();
-        });
     }
     get(id) {
         return this.api.get({

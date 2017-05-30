@@ -19,10 +19,6 @@ class MergePeople {
         this.duplicates = [];
         this.perPage = 5;
         this.total = 0;
-
-        $rootScope.$on('accountListUpdated', () => {
-            this.load(true);
-        });
     }
 
     load(reset = false) {
@@ -86,5 +82,12 @@ class MergePeople {
         return this.$q.all(promises).then(() => this.load(true));
     }
 }
-export default angular.module('mpdx.tools.mergePeople.service', [])
-    .service('mergePeople', MergePeople).name;
+
+import api from 'common/api/api.service';
+import people from 'contacts/show/people/people.service';
+import uiRouter from 'angular-ui-router';
+
+export default angular.module('mpdx.tools.mergePeople.service', [
+    uiRouter,
+    api, people
+]).service('mergePeople', MergePeople).name;

@@ -2,8 +2,7 @@ class PhoneNumbersController {
     fixPhoneNumbers;
 
     constructor(
-        $rootScope,
-        gettextCatalog, blockUI,
+        $rootScope, gettextCatalog, blockUI,
         modal, fixPhoneNumbers
     ) {
         this.gettextCatalog = gettextCatalog;

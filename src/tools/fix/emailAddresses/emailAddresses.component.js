@@ -2,8 +2,7 @@ class EmailAddressesController {
     fixEmailAddresses;
 
     constructor(
-        $rootScope,
-        gettextCatalog, blockUI,
+        $rootScope, gettextCatalog, blockUI,
         modal, fixEmailAddresses
     ) {
         this.gettextCatalog = gettextCatalog;
