@@ -4,16 +4,15 @@ const person = {first_name: 'a', last_name: 'b'};
 const contact = {id: 123};
 
 describe('contacts.show.personModal.controller', () => {
-    let $ctrl, controller, alerts, people, gettextCatalog, modal, rootScope, scope;
+    let $ctrl, controller, alerts, people, gettextCatalog, rootScope, scope;
     beforeEach(() => {
         angular.mock.module(mc);
-        inject(($controller, $rootScope, _alerts_, _people_, _modal_, _gettextCatalog_) => {
+        inject(($controller, $rootScope, _alerts_, _people_, _gettextCatalog_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             scope.$hide = () => {};
             alerts = _alerts_;
             gettextCatalog = _gettextCatalog_;
-            modal = _modal_;
             people = _people_;
             controller = $controller;
             loadController(person);

@@ -1,18 +1,22 @@
 import component from './people.component';
 
 describe('contacts.show.people.component', () => {
-    let $ctrl, rootScope, scope, componentController, api, people;
+    let $ctrl, rootScope, scope, componentController, alerts, api, gettextCatalog, people;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _api_, _people_) => {
+        inject(($componentController, $rootScope, _alerts_, _api_, _gettextCatalog_, _people_) => {
             rootScope = $rootScope;
             scope = $rootScope.$new();
             api = _api_;
             componentController = $componentController;
+            alerts = _alerts_;
+            gettextCatalog = _gettextCatalog_;
             api.account_list_id = 1234;
             people = _people_;
             loadController();
         });
+        spyOn(alerts, 'addAlert').and.callFake(() => {});
+        spyOn(gettextCatalog, 'getString').and.callFake(data => data);
     });
     function loadController() {
         $ctrl = componentController('contactPeople', {$scope: scope}, {view: null, selected: null});
@@ -57,6 +61,36 @@ describe('contacts.show.people.component', () => {
                 done();
             });
             expect(people.list).toHaveBeenCalledWith(1);
+        });
+    });
+    describe('openMergeModal', () => {
+        it(`should display a translated message if at least 2 people aren't selected`, () => {
+            $ctrl.selectedPeople = [1];
+            $ctrl.openMergeModal();
+            expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
+        });
+        it('should hide the merging view', () => {
+            $ctrl.selectedPeople = [1, 2];
+            $ctrl.openMergeModal();
+            expect($ctrl.isMerging).toBeFalsy();
+        });
+        it('should open the merge modal', done => {
+            spyOn(people, 'openMergePeopleModal').and.callFake(() => Promise.resolve());
+            $ctrl.selectedPeople = [1, 2];
+            $ctrl.openMergeModal().then(() => {
+                expect(people.openMergePeopleModal).toHaveBeenCalledWith([1, 2]);
+                expect($ctrl.selectedPeople).toEqual([]);
+                done();
+            });
+        });
+        it('should handle catch', done => {
+            spyOn(people, 'openMergePeopleModal').and.callFake(() => Promise.reject(Error('err')));
+            $ctrl.selectedPeople = [1, 2];
+            $ctrl.openMergeModal().then(() => {
+                expect($ctrl.selectedPeople).toEqual([]);
+                done();
+            });
         });
     });
 });
