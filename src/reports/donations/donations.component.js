@@ -14,7 +14,6 @@ class DonationsController {
         $state, $stateParams, $rootScope, blockUI,
         contacts, designationAccounts, donations
     ) {
-        this.$rootScope = $rootScope;
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.contacts = contacts;
@@ -25,16 +24,16 @@ class DonationsController {
         this.enableNext = false;
         this.donationsList = [];
         this.page = 1;
+
+        $rootScope.$on('accountListUpdated', () => {
+            this.load(1);
+        });
     }
 
     $onInit() {
         if (this.byMonth) {
             this.startDate = defaultTo(moment().startOf('month'), this.$stateParams.startDate);
         }
-
-        this.watcher = this.$rootScope.$on('accountListUpdated', () => {
-            this.load(1);
-        });
         this.load(1);
     }
 
@@ -42,10 +41,6 @@ class DonationsController {
         if (changesObj.contact && !changesObj.contact.isFirstChange()) {
             this.load(1);
         }
-    }
-
-    $onDestroy() {
-        this.watcher();
     }
 
     load(page) {

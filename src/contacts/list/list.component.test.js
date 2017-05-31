@@ -58,28 +58,32 @@ describe('contacts.list.component', () => {
     describe('events', () => {
         beforeEach(() => {
             spyOn($ctrl, 'load').and.callFake(() => new Promise((resolve) => resolve));
-            spyOn(contactsTags, 'load').and.callFake(() => new Promise((resolve) => resolve));
+            spyOn(contactsTags, 'load').and.callFake(() => Promise.resolve());
+            spyOn(contacts, 'clearSelectedContacts').and.callFake(() => {});
         });
         it('should fire contacts.load on contactCreated', () => {
             rootScope.$emit('contactCreated');
             scope.$digest();
             expect($ctrl.load).toHaveBeenCalledWith();
         });
-        //xit until fix contactTags accountListUpdated to not fire in service
+        //xit until fix org_accounts accountListUpdated to not fire in service
         xit('should fire contacts.load on accountListUpdated', () => {
             rootScope.$emit('accountListUpdated');
             scope.$digest();
-            expect($ctrl.load).toHaveBeenCalledWith();
+            expect($ctrl.load).toHaveBeenCalled();
+            expect(contacts.clearSelectedContacts).toHaveBeenCalled();
         });
         it('should fire contacts.load on contactsFilterChange', () => {
             rootScope.$emit('contactsFilterChange');
             scope.$digest();
             expect($ctrl.load).toHaveBeenCalledWith();
+            expect(contacts.clearSelectedContacts).toHaveBeenCalled();
         });
         it('should fire contacts.load on contactsTagsChange', () => {
             rootScope.$emit('contactsTagsChange');
             scope.$digest();
             expect($ctrl.load).toHaveBeenCalledWith();
+            expect(contacts.clearSelectedContacts).toHaveBeenCalled();
         });
     });
     describe('loadMoreContacts', () => {
@@ -121,6 +125,17 @@ describe('contacts.list.component', () => {
         });
         it('should call clearSelectedContacts if all contacts are selected', () => {
             contacts.selectedContacts = [1];
+            $ctrl.toggleAllContacts();
+            expect(contacts.clearSelectedContacts).toHaveBeenCalledWith();
+        });
+        it('should call clearSelectedContacts if contacts are undefined', () => {
+            contacts.selectedContacts = null;
+            $ctrl.toggleAllContacts();
+            expect(contacts.clearSelectedContacts).toHaveBeenCalledWith();
+        });
+        it('should call clearSelectedContacts if no data', () => {
+            contacts.selectedContacts = [1];
+            $ctrl.data = null;
             $ctrl.toggleAllContacts();
             expect(contacts.clearSelectedContacts).toHaveBeenCalledWith();
         });

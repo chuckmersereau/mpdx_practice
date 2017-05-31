@@ -8,12 +8,13 @@ class PersonService {
     modal;
 
     constructor(
-        $filter, $log, $q, gettextCatalog,
+        $filter, $log, $q, $rootScope, gettextCatalog,
         api, contacts, modal
     ) {
         this.$filter = $filter;
         this.$log = $log;
         this.$q = $q;
+        this.$rootScope = $rootScope;
         this.gettextCatalog = gettextCatalog;
 
         this.api = api;
@@ -159,7 +160,7 @@ class PersonService {
     }
     openPeopleModal(contact, personId) {
         const modalOpen = (contact, person) => {
-            this.modal.open({
+            return this.modal.open({
                 template: require('./modal/modal.html'),
                 controller: 'personModalController',
                 locals: {
@@ -169,26 +170,35 @@ class PersonService {
                 resolve: {
                     peopleForRelationship: () => this.listAll()
                 }
-            }).then(() => this.list(contact.id));
+            });
         };
 
-        if (personId == null) {
-            return modalOpen(contact, {});
-        } else {
+        if (personId) {
             return this.get(contact.id, personId).then((person) => {
                 return modalOpen(contact, person);
             });
+        } else {
+            return modalOpen(contact, {});
         }
     }
-    openMergePeopleModal(contact, selectedPeople) {
+    openMergePeopleModal(selectedPeople) {
         return this.modal.open({
             template: require('./merge/merge.html'),
             controller: 'mergePeopleModalController',
             locals: {
                 selectedPeople: selectedPeople
             }
-        }).then(() => this.list(contact.id));
+        });
     }
 }
-export default angular.module('mpdx.contacts.show.people.service', [])
-    .service('people', PersonService).name;
+
+
+import gettextCatalog from 'angular-gettext';
+import api from 'common/api/api.service';
+import contacts from 'contacts/contacts.service';
+import modal from 'common/modal/modal.service';
+
+export default angular.module('mpdx.contacts.show.people.service', [
+    gettextCatalog,
+    api, contacts, modal
+]).service('people', PersonService).name;

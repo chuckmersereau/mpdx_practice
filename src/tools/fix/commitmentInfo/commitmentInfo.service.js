@@ -4,28 +4,22 @@ import reject from 'lodash/fp/reject';
 
 class CommitmentInfoService {
     api;
+    contacts;
 
     constructor(
-        $log, $q, $rootScope,
         api, contacts
     ) {
-        this.$log = $log;
-        this.$q = $q;
         this.api = api;
         this.contacts = contacts;
         this.loading = false;
         this.page = 1;
-
-        $rootScope.$on('accountListUpdated', () => {
-            this.load(true);
-        });
     }
 
     loadCount() {
-        if (this.meta) { return this.$q.resolve(); }
-        return this.api.get({
-            url: 'contacts',
-            data: {
+        if (this.meta) { return Promise.resolve(this.meta); }
+        return this.api.get(
+            'contacts',
+            {
                 filter: {
                     status_valid: false,
                     account_list_id: this.api.account_list_id
@@ -33,24 +27,25 @@ class CommitmentInfoService {
                 page: 1,
                 per_page: 0
             }
-        }).then((data) => {
+        ).then((data) => {
             if (!this.meta) {
                 this.meta = data.meta;
             }
+            return this.meta;
         });
     }
 
     load(reset = false, page = 1) {
         if (!reset && this.data && this.page === page) {
-            return this.$q.resolve(this.data);
+            return Promise.resolve(this.data);
         }
 
         this.loading = true;
         this.page = page;
 
-        return this.api.get({
-            url: 'contacts',
-            data: {
+        return this.api.get(
+            'contacts',
+            {
                 filter: {
                     status_valid: false,
                     account_list_id: this.api.account_list_id
@@ -61,10 +56,10 @@ class CommitmentInfoService {
                 include: 'last_six_donations',
                 sort: 'name',
                 page: page,
-                per_page: 25
+                per_page: 5
             }
-        }).then((data) => {
-            this.$log.debug('FixCommitmentInfo.load', data);
+        ).then((data) => {
+            this.loading = false;
 
             this.data = data;
             this.meta = data.meta;
@@ -93,32 +88,32 @@ class CommitmentInfoService {
                     contact.status = contact.suggested_changes['status'];
                 }
             }, data);
+
+            return this.data;
         });
     }
 
     save(contact) {
         contact.status_valid = true;
-
-        return this.contacts.save(contact).then(() => {
-            this.data = reject({ id: contact.id }, this.data);
-            if (this.meta && this.meta.pagination && this.meta.pagination.total_count) {
-                this.meta.pagination.total_count -= 1;
-            }
-        });
+        return this.contacts.save(contact).then(() => this.removeContactFromData(contact.id));
     }
 
     reject(contact) {
-        let params = {
+        const params = {
             id: contact.id,
             status_valid: true
         };
+        return this.contacts.save(params).then(() => this.removeContactFromData(contact.id));
+    }
 
-        return this.contacts.save(params).then(() => {
-            this.data = reject({ id: contact.id }, this.data);
-            if (this.meta && this.meta.pagination && this.meta.pagination.total_count) {
-                this.meta.pagination.total_count -= 1;
-            }
-        });
+    removeContactFromData(contactId) {
+        this.data = reject({ id: contactId }, this.data);
+        if (this.meta && this.meta.pagination && this.meta.pagination.total_count) {
+            this.meta.pagination.total_count -= 1;
+        }
+        if (this.data.length === 0) {
+            this.load(true, this.page);
+        }
     }
 
     bulkSave() {
@@ -134,5 +129,9 @@ class CommitmentInfoService {
     }
 }
 
-export default angular.module('mpdx.tools.fix.commitmentInfo.service', [])
-    .service('fixCommitmentInfo', CommitmentInfoService).name;
+import api from 'common/api/api.service';
+import contacts from 'contacts/contacts.service';
+
+export default angular.module('mpdx.tools.fix.commitmentInfo.service', [
+    api, contacts
+]).service('fixCommitmentInfo', CommitmentInfoService).name;

@@ -1,5 +1,4 @@
 import modalController from './modal.controller';
-import isEqual from 'lodash/fp/isEqual';
 
 describe('common.collectionSelector.modal.controller', () => {
     let $ctrl, controller, scope;

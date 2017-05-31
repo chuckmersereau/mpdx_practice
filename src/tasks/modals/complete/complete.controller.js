@@ -1,15 +1,14 @@
-import indexOf from 'lodash/fp/indexOf';
+import contains from 'lodash/fp/contains';
 import map from 'lodash/fp/map';
-import createPatch from '../../../common/fp/createPatch';
+import createPatch from 'common/fp/createPatch';
 
 class CompleteTaskController {
     comment;
     constructor(
-        $q, $log, $scope,
+        $log, $scope,
         serverConstants, tasks, contacts,
         task
     ) {
-        this.$q = $q;
         this.$log = $log;
         this.$scope = $scope;
         this.serverConstants = serverConstants;
@@ -30,7 +29,7 @@ class CompleteTaskController {
             patch,
             this.comment
         ));
-        return this.$q.all(promises).then(() => {
+        return Promise.all(promises).then(() => {
             this.$scope.$hide();
             if (this.task.next_action) {
                 this.tasks.addModal(map('id', this.task.contacts), this.task.next_action);
@@ -38,9 +37,14 @@ class CompleteTaskController {
         });
     }
     showPartnerStatus() {
-        return this.task.contacts.length > 0 && this.task.activity_type && indexOf(this.task.activity_type, ['Pre Call Letter', 'Reminder Letter', 'Support Letter', 'Thank', 'To Do']) === -1;
+        return this.task.contacts.length > 0 && this.task.activity_type && !contains(this.task.activity_type, ['Pre Call Letter', 'Reminder Letter', 'Support Letter', 'Thank', 'To Do']);
     }
 }
 
-export default angular.module('mpdx.tasks.complete.controller', [])
-    .controller('completeTaskController', CompleteTaskController).name;
+import contacts from 'contacts/contacts.service';
+import serverConstants from 'common/serverConstants/serverConstants.service';
+import tasks from 'tasks/tasks.service';
+
+export default angular.module('mpdx.tasks.modals.complete.controller', [
+    contacts, serverConstants, tasks
+]).controller('completeTaskController', CompleteTaskController).name;

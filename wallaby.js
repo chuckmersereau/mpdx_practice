@@ -1,8 +1,5 @@
 'use strict';
 
-var assign = require('lodash/fp/assign');
-var concat = require('lodash/fp/concat');
-
 var path = require('path');
 var wallabyWebpack = require('wallaby-webpack');
 var webpack = require('webpack');

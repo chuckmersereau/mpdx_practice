@@ -10,6 +10,7 @@ import has from 'lodash/fp/has';
 import isNil from 'lodash/fp/isNil';
 import map from 'lodash/fp/map';
 import reject from 'lodash/fp/reject';
+import set from 'lodash/fp/set';
 
 class ContactController {
     alerts;
@@ -20,7 +21,7 @@ class ContactController {
     users;
 
     constructor(
-        $log, $rootScope, $state, $stateParams, $location, $anchorScroll, blockUI, gettextCatalog, help,
+        $log, $rootScope, $state, $stateParams, $anchorScroll, blockUI, gettextCatalog, help,
         alerts, modal, contacts, tasks, contactFilter, people, users
     ) {
         this.$anchorScroll = $anchorScroll;
@@ -28,7 +29,6 @@ class ContactController {
         this.$rootScope = $rootScope;
         this.$state = $state;
         this.$stateParams = $stateParams;
-        this.$location = $location;
         this.alerts = alerts;
         this.blockUI = blockUI.instances.get('contactShow');
         this.contacts = contacts;
@@ -96,7 +96,6 @@ class ContactController {
         };
 
         help.suggest([
-            this.gettextCatalog.getString('58d3d70ddd8c8e7f5974d3ca'),
             this.gettextCatalog.getString('5845aab3c6979106d373a576'),
             this.gettextCatalog.getString('5845995e90336006981769bb'),
             this.gettextCatalog.getString('584ac7f39033602d65f6e131'),
@@ -133,7 +132,7 @@ class ContactController {
             return;
         }
         this.$log.debug('change primary: ', personId);
-        this.contacts.current.primary_person.id = personId;
+        this.contacts.current = set('primary_person.id', personId, this.contacts.current);
         this.save();
     }
     openLogTaskModal() {
@@ -166,5 +165,20 @@ const Show = {
     template: require('./show.html')
 };
 
-export default angular.module('mpdx.contacts.show.component', [])
+import alerts from 'common/alerts/alerts.service';
+import blockUI from 'angular-block-ui';
+import contacts from '../contacts.service';
+import contactFilter from '../sidebar/filter/filter.service';
+import gettextCatalog from 'angular-gettext';
+import help from 'common/help/help.service';
+import modal from 'common/modal/modal.service';
+import people from './people/people.service';
+import tasks from 'tasks/tasks.service';
+import uiRouter from 'angular-ui-router';
+import users from 'common/users/users.service';
+
+export default angular.module('mpdx.contacts.show.component', [
+    blockUI, gettextCatalog, uiRouter,
+    alerts, help, modal, contacts, tasks, contactFilter, people, users
+])
     .component('contact', Show).name;

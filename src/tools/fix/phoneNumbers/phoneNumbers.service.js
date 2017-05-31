@@ -1,4 +1,5 @@
 import each from 'lodash/fp/each';
+import filter from 'lodash/fp/filter';
 import find from 'lodash/fp/find';
 import map from 'lodash/fp/map';
 import reduce from 'lodash/fp/reduce';
@@ -10,26 +11,19 @@ class PhoneNumbersService {
     blockUI;
 
     constructor(
-        $log, $q, $rootScope,
         api, people
     ) {
-        this.$log = $log;
-        this.$q = $q;
         this.api = api;
         this.people = people;
         this.loading = false;
         this.page = 1;
-
-        $rootScope.$on('accountListUpdated', () => {
-            this.load(true);
-        });
     }
 
     loadCount() {
-        if (this.meta) { return this.$q.resolve(); }
-        return this.api.get({
-            url: 'contacts/people',
-            data: {
+        if (this.meta) { return Promise.resolve(this.meta); }
+        return this.api.get(
+            'contacts/people',
+            {
                 filter: {
                     phone_number_valid: false,
                     account_list_id: this.api.account_list_id
@@ -37,24 +31,25 @@ class PhoneNumbersService {
                 page: 1,
                 per_page: 0
             }
-        }).then((data) => {
+        ).then((data) => {
             if (!this.meta) {
                 this.meta = data.meta;
             }
+            return this.meta;
         });
     }
 
     load(reset = false, page = 1) {
         if (!reset && this.data && this.page === page) {
-            return this.$q.resolve(this.data);
+            return Promise.resolve(this.data);
         }
 
         this.loading = true;
         this.page = page;
 
-        return this.api.get({
-            url: 'contacts/people',
-            data: {
+        return this.api.get(
+            'contacts/people',
+            {
                 filter: {
                     phone_number_valid: false,
                     account_list_id: this.api.account_list_id
@@ -66,20 +61,21 @@ class PhoneNumbersService {
                 page: this.page,
                 per_page: 25
             }
-        }).then((data) => {
-            this.$log.debug('FixPhoneNumbers.load', data);
+        ).then((data) => {
             this.loading = false;
-
             this.sources = ['MPDX'];
-            this.data = data;
+
             each((person) => {
                 each((phoneNumber) => {
                     this.sources.push(phoneNumber.source);
                 }, person.phone_numbers);
             }, data);
-            this.sources = uniq(this.sources).sort();
 
+            this.sources = uniq(this.sources).sort();
+            this.data = data;
             this.meta = data.meta;
+
+            return this.data;
         });
     }
 
@@ -93,7 +89,7 @@ class PhoneNumbersService {
             if (this.meta && this.meta.pagination && this.meta.pagination.total_count) {
                 this.meta.pagination.total_count -= 1;
             }
-            if (this.data.length <= 5) {
+            if (this.data.length === 0) {
                 this.load(true, this.page);
             }
         });
@@ -134,7 +130,15 @@ class PhoneNumbersService {
     savePhoneNumber(person, phoneNumber) {
         return this.people.savePhoneNumber(person, phoneNumber);
     }
+
+    hasPrimary(person) {
+        return filter((phoneNumber) => phoneNumber.primary, person.phone_numbers).length === 1;
+    }
 }
 
-export default angular.module('mpdx.tools.fix.phoneNumbers.service', [])
-    .service('fixPhoneNumbers', PhoneNumbersService).name;
+import api from 'common/api/api.service';
+import people from 'contacts/show/people/people.service';
+
+export default angular.module('mpdx.tools.fix.phoneNumbers.service', [
+    api, people
+]).service('fixPhoneNumbers', PhoneNumbersService).name;

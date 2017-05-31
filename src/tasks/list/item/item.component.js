@@ -1,3 +1,6 @@
+import eq from 'lodash/fp/eq';
+import get from 'lodash/fp/get';
+
 class ItemController {
     task;
     constructor(
@@ -60,7 +63,7 @@ class ItemController {
         });
     }
     commentBelongsToUser(comment) {
-        return comment.person.id === this.users.current.id;
+        return eq(get('person.id', comment), this.users.current.id);
     }
 }
 
@@ -73,5 +76,9 @@ const Item = {
     }
 };
 
-export default angular.module('mpdx.tasks.list.item.component', [])
-    .component('tasksListItem', Item).name;
+import contacts from 'contacts/contacts.service';
+import tasks from 'tasks/tasks.service';
+
+export default angular.module('mpdx.tasks.list.item.component', [
+    contacts, tasks
+]).component('tasksListItem', Item).name;

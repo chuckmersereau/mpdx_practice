@@ -2,29 +2,38 @@ class PhoneNumbersController {
     fixPhoneNumbers;
 
     constructor(
-        gettextCatalog, blockUI,
+        $rootScope, gettextCatalog, blockUI,
         modal, fixPhoneNumbers
     ) {
         this.gettextCatalog = gettextCatalog;
-        this.blockUI = blockUI.instances.get('fix-phoneNumbers');
+        this.blockUI = blockUI.instances.get('fix-phone-numbers');
 
         this.modal = modal;
         this.fixPhoneNumbers = fixPhoneNumbers;
         this.source = 'MPDX';
+
+        $rootScope.$on('accountListUpdated', () => {
+            this.load(true);
+        });
     }
 
     save() {
-        const message = this.gettextCatalog.getString("You are updating all visible contacts to set the first {{source}} phone number as the primary phone number. If no such phone number exists the contact will not be updated. Are you sure you want to do this?", { source: this.source });
+        const message = this.gettextCatalog.getString(
+            `You are updating all visible contacts to set the first {{source}} phone number as the
+            primary phone number. If no such phone number exists the contact will not be updated.
+            Are you sure you want to do this?`,
+            { source: this.source }
+        );
         return this.modal.confirm(message).then(() => {
             this.blockUI.start();
-            return this.fixPhoneNumbers.bulkSave(this.source).finally(() => {
+            return this.fixPhoneNumbers.bulkSave(this.source).then(() => {
                 this.blockUI.reset();
             });
         });
     }
 
-    load(page) {
-        this.fixPhoneNumbers.load(true, page);
+    load(page = null) {
+        return this.fixPhoneNumbers.load(true, page);
     }
 }
 
@@ -33,5 +42,12 @@ const PhoneNumbers = {
     template: require('./phoneNumbers.html')
 };
 
-export default angular.module('mpdx.tools.fix.phoneNumbers.component', [])
-    .component('fixPhoneNumbers', PhoneNumbers).name;
+import gettextCatalog from 'angular-gettext';
+import blockUI from 'angular-block-ui';
+import modal from 'common/modal/modal.service';
+import fixPhoneNumbers from './phoneNumbers.service';
+
+export default angular.module('mpdx.tools.fix.phoneNumbers.component', [
+    gettextCatalog, blockUI,
+    modal, fixPhoneNumbers
+]).component('fixPhoneNumbers', PhoneNumbers).name;

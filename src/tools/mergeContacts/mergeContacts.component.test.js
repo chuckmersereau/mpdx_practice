@@ -1,7 +1,7 @@
 import component from './mergeContacts.component';
 
 describe('tools.mergeContacts.component', () => {
-    let $ctrl, rootScope, scope, mergeContacts, componentController;
+    let rootScope, scope, mergeContacts, componentController;
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _mergeContacts_) => {
@@ -9,7 +9,7 @@ describe('tools.mergeContacts.component', () => {
             scope = rootScope.$new();
             mergeContacts = _mergeContacts_;
             componentController = $componentController;
-            $ctrl = componentController('mergeContacts', {$scope: scope}, {});
+            componentController('mergeContacts', {$scope: scope}, {});
         });
     });
     describe('events', () => {

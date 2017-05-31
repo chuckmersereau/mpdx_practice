@@ -2,13 +2,10 @@ class ItemController {
     fixAddresses;
 
     constructor(
-        $log, $q, blockUI,
+        blockUI,
         fixAddresses
     ) {
-        this.$log = $log;
-        this.$q = $q;
         this.blockUI = blockUI;
-
         this.fixAddresses = fixAddresses;
     }
 
@@ -18,9 +15,13 @@ class ItemController {
 
     save() {
         this.blockUI.start();
-        return this.fixAddresses.save(this.contact).finally(() => {
+        return this.fixAddresses.save(this.contact).then(() => {
             this.blockUI.reset();
         });
+    }
+
+    hasPrimary() {
+        return this.fixAddresses.hasPrimary(this.contact);
     }
 }
 
@@ -32,5 +33,10 @@ const Item = {
     }
 };
 
-export default angular.module('mpdx.tools.fix.addresses.item.component', [])
-    .component('fixAddressesItem', Item).name;
+import blockUI from 'angular-block-ui';
+import fixAddresses from '../addresses.service';
+
+export default angular.module('mpdx.tools.fix.addresses.item.component', [
+    blockUI,
+    fixAddresses
+]).component('fixAddressesItem', Item).name;

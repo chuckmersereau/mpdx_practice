@@ -14,7 +14,6 @@ class HomeController {
         this.blockUI2 = blockUI.instances.get('connect');
 
         help.suggest([
-            this.gettextCatalog.getString('58d3d70ddd8c8e7f5974d3ca'),
             this.gettextCatalog.getString('584aced8c697912ffd6bc297'),
             this.gettextCatalog.getString('58496f15c6979106d373bb65'),
             this.gettextCatalog.getString('58481fd3c6979106d373b4f6'),

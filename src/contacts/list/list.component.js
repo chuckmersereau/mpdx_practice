@@ -54,14 +54,17 @@ class ListController {
 
         $rootScope.$on('accountListUpdated', () => {
             this.load();
+            this.contacts.clearSelectedContacts();
         });
 
         $rootScope.$on('contactsFilterChange', () => {
             this.load();
+            this.contacts.clearSelectedContacts();
         });
 
         $rootScope.$on('contactsTagsChange', () => {
             this.load();
+            this.contacts.clearSelectedContacts();
         });
     }
     $onInit() {
@@ -75,7 +78,7 @@ class ListController {
         this.load(this.page);
     }
     toggleAllContacts() {
-        if (this.contacts.selectedContacts.length < this.data.length) {
+        if (this.data && this.contacts.selectedContacts && this.contacts.selectedContacts.length < this.data.length) {
             this.selectAllContacts(false);
         } else {
             this.contacts.clearSelectedContacts();

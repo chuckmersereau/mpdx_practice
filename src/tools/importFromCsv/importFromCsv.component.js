@@ -15,8 +15,8 @@ class ImportFromCsvController {
     modal;
     serverConstants;
     constructor(
-        $log, $window, $scope, $transitions, $state, alerts, modal, blockUI, gettextCatalog,
-        importFromCsv, serverConstants, contactsTags
+        $log, $rootScope, $scope, $state, $transitions, $window, alerts, blockUI, gettextCatalog, modal,
+        contactsTags, importFromCsv, serverConstants
     ) {
         this.$log = $log;
         this.$state = $state;
@@ -57,6 +57,10 @@ class ImportFromCsvController {
             if (deregisterTransitionHook) {
                 deregisterTransitionHook();
             }
+        });
+
+        $rootScope.$on('accountListUpdated', () => {
+            this.contactsTags.load();
         });
     }
     $onInit() {
@@ -262,5 +266,15 @@ const ImportFromCsv = {
     template: require('./importFromCsv.html')
 };
 
-export default angular.module('mpdx.tools.importFromCsv.component', [])
-    .component('importFromCsv', ImportFromCsv).name;
+import alerts from 'common/alerts/alerts.service';
+import blockUi from 'angular-block-ui';
+import contactsTags from 'contacts/sidebar/filter/tags/tags.service';
+import importFromCsv from './importFromCsv.service';
+import serverConstants from 'common/serverConstants/serverConstants.service';
+import uiRouter from 'angular-ui-router';
+import Upload from 'ng-file-upload';
+
+export default angular.module('mpdx.tools.importFromCsv.component', [
+    blockUi, uiRouter,
+    alerts, contactsTags, importFromCsv, serverConstants, Upload
+]).component('importFromCsv', ImportFromCsv).name;

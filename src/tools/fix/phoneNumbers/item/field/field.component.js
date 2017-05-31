@@ -5,11 +5,8 @@ class FieldController {
     locale;
 
     constructor(
-        $q,
         fixPhoneNumbers, locale
     ) {
-        this.$q = $q;
-
         this.fixPhoneNumbers = fixPhoneNumbers;
         this.locale = locale;
     }
@@ -26,12 +23,8 @@ class FieldController {
         }
     }
 
-    remove() {
-        this.fixPhoneNumbers.removePhoneNumber(this.person, this.phoneNumber);
-    }
-
     save() {
-        this.fixPhoneNumbers.savePhoneNumber(this.person, this.phoneNumber).then(() => {
+        return this.fixPhoneNumbers.savePhoneNumber(this.person, this.phoneNumber).then(() => {
             if (this.phoneNumber.new) {
                 this.phoneNumber.new = false;
                 this.person.phone_numbers.push(this.phoneNumber);
@@ -44,6 +37,10 @@ class FieldController {
                 };
             }
         });
+    }
+
+    remove() {
+        this.fixPhoneNumbers.removePhoneNumber(this.person, this.phoneNumber);
     }
 
     setPrimary() {
@@ -60,5 +57,9 @@ const Field = {
     }
 };
 
-export default angular.module('mpdx.tools.fix.phoneNumbers.item.field.component', [])
-    .component('fixPhoneNumbersItemField', Field).name;
+import fixPhoneNumbers from '../../phoneNumbers.service';
+import locale from 'common/locale/locale.service';
+
+export default angular.module('mpdx.tools.fix.phoneNumbers.item.field.component', [
+    fixPhoneNumbers, locale
+]).component('fixPhoneNumbersItemField', Field).name;

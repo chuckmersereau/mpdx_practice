@@ -3,13 +3,10 @@ class ItemController {
     serverConstants
 
     constructor(
-        $log, $q, blockUI,
+        blockUI,
         serverConstants, fixCommitmentInfo, locale
     ) {
-        this.$log = $log;
-        this.$q = $q;
         this.blockUI = blockUI;
-
         this.serverConstants = serverConstants;
         this.locale = locale;
         this.fixCommitmentInfo = fixCommitmentInfo;
@@ -21,14 +18,14 @@ class ItemController {
 
     save() {
         this.blockUI.start();
-        return this.fixCommitmentInfo.save(this.contact).finally(() => {
+        return this.fixCommitmentInfo.save(this.contact).then(() => {
             this.blockUI.reset();
         });
     }
 
     reject() {
         this.blockUI.start();
-        return this.fixCommitmentInfo.reject(this.contact).finally(() => {
+        return this.fixCommitmentInfo.reject(this.contact).then(() => {
             this.blockUI.reset();
         });
     }
@@ -42,5 +39,12 @@ const Item = {
     }
 };
 
-export default angular.module('mpdx.tools.fix.commitmentInfo.item.component', [])
-    .component('fixCommitmentInfoItem', Item).name;
+import blockUI from 'angular-block-ui';
+import serverConstants from 'common/serverConstants/serverConstants.service';
+import fixCommitmentInfo from '../commitmentInfo.service';
+import locale from 'common/locale/locale.service';
+
+export default angular.module('mpdx.tools.fix.commitmentInfo.item.component', [
+    blockUI,
+    serverConstants, fixCommitmentInfo, locale
+]).component('fixCommitmentInfoItem', Item).name;

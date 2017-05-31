@@ -8,7 +8,6 @@ class AccountsController {
         this.gettextCatalog = gettextCatalog;
 
         help.suggest([
-            this.gettextCatalog.getString('58d3d70ddd8c8e7f5974d3ca'),
             this.gettextCatalog.getString('57e2f280c697910d0784d307')
         ]);
     }
