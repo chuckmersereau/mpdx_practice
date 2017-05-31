@@ -186,6 +186,10 @@ describe('tasks.service', () => {
         });
     });
     describe('get', () => {
+        beforeEach(() => {
+            tasks.selected = selected;
+            spyOn(api, 'get').and.callFake(() => Promise.resolve());
+        });
         it('should query the api for a tasks comments & contacts info', () => {
             tasks.get(1);
             expect(api.get).toHaveBeenCalledWith(`tasks/1`, {

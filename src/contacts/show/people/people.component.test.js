@@ -1,15 +1,13 @@
 import component from './people.component';
 
 describe('contacts.show.people.component', () => {
-    let $ctrl, rootScope, scope, componentController, alerts, gettextCatalog, api, people;
+    let $ctrl, rootScope, scope, componentController, api, people;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _alerts_, _gettextCatalog_, _api_, _people_) => {
+        inject(($componentController, $rootScope, _api_, _people_) => {
             rootScope = $rootScope;
             scope = $rootScope.$new();
-            alerts = _alerts_;
             api = _api_;
-            gettextCatalog = _gettextCatalog_;
             componentController = $componentController;
             api.account_list_id = 1234;
             people = _people_;

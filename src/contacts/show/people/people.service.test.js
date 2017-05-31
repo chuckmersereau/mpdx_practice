@@ -3,14 +3,13 @@ import service from './people.service';
 const accountListId = 123;
 
 describe('contacts.service', () => {
-    let api, contacts, modal, rootScope, people;
+    let api, modal, rootScope, people;
     beforeEach(() => {
         angular.mock.module(service);
-        inject(($rootScope, _people_, _api_, _contacts_, _modal_) => {
+        inject(($rootScope, _people_, _api_, _modal_) => {
             rootScope = $rootScope;
             api = _api_;
             api.account_list_id = accountListId;
-            contacts = _contacts_;
             modal = _modal_;
             people = _people_;
         });
