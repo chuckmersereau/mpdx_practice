@@ -5,6 +5,21 @@ class AddressController {
     ) {
         this.contacts = contacts;
     }
+    $onChanges() {
+        if (this.address) {
+            let address = `${this.address.street}`;
+            if (this.address.city) {
+                address += `, ${this.address.city}`;
+            }
+            if (this.address.state) {
+                address += `, ${this.address.state}`;
+            }
+            if (this.address.postal_code) {
+                address += `, ${this.address.postal_code}`;
+            }
+            this.mapLink = `https://www.google.com/maps/search/?api=1&query=${address}`;
+        }
+    }
 }
 
 const Address = {
@@ -17,5 +32,8 @@ const Address = {
     }
 };
 
-export default angular.module('mpdx.contacts.show.address.component', [])
-    .component('contactAddress', Address).name;
+import contacts from 'contacts/contacts.service';
+
+export default angular.module('mpdx.contacts.show.address.component', [
+    contacts
+]).component('contactAddress', Address).name;
