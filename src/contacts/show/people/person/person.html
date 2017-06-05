@@ -19,7 +19,7 @@
             </dd>
             <dd ng-if="::$ctrl.person.marital_status">
                 <span>{{ ::$ctrl.person.marital_status }}</span>
-                <span ng-if="::$ctrl.person.anniversary">{{ ::$ctrl.person.anniversary }}</span>
+                <span ng-if="::$ctrl.person.anniversary">{{ ::$ctrl.person.anniversary | date : $ctrl.locale.dateTimeFormat }}</span>
             </dd>
             <dd ng-if="::$ctrl.person.facebook_accounts.length > 0 || $ctrl.person.twitter_accounts.length > 0 || $ctrl.person.linkedin_accounts.length > 0 || $ctrl.person.websites.length > 0" class="networks">
                 <facebook-link ng-repeat="fb in ::$ctrl.person.facebook_accounts" facebook-account="fb"></facebook-link>

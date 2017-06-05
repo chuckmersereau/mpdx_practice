@@ -28,6 +28,19 @@ describe('contacts.show.personModal.controller', () => {
             person: null
         });
     }
+    describe('activate', () => {
+        it('should set a translated title', () => {
+            $ctrl.activate();
+            expect($ctrl.modalTitle).toEqual('Add Person');
+            expect(gettextCatalog.getString).toHaveBeenCalledWith('Add Person');
+        });
+        it('should set a translated title', () => {
+            $ctrl.person = {id: 1};
+            $ctrl.activate();
+            expect($ctrl.modalTitle).toEqual('Edit Person');
+            expect(gettextCatalog.getString).toHaveBeenCalledWith('Edit Person');
+        });
+    });
     describe('save', () => {
         beforeEach(() => {
             spyOn(people, 'create').and.callFake(() => Promise.resolve());
