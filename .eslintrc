@@ -14,6 +14,7 @@
 	"semi": [2, "always"],
 	"space-before-function-paren": [2, "never"],
 	"spaced-comment": [0, "always"],
+    "prefer-promise-reject-errors": [0, "always"],
 	"radix": 0
   },
   "globals": {

@@ -28,13 +28,14 @@ class OrganizationIntegrationPreferencesController {
     }
     save() {
         this.saving = true;
-        this.preferencesOrganization.save().then(() => {
+        return this.preferencesOrganization.save().then(() => {
             this.alerts.addAlert(this.gettextCatalog.getString('Preferences saved successfully'));
             this.users.listOrganizationAccounts(true);
             this.saving = false;
-        }).catch(() => {
+        }).catch(err => {
             this.alerts.addAlert(this.gettextCatalog.getString('Unable to save preferences'), 'danger');
             this.saving = false;
+            throw err;
         });
     }
     disconnect(id) {
@@ -43,9 +44,10 @@ class OrganizationIntegrationPreferencesController {
             this.saving = false;
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed your organization integration'));
             this.users.listOrganizationAccounts(true);
-        }).catch(() => {
+        }).catch(err => {
             this.alerts.addAlert(this.gettextCatalog.getString(`MPDX couldn't save your configuration changes for that organization`), 'danger');
             this.saving = false;
+            throw err;
         });
     }
     createAccount() {
@@ -55,9 +57,10 @@ class OrganizationIntegrationPreferencesController {
             this.users.listOrganizationAccounts(true);
             this.revert();
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX added your organization account'));
-        }).catch(() => {
+        }).catch(err => {
             this.alerts.addAlert(this.gettextCatalog.getString('Unable to add your organization account'), 'danger');
             this.saving = false;
+            throw err;
         });
     }
     updateAccount() {
@@ -67,9 +70,10 @@ class OrganizationIntegrationPreferencesController {
             this.users.listOrganizationAccounts(true);
             this.revert();
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX updated your organization account'));
-        }).catch(() => {
+        }).catch(err => {
             this.alerts.addAlert(this.gettextCatalog.getString('Unable to update your organization account'), 'danger');
             this.saving = false;
+            throw err;
         });
     }
     editAccount(account) {
@@ -91,15 +95,17 @@ class OrganizationIntegrationPreferencesController {
     }
     import(account) {
         this.importing = true;
-        this.preferencesOrganization.import(account).then(() => {
+        return this.preferencesOrganization.import(account).then(() => {
             account.showTntDataSync = false;
             this.modal.info(
                 this.gettextCatalog.getString('File successfully uploaded. The import to {{ name }} will begin in the background.', { name: account.organization.name }, null), 'success');
-        }, () => {
-            this.alerts.addAlert(this.gettextCatalog.getString('File upload failed.'), 'danger');
-        }).finally(() => {
             account.file = null;
             this.importing = false;
+        }).catch(err => {
+            this.alerts.addAlert(this.gettextCatalog.getString('File upload failed.'), 'danger');
+            account.file = null;
+            this.importing = false;
+            throw err;
         });
     }
 }
@@ -109,5 +115,16 @@ const Organization = {
     template: require('./organization.html')
 };
 
-export default angular.module('mpdx.preferences.organization.component', [])
-    .component('organizationIntegrationPreferences', Organization).name;
+import gettextCatalog from 'angular-gettext';
+import Upload from 'ng-file-upload';
+import alerts from 'common/alerts/alerts.service';
+import help from 'common/help/help.service';
+import modal from 'common/modal/modal.service';
+import preferencesOrganization from './organization.service';
+import serverConstants from 'common/serverConstants/serverConstants.service';
+import users from 'common/users/users.service';
+
+export default angular.module('mpdx.preferences.organization.component', [
+    gettextCatalog, Upload,
+    alerts, help, modal, preferencesOrganization, serverConstants, users
+]).component('organizationIntegrationPreferences', Organization).name;

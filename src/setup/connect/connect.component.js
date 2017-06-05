@@ -34,13 +34,14 @@ class SetupConnectController {
         this.connecting = true;
     }
     add() {
-        this.preferencesOrganization.createAccount(this.username, this.password, this.selectedKey).then(() => {
-            this.users.listOrganizationAccounts(true).then(() => {
+        return this.preferencesOrganization.createAccount(this.username, this.password, this.selectedKey).then(() => {
+            return this.users.listOrganizationAccounts(true).then(() => {
                 this.connecting = false;
                 this.showOrgs = false;
             });
-        }).catch(() => {
-            this.alerts.addAlert('Invalid username or password.', 'danger');
+        }).catch(err => {
+            this.alerts.addAlert(this.gettextCatalog.getString('Invalid username or password.'), 'danger');
+            throw err;
         });
     }
     next() {
@@ -65,5 +66,17 @@ const SetupConnect = {
     controller: SetupConnectController
 };
 
-export default angular.module('mpdx.setup.connect.component', [])
-    .component('setupConnect', SetupConnect).name;
+import uiRouter from 'angular-ui-router';
+import gettextCatalog from 'angular-gettext';
+import accounts from 'common/accounts/accounts.service';
+import alerts from 'common/alerts/alerts.service';
+import api from 'common/api/api.service';
+import help from 'common/help/help.service';
+import preferencesOrganization from 'preferences/integrations/organization/organization.service';
+import serverConstants from 'common/serverConstants/serverConstants.service';
+import users from 'common/users/users.service';
+
+export default angular.module('mpdx.setup.connect.component', [
+    uiRouter, gettextCatalog,
+    accounts, alerts, api, help, preferencesOrganization, serverConstants, users
+]).component('setupConnect', SetupConnect).name;

@@ -122,9 +122,12 @@ class ContactController {
                 const tags = patch.tag_list.split(',');
                 this.$rootScope.$emit('contactTagsAdded', {tags: tags});
             }
-            this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
-        }).catch(() => {
-            this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger');
+            const message = this.gettextCatalog.getString('Changes saved successfully.');
+            this.alerts.addAlert(message);
+        }).catch(err => {
+            const message = this.gettextCatalog.getString('Unable to save changes.');
+            this.alerts.addAlert(message, 'danger');
+            throw err;
         });
     }
     onPrimary(personId) {

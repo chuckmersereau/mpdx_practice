@@ -71,7 +71,7 @@ class PersonalController {
     save() {
         this.saving = true;
         return this.users.saveCurrent().then(() => {
-            this.alerts.addAlert('Preferences saved successfully', 'success');
+            this.alerts.addAlert(this.gettextCatalog.getString('Preferences saved successfully'), 'success');
             this.setTab('');
             this.saving = false;
             this.onSave();
@@ -82,12 +82,13 @@ class PersonalController {
                 }, data.errors);
             }
             this.saving = false;
+            throw data;
         });
     }
     saveAccount() {
         this.saving = true;
         return this.accounts.saveCurrent().then(() => {
-            this.alerts.addAlert('Preferences saved successfully', 'success');
+            this.alerts.addAlert(this.gettextCatalog.getString('Preferences saved successfully'), 'success');
             this.setTab('');
             this.onSave();
             this.saving = false;
@@ -98,6 +99,7 @@ class PersonalController {
                 }, data.errors);
             }
             this.saving = false;
+            throw data;
         });
     }
     setTab(service) {
@@ -159,5 +161,16 @@ const Personal = {
     }
 };
 
-export default angular.module('mpdx.preferences.personal.component', [])
-    .component('preferencesPersonal', Personal).name;
+import uiRouter from 'angular-ui-router';
+import gettextCatalog from 'angular-gettext';
+import accounts from 'common/accounts/accounts.service';
+import api from 'common/api/api.service';
+import alerts from 'common/alerts/alerts.service';
+import locale from 'common/locale/locale.service';
+import serverConstants from 'common/serverConstants/serverConstants.service';
+import users from 'common/users/users.service';
+
+export default angular.module('mpdx.preferences.personal.component', [
+    uiRouter, gettextCatalog,
+    accounts, api, alerts, locale, serverConstants, users
+]).component('preferencesPersonal', Personal).name;

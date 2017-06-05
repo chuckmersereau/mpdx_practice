@@ -81,8 +81,9 @@ class PersonModalController {
                 this.$rootScope.$emit('personUpdated');
                 this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
                 this.$scope.$hide();
-            }).catch(() => {
+            }).catch(err => {
                 this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger');
+                throw err;
             });
         } else {
             return this.people.create(this.contact.id, this.person).then(() => {
@@ -91,8 +92,9 @@ class PersonModalController {
                 this.$rootScope.$emit('personUpdated');
                 this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
                 this.$scope.$hide();
-            }).catch(() => {
+            }).catch(err => {
                 this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger');
+                throw err;
             });
         }
     }

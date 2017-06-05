@@ -18,7 +18,7 @@ describe('contacts.show.personModal.controller', () => {
             loadController(person);
         });
         spyOn(alerts, 'addAlert').and.callFake(data => data);
-        spyOn(gettextCatalog, 'getString').and.callFake(data => data);
+        spyOn(gettextCatalog, 'getString').and.callThrough();
     });
     function loadController() {
         $ctrl = controller('personModalController as $ctrl', {
@@ -43,26 +43,48 @@ describe('contacts.show.personModal.controller', () => {
     });
     describe('save', () => {
         beforeEach(() => {
-            spyOn(people, 'create').and.callFake(() => Promise.resolve());
-            spyOn(people, 'save').and.callFake(() => Promise.resolve());
             spyOn(rootScope, '$emit').and.callThrough();
             spyOn(scope, '$hide');
         });
         it('should call personUpdated on create', done => {
+            spyOn(people, 'create').and.callFake(() => Promise.resolve());
             $ctrl.activate();
             $ctrl.person.first_name = 'a';
             $ctrl.save().then(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
+                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 expect(rootScope.$emit).toHaveBeenCalledWith('personUpdated');
                 done();
             });
         });
+        it('should handle rejection', done => {
+            spyOn(people, 'create').and.callFake(() => Promise.reject(Error('')));
+            $ctrl.save().catch(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
+                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
+                done();
+            });
+        });
         it('should call personUpdated on update', done => {
+            spyOn(people, 'save').and.callFake(() => Promise.resolve());
             $ctrl.person = person;
             $ctrl.person.id = 123;
             $ctrl.activate();
             $ctrl.person.first_name = 'b';
             $ctrl.save().then(() => {
                 expect(rootScope.$emit).toHaveBeenCalledWith('personUpdated');
+                done();
+            });
+        });
+        it('should handle rejection', done => {
+            spyOn(people, 'save').and.callFake(() => Promise.reject(Error('')));
+            $ctrl.person = person;
+            $ctrl.person.id = 123;
+            $ctrl.activate();
+            $ctrl.person.first_name = 'b';
+            $ctrl.save().catch(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
+                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });
