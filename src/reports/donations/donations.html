@@ -34,7 +34,7 @@
                     <tbody>
                         <tr ng-repeat="donation in $ctrl.donationsList">
                             <td ng-if="::$ctrl.inContact">{{ ::donation.donor_account.account_number }}</td>
-                            <td class="date">{{ ::donation.donation_date | moment: 'l' }}</td>
+                            <td class="date">{{ ::donation.donation_date | date: $ctrl.locale.dateTimeFormat }}</td>
                             <td ng-if="!$ctrl.inContact">
                                 <a ui-sref="contacts.show({ contactId: donation.contact.id })">{{ ::donation.donor_account.display_name }}</a>
                             </td>

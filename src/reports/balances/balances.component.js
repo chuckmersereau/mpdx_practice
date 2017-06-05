@@ -6,9 +6,10 @@ class BalancesController {
 
     constructor(
         $rootScope, blockUI,
-        designationAccounts
+        designationAccounts, locale
     ) {
         this.$rootScope = $rootScope;
+        this.locale = locale;
         this.blockUI = blockUI.instances.get('balances');
 
         this.designationAccounts = designationAccounts;
@@ -45,6 +46,9 @@ const Balances = {
 
 import blockUI from 'angular-block-ui';
 import designationAccounts from 'common/designationAccounts/designationAccounts.service';
+import locale from 'common/locale/locale.service';
 
-export default angular.module('mpdx.reports.balances.component', [blockUI, designationAccounts])
-    .component('balances', Balances).name;
+export default angular.module('mpdx.reports.balances.component', [
+    blockUI,
+    designationAccounts, locale
+]).component('balances', Balances).name;

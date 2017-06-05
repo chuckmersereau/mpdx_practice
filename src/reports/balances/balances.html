@@ -30,7 +30,7 @@
                     <tr ng-repeat="designation in $ctrl.designationAccounts.data">
                         <td>{{::designation.organization_name}}</td>
                         <td>{{::designation.designation_number}}</td>
-                        <td>{{::designation.balance_updated_at | date : format : shortDate}}</td>
+                        <td>{{::designation.balance_updated_at | date : $ctrl.locale.dateTimeFormat}}</td>
                         <td class="text-right">
                             {{::designation.currency_symbol}}
                             {{::designation.balance || 0  | number : 0}}
