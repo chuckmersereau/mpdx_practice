@@ -17,6 +17,7 @@ class ModalController {
         this.hideFooter = this.hideFooter || false;
         this.size = this.size || 'md';
         this.valid = this.valid || true;
+        this.saving = false;
 
         this.cancelText = this.cancelText || this.gettextCatalog.getString('Cancel');
         this.saveText = this.saveText || this.gettextCatalog.getString('Save');
@@ -27,23 +28,29 @@ class ModalController {
         this.$element.attr('role', 'dialog');
     }
     saveAndBlock() {
+        this.saving = true;
         this.blockUI.start();
         return this.save().then(data => {
+            this.saving = false;
             this.blockUI.reset();
             return data;
         }).catch(err => {
+            this.saving = false;
             this.blockUI.reset();
-            return err;
+            throw err;
         });
     }
     deleteAndBlock() {
+        this.saving = true;
         this.blockUI.start();
         return this.delete().then(data => {
+            this.saving = false;
             this.blockUI.reset();
             return data;
         }).catch(err => {
+            this.saving = false;
             this.blockUI.reset();
-            return err;
+            throw err;
         });
     }
 }

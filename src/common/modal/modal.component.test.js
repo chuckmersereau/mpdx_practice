@@ -26,10 +26,19 @@ describe('common.modal.component', () => {
     function loadController(bindings = defaultBindings) {
         $ctrl = componentController('modal', { $scope: scope, $element: {}, $attrs: {} }, bindings);
     }
+    describe('constructor', () => {
+        it('should set default values', () => {
+            expect($ctrl.saving).toBeFalsy();
+        });
+    });
     describe('deleteAndBlock', () => {
         beforeEach(() => {
             spyOn(blockUI, 'start').and.callFake(() => {});
             spyOn(blockUI, 'reset').and.callFake(() => {});
+        });
+        it('should mark saving bool', () => {
+            $ctrl.deleteAndBlock();
+            expect($ctrl.saving).toBeTruthy();
         });
         it('should block the UI', () => {
             $ctrl.deleteAndBlock();
@@ -41,16 +50,18 @@ describe('common.modal.component', () => {
             expect($ctrl.delete).toHaveBeenCalled();
         });
         it('should reset the blockUI', done => {
-            spyOn($ctrl, 'save').and.callFake(() => Promise.resolve());
+            spyOn($ctrl, 'delete').and.callFake(() => Promise.resolve());
             $ctrl.deleteAndBlock().then(() => {
                 expect(blockUI.reset).toHaveBeenCalled();
+                expect($ctrl.saving).toBeFalsy();
                 done();
             });
         });
         it('should reset the blockUI on reject', done => {
-            spyOn($ctrl, 'save').and.callFake(() => Promise.reject(Error('')));
-            $ctrl.deleteAndBlock().then(() => {
+            spyOn($ctrl, 'delete').and.callFake(() => Promise.reject(Error('')));
+            $ctrl.deleteAndBlock().catch(() => {
                 expect(blockUI.reset).toHaveBeenCalled();
+                expect($ctrl.saving).toBeFalsy();
                 done();
             });
         });
@@ -59,6 +70,10 @@ describe('common.modal.component', () => {
         beforeEach(() => {
             spyOn(blockUI, 'start').and.callFake(() => {});
             spyOn(blockUI, 'reset').and.callFake(() => {});
+        });
+        it('should mark saving bool', () => {
+            $ctrl.saveAndBlock();
+            expect($ctrl.saving).toBeTruthy();
         });
         it('should block the UI', () => {
             $ctrl.saveAndBlock();
@@ -69,17 +84,19 @@ describe('common.modal.component', () => {
             $ctrl.saveAndBlock();
             expect($ctrl.save).toHaveBeenCalled();
         });
-        it('should reset the blockUI', done => {
+        it('should reset the blockUI and mark saving false', done => {
             spyOn($ctrl, 'save').and.callFake(() => Promise.resolve());
             $ctrl.saveAndBlock().then(() => {
                 expect(blockUI.reset).toHaveBeenCalled();
+                expect($ctrl.saving).toBeFalsy();
                 done();
             });
         });
-        it('should reset the blockUI on reject', done => {
+        it('should reset the blockUI on reject and mark saving false', done => {
             spyOn($ctrl, 'save').and.callFake(() => Promise.reject(Error('')));
-            $ctrl.saveAndBlock().then(() => {
+            $ctrl.saveAndBlock().catch(() => {
                 expect(blockUI.reset).toHaveBeenCalled();
+                expect($ctrl.saving).toBeFalsy();
                 done();
             });
         });
