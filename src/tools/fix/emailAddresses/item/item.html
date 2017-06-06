@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-xs-10">
-        <div class="panel" block-ui="fix-phone-numbers-item-{{$ctrl.person.id}}">
+        <div class="panel" block-ui="fix-email-addresses-item-{{$ctrl.person.id}}">
             <div class="panel-body">
                 <avatar src="$ctrl.person.avatar"></avatar>
                 <div class="avatar-on-left">
@@ -24,7 +24,7 @@
         </div>
     </div>
     <div class="col-xs-2">
-        <button class="btn btn-gray btn-block confirm-item" ng-click="$ctrl.save()">
+        <button class="btn btn-gray btn-block confirm-item" ng-click="$ctrl.save()" ng-disabled="!$ctrl.hasPrimary()">
             <i class="fa fa-check-circle"></i> <translate>Confirm</translate>
         </button>
     </div>

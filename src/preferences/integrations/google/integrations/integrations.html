@@ -59,11 +59,11 @@
                     </div>
                     <p translate>Choose which of tasks below you'd like MPDX to put on your calendar:</p>
                     <div class="row">
-                        <div class="col-md-6" ng-repeat="activity in $ctrl.serverConstants.data.activities">
+                        <div class="col-md-6" ng-repeat="activity in $ctrl.serverConstants.data.activity_hashes">
                             <div class="form-group">
                                 <label>
-                                    <input type="checkbox" checklist-value="activity" checklist-model="$ctrl.googleIntegration.calendar_integrations" ng-change="$ctrl.save()">
-                                    &nbsp; {{activity}}
+                                    <input type="checkbox" checklist-value="activity.id" checklist-model="$ctrl.googleIntegration.calendar_integrations" ng-change="$ctrl.save()">
+                                    &nbsp; {{activity.value}}
                                 </label>
                             </div>
                         </div>

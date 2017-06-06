@@ -46,6 +46,12 @@ class DatetimepickerController {
             this.time = this.model.toDate();
         }
     }
+    focus() {
+        if (!this.model) {
+            this.ngModel = moment().toISOString();
+            this.init();
+        }
+    }
 }
 
 const Datetimepicker = {

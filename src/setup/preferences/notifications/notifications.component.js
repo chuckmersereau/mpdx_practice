@@ -15,7 +15,7 @@ class NotificationsController {
     }
     next() {
         this.users.currentOptions.setup_position.value = 'preferences.integrations';
-        this.users.setOption(this.users.currentOptions.setup_position).then(() => {
+        return this.users.setOption(this.users.currentOptions.setup_position).then(() => {
             this.$state.go('setup.preferences.integrations');
         });
     }
@@ -26,5 +26,10 @@ const Notifications = {
     controller: NotificationsController
 };
 
-export default angular.module('mpdx.setup.preferences.notifications.component', [])
-    .component('setupPreferencesNotifications', Notifications).name;
+import uiRouter from 'angular-ui-router';
+import users from 'common/users/users.service';
+
+export default angular.module('mpdx.setup.preferences.notifications.component', [
+    uiRouter,
+    users
+]).component('setupPreferencesNotifications', Notifications).name;

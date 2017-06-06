@@ -1,4 +1,5 @@
 import each from 'lodash/fp/each';
+import filter from 'lodash/fp/filter';
 import find from 'lodash/fp/find';
 import map from 'lodash/fp/map';
 import reduce from 'lodash/fp/reduce';
@@ -7,29 +8,22 @@ import uniq from 'lodash/fp/uniq';
 
 class AddressesService {
     api;
-    blockUI;
+    contacts;
 
     constructor(
-        $log, $q, $rootScope,
         api, contacts
     ) {
-        this.$log = $log;
-        this.$q = $q;
         this.api = api;
         this.contacts = contacts;
         this.loading = false;
         this.page = 1;
-
-        $rootScope.$on('accountListUpdated', () => {
-            this.load(true);
-        });
     }
 
     loadCount() {
-        if (this.meta) { return this.$q.resolve(); }
-        return this.api.get({
-            url: 'contacts',
-            data: {
+        if (this.meta) { return Promise.resolve(this.meta); }
+        return this.api.get(
+            'contacts',
+            {
                 filter: {
                     address_valid: false,
                     account_list_id: this.api.account_list_id
@@ -37,24 +31,25 @@ class AddressesService {
                 page: 1,
                 per_page: 0
             }
-        }).then((data) => {
+        ).then((data) => {
             if (!this.meta) {
                 this.meta = data.meta;
             }
+            return this.meta;
         });
     }
 
     load(reset = false, page = 1) {
         if (!reset && this.data && this.page === page) {
-            return this.$q.resolve(this.data);
+            return Promise.resolve(this.data);
         }
 
         this.loading = true;
         this.page = page;
 
-        return this.api.get({
-            url: 'contacts',
-            data: {
+        return this.api.get(
+            'contacts',
+            {
                 filter: {
                     address_valid: false,
                     account_list_id: this.api.account_list_id
@@ -67,20 +62,20 @@ class AddressesService {
                 per_page: 25,
                 sort: 'name'
             }
-        }).then((data) => {
-            this.$log.debug('FixAddresses.load', data);
+        ).then((data) => {
             this.loading = false;
 
             this.sources = ['MPDX'];
-            this.data = data;
             each((contact) => {
                 each((address) => {
                     this.sources.push(address.source);
                 }, contact.addresses);
             }, data);
             this.sources = uniq(this.sources).sort();
-
+            this.data = data;
             this.meta = data.meta;
+
+            return this.data;
         });
     }
 
@@ -93,6 +88,9 @@ class AddressesService {
             this.data = reject({ id: contact.id }, this.data);
             if (this.meta && this.meta.pagination && this.meta.pagination.total_count) {
                 this.meta.pagination.total_count -= 1;
+            }
+            if (this.data.length === 0) {
+                this.load(true, this.page);
             }
         });
     }
@@ -123,12 +121,20 @@ class AddressesService {
         }, contact.addresses);
     }
 
-    remove(contact, address) {
-        this.contacts.deleteAddress(contact.id, address.id).then(() => {
+    removeAddress(contact, address) {
+        return this.contacts.deleteAddress(contact.id, address.id).then(() => {
             contact.addresses = reject({id: address.id}, contact.addresses);
         });
     }
+
+    hasPrimary(contact) {
+        return filter((address) => address.primary_mailing_address, contact.addresses).length === 1;
+    }
 }
 
-export default angular.module('mpdx.tools.fix.addresses.service', [])
-    .service('fixAddresses', AddressesService).name;
+import api from 'common/api/api.service';
+import contacts from 'contacts/contacts.service';
+
+export default angular.module('mpdx.tools.fix.addresses.service', [
+    api, contacts
+]).service('fixAddresses', AddressesService).name;

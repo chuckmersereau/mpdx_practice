@@ -2,7 +2,7 @@ class CommitmentInfoController {
     fixCommitmentInfo;
 
     constructor(
-        gettextCatalog, blockUI,
+        $rootScope, gettextCatalog, blockUI,
         modal, fixCommitmentInfo
     ) {
         this.gettextCatalog = gettextCatalog;
@@ -10,20 +10,27 @@ class CommitmentInfoController {
 
         this.modal = modal;
         this.fixCommitmentInfo = fixCommitmentInfo;
+
+        $rootScope.$on('accountListUpdated', () => {
+            this.load();
+        });
     }
 
     save() {
-        const message = this.gettextCatalog.getString("Are you sure?");
+        const message = this.gettextCatalog.getString(
+            `You are updating all visible contacts to the visible Commitment Info.
+            Are you sure you want to do this?`
+        );
         return this.modal.confirm(message).then(() => {
             this.blockUI.start();
-            return this.fixCommitmentInfo.bulkSave().finally(() => {
+            return this.fixCommitmentInfo.bulkSave().then(() => {
                 this.blockUI.reset();
             });
         });
     }
 
-    load(page) {
-        this.fixCommitmentInfo.load(true, page);
+    load(page = null) {
+        return this.fixCommitmentInfo.load(true, page);
     }
 }
 
@@ -32,5 +39,12 @@ const FixCommitmentInfo = {
     template: require('./commitmentInfo.html')
 };
 
-export default angular.module('mpdx.tools.fixCommitmentInfo.component', [])
-    .component('fixCommitmentInfo', FixCommitmentInfo).name;
+import gettextCatalog from 'angular-gettext';
+import blockUI from 'angular-block-ui';
+import modal from 'common/modal/modal.service';
+import fixCommitmentInfo from './commitmentInfo.service';
+
+export default angular.module('mpdx.tools.fixCommitmentInfo.component', [
+    gettextCatalog, blockUI,
+    modal, fixCommitmentInfo
+]).component('fixCommitmentInfo', FixCommitmentInfo).name;

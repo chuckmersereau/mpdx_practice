@@ -11,7 +11,6 @@ class ToolsController {
         this.tools = tools;
 
         help.suggest([
-            this.gettextCatalog.getString('58d3d70ddd8c8e7f5974d3ca'),
             this.gettextCatalog.getString('5845aa229033600698176a54'),
             this.gettextCatalog.getString('584715b890336006981774d2'),
             this.gettextCatalog.getString('5845a6de9033600698176a43'),

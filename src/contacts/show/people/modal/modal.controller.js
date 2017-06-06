@@ -11,11 +11,12 @@ class PersonModalController {
     contacts;
 
     constructor(
-        $log, $scope, gettextCatalog,
+        $log, $rootScope, $scope, gettextCatalog,
         alerts, people, locale, modal,
         contact, peopleForRelationship, person
     ) {
         this.$log = $log;
+        this.$rootScope = $rootScope;
         this.$scope = $scope;
         this.alerts = alerts;
         this.contact = contact;
@@ -75,7 +76,9 @@ class PersonModalController {
             const patch = createPatch(this.personInitialState, this.person);
             this.$log.debug('person patch', patch);
             return this.people.save(this.contact.id, patch).then(() => {
+                /* istanbul ignore next */
                 this.$log.debug('person saved:', this.person);
+                this.$rootScope.$emit('personUpdated');
                 this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
                 this.$scope.$hide();
             }).catch(() => {
@@ -83,7 +86,9 @@ class PersonModalController {
             });
         } else {
             return this.people.create(this.contact.id, this.person).then(() => {
+                /* istanbul ignore next */
                 this.$log.debug('person created:', this.person);
+                this.$rootScope.$emit('personUpdated');
                 this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
                 this.$scope.$hide();
             }).catch(() => {
@@ -134,5 +139,11 @@ class PersonModalController {
     }
 }
 
-export default angular.module('mpdx.contacts.show.personModal.controller', [])
-    .controller('personModalController', PersonModalController).name;
+import alerts from 'common/alerts/alerts.service';
+import locale from 'common/locale/locale.service';
+import modal from 'common/modal/modal.service';
+import people from '../people.service';
+
+export default angular.module('mpdx.contacts.show.personModal.controller', [
+    alerts, locale, modal, people
+]).controller('personModalController', PersonModalController).name;

@@ -27,4 +27,12 @@ home-progress {
             }
         }
     }
+    .row {
+        .col-md-6:first-child {
+            padding-right: 2.5px;
+        }
+        .col-md-6:last-child {
+            padding-left: 2.5px;
+        }
+    }
 }

@@ -10,7 +10,7 @@
                 disable-search="true"
                 class="form-control"
                 id='action'
-                ng-options="opt as opt for opt in $ctrl.serverConstants.data.activities"
+                ng-options="opt.id as opt.value for opt in $ctrl.serverConstants.data.activity_hashes"
                 ng-model="$ctrl.task.activity_type">
             <option value=""></option>
         </select>

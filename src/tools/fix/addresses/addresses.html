@@ -24,8 +24,16 @@
                 <i class="fa fa-check-circle"></i> <translate translate-params-source="$ctrl.source">Confirm All as {{source}}</translate>
             </button>
         </div>
-        <fix-addresses-item ng-repeat="contact in $ctrl.fixAddresses.data" ng-if="!contact.hidden" contact="contact"></fix-addresses-item>
-        <pagination ng-if="$ctrl.fixAddresses.data.length > 0"
+        <div ng-show="$ctrl.fixAddresses.loading">
+            <div class="loading-box">
+                <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+                <span class="sr-only" translate="">Loading</span>
+            </div>
+        </div>
+        <div ng-show="!$ctrl.fixAddresses.loading">
+            <fix-addresses-item ng-repeat="contact in $ctrl.fixAddresses.data" ng-if="!contact.hidden" contact="contact"></fix-addresses-item>
+        </div>
+        <pagination ng-if="$ctrl.fixAddresses.meta.pagination.total_count > 0"
                     meta="$ctrl.fixAddresses.meta.pagination"
                     on-change="$ctrl.load(page)"
                     class="text-center">

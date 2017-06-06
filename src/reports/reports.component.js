@@ -7,7 +7,6 @@ class ReportsController {
         this.session = session;
 
         help.suggest([
-            this.gettextCatalog.getString('58d3d70ddd8c8e7f5974d3ca'),
             this.gettextCatalog.getString('584820bc9033600698177a95'),
             this.gettextCatalog.getString('58496cc0c6979106d373bb52'),
             this.gettextCatalog.getString('58496f15c6979106d373bb65'),

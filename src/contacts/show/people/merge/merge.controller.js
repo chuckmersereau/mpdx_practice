@@ -7,12 +7,14 @@ class MergePeopleModalController {
     people;
 
     constructor(
-        $scope,
+        $rootScope, $scope, gettextCatalog,
         people, alerts,
         selectedPeople
     ) {
         this.alerts = alerts;
+        this.$rootScope = $rootScope;
         this.$scope = $scope;
+        this.gettextCatalog = gettextCatalog;
         this.selectedPeople = selectedPeople;
         this.people = people;
 
@@ -25,12 +27,22 @@ class MergePeopleModalController {
             return { winner_id: this.selectedPerson, loser_id: person.id };
         }, selectedPeople);
 
-        return this.people.bulkMerge(selectedPeopleToMerge).catch(() => {
-            this.alerts.addAlert('There was an error while trying to merge the people', 'danger');
-        }).finally(() => {
+        return this.people.bulkMerge(selectedPeopleToMerge).then(() => {
+            this.$rootScope.$emit('personUpdated');
+        }).then(() => {
             this.$scope.$hide();
+        }).catch(err => {
+            const message = this.gettextCatalog.getString('There was an error while trying to merge the people');
+            this.alerts.addAlert(message, 'danger');
+            this.$scope.$hide();
+            return err;
         });
     }
 }
-export default angular.module('mpdx.contacts.show.people.merge.controller', [])
-    .controller('mergePeopleModalController', MergePeopleModalController).name;
+
+import alerts from 'common/alerts/alerts.service';
+import people from '../people.service';
+
+export default angular.module('mpdx.contacts.show.people.merge.controller', [
+    alerts, people
+]).controller('mergePeopleModalController', MergePeopleModalController).name;

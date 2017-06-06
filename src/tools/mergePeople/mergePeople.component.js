@@ -5,7 +5,7 @@ class MergePeopleController {
     mergePeople;
 
     constructor(
-        $log, $q, $state, blockUI,
+        $log, $q, $rootScope, $state, blockUI,
         api, mergePeople
     ) {
         this.$log = $log;
@@ -14,6 +14,10 @@ class MergePeopleController {
         this.blockUI = blockUI.instances.get('merge-people');
         this.api = api;
         this.mergePeople = mergePeople;
+
+        $rootScope.$on('accountListUpdated', () => {
+            this.mergePeople.load(true);
+        });
     }
 
     useThisOne(duplicate, mergeChoice = -1) {
@@ -43,5 +47,10 @@ const MergePeople = {
     template: require('./mergePeople.html')
 };
 
-export default angular.module('mpdx.tools.mergePeople.component', [])
-    .component('mergePeople', MergePeople).name;
+import blockUi from 'angular-block-ui';
+import mergePeople from './mergePeople.service';
+
+export default angular.module('mpdx.tools.mergePeople.component', [
+    blockUi,
+    mergePeople
+]).component('mergePeople', MergePeople).name;

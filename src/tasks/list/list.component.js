@@ -10,11 +10,11 @@ class ListController {
         this.tasksTags = tasksTags;
 
         $rootScope.$on('taskChange', () => {
-            this.tasks.load(true);
+            this.tasks.load();
         });
 
         $rootScope.$on('tasksFilterChange', () => {
-            this.tasks.load(true);
+            this.tasks.load();
         });
 
         $rootScope.$on('tasksTagsChanged', () => {

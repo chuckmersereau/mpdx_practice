@@ -8,7 +8,7 @@ describe('common.datetimepicker.component', () => {
         angular.mock.module(component);
         inject(($componentController, $rootScope) => {
             rootScope = $rootScope;
-            scope = $rootScope.$new();
+            scope = rootScope.$new();
             componentController = $componentController;
             loadController({ngModel: defaultModel});
         });
@@ -66,7 +66,7 @@ describe('common.datetimepicker.component', () => {
         it('should change the time', () => {
             $ctrl.time = moment(defaultModel).add(1, 'hour');
             scope.$digest();
-            expect($ctrl.ngModel).toEqual(moment(defaultModel).add(1, 'hour').toISOString());
+            expect(moment($ctrl.ngModel).hour()).toEqual(moment($ctrl.time).hour());
         });
         it('should change the date', () => {
             $ctrl.date = moment(defaultModel).add(1, 'day');
@@ -80,6 +80,14 @@ describe('common.datetimepicker.component', () => {
         });
         it(`shouldn't set model`, () => {
             expect($ctrl.model).toBeUndefined();
+        });
+    });
+    describe('focus', () => {
+        it('should init on focus', () => {
+            spyOn($ctrl, 'init').and.callFake(() => {});
+            $ctrl.focus();
+            expect($ctrl.ngModel).toBeDefined();
+            expect($ctrl.init).toHaveBeenCalled();
         });
     });
 });

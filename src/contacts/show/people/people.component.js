@@ -25,7 +25,11 @@ class ContactPeopleController {
         this.isMerging = false;
 
         $rootScope.$on('accountListUpdated', () => {
-            this.people.listAll(true);
+            this.init();
+        });
+
+        $rootScope.$on('personUpdated', () => {
+            this.init();
         });
     }
     $onInit() {
@@ -39,7 +43,8 @@ class ContactPeopleController {
         if (!has('contact.id', this)) {
             return;
         }
-        this.people.list(this.contact.id).then((data) => {
+        this.data = [];
+        return this.people.list(this.contact.id).then(data => {
             this.$log.debug('selected people: ', data);
             this.data = data;
         });
@@ -58,7 +63,9 @@ class ContactPeopleController {
             this.alerts.addAlert(this.gettextCatalog.getString('First select at least 2 people to merge'), 'danger');
         } else {
             this.isMerging = false;
-            this.people.openMergePeopleModal(this.contact, this.selectedPeople).finally(() => {
+            return this.people.openMergePeopleModal(this.selectedPeople).then(() => {
+                this.selectedPeople = [];
+            }).catch(() => {
                 this.selectedPeople = [];
             });
         }
@@ -81,5 +88,13 @@ const People = {
     }
 };
 
-export default angular.module('mpdx.contacts.show.people.component', [])
-    .component('contactPeople', People).name;
+import alerts from 'common/alerts/alerts.service';
+import api from 'common/api/api.service';
+import gettext from 'angular-gettext';
+import people from './people.service';
+import uiRouter from 'angular-ui-router';
+
+export default angular.module('mpdx.contacts.show.people.component', [
+    api, gettext, uiRouter,
+    alerts, people
+]).component('contactPeople', People).name;
