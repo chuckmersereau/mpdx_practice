@@ -7,19 +7,20 @@ class SharePreferencesController {
     users;
 
     constructor(
-        $rootScope,
+        $rootScope, gettextCatalog,
         accounts, alerts, users
     ) {
         this.$rootScope = $rootScope;
         this.accounts = accounts;
         this.alerts = alerts;
+        this.gettextCatalog = gettextCatalog;
         this.users = users;
 
         this.saving = false;
         this.inviteEmail = '';
     }
     $onInit() {
-        if (this.setup) { //don't load during setup
+        if (this.setup) {
             return;
         }
 
@@ -33,24 +34,26 @@ class SharePreferencesController {
     }
     cancelInvite(id) {
         this.saving = true;
-        this.accounts.destroyInvite(id).then(() => {
+        return this.accounts.destroyInvite(id).then(() => {
             this.saving = false;
-            this.alerts.addAlert('MPDX removed the invite successfully');
+            this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed the invite successfully'));
             this.accounts.inviteList = reject({id: id}, this.accounts.inviteList);
-        }).catch(() => {
-            this.alerts.addAlert("MPDX couldn't remove the invite", 'danger');
+        }).catch(err => {
+            this.alerts.addAlert(this.gettextCatalog.getString("MPDX couldn't remove the invite"), 'danger');
             this.saving = false;
+            throw err;
         });
     }
     removeUser(id) {
         this.saving = true;
-        this.accounts.destroyUser(id).then(() => {
+        return this.accounts.destroyUser(id).then(() => {
             this.saving = false;
-            this.alerts.addAlert('MPDX removed the user successfully');
+            this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed the user successfully'));
             this.accounts.userList = reject({id: id}, this.accounts.userList);
-        }).catch(() => {
-            this.alerts.addAlert("MPDX couldn't remove the user", 'danger');
+        }).catch(err => {
+            this.alerts.addAlert(this.gettextCatalog.getString("MPDX couldn't remove the user"), 'danger');
             this.saving = false;
+            throw err;
         });
     }
 }
@@ -63,5 +66,13 @@ const Share = {
     }
 };
 
-export default angular.module('mpdx.preferences.accounts.share', [])
-    .component('sharePreferences', Share).name;
+
+import accounts from 'common/accounts/accounts.service';
+import alerts from 'common/alerts/alerts.service';
+import gettext from 'angular-gettext';
+import users from 'common/users/users.service';
+
+export default angular.module('mpdx.preferences.accounts.share', [
+    gettext,
+    accounts, alerts, users
+]).component('sharePreferences', Share).name;

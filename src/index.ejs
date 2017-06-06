@@ -31,7 +31,7 @@
 </head>
 <body app>
     <ui-view></ui-view>
-    <script src="https://maps.google.com/maps/api/js?key=AIzaSyCSGxKR6LxY26xz9JajJ1_KSz-gv6gzOu0&libraries=places"></script>
+    <script src="https://maps.google.com/maps/api/js?key=AIzaSyCSGxKR6LxY26xz9JajJ1_KSz-gv6gzOu0&libraries=places" async></script>
     <% if(htmlWebpackPlugin.options.env === 'production' || htmlWebpackPlugin.options.env === 'next') { %>
         <script type="text/javascript">
             var _gaq = _gaq || [];

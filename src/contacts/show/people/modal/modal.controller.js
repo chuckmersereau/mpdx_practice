@@ -36,7 +36,7 @@ class PersonModalController {
     activate() {
         if (has('id', this.person)) {
             this.personInitialState = angular.copy(this.person);
-            this.modalTitle = 'Edit Person';
+            this.modalTitle = this.gettextCatalog.getString('Edit Person');
             //bad data is bad
             if (this.person.birthday_year) {
                 this.person.birthday = moment(`${this.person.birthday_year}-${this.person.birthday_month}-${this.person.birthday_day}`, 'YYYY-MM-DD').toDate();
@@ -45,7 +45,7 @@ class PersonModalController {
                 this.person.anniversary = moment(`${this.person.anniversary_year}-${this.person.anniversary_month}-${this.person.anniversary_day}`, 'YYYY-MM-DD').toDate();
             }
         } else {
-            this.modalTitle = 'Add Person';
+            this.modalTitle = this.gettextCatalog.getString('Add Person');
             this.person = {
                 email_addresses: [],
                 phone_numbers: [],
@@ -81,8 +81,9 @@ class PersonModalController {
                 this.$rootScope.$emit('personUpdated');
                 this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
                 this.$scope.$hide();
-            }).catch(() => {
+            }).catch(err => {
                 this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger');
+                throw err;
             });
         } else {
             return this.people.create(this.contact.id, this.person).then(() => {
@@ -91,8 +92,9 @@ class PersonModalController {
                 this.$rootScope.$emit('personUpdated');
                 this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
                 this.$scope.$hide();
-            }).catch(() => {
+            }).catch(err => {
                 this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger');
+                throw err;
             });
         }
     }

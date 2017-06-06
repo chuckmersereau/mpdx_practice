@@ -5,9 +5,10 @@ class ContributionsController {
 
     constructor(
         $rootScope,
-        contributions
+        contributions, locale
     ) {
         this.contributions = contributions;
+        this.locale = locale;
 
         this.data = {};
         this.expanded = false;
@@ -63,7 +64,8 @@ const Contributions = {
 };
 
 import contributions from './contributions.service';
+import locale from 'common/locale/locale.service';
 
 export default angular.module('mpdx.reports.contributions.component', [
-    contributions
+    contributions, locale
 ]).component('contributions', Contributions).name;

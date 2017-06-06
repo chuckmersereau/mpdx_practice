@@ -17,6 +17,8 @@ describe('donation.modal.controller', () => {
 
             loadController();
         });
+        spyOn(alerts, 'addAlert').and.callFake(data => data);
+        spyOn(gettextCatalog, 'getString').and.callThrough();
     });
 
     function loadController() {
@@ -64,20 +66,12 @@ describe('donation.modal.controller', () => {
         describe('promise rejected', () => {
             beforeEach(() => {
                 spyOn(donations, 'save').and.callFake(() => Promise.reject(Error('fail')));
-                spyOn(alerts, 'addAlert').and.returnValue();
-                spyOn(gettextCatalog, 'getString').and.callFake((message) => message);
             });
 
-            it('should add alert', (done) => {
-                $ctrl.save().then(() => {
-                    expect(alerts.addAlert).toHaveBeenCalledWith('Unable to change donation', 'danger');
-                    done();
-                });
-            });
-
-            it('should translate alert message', (done) => {
-                $ctrl.save().then(() => {
-                    expect(gettextCatalog.getString).toHaveBeenCalled();
+            it('should add a translated alert', (done) => {
+                $ctrl.save().catch(() => {
+                    expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
+                    expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                     done();
                 });
             });
@@ -150,19 +144,11 @@ describe('donation.modal.controller', () => {
         describe('promise rejected', () => {
             beforeEach(() => {
                 spyOn(donations, 'delete').and.callFake(() => Promise.reject(Error('fail')));
-                spyOn(alerts, 'addAlert').and.returnValue();
-                spyOn(gettextCatalog, 'getString').and.callFake((message) => message);
             });
 
-            it('should add alert', (done) => {
-                $ctrl.delete().then(() => {
-                    expect(alerts.addAlert).toHaveBeenCalledWith('Unable to remove donation', 'danger');
-                    done();
-                });
-            });
-
-            it('should translate alert message', (done) => {
-                $ctrl.delete().then(() => {
+            it('should add a translated alert', (done) => {
+                $ctrl.delete().catch(() => {
+                    expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
                     expect(gettextCatalog.getString).toHaveBeenCalled();
                     done();
                 });

@@ -39,5 +39,8 @@ class MailchimpService {
     }
 }
 
-export default angular.module('mpdx.preferences.accounts.integrations.mailchimp.service', [])
-    .service('mailchimp', MailchimpService).name;
+import api from 'common/api/api.service';
+
+export default angular.module('mpdx.preferences.accounts.integrations.mailchimp.service', [
+    api
+]).service('mailchimp', MailchimpService).name;

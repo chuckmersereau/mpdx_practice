@@ -14,12 +14,13 @@ class NotificationPreferencesController {
     users;
 
     constructor(
-        $rootScope, $state,
+        $rootScope, $state, gettextCatalog,
         accounts, alerts, serverConstants, users
     ) {
         this.$state = $state;
         this.accounts = accounts;
         this.alerts = alerts;
+        this.gettextCatalog = gettextCatalog;
         this.serverConstants = serverConstants;
         this.users = users;
 
@@ -63,7 +64,7 @@ class NotificationPreferencesController {
             return concat(result, notificationType);
         }, [], this.notifications);
         return this.accounts.saveCurrent().then(() => {
-            this.alerts.addAlert('Notifications saved successfully', 'success');
+            this.alerts.addAlert(this.gettextCatalog.getString('Notifications saved successfully'), 'success');
             this.onSave();
             this.saving = false;
         });

@@ -12,14 +12,14 @@
             <div class="modal-body" ng-transclude></div>
             <div class="modal-footer" ng-if="!$ctrl.hideFooter">
                 <div class="pull-left">
-                    <button type="button" class="btn btn-danger" ng-click="$ctrl.deleteAndBlock()" ng-if="$ctrl.$attrs.delete && $ctrl.showDelete">
+                    <button type="button" class="btn btn-danger" ng-click="$ctrl.deleteAndBlock()" ng-if="$ctrl.$attrs.delete && $ctrl.showDelete" ng-disabled="$ctrl.saving">
                         <i class="fa fa-trash"></i>
                         &nbsp;
                         <span translate>Remove</span>
                     </button>
                 </div>
                 <button type="button" class="btn btn-link" ng-click="$ctrl.cancel()" ng-if="$ctrl.$attrs.cancel && $ctrl.$attrs.save">{{$ctrl.cancelText}}</button>
-                <button type="button" class="btn btn-primary" ng-disabled="!modalForm.$valid" ng-if="$ctrl.$attrs.save" ng-click="$ctrl.saveAndBlock()">{{$ctrl.saveText}}</button>
+                <button type="button" class="btn btn-primary" ng-disabled="!modalForm.$valid || $ctrl.saving" ng-if="$ctrl.$attrs.save" ng-click="$ctrl.saveAndBlock()">{{$ctrl.saveText}}</button>
             </div>
         </div>
     </form>

@@ -35,7 +35,7 @@ class TntImportController {
     }
     save(form) {
         this.importing = true;
-        this.Upload.upload({
+        return this.Upload.upload({
             url: `${config.apiUrl}account_lists/${this.api.account_list_id}/imports/tnt`,
             data: {
                 data: {
@@ -55,9 +55,10 @@ class TntImportController {
                 template: require('./success/success.html'),
                 controller: 'tntSuccessController'
             });
-        }, () => {
+        }, err => {
             this.importing = false;
             this.alerts.addAlert(this.gettextCatalog.getString('File upload failed.'), 'danger');
+            throw err;
         }, (evt) => {
             this.progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
         });

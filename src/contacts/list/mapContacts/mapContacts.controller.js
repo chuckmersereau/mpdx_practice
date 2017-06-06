@@ -6,8 +6,6 @@ import isNil from 'lodash/fp/isNil';
 import map from 'lodash/fp/map';
 import reduce from 'lodash/fp/reduce';
 
-const iconSize = new window.google.maps.Size(20, 36);
-
 class MapContactsController {
     selectedContacts;
     constructor(
@@ -21,6 +19,7 @@ class MapContactsController {
 
         this.noContactCount = 0;
         this.markerClusterer = null;
+        this.iconSize = new window.google.maps.Size(20, 36);
 
         this.activate();
     }
@@ -40,7 +39,7 @@ class MapContactsController {
             const geoSplit = address.geo.split(',');
             const position = new this.$window.google.maps.LatLng(geoSplit[0], geoSplit[1]);
             const url = this.markerURL(address.contactStatus);
-            const icon = new this.$window.google.maps.MarkerImage(url, iconSize);
+            const icon = new this.$window.google.maps.MarkerImage(url, this.iconSize);
             return new this.$window.google.maps.Marker({ position: position, title: address.contactName, icon: icon });
         }, addresses);
         this.NgMap.getMap().then((evtMap) => {

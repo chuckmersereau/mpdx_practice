@@ -15,6 +15,6 @@
         <translate>Primary</translate>
     </div>
     <div ng-if="$ctrl.address.street">
-        <a ng-click="$ctrl.contacts.openAddressModal(null, $ctrl.address)" class="btn btn-reverse btn-xs"><i class="fa fa-map-marker"></i> <translate>Google Maps</translate></a>
+        <a ng-href="{{$ctrl.mapLink}}" target="_blank" class="btn btn-reverse btn-xs"><i class="fa fa-map-marker"></i> <translate>Google Maps</translate></a>
     </div>
 </div>

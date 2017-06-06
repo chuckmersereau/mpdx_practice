@@ -17,7 +17,7 @@ describe('contacts.show.people.merge.controller', () => {
             loadController(person);
         });
         spyOn(alerts, 'addAlert').and.callFake(data => data);
-        spyOn(gettextCatalog, 'getString').and.callFake(data => data);
+        spyOn(gettextCatalog, 'getString').and.callThrough();
     });
     function loadController() {
         $ctrl = controller('mergePeopleModalController as $ctrl', {

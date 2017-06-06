@@ -12,13 +12,14 @@ class DonationsController {
 
     constructor(
         $state, $stateParams, $rootScope, blockUI,
-        contacts, designationAccounts, donations
+        contacts, designationAccounts, donations, locale
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.contacts = contacts;
         this.designationAccounts = designationAccounts;
         this.donations = donations;
+        this.locale = locale;
         this.blockUI = blockUI.instances.get('donations');
 
         this.enableNext = false;

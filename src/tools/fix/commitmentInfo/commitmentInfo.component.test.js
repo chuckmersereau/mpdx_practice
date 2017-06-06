@@ -44,7 +44,7 @@ describe('tools.fix.commitmentInfo.component', () => {
     describe('save', () => {
         beforeEach(() => {
             spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
-            spyOn(gettextCatalog, 'getString').and.callFake(() => {});
+            spyOn(gettextCatalog, 'getString').and.callThrough();
         });
 
         it('should call a translated confirm message', () => {

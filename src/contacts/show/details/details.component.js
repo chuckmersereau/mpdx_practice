@@ -114,23 +114,24 @@ class ContactDetailsController {
                     }
                 }
             };
-            this.api.put({
+            return this.api.put({
                 url: `contacts/${this.contact.id}`,
                 data: request,
                 doSerialization: false
             }).then(() => {
                 this.contact.contacts_that_referred_me = [{id: this.referrer}];
                 this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
-            }).catch(() => {
+            }).catch(err => {
                 this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger');
+                throw err;
             });
         } else if (!this.referrer && get(this.contact, 'contacts_that_referred_me[0].id')) {
             this.contact.contact_referrals_to_me = this.destroyReferrals(this.contact.contact_referrals_to_me);
-            this.onSave().then(() => {
+            return this.onSave().then(() => {
                 this.contact.contacts_that_referred_me = [];
             });
         } else {
-            this.onSave();
+            return this.onSave();
         }
     }
     destroyReferrals(referrals) {
@@ -139,6 +140,7 @@ class ContactDetailsController {
         }, referrals);
     }
     onAddressPrimary(addressId) {
+        /* istanbul ignore next */
         this.$log.debug('change primary: ', addressId);
         return this.modal.confirm(this.gettextCatalog.getString('This address will be used for your newsletters. Would you like to change to have this address as primary?')).then(() => {
             const addresses = map(address => {
@@ -151,8 +153,9 @@ class ContactDetailsController {
             return this.contacts.save({id: this.contacts.current.id, addresses: addressPatch}).then(() => {
                 this.contact.addresses = addresses;
                 this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
-            }).catch(() => {
+            }).catch(err => {
                 this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger');
+                throw err;
             });
         });
     }
@@ -174,10 +177,15 @@ const Details = {
     }
 };
 
-import contacts from '../../contacts.service';
-import serverConstants from '../../../common/serverConstants/serverConstants.service';
-import tasks from '../../../tasks/tasks.service';
+import api from 'common/api/api.service';
+import alerts from 'common/alerts/alerts.service';
+import contacts from 'contacts/contacts.service';
+import contactsTags from 'contacts/sidebar/filter/tags/tags.service';
+import locale from 'common/locale/locale.service';
+import modal from 'common/modal/modal.service';
+import serverConstants from 'common/serverConstants/serverConstants.service';
+import users from 'common/users/users.service';
 
 export default angular.module('mpdx.contacts.show.details.component', [
-    contacts, serverConstants, tasks
+    alerts, api, contactsTags, contacts, locale, modal, serverConstants, users
 ]).component('contactDetails', Details).name;

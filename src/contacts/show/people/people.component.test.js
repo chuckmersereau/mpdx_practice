@@ -16,7 +16,7 @@ describe('contacts.show.people.component', () => {
             loadController();
         });
         spyOn(alerts, 'addAlert').and.callFake(() => {});
-        spyOn(gettextCatalog, 'getString').and.callFake(data => data);
+        spyOn(gettextCatalog, 'getString').and.callThrough();
     });
     function loadController() {
         $ctrl = componentController('contactPeople', {$scope: scope}, {view: null, selected: null});
