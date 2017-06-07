@@ -9,7 +9,8 @@ const configEnv = process.env.NODE_ENV || 'development';
 const config = {
     devtool: 'eval',
     entry: {
-        app: './src/app.module.js'
+        app: './src/app.module.js',
+        moment_locales: './src/moment-locales.js'
     },
     externals: [{
         "window": "window",
