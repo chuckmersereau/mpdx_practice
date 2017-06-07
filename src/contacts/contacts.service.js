@@ -200,6 +200,7 @@ class ContactsService {
                 'birthdays_this_week.twitter_accounts,' +
                 'birthdays_this_week.email_addresses',
                 fields: {
+                    contacts: 'people',
                     people: 'anniversary_day,anniversary_month,birthday_day,birthday_month,facebook_accounts,first_name,last_name,twitter_accounts,email_addresses,parent_contact',
                     email_addresses: 'email,primary',
                     facebook_accounts: 'username',
