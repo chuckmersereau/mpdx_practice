@@ -130,7 +130,7 @@ class TasksService {
                 per_page: 25,
                 include: 'contacts',
                 fields: {
-                    tasks: 'activity_type,completed,completed_at,contacts,no_date,starred,start_at,subject,tag_list,comments_count',
+                    tasks: 'activity_type,completed,completed_at,contacts,no_date,starred,start_at,subject,tag_list,comments_count,location',
                     contacts: 'name'
                 }
             },
