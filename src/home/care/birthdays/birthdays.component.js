@@ -1,3 +1,7 @@
+import defaultTo from 'lodash/fp/defaultTo';
+import get from 'lodash/fp/get';
+import moment from 'moment';
+
 class BirthdaysController {
     contacts;
 
@@ -8,6 +12,14 @@ class BirthdaysController {
         this.locale = locale;
 
         this.limit = 5;
+    }
+    partialDateSort(value) {
+        let sortval = defaultTo(0, get('anniversary_month', value)) * 100;
+        if (sortval > 1100 && moment().month() === 11 && moment().date() > 20) { //reset for dec/jan sorting
+            sortval = 0;
+        }
+        sortval += defaultTo(0, get('anniversary_day', value));
+        return parseInt(sortval);
     }
 }
 

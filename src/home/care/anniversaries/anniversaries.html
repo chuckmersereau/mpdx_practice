@@ -1,6 +1,6 @@
 <h4 class="title" translate>Anniversaries This Week</h4>
 <ul class="list-unstyled" ng-if="$ctrl.contacts.analytics.anniversaries_this_week.length">
-    <li ng-repeat="contact in $ctrl.contacts.analytics.anniversaries_this_week | limitTo: $ctrl.limit">
+    <li ng-repeat="contact in $ctrl.contacts.analytics.anniversaries_this_week | orderBy : $ctrl.partialDateSort | limitTo: $ctrl.limit">
         <span ng-repeat="person in contact.people track by person.id">
             <span ng-if="$index === 0">{{ person.anniversary_date | date: $ctrl.locale.dateTimeFormat }}</span>
             <a ui-sref="contacts.show({ contactId: contact.id })">{{person.first_name}} {{person.last_name}}</a>

@@ -1,6 +1,6 @@
 <h4 class="title" translate>Birthdays This Week</h4>
 <ul class="list-unstyled" ng-if="$ctrl.contacts.analytics.birthdays_this_week.length">
-    <li ng-repeat="person in $ctrl.contacts.analytics.birthdays_this_week | limitTo: $ctrl.limit">
+    <li ng-repeat="person in $ctrl.contacts.analytics.birthdays_this_week | orderBy: $ctrl.partialDateSort | limitTo: $ctrl.limit track by person.id">
         {{ person.birthday_date | date: $ctrl.locale.dateTimeFormat }}
         <a ui-sref="contacts.show({ contactId: person.parent_contact.id })">
             {{person.first_name}} {{person.last_name}}
