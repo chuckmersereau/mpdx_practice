@@ -1,15 +1,13 @@
 <h4 class="title" translate>Anniversaries This Week</h4>
 <ul class="list-unstyled" ng-if="$ctrl.contacts.analytics.anniversaries_this_week.length">
     <li ng-repeat="contact in $ctrl.contacts.analytics.anniversaries_this_week | limitTo: $ctrl.limit">
-        <a ui-sref="contacts.show({ contactId: contact.id })">
-            <span ng-repeat="person in contact.people track by person.id">
-                <span ng-if="$index === 0">{{ person.anniversary_month }}-{{ person.anniversary_day }}</span>
-                {{person.first_name}} {{person.last_name}}
-                <facebook-link facebook-account="person.facebook_accounts[0]" ng-if="person.facebook_accounts[0]"></facebook-link>
-                <twitter-link twitter-account="person.twitter_accounts[0]" ng-if="person.twitter_accounts[0]"></twitter-link>
-                <email-link ng-repeat="email in person.email_addresses" ng-if="email.primary" email-address="email"></email-link>
-            </span>
-        </a>
+        <span ng-repeat="person in contact.people track by person.id">
+            <span ng-if="$index === 0">{{ person.anniversary_date | date: $ctrl.locale.dateTimeFormat }}</span>
+            <a ui-sref="contacts.show({ contactId: contact.id })">{{person.first_name}} {{person.last_name}}</a>
+            <facebook-link facebook-account="person.facebook_accounts[0]" ng-if="person.facebook_accounts[0]"></facebook-link>
+            <twitter-link twitter-account="person.twitter_accounts[0]" ng-if="person.twitter_accounts[0]"></twitter-link>
+            <email-link ng-repeat="email in person.email_addresses" ng-if="email.primary" email-address="email"></email-link>
+        </span>
     </li>
     <li ng-if="$ctrl.contacts.analytics.anniversaries_this_week.length > $ctrl.limit">
         <a ng-click="$ctrl.limit = $ctrl.contacts.analytics.anniversaries_this_week.length">

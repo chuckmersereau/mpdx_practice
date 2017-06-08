@@ -1,5 +1,6 @@
 import service from './contacts.service';
 import assign from 'lodash/fp/assign';
+import moment from 'moment';
 
 const accountListId = 123;
 const defaultParams = {};
@@ -18,8 +19,7 @@ describe('contacts.service', () => {
             contactsTags = _contactsTags_;
             api.account_list_id = accountListId;
         });
-        spyOn(api, 'get').and.callFake((data) => new Promise(resolve => resolve(data)));
-        spyOn(api, 'put').and.callFake((data) => new Promise(resolve => resolve(data)));
+        spyOn(api, 'put').and.callFake(data => Promise.resolve(data));
         spyOn(rootScope, '$emit').and.callThrough();
     });
     describe('buildFilterParams', () => {
@@ -49,6 +49,7 @@ describe('contacts.service', () => {
     });
     describe('getNames', () => {
         it('should query an array of ids for names', () => {
+            spyOn(api, 'get').and.callFake(data => Promise.resolve(data));
             contacts.getNames([1, 2]);
             expect(api.get).toHaveBeenCalledWith('contacts', {
                 fields: { contacts: 'name' },
@@ -76,6 +77,71 @@ describe('contacts.service', () => {
         it('should return the server response', done => {
             contacts.save(contact).then(data => {
                 expect(data).toBeDefined();
+                done();
+            });
+        });
+    });
+    describe('getAnalytics', () => {
+        beforeEach(() => {
+            contacts.analytics = null;
+        });
+        it('should return cached value if not a reset', done => {
+            const data = ['data'];
+            contacts.analytics = data;
+            contacts.getAnalytics().then(retval => {
+                expect(retval).toEqual(data);
+                done();
+            });
+        });
+        it('should query the api', () => {
+            spyOn(api, 'get').and.callFake(() => Promise.resolve());
+            contacts.getAnalytics();
+            expect(api.get).toHaveBeenCalledWith({
+                url: 'contacts/analytics',
+                data: {
+                    include: 'anniversaries_this_week,' +
+                    'anniversaries_this_week.people,' +
+                    'anniversaries_this_week.people.facebook_accounts,' +
+                    'anniversaries_this_week.people.twitter_accounts,' +
+                    'anniversaries_this_week.people.email_addresses,' +
+                    'birthdays_this_week,' +
+                    'birthdays_this_week.facebook_accounts,' +
+                    'birthdays_this_week.twitter_accounts,' +
+                    'birthdays_this_week.email_addresses',
+                    fields: {
+                        contacts: 'people',
+                        people: 'anniversary_day,anniversary_month,anniversary_year,birthday_day,birthday_month,birthday_year,facebook_accounts,first_name,last_name,twitter_accounts,email_addresses,parent_contact',
+                        email_addresses: 'email,primary',
+                        facebook_accounts: 'username',
+                        twitter_accounts: 'screen_name'
+                    },
+                    filter: {account_list_id: api.account_list_id}
+                },
+                deSerializationOptions: jasmine.any(Object), //for parent_contact
+                beforeDeserializationTransform: jasmine.any(Function),
+                overrideGetAsPost: true
+            });
+        });
+        it('should transform birthdays and anniversaries to dates', done => {
+            const transformable = {
+                birthdays_this_week: [{
+                    birthday_year: 2015,
+                    birthday_day: 1,
+                    birthday_month: 1
+                }],
+                anniversaries_this_week: [{
+                    people: [{
+                        anniversary_year: 2015,
+                        anniversary_day: 1,
+                        anniversary_month: 1
+                    }]
+                }]
+            };
+            spyOn(api, 'get').and.callFake(() => Promise.resolve(transformable));
+            contacts.getAnalytics().then(data => {
+                expect(moment(contacts.analytics.birthdays_this_week[0].birthday_date).format('M-D-YYYY')).toEqual('1-1-2015');
+                expect(moment(contacts.analytics.anniversaries_this_week[0].people[0].anniversary_date).format('M-D-YYYY')).toEqual('1-1-2015');
+                expect(data).toEqual(contacts.analytics);
                 done();
             });
         });

@@ -2,9 +2,11 @@ class AnniversariesController {
     contacts;
 
     constructor(
-        contacts
+        contacts, locale
     ) {
         this.contacts = contacts;
+        this.locale = locale;
+
         this.limit = 5;
     }
 }
@@ -15,5 +17,9 @@ const Anniversaries = {
 };
 
 
-export default angular.module('mpdx.home.care.anniversaries', [])
-    .component('anniversaries', Anniversaries).name;
+import contacts from 'contacts/contacts.service';
+import locale from 'common/locale/locale.service';
+
+export default angular.module('mpdx.home.care.anniversaries', [
+    contacts, locale
+]).component('anniversaries', Anniversaries).name;
