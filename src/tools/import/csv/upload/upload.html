@@ -1,0 +1,24 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Upload your CSV File
+    </div>
+    <div class="panel-body">
+        <translate>
+            A CSV is a comma-seperated spreadsheet format that can be created by many programs such as Excel, Google Sheets, Google Contacts or Numbers.
+        </translate>
+    </div>
+    <div class="panel-footer">
+        <form name="importForm" novalidate>
+            <span translate-params-size="::$ctrl.maxSizeInMB" translate>{{size}}MB Max CSV file size</span>
+            &nbsp;
+            <button class="btn btn-primary"
+               ng-model="f.file"
+               ngf-select="$ctrl.importCsv.upload(f.file)"
+               ngf-accept="'.csv, text/csv'"
+               ngf-max-size="{{$ctrl.maxSize}}"
+               name="file"
+               translate>Select CSV file</button>
+            <div ng-if="importForm.file.$error.maxSize" translate translate-params-size="::$ctrl.maxSizeInMB" class="text-danger">File too large, {{size}}MB max</div>
+        </form>
+    </div>
+</div>

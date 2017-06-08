@@ -1,16 +1,24 @@
 class ToolsController {
-    tools;
     help;
+    session;
+    tools;
+
     constructor(
         $state, $stateParams, gettextCatalog,
-        tools, help
+        help, session, tools
     ) {
         this.$state = $state;
         this.gettextCatalog = gettextCatalog;
 
+        this.help = help;
+        this.session = session;
         this.tools = tools;
 
-        help.suggest([
+        this.setup = $stateParams.setup;
+    }
+
+    $onInit() {
+        this.help.suggest([
             this.gettextCatalog.getString('5845aa229033600698176a54'),
             this.gettextCatalog.getString('584715b890336006981774d2'),
             this.gettextCatalog.getString('5845a6de9033600698176a43'),
@@ -19,7 +27,11 @@ class ToolsController {
             this.gettextCatalog.getString('58a47007dd8c8e56bfa7b7a4')
         ]);
 
-        this.setup = $stateParams.setup;
+        this.session.navSecondary = true;
+    }
+
+    $onDestroy() {
+        this.session.navSecondary = false;
     }
 }
 
@@ -28,5 +40,13 @@ const Tools = {
     template: require('./tools.html')
 };
 
-export default angular.module('mpdx.tools.component', [])
-    .component('tools', Tools).name;
+import gettextCatalog from 'angular-gettext';
+import uiRouter from 'angular-ui-router';
+import help from 'common/help/help.service';
+import session from 'common/session/session.service';
+import tools from 'tools/tools.service';
+
+export default angular.module('mpdx.tools.component', [
+    gettextCatalog, uiRouter,
+    help, session, tools
+]).component('tools', Tools).name;

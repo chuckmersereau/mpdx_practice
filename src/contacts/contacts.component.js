@@ -1,10 +1,12 @@
 class ContactsController {
     contactFilter;
     help;
+    session;
 
     constructor(
-        $rootScope, $state, $stateParams, gettextCatalog,
-        contactFilter, help
+        $rootScope,
+        $state, $stateParams, gettextCatalog,
+        contactFilter, help, session
     ) {
         this.$rootScope = $rootScope;
         this.$state = $state;
@@ -12,8 +14,12 @@ class ContactsController {
         this.gettextCatalog = gettextCatalog;
 
         this.contactFilter = contactFilter;
+        this.help = help;
+        this.session = session;
+    }
 
-        help.suggest([
+    $onInit() {
+        this.help.suggest([
             this.gettextCatalog.getString('5845aa229033600698176a54'),
             this.gettextCatalog.getString('5841bd789033600698175e62'),
             this.gettextCatalog.getString('584715b890336006981774d2'),
@@ -27,9 +33,13 @@ class ContactsController {
             this.gettextCatalog.getString('5845acfcc6979106d373a580'),
             this.gettextCatalog.getString('5845ad8c9033600698176a6e')
         ]);
-    }
-    $onInit() {
+
         this.selected = this.$stateParams.contactId;
+        this.session.navSecondary = true;
+    }
+
+    $onDestroy() {
+        this.session.navSecondary = false;
     }
 }
 
@@ -38,5 +48,13 @@ const Contacts = {
     template: require('./contacts.html')
 };
 
-export default angular.module('mpdx.contacts.component', [])
-    .component('contacts', Contacts).name;
+import gettextCatalog from 'angular-gettext';
+import uiRouter from 'angular-ui-router';
+import contactFilter from 'contacts/sidebar/filter/filter.service';
+import help from 'common/help/help.service';
+import session from 'common/session/session.service';
+
+export default angular.module('mpdx.contacts.component', [
+    gettextCatalog, uiRouter,
+    contactFilter, help, session
+]).component('contacts', Contacts).name;

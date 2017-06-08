@@ -13,7 +13,7 @@ describe('tools.import.google.component', () => {
         });
     });
     function loadController() {
-        componentController('googleImportForm', {$scope: scope}, {});
+        componentController('importGoogle', {$scope: scope}, {});
     }
     describe('events', () => {
         it('should handle account list change', () => {

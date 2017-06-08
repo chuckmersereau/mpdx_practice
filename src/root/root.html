@@ -1,15 +1,10 @@
-<impersonation-bar></impersonation-bar>
-<menu class="menu-global"></menu>
-<div id="body" block-ui="root">
-    <div id="content" class="container" ng-class="{fullscreen: $ctrl.session.fullScreen}">
-        <notices></notices>
-        <ui-view></ui-view>
-        <a id="exit-fullscreen" ng-if="$ctrl.session.fullScreen" ng-click="$ctrl.session.fullScreen = false">
-            <span class="icons">
-                <i class="fa fa-arrow-right"></i><i class="fa fa-arrow-left"></i>
-            </span>
-        </a>
+<div ng-class="{'has-nav-secondary': $ctrl.session.navSecondary}">
+    <menu class="menu-global"></menu>
+    <alerts></alerts>
+    <div block-ui="root" class="root">
+        <div class="container">
+            <ui-view></ui-view>
+        </div>
+        <bottom></bottom>
     </div>
-    <bottom></bottom>
 </div>
-<div bs-alert data-container="body" style="display: none"></div>

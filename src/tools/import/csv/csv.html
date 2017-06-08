@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-md-3">
+        <div class="panel panel-default text-center" ng-class="{ 'panel-success': $ctrl.$state.$current.name === 'tools.import.csv.upload' }">
+            <div class="panel-heading">
+                <h4><strong translate>Step 1</strong></h4>
+                <translate>Upload your CSV File</translate>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default text-center" ng-class="{ 'panel-success': $ctrl.$state.$current.name === 'tools.import.csv.headers' }">
+            <div class="panel-heading">
+                <h4><strong translate>Step 2</strong></h4>
+                <translate>Map your headers</translate>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default text-center" ng-class="{ 'panel-success': $ctrl.$state.$current.name === 'tools.import.csv.values' }">
+            <div class="panel-heading">
+                <h4><strong translate>Step 3</strong></h4>
+                <translate>Map your values</translate>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default text-center" ng-class="{ 'panel-success': $ctrl.$state.$current.name === 'tools.import.csv.preview' }">
+            <div class="panel-heading">
+                <h4><strong translate>Step 4</strong></h4>
+                <translate>Preview</translate>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div block-ui="tools-import-csv">
+    <ui-view></ui-view>
+</div>

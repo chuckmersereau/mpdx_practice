@@ -264,20 +264,55 @@ export default class Routes {
                 setup: false
             }
         }).state({
-            name: 'tools.importFromCSV',
-            title: gettext('Tools - Import From CSV'),
-            url: '/import-from-csv',
-            component: 'importFromCsv'
+            name: 'tools.import',
+            title: gettext('Tools - Import'),
+            abstract: true,
+            component: 'import',
+            url: '/import'
         }).state({
-            name: 'tools.importFromGoogle',
-            title: gettext('Tools - Import From Google'),
-            url: '/import-from-google',
-            component: 'googleImportForm'
+            name: 'tools.import.csv',
+            title: gettext('Tools - Import - CSV'),
+            url: '/csv',
+            component: 'importCsv'
         }).state({
-            name: 'tools.importFromTNT',
-            title: gettext('Tools - Import From TNT'),
-            url: '/import-from-tnt',
-            component: 'tntImportForm',
+            name: 'tools.import.csv.upload',
+            title: gettext('Tools - Import - CSV - Upload'),
+            url: '/upload',
+            component: 'importCsvUpload'
+        }).state({
+            name: 'tools.import.csv.headers',
+            title: gettext('Tools - Import - CSV - Headers'),
+            url: '/headers/:importId',
+            component: 'importCsvHeaders',
+            resolve: {
+                0: /*@ngInject*/ ($stateParams, importCsv) => importCsv.get($stateParams.importId)
+            }
+        }).state({
+            name: 'tools.import.csv.values',
+            title: gettext('Tools - Import - CSV - Values'),
+            url: '/values/:importId',
+            component: 'importCsvValues',
+            resolve: {
+                0: /*@ngInject*/ ($stateParams, importCsv) => importCsv.get($stateParams.importId)
+            }
+        }).state({
+            name: 'tools.import.csv.preview',
+            title: gettext('Tools - Import - CSV - Preview'),
+            url: '/preview/:importId',
+            component: 'importCsvPreview',
+            resolve: {
+                0: /*@ngInject*/ ($stateParams, importCsv) => importCsv.get($stateParams.importId)
+            }
+        }).state({
+            name: 'tools.import.google',
+            title: gettext('Tools - Import - Google'),
+            url: '/google',
+            component: 'importGoogle'
+        }).state({
+            name: 'tools.import.tnt',
+            title: gettext('Tools - Import - TNT'),
+            url: '/tnt',
+            component: 'importTnt',
             resolve: {
                 another: /*@ngInject*/ (contactsTags) => contactsTags.load()
             }

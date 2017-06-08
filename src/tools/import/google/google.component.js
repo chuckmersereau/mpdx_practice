@@ -1,4 +1,4 @@
-class GoogleImportController {
+class ImportGoogleController {
     constructor(
         $rootScope,
         contactsTags
@@ -9,13 +9,10 @@ class GoogleImportController {
             this.contactsTags.load();
         });
     }
-    save() {
-
-    }
 }
 
-const GoogleImport = {
-    controller: GoogleImportController,
+const ImportGoogle = {
+    controller: ImportGoogleController,
     template: require('./google.html'),
     bindings: {
         preferences: '<',
@@ -27,4 +24,4 @@ import contactsTags from 'contacts/sidebar/filter/tags/tags.service';
 
 export default angular.module('mpdx.tools.import.google.component', [
     contactsTags
-]).component('googleImportForm', GoogleImport).name;
+]).component('importGoogle', ImportGoogle).name;
