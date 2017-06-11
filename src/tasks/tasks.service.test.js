@@ -198,8 +198,8 @@ describe('tasks.service', () => {
             spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
             spyOn(tasksTags, 'change').and.callFake(() => {});
             spyOn(tasks, 'change').and.callFake(() => {});
+            spyOn(tasks, 'load').and.callFake(() => Promise.resolve());
         });
-        const model = {activity_type: 'activity'};
         it('should alert if over 25 selected contacts', (done) => {
             tasks.selected = range(0, 26);
             tasks.bulkDelete().catch(() => {
@@ -233,6 +233,14 @@ describe('tasks.service', () => {
             spyOn(api, 'delete').and.callFake(() => Promise.resolve());
             tasks.bulkDelete().then(() => {
                 expect(tasks.data).toEqual([]);
+                done();
+            });
+        });
+        it('should load tasks if all visible tasks were removed', (done) => {
+            tasks.data = [{id: 1}, {id: 2}];
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            tasks.bulkDelete().then(() => {
+                expect(tasks.load).toHaveBeenCalledWith();
                 done();
             });
         });
