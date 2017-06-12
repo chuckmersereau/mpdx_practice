@@ -281,7 +281,7 @@ class EntityAttributes {
                 },
                 donor_accounts: {
                     ref: 'id',
-                    attributes: ["account_number", "organization"],
+                    attributes: ["account_number", "organization", "_destroy"],
                     organization: {ref: 'id'}
                 },
                 account_list: { ref: 'id' },
