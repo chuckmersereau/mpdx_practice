@@ -355,17 +355,20 @@ export default class Routes {
                 0: /*@ngInject*/ (fixAddresses) => fixAddresses.load()
             }
         }).state({
-            name: 'tools.mergeContacts',
-            title: gettext('Tools - Merge Contacts'),
-            url: '/merge-contacts',
-            component: 'mergeContacts',
-            resolve: {
-                0: /*@ngInject*/ (mergeContacts) => mergeContacts.load()
-            }
+            name: 'tools.merge',
+            title: gettext('Tools - Merge'),
+            abstract: true,
+            component: 'merge',
+            url: '/merge'
         }).state({
-            name: 'tools.mergePeople',
+            name: 'tools.merge.contacts',
+            title: gettext('Tools - Merge Contacts'),
+            url: '/contacts',
+            component: 'mergeContacts'
+        }).state({
+            name: 'tools.merge.people',
             title: gettext('Tools - Merge People'),
-            url: '/merge-people',
+            url: '/people',
             component: 'mergePeople',
             resolve: {
                 0: /*@ngInject*/ (mergePeople) => mergePeople.load()

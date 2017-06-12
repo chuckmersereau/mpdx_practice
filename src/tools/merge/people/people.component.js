@@ -44,13 +44,13 @@ class MergePeopleController {
 }
 const MergePeople = {
     controller: MergePeopleController,
-    template: require('./mergePeople.html')
+    template: require('./people.html')
 };
 
 import blockUi from 'angular-block-ui';
-import mergePeople from './mergePeople.service';
+import mergePeople from './people.service';
 
-export default angular.module('mpdx.tools.mergePeople.component', [
+export default angular.module('mpdx.tools.merge.people.component', [
     blockUi,
     mergePeople
 ]).component('mergePeople', MergePeople).name;

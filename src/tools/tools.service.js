@@ -13,8 +13,8 @@ class ToolsService {
             {title: gettextCatalog.getString('Fix Phone Numbers'), icon: 'fa fa-phone-square', link: 'tools.fix.phoneNumbers', description: gettextCatalog.getString('Set the correct primary phone number for each person'), enabled: true},
             {title: gettextCatalog.getString('Fix Email Addresses'), icon: 'fa fa-envelope-o', link: 'tools.fix.emailAddresses', description: gettextCatalog.getString('Set the correct primary email address for each person'), enabled: true},
             {title: gettextCatalog.getString('Fix Mailing Addresses'), icon: 'fa fa-map', link: 'tools.fix.addresses', description: gettextCatalog.getString('Set the correct primary mailing address for each contact'), enabled: true},
-            {title: gettextCatalog.getString('Merge Contacts'), icon: 'fa fa-users', link: 'tools.mergeContacts', description: gettextCatalog.getString('Review and merge duplicate contacts'), enabled: true},
-            {title: gettextCatalog.getString('Merge People'), icon: 'fa fa-exchange', link: 'tools.mergePeople', description: gettextCatalog.getString('Review and merge duplicate people'), enabled: true}
+            {title: gettextCatalog.getString('Merge Contacts'), icon: 'fa fa-users', link: 'tools.merge.contacts', description: gettextCatalog.getString('Review and merge duplicate contacts'), enabled: true},
+            {title: gettextCatalog.getString('Merge People'), icon: 'fa fa-exchange', link: 'tools.merge.people', description: gettextCatalog.getString('Review and merge duplicate people'), enabled: true}
         ];
     }
 }

@@ -1,6 +1,6 @@
-import component from './mergePeople.component';
+import component from './people.component';
 
-describe('tools.mergePeople.component', () => {
+describe('tools.merge.people.component', () => {
     let mergePeople, rootScope, scope, componentController;
     beforeEach(() => {
         angular.mock.module(component);

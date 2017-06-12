@@ -1,6 +1,6 @@
 import each from 'lodash/fp/each';
 import map from 'lodash/fp/map';
-import relationshipId from "../../common/fp/relationshipId";
+import relationshipId from "common/fp/relationshipId";
 import filter from 'lodash/fp/filter';
 
 class MergePeople {
@@ -8,7 +8,7 @@ class MergePeople {
     people;
 
     constructor(
-        $log, $q, $rootScope,
+        $log, $q,
         api, people
     ) {
         this.$q = $q;
@@ -87,7 +87,7 @@ import api from 'common/api/api.service';
 import people from 'contacts/show/people/people.service';
 import uiRouter from 'angular-ui-router';
 
-export default angular.module('mpdx.tools.mergePeople.service', [
+export default angular.module('mpdx.tools.merge.people.service', [
     uiRouter,
     api, people
 ]).service('mergePeople', MergePeople).name;

@@ -1,5 +1,5 @@
-<div ng-click="$ctrl.onClick()" class="item" ng-class="{'selected': $ctrl.selected, 'ignored': $ctrl.ignored}">
-    <div ng-if="$ctrl.selected" class="merge-state selected" translate>Use This One</div>
+<div ng-click="$ctrl.onClick()" class="item" ng-class="{'selected': $ctrl.contact.selected, 'ignored': $ctrl.ignored}">
+    <div ng-if="$ctrl.contact.selected" class="merge-state selected" translate>Use This One</div>
     <div ng-if="$ctrl.ignored" class="merge-state ignored" translate>Don't Merge</div>
     <avatar src="$ctrl.contact.square_avatar"></avatar>
     <div class="avatar-on-left">
