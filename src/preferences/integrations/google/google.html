@@ -5,7 +5,7 @@
         </div>
     </div>
     <div class="col-md-8">
-        <div ng-if="$ctrl.google.data.length == 0">
+        <div ng-if="$ctrl.google.data.length === 0">
             <h4 class="integration_subhead" translate>Google Integration Overview</h4>
             <p translate>
                 Google’s suite of tools are great at connecting you to your Ministry Partners.
@@ -46,5 +46,6 @@
             </div>
         </div>
         <a ng-href="{{ $ctrl.google.oAuth }}" class="btn btn-primary" translate>Add Account</a>
+        <a ui-sref="tools.import.google" class="btn btn-default" ng-if="$ctrl.google.data.length > 0" translate>Import Contacts</a>
     </div>
 </div>

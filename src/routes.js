@@ -307,7 +307,11 @@ export default class Routes {
             name: 'tools.import.google',
             title: gettext('Tools - Import - Google'),
             url: '/google',
-            component: 'importGoogle'
+            component: 'importGoogle',
+            resolve: {
+                0: /*@ngInject*/ (contactsTags) => contactsTags.load(),
+                1: /*@ngInject*/ (google) => google.load()
+            }
         }).state({
             name: 'tools.import.tnt',
             title: gettext('Tools - Import - TNT'),

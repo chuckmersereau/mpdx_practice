@@ -22,7 +22,7 @@ class ImportTntController {
         this.Upload = Upload;
 
         this.importing = false;
-        this.override = true;
+        this.override = 'true';
         this.tags = [];
 
         $rootScope.$on('accountListUpdated', () => {

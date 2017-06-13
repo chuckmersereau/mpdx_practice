@@ -80,7 +80,7 @@ describe('tools.import.csv.preview.component', () => {
                 spyOn(gettextCatalog, 'getString').and.returnValue();
                 $ctrl.save().then(() => {
                     expect(gettextCatalog.getString).toHaveBeenCalledWith(
-                        'Your import has started and your contacts will be in MPDX shortly. We will email you when your import is complete.'
+                        'Your CSV import has started and your contacts will be in MPDX shortly. We will email you when your import is complete.'
                     );
                     done();
                 });
@@ -89,7 +89,7 @@ describe('tools.import.csv.preview.component', () => {
             it('should call modal info', (done) => {
                 $ctrl.save().then(() => {
                     expect(modal.info).toHaveBeenCalledWith(
-                        'Your import has started and your contacts will be in MPDX shortly. We will email you when your import is complete.'
+                        'Your CSV import has started and your contacts will be in MPDX shortly. We will email you when your import is complete.'
                     );
                     done();
                 });

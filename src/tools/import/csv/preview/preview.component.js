@@ -28,7 +28,7 @@ class PreviewController {
         return this.importCsv.save().then(() => {
             this.importCsv.data = null;
             const message = this.gettextCatalog.getString(
-                'Your import has started and your contacts will be in MPDX shortly. We will email you when your import is complete.'
+                'Your CSV import has started and your contacts will be in MPDX shortly. We will email you when your import is complete.'
             );
             return this.modal.info(message);
         });
