@@ -17,6 +17,9 @@ class ToolsService {
             {title: gettextCatalog.getString('Merge People'), icon: 'fa fa-exchange', link: 'tools.merge.people', description: gettextCatalog.getString('Review and merge duplicate people'), enabled: true}
         ];
     }
+    methodToFakeOutKarma() { //fixes the bad ngInject
+        this.data = 'nothing';
+    }
 }
 
 import gettextCatalog from 'angular-gettext';

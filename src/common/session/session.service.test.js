@@ -5,7 +5,7 @@ describe('common.session.service', () => {
 
     beforeEach(() => {
         angular.mock.module(service);
-        inject(($rootScope, $timeout, _session_) => {
+        inject(($rootScope, _session_) => {
             session = _session_;
         });
     });

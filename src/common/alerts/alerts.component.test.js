@@ -19,8 +19,8 @@ describe('common.alerts.component', () => {
     }
 
     describe('constructor', () => {
-        it('should set default values', () => {
-            expect($ctrl.alerts).toEqual(alerts);
+        it('should set dependency exports', () => {
+            expect($ctrl.alerts).toBeDefined();
         });
     });
 });
