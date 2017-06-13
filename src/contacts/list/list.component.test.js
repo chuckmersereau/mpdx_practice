@@ -7,7 +7,7 @@ describe('contacts.list.component', () => {
         angular.mock.module(list);
         inject(($componentController, $rootScope, _contacts_, _contactsTags_, _modal_, _tasks_, _alerts_, _gettextCatalog_, _api_) => {
             rootScope = $rootScope;
-            scope = $rootScope.$new();
+            scope = rootScope.$new();
             alerts = _alerts_;
             api = _api_;
             contacts = _contacts_;
@@ -19,6 +19,8 @@ describe('contacts.list.component', () => {
             api.account_list_id = 1234;
             loadController();
         });
+        spyOn(gettextCatalog, 'getString').and.callThrough();
+        spyOn(gettextCatalog, 'getPlural').and.callFake(data => data);
     });
     function loadController() {
         $ctrl = componentController('contactsList', {$scope: scope}, {view: null, selected: null});
@@ -226,7 +228,6 @@ describe('contacts.list.component', () => {
         beforeEach(() => {
             spyOn(modal, 'open').and.callFake(() => {});
             spyOn(alerts, 'addAlert').and.callFake(() => {});
-            spyOn(gettextCatalog, 'getPlural').and.callFake(() => {});
             contacts.selectedContacts = [1, 2];
         });
         it('should open the merge contacts modal', () => {
@@ -243,11 +244,13 @@ describe('contacts.list.component', () => {
             contacts.selectedContacts = [1];
             $ctrl.openMergeContactsModal();
             expect(alerts.addAlert).toHaveBeenCalledWith(gettextCatalog.getPlural(2, jasmine.any(String), jasmine.any(String), {}), 'danger');
+            expect(gettextCatalog.getPlural).toHaveBeenCalledWith(2, jasmine.any(String), jasmine.any(String), {});
         });
         it('should alert if more than 8 contacts are selected', () => {
-            contacts.selectedContacts = [1];
+            contacts.selectedContacts = [1, 2, 3, 4, 5, 6, 7, 8, 9];
             $ctrl.openMergeContactsModal();
             expect(alerts.addAlert).toHaveBeenCalledWith(gettextCatalog.getPlural(8, jasmine.any(String), jasmine.any(String), {}), 'danger');
+            expect(gettextCatalog.getPlural).toHaveBeenCalledWith(8, jasmine.any(String), jasmine.any(String), {});
         });
     });
     describe('openExportContactsModal', () => {
@@ -399,7 +402,6 @@ describe('contacts.list.component', () => {
         beforeEach(() => {
             spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
             spyOn(contacts, 'bulkSave').and.callFake(() => Promise.resolve());
-            spyOn(gettextCatalog, 'getString').and.callFake(() => {});
         });
         it('should call a translated confirm message', () => {
             $ctrl.bulkHideContacts();

@@ -3,9 +3,10 @@ class ContactPersonController {
     people;
     constructor(
         $sce,
-        people
+        locale, people
     ) {
         this.$sce = $sce;
+        this.locale = locale;
         this.people = people;
     }
     openModal() {

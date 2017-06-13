@@ -50,7 +50,7 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="donation in monthlyDonation.donations">
-                            <td>{{$ctrl.moment(donation.date).format('MMM Do')}}</td>
+                            <td>{{::donation.date | date : $ctrl.locale.dateTimeFormat}}</td>
                             <td class="text-right">{{donation.currency.symbol}}{{donation.amount | number : 0}} {{donation.currency.code}}</td>
                         </tr>
                     </tbody>

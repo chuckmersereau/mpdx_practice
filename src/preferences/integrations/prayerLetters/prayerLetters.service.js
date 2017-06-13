@@ -4,7 +4,7 @@ class PrayerLettersService {
     api;
 
     constructor(
-        $log, $q, $window,
+        $log, $window,
         api
     ) {
         this.$log = $log;
@@ -36,5 +36,8 @@ class PrayerLettersService {
     }
 }
 
-export default angular.module('mpdx.preferences.accounts.integrations.prayerLetters.service', [])
-    .service('prayerLetters', PrayerLettersService).name;
+import api from 'common/api/api.service';
+
+export default angular.module('mpdx.preferences.accounts.integrations.prayerLetters.service', [
+    api
+]).service('prayerLetters', PrayerLettersService).name;

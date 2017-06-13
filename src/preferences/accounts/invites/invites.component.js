@@ -4,9 +4,11 @@ class InvitePreferencesController {
     invites;
 
     constructor(
+        gettextCatalog,
         accounts, alerts, invites
     ) {
         this.accounts = accounts;
+        this.gettextCatalog = gettextCatalog;
         this.invites = invites;
         this.alerts = alerts;
         this.saving = false;
@@ -14,14 +16,15 @@ class InvitePreferencesController {
     }
     sendInvite() {
         this.saving = true;
-        this.invites.create(this.email).then(() => {
+        return this.invites.create(this.email).then(() => {
             this.saving = false;
-            this.alerts.addAlert('MPDX sent an invite to ' + this.email, 'success');
+            this.alerts.addAlert(this.gettextCatalog.getString('MPDX sent an invite to {{email}}', {email: this.email}), 'success');
             this.email = '';
-            this.accounts.listInvites();
-        }).catch(() => {
-            this.alerts.addAlert("MPDX couldn't send an invite (check to see if email address is valid)", 'danger');
+            return this.accounts.listInvites();
+        }).catch(err => {
+            this.alerts.addAlert(this.gettextCatalog.getString("MPDX couldn't send an invite (check to see if email address is valid)"), 'danger');
             this.saving = false;
+            throw err;
         });
     };
 }
@@ -31,5 +34,12 @@ const Invites = {
     template: require('./invites.html')
 };
 
-export default angular.module('mpdx.preferences.accounts.invites.component', [])
-    .component('invitePreferences', Invites).name;
+import accounts from 'common/accounts/accounts.service';
+import alerts from 'common/alerts/alerts.service';
+import gettext from 'angular-gettext';
+import invites from './invites.service';
+
+export default angular.module('mpdx.preferences.accounts.invites.component', [
+    gettext,
+    accounts, alerts, invites
+]).component('invitePreferences', Invites).name;

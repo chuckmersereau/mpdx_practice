@@ -87,5 +87,8 @@ class OrganizationService {
     }
 }
 
-export default angular.module('mpdx.preferences.integrations.organization.service', [])
-    .service('preferencesOrganization', OrganizationService).name;
+import Upload from 'ng-file-upload';
+
+export default angular.module('mpdx.preferences.integrations.organization.service', [
+    Upload
+]).service('preferencesOrganization', OrganizationService).name;

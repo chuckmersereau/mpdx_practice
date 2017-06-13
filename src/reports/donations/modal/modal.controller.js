@@ -38,16 +38,18 @@ class DonationModalController {
         const patch = createPatch(this.initialDonation, donation);
         return this.donations.save(patch).then(() => {
             this.$scope.$hide();
-        }).catch(() => {
+        }).catch(err => {
             this.alerts.addAlert(this.gettextCatalog.getString('Unable to change donation'), 'danger');
+            throw err;
         });
     }
 
     delete() {
         return this.donations.delete(this.donation).then(() => {
             this.$scope.$hide();
-        }).catch(() => {
+        }).catch(err => {
             this.alerts.addAlert(this.gettextCatalog.getString('Unable to remove donation'), 'danger');
+            throw err;
         });
     }
 

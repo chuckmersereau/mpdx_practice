@@ -2,6 +2,7 @@ import service from './tasks.service';
 import assign from 'lodash/fp/assign';
 import each from 'lodash/fp/each';
 import map from 'lodash/fp/map';
+import range from 'lodash/fp/range';
 import unionBy from 'lodash/fp/unionBy';
 import moment from 'moment';
 
@@ -11,19 +12,25 @@ const selected = [1, 2];
 const currentUser = {id: 321};
 
 describe('tasks.service', () => {
-    let api, users, tasks, tasksTags, tasksFilter;
+    let api, users, tasks, tasksTags, tasksFilter, alerts, gettextCatalog, modal;
     beforeEach(() => {
         angular.mock.module(service);
-        inject(($rootScope, _api_, _tasks_, _tasksTags_, _users_, _tasksFilter_) => {
+        inject(($rootScope, _api_, _tasks_, _tasksTags_, _users_, _tasksFilter_, _alerts_, _gettextCatalog_, _modal_) => {
             api = _api_;
+            alerts = _alerts_;
+            modal = _modal_;
             users = _users_;
             tasks = _tasks_;
             tasksTags = _tasksTags_;
             tasksFilter = _tasksFilter_;
+            gettextCatalog = _gettextCatalog_;
             api.account_list_id = accountListId;
             users.current = currentUser;
         });
         spyOn(api, 'post').and.callFake(() => Promise.resolve({id: 1}));
+        spyOn(alerts, 'addAlert').and.callFake(data => data);
+        spyOn(gettextCatalog, 'getString').and.callThrough();
+        spyOn(gettextCatalog, 'getPlural').and.callThrough();
     });
     describe('create', () => {
         beforeEach(() => {
@@ -181,6 +188,66 @@ describe('tasks.service', () => {
                 each(task => {
                     expect(task.tag_list).toEqual('a,b');
                 }, data);
+                done();
+            });
+        });
+    });
+    describe('bulkDelete', () => {
+        beforeEach(() => {
+            tasks.selected = selected;
+            spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
+            spyOn(tasksTags, 'change').and.callFake(() => {});
+            spyOn(tasks, 'change').and.callFake(() => {});
+        });
+        const model = {activity_type: 'activity'};
+        it('should alert if over 25 selected contacts', (done) => {
+            tasks.selected = range(0, 26);
+            tasks.bulkDelete().catch(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
+                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
+                done();
+            });
+        });
+        it('should confirm with a translated message', () => {
+            tasks.bulkDelete();
+            expect(gettextCatalog.getPlural).toHaveBeenCalledWith(2, jasmine.any(String), jasmine.any(String), jasmine.any(Object));
+            expect(modal.confirm).toHaveBeenCalledWith(jasmine.any(String));
+        });
+        it('should call delete', (done) => {
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            tasks.bulkDelete().then(() => {
+                expect(api.delete).toHaveBeenCalledWith({url: 'tasks/bulk', data: [{id: 1}, {id: 2}], type: 'tasks'});
+                done();
+            });
+        });
+        it('should alert a translated message', (done) => {
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            tasks.bulkDelete().then(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
+                expect(gettextCatalog.getPlural).toHaveBeenCalledWith(2, jasmine.any(String), jasmine.any(String), jasmine.any(Object));
+                done();
+            });
+        });
+        it('should remove the tasks from data', (done) => {
+            tasks.data = [{id: 1}, {id: 2}];
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            tasks.bulkDelete().then(() => {
+                expect(tasks.data).toEqual([]);
+                done();
+            });
+        });
+        it('should unselect all tasks', (done) => {
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            tasks.bulkDelete().then(() => {
+                expect(tasks.selected).toEqual([]);
+                done();
+            });
+        });
+        it('should handle rejection', (done) => {
+            spyOn(api, 'delete').and.callFake(() => Promise.reject());
+            tasks.bulkDelete().catch(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
+                expect(gettextCatalog.getPlural).toHaveBeenCalledWith(2, jasmine.any(String), jasmine.any(String), jasmine.any(Object));
                 done();
             });
         });

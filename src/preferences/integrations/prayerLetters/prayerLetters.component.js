@@ -21,9 +21,10 @@ class PrayerLettersController {
         return this.prayerLetters.sync().then(() => {
             this.saving = false;
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX is now syncing your newsletter recipients with Prayer Letters'), 'success');
-        }).catch(() => {
+        }).catch(err => {
             this.saving = false;
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for Prayer Letters'), 'danger');
+            throw err;
         });
     }
     disconnect() {
@@ -32,9 +33,10 @@ class PrayerLettersController {
             return this.prayerLetters.disconnect().then(() => {
                 this.saving = false;
                 this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed your integration with Prayer Letters'), 'success');
-            }).catch(() => {
+            }).catch(err => {
                 this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for Prayer Letters'), 'danger');
                 this.saving = false;
+                throw err;
             });
         });
     }
@@ -45,5 +47,12 @@ const PrayerLetters = {
     controller: PrayerLettersController
 };
 
-export default angular.module('mpdx.preferences.integrations.prayerLetters.component', [])
-    .component('prayerLettersIntegrationsPreferences', PrayerLetters).name;
+import gettextCatalog from 'angular-gettext';
+import alerts from 'common/alerts/alerts.service';
+import modal from 'common/modal/modal.service';
+import prayerLetters from './prayerLetters.service';
+
+export default angular.module('mpdx.preferences.integrations.prayerLetters.component', [
+    gettextCatalog,
+    alerts, modal, prayerLetters
+]).component('prayerLettersIntegrationsPreferences', PrayerLetters).name;

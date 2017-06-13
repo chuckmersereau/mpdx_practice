@@ -1,12 +1,15 @@
 import component from './details.component';
 
 describe('contacts.show.details.component', () => {
-    let $ctrl, scope, api, serverConstants, gettextCatalog;
+    let $ctrl, scope, api, serverConstants, gettextCatalog, alerts, modal, contacts;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _contacts_, _tasks_, _serverConstants_, _gettextCatalog_, _api_) => {
+        inject(($componentController, $rootScope, _contacts_, _serverConstants_, _gettextCatalog_, _api_, _alerts_, _modal_) => {
             scope = $rootScope.$new();
+            alerts = _alerts_;
             api = _api_;
+            contacts = _contacts_;
+            modal = _modal_;
             gettextCatalog = _gettextCatalog_;
             serverConstants = _serverConstants_;
             serverConstants.data = {locales: {}};
@@ -14,7 +17,8 @@ describe('contacts.show.details.component', () => {
             api.account_list_id = 1234;
             $ctrl = $componentController('contactDetails', {$scope: scope}, {donorAccounts: [], contact: {}, onSave: () => Promise.resolve()});
         });
-        spyOn(gettextCatalog, 'getString').and.callFake(data => data);
+        spyOn(gettextCatalog, 'getString').and.callThrough();
+        spyOn(alerts, 'addAlert').and.callFake(data => data);
     });
     describe('$onChanges', () => {
         beforeEach(() => {
@@ -71,6 +75,65 @@ describe('contacts.show.details.component', () => {
             $ctrl.getName(1);
             expect(api.get).toHaveBeenCalledWith(`contacts/1`, {
                 fields: { contacts: 'name' }
+            });
+        });
+    });
+    describe('save - referral changed', () => {
+        beforeEach(() => {
+            $ctrl.contact.contacts_that_referred_me = [{id: 1}];
+            $ctrl.contact.contact_referrals_to_me = [{id: 1}];
+            $ctrl.referrer = 2;
+        });
+        it('should alert', done => {
+            spyOn(api, 'put').and.callFake(() => Promise.resolve());
+            $ctrl.save().then(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
+                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
+                done();
+            });
+        });
+        it('should alert if rejected', done => {
+            spyOn(api, 'put').and.callFake(() => Promise.reject(Error('')));
+            $ctrl.save().catch(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
+                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
+                done();
+            });
+        });
+    });
+    describe('onAddressPrimary', () => {
+        beforeEach(() => {
+            spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
+            contacts.current = {id: 123};
+            $ctrl.contact = {addresses: [{id: 321, primary_mailing_address: false}, {id: 432, primary_mailing_address: true}]};
+        });
+        it('should confirm with a translated message', () => {
+            $ctrl.onAddressPrimary();
+            expect(modal.confirm).toHaveBeenCalledWith(jasmine.any(String));
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
+        });
+        it('should save', done => {
+            spyOn(contacts, 'save').and.callFake(() => Promise.resolve());
+            $ctrl.onAddressPrimary(321).then(() => {
+                expect(contacts.save).toHaveBeenCalledWith({id: contacts.current.id, addresses: [{ id: 321, primary_mailing_address: true }, {id: 432, primary_mailing_address: false}]});
+                expect($ctrl.contact.addresses).toEqual([{ id: 321, primary_mailing_address: true }, {id: 432, primary_mailing_address: false}]);
+                done();
+            });
+        });
+        it('should alert if referral changed', done => {
+            spyOn(contacts, 'save').and.callFake(() => Promise.resolve());
+            $ctrl.onAddressPrimary(321).then(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
+                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
+                done();
+            });
+        });
+        it('should alert if referral changed and rejected', done => {
+            spyOn(contacts, 'save').and.callFake(() => Promise.reject(Error('')));
+            $ctrl.onAddressPrimary().catch(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
+                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
+                done();
             });
         });
     });

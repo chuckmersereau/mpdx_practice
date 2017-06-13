@@ -218,7 +218,7 @@ describe('reports.donations.service', () => {
         const donation = { id: 'donation_id' };
 
         beforeEach(() => {
-            spyOn(gettextCatalog, 'getString').and.callFake(() => {});
+            spyOn(gettextCatalog, 'getString').and.callThrough();
             spyOn(modal, 'confirm').and.returnValue(Promise.resolve());
         });
 

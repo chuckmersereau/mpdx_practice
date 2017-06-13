@@ -292,8 +292,9 @@ class TasksService {
                 this.alerts.addAlert(this.gettextCatalog.getPlural(angular.copy(this.selected).length, '1 task successfully removed.', '{{$count}} tasks successfully removed.', {}));
                 this.data = pullAllBy('id', tasks, this.data);
                 this.selected = [];
-            }).catch(() => {
+            }).catch(err => {
                 this.alerts.addAlert(this.gettextCatalog.getPlural(this.selected.length, 'Unable to delete the selected task.', 'Unable to delete the {{$count}} selected tasks.', {}), 'danger');
+                throw err;
             });
         });
     }

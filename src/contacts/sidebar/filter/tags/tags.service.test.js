@@ -22,7 +22,7 @@ describe('contacts.service', () => {
         beforeEach(() => {
             spyOn(modal, 'confirm').and.callFake(() => Promise.resolve({}));
             spyOn(contactsTags, 'load').and.callFake(() => Promise.resolve());
-            spyOn(gettextCatalog, 'getString').and.callFake(() => '');
+            spyOn(gettextCatalog, 'getString').and.callThrough();
             spyOn(rootScope, '$emit').and.callThrough();
         });
         it('should confirm a translated message', () => {
