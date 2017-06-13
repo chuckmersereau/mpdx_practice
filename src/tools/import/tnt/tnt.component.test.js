@@ -1,7 +1,7 @@
 import component from './tnt.component';
 
-describe('preferences.import.tnt.component', () => {
-    let rootScope, scope, componentController, contactsTags, Upload, $ctrl, alerts, gettextCatalog;
+describe('tools.import.tnt.component', () => {
+    let rootScope, scope, componentController, $ctrl, contactsTags, Upload, alerts, gettextCatalog;
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _contactsTags_, _Upload_, _alerts_, _gettextCatalog_) => {
@@ -18,7 +18,7 @@ describe('preferences.import.tnt.component', () => {
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
     function loadController() {
-        $ctrl = componentController('tntImportForm', {$scope: scope}, {});
+        $ctrl = componentController('importTnt', {$scope: scope}, {});
     }
     describe('events', () => {
         it('should handle account list change', () => {

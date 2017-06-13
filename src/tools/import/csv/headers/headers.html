@@ -1,0 +1,37 @@
+<div class="alert alert-warning" ng-if="$ctrl.unmappedHeaders.length !== 0">
+    <div ng-repeat="header in $ctrl.unmappedHeaders" translate-params-name="::$ctrl.serverConstants.data.csv_import.required_headers[header]" translate>
+        {{name}} is required
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Map your headers
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th translate>Your CSV Header</th>
+            <th translate>MPDX destination field</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr ng-repeat="(header_key, header) in $ctrl.importCsv.data.file_headers">
+            <td class="text-left">{{header}}</td>
+            <td class="text-left">
+                <select chosen
+                        class="form-control"
+                        ng-model='$ctrl.importCsv.data.file_headers_mappings[header_key]'
+                        ng-options="v as k disable when ($ctrl.importCsv.data.file_headers_mappings[v] && $ctrl.importCsv.data.file_headers_mappings[v] !== header_key) for (v, k) in $ctrl.serverConstants.data.csv_import.supported_headers"
+                        ng-change="$ctrl.updateHeaders()">
+                    <option value="" translate>Do Not Import</option>
+                </select>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="panel-footer">
+        <button class="btn btn-reverse pull-left" ng-click="$ctrl.back()" translate>Back</button>
+        <button class="btn btn-primary" ng-click="$ctrl.save()" ng-disabled="!$ctrl.importCsv.data || $ctrl.unmappedHeaders.length !== 0" translate>Next</button>
+    </div>
+</div>

@@ -281,7 +281,7 @@ class EntityAttributes {
                 },
                 donor_accounts: {
                     ref: 'id',
-                    attributes: ["account_number", "organization"],
+                    attributes: ["account_number", "organization", "_destroy"],
                     organization: {ref: 'id'}
                 },
                 account_list: { ref: 'id' },
@@ -324,7 +324,7 @@ class EntityAttributes {
                 account_list: { ref: 'id' }
             },
             imports: {
-                attributes: ["file_headers", "file_headers_mappings", "file_constants", "file_constants_mappings", "sample_contacts", "in_preview", "tag_list", "source_account"],
+                attributes: ["file_headers", "file_headers_mappings", "file_constants", "file_constants_mappings", "sample_contacts", "in_preview", "tag_list", "source_account", "groups", "import_by_group", "in_preview", "override", "source", "source_account_id", "group_tags"],
                 sample_contacts: { ref: 'id' },
                 source_account: { ref: 'id' },
                 typeForAttribute: (key) => {
@@ -332,7 +332,7 @@ class EntityAttributes {
                         case 'sample_contacts':
                             return 'contacts';
                         case 'source_account':
-                            return 'organization_accounts';
+                            return 'google_accounts';
                         default:
                             return key;
                     }

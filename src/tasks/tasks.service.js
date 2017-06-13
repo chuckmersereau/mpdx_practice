@@ -130,7 +130,7 @@ class TasksService {
                 per_page: 25,
                 include: 'contacts',
                 fields: {
-                    tasks: 'activity_type,completed,completed_at,contacts,no_date,starred,start_at,subject,tag_list,comments_count',
+                    tasks: 'activity_type,completed,completed_at,contacts,no_date,starred,start_at,subject,tag_list,comments_count,location',
                     contacts: 'name'
                 }
             },
@@ -291,6 +291,9 @@ class TasksService {
             return this.api.delete({url: 'tasks/bulk', data: tasks, type: 'tasks'}).then(() => {
                 this.alerts.addAlert(this.gettextCatalog.getPlural(angular.copy(this.selected).length, '1 task successfully removed.', '{{$count}} tasks successfully removed.', {}));
                 this.data = pullAllBy('id', tasks, this.data);
+                if (this.data.length === 0) {
+                    this.load();
+                }
                 this.selected = [];
             }).catch(err => {
                 this.alerts.addAlert(this.gettextCatalog.getPlural(this.selected.length, 'Unable to delete the selected task.', 'Unable to delete the {{$count}} selected tasks.', {}), 'danger');

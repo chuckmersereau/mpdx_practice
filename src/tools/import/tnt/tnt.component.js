@@ -1,8 +1,8 @@
 import round from "lodash/fp/round";
-import joinComma from "../../../common/fp/joinComma";
+import joinComma from "common/fp/joinComma";
 import config from 'config';
 
-class TntImportController {
+class ImportTntController {
     alerts;
     api;
     modal;
@@ -22,7 +22,7 @@ class TntImportController {
         this.Upload = Upload;
 
         this.importing = false;
-        this.override = true;
+        this.override = 'true';
         this.tags = [];
 
         $rootScope.$on('accountListUpdated', () => {
@@ -65,17 +65,17 @@ class TntImportController {
     }
 }
 
-const TntImport = {
-    controller: TntImportController,
+const ImportTnt = {
+    controller: ImportTntController,
     template: require('./tnt.html')
 };
 
+import Upload from 'ng-file-upload';
 import alerts from 'common/alerts/alerts.service';
 import contactsTags from 'contacts/sidebar/filter/tags/tags.service';
 import serverConstants from 'common/serverConstants/serverConstants.service';
-import Upload from 'ng-file-upload';
 
-export default angular.module('mpdx.preferences.import.tnt.component', [
+export default angular.module('mpdx.tools.import.tnt.component', [
     Upload,
     alerts, contactsTags, serverConstants
-]).component('tntImportForm', TntImport).name;
+]).component('importTnt', ImportTnt).name;

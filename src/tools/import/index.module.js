@@ -1,9 +1,11 @@
-import google from './google/google.component';
-import service from './import.service';
+import component from './import.component';
+import csv from './csv/index.module';
+import google from './google/index.module';
 import tnt from './tnt/index.module';
 
-export default angular.module('mpdx.preferences.import', [
+export default angular.module('mpdx.tools.import', [
+    component,
+    csv,
     google,
-    service,
     tnt
 ]).name;

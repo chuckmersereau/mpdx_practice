@@ -1,12 +1,13 @@
-class SuccessController {
+class ImportTntSuccessController {
     constructor(
-        $scope, $state
+        $scope,
+        $state
     ) {
         this.$scope = $scope;
         this.$state = $state;
     }
     setup() {
-        this.$state.go('tools', {setup: true});
+        this.$state.go('tools', { setup: true });
         this.$scope.$hide();
     }
     done() {
@@ -15,5 +16,8 @@ class SuccessController {
     }
 }
 
-export default angular.module('mpdx.tools.import.tnt.success.controller', [])
-    .controller('tntSuccessController', SuccessController).name;
+import uiRouter from 'angular-ui-router';
+
+export default angular.module('mpdx.tools.import.tnt.success.controller', [
+    uiRouter
+]).controller('ImportTntSuccessController', ImportTntSuccessController).name;

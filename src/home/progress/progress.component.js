@@ -1,50 +1,66 @@
 import moment from 'moment';
+import find from 'lodash/fp/find';
 
 class progressController {
     accounts;
-    api;
     users;
 
     constructor(
-        $filter, $rootScope, blockUI,
-        accounts, api, users
+        $rootScope,
+        blockUI, gettextCatalog,
+        accounts, alerts, users
     ) {
-        this.$filter = $filter;
+        this.$rootScope = $rootScope;
+        this.gettextCatalog = gettextCatalog;
+
         this.accounts = accounts;
-        this.api = api;
+        this.alerts = alerts;
         this.blockUI = blockUI.instances.get('homeProgress');
         this.users = users;
 
         this.endDate = moment().endOf('week');
         this.startDate = moment(this.endDate).subtract(1, 'week').add(1, 'day');
         this.errorOccurred = false;
+    }
 
-        $rootScope.$on('accountListUpdated', () => {
+    $onInit() {
+        this.$rootScope.$on('accountListUpdated', () => {
             this.refreshData();
+            this.users.listOrganizationAccounts(true);
         });
+
+        this.refreshData();
+        this.users.listOrganizationAccounts(true);
     }
-    blankData() {
-        this.blockUI.start();
-        this.accounts.analytics = null;
-    }
+
     nextWeek() {
         this.startDate.add(1, 'week');
         this.endDate.add(1, 'week');
         this.refreshData();
     }
+
     previousWeek() {
         this.startDate.subtract(1, 'week');
         this.endDate.subtract(1, 'week');
         this.refreshData();
     }
+
     refreshData() {
-        this.blankData();
-        this.accounts.getAnalytics({startDate: this.startDate, endDate: this.endDate}).then(() => {
-            this.blockUI.stop();
+        this.blockUI.start();
+        this.accounts.analytics = null;
+        return this.accounts.getAnalytics({startDate: this.startDate, endDate: this.endDate}).then(() => {
+            this.blockUI.reset();
+        }).catch((err) => {
+            this.blockUI.reset();
+            this.alerts.addAlert(this.gettextCatalog.getString('Unable to update Progress Report'), 'danger');
+            throw err;
         });
     }
-    $onInit() {
-        this.refreshData();
+
+    showWeeklyProgressReport() {
+        return find((organizationAccount) => {
+            return organizationAccount.organization.name === 'Cru - USA';
+        }, this.users.organizationAccounts);
     }
 }
 
@@ -53,5 +69,13 @@ const Progress = {
     template: require('./progress.html')
 };
 
-export default angular.module('mpdx.home.progress.component', [])
-    .component('homeProgress', Progress).name;
+import blockUI from 'angular-block-ui';
+import gettextCatalog from 'angular-gettext';
+import accounts from 'common/accounts/accounts.service';
+import alerts from 'common/alerts/alerts.service';
+import users from 'common/users/users.service';
+
+export default angular.module('mpdx.home.progress.component', [
+    blockUI, gettextCatalog,
+    accounts, alerts, users
+]).component('homeProgress', Progress).name;

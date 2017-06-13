@@ -1,12 +1,18 @@
 class ReportsController {
+    help;
+    session;
+
     constructor(
         gettextCatalog,
         help, session
     ) {
         this.gettextCatalog = gettextCatalog;
         this.session = session;
+        this.help = help;
+    }
 
-        help.suggest([
+    $onInit() {
+        this.help.suggest([
             this.gettextCatalog.getString('584820bc9033600698177a95'),
             this.gettextCatalog.getString('58496cc0c6979106d373bb52'),
             this.gettextCatalog.getString('58496f15c6979106d373bb65'),
@@ -16,6 +22,12 @@ class ReportsController {
             this.gettextCatalog.getString('58496d4ec6979106d373bb57'),
             this.gettextCatalog.getString('58496e389033600698178180')
         ]);
+
+        this.session.navSecondary = true;
+    }
+
+    $onDestroy() {
+        this.session.navSecondary = false;
     }
 }
 
@@ -24,5 +36,11 @@ const Reports = {
     template: require('./reports.html')
 };
 
-export default angular.module('mpdx.reports.component', [])
-    .component('reports', Reports).name;
+import gettextCatalog from 'angular-gettext';
+import help from 'common/help/help.service';
+import session from 'common/session/session.service';
+
+export default angular.module('mpdx.reports.component', [
+    gettextCatalog,
+    help, session
+]).component('reports', Reports).name;

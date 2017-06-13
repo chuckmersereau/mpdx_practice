@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 class Locale {
     constructor(
     ) {
@@ -6,6 +8,21 @@ class Locale {
     }
     change(locale) {
         this.dateTimeFormat = this.formats[locale] || 'MM/dd/yyyy';
+        moment.locale(this.handleMomentMisnomers(locale));
+    }
+    handleMomentMisnomers(locale) {
+        //handle differences between api and moment naming
+        switch (locale) {
+            case 'fil':
+                return 'tl-ph';
+            case 'ga':
+                return 'gl';
+            case 'zh':
+            case 'zh-hant':
+                return 'zh-cn';
+            default:
+                return locale;
+        }
     }
     init() {
         this.formats = {

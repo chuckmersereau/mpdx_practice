@@ -18,6 +18,8 @@
                                     <li><a ng-click="$ctrl.tasks.bulkComplete()" translate>Complete Tasks</a></li>
                                     <li><a ng-click="$ctrl.tasks.bulkEditModal()" translate>Edit Tasks</a></li>
                                     <li class="divider"></li>
+                                    <li><a ng-click="$ctrl.openRemoveTagModal()" translate>Remove Tag(s)</a></li>
+                                    <li class="divider"></li>
                                     <li><a ng-click="$ctrl.tasks.bulkDelete()" translate>Delete Tasks</a></li>
                                 </ul>
                                 <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop" ng-show="$ctrl.tasks.selected.length === 0">
