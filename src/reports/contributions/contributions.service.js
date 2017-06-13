@@ -1,8 +1,8 @@
+const map = require('lodash/fp/map').convert({ 'cap': false });
 import concat from 'lodash/fp/concat';
 import constant from 'lodash/fp/constant';
 import flatten from 'lodash/fp/flatten';
 import flatMap from 'lodash/fp/flatMap';
-import map from 'lodash/fp/map';
 import round from 'lodash/fp/round';
 import times from 'lodash/fp/times';
 import find from 'lodash/fp/find';
@@ -43,13 +43,15 @@ class ContributionsService {
             let currencies = reduceObject((result, value, key) => {
                 // iterate through donation_infos
                 let currency = angular.copy(this.serverConstants.data.pledge_currencies[key]);
-
+                if (type === 'salary') {
+                    value.totals.months = map(() => 0, value.totals.months);
+                }
                 currency.totals = value.totals;
                 currency.donors = map(donor => {
                     // find contact from donor_infos
                     const contact = find({ 'contact_id': donor.contact_id }, data.donor_infos);
                     // build monthly donations
-                    const monthlyDonations = map(monthlyDonation => {
+                    const monthlyDonations = map((monthlyDonation, index) => {
                         let total = 0;
                         let convertedTotal = 0;
                         const donations = map(donation => {
@@ -67,6 +69,9 @@ class ContributionsService {
                             convertedTotal += parseFloat(donation.converted_amount);
                             return result;
                         }, monthlyDonation.donations);
+                        if (type === 'salary') {
+                            value.totals.months[index] += convertedTotal;
+                        }
                         return {
                             donations: donations,
                             total: type === 'salary' ? convertedTotal : total,
