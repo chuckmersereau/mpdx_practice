@@ -25,13 +25,12 @@ export default function appRun(
     });
     $transitions.onFinish(null, (trans) => {
         changePageTitle(trans, $rootScope, $window);
+        $window._satellite && $window._satellite.track('page view');
         block.reset();
     });
     $transitions.onError(null, () => {
         block.reset();
     });
-
-    $window.digitalData.page.attributes.angularLoaded = true;
 }
 
 function changePageTitle(transition, $rootScope, $window) {
