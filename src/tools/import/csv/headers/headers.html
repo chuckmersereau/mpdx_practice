@@ -1,5 +1,8 @@
 <div class="alert alert-warning" ng-if="$ctrl.unmappedHeaders.length !== 0">
-    <div ng-repeat="header in $ctrl.unmappedHeaders" translate-params-name="::$ctrl.serverConstants.data.csv_import.required_headers[header]" translate>
+    <div ng-repeat="header in $ctrl.unmappedHeaders"
+         ng-if="::$ctrl.serverConstants.data.csv_import.required_headers[header]"
+         translate-params-name="::$ctrl.serverConstants.data.csv_import.required_headers[header]"
+         translate>
         {{name}} is required
     </div>
 </div>
@@ -22,7 +25,7 @@
                 <select chosen
                         class="form-control"
                         ng-model='$ctrl.importCsv.data.file_headers_mappings[header_key]'
-                        ng-options="v as k disable when ($ctrl.importCsv.data.file_headers_mappings[v] && $ctrl.importCsv.data.file_headers_mappings[v] !== header_key) for (v, k) in $ctrl.serverConstants.data.csv_import.supported_headers"
+                        ng-options="k as v disable when ($ctrl.mappedHeaders.indexOf(k) >= 0 && $ctrl.importCsv.data.file_headers_mappings[header_key] !== k) for (k, v) in $ctrl.serverConstants.data.csv_import.supported_headers"
                         ng-change="$ctrl.updateHeaders()">
                     <option value="" translate>Do Not Import</option>
                 </select>

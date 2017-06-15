@@ -1,5 +1,7 @@
 import difference from 'lodash/fp/difference';
+import includes from 'lodash/fp/includes';
 import keys from 'lodash/fp/keys';
+import union from 'lodash/fp/union';
 import values from 'lodash/fp/values';
 
 class HeadersController {
@@ -16,6 +18,7 @@ class HeadersController {
         this.modal = modal;
         this.serverConstants = serverConstants;
 
+        this.mappedHeaders = [];
         this.unmappedHeaders = [];
     }
 
@@ -24,9 +27,14 @@ class HeadersController {
     }
 
     updateHeaders() {
-        this.unmappedHeaders = difference(
-            keys(this.serverConstants.data.csv_import.required_headers),
-            values(this.importCsv.data.file_headers_mappings));
+        this.mappedHeaders = values(this.importCsv.data.file_headers_mappings);
+        let requiredHeaders = keys(this.serverConstants.data.csv_import.required_headers);
+        requiredHeaders = union(['first_name', 'last_name', 'full_name'], requiredHeaders);
+        if ((includes('first_name', this.mappedHeaders) && includes('last_name', this.mappedHeaders)) || includes('full_name', this.mappedHeaders)) {
+            requiredHeaders = difference(requiredHeaders, ['first_name', 'last_name', 'full_name']);
+            console.log(requiredHeaders);
+        }
+        this.unmappedHeaders = difference(requiredHeaders, this.mappedHeaders);
     }
 
     save() {
