@@ -1,6 +1,6 @@
 <div class="panel panel-default" block-ui="connect">
     <div class="panel-heading">
-        <a class="btn btn-default pull-right" ng-click="$ctrl.addTask()">
+        <a class="btn btn-default pull-right" ng-click="$ctrl.tasks.addModal()">
             <translate>Add a New Task</translate>
         </a>
         <translate>Connect</translate>
@@ -12,8 +12,8 @@
         <ul class="list-unstyled list-arrow">
             <li ng-repeat="task in $ctrl.tasks.analytics.tasks_overdue_or_due_today_counts | orderBy: 'count' : true | limitTo: $ctrl.limit" ng-if="task.count > 0">
                 <a ui-sref="tasks({ filters: { activity_type: task.label } })">
-                    <span class="count">{{ task.count }}</span>
-                    {{ task.label }}
+                    <span class="count">{{ ::task.count }}</span>
+                    {{ ::$ctrl.getTranslatedLabel(task.label) }}
                 </a>
             </li>
         </ul>
