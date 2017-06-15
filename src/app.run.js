@@ -2,6 +2,7 @@
 export default function appRun(
     $q, $log, $rootScope, $state, $transitions, $window, authManager, blockUI
 ) {
+    let initialPage = true;
     const block = blockUI.instances.get('root');
     authManager.checkAuthOnRefresh();
     authManager.redirectWhenUnauthenticated();
@@ -25,12 +26,20 @@ export default function appRun(
     });
     $transitions.onFinish(null, (trans) => {
         changePageTitle(trans, $rootScope, $window);
-        $window._satellite && $window._satellite.track('page view');
+        initialPage && fireAdobeAnalyticsDirectRuleCall($window);
+        initialPage = false;
         block.reset();
     });
     $transitions.onError(null, () => {
         block.reset();
     });
+    $rootScope.$on('$locationChangeSuccess', () => {
+        !initialPage && fireAdobeAnalyticsDirectRuleCall($window);
+    });
+}
+
+function fireAdobeAnalyticsDirectRuleCall($window) {
+    $window._satellite && $window._satellite.track('page view');
 }
 
 function changePageTitle(transition, $rootScope, $window) {
