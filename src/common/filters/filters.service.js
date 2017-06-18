@@ -1,5 +1,6 @@
 import assign from 'lodash/fp/assign';
 import concat from 'lodash/fp/concat';
+import contains from 'lodash/fp/contains';
 import defaultTo from 'lodash/fp/defaultTo';
 import difference from 'lodash/fp/difference';
 import filter from 'lodash/fp/filter';
@@ -11,6 +12,8 @@ import map from 'lodash/fp/map';
 import reduce from 'lodash/fp/reduce';
 import sortBy from 'lodash/fp/sortBy';
 import toInteger from 'lodash/fp/toInteger';
+import split from 'lodash/fp/split';
+import trim from 'lodash/fp/trim';
 
 class Filters {
     api;
@@ -75,23 +78,34 @@ class Filters {
     // Invert the selected options of a multiselect filter
     invertMultiselect(filter, params) {
         const allOptions = map('id', filter.options);
-        let selectedOptions = params[filter.name];
+        let selectedOptions = map(trim, split(',', params[filter.name]));
 
-        let allOption = '';
-        if (filter.name === 'status') {
-            allOption = 'active';
+        let allOption = [];
+
+        if (filter.name === 'status' || filter.name === 'contact_status') {
+            if (contains('active', selectedOptions) || contains('null', selectedOptions)) {
+                return ['hidden'];
+            } else if (contains('hidden', selectedOptions)) {
+                return [''];
+            }
+            if (filter.name === 'contact_status') {
+                allOption = ['', 'active', 'null', 'hidden'];
+            } else {
+                allOption = ['active', 'null', 'hidden'];
+            }
         }
-
-        // If all options are selected other than 'All', then the inverse is 'All'
-        if (isEqual(difference(allOptions, selectedOptions), [allOption])) {
+        // If all options are selected other than All/Any/Grouped, then the inverse is 'All'
+        if (isEqual(difference(allOptions, selectedOptions), allOption)) {
             return [''];
         }
 
-        selectedOptions = concat(selectedOptions, allOption); // Exclude the 'All' option when inverting
+        selectedOptions = concat(selectedOptions, allOption); // Exclude the All/Any/Grouped/Hidden options when inverting
         return difference(allOptions, selectedOptions);
     }
 }
 
+import api from 'common/api/api.service';
 
-export default angular.module('mpdx.common.filters', [])
-    .service('filters', Filters).name;
+export default angular.module('mpdx.common.filters', [
+    api
+]).service('filters', Filters).name;
