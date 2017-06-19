@@ -6,7 +6,7 @@
                 <div class="avatar-on-left">
                     <div class="row">
                         <div class="col-xs-5">
-                            <a ui-sref="contacts.show({contactId: $ctrl.contact.id})"><h4 class="name">{{ $ctrl.contact.name }}</h4></a>
+                            <a ng-href="/contacts/{{$ctrl.contact.id}}" target="_blank"><h4 class="name">{{ $ctrl.contact.name }}</h4></a>
                             <translate ng-if="$ctrl.contact.original_pledge_amount || $ctrl.contact.original_pledge_currency || $ctrl.contact.original_pledge_frequency || $ctrl.contact.original_status">Current:</translate>
                             {{ $ctrl.contact.original_status }}
                             {{ $ctrl.contact.original_pledge_amount | number }} {{ $ctrl.contact.original_pledge_currency }}
