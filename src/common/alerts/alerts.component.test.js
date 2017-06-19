@@ -23,4 +23,28 @@ describe('common.alerts.component', () => {
             expect($ctrl.alerts).toBeDefined();
         });
     });
+
+    describe('$onInit', () => {
+        describe('modal binding is set', () => {
+            beforeEach(() => {
+                $ctrl = componentController('alerts', { $scope: scope }, { modal: true });
+            });
+
+            it('should set modal to binding value', () => {
+                $ctrl.$onInit();
+                expect($ctrl.modal).toBeDefined();
+            });
+        });
+
+        describe('modal binding is not set', () => {
+            beforeEach(() => {
+                $ctrl = componentController('alerts', { $scope: scope }, {});
+            });
+
+            it('should set modal', () => {
+                $ctrl.$onInit();
+                expect($ctrl.modal).toEqual(false);
+            });
+        });
+    });
 });

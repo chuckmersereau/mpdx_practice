@@ -4,8 +4,11 @@
 .form-control {
     border-radius: 3px;
     border-color: #ccc;
-    &.ng-dirty.ng-invalid {
+    &.ng-dirty.ng-invalid, &.ng-touched.ng-invalid {
         border-color: red;
+        + .chosen-container > .chosen-single {
+            border-color: red;
+        }
     }
     &:focus {
         box-shadow: none;
@@ -17,6 +20,13 @@
         width: auto;
         height: auto;
     }
+}
+.empty-association {
+    text-align: center;
+    line-height: 34px;
+    border: 1px dashed #ccc;
+    font-size: 14px;
+    margin-bottom: 11px;
 }
 tags-input {
     &.ng-invalid .tags {

@@ -60,7 +60,7 @@ describe('contacts.show.personModal.controller', () => {
         it('should handle rejection', done => {
             spyOn(people, 'create').and.callFake(() => Promise.reject(Error('')));
             $ctrl.save().catch(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
+                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger', null, 5, true);
                 expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
@@ -83,9 +83,35 @@ describe('contacts.show.personModal.controller', () => {
             $ctrl.activate();
             $ctrl.person.first_name = 'b';
             $ctrl.save().catch(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
+                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger', null, 5, true);
                 expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
+            });
+        });
+    });
+    describe('changeTab', () => {
+        describe('Form Valid', () => {
+            const form = { $valid: true };
+
+            it('should update activeTab', () => {
+                $ctrl.activeTab = 'other';
+                $ctrl.changeTab(form, 'test');
+                expect($ctrl.activeTab).toEqual('test');
+            });
+        });
+        describe('Form Invalid', () => {
+            const form = { $valid: false };
+
+            it('should translate alert', () => {
+                $ctrl.activeTab = 'other';
+                $ctrl.changeTab(form, 'test');
+                expect(gettextCatalog.getString).toHaveBeenCalledWith('Please complete required fields before changing tabs');
+            });
+
+            it('should add alert', () => {
+                $ctrl.activeTab = 'other';
+                $ctrl.changeTab(form, 'test');
+                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger', null, 5, true);
             });
         });
     });

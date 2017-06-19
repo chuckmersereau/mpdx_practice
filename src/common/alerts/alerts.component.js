@@ -6,11 +6,18 @@ class AlertsController {
     ) {
         this.alerts = alerts;
     }
+
+    $onInit() {
+        this.modal = this.modal || false;
+    }
 }
 
 const Alerts = {
     template: require('./alerts.html'),
-    controller: AlertsController
+    controller: AlertsController,
+    bindings: {
+        modal: '@'
+    }
 };
 
 import alerts from './alerts.service';
