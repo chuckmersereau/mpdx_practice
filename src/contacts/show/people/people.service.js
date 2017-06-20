@@ -166,9 +166,6 @@ class PersonService {
                 locals: {
                     contact: contact,
                     person: person
-                },
-                resolve: {
-                    peopleForRelationship: () => this.listAll()
                 }
             });
         };

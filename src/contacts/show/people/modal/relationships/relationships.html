@@ -1,12 +1,12 @@
 <div class="row" ng-if="!$ctrl.deleted">
     <div class="col-sm-7">
-        <select class="form-control" ng-model="$ctrl.familyRelationship.related_person.id" data-placeholder="{{ 'Select an Option *' | translate }}"
-                chosen>
-            <option ng-repeat="person in $ctrl.peopleForRelationship | orderBy: 'first_name' | orderBy: 'last_name' track by person.id" ng-value="person.id"
-                ng-hide="person.id == $ctrl.person.id">
-                {{person.last_name}}, {{person.first_name}}
-            </option>
-        </select>
+        <collection-selector
+            item-name="{{::'Person' | translate}}"
+            display-text="$ctrl.familyRelationship.related_person.display_name"
+            search-text="$ctrl.familyRelationship.related_person.display_name"
+            search="$ctrl.search(text)"
+            select="$ctrl.select(item)">
+        </collection-selector>
     </div>
     <div class="col-sm-4">
         <select class="form-control" ng-model="$ctrl.familyRelationship.relationship" data-placeholder="{{ 'Select an Option *' | translate }}"

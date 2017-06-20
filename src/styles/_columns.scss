@@ -1,21 +1,10 @@
 .filter-body {
-  &.without-subnav {
-    .filter-sidebar {
-      top: $nav-height;
-    }
-    .filter-content {
-      margin-top: $subnav-padding;
-    }
-  }
-
   .filter-sidebar {
-      top: $fullnav-height;
       bottom: 0;
       margin-bottom: 30px;
-      padding-top: $subnav-padding;
       position: fixed;
       overflow-y: scroll;
-
+      top: $nav-height + $nav-padding;
       @include breakpoint(md) {
         width: 215px;
       }
@@ -41,10 +30,10 @@
     font-size: 14px;
   }
 }
-
-.nav-offset {
-  margin-top: $nav-height;
-}
-.subnav-offset {
-  margin-top: $subnav-height;
+.has-nav-secondary {
+    .filter-body {
+        .filter-sidebar {
+            top: $secondary-nav-height + $nav-padding;
+        }
+    }
 }

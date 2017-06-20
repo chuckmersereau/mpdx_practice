@@ -1,0 +1,123 @@
+<div class="row fieldset">
+    <div class="col-sm-12">
+        <h4 class="attribute-header" translate>Add Tags to all imported contacts</h4>
+        <div class="inline-input">
+            <tag-selector ng-model="$ctrl.importCsv.data.tag_list" tag-list="$ctrl.contactsTags.data"></tag-selector>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading" translate>
+        Preview
+    </div>
+    <div class="panel-body">
+        <translate>
+            Please take a look at these sample rows that show how your CSV will import into MPDX.
+            If you would like to make changes, go back to Step 2 or back to Step 1 to reimport all over again.
+        </translate>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th translate>Church</th>
+                <th translate>Contact Name</th>
+                <th translate>Greeting</th>
+                <th translate>Envelope Greeting</th>
+                <th translate>Status</th>
+                <th translate>Commitment Amount</th>
+                <th translate>Notes</th>
+                <th translate>Commitment Frequency</th>
+                <th translate>Newsletter</th>
+                <th translate>Commitment Currency</th>
+                <th translate>Likely to Give</th>
+                <th translate>Send Appeals?</th>
+                <th translate>Website</th>
+
+                <th translate>Street</th>
+                <th translate>City</th>
+                <th translate>State</th>
+                <th translate>Zip</th>
+                <th translate>Country</th>
+                <th translate>Metro Area</th>
+                <th translate>Region</th>
+
+                <th translate>Tags</th>
+
+                <th translate>First Name</th>
+                <th translate>Last Name</th>
+
+                <th translate>Email 1</th>
+                <th translate>Email 2</th>
+
+                <th translate>Phone 1</th>
+                <th translate>Phone 2</th>
+                <th translate>Phone 3</th>
+
+                <th translate>Spouse First Name</th>
+                <th translate>Spouse Last Name</th>
+                <th translate>Spouse Email</th>
+                <th translate>Spouse Phone</th>
+
+                <th translate>Referred By</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr ng-repeat="contact in $ctrl.importCsv.data.sample_contacts">
+                <td>{{contact.church_name}}</td>
+                <td>{{contact.name}}</td>
+                <td>{{contact.greeting}}</td>
+                <td>{{contact.envelope_greeting}}</td>
+                <td>{{contact.status}}</td>
+                <td>{{contact.pledge_amount}}</td>
+                <td>{{contact.notes}}</td>
+                <td>{{contact.pledge_frequency}}</td>
+                <td>{{contact.send_newsletter}}</td>
+                <td>{{contact.pledge_currency}}</td>
+                <td>{{contact.likely_to_give}}</td>
+                <td>{{contact.no_appeals}}</td>
+                <td>{{contact.website}}</td>
+
+                <td>{{contact.addresses[0].street}}</td>
+                <td>{{contact.addresses[0].city}}</td>
+                <td>{{contact.addresses[0].state}}</td>
+                <td>{{contact.addresses[0].postal_code}}</td>
+                <td>{{contact.addresses[0].country}}</td>
+                <td>{{contact.addresses[0].metro_area}}</td>
+                <td>{{contact.addresses[0].region}}</td>
+
+                <td>{{contact.tag_list}}</td>
+
+                <td>{{contact.primary_person.first_name}}</td>
+                <td>{{contact.primary_person.last_name}}</td>
+
+                <td>{{contact.primary_person.email_addresses[0].email}}</td>
+                <td>{{contact.primary_person.email_addresses[1].email}}</td>
+
+                <td>{{contact.primary_person.phone_numbers[0].number}}</td>
+                <td>{{contact.primary_person.phone_numbers[1].number}}</td>
+                <td>{{contact.primary_person.phone_numbers[2].number}}</td>
+
+                <td>{{contact.spouse.first_name}}</td>
+                <td>{{contact.spouse.last_name}}</td>
+                <td>{{contact.spouse.email_addresses[0].email}}</td>
+                <td>{{contact.spouse.phone_numbers[0].number}}</td>
+
+                <td>{{contact.contacts_that_referred_me[0].name}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="panel-footer">
+        <button class="btn btn-reverse pull-left" ng-click="$ctrl.back()" translate>Back</button>
+        <label for="accept">
+            <input id="accept" type="checkbox" ng-model="$ctrl.accept">
+            <translate>I accept that this import cannot be undone</translate>
+        </label>
+        &nbsp;
+        <button class="btn btn-primary" ng-click="$ctrl.save()" ng-disabled="!$ctrl.accept" translate>
+            Import
+        </button>
+    </div>
+</div>

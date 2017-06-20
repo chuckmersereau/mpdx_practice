@@ -1,27 +1,33 @@
-class Google {
+import joinComma from "common/fp/joinComma";
+import reduceObject from "common/fp/reduceObject";
+class ImportGoogleService {
     api;
 
     constructor(
-        $log,
         api
     ) {
-        this.$log = $log;
         this.api = api;
-
-        this.data = null;
-        this.selected_account = null;
     }
-    load() {
-        return this.api.get('user/google_accounts').then((data) => {
-            this.$log.debug('user/google_accounts', data);
-            this.data = data;
-            if (this.data.length === 1) {
-                this.selected_account = this.data[0];
-                this.selectedAccountUpdated(this.selected_account);
-            }
+
+    save(data) {
+        let transformedData = angular.copy(data);
+
+        transformedData.tag_list = joinComma(transformedData.tag_list);
+        transformedData.group_tags = reduceObject((result, tags, key) => {
+            result[key] = joinComma(tags);
+            return result;
+        }, {}, transformedData.group_tags);
+
+        return this.api.post({
+            url: `account_lists/${this.api.account_list_id}/imports/google`,
+            data: transformedData,
+            type: 'imports'
         });
     }
 }
 
-export default angular.module('mpdx.preferences.import.google.services', [])
-    .service('google', Google).name;
+import api from 'common/api/api.service';
+
+export default angular.module('mpdx.tools.import.google.service', [
+    api
+]).service('importGoogle', ImportGoogleService).name;

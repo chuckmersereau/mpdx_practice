@@ -1,6 +1,5 @@
 import includes from 'lodash/fp/includes';
 import reject from 'lodash/fp/reject';
-import joinComma from "../../../common/fp/joinComma";
 
 class TagsService {
     api;
@@ -55,19 +54,6 @@ class TagsService {
         return this.api.post('tasks/bulk_create', {
             add_tag_task_ids: contextIds.join(),
             add_tag_name: tag
-        });
-    }
-    untag(contextIds, tag) {
-        const params = {
-            filter: {
-                account_list_id: this.api.account_list_id,
-                contact_ids: joinComma(contextIds)
-            },
-            name: tag
-        };
-        const message = this.gettextCatalog.getString('Are you sure you wish to remove the selected tag?');
-        return this.modal.confirm(message).then(() => {
-            return this.api.delete({url: 'tasks/tags/bulk', data: params, type: 'tags'});
         });
     }
     isTagActive(tag) {

@@ -17,6 +17,7 @@ import relationshipId from "../common/fp/relationshipId";
 import reduce from 'lodash/fp/reduce';
 import reduceObject from '../common/fp/reduceObject';
 import emptyToNull from '../common/fp/emptyToNull';
+import moment from 'moment';
 
 class ContactsService {
     alerts;
@@ -184,7 +185,7 @@ class ContactsService {
     }
     getAnalytics(reset = false) {
         if (this.analytics && !reset) {
-            return this.$q.resolve(this.analytics);
+            return Promise.resolve(this.analytics);
         }
         return this.api.get({
             url: 'contacts/analytics',
@@ -200,7 +201,8 @@ class ContactsService {
                 'birthdays_this_week.twitter_accounts,' +
                 'birthdays_this_week.email_addresses',
                 fields: {
-                    people: 'anniversary_day,anniversary_month,birthday_day,birthday_month,facebook_accounts,first_name,last_name,twitter_accounts,email_addresses,parent_contact',
+                    contacts: 'people',
+                    people: 'anniversary_day,anniversary_month,anniversary_year,birthday_day,birthday_month,birthday_year,facebook_accounts,first_name,last_name,twitter_accounts,email_addresses,parent_contact',
                     email_addresses: 'email,primary',
                     facebook_accounts: 'username',
                     twitter_accounts: 'screen_name'
@@ -233,7 +235,19 @@ class ContactsService {
             },
             overrideGetAsPost: true
         }).then((data) => {
+            /* istanbul ignore next */
             this.$log.debug('contacts/analytics', data);
+            data.birthdays_this_week = reduce((result, birthday) => {
+                birthday.birthday_date = moment(`${birthday.birthday_year}-${birthday.birthday_month}-${birthday.birthday_day}`, 'YYYY-MM-DD').toDate();
+                return concat(result, birthday);
+            }, [], data.birthdays_this_week);
+            data.anniversaries_this_week = reduce((result, anniversary) => {
+                anniversary.people = map(person => {
+                    person.anniversary_date = moment(`${person.anniversary_year}-${person.anniversary_month}-${person.anniversary_day}`, 'YYYY-MM-DD').toDate();
+                    return person;
+                }, anniversary.people);
+                return concat(result, anniversary);
+            }, [], data.anniversaries_this_week);
             this.analytics = data;
             return this.analytics;
         });

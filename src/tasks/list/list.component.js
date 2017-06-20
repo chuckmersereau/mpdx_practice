@@ -1,10 +1,16 @@
+import concat from 'lodash/fp/concat';
+import includes from 'lodash/fp/includes';
+import map from 'lodash/fp/map';
+import reduce from 'lodash/fp/reduce';
+
 class ListController {
     tasks;
 
     constructor(
         $rootScope,
-        tasks, tasksFilter, tasksTags
+        modal, tasks, tasksFilter, tasksTags
     ) {
+        this.modal = modal;
         this.tasks = tasks;
         this.tasksFilter = tasksFilter;
         this.tasksTags = tasksTags;
@@ -31,6 +37,29 @@ class ListController {
     $onChanges() {
         this.tasks.reset();
     }
+    openRemoveTagModal() {
+        this.modal.open({
+            template: require('../modals/removeTags/removeTags.html'),
+            controller: 'removeTaskTagController',
+            locals: {
+                selectedTasks: this.getSelectedTasks(),
+                currentListSize: this.tasks.data.length
+            }
+        });
+    }
+    getSelectedTasks() {
+        if (this.tasks.selected.length > this.tasks.data.length) {
+            return map(id => {
+                return {id: id};
+            }, this.tasks.selected);
+        }
+        return reduce((result, task) => {
+            if (includes(task.id, this.tasks.selected)) {
+                result = concat(result, task);
+            }
+            return result;
+        }, [], this.tasks.data);
+    }
 }
 
 const TaskList = {
@@ -41,5 +70,11 @@ const TaskList = {
     }
 };
 
-export default angular.module('mpdx.tasks.list.component', [])
-    .component('tasksList', TaskList).name;
+import modal from 'common/modal/modal.service';
+import tasks from '../tasks.service';
+import tasksFilter from '../filter/filter.service';
+import tasksTags from '../filter/tags/tags.service';
+
+export default angular.module('mpdx.tasks.list.component', [
+    modal, tasks, tasksFilter, tasksTags
+]).component('tasksList', TaskList).name;

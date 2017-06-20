@@ -1,0 +1,37 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Map your values
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="col-md-6" translate>Your CSV value</th>
+                <th class="col-md-6" translate>MPDX value</th>
+            </tr>
+        </thead>
+        <tbody ng-repeat="(constant, obj) in $ctrl.importCsv.values_to_constants_mapping">
+            <tr>
+
+                <th>{{::$ctrl.fileHeader(constant)}}</th>
+                <th>{{::$ctrl.serverConstants.data.csv_import.supported_headers[constant]}}</th>
+            </tr>
+            <tr ng-repeat="(key, value) in obj">
+                <td class="text-left">{{key}}</td>
+                <td class="text-left">
+                    <select chosen
+                            class="form-control"
+                            ng-model='$ctrl.importCsv.values_to_constants_mapping[constant][key]'
+                            ng-options="v as k for (v, k) in $ctrl.serverConstants.data.csv_import.constants[constant]">
+                        <option value="">None</option>
+                    </select>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="panel-footer">
+        <button class="btn btn-reverse pull-left" ng-click="$ctrl.back()" translate>Back</button>
+        <button class="btn btn-primary" ng-click="$ctrl.save()" translate>
+            Next
+        </button>
+    </div>
+</div>

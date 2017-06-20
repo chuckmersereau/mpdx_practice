@@ -2,7 +2,7 @@ import has from 'lodash/fp/has';
 import map from 'lodash/fp/map';
 import moment from 'moment';
 import uuid from 'uuid/v1';
-import createPatch from "../../../../common/fp/createPatch";
+import createPatch from "common/fp/createPatch";
 
 class PersonModalController {
     alerts;
@@ -13,7 +13,7 @@ class PersonModalController {
     constructor(
         $log, $rootScope, $scope, gettextCatalog,
         alerts, people, locale, modal,
-        contact, peopleForRelationship, person
+        contact, person
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
@@ -24,7 +24,6 @@ class PersonModalController {
         this.locale = locale;
         this.modal = modal;
         this.people = people;
-        this.peopleForRelationship = peopleForRelationship;
         this.person = person;
 
         this.personDetails = '';

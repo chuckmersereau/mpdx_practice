@@ -7,8 +7,8 @@
     <div class="col-md-8">
         <div class="network_button">
             <div ng-if="$ctrl.prayerLetters.data">
-                <div class="alert alert-warning" translate>
-                    Syncing will replace your prayerletters.com lists
+                <div class="alert alert-danger" translate>
+                    By clicking "Sync Now" you will replace your entire prayerletters.com list with what is in MPDX. Any contacts or information that are in your current prayerletters.com list that are not in MPDX will be deleted.
                 </div>
                 <button type="submit" ng-click="$ctrl.sync()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                     <span translate>Sync Now</span>&nbsp;
