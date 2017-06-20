@@ -4,15 +4,20 @@
         <input class="form-control" ng-model="$ctrl.task.subject" autofocus required>
     </div>
     <div class="form-group">
-        <label><translate>Action</translate> <span class="text-danger">*</span></label>
+        <label>
+            <translate>Action</translate> <span class="text-danger">*</span>
+        </label>
+        <br>
         <label>
             <input name="newsletter" type="radio" ng-model="$ctrl.task.activity_type" value="Newsletter - Physical" required>
             <translate>Newsletter - Physical</translate>
         </label>
+        <br>
         <label>
             <input name="newsletter" type="radio" ng-model="$ctrl.task.activity_type" value="Newsletter - Email" required>
             <translate>Newsletter - Email</translate>
         </label>
+        <br>
         <label>
             <input name="newsletter" type="radio" ng-model="$ctrl.task.activity_type" value="Newsletter - Both" required>
             <translate>Both</translate>
@@ -28,6 +33,6 @@
     </div>
     <div class="form-group">
         <label for="comment" translate>Comment</label>
-        <input class="form-control" ng-model="$ctrl.comment">
+        <textarea class="form-control" id='comment' ng-model="$ctrl.comment"></textarea>
     </div>
 </modal>
