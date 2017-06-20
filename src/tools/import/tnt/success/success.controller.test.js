@@ -15,7 +15,7 @@ describe('tools.import.tnt.success.controller', () => {
     });
 
     function loadController() {
-        return controller('ImportTntSuccessController as $ctrl', {
+        return controller('importTntSuccessController as $ctrl', {
             $scope: scope,
             $state: state
         });

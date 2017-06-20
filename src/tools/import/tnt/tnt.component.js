@@ -53,7 +53,7 @@ class ImportTntController {
             form.file = null;
             this.modal.open({
                 template: require('./success/success.html'),
-                controller: 'tntSuccessController'
+                controller: 'importTntSuccessController'
             });
         }, err => {
             this.importing = false;

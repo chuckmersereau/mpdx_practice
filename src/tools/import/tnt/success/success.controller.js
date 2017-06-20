@@ -20,4 +20,4 @@ import uiRouter from 'angular-ui-router';
 
 export default angular.module('mpdx.tools.import.tnt.success.controller', [
     uiRouter
-]).controller('ImportTntSuccessController', ImportTntSuccessController).name;
+]).controller('importTntSuccessController', ImportTntSuccessController).name;
