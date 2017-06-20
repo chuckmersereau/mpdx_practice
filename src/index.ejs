@@ -11,9 +11,6 @@
             page: {
                 pageInfo: {
                     pageName: 'no pageName found'
-                },
-                attributes: {
-                    angularLoaded: false
                 }
             },
             user: [{
@@ -25,7 +22,7 @@
     </script>
     <% if(htmlWebpackPlugin.options.env === 'production' || htmlWebpackPlugin.options.env === 'next') { %>
         <script src="//assets.adobedtm.com/3202ba9b02b459ee20779cfcd8e79eaf266be170/satelliteLib-7973047d2bbc9bb73f3d16528aa95985e95979d5.js"></script>
-    <% } else if(htmlWebpackPlugin.options.env === 'staging') { %>
+    <% } else { %>
         <script src="//assets.adobedtm.com/3202ba9b02b459ee20779cfcd8e79eaf266be170/satelliteLib-7973047d2bbc9bb73f3d16528aa95985e95979d5-staging.js"></script>
     <% } %>
 </head>

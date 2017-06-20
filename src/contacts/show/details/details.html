@@ -68,14 +68,24 @@
                         <h4 class="attribute-header" translate>Last Donation</h4>
                         <div class="inline-input disabled">
                             <input type="text" value="{{$ctrl.last_donation}}" readonly />
-                            <a class="tip" data-trigger="hover" data-content="{{ 'This field is updated live from donation services and cannot be edited directly here' | translate }}" data-placement="top" bs-popover><i class="fa fa-lock"></i></a>
+                            <a class="tip"
+                               data-trigger="hover"
+                               data-content="{{ 'This field is updated live from donation services and cannot be edited directly here' | translate }}"
+                               data-placement="top" bs-popover>
+                                <i class="fa fa-lock"></i>
+                            </a>
                         </div>
                     </div>
                     <div class="field">
                         <h4 class="attribute-header" translate>Giving Method</h4>
                         <div class="inline-input disabled">
                             <input type="text" value="{{$ctrl.giving_method}}" readonly />
-                            <a class="tip" data-trigger="hover" data-content="{{ 'This field is updated live from donation services and cannot be edited directly here' |  translate }}" data-placement="top" bs-popover><i class="fa fa-lock"></i></a>
+                            <a class="tip"
+                               data-trigger="hover"
+                               data-content="{{ 'This field is updated live from donation services and cannot be edited directly here' |  translate }}"
+                               data-placement="top" bs-popover>
+                                <i class="fa fa-lock"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -84,7 +94,12 @@
                         <h4 class="attribute-header" translate>Lifetime Donations</h4>
                         <div class="inline-input disabled">
                             <input type="text" value="{{$ctrl.lifetime_donations}}" readonly />
-                            <a class="tip" data-trigger="hover" data-content="{{ 'This field is updated live from donation services and cannot be edited directly here' | translate }}" data-placement="top" bs-popover><i class="fa fa-lock"></i></a>
+                            <a class="tip"
+                               data-trigger="hover"
+                               data-content="{{ 'This field is updated live from donation services and cannot be edited directly here' | translate }}"
+                               data-placement="top" bs-popover>
+                                <i class="fa fa-lock"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -96,7 +111,11 @@
                 <div class="col-sm-6">
                     <div class="field">
                         <h4 class="attribute-header" translate>Referred By</h4>
-                        <collection-selector item-name="{{ 'contact' | translate }}" display-text="$ctrl.referrerName" search="$ctrl.contacts.search(text)" select="$ctrl.onContactSelected(item)"></collection-selector>
+                        <collection-selector item-name="{{ 'contact' | translate }}"
+                                             display-text="$ctrl.referrerName"
+                                             search="$ctrl.contacts.search(text)"
+                                             select="$ctrl.onContactSelected(item)">
+                        </collection-selector>
                     </div>
                     <div class="field">
                         <h4 class="attribute-header" translate>Send Appeals?</h4>
@@ -110,7 +129,7 @@
                                     class="form-control"
                                     id="status"
                                     ng-model="$ctrl.contact.no_appeals"
-                                    ng-options="o.key as o.value for o in [{key: false, value: 'Yes'},{key: true, value: 'No'}]">
+                                    ng-options="o.key as o.value for o in $ctrl.translations.no_appeals">
                             </select>
                         </div>
                     </div>
@@ -141,7 +160,11 @@
             <div class="col-sm-12 ">
                 <h4 class="attribute-header" translate>Tags</h4>
                 <div class="inline-input">
-                    <tag-selector ng-model="$ctrl.contact.tag_list" tag-list="$ctrl.contactsTags.data" on-tag-added="$ctrl.save()" on-tag-removed="$ctrl.save()"></tag-selector>
+                    <tag-selector ng-model="$ctrl.contact.tag_list"
+                                  tag-list="$ctrl.contactsTags.data"
+                                  on-tag-added="$ctrl.save()"
+                                  on-tag-removed="$ctrl.save()">
+                    </tag-selector>
                 </div>
             </div>
         </div>
@@ -174,7 +197,7 @@
                                     class="form-control"
                                     id="magazine"
                                     ng-model="$ctrl.contact.magazine"
-                                    ng-options="o.key as o.value for o in [{key: true, value: 'Yes'},{key: false, value: 'No'}]">
+                                    ng-options="o.key as o.value for o in $ctrl.translations.magazine">
                             </select>
                         </div>
                     </div>
@@ -199,7 +222,10 @@
     <div class="col-sm-4">
         <div class="fieldset">
             <h3 translate>Partner Accounts</h3>
-            <contact-donor-account ng-repeat="donorAccount in $ctrl.contact.donor_accounts" contact="$ctrl.contact" donor-account="donorAccount" on-save="$ctrl.onSave()"></contact-donor-account>
+            <contact-donor-account ng-repeat="donorAccount in $ctrl.contact.donor_accounts"
+                                   contact="$ctrl.contact"
+                                   donor-account="donorAccount"
+                                   on-save="$ctrl.onSave()"></contact-donor-account>
             <div class="add-partner-account">
                 <button type="button" class="btn btn-primary" ng-click="$ctrl.addPartnerAccount()">
                     <i class="fa fa-plus-circle"></i> <translate>Add Partner Account</translate>

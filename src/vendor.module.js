@@ -12,7 +12,6 @@ import ngMap from 'ngmap';
 import ngSortable from 'ng-sortable';
 import angulartics from 'angulartics';
 import angularticsGoogleAnalytics from 'angulartics-google-analytics';
-import angularticsAdobeAnalytics from 'angulartics-adobe-analytics';
 
 // deps with no default exports
 import lang from 'langmap'; //load before language-picker
@@ -61,7 +60,6 @@ export default angular.module('mpdx.vendor', [
     ngSortable,
     angulartics,
     angularticsGoogleAnalytics,
-    angularticsAdobeAnalytics,
     'angular.filter',
     'blockUI',
     'LocalForageModule',

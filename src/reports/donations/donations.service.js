@@ -78,6 +78,14 @@ class DonationsService {
         });
     }
 
+    displayName(donation) {
+        if (donation.contact) {
+            return `${donation.contact.name} (${donation.donor_account.account_number})`;
+        } else {
+            return donation.donor_account.display_name;
+        }
+    }
+
     openDonationModal(donation) {
         if (!donation) {
             donation = { amount: '0' };

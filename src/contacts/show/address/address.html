@@ -1,15 +1,18 @@
-<div class="card" ng-class="{ 'primary':$ctrl.address.primary_mailing_address }">
+<div class="card" ng-class="{ 'primary': $ctrl.address.primary_mailing_address }">
     <a class="pull-right edit" ng-click="$ctrl.contacts.openAddressModal($ctrl.contact, $ctrl.address)">
         <span ng-if="!$ctrl.address.remote_id && $ctrl.address.source === 'MPDX'" translate>Edit</span>
         <span ng-if="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'" translate>View</span>
     </a>
     <p ng-class="{strike: $ctrl.address.historic}">
-        {{$ctrl.address.street}}<br />
-        {{$ctrl.address.city}} {{$ctrl.address.state}} {{$ctrl.address.postal_code}}<br />
-        {{$ctrl.address.country}}
+        {{$ctrl.address.street}}<br>
+        {{$ctrl.address.city}} {{$ctrl.address.state}} {{$ctrl.address.postal_code}}<br>
+        {{$ctrl.address.country}}<br>
+        <translate translate-params-source="$ctrl.address.source | sourceToStr" translate-params-date="$ctrl.address.updated_at | date : $ctrl.locale.dateTimeFormat">
+            Source: {{source}} ({{date}})
+        </translate>
     </p>
 
-    <div class="pull-right" style="cursor: pointer" ng-click="$ctrl.onPrimary()">
+    <div class="primary-option" ng-click="$ctrl.onPrimary()">
         <i class="fa fa-square-o" ng-if="!$ctrl.address.primary_mailing_address"></i>
         <i class="fa fa-check-square-o" ng-if="$ctrl.address.primary_mailing_address"></i>
         <translate>Primary</translate>

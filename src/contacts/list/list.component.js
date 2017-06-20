@@ -11,26 +11,32 @@ import unionBy from 'lodash/fp/unionBy';
 class ListController {
     accounts;
     alerts;
+    api;
     contacts;
+    contactFilter;
     contactsTags;
     modal;
+    session;
     tasks;
-    view;
 
     constructor(
-        $log, $rootScope, $window, gettextCatalog,
-        api, modal, contacts, contactFilter, contactsTags, alerts, tasks, accounts
+        $log, $rootScope, $window,
+        gettextCatalog,
+        accounts, alerts, api, contacts, contactFilter, contactsTags, modal, session, tasks
     ) {
         this.$log = $log;
         this.$window = $window;
+
+        this.gettextCatalog = gettextCatalog;
+
         this.accounts = accounts;
         this.alerts = alerts;
         this.api = api;
         this.contacts = contacts;
-        this.gettextCatalog = gettextCatalog;
-        this.modal = modal;
         this.contactFilter = contactFilter;
         this.contactsTags = contactsTags;
+        this.modal = modal;
+        this.session = session;
         this.tasks = tasks;
 
         this.contacts.clearSelectedContacts();
@@ -289,10 +295,18 @@ const ContactList = {
     }
 };
 
-import alerts from '../../common/alerts/alerts.service';
+import gettextCatalog from 'angular-gettext';
+import accounts from 'common/accounts/accounts.service';
+import alerts from 'common/alerts/alerts.service';
+import api from 'common/api/api.service';
 import contacts from '../contacts.service';
-import tasks from '../../tasks/tasks.service';
+import contactFilter from '../sidebar/filter/filter.service';
+import contactsTags from '../sidebar/filter/tags/tags.service';
+import modal from 'common/modal/modal.service';
+import session from 'common/session/session.service';
+import tasks from 'tasks/tasks.service';
 
 export default angular.module('mpdx.contacts.list.component', [
-    alerts, contacts, tasks
+    gettextCatalog,
+    accounts, alerts, api, contacts, contactFilter, contactsTags, modal, session, tasks
 ]).component('contactsList', ContactList).name;

@@ -1,4 +1,5 @@
-import has from 'lodash/fp/has';
+import get from 'lodash/fp/get';
+import isNil from 'lodash/fp/isNil';
 import map from 'lodash/fp/map';
 import assign from 'lodash/fp/assign';
 
@@ -10,7 +11,8 @@ class ContactFamilyRelationshipController {
         this.deleted = false;
     }
     $onInit() {
-        if (has('related_person', this.familyRelationship)) {
+        const person = get('related_person.first_name', this.familyRelationship);
+        if (!isNil(person)) {
             this.familyRelationship.related_person.display_name = `${this.familyRelationship.related_person.first_name} ${this.familyRelationship.related_person.last_name}`;
         }
     }

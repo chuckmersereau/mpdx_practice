@@ -8,9 +8,10 @@ class ListController {
 
     constructor(
         $rootScope,
-        modal, tasks, tasksFilter, tasksTags
+        modal, session, tasks, tasksFilter, tasksTags
     ) {
         this.modal = modal;
+        this.session = session;
         this.tasks = tasks;
         this.tasksFilter = tasksFilter;
         this.tasksTags = tasksTags;
@@ -71,10 +72,11 @@ const TaskList = {
 };
 
 import modal from 'common/modal/modal.service';
+import session from 'common/session/session.service';
 import tasks from '../tasks.service';
 import tasksFilter from '../filter/filter.service';
 import tasksTags from '../filter/tags/tags.service';
 
 export default angular.module('mpdx.tasks.list.component', [
-    modal, tasks, tasksFilter, tasksTags
+    modal, session, tasks, tasksFilter, tasksTags
 ]).component('tasksList', TaskList).name;

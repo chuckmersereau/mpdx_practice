@@ -1,5 +1,6 @@
 <div class="columns columns--fixed">
-    <div class="column column--heading">
+    <div class="column column--heading filter--heading">
+        <alerts padding-only="true"></alerts>
         <div class="page-filters">
             <div class="row">
                 <div class="col-md-5 col-sm-4">
@@ -28,6 +29,10 @@
                             </div>
                         </div>
                         <a class="btn btn-default" ng-click="$ctrl.tasks.toggleAll()" translate>Select All</a>
+                        <a class="btn btn-default visible-sm" ng-class="{ 'btn-reverse' : $ctrl.session.showFiltersOnMobile }" ng-click="$ctrl.session.showFiltersOnMobile = !$ctrl.session.showFiltersOnMobile">
+                            <i class="fa fa-sliders"></i>
+                            <translate>Filters</translate>
+                        </a>
                     </div>
                 </div>
             </div>

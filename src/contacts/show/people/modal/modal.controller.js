@@ -81,7 +81,7 @@ class PersonModalController {
                 this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
                 this.$scope.$hide();
             }).catch(err => {
-                this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger');
+                this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger', null, 5, true);
                 throw err;
             });
         } else {
@@ -92,34 +92,45 @@ class PersonModalController {
                 this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
                 this.$scope.$hide();
             }).catch(err => {
-                this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger');
+                this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger', null, 5, true);
                 throw err;
             });
         }
     }
+    changeTab(form, tab) {
+        if (form.$valid) {
+            this.activeTab = tab;
+        } else {
+            this.alerts.addAlert(this.gettextCatalog.getString('Please complete required fields before changing tabs'), 'danger', null, 5, true);
+        }
+    }
     remove(property, index) {
-        this.person[property][index]._destroy = 1;
+        if (this.person[property][index].new) {
+            this.person[property].splice(index, 1);
+        } else {
+            this.person[property][index]._destroy = 1;
+        }
     }
     addEmailAddress() {
-        this.person.email_addresses.push({id: uuid(), email: '', location: ''});
+        this.person.email_addresses.push({ id: uuid(), email: '', location: '', new: true });
     }
     addPhone() {
-        this.person.phone_numbers.push({id: uuid(), number: '', location: ''});
+        this.person.phone_numbers.push({ id: uuid(), number: '', location: '', new: true });
     }
     addFamilyRelationship() {
-        this.person.family_relationships.push({id: uuid(), related_person: {id: null}});
+        this.person.family_relationships.push({ id: uuid(), related_person: { id: null }, new: true });
     }
     addFacebook() {
-        this.person.facebook_accounts.push({id: uuid(), username: ''});
+        this.person.facebook_accounts.push({ id: uuid(), username: '', new: true });
     }
     addTwitter() {
-        this.person.twitter_accounts.push({id: uuid(), screen_name: ''});
+        this.person.twitter_accounts.push({ id: uuid(), screen_name: '', new: true });
     }
     addLinkedin() {
-        this.person.linkedin_accounts.push({id: uuid(), username: ''});
+        this.person.linkedin_accounts.push({ id: uuid(), username: '', new: true });
     }
     addWebsite() {
-        this.person.websites.push({id: uuid(), url: ''});
+        this.person.websites.push({ id: uuid(), url: '', new: true });
     }
     changePrimary(property, id) {
         this.person[property] = map(val => {

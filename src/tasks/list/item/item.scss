@@ -17,11 +17,14 @@ tasks-list-item {
     }
     .comments, .contacts {
         border-top: 1px solid #eee;
-        padding: 15px;
-        padding-top: 0;
+        padding-bottom: 15px;
+        .comment {
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
         .links {
             padding: 10px 15px;
-            margin: 0 -15px 15px;
+            margin-bottom: 10px;
             border-bottom: 1px solid #eee;
         }
     }

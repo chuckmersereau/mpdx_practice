@@ -284,7 +284,7 @@ describe('reports.contributions.service', () => {
                 totals: {
                     year: '25.0',
                     year_converted: 25,
-                    months: ['25.0', 0]
+                    months: [50, 0]
                 },
                 donors: [
                     {
@@ -376,6 +376,6 @@ describe('reports.contributions.service', () => {
         ],
         ['Abraham, Adam', 'Never Contacted', '$25.0 NZD ', 13, 25, 25, 25, 0, 25],
         ['Smith, Sarah', 'Partner - Financial', '$25.0 NZD Every Month', 13, 25, 25, 25, 0, 25],
-        ['Totals', '', '', '', '', '', '25.0', 0, 25]
+        ['Totals', '', '', '', '', '', 50, 0, 25]
     ];
 });

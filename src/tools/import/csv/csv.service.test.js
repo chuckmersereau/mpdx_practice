@@ -129,7 +129,8 @@ describe('tools.import.csv.service', () => {
                     expect(alerts.addAlert).toHaveBeenCalledWith(
                         'Invalid CSV file - See help docs or send us a message with your CSV attached',
                         'danger',
-                        error.status
+                        error.status,
+                        10
                     );
                     done();
                 });
@@ -317,7 +318,7 @@ describe('tools.import.csv.service', () => {
             expect(api.get).toHaveBeenCalledWith(
                         `account_lists/${api.account_list_id}/imports/csv/${importId}`,
                 {
-                    include: 'sample_contacts,sample_contacts.addresses,sample_contacts.primary_person,sample_contacts.primary_person.email_addresses,sample_contacts.primary_person.phone_numbers,sample_contacts.spouse'
+                    include: 'sample_contacts,sample_contacts.addresses,sample_contacts.primary_person,sample_contacts.primary_person.email_addresses,sample_contacts.primary_person.phone_numbers,sample_contacts.spouse,sample_contacts.spouse.email_addresses,sample_contacts.spouse.phone_numbers'
                 });
         });
 
@@ -394,7 +395,7 @@ describe('tools.import.csv.service', () => {
         it('should call the api', () => {
             importCsv.save();
             expect(api.put).toHaveBeenCalledWith({
-                url: `account_lists/${api.account_list_id}/imports/csv/${data.id}?include=sample_contacts,sample_contacts.addresses,sample_contacts.primary_person,sample_contacts.primary_person.email_addresses,sample_contacts.primary_person.phone_numbers,sample_contacts.spouse`,
+                url: `account_lists/${api.account_list_id}/imports/csv/${data.id}?include=sample_contacts,sample_contacts.addresses,sample_contacts.primary_person,sample_contacts.primary_person.email_addresses,sample_contacts.primary_person.phone_numbers,sample_contacts.spouse,sample_contacts.spouse.email_addresses,sample_contacts.spouse.phone_numbers`,
                 data: { id: importId },
                 type: 'imports'
             });
@@ -499,7 +500,7 @@ describe('tools.import.csv.service', () => {
                 });
             });
 
-            describe('only mapped and unmapped constants present', () => {
+            describe('mapped and unmapped constants present', () => {
                 beforeEach(() => {
                     importCsv.data.file_constants = {
                         categories: [
@@ -534,6 +535,40 @@ describe('tools.import.csv.service', () => {
                                     'test_2',
                                     'test_3',
                                     'test_4'
+                                ]
+                            }
+                        });
+                });
+            });
+
+            describe('only mapped constants present', () => {
+                beforeEach(() => {
+                    importCsv.data.file_constants = {
+                        categories: [
+                            'test_1',
+                            'test_2'
+                        ]
+                    };
+                    importCsv.data.file_headers_mappings = {
+                        categories: 'status'
+                    };
+                    importCsv.values_to_constants_mapping = {
+                        status: {
+                            'test_1': 'Never Contacted',
+                            'test_2': 'Never Contacted'
+                        }
+                    };
+                });
+
+                it('should add unmapped constants to file_constants_mappings', () => {
+                    importCsv.save();
+                    expect(importCsv.data.file_constants_mappings).toEqual(
+                        {
+                            status:
+                            {
+                                'Never Contacted': [
+                                    'test_1',
+                                    'test_2'
                                 ]
                             }
                         });
@@ -604,7 +639,7 @@ describe('tools.import.csv.service', () => {
                 importCsv.save().catch(() => {
                     expect(alerts.addAlert).toHaveBeenCalledWith(
                         'Unable to save your CSV import settings - See help docs or send us a message with your CSV attached',
-                        'danger');
+                        'danger', 10);
                     done();
                 });
             });
@@ -617,8 +652,8 @@ describe('tools.import.csv.service', () => {
 
                 it('should call addAlert with error detail', (done) => {
                     importCsv.save().catch(() => {
-                        expect(alerts.addAlert).toHaveBeenCalledWith('test_1', 'danger');
-                        expect(alerts.addAlert).toHaveBeenCalledWith('test_2', 'danger');
+                        expect(alerts.addAlert).toHaveBeenCalledWith('test_1', 'danger', null, 10);
+                        expect(alerts.addAlert).toHaveBeenCalledWith('test_2', 'danger', null, 10);
                         done();
                     });
                 });

@@ -27,6 +27,13 @@ describe('contacts.show.personModal.family.component', () => {
             $ctrl.$onInit();
             expect($ctrl.familyRelationship.related_person.display_name).toEqual('a b');
         });
+        it('should properly handle undefined', () => {
+            $ctrl.familyRelationship = {
+                related_person: {}
+            };
+            $ctrl.$onInit();
+            expect($ctrl.familyRelationship.related_person.display_name).toBeUndefined();
+        });
     });
     describe('remove', () => {
         beforeEach(() => {

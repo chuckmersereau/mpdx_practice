@@ -1,11 +1,12 @@
 <div class="columns columns--fixed">
-    <div class="column column--heading">
+    <div class="column column--heading filter--heading">
+        <alerts padding-only="true"></alerts>
         <div class="page-filters">
             <div class="row">
-                <div class="col-md-5 col-sm-7">
+                <div class="col-md-5 col-sm-5">
                     <contacts-list-search></contacts-list-search>
                 </div>
-                <div class="col-md-7 col-sm-5 text-right">
+                <div class="col-md-7 col-sm-7 text-right">
                     <div class="btn-group">
                         <div class="btn-group">
                             <div class="dropdown">
@@ -35,18 +36,20 @@
                         <span class="btn btn-default" ng-click="$ctrl.toggleAllContacts()" translate>
                             Select All
                         </span>
+                        <span class="btn btn-default visible-sm" ng-class="{ 'btn-reverse' : $ctrl.session.showFiltersOnMobile }" ng-click="$ctrl.session.showFiltersOnMobile = !$ctrl.session.showFiltersOnMobile">
+                            <i class="fa fa-sliders"></i>
+                            <translate>Filters</translate>
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row page-controls">
             <div class="col-sm-12">
-                <span ng-if="!$ctrl.loading">
-                    <translate translate-params-from="$ctrl.data.length || 0"
-                               translate-params-to="::$ctrl.meta.pagination.total_count || 0">
-                        Showing <strong>{{from}}</strong> of <strong>{{to}}</strong>
-                    </translate>
-                </span>
+                <translate translate-params-from="$ctrl.data.length || 0"
+                           translate-params-to="$ctrl.meta.pagination.total_count || 0">
+                    Showing <strong>{{from}}</strong> of <strong>{{to}}</strong>
+                </translate>
                 <span class="label label-primary" ng-if="$ctrl.contacts.selectedContacts.length > 0">
                     {{$ctrl.contacts.selectedContacts.length}} <span translate>Selected</span>
                     <a href="javascript:;" class="label-action" ng-click="$ctrl.contacts.clearSelectedContacts()"><i class="fa fa-times"></i></a>

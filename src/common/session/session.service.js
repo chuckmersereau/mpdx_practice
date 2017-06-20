@@ -4,6 +4,7 @@ class Session {
     ) {
         this.$state = $state;
         this.navSecondary = false;
+        this.showFiltersOnMobile = false;
     }
 
     isInState(match) {
