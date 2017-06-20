@@ -20,6 +20,22 @@ describe('contacts.show.details.component', () => {
         spyOn(gettextCatalog, 'getString').and.callThrough();
         spyOn(alerts, 'addAlert').and.callFake(data => data);
     });
+    describe('$onInit', () => {
+        it('should setup translation object', () => {
+            $ctrl.$onInit();
+            expect($ctrl.translations).toEqual({
+                no_appeals: [
+                    {key: false, value: 'Yes'},
+                    {key: true, value: 'No'}
+                ],
+                magazine: [
+                    {key: true, value: 'Yes'},
+                    {key: false, value: 'No'}
+                ]
+            });
+            expect(gettextCatalog.getString.calls.count()).toEqual(2);
+        });
+    });
     describe('$onChanges', () => {
         beforeEach(() => {
             spyOn($ctrl, 'getName').and.callFake(() => Promise.resolve({name: 'a'}));

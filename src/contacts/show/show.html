@@ -44,13 +44,21 @@
                     <a as-sortable-item-handle ng-click="$ctrl.setActiveTab(item.key)">{{ item.value | translate }}</a>
                 </div>
             </div>
-
             <div class="tabs-info">
-                <a class="tip" data-trigger="hover" data-title="{{ 'You can reorder these tabs to your liking! Just Drag them left or right.' | translate }}" data-placement="left" bs-tooltip><i class="fa fa-question-circle"></i></a>
+                <a class="tip"
+                   data-trigger="hover"
+                   data-title="{{ 'You can reorder these tabs to your liking! Just Drag them left or right.' | translate }}"
+                   data-placement="left"
+                   bs-tooltip>
+                    <i class="fa fa-question-circle"></i>
+                </a>
             </div>
         </div>
         <ui-view>
-            <contact-details contact="$ctrl.contacts.current" donor-accounts="$ctrl.contacts.current.donor_accounts" on-save="$ctrl.save()"></contact-details>
+            <contact-details contact="$ctrl.contacts.current"
+                             donor-accounts="$ctrl.contacts.current.donor_accounts"
+                             on-save="$ctrl.save()">
+            </contact-details>
         </ui-view>
     </div>
 </div>

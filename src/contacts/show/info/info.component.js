@@ -6,11 +6,23 @@ class ContactInfoController {
     serverConstants;
 
     constructor(
+        gettextCatalog,
         contacts, locale, serverConstants
     ) {
         this.contacts = contacts;
+        this.gettextCatalog = gettextCatalog;
         this.locale = locale;
         this.serverConstants = serverConstants;
+    }
+    $onInit() {
+        const yes = this.gettextCatalog.getString('Yes');
+        const no = this.gettextCatalog.getString('No');
+        this.translations = {
+            pledge_received: [
+                {key: true, value: yes},
+                {key: false, value: no}
+            ]
+        };
     }
     $onChanges(obj) {
         if (obj.contact) {
@@ -36,5 +48,10 @@ const Info = {
     }
 };
 
-export default angular.module('mpdx.contacts.show.info.component', [])
-    .component('contactInfo', Info).name;
+import contacts from 'contacts/contacts.service';
+import locale from 'common/locale/locale.service';
+import serverConstants from 'common/serverConstants/serverConstants.service';
+
+export default angular.module('mpdx.contacts.show.info.component', [
+    contacts, locale, serverConstants
+]).component('contactInfo', Info).name;
