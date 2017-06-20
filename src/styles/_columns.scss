@@ -1,39 +1,94 @@
-.filter-body {
-  .filter-sidebar {
-      bottom: 0;
-      margin-bottom: 30px;
-      position: fixed;
-      overflow-y: scroll;
-      top: $nav-height + $nav-padding;
-      @include breakpoint(md) {
-        width: 215px;
-      }
-      @include breakpoint(lg) {
-        width: 265px;
-      }
-  }
-
-  @media (max-width: 991px) {
-    .filter-sidebar {
-      top: auto;
-      bottom: auto;
-      padding-top: 0;
-      position: relative;
-      overflow: auto;
-      max-height: 50vh;
+.filter {
+    &--sidebar {
+        bottom: 0;
+        margin-bottom: 30px;
+        position: fixed;
+        overflow-y: scroll;
+        top: $nav-height;
+        padding-top: $nav-padding;
+        background: $cru-white;
+        z-index: 1;
+        @include breakpoint(sm) {
+            width: 720px;
+        }
+        @include breakpoint(md) {
+            width: 215px;
+        }
+        @include breakpoint(lg) {
+            width: 265px;
+        }
+        &__contacts {
+            @include breakpoint(sm) {
+                top: $secondary-nav-height + 99px;
+            }
+            @include breakpoint(md) {
+                top: $nav-height;
+            }
+        }
+        &__contact {
+            @include breakpoint(sm) {
+                top: $nav-height + 47px;
+            }
+            @include breakpoint(md) {
+                top: $nav-height;
+            }
+        }
+        &__tasks {
+            @include breakpoint(sm) {
+                top: $nav-height + 133px;
+            }
+            @include breakpoint(md) {
+                top: $nav-height;
+            }
+        }
     }
-  }
-
-  .nav-pills>li>a {
-    padding-top: 5px;
-    padding-bottom: 5px;
-    font-size: 14px;
-  }
+    &--heading {
+        position: fixed;
+        top: $nav-height;
+        padding-top: $nav-padding;
+        background: $cru-white;
+        z-index: 1;
+        @include breakpoint(sm) {
+            width: 720px;
+        }
+        @include breakpoint(md) {
+            width: 698px;
+        }
+        @include breakpoint(lg) {
+            width: 848px;
+        }
+    }
+    &--spacer {
+        &__contacts {
+            height: 99px;
+        }
+        &__contact {
+            height: 67px;
+        }
+        &__tasks {
+            height: 133px;
+        }
+    }
+    &--body {
+        .nav-pills>li>a {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            font-size: 14px;
+        }
+    }
 }
 .has-nav-secondary {
-    .filter-body {
-        .filter-sidebar {
-            top: $secondary-nav-height + $nav-padding;
+    .filter {
+        &--sidebar {
+            @include breakpoint(md) {
+                top: $secondary-nav-height;
+            }
+            @include breakpoint(lg) {
+                top: $secondary-nav-height;
+            }
+        }
+        &--heading {
+            top: $secondary-nav-height;
         }
     }
 }

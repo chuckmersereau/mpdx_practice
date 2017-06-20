@@ -22,7 +22,7 @@ class ContactController {
 
     constructor(
         $log, $rootScope, $state, $stateParams, $anchorScroll, blockUI, gettextCatalog, help,
-        alerts, modal, contacts, tasks, contactFilter, people, users
+        alerts, modal, contacts, tasks, contactFilter, people, users, session
     ) {
         this.$anchorScroll = $anchorScroll;
         this.$log = $log;
@@ -38,6 +38,7 @@ class ContactController {
         this.people = people;
         this.tasks = tasks;
         this.users = users;
+        this.session = session;
 
         if ($stateParams['personId']) {
             this.people.openPeopleModal(this.contacts.current, $stateParams['personId']);
@@ -179,9 +180,10 @@ import people from './people/people.service';
 import tasks from 'tasks/tasks.service';
 import uiRouter from 'angular-ui-router';
 import users from 'common/users/users.service';
+import session from 'common/session/session.service';
 
 export default angular.module('mpdx.contacts.show.component', [
     blockUI, gettextCatalog, uiRouter,
-    alerts, help, modal, contacts, tasks, contactFilter, people, users
+    alerts, help, modal, contacts, tasks, contactFilter, people, users, session
 ])
     .component('contact', Show).name;

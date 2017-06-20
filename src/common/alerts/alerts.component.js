@@ -9,6 +9,7 @@ class AlertsController {
 
     $onInit() {
         this.modal = this.modal || false;
+        this.paddingOnly = this.paddingOnly || false;
     }
 }
 
@@ -16,7 +17,8 @@ const Alerts = {
     template: require('./alerts.html'),
     controller: AlertsController,
     bindings: {
-        modal: '@'
+        modal: '@',
+        paddingOnly: '@'
     }
 };
 
