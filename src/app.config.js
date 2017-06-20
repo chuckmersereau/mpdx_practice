@@ -3,9 +3,10 @@ import config from 'config';
 import Routes from "./routes";
 /*@ngInject*/
 export default function appConfig(
-    $locationProvider, $logProvider, $stateProvider, $httpProvider, $qProvider, $urlRouterProvider,
+    $compileProvider, $locationProvider, $logProvider, $stateProvider, $httpProvider, $qProvider, $urlRouterProvider,
     blockUIConfig, jwtOptionsProvider, RollbarProvider, timeAgoSettings, gettext
 ) {
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|tel|mailto):/);
     jwtOptionsProvider.config({
         tokenGetter: () => {
             return localStorage.getItem('token');
