@@ -88,7 +88,7 @@ class DonationsService {
 
     openDonationModal(donation) {
         if (!donation) {
-            donation = { amount: '0' };
+            donation = {};
         }
         return this.modal.open({
             template: require('./modal/modal.html'),

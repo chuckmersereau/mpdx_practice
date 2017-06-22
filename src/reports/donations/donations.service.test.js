@@ -414,7 +414,7 @@ describe('reports.donations.service', () => {
                     template: require('./modal/modal.html'),
                     controller: 'donationModalController',
                     locals: {
-                        donation: { amount: '0' }
+                        donation: {}
                     }
                 });
             });

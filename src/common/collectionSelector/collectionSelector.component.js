@@ -37,7 +37,8 @@ const CollectionSelector = {
         itemName: '@',
         search: '&',
         searchText: '<',
-        select: '&'
+        select: '&',
+        required: '<'
     }
 };
 

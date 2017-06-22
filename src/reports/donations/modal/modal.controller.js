@@ -10,12 +10,14 @@ class DonationModalController {
     serverConstants;
 
     constructor(
-        $scope, gettextCatalog,
-        appeals, alerts, donations, locale, donorAccounts, designationAccounts, serverConstants,
+        $scope,
+        gettextCatalog,
+        accounts, appeals, alerts, donations, locale, donorAccounts, designationAccounts, serverConstants,
         donation
     ) {
         this.$scope = $scope;
 
+        this.accounts = accounts;
         this.alerts = alerts;
         this.appeals = appeals;
         this.donations = donations;
@@ -27,6 +29,26 @@ class DonationModalController {
 
         this.initialDonation = donation;
         this.donation = angular.copy(donation);
+
+        this.activate();
+    }
+
+    activate() {
+        if (!this.donation.designation_account) {
+            this.setDesignationAccount();
+        }
+
+        if (!this.donation.currency && this.accounts.current.currency) {
+            this.donation.currency = this.accounts.current.currency;
+        }
+    }
+
+    setDesignationAccount() {
+        return this.designationAccounts.load().then(data => {
+            if (data.length === 1) {
+                this.donation.designation_account = data[0];
+            }
+        });
     }
 
     save() {
@@ -37,18 +59,20 @@ class DonationModalController {
         }
         const patch = createPatch(this.initialDonation, donation);
         return this.donations.save(patch).then(() => {
+            this.alerts.addAlert(this.gettextCatalog.getString('Donation saved successfullly'), 'success');
             this.$scope.$hide();
         }).catch(err => {
-            this.alerts.addAlert(this.gettextCatalog.getString('Unable to change donation'), 'danger');
+            this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes to donation'), 'danger', null, 5, true);
             throw err;
         });
     }
 
     delete() {
         return this.donations.delete(this.donation).then(() => {
+            this.alerts.addAlert(this.gettextCatalog.getString('Donation deleted successfullly'), 'success');
             this.$scope.$hide();
         }).catch(err => {
-            this.alerts.addAlert(this.gettextCatalog.getString('Unable to remove donation'), 'danger');
+            this.alerts.addAlert(this.gettextCatalog.getString('Unable to remove donation'), 'danger', null, 5, true);
             throw err;
         });
     }
@@ -67,6 +91,7 @@ class DonationModalController {
 }
 
 import gettextCatalog from 'angular-gettext';
+import accounts from 'common/accounts/accounts.service';
 import appeals from 'common/appeals/appeals.service';
 import alerts from 'common/alerts/alerts.service';
 import donations from 'reports/donations/donations.service';
@@ -77,5 +102,5 @@ import serverConstants from 'common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.donation.modal.controller', [
     gettextCatalog,
-    appeals, alerts, donations, locale, donorAccounts, designationAccounts, serverConstants
+    accounts, appeals, alerts, donations, locale, donorAccounts, designationAccounts, serverConstants
 ]).controller('donationModalController', DonationModalController).name;
