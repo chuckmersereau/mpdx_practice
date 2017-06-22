@@ -10,6 +10,7 @@ const config = {
     devtool: 'eval',
     entry: {
         app: './src/app.module.js',
+        helpscout: './src/helpscout.js',
         moment_locales: './src/moment-locales.js'
     },
     externals: [{
