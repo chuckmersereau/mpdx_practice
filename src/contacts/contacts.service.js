@@ -238,15 +238,21 @@ class ContactsService {
             /* istanbul ignore next */
             this.$log.debug('contacts/analytics', data);
             data.birthdays_this_week = reduce((result, birthday) => {
-                birthday.birthday_date = moment(`${birthday.birthday_year}-${birthday.birthday_month}-${birthday.birthday_day}`, 'YYYY-MM-DD').toDate();
-                return concat(result, birthday);
+                if (birthday.birthday_year > 1800) {
+                    birthday.birthday_date = moment().year(birthday.birthday_year).month(birthday.birthday_month - 1).date(birthday.birthday_day).toDate();
+                    return concat(result, birthday);
+                }
+                return result;
             }, [], data.birthdays_this_week);
             data.anniversaries_this_week = reduce((result, anniversary) => {
-                anniversary.people = map(person => {
-                    person.anniversary_date = moment(`${person.anniversary_year}-${person.anniversary_month}-${person.anniversary_day}`, 'YYYY-MM-DD').toDate();
-                    return person;
-                }, anniversary.people);
-                return concat(result, anniversary);
+                anniversary.people = reduce((iresult, person) => {
+                    if (person.anniversary_year > 1800) {
+                        person.anniversary_date = moment().year(person.anniversary_year).month(person.anniversary_month - 1).date(person.anniversary_day).toDate();
+                        return concat(iresult, person);
+                    }
+                    return iresult;
+                }, [], anniversary.people);
+                return anniversary.people.length > 0 ? concat(result, anniversary) : result;
             }, [], data.anniversaries_this_week);
             this.analytics = data;
             return this.analytics;
