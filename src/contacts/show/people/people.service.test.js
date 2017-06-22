@@ -15,6 +15,7 @@ describe('contacts.service', () => {
         });
         spyOn(api, 'get').and.callFake((data) => Promise.resolve(data));
         spyOn(api, 'put').and.callFake((data) => Promise.resolve(data));
+        spyOn(api, 'delete').and.callFake((data) => Promise.resolve(data));
         spyOn(rootScope, '$emit').and.callThrough();
         spyOn(modal, 'open').and.callFake(() => Promise.resolve());
     });

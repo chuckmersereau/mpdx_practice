@@ -55,7 +55,7 @@ class PhoneNumbersService {
                     account_list_id: this.api.account_list_id
                 },
                 fields: {
-                    person: 'first_name,last_name,avatar,phone_numbers'
+                    person: 'first_name,last_name,avatar,phone_numbers,parent_contacts'
                 },
                 include: 'phone_numbers',
                 page: this.page,
@@ -84,7 +84,7 @@ class PhoneNumbersService {
             phoneNumber.valid_values = true;
         }, person.phone_numbers);
 
-        return this.people.save(null, person).then(() => {
+        return this.people.save(person).then(() => {
             this.data = reject({ id: person.id }, this.data);
             if (this.meta && this.meta.pagination && this.meta.pagination.total_count) {
                 this.meta.pagination.total_count -= 1;

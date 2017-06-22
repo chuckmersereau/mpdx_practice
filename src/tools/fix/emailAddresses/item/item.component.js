@@ -1,27 +1,27 @@
+import get from 'lodash/fp/get';
+
 class ItemController {
     fixEmailAddresses;
-
     constructor(
-        blockUI,
-        fixEmailAddresses
+        $scope, blockUI,
+        fixEmailAddresses, modal
     ) {
-        this.blockUI = blockUI;
+        this.modal = modal;
+        this.blockUI = blockUI.instances.get(`fix-email-addresses-item-${$scope.$id}`);
         this.fixEmailAddresses = fixEmailAddresses;
     }
-
-    $onInit() {
-        this.blockUI = this.blockUI.instances.get(`fix-email-addresses-item-${this.person.id}`);
-    }
-
     save() {
         this.blockUI.start();
         return this.fixEmailAddresses.save(this.person).then(() => {
             this.blockUI.reset();
         });
     }
-
     hasPrimary() {
         return this.fixEmailAddresses.hasPrimary(this.person);
+    }
+    openPersonModal() {
+        const contactId = get('parent_contacts[0]', this.person);
+        return this.people.openPeopleModal({id: contactId}, this.person.id);
     }
 }
 

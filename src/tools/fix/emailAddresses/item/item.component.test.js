@@ -27,14 +27,6 @@ describe('tools.fix.emailAddresses.item.component', () => {
         spyOn($ctrl.blockUI, 'reset').and.callThrough();
     }
 
-    describe('$onInit', () => {
-        it('should get instance of blockUI', () => {
-            $ctrl.$onInit();
-            expect(blockUI.instances.get).toHaveBeenCalledWith('fix-email-addresses-item-person_id');
-            expect($ctrl.blockUI).toEqual(fakeBlockUI);
-        });
-    });
-
     describe('hasMultiplePrimaries', () => {
         beforeEach(() => {
             spyOn(fixEmailAddresses, 'hasPrimary').and.returnValue(true);
