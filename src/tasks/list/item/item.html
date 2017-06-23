@@ -25,10 +25,10 @@
         <strong>{{ ::$ctrl.task.activity_type | translate }}</strong>
         <a ng-click="$ctrl.edit(); $event.stopPropagation();">
             {{ ::$ctrl.task.subject }}
-            <span ng-if="::$ctrl.task.completed" translate-params-result="::$ctrl.task.result" translate>
-                ({{ result }})
-            </span>
         </a>
+        <span ng-if="::$ctrl.task.completed" translate-params-result="::$ctrl.task.result" translate>
+            ({{ result }})
+        </span>
         <span ng-if="::!$ctrl.task.no_date && $ctrl.task.start_at && !$ctrl.task.completed">
             {{ ::$ctrl.task.start_at | date : $ctrl.locale.dateTimeFormat + ' hh:mm a' }}
         </span>
