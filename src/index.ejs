@@ -27,7 +27,14 @@
     <% } %>
 </head>
 <body app>
-    <ui-view></ui-view>
+    <ui-view>
+        <div class="full-page">
+            <div class="loading-spinner">
+                <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+                <span class="sr-only" translate>Loading</span>
+            </div>
+        </div>
+    </ui-view>
     <script src="https://maps.google.com/maps/api/js?key=AIzaSyCSGxKR6LxY26xz9JajJ1_KSz-gv6gzOu0&libraries=places" async></script>
     <% if(htmlWebpackPlugin.options.env === 'production' || htmlWebpackPlugin.options.env === 'next') { %>
         <script type="text/javascript">
