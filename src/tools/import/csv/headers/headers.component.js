@@ -32,7 +32,6 @@ class HeadersController {
         requiredHeaders = union(['first_name', 'last_name', 'full_name'], requiredHeaders);
         if ((includes('first_name', this.mappedHeaders) && includes('last_name', this.mappedHeaders)) || includes('full_name', this.mappedHeaders)) {
             requiredHeaders = difference(requiredHeaders, ['first_name', 'last_name', 'full_name']);
-            console.log(requiredHeaders);
         }
         this.unmappedHeaders = difference(requiredHeaders, this.mappedHeaders);
     }

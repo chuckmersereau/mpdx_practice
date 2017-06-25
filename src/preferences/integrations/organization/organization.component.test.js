@@ -31,6 +31,21 @@ describe('preferences.organization.component', () => {
             expect($ctrl.password).toEqual(null);
         });
     });
+    describe('$onInit', () => {
+        it('should call listOrganizationAccounts', () => {
+            spyOn(users, 'listOrganizationAccounts').and.callFake(() => Promise.resolve());
+            $ctrl.$onInit();
+            expect(users.listOrganizationAccounts).toHaveBeenCalled();
+        });
+        describe('accountListUpdated event', () => {
+            it('should call listOrganizationAccounts when event accountListUpdated triggered', () => {
+                $ctrl.$onInit();
+                spyOn(users, 'listOrganizationAccounts').and.callFake(() => Promise.resolve());
+                rootScope.$emit('accountListUpdated');
+                expect(users.listOrganizationAccounts).toHaveBeenCalledWith(true);
+            });
+        });
+    });
     describe('save', () => {
         beforeEach(() => {
             spyOn(users, 'listOrganizationAccounts').and.callFake(() => Promise.resolve());

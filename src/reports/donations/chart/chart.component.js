@@ -10,15 +10,15 @@ class ChartController {
     inContact;
     constructor(
         $state, $rootScope, $filter, $log, gettextCatalog,
-        accounts, contacts, donations, blockUI
+        accounts, api, contacts, blockUI
     ) {
         this.$state = $state;
         this.$rootScope = $rootScope;
         this.$filter = $filter;
         this.$log = $log;
         this.accounts = accounts;
+        this.api = api;
         this.contacts = contacts;
-        this.donations = donations;
         this.gettextCatalog = gettextCatalog;
 
         this.blockUI = blockUI.instances.get('donationsChart');
@@ -32,18 +32,14 @@ class ChartController {
             { backgroundColor: '#00729a' }
         ];
     }
-
     $onInit() {
-        this.load();
         this.$rootScope.$on('accountListUpdated', () => {
             this.load();
         });
     }
-
     $onChanges() {
         this.load();
     }
-
     load() {
         if (this.inContact) {
             this.startDate = moment().startOf('month').subtract(23, 'months');
@@ -60,7 +56,7 @@ class ChartController {
             if (params.donorAccountId === '') return;
         }
         this.blockUI.start();
-        this.donations.getDonationChart(params).then((data) => {
+        this.getDonationChart(params).then((data) => {
             this.blockUI.stop();
             if (data.totals.length === 0) {
                 this.hasChart = false;
@@ -139,11 +135,28 @@ class ChartController {
             this.chartData = data;
         });
     }
-
     onClick(event, legendItem) {
         if (legendItem.length === 0) return;
         const startDate = moment(`01 ${legendItem[0]._model.label}`, 'DD MMM YY');
         this.$state.go('reports.donations', { startDate: startDate });
+    }
+    getDonationChart({ startDate = null, endDate = null, donorAccountId = null } = {}) {
+        let params = {
+            filter: {
+                account_list_id: this.api.account_list_id
+            }
+        };
+        if (donorAccountId) {
+            params.filter.donor_account_id = donorAccountId;
+        }
+        if (startDate && endDate && moment.isMoment(startDate) && moment.isMoment(endDate)) {
+            params.filter.donation_date = `${startDate.format('YYYY-MM-DD')}..${endDate.format('YYYY-MM-DD')}`;
+        }
+        return this.api.get('reports/monthly_giving_graph', params).then(data => {
+            /* istanbul ignore next */
+            this.$log.debug('reports/monthly_giving_graph', data);
+            return data;
+        });
     }
 }
 
@@ -155,5 +168,14 @@ const Chart = {
     }
 };
 
-export default angular.module('mpdx.reports.donations.chart.component', [])
-    .component('donationsChart', Chart).name;
+import accounts from 'common/accounts/accounts.service';
+import api from 'common/api/api.service';
+import blockUI from 'angular-block-ui';
+import contacts from 'contacts/contacts.service';
+import gettext from 'angular-gettext';
+import uiRouter from 'angular-ui-router';
+
+export default angular.module('mpdx.reports.donations.chart.component', [
+    blockUI, gettext, uiRouter,
+    accounts, api, contacts
+]).component('donationsChart', Chart).name;
