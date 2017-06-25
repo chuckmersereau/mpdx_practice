@@ -95,6 +95,9 @@ class ChartController {
                     }],
                     yAxes: [{
                         stacked: !this.inContact,
+                        ticks: {
+                            beginAtZero: true
+                        },
                         scaleLabel: {
                             display: true,
                             labelString: `${this.gettextCatalog.getString('Amount')} (${data.salary_currency})`
