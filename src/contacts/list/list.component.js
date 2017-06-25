@@ -137,7 +137,7 @@ class ListController {
             this.alerts.addAlert(this.gettextCatalog.getPlural(8, 'You can only merge up to 1 contact at a time.', 'You can only merge up to {{$count}} contacts at a time.', {}), 'danger');
         } else {
             this.modal.open({
-                template: require('./mergeContacts/mergeContacts.html'),
+                template: require('./merge/merge.html'),
                 controller: 'mergeContactsController',
                 locals: {
                     selectedContacts: this.getSelectedContacts()

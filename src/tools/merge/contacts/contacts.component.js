@@ -75,7 +75,7 @@ class MergeContactsController {
             }
             return {winner_id: duplicate.contacts[1].id, loser_id: duplicate.contacts[0].id};
         }, duplicates);
-        return this.contacts.bulkMerge(winnersAndLosers);
+        return this.contacts.merge(winnersAndLosers);
     }
     load() {
         this.duplicates = [];

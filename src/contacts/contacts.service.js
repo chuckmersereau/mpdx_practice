@@ -259,15 +259,7 @@ class ContactsService {
         });
     }
     merge(winnersAndLosers) {
-        return this.api.post({url: `contacts/merges/bulk`, data: winnersAndLosers, type: 'contacts'}).then((data) => {
-            if (isFunction(data.success)) {
-                data.success();
-            }
-            return data;
-        });
-    }
-    bulkMerge(winnersAndLosers) {
-        return this.api.post({url: `contacts/merges/bulk`, data: winnersAndLosers, type: 'contacts'}).then((data) => {
+        return this.api.post({url: `contacts/merges/bulk`, data: winnersAndLosers, type: 'contacts'}).then(data => {
             if (isFunction(data.success)) {
                 data.success();
             }

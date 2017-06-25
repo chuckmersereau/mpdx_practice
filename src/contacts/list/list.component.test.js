@@ -233,7 +233,7 @@ describe('contacts.list.component', () => {
         it('should open the merge contacts modal', () => {
             $ctrl.openMergeContactsModal();
             expect(modal.open).toHaveBeenCalledWith({
-                template: require('./mergeContacts/mergeContacts.html'),
+                template: require('./merge/merge.html'),
                 controller: 'mergeContactsController',
                 locals: {
                     selectedContacts: $ctrl.getSelectedContacts()

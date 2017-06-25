@@ -168,4 +168,29 @@ describe('contacts.service', () => {
             done();
         });
     });
+    describe('merge', () => {
+        it('should post to api', () => {
+            spyOn(api, 'post').and.callFake(() => Promise.resolve());
+            contacts.merge('a');
+            expect(api.post).toHaveBeenCalledWith({url: `contacts/merges/bulk`, data: 'a', type: 'contacts'});
+        });
+        it('should return data', done => {
+            let data = {success: () => 'a'};
+            spyOn(data, 'success').and.callThrough();
+            spyOn(api, 'post').and.callFake(() => Promise.resolve(data));
+            contacts.merge('a').then(resp => {
+                expect(resp).toEqual(data);
+                done();
+            });
+        });
+        it('should call a success fn', done => {
+            let data = {success: () => 'a'};
+            spyOn(data, 'success').and.callThrough();
+            spyOn(api, 'post').and.callFake(() => Promise.resolve(data));
+            contacts.merge('a').then(() => {
+                expect(data.success).toHaveBeenCalledWith();
+                done();
+            });
+        });
+    });
 });
