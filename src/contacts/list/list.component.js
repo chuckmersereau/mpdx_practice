@@ -80,8 +80,7 @@ class ListController {
         if (this.loading || this.page >= this.meta.pagination.total_pages) {
             return;
         }
-        this.page++;
-        this.load(this.page);
+        this.load(this.page + 1);
     }
     toggleAllContacts() {
         if (this.data && this.contacts.selectedContacts && this.contacts.selectedContacts.length < this.data.length) {
@@ -169,7 +168,6 @@ class ListController {
 
         let currentCount;
         if (reset) {
-            this.page = 1;
             this.meta = {};
             this.data = null;
             this.listLoadCount++;
@@ -177,7 +175,7 @@ class ListController {
             const contactHeight = 70; //min pixel height of contact items
             this.pageSize = defaultTo(12, ceil(this.$window.innerHeight / contactHeight) - 2); //minimally adjust for menus (always pull at least a few extra)
         }
-
+        this.page = page;
         return this.api.get({
             url: 'contacts',
             data: {
@@ -197,15 +195,13 @@ class ListController {
             },
             overrideGetAsPost: true
         }).then(data => {
+            /* istanbul ignore next */
             this.$log.debug('contacts page ' + data.meta.pagination.page, data);
             if (reset && currentCount !== this.listLoadCount) {
                 return;
             }
-            let count = defaultTo(0, this.meta.to);
+            let count = reset ? 0 : defaultTo(0, this.meta.to);
             this.meta = data.meta;
-            if (reset) {
-                count = 0;
-            }
             if (data.length === 0) {
                 this.getTotalCount();
                 this.loading = false;
@@ -240,9 +236,10 @@ class ListController {
         if (all) {
             this.allSelected = true; //for reactive visuals
             return this.getCompleteFilteredList().then((data) => {
+                this.allSelected = false;
                 this.contacts.selectedContacts = map('id', data);
-            }).finally(() => {
-                this.allSelected = false; //remove skeleton
+            }).catch(() => {
+                this.allSelected = false;
             });
         } else {
             this.contacts.selectedContacts = map('id', this.data);
