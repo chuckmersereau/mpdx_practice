@@ -55,4 +55,9 @@ $merge-default: #dbdbdb;
         line-height: 34px;
         font-weight: bold;
     }
+    &__list {
+        .item {
+            margin-bottom: 10px;
+        }
+    }
 }

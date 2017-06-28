@@ -8,11 +8,12 @@ class MergeContactsController {
     contacts;
     constructor(
         $scope,
-        contacts,
+        contacts, locale,
         selectedContacts
     ) {
         this.$scope = $scope;
         this.contacts = contacts;
+        this.locale = locale;
         this.selectedContacts = selectedContacts;
 
         this.winner = get('id', first(selectedContacts));
@@ -32,7 +33,8 @@ class MergeContactsController {
 }
 
 import contacts from 'contacts/contacts.service';
+import locale from 'common/locale/locale.service';
 
 export default angular.module('mpdx.contacts.list.merge.controller', [
-    contacts
+    contacts, locale
 ]).controller('mergeContactsController', MergeContactsController).name;

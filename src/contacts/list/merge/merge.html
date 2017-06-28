@@ -1,17 +1,26 @@
 <modal title="{{'Merge Contacts' | translate}}" cancel="$hide()" save="$ctrl.save()">
-    <div class="row">
-        <div class="col-sm-12" translate>
-            Data from the "losers" will get copied to the "winner". No data will be lost by merging.
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="row" ng-repeat="contact in $ctrl.selectedContacts">
-                <input type="radio" ng-model="$ctrl.winner" ng-value="contact.id" autofocus="$index == 0">
-                <span>{{ contact.name }}</span>
+    <div class="alert alert-danger" translate>This action cannot be undone!</div>
+    <p translate>Are you sure you want to merge the selected contacts?</p>
+    <p translate>Data from the "losers" will get copied to the "winner". Select the winner below. No data will be lost by merging.</p>
+    <div class="merges merges__list" ng-repeat="contact in $ctrl.selectedContacts">
+        <div ng-click="$ctrl.winner = contact.id" class="item" ng-class="{ 'selected': $ctrl.winner === contact.id }">
+            <div ng-if="$ctrl.winner === contact.id" class="merge-state selected" translate>Use This One</div>
+            <avatar src="::contact.square_avatar"></avatar>
+            <div class="avatar-on-left">
+                <a ui-sref="contacts.show({ contactId: contact.id })" ng-click="$event.stopPropagation()" target="_blank">
+                    <strong>{{::contact.name}}</strong>
+                </a>
+                <div><translate>Status: </translate> {{::contact.status || 'None' | translate}}</div>
+                <div ng-repeat="address in contact.addresses track by address.id" ng-if="::address.primary_mailing_address">
+                    <span class="no-slash" ng-if="::address.street">{{::address.street}}<br></span>
+                    <span class="no-slash" ng-if="::address.city">{{::address.city}},</span>
+                    {{::address.state}}
+                    {{::address.postal_code}}
+                    <div translate translate-params-source="::(address.source | sourceToStr)">From: {{source}}</div>
+                    <i class="fa fa-exclamation-triangle" ng-if="address.duplicate"></i>
+                </div>
+                <div translate translate-params-date="(contact.created_at | date : $ctrl.locale.dateTimeFormat)">On: {{date}}</div>
             </div>
         </div>
     </div>
-    <p translate>Are you sure you want to merge the selected contacts?</p>
-    <div class="alert alert-danger" translate>This action cannot be undone!</div>
 </modal>
