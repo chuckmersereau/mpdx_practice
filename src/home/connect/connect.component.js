@@ -1,4 +1,7 @@
+import defaultTo from 'lodash/fp/defaultTo';
 import filter from 'lodash/fp/filter';
+import find from 'lodash/fp/find';
+import get from 'lodash/fp/get';
 import sumBy from 'lodash/fp/sumBy';
 
 class ConnectController {
@@ -6,27 +9,21 @@ class ConnectController {
     tasks;
 
     constructor(
-        tasks
+        serverConstants, tasks
     ) {
+        this.serverConstants = serverConstants;
         this.tasks = tasks;
+
         this.limit = 5;
     }
-    addTask() {
-        this.tasks.addModal();
-    }
     totalTasks() {
-        if (this.tasks.analytics && this.tasks.analytics.tasks_overdue_or_due_today_counts) {
-            return sumBy('count', this.tasks.analytics.tasks_overdue_or_due_today_counts);
-        } else {
-            return 0;
-        }
+        return defaultTo(0, sumBy('count', get('analytics.tasks_overdue_or_due_today_counts', this.tasks)));
     }
     totalTypes() {
-        if (this.tasks.analytics && this.tasks.analytics.tasks_overdue_or_due_today_counts) {
-            return filter(c => c.count > 0, this.tasks.analytics.tasks_overdue_or_due_today_counts).length;
-        } else {
-            return 0;
-        }
+        return defaultTo(0, filter(c => c.count > 0, get('analytics.tasks_overdue_or_due_today_counts', this.tasks)).length);
+    }
+    getTranslatedLabel(label) {
+        return defaultTo(label, get('value', find({id: label}, this.serverConstants.data.activity_hashes)));
     }
 }
 
@@ -35,6 +32,9 @@ const Connect = {
     controller: ConnectController
 };
 
-export default angular.module('mpdx.home.connect', [])
-    .component('homeConnect', Connect)
-    .name;
+import serverConstants from 'common/serverConstants/serverConstants.service';
+import tasks from 'tasks/tasks.service';
+
+export default angular.module('mpdx.home.connect', [
+    serverConstants, tasks
+]).component('homeConnect', Connect).name;

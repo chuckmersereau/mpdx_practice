@@ -64,7 +64,7 @@ class CsvService {
             this.blockUI.reset();
             /* istanbul ignore next */
             this.$log.error(error);
-            this.alerts.addAlert(this.gettextCatalog.getString('Invalid CSV file - See help docs or send us a message with your CSV attached'), 'danger', error.status);
+            this.alerts.addAlert(this.gettextCatalog.getString('Invalid CSV file - See help docs or send us a message with your CSV attached'), 'danger', error.status, 10);
             this.help.showArticle(this.gettextCatalog.getString('590a049b0428634b4a32d13d'));
             throw error;
         });
@@ -117,7 +117,7 @@ class CsvService {
         return this.api.get(
             `account_lists/${this.api.account_list_id}/imports/csv/${importId}`,
             {
-                include: 'sample_contacts,sample_contacts.addresses,sample_contacts.primary_person,sample_contacts.primary_person.email_addresses,sample_contacts.primary_person.phone_numbers,sample_contacts.spouse'
+                include: 'sample_contacts,sample_contacts.addresses,sample_contacts.primary_person,sample_contacts.primary_person.email_addresses,sample_contacts.primary_person.phone_numbers,sample_contacts.spouse,sample_contacts.spouse.email_addresses,sample_contacts.spouse.phone_numbers'
             }
         ).then((data) => {
             this.blockUI.reset();
@@ -155,8 +155,10 @@ class CsvService {
                 const mappedConstants = flatten(values(result[constant]));
                 const unmappedConstants = difference(this.data.file_constants[header], mappedConstants);
                 result[constant][''] = union(result[constant][''], unmappedConstants);
+                if (result[constant][''].length === 0) {
+                    delete result[constant][''];
+                }
             }
-
             return result;
         }, this.data.file_constants_mappings, this.data.file_headers_mappings);
 
@@ -166,7 +168,7 @@ class CsvService {
 
         this.blockUI.start();
         return this.api.put({
-            url: `account_lists/${this.api.account_list_id}/imports/csv/${this.data.id}?include=sample_contacts,sample_contacts.addresses,sample_contacts.primary_person,sample_contacts.primary_person.email_addresses,sample_contacts.primary_person.phone_numbers,sample_contacts.spouse`,
+            url: `account_lists/${this.api.account_list_id}/imports/csv/${this.data.id}?include=sample_contacts,sample_contacts.addresses,sample_contacts.primary_person,sample_contacts.primary_person.email_addresses,sample_contacts.primary_person.phone_numbers,sample_contacts.spouse,sample_contacts.spouse.email_addresses,sample_contacts.spouse.phone_numbers`,
             data: patch,
             type: 'imports'
         }).then((data) => {
@@ -180,13 +182,13 @@ class CsvService {
             this.$log.error(data);
             if (has('data.errors', data)) {
                 each(error => {
-                    this.alerts.addAlert(error.detail, 'danger');
+                    this.alerts.addAlert(error.detail, 'danger', null, 10);
                 }, data.data.errors);
             } else {
                 this.alerts.addAlert(
                     this.gettextCatalog.getString(
                         'Unable to save your CSV import settings - See help docs or send us a message with your CSV attached'),
-                    'danger');
+                    'danger', 10);
             }
 
             throw data;

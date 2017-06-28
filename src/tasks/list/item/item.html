@@ -57,7 +57,7 @@
             <i class="fa fa-times"></i>
         </a>
     </div>
-    <div class="panel panel-default" ng-repeat="comment in $ctrl.task.comments">
+    <div class="panel panel-default comment" ng-repeat="comment in $ctrl.task.comments">
         <div class="panel-body">
             <a class="btn btn-xs btn-danger pull-right" ng-click="$ctrl.deleteComment(comment)" title="{{::'Delete Comment' | translate}}" ng-if="$ctrl.commentBelongsToUser(comment)">
                 <i class="fa fa-trash-o"></i>

@@ -1,38 +1,37 @@
 <div block-ui="contactShow">
-    <div class="contact-actions">
-        <a class="btn btn-default" ng-click="$ctrl.contacts.openAddReferralsModal()">
-            <i class="fa fa-users" aria-hidden="true"></i>
-            <translate>Add Referrals</translate>
-        </a>
-        <a class="btn btn-default" ng-click="$ctrl.openAddTaskModal()">
-            <i class="fa fa-square-o" aria-hidden="true"></i>
-            <translate>Add Task</translate>
-        </a>
-        <a class="btn btn-default" ng-click="$ctrl.openLogTaskModal()">
-            <i class="fa fa-check-square-o" aria-hidden="true"></i>
-            <translate>Log Task</translate>
-        </a>
-        <a class="btn btn-default" ng-click="$ctrl.hideContact()" ng-hide="$ctrl.contacts.current.status == 'Never Ask'">
-            <i class="fa fa-eye-slash" aria-hidden="true"></i>
-            <translate>Hide Contact</translate>
+    <div class="contact-actions filter--heading">
+        <alerts padding-only="true"></alerts>
+        <div class="btn-group">
+            <a class="btn btn-default" ng-click="$ctrl.contacts.openAddReferralsModal()">
+                <i class="fa fa-users" aria-hidden="true"></i>
+                <translate>Add Referrals</translate>
+            </a>
+            <a class="btn btn-default" ng-click="$ctrl.openAddTaskModal()">
+                <i class="fa fa-square-o" aria-hidden="true"></i>
+                <translate>Add Task</translate>
+            </a>
+            <a class="btn btn-default" ng-click="$ctrl.openLogTaskModal()">
+                <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                <translate>Log Task</translate>
+            </a>
+            <a class="btn btn-default" ng-click="$ctrl.hideContact()" ng-hide="$ctrl.contacts.current.status == 'Never Ask'">
+                <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                <translate>Hide Contact</translate>
+            </a>
+            <a class="btn btn-default visible-sm" ng-class="{ 'btn-reverse' : $ctrl.session.showFiltersOnMobile }" ng-click="$ctrl.session.showFiltersOnMobile = !$ctrl.session.showFiltersOnMobile">
+                <i class="fa fa-sliders"></i>
+                <translate>Filters</translate>
+            </a>
+        </div>
+        <a class="btn btn-reverse pull-right" ng-click="$ctrl.displayNotes()">
+            <i class="fa fa-sticky-note-o"></i>
+            <translate>See Notes</translate>
         </a>
     </div>
     <div class="contact-card">
-        <div class="row">
-            <div class="col-md-10">
-                <avatar src="$ctrl.contacts.current.square_avatar"></avatar>
-                <div class="top-content avatar-on-left">
-                    <contact-info contact="$ctrl.contacts.current" on-save="$ctrl.save()"></contact-info>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="see-notes">
-                    <a class="btn btn-reverse" ng-click="$ctrl.displayNotes()">
-                        <i class="fa fa-sticky-note-o"></i>
-                        <translate>See Notes</translate>
-                    </a>
-                </div>
-            </div>
+        <avatar src="$ctrl.contacts.current.square_avatar"></avatar>
+        <div class="top-content avatar-on-left">
+            <contact-info contact="$ctrl.contacts.current" on-save="$ctrl.save()"></contact-info>
         </div>
         <div class="contacts-gray-line"></div>
         <div>
@@ -44,13 +43,21 @@
                     <a as-sortable-item-handle ng-click="$ctrl.setActiveTab(item.key)">{{ item.value | translate }}</a>
                 </div>
             </div>
-
             <div class="tabs-info">
-                <a class="tip" data-trigger="hover" data-title="{{ 'You can reorder these tabs to your liking! Just Drag them left or right.' | translate }}" data-placement="left" bs-tooltip><i class="fa fa-question-circle"></i></a>
+                <a class="tip"
+                   data-trigger="hover"
+                   data-title="{{ 'You can reorder these tabs to your liking! Just Drag them left or right.' | translate }}"
+                   data-placement="left"
+                   bs-tooltip>
+                    <i class="fa fa-question-circle"></i>
+                </a>
             </div>
         </div>
         <ui-view>
-            <contact-details contact="$ctrl.contacts.current" donor-accounts="$ctrl.contacts.current.donor_accounts" on-save="$ctrl.save()"></contact-details>
+            <contact-details contact="$ctrl.contacts.current"
+                             donor-accounts="$ctrl.contacts.current.donor_accounts"
+                             on-save="$ctrl.save()">
+            </contact-details>
         </ui-view>
     </div>
 </div>

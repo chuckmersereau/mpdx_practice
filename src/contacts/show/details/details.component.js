@@ -45,6 +45,20 @@ class ContactDetailsController {
             }
         }, keys(serverConstants.data.locales));
     }
+    $onInit() {
+        const yes = this.gettextCatalog.getString('Yes');
+        const no = this.gettextCatalog.getString('No');
+        this.translations = {
+            no_appeals: [
+                {key: false, value: yes},
+                {key: true, value: no}
+            ],
+            magazine: [
+                {key: true, value: yes},
+                {key: false, value: no}
+            ]
+        };
+    }
     $onChanges() {
         this.last_donation = this.contact.last_donation ? round(this.contact.last_donation.amount) : this.gettextCatalog.getString('Never');
         this.giving_method = defaultTo(this.gettextCatalog.getString('None'), get('last_donation.payment_method', this.contact));

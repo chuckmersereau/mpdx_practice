@@ -372,6 +372,36 @@ describe('reports.donations.service', () => {
         });
     });
 
+    describe('displayName', () => {
+        describe('has contact', () => {
+            const donation = {
+                contact: {
+                    name: 'Test Name'
+                },
+                donor_account: {
+                    account_number: '123'
+                }
+            };
+
+            it('should return contact name with account number', () => {
+                expect(donations.displayName(donation)).toEqual('Test Name (123)');
+            });
+        });
+
+        describe('has no contact', () => {
+            const donation = {
+                contact: null,
+                donor_account: {
+                    display_name: 'test test (123)'
+                }
+            };
+
+            it('should return donor account display name', () => {
+                expect(donations.displayName(donation)).toEqual('test test (123)');
+            });
+        });
+    });
+
     describe('openDonationModal', () => {
         beforeEach(() => {
             spyOn(modal, 'open').and.callFake(() => {});

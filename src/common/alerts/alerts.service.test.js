@@ -35,7 +35,8 @@ describe('common.alerts.service', () => {
                     displayTime: 5,
                     message: message,
                     status: null,
-                    type: 'success'
+                    type: 'success',
+                    modal: false
                 }]);
             });
 
@@ -57,7 +58,8 @@ describe('common.alerts.service', () => {
                         displayTime: 5,
                         message: message,
                         status: null,
-                        type: type
+                        type: type,
+                        modal: false
                     }]);
                 });
 
@@ -71,7 +73,8 @@ describe('common.alerts.service', () => {
                             displayTime: 5,
                             message: message,
                             status: status,
-                            type: type
+                            type: type,
+                            modal: false
                         }]);
                     });
 
@@ -85,8 +88,25 @@ describe('common.alerts.service', () => {
                                 displayTime: displayTime,
                                 message: message,
                                 status: status,
-                                type: type
+                                type: type,
+                                modal: false
                             }]);
+                        });
+
+                        describe('has modal', () => {
+                            const modal = true;
+
+                            it('should change data', () => {
+                                alerts.addAlert(message, type, status, displayTime, modal);
+                                expect(alerts.data).toEqual([{
+                                    id: jasmine.any(String),
+                                    displayTime: displayTime,
+                                    message: message,
+                                    status: status,
+                                    type: type,
+                                    modal: modal
+                                }]);
+                            });
                         });
                     });
                 });

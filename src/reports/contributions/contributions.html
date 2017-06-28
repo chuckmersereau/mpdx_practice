@@ -178,12 +178,12 @@
                                 </td>
                                 <td class="text-right" ng-repeat="total in ::currency.totals.months track by $index">
                                     <strong ng-class="::{'text-muted': $last}">
-                                        {{::currency.symbol}}{{::total | number : 0}}
+                                        {{::total | number : 0}}
                                     </strong>
                                 </td>
                                 <td class="text-right">
                                     <strong>
-                                        {{::currency.symbol}}{{::currency.totals.year | number : 0}}
+                                        {{::$ctrl.type === 'salary' ? currency.totals.year_converted : currency.totals.year | number : 0}}
                                     </strong>
                                 </td>
                             </tr>

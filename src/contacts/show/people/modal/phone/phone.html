@@ -7,10 +7,10 @@
         <select chosen
                 ng-model="$ctrl.phone.location"
                 data-placeholder="{{ 'Select an Option *' | translate}}"
-                class="form-control">
-            <option value="mobile">Mobile</option>
-            <option value="home">Home</option>
-            <option value="work">Work</option>
+                class="form-control" required>
+            <option value="mobile" translate>Mobile</option>
+            <option value="home" translate>Home</option>
+            <option value="work" translate>Work</option>
         </select>
     </div>
     <div class="col-sm-1">

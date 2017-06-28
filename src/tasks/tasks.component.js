@@ -2,9 +2,10 @@ class TasksController {
     help;
     constructor(
         gettextCatalog,
-        help
+        help, session
     ) {
         this.gettextCatalog = gettextCatalog;
+        this.session = session;
 
         help.suggest([
             this.gettextCatalog.getString('584acfaa9033602d65f6e191'),
@@ -25,5 +26,12 @@ const Tasks = {
     template: require('./tasks.html')
 };
 
-export default angular.module('mpdx.tasks.component', [])
+import gettextCatalog from 'angular-gettext';
+import help from 'common/help/help.service';
+import session from 'common/session/session.service';
+
+export default angular.module('mpdx.tasks.component', [
+    gettextCatalog,
+    help, session
+])
     .component('tasks', Tasks).name;

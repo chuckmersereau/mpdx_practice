@@ -24,6 +24,7 @@ describe('tools.import.csv.headers.component', () => {
     describe('constructor', () => {
         it('should set default values', () => {
             expect($ctrl.unmappedHeaders).toEqual([]);
+            expect($ctrl.mappedHeaders).toEqual([]);
         });
     });
 
@@ -36,12 +37,13 @@ describe('tools.import.csv.headers.component', () => {
     });
 
     describe('updateHeaders', () => {
-        it('should set unmappedHeaders to the difference between required_headers and file_headers_mappings', () => {
+        beforeEach(() => {
             serverConstants.data = {
                 csv_import: {
                     required_headers: {
                         first_name: 'First Name',
-                        last_name: 'Last Name'
+                        last_name: 'Last Name',
+                        status: 'Status'
                     }
                 }
             };
@@ -51,8 +53,39 @@ describe('tools.import.csv.headers.component', () => {
                     language: 'likely_to_give'
                 }
             };
+        });
+
+        it('should set unmappedHeaders to required_headers - file_headers_mappings + [first_name, last_name, full_name]', () => {
             $ctrl.updateHeaders();
-            expect($ctrl.unmappedHeaders).toEqual(['first_name', 'last_name']);
+            expect($ctrl.unmappedHeaders).toEqual(['first_name', 'last_name', 'status', 'full_name']);
+        });
+
+        it('should set mappedHeaders to array of values of the file_headers_mappings', () => {
+            $ctrl.updateHeaders();
+            expect($ctrl.mappedHeaders).toEqual(['notes', 'likely_to_give']);
+        });
+
+        describe('full_name set', () => {
+            beforeEach(() => {
+                importCsv.data.file_headers_mappings.full_name = 'full_name';
+            });
+
+            it('should set unmappedHeaders to required_headers - file_headers_mappings - [first_name, last_name, full_name]', () => {
+                $ctrl.updateHeaders();
+                expect($ctrl.unmappedHeaders).toEqual(['status']);
+            });
+        });
+
+        describe('first_name & last_name set', () => {
+            beforeEach(() => {
+                importCsv.data.file_headers_mappings.first_name = 'first_name';
+                importCsv.data.file_headers_mappings.last_name = 'last_name';
+            });
+
+            it('should set unmappedHeaders to required_headers - file_headers_mappings - [first_name, last_name, full_name]', () => {
+                $ctrl.updateHeaders();
+                expect($ctrl.unmappedHeaders).toEqual(['status']);
+            });
         });
     });
 

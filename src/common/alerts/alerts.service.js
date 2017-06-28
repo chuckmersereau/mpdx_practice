@@ -9,7 +9,7 @@ class AlertsService {
         this.data = [];
     }
 
-    addAlert(message, type = 'success', status = null, displayTime = 5) {
+    addAlert(message, type = 'success', status = null, displayTime = 5, modal = false) {
         if (!message) { return; };
 
         const alert = {
@@ -17,7 +17,8 @@ class AlertsService {
             displayTime: displayTime,
             message: message,
             status: status,
-            type: type
+            type: type,
+            modal: modal
         };
 
         this.data.push(alert);
