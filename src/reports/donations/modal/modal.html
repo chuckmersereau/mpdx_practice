@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-md-8">
                     <label for="tendered_amount"><translate>Amount</translate> <span class="text-danger">*</span></label>
-                    <input type="text" ng-model="$ctrl.donation.amount" id="tendered_amount" class="form-control" pattern="[0-9.,$]*" required autofocus>
+                    <input type="text" ng-model="$ctrl.donation.amount" id="tendered_amount" class="form-control" pattern="\$?[1-9][0-9.,]*" required autofocus>
                 </div>
                 <div class="col-md-4">
                     <label for="currency"><translate>Currency</translate> <span class="text-danger">*</span></label>
@@ -39,11 +39,11 @@
             <div class="row">
                 <div class="col-md-6">
                     <label for="donor_account_id"><translate>Partner Account</translate> <span class="text-danger">*</span></label>
-                    <collection-selector item-name="{{ ::'Partner Account' | translate }}" display-text="$ctrl.donation.donor_account.display_name" search-text="$ctrl.donation.donor_account.account_number" search="$ctrl.donorAccounts.search(text)" select="$ctrl.onDonorAccountSelected(item)"></collection-selector>
+                    <collection-selector item-name="{{ ::'Partner Account' | translate }}" display-text="$ctrl.donation.donor_account.display_name" search-text="$ctrl.donation.donor_account.account_number" search="$ctrl.donorAccounts.search(text)" select="$ctrl.onDonorAccountSelected(item)" required="true"></collection-selector>
                 </div>
                 <div class="col-md-6">
                     <label for="designation_account_id"><translate>Designation Account</translate> <span class="text-danger">*</span></label>
-                    <collection-selector item-name="{{ ::'Designation Account' | translate }}" display-text="$ctrl.donation.designation_account.display_name" search-text="$ctrl.donation.donor_account.designation_number" search="$ctrl.designationAccounts.search(text)" select="$ctrl.onDesignationAccountSelected(item)"></collection-selector>
+                    <collection-selector item-name="{{ ::'Designation Account' | translate }}" display-text="$ctrl.donation.designation_account.display_name" search-text="$ctrl.donation.donor_account.designation_number" search="$ctrl.designationAccounts.search(text)" select="$ctrl.onDesignationAccountSelected(item)" required="true"></collection-selector>
                 </div>
             </div>
         </div>

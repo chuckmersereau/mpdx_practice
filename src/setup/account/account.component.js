@@ -5,18 +5,24 @@ class AccountController {
     accounts;
     users;
     constructor(
-        $state,
+        $rootScope, $state,
         users, accounts
     ) {
+        this.$rootScope = $rootScope;
         this.$state = $state;
         this.accounts = accounts;
         this.users = users;
     }
     $onInit() {
         const firstAccount = get('data[0].id', this.accounts);
-        this.users.current.preferences.default_account_list = defaultTo(firstAccount, this.users.current.preferences.default_account_list);
+        this.users.current.preferences.default_account_list = defaultTo(firstAccount, get('current.preferences.default_account_list', this.users));
         this.users.currentOptions.setup_position.value = 'account';
         this.users.setOption(this.users.currentOptions.setup_position);
+
+        this.users.listOrganizationAccounts();
+        this.$rootScope.$on('accountListUpdated', () => {
+            this.users.listOrganizationAccounts(true);
+        });
     }
     next() {
         return this.users.saveCurrent().then((data) => {
@@ -31,10 +37,14 @@ class AccountController {
     }
 }
 
+import accounts from 'common/accounts/accounts.service';
+import users from 'common/users/users.service';
+
 const Account = {
     template: require('./account.html'),
     controller: AccountController
 };
 
-export default angular.module('mpdx.setup.account.component', [])
-    .component('setupAccount', Account).name;
+export default angular.module('mpdx.setup.account.component', [
+    accounts, users
+]).component('setupAccount', Account).name;

@@ -60,7 +60,7 @@
         <label translate>Tags</label>
         <tag-selector ng-model="$ctrl.task.tag_list" tag-list="$ctrl.tasksTags.data"></tag-selector>
     </div>
-    <div ng-if="$ctrl.task.activity_type === 'Appointment'">
+    <div class="form-group" ng-if="$ctrl.task.activity_type === 'Appointment'">
         <label for="location" translate>Location</label>
         <input type="text"
                name="location"

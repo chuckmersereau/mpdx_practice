@@ -1,12 +1,15 @@
+import get from 'lodash/fp/get';
+
 class ItemController {
     fixPhoneNumbers;
 
     constructor(
         blockUI,
-        fixPhoneNumbers
+        fixPhoneNumbers, people
     ) {
         this.blockUI = blockUI;
         this.fixPhoneNumbers = fixPhoneNumbers;
+        this.people = people;
     }
 
     $onInit() {
@@ -23,6 +26,10 @@ class ItemController {
     hasPrimary() {
         return this.fixPhoneNumbers.hasPrimary(this.person);
     }
+    openPersonModal() {
+        const contactId = get('parent_contacts[0]', this.person);
+        return this.people.openPeopleModal({id: contactId}, this.person.id);
+    }
 }
 
 const Item = {
@@ -35,7 +42,8 @@ const Item = {
 
 import blockUI from 'angular-block-ui';
 import fixPhoneNumbers from '../phoneNumbers.service';
+import people from 'contacts/show/people/people.service';
 
 export default angular.module('mpdx.tools.fix.phoneNumbers.item.component', [
-    blockUI, fixPhoneNumbers
+    blockUI, fixPhoneNumbers, people
 ]).component('fixPhoneNumbersItem', Item).name;

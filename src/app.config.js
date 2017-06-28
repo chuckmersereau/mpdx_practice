@@ -12,7 +12,9 @@ export default function appConfig(
             return localStorage.getItem('token');
         },
         unauthenticatedRedirectPath: '/login',
-        unauthenticatedRedirector: /*@ngInject*/ ($state) => {
+        unauthenticatedRedirector: /*@ngInject*/ ($state, $location, $window) => {
+            $window.localStorage.setItem('redirect', $location.path());
+            $window.localStorage.setItem('params', JSON.stringify($location.search()));
             $state.go('login');
         },
         whiteListedDomains: ['api.stage.mpdx.org', 'api.mpdx.org', 'localhost']

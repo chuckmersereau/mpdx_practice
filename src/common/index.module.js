@@ -1,3 +1,4 @@
+import acceptInvite from './acceptInvite/acceptInvite.component';
 import accounts from './accounts/accounts.service';
 import alerts from './alerts/index.module';
 import api from './api/api.service';
@@ -36,6 +37,7 @@ import urlParameter from './urlParameter/urlParameter.service';
 import users from './users/users.service';
 
 export default angular.module('mpdx.common', [
+    acceptInvite,
     accounts,
     alerts,
     appeals,

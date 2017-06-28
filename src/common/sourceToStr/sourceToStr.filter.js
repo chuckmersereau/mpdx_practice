@@ -11,6 +11,8 @@ class SourceToStrFilter {
                     return this.gettextCatalog.getString('MPDX');
                 case 'TntImport':
                     return this.gettextCatalog.getString('Tnt Import');
+                case 'GoogleImport':
+                    return this.gettextCatalog.getString('Google Import');
                 default:
                     return str;
             }

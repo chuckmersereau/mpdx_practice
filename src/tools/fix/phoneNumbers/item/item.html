@@ -4,7 +4,9 @@
             <div class="panel-body">
                 <avatar src="$ctrl.person.avatar"></avatar>
                 <div class="avatar-on-left">
-                    <h4>{{$ctrl.person.first_name}} {{$ctrl.person.last_name}}</h4>
+                    <a ng-click="$ctrl.openPersonModal()">
+                        <h4>{{$ctrl.person.first_name}} {{$ctrl.person.last_name}}</h4>
+                    </a>
                     <div class="row">
                         <div class="col-xs-4">
                             <label translate>Source</label>

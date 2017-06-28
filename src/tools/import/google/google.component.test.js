@@ -134,7 +134,7 @@ describe('tools.import.google.component', () => {
             });
         });
 
-        describe('promise successful', () => {
+        describe('promise rejected', () => {
             beforeEach(() => {
                 spy.and.callFake(() => Promise.reject(new Error('something bad happened')));
             });

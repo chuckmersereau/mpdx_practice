@@ -102,7 +102,7 @@ describe('tools.fix.emailAddresses.service', () => {
                         account_list_id: api.account_list_id
                     },
                     fields: {
-                        person: 'first_name,last_name,avatar,email_addresses'
+                        person: 'first_name,last_name,avatar,email_addresses,parent_contacts'
                     },
                     include: 'email_addresses',
                     page: 1,
@@ -212,12 +212,10 @@ describe('tools.fix.emailAddresses.service', () => {
 
         it('should call the people service', () => {
             fixEmailAddresses.save(person);
-            expect(people.save).toHaveBeenCalledWith(
-                null,
-                {
-                    id: 'person_id',
-                    email_addresses: [{ valid_values: true }, { valid_values: true }]
-                });
+            expect(people.save).toHaveBeenCalledWith({
+                id: 'person_id',
+                email_addresses: [{ valid_values: true }, { valid_values: true }]
+            });
         });
 
         describe('promise successful', () => {

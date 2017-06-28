@@ -13,16 +13,19 @@
                    ng-model="$ctrl.searchParams"
                    ng-change="$ctrl.search()"
                    ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
-                   ng-blur="$ctrl.reset()">
+                   ng-blur="$ctrl.reset()"
+                   ng-keyup="$ctrl.keyup($event)">
         </div>
         <div class="dropdown-content" ng-if="$ctrl.searchParams != '' && $ctrl.contactList.length > 0">
             <a ng-repeat="contact in $ctrl.contactList track by contact.id"
                ng-click="$ctrl.go(contact.id)"
-               ng-if="$ctrl.searchParams !== ''">
+               ng-if="$ctrl.searchParams !== ''"
+               ng-class="{ 'active' : contact.active }">
                 {{::contact.name}}
             </a>
             <a ng-if="$ctrl.contactList.meta.pagination.per_page < $ctrl.contactList.meta.pagination.total_count"
                ng-click="$ctrl.gotoList()"
+               ng-class="{ 'active' : $ctrl.moreActive }"
                translate-params-count="$ctrl.contactList.meta.pagination.total_count - $ctrl.contactList.meta.pagination.per_page"
                translate>
                 And {{count}} more

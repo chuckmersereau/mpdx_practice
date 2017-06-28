@@ -2,3 +2,4 @@
     <translate translate-params-item="$ctrl.itemName" ng-if="!$ctrl.displayText">Select {{item}}</translate>
     <span ng-if="$ctrl.displayText">{{ $ctrl.displayText }}</span>
 </button>
+<input type="hidden" ng-model="$ctrl.displayText" ng-if="$ctrl.required" required>

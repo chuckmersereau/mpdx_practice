@@ -9,9 +9,10 @@ class SetupConnectController {
     serverConstants;
     users;
     constructor(
-        $state, gettextCatalog,
+        $rootScope, $state, gettextCatalog,
         accounts, alerts, api, help, preferencesOrganization, serverConstants, users
     ) {
+        this.$rootScope = $rootScope;
         this.$state = $state;
         this.gettextCatalog = gettextCatalog;
 
@@ -28,7 +29,12 @@ class SetupConnectController {
     $onInit() {
         this.users.currentOptions.setup_position.value = 'connect';
         this.users.setOption(this.users.currentOptions.setup_position);
-        this.showOrgs = this.users.organizationAccounts.length === 0;
+        this.users.listOrganizationAccounts().then(() => {
+            this.showOrgs = this.users.organizationAccounts.length === 0;
+        });
+        this.$rootScope.$on('accountListUpdated', () => {
+            this.users.listOrganizationAccounts(true);
+        });
     }
     connect() {
         this.connecting = true;

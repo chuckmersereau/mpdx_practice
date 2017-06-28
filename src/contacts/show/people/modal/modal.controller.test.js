@@ -4,21 +4,24 @@ const person = {first_name: 'a', last_name: 'b'};
 const contact = {id: 123};
 
 describe('contacts.show.personModal.controller', () => {
-    let $ctrl, controller, alerts, people, gettextCatalog, rootScope, scope;
+    let $ctrl, controller, alerts, people, gettextCatalog, rootScope, scope, modal, api;
     beforeEach(() => {
         angular.mock.module(mc);
-        inject(($controller, $rootScope, _alerts_, _people_, _gettextCatalog_) => {
+        inject(($controller, $rootScope, _alerts_, _people_, _gettextCatalog_, _modal_, _api_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             scope.$hide = () => {};
             alerts = _alerts_;
+            api = _api_;
             gettextCatalog = _gettextCatalog_;
+            modal = _modal_;
             people = _people_;
             controller = $controller;
             loadController(person);
         });
         spyOn(alerts, 'addAlert').and.callFake(data => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
+        spyOn(scope, '$hide').and.callFake(() => {});
     });
     function loadController() {
         $ctrl = controller('personModalController as $ctrl', {
@@ -44,21 +47,46 @@ describe('contacts.show.personModal.controller', () => {
     describe('save', () => {
         beforeEach(() => {
             spyOn(rootScope, '$emit').and.callThrough();
-            spyOn(scope, '$hide');
         });
-        it('should call personUpdated on create', done => {
-            spyOn(people, 'create').and.callFake(() => Promise.resolve());
+        it('should create on create', done => {
+            spyOn(api, 'post').and.callFake(() => Promise.resolve());
+            $ctrl.activate();
+            $ctrl.person.first_name = 'a';
+            $ctrl.save().then(() => {
+                expect(api.post).toHaveBeenCalledWith('contacts/people', {
+                    email_addresses: [],
+                    first_name: 'a',
+                    phone_numbers: [],
+                    family_relationships: [],
+                    facebook_accounts: [],
+                    twitter_accounts: [],
+                    linkedin_accounts: [],
+                    websites: []
+                });
+                done();
+            });
+        });
+        it('should alert a translated message on create', done => {
+            spyOn(api, 'post').and.callFake(() => Promise.resolve());
             $ctrl.activate();
             $ctrl.person.first_name = 'a';
             $ctrl.save().then(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
                 expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
+                done();
+            });
+        });
+        it('should call personUpdated on create', done => {
+            spyOn(api, 'post').and.callFake(() => Promise.resolve());
+            $ctrl.activate();
+            $ctrl.person.first_name = 'a';
+            $ctrl.save().then(() => {
                 expect(rootScope.$emit).toHaveBeenCalledWith('personUpdated');
                 done();
             });
         });
         it('should handle rejection', done => {
-            spyOn(people, 'create').and.callFake(() => Promise.reject(Error('')));
+            spyOn(api, 'post').and.callFake(() => Promise.reject());
             $ctrl.save().catch(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger', null, 5, true);
                 expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
@@ -85,6 +113,31 @@ describe('contacts.show.personModal.controller', () => {
             $ctrl.save().catch(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger', null, 5, true);
                 expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
+                done();
+            });
+        });
+    });
+    describe('delete', () => {
+        beforeEach(() => {
+            spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+        });
+        it('should confirm with a translated message', () => {
+            $ctrl.delete();
+            expect(modal.confirm).toHaveBeenCalledWith(jasmine.any(String));
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
+        });
+        it('should call people.remove', done => {
+            $ctrl.person.id = 1;
+            $ctrl.delete().then(() => {
+                expect(api.delete).toHaveBeenCalledWith('contacts/123/people/1');
+                done();
+            });
+        });
+        it('should hide the modal', done => {
+            $ctrl.person.id = 1;
+            $ctrl.delete().then(() => {
+                expect(scope.$hide).toHaveBeenCalledWith();
                 done();
             });
         });

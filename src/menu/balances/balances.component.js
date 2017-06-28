@@ -3,17 +3,15 @@ import toInteger from 'lodash/fp/toInteger';
 
 class BalancesController {
     accounts;
-    api;
     designationAccounts;
     reports;
     constructor(
         $log, $rootScope, gettextCatalog,
-        accounts, api, designationAccounts, reports
+        accounts, designationAccounts, reports
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
         this.accounts = accounts;
-        this.api = api;
         this.designationAccounts = designationAccounts;
         this.gettextCatalog = gettextCatalog;
         this.reports = reports;
@@ -21,10 +19,10 @@ class BalancesController {
     $onInit() {
         this.init();
         this.$rootScope.$on('accountListUpdated', () => {
-            this.init();
+            this.init(true);
         });
     }
-    init() {
+    init(reset = false) {
         this.reports.getGoals().then(() => {
             this.title = this.gettextCatalog.getString(
                 '{{received}} received/{{pledged}} committed of goal: {{goal}}. Click to see outstanding financial partners.', {
@@ -34,7 +32,7 @@ class BalancesController {
                 }
             );
         });
-        this.designationAccounts.load(true).then(() => {
+        this.designationAccounts.load(reset).then(() => {
             this.balance = reduce((sum, designation) =>
                 sum + toInteger(designation.active ? designation.converted_balance : 0)
             , 0, this.designationAccounts.data);
@@ -47,5 +45,12 @@ const Balances = {
     template: require('./balances.html')
 };
 
-export default angular.module('mpdx.menu.balances.component', [])
-    .component('menuBalances', Balances).name;
+import accounts from 'common/accounts/accounts.service';
+import designationAccounts from 'common/designationAccounts/designationAccounts.service';
+import gettextCatalog from 'angular-gettext';
+import reports from 'reports/reports.service';
+
+export default angular.module('mpdx.menu.balances.component', [
+    gettextCatalog,
+    accounts, designationAccounts, reports
+]).component('menuBalances', Balances).name;

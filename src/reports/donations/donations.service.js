@@ -60,24 +60,6 @@ class DonationsService {
         });
     }
 
-    getDonationChart({ startDate = null, endDate = null, donorAccountId = null } = {}) {
-        let params = {
-            filter: {
-                account_list_id: this.api.account_list_id
-            }
-        };
-        if (donorAccountId) {
-            params.filter.donor_account_id = donorAccountId;
-        }
-        if (startDate && endDate && moment.isMoment(startDate) && moment.isMoment(endDate)) {
-            params.filter.donation_date = `${startDate.format('YYYY-MM-DD')}..${endDate.format('YYYY-MM-DD')}`;
-        }
-        return this.api.get('reports/monthly_giving_graph', params).then((data) => {
-            this.$log.debug('reports/monthly_giving_graph', data);
-            return data;
-        });
-    }
-
     displayName(donation) {
         if (donation.contact) {
             return `${donation.contact.name} (${donation.donor_account.account_number})`;
@@ -88,7 +70,7 @@ class DonationsService {
 
     openDonationModal(donation) {
         if (!donation) {
-            donation = { amount: '0' };
+            donation = {};
         }
         return this.modal.open({
             template: require('./modal/modal.html'),

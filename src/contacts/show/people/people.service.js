@@ -24,9 +24,6 @@ class PersonService {
         this.includes = 'email_addresses,facebook_accounts,family_relationships,family_relationships.related_person,linkedin_accounts,master_person,phone_numbers,twitter_accounts,websites';
         this.data = [];
     }
-    create(contactId, person) {
-        return this.api.post(`contacts/${contactId}/people`, person);
-    }
     get(contactId, personId) {
         return this.api.get(`contacts/${contactId}/people/${personId}`, {include: this.includes}).then((data) => {
             this.$log.debug(`contacts/${contactId}/people/${personId}`, data);
@@ -73,16 +70,12 @@ class PersonService {
             return data;
         });
     }
-    save(contactId, person) {
-        if (contactId !== null) {
-            return this.api.put(`contacts/${contactId}/people/${person.id}`, person); //reload after use, otherwise add reconcile
-        } else {
-            return this.api.put({
-                url: `contacts/people/${person.id}`,
-                data: person,
-                type: 'people'
-            }); //reload after use, otherwise add reconcile
-        }
+    save(person) {
+        return this.api.put({
+            url: `contacts/people/${person.id}`,
+            data: person,
+            type: 'people'
+        }); //reload after use, otherwise add reconcile
     }
     bulkSave(people) {
         return this.api.put({
@@ -90,9 +83,6 @@ class PersonService {
             data: people,
             type: 'people'
         });
-    }
-    remove(contactId, personId) {
-        return this.api.delete(`contacts/${contactId}/people/${personId}`);
     }
     deleteEmailAddress(person, emailAddress) {
         const message = this.gettextCatalog.getString('Are you sure you wish to delete this email address?');
