@@ -63,7 +63,7 @@
                 disable-search="true"
                 data-placeholder-text-single="'Select an Option' | translate"
                 class="form-control"
-                ng-options="opt as opt for opt in $ctrl.serverConstants.data.assignable_statuses"
+                ng-options="opt.id as opt.value for opt in $ctrl.serverConstants.data.status_hashes"
                 ng-model="$ctrl.status"
                 allow-single-deselect="true">
             <option value=""></option>
