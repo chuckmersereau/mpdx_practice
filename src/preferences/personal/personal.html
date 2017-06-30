@@ -130,12 +130,8 @@
             <div class="panel-animate" ng-show="$ctrl.tabSelected('language')">
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-8 col-md-offset-4" ng-form="languageForm">
-                            <preferences-personal-language on-save="$ctrl.save()"></preferences-personal-language>
-                            <button ng-click="$ctrl.save()" ng-disabled="(!$ctrl.setup && languageForm.$pristine) || $ctrl.saving" class="btn btn-primary">
-                                <span translate>Save</span>&nbsp;
-                                <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
-                            </button>
+                        <div class="col-md-8 col-md-offset-4" >
+                            <preferences-personal-language on-save="$ctrl.save()" setup="$ctrl.setup"></preferences-personal-language>
                         </div>
                     </div>
                 </div>
