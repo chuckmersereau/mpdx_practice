@@ -62,10 +62,8 @@ class ContactPeopleController {
         if (this.selectedPeople.length < 2) {
             this.alerts.addAlert(this.gettextCatalog.getString('First select at least 2 people to merge'), 'danger');
         } else {
-            this.isMerging = false;
             return this.people.openMergePeopleModal(this.selectedPeople).then(() => {
-                this.selectedPeople = [];
-            }).catch(() => {
+                this.isMerging = false;
                 this.selectedPeople = [];
             });
         }

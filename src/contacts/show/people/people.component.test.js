@@ -70,25 +70,13 @@ describe('contacts.show.people.component', () => {
             expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
             expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
         });
-        it('should hide the merging view', () => {
-            $ctrl.selectedPeople = [1, 2];
-            $ctrl.openMergeModal();
-            expect($ctrl.isMerging).toBeFalsy();
-        });
         it('should open the merge modal', done => {
             spyOn(people, 'openMergePeopleModal').and.callFake(() => Promise.resolve());
             $ctrl.selectedPeople = [1, 2];
             $ctrl.openMergeModal().then(() => {
                 expect(people.openMergePeopleModal).toHaveBeenCalledWith([1, 2]);
                 expect($ctrl.selectedPeople).toEqual([]);
-                done();
-            });
-        });
-        it('should handle catch', done => {
-            spyOn(people, 'openMergePeopleModal').and.callFake(() => Promise.reject(Error('err')));
-            $ctrl.selectedPeople = [1, 2];
-            $ctrl.openMergeModal().then(() => {
-                expect($ctrl.selectedPeople).toEqual([]);
+                expect($ctrl.isMerging).toBeFalsy();
                 done();
             });
         });

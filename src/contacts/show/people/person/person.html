@@ -1,7 +1,7 @@
-<div class="card" ng-class="{'merging': $ctrl.isMerging, 'selected' : $ctrl.person.selected_for_merge === true, 'primary': $ctrl.contact.primary_person.id === $ctrl.person.id }">
+<div class="card" ng-class="{'merging': $ctrl.isMerging, 'selected' : $ctrl.person.selected_for_merge === true, 'primary': $ctrl.contact.primary_person.id === $ctrl.person.id }" ng-click="$ctrl.selectCard()">
     <avatar src="$ctrl.person.avatar"></avatar>
     <div class="content avatar-on-left">
-        <a class="pull-right edit" ng-click="$ctrl.openModal(); $event.stopPropagation()" ng-if="::!$ctrl.view" ng-click="$ctrl.selectCard()" translate>Edit</a>
+        <a class="pull-right edit" ng-click="$ctrl.openModal(); $event.stopPropagation()" ng-if="::!$ctrl.view" translate>Edit</a>
         <h3 ng-class="::{ strike: $ctrl.person.deceased }">{{:: $ctrl.person.first_name }} {{:: $ctrl.person.last_name }}</h3>
         <dl>
             <dd ng-repeat="email in ::$ctrl.person.email_addresses">
