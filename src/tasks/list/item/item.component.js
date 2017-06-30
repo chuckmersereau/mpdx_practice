@@ -1,3 +1,4 @@
+import concat from 'lodash/fp/concat';
 import eq from 'lodash/fp/eq';
 import get from 'lodash/fp/get';
 
@@ -5,8 +6,9 @@ class ItemController {
     task;
     constructor(
         gettextCatalog,
-        locale, modal, tasks, users
+        api, locale, modal, tasks, users
     ) {
+        this.api = api;
         this.gettextCatalog = gettextCatalog;
         this.locale = locale;
         this.modal = modal;
@@ -52,9 +54,21 @@ class ItemController {
     }
     addComment() {
         if (this.comment) {
-            this.tasks.addComment(this.task, this.comment);
-            this.comment = '';
+            return this.api.post(`tasks/${this.task.id}/comments`, { body: this.comment, person: { id: this.users.current.id } }).then(data => {
+                data.person = {
+                    id: this.users.current.id,
+                    first_name: this.users.current.first_name,
+                    last_name: this.users.current.last_name
+                };
+                this.task.comments = concat(this.task.comments, data);
+                this.comment = '';
+            });
         }
+    }
+    editComment(comment) {
+        return this.api.put(`tasks/${this.task.id}/comments/${comment.id}`, { body: comment.body }).then(() => {
+            comment.edit = false;
+        });
     }
     deleteComment(comment) {
         const message = this.gettextCatalog.getString('Are you sure you wish to delete the selected comment?');
