@@ -22,6 +22,11 @@ describe('contacts.show.details.component', () => {
         spyOn(gettextCatalog, 'getString').and.callThrough();
         spyOn(alerts, 'addAlert').and.callFake(data => data);
     });
+    describe('constructor', () => {
+        it('should define view only dependencies', () => {
+            expect($ctrl.contactsTags).toBeDefined();
+        });
+    });
     describe('$onInit', () => {
         it('should setup translation object', () => {
             $ctrl.$onInit();

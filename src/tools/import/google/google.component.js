@@ -31,7 +31,7 @@ class ImportGoogleController {
 
     $onInit() {
         this.$rootScope.$on('accountListUpdated', () => {
-            this.contactsTags.load(true);
+            this.contactsTags.load();
             this.google.load(true);
         });
 
