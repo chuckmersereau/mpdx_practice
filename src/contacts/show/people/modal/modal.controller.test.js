@@ -53,7 +53,7 @@ describe('contacts.show.personModal.controller', () => {
             $ctrl.activate();
             $ctrl.person.first_name = 'a';
             $ctrl.save().then(() => {
-                expect(api.post).toHaveBeenCalledWith('contacts/people', {
+                expect(api.post).toHaveBeenCalledWith('contacts/123/people', {
                     email_addresses: [],
                     first_name: 'a',
                     phone_numbers: [],

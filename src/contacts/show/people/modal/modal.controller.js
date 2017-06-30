@@ -87,7 +87,7 @@ class PersonModalController {
                 throw err;
             });
         } else {
-            return this.api.post(`contacts/people`, this.person).then(() => {
+            return this.api.post(`contacts/${this.contact.id}/people`, this.person).then(() => {
                 /* istanbul ignore next */
                 this.$log.debug('person created:', this.person);
                 this.$rootScope.$emit('personUpdated');
