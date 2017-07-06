@@ -1,12 +1,18 @@
-<div class="form-group" ng-if="!$ctrl.listOnly">
-    <label for="language" translate>Language</label>
-    <p class="text-muted" translate>The language determines your default language for MPDX.</p>
-    <select chosen class="form-control" ng-model="$ctrl.users.current.preferences.locale" id="language" ng-change="$ctrl.setLanguage()"
+<div ng-form="languageForm">
+    <div class="form-group" ng-if="!$ctrl.listOnly">
+        <label for="language" translate>Language</label>
+        <p class="text-muted" translate>The language determines your default language for MPDX.</p>
+        <select chosen class="form-control" ng-model="$ctrl.users.current.preferences.locale" id="language" ng-change="$ctrl.setLanguage()"
+                ng-options="option.alias as option.value for option in $ctrl.languages">
+            <option value=""></option>
+        </select>
+    </div>
+    <select chosen class="form-control" ng-model="$ctrl.users.current.preferences.locale" ng-change="$ctrl.setLanguage()"  ng-if="$ctrl.listOnly"
             ng-options="option.alias as option.value for option in $ctrl.languages">
         <option value=""></option>
     </select>
+    <button ng-click="$ctrl.save()" ng-disabled="(!$ctrl.setup && languageForm.$pristine) || $ctrl.saving" class="btn btn-primary">
+        <span translate>Save</span>&nbsp;
+        <span class="btn-progress" ng-show="$ctrl.saving"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+    </button>
 </div>
-<select chosen class="form-control" ng-model="$ctrl.users.current.preferences.locale" ng-change="$ctrl.setLanguage()"  ng-if="$ctrl.listOnly"
-        ng-options="option.alias as option.value for option in $ctrl.languages">
-    <option value=""></option>
-</select>

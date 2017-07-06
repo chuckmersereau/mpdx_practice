@@ -255,16 +255,6 @@ class TasksService {
             return data;
         });
     }
-    addComment(task, comment) {
-        return this.api.post(`tasks/${task.id}/comments`, { body: comment, person: { id: this.users.current.id } }).then((data) => {
-            data.person = {
-                id: this.users.current.id,
-                first_name: this.users.current.first_name,
-                last_name: this.users.current.last_name
-            };
-            task.comments = concat(task.comments, data);
-        });
-    }
     deleteComment(task, comment) {
         return this.api.delete(`tasks/${task.id}/comments/${comment.id}`).then(() => {
             task.comments = reject({id: comment.id}, task.comments);

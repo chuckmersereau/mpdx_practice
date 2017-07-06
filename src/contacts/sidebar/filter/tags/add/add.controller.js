@@ -9,14 +9,16 @@ class AddTagController {
 
     constructor(
         $rootScope, $scope,
-        contactsTags, contacts,
+        api, contactsTags, contacts,
         selectedContacts
     ) {
         this.$rootScope = $rootScope;
         this.$scope = $scope;
-        this.selectedContacts = selectedContacts;
+        this.api = api;
         this.contacts = contacts;
         this.contactsTags = contactsTags;
+        this.selectedContacts = selectedContacts;
+
         this.tags = [];
     }
     save(tag) {
@@ -27,7 +29,17 @@ class AddTagController {
         if (!isArray(tagToAdd)) {
             tagToAdd = [tagToAdd];
         }
-        return this.contactsTags.tagContact(this.selectedContacts, tagToAdd).then(() => {
+        return this.api.post({
+            url: 'contacts/tags/bulk',
+            data: tagToAdd,
+            params: {
+                filter: {
+                    account_list_id: this.api.account_list_id,
+                    contact_ids: this.selectedContacts.join()
+                }
+            },
+            type: 'tags'
+        }).then(() => {
             this.$rootScope.$emit('contactTagsAdded', {tags: map('name', tagToAdd), contactIds: this.selectedContacts});
             this.$scope.$hide();
         });

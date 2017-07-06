@@ -1,9 +1,9 @@
 <modal size="md" title="{{$ctrl.modalTitle}}" cancel="$hide()" save="$ctrl.save()" delete="$ctrl.delete()" show-delete="$ctrl.person.id && $ctrl.contact.id">
-    <form name="personForm">
-        <div class="row modal-panel-container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="modal-panel-content">
+    <div class="row modal-panel-container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="modal-panel-content">
+                    <form name="personForm">
                         <div class="row">
                             <div class="col-md-2">
                                 <label for="title" translate>Title</label>
@@ -35,35 +35,16 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="modal-panel-content">
-                        <ul class="nav nav-tabs">
-                            <li ng-class="{ 'active' : $ctrl.activeTab == 'contact-info' }">
-                                <a ng-click="$ctrl.changeTab(personForm, 'contact-info')">
-                                    <translate>Contact Info</translate>
-                                </a>
-                            </li>
-                            <li ng-class="{ 'active' : $ctrl.activeTab == 'details' }">
-                                <a ng-click="$ctrl.changeTab(personForm, 'details')">
-                                    <translate>Details</translate>
-                                </a>
-                            </li>
-                            <li ng-class="{ 'active' : $ctrl.activeTab == 'social-info' }">
-                                <a ng-click="$ctrl.changeTab(personForm, 'social-info')">
-                                    <translate>Social Connections</translate>
-                                </a>
-                            </li>
-                            <li ng-class="{ 'active' : $ctrl.activeTab == 'relationships' }">
-                                <a ng-click="$ctrl.changeTab(personForm, 'relationships')">
-                                    <translate>Relationships &amp; Work</translate>
-                                </a>
-                            </li>
-                        </ul>
-                        <div ng-if="$ctrl.activeTab == 'contact-info'">
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="modal-panel-content">
+                    <div ng-if="$ctrl.activeTab == 'contact-info'">
+                        <form name="currentForm">
+                            <ng-include src="'personModalTabs'"></ng-include>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="row">
@@ -120,8 +101,11 @@
                                     </label>
                                 </div>
                             </div>
-                        </div>
-                        <div ng-if="$ctrl.activeTab == 'details'">
+                        </form>
+                    </div>
+                    <div ng-if="$ctrl.activeTab == 'details'">
+                        <form name="currentForm">
+                            <ng-include src="'personModalTabs'"></ng-include>
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="legal_first_name" translate>Legal First Name</label>
@@ -156,8 +140,11 @@
                                     </label>
                                 </div>
                             </div>
-                        </div>
-                        <div ng-if="$ctrl.activeTab == 'social-info'">
+                        </form>
+                    </div>
+                    <div ng-if="$ctrl.activeTab == 'social-info'">
+                        <form name="currentForm">
+                            <ng-include src="'personModalTabs'"></ng-include>
                             <div class="row">
                                 <div class="col-sm-9">
                                     <label translate>Social Connections</label>
@@ -197,7 +184,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="row">
                                 <div class="col-md-12">
                                     <strong translate>Add:</strong>
@@ -215,8 +201,11 @@
                                     </a>
                                 </div>
                             </div>
-                        </div>
-                        <div ng-if="$ctrl.activeTab == 'relationships'">
+                        </form>
+                    </div>
+                    <div ng-if="$ctrl.activeTab == 'relationships'">
+                        <form name="currentForm">
+                            <ng-include src="'personModalTabs'"></ng-include>
                             <div class="row">
                                 <div class="col-md-4">
                                     <label translate>Occupation</label>
@@ -261,10 +250,35 @@
                                     </a>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </modal>
+
+<script type="text/ng-template" id="personModalTabs">
+    <ul class="nav nav-tabs">
+        <li ng-class="{ 'active' : $ctrl.activeTab == 'contact-info' }">
+            <a ng-click="$ctrl.changeTab(currentForm, 'contact-info')">
+                <translate>Contact Info</translate>
+            </a>
+        </li>
+        <li ng-class="{ 'active' : $ctrl.activeTab == 'details' }">
+            <a ng-click="$ctrl.changeTab(currentForm, 'details')">
+                <translate>Details</translate>
+            </a>
+        </li>
+        <li ng-class="{ 'active' : $ctrl.activeTab == 'social-info' }">
+            <a ng-click="$ctrl.changeTab(currentForm, 'social-info')">
+                <translate>Social Connections</translate>
+            </a>
+        </li>
+        <li ng-class="{ 'active' : $ctrl.activeTab == 'relationships' }">
+            <a ng-click="$ctrl.changeTab(currentForm, 'relationships')">
+                <translate>Relationships &amp; Work</translate>
+            </a>
+        </li>
+    </ul>
+</script>

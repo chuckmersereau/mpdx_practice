@@ -45,4 +45,10 @@
             text-align: left;
         }
     }
+    .circle-late {
+      color: $color-secondary;
+    }
+    .circle-very-late {
+      color: $color-danger;
+    }
 }
