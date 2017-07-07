@@ -42,11 +42,7 @@ class Users {
             email_addresses: 'email,primary'
         };
         this.hasAnyUsAccounts = false;
-        this.organizationAccounts = null;
-
-        $rootScope.$on('accountListUpdated', () => {
-            this.listOrganizationAccounts();
-        });
+        this.organizationAccounts = [];
     }
     getCurrent(reset = false, forRouting = false) {
         if (this.current && !reset) {
@@ -149,8 +145,8 @@ class Users {
         }); //use jsonapi key here since it doesn't match endpoint
     }
     listOrganizationAccounts(reset = false) {
-        if (this.organizationAccounts && !reset) {
-            return this.$q.resolve(this.organizationAccounts);
+        if (this.organizationAccounts.length > 0 && !reset) {
+            return Promise.resolve(this.organizationAccounts);
         }
         return this.api.get(`user/organization_accounts`, {include: 'organization'}).then((data) => {
             this.$log.debug('user/organization_accounts: ', data);

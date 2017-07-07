@@ -1,12 +1,12 @@
 <div class="item" ng-class="{ 'item--selected' : $ctrl.tasks.isSelected($ctrl.task.id) }" ng-click="$ctrl.tasks.select($ctrl.task.id)">
     <div class="pull-left">
         <div class="btn-group">
-            <a class="btn btn-xs btn-default" ng-click="$ctrl.complete(); $event.stopPropagation();" title="{{::'Completed' | translate}}">
+            <button class="btn btn-xs btn-default" ng-click="$ctrl.complete(); $event.stopPropagation();" title="{{::'Completed' | translate}}" ng-disabled="::$ctrl.task.completed">
                 <i class="fa" ng-class="$ctrl.task.completed ? 'fa-check-square-o' : 'fa-square-o'" ></i>
-            </a>
-            <a class="btn btn-xs btn-default" ng-click="$ctrl.star(); $event.stopPropagation();" title="{{::'Starred' | translate}}">
+            </button>
+            <button class="btn btn-xs btn-default" ng-click="$ctrl.star(); $event.stopPropagation();" title="{{::'Starred' | translate}}">
                 <i class="fa" ng-class="$ctrl.task.starred ? 'fa-star' : 'fa-star-o'" ></i>
-            </a>
+            </button>
         </div>
     </div>
     <div class="pull-right">
@@ -23,7 +23,12 @@
     </div>
     <div class="item-title">
         <strong>{{ ::$ctrl.task.activity_type | translate }}</strong>
-        <a ng-click="$ctrl.edit(); $event.stopPropagation();">{{ ::$ctrl.task.subject }}</a>
+        <a ng-click="$ctrl.edit(); $event.stopPropagation();">
+            {{ ::$ctrl.task.subject }}
+        </a>
+        <span ng-if="::$ctrl.task.completed" translate-params-result="::$ctrl.task.result" translate>
+            ({{ result }})
+        </span>
         <span ng-if="::!$ctrl.task.no_date && $ctrl.task.start_at && !$ctrl.task.completed">
             {{ ::$ctrl.task.start_at | date : $ctrl.locale.dateTimeFormat + ' hh:mm a' }}
         </span>
@@ -59,10 +64,23 @@
     </div>
     <div class="panel panel-default comment" ng-repeat="comment in $ctrl.task.comments">
         <div class="panel-body">
-            <a class="btn btn-xs btn-danger pull-right" ng-click="$ctrl.deleteComment(comment)" title="{{::'Delete Comment' | translate}}" ng-if="$ctrl.commentBelongsToUser(comment)">
+            <a class="btn btn-xs btn-danger pull-right" ng-click="$ctrl.deleteComment(comment)" title="{{::'Delete Comment' | translate}}" ng-if="::$ctrl.commentBelongsToUser(comment)">
                 <i class="fa fa-trash-o"></i>
             </a>
-            {{ ::comment.body }}
+            <a class="btn btn-xs btn-primary pull-right" ng-click="comment.edit = true" title="{{::'Edit Comment' | translate}}" ng-if="::$ctrl.commentBelongsToUser(comment)">
+                <i class="fa fa-pencil"></i>
+            </a>
+            <span ng-if="!comment.edit">
+                {{ comment.body }}
+            </span>
+            <div ng-if="comment.edit">
+                <form class="input-group" ng-submit="$ctrl.editComment(comment)">
+                    <input type="text" class="form-control" ng-model="comment.body" required>
+                    <span class="input-group-btn">
+                      <button type="submit" class="btn btn-primary" translate>Submit</button>
+                    </span>
+                </form>
+            </div>
         </div>
         <div class="panel-footer">
             <small><span ng-if="::comment.person">{{ ::comment.person.first_name }} {{ ::comment.person.last_name }},</span> {{ ::comment.created_at | date : $ctrl.locale.dateTimeFormat }}</small>

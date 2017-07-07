@@ -93,7 +93,6 @@ describe('preferences.accounts.share', () => {
         it('should handle rejection', done => {
             spyOn(accounts, 'destroyInvite').and.callFake(() => Promise.reject(Error('')));
             $ctrl.cancelInvite(1).catch(() => {
-                console.log('ding');
                 expect($ctrl.saving).toBeFalsy();
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
                 expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
@@ -139,7 +138,6 @@ describe('preferences.accounts.share', () => {
         it('should handle rejection', done => {
             spyOn(accounts, 'destroyUser').and.callFake(() => Promise.reject(Error('')));
             $ctrl.removeUser(1).catch(() => {
-                console.log('ding');
                 expect($ctrl.saving).toBeFalsy();
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
                 expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));

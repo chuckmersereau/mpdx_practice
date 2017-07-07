@@ -2,17 +2,19 @@ import modalController from './modal.controller';
 import isEqual from 'lodash/fp/isEqual';
 
 describe('donation.modal.controller', () => {
-    let $ctrl, controller, scope, gettextCatalog, alerts, donations;
+    let $ctrl, controller, scope, gettextCatalog, accounts, alerts, designationAccounts, donations;
     let donation = { id: 'donation_id' };
     beforeEach(() => {
         angular.mock.module(modalController);
-        inject(($controller, $rootScope, _gettextCatalog_, _alerts_, _donations_) => {
+        inject(($controller, $rootScope, _gettextCatalog_, _accounts_, _alerts_, _designationAccounts_, _donations_) => {
             controller = $controller;
             scope = $rootScope.$new();
             scope.$hide = () => {};
 
             gettextCatalog = _gettextCatalog_;
+            accounts = _accounts_;
             alerts = _alerts_;
+            designationAccounts = _designationAccounts_;
             donations = _donations_;
 
             loadController();
@@ -22,6 +24,9 @@ describe('donation.modal.controller', () => {
     });
 
     function loadController() {
+        if (!accounts.current) {
+            accounts.current = {};
+        }
         $ctrl = controller('donationModalController as $ctrl', {
             $scope: scope,
             donation: donation
@@ -36,6 +41,49 @@ describe('donation.modal.controller', () => {
 
         it('should set the initialDonation', () => {
             expect($ctrl.initialDonation).toEqual(donation);
+        });
+    });
+
+    describe('activate', () => {
+        describe('no currency set', () => {
+            beforeEach(() => {
+                accounts.current = { currency: 'NZD' };
+            });
+
+            it('should set the currency to account currency', () => {
+                $ctrl.activate();
+                expect($ctrl.donation.currency).toEqual(accounts.current.currency);
+            });
+        });
+
+        describe('no designation account set', () => {
+            beforeEach(() => {
+                spyOn($ctrl, 'setDesignationAccount').and.returnValue();
+            });
+
+            it('should set the initialDonation', () => {
+                $ctrl.activate();
+                expect($ctrl.setDesignationAccount).toHaveBeenCalled();
+            });
+        });
+    });
+
+    describe('setDesignationAccount', () => {
+        beforeEach(() => {
+            spyOn(designationAccounts, 'load').and.callFake(() => Promise.resolve([{ id: 'designation_id' }]));
+        });
+
+        it('should return a promise', () => {
+            expect($ctrl.setDesignationAccount()).toEqual(jasmine.any(Promise));
+        });
+
+        describe('promise successful', () => {
+            it('should set the designation_account', (done) => {
+                $ctrl.setDesignationAccount().then(() => {
+                    expect($ctrl.donation.designation_account).toEqual({ id: 'designation_id' });
+                    done();
+                });
+            });
         });
     });
 
@@ -61,6 +109,14 @@ describe('donation.modal.controller', () => {
                     done();
                 });
             });
+
+            it('should add a translated alert', (done) => {
+                $ctrl.save().then(() => {
+                    expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'success');
+                    expect(gettextCatalog.getString).toHaveBeenCalled();
+                    done();
+                });
+            });
         });
 
         describe('promise rejected', () => {
@@ -70,7 +126,7 @@ describe('donation.modal.controller', () => {
 
             it('should add a translated alert', (done) => {
                 $ctrl.save().catch(() => {
-                    expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
+                    expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger', null, 5, true);
                     expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                     done();
                 });
@@ -139,6 +195,14 @@ describe('donation.modal.controller', () => {
                     done();
                 });
             });
+
+            it('should add a translated alert', (done) => {
+                $ctrl.delete().then(() => {
+                    expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'success');
+                    expect(gettextCatalog.getString).toHaveBeenCalled();
+                    done();
+                });
+            });
         });
 
         describe('promise rejected', () => {
@@ -148,7 +212,7 @@ describe('donation.modal.controller', () => {
 
             it('should add a translated alert', (done) => {
                 $ctrl.delete().catch(() => {
-                    expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
+                    expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger', null, 5, true);
                     expect(gettextCatalog.getString).toHaveBeenCalled();
                     done();
                 });

@@ -1,17 +1,19 @@
 import component from './details.component';
 
 describe('contacts.show.details.component', () => {
-    let $ctrl, scope, api, serverConstants, gettextCatalog, alerts, modal, contacts;
+    let $ctrl, scope, api, serverConstants, gettextCatalog, alerts, modal, contacts, users, rootScope;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _contacts_, _serverConstants_, _gettextCatalog_, _api_, _alerts_, _modal_) => {
-            scope = $rootScope.$new();
+        inject(($componentController, $rootScope, _contacts_, _serverConstants_, _gettextCatalog_, _api_, _alerts_, _modal_, _users_) => {
+            rootScope = $rootScope;
+            scope = rootScope.$new();
             alerts = _alerts_;
             api = _api_;
             contacts = _contacts_;
             modal = _modal_;
             gettextCatalog = _gettextCatalog_;
             serverConstants = _serverConstants_;
+            users = _users_;
             serverConstants.data = {locales: {}};
             window.languageMappingList = [];
             api.account_list_id = 1234;
@@ -19,6 +21,11 @@ describe('contacts.show.details.component', () => {
         });
         spyOn(gettextCatalog, 'getString').and.callThrough();
         spyOn(alerts, 'addAlert').and.callFake(data => data);
+    });
+    describe('constructor', () => {
+        it('should define view only dependencies', () => {
+            expect($ctrl.contactsTags).toBeDefined();
+        });
     });
     describe('$onInit', () => {
         it('should setup translation object', () => {
@@ -34,6 +41,18 @@ describe('contacts.show.details.component', () => {
                 ]
             });
             expect(gettextCatalog.getString.calls.count()).toEqual(2);
+        });
+        it('should get org accounts', () => {
+            spyOn(users, 'listOrganizationAccounts').and.callFake(() => Promise.resolve());
+            $ctrl.$onInit();
+            expect(users.listOrganizationAccounts).toHaveBeenCalledWith();
+        });
+        it('should refresh org accounts on account swap', () => {
+            spyOn(users, 'listOrganizationAccounts').and.callFake(() => Promise.resolve());
+            $ctrl.$onInit();
+            rootScope.$emit('accountListUpdated');
+            rootScope.$digest();
+            expect(users.listOrganizationAccounts).toHaveBeenCalledWith(true);
         });
     });
     describe('$onChanges', () => {

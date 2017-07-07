@@ -13,12 +13,13 @@ class PersonModalController {
     constructor(
         $log, $rootScope, $scope, gettextCatalog,
         alerts, people, locale, modal,
-        contact, person
+        api, contact, person
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
         this.$scope = $scope;
         this.alerts = alerts;
+        this.api = api;
         this.contact = contact;
         this.gettextCatalog = gettextCatalog;
         this.locale = locale;
@@ -73,8 +74,9 @@ class PersonModalController {
 
         if (has('id', this.person)) {
             const patch = createPatch(this.personInitialState, this.person);
+            /* istanbul ignore next */
             this.$log.debug('person patch', patch);
-            return this.people.save(this.contact.id, patch).then(() => {
+            return this.people.save(patch).then(() => {
                 /* istanbul ignore next */
                 this.$log.debug('person saved:', this.person);
                 this.$rootScope.$emit('personUpdated');
@@ -85,7 +87,7 @@ class PersonModalController {
                 throw err;
             });
         } else {
-            return this.people.create(this.contact.id, this.person).then(() => {
+            return this.api.post(`contacts/${this.contact.id}/people`, this.person).then(() => {
                 /* istanbul ignore next */
                 this.$log.debug('person created:', this.person);
                 this.$rootScope.$emit('personUpdated');
@@ -142,9 +144,8 @@ class PersonModalController {
         obj.historic = !obj.historic;
     }
     delete() {
-        const message = this.gettextCatalog.getString('Are you sure you wish to delete this person?');
-        return this.modal.confirm(message).then(() => {
-            return this.people.remove(this.contact.id, this.person.id).then(() => {
+        return this.modal.confirm(this.gettextCatalog.getString('Are you sure you wish to delete this person?')).then(() => {
+            return this.api.delete(`contacts/${this.contact.id}/people/${this.person.id}`).then(() => {
                 this.$scope.$hide();
             });
         });

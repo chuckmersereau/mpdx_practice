@@ -4,7 +4,8 @@ import find from 'lodash/fp/find';
 import map from 'lodash/fp/map';
 import reduce from 'lodash/fp/reduce';
 import reject from 'lodash/fp/reject';
-import uniq from 'lodash/fp/uniq';
+import flatMap from 'lodash/fp/flatMap';
+import union from 'lodash/fp/union';
 
 class EmailAddressesService {
     api;
@@ -47,31 +48,25 @@ class EmailAddressesService {
         this.loading = true;
         this.page = page;
 
-        return this.api.get(
-            'contacts/people',
-            {
-                filter: {
-                    email_address_valid: false,
-                    account_list_id: this.api.account_list_id
-                },
-                fields: {
-                    person: 'first_name,last_name,avatar,email_addresses'
-                },
-                include: 'email_addresses',
-                page: this.page,
-                per_page: 25
-            }
-        ).then((data) => {
+        return this.api.get('contacts/people', {
+            filter: {
+                email_address_valid: false,
+                account_list_id: this.api.account_list_id
+            },
+            fields: {
+                person: 'first_name,last_name,avatar,email_addresses,parent_contacts'
+            },
+            include: 'email_addresses',
+            page: this.page,
+            per_page: 25
+        }).then(data => {
             this.loading = false;
-            this.sources = ['MPDX'];
+            this.sources = union(
+                flatMap(
+                    person => map('source', person.email_addresses)
+                , data),
+            ['MPDX']).sort();
 
-            each((person) => {
-                each((emailAddress) => {
-                    this.sources.push(emailAddress.source);
-                }, person.email_addresses);
-            }, data);
-
-            this.sources = uniq(this.sources).sort();
             this.data = data;
             this.meta = data.meta;
 
@@ -84,7 +79,7 @@ class EmailAddressesService {
             emailAddress.valid_values = true;
         }, person.email_addresses);
 
-        return this.people.save(null, person).then(() => {
+        return this.people.save(person).then(() => {
             this.data = reject({ id: person.id }, this.data);
             if (this.meta && this.meta.pagination && this.meta.pagination.total_count) {
                 this.meta.pagination.total_count -= 1;

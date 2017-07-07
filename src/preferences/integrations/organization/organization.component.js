@@ -8,9 +8,10 @@ class OrganizationIntegrationPreferencesController {
     users;
 
     constructor(
-        gettextCatalog, Upload,
+        $rootScope, gettextCatalog, Upload,
         alerts, help, modal, preferencesOrganization, serverConstants, users
     ) {
+        this.$rootScope = $rootScope;
         this.alerts = alerts;
         this.gettextCatalog = gettextCatalog;
         this.help = help;
@@ -25,6 +26,12 @@ class OrganizationIntegrationPreferencesController {
         this.selected = null;
         this.username = null;
         this.password = null;
+    }
+    $onInit() {
+        this.users.listOrganizationAccounts();
+        this.$rootScope.$on('accountListUpdated', () => {
+            this.users.listOrganizationAccounts(true);
+        });
     }
     save() {
         this.saving = true;

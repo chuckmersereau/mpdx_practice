@@ -4,18 +4,18 @@
     <translate>Tags</translate>
     <ul class="nav nav-pills pull-right">
       <li ng-class="{ 'active': $ctrl.contactsTags.anyTags }">
-        <a ng-click="$ctrl.contactsTags.changeAny(true)" title="{{::'Look up contacts with Any of the tags selected (a or b or c).' | translate }}" translate>Any</a>
+        <a ng-click="$ctrl.changeAny(true)" title="{{::'Look up contacts with Any of the tags selected (a or b or c).' | translate }}" translate>Any</a>
       </li>
       <li ng-class="{ 'active': !$ctrl.contactsTags.anyTags }">
-        <a ng-click="$ctrl.contactsTags.changeAny(false)" title="{{ ::'Look up contacts with ALL of the tags selected (a and b and c).' | translate }}" translate>All</a>
+        <a ng-click="$ctrl.changeAny(false)" title="{{ ::'Look up contacts with ALL of the tags selected (a and b and c).' | translate }}" translate>All</a>
       </li>
     </ul>
 </div>
 <div class="filter_hint" translate>Click a tag twice to look up all contacts who do not have that tag.</div>
 <div class="left_tag_list tags" ng-class="{'show_all_tags': $ctrl.showAllTags}">
     <span class="tag"
-          ng-class="{ 'selected': !$ctrl.contactsTags.isTagActive(tag), 'rejected': $ctrl.contactsTags.isTagRejected(tag) }"
-          ng-click="$ctrl.contactsTags.tagClick(tag, $event)"
+          ng-class="{ 'selected': !$ctrl.isTagActive(tag), 'rejected': $ctrl.isTagRejected(tag) }"
+          ng-click="$ctrl.tagClick(tag, $event)"
           ng-repeat="tag in $ctrl.contactsTags.data"
           title="{{::tag.name}}">
         {{ ::tag.name |limitTo: 20 }}{{ ::tag.name.length > 20 ? '...' : '' }}
@@ -48,7 +48,7 @@
         <div class="popover-content">
             <div translate>Are you sure you want to completely delete this tag and remove it from all contacts?</div>
             <div class="text-muted" translate>To remove a tag from selected contacts only, use the action menu.</div>
-            <button class="btn btn-danger btn-block btn-xs" ng-click="$ctrl.contactsTags.delete(tag); $hide()" translate>Delete Tag</button>
+            <button class="btn btn-danger btn-block btn-xs" ng-click="$ctrl.delete(tag); $hide()" translate>Delete Tag</button>
         </div>
     </div>
 </script>

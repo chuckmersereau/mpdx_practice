@@ -1,28 +1,29 @@
-import defaultTo from 'lodash/fp/defaultTo';
 import has from 'lodash/fp/has';
 import unionBy from 'lodash/fp/unionBy';
 
 class ListController {
     constructor(
         $log, $rootScope, $state, $stateParams,
-        api, contacts
+        api, contacts, contactFilter
     ) {
         this.$log = $log;
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.api = api;
+        this.contactFilter = contactFilter;
         this.contacts = contacts;
 
         this.data = [];
         this.loading = false;
         this.page = 0;
+        this.searchText = null;
 
         $rootScope.$on('accountListUpdated', () => {
-            this.load(true);
+            this.load();
         });
 
         $rootScope.$on('contactsFilterChange', () => {
-            this.load(true);
+            this.load();
         });
     }
     $onInit() {
@@ -40,20 +41,19 @@ class ListController {
         }
         this.load(false, this.page + 1);
     }
-    load(reset = false, page = 0) {
+    load(page = 1) {
+        const reset = page === 1;
         if (!reset && this.data.length > 0 && page <= this.page) {
             return;
         }
         this.loading = true;
         let currentCount;
+        this.page = page;
         if (reset) {
-            this.page = 1;
             this.meta = {};
             this.listLoadCount++;
             this.data = [];
             currentCount = angular.copy(this.listLoadCount);
-        } else {
-            this.page = page;
         }
         return this.api.get({
             url: 'contacts',
@@ -67,19 +67,19 @@ class ListController {
                 sort: 'name'
             },
             overrideGetAsPost: true
-        }).then((data) => {
+        }).then(data => {
             this.$log.debug(`contacts sidebar list page ${this.page}`, data);
             if (reset && currentCount !== this.listLoadCount) {
                 return;
             }
             this.meta = data.meta;
-            let count = defaultTo(0, this.meta.to);
             const newContacts = angular.copy(data);
             this.data = reset ? newContacts : unionBy('id', this.data, newContacts);
-            count += data.length;
-            this.meta.to = count;
             this.loading = false;
         });
+    }
+    search() {
+        this.load();
     }
 }
 

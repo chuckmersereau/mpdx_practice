@@ -1,7 +1,7 @@
 import component from './connect.component';
 
 describe('setup.connect.component', () => {
-    let $ctrl, contacts, rootScope, scope, componentController, api, alerts, gettextCatalog, preferencesOrganization, users;
+    let $ctrl, rootScope, scope, componentController, api, alerts, gettextCatalog, preferencesOrganization, users;
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _accounts_, _help_, _preferencesOrganization_, _serverConstants_, _alerts_, _gettextCatalog_, _api_, _users_) => {
@@ -14,6 +14,8 @@ describe('setup.connect.component', () => {
             componentController = $componentController;
             users = _users_;
             api.account_list_id = 1234;
+            users.current = {preferences: {}};
+            users.currentOptions = {setup_position: {}};
             loadController();
         });
         spyOn(alerts, 'addAlert').and.callFake(data => data);
@@ -49,6 +51,21 @@ describe('setup.connect.component', () => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
                 expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
+            });
+        });
+    });
+    describe('$onInit', () => {
+        it('should call listOrganizationAccounts', () => {
+            spyOn(users, 'listOrganizationAccounts').and.callFake(() => Promise.resolve());
+            $ctrl.$onInit();
+            expect(users.listOrganizationAccounts).toHaveBeenCalled();
+        });
+        describe('accountListUpdated event', () => {
+            it('should call listOrganizationAccounts when event accountListUpdated triggered', () => {
+                $ctrl.$onInit();
+                spyOn(users, 'listOrganizationAccounts').and.callFake(() => Promise.resolve());
+                rootScope.$emit('accountListUpdated');
+                expect(users.listOrganizationAccounts).toHaveBeenCalledWith(true);
             });
         });
     });

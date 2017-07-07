@@ -35,13 +35,12 @@
         </label>
     </div>
     <div ng-if="$ctrl.task.notification_type">
+        <p translate>How long before task is due would you like to be notified?</p>
         <div class="row">
             <div class="col-sm-4">
-                <label for="notification_type" translate>Notify in</label>
                 <input type="number" class="form-control" ng-model="$ctrl.task.notification_time_before" id="notification_type" ng-required="$ctrl.task.notification_type" min="0">
             </div>
             <div class="col-sm-8">
-                <label for="notification_type" translate>Interval</label>
                 <select chosen ng-model="$ctrl.task.notification_time_unit" ng-required="$ctrl.task.notification_type">
                     <option value="minutes">Minutes</option>
                     <option value="hours">Hours</option>
@@ -60,7 +59,7 @@
         <label translate>Tags</label>
         <tag-selector ng-model="$ctrl.task.tag_list" tag-list="$ctrl.tasksTags.data"></tag-selector>
     </div>
-    <div ng-if="$ctrl.task.activity_type === 'Appointment'">
+    <div class="form-group" ng-if="$ctrl.task.activity_type === 'Appointment'">
         <label for="location" translate>Location</label>
         <input type="text"
                name="location"

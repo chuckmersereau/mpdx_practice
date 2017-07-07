@@ -7,15 +7,26 @@ class LanguageController {
     serverConstants;
     users;
     constructor(
-        $window,
+        $transitions, $window,
         language, serverConstants, users
     ) {
+        this.$transitions = $transitions;
         this.$window = $window;
         this.language = language;
         this.serverConstants = serverConstants;
         this.users = users;
 
+        this.lastLanguage = null;
         this.saving = false;
+        this.deregisterTransitionHook = null;
+    }
+    $onInit() {
+        this.deregisterTransitionHook = this.$transitions.onBefore({
+            from: 'preferences.personal',
+            to: (state) => state.name !== 'preferences.personal'
+        }, () => {
+            this.revertLanguage();
+        });
     }
     $onChanges() {
         if (!this.users.current.preferences.locale) {
@@ -36,9 +47,29 @@ class LanguageController {
         if (!found) {
             this.users.current.preferences.locale = 'en';
         }
+        this.lastLanguage = this.users.current.preferences.locale;
+    }
+    $onDestroy() {
+        if (this.deregisterTransitionHook) {
+            this.deregisterTransitionHook();
+        }
     }
     setLanguage() {
         this.language.change(this.users.current.preferences.locale);
+    }
+    revertLanguage() {
+        this.users.current.preferences.locale = this.lastLanguage;
+        this.setLanguage();
+    }
+    save() {
+        this.saving = true;
+        return this.onSave().then(() => {
+            this.saving = false;
+            this.lastLanguage = this.users.current.preferences.locale;
+        }).catch(err => {
+            this.saving = false;
+            throw err;
+        });
     }
 }
 
@@ -47,9 +78,15 @@ const Language = {
     controller: LanguageController,
     bindings: {
         onSave: '&',
+        setup: '<',
         listOnly: '<'
     }
 };
 
-export default angular.module('mpdx.preferences.personal.language.component', [])
-    .component('preferencesPersonalLanguage', Language).name;
+import language from 'common/language/language.service';
+import serverConstants from 'common/serverConstants/serverConstants.service';
+import users from 'common/users/users.service';
+
+export default angular.module('mpdx.preferences.personal.language.component', [
+    language, serverConstants, users
+]).component('preferencesPersonalLanguage', Language).name;

@@ -39,7 +39,6 @@ describe('tasks.modals.add.controller', () => {
         });
 
         it('should set task activity_type to injected param', () => {
-            console.log($ctrl.task);
             expect($ctrl.task.activity_type).toEqual(activity);
         });
     });

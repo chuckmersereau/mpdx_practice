@@ -73,9 +73,10 @@ const ImportTnt = {
 import Upload from 'ng-file-upload';
 import alerts from 'common/alerts/alerts.service';
 import contactsTags from 'contacts/sidebar/filter/tags/tags.service';
+import modal from 'common/modal/modal.service';
 import serverConstants from 'common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.tools.import.tnt.component', [
     Upload,
-    alerts, contactsTags, serverConstants
+    alerts, contactsTags, modal, serverConstants
 ]).component('importTnt', ImportTnt).name;

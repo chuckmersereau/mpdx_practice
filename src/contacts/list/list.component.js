@@ -80,8 +80,7 @@ class ListController {
         if (this.loading || this.page >= this.meta.pagination.total_pages) {
             return;
         }
-        this.page++;
-        this.load(this.page);
+        this.load(this.page + 1);
     }
     toggleAllContacts() {
         if (this.data && this.contacts.selectedContacts && this.contacts.selectedContacts.length < this.data.length) {
@@ -137,7 +136,7 @@ class ListController {
             this.alerts.addAlert(this.gettextCatalog.getPlural(8, 'You can only merge up to 1 contact at a time.', 'You can only merge up to {{$count}} contacts at a time.', {}), 'danger');
         } else {
             this.modal.open({
-                template: require('./mergeContacts/mergeContacts.html'),
+                template: require('./merge/merge.html'),
                 controller: 'mergeContactsController',
                 locals: {
                     selectedContacts: this.getSelectedContacts()
@@ -169,7 +168,6 @@ class ListController {
 
         let currentCount;
         if (reset) {
-            this.page = 1;
             this.meta = {};
             this.data = null;
             this.listLoadCount++;
@@ -177,7 +175,7 @@ class ListController {
             const contactHeight = 70; //min pixel height of contact items
             this.pageSize = defaultTo(12, ceil(this.$window.innerHeight / contactHeight) - 2); //minimally adjust for menus (always pull at least a few extra)
         }
-
+        this.page = page;
         return this.api.get({
             url: 'contacts',
             data: {
@@ -186,7 +184,7 @@ class ListController {
                 per_page: this.pageSize,
                 include: 'addresses,people,people.facebook_accounts,people.phone_numbers,people.email_addresses',
                 fields: {
-                    contact: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people',
+                    contact: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people,created_at',
                     people: 'deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
                     addresses: 'city,geo,historic,primary_mailing_address,postal_code,state,source,street',
                     email_addresses: 'email,historic,primary',
@@ -197,15 +195,13 @@ class ListController {
             },
             overrideGetAsPost: true
         }).then(data => {
+            /* istanbul ignore next */
             this.$log.debug('contacts page ' + data.meta.pagination.page, data);
             if (reset && currentCount !== this.listLoadCount) {
                 return;
             }
-            let count = defaultTo(0, this.meta.to);
+            let count = reset ? 0 : defaultTo(0, this.meta.to);
             this.meta = data.meta;
-            if (reset) {
-                count = 0;
-            }
             if (data.length === 0) {
                 this.getTotalCount();
                 this.loading = false;
@@ -240,9 +236,10 @@ class ListController {
         if (all) {
             this.allSelected = true; //for reactive visuals
             return this.getCompleteFilteredList().then((data) => {
+                this.allSelected = false;
                 this.contacts.selectedContacts = map('id', data);
-            }).finally(() => {
-                this.allSelected = false; //remove skeleton
+            }).catch(() => {
+                this.allSelected = false;
             });
         } else {
             this.contacts.selectedContacts = map('id', this.data);

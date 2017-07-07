@@ -29,6 +29,15 @@ export default class Routes {
                 url: /*@ngInject*/ ($location) => $location.url($location.url().replace("#", "?"))
             }
         }).state({
+            name: 'acceptInvite',
+            title: gettext('Accept Invite'),
+            url: '/account_lists/accept_invite?code&id&account_list_id',
+            component: 'acceptInvite',
+            parent: 'root',
+            resolve: {
+                url: /*@ngInject*/ ($location) => $location.url($location.url().replace("#", "?"))
+            }
+        }).state({
             name: 'logout',
             title: gettext('Logout'),
             url: '/logout',

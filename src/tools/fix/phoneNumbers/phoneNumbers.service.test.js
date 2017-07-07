@@ -102,7 +102,7 @@ describe('tools.fix.phoneNumbers.service', () => {
                         account_list_id: api.account_list_id
                     },
                     fields: {
-                        person: 'first_name,last_name,avatar,phone_numbers'
+                        person: 'first_name,last_name,avatar,phone_numbers,parent_contacts'
                     },
                     include: 'phone_numbers',
                     page: 1,
@@ -212,12 +212,10 @@ describe('tools.fix.phoneNumbers.service', () => {
 
         it('should call the people service', () => {
             fixPhoneNumbers.save(person);
-            expect(people.save).toHaveBeenCalledWith(
-                null,
-                {
-                    id: 'person_id',
-                    phone_numbers: [{ valid_values: true }, { valid_values: true }]
-                });
+            expect(people.save).toHaveBeenCalledWith({
+                id: 'person_id',
+                phone_numbers: [{ valid_values: true }, { valid_values: true }]
+            });
         });
 
         describe('promise successful', () => {

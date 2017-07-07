@@ -146,4 +146,51 @@ describe('contacts.service', () => {
             });
         });
     });
+    it('should handle bad birthdays and anniversaries', done => {
+        const transformable = {
+            birthdays_this_week: [{
+                birthday_year: 6,
+                birthday_day: 1,
+                birthday_month: 1
+            }],
+            anniversaries_this_week: [{
+                people: [{
+                    anniversary_year: 15,
+                    anniversary_day: 1,
+                    anniversary_month: 1
+                }]
+            }]
+        };
+        spyOn(api, 'get').and.callFake(() => Promise.resolve(transformable));
+        contacts.getAnalytics().then(() => {
+            expect(contacts.analytics.birthdays_this_week).toEqual([]);
+            expect(contacts.analytics.anniversaries_this_week).toEqual([]);
+            done();
+        });
+    });
+    describe('merge', () => {
+        it('should post to api', () => {
+            spyOn(api, 'post').and.callFake(() => Promise.resolve());
+            contacts.merge('a');
+            expect(api.post).toHaveBeenCalledWith({url: `contacts/merges/bulk`, data: 'a', type: 'contacts'});
+        });
+        it('should return data', done => {
+            let data = {success: () => 'a'};
+            spyOn(data, 'success').and.callThrough();
+            spyOn(api, 'post').and.callFake(() => Promise.resolve(data));
+            contacts.merge('a').then(resp => {
+                expect(resp).toEqual(data);
+                done();
+            });
+        });
+        it('should call a success fn', done => {
+            let data = {success: () => 'a'};
+            spyOn(data, 'success').and.callThrough();
+            spyOn(api, 'post').and.callFake(() => Promise.resolve(data));
+            contacts.merge('a').then(() => {
+                expect(data.success).toHaveBeenCalledWith();
+                done();
+            });
+        });
+    });
 });

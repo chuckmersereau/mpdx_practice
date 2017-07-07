@@ -130,7 +130,7 @@ class TasksService {
                 per_page: 25,
                 include: 'contacts',
                 fields: {
-                    tasks: 'activity_type,completed,completed_at,contacts,no_date,starred,start_at,subject,tag_list,comments_count,location',
+                    tasks: 'activity_type,completed,completed_at,contacts,no_date,starred,start_at,subject,tag_list,comments_count,location,result',
                     contacts: 'name'
                 }
             },
@@ -253,16 +253,6 @@ class TasksService {
             this.tasksTags.change();
             this.change();
             return data;
-        });
-    }
-    addComment(task, comment) {
-        return this.api.post(`tasks/${task.id}/comments`, { body: comment, person: { id: this.users.current.id } }).then((data) => {
-            data.person = {
-                id: this.users.current.id,
-                first_name: this.users.current.first_name,
-                last_name: this.users.current.last_name
-            };
-            task.comments = concat(task.comments, data);
         });
     }
     deleteComment(task, comment) {

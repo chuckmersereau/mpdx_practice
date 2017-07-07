@@ -25,24 +25,41 @@ describe('contacts.sidebar.list.component', () => {
     describe('load', () => {
         const oneRecord = [{id: 1, name: 'a'}];
         beforeEach(() => {
-            spyOn(api, 'get').and.callFake(() => new Promise(resolve => resolve(oneRecord)));
+            $ctrl.data = oneRecord;
             $ctrl.listLoadCount = 1;
         });
-        describe('existing data', () => {
-            beforeEach(() => {
-                $ctrl.data = oneRecord;
+        it('should reset variables on reset', () => {
+            spyOn(api, 'get').and.callFake(() => Promise.resolve(oneRecord));
+            $ctrl.load();
+            expect($ctrl.page).toEqual(1);
+            expect($ctrl.meta).toEqual({});
+            expect($ctrl.data).toEqual([]);
+            expect($ctrl.listLoadCount).toEqual(2);
+        });
+        it('should do nothing if not resetting or getting a new page', () => {
+            spyOn(api, 'get').and.callFake(() => Promise.resolve(oneRecord));
+            $ctrl.load(2);
+            expect($ctrl.load(2)).toEqual(undefined);
+        });
+        it('should handle late prior results', done => {
+            let call = 0;
+            spyOn(api, 'get').and.callFake(() => {
+                if (call === 0) {
+                    call++;
+                    return new Promise(resolve => {
+                        setTimeout(() => {
+                            resolve(oneRecord);
+                        }, 1000);
+                    });
+                } else {
+                    return Promise.resolve(oneRecord);
+                }
             });
-            it('should do nothing if not resetting or getting a new page', () => {
-                expect($ctrl.load()).toEqual(undefined);
+            $ctrl.load().then(data => {
+                done();
+                expect(data).toBeUndefined();
             });
-            xit('should reset variables on reset', (done) => {
-                $ctrl.load(true, 1).then(() => {
-                    expect($ctrl.page).toEqual(1);
-                    expect($ctrl.meta).toEqual({});
-                    expect($ctrl.listLoadCount).toEqual(2);
-                    done();
-                });
-            });
+            $ctrl.load();
         });
     });
     describe('events', () => {
@@ -52,12 +69,12 @@ describe('contacts.sidebar.list.component', () => {
         it('should load on accountListUpdated', () => {
             rootScope.$emit('accountListUpdated');
             rootScope.$digest();
-            expect($ctrl.load).toHaveBeenCalledWith(true);
+            expect($ctrl.load).toHaveBeenCalledWith();
         });
         it('should load on contactsFilterChange', () => {
             rootScope.$emit('contactsFilterChange');
             rootScope.$digest();
-            expect($ctrl.load).toHaveBeenCalledWith(true);
+            expect($ctrl.load).toHaveBeenCalledWith();
         });
     });
     describe('$onInit', () => {
@@ -106,6 +123,13 @@ describe('contacts.sidebar.list.component', () => {
             $ctrl.page = 4;
             $ctrl.loadMoreContacts();
             expect($ctrl.load).not.toHaveBeenCalled();
+        });
+    });
+    describe('search', () => {
+        it('should fire load', () => {
+            spyOn($ctrl, 'load').and.callFake(() => {});
+            $ctrl.search();
+            expect($ctrl.load).toHaveBeenCalledWith();
         });
     });
 });

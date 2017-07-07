@@ -9,10 +9,8 @@
                 </div>
                 <h4 class="modal-title">{{$ctrl.title}}</h4>
             </div>
-            <div class="modal-body">
-                <alerts modal="true"></alerts>
-                <div ng-transclude></div>
-            </div>
+            <alerts modal="true"></alerts>
+            <div class="modal-body" ng-transclude></div>
             <div class="modal-footer" ng-if="!$ctrl.hideFooter">
                 <div class="pull-left">
                     <button type="button" class="btn btn-danger" ng-click="$ctrl.deleteAndBlock()" ng-if="$ctrl.$attrs.delete && $ctrl.showDelete" ng-disabled="$ctrl.saving">

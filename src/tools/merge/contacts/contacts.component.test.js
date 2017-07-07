@@ -152,9 +152,9 @@ describe('tools.mergeContacts.component', () => {
     });
     describe('merge', () => {
         it('should call bulkMerge with data', () => {
-            spyOn(contacts, 'bulkMerge').and.callFake(() => Promise.resolve());
+            spyOn(contacts, 'merge').and.callFake(() => Promise.resolve());
             $ctrl.merge([{contacts: [{id: 1, selected: true}, {id: 2}]}, {contacts: [{id: 3}, {id: 4, selected: true}]}]);
-            expect(contacts.bulkMerge).toHaveBeenCalledWith([
+            expect(contacts.merge).toHaveBeenCalledWith([
                 {winner_id: 1, loser_id: 2},
                 {winner_id: 4, loser_id: 3}
             ]);

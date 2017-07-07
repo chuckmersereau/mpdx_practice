@@ -1,4 +1,16 @@
 <div>
+    <form >
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+            <input type="text"
+                   class="search_filter form-control"
+                   autocomplete="off"
+                   placeholder="{{ 'Search Contacts' | translate }}"
+                   ng-model="$ctrl.contactFilter.wildcard_search"
+                   ng-change="$ctrl.search()"
+                   ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }">
+        </div>
+    </form>
     <div infinite-scroll="$ctrl.loadMoreContacts()" infinite-scroll-disabled="$ctrl.loading" infinite-scroll-use-document-bottom="false" infinite-scroll-container="$ctrl.scrollParent">
         <div ng-repeat="contact in $ctrl.data track by contact.id" class="contact-row item" ng-class="{ selected: contact.selected }">
             <a ng-click="$ctrl.switchContact(contact.id)" ng-class="{'active': $ctrl.selected == contact.id }">{{contact.name}}</a>

@@ -20,10 +20,11 @@ class ContactDetailsController {
     users;
 
     constructor(
-        $log, $window, gettextCatalog,
+        $log, $rootScope, $window, gettextCatalog,
         alerts, api, contactsTags, contacts, locale, modal, serverConstants, users
     ) {
         this.$log = $log;
+        this.$rootScope = $rootScope;
         this.alerts = alerts;
         this.api = api;
         this.contacts = contacts;
@@ -58,6 +59,10 @@ class ContactDetailsController {
                 {key: false, value: no}
             ]
         };
+        this.users.listOrganizationAccounts();
+        this.$rootScope.$on('accountListUpdated', () => {
+            this.users.listOrganizationAccounts(true);
+        });
     }
     $onChanges() {
         this.last_donation = this.contact.last_donation ? round(this.contact.last_donation.amount) : this.gettextCatalog.getString('Never');

@@ -8,12 +8,12 @@ class MergeContactsController {
     contacts;
     constructor(
         $scope,
-        api, contacts,
+        contacts, locale,
         selectedContacts
     ) {
         this.$scope = $scope;
-        this.api = api;
         this.contacts = contacts;
+        this.locale = locale;
         this.selectedContacts = selectedContacts;
 
         this.winner = get('id', first(selectedContacts));
@@ -28,9 +28,13 @@ class MergeContactsController {
         }, filtered);
         return this.contacts.merge(winnersAndLosers).then(() => {
             this.$scope.$hide();
-            location.reload();
         });
     }
 }
-export default angular.module('mpdx.contacts.list.mergeContacts.controller', [])
-    .controller('mergeContactsController', MergeContactsController).name;
+
+import contacts from 'contacts/contacts.service';
+import locale from 'common/locale/locale.service';
+
+export default angular.module('mpdx.contacts.list.merge.controller', [
+    contacts, locale
+]).controller('mergeContactsController', MergeContactsController).name;
