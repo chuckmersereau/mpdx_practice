@@ -14,7 +14,7 @@ describe('contacts.show.component', () => {
             gettextCatalog = _gettextCatalog_;
             componentController = $componentController;
             api.account_list_id = 1234;
-            contacts.current = {id: 1};
+            contacts.current = {id: 1, name: 'a b'};
             loadController();
         });
         spyOn(alerts, 'addAlert').and.callFake(data => data);
@@ -23,6 +23,12 @@ describe('contacts.show.component', () => {
     function loadController() {
         $ctrl = componentController('contact', {$scope: scope}, {});
     }
+    describe('$onChanges', () => {
+        it('should display contact name in page title', () => {
+            $ctrl.$onChanges();
+            expect(rootScope.pageTitle).toEqual('Contact | a b');
+        });
+    });
     describe('onPrimary', () => {
         beforeEach(() => {
             spyOn($ctrl, 'save').and.callFake(() => {});
