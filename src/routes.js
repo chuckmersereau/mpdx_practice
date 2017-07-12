@@ -21,6 +21,12 @@ export default class Routes {
             url: '/login',
             component: 'login'
         }).state({
+            name: 'admin',
+            title: gettext('Admin'),
+            url: '/admin',
+            component: 'admin',
+            parent: 'root'
+        }).state({
             name: 'auth',
             title: gettext('Auth'),
             url: '/auth?access_token',
