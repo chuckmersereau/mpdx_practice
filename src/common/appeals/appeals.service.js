@@ -26,19 +26,17 @@ class AppealsService {
     }
 
     search(keywords) {
-        return this.api.get(
-            `appeals`,
-            {
-                filter: {
-                    wildcard_search: keywords,
-                    account_list_id: this.api.account_list_id
-                },
-                fields: {
-                    appeals: 'name'
-                },
-                per_page: 6
-            }
-        );
+        return this.api.get(`appeals`, {
+            filter: {
+                wildcard_search: keywords,
+                account_list_id: this.api.account_list_id
+            },
+            fields: {
+                appeals: 'name'
+            },
+            sort: '-created_at',
+            per_page: 6
+        });
     }
 }
 

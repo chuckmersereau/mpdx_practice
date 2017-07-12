@@ -71,6 +71,7 @@ describe('common.appeals.service', () => {
                     fields: {
                         appeals: 'name'
                     },
+                    sort: '-created_at',
                     per_page: 6
                 }
             );
