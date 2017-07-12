@@ -2,14 +2,15 @@ import component from './search.component';
 import findIndex from 'lodash/fp/findIndex';
 
 describe('menu.search.component', () => {
-    let $ctrl, state, scope, contactFilter, contacts;
+    let $ctrl, state, scope, contactFilter, contacts, timeout;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, $state, _contactFilter_, _contacts_) => {
+        inject(($componentController, $rootScope, $state, _contactFilter_, _contacts_, $timeout) => {
             scope = $rootScope.$new();
             contactFilter = _contactFilter_;
             contacts = _contacts_;
             state = $state;
+            timeout = $timeout;
             $ctrl = $componentController('menuSearch', {$scope: scope}, {});
         });
         spyOn(state, 'go').and.callFake(() => {});
@@ -19,12 +20,14 @@ describe('menu.search.component', () => {
         it('should clear out searchParams', () => {
             $ctrl.searchParams = 'abc';
             $ctrl.reset();
+            timeout.flush();
             expect($ctrl.searchParams).toEqual('');
         });
 
         it('should clear out contactList', () => {
             $ctrl.contactList = ['abc'];
             $ctrl.reset();
+            timeout.flush();
             expect($ctrl.contactList).toEqual([]);
         });
     });

@@ -1,6 +1,6 @@
 import component from './auth.component';
 
-describe('tools.component', () => {
+describe('auth.component', () => {
     let $ctrl, componentController, scope, rootScope, http, location, $$window, state;
 
     beforeEach(() => {

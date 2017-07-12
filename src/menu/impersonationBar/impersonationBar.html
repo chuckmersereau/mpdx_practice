@@ -1,0 +1,8 @@
+<div class="impersonation-bar" ng-if="$ctrl.impersonator">
+    <span translate
+          translate-params-impersonator="$ctrl.impersonator"
+          translate-params-impersonated="$ctrl.impersonated">
+        You are {{impersonator}} impersonating {{impersonated}}
+    </span>
+    <button class="btn btn-primary" ng-click="$ctrl.logout()" translate>Log out</button>
+</div>

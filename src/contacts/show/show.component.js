@@ -111,6 +111,7 @@ class ContactController {
     }
     $onChanges() {
         this.$log.debug('selected contact: ', this.contacts.current);
+        this.$rootScope.pageTitle = `Contact | ${this.contacts.current.name}`;
     }
     save() {
         const source = angular.copy(this.contacts.current); //to avoid onChanges changes

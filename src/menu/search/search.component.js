@@ -18,10 +18,11 @@ class ContactsSearchController {
         this.contactList = [];
         this.moreActive = false;
     }
-
     reset() {
-        this.searchParams = '';
-        this.contactList = [];
+        this.$timeout(() => {
+            this.searchParams = '';
+            this.contactList = [];
+        }, 500);
     }
 
     go(contactId) {
