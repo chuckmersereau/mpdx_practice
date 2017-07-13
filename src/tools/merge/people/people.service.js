@@ -85,7 +85,7 @@ class MergePeople {
 
 import api from 'common/api/api.service';
 import people from 'contacts/show/people/people.service';
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('mpdx.tools.merge.people.service', [
     uiRouter,

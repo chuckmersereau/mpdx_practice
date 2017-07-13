@@ -176,7 +176,7 @@ import api from 'common/api/api.service';
 import blockUI from 'angular-block-ui';
 import contacts from 'contacts/contacts.service';
 import gettext from 'angular-gettext';
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('mpdx.reports.donations.chart.component', [
     blockUI, gettext, uiRouter,

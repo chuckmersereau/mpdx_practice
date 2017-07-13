@@ -41,7 +41,7 @@ const Tools = {
 };
 
 import gettextCatalog from 'angular-gettext';
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 import help from 'common/help/help.service';
 import session from 'common/session/session.service';
 import tools from 'tools/tools.service';

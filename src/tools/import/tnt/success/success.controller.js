@@ -16,7 +16,7 @@ class ImportTntSuccessController {
     }
 }
 
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('mpdx.tools.import.tnt.success.controller', [
     uiRouter

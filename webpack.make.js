@@ -3,6 +3,7 @@
  * Webpack default config
  */
 const path = require('path');
+const webpack = require('webpack');
 
 const configEnv = process.env.NODE_ENV || 'development';
 
@@ -45,7 +46,9 @@ const config = {
             use: "file-loader"
         }]
     },
-    plugins: []
+    plugins: [
+        new webpack.optimize.ModuleConcatenationPlugin()
+    ]
 };
 
 module.exports = config;

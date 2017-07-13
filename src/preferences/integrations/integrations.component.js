@@ -115,7 +115,7 @@ import integrations from './integrations.service';
 import mailchimp from './mailchimp/mailchimp.service';
 import modal from '../../common/modal/modal.service';
 import prayerLetters from './prayerLetters/prayerLetters.service';
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('mpdx.preferences.integrations.component', [
     uiRouter,

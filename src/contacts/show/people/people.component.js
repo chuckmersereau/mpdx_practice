@@ -90,7 +90,7 @@ import alerts from 'common/alerts/alerts.service';
 import api from 'common/api/api.service';
 import gettext from 'angular-gettext';
 import people from './people.service';
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('mpdx.contacts.show.people.component', [
     api, gettext, uiRouter,

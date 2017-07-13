@@ -242,7 +242,7 @@ class CsvService {
 import blockUI from 'angular-block-ui';
 import gettextCatalog from 'angular-gettext';
 import ngFileUpload from 'ng-file-upload';
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 import alerts from 'common/alerts/alerts.service';
 import api from 'common/api/api.service';
 import help from 'common/help/help.service';
