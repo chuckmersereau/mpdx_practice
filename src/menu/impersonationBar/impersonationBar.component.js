@@ -2,22 +2,33 @@ const template = require('./impersonationBar.html');
 
 class ImpersonationController {
     constructor(
-        $window,
+        $timeout, $window,
         users
     ) {
+        this.$timeout = $timeout;
         this.$window = $window;
         this.users = users;
+
+        this.loading = false;
     }
     $onInit() {
-        this.impersonator = this.$window.localStorage.getItem('impersonator');
-        this.impersonated = `${this.users.current.first_name} ${this.users.current.last_name}`;
+        this.$timeout(() => {
+            this.impersonator = this.$window.localStorage.getItem('impersonator');
+            this.impersonated = `${this.users.current.first_name} ${this.users.current.last_name}`;
+        }, 500);
     }
     logout() {
-        const token = this.$window.localStorage.getItem('impersonatorToken');
-        this.$window.localStorage.setItem('token', token);
-        this.$window.localStorage.removeItem('impersonator');
-        this.$window.localStorage.removeItem('impersonatorToken');
-        this.redirectHome();
+        this.loading = true;
+        if (this.impersonator) {
+            const token = this.$window.localStorage.getItem('impersonatorToken');
+            this.$window.localStorage.setItem('token', token);
+            this.$window.localStorage.removeItem('impersonator');
+            this.$window.localStorage.removeItem('impersonatorToken');
+            this.redirectHome();
+        } else {
+            this.redirectHome();
+        }
+        this.impersonator = null;
     }
     redirectHome() {
         //untestable code

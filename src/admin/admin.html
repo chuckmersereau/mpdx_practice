@@ -16,7 +16,7 @@
     <br/>
     <div class="container">
         <div class="col-md-3">
-            <button type="submit" class="btn btn-primary" translate>Impersonate User</button>
+            <button type="submit" class="btn btn-primary" ng-disabled="$ctrl.loading || !impersonationForm.userId || !impersonationForm.reason" translate>Impersonate User</button>
         </div>
     </div>
 </form>
