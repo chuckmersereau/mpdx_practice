@@ -112,7 +112,7 @@ describe('contacts.sidebar.list.component', () => {
         });
         it('should load the next page by default', () => {
             $ctrl.loadMoreContacts();
-            expect($ctrl.load).toHaveBeenCalledWith(false, $ctrl.page + 1);
+            expect($ctrl.load).toHaveBeenCalledWith($ctrl.page + 1);
         });
         it(`shouldn't run if loading`, () => {
             $ctrl.loading = true;
