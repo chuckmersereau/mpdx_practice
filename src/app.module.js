@@ -4,6 +4,7 @@ import angular from 'angular';
 window.angular = angular;
 
 import app from './app.directive';
+import admin from './admin/admin.component';
 import bottom from './bottom/index.module';
 import common from './common/index.module';
 import contacts from './contacts/index.module';
@@ -25,6 +26,7 @@ require('./images/mpdx-favicon.png');
 
 export default angular.module('mpdx', [
     app,
+    admin,
     bottom,
     common,
     contacts,

@@ -1,0 +1,22 @@
+<h2 translate>Admin Console</h2>
+<br/>
+<b translate>Impersonate User</b>
+
+<form name="impersonationForm" ng-submit="$ctrl.impersonate(impersonationForm)">
+    <div class="container">
+        <div class="col-md-4">
+            <label for="impersonate_lookup" translate>User ID</label>
+            <input type="text" id="impersonate_lookup" class="form-control" ng-model="impersonationForm.userId" required>
+        </div>
+        <div class="col-md-4">
+            <label for="reason" translate>Reason / Support Ticket Link</label>
+            <input type="text" id="reason" class="form-control" ng-model="impersonationForm.reason" required>
+        </div>
+    </div>
+    <br/>
+    <div class="container">
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary" ng-disabled="$ctrl.loading || !impersonationForm.userId || !impersonationForm.reason" translate>Impersonate User</button>
+        </div>
+    </div>
+</form>

@@ -1,3 +1,4 @@
+<impersonation-bar></impersonation-bar>
 <div class="nav--global">
     <div class="container">
         <div class="row">
@@ -32,6 +33,7 @@
                                 <i class="fa fa-cog"></i> <translate>Settings</translate>
                             </a>
                             <ul class="dropdown-menu" role="menu">
+                                <li role="presentation" ng-if="!$ctrl.setup && $ctrl.users.current.preferences.admin"><a ui-sref="admin" translate>Admin</a></li>
                                 <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="preferences.personal" translate>Preferences</a></li>
                                 <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="preferences.notifications" translate>Notifications</a></li>
                                 <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="tools" translate>Import Contacts</a></li>

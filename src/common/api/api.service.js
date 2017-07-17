@@ -338,6 +338,10 @@ class EntityAttributes {
                     }
                 }
             },
+            impersonation: {
+                attributes: ["user", "reason"],
+                pluralizeType: false
+            },
             merge: {
                 attributes: ['account_list_to_merge'],
                 typeForAttribute: (key) => {
