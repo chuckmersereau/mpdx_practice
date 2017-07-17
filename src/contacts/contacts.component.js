@@ -49,7 +49,7 @@ const Contacts = {
 };
 
 import gettextCatalog from 'angular-gettext';
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 import contactFilter from 'contacts/sidebar/filter/filter.service';
 import help from 'common/help/help.service';
 import session from 'common/session/session.service';

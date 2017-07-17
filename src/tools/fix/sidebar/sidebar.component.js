@@ -31,7 +31,7 @@ const Sidebar = {
     template: require('./sidebar.html')
 };
 
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 import fixAddresses from '../addresses/addresses.service';
 import fixCommitmentInfo from '../commitmentInfo/commitmentInfo.service';
 import fixEmailAddresses from '../emailAddresses/emailAddresses.service';

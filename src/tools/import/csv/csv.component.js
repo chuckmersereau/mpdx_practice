@@ -61,7 +61,7 @@ const ImportCsv = {
 };
 
 import gettextCatalog from 'angular-gettext';
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 import importCsv from 'tools/import/csv/csv.service';
 import modal from 'common/modal/modal.service';
 

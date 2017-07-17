@@ -161,7 +161,7 @@ const Personal = {
     }
 };
 
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 import gettextCatalog from 'angular-gettext';
 import accounts from 'common/accounts/accounts.service';
 import api from 'common/api/api.service';

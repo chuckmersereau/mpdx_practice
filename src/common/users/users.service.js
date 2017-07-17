@@ -178,7 +178,7 @@ import accounts from '../accounts/accounts.service';
 import help from '../help/help.service';
 import language from '../language/language.service';
 import locale from '../locale/locale.service';
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('mpdx.common.users.service', [
     'tandibar/ng-rollbar',

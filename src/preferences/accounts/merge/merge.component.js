@@ -56,7 +56,7 @@ import accounts from 'common/accounts/accounts.service';
 import api from 'common/api/api.service';
 import alerts from 'common/alerts/alerts.service';
 import gettext from 'angular-gettext';
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 import users from 'common/users/users.service';
 
 export default angular.module('mpdx.preferences.accounts.merge.component', [

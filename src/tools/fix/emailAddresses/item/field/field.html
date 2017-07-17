@@ -10,7 +10,7 @@
         </span>
     </div>
     <div class="col-xs-5">
-        <input class="form-control" type="text" name="number" ng-model="$ctrl.emailAddress.email" ng-model-options="{ updateOn: 'blur' }" ng-change="$ctrl.save()" ng-disabled="$ctrl.emailAddress.source !== 'MPDX'" required>
+        <input class="form-control" type="text" name="number" ng-model="$ctrl.emailAddress.email" title="{{$ctrl.emailAddress.email}}" ng-model-options="{ updateOn: 'blur' }" ng-change="$ctrl.save()" ng-disabled="$ctrl.emailAddress.source !== 'MPDX'" required>
     </div>
     <div class="col-xs-1">
         <button ng-click="$ctrl.remove()" class="btn btn-link btn-xs" title="{{ 'Locked' | translate }}" ng-if="!$ctrl.emailAddress.new && $ctrl.emailAddress.source !== 'MPDX'" disabled="disabled">

@@ -179,7 +179,7 @@ import help from 'common/help/help.service';
 import modal from 'common/modal/modal.service';
 import people from './people/people.service';
 import tasks from 'tasks/tasks.service';
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 import users from 'common/users/users.service';
 import session from 'common/session/session.service';
 

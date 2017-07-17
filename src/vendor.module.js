@@ -3,7 +3,7 @@ import ngAnimate from 'angular-animate';
 import getText from 'angular-gettext';
 import jwt from 'angular-jwt';
 import ngSanitize from 'angular-sanitize';
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 import checklistModel from 'checklist-model';
 import ngInfiniteScroll from 'ng-infinite-scroll';
 import ngCsv from 'ng-csv';
