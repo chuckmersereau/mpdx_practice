@@ -40,6 +40,7 @@
     "angulartics-google-analytics": "0.4.0",
     "bootstrap-additions": "0.3.1",
     "bootstrap-daterangepicker": "2.1.25",
+    "bowser": "^1.7.1",
     "chartjs-plugin-annotation": "0.5.5",
     "checklist-model": "0.11.0",
     "flag-icon-css": "2.8.0",

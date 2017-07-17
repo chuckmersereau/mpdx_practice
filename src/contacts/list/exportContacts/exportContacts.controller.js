@@ -1,6 +1,7 @@
 import assign from 'lodash/fp/assign';
 import joinComma from "../../../common/fp/joinComma";
 import moment from 'moment';
+import bowser from 'bowser';
 
 class ExportContactsController {
     api;
@@ -17,6 +18,7 @@ class ExportContactsController {
         this.contacts = contacts;
         this.moment = moment;
 
+        this.isSafari = bowser.name === 'Safari';
         this.params = {
             data: {
                 filter: this.api.cleanFilters(this.contacts.buildFilterParams())
