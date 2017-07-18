@@ -231,7 +231,7 @@ class EntityAttributes {
                 attributes: ["accepted_at", "accepted_by_user_id", "account_list_id", "cancelled_by_user_id", "code", "created_at", "invited_by_user_id", "recipient_email", "updated_at"]
             },
             account_lists: {
-                attributes: ["creator_id", "created_at", "currency", "home_country", "monthly_goal", "name", "notification_preferences", "settings", "tester", "total_pledges", "updated_at"],
+                attributes: ["creator_id", "created_at", "currency", "home_country", "monthly_goal", "name", "notification_preferences", "settings", "salary_organization", "tester", "total_pledges", "updated_at"],
                 notification_preferences: {
                     ref: 'id',
                     attributes: ["actions", "notification_type"],

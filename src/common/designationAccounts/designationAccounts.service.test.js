@@ -15,7 +15,7 @@ describe('common.designationAccounts.service', () => {
 
     describe('load', () => {
         beforeEach(() => {
-            spyOn(api, 'get').and.callFake((url, data) => Promise.resolve(data));
+            spyOn(api, 'get').and.callFake(() => Promise.resolve([{id: 1, organization: {id: 2}}]));
             spyOn($log, 'debug').and.returnValue();
         });
 
@@ -26,7 +26,9 @@ describe('common.designationAccounts.service', () => {
         it('should call api.get', () => {
             designationAccounts.load();
             expect(api.get).toHaveBeenCalledWith(
-                'account_lists/account_list_id/designation_accounts'
+                'account_lists/account_list_id/designation_accounts', {
+                    include: 'organization'
+                }
             );
         });
 

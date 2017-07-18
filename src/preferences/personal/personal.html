@@ -316,7 +316,9 @@
                 </div>
             </div>
         </div>
-        <div class="panel panel-default" ng-if="$ctrl.accounts.current.designation_organizations.count > 1" ng-class="{ 'panel-selected' : $ctrl.tabSelected('salary_organization_id'), 'panel-disabled' : !$ctrl.tabSelectable('salary_organization_id') }">
+        <div class="panel panel-default"
+             ng-if="$ctrl.designationAccounts.organizations.length > 1"
+             ng-class="{ 'panel-selected' : $ctrl.tabSelected('salary_organization_id'), 'panel-disabled' : !$ctrl.tabSelectable('salary_organization_id') }">
             <div class="panel-heading" ng-click="$ctrl.setTab('salary_organization_id')">
                 <div class="row">
                     <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('salary_organization_id') }"></i>
@@ -335,8 +337,12 @@
                             <div class="form-group" ng-form="salaryOrgForm">
                                 <label for="salaryOrganizationId" translate>Primary Organization</label>
                                 <p class="text-muted" translate>This should be the organization you get paid from and most likely correspond to the country you are living and serving in. This will set your currency conversions for multi-currency accounts to the currency of this organization both on the dashboard and the corresponding contribution reports.</p>
-                                <select id="salaryOrganizationId" class="form-control" ng-model="$ctrl.users.current.preferences.salary_organization_id" ng-change="$ctrl.setSalaryOrg()" chosen>
-                                    <option ng-repeat="org in $ctrl.salary_organization_select(current_account_list)">{{org}}</option>
+                                <select id="salaryOrganizationId"
+                                        class="form-control"
+                                        ng-model="$ctrl.accounts.current.salary_organization"
+                                        ng-change="$ctrl.setSalaryOrg()"
+                                        ng-options="org.id as org.name for org in $ctrl.designationAccounts.organizations"
+                                        chosen>
                                 </select>
                             </div>
                             <button ng-click="$ctrl.saveAccount()" ng-disabled="(!$ctrl.setup && salaryOrgForm.$pristine) || $ctrl.saving" class="btn btn-primary">

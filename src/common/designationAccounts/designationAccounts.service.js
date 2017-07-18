@@ -1,3 +1,7 @@
+import concat from 'lodash/fp/concat';
+import find from 'lodash/fp/find';
+import reduce from 'lodash/fp/reduce';
+
 class DesignationAccountsService {
     api;
     data;
@@ -11,6 +15,7 @@ class DesignationAccountsService {
 
         this.data = [];
         this.list = [];
+        this.organizations = [];
     }
 
     load(reset = false) {
@@ -18,26 +23,32 @@ class DesignationAccountsService {
             return Promise.resolve(this.data);
         }
 
-        return this.api.get(`account_lists/${this.api.account_list_id}/designation_accounts`).then((data) => {
+        return this.api.get(`account_lists/${this.api.account_list_id}/designation_accounts`, {
+            include: 'organization'
+        }).then(data => {
             this.$log.debug(`account_lists/${this.api.account_list_id}/designation_accounts`, data);
             this.data = data;
+            this.organizations = reduce((result, value) => {
+                if (!find({id: value.organization.id}, result)) {
+                    return concat(result, value.organization);
+                }
+                return result;
+            }, [], data);
+            this.$log.debug('designation organizations', this.organizations);
             return this.data;
         });
     }
 
     search(keywords) {
-        return this.api.get(
-            `account_lists/${this.api.account_list_id}/designation_accounts`,
-            {
-                filter: {
-                    wildcard_search: keywords
-                },
-                fields: {
-                    designation_accounts: 'display_name,designation_number'
-                },
-                per_page: 6
-            }
-        );
+        return this.api.get(`account_lists/${this.api.account_list_id}/designation_accounts`, {
+            filter: {
+                wildcard_search: keywords
+            },
+            fields: {
+                designation_accounts: 'display_name,designation_number'
+            },
+            per_page: 6
+        });
     }
 }
 
