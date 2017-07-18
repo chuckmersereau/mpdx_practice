@@ -39,7 +39,7 @@ class ListController {
         if (this.loading || (has('pagination.total_pages', this.meta) && this.page >= this.meta.pagination.total_pages)) {
             return;
         }
-        this.load(false, this.page + 1);
+        this.load(this.page + 1);
     }
     load(page = 1) {
         const reset = page === 1;
