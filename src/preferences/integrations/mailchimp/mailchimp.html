@@ -1,4 +1,4 @@
-<div ng-if="$ctrl.mailchimp.data.active && !$ctrl.mailchimp.data.valid || $ctrl.showSettings == true">
+<div ng-if="$ctrl.mailchimp.data.validate_key && !$ctrl.mailchimp.data.valid || $ctrl.showSettings == true">
     <div class="alert alert-danger" translate>
         Warning: Some complicated Mailchimp Lists have had trouble syncing with MPDX.
         While we refine the sync, we recommend that you only sync MPDX with a brand new list in Mailchimp.
@@ -38,7 +38,7 @@
         <a ng-href="{{$ctrl.mailchimp.data.lists_link}}" target="_blank">Go to MailChimp to create a list.</a>
     </div>
 </div>
-<div ng-if="$ctrl.mailchimp.data.active && $ctrl.mailchimp.data.valid && $ctrl.showSettings == false">
+<div ng-if="$ctrl.mailchimp.data.validate_key && $ctrl.mailchimp.data.valid && $ctrl.showSettings == false">
     <div class="alert alert-info" translate>
         Your contacts are now automatically syncing with MailChimp
     </div>
@@ -65,7 +65,7 @@
     <a class="btn btn-default" ng-click="$ctrl.showSettings = true" translate>Modify Settings</a>
     <a class="btn btn-link" ng-click="$ctrl.disconnect()" translate>Disconnect</a>
 </div>
-<div ng-if="!$ctrl.mailchimp.data.active">
+<div ng-if="!$ctrl.mailchimp.data.validate_key">
     <h4 class="integration_subhead" translate>MailChimp Overview</h4>
     <p translate>MailChimp makes keeping in touch with your ministry partners easy and streamlined. Here’s how it works:</p>
     <ol>
