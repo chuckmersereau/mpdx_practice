@@ -40,7 +40,7 @@
             <div class="arrow"></div>
             <div class="popover-content">
                 <strong translate>Monthly Total</strong>
-                <div><translate>Salary Currency</translate> {{$ctrl.data.salaryCurrency.symbol}}{{monthlyDonation.convertedTotal | number:0}} {{$ctrl.data.salaryCurrency.code}}</div>
+                <div><translate>Salary Currency</translate> {{::$ctrl.data.salaryCurrency.symbol}}{{::monthlyDonation.convertedTotal | number:0}} {{::$ctrl.data.salaryCurrency.code}}</div>
                 <table class="table table-condensed">
                     <thead>
                         <tr>
@@ -49,9 +49,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="donation in monthlyDonation.donations">
-                            <td>{{::donation.date | date : $ctrl.locale.dateTimeFormat}}</td>
-                            <td class="text-right">{{donation.currency.symbol}}{{donation.amount | number : 0}} {{donation.currency.code}}</td>
+                        <tr ng-repeat="donation in ::monthlyDonation.donations">
+                            <td>{{donation.donation_date | date : $ctrl.locale.dateTimeFormat}}</td>
+                            <td class="text-right">
+                                {{$ctrl.serverConstants.data.pledge_currencies[donation.currency.toLowerCase()].symbol}}
+                                {{donation.amount | number : 0}}
+                                {{$ctrl.serverConstants.data.pledge_currencies[donation.currency.toLowerCase()].code}}
+                            </td>
                         </tr>
                     </tbody>
                 </table>
