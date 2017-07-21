@@ -42,6 +42,12 @@ preferences {
 preferences-sidebar {
     display: block;
     margin-bottom: $gutter;
+    .selector {
+        margin-top: 20px;
+        .account-list-dropdown {
+            margin-top: 5px;
+        }
+    }
 }
 
 preferences-notifications {
