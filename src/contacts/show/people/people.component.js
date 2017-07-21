@@ -1,4 +1,5 @@
 import concat from 'lodash/fp/concat';
+import each from 'lodash/fp/each';
 import has from 'lodash/fp/has';
 import includes from 'lodash/fp/includes';
 import reject from 'lodash/fp/reject';
@@ -70,6 +71,9 @@ class ContactPeopleController {
     }
     cancelMerge() {
         this.isMerging = false;
+        each((person) => {
+            person.selected_for_merge = false;
+        }, this.selectedPeople);
         this.selectedPeople = [];
     }
     newPerson() {

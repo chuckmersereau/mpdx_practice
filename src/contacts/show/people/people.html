@@ -3,21 +3,21 @@
         <i class="fa fa-plus-circle"></i>
         <translate>Add New Person</translate>
     </a>
-    <a class="btn btn-reverse" ng-click="$ctrl.isMerging = true">
+    <button class="btn btn-reverse" ng-click="$ctrl.isMerging = true" ng-disabled="$ctrl.data.length < 2">
         <i class="fa fa-code-fork"></i>
         <translate>Merge People</translate>
-    </a>
+    </button>
 </div>
 <div ng-if="$ctrl.isMerging">
-    <a class="tip ng-scope" data-trigger="hover" data-content="{{ 'Select people to merge by tapping on the person.' | translate }}" data-placement="top" bs-popover=""><i class="fa fa-question-circle"></i></a>
-    &nbsp;
-    <a class="btn btn-default" ng-click="$ctrl.cancelMerge()" translate>
+    <a class="btn btn-link" ng-click="$ctrl.cancelMerge()" translate>
         Cancel
     </a>
     <a class="btn btn-primary" ng-click="$ctrl.openMergeModal()">
         <i class="fa fa-code-fork"></i>
         <translate>Merge Selected People</translate>
     </a>
+    &nbsp;
+    <a class="tip ng-scope" data-trigger="hover" data-content="{{ 'Select people to merge by tapping on the person.' | translate }}" data-placement="top" bs-popover=""><i class="fa fa-question-circle"></i></a>
 </div>
 <div class="row people-row">
     <div class="col-sm-6" ng-repeat="remainder in [0,1]">
@@ -31,4 +31,3 @@
         </contact-person>
     </div>
 </div>
-
