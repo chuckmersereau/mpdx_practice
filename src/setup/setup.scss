@@ -2,54 +2,35 @@ setup {
     margin: 70px 0 80px;
     display: block;
 }
-
-
 setup-start, setup-connect, setup-account, setup-finish {
-
-    .h2, h2 {
-        font-weight: 600;
-    }
     .panel {
         border: none;
-        color: $color-text-dark;
-        padding-top: $gutter*1.6 - 10px;
-        padding-bottom: $gutter*1.6 - 15px;
-    }
-    .panel-heading, .panel-body {
-        margin-left: $gutter;
-        margin-right: $gutter;
     }
     .panel-heading {
-        padding-left: $gutter;
-        padding-right: $gutter/2;
-        padding-bottom: $gutter*1.6;
+        background: url('images/setup/icon_alert_2x.png');
+        background-repeat: no-repeat;
+        background-size: auto 55px;
+        background-position: $gutter center;
+        text-align: center;
+        margin-bottom: 20px;
+        padding: 35px 20px 40px 100px;
         font-size: $font-size-xl;
         font-weight: 600;
-        color: $color-panel-bg;
-        line-height: 62px;
+        line-height: 44px;
         border-color: $cru-gray-silver;
-        img, translate {
-            vertical-align: top;
-        }
-        img {
-            width: auto;
-            height: auto;
-            max-width: 80px;
-            max-height: 62px;
-        }
-        translate {
-            display: inline-block;
-        }
     }
     .panel-body {
-        padding-left: 0;
-        padding-right: 0;
+        margin-left: $gutter;
+        margin-right: $gutter;
+        padding: 0 0 30px 0;
         > h2, > div > h2 {
             margin-top: 0;
         }
         p {
             margin-bottom: $font-size-lg;
-            &:last-child {margin-bottom: 0;}
+            &:last-child {
+                margin-bottom: 0;
+            }
         }
         .list-unstyled {
             border: $cru-gray-silver 1px solid;
@@ -71,39 +52,18 @@ setup-start, setup-connect, setup-account, setup-finish {
         }
     }
     .panel--language {
-        text-align: center;
-        font-size: 20px;
-    }
-    .panel--language-selector {
         width: 300px;
-        display: inline-block;
-        text-align: left;
+        margin: 5px auto 0;
     }
     .panel__connect-links {
         margin-top: $font-size-lg;
     }
     .btn {
-        min-width: 200px;
-        max-width: 100%;
         font-size: $font-size-lg;
         padding: 20px;
-        white-space: normal;
-        &-wide {
-            min-width: 388px;
-        }
-        &-sm {
-            min-width: 1px;
-            font-size: $font-size*1.25;
-            padding: 12px 32px;
-        }
     }
-
 }
-
 
 setup-preferences {
     @extend preferences;
 }
-
-
-setup-finish .panel-heading {line-height: 44px;}

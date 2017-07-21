@@ -56,6 +56,9 @@ class LanguageController {
     }
     setLanguage() {
         this.language.change(this.users.current.preferences.locale);
+        if (this.listOnly) {
+            this.users.saveCurrent();
+        }
     }
     revertLanguage() {
         this.users.current.preferences.locale = this.lastLanguage;
