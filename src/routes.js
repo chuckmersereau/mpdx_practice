@@ -37,7 +37,7 @@ export default class Routes {
         }).state({
             name: 'acceptInvite',
             title: gettext('Accept Invite'),
-            url: '/account_lists/accept_invite?code&id&account_list_id',
+            url: '/account_lists/{account_list_id}/accept_invite/{id}?code',
             component: 'acceptInvite',
             parent: 'root',
             resolve: {
