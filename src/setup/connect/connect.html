@@ -43,11 +43,11 @@
                                 <p translate>Next, <a href="/logout" translate>click here to log out of MPDX</a> so you can log back in with your offical key account.</p>
                             </div>
                         </div>
-                        <div class="col-xs-6" ng-if="$ctrl.selected.api_class == 'DataServer' || $ctrl.selected.api_class == 'DataServerPtc'">
+                        <div class="col-xs-6" ng-if="['DataServer', 'DataServerPtc', 'DataServerNavigators'].includes($ctrl.selected.api_class)">
                             <label for="username" translate>Username</label>
                             <input type="text" class="form-control" id="username" ng-model="$ctrl.username">
                         </div>
-                        <div class="col-xs-6" ng-if="$ctrl.selected.api_class == 'DataServer' || $ctrl.selected.api_class == 'DataServerPtc'">
+                        <div class="col-xs-6" ng-if="['DataServer', 'DataServerPtc', 'DataServerNavigators'].includes($ctrl.selected.api_class)">
                             <label for="password" translate>Password</label>
                             <input type="password" class="form-control" id="password" ng-model="$ctrl.password">
                         </div>
