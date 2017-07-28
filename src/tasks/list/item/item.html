@@ -64,21 +64,24 @@
     </div>
     <div class="panel panel-default comment" ng-repeat="comment in $ctrl.task.comments">
         <div class="panel-body">
-            <a class="btn btn-xs btn-danger pull-right" ng-click="$ctrl.deleteComment(comment)" title="{{::'Delete Comment' | translate}}" ng-if="::$ctrl.commentBelongsToUser(comment)">
-                <i class="fa fa-trash-o"></i>
-            </a>
-            <a class="btn btn-xs btn-primary pull-right" ng-click="comment.edit = true" title="{{::'Edit Comment' | translate}}" ng-if="::$ctrl.commentBelongsToUser(comment)">
-                <i class="fa fa-pencil"></i>
-            </a>
-            <span ng-if="!comment.edit">
-                {{ comment.body }}
-            </span>
+            <div ng-if="!comment.edit">
+                <div class="pull-right">
+                    <a class="btn btn-xs btn-danger" ng-click="$ctrl.deleteComment(comment)" title="{{::'Delete Comment' | translate}}" ng-if="::$ctrl.commentBelongsToUser(comment)">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                    <a class="btn btn-xs btn-primary" ng-click="comment.edit = true" title="{{::'Edit Comment' | translate}}" ng-if="::$ctrl.commentBelongsToUser(comment)">
+                        <i class="fa fa-pencil"></i>
+                    </a>
+                </div>
+                <div class="content">{{ comment.body }}</div>
+            </div>
             <div ng-if="comment.edit">
-                <form class="input-group" ng-submit="$ctrl.editComment(comment)">
-                    <input type="text" class="form-control" ng-model="comment.body" required>
-                    <span class="input-group-btn">
-                      <button type="submit" class="btn btn-primary" translate>Submit</button>
-                    </span>
+                <form ng-submit="$ctrl.editComment(comment)">
+                    <textarea class="form-control" ng-model="comment.body" required></textarea>
+                    <div class="text-right">
+                        <button ng-click="comment.edit = false" class="btn btn-link" translate>Cancel</button>
+                        <button type="submit" class="btn btn-primary" translate>Save</button>
+                    </div>
                 </form>
             </div>
         </div>
