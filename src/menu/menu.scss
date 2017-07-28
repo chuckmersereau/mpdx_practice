@@ -150,10 +150,10 @@ menu {
             border-radius: 0;
             font-size: 80%;
             .bar {
-                background: $green;
+                background: $progress;
             }
             .bar-pledged {
-                background: $green_light;
+                background: $progress_dark;
             }
             .value, .bar {
                 height: $progress-bar-height;
