@@ -49,7 +49,19 @@ class ContactsService {
         return this.api.get({
             url: `contacts/${id}`,
             data: {
-                include: 'addresses,donor_accounts,primary_person,contact_referrals_to_me'
+                include: 'addresses,donor_accounts,primary_person,contact_referrals_to_me',
+                fields: {
+                    contacts: 'avatar,church_name,envelope_greeting,greeting,last_donation,lifetime_donations,' +
+                              'likely_to_give,locale,magazine,name,no_appeals,notes,notes_saved_at,pledge_amount,' +
+                              'pledge_currency,pledge_currency_symbol,pledge_frequency,pledge_received,' +
+                              'pledge_start_date,send_newsletter,square_avatar,status,status_valid,suggested_changes,' +
+                              'tag_list,timezone,website,addresses,contact_referrals_by_me,contact_referrals_to_me,' +
+                              'contacts_that_referred_me,donor_accounts,primary_person',
+                    addresses: 'city,country,created_at,end_date,geo,historic,location,metro_area,postal_code,' +
+                               'primary_mailing_address,region,remote_id,seasonal,source,start_date,state,street,' +
+                               'updated_at,updated_in_db_at,valid_values',
+                    donor_accounts: 'account_number'
+                }
             },
             deSerializationOptions: relationshipId(['contacts', 'people']) //for contacts_referred_by_me, contacts_that_referred_me and primary_person
         }).then((data) => {

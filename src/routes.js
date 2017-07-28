@@ -125,9 +125,6 @@ export default class Routes {
             title: gettext('Reports - Donations'),
             url: '/donations',
             component: 'donations',
-            resolve: {
-                byMonth: () => true
-            },
             params: {
                 startDate: null
             }
