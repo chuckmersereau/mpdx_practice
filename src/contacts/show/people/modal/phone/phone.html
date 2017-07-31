@@ -1,12 +1,12 @@
 <div class="row" ng-hide="$ctrl.deleted">
 
     <div class="col-sm-5">
-        <input class="form-control" type="text" name="number" ng-model="$ctrl.phone.number" placeholder="Phone *" ng-required="!$ctrl.deleted">
+        <input class="form-control" name="number" ng-model="$ctrl.phone.number" placeholder="{{::'Phone *' | translate}}" ng-required="!$ctrl.deleted">
     </div>
     <div class="col-sm-4">
         <select chosen
                 ng-model="$ctrl.phone.location"
-                data-placeholder="{{ 'Select an Option *' | translate}}"
+                data-placeholder="{{ ::'Select an Option *' | translate}}"
                 class="form-control" required>
             <option value="mobile" translate>Mobile</option>
             <option value="home" translate>Home</option>
@@ -14,19 +14,19 @@
         </select>
     </div>
     <div class="col-sm-1">
-        <a class="btn btn-block btn-default" title="{{Primary | translate}}" ng-click="$ctrl.onPrimary()">
+        <a class="btn btn-block btn-default" title="{{::'Primary' | translate}}" ng-click="$ctrl.onPrimary()">
             <i ng-if="$ctrl.phone.primary" class="fa fa-check text-success"></i>
             <i ng-if="!$ctrl.phone.primary" class="fa"></i>
         </a>
     </div>
     <div class="col-sm-1">
-        <a class="btn btn-block btn-default" title="{{'No longer valid' | translate}}" ng-click="$ctrl.onHistoric()">
+        <a class="btn btn-block btn-default" title="::{{'No longer valid' | translate}}" ng-click="$ctrl.onHistoric()">
             <i ng-if="$ctrl.phone.historic" class="fa fa-close text-danger"></i>
             <i ng-if="!$ctrl.phone.historic" class="fa"></i>
         </a>
     </div>
     <div class="col-sm-1">
-        <button type="button" ng-click="$ctrl.remove()" class="btn btn-block btn-default" title="{{Delete | translate}}">
+        <button type="button" ng-click="$ctrl.remove()" class="btn btn-block btn-default" title="{{::'Delete' | translate}}">
             <i class="fa fa-trash"></i>
         </button>
     </div>
