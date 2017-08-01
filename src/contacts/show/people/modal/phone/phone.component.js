@@ -1,10 +1,19 @@
+import isFunction from 'lodash/fp/isFunction';
+
 class ContactPhoneController {
     constructor() {
         this.deleted = false;
     }
+    $onInit() {
+        if (this.phone.location) {
+            this.phone.location = this.phone.location.toLowerCase();
+        } else {
+            this.phone.location = 'other';
+        }
+    }
     remove() {
         this.deleted = true;
-        this.onRemove();
+        if (isFunction(this.onRemove)) this.onRemove();
     }
 }
 
