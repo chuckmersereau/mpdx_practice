@@ -13,7 +13,9 @@ class ContactEmailAddressController {
     }
     remove() {
         this.deleted = true;
-        if (isFunction(this.onRemove)) this.onRemove();
+        if (isFunction(this.onRemove)) {
+            this.onRemove();
+        }
     }
 }
 
