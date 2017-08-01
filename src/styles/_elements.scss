@@ -57,6 +57,9 @@ a {
 
 /* ************************************************************** */
 
+body > .tooltip {
+    position: fixed;
+}
 .actions {
     display: inline-block;
 }
