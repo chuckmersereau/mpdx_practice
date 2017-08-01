@@ -39,10 +39,15 @@ class TagsService {
         const params = {
             filter: {
                 account_list_id: this.api.account_list_id
-            },
-            name: tag.name
+            }
         };
-        return this.api.delete({url: 'tasks/tags/bulk', data: params, type: 'tags'}).then(() => {
+
+
+        const data = [{
+            name: tag.name
+        }];
+
+        return this.api.delete({url: 'tasks/tags/bulk', params: params, data: data, type: 'tags'}).then(() => {
             this.selectedTags = reject({ name: tag.name }, this.selectedTags);
             this.rejectedTags = reject({ name: tag.name }, this.rejectedTags);
             this.data = reject({ name: tag.name }, this.data);
