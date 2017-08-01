@@ -10,7 +10,6 @@ import isNil from 'lodash/fp/isNil';
 import map from 'lodash/fp/map';
 import omitBy from 'lodash/fp/omitBy';
 import pull from 'lodash/fp/pull';
-import toInteger from 'lodash/fp/toInteger';
 import union from 'lodash/fp/union';
 import joinComma from "../common/fp/joinComma";
 import relationshipId from "../common/fp/relationshipId";
@@ -58,7 +57,7 @@ class ContactsService {
             },
             deSerializationOptions: relationshipId(['contacts', 'people']) //for contacts_referred_by_me, contacts_that_referred_me and primary_person
         }).then((data) => {
-            data.pledge_amount = toInteger(data.pledge_amount); //fix bad api serialization as string
+            data.pledge_amount = parseFloat(data.pledge_amount); //fix bad api serialization as string
             return data;
         });
     }

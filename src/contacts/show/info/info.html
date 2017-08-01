@@ -80,7 +80,7 @@
         <div class="col-sm-4 ">
             <h4 class="attribute-header" translate>Commitment</h4>
             <div class="inline-input">
-                <input type="number" ng-model="$ctrl.contact.pledge_amount" ng-change="$ctrl.save()" ng-model-options="{ debounce: 1000 }" />
+                <input type="number" step="0.01" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-model="$ctrl.contact.pledge_amount" ng-change="$ctrl.save()" ng-model-options="{ debounce: 1000 }" />
             </div>
         </div>
         <div class="col-sm-4 ">

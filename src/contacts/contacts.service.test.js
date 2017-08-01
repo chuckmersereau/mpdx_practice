@@ -85,7 +85,7 @@ describe('contacts.service', () => {
         describe('promise successful', () => {
             it('should set pledge_amount to integer', (done) => {
                 contacts.get(123).then((data) => {
-                    expect(data.pledge_amount).toEqual(100);
+                    expect(data.pledge_amount).toEqual(100.1);
                     done();
                 });
             });
