@@ -17,12 +17,20 @@
             </tr>
             <tr ng-repeat="(key, value) in obj">
                 <td class="text-left">{{key}}</td>
-                <td class="text-left">
+                <td class="text-left" ng-if="constant !== 'commitment_currency'">
                     <select chosen
                             class="form-control"
                             ng-model='$ctrl.importCsv.values_to_constants_mapping[constant][key]'
-                            ng-options="v as k for (v, k) in $ctrl.serverConstants.data.csv_import.constants[constant]">
-                        <option value="">None</option>
+                            ng-options="item.id as item.value for item in $ctrl.serverConstants.data[$ctrl.serverConstants.data.csv_import.constants_from_top_level[constant]] track by item.id">
+                        <option value="" translate>None</option>
+                    </select>
+                </td>
+                <td class="text-left" ng-if="constant === 'commitment_currency'">
+                    <select chosen
+                            class="form-control"
+                            ng-model='$ctrl.importCsv.values_to_constants_mapping[constant][key]'
+                            ng-options="item.code as item.code_symbol_string for item in $ctrl.serverConstants.data[$ctrl.serverConstants.data.csv_import.constants_from_top_level[constant]] track by item.code">
+                        <option value="" translate>None</option>
                     </select>
                 </td>
             </tr>
