@@ -2,9 +2,6 @@ import has from 'lodash/fp/has';
 import moment from 'moment';
 
 class DonationsService {
-    api;
-    modal;
-
     constructor(
         $log, gettextCatalog,
         api, modal

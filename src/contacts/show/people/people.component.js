@@ -5,11 +5,6 @@ import includes from 'lodash/fp/includes';
 import reject from 'lodash/fp/reject';
 
 class ContactPeopleController {
-    alerts;
-    api;
-    contact;
-    people;
-
     constructor(
         $log, $state, $rootScope,
         alerts, api, people, gettextCatalog

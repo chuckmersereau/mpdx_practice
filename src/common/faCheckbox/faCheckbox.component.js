@@ -1,8 +1,4 @@
-class FaCheckboxController {
-}
-
 const FaCheckbox = {
-    controller: FaCheckboxController,
     template: require('./faCheckbox.html'),
     bindings: {
         checked: '<',

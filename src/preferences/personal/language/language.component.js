@@ -2,10 +2,6 @@ import keys from 'lodash/fp/keys';
 import map from 'lodash/fp/map';
 
 class LanguageController {
-    language;
-    saving;
-    serverConstants;
-    users;
     constructor(
         $transitions, $window,
         language, serverConstants, users

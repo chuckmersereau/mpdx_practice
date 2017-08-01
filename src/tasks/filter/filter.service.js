@@ -10,9 +10,6 @@ import joinComma from "../../common/fp/joinComma";
 import emptyToNull from '../../common/fp/emptyToNull';
 
 class TasksFilterService {
-    api;
-    filters;
-
     constructor(
         $q, $rootScope, $log,
         api, filters, tasksTags

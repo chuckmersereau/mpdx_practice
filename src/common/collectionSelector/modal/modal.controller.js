@@ -2,11 +2,6 @@ import isEmpty from 'lodash/fp/isEmpty';
 import isNil from 'lodash/fp/isNil';
 
 class ModalController {
-    itemName;
-    collectionSearch;
-    searchText;
-    select;
-
     constructor(
         $scope,
         itemName, collectionSearch, searchText, select

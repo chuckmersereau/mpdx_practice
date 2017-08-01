@@ -20,13 +20,6 @@ import emptyToNull from '../common/fp/emptyToNull';
 import moment from 'moment';
 
 class ContactsService {
-    alerts;
-    analytics;
-    api;
-    contactFilter;
-    contactsTags;
-    modal;
-
     constructor(
         $log, $q, $rootScope, gettextCatalog,
         alerts, api, contactFilter, contactsTags, modal

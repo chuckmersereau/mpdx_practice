@@ -4,8 +4,6 @@ import reduce from 'lodash/fp/reduce';
 import toString from 'lodash/fp/toString';
 
 class ServerConstantsService {
-    api;
-
     constructor(
         $log, $q,
         api, pledgeFrequencyToStrFilter

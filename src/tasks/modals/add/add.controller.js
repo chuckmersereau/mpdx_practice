@@ -3,8 +3,6 @@ import startsWith from 'lodash/fp/startsWith';
 import union from 'lodash/fp/union';
 
 class AddTaskController {
-    comment;
-    contactNames;
     constructor(
         $scope, $state,
         contacts, tasksTags, serverConstants, tasks, users,

@@ -1,6 +1,4 @@
 class ItemController {
-    locale;
-
     constructor(
         locale
     ) {

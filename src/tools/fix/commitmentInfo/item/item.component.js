@@ -1,7 +1,4 @@
 class ItemController {
-    fixCommitmentInfo;
-    serverConstants
-
     constructor(
         blockUI,
         serverConstants, fixCommitmentInfo, locale

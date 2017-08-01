@@ -1,8 +1,6 @@
 import config from 'config';
-class OrganizationService {
-    api;
-    users;
 
+class OrganizationService {
     constructor(
         $log, Upload,
         api, users

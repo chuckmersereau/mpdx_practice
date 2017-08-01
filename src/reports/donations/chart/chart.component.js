@@ -7,7 +7,6 @@ import zip from 'lodash/zip';
 import moment from 'moment';
 
 class ChartController {
-    inContact;
     constructor(
         $state, $rootScope, $filter, $log, gettextCatalog,
         accounts, api, contacts, blockUI

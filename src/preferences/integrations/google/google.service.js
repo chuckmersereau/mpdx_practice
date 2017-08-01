@@ -3,8 +3,6 @@ import find from 'lodash/fp/find';
 import isObject from 'lodash/fp/isObject';
 
 class GoogleService {
-    api;
-
     constructor(
         $log, $window,
         api

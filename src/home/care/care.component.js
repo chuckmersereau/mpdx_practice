@@ -1,6 +1,4 @@
 class CareController {
-    tasks;
-
     constructor(
         tasks
     ) {

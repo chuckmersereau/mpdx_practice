@@ -1,7 +1,6 @@
 import indexOf from 'lodash/fp/indexOf';
 
 class IntegrationsController {
-    users;
     constructor(
         $state, users
     ) {

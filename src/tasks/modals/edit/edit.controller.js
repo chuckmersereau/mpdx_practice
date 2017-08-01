@@ -2,7 +2,6 @@ import createPatch from '../../../common/fp/createPatch';
 import isNil from 'lodash/fp/isNil';
 
 class EditTaskController {
-    comment;
     constructor(
         $log, $scope,
         modal, contacts, tasksTags, tasks, serverConstants, users,

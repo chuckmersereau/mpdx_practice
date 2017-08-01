@@ -22,8 +22,6 @@ import reduce from 'lodash/fp/reduce';
 import moment from 'moment';
 
 class TasksService {
-    contacts;
-    selectedContacts;
     constructor(
         $rootScope, $log, gettextCatalog,
         alerts, api, tasksFilter, tasksTags, users, modal, tasksModals, contacts

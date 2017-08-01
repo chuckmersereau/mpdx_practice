@@ -1,7 +1,6 @@
 import values from 'lodash/fp/values';
 
 class CurrencySelectController {
-    ngModel;
     constructor(
         twitterCldr
     ) {

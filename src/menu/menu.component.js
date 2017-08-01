@@ -1,12 +1,4 @@
 class menuController {
-    contacts;
-    donations;
-    help;
-    state;
-    tasks;
-    tools;
-    users;
-
     constructor(
         $rootScope, $state,
         contacts, help, session, tasks, users, donations

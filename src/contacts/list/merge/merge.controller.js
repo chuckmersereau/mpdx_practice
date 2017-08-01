@@ -4,8 +4,6 @@ import map from 'lodash/fp/map';
 import reject from 'lodash/fp/reject';
 
 class MergeContactsController {
-    api;
-    contacts;
     constructor(
         $scope,
         contacts, locale,

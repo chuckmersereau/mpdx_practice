@@ -5,10 +5,6 @@ import startsWith from 'lodash/fp/startsWith';
 import union from 'lodash/fp/union';
 
 class LogTaskController {
-    comment;
-    model;
-    status;
-    task;
     constructor(
         $scope, $state,
         contacts, tasks, tasksTags, serverConstants, users,

@@ -4,8 +4,6 @@ import map from 'lodash/fp/map';
 import reduce from 'lodash/fp/reduce';
 
 class ListController {
-    tasks;
-
     constructor(
         $rootScope,
         modal, session, tasks, tasksFilter, tasksTags

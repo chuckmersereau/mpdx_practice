@@ -16,7 +16,6 @@ import split from 'lodash/fp/split';
 import trim from 'lodash/fp/trim';
 
 class Filters {
-    api;
     constructor(
         $q, $log,
         api

@@ -1,10 +1,6 @@
 import isNil from 'lodash/fp/isNil';
 
 class IntegrationPreferencesController {
-    alerts;
-    integrations;
-    selectedTab;
-
     constructor(
         $window, $rootScope, $state, $stateParams, gettextCatalog,
         alerts, help, integrations, modal, google, mailchimp, prayerLetters

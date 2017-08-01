@@ -3,9 +3,6 @@ import reduce from 'lodash/fp/reduce';
 import reject from 'lodash/fp/reject';
 
 class CommitmentInfoService {
-    api;
-    contacts;
-
     constructor(
         api, contacts
     ) {

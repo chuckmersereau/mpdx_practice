@@ -1,6 +1,4 @@
 class GoogleIntegrationsModalController {
-    googleIntegrations;
-
     constructor(
         $log, blockUI, gettextCatalog,
         googleIntegrations, modal, serverConstants, google,

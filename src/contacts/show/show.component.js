@@ -13,13 +13,6 @@ import reject from 'lodash/fp/reject';
 import set from 'lodash/fp/set';
 
 class ContactController {
-    alerts;
-    contacts;
-    contactFilter;
-    modal;
-    tasks;
-    users;
-
     constructor(
         $log, $rootScope, $state, $stateParams, $anchorScroll, blockUI, gettextCatalog, help,
         alerts, modal, contacts, tasks, contactFilter, people, users, session

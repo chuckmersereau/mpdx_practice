@@ -2,10 +2,6 @@ import map from 'lodash/fp/map';
 import reject from 'lodash/fp/reject';
 
 class MergePeopleModalController {
-    alerts;
-    contact;
-    people;
-
     constructor(
         $rootScope, $scope, gettextCatalog,
         people, alerts,

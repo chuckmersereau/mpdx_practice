@@ -1,8 +1,4 @@
 class ContactsController {
-    contactFilter;
-    help;
-    session;
-
     constructor(
         $rootScope,
         $state, $stateParams, gettextCatalog,

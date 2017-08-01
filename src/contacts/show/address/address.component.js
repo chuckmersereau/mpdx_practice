@@ -1,5 +1,4 @@
 class AddressController {
-    contacts;
     constructor(
         contacts, locale
     ) {

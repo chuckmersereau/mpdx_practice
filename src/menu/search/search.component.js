@@ -2,9 +2,6 @@ import find from 'lodash/fp/find';
 import findIndex from 'lodash/fp/findIndex';
 
 class ContactsSearchController {
-    contacts;
-    contactFilter;
-
     constructor(
         $state, $timeout,
         contacts, contactFilter

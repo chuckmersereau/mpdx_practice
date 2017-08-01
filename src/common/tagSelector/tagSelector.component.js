@@ -10,7 +10,6 @@ const ifNotObject = (tag) => {
 };
 
 class TagSelectorController {
-    tagList;
     constructor(
         $filter
     ) {

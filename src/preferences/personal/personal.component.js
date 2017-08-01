@@ -10,13 +10,6 @@ import toLower from 'lodash/fp/toLower';
 import uuid from 'uuid/v1';
 
 class PersonalController {
-    accounts;
-    alerts;
-    api;
-    locale;
-    serverConstants;
-    users;
-
     constructor(
         $state, $stateParams, $window, gettextCatalog,
         accounts, api, alerts, designationAccounts, locale, serverConstants, users

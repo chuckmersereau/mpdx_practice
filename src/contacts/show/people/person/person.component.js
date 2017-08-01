@@ -1,6 +1,4 @@
 class ContactPersonController {
-    contact;
-    people;
     constructor(
         $sce, gettextCatalog,
         locale, people

@@ -3,7 +3,6 @@ import eq from 'lodash/fp/eq';
 import get from 'lodash/fp/get';
 
 class ItemController {
-    task;
     constructor(
         $log, gettextCatalog,
         api, locale, modal, tasks, users

@@ -1,9 +1,6 @@
 import filter from 'lodash/fp/filter';
 
 class MergePeopleController {
-    api;
-    mergePeople;
-
     constructor(
         $log, $q, $rootScope, $state, blockUI,
         api, mergePeople

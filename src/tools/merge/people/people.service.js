@@ -4,9 +4,6 @@ import relationshipId from "common/fp/relationshipId";
 import filter from 'lodash/fp/filter';
 
 class MergePeople {
-    api;
-    people;
-
     constructor(
         $log, $q,
         api, people

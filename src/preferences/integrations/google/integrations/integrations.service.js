@@ -1,6 +1,4 @@
 class GoogleIntegrationsService {
-    api;
-
     constructor(
         $log,
         api, modal

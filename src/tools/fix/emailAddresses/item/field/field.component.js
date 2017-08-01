@@ -1,9 +1,6 @@
 import uuid from 'uuid/v1';
 
 class FieldController {
-    fixEmailAddresses;
-    locale;
-
     constructor(
         fixEmailAddresses, locale
     ) {

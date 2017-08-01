@@ -1,8 +1,4 @@
-class MergeController {
-}
-
 const Merge = {
-    controller: MergeController,
     template: require('./merge.html')
 };
 

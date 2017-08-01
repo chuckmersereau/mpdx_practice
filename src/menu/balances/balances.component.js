@@ -2,9 +2,6 @@ import reduce from 'lodash/fp/reduce';
 import toInteger from 'lodash/fp/toInteger';
 
 class BalancesController {
-    accounts;
-    designationAccounts;
-    reports;
     constructor(
         $log, $rootScope, gettextCatalog,
         accounts, designationAccounts, reports

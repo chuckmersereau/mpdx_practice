@@ -1,6 +1,4 @@
 class ContactReferralsController {
-    contact;
-
     constructor(
         $stateParams,
         contacts, locale

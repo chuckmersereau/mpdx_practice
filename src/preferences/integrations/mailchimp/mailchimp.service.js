@@ -1,8 +1,6 @@
 import config from 'config';
 
 class MailchimpService {
-    api;
-
     constructor(
         $log, $q, $window,
         api
@@ -21,7 +19,6 @@ class MailchimpService {
         return this.api.get(`account_lists/${this.api.account_list_id}/mail_chimp_account`).then((data) => {
             this.$log.debug(`account_lists/${this.api.account_list_id}/mail_chimp_account`, data);
             this.data = data;
-        }).finally(() => {
         });
     }
     save() {

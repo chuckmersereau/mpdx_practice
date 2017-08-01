@@ -5,11 +5,6 @@ import reject from 'lodash/fp/reject';
 import createPatch from "../../../../common/fp/createPatch";
 
 class AddressModalController {
-    contact;
-    contacts;
-    map;
-    serverConstants;
-
     constructor(
         $log, $scope, $timeout, $window, gettextCatalog, NgMap,
         contacts, serverConstants, users,

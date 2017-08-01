@@ -1,11 +1,6 @@
 import reject from 'lodash/fp/reject';
 
 class SharePreferencesController {
-    accounts;
-    alerts;
-    setup;
-    users;
-
     constructor(
         $rootScope, gettextCatalog,
         accounts, alerts, users

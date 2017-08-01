@@ -1,5 +1,4 @@
 class SetupPreferencesController {
-    accounts;
     constructor(accounts) {
         this.accounts = accounts;
     }

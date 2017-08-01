@@ -1,6 +1,4 @@
 class CommitmentInfoController {
-    fixCommitmentInfo;
-
     constructor(
         $rootScope, gettextCatalog, blockUI,
         modal, fixCommitmentInfo

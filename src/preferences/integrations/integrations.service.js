@@ -1,6 +1,4 @@
 class IntegrationsService {
-    api;
-
     constructor(
         $q, $log,
         api

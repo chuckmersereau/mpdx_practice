@@ -1,5 +1,4 @@
 export class BottomController {
-    help;
     constructor(help) {
         this.help = help;
         this.year = new Date().getFullYear();

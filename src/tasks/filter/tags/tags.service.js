@@ -2,8 +2,6 @@ import includes from 'lodash/fp/includes';
 import reject from 'lodash/fp/reject';
 
 class TagsService {
-    api;
-
     constructor(
         $filter, $log, $q, $rootScope, gettextCatalog,
         api, modal

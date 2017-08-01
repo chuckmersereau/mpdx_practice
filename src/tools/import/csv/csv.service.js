@@ -14,10 +14,6 @@ import union from 'lodash/fp/union';
 import values from 'lodash/fp/values';
 
 class CsvService {
-    alerts;
-    api;
-    serverConstants;
-
     constructor(
         $log,
         $state, blockUI, gettextCatalog, Upload,

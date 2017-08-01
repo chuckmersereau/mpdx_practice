@@ -1,5 +1,4 @@
 class ReportsService {
-    api;
     constructor(
         $q, $log,
         api

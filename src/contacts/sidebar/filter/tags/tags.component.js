@@ -2,8 +2,6 @@ import includes from 'lodash/fp/includes';
 import reject from 'lodash/fp/reject';
 
 class TagsController {
-    contactsTags;
-
     constructor(
         $log, $rootScope,
         api, contactsTags

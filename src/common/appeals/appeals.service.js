@@ -2,9 +2,6 @@ import defaultTo from 'lodash/fp/defaultTo';
 import get from 'lodash/fp/get';
 
 class AppealsService {
-    api;
-    data;
-
     constructor(
         $rootScope, $log,
         api

@@ -1,8 +1,4 @@
 class FieldController {
-    fixAddresses;
-    locale;
-    contacts;
-
     constructor(
         fixAddresses, locale, contacts
     ) {

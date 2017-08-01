@@ -1,8 +1,4 @@
-class FixController {
-}
-
 const Fix = {
-    controller: FixController,
     template: require('./fix.html')
 };
 

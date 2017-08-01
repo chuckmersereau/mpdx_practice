@@ -2,8 +2,6 @@ import reduce from 'lodash/fp/reduce';
 import moment from 'moment';
 
 class FilterDaterangeController {
-    customOptions;
-    locale;
     constructor($element) {
         let input = $element.find('input');
 

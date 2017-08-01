@@ -2,9 +2,6 @@ import assign from 'lodash/fp/assign';
 import isEmpty from 'lodash/fp/isEmpty';
 
 class FilterService {
-    api;
-    filters;
-
     constructor(
         $rootScope,
         api, contactsTags, filters

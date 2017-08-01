@@ -9,16 +9,6 @@ import reject from 'lodash/fp/reject';
 import unionBy from 'lodash/fp/unionBy';
 
 class ListController {
-    accounts;
-    alerts;
-    api;
-    contacts;
-    contactFilter;
-    contactsTags;
-    modal;
-    session;
-    tasks;
-
     constructor(
         $log, $rootScope, $window,
         gettextCatalog,

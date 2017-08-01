@@ -2,8 +2,6 @@ import reduce from 'lodash/fp/reduce';
 import toInteger from 'lodash/fp/toInteger';
 
 class BalancesController {
-    designationAccounts;
-
     constructor(
         $rootScope, blockUI,
         designationAccounts, locale

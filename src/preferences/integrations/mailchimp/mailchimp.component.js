@@ -1,10 +1,6 @@
 import each from 'lodash/fp/each';
 
 class MailchimpIntegrationPreferencesController {
-    alerts;
-    mailchimp;
-    state;
-
     constructor(
         $rootScope, gettextCatalog,
         mailchimp, alerts, help, modal

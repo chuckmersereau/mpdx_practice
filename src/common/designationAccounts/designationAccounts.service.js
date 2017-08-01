@@ -3,9 +3,6 @@ import find from 'lodash/fp/find';
 import reduce from 'lodash/fp/reduce';
 
 class DesignationAccountsService {
-    api;
-    data;
-
     constructor(
         $log,
         api

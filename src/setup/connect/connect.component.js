@@ -1,13 +1,6 @@
 import get from 'lodash/fp/get';
 
 class SetupConnectController {
-    accounts;
-    alerts;
-    api;
-    selectedKey;
-    preferencesOrganization;
-    serverConstants;
-    users;
     constructor(
         $rootScope, $state, gettextCatalog,
         accounts, alerts, api, help, preferencesOrganization, serverConstants, users

@@ -3,11 +3,6 @@ import joinComma from "common/fp/joinComma";
 import config from 'config';
 
 class ImportTntController {
-    alerts;
-    api;
-    modal;
-    maxSize;
-    maxSizeInMB;
     constructor(
         $rootScope, $window, gettextCatalog, Upload,
         alerts, api, contactsTags, modal, serverConstants

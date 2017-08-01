@@ -5,12 +5,6 @@ import moment from 'moment';
 import reduceObject from 'common/fp/reduceObject';
 
 class DonationsController {
-    inContact;
-    contacts;
-    designationAccounts;
-    donations;
-    locale;
-
     constructor(
         $rootScope, $log,
         $stateParams,
