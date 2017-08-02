@@ -58,7 +58,7 @@ class IntegrationPreferencesController {
         this.service = service;
         return this.integrations.disconnect(service).then(() => {
             this.saving = false;
-            this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed your integration with with {{service}}.', {service: this.service}), 'success');
+            this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed your integration with {{service}}.', {service: this.service}), 'success');
             this.integrations.load();
         }).catch(err => {
             this.alerts.addAlert(this.gettextCatalog.getString(`MPDX couldn't save your configuration changes for {{service}}. {{error}}`, {service: this.service, error: err.error}), 'danger');
