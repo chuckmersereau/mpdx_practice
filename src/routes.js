@@ -21,12 +21,6 @@ export default class Routes {
             url: '/login',
             component: 'login'
         }).state({
-            name: 'admin',
-            title: gettext('Admin'),
-            url: '/admin',
-            component: 'admin',
-            parent: 'root'
-        }).state({
             name: 'auth',
             title: gettext('Auth'),
             url: '/auth?access_token',
@@ -163,6 +157,11 @@ export default class Routes {
             resolve: {
                 resolution: /*@ngInject*/ (accounts) => accounts.load()
             }
+        }).state({
+            name: 'preferences.admin',
+            title: gettext('Preferences - Admin'),
+            url: '/admin',
+            component: 'preferencesAdmin'
         }).state({
             name: 'preferences.integrations',
             title: gettext('Preferences - Connect Services'),

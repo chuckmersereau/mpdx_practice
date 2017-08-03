@@ -1,0 +1,23 @@
+<p translate>
+    This will log you in on behalf of the user specified below. You will be able to see what the user
+    sees on MPDX. Impersonation sessions have 20 minute timeout where you will automatically be logged
+    out of the user's account after the specified amount of time. Once you are finished impersonating,
+    click 'Log Out' at the top of the page.
+</p>
+<form name="impersonateUserForm" ng-submit="$ctrl.save()">
+    <div class="form-group">
+        <label for="user" translate>User Name, ID or Key/Relay Email</label>
+        <input name="user" type="text" class="form-control" ng-model="$ctrl.impersonateUser.user" required>
+    </div>
+    <div class="form-group">
+        <label for="reason" translate>Reason / Helpscout Ticket Link</label>
+        <input name="reason" type="text" class="form-control" ng-model="$ctrl.impersonateUser.reason" required>
+    </div>
+    <button type="submit" ng-disabled="!impersonateUserForm.$valid || $ctrl.saving" class="btn btn-primary">
+        <span translate>Impersonate User</span>
+        &nbsp;
+        <span class="btn-progress" ng-show="$ctrl.saving">
+            <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
+        </span>
+    </button>
+</form>

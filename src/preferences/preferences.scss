@@ -1,35 +1,38 @@
 preferences {
-    .panel-heading {
-        position: relative;
-        .row {position: relative;}
-        .fa-chevron-right {
-            position: absolute;
-            top: 50%;
-            right: 14px;
-            margin-top: -10px;
-            font-size: 13px;
-            color: $color-panel-border;
-            display: block;
-            width: 20px;
-            padding-left: 3px;
-            padding-top: 1px;
-            line-height: 15px;
-            text-align: center;
-            border-radius: 50%;
-            border: $color-panel-border 2px solid;
+    .panel.panel-default {
+        .panel-heading {
+            position: relative;
+            cursor: pointer;
+            .row {position: relative;}
+            .fa-chevron-right {
+                position: absolute;
+                top: 50%;
+                right: 14px;
+                margin-top: -10px;
+                font-size: 13px;
+                color: $color-panel-border;
+                display: block;
+                width: 20px;
+                padding-left: 3px;
+                padding-top: 1px;
+                line-height: 15px;
+                text-align: center;
+                border-radius: 50%;
+                border: $color-panel-border 2px solid;
+            }
+            .fa-chevron-right {
+                transition: transform 0.5s, color 0.5s, border-color 0.5s;
+            }
         }
-        .fa-chevron-right {
-            transition: transform 0.5s, color 0.5s, border-color 0.5s;
-        }
-    }
-    .panel-selected > .panel-heading {
-        .fa-chevron-right {
-            color: $color-panel-bg;
-        }
-        .fa-chevron-right {
-            border-color: $color-panel-bg;
-            line-height: 14px;
-            padding-top: 2px;
+        .panel-selected > .panel-heading {
+            .fa-chevron-right {
+                color: $color-panel-bg;
+            }
+            .fa-chevron-right {
+                border-color: $color-panel-bg;
+                line-height: 14px;
+                padding-top: 2px;
+            }
         }
     }
     .btn-primary {

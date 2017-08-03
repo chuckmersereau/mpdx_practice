@@ -364,6 +364,9 @@ class EntityAttributes {
                 organization: {ref: 'id'},
                 person: {ref: 'id'}
             },
+            organizations: {
+                attributes: ['name', "org_help_url", "country"]
+            },
             people: {
                 attributes: ["first_name", "legal_first_name", "last_name", "birthday_month", "birthday_year", "birthday_day", "anniversary_month", "anniversary_year", "anniversary_day", "title",
                     "suffix", "gender", "marital_status", "preferences", "sign_in_count", "current_sign_in_at", "last_sign_in_at", "current_sign_in_ip", "last_sign_in_ip", "created_at", "updated_at",
@@ -404,6 +407,9 @@ class EntityAttributes {
                     }
                     return key;
                 }
+            },
+            resets: {
+                attributes: ["resetted_user_email", "reason", "account_list_name"]
             },
             tasks: {
                 attributes: ["account_list", "activity_type", "comments", "completed", "completed_at", "created_at", "contacts", "due_date", "end_at", "location",
