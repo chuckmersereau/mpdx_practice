@@ -7,6 +7,19 @@ menu {
     top: 0;
     z-index: 10;
 
+    .nav--impersonation {
+        background: $gray_light;
+        text-align: center;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: $impersonation-height;
+        .btn {
+            display:inline-block;
+            vertical-align: middle;
+            margin: 0 0 5px 10px;
+        }
+    }
+
     .nav--logo {
         cursor: pointer;
         background: url("images/mpdx-logo-svg.svg") no-repeat;
@@ -220,4 +233,9 @@ menu {
     }
     translate {vertical-align: top;}
     .badge {vertical-align: text-top;}
+}
+.has-nav-impersonation {
+    .nav--secondary {
+        top: $impersonation-nav-height;
+    }
 }

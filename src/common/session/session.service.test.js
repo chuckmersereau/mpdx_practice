@@ -13,6 +13,7 @@ describe('common.session.service', () => {
     describe('constructor', () => {
         it('should set default values', () => {
             expect(session.navSecondary).toBeFalsy();
+            expect(session.navImpersonation).toBeFalsy();
             expect(session.showFiltersOnMobile).toBeFalsy();
         });
     });
