@@ -5,59 +5,60 @@
             <translate ng-if="$ctrl.users.organizationAccounts.length > 0">It's time for awesome!</translate>
         </div>
         <div class="panel-body text-center">
-            <div ng-if="!$ctrl.showOrgs">
+            <div ng-if="!$ctrl.addOrganization">
                 <div ng-if="$ctrl.users.organizationAccounts.length > 0">
                     <h2 translate>Sweet! You're connected.</h2>
                     <ul class="list-unstyled">
                         <li ng-repeat="account in $ctrl.users.organizationAccounts">{{account.organization.name}}</li>
                     </ul>
-
                     <h3 translate>Do you receive donations in any other country or from any other organizations?</h3>
-                    <a ng-click="$ctrl.showOrgs = true" class="btn btn-reverse" style="width: 48%;" translate>Yes</a>
+                    <a ng-click="$ctrl.addOrganization = true" class="btn btn-reverse" style="width: 48%;" translate>Yes</a>
                     <a ng-click="$ctrl.next()" class="btn btn-primary" style="width: 48%;" translate>No</a>
                 </div>
             </div>
-            <div ng-if="$ctrl.showOrgs">
+            <div ng-if="$ctrl.addOrganization">
                 <div ng-if="$ctrl.users.organizationAccounts.length === 0">
                     <h2 translate>First, connect your organization to your MPDX account.</h2>
                     <p>This will allow MPDX to automatically synchronize your donation information.</p>
                 </div>
                 <div class="text-left">
-                    <label for="organization" class="hide-desktop" translate>Organization</label>
-                    <select chosen
-                            ng-model="$ctrl.selectedKey"
-                            ng-change="$ctrl.select()"
-                            id="organization"
-                            ng-options="key as value.name for (key, value) in $ctrl.serverConstants.data.organizations_attributes track by key">
-                        <option value=""></option>
-                    </select>
-                    <div ng-if="!$ctrl.selectedKey">
-                        <a ng-click="$ctrl.showOrganizationHelp()" translate>Can't find your organization?</a>
-                    </div>
-                    <div ng-if="$ctrl.connecting" class="row">
-                        <div ng-if="$ctrl.selected.api_class === 'Siebel'">
-                            <div class="well">
-                                <h4 translate>You must log into MPDX with your ministry email</h4>
-                                <p translate>This organization requires you to log into MPDX with your ministry email to access it.</p>
-                                <p translate>First you need to <a href="https://thekey.me/cas/logout" target="_blank" translate>click here to log out of your personal Key account</a></p>
-                                <p translate>Next, <a href="/logout" translate>click here to log out of MPDX</a> so you can log back in with your offical key account.</p>
+                    <form name="addOrganization" ng-submit="$ctrl.add()" novalidate>
+                        <label for="organization" translate>Organization</label>
+                        <select chosen
+                                required
+                                ng-model="$ctrl.selectedKey"
+                                ng-change="$ctrl.select()"
+                                id="organization"
+                                ng-options="key as value.name for (key, value) in $ctrl.serverConstants.data.organizations_attributes track by key">
+                            <option value=""></option>
+                        </select>
+                        <div ng-if="!$ctrl.selectedKey" style="margin-top: 5px;">
+                            <a ng-click="$ctrl.showOrganizationHelp()" translate>Can't find your organization?</a>
+                        </div>
+                        <div class="well" ng-if="$ctrl.selected.api_class === 'Siebel'">
+                            <h4 translate>You must log into MPDX with your ministry email</h4>
+                            <p translate>This organization requires you to log into MPDX with your ministry email to access it.</p>
+                            <p translate>First you need to <a href="https://thekey.me/cas/logout" target="_blank" translate>click here to log out of your personal Key account</a></p>
+                            <p translate>Next, <a href="/logout" translate>click here to log out of MPDX</a> so you can log back in with your offical key account.</p>
+                        </div>
+                        <div class="row" ng-if="['DataServer', 'DataServerPtc', 'DataServerNavigators'].includes($ctrl.selected.api_class)">
+                            <div class="col-xs-6">
+                                <label for="username" translate>Username</label>
+                                <input type="text" class="form-control" id="username" ng-model="$ctrl.username" required>
+                            </div>
+                            <div class="col-xs-6">
+                                <label for="password" translate>Password</label>
+                                <input type="password" class="form-control" id="password" ng-model="$ctrl.password" required>
                             </div>
                         </div>
-                        <div class="col-xs-6" ng-if="['DataServer', 'DataServerPtc', 'DataServerNavigators'].includes($ctrl.selected.api_class)">
-                            <label for="username" translate>Username</label>
-                            <input type="text" class="form-control" id="username" ng-model="$ctrl.username">
+                        <div class="panel__connect-links text-center">
+                            <a ng-click="$ctrl.reset()" class="btn btn-reverse" style="width: 48%;" ng-if="$ctrl.users.organizationAccounts.length > 0" translate>Cancel</a>
+                            <button ng-disabled="!addOrganization.$valid || $ctrl.saving" class="btn btn-primary"style="width: 48%;">
+                                <translate>Connect</translate>
+                                <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-class="{ 'hidden': !$ctrl.saving }"></i>
+                            </button>
                         </div>
-                        <div class="col-xs-6" ng-if="['DataServer', 'DataServerPtc', 'DataServerNavigators'].includes($ctrl.selected.api_class)">
-                            <label for="password" translate>Password</label>
-                            <input type="password" class="form-control" id="password" ng-model="$ctrl.password">
-                        </div>
-                    </div>
-                </div>
-                <div class="panel__connect-links text-center">
-                    <a ng-click="$ctrl.reset()" class="btn btn-reverse" style="width: 48%;" ng-if="$ctrl.connecting" translate>Cancel</a>
-                    <a ng-click="$ctrl.showOrgs = false" class="btn btn-reverse" style="width: 48%;" ng-if="!$ctrl.connecting && $ctrl.users.organizationAccounts.length > 0" translate>Cancel</a>
-                    <button ng-click="$ctrl.connect()" ng-disabled="!$ctrl.selected" class="btn btn-primary" style="width: 48%;" ng-if="!$ctrl.connecting && $ctrl.selected.api_class !== 'OfflineOrg'" translate>Connect</button>
-                    <a ng-click="$ctrl.add()" class="btn btn-primary" style="width: 48%;" ng-if="($ctrl.connecting && $ctrl.selected.api_class !== 'Siebel') || $ctrl.selected.api_class === 'OfflineOrg'" translate>Add Account</a>
+                    </form>
                 </div>
             </div>
         </div>

@@ -1,6 +1,9 @@
 setup {
     margin: 70px 0 80px;
     display: block;
+    alerts .alerts {
+        top: 53px;
+    }
 }
 setup-start, setup-connect, setup-account, setup-finish {
     .panel {
