@@ -21,7 +21,7 @@ import moment from 'moment';
 class ContactsService {
     constructor(
         $log, $q, $rootScope, gettextCatalog,
-        alerts, api, contactFilter, contactsTags, modal
+        alerts, api, contactFilter, contactsTags, modal, serverConstants
     ) {
         this.$log = $log;
         this.$q = $q;
@@ -32,6 +32,7 @@ class ContactsService {
         this.contactsTags = contactsTags;
         this.gettextCatalog = gettextCatalog;
         this.modal = modal;
+        this.serverConstants = serverConstants;
 
         this.analytics = null;
         this.current = null;
@@ -56,8 +57,11 @@ class ContactsService {
                 }
             },
             deSerializationOptions: relationshipId(['contacts', 'people']) //for contacts_referred_by_me, contacts_that_referred_me and primary_person
-        }).then((data) => {
+        }).then(data => {
             data.pledge_amount = parseFloat(data.pledge_amount); //fix bad api serialization as string
+            if (!isNil(data.pledge_frequency)) {
+                data.pledge_frequency = parseFloat(data.pledge_frequency);
+            }
             return data;
         });
     }
@@ -280,6 +284,9 @@ class ContactsService {
                 contact: contact,
                 address: address
             },
+            resolve: {
+                0: () => this.serverConstants.load(['assignable_locations'])
+            },
             onHide: () => {
                 promise.resolve();
             }
@@ -330,14 +337,15 @@ class ContactsService {
     }
 }
 
-import alerts from '../common/alerts/alerts.service';
-import api from '../common/api/api.service';
+import alerts from 'common/alerts/alerts.service';
+import api from 'common/api/api.service';
 import contactFilter from './sidebar/filter/filter.service';
 import contactsTags from './sidebar/filter/tags/tags.service';
-import modal from '../common/modal/modal.service';
+import modal from 'common/modal/modal.service';
 import getText from 'angular-gettext';
+import serverConstants from 'common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.contacts.service', [
     getText,
-    alerts, api, contactFilter, contactsTags, modal
+    alerts, api, contactFilter, contactsTags, modal, serverConstants
 ]).service('contacts', ContactsService).name;

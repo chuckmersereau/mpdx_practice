@@ -50,7 +50,8 @@ describe('contacts.service', () => {
     describe('get', () => {
         beforeEach(() => {
             const data = {
-                pledge_amount: '100.1'
+                pledge_amount: '100.1',
+                pledge_frequency: '1.1'
             };
             spyOn(api, 'get').and.returnValue(Promise.resolve(data));
         });
@@ -82,12 +83,16 @@ describe('contacts.service', () => {
         it('should return promise', () => {
             expect(contacts.get(123)).toEqual(jasmine.any(Promise));
         });
-        describe('promise successful', () => {
-            it('should set pledge_amount to integer', (done) => {
-                contacts.get(123).then((data) => {
-                    expect(data.pledge_amount).toEqual(100.1);
-                    done();
-                });
+        it('should set pledge_amount to float', (done) => {
+            contacts.get(123).then((data) => {
+                expect(data.pledge_amount).toEqual(100.1);
+                done();
+            });
+        });
+        it('should parse pledge_frequency for value consistency', done => {
+            contacts.get(123).then(data => {
+                expect(data.pledge_frequency).toEqual(1.1);
+                done();
             });
         });
     });

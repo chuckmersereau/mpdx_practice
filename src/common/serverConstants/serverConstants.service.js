@@ -1,40 +1,62 @@
 import replaceUnderscore from '../fp/replaceUnderscore';
+import assign from 'lodash/fp/assign';
+import concat from 'lodash/fp/concat';
+import difference from 'lodash/fp/difference';
 import keys from 'lodash/fp/keys';
 import reduce from 'lodash/fp/reduce';
 import toString from 'lodash/fp/toString';
+import joinComma from '../fp/joinComma';
+import reduceObject from '../fp/reduceObject';
 
 class ServerConstantsService {
     constructor(
         $log, $q,
-        api, pledgeFrequencyToStrFilter
+        api
     ) {
         this.$log = $log;
         this.$q = $q;
-
         this.api = api;
-        this.pledgeFrequencyToStrFilter = pledgeFrequencyToStrFilter;
 
-        this.data = null;
+        this.data = {};
     }
-    load(reset = false) {
-        if (!reset && this.data) {
+    load(constants = []) {
+        /* istanbul ignore next */
+        this.$log.debug('constants requested', constants);
+        const differences = difference(constants, keys(this.data));
+        /* istanbul ignore next */
+        this.$log.debug('constants missing', differences);
+
+        if (differences.length === 0) {
             return this.$q.resolve(this.data);
         }
 
-        return this.api.get('constants').then((data) => {
-            this.$log.debug('constants', data);
-            data.dates = this.mapUnderscore(data.dates);
-            data.languages = this.mapUnderscore(data.languages);
-            data.locales = this.mapUnderscore(data.locales);
-            data.notifications = this.mapUnderscore(data.notifications);
-            data.organizations = this.mapUnderscore(data.organizations);
-            data.organizations_attributes = this.mapUnderscore(data.organizations_attributes);
-            data.pledge_frequencies = this.mapFreqencies(data.pledge_frequencies);
-            this.data = data;
+        return this.api.get('constants', {
+            fields: {
+                constant_list: joinComma(differences)
+            }
+        }).then(data => {
+            this.data = assign(this.data, data);
+            this.data = reduceObject((result, value, key) => {
+                result[key] = this.handleSpecialKeys(key, value);
+                return result;
+            }, {}, this.data);
+            /* istanbul ignore next */
+            this.$log.debug('constants', this.data);
             return data;
         });
     }
-
+    handleSpecialKeys(key, value) {
+        switch (key) {
+            case 'languages':
+            case 'locales':
+            case 'organizations_attributes':
+                return this.mapUnderscore(value);
+            case 'pledge_frequency_hashes':
+                return this.mapFreqencies(value);
+            default:
+                return value;
+        }
+    }
     mapUnderscore(obj) {
         const objKeys = keys(obj);
         return reduce((result, key) => {
@@ -44,17 +66,16 @@ class ServerConstantsService {
     }
 
     mapFreqencies(obj) {
-        const objKeys = keys(obj);
-        return reduce((result, key) => {
-            result[toString(parseFloat(key))] = this.pledgeFrequencyToStrFilter(key);
-            return result;
-        }, {}, objKeys);
+        return reduce((result, value) => {
+            value.key = parseFloat(value.key);
+            return concat(result, value);
+        }, [], obj);
     }
 }
 
-import pledgeFrequencyToStr from '../../contacts/list/item/pledgeFrequencyToStr.filter';
+import api from '../api/api.service';
 
 export default angular.module('mpdx.common.serverConstants', [
-    pledgeFrequencyToStr
+    api
 ]).service('serverConstants', ServerConstantsService).name;
 

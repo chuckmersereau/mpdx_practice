@@ -5,6 +5,7 @@ import defaultTo from 'lodash/fp/defaultTo';
 import find from 'lodash/fp/find';
 import flatten from 'lodash/fp/flatten';
 import flatMap from 'lodash/fp/flatMap';
+import get from 'lodash/fp/get';
 import isNil from 'lodash/fp/isNil';
 import map from 'lodash/fp/map';
 import moment from 'moment';
@@ -19,9 +20,10 @@ import toInteger from 'lodash/fp/toInteger';
 
 class ContributionsController {
     constructor(
-        $rootScope, gettextCatalog,
+        $log, $rootScope, gettextCatalog,
         api, locale, serverConstants
     ) {
+        this.$log = $log;
         this.api = api;
         this.gettextCatalog = gettextCatalog;
         this.locale = locale;
@@ -51,7 +53,7 @@ class ContributionsController {
     }
     load() {
         this.loading = true;
-        return this.serverConstants.load().then(() => this.loadAfterServerConstants(this.type));
+        return this.loadAfterServerConstants(this.type);
     }
     loadAfterServerConstants(type) {
         const endpoint = type === 'salary' ? 'reports/salary_currency_donations' : 'reports/donor_currency_donations';
@@ -66,6 +68,7 @@ class ContributionsController {
                 total: sumBy('totals.year_converted', currencies),
                 salaryCurrency: this.serverConstants.data.pledge_currencies[data.salary_currency.toLowerCase()]
             };
+            this.$log.debug('parsed report data', this.data);
             this.loading = false;
         });
     }
@@ -105,7 +108,7 @@ class ContributionsController {
         return sortBy('contact.contact_name',
             map(donor => {
                 return {
-                    contact: find({'contact_id': donor.contact_id}, data.donor_infos),
+                    contact: this.getContact(donor, data),
                     monthlyDonations: this.getMonthlyDonations(type, donor),
                     average: donor.average,
                     maximum: donor.maximum,
@@ -114,6 +117,17 @@ class ContributionsController {
                 };
             }, reject(donor => isNil(donor.total), info))
         );
+    }
+    getContact(donor, data) {
+        let contact = find({'contact_id': donor.contact_id}, data.donor_infos);
+        if (contact) {
+            const frequencyValue = parseFloat(contact.pledge_frequency);
+            const frequency = find({key: frequencyValue}, this.serverConstants.data.pledge_frequency_hashes);
+            if (frequency) {
+                contact.pledge_frequency = get('value', frequency);
+            }
+        }
+        return contact;
     }
     getMonthlyDonations(type, donor) {
         return map(monthlyDonation => {
@@ -135,7 +149,7 @@ class ContributionsController {
         return moment(str);
     }
     toCSV() {
-        return this.serverConstants.load().then(() => this.toCSVAfterServerConstants(this.data));
+        return this.toCSVAfterServerConstants(this.data);
     }
     toCSVAfterServerConstants(contributions) {
         if (!contributions || !contributions.currencies || !contributions.months) {
@@ -168,7 +182,7 @@ class ContributionsController {
                 columnHeaders
             ];
             const donorRows = map(donor => {
-                const pledgeFreq = this.serverConstants.data.pledge_frequencies[parseFloat(defaultTo(0, donor.contact.pledge_frequency))] || '';
+                const pledgeFreq = get('pledge_frequency', donor.contact) || '';
                 const amount = defaultTo(0, donor.contact.pledge_amount) === 0 ? '' : `${currency.symbol}${donor.contact.pledge_amount} ${currency.code} ${pledgeFreq}`;
                 return [
                     donor.contact.contact_name,

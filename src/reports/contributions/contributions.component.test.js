@@ -18,27 +18,53 @@ describe('reports.contributions.component', () => {
             api.account_list_id = 123;
 
             serverConstants.data = {
-                pledge_frequencies: {
-                    0.23076923076923: "Every Week",
-                    0.46153846153846: "Every 2 Weeks",
-                    1: "Every Month",
-                    2: "Every 2 Months",
-                    3: "Every Quarter",
-                    4: "Every 4 Months",
-                    6: "Every 6 Months",
-                    12: "Every Year",
-                    24: "Every 2 Years"
-                },
+                pledge_frequency_hashes: [{
+                    'id': 'Weekly',
+                    'key': '0.23076923076923',
+                    'value': 'Weekly'
+                }, {
+                    'id': 'Every 2 Weeks',
+                    'key': '0.46153846153846',
+                    'value': 'Every 2 Weeks'
+                }, {
+                    'id': 'Monthly',
+                    'key': 1,
+                    'value': 'Monthly'
+                }, {
+                    'id': 'Every 2 Months',
+                    'key': 2,
+                    'value': 'Every 2 Months'
+                }, {
+                    'id': 'Quarterly',
+                    'key': 3,
+                    'value': 'Quarterly'
+                }, {
+                    'id': 'Every 4 Months',
+                    'key': 4,
+                    'value': 'Every 4 Months'
+                }, {
+                    'id': 'Every 6 Months',
+                    'key': 6,
+                    'value': 'Every 6 Months'
+                }, {
+                    'id': 'Annual',
+                    'key': 12.0,
+                    'value': 'Annual'
+                }, {
+                    'id': 'Every 2 Years',
+                    'key': 24.0,
+                    'value': 'Every 2 Years'
+                }],
                 pledge_currencies: {
                     nzd: {
-                        code: "NZD",
-                        code_symbol_string: "NZD ($)",
-                        name: "New Zealand dollar",
-                        symbol: "$"
+                        code: 'NZD',
+                        code_symbol_string: 'NZD ($)',
+                        name: 'New Zealand dollar',
+                        symbol: '$'
                     }
                 }
             };
-            $ctrl = componentController('contributions', { $scope: scope }, {});
+            $ctrl = componentController('contributions', {$scope: scope}, {});
         });
     });
 
@@ -74,19 +100,13 @@ describe('reports.contributions.component', () => {
 
     describe('load', () => {
         beforeEach(() => {
-            spyOn($ctrl, 'loadAfterServerConstants').and.callFake(() => Promise.resolve({ mock: 'data' }));
-            spyOn(serverConstants, 'load').and.callFake(() => Promise.resolve());
+            spyOn($ctrl, 'loadAfterServerConstants').and.callFake(() => Promise.resolve({mock: 'data'}));
         });
 
         it('should set loading to true', () => {
             $ctrl.loading = false;
             $ctrl.load();
             expect($ctrl.loading).toBeTruthy();
-        });
-
-        it('should call serverConstants', () => {
-            $ctrl.load();
-            expect(serverConstants.load).toHaveBeenCalled();
         });
 
         it('should call loadAfterServerConstants', done => {
@@ -99,8 +119,8 @@ describe('reports.contributions.component', () => {
 
         describe('type is partner', () => {
             beforeEach(() => {
-                $ctrl = componentController('contributions', { $scope: scope }, { type: 'partner' });
-                spyOn($ctrl, 'loadAfterServerConstants').and.callFake(() => Promise.resolve({ mock: 'data' }));
+                $ctrl = componentController('contributions', {$scope: scope}, {type: 'partner'});
+                spyOn($ctrl, 'loadAfterServerConstants').and.callFake(() => Promise.resolve({mock: 'data'}));
             });
 
             it('should call load', done => {
@@ -122,7 +142,7 @@ describe('reports.contributions.component', () => {
             $ctrl.loadAfterServerConstants('salary');
             expect(api.get).toHaveBeenCalledWith(
                 'reports/salary_currency_donations',
-                { filter: { account_list_id: api.account_list_id } }
+                {filter: {account_list_id: api.account_list_id}}
             );
         });
         it('should get currencies', done => {
@@ -140,7 +160,7 @@ describe('reports.contributions.component', () => {
         it('should set data', (done) => {
             $ctrl.loadAfterServerConstants('salary').then(() => {
                 expect($ctrl.data).toEqual({
-                    currencies: [ ],
+                    currencies: [],
                     years: {a: 'b'},
                     months: data.months,
                     total: 0,
@@ -160,7 +180,7 @@ describe('reports.contributions.component', () => {
                 $ctrl.loadAfterServerConstants('partner');
                 expect(api.get).toHaveBeenCalledWith(
                     'reports/donor_currency_donations',
-                    { filter: { account_list_id: api.account_list_id } }
+                    {filter: {account_list_id: api.account_list_id}}
                 );
             });
 
@@ -186,27 +206,30 @@ describe('reports.contributions.component', () => {
     });
     describe('getSortedCurrencies', () => {
         const data = [
-            {totals: {year_converted: "67086.99546423639162522026817265"}},
-            {totals: {year_converted: "67087.99546423639162522026817265"}}
+            {totals: {year_converted: '67086.99546423639162522026817265'}},
+            {totals: {year_converted: '67087.99546423639162522026817265'}}
         ];
         beforeEach(() => {
             spyOn($ctrl, 'getCurrencies').and.callFake(() => data);
         });
         it('should sort Currencies', () => {
             expect($ctrl.getSortedCurrencies('salary', data)).toEqual([
-                {totals: {year_converted: "67087.99546423639162522026817265"}},
-                {totals: {year_converted: "67086.99546423639162522026817265"}}
+                {totals: {year_converted: '67087.99546423639162522026817265'}},
+                {totals: {year_converted: '67086.99546423639162522026817265'}}
             ]);
         });
     });
     describe('getCurrencies', () => {
-        const data = {currency_groups: {nzd: []}, totals: {year_converted: "67086.99546423639162522026817265"}};
+        const data = {currency_groups: {nzd: []}, totals: {year_converted: '67086.99546423639162522026817265'}};
         beforeEach(() => {
             spyOn($ctrl, 'getDonors').and.callFake(() => ['a']);
             spyOn($ctrl, 'getDonorTotals').and.callFake(() => ['b']);
         });
         it('should create an array of currencies', () => {
-            expect($ctrl.getCurrencies('salary', data)).toEqual([assign(serverConstants.data.pledge_currencies['nzd'], {totals: ['b'], donors: ['a']})]);
+            expect($ctrl.getCurrencies('salary', data)).toEqual([assign(serverConstants.data.pledge_currencies['nzd'], {
+                totals: ['b'],
+                donors: ['a']
+            })]);
         });
     });
     describe('getDonorTotals', () => {
@@ -233,26 +256,62 @@ describe('reports.contributions.component', () => {
         });
         it('should create a sorted array of donors', () => {
             expect($ctrl.getDonors(data, 'salary', info)).toEqual([
-                {contact: {contact_id: 2, contact_name: 'a, b'}, total: 2, average: 3, maximum: 4, minimum: 1, monthlyDonations: ['a']},
-                {contact: {contact_id: 1, contact_name: 'b, c'}, total: 1, average: 2, maximum: 3, minimum: 0, monthlyDonations: ['a']}
+                {
+                    contact: {contact_id: 2, contact_name: 'a, b'},
+                    total: 2,
+                    average: 3,
+                    maximum: 4,
+                    minimum: 1,
+                    monthlyDonations: ['a']
+                },
+                {
+                    contact: {contact_id: 1, contact_name: 'b, c'},
+                    total: 1,
+                    average: 2,
+                    maximum: 3,
+                    minimum: 0,
+                    monthlyDonations: ['a']
+                }
             ]);
         });
     });
     describe('getMonthlyDonations', () => {
-        const donor = {months: [
-            {donations: [{amount: 1, converted_amount: 1.1}, {amount: 1, converted_amount: 2.2}]},
-            {donations: [{amount: 2, converted_amount: 2.2}, {amount: 2, converted_amount: 3.3}]}
-        ]};
+        const donor = {
+            months: [
+                {donations: [{amount: 1, converted_amount: 1.1}, {amount: 1, converted_amount: 2.2}]},
+                {donations: [{amount: 2, converted_amount: 2.2}, {amount: 2, converted_amount: 3.3}]}
+            ]
+        };
         it('should add converted Totals and re-arrange object values', () => {
             expect($ctrl.getMonthlyDonations('salary', donor)).toEqual([
-                {donations: [{amount: 1, converted_amount: 1.1}, {amount: 1, converted_amount: 2.2}], total: 3, convertedTotal: 3, nativeTotal: 2},
-                {donations: [{amount: 2, converted_amount: 2.2}, {amount: 2, converted_amount: 3.3}], total: 5, convertedTotal: 5, nativeTotal: 4}
+                {
+                    donations: [{amount: 1, converted_amount: 1.1}, {amount: 1, converted_amount: 2.2}],
+                    total: 3,
+                    convertedTotal: 3,
+                    nativeTotal: 2
+                },
+                {
+                    donations: [{amount: 2, converted_amount: 2.2}, {amount: 2, converted_amount: 3.3}],
+                    total: 5,
+                    convertedTotal: 5,
+                    nativeTotal: 4
+                }
             ]);
         });
         it('should add converted Totals and re-arrange object values for partner', () => {
             expect($ctrl.getMonthlyDonations('partner', donor)).toEqual([
-                {donations: [{amount: 1, converted_amount: 1.1}, {amount: 1, converted_amount: 2.2}], total: 2, convertedTotal: 3, nativeTotal: 2},
-                {donations: [{amount: 2, converted_amount: 2.2}, {amount: 2, converted_amount: 3.3}], total: 4, convertedTotal: 5, nativeTotal: 4}
+                {
+                    donations: [{amount: 1, converted_amount: 1.1}, {amount: 1, converted_amount: 2.2}],
+                    total: 2,
+                    convertedTotal: 3,
+                    nativeTotal: 2
+                },
+                {
+                    donations: [{amount: 2, converted_amount: 2.2}, {amount: 2, converted_amount: 3.3}],
+                    total: 4,
+                    convertedTotal: 5,
+                    nativeTotal: 4
+                }
             ]);
         });
     });
@@ -272,7 +331,7 @@ describe('reports.contributions.component', () => {
 
         describe('contributions.data.currencies not set', () => {
             beforeEach(() => {
-                data = { currencies: null };
+                data = {currencies: null};
             });
 
             it('should return empty array', () => {
@@ -282,7 +341,7 @@ describe('reports.contributions.component', () => {
 
         describe('contributions.data.months not set', () => {
             beforeEach(() => {
-                data = { months: null };
+                data = {months: null};
             });
 
             it('should return empty array', () => {
@@ -310,7 +369,7 @@ describe('reports.contributions.component', () => {
     describe('percentage', () => {
         describe('total set > 0', () => {
             beforeEach(() => {
-                $ctrl.data = { total: 150 };
+                $ctrl.data = {total: 150};
             });
 
             describe('amount 0', () => {
@@ -328,7 +387,7 @@ describe('reports.contributions.component', () => {
 
         describe('total set === 0', () => {
             beforeEach(() => {
-                $ctrl.data = { total: 0 };
+                $ctrl.data = {total: 0};
             });
 
             describe('amount 0', () => {
@@ -346,7 +405,7 @@ describe('reports.contributions.component', () => {
 
         describe('total not set', () => {
             beforeEach(() => {
-                $ctrl.data = { total: null };
+                $ctrl.data = {total: null};
             });
 
             describe('amount 0', () => {
@@ -372,17 +431,8 @@ describe('reports.contributions.component', () => {
     });
 
     describe('toCSV', () => {
-        beforeEach(() => {
-            spyOn(serverConstants, 'load').and.callFake(() => Promise.resolve());
-        });
-
-        it('should call serverConstants', () => {
-            $ctrl.toCSV({});
-            expect(serverConstants.load).toHaveBeenCalled();
-        });
-
-        it('should return a promise', () => {
-            expect($ctrl.toCSV({})).toEqual(jasmine.any(Promise));
+        it('should return an array', () => {
+            expect($ctrl.toCSV({})).toEqual(jasmine.any(Array));
         });
 
         describe('promise successful', () => {
@@ -442,7 +492,7 @@ describe('reports.contributions.component', () => {
                                 nativeTotal: 25,
                                 convertedTotal: 25
                             },
-                            { donations: [], total: 0, nativeTotal: 0, convertedTotal: 0 }
+                            {donations: [], total: 0, nativeTotal: 0, convertedTotal: 0}
                         ],
                         average: 12.5,
                         maximum: 25,
@@ -456,7 +506,7 @@ describe('reports.contributions.component', () => {
                             late_by_60_days: false,
                             pledge_amount: '25.0',
                             pledge_currency: 'NZD',
-                            pledge_frequency: 1,
+                            pledge_frequency: 'Monthly',
                             status: 'Partner - Financial'
                         },
                         monthlyDonations: [
@@ -475,7 +525,7 @@ describe('reports.contributions.component', () => {
                                 nativeTotal: 25,
                                 convertedTotal: 25
                             },
-                            { donations: [], total: 0, nativeTotal: 0, convertedTotal: 0 }
+                            {donations: [], total: 0, nativeTotal: 0, convertedTotal: 0}
                         ],
                         average: 12.5,
                         maximum: 25,
@@ -485,7 +535,7 @@ describe('reports.contributions.component', () => {
                 ]
             }
         ],
-        years: { '2016': 2 },
+        years: {'2016': 2},
         months: ['2016-05-01', '2016-06-01'],
         total: 25,
         salaryCurrency: {
@@ -503,7 +553,7 @@ describe('reports.contributions.component', () => {
             'Jun 16', 'Total (last month excluded from total)'
         ],
         ['Abraham, Adam', 'Never Contacted', '$25.0 NZD ', 13, 25, 25, 25, 0, 25],
-        ['Smith, Sarah', 'Partner - Financial', '$25.0 NZD Every Month', 13, 25, 25, 25, 0, 25],
+        ['Smith, Sarah', 'Partner - Financial', '$25.0 NZD Monthly', 13, 25, 25, 25, 0, 25],
         ['Totals', '', '', '', '', '', 50, 0, 25]
     ];
 });

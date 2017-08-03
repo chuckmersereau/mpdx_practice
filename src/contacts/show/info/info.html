@@ -110,7 +110,7 @@
                         class="form-control"
                         allow-single-deselect="true"
                         id="pledge_frequency"
-                        ng-options="val as key for (val, key) in $ctrl.serverConstants.data.pledge_frequencies"
+                        ng-options="opt.key as opt.value for opt in $ctrl.serverConstants.data.pledge_frequency_hashes"
                         ng-model="$ctrl.contact.pledge_frequency">
                     <option value=""></option>
                 </select>

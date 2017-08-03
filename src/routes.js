@@ -5,16 +5,16 @@ export default class Routes {
         $stateProvider.state({
             name: 'root',
             abstract: true,
-            component: 'root',
-            resolve: {
-                constants: /*@ngInject*/ (serverConstants) => serverConstants.load()
-            }
+            component: 'root'
         }).state({
             name: 'home',
             title: gettext('Home'),
             url: '/',
             component: 'home',
-            parent: 'root'
+            parent: 'root',
+            resolve: {
+                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['activity_hashes', 'organizations_attributes'])
+            }
         }).state({
             name: 'login',
             title: gettext('Login'),
@@ -59,7 +59,8 @@ export default class Routes {
                         }
                     });
                 },
-                tag: /*@ngInject*/ (contactsTags) => contactsTags.load()
+                tag: /*@ngInject*/ (contactsTags) => contactsTags.load(),
+                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['pledge_frequency_hashes'])
             }
         }).state({
             name: 'contacts.show',
@@ -70,7 +71,8 @@ export default class Routes {
                 personId: null
             },
             resolve: {
-                again: /*@ngInject*/ (users) => users.listOrganizationAccounts(),
+                0: /*@ngInject*/ (users) => users.listOrganizationAccounts(),
+                1: /*@ngInject*/ (serverConstants) => serverConstants.load(['assignable_likely_to_give_hashes', 'assignable_send_newsletter_hashes', 'locales', 'pledge_currencies', 'pledge_frequency_hashes', 'status_hashes']),
                 contact: /*@ngInject*/ (contacts, $stateParams) => contacts.get($stateParams.contactId).then((data) => {
                     contacts.current = data;
                     contacts.initialState = angular.copy(data);
@@ -133,7 +135,8 @@ export default class Routes {
             url: '/partner',
             component: 'contributions',
             resolve: {
-                type: () => 'partner'
+                type: () => 'partner',
+                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['pledge_currencies', 'pledge_frequency_hashes'])
             }
         }).state({
             name: 'reports.salary',
@@ -141,7 +144,8 @@ export default class Routes {
             url: '/salary',
             component: 'contributions',
             resolve: {
-                type: () => 'salary'
+                type: () => 'salary',
+                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['pledge_currencies', 'pledge_frequency_hashes'])
             }
         }).state({
             name: 'preferences',
@@ -168,7 +172,8 @@ export default class Routes {
             url: '/integrations?selectedTab',
             component: 'preferencesIntegration',
             resolve: {
-                resolution: /*@ngInject*/ (users) => users.listOrganizationAccounts()
+                resolution: /*@ngInject*/ (users) => users.listOrganizationAccounts(),
+                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['organizations_attributes'])
             },
             params: {
                 selectedTab: null
@@ -177,19 +182,25 @@ export default class Routes {
             name: 'preferences.notifications',
             title: gettext('Preferences - Notifications'),
             url: '/notifications',
-            component: 'preferencesNotifications'
+            component: 'preferencesNotifications',
+            resolve: {
+                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['notification_translated_hashes'])
+            }
         }).state({
             name: 'preferences.personal',
             title: gettext('Preferences - Personal'),
             url: '/personal',
-            component: 'preferencesPersonal'
+            component: 'preferencesPersonal',
+            resolve: {
+                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['languages', 'locales'])
+            }
         }).state({
             name: 'setup',
             title: gettext('Setup'),
             url: '/setup',
             component: 'setup',
             resolve: {
-                constants: /*@ngInject*/ (serverConstants) => serverConstants.load()
+                constants: /*@ngInject*/ (serverConstants) => serverConstants.load(['organizations_attributes'])
             }
         }).state({
             name: 'setup.connect',
@@ -198,7 +209,8 @@ export default class Routes {
             component: 'setupConnect',
             resolve: {
                 resolution: /*@ngInject*/ (users) => users.listOrganizationAccounts(),
-                another: /*@ngInject*/ (accounts) => accounts.load()
+                another: /*@ngInject*/ (accounts) => accounts.load(),
+                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['organizations_attributes'])
             }
         }).state({
             name: 'setup.account',
@@ -227,17 +239,26 @@ export default class Routes {
             name: 'setup.preferences.integrations',
             title: gettext('Setup - Preferences - Integrations'),
             url: '/preferences/integration',
-            component: 'setupPreferencesIntegrations'
+            component: 'setupPreferencesIntegrations',
+            resolve: {
+                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['organizations_attributes'])
+            }
         }).state({
             name: 'setup.preferences.notifications',
             title: gettext('Setup - Preferences - Notifications'),
             url: '/preferences/notifications',
-            component: 'setupPreferencesNotifications'
+            component: 'setupPreferencesNotifications',
+            resolve: {
+                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['notification_translated_hashes'])
+            }
         }).state({
             name: 'setup.preferences.personal',
             title: gettext('Setup - Preferences - Personal'),
             url: '/preferences/personal',
-            component: 'setupPreferencesPersonal'
+            component: 'setupPreferencesPersonal',
+            resolve: {
+                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['languages', 'locales'])
+            }
         }).state({
             name: 'setup.start',
             title: gettext('Setup - Get Started'),
@@ -284,7 +305,10 @@ export default class Routes {
             name: 'tools.import.csv',
             title: gettext('Tools - Import - CSV'),
             url: '/csv',
-            component: 'importCsv'
+            component: 'importCsv',
+            resolve: {
+                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['csv_import'])
+            }
         }).state({
             name: 'tools.import.csv.upload',
             title: gettext('Tools - Import - CSV - Upload'),
@@ -329,7 +353,8 @@ export default class Routes {
             url: '/tnt',
             component: 'importTnt',
             resolve: {
-                another: /*@ngInject*/ (contactsTags) => contactsTags.load()
+                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['tnt_import']),
+                1: /*@ngInject*/ (contactsTags) => contactsTags.load()
             }
         }).state({
             name: 'tools.fix',
@@ -343,7 +368,10 @@ export default class Routes {
             url: '/commitment-info',
             component: 'fixCommitmentInfo',
             resolve: {
-                0: /*@ngInject*/ (fixCommitmentInfo) => fixCommitmentInfo.load()
+                1: /*@ngInject*/ (serverConstants, fixCommitmentInfo) =>
+                    serverConstants.load(['pledge_currencies', 'pledge_frequency_hashes', 'status_hashes']).then(() =>
+                        fixCommitmentInfo.load()
+                    )
             }
         }).state({
             name: 'tools.fix.phoneNumbers',

@@ -1,8 +1,9 @@
 class ModalsService {
     constructor(
-        modal, tasksTags
+        modal, serverConstants, tasksTags
     ) {
         this.modal = modal;
+        this.serverConstants = serverConstants;
         this.tasksTags = tasksTags;
     }
     add(contactsList = [], activityType = null) {
@@ -13,7 +14,8 @@ class ModalsService {
             template: require('./add/add.html'),
             controller: 'addTaskController',
             resolve: {
-                tags: () => this.tasksTags.load()
+                tags: () => this.tasksTags.load(),
+                0: () => this.serverConstants.load(['activity_hashes'])
             },
             locals: {
                 contactsList: contactsList,
@@ -29,7 +31,8 @@ class ModalsService {
             template: require('./log/log.html'),
             controller: 'logTaskController',
             resolve: {
-                tags: () => this.tasksTags.load()
+                tags: () => this.tasksTags.load(),
+                0: () => this.serverConstants.load(['activity_hashes', 'next_actions', 'results', 'status_hashes'])
             },
             locals: {
                 contactsList: contactsList
@@ -48,6 +51,9 @@ class ModalsService {
             controller: 'completeTaskController',
             locals: {
                 task: task
+            },
+            resolve: {
+                0: () => this.serverConstants.load(['next_actions', 'results', 'status_hashes'])
             }
         });
     }
@@ -57,6 +63,9 @@ class ModalsService {
             controller: 'editTaskController',
             locals: {
                 task: task
+            },
+            resolve: {
+                0: () => this.serverConstants.load(['activity_hashes', 'results'])
             }
         });
     }
@@ -66,10 +75,16 @@ class ModalsService {
             controller: 'bulkEditTaskController',
             locals: {
                 selectedTasks: tasks
+            },
+            resolve: {
+                0: () => this.serverConstants.load(['activity_hashes'])
             }
         });
     }
 }
 
-export default angular.module('mpdx.tasks.modals.service', [])
-    .service('tasksModals', ModalsService).name;
+import serverConstants from 'common/serverConstants/serverConstants.service';
+
+export default angular.module('mpdx.tasks.modals.service', [
+    serverConstants
+]).service('tasksModals', ModalsService).name;

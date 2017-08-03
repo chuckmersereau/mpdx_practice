@@ -69,8 +69,8 @@ class LogTaskController {
     }
 }
 
-import contacts from '../../../contacts/contacts.service';
-import serverConstants from '../../../common/serverConstants/serverConstants.service';
+import contacts from 'contacts/contacts.service';
+import serverConstants from 'common/serverConstants/serverConstants.service';
 import tasks from '../../tasks.service';
 
 export default angular.module('mpdx.contacts.logTask.controller', [

@@ -4,12 +4,13 @@ import moment from 'moment';
 class DonationsService {
     constructor(
         $log, gettextCatalog,
-        api, modal
+        api, modal, serverConstants
     ) {
         this.$log = $log;
         this.gettextCatalog = gettextCatalog;
         this.api = api;
         this.modal = modal;
+        this.serverConstants = serverConstants;
     }
 
     getDonations({ startDate = null, endDate = null, donorAccountId = null, page = null } = {}) {
@@ -74,6 +75,9 @@ class DonationsService {
             controller: 'donationModalController',
             locals: {
                 donation: angular.copy(donation)
+            },
+            resolve: {
+                0: () => this.serverConstants.load(['pledge_currencies'])
             }
         });
     }
@@ -82,8 +86,9 @@ class DonationsService {
 import gettextCatalog from 'angular-gettext';
 import api from 'common/api/api.service';
 import modal from 'common/modal/modal.service';
+import serverConstants from 'common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.reports.donations.service', [
     gettextCatalog,
-    api, modal
+    api, modal, serverConstants
 ]).service('donations', DonationsService).name;
