@@ -15,6 +15,12 @@
 
                 <th>{{::$ctrl.fileHeader(constant)}}</th>
                 <th>{{::$ctrl.serverConstants.data.csv_import.supported_headers[constant]}}</th>
+            </tr
+            <tr ng-if="obj | isEmpty">
+                <td></td>
+                <td translate-params-header="::$ctrl.fileHeader(constant)" translate>
+                    No {{header}} values found to map
+                </td>
             </tr>
             <tr ng-repeat="(key, value) in obj">
                 <td class="text-left">{{key}}</td>
