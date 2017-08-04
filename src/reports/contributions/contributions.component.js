@@ -65,7 +65,7 @@ class ContributionsController {
                 currencies: currencies,
                 years: this.buildYears(data.months),
                 months: data.months,
-                total: sumBy('totals.year_converted', currencies),
+                total: sumBy((currency) => parseFloat(currency.totals.year_converted), currencies),
                 salaryCurrency: this.serverConstants.data.pledge_currencies[data.salary_currency.toLowerCase()]
             };
             this.$log.debug('parsed report data', this.data);
@@ -142,7 +142,7 @@ class ContributionsController {
         }, donor.months);
     }
     percentage(amount) {
-        return this.data.total ? (amount / this.data.total) * 100 : NaN;
+        return this.data.total ? (amount / parseFloat(this.data.total)) * 100 : NaN;
     }
 
     moment(str) {
