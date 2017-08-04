@@ -1,34 +1,45 @@
+import config from 'config';
 import each from 'lodash/fp/each';
 
 class MailchimpIntegrationPreferencesController {
     constructor(
-        $rootScope, gettextCatalog,
-        mailchimp, alerts, help, modal
+        $log, $rootScope, $window, gettextCatalog,
+        api, alerts, help, mailchimp, modal
     ) {
-        this.gettextCatalog = gettextCatalog;
-
-        this.mailchimp = mailchimp;
-        this.help = help;
+        this.$log = $log;
+        this.$window = $window;
         this.alerts = alerts;
+        this.api = api;
+        this.gettextCatalog = gettextCatalog;
+        this.help = help;
+        this.mailchimp = mailchimp;
         this.modal = modal;
 
         this.saving = false;
         this.showSettings = false;
 
         $rootScope.$on('accountListUpdated', () => {
-            this.mailchimp.load(true);
+            this.load();
         });
     }
     $onInit() {
-        this.mailchimp.load(true);
+        this.oAuth = `${config.oAuthUrl}mailchimp?account_list_id=${this.api.account_list_id}&redirect_to=${this.$window.encodeURIComponent(config.baseUrl + 'preferences/integrations?selectedTab=mailchimp')}&access_token=${this.$window.localStorage.getItem('token')}`;
+        this.load();
+    }
+    load() {
+        return this.api.get(`account_lists/${this.api.account_list_id}/mail_chimp_account`).then(data => {
+            /* istanbul ignore next */
+            this.$log.debug(`account_lists/${this.api.account_list_id}/mail_chimp_account`, data);
+            this.mailchimp.data = data;
+        });
     }
     save(showSettings = false) {
         this.saving = true;
-        return this.mailchimp.save().then(() => {
+        return this.api.post({ url: `account_lists/${this.api.account_list_id}/mail_chimp_account`, data: this.mailchimp.data }).then(() => {
             this.alerts.addAlert(this.gettextCatalog.getString('Preferences saved successfully'), 'success');
             this.saving = false;
             this.showSettings = false;
-            return this.mailchimp.load(true).then(() => {
+            return this.load().then(() => {
                 this.showSettings = showSettings;
             });
         }).catch(err => {
@@ -41,7 +52,7 @@ class MailchimpIntegrationPreferencesController {
     }
     sync() {
         this.saving = true;
-        return this.mailchimp.sync().then(() => {
+        return this.api.get(`account_lists/${this.api.account_list_id}/mail_chimp_account/sync`).then(() => {
             this.saving = false;
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX is now syncing your newsletter recipients with MailChimp'), 'success');
         }).catch(err => {
@@ -53,7 +64,8 @@ class MailchimpIntegrationPreferencesController {
     disconnect() {
         return this.modal.confirm(this.gettextCatalog.getString('Are you sure you wish to disconnect this MailChimp account?')).then(() => {
             this.saving = true;
-            return this.mailchimp.disconnect().then(() => {
+            return this.api.delete(`account_lists/${this.api.account_list_id}/mail_chimp_account`).then(() => {
+                this.mailchimp.data = null;
                 this.showSettings = false;
                 this.saving = false;
                 this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed your integration with MailChimp'), 'success');
@@ -74,6 +86,7 @@ const Mailchimp = {
     template: require('./mailchimp.html')
 };
 
+import api from 'common/api/api.service';
 import gettextCatalog from 'angular-gettext';
 import mailchimp from './mailchimp.service';
 import alerts from 'common/alerts/alerts.service';
@@ -82,5 +95,5 @@ import modal from 'common/modal/modal.service';
 
 export default angular.module('mpdx.preferences.integrations.mailchimp.component', [
     gettextCatalog,
-    mailchimp, alerts, help, modal
+    api, mailchimp, alerts, help, modal
 ]).component('mailchimpIntegrationPreferences', Mailchimp).name;
