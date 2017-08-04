@@ -1,3 +1,5 @@
+import isFunction from 'lodash/fp/isFunction';
+
 class OfflineOrganizationController {
     constructor(
         gettextCatalog,
@@ -9,7 +11,7 @@ class OfflineOrganizationController {
         this.saving = false;
         this.offlineOrganization = { name: '', org_help_url: '', country: '' };
     }
-    save() {
+    save(form) {
         this.saving = true;
         return this.api.post({
             url: 'admin/organizations',
@@ -19,6 +21,14 @@ class OfflineOrganizationController {
             this.saving = false;
             this.offlineOrganization = { name: '', org_help_url: '', country: '' };
             this.alerts.addAlert(this.gettextCatalog.getString('Successfully created offline organization'), 'success');
+            if (form) {
+                if (isFunction(form.$setUntouched)) {
+                    form.$setUntouched();
+                }
+                if (isFunction(form.$setPristine)) {
+                    form.$setPristine();
+                }
+            }
         }).catch(() => {
             this.saving = false;
             this.alerts.addAlert(this.gettextCatalog.getString('Unable to create offline organization'), 'danger');

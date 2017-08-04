@@ -3,7 +3,7 @@
     Be aware that donations will need to be uploaded and/or entered manually for users of
     this organization.
 </p>
-<form name="offlineOrganizationForm" ng-submit="$ctrl.save()">
+<form name="offlineOrganizationForm" ng-submit="$ctrl.save(offlineOrganizationForm)">
     <div class="form-group">
         <label for="name" translate>Name</label>
         <input name="name" type="text" class="form-control" ng-model="$ctrl.offlineOrganization.name" required>

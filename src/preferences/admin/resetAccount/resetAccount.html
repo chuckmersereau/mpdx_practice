@@ -3,7 +3,7 @@
     Specify the Account by typing the User's email address, the reason for the reset, as well as the exact name of the Account.
     All User's that have access to the Account will be affected.
 </p>
-<form name="resetAccountForm" ng-submit="$ctrl.save()">
+<form name="resetAccountForm" ng-submit="$ctrl.save(resetAccountForm)">
     <div class="form-group">
         <label for="resetted_user_email" translate>Key / Relay Email</label>
         <input name="resetted_user_email" type="text" class="form-control" ng-model="$ctrl.resetAccount.resetted_user_email" required>

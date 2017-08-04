@@ -1,3 +1,5 @@
+import isFunction from 'lodash/fp/isFunction';
+
 class ResetAccountController {
     constructor(
         gettextCatalog,
@@ -9,7 +11,7 @@ class ResetAccountController {
         this.saving = false;
         this.resetAccount = { resetted_user_email: '', reason: '', account_list_name: '' };
     }
-    save() {
+    save(form) {
         this.saving = true;
         return this.api.post({
             url: 'admin/resets',
@@ -19,6 +21,14 @@ class ResetAccountController {
             this.saving = false;
             this.resetAccount = { resetted_user_email: '', reason: '', account_list_name: '' };
             this.alerts.addAlert(this.gettextCatalog.getString('Successfully reset account'), 'success');
+            if (form) {
+                if (isFunction(form.$setUntouched)) {
+                    form.$setUntouched();
+                }
+                if (isFunction(form.$setPristine)) {
+                    form.$setPristine();
+                }
+            }
         }).catch(() => {
             this.saving = false;
             this.alerts.addAlert(this.gettextCatalog.getString('Unable to reset account'), 'danger');

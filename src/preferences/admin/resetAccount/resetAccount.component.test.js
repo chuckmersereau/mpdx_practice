@@ -73,6 +73,22 @@ describe('preferences.admin.resetAccount.component', () => {
                     done();
                 });
             });
+
+            it('should reset form', (done) => {
+                let form = {
+                    $setUntouched: () => {},
+                    $setPristine: () => {}
+                };
+
+                spyOn(form, '$setUntouched').and.callThrough();
+                spyOn(form, '$setPristine').and.callThrough();
+
+                $ctrl.save(form).then(() => {
+                    expect(form.$setUntouched).toHaveBeenCalled();
+                    expect(form.$setPristine).toHaveBeenCalled();
+                    done();
+                });
+            });
         });
 
         describe('promise unsuccessful', () => {
