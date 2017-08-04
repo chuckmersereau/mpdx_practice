@@ -2,10 +2,9 @@ import uuid from 'uuid/v1';
 
 class FieldController {
     constructor(
-        fixEmailAddresses, locale
+        fixEmailAddresses
     ) {
         this.fixEmailAddresses = fixEmailAddresses;
-        this.locale = locale;
     }
 
     $onInit() {

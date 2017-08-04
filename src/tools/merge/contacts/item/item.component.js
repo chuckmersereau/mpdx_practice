@@ -1,13 +1,4 @@
-class ItemController {
-    constructor(
-        locale
-    ) {
-        this.locale = locale;
-    }
-}
-
 const Item = {
-    controller: ItemController,
     template: require('./item.html'),
     bindings: {
         contact: '<',

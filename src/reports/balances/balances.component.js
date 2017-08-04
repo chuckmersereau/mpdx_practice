@@ -4,13 +4,12 @@ import toInteger from 'lodash/fp/toInteger';
 class BalancesController {
     constructor(
         $rootScope, blockUI,
-        designationAccounts, locale
+        designationAccounts
     ) {
         this.$rootScope = $rootScope;
-        this.locale = locale;
-        this.blockUI = blockUI.instances.get('balances');
-
         this.designationAccounts = designationAccounts;
+
+        this.blockUI = blockUI.instances.get('balances');
 
         this.$rootScope.$on('accountListUpdated', () => {
             this.load();

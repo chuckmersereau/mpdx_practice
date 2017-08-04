@@ -1,11 +1,10 @@
 class ItemController {
     constructor(
         blockUI,
-        serverConstants, fixCommitmentInfo, locale
+        serverConstants, fixCommitmentInfo
     ) {
         this.blockUI = blockUI;
         this.serverConstants = serverConstants;
-        this.locale = locale;
         this.fixCommitmentInfo = fixCommitmentInfo;
     }
 

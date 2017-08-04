@@ -6,12 +6,11 @@ import reject from 'lodash/fp/reject';
 class MergeContactsController {
     constructor(
         $scope,
-        contacts, locale,
+        contacts,
         selectedContacts
     ) {
         this.$scope = $scope;
         this.contacts = contacts;
-        this.locale = locale;
         this.selectedContacts = selectedContacts;
 
         this.winner = get('id', first(selectedContacts));
@@ -31,8 +30,7 @@ class MergeContactsController {
 }
 
 import contacts from 'contacts/contacts.service';
-import locale from 'common/locale/locale.service';
 
 export default angular.module('mpdx.contacts.list.merge.controller', [
-    contacts, locale
+    contacts
 ]).controller('mergeContactsController', MergeContactsController).name;

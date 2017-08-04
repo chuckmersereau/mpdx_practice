@@ -30,10 +30,10 @@
             ({{ result }})
         </span>
         <span ng-if="::!$ctrl.task.no_date && $ctrl.task.start_at && !$ctrl.task.completed">
-            {{ ::$ctrl.task.start_at | date : $ctrl.locale.dateTimeFormat + ' hh:mm a' }}
+            {{ ::$ctrl.task.start_at | localizeWithTime }}
         </span>
         <span ng-if="::!$ctrl.task.no_date && $ctrl.task.start_at && $ctrl.task.completed">
-            {{ ::$ctrl.task.completed_at | date : $ctrl.locale.dateTimeFormat + ' hh:mm a' }}
+            {{ ::$ctrl.task.completed_at | localizeWithTime }}
         </span>
         <span ng-repeat="contact in ::$ctrl.task.contacts | limitTo : 5">
             <a ng-click="$ctrl.toggleContacts(); $event.stopPropagation();">
@@ -86,7 +86,7 @@
             </div>
         </div>
         <div class="panel-footer">
-            <small><span ng-if="::comment.person">{{ ::comment.person.first_name }} {{ ::comment.person.last_name }},</span> {{ ::comment.created_at | date : $ctrl.locale.dateTimeFormat }}</small>
+            <small><span ng-if="::comment.person">{{ ::comment.person.first_name }} {{ ::comment.person.last_name }},</span> {{ ::comment.created_at | localize }}</small>
         </div>
     </div>
     <form class="input-group" ng-submit="$ctrl.addComment()">

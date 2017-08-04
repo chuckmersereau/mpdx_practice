@@ -68,7 +68,7 @@
                             <thead>
                                 <tr>
                                     <th ng-repeat="donation in $ctrl.contact.last_six_donations">
-                                        {{donation.donation_date | date : $ctrl.locale.dateTimeFormat }}
+                                        {{donation.donation_date | localize }}
                                     </th>
                                 </tr>
                             </thead>

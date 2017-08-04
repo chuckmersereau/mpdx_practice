@@ -164,7 +164,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="donation in monthlyDonation.donations">
-                    <td>{{donation.donation_date | date : $ctrl.locale.dateTimeFormat}}</td>
+                    <td>{{donation.donation_date | localize}}</td>
                     <td class="text-right">
                         {{$ctrl.serverConstants.data.pledge_currencies[donation.currency.toLowerCase()].symbol}}
                         {{donation.amount | number : 0}}

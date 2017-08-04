@@ -5,12 +5,11 @@ import get from 'lodash/fp/get';
 class ItemController {
     constructor(
         $log, gettextCatalog,
-        api, locale, modal, tasks, users
+        api, modal, tasks, users
     ) {
         this.$log = $log;
         this.api = api;
         this.gettextCatalog = gettextCatalog;
-        this.locale = locale;
         this.modal = modal;
         this.tasks = tasks;
         this.users = users;

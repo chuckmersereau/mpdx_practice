@@ -21,7 +21,7 @@ import help from './help/help.service';
 import language from './language/language.service';
 import layoutSettings from './layoutSettings/layoutSettings.directive';
 import links from './links/index.module';
-import locale from './locale/locale.service';
+import locale from './locale/index.module';
 import login from './login/login.component';
 import modal from './modal/index.module';
 import momentFilter from './moment/moment.filter';

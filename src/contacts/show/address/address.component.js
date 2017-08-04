@@ -1,9 +1,8 @@
 class AddressController {
     constructor(
-        contacts, locale
+        contacts
     ) {
         this.contacts = contacts;
-        this.locale = locale;
     }
     $onChanges() {
         if (this.address) {
@@ -34,8 +33,7 @@ const Address = {
 };
 
 import contacts from 'contacts/contacts.service';
-import locale from 'common/locale/locale.service';
 
 export default angular.module('mpdx.contacts.show.address.component', [
-    contacts, locale
+    contacts
 ]).component('contactAddress', Address).name;

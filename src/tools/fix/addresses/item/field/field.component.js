@@ -1,10 +1,9 @@
 class FieldController {
     constructor(
-        fixAddresses, locale, contacts
+        fixAddresses, contacts
     ) {
         this.fixAddresses = fixAddresses;
         this.contacts = contacts;
-        this.locale = locale;
     }
 
     addressSummary() {

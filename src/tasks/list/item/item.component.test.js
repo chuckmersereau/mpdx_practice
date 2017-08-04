@@ -1,14 +1,13 @@
 import component from './item.component';
 
 describe('tasks.list.item.component', () => {
-    let $ctrl, contacts, rootScope, scope, componentController, modal, tasks, locale, gettextCatalog, users, api;
+    let $ctrl, contacts, rootScope, scope, componentController, modal, tasks, gettextCatalog, users, api;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _contacts_, _modal_, _tasks_, _locale_, _gettextCatalog_, _users_, _api_) => {
+        inject(($componentController, $rootScope, _contacts_, _modal_, _tasks_, _gettextCatalog_, _users_, _api_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             api = _api_;
-            locale = _locale_;
             users = _users_;
             contacts = _contacts_;
             gettextCatalog = _gettextCatalog_;
@@ -27,7 +26,6 @@ describe('tasks.list.item.component', () => {
         });
         it('should expose dependencies', () => {
             expect($ctrl.gettextCatalog).toEqual(gettextCatalog);
-            expect($ctrl.locale).toEqual(locale);
             expect($ctrl.modal).toEqual(modal);
             expect($ctrl.tasks).toEqual(tasks);
             expect($ctrl.users).toEqual(users);

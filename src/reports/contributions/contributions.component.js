@@ -20,13 +20,13 @@ import toInteger from 'lodash/fp/toInteger';
 
 class ContributionsController {
     constructor(
-        $log, $rootScope, gettextCatalog,
-        api, locale, serverConstants
+        $log, $rootScope,
+        gettextCatalog,
+        api, serverConstants
     ) {
         this.$log = $log;
         this.api = api;
         this.gettextCatalog = gettextCatalog;
-        this.locale = locale;
         this.serverConstants = serverConstants;
 
         this.data = {};
@@ -218,9 +218,8 @@ const Contributions = {
 import gettextCatalog from 'angular-gettext';
 import api from 'common/api/api.service';
 import serverConstants from 'common/serverConstants/serverConstants.service';
-import locale from 'common/locale/locale.service';
 
 export default angular.module('mpdx.reports.contributions.component', [
     gettextCatalog,
-    api, locale, serverConstants
+    api, serverConstants
 ]).component('contributions', Contributions).name;
