@@ -249,8 +249,8 @@ class TasksService {
         });
     }
     bulkDelete() {
-        if (this.selected.length > 25) {
-            const message = this.gettextCatalog.getString('Too many tasks selected, please select a maximum of 25 tasks.');
+        if (this.selected.length > 150) {
+            const message = this.gettextCatalog.getString('Too many tasks selected, please select a maximum of 150 tasks.');
             this.alerts.addAlert(message, 'danger');
             return Promise.reject(new Error({message: message}));
         }

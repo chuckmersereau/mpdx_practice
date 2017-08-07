@@ -197,8 +197,8 @@ describe('tasks.service', () => {
             spyOn(tasks, 'change').and.callFake(() => {});
             spyOn(tasks, 'load').and.callFake(() => Promise.resolve());
         });
-        it('should alert if over 25 selected contacts', (done) => {
-            tasks.selected = range(0, 26);
+        it('should alert if over 150 selected contacts', (done) => {
+            tasks.selected = range(0, 151);
             tasks.bulkDelete().catch(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
                 expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
