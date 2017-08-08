@@ -1,10 +1,8 @@
 class AddressController {
-    contacts;
     constructor(
-        contacts, locale
+        contacts
     ) {
         this.contacts = contacts;
-        this.locale = locale;
     }
     $onChanges() {
         if (this.address) {
@@ -19,6 +17,7 @@ class AddressController {
                 address += `, ${this.address.postal_code}`;
             }
             this.mapLink = `https://www.google.com/maps/search/?api=1&query=${address}`;
+            this.isEditable = !this.address.remote_id && (this.address.source === 'MPDX' || this.address.source === 'manual' || this.address.source === 'TntImport');
         }
     }
 }
@@ -34,8 +33,7 @@ const Address = {
 };
 
 import contacts from 'contacts/contacts.service';
-import locale from 'common/locale/locale.service';
 
 export default angular.module('mpdx.contacts.show.address.component', [
-    contacts, locale
+    contacts
 ]).component('contactAddress', Address).name;

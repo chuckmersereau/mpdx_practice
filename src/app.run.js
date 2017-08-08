@@ -1,12 +1,11 @@
 /*@ngInject*/
 export default function appRun(
-    $q, $log, $rootScope, $state, $transitions, $window, authManager, blockUI
+    $document, $q, $log, $rootScope, $state, $transitions, $window, authManager, blockUI
 ) {
     let initialPage = true;
     const block = blockUI.instances.get('root');
     authManager.checkAuthOnRefresh();
     authManager.redirectWhenUnauthenticated();
-
     $transitions.onStart({ to: state => state.name !== 'login' && state.name !== 'auth' }, trans => {
         if (!authManager.isAuthenticated()) {
             return;
@@ -52,6 +51,7 @@ export default function appRun(
     });
     $rootScope.$on('$locationChangeSuccess', () => {
         !initialPage && fireAdobeAnalyticsDirectRuleCall($window);
+        $document[0].body.scrollTop = $document[0].documentElement.scrollTop = 0;
     });
 }
 

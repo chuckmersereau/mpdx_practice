@@ -5,9 +5,6 @@ import get from 'lodash/fp/get';
 import sumBy from 'lodash/fp/sumBy';
 
 class ConnectController {
-    $state;
-    tasks;
-
     constructor(
         serverConstants, tasks
     ) {

@@ -1,14 +1,6 @@
 import createPatch from 'common/fp/createPatch';
 
 class DonationModalController {
-    appeals;
-    alerts;
-    donations;
-    locale;
-    donorAccounts;
-    designationAccounts;
-    serverConstants;
-
     constructor(
         $scope,
         gettextCatalog,

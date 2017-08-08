@@ -1,3 +1,5 @@
+import isFunction from 'lodash/fp/isFunction';
+
 class ContactEmailAddressController {
     constructor() {
         this.deleted = false;
@@ -5,11 +7,15 @@ class ContactEmailAddressController {
     $onInit() {
         if (this.email.location) {
             this.email.location = this.email.location.toLowerCase();
+        } else {
+            this.email.location = 'other';
         }
     }
     remove() {
         this.deleted = true;
-        this.onRemove();
+        if (isFunction(this.onRemove)) {
+            this.onRemove();
+        }
     }
 }
 

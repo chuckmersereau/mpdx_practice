@@ -62,7 +62,8 @@
         <div class="panel-heading" ng-click="$ctrl.setTab('google')">
             <translate>Google</translate>
             <div class="state">
-                <i class="fa fa-circle text-success" ng-show="$ctrl.google.data.length > 0"></i>
+                <i class="fa fa-circle text-success" ng-show="$ctrl.google.data.length > 0 && !$ctrl.google.failure"></i>
+                <i class="fa fa-circle text-danger" ng-show="$ctrl.google.data.length > 0 && $ctrl.google.failure"></i>
                 <i class="fa fa-circle-o text-muted" ng-show="$ctrl.google.data.length == 0"></i>
             </div>
             <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('google') }"></i>

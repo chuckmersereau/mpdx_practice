@@ -39,5 +39,9 @@ $gutter:                    30px;
 $border-radius:             3px;
 
 $nav-height: 93px;
-$secondary-nav-height: $nav-height + 43px;
+$secondary-height: 43px;
+$impersonation-height: 35px;
+$impersonation-nav-height: $nav-height + $impersonation-height;
+$secondary-nav-height: $nav-height + $secondary-height;
+$secondary-impersonation-nav-height: $nav-height + $secondary-height + $impersonation-height;
 $nav-padding: 20px;

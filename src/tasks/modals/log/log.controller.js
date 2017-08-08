@@ -5,10 +5,6 @@ import startsWith from 'lodash/fp/startsWith';
 import union from 'lodash/fp/union';
 
 class LogTaskController {
-    comment;
-    model;
-    status;
-    task;
     constructor(
         $scope, $state,
         contacts, tasks, tasksTags, serverConstants, users,
@@ -73,8 +69,8 @@ class LogTaskController {
     }
 }
 
-import contacts from '../../../contacts/contacts.service';
-import serverConstants from '../../../common/serverConstants/serverConstants.service';
+import contacts from 'contacts/contacts.service';
+import serverConstants from 'common/serverConstants/serverConstants.service';
 import tasks from '../../tasks.service';
 
 export default angular.module('mpdx.contacts.logTask.controller', [

@@ -3,7 +3,6 @@ import defaultTo from 'lodash/fp/defaultTo';
 import isNil from 'lodash/fp/isNil';
 
 class DatetimepickerController {
-    locale;
     constructor(
         $scope,
         locale

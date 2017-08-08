@@ -1,6 +1,4 @@
 class DonorAccountsService {
-    api;
-
     constructor(
         api
     ) {

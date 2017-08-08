@@ -1,9 +1,5 @@
-class EmailLinkController {
-}
-
 const emailLink = {
     template: require('./email.html'),
-    controller: EmailLinkController,
     bindings: {
         emailAddress: '<'
     }

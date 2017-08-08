@@ -1,0 +1,60 @@
+<h3 translate>Admin Console</h3>
+<div class="panel-group">
+    <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabId === 'impersonate_user' }">
+        <div class="panel-heading" ng-click="$ctrl.setTab('impersonate_user')">
+            <div class="row">
+                <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabId === 'impersonate_user' }"></i>
+                <div class="col-sm-10">
+                    <span translate>Impersonate User</span>
+                </div>
+            </div>
+        </div>
+        <div class="panel-animate" ng-show="$ctrl.tabId === 'impersonate_user'">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-4">
+                        <preferences-admin-impersonate-user></preferences-admin-impersonate-user>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabId === 'reset_account' }">
+        <div class="panel-heading" ng-click="$ctrl.setTab('reset_account')">
+            <div class="row">
+                <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabId === 'reset_account' }"></i>
+                <div class="col-sm-10">
+                    <span translate>Reset Account</span>
+                </div>
+            </div>
+        </div>
+        <div class="panel-animate" ng-show="$ctrl.tabId === 'reset_account'">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-4">
+                        <preferences-admin-reset-account></preferences-admin-reset-account>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabId === 'offline_organization' }">
+        <div class="panel-heading" ng-click="$ctrl.setTab('offline_organization')">
+            <div class="row">
+                <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabId === 'offline_organization' }"></i>
+                <div class="col-sm-10">
+                    <span translate>Add Offline Organization</span>
+                </div>
+            </div>
+        </div>
+        <div class="panel-animate" ng-show="$ctrl.tabId === 'offline_organization'">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-4">
+                        <preferences-admin-offline-organization></preferences-admin-offline-organization>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

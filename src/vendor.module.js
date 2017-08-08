@@ -16,8 +16,6 @@ import angularticsGoogleAnalytics from 'angulartics-google-analytics';
 // deps with no default exports
 import lang from 'langmap'; //load before language-picker
 window.languageMappingList = lang;
-import 'es6-shim';
-import 'promise.prototype.finally';
 import 'angular-block-ui';
 import 'angular-filter';
 import 'angular-strap';

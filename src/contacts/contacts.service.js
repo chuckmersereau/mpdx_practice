@@ -10,7 +10,6 @@ import isNil from 'lodash/fp/isNil';
 import map from 'lodash/fp/map';
 import omitBy from 'lodash/fp/omitBy';
 import pull from 'lodash/fp/pull';
-import toInteger from 'lodash/fp/toInteger';
 import union from 'lodash/fp/union';
 import joinComma from "../common/fp/joinComma";
 import relationshipId from "../common/fp/relationshipId";
@@ -20,16 +19,9 @@ import emptyToNull from '../common/fp/emptyToNull';
 import moment from 'moment';
 
 class ContactsService {
-    alerts;
-    analytics;
-    api;
-    contactFilter;
-    contactsTags;
-    modal;
-
     constructor(
         $log, $q, $rootScope, gettextCatalog,
-        alerts, api, contactFilter, contactsTags, modal
+        alerts, api, contactFilter, contactsTags, modal, serverConstants
     ) {
         this.$log = $log;
         this.$q = $q;
@@ -40,6 +32,7 @@ class ContactsService {
         this.contactsTags = contactsTags;
         this.gettextCatalog = gettextCatalog;
         this.modal = modal;
+        this.serverConstants = serverConstants;
 
         this.analytics = null;
         this.current = null;
@@ -49,11 +42,26 @@ class ContactsService {
         return this.api.get({
             url: `contacts/${id}`,
             data: {
-                include: 'addresses,donor_accounts,primary_person,contact_referrals_to_me'
+                include: 'addresses,donor_accounts,primary_person,contact_referrals_to_me',
+                fields: {
+                    contacts: 'avatar,church_name,envelope_greeting,greeting,last_donation,lifetime_donations,' +
+                              'likely_to_give,locale,magazine,name,no_appeals,notes,notes_saved_at,pledge_amount,' +
+                              'pledge_currency,pledge_currency_symbol,pledge_frequency,pledge_received,' +
+                              'pledge_start_date,send_newsletter,square_avatar,status,status_valid,suggested_changes,' +
+                              'tag_list,timezone,website,addresses,contact_referrals_by_me,contact_referrals_to_me,' +
+                              'contacts_that_referred_me,donor_accounts,primary_person',
+                    addresses: 'city,country,created_at,end_date,geo,historic,location,metro_area,postal_code,' +
+                               'primary_mailing_address,region,remote_id,seasonal,source,start_date,state,street,' +
+                               'updated_at,updated_in_db_at,valid_values',
+                    donor_accounts: 'account_number'
+                }
             },
             deSerializationOptions: relationshipId(['contacts', 'people']) //for contacts_referred_by_me, contacts_that_referred_me and primary_person
-        }).then((data) => {
-            data.pledge_amount = toInteger(data.pledge_amount); //fix bad api serialization as string
+        }).then(data => {
+            data.pledge_amount = parseFloat(data.pledge_amount); //fix bad api serialization as string
+            if (!isNil(data.pledge_frequency)) {
+                data.pledge_frequency = parseFloat(data.pledge_frequency);
+            }
             return data;
         });
     }
@@ -276,6 +284,9 @@ class ContactsService {
                 contact: contact,
                 address: address
             },
+            resolve: {
+                0: () => this.serverConstants.load(['assignable_locations'])
+            },
             onHide: () => {
                 promise.resolve();
             }
@@ -326,14 +337,15 @@ class ContactsService {
     }
 }
 
-import alerts from '../common/alerts/alerts.service';
-import api from '../common/api/api.service';
+import alerts from 'common/alerts/alerts.service';
+import api from 'common/api/api.service';
 import contactFilter from './sidebar/filter/filter.service';
 import contactsTags from './sidebar/filter/tags/tags.service';
-import modal from '../common/modal/modal.service';
+import modal from 'common/modal/modal.service';
 import getText from 'angular-gettext';
+import serverConstants from 'common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.contacts.service', [
     getText,
-    alerts, api, contactFilter, contactsTags, modal
+    alerts, api, contactFilter, contactsTags, modal, serverConstants
 ]).service('contacts', ContactsService).name;

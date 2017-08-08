@@ -1,0 +1,26 @@
+<p translate>
+    This will reset a particular Account by deleting all of it's data and reimporting from it's Organization(s).
+    Specify the Account by typing the User's email address, the reason for the reset, as well as the exact name of the Account.
+    All User's that have access to the Account will be affected.
+</p>
+<form name="resetAccountForm" ng-submit="$ctrl.save(resetAccountForm)">
+    <div class="form-group">
+        <label for="resetted_user_email" translate>Key / Relay Email</label>
+        <input name="resetted_user_email" type="text" class="form-control" ng-model="$ctrl.resetAccount.resetted_user_email" required>
+    </div>
+    <div class="form-group">
+        <label for="website" translate>Reason / Helpscout Ticket Link</label>
+        <input name="website" type="text" class="form-control" ng-model="$ctrl.resetAccount.reason">
+    </div>
+    <div class="form-group">
+        <label for="account_list_name" translate>Account Name</label>
+        <input name="account_list_name" type="text" class="form-control" ng-model="$ctrl.resetAccount.account_list_name" required>
+    </div>
+    <button type="submit" ng-disabled="!resetAccountForm.$valid || $ctrl.saving" class="btn btn-primary">
+        <span translate>Reset Account</span>
+        &nbsp;
+        <span class="btn-progress" ng-show="$ctrl.saving">
+            <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
+        </span>
+    </button>
+</form>

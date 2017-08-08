@@ -1,13 +1,12 @@
 class GoogleIntegrationsService {
-    api;
-
     constructor(
         $log,
-        api, modal
+        api, modal, serverConstants
     ) {
         this.$log = $log;
         this.api = api;
         this.modal = modal;
+        this.serverConstants = serverConstants;
     }
     get(googleAccount) {
         return this.api.get(`user/google_accounts/${googleAccount.id}/google_integrations`, {
@@ -61,7 +60,8 @@ class GoogleIntegrationsService {
             template: require('./integrations.html'),
             controller: 'googleIntegrationsModalController',
             resolve: {
-                googleIntegration: () => { return this.get(googleAccount); }
+                googleIntegration: () => this.get(googleAccount),
+                0: () => this.serverConstants.load(['activity_hashes'])
             },
             locals: {
                 googleAccount: googleAccount

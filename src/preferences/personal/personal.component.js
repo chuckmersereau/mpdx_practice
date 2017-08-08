@@ -10,16 +10,9 @@ import toLower from 'lodash/fp/toLower';
 import uuid from 'uuid/v1';
 
 class PersonalController {
-    accounts;
-    alerts;
-    api;
-    locale;
-    serverConstants;
-    users;
-
     constructor(
         $state, $stateParams, $window, gettextCatalog,
-        accounts, api, alerts, locale, serverConstants, users
+        accounts, api, alerts, designationAccounts, locale, serverConstants, users
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
@@ -27,6 +20,7 @@ class PersonalController {
         this.accounts = accounts;
         this.alerts = alerts;
         this.api = api;
+        this.designationAccounts = designationAccounts;
         this.locale = locale;
         this.gettextCatalog = gettextCatalog;
         this.serverConstants = serverConstants;
@@ -44,7 +38,6 @@ class PersonalController {
         if (this.$stateParams.id || this.selectedTab) {
             this.setTab(this.$stateParams.id || this.selectedTab);
         }
-        this.email = this.getEmail(this.users.current);
     }
     getEmail(data) {
         const primaryEmail = find({primary: true}, data.email_addresses);
@@ -57,6 +50,7 @@ class PersonalController {
             this.setTab(this.selectedTab);
         }
         this.email = this.getEmail(this.users.current);
+        this.setSalaryOrg();
     }
     saveEmail() {
         this.saving = true;
@@ -127,7 +121,8 @@ class PersonalController {
         return this.tabId === service;
     }
     setSalaryOrg() {
-        this.salary_organization_string = this.personal.data.salary_organization_id;
+        const currentOrg = find({id: this.accounts.current.salary_organization}, this.designationAccounts.organizations);
+        this.salary_organization_string = get('name', currentOrg);
     }
     getCountry(locale) {
         if (!locale) return;
@@ -166,11 +161,12 @@ import gettextCatalog from 'angular-gettext';
 import accounts from 'common/accounts/accounts.service';
 import api from 'common/api/api.service';
 import alerts from 'common/alerts/alerts.service';
+import designationAccounts from 'common/designationAccounts/designationAccounts.service';
 import locale from 'common/locale/locale.service';
 import serverConstants from 'common/serverConstants/serverConstants.service';
 import users from 'common/users/users.service';
 
 export default angular.module('mpdx.preferences.personal.component', [
     uiRouter, gettextCatalog,
-    accounts, api, alerts, locale, serverConstants, users
+    accounts, api, alerts, designationAccounts, locale, serverConstants, users
 ]).component('preferencesPersonal', Personal).name;

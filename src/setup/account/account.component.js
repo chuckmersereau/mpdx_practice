@@ -2,8 +2,6 @@ import defaultTo from 'lodash/fp/defaultTo';
 import get from 'lodash/fp/get';
 
 class AccountController {
-    accounts;
-    users;
     constructor(
         $rootScope, $state,
         users, accounts

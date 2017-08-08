@@ -3,10 +3,11 @@ const template = require('./impersonationBar.html');
 class ImpersonationController {
     constructor(
         $timeout, $window,
-        users
+        session, users
     ) {
         this.$timeout = $timeout;
         this.$window = $window;
+        this.session = session;
         this.users = users;
 
         this.loading = false;
@@ -15,6 +16,9 @@ class ImpersonationController {
         this.$timeout(() => {
             this.impersonator = this.$window.localStorage.getItem('impersonator');
             this.impersonated = `${this.users.current.first_name} ${this.users.current.last_name}`;
+            if (this.impersonator) {
+                this.session.navImpersonation = true;
+            }
         }, 500);
     }
     logout() {
@@ -41,8 +45,9 @@ const ImpersonationBar = {
     controller: ImpersonationController
 };
 
+import session from 'common/session/session.service';
 import users from 'common/users/users.service';
 
 export default angular.module('mpdx.menu.impersonationBar', [
-    users
+    session, users
 ]).component('impersonationBar', ImpersonationBar).name;

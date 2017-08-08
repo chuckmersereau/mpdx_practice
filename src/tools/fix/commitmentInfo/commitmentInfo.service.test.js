@@ -1,17 +1,70 @@
 import service from './commitmentInfo.service';
 
 const accountListId = 123;
+let apiData = [{
+    pledge_amount: 5,
+    pledge_currency: 'NZD',
+    pledge_frequency: 1,
+    status: 'Never Contacted',
+    suggested_changes: {
+        pledge_amount: '50.0',
+        pledge_currency: 'USD',
+        pledge_frequency: 2,
+        status: 'Partner - Financial'
+    }
+}];
+apiData.meta = { page: 1 };
 
 describe('tools.fix.commitmentInfo.service', () => {
-    let api, contacts, fixCommitmentInfo;
+    let api, contacts, fixCommitmentInfo, serverConstants;
 
     beforeEach(() => {
         angular.mock.module(service);
-        inject(($rootScope, _api_, _contacts_, _fixCommitmentInfo_) => {
+        inject(($rootScope, _api_, _contacts_, _fixCommitmentInfo_, _serverConstants_) => {
             api = _api_;
             contacts = _contacts_;
+            serverConstants = _serverConstants_;
             fixCommitmentInfo = _fixCommitmentInfo_;
             api.account_list_id = accountListId;
+            serverConstants.data = {
+                pledge_frequency_hashes: [{
+                    'id': 'Weekly',
+                    'key': 0.23076923076923,
+                    'value': 'Weekly'
+                }, {
+                    'id': 'Every 2 Weeks',
+                    'key': 0.46153846153846,
+                    'value': 'Every 2 Weeks'
+                }, {
+                    'id': 'Monthly',
+                    'key': 1,
+                    'value': 'Monthly'
+                }, {
+                    'id': 'Every 2 Months',
+                    'key': 2,
+                    'value': 'Every 2 Months'
+                }, {
+                    'id': 'Quarterly',
+                    'key': 3,
+                    'value': 'Quarterly'
+                }, {
+                    'id': 'Every 4 Months',
+                    'key': 4,
+                    'value': 'Every 4 Months'
+                }, {
+                    'id': 'Every 6 Months',
+                    'key': 6,
+                    'value': 'Every 6 Months'
+                }, {
+                    'id': 'Annual',
+                    'key': 12,
+                    'value': 'Annual'
+                }, {
+                    'id': 'Every 2 Years',
+                    'key': 24,
+                    'value': 'Every 2 Years'
+                }]
+            };
         });
     });
 
@@ -119,17 +172,23 @@ describe('tools.fix.commitmentInfo.service', () => {
                     done();
                 });
             });
-
             it('should store data', (done) => {
                 fixCommitmentInfo.load().then((data) => {
-                    expect(data).toEqual(apiData);
+                    expect(data[0].original_pledge_amount).toEqual(apiData[0].pledge_amount);
+                    expect(data[0].original_pledge_currency).toEqual(apiData[0].pledge_currency);
+                    expect(data[0].original_pledge_frequency).toEqual('Monthly');
+                    expect(data[0].original_status).toEqual(apiData[0].status);
+                    expect(data[0].pledge_amount).toEqual(50.0);
+                    expect(data[0].pledge_currency).toEqual(apiData[0].suggested_changes.pledge_currency);
+                    expect(data[0].pledge_frequency).toEqual(apiData[0].suggested_changes.pledge_frequency);
+                    expect(data[0].status).toEqual(apiData[0].suggested_changes.status);
                     done();
                 });
             });
 
             it('should store meta', (done) => {
-                fixCommitmentInfo.load().then((data) => {
-                    expect(data.meta).toEqual(apiData.meta);
+                fixCommitmentInfo.load().then(() => {
+                    expect(fixCommitmentInfo.meta).toEqual(apiData.meta);
                     done();
                 });
             });
@@ -345,21 +404,4 @@ describe('tools.fix.commitmentInfo.service', () => {
             });
         });
     });
-
-    const apiData = [
-        {
-            pledge_amount: 5,
-            pledge_currency: 'NZD',
-            pledge_frequency: 1,
-            status: 'Never Contacted',
-            suggested_changes: {
-                pledge_amount: '50.0',
-                pledge_currency: 'USD',
-                pledge_frequency: 2,
-                status: 'Partner - Financial'
-            }
-        }
-    ];
-
-    apiData.meta = { page: 1 };
 });

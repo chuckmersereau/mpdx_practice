@@ -1,8 +1,4 @@
-class AvatarController {
-}
-
 const Avatar = {
-    controller: AvatarController,
     template: require('./avatar.html'),
     bindings: {
         src: '<'

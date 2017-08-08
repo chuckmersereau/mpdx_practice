@@ -1,12 +1,7 @@
 import isArray from 'lodash/fp/isArray';
 import map from "lodash/fp/map";
-// import uuid from 'uuid/v1';
 
 class AddTagController {
-    contacts;
-    contactsTags;
-    selectedContacts;
-
     constructor(
         $rootScope, $scope,
         api, contactsTags, contacts,

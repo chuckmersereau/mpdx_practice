@@ -1,5 +1,4 @@
 class CorrespondenceController {
-    accounts;
     constructor(
         accounts
     ) {

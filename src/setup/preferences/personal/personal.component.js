@@ -1,9 +1,6 @@
 import indexOf from 'lodash/fp/indexOf';
 
 class PersonalController {
-    accounts;
-    alerts;
-    users;
     constructor(
         $state,
         accounts, alerts, users

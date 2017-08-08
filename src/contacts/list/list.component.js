@@ -1,7 +1,10 @@
 import ceil from 'lodash/fp/ceil';
 import concat from 'lodash/fp/concat';
 import defaultTo from 'lodash/fp/defaultTo';
+import find from 'lodash/fp/find';
+import get from 'lodash/fp/get';
 import includes from 'lodash/fp/includes';
+import isNil from 'lodash/fp/isNil';
 import map from 'lodash/fp/map';
 import pullAllBy from 'lodash/fp/pullAllBy';
 import reduce from 'lodash/fp/reduce';
@@ -9,20 +12,10 @@ import reject from 'lodash/fp/reject';
 import unionBy from 'lodash/fp/unionBy';
 
 class ListController {
-    accounts;
-    alerts;
-    api;
-    contacts;
-    contactFilter;
-    contactsTags;
-    modal;
-    session;
-    tasks;
-
     constructor(
         $log, $rootScope, $window,
         gettextCatalog,
-        accounts, alerts, api, contacts, contactFilter, contactsTags, modal, session, tasks
+        accounts, alerts, api, contacts, contactFilter, contactsTags, modal, serverConstants, session, tasks
     ) {
         this.$log = $log;
         this.$window = $window;
@@ -36,6 +29,7 @@ class ListController {
         this.contactFilter = contactFilter;
         this.contactsTags = contactsTags;
         this.modal = modal;
+        this.serverConstants = serverConstants;
         this.session = session;
         this.tasks = tasks;
 
@@ -125,6 +119,9 @@ class ListController {
             controller: 'editFieldsController',
             locals: {
                 selectedContacts: this.getSelectedContacts()
+            },
+            resolve: {
+                0: () => this.serverConstants.load(['bulk_update_options', 'languages'])
             }
         });
     }
@@ -207,7 +204,16 @@ class ListController {
                 this.loading = false;
                 return;
             }
-            const newContacts = angular.copy(data);
+            const newContacts = map(contact => {
+                if (!isNil(contact.pledge_amount)) {
+                    contact.pledge_amount = parseFloat(contact.pledge_amount); //fix bad api serialization as string
+                }
+                if (!isNil(contact.pledge_frequency)) {
+                    const frequency = find({key: parseFloat(contact.pledge_frequency)}, this.serverConstants.data.pledge_frequency_hashes);
+                    contact.pledge_frequency = get('value', frequency);
+                }
+                return contact;
+            }, angular.copy(data));
             if (reset) {
                 this.data = newContacts;
             } else {

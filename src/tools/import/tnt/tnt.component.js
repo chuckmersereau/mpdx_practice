@@ -3,11 +3,6 @@ import joinComma from "common/fp/joinComma";
 import config from 'config';
 
 class ImportTntController {
-    alerts;
-    api;
-    modal;
-    maxSize;
-    maxSizeInMB;
     constructor(
         $rootScope, $window, gettextCatalog, Upload,
         alerts, api, contactsTags, modal, serverConstants
@@ -73,10 +68,11 @@ const ImportTnt = {
 import Upload from 'ng-file-upload';
 import alerts from 'common/alerts/alerts.service';
 import contactsTags from 'contacts/sidebar/filter/tags/tags.service';
+import gettext from 'angular-gettext';
 import modal from 'common/modal/modal.service';
 import serverConstants from 'common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.tools.import.tnt.component', [
-    Upload,
+    gettext, Upload,
     alerts, contactsTags, modal, serverConstants
 ]).component('importTnt', ImportTnt).name;

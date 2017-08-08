@@ -3,10 +3,6 @@ import map from 'lodash/fp/map';
 import moment from 'moment';
 
 class PersonService {
-    api;
-    contacts;
-    modal;
-
     constructor(
         $filter, $log, $q, $rootScope, gettextCatalog,
         api, contacts, modal

@@ -1,5 +1,4 @@
 class FinishController {
-    users;
     constructor(
         $state,
         users

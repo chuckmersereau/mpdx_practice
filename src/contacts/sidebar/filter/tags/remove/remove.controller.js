@@ -5,10 +5,6 @@ import joinComma from "common/fp/joinComma";
 import emptyToNull from "common/fp/emptyToNull";
 
 class RemoveTagController {
-    selectedContacts;
-    contacts;
-    contactsTags;
-
     constructor(
         $rootScope, $scope, gettextCatalog,
         api, modal, contactsTags,

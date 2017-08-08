@@ -64,7 +64,7 @@ describe('contacts.list.exportContacts.controller', () => {
             });
         });
         xit('should stop the loader', (done) => {
-            $ctrl.primaryCSVLink().finally(() => {
+            $ctrl.primaryCSVLink().then(() => {
                 expect($ctrl.blockUI.reset).toHaveBeenCalled();
                 done();
             });

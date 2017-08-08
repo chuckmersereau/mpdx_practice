@@ -1,8 +1,6 @@
 import get from 'lodash/fp/get';
 
 class ItemController {
-    fixPhoneNumbers;
-
     constructor(
         blockUI,
         fixPhoneNumbers, people

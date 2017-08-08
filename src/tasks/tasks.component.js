@@ -1,5 +1,4 @@
 class TasksController {
-    help;
     constructor(
         gettextCatalog,
         help, session

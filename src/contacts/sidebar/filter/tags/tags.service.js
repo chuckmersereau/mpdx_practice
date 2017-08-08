@@ -3,7 +3,6 @@ import unionBy from 'lodash/fp/unionBy';
 import uuid from 'uuid/v1';
 
 class TagsService {
-    api;
     constructor(
         $log, $rootScope,
         api

@@ -1,6 +1,4 @@
 class ItemController {
-    fixAddresses;
-
     constructor(
         blockUI,
         fixAddresses

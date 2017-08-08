@@ -6,8 +6,6 @@ import sumBy from 'lodash/fp/sumBy';
 import reduceObject from '../../common/fp/reduceObject';
 
 class MonthlyController {
-    api;
-    errorOccurred;
     constructor(
         $log,
         $rootScope,

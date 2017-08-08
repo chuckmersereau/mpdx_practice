@@ -6,10 +6,6 @@ import toString from 'lodash/fp/toString';
 import createPatch from "../fp/createPatch";
 
 class AccountsService {
-    analytics;
-    api;
-    donations;
-
     constructor(
         $log, $q, $rootScope, $window,
         api

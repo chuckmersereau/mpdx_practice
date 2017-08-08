@@ -1,6 +1,4 @@
 class AddressesController {
-    fixAddresses;
-
     constructor(
         $rootScope, gettextCatalog, blockUI,
         modal, fixAddresses

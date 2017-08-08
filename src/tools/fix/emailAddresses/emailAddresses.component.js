@@ -1,6 +1,4 @@
 class EmailAddressesController {
-    fixEmailAddresses;
-
     constructor(
         $rootScope, gettextCatalog, blockUI,
         modal, fixEmailAddresses

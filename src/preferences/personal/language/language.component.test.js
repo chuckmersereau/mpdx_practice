@@ -19,7 +19,10 @@ describe('preferences.personal.language.component', () => {
         });
     });
     function loadController() {
-        $ctrl = componentController('preferencesPersonalLanguage', {$scope: scope}, {onSave: () => Promise.resolve()});
+        $ctrl = componentController(
+            'preferencesPersonalLanguage',
+            { $scope: scope },
+            { onSave: () => Promise.resolve() });
     }
     describe('$onInit', () => {
         it('should set the handler for moving away', () => {
@@ -78,6 +81,23 @@ describe('preferences.personal.language.component', () => {
             users.current.preferences.locale = 'en';
             $ctrl.setLanguage();
             expect(language.change).toHaveBeenCalledWith('en');
+        });
+        describe('listOnly', () => {
+            beforeEach(() => {
+                $ctrl = componentController(
+                    'preferencesPersonalLanguage',
+                    { $scope: scope },
+                    {
+                        onSave: () => Promise.resolve(),
+                        listOnly: true
+                    });
+                spyOn(users, 'saveCurrent').and.callThrough();
+            });
+
+            it('should call users.saveCurrent', () => {
+                $ctrl.setLanguage();
+                expect(users.saveCurrent).toHaveBeenCalled();
+            });
         });
     });
     describe('revertLanguage', () => {

@@ -1,7 +1,7 @@
 import component from './notes.component';
 
 describe('contacts.show.details.component', () => {
-    let $ctrl, scope, api, serverConstants, gettextCatalog, alerts, modal, contacts;
+    let $ctrl, scope, gettextCatalog, alerts, contacts;
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _contacts_, _gettextCatalog_, _alerts_) => {

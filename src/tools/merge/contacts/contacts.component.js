@@ -2,9 +2,6 @@ import filter from 'lodash/fp/filter';
 import map from 'lodash/fp/map';
 
 class MergeContactsController {
-    api;
-    mergeContacts;
-
     constructor(
         $log, $rootScope, $state, blockUI, gettextCatalog,
         alerts, api, contacts

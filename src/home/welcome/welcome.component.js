@@ -1,6 +1,4 @@
 class WelcomeController {
-    users;
-
     constructor(
         users
     ) {

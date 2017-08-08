@@ -3,14 +3,13 @@ import eq from 'lodash/fp/eq';
 import get from 'lodash/fp/get';
 
 class ItemController {
-    task;
     constructor(
-        gettextCatalog,
-        api, locale, modal, tasks, users
+        $log, gettextCatalog,
+        api, modal, tasks, users
     ) {
+        this.$log = $log;
         this.api = api;
         this.gettextCatalog = gettextCatalog;
-        this.locale = locale;
         this.modal = modal;
         this.tasks = tasks;
         this.users = users;
@@ -33,9 +32,22 @@ class ItemController {
         }
     }
     load() {
-        this.tasks.get(this.task.id, false).then((task) => {
+        return this.api.get(`tasks/${this.task.id}`, {
+            include: 'comments,comments.person,contacts,contacts.addresses,contacts.people,contacts.people.facebook_accounts,contacts.people.phone_numbers,contacts.people.email_addresses',
+            fields: {
+                contacts: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people',
+                addresses: 'city,historic,primary_mailing_address,postal_code,state,source,street',
+                email_addresses: 'email,historic,primary',
+                phone_numbers: 'historic,location,number,primary',
+                facebook_accounts: 'username',
+                person: 'first_name,last_name,deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers'
+            }
+        }).then(task => {
             this.loaded = true;
             this.task = task;
+            /* istanbul ignore next */
+            this.$log.debug(`tasks/${task.id}`, task);
+            return task;
         });
     }
     complete() {

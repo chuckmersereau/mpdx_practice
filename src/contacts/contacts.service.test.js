@@ -47,6 +47,55 @@ describe('contacts.service', () => {
             contactFilter.rejectedTags = [];
         });
     });
+    describe('get', () => {
+        beforeEach(() => {
+            const data = {
+                pledge_amount: '100.1',
+                pledge_frequency: '1.1'
+            };
+            spyOn(api, 'get').and.returnValue(Promise.resolve(data));
+        });
+        it('should call the api with a contact id', () => {
+            contacts.get(123);
+            expect(api.get).toHaveBeenCalledWith({
+                url: 'contacts/123',
+                data: {
+                    include: 'addresses,donor_accounts,primary_person,contact_referrals_to_me',
+                    fields: {
+                        contacts: 'avatar,church_name,envelope_greeting,greeting,last_donation,lifetime_donations,' +
+                                  'likely_to_give,locale,magazine,name,no_appeals,notes,notes_saved_at,pledge_amount,' +
+                                  'pledge_currency,pledge_currency_symbol,pledge_frequency,pledge_received,' +
+                                  'pledge_start_date,send_newsletter,square_avatar,status,status_valid,suggested_changes,' +
+                                  'tag_list,timezone,website,addresses,contact_referrals_by_me,contact_referrals_to_me,' +
+                                  'contacts_that_referred_me,donor_accounts,primary_person',
+                        addresses: 'city,country,created_at,end_date,geo,historic,location,metro_area,postal_code,' +
+                                   'primary_mailing_address,region,remote_id,seasonal,source,start_date,state,street,' +
+                                   'updated_at,updated_in_db_at,valid_values',
+                        donor_accounts: 'account_number'
+                    }
+                },
+                deSerializationOptions: {
+                    contacts: { valueForRelationship: jasmine.any(Function) },
+                    people: { valueForRelationship: jasmine.any(Function) }
+                }
+            });
+        });
+        it('should return promise', () => {
+            expect(contacts.get(123)).toEqual(jasmine.any(Promise));
+        });
+        it('should set pledge_amount to float', (done) => {
+            contacts.get(123).then((data) => {
+                expect(data.pledge_amount).toEqual(100.1);
+                done();
+            });
+        });
+        it('should parse pledge_frequency for value consistency', done => {
+            contacts.get(123).then(data => {
+                expect(data.pledge_frequency).toEqual(1.1);
+                done();
+            });
+        });
+    });
     describe('getNames', () => {
         it('should query an array of ids for names', () => {
             spyOn(api, 'get').and.callFake(data => Promise.resolve(data));

@@ -1,6 +1,4 @@
 class TimeZoneController {
-    accounts;
-    saving;
     constructor(
         users
     ) {

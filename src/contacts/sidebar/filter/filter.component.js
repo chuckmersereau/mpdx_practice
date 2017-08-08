@@ -1,11 +1,6 @@
 import assign from 'lodash/fp/assign';
 
 class FilterController {
-    contacts;
-    contactFilter;
-    contactsTags;
-    modal;
-
     constructor(
         $stateParams, gettextCatalog,
         contactFilter, contactsTags, contacts, filters, modal

@@ -1,13 +1,19 @@
 class ContactPersonController {
-    contact;
-    people;
     constructor(
-        $sce,
+        $sce, gettextCatalog,
         locale, people
     ) {
         this.$sce = $sce;
         this.locale = locale;
         this.people = people;
+
+        this.translatedLocations = {
+            home: gettextCatalog.getString('Home'),
+            mobile: gettextCatalog.getString('Mobile'),
+            work: gettextCatalog.getString('Work'),
+            fax: gettextCatalog.getString('Fax'),
+            other: gettextCatalog.getString('Other')
+        };
     }
     openModal() {
         this.people.openPeopleModal(this.contact, this.person.id);

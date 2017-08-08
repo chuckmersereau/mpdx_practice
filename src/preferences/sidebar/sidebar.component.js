@@ -1,7 +1,7 @@
 class SidebarController {
-    constructor($state, accounts) {
+    constructor($state, users) {
         this.$state = $state;
-        this.accounts = accounts;
+        this.users = users;
     }
     go(state) {
         if (!this.disabled) {

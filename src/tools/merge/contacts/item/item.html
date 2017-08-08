@@ -15,6 +15,6 @@
             <div translate translate-params-source="(address.source | sourceToStr)">From: {{source}}</div>
             <i class="fa fa-exclamation-triangle" ng-if="address.duplicate"></i>
         </div>
-        <div translate translate-params-date="($ctrl.contact.created_at | date : $ctrl.locale.dateTimeFormat)">On: {{date}}</div>
+        <div translate translate-params-date="($ctrl.contact.created_at | localize)">On: {{date}}</div>
     </div>
 </div>

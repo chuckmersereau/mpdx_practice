@@ -1,5 +1,4 @@
 class StartController {
-    users;
     constructor(
         $state,
         users

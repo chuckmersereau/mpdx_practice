@@ -3,10 +3,10 @@
         <input class="form-control" type="url" name="linkedin_account" ng-model="$ctrl.linkedinAccount.public_url" placeholder="http://linkedin.com/user1234 *" ng-required="!$ctrl.deleted">
     </div>
     <div class="col-sm-2">
-        <button class="btn btn-default btn-block" disabled="disabled" translate>Linked In</button>
+        <button class="btn btn-default btn-block" disabled translate>Linked In</button>
     </div>
     <div class="col-sm-1">
-        <button type="button" ng-click="$ctrl.remove()" class="btn btn-block btn-default" title="{{Delete | translate}}">
+        <button type="button" ng-click="$ctrl.remove()" class="btn btn-block btn-default" title="{{::'Delete' | translate}}">
             <i class="fa fa-trash"></i>
         </button>
     </div>

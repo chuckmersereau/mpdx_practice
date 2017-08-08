@@ -1,14 +1,10 @@
 import uuid from 'uuid/v1';
 
 class FieldController {
-    fixPhoneNumbers;
-    locale;
-
     constructor(
-        fixPhoneNumbers, locale
+        fixPhoneNumbers
     ) {
         this.fixPhoneNumbers = fixPhoneNumbers;
-        this.locale = locale;
     }
 
     $onInit() {

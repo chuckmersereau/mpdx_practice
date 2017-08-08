@@ -16,7 +16,7 @@
                 <a ng-href="tel:{{::phone.number}}" target="_blank">
                     {{ ::phone.number }}
                 </a>
-                <span ng-if="::phone.location">{{ ::' - ' + phone.location }}</span>
+                <span ng-if="::phone.location">{{ ' - ' + $ctrl.translatedLocations[phone.location] }}</span>
                 <i ng-if="::phone.primary" class="fa fa-check text-success"></i>
                 <i ng-if="::phone.historic" class="fa fa-close text-danger"></i>
             </dd>

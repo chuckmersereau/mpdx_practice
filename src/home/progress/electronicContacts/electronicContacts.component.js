@@ -1,5 +1,4 @@
 class ElectronicContactsController {
-    accounts;
     constructor(
         accounts
     ) {

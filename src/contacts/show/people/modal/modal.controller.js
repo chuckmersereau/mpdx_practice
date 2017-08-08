@@ -5,11 +5,6 @@ import uuid from 'uuid/v1';
 import createPatch from "common/fp/createPatch";
 
 class PersonModalController {
-    alerts;
-    contact;
-    people;
-    contacts;
-
     constructor(
         $log, $rootScope, $scope, gettextCatalog,
         alerts, people, locale, modal,

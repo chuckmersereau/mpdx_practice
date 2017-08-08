@@ -1,9 +1,4 @@
 class ContactDonorAccountController {
-    accounts;
-    contact;
-    contacts;
-    donorAccount;
-
     constructor(
         accounts, contacts
     ) {

@@ -1,9 +1,6 @@
 import includes from 'lodash/fp/includes';
 
 class ImportCsvController {
-    importCsv;
-    modal;
-
     constructor(
         $window,
         $transitions, $state, gettextCatalog,

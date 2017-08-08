@@ -1,9 +1,5 @@
-class WebsiteLinkController {
-}
-
 const websiteLink = {
     template: require('./website.html'),
-    controller: WebsiteLinkController,
     bindings: {
         website: '<'
     }

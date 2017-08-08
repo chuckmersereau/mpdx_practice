@@ -1,9 +1,6 @@
 import moment from 'moment';
 
 class ContactNotesController {
-    contacts;
-    moment;
-
     constructor(
         gettextCatalog,
         alerts, contacts

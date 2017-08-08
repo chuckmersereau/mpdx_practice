@@ -1,8 +1,4 @@
-class ImportController {
-}
-
 const Import = {
-    controller: ImportController,
     template: require('./import.html')
 };
 

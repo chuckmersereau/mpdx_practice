@@ -1,6 +1,4 @@
 class ToolsService {
-    data;
-
     constructor(
         gettextCatalog
     ) {
