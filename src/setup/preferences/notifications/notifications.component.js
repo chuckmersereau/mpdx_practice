@@ -26,7 +26,7 @@ const Notifications = {
     controller: NotificationsController
 };
 
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 import users from 'common/users/users.service';
 
 export default angular.module('mpdx.setup.preferences.notifications.component', [

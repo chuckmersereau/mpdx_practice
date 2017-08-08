@@ -81,7 +81,7 @@ const ImportGoogle = {
     template: require('./google.html')
 };
 
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 import blockUI from 'angular-block-ui';
 import gettextCatalog from 'angular-gettext';
 import alerts from 'common/alerts/alerts.service';

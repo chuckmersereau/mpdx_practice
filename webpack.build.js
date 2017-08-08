@@ -5,7 +5,6 @@ const webpack = require('webpack');
 const path = require('path');
 const assign = require('lodash/fp/assign');
 const concat = require('lodash/fp/concat');
-const autoprefixer = require('autoprefixer');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -30,6 +29,13 @@ switch (configEnv) {
         publicPath = 'https://mpdx.org';
 }
 
+const postcssLoader = {
+    loader: 'postcss-loader',
+    options: {
+        plugins: [ require('autoprefixer')({browsers: ['last 2 version']}) ]
+    }
+};
+
 config = assign(config, {
     output: {
         path: path.join(__dirname, 'public'),
@@ -42,13 +48,13 @@ config = assign(config, {
             {
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({
-                    use: ['css-loader', 'postcss-loader'],
+                    use: ['css-loader', postcssLoader],
                     fallback: 'style-loader'
                 })
             }, {
                 test: /\.scss$/,
                 use: ExtractTextPlugin.extract({
-                    use: ['css-loader', 'postcss-loader', 'sass-loader'],
+                    use: ['css-loader', postcssLoader, 'sass-loader'],
                     fallback: 'style-loader'
                 })
             }
@@ -67,11 +73,6 @@ config = assign(config, {
         }),
         new webpack.LoaderOptionsPlugin({
             options: {
-                postcss: [
-                    autoprefixer({
-                        browsers: ['last 2 version']
-                    })
-                ],
                 eslint: {
                     parser: 'babel-eslint'
                 },

@@ -44,7 +44,7 @@ const AcceptInvite = {
     template: require('./acceptInvite.html')
 };
 
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 import gettextCatalog from 'angular-gettext';
 import alerts from 'common/alerts/alerts.service';
 import api from 'common/api/api.service';

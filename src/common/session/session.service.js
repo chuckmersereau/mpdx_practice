@@ -12,7 +12,7 @@ class Session {
     }
 }
 
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('mpdx.services.session', [
     uiRouter

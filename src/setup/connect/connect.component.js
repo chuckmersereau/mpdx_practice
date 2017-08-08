@@ -72,7 +72,7 @@ const SetupConnect = {
     controller: SetupConnectController
 };
 
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 import gettextCatalog from 'angular-gettext';
 import accounts from 'common/accounts/accounts.service';
 import alerts from 'common/alerts/alerts.service';

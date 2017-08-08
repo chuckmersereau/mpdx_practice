@@ -89,7 +89,7 @@ const List = {
 };
 
 import contacts from '../../contacts.service';
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('mpdx.contacts.sidebar.list.component', [
     uiRouter,

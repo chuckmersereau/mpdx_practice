@@ -81,7 +81,7 @@ const Auth = {
     template: require('./auth.html')
 };
 
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('mpdx.common.auth.component', [
     uiRouter

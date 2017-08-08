@@ -7,9 +7,15 @@ const assign = require('lodash/fp/assign');
 const concat = require('lodash/fp/concat');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const autoprefixer = require('autoprefixer');
 
 let config = require('./webpack.make');
+
+const postcssLoader = {
+    loader: 'postcss-loader',
+    options: {
+        plugins: [ require('autoprefixer')({browsers: ['last 2 version']}) ]
+    }
+};
 
 config = assign(config, {
     output: {
@@ -27,21 +33,16 @@ config = assign(config, {
                 loaders: ['eslint-loader']
             }, {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader', 'postcss-loader']
+                use: ['style-loader', 'css-loader', postcssLoader]
             }, {
                 test: /\.scss$/,
-                use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
+                use: ['style-loader', 'css-loader', postcssLoader, 'sass-loader']
             }
         ])
     }),
     plugins: concat(config.plugins, [
         new webpack.LoaderOptionsPlugin({
             options: {
-                postcss: [
-                    autoprefixer({
-                        browsers: ['last 2 version']
-                    })
-                ],
                 eslint: {
                     parser: 'babel-eslint'
                 },

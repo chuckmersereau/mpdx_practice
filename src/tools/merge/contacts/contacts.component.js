@@ -105,7 +105,7 @@ const MergeContacts = {
 
 import blockUi from 'angular-block-ui';
 import gettext from 'angular-gettext';
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 import alerts from 'common/alerts/alerts.service';
 import api from 'common/api/api.service';
 import contacts from 'contacts/contacts.service';

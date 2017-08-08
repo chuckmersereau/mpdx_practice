@@ -89,7 +89,7 @@ const Search = {
 
 import contacts from '../../contacts/contacts.service';
 import contactFilter from '../../contacts/sidebar/filter/filter.service';
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('mpdx.menu.search.component', [
     uiRouter,

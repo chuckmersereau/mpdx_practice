@@ -28,7 +28,7 @@ const Add = {
 
 import contacts from 'contacts/contacts.service';
 import tasks from 'tasks/tasks.service';
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('mpdx.tasks.list.add.component', [
     uiRouter,

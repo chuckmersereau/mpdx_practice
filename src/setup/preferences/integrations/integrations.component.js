@@ -37,7 +37,7 @@ const Integrations = {
 };
 
 import users from '../../../common/users/users.service';
-import uiRouter from 'angular-ui-router';
+import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('mpdx.setup.preferences.integrations.component', [
     users,
