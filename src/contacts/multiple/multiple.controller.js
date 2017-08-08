@@ -4,8 +4,6 @@ import reduce from 'lodash/fp/reduce';
 import uuid from 'uuid/v1';
 
 class MultipleController {
-    api;
-    contacts;
     constructor(
         $scope,
         api, contacts

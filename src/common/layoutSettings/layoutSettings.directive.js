@@ -1,6 +1,4 @@
 class LayoutSettingsController {
-    layoutSettings;
-
     constructor(layoutSettings) {
         this.layoutSettings = layoutSettings;
     }

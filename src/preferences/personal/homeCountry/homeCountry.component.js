@@ -1,6 +1,4 @@
 class HomeCountryController {
-    accounts;
-    saving;
     constructor(
         accounts
     ) {

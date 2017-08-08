@@ -9,7 +9,6 @@ import 'ng-rollbar';
 
 //add es6 polyfill (mostly for promises) for phantomjs
 require('es6-shim');
-require('promise.prototype.finally');
 
 var testsContext = require.context(".", true, /.test$/);
 testsContext.keys().forEach(testsContext);

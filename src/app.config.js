@@ -6,6 +6,9 @@ export default function appConfig(
     $compileProvider, $locationProvider, $logProvider, $stateProvider, $httpProvider, $qProvider, $urlRouterProvider,
     blockUIConfig, jwtOptionsProvider, RollbarProvider, timeAgoSettings, gettext
 ) {
+    if (config.env !== 'development') {
+        $compileProvider.debugInfoEnabled(false);
+    }
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|tel|mailto):/);
     jwtOptionsProvider.config({
         tokenGetter: () => {

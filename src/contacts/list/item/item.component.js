@@ -5,9 +5,6 @@ import pull from 'lodash/fp/pull';
 import union from 'lodash/fp/union';
 
 class ItemController {
-    contact;
-    contacts;
-    people;
     constructor(
         $rootScope, $state,
         contacts, people, users

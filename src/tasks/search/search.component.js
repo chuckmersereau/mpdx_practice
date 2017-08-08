@@ -1,7 +1,4 @@
 class TasksSearchController {
-    tasks;
-    tasksFilter;
-
     constructor(
         tasks, tasksFilter
     ) {

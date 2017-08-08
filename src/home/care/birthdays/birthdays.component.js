@@ -3,8 +3,6 @@ import get from 'lodash/fp/get';
 import moment from 'moment';
 
 class BirthdaysController {
-    contacts;
-
     constructor(
         contacts, locale
     ) {

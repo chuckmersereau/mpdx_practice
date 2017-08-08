@@ -33,9 +33,6 @@ describe('tasks.service', () => {
         spyOn(gettextCatalog, 'getPlural').and.callThrough();
     });
     describe('create', () => {
-        beforeEach(() => {
-            spyOn(tasks, 'get').and.callFake(() => Promise.resolve());
-        });
         it('should return a Promise', () => {
             expect(tasks.create({})).toEqual(jasmine.any(Promise));
         });
@@ -200,8 +197,8 @@ describe('tasks.service', () => {
             spyOn(tasks, 'change').and.callFake(() => {});
             spyOn(tasks, 'load').and.callFake(() => Promise.resolve());
         });
-        it('should alert if over 25 selected contacts', (done) => {
-            tasks.selected = range(0, 26);
+        it('should alert if over 150 selected contacts', (done) => {
+            tasks.selected = range(0, 151);
             tasks.bulkDelete().catch(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
                 expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
@@ -257,26 +254,6 @@ describe('tasks.service', () => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
                 expect(gettextCatalog.getPlural).toHaveBeenCalledWith(2, jasmine.any(String), jasmine.any(String), jasmine.any(Object));
                 done();
-            });
-        });
-    });
-    describe('get', () => {
-        beforeEach(() => {
-            tasks.selected = selected;
-            spyOn(api, 'get').and.callFake(() => Promise.resolve());
-        });
-        it('should query the api for a tasks comments & contacts info', () => {
-            tasks.get(1);
-            expect(api.get).toHaveBeenCalledWith(`tasks/1`, {
-                include: 'comments,comments.person,contacts,contacts.addresses,contacts.people,contacts.people.facebook_accounts,contacts.people.phone_numbers,contacts.people.email_addresses',
-                fields: {
-                    contacts: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people',
-                    addresses: 'city,historic,primary_mailing_address,postal_code,state,source,street',
-                    email_addresses: 'email,historic,primary',
-                    phone_numbers: 'historic,location,number,primary',
-                    facebook_accounts: 'username',
-                    person: 'first_name,last_name,deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers'
-                }
             });
         });
     });

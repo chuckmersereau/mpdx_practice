@@ -1,6 +1,4 @@
 class CommitmentsController {
-    contacts;
-
     constructor(
         $rootScope, contacts, blockUI
     ) {

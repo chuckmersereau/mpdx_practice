@@ -21,6 +21,12 @@ tasks-list-item {
         .comment {
             border: 1px solid #ddd;
             margin-bottom: 10px;
+            .content {
+                white-space: pre-wrap;
+            }
+            textarea {
+                margin-bottom: 15px;
+            }
         }
         .links {
             padding: 10px 15px;

@@ -1,7 +1,7 @@
 import balances from './balances/balances.component';
 import component from './reports.component';
 import monthly from './monthly/monthly.component';
-import contributions from './contributions/index.module';
+import contributions from './contributions/contributions.component';
 import donations from './donations/index.module';
 import service from './reports.service';
 

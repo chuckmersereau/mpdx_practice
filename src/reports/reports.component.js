@@ -1,7 +1,4 @@
 class ReportsController {
-    help;
-    session;
-
     constructor(
         gettextCatalog,
         help, session

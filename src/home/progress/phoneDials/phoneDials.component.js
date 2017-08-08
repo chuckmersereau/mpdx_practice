@@ -1,5 +1,4 @@
 class PhoneDialsController {
-    accounts;
     constructor(
         accounts
     ) {

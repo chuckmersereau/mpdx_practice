@@ -1,8 +1,4 @@
 class ModalController {
-    $element;
-    $attrs;
-    delete;
-
     constructor(
         $element, $attrs, $scope,
         blockUI, gettextCatalog

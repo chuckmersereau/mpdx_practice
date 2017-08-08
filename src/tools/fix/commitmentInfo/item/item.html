@@ -10,7 +10,7 @@
                             <translate ng-if="$ctrl.contact.original_pledge_amount || $ctrl.contact.original_pledge_currency || $ctrl.contact.original_pledge_frequency || $ctrl.contact.original_status">Current:</translate>
                             {{ $ctrl.contact.original_status }}
                             {{ $ctrl.contact.original_pledge_amount | number }} {{ $ctrl.contact.original_pledge_currency }}
-                            {{ $ctrl.contact.original_pledge_frequency | pledgeFrequencyToStr }}
+                            {{ $ctrl.contact.original_pledge_frequency }}
                         </div>
                         <div class="col-xs-7">
                             <div class="form-group">
@@ -54,7 +54,7 @@
                                                 allow-single-deselect="true"
                                                 class="form-control"
                                                 data-placeholder-text-single="'Freq.' | translate"
-                                                ng-options="val as key for (val, key) in $ctrl.serverConstants.data.pledge_frequencies"
+                                                ng-options="opt.key as opt.value for opt in $ctrl.serverConstants.data.pledge_frequency_hashes"
                                                 ng-model="$ctrl.contact.pledge_frequency">
                                             <option value=""></option>
                                         </select>
@@ -68,7 +68,7 @@
                             <thead>
                                 <tr>
                                     <th ng-repeat="donation in $ctrl.contact.last_six_donations">
-                                        {{donation.donation_date | date : $ctrl.locale.dateTimeFormat }}
+                                        {{donation.donation_date | localize }}
                                     </th>
                                 </tr>
                             </thead>

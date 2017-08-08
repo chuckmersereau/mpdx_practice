@@ -5,10 +5,6 @@ import union from 'lodash/fp/union';
 import values from 'lodash/fp/values';
 
 class HeadersController {
-    importCsv;
-    modal;
-    serverConstants;
-
     constructor(
         gettextCatalog,
         importCsv, modal, serverConstants

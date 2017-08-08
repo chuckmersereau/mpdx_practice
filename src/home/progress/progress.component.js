@@ -2,9 +2,6 @@ import moment from 'moment';
 import find from 'lodash/fp/find';
 
 class progressController {
-    accounts;
-    users;
-
     constructor(
         $rootScope,
         blockUI, gettextCatalog,

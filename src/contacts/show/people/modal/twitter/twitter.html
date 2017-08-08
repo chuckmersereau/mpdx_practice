@@ -1,12 +1,12 @@
 <div class="row" ng-hide="$ctrl.deleted">
     <div class="col-sm-9">
-        <input class="form-control" type="text" name="twitter_account" ng-model="$ctrl.twitterAccount.screen_name" placeholder="{{'Username *' | translate}}" ng-required="!$ctrl.deleted">
+        <input class="form-control" name="twitter_account" ng-model="$ctrl.twitterAccount.screen_name" placeholder="{{::'Username *' | translate}}" ng-required="!$ctrl.deleted">
     </div>
     <div class="col-sm-2">
-        <button class="btn btn-default btn-block" disabled="disabled" translate>Twitter</button>
+        <button class="btn btn-default btn-block" disabled translate>Twitter</button>
     </div>
     <div class="col-sm-1">
-        <button type="button" ng-click="$ctrl.remove()" class="btn btn-block btn-default" title="{{Delete | translate}}">
+        <button type="button" ng-click="$ctrl.remove()" class="btn btn-block btn-default" title="{{::'Delete' | translate}}">
             <i class="fa fa-trash"></i>
         </button>
     </div>

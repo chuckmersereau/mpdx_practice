@@ -1,6 +1,4 @@
 class PhoneNumbersController {
-    fixPhoneNumbers;
-
     constructor(
         $rootScope, gettextCatalog, blockUI,
         modal, fixPhoneNumbers

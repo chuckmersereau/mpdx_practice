@@ -81,4 +81,26 @@ describe('contacts.show.people.component', () => {
             });
         });
     });
+    describe('cancelMerge', () => {
+        it(`should set isMerging to false`, () => {
+            $ctrl.isMerging = true;
+            $ctrl.cancelMerge();
+            expect($ctrl.isMerging).toBeFalsy();
+        });
+
+        it(`should set person.selected_for_merge to false`, () => {
+            let person1 = { selected_for_merge: true };
+            let person2 = { selected_for_merge: true };
+            $ctrl.selectedPeople = [person1, person2];
+            $ctrl.cancelMerge();
+            expect(person1.selected_for_merge).toBeFalsy();
+            expect(person2.selected_for_merge).toBeFalsy();
+        });
+
+        it(`should set selectedPeople to []`, () => {
+            $ctrl.selectedPeople = [{}, {}];
+            $ctrl.cancelMerge();
+            expect($ctrl.selectedPeople).toEqual([]);
+        });
+    });
 });

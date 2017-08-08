@@ -1,5 +1,4 @@
 class BulkEditTaskController {
-    comment;
     constructor(
         $scope,
         tasksTags, serverConstants, tasks, users

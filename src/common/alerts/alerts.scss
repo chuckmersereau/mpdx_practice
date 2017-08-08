@@ -80,3 +80,11 @@ alerts {
 .has-nav-secondary .alerts {
     top: $secondary-nav-height;
 }
+
+.has-nav-impersonation .alerts {
+    top: $impersonation-nav-height;
+}
+
+.has-nav-secondary.has-nav-impersonation .alerts {
+    top: $secondary-impersonation-nav-height;
+}

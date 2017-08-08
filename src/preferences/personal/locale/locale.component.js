@@ -2,10 +2,6 @@ import keys from 'lodash/fp/keys';
 import map from 'lodash/fp/map';
 
 class LocaleController {
-    locale;
-    saving;
-    serverConstants;
-    users;
     constructor(
         $window,
         locale, serverConstants, users

@@ -13,13 +13,6 @@ import reject from 'lodash/fp/reject';
 import set from 'lodash/fp/set';
 
 class ContactController {
-    alerts;
-    contacts;
-    contactFilter;
-    modal;
-    tasks;
-    users;
-
     constructor(
         $log, $rootScope, $state, $stateParams, $anchorScroll, blockUI, gettextCatalog, help,
         alerts, modal, contacts, tasks, contactFilter, people, users, session
@@ -45,7 +38,6 @@ class ContactController {
         }
 
         this.moveContact = { previous_contact: 0, following_contact: 0 };
-        this.activeTab = '';
 
         let tabsLabels = [
             { key: 'details', value: gettextCatalog.getString('Details') },
@@ -54,6 +46,7 @@ class ContactController {
             { key: 'referrals', value: gettextCatalog.getString('Referrals') },
             { key: 'notes', value: gettextCatalog.getString('Notes') }
         ];
+
         if (has('currentOptions.contact_tabs_sort', users)) {
             forEachRight(tab => {
                 const label = find({key: tab}, tabsLabels);
@@ -65,10 +58,10 @@ class ContactController {
         }
 
         this.tabsLabels = tabsLabels;
-        this.activeTab = defaultTo(this.tabsLabels[0]['key'], this.$state.$current.name.split('.')[2]);
+        this.contacts.activeTab = defaultTo(this.tabsLabels[0]['key'], this.contacts.activeTab, this.$state.$current.name.split('.')[2]);
 
-        if (this.activeTab !== 'details') {
-            this.$state.go(`contacts.show.${this.activeTab}`);
+        if (this.contacts.activeTab !== 'details') {
+            this.$state.go(`contacts.show.${this.contacts.activeTab}`);
         }
 
         this.sortableOptions = {
@@ -77,7 +70,7 @@ class ContactController {
             accept: (sourceItemHandleScope, destSortableScope) => sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id,
             orderChanged: (event) => {
                 let newIndex = event.dest.index;
-                this.activeTab = this.tabsLabels[newIndex]['key'];
+                this.contacts.activeTab = this.tabsLabels[newIndex]['key'];
 
                 if (newIndex >= this.tabsLabels.length) {
                     newIndex = this.tabsLabels.length - 1;
@@ -156,7 +149,7 @@ class ContactController {
         this.setActiveTab('notes');
     }
     setActiveTab(tab) {
-        this.activeTab = tab;
+        this.contacts.activeTab = tab;
         if (tab === 'details') {
             this.$state.go(`contacts.show`);
         } else {

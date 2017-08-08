@@ -5,11 +5,6 @@ import reject from 'lodash/fp/reject';
 import createPatch from "../../../../common/fp/createPatch";
 
 class AddressModalController {
-    contact;
-    contacts;
-    map;
-    serverConstants;
-
     constructor(
         $log, $scope, $timeout, $window, gettextCatalog, NgMap,
         contacts, serverConstants, users,
@@ -91,6 +86,7 @@ class AddressModalController {
             } else {
                 this.modalTitle = this.gettextCatalog.getString('Address');
             }
+            this.isEditable = !this.address.remote_id && (this.address.source === 'MPDX' || this.address.source === 'manual' || this.address.source === 'TntImport');
         } else {
             this.modalTitle = this.gettextCatalog.getString('Add Address');
             this.address = { street: '', location: 'Home', source: 'MPDX' };
@@ -141,5 +137,13 @@ class AddressModalController {
     }
 }
 
-export default angular.module('mpdx.contacts.show.address.modal.controller', [])
-    .controller('addressModalController', AddressModalController).name;
+import contacts from 'contacts/contacts.service';
+import gettextCatalog from 'angular-gettext';
+import ngmap from 'ngmap';
+import serverConstants from 'common/serverConstants/serverConstants.service';
+import users from 'common/users/users.service';
+
+export default angular.module('mpdx.contacts.show.address.modal.controller', [
+    gettextCatalog, ngmap,
+    contacts, serverConstants, users
+]).controller('addressModalController', AddressModalController).name;

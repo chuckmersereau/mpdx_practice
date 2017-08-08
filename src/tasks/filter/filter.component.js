@@ -1,9 +1,4 @@
 class FilterController {
-    tasks;
-    tasksFilter;
-    tasksTags;
-    modal;
-
     constructor(
         filters, gettextCatalog, modal, tasksFilter, tasksTags, tasks
     ) {

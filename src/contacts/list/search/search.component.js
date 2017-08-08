@@ -1,7 +1,4 @@
 class ContactsSearchController {
-    contacts;
-    contactFilter;
-
     constructor(
         $rootScope,
         contactFilter, contacts

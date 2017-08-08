@@ -3,8 +3,6 @@ import startsWith from 'lodash/fp/startsWith';
 import union from 'lodash/fp/union';
 
 class AddTaskController {
-    comment;
-    contactNames;
     constructor(
         $scope, $state,
         contacts, tasksTags, serverConstants, tasks, users,
@@ -59,8 +57,8 @@ class AddTaskController {
     }
 }
 
-import contacts from '../../../contacts/contacts.service';
-import serverConstants from '../../../common/serverConstants/serverConstants.service';
+import contacts from 'contacts/contacts.service';
+import serverConstants from 'common/serverConstants/serverConstants.service';
 import tasks from '../../tasks.service';
 
 export default angular.module('mpdx.tasks.add.controller', [

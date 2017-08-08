@@ -3,7 +3,6 @@ import map from 'lodash/fp/map';
 import createPatch from 'common/fp/createPatch';
 
 class CompleteTaskController {
-    comment;
     constructor(
         $log, $scope,
         serverConstants, tasks, contacts,

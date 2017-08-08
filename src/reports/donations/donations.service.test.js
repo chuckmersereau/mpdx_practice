@@ -292,6 +292,9 @@ describe('reports.donations.service', () => {
                     controller: 'donationModalController',
                     locals: {
                         donation: {}
+                    },
+                    resolve: {
+                        0: jasmine.any(Function)
                     }
                 });
             });
@@ -306,6 +309,9 @@ describe('reports.donations.service', () => {
                     controller: 'donationModalController',
                     locals: {
                         donation: donation
+                    },
+                    resolve: {
+                        0: jasmine.any(Function)
                     }
                 });
             });

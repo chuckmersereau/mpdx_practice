@@ -1,5 +1,5 @@
 <modal title="{{'Export Contacts' | translate}}" cancel="$hide()">
-    <div class="row" block-ui="contact-export">
+    <div class="row" block-ui="contact-export" ng-if="::!$ctrl.isSafari">
         <div class="col-sm-4">
             <a ng-click="$ctrl.mailingCSVLink()"
                class="btn btn-primary btn-block"
@@ -28,5 +28,8 @@
                 All of the information for your contacts in Excel's default XLSX format.
             </p>
         </div>
+    </div>
+    <div ng-if="::$ctrl.isSafari" class="alert alert-danger" translate>
+        Safari currently doesn't allow our exports. We are working on a solution, but for now exports are only available in Chrome browser. Sorry for the inconvenience.
     </div>
 </modal>

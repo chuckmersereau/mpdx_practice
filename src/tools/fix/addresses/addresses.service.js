@@ -7,9 +7,6 @@ import reject from 'lodash/fp/reject';
 import uniq from 'lodash/fp/uniq';
 
 class AddressesService {
-    api;
-    contacts;
-
     constructor(
         api, contacts
     ) {

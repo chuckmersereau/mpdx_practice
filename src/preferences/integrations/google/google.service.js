@@ -1,8 +1,8 @@
 import config from 'config';
+import find from 'lodash/fp/find';
+import isObject from 'lodash/fp/isObject';
 
 class GoogleService {
-    api;
-
     constructor(
         $log, $window,
         api
@@ -22,8 +22,10 @@ class GoogleService {
         return this.api.get(`user/google_accounts`, {
             sort: 'created_at',
             include: 'contact_groups'
-        }).then((data) => {
+        }).then(data => {
+            /* istanbul ignore next */
             this.$log.debug('user/google_accounts', data);
+            this.failure = isObject(find({token_failure: true}, data));
             this.data = data;
         });
     }
@@ -34,5 +36,8 @@ class GoogleService {
     }
 }
 
-export default angular.module('mpdx.preferences.accounts.integrations.google.service', [])
-    .service('google', GoogleService).name;
+import api from 'common/api/api.service';
+
+export default angular.module('mpdx.preferences.accounts.integrations.google.service', [
+    api
+]).service('google', GoogleService).name;

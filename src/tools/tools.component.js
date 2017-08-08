@@ -1,8 +1,4 @@
 class ToolsController {
-    help;
-    session;
-    tools;
-
     constructor(
         $state, $stateParams, gettextCatalog,
         help, session, tools

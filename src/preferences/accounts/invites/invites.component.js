@@ -1,8 +1,4 @@
 class InvitePreferencesController {
-    accounts;
-    alerts;
-    invites;
-
     constructor(
         gettextCatalog,
         accounts, alerts, invites

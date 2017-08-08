@@ -1,7 +1,4 @@
 class ContactNewModalController {
-    contact;
-    contacts;
-
     constructor(
         gettextCatalog, $scope, $state, contacts
     ) {

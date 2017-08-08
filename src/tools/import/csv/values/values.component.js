@@ -1,9 +1,6 @@
 import invert from 'lodash/fp/invert';
 
 class ValuesController {
-    importCsv;
-    serverConstants;
-
     constructor(
         importCsv, serverConstants
     ) {

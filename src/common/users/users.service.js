@@ -9,13 +9,6 @@ import createPatch from "../fp/createPatch";
 import config from 'config';
 
 class Users {
-    accounts;
-    api;
-    help;
-    language;
-    locale;
-    organizationAccounts;
-
     constructor(
         $log, $q, $rootScope, $state, $window, Rollbar,
         accounts, api, help, language, locale

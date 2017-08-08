@@ -1,8 +1,6 @@
 import config from 'config';
 
 class PrayerLettersService {
-    api;
-
     constructor(
         $log, $window,
         api

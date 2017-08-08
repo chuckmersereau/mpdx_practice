@@ -1,6 +1,4 @@
 class InvitesService {
-    api;
-
     constructor(
         api
     ) {

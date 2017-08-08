@@ -1,6 +1,4 @@
 class PreferencesController {
-    accounts;
-
     constructor(
         gettextCatalog,
         accounts, help

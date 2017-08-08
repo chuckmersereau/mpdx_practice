@@ -1,8 +1,4 @@
 class PreviewController {
-    contactsTags;
-    importCsv;
-    modal;
-
     constructor(
         $rootScope,
         gettextCatalog,

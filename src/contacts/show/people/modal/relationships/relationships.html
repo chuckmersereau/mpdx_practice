@@ -9,7 +9,7 @@
         </collection-selector>
     </div>
     <div class="col-sm-4">
-        <select chosen class="form-control" ng-model="$ctrl.familyRelationship.relationship" data-placeholder="{{ 'Select an Option *' | translate }}"
+        <select chosen class="form-control" ng-model="$ctrl.familyRelationship.relationship" data-placeholder="{{ ::'Select an Option *' | translate }}"
                 disable-search="true">
             <option translate>Husband</option>
             <option translate>Son</option>
@@ -32,7 +32,7 @@
         </select>
     </div>
     <div class="col-sm-1">
-        <button type="button" ng-click="$ctrl.remove()" class="btn btn-block btn-default"  title="{{'Delete' | translate}}">
+        <button type="button" ng-click="$ctrl.remove()" class="btn btn-block btn-default"  title="{{::'Delete' | translate}}">
             <i class="fa fa-trash"></i>
         </button>
     </div>

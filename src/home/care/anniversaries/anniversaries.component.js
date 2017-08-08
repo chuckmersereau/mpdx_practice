@@ -3,8 +3,6 @@ import get from 'lodash/fp/get';
 import moment from 'moment';
 
 class AnniversariesController {
-    contacts;
-
     constructor(
         contacts, locale
     ) {

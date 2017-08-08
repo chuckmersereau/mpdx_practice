@@ -7,9 +7,6 @@ import reject from 'lodash/fp/reject';
 import uniq from 'lodash/fp/uniq';
 
 class PhoneNumbersService {
-    api;
-    blockUI;
-
     constructor(
         api, people
     ) {

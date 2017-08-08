@@ -2,11 +2,6 @@ import reduce from 'lodash/fp/reduce';
 import uuid from 'uuid/v1';
 
 class AddReferralsModalController {
-    alerts;
-    api;
-    contact;
-    contacts;
-
     constructor(
         $scope,
         api, alerts, contacts,

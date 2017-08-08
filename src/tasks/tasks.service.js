@@ -22,8 +22,6 @@ import reduce from 'lodash/fp/reduce';
 import moment from 'moment';
 
 class TasksService {
-    contacts;
-    selectedContacts;
     constructor(
         $rootScope, $log, gettextCatalog,
         alerts, api, tasksFilter, tasksTags, users, modal, tasksModals, contacts
@@ -60,27 +58,6 @@ class TasksService {
     reset() {
         this.selected = [];
         this.change();
-    }
-    get(id, updateLists = true) {
-        return this.api.get(`tasks/${id}`, {
-            include: 'comments,comments.person,contacts,contacts.addresses,contacts.people,contacts.people.facebook_accounts,contacts.people.phone_numbers,contacts.people.email_addresses',
-            fields: {
-                contacts: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people',
-                addresses: 'city,historic,primary_mailing_address,postal_code,state,source,street',
-                email_addresses: 'email,historic,primary',
-                phone_numbers: 'historic,location,number,primary',
-                facebook_accounts: 'username',
-                person: 'first_name,last_name,deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers'
-            }
-        }).then((task) => {
-            const processedTask = this.process(task);
-            if (updateLists) {
-                this.data = upsert('id', processedTask, this.data);
-            }
-            /* istanbul ignore next */
-            this.$log.debug(`tasks/${task.id}`, processedTask);
-            return processedTask;
-        });
     }
     getList() {
         this.completeList = [];
@@ -220,7 +197,9 @@ class TasksService {
         }
         task.contacts = map(contactId => { return {id: contactId}; }, contactIds);
         return this.api.post('tasks', task).then(data => {
-            return this.get(data.id);
+            const processedTask = this.process(data);
+            this.data = upsert('id', processedTask, this.data);
+            return data;
         });
     }
     bulkComplete() {
@@ -270,8 +249,8 @@ class TasksService {
         });
     }
     bulkDelete() {
-        if (this.selected.length > 25) {
-            const message = this.gettextCatalog.getString('Too many tasks selected, please select a maximum of 25 tasks.');
+        if (this.selected.length > 150) {
+            const message = this.gettextCatalog.getString('Too many tasks selected, please select a maximum of 150 tasks.');
             this.alerts.addAlert(message, 'danger');
             return Promise.reject(new Error({message: message}));
         }

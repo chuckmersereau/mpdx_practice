@@ -1,6 +1,4 @@
 class AppController {
-    session;
-    year;
     constructor(session) {
         this.session = session;
         this.year = new Date().getFullYear();

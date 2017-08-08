@@ -1,14 +1,13 @@
 import component from './item.component';
 
 describe('tasks.list.item.component', () => {
-    let $ctrl, contacts, rootScope, scope, componentController, modal, tasks, locale, gettextCatalog, users, api;
+    let $ctrl, contacts, rootScope, scope, componentController, modal, tasks, gettextCatalog, users, api;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _contacts_, _modal_, _tasks_, _locale_, _gettextCatalog_, _users_, _api_) => {
+        inject(($componentController, $rootScope, _contacts_, _modal_, _tasks_, _gettextCatalog_, _users_, _api_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             api = _api_;
-            locale = _locale_;
             users = _users_;
             contacts = _contacts_;
             gettextCatalog = _gettextCatalog_;
@@ -27,7 +26,6 @@ describe('tasks.list.item.component', () => {
         });
         it('should expose dependencies', () => {
             expect($ctrl.gettextCatalog).toEqual(gettextCatalog);
-            expect($ctrl.locale).toEqual(locale);
             expect($ctrl.modal).toEqual(modal);
             expect($ctrl.tasks).toEqual(tasks);
             expect($ctrl.users).toEqual(users);
@@ -105,6 +103,26 @@ describe('tasks.list.item.component', () => {
             users.current = {id: 1};
             const comment = {};
             expect($ctrl.commentBelongsToUser(comment)).toBeFalsy();
+        });
+    });
+    describe('load', () => {
+        beforeEach(() => {
+            spyOn(api, 'get').and.callFake(() => Promise.resolve());
+        });
+        it('should query the api for a tasks comments & contacts info', () => {
+            $ctrl.task = {id: 1};
+            $ctrl.load();
+            expect(api.get).toHaveBeenCalledWith(`tasks/1`, {
+                include: 'comments,comments.person,contacts,contacts.addresses,contacts.people,contacts.people.facebook_accounts,contacts.people.phone_numbers,contacts.people.email_addresses',
+                fields: {
+                    contacts: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people',
+                    addresses: 'city,historic,primary_mailing_address,postal_code,state,source,street',
+                    email_addresses: 'email,historic,primary',
+                    phone_numbers: 'historic,location,number,primary',
+                    facebook_accounts: 'username',
+                    person: 'first_name,last_name,deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers'
+                }
+            });
         });
     });
 });

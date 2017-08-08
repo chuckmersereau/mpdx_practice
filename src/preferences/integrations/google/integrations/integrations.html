@@ -113,6 +113,13 @@
                     If you delete a contact in Google contacts that is active in MPDX, you must also go in to MPDX and hide the
                     contact, making it inactive in MPDX. Otherwise, it will get regenerated in Google once it syncs again.
                 <p>
+                <div class="alert alert-danger" translate>
+                    If a contact contains more than one person, a Google contact will be created for each person.
+                    Spouses and other family members are not merged in this process.
+                </div>
+                <div class="alert alert-danger" translate>
+                    Additionally, Google accounts which are heavily customized (groupings, etc) may cause sync issues with MPDX.
+                </div>
                 <div ng-if="!$ctrl.googleIntegration.contacts_integration">
                     <div class="modal-footer">
                         <button class="btn btn-link" ng-click="$hide()" translate>Close</button>

@@ -1,8 +1,4 @@
 class AccountListsController {
-    accounts;
-    api;
-    users;
-
     constructor(
         accounts, api, users
     ) {

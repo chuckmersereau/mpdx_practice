@@ -1,8 +1,4 @@
 class HomeController {
-    accounts;
-    contacts;
-    tasks;
-    users;
     constructor(
         $rootScope, blockUI, gettextCatalog,
         help, tasks

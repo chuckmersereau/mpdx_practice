@@ -1,9 +1,6 @@
 import round from 'lodash/fp/round';
 
 class UploadController {
-    importCsv;
-    serverConstants;
-
     constructor(
         importCsv, serverConstants
     ) {

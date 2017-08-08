@@ -1,5 +1,4 @@
 class NotificationsController {
-    users;
     constructor(
         $state, users
     ) {

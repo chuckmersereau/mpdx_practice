@@ -29,16 +29,16 @@
                     </div>
                     <div class="section">
                         <div class="dropdown">
-                            <a bs-dropdown class="settings-drop btn btn-reverse btn-block" type="button" data-placement="bottom-right">
+                            <a bs-dropdown class="settings-drop btn btn-reverse" type="button" data-placement="bottom-right">
                                 <i class="fa fa-cog"></i> <translate>Settings</translate>
                             </a>
                             <ul class="dropdown-menu" role="menu">
-                                <li role="presentation" ng-if="!$ctrl.setup && $ctrl.users.current.preferences.admin"><a ui-sref="admin" translate>Admin</a></li>
                                 <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="preferences.personal" translate>Preferences</a></li>
                                 <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="preferences.notifications" translate>Notifications</a></li>
                                 <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="tools" translate>Import Contacts</a></li>
                                 <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="preferences.integrations" translate>Connect Services</a></li>
                                 <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="preferences.accounts" translate>Manage Account</a></li>
+                                <li role="presentation" ng-if="!$ctrl.setup && $ctrl.users.current.preferences.admin"><a ui-sref="preferences.admin" translate>Admin Console</a></li>
                                 <li role="presentation" ng-if="!$ctrl.setup" class="divider"></li>
                                 <li role="presentation"><a ui-sref="logout" translate>Log out</a></li>
                             </ul>

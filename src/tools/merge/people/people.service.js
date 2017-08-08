@@ -4,9 +4,6 @@ import relationshipId from "common/fp/relationshipId";
 import filter from 'lodash/fp/filter';
 
 class MergePeople {
-    api;
-    people;
-
     constructor(
         $log, $q,
         api, people
@@ -33,7 +30,8 @@ class MergePeople {
                 fields: {
                     people: 'avatar,email_addresses,phone_numbers,first_name,last_name,created_at',
                     phone_numbers: 'primary,number,source',
-                    email_addresses: 'primary,email,source'
+                    email_addresses: 'primary,email,source',
+                    person_duplicates: 'people,shared_contact'
                 },
                 filter: {account_list_id: this.api.account_list_id},
                 per_page: this.perPage

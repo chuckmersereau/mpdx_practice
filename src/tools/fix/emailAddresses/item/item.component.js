@@ -1,7 +1,6 @@
 import get from 'lodash/fp/get';
 
 class ItemController {
-    fixEmailAddresses;
     constructor(
         $scope, blockUI,
         fixEmailAddresses, modal

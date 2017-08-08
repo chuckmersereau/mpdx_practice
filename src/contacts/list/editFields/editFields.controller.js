@@ -1,10 +1,4 @@
 class EditFieldsController {
-    selectedContacts;
-    contacts;
-    locale;
-    serverConstants;
-    contactsTags;
-
     constructor(
         $rootScope, $scope,
         contactsTags, locale, serverConstants, contacts,

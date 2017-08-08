@@ -1,17 +1,21 @@
 <cover>
     <div class="panel">
         <div class="panel-heading">
-            <img src="../../images/setup/icon_alert_2x.png" class="icon_alert" />
             <translate>Congratulations!</translate>
             <br />
             <translate>You're all set!</translate>
         </div>
         <div class="panel-body text-center">
             <p translate>One of the great features of MPDX is its ability to bring in information and contacts from other places you might have used in the past. You can import from software like TNT Connect, Google Contacts or a Spreadsheet.</p>
-            <p translate>Would you like to import that data now?</p>
-            <p translate>(Current users don't need to reimport their data)</p>
-            <p><a ng-click="$ctrl.next()" class="btn btn-lg btn-primary"><translate>Yes! Import my stuff!</translate></a></p>
-            <p><a ng-click="$ctrl.dashboard()"><translate>Nope, I'm all done! Take me to MPDX.</translate></a></p>
+            <p>
+                <translate>Would you like to import that data now?</translate>
+                <br>
+                <translate>(Current users don't need to reimport their data)</translate>
+            </p>
+            <a ng-click="$ctrl.next()" class="btn btn-block btn-primary" translate>Yes! Import my stuff!</a>
+            <p>
+                <a ng-click="$ctrl.dashboard()" translate>Nope, I'm all done! Take me to MPDX</a>
+            </p>
         </div>
     </div>
 </cover>

@@ -1,10 +1,6 @@
 import defaultTo from 'lodash/fp/defaultTo';
 
 class ContactInfoController {
-    contact;
-    contacts;
-    serverConstants;
-
     constructor(
         gettextCatalog,
         contacts, locale, serverConstants

@@ -1,14 +1,14 @@
 <p translate>
     Add or change the organizations that sync donation information with this MPDX account. Removing an organization will not remove past information, but will prevent future donations and contacts from syncing.
 </p>
-<div ng-if="$ctrl.page == 'org_list'">
-    <div ng-if="$ctrl.users.organizationAccounts.length == 0">
+<div ng-if="$ctrl.page === 'org_list'">
+    <div ng-if="$ctrl.users.organizationAccounts.length === 0">
         <h3 translate>Let's start by connecting to your first organization</h3>
     </div>
-    <div ng-repeat="account in $ctrl.users.organizationAccounts" class="panel panel-default">
+    <div ng-repeat="account in $ctrl.users.organizationAccounts track by account.id" class="panel panel-default--no-animate">
         <div class="panel-heading">
             <div class="pull-right">
-                <a class="btn btn-default btn-xs" ng-click="$ctrl.editAccount(account)" ng-if="$ctrl.serverConstants.data.organizations_attributes[account.organization.id].api_class === 'DataServer'">
+                <a class="btn btn-default btn-xs" ng-click="$ctrl.editAccount(account)" ng-if="['DataServer', 'DataServerPtc', 'DataServerNavigators'].includes($ctrl.serverConstants.data.organizations_attributes[account.organization.id].api_class)">
                     <i class="fa fa-pencil"></i>
                     <translate>Edit</translate>
                 </a>
@@ -49,79 +49,77 @@
     </div>
     <a class="btn btn-primary" ng-click="$ctrl.page = 'select_org'" translate>Add Account</a>
 </div>
-<div class="panel panel-default" ng-if="$ctrl.page == 'select_org'">
-    <div class="panel-heading" translate>
-        Add Account
-    </div>
-    <div class="panel-body">
-        <div class="form-group">
-            <label translate>Organization</label>
-            <select chosen
-                    class="form-control"
-                    ng-model="$ctrl.selectedKey"
-                    ng-disabled="$ctrl.saving"
-                    ng-change="$ctrl.select()"
-                    ng-options="key as value.name for (key, value) in $ctrl.serverConstants.data.organizations_attributes track by key">
-            </select>
+<form  ng-if="$ctrl.page == 'select_org'" ng-submit="$ctrl.createAccount()" name="addOrganization" novalidate>
+    <div class="panel panel-default--no-animate">
+        <div class="panel-heading" translate>
+            Add Account
         </div>
-        <div ng-if="!$ctrl.selected">
-            <a ng-click="$ctrl.showOrganizationHelp()" translate>Can't find your organization?</a>
-        </div>
-        <div ng-if="$ctrl.selected">
-            <div ng-if="$ctrl.selected.api_class === 'Siebel'">
-                <h4 translate>You must log into MPDX with your ministry email</h4>
-                <p translate>This organization requires you to log into MPDX with your ministry email to access it.</p>
-                <p translate>First you need to <a href="https://thekey.me/cas/logout" target="_blank" translate>click here to log out of your personal Key account</a></p>
-                <p translate>Next, <a href="/logout" translate>click here to log out of MPDX</a> so you can log back in with your offical key account.</p>
+        <div class="panel-body">
+            <div class="form-group">
+                <label translate>Organization</label>
+                <select chosen
+                        class="form-control"
+                        required
+                        ng-model="$ctrl.selectedKey"
+                        ng-disabled="$ctrl.saving"
+                        ng-change="$ctrl.select()"
+                        ng-options="key as value.name for (key, value) in $ctrl.serverConstants.data.organizations_attributes track by key">
+                </select>
             </div>
-            <div ng-if="$ctrl.selected.api_class === 'DataServer' || $ctrl.selected.api_class === 'DataServerPtc'">
-                <div class="form-group">
-                    <label translate>Username</label>
-                    <input class="form-control" ng-disabled="$ctrl.saving" type="text" ng-model="$ctrl.username">
+            <div ng-if="!$ctrl.selected">
+                <a ng-click="$ctrl.showOrganizationHelp()" translate>Can't find your organization?</a>
+            </div>
+            <div ng-if="$ctrl.selected">
+                <div ng-if="$ctrl.selected.api_class === 'Siebel'">
+                    <h4 translate>You must log into MPDX with your ministry email</h4>
+                    <p translate>This organization requires you to log into MPDX with your ministry email to access it.</p>
+                    <p translate>First you need to <a href="https://thekey.me/cas/logout" target="_blank" translate>click here to log out of your personal Key account</a></p>
+                    <p translate>Next, <a href="/logout" translate>click here to log out of MPDX</a> so you can log back in with your official key account.</p>
                 </div>
-                <div class="form-group">
-                    <label translate>Password</label>
-                    <input class="form-control" ng-disabled="$ctrl.saving" type="password" ng-model="$ctrl.password">
+                <div ng-if="['DataServer', 'DataServerPtc', 'DataServerNavigators'].includes($ctrl.selected.api_class)">
+                    <div class="form-group">
+                        <label translate>Username</label>
+                        <input class="form-control" ng-disabled="$ctrl.saving" ng-model="$ctrl.username" required>
+                    </div>
+                    <div class="form-group">
+                        <label translate>Password</label>
+                        <input class="form-control" ng-disabled="$ctrl.saving" type="password" ng-model="$ctrl.password" required>
+                    </div>
                 </div>
             </div>
-            <div ng-if="$ctrl.selected.api_class === 'OfflineOrg'">
-            </div>
         </div>
-    </div>
-    <div class="panel-footer">
-        <div ng-if="!$ctrl.selected">
-            <a class="btn btn-default" ng-if="!$ctrl.selected" ng-click="$ctrl.revert()" translate>Back</a>
-        </div>
-        <div ng-if="$ctrl.selected">
+        <div class="panel-footer">
             <a class="btn" ng-click="$ctrl.revert()" translate>Cancel</a>
-            <button ng-click="$ctrl.createAccount()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
-                <translate>Add</translate>
+            <button ng-disabled="!addOrganization.$valid || $ctrl.saving" class="btn btn-primary btn-actionable">
+                <translate>Save</translate>
                 <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
             </button>
         </div>
     </div>
-</div>
-<div class="panel panel-default" ng-if="$ctrl.page === 'edit_account'">
-    <div class="panel-heading">
-        <translate>Edit Account</translate>
-        |
-        <strong>{{$ctrl.selected.organization.name}}</strong>
-    </div>
-    <div class="panel-body">
-        <div class="form-group">
-            <label translate>Username</label>
-            <input class="form-control" ng-disabled="$ctrl.saving" type="text" ng-model="$ctrl.username">
+</form>
+<form ng-if="$ctrl.page === 'edit_account'" ng-submit="$ctrl.updateAccount()" name="editOrganization" novalidate>
+    <div class="panel panel-default--no-animate">
+        <div class="panel-heading">
+            <translate>Edit Account</translate>
+            |
+            <strong>{{$ctrl.selected.organization.name}}</strong>
         </div>
-        <div class="form-group">
-            <label translate>Password</label>
-            <input class="form-control" ng-disabled="$ctrl.saving" type="password" ng-model="$ctrl.password">
+        <div class="panel-body">
+            <div class="form-group">
+                <label translate>Username</label>
+                <input class="form-control" ng-disabled="$ctrl.saving" ng-model="$ctrl.username" required>
+            </div>
+            <div class="form-group">
+                <label translate>Password</label>
+                <input class="form-control" ng-disabled="$ctrl.saving" type="password" ng-model="$ctrl.password" required>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <a class="btn btn-link" ng-click="$ctrl.revert()" translate>Cancel</a>
+            <button type="submit" ng-disabled="!editOrganization.$valid || $ctrl.saving" class="btn btn-primary btn-actionable">
+                <translate>Save</translate>
+                <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
+            </button>
         </div>
     </div>
-    <div class="panel-footer">
-        <a class="btn btn-link" ng-click="$ctrl.revert()" translate>Cancel</a>
-        <button type="submit" ng-click="$ctrl.updateAccount()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
-            <translate>Save</translate>
-            <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
-        </button>
-    </div>
-</div>
+</form>

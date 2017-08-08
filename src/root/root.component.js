@@ -1,6 +1,4 @@
 class RootController {
-    session;
-
     constructor(
         session
     ) {

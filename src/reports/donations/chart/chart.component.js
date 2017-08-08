@@ -7,7 +7,6 @@ import zip from 'lodash/zip';
 import moment from 'moment';
 
 class ChartController {
-    inContact;
     constructor(
         $state, $rootScope, $filter, $log, gettextCatalog,
         accounts, api, contacts, blockUI
@@ -44,7 +43,7 @@ class ChartController {
         if (this.inContact) {
             this.startDate = moment().startOf('month').subtract(23, 'months');
         } else {
-            this.startDate = moment().startOf('month').subtract(11, 'months');
+            this.startDate = moment().startOf('month').subtract(12, 'months');
         }
         this.endDate = moment().endOf('month');
         let params = {
@@ -53,11 +52,12 @@ class ChartController {
         };
         if (this.inContact && this.contacts.current.donor_accounts) {
             params.donorAccountId = map('id', this.contacts.current.donor_accounts).join();
-            if (params.donorAccountId === '') return;
+            if (params.donorAccountId === '') return Promise.reject();
+            if (this.contacts.current.pledge_currency) params.displayCurrency = this.contacts.current.pledge_currency;
         }
         this.blockUI.start();
-        this.getDonationChart(params).then((data) => {
-            this.blockUI.stop();
+        return this.getDonationChart(params).then((data) => {
+            this.blockUI.reset();
             if (data.totals.length === 0) {
                 this.hasChart = false;
                 return;
@@ -100,7 +100,7 @@ class ChartController {
                         },
                         scaleLabel: {
                             display: true,
-                            labelString: `${this.gettextCatalog.getString('Amount')} (${data.salary_currency})`
+                            labelString: `${this.gettextCatalog.getString('Amount')} (${data.display_currency})`
                         }
                     }]
                 },
@@ -139,11 +139,11 @@ class ChartController {
         });
     }
     onClick(event, legendItem) {
-        if (legendItem.length === 0) return;
+        if (legendItem.length === 0 || this.inContact) return;
         const startDate = moment(`01 ${legendItem[0]._model.label}`, 'DD MMM YY');
         this.$state.go('reports.donations', { startDate: startDate });
     }
-    getDonationChart({ startDate = null, endDate = null, donorAccountId = null } = {}) {
+    getDonationChart({ startDate = null, endDate = null, donorAccountId = null, displayCurrency = null } = {}) {
         let params = {
             filter: {
                 account_list_id: this.api.account_list_id
@@ -151,6 +151,9 @@ class ChartController {
         };
         if (donorAccountId) {
             params.filter.donor_account_id = donorAccountId;
+        }
+        if (displayCurrency) {
+            params.filter.display_currency = displayCurrency;
         }
         if (startDate && endDate && moment.isMoment(startDate) && moment.isMoment(endDate)) {
             params.filter.donation_date = `${startDate.format('YYYY-MM-DD')}..${endDate.format('YYYY-MM-DD')}`;

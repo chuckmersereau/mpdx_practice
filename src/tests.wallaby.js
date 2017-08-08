@@ -9,4 +9,3 @@ import 'ng-rollbar';
 
 //add promise polyfill for karma
 require('es6-shim');
-require('promise.prototype.finally');

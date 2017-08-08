@@ -2,10 +2,10 @@ import list from './list.component';
 import assign from 'lodash/fp/assign';
 
 describe('contacts.list.component', () => {
-    let $ctrl, contacts, contactsTags, rootScope, scope, componentController, modal, tasks, alerts, gettextCatalog, api;
+    let $ctrl, contacts, contactsTags, rootScope, scope, componentController, modal, tasks, alerts, gettextCatalog, api, serverConstants;
     beforeEach(() => {
         angular.mock.module(list);
-        inject(($componentController, $rootScope, _contacts_, _contactsTags_, _modal_, _tasks_, _alerts_, _gettextCatalog_, _api_) => {
+        inject(($componentController, $rootScope, _contacts_, _contactsTags_, _modal_, _tasks_, _alerts_, _gettextCatalog_, _api_, _serverConstants_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             alerts = _alerts_;
@@ -15,6 +15,7 @@ describe('contacts.list.component', () => {
             gettextCatalog = _gettextCatalog_;
             modal = _modal_;
             tasks = _tasks_;
+            serverConstants = _serverConstants_;
             componentController = $componentController;
             api.account_list_id = 1234;
             loadController();
@@ -206,16 +207,18 @@ describe('contacts.list.component', () => {
         });
     });
     describe('openEditFieldsModal', () => {
-        beforeEach(() => {
-            spyOn(modal, 'open').and.callFake(() => {});
-        });
         it('should open the edit fields modal', () => {
+            spyOn(modal, 'open').and.callFake(() => {});
+            spyOn(serverConstants, 'load').and.callThrough();
             $ctrl.openEditFieldsModal();
             expect(modal.open).toHaveBeenCalledWith({
                 template: require('./editFields/editFields.html'),
                 controller: 'editFieldsController',
                 locals: {
                     selectedContacts: $ctrl.getSelectedContacts()
+                },
+                resolve: {
+                    0: jasmine.any(Function)
                 }
             });
         });

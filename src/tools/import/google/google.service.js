@@ -1,8 +1,7 @@
 import joinComma from "common/fp/joinComma";
 import reduceObject from "common/fp/reduceObject";
-class ImportGoogleService {
-    api;
 
+class ImportGoogleService {
     constructor(
         api
     ) {

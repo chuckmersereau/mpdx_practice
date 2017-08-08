@@ -3,13 +3,6 @@ import findIndex from 'lodash/fp/findIndex';
 import reject from 'lodash/fp/reject';
 
 class MergePreferencesController {
-    accounts;
-    alerts;
-    api;
-    onSave;
-    setup;
-    users;
-
     constructor(
         $state, gettextCatalog,
         accounts, api, alerts, users

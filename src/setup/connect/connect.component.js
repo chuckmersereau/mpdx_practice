@@ -1,13 +1,6 @@
 import get from 'lodash/fp/get';
 
 class SetupConnectController {
-    accounts;
-    alerts;
-    api;
-    selectedKey;
-    preferencesOrganization;
-    serverConstants;
-    users;
     constructor(
         $rootScope, $state, gettextCatalog,
         accounts, alerts, api, help, preferencesOrganization, serverConstants, users
@@ -23,29 +16,27 @@ class SetupConnectController {
         this.preferencesOrganization = preferencesOrganization;
         this.serverConstants = serverConstants;
         this.users = users;
-
-        this.reset();
     }
     $onInit() {
+        this.reset();
         this.users.currentOptions.setup_position.value = 'connect';
         this.users.setOption(this.users.currentOptions.setup_position);
         this.users.listOrganizationAccounts().then(() => {
-            this.showOrgs = this.users.organizationAccounts.length === 0;
+            this.addOrganization = this.users.organizationAccounts.length === 0;
         });
         this.$rootScope.$on('accountListUpdated', () => {
             this.users.listOrganizationAccounts(true);
         });
     }
-    connect() {
-        this.connecting = true;
-    }
     add() {
+        this.saving = true;
         return this.preferencesOrganization.createAccount(this.username, this.password, this.selectedKey).then(() => {
             return this.users.listOrganizationAccounts(true).then(() => {
-                this.connecting = false;
-                this.showOrgs = false;
+                this.saving = false;
+                this.addOrganization = false;
             });
         }).catch(err => {
+            this.saving = false;
             this.alerts.addAlert(this.gettextCatalog.getString('Invalid username or password.'), 'danger');
             throw err;
         });
@@ -54,8 +45,9 @@ class SetupConnectController {
         this.$state.go('setup.account');
     }
     reset() {
+        this.addOrganization = false;
+        this.saving = false;
         this.organization = null;
-        this.connecting = false;
         this.username = "";
         this.password = "";
     }

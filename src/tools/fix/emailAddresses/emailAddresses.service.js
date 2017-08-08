@@ -8,9 +8,6 @@ import flatMap from 'lodash/fp/flatMap';
 import union from 'lodash/fp/union';
 
 class EmailAddressesService {
-    api;
-    people;
-
     constructor(
         api, people
     ) {

@@ -1,12 +1,6 @@
 import get from 'lodash/fp/get';
 
 class OrganizationIntegrationPreferencesController {
-    alerts;
-    preferencesOrganization;
-    selectedKey;
-    serverConstants;
-    users;
-
     constructor(
         $rootScope, gettextCatalog, Upload,
         alerts, help, modal, preferencesOrganization, serverConstants, users

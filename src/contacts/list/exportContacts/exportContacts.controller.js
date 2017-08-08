@@ -1,11 +1,9 @@
 import assign from 'lodash/fp/assign';
 import joinComma from "../../../common/fp/joinComma";
 import moment from 'moment';
+import bowser from 'bowser';
 
 class ExportContactsController {
-    api;
-    contacts;
-    moment;
     constructor(
         $timeout, blockUI,
         api, contacts,
@@ -17,6 +15,7 @@ class ExportContactsController {
         this.contacts = contacts;
         this.moment = moment;
 
+        this.isSafari = bowser.name === 'Safari';
         this.params = {
             data: {
                 filter: this.api.cleanFilters(this.contacts.buildFilterParams())
@@ -59,7 +58,9 @@ class ExportContactsController {
                 type: `text/csv;charset=utf-8;`
             });
             this.sendDownload(blob, `mpdx-contact-export-${moment().format('Y-MM-DD-HH:mm')}.csv`);
-        }).finally(() => {
+        }).then(() => {
+            this.blockUI.reset();
+        }).catch(() => {
             this.blockUI.reset();
         });
     }
@@ -77,7 +78,9 @@ class ExportContactsController {
                 type: `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;`
             });
             this.sendDownload(blob, `mpdx-contact-export-${moment().format('Y-MM-DD-HH:mm')}.xlsx`);
-        }).finally(() => {
+        }).then(() => {
+            this.blockUI.reset();
+        }).catch(() => {
             this.blockUI.reset();
         });
     }
@@ -94,7 +97,9 @@ class ExportContactsController {
                 type: `text/csv;charset=utf-8;`
             });
             this.sendDownload(blob, `mpdx-mailing-export-${moment().format('Y-MM-DD-HH:mm')}.csv`);
-        }).finally(() => {
+        }).then(() => {
+            this.blockUI.reset();
+        }).catch(() => {
             this.blockUI.reset();
         });
     }

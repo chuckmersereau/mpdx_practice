@@ -9,16 +9,6 @@ import round from 'lodash/fp/round';
 import uuid from 'uuid/v1';
 
 class ContactDetailsController {
-    alerts;
-    contact;
-    contacts;
-    contactsTags;
-    modal;
-    onSave;
-    referrerName;
-    serverConstants;
-    users;
-
     constructor(
         $log, $rootScope, $window, gettextCatalog,
         alerts, api, contactsTags, contacts, locale, modal, serverConstants, users

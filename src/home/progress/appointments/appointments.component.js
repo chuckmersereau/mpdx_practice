@@ -1,5 +1,4 @@
 class AppointmentsController {
-    accounts;
     constructor(
         accounts
     ) {

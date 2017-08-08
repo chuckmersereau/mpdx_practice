@@ -7,7 +7,6 @@ import map from 'lodash/fp/map';
 import reduce from 'lodash/fp/reduce';
 
 class MapContactsController {
-    selectedContacts;
     constructor(
         $window,
         NgMap,

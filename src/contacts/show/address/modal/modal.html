@@ -1,4 +1,4 @@
-<modal title="{{$ctrl.modalTitle}}" cancel="$hide()" save="$ctrl.save()" delete="$ctrl.delete()" show-delete="$ctrl.address.id && $ctrl.address.source === 'MPDX'" hide-footer="!$ctrl.contact">
+<modal title="{{$ctrl.modalTitle}}" cancel="$hide()" save="$ctrl.save()" delete="$ctrl.delete()" show-delete="$ctrl.address.id && $ctrl.isEditable" hide-footer="!$ctrl.contact">
     <div class="empty-map" ng-if="!$ctrl.place">
         <i class="fa fa-map"></i>
     </div>
@@ -6,7 +6,7 @@
         <marker position="{{$ctrl.place.formatted_address}}" title="{{$ctrl.place.formatted_address}}"></marker>
     </ng-map>
     <div ng-if="$ctrl.contact">
-        <div class="row" ng-if="$ctrl.address.source !== 'MPDX'">
+        <div class="row" ng-if="!$ctrl.isEditable">
             <div class="col-sm-12">
                 <div class="alert alert-info" ng-if="$ctrl.address.source === 'Siebel'">
                     <strong translate>This address is provided by Donation Services</strong><br />
@@ -34,9 +34,9 @@
                        places-auto-complete
                        on-place-changed="$ctrl.updateAddress()"
                        ng-model="$ctrl.address.street"
-                       ng-required="$ctrl.address.source === 'MPDX'"
-                       ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'"
-                       autofocus="!$ctrl.address.remote_id && $ctrl.address.source === 'MPDX'">
+                       ng-required="$ctrl.isEditable"
+                       ng-disabled="!$ctrl.isEditable"
+                       autofocus="$ctrl.isEditable">
             </div>
             <div class="col-sm-3">
                 <label for="location"><translate>Location</translate></label>
@@ -47,7 +47,7 @@
                         id="location"
                         ng-options="opt as opt for opt in $ctrl.serverConstants.data.assignable_locations"
                         ng-model="$ctrl.address.location"
-                        ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'">
+                        ng-disabled="!$ctrl.isEditable">
                     <option value=""></option>
                 </select>
             </div>
@@ -56,24 +56,24 @@
             <div class="col-sm-6">
                 <label for="city" translate>City</label>
                 <input class="form-control" type="text" name="city" id="city"
-                       ng-model="$ctrl.address.city" ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'">
+                       ng-model="$ctrl.address.city" ng-disabled="!$ctrl.isEditable">
             </div>
             <div class="col-sm-3">
                 <label for="state" translate>State</label>
                 <input class="form-control" type="text" name="state" id="state"
-                       ng-model="$ctrl.address.state" ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'">
+                       ng-model="$ctrl.address.state" ng-disabled="!$ctrl.isEditable">
             </div>
             <div class="col-sm-3">
                 <label for="zip" translate>Zip</label>
                 <input class="form-control" type="text" name="postal_code" id="zip"
-                       ng-model="$ctrl.address.postal_code" ng-disabled="$ctrl.address.remote_id || $ctrl.address.source !== 'MPDX'">
+                       ng-model="$ctrl.address.postal_code" ng-disabled="!$ctrl.isEditable">
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6">
                 <label for="country" translate>Country</label>
                 <input class="form-control" type="text" name="country" id="country"
-                       ng-model="$ctrl.address.country" ng-disabled="$ctrl.address.source === 'Siebel'">
+                       ng-model="$ctrl.address.country" ng-disabled="!$ctrl.isEditable">
             </div>
             <div class="col-sm-3">
                 <label for="region" translate>Region</label>

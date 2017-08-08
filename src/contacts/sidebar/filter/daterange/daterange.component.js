@@ -6,15 +6,19 @@ class FilterDaterangeController {
     constructor(
         $element, gettextCatalog
     ) {
-        let input = $element.find('input');
+        this.$element = $element;
+        this.gettextCatalog = gettextCatalog;
+    }
+    $onInit() {
+        let input = this.$element.find('input');
 
         const defaultRanges = {
-            [gettextCatalog.getString('Today')]: [moment(), moment()],
-            [gettextCatalog.getString('Yesterday')]: [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            [gettextCatalog.getPlural(7, 'Last Day', 'Last {{$count}} Days', {})]: [moment().subtract(6, 'days'), moment()],
-            [gettextCatalog.getPlural(30, 'Last 1 Day', 'Last {{$count}} Days', {})]: [moment().subtract(29, 'days'), moment()],
-            [gettextCatalog.getString('This Month')]: [moment().startOf('month'), moment().endOf('month')],
-            [gettextCatalog.getString('Last Month')]: [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            [this.gettextCatalog.getPlural(7, 'Last Day', 'Last {{$count}} Days', {})]: [moment().subtract(6, 'days'), moment()],
+            [this.gettextCatalog.getPlural(30, 'Last 1 Day', 'Last {{$count}} Days', {})]: [moment().subtract(29, 'days'), moment()],
+            [this.gettextCatalog.getString('This Month')]: [moment().startOf('month'), moment().endOf('month')],
+            [this.gettextCatalog.getString('Last Month')]: [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+            [this.gettextCatalog.getString('This Year')]: [moment().startOf('year'), moment().endOf('year')],
+            [this.gettextCatalog.getString('Last 13 Months')]: [moment().startOf('month').subtract(13, 'months'), moment()]
         };
 
         this.options = {
@@ -28,8 +32,7 @@ class FilterDaterangeController {
         input.daterangepicker(this.options);
         input.on('apply.daterangepicker', this.apply);
         input.on('cancel.daterangepicker', this.cancel);
-    }
-    $onInit() {
+
         this.parseCustomOptions();
     }
     parseCustomOptions() {
@@ -63,5 +66,7 @@ const Daterange = {
     }
 };
 
-export default angular.module('mpdx.contacts.filter.daterange', [])
-    .component('contactsFilterDaterange', Daterange).name;
+import gettextCatalog from 'angular-gettext';
+export default angular.module('mpdx.contacts.filter.daterange', [
+    gettextCatalog
+]).component('contactsFilterDaterange', Daterange).name;

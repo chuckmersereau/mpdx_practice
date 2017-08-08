@@ -4,10 +4,6 @@ import union from 'lodash/fp/union';
 import joinComma from 'common/fp/joinComma';
 
 class RemoveTagController {
-    selectedContacts;
-    contacts;
-    contactsTags;
-
     constructor(
         $rootScope, $scope, gettextCatalog,
         alerts, api, modal, tasksTags,

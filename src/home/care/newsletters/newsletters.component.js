@@ -1,6 +1,4 @@
 class NewslettersController {
-    tasks;
-
     constructor(
         tasks
     ) {
