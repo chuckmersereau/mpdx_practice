@@ -256,7 +256,7 @@ class EntityAttributes {
                 attributes: ["account_list", "addresses", "church_name", "contacts_referred_by_me", "contact_referrals_to_me", "created_at", "direct_deposit", "donor_accounts", "envelope_greeting",
                     "first_donation_date", "full_name", "greeting",
                     "last_activity", "last_appointment", "last_donation_date", "last_letter", "likely_to_give", "last_phone_call", "last_pre_call", "last_thank", "late_at", "locale", "loser_id",
-                    "magazine", "name", "next_ask", "no_appeals", "not_duplicated_with", "notes", "notes_saved_at",
+                    "magazine", "name", "next_ask", "no_appeals", "no_gift_aid", "not_duplicated_with", "notes", "notes_saved_at",
                     "people", "pledge_amount", "pledge_currency", "pledge_frequency", "pledge_received", "pledge_start_date", "pls_id", "prayer_letters_id", "prayer_letters_params", "primary_person",
                     "send_newsletter", "status", "status_valid", "tag_list", "timezone", "tnt_id", "total_donations", "uncompleted_tasks_count", "updated_at", "website", "winner_id"
                 ],
@@ -365,7 +365,7 @@ class EntityAttributes {
                 person: {ref: 'id'}
             },
             organizations: {
-                attributes: ['name', "org_help_url", "country"]
+                attributes: ['name', "org_help_url", "country", "gift_aid_percentage"]
             },
             people: {
                 attributes: ["first_name", "legal_first_name", "last_name", "birthday_month", "birthday_year", "birthday_day", "anniversary_month", "anniversary_year", "anniversary_day", "title",

@@ -49,7 +49,7 @@ class ContactsService {
                               'pledge_currency,pledge_currency_symbol,pledge_frequency,pledge_received,' +
                               'pledge_start_date,send_newsletter,square_avatar,status,status_valid,suggested_changes,' +
                               'tag_list,timezone,website,addresses,contact_referrals_by_me,contact_referrals_to_me,' +
-                              'contacts_that_referred_me,donor_accounts,primary_person',
+                              'contacts_that_referred_me,donor_accounts,primary_person,no_gift_aid',
                     addresses: 'city,country,created_at,end_date,geo,historic,location,metro_area,postal_code,' +
                                'primary_mailing_address,region,remote_id,seasonal,source,start_date,state,street,' +
                                'updated_at,updated_in_db_at,valid_values',
