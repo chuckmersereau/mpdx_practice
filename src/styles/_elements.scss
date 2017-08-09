@@ -154,3 +154,16 @@ $appealHeight: 20px;
     border: 1px #DDD solid;
     text-align: center;
 }
+
+
+.circle-late {
+  color: $gray_dark;
+}
+
+.circle-very-late {
+  color: $color-danger;
+}
+
+.circle-on-time {
+  color: $color-success;
+}

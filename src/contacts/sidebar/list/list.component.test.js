@@ -1,4 +1,5 @@
 import component from './list.component';
+import moment from 'moment';
 
 const contactId = 123;
 
@@ -130,6 +131,26 @@ describe('contacts.sidebar.list.component', () => {
             spyOn($ctrl, 'load').and.callFake(() => {});
             $ctrl.search();
             expect($ctrl.load).toHaveBeenCalledWith();
+        });
+    });
+    describe('daysLate', () => {
+        describe('contact late_at 60 days ago', () => {
+            it('should return 60', () => {
+                expect($ctrl.daysLate({ late_at: moment().subtract(60, 'days').format('YYYY-MM-DD') })).toEqual(60);
+            });
+        });
+        describe('contact late_at null', () => {
+            beforeEach(() => {
+                $ctrl.contact = { late_at: null };
+            });
+            it('should return 0', () => {
+                expect($ctrl.daysLate({ late_at: null })).toEqual(0);
+            });
+        });
+        describe('contact late_at not set', () => {
+            it('should return 0', () => {
+                expect($ctrl.daysLate({})).toEqual(0);
+            });
         });
     });
 });

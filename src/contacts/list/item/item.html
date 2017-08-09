@@ -17,6 +17,9 @@
                     <span>{{::$ctrl.contact.pledge_currency_symbol}}</span>
                     <span>{{::$ctrl.contact.pledge_currency_symbol}}</span>
                 </span>
+                <i class="fa fa-circle circle-on-time" ng-if="::$ctrl.daysLate() < 0" data-title="{{ ::'on time' | translate }}" bs-tooltip></i>
+                <i class="fa fa-circle circle-late" ng-if="::$ctrl.daysLate() >= 30 && $ctrl.daysLate() < 60" data-title="{{ ::'30+ days late' | translate }}" bs-tooltip></i>
+                <i class="fa fa-circle circle-very-late" ng-if="::$ctrl.daysLate() >= 60" data-title="{{ ::'60+ days late' | translate }}" bs-tooltip></i>
             </h4>
             <div class="people">
                 <div ng-repeat="person in ::$ctrl.contact.people track by person.id" ng-if="::!person.deceased" class="people-single-contact">
