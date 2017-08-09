@@ -263,7 +263,10 @@ export default class Routes {
             name: 'setup.start',
             title: gettext('Setup - Get Started'),
             url: '/start',
-            component: 'setupStart'
+            component: 'setupStart',
+            resolve: {
+                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['languages'])
+            }
         }).state({
             name: 'setup.finish',
             title: gettext('Setup - Completed'),
