@@ -282,7 +282,7 @@ class ContactsService {
             controller: 'addressModalController',
             locals: {
                 contact: contact,
-                address: address
+                address: address || { source: 'MPDX' }
             },
             resolve: {
                 0: () => this.serverConstants.load(['assignable_locations'])
