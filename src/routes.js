@@ -192,7 +192,7 @@ export default class Routes {
             url: '/personal',
             component: 'preferencesPersonal',
             resolve: {
-                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['languages', 'locales'])
+                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['languages', 'locales', 'pledge_currencies'])
             }
         }).state({
             name: 'setup',
@@ -257,7 +257,7 @@ export default class Routes {
             url: '/preferences/personal',
             component: 'setupPreferencesPersonal',
             resolve: {
-                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['languages', 'locales'])
+                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['languages', 'locales', 'pledge_currencies'])
             }
         }).state({
             name: 'setup.start',
