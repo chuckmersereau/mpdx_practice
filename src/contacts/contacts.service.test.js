@@ -201,14 +201,14 @@ describe('contacts.service', () => {
                 birthday_year: 6,
                 birthday_day: 1,
                 birthday_month: 1
-            }],
+            }, null],
             anniversaries_this_week: [{
                 people: [{
                     anniversary_year: 15,
                     anniversary_day: 1,
                     anniversary_month: 1
                 }]
-            }]
+            }, null]
         };
         spyOn(api, 'get').and.callFake(() => Promise.resolve(transformable));
         contacts.getAnalytics().then(() => {

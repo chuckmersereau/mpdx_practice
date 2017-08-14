@@ -246,6 +246,9 @@ class ContactsService {
             /* istanbul ignore next */
             this.$log.debug('contacts/analytics', data);
             data.birthdays_this_week = reduce((result, birthday) => {
+                if (isNil(birthday)) {
+                    return result;
+                }
                 if (birthday.birthday_year > 1800) {
                     birthday.birthday_date = moment().year(birthday.birthday_year).month(birthday.birthday_month - 1).date(birthday.birthday_day).toDate();
                     return concat(result, birthday);
@@ -253,6 +256,9 @@ class ContactsService {
                 return result;
             }, [], data.birthdays_this_week);
             data.anniversaries_this_week = reduce((result, anniversary) => {
+                if (isNil(anniversary)) {
+                    return result;
+                }
                 anniversary.people = reduce((iresult, person) => {
                     if (person.anniversary_year > 1800) {
                         person.anniversary_date = moment().year(person.anniversary_year).month(person.anniversary_month - 1).date(person.anniversary_day).toDate();
