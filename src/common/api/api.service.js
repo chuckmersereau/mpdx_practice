@@ -413,10 +413,15 @@ class EntityAttributes {
                 attributes: ["resetted_user_email", "reason", "account_list_name"]
             },
             tasks: {
-                attributes: ["account_list", "activity_type", "comments", "completed", "completed_at", "created_at", "contacts", "due_date", "end_at", "location",
+                attributes: ["account_list", "activity_contacts", "activity_type", "comments", "completed", "completed_at", "created_at", "contacts", "due_date", "end_at", "location",
                     "next_action", "no_date", "notification_id", "notification_time_before", "notification_time_unit", "notification_scheduled", "notification_type",
                     "remote_id", "result", "source", "starred", "start_at", "subject", "tag_list", "type", "updated_at"],
                 account_list: { ref: 'id' },
+                activity_contacts: {
+                    ref: 'id',
+                    attributes: ["_destroy"],
+                    contact: { ref: 'id' }
+                },
                 comments: {
                     ref: 'id',
                     attributes: ["body", "person"],
