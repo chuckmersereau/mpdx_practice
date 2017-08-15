@@ -328,7 +328,7 @@ class ContactsService {
     }
     openMapContactsModal(selectedContacts) {
         return this.modal.open({
-            template: require('./list/mapContacts/mapContacts.html'),
+            template: require('./list/map/map.html'),
             controller: 'mapContactsController',
             locals: {
                 selectedContacts: selectedContacts

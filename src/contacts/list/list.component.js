@@ -142,7 +142,7 @@ class ListController {
     }
     openMapContactsModal() {
         this.modal.open({
-            template: require('./mapContacts/mapContacts.html'),
+            template: require('./map/map.html'),
             controller: 'mapContactsController',
             locals: {
                 selectedContacts: this.getSelectedContacts()
@@ -173,7 +173,7 @@ class ListController {
                 fields: {
                     contact: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people,created_at,late_at',
                     people: 'deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
-                    addresses: 'city,geo,historic,primary_mailing_address,postal_code,state,source,street',
+                    addresses: 'city,geo,historic,primary_mailing_address,postal_code,state,source,street,updated_at',
                     email_addresses: 'email,historic,primary',
                     phone_numbers: 'historic,location,number,primary',
                     facebook_accounts: 'username'
