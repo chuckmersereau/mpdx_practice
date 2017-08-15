@@ -14,7 +14,7 @@
                                     <span  translate>Actions</span> <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop" ng-show="$ctrl.contacts.selectedContacts.length > 0">
-                                    <li><a ng-click="$ctrl.openAddTagModal()" translate>Add Tags</a></li>
+                                    <li><a ng-click="$ctrl.contacts.openAddTagModal($ctrl.contacts.selectedContacts)" translate>Add Tags</a></li>
                                     <li><a ng-click="$ctrl.openRemoveTagModal()" translate>Remove Tags</a></li>
                                     <li><a ng-click="$ctrl.openAddTaskModal()" translate>Add Task</a></li>
                                     <li><a ng-click="$ctrl.openLogTaskModal()" translate>Log Task</a></li>

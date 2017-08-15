@@ -8,15 +8,16 @@ const params = {a: 'b'};
 const tags = [{name: 'a'}, {name: 'b'}];
 
 describe('contacts.service', () => {
-    let api, contacts, contactFilter, contactsTags, rootScope;
+    let api, contacts, contactFilter, contactsTags, rootScope, modal;
     beforeEach(() => {
         angular.mock.module(service);
-        inject(($rootScope, _api_, _contacts_, _contactFilter_, _contactsTags_) => {
+        inject(($rootScope, _api_, _contacts_, _contactFilter_, _contactsTags_, _modal_) => {
             rootScope = $rootScope;
             api = _api_;
             contacts = _contacts_;
             contactFilter = _contactFilter_;
             contactsTags = _contactsTags_;
+            modal = _modal_;
             api.account_list_id = accountListId;
         });
         spyOn(api, 'put').and.callFake(data => Promise.resolve(data));
@@ -239,6 +240,19 @@ describe('contacts.service', () => {
             contacts.merge('a').then(() => {
                 expect(data.success).toHaveBeenCalledWith();
                 done();
+            });
+        });
+    });
+    describe('openAddTagModal', () => {
+        it('should open the add tag modal', () => {
+            spyOn(modal, 'open').and.callFake(() => {});
+            contacts.openAddTagModal([1, 2]);
+            expect(modal.open).toHaveBeenCalledWith({
+                template: require('./sidebar/filter/tags/add/add.html'),
+                controller: 'addTagController',
+                locals: {
+                    selectedContacts: [1, 2]
+                }
             });
         });
     });

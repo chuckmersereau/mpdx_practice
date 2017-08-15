@@ -1,0 +1,131 @@
+<div class="row">
+    <div class="col-md-9">
+        <div class="panel panel-default">
+            <div class="row panel-body">
+                <div class="col-md-7">
+                    <div class="inline-input header">
+                        <input ng-model="$ctrl.appeal.name"
+                               ng-change="$ctrl.save()"
+                               aria-label="Appeal Name"
+                               ng-model-options="{ debounce: 1000 }">
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    {{:: $ctrl.currency.symbol}}{{::$ctrl.donationsSum}} /
+                    {{:: $ctrl.currency.symbol}}
+                    <span class="inline-input inline-block">
+                        <input ng-model="$ctrl.appeal.amount"
+                               ng-change="$ctrl.changeGoal()"
+                               aria-label="Appeal Goal"
+                               ng-model-options="{ debounce: 1000 }">
+                    </span>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="{{$ctrl.percentageRaised}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$ctrl.percentageRaised}}%; min-width: 5%; max-width: 100%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button class="btn" ng-click="$ctrl.addDonation()" translate>Add Donation</button>
+            <button class="btn" ng-click="$ctrl.contacts.openAddTagModal($ctrl.selectedContactIds)" translate>Add Tag</button>
+            <button class="btn" ng-click="$ctrl.tasks.addModal($ctrl.selectedContactIds)" translate>Add Task</button>
+        </div>
+        <div>&nbsp;</div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Given To Appeal</h4>
+            </div>
+            <div class="row panel-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2">Contact</th>
+                            <th>Commitment</th>
+                            <th>Donation(s)</th>
+                            <th colspan="2">
+                                <a ng-click="$ctrl.selectAllGiven()">select all</a> |
+                                <a ng-click="$ctrl.deselectAllGiven()">deselect all</a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="donation in $ctrl.appeal.donations">
+                            <td>
+                                <input type="checkbox"
+                                       ng-checked="$ctrl.selectedContactIds.includes(donation.contact.id)"
+                                       ng-click="$ctrl.selectContact(contact.id)">
+                            </td>
+                            <td>{{::donation.contact.name}}</td>
+                            <td>{{::donation.contact.pledge_amount}}</td>
+                            <td>{{::donation.amount}} {{::donation.currency}} ({{::donation.donation_date}})</td>
+                            <td><i class="fa fa-edit" ng-click="$ctrl.editDonation(donation)"></i></td>
+                            <td><i class="fa fa-trash"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Not Given To Appeal Yet</h4>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th colspan="2">Contact</th>
+                        <th>Commitment</th>
+                        <th>
+                            <a ng-click="$ctrl.selectAllNotGiven()">select all</a> |
+                            <a ng-click="$ctrl.deselectAllNotGiven()">deselect all</a>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="contact in $ctrl.contactsNotGiven">
+                        <td>
+                            <input type="checkbox"
+                                   ng-checked="$ctrl.selectedContactIds.includes(contact.id)"
+                                   ng-click="$ctrl.selectContact(contact.id)">
+                        </td>
+                        <td>{{::contact.name}}</td>
+                        <td>
+                            {{::contact.currency.symbol}}{{::contact.pledge_amount}}
+                            {{::$ctrl.serverConstants.getPledgeFrequency(contact.pledge_frequency).value}}
+                        </td>
+                        <td><i class="fa fa-trash"></i></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row panel-body">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h4 translate>Export Selected to CSV</h4>
+                <button class="btn"
+                        ng-csv="$ctrl.exportToCSV()"
+                        lazy-load="true"
+                        filename="mpdx-appeal-export-{{$ctrl.moment().format('Y-MM-DD-HH:mm')}}.csv"
+                        translate>
+                    Export Selected
+                </button>
+                <h4>Export Selected to Mail Chimp List</h4>
+                <button class="btn" ng-click="$ctrl.exportMailChimp()" translate>Export Selected</button>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h4 translate>Add Contact to Appeal</h4>
+                <collection-selector item-name="{{ 'Contact' | translate }}"
+                                     display-text="$ctrl.selectedContact"
+                                     search="$ctrl.contactSearch(text)"
+                                     select="$ctrl.onContactSelected(item)">
+                </collection-selector>
+            </div>
+        </div>
+    </div>
+</div>

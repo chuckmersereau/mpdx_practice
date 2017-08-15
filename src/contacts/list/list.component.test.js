@@ -157,21 +157,6 @@ describe('contacts.list.component', () => {
             });
         });
     });
-    describe('openAddTagModal', () => {
-        beforeEach(() => {
-            spyOn(modal, 'open').and.callFake(() => {});
-        });
-        it('should open the add tag modal', () => {
-            $ctrl.openAddTagModal();
-            expect(modal.open).toHaveBeenCalledWith({
-                template: require('../sidebar/filter/tags/add/add.html'),
-                controller: 'addTagController',
-                locals: {
-                    selectedContacts: contacts.selectedContacts
-                }
-            });
-        });
-    });
     describe('openRemoveTagModal', () => {
         beforeEach(() => {
             spyOn(modal, 'open').and.callFake(() => {});

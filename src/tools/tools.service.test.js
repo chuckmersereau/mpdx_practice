@@ -15,7 +15,7 @@ describe('tools.service', () => {
             expect(tools.data).toEqual([
                 { title: 'Goals & Appeals',
                     icon: 'fa fa-trophy',
-                    link: 'tools.goalsAndAppeals',
+                    link: 'tools.appeals',
                     description: 'Set goals, create asks, and track progress for one time needs',
                     enabled: false },
                 { title: 'Import from Google',

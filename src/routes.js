@@ -299,6 +299,20 @@ export default class Routes {
                 setup: false
             }
         }).state({
+            name: 'tools.appeals',
+            url: '/appeals',
+            component: 'appeals',
+            resolve: {
+                0: /*@ngInject*/ (contactsTags) => contactsTags.load()
+            }
+        }).state({
+            name: 'tools.appeals.show',
+            url: '/show/{appealId}',
+            component: 'appealsShow',
+            resolve: {
+                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['pledge_currencies', 'pledge_frequency_hashes'])
+            }
+        }).state({
             name: 'tools.import',
             title: gettext('Tools - Import'),
             abstract: true,

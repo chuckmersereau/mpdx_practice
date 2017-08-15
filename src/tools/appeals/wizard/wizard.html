@@ -1,0 +1,97 @@
+<form name="addGoalForm" ng-submit="$ctrl.save(addGoalForm)">
+    <div class="panel panel-default">
+        <div class="panel-heading" translate>
+            Add Goal
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label for="name" translate>Name</label>
+                <input class="form-control" ng-model="$ctrl.appeal.name" id="name" required>
+            </div>
+            <table class="table table-borderless">
+                <tbody>
+                    <tr>
+                        <td colspan="2"><label for="initialGoal" translate>Initial Goal</label></td>
+                        <td colspan="2"><label for="letterCost" translate>Letter Cost</label></td>
+                        <td colspan="2"><label for="adminPercent" translate>Admin %</label></td>
+                        <td><label for="amount" translate>Goal</label></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="number" class="form-control" ng-model="$ctrl.goal.initial" ng-change="$ctrl.calculateGoal()" raw-number id="initialGoal">
+                        </td>
+                        <td>
+                            <i class="fa fa-plus"></i>
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" ng-model="$ctrl.goal.letterCost" ng-change="$ctrl.calculateGoal()" id="letterCost">
+                        </td>
+                        <td>
+                            <i class="fa fa-times"></i>
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" ng-model="$ctrl.goal.adminPercent" ng-change="$ctrl.calculateGoal()" id="adminPercent">
+                        </td>
+                        <td>
+                            <strong>=</strong>
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" ng-model="$ctrl.appeal.amount" id="amount">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="alert alert-info" translate>
+                You can add contacts to your goal based on their status and/or tags.
+                You can also add additional contacts individually at a later time.
+            </div>
+            <div class="form-group" ng-if="::$ctrl.serverConstants.data.statuses.length">
+                <label translate>Add contacts with the following status(es):</label>
+                <a ng-click="$ctrl.selectAllStatuses()" translate>select all</a>
+                <select chosen
+                        multiple
+                        ng-model="$ctrl.statuses"
+                        ng-options="opt.id as opt.value for opt in $ctrl.serverConstants.data.status_hashes">
+                    <option value=""></option>
+                </select>
+            </div>
+            <div class="form-group" ng-if="$ctrl.contactsTags.data.length">
+                <label translate>Add contacts with the following tag(s):</label>
+                <a ng-click="$ctrl.selectAllTags()" translate>select all</a>
+                <select chosen
+                        multiple
+                        ng-model="$ctrl.tags"
+                        ng-options="tag.name as tag.name for tag in $ctrl.contactsTags.data">
+                    <option value=""></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label translate>Do not add contacts who:</label>
+                <select chosen
+                        multiple
+                        ng-model="$ctrl.excludes">
+                    <option value=""></option>
+                    <option value="specialGift3months" translate>May have given a special gift in the last 3 months</option>
+                    <option value="joinedTeam3months" translate>May have joined my team in the last 3 months</option>
+                    <option value="increasedGiving3months" translate>May have increased their giving in the last 3 months</option>
+                    <option value="stoppedGiving2months" translate>May have stopped giving for the last 2 months</option>
+                    <option value="doNotAskAppeals" translate>Are marked as do not ask for appeals</option>
+                </select>
+                <small translate>You can review the contacts MPDX excludes and add them back in on the next page.</small><br>
+            </div>
+            <div class="form-group">
+                <label translate>Add Tags to all imported contacts</label>
+                <tag-selector ng-model="$ctrl.newTags" tag-list="$ctrl.contactsTags.data"></tag-selector>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <button class="btn btn-primary" ng-disabled="!addGoalForm.$valid || $ctrl.saving">
+                <span translate>Add Goal</span>
+                &nbsp;
+                <span class="btn-progress" ng-show="$ctrl.saving">
+                    <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
+                </span>
+            </button>
+        </div>
+    </div>
+</form>

@@ -2,7 +2,6 @@ import acceptInvite from './acceptInvite/acceptInvite.component';
 import accounts from './accounts/accounts.service';
 import alerts from './alerts/index.module';
 import api from './api/api.service';
-import appeals from './appeals/index.module';
 import auth from './auth/auth.component';
 import autofocus from './autofocus/autofocus.directive';
 import avatar from './avatar/avatar.component';
@@ -40,7 +39,6 @@ export default angular.module('mpdx.common', [
     acceptInvite,
     accounts,
     alerts,
-    appeals,
     api,
     auth,
     autofocus,

@@ -341,6 +341,15 @@ class ContactsService {
             controller: 'multipleContactController'
         });
     }
+    openAddTagModal(selectedContactIds) {
+        return this.modal.open({
+            template: require('./sidebar/filter/tags/add/add.html'),
+            controller: 'addTagController',
+            locals: {
+                selectedContacts: selectedContactIds
+            }
+        });
+    }
 }
 
 import alerts from 'common/alerts/alerts.service';

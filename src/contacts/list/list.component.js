@@ -1,7 +1,6 @@
 import ceil from 'lodash/fp/ceil';
 import concat from 'lodash/fp/concat';
 import defaultTo from 'lodash/fp/defaultTo';
-import find from 'lodash/fp/find';
 import get from 'lodash/fp/get';
 import includes from 'lodash/fp/includes';
 import isNil from 'lodash/fp/isNil';
@@ -86,15 +85,6 @@ class ListController {
     hideContact(contact) {
         return this.contacts.hideContact(contact).then(() => {
             this.data = reject({id: contact.id}, this.data);
-        });
-    }
-    openAddTagModal() {
-        this.modal.open({
-            template: require('../sidebar/filter/tags/add/add.html'),
-            controller: 'addTagController',
-            locals: {
-                selectedContacts: this.contacts.selectedContacts
-            }
         });
     }
     openRemoveTagModal() {
@@ -209,7 +199,7 @@ class ListController {
                     contact.pledge_amount = parseFloat(contact.pledge_amount); //fix bad api serialization as string
                 }
                 if (!isNil(contact.pledge_frequency)) {
-                    const frequency = find({key: parseFloat(contact.pledge_frequency)}, this.serverConstants.data.pledge_frequency_hashes);
+                    const frequency = this.serverConstants.getPledgeFrequency(contact.pledge_frequency);
                     contact.pledge_frequency = get('value', frequency);
                 }
                 return contact;

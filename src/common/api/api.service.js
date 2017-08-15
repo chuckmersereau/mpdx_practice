@@ -242,7 +242,8 @@ class EntityAttributes {
                 attributes: ["city", "country", "end_date", "geo", "historic", "location", "metro_area", "postal_code", "primary_mailing_address", "region", "start_date", "state", "street", "valid_values"]
             },
             appeals: {
-                attributes: ["amount", "contacts", "created_at", "currencies", "description", "donations", "end_date", "name", "total_currency", "updated_at"]
+                attributes: ["account_list", "amount", "contacts", "created_at", "currencies", "description", "donations", "end_date", "name", "total_currency", "contact_statuses", "contact_tags", "contact_exclude", "tag_list", "updated_at"],
+                account_list: { ref: 'id' }
             },
             bulk: {
                 attributes: ["tag_name"],
