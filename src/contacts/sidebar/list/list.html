@@ -13,7 +13,14 @@
     </form>
     <div infinite-scroll="$ctrl.loadMoreContacts()" infinite-scroll-disabled="$ctrl.loading" infinite-scroll-use-document-bottom="false" infinite-scroll-container="$ctrl.scrollParent">
         <div ng-repeat="contact in $ctrl.data track by contact.id" class="contact-row item" ng-class="{ selected: contact.selected }">
-            <a ng-click="$ctrl.switchContact(contact.id)" ng-class="{'active': $ctrl.selected == contact.id }">{{contact.name}}</a>
+            <a ng-click="$ctrl.switchContact(contact.id)" ng-class="{'active': $ctrl.selected == contact.id }">
+                <div class="pull-right">
+                    <i class="fa fa-circle circle-on-time" ng-if="::$ctrl.daysLate(contact) < 0" data-title="{{ ::'on time' | translate }}" data-placement="left" bs-tooltip></i>
+                    <i class="fa fa-circle circle-late" ng-if="::$ctrl.daysLate(contact) >= 30 && $ctrl.daysLate(contact) < 60" data-title="{{ ::'30+ days late' | translate }}" data-placement="left" bs-tooltip></i>
+                    <i class="fa fa-circle circle-very-late" ng-if="::$ctrl.daysLate(contact) >= 60" data-title="{{ ::'60+ days late' | translate }}" data-placement="left" bs-tooltip></i>
+                </div>
+                {{contact.name}}
+            </a>
         </div>
     </div>
     <div ng-if="$ctrl.loading" class="loading-spinner">

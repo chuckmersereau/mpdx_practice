@@ -1,5 +1,6 @@
-import createPatch from "../../common/fp/createPatch";
-import joinComma from "../../common/fp/joinComma";
+import assign from "lodash/fp/assign";
+import createPatch from "common/fp/createPatch";
+import joinComma from "common/fp/joinComma";
 import concat from 'lodash/fp/concat';
 import defaultTo from 'lodash/fp/defaultTo';
 import eq from 'lodash/fp/eq';
@@ -116,6 +117,9 @@ class ContactController {
             if (patch.tag_list) {
                 const tags = patch.tag_list.split(',');
                 this.$rootScope.$emit('contactTagsAdded', {tags: tags});
+            }
+            if (patch.id === this.contacts.initialState.id) {
+                this.contacts.initialState = assign(this.contacts.initialState, patch);
             }
             const message = this.gettextCatalog.getString('Changes saved successfully.');
             this.alerts.addAlert(message);

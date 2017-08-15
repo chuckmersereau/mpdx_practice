@@ -1,16 +1,21 @@
-import service from './appeals.service';
+import component from './appeals.component';
 
-describe('common.appeals.service', () => {
-    let api, appeals;
+describe('home.progress.appeals.component', () => {
+    let $ctrl, componentController, scope, rootScope, api;
     beforeEach(() => {
-        angular.mock.module(service);
-        inject(($rootScope, _api_, _appeals_) => {
-            appeals = _appeals_;
+        angular.mock.module(component);
+        inject(($componentController, $rootScope, _api_) => {
+            rootScope = $rootScope;
+            scope = rootScope.$new();
             api = _api_;
             api.account_list_id = 123;
+            componentController = $componentController;
+            loadController();
         });
     });
-
+    function loadController() {
+        $ctrl = componentController('progressAppeals', {$scope: scope});
+    }
     describe('getCount', () => {
         const result = {meta: {pagination: {total_count: 1}}};
 
@@ -19,7 +24,7 @@ describe('common.appeals.service', () => {
         });
 
         it('should query api for a count and return it', (done) => {
-            appeals.getCount().then(data => {
+            $ctrl.getCount().then(data => {
                 expect(data).toBe(1);
                 done();
             });
@@ -37,7 +42,7 @@ describe('common.appeals.service', () => {
         });
 
         it('should query api for a count and return it', (done) => {
-            appeals.getCount().then(data => {
+            $ctrl.getCount().then(data => {
                 expect(data).toBe(0);
                 done();
             });
@@ -46,35 +51,6 @@ describe('common.appeals.service', () => {
                 filter: {account_list_id: api.account_list_id},
                 per_page: 0
             });
-        });
-    });
-
-    describe('search', () => {
-        const keywords = 'my keywords';
-        beforeEach(() => {
-            spyOn(api, 'get').and.callFake((url, data) => Promise.resolve(data));
-        });
-
-        it('should return a promise', () => {
-            expect(appeals.search(keywords)).toEqual(jasmine.any(Promise));
-        });
-
-        it('should call api.get', () => {
-            appeals.search(keywords);
-            expect(api.get).toHaveBeenCalledWith(
-                'appeals',
-                {
-                    filter: {
-                        wildcard_search: keywords,
-                        account_list_id: api.account_list_id
-                    },
-                    fields: {
-                        appeals: 'name'
-                    },
-                    sort: '-created_at',
-                    per_page: 6
-                }
-            );
         });
     });
 });

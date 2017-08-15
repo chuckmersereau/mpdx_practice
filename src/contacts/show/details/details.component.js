@@ -6,6 +6,7 @@ import get from 'lodash/fp/get';
 import keys from 'lodash/fp/keys';
 import map from 'lodash/fp/map';
 import round from 'lodash/fp/round';
+import sumBy from 'lodash/fp/sumBy';
 import uuid from 'uuid/v1';
 
 class ContactDetailsController {
@@ -41,6 +42,10 @@ class ContactDetailsController {
         const no = this.gettextCatalog.getString('No');
         this.translations = {
             no_appeals: [
+                {key: false, value: yes},
+                {key: true, value: no}
+            ],
+            no_gift_aid: [
                 {key: false, value: yes},
                 {key: true, value: no}
             ],
@@ -174,6 +179,14 @@ class ContactDetailsController {
                 contacts: 'name'
             }
         });
+    }
+    showGiftAid() {
+        return sumBy((organizationAccount) => {
+            if (!organizationAccount.organization || !organizationAccount.organization.gift_aid_percentage) {
+                return false;
+            }
+            return parseFloat(organizationAccount.organization.gift_aid_percentage);
+        }, this.users.organizationAccounts) > 0;
     }
 }
 const Details = {

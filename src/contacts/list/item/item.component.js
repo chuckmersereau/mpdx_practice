@@ -1,19 +1,18 @@
 import flatten from 'lodash/fp/flatten';
 import includes from 'lodash/fp/includes';
 import map from 'lodash/fp/map';
+import moment from 'moment';
 import pull from 'lodash/fp/pull';
 import union from 'lodash/fp/union';
 
 class ItemController {
     constructor(
-        $rootScope, $state,
+        $rootScope,
         contacts, people, users
     ) {
-        this.$state = $state;
         this.contacts = contacts;
         this.people = people;
         this.users = users;
-
 
         $rootScope.$on('contactTagDeleted', (e, val) => {
             if (!val.contactIds || includes(this.contact.id, val.contactIds)) {
@@ -49,6 +48,9 @@ class ItemController {
             this.contacts.deSelectContact(this.contact.id);
         }
     }
+    daysLate() {
+        return moment().diff(moment(this.contact.late_at), 'days') || 0;
+    }
 }
 
 const Item = {
@@ -61,5 +63,10 @@ const Item = {
     }
 };
 
-export default angular.module('mpdx.contacts.list.item.component', [])
-    .component('contactsListItem', Item).name;
+import contacts from 'contacts/contacts.service';
+import people from 'contacts/show/people/people.service';
+import users from 'common/users/users.service';
+
+export default angular.module('mpdx.contacts.list.item.component', [
+    contacts, people, users
+]).component('contactsListItem', Item).name;

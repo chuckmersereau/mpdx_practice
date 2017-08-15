@@ -192,7 +192,7 @@ export default class Routes {
             url: '/personal',
             component: 'preferencesPersonal',
             resolve: {
-                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['languages', 'locales'])
+                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['languages', 'locales', 'pledge_currencies'])
             }
         }).state({
             name: 'setup',
@@ -257,7 +257,7 @@ export default class Routes {
             url: '/preferences/personal',
             component: 'setupPreferencesPersonal',
             resolve: {
-                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['languages', 'locales'])
+                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['languages', 'locales', 'pledge_currencies'])
             }
         }).state({
             name: 'setup.start',
@@ -297,6 +297,20 @@ export default class Routes {
             parent: 'root',
             params: {
                 setup: false
+            }
+        }).state({
+            name: 'tools.appeals',
+            url: '/appeals',
+            component: 'appeals',
+            resolve: {
+                0: /*@ngInject*/ (contactsTags) => contactsTags.load()
+            }
+        }).state({
+            name: 'tools.appeals.show',
+            url: '/show/{appealId}',
+            component: 'appealsShow',
+            resolve: {
+                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['pledge_currencies', 'pledge_frequency_hashes'])
             }
         }).state({
             name: 'tools.import',

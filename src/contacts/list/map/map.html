@@ -1,0 +1,91 @@
+<modal class="modal-map" title="{{'Map Contacts' | translate}}" cancel="$hide()" hide-footer="true">
+    <div class="panel panel-default" ng-repeat="(k, status) in $ctrl.statuses" ng-class="{ 'panel-selected' : $ctrl.tabSelected(status.name)}" ng-if="status.markers.length > 0">
+        <div class="panel-heading" ng-click="$ctrl.setTab(status.name)">
+            <img src="{{status.imageUrl}}">
+            <strong>{{status.markers.length}}</strong>
+            {{status.name}}
+            <div class="pull-right" translate>
+                <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected(status.name) }"></i>
+            </div>
+        </div>
+        <div class="panel-animate" ng-show="$ctrl.tabSelected(status.name)">
+            <div ng-repeat="marker in status.markers" class="card" ng-click="$ctrl.centerOnMarker(marker)" ng-class="{ 'card-selected' : $ctrl.selectedAddress === marker.address }">
+                <div class="pull-right text-muted" translate>Show</div>
+                <strong>{{marker.contact.name}}</strong>
+                <p ng-class="{strike: marker.address.historic}">
+                    {{marker.address.street}}<br>
+                    {{marker.address.city}} {{marker.address.state}} {{marker.address.postal_code}}<br>
+                    {{marker.address.country}}<br ng-if="marker.address.country">
+                    <translate translate-params-source="marker.address.source | sourceToStr" translate-params-date="marker.address.updated_at | localize">
+                        Source: {{source}} ({{date}})
+                    </translate>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('Invalid Contacts')}" ng-if="$ctrl.invalidContacts.length > 0">
+        <div class="panel-heading" ng-click="$ctrl.setTab('Invalid Contacts')">
+            <img src="/images/pin_inactive.png" />
+            <strong>{{ $ctrl.invalidContacts.length }}</strong>
+            <translate>No Primary Address Set</translate>
+            <div class="pull-right" translate>
+                <i class="fa fa-question-circle" data-placement="left" data-title="{{ 'Contacts have no primary address set. Try setting a primary address for these contacts.' | translate }}" bs-tooltip></i>
+                &nbsp;
+                <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('Invalid Contacts') }"></i>
+            </div>
+        </div>
+        <div class="panel-animate" ng-show="$ctrl.tabSelected('Invalid Contacts')">
+            <div ng-repeat="contact in $ctrl.invalidContacts" class="card" ui-sref="contacts.show({contactId: contact.id})" ng-click="$hide()">
+                <div class="pull-right text-muted" translate>Show</div>
+                <strong>{{contact.name}}</strong>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('Invalid Addresses')}" ng-if="$ctrl.invalidAddresses.length > 0">
+        <div class="panel-heading" ng-click="$ctrl.setTab('Invalid Addresses')">
+            <img src="/images/pin_inactive.png" />
+            <strong>{{ $ctrl.invalidAddresses.length }}</strong>
+            <translate>Invalid Address</translate>
+            <div class="pull-right" translate>
+                <i class="fa fa-question-circle" data-placement="left" data-title="{{ 'Addresses have no coordinates set. Try deleting and adding the address to the associated contact.' | translate }}" bs-tooltip></i>
+                &nbsp;
+                <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('Invalid Addresses') }"></i>
+            </div>
+        </div>
+        <div class="panel-animate" ng-show="$ctrl.tabSelected('Invalid Addresses')">
+            <div ng-repeat="obj in $ctrl.invalidAddresses" ui-sref="contacts.show({contactId: obj.contact.id})" ng-click="$hide()" class="card">
+                <div class="pull-right text-muted" translate>Show</div>
+                <strong>{{obj.contact.name}}</strong>
+                <p ng-class="{strike: obj.address.historic}">
+                    {{obj.address.street}}<br>
+                    {{obj.address.city}} {{obj.address.state}} {{obj.address.postal_code}}<br>
+                    {{obj.address.country}}<br ng-if="obj.address.country">
+                    <translate translate-params-source="obj.address.source | sourceToStr" translate-params-date="obj.address.updated_at | localize">
+                        Source: {{source}} ({{date}})
+                    </translate>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="empty-map" ng-if="$ctrl.loading">
+        <div class="empty-icon">
+            <i class="fa fa-map"></i>
+        </div>
+    </div>
+    <ng-map id="{{::$id}}">
+        <info-window id="contact-info">
+          <div ng-non-bindable="" class="map-info-window">
+            <strong>{{$ctrl.selectedContact.name}}</strong>
+            <p ng-class="{strike: $ctrl.selectedAddress.historic}">
+                {{$ctrl.selectedAddress.street}}<br>
+                {{$ctrl.selectedAddress.city}} {{$ctrl.selectedAddress.state}} {{$ctrl.selectedAddress.postal_code}}<br>
+                {{$ctrl.selectedAddress.country}}<br ng-if="$ctrl.selectedAddress.country">
+                <translate translate-params-source="$ctrl.selectedAddress.source | sourceToStr" translate-params-date="$ctrl.selectedAddress.updated_at | localize">
+                    Source: {{source}} ({{date}})
+                </translate>
+            </p>
+            <a class="btn btn-primary" ui-sref="contacts.show({contactId: $ctrl.selectedContact.id})" ng-click="$hide()" translate>Show Contact</a>
+          </div>
+        </info-window>
+    </ng-map>
+</modal>

@@ -2,15 +2,16 @@ import modalController from './modal.controller';
 import isEqual from 'lodash/fp/isEqual';
 
 describe('donation.modal.controller', () => {
-    let $ctrl, controller, scope, gettextCatalog, accounts, alerts, designationAccounts, donations;
+    let $ctrl, controller, scope, gettextCatalog, accounts, alerts, designationAccounts, donations, api;
     let donation = { id: 'donation_id' };
     beforeEach(() => {
         angular.mock.module(modalController);
-        inject(($controller, $rootScope, _gettextCatalog_, _accounts_, _alerts_, _designationAccounts_, _donations_) => {
+        inject(($controller, $rootScope, _gettextCatalog_, _accounts_, _alerts_, _designationAccounts_, _donations_, _api_) => {
             controller = $controller;
             scope = $rootScope.$new();
             scope.$hide = () => {};
 
+            api = _api_;
             gettextCatalog = _gettextCatalog_;
             accounts = _accounts_;
             alerts = _alerts_;
@@ -256,6 +257,35 @@ describe('donation.modal.controller', () => {
         it('should set donation donor account', () => {
             $ctrl.onAppealSelected(appeal);
             expect($ctrl.donation.appeal).toEqual(appeal);
+        });
+    });
+
+    describe('search', () => {
+        const keywords = 'my keywords';
+        beforeEach(() => {
+            spyOn(api, 'get').and.callFake((url, data) => Promise.resolve(data));
+        });
+
+        it('should return a promise', () => {
+            expect($ctrl.search(keywords)).toEqual(jasmine.any(Promise));
+        });
+
+        it('should call api.get', () => {
+            $ctrl.search(keywords);
+            expect(api.get).toHaveBeenCalledWith(
+                'appeals',
+                {
+                    filter: {
+                        wildcard_search: keywords,
+                        account_list_id: api.account_list_id
+                    },
+                    fields: {
+                        appeals: 'name'
+                    },
+                    sort: '-created_at',
+                    per_page: 6
+                }
+            );
         });
     });
 });

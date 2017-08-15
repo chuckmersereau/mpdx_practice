@@ -3,7 +3,7 @@ class ToolsService {
         gettextCatalog
     ) {
         this.data = [
-            {title: gettextCatalog.getString('Goals & Appeals'), icon: 'fa fa-trophy', link: 'tools.goalsAndAppeals', description: gettextCatalog.getString('Set goals, create asks, and track progress for one time needs'), enabled: false},
+            {title: gettextCatalog.getString('Goals & Appeals'), icon: 'fa fa-trophy', link: 'tools.appeals', description: gettextCatalog.getString('Set goals, create asks, and track progress for one time needs'), enabled: false},
             {title: gettextCatalog.getString('Import from Google'), icon: 'fa fa-google', link: 'tools.import.google', description: gettextCatalog.getString('Import your contact information from your Google account'), enabled: true, imports: true},
             {title: gettextCatalog.getString('Import from CSV'), icon: 'fa fa-table', link: 'tools.import.csv', description: gettextCatalog.getString('Import contacts you have saved in a CSV file'), enabled: true, imports: true},
             {title: gettextCatalog.getString('Import from TntConnect'), icon: 'fa fa-cloud-upload', link: 'tools.import.tnt', description: gettextCatalog.getString('Import your contacts from your TntConnect database'), enabled: true, imports: true},

@@ -1,10 +1,12 @@
-import createPatch from '../../../common/fp/createPatch';
+import createPatch from 'common/fp/createPatch';
 import isNil from 'lodash/fp/isNil';
+import keys from 'lodash/fp/keys';
+import remove from 'lodash/fp/remove';
 
 class EditTaskController {
     constructor(
         $log, $scope,
-        modal, contacts, tasksTags, tasks, serverConstants, users,
+        contacts, modal, serverConstants, tasks, tasksTags, users,
         task
     ) {
         this.$log = $log;
@@ -18,16 +20,19 @@ class EditTaskController {
 
         this.task = angular.copy(task);
         this.taskInitialState = angular.copy(task);
-
-        if (isNil(this.task.start_at)) {
-            this.no_date = true;
-        }
+        this.task.contacts = [];
+        this.noDate = isNil(this.task.start_at);
     }
+
     save() {
-        if (this.no_date) {
+        if (this.noDate) {
             this.task.start_at = null;
         }
-        const patch = createPatch(this.taskInitialState, this.task);
+        this.task.contacts = remove((contact) => {
+            return keys(contact).length === 0;
+        }, this.task.contacts);
+        let patch = createPatch(this.taskInitialState, this.task);
+        /* istanbul ignore next */
         this.$log.debug('task patch', patch);
         return this.tasks.save(
             patch,
@@ -36,6 +41,17 @@ class EditTaskController {
             this.$scope.$hide();
         });
     }
+
+    addContact() {
+        this.task.contacts.push({});
+    }
+
+    setContact(contact, index) {
+        if (contact) {
+            this.task.contacts[index] = contact;
+        }
+    }
+
     delete() {
         return this.tasks.delete(
             this.task
@@ -44,5 +60,14 @@ class EditTaskController {
         });
     }
 }
-export default angular.module('mpdx.tasks.edit.controller', [])
-    .controller('editTaskController', EditTaskController).name;
+
+import contacts from 'contacts/contacts.service';
+import modal from 'common/modal/modal.service';
+import serverConstants from 'common/serverConstants/serverConstants.service';
+import tasksTags from 'tasks/filter/tags/tags.service';
+import tasks from 'tasks/tasks.service';
+import users from 'common/users/users.service';
+
+export default angular.module('mpdx.tasks.modals.edit.controller', [
+    contacts, modal, serverConstants, tasksTags, tasks, users
+]).controller('editTaskController', EditTaskController).name;

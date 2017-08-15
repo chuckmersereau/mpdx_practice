@@ -2,6 +2,7 @@ import replaceUnderscore from '../fp/replaceUnderscore';
 import assign from 'lodash/fp/assign';
 import concat from 'lodash/fp/concat';
 import difference from 'lodash/fp/difference';
+import find from 'lodash/fp/find';
 import keys from 'lodash/fp/keys';
 import reduce from 'lodash/fp/reduce';
 import toString from 'lodash/fp/toString';
@@ -64,12 +65,14 @@ class ServerConstantsService {
             return result;
         }, {}, objKeys);
     }
-
     mapFreqencies(obj) {
         return reduce((result, value) => {
             value.key = parseFloat(value.key);
             return concat(result, value);
         }, [], obj);
+    }
+    getPledgeFrequency(freq) {
+        return find({key: parseFloat(freq)}, this.data.pledge_frequency_hashes);
     }
 }
 

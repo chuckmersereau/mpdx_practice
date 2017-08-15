@@ -1,7 +1,6 @@
 import ceil from 'lodash/fp/ceil';
 import concat from 'lodash/fp/concat';
 import defaultTo from 'lodash/fp/defaultTo';
-import find from 'lodash/fp/find';
 import get from 'lodash/fp/get';
 import includes from 'lodash/fp/includes';
 import isNil from 'lodash/fp/isNil';
@@ -88,15 +87,6 @@ class ListController {
             this.data = reject({id: contact.id}, this.data);
         });
     }
-    openAddTagModal() {
-        this.modal.open({
-            template: require('../sidebar/filter/tags/add/add.html'),
-            controller: 'addTagController',
-            locals: {
-                selectedContacts: this.contacts.selectedContacts
-            }
-        });
-    }
     openRemoveTagModal() {
         this.modal.open({
             template: require('../sidebar/filter/tags/remove/remove.html'),
@@ -152,7 +142,7 @@ class ListController {
     }
     openMapContactsModal() {
         this.modal.open({
-            template: require('./mapContacts/mapContacts.html'),
+            template: require('./map/map.html'),
             controller: 'mapContactsController',
             locals: {
                 selectedContacts: this.getSelectedContacts()
@@ -181,9 +171,9 @@ class ListController {
                 per_page: this.pageSize,
                 include: 'addresses,people,people.facebook_accounts,people.phone_numbers,people.email_addresses',
                 fields: {
-                    contact: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people,created_at',
+                    contact: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people,created_at,late_at',
                     people: 'deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
-                    addresses: 'city,geo,historic,primary_mailing_address,postal_code,state,source,street',
+                    addresses: 'city,geo,historic,primary_mailing_address,postal_code,state,source,street,updated_at',
                     email_addresses: 'email,historic,primary',
                     phone_numbers: 'historic,location,number,primary',
                     facebook_accounts: 'username'
@@ -209,7 +199,7 @@ class ListController {
                     contact.pledge_amount = parseFloat(contact.pledge_amount); //fix bad api serialization as string
                 }
                 if (!isNil(contact.pledge_frequency)) {
-                    const frequency = find({key: parseFloat(contact.pledge_frequency)}, this.serverConstants.data.pledge_frequency_hashes);
+                    const frequency = this.serverConstants.getPledgeFrequency(contact.pledge_frequency);
                     contact.pledge_frequency = get('value', frequency);
                 }
                 return contact;

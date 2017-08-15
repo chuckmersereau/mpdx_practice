@@ -17,7 +17,7 @@ describe('common.collectionSelector.modal.controller', () => {
         $ctrl = controller('collectionSelectionModalController as $ctrl', {
             $scope: scope,
             itemName: 'contact',
-            collectionSearch: () => {},
+            collectionSearch: () => Promise.resolve(),
             searchText: 'Smith, John',
             select: () => {}
         });
@@ -51,12 +51,29 @@ describe('common.collectionSelector.modal.controller', () => {
 
     describe('$onInit', () => {
         beforeEach(() => {
-            spyOn($ctrl, 'search').and.returnValue();
-            $ctrl.$onInit();
+            spyOn($ctrl, 'collectionSearch').and.callFake(() => Promise.resolve());
         });
 
-        it('should call search', () => {
-            expect($ctrl.search).toHaveBeenCalled();
+        describe('searchText present', () => {
+            beforeEach(() => {
+                $ctrl.searchText = 'abc';
+            });
+
+            it('should call collectionSearch', () => {
+                $ctrl.$onInit();
+                expect($ctrl.collectionSearch).toHaveBeenCalled();
+            });
+        });
+
+        describe('searchText not present', () => {
+            beforeEach(() => {
+                $ctrl.searchText = null;
+            });
+
+            it('should call collectionSearch', () => {
+                $ctrl.$onInit();
+                expect($ctrl.collectionSearch).not.toHaveBeenCalled();
+            });
         });
     });
 

@@ -157,21 +157,6 @@ describe('contacts.list.component', () => {
             });
         });
     });
-    describe('openAddTagModal', () => {
-        beforeEach(() => {
-            spyOn(modal, 'open').and.callFake(() => {});
-        });
-        it('should open the add tag modal', () => {
-            $ctrl.openAddTagModal();
-            expect(modal.open).toHaveBeenCalledWith({
-                template: require('../sidebar/filter/tags/add/add.html'),
-                controller: 'addTagController',
-                locals: {
-                    selectedContacts: contacts.selectedContacts
-                }
-            });
-        });
-    });
     describe('openRemoveTagModal', () => {
         beforeEach(() => {
             spyOn(modal, 'open').and.callFake(() => {});
@@ -274,7 +259,7 @@ describe('contacts.list.component', () => {
         it('should open the map contacts modal', () => {
             $ctrl.openMapContactsModal();
             expect(modal.open).toHaveBeenCalledWith({
-                template: require('./mapContacts/mapContacts.html'),
+                template: require('./map/map.html'),
                 controller: 'mapContactsController',
                 locals: {
                     selectedContacts: $ctrl.getSelectedContacts()
@@ -291,9 +276,9 @@ describe('contacts.list.component', () => {
                 per_page: jasmine.any(Number),
                 include: 'addresses,people,people.facebook_accounts,people.phone_numbers,people.email_addresses',
                 fields: {
-                    contact: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people,created_at',
+                    contact: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people,created_at,late_at',
                     people: 'deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
-                    addresses: 'city,geo,historic,primary_mailing_address,postal_code,state,source,street',
+                    addresses: 'city,geo,historic,primary_mailing_address,postal_code,state,source,street,updated_at',
                     email_addresses: 'email,historic,primary',
                     phone_numbers: 'historic,location,number,primary',
                     facebook_accounts: 'username'

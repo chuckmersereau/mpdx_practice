@@ -1,4 +1,5 @@
 import has from 'lodash/fp/has';
+import moment from 'moment';
 import unionBy from 'lodash/fp/unionBy';
 
 class ListController {
@@ -60,7 +61,7 @@ class ListController {
             data: {
                 filter: this.contacts.buildFilterParams(),
                 fields: {
-                    contacts: 'name'
+                    contacts: 'name,late_at'
                 },
                 page: this.page,
                 per_page: 50,
@@ -80,6 +81,9 @@ class ListController {
     }
     search() {
         this.load();
+    }
+    daysLate(contact) {
+        return moment().diff(moment(contact.late_at), 'days') || 0;
     }
 }
 

@@ -83,10 +83,11 @@ describe('tasks.service', () => {
                     filter: tasksFilter.toParams(),
                     page: 1,
                     per_page: 25,
-                    include: 'contacts',
+                    include: 'activity_contacts,activity_contacts.contact',
                     fields: {
-                        tasks: 'activity_type,completed,completed_at,contacts,no_date,starred,start_at,subject,tag_list,comments_count,location,result',
-                        contacts: 'name'
+                        activity_contacts: 'contact',
+                        contact: 'name',
+                        tasks: 'activity_contacts,activity_type,completed,completed_at,no_date,starred,start_at,subject,tag_list,comments_count,location,result'
                     }
                 },
                 deSerializationOptions: jasmine.any(Object),

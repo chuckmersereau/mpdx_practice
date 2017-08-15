@@ -242,7 +242,8 @@ class EntityAttributes {
                 attributes: ["city", "country", "end_date", "geo", "historic", "location", "metro_area", "postal_code", "primary_mailing_address", "region", "start_date", "state", "street", "valid_values"]
             },
             appeals: {
-                attributes: ["amount", "contacts", "created_at", "currencies", "description", "donations", "end_date", "name", "total_currency", "updated_at"]
+                attributes: ["account_list", "amount", "contacts", "created_at", "currencies", "description", "donations", "end_date", "name", "total_currency", "contact_statuses", "contact_tags", "contact_exclude", "tag_list", "updated_at"],
+                account_list: { ref: 'id' }
             },
             bulk: {
                 attributes: ["tag_name"],
@@ -256,7 +257,7 @@ class EntityAttributes {
                 attributes: ["account_list", "addresses", "church_name", "contacts_referred_by_me", "contact_referrals_to_me", "created_at", "direct_deposit", "donor_accounts", "envelope_greeting",
                     "first_donation_date", "full_name", "greeting",
                     "last_activity", "last_appointment", "last_donation_date", "last_letter", "likely_to_give", "last_phone_call", "last_pre_call", "last_thank", "late_at", "locale", "loser_id",
-                    "magazine", "name", "next_ask", "no_appeals", "not_duplicated_with", "notes", "notes_saved_at",
+                    "magazine", "name", "next_ask", "no_appeals", "no_gift_aid", "not_duplicated_with", "notes", "notes_saved_at",
                     "people", "pledge_amount", "pledge_currency", "pledge_frequency", "pledge_received", "pledge_start_date", "pls_id", "prayer_letters_id", "prayer_letters_params", "primary_person",
                     "send_newsletter", "status", "status_valid", "tag_list", "timezone", "tnt_id", "total_donations", "uncompleted_tasks_count", "updated_at", "website", "winner_id"
                 ],
@@ -365,7 +366,7 @@ class EntityAttributes {
                 person: {ref: 'id'}
             },
             organizations: {
-                attributes: ['name', "org_help_url", "country"]
+                attributes: ['name', "org_help_url", "country", "gift_aid_percentage"]
             },
             people: {
                 attributes: ["first_name", "legal_first_name", "last_name", "birthday_month", "birthday_year", "birthday_day", "anniversary_month", "anniversary_year", "anniversary_day", "title",
@@ -412,10 +413,15 @@ class EntityAttributes {
                 attributes: ["resetted_user_email", "reason", "account_list_name"]
             },
             tasks: {
-                attributes: ["account_list", "activity_type", "comments", "completed", "completed_at", "created_at", "contacts", "due_date", "end_at", "location",
+                attributes: ["account_list", "activity_contacts", "activity_type", "comments", "completed", "completed_at", "created_at", "contacts", "due_date", "end_at", "location",
                     "next_action", "no_date", "notification_id", "notification_time_before", "notification_time_unit", "notification_scheduled", "notification_type",
                     "remote_id", "result", "source", "starred", "start_at", "subject", "tag_list", "type", "updated_at"],
                 account_list: { ref: 'id' },
+                activity_contacts: {
+                    ref: 'id',
+                    attributes: ["_destroy"],
+                    contact: { ref: 'id' }
+                },
                 comments: {
                     ref: 'id',
                     attributes: ["body", "person"],

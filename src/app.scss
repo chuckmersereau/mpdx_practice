@@ -31,12 +31,14 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "styles/buttons";
 @import "styles/panels";
 @import "styles/fonts/cru/ci.css";
+@import "styles/tables";
 @import "styles/tags";
 @import "styles/merges";
 @import "styles/typography";
 @import "styles/horizontalTabsSortable";
 
 /* Components */
+@import "tools/appeals/wizard/wizard";
 @import "blockUI/blockUI";
 @import "menu/menu";
 @import "menu/accountLists/accountLists";
@@ -48,7 +50,7 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "common/tagSelector/tasgSelector";
 @import "common/login/login";
 @import "common/collectionSelector/modal/modal";
-@import "contacts/list/mapContacts/mapContacts";
+@import "contacts/list/map/map";
 @import "contacts/sidebar/filter/tags/tags";
 @import "contacts/sidebar/list/list";
 @import "contacts/list/list";

@@ -1,4 +1,5 @@
 import isEmpty from 'lodash/fp/isEmpty';
+import isFunction from 'lodash/fp/isFunction';
 import isNil from 'lodash/fp/isNil';
 
 class ModalController {
@@ -16,6 +17,8 @@ class ModalController {
         this.collection = [];
         this.loading = false;
         this.selectedItem = null;
+
+        this.$onInit();
     }
 
     $onInit() {

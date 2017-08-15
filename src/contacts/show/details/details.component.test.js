@@ -35,6 +35,10 @@ describe('contacts.show.details.component', () => {
                     {key: false, value: 'Yes'},
                     {key: true, value: 'No'}
                 ],
+                no_gift_aid: [
+                    {key: false, value: 'Yes'},
+                    {key: true, value: 'No'}
+                ],
                 magazine: [
                     {key: true, value: 'Yes'},
                     {key: false, value: 'No'}
@@ -169,6 +173,46 @@ describe('contacts.show.details.component', () => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
                 expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
+            });
+        });
+    });
+    describe('showGiftAid', () => {
+        describe('organizations have a gift_aid_percentage > 0', () => {
+            beforeEach(() => {
+                users.organizationAccounts = [
+                    {
+                        organization: {
+                            gift_aid_percentage: 10
+                        }
+                    }, {
+                        organization: {
+                            gift_aid_percentage: null
+                        }
+                    }, {
+                    }
+                ];
+            });
+            it('should return true', () => {
+                expect($ctrl.showGiftAid()).toEqual(true);
+            });
+        });
+        describe('organizations have a gift_aid_percentage === 0', () => {
+            beforeEach(() => {
+                users.organizationAccounts = [
+                    {
+                        organization: {
+                            gift_aid_percentage: 0
+                        }
+                    }, {
+                        organization: {
+                            gift_aid_percentage: null
+                        }
+                    }, {
+                    }
+                ];
+            });
+            it('should return false', () => {
+                expect($ctrl.showGiftAid()).toEqual(false);
             });
         });
     });

@@ -1,0 +1,94 @@
+.modal-map.modal.center {
+    .modal-dialog .modal-content .modal-body {
+        ng-map, .empty-map {
+            position: fixed;
+            top: 11px;
+            left: 11px;
+            bottom: 41px;
+            right: 300px;
+            margin: 0;
+            height: auto;
+        }
+        .empty-map {
+            display: table;
+            height: calc(100% - 50px);
+            width: calc(100% - 310px);
+            .empty-icon {
+                display: table-cell;
+                vertical-align: middle;
+                text-align: center;
+            }
+        }
+        ng-map .map-info-window {
+            font-size: 16px;
+            font-family: "Source Sans Pro", sans-serif;
+            min-width: 200px;
+        }
+    }
+    .modal-dialog {
+        margin: 0;
+        padding: 0;
+        position: fixed;
+        right: 10px;
+        top: 10px;
+        bottom: 40px;
+        width: 290px;
+        min-width: auto;
+        .modal-title {
+            text-align: left;
+            padding-left: 15px;
+        }
+        .modal-content {
+            margin: 0;
+            border-left: 1px solid #e5e5e5;
+            position: absolute;
+            bottom: 0;
+            top: 0;
+            width: 100%;
+        }
+        .modal-body {
+            position: absolute;
+            bottom: 0;
+            top: 57px;
+            left: 0;
+            right: 0;
+            overflow: auto;
+            padding: 0;
+            .panel.panel-default {
+                margin: 0;
+                border-width: 0 0 1px 0;
+                .panel-heading {
+                    line-height: 34px;
+                    i {
+                        font-size: 14px;
+                        line-height: 37px;
+                    }
+                    img {
+                        margin-right: 10px;
+                    }
+                }
+                .card {
+                    margin-bottom: 0;
+                    border-width: 0 0 1px 0;
+                    cursor: pointer;
+                    &:last-child {
+                        border-bottom-width: 0;
+                    }
+                    &.card-selected {
+                        background-color: #000;
+                        background-color: rgba($color-secondary, .22);
+                        border-color: $color-secondary;
+                    }
+                }
+            }
+        }
+    }
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        li {
+            margin-bottom: 10px;
+        }
+    }
+}

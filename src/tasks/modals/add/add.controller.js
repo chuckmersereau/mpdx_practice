@@ -61,6 +61,6 @@ import contacts from 'contacts/contacts.service';
 import serverConstants from 'common/serverConstants/serverConstants.service';
 import tasks from '../../tasks.service';
 
-export default angular.module('mpdx.tasks.add.controller', [
+export default angular.module('mpdx.tasks.modals.add.controller', [
     contacts, serverConstants, tasks
 ]).controller('addTaskController', AddTaskController).name;

@@ -54,4 +54,14 @@ describe('contacts.service', () => {
             expect(serverConstants.handleSpecialKeys('pledge_frequency_hashes', [{key: '1.1'}])).toEqual([{key: 1.1}]);
         });
     });
+    describe('getPledgeFrequency', () => {
+        it('should return a pledge frequency object', () => {
+            serverConstants.data = {
+                pledge_frequency_hashes: [
+                    {key: 1, value: 'a'}
+                ]
+            };
+            expect(serverConstants.getPledgeFrequency('1')).toEqual({key: 1, value: 'a'});
+        });
+    });
 });

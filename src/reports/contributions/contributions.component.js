@@ -122,7 +122,7 @@ class ContributionsController {
         let contact = find({'contact_id': donor.contact_id}, data.donor_infos);
         if (contact) {
             const frequencyValue = parseFloat(contact.pledge_frequency);
-            const frequency = find({key: frequencyValue}, this.serverConstants.data.pledge_frequency_hashes);
+            const frequency = this.serverConstants.getPledgeFrequency(frequencyValue);
             if (frequency) {
                 contact.pledge_frequency = get('value', frequency);
             }

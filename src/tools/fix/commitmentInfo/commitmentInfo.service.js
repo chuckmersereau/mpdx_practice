@@ -1,5 +1,4 @@
 import concat from 'lodash/fp/concat';
-import find from 'lodash/fp/find';
 import get from 'lodash/fp/get';
 import isNil from 'lodash/fp/isNil';
 import reduce from 'lodash/fp/reduce';
@@ -67,7 +66,7 @@ class CommitmentInfoService {
                 contact.original_pledge_amount = contact.pledge_amount;
                 contact.original_pledge_currency = contact.pledge_currency;
                 if (!isNil(contact.pledge_frequency)) {
-                    const frequency = find({key: parseFloat(contact.pledge_frequency)}, this.serverConstants.data.pledge_frequency_hashes);
+                    const frequency = this.serverConstants.getPledgeFrequency(contact.pledge_frequency);
                     contact.original_pledge_frequency = get('value', frequency);
                 }
                 contact.original_status = contact.status;

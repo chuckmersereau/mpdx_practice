@@ -87,6 +87,15 @@ describe('contacts.show.component', () => {
                 done();
             });
         });
+        it('should update initialState', done => {
+            contacts.initialState.no_gift_aid = false;
+            contacts.current.no_gift_aid = true;
+            spyOn(contacts, 'save').and.callFake(() => Promise.resolve());
+            $ctrl.save().then(() => {
+                expect(contacts.initialState.no_gift_aid).toEqual(true);
+                done();
+            });
+        });
         it('should alert if rejected', done => {
             spyOn(contacts, 'save').and.callFake(() => Promise.reject());
             $ctrl.save().catch(() => {

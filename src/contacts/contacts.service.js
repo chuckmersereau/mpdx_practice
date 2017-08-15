@@ -49,7 +49,7 @@ class ContactsService {
                               'pledge_currency,pledge_currency_symbol,pledge_frequency,pledge_received,' +
                               'pledge_start_date,send_newsletter,square_avatar,status,status_valid,suggested_changes,' +
                               'tag_list,timezone,website,addresses,contact_referrals_by_me,contact_referrals_to_me,' +
-                              'contacts_that_referred_me,donor_accounts,primary_person',
+                              'contacts_that_referred_me,donor_accounts,primary_person,no_gift_aid',
                     addresses: 'city,country,created_at,end_date,geo,historic,location,metro_area,postal_code,' +
                                'primary_mailing_address,region,remote_id,seasonal,source,start_date,state,street,' +
                                'updated_at,updated_in_db_at,valid_values',
@@ -246,6 +246,9 @@ class ContactsService {
             /* istanbul ignore next */
             this.$log.debug('contacts/analytics', data);
             data.birthdays_this_week = reduce((result, birthday) => {
+                if (isNil(birthday)) {
+                    return result;
+                }
                 if (birthday.birthday_year > 1800) {
                     birthday.birthday_date = moment().year(birthday.birthday_year).month(birthday.birthday_month - 1).date(birthday.birthday_day).toDate();
                     return concat(result, birthday);
@@ -253,6 +256,9 @@ class ContactsService {
                 return result;
             }, [], data.birthdays_this_week);
             data.anniversaries_this_week = reduce((result, anniversary) => {
+                if (isNil(anniversary)) {
+                    return result;
+                }
                 anniversary.people = reduce((iresult, person) => {
                     if (person.anniversary_year > 1800) {
                         person.anniversary_date = moment().year(person.anniversary_year).month(person.anniversary_month - 1).date(person.anniversary_day).toDate();
@@ -322,7 +328,7 @@ class ContactsService {
     }
     openMapContactsModal(selectedContacts) {
         return this.modal.open({
-            template: require('./list/mapContacts/mapContacts.html'),
+            template: require('./list/map/map.html'),
             controller: 'mapContactsController',
             locals: {
                 selectedContacts: selectedContacts
@@ -333,6 +339,15 @@ class ContactsService {
         return this.modal.open({
             template: require('./multiple/multiple.html'),
             controller: 'multipleContactController'
+        });
+    }
+    openAddTagModal(selectedContactIds) {
+        return this.modal.open({
+            template: require('./sidebar/filter/tags/add/add.html'),
+            controller: 'addTagController',
+            locals: {
+                selectedContacts: selectedContactIds
+            }
         });
     }
 }

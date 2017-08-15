@@ -8,15 +8,16 @@ const params = {a: 'b'};
 const tags = [{name: 'a'}, {name: 'b'}];
 
 describe('contacts.service', () => {
-    let api, contacts, contactFilter, contactsTags, rootScope;
+    let api, contacts, contactFilter, contactsTags, rootScope, modal;
     beforeEach(() => {
         angular.mock.module(service);
-        inject(($rootScope, _api_, _contacts_, _contactFilter_, _contactsTags_) => {
+        inject(($rootScope, _api_, _contacts_, _contactFilter_, _contactsTags_, _modal_) => {
             rootScope = $rootScope;
             api = _api_;
             contacts = _contacts_;
             contactFilter = _contactFilter_;
             contactsTags = _contactsTags_;
+            modal = _modal_;
             api.account_list_id = accountListId;
         });
         spyOn(api, 'put').and.callFake(data => Promise.resolve(data));
@@ -67,7 +68,7 @@ describe('contacts.service', () => {
                                   'pledge_currency,pledge_currency_symbol,pledge_frequency,pledge_received,' +
                                   'pledge_start_date,send_newsletter,square_avatar,status,status_valid,suggested_changes,' +
                                   'tag_list,timezone,website,addresses,contact_referrals_by_me,contact_referrals_to_me,' +
-                                  'contacts_that_referred_me,donor_accounts,primary_person',
+                                  'contacts_that_referred_me,donor_accounts,primary_person,no_gift_aid',
                         addresses: 'city,country,created_at,end_date,geo,historic,location,metro_area,postal_code,' +
                                    'primary_mailing_address,region,remote_id,seasonal,source,start_date,state,street,' +
                                    'updated_at,updated_in_db_at,valid_values',
@@ -201,14 +202,14 @@ describe('contacts.service', () => {
                 birthday_year: 6,
                 birthday_day: 1,
                 birthday_month: 1
-            }],
+            }, null],
             anniversaries_this_week: [{
                 people: [{
                     anniversary_year: 15,
                     anniversary_day: 1,
                     anniversary_month: 1
                 }]
-            }]
+            }, null]
         };
         spyOn(api, 'get').and.callFake(() => Promise.resolve(transformable));
         contacts.getAnalytics().then(() => {
@@ -239,6 +240,19 @@ describe('contacts.service', () => {
             contacts.merge('a').then(() => {
                 expect(data.success).toHaveBeenCalledWith();
                 done();
+            });
+        });
+    });
+    describe('openAddTagModal', () => {
+        it('should open the add tag modal', () => {
+            spyOn(modal, 'open').and.callFake(() => {});
+            contacts.openAddTagModal([1, 2]);
+            expect(modal.open).toHaveBeenCalledWith({
+                template: require('./sidebar/filter/tags/add/add.html'),
+                controller: 'addTagController',
+                locals: {
+                    selectedContacts: [1, 2]
+                }
             });
         });
     });
