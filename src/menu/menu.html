@@ -4,7 +4,8 @@
         <div class="row">
             <div class="col-sm-12">
                 <div id="brand" class="pull-left">
-                    <a class="nav--logo" ng-click="$ctrl.go('home')"></a>
+                    <a class="nav--logo" ng-if="!$ctrl.setup" ui-sref="home"></a>
+                    <a class="nav--logo" ng-if="$ctrl.setup"></a>
                 </div>
                 <div class="pull-right navbar-quick">
                     <div class="section pull-left" ng-if="!$ctrl.setup" style="max-width: 200px; margin-right: 5px;">
@@ -44,11 +45,11 @@
                             </ul>
                         </div>
                     </div>
-                    <!--<div class="section" ng-if="!$ctrl.setup">-->
-                        <!--<a ui-sref="tools" class="btn btn-block notifications-link" ng-class="{ 'active' : $ctrl.notifications.count > 0 }">-->
-                            <!--<i class=" fa fa-bell"></i><span class="badge" ng-if="$ctrl.notifications.count > 0">{{$ctrl.notifications.count}}</span>-->
-                        <!--</a>-->
-                    <!--</div>-->
+                    <div class="section" ng-if="!$ctrl.setup">
+                        <a ui-sref="tools" class="btn btn-block notifications-link" ng-class="{ 'active' : $ctrl.tools.getTotal() > 0 }">
+                            <i class=" fa fa-bell"></i><span class="badge" ng-if="$ctrl.tools.getTotal() > 0">{{$ctrl.tools.getTotal()}}</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -72,7 +73,7 @@
                             <li class="item" ui-sref-active="active"><a ui-sref="tasks" translate>Tasks</a></li>
                             <li class="item" ng-class="{active: $ctrl.session.isInState('reports')}"><a ui-sref="reports.donations" translate>Reports</a></li>
                             <li class="item" ng-class="{active: $ctrl.session.isInState('tools')}"><a ui-sref="tools" translate>Tools</a></li>
-                            <li class="item last" ui-sref-active="active"><a ng-click="$ctrl.showHelp()" translate>Help</a></li>
+                            <li class="item last" ui-sref-active="active"><a ng-click="$ctrl.help.showHelp()" translate>Help</a></li>
                         </ul>
                     </div>
                 </nav>

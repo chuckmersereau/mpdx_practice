@@ -6,16 +6,16 @@ import filter from 'lodash/fp/filter';
 class MergePeople {
     constructor(
         $log, $q,
-        api, people
+        api, people, tools
     ) {
         this.$q = $q;
         this.$log = $log;
         this.api = api;
         this.people = people;
+        this.tools = tools;
 
         this.duplicates = [];
         this.perPage = 5;
-        this.total = 0;
     }
 
     load(reset = false) {
@@ -39,12 +39,20 @@ class MergePeople {
             deSerializationOptions: relationshipId('contacts') //for shared_contact
         }).then((data) => {
             this.$log.debug('contacts/people/duplicates', data);
-            this.total = data.meta.pagination.total_count;
+            this.setMeta(data.meta);
             this.duplicates = map((person) => {
                 person.mergeChoice = -1;
                 return person;
             }, data);
         });
+    }
+
+    setMeta(meta) {
+        this.meta = meta;
+
+        if (this.meta && this.meta.pagination && this.meta.pagination.total_count && this.tools.analytics) {
+            this.tools.analytics['duplicate-people'] = this.meta.pagination.total_count;
+        }
     }
 
     merge(duplicates) {
@@ -81,11 +89,12 @@ class MergePeople {
     }
 }
 
+import uiRouter from '@uirouter/angularjs';
 import api from 'common/api/api.service';
 import people from 'contacts/show/people/people.service';
-import uiRouter from '@uirouter/angularjs';
+import tools from 'tools/tools.service';
 
 export default angular.module('mpdx.tools.merge.people.service', [
     uiRouter,
-    api, people
+    api, people, tools
 ]).service('mergePeople', MergePeople).name;

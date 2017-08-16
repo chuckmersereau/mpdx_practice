@@ -1,51 +1,55 @@
 import component from './contacts.component';
 
 describe('tools.mergeContacts.component', () => {
-    let $ctrl, rootScope, scope, componentController, alerts, gettextCatalog, state, api, contacts;
+    let $ctrl, rootScope, scope, componentController, alerts, gettextCatalog, state, api, contacts, tools;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _alerts_, _gettextCatalog_, $state, _api_, _contacts_) => {
+        inject(($componentController, $rootScope, $state, _alerts_, _api_, _gettextCatalog_, _contacts_, _tools_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             alerts = _alerts_;
             api = _api_;
-            contacts = _contacts_;
             gettextCatalog = _gettextCatalog_;
+            contacts = _contacts_;
+            tools = _tools_;
             state = $state;
             componentController = $componentController;
-            $ctrl = componentController('mergeContacts', {$scope: scope}, {});
+            $ctrl = componentController('mergeContacts', { $scope: scope }, {});
         });
         spyOn($ctrl.blockUI, 'reset').and.callFake(() => {});
     });
-    describe('events', () => {
-        beforeEach(() => {
-            spyOn($ctrl, 'load').and.callFake(() => Promise.resolve({}));
-        });
-        it('will reload on accountListUpdated', () => {
-            rootScope.$emit('accountListUpdated');
-            expect($ctrl.load).toHaveBeenCalledWith();
-        });
-    });
+
     describe('$onInit', () => {
         beforeEach(() => {
             spyOn($ctrl, 'load').and.callFake(() => Promise.resolve({}));
         });
+
         it('will call load', () => {
             $ctrl.$onInit();
             expect($ctrl.load).toHaveBeenCalledWith();
         });
+
+        it('will reload on accountListUpdated', () => {
+            $ctrl.$onInit();
+            rootScope.$emit('accountListUpdated');
+            expect($ctrl.load).toHaveBeenCalledWith();
+        });
     });
+
     describe('select', () => {
         let duplicate;
+
         beforeEach(() => {
             duplicate = {contacts: [{id: 1}, {id: 2}]};
         });
+
         it('should pick winner 1', () => {
             $ctrl.select(duplicate, 0);
             expect(duplicate.ignored).toBeFalsy();
             expect(duplicate.contacts[0].selected).toBeTruthy();
             expect(duplicate.contacts[1].selected).toBeFalsy();
         });
+
         it('should pick winner 2', () => {
             $ctrl.select(duplicate, 1);
             expect(duplicate.ignored).toBeFalsy();
@@ -53,11 +57,14 @@ describe('tools.mergeContacts.component', () => {
             expect(duplicate.contacts[0].selected).toBeFalsy();
         });
     });
+
     describe('deSelect', () => {
         let duplicate;
+
         beforeEach(() => {
             duplicate = {contacts: [{id: 1}, {id: 2}]};
         });
+
         it('should set ignored', () => {
             $ctrl.deSelect(duplicate);
             expect(duplicate.ignored).toBeTruthy();
@@ -65,29 +72,35 @@ describe('tools.mergeContacts.component', () => {
             expect(duplicate.contacts[1].selected).toBeFalsy();
         });
     });
+
     describe('confirm', () => {
-        afterEach(() => {
-            rootScope.$apply(); // for return Promise.all
-        });
         beforeEach(() => {
             spyOn($ctrl.blockUI, 'start').and.callFake(() => {});
             spyOn($ctrl, 'merge').and.callFake(() => Promise.resolve());
             spyOn($ctrl, 'ignore').and.callFake(() => Promise.resolve());
         });
+
+        afterEach(() => {
+            rootScope.$apply(); // for return Promise.all
+        });
+
         it('should show loading screen', () => {
             $ctrl.confirm();
             expect($ctrl.blockUI.start).toHaveBeenCalledWith();
         });
+
         it('should handle bulk merging of contacts', () => {
             $ctrl.duplicates = [{contacts: [{id: 1, selected: true}, {id: 2}]}, {contacts: [{id: 3}, {id: 4, selected: true}]}];
             $ctrl.confirm();
             expect($ctrl.merge).toHaveBeenCalledWith([{contacts: [{id: 1, selected: true}, {id: 2}]}, {contacts: [{id: 3}, {id: 4, selected: true}]}]);
         });
+
         it('should handle multiple ignores', () => {
             $ctrl.duplicates = [{ignored: true, contacts: [{id: 1}, {id: 2}]}, {contacts: [{id: 3}, {id: 4}]}, {ignored: true, contacts: [{id: 4}, {id: 5}]}];
             $ctrl.confirm();
             expect($ctrl.ignore).toHaveBeenCalledWith([{ignored: true, contacts: [{id: 1}, {id: 2}]}, {ignored: true, contacts: [{id: 4}, {id: 5}]}]);
         });
+
         it('should show a translated alert on completion', done => {
             spyOn(alerts, 'addAlert').and.callFake(data => data);
             spyOn(gettextCatalog, 'getString').and.callThrough();
@@ -98,21 +111,25 @@ describe('tools.mergeContacts.component', () => {
             });
         });
     });
+
     describe('confirmAndContinue', () => {
         beforeEach(() => {
             spyOn($ctrl, 'confirm').and.callFake(() => Promise.resolve());
             spyOn($ctrl, 'load').and.callFake(() => Promise.resolve());
         });
+
         it('should call confirm', () => {
             $ctrl.confirmAndContinue();
             expect($ctrl.confirm).toHaveBeenCalledWith();
         });
+
         it('should reload new contacts', done => {
             $ctrl.confirmAndContinue().then(() => {
                 expect($ctrl.load).toHaveBeenCalledWith();
                 done();
             });
         });
+
         it('should hide the load screen', done => {
             $ctrl.confirmAndContinue().then(() => {
                 expect($ctrl.blockUI.reset).toHaveBeenCalledWith();
@@ -120,21 +137,25 @@ describe('tools.mergeContacts.component', () => {
             });
         });
     });
+
     describe('confirmThenLeave', () => {
         beforeEach(() => {
             spyOn($ctrl, 'confirm').and.callFake(() => Promise.resolve());
             spyOn(state, 'go').and.callFake(() => {});
         });
+
         it('should call confirm', () => {
             $ctrl.confirmThenLeave();
             expect($ctrl.confirm).toHaveBeenCalledWith();
         });
+
         it('should navigate to tools homepage', done => {
             $ctrl.confirmThenLeave().then(() => {
                 expect(state.go).toHaveBeenCalledWith('tools');
                 done();
             });
         });
+
         it('should hide the load screen', done => {
             $ctrl.confirmThenLeave().then(() => {
                 expect($ctrl.blockUI.reset).toHaveBeenCalledWith();
@@ -142,6 +163,7 @@ describe('tools.mergeContacts.component', () => {
             });
         });
     });
+
     describe('ignore', () => {
         it('should create an array of api delete promises', () => {
             spyOn(api, 'delete').and.callFake(() => Promise.resolve());
@@ -150,6 +172,7 @@ describe('tools.mergeContacts.component', () => {
             expect(api.delete).toHaveBeenCalledWith({url: `contacts/duplicates/2`, type: 'contacts'});
         });
     });
+
     describe('merge', () => {
         it('should call bulkMerge with data', () => {
             spyOn(contacts, 'merge').and.callFake(() => Promise.resolve());
@@ -160,14 +183,17 @@ describe('tools.mergeContacts.component', () => {
             ]);
         });
     });
+
     describe('load', () => {
         beforeEach(() => {
             $ctrl.duplicates = [{contacts: [{id: 1}, {id: 2}]}];
         });
+
         it('should reset duplicates', () => {
             $ctrl.load();
             expect($ctrl.duplicates).toEqual([]);
         });
+
         it('should query the api', () => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve());
             $ctrl.load();
@@ -181,21 +207,37 @@ describe('tools.mergeContacts.component', () => {
                 per_page: 5
             });
         });
-        it('should grab total', done => {
-            spyOn(api, 'get').and.callFake(() => Promise.resolve({meta: {pagination: {total_count: 2}}}));
+
+        it('should call set meta', (done) => {
+            let data = [{ id: 1 }];
+            spyOn(api, 'get').and.callFake(() => Promise.resolve(data));
+            spyOn($ctrl, 'setMeta').and.callThrough();
             $ctrl.load().then(() => {
-                expect($ctrl.total).toEqual(2);
+                expect($ctrl.setMeta).toHaveBeenCalled();
                 done();
             });
         });
+
         it('should map data', done => {
-            let data = [{id: 1}];
-            data.meta = {pagination: {total_count: 2}};
+            let data = [{ id: 1 }];
+            data.meta = { pagination: { total_count: 2 } };
             spyOn(api, 'get').and.callFake(() => Promise.resolve(data));
             $ctrl.load().then(() => {
                 expect($ctrl.duplicates).toEqual(data);
                 done();
             });
+        });
+    });
+
+    describe('setMeta', () => {
+        it('should set meta', () => {
+            $ctrl.setMeta(['data']);
+            expect($ctrl.meta).toEqual(['data']);
+        });
+
+        it('should set tools.analytics', () => {
+            $ctrl.setMeta({ pagination: { total_count: 123 } });
+            expect(tools.analytics['duplicate-contacts']).toEqual(123);
         });
     });
 });

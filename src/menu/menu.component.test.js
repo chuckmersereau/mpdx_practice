@@ -1,19 +1,14 @@
-import component from './sidebar.component';
+import component from './menu.component';
 
-describe('tools.fix.sidebar.component', () => {
-    let $ctrl, rootScope, scope, componentController,
-        fixAddresses, fixCommitmentInfo, fixEmailAddresses, fixPhoneNumbers, tools;
+describe('menu.component', () => {
+    let $ctrl, rootScope, scope, componentController, tools;
 
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope,
-        _fixAddresses_, _fixCommitmentInfo_, _fixEmailAddresses_, _fixPhoneNumbers_, _tools_) => {
+            _tools_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
-            fixAddresses = _fixAddresses_;
-            fixCommitmentInfo = _fixCommitmentInfo_;
-            fixEmailAddresses = _fixEmailAddresses_;
-            fixPhoneNumbers = _fixPhoneNumbers_;
             tools = _tools_;
             componentController = $componentController;
             loadController();
@@ -21,7 +16,7 @@ describe('tools.fix.sidebar.component', () => {
     });
 
     function loadController() {
-        $ctrl = componentController('fixSidebar', { $scope: scope });
+        $ctrl = componentController('menu', { $scope: scope });
     }
 
     describe('$onInit', () => {

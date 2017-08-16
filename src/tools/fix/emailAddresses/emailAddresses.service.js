@@ -9,32 +9,13 @@ import union from 'lodash/fp/union';
 
 class EmailAddressesService {
     constructor(
-        api, people
+        api, people, tools
     ) {
         this.api = api;
         this.people = people;
+        this.tools = tools;
         this.loading = false;
         this.page = 1;
-    }
-
-    loadCount() {
-        if (this.meta) { return Promise.resolve(this.meta); }
-        return this.api.get(
-            'contacts/people',
-            {
-                filter: {
-                    email_address_valid: false,
-                    account_list_id: this.api.account_list_id
-                },
-                page: 1,
-                per_page: 0
-            }
-        ).then((data) => {
-            if (!this.meta) {
-                this.meta = data.meta;
-            }
-            return this.meta;
-        });
     }
 
     load(reset = false, page = 1) {
@@ -65,10 +46,18 @@ class EmailAddressesService {
             ['MPDX']).sort();
 
             this.data = data;
-            this.meta = data.meta;
+            this.setMeta(data.meta);
 
             return this.data;
         });
+    }
+
+    setMeta(meta) {
+        this.meta = meta;
+
+        if (this.meta && this.meta.pagination && this.meta.pagination.total_count && this.tools.analytics) {
+            this.tools.analytics['fix-email-addresses'] = this.meta.pagination.total_count;
+        }
     }
 
     save(person) {
@@ -80,6 +69,7 @@ class EmailAddressesService {
             this.data = reject({ id: person.id }, this.data);
             if (this.meta && this.meta.pagination && this.meta.pagination.total_count) {
                 this.meta.pagination.total_count -= 1;
+                this.setMeta(this.meta);
             }
             if (this.data.length === 0) {
                 this.load(true, this.page);
@@ -130,7 +120,8 @@ class EmailAddressesService {
 
 import api from 'common/api/api.service';
 import people from 'contacts/show/people/people.service';
+import tools from 'tools/tools.service';
 
 export default angular.module('mpdx.tools.fix.emailAddresses.service', [
-    api, people
+    api, people, tools
 ]).service('fixEmailAddresses', EmailAddressesService).name;

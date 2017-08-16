@@ -3,37 +3,44 @@ import map from 'lodash/fp/map';
 
 class MergeContactsController {
     constructor(
-        $log, $rootScope, $state, blockUI, gettextCatalog,
-        alerts, api, contacts
+        $log, $rootScope,
+        $state, blockUI, gettextCatalog,
+        alerts, api, contacts, tools
     ) {
         this.$log = $log;
+        this.$rootScope = $rootScope;
         this.$state = $state;
+        this.gettextCatalog = gettextCatalog;
+        this.blockUI = blockUI.instances.get('merge-contacts');
         this.alerts = alerts;
         this.api = api;
         this.contacts = contacts;
-        this.gettextCatalog = gettextCatalog;
-        this.blockUI = blockUI.instances.get('merge-contacts');
+        this.tools = tools;
 
         this.duplicates = [];
         this.total = 0;
+    }
 
-        $rootScope.$on('accountListUpdated', () => {
+    $onInit() {
+        this.$rootScope.$on('accountListUpdated', () => {
             this.load();
         });
-    }
-    $onInit() {
+
         this.load();
     }
+
     select(duplicate, index) {
         duplicate.ignored = false;
         duplicate.contacts[0].selected = index === 0;
         duplicate.contacts[1].selected = index === 1;
     }
+
     deSelect(duplicate) {
         duplicate.ignored = true;
         duplicate.contacts[0].selected = false;
         duplicate.contacts[1].selected = false;
     }
+
     confirm() {
         this.blockUI.start();
         let promises = [];
@@ -47,6 +54,7 @@ class MergeContactsController {
             this.alerts.addAlert(this.gettextCatalog.getString('Contacts successfully merged'));
         });
     }
+
     confirmAndContinue() {
         return this.confirm().then(() => {
             return this.load().then(() => {
@@ -54,17 +62,20 @@ class MergeContactsController {
             });
         });
     }
+
     confirmThenLeave() {
         return this.confirm().then(() => {
             this.blockUI.reset();
             this.$state.go('tools');
         });
     }
+
     ignore(duplicates) {
         return map(duplicate =>
             this.api.delete({url: `contacts/duplicates/${duplicate.id}`, type: 'contacts'})
         , duplicates);
     }
+
     merge(duplicates) {
         const winnersAndLosers = map(duplicate => {
             if (duplicate.contacts[0].selected) {
@@ -74,6 +85,7 @@ class MergeContactsController {
         }, duplicates);
         return this.contacts.merge(winnersAndLosers);
     }
+
     load() {
         this.duplicates = [];
         return this.api.get('contacts/duplicates', {
@@ -87,10 +99,19 @@ class MergeContactsController {
         }).then(data => {
             /* istanbul ignore next */
             this.$log.debug('contacts/duplicates', data);
-            this.total = data.meta.pagination.total_count;
+            this.setMeta(data.meta);
             this.duplicates = data;
         });
     }
+
+    setMeta(meta) {
+        this.meta = meta;
+
+        if (this.meta && this.meta.pagination && this.meta.pagination.total_count && this.tools.analytics) {
+            this.tools.analytics['duplicate-contacts'] = this.meta.pagination.total_count;
+        }
+    }
+
     confirmButtonDisabled() {
         return filter(duplicate => (duplicate.mergeChoice !== -1), this.duplicates).length === 0;
     }
@@ -106,8 +127,9 @@ import uiRouter from '@uirouter/angularjs';
 import alerts from 'common/alerts/alerts.service';
 import api from 'common/api/api.service';
 import contacts from 'contacts/contacts.service';
+import tools from 'tools/tools.service';
 
 export default angular.module('mpdx.tools.merge.contacts.component', [
     blockUi, uiRouter, gettext,
-    alerts, api, contacts
+    alerts, api, contacts, tools
 ]).component('mergeContacts', MergeContacts).name;

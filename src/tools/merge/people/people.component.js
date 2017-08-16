@@ -6,15 +6,19 @@ class MergePeopleController {
         api, mergePeople
     ) {
         this.$log = $log;
-        this.$q = $q;
         this.$state = $state;
+        this.$rootScope = $rootScope;
         this.blockUI = blockUI.instances.get('merge-people');
         this.api = api;
         this.mergePeople = mergePeople;
+    }
 
-        $rootScope.$on('accountListUpdated', () => {
+    $onInit() {
+        this.$rootScope.$on('accountListUpdated', () => {
             this.mergePeople.load(true);
         });
+
+        this.mergePeople.load();
     }
 
     useThisOne(duplicate, mergeChoice = -1) {
@@ -39,6 +43,7 @@ class MergePeopleController {
         return filter(duplicate => (duplicate.mergeChoice !== -1), this.mergePeople.duplicates).length === 0;
     }
 }
+
 const MergePeople = {
     controller: MergePeopleController,
     template: require('./people.html')

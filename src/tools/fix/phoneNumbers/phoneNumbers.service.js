@@ -8,32 +8,13 @@ import uniq from 'lodash/fp/uniq';
 
 class PhoneNumbersService {
     constructor(
-        api, people
+        api, people, tools
     ) {
         this.api = api;
         this.people = people;
+        this.tools = tools;
         this.loading = false;
         this.page = 1;
-    }
-
-    loadCount() {
-        if (this.meta) { return Promise.resolve(this.meta); }
-        return this.api.get(
-            'contacts/people',
-            {
-                filter: {
-                    phone_number_valid: false,
-                    account_list_id: this.api.account_list_id
-                },
-                page: 1,
-                per_page: 0
-            }
-        ).then((data) => {
-            if (!this.meta) {
-                this.meta = data.meta;
-            }
-            return this.meta;
-        });
     }
 
     load(reset = false, page = 1) {
@@ -70,10 +51,18 @@ class PhoneNumbersService {
 
             this.sources = uniq(this.sources).sort();
             this.data = data;
-            this.meta = data.meta;
+            this.setMeta(data.meta);
 
             return this.data;
         });
+    }
+
+    setMeta(meta) {
+        this.meta = meta;
+
+        if (this.meta && this.meta.pagination && this.meta.pagination.total_count && this.tools.analytics) {
+            this.tools.analytics['fix-phone-numbers'] = this.meta.pagination.total_count;
+        }
     }
 
     save(person) {
@@ -85,6 +74,7 @@ class PhoneNumbersService {
             this.data = reject({ id: person.id }, this.data);
             if (this.meta && this.meta.pagination && this.meta.pagination.total_count) {
                 this.meta.pagination.total_count -= 1;
+                this.setMeta(this.meta);
             }
             if (this.data.length === 0) {
                 this.load(true, this.page);
@@ -135,7 +125,8 @@ class PhoneNumbersService {
 
 import api from 'common/api/api.service';
 import people from 'contacts/show/people/people.service';
+import tools from 'tools/tools.service';
 
 export default angular.module('mpdx.tools.fix.phoneNumbers.service', [
-    api, people
+    api, people, tools
 ]).service('fixPhoneNumbers', PhoneNumbersService).name;

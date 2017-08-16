@@ -1,8 +1,8 @@
 <div class="merges">
     <h2 translate>Merge Contacts</h2>
-    <div ng-if="$ctrl.duplicates.length">
+    <div ng-if="$ctrl.duplicates.length > 0">
         <p>
-            <translate translate-plural="You have {{$count}} possible duplicate contacts." translate-n="$ctrl.total">
+            <translate translate-plural="You have {{$count}} possible duplicate contacts." translate-n="$ctrl.meta.pagination.total_count">
                 You have 1 possible duplicate contact.
             </translate>
             <translate>
@@ -47,7 +47,7 @@
             </div>
         </div>
     </div>
-    <div ng-if="!$ctrl.duplicates.length">
+    <div ng-if="$ctrl.duplicates.length === 0">
         <p translate>No Contacts to merge right now!</p>
     </div>
 </div>
