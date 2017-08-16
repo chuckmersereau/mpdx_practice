@@ -310,7 +310,8 @@ export default class Routes {
             url: '/show/{appealId}',
             component: 'appealsShow',
             resolve: {
-                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['pledge_currencies', 'pledge_frequency_hashes'])
+                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['pledge_currencies', 'pledge_frequency_hashes']),
+                1: /*@ngInject*/ (mailchimp) => mailchimp.load()
             }
         }).state({
             name: 'tools.import',

@@ -19,27 +19,21 @@ class MailchimpIntegrationPreferencesController {
         this.showSettings = false;
 
         $rootScope.$on('accountListUpdated', () => {
-            this.load();
+            this.mailchimp.load();
         });
     }
     $onInit() {
         this.oAuth = `${config.oAuthUrl}mailchimp?account_list_id=${this.api.account_list_id}&redirect_to=${this.$window.encodeURIComponent(config.baseUrl + 'preferences/integrations?selectedTab=mailchimp')}&access_token=${this.$window.localStorage.getItem('token')}`;
-        this.load();
+        this.mailchimp.load();
     }
-    load() {
-        return this.api.get(`account_lists/${this.api.account_list_id}/mail_chimp_account`).then(data => {
-            /* istanbul ignore next */
-            this.$log.debug(`account_lists/${this.api.account_list_id}/mail_chimp_account`, data);
-            this.mailchimp.data = data;
-        });
-    }
+
     save(showSettings = false) {
         this.saving = true;
         return this.api.post({ url: `account_lists/${this.api.account_list_id}/mail_chimp_account`, data: this.mailchimp.data }).then(() => {
             this.alerts.addAlert(this.gettextCatalog.getString('Preferences saved successfully'), 'success');
             this.saving = false;
             this.showSettings = false;
-            return this.load().then(() => {
+            return this.mailchimp.load().then(() => {
                 this.showSettings = showSettings;
             });
         }).catch(err => {

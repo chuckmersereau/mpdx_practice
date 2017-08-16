@@ -1,10 +1,12 @@
 import assign from 'lodash/fp/assign';
 import concat from 'lodash/fp/concat';
 import contains from 'lodash/fp/contains';
+import curry from 'lodash/fp/curry';
 import defaultTo from 'lodash/fp/defaultTo';
 import find from 'lodash/fp/find';
 import get from 'lodash/fp/get';
-// import joinComma from 'common/fp/joinComma';
+import isNilOrEmpty from 'common/fp/isNilOrEmpty';
+import joinComma from 'common/fp/joinComma';
 import map from 'lodash/fp/map';
 import moment from 'moment';
 import pull from 'lodash/fp/pull';
@@ -15,8 +17,8 @@ import union from 'lodash/fp/union';
 
 class AppealController {
     constructor(
-        $log, $stateParams, gettext,
-        alerts, api, contacts, donations, serverConstants, tasks
+        $log, $rootScope, $state, $stateParams, gettext,
+        alerts, api, contacts, donations, mailchimp, serverConstants, tasks
     ) {
         this.$log = $log;
         this.$stateParams = $stateParams;
@@ -25,19 +27,24 @@ class AppealController {
         this.contacts = contacts;
         this.donations = donations;
         this.gettext = gettext;
+        this.mailchimp = mailchimp;
         this.moment = moment;
         this.serverConstants = serverConstants;
         this.tasks = tasks;
 
         this.appeal = null;
         this.selectedContactIds = [];
+
+        $rootScope.$on('accountListUpdated', () => {
+            $state.go('tools.appeals');
+        });
     }
     $onInit() {
         this.api.get(`appeals/${this.$stateParams.appealId}`, {
-            include: 'contacts,contacts.donor_accounts'
-            // fields: {
-            //     contacts: 'name'
-            // }
+            include: 'contacts,contacts.donor_accounts',
+            fields: {
+                contacts: 'donor_accounts,name,pledge_amount,pledge_currency,pledge_frequency'
+            }
         }).then(data => {
             /* istanbul ignore next */
             this.$log.debug('appeal', data);
@@ -74,10 +81,10 @@ class AppealController {
             const contact = get('contact', value);
             return contact ? concat(result, contact) : result;
         }, [], donations);
-        const contactsNotGiven = reject(c => contains(c.id, allGiven), contacts);
-        return map(c => {
-            c.currency = this.getCurrencyFromCode(c.pledge_currency);
-            return c;
+        const contactsNotGiven = reject(contact => contains(contact.id, allGiven), contacts);
+        return map(contact => {
+            contact.currency = this.getCurrencyFromCode(contact.pledge_currency);
+            return contact;
         }, contactsNotGiven);
     }
     getCurrencyFromCode(code) {
@@ -128,18 +135,18 @@ class AppealController {
         });
     }
     selectAllGiven() {
-        this.selectedContactIds = union(this.selectedContactIds, map(d => d.contact.id, this.appeal.donations));
+        this.selectedContactIds = union(this.selectedContactIds, map(donation => donation.contact.id, this.appeal.donations));
     }
     deselectAllGiven() {
-        const allGiven = map(d => d.contact.id, this.appeal.donations);
-        this.selectedContactIds = reject(c => contains(c, allGiven), this.selectedContactIds);
+        const allGiven = map(donation => donation.contact.id, this.appeal.donations);
+        this.selectedContactIds = reject(id => contains(id, allGiven), this.selectedContactIds);
     }
     selectAllNotGiven() {
         this.selectedContactIds = union(this.selectedContactIds, map('id', this.contactsNotGiven));
     }
     deselectAllNotGiven() {
         const allNotGiven = map('id', this.contactsNotGiven);
-        this.selectedContactIds = reject(c => contains(c, allNotGiven), this.selectedContactIds);
+        this.selectedContactIds = reject(id => contains(id, allNotGiven), this.selectedContactIds);
     }
     selectContact(contactId) {
         this.selectedContactIds = contains(contactId, this.selectedContactIds) ? pull(contactId, this.selectedContactIds) : concat(this.selectedContactIds, contactId);
@@ -190,6 +197,39 @@ class AppealController {
         const field = `${currency}${pledge} ${frequency}`;
         return [[name, field]];
     }
+    exportMailchimp() {
+        const alert = curry(message => this.alerts.addAlert(this.gettext(message), 'danger'));
+        const result = this.cantExportToMailChimp();
+        return result ? alert(result) : this.doExportToMailChimp();
+    }
+    cantExportToMailChimp() {
+        return defaultTo(this.isSelectedPrimary(), this.isMailChimpListUndefined());
+    }
+    isMailChimpListUndefined() {
+        const message = 'No primary Mailchimp list defined. Please select a list in preferences.';
+        return isNilOrEmpty(this.mailchimp.data.primary_list_id) ? message : null;
+    }
+    isSelectedPrimary() {
+        const message = 'Please select a list other than your primary Mailchimp list.';
+        return this.mailchimp.data.primary_list_id === this.mailchimpListId ? message : false;
+    }
+    doExportToMailChimp() {
+        return this.api.post({
+            url: `contacts/export_to_mail_chimp?mail_chimp_list_id=${this.mailchimpListId}`,
+            type: 'export_to_mail_chimps',
+            data: {
+                filter: {
+                    contact_ids: joinComma(this.selectedContactIds)
+                }
+            },
+            doSerialization: false
+        }).then(() => {
+            this.alerts.addAlert(this.gettext('Contact(s) successfully exported to Mailchimp'));
+        }).catch(ex => {
+            this.alerts.addAlert(this.gettext('Unable to add export contact(s) to Mailchimp'), 'danger');
+            throw ex;
+        });
+    }
 }
 
 const Appeal = {
@@ -199,10 +239,11 @@ const Appeal = {
 
 import contacts from 'contacts/contacts.service';
 import donations from 'reports/donations/donations.service';
+import mailchimp from 'preferences/integrations/mailchimp/mailchimp.service';
 import tasks from 'tasks/tasks.service';
 import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('tools.mpdx.appeals.show', [
     uiRouter,
-    contacts, donations, tasks
+    contacts, donations, mailchimp, tasks
 ]).component('appealsShow', Appeal).name;

@@ -31,7 +31,7 @@ describe('preferences.integrations.mailchimp.component', () => {
     });
     describe('$onInit', () => {
         beforeEach(() => {
-            spyOn($ctrl, 'load').and.callFake(() => {});
+            spyOn(mailchimp, 'load').and.callFake(() => {});
         });
         it('should build the oAuth url', () => {
             $ctrl.$onInit();
@@ -39,27 +39,12 @@ describe('preferences.integrations.mailchimp.component', () => {
         });
         it('should call load', () => {
             $ctrl.$onInit();
-            expect($ctrl.load).toHaveBeenCalledWith();
-        });
-    });
-    describe('load', () => {
-        beforeEach(() => {
-            spyOn(api, 'get').and.callFake(() => Promise.resolve(['data']));
-        });
-        it('should call the api', () => {
-            $ctrl.load();
-            expect(api.get).toHaveBeenCalledWith(`account_lists/123/mail_chimp_account`);
-        });
-        it('should set the mailchimp service data', done => {
-            $ctrl.load().then(() => {
-                expect(mailchimp.data).toEqual(['data']);
-                done();
-            });
+            expect(mailchimp.load).toHaveBeenCalledWith();
         });
     });
     describe('save', () => {
         beforeEach(() => {
-            spyOn($ctrl, 'load').and.callFake(() => Promise.resolve());
+            spyOn(mailchimp, 'load').and.callFake(() => Promise.resolve());
         });
         it('should set saving flag', () => {
             $ctrl.save();
@@ -95,7 +80,7 @@ describe('preferences.integrations.mailchimp.component', () => {
         it('should refresh', done => {
             spyOn(api, 'post').and.callFake(() => Promise.resolve());
             $ctrl.save().then(() => {
-                expect($ctrl.load).toHaveBeenCalledWith();
+                expect(mailchimp.load).toHaveBeenCalledWith();
                 done();
             });
         });
