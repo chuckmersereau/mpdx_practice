@@ -6,7 +6,7 @@ export default function appRun(
     const block = blockUI.instances.get('root');
     authManager.checkAuthOnRefresh();
     authManager.redirectWhenUnauthenticated();
-    $transitions.onStart({ to: state => state.name !== 'login' && state.name !== 'auth' }, trans => {
+    $transitions.onStart({ to: state => state.name !== 'login' && state.name !== 'auth' && state.name !== 'acceptInvite' }, trans => {
         if (!authManager.isAuthenticated()) {
             return;
         }

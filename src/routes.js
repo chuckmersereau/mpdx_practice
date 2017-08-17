@@ -33,7 +33,6 @@ export default class Routes {
             title: gettext('Accept Invite'),
             url: '/account_lists/{account_list_id}/accept_invite/{id}?code',
             component: 'acceptInvite',
-            parent: 'root',
             resolve: {
                 url: /*@ngInject*/ ($location) => $location.url($location.url().replace("#", "?"))
             }
