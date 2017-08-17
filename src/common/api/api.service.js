@@ -172,7 +172,7 @@ class Api {
             }
             promise.resolve(response.data);
         }).catch((response) => {
-            this.$log.error('API ERROR:', response.status, response.data);
+            this.$log.error('API ERROR:', response);
             promise.reject(response);
         });
 

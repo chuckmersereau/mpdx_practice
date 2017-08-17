@@ -1,6 +1,7 @@
 import assign from 'lodash/fp/assign';
 import concat from 'lodash/fp/concat';
 import contains from 'lodash/fp/contains';
+import createPatch from 'common/fp/createPatch';
 import curry from 'lodash/fp/curry';
 import defaultTo from 'lodash/fp/defaultTo';
 import find from 'lodash/fp/find';
@@ -49,6 +50,7 @@ class AppealController {
             /* istanbul ignore next */
             this.$log.debug('appeal', data);
             this.appeal = data;
+            this.dataInitialState = angular.copy(data);
             this.currency = this.getCurrencyFromCode(data.total_currency);
             this.donationsSum = sumBy('converted_amount', data.donations);
             this.percentageRaised = this.donationsSum / data.amount * 100;
@@ -99,7 +101,11 @@ class AppealController {
         this.percentageRaised = this.donationsSum / this.appeal.amount * 100;
     }
     save() {
-        return this.api.put(`appeals/${this.appeal.id}`, this.appeal).then(data => {
+        let patch = createPatch(this.dataInitialState, this.appeal);
+        delete patch.contacts;
+        delete patch.donations;
+        this.$log.debug('appeal save', patch);
+        return this.api.put(`appeals/${this.appeal.id}`, patch).then(data => {
             this.alerts.addAlert(this.gettext('Appeal saved successfully'));
             return data;
         }).catch(ex => {

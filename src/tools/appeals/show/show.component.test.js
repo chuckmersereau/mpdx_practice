@@ -49,8 +49,9 @@ describe('tools.appeals.show.component', () => {
         });
     });
     describe('save', () => {
-        const appeal = { id: 3 };
+        const appeal = { id: 3, name: 'a' };
         beforeEach(() => {
+            $ctrl.dataInitialState = {id: 3};
             $ctrl.appeal = appeal;
         });
         it('should call the api', () => {
