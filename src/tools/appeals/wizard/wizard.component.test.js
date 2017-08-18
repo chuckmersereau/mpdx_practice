@@ -1,25 +1,24 @@
 import component from './wizard.component';
 
 describe('tools.appeals.wizard.component', () => {
-    let $ctrl, scope, serverConstants, contactsTags, api;
+    let $ctrl, scope, serverConstants, contactsTags;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _contactsTags_, _api_, _serverConstants_) => {
+        inject(($componentController, $rootScope, _contactsTags_, _serverConstants_) => {
             scope = $rootScope.$new();
-            api = _api_;
             contactsTags = _contactsTags_;
             serverConstants = _serverConstants_;
-            $ctrl = $componentController('appealsWizard', {$scope: scope}, {});
+            $ctrl = $componentController('appealsWizard', { $scope: scope }, {});
         });
         serverConstants.data = {
             status_hashes: [
-                {id: 'a'},
-                {id: 'b'}
+                { id: 'a' },
+                { id: 'b' }
             ]
         };
         contactsTags.data = [
-            {name: 'b'},
-            {name: 'c'}
+            { name: 'b' },
+            { name: 'c' }
         ];
     });
 

@@ -42,8 +42,8 @@ class EmailAddressesService {
             this.sources = union(
                 flatMap(
                     person => map('source', person.email_addresses)
-                , data),
-            ['MPDX']).sort();
+                    , data),
+                ['MPDX']).sort();
 
             this.data = data;
             this.setMeta(data.meta);
@@ -105,7 +105,7 @@ class EmailAddressesService {
 
     removeEmailAddress(person, emailAddress) {
         return this.people.deleteEmailAddress(person, emailAddress).then(() => {
-            person.email_addresses = reject({id: emailAddress.id}, person.email_addresses);
+            person.email_addresses = reject({ id: emailAddress.id }, person.email_addresses);
         });
     }
 

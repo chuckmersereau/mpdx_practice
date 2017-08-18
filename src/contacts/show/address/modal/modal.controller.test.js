@@ -26,19 +26,19 @@ describe('contacts.show.address.modal.controller', () => {
             spyOn($ctrl, 'refreshMap').and.callFake(() => {});
         });
         it('shouldn\'t be editable with a remote_id', () => {
-            loadController({}, {remote_id: 123});
+            loadController({}, { remote_id: 123 });
             expect($ctrl.isEditable).toBeFalsy();
         });
         it('should be editable with source MPDX', () => {
-            loadController({}, {source: 'MPDX'});
+            loadController({}, { source: 'MPDX' });
             expect($ctrl.isEditable).toBeTruthy();
         });
         it('should be editable with source manual', () => {
-            loadController({}, {source: 'manual'});
+            loadController({}, { source: 'manual' });
             expect($ctrl.isEditable).toBeTruthy();
         });
         it('should be editable with source TntImport', () => {
-            loadController({}, {source: 'TntImport'});
+            loadController({}, { source: 'TntImport' });
             expect($ctrl.isEditable).toBeTruthy();
         });
     });

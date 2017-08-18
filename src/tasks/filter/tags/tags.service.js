@@ -28,7 +28,7 @@ class TagsService {
             return this.$q.resolve(this.data);
         }
 
-        return this.api.get('tasks/tags', {filter: {account_list_id: this.api.account_list_id}}).then((data) => {
+        return this.api.get('tasks/tags', { filter: { account_list_id: this.api.account_list_id } }).then((data) => {
             this.$log.debug('tasks/tags', data);
             this.data = data;
             this.change();
@@ -47,7 +47,7 @@ class TagsService {
             name: tag.name
         }];
 
-        return this.api.delete({url: 'tasks/tags/bulk', params: params, data: data, type: 'tags'}).then(() => {
+        return this.api.delete({ url: 'tasks/tags/bulk', params: params, data: data, type: 'tags' }).then(() => {
             this.selectedTags = reject({ name: tag.name }, this.selectedTags);
             this.rejectedTags = reject({ name: tag.name }, this.rejectedTags);
             this.data = reject({ name: tag.name }, this.data);

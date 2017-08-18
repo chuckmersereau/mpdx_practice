@@ -145,7 +145,7 @@ describe('home.progress.component', () => {
 
         it('should call accounts.getAnalytics', () => {
             $ctrl.refreshData();
-            expect(accounts.getAnalytics).toHaveBeenCalledWith({startDate: $ctrl.startDate, endDate: $ctrl.endDate});
+            expect(accounts.getAnalytics).toHaveBeenCalledWith({ startDate: $ctrl.startDate, endDate: $ctrl.endDate });
         });
 
         it('should return promise', () => {

@@ -10,7 +10,7 @@ class AlertsService {
     }
 
     addAlert(message, type = 'success', status = null, displayTime = 5, modal = false) {
-        if (!message) { return; };
+        if (!message) { return; }
 
         const alert = {
             id: uuid(),
@@ -30,4 +30,4 @@ class AlertsService {
 }
 
 export default angular.module('mpdx.common.alerts.service', []
-    ).service('alerts', AlertsService).name;
+).service('alerts', AlertsService).name;

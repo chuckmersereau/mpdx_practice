@@ -4,7 +4,7 @@ import map from 'lodash/fp/map';
 
 const ifNotObject = (tag) => {
     if (!isObject(tag)) {
-        return {name: tag};
+        return { name: tag };
     }
     return tag;
 };
@@ -20,12 +20,12 @@ class TagSelectorController {
         this.init();
     }
     init() {
-        //make sure ngModel is an array before we try to modify it
+        // make sure ngModel is an array before we try to modify it
         if (!isArray(this.ngModel)) {
             this.ngModel = [];
         }
         const tagList = this.tagList;
-        //map to tag object if array of names
+        // map to tag object if array of names
         this.tags = map(ifNotObject, tagList);
         this.selectedTags = angular.copy(this.ngModel);
     }

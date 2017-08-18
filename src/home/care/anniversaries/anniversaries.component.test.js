@@ -15,7 +15,7 @@ describe('home.care.anniversaries', () => {
         });
     });
     function loadController() {
-        $ctrl = componentController('anniversaries', {$scope: scope}, {});
+        $ctrl = componentController('anniversaries', { $scope: scope }, {});
     }
     describe('constructor', () => {
         it('should expose dependencies for view', () => {
@@ -34,12 +34,12 @@ describe('home.care.anniversaries', () => {
             jasmine.clock().uninstall();
         });
         it('should build a numeric representation of the current month/day for sorting', () => {
-            expect($ctrl.partialDateSort({people: [{anniversary_month: 1, anniversary_day: 2}]})).toEqual(102);
+            expect($ctrl.partialDateSort({ people: [{ anniversary_month: 1, anniversary_day: 2 }] })).toEqual(102);
         });
         it('should handle pre-sorting december', () => {
             const day = moment('2015-12-22').toDate();
             jasmine.clock().mockDate(day);
-            expect($ctrl.partialDateSort({people: [{anniversary_month: 12, anniversary_day: 22}]})).toEqual(22);
+            expect($ctrl.partialDateSort({ people: [{ anniversary_month: 12, anniversary_day: 22 }] })).toEqual(22);
         });
     });
 });

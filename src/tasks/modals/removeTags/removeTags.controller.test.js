@@ -7,10 +7,10 @@ describe('tasks.modals.removeTags.controller', () => {
     function defaultScope() {
         return {
             $scope: scope,
-            selectedTasks: [{id: 1, tag_list: ['b']}, {id: 2, tag_list: ['a']}],
+            selectedTasks: [{ id: 1, tag_list: ['b'] }, { id: 2, tag_list: ['a'] }],
             currentListSize: 25
         };
-    };
+    }
     beforeEach(() => {
         angular.mock.module(remove);
         inject(($controller, $rootScope, _tasksTags_, _api_, _modal_, _gettextCatalog_, _alerts_) => {
@@ -22,7 +22,7 @@ describe('tasks.modals.removeTags.controller', () => {
             gettextCatalog = _gettextCatalog_;
             modal = _modal_;
             tasksTags = _tasksTags_;
-            tasksTags.data = [{name: 'b'}, {name: 'c'}];
+            tasksTags.data = [{ name: 'b' }, { name: 'c' }];
             controller = $controller;
             $ctrl = loadController(defaultScope());
         });
@@ -79,7 +79,7 @@ describe('tasks.modals.removeTags.controller', () => {
             expect($ctrl.getTagsFromSelectedTasks()).toEqual(['a', 'b']);
         });
         it('should show a complete list of tags if selected > data', () => {
-            $ctrl = loadController(assign(defaultScope(), {currentListSize: 1}));
+            $ctrl = loadController(assign(defaultScope(), { currentListSize: 1 }));
             expect($ctrl.getTagsFromSelectedTasks()).toEqual(['b', 'c']);
         });
     });

@@ -40,7 +40,7 @@ describe('tools.mergeContacts.component', () => {
         let duplicate;
 
         beforeEach(() => {
-            duplicate = {contacts: [{id: 1}, {id: 2}]};
+            duplicate = { contacts: [{ id: 1 }, { id: 2 }] };
         });
 
         it('should pick winner 1', () => {
@@ -62,7 +62,7 @@ describe('tools.mergeContacts.component', () => {
         let duplicate;
 
         beforeEach(() => {
-            duplicate = {contacts: [{id: 1}, {id: 2}]};
+            duplicate = { contacts: [{ id: 1 }, { id: 2 }] };
         });
 
         it('should set ignored', () => {
@@ -90,15 +90,28 @@ describe('tools.mergeContacts.component', () => {
         });
 
         it('should handle bulk merging of contacts', () => {
-            $ctrl.duplicates = [{contacts: [{id: 1, selected: true}, {id: 2}]}, {contacts: [{id: 3}, {id: 4, selected: true}]}];
+            $ctrl.duplicates = [
+                { contacts: [{ id: 1, selected: true }, { id: 2 }] },
+                { contacts: [{ id: 3 }, { id: 4, selected: true }] }
+            ];
             $ctrl.confirm();
-            expect($ctrl.merge).toHaveBeenCalledWith([{contacts: [{id: 1, selected: true}, {id: 2}]}, {contacts: [{id: 3}, {id: 4, selected: true}]}]);
+            expect($ctrl.merge).toHaveBeenCalledWith([
+                { contacts: [{ id: 1, selected: true }, { id: 2 }] },
+                { contacts: [{ id: 3 }, { id: 4, selected: true }] }
+            ]);
         });
 
         it('should handle multiple ignores', () => {
-            $ctrl.duplicates = [{ignored: true, contacts: [{id: 1}, {id: 2}]}, {contacts: [{id: 3}, {id: 4}]}, {ignored: true, contacts: [{id: 4}, {id: 5}]}];
+            $ctrl.duplicates = [
+                { ignored: true, contacts: [{ id: 1 }, { id: 2 }] },
+                { contacts: [{ id: 3 }, { id: 4 }] },
+                { ignored: true, contacts: [{ id: 4 }, { id: 5 }] }
+            ];
             $ctrl.confirm();
-            expect($ctrl.ignore).toHaveBeenCalledWith([{ignored: true, contacts: [{id: 1}, {id: 2}]}, {ignored: true, contacts: [{id: 4}, {id: 5}]}]);
+            expect($ctrl.ignore).toHaveBeenCalledWith([
+                { ignored: true, contacts: [{ id: 1 }, { id: 2 }] },
+                { ignored: true, contacts: [{ id: 4 }, { id: 5 }] }
+            ]);
         });
 
         it('should show a translated alert on completion', done => {
@@ -167,26 +180,29 @@ describe('tools.mergeContacts.component', () => {
     describe('ignore', () => {
         it('should create an array of api delete promises', () => {
             spyOn(api, 'delete').and.callFake(() => Promise.resolve());
-            expect($ctrl.ignore([{id: 1}, {id: 2}])).toEqual([jasmine.any(Promise), jasmine.any(Promise)]);
-            expect(api.delete).toHaveBeenCalledWith({url: `contacts/duplicates/1`, type: 'contacts'});
-            expect(api.delete).toHaveBeenCalledWith({url: `contacts/duplicates/2`, type: 'contacts'});
+            expect($ctrl.ignore([{ id: 1 }, { id: 2 }])).toEqual([jasmine.any(Promise), jasmine.any(Promise)]);
+            expect(api.delete).toHaveBeenCalledWith({ url: 'contacts/duplicates/1', type: 'contacts' });
+            expect(api.delete).toHaveBeenCalledWith({ url: 'contacts/duplicates/2', type: 'contacts' });
         });
     });
 
     describe('merge', () => {
         it('should call bulkMerge with data', () => {
             spyOn(contacts, 'merge').and.callFake(() => Promise.resolve());
-            $ctrl.merge([{contacts: [{id: 1, selected: true}, {id: 2}]}, {contacts: [{id: 3}, {id: 4, selected: true}]}]);
+            $ctrl.merge([
+                { contacts: [{ id: 1, selected: true }, { id: 2 }] },
+                { contacts: [{ id: 3 }, { id: 4, selected: true }] }
+            ]);
             expect(contacts.merge).toHaveBeenCalledWith([
-                {winner_id: 1, loser_id: 2},
-                {winner_id: 4, loser_id: 3}
+                { winner_id: 1, loser_id: 2 },
+                { winner_id: 4, loser_id: 3 }
             ]);
         });
     });
 
     describe('load', () => {
         beforeEach(() => {
-            $ctrl.duplicates = [{contacts: [{id: 1}, {id: 2}]}];
+            $ctrl.duplicates = [{ contacts: [{ id: 1 }, { id: 2 }] }];
         });
 
         it('should reset duplicates', () => {
@@ -203,7 +219,7 @@ describe('tools.mergeContacts.component', () => {
                     contacts: 'addresses,name,square_avatar,status,created_at',
                     addresses: 'city,postal_code,primary_mailing_address,state,street,source'
                 },
-                filter: {account_list_id: api.account_list_id},
+                filter: { account_list_id: api.account_list_id },
                 per_page: 5
             });
         });

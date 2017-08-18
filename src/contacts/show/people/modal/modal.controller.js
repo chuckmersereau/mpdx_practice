@@ -2,7 +2,7 @@ import has from 'lodash/fp/has';
 import map from 'lodash/fp/map';
 import moment from 'moment';
 import uuid from 'uuid/v1';
-import createPatch from "common/fp/createPatch";
+import createPatch from 'common/fp/createPatch';
 
 class PersonModalController {
     constructor(
@@ -32,7 +32,7 @@ class PersonModalController {
         if (has('id', this.person)) {
             this.personInitialState = angular.copy(this.person);
             this.modalTitle = this.gettextCatalog.getString('Edit Person');
-            //bad data is bad
+            // bad data is bad
             if (this.person.birthday_year) {
                 this.person.birthday = moment(`${this.person.birthday_year}-${this.person.birthday_month}-${this.person.birthday_day}`, 'YYYY-MM-DD').toDate();
             }
@@ -53,7 +53,7 @@ class PersonModalController {
         }
     }
     save() {
-        //bad data is bad
+        // bad data is bad
         if (this.person.birthday) {
             const birthday = moment(this.person.birthday);
             this.person.birthday_year = birthday.year();

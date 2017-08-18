@@ -64,7 +64,7 @@ describe('reports.contributions.component', () => {
                     }
                 }
             };
-            $ctrl = componentController('contributions', {$scope: scope}, {});
+            $ctrl = componentController('contributions', { $scope: scope }, {});
         });
     });
 
@@ -100,7 +100,7 @@ describe('reports.contributions.component', () => {
 
     describe('load', () => {
         beforeEach(() => {
-            spyOn($ctrl, 'loadAfterServerConstants').and.callFake(() => Promise.resolve({mock: 'data'}));
+            spyOn($ctrl, 'loadAfterServerConstants').and.callFake(() => Promise.resolve({ mock: 'data' }));
         });
 
         it('should set loading to true', () => {
@@ -119,8 +119,8 @@ describe('reports.contributions.component', () => {
 
         describe('type is partner', () => {
             beforeEach(() => {
-                $ctrl = componentController('contributions', {$scope: scope}, {type: 'partner'});
-                spyOn($ctrl, 'loadAfterServerConstants').and.callFake(() => Promise.resolve({mock: 'data'}));
+                $ctrl = componentController('contributions', { $scope: scope }, { type: 'partner' });
+                spyOn($ctrl, 'loadAfterServerConstants').and.callFake(() => Promise.resolve({ mock: 'data' }));
             });
 
             it('should call load', done => {
@@ -132,17 +132,17 @@ describe('reports.contributions.component', () => {
         });
     });
     describe('loadAfterServerConstants', () => {
-        const data = {salary_currency: 'NZD', months: ['2016-07-01', '2016-08-01']};
+        const data = { salary_currency: 'NZD', months: ['2016-07-01', '2016-08-01'] };
         beforeEach(() => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve(data));
             spyOn($ctrl, 'getCurrencies').and.callFake(() => []);
-            spyOn($ctrl, 'buildYears').and.callFake(() => { return {a: 'b'}; });
+            spyOn($ctrl, 'buildYears').and.callFake(() => { return { a: 'b' }; });
         });
         it('should call api', () => {
             $ctrl.loadAfterServerConstants('salary');
             expect(api.get).toHaveBeenCalledWith(
                 'reports/salary_currency_donations',
-                {filter: {account_list_id: api.account_list_id}}
+                { filter: { account_list_id: api.account_list_id } }
             );
         });
         it('should get currencies', done => {
@@ -161,7 +161,7 @@ describe('reports.contributions.component', () => {
             $ctrl.loadAfterServerConstants('salary').then(() => {
                 expect($ctrl.data).toEqual({
                     currencies: [],
-                    years: {a: 'b'},
+                    years: { a: 'b' },
                     months: data.months,
                     total: 0,
                     salaryCurrency: serverConstants.data.pledge_currencies['nzd']
@@ -180,7 +180,7 @@ describe('reports.contributions.component', () => {
                 $ctrl.loadAfterServerConstants('partner');
                 expect(api.get).toHaveBeenCalledWith(
                     'reports/donor_currency_donations',
-                    {filter: {account_list_id: api.account_list_id}}
+                    { filter: { account_list_id: api.account_list_id } }
                 );
             });
 
@@ -201,26 +201,26 @@ describe('reports.contributions.component', () => {
     });
     describe('buildYears', () => {
         it('should build an object of years', () => {
-            expect($ctrl.buildYears(['2016-07-01', '2016-08-01'])).toEqual({2016: 2});
+            expect($ctrl.buildYears(['2016-07-01', '2016-08-01'])).toEqual({ 2016: 2 });
         });
     });
     describe('getSortedCurrencies', () => {
         const data = [
-            {totals: {year_converted: '67086.99546423639162522026817265'}},
-            {totals: {year_converted: '67087.99546423639162522026817265'}}
+            { totals: { year_converted: '67086.99546423639162522026817265' } },
+            { totals: { year_converted: '67087.99546423639162522026817265' } }
         ];
         beforeEach(() => {
             spyOn($ctrl, 'getCurrencies').and.callFake(() => data);
         });
         it('should sort Currencies', () => {
             expect($ctrl.getSortedCurrencies('salary', data)).toEqual([
-                {totals: {year_converted: '67087.99546423639162522026817265'}},
-                {totals: {year_converted: '67086.99546423639162522026817265'}}
+                { totals: { year_converted: '67087.99546423639162522026817265' } },
+                { totals: { year_converted: '67086.99546423639162522026817265' } }
             ]);
         });
     });
     describe('getCurrencies', () => {
-        const data = {currency_groups: {nzd: []}, totals: {year_converted: '67086.99546423639162522026817265'}};
+        const data = { currency_groups: { nzd: [] }, totals: { year_converted: '67086.99546423639162522026817265' } };
         beforeEach(() => {
             spyOn($ctrl, 'getDonors').and.callFake(() => ['a']);
             spyOn($ctrl, 'getDonorTotals').and.callFake(() => ['b']);
@@ -233,23 +233,23 @@ describe('reports.contributions.component', () => {
         });
     });
     describe('getDonorTotals', () => {
-        const value = {totals: {totes: {}}};
+        const value = { totals: { totes: {} } };
         const data = [
-            {monthlyDonations: [{convertedTotal: 1}, {convertedTotal: 2}, {convertedTotal: 4}]},
-            {monthlyDonations: [{convertedTotal: 1}, {convertedTotal: 2}, {convertedTotal: 4}]},
-            {monthlyDonations: [{convertedTotal: 1}, {convertedTotal: 2}, {convertedTotal: 4}]}
+            { monthlyDonations: [{ convertedTotal: 1 }, { convertedTotal: 2 }, { convertedTotal: 4 }] },
+            { monthlyDonations: [{ convertedTotal: 1 }, { convertedTotal: 2 }, { convertedTotal: 4 }] },
+            { monthlyDonations: [{ convertedTotal: 1 }, { convertedTotal: 2 }, { convertedTotal: 4 }] }
         ];
         const months = times(constant(0), 3);
         it('should add converted Totals and re-arrange object values', () => {
-            expect($ctrl.getDonorTotals(value, data, months)).toEqual({totes: {}, months: [3, 6, 12]});
+            expect($ctrl.getDonorTotals(value, data, months)).toEqual({ totes: {}, months: [3, 6, 12] });
         });
     });
     describe('getDonors', () => {
-        const data = {donor_infos: [{contact_id: 2, contact_name: 'a, b'}, {contact_id: 1, contact_name: 'b, c'}]};
+        const data = { donor_infos: [{ contact_id: 2, contact_name: 'a, b' }, { contact_id: 1, contact_name: 'b, c' }] };
         const info = [
-            {contact_id: 1, total: 1, average: 2, maximum: 3, minimum: 0},
-            {contact_id: 2, total: 2, average: 3, maximum: 4, minimum: 1},
-            {contact_id: 3, total: null, average: 4, maximum: 5, minimum: 2}
+            { contact_id: 1, total: 1, average: 2, maximum: 3, minimum: 0 },
+            { contact_id: 2, total: 2, average: 3, maximum: 4, minimum: 1 },
+            { contact_id: 3, total: null, average: 4, maximum: 5, minimum: 2 }
         ];
         beforeEach(() => {
             spyOn($ctrl, 'getMonthlyDonations').and.callFake(() => ['a']);
@@ -257,7 +257,7 @@ describe('reports.contributions.component', () => {
         it('should create a sorted array of donors', () => {
             expect($ctrl.getDonors(data, 'salary', info)).toEqual([
                 {
-                    contact: {contact_id: 2, contact_name: 'a, b'},
+                    contact: { contact_id: 2, contact_name: 'a, b' },
                     total: 2,
                     average: 3,
                     maximum: 4,
@@ -265,7 +265,7 @@ describe('reports.contributions.component', () => {
                     monthlyDonations: ['a']
                 },
                 {
-                    contact: {contact_id: 1, contact_name: 'b, c'},
+                    contact: { contact_id: 1, contact_name: 'b, c' },
                     total: 1,
                     average: 2,
                     maximum: 3,
@@ -278,20 +278,20 @@ describe('reports.contributions.component', () => {
     describe('getMonthlyDonations', () => {
         const donor = {
             months: [
-                {donations: [{amount: 1, converted_amount: 1.1}, {amount: 1, converted_amount: 2.2}]},
-                {donations: [{amount: 2, converted_amount: 2.2}, {amount: 2, converted_amount: 3.3}]}
+                { donations: [{ amount: 1, converted_amount: 1.1 }, { amount: 1, converted_amount: 2.2 }] },
+                { donations: [{ amount: 2, converted_amount: 2.2 }, { amount: 2, converted_amount: 3.3 }] }
             ]
         };
         it('should add converted Totals and re-arrange object values', () => {
             expect($ctrl.getMonthlyDonations('salary', donor)).toEqual([
                 {
-                    donations: [{amount: 1, converted_amount: 1.1}, {amount: 1, converted_amount: 2.2}],
+                    donations: [{ amount: 1, converted_amount: 1.1 }, { amount: 1, converted_amount: 2.2 }],
                     total: 3,
                     convertedTotal: 3,
                     nativeTotal: 2
                 },
                 {
-                    donations: [{amount: 2, converted_amount: 2.2}, {amount: 2, converted_amount: 3.3}],
+                    donations: [{ amount: 2, converted_amount: 2.2 }, { amount: 2, converted_amount: 3.3 }],
                     total: 5,
                     convertedTotal: 5,
                     nativeTotal: 4
@@ -301,13 +301,13 @@ describe('reports.contributions.component', () => {
         it('should add converted Totals and re-arrange object values for partner', () => {
             expect($ctrl.getMonthlyDonations('partner', donor)).toEqual([
                 {
-                    donations: [{amount: 1, converted_amount: 1.1}, {amount: 1, converted_amount: 2.2}],
+                    donations: [{ amount: 1, converted_amount: 1.1 }, { amount: 1, converted_amount: 2.2 }],
                     total: 2,
                     convertedTotal: 3,
                     nativeTotal: 2
                 },
                 {
-                    donations: [{amount: 2, converted_amount: 2.2}, {amount: 2, converted_amount: 3.3}],
+                    donations: [{ amount: 2, converted_amount: 2.2 }, { amount: 2, converted_amount: 3.3 }],
                     total: 4,
                     convertedTotal: 5,
                     nativeTotal: 4
@@ -331,7 +331,7 @@ describe('reports.contributions.component', () => {
 
         describe('contributions.data.currencies not set', () => {
             beforeEach(() => {
-                data = {currencies: null};
+                data = { currencies: null };
             });
 
             it('should return empty array', () => {
@@ -341,7 +341,7 @@ describe('reports.contributions.component', () => {
 
         describe('contributions.data.months not set', () => {
             beforeEach(() => {
-                data = {months: null};
+                data = { months: null };
             });
 
             it('should return empty array', () => {
@@ -369,7 +369,7 @@ describe('reports.contributions.component', () => {
     describe('percentage', () => {
         describe('total set > 0', () => {
             beforeEach(() => {
-                $ctrl.data = {total: 150};
+                $ctrl.data = { total: 150 };
             });
 
             describe('amount 0', () => {
@@ -387,7 +387,7 @@ describe('reports.contributions.component', () => {
 
         describe('total set === 0', () => {
             beforeEach(() => {
-                $ctrl.data = {total: 0};
+                $ctrl.data = { total: 0 };
             });
 
             describe('amount 0', () => {
@@ -405,7 +405,7 @@ describe('reports.contributions.component', () => {
 
         describe('total not set', () => {
             beforeEach(() => {
-                $ctrl.data = {total: null};
+                $ctrl.data = { total: null };
             });
 
             describe('amount 0', () => {
@@ -492,7 +492,7 @@ describe('reports.contributions.component', () => {
                                 nativeTotal: 25,
                                 convertedTotal: 25
                             },
-                            {donations: [], total: 0, nativeTotal: 0, convertedTotal: 0}
+                            { donations: [], total: 0, nativeTotal: 0, convertedTotal: 0 }
                         ],
                         average: 12.5,
                         maximum: 25,
@@ -525,7 +525,7 @@ describe('reports.contributions.component', () => {
                                 nativeTotal: 25,
                                 convertedTotal: 25
                             },
-                            {donations: [], total: 0, nativeTotal: 0, convertedTotal: 0}
+                            { donations: [], total: 0, nativeTotal: 0, convertedTotal: 0 }
                         ],
                         average: 12.5,
                         maximum: 25,
@@ -535,7 +535,7 @@ describe('reports.contributions.component', () => {
                 ]
             }
         ],
-        years: {'2016': 2},
+        years: { '2016': 2 },
         months: ['2016-05-01', '2016-06-01'],
         total: 25,
         salaryCurrency: {

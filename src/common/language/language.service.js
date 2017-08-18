@@ -9,7 +9,7 @@ class Language {
     }
     change(language) {
         let temp = angular.copy(language);
-        //hardcoded until the data is fixed
+        // hardcoded until the data is fixed
         switch (language) {
             case 'fr-fr':
                 language = 'fr_FR';
@@ -19,7 +19,7 @@ class Language {
                 language = 'es_419';
                 break;
             case 'zh-hans-cn':
-                language = "zh_Hans_CN";
+                language = 'zh_Hans_CN';
                 temp = 'zh-Hans-CN';
                 break;
             case 'en-us':

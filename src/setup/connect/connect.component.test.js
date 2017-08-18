@@ -4,7 +4,10 @@ describe('setup.connect.component', () => {
     let $ctrl, rootScope, scope, componentController, api, alerts, gettextCatalog, preferencesOrganization, users;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _accounts_, _help_, _preferencesOrganization_, _serverConstants_, _alerts_, _gettextCatalog_, _api_, _users_) => {
+        inject((
+            $componentController, $rootScope, _accounts_, _help_, _preferencesOrganization_, _serverConstants_,
+            _alerts_, _gettextCatalog_, _api_, _users_
+        ) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             alerts = _alerts_;
@@ -14,15 +17,15 @@ describe('setup.connect.component', () => {
             componentController = $componentController;
             users = _users_;
             api.account_list_id = 1234;
-            users.current = {preferences: {}};
-            users.currentOptions = {setup_position: {}};
+            users.current = { preferences: {} };
+            users.currentOptions = { setup_position: {} };
             loadController();
         });
         spyOn(alerts, 'addAlert').and.callFake(data => data);
         spyOn(gettextCatalog, 'getString').and.callFake(data => data);
     });
     function loadController() {
-        $ctrl = componentController('setupConnect', {$scope: scope}, {});
+        $ctrl = componentController('setupConnect', { $scope: scope }, {});
     }
     describe('add', () => {
         beforeEach(() => {

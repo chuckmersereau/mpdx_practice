@@ -24,10 +24,10 @@ class Filters {
         this.$q = $q;
         this.api = api;
     }
-    count({params, defaultParams}) {
+    count({ params, defaultParams }) {
         return filter(key => !isEqual(params[key], defaultParams[key]), keys(params)).length;
     }
-    load({data, defaultParams, params, url}) {
+    load({ data, defaultParams, params, url }) {
         if (data) {
             return this.$q.resolve({
                 data: data,
@@ -35,7 +35,7 @@ class Filters {
                 defaultParams: defaultParams
             });
         }
-        return this.api.get(url, {filter: {account_list_id: this.api.account_list_id}}).then((response) => {
+        return this.api.get(url, { filter: { account_list_id: this.api.account_list_id } }).then((response) => {
             data = defaultTo([], response);
             data = sortBy(filter => toInteger(filter.id), data);
             this.$log.debug(url, data);
@@ -51,7 +51,7 @@ class Filters {
                 if (filter.parent !== null) {
                     let parentIndex = findIndex(parent => parent.title === filter.parent && parent.type === 'container', result);
                     if (parentIndex === -1) {
-                        const parentObj = {title: filter.parent, type: 'container', priority: filter.priority, children: [filter]};
+                        const parentObj = { title: filter.parent, type: 'container', priority: filter.priority, children: [filter] };
                         result = concat(result, parentObj);
                     } else {
                         result[parentIndex].children = concat(result[parentIndex].children, filter);
@@ -69,7 +69,7 @@ class Filters {
             };
         });
     }
-    reset({defaultParams, params, onChange}) {
+    reset({ defaultParams, params, onChange }) {
         params = angular.copy(defaultParams);
         onChange(params);
         return params;

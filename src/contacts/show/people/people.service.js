@@ -21,13 +21,13 @@ class PersonService {
         this.data = [];
     }
     get(contactId, personId) {
-        return this.api.get(`contacts/${contactId}/people/${personId}`, {include: this.includes}).then((data) => {
+        return this.api.get(`contacts/${contactId}/people/${personId}`, { include: this.includes }).then((data) => {
             this.$log.debug(`contacts/${contactId}/people/${personId}`, data);
             return data;
         });
     }
     list(contactId) {
-        return this.api.get(`contacts/${contactId}/people`, {include: this.includes}).then((data) => {
+        return this.api.get(`contacts/${contactId}/people`, { include: this.includes }).then((data) => {
             return map(person => {
                 if (person.anniversary_year) {
                     person.anniversary = moment(`${person.anniversary_year}-${person.anniversary_month}-${person.anniversary_day}`, 'YYYY-MM-DD').toDate();
@@ -40,7 +40,7 @@ class PersonService {
         if (!reset && this.data.length > 0) {
             return this.$q.resolve(this.data);
         }
-        return this.api.get(`contacts//people`, {
+        return this.api.get('contacts//people', {
             fields: {
                 people: 'first_name,last_name'
             },
@@ -51,7 +51,7 @@ class PersonService {
         });
     }
     merge(contact, winnerId, loserId) {
-        return this.api.post(`contacts/${contact.id}/people/merges`, {winner_id: winnerId, loser_id: loserId}).then((data) => {
+        return this.api.post(`contacts/${contact.id}/people/merges`, { winner_id: winnerId, loser_id: loserId }).then((data) => {
             if (isFunction(data.success)) {
                 data.success();
             }
@@ -59,7 +59,7 @@ class PersonService {
         });
     }
     bulkMerge(winnersAndLosers) {
-        return this.api.post({url: `contacts/people/merges/bulk`, data: winnersAndLosers, type: 'people'}).then((data) => {
+        return this.api.post({ url: 'contacts/people/merges/bulk', data: winnersAndLosers, type: 'people' }).then((data) => {
             if (isFunction(data.success)) {
                 data.success();
             }
@@ -71,7 +71,7 @@ class PersonService {
             url: `contacts/people/${person.id}`,
             data: person,
             type: 'people'
-        }); //reload after use, otherwise add reconcile
+        }); // reload after use, otherwise add reconcile
     }
     bulkSave(people) {
         return this.api.put({
@@ -100,7 +100,7 @@ class PersonService {
         });
     }
     saveEmailAddress(person, emailAddress) {
-        if (!emailAddress.email) { return this.$q.reject(); };
+        if (!emailAddress.email) { return this.$q.reject(); }
         return this.api.put({
             url: `contacts/people/${person.id}`,
             data: {
@@ -132,7 +132,7 @@ class PersonService {
         });
     }
     savePhoneNumber(person, phoneNumber) {
-        if (!phoneNumber.number) { return this.$q.reject(); };
+        if (!phoneNumber.number) { return this.$q.reject(); }
         return this.api.put({
             url: `contacts/people/${person.id}`,
             data: {

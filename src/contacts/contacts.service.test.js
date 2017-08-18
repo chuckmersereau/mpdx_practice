@@ -4,8 +4,8 @@ import moment from 'moment';
 
 const accountListId = 123;
 const defaultParams = {};
-const params = {a: 'b'};
-const tags = [{name: 'a'}, {name: 'b'}];
+const params = { a: 'b' };
+const tags = [{ name: 'a' }, { name: 'b' }];
 
 describe('contacts.service', () => {
     let api, contacts, contactFilter, contactsTags, rootScope, modal;
@@ -24,7 +24,7 @@ describe('contacts.service', () => {
         spyOn(rootScope, '$emit').and.callThrough();
     });
     describe('buildFilterParams', () => {
-        const defaultResult = assign(params, {account_list_id: accountListId, any_tags: false});
+        const defaultResult = assign(params, { account_list_id: accountListId, any_tags: false });
         beforeEach(() => {
             contactFilter.default_params = defaultParams;
             contactFilter.params = params;
@@ -34,17 +34,17 @@ describe('contacts.service', () => {
         });
         it('should handle wildcard search', () => {
             contactFilter.wildcard_search = 'abc';
-            expect(contacts.buildFilterParams()).toEqual(assign(defaultResult, {wildcard_search: 'abc'}));
+            expect(contacts.buildFilterParams()).toEqual(assign(defaultResult, { wildcard_search: 'abc' }));
             contactFilter.wildcard_search = null;
         });
         it('should handle tags', () => {
             contactsTags.selectedTags = tags;
-            expect(contacts.buildFilterParams()).toEqual(assign(defaultResult, {tags: 'a,b'}));
+            expect(contacts.buildFilterParams()).toEqual(assign(defaultResult, { tags: 'a,b' }));
             contactFilter.selectedTags = [];
         });
         it('should handle tag exclusions', () => {
             contactsTags.rejectedTags = tags;
-            expect(contacts.buildFilterParams()).toEqual(assign(defaultResult, {exclude_tags: 'a,b'}));
+            expect(contacts.buildFilterParams()).toEqual(assign(defaultResult, { exclude_tags: 'a,b' }));
             contactFilter.rejectedTags = [];
         });
     });
@@ -63,15 +63,15 @@ describe('contacts.service', () => {
                 data: {
                     include: 'addresses,donor_accounts,primary_person,contact_referrals_to_me',
                     fields: {
-                        contacts: 'avatar,church_name,envelope_greeting,greeting,last_donation,lifetime_donations,' +
-                                  'likely_to_give,locale,magazine,name,no_appeals,notes,notes_saved_at,pledge_amount,' +
-                                  'pledge_currency,pledge_currency_symbol,pledge_frequency,pledge_received,' +
-                                  'pledge_start_date,send_newsletter,square_avatar,status,status_valid,suggested_changes,' +
-                                  'tag_list,timezone,website,addresses,contact_referrals_by_me,contact_referrals_to_me,' +
-                                  'contacts_that_referred_me,donor_accounts,primary_person,no_gift_aid',
-                        addresses: 'city,country,created_at,end_date,geo,historic,location,metro_area,postal_code,' +
-                                   'primary_mailing_address,region,remote_id,seasonal,source,start_date,state,street,' +
-                                   'updated_at,updated_in_db_at,valid_values',
+                        contacts: 'avatar,church_name,envelope_greeting,greeting,last_donation,lifetime_donations,'
+                                  + 'likely_to_give,locale,magazine,name,no_appeals,notes,notes_saved_at,pledge_amount,'
+                                  + 'pledge_currency,pledge_currency_symbol,pledge_frequency,pledge_received,'
+                                  + 'pledge_start_date,send_newsletter,square_avatar,status,status_valid,suggested_changes,'
+                                  + 'tag_list,timezone,website,addresses,contact_referrals_by_me,contact_referrals_to_me,'
+                                  + 'contacts_that_referred_me,donor_accounts,primary_person,no_gift_aid',
+                        addresses: 'city,country,created_at,end_date,geo,historic,location,metro_area,postal_code,'
+                                   + 'primary_mailing_address,region,remote_id,seasonal,source,start_date,state,street,'
+                                   + 'updated_at,updated_in_db_at,valid_values',
                         donor_accounts: 'account_number'
                     }
                 },
@@ -108,7 +108,7 @@ describe('contacts.service', () => {
         });
     });
     describe('save', () => {
-        let contact = {id: 1, name: 'a'};
+        let contact = { id: 1, name: 'a' };
         it('should save a contact', () => {
             contacts.save(contact);
             expect(api.put).toHaveBeenCalledWith(`contacts/${contact.id}`, contact);
@@ -116,7 +116,7 @@ describe('contacts.service', () => {
         it('should change tag_list array to comma delim list', () => {
             contact.tag_list = ['tag1', 'tag2'];
             contacts.save(contact);
-            expect(api.put).toHaveBeenCalledWith(`contacts/${contact.id}`, assign(contact, {tag_list: 'tag1,tag2'}));
+            expect(api.put).toHaveBeenCalledWith(`contacts/${contact.id}`, assign(contact, { tag_list: 'tag1,tag2' }));
         });
         it('should trigger contactCreated if name changed', done => {
             contacts.save(contact).then(() => {
@@ -149,15 +149,15 @@ describe('contacts.service', () => {
             expect(api.get).toHaveBeenCalledWith({
                 url: 'contacts/analytics',
                 data: {
-                    include: 'anniversaries_this_week,' +
-                    'anniversaries_this_week.people,' +
-                    'anniversaries_this_week.people.facebook_accounts,' +
-                    'anniversaries_this_week.people.twitter_accounts,' +
-                    'anniversaries_this_week.people.email_addresses,' +
-                    'birthdays_this_week,' +
-                    'birthdays_this_week.facebook_accounts,' +
-                    'birthdays_this_week.twitter_accounts,' +
-                    'birthdays_this_week.email_addresses',
+                    include: 'anniversaries_this_week,'
+                    + 'anniversaries_this_week.people,'
+                    + 'anniversaries_this_week.people.facebook_accounts,'
+                    + 'anniversaries_this_week.people.twitter_accounts,'
+                    + 'anniversaries_this_week.people.email_addresses,'
+                    + 'birthdays_this_week,'
+                    + 'birthdays_this_week.facebook_accounts,'
+                    + 'birthdays_this_week.twitter_accounts,'
+                    + 'birthdays_this_week.email_addresses',
                     fields: {
                         contacts: 'people',
                         people: 'anniversary_day,anniversary_month,anniversary_year,birthday_day,birthday_month,birthday_year,facebook_accounts,first_name,last_name,twitter_accounts,email_addresses,parent_contact',
@@ -165,9 +165,9 @@ describe('contacts.service', () => {
                         facebook_accounts: 'username',
                         twitter_accounts: 'screen_name'
                     },
-                    filter: {account_list_id: api.account_list_id}
+                    filter: { account_list_id: api.account_list_id }
                 },
-                deSerializationOptions: jasmine.any(Object), //for parent_contact
+                deSerializationOptions: jasmine.any(Object), // for parent_contact
                 beforeDeserializationTransform: jasmine.any(Function),
                 overrideGetAsPost: true
             });
@@ -222,10 +222,10 @@ describe('contacts.service', () => {
         it('should post to api', () => {
             spyOn(api, 'post').and.callFake(() => Promise.resolve());
             contacts.merge('a');
-            expect(api.post).toHaveBeenCalledWith({url: `contacts/merges/bulk`, data: 'a', type: 'contacts'});
+            expect(api.post).toHaveBeenCalledWith({ url: 'contacts/merges/bulk', data: 'a', type: 'contacts' });
         });
         it('should return data', done => {
-            let data = {success: () => 'a'};
+            let data = { success: () => 'a' };
             spyOn(data, 'success').and.callThrough();
             spyOn(api, 'post').and.callFake(() => Promise.resolve(data));
             contacts.merge('a').then(resp => {
@@ -234,7 +234,7 @@ describe('contacts.service', () => {
             });
         });
         it('should call a success fn', done => {
-            let data = {success: () => 'a'};
+            let data = { success: () => 'a' };
             spyOn(data, 'success').and.callThrough();
             spyOn(api, 'post').and.callFake(() => Promise.resolve(data));
             contacts.merge('a').then(() => {

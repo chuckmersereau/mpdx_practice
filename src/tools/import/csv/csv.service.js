@@ -98,7 +98,7 @@ class CsvService {
             this.data.tag_list = [];
         }
 
-         /* istanbul ignore next */
+        /* istanbul ignore next */
         this.$log.debug('import', this.data);
     }
 
@@ -144,7 +144,7 @@ class CsvService {
 
         this.data.file_constants_mappings = reduceObject((result, constant, header) => {
             if (this.serverConstants.data.csv_import.constants[constant] && !result[constant]) {
-                result[constant] = {'': []};
+                result[constant] = { '': [] };
             }
 
             if (result[constant]) {

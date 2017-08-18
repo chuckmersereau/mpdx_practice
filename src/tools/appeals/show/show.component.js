@@ -90,7 +90,7 @@ class AppealController {
         }, contactsNotGiven);
     }
     getCurrencyFromCode(code) {
-        return find({code: code}, this.serverConstants.data.pledge_currencies);
+        return find({ code: code }, this.serverConstants.data.pledge_currencies);
     }
     changeGoal() {
         return this.save().then(() => {
@@ -141,7 +141,8 @@ class AppealController {
         });
     }
     selectAllGiven() {
-        this.selectedContactIds = union(this.selectedContactIds, map(donation => donation.contact.id, this.appeal.donations));
+        const contactIds = map(donation => donation.contact.id, this.appeal.donations);
+        this.selectedContactIds = union(this.selectedContactIds, contactIds);
     }
     deselectAllGiven() {
         const allGiven = map(donation => donation.contact.id, this.appeal.donations);
@@ -155,13 +156,15 @@ class AppealController {
         this.selectedContactIds = reject(id => contains(id, allNotGiven), this.selectedContactIds);
     }
     selectContact(contactId) {
-        this.selectedContactIds = contains(contactId, this.selectedContactIds) ? pull(contactId, this.selectedContactIds) : concat(this.selectedContactIds, contactId);
+        this.selectedContactIds = contains(contactId, this.selectedContactIds)
+            ? pull(contactId, this.selectedContactIds)
+            : concat(this.selectedContactIds, contactId);
     }
     addDonation() {
-        this.donations.openDonationModal({appeal: {id: this.appeal.id, name: this.appeal.name}});
+        this.donations.openDonationModal({ appeal: { id: this.appeal.id, name: this.appeal.name } });
     }
     editDonation(donation) {
-        this.donations.openDonationModal(assign(donation, {appeal: {id: this.appeal.id, name: this.appeal.name}}));
+        this.donations.openDonationModal(assign(donation, { appeal: { id: this.appeal.id, name: this.appeal.name } }));
     }
     exportToCSV() {
         const columnHeaders = [[
@@ -177,12 +180,16 @@ class AppealController {
     getSelectedDonationContacts() {
         return reduce((result, donation) => {
             const contactId = get('id', donation.contact);
-            return contains(contactId, this.selectedContactIds) ? concat(result, this.mutateDonation(donation)) : result;
+            return contains(contactId, this.selectedContactIds)
+                ? concat(result, this.mutateDonation(donation))
+                : result;
         }, [], this.appeal.donations);
     }
     getSelectedContactsNotGiven() {
         return reduce((result, contact) => {
-            return contains(contact.id, this.selectedContactIds) ? concat(result, this.mutateContact(contact)) : result;
+            return contains(contact.id, this.selectedContactIds)
+                ? concat(result, this.mutateContact(contact))
+                : result;
         }, [], this.contactsNotGiven);
     }
     mutateDonation(donation) {

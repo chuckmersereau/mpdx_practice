@@ -1,4 +1,3 @@
-import config from 'config';
 import service from './google.service';
 
 const accountListId = 123;
@@ -24,7 +23,7 @@ describe('preferences.integrations.google.service', () => {
         it('should query the API', done => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve());
             google.load(true).then(() => {
-                expect(api.get).toHaveBeenCalledWith(`user/google_accounts`, {
+                expect(api.get).toHaveBeenCalledWith('user/google_accounts', {
                     sort: 'created_at',
                     include: 'contact_groups'
                 });
@@ -33,7 +32,7 @@ describe('preferences.integrations.google.service', () => {
         });
         it('find failures', done => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve([
-                {token_failure: true}
+                { token_failure: true }
             ]));
             google.load(true).then(() => {
                 expect(google.failure).toBeTruthy();
@@ -62,7 +61,7 @@ describe('preferences.integrations.google.service', () => {
             spyOn(api, 'delete').and.callFake(() => Promise.resolve());
             spyOn(google, 'load').and.callFake(() => Promise.resolve());
             google.disconnect(123).then(() => {
-                expect(api.delete).toHaveBeenCalledWith({url: `user/google_accounts/123`, type: 'google_accounts'});
+                expect(api.delete).toHaveBeenCalledWith({ url: 'user/google_accounts/123', type: 'google_accounts' });
                 done();
             });
         });

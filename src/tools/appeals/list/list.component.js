@@ -55,16 +55,15 @@ class ListController {
         this.loading = true;
 
         return this.api.get('appeals', params).then(data => {
-            this.$log.debug(`appeals`, data);
+            this.$log.debug('appeals', data);
             this.loading = false;
 
-            if (reset && currentCount !== this.listLoadCount) return;
+            if (reset && currentCount !== this.listLoadCount) { return; }
             this.meta = data.meta;
-            console.log(this.data);
 
             const deserializedData = reduce((result, appeal) => {
                 appeal.amount_raised = sumBy(donation =>
-                        parseFloat(donation.converted_amount)
+                    parseFloat(donation.converted_amount)
                     , appeal.donations);
                 if (appeal.amount && parseFloat(appeal.amount) > 0) {
                     appeal.percentage_raised = parseInt((appeal.amount_raised / appeal.amount) * 100.0);

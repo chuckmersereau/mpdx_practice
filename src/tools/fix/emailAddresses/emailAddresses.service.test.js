@@ -317,7 +317,7 @@ describe('tools.fix.emailAddresses.service', () => {
                     id: 'email_address_2',
                     primary: false
                 }
-            ]};
+            ] };
             expect(person.email_addresses[2].primary).toBeFalsy();
             fixEmailAddresses.setPrimary(person, { id: 'email_address_2' });
             expect(person.email_addresses[2].primary).toBeTruthy();
@@ -339,7 +339,7 @@ describe('tools.fix.emailAddresses.service', () => {
                     id: 'email_address_2',
                     primary: false
                 }
-            ]};
+            ] };
             spyOn(people, 'deleteEmailAddress').and.callFake(() => Promise.resolve());
         });
 
@@ -366,7 +366,7 @@ describe('tools.fix.emailAddresses.service', () => {
                                 id: 'email_address_2',
                                 primary: false
                             }
-                        ]}
+                        ] }
                     );
                     done();
                 });
@@ -389,7 +389,7 @@ describe('tools.fix.emailAddresses.service', () => {
                     id: 'email_address_2',
                     primary: false
                 }
-            ]};
+            ] };
             spyOn(people, 'saveEmailAddress').and.callFake(() => Promise.resolve());
         });
 

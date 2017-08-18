@@ -1,7 +1,7 @@
 import mc from './modal.controller';
 
-const person = {first_name: 'a', last_name: 'b'};
-const contact = {id: 123};
+const person = { first_name: 'a', last_name: 'b' };
+const contact = { id: 123 };
 
 describe('contacts.show.personModal.controller', () => {
     let $ctrl, controller, alerts, people, gettextCatalog, rootScope, scope, modal, api;
@@ -38,7 +38,7 @@ describe('contacts.show.personModal.controller', () => {
             expect(gettextCatalog.getString).toHaveBeenCalledWith('Add Person');
         });
         it('should set a translated title', () => {
-            $ctrl.person = {id: 1};
+            $ctrl.person = { id: 1 };
             $ctrl.activate();
             expect($ctrl.modalTitle).toEqual('Edit Person');
             expect(gettextCatalog.getString).toHaveBeenCalledWith('Edit Person');

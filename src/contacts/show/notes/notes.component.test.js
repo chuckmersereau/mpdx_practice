@@ -9,13 +9,13 @@ describe('contacts.show.details.component', () => {
             alerts = _alerts_;
             contacts = _contacts_;
             gettextCatalog = _gettextCatalog_;
-            $ctrl = $componentController('contactNotes', {$scope: scope}, {});
+            $ctrl = $componentController('contactNotes', { $scope: scope }, {});
         });
         spyOn(gettextCatalog, 'getString').and.callThrough();
         spyOn(alerts, 'addAlert').and.callFake(data => data);
     });
     describe('save', () => {
-        const contact = {id: 123, notes: 'a'};
+        const contact = { id: 123, notes: 'a' };
         beforeEach(() => {
             contacts.current = contact;
         });

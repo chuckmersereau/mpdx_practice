@@ -18,7 +18,7 @@ describe('preferences.accounts.invites.component', () => {
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
     function loadController() {
-        $ctrl = componentController('invitePreferences', {$scope: scope}, {});
+        $ctrl = componentController('invitePreferences', { $scope: scope }, {});
     }
     describe('constructor', () => {
         it('should set default values', () => {
@@ -52,7 +52,7 @@ describe('preferences.accounts.invites.component', () => {
             spyOn(accounts, 'listInvites').and.callFake(() => Promise.resolve());
             $ctrl.sendInvite().then(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'success');
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String), {email: 'a@b.c'});
+                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String), { email: 'a@b.c' });
                 done();
             });
         });

@@ -1,20 +1,19 @@
 import component from './language.component';
 
 describe('preferences.personal.language.component', () => {
-    let $ctrl, language, rootScope, scope, componentController, transitions, serverConstants, users, state;
+    let $ctrl, language, rootScope, scope, componentController, transitions, serverConstants, users;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _language_, _users_, _serverConstants_, $transitions, $state) => {
+        inject(($componentController, $rootScope, _language_, _users_, _serverConstants_, $transitions) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             language = _language_;
             users = _users_;
             serverConstants = _serverConstants_;
-            state = $state;
             transitions = $transitions;
             componentController = $componentController;
-            serverConstants.data = {languages: []};
-            users.current = {preferences: {locale: 'en'}};
+            serverConstants.data = { languages: [] };
+            users.current = { preferences: { locale: 'en' } };
             loadController();
         });
     });

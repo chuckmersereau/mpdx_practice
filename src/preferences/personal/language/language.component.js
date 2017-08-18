@@ -35,9 +35,9 @@ class LanguageController {
                 found = true;
             }
             if (language) {
-                return {alias: lang, value: `${language.englishName} (${language.nativeName} - ${lang})`};
+                return { alias: lang, value: `${language.englishName} (${language.nativeName} - ${lang})` };
             } else {
-                return {alias: lang, value: `${this.serverConstants.data.languages[lang]} - ${lang}`};
+                return { alias: lang, value: `${this.serverConstants.data.languages[lang]} - ${lang}` };
             }
         }, keys(this.serverConstants.data.languages));
         if (!found) {

@@ -1,6 +1,6 @@
 import each from 'lodash/fp/each';
 import map from 'lodash/fp/map';
-import relationshipId from "common/fp/relationshipId";
+import relationshipId from 'common/fp/relationshipId';
 import filter from 'lodash/fp/filter';
 
 class MergePeople {
@@ -33,10 +33,10 @@ class MergePeople {
                     email_addresses: 'primary,email,source',
                     person_duplicates: 'people,shared_contact'
                 },
-                filter: {account_list_id: this.api.account_list_id},
+                filter: { account_list_id: this.api.account_list_id },
                 per_page: this.perPage
             },
-            deSerializationOptions: relationshipId('contacts') //for shared_contact
+            deSerializationOptions: relationshipId('contacts') // for shared_contact
         }).then((data) => {
             this.$log.debug('contacts/people/duplicates', data);
             this.setMeta(data.meta);
@@ -58,9 +58,9 @@ class MergePeople {
     merge(duplicates) {
         const winnersAndLosers = map(duplicate => {
             if (duplicate.mergeChoice === 0) {
-                return {winner_id: duplicate.people[0].id, loser_id: duplicate.people[1].id};
+                return { winner_id: duplicate.people[0].id, loser_id: duplicate.people[1].id };
             }
-            return {winner_id: duplicate.people[1].id, loser_id: duplicate.people[0].id};
+            return { winner_id: duplicate.people[1].id, loser_id: duplicate.people[0].id };
         }, duplicates);
 
         return this.people.bulkMerge(winnersAndLosers);
@@ -69,15 +69,17 @@ class MergePeople {
     ignore(duplicates) {
         let promises = [];
         each(duplicate => {
-            promises.push(this.api.delete({url: `contacts/people/duplicates/${duplicate.id}`, type: 'people'}));
+            promises.push(this.api.delete({ url: `contacts/people/duplicates/${duplicate.id}`, type: 'people' }));
         }, duplicates);
 
         return this.$q.all(promises);
     }
 
     confirm(promises = []) {
-        const peopleToMerge = filter(duplicate => (duplicate.mergeChoice === 0 || duplicate.mergeChoice === 1), this.duplicates);
-        const peopleToIgnore = filter({mergeChoice: 2}, this.duplicates);
+        const peopleToMerge = filter(duplicate => {
+            return duplicate.mergeChoice === 0 || duplicate.mergeChoice === 1;
+        }, this.duplicates);
+        const peopleToIgnore = filter({ mergeChoice: 2 }, this.duplicates);
         if (peopleToMerge.length > 0) {
             promises.push(this.merge(peopleToMerge));
         }

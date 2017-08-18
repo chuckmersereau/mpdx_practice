@@ -18,7 +18,7 @@ describe('preferences.integrations.prayerLetters.component', () => {
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
     function loadController() {
-        $ctrl = componentController('prayerLettersIntegrationsPreferences', {$scope: scope}, {});
+        $ctrl = componentController('prayerLettersIntegrationsPreferences', { $scope: scope }, {});
     }
     describe('$onInit', () => {
         beforeEach(() => {
@@ -54,7 +54,7 @@ describe('preferences.integrations.prayerLetters.component', () => {
             });
         });
         it('should handle rejection', done => {
-            spyOn(prayerLetters, 'sync').and.callFake(() => Promise.reject({errors: ['a']}));
+            spyOn(prayerLetters, 'sync').and.callFake(() => Promise.reject({ errors: ['a'] }));
             $ctrl.sync().catch(() => {
                 expect($ctrl.saving).toBeFalsy();
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');

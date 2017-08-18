@@ -325,7 +325,7 @@ describe('tools.fix.phoneNumbers.service', () => {
                     id: 'phone_number_2',
                     primary: false
                 }
-            ]};
+            ] };
             expect(person.phone_numbers[2].primary).toBeFalsy();
             fixPhoneNumbers.setPrimary(person, { id: 'phone_number_2' });
             expect(person.phone_numbers[2].primary).toBeTruthy();
@@ -347,7 +347,7 @@ describe('tools.fix.phoneNumbers.service', () => {
                     id: 'phone_number_2',
                     primary: false
                 }
-            ]};
+            ] };
             spyOn(people, 'deletePhoneNumber').and.callFake(() => Promise.resolve());
         });
 
@@ -374,7 +374,7 @@ describe('tools.fix.phoneNumbers.service', () => {
                                 id: 'phone_number_2',
                                 primary: false
                             }
-                        ]}
+                        ] }
                     );
                     done();
                 });
@@ -397,7 +397,7 @@ describe('tools.fix.phoneNumbers.service', () => {
                     id: 'phone_number_2',
                     primary: false
                 }
-            ]};
+            ] };
             spyOn(people, 'savePhoneNumber').and.callFake(() => Promise.resolve());
         });
 

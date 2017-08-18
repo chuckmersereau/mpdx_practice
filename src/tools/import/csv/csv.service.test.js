@@ -172,10 +172,10 @@ describe('tools.import.csv.service', () => {
                     data = {
                         file_headers_mappings: {},
                         file_headers: {
-                            first_name: "First Name",
-                            middle_name: "Middle Name",
-                            last_name: "Last Name",
-                            title: "Title"
+                            first_name: 'First Name',
+                            middle_name: 'Middle Name',
+                            last_name: 'Last Name',
+                            title: 'Title'
                         }
                     };
                 });
@@ -196,10 +196,10 @@ describe('tools.import.csv.service', () => {
                             last_name: 'middle_name'
                         },
                         file_headers: {
-                            first_name: "First Name",
-                            middle_name: "Middle Name",
-                            last_name: "Last Name",
-                            title: "Title"
+                            first_name: 'First Name',
+                            middle_name: 'Middle Name',
+                            last_name: 'Last Name',
+                            title: 'Title'
                         }
                     };
                 });
@@ -316,7 +316,7 @@ describe('tools.import.csv.service', () => {
         it('should call the api', () => {
             importCsv.get(importId);
             expect(api.get).toHaveBeenCalledWith(
-                        `account_lists/${api.account_list_id}/imports/csv/${importId}`,
+                `account_lists/${api.account_list_id}/imports/csv/${importId}`,
                 {
                     include: 'sample_contacts,sample_contacts.addresses,sample_contacts.primary_person,sample_contacts.primary_person.email_addresses,sample_contacts.primary_person.phone_numbers,sample_contacts.spouse,sample_contacts.spouse.email_addresses,sample_contacts.spouse.phone_numbers'
                 });

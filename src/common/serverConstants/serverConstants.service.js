@@ -72,7 +72,7 @@ class ServerConstantsService {
         }, [], obj);
     }
     getPledgeFrequency(freq) {
-        return find({key: parseFloat(freq)}, this.data.pledge_frequency_hashes);
+        return find({ key: parseFloat(freq) }, this.data.pledge_frequency_hashes);
     }
 }
 

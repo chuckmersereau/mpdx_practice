@@ -12,10 +12,10 @@ const transformedResponse = {
 
 const jsonApiErrorResponse = {
     errors: [{
-        status: "bad_request",
-        source: {pointer: "/data/attributes/updated_in_db_at"},
-        title: "has to be sent in the list of attributes in order to update resource",
-        detail: "Updated in db at has to be sent in the list of attributes in order to update resource"
+        status: 'bad_request',
+        source: { pointer: '/data/attributes/updated_in_db_at' },
+        title: 'has to be sent in the list of attributes in order to update resource',
+        detail: 'Updated in db at has to be sent in the list of attributes in order to update resource'
     }]
 };
 

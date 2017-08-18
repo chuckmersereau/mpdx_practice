@@ -42,13 +42,13 @@ class LogTaskController {
         if (!params) {
             return;
         }
-        this.contactNames[params.id] = params.name; //set id if missing or out of date
+        this.contactNames[params.id] = params.name; // set id if missing or out of date
         this.contactsList[index] = params.id;
     }
     save(promises = []) {
         if (this.status && this.showPartnerStatus()) {
             const contacts = reduce((result, contact) =>
-                    concat(result, {id: contact, status: this.status})
+                concat(result, { id: contact, status: this.status })
                 , [], this.contactsList);
             promises.push(this.contacts.bulkSave(contacts));
         }

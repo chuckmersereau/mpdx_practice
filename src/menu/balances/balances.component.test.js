@@ -15,7 +15,7 @@ describe('menu.balances.component', () => {
     });
 
     function loadController() {
-        $ctrl = componentController('menuBalances', {$scope: scope});
+        $ctrl = componentController('menuBalances', { $scope: scope });
     }
     describe('$onInit', () => {
         beforeEach(() => {

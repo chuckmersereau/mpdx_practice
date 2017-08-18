@@ -45,8 +45,8 @@ class DonationModalController {
     save() {
         let donation = angular.copy(this.donation);
 
-        if (this.initialDonation.appeal && !donation.appeal) { //appeal removed case
-            donation.appeal = { id: 'none' }; //fudge around api shortcoming
+        if (this.initialDonation.appeal && !donation.appeal) { // appeal removed case
+            donation.appeal = { id: 'none' }; // fudge around api shortcoming
         }
         const patch = createPatch(this.initialDonation, donation);
         return this.donations.save(patch).then(() => {
@@ -81,7 +81,7 @@ class DonationModalController {
     }
 
     search(keywords) {
-        return this.api.get(`appeals`, {
+        return this.api.get('appeals', {
             filter: {
                 wildcard_search: keywords,
                 account_list_id: this.api.account_list_id

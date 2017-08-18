@@ -1,6 +1,6 @@
 import mc from './merge.controller';
 
-const person = {first_name: 'a', last_name: 'b'};
+const person = { first_name: 'a', last_name: 'b' };
 
 describe('contacts.show.people.merge.controller', () => {
     let $ctrl, controller, alerts, people, rootScope, scope, gettextCatalog;

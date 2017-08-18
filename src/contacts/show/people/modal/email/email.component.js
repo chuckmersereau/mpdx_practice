@@ -31,4 +31,4 @@ const Email = {
 };
 
 export default angular.module('mpdx.contacts.show.personModal.email.component', [])
-        .component('contactEmailAddress', Email).name;
+    .component('contactEmailAddress', Email).name;

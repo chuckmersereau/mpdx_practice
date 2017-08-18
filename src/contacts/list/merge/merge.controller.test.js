@@ -1,6 +1,6 @@
 import mergeController from './merge.controller';
 
-let contactList = [{id: 1}, {id: 2}, {id: 3}];
+let contactList = [{ id: 1 }, { id: 2 }, { id: 3 }];
 
 describe('contacts.list.merge.controller', () => {
     let $ctrl, controller, contacts, scope;
@@ -31,7 +31,7 @@ describe('contacts.list.merge.controller', () => {
         });
         it('should call the api with winners and losers', () => {
             $ctrl.save();
-            expect(contacts.merge).toHaveBeenCalledWith([{winner_id: 1, loser_id: 2}, {winner_id: 1, loser_id: 3}]);
+            expect(contacts.merge).toHaveBeenCalledWith([{ winner_id: 1, loser_id: 2 }, { winner_id: 1, loser_id: 3 }]);
         });
         it('should hide', done => {
             spyOn(scope, '$hide').and.callThrough();

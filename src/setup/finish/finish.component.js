@@ -13,7 +13,7 @@ class FinishController {
     next() {
         this.users.currentOptions.setup_position.value = '';
         this.users.setOption(this.users.currentOptions.setup_position).then(() => {
-            this.$state.go('tools', {setup: true});
+            this.$state.go('tools', { setup: true });
         });
     }
     dashboard() {

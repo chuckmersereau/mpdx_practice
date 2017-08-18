@@ -21,8 +21,8 @@ class ImportCsvController {
             this.$state.go('tools.import.csv.upload');
         }
 
-        const message =
-            this.gettextCatalog.getString(
+        const message
+            = this.gettextCatalog.getString(
                 'Are you sure you want to navigate away from this CSV Import? You will lose all unsaved progress.'
             );
 
@@ -38,9 +38,9 @@ class ImportCsvController {
                     return !includes('tools.import.csv', state.name);
                 }
             }, () => {
-            if (!this.importCsv.data) { return true; }
-            return this.modal.confirm(message);
-        });
+                if (!this.importCsv.data) { return true; }
+                return this.modal.confirm(message);
+            });
     }
 
     $onDestroy() {

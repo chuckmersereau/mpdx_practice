@@ -11,7 +11,7 @@ describe('contacts.list.search', () => {
             scope = $rootScope.$new();
             contactFilter = _contactFilter_;
             contactFilter.wildcard_search = wildcardSearch;
-            $ctrl = $componentController('contactsListSearch', {$scope: scope}, {view: null, selected: null});
+            $ctrl = $componentController('contactsListSearch', { $scope: scope }, { view: null, selected: null });
         });
     });
     describe('constructor', () => {

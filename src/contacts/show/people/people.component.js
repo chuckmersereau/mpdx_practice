@@ -29,7 +29,7 @@ class ContactPeopleController {
         });
     }
     $onInit() {
-        this.people.listAll(); //lazy load people so the people modal feels snappy
+        this.people.listAll(); // lazy load people so the people modal feels snappy
     }
     $onChanges() {
         this.selectedPeople = [];

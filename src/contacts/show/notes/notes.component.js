@@ -11,7 +11,7 @@ class ContactNotesController {
         this.moment = moment;
     }
     save() {
-        return this.contacts.save({id: this.contacts.current.id, notes: this.contacts.current.notes}).then(() => {
+        return this.contacts.save({ id: this.contacts.current.id, notes: this.contacts.current.notes }).then(() => {
             this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
         }).catch(err => {
             this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger');

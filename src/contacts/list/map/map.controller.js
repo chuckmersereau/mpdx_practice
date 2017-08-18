@@ -157,7 +157,7 @@ class MapContactsController {
     statusToString(status) {
         if (has(status, this.statuses)) {
             return status;
-        };
+        }
         return 'All Inactive';
     }
 

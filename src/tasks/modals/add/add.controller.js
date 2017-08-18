@@ -40,7 +40,7 @@ class AddTaskController {
         if (!params) {
             return;
         }
-        this.contactNames[params.id] = params.name; //set id if missing or out of date
+        this.contactNames[params.id] = params.name; // set id if missing or out of date
         this.contactsList[index] = params.id;
     }
     save() {

@@ -52,8 +52,10 @@ class ChartController {
         };
         if (this.inContact && this.contacts.current.donor_accounts) {
             params.donorAccountId = map('id', this.contacts.current.donor_accounts).join();
-            if (params.donorAccountId === '') return Promise.reject();
-            if (this.contacts.current.pledge_currency) params.displayCurrency = this.contacts.current.pledge_currency;
+            if (params.donorAccountId === '') { return Promise.reject(); }
+            if (this.contacts.current.pledge_currency) {
+                params.displayCurrency = this.contacts.current.pledge_currency;
+            }
         }
         this.blockUI.start();
         return this.getDonationChart(params).then((data) => {
@@ -139,7 +141,7 @@ class ChartController {
         });
     }
     onClick(event, legendItem) {
-        if (legendItem.length === 0 || this.inContact) return;
+        if (legendItem.length === 0 || this.inContact) { return; }
         const startDate = moment(`01 ${legendItem[0]._model.label}`, 'DD MMM YY');
         this.$state.go('reports.donations', { startDate: startDate });
     }

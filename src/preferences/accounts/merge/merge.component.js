@@ -19,18 +19,21 @@ class MergePreferencesController {
     }
     merge() {
         this.saving = true;
-        return this.api.post(`account_lists/${this.api.account_list_id}/merge`, { account_list_to_merge: {id: this.selected_account_id} }).then((data) => {
+        return this.api.post(`account_lists/${this.api.account_list_id}/merge`, {
+            account_list_to_merge: { id: this.selected_account_id }
+        }).then((data) => {
             this.saving = false;
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX merged your account successfully'), 'success');
-            this.users.current.account_lists = reject({id: this.selected_account_id}, this.users.current.account_lists);
-            const target = findIndex({id: this.api.account_list_id}, this.accounts.data);
+            this.users.current.account_lists = reject({ id: this.selected_account_id },
+                this.users.current.account_lists);
+            const target = findIndex({ id: this.api.account_list_id }, this.accounts.data);
             if (target > -1) {
                 this.accounts.data[target] = assign(this.accounts.data[target], data);
             }
             this.onSave();
             return data;
         }).catch(err => {
-            this.alerts.addAlert(this.gettextCatalog.getString(`MPDX couldn't merge your account`), 'danger');
+            this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t merge your account'), 'danger');
             this.saving = false;
             throw err;
         });

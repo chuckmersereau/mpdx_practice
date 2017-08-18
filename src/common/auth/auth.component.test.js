@@ -100,7 +100,7 @@ describe('auth.component', () => {
                 '/api/v1/user/authenticate',
                 {
                     data: {
-                        type: "authenticate",
+                        type: 'authenticate',
                         attributes: {
                             cas_ticket: 'ticket'
                         }

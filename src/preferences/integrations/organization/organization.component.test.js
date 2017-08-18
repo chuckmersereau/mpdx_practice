@@ -1,16 +1,17 @@
 import component from './organization.component';
 
 describe('preferences.organization.component', () => {
-    let $ctrl, preferencesOrganization, help, rootScope, scope, componentController, alerts, gettextCatalog, modal, users;
+    let $ctrl, preferencesOrganization, rootScope, scope, componentController, alerts, gettextCatalog, modal, users;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _preferencesOrganization_, _help_, _alerts_, _gettextCatalog_, _modal_, _users_) => {
+        inject((
+            $componentController, $rootScope, _preferencesOrganization_, _alerts_, _gettextCatalog_, _modal_, _users_
+        ) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             preferencesOrganization = _preferencesOrganization_;
             alerts = _alerts_;
             modal = _modal_;
-            help = _help_;
             users = _users_;
             gettextCatalog = _gettextCatalog_;
             componentController = $componentController;
@@ -20,7 +21,7 @@ describe('preferences.organization.component', () => {
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
     function loadController() {
-        $ctrl = componentController('organizationIntegrationPreferences', {$scope: scope}, {});
+        $ctrl = componentController('organizationIntegrationPreferences', { $scope: scope }, {});
     }
     describe('constructor', () => {
         it('should set default values', () => {
@@ -90,7 +91,7 @@ describe('preferences.organization.component', () => {
             });
         });
         it('should handle rejection', done => {
-            spyOn(preferencesOrganization, 'save').and.callFake(() => Promise.reject({errors: ['a']}));
+            spyOn(preferencesOrganization, 'save').and.callFake(() => Promise.reject({ errors: ['a'] }));
             $ctrl.save().catch(() => {
                 expect($ctrl.saving).toBeFalsy();
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
@@ -174,7 +175,7 @@ describe('preferences.organization.component', () => {
             });
         });
         it('should handle rejection', done => {
-            spyOn(preferencesOrganization, 'createAccount').and.callFake(() => Promise.reject({errors: ['a']}));
+            spyOn(preferencesOrganization, 'createAccount').and.callFake(() => Promise.reject({ errors: ['a'] }));
             $ctrl.createAccount().catch(() => {
                 expect($ctrl.saving).toBeFalsy();
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
@@ -188,8 +189,8 @@ describe('preferences.organization.component', () => {
             $ctrl.username = 'a';
             $ctrl.password = 'b';
             $ctrl.selectedKey = 'c';
-            users.current = {id: 1};
-            $ctrl.selected = {id: 2};
+            users.current = { id: 1 };
+            $ctrl.selected = { id: 2 };
             spyOn(users, 'listOrganizationAccounts').and.callFake(() => Promise.resolve());
             spyOn($ctrl, 'revert').and.callFake(() => Promise.resolve());
         });
@@ -233,7 +234,7 @@ describe('preferences.organization.component', () => {
             });
         });
         it('should handle rejection', done => {
-            spyOn(preferencesOrganization, 'updateAccount').and.callFake(() => Promise.reject({errors: ['a']}));
+            spyOn(preferencesOrganization, 'updateAccount').and.callFake(() => Promise.reject({ errors: ['a'] }));
             $ctrl.updateAccount().catch(() => {
                 expect($ctrl.saving).toBeFalsy();
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
@@ -243,9 +244,9 @@ describe('preferences.organization.component', () => {
         });
     });
     describe('import', () => {
-        const account = {id: 1};
+        const account = { id: 1 };
         beforeEach(() => {
-            account.organization = {name: 'a'};
+            account.organization = { name: 'a' };
             spyOn(modal, 'info').and.callFake(() => Promise.resolve());
         });
         it('should set importing flag', () => {
@@ -288,7 +289,7 @@ describe('preferences.organization.component', () => {
             });
         });
         it('should handle rejection', done => {
-            spyOn(preferencesOrganization, 'import').and.callFake(() => Promise.reject({errors: ['a']}));
+            spyOn(preferencesOrganization, 'import').and.callFake(() => Promise.reject({ errors: ['a'] }));
             $ctrl.import(account).catch(() => {
                 expect($ctrl.importing).toBeFalsy();
                 expect(account.file).toEqual(null);

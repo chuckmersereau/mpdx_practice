@@ -42,7 +42,7 @@ class AuthController {
             `${config.apiUrl}user/authenticate`,
             {
                 data: {
-                    type: "authenticate",
+                    type: 'authenticate',
                     attributes: {
                         cas_ticket: ticket
                     }
@@ -68,7 +68,7 @@ class AuthController {
                 this.$location.path(redirect);
             } else {
                 this.$state.go('home', params, { reload: true });
-            };
+            }
         }).catch((err) => {
             this.$state.go('logout');
             throw err;

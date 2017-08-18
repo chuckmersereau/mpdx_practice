@@ -19,7 +19,7 @@ describe('contacts.show.people.component', () => {
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
     function loadController() {
-        $ctrl = componentController('contactPeople', {$scope: scope}, {view: null, selected: null});
+        $ctrl = componentController('contactPeople', { $scope: scope }, { view: null, selected: null });
     }
     describe('constructor', () => {
         it('should have default values', () => {
@@ -31,12 +31,12 @@ describe('contacts.show.people.component', () => {
         beforeEach(() => {
             spyOn($ctrl, 'init').and.callFake(() => {});
         });
-        xit('should handle accountListUpdated', () => { //will work once contact tags handles events in component
+        xit('should handle accountListUpdated', () => { // will work once contact tags handles events in component
             rootScope.$emit('accountListUpdated');
             rootScope.$digest();
             expect($ctrl.init).toHaveBeenCalled();
         });
-        it('should handle personUpdated', () => { //will work once contact tags handles events in component
+        it('should handle personUpdated', () => { // will work once contact tags handles events in component
             rootScope.$emit('personUpdated');
             rootScope.$digest();
             expect($ctrl.init).toHaveBeenCalled();
@@ -48,13 +48,13 @@ describe('contacts.show.people.component', () => {
             expect($ctrl.init()).toBeUndefined();
         });
         it('should reset data before reloading to trigger rebinding', () => {
-            $ctrl.contact = {id: 1};
+            $ctrl.contact = { id: 1 };
             $ctrl.data = [3, 4];
             $ctrl.init();
             expect($ctrl.data).toEqual([]);
         });
         it('should get a list of people for a contact', done => {
-            $ctrl.contact = {id: 1};
+            $ctrl.contact = { id: 1 };
             spyOn(people, 'list').and.callFake(() => Promise.resolve([1, 2]));
             $ctrl.init(1).then(() => {
                 expect($ctrl.data).toEqual([1, 2]);
@@ -64,7 +64,7 @@ describe('contacts.show.people.component', () => {
         });
     });
     describe('openMergeModal', () => {
-        it(`should display a translated message if at least 2 people aren't selected`, () => {
+        it('should display a translated message if at least 2 people aren\'t selected', () => {
             $ctrl.selectedPeople = [1];
             $ctrl.openMergeModal();
             expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
@@ -82,13 +82,13 @@ describe('contacts.show.people.component', () => {
         });
     });
     describe('cancelMerge', () => {
-        it(`should set isMerging to false`, () => {
+        it('should set isMerging to false', () => {
             $ctrl.isMerging = true;
             $ctrl.cancelMerge();
             expect($ctrl.isMerging).toBeFalsy();
         });
 
-        it(`should set person.selected_for_merge to false`, () => {
+        it('should set person.selected_for_merge to false', () => {
             let person1 = { selected_for_merge: true };
             let person2 = { selected_for_merge: true };
             $ctrl.selectedPeople = [person1, person2];
@@ -97,7 +97,7 @@ describe('contacts.show.people.component', () => {
             expect(person2.selected_for_merge).toBeFalsy();
         });
 
-        it(`should set selectedPeople to []`, () => {
+        it('should set selectedPeople to []', () => {
             $ctrl.selectedPeople = [{}, {}];
             $ctrl.cancelMerge();
             expect($ctrl.selectedPeople).toEqual([]);

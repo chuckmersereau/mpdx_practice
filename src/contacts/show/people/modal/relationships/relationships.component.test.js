@@ -14,7 +14,7 @@ describe('contacts.show.personModal.family.component', () => {
         });
     });
     function loadController() {
-        $ctrl = componentController('contactFamilyRelationship', {$scope: scope}, {onRemove: () => {}});
+        $ctrl = componentController('contactFamilyRelationship', { $scope: scope }, { onRemove: () => {} });
     }
     describe('$onInit', () => {
         it('should set the display_name for the search button/box', () => {
@@ -53,7 +53,7 @@ describe('contacts.show.personModal.family.component', () => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve());
             $ctrl.search('abc');
             expect(api.get).toHaveBeenCalledWith(
-                `contacts//people`, {
+                'contacts//people', {
                     fields: {
                         people: 'first_name,last_name'
                     },
@@ -65,9 +65,9 @@ describe('contacts.show.personModal.family.component', () => {
             );
         });
         it('should map the results', done => {
-            spyOn(api, 'get').and.callFake(() => Promise.resolve([{first_name: 'a', last_name: 'b'}]));
+            spyOn(api, 'get').and.callFake(() => Promise.resolve([{ first_name: 'a', last_name: 'b' }]));
             $ctrl.search('').then(data => {
-                expect(data).toEqual([{first_name: 'a', last_name: 'b', display_name: 'a b'}]);
+                expect(data).toEqual([{ first_name: 'a', last_name: 'b', display_name: 'a b' }]);
                 done();
             });
         });
@@ -75,8 +75,8 @@ describe('contacts.show.personModal.family.component', () => {
     describe('select', () => {
         it('should set the related_person', () => {
             $ctrl.familyRelationship = {};
-            $ctrl.select({id: 1});
-            expect($ctrl.familyRelationship.related_person).toEqual({id: 1});
+            $ctrl.select({ id: 1 });
+            expect($ctrl.familyRelationship.related_person).toEqual({ id: 1 });
         });
     });
 });

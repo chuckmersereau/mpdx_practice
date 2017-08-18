@@ -1,13 +1,11 @@
 import service from './locale.service';
-import assign from 'lodash/fp/assign';
 import moment from 'moment';
 
 describe('contacts.service', () => {
-    let locale, rootScope;
+    let locale;
     beforeEach(() => {
         angular.mock.module(service);
-        inject(($rootScope, _locale_) => {
-            rootScope = $rootScope;
+        inject((_locale_) => {
             locale = _locale_;
         });
     });

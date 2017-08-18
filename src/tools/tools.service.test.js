@@ -106,16 +106,16 @@ describe('tools.service', () => {
         beforeEach(() => {
             tools.analytics = null;
             spyOn(api, 'get').and.callFake(() => Promise.resolve({
-                "counts_by_type": [
+                'counts_by_type': [
                     {
-                        "counts": [
+                        'counts': [
                             {
-                                "type": "fix-commitment-info",
-                                "count": 190
+                                'type': 'fix-commitment-info',
+                                'count': 190
                             },
                             {
-                                "type": "fix-phone-numbers",
-                                "count": 3
+                                'type': 'fix-phone-numbers',
+                                'count': 3
                             }
                         ]
                     }

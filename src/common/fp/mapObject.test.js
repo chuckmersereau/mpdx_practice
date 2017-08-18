@@ -6,7 +6,7 @@ const obj = {
 };
 
 describe('common.fp.mapObject', () => {
-    it(`should curry`, () => {
+    it('should curry', () => {
         expect(isFunction(mapObject())).toEqual(true);
     });
     it('should map an object', () => {

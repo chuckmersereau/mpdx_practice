@@ -7,15 +7,17 @@ import unionBy from 'lodash/fp/unionBy';
 import moment from 'moment';
 
 const accountListId = 123;
-const tags = [{name: 'a'}, {name: 'b'}];
+const tags = [{ name: 'a' }, { name: 'b' }];
 const selected = [1, 2];
-const currentUser = {id: 321};
+const currentUser = { id: 321 };
 
 describe('tasks.service', () => {
     let api, users, tasks, tasksTags, tasksFilter, alerts, gettextCatalog, modal;
     beforeEach(() => {
         angular.mock.module(service);
-        inject(($rootScope, _api_, _tasks_, _tasksTags_, _users_, _tasksFilter_, _alerts_, _gettextCatalog_, _modal_) => {
+        inject((
+            $rootScope, _api_, _tasks_, _tasksTags_, _users_, _tasksFilter_, _alerts_, _gettextCatalog_, _modal_
+        ) => {
             api = _api_;
             alerts = _alerts_;
             modal = _modal_;
@@ -27,7 +29,7 @@ describe('tasks.service', () => {
             api.account_list_id = accountListId;
             users.current = currentUser;
         });
-        spyOn(api, 'post').and.callFake(() => Promise.resolve({id: 1}));
+        spyOn(api, 'post').and.callFake(() => Promise.resolve({ id: 1 }));
         spyOn(alerts, 'addAlert').and.callFake(data => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
         spyOn(gettextCatalog, 'getPlural').and.callThrough();
@@ -70,8 +72,8 @@ describe('tasks.service', () => {
         });
     });
     describe('load', () => {
-        let resp = [{id: 1, subject: 'a'}];
-        resp.meta = {pagination: {page: 1}};
+        let resp = [{ id: 1, subject: 'a' }];
+        resp.meta = { pagination: { page: 1 } };
         beforeEach(() => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve(resp));
         });
@@ -97,7 +99,7 @@ describe('tasks.service', () => {
         it('should set reset values on 1st page', () => {
             tasks.loading = false;
             tasks.page = 2;
-            tasks.meta = {junk: 'value'};
+            tasks.meta = { junk: 'value' };
             tasks.data = [1, 2, 3];
             tasks.dataLoadCount = 0;
             tasks.load();
@@ -117,7 +119,7 @@ describe('tasks.service', () => {
             });
         });
         it('should handle pages', done => {
-            const oldData = [{id: 2, subject: 'b'}];
+            const oldData = [{ id: 2, subject: 'b' }];
             tasks.data = oldData;
             tasks.load(2).then(() => {
                 expect(tasks.page).toEqual(resp.meta.pagination.page);
@@ -131,7 +133,7 @@ describe('tasks.service', () => {
     describe('process', () => {
         let task;
         beforeEach(() => {
-            task = {id: 1, subject: 'a'};
+            task = { id: 1, subject: 'a' };
         });
         it('should handle completed', () => {
             task.completed = true;
@@ -161,9 +163,9 @@ describe('tasks.service', () => {
             spyOn(tasksTags, 'change').and.callFake(() => {});
             spyOn(tasks, 'change').and.callFake(() => {});
         });
-        const model = {activity_type: 'activity'};
+        const model = { activity_type: 'activity' };
         it('should build a task from the provided model', (done) => {
-            const result = map(id => assign({id: id}, model), selected);
+            const result = map(id => assign({ id: id }, model), selected);
             tasks.bulkEdit(model).then(data => {
                 expect(data).toEqual(result);
                 expect(tasksTags.change).toHaveBeenCalled();
@@ -208,13 +210,18 @@ describe('tasks.service', () => {
         });
         it('should confirm with a translated message', () => {
             tasks.bulkDelete();
-            expect(gettextCatalog.getPlural).toHaveBeenCalledWith(2, jasmine.any(String), jasmine.any(String), jasmine.any(Object));
+            expect(gettextCatalog.getPlural)
+                .toHaveBeenCalledWith(2, jasmine.any(String), jasmine.any(String), jasmine.any(Object));
             expect(modal.confirm).toHaveBeenCalledWith(jasmine.any(String));
         });
         it('should call delete', (done) => {
             spyOn(api, 'delete').and.callFake(() => Promise.resolve());
             tasks.bulkDelete().then(() => {
-                expect(api.delete).toHaveBeenCalledWith({url: 'tasks/bulk', data: [{id: 1}, {id: 2}], type: 'tasks'});
+                expect(api.delete).toHaveBeenCalledWith({
+                    url: 'tasks/bulk',
+                    data: [{ id: 1 }, { id: 2 }],
+                    type: 'tasks'
+                });
                 done();
             });
         });
@@ -222,12 +229,13 @@ describe('tasks.service', () => {
             spyOn(api, 'delete').and.callFake(() => Promise.resolve());
             tasks.bulkDelete().then(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
-                expect(gettextCatalog.getPlural).toHaveBeenCalledWith(2, jasmine.any(String), jasmine.any(String), jasmine.any(Object));
+                expect(gettextCatalog.getPlural)
+                    .toHaveBeenCalledWith(2, jasmine.any(String), jasmine.any(String), jasmine.any(Object));
                 done();
             });
         });
         it('should remove the tasks from data', (done) => {
-            tasks.data = [{id: 1}, {id: 2}];
+            tasks.data = [{ id: 1 }, { id: 2 }];
             spyOn(api, 'delete').and.callFake(() => Promise.resolve());
             tasks.bulkDelete().then(() => {
                 expect(tasks.data).toEqual([]);
@@ -235,7 +243,7 @@ describe('tasks.service', () => {
             });
         });
         it('should load tasks if all visible tasks were removed', (done) => {
-            tasks.data = [{id: 1}, {id: 2}];
+            tasks.data = [{ id: 1 }, { id: 2 }];
             spyOn(api, 'delete').and.callFake(() => Promise.resolve());
             tasks.bulkDelete().then(() => {
                 expect(tasks.load).toHaveBeenCalledWith();
@@ -253,7 +261,8 @@ describe('tasks.service', () => {
             spyOn(api, 'delete').and.callFake(() => Promise.reject());
             tasks.bulkDelete().catch(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
-                expect(gettextCatalog.getPlural).toHaveBeenCalledWith(2, jasmine.any(String), jasmine.any(String), jasmine.any(Object));
+                expect(gettextCatalog.getPlural)
+                    .toHaveBeenCalledWith(2, jasmine.any(String), jasmine.any(String), jasmine.any(Object));
                 done();
             });
         });

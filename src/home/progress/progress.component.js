@@ -48,7 +48,7 @@ class progressController {
     refreshData() {
         this.blockUI.start();
         this.accounts.analytics = null;
-        return this.accounts.getAnalytics({startDate: this.startDate, endDate: this.endDate}).then(() => {
+        return this.accounts.getAnalytics({ startDate: this.startDate, endDate: this.endDate }).then(() => {
             this.blockUI.reset();
         }).catch(err => {
             this.blockUI.reset();

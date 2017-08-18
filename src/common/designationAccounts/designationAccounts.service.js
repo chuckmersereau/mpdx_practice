@@ -26,7 +26,7 @@ class DesignationAccountsService {
             this.$log.debug(`account_lists/${this.api.account_list_id}/designation_accounts`, data);
             this.data = data;
             this.organizations = reduce((result, value) => {
-                if (!find({id: value.organization.id}, result)) {
+                if (!find({ id: value.organization.id }, result)) {
                     return concat(result, value.organization);
                 }
                 return result;

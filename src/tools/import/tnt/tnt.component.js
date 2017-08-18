@@ -1,5 +1,5 @@
-import round from "lodash/fp/round";
-import joinComma from "common/fp/joinComma";
+import round from 'lodash/fp/round';
+import joinComma from 'common/fp/joinComma';
 import config from 'config';
 
 class ImportTntController {

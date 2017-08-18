@@ -25,7 +25,7 @@ class GoogleController {
                 this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed your integration with Google.'));
             }).catch((data) => {
                 this.saving = false;
-                this.alerts.addAlert(this.gettextCatalog.getString(`MPDX couldn't save your configuration changes for Google. {error}`, {error: data.error}), 'danger');
+                this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for Google. {error}', { error: data.error }), 'danger');
             });
         });
     }

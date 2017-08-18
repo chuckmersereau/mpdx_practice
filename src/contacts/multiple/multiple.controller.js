@@ -18,7 +18,7 @@ class MultipleController {
             if (model.first_name || model.last_name) {
                 let contact = {
                     id: uuid(),
-                    account_list: {id: this.api.account_list_id},
+                    account_list: { id: this.api.account_list_id },
                     name: `${model.last_name}, ${model.first_name}`,
                     notes: model.notes
                 };
@@ -28,10 +28,10 @@ class MultipleController {
                     last_name: model.last_name
                 };
                 if (model.email) {
-                    person.email_addresses = [{id: uuid(), email: model.email, primary: true}];
+                    person.email_addresses = [{ id: uuid(), email: model.email, primary: true }];
                 }
                 if (model.phone) {
-                    person.phone_numbers = [{id: uuid(), number: model.phone, primary: true}];
+                    person.phone_numbers = [{ id: uuid(), number: model.phone, primary: true }];
                 }
                 contact.people = [person];
                 if (model.spouse_first_name) {
@@ -42,10 +42,10 @@ class MultipleController {
                     };
                     contact.name += ` and ${model.spouse_first_name}`;
                     if (model.spouse_phone) {
-                        spouse.phone_numbers = [{id: uuid(), number: model.spouse_phone, primary: true}];
+                        spouse.phone_numbers = [{ id: uuid(), number: model.spouse_phone, primary: true }];
                     }
                     if (model.spouse_email) {
-                        spouse.email_addresses = [{id: uuid(), email: model.spouse_email, primary: true}];
+                        spouse.email_addresses = [{ id: uuid(), email: model.spouse_email, primary: true }];
                     }
                     contact.people = concat(contact.people, spouse);
                 }

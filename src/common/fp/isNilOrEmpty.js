@@ -1,4 +1,4 @@
-//return null or empty, but not numeric
+// return null or empty, but not numeric
 import curry from 'lodash/fp/curry';
 import isEmpty from 'lodash/fp/isEmpty';
 import isNil from 'lodash/fp/isNil';

@@ -21,7 +21,7 @@ class ContactFamilyRelationshipController {
         this.onRemove();
     }
     search(text) {
-        return this.api.get(`contacts//people`, {
+        return this.api.get('contacts//people', {
             fields: {
                 people: 'first_name,last_name'
             },
@@ -31,7 +31,7 @@ class ContactFamilyRelationshipController {
             per_page: 10000
         }).then(data => {
             return map(item => {
-                return assign(item, {display_name: `${item.first_name} ${item.last_name}`});
+                return assign(item, { display_name: `${item.first_name} ${item.last_name}` });
             }, data);
         });
     }

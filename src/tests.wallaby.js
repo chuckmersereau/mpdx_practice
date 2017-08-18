@@ -7,5 +7,5 @@ import 'angular-strap';
 import 'angular-strap/dist/angular-strap.tpl';
 import 'ng-rollbar';
 
-//add promise polyfill for karma
+// add promise polyfill for karma
 require('es6-shim');

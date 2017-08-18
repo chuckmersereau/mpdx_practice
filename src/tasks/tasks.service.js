@@ -45,8 +45,8 @@ class TasksService {
         this.meta = {};
         this.page = 1;
         this.selected = [];
-        this.loading = true; //TODO: maybe should become false until actually loading
-        //TODO: move to component (won't update in service)
+        this.loading = true; // TODO: maybe should become false until actually loading
+        // TODO: move to component (won't update in service)
         this.categories = {
             'completed': this.gettextCatalog.getString('Completed'),
             'today': this.gettextCatalog.getString('Today'),
@@ -78,7 +78,7 @@ class TasksService {
         });
     }
     getAnalytics() {
-        return this.api.get('tasks/analytics', {filter: {account_list_id: this.api.account_list_id}}).then((data) => {
+        return this.api.get('tasks/analytics', { filter: { account_list_id: this.api.account_list_id } }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug('tasks/analytics', data);
             this.analytics = data;
@@ -112,13 +112,13 @@ class TasksService {
                     tasks: 'activity_contacts,activity_type,completed,completed_at,no_date,starred,start_at,subject,tag_list,comments_count,location,result,notification_type,notification_time_before,notification_time_unit'
                 }
             },
-            deSerializationOptions: relationshipId('comments'), //for comment count
+            deSerializationOptions: relationshipId('comments'), // for comment count
             overrideGetAsPost: true
         }).then(data => {
             /* istanbul ignore next */
             this.$log.debug('tasks page ' + data.meta.pagination.page, data);
             /* istanbul ignore next */
-            if (reset && currentCount !== this.dataLoadCount) { //case for slow prior query returning after faster newer query
+            if (reset && currentCount !== this.dataLoadCount) { // case for slow prior query returning after faster newer query
                 return;
             }
             this.loading = false;
@@ -151,13 +151,13 @@ class TasksService {
     }
     save(task, comment = null) {
         if (task.tag_list) {
-            task.tag_list = joinComma(task.tag_list); //fix for api mis-match
+            task.tag_list = joinComma(task.tag_list); // fix for api mis-match
         }
         if (comment) {
             if (!task.comments) {
                 task.comments = [];
             }
-            task.comments.push({id: uuid(), body: comment, person: { id: this.users.current.id }});
+            task.comments.push({ id: uuid(), body: comment, person: { id: this.users.current.id } });
         }
         return this.api.put(`tasks/${task.id}`, task).then(() => {
             this.change();
@@ -169,7 +169,7 @@ class TasksService {
     create(task, contactIds = [], comment) {
         task.account_list = { id: this.api.account_list_id };
         contactIds = reject('', contactIds);
-        task.tag_list = joinComma(task.tag_list); //fix for api mis-match
+        task.tag_list = joinComma(task.tag_list); // fix for api mis-match
         if (contactIds.length > 1) {
             const tasks = reduce((result, contactId) => {
                 let contactTask = angular.copy(task);
@@ -177,10 +177,10 @@ class TasksService {
                     if (!contactTask.comments) {
                         contactTask.comments = [];
                     }
-                    contactTask.comments = [{id: uuid(), body: comment, person: { id: this.users.current.id }}];
+                    contactTask.comments = [{ id: uuid(), body: comment, person: { id: this.users.current.id } }];
                 }
                 if (!isEmpty(contactId)) {
-                    result = concat(result, assign(contactTask, {id: uuid(), contacts: [{id: contactId}]}));
+                    result = concat(result, assign(contactTask, { id: uuid(), contacts: [{ id: contactId }] }));
                 }
                 return result;
             }, [], contactIds);
@@ -194,9 +194,9 @@ class TasksService {
             if (!task.comments) {
                 task.comments = [];
             }
-            task.comments = [{id: uuid(), body: comment, person: { id: this.users.current.id }}];
+            task.comments = [{ id: uuid(), body: comment, person: { id: this.users.current.id } }];
         }
-        task.contacts = map(contactId => { return {id: contactId}; }, contactIds);
+        task.contacts = map(contactId => { return { id: contactId }; }, contactIds);
         return this.api.post('tasks', task).then(data => {
             const processedTask = this.process(data);
             this.data = upsert('id', processedTask, this.data);
@@ -222,9 +222,9 @@ class TasksService {
     }
     bulkEdit(model, comment, tags) {
         const tasks = map(id => {
-            let task = assign({id: id}, model);
+            let task = assign({ id: id }, model);
             if (comment) {
-                task.comments = [{id: uuid(), body: comment, person: { id: this.users.current.id }}];
+                task.comments = [{ id: uuid(), body: comment, person: { id: this.users.current.id } }];
             }
             task.tag_list = emptyToNull(joinComma(tags));
             return omitBy(isNil, task);
@@ -237,14 +237,14 @@ class TasksService {
     }
     deleteComment(task, comment) {
         return this.api.delete(`tasks/${task.id}/comments/${comment.id}`).then(() => {
-            task.comments = reject({id: comment.id}, task.comments);
+            task.comments = reject({ id: comment.id }, task.comments);
         });
     }
     delete(task) {
         const message = this.gettextCatalog.getString('Are you sure you wish to delete the selected task?');
         return this.modal.confirm(message).then(() => {
             return this.api.delete(`tasks/${task.id}`).then(() => {
-                this.data = reject({id: task.id}, this.data);
+                this.data = reject({ id: task.id }, this.data);
                 this.selected = pull(task.id, this.selected);
             });
         });
@@ -253,12 +253,12 @@ class TasksService {
         if (this.selected.length > 150) {
             const message = this.gettextCatalog.getString('Too many tasks selected, please select a maximum of 150 tasks.');
             this.alerts.addAlert(message, 'danger');
-            return Promise.reject(new Error({message: message}));
+            return Promise.reject(new Error({ message: message }));
         }
-        const tasks = map(id => { return {id: id}; }, this.selected);
+        const tasks = map(id => { return { id: id }; }, this.selected);
         const message = this.gettextCatalog.getPlural(this.selected.length, 'Are you sure you wish to delete the selected task?', 'Are you sure you wish to delete the {{$count}} selected tasks?', {});
         return this.modal.confirm(message).then(() => {
-            return this.api.delete({url: 'tasks/bulk', data: tasks, type: 'tasks'}).then(() => {
+            return this.api.delete({ url: 'tasks/bulk', data: tasks, type: 'tasks' }).then(() => {
                 this.alerts.addAlert(this.gettextCatalog.getPlural(angular.copy(this.selected).length, '1 task successfully removed.', '{{$count}} tasks successfully removed.', {}));
                 this.data = pullAllBy('id', tasks, this.data);
                 if (this.data.length === 0) {
@@ -272,7 +272,7 @@ class TasksService {
         });
     }
     star(task) {
-        return this.api.put(`tasks/${task.id}`, {id: task.id, starred: !task.starred});
+        return this.api.put(`tasks/${task.id}`, { id: task.id, starred: !task.starred });
     }
     isSelected(id) {
         return includes(id, this.selected);

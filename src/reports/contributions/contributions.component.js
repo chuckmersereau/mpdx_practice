@@ -97,11 +97,11 @@ class ContributionsController {
         const sumColumn = (col, array) =>
             sumBy(c =>
                 c.monthlyDonations[col].convertedTotal
-            , array);
+                , array);
         return assign(value.totals, {
             months: times(index =>
                 sumColumn(index, donors)
-            , months.length)
+                , months.length)
         });
     }
     getDonors(data, type, info) {
@@ -119,7 +119,7 @@ class ContributionsController {
         );
     }
     getContact(donor, data) {
-        let contact = find({'contact_id': donor.contact_id}, data.donor_infos);
+        let contact = find({ 'contact_id': donor.contact_id }, data.donor_infos);
         if (contact) {
             const frequencyValue = parseFloat(contact.pledge_frequency);
             const frequency = this.serverConstants.getPledgeFrequency(frequencyValue);

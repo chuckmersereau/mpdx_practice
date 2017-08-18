@@ -18,7 +18,7 @@ class MergePeopleModalController {
         this.currentlyMerging = false;
     }
     save() {
-        const selectedPeople = reject({id: this.selectedPerson}, this.selectedPeople);
+        const selectedPeople = reject({ id: this.selectedPerson }, this.selectedPeople);
         const selectedPeopleToMerge = map((person) => {
             return { winner_id: this.selectedPerson, loser_id: person.id };
         }, selectedPeople);

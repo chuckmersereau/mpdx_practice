@@ -20,14 +20,14 @@ describe('contacts.service', () => {
         spyOn(modal, 'open').and.callFake(() => Promise.resolve());
     });
     describe('openPeopleModal', () => {
-        const contact = {id: 1};
+        const contact = { id: 1 };
         it('should call modal.open', () => {
             people.openPeopleModal(contact);
             expect(modal.open).toHaveBeenCalled();
         });
     });
     describe('openMergePeopleModal', () => {
-        const contact = {id: 1};
+        const contact = { id: 1 };
         it('should call modal.open', () => {
             people.openMergePeopleModal(contact);
             expect(modal.open).toHaveBeenCalled();

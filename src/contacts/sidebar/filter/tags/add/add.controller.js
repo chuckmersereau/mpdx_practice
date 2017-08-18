@@ -1,5 +1,5 @@
 import isArray from 'lodash/fp/isArray';
-import map from "lodash/fp/map";
+import map from 'lodash/fp/map';
 
 class AddTagController {
     constructor(
@@ -35,7 +35,7 @@ class AddTagController {
             },
             type: 'tags'
         }).then(() => {
-            this.$rootScope.$emit('contactTagsAdded', {tags: map('name', tagToAdd), contactIds: this.selectedContacts});
+            this.$rootScope.$emit('contactTagsAdded', { tags: map('name', tagToAdd), contactIds: this.selectedContacts });
             this.$scope.$hide();
         });
     }

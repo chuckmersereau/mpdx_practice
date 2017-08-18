@@ -48,8 +48,8 @@ class SetupConnectController {
         this.addOrganization = false;
         this.saving = false;
         this.organization = null;
-        this.username = "";
-        this.password = "";
+        this.username = '';
+        this.password = '';
     }
     select() {
         this.selected = get(this.selectedKey, this.serverConstants.data.organizations_attributes);

@@ -15,7 +15,7 @@ describe('common.designationAccounts.service', () => {
 
     describe('load', () => {
         beforeEach(() => {
-            spyOn(api, 'get').and.callFake(() => Promise.resolve([{id: 1, organization: {id: 2}}]));
+            spyOn(api, 'get').and.callFake(() => Promise.resolve([{ id: 1, organization: { id: 2 } }]));
             spyOn($log, 'debug').and.returnValue();
         });
 

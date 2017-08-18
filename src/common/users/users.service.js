@@ -5,7 +5,7 @@ import has from 'lodash/fp/has';
 import keyBy from 'lodash/fp/keyBy';
 import keys from 'lodash/fp/keys';
 import toString from 'lodash/fp/toString';
-import createPatch from "../fp/createPatch";
+import createPatch from '../fp/createPatch';
 import config from 'config';
 
 class Users {
@@ -43,7 +43,7 @@ class Users {
                 return this.current;
             });
         }
-        return this.api.get('user', {include: this.defaultIncludes, fields: this.defaultFields}).then((response) => {
+        return this.api.get('user', { include: this.defaultIncludes, fields: this.defaultFields }).then((response) => {
             this.current = response;
             this.currentInitialState = angular.copy(this.current);
             this.$log.debug('current user: ', response);
@@ -66,7 +66,7 @@ class Users {
             const accountListId = this.$window.localStorage.getItem(`${this.current.id}_accountListId`) || defaultAccountList;
 
             if (!accountListId) {
-                return this.$q.reject({redirect: 'setup.account'});
+                return this.$q.reject({ redirect: 'setup.account' });
             }
 
             return this.accounts.swap(accountListId, this.current.id).then(() => {
@@ -82,7 +82,7 @@ class Users {
         if (!config.rollbarAccessToken) {
             return;
         }
-        const primaryEmail = find({primary: true}, data.email_addresses);
+        const primaryEmail = find({ primary: true }, data.email_addresses);
         const firstEmail = get('email_addresses[0]', data);
         const email = defaultTo(defaultTo('', firstEmail.email), primaryEmail.email);
         this.Rollbar.configure({
@@ -103,14 +103,14 @@ class Users {
             this.currentOptions = this.mapOptions(data);
             this.$log.debug('user/options', this.currentOptions);
             if (forRouting) {
-                if (!has('setup_position', this.currentOptions)) { //force first time setup
+                if (!has('setup_position', this.currentOptions)) { // force first time setup
                     return this.createOption('setup_position', 'start').then((pos) => {
                         this.currentOptions.setup_position = pos;
                         //  = this.mapOptions(data);
-                        return this.$q.reject({redirect: 'setup.start'});
+                        return this.$q.reject({ redirect: 'setup.start' });
                     });
                 } else if (this.currentOptions.setup_position.value !== '') {
-                    return this.$q.reject({redirect: `setup.${this.currentOptions.setup_position.value}`});
+                    return this.$q.reject({ redirect: `setup.${this.currentOptions.setup_position.value}` });
                 }
             }
             return this.currentOptions;
@@ -120,10 +120,10 @@ class Users {
         return keyBy('key', options);
     }
     createOption(key, value) {
-        return this.api.post({ url: `user/options`, data: {key: key, value: value}, type: 'user_options' }).then((data) => {
+        return this.api.post({ url: 'user/options', data: { key: key, value: value }, type: 'user_options' }).then((data) => {
             this.currentOptions[key] = data;
             return data;
-        }); //use jsonapi key here since it doesn't match endpoint
+        }); // use jsonapi key here since it doesn't match endpoint
     }
     deleteOption(option) {
         return this.api.delete(`user/options/${option}`);
@@ -135,13 +135,13 @@ class Users {
         return this.api.put({ url: `user/options/${option.key}`, data: option, type: 'user_options' }).then((data) => {
             this.currentOptions[option.key] = data;
             return data;
-        }); //use jsonapi key here since it doesn't match endpoint
+        }); // use jsonapi key here since it doesn't match endpoint
     }
     listOrganizationAccounts(reset = false) {
         if (this.organizationAccounts.length > 0 && !reset) {
             return Promise.resolve(this.organizationAccounts);
         }
-        return this.api.get(`user/organization_accounts`, {include: 'organization'}).then((data) => {
+        return this.api.get('user/organization_accounts', { include: 'organization' }).then((data) => {
             this.$log.debug('user/organization_accounts: ', data);
             this.organizationAccounts = data;
             return data;
@@ -157,11 +157,11 @@ class Users {
             return this.$q.resolve(this.current);
         }
         return this.api.put('user', patch).then(() => {
-            return this.getCurrent(true); //force reload to reconcile as put response is incomplete
+            return this.getCurrent(true); // force reload to reconcile as put response is incomplete
         });
     }
     getKeyAccount() {
-        return this.api.get(`user/key_accounts`).then((data) => {
+        return this.api.get('user/key_accounts').then((data) => {
             this.current.key_uuid = data[0].remote_id;
         });
     }

@@ -45,7 +45,7 @@ class MergeContactsController {
         this.blockUI.start();
         let promises = [];
         const contactsToMerge = filter(duplicate => !duplicate.ignored, this.duplicates);
-        const contactsToIgnore = filter({ignored: true}, this.duplicates);
+        const contactsToIgnore = filter({ ignored: true }, this.duplicates);
         if (contactsToMerge.length > 0) {
             promises.push(this.merge(contactsToMerge));
         }
@@ -72,16 +72,16 @@ class MergeContactsController {
 
     ignore(duplicates) {
         return map(duplicate =>
-            this.api.delete({url: `contacts/duplicates/${duplicate.id}`, type: 'contacts'})
-        , duplicates);
+            this.api.delete({ url: `contacts/duplicates/${duplicate.id}`, type: 'contacts' })
+            , duplicates);
     }
 
     merge(duplicates) {
         const winnersAndLosers = map(duplicate => {
             if (duplicate.contacts[0].selected) {
-                return {winner_id: duplicate.contacts[0].id, loser_id: duplicate.contacts[1].id};
+                return { winner_id: duplicate.contacts[0].id, loser_id: duplicate.contacts[1].id };
             }
-            return {winner_id: duplicate.contacts[1].id, loser_id: duplicate.contacts[0].id};
+            return { winner_id: duplicate.contacts[1].id, loser_id: duplicate.contacts[0].id };
         }, duplicates);
         return this.contacts.merge(winnersAndLosers);
     }
@@ -94,7 +94,7 @@ class MergeContactsController {
                 contacts: 'addresses,name,square_avatar,status,created_at',
                 addresses: 'city,postal_code,primary_mailing_address,state,street,source'
             },
-            filter: {account_list_id: this.api.account_list_id},
+            filter: { account_list_id: this.api.account_list_id },
             per_page: 5
         }).then(data => {
             /* istanbul ignore next */

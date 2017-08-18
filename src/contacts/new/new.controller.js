@@ -7,7 +7,7 @@ class ContactNewModalController {
         this.contacts = contacts;
         this.gettextCatalog = gettextCatalog;
 
-        this.contact = {name: ''};
+        this.contact = { name: '' };
     }
     save() {
         return this.contacts.create(this.contact).then((contact) => {

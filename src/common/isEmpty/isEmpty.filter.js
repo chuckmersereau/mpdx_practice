@@ -5,4 +5,4 @@ function isEmptyFilter() {
 }
 
 export default angular.module('mpdx.common.isEmpty', [])
-  .filter('isEmpty', isEmptyFilter).name;
+    .filter('isEmpty', isEmptyFilter).name;

@@ -110,7 +110,7 @@ class AddressesService {
 
     removeAddress(contact, address) {
         return this.contacts.deleteAddress(contact.id, address.id).then(() => {
-            contact.addresses = reject({id: address.id}, contact.addresses);
+            contact.addresses = reject({ id: address.id }, contact.addresses);
         });
     }
 

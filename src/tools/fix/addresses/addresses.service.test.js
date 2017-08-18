@@ -327,7 +327,7 @@ describe('tools.fix.addresses.service', () => {
                     id: 'address_2',
                     primary_mailing_address: false
                 }
-            ]};
+            ] };
             expect(contact.addresses[2].primary_mailing_address).toBeFalsy();
             fixAddresses.setPrimary(contact, { id: 'address_2' });
             expect(contact.addresses[2].primary_mailing_address).toBeTruthy();

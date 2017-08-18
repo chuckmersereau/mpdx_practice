@@ -4,7 +4,10 @@ describe('contacts.show.details.component', () => {
     let $ctrl, scope, api, serverConstants, gettextCatalog, alerts, modal, contacts, users, rootScope;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _contacts_, _serverConstants_, _gettextCatalog_, _api_, _alerts_, _modal_, _users_) => {
+        inject((
+            $componentController, $rootScope, _contacts_, _serverConstants_, _gettextCatalog_, _api_, _alerts_,
+            _modal_, _users_
+        ) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             alerts = _alerts_;
@@ -14,10 +17,10 @@ describe('contacts.show.details.component', () => {
             gettextCatalog = _gettextCatalog_;
             serverConstants = _serverConstants_;
             users = _users_;
-            serverConstants.data = {locales: {}};
+            serverConstants.data = { locales: {} };
             window.languageMappingList = [];
             api.account_list_id = 1234;
-            $ctrl = $componentController('contactDetails', {$scope: scope}, {donorAccounts: [], contact: {}, onSave: () => Promise.resolve()});
+            $ctrl = $componentController('contactDetails', { $scope: scope }, { donorAccounts: [], contact: {}, onSave: () => Promise.resolve() });
         });
         spyOn(gettextCatalog, 'getString').and.callThrough();
         spyOn(alerts, 'addAlert').and.callFake(data => data);
@@ -32,16 +35,16 @@ describe('contacts.show.details.component', () => {
             $ctrl.$onInit();
             expect($ctrl.translations).toEqual({
                 no_appeals: [
-                    {key: false, value: 'Yes'},
-                    {key: true, value: 'No'}
+                    { key: false, value: 'Yes' },
+                    { key: true, value: 'No' }
                 ],
                 no_gift_aid: [
-                    {key: false, value: 'Yes'},
-                    {key: true, value: 'No'}
+                    { key: false, value: 'Yes' },
+                    { key: true, value: 'No' }
                 ],
                 magazine: [
-                    {key: true, value: 'Yes'},
-                    {key: false, value: 'No'}
+                    { key: true, value: 'Yes' },
+                    { key: false, value: 'No' }
                 ]
             });
             expect(gettextCatalog.getString.calls.count()).toEqual(2);
@@ -61,10 +64,10 @@ describe('contacts.show.details.component', () => {
     });
     describe('$onChanges', () => {
         beforeEach(() => {
-            spyOn($ctrl, 'getName').and.callFake(() => Promise.resolve({name: 'a'}));
+            spyOn($ctrl, 'getName').and.callFake(() => Promise.resolve({ name: 'a' }));
         });
         it('should get the first referrer', (done) => {
-            $ctrl.contact.contacts_that_referred_me = [{id: 1}];
+            $ctrl.contact.contacts_that_referred_me = [{ id: 1 }];
             $ctrl.referrer = null;
             $ctrl.$onChanges().then(() => {
                 expect($ctrl.referrerName).toEqual('a');
@@ -74,7 +77,7 @@ describe('contacts.show.details.component', () => {
             expect($ctrl.getName).toHaveBeenCalledWith($ctrl.referrer);
         });
         it('should get the rounded last donation amount', () => {
-            $ctrl.contact.last_donation = {amount: 1.23};
+            $ctrl.contact.last_donation = { amount: 1.23 };
             $ctrl.$onChanges();
             expect($ctrl.last_donation).toEqual(1);
         });
@@ -85,7 +88,7 @@ describe('contacts.show.details.component', () => {
             expect(gettextCatalog.getString).toHaveBeenCalledWith('Never');
         });
         it('should get the giving method', () => {
-            $ctrl.contact.last_donation = {payment_method: 'EFT'};
+            $ctrl.contact.last_donation = { payment_method: 'EFT' };
             $ctrl.$onChanges();
             expect($ctrl.giving_method).toEqual('EFT');
         });
@@ -112,15 +115,15 @@ describe('contacts.show.details.component', () => {
         });
         it('should query api for a name by id', () => {
             $ctrl.getName(1);
-            expect(api.get).toHaveBeenCalledWith(`contacts/1`, {
+            expect(api.get).toHaveBeenCalledWith('contacts/1', {
                 fields: { contacts: 'name' }
             });
         });
     });
     describe('save - referral changed', () => {
         beforeEach(() => {
-            $ctrl.contact.contacts_that_referred_me = [{id: 1}];
-            $ctrl.contact.contact_referrals_to_me = [{id: 1}];
+            $ctrl.contact.contacts_that_referred_me = [{ id: 1 }];
+            $ctrl.contact.contact_referrals_to_me = [{ id: 1 }];
             $ctrl.referrer = 2;
         });
         it('should alert', done => {
@@ -143,8 +146,13 @@ describe('contacts.show.details.component', () => {
     describe('onAddressPrimary', () => {
         beforeEach(() => {
             spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
-            contacts.current = {id: 123};
-            $ctrl.contact = {addresses: [{id: 321, primary_mailing_address: false}, {id: 432, primary_mailing_address: true}]};
+            contacts.current = { id: 123 };
+            $ctrl.contact = {
+                addresses: [
+                    { id: 321, primary_mailing_address: false },
+                    { id: 432, primary_mailing_address: true }
+                ]
+            };
         });
         it('should confirm with a translated message', () => {
             $ctrl.onAddressPrimary();
@@ -154,8 +162,17 @@ describe('contacts.show.details.component', () => {
         it('should save', done => {
             spyOn(contacts, 'save').and.callFake(() => Promise.resolve());
             $ctrl.onAddressPrimary(321).then(() => {
-                expect(contacts.save).toHaveBeenCalledWith({id: contacts.current.id, addresses: [{ id: 321, primary_mailing_address: true }, {id: 432, primary_mailing_address: false}]});
-                expect($ctrl.contact.addresses).toEqual([{ id: 321, primary_mailing_address: true }, {id: 432, primary_mailing_address: false}]);
+                expect(contacts.save).toHaveBeenCalledWith({
+                    id: contacts.current.id,
+                    addresses: [
+                        { id: 321, primary_mailing_address: true },
+                        { id: 432, primary_mailing_address: false }
+                    ]
+                });
+                expect($ctrl.contact.addresses).toEqual([
+                    { id: 321, primary_mailing_address: true },
+                    { id: 432, primary_mailing_address: false }
+                ]);
                 done();
             });
         });

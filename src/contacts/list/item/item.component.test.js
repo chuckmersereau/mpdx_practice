@@ -2,15 +2,12 @@ import component from './item.component';
 import moment from 'moment';
 
 describe('contacts.list.item', () => {
-    let $ctrl, rootScope, scope, contacts, people, users;
+    let $ctrl, rootScope, scope;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _contacts_, _people_, _users_) => {
+        inject(($componentController, $rootScope) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
-            contacts = _contacts_;
-            people = _people_;
-            users = _users_;
             $ctrl = $componentController('contactsListItem', { $scope: scope });
         });
     });

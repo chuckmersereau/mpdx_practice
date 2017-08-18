@@ -1,4 +1,4 @@
-/*@ngInject*/
+/* @ngInject*/
 export default function appRun(
     $document, $q, $log, $rootScope, $state, $transitions, $window, authManager, blockUI
 ) {

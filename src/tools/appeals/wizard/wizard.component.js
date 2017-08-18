@@ -1,7 +1,7 @@
-import concat from "lodash/fp/concat";
-import map from "lodash/fp/map";
-import isFunction from "lodash/fp/isFunction";
-import joinComma from "common/fp/joinComma";
+import concat from 'lodash/fp/concat';
+import map from 'lodash/fp/map';
+import isFunction from 'lodash/fp/isFunction';
+import joinComma from 'common/fp/joinComma';
 
 class WizardController {
     constructor(
@@ -40,7 +40,9 @@ class WizardController {
     }
     calculateGoal() {
         const adminPercent = Number(this.goal.adminPercent) / 100 + 1;
-        this.appeal.amount = Math.round((Number(this.goal.initial) + Number(this.goal.letterCost)) * adminPercent * 100) / 100;
+        const initialGoal = Number(this.goal.initial);
+        const letterCost = Number(this.goal.letterCost);
+        this.appeal.amount = Math.round((initialGoal + letterCost) * adminPercent * 100) / 100;
     }
     selectAllStatuses() {
         if (this.statuses.length === this.serverConstants.data.status_hashes.length) {
@@ -94,7 +96,7 @@ class WizardController {
                 fields: {
                     contacts: 'tag_list'
                 },
-                per_page: 100 //limit of bulk api
+                per_page: 100 // limit of bulk api
             },
             overrideGetAsPost: true
         }).then(contacts => {
@@ -136,7 +138,7 @@ class WizardController {
         });
     }
     create(appeal) {
-        appeal.account_list = {id: this.api.account_list_id};
+        appeal.account_list = { id: this.api.account_list_id };
         return this.api.post({
             url: 'appeals',
             data: appeal,

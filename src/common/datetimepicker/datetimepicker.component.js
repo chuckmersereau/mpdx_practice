@@ -15,7 +15,9 @@ class DatetimepickerController {
         this.init();
         this.$scope.$watch('$ctrl.date', () => {
             if (this.date) {
-                this.model = this.model ? moment(this.date).hour(this.model.hour()).minute(this.model.minute()) : moment(this.date);
+                this.model = this.model
+                    ? moment(this.date).hour(this.model.hour()).minute(this.model.minute())
+                    : moment(this.date);
                 this.ngModel = this.model.toISOString();
             }
         });

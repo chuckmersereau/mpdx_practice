@@ -1,15 +1,14 @@
 import component from './share.component';
 
 describe('preferences.accounts.share', () => {
-    let $ctrl, accounts, rootScope, scope, componentController, alerts, gettextCatalog, users;
+    let $ctrl, accounts, rootScope, scope, componentController, alerts, gettextCatalog;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _accounts_, _alerts_, _gettextCatalog_, _users_) => {
+        inject(($componentController, $rootScope, _accounts_, _alerts_, _gettextCatalog_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             accounts = _accounts_;
             alerts = _alerts_;
-            users = _users_;
             gettextCatalog = _gettextCatalog_;
             componentController = $componentController;
             loadController();
@@ -20,7 +19,7 @@ describe('preferences.accounts.share', () => {
         spyOn(accounts, 'listInvites').and.callFake(() => {});
     });
     function loadController() {
-        $ctrl = componentController('sharePreferences', {$scope: scope}, {setup: false});
+        $ctrl = componentController('sharePreferences', { $scope: scope }, { setup: false });
     }
     describe('constructor', () => {
         it('should set default values', () => {
@@ -32,7 +31,7 @@ describe('preferences.accounts.share', () => {
         beforeEach(() => {
             $ctrl.setup = false;
         });
-        it(`shouldn't run services on setup`, () => {
+        it('shouldn\'t run services on setup', () => {
             $ctrl.setup = true;
             $ctrl.$onInit();
             expect(accounts.listUsers).not.toHaveBeenCalled();
@@ -47,7 +46,7 @@ describe('preferences.accounts.share', () => {
         beforeEach(() => {
             $ctrl.$onInit();
         });
-        //x'd until Org_acct is fixed
+        // x'd until Org_acct is fixed
         xit('should call services if account list changes out of setup', () => {
             rootScope.$emit('accountListUpdated');
             rootScope.$digest();
@@ -57,7 +56,7 @@ describe('preferences.accounts.share', () => {
     });
     describe('cancelInvite', () => {
         beforeEach(() => {
-            accounts.inviteList = [{id: 1}, {id: 2}];
+            accounts.inviteList = [{ id: 1 }, { id: 2 }];
         });
         it('should set saving flag', () => {
             $ctrl.cancelInvite(1);
@@ -86,7 +85,7 @@ describe('preferences.accounts.share', () => {
         it('should remove the invite', done => {
             spyOn(accounts, 'destroyInvite').and.callFake(() => Promise.resolve());
             $ctrl.cancelInvite(1).then(() => {
-                expect(accounts.inviteList).toEqual([{id: 2}]);
+                expect(accounts.inviteList).toEqual([{ id: 2 }]);
                 done();
             });
         });
@@ -102,7 +101,7 @@ describe('preferences.accounts.share', () => {
     });
     describe('removeUser', () => {
         beforeEach(() => {
-            accounts.userList = [{id: 1}, {id: 2}];
+            accounts.userList = [{ id: 1 }, { id: 2 }];
         });
         it('should set saving flag', () => {
             $ctrl.removeUser(1);
@@ -131,7 +130,7 @@ describe('preferences.accounts.share', () => {
         it('should remove the user', done => {
             spyOn(accounts, 'destroyUser').and.callFake(() => Promise.resolve());
             $ctrl.removeUser(1).then(() => {
-                expect(accounts.userList).toEqual([{id: 2}]);
+                expect(accounts.userList).toEqual([{ id: 2 }]);
                 done();
             });
         });

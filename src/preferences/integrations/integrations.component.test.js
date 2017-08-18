@@ -27,7 +27,7 @@ describe('preferences.integrations.component', () => {
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
     function loadController(bindings) {
-        return componentController('preferencesIntegration', {$scope: scope}, bindings);
+        return componentController('preferencesIntegration', { $scope: scope }, bindings);
     }
     describe('constructor', () => {
         beforeEach(() => {

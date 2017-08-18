@@ -33,11 +33,11 @@ class TagsController {
         const data = [{
             name: tag.name
         }];
-        return this.api.delete({url: 'contacts/tags/bulk', params: params, data: data, type: 'tags'}).then(() => {
+        return this.api.delete({ url: 'contacts/tags/bulk', params: params, data: data, type: 'tags' }).then(() => {
             this.contactsTags.selectedTags = reject({ name: tag.name }, this.contactsTags.selectedTags);
             this.contactsTags.rejectedTags = reject({ name: tag.name }, this.contactsTags.rejectedTags);
             this.contactsTags.data = reject({ name: tag.name }, this.contactsTags.data);
-            this.$rootScope.$emit('contactTagDeleted', {tag: tag.name});
+            this.$rootScope.$emit('contactTagDeleted', { tag: tag.name });
         });
     }
     isTagActive(tag) {

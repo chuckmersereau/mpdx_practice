@@ -3,7 +3,7 @@ import findIndex from 'lodash/fp/findIndex';
 import get from 'lodash/fp/get';
 import keys from 'lodash/fp/keys';
 import toString from 'lodash/fp/toString';
-import createPatch from "../fp/createPatch";
+import createPatch from '../fp/createPatch';
 
 class AccountsService {
     constructor(
@@ -56,7 +56,7 @@ class AccountsService {
         });
     }
     destroyInvite(id) {
-        return this.api.delete({url: `account_lists/${this.api.account_list_id}/invites/${id}`, type: 'account_list_invites'});
+        return this.api.delete({ url: `account_lists/${this.api.account_list_id}/invites/${id}`, type: 'account_list_invites' });
     }
     destroyUser(id) {
         return this.api.delete(`account_lists/${this.api.account_list_id}/users/${id}`);
@@ -100,10 +100,10 @@ class AccountsService {
             return this.$q.resolve(this.current);
         }
         return this.api.put(`account_lists/${this.current.id}`, patch).then(() => {
-            this.get(this.current.id).then((data) => { //get complete due to include object diffs
+            this.get(this.current.id).then((data) => { // get complete due to include object diffs
                 this.current = data;
                 this.currentInitialState = angular.copy(this.current);
-                const index = findIndex({id: data.id}, this.data); //reconcile w/ account list
+                const index = findIndex({ id: data.id }, this.data); // reconcile w/ account list
                 if (index > 0) {
                     this.data[index] = assign(this.data[index], patch);
                 }

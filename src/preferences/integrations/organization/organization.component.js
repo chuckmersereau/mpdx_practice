@@ -46,7 +46,7 @@ class OrganizationIntegrationPreferencesController {
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed your organization integration'));
             this.users.listOrganizationAccounts(true);
         }).catch(err => {
-            this.alerts.addAlert(this.gettextCatalog.getString(`MPDX couldn't save your configuration changes for that organization`), 'danger');
+            this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for that organization'), 'danger');
             this.saving = false;
             throw err;
         });

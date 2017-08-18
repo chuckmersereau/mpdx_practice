@@ -1,17 +1,16 @@
 import component from './mailchimp.component';
 
 describe('preferences.integrations.mailchimp.component', () => {
-    let $ctrl, mailchimp, help, rootScope, scope, componentController, alerts, gettextCatalog, modal, api;
+    let $ctrl, mailchimp, rootScope, scope, componentController, alerts, gettextCatalog, modal, api;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _mailchimp_, _help_, _alerts_, _gettextCatalog_, _modal_, _api_) => {
+        inject(($componentController, $rootScope, _mailchimp_, _alerts_, _gettextCatalog_, _modal_, _api_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             api = _api_;
             mailchimp = _mailchimp_;
             alerts = _alerts_;
             modal = _modal_;
-            help = _help_;
             gettextCatalog = _gettextCatalog_;
             componentController = $componentController;
             api.account_list_id = 123;
@@ -21,7 +20,7 @@ describe('preferences.integrations.mailchimp.component', () => {
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
     function loadController() {
-        $ctrl = componentController('mailchimpIntegrationPreferences', {$scope: scope}, {});
+        $ctrl = componentController('mailchimpIntegrationPreferences', { $scope: scope }, {});
     }
     describe('constructor', () => {
         it('should set default values', () => {
@@ -53,7 +52,7 @@ describe('preferences.integrations.mailchimp.component', () => {
         it('should create an invite', () => {
             spyOn(api, 'post').and.callFake(() => Promise.resolve());
             $ctrl.save();
-            expect(api.post).toHaveBeenCalledWith({ url: `account_lists/123/mail_chimp_account`, data: mailchimp.data });
+            expect(api.post).toHaveBeenCalledWith({ url: 'account_lists/123/mail_chimp_account', data: mailchimp.data });
         });
         it('should unset saving flag', done => {
             spyOn(api, 'post').and.callFake(() => Promise.resolve());
@@ -85,7 +84,7 @@ describe('preferences.integrations.mailchimp.component', () => {
             });
         });
         it('should handle rejection', done => {
-            spyOn(api, 'post').and.callFake(() => Promise.reject({errors: ['a']}));
+            spyOn(api, 'post').and.callFake(() => Promise.reject({ errors: ['a'] }));
             $ctrl.save().catch(() => {
                 expect($ctrl.saving).toBeFalsy();
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
@@ -105,7 +104,7 @@ describe('preferences.integrations.mailchimp.component', () => {
         it('should disconnect', done => {
             spyOn(api, 'delete').and.callFake(() => Promise.resolve());
             $ctrl.disconnect().then(() => {
-                expect(api.delete).toHaveBeenCalledWith(`account_lists/123/mail_chimp_account`);
+                expect(api.delete).toHaveBeenCalledWith('account_lists/123/mail_chimp_account');
                 done();
             });
         });
@@ -132,7 +131,7 @@ describe('preferences.integrations.mailchimp.component', () => {
             });
         });
         it('should handle rejection', done => {
-            spyOn(api, 'delete').and.callFake(() => Promise.reject({errors: ['a']}));
+            spyOn(api, 'delete').and.callFake(() => Promise.reject({ errors: ['a'] }));
             $ctrl.disconnect().catch(() => {
                 expect($ctrl.saving).toBeFalsy();
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
@@ -167,7 +166,7 @@ describe('preferences.integrations.mailchimp.component', () => {
             });
         });
         it('should handle rejection', done => {
-            spyOn(api, 'get').and.callFake(() => Promise.reject({errors: ['a']}));
+            spyOn(api, 'get').and.callFake(() => Promise.reject({ errors: ['a'] }));
             $ctrl.sync().catch(() => {
                 expect($ctrl.saving).toBeFalsy();
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');

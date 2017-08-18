@@ -1,7 +1,7 @@
 import component from './tasks.component';
 import assign from 'lodash/fp/assign';
 
-const currentContact = {id: 1};
+const currentContact = { id: 1 };
 describe('contacts.show.tasks.component', () => {
     let $ctrl, contacts, tasksFilter, scope;
     beforeEach(() => {
@@ -11,7 +11,7 @@ describe('contacts.show.tasks.component', () => {
             contacts = _contacts_;
             tasksFilter = _tasksFilter_;
             contacts.current = currentContact;
-            $ctrl = $componentController('contactTasks', {$scope: scope}, {});
+            $ctrl = $componentController('contactTasks', { $scope: scope }, {});
         });
     });
     describe('$onInit', () => {

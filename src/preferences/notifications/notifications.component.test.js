@@ -17,18 +17,18 @@ describe('contacts.list.component', () => {
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
     function loadController() {
-        $ctrl = componentController('preferencesNotifications', {$scope: scope}, {onSave: () => Promise.resolve(), setup: null});
+        $ctrl = componentController('preferencesNotifications', { $scope: scope }, { onSave: () => Promise.resolve(), setup: null });
     }
     describe('init', () => {
         it('should transform the users notification preferences with server constants', () => {
             serverConstants.data = {
                 notification_translated_hashes: [{
-                    id: "Partner gave a Special Gift",
-                    key: "11a42c09-2ed1-4754-9b43-2d14a2a3b420",
-                    value: "Partner gave a Special Gift"
+                    id: 'Partner gave a Special Gift',
+                    key: '11a42c09-2ed1-4754-9b43-2d14a2a3b420',
+                    value: 'Partner gave a Special Gift'
                 }]
             };
-            accounts.current = {notification_preferences: [{id: '1234', notification_type: {id: '11a42c09-2ed1-4754-9b43-2d14a2a3b420'}, actions: ['email', 'task']}]};
+            accounts.current = { notification_preferences: [{ id: '1234', notification_type: { id: '11a42c09-2ed1-4754-9b43-2d14a2a3b420' }, actions: ['email', 'task'] }] };
             $ctrl.init();
             expect($ctrl.notifications).toEqual([{
                 id: '1234',
@@ -41,7 +41,7 @@ describe('contacts.list.component', () => {
     });
     describe('save', () => {
         beforeEach(() => {
-            accounts.current = {id: 1};
+            accounts.current = { id: 1 };
         });
         it('should set saving flag', () => {
             spyOn(accounts, 'saveCurrent').and.callFake(() => Promise.resolve());

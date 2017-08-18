@@ -110,7 +110,7 @@ class PhoneNumbersService {
 
     removePhoneNumber(person, phoneNumber) {
         return this.people.deletePhoneNumber(person, phoneNumber).then(() => {
-            person.phone_numbers = reject({id: phoneNumber.id}, person.phone_numbers);
+            person.phone_numbers = reject({ id: phoneNumber.id }, person.phone_numbers);
         });
     }
 
