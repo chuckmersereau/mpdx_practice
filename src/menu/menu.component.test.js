@@ -24,16 +24,24 @@ describe('menu.component', () => {
             spyOn(tools, 'getAnalytics').and.returnValue();
         });
 
-        it('should have called tools.getAnalytics', () => {
+        it('should call tools.getAnalytics', () => {
             $ctrl.$onInit();
             expect(tools.getAnalytics).toHaveBeenCalled();
         });
 
-        it('should refresh tools.getAnalytics on account swap', () => {
+        it('should refresh tools.getAnalytics on accountListUpdated', () => {
             $ctrl.$onInit();
             rootScope.$emit('accountListUpdated');
             rootScope.$digest();
             expect(tools.getAnalytics).toHaveBeenCalledWith(true);
+        });
+
+        describe('setup', () => {
+            it('should not tools.getAnalytics', () => {
+                $ctrl.setup = true;
+                $ctrl.$onInit();
+                expect(tools.getAnalytics).not.toHaveBeenCalled();
+            });
         });
     });
 });

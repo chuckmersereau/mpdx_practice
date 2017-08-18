@@ -4,6 +4,7 @@ class Session {
     ) {
         this.$state = $state;
         this.navSecondary = false;
+        this.navSetup = false;
         this.navImpersonation = false;
         this.showFiltersOnMobile = false;
     }

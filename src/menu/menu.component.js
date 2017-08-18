@@ -20,7 +20,9 @@ class menuController {
             this.tools.getAnalytics(true);
         });
 
-        this.tools.getAnalytics();
+        if (!this.setup) {
+            this.tools.getAnalytics();
+        }
     }
 }
 
