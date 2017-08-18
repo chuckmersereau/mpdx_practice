@@ -22,6 +22,8 @@ class AppealController {
         alerts, api, contacts, donations, mailchimp, serverConstants, tasks
     ) {
         this.$log = $log;
+        this.$rootScope = $rootScope;
+        this.$state = $state;
         this.$stateParams = $stateParams;
         this.alerts = alerts;
         this.api = api;
@@ -35,12 +37,11 @@ class AppealController {
 
         this.appeal = null;
         this.selectedContactIds = [];
-
-        $rootScope.$on('accountListUpdated', () => {
-            $state.go('tools.appeals');
-        });
     }
     $onInit() {
+        this.disable = this.$rootScope.$on('accountListUpdated', () => {
+            this.$state.go('tools.appeals');
+        });
         this.api.get(`appeals/${this.$stateParams.appealId}`, {
             include: 'contacts,contacts.donor_accounts',
             fields: {
@@ -61,6 +62,9 @@ class AppealController {
             this.contactsNotGiven = this.getContactsNotGiven(data.contacts, this.appeal.donations);
             this.$log.debug('donation accounts', this.donationAccounts);
         });
+    }
+    $onDestroy() {
+        this.disable();
     }
     mapContactsToDonation(donations, donationAccounts) {
         return map(donation => {
