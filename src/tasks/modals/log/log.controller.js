@@ -7,7 +7,7 @@ import union from 'lodash/fp/union';
 class LogTaskController {
     constructor(
         $scope, $state,
-        contacts, tasks, tasksTags, serverConstants, users,
+        contacts, serverConstants, tasks, tasksTags, users,
         contactsList
     ) {
         this.$scope = $scope;
@@ -45,24 +45,24 @@ class LogTaskController {
         this.contactNames[params.id] = params.name; // set id if missing or out of date
         this.contactsList[index] = params.id;
     }
-    save(promises = []) {
-        if (this.status && this.showPartnerStatus()) {
-            const contacts = reduce((result, contact) =>
-                concat(result, { id: contact, status: this.status })
-                , [], this.contactsList);
-            promises.push(this.contacts.bulkSave(contacts));
-        }
-        promises.push(this.tasks.create(
-            this.task,
-            this.contactsList,
-            this.comment
-        ));
+    save() {
+        const promises = [this.createTask(), this.getContactPromise()];
         return Promise.all(promises).then(() => {
             this.$scope.$hide();
             if (this.task.next_action) {
                 this.tasks.addModal(this.contactsList, this.task.next_action);
             }
         });
+    }
+    createTask() {
+        return this.tasks.create(this.task, this.contactsList, this.comment);
+    }
+    getContactPromise() {
+        return (this.status && this.showPartnerStatus())
+            ? this.contacts.bulkSave(reduce((result, contact) =>
+                concat(result, { id: contact, status: this.status })
+                , [], this.contactsList))
+            : Promise.resolve();
     }
     showPartnerStatus() {
         return this.contactsList.length > 0 && this.task.activity_type && !contains(this.task.activity_type, ['Pre Call Letter', 'Reminder Letter', 'Support Letter', 'Thank', 'To Do']);

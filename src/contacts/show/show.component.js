@@ -138,9 +138,6 @@ class ContactController {
         this.contacts.current = set('primary_person.id', personId, this.contacts.current);
         this.save();
     }
-    openLogTaskModal() {
-        this.tasks.logModal(this.contacts.current.id);
-    }
     openAddTaskModal() {
         this.tasks.addModal(this.contacts.current.id);
     }

@@ -1,3 +1,4 @@
+
 import uuid from 'uuid/v1';
 import concat from 'lodash/fp/concat';
 import assign from 'lodash/fp/assign';
@@ -24,19 +25,20 @@ import moment from 'moment';
 class TasksService {
     constructor(
         $rootScope, $log, gettextCatalog,
-        alerts, api, tasksFilter, tasksTags, users, modal, tasksModals, contacts
+        alerts, api, contacts, modal, serverConstants, tasksFilter, tasksModals, tasksTags, users
     ) {
-        this.alerts = alerts;
         this.$log = $log;
         this.$rootScope = $rootScope;
+        this.alerts = alerts;
         this.api = api;
+        this.contacts = contacts;
         this.gettextCatalog = gettextCatalog;
+        this.modal = modal;
+        this.serverConstants = serverConstants;
         this.tasksFilter = tasksFilter;
+        this.tasksModals = tasksModals;
         this.tasksTags = tasksTags;
         this.users = users;
-        this.contacts = contacts;
-        this.modal = modal;
-        this.tasksModals = tasksModals;
 
         this.analytics = null;
         this.completeList = [];
@@ -314,7 +316,17 @@ class TasksService {
         });
     }
     logModal(contactsList = []) {
-        return this.tasksModals.log(contactsList);
+        return this.modal.open({
+            template: require('./modals/log/log.html'),
+            controller: 'logTaskController',
+            resolve: {
+                tags: () => this.tasksTags.load(),
+                0: () => this.serverConstants.load(['activity_hashes', 'next_actions', 'results', 'status_hashes'])
+            },
+            locals: {
+                contactsList: contactsList
+            }
+        });
     }
     bulkEditModal(tasks) {
         return this.tasksModals.bulkEdit(tasks || this.selected);
@@ -331,6 +343,7 @@ import alerts from '../common/alerts/alerts.service';
 import api from '../common/api/api.service';
 import contacts from '../contacts/contacts.service';
 import getText from 'angular-gettext';
+import serverConstants from 'common/serverConstants/serverConstants.service';
 import tasksModals from './modals/modals.service';
 import tasksFilter from './filter/filter.service';
 import tasksTags from './filter/tags/tags.service';
@@ -338,5 +351,5 @@ import users from '../common/users/users.service';
 
 export default angular.module('mpdx.tasks.service', [
     getText,
-    alerts, api, contacts, tasksFilter, tasksModals, tasksTags, users
+    alerts, api, contacts, serverConstants, tasksFilter, tasksModals, tasksTags, users
 ]).service('tasks', TasksService).name;

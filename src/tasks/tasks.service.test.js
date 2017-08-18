@@ -12,11 +12,12 @@ const selected = [1, 2];
 const currentUser = { id: 321 };
 
 describe('tasks.service', () => {
-    let api, users, tasks, tasksTags, tasksFilter, alerts, gettextCatalog, modal;
+    let api, users, tasks, tasksTags, tasksFilter, alerts, gettextCatalog, modal, serverConstants;
     beforeEach(() => {
         angular.mock.module(service);
         inject((
-            $rootScope, _api_, _tasks_, _tasksTags_, _users_, _tasksFilter_, _alerts_, _gettextCatalog_, _modal_
+            $rootScope, _api_, _tasks_, _tasksTags_, _users_, _tasksFilter_, _alerts_, _gettextCatalog_, _modal_,
+            _serverConstants_
         ) => {
             api = _api_;
             alerts = _alerts_;
@@ -26,6 +27,7 @@ describe('tasks.service', () => {
             tasksTags = _tasksTags_;
             tasksFilter = _tasksFilter_;
             gettextCatalog = _gettextCatalog_;
+            serverConstants = _serverConstants_;
             api.account_list_id = accountListId;
             users.current = currentUser;
         });
@@ -265,6 +267,33 @@ describe('tasks.service', () => {
                     .toHaveBeenCalledWith(2, jasmine.any(String), jasmine.any(String), jasmine.any(Object));
                 done();
             });
+        });
+    });
+    describe('logModal', () => {
+        beforeEach(() => {
+            spyOn(serverConstants, 'load').and.callFake(() => Promise.resolve());
+            spyOn(tasksTags, 'load').and.callFake(() => Promise.resolve());
+        });
+        it('should open the log task modal', () => {
+            spyOn(modal, 'open').and.callFake(() => {});
+            tasks.logModal();
+            expect(modal.open).toHaveBeenCalledWith({
+                template: require('./modals/log/log.html'),
+                controller: 'logTaskController',
+                resolve: {
+                    tags: jasmine.any(Function),
+                    0: jasmine.any(Function)
+                },
+                locals: {
+                    contactsList: []
+                }
+            });
+        });
+        it('should handle the resolves', () => {
+            spyOn(modal, 'open').and.callThrough();
+            tasks.logModal();
+            expect(tasksTags.load).toHaveBeenCalledWith();
+            expect(serverConstants.load).toHaveBeenCalledWith(['activity_hashes', 'next_actions', 'results', 'status_hashes']);
         });
     });
 });

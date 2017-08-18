@@ -186,15 +186,6 @@ describe('contacts.list.component', () => {
             expect(tasks.addModal).toHaveBeenCalledWith($ctrl.contacts.selectedContacts);
         });
     });
-    describe('openLogTaskModal', () => {
-        beforeEach(() => {
-            spyOn(tasks, 'logModal').and.callFake(() => {});
-        });
-        it('should open the log task modal', () => {
-            $ctrl.openLogTaskModal();
-            expect(tasks.logModal).toHaveBeenCalledWith($ctrl.contacts.selectedContacts);
-        });
-    });
     describe('openEditFieldsModal', () => {
         it('should open the edit fields modal', () => {
             spyOn(modal, 'open').and.callFake(() => {});

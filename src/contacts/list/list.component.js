@@ -100,9 +100,6 @@ class ListController {
     openAddTaskModal() {
         this.tasks.addModal(this.contacts.selectedContacts);
     }
-    openLogTaskModal() {
-        this.tasks.logModal(this.contacts.selectedContacts);
-    }
     openEditFieldsModal() {
         this.modal.open({
             template: require('./editFields/editFields.html'),
