@@ -32,7 +32,7 @@ class NotificationPreferencesController {
                 ? ['email', 'task']
                 : [''];
             const notificationType = defaultTo({ id: uuid(), actions: defaultActions },
-                find(pref => pref.notification_type.id === value.key,
+                find((pref) => pref.notification_type.id === value.key,
                     this.accounts.current.notification_preferences));
             result = concat(result, {
                 id: notificationType.id,

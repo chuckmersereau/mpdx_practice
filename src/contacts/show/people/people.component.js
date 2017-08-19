@@ -40,7 +40,7 @@ class ContactPeopleController {
             return;
         }
         this.data = [];
-        return this.people.list(this.contact.id).then(data => {
+        return this.people.list(this.contact.id).then((data) => {
             this.$log.debug('selected people: ', data);
             this.data = data;
         });

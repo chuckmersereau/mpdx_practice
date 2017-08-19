@@ -35,7 +35,7 @@ class ServerConstantsService {
             fields: {
                 constant_list: joinComma(differences)
             }
-        }).then(data => {
+        }).then((data) => {
             this.data = assign(this.data, data);
             this.data = reduceObject((result, value, key) => {
                 result[key] = this.handleSpecialKeys(key, value);

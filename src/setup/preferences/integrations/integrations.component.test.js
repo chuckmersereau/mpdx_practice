@@ -14,7 +14,7 @@ describe('setup.preferences.integrations.component', () => {
             $ctrl = $componentController('setupPreferencesIntegrations', { $scope: scope }, {});
         });
         spyOn(state, 'go').and.callFake(() => {});
-        spyOn(users, 'setOption').and.callFake(() => new Promise(resolve => resolve({})));
+        spyOn(users, 'setOption').and.callFake(() => new Promise((resolve) => resolve({})));
     });
     describe('constructor', () => {
         it('should set selectable tabs', () => {

@@ -122,8 +122,8 @@ class MapContactsController {
                 zoom: 13, gridSize: 50, imagePath: 'images/m'
             });
 
-            each(status => {
-                each(marker => {
+            each((status) => {
+                each((marker) => {
                     bounds.extend(marker.getPosition());
                     marker.addListener('click', () => {
                         this.centerOnMarker(marker, false);

@@ -18,7 +18,7 @@ describe('preferences.integrations.mailchimp.service', () => {
             mailchimp.load();
             expect(api.get).toHaveBeenCalledWith('account_lists/123/mail_chimp_account');
         });
-        it('should set the mailchimp service data', done => {
+        it('should set the mailchimp service data', (done) => {
             mailchimp.load().then(() => {
                 expect(mailchimp.data).toEqual(['data']);
                 done();

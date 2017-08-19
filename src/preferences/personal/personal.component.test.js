@@ -18,7 +18,7 @@ describe('preferences.personal.component', () => {
             serverConstants.data = { pledge_currenices: {} };
             loadController();
         });
-        spyOn(alerts, 'addAlert').and.callFake(data => data);
+        spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
     function loadController() {
@@ -39,28 +39,28 @@ describe('preferences.personal.component', () => {
             $ctrl.save();
             expect(users.saveCurrent).toHaveBeenCalledWith();
         });
-        it('should unset saving flag', done => {
+        it('should unset saving flag', (done) => {
             spyOn(users, 'saveCurrent').and.callFake(() => Promise.resolve());
             $ctrl.save().then(() => {
                 expect($ctrl.saving).toBeFalsy();
                 done();
             });
         });
-        it('should unset tab', done => {
+        it('should unset tab', (done) => {
             spyOn(users, 'saveCurrent').and.callFake(() => Promise.resolve());
             $ctrl.save().then(() => {
                 expect($ctrl.setTab).toHaveBeenCalledWith('');
                 done();
             });
         });
-        it('should call onSave', done => {
+        it('should call onSave', (done) => {
             spyOn(users, 'saveCurrent').and.callFake(() => Promise.resolve());
             $ctrl.save().then(() => {
                 expect($ctrl.onSave).toHaveBeenCalledWith();
                 done();
             });
         });
-        it('should alert a translated confirmation', done => {
+        it('should alert a translated confirmation', (done) => {
             spyOn(users, 'saveCurrent').and.callFake(() => Promise.resolve());
             $ctrl.save().then(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'success');
@@ -68,7 +68,7 @@ describe('preferences.personal.component', () => {
                 done();
             });
         });
-        it('should handle rejection', done => {
+        it('should handle rejection', (done) => {
             spyOn(users, 'saveCurrent').and.callFake(() => Promise.reject({ errors: ['a'] }));
             $ctrl.save().catch(() => {
                 expect($ctrl.saving).toBeFalsy();
@@ -92,28 +92,28 @@ describe('preferences.personal.component', () => {
             $ctrl.saveAccount();
             expect(accounts.saveCurrent).toHaveBeenCalledWith();
         });
-        it('should unset saving flag', done => {
+        it('should unset saving flag', (done) => {
             spyOn(accounts, 'saveCurrent').and.callFake(() => Promise.resolve());
             $ctrl.saveAccount().then(() => {
                 expect($ctrl.saving).toBeFalsy();
                 done();
             });
         });
-        it('should unset tab', done => {
+        it('should unset tab', (done) => {
             spyOn(accounts, 'saveCurrent').and.callFake(() => Promise.resolve());
             $ctrl.saveAccount().then(() => {
                 expect($ctrl.setTab).toHaveBeenCalledWith('');
                 done();
             });
         });
-        it('should call onSave', done => {
+        it('should call onSave', (done) => {
             spyOn(accounts, 'saveCurrent').and.callFake(() => Promise.resolve());
             $ctrl.saveAccount().then(() => {
                 expect($ctrl.onSave).toHaveBeenCalledWith();
                 done();
             });
         });
-        it('should alert a translated confirmation', done => {
+        it('should alert a translated confirmation', (done) => {
             spyOn(accounts, 'saveCurrent').and.callFake(() => Promise.resolve());
             $ctrl.saveAccount().then(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'success');
@@ -121,7 +121,7 @@ describe('preferences.personal.component', () => {
                 done();
             });
         });
-        it('should handle rejection', done => {
+        it('should handle rejection', (done) => {
             spyOn(accounts, 'saveCurrent').and.callFake(() => Promise.reject({ errors: ['a'] }));
             $ctrl.saveAccount().catch(() => {
                 expect($ctrl.saving).toBeFalsy();

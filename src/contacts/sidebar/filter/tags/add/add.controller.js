@@ -17,7 +17,7 @@ class AddTagController {
         this.tags = [];
     }
     save(tag) {
-        let tagToAdd = tag || map(tag => { return { name: tag }; }, this.tags);
+        let tagToAdd = tag || map((tag) => { return { name: tag }; }, this.tags);
         if (!tagToAdd) {
             return;
         }

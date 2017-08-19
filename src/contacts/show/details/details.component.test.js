@@ -23,7 +23,7 @@ describe('contacts.show.details.component', () => {
             $ctrl = $componentController('contactDetails', { $scope: scope }, { donorAccounts: [], contact: {}, onSave: () => Promise.resolve() });
         });
         spyOn(gettextCatalog, 'getString').and.callThrough();
-        spyOn(alerts, 'addAlert').and.callFake(data => data);
+        spyOn(alerts, 'addAlert').and.callFake((data) => data);
     });
     describe('constructor', () => {
         it('should define view only dependencies', () => {
@@ -126,7 +126,7 @@ describe('contacts.show.details.component', () => {
             $ctrl.contact.contact_referrals_to_me = [{ id: 1 }];
             $ctrl.referrer = 2;
         });
-        it('should alert', done => {
+        it('should alert', (done) => {
             spyOn(api, 'put').and.callFake(() => Promise.resolve());
             $ctrl.save().then(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
@@ -134,7 +134,7 @@ describe('contacts.show.details.component', () => {
                 done();
             });
         });
-        it('should alert if rejected', done => {
+        it('should alert if rejected', (done) => {
             spyOn(api, 'put').and.callFake(() => Promise.reject(Error('')));
             $ctrl.save().catch(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
@@ -159,7 +159,7 @@ describe('contacts.show.details.component', () => {
             expect(modal.confirm).toHaveBeenCalledWith(jasmine.any(String));
             expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
         });
-        it('should save', done => {
+        it('should save', (done) => {
             spyOn(contacts, 'save').and.callFake(() => Promise.resolve());
             $ctrl.onAddressPrimary(321).then(() => {
                 expect(contacts.save).toHaveBeenCalledWith({
@@ -176,7 +176,7 @@ describe('contacts.show.details.component', () => {
                 done();
             });
         });
-        it('should alert if referral changed', done => {
+        it('should alert if referral changed', (done) => {
             spyOn(contacts, 'save').and.callFake(() => Promise.resolve());
             $ctrl.onAddressPrimary(321).then(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
@@ -184,7 +184,7 @@ describe('contacts.show.details.component', () => {
                 done();
             });
         });
-        it('should alert if referral changed and rejected', done => {
+        it('should alert if referral changed and rejected', (done) => {
             spyOn(contacts, 'save').and.callFake(() => Promise.reject(Error('')));
             $ctrl.onAddressPrimary().catch(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');

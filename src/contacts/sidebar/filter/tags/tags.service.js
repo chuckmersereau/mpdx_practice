@@ -17,14 +17,14 @@ class TagsService {
         this.anyTags = false;
 
         $rootScope.$on('contactTagsAdded', (e, val) => {
-            const tags = map(obj => {
+            const tags = map((obj) => {
                 return { id: uuid(), name: obj };
             }, val.tags);
             this.data = unionBy('name', this.data, tags);
         });
     }
     load() {
-        return this.api.get('contacts/tags', { filter: { account_list_id: this.api.account_list_id } }).then(data => {
+        return this.api.get('contacts/tags', { filter: { account_list_id: this.api.account_list_id } }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug('contact/tags:', data);
             this.data = data;

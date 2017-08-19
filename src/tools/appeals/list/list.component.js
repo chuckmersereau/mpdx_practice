@@ -28,10 +28,10 @@ class ListController {
         this.load();
     }
     loadMoreAppeals() {
-        if (this.loading || this.page >= this.meta.pagination.total_pages) {
-            return;
-        }
-        this.load(this.page + 1);
+        return this.canLoadMore() ? this.load(this.page + 1) : null;
+    }
+    canLoadMore() {
+        return this.loading || this.page >= this.meta.pagination.total_pages;
     }
     load(page = 1) {
         const reset = page === 1;
@@ -54,15 +54,18 @@ class ListController {
 
         this.loading = true;
 
-        return this.api.get('appeals', params).then(data => {
+        return this.api.get('appeals', params).then((data) => {
+            /* istanbul ignore next */
             this.$log.debug('appeals', data);
             this.loading = false;
 
-            if (reset && currentCount !== this.listLoadCount) { return; }
+            if (this.loadedOutOfTurn(reset, currentCount)) {
+                return;
+            }
             this.meta = data.meta;
 
             const deserializedData = reduce((result, appeal) => {
-                appeal.amount_raised = sumBy(donation =>
+                appeal.amount_raised = sumBy((donation) =>
                     parseFloat(donation.converted_amount)
                     , appeal.donations);
                 if (appeal.amount && parseFloat(appeal.amount) > 0) {
@@ -74,15 +77,18 @@ class ListController {
                 return concat(result, appeal);
             }, [], data);
 
-            if (reset) {
-                this.data = deserializedData;
-            } else {
-                this.data = unionBy('id', this.data, deserializedData);
-            }
+            this.data = this.resetOrAppendData(reset, deserializedData);
+
             return this.data;
         }).catch(() => {
             this.loading = false;
         });
+    }
+    loadedOutOfTurn(reset, currentCount) {
+        return reset && currentCount !== this.listLoadCount;
+    }
+    resetOrAppendData(reset, deserializedData) {
+        return reset ? deserializedData : unionBy('id', this.data, deserializedData);
     }
 }
 

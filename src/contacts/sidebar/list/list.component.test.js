@@ -42,12 +42,12 @@ describe('contacts.sidebar.list.component', () => {
             $ctrl.load(2);
             expect($ctrl.load(2)).toEqual(undefined);
         });
-        it('should handle late prior results', done => {
+        it('should handle late prior results', (done) => {
             let call = 0;
             spyOn(api, 'get').and.callFake(() => {
                 if (call === 0) {
                     call++;
-                    return new Promise(resolve => {
+                    return new Promise((resolve) => {
                         setTimeout(() => {
                             resolve(oneRecord);
                         }, 1000);
@@ -56,7 +56,7 @@ describe('contacts.sidebar.list.component', () => {
                     return Promise.resolve(oneRecord);
                 }
             });
-            $ctrl.load().then(data => {
+            $ctrl.load().then((data) => {
                 done();
                 expect(data).toBeUndefined();
             });

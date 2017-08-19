@@ -66,20 +66,20 @@ class ChartController {
             } else {
                 this.hasChart = true;
             }
-            this.data = map(total => {
-                return map(val => round(val.converted, 2), total.month_totals);
+            this.data = map((total) => {
+                return map((val) => round(val.converted, 2), total.month_totals);
             }, data.totals);
             if (this.inContact) {
-                this.labels = map(month => moment(month, 'YYYY-MM-DD').format('MMM'), takeRight(12, data.months_to_dates));
+                this.labels = map((month) => moment(month, 'YYYY-MM-DD').format('MMM'), takeRight(12, data.months_to_dates));
                 this.series = [this.gettextCatalog.getString('Last Year'), this.gettextCatalog.getString('This Year')];
-                const primaryData = map(value => sum(value), zip(...this.data));
+                const primaryData = map((value) => sum(value), zip(...this.data));
                 this.data = [
                     take(12, primaryData),
                     takeRight(12, primaryData)
                 ];
             } else {
                 this.series = map('currency', data.totals);
-                this.labels = map(month => moment(month, 'YYYY-MM-DD').format('MMM YY'), data.months_to_dates);
+                this.labels = map((month) => moment(month, 'YYYY-MM-DD').format('MMM YY'), data.months_to_dates);
             }
             this.options = {
                 responsive: true,
@@ -160,7 +160,7 @@ class ChartController {
         if (startDate && endDate && moment.isMoment(startDate) && moment.isMoment(endDate)) {
             params.filter.donation_date = `${startDate.format('YYYY-MM-DD')}..${endDate.format('YYYY-MM-DD')}`;
         }
-        return this.api.get('reports/monthly_giving_graph', params).then(data => {
+        return this.api.get('reports/monthly_giving_graph', params).then((data) => {
             /* istanbul ignore next */
             this.$log.debug('reports/monthly_giving_graph', data);
             return data;

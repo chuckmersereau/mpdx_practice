@@ -109,7 +109,7 @@ describe('reports.contributions.component', () => {
             expect($ctrl.loading).toBeTruthy();
         });
 
-        it('should call loadAfterServerConstants', done => {
+        it('should call loadAfterServerConstants', (done) => {
             $ctrl.type = 'salary';
             $ctrl.load().then(() => {
                 expect($ctrl.loadAfterServerConstants).toHaveBeenCalledWith('salary');
@@ -123,7 +123,7 @@ describe('reports.contributions.component', () => {
                 spyOn($ctrl, 'loadAfterServerConstants').and.callFake(() => Promise.resolve({ mock: 'data' }));
             });
 
-            it('should call load', done => {
+            it('should call load', (done) => {
                 $ctrl.load().then(() => {
                     expect($ctrl.loadAfterServerConstants).toHaveBeenCalledWith('partner');
                     done();
@@ -145,13 +145,13 @@ describe('reports.contributions.component', () => {
                 { filter: { account_list_id: api.account_list_id } }
             );
         });
-        it('should get currencies', done => {
+        it('should get currencies', (done) => {
             $ctrl.loadAfterServerConstants('salary').then(() => {
                 expect($ctrl.getCurrencies).toHaveBeenCalledWith('salary', data);
                 done();
             });
         });
-        it('should build years', done => {
+        it('should build years', (done) => {
             $ctrl.loadAfterServerConstants('salary').then(() => {
                 expect($ctrl.buildYears).toHaveBeenCalledWith(data.months);
                 done();

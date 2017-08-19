@@ -18,7 +18,7 @@ describe('tasks.modals.add.controller', () => {
             controller = $controller;
             $ctrl = loadController();
             const result = [{ id: 1, name: 'a' }];
-            spyOn(contacts, 'getNames').and.callFake(() => new Promise(resolve => resolve(result)));
+            spyOn(contacts, 'getNames').and.callFake(() => new Promise((resolve) => resolve(result)));
         });
     });
     function loadController(activityType) {
@@ -101,8 +101,8 @@ describe('tasks.modals.add.controller', () => {
     });
     describe('save', () => {
         beforeEach(() => {
-            spyOn(tasks, 'create').and.callFake(() => new Promise(resolve => resolve({})));
-            spyOn(tasks, 'addModal').and.callFake(() => new Promise(resolve => resolve({})));
+            spyOn(tasks, 'create').and.callFake(() => new Promise((resolve) => resolve({})));
+            spyOn(tasks, 'addModal').and.callFake(() => new Promise((resolve) => resolve({})));
             scope.$hide = () => {};
             spyOn(scope, '$hide').and.callThrough();
         });

@@ -68,7 +68,7 @@ class LanguageController {
         return this.onSave().then(() => {
             this.saving = false;
             this.lastLanguage = this.users.current.preferences.locale;
-        }).catch(err => {
+        }).catch((err) => {
             this.saving = false;
             throw err;
         });

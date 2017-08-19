@@ -57,7 +57,7 @@ class ContactsService {
                 }
             },
             deSerializationOptions: relationshipId(['contacts', 'people']) // for contacts_referred_by_me, contacts_that_referred_me and primary_person
-        }).then(data => {
+        }).then((data) => {
             data.pledge_amount = parseFloat(data.pledge_amount); // fix bad api serialization as string
             if (!isNil(data.pledge_frequency)) {
                 data.pledge_frequency = parseFloat(data.pledge_frequency);
@@ -281,7 +281,7 @@ class ContactsService {
         });
     }
     merge(winnersAndLosers) {
-        return this.api.post({ url: 'contacts/merges/bulk', data: winnersAndLosers, type: 'contacts' }).then(data => {
+        return this.api.post({ url: 'contacts/merges/bulk', data: winnersAndLosers, type: 'contacts' }).then((data) => {
             if (isFunction(data.success)) {
                 data.success();
             }

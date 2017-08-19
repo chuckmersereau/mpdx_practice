@@ -35,7 +35,7 @@ class DonationModalController {
     }
 
     setDesignationAccount() {
-        return this.designationAccounts.load().then(data => {
+        return this.designationAccounts.load().then((data) => {
             if (data.length === 1) {
                 this.donation.designation_account = data[0];
             }
@@ -52,7 +52,7 @@ class DonationModalController {
         return this.donations.save(patch).then(() => {
             this.alerts.addAlert(this.gettextCatalog.getString('Donation saved successfullly'), 'success');
             this.$scope.$hide();
-        }).catch(err => {
+        }).catch((err) => {
             this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes to donation'), 'danger', null, 5, true);
             throw err;
         });
@@ -62,7 +62,7 @@ class DonationModalController {
         return this.donations.delete(this.donation).then(() => {
             this.alerts.addAlert(this.gettextCatalog.getString('Donation deleted successfullly'), 'success');
             this.$scope.$hide();
-        }).catch(err => {
+        }).catch((err) => {
             this.alerts.addAlert(this.gettextCatalog.getString('Unable to remove donation'), 'danger', null, 5, true);
             throw err;
         });

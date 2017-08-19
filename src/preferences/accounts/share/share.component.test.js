@@ -13,7 +13,7 @@ describe('preferences.accounts.share', () => {
             componentController = $componentController;
             loadController();
         });
-        spyOn(alerts, 'addAlert').and.callFake(data => data);
+        spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
         spyOn(accounts, 'listUsers').and.callFake(() => {});
         spyOn(accounts, 'listInvites').and.callFake(() => {});
@@ -67,14 +67,14 @@ describe('preferences.accounts.share', () => {
             $ctrl.cancelInvite(1);
             expect(accounts.destroyInvite).toHaveBeenCalledWith(1);
         });
-        it('should unset saving flag', done => {
+        it('should unset saving flag', (done) => {
             spyOn(accounts, 'destroyInvite').and.callFake(() => Promise.resolve());
             $ctrl.cancelInvite(1).then(() => {
                 expect($ctrl.saving).toBeFalsy();
                 done();
             });
         });
-        it('should alert a translated confirmation', done => {
+        it('should alert a translated confirmation', (done) => {
             spyOn(accounts, 'destroyInvite').and.callFake(() => Promise.resolve());
             $ctrl.cancelInvite(1).then(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
@@ -82,14 +82,14 @@ describe('preferences.accounts.share', () => {
                 done();
             });
         });
-        it('should remove the invite', done => {
+        it('should remove the invite', (done) => {
             spyOn(accounts, 'destroyInvite').and.callFake(() => Promise.resolve());
             $ctrl.cancelInvite(1).then(() => {
                 expect(accounts.inviteList).toEqual([{ id: 2 }]);
                 done();
             });
         });
-        it('should handle rejection', done => {
+        it('should handle rejection', (done) => {
             spyOn(accounts, 'destroyInvite').and.callFake(() => Promise.reject(Error('')));
             $ctrl.cancelInvite(1).catch(() => {
                 expect($ctrl.saving).toBeFalsy();
@@ -112,14 +112,14 @@ describe('preferences.accounts.share', () => {
             $ctrl.removeUser(1);
             expect(accounts.destroyUser).toHaveBeenCalledWith(1);
         });
-        it('should unset saving flag', done => {
+        it('should unset saving flag', (done) => {
             spyOn(accounts, 'destroyUser').and.callFake(() => Promise.resolve());
             $ctrl.removeUser(1).then(() => {
                 expect($ctrl.saving).toBeFalsy();
                 done();
             });
         });
-        it('should alert a translated confirmation', done => {
+        it('should alert a translated confirmation', (done) => {
             spyOn(accounts, 'destroyUser').and.callFake(() => Promise.resolve());
             $ctrl.removeUser(1).then(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
@@ -127,14 +127,14 @@ describe('preferences.accounts.share', () => {
                 done();
             });
         });
-        it('should remove the user', done => {
+        it('should remove the user', (done) => {
             spyOn(accounts, 'destroyUser').and.callFake(() => Promise.resolve());
             $ctrl.removeUser(1).then(() => {
                 expect(accounts.userList).toEqual([{ id: 2 }]);
                 done();
             });
         });
-        it('should handle rejection', done => {
+        it('should handle rejection', (done) => {
             spyOn(accounts, 'destroyUser').and.callFake(() => Promise.reject(Error('')));
             $ctrl.removeUser(1).catch(() => {
                 expect($ctrl.saving).toBeFalsy();

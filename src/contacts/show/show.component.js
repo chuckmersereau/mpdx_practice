@@ -49,7 +49,7 @@ class ContactController {
         ];
 
         if (has('currentOptions.contact_tabs_sort', users)) {
-            forEachRight(tab => {
+            forEachRight((tab) => {
                 const label = find({ key: tab }, tabsLabels);
                 if (label) {
                     tabsLabels = reject({ key: tab }, tabsLabels);
@@ -124,7 +124,7 @@ class ContactController {
             }
             const message = this.gettextCatalog.getString('Changes saved successfully.');
             this.alerts.addAlert(message);
-        }).catch(err => {
+        }).catch((err) => {
             const message = this.gettextCatalog.getString('Unable to save changes.');
             this.alerts.addAlert(message, 'danger');
             throw err;

@@ -19,7 +19,7 @@ describe('contacts.show.personModal.controller', () => {
             controller = $controller;
             loadController(person);
         });
-        spyOn(alerts, 'addAlert').and.callFake(data => data);
+        spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
         spyOn(scope, '$hide').and.callFake(() => {});
     });
@@ -48,7 +48,7 @@ describe('contacts.show.personModal.controller', () => {
         beforeEach(() => {
             spyOn(rootScope, '$emit').and.callThrough();
         });
-        it('should create on create', done => {
+        it('should create on create', (done) => {
             spyOn(api, 'post').and.callFake(() => Promise.resolve());
             $ctrl.activate();
             $ctrl.person.first_name = 'a';
@@ -66,7 +66,7 @@ describe('contacts.show.personModal.controller', () => {
                 done();
             });
         });
-        it('should alert a translated message on create', done => {
+        it('should alert a translated message on create', (done) => {
             spyOn(api, 'post').and.callFake(() => Promise.resolve());
             $ctrl.activate();
             $ctrl.person.first_name = 'a';
@@ -76,7 +76,7 @@ describe('contacts.show.personModal.controller', () => {
                 done();
             });
         });
-        it('should call personUpdated on create', done => {
+        it('should call personUpdated on create', (done) => {
             spyOn(api, 'post').and.callFake(() => Promise.resolve());
             $ctrl.activate();
             $ctrl.person.first_name = 'a';
@@ -85,7 +85,7 @@ describe('contacts.show.personModal.controller', () => {
                 done();
             });
         });
-        it('should handle rejection', done => {
+        it('should handle rejection', (done) => {
             spyOn(api, 'post').and.callFake(() => Promise.reject());
             $ctrl.save().catch(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger', null, 5, true);
@@ -93,7 +93,7 @@ describe('contacts.show.personModal.controller', () => {
                 done();
             });
         });
-        it('should call personUpdated on update', done => {
+        it('should call personUpdated on update', (done) => {
             spyOn(people, 'save').and.callFake(() => Promise.resolve());
             $ctrl.person = person;
             $ctrl.person.id = 123;
@@ -104,7 +104,7 @@ describe('contacts.show.personModal.controller', () => {
                 done();
             });
         });
-        it('should handle rejection', done => {
+        it('should handle rejection', (done) => {
             spyOn(people, 'save').and.callFake(() => Promise.reject(Error('')));
             $ctrl.person = person;
             $ctrl.person.id = 123;
@@ -127,14 +127,14 @@ describe('contacts.show.personModal.controller', () => {
             expect(modal.confirm).toHaveBeenCalledWith(jasmine.any(String));
             expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
         });
-        it('should call people.remove', done => {
+        it('should call people.remove', (done) => {
             $ctrl.person.id = 1;
             $ctrl.delete().then(() => {
                 expect(api.delete).toHaveBeenCalledWith('contacts/123/people/1');
                 done();
             });
         });
-        it('should hide the modal', done => {
+        it('should hide the modal', (done) => {
             $ctrl.person.id = 1;
             $ctrl.delete().then(() => {
                 expect(scope.$hide).toHaveBeenCalledWith();

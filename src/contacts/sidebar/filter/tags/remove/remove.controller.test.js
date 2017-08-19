@@ -70,7 +70,7 @@ describe('contacts.sidebar.tags.remove.controller', () => {
             expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
             expect(modal.confirm).toHaveBeenCalledWith(jasmine.any(String));
         });
-        it('should remove a tag', done => {
+        it('should remove a tag', (done) => {
             $ctrl.untagContact([], 'a').then(() => {
                 expect(api.delete).toHaveBeenCalledWith({
                     url: 'contacts/tags/bulk',

@@ -29,8 +29,8 @@ class ContactFamilyRelationshipController {
                 wildcard_search: text
             },
             per_page: 10000
-        }).then(data => {
-            return map(item => {
+        }).then((data) => {
+            return map((item) => {
                 return assign(item, { display_name: `${item.first_name} ${item.last_name}` });
             }, data);
         });

@@ -5,7 +5,7 @@ import union from 'lodash/fp/union';
 class AddTaskController {
     constructor(
         $scope, $state,
-        contacts, tasksTags, serverConstants, tasks, users,
+        contacts, serverConstants, tasks, tasksTags, users,
         contactsList, activityType
     ) {
         this.$scope = $scope;

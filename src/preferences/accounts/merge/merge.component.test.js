@@ -15,7 +15,7 @@ describe('preferences.accounts.merge.component', () => {
             componentController = $componentController;
             loadController();
         });
-        spyOn(alerts, 'addAlert').and.callFake(data => data);
+        spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
     function loadController() {
@@ -44,14 +44,14 @@ describe('preferences.accounts.merge.component', () => {
             $ctrl.merge();
             expect(api.post).toHaveBeenCalledWith(`account_lists/${api.account_list_id}/merge`, { account_list_to_merge: { id: 123 } });
         });
-        it('should unset saving flag', done => {
+        it('should unset saving flag', (done) => {
             spyOn(api, 'post').and.callFake(() => Promise.resolve());
             $ctrl.merge().then(() => {
                 expect($ctrl.saving).toBeFalsy();
                 done();
             });
         });
-        it('should alert a translated confirmation', done => {
+        it('should alert a translated confirmation', (done) => {
             spyOn(api, 'post').and.callFake(() => Promise.resolve());
             $ctrl.merge().then(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'success');
@@ -59,28 +59,28 @@ describe('preferences.accounts.merge.component', () => {
                 done();
             });
         });
-        it('should remove the merged account', done => {
+        it('should remove the merged account', (done) => {
             spyOn(api, 'post').and.callFake(() => Promise.resolve());
             $ctrl.merge().then(() => {
                 expect(users.current.account_lists).toEqual([{ id: 234 }]);
                 done();
             });
         });
-        it('should update the current account list', done => {
+        it('should update the current account list', (done) => {
             spyOn(api, 'post').and.callFake(() => Promise.resolve({ id: 234, name: 'a' }));
             $ctrl.merge().then(() => {
                 expect(accounts.data[1].name).toEqual('a');
                 done();
             });
         });
-        it('should call onSave', done => {
+        it('should call onSave', (done) => {
             spyOn(api, 'post').and.callFake(() => Promise.resolve({ id: 234, name: 'a' }));
             $ctrl.merge().then(() => {
                 expect(accounts.data[1].name).toEqual('a');
                 done();
             });
         });
-        it('should handle rejection', done => {
+        it('should handle rejection', (done) => {
             spyOn(api, 'post').and.callFake(() => Promise.reject(Error('')));
             $ctrl.merge().catch(() => {
                 expect($ctrl.saving).toBeFalsy();

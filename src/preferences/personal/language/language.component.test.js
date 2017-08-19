@@ -51,20 +51,20 @@ describe('preferences.personal.language.component', () => {
             $ctrl.save();
             expect($ctrl.onSave).toHaveBeenCalledWith();
         });
-        it('should unset saving flag', done => {
+        it('should unset saving flag', (done) => {
             $ctrl.save().then(() => {
                 expect($ctrl.saving).toBeFalsy();
                 done();
             });
         });
-        it('should unset saving flag on reject', done => {
+        it('should unset saving flag on reject', (done) => {
             spyOn($ctrl, 'onSave').and.callFake(() => Promise.reject());
             $ctrl.save().catch(() => {
                 expect($ctrl.saving).toBeFalsy();
                 done();
             });
         });
-        it('should set lastLanguage', done => {
+        it('should set lastLanguage', (done) => {
             users.current.preferences.locale = 'fr';
             $ctrl.save().then(() => {
                 expect($ctrl.lastLanguage).toEqual('fr');

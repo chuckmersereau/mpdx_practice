@@ -50,7 +50,7 @@ class ImportTntController {
                 template: require('./success/success.html'),
                 controller: 'importTntSuccessController'
             });
-        }, err => {
+        }, (err) => {
             this.importing = false;
             this.alerts.addAlert(this.gettextCatalog.getString('File upload failed.'), 'danger');
             throw err;

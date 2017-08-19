@@ -22,7 +22,7 @@ class DesignationAccountsService {
 
         return this.api.get(`account_lists/${this.api.account_list_id}/designation_accounts`, {
             include: 'organization'
-        }).then(data => {
+        }).then((data) => {
             this.$log.debug(`account_lists/${this.api.account_list_id}/designation_accounts`, data);
             this.data = data;
             this.organizations = reduce((result, value) => {

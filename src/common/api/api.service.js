@@ -140,7 +140,7 @@ class Api {
                 if (doSerialization) {
                     if (isArray(data)) {
                         return angular.toJson({
-                            data: map(item => serialize(type, params, item, method), data)
+                            data: map((item) => serialize(type, params, item, method), data)
                         });
                     } else {
                         return angular.toJson(serialize(type, params, data, method));
@@ -155,7 +155,7 @@ class Api {
                 }
                 if (doDeSerialization) {
                     if (isArray(data)) {
-                        return map(item => deserialize(item, deSerializationOptions), data);
+                        return map((item) => deserialize(item, deSerializationOptions), data);
                     } else {
                         return deserialize(data, deSerializationOptions);
                     }

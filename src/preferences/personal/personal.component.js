@@ -30,7 +30,7 @@ class PersonalController {
         this.saving = false;
         this.tabId = '';
 
-        this.currencies = map(pc => {
+        this.currencies = map((pc) => {
             return { key: pc.code, value: `${pc.name} - ${pc.code_symbol_string}` };
         }, serverConstants.data.pledge_currencies);
     }
@@ -69,7 +69,7 @@ class PersonalController {
             this.setTab('');
             this.saving = false;
             this.onSave();
-        }).catch(data => {
+        }).catch((data) => {
             if (data) {
                 each((value) => {
                     this.alerts.addAlert(value, 'danger');

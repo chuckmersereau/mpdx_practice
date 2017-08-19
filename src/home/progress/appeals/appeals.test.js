@@ -24,7 +24,7 @@ describe('home.progress.appeals.component', () => {
         });
 
         it('should query api for a count and return it', (done) => {
-            $ctrl.getCount().then(data => {
+            $ctrl.getCount().then((data) => {
                 expect(data).toBe(1);
                 done();
             });
@@ -42,7 +42,7 @@ describe('home.progress.appeals.component', () => {
         });
 
         it('should query api for a count and return it', (done) => {
-            $ctrl.getCount().then(data => {
+            $ctrl.getCount().then((data) => {
                 expect(data).toBe(0);
                 done();
             });

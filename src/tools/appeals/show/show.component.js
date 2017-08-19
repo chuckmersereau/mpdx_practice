@@ -47,7 +47,7 @@ class AppealController {
             fields: {
                 contacts: 'donor_accounts,name,pledge_amount,pledge_currency,pledge_frequency'
             }
-        }).then(data => {
+        }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug('appeal', data);
             this.appeal = data;
@@ -67,7 +67,7 @@ class AppealController {
         this.disable();
     }
     mapContactsToDonation(donations, donationAccounts) {
-        return map(donation => {
+        return map((donation) => {
             donation.contact = get('contact', get(donation.donor_account_id.toString(), donationAccounts));
             return donation;
         }, donations);
@@ -87,8 +87,8 @@ class AppealController {
             const contact = get('contact', value);
             return contact ? concat(result, contact) : result;
         }, [], donations);
-        const contactsNotGiven = reject(contact => contains(contact.id, allGiven), contacts);
-        return map(contact => {
+        const contactsNotGiven = reject((contact) => contains(contact.id, allGiven), contacts);
+        return map((contact) => {
             contact.currency = this.getCurrencyFromCode(contact.pledge_currency);
             return contact;
         }, contactsNotGiven);
@@ -109,10 +109,10 @@ class AppealController {
         delete patch.contacts;
         delete patch.donations;
         this.$log.debug('appeal save', patch);
-        return this.api.put(`appeals/${this.appeal.id}`, patch).then(data => {
+        return this.api.put(`appeals/${this.appeal.id}`, patch).then((data) => {
             this.alerts.addAlert(this.gettext('Appeal saved successfully'));
             return data;
-        }).catch(ex => {
+        }).catch((ex) => {
             this.alerts.addAlert(this.gettext('Unable to save appeal'), 'danger');
             throw ex;
         });
@@ -139,25 +139,25 @@ class AppealController {
     onContactSelected(contact) {
         return this.api.post(`appeals/${this.appeal.id}/contacts/${contact.id}`).then(() => {
             this.alerts.addAlert(this.gettext('Contact successfully added to appeal'));
-        }).catch(ex => {
+        }).catch((ex) => {
             this.alerts.addAlert(this.gettext('Unable to add contact to appeal'), 'danger');
             throw ex;
         });
     }
     selectAllGiven() {
-        const contactIds = map(donation => donation.contact.id, this.appeal.donations);
+        const contactIds = map((donation) => donation.contact.id, this.appeal.donations);
         this.selectedContactIds = union(this.selectedContactIds, contactIds);
     }
     deselectAllGiven() {
-        const allGiven = map(donation => donation.contact.id, this.appeal.donations);
-        this.selectedContactIds = reject(id => contains(id, allGiven), this.selectedContactIds);
+        const allGiven = map((donation) => donation.contact.id, this.appeal.donations);
+        this.selectedContactIds = reject((id) => contains(id, allGiven), this.selectedContactIds);
     }
     selectAllNotGiven() {
         this.selectedContactIds = union(this.selectedContactIds, map('id', this.contactsNotGiven));
     }
     deselectAllNotGiven() {
         const allNotGiven = map('id', this.contactsNotGiven);
-        this.selectedContactIds = reject(id => contains(id, allNotGiven), this.selectedContactIds);
+        this.selectedContactIds = reject((id) => contains(id, allNotGiven), this.selectedContactIds);
     }
     selectContact(contactId) {
         this.selectedContactIds = contains(contactId, this.selectedContactIds)
@@ -215,7 +215,7 @@ class AppealController {
         return [[name, field]];
     }
     exportMailchimp() {
-        const alert = curry(message => this.alerts.addAlert(this.gettext(message), 'danger'));
+        const alert = curry((message) => this.alerts.addAlert(this.gettext(message), 'danger'));
         const result = this.cantExportToMailChimp();
         return result ? alert(result) : this.doExportToMailChimp();
     }
@@ -242,7 +242,7 @@ class AppealController {
             doSerialization: false
         }).then(() => {
             this.alerts.addAlert(this.gettext('Contact(s) successfully exported to Mailchimp'));
-        }).catch(ex => {
+        }).catch((ex) => {
             this.alerts.addAlert(this.gettext('Unable to add export contact(s) to Mailchimp'), 'danger');
             throw ex;
         });

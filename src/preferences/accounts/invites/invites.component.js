@@ -17,7 +17,7 @@ class InvitePreferencesController {
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX sent an invite to {{email}}', { email: this.email }), 'success');
             this.email = '';
             return this.accounts.listInvites();
-        }).catch(err => {
+        }).catch((err) => {
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t send an invite (check to see if email address is valid)'), 'danger');
             this.saving = false;
             throw err;

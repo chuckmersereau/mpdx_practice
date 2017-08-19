@@ -86,7 +86,7 @@ class PhoneNumbersService {
         let people = reduce((result, person) => {
             let primaryPhoneNumber = find(['source', source], person.phone_numbers);
             if (primaryPhoneNumber) {
-                person.phone_numbers = map(phoneNumber => {
+                person.phone_numbers = map((phoneNumber) => {
                     phoneNumber.primary = phoneNumber.id === primaryPhoneNumber.id;
                     phoneNumber.valid_values = true;
                     return phoneNumber;
@@ -102,7 +102,7 @@ class PhoneNumbersService {
     }
 
     setPrimary(person, primaryPhoneNumber) {
-        person.phone_numbers = map(phoneNumber => {
+        person.phone_numbers = map((phoneNumber) => {
             phoneNumber.primary = phoneNumber.id === primaryPhoneNumber.id;
             return phoneNumber;
         }, person.phone_numbers);

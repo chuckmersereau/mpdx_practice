@@ -20,8 +20,8 @@ describe('contacts.show.component', () => {
             contacts.current = { id: 1, name: 'a b' };
             loadController();
         });
-        spyOn(alerts, 'addAlert').and.callFake(data => data);
-        spyOn(gettextCatalog, 'getString').and.callFake(data => data);
+        spyOn(alerts, 'addAlert').and.callFake((data) => data);
+        spyOn(gettextCatalog, 'getString').and.callFake((data) => data);
     });
     function loadController() {
         $ctrl = componentController('contact', { $scope: scope }, {});
@@ -67,7 +67,7 @@ describe('contacts.show.component', () => {
             $ctrl.save();
             expect(contacts.save).toHaveBeenCalledWith({ id: 1, name: 'a' });
         });
-        it('should alert if successful', done => {
+        it('should alert if successful', (done) => {
             spyOn(contacts, 'save').and.callFake(() => Promise.resolve());
             $ctrl.save().then(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
@@ -75,14 +75,14 @@ describe('contacts.show.component', () => {
                 done();
             });
         });
-        it('shouldn\'t broadcast if tag_list is unchanged', done => {
+        it('shouldn\'t broadcast if tag_list is unchanged', (done) => {
             spyOn(contacts, 'save').and.callFake(() => Promise.resolve());
             $ctrl.save().then(() => {
                 expect(rootScope.$emit).not.toHaveBeenCalled();
                 done();
             });
         });
-        it('should broadcast if tag_list changed', done => {
+        it('should broadcast if tag_list changed', (done) => {
             contacts.current = assign(contacts.current, { tag_list: 'a,b' });
             spyOn(contacts, 'save').and.callFake(() => Promise.resolve());
             $ctrl.save().then(() => {
@@ -90,7 +90,7 @@ describe('contacts.show.component', () => {
                 done();
             });
         });
-        it('should update initialState', done => {
+        it('should update initialState', (done) => {
             contacts.initialState.no_gift_aid = false;
             contacts.current.no_gift_aid = true;
             spyOn(contacts, 'save').and.callFake(() => Promise.resolve());
@@ -99,7 +99,7 @@ describe('contacts.show.component', () => {
                 done();
             });
         });
-        it('should alert if rejected', done => {
+        it('should alert if rejected', (done) => {
             spyOn(contacts, 'save').and.callFake(() => Promise.reject());
             $ctrl.save().catch(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');

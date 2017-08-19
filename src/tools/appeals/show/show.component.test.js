@@ -19,8 +19,8 @@ describe('tools.appeals.show.component', () => {
                 { id: 'b' }
             ]
         };
-        spyOn(alerts, 'addAlert').and.callFake(data => data);
-        spyOn($ctrl, 'gettext').and.callFake(data => data);
+        spyOn(alerts, 'addAlert').and.callFake((data) => data);
+        spyOn($ctrl, 'gettext').and.callFake((data) => data);
     });
     describe('changeGoal', () => {
         beforeEach(() => {
@@ -31,7 +31,7 @@ describe('tools.appeals.show.component', () => {
             $ctrl.changeGoal();
             expect($ctrl.save).toHaveBeenCalledWith();
         });
-        it('should recalculate goal', done => {
+        it('should recalculate goal', (done) => {
             $ctrl.changeGoal().then(() => {
                 expect($ctrl.changePercentage).toHaveBeenCalledWith();
                 done();
@@ -49,7 +49,7 @@ describe('tools.appeals.show.component', () => {
     describe('save', () => {
         const appeal = { id: 3, name: 'a' };
         beforeEach(() => {
-            $ctrl.dataInitialState = {id: 3};
+            $ctrl.dataInitialState = { id: 3 };
             $ctrl.appeal = appeal;
         });
         it('should call the api', () => {
@@ -57,7 +57,7 @@ describe('tools.appeals.show.component', () => {
             $ctrl.save();
             expect(api.put).toHaveBeenCalledWith(`appeals/${appeal.id}`, appeal);
         });
-        it('should alert success', done => {
+        it('should alert success', (done) => {
             spyOn(api, 'put').and.callFake(() => Promise.resolve());
             $ctrl.save().then(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith('Appeal saved successfully');
@@ -65,7 +65,7 @@ describe('tools.appeals.show.component', () => {
                 done();
             });
         });
-        it('should alert failure', done => {
+        it('should alert failure', (done) => {
             spyOn(api, 'put').and.callFake(() => Promise.reject());
             $ctrl.save().catch(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith('Unable to save appeal', 'danger');
@@ -104,7 +104,7 @@ describe('tools.appeals.show.component', () => {
             $ctrl.onContactSelected({ id: 1 });
             expect(api.post).toHaveBeenCalledWith('appeals/123/contacts/1');
         });
-        it('should alert success', done => {
+        it('should alert success', (done) => {
             spyOn(api, 'post').and.callFake(() => Promise.resolve());
             $ctrl.onContactSelected({ id: 1 }).then(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith('Contact successfully added to appeal');
@@ -112,7 +112,7 @@ describe('tools.appeals.show.component', () => {
                 done();
             });
         });
-        it('should alert failure', done => {
+        it('should alert failure', (done) => {
             spyOn(api, 'post').and.callFake(() => Promise.reject());
             $ctrl.onContactSelected({ id: 1 }).catch(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith('Unable to add contact to appeal', 'danger');
@@ -211,7 +211,7 @@ describe('tools.appeals.show.component', () => {
         it('should get donation contacts', () => {
             $ctrl.selectedContactIds = [1, 2];
             $ctrl.appeal = { donations: [{ contact: { id: 1, name: 'a' } }, { contact: { id: 3, name: 'b' } }] };
-            spyOn($ctrl, 'mutateDonation').and.callFake(data => data);
+            spyOn($ctrl, 'mutateDonation').and.callFake((data) => data);
             expect($ctrl.getSelectedDonationContacts()).toEqual([{ contact: { id: 1, name: 'a' } }]);
         });
     });
@@ -219,7 +219,7 @@ describe('tools.appeals.show.component', () => {
         it('should get contacts', () => {
             $ctrl.selectedContactIds = [1, 2];
             $ctrl.contactsNotGiven = [{ id: 1, name: 'a' }, { id: 3 }];
-            spyOn($ctrl, 'mutateContact').and.callFake(data => data);
+            spyOn($ctrl, 'mutateContact').and.callFake((data) => data);
             expect($ctrl.getSelectedContactsNotGiven()).toEqual([{ id: 1, name: 'a' }]);
         });
     });
@@ -322,7 +322,7 @@ describe('tools.appeals.show.component', () => {
                 doSerialization: false
             });
         });
-        it('should alert success', done => {
+        it('should alert success', (done) => {
             spyOn(api, 'post').and.callFake(() => Promise.resolve());
             $ctrl.doExportToMailChimp().then(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith('Contact(s) successfully exported to Mailchimp');
@@ -330,7 +330,7 @@ describe('tools.appeals.show.component', () => {
                 done();
             });
         });
-        it('should alert failure', done => {
+        it('should alert failure', (done) => {
             spyOn(api, 'post').and.callFake(() => Promise.reject());
             $ctrl.doExportToMailChimp().catch(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith('Unable to add export contact(s) to Mailchimp', 'danger');

@@ -14,7 +14,7 @@ describe('preferences.integrations.prayerLetters.component', () => {
             componentController = $componentController;
             loadController();
         });
-        spyOn(alerts, 'addAlert').and.callFake(data => data);
+        spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
     function loadController() {
@@ -38,14 +38,14 @@ describe('preferences.integrations.prayerLetters.component', () => {
             $ctrl.sync();
             expect(prayerLetters.sync).toHaveBeenCalledWith();
         });
-        it('should unset saving flag', done => {
+        it('should unset saving flag', (done) => {
             spyOn(prayerLetters, 'sync').and.callFake(() => Promise.resolve());
             $ctrl.sync().then(() => {
                 expect($ctrl.saving).toBeFalsy();
                 done();
             });
         });
-        it('should alert a translated confirmation', done => {
+        it('should alert a translated confirmation', (done) => {
             spyOn(prayerLetters, 'sync').and.callFake(() => Promise.resolve());
             $ctrl.sync().then(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'success');
@@ -53,7 +53,7 @@ describe('preferences.integrations.prayerLetters.component', () => {
                 done();
             });
         });
-        it('should handle rejection', done => {
+        it('should handle rejection', (done) => {
             spyOn(prayerLetters, 'sync').and.callFake(() => Promise.reject({ errors: ['a'] }));
             $ctrl.sync().catch(() => {
                 expect($ctrl.saving).toBeFalsy();
@@ -67,21 +67,21 @@ describe('preferences.integrations.prayerLetters.component', () => {
         beforeEach(() => {
             spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
         });
-        it('should disconnect', done => {
+        it('should disconnect', (done) => {
             spyOn(prayerLetters, 'disconnect').and.callFake(() => Promise.resolve());
             $ctrl.disconnect().then(() => {
                 expect(prayerLetters.disconnect).toHaveBeenCalledWith();
                 done();
             });
         });
-        it('should unset saving flag', done => {
+        it('should unset saving flag', (done) => {
             spyOn(prayerLetters, 'disconnect').and.callFake(() => Promise.resolve());
             $ctrl.disconnect().then(() => {
                 expect($ctrl.saving).toBeFalsy();
                 done();
             });
         });
-        it('should alert a translated confirmation', done => {
+        it('should alert a translated confirmation', (done) => {
             spyOn(prayerLetters, 'disconnect').and.callFake(() => Promise.resolve());
             $ctrl.disconnect().then(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'success');
@@ -89,7 +89,7 @@ describe('preferences.integrations.prayerLetters.component', () => {
                 done();
             });
         });
-        it('should handle rejection', done => {
+        it('should handle rejection', (done) => {
             spyOn(prayerLetters, 'disconnect').and.callFake(() => Promise.reject());
             $ctrl.disconnect().catch(() => {
                 expect($ctrl.saving).toBeFalsy();

@@ -19,7 +19,7 @@ class ImpersonateUserController {
             url: 'admin/impersonation',
             data: this.impersonateUser,
             type: 'impersonation'
-        }).then(data => {
+        }).then((data) => {
             this.$window.localStorage.setItem('impersonatorToken', this.$window.localStorage.getItem('token'));
             this.$window.localStorage.setItem('impersonator', `${this.users.current.first_name} ${this.users.current.last_name}`);
             this.$window.localStorage.setItem('token', data.json_web_token);

@@ -53,7 +53,7 @@ describe('contacts.show.people.component', () => {
             $ctrl.init();
             expect($ctrl.data).toEqual([]);
         });
-        it('should get a list of people for a contact', done => {
+        it('should get a list of people for a contact', (done) => {
             $ctrl.contact = { id: 1 };
             spyOn(people, 'list').and.callFake(() => Promise.resolve([1, 2]));
             $ctrl.init(1).then(() => {
@@ -70,7 +70,7 @@ describe('contacts.show.people.component', () => {
             expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
             expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
         });
-        it('should open the merge modal', done => {
+        it('should open the merge modal', (done) => {
             spyOn(people, 'openMergePeopleModal').and.callFake(() => Promise.resolve());
             $ctrl.selectedPeople = [1, 2];
             $ctrl.openMergeModal().then(() => {

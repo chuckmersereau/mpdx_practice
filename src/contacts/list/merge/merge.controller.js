@@ -17,7 +17,7 @@ class MergeContactsController {
     }
     save() {
         const filtered = reject({ id: this.winner }, this.selectedContacts);
-        const winnersAndLosers = map(val => {
+        const winnersAndLosers = map((val) => {
             return {
                 winner_id: this.winner,
                 loser_id: val.id

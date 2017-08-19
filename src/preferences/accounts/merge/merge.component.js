@@ -32,7 +32,7 @@ class MergePreferencesController {
             }
             this.onSave();
             return data;
-        }).catch(err => {
+        }).catch((err) => {
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t merge your account'), 'danger');
             this.saving = false;
             throw err;

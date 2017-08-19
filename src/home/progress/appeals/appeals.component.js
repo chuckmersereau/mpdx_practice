@@ -24,7 +24,7 @@ class AppealsController {
             fields: { appeals: '' },
             filter: { account_list_id: this.api.account_list_id },
             per_page: 0
-        }).then(data => {
+        }).then((data) => {
             const count = defaultTo(0, get('meta.pagination.total_count', data));
             this.$log.debug('appeals count', count);
             this.count = count;

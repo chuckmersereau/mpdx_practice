@@ -2,14 +2,14 @@ function localeFilter(
     $filter,
     locale
 ) {
-    return val => $filter('date')(val, locale.dateTimeFormat);
+    return (val) => $filter('date')(val, locale.dateTimeFormat);
 }
 
 function localeFilterWithTime(
     $filter,
     locale
 ) {
-    return val => $filter('date')(val, locale.dateTimeFormat + ' hh:mm a');
+    return (val) => $filter('date')(val, locale.dateTimeFormat + ' hh:mm a');
 }
 
 import locale from './locale.service';

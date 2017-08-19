@@ -32,7 +32,7 @@ describe('tasks.service', () => {
             users.current = currentUser;
         });
         spyOn(api, 'post').and.callFake(() => Promise.resolve({ id: 1 }));
-        spyOn(alerts, 'addAlert').and.callFake(data => data);
+        spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
         spyOn(gettextCatalog, 'getPlural').and.callThrough();
     });
@@ -40,7 +40,7 @@ describe('tasks.service', () => {
         it('should return a Promise', () => {
             expect(tasks.create({})).toEqual(jasmine.any(Promise));
         });
-        it('should only add 1 and only 1 comment on creation', done => {
+        it('should only add 1 and only 1 comment on creation', (done) => {
             tasks.create({}, [], 'comment').then(() => {
                 tasks.create({}, [], 'comment').then(() => {
                     let task = api.post.calls.argsFor(1)[1];
@@ -50,7 +50,7 @@ describe('tasks.service', () => {
                 });
             });
         });
-        it('should only add 1 and only 1 comment on creation with contacts', done => {
+        it('should only add 1 and only 1 comment on creation with contacts', (done) => {
             tasks.create({}, ['1', '2'], 'comment').then(() => {
                 tasks.create({}, ['1', '2'], 'comment').then(() => {
                     let task = api.post.calls.argsFor(1)[0].data[0];
@@ -111,7 +111,7 @@ describe('tasks.service', () => {
             expect(tasks.data).toEqual([]);
             expect(tasks.dataLoadCount).toEqual(1);
         });
-        it('should handle response', done => {
+        it('should handle response', (done) => {
             tasks.load().then(() => {
                 expect(tasks.loading).toEqual(false);
                 expect(tasks.page).toEqual(resp.meta.pagination.page);
@@ -120,7 +120,7 @@ describe('tasks.service', () => {
                 done();
             });
         });
-        it('should handle pages', done => {
+        it('should handle pages', (done) => {
             const oldData = [{ id: 2, subject: 'b' }];
             tasks.data = oldData;
             tasks.load(2).then(() => {
@@ -158,17 +158,83 @@ describe('tasks.service', () => {
             expect(tasks.process(task).category).toEqual({ name: 'no-due-date', id: 3 });
         });
     });
+    describe('loadMoreTasks', () => {
+        beforeEach(() => {
+            tasks.page = 1;
+        });
+        it('should load the next tasks', () => {
+            spyOn(tasks, 'canLoadMoreTasks').and.callFake(() => true);
+            spyOn(tasks, 'load').and.callFake(() => Promise.resolve());
+            tasks.loadMoreTasks();
+            expect(tasks.load).toHaveBeenCalledWith(2);
+        });
+        it('shouldn\'t load the next tasks', () => {
+            spyOn(tasks, 'canLoadMoreTasks').and.callFake(() => false);
+            spyOn(tasks, 'load').and.callFake(() => Promise.resolve());
+            tasks.loadMoreTasks();
+            expect(tasks.load).not.toHaveBeenCalled();
+        });
+    });
+    describe('canLoadMoreTasks', () => {
+        beforeEach(() => {
+            tasks.page = 1;
+            tasks.meta = {
+                pagination: {
+                    total_pages: 2
+                }
+            };
+            tasks.loading = false;
+        });
+        it('should return true', () => {
+            expect(tasks.canLoadMoreTasks()).toEqual(true);
+        });
+        it('should return false', () => {
+            tasks.loading = true;
+            expect(tasks.canLoadMoreTasks()).toEqual(false);
+        });
+        it('should return false', () => {
+            tasks.meta.pagination.total_pages = 1;
+            expect(tasks.canLoadMoreTasks()).toEqual(false);
+        });
+    });
+    describe('save', () => {
+        beforeEach(() => {
+            spyOn(tasks, 'mutateTagList').and.callFake((data) => data);
+            spyOn(tasks, 'mutateComment').and.callFake((data) => data);
+            spyOn(api, 'put').and.callFake(() => Promise.resolve());
+            spyOn(tasks, 'change').and.callFake(() => {});
+        });
+        const task = { id: 1 };
+        it('should call mutateTagList', () => {
+            tasks.save(task);
+            expect(tasks.mutateTagList).toHaveBeenCalledWith(task);
+        });
+        it('should call mutateComment', () => {
+            tasks.save(task, 'abc');
+            expect(tasks.mutateComment).toHaveBeenCalledWith(task, 'abc');
+        });
+        it('should call the api', () => {
+            tasks.save(task);
+            expect(api.put).toHaveBeenCalledWith(`tasks/${task.id}`, task);
+        });
+        it('should call change', (done) => {
+            tasks.save(task).then(() => {
+                expect(tasks.change).toHaveBeenCalledWith();
+                done();
+            });
+        });
+    });
     describe('bulkEdit', () => {
         beforeEach(() => {
             tasks.selected = selected;
-            spyOn(api, 'put').and.callFake((url, data) => new Promise(resolve => resolve(data)));
+            spyOn(api, 'put').and.callFake((url, data) => new Promise((resolve) => resolve(data)));
             spyOn(tasksTags, 'change').and.callFake(() => {});
             spyOn(tasks, 'change').and.callFake(() => {});
         });
         const model = { activity_type: 'activity' };
         it('should build a task from the provided model', (done) => {
-            const result = map(id => assign({ id: id }, model), selected);
-            tasks.bulkEdit(model).then(data => {
+            const result = map((id) => assign({ id: id }, model), selected);
+            tasks.bulkEdit(model).then((data) => {
                 expect(data).toEqual(result);
                 expect(tasksTags.change).toHaveBeenCalled();
                 done();
@@ -177,8 +243,8 @@ describe('tasks.service', () => {
         });
         it('should handle a comment', (done) => {
             const comment = 'comment';
-            tasks.bulkEdit(model, comment).then(data => {
-                each(task => {
+            tasks.bulkEdit(model, comment).then((data) => {
+                each((task) => {
                     expect(task.comments[0].body).toEqual(comment);
                     expect(task.comments[0].person.id).toEqual(currentUser.id);
                 }, data);
@@ -186,8 +252,8 @@ describe('tasks.service', () => {
             });
         });
         it('should handle tags', (done) => {
-            tasks.bulkEdit(model, null, map('name', tags)).then(data => {
-                each(task => {
+            tasks.bulkEdit(model, null, map('name', tags)).then((data) => {
+                each((task) => {
                     expect(task.tag_list).toEqual('a,b');
                 }, data);
                 done();

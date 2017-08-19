@@ -14,7 +14,7 @@ describe('tools.import.tnt.component', () => {
             componentController = $componentController;
             loadController();
         });
-        spyOn(alerts, 'addAlert').and.callFake(data => data);
+        spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
     function loadController() {

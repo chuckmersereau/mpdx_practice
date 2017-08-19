@@ -54,14 +54,14 @@ describe('tasks.list.item.component', () => {
             $ctrl.addComment();
             expect(api.post).toHaveBeenCalledWith('tasks/1/comments', { body: 'asdf', person: { id: 2 } });
         });
-        it('should adjust the current results', done => {
+        it('should adjust the current results', (done) => {
             $ctrl.comment = 'asdf';
             $ctrl.addComment().then(() => {
                 expect($ctrl.task.comments).toEqual([{ id: 1, body: 'asdf', person: { id: 2, first_name: 'a', last_name: 'b' } }]);
                 done();
             });
         });
-        it('should reset the comment box', done => {
+        it('should reset the comment box', (done) => {
             $ctrl.comment = 'asdf';
             $ctrl.addComment().then(() => {
                 expect($ctrl.comment).toEqual('');
@@ -80,7 +80,7 @@ describe('tasks.list.item.component', () => {
             $ctrl.editComment(comment);
             expect(api.put).toHaveBeenCalledWith('tasks/1/comments/3', { body: 'asdf' });
         });
-        it('should reset the comment edit flag', done => {
+        it('should reset the comment edit flag', (done) => {
             let comment = { id: 3, body: 'asdf', person: { id: 2, first_name: 'a', last_name: 'b' } };
             $ctrl.editComment(comment).then(() => {
                 expect(comment.edit).toBeFalsy();

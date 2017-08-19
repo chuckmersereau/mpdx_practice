@@ -28,7 +28,7 @@ class PersonService {
     }
     list(contactId) {
         return this.api.get(`contacts/${contactId}/people`, { include: this.includes }).then((data) => {
-            return map(person => {
+            return map((person) => {
                 if (person.anniversary_year) {
                     person.anniversary = moment(`${person.anniversary_year}-${person.anniversary_month}-${person.anniversary_day}`, 'YYYY-MM-DD').toDate();
                 }

@@ -4,6 +4,7 @@ module.exports = {
     },
     extends: ['eslint:recommended', 'standard'],
     rules: {
+        'arrow-parens': ['error', 'always'],
         'brace-style': 'error',
         'comma-dangle': ['error', 'never'],
         // 'complexity': ['warn', 2],
@@ -29,6 +30,7 @@ module.exports = {
         'no-extra-parens': 'error',
         'no-lonely-if': 'error',
         'no-multiple-empty-lines': ['error', {'max': 2}],
+        'no-unneeded-ternary': 'error',
         'no-unused-vars': ['error', 'all'],
         'no-var': 'error',
         'object-curly-spacing': ['error', 'always'],

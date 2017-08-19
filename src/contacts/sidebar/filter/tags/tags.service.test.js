@@ -15,14 +15,14 @@ describe('contacts.service', () => {
         spyOn(api, 'get').and.callFake(() => Promise.resolve(result));
     });
     describe('load', () => {
-        it('should query the api', done => {
+        it('should query the api', (done) => {
             contactsTags.load().then(() => {
                 expect(api.get).toHaveBeenCalledWith('contacts/tags', { filter: { account_list_id: accountListId } });
                 done();
             });
         });
-        it('should set and return data', done => {
-            contactsTags.load().then(data => {
+        it('should set and return data', (done) => {
+            contactsTags.load().then((data) => {
                 expect(contactsTags.data).toEqual(result);
                 expect(data).toEqual(result);
                 done();

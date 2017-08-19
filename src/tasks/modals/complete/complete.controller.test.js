@@ -79,7 +79,7 @@ describe('tasks.modals.complete.controller', () => {
         });
         it('should be false when certain activity_types are set', () => {
             const arr = ['Pre Call Letter', 'Reminder Letter', 'Support Letter', 'Thank', 'To Do'];
-            each(activity => {
+            each((activity) => {
                 $ctrl.task.activity_type = activity;
                 expect($ctrl.showPartnerStatus()).toBeFalsy();
             }, arr);

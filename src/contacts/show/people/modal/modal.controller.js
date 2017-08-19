@@ -77,7 +77,7 @@ class PersonModalController {
                 this.$rootScope.$emit('personUpdated');
                 this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
                 this.$scope.$hide();
-            }).catch(err => {
+            }).catch((err) => {
                 this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger', null, 5, true);
                 throw err;
             });
@@ -88,7 +88,7 @@ class PersonModalController {
                 this.$rootScope.$emit('personUpdated');
                 this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
                 this.$scope.$hide();
-            }).catch(err => {
+            }).catch((err) => {
                 this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger', null, 5, true);
                 throw err;
             });
@@ -130,7 +130,7 @@ class PersonModalController {
         this.person.websites.push({ id: uuid(), url: '', new: true });
     }
     changePrimary(property, id) {
-        this.person[property] = map(val => {
+        this.person[property] = map((val) => {
             val.primary = val.id === id;
             return val;
         }, this.person[property]);

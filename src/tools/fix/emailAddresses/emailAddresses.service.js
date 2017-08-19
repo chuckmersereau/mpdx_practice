@@ -37,11 +37,11 @@ class EmailAddressesService {
             include: 'email_addresses',
             page: this.page,
             per_page: 25
-        }).then(data => {
+        }).then((data) => {
             this.loading = false;
             this.sources = union(
                 flatMap(
-                    person => map('source', person.email_addresses)
+                    (person) => map('source', person.email_addresses)
                     , data),
                 ['MPDX']).sort();
 
@@ -81,7 +81,7 @@ class EmailAddressesService {
         let people = reduce((result, person) => {
             let primaryEmailAddress = find(['source', source], person.email_addresses);
             if (primaryEmailAddress) {
-                person.email_addresses = map(emailAddress => {
+                person.email_addresses = map((emailAddress) => {
                     emailAddress.primary = emailAddress.id === primaryEmailAddress.id;
                     emailAddress.valid_values = true;
                     return emailAddress;
@@ -97,7 +97,7 @@ class EmailAddressesService {
     }
 
     setPrimary(person, primaryEmailAddress) {
-        person.email_addresses = map(emailAddress => {
+        person.email_addresses = map((emailAddress) => {
             emailAddress.primary = emailAddress.id === primaryEmailAddress.id;
             return emailAddress;
         }, person.email_addresses);

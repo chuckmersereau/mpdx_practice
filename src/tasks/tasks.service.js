@@ -1,6 +1,7 @@
 
 import uuid from 'uuid/v1';
 import concat from 'lodash/fp/concat';
+import defaultTo from 'lodash/fp/defaultTo';
 import assign from 'lodash/fp/assign';
 import each from 'lodash/fp/each';
 import find from 'lodash/fp/find';
@@ -116,7 +117,7 @@ class TasksService {
             },
             deSerializationOptions: relationshipId('comments'), // for comment count
             overrideGetAsPost: true
-        }).then(data => {
+        }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug('tasks page ' + data.meta.pagination.page, data);
             /* istanbul ignore next */
@@ -125,11 +126,12 @@ class TasksService {
             }
             this.loading = false;
             this.meta = data.meta;
-            const tasks = map(task => this.process(task), data);
+            const tasks = map((task) => this.process(task), data);
             this.data = unionBy('id', this.data, tasks);
             this.page = parseInt(this.meta.pagination.page);
         });
     }
+    /* eslint-disable complexity */
     process(task) {
         const startAt = moment(task.start_at);
         if (task.completed) {
@@ -145,25 +147,35 @@ class TasksService {
         }
         return task;
     }
+    /* eslint-enable */
     loadMoreTasks() {
-        if (this.loading || this.page >= parseInt(this.meta.pagination.total_pages)) {
-            return;
-        }
-        this.load(this.page + 1);
+        return this.canLoadMoreTasks() ? this.load(this.page + 1) : null;
+    }
+    canLoadMoreTasks() {
+        return !this.loading && this.page < parseInt(this.meta.pagination.total_pages);
     }
     save(task, comment = null) {
-        if (task.tag_list) {
-            task.tag_list = joinComma(task.tag_list); // fix for api mis-match
-        }
-        if (comment) {
-            if (!task.comments) {
-                task.comments = [];
-            }
-            task.comments.push({ id: uuid(), body: comment, person: { id: this.users.current.id } });
-        }
+        task = this.mutateTagList(task);
+        task = this.mutateComment(task, comment);
+
         return this.api.put(`tasks/${task.id}`, task).then(() => {
             this.change();
         });
+    }
+    mutateTagList(task) {
+        // fix for api mis-match
+        return task.tag_list ? assign(task, {
+            tag_list: joinComma(task.tag_list)
+        }) : task;
+    }
+    mutateComment(task, comment) {
+        return comment ? assign(task, {
+            comments: concat(defaultTo([], task.comments), {
+                id: uuid(),
+                body: comment,
+                person: { id: this.users.current.id }
+            })
+        }) : task;
     }
     change() {
         this.$rootScope.$emit('taskChange');
@@ -171,16 +183,11 @@ class TasksService {
     create(task, contactIds = [], comment) {
         task.account_list = { id: this.api.account_list_id };
         contactIds = reject('', contactIds);
-        task.tag_list = joinComma(task.tag_list); // fix for api mis-match
+        task = this.mutateTagList(task);
         if (contactIds.length > 1) {
             const tasks = reduce((result, contactId) => {
                 let contactTask = angular.copy(task);
-                if (comment) {
-                    if (!contactTask.comments) {
-                        contactTask.comments = [];
-                    }
-                    contactTask.comments = [{ id: uuid(), body: comment, person: { id: this.users.current.id } }];
-                }
+                contactTask = this.mutateComment(contactTask, comment);
                 if (!isEmpty(contactId)) {
                     result = concat(result, assign(contactTask, { id: uuid(), contacts: [{ id: contactId }] }));
                 }
@@ -192,21 +199,17 @@ class TasksService {
                 }
             });
         }
-        if (comment) {
-            if (!task.comments) {
-                task.comments = [];
-            }
-            task.comments = [{ id: uuid(), body: comment, person: { id: this.users.current.id } }];
-        }
-        task.contacts = map(contactId => { return { id: contactId }; }, contactIds);
-        return this.api.post('tasks', task).then(data => {
+        task = this.mutateComment(task, comment);
+
+        task.contacts = map((contactId) => { return { id: contactId }; }, contactIds);
+        return this.api.post('tasks', task).then((data) => {
             const processedTask = this.process(data);
             this.data = upsert('id', processedTask, this.data);
             return data;
         });
     }
     bulkComplete() {
-        const tasks = map(id => {
+        const tasks = map((id) => {
             return {
                 id: id,
                 completed: true
@@ -223,7 +226,7 @@ class TasksService {
         });
     }
     bulkEdit(model, comment, tags) {
-        const tasks = map(id => {
+        const tasks = map((id) => {
             let task = assign({ id: id }, model);
             if (comment) {
                 task.comments = [{ id: uuid(), body: comment, person: { id: this.users.current.id } }];
@@ -231,7 +234,7 @@ class TasksService {
             task.tag_list = emptyToNull(joinComma(tags));
             return omitBy(isNil, task);
         }, this.selected);
-        return this.api.put('tasks/bulk', tasks).then(data => {
+        return this.api.put('tasks/bulk', tasks).then((data) => {
             this.tasksTags.change();
             this.change();
             return data;
@@ -257,7 +260,7 @@ class TasksService {
             this.alerts.addAlert(message, 'danger');
             return Promise.reject(new Error({ message: message }));
         }
-        const tasks = map(id => { return { id: id }; }, this.selected);
+        const tasks = map((id) => { return { id: id }; }, this.selected);
         const message = this.gettextCatalog.getPlural(this.selected.length, 'Are you sure you wish to delete the selected task?', 'Are you sure you wish to delete the {{$count}} selected tasks?', {});
         return this.modal.confirm(message).then(() => {
             return this.api.delete({ url: 'tasks/bulk', data: tasks, type: 'tasks' }).then(() => {
@@ -267,7 +270,7 @@ class TasksService {
                     this.load();
                 }
                 this.selected = [];
-            }).catch(err => {
+            }).catch((err) => {
                 this.alerts.addAlert(this.gettextCatalog.getPlural(this.selected.length, 'Unable to delete the selected task.', 'Unable to delete the {{$count}} selected tasks.', {}), 'danger');
                 throw err;
             });

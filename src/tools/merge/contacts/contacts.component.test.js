@@ -114,8 +114,8 @@ describe('tools.mergeContacts.component', () => {
             ]);
         });
 
-        it('should show a translated alert on completion', done => {
-            spyOn(alerts, 'addAlert').and.callFake(data => data);
+        it('should show a translated alert on completion', (done) => {
+            spyOn(alerts, 'addAlert').and.callFake((data) => data);
             spyOn(gettextCatalog, 'getString').and.callThrough();
             $ctrl.confirm().then(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
@@ -136,14 +136,14 @@ describe('tools.mergeContacts.component', () => {
             expect($ctrl.confirm).toHaveBeenCalledWith();
         });
 
-        it('should reload new contacts', done => {
+        it('should reload new contacts', (done) => {
             $ctrl.confirmAndContinue().then(() => {
                 expect($ctrl.load).toHaveBeenCalledWith();
                 done();
             });
         });
 
-        it('should hide the load screen', done => {
+        it('should hide the load screen', (done) => {
             $ctrl.confirmAndContinue().then(() => {
                 expect($ctrl.blockUI.reset).toHaveBeenCalledWith();
                 done();
@@ -162,14 +162,14 @@ describe('tools.mergeContacts.component', () => {
             expect($ctrl.confirm).toHaveBeenCalledWith();
         });
 
-        it('should navigate to tools homepage', done => {
+        it('should navigate to tools homepage', (done) => {
             $ctrl.confirmThenLeave().then(() => {
                 expect(state.go).toHaveBeenCalledWith('tools');
                 done();
             });
         });
 
-        it('should hide the load screen', done => {
+        it('should hide the load screen', (done) => {
             $ctrl.confirmThenLeave().then(() => {
                 expect($ctrl.blockUI.reset).toHaveBeenCalledWith();
                 done();
@@ -234,7 +234,7 @@ describe('tools.mergeContacts.component', () => {
             });
         });
 
-        it('should map data', done => {
+        it('should map data', (done) => {
             let data = [{ id: 1 }];
             data.meta = { pagination: { total_count: 2 } };
             spyOn(api, 'get').and.callFake(() => Promise.resolve(data));

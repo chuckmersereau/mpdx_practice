@@ -178,7 +178,7 @@ class ListController {
                 sort: 'name'
             },
             overrideGetAsPost: true
-        }).then(data => {
+        }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug('contacts page ' + data.meta.pagination.page, data);
             if (reset && currentCount !== this.listLoadCount) {
@@ -191,7 +191,7 @@ class ListController {
                 this.loading = false;
                 return;
             }
-            const newContacts = map(contact => {
+            const newContacts = map((contact) => {
                 if (!isNil(contact.pledge_amount)) {
                     contact.pledge_amount = parseFloat(contact.pledge_amount); // fix bad api serialization as string
                 }
@@ -214,7 +214,7 @@ class ListController {
     }
     getSelectedContacts() {
         if (this.contacts.selectedContacts.length > this.data.length) {
-            return map(id => {
+            return map((id) => {
                 return { id: id };
             }, this.contacts.selectedContacts);
         }
@@ -241,7 +241,7 @@ class ListController {
     bulkHideContacts() {
         const message = this.gettextCatalog.getString('Are you sure you wish to hide the selected contacts? Hiding a contact in MPDX actually sets the contact status to "Never Ask".');
         return this.modal.confirm(message).then(() => {
-            const contacts = map(contact => {
+            const contacts = map((contact) => {
                 return {
                     id: contact,
                     status: 'Never Ask'

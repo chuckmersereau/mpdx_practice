@@ -40,7 +40,7 @@ class CommitmentInfoService {
                 page: page,
                 per_page: 5
             }
-        ).then(data => {
+        ).then((data) => {
             this.setMeta(data.meta);
 
             this.data = reduce((result, contact) => {

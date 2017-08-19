@@ -16,7 +16,7 @@ describe('contacts.show.people.merge.controller', () => {
             controller = $controller;
             loadController(person);
         });
-        spyOn(alerts, 'addAlert').and.callFake(data => data);
+        spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
     function loadController() {
@@ -30,7 +30,7 @@ describe('contacts.show.people.merge.controller', () => {
             spyOn(rootScope, '$emit').and.callThrough();
             spyOn(scope, '$hide');
         });
-        it('should call personUpdated', done => {
+        it('should call personUpdated', (done) => {
             spyOn(people, 'bulkMerge').and.callFake(() => Promise.resolve());
             $ctrl.selectedPerson = person;
             $ctrl.save().then(() => {
@@ -39,7 +39,7 @@ describe('contacts.show.people.merge.controller', () => {
                 done();
             });
         });
-        it('should handle failure with a translated Message', done => {
+        it('should handle failure with a translated Message', (done) => {
             spyOn(people, 'bulkMerge').and.callFake(() => Promise.reject(Error('')));
             $ctrl.selectedPerson = person;
             $ctrl.save().then(() => {

@@ -26,11 +26,11 @@ class ModalController {
     saveAndBlock() {
         this.saving = true;
         this.blockUI.start();
-        return this.save().then(data => {
+        return this.save().then((data) => {
             this.saving = false;
             this.blockUI.reset();
             return data;
-        }).catch(err => {
+        }).catch((err) => {
             this.saving = false;
             this.blockUI.reset();
             throw err;
@@ -39,11 +39,11 @@ class ModalController {
     deleteAndBlock() {
         this.saving = true;
         this.blockUI.start();
-        return this.delete().then(data => {
+        return this.delete().then((data) => {
             this.saving = false;
             this.blockUI.reset();
             return data;
-        }).catch(err => {
+        }).catch((err) => {
             this.saving = false;
             this.blockUI.reset();
             throw err;

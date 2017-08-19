@@ -21,8 +21,8 @@ describe('setup.connect.component', () => {
             users.currentOptions = { setup_position: {} };
             loadController();
         });
-        spyOn(alerts, 'addAlert').and.callFake(data => data);
-        spyOn(gettextCatalog, 'getString').and.callFake(data => data);
+        spyOn(alerts, 'addAlert').and.callFake((data) => data);
+        spyOn(gettextCatalog, 'getString').and.callFake((data) => data);
     });
     function loadController() {
         $ctrl = componentController('setupConnect', { $scope: scope }, {});
@@ -39,7 +39,7 @@ describe('setup.connect.component', () => {
             $ctrl.add();
             expect(preferencesOrganization.createAccount).toHaveBeenCalledWith('a', 'b', 'c');
         });
-        it('should refresh if successful', done => {
+        it('should refresh if successful', (done) => {
             spyOn(preferencesOrganization, 'createAccount').and.callFake(() => Promise.resolve());
             $ctrl.add().then(() => {
                 expect(users.listOrganizationAccounts).toHaveBeenCalledWith(true);
@@ -48,7 +48,7 @@ describe('setup.connect.component', () => {
                 done();
             });
         });
-        it('should alert if rejected', done => {
+        it('should alert if rejected', (done) => {
             spyOn(preferencesOrganization, 'createAccount').and.callFake(() => Promise.reject());
             $ctrl.add().catch(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');

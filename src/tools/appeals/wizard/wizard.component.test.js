@@ -102,12 +102,82 @@ describe('tools.appeals.wizard.component', () => {
             expect($ctrl.tags).toEqual([]);
         });
     });
-    // describe('save', () => {
-    //     it('should handle tag list', () => {
-    //         $ctrl.appeal.tag_list = ['a', 'b'];
-    //         $ctrl.save();
-    //         expect($ctrl.appeal.tag_list).toEqual('a,b');
-    //     });
-    //
-    // });
+    describe('save', () => {
+        const form = { // default for testing
+            $setUntouched: () => {},
+            $setPristine: () => {}
+        };
+        beforeEach(() => {
+            spyOn(form, '$setUntouched').and.callThrough();
+            spyOn(form, '$setPristine').and.callThrough();
+            $ctrl.appeal = {};
+            spyOn($ctrl, 'getAndChangeContacts').and.callFake((data) => Promise.resolve(data));
+            spyOn($ctrl, 'init').and.callFake(() => {});
+        });
+        it('should set saving to true', () => {
+            spyOn($ctrl, 'create').and.callFake(() => Promise.resolve());
+            $ctrl.save();
+            expect($ctrl.saving).toEqual(true);
+        });
+        it('should call create', () => {
+            spyOn($ctrl, 'create').and.callFake(() => Promise.resolve());
+            $ctrl.save();
+            expect($ctrl.create).toHaveBeenCalledWith($ctrl.appeal);
+        });
+        it('should call getAndChangeContacts', (done) => {
+            spyOn($ctrl, 'create').and.callFake(() => Promise.resolve({ id: 1 }));
+            spyOn($ctrl, 'hasStatusesOrTags').and.callFake(() => true);
+            $ctrl.save(form).then(() => {
+                expect($ctrl.getAndChangeContacts).toHaveBeenCalledWith({ id: 1 });
+                done();
+            });
+        });
+        it('shouldn\'t call getAndChangeContacts', (done) => {
+            spyOn($ctrl, 'create').and.callFake(() => Promise.resolve());
+            spyOn($ctrl, 'hasStatusesOrTags').and.callFake(() => false);
+            $ctrl.save(form).then(() => {
+                expect($ctrl.getAndChangeContacts).not.toHaveBeenCalled();
+                done();
+            });
+        });
+        it('should call form $setUntouched', (done) => {
+            spyOn($ctrl, 'create').and.callFake(() => Promise.resolve());
+            spyOn($ctrl, 'hasStatusesOrTags').and.callFake(() => false);
+            $ctrl.save(form).then(() => {
+                expect(form.$setUntouched).toHaveBeenCalledWith();
+                done();
+            });
+        });
+        it('should ca;; form $setPristine', (done) => {
+            spyOn($ctrl, 'create').and.callFake(() => Promise.resolve());
+            spyOn($ctrl, 'hasStatusesOrTags').and.callFake(() => false);
+            $ctrl.save(form).then(() => {
+                expect(form.$setPristine).toHaveBeenCalledWith();
+                done();
+            });
+        });
+        it('should call init', (done) => {
+            spyOn($ctrl, 'create').and.callFake(() => Promise.resolve());
+            spyOn($ctrl, 'hasStatusesOrTags').and.callFake(() => false);
+            $ctrl.save(form).then(() => {
+                expect($ctrl.init).toHaveBeenCalledWith();
+                done();
+            });
+        });
+        it('should reset saving', (done) => {
+            spyOn($ctrl, 'create').and.callFake(() => Promise.resolve());
+            spyOn($ctrl, 'hasStatusesOrTags').and.callFake(() => false);
+            $ctrl.save(form).then(() => {
+                expect($ctrl.saving).toEqual(false);
+                done();
+            });
+        });
+        it('should reset saving', (done) => {
+            spyOn($ctrl, 'create').and.callFake(() => Promise.reject());
+            $ctrl.save(form).catch(() => {
+                expect($ctrl.saving).toEqual(false);
+                done();
+            });
+        });
+    });
 });

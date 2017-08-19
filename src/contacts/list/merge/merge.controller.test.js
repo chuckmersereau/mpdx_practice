@@ -33,7 +33,7 @@ describe('contacts.list.merge.controller', () => {
             $ctrl.save();
             expect(contacts.merge).toHaveBeenCalledWith([{ winner_id: 1, loser_id: 2 }, { winner_id: 1, loser_id: 3 }]);
         });
-        it('should hide', done => {
+        it('should hide', (done) => {
             spyOn(scope, '$hide').and.callThrough();
             $ctrl.save().then(() => {
                 expect(scope.$hide).toHaveBeenCalledWith();

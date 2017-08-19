@@ -44,7 +44,7 @@ class MergeContactsController {
     confirm() {
         this.blockUI.start();
         let promises = [];
-        const contactsToMerge = filter(duplicate => !duplicate.ignored, this.duplicates);
+        const contactsToMerge = filter((duplicate) => !duplicate.ignored, this.duplicates);
         const contactsToIgnore = filter({ ignored: true }, this.duplicates);
         if (contactsToMerge.length > 0) {
             promises.push(this.merge(contactsToMerge));
@@ -71,13 +71,13 @@ class MergeContactsController {
     }
 
     ignore(duplicates) {
-        return map(duplicate =>
+        return map((duplicate) =>
             this.api.delete({ url: `contacts/duplicates/${duplicate.id}`, type: 'contacts' })
             , duplicates);
     }
 
     merge(duplicates) {
-        const winnersAndLosers = map(duplicate => {
+        const winnersAndLosers = map((duplicate) => {
             if (duplicate.contacts[0].selected) {
                 return { winner_id: duplicate.contacts[0].id, loser_id: duplicate.contacts[1].id };
             }
@@ -96,7 +96,7 @@ class MergeContactsController {
             },
             filter: { account_list_id: this.api.account_list_id },
             per_page: 5
-        }).then(data => {
+        }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug('contacts/duplicates', data);
             this.setMeta(data.meta);
@@ -113,7 +113,7 @@ class MergeContactsController {
     }
 
     confirmButtonDisabled() {
-        return filter(duplicate => (duplicate.mergeChoice !== -1), this.duplicates).length === 0;
+        return filter((duplicate) => (duplicate.mergeChoice !== -1), this.duplicates).length === 0;
     }
 }
 const MergeContacts = {

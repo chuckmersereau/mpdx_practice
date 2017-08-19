@@ -26,7 +26,7 @@ describe('contacts.service', () => {
         });
         it('should change the moment locale', () => {
             spyOn(moment, 'locale').and.callFake(() => {});
-            spyOn(locale, 'handleMomentMisnomers').and.callFake(data => data);
+            spyOn(locale, 'handleMomentMisnomers').and.callFake((data) => data);
             locale.change('en-gb');
             expect(moment.locale).toHaveBeenCalledWith(jasmine.any(String));
             expect(locale.handleMomentMisnomers).toHaveBeenCalledWith(jasmine.any(String));

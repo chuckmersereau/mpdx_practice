@@ -33,7 +33,7 @@ class SharePreferencesController {
             this.saving = false;
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed the invite successfully'));
             this.accounts.inviteList = reject({ id: id }, this.accounts.inviteList);
-        }).catch(err => {
+        }).catch((err) => {
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t remove the invite'), 'danger');
             this.saving = false;
             throw err;
@@ -45,7 +45,7 @@ class SharePreferencesController {
             this.saving = false;
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed the user successfully'));
             this.accounts.userList = reject({ id: id }, this.accounts.userList);
-        }).catch(err => {
+        }).catch((err) => {
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t remove the user'), 'danger');
             this.saving = false;
             throw err;

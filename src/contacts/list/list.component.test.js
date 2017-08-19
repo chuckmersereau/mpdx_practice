@@ -25,7 +25,7 @@ describe('contacts.list.component', () => {
             loadController();
         });
         spyOn(gettextCatalog, 'getString').and.callThrough();
-        spyOn(gettextCatalog, 'getPlural').and.callFake(data => data);
+        spyOn(gettextCatalog, 'getPlural').and.callFake((data) => data);
     });
     function loadController() {
         $ctrl = componentController('contactsList', { $scope: scope }, { view: null, selected: null });
@@ -147,7 +147,7 @@ describe('contacts.list.component', () => {
         let contact = { id: 1, name: 'a' };
         beforeEach(() => {
             $ctrl.data = [contact];
-            spyOn(contacts, 'hideContact').and.callFake(() => new Promise(resolve => resolve()));
+            spyOn(contacts, 'hideContact').and.callFake(() => new Promise((resolve) => resolve()));
         });
         it('should call contacts.hideContact', () => {
             $ctrl.data = [{ id: 1 }];
@@ -330,7 +330,7 @@ describe('contacts.list.component', () => {
             expect(api.get).toHaveBeenCalledWith(defaultRequest);
             expect(contacts.buildFilterParams).toHaveBeenCalled();
         });
-        it('should unflag loading after load', done => {
+        it('should unflag loading after load', (done) => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve(result));
             $ctrl.load().then(() => {
                 expect($ctrl.loading).toBeFalsy();
@@ -355,17 +355,17 @@ describe('contacts.list.component', () => {
         });
         it('should return data', (done) => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve(result));
-            $ctrl.load().then(data => {
+            $ctrl.load().then((data) => {
                 expect(data).toBeDefined();
                 done();
             });
         });
-        it('should handle late prior results', done => {
+        it('should handle late prior results', (done) => {
             let call = 0;
             spyOn(api, 'get').and.callFake(() => {
                 if (call === 0) {
                     call++;
-                    return new Promise(resolve => {
+                    return new Promise((resolve) => {
                         setTimeout(() => {
                             resolve(result);
                         }, 1000);
@@ -374,7 +374,7 @@ describe('contacts.list.component', () => {
                     return Promise.resolve(result);
                 }
             });
-            $ctrl.load().then(data => {
+            $ctrl.load().then((data) => {
                 done();
                 expect(data).toBeUndefined();
             });

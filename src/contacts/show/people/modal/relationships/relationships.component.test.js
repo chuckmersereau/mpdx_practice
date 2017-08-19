@@ -64,9 +64,9 @@ describe('contacts.show.personModal.family.component', () => {
                 }
             );
         });
-        it('should map the results', done => {
+        it('should map the results', (done) => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve([{ first_name: 'a', last_name: 'b' }]));
-            $ctrl.search('').then(data => {
+            $ctrl.search('').then((data) => {
                 expect(data).toEqual([{ first_name: 'a', last_name: 'b', display_name: 'a b' }]);
                 done();
             });

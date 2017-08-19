@@ -25,7 +25,7 @@ class Filters {
         this.api = api;
     }
     count({ params, defaultParams }) {
-        return filter(key => !isEqual(params[key], defaultParams[key]), keys(params)).length;
+        return filter((key) => !isEqual(params[key], defaultParams[key]), keys(params)).length;
     }
     load({ data, defaultParams, params, url }) {
         if (data) {
@@ -37,7 +37,7 @@ class Filters {
         }
         return this.api.get(url, { filter: { account_list_id: this.api.account_list_id } }).then((response) => {
             data = defaultTo([], response);
-            data = sortBy(filter => toInteger(filter.id), data);
+            data = sortBy((filter) => toInteger(filter.id), data);
             this.$log.debug(url, data);
             defaultParams = reduce((result, filter) => {
                 if (filter.multiple && !isArray(filter.default_selection)) {
@@ -49,7 +49,7 @@ class Filters {
             }, {}, data);
             data = reduce((result, filter) => {
                 if (filter.parent !== null) {
-                    let parentIndex = findIndex(parent => parent.title === filter.parent && parent.type === 'container', result);
+                    let parentIndex = findIndex((parent) => parent.title === filter.parent && parent.type === 'container', result);
                     if (parentIndex === -1) {
                         const parentObj = { title: filter.parent, type: 'container', priority: filter.priority, children: [filter] };
                         result = concat(result, parentObj);

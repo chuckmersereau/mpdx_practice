@@ -68,7 +68,7 @@ class ListController {
                 sort: 'name'
             },
             overrideGetAsPost: true
-        }).then(data => {
+        }).then((data) => {
             this.$log.debug(`contacts sidebar list page ${this.page}`, data);
             if (reset && currentCount !== this.listLoadCount) {
                 return;

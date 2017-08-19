@@ -86,7 +86,7 @@ class AddressesService {
         let contacts = reduce((result, contact) => {
             let primaryAddress = find(['source', source], contact.addresses);
             if (primaryAddress) {
-                contact.addresses = map(address => {
+                contact.addresses = map((address) => {
                     address.primary_mailing_address = address.id === primaryAddress.id;
                     address.valid_values = true;
                     return address;
@@ -102,7 +102,7 @@ class AddressesService {
     }
 
     setPrimary(contact, primaryAddress) {
-        contact.addresses = map(address => {
+        contact.addresses = map((address) => {
             address.primary_mailing_address = address.id === primaryAddress.id;
             return address;
         }, contact.addresses);

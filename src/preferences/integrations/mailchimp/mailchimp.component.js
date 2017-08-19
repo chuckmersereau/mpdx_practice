@@ -36,8 +36,8 @@ class MailchimpIntegrationPreferencesController {
             return this.mailchimp.load().then(() => {
                 this.showSettings = showSettings;
             });
-        }).catch(err => {
-            each(value => {
+        }).catch((err) => {
+            each((value) => {
                 this.alerts.addAlert(value, 'danger');
             }, err.errors);
             this.saving = false;
@@ -49,7 +49,7 @@ class MailchimpIntegrationPreferencesController {
         return this.api.get(`account_lists/${this.api.account_list_id}/mail_chimp_account/sync`).then(() => {
             this.saving = false;
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX is now syncing your newsletter recipients with MailChimp'), 'success');
-        }).catch(err => {
+        }).catch((err) => {
             this.saving = false;
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for MailChimp'), 'danger');
             throw err;
@@ -63,7 +63,7 @@ class MailchimpIntegrationPreferencesController {
                 this.showSettings = false;
                 this.saving = false;
                 this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed your integration with MailChimp'), 'success');
-            }).catch(err => {
+            }).catch((err) => {
                 this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for MailChimp'), 'danger');
                 this.saving = false;
                 throw err;

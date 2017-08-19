@@ -35,7 +35,7 @@ class SetupConnectController {
                 this.saving = false;
                 this.addOrganization = false;
             });
-        }).catch(err => {
+        }).catch((err) => {
             this.saving = false;
             this.alerts.addAlert(this.gettextCatalog.getString('Invalid username or password.'), 'danger');
             throw err;

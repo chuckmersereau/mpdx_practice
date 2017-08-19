@@ -20,7 +20,7 @@ describe('contacts.service', () => {
             modal = _modal_;
             api.account_list_id = accountListId;
         });
-        spyOn(api, 'put').and.callFake(data => Promise.resolve(data));
+        spyOn(api, 'put').and.callFake((data) => Promise.resolve(data));
         spyOn(rootScope, '$emit').and.callThrough();
     });
     describe('buildFilterParams', () => {
@@ -90,8 +90,8 @@ describe('contacts.service', () => {
                 done();
             });
         });
-        it('should parse pledge_frequency for value consistency', done => {
-            contacts.get(123).then(data => {
+        it('should parse pledge_frequency for value consistency', (done) => {
+            contacts.get(123).then((data) => {
                 expect(data.pledge_frequency).toEqual(1.1);
                 done();
             });
@@ -99,7 +99,7 @@ describe('contacts.service', () => {
     });
     describe('getNames', () => {
         it('should query an array of ids for names', () => {
-            spyOn(api, 'get').and.callFake(data => Promise.resolve(data));
+            spyOn(api, 'get').and.callFake((data) => Promise.resolve(data));
             contacts.getNames([1, 2]);
             expect(api.get).toHaveBeenCalledWith('contacts', {
                 fields: { contacts: 'name' },
@@ -118,14 +118,14 @@ describe('contacts.service', () => {
             contacts.save(contact);
             expect(api.put).toHaveBeenCalledWith(`contacts/${contact.id}`, assign(contact, { tag_list: 'tag1,tag2' }));
         });
-        it('should trigger contactCreated if name changed', done => {
+        it('should trigger contactCreated if name changed', (done) => {
             contacts.save(contact).then(() => {
                 expect(rootScope.$emit).toHaveBeenCalledWith('contactCreated');
                 done();
             });
         });
-        it('should return the server response', done => {
-            contacts.save(contact).then(data => {
+        it('should return the server response', (done) => {
+            contacts.save(contact).then((data) => {
                 expect(data).toBeDefined();
                 done();
             });
@@ -135,10 +135,10 @@ describe('contacts.service', () => {
         beforeEach(() => {
             contacts.analytics = null;
         });
-        it('should return cached value if not a reset', done => {
+        it('should return cached value if not a reset', (done) => {
             const data = ['data'];
             contacts.analytics = data;
-            contacts.getAnalytics().then(retval => {
+            contacts.getAnalytics().then((retval) => {
                 expect(retval).toEqual(data);
                 done();
             });
@@ -172,7 +172,7 @@ describe('contacts.service', () => {
                 overrideGetAsPost: true
             });
         });
-        it('should transform birthdays and anniversaries to dates', done => {
+        it('should transform birthdays and anniversaries to dates', (done) => {
             const transformable = {
                 birthdays_this_week: [{
                     birthday_year: 2015,
@@ -188,7 +188,7 @@ describe('contacts.service', () => {
                 }]
             };
             spyOn(api, 'get').and.callFake(() => Promise.resolve(transformable));
-            contacts.getAnalytics().then(data => {
+            contacts.getAnalytics().then((data) => {
                 expect(moment(contacts.analytics.birthdays_this_week[0].birthday_date).format('M-D-YYYY')).toEqual('1-1-2015');
                 expect(moment(contacts.analytics.anniversaries_this_week[0].people[0].anniversary_date).format('M-D-YYYY')).toEqual('1-1-2015');
                 expect(data).toEqual(contacts.analytics);
@@ -196,7 +196,7 @@ describe('contacts.service', () => {
             });
         });
     });
-    it('should handle bad birthdays and anniversaries', done => {
+    it('should handle bad birthdays and anniversaries', (done) => {
         const transformable = {
             birthdays_this_week: [{
                 birthday_year: 6,
@@ -224,16 +224,16 @@ describe('contacts.service', () => {
             contacts.merge('a');
             expect(api.post).toHaveBeenCalledWith({ url: 'contacts/merges/bulk', data: 'a', type: 'contacts' });
         });
-        it('should return data', done => {
+        it('should return data', (done) => {
             let data = { success: () => 'a' };
             spyOn(data, 'success').and.callThrough();
             spyOn(api, 'post').and.callFake(() => Promise.resolve(data));
-            contacts.merge('a').then(resp => {
+            contacts.merge('a').then((resp) => {
                 expect(resp).toEqual(data);
                 done();
             });
         });
-        it('should call a success fn', done => {
+        it('should call a success fn', (done) => {
             let data = { success: () => 'a' };
             spyOn(data, 'success').and.callThrough();
             spyOn(api, 'post').and.callFake(() => Promise.resolve(data));

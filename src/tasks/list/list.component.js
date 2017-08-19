@@ -48,7 +48,7 @@ class ListController {
     }
     getSelectedTasks() {
         if (this.tasks.selected.length > this.tasks.data.length) {
-            return map(id => {
+            return map((id) => {
                 return { id: id };
             }, this.tasks.selected);
         }

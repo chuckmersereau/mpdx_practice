@@ -13,14 +13,14 @@ describe('preferences.integrations.google.service', () => {
         });
     });
     describe('load', () => {
-        it('should build the google oAuth link', done => {
+        it('should build the google oAuth link', (done) => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve());
             google.load(true).then(() => {
                 expect(google.oAuth).toBeDefined();
                 done();
             });
         });
-        it('should query the API', done => {
+        it('should query the API', (done) => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve());
             google.load(true).then(() => {
                 expect(api.get).toHaveBeenCalledWith('user/google_accounts', {
@@ -30,7 +30,7 @@ describe('preferences.integrations.google.service', () => {
                 done();
             });
         });
-        it('find failures', done => {
+        it('find failures', (done) => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve([
                 { token_failure: true }
             ]));
@@ -39,7 +39,7 @@ describe('preferences.integrations.google.service', () => {
                 done();
             });
         });
-        it('find no failures', done => {
+        it('find no failures', (done) => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve([
                 {}
             ]));
@@ -48,7 +48,7 @@ describe('preferences.integrations.google.service', () => {
                 done();
             });
         });
-        it('should cache results', done => {
+        it('should cache results', (done) => {
             google.data = [{}];
             google.load().then(() => {
                 expect(google.data.length).toBe(1);
@@ -57,7 +57,7 @@ describe('preferences.integrations.google.service', () => {
         });
     });
     describe('disconnect', () => {
-        it('should delete the relationship', done => {
+        it('should delete the relationship', (done) => {
             spyOn(api, 'delete').and.callFake(() => Promise.resolve());
             spyOn(google, 'load').and.callFake(() => Promise.resolve());
             google.disconnect(123).then(() => {
@@ -65,7 +65,7 @@ describe('preferences.integrations.google.service', () => {
                 done();
             });
         });
-        it('should re-load list after delete', done => {
+        it('should re-load list after delete', (done) => {
             spyOn(api, 'delete').and.callFake(() => Promise.resolve());
             spyOn(google, 'load').and.callFake(() => Promise.resolve());
             google.disconnect(123).then(() => {

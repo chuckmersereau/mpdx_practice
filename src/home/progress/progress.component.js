@@ -50,7 +50,7 @@ class progressController {
         this.accounts.analytics = null;
         return this.accounts.getAnalytics({ startDate: this.startDate, endDate: this.endDate }).then(() => {
             this.blockUI.reset();
-        }).catch(err => {
+        }).catch((err) => {
             this.blockUI.reset();
             this.alerts.addAlert(this.gettextCatalog.getString('Unable to update Progress Report'), 'danger');
             throw err;
@@ -58,7 +58,7 @@ class progressController {
     }
 
     showWeeklyProgressReport() {
-        return find(organizationAccount => organizationAccount.organization.name === 'Cru - USA', this.users.organizationAccounts);
+        return find((organizationAccount) => organizationAccount.organization.name === 'Cru - USA', this.users.organizationAccounts);
     }
 }
 

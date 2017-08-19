@@ -27,14 +27,14 @@ class AcceptInviteController {
             }).then(() => {
                 this.alerts.addAlert(this.gettextCatalog.getString('Accepted invite to account successfully.'));
                 this.$state.go('home');
-            }).catch(err => {
+            }).catch((err) => {
                 const message = 'Unable to accept invite. Try asking the account holder to resend the invite.';
                 this.alerts.addAlert(this.gettextCatalog.getString(message), 'danger', null, 10);
                 this.$state.go('home');
                 throw err;
             });
         } else {
-            return Promise.reject().catch(err => {
+            return Promise.reject().catch((err) => {
                 const message = 'Unable to accept invite. Try asking the account holder to resend the invite.';
                 this.alerts.addAlert(this.gettextCatalog.getString(message), 'danger', null, 10);
                 this.$state.go('home');

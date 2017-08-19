@@ -13,7 +13,7 @@ describe('contacts.list.component', () => {
             componentController = $componentController;
             loadController();
         });
-        spyOn(alerts, 'addAlert').and.callFake(data => data);
+        spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
     function loadController() {
@@ -53,7 +53,7 @@ describe('contacts.list.component', () => {
             $ctrl.save();
             expect(accounts.saveCurrent).toHaveBeenCalledWith();
         });
-        it('should alert a translated confirmation', done => {
+        it('should alert a translated confirmation', (done) => {
             spyOn(accounts, 'saveCurrent').and.callFake(() => Promise.resolve());
             $ctrl.save().then(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'success');
@@ -61,7 +61,7 @@ describe('contacts.list.component', () => {
                 done();
             });
         });
-        it('should call onSave', done => {
+        it('should call onSave', (done) => {
             spyOn(accounts, 'saveCurrent').and.callFake(() => Promise.resolve());
             spyOn($ctrl, 'onSave').and.callFake(() => Promise.resolve());
             $ctrl.save().then(() => {
@@ -69,7 +69,7 @@ describe('contacts.list.component', () => {
                 done();
             });
         });
-        it('should unset saving flag', done => {
+        it('should unset saving flag', (done) => {
             spyOn(accounts, 'saveCurrent').and.callFake(() => Promise.resolve());
             $ctrl.save().then(() => {
                 expect($ctrl.saving).toBeFalsy();

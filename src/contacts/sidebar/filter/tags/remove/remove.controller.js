@@ -50,7 +50,7 @@ class RemoveTagController {
         }];
         const message = this.gettextCatalog.getString('Are you sure you wish to remove the selected tag?');
         return this.modal.confirm(message).then(() => {
-            return this.api.delete({ url: 'contacts/tags/bulk', params: params, data: data, type: 'tags' }).then(data => {
+            return this.api.delete({ url: 'contacts/tags/bulk', params: params, data: data, type: 'tags' }).then((data) => {
                 this.$rootScope.$emit('contactTagDeleted', { tag: tag, contactIds: contactIds });
                 return data;
             });
