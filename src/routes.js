@@ -13,7 +13,7 @@ export default class Routes {
             component: 'home',
             parent: 'root',
             resolve: {
-                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['activity_hashes', 'organizations_attributes'])
+                0: /* @ngInject*/ (serverConstants) => serverConstants.load(['activity_hashes', 'organizations_attributes'])
             }
         }).state({
             name: 'login',
@@ -26,16 +26,15 @@ export default class Routes {
             url: '/auth?access_token',
             component: 'auth',
             resolve: {
-                url: /*@ngInject*/ ($location) => $location.url($location.url().replace("#", "?"))
+                url: /* @ngInject*/ ($location) => $location.url($location.url().replace('#', '?'))
             }
         }).state({
             name: 'acceptInvite',
             title: gettext('Accept Invite'),
             url: '/account_lists/{account_list_id}/accept_invite/{id}?code',
             component: 'acceptInvite',
-            parent: 'root',
             resolve: {
-                url: /*@ngInject*/ ($location) => $location.url($location.url().replace("#", "?"))
+                url: /* @ngInject*/ ($location) => $location.url($location.url().replace('#', '?'))
             }
         }).state({
             name: 'logout',
@@ -52,15 +51,15 @@ export default class Routes {
             },
             parent: 'root',
             resolve: {
-                filter: /*@ngInject*/ ($stateParams, contactFilter) => {
+                filter: /* @ngInject*/ ($stateParams, contactFilter) => {
                     return contactFilter.load().then(() => {
                         if ($stateParams.filters) {
                             contactFilter.reset($stateParams.filters);
                         }
                     });
                 },
-                tag: /*@ngInject*/ (contactsTags) => contactsTags.load(),
-                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['pledge_frequency_hashes'])
+                tag: /* @ngInject*/ (contactsTags) => contactsTags.load(),
+                0: /* @ngInject*/ (serverConstants) => serverConstants.load(['pledge_frequency_hashes'])
             }
         }).state({
             name: 'contacts.show',
@@ -71,13 +70,21 @@ export default class Routes {
                 personId: null
             },
             resolve: {
-                0: /*@ngInject*/ (users) => users.listOrganizationAccounts(),
-                1: /*@ngInject*/ (serverConstants) => serverConstants.load(['assignable_likely_to_give_hashes', 'assignable_send_newsletter_hashes', 'locales', 'pledge_currencies', 'pledge_frequency_hashes', 'status_hashes']),
-                contact: /*@ngInject*/ (contacts, $stateParams) => contacts.get($stateParams.contactId).then((data) => {
-                    contacts.current = data;
-                    contacts.initialState = angular.copy(data);
-                    return data;
-                })
+                0: /* @ngInject*/ (users) => users.listOrganizationAccounts(),
+                1: /* @ngInject*/ (serverConstants) =>
+                    serverConstants.load([
+                        'assignable_likely_to_give_hashes',
+                        'assignable_send_newsletter_hashes',
+                        'locales', 'pledge_currencies',
+                        'pledge_frequency_hashes',
+                        'status_hashes'
+                    ]),
+                contact: /* @ngInject*/ (contacts, $stateParams) =>
+                    contacts.get($stateParams.contactId).then((data) => {
+                        contacts.current = data;
+                        contacts.initialState = angular.copy(data);
+                        return data;
+                    })
             }
         }).state({
             name: 'contacts.show.donations',
@@ -98,7 +105,7 @@ export default class Routes {
             url: '/referrals',
             component: 'contactReferrals',
             resolve: {
-                referrals: /*@ngInject*/ (contacts, $stateParams) => contacts.getReferrals($stateParams.contactId)
+                referrals: /* @ngInject*/ (contacts, $stateParams) => contacts.getReferrals($stateParams.contactId)
             }
         }).state({
             name: 'contacts.show.tasks',
@@ -136,7 +143,7 @@ export default class Routes {
             component: 'contributions',
             resolve: {
                 type: () => 'partner',
-                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['pledge_currencies', 'pledge_frequency_hashes'])
+                0: /* @ngInject*/ (serverConstants) => serverConstants.load(['pledge_currencies', 'pledge_frequency_hashes'])
             }
         }).state({
             name: 'reports.salary',
@@ -145,7 +152,7 @@ export default class Routes {
             component: 'contributions',
             resolve: {
                 type: () => 'salary',
-                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['pledge_currencies', 'pledge_frequency_hashes'])
+                0: /* @ngInject*/ (serverConstants) => serverConstants.load(['pledge_currencies', 'pledge_frequency_hashes'])
             }
         }).state({
             name: 'preferences',
@@ -159,7 +166,7 @@ export default class Routes {
             url: '/accounts',
             component: 'preferencesAccounts',
             resolve: {
-                resolution: /*@ngInject*/ (accounts) => accounts.load()
+                resolution: /* @ngInject*/ (accounts) => accounts.load()
             }
         }).state({
             name: 'preferences.admin',
@@ -172,8 +179,8 @@ export default class Routes {
             url: '/integrations?selectedTab',
             component: 'preferencesIntegration',
             resolve: {
-                resolution: /*@ngInject*/ (users) => users.listOrganizationAccounts(),
-                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['organizations_attributes'])
+                resolution: /* @ngInject*/ (users) => users.listOrganizationAccounts(),
+                0: /* @ngInject*/ (serverConstants) => serverConstants.load(['organizations_attributes'])
             },
             params: {
                 selectedTab: null
@@ -184,7 +191,7 @@ export default class Routes {
             url: '/notifications',
             component: 'preferencesNotifications',
             resolve: {
-                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['notification_translated_hashes'])
+                0: /* @ngInject*/ (serverConstants) => serverConstants.load(['notification_translated_hashes'])
             }
         }).state({
             name: 'preferences.personal',
@@ -192,7 +199,7 @@ export default class Routes {
             url: '/personal',
             component: 'preferencesPersonal',
             resolve: {
-                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['languages', 'locales', 'pledge_currencies'])
+                0: /* @ngInject*/ (serverConstants) => serverConstants.load(['languages', 'locales', 'pledge_currencies'])
             }
         }).state({
             name: 'setup',
@@ -200,7 +207,7 @@ export default class Routes {
             url: '/setup',
             component: 'setup',
             resolve: {
-                constants: /*@ngInject*/ (serverConstants) => serverConstants.load(['organizations_attributes'])
+                constants: /* @ngInject*/ (serverConstants) => serverConstants.load(['organizations_attributes'])
             }
         }).state({
             name: 'setup.connect',
@@ -208,9 +215,9 @@ export default class Routes {
             url: '/connect',
             component: 'setupConnect',
             resolve: {
-                resolution: /*@ngInject*/ (users) => users.listOrganizationAccounts(),
-                another: /*@ngInject*/ (accounts) => accounts.load(),
-                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['organizations_attributes'])
+                resolution: /* @ngInject*/ (users) => users.listOrganizationAccounts(),
+                another: /* @ngInject*/ (accounts) => accounts.load(),
+                0: /* @ngInject*/ (serverConstants) => serverConstants.load(['organizations_attributes'])
             }
         }).state({
             name: 'setup.account',
@@ -218,7 +225,7 @@ export default class Routes {
             url: '/account',
             component: 'setupAccount',
             resolve: {
-                resolution: /*@ngInject*/ (accounts) => accounts.load(true)
+                resolution: /* @ngInject*/ (accounts) => accounts.load(true)
             }
         }).state({
             name: 'setup.google',
@@ -241,7 +248,7 @@ export default class Routes {
             url: '/preferences/integration',
             component: 'setupPreferencesIntegrations',
             resolve: {
-                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['organizations_attributes'])
+                0: /* @ngInject*/ (serverConstants) => serverConstants.load(['organizations_attributes'])
             }
         }).state({
             name: 'setup.preferences.notifications',
@@ -249,7 +256,7 @@ export default class Routes {
             url: '/preferences/notifications',
             component: 'setupPreferencesNotifications',
             resolve: {
-                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['notification_translated_hashes'])
+                0: /* @ngInject*/ (serverConstants) => serverConstants.load(['notification_translated_hashes'])
             }
         }).state({
             name: 'setup.preferences.personal',
@@ -257,7 +264,7 @@ export default class Routes {
             url: '/preferences/personal',
             component: 'setupPreferencesPersonal',
             resolve: {
-                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['languages', 'locales', 'pledge_currencies'])
+                0: /* @ngInject*/ (serverConstants) => serverConstants.load(['languages', 'locales', 'pledge_currencies'])
             }
         }).state({
             name: 'setup.start',
@@ -265,7 +272,7 @@ export default class Routes {
             url: '/start',
             component: 'setupStart',
             resolve: {
-                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['languages'])
+                0: /* @ngInject*/ (serverConstants) => serverConstants.load(['languages'])
             }
         }).state({
             name: 'setup.finish',
@@ -282,12 +289,12 @@ export default class Routes {
                 filters: null
             },
             resolve: {
-                filter: /*@ngInject*/ ($stateParams, tasksFilter) => {
+                filter: /* @ngInject*/ ($stateParams, tasksFilter) => {
                     return tasksFilter.load().then(() => {
                         tasksFilter.reset($stateParams.filters);
                     });
                 },
-                tag: /*@ngInject*/ (tasksTags) => tasksTags.load()
+                tag: /* @ngInject*/ (tasksTags) => tasksTags.load()
             }
         }).state({
             name: 'tools',
@@ -303,14 +310,15 @@ export default class Routes {
             url: '/appeals',
             component: 'appeals',
             resolve: {
-                0: /*@ngInject*/ (contactsTags) => contactsTags.load()
+                0: /* @ngInject*/ (contactsTags) => contactsTags.load()
             }
         }).state({
             name: 'tools.appeals.show',
             url: '/show/{appealId}',
             component: 'appealsShow',
             resolve: {
-                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['pledge_currencies', 'pledge_frequency_hashes'])
+                0: /* @ngInject*/ (serverConstants) => serverConstants.load(['pledge_currencies', 'pledge_frequency_hashes']),
+                1: /* @ngInject*/ (mailchimp) => mailchimp.load()
             }
         }).state({
             name: 'tools.import',
@@ -324,7 +332,7 @@ export default class Routes {
             url: '/csv',
             component: 'importCsv',
             resolve: {
-                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['csv_import'])
+                0: /* @ngInject*/ (serverConstants) => serverConstants.load(['csv_import'])
             }
         }).state({
             name: 'tools.import.csv.upload',
@@ -337,7 +345,7 @@ export default class Routes {
             url: '/headers/:importId',
             component: 'importCsvHeaders',
             resolve: {
-                0: /*@ngInject*/ ($stateParams, importCsv) => importCsv.get($stateParams.importId)
+                0: /* @ngInject*/ ($stateParams, importCsv) => importCsv.get($stateParams.importId)
             }
         }).state({
             name: 'tools.import.csv.values',
@@ -345,7 +353,7 @@ export default class Routes {
             url: '/values/:importId',
             component: 'importCsvValues',
             resolve: {
-                0: /*@ngInject*/ ($stateParams, importCsv) => importCsv.get($stateParams.importId)
+                0: /* @ngInject*/ ($stateParams, importCsv) => importCsv.get($stateParams.importId)
             }
         }).state({
             name: 'tools.import.csv.preview',
@@ -353,7 +361,7 @@ export default class Routes {
             url: '/preview/:importId',
             component: 'importCsvPreview',
             resolve: {
-                0: /*@ngInject*/ ($stateParams, importCsv) => importCsv.get($stateParams.importId)
+                0: /* @ngInject*/ ($stateParams, importCsv) => importCsv.get($stateParams.importId)
             }
         }).state({
             name: 'tools.import.google',
@@ -361,8 +369,8 @@ export default class Routes {
             url: '/google',
             component: 'importGoogle',
             resolve: {
-                0: /*@ngInject*/ (contactsTags) => contactsTags.load(),
-                1: /*@ngInject*/ (google) => google.load()
+                0: /* @ngInject*/ (contactsTags) => contactsTags.load(),
+                1: /* @ngInject*/ (google) => google.load()
             }
         }).state({
             name: 'tools.import.tnt',
@@ -370,8 +378,8 @@ export default class Routes {
             url: '/tnt',
             component: 'importTnt',
             resolve: {
-                0: /*@ngInject*/ (serverConstants) => serverConstants.load(['tnt_import']),
-                1: /*@ngInject*/ (contactsTags) => contactsTags.load()
+                0: /* @ngInject*/ (serverConstants) => serverConstants.load(['tnt_import']),
+                1: /* @ngInject*/ (contactsTags) => contactsTags.load()
             }
         }).state({
             name: 'tools.fix',
@@ -385,7 +393,7 @@ export default class Routes {
             url: '/commitment-info',
             component: 'fixCommitmentInfo',
             resolve: {
-                1: /*@ngInject*/ (serverConstants, fixCommitmentInfo) =>
+                1: /* @ngInject*/ (serverConstants, fixCommitmentInfo) =>
                     serverConstants.load(['pledge_currencies', 'pledge_frequency_hashes', 'status_hashes']).then(() =>
                         fixCommitmentInfo.load()
                     )
@@ -396,7 +404,7 @@ export default class Routes {
             url: '/phone-numbers',
             component: 'fixPhoneNumbers',
             resolve: {
-                0: /*@ngInject*/ (fixPhoneNumbers) => fixPhoneNumbers.load()
+                0: /* @ngInject*/ (fixPhoneNumbers) => fixPhoneNumbers.load()
             }
         }).state({
             name: 'tools.fix.emailAddresses',
@@ -404,7 +412,7 @@ export default class Routes {
             url: '/email-addresses',
             component: 'fixEmailAddresses',
             resolve: {
-                0: /*@ngInject*/ (fixEmailAddresses) => fixEmailAddresses.load()
+                0: /* @ngInject*/ (fixEmailAddresses) => fixEmailAddresses.load()
             }
         }).state({
             name: 'tools.fix.addresses',
@@ -412,7 +420,7 @@ export default class Routes {
             url: '/addresses',
             component: 'fixAddresses',
             resolve: {
-                0: /*@ngInject*/ (fixAddresses) => fixAddresses.load()
+                0: /* @ngInject*/ (fixAddresses) => fixAddresses.load()
             }
         }).state({
             name: 'tools.merge',
@@ -431,7 +439,7 @@ export default class Routes {
             url: '/people',
             component: 'mergePeople',
             resolve: {
-                0: /*@ngInject*/ (mergePeople) => mergePeople.load()
+                0: /* @ngInject*/ (mergePeople) => mergePeople.load()
             }
         }).state({
             name: 'unavailable',
@@ -443,7 +451,7 @@ export default class Routes {
     }
 }
 
-/*@ngInject*/
+/* @ngInject*/
 function logout(
     $window,
     users

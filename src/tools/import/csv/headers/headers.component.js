@@ -26,10 +26,12 @@ class HeadersController {
         this.mappedHeaders = values(this.importCsv.data.file_headers_mappings);
         let requiredHeaders = keys(this.serverConstants.data.csv_import.required_headers);
         requiredHeaders = union(['first_name', 'last_name', 'full_name'], requiredHeaders);
-        if ((includes('first_name', this.mappedHeaders) && includes('last_name', this.mappedHeaders)) || includes('full_name', this.mappedHeaders)) {
-            requiredHeaders = difference(requiredHeaders, ['first_name', 'last_name', 'full_name']);
-        }
+        requiredHeaders = this.containsName() ? difference(requiredHeaders, ['first_name', 'last_name', 'full_name']) : requiredHeaders;
         this.unmappedHeaders = difference(requiredHeaders, this.mappedHeaders);
+    }
+
+    containsName() {
+        return (includes('first_name', this.mappedHeaders) && includes('last_name', this.mappedHeaders)) || includes('full_name', this.mappedHeaders);
     }
 
     save() {

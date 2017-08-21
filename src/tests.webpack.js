@@ -7,8 +7,8 @@ import 'angular-strap';
 import 'angular-strap/dist/angular-strap.tpl';
 import 'ng-rollbar';
 
-//add es6 polyfill (mostly for promises) for phantomjs
+// add es6 polyfill (mostly for promises) for phantomjs
 require('es6-shim');
 
-var testsContext = require.context(".", true, /.test$/);
+const testsContext = require.context('.', true, /.test$/);
 testsContext.keys().forEach(testsContext);

@@ -32,7 +32,7 @@ class BalancesController {
         this.designationAccounts.load(reset).then(() => {
             this.balance = reduce((sum, designation) =>
                 sum + toInteger(designation.active ? designation.converted_balance : 0)
-            , 0, this.designationAccounts.data);
+                , 0, this.designationAccounts.data);
         });
     }
 }

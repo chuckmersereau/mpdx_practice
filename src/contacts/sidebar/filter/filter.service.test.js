@@ -23,10 +23,10 @@ describe('contacts.sidebar.filter.service', () => {
         beforeEach(() => {
             contactFilter.wildcard_search = '';
         });
-        it(`shouldn't be resettable if default conditions are met`, () => { //incomplete test
+        it('shouldn\'t be resettable if default conditions are met', () => { // incomplete test
             expect(contactFilter.isResettable()).toBeFalsy();
         });
-        it(`should be resettable if wildcard isn't empty`, () => {
+        it('should be resettable if wildcard isn\'t empty', () => {
             contactFilter.wildcard_search = 'abc';
             expect(contactFilter.isResettable()).toBeTruthy();
         });

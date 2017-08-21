@@ -1,7 +1,6 @@
-import concat from "lodash/fp/concat";
-import map from "lodash/fp/map";
-import isFunction from "lodash/fp/isFunction";
-import joinComma from "common/fp/joinComma";
+import concat from 'lodash/fp/concat';
+import map from 'lodash/fp/map';
+import joinComma from 'common/fp/joinComma';
 
 class WizardController {
     constructor(
@@ -40,7 +39,9 @@ class WizardController {
     }
     calculateGoal() {
         const adminPercent = Number(this.goal.adminPercent) / 100 + 1;
-        this.appeal.amount = Math.round((Number(this.goal.initial) + Number(this.goal.letterCost)) * adminPercent * 100) / 100;
+        const initialGoal = Number(this.goal.initial);
+        const letterCost = Number(this.goal.letterCost);
+        this.appeal.amount = Math.round((initialGoal + letterCost) * adminPercent * 100) / 100;
     }
     selectAllStatuses() {
         if (this.statuses.length === this.serverConstants.data.status_hashes.length) {
@@ -56,29 +57,28 @@ class WizardController {
             this.tags = map('name', this.contactsTags.data);
         }
     }
-    save(form) {
+    save(form = { // default for testing
+        $setUntouched: () => {},
+        $setPristine: () => {}
+    }) {
         this.saving = true;
-        return this.create(this.appeal).then(data => {
+        return this.create(this.appeal).then((data) => {
+            /* istanbul ignore next */
             this.$log.debug('appealAdded', data);
             this.saving = false;
-            let promise = Promise.resolve();
-            if (this.statuses.length > 0 || this.tags.length > 0) {
-                promise = this.getAndChangeContacts(data);
-            }
+            let promise = this.hasStatusesOrTags() ? this.getAndChangeContacts(data) : Promise.resolve();
             return promise.then(() => {
-                if (form) {
-                    if (isFunction(form.$setUntouched)) {
-                        form.$setUntouched();
-                    }
-                    if (isFunction(form.$setPristine)) {
-                        form.$setPristine();
-                    }
-                }
+                form.$setUntouched();
+                form.$setPristine();
                 this.init();
             });
-        }).catch(() => {
-            this.saving = true;
+        }).catch((ex) => {
+            this.saving = false;
+            throw ex;
         });
+    }
+    hasStatusesOrTags() {
+        return this.statuses.length > 0 || this.tags.length > 0;
     }
     getAndChangeContacts(appeal) {
         return this.api.get({
@@ -94,10 +94,10 @@ class WizardController {
                 fields: {
                     contacts: 'tag_list'
                 },
-                per_page: 100 //limit of bulk api
+                per_page: 100 // limit of bulk api
             },
             overrideGetAsPost: true
-        }).then(contacts => {
+        }).then((contacts) => {
             this.$log.debug('contacts', contacts);
             let promises = [this.addContactsToAppeals(contacts, appeal)];
             if (this.newTags.length > 0) {
@@ -107,7 +107,7 @@ class WizardController {
         });
     }
     changeContacts(contacts, appeal) {
-        const requests = map(contact => {
+        const requests = map((contact) => {
             let patch = {
                 id: contact.id,
                 appeals: [appeal]
@@ -121,7 +121,7 @@ class WizardController {
         return this.contacts.bulkSave(requests);
     }
     addContactsToAppeals(contacts, appeal) {
-        const requests = map(contact => {
+        const requests = map((contact) => {
             return {
                 method: 'POST',
                 path: `/api/v2/appeals/${appeal.id}/contacts/${contact.id}`
@@ -136,7 +136,7 @@ class WizardController {
         });
     }
     create(appeal) {
-        appeal.account_list = {id: this.api.account_list_id};
+        appeal.account_list = { id: this.api.account_list_id };
         return this.api.post({
             url: 'appeals',
             data: appeal,

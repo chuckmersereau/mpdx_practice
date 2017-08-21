@@ -27,4 +27,4 @@ class SourceToStrFilter {
 SourceToStrFilter.sourceToStrFactory.$inject = ['gettextCatalog'];
 
 export default angular.module('mpdx.common.sourceToStr', [])
-  .filter('sourceToStr', SourceToStrFilter.sourceToStrFactory).name;
+    .filter('sourceToStr', SourceToStrFilter.sourceToStrFactory).name;

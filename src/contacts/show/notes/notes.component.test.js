@@ -9,24 +9,24 @@ describe('contacts.show.details.component', () => {
             alerts = _alerts_;
             contacts = _contacts_;
             gettextCatalog = _gettextCatalog_;
-            $ctrl = $componentController('contactNotes', {$scope: scope}, {});
+            $ctrl = $componentController('contactNotes', { $scope: scope }, {});
         });
         spyOn(gettextCatalog, 'getString').and.callThrough();
-        spyOn(alerts, 'addAlert').and.callFake(data => data);
+        spyOn(alerts, 'addAlert').and.callFake((data) => data);
     });
     describe('save', () => {
-        const contact = {id: 123, notes: 'a'};
+        const contact = { id: 123, notes: 'a' };
         beforeEach(() => {
             contacts.current = contact;
         });
-        it('should save', done => {
+        it('should save', (done) => {
             spyOn(contacts, 'save').and.callFake(() => Promise.resolve());
             $ctrl.save().then(() => {
                 expect(contacts.save).toHaveBeenCalledWith(contact);
                 done();
             });
         });
-        it('should alert if saved', done => {
+        it('should alert if saved', (done) => {
             spyOn(contacts, 'save').and.callFake(() => Promise.resolve());
             $ctrl.save().then(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
@@ -34,7 +34,7 @@ describe('contacts.show.details.component', () => {
                 done();
             });
         });
-        it('should alert if rejected', done => {
+        it('should alert if rejected', (done) => {
             spyOn(contacts, 'save').and.callFake(() => Promise.reject(Error('')));
             $ctrl.save().catch(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');

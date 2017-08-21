@@ -1,15 +1,16 @@
 import component from './tools.component';
 
 describe('tools.component', () => {
-    let $ctrl, componentController, scope, rootScope, help;
+    let $ctrl, componentController, scope, rootScope, help, tools;
 
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, $stateParams, _help_) => {
+        inject(($componentController, $rootScope, $stateParams, _help_, _tools_) => {
             componentController = $componentController;
             rootScope = $rootScope;
             scope = rootScope.$new();
             help = _help_;
+            tools = _tools_;
             $stateParams.setup = true;
             loadController();
         });
@@ -26,6 +27,10 @@ describe('tools.component', () => {
     });
 
     describe('$onInit', () => {
+        beforeEach(() => {
+            spyOn(tools, 'getAnalytics').and.returnValue();
+        });
+
         it('should call help service', () => {
             spyOn(help, 'suggest').and.returnValue();
             $ctrl.$onInit();
@@ -42,6 +47,18 @@ describe('tools.component', () => {
         it('should set session.navSecondary', () => {
             $ctrl.$onInit();
             expect($ctrl.session.navSecondary).toBeTruthy();
+        });
+
+        it('should have called tools.getAnalytics', () => {
+            $ctrl.$onInit();
+            expect(tools.getAnalytics).toHaveBeenCalled();
+        });
+
+        it('should refresh tools.getAnalytics on account swap', () => {
+            $ctrl.$onInit();
+            rootScope.$emit('accountListUpdated');
+            rootScope.$digest();
+            expect(tools.getAnalytics).toHaveBeenCalledWith(true);
         });
     });
 

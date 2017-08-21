@@ -1,28 +1,23 @@
 class SidebarController {
     constructor(
+        $rootScope,
         $state,
-        fixAddresses, fixCommitmentInfo, fixEmailAddresses, fixPhoneNumbers
+        fixAddresses, fixCommitmentInfo, fixEmailAddresses, fixPhoneNumbers, tools
     ) {
+        this.$rootScope = $rootScope;
         this.$state = $state;
         this.fixAddresses = fixAddresses;
         this.fixCommitmentInfo = fixCommitmentInfo;
         this.fixEmailAddresses = fixEmailAddresses;
         this.fixPhoneNumbers = fixPhoneNumbers;
+        this.tools = tools;
     }
 
     $onInit() {
-        if (this.$state.current.name !== 'tools.fix.addresses') {
-            this.fixAddresses.loadCount();
-        }
-        if (this.$state.current.name !== 'tools.fix.commitmentInfo') {
-            this.fixCommitmentInfo.loadCount();
-        }
-        if (this.$state.current.name !== 'tools.fix.emailAddresses') {
-            this.fixEmailAddresses.loadCount();
-        }
-        if (this.$state.current.name !== 'tools.fix.phoneNumbers') {
-            this.fixPhoneNumbers.loadCount();
-        }
+        this.$rootScope.$on('accountListUpdated', () => {
+            this.tools.getAnalytics(true);
+        });
+        this.tools.getAnalytics();
     }
 }
 
@@ -36,8 +31,9 @@ import fixAddresses from '../addresses/addresses.service';
 import fixCommitmentInfo from '../commitmentInfo/commitmentInfo.service';
 import fixEmailAddresses from '../emailAddresses/emailAddresses.service';
 import fixPhoneNumbers from '../phoneNumbers/phoneNumbers.service';
+import tools from 'tools/tools.service';
 
 export default angular.module('mpdx.tools.fix.sidebar.component', [
     uiRouter,
-    fixAddresses, fixCommitmentInfo, fixEmailAddresses, fixPhoneNumbers
+    fixAddresses, fixCommitmentInfo, fixEmailAddresses, fixPhoneNumbers, tools
 ]).component('fixSidebar', Sidebar).name;

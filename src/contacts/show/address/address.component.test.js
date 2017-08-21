@@ -1,19 +1,18 @@
 import component from './address.component';
 
 describe('contacts.show.address.component', () => {
-    let $ctrl, contacts, rootScope, scope, componentController;
+    let $ctrl, rootScope, scope, componentController;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _contacts_) => {
+        inject(($componentController, $rootScope) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
-            contacts = _contacts_;
             componentController = $componentController;
             loadController();
         });
     });
     function loadController() {
-        $ctrl = componentController('contactAddress', {$scope: scope}, {});
+        $ctrl = componentController('contactAddress', { $scope: scope }, {});
     }
     describe('$onChanges', () => {
         beforeEach(() => {

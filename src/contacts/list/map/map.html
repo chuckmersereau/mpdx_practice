@@ -4,7 +4,7 @@
             <img src="{{status.imageUrl}}">
             <strong>{{status.markers.length}}</strong>
             {{status.name}}
-            <div class="pull-right" translate>
+            <div class="pull-right">
                 <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected(status.name) }"></i>
             </div>
         </div>
@@ -28,7 +28,7 @@
             <img src="/images/pin_inactive.png" />
             <strong>{{ $ctrl.invalidContacts.length }}</strong>
             <translate>No Primary Address Set</translate>
-            <div class="pull-right" translate>
+            <div class="pull-right">
                 <i class="fa fa-question-circle" data-placement="left" data-title="{{ 'Contacts have no primary address set. Try setting a primary address for these contacts.' | translate }}" bs-tooltip></i>
                 &nbsp;
                 <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('Invalid Contacts') }"></i>
@@ -46,7 +46,7 @@
             <img src="/images/pin_inactive.png" />
             <strong>{{ $ctrl.invalidAddresses.length }}</strong>
             <translate>Invalid Address</translate>
-            <div class="pull-right" translate>
+            <div class="pull-right">
                 <i class="fa fa-question-circle" data-placement="left" data-title="{{ 'Addresses have no coordinates set. Try deleting and adding the address to the associated contact.' | translate }}" bs-tooltip></i>
                 &nbsp;
                 <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('Invalid Addresses') }"></i>

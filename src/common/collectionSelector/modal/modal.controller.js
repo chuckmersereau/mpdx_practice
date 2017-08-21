@@ -1,5 +1,4 @@
 import isEmpty from 'lodash/fp/isEmpty';
-import isFunction from 'lodash/fp/isFunction';
 import isNil from 'lodash/fp/isNil';
 
 class ModalController {

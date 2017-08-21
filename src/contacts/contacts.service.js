@@ -11,8 +11,8 @@ import map from 'lodash/fp/map';
 import omitBy from 'lodash/fp/omitBy';
 import pull from 'lodash/fp/pull';
 import union from 'lodash/fp/union';
-import joinComma from "../common/fp/joinComma";
-import relationshipId from "../common/fp/relationshipId";
+import joinComma from '../common/fp/joinComma';
+import relationshipId from '../common/fp/relationshipId';
 import reduce from 'lodash/fp/reduce';
 import reduceObject from '../common/fp/reduceObject';
 import emptyToNull from '../common/fp/emptyToNull';
@@ -44,21 +44,21 @@ class ContactsService {
             data: {
                 include: 'addresses,donor_accounts,primary_person,contact_referrals_to_me',
                 fields: {
-                    contacts: 'avatar,church_name,envelope_greeting,greeting,last_donation,lifetime_donations,' +
-                              'likely_to_give,locale,magazine,name,no_appeals,notes,notes_saved_at,pledge_amount,' +
-                              'pledge_currency,pledge_currency_symbol,pledge_frequency,pledge_received,' +
-                              'pledge_start_date,send_newsletter,square_avatar,status,status_valid,suggested_changes,' +
-                              'tag_list,timezone,website,addresses,contact_referrals_by_me,contact_referrals_to_me,' +
-                              'contacts_that_referred_me,donor_accounts,primary_person,no_gift_aid',
-                    addresses: 'city,country,created_at,end_date,geo,historic,location,metro_area,postal_code,' +
-                               'primary_mailing_address,region,remote_id,seasonal,source,start_date,state,street,' +
-                               'updated_at,updated_in_db_at,valid_values',
+                    contacts: 'avatar,church_name,envelope_greeting,greeting,last_donation,lifetime_donations,'
+                              + 'likely_to_give,locale,magazine,name,no_appeals,notes,notes_saved_at,pledge_amount,'
+                              + 'pledge_currency,pledge_currency_symbol,pledge_frequency,pledge_received,'
+                              + 'pledge_start_date,send_newsletter,square_avatar,status,status_valid,suggested_changes,'
+                              + 'tag_list,timezone,website,addresses,contact_referrals_by_me,contact_referrals_to_me,'
+                              + 'contacts_that_referred_me,donor_accounts,primary_person,no_gift_aid',
+                    addresses: 'city,country,created_at,end_date,geo,historic,location,metro_area,postal_code,'
+                               + 'primary_mailing_address,region,remote_id,seasonal,source,start_date,state,street,'
+                               + 'updated_at,updated_in_db_at,valid_values',
                     donor_accounts: 'account_number'
                 }
             },
-            deSerializationOptions: relationshipId(['contacts', 'people']) //for contacts_referred_by_me, contacts_that_referred_me and primary_person
-        }).then(data => {
-            data.pledge_amount = parseFloat(data.pledge_amount); //fix bad api serialization as string
+            deSerializationOptions: relationshipId(['contacts', 'people']) // for contacts_referred_by_me, contacts_that_referred_me and primary_person
+        }).then((data) => {
+            data.pledge_amount = parseFloat(data.pledge_amount); // fix bad api serialization as string
             if (!isNil(data.pledge_frequency)) {
                 data.pledge_frequency = parseFloat(data.pledge_frequency);
             }
@@ -116,7 +116,7 @@ class ContactsService {
     }
     save(contact) {
         if (contact.tag_list) {
-            contact.tag_list = joinComma(contact.tag_list); //fix for api mis-match
+            contact.tag_list = joinComma(contact.tag_list); // fix for api mis-match
         }
         return this.api.put(`contacts/${contact.id}`, contact).then((data) => {
             if (contact.name) {
@@ -133,7 +133,7 @@ class ContactsService {
         });
     }
     addBulk(contacts) {
-        return this.api.post({url: 'contacts/bulk', data: contacts, type: 'contacts'}).then(() => {
+        return this.api.post({ url: 'contacts/bulk', data: contacts, type: 'contacts' }).then(() => {
             this.$rootScope.$emit('contactCreated');
         });
     }
@@ -187,8 +187,8 @@ class ContactsService {
     }
     bulkEditFields(model, contacts) {
         contacts = reduce((result, contact) =>
-            concat(result, assign({id: contact.id}, model))
-        , [], contacts);
+            concat(result, assign({ id: contact.id }, model))
+            , [], contacts);
         return this.bulkSave(contacts);
     }
     getAnalytics(reset = false) {
@@ -199,15 +199,15 @@ class ContactsService {
             url: 'contacts/analytics',
             data: {
                 include:
-                'anniversaries_this_week,' +
-                'anniversaries_this_week.people,' +
-                'anniversaries_this_week.people.facebook_accounts,' +
-                'anniversaries_this_week.people.twitter_accounts,' +
-                'anniversaries_this_week.people.email_addresses,' +
-                'birthdays_this_week,' +
-                'birthdays_this_week.facebook_accounts,' +
-                'birthdays_this_week.twitter_accounts,' +
-                'birthdays_this_week.email_addresses',
+                'anniversaries_this_week,'
+                + 'anniversaries_this_week.people,'
+                + 'anniversaries_this_week.people.facebook_accounts,'
+                + 'anniversaries_this_week.people.twitter_accounts,'
+                + 'anniversaries_this_week.people.email_addresses,'
+                + 'birthdays_this_week,'
+                + 'birthdays_this_week.facebook_accounts,'
+                + 'birthdays_this_week.twitter_accounts,'
+                + 'birthdays_this_week.email_addresses',
                 fields: {
                     contacts: 'people',
                     people: 'anniversary_day,anniversary_month,anniversary_year,birthday_day,birthday_month,birthday_year,facebook_accounts,first_name,last_name,twitter_accounts,email_addresses,parent_contact',
@@ -215,11 +215,11 @@ class ContactsService {
                     facebook_accounts: 'username',
                     twitter_accounts: 'screen_name'
                 },
-                filter: {account_list_id: this.api.account_list_id}
+                filter: { account_list_id: this.api.account_list_id }
             },
-            deSerializationOptions: relationshipId('parent_contact'), //for parent_contact
+            deSerializationOptions: relationshipId('parent_contact'), // for parent_contact
             beforeDeserializationTransform: (data) => {
-                //this avoids infinite recursion between people & contacts
+                // this avoids infinite recursion between people & contacts
                 return reduceObject((result, value, key) => {
                     if (key === 'included') {
                         result[key] = reduce((dataResult, dataValue) => {
@@ -227,7 +227,7 @@ class ContactsService {
                                 dataValue.relationships.parent_contact.data.type = 'parent_contact';
                             }
                             if (dataValue.type === 'contacts') {
-                                //duplicate contact include for parent_contact type
+                                // duplicate contact include for parent_contact type
                                 dataResult = concat(dataResult, {
                                     id: dataValue.id,
                                     type: 'parent_contact'
@@ -250,7 +250,11 @@ class ContactsService {
                     return result;
                 }
                 if (birthday.birthday_year > 1800) {
-                    birthday.birthday_date = moment().year(birthday.birthday_year).month(birthday.birthday_month - 1).date(birthday.birthday_day).toDate();
+                    birthday.birthday_date = moment()
+                        .year(birthday.birthday_year)
+                        .month(birthday.birthday_month - 1)
+                        .date(birthday.birthday_day)
+                        .toDate();
                     return concat(result, birthday);
                 }
                 return result;
@@ -261,7 +265,11 @@ class ContactsService {
                 }
                 anniversary.people = reduce((iresult, person) => {
                     if (person.anniversary_year > 1800) {
-                        person.anniversary_date = moment().year(person.anniversary_year).month(person.anniversary_month - 1).date(person.anniversary_day).toDate();
+                        person.anniversary_date = moment()
+                            .year(person.anniversary_year)
+                            .month(person.anniversary_month - 1)
+                            .date(person.anniversary_day)
+                            .toDate();
                         return concat(iresult, person);
                     }
                     return iresult;
@@ -273,7 +281,7 @@ class ContactsService {
         });
     }
     merge(winnersAndLosers) {
-        return this.api.post({url: `contacts/merges/bulk`, data: winnersAndLosers, type: 'contacts'}).then(data => {
+        return this.api.post({ url: 'contacts/merges/bulk', data: winnersAndLosers, type: 'contacts' }).then((data) => {
             if (isFunction(data.success)) {
                 data.success();
             }

@@ -6,10 +6,16 @@ root {
     .has-nav-secondary .root {
         margin-top: $secondary-nav-height + $nav-padding;
     }
+    .has-nav-setup .root {
+        margin-top: $setup-nav-height + $nav-padding;
+    }
     .has-nav-impersonation .root {
         margin-top: $impersonation-nav-height + $nav-padding;
     }
     .has-nav-secondary.has-nav-impersonation .root {
         margin-top: $secondary-impersonation-nav-height + $nav-padding;
+    }
+    .has-nav-setup.has-nav-impersonation .root {
+        margin-top: $setup-impersonation-nav-height + $nav-padding;
     }
 }

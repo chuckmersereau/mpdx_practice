@@ -3,14 +3,15 @@ import service from './emailAddresses.service';
 const accountListId = 123;
 
 describe('tools.fix.emailAddresses.service', () => {
-    let api, people, fixEmailAddresses;
+    let api, fixEmailAddresses, people, tools;
 
     beforeEach(() => {
         angular.mock.module(service);
-        inject(($rootScope, _api_, _people_, _fixEmailAddresses_) => {
+        inject(($rootScope, _api_, _fixEmailAddresses_, _people_, _tools_) => {
             api = _api_;
-            people = _people_;
             fixEmailAddresses = _fixEmailAddresses_;
+            people = _people_;
+            tools = _tools_;
             api.account_list_id = accountListId;
         });
     });
@@ -19,61 +20,6 @@ describe('tools.fix.emailAddresses.service', () => {
         it('should set default values', () => {
             expect(fixEmailAddresses.loading).toBeFalsy();
             expect(fixEmailAddresses.page).toEqual(1);
-        });
-    });
-
-    describe('loadCount', () => {
-        beforeEach(() => {
-            spyOn(api, 'get').and.callFake(() => Promise.resolve({ meta: { page: 0 } }));
-        });
-
-        it('should return a promise', () => {
-            expect(fixEmailAddresses.loadCount()).toEqual(jasmine.any(Promise));
-        });
-
-        describe('meta set', () => {
-            beforeEach(() => {
-                fixEmailAddresses.meta = { page: 1 };
-            });
-
-            it('should return meta', (done) => {
-                fixEmailAddresses.loadCount().then((data) => {
-                    expect(data).toEqual(fixEmailAddresses.meta);
-                    done();
-                });
-            });
-
-            it('should not call the api', (done) => {
-                fixEmailAddresses.loadCount().then(() => {
-                    expect(api.get).not.toHaveBeenCalled();
-                    done();
-                });
-            });
-        });
-
-        describe('meta not set', () => {
-            it('should set and return meta', (done) => {
-                fixEmailAddresses.loadCount().then((data) => {
-                    expect(data).toEqual(fixEmailAddresses.meta);
-                    done();
-                });
-            });
-
-            it('should call the api', (done) => {
-                fixEmailAddresses.loadCount().then(() => {
-                    expect(api.get).toHaveBeenCalledWith(
-                        'contacts/people',
-                        {
-                            filter: {
-                                email_address_valid: false,
-                                account_list_id: api.account_list_id
-                            },
-                            page: 1,
-                            per_page: 0
-                        });
-                    done();
-                });
-            });
         });
     });
 
@@ -196,6 +142,18 @@ describe('tools.fix.emailAddresses.service', () => {
         });
     });
 
+    describe('setMeta', () => {
+        it('should set meta', () => {
+            fixEmailAddresses.setMeta(['data']);
+            expect(fixEmailAddresses.meta).toEqual(['data']);
+        });
+
+        it('should set tools.analytics', () => {
+            fixEmailAddresses.setMeta({ pagination: { total_count: 123 } });
+            expect(tools.analytics['fix-email-addresses']).toEqual(123);
+        });
+    });
+
     describe('save', () => {
         let person;
         beforeEach(() => {
@@ -233,6 +191,14 @@ describe('tools.fix.emailAddresses.service', () => {
             it('should subtract 1 from the total_count', (done) => {
                 fixEmailAddresses.save(person).then(() => {
                     expect(fixEmailAddresses.meta.pagination.total_count).toEqual(1);
+                    done();
+                });
+            });
+
+            it('should call setMeta', (done) => {
+                spyOn(fixEmailAddresses, 'setMeta').and.callThrough();
+                fixEmailAddresses.save(person).then(() => {
+                    expect(fixEmailAddresses.setMeta).toHaveBeenCalled();
                     done();
                 });
             });
@@ -351,7 +317,7 @@ describe('tools.fix.emailAddresses.service', () => {
                     id: 'email_address_2',
                     primary: false
                 }
-            ]};
+            ] };
             expect(person.email_addresses[2].primary).toBeFalsy();
             fixEmailAddresses.setPrimary(person, { id: 'email_address_2' });
             expect(person.email_addresses[2].primary).toBeTruthy();
@@ -373,7 +339,7 @@ describe('tools.fix.emailAddresses.service', () => {
                     id: 'email_address_2',
                     primary: false
                 }
-            ]};
+            ] };
             spyOn(people, 'deleteEmailAddress').and.callFake(() => Promise.resolve());
         });
 
@@ -400,7 +366,7 @@ describe('tools.fix.emailAddresses.service', () => {
                                 id: 'email_address_2',
                                 primary: false
                             }
-                        ]}
+                        ] }
                     );
                     done();
                 });
@@ -423,7 +389,7 @@ describe('tools.fix.emailAddresses.service', () => {
                     id: 'email_address_2',
                     primary: false
                 }
-            ]};
+            ] };
             spyOn(people, 'saveEmailAddress').and.callFake(() => Promise.resolve());
         });
 

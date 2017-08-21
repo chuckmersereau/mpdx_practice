@@ -26,12 +26,16 @@ class GoogleIntegrationsModalController {
         });
     }
     disable(integrationName) {
-        this.modal.confirm(this.gettextCatalog.getString('Are you sure you want to disable Google {{name}} sync?', { name: integrationName })).then(() => {
+        const message = this.gettextCatalog.getString('Are you sure you want to disable Google {{name}} sync?', {
+            name: integrationName
+        });
+        this.modal.confirm(message).then(() => {
             this.blockUI.start();
-            this.googleIntegrations.disable(this.googleAccount, this.googleIntegration, integrationName).then((data) => {
-                this.blockUI.reset();
-                this.googleIntegration = data;
-            });
+            this.googleIntegrations.disable(this.googleAccount, this.googleIntegration, integrationName)
+                .then((data) => {
+                    this.blockUI.reset();
+                    this.googleIntegration = data;
+                });
         });
     }
     sync(integrationName) {

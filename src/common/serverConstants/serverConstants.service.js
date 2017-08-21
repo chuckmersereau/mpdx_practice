@@ -35,7 +35,7 @@ class ServerConstantsService {
             fields: {
                 constant_list: joinComma(differences)
             }
-        }).then(data => {
+        }).then((data) => {
             this.data = assign(this.data, data);
             this.data = reduceObject((result, value, key) => {
                 result[key] = this.handleSpecialKeys(key, value);
@@ -72,7 +72,7 @@ class ServerConstantsService {
         }, [], obj);
     }
     getPledgeFrequency(freq) {
-        return find({key: parseFloat(freq)}, this.data.pledge_frequency_hashes);
+        return find({ key: parseFloat(freq) }, this.data.pledge_frequency_hashes);
     }
 }
 

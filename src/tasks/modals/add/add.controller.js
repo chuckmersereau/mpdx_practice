@@ -5,7 +5,7 @@ import union from 'lodash/fp/union';
 class AddTaskController {
     constructor(
         $scope, $state,
-        contacts, tasksTags, serverConstants, tasks, users,
+        contacts, serverConstants, tasks, tasksTags, users,
         contactsList, activityType
     ) {
         this.$scope = $scope;
@@ -40,7 +40,7 @@ class AddTaskController {
         if (!params) {
             return;
         }
-        this.contactNames[params.id] = params.name; //set id if missing or out of date
+        this.contactNames[params.id] = params.name; // set id if missing or out of date
         this.contactsList[index] = params.id;
     }
     save() {

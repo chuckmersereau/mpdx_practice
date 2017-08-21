@@ -7,10 +7,10 @@ describe('tasks.modals.removeTags.controller', () => {
     function defaultScope() {
         return {
             $scope: scope,
-            selectedTasks: [{id: 1, tag_list: ['b']}, {id: 2, tag_list: ['a']}],
+            selectedTasks: [{ id: 1, tag_list: ['b'] }, { id: 2, tag_list: ['a'] }],
             currentListSize: 25
         };
-    };
+    }
     beforeEach(() => {
         angular.mock.module(remove);
         inject(($controller, $rootScope, _tasksTags_, _api_, _modal_, _gettextCatalog_, _alerts_) => {
@@ -22,7 +22,7 @@ describe('tasks.modals.removeTags.controller', () => {
             gettextCatalog = _gettextCatalog_;
             modal = _modal_;
             tasksTags = _tasksTags_;
-            tasksTags.data = [{name: 'b'}, {name: 'c'}];
+            tasksTags.data = [{ name: 'b' }, { name: 'c' }];
             controller = $controller;
             $ctrl = loadController(defaultScope());
         });
@@ -34,8 +34,8 @@ describe('tasks.modals.removeTags.controller', () => {
         beforeEach(() => {
             spyOn(api, 'delete').and.callFake(() => Promise.resolve({}));
             spyOn(modal, 'confirm').and.callFake(() => Promise.resolve({}));
-            spyOn(gettextCatalog, 'getString').and.callFake(data => data);
-            spyOn(alerts, 'addAlert').and.callFake(data => data);
+            spyOn(gettextCatalog, 'getString').and.callFake((data) => data);
+            spyOn(alerts, 'addAlert').and.callFake((data) => data);
             scope.$hide = () => {};
             spyOn(scope, '$hide').and.callThrough();
         });
@@ -44,7 +44,7 @@ describe('tasks.modals.removeTags.controller', () => {
             expect(modal.confirm).toHaveBeenCalledWith(jasmine.any(String));
             expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
         });
-        it('should remove a tag from selected contacts', done => {
+        it('should remove a tag from selected contacts', (done) => {
             $ctrl.removeTag('a').then(() => {
                 expect(api.delete).toHaveBeenCalledWith({
                     url: 'tasks/tags/bulk',
@@ -60,14 +60,14 @@ describe('tasks.modals.removeTags.controller', () => {
                 done();
             });
         });
-        it('should alert the user on successful removal', done => {
+        it('should alert the user on successful removal', (done) => {
             $ctrl.removeTag('a').then(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
                 expect(gettextCatalog.getString.calls.argsFor(1)[0]).toEqual(jasmine.any(String));
                 done();
             });
         });
-        it('should hide the modal', done => {
+        it('should hide the modal', (done) => {
             $ctrl.removeTag('a').then(() => {
                 expect(scope.$hide).toHaveBeenCalled();
                 done();
@@ -79,7 +79,7 @@ describe('tasks.modals.removeTags.controller', () => {
             expect($ctrl.getTagsFromSelectedTasks()).toEqual(['a', 'b']);
         });
         it('should show a complete list of tags if selected > data', () => {
-            $ctrl = loadController(assign(defaultScope(), {currentListSize: 1}));
+            $ctrl = loadController(assign(defaultScope(), { currentListSize: 1 }));
             expect($ctrl.getTagsFromSelectedTasks()).toEqual(['b', 'c']);
         });
     });

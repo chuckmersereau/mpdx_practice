@@ -1,5 +1,5 @@
-import joinComma from "common/fp/joinComma";
-import reduceObject from "common/fp/reduceObject";
+import joinComma from 'common/fp/joinComma';
+import reduceObject from 'common/fp/reduceObject';
 
 class ImportGoogleService {
     constructor(

@@ -35,7 +35,7 @@ class DonationModalController {
     }
 
     setDesignationAccount() {
-        return this.designationAccounts.load().then(data => {
+        return this.designationAccounts.load().then((data) => {
             if (data.length === 1) {
                 this.donation.designation_account = data[0];
             }
@@ -45,14 +45,14 @@ class DonationModalController {
     save() {
         let donation = angular.copy(this.donation);
 
-        if (this.initialDonation.appeal && !donation.appeal) { //appeal removed case
-            donation.appeal = { id: 'none' }; //fudge around api shortcoming
+        if (this.initialDonation.appeal && !donation.appeal) { // appeal removed case
+            donation.appeal = { id: 'none' }; // fudge around api shortcoming
         }
         const patch = createPatch(this.initialDonation, donation);
         return this.donations.save(patch).then(() => {
             this.alerts.addAlert(this.gettextCatalog.getString('Donation saved successfullly'), 'success');
             this.$scope.$hide();
-        }).catch(err => {
+        }).catch((err) => {
             this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes to donation'), 'danger', null, 5, true);
             throw err;
         });
@@ -62,7 +62,7 @@ class DonationModalController {
         return this.donations.delete(this.donation).then(() => {
             this.alerts.addAlert(this.gettextCatalog.getString('Donation deleted successfullly'), 'success');
             this.$scope.$hide();
-        }).catch(err => {
+        }).catch((err) => {
             this.alerts.addAlert(this.gettextCatalog.getString('Unable to remove donation'), 'danger', null, 5, true);
             throw err;
         });
@@ -81,7 +81,7 @@ class DonationModalController {
     }
 
     search(keywords) {
-        return this.api.get(`appeals`, {
+        return this.api.get('appeals', {
             filter: {
                 wildcard_search: keywords,
                 account_list_id: this.api.account_list_id

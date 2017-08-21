@@ -1,15 +1,14 @@
 import component from './alerts.component';
 
 describe('common.alerts.component', () => {
-    let $ctrl, componentController, scope, rootScope, alerts;
+    let $ctrl, componentController, scope, rootScope;
 
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _alerts_) => {
+        inject(($componentController, $rootScope) => {
             componentController = $componentController;
             rootScope = $rootScope;
             scope = rootScope.$new();
-            alerts = _alerts_;
             loadController();
         });
     });

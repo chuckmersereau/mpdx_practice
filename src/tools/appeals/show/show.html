@@ -110,11 +110,22 @@
                         ng-csv="$ctrl.exportToCSV()"
                         lazy-load="true"
                         filename="mpdx-appeal-export-{{$ctrl.moment().format('Y-MM-DD-HH:mm')}}.csv"
+                        ng-disabled="$ctrl.selectedContactIds.length < 1"
                         translate>
                     Export Selected
                 </button>
-                <h4>Export Selected to Mail Chimp List</h4>
-                <button class="btn" ng-click="$ctrl.exportMailChimp()" translate>Export Selected</button>
+                <div ng-if="$ctrl.mailchimp.data.lists_present">
+                    <h4>Export Selected to Mail Chimp List</h4>
+                    <select name="primaryListId"
+                            id="primaryListId"
+                            ng-model="$ctrl.mailchimpListId"
+                            class="form-control"
+                            ng-options="option.id as option.name for option in $ctrl.mailchimp.data.lists_available_for_newsletters"
+                            chosen>
+                    </select>
+                    <br />&nbsp;<br />
+                    <button class="btn" ng-click="$ctrl.exportMailchimp()" ng-disabled="!$ctrl.mailchimpListId || $ctrl.selectedContactIds.length < 1" translate>Export Selected</button>
+                </div>
             </div>
         </div>
         <div class="panel panel-default">

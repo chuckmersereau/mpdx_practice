@@ -2,19 +2,16 @@ import component from './donations.component';
 import moment from 'moment';
 
 describe('reports.donations.component', () => {
-    let $ctrl, componentController, scope, rootScope, stateParams, contacts, designationAccounts, donations, locale;
+    let $ctrl, componentController, scope, rootScope, stateParams, donations;
 
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, $stateParams, _contacts_, _designationAccounts_, _donations_, _locale_) => {
+        inject(($componentController, $rootScope, $stateParams, _donations_) => {
             componentController = $componentController;
             rootScope = $rootScope;
             scope = rootScope.$new();
             stateParams = $stateParams;
-            contacts = _contacts_;
-            designationAccounts = _designationAccounts_;
             donations = _donations_;
-            locale = _locale_;
             loadController();
         });
     });

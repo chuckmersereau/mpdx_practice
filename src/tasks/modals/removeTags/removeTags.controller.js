@@ -32,7 +32,7 @@ class RemoveTagController {
         }];
         const message = this.gettextCatalog.getString('Are you sure you wish to remove the selected tag?');
         return this.modal.confirm(message).then(() => {
-            return this.api.delete({url: 'tasks/tags/bulk', data: params, type: 'tags'}).then(() => {
+            return this.api.delete({ url: 'tasks/tags/bulk', data: params, type: 'tags' }).then(() => {
                 this.alerts.addAlert(this.gettextCatalog.getString('Tag successfully removed.'));
                 this.$scope.$hide();
             });
@@ -44,7 +44,7 @@ class RemoveTagController {
             return map('name', this.tasksTags.data);
         }
         return reduce((result, task) =>
-                union(result, task.tag_list)
+            union(result, task.tag_list)
             , [], this.selectedTasks).sort();
     }
 }

@@ -59,7 +59,7 @@ class ContributionsController {
         const endpoint = type === 'salary' ? 'reports/salary_currency_donations' : 'reports/donor_currency_donations';
         return this.api.get(endpoint, {
             filter: { account_list_id: this.api.account_list_id }
-        }).then(data => {
+        }).then((data) => {
             const currencies = this.getSortedCurrencies(type, data);
             this.data = {
                 currencies: currencies,
@@ -80,7 +80,7 @@ class ContributionsController {
         }, {}, months);
     }
     getSortedCurrencies(type, data) {
-        return sortBy(c => parseFloat(`-${c.totals.year_converted}`), this.getCurrencies(type, data));
+        return sortBy((c) => parseFloat(`-${c.totals.year_converted}`), this.getCurrencies(type, data));
     }
     getCurrencies(type, data) {
         return reduceObject((result, value, key) => {
@@ -95,18 +95,18 @@ class ContributionsController {
     }
     getDonorTotals(value, donors, months) {
         const sumColumn = (col, array) =>
-            sumBy(c =>
+            sumBy((c) =>
                 c.monthlyDonations[col].convertedTotal
-            , array);
+                , array);
         return assign(value.totals, {
-            months: times(index =>
+            months: times((index) =>
                 sumColumn(index, donors)
-            , months.length)
+                , months.length)
         });
     }
     getDonors(data, type, info) {
         return sortBy('contact.contact_name',
-            map(donor => {
+            map((donor) => {
                 return {
                     contact: this.getContact(donor, data),
                     monthlyDonations: this.getMonthlyDonations(type, donor),
@@ -115,11 +115,11 @@ class ContributionsController {
                     minimum: donor.minimum,
                     total: donor.total
                 };
-            }, reject(donor => isNil(donor.total), info))
+            }, reject((donor) => isNil(donor.total), info))
         );
     }
     getContact(donor, data) {
-        let contact = find({'contact_id': donor.contact_id}, data.donor_infos);
+        let contact = find({ 'contact_id': donor.contact_id }, data.donor_infos);
         if (contact) {
             const frequencyValue = parseFloat(contact.pledge_frequency);
             const frequency = this.serverConstants.getPledgeFrequency(frequencyValue);
@@ -130,8 +130,8 @@ class ContributionsController {
         return contact;
     }
     getMonthlyDonations(type, donor) {
-        return map(monthlyDonation => {
-            const convertedTotal = sumBy(amt => round(amt.converted_amount), monthlyDonation.donations);
+        return map((monthlyDonation) => {
+            const convertedTotal = sumBy((amt) => round(amt.converted_amount), monthlyDonation.donations);
             const total = toInteger(sumBy('amount', monthlyDonation.donations));
             return {
                 donations: monthlyDonation.donations,
@@ -163,7 +163,7 @@ class ContributionsController {
             this.gettextCatalog.getString('Average'),
             this.gettextCatalog.getString('Minimum'),
             this.gettextCatalog.getString('Maximum'),
-            map(m => {
+            map((m) => {
                 if (!moment.isMoment(m)) {
                     m = moment(m);
                 }
@@ -172,7 +172,7 @@ class ContributionsController {
             this.gettextCatalog.getString('Total (last month excluded from total)')
         ]);
 
-        return flatMap(currency => {
+        return flatMap((currency) => {
             const combinedHeaders = [
                 [
                     this.gettextCatalog.getString('Currency'),
@@ -181,7 +181,7 @@ class ContributionsController {
                 ],
                 columnHeaders
             ];
-            const donorRows = map(donor => {
+            const donorRows = map((donor) => {
                 const pledgeFreq = get('pledge_frequency', donor.contact) || '';
                 const amount = defaultTo(0, donor.contact.pledge_amount) === 0 ? '' : `${currency.symbol}${donor.contact.pledge_amount} ${currency.code} ${pledgeFreq}`;
                 return [

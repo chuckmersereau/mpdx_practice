@@ -68,7 +68,7 @@ class ImportGoogleController {
     }
 
     checkAllGoogleContactGroups() {
-        this.import.groups = map(group => group.id, this.selectedAccount.contact_groups);
+        this.import.groups = map((group) => group.id, this.selectedAccount.contact_groups);
     }
 
     uncheckAllGoogleContactGroups() {

@@ -68,6 +68,9 @@
         &__tasks {
             height: 133px;
         }
+        &__setup {
+            height: 90px;
+        }
     }
     &--body {
         .nav-pills>li>a {
@@ -90,6 +93,22 @@
         }
         &--heading {
             top: $secondary-nav-height;
+        }
+    }
+}
+
+.has-nav-setup {
+    .filter {
+        &--sidebar {
+            @include breakpoint(md) {
+                top: $setup-nav-height;
+            }
+            @include breakpoint(lg) {
+                top: $setup-nav-height;
+            }
+        }
+        &--heading {
+            top: $setup-nav-height;
         }
     }
 }
@@ -122,6 +141,22 @@
         }
         &--heading {
             top: $secondary-impersonation-nav-height;
+        }
+    }
+}
+
+.has-nav-setup.has-nav-impersonation {
+    .filter {
+        &--sidebar {
+            @include breakpoint(md) {
+                top: $setup-impersonation-nav-height;
+            }
+            @include breakpoint(lg) {
+                top: $setup-impersonation-nav-height;
+            }
+        }
+        &--heading {
+            top: $setup-impersonation-nav-height;
         }
     }
 }

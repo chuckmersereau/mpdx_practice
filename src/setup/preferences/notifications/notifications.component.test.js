@@ -7,9 +7,9 @@ describe('setup.preferences.notifications.component', () => {
         inject(($componentController, $rootScope, _users_, $state) => {
             scope = $rootScope.$new();
             users = _users_;
-            users.currentOptions = {setup_position: {}};
+            users.currentOptions = { setup_position: {} };
             state = $state;
-            $ctrl = $componentController('setupPreferencesNotifications', {$scope: scope}, {});
+            $ctrl = $componentController('setupPreferencesNotifications', { $scope: scope }, {});
         });
         spyOn(state, 'go').and.callFake(() => {});
         spyOn(users, 'setOption').and.callFake(() => Promise.resolve());

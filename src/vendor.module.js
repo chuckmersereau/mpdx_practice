@@ -14,7 +14,7 @@ import angulartics from 'angulartics';
 import angularticsGoogleAnalytics from 'angulartics-google-analytics';
 
 // deps with no default exports
-import lang from 'langmap'; //load before language-picker
+import lang from 'langmap'; // load before language-picker
 window.languageMappingList = lang;
 import 'angular-block-ui';
 import 'angular-filter';
@@ -27,7 +27,7 @@ import 'angular-localforage';
 import 'angular-timeago';
 import 'ng-tags-input';
 import 'ng-rollbar';
-//non-angular deps
+// non-angular deps
 import 'chart.js';
 import 'chartjs-plugin-annotation';
 import ngChartJs from 'angular-chart.js';

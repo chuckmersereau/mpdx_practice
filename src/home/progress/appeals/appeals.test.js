@@ -14,23 +14,23 @@ describe('home.progress.appeals.component', () => {
         });
     });
     function loadController() {
-        $ctrl = componentController('progressAppeals', {$scope: scope});
+        $ctrl = componentController('progressAppeals', { $scope: scope });
     }
     describe('getCount', () => {
-        const result = {meta: {pagination: {total_count: 1}}};
+        const result = { meta: { pagination: { total_count: 1 } } };
 
         beforeEach(() => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve(result));
         });
 
         it('should query api for a count and return it', (done) => {
-            $ctrl.getCount().then(data => {
+            $ctrl.getCount().then((data) => {
                 expect(data).toBe(1);
                 done();
             });
             expect(api.get).toHaveBeenCalledWith('appeals', {
-                fields: {appeals: ''},
-                filter: {account_list_id: api.account_list_id},
+                fields: { appeals: '' },
+                filter: { account_list_id: api.account_list_id },
                 per_page: 0
             });
         });
@@ -42,13 +42,13 @@ describe('home.progress.appeals.component', () => {
         });
 
         it('should query api for a count and return it', (done) => {
-            $ctrl.getCount().then(data => {
+            $ctrl.getCount().then((data) => {
                 expect(data).toBe(0);
                 done();
             });
             expect(api.get).toHaveBeenCalledWith('appeals', {
-                fields: {appeals: ''},
-                filter: {account_list_id: api.account_list_id},
+                fields: { appeals: '' },
+                filter: { account_list_id: api.account_list_id },
                 per_page: 0
             });
         });

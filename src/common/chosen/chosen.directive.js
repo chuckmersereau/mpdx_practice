@@ -2,10 +2,10 @@ function chosenDirective(
 ) {
     return {
         link: (scope, element) => {
-            //bad index fix
+            // bad index fix
             scope.$watch(() => element[0].length, (newvalue, oldvalue) => {
                 if (newvalue !== oldvalue) {
-                    element.trigger("chosen:updated");
+                    element.trigger('chosen:updated');
                 }
             });
         }

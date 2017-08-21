@@ -15,14 +15,14 @@ const config = {
         moment_locales: './src/moment-locales.js'
     },
     externals: [{
-        "window": "window",
-        "google": "window.google"
+        'window': 'window',
+        'google': 'window.google'
     }],
     resolve: {
         alias: {
             config: path.join(__dirname, 'config', configEnv + '.js')
         },
-        modules: [path.join(__dirname), "node_modules", "bower_components", "src"]
+        modules: [path.join(__dirname), 'node_modules', 'bower_components', 'src']
     },
     module: {
         loaders: [{
@@ -31,19 +31,19 @@ const config = {
             exclude: /node_modules|bower_components\//
         }, {
             test: /\.json/,
-            use: "json-loader"
+            use: 'json-loader'
         }, {
             test: /\.html$/,
-            use: "html-loader"
+            use: 'html-loader'
         }, {
             test: /\.(png|jpg|jpeg|gif)$/,
             use: 'file-loader'
         }, {
             test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-            use: "url-loader?limit=10000&mimetype=application/font-woff"
+            use: 'url-loader?limit=10000&mimetype=application/font-woff'
         }, {
             test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-            use: "file-loader"
+            use: 'file-loader'
         }]
     },
     plugins: [

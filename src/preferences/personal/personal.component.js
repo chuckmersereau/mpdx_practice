@@ -30,7 +30,7 @@ class PersonalController {
         this.saving = false;
         this.tabId = '';
 
-        this.currencies = map(pc => {
+        this.currencies = map((pc) => {
             return { key: pc.code, value: `${pc.name} - ${pc.code_symbol_string}` };
         }, serverConstants.data.pledge_currencies);
     }
@@ -40,9 +40,9 @@ class PersonalController {
         }
     }
     getEmail(data) {
-        const primaryEmail = find({primary: true}, data.email_addresses);
+        const primaryEmail = find({ primary: true }, data.email_addresses);
         const firstEmail = get('email_addresses[0]', data);
-        const newEmail = {id: uuid(), email: ''};
+        const newEmail = { id: uuid(), email: '' };
         return defaultTo(defaultTo(newEmail, firstEmail), primaryEmail);
     }
     $onChanges(data) {
@@ -69,7 +69,7 @@ class PersonalController {
             this.setTab('');
             this.saving = false;
             this.onSave();
-        }).catch(data => {
+        }).catch((data) => {
             if (data) {
                 each((value) => {
                     this.alerts.addAlert(value, 'danger');
@@ -101,14 +101,12 @@ class PersonalController {
             if (!this.selectedTab) {
                 this.tabId = '';
             }
-        } else {
-            if (this.selectedTab) {
-                if (this.tabSelectable(service)) {
-                    this.tabId = service;
-                }
-            } else {
+        } else if (this.selectedTab) {
+            if (this.tabSelectable(service)) {
                 this.tabId = service;
             }
+        } else {
+            this.tabId = service;
         }
     }
     tabSelectable(service) {
@@ -121,12 +119,13 @@ class PersonalController {
         return this.tabId === service;
     }
     setSalaryOrg() {
-        const currentOrg = find({id: this.accounts.current.salary_organization}, this.designationAccounts.organizations);
+        const currentOrg = find({ id: this.accounts.current.salary_organization },
+            this.designationAccounts.organizations);
         this.salary_organization_string = get('name', currentOrg);
     }
     getCountry(locale) {
-        if (!locale) return;
-        if (locale === 'en') return 'us';
+        if (!locale) { return; }
+        if (locale === 'en') { return 'us'; }
         const splitLocale = split('-', locale);
         if (splitLocale.length > 1) {
             return toLower(splitLocale[1]);
@@ -134,7 +133,7 @@ class PersonalController {
         return locale;
     }
     getLanguageOrLocaleNative(locale) {
-        if (!locale) return;
+        if (!locale) { return; }
         if (has(locale, this.$window.languageMappingList)) {
             return this.$window.languageMappingList[locale].nativeName;
         } else if (has(locale, this.serverConstants.data.locales)) {

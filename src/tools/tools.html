@@ -46,9 +46,10 @@
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="tool in $ctrl.tools.data" ng-if="tool.enabled">
             <div class="tool well" ui-sref="{{tool.link}}" ng-class="{selected: $ctrl.setup && tool.imports}">
-                <i class="{{tool.icon}}"></i>
+                <div class="icon" ng-class="{ 'active' : $ctrl.tools.analytics[tool.analyticKey] > 0 }">
+                    <i class="{{tool.icon}}"></i><span class="badge" ng-if="$ctrl.tools.analytics[tool.analyticKey] > 0">{{$ctrl.tools.analytics[tool.analyticKey]}}</span>
+                </div>
                 <h4 class="title">{{tool.title}}</h4>
-
                 <p>{{tool.description}}</p>
             </div>
         </div>

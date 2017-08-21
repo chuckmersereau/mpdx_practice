@@ -8,7 +8,7 @@ const fakeBlockUI = {
 };
 const params = {
     data: {
-        filter: {any_tags: false}
+        filter: { any_tags: false }
     },
     doDeSerialization: false,
     overrideGetAsPost: true

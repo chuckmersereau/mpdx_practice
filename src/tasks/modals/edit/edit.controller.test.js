@@ -3,14 +3,12 @@ import isEqual from 'lodash/fp/isEqual';
 
 
 describe('tasks.modals.edit.controller', () => {
-    let $ctrl, controller, contacts, task, tasks, scope, state;
+    let $ctrl, controller, tasks, scope;
     beforeEach(() => {
         angular.mock.module(editController);
-        inject(($controller, $rootScope, _contacts_, _tasks_, $state) => {
+        inject(($controller, $rootScope, _tasks_) => {
             scope = $rootScope.$new();
             scope.$hide = () => {};
-            state = $state;
-            contacts = _contacts_;
             tasks = _tasks_;
             controller = $controller;
 

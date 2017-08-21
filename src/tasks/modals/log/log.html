@@ -4,7 +4,7 @@
         <input class="form-control" id='subject' ng-model="$ctrl.task.subject" autofocus required>
     </div>
     <div class="form-group">
-        <label for="action"><translate>Action</translate></label>
+        <label for="action" translate>Action</label>
         <select chosen
                 disable-search="true"
                 data-placeholder-text-single="'Select an Option' | translate"
@@ -34,7 +34,7 @@
     <div class="form-group">
         <label for="result"><translate>Result</translate> <span class="text-danger">*</span></label>
         <select chosen
-                ng-required="$ctrl.toComplete"
+                required
                 disable-search="true"
                 data-placeholder-text-single="'Select an Option' | translate"
                 class="form-control"

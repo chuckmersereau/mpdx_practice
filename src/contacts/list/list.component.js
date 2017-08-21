@@ -84,7 +84,7 @@ class ListController {
     }
     hideContact(contact) {
         return this.contacts.hideContact(contact).then(() => {
-            this.data = reject({id: contact.id}, this.data);
+            this.data = reject({ id: contact.id }, this.data);
         });
     }
     openRemoveTagModal() {
@@ -99,9 +99,6 @@ class ListController {
     }
     openAddTaskModal() {
         this.tasks.addModal(this.contacts.selectedContacts);
-    }
-    openLogTaskModal() {
-        this.tasks.logModal(this.contacts.selectedContacts);
     }
     openEditFieldsModal() {
         this.modal.open({
@@ -159,8 +156,8 @@ class ListController {
             this.data = null;
             this.listLoadCount++;
             currentCount = angular.copy(this.listLoadCount);
-            const contactHeight = 70; //min pixel height of contact items
-            this.pageSize = defaultTo(12, ceil(this.$window.innerHeight / contactHeight) - 2); //minimally adjust for menus (always pull at least a few extra)
+            const contactHeight = 70; // min pixel height of contact items
+            this.pageSize = defaultTo(12, ceil(this.$window.innerHeight / contactHeight) - 2); // minimally adjust for menus (always pull at least a few extra)
         }
         this.page = page;
         return this.api.get({
@@ -181,7 +178,7 @@ class ListController {
                 sort: 'name'
             },
             overrideGetAsPost: true
-        }).then(data => {
+        }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug('contacts page ' + data.meta.pagination.page, data);
             if (reset && currentCount !== this.listLoadCount) {
@@ -194,9 +191,9 @@ class ListController {
                 this.loading = false;
                 return;
             }
-            const newContacts = map(contact => {
+            const newContacts = map((contact) => {
                 if (!isNil(contact.pledge_amount)) {
-                    contact.pledge_amount = parseFloat(contact.pledge_amount); //fix bad api serialization as string
+                    contact.pledge_amount = parseFloat(contact.pledge_amount); // fix bad api serialization as string
                 }
                 if (!isNil(contact.pledge_frequency)) {
                     const frequency = this.serverConstants.getPledgeFrequency(contact.pledge_frequency);
@@ -217,8 +214,8 @@ class ListController {
     }
     getSelectedContacts() {
         if (this.contacts.selectedContacts.length > this.data.length) {
-            return map(id => {
-                return {id: id};
+            return map((id) => {
+                return { id: id };
             }, this.contacts.selectedContacts);
         }
         return reduce((result, contact) => {
@@ -230,7 +227,7 @@ class ListController {
     }
     selectAllContacts(all = true) {
         if (all) {
-            this.allSelected = true; //for reactive visuals
+            this.allSelected = true; // for reactive visuals
             return this.getCompleteFilteredList().then((data) => {
                 this.allSelected = false;
                 this.contacts.selectedContacts = map('id', data);
@@ -244,7 +241,7 @@ class ListController {
     bulkHideContacts() {
         const message = this.gettextCatalog.getString('Are you sure you wish to hide the selected contacts? Hiding a contact in MPDX actually sets the contact status to "Never Ask".');
         return this.modal.confirm(message).then(() => {
-            const contacts = map(contact => {
+            const contacts = map((contact) => {
                 return {
                     id: contact,
                     status: 'Never Ask'
@@ -268,7 +265,7 @@ class ListController {
             overrideGetAsPost: true
         });
     }
-    getTotalCount() { //only used when search is empty
+    getTotalCount() { // only used when search is empty
         return this.api.get('contacts', {
             filter: {
                 account_list_id: this.api.account_list_id

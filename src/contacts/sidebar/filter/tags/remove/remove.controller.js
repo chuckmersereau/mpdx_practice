@@ -1,8 +1,8 @@
 import map from 'lodash/fp/map';
 import reduce from 'lodash/fp/reduce';
 import union from 'lodash/fp/union';
-import joinComma from "common/fp/joinComma";
-import emptyToNull from "common/fp/emptyToNull";
+import joinComma from 'common/fp/joinComma';
+import emptyToNull from 'common/fp/emptyToNull';
 
 class RemoveTagController {
     constructor(
@@ -35,7 +35,7 @@ class RemoveTagController {
             return map('name', this.contactsTags.data);
         }
         return reduce((result, contact) =>
-                union(result, contact.tag_list)
+            union(result, contact.tag_list)
             , [], this.selectedContacts).sort();
     }
     untagContact(contactIds, tag) {
@@ -50,8 +50,8 @@ class RemoveTagController {
         }];
         const message = this.gettextCatalog.getString('Are you sure you wish to remove the selected tag?');
         return this.modal.confirm(message).then(() => {
-            return this.api.delete({url: 'contacts/tags/bulk', params: params, data: data, type: 'tags'}).then(data => {
-                this.$rootScope.$emit('contactTagDeleted', {tag: tag, contactIds: contactIds});
+            return this.api.delete({ url: 'contacts/tags/bulk', params: params, data: data, type: 'tags' }).then((data) => {
+                this.$rootScope.$emit('contactTagDeleted', { tag: tag, contactIds: contactIds });
                 return data;
             });
         });

@@ -13,7 +13,7 @@ describe('contacts.sidebar.list.component', () => {
             api = _api_;
             state = $state;
             $stateParams.contactId = contactId;
-            $ctrl = $componentController('contactsSidebarList', {$scope: scope}, {});
+            $ctrl = $componentController('contactsSidebarList', { $scope: scope }, {});
         });
     });
     describe('constructor', () => {
@@ -24,7 +24,7 @@ describe('contacts.sidebar.list.component', () => {
         });
     });
     describe('load', () => {
-        const oneRecord = [{id: 1, name: 'a'}];
+        const oneRecord = [{ id: 1, name: 'a' }];
         beforeEach(() => {
             $ctrl.data = oneRecord;
             $ctrl.listLoadCount = 1;
@@ -42,12 +42,12 @@ describe('contacts.sidebar.list.component', () => {
             $ctrl.load(2);
             expect($ctrl.load(2)).toEqual(undefined);
         });
-        it('should handle late prior results', done => {
+        it('should handle late prior results', (done) => {
             let call = 0;
             spyOn(api, 'get').and.callFake(() => {
                 if (call === 0) {
                     call++;
-                    return new Promise(resolve => {
+                    return new Promise((resolve) => {
                         setTimeout(() => {
                             resolve(oneRecord);
                         }, 1000);
@@ -56,7 +56,7 @@ describe('contacts.sidebar.list.component', () => {
                     return Promise.resolve(oneRecord);
                 }
             });
-            $ctrl.load().then(data => {
+            $ctrl.load().then((data) => {
                 done();
                 expect(data).toBeUndefined();
             });
@@ -101,26 +101,26 @@ describe('contacts.sidebar.list.component', () => {
             const id = 234;
             $ctrl.switchContact(id);
             expect($ctrl.selected).toEqual(id);
-            expect(state.go).toHaveBeenCalledWith('contacts.show', {contactId: id});
+            expect(state.go).toHaveBeenCalledWith('contacts.show', { contactId: id });
         });
     });
     describe('loadMoreContacts', () => {
         beforeEach(() => {
             $ctrl.loading = false;
             $ctrl.page = 0;
-            $ctrl.meta = {pagination: {total_pages: 4}};
+            $ctrl.meta = { pagination: { total_pages: 4 } };
             spyOn($ctrl, 'load').and.callFake(() => {});
         });
         it('should load the next page by default', () => {
             $ctrl.loadMoreContacts();
             expect($ctrl.load).toHaveBeenCalledWith($ctrl.page + 1);
         });
-        it(`shouldn't run if loading`, () => {
+        it('shouldn\'t run if loading', () => {
             $ctrl.loading = true;
             $ctrl.loadMoreContacts();
             expect($ctrl.load).not.toHaveBeenCalled();
         });
-        it(`shouldn't run if on last page`, () => {
+        it('shouldn\'t run if on last page', () => {
             $ctrl.page = 4;
             $ctrl.loadMoreContacts();
             expect($ctrl.load).not.toHaveBeenCalled();

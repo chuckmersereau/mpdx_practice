@@ -14,11 +14,11 @@ describe('tools.import.tnt.component', () => {
             componentController = $componentController;
             loadController();
         });
-        spyOn(alerts, 'addAlert').and.callFake(data => data);
+        spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
     function loadController() {
-        $ctrl = componentController('importTnt', {$scope: scope}, {});
+        $ctrl = componentController('importTnt', { $scope: scope }, {});
     }
     describe('events', () => {
         it('should handle account list change', () => {

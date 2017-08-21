@@ -1,5 +1,6 @@
 import concat from 'lodash/fp/concat';
 import contains from 'lodash/fp/contains';
+import get from 'lodash/fp/get';
 import reduce from 'lodash/fp/reduce';
 import startsWith from 'lodash/fp/startsWith';
 import union from 'lodash/fp/union';
@@ -7,7 +8,7 @@ import union from 'lodash/fp/union';
 class LogTaskController {
     constructor(
         $scope, $state,
-        contacts, tasks, tasksTags, serverConstants, users,
+        contacts, serverConstants, tasks, tasksTags, users,
         contactsList
     ) {
         this.$scope = $scope;
@@ -42,27 +43,31 @@ class LogTaskController {
         if (!params) {
             return;
         }
-        this.contactNames[params.id] = params.name; //set id if missing or out of date
+        this.contactNames[params.id] = params.name; // set id if missing or out of date
         this.contactsList[index] = params.id;
     }
-    save(promises = []) {
-        if (this.status && this.showPartnerStatus()) {
-            const contacts = reduce((result, contact) =>
-                    concat(result, {id: contact, status: this.status})
-                , [], this.contactsList);
-            promises.push(this.contacts.bulkSave(contacts));
-        }
-        promises.push(this.tasks.create(
-            this.task,
-            this.contactsList,
-            this.comment
-        ));
-        return Promise.all(promises).then(() => {
+    save() {
+        return this.getPromise().then(() => {
             this.$scope.$hide();
-            if (this.task.next_action) {
+            if (get('next_action', this.task)) {
                 this.tasks.addModal(this.contactsList, this.task.next_action);
             }
         });
+    }
+    getPromise() {
+        const taskPromise = this.createTask();
+        const contactPromise = this.getContactPromise();
+        return contactPromise ? Promise.all([taskPromise, contactPromise]) : taskPromise;
+    }
+    createTask() {
+        return this.tasks.create(this.task, this.contactsList, this.comment);
+    }
+    getContactPromise() {
+        return (this.status && this.showPartnerStatus())
+            ? this.contacts.bulkSave(reduce((result, contact) =>
+                concat(result, { id: contact, status: this.status })
+                , [], this.contactsList))
+            : false;
     }
     showPartnerStatus() {
         return this.contactsList.length > 0 && this.task.activity_type && !contains(this.task.activity_type, ['Pre Call Letter', 'Reminder Letter', 'Support Letter', 'Thank', 'To Do']);

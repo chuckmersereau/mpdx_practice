@@ -3,10 +3,10 @@ import flow from 'lodash/fp/flow';
 import isEmpty from 'lodash/fp/isEmpty';
 import isEqual from 'lodash/fp/isEqual';
 import isNil from 'lodash/fp/isNil';
-import assign from "lodash/fp/assign";
-import map from "lodash/fp/map";
-import omitBy from "lodash/fp/omitBy";
-import joinComma from "../../common/fp/joinComma";
+import assign from 'lodash/fp/assign';
+import map from 'lodash/fp/map';
+import omitBy from 'lodash/fp/omitBy';
+import joinComma from '../../common/fp/joinComma';
 import emptyToNull from '../../common/fp/emptyToNull';
 
 class TasksFilterService {
@@ -80,7 +80,7 @@ class TasksFilterService {
             defaultParams: this.defaultParams,
             params: this.params,
             url: 'tasks/filters'
-        }).then(({data, defaultParams, params}) => {
+        }).then(({ data, defaultParams, params }) => {
             this.data = data;
             this.defaultParams = defaultParams;
             this.params = params;

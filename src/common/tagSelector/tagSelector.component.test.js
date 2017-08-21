@@ -1,7 +1,7 @@
 import list from './tagSelector.component';
 
 let defaultModel = ['a'];
-let tagList = [{name: 'a'}, {name: 'b'}];
+let tagList = [{ name: 'a' }, { name: 'b' }];
 
 describe('common.tagSelector.component', () => {
     let $ctrl, rootScope, scope, componentController;
@@ -15,7 +15,7 @@ describe('common.tagSelector.component', () => {
         });
     });
     function loadController() {
-        $ctrl = componentController('tagSelector', {$scope: scope}, {
+        $ctrl = componentController('tagSelector', { $scope: scope }, {
             ngModel: defaultModel,
             tagList: tagList,
             onTagAdded: () => {},
@@ -62,7 +62,7 @@ describe('common.tagSelector.component', () => {
             $ctrl.ngModel = ['a'];
         });
         it('should add a tag to model', () => {
-            $ctrl.addTag({name: 'c'});
+            $ctrl.addTag({ name: 'c' });
             expect($ctrl.ngModel).toEqual(['a', 'c']);
         });
     });
@@ -72,7 +72,7 @@ describe('common.tagSelector.component', () => {
         });
         it('should remove a tag from model', () => {
             scope.$digest();
-            $ctrl.removeTag({name: 'a'});
+            $ctrl.removeTag({ name: 'a' });
             expect($ctrl.ngModel).toEqual([]);
         });
     });
@@ -82,7 +82,7 @@ describe('common.tagSelector.component', () => {
             $ctrl.init();
         });
         it('should return a filtered list', () => {
-            expect($ctrl.filterTags('a')).toEqual([{name: 'a'}]);
+            expect($ctrl.filterTags('a')).toEqual([{ name: 'a' }]);
         });
     });
 });

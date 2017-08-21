@@ -8,7 +8,8 @@ class monthRangeService {
         return moment().format('YYYY-MM') + '-' + moment().daysInMonth();
     }
 
-    /** Get the month that is at the start of a X month range before and including the current month in format YYYY-MM-DD where DD is the first day of the month */
+    /** Get the month that is at the start of a X month range before and including the
+     *  current month in format YYYY-MM-DD where DD is the first day of the month */
     getStartingMonth(numberOfMonths) {
         // We subtract 1 so that the current month is included
         return moment().subtract(numberOfMonths - 1, 'months').startOf('month').format('YYYY-MM-DD');

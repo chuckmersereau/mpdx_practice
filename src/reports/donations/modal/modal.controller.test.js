@@ -6,7 +6,9 @@ describe('donation.modal.controller', () => {
     let donation = { id: 'donation_id' };
     beforeEach(() => {
         angular.mock.module(modalController);
-        inject(($controller, $rootScope, _gettextCatalog_, _accounts_, _alerts_, _designationAccounts_, _donations_, _api_) => {
+        inject((
+            $controller, $rootScope, _gettextCatalog_, _accounts_, _alerts_, _designationAccounts_, _donations_, _api_
+        ) => {
             controller = $controller;
             scope = $rootScope.$new();
             scope.$hide = () => {};
@@ -20,7 +22,7 @@ describe('donation.modal.controller', () => {
 
             loadController();
         });
-        spyOn(alerts, 'addAlert').and.callFake(data => data);
+        spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
 
@@ -155,10 +157,10 @@ describe('donation.modal.controller', () => {
         describe('calls save with patch only', () => {
             beforeEach(() => {
                 spyOn(donations, 'save').and.callFake((data) => Promise.resolve(data));
-                $ctrl.initialDonation =
-                    { id: 'donation_id', sameVal: 'value', sameObj: {}, patchVal: null, patchObj: null };
-                $ctrl.donation =
-                    { id: 'donation_id', sameVal: 'value', sameObj: {}, patchVal: 'value', patchObj: {} };
+                $ctrl.initialDonation
+                    = { id: 'donation_id', sameVal: 'value', sameObj: {}, patchVal: null, patchObj: null };
+                $ctrl.donation
+                    = { id: 'donation_id', sameVal: 'value', sameObj: {}, patchVal: 'value', patchObj: {} };
             });
 
             it('should update with empty appeal', (done) => {

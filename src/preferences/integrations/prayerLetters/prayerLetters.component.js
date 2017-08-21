@@ -21,7 +21,7 @@ class PrayerLettersController {
         return this.prayerLetters.sync().then(() => {
             this.saving = false;
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX is now syncing your newsletter recipients with Prayer Letters'), 'success');
-        }).catch(err => {
+        }).catch((err) => {
             this.saving = false;
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for Prayer Letters'), 'danger');
             throw err;
@@ -33,7 +33,7 @@ class PrayerLettersController {
             return this.prayerLetters.disconnect().then(() => {
                 this.saving = false;
                 this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed your integration with Prayer Letters'), 'success');
-            }).catch(err => {
+            }).catch((err) => {
                 this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for Prayer Letters'), 'danger');
                 this.saving = false;
                 throw err;

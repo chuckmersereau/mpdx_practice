@@ -7,7 +7,7 @@ const HSMock = {
         ready: () => {}
     }
 };
-/*global HS*/
+/* global HS*/
 class HelpService {
     constructor(
         $log, gettextCatalog

@@ -10,11 +10,11 @@ describe('common.datetimepicker.component', () => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             componentController = $componentController;
-            loadController({ngModel: defaultModel});
+            loadController({ ngModel: defaultModel });
         });
     });
     function loadController(bindings) {
-        $ctrl = componentController('datetimepicker', {$scope: scope}, bindings);
+        $ctrl = componentController('datetimepicker', { $scope: scope }, bindings);
     }
     describe('init', () => {
         it('should default the hourStep binding', () => {
@@ -59,7 +59,7 @@ describe('common.datetimepicker.component', () => {
     });
     describe('events', () => {
         beforeEach(() => {
-            loadController({ngModel: defaultModel});
+            loadController({ ngModel: defaultModel });
             $ctrl.model = moment(defaultModel);
             $ctrl.$onInit();
         });
@@ -78,7 +78,7 @@ describe('common.datetimepicker.component', () => {
         beforeEach(() => {
             loadController({});
         });
-        it(`shouldn't set model`, () => {
+        it('shouldn\'t set model', () => {
             expect($ctrl.model).toBeUndefined();
         });
     });

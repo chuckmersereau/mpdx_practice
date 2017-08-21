@@ -10,7 +10,10 @@ describe('tools.import.google.component', () => {
         alerts, contactsTags, google, importGoogle, modal;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, $state, _blockUI_, _gettextCatalog_, _alerts_, _contactsTags_, _google_, _importGoogle_, _modal_) => {
+        inject((
+            $componentController, $rootScope, $state, _blockUI_, _gettextCatalog_, _alerts_, _contactsTags_, _google_,
+            _importGoogle_, _modal_
+        ) => {
             rootScope = $rootScope;
             scope = $rootScope.$new();
             state = $state;
@@ -27,7 +30,7 @@ describe('tools.import.google.component', () => {
     });
     function loadController() {
         spyOn(blockUI.instances, 'get').and.callFake(() => fakeBlockUI);
-        $ctrl = componentController('importGoogle', {$scope: scope}, {});
+        $ctrl = componentController('importGoogle', { $scope: scope }, {});
         spyOn($ctrl.blockUI, 'reset').and.callThrough();
         spyOn($ctrl.blockUI, 'start').and.callThrough();
     }

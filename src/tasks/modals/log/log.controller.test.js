@@ -19,7 +19,7 @@ describe('tasks.modals.log.controller', () => {
             tasks = _tasks_;
             controller = $controller;
             $ctrl = loadController();
-            const result = [{id: 1, name: 'a'}];
+            const result = [{ id: 1, name: 'a' }];
             spyOn(contacts, 'getNames').and.callFake(() => Promise.resolve(result));
         });
     });
@@ -48,7 +48,7 @@ describe('tasks.modals.log.controller', () => {
     describe('called from a contact view page', () => {
         beforeEach(() => {
             state.current.name = 'contacts.show';
-            contacts.current = {id: 2};
+            contacts.current = { id: 2 };
             loadController();
         });
         it('should add the current contact', () => {
@@ -58,7 +58,7 @@ describe('tasks.modals.log.controller', () => {
     describe('activate', () => {
         it('should get and assign contact names', (done) => {
             $ctrl.activate().then(() => {
-                expect($ctrl.contactNames).toEqual({1: 'a'});
+                expect($ctrl.contactNames).toEqual({ 1: 'a' });
                 done();
             });
             expect(contacts.getNames).toHaveBeenCalledWith(contactList);
@@ -80,26 +80,26 @@ describe('tasks.modals.log.controller', () => {
             expect($ctrl.contactsList).toEqual(startingContacts);
         });
         it('should set the contact id in contactList', () => {
-            const newVal = {id: 2, name: 'b'};
+            const newVal = { id: 2, name: 'b' };
             $ctrl.contactsList = [1];
-            $ctrl.contactNames = {1: 'a'};
+            $ctrl.contactNames = { 1: 'a' };
             $ctrl.setContact(newVal, 0);
             expect($ctrl.contactsList).toEqual([newVal.id]);
         });
         it('should update a contact name in contactNames', () => {
-            const newVal = {id: 1, name: 'b'};
+            const newVal = { id: 1, name: 'b' };
             $ctrl.contactsList = [1];
-            $ctrl.contactNames = {1: 'a'};
+            $ctrl.contactNames = { 1: 'a' };
             $ctrl.setContact(newVal, 0);
-            expect($ctrl.contactNames).toEqual({[newVal.id]: newVal.name});
+            expect($ctrl.contactNames).toEqual({ [newVal.id]: newVal.name });
         });
         it('should add a contact name in contactNames', () => {
-            const newVal = {id: 2, name: 'b'};
+            const newVal = { id: 2, name: 'b' };
             $ctrl.contactsList = [1];
-            $ctrl.contactNames = {1: 'a'};
+            $ctrl.contactNames = { 1: 'a' };
             const startingVal = angular.copy($ctrl.contactNames);
             $ctrl.setContact(newVal, 0);
-            expect($ctrl.contactNames).toEqual(assign(startingVal, {[newVal.id]: newVal.name}));
+            expect($ctrl.contactNames).toEqual(assign(startingVal, { [newVal.id]: newVal.name }));
         });
     });
     describe('save', () => {
@@ -136,7 +136,7 @@ describe('tasks.modals.log.controller', () => {
     });
     describe('showPartnerStatus', () => {
         beforeEach(() => {
-            //default to true conditions
+            // default to true conditions
             defaultPartnerStatus();
         });
         it('should be true when conditions are met', () => {
@@ -152,7 +152,7 @@ describe('tasks.modals.log.controller', () => {
         });
         it('should be false when certain activity_types are set', () => {
             const arr = ['Pre Call Letter', 'Reminder Letter', 'Support Letter', 'Thank', 'To Do'];
-            each(activity => {
+            each((activity) => {
                 $ctrl.task.activity_type = activity;
                 expect($ctrl.showPartnerStatus()).toBeFalsy();
             }, arr);

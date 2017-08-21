@@ -24,9 +24,9 @@ class LocaleController {
                 found = true;
             }
             if (language) {
-                return {alias: locale, value: `${language.englishName} (${language.nativeName} - ${locale})`};
+                return { alias: locale, value: `${language.englishName} (${language.nativeName} - ${locale})` };
             } else {
-                return {alias: locale, value: `${this.serverConstants.data.locales[locale].english_name} (${this.serverConstants.data.locales[locale].native_name} - ${locale})`};
+                return { alias: locale, value: `${this.serverConstants.data.locales[locale].english_name} (${this.serverConstants.data.locales[locale].native_name} - ${locale})` };
             }
         }, keys(this.serverConstants.data.locales));
         if (!found) {

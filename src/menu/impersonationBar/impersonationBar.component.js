@@ -35,7 +35,7 @@ class ImpersonationController {
         this.impersonator = null;
     }
     redirectHome() {
-        //untestable code
+        // untestable code
         this.$window.location.href = '/';
     }
 }

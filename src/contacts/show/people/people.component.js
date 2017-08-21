@@ -29,7 +29,7 @@ class ContactPeopleController {
         });
     }
     $onInit() {
-        this.people.listAll(); //lazy load people so the people modal feels snappy
+        this.people.listAll(); // lazy load people so the people modal feels snappy
     }
     $onChanges() {
         this.selectedPeople = [];
@@ -40,7 +40,7 @@ class ContactPeopleController {
             return;
         }
         this.data = [];
-        return this.people.list(this.contact.id).then(data => {
+        return this.people.list(this.contact.id).then((data) => {
             this.$log.debug('selected people: ', data);
             this.data = data;
         });

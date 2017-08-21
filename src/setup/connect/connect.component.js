@@ -35,7 +35,7 @@ class SetupConnectController {
                 this.saving = false;
                 this.addOrganization = false;
             });
-        }).catch(err => {
+        }).catch((err) => {
             this.saving = false;
             this.alerts.addAlert(this.gettextCatalog.getString('Invalid username or password.'), 'danger');
             throw err;
@@ -48,8 +48,8 @@ class SetupConnectController {
         this.addOrganization = false;
         this.saving = false;
         this.organization = null;
-        this.username = "";
-        this.password = "";
+        this.username = '';
+        this.password = '';
     }
     select() {
         this.selected = get(this.selectedKey, this.serverConstants.data.organizations_attributes);

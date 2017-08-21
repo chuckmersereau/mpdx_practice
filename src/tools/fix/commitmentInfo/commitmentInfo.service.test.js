@@ -16,15 +16,16 @@ let apiData = [{
 apiData.meta = { page: 1 };
 
 describe('tools.fix.commitmentInfo.service', () => {
-    let api, contacts, fixCommitmentInfo, serverConstants;
+    let api, contacts, fixCommitmentInfo, serverConstants, tools;
 
     beforeEach(() => {
         angular.mock.module(service);
-        inject(($rootScope, _api_, _contacts_, _fixCommitmentInfo_, _serverConstants_) => {
+        inject(($rootScope, _api_, _contacts_, _fixCommitmentInfo_, _serverConstants_, _tools_) => {
             api = _api_;
             contacts = _contacts_;
-            serverConstants = _serverConstants_;
             fixCommitmentInfo = _fixCommitmentInfo_;
+            serverConstants = _serverConstants_;
+            tools = _tools_;
             api.account_list_id = accountListId;
             serverConstants.data = {
                 pledge_frequency_hashes: [{
@@ -75,61 +76,6 @@ describe('tools.fix.commitmentInfo.service', () => {
         });
     });
 
-    describe('loadCount', () => {
-        beforeEach(() => {
-            spyOn(api, 'get').and.callFake(() => Promise.resolve({ meta: { page: 0 } }));
-        });
-
-        it('should return a promise', () => {
-            expect(fixCommitmentInfo.loadCount()).toEqual(jasmine.any(Promise));
-        });
-
-        describe('meta set', () => {
-            beforeEach(() => {
-                fixCommitmentInfo.meta = { page: 1 };
-            });
-
-            it('should return meta', (done) => {
-                fixCommitmentInfo.loadCount().then((data) => {
-                    expect(data).toEqual(fixCommitmentInfo.meta);
-                    done();
-                });
-            });
-
-            it('should not call the api', (done) => {
-                fixCommitmentInfo.loadCount().then(() => {
-                    expect(api.get).not.toHaveBeenCalled();
-                    done();
-                });
-            });
-        });
-
-        describe('meta not set', () => {
-            it('should set and return meta', (done) => {
-                fixCommitmentInfo.loadCount().then((data) => {
-                    expect(data).toEqual(fixCommitmentInfo.meta);
-                    done();
-                });
-            });
-
-            it('should call the api', (done) => {
-                fixCommitmentInfo.loadCount().then(() => {
-                    expect(api.get).toHaveBeenCalledWith(
-                        'contacts',
-                        {
-                            filter: {
-                                status_valid: false,
-                                account_list_id: api.account_list_id
-                            },
-                            page: 1,
-                            per_page: 0
-                        });
-                    done();
-                });
-            });
-        });
-    });
-
     describe('load', () => {
         beforeEach(() => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve(apiData));
@@ -172,6 +118,15 @@ describe('tools.fix.commitmentInfo.service', () => {
                     done();
                 });
             });
+
+            it('should call set meta', (done) => {
+                spyOn(fixCommitmentInfo, 'setMeta').and.callThrough();
+                fixCommitmentInfo.load().then(() => {
+                    expect(fixCommitmentInfo.setMeta).toHaveBeenCalled();
+                    done();
+                });
+            });
+
             it('should store data', (done) => {
                 fixCommitmentInfo.load().then((data) => {
                     expect(data[0].original_pledge_amount).toEqual(apiData[0].pledge_amount);
@@ -198,6 +153,7 @@ describe('tools.fix.commitmentInfo.service', () => {
                     fixCommitmentInfo.data = apiData;
                     fixCommitmentInfo.page = 1;
                 });
+
                 describe('reset set to true', () => {
                     it('should call the api', (done) => {
                         fixCommitmentInfo.load(true).then(() => {
@@ -246,6 +202,18 @@ describe('tools.fix.commitmentInfo.service', () => {
                     });
                 });
             });
+        });
+    });
+
+    describe('setMeta', () => {
+        it('should set meta', () => {
+            fixCommitmentInfo.setMeta(['data']);
+            expect(fixCommitmentInfo.meta).toEqual(['data']);
+        });
+
+        it('should set tools.analytics', () => {
+            fixCommitmentInfo.setMeta({ pagination: { total_count: 123 } });
+            expect(tools.analytics['fix-commitment-info']).toEqual(123);
         });
     });
 
@@ -338,6 +306,12 @@ describe('tools.fix.commitmentInfo.service', () => {
         it('should subtract 1 from the total_count', () => {
             fixCommitmentInfo.removeContactFromData(contact.id);
             expect(fixCommitmentInfo.meta.pagination.total_count).toEqual(1);
+        });
+
+        it('should call setMeta', () => {
+            spyOn(fixCommitmentInfo, 'setMeta').and.callThrough();
+            fixCommitmentInfo.removeContactFromData(contact.id);
+            expect(fixCommitmentInfo.setMeta).toHaveBeenCalled();
         });
 
         describe('data empty', () => {

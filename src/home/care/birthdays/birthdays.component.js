@@ -13,7 +13,7 @@ class BirthdaysController {
     }
     partialDateSort(value) {
         let sortval = defaultTo(0, get('anniversary_month', value)) * 100;
-        if (sortval > 1100 && moment().month() === 11 && moment().date() > 20) { //reset for dec/jan sorting
+        if (sortval > 1100 && moment().month() === 11 && moment().date() > 20) { // reset for dec/jan sorting
             sortval = 0;
         }
         sortval += defaultTo(0, get('anniversary_day', value));

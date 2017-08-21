@@ -33,7 +33,7 @@ class OrganizationIntegrationPreferencesController {
             this.alerts.addAlert(this.gettextCatalog.getString('Preferences saved successfully'));
             this.users.listOrganizationAccounts(true);
             this.saving = false;
-        }).catch(err => {
+        }).catch((err) => {
             this.alerts.addAlert(this.gettextCatalog.getString('Unable to save preferences'), 'danger');
             this.saving = false;
             throw err;
@@ -45,8 +45,8 @@ class OrganizationIntegrationPreferencesController {
             this.saving = false;
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed your organization integration'));
             this.users.listOrganizationAccounts(true);
-        }).catch(err => {
-            this.alerts.addAlert(this.gettextCatalog.getString(`MPDX couldn't save your configuration changes for that organization`), 'danger');
+        }).catch((err) => {
+            this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for that organization'), 'danger');
             this.saving = false;
             throw err;
         });
@@ -58,7 +58,7 @@ class OrganizationIntegrationPreferencesController {
             this.users.listOrganizationAccounts(true);
             this.revert();
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX added your organization account'));
-        }).catch(err => {
+        }).catch((err) => {
             this.alerts.addAlert(this.gettextCatalog.getString('Unable to add your organization account'), 'danger');
             this.saving = false;
             throw err;
@@ -71,7 +71,7 @@ class OrganizationIntegrationPreferencesController {
             this.users.listOrganizationAccounts(true);
             this.revert();
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX updated your organization account'));
-        }).catch(err => {
+        }).catch((err) => {
             this.alerts.addAlert(this.gettextCatalog.getString('Unable to update your organization account'), 'danger');
             this.saving = false;
             throw err;
@@ -102,7 +102,7 @@ class OrganizationIntegrationPreferencesController {
                 this.gettextCatalog.getString('File successfully uploaded. The import to {{ name }} will begin in the background.', { name: account.organization.name }, null), 'success');
             account.file = null;
             this.importing = false;
-        }).catch(err => {
+        }).catch((err) => {
             this.alerts.addAlert(this.gettextCatalog.getString('File upload failed.'), 'danger');
             account.file = null;
             this.importing = false;

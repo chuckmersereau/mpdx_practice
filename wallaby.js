@@ -13,7 +13,7 @@ var webpackPostprocessor = wallabyWebpack({
         alias: {
             config: path.join(__dirname, 'config', 'test.js')
         },
-        modules: [path.join(__dirname), "node_modules", "bower_components", "src"]
+        modules: [path.join(__dirname), 'node_modules', 'bower_components', 'src']
     },
     module: {
         loaders: [{
@@ -25,8 +25,8 @@ var webpackPostprocessor = wallabyWebpack({
         new webpack.NormalModuleReplacementPlugin(/\.(gif|png|jpg|jpeg|scss|css)$/, 'node-noop')
     ],
     externals: [{
-        "window": "window",
-        "google": "window.google"
+        'window': 'window',
+        'google': 'window.google'
     }]
 });
 
@@ -39,7 +39,7 @@ module.exports = function(wallaby) {
             {pattern: 'src/**/*.html', load: false, instrument: false},
             {pattern: 'src/**/*.test.js', ignore: true}
         ],
-        "tests": [
+        'tests': [
             {pattern: 'src/**/*.test.js', load: false}
         ],
         testFramework: 'jasmine',
@@ -49,16 +49,16 @@ module.exports = function(wallaby) {
         },
         compilers: {
             'src/**/*.js*': wallaby.compilers.babel({
-                "presets": [
-                    "env",
-                    "stage-1"
+                'presets': [
+                    'env',
+                    'stage-1'
                 ],
-                "plugins": [
-                    "angularjs-annotate"
+                'plugins': [
+                    'angularjs-annotate'
                 ],
-                "env": {
-                    "test": {
-                        "plugins": ["istanbul"]
+                'env': {
+                    'test': {
+                        'plugins': ['istanbul']
                     }
                 }
             })

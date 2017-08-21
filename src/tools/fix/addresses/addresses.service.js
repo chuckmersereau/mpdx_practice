@@ -8,32 +8,13 @@ import uniq from 'lodash/fp/uniq';
 
 class AddressesService {
     constructor(
-        api, contacts
+        api, contacts, tools
     ) {
         this.api = api;
         this.contacts = contacts;
+        this.tools = tools;
         this.loading = false;
         this.page = 1;
-    }
-
-    loadCount() {
-        if (this.meta) { return Promise.resolve(this.meta); }
-        return this.api.get(
-            'contacts',
-            {
-                filter: {
-                    address_valid: false,
-                    account_list_id: this.api.account_list_id
-                },
-                page: 1,
-                per_page: 0
-            }
-        ).then((data) => {
-            if (!this.meta) {
-                this.meta = data.meta;
-            }
-            return this.meta;
-        });
     }
 
     load(reset = false, page = 1) {
@@ -70,10 +51,18 @@ class AddressesService {
             }, data);
             this.sources = uniq(this.sources).sort();
             this.data = data;
-            this.meta = data.meta;
+            this.setMeta(data.meta);
 
             return this.data;
         });
+    }
+
+    setMeta(meta) {
+        this.meta = meta;
+
+        if (this.meta && this.meta.pagination && this.meta.pagination.total_count && this.tools.analytics) {
+            this.tools.analytics['fix-addresses'] = this.meta.pagination.total_count;
+        }
     }
 
     save(contact) {
@@ -85,6 +74,7 @@ class AddressesService {
             this.data = reject({ id: contact.id }, this.data);
             if (this.meta && this.meta.pagination && this.meta.pagination.total_count) {
                 this.meta.pagination.total_count -= 1;
+                this.setMeta(this.meta);
             }
             if (this.data.length === 0) {
                 this.load(true, this.page);
@@ -96,7 +86,7 @@ class AddressesService {
         let contacts = reduce((result, contact) => {
             let primaryAddress = find(['source', source], contact.addresses);
             if (primaryAddress) {
-                contact.addresses = map(address => {
+                contact.addresses = map((address) => {
                     address.primary_mailing_address = address.id === primaryAddress.id;
                     address.valid_values = true;
                     return address;
@@ -112,7 +102,7 @@ class AddressesService {
     }
 
     setPrimary(contact, primaryAddress) {
-        contact.addresses = map(address => {
+        contact.addresses = map((address) => {
             address.primary_mailing_address = address.id === primaryAddress.id;
             return address;
         }, contact.addresses);
@@ -120,7 +110,7 @@ class AddressesService {
 
     removeAddress(contact, address) {
         return this.contacts.deleteAddress(contact.id, address.id).then(() => {
-            contact.addresses = reject({id: address.id}, contact.addresses);
+            contact.addresses = reject({ id: address.id }, contact.addresses);
         });
     }
 
@@ -131,7 +121,8 @@ class AddressesService {
 
 import api from 'common/api/api.service';
 import contacts from 'contacts/contacts.service';
+import tools from 'tools/tools.service';
 
 export default angular.module('mpdx.tools.fix.addresses.service', [
-    api, contacts
+    api, contacts, tools
 ]).service('fixAddresses', AddressesService).name;

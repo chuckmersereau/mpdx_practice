@@ -1,17 +1,18 @@
 class ToolsController {
     constructor(
+        $rootScope,
         $state, $stateParams, gettextCatalog,
         help, session, tools
     ) {
+        this.$rootScope = $rootScope;
         this.$state = $state;
         this.gettextCatalog = gettextCatalog;
-
         this.help = help;
         this.session = session;
         this.tools = tools;
-
         this.setup = $stateParams.setup;
     }
+
 
     $onInit() {
         this.help.suggest([
@@ -24,6 +25,12 @@ class ToolsController {
         ]);
 
         this.session.navSecondary = true;
+
+        this.$rootScope.$on('accountListUpdated', () => {
+            this.tools.getAnalytics(true);
+        });
+
+        this.tools.getAnalytics();
     }
 
     $onDestroy() {

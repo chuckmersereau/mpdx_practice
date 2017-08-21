@@ -16,7 +16,7 @@ describe('reports.donations.chart.component', () => {
     });
 
     function loadController() {
-        $ctrl = componentController('donationsChart', {$scope: scope}, {inContact: false});
+        $ctrl = componentController('donationsChart', { $scope: scope }, { inContact: false });
         blockUI = $ctrl.blockUI;
     }
 
@@ -232,7 +232,7 @@ describe('reports.donations.chart.component', () => {
                 it('should set $ctrl.labels', (done) => {
                     $ctrl.load().then(() => {
                         expect($ctrl.labels).toEqual(
-                             ['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']
+                            ['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']
                         );
                         done();
                     });
@@ -241,7 +241,7 @@ describe('reports.donations.chart.component', () => {
                 it('should set $ctrl.series', (done) => {
                     $ctrl.load().then(() => {
                         expect($ctrl.series).toEqual(
-                             ['Last Year', 'This Year']
+                            ['Last Year', 'This Year']
                         );
                         done();
                     });
@@ -325,12 +325,12 @@ describe('reports.donations.chart.component', () => {
 
             describe('only startDate set', () => {
                 beforeEach(() => {
-                    params = {startDate: moment().startOf('month')};
+                    params = { startDate: moment().startOf('month') };
                 });
 
                 it('should not set donation_date in params', (done) => {
                     $ctrl.getDonationChart(params).then((data) => {
-                        expect(data.filter).toEqual({account_list_id: api.account_list_id});
+                        expect(data.filter).toEqual({ account_list_id: api.account_list_id });
                         done();
                     });
                 });
@@ -338,12 +338,12 @@ describe('reports.donations.chart.component', () => {
 
             describe('only endDate set', () => {
                 beforeEach(() => {
-                    params = {endDate: moment().endOf('month')};
+                    params = { endDate: moment().endOf('month') };
                 });
 
                 it('should not set donation_date in params', (done) => {
                     $ctrl.getDonationChart(params).then((data) => {
-                        expect(data.filter).toEqual({account_list_id: api.account_list_id});
+                        expect(data.filter).toEqual({ account_list_id: api.account_list_id });
                         done();
                     });
                 });
@@ -378,7 +378,7 @@ describe('reports.donations.chart.component', () => {
 
                     it('should not set donation_date in params', (done) => {
                         $ctrl.getDonationChart(params).then((data) => {
-                            expect(data.filter).toEqual({account_list_id: api.account_list_id});
+                            expect(data.filter).toEqual({ account_list_id: api.account_list_id });
                             done();
                         });
                     });
@@ -394,7 +394,7 @@ describe('reports.donations.chart.component', () => {
 
                     it('should not set donation_date in params', (done) => {
                         $ctrl.getDonationChart(params).then((data) => {
-                            expect(data.filter).toEqual({account_list_id: api.account_list_id});
+                            expect(data.filter).toEqual({ account_list_id: api.account_list_id });
                             done();
                         });
                     });
@@ -403,7 +403,7 @@ describe('reports.donations.chart.component', () => {
         });
 
         describe('donorAccountId', () => {
-            const params = {donorAccountId: 'donor_account_id'};
+            const params = { donorAccountId: 'donor_account_id' };
 
             it('should set donorAccountId in params', (done) => {
                 $ctrl.getDonationChart(params).then((data) => {
@@ -414,7 +414,7 @@ describe('reports.donations.chart.component', () => {
         });
 
         describe('displayCurrency', () => {
-            const params = {displayCurrency: 'USD'};
+            const params = { displayCurrency: 'USD' };
 
             it('should set displayCurrency in params', (done) => {
                 $ctrl.getDonationChart(params).then((data) => {

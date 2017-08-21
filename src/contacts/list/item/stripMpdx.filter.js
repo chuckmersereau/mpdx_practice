@@ -2,7 +2,7 @@ import isString from 'lodash/fp/isString';
 
 function stripMpdx() {
     return function(val) {
-        if (!isString(val)) return '';
+        if (!isString(val)) { return ''; }
         return val.replace('https://mpdx.org', '');
     };
 }

@@ -32,9 +32,9 @@ class SharePreferencesController {
         return this.accounts.destroyInvite(id).then(() => {
             this.saving = false;
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed the invite successfully'));
-            this.accounts.inviteList = reject({id: id}, this.accounts.inviteList);
-        }).catch(err => {
-            this.alerts.addAlert(this.gettextCatalog.getString("MPDX couldn't remove the invite"), 'danger');
+            this.accounts.inviteList = reject({ id: id }, this.accounts.inviteList);
+        }).catch((err) => {
+            this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t remove the invite'), 'danger');
             this.saving = false;
             throw err;
         });
@@ -44,9 +44,9 @@ class SharePreferencesController {
         return this.accounts.destroyUser(id).then(() => {
             this.saving = false;
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed the user successfully'));
-            this.accounts.userList = reject({id: id}, this.accounts.userList);
-        }).catch(err => {
-            this.alerts.addAlert(this.gettextCatalog.getString("MPDX couldn't remove the user"), 'danger');
+            this.accounts.userList = reject({ id: id }, this.accounts.userList);
+        }).catch((err) => {
+            this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t remove the user'), 'danger');
             this.saving = false;
             throw err;
         });

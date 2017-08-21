@@ -2,7 +2,7 @@ import concat from 'lodash/fp/concat';
 import each from 'lodash/fp/each';
 import findIndex from 'lodash/fp/findIndex';
 import reject from 'lodash/fp/reject';
-import createPatch from "../../../../common/fp/createPatch";
+import createPatch from '../../../../common/fp/createPatch';
 
 class AddressModalController {
     constructor(
@@ -43,7 +43,7 @@ class AddressModalController {
         });
 
         let $ctrl = this;
-        this.updateAddress = function() { //workaround for weird bindings in google places
+        this.updateAddress = function() { // workaround for weird bindings in google places
             $ctrl.place = this.getPlace();
             $ctrl.address.street = '';
             each((component) => {
@@ -94,7 +94,7 @@ class AddressModalController {
     }
     save() {
         if (angular.isDefined(this.address.id)) {
-            const addressIndex = findIndex({id: this.address.id}, this.contact.addresses);
+            const addressIndex = findIndex({ id: this.address.id }, this.contact.addresses);
             this.contact.addresses[addressIndex] = angular.copy(this.address);
             const patch = createPatch(this.addressInitialState, this.address);
             this.$log.debug('address patch', patch);
@@ -131,7 +131,7 @@ class AddressModalController {
     }
     delete() {
         return this.contacts.deleteAddress(this.contact.id, this.address.id).then(() => {
-            this.contact.addresses = reject({id: this.address.id}, this.contact.addresses);
+            this.contact.addresses = reject({ id: this.address.id }, this.contact.addresses);
             this.$scope.$hide();
         });
     }

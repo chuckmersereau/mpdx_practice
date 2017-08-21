@@ -1,6 +1,6 @@
-import assign from "lodash/fp/assign";
-import createPatch from "common/fp/createPatch";
-import joinComma from "common/fp/joinComma";
+import assign from 'lodash/fp/assign';
+import createPatch from 'common/fp/createPatch';
+import joinComma from 'common/fp/joinComma';
 import concat from 'lodash/fp/concat';
 import defaultTo from 'lodash/fp/defaultTo';
 import eq from 'lodash/fp/eq';
@@ -49,10 +49,10 @@ class ContactController {
         ];
 
         if (has('currentOptions.contact_tabs_sort', users)) {
-            forEachRight(tab => {
-                const label = find({key: tab}, tabsLabels);
+            forEachRight((tab) => {
+                const label = find({ key: tab }, tabsLabels);
                 if (label) {
-                    tabsLabels = reject({key: tab}, tabsLabels);
+                    tabsLabels = reject({ key: tab }, tabsLabels);
                     tabsLabels = concat(label, tabsLabels);
                 }
             }, users.currentOptions.contact_tabs_sort.value.split(','));
@@ -67,8 +67,9 @@ class ContactController {
 
         this.sortableOptions = {
             containment: '#contact-tabs',
-            //restrict move across columns. move only within column.
-            accept: (sourceItemHandleScope, destSortableScope) => sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id,
+            // restrict move across columns. move only within column.
+            accept: (sourceItemHandleScope, destSortableScope) =>
+                sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id,
             orderChanged: (event) => {
                 let newIndex = event.dest.index;
                 this.contacts.activeTab = this.tabsLabels[newIndex]['key'];
@@ -108,22 +109,22 @@ class ContactController {
         this.$rootScope.pageTitle = `Contact | ${this.contacts.current.name}`;
     }
     save() {
-        const source = angular.copy(this.contacts.current); //to avoid onChanges changes
-        const target = angular.copy(this.contacts.initialState); //to avoid onChanges changes
+        const source = angular.copy(this.contacts.current); // to avoid onChanges changes
+        const target = angular.copy(this.contacts.initialState); // to avoid onChanges changes
         const patch = createPatch(target, source);
         this.$log.debug('contact patch', patch);
 
         return this.contacts.save(patch).then(() => {
             if (patch.tag_list) {
                 const tags = patch.tag_list.split(',');
-                this.$rootScope.$emit('contactTagsAdded', {tags: tags});
+                this.$rootScope.$emit('contactTagsAdded', { tags: tags });
             }
             if (patch.id === this.contacts.initialState.id) {
                 this.contacts.initialState = assign(this.contacts.initialState, patch);
             }
             const message = this.gettextCatalog.getString('Changes saved successfully.');
             this.alerts.addAlert(message);
-        }).catch(err => {
+        }).catch((err) => {
             const message = this.gettextCatalog.getString('Unable to save changes.');
             this.alerts.addAlert(message, 'danger');
             throw err;
@@ -136,9 +137,6 @@ class ContactController {
         this.$log.debug('change primary: ', personId);
         this.contacts.current = set('primary_person.id', personId, this.contacts.current);
         this.save();
-    }
-    openLogTaskModal() {
-        this.tasks.logModal(this.contacts.current.id);
     }
     openAddTaskModal() {
         this.tasks.addModal(this.contacts.current.id);
@@ -155,7 +153,7 @@ class ContactController {
     setActiveTab(tab) {
         this.contacts.activeTab = tab;
         if (tab === 'details') {
-            this.$state.go(`contacts.show`);
+            this.$state.go('contacts.show');
         } else {
             this.$state.go(`contacts.show.${tab}`);
         }

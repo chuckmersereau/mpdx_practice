@@ -34,7 +34,7 @@ class ListController {
     }
     switchContact(id) {
         this.selected = id;
-        this.$state.go('contacts.show', {contactId: id});
+        this.$state.go('contacts.show', { contactId: id });
     }
     loadMoreContacts() {
         if (this.loading || (has('pagination.total_pages', this.meta) && this.page >= this.meta.pagination.total_pages)) {
@@ -68,7 +68,7 @@ class ListController {
                 sort: 'name'
             },
             overrideGetAsPost: true
-        }).then(data => {
+        }).then((data) => {
             this.$log.debug(`contacts sidebar list page ${this.page}`, data);
             if (reset && currentCount !== this.listLoadCount) {
                 return;
