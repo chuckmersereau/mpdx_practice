@@ -37,10 +37,14 @@ class ImportCsvController {
                 to: (state) => {
                     return !includes('tools.import.csv', state.name);
                 }
-            }, () => {
-                if (!this.importCsv.data) { return true; }
+            },
+            () => {
+                if (!this.importCsv.data) {
+                    return true;
+                }
                 return this.modal.confirm(message);
-            });
+            }
+        );
     }
 
     $onDestroy() {

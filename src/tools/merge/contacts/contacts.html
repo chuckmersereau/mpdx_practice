@@ -1,6 +1,6 @@
 <div class="merges">
     <h2 translate>Merge Contacts</h2>
-    <div ng-if="$ctrl.duplicates.length > 0">
+    <div ng-if="$ctrl.duplicates.length > 0 && !$ctrl.loading">
         <p>
             <translate translate-plural="You have {{$count}} possible duplicate contacts." translate-n="$ctrl.meta.pagination.total_count">
                 You have 1 possible duplicate contact.
@@ -17,37 +17,41 @@
         </p>
         <hr>
         <div block-ui="merge-contacts">
+            <div class="row" ng-repeat="duplicate in $ctrl.duplicates track by $index">
+                <div class="col-sm-5">
+                    <merge-contacts-item contact="duplicate.contacts[0]" on-click="$ctrl.select(duplicate, 0)" ignore="duplicate.ignore"></merge-contacts-item>
+                </div>
+                <div class="col-sm-2 text-center choices">
+                    <i class="fa fa-arrow-left choice-left" ng-class="{'selected': duplicate.contacts[0].selected}" ng-click="$ctrl.select(duplicate, 0)"></i>
+                    <i class="fa fa-arrow-right choice-right" ng-class="{'selected': duplicate.contacts[1].selected}" ng-click="$ctrl.select(duplicate, 1)"></i>
+                    <i class="fa fa-close choice-cancel" ng-class="{'selected': duplicate.ignore}" ng-click="$ctrl.deSelect(duplicate)"></i>
+                </div>
+                <div class="col-sm-5">
+                    <merge-contacts-item contact="duplicate.contacts[1]" on-click="$ctrl.select(duplicate, 1)" ignore="duplicate.ignore"></merge-contacts-item>
+                </div>
+            </div>
             <div class="row">
-                <div class="col-sm-10 col-sm-offset-1">
-                    <div class="row" ng-repeat="duplicate in $ctrl.duplicates track by $index">
-                        <div class="col-sm-5">
-                            <merge-contacts-item contact="duplicate.contacts[0]" on-click="$ctrl.select(duplicate, 0)" ignored="duplicate.ignored"></merge-contacts-item>
-                        </div>
-                        <div class="col-sm-2 text-center choices">
-                            <i class="fa fa-arrow-left choice-left" ng-class="{'selected': duplicate.contacts[0].selected}" ng-click="$ctrl.select(duplicate, 0)"></i>
-                            <i class="fa fa-arrow-right choice-right" ng-class="{'selected': duplicate.contacts[1].selected}" ng-click="$ctrl.select(duplicate, 1)"></i>
-                            <i class="fa fa-close choice-cancel" ng-class="{'selected': duplicate.ignored}" ng-click="$ctrl.deSelect(duplicate)"></i>
-                        </div>
-                        <div class="col-sm-5">
-                            <merge-contacts-item contact="duplicate.contacts[1]" on-click="$ctrl.select(duplicate, 1)" ignored="duplicate.ignored"></merge-contacts-item>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-5 text-right">
-                            <button class="btn btn-primary" ng-click="$ctrl.confirmAndContinue()" ng-disabled="$ctrl.confirmButtonDisabled()" translate>Confirm and Continue</button>
-                        </div>
-                        <div class="col-sm-2 text-center confirm-or">
-                            <span>OR</span>
-                        </div>
-                        <div class="col-sm-5">
-                            <button class="btn btn-primary" ng-click="$ctrl.confirmThenLeave()" ng-disabled="$ctrl.confirmButtonDisabled()" translate>Confirm and Leave</button>
-                        </div>
-                    </div>
+                <div class="col-sm-5 text-right">
+                    <button class="btn btn-primary" ng-click="$ctrl.confirmAndContinue()" ng-disabled="$ctrl.confirmButtonDisabled()" translate>Confirm and Continue</button>
+                </div>
+                <div class="col-sm-2 text-center confirm-or">
+                    <span>OR</span>
+                </div>
+                <div class="col-sm-5">
+                    <button class="btn btn-primary" ng-click="$ctrl.confirmThenLeave()" ng-disabled="$ctrl.confirmButtonDisabled()" translate>Confirm and Leave</button>
                 </div>
             </div>
         </div>
     </div>
-    <div ng-if="$ctrl.duplicates.length === 0">
-        <p translate>No Contacts to merge right now!</p>
+    <div ng-if="$ctrl.duplicates.length === 0 && !$ctrl.loading">
+        <div class="blankslate blankslate-spacious">
+          <i class="fa fa-users blankslate-icon"></i>
+          <h3 translate>No Contacts to Merge</h3>
+          <p translate>Merging matches on contact names and partner account numbers.</p>
+          <a class="btn btn-default" ui-sref="tools" translate>Back to Tools</a>
+        </div>
+    </div>
+    <div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
+      <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
     </div>
 </div>

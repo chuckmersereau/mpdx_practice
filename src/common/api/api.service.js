@@ -318,6 +318,9 @@ class EntityAttributes {
                 donor_account: { ref: 'id' },
                 appeal: { ref: 'id' }
             },
+            duplicate_record_pairs: {
+                attributes: ['reason', 'ignore']
+            },
             google_integrations: {
                 attributes: ['account_list', 'calendar_integration', 'calendar_integrations', 'calendar_id', 'calendar_name', 'email_integration', 'contacts_integration'],
                 account_list: { ref: 'id' }
