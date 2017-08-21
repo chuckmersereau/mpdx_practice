@@ -1,6 +1,6 @@
 import component from './add.component';
 
-const defaultTask = {subject: 'a'};
+const defaultTask = { subject: 'a' };
 describe('tasks.list.add.component', () => {
     let $ctrl, rootScope, scope, componentController, tasks, contacts, state;
     beforeEach(() => {
@@ -9,7 +9,7 @@ describe('tasks.list.add.component', () => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             contacts = _contacts_;
-            contacts.current = {id: 1};
+            contacts.current = { id: 1 };
             state = $state;
             tasks = _tasks_;
             componentController = $componentController;
@@ -17,7 +17,7 @@ describe('tasks.list.add.component', () => {
         });
     });
     function loadController() {
-        $ctrl = componentController('tasksListAdd', {$scope: scope}, {});
+        $ctrl = componentController('tasksListAdd', { $scope: scope }, {});
     }
     describe('constructor', () => {
         it('should set task to an empty model', () => {

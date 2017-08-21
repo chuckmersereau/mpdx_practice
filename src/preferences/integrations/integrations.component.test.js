@@ -3,7 +3,7 @@ import component from './integrations.component';
 const defaultBindings = {
     selectedTab: null,
     setup: false,
-    onSave: () => new Promise(resolve => resolve())
+    onSave: () => new Promise((resolve) => resolve())
 };
 
 describe('preferences.integrations.component', () => {
@@ -23,11 +23,11 @@ describe('preferences.integrations.component', () => {
         });
         spyOn(state, 'go').and.callFake(() => {});
         spyOn(help, 'suggest').and.callFake(() => {});
-        spyOn(alerts, 'addAlert').and.callFake(data => data);
+        spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
     function loadController(bindings) {
-        return componentController('preferencesIntegration', {$scope: scope}, bindings);
+        return componentController('preferencesIntegration', { $scope: scope }, bindings);
     }
     describe('constructor', () => {
         beforeEach(() => {
@@ -71,14 +71,14 @@ describe('preferences.integrations.component', () => {
             $ctrl.disconnect('google');
             expect(integrations.disconnect).toHaveBeenCalledWith('google');
         });
-        it('should unset saving flag', done => {
+        it('should unset saving flag', (done) => {
             spyOn(integrations, 'disconnect').and.callFake(() => Promise.resolve());
             $ctrl.disconnect('google').then(() => {
                 expect($ctrl.saving).toBeFalsy();
                 done();
             });
         });
-        it('should alert a translated confirmation', done => {
+        it('should alert a translated confirmation', (done) => {
             spyOn(integrations, 'disconnect').and.callFake(() => Promise.resolve());
             $ctrl.disconnect('google').then(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'success');
@@ -86,7 +86,7 @@ describe('preferences.integrations.component', () => {
                 done();
             });
         });
-        it('should reload integrations', done => {
+        it('should reload integrations', (done) => {
             spyOn(integrations, 'disconnect').and.callFake(() => Promise.resolve());
             spyOn(integrations, 'load').and.callFake(() => Promise.resolve());
             $ctrl.disconnect('google').then(() => {
@@ -94,7 +94,7 @@ describe('preferences.integrations.component', () => {
                 done();
             });
         });
-        it('should handle rejection', done => {
+        it('should handle rejection', (done) => {
             spyOn(integrations, 'disconnect').and.callFake(() => Promise.reject(Error('')));
             $ctrl.disconnect('google').catch(() => {
                 expect($ctrl.saving).toBeFalsy();

@@ -20,7 +20,7 @@ class ContactPersonController {
     }
     selectCard() {
         if (this.isMerging) {
-            this.onSelectPerson({person: this.person});
+            this.onSelectPerson({ person: this.person });
         } else {
             this.openModal();
         }

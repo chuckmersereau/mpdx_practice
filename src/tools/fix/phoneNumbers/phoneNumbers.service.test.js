@@ -3,14 +3,15 @@ import service from './phoneNumbers.service';
 const accountListId = 123;
 
 describe('tools.fix.phoneNumbers.service', () => {
-    let api, people, fixPhoneNumbers;
+    let api, fixPhoneNumbers, people, tools;
 
     beforeEach(() => {
         angular.mock.module(service);
-        inject(($rootScope, _api_, _people_, _fixPhoneNumbers_) => {
+        inject(($rootScope, _api_, _fixPhoneNumbers_, _people_, _tools_) => {
             api = _api_;
             people = _people_;
             fixPhoneNumbers = _fixPhoneNumbers_;
+            tools = _tools_;
             api.account_list_id = accountListId;
         });
     });
@@ -19,61 +20,6 @@ describe('tools.fix.phoneNumbers.service', () => {
         it('should set default values', () => {
             expect(fixPhoneNumbers.loading).toBeFalsy();
             expect(fixPhoneNumbers.page).toEqual(1);
-        });
-    });
-
-    describe('loadCount', () => {
-        beforeEach(() => {
-            spyOn(api, 'get').and.callFake(() => Promise.resolve({ meta: { page: 0 } }));
-        });
-
-        it('should return a promise', () => {
-            expect(fixPhoneNumbers.loadCount()).toEqual(jasmine.any(Promise));
-        });
-
-        describe('meta set', () => {
-            beforeEach(() => {
-                fixPhoneNumbers.meta = { page: 1 };
-            });
-
-            it('should return meta', (done) => {
-                fixPhoneNumbers.loadCount().then((data) => {
-                    expect(data).toEqual(fixPhoneNumbers.meta);
-                    done();
-                });
-            });
-
-            it('should not call the api', (done) => {
-                fixPhoneNumbers.loadCount().then(() => {
-                    expect(api.get).not.toHaveBeenCalled();
-                    done();
-                });
-            });
-        });
-
-        describe('meta not set', () => {
-            it('should set and return meta', (done) => {
-                fixPhoneNumbers.loadCount().then((data) => {
-                    expect(data).toEqual(fixPhoneNumbers.meta);
-                    done();
-                });
-            });
-
-            it('should call the api', (done) => {
-                fixPhoneNumbers.loadCount().then(() => {
-                    expect(api.get).toHaveBeenCalledWith(
-                        'contacts/people',
-                        {
-                            filter: {
-                                phone_number_valid: false,
-                                account_list_id: api.account_list_id
-                            },
-                            page: 1,
-                            per_page: 0
-                        });
-                    done();
-                });
-            });
         });
     });
 
@@ -115,6 +61,14 @@ describe('tools.fix.phoneNumbers.service', () => {
                 fixPhoneNumbers.loading = true;
                 fixPhoneNumbers.load().then(() => {
                     expect(fixPhoneNumbers.loading).toBeFalsy();
+                    done();
+                });
+            });
+
+            it('should call set meta', (done) => {
+                spyOn(fixPhoneNumbers, 'setMeta').and.callThrough();
+                fixPhoneNumbers.load().then(() => {
+                    expect(fixPhoneNumbers.setMeta).toHaveBeenCalled();
                     done();
                 });
             });
@@ -196,6 +150,18 @@ describe('tools.fix.phoneNumbers.service', () => {
         });
     });
 
+    describe('setMeta', () => {
+        it('should set meta', () => {
+            fixPhoneNumbers.setMeta(['data']);
+            expect(fixPhoneNumbers.meta).toEqual(['data']);
+        });
+
+        it('should set tools.analytics', () => {
+            fixPhoneNumbers.setMeta({ pagination: { total_count: 123 } });
+            expect(tools.analytics['fix-phone-numbers']).toEqual(123);
+        });
+    });
+
     describe('save', () => {
         let person;
         beforeEach(() => {
@@ -233,6 +199,14 @@ describe('tools.fix.phoneNumbers.service', () => {
             it('should subtract 1 from the total_count', (done) => {
                 fixPhoneNumbers.save(person).then(() => {
                     expect(fixPhoneNumbers.meta.pagination.total_count).toEqual(1);
+                    done();
+                });
+            });
+
+            it('should call setMeta', (done) => {
+                spyOn(fixPhoneNumbers, 'setMeta').and.callThrough();
+                fixPhoneNumbers.save(person).then(() => {
+                    expect(fixPhoneNumbers.setMeta).toHaveBeenCalled();
                     done();
                 });
             });
@@ -351,7 +325,7 @@ describe('tools.fix.phoneNumbers.service', () => {
                     id: 'phone_number_2',
                     primary: false
                 }
-            ]};
+            ] };
             expect(person.phone_numbers[2].primary).toBeFalsy();
             fixPhoneNumbers.setPrimary(person, { id: 'phone_number_2' });
             expect(person.phone_numbers[2].primary).toBeTruthy();
@@ -373,7 +347,7 @@ describe('tools.fix.phoneNumbers.service', () => {
                     id: 'phone_number_2',
                     primary: false
                 }
-            ]};
+            ] };
             spyOn(people, 'deletePhoneNumber').and.callFake(() => Promise.resolve());
         });
 
@@ -400,7 +374,7 @@ describe('tools.fix.phoneNumbers.service', () => {
                                 id: 'phone_number_2',
                                 primary: false
                             }
-                        ]}
+                        ] }
                     );
                     done();
                 });
@@ -423,7 +397,7 @@ describe('tools.fix.phoneNumbers.service', () => {
                     id: 'phone_number_2',
                     primary: false
                 }
-            ]};
+            ] };
             spyOn(people, 'savePhoneNumber').and.callFake(() => Promise.resolve());
         });
 

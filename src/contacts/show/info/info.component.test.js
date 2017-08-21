@@ -1,17 +1,16 @@
 import component from './info.component';
 
 describe('contacts.show.details.component', () => {
-    let $ctrl, scope, serverConstants, gettextCatalog, contacts;
+    let $ctrl, scope, serverConstants, gettextCatalog;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _contacts_, _serverConstants_, _gettextCatalog_) => {
+        inject(($componentController, $rootScope, _serverConstants_, _gettextCatalog_) => {
             scope = $rootScope.$new();
-            contacts = _contacts_;
             gettextCatalog = _gettextCatalog_;
             serverConstants = _serverConstants_;
-            serverConstants.data = {locales: {}};
+            serverConstants.data = { locales: {} };
             window.languageMappingList = [];
-            $ctrl = $componentController('contactInfo', {$scope: scope}, {contact: {}, onSave: () => Promise.resolve()});
+            $ctrl = $componentController('contactInfo', { $scope: scope }, { contact: {}, onSave: () => Promise.resolve() });
         });
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
@@ -20,8 +19,8 @@ describe('contacts.show.details.component', () => {
             $ctrl.$onInit();
             expect($ctrl.translations).toEqual({
                 pledge_received: [
-                    {key: true, value: 'Yes'},
-                    {key: false, value: 'No'}
+                    { key: true, value: 'Yes' },
+                    { key: false, value: 'No' }
                 ]
             });
             expect(gettextCatalog.getString.calls.count()).toEqual(2);

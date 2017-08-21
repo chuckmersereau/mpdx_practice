@@ -1,23 +1,23 @@
+// do not disable angular debug in production. breaks daterangepicker
 import config from 'config';
 
-import Routes from "./routes";
-/*@ngInject*/
+import Routes from './routes';
+/* @ngInject*/
 export default function appConfig(
     $compileProvider, $locationProvider, $logProvider, $stateProvider, $httpProvider, $qProvider, $urlRouterProvider,
     blockUIConfig, jwtOptionsProvider, RollbarProvider, timeAgoSettings, gettext
 ) {
-    if (config.env !== 'development') {
-        $compileProvider.debugInfoEnabled(false);
-    }
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|tel|mailto):/);
     jwtOptionsProvider.config({
         tokenGetter: () => {
             return localStorage.getItem('token');
         },
         unauthenticatedRedirectPath: '/login',
-        unauthenticatedRedirector: /*@ngInject*/ ($state, $location, $window) => {
-            $window.localStorage.setItem('redirect', $location.path());
-            $window.localStorage.setItem('params', JSON.stringify($location.search()));
+        unauthenticatedRedirector: /* @ngInject*/ ($state, $location, $window) => {
+            if ($location.path() !== '/login') {
+                $window.localStorage.setItem('redirect', $location.path());
+                $window.localStorage.setItem('params', JSON.stringify($location.search()));
+            }
             $state.go('login');
         },
         whiteListedDomains: ['api.stage.mpdx.org', 'api.mpdx.org', 'localhost']

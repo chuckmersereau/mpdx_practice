@@ -16,6 +16,8 @@ class ModalController {
         this.collection = [];
         this.loading = false;
         this.selectedItem = null;
+
+        this.$onInit();
     }
 
     $onInit() {

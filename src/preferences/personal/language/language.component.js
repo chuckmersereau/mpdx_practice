@@ -27,6 +27,9 @@ class LanguageController {
     $onChanges() {
         if (!this.users.current.preferences.locale) {
             this.users.current.preferences.locale = navigator.language || navigator.browserLanguage || navigator.systemLanguage || navigator.userLanguage || 'en-us';
+            if (!this.serverConstants.data.languages[this.users.current.preferences.locale]) {
+                this.users.current.preferences.locale = 'en-us';
+            }
         }
         let found = false;
         this.languages = map((lang) => {
@@ -35,9 +38,9 @@ class LanguageController {
                 found = true;
             }
             if (language) {
-                return {alias: lang, value: `${language.englishName} (${language.nativeName} - ${lang})`};
+                return { alias: lang, value: `${language.nativeName} (${language.englishName})` };
             } else {
-                return {alias: lang, value: `${this.serverConstants.data.languages[lang]} - ${lang}`};
+                return { alias: lang, value: `${this.serverConstants.data.languages[lang]}` };
             }
         }, keys(this.serverConstants.data.languages));
         if (!found) {
@@ -65,7 +68,7 @@ class LanguageController {
         return this.onSave().then(() => {
             this.saving = false;
             this.lastLanguage = this.users.current.preferences.locale;
-        }).catch(err => {
+        }).catch((err) => {
             this.saving = false;
             throw err;
         });

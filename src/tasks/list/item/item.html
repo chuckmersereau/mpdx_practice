@@ -23,9 +23,7 @@
     </div>
     <div class="item-title">
         <strong>{{ ::$ctrl.task.activity_type | translate }}</strong>
-        <a ng-click="$ctrl.edit(); $event.stopPropagation();">
-            {{ ::$ctrl.task.subject }}
-        </a>
+        <a ng-click="$ctrl.edit(); $event.stopPropagation();">{{ ::$ctrl.task.subject }}</a>
         <span ng-if="::$ctrl.task.completed" translate-params-result="::$ctrl.task.result" translate>
             ({{ result }})
         </span>
@@ -35,10 +33,10 @@
         <span ng-if="::!$ctrl.task.no_date && $ctrl.task.start_at && $ctrl.task.completed">
             {{ ::$ctrl.task.completed_at | localizeWithTime }}
         </span>
-        <span ng-repeat="contact in ::$ctrl.task.contacts | limitTo : 5">
+        <span ng-repeat="activityContact in ::$ctrl.task.activity_contacts | limitTo : 5">
             <a ng-click="$ctrl.toggleContacts(); $event.stopPropagation();">
-                <span ng-if="::$index < 4">{{ ::contact.name }}</span>
-                <span ng-if="::$index === 4" translate translate-plural="and {{$count}} others" translate-n="::$ctrl.task.contacts.length - 4">and 1 other</span>
+                <span ng-if="::$index < 4">{{ ::activityContact.contact.name }}</span>
+                <span ng-if="::$index === 4" translate translate-plural="and {{$count}} others" translate-n="::$ctrl.task.activity_contacts.length - 4">and 1 other</span>
             </a>
         </span>
         <span class="tags">

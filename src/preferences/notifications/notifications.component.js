@@ -28,8 +28,12 @@ class NotificationPreferencesController {
     }
     init() {
         this.notifications = reduce((result, value) => {
-            const defaultActions = (this.setup && this.accounts.current.notification_preferences.length === 0) ? ['email', 'task'] : [''];
-            const notificationType = defaultTo({id: uuid(), actions: defaultActions}, find(pref => pref.notification_type.id === value.key, this.accounts.current.notification_preferences));
+            const defaultActions = (this.setup && this.accounts.current.notification_preferences.length === 0)
+                ? ['email', 'task']
+                : [''];
+            const notificationType = defaultTo({ id: uuid(), actions: defaultActions },
+                find((pref) => pref.notification_type.id === value.key,
+                    this.accounts.current.notification_preferences));
             result = concat(result, {
                 id: notificationType.id,
                 key: value.key,
@@ -43,7 +47,8 @@ class NotificationPreferencesController {
     save() {
         this.saving = true;
         this.accounts.current.notification_preferences = reduce((result, value) => {
-            let notificationType = find({id: value.id}, this.accounts.current.notification_preferences) || {id: uuid(), notification_type: {id: value.key}, actions: []};
+            let notificationType = find({ id: value.id }, this.accounts.current.notification_preferences)
+                || { id: uuid(), notification_type: { id: value.key }, actions: [] };
             notificationType.actions = [];
             if (value.email) {
                 notificationType.actions = concat(notificationType.actions, 'email');

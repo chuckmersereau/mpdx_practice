@@ -20,7 +20,7 @@ class AddReferralsModalController {
             if (model.first_name || model.last_name) {
                 let contact = {
                     id: uuid(),
-                    account_list: {id: this.api.account_list_id},
+                    account_list: { id: this.api.account_list_id },
                     primary_person_first_name: model.first_name,
                     primary_person_last_name: model.last_name,
                     name: `${model.last_name}, ${model.first_name}`,

@@ -16,7 +16,7 @@ describe('common.acceptInvite.component', () => {
             $ctrl = componentController('acceptInvite', { $scope: scope });
         });
         spyOn(gettextCatalog, 'getString').and.callThrough();
-        spyOn(alerts, 'addAlert').and.callFake(data => data);
+        spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(state, 'go').and.callThrough();
         $ctrl.$stateParams = {
             code: 'abc',

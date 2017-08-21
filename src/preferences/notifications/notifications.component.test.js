@@ -13,22 +13,22 @@ describe('contacts.list.component', () => {
             componentController = $componentController;
             loadController();
         });
-        spyOn(alerts, 'addAlert').and.callFake(data => data);
+        spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
     function loadController() {
-        $ctrl = componentController('preferencesNotifications', {$scope: scope}, {onSave: () => Promise.resolve(), setup: null});
+        $ctrl = componentController('preferencesNotifications', { $scope: scope }, { onSave: () => Promise.resolve(), setup: null });
     }
     describe('init', () => {
         it('should transform the users notification preferences with server constants', () => {
             serverConstants.data = {
                 notification_translated_hashes: [{
-                    id: "Partner gave a Special Gift",
-                    key: "11a42c09-2ed1-4754-9b43-2d14a2a3b420",
-                    value: "Partner gave a Special Gift"
+                    id: 'Partner gave a Special Gift',
+                    key: '11a42c09-2ed1-4754-9b43-2d14a2a3b420',
+                    value: 'Partner gave a Special Gift'
                 }]
             };
-            accounts.current = {notification_preferences: [{id: '1234', notification_type: {id: '11a42c09-2ed1-4754-9b43-2d14a2a3b420'}, actions: ['email', 'task']}]};
+            accounts.current = { notification_preferences: [{ id: '1234', notification_type: { id: '11a42c09-2ed1-4754-9b43-2d14a2a3b420' }, actions: ['email', 'task'] }] };
             $ctrl.init();
             expect($ctrl.notifications).toEqual([{
                 id: '1234',
@@ -41,7 +41,7 @@ describe('contacts.list.component', () => {
     });
     describe('save', () => {
         beforeEach(() => {
-            accounts.current = {id: 1};
+            accounts.current = { id: 1 };
         });
         it('should set saving flag', () => {
             spyOn(accounts, 'saveCurrent').and.callFake(() => Promise.resolve());
@@ -53,7 +53,7 @@ describe('contacts.list.component', () => {
             $ctrl.save();
             expect(accounts.saveCurrent).toHaveBeenCalledWith();
         });
-        it('should alert a translated confirmation', done => {
+        it('should alert a translated confirmation', (done) => {
             spyOn(accounts, 'saveCurrent').and.callFake(() => Promise.resolve());
             $ctrl.save().then(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'success');
@@ -61,7 +61,7 @@ describe('contacts.list.component', () => {
                 done();
             });
         });
-        it('should call onSave', done => {
+        it('should call onSave', (done) => {
             spyOn(accounts, 'saveCurrent').and.callFake(() => Promise.resolve());
             spyOn($ctrl, 'onSave').and.callFake(() => Promise.resolve());
             $ctrl.save().then(() => {
@@ -69,7 +69,7 @@ describe('contacts.list.component', () => {
                 done();
             });
         });
-        it('should unset saving flag', done => {
+        it('should unset saving flag', (done) => {
             spyOn(accounts, 'saveCurrent').and.callFake(() => Promise.resolve());
             $ctrl.save().then(() => {
                 expect($ctrl.saving).toBeFalsy();

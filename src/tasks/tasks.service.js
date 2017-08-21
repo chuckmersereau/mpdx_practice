@@ -1,5 +1,7 @@
+
 import uuid from 'uuid/v1';
 import concat from 'lodash/fp/concat';
+import defaultTo from 'lodash/fp/defaultTo';
 import assign from 'lodash/fp/assign';
 import each from 'lodash/fp/each';
 import find from 'lodash/fp/find';
@@ -24,19 +26,20 @@ import moment from 'moment';
 class TasksService {
     constructor(
         $rootScope, $log, gettextCatalog,
-        alerts, api, tasksFilter, tasksTags, users, modal, tasksModals, contacts
+        alerts, api, contacts, modal, serverConstants, tasksFilter, tasksModals, tasksTags, users
     ) {
-        this.alerts = alerts;
         this.$log = $log;
         this.$rootScope = $rootScope;
+        this.alerts = alerts;
         this.api = api;
+        this.contacts = contacts;
         this.gettextCatalog = gettextCatalog;
+        this.modal = modal;
+        this.serverConstants = serverConstants;
         this.tasksFilter = tasksFilter;
+        this.tasksModals = tasksModals;
         this.tasksTags = tasksTags;
         this.users = users;
-        this.contacts = contacts;
-        this.modal = modal;
-        this.tasksModals = tasksModals;
 
         this.analytics = null;
         this.completeList = [];
@@ -45,8 +48,8 @@ class TasksService {
         this.meta = {};
         this.page = 1;
         this.selected = [];
-        this.loading = true; //TODO: maybe should become false until actually loading
-        //TODO: move to component (won't update in service)
+        this.loading = true; // TODO: maybe should become false until actually loading
+        // TODO: move to component (won't update in service)
         this.categories = {
             'completed': this.gettextCatalog.getString('Completed'),
             'today': this.gettextCatalog.getString('Today'),
@@ -78,7 +81,7 @@ class TasksService {
         });
     }
     getAnalytics() {
-        return this.api.get('tasks/analytics', {filter: {account_list_id: this.api.account_list_id}}).then((data) => {
+        return this.api.get('tasks/analytics', { filter: { account_list_id: this.api.account_list_id } }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug('tasks/analytics', data);
             this.analytics = data;
@@ -105,28 +108,30 @@ class TasksService {
                 filter: this.tasksFilter.toParams(),
                 page: page,
                 per_page: 25,
-                include: 'contacts',
+                include: 'activity_contacts,activity_contacts.contact',
                 fields: {
-                    tasks: 'activity_type,completed,completed_at,contacts,no_date,starred,start_at,subject,tag_list,comments_count,location,result',
-                    contacts: 'name'
+                    activity_contacts: 'contact',
+                    contact: 'name',
+                    tasks: 'activity_contacts,activity_type,completed,completed_at,no_date,starred,start_at,subject,tag_list,comments_count,location,result,notification_type,notification_time_before,notification_time_unit'
                 }
             },
-            deSerializationOptions: relationshipId('comments'), //for comment count
+            deSerializationOptions: relationshipId('comments'), // for comment count
             overrideGetAsPost: true
-        }).then(data => {
+        }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug('tasks page ' + data.meta.pagination.page, data);
             /* istanbul ignore next */
-            if (reset && currentCount !== this.dataLoadCount) { //case for slow prior query returning after faster newer query
+            if (reset && currentCount !== this.dataLoadCount) { // case for slow prior query returning after faster newer query
                 return;
             }
             this.loading = false;
             this.meta = data.meta;
-            const tasks = map(task => this.process(task), data);
+            const tasks = map((task) => this.process(task), data);
             this.data = unionBy('id', this.data, tasks);
             this.page = parseInt(this.meta.pagination.page);
         });
     }
+    /* eslint-disable complexity */
     process(task) {
         const startAt = moment(task.start_at);
         if (task.completed) {
@@ -142,25 +147,35 @@ class TasksService {
         }
         return task;
     }
+    /* eslint-enable */
     loadMoreTasks() {
-        if (this.loading || this.page >= parseInt(this.meta.pagination.total_pages)) {
-            return;
-        }
-        this.load(this.page + 1);
+        return this.canLoadMoreTasks() ? this.load(this.page + 1) : null;
+    }
+    canLoadMoreTasks() {
+        return !this.loading && this.page < parseInt(this.meta.pagination.total_pages);
     }
     save(task, comment = null) {
-        if (task.tag_list) {
-            task.tag_list = joinComma(task.tag_list); //fix for api mis-match
-        }
-        if (comment) {
-            if (!task.comments) {
-                task.comments = [];
-            }
-            task.comments.push({id: uuid(), body: comment, person: { id: this.users.current.id }});
-        }
+        task = this.mutateTagList(task);
+        task = this.mutateComment(task, comment);
+
         return this.api.put(`tasks/${task.id}`, task).then(() => {
             this.change();
         });
+    }
+    mutateTagList(task) {
+        // fix for api mis-match
+        return task.tag_list ? assign(task, {
+            tag_list: joinComma(task.tag_list)
+        }) : task;
+    }
+    mutateComment(task, comment) {
+        return comment ? assign(task, {
+            comments: concat(defaultTo([], task.comments), {
+                id: uuid(),
+                body: comment,
+                person: { id: this.users.current.id }
+            })
+        }) : task;
     }
     change() {
         this.$rootScope.$emit('taskChange');
@@ -168,18 +183,13 @@ class TasksService {
     create(task, contactIds = [], comment) {
         task.account_list = { id: this.api.account_list_id };
         contactIds = reject('', contactIds);
-        task.tag_list = joinComma(task.tag_list); //fix for api mis-match
+        task = this.mutateTagList(task);
         if (contactIds.length > 1) {
             const tasks = reduce((result, contactId) => {
                 let contactTask = angular.copy(task);
-                if (comment) {
-                    if (!contactTask.comments) {
-                        contactTask.comments = [];
-                    }
-                    contactTask.comments = [{id: uuid(), body: comment, person: { id: this.users.current.id }}];
-                }
+                contactTask = this.mutateComment(contactTask, comment);
                 if (!isEmpty(contactId)) {
-                    result = concat(result, assign(contactTask, {id: uuid(), contacts: [{id: contactId}]}));
+                    result = concat(result, assign(contactTask, { id: uuid(), contacts: [{ id: contactId }] }));
                 }
                 return result;
             }, [], contactIds);
@@ -189,21 +199,17 @@ class TasksService {
                 }
             });
         }
-        if (comment) {
-            if (!task.comments) {
-                task.comments = [];
-            }
-            task.comments = [{id: uuid(), body: comment, person: { id: this.users.current.id }}];
-        }
-        task.contacts = map(contactId => { return {id: contactId}; }, contactIds);
-        return this.api.post('tasks', task).then(data => {
+        task = this.mutateComment(task, comment);
+
+        task.contacts = map((contactId) => { return { id: contactId }; }, contactIds);
+        return this.api.post('tasks', task).then((data) => {
             const processedTask = this.process(data);
             this.data = upsert('id', processedTask, this.data);
             return data;
         });
     }
     bulkComplete() {
-        const tasks = map(id => {
+        const tasks = map((id) => {
             return {
                 id: id,
                 completed: true
@@ -220,15 +226,15 @@ class TasksService {
         });
     }
     bulkEdit(model, comment, tags) {
-        const tasks = map(id => {
-            let task = assign({id: id}, model);
+        const tasks = map((id) => {
+            let task = assign({ id: id }, model);
             if (comment) {
-                task.comments = [{id: uuid(), body: comment, person: { id: this.users.current.id }}];
+                task.comments = [{ id: uuid(), body: comment, person: { id: this.users.current.id } }];
             }
             task.tag_list = emptyToNull(joinComma(tags));
             return omitBy(isNil, task);
         }, this.selected);
-        return this.api.put('tasks/bulk', tasks).then(data => {
+        return this.api.put('tasks/bulk', tasks).then((data) => {
             this.tasksTags.change();
             this.change();
             return data;
@@ -236,14 +242,14 @@ class TasksService {
     }
     deleteComment(task, comment) {
         return this.api.delete(`tasks/${task.id}/comments/${comment.id}`).then(() => {
-            task.comments = reject({id: comment.id}, task.comments);
+            task.comments = reject({ id: comment.id }, task.comments);
         });
     }
     delete(task) {
         const message = this.gettextCatalog.getString('Are you sure you wish to delete the selected task?');
         return this.modal.confirm(message).then(() => {
             return this.api.delete(`tasks/${task.id}`).then(() => {
-                this.data = reject({id: task.id}, this.data);
+                this.data = reject({ id: task.id }, this.data);
                 this.selected = pull(task.id, this.selected);
             });
         });
@@ -252,26 +258,26 @@ class TasksService {
         if (this.selected.length > 150) {
             const message = this.gettextCatalog.getString('Too many tasks selected, please select a maximum of 150 tasks.');
             this.alerts.addAlert(message, 'danger');
-            return Promise.reject(new Error({message: message}));
+            return Promise.reject(new Error({ message: message }));
         }
-        const tasks = map(id => { return {id: id}; }, this.selected);
+        const tasks = map((id) => { return { id: id }; }, this.selected);
         const message = this.gettextCatalog.getPlural(this.selected.length, 'Are you sure you wish to delete the selected task?', 'Are you sure you wish to delete the {{$count}} selected tasks?', {});
         return this.modal.confirm(message).then(() => {
-            return this.api.delete({url: 'tasks/bulk', data: tasks, type: 'tasks'}).then(() => {
+            return this.api.delete({ url: 'tasks/bulk', data: tasks, type: 'tasks' }).then(() => {
                 this.alerts.addAlert(this.gettextCatalog.getPlural(angular.copy(this.selected).length, '1 task successfully removed.', '{{$count}} tasks successfully removed.', {}));
                 this.data = pullAllBy('id', tasks, this.data);
                 if (this.data.length === 0) {
                     this.load();
                 }
                 this.selected = [];
-            }).catch(err => {
+            }).catch((err) => {
                 this.alerts.addAlert(this.gettextCatalog.getPlural(this.selected.length, 'Unable to delete the selected task.', 'Unable to delete the {{$count}} selected tasks.', {}), 'danger');
                 throw err;
             });
         });
     }
     star(task) {
-        return this.api.put(`tasks/${task.id}`, {id: task.id, starred: !task.starred});
+        return this.api.put(`tasks/${task.id}`, { id: task.id, starred: !task.starred });
     }
     isSelected(id) {
         return includes(id, this.selected);
@@ -313,7 +319,17 @@ class TasksService {
         });
     }
     logModal(contactsList = []) {
-        return this.tasksModals.log(contactsList);
+        return this.modal.open({
+            template: require('./modals/log/log.html'),
+            controller: 'logTaskController',
+            resolve: {
+                tags: () => this.tasksTags.load(),
+                0: () => this.serverConstants.load(['activity_hashes', 'next_actions', 'results', 'status_hashes'])
+            },
+            locals: {
+                contactsList: contactsList
+            }
+        });
     }
     bulkEditModal(tasks) {
         return this.tasksModals.bulkEdit(tasks || this.selected);
@@ -330,6 +346,7 @@ import alerts from '../common/alerts/alerts.service';
 import api from '../common/api/api.service';
 import contacts from '../contacts/contacts.service';
 import getText from 'angular-gettext';
+import serverConstants from 'common/serverConstants/serverConstants.service';
 import tasksModals from './modals/modals.service';
 import tasksFilter from './filter/filter.service';
 import tasksTags from './filter/tags/tags.service';
@@ -337,5 +354,5 @@ import users from '../common/users/users.service';
 
 export default angular.module('mpdx.tasks.service', [
     getText,
-    alerts, api, contacts, tasksFilter, tasksModals, tasksTags, users
+    alerts, api, contacts, serverConstants, tasksFilter, tasksModals, tasksTags, users
 ]).service('tasks', TasksService).name;

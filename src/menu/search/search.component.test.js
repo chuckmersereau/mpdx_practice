@@ -11,7 +11,7 @@ describe('menu.search.component', () => {
             contacts = _contacts_;
             state = $state;
             timeout = $timeout;
-            $ctrl = $componentController('menuSearch', {$scope: scope}, {});
+            $ctrl = $componentController('menuSearch', { $scope: scope }, {});
         });
         spyOn(state, 'go').and.callFake(() => {});
     });
@@ -61,7 +61,7 @@ describe('menu.search.component', () => {
 
         it('should navigate to the contact list', () => {
             $ctrl.gotoList();
-            expect(state.go).toHaveBeenCalledWith('contacts', {}, {reload: true});
+            expect(state.go).toHaveBeenCalledWith('contacts', {}, { reload: true });
         });
 
         it('should clear out the value after navigation', () => {

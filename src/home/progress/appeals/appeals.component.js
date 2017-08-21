@@ -1,10 +1,15 @@
+import defaultTo from 'lodash/fp/defaultTo';
+import get from 'lodash/fp/get';
+
 class AppealsController {
     constructor(
-        $rootScope,
-        appeals
+        $log, $rootScope,
+        api
     ) {
-        this.appeals = appeals;
+        this.$log = $log;
         this.$rootScope = $rootScope;
+        this.api = api;
+
         this.count = 0;
 
         $rootScope.$on('accountListUpdated', () => {
@@ -15,8 +20,15 @@ class AppealsController {
         this.getCount();
     }
     getCount() {
-        this.appeals.getCount().then((data) => {
-            this.count = data;
+        return this.api.get('appeals', {
+            fields: { appeals: '' },
+            filter: { account_list_id: this.api.account_list_id },
+            per_page: 0
+        }).then((data) => {
+            const count = defaultTo(0, get('meta.pagination.total_count', data));
+            this.$log.debug('appeals count', count);
+            this.count = count;
+            return count;
         });
     }
 }
@@ -26,5 +38,8 @@ const progressAppeals = {
     controller: AppealsController
 };
 
-export default angular.module('mpdx.home.progress.appeals', [])
-    .component('progressAppeals', progressAppeals).name;
+import api from 'common/api/api.service';
+
+export default angular.module('mpdx.home.progress.appeals', [
+    api
+]).component('progressAppeals', progressAppeals).name;

@@ -5,7 +5,7 @@
     <div ng-if="$ctrl.users.organizationAccounts.length === 0">
         <h3 translate>Let's start by connecting to your first organization</h3>
     </div>
-    <div ng-repeat="account in $ctrl.users.organizationAccounts track by account.id" class="panel panel-default--no-animate">
+    <div ng-repeat="account in $ctrl.users.organizationAccounts track by account.id" class="panel panel-default panel-default--no-animate">
         <div class="panel-heading">
             <div class="pull-right">
                 <a class="btn btn-default btn-xs" ng-click="$ctrl.editAccount(account)" ng-if="['DataServer', 'DataServerPtc', 'DataServerNavigators'].includes($ctrl.serverConstants.data.organizations_attributes[account.organization.id].api_class)">
@@ -50,7 +50,7 @@
     <a class="btn btn-primary" ng-click="$ctrl.page = 'select_org'" translate>Add Account</a>
 </div>
 <form  ng-if="$ctrl.page == 'select_org'" ng-submit="$ctrl.createAccount()" name="addOrganization" novalidate>
-    <div class="panel panel-default--no-animate">
+    <div class="panel panel-default panel-default--no-animate">
         <div class="panel-heading" translate>
             Add Account
         </div>
@@ -98,7 +98,7 @@
     </div>
 </form>
 <form ng-if="$ctrl.page === 'edit_account'" ng-submit="$ctrl.updateAccount()" name="editOrganization" novalidate>
-    <div class="panel panel-default--no-animate">
+    <div class="panel panel-default panel-default--no-animate">
         <div class="panel-heading">
             <translate>Edit Account</translate>
             |

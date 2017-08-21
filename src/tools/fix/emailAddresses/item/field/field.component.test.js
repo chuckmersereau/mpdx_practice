@@ -17,8 +17,8 @@ describe('tools.fix.emailEmailAddresses.item.field.component', () => {
 
     function loadController() {
         $ctrl = componentController('fixEmailAddressesItemField',
-                                    { $scope: scope },
-                                    { person: person, emailAddress: emailAddress });
+            { $scope: scope },
+            { person: person, emailAddress: emailAddress });
     }
 
     describe('$onInit', () => {

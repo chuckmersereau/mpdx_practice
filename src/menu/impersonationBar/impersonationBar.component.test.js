@@ -1,4 +1,4 @@
-//causes 'Script Error' in Unit tests
+// causes 'Script Error' in Unit tests
 
 // import component from './impersonationBar.component';
 //

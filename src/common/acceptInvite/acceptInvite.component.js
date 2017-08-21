@@ -13,7 +13,10 @@ class AcceptInviteController {
     }
 
     $onInit() {
-        if (!isEmpty(this.$stateParams.code) && !isEmpty(this.$stateParams.account_list_id) && !isEmpty(this.$stateParams.id)) {
+        if (!isEmpty(this.$stateParams.code)
+            && !isEmpty(this.$stateParams.account_list_id)
+            && !isEmpty(this.$stateParams.id)
+        ) {
             return this.api.put({
                 url: `account_lists/${this.$stateParams.account_list_id}/invites/${this.$stateParams.id}/accept`,
                 data: {
@@ -24,14 +27,16 @@ class AcceptInviteController {
             }).then(() => {
                 this.alerts.addAlert(this.gettextCatalog.getString('Accepted invite to account successfully.'));
                 this.$state.go('home');
-            }).catch(err => {
-                this.alerts.addAlert(this.gettextCatalog.getString('Unable to accept invite. Try asking the account holder to resend the invite.'), 'danger', null, 10);
+            }).catch((err) => {
+                const message = 'Unable to accept invite. Try asking the account holder to resend the invite.';
+                this.alerts.addAlert(this.gettextCatalog.getString(message), 'danger', null, 10);
                 this.$state.go('home');
                 throw err;
             });
         } else {
-            return Promise.reject().catch(err => {
-                this.alerts.addAlert(this.gettextCatalog.getString('Unable to accept invite. Try asking the account holder to resend the invite.'), 'danger', null, 10);
+            return Promise.reject().catch((err) => {
+                const message = 'Unable to accept invite. Try asking the account holder to resend the invite.';
+                this.alerts.addAlert(this.gettextCatalog.getString(message), 'danger', null, 10);
                 this.$state.go('home');
                 throw err;
             });

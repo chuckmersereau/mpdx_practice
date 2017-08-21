@@ -3,7 +3,7 @@ const Item = {
     bindings: {
         contact: '<',
         onClick: '&',
-        ignored: '<'
+        ignore: '<'
     }
 };
 

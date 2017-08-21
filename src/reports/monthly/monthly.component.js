@@ -32,7 +32,7 @@ class MonthlyController {
     loadExpectedMonthlyTotals() {
         this.activePanels = [0, 1, 2];
         this.loading = true;
-        this.api.get('reports/expected_monthly_totals', {filter: {account_list_id: this.api.account_list_id}}).then((data) => {
+        this.api.get('reports/expected_monthly_totals', { filter: { account_list_id: this.api.account_list_id } }).then((data) => {
             this.$log.debug('reports/expected_monthly_totals', data);
             this.total_currency = data.total_currency;
             this.total_currency_symbol = data.total_currency_symbol;
@@ -73,4 +73,4 @@ const Monthly = {
 };
 
 export default angular.module('mpdx.reports.monthly.component', [])
-        .component('monthly', Monthly).name;
+    .component('monthly', Monthly).name;

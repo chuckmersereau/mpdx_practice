@@ -1,5 +1,4 @@
 import concat from 'lodash/fp/concat';
-import find from 'lodash/fp/find';
 import get from 'lodash/fp/get';
 import isNil from 'lodash/fp/isNil';
 import reduce from 'lodash/fp/reduce';
@@ -7,34 +6,15 @@ import reject from 'lodash/fp/reject';
 
 class CommitmentInfoService {
     constructor(
-        api, contacts, serverConstants
+        api, contacts, serverConstants, tools
     ) {
         this.api = api;
         this.contacts = contacts;
         this.serverConstants = serverConstants;
+        this.tools = tools;
 
         this.loading = false;
         this.page = 1;
-    }
-
-    loadCount() {
-        if (this.meta) { return Promise.resolve(this.meta); }
-        return this.api.get(
-            'contacts',
-            {
-                filter: {
-                    status_valid: false,
-                    account_list_id: this.api.account_list_id
-                },
-                page: 1,
-                per_page: 0
-            }
-        ).then((data) => {
-            if (!this.meta) {
-                this.meta = data.meta;
-            }
-            return this.meta;
-        });
     }
 
     load(reset = false, page = 1) {
@@ -60,14 +40,14 @@ class CommitmentInfoService {
                 page: page,
                 per_page: 5
             }
-        ).then(data => {
-            this.meta = data.meta;
+        ).then((data) => {
+            this.setMeta(data.meta);
 
             this.data = reduce((result, contact) => {
                 contact.original_pledge_amount = contact.pledge_amount;
                 contact.original_pledge_currency = contact.pledge_currency;
                 if (!isNil(contact.pledge_frequency)) {
-                    const frequency = find({key: parseFloat(contact.pledge_frequency)}, this.serverConstants.data.pledge_frequency_hashes);
+                    const frequency = this.serverConstants.getPledgeFrequency(contact.pledge_frequency);
                     contact.original_pledge_frequency = get('value', frequency);
                 }
                 contact.original_status = contact.status;
@@ -94,6 +74,14 @@ class CommitmentInfoService {
         });
     }
 
+    setMeta(meta) {
+        this.meta = meta;
+
+        if (this.meta && this.meta.pagination && this.meta.pagination.total_count && this.tools.analytics) {
+            this.tools.analytics['fix-commitment-info'] = this.meta.pagination.total_count;
+        }
+    }
+
     save(contact) {
         contact.status_valid = true;
         return this.contacts.save(contact).then(() => this.removeContactFromData(contact.id));
@@ -111,6 +99,7 @@ class CommitmentInfoService {
         this.data = reject({ id: contactId }, this.data);
         if (this.meta && this.meta.pagination && this.meta.pagination.total_count) {
             this.meta.pagination.total_count -= 1;
+            this.setMeta(this.meta);
         }
         if (this.data.length === 0) {
             this.load(true, this.page);
@@ -133,7 +122,8 @@ class CommitmentInfoService {
 import api from 'common/api/api.service';
 import contacts from 'contacts/contacts.service';
 import serverConstants from 'common/serverConstants/serverConstants.service';
+import tools from 'tools/tools.service';
 
 export default angular.module('mpdx.tools.fix.commitmentInfo.service', [
-    api, contacts, serverConstants
+    api, contacts, serverConstants, tools
 ]).service('fixCommitmentInfo', CommitmentInfoService).name;

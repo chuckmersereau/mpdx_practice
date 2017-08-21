@@ -1,4 +1,4 @@
-import service from "./google.service";
+import service from './google.service';
 
 describe('tools.import.csv.service', () => {
     let api, importGoogle;

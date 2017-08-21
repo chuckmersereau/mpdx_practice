@@ -1,22 +1,21 @@
 import component from './account.component';
 
 describe('setup.account.component', () => {
-    let $ctrl, rootScope, scope, componentController, accounts, users;
+    let $ctrl, rootScope, scope, componentController, users;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _accounts_, _users_) => {
+        inject(($componentController, $rootScope, _users_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
-            accounts = _accounts_;
             componentController = $componentController;
             users = _users_;
-            users.current = {preferences: {}};
-            users.currentOptions = {setup_position: {}};
+            users.current = { preferences: {} };
+            users.currentOptions = { setup_position: {} };
             loadController();
         });
     });
     function loadController() {
-        $ctrl = componentController('setupAccount', {$scope: scope}, {});
+        $ctrl = componentController('setupAccount', { $scope: scope }, {});
     }
     describe('$onInit', () => {
         it('should call listOrganizationAccounts', () => {

@@ -2,10 +2,14 @@ import list from './list.component';
 import assign from 'lodash/fp/assign';
 
 describe('contacts.list.component', () => {
-    let $ctrl, contacts, contactsTags, rootScope, scope, componentController, modal, tasks, alerts, gettextCatalog, api, serverConstants;
+    let $ctrl, contacts, contactsTags, rootScope, scope, componentController, modal, tasks, alerts, gettextCatalog,
+        api, serverConstants;
     beforeEach(() => {
         angular.mock.module(list);
-        inject(($componentController, $rootScope, _contacts_, _contactsTags_, _modal_, _tasks_, _alerts_, _gettextCatalog_, _api_, _serverConstants_) => {
+        inject((
+            $componentController, $rootScope, _contacts_, _contactsTags_, _modal_, _tasks_, _alerts_,
+            _gettextCatalog_, _api_, _serverConstants_
+        ) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             alerts = _alerts_;
@@ -21,10 +25,10 @@ describe('contacts.list.component', () => {
             loadController();
         });
         spyOn(gettextCatalog, 'getString').and.callThrough();
-        spyOn(gettextCatalog, 'getPlural').and.callFake(data => data);
+        spyOn(gettextCatalog, 'getPlural').and.callFake((data) => data);
     });
     function loadController() {
-        $ctrl = componentController('contactsList', {$scope: scope}, {view: null, selected: null});
+        $ctrl = componentController('contactsList', { $scope: scope }, { view: null, selected: null });
     }
     describe('constructor', () => {
         beforeEach(() => {
@@ -69,7 +73,7 @@ describe('contacts.list.component', () => {
             scope.$digest();
             expect($ctrl.load).toHaveBeenCalledWith();
         });
-        //xit until fix org_accounts accountListUpdated to not fire in service
+        // xit until fix org_accounts accountListUpdated to not fire in service
         xit('should fire contacts.load on accountListUpdated', () => {
             rootScope.$emit('accountListUpdated');
             scope.$digest();
@@ -94,7 +98,7 @@ describe('contacts.list.component', () => {
             spyOn($ctrl, 'load').and.callFake(() => Promise.resolve());
             $ctrl.page = 0;
             $ctrl.loading = false;
-            $ctrl.meta = {pagination: {total_pages: 4}};
+            $ctrl.meta = { pagination: { total_pages: 4 } };
         });
         it('should call load', () => {
             $ctrl.loadMoreContacts();
@@ -113,7 +117,7 @@ describe('contacts.list.component', () => {
     });
     describe('toggleAllContacts', () => {
         beforeEach(() => {
-            $ctrl.data = [{id: 1}];
+            $ctrl.data = [{ id: 1 }];
             spyOn($ctrl, 'selectAllContacts').and.callFake(() => {});
             spyOn(contacts, 'clearSelectedContacts').and.callFake(() => {});
         });
@@ -140,13 +144,13 @@ describe('contacts.list.component', () => {
         });
     });
     describe('hideContact', () => {
-        let contact = {id: 1, name: 'a'};
+        let contact = { id: 1, name: 'a' };
         beforeEach(() => {
             $ctrl.data = [contact];
-            spyOn(contacts, 'hideContact').and.callFake(() => new Promise(resolve => resolve()));
+            spyOn(contacts, 'hideContact').and.callFake(() => new Promise((resolve) => resolve()));
         });
         it('should call contacts.hideContact', () => {
-            $ctrl.data = [{id: 1}];
+            $ctrl.data = [{ id: 1 }];
             $ctrl.hideContact(contact);
             expect(contacts.hideContact).toHaveBeenCalledWith(contact);
         });
@@ -154,21 +158,6 @@ describe('contacts.list.component', () => {
             $ctrl.hideContact(contact).then(() => {
                 expect($ctrl.data).toEqual([]);
                 done();
-            });
-        });
-    });
-    describe('openAddTagModal', () => {
-        beforeEach(() => {
-            spyOn(modal, 'open').and.callFake(() => {});
-        });
-        it('should open the add tag modal', () => {
-            $ctrl.openAddTagModal();
-            expect(modal.open).toHaveBeenCalledWith({
-                template: require('../sidebar/filter/tags/add/add.html'),
-                controller: 'addTagController',
-                locals: {
-                    selectedContacts: contacts.selectedContacts
-                }
             });
         });
     });
@@ -195,15 +184,6 @@ describe('contacts.list.component', () => {
         it('should open the add task modal', () => {
             $ctrl.openAddTaskModal();
             expect(tasks.addModal).toHaveBeenCalledWith($ctrl.contacts.selectedContacts);
-        });
-    });
-    describe('openLogTaskModal', () => {
-        beforeEach(() => {
-            spyOn(tasks, 'logModal').and.callFake(() => {});
-        });
-        it('should open the log task modal', () => {
-            $ctrl.openLogTaskModal();
-            expect(tasks.logModal).toHaveBeenCalledWith($ctrl.contacts.selectedContacts);
         });
     });
     describe('openEditFieldsModal', () => {
@@ -274,7 +254,7 @@ describe('contacts.list.component', () => {
         it('should open the map contacts modal', () => {
             $ctrl.openMapContactsModal();
             expect(modal.open).toHaveBeenCalledWith({
-                template: require('./mapContacts/mapContacts.html'),
+                template: require('./map/map.html'),
                 controller: 'mapContactsController',
                 locals: {
                     selectedContacts: $ctrl.getSelectedContacts()
@@ -291,9 +271,9 @@ describe('contacts.list.component', () => {
                 per_page: jasmine.any(Number),
                 include: 'addresses,people,people.facebook_accounts,people.phone_numbers,people.email_addresses',
                 fields: {
-                    contact: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people,created_at',
+                    contact: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people,created_at,late_at',
                     people: 'deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
-                    addresses: 'city,geo,historic,primary_mailing_address,postal_code,state,source,street',
+                    addresses: 'city,geo,historic,primary_mailing_address,postal_code,state,source,street,updated_at',
                     email_addresses: 'email,historic,primary',
                     phone_numbers: 'historic,location,number,primary',
                     facebook_accounts: 'username'
@@ -302,11 +282,11 @@ describe('contacts.list.component', () => {
             },
             overrideGetAsPost: true
         };
-        let contact = {id: 1, name: 'a'};
+        let contact = { id: 1, name: 'a' };
         let result = [contact];
         result.meta = {
             to: 1,
-            pagination: {page: 1}
+            pagination: { page: 1 }
         };
         beforeEach(() => {
             spyOn(contacts, 'buildFilterParams').and.callFake(() => { return {}; });
@@ -326,13 +306,17 @@ describe('contacts.list.component', () => {
         it('should default to the first page', () => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve(result));
             $ctrl.load();
-            expect(api.get).toHaveBeenCalledWith(assign(defaultRequest, {data: assign(defaultRequest.data, {page: 1})}));
+            expect(api.get).toHaveBeenCalledWith(assign(defaultRequest, {
+                data: assign(defaultRequest.data, { page: 1 })
+            }));
             scope.$digest();
         });
         it('should request the page of the param', () => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve(result));
             $ctrl.load(2);
-            expect(api.get).toHaveBeenCalledWith(assign(defaultRequest, {data: assign(defaultRequest.data, {page: 2})}));
+            expect(api.get).toHaveBeenCalledWith(assign(defaultRequest, {
+                data: assign(defaultRequest.data, { page: 2 })
+            }));
         });
         it('should increment listLoadCount', () => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve(result));
@@ -346,7 +330,7 @@ describe('contacts.list.component', () => {
             expect(api.get).toHaveBeenCalledWith(defaultRequest);
             expect(contacts.buildFilterParams).toHaveBeenCalled();
         });
-        it('should unflag loading after load', done => {
+        it('should unflag loading after load', (done) => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve(result));
             $ctrl.load().then(() => {
                 expect($ctrl.loading).toBeFalsy();
@@ -355,7 +339,7 @@ describe('contacts.list.component', () => {
         });
         it('should set contacts on page 1', (done) => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve(result));
-            $ctrl.data = [{id: 2, name: 'b'}];
+            $ctrl.data = [{ id: 2, name: 'b' }];
             $ctrl.load().then(() => {
                 expect($ctrl.data).toEqual([contact]);
                 done();
@@ -363,7 +347,7 @@ describe('contacts.list.component', () => {
         });
         it('should union contacts on page 2', (done) => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve(result));
-            $ctrl.data = [{id: 2, name: 'b'}, {id: 1, name: 'b'}];
+            $ctrl.data = [{ id: 2, name: 'b' }, { id: 1, name: 'b' }];
             $ctrl.load(2).then(() => {
                 expect($ctrl.data[1].name).toEqual('b');
                 done();
@@ -371,17 +355,17 @@ describe('contacts.list.component', () => {
         });
         it('should return data', (done) => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve(result));
-            $ctrl.load().then(data => {
+            $ctrl.load().then((data) => {
                 expect(data).toBeDefined();
                 done();
             });
         });
-        it('should handle late prior results', done => {
+        it('should handle late prior results', (done) => {
             let call = 0;
             spyOn(api, 'get').and.callFake(() => {
                 if (call === 0) {
                     call++;
-                    return new Promise(resolve => {
+                    return new Promise((resolve) => {
                         setTimeout(() => {
                             resolve(result);
                         }, 1000);
@@ -390,7 +374,7 @@ describe('contacts.list.component', () => {
                     return Promise.resolve(result);
                 }
             });
-            $ctrl.load().then(data => {
+            $ctrl.load().then((data) => {
                 done();
                 expect(data).toBeUndefined();
             });
@@ -402,7 +386,7 @@ describe('contacts.list.component', () => {
             let result = [];
             result.meta = {
                 to: 0,
-                pagination: {page: 1}
+                pagination: { page: 1 }
             };
             spyOn(api, 'get').and.callFake(() => Promise.resolve(result));
             spyOn($ctrl, 'getTotalCount').and.callFake(() => {});
@@ -415,12 +399,12 @@ describe('contacts.list.component', () => {
     describe('getSelectedContacts', () => {
         it('should get contacts for selected ids', () => {
             contacts.selectedContacts = [1, 2];
-            $ctrl.data = [{id: 1, name: 'a'}, {id: 2, name: 'b'}];
+            $ctrl.data = [{ id: 1, name: 'a' }, { id: 2, name: 'b' }];
             expect($ctrl.getSelectedContacts()).toEqual($ctrl.data);
         });
     });
-    describe('selectAllContacts', () => { //spread operator fails in karma/phantomjs
-        const data = [{id: 1, name: 'a'}, {id: 2, name: 'b'}];
+    describe('selectAllContacts', () => { // spread operator fails in karma/phantomjs
+        const data = [{ id: 1, name: 'a' }, { id: 2, name: 'b' }];
         beforeEach(() => {
             spyOn($ctrl, 'getCompleteFilteredList').and.callFake(() => Promise.resolve(data));
         });
@@ -450,12 +434,12 @@ describe('contacts.list.component', () => {
         it('should save selected contacts as hidden', (done) => {
             contacts.selectedContacts = [1, 2];
             $ctrl.bulkHideContacts().then(() => {
-                expect(contacts.bulkSave).toHaveBeenCalledWith([{id: 1, status: 'Never Ask'}, {id: 2, status: 'Never Ask'}]);
+                expect(contacts.bulkSave).toHaveBeenCalledWith([{ id: 1, status: 'Never Ask' }, { id: 2, status: 'Never Ask' }]);
                 done();
             });
         });
         it('should hide the contacts from view', (done) => {
-            $ctrl.data = [{id: 1, status: 'Never Ask'}, {id: 1, status: 'Never Ask'}];
+            $ctrl.data = [{ id: 1, status: 'Never Ask' }, { id: 1, status: 'Never Ask' }];
             contacts.selectedContacts = [1, 2];
             $ctrl.bulkHideContacts().then(() => {
                 expect($ctrl.data).toEqual([]);
@@ -484,7 +468,7 @@ describe('contacts.list.component', () => {
     });
     describe('getTotalCount', () => {
         beforeEach(() => {
-            spyOn(api, 'get').and.callFake(() => Promise.resolve({meta: {pagination: {total_count: 2}}}));
+            spyOn(api, 'get').and.callFake(() => Promise.resolve({ meta: { pagination: { total_count: 2 } } }));
         });
         it('should get a count of contacts in account list', (done) => {
             $ctrl.getTotalCount().then(() => {

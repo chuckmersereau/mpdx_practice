@@ -40,8 +40,11 @@ $border-radius:             3px;
 
 $nav-height: 93px;
 $secondary-height: 43px;
+$setup-height: -50px;
 $impersonation-height: 35px;
 $impersonation-nav-height: $nav-height + $impersonation-height;
 $secondary-nav-height: $nav-height + $secondary-height;
+$setup-nav-height: $nav-height + $setup-height;
 $secondary-impersonation-nav-height: $nav-height + $secondary-height + $impersonation-height;
+$setup-impersonation-nav-height: $nav-height + $setup-height + $impersonation-height;
 $nav-padding: 20px;

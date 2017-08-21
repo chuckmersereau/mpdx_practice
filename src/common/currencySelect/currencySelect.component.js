@@ -26,4 +26,4 @@ const CurrencySelect = {
 };
 
 export default angular.module('mpdx.common.currencySelect.component', [])
-        .component('currencySelect', CurrencySelect).name;
+    .component('currencySelect', CurrencySelect).name;

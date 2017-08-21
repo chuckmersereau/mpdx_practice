@@ -42,7 +42,7 @@ class ItemController {
                 facebook_accounts: 'username',
                 person: 'first_name,last_name,deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers'
             }
-        }).then(task => {
+        }).then((task) => {
             this.loaded = true;
             this.task = task;
             /* istanbul ignore next */
@@ -66,7 +66,7 @@ class ItemController {
     }
     addComment() {
         if (this.comment) {
-            return this.api.post(`tasks/${this.task.id}/comments`, { body: this.comment, person: { id: this.users.current.id } }).then(data => {
+            return this.api.post(`tasks/${this.task.id}/comments`, { body: this.comment, person: { id: this.users.current.id } }).then((data) => {
                 data.person = {
                     id: this.users.current.id,
                     first_name: this.users.current.first_name,

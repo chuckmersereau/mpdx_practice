@@ -26,14 +26,12 @@ class AccountsController {
             if (!this.selectedTab) {
                 this.tabId = '';
             }
-        } else {
-            if (this.selectedTab) {
-                if (this.tabSelectable(service)) {
-                    this.tabId = service;
-                }
-            } else {
+        } else if (this.selectedTab) {
+            if (this.tabSelectable(service)) {
                 this.tabId = service;
             }
+        } else {
+            this.tabId = service;
         }
     }
     tabSelectable(service) {

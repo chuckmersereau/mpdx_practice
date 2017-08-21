@@ -15,8 +15,8 @@ class ContactInfoController {
         const no = this.gettextCatalog.getString('No');
         this.translations = {
             pledge_received: [
-                {key: true, value: yes},
-                {key: false, value: no}
+                { key: true, value: yes },
+                { key: false, value: no }
             ]
         };
     }

@@ -96,7 +96,7 @@ describe('contacts.sidebar.filter.daterange.component', () => {
     });
     describe('parseCustomOptions', () => {
         it('should set ranges', () => {
-            $ctrl.customOptions = [{name: 'a', start: '2015-12-22', end: '2015-12-23'}];
+            $ctrl.customOptions = [{ name: 'a', start: '2015-12-22', end: '2015-12-23' }];
             $ctrl.parseCustomOptions();
             expect(moment('2015-12-22').isSame($ctrl.ranges.a[0], 'date')).toBeTruthy();
             expect(moment('2015-12-23').isSame($ctrl.ranges.a[1], 'date')).toBeTruthy();

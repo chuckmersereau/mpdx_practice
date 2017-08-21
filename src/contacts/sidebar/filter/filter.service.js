@@ -26,14 +26,16 @@ class FilterService {
             defaultParams: this.default_params,
             params: this.params,
             url: 'contacts/filters'
-        }).then(({data, defaultParams, params}) => {
+        }).then(({ data, defaultParams, params }) => {
             this.data = data;
             this.default_params = defaultParams;
             this.params = params;
         });
     }
     count() {
-        return this.filters.count({ defaultParams: this.default_params, params: this.params }) + this.contactsTags.selectedTags.length + this.contactsTags.rejectedTags.length;
+        return this.filters.count({ defaultParams: this.default_params, params: this.params })
+            + this.contactsTags.selectedTags.length
+            + this.contactsTags.rejectedTags.length;
     }
     reset(stateParams = null) {
         this.params = angular.copy(this.default_params);
@@ -49,7 +51,9 @@ class FilterService {
         this.$rootScope.$emit('contactsFilterChange');
     }
     isResettable() {
-        return !angular.equals(this.params, this.default_params) || this.contactsTags.isResettable() || !isEmpty(this.wildcard_search);
+        return !angular.equals(this.params, this.default_params)
+            || this.contactsTags.isResettable()
+            || !isEmpty(this.wildcard_search);
     }
 }
 

@@ -9,7 +9,7 @@ const arr = [{
 }];
 
 describe('common.fp.mapByName', () => {
-    it(`should curry`, () => {
+    it('should curry', () => {
         expect(isFunction(mapByName())).toEqual(true);
     });
     it('should map an array by name property', () => {

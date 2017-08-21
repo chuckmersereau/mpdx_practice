@@ -78,7 +78,7 @@ class DonationsController {
             params.endDate = this.endDate;
         } else if (this.contacts.current.donor_accounts) {
             params.donorAccountId = map('id', this.contacts.current.donor_accounts).join();
-            if (params.donorAccountId === '') return Promise.reject();
+            if (params.donorAccountId === '') { return Promise.reject(); }
         }
 
         this.loading = true;
@@ -86,7 +86,7 @@ class DonationsController {
             /* istanbul ignore next */
             this.$log.debug('donations page ' + data.meta.pagination.page, data);
             this.loading = false;
-            if (reset && currentCount !== this.listLoadCount) return;
+            if (reset && currentCount !== this.listLoadCount) { return; }
             this.meta = data.meta;
             if (reset) {
                 this.data = data;

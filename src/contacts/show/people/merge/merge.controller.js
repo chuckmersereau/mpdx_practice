@@ -18,7 +18,7 @@ class MergePeopleModalController {
         this.currentlyMerging = false;
     }
     save() {
-        const selectedPeople = reject({id: this.selectedPerson}, this.selectedPeople);
+        const selectedPeople = reject({ id: this.selectedPerson }, this.selectedPeople);
         const selectedPeopleToMerge = map((person) => {
             return { winner_id: this.selectedPerson, loser_id: person.id };
         }, selectedPeople);
@@ -27,7 +27,7 @@ class MergePeopleModalController {
             this.$rootScope.$emit('personUpdated');
         }).then(() => {
             this.$scope.$hide();
-        }).catch(err => {
+        }).catch((err) => {
             const message = this.gettextCatalog.getString('There was an error while trying to merge the people');
             this.alerts.addAlert(message, 'danger');
             this.$scope.$hide();

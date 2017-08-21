@@ -17,8 +17,8 @@ describe('tools.fix.phoneNumbers.item.field.component', () => {
 
     function loadController() {
         $ctrl = componentController('fixPhoneNumbersItemField',
-                                    { $scope: scope },
-                                    { person: person, phoneNumber: phoneNumber });
+            { $scope: scope },
+            { person: person, phoneNumber: phoneNumber });
     }
 
     describe('$onInit', () => {

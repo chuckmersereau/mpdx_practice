@@ -1,13 +1,11 @@
 import service from './locale.service';
-import assign from 'lodash/fp/assign';
 import moment from 'moment';
 
 describe('contacts.service', () => {
-    let locale, rootScope;
+    let locale;
     beforeEach(() => {
         angular.mock.module(service);
-        inject(($rootScope, _locale_) => {
-            rootScope = $rootScope;
+        inject((_locale_) => {
             locale = _locale_;
         });
     });
@@ -28,7 +26,7 @@ describe('contacts.service', () => {
         });
         it('should change the moment locale', () => {
             spyOn(moment, 'locale').and.callFake(() => {});
-            spyOn(locale, 'handleMomentMisnomers').and.callFake(data => data);
+            spyOn(locale, 'handleMomentMisnomers').and.callFake((data) => data);
             locale.change('en-gb');
             expect(moment.locale).toHaveBeenCalledWith(jasmine.any(String));
             expect(locale.handleMomentMisnomers).toHaveBeenCalledWith(jasmine.any(String));

@@ -6,7 +6,7 @@ class CorrespondenceController {
     }
 }
 
-var progressCorrespondence = {
+let progressCorrespondence = {
     template: require('./correspondence.html'),
     controller: CorrespondenceController
 };

@@ -31,4 +31,4 @@ const Phone = {
 };
 
 export default angular.module('mpdx.contacts.show.personModal.phone.component', [])
-        .component('contactPhone', Phone).name;
+    .component('contactPhone', Phone).name;

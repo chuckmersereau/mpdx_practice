@@ -2,7 +2,7 @@ import complete from './complete.controller';
 import assign from 'lodash/fp/assign';
 import each from 'lodash/fp/each';
 
-const defaultTask = {id: 1, contacts: [{id: 1}]};
+const defaultTask = { id: 1, contacts: [{ id: 1 }] };
 
 describe('tasks.modals.complete.controller', () => {
     let $ctrl, controller, contacts, tasks, scope;
@@ -29,7 +29,7 @@ describe('tasks.modals.complete.controller', () => {
     }
     describe('constructor', () => {
         it('should clone the task and set the new task model to complete', () => {
-            expect($ctrl.task).toEqual(assign(defaultTask, {completed: true}));
+            expect($ctrl.task).toEqual(assign(defaultTask, { completed: true }));
             expect($ctrl.task !== $ctrl.taskInitialState).toBeTruthy();
         });
     });
@@ -63,7 +63,7 @@ describe('tasks.modals.complete.controller', () => {
     });
     describe('showPartnerStatus', () => {
         beforeEach(() => {
-            //default to true conditions
+            // default to true conditions
             defaultPartnerStatus();
         });
         it('should be true when conditions are met', () => {
@@ -79,7 +79,7 @@ describe('tasks.modals.complete.controller', () => {
         });
         it('should be false when certain activity_types are set', () => {
             const arr = ['Pre Call Letter', 'Reminder Letter', 'Support Letter', 'Thank', 'To Do'];
-            each(activity => {
+            each((activity) => {
                 $ctrl.task.activity_type = activity;
                 expect($ctrl.showPartnerStatus()).toBeFalsy();
             }, arr);

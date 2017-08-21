@@ -15,7 +15,7 @@ class OrganizationService {
         this.state = 'disabled';
     }
     save() {
-        this.api.put(`user/organization_accounts`, this.data).then((data) => {
+        this.api.put('user/organization_accounts', this.data).then((data) => {
             this.data.organization_accounts = data;
             return this.updateState();
         });
@@ -49,7 +49,7 @@ class OrganizationService {
         if (password && password.length > 0) {
             org.password = password;
         }
-        return this.api.post(`user/organization_accounts`, org);
+        return this.api.post('user/organization_accounts', org);
     }
     updateAccount(username, password, accountId) {
         return this.api.put({

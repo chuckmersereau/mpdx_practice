@@ -1,3 +1,5 @@
+import isArray from 'lodash/fp/isArray';
+
 class ModalsService {
     constructor(
         modal, serverConstants, tasksTags
@@ -7,9 +9,7 @@ class ModalsService {
         this.tasksTags = tasksTags;
     }
     add(contactsList = [], activityType = null) {
-        if (!Array.isArray(contactsList)) {
-            contactsList = [contactsList];
-        }
+        contactsList = isArray(contactsList) ? contactsList : [contactsList];
         return this.modal.open({
             template: require('./add/add.html'),
             controller: 'addTaskController',
@@ -20,22 +20,6 @@ class ModalsService {
             locals: {
                 contactsList: contactsList,
                 activityType: activityType
-            }
-        });
-    }
-    log(contactsList = []) {
-        if (!Array.isArray(contactsList)) {
-            contactsList = [contactsList];
-        }
-        return this.modal.open({
-            template: require('./log/log.html'),
-            controller: 'logTaskController',
-            resolve: {
-                tags: () => this.tasksTags.load(),
-                0: () => this.serverConstants.load(['activity_hashes', 'next_actions', 'results', 'status_hashes'])
-            },
-            locals: {
-                contactsList: contactsList
             }
         });
     }

@@ -9,12 +9,12 @@ describe('setup.preferences.integrations.component', () => {
         inject(($componentController, $rootScope, _users_, $state) => {
             scope = $rootScope.$new();
             users = _users_;
-            users.currentOptions = {setup_position: {}};
+            users.currentOptions = { setup_position: {} };
             state = $state;
-            $ctrl = $componentController('setupPreferencesIntegrations', {$scope: scope}, {});
+            $ctrl = $componentController('setupPreferencesIntegrations', { $scope: scope }, {});
         });
         spyOn(state, 'go').and.callFake(() => {});
-        spyOn(users, 'setOption').and.callFake(() => new Promise(resolve => resolve({})));
+        spyOn(users, 'setOption').and.callFake(() => new Promise((resolve) => resolve({})));
     });
     describe('constructor', () => {
         it('should set selectable tabs', () => {

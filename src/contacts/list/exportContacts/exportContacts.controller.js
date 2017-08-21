@@ -1,5 +1,5 @@
 import assign from 'lodash/fp/assign';
-import joinComma from "../../../common/fp/joinComma";
+import joinComma from '../../../common/fp/joinComma';
 import moment from 'moment';
 import bowser from 'bowser';
 
@@ -55,7 +55,7 @@ class ExportContactsController {
         });
         return this.api.get(params).then((data) => {
             const blob = new Blob([data], {
-                type: `text/csv;charset=utf-8;`
+                type: 'text/csv;charset=utf-8;'
             });
             this.sendDownload(blob, `mpdx-contact-export-${moment().format('Y-MM-DD-HH:mm')}.csv`);
         }).then(() => {
@@ -75,7 +75,7 @@ class ExportContactsController {
         });
         return this.api.get(params).then((data) => {
             const blob = new Blob([data], {
-                type: `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;`
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;'
             });
             this.sendDownload(blob, `mpdx-contact-export-${moment().format('Y-MM-DD-HH:mm')}.xlsx`);
         }).then(() => {
@@ -94,7 +94,7 @@ class ExportContactsController {
         });
         return this.api.get(params).then((data) => {
             const blob = new Blob([data], {
-                type: `text/csv;charset=utf-8;`
+                type: 'text/csv;charset=utf-8;'
             });
             this.sendDownload(blob, `mpdx-mailing-export-${moment().format('Y-MM-DD-HH:mm')}.csv`);
         }).then(() => {

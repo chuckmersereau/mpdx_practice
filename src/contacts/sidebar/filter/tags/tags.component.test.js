@@ -13,7 +13,7 @@ describe('contacts.filter.tags.component', () => {
         });
     });
     function loadController() {
-        $ctrl = componentController('contactsTags', {$scope: scope}, {});
+        $ctrl = componentController('contactsTags', { $scope: scope }, {});
     }
     describe('events', () => {
         it('should handle account list change', () => {

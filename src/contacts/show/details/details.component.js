@@ -6,6 +6,7 @@ import get from 'lodash/fp/get';
 import keys from 'lodash/fp/keys';
 import map from 'lodash/fp/map';
 import round from 'lodash/fp/round';
+import sumBy from 'lodash/fp/sumBy';
 import uuid from 'uuid/v1';
 
 class ContactDetailsController {
@@ -27,7 +28,7 @@ class ContactDetailsController {
         this.languages = map((locale) => {
             const language = $window.languageMappingList[locale];
             if (language) {
-                return {alias: locale, value: `${language.englishName} (${language.nativeName} - ${locale})`};
+                return { alias: locale, value: `${language.englishName} (${language.nativeName} - ${locale})` };
             } else {
                 return {
                     alias: locale,
@@ -41,12 +42,16 @@ class ContactDetailsController {
         const no = this.gettextCatalog.getString('No');
         this.translations = {
             no_appeals: [
-                {key: false, value: yes},
-                {key: true, value: no}
+                { key: false, value: yes },
+                { key: true, value: no }
+            ],
+            no_gift_aid: [
+                { key: false, value: yes },
+                { key: true, value: no }
             ],
             magazine: [
-                {key: true, value: yes},
-                {key: false, value: no}
+                { key: true, value: yes },
+                { key: false, value: no }
             ]
         };
         this.users.listOrganizationAccounts();
@@ -69,7 +74,7 @@ class ContactDetailsController {
         }
     }
     addPartnerAccount() {
-        this.contact.donor_accounts.push({id: uuid(), organization: { id: this.users.organizationAccounts[0].organization.id }, account_number: ''});
+        this.contact.donor_accounts.push({ id: uuid(), organization: { id: this.users.organizationAccounts[0].organization.id }, account_number: '' });
     }
     onContactSelected(params) {
         if (!params) {
@@ -85,40 +90,40 @@ class ContactDetailsController {
     }
     save() {
         if (this.referrer && this.referrer !== get('contacts_that_referred_me[0].id', this.contact)) {
-            //wipe out old referrals
+            // wipe out old referrals
             this.contact.contact_referrals_to_me = this.destroyReferrals(this.contact.contact_referrals_to_me);
 
-            //awful, but it just won't serialize all the custom types
-            const destroyOld = map(referee => {
-                return assign({type: 'contact_referrals'}, referee);
+            // awful, but it just won't serialize all the custom types
+            const destroyOld = map((referee) => {
+                return assign({ type: 'contact_referrals' }, referee);
             }, this.contact.contact_referrals_to_me);
             const newId = uuid();
-            const newRelationship = {type: "contact_referrals", id: newId};
+            const newRelationship = { type: 'contact_referrals', id: newId };
             const relationshipData = concat(destroyOld, newRelationship);
             const request = {
-                "included": [
+                'included': [
                     {
-                        "type": "contact_referrals",
-                        "id": newId,
-                        "relationships": {
-                            "referred_by": {
-                                "data": {
-                                    "type": "contacts",
-                                    "id": this.referrer
+                        'type': 'contact_referrals',
+                        'id': newId,
+                        'relationships': {
+                            'referred_by': {
+                                'data': {
+                                    'type': 'contacts',
+                                    'id': this.referrer
                                 }
                             }
                         }
                     }
                 ],
-                "data": {
-                    "type": "contacts",
-                    "id": this.contact.id,
-                    "attributes": {
-                        "overwrite": true
+                'data': {
+                    'type': 'contacts',
+                    'id': this.contact.id,
+                    'attributes': {
+                        'overwrite': true
                     },
-                    "relationships": {
-                        "contact_referrals_to_me": {
-                            "data": relationshipData
+                    'relationships': {
+                        'contact_referrals_to_me': {
+                            'data': relationshipData
                         }
                     }
                 }
@@ -128,9 +133,9 @@ class ContactDetailsController {
                 data: request,
                 doSerialization: false
             }).then(() => {
-                this.contact.contacts_that_referred_me = [{id: this.referrer}];
+                this.contact.contacts_that_referred_me = [{ id: this.referrer }];
                 this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
-            }).catch(err => {
+            }).catch((err) => {
                 this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger');
                 throw err;
             });
@@ -144,7 +149,7 @@ class ContactDetailsController {
         }
     }
     destroyReferrals(referrals) {
-        return map(referee => {
+        return map((referee) => {
             return { id: referee.id, _destroy: 1 };
         }, referrals);
     }
@@ -152,17 +157,17 @@ class ContactDetailsController {
         /* istanbul ignore next */
         this.$log.debug('change primary: ', addressId);
         return this.modal.confirm(this.gettextCatalog.getString('This address will be used for your newsletters. Would you like to change to have this address as primary?')).then(() => {
-            const addresses = map(address => {
+            const addresses = map((address) => {
                 address.primary_mailing_address = eq(address.id, addressId);
                 return address;
             }, this.contact.addresses);
-            const addressPatch = map(address => {
-                return {id: address.id, primary_mailing_address: address.primary_mailing_address};
+            const addressPatch = map((address) => {
+                return { id: address.id, primary_mailing_address: address.primary_mailing_address };
             }, addresses);
-            return this.contacts.save({id: this.contacts.current.id, addresses: addressPatch}).then(() => {
+            return this.contacts.save({ id: this.contacts.current.id, addresses: addressPatch }).then(() => {
                 this.contact.addresses = addresses;
                 this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
-            }).catch(err => {
+            }).catch((err) => {
                 this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger');
                 throw err;
             });
@@ -175,12 +180,20 @@ class ContactDetailsController {
             }
         });
     }
+    showGiftAid() {
+        return sumBy((organizationAccount) => {
+            if (!organizationAccount.organization || !organizationAccount.organization.gift_aid_percentage) {
+                return false;
+            }
+            return parseFloat(organizationAccount.organization.gift_aid_percentage);
+        }, this.users.organizationAccounts) > 0;
+    }
 }
 const Details = {
     controller: ContactDetailsController,
     template: require('./details.html'),
     bindings: {
-        donorAccounts: '<', //for change detection
+        donorAccounts: '<', // for change detection
         contact: '=',
         onSave: '&'
     }

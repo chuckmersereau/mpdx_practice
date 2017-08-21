@@ -2,7 +2,7 @@ import has from 'lodash/fp/has';
 import map from 'lodash/fp/map';
 import moment from 'moment';
 import uuid from 'uuid/v1';
-import createPatch from "common/fp/createPatch";
+import createPatch from 'common/fp/createPatch';
 
 class PersonModalController {
     constructor(
@@ -32,7 +32,7 @@ class PersonModalController {
         if (has('id', this.person)) {
             this.personInitialState = angular.copy(this.person);
             this.modalTitle = this.gettextCatalog.getString('Edit Person');
-            //bad data is bad
+            // bad data is bad
             if (this.person.birthday_year) {
                 this.person.birthday = moment(`${this.person.birthday_year}-${this.person.birthday_month}-${this.person.birthday_day}`, 'YYYY-MM-DD').toDate();
             }
@@ -53,7 +53,7 @@ class PersonModalController {
         }
     }
     save() {
-        //bad data is bad
+        // bad data is bad
         if (this.person.birthday) {
             const birthday = moment(this.person.birthday);
             this.person.birthday_year = birthday.year();
@@ -77,7 +77,7 @@ class PersonModalController {
                 this.$rootScope.$emit('personUpdated');
                 this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
                 this.$scope.$hide();
-            }).catch(err => {
+            }).catch((err) => {
                 this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger', null, 5, true);
                 throw err;
             });
@@ -88,7 +88,7 @@ class PersonModalController {
                 this.$rootScope.$emit('personUpdated');
                 this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
                 this.$scope.$hide();
-            }).catch(err => {
+            }).catch((err) => {
                 this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger', null, 5, true);
                 throw err;
             });
@@ -130,7 +130,7 @@ class PersonModalController {
         this.person.websites.push({ id: uuid(), url: '', new: true });
     }
     changePrimary(property, id) {
-        this.person[property] = map(val => {
+        this.person[property] = map((val) => {
             val.primary = val.id === id;
             return val;
         }, this.person[property]);

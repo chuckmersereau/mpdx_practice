@@ -13,7 +13,7 @@ describe('contacts.sidebar.tags.remove.controller', () => {
             gettextCatalog = _gettextCatalog_;
             modal = _modal_;
             api.account_list_id = 1234;
-            contactsTags.data = [{name: 'b'}, {name: 'c'}];
+            contactsTags.data = [{ name: 'b' }, { name: 'c' }];
             scope.$hide = () => {};
             controller = $controller;
             loadController();
@@ -22,7 +22,7 @@ describe('contacts.sidebar.tags.remove.controller', () => {
     function loadController() {
         $ctrl = controller('removeTagController as $ctrl', {
             $scope: scope,
-            selectedContacts: [{id: 1, tag_list: ['b']}, {id: 2, tag_list: ['a']}],
+            selectedContacts: [{ id: 1, tag_list: ['b'] }, { id: 2, tag_list: ['a'] }],
             currentListSize: 25
         });
     }
@@ -70,7 +70,7 @@ describe('contacts.sidebar.tags.remove.controller', () => {
             expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
             expect(modal.confirm).toHaveBeenCalledWith(jasmine.any(String));
         });
-        it('should remove a tag', done => {
+        it('should remove a tag', (done) => {
             $ctrl.untagContact([], 'a').then(() => {
                 expect(api.delete).toHaveBeenCalledWith({
                     url: 'contacts/tags/bulk',
@@ -108,7 +108,7 @@ describe('contacts.sidebar.tags.remove.controller', () => {
         });
         it('should broadcast when complete', (done) => {
             $ctrl.untagContact([], 'a').then(() => {
-                expect($ctrl.$rootScope.$emit).toHaveBeenCalledWith('contactTagDeleted', {tag: 'a', contactIds: []});
+                expect($ctrl.$rootScope.$emit).toHaveBeenCalledWith('contactTagDeleted', { tag: 'a', contactIds: [] });
                 done();
             });
         });

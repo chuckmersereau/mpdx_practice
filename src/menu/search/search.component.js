@@ -33,7 +33,7 @@ class ContactsSearchController {
             this.go(activeContact.id);
         } else {
             this.contactFilter.wildcard_search = angular.copy(this.searchParams);
-            this.$state.go('contacts', {}, {reload: true});
+            this.$state.go('contacts', {}, { reload: true });
             this.reset();
         }
     }

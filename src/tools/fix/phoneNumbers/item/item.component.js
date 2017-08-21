@@ -26,7 +26,7 @@ class ItemController {
     }
     openPersonModal() {
         const contactId = get('parent_contacts[0]', this.person);
-        return this.people.openPeopleModal({id: contactId}, this.person.id);
+        return this.people.openPeopleModal({ id: contactId }, this.person.id);
     }
 }
 

@@ -30,9 +30,11 @@
 <div ng-if="$ctrl.accounts.inviteList.length > 0">
     <strong translate>Pending Invites</strong>
     <ul class="account-users">
-        <li ng-repeat="user in $ctrl.accounts.inviteList" ng-if="!user.accepted_by_user && !user.cancelled_by_user">
+        <li ng-repeat="user in $ctrl.accounts.inviteList" ng-if="!user.accepted_at && !user.cancelled_by_user">
             {{user.recipient_email}}
-            <i>(<span translate>Sent by</span> {{user.invited_by_user.first_name}} {{user.invited_by_user.last_name}})</i>
+            <em ng-if="user.invited_by_user" translate-params-first-name="user.invited_by_user.first_name" translate-params-last-name="user.invited_by_user.last_name" translate>
+                (Sent by {{firstName}} {{lastName}})
+            </em>
             <button class="btn btn-xxs btn-danger" ng-click="$ctrl.cancelInvite(user.id)" ng-disabled="$ctrl.saving"><i class="fa fa-remove"></i> <translate>Cancel</translate></button>
         </li>
     </ul>

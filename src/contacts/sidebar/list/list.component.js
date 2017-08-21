@@ -1,4 +1,5 @@
 import has from 'lodash/fp/has';
+import moment from 'moment';
 import unionBy from 'lodash/fp/unionBy';
 
 class ListController {
@@ -33,7 +34,7 @@ class ListController {
     }
     switchContact(id) {
         this.selected = id;
-        this.$state.go('contacts.show', {contactId: id});
+        this.$state.go('contacts.show', { contactId: id });
     }
     loadMoreContacts() {
         if (this.loading || (has('pagination.total_pages', this.meta) && this.page >= this.meta.pagination.total_pages)) {
@@ -60,14 +61,14 @@ class ListController {
             data: {
                 filter: this.contacts.buildFilterParams(),
                 fields: {
-                    contacts: 'name'
+                    contacts: 'name,late_at'
                 },
                 page: this.page,
                 per_page: 50,
                 sort: 'name'
             },
             overrideGetAsPost: true
-        }).then(data => {
+        }).then((data) => {
             this.$log.debug(`contacts sidebar list page ${this.page}`, data);
             if (reset && currentCount !== this.listLoadCount) {
                 return;
@@ -80,6 +81,9 @@ class ListController {
     }
     search() {
         this.load();
+    }
+    daysLate(contact) {
+        return moment().diff(moment(contact.late_at), 'days') || 0;
     }
 }
 

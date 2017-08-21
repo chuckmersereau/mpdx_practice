@@ -1,3 +1,3 @@
 import map from 'lodash/fp/map';
 
-export default map(data => data.name);
+export default map((data) => data.name);

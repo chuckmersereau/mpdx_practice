@@ -81,10 +81,18 @@ alerts {
     top: $secondary-nav-height;
 }
 
+.has-nav-setup .alerts {
+    top: $setup-nav-height;
+}
+
 .has-nav-impersonation .alerts {
     top: $impersonation-nav-height;
 }
 
 .has-nav-secondary.has-nav-impersonation .alerts {
     top: $secondary-impersonation-nav-height;
+}
+
+.has-nav-setup.has-nav-impersonation .alerts {
+    top: $setup-impersonation-nav-height;
 }

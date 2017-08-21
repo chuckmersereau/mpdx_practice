@@ -3,19 +3,19 @@
         <alerts padding-only="true"></alerts>
         <div class="btn-group">
             <a class="btn btn-default" ng-click="$ctrl.contacts.openAddReferralsModal()">
-                <i class="fa fa-users" aria-hidden="true"></i>
+                <i class="fa fa-users"></i>
                 <translate>Add Referrals</translate>
             </a>
             <a class="btn btn-default" ng-click="$ctrl.openAddTaskModal()">
-                <i class="fa fa-square-o" aria-hidden="true"></i>
+                <i class="fa fa-square-o"></i>
                 <translate>Add Task</translate>
             </a>
-            <a class="btn btn-default" ng-click="$ctrl.openLogTaskModal()">
-                <i class="fa fa-check-square-o" aria-hidden="true"></i>
+            <a class="btn btn-default" ng-click="$ctrl.tasks.logModal([$ctrl.contacts.current.id])">
+                <i class="fa fa-check-square-o"></i>
                 <translate>Log Task</translate>
             </a>
             <a class="btn btn-default" ng-click="$ctrl.hideContact()" ng-hide="$ctrl.contacts.current.status == 'Never Ask'">
-                <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                <i class="fa fa-eye-slash"></i>
                 <translate>Hide Contact</translate>
             </a>
             <a class="btn btn-default visible-sm" ng-class="{ 'btn-reverse' : $ctrl.session.showFiltersOnMobile }" ng-click="$ctrl.session.showFiltersOnMobile = !$ctrl.session.showFiltersOnMobile">

@@ -1,7 +1,6 @@
 import ceil from 'lodash/fp/ceil';
 import concat from 'lodash/fp/concat';
 import defaultTo from 'lodash/fp/defaultTo';
-import find from 'lodash/fp/find';
 import get from 'lodash/fp/get';
 import includes from 'lodash/fp/includes';
 import isNil from 'lodash/fp/isNil';
@@ -85,16 +84,7 @@ class ListController {
     }
     hideContact(contact) {
         return this.contacts.hideContact(contact).then(() => {
-            this.data = reject({id: contact.id}, this.data);
-        });
-    }
-    openAddTagModal() {
-        this.modal.open({
-            template: require('../sidebar/filter/tags/add/add.html'),
-            controller: 'addTagController',
-            locals: {
-                selectedContacts: this.contacts.selectedContacts
-            }
+            this.data = reject({ id: contact.id }, this.data);
         });
     }
     openRemoveTagModal() {
@@ -109,9 +99,6 @@ class ListController {
     }
     openAddTaskModal() {
         this.tasks.addModal(this.contacts.selectedContacts);
-    }
-    openLogTaskModal() {
-        this.tasks.logModal(this.contacts.selectedContacts);
     }
     openEditFieldsModal() {
         this.modal.open({
@@ -152,7 +139,7 @@ class ListController {
     }
     openMapContactsModal() {
         this.modal.open({
-            template: require('./mapContacts/mapContacts.html'),
+            template: require('./map/map.html'),
             controller: 'mapContactsController',
             locals: {
                 selectedContacts: this.getSelectedContacts()
@@ -169,8 +156,8 @@ class ListController {
             this.data = null;
             this.listLoadCount++;
             currentCount = angular.copy(this.listLoadCount);
-            const contactHeight = 70; //min pixel height of contact items
-            this.pageSize = defaultTo(12, ceil(this.$window.innerHeight / contactHeight) - 2); //minimally adjust for menus (always pull at least a few extra)
+            const contactHeight = 70; // min pixel height of contact items
+            this.pageSize = defaultTo(12, ceil(this.$window.innerHeight / contactHeight) - 2); // minimally adjust for menus (always pull at least a few extra)
         }
         this.page = page;
         return this.api.get({
@@ -181,9 +168,9 @@ class ListController {
                 per_page: this.pageSize,
                 include: 'addresses,people,people.facebook_accounts,people.phone_numbers,people.email_addresses',
                 fields: {
-                    contact: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people,created_at',
+                    contact: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people,created_at,late_at',
                     people: 'deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
-                    addresses: 'city,geo,historic,primary_mailing_address,postal_code,state,source,street',
+                    addresses: 'city,geo,historic,primary_mailing_address,postal_code,state,source,street,updated_at',
                     email_addresses: 'email,historic,primary',
                     phone_numbers: 'historic,location,number,primary',
                     facebook_accounts: 'username'
@@ -191,7 +178,7 @@ class ListController {
                 sort: 'name'
             },
             overrideGetAsPost: true
-        }).then(data => {
+        }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug('contacts page ' + data.meta.pagination.page, data);
             if (reset && currentCount !== this.listLoadCount) {
@@ -204,12 +191,12 @@ class ListController {
                 this.loading = false;
                 return;
             }
-            const newContacts = map(contact => {
+            const newContacts = map((contact) => {
                 if (!isNil(contact.pledge_amount)) {
-                    contact.pledge_amount = parseFloat(contact.pledge_amount); //fix bad api serialization as string
+                    contact.pledge_amount = parseFloat(contact.pledge_amount); // fix bad api serialization as string
                 }
                 if (!isNil(contact.pledge_frequency)) {
-                    const frequency = find({key: parseFloat(contact.pledge_frequency)}, this.serverConstants.data.pledge_frequency_hashes);
+                    const frequency = this.serverConstants.getPledgeFrequency(contact.pledge_frequency);
                     contact.pledge_frequency = get('value', frequency);
                 }
                 return contact;
@@ -227,8 +214,8 @@ class ListController {
     }
     getSelectedContacts() {
         if (this.contacts.selectedContacts.length > this.data.length) {
-            return map(id => {
-                return {id: id};
+            return map((id) => {
+                return { id: id };
             }, this.contacts.selectedContacts);
         }
         return reduce((result, contact) => {
@@ -240,7 +227,7 @@ class ListController {
     }
     selectAllContacts(all = true) {
         if (all) {
-            this.allSelected = true; //for reactive visuals
+            this.allSelected = true; // for reactive visuals
             return this.getCompleteFilteredList().then((data) => {
                 this.allSelected = false;
                 this.contacts.selectedContacts = map('id', data);
@@ -254,7 +241,7 @@ class ListController {
     bulkHideContacts() {
         const message = this.gettextCatalog.getString('Are you sure you wish to hide the selected contacts? Hiding a contact in MPDX actually sets the contact status to "Never Ask".');
         return this.modal.confirm(message).then(() => {
-            const contacts = map(contact => {
+            const contacts = map((contact) => {
                 return {
                     id: contact,
                     status: 'Never Ask'
@@ -278,7 +265,7 @@ class ListController {
             overrideGetAsPost: true
         });
     }
-    getTotalCount() { //only used when search is empty
+    getTotalCount() { // only used when search is empty
         return this.api.get('contacts', {
             filter: {
                 account_list_id: this.api.account_list_id

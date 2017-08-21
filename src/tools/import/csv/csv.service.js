@@ -1,5 +1,7 @@
 const each = require('lodash/fp/each').convert({ 'cap': false });
+import concat from 'lodash/fp/concat';
 import createPatch from 'common/fp/createPatch';
+import defaultTo from 'lodash/fp/defaultTo';
 import difference from 'lodash/fp/difference';
 import flatten from 'lodash/fp/flatten';
 import has from 'lodash/fp/has';
@@ -94,11 +96,9 @@ class CsvService {
             return result;
         }, {}, this.data.file_constants_mappings);
 
-        if (this.data.tag_list === undefined) {
-            this.data.tag_list = [];
-        }
+        this.data.tag_list = defaultTo([], this.data.tag_list);
 
-         /* istanbul ignore next */
+        /* istanbul ignore next */
         this.$log.debug('import', this.data);
     }
 
@@ -121,6 +121,45 @@ class CsvService {
         });
     }
 
+    valueIfNotNull(value) {
+        value = defaultTo('', value);
+        return value === 'null' ? '' : value;
+    }
+
+    constantValuesToFileConstants() {
+        return reduceObject((result, obj, constant) => {
+            result[constant] = reduceObject((deepResult, value, key) => {
+                value = this.valueIfNotNull(value);
+                deepResult[value] = deepResult[value] ? concat(deepResult[value], key) : [key];
+                return deepResult;
+            }, {}, obj);
+            return result;
+        }, {}, this.values_to_constants_mapping);
+    }
+
+    fileHeadersToFileConstants() {
+        return reduceObject((result, constant, header) => {
+            if (!this.serverConstants.data.csv_import.constants[constant]) {
+                return result;
+            }
+            result[constant] = defaultTo({}, result[constant]);
+
+            const mappedConstants = flatten(values(result[constant]));
+            const unmappedConstants = difference(this.data.file_constants[header], mappedConstants);
+
+            result[constant] = this.createPropertyIfNotEmpty(result[constant], unmappedConstants);
+
+            return result;
+        }, this.data.file_constants_mappings, this.data.file_headers_mappings);
+    }
+
+    createPropertyIfNotEmpty(result, unmappedConstants) {
+        if (unmappedConstants.length > 0) {
+            result[''] = union(defaultTo([], result['']), unmappedConstants);
+        }
+        return result;
+    }
+
     save() {
         if (this.data.tag_list) {
             this.data.tag_list = joinComma(this.data.tag_list);
@@ -128,35 +167,9 @@ class CsvService {
 
         this.data.file_headers_mappings = omitBy(isNil, this.data.file_headers_mappings);
 
-        this.data.file_constants_mappings = reduceObject((result, obj, constant) => {
-            result[constant] = {};
-            each((value, key) => {
-                if (value === 'null' || value === null) {
-                    value = '';
-                }
-                if (!result[constant][value]) {
-                    result[constant][value] = [];
-                }
-                result[constant][value].push(key);
-            }, obj);
-            return result;
-        }, {}, this.values_to_constants_mapping);
+        this.data.file_constants_mappings = this.constantValuesToFileConstants();
 
-        this.data.file_constants_mappings = reduceObject((result, constant, header) => {
-            if (this.serverConstants.data.csv_import.constants[constant] && !result[constant]) {
-                result[constant] = {'': []};
-            }
-
-            if (result[constant]) {
-                const mappedConstants = flatten(values(result[constant]));
-                const unmappedConstants = difference(this.data.file_constants[header], mappedConstants);
-                result[constant][''] = union(result[constant][''], unmappedConstants);
-                if (result[constant][''].length === 0) {
-                    delete result[constant][''];
-                }
-            }
-            return result;
-        }, this.data.file_constants_mappings, this.data.file_headers_mappings);
+        this.data.file_constants_mappings = this.fileHeadersToFileConstants();
 
         this.data.file_headers_mappings = invert(this.data.file_headers_mappings);
 
@@ -177,7 +190,7 @@ class CsvService {
             /* istanbul ignore next */
             this.$log.error(data);
             if (has('data.errors', data)) {
-                each(error => {
+                each((error) => {
                     this.alerts.addAlert(error.detail, 'danger', null, 10);
                 }, data.data.errors);
             } else {
@@ -192,45 +205,34 @@ class CsvService {
     }
 
     next(importId) {
-        switch (this.$state.$current.name) {
-            case 'tools.import.csv.upload':
-                this.$state.go('tools.import.csv.headers', { importId: importId });
-                break;
-            case 'tools.import.csv.headers':
-                if (keys(this.values_to_constants_mapping).length === 0) {
-                    this.$state.go('tools.import.csv.preview', { importId: importId });
-                } else {
-                    this.$state.go('tools.import.csv.values', { importId: importId });
-                }
-                break;
-            case 'tools.import.csv.values':
-                this.$state.go('tools.import.csv.preview', { importId: importId });
-                break;
-            default:
-                this.reset();
-                this.$state.go('tools');
+        const stateSwitch = (state) => ({
+            'tools.import.csv.upload': 'tools.import.csv.headers',
+            'tools.import.csv.headers': keys(this.values_to_constants_mapping).length === 0
+                ? 'tools.import.csv.preview'
+                : 'tools.import.csv.values',
+            'tools.import.csv.values': 'tools.import.csv.preview'
+        })[state];
+        const nextState = stateSwitch(this.$state.$current.name);
+        if (nextState) {
+            this.$state.go(nextState, { importId: importId });
+        } else {
+            this.reset();
+            this.$state.go('tools');
         }
     }
 
     back() {
-        switch (this.$state.$current.name) {
-            case 'tools.import.csv.preview':
-                if (keys(this.values_to_constants_mapping).length === 0) {
-                    this.$state.go('tools.import.csv.headers', { importId: this.data.id });
-                } else {
-                    this.$state.go('tools.import.csv.values', { importId: this.data.id });
-                }
-                break;
-            case 'tools.import.csv.values':
-                this.$state.go('tools.import.csv.headers', { importId: this.data.id });
-                break;
-            case 'tools.import.csv.headers':
-                this.reset();
-                this.$state.go('tools.import.csv.upload');
-                break;
-            default:
-                this.reset();
-                this.$state.go('tools');
+        const stateSwitch = (state) => ({
+            'tools.import.csv.preview': keys(this.values_to_constants_mapping).length === 0
+                ? this.$state.go('tools.import.csv.headers', { importId: this.data.id })
+                : this.$state.go('tools.import.csv.values', { importId: this.data.id }),
+            'tools.import.csv.values': this.$state.go('tools.import.csv.headers', { importId: this.data.id }),
+            'tools.import.csv.headers': this.$state.go('tools.import.csv.upload')
+        })[state];
+        const nextState = stateSwitch(this.$state.$current.name);
+        if (!nextState) {
+            this.reset();
+            this.$state.go('tools');
         }
     }
 }
