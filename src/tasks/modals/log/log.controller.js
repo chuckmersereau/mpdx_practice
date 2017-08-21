@@ -1,5 +1,6 @@
 import concat from 'lodash/fp/concat';
 import contains from 'lodash/fp/contains';
+import get from 'lodash/fp/get';
 import reduce from 'lodash/fp/reduce';
 import startsWith from 'lodash/fp/startsWith';
 import union from 'lodash/fp/union';
@@ -46,13 +47,17 @@ class LogTaskController {
         this.contactsList[index] = params.id;
     }
     save() {
-        const promises = [this.createTask(), this.getContactPromise()];
-        return Promise.all(promises).then(() => {
+        return this.getPromise().then(() => {
             this.$scope.$hide();
-            if (this.task.next_action) {
+            if (get('next_action', this.task)) {
                 this.tasks.addModal(this.contactsList, this.task.next_action);
             }
         });
+    }
+    getPromise() {
+        const taskPromise = this.createTask();
+        const contactPromise = this.getContactPromise();
+        return contactPromise ? Promise.all([taskPromise, contactPromise]) : taskPromise;
     }
     createTask() {
         return this.tasks.create(this.task, this.contactsList, this.comment);
@@ -62,7 +67,7 @@ class LogTaskController {
             ? this.contacts.bulkSave(reduce((result, contact) =>
                 concat(result, { id: contact, status: this.status })
                 , [], this.contactsList))
-            : Promise.resolve();
+            : false;
     }
     showPartnerStatus() {
         return this.contactsList.length > 0 && this.task.activity_type && !contains(this.task.activity_type, ['Pre Call Letter', 'Reminder Letter', 'Support Letter', 'Thank', 'To Do']);
