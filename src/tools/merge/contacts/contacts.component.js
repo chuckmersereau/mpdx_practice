@@ -43,7 +43,7 @@ class MergeContactsController {
 
     confirm() {
         let promises = [];
-        const contactsToMerge = filter(duplicate => {
+        const contactsToMerge = filter((duplicate) => {
             return (duplicate.contacts[0].selected || duplicate.contacts[1].selected) && duplicate.ignore === false;
         }, this.duplicates);
         const contactsToIgnore = filter({ ignore: true }, this.duplicates);
@@ -71,12 +71,12 @@ class MergeContactsController {
     }
 
     ignore(duplicates) {
-        return map(duplicate =>
+        return map((duplicate) =>
             this.api.put({
                 url: `contacts/duplicates/${duplicate.id}`,
                 data: { id: duplicate.id, ignore: true },
                 type: 'duplicate_record_pairs' })
-        , duplicates);
+            , duplicates);
     }
 
     merge(duplicates) {
@@ -100,7 +100,7 @@ class MergeContactsController {
             },
             filter: { account_list_id: this.api.account_list_id, ignore: false },
             per_page: 5
-        }).then(data => {
+        }).then((data) => {
             this.loading = false;
             /* istanbul ignore next */
             this.$log.debug('contacts/duplicates', data);
