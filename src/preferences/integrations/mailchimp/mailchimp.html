@@ -5,7 +5,7 @@
         This will prevent any data being lost on your current Mailchimp list.
     </div>
     <div class="alert alert-info" translate>
-        Please choose a list to sync with MailChimp. If select a list with existing subscribers, MPDX
+        Please choose a list to sync with MailChimp. If you select a list with existing subscribers, MPDX
         will add those contacts and set them to receive the email newsletter. If some of the subscribers
         already exist in MPDX, their email addresses will be added and they will be set to receive the email
         newsletter (or Both if they already get the physical letter).
@@ -19,11 +19,22 @@
         </div>
         <div class="form-group">
             <input type="checkbox" id="autoLogCampaigns" ng-model="$ctrl.mailchimp.data.auto_log_campaigns">
-            <label for="autoLogCampaigns" translate>Automatically log sent MailChimp campaigns in contact task history.</label>
+            &nbsp;
+            <label for="autoLogCampaigns" translate>Automatically log sent MailChimp campaigns in contact task history</label>
         </div>
         <div class="form-group">
-            <input id="syncAllActiveContacts" type="checkbox" ng-model="$ctrl.mailchimp.data.sync_all_active_contacts">
-            <label for="syncAllActiveContacts" translate>Sync with all active contacts with a valid email address</label>
+            <div class="panel panel-default">
+                <div class="panel-heading" translate>Contact Sync Settings</div>
+                <div class="panel-body">
+                    <input id="syncNewsletterContacts" name="syncType" type="radio" ng-model="$ctrl.mailchimp.data.sync_all_active_contacts" ng-value="false">
+                    &nbsp;
+                    <label for="syncNewsletterContacts" translate>Sync contacts with newsletter field set to email or both</label>
+                    <br>
+                    <input id="syncActiveContacts" name="syncType" type="radio" ng-model="$ctrl.mailchimp.data.sync_all_active_contacts" ng-value="true">
+                    &nbsp;
+                    <label for="syncActiveContacts" translate>Sync all active contacts with a valid email address</label>
+                </div>
+            </div>
         </div>
         <div class="form-group">
             <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
