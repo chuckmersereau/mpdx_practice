@@ -11,7 +11,7 @@
                     </div>
                 </div>
                 <div class="col-md-5">
-                    {{:: $ctrl.currency.symbol}}{{::$ctrl.donationsSum}} /
+                    {{:: $ctrl.currency.symbol}}{{:: $ctrl.donationsSum }} /
                     {{:: $ctrl.currency.symbol}}
                     <span class="inline-input inline-block">
                         <input ng-model="$ctrl.appeal.amount"
@@ -49,7 +49,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="donation in $ctrl.appeal.donations">
+                        <tr ng-repeat="donation in $ctrl.appeal.donations | orderBy : 'donation_date' : true">
                             <td>
                                 <input type="checkbox"
                                        ng-checked="$ctrl.selectedContactIds.includes(donation.contact.id)"
@@ -82,7 +82,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="contact in $ctrl.contactsNotGiven">
+                    <tr ng-repeat="contact in $ctrl.contactsNotGiven | orderBy : 'name'">
                         <td>
                             <input type="checkbox"
                                    ng-checked="$ctrl.selectedContactIds.includes(contact.id)"

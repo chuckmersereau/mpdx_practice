@@ -1,14 +1,15 @@
-import config from 'config';
-import japi from 'jsonapi-serializer';
 import concat from 'lodash/fp/concat';
+import config from 'config';
+import defaultTo from 'lodash/fp/defaultTo';
 import assign from 'lodash/fp/assign';
 import has from 'lodash/fp/has';
 import isArray from 'lodash/fp/isArray';
 import isNil from 'lodash/fp/isNil';
 import isObject from 'lodash/fp/isObject';
+import japi from 'jsonapi-serializer';
+import joinComma from '../fp/joinComma';
 import map from 'lodash/fp/map';
 import pull from 'lodash/fp/pull';
-import joinComma from '../fp/joinComma';
 import reduceObject from '../fp/reduceObject';
 
 function appendTransform(defaults, transform) {
@@ -20,36 +21,44 @@ function appendTransform(defaults, transform) {
 }
 
 const jsonApiParams = { keyForAttribute: 'underscore_case' };
-function deserialize(data, deSerializationOptions) {
-    const options = assign(jsonApiParams, deSerializationOptions);
-    if (isObject(data) && data.data) {
-        return new japi.Deserializer(options).deserialize(data).then((deserializedData) => {
-            deserializedData.meta = data.meta || {};
-            return deserializedData;
-        });
-    } else {
-        return data;
-    }
+
+function isDataObject(data) {
+    return isObject(data) && data.data;
 }
 
-function serialize(key, params, item, method) {
-    let serialized = new japi.Serializer(key, params).serialize(item);
+function deserialize(data, deSerializationOptions) {
+    const options = assign(jsonApiParams, deSerializationOptions);
+    return isDataObject(data)
+        ? new japi.Deserializer(options).deserialize(data).then((deserializedData) =>
+            assign(deserializedData, data.meta ? { meta: data.meta } : {}))
+        : data;
+}
+
+function removeIdIfUndefined(serialized, method) {
     if (method === 'post' && serialized.data.id === 'undefined') {
         delete serialized.data.id;
     }
-    // enable overwrite for put
+    return serialized;
+}
+
+function enablePutOverwrite(serialized, method) {
     if (method === 'put') {
-        if (!serialized.data.attributes) {
-            serialized.data.attributes = {};
-        }
+        serialized.data.attributes = defaultTo({}, serialized.data.attributes);
         serialized.data.attributes.overwrite = true;
     }
     return serialized;
 }
 
+function serialize(key, params, item, method) {
+    let serialized = new japi.Serializer(key, params).serialize(item);
+    serialized = removeIdIfUndefined(serialized, method);
+    serialized = enablePutOverwrite(serialized, method);
+    return serialized;
+}
+
 class Api {
     constructor(
-        $http, $cacheFactory, $log, $q, $timeout,
+        $http, $log, $q, $timeout,
     ) {
         this.$http = $http;
         this.$log = $log;
@@ -57,7 +66,6 @@ class Api {
         this.$timeout = $timeout;
 
         this.apiUrl = config.apiUrl;
-        this.apiCache = $cacheFactory('api');
         this.account_list_id = null;
         this.entityAttributes = new EntityAttributes().attributes;
     }
@@ -65,10 +73,8 @@ class Api {
         method,
         url,
         data = {},
-        cache,
         params = {},
         headers = {},
-        promise = null,
         overrideGetAsPost = false,
         type = null,
         doSerialization = true,
@@ -77,15 +83,7 @@ class Api {
         beforeDeserializationTransform = null,
         responseType = ''
     }) {
-        if (!promise) {
-            promise = this.$q.defer();
-        }
-        if (cache === true) {
-            const cachedData = this.apiCache.get(url);
-            if (angular.isDefined(cachedData)) {
-                return this.$q.resolve(cachedData);
-            }
-        }
+        let promise = this.$q.defer();
 
         if (overrideGetAsPost) {
             headers['X-HTTP-Method-Override'] = 'GET';
@@ -166,10 +164,8 @@ class Api {
             cacheService: false,
             timeout: 50000
         };
+
         this.$http(request).then((response) => {
-            if (cache === true) {
-                this.apiCache.put(url, response.data);
-            }
             promise.resolve(response.data);
         }).catch((response) => {
             this.$log.error('API ERROR:', response);

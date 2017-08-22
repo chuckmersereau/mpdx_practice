@@ -1,5 +1,7 @@
 import concat from 'lodash/fp/concat';
+import fixed from 'common/fp/fixed';
 import reduce from 'lodash/fp/reduce';
+import round from 'lodash/fp/round';
 import sumBy from 'lodash/fp/sumBy';
 import unionBy from 'lodash/fp/unionBy';
 
@@ -47,6 +49,11 @@ class ListController {
         this.page = page;
 
         let params = {
+            include: 'donations',
+            fields: {
+                appeals: 'amount,donations,name',
+                donations: 'converted_amount'
+            },
             filter: { account_list_id: this.api.account_list_id },
             sort: '-created_at',
             page: this.page
@@ -65,13 +72,14 @@ class ListController {
             this.meta = data.meta;
 
             const deserializedData = reduce((result, appeal) => {
-                appeal.amount_raised = sumBy((donation) =>
+                appeal.amount_raised = fixed(2, sumBy((donation) => (
                     parseFloat(donation.converted_amount)
-                    , appeal.donations);
-                if (appeal.amount && parseFloat(appeal.amount) > 0) {
-                    appeal.percentage_raised = parseInt((appeal.amount_raised / appeal.amount) * 100.0);
+                ), appeal.donations));
+                appeal.amount = fixed(2, appeal.amount);
+                if (appeal.amount > 0) {
+                    appeal.percentage_raised = round((appeal.amount_raised / appeal.amount) * 100.0);
                 } else {
-                    appeal.amount = 0;
+                    appeal.amount = '0.00';
                     appeal.percentage_raised = 0;
                 }
                 return concat(result, appeal);

@@ -5,6 +5,7 @@ import createPatch from 'common/fp/createPatch';
 import curry from 'lodash/fp/curry';
 import defaultTo from 'lodash/fp/defaultTo';
 import find from 'lodash/fp/find';
+import fixed from 'common/fp/fixed';
 import get from 'lodash/fp/get';
 import isNilOrEmpty from 'common/fp/isNilOrEmpty';
 import joinComma from 'common/fp/joinComma';
@@ -19,7 +20,7 @@ import union from 'lodash/fp/union';
 class AppealController {
     constructor(
         $log, $rootScope, $state, $stateParams, gettext,
-        alerts, api, contacts, donations, mailchimp, serverConstants, tasks
+        alerts, api, contacts, donations, mailchimp, serverConstants, tasks,
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
@@ -42,49 +43,41 @@ class AppealController {
         this.disable = this.$rootScope.$on('accountListUpdated', () => {
             this.$state.go('tools.appeals');
         });
-        this.api.get(`appeals/${this.$stateParams.appealId}`, {
-            include: 'contacts,contacts.donor_accounts',
-            fields: {
-                contacts: 'donor_accounts,name,pledge_amount,pledge_currency,pledge_frequency'
-            }
-        }).then((data) => {
-            /* istanbul ignore next */
-            this.$log.debug('appeal', data);
-            this.appeal = data;
-            this.dataInitialState = angular.copy(data);
-            this.currency = this.getCurrencyFromCode(data.total_currency);
-            this.donationsSum = sumBy('converted_amount', data.donations);
-            this.percentageRaised = this.donationsSum / data.amount * 100;
-            this.donationAccounts = this.getDonationAccounts(data.contacts);
-            this.appeal = assign(data, {
-                donations: this.mapContactsToDonation(this.appeal.donations, this.donationAccounts)
-            });
-            this.contactsNotGiven = this.getContactsNotGiven(data.contacts, this.appeal.donations);
-            this.$log.debug('donation accounts', this.donationAccounts);
+
+        /* istanbul ignore next */
+        this.$log.debug('appeal', this.data);
+        /* istanbul ignore next */
+        this.$log.debug('appeal contacts', this.contactsData);
+
+        this.dataInitialState = angular.copy(this.data);
+        this.currency = this.getCurrencyFromCode(this.data.total_currency);
+        this.donationsSum = fixed(2, sumBy((donation) => parseFloat(donation.converted_amount), this.data.donations));
+        this.percentageRaised = this.donationsSum / this.data.amount * 100;
+        this.contactsData.contacts = this.fixPledgeAmount(this.contactsData.contacts);
+        this.appeal = assign(this.data, {
+            amount: fixed(2, defaultTo(0, this.data.amount)),
+            donations: this.mutateDonations(this.data.donations, this.contactsData.contacts)
         });
+        this.contactsNotGiven = this.getContactsNotGiven(this.contactsData.contacts, this.appeal.donations);
     }
     $onDestroy() {
         this.disable();
     }
-    mapContactsToDonation(donations, donationAccounts) {
+    fixPledgeAmount(contacts) {
+        return map((contact) => assign(contact, {
+            pledge_amount: fixed(2, defaultTo(0, contact.pledge_amount))
+        }), contacts);
+    }
+    mutateDonations(donations, contacts) {
         return map((donation) => {
-            donation.contact = get('contact', get(donation.donor_account_id.toString(), donationAccounts));
+            donation.contact = find({ id: donation.contact.id }, contacts);
+            donation.amount = fixed(2, defaultTo(0, donation.amount));
             return donation;
         }, donations);
     }
-    getDonationAccounts(contacts) {
-        return reduce((result, contact) => {
-            const accounts = reduce((result, donor) => {
-                donor.contact = contact;
-                result[donor.account_number] = donor;
-                return result;
-            }, {}, contact.donor_accounts);
-            return assign(result, accounts);
-        }, {}, contacts);
-    }
     getContactsNotGiven(contacts, donations) {
         const allGiven = reduce((result, value) => {
-            const contact = get('contact', value);
+            const contact = get('id', value.contact);
             return contact ? concat(result, contact) : result;
         }, [], donations);
         const contactsNotGiven = reject((contact) => contains(contact.id, allGiven), contacts);
@@ -251,7 +244,11 @@ class AppealController {
 
 const Appeal = {
     controller: AppealController,
-    template: require('./show.html')
+    template: require('./show.html'),
+    bindings: {
+        data: '<',
+        contactsData: '<'
+    }
 };
 
 import contacts from 'contacts/contacts.service';
