@@ -1,24 +1,24 @@
 class FinishController {
     constructor(
         $state,
-        users
+        setup
     ) {
         this.$state = $state;
-        this.users = users;
+        this.setup = setup;
     }
+
     $onInit() {
-        this.users.currentOptions.setup_position.value = 'finish';
-        this.users.setOption(this.users.currentOptions.setup_position);
+        this.setup.setPosition('finish');
     }
+
     next() {
-        this.users.currentOptions.setup_position.value = '';
-        this.users.setOption(this.users.currentOptions.setup_position).then(() => {
+        return this.setup.setPosition('').then(() => {
             this.$state.go('tools', { setup: true });
         });
     }
+
     dashboard() {
-        this.users.currentOptions.setup_position.value = '';
-        this.users.setOption(this.users.currentOptions.setup_position).then(() => {
+        return this.setup.setPosition('').then(() => {
             this.$state.go('home');
         });
     }
@@ -29,5 +29,10 @@ const Finish = {
     controller: FinishController
 };
 
-export default angular.module('mpdx.setup.finish.component', [])
-    .component('setupFinish', Finish).name;
+import uiRouter from '@uirouter/angularjs';
+import setup from 'setup/setup.service';
+
+export default angular.module('mpdx.setup.finish.component', [
+    uiRouter,
+    setup
+]).component('setupFinish', Finish).name;
