@@ -396,9 +396,20 @@ export default class Routes {
             url: '/commitment-info',
             component: 'fixCommitmentInfo',
             resolve: {
-                1: /* @ngInject*/ (serverConstants, fixCommitmentInfo) =>
+                0: /* @ngInject*/ (serverConstants, fixCommitmentInfo) =>
                     serverConstants.load(['pledge_currencies', 'pledge_frequency_hashes', 'status_hashes']).then(() =>
                         fixCommitmentInfo.load()
+                    )
+            }
+        }).state({
+            name: 'tools.fix.sendNewsletter',
+            title: gettext('Tools - Fix - Send Newsletter'),
+            url: '/send-newsletter',
+            component: 'fixSendNewsletter',
+            resolve: {
+                0: /* @ngInject*/  (serverConstants, fixSendNewsletter) =>
+                    serverConstants.load(['assignable_send_newsletter_hashes']).then(() =>
+                        fixSendNewsletter.load()
                     )
             }
         }).state({

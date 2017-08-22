@@ -6,7 +6,6 @@
 }
 
 tools {
-
     .tool.well {
         cursor: pointer;
         height: 200px;
@@ -52,6 +51,11 @@ tools {
         margin-top: 0;
         padding-bottom: 18px;
         border-bottom: 3px solid $color-panel-border;
+    }
+
+    h4.name {
+        margin: 0;
+        line-height: 34px;
     }
 
     .bulk {

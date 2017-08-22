@@ -6,13 +6,6 @@
             <span class="badge" ng-if="!$ctrl.fixCommitmentInfo.meta.pagination.total_count && $ctrl.tools.analytics['fix-commitment-info'] > 0">{{$ctrl.tools.analytics['fix-commitment-info']}}</span>
         </a>
     </li>
-    <li role="presentation" ng-class="{'active' : $ctrl.$state.includes('tools.fix.phoneNumbers')}">
-        <a ui-sref="tools.fix.phoneNumbers">
-            <translate>Fix Phone Numbers</translate>
-            <span class="badge" ng-if="$ctrl.fixPhoneNumbers.meta.pagination.total_count > 0">{{$ctrl.fixPhoneNumbers.meta.pagination.total_count}}</span>
-            <span class="badge" ng-if="!$ctrl.fixPhoneNumbers.meta.pagination.total_count && $ctrl.tools.analytics['fix-phone-numbers'] > 0">{{$ctrl.tools.analytics['fix-phone-numbers']}}</span>
-        </a>
-    </li>
     <li role="presentation" ng-class="{'active': $ctrl.$state.includes('tools.fix.emailAddresses')}">
         <a ui-sref="tools.fix.emailAddresses">
             <translate>Fix Email Addresses</translate>
@@ -25,6 +18,20 @@
             <translate>Fix Mailing Addresses</translate>
             <span class="badge" ng-if="$ctrl.fixAddresses.meta.pagination.total_count > 0">{{$ctrl.fixAddresses.meta.pagination.total_count}}</span>
             <span class="badge" ng-if="!$ctrl.fixAddresses.meta.pagination.total_count && $ctrl.tools.analytics['fix-addresses'] > 0">{{$ctrl.tools.analytics['fix-addresses']}}</span>
+        </a>
+    </li>
+    <li role="presentation" ng-class="{'active' : $ctrl.$state.includes('tools.fix.phoneNumbers')}">
+        <a ui-sref="tools.fix.phoneNumbers">
+            <translate>Fix Phone Numbers</translate>
+            <span class="badge" ng-if="$ctrl.fixPhoneNumbers.meta.pagination.total_count > 0">{{$ctrl.fixPhoneNumbers.meta.pagination.total_count}}</span>
+            <span class="badge" ng-if="!$ctrl.fixPhoneNumbers.meta.pagination.total_count && $ctrl.tools.analytics['fix-phone-numbers'] > 0">{{$ctrl.tools.analytics['fix-phone-numbers']}}</span>
+        </a>
+    </li>
+    <li role="presentation" ng-class="{'active' : $ctrl.$state.includes('tools.fix.sendNewsletter')}">
+        <a ui-sref="tools.fix.sendNewsletter">
+            <translate>Fix Send Newsletter</translate>
+            <span class="badge" ng-if="$ctrl.fixSendNewsletter.meta.pagination.total_count > 0">{{$ctrl.fixSendNewsletter.meta.pagination.total_count}}</span>
+            <span class="badge" ng-if="!$ctrl.fixSendNewsletter.meta.pagination.total_count && $ctrl.tools.analytics['fix-send-newsletter'] > 0">{{$ctrl.tools.analytics['fix-send-newsletter']}}</span>
         </a>
     </li>
 </ul>
