@@ -18,7 +18,6 @@ describe('contacts.show.details.component', () => {
             serverConstants = _serverConstants_;
             users = _users_;
             serverConstants.data = { locales: {} };
-            window.languageMappingList = [];
             api.account_list_id = 1234;
             $ctrl = $componentController('contactDetails', { $scope: scope }, { donorAccounts: [], contact: {}, onSave: () => Promise.resolve() });
         });

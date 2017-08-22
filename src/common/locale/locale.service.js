@@ -1,8 +1,12 @@
+import keys from 'lodash/fp/keys';
+import map from 'lodash/fp/map';
 import moment from 'moment';
 
 class Locale {
     constructor(
+        serverConstants
     ) {
+        this.serverConstants = serverConstants;
         this.dateTimeFormat = null;
         this.init();
     }
@@ -23,6 +27,12 @@ class Locale {
             default:
                 return locale;
         }
+    }
+    getLocalesMap() {
+        return map((locale) => ({
+            alias: locale,
+            value: `${this.serverConstants.data.locales[locale].english_name} (${this.serverConstants.data.locales[locale].native_name} - ${locale})`
+        }), keys(this.serverConstants.data.locales));
     }
     init() {
         this.formats = {
@@ -292,5 +302,8 @@ class Locale {
     }
 }
 
-export default angular.module('mpdx.common.locale.service', [])
-    .service('locale', Locale).name;
+import serverConstants from 'common/serverConstants/serverConstants.service';
+
+export default angular.module('mpdx.common.locale.service', [
+    serverConstants
+]).service('locale', Locale).name;

@@ -108,7 +108,7 @@ class ListController {
                 selectedContacts: this.getSelectedContacts()
             },
             resolve: {
-                0: () => this.serverConstants.load(['bulk_update_options', 'languages'])
+                0: () => this.serverConstants.load(['bulk_update_options', 'locales'])
             }
         });
     }

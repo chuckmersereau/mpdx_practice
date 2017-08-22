@@ -13,6 +13,7 @@ class EditFieldsController {
         this.serverConstants = serverConstants;
 
         this.models = {};
+        this.languages = locale.getLocalesMap();
     }
 
     save() {

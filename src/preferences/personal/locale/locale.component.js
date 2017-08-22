@@ -1,12 +1,10 @@
-import keys from 'lodash/fp/keys';
-import map from 'lodash/fp/map';
+import defaultTo from 'lodash/fp/defaultTo';
+import find from 'lodash/fp/find';
 
 class LocaleController {
     constructor(
-        $window,
         locale, serverConstants, users
     ) {
-        this.$window = $window;
         this.locale = locale;
         this.serverConstants = serverConstants;
         this.users = users;
@@ -14,24 +12,14 @@ class LocaleController {
         this.saving = false;
     }
     $onChanges() {
-        if (!this.users.current.preferences.locale_display) {
-            this.users.current.preferences.locale_display = navigator.language || navigator.browserLanguage || navigator.systemLanguage || navigator.userLanguage || 'en-us';
-        }
-        let found = false;
-        this.languages = map((locale) => {
-            const language = this.$window.languageMappingList[locale];
-            if (this.users.current.preferences.locale_display === locale) {
-                found = true;
-            }
-            if (language) {
-                return { alias: locale, value: `${language.englishName} (${language.nativeName} - ${locale})` };
-            } else {
-                return { alias: locale, value: `${this.serverConstants.data.locales[locale].english_name} (${this.serverConstants.data.locales[locale].native_name} - ${locale})` };
-            }
-        }, keys(this.serverConstants.data.locales));
-        if (!found) {
-            this.users.current.preferences.locale_display = 'en';
-        }
+        /* istabul ignore next */
+        const defaultLocale = navigator.language || navigator.browserLanguage || navigator.systemLanguage
+            || navigator.userLanguage || 'en';
+        this.users.current.preferences.locale_display = defaultTo(defaultLocale,
+            this.users.current.preferences.locale_display);
+        this.languages = this.locale.getLocalesMap();
+        const found = find({ alias: this.users.current.preferences.locale_display }, this.languages);
+        this.users.current.preferences.locale_display = found ? this.users.current.preferences.locale_display : 'en';
     }
     setLocale() {
         this.locale.change(this.users.current.preferences.locale_display);
@@ -47,5 +35,10 @@ const Locale = {
     }
 };
 
-export default angular.module('mpdx.preferences.personal.locale.component', [])
-    .component('preferencesPersonalLocale', Locale).name;
+import locale from 'common/locale/locale.service';
+import serverConstants from 'common/serverConstants/serverConstants.service';
+import users from 'common/users/users.service';
+
+export default angular.module('mpdx.preferences.personal.locale.component', [
+    locale, serverConstants, users
+]).component('preferencesPersonalLocale', Locale).name;

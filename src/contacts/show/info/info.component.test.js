@@ -9,7 +9,6 @@ describe('contacts.show.details.component', () => {
             gettextCatalog = _gettextCatalog_;
             serverConstants = _serverConstants_;
             serverConstants.data = { locales: {} };
-            window.languageMappingList = [];
             $ctrl = $componentController('contactInfo', { $scope: scope }, { contact: {}, onSave: () => Promise.resolve() });
         });
         spyOn(gettextCatalog, 'getString').and.callThrough();

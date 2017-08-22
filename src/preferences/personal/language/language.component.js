@@ -1,13 +1,14 @@
+import defaultTo from 'lodash/fp/defaultTo';
+import get from 'lodash/fp/get';
 import keys from 'lodash/fp/keys';
 import map from 'lodash/fp/map';
 
 class LanguageController {
     constructor(
-        $transitions, $window,
+        $transitions,
         language, serverConstants, users
     ) {
         this.$transitions = $transitions;
-        this.$window = $window;
         this.language = language;
         this.serverConstants = serverConstants;
         this.users = users;
@@ -25,28 +26,18 @@ class LanguageController {
         });
     }
     $onChanges() {
-        if (!this.users.current.preferences.locale) {
-            this.users.current.preferences.locale = navigator.language || navigator.browserLanguage || navigator.systemLanguage || navigator.userLanguage || 'en-us';
-            if (!this.serverConstants.data.languages[this.users.current.preferences.locale]) {
-                this.users.current.preferences.locale = 'en-us';
-            }
-        }
-        let found = false;
-        this.languages = map((lang) => {
-            const language = this.$window.languageMappingList[lang];
-            if (this.users.current.preferences.locale === lang) {
-                found = true;
-            }
-            if (language) {
-                return { alias: lang, value: `${language.nativeName} (${language.englishName})` };
-            } else {
-                return { alias: lang, value: `${this.serverConstants.data.languages[lang]}` };
-            }
-        }, keys(this.serverConstants.data.languages));
-        if (!found) {
-            this.users.current.preferences.locale = 'en';
-        }
-        this.lastLanguage = this.users.current.preferences.locale;
+        /* istabul ignore next */
+        const defaultLocale = navigator.language || navigator.browserLanguage || navigator.systemLanguage
+            || navigator.userLanguage || 'en-us';
+        this.users.current.preferences.locale = defaultTo(defaultLocale, this.users.current.preferences.locale);
+        const lang = get(this.users.current.preferences.locale, this.serverConstants.data.languages);
+        this.users.current.preferences.locale = lang ? this.users.current.preferences.locale : 'en-us';
+
+        this.languages = map((lang) => ({
+            alias: lang,
+            value: `${this.serverConstants.data.languages[lang]}`
+        }), keys(this.serverConstants.data.languages));
+        this.lastLanguage = angular.copy(this.users.current.preferences.locale);
     }
     $onDestroy() {
         if (this.deregisterTransitionHook) {
