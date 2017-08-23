@@ -124,6 +124,42 @@ describe('tools.appeals.show.component', () => {
             });
         });
     });
+    describe('removeContact', () => {
+        beforeEach(() => {
+            $ctrl.appeal = { id: 123 };
+            spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
+        });
+        it('should open confirm modal', () => {
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            $ctrl.appeal = { id: 1, name: 'a' };
+            $ctrl.removeContact({ id: 1 });
+            expect($ctrl.gettext).toHaveBeenCalledWith('Are you sure you wish to remove this contact from the appeal?');
+            expect(modal.confirm).toHaveBeenCalledWith('Are you sure you wish to remove this contact from the appeal?');
+        });
+        it('should delete contact', (done) => {
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            $ctrl.removeContact({ id: 1 }).then(() => {
+                expect(api.delete).toHaveBeenCalledWith('appeals/123/contacts/1');
+                done();
+            });
+        });
+        it('should alert success', (done) => {
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            $ctrl.removeContact({ id: 1 }).then(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith('Contact removed from appeal');
+                expect($ctrl.gettext).toHaveBeenCalledWith('Contact removed from appeal');
+                done();
+            });
+        });
+        it('should alert failure', (done) => {
+            spyOn(api, 'delete').and.callFake(() => Promise.reject());
+            $ctrl.removeContact({ id: 1 }).catch(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith('Unable to remove contact from appeal', 'danger');
+                expect($ctrl.gettext).toHaveBeenCalledWith('Unable to remove contact from appeal');
+                done();
+            });
+        });
+    });
     describe('selectAllGiven', () => {
         it('should add contact ids from donations', () => {
             $ctrl.appeal = {

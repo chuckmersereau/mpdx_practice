@@ -138,6 +138,17 @@ class AppealController {
             throw ex;
         });
     }
+    removeContact(contact) {
+        const message = this.gettext('Are you sure you wish to remove this contact from the appeal?');
+        return this.modal.confirm(message).then(() =>
+            this.api.delete(`appeals/${this.appeal.id}/contacts/${contact.id}`).then(() => {
+                this.alerts.addAlert(this.gettext('Contact removed from appeal'));
+            }).catch((ex) => {
+                this.alerts.addAlert(this.gettext('Unable to remove contact from appeal'), 'danger');
+                throw ex;
+            })
+        );
+    }
     selectAllGiven() {
         const contactIds = map((donation) => donation.contact.id, this.appeal.donations);
         this.selectedContactIds = union(this.selectedContactIds, contactIds);
