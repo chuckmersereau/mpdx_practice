@@ -6,7 +6,7 @@ class SourceToStrFilter {
                 case 'Siebel':
                     return this.gettextCatalog.getString('US Donation Services');
                 case 'Dataserver':
-                    return this.gettextCatalog.getString('Dataserver');
+                    return this.gettextCatalog.getString('DonorHub');
                 case 'MPDX':
                     return this.gettextCatalog.getString('MPDX');
                 case 'TntImport':
