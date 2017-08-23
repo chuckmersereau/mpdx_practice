@@ -20,7 +20,7 @@ import union from 'lodash/fp/union';
 class AppealController {
     constructor(
         $log, $rootScope, $state, $stateParams, gettext,
-        alerts, api, contacts, donations, mailchimp, serverConstants, tasks,
+        alerts, api, contacts, donations, mailchimp, modal, serverConstants, tasks,
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
@@ -32,6 +32,7 @@ class AppealController {
         this.donations = donations;
         this.gettext = gettext;
         this.mailchimp = mailchimp;
+        this.modal = modal;
         this.moment = moment;
         this.serverConstants = serverConstants;
         this.tasks = tasks;
@@ -162,6 +163,12 @@ class AppealController {
     }
     editDonation(donation) {
         this.donations.openDonationModal(assign(donation, { appeal: { id: this.appeal.id, name: this.appeal.name } }));
+    }
+    removeDonation(donation) {
+        const message = this.gettext('Are you sure you wish to remove this donation?');
+        return this.modal.confirm(message).then(() =>
+            this.donations.delete(donation)
+        );
     }
     exportToCSV() {
         const columnHeaders = [[

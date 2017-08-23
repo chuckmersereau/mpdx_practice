@@ -1,15 +1,18 @@
 import component from './show.component';
 
 describe('tools.appeals.show.component', () => {
-    let $ctrl, scope, serverConstants, api, alerts, donations, mailchimp;
+    let $ctrl, scope, serverConstants, api, alerts, donations, mailchimp, modal;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _api_, _serverConstants_, _alerts_, _donations_, _mailchimp_) => {
+        inject((
+            $componentController, $rootScope, _api_, _serverConstants_, _alerts_, _donations_, _mailchimp_, _modal_
+        ) => {
             scope = $rootScope.$new();
             alerts = _alerts_;
             api = _api_;
             donations = _donations_;
             mailchimp = _mailchimp_;
+            modal = _modal_;
             serverConstants = _serverConstants_;
             $ctrl = $componentController('appealsShow', { $scope: scope }, {});
         });
@@ -197,6 +200,25 @@ describe('tools.appeals.show.component', () => {
             $ctrl.appeal = { id: 1, name: 'a' };
             $ctrl.editDonation({ id: 123 });
             expect(donations.openDonationModal).toHaveBeenCalledWith({ id: 123, appeal: $ctrl.appeal });
+        });
+    });
+
+    describe('removeDonation', () => {
+        it('should open confirm modal', () => {
+            spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
+            $ctrl.appeal = { id: 1, name: 'a' };
+            $ctrl.removeDonation({ id: 123 });
+            expect($ctrl.gettext).toHaveBeenCalledWith('Are you sure you wish to remove this donation?');
+            expect(modal.confirm).toHaveBeenCalledWith('Are you sure you wish to remove this donation?');
+        });
+        it('should delete donation', done => {
+            spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
+            spyOn(donations, 'delete').and.callFake(() => Promise.resolve());
+            $ctrl.appeal = { id: 1, name: 'a' };
+            $ctrl.removeDonation({ id: 123 }).then(() => {
+                expect(donations.delete).toHaveBeenCalledWith({ id: 123 });
+                done();
+            });
         });
     });
     describe('exportToCSV', () => {

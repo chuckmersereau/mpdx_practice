@@ -58,8 +58,8 @@
                             <td>{{::donation.contact.name}}</td>
                             <td>{{::donation.contact.pledge_amount}}</td>
                             <td>{{::donation.amount}} {{::donation.currency}} ({{::donation.donation_date}})</td>
-                            <td><i class="fa fa-edit" ng-click="$ctrl.editDonation(donation)"></i></td>
-                            <td><i class="fa fa-trash"></i></td>
+                            <td><i class="fa fa-edit" ng-click="$ctrl.editDonation(donation)" class="pointer"></i></td>
+                            <td><i class="fa fa-trash" ng-click="$ctrl.removeDonation(donation)" class="pointer"></i></td>
                         </tr>
                     </tbody>
                 </table>
@@ -93,7 +93,7 @@
                             {{::contact.currency.symbol}}{{::contact.pledge_amount}}
                             {{::$ctrl.serverConstants.getPledgeFrequency(contact.pledge_frequency).value}}
                         </td>
-                        <td><i class="fa fa-trash"></i></td>
+                        <td><i class="fa fa-trash" class="pointer"></i></td>
                     </tr>
                     </tbody>
                 </table>
