@@ -29,9 +29,10 @@ function isDataObject(data) {
 function deserialize(data, deSerializationOptions) {
     const options = assign(jsonApiParams, deSerializationOptions);
     return isDataObject(data)
-        ? new japi.Deserializer(options).deserialize(data).then((deserializedData) =>
-            assign(deserializedData, data.meta ? { meta: data.meta } : {}))
-        : data;
+        ? new japi.Deserializer(options).deserialize(data).then((deserializedData) => {
+            deserializedData.meta = defaultTo({}, data.meta);
+            return deserializedData;
+        }) : data;
 }
 
 function removeIdIfUndefined(serialized, method) {
