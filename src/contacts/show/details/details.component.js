@@ -11,7 +11,7 @@ import uuid from 'uuid/v1';
 class ContactDetailsController {
     constructor(
         $log, $rootScope, gettextCatalog,
-        alerts, api, contactsTags, contacts, locale, modal, users
+        alerts, api, contactsTags, contacts, locale, modal, timeZone, users
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
@@ -22,6 +22,7 @@ class ContactDetailsController {
         this.gettextCatalog = gettextCatalog;
         this.locale = locale;
         this.modal = modal;
+        this.timeZone = timeZone;
         this.users = users;
 
         this.languages = locale.getLocalesMap();
@@ -195,8 +196,9 @@ import contactsTags from 'contacts/sidebar/filter/tags/tags.service';
 import locale from 'common/locale/locale.service';
 import modal from 'common/modal/modal.service';
 import serverConstants from 'common/serverConstants/serverConstants.service';
+import timeZone from 'common/timeZone/timeZone.service';
 import users from 'common/users/users.service';
 
 export default angular.module('mpdx.contacts.show.details.component', [
-    alerts, api, contactsTags, contacts, locale, modal, serverConstants, users
+    alerts, api, contactsTags, contacts, locale, modal, serverConstants, timeZone, users
 ]).component('contactDetails', Details).name;

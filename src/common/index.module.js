@@ -32,6 +32,7 @@ import session from './session/session.service';
 import sourceToStr from './sourceToStr/sourceToStr.filter';
 import pagination from './pagination/pagination.component';
 import tagSelector from './tagSelector/tagSelector.component';
+import timeZone from './timeZone/timeZone.service';
 import urlParameter from './urlParameter/urlParameter.service';
 import users from './users/users.service';
 
@@ -70,6 +71,7 @@ export default angular.module('mpdx.common', [
     session,
     sourceToStr,
     tagSelector,
+    timeZone,
     urlParameter,
     users
 ]).name;

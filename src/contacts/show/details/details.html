@@ -72,6 +72,29 @@
                                              select="$ctrl.onContactSelected(item)">
                         </collection-selector>
                     </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="field">
+                        <h4 class="attribute-header" translate>Language</h4>
+                        <div class="inline-input">
+                            <select chosen
+                                    required
+                                    ng-change="$ctrl.saveWithEmptyCheck('locale')"
+                                    ng-model-options="{ debounce: 1000 }"
+                                    data-placeholder-text-single="'Select an Option' | translate"
+                                    class="form-control"
+                                    id="locale"
+                                    ng-options="option.alias as option.value for option in $ctrl.languages"
+                                    allow-single-deselect="true"
+                                    ng-model="$ctrl.contact.locale" >
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
                     <div class="field">
                         <h4 class="attribute-header" translate>Send Appeals?</h4>
                         <div class="inline-input">
@@ -90,18 +113,18 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="field">
-                        <h4 class="attribute-header" translate>Language</h4>
+                        <h4 class="attribute-header" translate>Timezone</h4>
                         <div class="inline-input">
                             <select chosen
                                     required
-                                    ng-change="$ctrl.saveWithEmptyCheck('locale')"
+                                    ng-change="$ctrl.save()"
                                     ng-model-options="{ debounce: 1000 }"
                                     data-placeholder-text-single="'Select an Option' | translate"
                                     class="form-control"
-                                    id="locale"
-                                    ng-options="option.alias as option.value for option in $ctrl.languages"
+                                    id="timezone"
+                                    ng-options="timeZone.key as timeZone.value for timeZone in $ctrl.timeZone.data"
                                     allow-single-deselect="true"
-                                    ng-model="$ctrl.contact.locale" >
+                                    ng-model="$ctrl.contact.timezone">
                                 <option value=""></option>
                             </select>
                         </div>
