@@ -42,10 +42,28 @@ class newsletterService {
             this.setMeta(data.meta);
 
             this.data = reduce((result, contact) => {
-                if (!contact.send_newsletter) {
-                    contact.send_newsletter = 'None';
-                }
                 contact.addresses = reject({ primary_mailing_address: false }, contact.addresses);
+                if (!contact.send_newsletter) {
+                    if (contact.addresses.length > 0) {
+                        contact.send_newsletter = 'Physical';
+                    }
+                    if (contact.primary_person) {
+                        if (contact.primary_person.optout_enewsletter !== true) {
+                            const PrimaryEmailAddresses = reject({ primary: false },
+                                                                 contact.primary_person.email_addresses);
+                            if (PrimaryEmailAddresses.length > 0) {
+                                if (contact.send_newsletter === 'Physical') {
+                                    contact.send_newsletter = 'Both';
+                                } else {
+                                    contact.send_newsletter = 'Email';
+                                }
+                            }
+                        }
+                    }
+                    if (!contact.send_newsletter) {
+                        contact.send_newsletter = 'None';
+                    }
+                }
                 return concat(result, contact);
             }, [], angular.copy(data));
 

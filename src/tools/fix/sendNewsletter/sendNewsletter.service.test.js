@@ -1,13 +1,51 @@
 import service from './sendNewsletter.service';
 
 const accountListId = 123;
-const apiData = [{
-    send_newsletter: null,
-    addresses: [
-        { primary_mailing_address: true },
-        { primary_mailing_address: false }
-    ]
-}];
+const apiData = [
+    {
+        // physical
+        send_newsletter: null,
+        addresses: [
+            { primary_mailing_address: true },
+            { primary_mailing_address: false }
+        ]
+    }, {
+        // email
+        send_newsletter: null,
+        primary_person: {
+            email_addresses: [
+                { primary: true }
+            ]
+        },
+        addresses: []
+    }, {
+        // both
+        send_newsletter: null,
+        primary_person: {
+            email_addresses: [
+                { primary: true }
+            ]
+        },
+        addresses: [
+            { primary_mailing_address: true },
+            { primary_mailing_address: false }
+        ]
+    }, {
+        // none
+        send_newsletter: null,
+        primary_person: null,
+        addresses: []
+    }, {
+        // email where person opted out - none
+        send_newsletter: null,
+        primary_person: {
+            optout_enewsletter: true,
+            email_addresses: [
+                { primary: true }
+            ]
+        }
+    }
+];
 
 describe('tools.fix.sendNewsletter.service', () => {
     let api, contacts, fixSendNewsletter, tools;
@@ -84,7 +122,11 @@ describe('tools.fix.sendNewsletter.service', () => {
 
             it('should store data', (done) => {
                 fixSendNewsletter.load().then((data) => {
-                    expect(data[0].send_newsletter).toEqual('None');
+                    expect(data[0].send_newsletter).toEqual('Physical');
+                    expect(data[1].send_newsletter).toEqual('Email');
+                    expect(data[2].send_newsletter).toEqual('Both');
+                    expect(data[3].send_newsletter).toEqual('None');
+                    expect(data[4].send_newsletter).toEqual('None');
                     expect(data[0].addresses).toEqual([{
                         primary_mailing_address: true
                     }]);
