@@ -28,8 +28,7 @@
         <div class="row">
             <div class="col-sm-9">
                 <label for="street"><translate>Street</translate> <span class="text-danger">*</span></label>
-                <input type="text"
-                       name="street"
+                <input name="street"
                        class="form-control" id="street"
                        places-auto-complete
                        on-place-changed="$ctrl.updateAddress()"
@@ -46,8 +45,7 @@
                         class="form-control"
                         id="location"
                         ng-options="opt as opt for opt in $ctrl.serverConstants.data.assignable_locations"
-                        ng-model="$ctrl.address.location"
-                        ng-disabled="!$ctrl.isEditable">
+                        ng-model="$ctrl.address.location">
                     <option value=""></option>
                 </select>
             </div>
@@ -55,35 +53,35 @@
         <div class="row">
             <div class="col-sm-6">
                 <label for="city" translate>City</label>
-                <input class="form-control" type="text" name="city" id="city"
+                <input class="form-control" name="city" id="city"
                        ng-model="$ctrl.address.city" ng-disabled="!$ctrl.isEditable">
             </div>
             <div class="col-sm-3">
                 <label for="state" translate>State</label>
-                <input class="form-control" type="text" name="state" id="state"
+                <input class="form-control" name="state" id="state"
                        ng-model="$ctrl.address.state" ng-disabled="!$ctrl.isEditable">
             </div>
             <div class="col-sm-3">
                 <label for="zip" translate>Zip</label>
-                <input class="form-control" type="text" name="postal_code" id="zip"
+                <input class="form-control" name="postal_code" id="zip"
                        ng-model="$ctrl.address.postal_code" ng-disabled="!$ctrl.isEditable">
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6">
                 <label for="country" translate>Country</label>
-                <input class="form-control" type="text" name="country" id="country"
+                <input class="form-control" name="country" id="country"
                        ng-model="$ctrl.address.country" ng-disabled="!$ctrl.isEditable">
             </div>
             <div class="col-sm-3">
                 <label for="region" translate>Region</label>
-                <input class="form-control" type="text" name="region" id="region"
-                       ng-model="$ctrl.address.region">
+                <input class="form-control" name="region" id="region"
+                       ng-model="$ctrl.address.region" ng-disabled="!$ctrl.isEditable">
             </div>
             <div class="col-sm-3">
                 <label for="metro" translate>Metro</label>
-                <input class="form-control" type="text" name="metro_area" id="metro"
-                       ng-model="$ctrl.address.metro_area">
+                <input class="form-control" name="metro_area" id="metro"
+                       ng-model="$ctrl.address.metro_area" ng-disabled="!$ctrl.isEditable">
             </div>
         </div>
         <div class="row">
