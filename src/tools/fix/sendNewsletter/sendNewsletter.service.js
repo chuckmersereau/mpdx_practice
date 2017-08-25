@@ -50,7 +50,7 @@ class newsletterService {
                     if (contact.primary_person) {
                         if (contact.primary_person.optout_enewsletter !== true) {
                             const PrimaryEmailAddresses = reject({ primary: false },
-                                                                 contact.primary_person.email_addresses);
+                                contact.primary_person.email_addresses);
                             if (PrimaryEmailAddresses.length > 0) {
                                 if (contact.send_newsletter === 'Physical') {
                                     contact.send_newsletter = 'Both';

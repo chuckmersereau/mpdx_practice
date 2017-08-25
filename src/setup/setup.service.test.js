@@ -33,8 +33,8 @@ describe('setup.service', () => {
                 spyOn(alerts, 'addAlert');
                 setup.next().catch(() => {
                     expect(alerts.addAlert).toHaveBeenCalledWith(
-                            'Something went wrong, please try again.', 'danger'
-                        );
+                        'Something went wrong, please try again.', 'danger'
+                    );
                     done();
                 });
             });

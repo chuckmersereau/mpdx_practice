@@ -239,7 +239,7 @@ describe('tools.mergeContacts.component', () => {
             });
         });
 
-        it('should map data', done => {
+        it('should map data', (done) => {
             let data = [{ id: 1, records: [{ id: 'contact_1_id' }, { id: 'contact_2_id' }] }];
             data.meta = { pagination: { total_count: 2 } };
             spyOn(api, 'get').and.callFake(() => Promise.resolve(data));

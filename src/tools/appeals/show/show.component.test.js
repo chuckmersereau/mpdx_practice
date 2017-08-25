@@ -247,7 +247,7 @@ describe('tools.appeals.show.component', () => {
             expect($ctrl.gettext).toHaveBeenCalledWith('Are you sure you wish to remove this donation?');
             expect(modal.confirm).toHaveBeenCalledWith('Are you sure you wish to remove this donation?');
         });
-        it('should delete donation', done => {
+        it('should delete donation', (done) => {
             spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
             spyOn(donations, 'delete').and.callFake(() => Promise.resolve());
             $ctrl.appeal = { id: 1, name: 'a' };
