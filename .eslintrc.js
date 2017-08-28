@@ -35,6 +35,23 @@ module.exports = {
         'no-var': 'error',
         'object-curly-spacing': ['error', 'always'],
         'operator-linebreak': ['error', 'before'],
+        'padded-blocks': ['error', {
+            blocks: 'never',
+            classes: 'never',
+            switches: 'never'
+        }],
+        'padding-line-between-statements': ['error',
+            { blankLine: 'always', prev: '*', next: 'class' },
+            { blankLine: 'always', prev: '*', next: 'function' },
+            { blankLine: "always", prev: "directive", next: "*" },
+            { blankLine: "any",    prev: "directive", next: "directive" },
+            { blankLine: "always", prev: "export", next: "*" },
+            { blankLine: "any",  prev: "export", next: "export" },
+            { blankLine: "always", prev: "import", next: "*" },
+            { blankLine: "never",  prev: "import", next: "import" },
+            { blankLine: "always", prev: "cjs-import", next: "*" },
+            { blankLine: "never",  prev: "cjs-import", next: "cjs-import" }
+        ],
         'prefer-promise-reject-errors': ['off', 'always'],
         'quotes': ['error', 'single'],
         'radix': 'off',
