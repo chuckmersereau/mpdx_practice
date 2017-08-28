@@ -56,7 +56,7 @@ describe('tools.appeals.show.component', () => {
             scope.$emit('accountListUpdated');
             scope.$digest();
             expect(state.go).toHaveBeenCalledWith('tools.appeals');
-            expect($ctrl.disable).toBeDefined();
+            expect($ctrl.disableAccountListEvent).toBeDefined();
         });
         it('should set the initial data state copy for patch', () => {
             $ctrl.$onInit();
@@ -96,11 +96,11 @@ describe('tools.appeals.show.component', () => {
     });
     describe('$onDestroy', () => {
         it('should disable event', () => {
-            $ctrl.disable = () => {};
+            $ctrl.disableAccountListEvent = () => {};
             spyOn(state, 'go').and.callFake(() => {});
-            spyOn($ctrl, 'disable').and.callFake(() => {});
+            spyOn($ctrl, 'disableAccountListEvent').and.callFake(() => {});
             $ctrl.$onDestroy();
-            expect($ctrl.disable).toHaveBeenCalled();
+            expect($ctrl.disableAccountListEvent).toHaveBeenCalled();
             scope.$emit('accountListUpdated');
             scope.$digest();
             expect(state.go).not.toHaveBeenCalled();

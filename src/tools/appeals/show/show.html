@@ -33,7 +33,7 @@
         <div>&nbsp;</div>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>Given To Appeal</h4>
+                <h4 translate>Given To Appeal</h4>
             </div>
             <div class="row panel-body">
                 <table class="table">
@@ -74,7 +74,54 @@
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>Not Given To Appeal Yet</h4>
+                <div class="row">
+                    <div class="col-md-9">
+                        <h4 translate>Contacts Excluded from Appeal</h4>
+                    </div>
+                    <div class="col-md-3">
+                        <a ng-click="$ctrl.getExcludedContacts()">Show Excluded</a>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-animate" ng-show="$ctrl.excludedContacts">
+                <div class="panel-body" >
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Contact</th>
+                            <th colspan="2">Commitment</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="contact in $ctrl.excludedContacts | orderBy : 'name'">
+                            <td>{{::contact.name}}</td>
+                            <td>
+                                {{::contact.currency.symbol}}{{::contact.pledge_amount}}
+                                {{::$ctrl.serverConstants.getPledgeFrequency(contact.pledge_frequency).value}}
+                            </td>
+                            <td>
+                                <button class="btn btn-xs btn-success" ng-click="$ctrl.addContact(contact)" title="{{'Add' | translate}}">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th colspan="4">
+                                <pagination meta="$ctrl.excludedContacts.meta.pagination"
+                                            on-change="$ctrl.getExcludedContacts(page)">
+                                </pagination>
+                            </th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 translate>Not Given To Appeal Yet</h4>
             </div>
             <div class="panel-body">
                 <table class="table">
