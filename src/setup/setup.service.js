@@ -2,9 +2,10 @@ import flatten from 'lodash/fp/flatten';
 
 class SetupService {
     constructor(
-        $state, gettextCatalog,
+        $q, $state, gettextCatalog,
         alerts, api, users
     ) {
+        this.$q = $q;
         this.$state = $state;
         this.gettextCatalog = gettextCatalog;
         this.alerts = alerts;
@@ -40,7 +41,7 @@ class SetupService {
     }
 
     hasOrganizationAccounts() {
-        return Promise.all([
+        return this.$q.all([
             this.getAccountListOrganizationAccounts(),
             this.getUserOrganizationAccounts()
         ]).then((data) => {

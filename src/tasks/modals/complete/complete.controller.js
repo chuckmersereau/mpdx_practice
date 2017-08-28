@@ -4,11 +4,12 @@ import createPatch from 'common/fp/createPatch';
 
 class CompleteTaskController {
     constructor(
-        $log, $scope,
+        $log, $q, $scope,
         serverConstants, tasks, contacts,
         task
     ) {
         this.$log = $log;
+        this.$q = $q;
         this.$scope = $scope;
         this.serverConstants = serverConstants;
         this.tasks = tasks;
@@ -28,7 +29,7 @@ class CompleteTaskController {
             patch,
             this.comment
         ));
-        return Promise.all(promises).then(() => {
+        return this.$q.all(promises).then(() => {
             this.$scope.$hide();
             if (this.task.next_action) {
                 this.tasks.addModal(map('id', this.task.contacts), this.task.next_action);

@@ -96,10 +96,6 @@ describe('tools.mergeContacts.component', () => {
             spyOn($ctrl, 'ignore').and.callFake(() => Promise.resolve());
         });
 
-        afterEach(() => {
-            rootScope.$apply(); // for return Promise.all
-        });
-
         it('should show loading screen', () => {
             $ctrl.confirm();
         });
@@ -139,6 +135,7 @@ describe('tools.mergeContacts.component', () => {
                 expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
+            rootScope.$apply();
         });
     });
 

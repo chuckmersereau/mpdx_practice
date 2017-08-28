@@ -4,9 +4,10 @@ import joinComma from 'common/fp/joinComma';
 
 class WizardController {
     constructor(
-        $log, $rootScope,
+        $log, $q, $rootScope,
         api, contacts, contactsTags, serverConstants
     ) {
+        this.$q = $q;
         this.$log = $log;
         this.$rootScope = $rootScope;
         this.api = api;
@@ -104,7 +105,7 @@ class WizardController {
             if (this.newTags.length > 0) {
                 promises.push(this.changeContacts(contacts, appeal));
             }
-            return Promise.all(promises);
+            return this.$q.all(promises);
         });
     }
     changeContacts(contacts, appeal) {

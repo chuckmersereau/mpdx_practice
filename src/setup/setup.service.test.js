@@ -1,16 +1,18 @@
 import service from './setup.service';
 
 describe('setup.service', () => {
-    let state, alerts, api, setup, users;
+    let state, alerts, api, setup, users, q, rootScope;
 
     beforeEach(() => {
         angular.mock.module(service);
-        inject(($rootScope, $state, _alerts_, _api_, _setup_, _users_) => {
+        inject(($q, $rootScope, $state, _alerts_, _api_, _setup_, _users_) => {
+            rootScope = $rootScope;
             api = _api_;
             state = $state;
             alerts = _alerts_;
             setup = _setup_;
             users = _users_;
+            q = $q;
         });
     });
 
@@ -143,8 +145,8 @@ describe('setup.service', () => {
     describe('hasOrganizationAccounts', () => {
         let accountListSpy, userSpy;
         beforeEach(() => {
-            accountListSpy = spyOn(setup, 'getAccountListOrganizationAccounts').and.callFake(() => Promise.resolve([]));
-            userSpy = spyOn(setup, 'getUserOrganizationAccounts').and.callFake(() => Promise.resolve([]));
+            accountListSpy = spyOn(setup, 'getAccountListOrganizationAccounts').and.callFake(() => q.resolve([]));
+            userSpy = spyOn(setup, 'getUserOrganizationAccounts').and.callFake(() => q.resolve([]));
         });
 
         it('should call getAccountListOrganizationAccounts', () => {
@@ -158,13 +160,13 @@ describe('setup.service', () => {
         });
 
         it('should return promise', () => {
-            expect(setup.hasOrganizationAccounts()).toEqual(jasmine.any(Promise));
+            expect(setup.hasOrganizationAccounts()).toEqual(jasmine.any(q));
         });
 
         describe('promise successful', () => {
             describe('AccountListOrganizationAccounts > 0', () => {
                 beforeEach(() => {
-                    accountListSpy.and.callFake(() => Promise.resolve([{}, {}]));
+                    accountListSpy.and.callFake(() => q.resolve([{}, {}]));
                     spyOn(setup, 'goPreferences');
                 });
 
@@ -173,12 +175,13 @@ describe('setup.service', () => {
                         expect(setup.goPreferences).toHaveBeenCalled();
                         done();
                     });
+                    rootScope.$apply();
                 });
             });
 
             describe('UserOrganizationAccounts > 0', () => {
                 beforeEach(() => {
-                    userSpy.and.callFake(() => Promise.resolve([{}, {}]));
+                    userSpy.and.callFake(() => q.resolve([{}, {}]));
                     spyOn(setup, 'goPreferences');
                 });
 
@@ -187,13 +190,14 @@ describe('setup.service', () => {
                         expect(setup.goPreferences).toHaveBeenCalled();
                         done();
                     });
+                    rootScope.$apply();
                 });
             });
 
             describe('OrganizationAccounts > 2', () => {
                 beforeEach(() => {
-                    accountListSpy.and.callFake(() => Promise.resolve([{}, {}]));
-                    userSpy.and.callFake(() => Promise.resolve([{}, {}]));
+                    accountListSpy.and.callFake(() => q.resolve([{}, {}]));
+                    userSpy.and.callFake(() => q.resolve([{}, {}]));
                     spyOn(setup, 'goPreferences');
                 });
 
@@ -202,6 +206,7 @@ describe('setup.service', () => {
                         expect(setup.goPreferences).toHaveBeenCalled();
                         done();
                     });
+                    rootScope.$apply();
                 });
             });
 
@@ -215,6 +220,7 @@ describe('setup.service', () => {
                         expect(setup.goConnect).toHaveBeenCalled();
                         done();
                     });
+                    rootScope.$apply();
                 });
             });
         });

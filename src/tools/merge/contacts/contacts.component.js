@@ -6,11 +6,12 @@ import reduceObject from 'common/fp/reduceObject';
 
 class MergeContactsController {
     constructor(
-        $log, $rootScope,
+        $log, $q, $rootScope,
         $state, gettextCatalog,
         alerts, api, contacts, tools
     ) {
         this.$log = $log;
+        this.$q = $q;
         this.$rootScope = $rootScope;
         this.$state = $state;
         this.gettextCatalog = gettextCatalog;
@@ -58,7 +59,7 @@ class MergeContactsController {
         if (contactsToIgnore.length > 0) {
             promises.push(...this.ignore(contactsToIgnore));
         }
-        return Promise.all(promises).then(() => {
+        return this.$q.all(promises).then(() => {
             this.alerts.addAlert(this.gettextCatalog.getString('Contacts successfully merged'));
         });
     }
