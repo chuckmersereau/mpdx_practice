@@ -49,15 +49,33 @@ describe('tools.mergeContacts.component', () => {
             expect(duplicate.contacts[1].selected).toBeFalsy();
         });
 
+        it('should un-pick winner 1', () => {
+            duplicate.contacts[0].selected = true;
+            duplicate.contacts[1].selected = false;
+            $ctrl.select(duplicate, 0);
+            expect(duplicate.ignored).toBeFalsy();
+            expect(duplicate.contacts[0].selected).toBeFalsy();
+            expect(duplicate.contacts[1].selected).toBeFalsy();
+        });
+
         it('should pick winner 2', () => {
             $ctrl.select(duplicate, 1);
             expect(duplicate.ignored).toBeFalsy();
             expect(duplicate.contacts[1].selected).toBeTruthy();
             expect(duplicate.contacts[0].selected).toBeFalsy();
         });
+
+        it('should un-pick winner 2', () => {
+            duplicate.contacts[0].selected = false;
+            duplicate.contacts[1].selected = true;
+            $ctrl.select(duplicate, 1);
+            expect(duplicate.ignored).toBeFalsy();
+            expect(duplicate.contacts[0].selected).toBeFalsy();
+            expect(duplicate.contacts[1].selected).toBeFalsy();
+        });
     });
 
-    describe('deSelect', () => {
+    describe('selectIgnore', () => {
         let duplicate;
 
         beforeEach(() => {
@@ -65,7 +83,7 @@ describe('tools.mergeContacts.component', () => {
         });
 
         it('should set ignore', () => {
-            $ctrl.deSelect(duplicate);
+            $ctrl.selectIgnore(duplicate);
             expect(duplicate.ignore).toBeTruthy();
             expect(duplicate.contacts[0].selected).toBeFalsy();
             expect(duplicate.contacts[1].selected).toBeFalsy();

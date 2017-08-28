@@ -1,6 +1,8 @@
+import concat from 'lodash/fp/concat';
 import filter from 'lodash/fp/filter';
 import map from 'lodash/fp/map';
 import reduce from 'lodash/fp/reduce';
+import reduceObject from 'common/fp/reduceObject';
 
 class MergeContactsController {
     constructor(
@@ -31,11 +33,14 @@ class MergeContactsController {
 
     select(duplicate, index) {
         duplicate.ignore = false;
-        duplicate.contacts[0].selected = index === 0;
-        duplicate.contacts[1].selected = index === 1;
+        const alreadySelected = !!duplicate.contacts[index].selected;
+        duplicate.contacts = reduceObject((result, value, rIndex) => {
+            value.selected = rIndex === index ? !alreadySelected : false;
+            return concat(result, value);
+        }, [], duplicate.contacts);
     }
 
-    deSelect(duplicate) {
+    selectIgnore(duplicate) {
         duplicate.ignore = true;
         duplicate.contacts[0].selected = false;
         duplicate.contacts[1].selected = false;
