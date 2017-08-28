@@ -98,6 +98,7 @@ class WizardController {
             },
             overrideGetAsPost: true
         }).then((contacts) => {
+            /* istanbul ignore next */
             this.$log.debug('contacts', contacts);
             let promises = [this.addContactsToAppeals(contacts, appeal)];
             if (this.newTags.length > 0) {

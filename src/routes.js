@@ -310,7 +310,8 @@ export default class Routes {
             url: '/appeals',
             component: 'appeals',
             resolve: {
-                0: /* @ngInject*/ (contactsTags) => contactsTags.load()
+                0: /* @ngInject*/ (contactsTags) => contactsTags.load(),
+                1: /* @ngInject*/ (serverConstants) => serverConstants.load(['status_hashes'])
             }
         }).state({
             name: 'tools.appeals.show',
@@ -321,7 +322,9 @@ export default class Routes {
                 1: /* @ngInject*/ (mailchimp) => mailchimp.load(),
                 data: /* @ngInject*/ (appealsShow, $stateParams) => appealsShow.getAppeal($stateParams.appealId),
                 contactsData: /* @ngInject*/ (appealsShow, $stateParams) =>
-                    appealsShow.getAppealContacts($stateParams.appealId)
+                    appealsShow.getAppealContacts($stateParams.appealId),
+                pledges: /* @ngInject*/ (appealsShow, $stateParams) =>
+                    appealsShow.getPledges($stateParams.appealId)
             }
         }).state({
             name: 'tools.import',

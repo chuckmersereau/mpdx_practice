@@ -1,4 +1,5 @@
 import concat from 'lodash/fp/concat';
+import defaultTo from 'lodash/fp/defaultTo';
 import fixed from 'common/fp/fixed';
 import reduce from 'lodash/fp/reduce';
 import round from 'lodash/fp/round';
@@ -33,7 +34,7 @@ class ListController {
         return this.canLoadMore() ? this.load(this.page + 1) : null;
     }
     canLoadMore() {
-        return this.loading || this.page >= this.meta.pagination.total_pages;
+        return !this.loading && this.page < this.meta.pagination.total_pages;
     }
     load(page = 1) {
         const reset = page === 1;
@@ -64,33 +65,29 @@ class ListController {
         return this.api.get('appeals', params).then((data) => {
             /* istanbul ignore next */
             this.$log.debug('appeals', data);
-            this.loading = false;
-
             if (this.loadedOutOfTurn(reset, currentCount)) {
                 return;
             }
-            this.meta = data.meta;
-
-            const deserializedData = reduce((result, appeal) => {
-                appeal.amount_raised = fixed(2, sumBy((donation) => (
-                    parseFloat(donation.converted_amount)
-                ), appeal.donations));
-                appeal.amount = fixed(2, appeal.amount);
-                if (appeal.amount > 0) {
-                    appeal.percentage_raised = round((appeal.amount_raised / appeal.amount) * 100.0);
-                } else {
-                    appeal.amount = '0.00';
-                    appeal.percentage_raised = 0;
-                }
-                return concat(result, appeal);
-            }, [], data);
-
+            const deserializedData = this.mutateData(data);
             this.data = this.resetOrAppendData(reset, deserializedData);
-
-            return this.data;
-        }).catch(() => {
+            this.meta = data.meta;
             this.loading = false;
+            return this.data;
+        }).catch((ex) => {
+            this.loading = false;
+            throw ex;
         });
+    }
+    mutateData(data) {
+        return reduce((result, appeal) => {
+            appeal.amount_raised = fixed(2, sumBy((donation) => (
+                parseFloat(donation.converted_amount)
+            ), appeal.donations));
+            appeal.amount = defaultTo(0, appeal.amount);
+            appeal.percentage_raised = appeal.amount > 0 ? round((appeal.amount_raised / appeal.amount) * 100) : 0;
+            appeal.amount = fixed(2, appeal.amount);
+            return concat(result, appeal);
+        }, [], data);
     }
     loadedOutOfTurn(reset, currentCount) {
         return reset && currentCount !== this.listLoadCount;

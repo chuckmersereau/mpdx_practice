@@ -1,11 +1,12 @@
 import component from './show.component';
 
 describe('tools.appeals.show.component', () => {
-    let $ctrl, scope, serverConstants, api, alerts, donations, mailchimp, modal;
+    let $ctrl, scope, serverConstants, api, alerts, donations, mailchimp, modal, state;
     beforeEach(() => {
         angular.mock.module(component);
         inject((
-            $componentController, $rootScope, _api_, _serverConstants_, _alerts_, _donations_, _mailchimp_, _modal_
+            $componentController, $rootScope, _api_, _serverConstants_, _alerts_, _donations_, _mailchimp_, _modal_,
+            $state
         ) => {
             scope = $rootScope.$new();
             alerts = _alerts_;
@@ -14,6 +15,7 @@ describe('tools.appeals.show.component', () => {
             mailchimp = _mailchimp_;
             modal = _modal_;
             serverConstants = _serverConstants_;
+            state = $state;
             $ctrl = $componentController('appealsShow', { $scope: scope }, {});
         });
         serverConstants.data = {
@@ -24,6 +26,85 @@ describe('tools.appeals.show.component', () => {
         };
         spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn($ctrl, 'gettext').and.callFake((data) => data);
+    });
+    describe('$onInit', () => {
+        const data = {
+            id: 1,
+            amount: '100',
+            total_currency: 'USD',
+            donations: []
+        };
+        const contactsData = {
+            contacts: [
+                { id: 1 },
+                { id: 2 }
+            ]
+        };
+        const currency = { code: 'USD', symbol: '$' };
+        beforeEach(() => {
+            $ctrl.data = data;
+            $ctrl.contactsData = contactsData;
+            spyOn(state, 'go').and.callFake(() => {});
+            spyOn($ctrl, 'getCurrencyFromCode').and.callFake(() => currency);
+            spyOn($ctrl, 'sumDonations').and.callFake(() => 30);
+            spyOn($ctrl, 'fixPledgeAmount').and.callFake((data) => data);
+            spyOn($ctrl, 'mutateDonations').and.callFake(() => []);
+            spyOn($ctrl, 'getContactsNotGiven').and.callFake(() => ['b']);
+        });
+        it('should change state on account list change', () => {
+            $ctrl.$onInit();
+            scope.$emit('accountListUpdated');
+            scope.$digest();
+            expect(state.go).toHaveBeenCalledWith('tools.appeals');
+            expect($ctrl.disable).toBeDefined();
+        });
+        it('should set the initial data state copy for patch', () => {
+            $ctrl.$onInit();
+            expect($ctrl.dataInitialState).toEqual(data);
+            expect($ctrl.dataInitialState === data).toBeFalsy();
+        });
+        it('should get currency from server constants', () => {
+            $ctrl.$onInit();
+            expect($ctrl.currency).toEqual(currency);
+            expect($ctrl.getCurrencyFromCode).toHaveBeenCalledWith(data.total_currency);
+        });
+        it('should get donations sum', () => {
+            $ctrl.$onInit();
+            expect($ctrl.donationsSum).toEqual(30);
+            expect($ctrl.sumDonations).toHaveBeenCalledWith([]);
+        });
+        it('should get percentage raised', () => {
+            $ctrl.$onInit();
+            expect($ctrl.percentageRaised).toEqual(30);
+        });
+        it('should get fix pledge amounts', () => {
+            $ctrl.$onInit();
+            expect($ctrl.contactsData).toEqual(contactsData);
+            expect($ctrl.fixPledgeAmount).toHaveBeenCalledWith(contactsData.contacts);
+        });
+        it('should append to the appeal', () => {
+            $ctrl.$onInit();
+            expect($ctrl.appeal.amount).toEqual('100.00');
+            expect($ctrl.appeal.donations).toEqual([]);
+            expect($ctrl.mutateDonations).toHaveBeenCalledWith([], contactsData.contacts);
+        });
+        it('should get contacts not given', () => {
+            $ctrl.$onInit();
+            expect($ctrl.contactsNotGiven).toEqual(['b']);
+            expect($ctrl.getContactsNotGiven).toHaveBeenCalledWith(contactsData.contacts, []);
+        });
+    });
+    describe('$onDestroy', () => {
+        it('should disable event', () => {
+            $ctrl.disable = () => {};
+            spyOn(state, 'go').and.callFake(() => {});
+            spyOn($ctrl, 'disable').and.callFake(() => {});
+            $ctrl.$onDestroy();
+            expect($ctrl.disable).toHaveBeenCalled();
+            scope.$emit('accountListUpdated');
+            scope.$digest();
+            expect(state.go).not.toHaveBeenCalled();
+        });
     });
     describe('changeGoal', () => {
         beforeEach(() => {
@@ -238,7 +319,6 @@ describe('tools.appeals.show.component', () => {
             expect(donations.openDonationModal).toHaveBeenCalledWith({ id: 123, appeal: $ctrl.appeal });
         });
     });
-
     describe('removeDonation', () => {
         it('should open confirm modal', () => {
             spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());

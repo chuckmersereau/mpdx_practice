@@ -14,5 +14,8 @@ const AppealsListItem = {
     }
 };
 
-export default angular.module('mpdx.tools.appeals.list.item.component', [])
-    .component('appealsListItem', AppealsListItem).name;
+import locale from 'common/locale/locale.service';
+
+export default angular.module('mpdx.tools.appeals.list.item.component', [
+    locale
+]).component('appealsListItem', AppealsListItem).name;

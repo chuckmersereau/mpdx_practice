@@ -41,10 +41,6 @@ class AppealController {
         this.selectedContactIds = [];
     }
     $onInit() {
-        this.disable = this.$rootScope.$on('accountListUpdated', () => {
-            this.$state.go('tools.appeals');
-        });
-
         /* istanbul ignore next */
         this.$log.debug('appeal', this.data);
         /* istanbul ignore next */
@@ -52,7 +48,7 @@ class AppealController {
 
         this.dataInitialState = angular.copy(this.data);
         this.currency = this.getCurrencyFromCode(this.data.total_currency);
-        this.donationsSum = fixed(2, sumBy((donation) => parseFloat(donation.converted_amount), this.data.donations));
+        this.donationsSum = this.sumDonations(this.data.donations);
         this.percentageRaised = this.donationsSum / this.data.amount * 100;
         this.contactsData.contacts = this.fixPledgeAmount(this.contactsData.contacts);
         this.appeal = assign(this.data, {
@@ -60,9 +56,16 @@ class AppealController {
             donations: this.mutateDonations(this.data.donations, this.contactsData.contacts)
         });
         this.contactsNotGiven = this.getContactsNotGiven(this.contactsData.contacts, this.appeal.donations);
+
+        this.disable = this.$rootScope.$on('accountListUpdated', () => {
+            this.$state.go('tools.appeals');
+        });
     }
     $onDestroy() {
         this.disable();
+    }
+    sumDonations(donations) {
+        return fixed(2, sumBy((donation) => parseFloat(donation.converted_amount), donations));
     }
     fixPledgeAmount(contacts) {
         return map((contact) => assign(contact, {
@@ -113,11 +116,12 @@ class AppealController {
     }
     contactSearch(keyword) {
         // api missing exclude capability
-        // const excluded = joinComma(map('id', this.appeal.contacts));
         return this.api.get({
             url: 'contacts',
             data: {
                 filter: {
+                    // appeal: this.appeal.id,
+                    // reverse_appeal: true,
                     account_list_id: this.api.account_list_id,
                     wildcard_search: keyword
                 },

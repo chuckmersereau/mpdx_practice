@@ -29,6 +29,18 @@ class Show {
             }
         });
     }
+    getPledges() {
+        return this.api.get(`account_lists/${this.api.account_list_id}/pledges`, {
+            // include: 'contacts',
+            // fields: {
+            //     appeal_id: appealId,
+            //     contacts: 'name,pledge_amount,pledge_currency,pledge_frequency'
+            // },
+            // filter: {
+            //     appeal_id: appealId
+            // }
+        });
+    }
 }
 
 import api from 'common/api/api.service';
