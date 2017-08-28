@@ -31,7 +31,7 @@ module.exports = {
         'no-lonely-if': 'error',
         'no-multiple-empty-lines': ['error', {'max': 2}],
         'no-unneeded-ternary': 'error',
-        'no-unused-vars': ['error', 'all'],
+        'no-unused-vars': ['warn', 'all'],
         'no-var': 'error',
         'object-curly-spacing': ['error', 'always'],
         'operator-linebreak': ['error', 'before'],

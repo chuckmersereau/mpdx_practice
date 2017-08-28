@@ -1,10 +1,12 @@
+import config from 'config';
 import isFunction from 'lodash/fp/isFunction';
 import map from 'lodash/fp/map';
 import moment from 'moment';
+import uuid from 'uuid/v1';
 
 class PersonService {
     constructor(
-        $filter, $log, $q, $rootScope, gettextCatalog,
+        $filter, $log, $q, $rootScope, gettextCatalog, Upload,
         api, contacts, modal
     ) {
         this.$filter = $filter;
@@ -12,6 +14,7 @@ class PersonService {
         this.$q = $q;
         this.$rootScope = $rootScope;
         this.gettextCatalog = gettextCatalog;
+        this.Upload = Upload;
 
         this.api = api;
         this.contacts = contacts;
@@ -73,6 +76,42 @@ class PersonService {
             type: 'people'
         }); // reload after use, otherwise add reconcile
     }
+    updateAvatar(person, avatar) {
+        const pictureId = uuid();
+        return this.Upload.upload({
+            url: `${config.apiUrl}contacts/people/${person.id}`,
+            method: 'PUT',
+            arrayKey: '[]',
+            data: {
+                data: {
+                    id: person.id,
+                    type: 'people',
+                    attributes: {
+                        overwrite: true
+                    },
+                    relationships: {
+                        pictures: {
+                            data: [{
+                                id: pictureId,
+                                type: 'pictures'
+                            }]
+                        }
+                    }
+                },
+                included: [
+                    {
+                        id: pictureId,
+                        type: 'pictures',
+                        attributes: {
+                            image: avatar,
+                            primary: true
+                        }
+                    }
+                ]
+            }
+        });
+    }
+
     bulkSave(people) {
         return this.api.put({
             url: 'contacts/people/bulk',
@@ -177,11 +216,12 @@ class PersonService {
 
 
 import gettextCatalog from 'angular-gettext';
+import Upload from 'ng-file-upload';
 import api from 'common/api/api.service';
 import contacts from 'contacts/contacts.service';
 import modal from 'common/modal/modal.service';
 
 export default angular.module('mpdx.contacts.show.people.service', [
-    gettextCatalog,
+    gettextCatalog, Upload,
     api, contacts, modal
 ]).service('people', PersonService).name;

@@ -1,1 +1,18 @@
-<img ng-src="{{$ctrl.src | stripMpdx}}">
+<div class="avatar">
+    <img ng-src="{{$ctrl.src | stripMpdx}}">
+    <a class="edit" ng-if="$ctrl.editable" translate>Edit</a>
+    <form name="imageUploadForm">
+        <div name="avatar" class="cover" ng-if="$ctrl.editable && !$ctrl.loading"
+            ng-model="$ctrl.avatar" ngf-model-options="{ allowInvalid: true }"
+            ngf-select
+            ngf-change="$ctrl.upload(imageUploadForm)"
+            ngf-pattern="'image/*'" ngf-accept="'image/*'"
+            ngf-max-size="20MB" ngf-min-height="340" ngf-min-width="340"
+            ngf-resize="{width: 340, height: 340}">
+        </div>
+    </form>
+    <div class="loading-spinner" ng-if="$ctrl.loading">
+        <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+        <span class="sr-only" translate>Loading</span>
+    </div>
+</div>
