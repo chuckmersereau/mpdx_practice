@@ -1,6 +1,8 @@
 import jQuery from '!expose-loader?jQuery!jquery'; // import before angular to replace jqlite
+
 window.$ = jQuery;
 import angular from 'angular';
+
 window.angular = angular;
 
 import app from './app.directive';

@@ -39,6 +39,7 @@ class Language {
 }
 
 import gettext from 'angular-gettext';
+
 export default angular.module('mpdx.common.language.service', [
     gettext
 ]).service('language', Language).name;
