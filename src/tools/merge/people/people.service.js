@@ -5,10 +5,11 @@ import filter from 'lodash/fp/filter';
 
 class MergePeople {
     constructor(
-        $log,
+        $log, $q,
         api, people, tools
     ) {
         this.$log = $log;
+        this.$q = $q;
         this.api = api;
         this.people = people;
         this.tools = tools;
@@ -66,11 +67,11 @@ class MergePeople {
             return this.api.delete({ url: `contacts/people/duplicates/${duplicate.id}`, type: 'people' });
         }, duplicates);
 
-        return Promise.all(promises);
+        return this.$q.all(promises);
     }
     confirm() {
         const promises = concat(this.getPeopleToMergePromise(), this.getPeopleToIgnorePromise());
-        return Promise.all(promises).then(() => this.load(true));
+        return this.$q.all(promises).then(() => this.load(true));
     }
     getPeopleToIgnorePromise() {
         const peopleToIgnore = filter({ mergeChoice: 2 }, this.duplicates);

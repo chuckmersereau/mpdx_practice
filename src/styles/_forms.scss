@@ -118,6 +118,7 @@ tags-input {
         }
         &.chosen-with-drop {
             .chosen-single {
+                border: 0;
                 border-bottom: 1px solid rgb(0, 115, 152);
                 div b {
                     &:before {

@@ -14,8 +14,8 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "~flag-icon-css/sass/flag-icon";
 
 /* Internal */
-@import "styles/utility";
 @import "styles/vars";
+@import "styles/utility";
 @import "styles/elements";
 @import "styles/columns";
 @import "styles/forms";
@@ -72,6 +72,7 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "tasks/list/item/item";
 @import "tasks/search/search";
 @import "tools/tools";
+@import 'tools/fix/sendNewsletter/item/item';
 @import "tools/import/csv/csv";
 @import "reports/reports";
 @import "bottom/bottom";

@@ -310,7 +310,8 @@ export default class Routes {
             url: '/appeals',
             component: 'appeals',
             resolve: {
-                0: /* @ngInject*/ (contactsTags) => contactsTags.load()
+                0: /* @ngInject*/ (contactsTags) => contactsTags.load(),
+                1: /* @ngInject*/ (serverConstants) => serverConstants.load(['status_hashes'])
             }
         }).state({
             name: 'tools.appeals.show',
@@ -318,7 +319,12 @@ export default class Routes {
             component: 'appealsShow',
             resolve: {
                 0: /* @ngInject*/ (serverConstants) => serverConstants.load(['pledge_currencies', 'pledge_frequency_hashes']),
-                1: /* @ngInject*/ (mailchimp) => mailchimp.load()
+                1: /* @ngInject*/ (mailchimp) => mailchimp.load(),
+                data: /* @ngInject*/ (appealsShow, $stateParams) => appealsShow.getAppeal($stateParams.appealId),
+                contactsData: /* @ngInject*/ (appealsShow, $stateParams) =>
+                    appealsShow.getAppealContacts($stateParams.appealId),
+                pledges: /* @ngInject*/ (appealsShow, $stateParams) =>
+                    appealsShow.getPledges($stateParams.appealId)
             }
         }).state({
             name: 'tools.import',
@@ -393,9 +399,20 @@ export default class Routes {
             url: '/commitment-info',
             component: 'fixCommitmentInfo',
             resolve: {
-                1: /* @ngInject*/ (serverConstants, fixCommitmentInfo) =>
+                0: /* @ngInject*/ (serverConstants, fixCommitmentInfo) =>
                     serverConstants.load(['pledge_currencies', 'pledge_frequency_hashes', 'status_hashes']).then(() =>
                         fixCommitmentInfo.load()
+                    )
+            }
+        }).state({
+            name: 'tools.fix.sendNewsletter',
+            title: gettext('Tools - Fix - Send Newsletter'),
+            url: '/send-newsletter',
+            component: 'fixSendNewsletter',
+            resolve: {
+                0: /* @ngInject*/  (serverConstants, fixSendNewsletter) =>
+                    serverConstants.load(['assignable_send_newsletter_hashes']).then(() =>
+                        fixSendNewsletter.load()
                     )
             }
         }).state({

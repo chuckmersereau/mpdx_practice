@@ -58,14 +58,6 @@ describe('tools.service', () => {
                     analyticKey: 'fix-commitment-info'
                 },
                 {
-                    title: gettextCatalog.getString('Fix Phone Numbers'),
-                    icon: 'fa fa-phone-square',
-                    link: 'tools.fix.phoneNumbers',
-                    description: gettextCatalog.getString('Set the correct primary phone number for each person'),
-                    enabled: true,
-                    analyticKey: 'fix-phone-numbers'
-                },
-                {
                     title: gettextCatalog.getString('Fix Email Addresses'),
                     icon: 'fa fa-envelope-o',
                     link: 'tools.fix.emailAddresses',
@@ -80,6 +72,22 @@ describe('tools.service', () => {
                     description: gettextCatalog.getString('Set the correct primary mailing address for each contact'),
                     enabled: true,
                     analyticKey: 'fix-addresses'
+                },
+                {
+                    title: gettextCatalog.getString('Fix Phone Numbers'),
+                    icon: 'fa fa-phone-square',
+                    link: 'tools.fix.phoneNumbers',
+                    description: gettextCatalog.getString('Set the correct primary phone number for each person'),
+                    enabled: true,
+                    analyticKey: 'fix-phone-numbers'
+                },
+                {
+                    title: gettextCatalog.getString('Fix Send Newsletter'),
+                    icon: 'fa fa-newspaper-o',
+                    link: 'tools.fix.sendNewsletter',
+                    description: gettextCatalog.getString('Set the correct newsletter state for each contact'),
+                    enabled: true,
+                    analyticKey: 'fix-send-newsletter'
                 },
                 {
                     title: gettextCatalog.getString('Merge Contacts'),

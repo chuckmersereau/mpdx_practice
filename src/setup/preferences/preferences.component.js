@@ -1,12 +1,5 @@
-class SetupPreferencesController {
-    constructor(accounts) {
-        this.accounts = accounts;
-    }
-}
-
 const SetupPreferences = {
-    template: require('./preferences.html'),
-    controller: SetupPreferencesController
+    template: require('./preferences.html')
 };
 
 export default angular.module('mpdx.setup.preferences.component', [])

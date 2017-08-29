@@ -1,8 +1,9 @@
 class TimeZoneController {
     constructor(
-        users
+        timeZone, users
     ) {
         this.saving = false;
+        this.timeZone = timeZone;
         this.users = users;
     }
 }
@@ -12,5 +13,9 @@ const TimeZone = {
     controller: TimeZoneController
 };
 
-export default angular.module('mpdx.preferences.personal.timeZone.component', [])
-    .component('preferencesPersonalTimeZone', TimeZone).name;
+import timeZone from 'common/timeZone/timeZone.service';
+import users from 'common/users/users.service';
+
+export default angular.module('mpdx.preferences.personal.timeZone.component', [
+    timeZone, users
+]).component('preferencesPersonalTimeZone', TimeZone).name;

@@ -4,9 +4,10 @@ import joinComma from 'common/fp/joinComma';
 
 class WizardController {
     constructor(
-        $log, $rootScope,
+        $log, $q, $rootScope,
         api, contacts, contactsTags, serverConstants
     ) {
+        this.$q = $q;
         this.$log = $log;
         this.$rootScope = $rootScope;
         this.api = api;
@@ -98,12 +99,13 @@ class WizardController {
             },
             overrideGetAsPost: true
         }).then((contacts) => {
+            /* istanbul ignore next */
             this.$log.debug('contacts', contacts);
             let promises = [this.addContactsToAppeals(contacts, appeal)];
             if (this.newTags.length > 0) {
                 promises.push(this.changeContacts(contacts, appeal));
             }
-            return Promise.all(promises);
+            return this.$q.all(promises);
         });
     }
     changeContacts(contacts, appeal) {

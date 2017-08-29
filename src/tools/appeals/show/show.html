@@ -11,7 +11,7 @@
                     </div>
                 </div>
                 <div class="col-md-5">
-                    {{:: $ctrl.currency.symbol}}{{::$ctrl.donationsSum}} /
+                    {{:: $ctrl.currency.symbol}}{{:: $ctrl.donationsSum }} /
                     {{:: $ctrl.currency.symbol}}
                     <span class="inline-input inline-block">
                         <input ng-model="$ctrl.appeal.amount"
@@ -42,14 +42,14 @@
                             <th colspan="2">Contact</th>
                             <th>Commitment</th>
                             <th>Donation(s)</th>
-                            <th colspan="2">
+                            <th>
                                 <a ng-click="$ctrl.selectAllGiven()">select all</a> |
                                 <a ng-click="$ctrl.deselectAllGiven()">deselect all</a>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="donation in $ctrl.appeal.donations">
+                        <tr ng-repeat="donation in $ctrl.appeal.donations | orderBy : 'donation_date' : true">
                             <td>
                                 <input type="checkbox"
                                        ng-checked="$ctrl.selectedContactIds.includes(donation.contact.id)"
@@ -58,8 +58,15 @@
                             <td>{{::donation.contact.name}}</td>
                             <td>{{::donation.contact.pledge_amount}}</td>
                             <td>{{::donation.amount}} {{::donation.currency}} ({{::donation.donation_date}})</td>
-                            <td><i class="fa fa-edit" ng-click="$ctrl.editDonation(donation)"></i></td>
-                            <td><i class="fa fa-trash"></i></td>
+                            <td>
+                                <button class="btn btn-xs btn-default" ng-click="$ctrl.editDonation(donation)" title="{{'Edit' | translate}}">
+                                    <i class="fa fa-pencil-square-o"></i>
+                                </button>
+                                &nbsp;
+                                <button class="btn btn-xs btn-danger" ng-click="$ctrl.removeDonation(donation)" title="{{'Remove' | translate}}">
+                                    <i class="fa fa-trash-o"></i>
+                                </button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -82,7 +89,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="contact in $ctrl.contactsNotGiven">
+                    <tr ng-repeat="contact in $ctrl.contactsNotGiven | orderBy : 'name'">
                         <td>
                             <input type="checkbox"
                                    ng-checked="$ctrl.selectedContactIds.includes(contact.id)"
@@ -93,7 +100,11 @@
                             {{::contact.currency.symbol}}{{::contact.pledge_amount}}
                             {{::$ctrl.serverConstants.getPledgeFrequency(contact.pledge_frequency).value}}
                         </td>
-                        <td><i class="fa fa-trash"></i></td>
+                        <td>
+                            <button class="btn btn-xs btn-danger" ng-click="$ctrl.removeContact(contact)" title="{{'Remove' | translate}}">
+                                <i class="fa fa-trash-o"></i>
+                            </button>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

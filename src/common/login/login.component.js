@@ -9,6 +9,7 @@ class LoginController {
         }
         this.year = new Date().getFullYear();
         this.loginUrl = `${config.authUrl}${config.authLoginPath}`;
+        this.signupUrl = `${config.authUrl}${config.authSignupPath}`;
     }
 }
 

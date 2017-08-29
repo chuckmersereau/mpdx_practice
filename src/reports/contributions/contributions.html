@@ -109,11 +109,13 @@
                                 </td>
                             </tr>
                             <tr class="row-total">
-                                <td colspan="{{$ctrl.expanded ? 5 : 1}}">
+                                <td colspan="{{$ctrl.expanded ? 3 : 1}}">
                                     <strong translate>
                                         Totals
                                     </strong>
                                 </td>
+                                <td ng-if="$ctrl.expanded">{{::currency.totals.average}}</td>
+                                <td ng-if="$ctrl.expanded">{{::currency.totals.minimum}}</td>
                                 <td class="text-right" ng-repeat="total in ::currency.totals.months track by $index">
                                     <strong ng-class="::{'text-muted': $last}">
                                         {{::total | number : 0}}

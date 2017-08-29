@@ -1,10 +1,10 @@
 class ContactPersonController {
     constructor(
-        $sce, gettextCatalog,
-        locale, people
+        $sce,
+        gettextCatalog,
+        people
     ) {
         this.$sce = $sce;
-        this.locale = locale;
         this.people = people;
 
         this.translatedLocations = {
@@ -15,18 +15,23 @@ class ContactPersonController {
             other: gettextCatalog.getString('Other')
         };
     }
+
     openModal() {
-        this.people.openPeopleModal(this.contact, this.person.id);
+        return this.people.openPeopleModal(this.contact, this.person.id);
     }
+
     selectCard() {
         if (this.isMerging) {
             this.onSelectPerson({ person: this.person });
-        } else {
-            this.openModal();
         }
     }
+
     trustSrc(src) {
         return this.$sce.trustAsResourceUrl(src);
+    }
+
+    updateAvatar(avatar) {
+        return this.people.updateAvatar(this.person, avatar);
     }
 }
 
@@ -43,5 +48,10 @@ const Person = {
     }
 };
 
-export default angular.module('mpdx.contacts.show.person.component', [])
-    .component('contactPerson', Person).name;
+import gettextCatalog from 'angular-gettext';
+import people from '../people.service';
+
+export default angular.module('mpdx.contacts.show.person.component', [
+    gettextCatalog,
+    people
+]).component('contactPerson', Person).name;

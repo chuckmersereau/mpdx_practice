@@ -94,14 +94,21 @@ class ContributionsController {
         }, [], data.currency_groups);
     }
     getDonorTotals(value, donors, months) {
-        const sumColumn = (col, array) =>
-            sumBy((c) =>
-                c.monthlyDonations[col].convertedTotal
-                , array);
+        const sumColumn = (column, donors) =>
+            sumBy((donor) => donor.monthlyDonations[column].convertedTotal, donors);
+        const sumAverages = (donors) =>
+            sumBy((donor) => parseInt(defaultTo(0, donor.average)), donors);
+        const sumMins = (donors) =>
+            sumBy((donor) => parseInt(defaultTo(0, donor.minimum)), donors);
+        const sumMaxes = (donors) =>
+            sumBy((donor) => parseInt(defaultTo(0, donor.maximum)), donors);
         return assign(value.totals, {
             months: times((index) =>
                 sumColumn(index, donors)
-                , months.length)
+                , months.length),
+            average: sumAverages(donors),
+            minimum: sumMins(donors),
+            maximum: sumMaxes(donors)
         });
     }
     getDonors(data, type, info) {
@@ -197,7 +204,10 @@ class ContributionsController {
             }, currency.donors);
             const totals = [
                 this.gettextCatalog.getString('Totals'),
-                ...times(constant(''), 5),
+                ...times(constant(''), 2),
+                currency.totals.average,
+                currency.totals.minimum,
+                currency.totals.maximum,
                 ...currency.totals.months,
                 round(currency.totals.year_converted)
             ];

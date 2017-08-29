@@ -1325,6 +1325,18 @@ span.best_in_place_once {
     display: flex;
 }
 
+.row-small-gutter {
+    > div {
+        padding: 0 2.5px;
+        &:first-child {
+            padding-left: 0;
+        }
+        &:last-child {
+            padding-right: 0;
+        }
+    }
+}
+
 //force gmaps auto-complete zindex +1 to modal
 .pac-container {
     z-index: 1051;
