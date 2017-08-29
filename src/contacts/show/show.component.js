@@ -104,9 +104,17 @@ class ContactController {
             this.gettextCatalog.getString('58471fd6903360069817752e')
         ]);
     }
+    $onInit() {
+        this.disableAccountListEvent = this.$rootScope.$on('accountListUpdated', () => {
+            this.$state.go('contacts');
+        });
+    }
     $onChanges() {
         this.$log.debug('selected contact: ', this.contacts.current);
         this.$rootScope.pageTitle = `Contact | ${this.contacts.current.name}`;
+    }
+    $onDestroy() {
+        this.disableAccountListEvent();
     }
     save() {
         const source = angular.copy(this.contacts.current); // to avoid onChanges changes

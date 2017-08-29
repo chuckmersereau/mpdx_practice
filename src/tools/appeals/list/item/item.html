@@ -1,15 +1,15 @@
-<div class="appeal" ui-sref=".show({appealId: $ctrl.appeal.id})">
+<div class="appeal pointer" ui-sref=".show({appealId: $ctrl.appeal.id})">
     <div class="appeal-info">
-        <h4 class="pull-left">{{$ctrl.appeal.name}}</h4>
+        <h4 class="pull-left">{{::$ctrl.appeal.name}}</h4>
 
         <div class="pull-right" style="margin: 10px 0">
-            {{$ctrl.appeal.amount_raised | currency:'':0}} / {{$ctrl.appeal.amount | currency:'':0}}
+            {{::$ctrl.appeal.amount_raised}} / {{::$ctrl.appeal.amount}}
         </div>
     </div>
 
     <div class="progress" style="clear: both">
         <div class="progress-bar color-0" role="progressbar" aria-valuenow="{{$ctrl.appeal.percentage_raised}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$ctrl.appeal.percentage_raised}}%; min-width: 5%; max-width: 100%;">
-            {{$ctrl.appeal.percentage_raised}}%
+            {{::$ctrl.appeal.percentage_raised}}%
         </div>
     </div>
 </div>

@@ -234,14 +234,40 @@ describe('reports.contributions.component', () => {
     });
     describe('getDonorTotals', () => {
         const value = { totals: { totes: {} } };
-        const data = [
-            { monthlyDonations: [{ convertedTotal: 1 }, { convertedTotal: 2 }, { convertedTotal: 4 }] },
-            { monthlyDonations: [{ convertedTotal: 1 }, { convertedTotal: 2 }, { convertedTotal: 4 }] },
-            { monthlyDonations: [{ convertedTotal: 1 }, { convertedTotal: 2 }, { convertedTotal: 4 }] }
-        ];
+        const data = [{
+            monthlyDonations: [
+                { convertedTotal: 1 }, { convertedTotal: 2 },
+                { convertedTotal: 4 }
+            ],
+            average: '20',
+            minimum: '1',
+            maximum: '30'
+        }, {
+            monthlyDonations: [
+                { convertedTotal: 1 }, { convertedTotal: 2 },
+                { convertedTotal: 4 }
+            ],
+            average: '20',
+            minimum: '1',
+            maximum: '30'
+        }, {
+            monthlyDonations: [
+                { convertedTotal: 1 }, { convertedTotal: 2 },
+                { convertedTotal: 4 }
+            ],
+            average: '20',
+            minimum: '1',
+            maximum: '30'
+        }];
         const months = times(constant(0), 3);
         it('should add converted Totals and re-arrange object values', () => {
-            expect($ctrl.getDonorTotals(value, data, months)).toEqual({ totes: {}, months: [3, 6, 12] });
+            expect($ctrl.getDonorTotals(value, data, months)).toEqual({
+                totes: {},
+                months: [3, 6, 12],
+                average: 60,
+                minimum: 3,
+                maximum: 90
+            });
         });
     });
     describe('getDonors', () => {
@@ -462,7 +488,10 @@ describe('reports.contributions.component', () => {
                 totals: {
                     year: '25.0',
                     year_converted: 25,
-                    months: [50, 0]
+                    months: [50, 0],
+                    minimum: 1,
+                    maximum: 30,
+                    average: 20
                 },
                 donors: [
                     {
@@ -554,6 +583,6 @@ describe('reports.contributions.component', () => {
         ],
         ['Abraham, Adam', 'Never Contacted', '$25.0 NZD ', 13, 25, 25, 25, 0, 25],
         ['Smith, Sarah', 'Partner - Financial', '$25.0 NZD Monthly', 13, 25, 25, 25, 0, 25],
-        ['Totals', '', '', '', '', '', 50, 0, 25]
+        ['Totals', '', '', 20, 1, 30, 50, 0, 25]
     ];
 });

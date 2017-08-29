@@ -12,7 +12,7 @@ describe('preferences.personal.language.component', () => {
             serverConstants = _serverConstants_;
             transitions = $transitions;
             componentController = $componentController;
-            serverConstants.data = { languages: [] };
+            serverConstants.data = { languages: { 'en-us': 'US English', 'fr-fr': 'French' } };
             users.current = { preferences: { locale: 'en' } };
             loadController();
         });
@@ -35,9 +35,24 @@ describe('preferences.personal.language.component', () => {
         });
     });
     describe('$onChanges', () => {
+        it('should default', () => {
+            users.current.preferences.locale = null;
+            $ctrl.$onChanges();
+            expect(users.current.preferences.locale).toEqual('en-us');
+        });
+        it('should handle a valid language', () => {
+            users.current.preferences.locale = 'fr-fr';
+            $ctrl.$onChanges();
+            expect(users.current.preferences.locale).toEqual('fr-fr');
+        });
+        it('should remap languages', () => {
+            users.current.preferences.locale = 'fr-fr';
+            $ctrl.$onChanges();
+            expect($ctrl.languages).toEqual([{ alias: 'en-us', value: 'US English' }, { alias: 'fr-fr', value: 'French' }]);
+        });
         it('should set lastLanguage', () => {
             $ctrl.$onChanges();
-            expect($ctrl.lastLanguage).toEqual('en');
+            expect($ctrl.lastLanguage).toEqual('en-us');
         });
     });
     describe('save', () => {

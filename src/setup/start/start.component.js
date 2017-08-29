@@ -1,17 +1,12 @@
 class StartController {
     constructor(
-        $state,
-        users
+        setup
     ) {
-        this.$state = $state;
-        this.users = users;
+        this.setup = setup;
     }
+
     $onInit() {
-        this.users.currentOptions.setup_position.value = 'start';
-        this.users.setOption(this.users.currentOptions.setup_position);
-    }
-    next() {
-        this.$state.go('setup.connect');
+        this.setup.setPosition('start');
     }
 }
 
@@ -20,5 +15,8 @@ const Start = {
     controller: StartController
 };
 
-export default angular.module('mpdx.setup.start.component', [])
-    .component('setupStart', Start).name;
+import setup from 'setup/setup.service';
+
+export default angular.module('mpdx.setup.start.component', [
+    setup
+]).component('setupStart', Start).name;

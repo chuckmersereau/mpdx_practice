@@ -123,7 +123,7 @@
                         <span translate>Language</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        <span class="flag-icon flag-icon-{{$ctrl.getCountry($ctrl.users.current.preferences.locale)}}" ></span> {{$ctrl.getLanguageOrLocaleNative($ctrl.users.current.preferences.locale)}}
+                        <span class="flag-icon flag-icon-{{$ctrl.getCountry($ctrl.users.current.preferences.locale)}}" ></span> {{$ctrl.getLanguage($ctrl.users.current.preferences.locale)}}
                     </div>
                 </div>
             </div>
@@ -145,7 +145,7 @@
                         <span translate>Locale</span>
                     </div>
                     <div class="col-sm-6 pref-current">
-                        <span class="flag-icon flag-icon-{{$ctrl.getCountry($ctrl.users.current.preferences.locale_display)}}" ></span> {{$ctrl.getLanguageOrLocaleNative($ctrl.users.current.preferences.locale_display)}}
+                        <span class="flag-icon flag-icon-{{$ctrl.getCountry($ctrl.users.current.preferences.locale_display)}}" ></span> {{$ctrl.getLocale($ctrl.users.current.preferences.locale_display)}}
                     </div>
                 </div>
             </div>

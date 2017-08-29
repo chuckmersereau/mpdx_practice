@@ -1,10 +1,57 @@
 avatar {
-    img {
+    .avatar {
         width: 50px;
         height: 50px;
         border-radius: 100%;
-        border:1px solid #A5A5A5;
         float: left;
+        position: relative;
+        overflow: hidden;
+        img {
+            width: 50px;
+            height: 50px;
+        }
+        .loading-spinner, .cover {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            border-radius: 100%;
+        }
+        .loading-spinner {
+            font-size: 12px;
+            text-align: center;
+            padding-top: 7px;
+            color: $color-secondary;
+            background-color: #000;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .cover {
+            background: transparent;
+            cursor: pointer;
+        }
+        .edit {
+            background: #000;
+            background: rgba(0,0,0,0.5);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #fff;
+            display: block;
+            opacity: 0;
+            transition: opacity 0.2s;
+            font-size: 12px;
+            &:hover {
+                text-decoration: none;
+            }
+        }
+        &:hover {
+            .edit {
+                opacity: 1;
+            }
+        }
     }
 }
 .avatar-on-left {

@@ -5,10 +5,12 @@ import each from 'lodash/fp/each';
 const defaultTask = { id: 1, contacts: [{ id: 1 }] };
 
 describe('tasks.modals.complete.controller', () => {
-    let $ctrl, controller, contacts, tasks, scope;
+    let $ctrl, controller, contacts, tasks, scope, rootScope, q;
     beforeEach(() => {
         angular.mock.module(complete);
-        inject(($controller, $rootScope, _contacts_, _tasks_) => {
+        inject(($controller, $q, $rootScope, _contacts_, _tasks_) => {
+            q = $q;
+            rootScope = $rootScope;
             scope = $rootScope.$new();
             contacts = _contacts_;
             tasks = _tasks_;
@@ -35,7 +37,7 @@ describe('tasks.modals.complete.controller', () => {
     });
     describe('save', () => {
         beforeEach(() => {
-            spyOn(tasks, 'save').and.callFake(() => Promise.resolve({}));
+            spyOn(tasks, 'save').and.callFake(() => q.resolve({}));
             spyOn(tasks, 'addModal').and.callFake(() => Promise.resolve({}));
             spyOn(contacts, 'bulkSave').and.callFake(() => Promise.resolve({}));
             scope.$hide = () => {};
@@ -52,6 +54,7 @@ describe('tasks.modals.complete.controller', () => {
                 expect(scope.$hide).toHaveBeenCalled();
                 done();
             });
+            rootScope.$apply();
         });
         it('should open next automation task if defined', (done) => {
             $ctrl.task.next_action = 'Call';
@@ -59,6 +62,7 @@ describe('tasks.modals.complete.controller', () => {
                 expect(tasks.addModal).toHaveBeenCalledWith([1], $ctrl.task.next_action);
                 done();
             });
+            rootScope.$apply();
         });
     });
     describe('showPartnerStatus', () => {

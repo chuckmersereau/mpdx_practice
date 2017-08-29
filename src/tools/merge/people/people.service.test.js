@@ -1,11 +1,13 @@
 import service from './people.service';
 
 describe('tools.merge.people.service', () => {
-    let mergePeople, api;
+    let mergePeople, api, rootScope, q;
 
     beforeEach(() => {
         angular.mock.module(service);
-        inject(($rootScope, _mergePeople_, _api_) => {
+        inject(($q, $rootScope, _mergePeople_, _api_) => {
+            q = $q;
+            rootScope = $rootScope;
             mergePeople = _mergePeople_;
             api = _api_;
             api.account_list_id = 123;
@@ -13,34 +15,37 @@ describe('tools.merge.people.service', () => {
     });
     describe('load', () => {
         it('should cache', (done) => {
-            spyOn(api, 'get').and.callFake(() => Promise.resolve());
+            spyOn(api, 'get').and.callFake(() => q.resolve());
             mergePeople.duplicates = [{ id: 1 }, { id: 2 }];
             mergePeople.load().then(() => {
                 expect(mergePeople.duplicates).toEqual([{ id: 1 }, { id: 2 }]);
                 expect(api.get).not.toHaveBeenCalled();
                 done();
             });
+            rootScope.$apply();
         });
     });
     describe('ignore', () => {
         it('should build and execute an array of api deletes', (done) => {
-            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            spyOn(api, 'delete').and.callFake(() => q.resolve());
             mergePeople.ignore([{ id: 1 }, { id: 2 }]).then(() => {
                 expect(api.delete).toHaveBeenCalledWith({ url: 'contacts/people/duplicates/1', type: 'people' });
                 expect(api.delete).toHaveBeenCalledWith({ url: 'contacts/people/duplicates/2', type: 'people' });
                 done();
             });
+            rootScope.$apply();
         });
     });
     describe('confirm', () => {
         it('should build and execute an array of Promises', (done) => {
-            spyOn(mergePeople, 'getPeopleToMergePromise').and.callFake(() => [Promise.resolve('a')]);
-            spyOn(mergePeople, 'getPeopleToIgnorePromise').and.callFake(() => [Promise.resolve('b')]);
-            spyOn(mergePeople, 'load').and.callFake(() => [Promise.resolve('c')]);
+            spyOn(mergePeople, 'getPeopleToMergePromise').and.callFake(() => [q.resolve('a')]);
+            spyOn(mergePeople, 'getPeopleToIgnorePromise').and.callFake(() => [q.resolve('b')]);
+            spyOn(mergePeople, 'load').and.callFake(() => [q.resolve('c')]);
             mergePeople.confirm().then(() => {
                 expect(mergePeople.load).toHaveBeenCalledWith(true);
                 done();
             });
+            rootScope.$apply();
             expect(mergePeople.getPeopleToMergePromise).toHaveBeenCalledWith();
             expect(mergePeople.getPeopleToIgnorePromise).toHaveBeenCalledWith();
         });

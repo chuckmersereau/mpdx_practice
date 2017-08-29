@@ -1,0 +1,18 @@
+fix-send-newsletter-item {
+    .card.primary {
+        border: 0;
+        margin: 0;
+        padding: 0;
+        .primary-option {
+            display: none;
+        }
+    }
+    .panel.panel-default {
+        > .panel-footer {
+            padding: 15px;
+            border-top: 1px solid #BEBEBE;
+            background-color: #F7F7F7;
+            text-align: left;
+        }
+    }
+}

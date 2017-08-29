@@ -1,16 +1,21 @@
 import component from './show.component';
 
 describe('tools.appeals.show.component', () => {
-    let $ctrl, scope, serverConstants, api, alerts, donations, mailchimp;
+    let $ctrl, scope, serverConstants, api, alerts, donations, mailchimp, modal, state;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _api_, _serverConstants_, _alerts_, _donations_, _mailchimp_) => {
+        inject((
+            $componentController, $rootScope, _api_, _serverConstants_, _alerts_, _donations_, _mailchimp_, _modal_,
+            $state
+        ) => {
             scope = $rootScope.$new();
             alerts = _alerts_;
             api = _api_;
             donations = _donations_;
             mailchimp = _mailchimp_;
+            modal = _modal_;
             serverConstants = _serverConstants_;
+            state = $state;
             $ctrl = $componentController('appealsShow', { $scope: scope }, {});
         });
         serverConstants.data = {
@@ -21,6 +26,85 @@ describe('tools.appeals.show.component', () => {
         };
         spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn($ctrl, 'gettext').and.callFake((data) => data);
+    });
+    describe('$onInit', () => {
+        const data = {
+            id: 1,
+            amount: '100',
+            total_currency: 'USD',
+            donations: []
+        };
+        const contactsData = {
+            contacts: [
+                { id: 1 },
+                { id: 2 }
+            ]
+        };
+        const currency = { code: 'USD', symbol: '$' };
+        beforeEach(() => {
+            $ctrl.data = data;
+            $ctrl.contactsData = contactsData;
+            spyOn(state, 'go').and.callFake(() => {});
+            spyOn($ctrl, 'getCurrencyFromCode').and.callFake(() => currency);
+            spyOn($ctrl, 'sumDonations').and.callFake(() => 30);
+            spyOn($ctrl, 'fixPledgeAmount').and.callFake((data) => data);
+            spyOn($ctrl, 'mutateDonations').and.callFake(() => []);
+            spyOn($ctrl, 'getContactsNotGiven').and.callFake(() => ['b']);
+        });
+        it('should change state on account list change', () => {
+            $ctrl.$onInit();
+            scope.$emit('accountListUpdated');
+            scope.$digest();
+            expect(state.go).toHaveBeenCalledWith('tools.appeals');
+            expect($ctrl.disable).toBeDefined();
+        });
+        it('should set the initial data state copy for patch', () => {
+            $ctrl.$onInit();
+            expect($ctrl.dataInitialState).toEqual(data);
+            expect($ctrl.dataInitialState === data).toBeFalsy();
+        });
+        it('should get currency from server constants', () => {
+            $ctrl.$onInit();
+            expect($ctrl.currency).toEqual(currency);
+            expect($ctrl.getCurrencyFromCode).toHaveBeenCalledWith(data.total_currency);
+        });
+        it('should get donations sum', () => {
+            $ctrl.$onInit();
+            expect($ctrl.donationsSum).toEqual(30);
+            expect($ctrl.sumDonations).toHaveBeenCalledWith([]);
+        });
+        it('should get percentage raised', () => {
+            $ctrl.$onInit();
+            expect($ctrl.percentageRaised).toEqual(30);
+        });
+        it('should get fix pledge amounts', () => {
+            $ctrl.$onInit();
+            expect($ctrl.contactsData).toEqual(contactsData);
+            expect($ctrl.fixPledgeAmount).toHaveBeenCalledWith(contactsData.contacts);
+        });
+        it('should append to the appeal', () => {
+            $ctrl.$onInit();
+            expect($ctrl.appeal.amount).toEqual('100.00');
+            expect($ctrl.appeal.donations).toEqual([]);
+            expect($ctrl.mutateDonations).toHaveBeenCalledWith([], contactsData.contacts);
+        });
+        it('should get contacts not given', () => {
+            $ctrl.$onInit();
+            expect($ctrl.contactsNotGiven).toEqual(['b']);
+            expect($ctrl.getContactsNotGiven).toHaveBeenCalledWith(contactsData.contacts, []);
+        });
+    });
+    describe('$onDestroy', () => {
+        it('should disable event', () => {
+            $ctrl.disable = () => {};
+            spyOn(state, 'go').and.callFake(() => {});
+            spyOn($ctrl, 'disable').and.callFake(() => {});
+            $ctrl.$onDestroy();
+            expect($ctrl.disable).toHaveBeenCalled();
+            scope.$emit('accountListUpdated');
+            scope.$digest();
+            expect(state.go).not.toHaveBeenCalled();
+        });
     });
     describe('changeGoal', () => {
         beforeEach(() => {
@@ -121,6 +205,42 @@ describe('tools.appeals.show.component', () => {
             });
         });
     });
+    describe('removeContact', () => {
+        beforeEach(() => {
+            $ctrl.appeal = { id: 123 };
+            spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
+        });
+        it('should open confirm modal', () => {
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            $ctrl.appeal = { id: 1, name: 'a' };
+            $ctrl.removeContact({ id: 1 });
+            expect($ctrl.gettext).toHaveBeenCalledWith('Are you sure you wish to remove this contact from the appeal?');
+            expect(modal.confirm).toHaveBeenCalledWith('Are you sure you wish to remove this contact from the appeal?');
+        });
+        it('should delete contact', (done) => {
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            $ctrl.removeContact({ id: 1 }).then(() => {
+                expect(api.delete).toHaveBeenCalledWith('appeals/123/contacts/1');
+                done();
+            });
+        });
+        it('should alert success', (done) => {
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            $ctrl.removeContact({ id: 1 }).then(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith('Contact removed from appeal');
+                expect($ctrl.gettext).toHaveBeenCalledWith('Contact removed from appeal');
+                done();
+            });
+        });
+        it('should alert failure', (done) => {
+            spyOn(api, 'delete').and.callFake(() => Promise.reject());
+            $ctrl.removeContact({ id: 1 }).catch(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith('Unable to remove contact from appeal', 'danger');
+                expect($ctrl.gettext).toHaveBeenCalledWith('Unable to remove contact from appeal');
+                done();
+            });
+        });
+    });
     describe('selectAllGiven', () => {
         it('should add contact ids from donations', () => {
             $ctrl.appeal = {
@@ -197,6 +317,24 @@ describe('tools.appeals.show.component', () => {
             $ctrl.appeal = { id: 1, name: 'a' };
             $ctrl.editDonation({ id: 123 });
             expect(donations.openDonationModal).toHaveBeenCalledWith({ id: 123, appeal: $ctrl.appeal });
+        });
+    });
+    describe('removeDonation', () => {
+        it('should open confirm modal', () => {
+            spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
+            $ctrl.appeal = { id: 1, name: 'a' };
+            $ctrl.removeDonation({ id: 123 });
+            expect($ctrl.gettext).toHaveBeenCalledWith('Are you sure you wish to remove this donation?');
+            expect(modal.confirm).toHaveBeenCalledWith('Are you sure you wish to remove this donation?');
+        });
+        it('should delete donation', (done) => {
+            spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
+            spyOn(donations, 'delete').and.callFake(() => Promise.resolve());
+            $ctrl.appeal = { id: 1, name: 'a' };
+            $ctrl.removeDonation({ id: 123 }).then(() => {
+                expect(donations.delete).toHaveBeenCalledWith({ id: 123 });
+                done();
+            });
         });
     });
     describe('exportToCSV', () => {

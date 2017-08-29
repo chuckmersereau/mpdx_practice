@@ -1,0 +1,54 @@
+<div class="row">
+    <div class="col-xs-10">
+        <div class="panel panel-default" block-ui="fix-send-newsletter-item-{{$ctrl.contact.id}}">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <avatar src="$ctrl.contact.avatar"></avatar>
+                        <div class="avatar-on-left">
+                            <a ng-href="/contacts/{{$ctrl.contact.id}}" target="_blank">
+                                <h4 class="name">{{ $ctrl.contact.name }}</h4>
+                            </a>
+                            {{ $ctrl.contact.status }}
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <label for="send_newsletter">Send Newsletter?</label>
+                        <select chosen
+                                required
+                                disable-search="true"
+                                data-placeholder-text-single="'Newsletter' | translate"
+                                class="form-control"
+                                id="send_newsletter"
+                                ng-options="opt.id as opt.value for opt in $ctrl.serverConstants.data.assignable_send_newsletter_hashes"
+                                ng-model="$ctrl.contact.send_newsletter"
+                                tabindex="0">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer" ng-if="$ctrl.contact.addresses[0] || $ctrl.contact.primary_person">
+                <div class="row">
+                    <div class="col-xs-6" ng-if="!$ctrl.contact.primary_person"></div>
+                    <div class="col-xs-6" ng-if="$ctrl.contact.primary_person">
+                        <contact-person
+                                        contact="$ctrl.contact"
+                                        person="$ctrl.contact.primary_person">
+                        </contact-person>
+                    </div>
+                    <div class="col-xs-6" ng-if="$ctrl.contact.addresses[0]">
+                        <contact-address address="$ctrl.contact.addresses[0]"
+                                         contact="$ctrl.contact">
+                        </contact-address>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-2">
+        <button class="btn btn-gray btn-block" ng-click="$ctrl.save()">
+            <i class="fa fa-check-circle"></i> <translate>Confirm</translate>
+        </button>
+    </div>
+</div>

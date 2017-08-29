@@ -7,10 +7,11 @@ import union from 'lodash/fp/union';
 
 class LogTaskController {
     constructor(
-        $scope, $state,
+        $q, $scope, $state,
         contacts, serverConstants, tasks, tasksTags, users,
         contactsList
     ) {
+        this.$q = $q;
         this.$scope = $scope;
         this.$state = $state;
         this.contacts = contacts;
@@ -57,7 +58,7 @@ class LogTaskController {
     getPromise() {
         const taskPromise = this.createTask();
         const contactPromise = this.getContactPromise();
-        return contactPromise ? Promise.all([taskPromise, contactPromise]) : taskPromise;
+        return contactPromise ? this.$q.all([taskPromise, contactPromise]) : taskPromise;
     }
     createTask() {
         return this.tasks.create(this.task, this.contactsList, this.comment);

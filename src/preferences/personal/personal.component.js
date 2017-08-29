@@ -3,7 +3,6 @@ import each from 'lodash/fp/each';
 import find from 'lodash/fp/find';
 import findIndex from 'lodash/fp/findIndex';
 import get from 'lodash/fp/get';
-import has from 'lodash/fp/has';
 import map from 'lodash/fp/map';
 import split from 'lodash/fp/split';
 import toLower from 'lodash/fp/toLower';
@@ -11,12 +10,11 @@ import uuid from 'uuid/v1';
 
 class PersonalController {
     constructor(
-        $state, $stateParams, $window, gettextCatalog,
+        $state, $stateParams, gettextCatalog,
         accounts, api, alerts, designationAccounts, locale, serverConstants, users
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
-        this.$window = $window;
         this.accounts = accounts;
         this.alerts = alerts;
         this.api = api;
@@ -132,16 +130,11 @@ class PersonalController {
         }
         return locale;
     }
-    getLanguageOrLocaleNative(locale) {
-        if (!locale) { return; }
-        if (has(locale, this.$window.languageMappingList)) {
-            return this.$window.languageMappingList[locale].nativeName;
-        } else if (has(locale, this.serverConstants.data.locales)) {
-            return this.serverConstants.data.locales[locale].native_name;
-        } else if (has(locale, this.serverConstants.data.languages)) {
-            return this.serverConstants.data.languages[locale];
-        }
-        return '';
+    getLanguage(language) {
+        return get(language, this.serverConstants.data.languages);
+    }
+    getLocale(locale) {
+        return get('native_name', get(locale, this.serverConstants.data.locales));
     }
 }
 

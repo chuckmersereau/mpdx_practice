@@ -49,15 +49,33 @@ describe('tools.mergeContacts.component', () => {
             expect(duplicate.contacts[1].selected).toBeFalsy();
         });
 
+        it('should un-pick winner 1', () => {
+            duplicate.contacts[0].selected = true;
+            duplicate.contacts[1].selected = false;
+            $ctrl.select(duplicate, 0);
+            expect(duplicate.ignored).toBeFalsy();
+            expect(duplicate.contacts[0].selected).toBeFalsy();
+            expect(duplicate.contacts[1].selected).toBeFalsy();
+        });
+
         it('should pick winner 2', () => {
             $ctrl.select(duplicate, 1);
             expect(duplicate.ignored).toBeFalsy();
             expect(duplicate.contacts[1].selected).toBeTruthy();
             expect(duplicate.contacts[0].selected).toBeFalsy();
         });
+
+        it('should un-pick winner 2', () => {
+            duplicate.contacts[0].selected = false;
+            duplicate.contacts[1].selected = true;
+            $ctrl.select(duplicate, 1);
+            expect(duplicate.ignored).toBeFalsy();
+            expect(duplicate.contacts[0].selected).toBeFalsy();
+            expect(duplicate.contacts[1].selected).toBeFalsy();
+        });
     });
 
-    describe('deSelect', () => {
+    describe('selectIgnore', () => {
         let duplicate;
 
         beforeEach(() => {
@@ -65,7 +83,7 @@ describe('tools.mergeContacts.component', () => {
         });
 
         it('should set ignore', () => {
-            $ctrl.deSelect(duplicate);
+            $ctrl.selectIgnore(duplicate);
             expect(duplicate.ignore).toBeTruthy();
             expect(duplicate.contacts[0].selected).toBeFalsy();
             expect(duplicate.contacts[1].selected).toBeFalsy();
@@ -76,10 +94,6 @@ describe('tools.mergeContacts.component', () => {
         beforeEach(() => {
             spyOn($ctrl, 'merge').and.callFake(() => Promise.resolve());
             spyOn($ctrl, 'ignore').and.callFake(() => Promise.resolve());
-        });
-
-        afterEach(() => {
-            rootScope.$apply(); // for return Promise.all
         });
 
         it('should show loading screen', () => {
@@ -121,6 +135,7 @@ describe('tools.mergeContacts.component', () => {
                 expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
+            rootScope.$apply();
         });
     });
 
@@ -239,7 +254,7 @@ describe('tools.mergeContacts.component', () => {
             });
         });
 
-        it('should map data', done => {
+        it('should map data', (done) => {
             let data = [{ id: 1, records: [{ id: 'contact_1_id' }, { id: 'contact_2_id' }] }];
             data.meta = { pagination: { total_count: 2 } };
             spyOn(api, 'get').and.callFake(() => Promise.resolve(data));

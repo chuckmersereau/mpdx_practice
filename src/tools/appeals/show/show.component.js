@@ -5,6 +5,7 @@ import createPatch from 'common/fp/createPatch';
 import curry from 'lodash/fp/curry';
 import defaultTo from 'lodash/fp/defaultTo';
 import find from 'lodash/fp/find';
+import fixed from 'common/fp/fixed';
 import get from 'lodash/fp/get';
 import isNilOrEmpty from 'common/fp/isNilOrEmpty';
 import joinComma from 'common/fp/joinComma';
@@ -19,7 +20,7 @@ import union from 'lodash/fp/union';
 class AppealController {
     constructor(
         $log, $rootScope, $state, $stateParams, gettext,
-        alerts, api, contacts, donations, mailchimp, serverConstants, tasks
+        alerts, api, contacts, donations, mailchimp, modal, serverConstants, tasks,
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
@@ -31,6 +32,7 @@ class AppealController {
         this.donations = donations;
         this.gettext = gettext;
         this.mailchimp = mailchimp;
+        this.modal = modal;
         this.moment = moment;
         this.serverConstants = serverConstants;
         this.tasks = tasks;
@@ -39,52 +41,47 @@ class AppealController {
         this.selectedContactIds = [];
     }
     $onInit() {
+        /* istanbul ignore next */
+        this.$log.debug('appeal', this.data);
+        /* istanbul ignore next */
+        this.$log.debug('appeal contacts', this.contactsData);
+
+        this.dataInitialState = angular.copy(this.data);
+        this.currency = this.getCurrencyFromCode(this.data.total_currency);
+        this.donationsSum = this.sumDonations(this.data.donations);
+        this.percentageRaised = this.donationsSum / this.data.amount * 100;
+        this.contactsData.contacts = this.fixPledgeAmount(this.contactsData.contacts);
+        this.appeal = assign(this.data, {
+            amount: fixed(2, defaultTo(0, this.data.amount)),
+            donations: this.mutateDonations(this.data.donations, this.contactsData.contacts)
+        });
+        this.contactsNotGiven = this.getContactsNotGiven(this.contactsData.contacts, this.appeal.donations);
+
         this.disable = this.$rootScope.$on('accountListUpdated', () => {
             this.$state.go('tools.appeals');
-        });
-        this.api.get(`appeals/${this.$stateParams.appealId}`, {
-            include: 'contacts,contacts.donor_accounts',
-            fields: {
-                contacts: 'donor_accounts,name,pledge_amount,pledge_currency,pledge_frequency'
-            }
-        }).then((data) => {
-            /* istanbul ignore next */
-            this.$log.debug('appeal', data);
-            this.appeal = data;
-            this.dataInitialState = angular.copy(data);
-            this.currency = this.getCurrencyFromCode(data.total_currency);
-            this.donationsSum = sumBy('converted_amount', data.donations);
-            this.percentageRaised = this.donationsSum / data.amount * 100;
-            this.donationAccounts = this.getDonationAccounts(data.contacts);
-            this.appeal = assign(data, {
-                donations: this.mapContactsToDonation(this.appeal.donations, this.donationAccounts)
-            });
-            this.contactsNotGiven = this.getContactsNotGiven(data.contacts, this.appeal.donations);
-            this.$log.debug('donation accounts', this.donationAccounts);
         });
     }
     $onDestroy() {
         this.disable();
     }
-    mapContactsToDonation(donations, donationAccounts) {
+    sumDonations(donations) {
+        return fixed(2, sumBy((donation) => parseFloat(donation.converted_amount), donations));
+    }
+    fixPledgeAmount(contacts) {
+        return map((contact) => assign(contact, {
+            pledge_amount: fixed(2, defaultTo(0, contact.pledge_amount))
+        }), contacts);
+    }
+    mutateDonations(donations, contacts) {
         return map((donation) => {
-            donation.contact = get('contact', get(donation.donor_account_id.toString(), donationAccounts));
+            donation.contact = find({ id: donation.contact.id }, contacts);
+            donation.amount = fixed(2, defaultTo(0, donation.amount));
             return donation;
         }, donations);
     }
-    getDonationAccounts(contacts) {
-        return reduce((result, contact) => {
-            const accounts = reduce((result, donor) => {
-                donor.contact = contact;
-                result[donor.account_number] = donor;
-                return result;
-            }, {}, contact.donor_accounts);
-            return assign(result, accounts);
-        }, {}, contacts);
-    }
     getContactsNotGiven(contacts, donations) {
         const allGiven = reduce((result, value) => {
-            const contact = get('contact', value);
+            const contact = get('id', value.contact);
             return contact ? concat(result, contact) : result;
         }, [], donations);
         const contactsNotGiven = reject((contact) => contains(contact.id, allGiven), contacts);
@@ -119,11 +116,12 @@ class AppealController {
     }
     contactSearch(keyword) {
         // api missing exclude capability
-        // const excluded = joinComma(map('id', this.appeal.contacts));
         return this.api.get({
             url: 'contacts',
             data: {
                 filter: {
+                    // appeal: this.appeal.id,
+                    // reverse_appeal: true,
                     account_list_id: this.api.account_list_id,
                     wildcard_search: keyword
                 },
@@ -143,6 +141,17 @@ class AppealController {
             this.alerts.addAlert(this.gettext('Unable to add contact to appeal'), 'danger');
             throw ex;
         });
+    }
+    removeContact(contact) {
+        const message = this.gettext('Are you sure you wish to remove this contact from the appeal?');
+        return this.modal.confirm(message).then(() =>
+            this.api.delete(`appeals/${this.appeal.id}/contacts/${contact.id}`).then(() => {
+                this.alerts.addAlert(this.gettext('Contact removed from appeal'));
+            }).catch((ex) => {
+                this.alerts.addAlert(this.gettext('Unable to remove contact from appeal'), 'danger');
+                throw ex;
+            })
+        );
     }
     selectAllGiven() {
         const contactIds = map((donation) => donation.contact.id, this.appeal.donations);
@@ -169,6 +178,12 @@ class AppealController {
     }
     editDonation(donation) {
         this.donations.openDonationModal(assign(donation, { appeal: { id: this.appeal.id, name: this.appeal.name } }));
+    }
+    removeDonation(donation) {
+        const message = this.gettext('Are you sure you wish to remove this donation?');
+        return this.modal.confirm(message).then(() =>
+            this.donations.delete(donation)
+        );
     }
     exportToCSV() {
         const columnHeaders = [[
@@ -251,7 +266,11 @@ class AppealController {
 
 const Appeal = {
     controller: AppealController,
-    template: require('./show.html')
+    template: require('./show.html'),
+    bindings: {
+        data: '<',
+        contactsData: '<'
+    }
 };
 
 import contacts from 'contacts/contacts.service';

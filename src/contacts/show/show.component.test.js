@@ -2,12 +2,12 @@ import component from './show.component';
 import assign from 'lodash/fp/assign';
 
 describe('contacts.show.component', () => {
-    let $ctrl, contacts, rootScope, scope, componentController, api, alerts, gettextCatalog;
+    let $ctrl, contacts, rootScope, scope, componentController, api, alerts, gettextCatalog, state;
     beforeEach(() => {
         angular.mock.module(component);
         inject((
             $componentController, $rootScope, _contacts_, _contactsTags_, _modal_, _tasks_, _alerts_,
-            _gettextCatalog_, _api_
+            _gettextCatalog_, _api_, $state
         ) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
@@ -15,6 +15,7 @@ describe('contacts.show.component', () => {
             api = _api_;
             contacts = _contacts_;
             gettextCatalog = _gettextCatalog_;
+            state = $state;
             componentController = $componentController;
             api.account_list_id = 1234;
             contacts.current = { id: 1, name: 'a b' };
@@ -26,10 +27,32 @@ describe('contacts.show.component', () => {
     function loadController() {
         $ctrl = componentController('contact', { $scope: scope }, {});
     }
+    describe('$onInit', () => {
+        it('should change state on account list change', () => {
+            spyOn(state, 'go').and.callFake(() => {});
+            $ctrl.$onInit();
+            scope.$emit('accountListUpdated');
+            scope.$digest();
+            expect(state.go).toHaveBeenCalledWith('contacts');
+            expect($ctrl.disableAccountListEvent).toBeDefined();
+        });
+    });
     describe('$onChanges', () => {
         it('should display contact name in page title', () => {
             $ctrl.$onChanges();
             expect(rootScope.pageTitle).toEqual('Contact | a b');
+        });
+    });
+    describe('$onDestroy', () => {
+        it('should disable event', () => {
+            $ctrl.disableAccountListEvent = () => {};
+            spyOn(state, 'go').and.callFake(() => {});
+            spyOn($ctrl, 'disableAccountListEvent').and.callFake(() => {});
+            $ctrl.$onDestroy();
+            expect($ctrl.disableAccountListEvent).toHaveBeenCalled();
+            scope.$emit('accountListUpdated');
+            scope.$digest();
+            expect(state.go).not.toHaveBeenCalled();
         });
     });
     describe('onPrimary', () => {

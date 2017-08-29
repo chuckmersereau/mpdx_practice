@@ -3,7 +3,6 @@ import concat from 'lodash/fp/concat';
 import defaultTo from 'lodash/fp/defaultTo';
 import eq from 'lodash/fp/eq';
 import get from 'lodash/fp/get';
-import keys from 'lodash/fp/keys';
 import map from 'lodash/fp/map';
 import round from 'lodash/fp/round';
 import sumBy from 'lodash/fp/sumBy';
@@ -11,8 +10,8 @@ import uuid from 'uuid/v1';
 
 class ContactDetailsController {
     constructor(
-        $log, $rootScope, $window, gettextCatalog,
-        alerts, api, contactsTags, contacts, locale, modal, serverConstants, users
+        $log, $rootScope, gettextCatalog,
+        alerts, api, contactsTags, contacts, locale, modal, timeZone, users
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
@@ -23,19 +22,10 @@ class ContactDetailsController {
         this.gettextCatalog = gettextCatalog;
         this.locale = locale;
         this.modal = modal;
+        this.timeZone = timeZone;
         this.users = users;
 
-        this.languages = map((locale) => {
-            const language = $window.languageMappingList[locale];
-            if (language) {
-                return { alias: locale, value: `${language.englishName} (${language.nativeName} - ${locale})` };
-            } else {
-                return {
-                    alias: locale,
-                    value: `${serverConstants.data.locales[locale].english_name} (${serverConstants.data.locales[locale].native_name} - ${locale})`
-                };
-            }
-        }, keys(serverConstants.data.locales));
+        this.languages = locale.getLocalesMap();
     }
     $onInit() {
         const yes = this.gettextCatalog.getString('Yes');
@@ -206,8 +196,9 @@ import contactsTags from 'contacts/sidebar/filter/tags/tags.service';
 import locale from 'common/locale/locale.service';
 import modal from 'common/modal/modal.service';
 import serverConstants from 'common/serverConstants/serverConstants.service';
+import timeZone from 'common/timeZone/timeZone.service';
 import users from 'common/users/users.service';
 
 export default angular.module('mpdx.contacts.show.details.component', [
-    alerts, api, contactsTags, contacts, locale, modal, serverConstants, users
+    alerts, api, contactsTags, contacts, locale, modal, serverConstants, timeZone, users
 ]).component('contactDetails', Details).name;

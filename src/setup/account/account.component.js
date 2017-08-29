@@ -3,46 +3,46 @@ import get from 'lodash/fp/get';
 
 class AccountController {
     constructor(
-        $rootScope, $state,
-        users, accounts
+        $rootScope,
+        accounts, setup, users
     ) {
         this.$rootScope = $rootScope;
-        this.$state = $state;
         this.accounts = accounts;
+        this.setup = setup;
         this.users = users;
     }
+
     $onInit() {
         const firstAccount = get('data[0].id', this.accounts);
         this.users.current.preferences.default_account_list = defaultTo(firstAccount, get('current.preferences.default_account_list', this.users));
-        this.users.currentOptions.setup_position.value = 'account';
-        this.users.setOption(this.users.currentOptions.setup_position);
-
         this.users.listOrganizationAccounts();
         this.$rootScope.$on('accountListUpdated', () => {
             this.users.listOrganizationAccounts(true);
         });
     }
+
     next() {
-        return this.users.saveCurrent().then((data) => {
-            return this.accounts.swap(data.preferences.default_account_list, this.users.current.id, true).then(() => {
-                if (this.accounts.data.length > 1 && this.users.organizationAccounts.length > 1) {
-                    this.$state.go('setup.preferences.accounts');
-                } else {
-                    this.$state.go('setup.preferences.personal');
-                }
+        return this.users.saveCurrent().then(() => {
+            return this.accounts.swap(
+                this.users.current.preferences.default_account_list,
+                this.users.current.id,
+                true
+            ).then(() => {
+                this.setup.next();
             });
         });
     }
 }
-
-import accounts from 'common/accounts/accounts.service';
-import users from 'common/users/users.service';
 
 const Account = {
     template: require('./account.html'),
     controller: AccountController
 };
 
+import accounts from 'common/accounts/accounts.service';
+import setup from 'setup/setup.service';
+import users from 'common/users/users.service';
+
 export default angular.module('mpdx.setup.account.component', [
-    accounts, users
+    accounts, setup, users
 ]).component('setupAccount', Account).name;

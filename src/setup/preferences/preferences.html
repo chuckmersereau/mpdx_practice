@@ -1,10 +1,17 @@
-<div id="content" class="container">
-    <div class="row">
-        <div class="col-md-3">
-            <preferences-sidebar disabled="true"></preferences-sidebar>
-        </div>
-        <div class="col-md-9">
-            <ui-view></ui-view>
+<div class="container">
+    <div class="filter--body">
+        <div class="filter--spacer filter--spacer__setup"></div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="filter--sidebar hidden-sm">
+                    <preferences-sidebar disabled="true"></preferences-sidebar>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="filter--content">
+                    <ui-view></ui-view>
+                </div>
+            </div>
         </div>
     </div>
 </div>

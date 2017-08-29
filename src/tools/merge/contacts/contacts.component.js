@@ -1,14 +1,17 @@
+import concat from 'lodash/fp/concat';
 import filter from 'lodash/fp/filter';
 import map from 'lodash/fp/map';
 import reduce from 'lodash/fp/reduce';
+import reduceObject from 'common/fp/reduceObject';
 
 class MergeContactsController {
     constructor(
-        $log, $rootScope,
+        $log, $q, $rootScope,
         $state, gettextCatalog,
         alerts, api, contacts, tools
     ) {
         this.$log = $log;
+        this.$q = $q;
         this.$rootScope = $rootScope;
         this.$state = $state;
         this.gettextCatalog = gettextCatalog;
@@ -31,11 +34,14 @@ class MergeContactsController {
 
     select(duplicate, index) {
         duplicate.ignore = false;
-        duplicate.contacts[0].selected = index === 0;
-        duplicate.contacts[1].selected = index === 1;
+        const alreadySelected = !!duplicate.contacts[index].selected;
+        duplicate.contacts = reduceObject((result, value, rIndex) => {
+            value.selected = rIndex === index ? !alreadySelected : false;
+            return concat(result, value);
+        }, [], duplicate.contacts);
     }
 
-    deSelect(duplicate) {
+    selectIgnore(duplicate) {
         duplicate.ignore = true;
         duplicate.contacts[0].selected = false;
         duplicate.contacts[1].selected = false;
@@ -53,7 +59,7 @@ class MergeContactsController {
         if (contactsToIgnore.length > 0) {
             promises.push(...this.ignore(contactsToIgnore));
         }
-        return Promise.all(promises).then(() => {
+        return this.$q.all(promises).then(() => {
             this.alerts.addAlert(this.gettextCatalog.getString('Contacts successfully merged'));
         });
     }

@@ -24,7 +24,7 @@
                 <div class="col-sm-2 text-center choices">
                     <i class="fa fa-arrow-left choice-left" ng-class="{'selected': duplicate.contacts[0].selected}" ng-click="$ctrl.select(duplicate, 0)"></i>
                     <i class="fa fa-arrow-right choice-right" ng-class="{'selected': duplicate.contacts[1].selected}" ng-click="$ctrl.select(duplicate, 1)"></i>
-                    <i class="fa fa-close choice-cancel" ng-class="{'selected': duplicate.ignore}" ng-click="$ctrl.deSelect(duplicate)"></i>
+                    <i class="fa fa-close choice-cancel" ng-class="{'selected': duplicate.ignore}" ng-click="$ctrl.selectIgnore(duplicate)"></i>
                 </div>
                 <div class="col-sm-5">
                     <merge-contacts-item contact="duplicate.contacts[1]" on-click="$ctrl.select(duplicate, 1)" ignore="duplicate.ignore"></merge-contacts-item>

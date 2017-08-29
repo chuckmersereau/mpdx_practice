@@ -1,3 +1,5 @@
-<menu setup="true"></menu>
-<alerts></alerts>
-<ui-view></ui-view>
+<div ng-class="{'has-nav-impersonation': $ctrl.session.navImpersonation, 'has-nav-setup': $ctrl.session.navSetup}">
+    <menu setup="true"></menu>
+    <alerts></alerts>
+    <ui-view></ui-view>
+</div>
