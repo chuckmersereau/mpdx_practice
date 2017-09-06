@@ -1,37 +1,80 @@
+import assign from 'lodash/fp/assign';
+import concat from 'lodash/fp/concat';
+import contains from 'lodash/fp/contains';
+import emptyToNull from 'common/fp/emptyToNull';
+import get from 'lodash/fp/get';
+import isNilOrEmpty from 'common/fp/isNilOrEmpty';
+import isString from 'lodash/fp/isString';
+import moment from 'moment';
 import reduce from 'lodash/fp/reduce';
 import startsWith from 'lodash/fp/startsWith';
+import uuid from 'uuid/v1';
 import union from 'lodash/fp/union';
 
 class AddTaskController {
     constructor(
         $scope, $state,
         contacts, serverConstants, tasks, tasksTags, users,
-        contactsList, activityType
+        contactsList, activityType, task, comments
     ) {
         this.$scope = $scope;
+        this.$state = $state;
         this.contacts = contacts;
         this.serverConstants = serverConstants;
         this.tasksTags = tasksTags;
         this.tasks = tasks;
         this.users = users;
 
-        this.contactsList = angular.copy(contactsList);
-        if (startsWith('contacts.show', $state.current.name)) {
-            this.contactsList = union(this.contactsList, [this.contacts.current.id]);
-        }
-        this.task = { activity_type: activityType };
+        this.activate({ activityType: activityType, comments: comments, contactsList: contactsList, task: task });
+    }
+    activate({ activityType, comments, contactsList, task }) {
+        const reuseTask = this.reuseTask(task, activityType);
+        const useContacts = this.useContacts(task, reuseTask);
+        const contactParams = useContacts ? angular.copy(contactsList) : [];
+        const inContactView = startsWith('contacts.show', this.$state.current.name);
+        this.contactsList = inContactView ? union(contactParams, [this.contacts.current.id]) : contactParams;
+        this.task = reuseTask
+            ? {
+                activity_type: activityType,
+                comments: this.mutateComments(comments),
+                start_at: moment().add(2, 'd').toISOString(),
+                subject: get('subject', task),
+                tag_list: get('tag_list', task)
+            }
+            : { activity_type: activityType };
         this.setDueDate = true;
         this.contactNames = null;
 
-        this.activate();
-    }
-    activate() {
         return this.contacts.getNames(this.contactsList).then((data) => {
             this.contactNames = reduce((result, contact) => {
                 result[contact.id] = contact.name;
                 return result;
             }, {}, data);
         });
+    }
+    reuseTask(task, activityType) {
+        return contains(get('result', task), ['Attempted', 'Attempted - Left Message']) && activityType;
+    }
+    useContacts(task, reuseTask) {
+        return !task || (task && reuseTask);
+    }
+    mutateComments(comments) {
+        return emptyToNull(
+            reduce((result, comment) => {
+                const id = uuid();
+                return isNilOrEmpty(comment)
+                    ? result
+                    : concat(result,
+                        isString(comment)
+                            ? {
+                                id: id,
+                                body: comment,
+                                person: { id: this.users.current.id }
+                            }
+                            : assign(comment, { id: id })
+                    );
+            }, [], comments)
+        );
     }
     addContact() {
         this.contactsList.push('');
@@ -44,9 +87,7 @@ class AddTaskController {
         this.contactsList[index] = params.id;
     }
     save() {
-        if (!this.setDueDate) {
-            this.task.start_at = null;
-        }
+        this.task.start_at = this.setDueDate ? this.task.start_at : null;
         return this.tasks.create(
             this.task,
             this.contactsList,

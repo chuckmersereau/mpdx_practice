@@ -147,7 +147,7 @@ class ContactController {
         this.save();
     }
     openAddTaskModal() {
-        this.tasks.addModal(this.contacts.current.id);
+        this.tasks.addModal({ contactsList: [this.contacts.current.id] });
     }
     hideContact() {
         this.contacts.hideContact(this.contacts.current).then(() => {

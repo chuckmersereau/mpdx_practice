@@ -67,6 +67,7 @@ const Daterange = {
 };
 
 import gettextCatalog from 'angular-gettext';
+
 export default angular.module('mpdx.contacts.filter.daterange', [
     gettextCatalog
 ]).component('contactsFilterDaterange', Daterange).name;

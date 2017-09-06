@@ -1,6 +1,8 @@
 import contains from 'lodash/fp/contains';
-import map from 'lodash/fp/map';
 import createPatch from 'common/fp/createPatch';
+import defaultTo from 'lodash/fp/defaultTo';
+import map from 'lodash/fp/map';
+import union from 'lodash/fp/union';
 
 class CompleteTaskController {
     constructor(
@@ -24,6 +26,7 @@ class CompleteTaskController {
             promises.push(this.contacts.bulkEditFields({ status: this.status }, this.task.contacts));
         }
         const patch = createPatch(this.taskInitialState, this.task);
+        /* istanbul ignore next */
         this.$log.debug('task patch', patch);
         promises.push(this.tasks.save(
             patch,
@@ -32,7 +35,12 @@ class CompleteTaskController {
         return this.$q.all(promises).then(() => {
             this.$scope.$hide();
             if (this.task.next_action) {
-                this.tasks.addModal(map('id', this.task.contacts), this.task.next_action);
+                this.tasks.addModal({
+                    activityType: this.task.next_action,
+                    comments: union(defaultTo([], this.task.comments), defaultTo([], this.comment)),
+                    contactsList: map('id', this.task.contacts),
+                    task: this.task
+                });
             }
         });
     }

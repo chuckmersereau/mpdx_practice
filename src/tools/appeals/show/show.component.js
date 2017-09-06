@@ -57,12 +57,12 @@ class AppealController {
         });
         this.contactsNotGiven = this.getContactsNotGiven(this.contactsData.contacts, this.appeal.donations);
 
-        this.disable = this.$rootScope.$on('accountListUpdated', () => {
+        this.disableAccountListEvent = this.$rootScope.$on('accountListUpdated', () => {
             this.$state.go('tools.appeals');
         });
     }
     $onDestroy() {
-        this.disable();
+        this.disableAccountListEvent();
     }
     sumDonations(donations) {
         return fixed(2, sumBy((donation) => parseFloat(donation.converted_amount), donations));
@@ -120,8 +120,8 @@ class AppealController {
             url: 'contacts',
             data: {
                 filter: {
-                    // appeal: this.appeal.id,
-                    // reverse_appeal: true,
+                    appeal: this.appeal.id,
+                    reverse_appeal: true,
                     account_list_id: this.api.account_list_id,
                     wildcard_search: keyword
                 },
@@ -137,6 +137,14 @@ class AppealController {
     onContactSelected(contact) {
         return this.api.post(`appeals/${this.appeal.id}/contacts/${contact.id}`).then(() => {
             this.alerts.addAlert(this.gettext('Contact successfully added to appeal'));
+        }).catch((ex) => {
+            this.alerts.addAlert(this.gettext('Unable to add contact to appeal'), 'danger');
+            throw ex;
+        });
+    }
+    addContact(contact) {
+        return this.api.post(`appeals/${this.appeal.id}/contacts/${contact.id}`).then(() => {
+            this.alerts.addAlert(this.gettext('Contact added to appeal'));
         }).catch((ex) => {
             this.alerts.addAlert(this.gettext('Unable to add contact to appeal'), 'danger');
             throw ex;

@@ -7,6 +7,7 @@ const HSMock = {
         ready: () => {}
     }
 };
+
 /* global HS*/
 class HelpService {
     constructor(

@@ -59,7 +59,12 @@ describe('tasks.modals.complete.controller', () => {
         it('should open next automation task if defined', (done) => {
             $ctrl.task.next_action = 'Call';
             $ctrl.save().then(() => {
-                expect(tasks.addModal).toHaveBeenCalledWith([1], $ctrl.task.next_action);
+                expect(tasks.addModal).toHaveBeenCalledWith({
+                    contactsList: [1],
+                    activityType: $ctrl.task.next_action,
+                    task: $ctrl.task,
+                    comments: []
+                });
                 done();
             });
             rootScope.$apply();
