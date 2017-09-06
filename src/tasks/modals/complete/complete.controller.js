@@ -1,6 +1,7 @@
 import contains from 'lodash/fp/contains';
 import createPatch from 'common/fp/createPatch';
 import defaultTo from 'lodash/fp/defaultTo';
+import isEmpty from 'lodash/fp/isEmpty';
 import map from 'lodash/fp/map';
 import union from 'lodash/fp/union';
 
@@ -45,7 +46,15 @@ class CompleteTaskController {
         });
     }
     showPartnerStatus() {
-        return this.task.contacts.length > 0 && this.task.activity_type && !contains(this.task.activity_type, ['Pre Call Letter', 'Reminder Letter', 'Support Letter', 'Thank', 'To Do']);
+        return !isEmpty(this.task.contacts)
+            && this.task.activity_type
+            && !contains(this.task.activity_type, [
+                'Pre Call Letter',
+                'Reminder Letter',
+                'Support Letter',
+                'Thank',
+                'To Do'
+            ]);
     }
 }
 
