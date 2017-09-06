@@ -1,5 +1,3 @@
-import isArray from 'lodash/fp/isArray';
-
 class ModalsService {
     constructor(
         modal, serverConstants, tasksTags
@@ -7,21 +5,6 @@ class ModalsService {
         this.modal = modal;
         this.serverConstants = serverConstants;
         this.tasksTags = tasksTags;
-    }
-    add(contactsList = [], activityType = null) {
-        contactsList = isArray(contactsList) ? contactsList : [contactsList];
-        return this.modal.open({
-            template: require('./add/add.html'),
-            controller: 'addTaskController',
-            resolve: {
-                tags: () => this.tasksTags.load(),
-                0: () => this.serverConstants.load(['activity_hashes'])
-            },
-            locals: {
-                contactsList: contactsList,
-                activityType: activityType
-            }
-        });
     }
     newsletter() {
         return this.modal.open({

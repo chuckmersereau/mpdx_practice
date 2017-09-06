@@ -1,4 +1,3 @@
-
 import uuid from 'uuid/v1';
 import concat from 'lodash/fp/concat';
 import defaultTo from 'lodash/fp/defaultTo';
@@ -9,6 +8,7 @@ import get from 'lodash/fp/get';
 import includes from 'lodash/fp/includes';
 import isEmpty from 'lodash/fp/isEmpty';
 import isNil from 'lodash/fp/isNil';
+import isNilOrEmpty from 'common/fp/isNilOrEmpty';
 import map from 'lodash/fp/map';
 import omitBy from 'lodash/fp/omitBy';
 import pull from 'lodash/fp/pull';
@@ -169,7 +169,7 @@ class TasksService {
         }) : task;
     }
     mutateComment(task, comment) {
-        return comment ? assign(task, {
+        return !isNilOrEmpty(comment) ? assign(task, {
             comments: concat(defaultTo([], task.comments), {
                 id: uuid(),
                 body: comment,
@@ -308,9 +308,20 @@ class TasksService {
             this.clearSelected();
         }
     }
-    addModal(contactsList = [], activityType = null) {
-        return this.tasksModals.add(contactsList, activityType).then(() => {
-            this.change();
+    addModal({ contactsList = [], activityType = null, task = {}, comments = [] }) {
+        return this.modal.open({
+            template: require('./modals/add/add.html'),
+            controller: 'addTaskController',
+            resolve: {
+                tags: () => this.tasksTags.load(),
+                0: () => this.serverConstants.load(['activity_hashes'])
+            },
+            locals: {
+                activityType: activityType,
+                comments: comments,
+                contactsList: contactsList,
+                task: task
+            }
         });
     }
     newsletterModal() {
