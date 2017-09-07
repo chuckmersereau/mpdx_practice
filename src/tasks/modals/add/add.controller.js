@@ -1,6 +1,5 @@
 import assign from 'lodash/fp/assign';
 import concat from 'lodash/fp/concat';
-import contains from 'lodash/fp/contains';
 import emptyToNull from 'common/fp/emptyToNull';
 import get from 'lodash/fp/get';
 import isNilOrEmpty from 'common/fp/isNilOrEmpty';
