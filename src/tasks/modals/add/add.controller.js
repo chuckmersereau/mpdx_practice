@@ -53,7 +53,7 @@ class AddTaskController {
         });
     }
     reuseTask(task, activityType) {
-        return contains(get('result', task), ['Attempted', 'Attempted - Left Message']) && activityType;
+        return get('result', task) && activityType;
     }
     useContacts(task, reuseTask) {
         return !task || (task && reuseTask);

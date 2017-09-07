@@ -117,7 +117,7 @@ describe('tasks.modals.add.controller', () => {
             expect($ctrl.reuseTask({ result: 'Attempted - Left Message' }, 'call')).toBeTruthy();
         });
         it('should be false', () => {
-            expect($ctrl.reuseTask({ result: '' }, 'call')).toBeFalsy();
+            expect($ctrl.reuseTask({ result: null }, 'call')).toBeFalsy();
             expect($ctrl.reuseTask({ result: 'Attempted - Left Message' }, undefined)).toBeFalsy();
         });
     });
