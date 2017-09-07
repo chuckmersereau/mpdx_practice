@@ -18,12 +18,14 @@ describe('tasks.modals.complete.controller', () => {
             $ctrl = loadController();
         });
     });
+
     function loadController() {
         return controller('completeTaskController as $ctrl', {
             $scope: scope,
             task: defaultTask
         });
     }
+
     function defaultPartnerStatus() {
         $ctrl.task = assign(defaultTask, {
             activity_type: 'Active'
@@ -80,6 +82,10 @@ describe('tasks.modals.complete.controller', () => {
         });
         it('should be false with empty contactList', () => {
             $ctrl.task.contacts = [];
+            expect($ctrl.showPartnerStatus()).toBeFalsy();
+        });
+        it('should be false with null contactList', () => {
+            $ctrl.task.contacts = null;
             expect($ctrl.showPartnerStatus()).toBeFalsy();
         });
         it('should be false without a task activity_type', () => {

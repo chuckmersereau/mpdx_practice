@@ -1,10 +1,14 @@
 import component from './item.component';
 
 describe('tasks.list.item.component', () => {
-    let $ctrl, contacts, rootScope, scope, componentController, modal, tasks, gettextCatalog, users, api;
+    let $ctrl, contacts, rootScope, scope, componentController, modal, tasks, gettextCatalog, users, api,
+        serverConstants;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _contacts_, _modal_, _tasks_, _gettextCatalog_, _users_, _api_) => {
+        inject((
+            $componentController, $rootScope, _contacts_, _modal_, _tasks_, _gettextCatalog_, _users_, _api_,
+            _serverConstants_
+        ) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             api = _api_;
@@ -13,10 +17,12 @@ describe('tasks.list.item.component', () => {
             gettextCatalog = _gettextCatalog_;
             modal = _modal_;
             tasks = _tasks_;
+            serverConstants = _serverConstants_;
             componentController = $componentController;
             loadController();
         });
     });
+
     function loadController() {
         $ctrl = componentController('tasksListItem', { $scope: scope }, { task: null, selected: null });
     }
@@ -123,6 +129,37 @@ describe('tasks.list.item.component', () => {
                     person: 'first_name,last_name,deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers'
                 }
             });
+        });
+    });
+    describe('complete', () => {
+        it('should open the complete modal', () => {
+            spyOn(modal, 'open').and.callThrough();
+            spyOn(serverConstants, 'load').and.callFake(() => Promise.resolve());
+            spyOn($ctrl, 'load').and.callFake(() => Promise.resolve());
+            $ctrl.task = { id: 1 };
+            $ctrl.complete();
+            expect(modal.open).toHaveBeenCalledWith({
+                template: require('../../modals/complete/complete.html'),
+                controller: 'completeTaskController',
+                resolve: jasmine.any(Object)
+            });
+            expect($ctrl.load).toHaveBeenCalledWith();
+            expect(serverConstants.load).toHaveBeenCalledWith(['next_actions', 'results', 'status_hashes']);
+        });
+    });
+    describe('edit', () => {
+        it('should open the edit modal', () => {
+            spyOn(modal, 'open').and.callThrough();
+            spyOn(serverConstants, 'load').and.callFake(() => Promise.resolve());
+            $ctrl.task = { id: 1 };
+            $ctrl.edit();
+            expect(modal.open).toHaveBeenCalledWith({
+                template: require('../../modals/edit/edit.html'),
+                controller: 'editTaskController',
+                locals: jasmine.any(Object),
+                resolve: jasmine.any(Object)
+            });
+            expect(serverConstants.load).toHaveBeenCalledWith(['activity_hashes', 'results']);
         });
     });
 });
