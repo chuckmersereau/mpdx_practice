@@ -345,12 +345,6 @@ class TasksService {
     bulkEditModal(tasks) {
         return this.tasksModals.bulkEdit(tasks || this.selected);
     }
-    editModal(task) {
-        return this.tasksModals.edit(task);
-    }
-    completeModal(task) {
-        return this.tasksModals.complete(task);
-    }
 }
 
 import alerts from '../common/alerts/alerts.service';

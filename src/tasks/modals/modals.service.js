@@ -12,30 +12,6 @@ class ModalsService {
             controller: 'newsletterTaskController'
         });
     }
-    complete(task) {
-        return this.modal.open({
-            template: require('./complete/complete.html'),
-            controller: 'completeTaskController',
-            locals: {
-                task: task
-            },
-            resolve: {
-                0: () => this.serverConstants.load(['next_actions', 'results', 'status_hashes'])
-            }
-        });
-    }
-    edit(task) {
-        return this.modal.open({
-            template: require('./edit/edit.html'),
-            controller: 'editTaskController',
-            locals: {
-                task: task
-            },
-            resolve: {
-                0: () => this.serverConstants.load(['activity_hashes', 'results'])
-            }
-        });
-    }
     bulkEdit(tasks) {
         return this.modal.open({
             template: require('./bulkEdit/bulkEdit.html'),
