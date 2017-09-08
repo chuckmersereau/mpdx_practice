@@ -270,6 +270,18 @@ class AppealController {
             throw ex;
         });
     }
+    addCommitment() {
+        this.modal.open({
+            template: require('./addCommitment/add.html'),
+            controller: 'addCommitmentController',
+            locals: {
+                appealId: this.appeal.id
+            },
+            resolve: {
+                0: () => this.serverConstants.load(['pledge_currencies'])
+            }
+        });
+    }
 }
 
 const Appeal = {
