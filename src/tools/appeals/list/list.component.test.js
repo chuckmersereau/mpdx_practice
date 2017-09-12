@@ -89,7 +89,7 @@ describe('tools.appeals.list.component', () => {
             expect(api.get).toHaveBeenCalledWith('appeals', {
                 include: 'donations',
                 fields: {
-                    appeals: 'amount,donations,name',
+                    appeals: 'amount,donations,name,pledges_amount_not_received_not_processed,pledges_amount_processed,pledges_amount_received_not_processed',
                     donations: 'converted_amount'
                 },
                 filter: { account_list_id: 123 },
@@ -156,12 +156,10 @@ describe('tools.appeals.list.component', () => {
             expect($ctrl.mutateData(data)).toEqual([{
                 amount: '10.00',
                 amount_raised: '10.00',
-                percentage_raised: 100,
                 donations: [{ converted_amount: '10' }]
             }, {
                 amount: '12.00',
                 amount_raised: '11.00',
-                percentage_raised: 92,
                 donations: [{ converted_amount: '11' }]
             }]);
         });
@@ -173,7 +171,6 @@ describe('tools.appeals.list.component', () => {
             expect($ctrl.mutateData(data)).toEqual([{
                 amount: '0.00',
                 amount_raised: '10.00',
-                percentage_raised: 0,
                 donations: [{ converted_amount: '10' }]
             }]);
         });

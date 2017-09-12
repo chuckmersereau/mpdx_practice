@@ -309,6 +309,7 @@ export default class Routes {
             name: 'tools.appeals',
             url: '/appeals',
             component: 'appeals',
+            title: gettext('Appeals'),
             resolve: {
                 0: /* @ngInject*/ (contactsTags) => contactsTags.load(),
                 1: /* @ngInject*/ (serverConstants) => serverConstants.load(['status_hashes'])
