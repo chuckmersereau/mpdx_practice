@@ -5,12 +5,13 @@ import get from 'lodash/fp/get';
 class ItemController {
     constructor(
         $log, gettextCatalog,
-        api, modal, tasks, users
+        api, modal, serverConstants, tasks, users
     ) {
         this.$log = $log;
         this.api = api;
         this.gettextCatalog = gettextCatalog;
         this.modal = modal;
+        this.serverConstants = serverConstants;
         this.tasks = tasks;
         this.users = users;
     }
@@ -51,7 +52,14 @@ class ItemController {
         });
     }
     complete() {
-        this.tasks.completeModal(this.task);
+        return this.modal.open({
+            template: require('../../modals/complete/complete.html'),
+            controller: 'completeTaskController',
+            resolve: {
+                task: () => this.load(),
+                0: () => this.serverConstants.load(['next_actions', 'results', 'status_hashes'])
+            }
+        });
     }
     star() {
         return this.tasks.star(this.task).then((data) => {
@@ -59,7 +67,16 @@ class ItemController {
         });
     }
     edit() {
-        this.tasks.editModal(this.task);
+        return this.modal.open({
+            template: require('../../modals/edit/edit.html'),
+            controller: 'editTaskController',
+            locals: {
+                task: this.task
+            },
+            resolve: {
+                0: () => this.serverConstants.load(['activity_hashes', 'results'])
+            }
+        });
     }
     delete() {
         this.tasks.delete(this.task);

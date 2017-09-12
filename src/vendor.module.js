@@ -12,7 +12,6 @@ import ngMap from 'ngmap';
 import ngSortable from 'ng-sortable';
 import angulartics from 'angulartics';
 import angularticsGoogleAnalytics from 'angulartics-google-analytics';
-
 // deps with no default exports
 import 'angular-block-ui';
 import 'angular-filter';
@@ -31,6 +30,7 @@ import 'chartjs-plugin-annotation';
 import ngChartJs from 'angular-chart.js';
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
+
 window.moment = extendMoment(Moment);
 import 'chosen-js';
 import 'bootstrap-daterangepicker/daterangepicker';

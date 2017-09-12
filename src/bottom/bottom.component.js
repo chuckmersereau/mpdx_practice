@@ -8,6 +8,7 @@ export class BottomController {
         this.help.showHelp();
     }
 }
+
 const Bottom = {
     template: require('./bottom.html'),
     controller: BottomController

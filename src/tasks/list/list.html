@@ -8,7 +8,7 @@
                 </div>
                 <div class="col-md-7 col-sm-8 text-right">
                     <div class="btn-group">
-                        <a class="btn btn-default" ng-click="$ctrl.tasks.addModal($ctrl.contact.id)" translate>Add Task</a>
+                        <a class="btn btn-default" ng-click="$ctrl.tasks.addModal({ contactsList: [$ctrl.contact.id] })" translate>Add Task</a>
                         <a class="btn btn-default" ng-click="$ctrl.tasks.logModal([$ctrl.contact.id])" translate>Log Task</a>
                         <div class="btn-group">
                             <div class="dropdown">
