@@ -11,7 +11,7 @@
         <div class="col-sm-7">
             <div class="form-group">
                 <label for="amount" translate>Amount</label><br/>
-                <input ng-model="$ctrl.amount" id="amount" class="form-control">
+                <input ng-model="$ctrl.pledge.amount" id="amount" class="form-control">
             </div>
         </div>
         <div class="col-sm-5">
@@ -25,7 +25,7 @@
                             data-placeholder-text-single="'Select an Option' | translate"
                             id="pledge_currency"
                             ng-options="pc.code as pc.code_symbol_string for pc in $ctrl.serverConstants.data.pledge_currencies"
-                            ng-model="$ctrl.currency">
+                            ng-model="$ctrl.pledge.commitmentCurrency">
                         <option value=""></option>
                     </select>
                 </div>
@@ -36,7 +36,7 @@
         <div class="form-group">
             <label for="date" translate>Expected Date</label><br/>
             <input bs-datepicker
-                   ng-model="$ctrl.expected_date"
+                   ng-model="$ctrl.pledge.expectedDate"
                    id="date"
                    class="form-control"
                    data-date-format="{{::$ctrl.locale.dateTimeFormat}}"
@@ -44,5 +44,5 @@
                    required>
         </div>
     </div>
-    <input type="hidden" ng-model="$ctrl.contactId" required>
+    <input type="hidden" ng-model="$ctrl.pledge.contactId" required>
 </modal>
