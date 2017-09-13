@@ -1,0 +1,42 @@
+<p translate>Share this ministry account with other team members</p>
+<p class="alert alert-warning" translate>
+    If you want to allow another mpdx coach to have coaching access to this ministry account,
+    you can share access with them. Make sure you have the proper permissions and
+    leadership consensus around this sharing before you do this. You will be able to remove coaching access later.
+</p>
+<div ng-if="$ctrl.accounts.coachList.length > 0">
+    <strong translate>Account currently coached by</strong>
+    <ul class="account-coaches">
+        <li ng-repeat="coach in $ctrl.accounts.coachList">
+            {{coach.first_name}}
+            {{coach.last_name}}
+            <span ng-repeat="email in coach.email_addresses" ng-if="email.primary">({{email.email}})</span>
+            <span ng-if="coach.method.type == 'designation'" data-toggle="tooltip" data-placement="top" title="{{ 'Linked by designation' | translate }}: {{coach.method.name}}">
+                <i class="fa fa-info-circle"></i>
+            </span>
+            <span ng-if="coach.method.type == 'invite'" data-toggle="tooltip" data-placement="top" title="{{ 'Invited by' | translate }}: {{coach.method.inviter.first_name}} {{coach.method.inviter.last_name}}">
+                <i class="fa fa-info-circle"></i>
+            </span>
+            <span ng-if="coach.method.type == 'mpdx'" data-toggle="tooltip" data-placement="top" title="{{ 'Manually added by MPDX support' | translate }}">
+                <i class="fa fa-info-circle"></i>
+            </span>
+            <button class="btn btn-xxs btn-danger" ng-click="$ctrl.removeCoach(coach.id)" ng-disabled="$ctrl.saving"><i class="fa fa-remove"></i> <span translate>Delete</span></button>
+        </li>
+    </ul>
+</div>
+<div ng-if="$ctrl.accounts.inviteCoachList.length > 0">
+    <strong translate>Pending Invites</strong>
+    <ul class="account-coaches">
+        <li ng-repeat="coach in $ctrl.accounts.inviteCoachList">
+            {{coach.recipient_email}}
+            <em ng-if="coach.invited_by_user" translate-params-first-name="coach.invited_by_user.first_name" translate-params-last-name="coach.invited_by_user.last_name" translate>
+                (Sent by {{firstName}} {{lastName}})
+            </em>
+            <button class="btn btn-xxs btn-danger" ng-click="$ctrl.removeCoachInvite(coach.id)" ng-disabled="$ctrl.saving"><i class="fa fa-remove"></i> <translate>Cancel</translate></button>
+        </li>
+    </ul>
+</div>
+<div class="well">
+    <strong translate>Invite someone to share this account:</strong>
+    <coaches-invite-preferences></coaches-invite-preferences>
+</div>

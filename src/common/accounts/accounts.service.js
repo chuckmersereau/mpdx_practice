@@ -55,36 +55,74 @@ class AccountsService {
             return resp;
         });
     }
-    destroyInvite(id) {
-        return this.api.delete({ url: `account_lists/${this.api.account_list_id}/invites/${id}`, type: 'account_list_invites' });
-    }
-    destroyUser(id) {
-        return this.api.delete(`account_lists/${this.api.account_list_id}/users/${id}`);
-    }
     listInvites() {
         this.inviteList = null;
         return this.api.get(`account_lists/${this.api.account_list_id}/invites`, {
             include: 'invited_by_user',
             fields: {
                 contacts: 'first_name, last_name'
+            },
+            filter: {
+                invite_user_as: 'user'
             }
         }).then((data) => {
-            this.inviteList = data;
+            /* istanbul ignore next */
             this.$log.debug('account_lists/invites', this.inviteList);
+            this.inviteList = data;
         });
     }
     listUsers() {
         this.userList = null;
-        this.api.get(`account_lists/${this.api.account_list_id}/users`, {
+        return this.api.get(`account_lists/${this.api.account_list_id}/users`, {
             include: 'email_addresses',
             fields: {
                 email_addresses: 'email,primary',
                 users: 'email_addresses,first_name,last_name'
             }
         }).then((data) => {
+            /* istanbul ignore next */
             this.$log.debug('account_lists/users:', data);
             this.userList = data;
         });
+    }
+    destroyUser(id) {
+        return this.api.delete(`account_lists/${this.api.account_list_id}/users/${id}`);
+    }
+    listCoachesInvites() {
+        this.inviteCoachList = null;
+        return this.api.get(`account_lists/${this.api.account_list_id}/invites`, {
+            include: 'invited_by_user',
+            fields: {
+                contacts: 'first_name, last_name'
+            },
+            filter: {
+                invite_user_as: 'coach'
+            }
+        }).then((data) => {
+            /* istanbul ignore next */
+            this.$log.debug('account_lists/invites', data);
+            this.inviteCoachList = data;
+        });
+    }
+    listCoaches() {
+        this.coachList = null;
+        return this.api.get(`account_lists/${this.api.account_list_id}/coaches`, {
+            include: 'email_addresses',
+            fields: {
+                email_addresses: 'email,primary',
+                users: 'email_addresses,first_name,last_name'
+            }
+        }).then((data) => {
+            /* istanbul ignore next */
+            this.$log.debug('account_lists/coaches:', data);
+            this.coachList = data;
+        });
+    }
+    destroyCoach(id) {
+        return this.api.delete(`account_lists/${this.api.account_list_id}/coaches/${id}`);
+    }
+    destroyInvite(id) {
+        return this.api.delete({ url: `account_lists/${this.api.account_list_id}/invites/${id}`, type: 'account_list_invites' });
     }
     getAnalytics(params) {
         return this.api.get(`account_lists/${this.api.account_list_id}/analytics`, { filter: { date_range: `${params.startDate.format('YYYY-MM-DD')}..${params.endDate.format('YYYY-MM-DD')}` } }).then((data) => {

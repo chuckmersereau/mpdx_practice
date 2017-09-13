@@ -12,6 +12,9 @@
     <li ng-class="{'active' : $ctrl.$state.includes('**.accounts') }">
         <a ng-click="$ctrl.go('preferences.accounts')" translate>Manage Accounts</a>
     </li>
+    <li ng-if="$ctrl.users.current.preferences.admin" ng-class="{'active' : $ctrl.$state.includes('**.coaches') }">
+        <a ng-click="$ctrl.go('preferences.coaches')" translate>Manage Coaches</a>
+    </li>
     <li ng-if="$ctrl.users.current.preferences.admin" ng-class="{'active' : $ctrl.$state.includes('**.admin') }">
         <a ng-click="$ctrl.go('preferences.admin')" translate>Admin Console</a>
     </li>

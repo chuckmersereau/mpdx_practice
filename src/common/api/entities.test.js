@@ -6,7 +6,7 @@ describe('EntityAttributes', () => {
         expect(attributes.account_list_invites).toEqual({
             attributes: [
                 'accepted_at', 'accepted_by_user_id', 'account_list_id', 'cancelled_by_user_id', 'code',
-                'created_at', 'invited_by_user_id', 'recipient_email', 'updated_at'
+                'created_at', 'invited_by_user_id', 'recipient_email', 'invite_user_as', 'updated_at'
             ]
         });
     });

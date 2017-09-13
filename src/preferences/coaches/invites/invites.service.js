@@ -7,7 +7,7 @@ class InvitesService {
     create(email) {
         return this.api.post({
             url: `account_lists/${this.api.account_list_id}/invites`,
-            data: { recipient_email: email, invite_user_as: 'user' },
+            data: { recipient_email: email, invite_user_as: 'coach' },
             type: 'account_list_invites'
         });
     }
@@ -15,6 +15,6 @@ class InvitesService {
 
 import api from 'common/api/api.service';
 
-export default angular.module('mpdx.preferences.accounts.invites.service', [
+export default angular.module('mpdx.preferences.coaches.invites.service', [
     api
-]).service('invites', InvitesService).name;
+]).service('coachesInvites', InvitesService).name;

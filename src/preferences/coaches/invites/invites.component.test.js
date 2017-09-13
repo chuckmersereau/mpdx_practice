@@ -1,16 +1,15 @@
 import component from './invites.component';
 
-describe('preferences.accounts.invites.component', () => {
-    let $ctrl, accounts, invites, rootScope, scope, componentController, alerts, gettextCatalog;
-
+describe('preferences.coaches.coachesInvites.component', () => {
+    let $ctrl, accounts, coachesInvites, rootScope, scope, componentController, alerts, gettextCatalog;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _accounts_, _invites_, _alerts_, _gettextCatalog_) => {
+        inject(($componentController, $rootScope, _accounts_, _coachesInvites_, _alerts_, _gettextCatalog_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             accounts = _accounts_;
             alerts = _alerts_;
-            invites = _invites_;
+            coachesInvites = _coachesInvites_;
             gettextCatalog = _gettextCatalog_;
             componentController = $componentController;
             loadController();
@@ -20,7 +19,7 @@ describe('preferences.accounts.invites.component', () => {
     });
 
     function loadController() {
-        $ctrl = componentController('invitePreferences', { $scope: scope }, {});
+        $ctrl = componentController('coachesInvitePreferences', { $scope: scope }, {});
     }
 
     describe('constructor', () => {
@@ -41,14 +40,14 @@ describe('preferences.accounts.invites.component', () => {
         });
 
         it('should create an invite', () => {
-            spyOn(invites, 'create').and.callFake(() => Promise.resolve());
+            spyOn(coachesInvites, 'create').and.callFake(() => Promise.resolve());
             $ctrl.sendInvite();
-            expect(invites.create).toHaveBeenCalledWith('a@b.c');
+            expect(coachesInvites.create).toHaveBeenCalledWith('a@b.c');
         });
 
         it('should unset saving flag', (done) => {
-            spyOn(invites, 'create').and.callFake(() => Promise.resolve());
-            spyOn(accounts, 'listInvites').and.callFake(() => Promise.resolve());
+            spyOn(coachesInvites, 'create').and.callFake(() => Promise.resolve());
+            spyOn(accounts, 'listCoachesInvites').and.callFake(() => Promise.resolve());
             $ctrl.sendInvite().then(() => {
                 expect($ctrl.saving).toBeFalsy();
                 done();
@@ -56,8 +55,8 @@ describe('preferences.accounts.invites.component', () => {
         });
 
         it('should alert a translated confirmation', (done) => {
-            spyOn(invites, 'create').and.callFake(() => Promise.resolve());
-            spyOn(accounts, 'listInvites').and.callFake(() => Promise.resolve());
+            spyOn(coachesInvites, 'create').and.callFake(() => Promise.resolve());
+            spyOn(accounts, 'listCoachesInvites').and.callFake(() => Promise.resolve());
             $ctrl.sendInvite().then(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'success');
                 expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String), { email: 'a@b.c' });
@@ -66,25 +65,25 @@ describe('preferences.accounts.invites.component', () => {
         });
 
         it('should reset email', (done) => {
-            spyOn(invites, 'create').and.callFake(() => Promise.resolve());
-            spyOn(accounts, 'listInvites').and.callFake(() => Promise.resolve());
+            spyOn(coachesInvites, 'create').and.callFake(() => Promise.resolve());
+            spyOn(accounts, 'listCoachesInvites').and.callFake(() => Promise.resolve());
             $ctrl.sendInvite().then(() => {
                 expect($ctrl.email).toEqual('');
                 done();
             });
         });
 
-        it('should refresh invites', (done) => {
-            spyOn(invites, 'create').and.callFake(() => Promise.resolve());
-            spyOn(accounts, 'listInvites').and.callFake(() => Promise.resolve());
+        it('should refresh coachesInvites', (done) => {
+            spyOn(coachesInvites, 'create').and.callFake(() => Promise.resolve());
+            spyOn(accounts, 'listCoachesInvites').and.callFake(() => Promise.resolve());
             $ctrl.sendInvite().then(() => {
-                expect(accounts.listInvites).toHaveBeenCalled();
+                expect(accounts.listCoachesInvites).toHaveBeenCalled();
                 done();
             });
         });
 
         it('should handle rejection', (done) => {
-            spyOn(invites, 'create').and.callFake(() => Promise.reject(Error('')));
+            spyOn(coachesInvites, 'create').and.callFake(() => Promise.reject(Error('')));
             $ctrl.sendInvite().catch(() => {
                 expect($ctrl.saving).toBeFalsy();
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');

@@ -1,4 +1,4 @@
-import service, { EntityAttributes } from './api.service';
+import service from './api.service';
 
 const jsonApiResponse = {
     data: {

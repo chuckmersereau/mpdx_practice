@@ -166,7 +166,7 @@ export default class Routes {
             url: '/accounts',
             component: 'preferencesAccounts',
             resolve: {
-                resolution: /* @ngInject*/ (accounts) => accounts.load()
+                0: /* @ngInject*/ (accounts) => accounts.load()
             }
         }).state({
             name: 'preferences.admin',
@@ -174,13 +174,21 @@ export default class Routes {
             url: '/admin',
             component: 'preferencesAdmin'
         }).state({
+            name: 'preferences.coaches',
+            title: gettext('Preferences - Manage Coaches'),
+            url: '/coaches',
+            component: 'preferencesCoaches',
+            resolve: {
+                0: /* @ngInject*/ (accounts) => accounts.load()
+            }
+        }).state({
             name: 'preferences.integrations',
             title: gettext('Preferences - Connect Services'),
             url: '/integrations?selectedTab',
             component: 'preferencesIntegration',
             resolve: {
-                resolution: /* @ngInject*/ (users) => users.listOrganizationAccounts(),
-                0: /* @ngInject*/ (serverConstants) => serverConstants.load(['organizations_attributes'])
+                0: /* @ngInject*/ (users) => users.listOrganizationAccounts(),
+                1: /* @ngInject*/ (serverConstants) => serverConstants.load(['organizations_attributes'])
             },
             params: {
                 selectedTab: null
