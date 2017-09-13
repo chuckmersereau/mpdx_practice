@@ -112,7 +112,6 @@ class Api {
             headers.Accept = 'application/vnd.api+json';
         }
 
-
         // override the browsers language with the one from current user
         headers['Accept-Language'] = this.language;
 
