@@ -29,6 +29,7 @@ describe('contacts.list.exportContacts.controller', () => {
             spyOn($ctrl.blockUI, 'start').and.callThrough();
         });
     });
+
     function loadController(contacts) {
         return controller('exportContactsController as $ctrl', {
             $scope: scope,

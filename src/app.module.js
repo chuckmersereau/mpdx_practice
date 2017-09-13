@@ -1,10 +1,12 @@
 import jQuery from '!expose-loader?jQuery!jquery'; // import before angular to replace jqlite
+
 window.$ = jQuery;
 import angular from 'angular';
+
 window.angular = angular;
 
 import app from './app.directive';
-import bottom from 'bottom/index.module';
+import bottom from 'bottom/bottom.component';
 import common from 'common/index.module';
 import contacts from 'contacts/index.module';
 import home from 'home/index.module';

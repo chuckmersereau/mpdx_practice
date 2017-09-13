@@ -1,7 +1,7 @@
 // do not disable angular debug in production. breaks daterangepicker
 import config from 'config';
-
 import Routes from './routes';
+
 /* @ngInject*/
 export default function appConfig(
     $compileProvider, $locationProvider, $logProvider, $stateProvider, $httpProvider, $qProvider, $urlRouterProvider,

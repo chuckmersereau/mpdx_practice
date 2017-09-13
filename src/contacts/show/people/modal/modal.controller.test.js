@@ -23,6 +23,7 @@ describe('contacts.show.personModal.controller', () => {
         spyOn(gettextCatalog, 'getString').and.callThrough();
         spyOn(scope, '$hide').and.callFake(() => {});
     });
+
     function loadController() {
         $ctrl = controller('personModalController as $ctrl', {
             $scope: scope,

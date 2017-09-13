@@ -12,6 +12,7 @@ describe('contacts.filter.tags.component', () => {
             loadController();
         });
     });
+
     function loadController() {
         $ctrl = componentController('contactsTags', { $scope: scope }, {});
     }

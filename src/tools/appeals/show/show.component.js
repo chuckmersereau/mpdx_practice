@@ -9,10 +9,12 @@ import fixed from 'common/fp/fixed';
 import get from 'lodash/fp/get';
 import isNilOrEmpty from 'common/fp/isNilOrEmpty';
 import joinComma from 'common/fp/joinComma';
+import keys from 'lodash/fp/keys';
 import map from 'lodash/fp/map';
 import moment from 'moment';
 import pull from 'lodash/fp/pull';
 import reduce from 'lodash/fp/reduce';
+// import reduceObject from 'common/fp/reduceObject';
 import reject from 'lodash/fp/reject';
 import sumBy from 'lodash/fp/sumBy';
 import union from 'lodash/fp/union';
@@ -52,10 +54,14 @@ class AppealController {
         this.percentageRaised = this.donationsSum / this.data.amount * 100;
         this.contactsData.contacts = this.fixPledgeAmount(this.contactsData.contacts);
         this.appeal = assign(this.data, {
-            amount: fixed(2, defaultTo(0, this.data.amount)),
-            donations: this.mutateDonations(this.data.donations, this.contactsData.contacts)
+            amount: fixed(2, defaultTo(0, this.data.amount))
+            // donations: this.mutateDonations(this.data.donations, this.contactsData.contacts)
         });
-        this.contactsNotGiven = this.getContactsNotGiven(this.contactsData.contacts, this.appeal.donations);
+
+        this.mutatePledges(this.pledges);
+        this.$log.debug('viewData', this.viewData);
+
+        this.contactsNotGiven = this.getContactsNotGiven(this.contactsData.contacts);// , this.appeal.donations);
 
         this.disableAccountListEvent = this.$rootScope.$on('accountListUpdated', () => {
             this.$state.go('tools.appeals');
@@ -63,6 +69,36 @@ class AppealController {
     }
     $onDestroy() {
         this.disableAccountListEvent();
+    }
+    mutatePledges(pledges) {
+        this.viewData = reduce((result, pledge) => {
+            const category = this.getCategory(pledge);
+            let resultCategory = result[category] = defaultTo({}, result[category]);
+            resultCategory[pledge.contact.id] = {
+                id: pledge.id,
+                contactId: pledge.contact.id,
+                name: pledge.contact.name,
+                commitment: fixed(2, defaultTo(0, pledge.contact.pledge_amount)),
+                commitmentCurrency: defaultTo('', pledge.contact.pledge_currency),
+                amount: this.combineAmounts(pledge, resultCategory),
+                expectedDate: pledge.expected_date,
+                donationDate: pledge.donations[0] ? get('donation_date', pledge.donations[0]) : ''
+            };
+            return result;
+        }, {}, pledges);
+    }
+    combineAmounts(pledge, resultCategory) {
+        return fixed(2,
+            parseFloat(defaultTo(0, pledge.amount))
+            + parseFloat(defaultTo(0, get('donationAmount', resultCategory[pledge.contact.id])))
+        );
+    }
+    getCategory(pledge) {
+        return pledge.received_not_processed
+            ? 'received_not_processed'
+            : isNilOrEmpty(pledge.donations)
+                ? 'committed_not_received'
+                : 'given_to_appeal';
     }
     sumDonations(donations) {
         return fixed(2, sumBy((donation) => parseFloat(donation.converted_amount), donations));
@@ -72,19 +108,22 @@ class AppealController {
             pledge_amount: fixed(2, defaultTo(0, contact.pledge_amount))
         }), contacts);
     }
-    mutateDonations(donations, contacts) {
-        return map((donation) => {
-            donation.contact = find({ id: donation.contact.id }, contacts);
-            donation.amount = fixed(2, defaultTo(0, donation.amount));
-            return donation;
-        }, donations);
-    }
-    getContactsNotGiven(contacts, donations) {
-        const allGiven = reduce((result, value) => {
-            const contact = get('id', value.contact);
-            return contact ? concat(result, contact) : result;
-        }, [], donations);
-        const contactsNotGiven = reject((contact) => contains(contact.id, allGiven), contacts);
+    // mutateDonations(donations, contacts) {
+    //     return map((donation) => {
+    //         donation.contact = find({ id: donation.contact.id }, contacts);
+    //         donation.amount = fixed(2, defaultTo(0, donation.amount));
+    //         return donation;
+    //     }, donations);
+    // }
+    getContactsNotGiven(contacts) { // , donations
+        // const allGiven = reduce((result, value) => {
+        //     const contact = get('id', value.contact);
+        //     return contact ? concat(result, contact) : result;
+        // }, [], donations);
+        // const contactsNotDonated = reject((contact) => contains(contact.id, allGiven), contacts);
+        const allPledged = reduce((result, value) => union(result, keys(value))
+            , [], this.viewData);
+        const contactsNotGiven = reject((contact) => contains(contact.id, allPledged), contacts);
         return map((contact) => {
             contact.currency = this.getCurrencyFromCode(contact.pledge_currency);
             return contact;
@@ -143,7 +182,7 @@ class AppealController {
         });
     }
     addContact(contact) {
-        this.api.post(`appeals/${this.appeal.id}/contacts/${contact.id}`).then(() => {
+        return this.api.post(`appeals/${this.appeal.id}/contacts/${contact.id}`).then(() => {
             this.alerts.addAlert(this.gettext('Contact added to appeal'));
         }).catch((ex) => {
             this.alerts.addAlert(this.gettext('Unable to add contact to appeal'), 'danger');
@@ -191,6 +230,12 @@ class AppealController {
         const message = this.gettext('Are you sure you wish to remove this donation?');
         return this.modal.confirm(message).then(() =>
             this.donations.delete(donation)
+        );
+    }
+    removeCommitment(pledge) {
+        const message = this.gettext('Are you sure you wish to remove this commitment?');
+        return this.modal.confirm(message).then(() =>
+            this.api.delete(`account_lists/${this.api.account_list_id}/pledges/${pledge.id}`)
         );
     }
     exportToCSV() {
@@ -270,6 +315,31 @@ class AppealController {
             throw ex;
         });
     }
+    addCommitment() {
+        this.modal.open({
+            template: require('./addCommitment/add.html'),
+            controller: 'addCommitmentController',
+            locals: {
+                appealId: this.appeal.id
+            },
+            resolve: {
+                0: () => this.serverConstants.load(['pledge_currencies'])
+            }
+        });
+    }
+    editCommitment(pledge) {
+        this.modal.open({
+            template: require('./editCommitment/edit.html'),
+            controller: 'editCommitmentController',
+            locals: {
+                appealId: this.appeal.id,
+                pledge: pledge
+            },
+            resolve: {
+                0: () => this.serverConstants.load(['pledge_currencies'])
+            }
+        });
+    }
     getExcludedContacts(page = 1) {
         return this.api.get({
             url: 'contacts',
@@ -299,7 +369,8 @@ const Appeal = {
     template: require('./show.html'),
     bindings: {
         data: '<',
-        contactsData: '<'
+        contactsData: '<',
+        pledges: '<'
     }
 };
 

@@ -2,7 +2,6 @@ import concat from 'lodash/fp/concat';
 import defaultTo from 'lodash/fp/defaultTo';
 import fixed from 'common/fp/fixed';
 import reduce from 'lodash/fp/reduce';
-import round from 'lodash/fp/round';
 import sumBy from 'lodash/fp/sumBy';
 import unionBy from 'lodash/fp/unionBy';
 
@@ -52,7 +51,7 @@ class ListController {
         let params = {
             include: 'donations',
             fields: {
-                appeals: 'amount,donations,name',
+                appeals: 'amount,donations,name,pledges_amount_not_received_not_processed,pledges_amount_processed,pledges_amount_received_not_processed',
                 donations: 'converted_amount'
             },
             filter: { account_list_id: this.api.account_list_id },
@@ -84,7 +83,6 @@ class ListController {
                 parseFloat(donation.converted_amount)
             ), appeal.donations));
             appeal.amount = defaultTo(0, appeal.amount);
-            appeal.percentage_raised = appeal.amount > 0 ? round((appeal.amount_raised / appeal.amount) * 100) : 0;
             appeal.amount = fixed(2, appeal.amount);
             return concat(result, appeal);
         }, [], data);

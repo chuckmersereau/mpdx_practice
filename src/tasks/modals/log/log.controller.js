@@ -51,7 +51,12 @@ class LogTaskController {
         return this.getPromise().then(() => {
             this.$scope.$hide();
             if (get('next_action', this.task)) {
-                this.tasks.addModal(this.contactsList, this.task.next_action);
+                this.tasks.addModal({
+                    activityType: this.task.next_action,
+                    comments: [this.comment],
+                    contactsList: this.contactsList,
+                    task: this.task
+                });
             }
         });
     }

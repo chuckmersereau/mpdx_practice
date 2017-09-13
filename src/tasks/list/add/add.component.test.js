@@ -16,6 +16,7 @@ describe('tasks.list.add.component', () => {
             loadController();
         });
     });
+
     function loadController() {
         $ctrl = componentController('tasksListAdd', { $scope: scope }, {});
     }

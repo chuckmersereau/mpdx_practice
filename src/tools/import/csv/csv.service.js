@@ -1,4 +1,5 @@
 const each = require('lodash/fp/each').convert({ 'cap': false });
+
 import concat from 'lodash/fp/concat';
 import createPatch from 'common/fp/createPatch';
 import defaultTo from 'lodash/fp/defaultTo';

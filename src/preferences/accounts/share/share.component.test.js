@@ -18,6 +18,7 @@ describe('preferences.accounts.share', () => {
         spyOn(accounts, 'listUsers').and.callFake(() => {});
         spyOn(accounts, 'listInvites').and.callFake(() => {});
     });
+
     function loadController() {
         $ctrl = componentController('sharePreferences', { $scope: scope }, { setup: false });
     }

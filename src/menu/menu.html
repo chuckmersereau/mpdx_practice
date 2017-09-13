@@ -39,6 +39,7 @@
                                 <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="tools" translate>Import Contacts</a></li>
                                 <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="preferences.integrations" translate>Connect Services</a></li>
                                 <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="preferences.accounts" translate>Manage Account</a></li>
+                                <li role="presentation" ng-if="!$ctrl.setup && $ctrl.users.current.preferences.admin"><a ui-sref="preferences.coaches" translate>Manage Coaches</a></li>
                                 <li role="presentation" ng-if="!$ctrl.setup && $ctrl.users.current.preferences.admin"><a ui-sref="preferences.admin" translate>Admin Console</a></li>
                                 <li role="presentation" ng-if="!$ctrl.setup" class="divider"></li>
                                 <li role="presentation"><a ui-sref="logout" translate>Log out</a></li>

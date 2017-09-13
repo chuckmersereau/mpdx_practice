@@ -25,6 +25,7 @@ describe('contacts.sidebar.filter.daterange.component', () => {
         });
         spyOn(gettextCatalog, 'getPlural').and.callThrough();
     });
+
     function loadController() {
         $ctrl = componentController('contactsFilterDaterange', {
             $scope: scope,

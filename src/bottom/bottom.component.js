@@ -1,6 +1,7 @@
 export class BottomController {
     constructor(help) {
         this.help = help;
+
         this.year = new Date().getFullYear();
     }
 
@@ -8,6 +9,7 @@ export class BottomController {
         this.help.showHelp();
     }
 }
+
 const Bottom = {
     template: require('./bottom.html'),
     controller: BottomController

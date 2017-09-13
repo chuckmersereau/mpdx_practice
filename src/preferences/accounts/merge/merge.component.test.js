@@ -18,6 +18,7 @@ describe('preferences.accounts.merge.component', () => {
         spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
+
     function loadController() {
         $ctrl = componentController('mergePreferences', { $scope: scope }, { onSave: () => Promise.resolve() });
     }

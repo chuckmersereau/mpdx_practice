@@ -23,12 +23,14 @@ describe('tasks.modals.log.controller', () => {
             spyOn(contacts, 'getNames').and.callFake(() => Promise.resolve(result));
         });
     });
+
     function loadController() {
         return controller('logTaskController as $ctrl', {
             $scope: scope,
             contactsList: contactList
         });
     }
+
     function defaultPartnerStatus() {
         $ctrl.task = assign(defaultTask, {
             activity_type: 'Active'
@@ -128,8 +130,14 @@ describe('tasks.modals.log.controller', () => {
         });
         it('should open next automation task if defined', (done) => {
             $ctrl.task.next_action = 'Call';
+            $ctrl.comment = 'ghi';
             $ctrl.save().then(() => {
-                expect(tasks.addModal).toHaveBeenCalledWith($ctrl.contactsList, $ctrl.task.next_action);
+                expect(tasks.addModal).toHaveBeenCalledWith({
+                    contactsList: $ctrl.contactsList,
+                    activityType: $ctrl.task.next_action,
+                    task: $ctrl.task,
+                    comments: [$ctrl.comment]
+                });
                 done();
             });
         });

@@ -24,6 +24,7 @@ describe('setup.connect.component', () => {
         spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callFake((data) => data);
     });
+
     function loadController() {
         $ctrl = componentController('setupConnect', { $scope: scope }, {});
     }

@@ -27,6 +27,7 @@ describe('contacts.list.component', () => {
         spyOn(gettextCatalog, 'getString').and.callThrough();
         spyOn(gettextCatalog, 'getPlural').and.callFake((data) => data);
     });
+
     function loadController() {
         $ctrl = componentController('contactsList', { $scope: scope }, { view: null, selected: null });
     }
@@ -183,7 +184,7 @@ describe('contacts.list.component', () => {
         });
         it('should open the add task modal', () => {
             $ctrl.openAddTaskModal();
-            expect(tasks.addModal).toHaveBeenCalledWith($ctrl.contacts.selectedContacts);
+            expect(tasks.addModal).toHaveBeenCalledWith({ contactsList: $ctrl.contacts.selectedContacts });
         });
     });
     describe('openEditFieldsModal', () => {

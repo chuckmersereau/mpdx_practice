@@ -18,12 +18,14 @@ describe('tasks.modals.complete.controller', () => {
             $ctrl = loadController();
         });
     });
+
     function loadController() {
         return controller('completeTaskController as $ctrl', {
             $scope: scope,
             task: defaultTask
         });
     }
+
     function defaultPartnerStatus() {
         $ctrl.task = assign(defaultTask, {
             activity_type: 'Active'
@@ -59,7 +61,12 @@ describe('tasks.modals.complete.controller', () => {
         it('should open next automation task if defined', (done) => {
             $ctrl.task.next_action = 'Call';
             $ctrl.save().then(() => {
-                expect(tasks.addModal).toHaveBeenCalledWith([1], $ctrl.task.next_action);
+                expect(tasks.addModal).toHaveBeenCalledWith({
+                    contactsList: [1],
+                    activityType: $ctrl.task.next_action,
+                    task: $ctrl.task,
+                    comments: []
+                });
                 done();
             });
             rootScope.$apply();
@@ -75,6 +82,10 @@ describe('tasks.modals.complete.controller', () => {
         });
         it('should be false with empty contactList', () => {
             $ctrl.task.contacts = [];
+            expect($ctrl.showPartnerStatus()).toBeFalsy();
+        });
+        it('should be false with null contactList', () => {
+            $ctrl.task.contacts = null;
             expect($ctrl.showPartnerStatus()).toBeFalsy();
         });
         it('should be false without a task activity_type', () => {

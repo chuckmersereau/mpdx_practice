@@ -2,7 +2,7 @@ import component from './show.component';
 import assign from 'lodash/fp/assign';
 
 describe('contacts.show.component', () => {
-    let $ctrl, contacts, rootScope, scope, componentController, api, alerts, gettextCatalog, state;
+    let $ctrl, contacts, rootScope, scope, componentController, api, alerts, gettextCatalog, state, tasks;
     beforeEach(() => {
         angular.mock.module(component);
         inject((
@@ -16,6 +16,7 @@ describe('contacts.show.component', () => {
             contacts = _contacts_;
             gettextCatalog = _gettextCatalog_;
             state = $state;
+            tasks = _tasks_;
             componentController = $componentController;
             api.account_list_id = 1234;
             contacts.current = { id: 1, name: 'a b' };
@@ -24,6 +25,7 @@ describe('contacts.show.component', () => {
         spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callFake((data) => data);
     });
+
     function loadController() {
         $ctrl = componentController('contact', { $scope: scope }, {});
     }
@@ -129,6 +131,13 @@ describe('contacts.show.component', () => {
                 expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
+        });
+    });
+    describe('openAddTaskModal', () => {
+        it('should open the add task modal', () => {
+            spyOn(tasks, 'addModal').and.callFake(() => {});
+            $ctrl.openAddTaskModal();
+            expect(tasks.addModal).toHaveBeenCalledWith({ contactsList: [contacts.current.id] });
         });
     });
 });
