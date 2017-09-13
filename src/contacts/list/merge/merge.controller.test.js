@@ -14,6 +14,7 @@ describe('contacts.list.merge.controller', () => {
             $ctrl = loadController();
         });
     });
+
     function loadController() {
         return controller('mergeContactsController as $ctrl', {
             $scope: scope,

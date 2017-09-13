@@ -13,6 +13,7 @@ describe('contacts.show.personModal.family.component', () => {
             loadController();
         });
     });
+
     function loadController() {
         $ctrl = componentController('contactFamilyRelationship', { $scope: scope }, { onRemove: () => {} });
     }

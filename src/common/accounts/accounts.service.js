@@ -1,17 +1,17 @@
 import assign from 'lodash/fp/assign';
 import findIndex from 'lodash/fp/findIndex';
 import get from 'lodash/fp/get';
+import isNil from 'lodash/fp/isNil';
 import keys from 'lodash/fp/keys';
 import toString from 'lodash/fp/toString';
 import createPatch from '../fp/createPatch';
 
 class AccountsService {
     constructor(
-        $log, $q, $rootScope, $window,
+        $log, $rootScope, $window,
         api
     ) {
         this.$log = $log;
-        this.$q = $q;
         this.$rootScope = $rootScope;
         this.$window = $window;
         this.api = api;
@@ -27,29 +27,37 @@ class AccountsService {
     }
     get(id) {
         return this.api.get(`account_lists/${id}`, { include: this.defaultIncludes }).then((data) => {
+            /* istanbul ignore next */
             this.$log.debug(`account_lists/${id}`, data);
             return data;
         });
     }
     swap(id, userId, reset = false) {
-        if (!reset && (id == null || id === get('id', this.current))) {
-            return this.$q.reject();
+        if (!reset && (isNil(id) || id === get('id', this.current))) {
+            return Promise.reject();
         }
         return this.get(id).then((data) => {
-            this.$window.localStorage.setItem(`${userId}_accountListId`, toString(id));
+            this.setLocalStorage(`${userId}_accountListId`, toString(id));
             this.current = data;
             this.currentInitialState = angular.copy(this.current);
             this.api.account_list_id = id;
+            /* istanbul ignore next */
             this.$log.debug('account swapped: ', id);
             this.$rootScope.$emit('accountListUpdated', this.api.account_list_id);
             return data;
         });
     }
+    /* istanbul ignore next */
+    setLocalStorage(key, value) {
+        // abstracted for test failures
+        this.$window.localStorage.setItem(key, value);
+    }
     getCurrent(userId, reset = false) {
         return this.swap(this.api.account_list_id, userId, reset);
     }
-    getDonations(params) {
-        return this.api.get(`account_lists/${this.api.account_list_id}/donations`, params || {}).then((resp) => {
+    getDonations(params = {}) {
+        return this.api.get(`account_lists/${this.api.account_list_id}/donations`, params).then((resp) => {
+            /* istanbul ignore next */
             this.$log.debug(`accounts.getDonations - account_lists/${this.api.account_list_id}/donations`, resp);
             this.donations = resp;
             return resp;
@@ -66,9 +74,10 @@ class AccountsService {
                 invite_user_as: 'user'
             }
         }).then((data) => {
+            this.inviteList = data;
             /* istanbul ignore next */
             this.$log.debug('account_lists/invites', this.inviteList);
-            this.inviteList = data;
+            return data;
         });
     }
     listUsers() {
@@ -125,7 +134,12 @@ class AccountsService {
         return this.api.delete({ url: `account_lists/${this.api.account_list_id}/invites/${id}`, type: 'account_list_invites' });
     }
     getAnalytics(params) {
-        return this.api.get(`account_lists/${this.api.account_list_id}/analytics`, { filter: { date_range: `${params.startDate.format('YYYY-MM-DD')}..${params.endDate.format('YYYY-MM-DD')}` } }).then((data) => {
+        return this.api.get(`account_lists/${this.api.account_list_id}/analytics`, {
+            filter: {
+                date_range: `${params.startDate.format('YYYY-MM-DD')}..${params.endDate.format('YYYY-MM-DD')}`
+            }
+        }).then((data) => {
+            /* istanbul ignore next */
             this.$log.debug('account_lists/analytics', data);
             this.analytics = data;
             return this.analytics;
@@ -133,25 +147,25 @@ class AccountsService {
     }
     saveCurrent() {
         const patch = createPatch(this.currentInitialState, this.current);
+        /* istanbul ignore next */
         this.$log.debug('account patch', patch);
-        if (keys(patch).length < 2) {
-            return this.$q.resolve(this.current);
-        }
-        return this.api.put(`account_lists/${this.current.id}`, patch).then(() => {
-            this.get(this.current.id).then((data) => { // get complete due to include object diffs
-                this.current = data;
-                this.currentInitialState = angular.copy(this.current);
-                const index = findIndex({ id: data.id }, this.data); // reconcile w/ account list
-                if (index > 0) {
-                    this.data[index] = assign(this.data[index], patch);
-                }
-                return this.current;
+        return keys(patch).length < 2
+            ? Promise.resolve(this.current)
+            : this.api.put(`account_lists/${this.current.id}`, patch).then(() => {
+                this.get(this.current.id).then((data) => { // get complete due to include object diffs
+                    this.current = data;
+                    this.currentInitialState = angular.copy(this.current);
+                    const index = findIndex({ id: data.id }, this.data); // reconcile w/ account list
+                    if (index > 0) {
+                        this.data[index] = assign(this.data[index], patch);
+                    }
+                    return this.current;
+                });
             });
-        });
     }
     load(reset = false) {
         if (!reset && this.data.length > 0) {
-            return this.$q.resolve(this.data);
+            return Promise.resolve(this.data);
         }
 
         return this.api.get('account_lists', { include: this.defaultIncludes }).then((data) => {

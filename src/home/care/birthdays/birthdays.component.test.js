@@ -14,6 +14,7 @@ describe('home.care.birthdays', () => {
             loadController();
         });
     });
+
     function loadController() {
         $ctrl = componentController('birthdays', { $scope: scope }, {});
     }

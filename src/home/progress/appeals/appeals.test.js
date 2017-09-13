@@ -13,6 +13,7 @@ describe('home.progress.appeals.component', () => {
             loadController();
         });
     });
+
     function loadController() {
         $ctrl = componentController('progressAppeals', { $scope: scope });
     }

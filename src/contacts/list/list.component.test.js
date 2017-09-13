@@ -27,6 +27,7 @@ describe('contacts.list.component', () => {
         spyOn(gettextCatalog, 'getString').and.callThrough();
         spyOn(gettextCatalog, 'getPlural').and.callFake((data) => data);
     });
+
     function loadController() {
         $ctrl = componentController('contactsList', { $scope: scope }, { view: null, selected: null });
     }

@@ -14,6 +14,7 @@ describe('common.tagSelector.component', () => {
             loadController();
         });
     });
+
     function loadController() {
         $ctrl = componentController('tagSelector', { $scope: scope }, {
             ngModel: defaultModel,

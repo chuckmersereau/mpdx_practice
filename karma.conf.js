@@ -17,6 +17,9 @@ module.exports = function karmaConfig(config) {
         browsers: [
             'PhantomJS'
         ],
+        client: {
+            captureConsole: true
+        },
         singleRun: true,
         coverageReporter: {
             reporters: [

@@ -8,6 +8,16 @@ const HSMock = {
     }
 };
 
+// Do not inject help service into modules.... Instead load HelpMock for testing
+export function HelpMock($provide) {
+    $provide.value('help', ({
+        showHelp: () => {},
+        showArticle: () => {},
+        updateUser: () => {},
+        suggest: () => {}
+    }));
+}
+
 /* global HS*/
 class HelpService {
     constructor(

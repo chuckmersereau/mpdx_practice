@@ -21,6 +21,7 @@ describe('preferences.personal.component', () => {
         spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
+
     function loadController() {
         $ctrl = componentController('preferencesPersonal', { $scope: scope }, { onSave: () => Promise.resolve() });
     }
