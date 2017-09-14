@@ -70,6 +70,7 @@ class Api {
         this.apiUrl = config.apiUrl;
         this.account_list_id = null;
         this.entityAttributes = new EntityAttributes().attributes;
+        this.language = 'en-US';
     }
     call({
         method,
@@ -111,6 +112,9 @@ class Api {
         if (!headers.Accept) {
             headers.Accept = 'application/vnd.api+json';
         }
+
+        // override the browsers language with the one from current user
+        headers['Accept-Language'] = this.language;
 
         const request = {
             method: method,
