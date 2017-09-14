@@ -2,8 +2,10 @@ import config from 'config';
 
 class Language {
     constructor(
-        gettextCatalog
+        gettextCatalog,
+        api
     ) {
+        this.api = api;
         this.gettextCatalog = gettextCatalog;
         this.dateTimeFormat = null;
     }
@@ -30,6 +32,7 @@ class Language {
                 language = 'fr_ca';
                 break;
         }
+        this.api.language = language;
         this.gettextCatalog.setCurrentLanguage(language);
 
         if (config.env !== 'development') {
@@ -38,8 +41,10 @@ class Language {
     }
 }
 
+import api from 'common/api/api.service';
 import gettext from 'angular-gettext';
 
 export default angular.module('mpdx.common.language.service', [
-    gettext
+    gettext,
+    api
 ]).service('language', Language).name;
