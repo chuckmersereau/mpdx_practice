@@ -358,6 +358,7 @@ class AppealController {
             },
             overrideGetAsPost: true
         }).then((data) => {
+            /* istanbul ignore next */
             this.$log.debug(`excluded contacts page ${page}`, data);
             this.excludedContacts = data;
         });

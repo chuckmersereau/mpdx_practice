@@ -1,6 +1,7 @@
-import concat from 'lodash/fp/concat';
+import assign from 'lodash/fp/assign';
+// import concat from 'lodash/fp/concat';
 import map from 'lodash/fp/map';
-import joinComma from 'common/fp/joinComma';
+// import joinComma from 'common/fp/joinComma';
 
 class WizardController {
     constructor(
@@ -67,84 +68,92 @@ class WizardController {
             /* istanbul ignore next */
             this.$log.debug('appealAdded', data);
             this.saving = false;
-            let promise = this.hasStatusesOrTags() ? this.getAndChangeContacts(data) : Promise.resolve();
-            return promise.then(() => {
-                form.$setUntouched();
-                form.$setPristine();
-                this.init();
-            });
+            // let promise = this.hasStatusesOrTags() ? this.getAndChangeContacts(data) : Promise.resolve();
+            // return promise.then(() => {
+            form.$setUntouched();
+            form.$setPristine();
+            this.init();
+            // });
         }).catch((ex) => {
             this.saving = false;
             throw ex;
-        });
-    }
-    hasStatusesOrTags() {
-        return this.statuses.length > 0 || this.tags.length > 0;
-    }
-    getAndChangeContacts(appeal) {
-        return this.api.get({
-            url: 'contacts',
-            data: {
-                filter: {
-                    account_list_id: this.api.account_list_id,
-                    tags: this.tags,
-                    status: this.statuses,
-                    exclude: this.excludes,
-                    any_tags: true
-                },
-                fields: {
-                    contacts: 'tag_list'
-                },
-                per_page: 100 // limit of bulk api
-            },
-            overrideGetAsPost: true
-        }).then((contacts) => {
-            /* istanbul ignore next */
-            this.$log.debug('contacts', contacts);
-            let promises = [this.addContactsToAppeals(contacts, appeal)];
-            if (this.newTags.length > 0) {
-                promises.push(this.changeContacts(contacts, appeal));
-            }
-            return this.$q.all(promises);
-        });
-    }
-    changeContacts(contacts, appeal) {
-        const requests = map((contact) => {
-            let patch = {
-                id: contact.id,
-                appeals: [appeal]
-            };
-            if (this.newTags.length > 0) {
-                patch.tag_list = joinComma(concat(contact.tag_list, this.newTags));
-            }
-            return patch;
-        }, contacts);
-        this.$log.debug('batch contact', requests);
-        return this.contacts.bulkSave(requests);
-    }
-    addContactsToAppeals(contacts, appeal) {
-        const requests = map((contact) => {
-            return {
-                method: 'POST',
-                path: `/api/v2/appeals/${appeal.id}/contacts/${contact.id}`
-            };
-        }, contacts);
-        return this.api.post({
-            url: 'batch',
-            data: {
-                requests: requests
-            },
-            doSerialization: false
         });
     }
     create(appeal) {
         appeal.account_list = { id: this.api.account_list_id };
         return this.api.post({
             url: 'appeals',
-            data: appeal,
+            data: assign(appeal, {
+                filter: {
+                    account_list_id: this.api.account_list_id,
+                    tags: this.tags,
+                    status: this.statuses,
+                    exclude: this.excludes,
+                    any_tags: true
+                }
+            }),
             include: 'excluded_appeal_contacts'
         });
     }
+    // hasStatusesOrTags() {
+    //     return this.statuses.length > 0 || this.tags.length > 0;
+    // }
+    // getAndChangeContacts(appeal) {
+    //     return this.api.get({
+    //         url: 'contacts',
+    //         data: {
+    //             filter: {
+    //                 account_list_id: this.api.account_list_id,
+    //                 tags: this.tags,
+    //                 status: this.statuses,
+    //                 exclude: this.excludes,
+    //                 any_tags: true
+    //             },
+    //             fields: {
+    //                 contacts: 'tag_list'
+    //             },
+    //             per_page: 100 // limit of bulk api
+    //         },
+    //         overrideGetAsPost: true
+    //     }).then((contacts) => {
+    //         /* istanbul ignore next */
+    //         this.$log.debug('contacts', contacts);
+    //         let promises = [this.addContactsToAppeals(contacts, appeal)];
+    //         if (this.newTags.length > 0) {
+    //             promises.push(this.changeContacts(contacts, appeal));
+    //         }
+    //         return this.$q.all(promises);
+    //     });
+    // }
+    // changeContacts(contacts, appeal) {
+    //     const requests = map((contact) => {
+    //         let patch = {
+    //             id: contact.id,
+    //             appeals: [appeal]
+    //         };
+    //         if (this.newTags.length > 0) {
+    //             patch.tag_list = joinComma(concat(contact.tag_list, this.newTags));
+    //         }
+    //         return patch;
+    //     }, contacts);
+    //     this.$log.debug('batch contact', requests);
+    //     return this.contacts.bulkSave(requests);
+    // }
+    // addContactsToAppeals(contacts, appeal) {
+    //     const requests = map((contact) => {
+    //         return {
+    //             method: 'POST',
+    //             path: `/api/v2/appeals/${appeal.id}/contacts/${contact.id}`
+    //         };
+    //     }, contacts);
+    //     return this.api.post({
+    //         url: 'batch',
+    //         data: {
+    //             requests: requests
+    //         },
+    //         doSerialization: false
+    //     });
+    // }
 }
 
 const AppealsWizard = {
