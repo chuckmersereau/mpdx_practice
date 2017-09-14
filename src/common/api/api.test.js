@@ -33,6 +33,11 @@ describe('common.api.service', () => {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
+    describe('constructor', () => {
+        it('should default language', () => {
+            expect(api.language).toEqual('en-US');
+        });
+    });
     describe('call', () => {
         describe('promise', () => {
             it('should send a simple get request', () => {
