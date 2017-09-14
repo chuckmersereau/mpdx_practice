@@ -6,6 +6,8 @@ class CoachesController {
         this.$stateParams = $stateParams;
         this.gettextCatalog = gettextCatalog;
         this.help = help;
+
+        this.tabId = 'share_coaching_account';
     }
 
     $onInit() {
