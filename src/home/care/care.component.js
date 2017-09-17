@@ -13,6 +13,8 @@ const Care = {
     controller: CareController
 };
 
-export default angular.module('mpdx.home.care.component', [])
-    .component('homeCare', Care)
-    .name;
+import tasks from 'tasks/tasks.service';
+
+export default angular.module('mpdx.home.care.component', [
+    tasks
+]).component('homeCare', Care).name;

@@ -11,5 +11,8 @@ const progressAppointments = {
     controller: AppointmentsController
 };
 
-export default angular.module('mpdx.home.progress.appointments', [])
-    .component('progressAppointments', progressAppointments).name;
+import accounts from 'common/accounts/accounts.service';
+
+export default angular.module('mpdx.home.progress.appointments', [
+    accounts
+]).component('progressAppointments', progressAppointments).name;

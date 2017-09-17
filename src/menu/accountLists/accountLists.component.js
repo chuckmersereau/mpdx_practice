@@ -14,5 +14,10 @@ const AccountLists = {
     template: require('./accountLists.html')
 };
 
-export default angular.module('mpdx.menu.accountLists.component', [])
-    .component('accountLists', AccountLists).name;
+import accounts from 'common/accounts/accounts.service';
+import api from 'common/api/api.service';
+import users from 'common/users/users.service';
+
+export default angular.module('mpdx.menu.accountLists.component', [
+    accounts, api, users
+]).component('accountLists', AccountLists).name;

@@ -3,7 +3,7 @@ import groupBy from 'lodash/fp/groupBy';
 import includes from 'lodash/fp/includes';
 import indexOf from 'lodash/fp/indexOf';
 import sumBy from 'lodash/fp/sumBy';
-import reduceObject from '../../common/fp/reduceObject';
+import reduceObject from 'common/fp/reduceObject';
 
 class MonthlyController {
     constructor(
@@ -72,5 +72,8 @@ const Monthly = {
     template: require('./monthly.html')
 };
 
-export default angular.module('mpdx.reports.monthly.component', [])
-    .component('monthly', Monthly).name;
+import api from 'common/api/api.service';
+
+export default angular.module('mpdx.reports.monthly.component', [
+    api
+]).component('monthly', Monthly).name;

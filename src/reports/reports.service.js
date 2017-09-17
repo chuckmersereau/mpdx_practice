@@ -19,5 +19,8 @@ class ReportsService {
     }
 }
 
-export default angular.module('mpdx.reports.service', [])
-    .service('reports', ReportsService).name;
+import api from 'common/api/api.service';
+
+export default angular.module('mpdx.reports.service', [
+    api
+]).service('reports', ReportsService).name;

@@ -11,6 +11,8 @@ const Newsletters = {
     template: require('./newsletters.html')
 };
 
+import tasks from 'tasks/tasks.service';
 
-export default angular.module('mpdx.home.care.newsletters', [])
-    .component('newsletters', Newsletters).name;
+export default angular.module('mpdx.home.care.newsletters', [
+    tasks
+]).component('newsletters', Newsletters).name;
