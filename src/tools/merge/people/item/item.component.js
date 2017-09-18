@@ -4,8 +4,7 @@ const Item = {
         person: '<',
         contact: '<',
         onClick: '&',
-        selected: '<',
-        ignored: '<'
+        ignore: '<'
     }
 };
 

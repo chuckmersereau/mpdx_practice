@@ -18,6 +18,12 @@ describe('preferences.coaches.component', () => {
         $ctrl = componentController('preferencesCoaches', { $scope: scope }, {});
     }
 
+    describe('constructor', () => {
+        it('should set default values', () => {
+            expect($ctrl.tabId).toEqual('share_coaching_account');
+        });
+    });
+
     describe('$onInit', () => {
         it('should call help.suggest', () => {
             spyOn(help, 'suggest').and.returnValue();

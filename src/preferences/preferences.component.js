@@ -21,5 +21,9 @@ const Preferences = {
     template: require('./preferences.html')
 };
 
-export default angular.module('mpdx.preferences.component', [])
-    .component('preferences', Preferences).name;
+import accounts from 'common/accounts/accounts.service';
+import gettextCatalog from 'angular-gettext';
+
+export default angular.module('mpdx.preferences.component', [
+    accounts, gettextCatalog
+]).component('preferences', Preferences).name;

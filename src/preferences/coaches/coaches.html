@@ -5,7 +5,7 @@
             <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabId === 'share_coaching_account' }"></i>
             <span translate>Manage Account Coaching Access</span>
         </div>
-        <div class="panel-animate" ng-show="$ctrl.tabSelected('share_coaching_account')">
+        <div class="panel-animate" ng-show="$ctrl.tabId === 'share_coaching_account'">
             <div class="panel-body">
                 <coaches-share-preferences></coaches-share-preferences>
             </div>

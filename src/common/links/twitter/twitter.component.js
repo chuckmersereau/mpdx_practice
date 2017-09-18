@@ -12,5 +12,5 @@ const twitterLink = {
     }
 };
 
-export default angular.module('mpdx.common.links.twitter', [])
+export default angular.module('mpdx.common.links.twitter.component', [])
     .component('twitterLink', twitterLink).name;

@@ -1,8 +1,8 @@
 <div class="merges">
     <h2 translate>Merge People</h2>
-    <div ng-if="$ctrl.mergePeople.duplicates.length > 0">
+    <div ng-if="$ctrl.duplicates.length > 0 && !$ctrl.loading">
         <p>
-            <translate translate-plural="You have {{$count}} possible duplicate people." translate-n="$ctrl.mergePeople.meta.pagination.total_count">
+            <translate translate-plural="You have {{$count}} possible duplicate people." translate-n="$ctrl.meta.pagination.total_count">
                 You have 1 possible duplicate person.
             </translate>
             <translate>
@@ -19,35 +19,43 @@
         <div block-ui="merge-people">
             <div class="row">
                 <div class="col-sm-10 col-sm-offset-1">
-                    <div class="row" ng-repeat="duplicate in $ctrl.mergePeople.duplicates">
+                    <div class="row" ng-repeat="duplicate in $ctrl.duplicates track by $index">
                         <div class="col-sm-5">
-                            <merge-people-item person="duplicate.people[0]" contact="duplicate.shared_contact" on-click="$ctrl.useThisOne(duplicate, 0)" selected="duplicate.mergeChoice == 0" ignored="duplicate.mergeChoice == 2"></merge-people-item>
+                            <merge-people-item person="duplicate.people[0]" contact="duplicate.shared_contact" on-click="$ctrl.select(duplicate, 0)" ignore="duplicate.ignore"></merge-people-item>
                         </div>
                         <div class="col-sm-2 text-center choices">
-                            <i class="fa fa-arrow-left choice-left" ng-class="{'selected': duplicate.mergeChoice == 0}" ng-click="$ctrl.useThisOne(duplicate, 0)"></i>
-                            <i class="fa fa-arrow-right choice-right" ng-class="{'selected': duplicate.mergeChoice == 1}" ng-click="$ctrl.useThisOne(duplicate, 1)"></i>
-                            <i class="fa fa-close choice-cancel" ng-class="{'selected': duplicate.mergeChoice == 2}" ng-click="$ctrl.useThisOne(duplicate, 2)"></i>
+                            <i class="fa fa-arrow-left choice-left" ng-class="{'selected': duplicate.people[0].selected}" ng-click="$ctrl.select(duplicate, 0)"></i>
+                            <i class="fa fa-arrow-right choice-right" ng-class="{'selected': duplicate.people[1].selected}" ng-click="$ctrl.select(duplicate, 1)"></i>
+                            <i class="fa fa-close choice-cancel" ng-class="{'selected': duplicate.ignore}" ng-click="$ctrl.selectIgnore(duplicate)"></i>
                         </div>
                         <div class="col-sm-5">
-                            <merge-people-item person="duplicate.people[1]" contact="duplicate.shared_contact" on-click="$ctrl.useThisOne(duplicate, 1)" selected="duplicate.mergeChoice == 1" ignored="duplicate.mergeChoice == 2"></merge-people-item>
+                            <merge-people-item person="duplicate.people[1]" contact="duplicate.shared_contact" on-click="$ctrl.select(duplicate, 1)" ignore="duplicate.ignore"></merge-people-item>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-5 text-right">
-                            <button class="btn btn-primary" ng-click="$ctrl.confirm(false)" ng-disabled="$ctrl.confirmButtonDisabled()" translate>Confirm and Continue</button>
+                            <button class="btn btn-primary" ng-click="$ctrl.confirmAndContinue()" ng-disabled="$ctrl.confirmButtonDisabled()" translate>Confirm and Continue</button>
                         </div>
                         <div class="col-sm-2 text-center confirm-or">
                             <span>OR</span>
                         </div>
                         <div class="col-sm-5">
-                            <button class="btn btn-primary" ng-click="$ctrl.confirm(true)" ng-disabled="$ctrl.confirmButtonDisabled()" translate>Confirm and Leave</button>
+                            <button class="btn btn-primary" ng-click="$ctrl.confirmThenLeave()" ng-disabled="$ctrl.confirmButtonDisabled()" translate>Confirm and Leave</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div ng-if="$ctrl.mergePeople.duplicates.length === 0">
-        <p translate>No People to merge right now!</p>
+    <div ng-if="$ctrl.duplicates.length === 0 && !$ctrl.loading">
+        <div class="blankslate blankslate-spacious">
+          <i class="fa fa-users blankslate-icon"></i>
+          <h3 translate>No People to Merge</h3>
+          <p translate>Merging matches on people names.</p>
+          <a class="btn btn-default" ui-sref="tools" translate>Back to Tools</a>
+        </div>
+    </div>
+    <div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
+      <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
     </div>
 </div>

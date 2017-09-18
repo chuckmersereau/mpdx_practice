@@ -1,10 +1,11 @@
 import service from './language.service';
 
 describe('common.language', () => {
-    let language, gettextCatalog;
+    let language, gettextCatalog, api;
     beforeEach(() => {
         angular.mock.module(service);
-        inject((_gettextCatalog_, _language_) => {
+        inject((_gettextCatalog_, _language_, _api_) => {
+            api = _api_;
             language = _language_;
             gettextCatalog = _gettextCatalog_;
         });
@@ -16,6 +17,7 @@ describe('common.language', () => {
             language.change('abc');
             expect(gettextCatalog.loadRemote).toHaveBeenCalledWith('locale/abc-undefined.json');
             expect(gettextCatalog.setCurrentLanguage).toHaveBeenCalledWith('abc');
+            expect(api.language).toEqual('abc');
         });
         it('should handle fr-fr', () => {
             language.change('fr-fr');

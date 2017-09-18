@@ -80,63 +80,69 @@ class ContactDetailsController {
     }
     save() {
         if (this.referrer && this.referrer !== get('contacts_that_referred_me[0].id', this.contact)) {
-            // wipe out old referrals
-            this.contact.contact_referrals_to_me = this.destroyReferrals(this.contact.contact_referrals_to_me);
-
-            // awful, but it just won't serialize all the custom types
-            const destroyOld = map((referee) => {
-                return assign({ type: 'contact_referrals' }, referee);
-            }, this.contact.contact_referrals_to_me);
-            const newId = uuid();
-            const newRelationship = { type: 'contact_referrals', id: newId };
-            const relationshipData = concat(destroyOld, newRelationship);
-            const request = {
-                'included': [
-                    {
-                        'type': 'contact_referrals',
-                        'id': newId,
-                        'relationships': {
-                            'referred_by': {
-                                'data': {
-                                    'type': 'contacts',
-                                    'id': this.referrer
-                                }
-                            }
-                        }
-                    }
-                ],
-                'data': {
-                    'type': 'contacts',
-                    'id': this.contact.id,
-                    'attributes': {
-                        'overwrite': true
-                    },
-                    'relationships': {
-                        'contact_referrals_to_me': {
-                            'data': relationshipData
-                        }
-                    }
-                }
-            };
-            return this.api.put({
-                url: `contacts/${this.contact.id}`,
-                data: request,
-                doSerialization: false
-            }).then(() => {
-                this.contact.contacts_that_referred_me = [{ id: this.referrer }];
-                this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
-            }).catch((err) => {
-                this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger');
-                throw err;
-            });
+            return this.changeReferrer();
         } else if (!this.referrer && get(this.contact, 'contacts_that_referred_me[0].id')) {
-            this.contact.contact_referrals_to_me = this.destroyReferrals(this.contact.contact_referrals_to_me);
-            return this.onSave().then(() => {
-                this.contact.contacts_that_referred_me = [];
-            });
+            return this.addReferrer();
         } else {
             return this.onSave();
         }
+    }
+    addReferrer() {
+        this.contact.contact_referrals_to_me = this.destroyReferrals(this.contact.contact_referrals_to_me);
+        return this.onSave().then(() => {
+            this.contact.contacts_that_referred_me = [];
+        });
+    }
+    changeReferrer() {
+        // wipe out old referrals
+        this.contact.contact_referrals_to_me = this.destroyReferrals(this.contact.contact_referrals_to_me);
+
+        // awful, but it just won't serialize all the custom types
+        const destroyOld = map((referee) => {
+            return assign({ type: 'contact_referrals' }, referee);
+        }, this.contact.contact_referrals_to_me);
+        const newId = uuid();
+        const newRelationship = { type: 'contact_referrals', id: newId };
+        const relationshipData = concat(destroyOld, newRelationship);
+        const request = {
+            'included': [
+                {
+                    'type': 'contact_referrals',
+                    'id': newId,
+                    'relationships': {
+                        'referred_by': {
+                            'data': {
+                                'type': 'contacts',
+                                'id': this.referrer
+                            }
+                        }
+                    }
+                }
+            ],
+            'data': {
+                'type': 'contacts',
+                'id': this.contact.id,
+                'attributes': {
+                    'overwrite': true
+                },
+                'relationships': {
+                    'contact_referrals_to_me': {
+                        'data': relationshipData
+                    }
+                }
+            }
+        };
+        return this.api.put({
+            url: `contacts/${this.contact.id}`,
+            data: request,
+            doSerialization: false
+        }).then(() => {
+            this.contact.contacts_that_referred_me = [{ id: this.referrer }];
+            this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
+        }).catch((err) => {
+            this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger');
+            throw err;
+        });
     }
     destroyReferrals(referrals) {
         return map((referee) => {
@@ -177,6 +183,13 @@ class ContactDetailsController {
             }
             return parseFloat(organizationAccount.organization.gift_aid_percentage);
         }, this.users.organizationAccounts) > 0;
+    }
+    removeReferrer() {
+        this.contact.contact_referrals_to_me[0]._destroy = 1;
+        return this.onSave().then(() => {
+            this.referrer = null;
+            this.referrerName = null;
+        });
     }
 }
 const Details = {

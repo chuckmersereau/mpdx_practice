@@ -463,10 +463,7 @@ export default class Routes {
             name: 'tools.merge.people',
             title: gettext('Tools - Merge People'),
             url: '/people',
-            component: 'mergePeople',
-            resolve: {
-                0: /* @ngInject*/ (mergePeople) => mergePeople.load()
-            }
+            component: 'mergePeople'
         }).state({
             name: 'unavailable',
             title: gettext('Unavailable'),

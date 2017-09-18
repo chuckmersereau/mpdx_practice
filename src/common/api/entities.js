@@ -95,7 +95,7 @@ export class EntityAttributes {
                 },
                 contact_referrals_to_me: {
                     ref: 'id',
-                    attributes: ['referred_by'],
+                    attributes: ['referred_by', '_destroy'],
                     contacts: { ref: 'id' }
                 },
                 typeForAttribute: (key) => {

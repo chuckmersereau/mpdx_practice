@@ -1,4 +1,4 @@
-import empty from 'lodash/fp/empty';
+import empty from 'lodash/fp/isEmpty';
 
 function isEmptyFilter() {
     return (obj) => empty(obj);
