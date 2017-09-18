@@ -66,11 +66,20 @@
                 <div class="col-sm-6">
                     <div class="field">
                         <h4 class="attribute-header" translate>Referred By</h4>
-                        <collection-selector item-name="{{ 'contact' | translate }}"
-                                             display-text="$ctrl.referrerName"
-                                             search="$ctrl.contacts.search(text)"
-                                             select="$ctrl.onContactSelected(item)">
-                        </collection-selector>
+                        <div class="row">
+                            <div ng-class="{ 'col-sm-10': $ctrl.referrer }">
+                                <collection-selector item-name="{{ 'contact' | translate }}"
+                                                     display-text="$ctrl.referrerName"
+                                                     search="$ctrl.contacts.search(text)"
+                                                     select="$ctrl.onContactSelected(item)">
+                                </collection-selector>
+                            </div>
+                            <div class="col-sm-2" ng-if="$ctrl.referrer">
+                                <a class="btn btn-xs btn-danger" ng-click="$ctrl.removeReferrer()" title="{{ ::'Remove referrer' | translate }}">
+                                    <i class="fa fa-trash-o trash"></i>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-sm-6">
