@@ -276,4 +276,50 @@ describe('tools.mergeContacts.component', () => {
             expect(tools.analytics['duplicate-contacts']).toEqual(123);
         });
     });
+
+    describe('confirmButtonDisabled', () => {
+        describe('ignore', () => {
+            it('should return false', () => {
+                $ctrl.duplicates = [
+                    { contacts: [{ id: 1 }, { id: 2 }] },
+                    { contacts: [{ id: 3 }, { id: 4 }] },
+                    { contacts: [{ id: 5 }, { id: 6 }], ignore: true }
+                ];
+                expect($ctrl.confirmButtonDisabled()).toEqual(false);
+            });
+        });
+
+        describe('contact 0 selected', () => {
+            it('should return false', () => {
+                $ctrl.duplicates = [
+                    { contacts: [{ id: 1, selected: true }, { id: 2 }] },
+                    { contacts: [{ id: 3 }, { id: 4 }] },
+                    { contacts: [{ id: 5 }, { id: 6 }] }
+                ];
+                expect($ctrl.confirmButtonDisabled()).toEqual(false);
+            });
+        });
+
+        describe('contact 1 selected', () => {
+            it('should return false', () => {
+                $ctrl.duplicates = [
+                    { contacts: [{ id: 1 }, { id: 2 }] },
+                    { contacts: [{ id: 3 }, { id: 4, selected: true }] },
+                    { contacts: [{ id: 5 }, { id: 6 }] }
+                ];
+                expect($ctrl.confirmButtonDisabled()).toEqual(false);
+            });
+        });
+
+        describe('nothing selected', () => {
+            it('should return true', () => {
+                $ctrl.duplicates = [
+                    { contacts: [{ id: 1 }, { id: 2 }] },
+                    { contacts: [{ id: 3 }, { id: 4 }] },
+                    { contacts: [{ id: 5 }, { id: 6 }] }
+                ];
+                expect($ctrl.confirmButtonDisabled()).toEqual(true);
+            });
+        });
+    });
 });
