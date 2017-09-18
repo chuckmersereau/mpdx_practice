@@ -15,7 +15,7 @@ class newsletterController {
 
     save() {
         const message = this.gettextCatalog.getString(
-            `You are updating all visible contacts to the visible newsletter selection.
+            `You are updating all contacts visible on this page, setting it to the visible newsletter selection.
             Are you sure you want to do this?`
         );
         return this.modal.confirm(message).then(() => {
