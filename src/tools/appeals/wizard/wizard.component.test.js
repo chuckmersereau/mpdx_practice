@@ -1,13 +1,14 @@
 import component from './wizard.component';
 
 describe('tools.appeals.wizard.component', () => {
-    let $ctrl, scope, serverConstants, contactsTags;
+    let $ctrl, scope, serverConstants, contactsTags, state;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _contactsTags_, _serverConstants_) => {
+        inject(($componentController, $rootScope, _contactsTags_, _serverConstants_, $state) => {
             scope = $rootScope.$new();
             contactsTags = _contactsTags_;
             serverConstants = _serverConstants_;
+            state = $state;
             $ctrl = $componentController('appealsWizard', { $scope: scope }, {});
         });
         serverConstants.data = {
@@ -111,7 +112,6 @@ describe('tools.appeals.wizard.component', () => {
             spyOn(form, '$setUntouched').and.callThrough();
             spyOn(form, '$setPristine').and.callThrough();
             $ctrl.appeal = {};
-            spyOn($ctrl, 'getAndChangeContacts').and.callFake((data) => Promise.resolve(data));
             spyOn($ctrl, 'init').and.callFake(() => {});
         });
         it('should set saving to true', () => {
@@ -124,49 +124,16 @@ describe('tools.appeals.wizard.component', () => {
             $ctrl.save();
             expect($ctrl.create).toHaveBeenCalledWith($ctrl.appeal);
         });
-        it('should call getAndChangeContacts', (done) => {
+        it('should change state', (done) => {
             spyOn($ctrl, 'create').and.callFake(() => Promise.resolve({ id: 1 }));
-            spyOn($ctrl, 'hasStatusesOrTags').and.callFake(() => true);
+            spyOn(state, 'go').and.callFake(() => {});
             $ctrl.save(form).then(() => {
-                expect($ctrl.getAndChangeContacts).toHaveBeenCalledWith({ id: 1 });
-                done();
-            });
-        });
-        it('shouldn\'t call getAndChangeContacts', (done) => {
-            spyOn($ctrl, 'create').and.callFake(() => Promise.resolve());
-            spyOn($ctrl, 'hasStatusesOrTags').and.callFake(() => false);
-            $ctrl.save(form).then(() => {
-                expect($ctrl.getAndChangeContacts).not.toHaveBeenCalled();
-                done();
-            });
-        });
-        it('should call form $setUntouched', (done) => {
-            spyOn($ctrl, 'create').and.callFake(() => Promise.resolve());
-            spyOn($ctrl, 'hasStatusesOrTags').and.callFake(() => false);
-            $ctrl.save(form).then(() => {
-                expect(form.$setUntouched).toHaveBeenCalledWith();
-                done();
-            });
-        });
-        it('should ca;; form $setPristine', (done) => {
-            spyOn($ctrl, 'create').and.callFake(() => Promise.resolve());
-            spyOn($ctrl, 'hasStatusesOrTags').and.callFake(() => false);
-            $ctrl.save(form).then(() => {
-                expect(form.$setPristine).toHaveBeenCalledWith();
-                done();
-            });
-        });
-        it('should call init', (done) => {
-            spyOn($ctrl, 'create').and.callFake(() => Promise.resolve());
-            spyOn($ctrl, 'hasStatusesOrTags').and.callFake(() => false);
-            $ctrl.save(form).then(() => {
-                expect($ctrl.init).toHaveBeenCalledWith();
+                expect(state.go).toHaveBeenCalledWith('tools.appeals.show', { appealId: 1 });
                 done();
             });
         });
         it('should reset saving', (done) => {
-            spyOn($ctrl, 'create').and.callFake(() => Promise.resolve());
-            spyOn($ctrl, 'hasStatusesOrTags').and.callFake(() => false);
+            spyOn($ctrl, 'create').and.callFake(() => Promise.resolve({ id: 1 }));
             $ctrl.save(form).then(() => {
                 expect($ctrl.saving).toEqual(false);
                 done();

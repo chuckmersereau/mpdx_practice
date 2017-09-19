@@ -1,7 +1,9 @@
 import assign from 'lodash/fp/assign';
 import contains from 'lodash/fp/contains';
+import emptyToNull from 'common/fp/emptyToNull';
+import joinComma from 'common/fp/joinComma';
 import map from 'lodash/fp/map';
-import reject from 'lodash/fp/reject';
+import removeObjectNulls from 'common/fp/removeObjectNulls';
 
 class WizardController {
     constructor(
@@ -60,21 +62,13 @@ class WizardController {
             this.tags = map('name', this.contactsTags.data);
         }
     }
-    save(form = { // default for testing
-        $setUntouched: () => {},
-        $setPristine: () => {}
-    }) {
+    save() {
         this.saving = true;
         return this.create(this.appeal).then((data) => {
             /* istanbul ignore next */
             this.$log.debug('appealAdded', data);
             this.saving = false;
-            // let promise = this.hasStatusesOrTags() ? this.getAndChangeContacts(data) : Promise.resolve();
-            // return promise.then(() => {
-            form.$setUntouched();
-            form.$setPristine();
             this.$state.go('tools.appeals.show', { appealId: data.id });
-            // });
         }).catch((ex) => {
             this.saving = false;
             throw ex;
@@ -85,18 +79,18 @@ class WizardController {
         return this.api.post({
             url: 'appeals',
             data: assign(appeal, {
-                inclusion_filter: {
+                inclusion_filter: removeObjectNulls({
                     account_list_id: this.api.account_list_id,
-                    tags: this.tags,
-                    status: this.statuses,
+                    tags: emptyToNull(joinComma(this.tags)),
+                    status: emptyToNull(joinComma(this.statuses)),
                     any_tags: true
-                },
+                }),
                 exclusion_filter: this.buildExclusionFilter()
             })
         });
     }
     buildExclusionFilter() {
-        return {
+        return removeObjectNulls({
             started_giving_within: contains('joinedTeam3months', this.excludes)
                 ? '3' : null,
             gave_more_than_pledged_within: contains('specialGift3months', this.excludes)
@@ -107,68 +101,8 @@ class WizardController {
                 ? '2' : null,
             no_appeals: contains('doNotAskAppeals', this.excludes)
                 ? true : null
-        };
+        });
     }
-
-    // hasStatusesOrTags() {
-    //     return this.statuses.length > 0 || this.tags.length > 0;
-    // }
-    // getAndChangeContacts(appeal) {
-    //     return this.api.get({
-    //         url: 'contacts',
-    //         data: {
-    //             filter: {
-    //                 account_list_id: this.api.account_list_id,
-    //                 tags: this.tags,
-    //                 status: this.statuses,
-    //                 exclude: this.excludes,
-    //                 any_tags: true
-    //             },
-    //             fields: {
-    //                 contacts: 'tag_list'
-    //             },
-    //             per_page: 100 // limit of bulk api
-    //         },
-    //         overrideGetAsPost: true
-    //     }).then((contacts) => {
-    //         /* istanbul ignore next */
-    //         this.$log.debug('contacts', contacts);
-    //         let promises = [this.addContactsToAppeals(contacts, appeal)];
-    //         if (this.newTags.length > 0) {
-    //             promises.push(this.changeContacts(contacts, appeal));
-    //         }
-    //         return this.$q.all(promises);
-    //     });
-    // }
-    // changeContacts(contacts, appeal) {
-    //     const requests = map((contact) => {
-    //         let patch = {
-    //             id: contact.id,
-    //             appeals: [appeal]
-    //         };
-    //         if (this.newTags.length > 0) {
-    //             patch.tag_list = joinComma(concat(contact.tag_list, this.newTags));
-    //         }
-    //         return patch;
-    //     }, contacts);
-    //     this.$log.debug('batch contact', requests);
-    //     return this.contacts.bulkSave(requests);
-    // }
-    // addContactsToAppeals(contacts, appeal) {
-    //     const requests = map((contact) => {
-    //         return {
-    //             method: 'POST',
-    //             path: `/api/v2/appeals/${appeal.id}/contacts/${contact.id}`
-    //         };
-    //     }, contacts);
-    //     return this.api.post({
-    //         url: 'batch',
-    //         data: {
-    //             requests: requests
-    //         },
-    //         doSerialization: false
-    //     });
-    // }
 }
 
 const AppealsWizard = {
@@ -179,7 +113,9 @@ const AppealsWizard = {
 import contacts from 'contacts/contacts.service';
 import contactTags from 'contacts/sidebar/filter/tags/tags.service';
 import serverConstants from 'common/serverConstants/serverConstants.service';
+import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('mpdx.tools.appeals.wizard.component', [
+    uiRouter,
     contacts, contactTags, serverConstants
 ]).component('appealsWizard', AppealsWizard).name;

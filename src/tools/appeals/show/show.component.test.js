@@ -80,7 +80,7 @@ describe('tools.appeals.show.component', () => {
         it('should get fix pledge amounts', () => {
             $ctrl.$onInit();
             expect($ctrl.contactsData).toEqual(contactsData);
-            expect($ctrl.fixPledgeAmount).toHaveBeenCalledWith(contactsData.contacts);
+            expect($ctrl.fixPledgeAmount).toHaveBeenCalledWith(contactsData);
         });
         it('should append to the appeal', () => {
             $ctrl.$onInit();
