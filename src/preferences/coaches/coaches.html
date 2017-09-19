@@ -1,0 +1,14 @@
+<h3 translate>Manage Coaches</h3>
+<div class="panel-group">
+    <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabId === 'share_coaching_account' }">
+        <div class="panel-heading" ng-click="$ctrl.setTab('share_coaching_account')">
+            <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabId === 'share_coaching_account' }"></i>
+            <span translate>Manage Account Coaching Access</span>
+        </div>
+        <div class="panel-animate" ng-show="$ctrl.tabId === 'share_coaching_account'">
+            <div class="panel-body">
+                <coaches-share-preferences></coaches-share-preferences>
+            </div>
+        </div>
+    </div>
+</div>

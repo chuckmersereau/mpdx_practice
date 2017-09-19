@@ -17,7 +17,7 @@ class AddressesController {
 
     save() {
         const message = this.gettextCatalog.getString(
-            `You are updating all visible contacts to set the first {{source}} address as the primary address.
+            `You are updating all contacts visible on this page, setting the first {{source}} address as the primary address.
             If no such address exists the contact will not be updated. Are you sure you want to do this?`,
             { source: this.source }
         );

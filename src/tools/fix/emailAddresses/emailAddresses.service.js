@@ -55,7 +55,7 @@ class EmailAddressesService {
     setMeta(meta) {
         this.meta = meta;
 
-        if (this.meta && this.meta.pagination && this.meta.pagination.total_count && this.tools.analytics) {
+        if (this.meta && this.meta.pagination && this.meta.pagination.total_count >= 0 && this.tools.analytics) {
             this.tools.analytics['fix-email-addresses'] = this.meta.pagination.total_count;
         }
     }

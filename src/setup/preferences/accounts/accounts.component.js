@@ -7,6 +7,7 @@ class AccountsController {
         this.$state = $state;
         this.accounts = accounts;
         this.users = users;
+
         this.selectedTab = 'merge_account';
     }
     $onInit() {
@@ -26,5 +27,11 @@ const Accounts = {
     controller: AccountsController
 };
 
-export default angular.module('mpdx.setup.preferences.accounts.component', [])
-    .component('setupPreferencesAccounts', Accounts).name;
+import accounts from 'common/accounts/accounts.service';
+import uiRouter from '@uirouter/angularjs';
+import users from 'common/users/users.service';
+
+export default angular.module('mpdx.setup.preferences.accounts.component', [
+    accounts, users,
+    uiRouter
+]).component('setupPreferencesAccounts', Accounts).name;

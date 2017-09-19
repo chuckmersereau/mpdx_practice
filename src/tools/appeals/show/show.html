@@ -1,31 +1,64 @@
 <div class="row">
     <div class="col-md-9">
         <div class="panel panel-default">
-            <div class="row panel-body">
-                <div class="col-md-7">
-                    <div class="inline-input header">
-                        <input ng-model="$ctrl.appeal.name"
-                               ng-change="$ctrl.save()"
-                               aria-label="Appeal Name"
-                               ng-model-options="{ debounce: 1000 }">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="inline-input header">
+                            <input ng-model="$ctrl.appeal.name"
+                                   ng-change="$ctrl.save()"
+                                   aria-label="Appeal Name"
+                                   ng-model-options="{ debounce: 1000 }">
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        {{:: $ctrl.currency.symbol}}{{:: $ctrl.donationsSum }} /
+                        {{:: $ctrl.currency.symbol}}
+                        <span class="inline-input inline-block">
+                            <input ng-model="$ctrl.appeal.amount"
+                                   ng-change="$ctrl.changeGoal()"
+                                   aria-label="Appeal Goal"
+                                   ng-model-options="{ debounce: 1000 }">
+                        </span>
                     </div>
                 </div>
-                <div class="col-md-5">
-                    {{:: $ctrl.currency.symbol}}{{:: $ctrl.donationsSum }} /
-                    {{:: $ctrl.currency.symbol}}
-                    <span class="inline-input inline-block">
-                        <input ng-model="$ctrl.appeal.amount"
-                               ng-change="$ctrl.changeGoal()"
-                               aria-label="Appeal Goal"
-                               ng-model-options="{ debounce: 1000 }">
-                    </span>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="{{$ctrl.percentageRaised}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$ctrl.percentageRaised}}%; min-width: 5%; max-width: 100%;"></div>
+                <div class="progress">
+                    <!--<div class="progress-bar" role="progressbar" aria-valuenow="{{$ctrl.percentageRaised}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$ctrl.percentageRaised}}%; min-width: 5%; max-width: 100%;"></div>-->
+                    <div class="progress-bar color-0"
+                         role="progressbar"
+                         aria-valuenow="{{$ctrl.appeal.pledges_amount_not_received_not_processed }}"
+                         ng-if="$ctrl.appeal.pledges_amount_not_received_not_processed > 0"
+                         title="{{$ctrl.appeal.pledges_amount_not_received_not_processed}}"
+                         aria-valuemin="0"
+                         aria-valuemax="{{$ctrl.appeal.amount}}"
+                         style="width: {{($ctrl.appeal.pledges_amount_not_received_not_processed / $ctrl.appeal.amount) * 100}}%; min-width: 10%; max-width: 100%;">
+                        <span translate>Pledged</span>
+                    </div>
+                    <div class="progress-bar color-1"
+                         ng-if="$ctrl.appeal.percentage_raised > 0"
+                         title="{{$ctrl.appeal.percentage_raised}}"
+                         role="progressbar"
+                         aria-valuenow="{{$ctrl.appeal.percentage_raised}}"
+                         aria-valuemin="0"
+                         aria-valuemax="{{$ctrl.appeal.amount}}"
+                         style="width: {{($ctrl.appeal.percentage_raised / $ctrl.appeal.amount) * 100}}%; min-width: 10%; max-width: 100%;">
+                        <span translate>Received</span>
+                    </div>
+                    <div class="progress-bar color-2"
+                         role="progressbar"
+                         ng-if="$ctrl.appeal.pledges_amount_processed > 0"
+                         title="{{$ctrl.appeal.pledges_amount_processed}}"
+                         aria-valuenow="{{$ctrl.appeal.pledges_amount_processed}}"
+                         aria-valuemin="0"
+                         aria-valuemax="{{$ctrl.appeal.amount}}"
+                         style="width: {{($ctrl.appeal.pledges_amount_processed / $ctrl.appeal.amount) * 100}}%; min-width: 10%; max-width: 100%;">
+                        <span translate>Processed</span>
                     </div>
                 </div>
             </div>
         </div>
         <div>
+            <button class="btn" ng-click="$ctrl.addCommitment()" translate>Add Commitment</button>
             <button class="btn" ng-click="$ctrl.addDonation()" translate>Add Donation</button>
             <button class="btn" ng-click="$ctrl.contacts.openAddTagModal($ctrl.selectedContactIds)" translate>Add Tag</button>
             <button class="btn" ng-click="$ctrl.tasks.addModal({ contactsList: $ctrl.selectedContactIds })" translate>Add Task</button>
@@ -49,25 +82,115 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="donation in $ctrl.appeal.donations | orderBy : 'donation_date' : true">
+                        <tr ng-repeat="pledge in $ctrl.viewData.given_to_appeal | orderBy : 'donationDate' : true">
                             <td>
                                 <input type="checkbox"
                                        ng-checked="$ctrl.selectedContactIds.includes(donation.contact.id)"
                                        ng-click="$ctrl.selectContact(contact.id)">
                             </td>
-                            <td>{{::donation.contact.name}}</td>
-                            <td>{{::donation.contact.pledge_amount}}</td>
-                            <td>{{::donation.amount}} {{::donation.currency}} ({{::donation.donation_date}})</td>
+                            <td>{{::pledge.name}}</td>
+                            <td>{{::pledge.commitment}}</td>
+                            <td>{{::pledge.donations[0].amount}} {{::pledge.commitmentCurrency}} ({{::pledge.donationDate | localize}})</td>
                             <td>
-                                <button class="btn btn-xs btn-default" ng-click="$ctrl.editDonation(donation)" title="{{'Edit' | translate}}">
+                                <button class="btn btn-xs btn-default" ng-click="$ctrl.editCommitment(pledge)" title="{{'Edit Commitment' | translate}}">
                                     <i class="fa fa-pencil-square-o"></i>
                                 </button>
                                 &nbsp;
-                                <button class="btn btn-xs btn-danger" ng-click="$ctrl.removeDonation(donation)" title="{{'Remove' | translate}}">
+                                <button class="btn btn-xs btn-default" ng-click="$ctrl.editDonation(pledge.donation)" title="{{'Edit Donation' | translate}}">
+                                    <i class="fa fa-pencil-square-o"></i>
+                                </button>
+                                &nbsp;
+                                <button class="btn btn-xs btn-danger" ng-click="$ctrl.removeDonation(pledge)" title="{{'Remove Donation' | translate}}">
+                                    <i class="fa fa-trash-o"></i>
+                                </button>
+                                &nbsp;
+                                <button class="btn btn-xs btn-danger" ng-click="$ctrl.removeCommitment(pledge)" title="{{'Remove Commitment' | translate}}">
                                     <i class="fa fa-trash-o"></i>
                                 </button>
                             </td>
                         </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 translate>Received, Not Yet Processed</h4>
+            </div>
+            <div class="row panel-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th colspan="2">Contact</th>
+                        <th>Commitment</th>
+                        <th>Amount Received</th>
+                        <th>
+                            <a ng-click="$ctrl.selectAllGiven()">select all</a> |
+                            <a ng-click="$ctrl.deselectAllGiven()">deselect all</a>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="pledge in $ctrl.viewData.received_not_processed | toArray | orderBy : 'donationDate' : true">
+                        <td>
+                            <input type="checkbox"
+                                   ng-checked="$ctrl.selectedContactIds.includes(donation.contact.id)"
+                                   ng-click="$ctrl.selectContact(contact.id)">
+                        </td>
+                        <td>{{::pledge.name}}</td>
+                        <td>{{::pledge.commitment}} {{::pledge.commitmentCurrency}}</td>
+                        <td>{{::pledge.amount}} {{::pledge.commitmentCurrency}} ({{::pledge.donationDate | localize}})</td>
+                        <td>
+                            <button class="btn btn-xs btn-default" ng-click="$ctrl.editCommitment(pledge)" title="{{'Edit' | translate}}">
+                                <i class="fa fa-pencil-square-o"></i>
+                            </button>
+                            &nbsp;
+                            <button class="btn btn-xs btn-danger" ng-click="$ctrl.removeCommitment(pledge)" title="{{'Remove' | translate}}">
+                                <i class="fa fa-trash-o"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 translate>Committed, Not Yet Received</h4>
+            </div>
+            <div class="row panel-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th colspan="2">Contact</th>
+                        <th>Commitment</th>
+                        <th>Amount Committed</th>
+                        <th>
+                            <a ng-click="$ctrl.selectAllGiven()">select all</a> |
+                            <a ng-click="$ctrl.deselectAllGiven()">deselect all</a>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="pledge in $ctrl.viewData.committed_not_received | toArray | orderBy : 'expectedDate' : true">
+                        <td>
+                            <input type="checkbox"
+                                   ng-checked="$ctrl.selectedContactIds.includes(donation.contact.id)"
+                                   ng-click="$ctrl.selectContact(contact.id)">
+                        </td>
+                        <td>{{::pledge.name}}</td>
+                        <td>{{::pledge.commitment}} {{::pledge.commitmentCurrency}}</td>
+                        <td>{{::pledge.amount}} {{::pledge.commitmentCurrency}} ({{::pledge.expectedDate | localize}})</td>
+                        <td>
+                            <button class="btn btn-xs btn-default" ng-click="$ctrl.editCommitment(pledge)" title="{{'Edit' | translate}}">
+                                <i class="fa fa-pencil-square-o"></i>
+                            </button>
+                            &nbsp;
+                            <button class="btn btn-xs btn-danger" ng-click="$ctrl.removeCommitment(pledge)" title="{{'Remove' | translate}}">
+                                <i class="fa fa-trash-o"></i>
+                            </button>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>

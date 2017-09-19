@@ -4,6 +4,7 @@ import assign from 'lodash/fp/assign';
 
 describe('tasks.modals.removeTags.controller', () => {
     let $ctrl, controller, tasksTags, scope, rootScope, api, modal, gettextCatalog, alerts;
+
     function defaultScope() {
         return {
             $scope: scope,
@@ -27,6 +28,7 @@ describe('tasks.modals.removeTags.controller', () => {
             $ctrl = loadController(defaultScope());
         });
     });
+
     function loadController(scope) {
         return controller('removeTaskTagController as $ctrl', scope);
     }

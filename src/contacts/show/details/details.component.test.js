@@ -232,4 +232,27 @@ describe('contacts.show.details.component', () => {
             });
         });
     });
+    describe('removeReferrer', () => {
+        beforeEach(() => {
+            $ctrl.contact.contact_referrals_to_me = [{ id: 1 }];
+            spyOn($ctrl, 'onSave').and.callFake(() => Promise.resolve());
+        });
+        it('should set the referrer to _destroy', () => {
+            $ctrl.removeReferrer();
+            expect($ctrl.contact.contact_referrals_to_me[0]._destroy).toEqual(1);
+        });
+        it('should call onSave', () => {
+            $ctrl.removeReferrer();
+            expect($ctrl.onSave).toHaveBeenCalledWith();
+        });
+        it('should reset the component referrer view data', (done) => {
+            $ctrl.referrer = 1;
+            $ctrl.referrerName = 'a';
+            $ctrl.removeReferrer().then(() => {
+                expect($ctrl.referrer).toEqual(null);
+                expect($ctrl.referrerName).toEqual(null);
+                done();
+            });
+        });
+    });
 });

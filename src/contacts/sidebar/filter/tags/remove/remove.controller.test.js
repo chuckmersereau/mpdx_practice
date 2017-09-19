@@ -19,6 +19,7 @@ describe('contacts.sidebar.tags.remove.controller', () => {
             loadController();
         });
     });
+
     function loadController() {
         $ctrl = controller('removeTagController as $ctrl', {
             $scope: scope,

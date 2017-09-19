@@ -58,6 +58,7 @@ describe('contacts.list.map.controller', () => {
             $ctrl = loadController();
         });
     });
+
     function loadController() {
         map = {
             setCenter: () => {},

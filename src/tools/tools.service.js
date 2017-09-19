@@ -83,7 +83,7 @@ class ToolsService {
             },
             {
                 title: gettextCatalog.getString('Merge Contacts'),
-                icon: 'fa fa-users',
+                icon: 'fa fa-home',
                 link: 'tools.merge.contacts',
                 description: gettextCatalog.getString('Review and merge duplicate contacts'),
                 enabled: true,
@@ -91,7 +91,7 @@ class ToolsService {
             },
             {
                 title: gettextCatalog.getString('Merge People'),
-                icon: 'fa fa-exchange',
+                icon: 'fa fa-users',
                 link: 'tools.merge.people',
                 description: gettextCatalog.getString('Review and merge duplicate people'),
                 enabled: true,

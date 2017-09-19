@@ -19,6 +19,7 @@ describe('preferences.integrations.mailchimp.component', () => {
         spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
+
     function loadController() {
         $ctrl = componentController('mailchimpIntegrationPreferences', { $scope: scope }, {});
     }

@@ -2,8 +2,9 @@ class HomeCountryController {
     constructor(
         accounts
     ) {
-        this.saving = false;
         this.accounts = accounts;
+
+        this.saving = false;
     }
 }
 
@@ -12,5 +13,8 @@ const HomeCountry = {
     controller: HomeCountryController
 };
 
-export default angular.module('mpdx.preferences.personal.homeCountry.component', [])
-    .component('preferencesPersonalHomeCountry', HomeCountry).name;
+import accounts from 'common/accounts/accounts.service';
+
+export default angular.module('mpdx.preferences.personal.homeCountry.component', [
+    accounts
+]).component('preferencesPersonalHomeCountry', HomeCountry).name;

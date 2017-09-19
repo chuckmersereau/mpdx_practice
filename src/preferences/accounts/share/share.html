@@ -30,7 +30,7 @@
 <div ng-if="$ctrl.accounts.inviteList.length > 0">
     <strong translate>Pending Invites</strong>
     <ul class="account-users">
-        <li ng-repeat="user in $ctrl.accounts.inviteList" ng-if="!user.accepted_at && !user.cancelled_by_user">
+        <li ng-repeat="user in $ctrl.accounts.inviteList">
             {{user.recipient_email}}
             <em ng-if="user.invited_by_user" translate-params-first-name="user.invited_by_user.first_name" translate-params-last-name="user.invited_by_user.last_name" translate>
                 (Sent by {{firstName}} {{lastName}})

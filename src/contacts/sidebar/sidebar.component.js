@@ -12,5 +12,9 @@ const Sidebar = {
     controller: SidebarController
 };
 
-export default angular.module('mpdx.contacts.sidebar.component', [])
-    .component('contactsSidebar', Sidebar).name;
+import contactFilter from './filter/filter.service';
+import session from 'common/session/session.service';
+
+export default angular.module('mpdx.contacts.sidebar.component', [
+    contactFilter, session
+]).component('contactsSidebar', Sidebar).name;

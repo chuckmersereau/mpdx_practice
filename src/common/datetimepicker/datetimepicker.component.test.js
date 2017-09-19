@@ -13,6 +13,7 @@ describe('common.datetimepicker.component', () => {
             loadController({ ngModel: defaultModel });
         });
     });
+
     function loadController(bindings) {
         $ctrl = componentController('datetimepicker', { $scope: scope }, bindings);
     }

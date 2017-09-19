@@ -17,7 +17,7 @@ class EmailAddressesController {
 
     save() {
         const message = this.gettextCatalog.getString(
-            `You are updating all visible contacts to set the first {{source}} email address as the
+            `You are updating all contacts visible on this page, setting the first {{source}} email address as the
             primary email address. If no such email address exists the contact will not be updated.
             Are you sure you want to do this?`,
             { source: this.source }

@@ -128,13 +128,17 @@ class MergeContactsController {
     setMeta(meta) {
         this.meta = meta;
 
-        if (this.meta && this.meta.pagination && this.meta.pagination.total_count && this.tools.analytics) {
+        if (this.meta && this.meta.pagination && this.meta.pagination.total_count >= 0 && this.tools.analytics) {
             this.tools.analytics['duplicate-contacts'] = this.meta.pagination.total_count;
         }
     }
 
     confirmButtonDisabled() {
-        return filter((duplicate) => (duplicate.mergeChoice !== -1), this.duplicates).length === 0;
+        return filter((duplicate) => {
+            return duplicate.ignore === true
+            || duplicate.contacts[0].selected === true
+            || duplicate.contacts[1].selected === true;
+        }, this.duplicates).length === 0;
     }
 }
 const MergeContacts = {

@@ -1,5 +1,7 @@
 class CoverController {
-    constructor(cover) {
+    constructor(
+        cover
+    ) {
         this.cover = cover.covers[Math.floor(Math.random() * cover.covers.length)];
     }
 }

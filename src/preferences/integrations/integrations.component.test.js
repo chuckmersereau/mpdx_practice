@@ -26,6 +26,7 @@ describe('preferences.integrations.component', () => {
         spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
+
     function loadController(bindings) {
         return componentController('preferencesIntegration', { $scope: scope }, bindings);
     }

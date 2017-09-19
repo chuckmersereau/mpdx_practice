@@ -87,9 +87,42 @@
                     </div>
                 </div>
                 <div ng-if="$ctrl.googleIntegration.email_integration">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div><label translate>Exclude from Sync</label></div>
+                            <div ng-if="$ctrl.googleIntegration.email_blacklist.length === 0" class="empty-association">
+                                <span translate>No Email Addresses.</span>
+                                <a ng-click="$ctrl.addEmailAddress()" translate>Add one.</a>
+                            </div>
+                            <div ng-repeat="email in $ctrl.googleIntegration.email_blacklist track by $index" name="email_addresses">
+                                <div class="row">
+                                    <div class="col-sm-11">
+                                        <input class="form-control"
+                                               type="email"
+                                               name="email"
+                                               ng-model="$ctrl.googleIntegration.email_blacklist[$index]"
+                                               placeholder="{{::'Email *' | translate}}"
+                                               required>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <button type="button"
+                                                ng-click="$ctrl.removeEmail($index)"
+                                                class="btn btn-block btn-default"
+                                                title="{{::'Delete' | translate}}">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <a type="button" class="btn btn-default btn-xs" ng-click="$ctrl.addEmailAddress()">
+                                <i class="fa fa-plus-circle"></i> <translate>Add Email</translate>
+                            </a>
+                        </div>
+                    </div>
                     <div class="modal-footer">
                         <button class="btn btn-danger pull-left" ng-click="$ctrl.disable('email')" translate>Disable Gmail Integration</button>
                         <button class="btn btn-link" ng-click="$hide()" translate>Close</button>
+                        <button class="btn btn-primary" ng-click="$ctrl.save()" translate>Save Changes</button>
                         <button class="btn btn-primary" ng-click="$ctrl.sync('email')" translate>Sync Gmail</button>
                     </div>
                 </div>

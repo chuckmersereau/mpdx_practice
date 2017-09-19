@@ -79,5 +79,14 @@ describe('common.acceptInvite.component', () => {
                 });
             });
         });
+
+        it('should handle empty conditions', (done) => {
+            $ctrl.$stateParams.code = '';
+            $ctrl.$onInit().catch(() => {
+                expect(gettextCatalog.getString).toHaveBeenCalledWith('Unable to accept invite. Try asking the account holder to resend the invite.');
+                expect(alerts.addAlert).toHaveBeenCalledWith('Unable to accept invite. Try asking the account holder to resend the invite.', 'danger', null, 10);
+                done();
+            });
+        });
     });
 });
