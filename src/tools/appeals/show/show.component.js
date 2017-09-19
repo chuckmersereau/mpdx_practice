@@ -52,7 +52,7 @@ class AppealController {
         this.currency = this.getCurrencyFromCode(this.data.total_currency);
         this.donationsSum = this.sumDonations(this.data.donations);
         this.percentageRaised = this.donationsSum / this.data.amount * 100;
-        this.contactsData.contacts = this.fixPledgeAmount(this.contactsData.contacts);
+        this.contactsData = this.fixPledgeAmount(this.contactsData);
         this.appeal = assign(this.data, {
             amount: fixed(2, defaultTo(0, this.data.amount))
             // donations: this.mutateDonations(this.data.donations, this.contactsData.contacts)
@@ -61,7 +61,7 @@ class AppealController {
         this.mutatePledges(this.pledges);
         this.$log.debug('viewData', this.viewData);
 
-        this.contactsNotGiven = this.getContactsNotGiven(this.contactsData.contacts);// , this.appeal.donations);
+        this.contactsNotGiven = this.getContactsNotGiven(this.contactsData);// , this.appeal.donations);
 
         this.disableAccountListEvent = this.$rootScope.$on('accountListUpdated', () => {
             this.$state.go('tools.appeals');
@@ -104,8 +104,10 @@ class AppealController {
         return fixed(2, sumBy((donation) => parseFloat(donation.converted_amount), donations));
     }
     fixPledgeAmount(contacts) {
-        return map((contact) => assign(contact, {
-            pledge_amount: fixed(2, defaultTo(0, contact.pledge_amount))
+        return map((ref) => assign(ref, {
+            contact: assign(ref.contact, {
+                pledge_amount: fixed(2, defaultTo(0, ref.contact.pledge_amount))
+            })
         }), contacts);
     }
     // mutateDonations(donations, contacts) {
@@ -123,10 +125,10 @@ class AppealController {
         // const contactsNotDonated = reject((contact) => contains(contact.id, allGiven), contacts);
         const allPledged = reduce((result, value) => union(result, keys(value))
             , [], this.viewData);
-        const contactsNotGiven = reject((contact) => contains(contact.id, allPledged), contacts);
-        return map((contact) => {
-            contact.currency = this.getCurrencyFromCode(contact.pledge_currency);
-            return contact;
+        const contactsNotGiven = reject((ref) => contains(ref.contact.id, allPledged), contacts);
+        return map((ref) => {
+            ref.contact.currency = this.getCurrencyFromCode(ref.contact.pledge_currency);
+            return ref.contact;
         }, contactsNotGiven);
     }
     getCurrencyFromCode(code) {
@@ -341,22 +343,14 @@ class AppealController {
         });
     }
     getExcludedContacts(page = 1) {
-        return this.api.get({
-            url: 'contacts',
-            data: {
-                filter: {
-                    appeal: this.appeal.id,
-                    reverse_appeal: true,
-                    account_list_id: this.api.account_list_id
-                },
-                // fields: {
-                //     contacts: 'name'
-                // },
-                per_page: 20,
-                page: page,
-                sort: 'name'
-            },
-            overrideGetAsPost: true
+        return this.api.get(`appeals/${this.appeal.id}/excluded_appeal_contacts`, {
+            include: 'contact',
+            // fields: {
+            //     contact: 'name,pledge_amount,pledge_currency,pledge_frequency'
+            // },
+            per_page: 20,
+            page: page // ,
+            // sort: 'contact.name'
         }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug(`excluded contacts page ${page}`, data);

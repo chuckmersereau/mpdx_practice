@@ -20,14 +20,11 @@ class Show {
         });
     }
     getAppealContacts(appealId) {
-        return this.api.get(`appeals/${appealId}`, {
-            include: 'contacts,excluded_contacts',
+        return this.api.get(`appeals/${appealId}/appeal_contacts`, {
+            include: 'contact',
+            per_page: 9000,
             fields: {
-                appeals: 'contacts',
-                contacts: 'name,pledge_amount,pledge_currency,pledge_frequency'
-            },
-            filter: {
-                account_list_id: this.api.account_list_id
+                contact: 'name,pledge_amount,pledge_currency,pledge_frequency'
             }
         });
     }

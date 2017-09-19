@@ -5,12 +5,13 @@ import reject from 'lodash/fp/reject';
 
 class WizardController {
     constructor(
-        $log, $q, $rootScope,
+        $log, $q, $rootScope, $state,
         api, contacts, contactsTags, serverConstants
     ) {
         this.$q = $q;
         this.$log = $log;
         this.$rootScope = $rootScope;
+        this.$state = $state;
         this.api = api;
         this.contacts = contacts;
         this.contactsTags = contactsTags;
@@ -72,7 +73,7 @@ class WizardController {
             // return promise.then(() => {
             form.$setUntouched();
             form.$setPristine();
-            this.init();
+            this.$state.go('tools.appeals.show', { appealId: data.id });
             // });
         }).catch((ex) => {
             this.saving = false;
@@ -95,7 +96,7 @@ class WizardController {
         });
     }
     buildExclusionFilter() {
-        return reject((val) => val === null, {
+        return {
             started_giving_within: contains('joinedTeam3months', this.excludes)
                 ? '3' : null,
             gave_more_than_pledged_within: contains('specialGift3months', this.excludes)
@@ -106,7 +107,7 @@ class WizardController {
                 ? '2' : null,
             no_appeals: contains('doNotAskAppeals', this.excludes)
                 ? true : null
-        });
+        };
     }
 
     // hasStatusesOrTags() {
