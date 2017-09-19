@@ -12,5 +12,5 @@ const facebookLink = {
     }
 };
 
-export default angular.module('mpdx.common.links.facebook', [])
+export default angular.module('mpdx.common.links.facebook.component', [])
     .component('facebookLink', facebookLink).name;

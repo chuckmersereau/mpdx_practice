@@ -34,12 +34,16 @@ describe('tools.fix.sendNewsletter.component', () => {
 
         it('should call a translated confirm message', () => {
             $ctrl.save();
-            expect(gettextCatalog.getString).toHaveBeenCalled();
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(
+                `You are updating all contacts visible on this page, setting it to the visible newsletter selection.
+            Are you sure you want to do this?`);
         });
 
         it('should open a confirm modal', () => {
             $ctrl.save();
-            expect(modal.confirm).toHaveBeenCalled();
+            expect(modal.confirm).toHaveBeenCalledWith(
+                `You are updating all contacts visible on this page, setting it to the visible newsletter selection.
+            Are you sure you want to do this?`);
         });
 
         it('should return a promise', () => {

@@ -1,11 +1,11 @@
-<div ng-click="$ctrl.onClick()" class="item" ng-class="{'selected': $ctrl.selected, 'ignored': $ctrl.ignored}">
+<div ng-click="$ctrl.onClick()" class="item" ng-class="{'selected': $ctrl.person.selected, 'ignore': $ctrl.ignore}">
     <div ng-if="$ctrl.selected" class="merge-state selected" translate>Use This One</div>
-    <div ng-if="$ctrl.ignored" class="merge-state ignored" translate>Don't Merge</div>
+    <div ng-if="$ctrl.ignore" class="merge-state ignore" translate>Don't Merge</div>
     <avatar src="$ctrl.person.avatar"></avatar>
     <div class="avatar-on-left">
-        <a ui-sref="contacts.show({ contactId: $ctrl.contact.id, personId: $ctrl.person.id })" ng-click="$event.stopPropagation()" target="_blank">
+        <!-- <a ui-sref="contacts.show({ contactId: $ctrl.contact.id, personId: $ctrl.person.id })" ng-click="$event.stopPropagation()" target="_blank"> -->
             <strong>{{$ctrl.person.title}} {{$ctrl.person.first_name}} {{$ctrl.person.last_name}}</strong>
-        </a>
+        <!-- </a> -->
         <div ng-repeat="phone_number in $ctrl.person.phone_numbers track by phone_number.id" ng-if="phone_number.primary">
             {{phone_number.number}}
             <div translate translate-params-source="(phone_number.source | sourceToStr)">From: {{source}}</div>

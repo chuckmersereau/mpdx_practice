@@ -16,6 +16,7 @@ describe('contacts.list.component', () => {
         spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
+
     function loadController() {
         $ctrl = componentController('preferencesNotifications', { $scope: scope }, { onSave: () => Promise.resolve(), setup: null });
     }

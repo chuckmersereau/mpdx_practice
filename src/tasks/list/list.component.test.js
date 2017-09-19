@@ -12,6 +12,7 @@ describe('tasks.list.component', () => {
             loadController();
         });
     });
+
     function loadController() {
         $ctrl = componentController('tasksList', { $scope: scope }, { view: null, selected: null });
     }

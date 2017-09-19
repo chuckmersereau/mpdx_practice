@@ -11,5 +11,8 @@ const progressElectronicContacts = {
     controller: ElectronicContactsController
 };
 
-export default angular.module('mpdx.home.progress.electronicContacts', [])
-    .component('progressElectronicContacts', progressElectronicContacts).name;
+import accounts from 'common/accounts/accounts.service';
+
+export default angular.module('mpdx.home.progress.electronicContacts', [
+    accounts
+]).component('progressElectronicContacts', progressElectronicContacts).name;

@@ -17,7 +17,7 @@ class PhoneNumbersController {
 
     save() {
         const message = this.gettextCatalog.getString(
-            `You are updating all visible contacts to set the first {{source}} phone number as the
+            `You are updating all contacts visible on this page, setting the first {{source}} phone number as the
             primary phone number. If no such phone number exists the contact will not be updated.
             Are you sure you want to do this?`,
             { source: this.source }

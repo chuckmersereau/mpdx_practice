@@ -2,9 +2,10 @@ class TimeZoneController {
     constructor(
         timeZone, users
     ) {
-        this.saving = false;
         this.timeZone = timeZone;
         this.users = users;
+
+        this.saving = false;
     }
 }
 

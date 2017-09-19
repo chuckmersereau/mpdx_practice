@@ -2,8 +2,10 @@ import relationshipId from 'common/fp/relationshipId';
 
 class Show {
     constructor(
+        $log,
         api
     ) {
+        this.$log = $log;
         this.api = api;
     }
     getAppeal(appealId) {
@@ -29,16 +31,18 @@ class Show {
             }
         });
     }
-    getPledges() {
+    getPledges(appealId) {
         return this.api.get(`account_lists/${this.api.account_list_id}/pledges`, {
-            // include: 'contacts',
+            include: 'contact,donations',
             // fields: {
-            //     appeal_id: appealId,
             //     contacts: 'name,pledge_amount,pledge_currency,pledge_frequency'
             // },
-            // filter: {
-            //     appeal_id: appealId
-            // }
+            filter: {
+                appeal_id: appealId
+            }
+        }).then((data) => {
+            this.$log.debug('pledges', data);
+            return data;
         });
     }
 }

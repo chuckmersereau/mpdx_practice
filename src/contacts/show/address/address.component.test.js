@@ -11,6 +11,7 @@ describe('contacts.show.address.component', () => {
             loadController();
         });
     });
+
     function loadController() {
         $ctrl = componentController('contactAddress', { $scope: scope }, {});
     }

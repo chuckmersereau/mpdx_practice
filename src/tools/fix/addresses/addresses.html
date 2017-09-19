@@ -21,7 +21,9 @@
             </select>
 
             <button class="btn btn-gray" ng-click="$ctrl.save()" ng-disabled="!$ctrl.source">
-                <i class="fa fa-check-circle"></i> <translate translate-params-source="$ctrl.source">Confirm All as {{source}}</translate>
+                <i class="fa fa-check-circle"></i>
+                <translate translate-params-source="$ctrl.source"
+                           translate-params-count="$ctrl.fixAddresses.data.length">Confirm {{count}} as {{source}}</translate>
             </button>
         </div>
         <div ng-show="$ctrl.fixAddresses.loading">

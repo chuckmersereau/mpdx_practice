@@ -192,20 +192,14 @@ describe('tasks.modals.add.controller', () => {
     describe('save', () => {
         beforeEach(() => {
             spyOn(tasks, 'create').and.callFake(() => Promise.resolve({}));
-            spyOn(tasks, 'addModal').and.callFake(() => Promise.resolve({}));
+            scope.$hide = () => {};
+            spyOn(scope, '$hide').and.callThrough();
         });
         it('should create a task', () => {
             $ctrl.save();
             expect(tasks.create).toHaveBeenCalledWith($ctrl.task, $ctrl.contactsList, $ctrl.comment);
         });
-        it('shouldn\'t have a start date if setDueDate false', () => {
-            $ctrl.setDueDate = false;
-            $ctrl.save();
-            expect($ctrl.task.start_at).toEqual(null);
-        });
         it('should hide the modal when finished', (done) => {
-            scope.$hide = () => {};
-            spyOn(scope, '$hide').and.callFake(() => {});
             $ctrl.save().then(() => {
                 expect(scope.$hide).toHaveBeenCalled();
                 done();

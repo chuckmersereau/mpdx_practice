@@ -13,6 +13,7 @@ describe('contacts.show.address.modal.controller', () => {
         });
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
+
     function loadController(contact = {}, address = {}) {
         $ctrl = controller('addressModalController as $ctrl', {
             $scope: scope,

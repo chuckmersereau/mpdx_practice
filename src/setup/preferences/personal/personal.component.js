@@ -35,5 +35,12 @@ const Personal = {
     controller: PersonalController
 };
 
-export default angular.module('mpdx.setup.preferences.personal.component', [])
-    .component('setupPreferencesPersonal', Personal).name;
+import accounts from 'common/accounts/accounts.service';
+import alerts from 'common/alerts/alerts.service';
+import uiRouter from '@uirouter/angularjs';
+import users from 'common/users/users.service';
+
+export default angular.module('mpdx.setup.preferences.personal.component', [
+    accounts, alerts, users,
+    uiRouter
+]).component('setupPreferencesPersonal', Personal).name;

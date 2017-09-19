@@ -11,5 +11,8 @@ let progressCorrespondence = {
     controller: CorrespondenceController
 };
 
-export default angular.module('mpdx.home.progress.correspondence', [])
-    .component('progressCorrespondence', progressCorrespondence).name;
+import accounts from 'common/accounts/accounts.service';
+
+export default angular.module('mpdx.home.progress.correspondence', [
+    accounts
+]).component('progressCorrespondence', progressCorrespondence).name;

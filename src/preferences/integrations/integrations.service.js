@@ -31,7 +31,7 @@ class IntegrationsService {
     }
 }
 
-import api from '../../common/api/api.service';
+import api from 'common/api/api.service';
 
 export default angular.module('mpdx.preferences.integrations.service', [
     api

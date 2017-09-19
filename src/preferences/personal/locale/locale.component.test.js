@@ -16,6 +16,7 @@ describe('preferences.personal.locale.component', () => {
             loadController();
         });
     });
+
     function loadController() {
         $ctrl = componentController(
             'preferencesPersonalLocale',

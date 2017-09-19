@@ -1,8 +1,11 @@
 <div class="section">
     <div class="navbar-quick hidden-sm hidden-xs">
-        <span>
-            <div class="account_balances tip" title="{{::'May take a few days to update' | translate}}"><translate>Balance</translate>: {{$ctrl.balance}} {{$ctrl.accounts.current.default_currency}}</div>
-        </span>
+        <small>
+            <a class="text-muted" ui-sref="reports.balances" ng-if="$ctrl.balance > 0" data-title="{{::'May take a few days to update' | translate}}" data-placement="bottom" bs-tooltip>
+                <translate>Balance:</translate>
+                {{$ctrl.balance}} {{$ctrl.accounts.current.default_currency}}
+            </a>
+        </small>
     </div>
 </div>
 <div class="section" ng-if="$ctrl.accounts.current.monthly_goal && $ctrl.accounts.current.monthly_goal > 0">

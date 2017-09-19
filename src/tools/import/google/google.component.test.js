@@ -28,6 +28,7 @@ describe('tools.import.google.component', () => {
             loadController();
         });
     });
+
     function loadController() {
         spyOn(blockUI.instances, 'get').and.callFake(() => fakeBlockUI);
         $ctrl = componentController('importGoogle', { $scope: scope }, {});

@@ -11,5 +11,8 @@ const Welcome = {
     template: require('./welcome.html')
 };
 
-export default angular.module('mpdx.home.welcome', [])
-    .component('homeWelcome', Welcome).name;
+import users from 'common/users/users.service';
+
+export default angular.module('mpdx.home.welcome', [
+    users
+]).component('homeWelcome', Welcome).name;

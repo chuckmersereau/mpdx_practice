@@ -41,5 +41,5 @@ class AddTagController {
     }
 }
 
-export default angular.module('mpdxApp.common.tags.add.controller', [])
+export default angular.module('mpdxApp.contacts.sidebar.tags.add.controller', [])
     .controller('addTagController', AddTagController).name;
