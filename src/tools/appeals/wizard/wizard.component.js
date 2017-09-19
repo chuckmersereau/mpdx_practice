@@ -1,7 +1,7 @@
 import assign from 'lodash/fp/assign';
-// import concat from 'lodash/fp/concat';
+import contains from 'lodash/fp/contains';
 import map from 'lodash/fp/map';
-// import joinComma from 'common/fp/joinComma';
+import reject from 'lodash/fp/reject';
 
 class WizardController {
     constructor(
@@ -84,17 +84,31 @@ class WizardController {
         return this.api.post({
             url: 'appeals',
             data: assign(appeal, {
-                filter: {
+                inclusion_filter: {
                     account_list_id: this.api.account_list_id,
                     tags: this.tags,
                     status: this.statuses,
-                    exclude: this.excludes,
                     any_tags: true
-                }
-            }),
-            include: 'excluded_appeal_contacts'
+                },
+                exclusion_filter: this.buildExclusionFilter()
+            })
         });
     }
+    buildExclusionFilter() {
+        return reject((val) => val === null, {
+            started_giving_within: contains('joinedTeam3months', this.excludes)
+                ? '3' : null,
+            gave_more_than_pledged_within: contains('specialGift3months', this.excludes)
+                ? '3' : null,
+            pledge_amount_increased_within: contains('increasedGiving3months', this.excludes)
+                ? '3' : null,
+            stopped_giving_within: contains('stoppedGiving2months', this.excludes)
+                ? '2' : null,
+            no_appeals: contains('doNotAskAppeals', this.excludes)
+                ? true : null
+        });
+    }
+
     // hasStatusesOrTags() {
     //     return this.statuses.length > 0 || this.tags.length > 0;
     // }

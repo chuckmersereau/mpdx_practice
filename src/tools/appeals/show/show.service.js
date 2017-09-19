@@ -21,7 +21,7 @@ class Show {
     }
     getAppealContacts(appealId) {
         return this.api.get(`appeals/${appealId}`, {
-            include: 'contacts',
+            include: 'contacts,excluded_contacts',
             fields: {
                 appeals: 'contacts',
                 contacts: 'name,pledge_amount,pledge_currency,pledge_frequency'
