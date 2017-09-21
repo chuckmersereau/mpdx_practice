@@ -1,36 +1,39 @@
-<div block-ui="donationsChart" class="chart">
-    <div class="panel panel-default">
-        <div class="panel-heading text-center" ng-if="$ctrl.chartData">
-            <span ng-if="!$ctrl.contact">
-                <span style="color:#007398">
-                    <translate>Commitments</translate>:
-                    {{$ctrl.chartData.pledges || 0}}
-                </span>
-                |
-                <span style="color:#3eb1c8">
-                    <translate>Monthly Goal</translate>:
-                    {{$ctrl.chartData.monthly_goal || 0}}
-                </span>
-                |
+<div class="panel panel-default mb-1" ng-if="!$ctrl.loading && $ctrl.data.length > 0">
+    <div class="panel-heading text-center">
+        <span ng-if="!$ctrl.contact">
+            <span style="color:#007398">
+                <translate>Commitments</translate>:
+                {{$ctrl.chartData.pledges || 0}}
             </span>
-            <span style="color:#666062">
-                <translate>Monthly Average:</translate>
-                {{$ctrl.chartData.monthly_average || 0}}
+            |
+            <span style="color:#3eb1c8">
+                <translate>Monthly Goal</translate>:
+                {{$ctrl.chartData.monthly_goal || 0}}
             </span>
-        </div>
-        <div class="panel-body" ng-if="$ctrl.hasChart">
-            <canvas class="chart chart-bar"
-                    chart-data="$ctrl.data"
-                    chart-labels="$ctrl.labels"
-                    chart-series="$ctrl.series"
-                    chart-options="$ctrl.options"
-                    chart-colors="$ctrl.colors"
-                    chart-dataset-override="$ctrl.datasetOverride"
-                    height="250">
-            </canvas>
-        </div>
-        <div class="panel-body panel-empty text-center" ng-if="!$ctrl.hasChart">
-            <translate>No Donations Received</translate>
-        </div>
+            |
+        </span>
+        <span style="color:#666062">
+            <translate>Monthly Average:</translate>
+            {{$ctrl.chartData.monthly_average || 0}}
+        </span>
     </div>
+    <div class="panel-body">
+        <canvas class="chart chart-bar"
+                chart-data="$ctrl.data"
+                chart-labels="$ctrl.labels"
+                chart-series="$ctrl.series"
+                chart-options="$ctrl.options"
+                chart-colors="$ctrl.colors"
+                chart-dataset-override="$ctrl.datasetOverride"
+                height="250">
+        </canvas>
+    </div>
+</div>
+<div class="blankslate mb-1" ng-if="!$ctrl.loading && $ctrl.data.length === 0">
+    <i class="fa fa-bar-chart blankslate-icon"></i>
+    <h3 translate>No chart to display</h3>
+    <p translate>No donations received to populate graph.</p>
+</div>
+<div class="blankslate blankslate-spacious mb-1" ng-if="$ctrl.loading">
+  <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
 </div>

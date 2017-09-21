@@ -1,5 +1,5 @@
 <div class="merges">
-    <h2 translate>Merge People</h2>
+    <h1 translate>Merge People</h1>
     <div ng-if="$ctrl.duplicates.length > 0 && !$ctrl.loading">
         <p>
             <translate translate-plural="You have {{$count}} possible duplicate people." translate-n="$ctrl.meta.pagination.total_count">
@@ -15,7 +15,6 @@
         <p>
             <strong class="text-danger" translate>This cannot be undone.</strong>
         </p>
-        <hr>
         <div block-ui="merge-people">
             <div class="row">
                 <div class="col-sm-10 col-sm-offset-1">
@@ -50,8 +49,8 @@
     <div ng-if="$ctrl.duplicates.length === 0 && !$ctrl.loading">
         <div class="blankslate blankslate-spacious">
           <i class="fa fa-users blankslate-icon"></i>
-          <h3 translate>No People to Merge</h3>
-          <p translate>Merging matches on people names.</p>
+          <h3 translate>No duplicate people need attention</h3>
+          <p translate>People with similar names will appear here.</p>
           <a class="btn btn-default" ui-sref="tools" translate>Back to Tools</a>
         </div>
     </div>
