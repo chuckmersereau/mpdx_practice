@@ -1,8 +1,11 @@
 <div block-ui="fix-email-addresses">
     <h1 translate>Fix Email Addresses</h1>
-    <p ng-if="!$ctrl.fixEmailAddresses.meta.pagination.total_count" translate>
-        Great work! We weren't able to detect any email addresses in your account needing review.
-    </p>
+    <div class="blankslate blankslate-spacious" ng-if="!$ctrl.fixEmailAddresses.meta.pagination.total_count && !$ctrl.fixEmailAddresses.loading">
+        <i class="fa fa-envelope-o blankslate-icon"></i>
+        <h3 translate>No people with email addresses need attention</h3>
+        <p translate>People with new email addresses or multiple primary email addresses will appear here.</p>
+        <a class="btn btn-default" ui-sref="tools" translate>Back to Tools</a>
+    </div>
     <div ng-if="$ctrl.fixEmailAddresses.meta.pagination.total_count">
         <p>
             <strong translate translate-params-count="$ctrl.fixEmailAddresses.meta.pagination.total_count">You have {{count}} email addresses to confirm.</strong>

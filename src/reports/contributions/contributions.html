@@ -27,10 +27,12 @@
     </div>
 
     <div ng-show="!$ctrl.loading">
-        <div class="panel panel-default" ng-if="$ctrl.data.currencies.length == 0">
-            <div class="panel-footer" translate>
-                You have received no donations in the last thirteen months
-            </div>
+        <div class="blankslate blankslate-spacious" ng-if="$ctrl.data.currencies.length === 0">
+            <i class="fa fa-money blankslate-icon"></i>
+            <h3 translate>You have received no donations in the last thirteen months</h3>
+            <p translate>You can setup an organization account to import them or add a new donation.</p>
+            <a ui-sref="preferences.integrations" class="btn btn-default" translate>Connect Services</a>
+            <a ng-click="$ctrl.donations.openDonationModal()" class="btn btn-primary" translate>Add New Donation</a>
         </div>
         <div ng-if="$ctrl.type === 'partner' && $ctrl.data.currencies.length > 0" class="progress">
             <div ng-repeat="currency in $ctrl.data.currencies" class="progress-bar color-{{$index % 6}}" style="width: {{$ctrl.percentage(currency.totals.year_converted) }}%" data-template-url="reports/contributions/popovers/progress.tpl.html" data-trigger="hover" data-placement="bottom" bs-popover>

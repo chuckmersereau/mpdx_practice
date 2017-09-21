@@ -1,3 +1,4 @@
+{{}}
 <div class="reports">
     <h2 translate>Expected Monthly Total</h2>
     <div ng-if="$ctrl.loading">
@@ -8,7 +9,14 @@
     </div>
 
     <div ng-if="!$ctrl.loading">
-        <div ng-if="!$ctrl.errorOccurred" class="progress">
+        <div class="blankslate blankslate-spacious" ng-if="$ctrl.donationsByType.length === 0">
+            <i class="fa fa-money blankslate-icon"></i>
+            <h3 translate>You have no expected donations this month</h3>
+            <p translate>You can setup an organization account to import historic donations or add a new donation.</p>
+            <a ui-sref="preferences.integrations" class="btn btn-default" translate>Connect Services</a>
+            <a ng-click="$ctrl.donations.openDonationModal()" class="btn btn-primary" translate>Add New Donation</a>
+        </div>
+        <div ng-if="!$ctrl.errorOccurred && $ctrl.donationsByType.length > 0" class="progress">
             <div ng-repeat="donationType in $ctrl.donationsByType | orderBy: 'order'" class="progress-bar color-{{::$index % 6}}" style="width: {{::$ctrl.percentage(donationType) }}%" data-title="{{::$ctrl.total_currency_symbol}}{{::donationType.sum | number : 0}}" data-placement="bottom" bs-tooltip>
                 <span ng-if="::$ctrl.percentage(donationType) > 7" ng-switch="donationType.type">
                   <span ng-switch-when="received" translate>Received</span>

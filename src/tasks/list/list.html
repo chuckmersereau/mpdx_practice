@@ -81,5 +81,24 @@
             <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
             <span class="sr-only" translate>Loading</span>
         </div>
+        <div class="blankslate"  ng-class="{ 'blankslate-spacious' : !$ctrl.contact }" ng-if="$ctrl.tasks.data.length === 0 && !$ctrl.tasks.loading">
+            <i class="fa fa-tasks blankslate-icon"></i>
+            <div ng-if="$ctrl.tasks.totalTaskCount > 0 && !$ctrl.contact">
+                <h3 translate translate-plural="You have {{$count}} total tasks" translate-n="::$ctrl.tasks.totalTaskCount">You have 1 total task</h3>
+                <p translate>Unfortunately none of them match your current search or filters.</p>
+                <a ng-click="$ctrl.tasksFilter.reset()" class="btn btn-default" translate>Reset All Search Filters</a>
+                <a ng-click="$ctrl.tasks.addModal({ contactsList: [$ctrl.contact.id] })" class="btn btn-primary" translate>Add New Task</a>
+            </div>
+            <div ng-if="$ctrl.tasks.totalTaskCount > 0 && $ctrl.contact">
+                <h3 translate>Looks like you haven't added any tasks for this contact yet</h3>
+                <a ng-click="$ctrl.tasks.addModal({ contactsList: [$ctrl.contact.id] })" class="btn btn-default" translate>Add New Task</a>
+            </div>
+            <div ng-if="$ctrl.tasks.totalTaskCount === 0">
+                <h3 translate>Looks like you haven't added any tasks yet</h3>
+                <p translate>You can import tasks from another service or add a new task.</p>
+                <a ui-sref="tools({setup: true})" class="btn btn-default" translate>Import Tasks</a>
+                <a ng-click="$ctrl.tasks.addModal({ contactsList: [$ctrl.contact.id] })" class="btn btn-primary" translate>Add New Task</a>
+            </div>
+        </div>
     </div>
 </div>

@@ -1,8 +1,11 @@
 <div block-ui="fix-commitment-info">
     <h1 translate>Fix Commitment Info</h1>
-    <p ng-if="!$ctrl.fixCommitmentInfo.meta.pagination.total_count" translate>
-        Great work! We weren't able to detect any more suggested Partner Status changes in your account needing review.
-    </p>
+    <div class="blankslate blankslate-spacious" ng-if="!$ctrl.fixCommitmentInfo.meta.pagination.total_count && !$ctrl.fixCommitmentInfo.loading">
+        <i class="fa fa-usd blankslate-icon"></i>
+        <h3 translate>No contacts with commitment info need attention</h3>
+        <p translate>Contacts with possibly incorrect commitment info will appear here.</p>
+        <a class="btn btn-default" ui-sref="tools" translate>Back to Tools</a>
+    </div>
     <div ng-if="$ctrl.fixCommitmentInfo.meta.pagination.total_count">
         <p>
             <strong translate translate-plural="You have {{$count}} partner statuses to confirm." translate-n="$ctrl.fixCommitmentInfo.meta.pagination.total_count">You have 1 partner status to confirm.</strong>
