@@ -1,5 +1,5 @@
 <div class="merges">
-    <h1 translate>Merge Contacts</h1>
+    <h2 translate>Merge Contacts</h2>
     <div ng-if="$ctrl.duplicates.length > 0 && !$ctrl.loading">
         <p>
             <translate translate-plural="You have {{$count}} possible duplicate contacts." translate-n="$ctrl.meta.pagination.total_count">
@@ -15,6 +15,7 @@
         <p>
             <strong class="text-danger" translate>This cannot be undone.</strong>
         </p>
+        <hr>
         <div block-ui="merge-contacts">
             <div class="row" ng-repeat="duplicate in $ctrl.duplicates track by $index">
                 <div class="col-sm-5">
@@ -45,8 +46,8 @@
     <div ng-if="$ctrl.duplicates.length === 0 && !$ctrl.loading">
         <div class="blankslate blankslate-spacious">
           <i class="fa fa-home blankslate-icon"></i>
-          <h3 translate>No duplicate contacts need attention</h3>
-          <p translate>People with similar names and partner account numbers will appear here.</p>
+          <h3 translate>No Contacts to Merge</h3>
+          <p translate>Merging matches on contact names and partner account numbers.</p>
           <a class="btn btn-default" ui-sref="tools" translate>Back to Tools</a>
         </div>
     </div>

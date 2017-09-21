@@ -1,11 +1,8 @@
 <div block-ui="fix-phone-numbers">
     <h1 translate>Fix Phone Numbers</h1>
-    <div class="blankslate blankslate-spacious" ng-if="!$ctrl.fixPhoneNumbers.meta.pagination.total_count && !$ctrl.fixPhoneNumbers.loading">
-        <i class="fa fa-phone-square blankslate-icon"></i>
-        <h3 translate>No people with phone numbers need attention</h3>
-        <p translate>People with new phone numbers or multiple primary phone numbers will appear here.</p>
-        <a class="btn btn-default" ui-sref="tools" translate>Back to Tools</a>
-    </div>
+    <p ng-if="!$ctrl.fixPhoneNumbers.meta.pagination.total_count" translate>
+        Great work! We weren't able to detect any phone numbers in your account needing review.
+    </p>
     <div ng-if="$ctrl.fixPhoneNumbers.meta.pagination.total_count">
         <p>
             <strong translate translate-params-count="$ctrl.fixPhoneNumbers.meta.pagination.total_count">You have {{count}} phone numbers to confirm.</strong>

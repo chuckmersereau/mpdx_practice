@@ -75,10 +75,9 @@ describe('tasks.service', () => {
     });
     describe('load', () => {
         let resp = [{ id: 1, subject: 'a' }];
-        let spy;
         resp.meta = { pagination: { page: 1 } };
         beforeEach(() => {
-            spy = spyOn(api, 'get').and.callFake(() => Promise.resolve(resp));
+            spyOn(api, 'get').and.callFake(() => Promise.resolve(resp));
         });
         it('should query the api', () => {
             tasks.load();
@@ -131,21 +130,6 @@ describe('tasks.service', () => {
             });
             const args = api.get.calls.argsFor(0)[0];
             expect(args.data.page).toEqual(2);
-        });
-        describe('no results', () => {
-            it('should call getTotalCount if no results', (done) => {
-                let result = [];
-                result.meta = {
-                    to: 0,
-                    pagination: { page: 1 }
-                };
-                spy.and.callFake(() => Promise.resolve(result));
-                spyOn(tasks, 'getTotalCount').and.callFake(() => {});
-                tasks.load().then(() => {
-                    expect(tasks.getTotalCount).toHaveBeenCalled();
-                    done();
-                });
-            });
         });
     });
     describe('process', () => {
@@ -376,32 +360,6 @@ describe('tasks.service', () => {
             tasks.logModal();
             expect(tasksTags.load).toHaveBeenCalledWith();
             expect(serverConstants.load).toHaveBeenCalledWith(['activity_hashes', 'next_actions', 'results', 'status_hashes']);
-        });
-    });
-    describe('getTotalCount', () => {
-        beforeEach(() => {
-            api.account_list_id = 123;
-            spyOn(api, 'get').and.callFake(() => Promise.resolve({ meta: { pagination: { total_count: 1 } } }));
-        });
-        it('should call the api', () => {
-            tasks.getTotalCount();
-            expect(api.get).toHaveBeenCalledWith('tasks', {
-                filter: {
-                    account_list_id: 123
-                },
-                per_page: 0
-            });
-        });
-        it('should return promise', () => {
-            expect(tasks.getTotalCount()).toEqual(jasmine.any(Promise));
-        });
-        describe('promise successful', () => {
-            it('should set totalTaskCount', (done) => {
-                tasks.getTotalCount().then(() => {
-                    expect(tasks.totalTaskCount).toEqual(1);
-                    done();
-                });
-            });
         });
     });
 });

@@ -19,11 +19,6 @@
     &nbsp;
     <a class="tip ng-scope" data-trigger="hover" data-content="{{ 'Select people to merge by tapping on the person.' | translate }}" data-placement="top" bs-popover=""><i class="fa fa-question-circle"></i></a>
 </div>
-<div class="blankslate mt-2" ng-if="$ctrl.data.length === 0 && !$ctrl.loading">
-    <i class="fa fa-users blankslate-icon"></i>
-    <h3 translate>No people associated with this contact</h3>
-    <a ng-click="$ctrl.newPerson()" class="btn btn-default" translate>Add New Person</a>
-</div>
 <div class="row people-row">
     <div class="col-sm-6" ng-repeat="remainder in [0,1]">
         <contact-person is-merging="$ctrl.isMerging"

@@ -1,12 +1,9 @@
 <div block-ui="fix-addresses">
     <h1 translate>Fix Mailing Addresses</h1>
-    <div class="blankslate blankslate-spacious" ng-if="!$ctrl.fixAddresses.meta.pagination.total_count && !$ctrl.fixAddresses.loading" >
-        <i class="fa fa-map blankslate-icon"></i>
-        <h3 translate>No contacts with mailing addresses need attention</h3>
-        <p translate>Contacts with new addresses or multiple primary mailing addresses will appear here.</p>
-        <a class="btn btn-default" ui-sref="tools" translate>Back to Tools</a>
-    </div>
-    <div ng-if="$ctrl.fixAddresses.meta.pagination.total_count && !$ctrl.fixAddresses.loading">
+    <p ng-if="!$ctrl.fixAddresses.meta.pagination.total_count" translate>
+        Great work! We weren't able to detect any Mailing Addresses in your account needing reviewed.
+    </p>
+    <div ng-if="$ctrl.fixAddresses.meta.pagination.total_count">
         <p>
             <strong translate translate-params-count="$ctrl.fixAddresses.meta.pagination.total_count">You have {{count}} mailing addresses to confirm.</strong>
             <br>

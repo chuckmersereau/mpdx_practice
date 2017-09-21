@@ -2,7 +2,7 @@ import component from './chart.component';
 import moment from 'moment';
 
 describe('reports.donations.chart.component', () => {
-    let $ctrl, componentController, scope, rootScope, api;
+    let $ctrl, componentController, scope, rootScope, api, blockUI;
 
     beforeEach(() => {
         angular.mock.module(component);
@@ -17,6 +17,7 @@ describe('reports.donations.chart.component', () => {
 
     function loadController() {
         $ctrl = componentController('donationsChart', { $scope: scope }, { inContact: false });
+        blockUI = $ctrl.blockUI;
     }
 
     describe('load', () => {
@@ -36,10 +37,10 @@ describe('reports.donations.chart.component', () => {
             expect($ctrl.endDate).toEqual(moment().endOf('month'));
         });
 
-        it('should set loading to true', () => {
-            $ctrl.loading = false;
+        it('should call blockUI.start', () => {
+            spyOn(blockUI, 'start').and.callFake(() => {});
             $ctrl.load();
-            expect($ctrl.loading).toEqual(true);
+            expect(blockUI.start).toHaveBeenCalled();
         });
 
         it('should call $ctrl.getDonationChart with params', () => {
@@ -134,6 +135,13 @@ describe('reports.donations.chart.component', () => {
                 });
             });
 
+            it('should set $ctrl.hasChart to true', (done) => {
+                $ctrl.load().then(() => {
+                    expect($ctrl.hasChart).toEqual(true);
+                    done();
+                });
+            });
+
             it('should set $ctrl.chartData', (done) => {
                 $ctrl.load().then(() => {
                     expect($ctrl.chartData).toEqual(data);
@@ -141,10 +149,10 @@ describe('reports.donations.chart.component', () => {
                 });
             });
 
-            it('should set loading to false', (done) => {
-                $ctrl.loading = true;
+            it('should call blockUI.reset', (done) => {
+                spyOn(blockUI, 'reset').and.callFake(() => {});
                 $ctrl.load().then(() => {
-                    expect($ctrl.loading).toEqual(false);
+                    expect(blockUI.reset).toHaveBeenCalled();
                     done();
                 });
             });
@@ -248,6 +256,13 @@ describe('reports.donations.chart.component', () => {
                     });
                 });
 
+                it('should set $ctrl.hasChart to true', (done) => {
+                    $ctrl.load().then(() => {
+                        expect($ctrl.hasChart).toEqual(true);
+                        done();
+                    });
+                });
+
                 it('should set $ctrl.chartData', (done) => {
                     $ctrl.load().then(() => {
                         expect($ctrl.chartData).toEqual(inContactData);
@@ -274,6 +289,12 @@ describe('reports.donations.chart.component', () => {
                 spy.and.callFake(() => Promise.resolve({
                     totals: []
                 }));
+            });
+            it('should set $ctrl.hasChart to false', (done) => {
+                $ctrl.load().then(() => {
+                    expect($ctrl.hasChart).toEqual(false);
+                    done();
+                });
             });
         });
     });

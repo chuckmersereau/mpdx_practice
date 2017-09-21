@@ -3,14 +3,10 @@
     <translate>Import from Google</translate>
 </h1>
 <div block-ui="tools-import-google">
-
-    <div ng-if="$ctrl.google.data.length == 0">
-        <div class="blankslate blankslate-spacious">
-          <i class="fa fa-google blankslate-icon"></i>
-          <h3 translate>You haven't connected a Google account yet</h3>
-          <p translate>Add a Google account then try to import from Google.</p>
-          <a class="btn btn-default" ui-sref="preferences.integrations({selectedTab: 'google'})" translate>Connect Google Account</a>
-        </div>
+    <div ng-show="$ctrl.google.data.length == 0">
+        <h3 translate >Get Started by connecting a Google Account</h3>
+        <p translate>You haven't connected any Google Accounts yet. Go to 'Settings -> Connect Services' to get started.</p>
+        <a ui-sref="preferences.integrations({selectedTab: 'google'})" class="btn btn-primary" translate>Connect Google Account</a>
     </div>
     <div ng-show="$ctrl.google.data.length > 1">
         <label translate>Account to Import From</label>
