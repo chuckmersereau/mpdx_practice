@@ -140,7 +140,13 @@ class PersonModalController {
     }
     delete() {
         return this.modal.confirm(this.gettextCatalog.getString('Are you sure you wish to delete this person?')).then(() => {
-            return this.api.delete(`contacts/${this.contact.id}/people/${this.person.id}`).then(() => {
+            return this.api.delete({
+                url: `contacts/people/${this.person.id}`,
+                data: {
+                    id: this.person.id
+                },
+                type: 'people'
+            }).then(() => {
                 this.$scope.$hide();
             });
         });
