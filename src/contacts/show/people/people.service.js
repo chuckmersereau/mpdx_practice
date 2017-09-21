@@ -23,9 +23,9 @@ class PersonService {
         this.includes = 'email_addresses,facebook_accounts,family_relationships,family_relationships.related_person,linkedin_accounts,master_person,phone_numbers,twitter_accounts,websites';
         this.data = [];
     }
-    get(contactId, personId) {
-        return this.api.get(`contacts/${contactId}/people/${personId}`, { include: this.includes }).then((data) => {
-            this.$log.debug(`contacts/${contactId}/people/${personId}`, data);
+    get(personId) {
+        return this.api.get(`contacts/people/${personId}`, { include: this.includes }).then((data) => {
+            this.$log.debug(`contacts/people/${personId}`, data);
             return data;
         });
     }
@@ -196,7 +196,7 @@ class PersonService {
         };
 
         if (personId) {
-            return this.get(contact.id, personId).then((person) => {
+            return this.get(personId).then((person) => {
                 return modalOpen(contact, person);
             });
         } else {

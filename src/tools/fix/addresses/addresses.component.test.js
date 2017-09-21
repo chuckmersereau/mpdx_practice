@@ -53,12 +53,15 @@ describe('tools.fix.addresses.component', () => {
 
         it('should call a translated confirm message', () => {
             $ctrl.save();
-            expect(gettextCatalog.getString).toHaveBeenCalled();
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(`You are updating all contacts visible on this page, setting the first {{source}} address as the primary address.
+            If no such address exists the contact will not be updated. Are you sure you want to do this?`,
+                { source: 'MPDX' });
         });
 
         it('should open a confirm modal', () => {
             $ctrl.save();
-            expect(modal.confirm).toHaveBeenCalled();
+            expect(modal.confirm).toHaveBeenCalledWith(`You are updating all contacts visible on this page, setting the first MPDX address as the primary address.
+            If no such address exists the contact will not be updated. Are you sure you want to do this?`);
         });
 
         it('should return a promise', () => {

@@ -19,7 +19,8 @@
     </p>
     <div class="bulk">
         <button class="btn btn-gray" ng-click="$ctrl.save()">
-            <i class="fa fa-check-circle"></i> <translate>Confirm All</translate>
+            <i class="fa fa-check-circle"></i>
+            <translate translate-params-count="$ctrl.fixSendNewsletter.data.length">Confirm {{count}}</translate>
         </button>
     </div>
     <fix-send-newsletter-item ng-repeat="contact in $ctrl.fixSendNewsletter.data" ng-if="!contact.hidden" contact="contact"></fix-send-newsletter-item>

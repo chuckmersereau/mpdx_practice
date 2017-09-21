@@ -131,7 +131,13 @@ describe('contacts.show.personModal.controller', () => {
         it('should call people.remove', (done) => {
             $ctrl.person.id = 1;
             $ctrl.delete().then(() => {
-                expect(api.delete).toHaveBeenCalledWith('contacts/123/people/1');
+                expect(api.delete).toHaveBeenCalledWith({
+                    url: 'contacts/people/1',
+                    data: {
+                        id: 1
+                    },
+                    type: 'people'
+                });
                 done();
             });
         });
