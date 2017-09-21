@@ -15,13 +15,9 @@ export const importsTypeForAttribute = (key) =>
         'source_account': 'google_accounts'
     }[key]);
 
-export const mergeTypeForAttribute = (key) => {
-    return key === 'account_list_to_merge' ? 'account_lists' : key;
-};
+export const mergeTypeForAttribute = (key) => key === 'account_list_to_merge' ? 'account_lists' : key;
 
-export const peopleTypeForAttribute = (key) => {
-    return key === 'related_person' ? 'people' : key;
-};
+export const peopleTypeForAttribute = (key) => key === 'related_person' ? 'people' : key;
 
 export class EntityAttributes {
     constructor() {
