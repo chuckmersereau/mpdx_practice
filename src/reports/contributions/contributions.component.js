@@ -22,10 +22,11 @@ class ContributionsController {
     constructor(
         $log, $rootScope,
         gettextCatalog,
-        api, serverConstants
+        api, donations, serverConstants
     ) {
         this.$log = $log;
         this.api = api;
+        this.donations = donations;
         this.gettextCatalog = gettextCatalog;
         this.serverConstants = serverConstants;
 
@@ -227,9 +228,10 @@ const Contributions = {
 
 import gettextCatalog from 'angular-gettext';
 import api from 'common/api/api.service';
+import donations from 'reports/donations/donations.service';
 import serverConstants from 'common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.reports.contributions.component', [
     gettextCatalog,
-    api, serverConstants
+    api, donations, serverConstants
 ]).component('contributions', Contributions).name;

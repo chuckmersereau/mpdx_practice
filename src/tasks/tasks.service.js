@@ -124,11 +124,24 @@ class TasksService {
             if (reset && currentCount !== this.dataLoadCount) { // case for slow prior query returning after faster newer query
                 return;
             }
-            this.loading = false;
+            let count = reset ? 0 : defaultTo(0, this.meta.to);
             this.meta = data.meta;
+            if (data.length === 0) {
+                this.getTotalCount();
+                this.loading = false;
+                return;
+            }
             const tasks = map((task) => this.process(task), data);
-            this.data = unionBy('id', this.data, tasks);
+            if (reset) {
+                this.data = tasks;
+            } else {
+                this.data = unionBy('id', this.data, tasks);
+            }
+            count += data.length;
+            this.meta.to = count;
             this.page = parseInt(this.meta.pagination.page);
+            this.loading = false;
+            return this.data;
         });
     }
     /* eslint-disable complexity */
@@ -344,6 +357,16 @@ class TasksService {
     }
     bulkEditModal(tasks) {
         return this.tasksModals.bulkEdit(tasks || this.selected);
+    }
+    getTotalCount() { // only used when search is empty
+        return this.api.get('tasks', {
+            filter: {
+                account_list_id: this.api.account_list_id
+            },
+            per_page: 0
+        }).then((data) => {
+            this.totalTaskCount = data.meta.pagination.total_count;
+        });
     }
 }
 

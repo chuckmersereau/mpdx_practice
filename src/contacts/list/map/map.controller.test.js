@@ -3,6 +3,7 @@ import mapController from './map.controller';
 let contactList = [
     {
         id: 1,
+        name: 'a',
         addresses: [
             {
                 primary_mailing_address: true,
@@ -11,6 +12,7 @@ let contactList = [
         ]
     }, {
         id: 2,
+        name: 'b',
         addresses: [
             {
                 primary_mailing_address: true,
@@ -25,12 +27,14 @@ let contactList = [
 ];
 
 describe('contacts.list.map.controller', () => {
-    let $ctrl, controller, scope, _window, gettextCatalog, NgMap, map, markerClusterer, bounds;
+    let $ctrl, controller, scope, _window, gettextCatalog, NgMap, map, markerClusterer, bounds, api, contacts;
     beforeEach(() => {
         angular.mock.module(mapController);
-        inject(($controller, $rootScope, $window, _gettextCatalog_, _NgMap_) => {
+        inject(($controller, $rootScope, $window, _gettextCatalog_, _NgMap_, _api_, _contacts_) => {
             scope = $rootScope.$new();
             scope.$hide = () => {};
+            api = _api_;
+            contacts = _contacts_;
             controller = $controller;
             _window = $window;
             gettextCatalog = _gettextCatalog_;
@@ -138,20 +142,62 @@ describe('contacts.list.map.controller', () => {
         });
     });
 
-    describe('$onInit', () => {
+    describe('init', () => {
         beforeEach(() => {
             spyOn($ctrl, 'deserializeContacts').and.returnValue();
             spyOn($ctrl, 'setMap').and.returnValue();
+            spyOn($ctrl, 'getContacts').and.callFake(() => Promise.resolve());
         });
 
-        it('should call deserializeContacts', () => {
-            $ctrl.$onInit();
-            expect($ctrl.deserializeContacts).toHaveBeenCalled();
+        it('should call getContacts', (done) => {
+            $ctrl.init().then(() => {
+                expect($ctrl.getContacts).toHaveBeenCalled();
+                done();
+            });
+        });
+        it('should call deserializeContacts', (done) => {
+            $ctrl.init().then(() => {
+                expect($ctrl.deserializeContacts).toHaveBeenCalled();
+                done();
+            });
         });
 
-        it('should call setMap', () => {
-            $ctrl.$onInit();
-            expect($ctrl.setMap).toHaveBeenCalled();
+        it('should call setMap', (done) => {
+            $ctrl.init().then(() => {
+                expect($ctrl.setMap).toHaveBeenCalled();
+                done();
+            });
+        });
+    });
+    describe('getContacts', () => {
+        beforeEach(() => {
+            spyOn(api, 'get').and.callFake(() => Promise.resolve());
+            spyOn(contacts, 'buildFilterParams').and.callFake(() => 'bfp');
+        });
+        it('shouldn\'t call the api', (done) => {
+            $ctrl.getContacts().then(() => {
+                expect(api.get).not.toHaveBeenCalled();
+                done();
+            });
+        });
+        it('should call the api when no data is present', (done) => {
+            $ctrl.selectedContacts = [{ id: 1 }, { id: 2 }];
+            $ctrl.getContacts().then(() => {
+                expect(api.get).toHaveBeenCalledWith({
+                    url: 'contacts',
+                    data: {
+                        filter: 'bfp',
+                        fields: {
+                            addresses: 'geo,primary_mailing_address',
+                            contacts: 'addresses,name,status'
+                        },
+                        include: 'addresses',
+                        per_page: 20000
+                    },
+                    overrideGetAsPost: true
+                });
+                done();
+            });
         });
     });
 
