@@ -7,23 +7,9 @@ const jsonApiResponse = {
     }
 };
 
-const jsonApiArrayResponse = {
-    data: [{
-        id: 234
-    }, {
-        id: 345
-    }]
-};
-
 const transformedResponse = {
     id: 234
 };
-
-const transformedArrayResponse = [{
-    id: 234
-}, {
-    id: 345
-}];
 
 const jsonApiErrorResponse = {
     errors: [{
