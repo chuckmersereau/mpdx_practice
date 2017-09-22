@@ -256,11 +256,11 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="contact in $ctrl.excludedContacts | orderBy : 'name'">
-                            <td>{{::contact.name}}</td>
+                        <tr ng-repeat="rel in $ctrl.excludedContacts | orderBy : 'name'">
+                            <td>{{::rel.contact.name}}</td>
                             <td>
-                                {{::contact.currency.symbol}}{{::contact.pledge_amount}}
-                                {{::$ctrl.serverConstants.getPledgeFrequency(contact.pledge_frequency).value}}
+                                {{::rel.contact.currency.symbol}}{{::rel.contact.pledge_amount}}
+                                {{::$ctrl.serverConstants.getPledgeFrequency(rel.contact.pledge_frequency).value}}
                             </td>
                             <td>
                                 <button class="btn btn-xs btn-success" ng-click="$ctrl.addContact(contact)" title="{{'Add' | translate}}">
