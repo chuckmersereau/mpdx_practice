@@ -31,7 +31,6 @@ class WizardController {
         this.statuses = [];
         this.tags = [];
         this.excludes = [];
-        this.newTags = [];
         this.appeal = {};
         this.saving = false;
         this.goal = {
