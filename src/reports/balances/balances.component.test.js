@@ -1,43 +1,28 @@
 import component from './balances.component';
 
-const fakeBlockUI = {
-    reset: () => {},
-    start: () => {}
-};
-
-
 describe('reports.balances.component', () => {
-    let $ctrl, componentController, rootScope, scope, designationAccounts, blockUI;
+    let $ctrl, componentController, rootScope, scope, designationAccounts;
 
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _designationAccounts_, _blockUI_) => {
+        inject(($componentController, $rootScope, _designationAccounts_) => {
             componentController = $componentController;
             rootScope = $rootScope;
             scope = $rootScope.$new();
 
             designationAccounts = _designationAccounts_;
-            blockUI = _blockUI_;
             loadController();
         });
     });
 
     function loadController() {
-        spyOn(blockUI.instances, 'get').and.callFake(() => fakeBlockUI);
         spyOn(rootScope, '$on').and.callThrough();
         $ctrl = componentController('balances', { $scope: scope }, { view: null });
-        spyOn($ctrl.blockUI, 'reset').and.callThrough();
-        spyOn($ctrl.blockUI, 'start').and.callThrough();
     }
 
     describe('constructor', () => {
         it('should set watcher on accountListUpdated', () => {
             expect(rootScope.$on.calls.mostRecent().args[0]).toEqual('accountListUpdated');
-        });
-
-        it('should get instance of blockUI', () => {
-            expect(blockUI.instances.get).toHaveBeenCalledWith('balances');
-            expect($ctrl.blockUI).toEqual(fakeBlockUI);
         });
 
         it('should call load when event accountListUpdated triggered', () => {
@@ -67,9 +52,10 @@ describe('reports.balances.component', () => {
             expect($ctrl.load()).toEqual(jasmine.any(Promise));
         });
 
-        it('should start blockUI', () => {
+        it('should set loading to true', () => {
+            $ctrl.loading = false;
             $ctrl.load();
-            expect($ctrl.blockUI.start).toHaveBeenCalled();
+            expect($ctrl.loading).toEqual(true);
         });
 
         it('should call designationAccounts.load', () => {
@@ -78,9 +64,10 @@ describe('reports.balances.component', () => {
         });
 
         describe('promise is successful', () => {
-            it('should reset blockUI', (done) => {
+            it('should set loading to false', (done) => {
+                $ctrl.loading = true;
                 $ctrl.load().then(() => {
-                    expect($ctrl.blockUI.reset).toHaveBeenCalled();
+                    expect($ctrl.loading).toEqual(false);
                     done();
                 });
             });

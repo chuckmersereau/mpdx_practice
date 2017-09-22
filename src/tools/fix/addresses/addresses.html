@@ -1,8 +1,11 @@
 <div block-ui="fix-addresses">
     <h1 translate>Fix Mailing Addresses</h1>
-    <p ng-if="!$ctrl.fixAddresses.meta.pagination.total_count" translate>
-        Great work! We weren't able to detect any Mailing Addresses in your account needing reviewed.
-    </p>
+    <div class="blankslate blankslate-spacious" ng-if="!$ctrl.fixAddresses.meta.pagination.total_count && !$ctrl.fixAddresses.loading">
+        <i class="fa fa-map blankslate-icon"></i>
+        <h3 translate>No contacts with mailing addresses need attention</h3>
+        <p translate>Contacts with new addresses or multiple primary mailing addresses will appear here.</p>
+        <a class="btn btn-default" ui-sref="tools" translate>Back to Tools</a>
+    </div>
     <div ng-if="$ctrl.fixAddresses.meta.pagination.total_count">
         <p>
             <strong translate translate-params-count="$ctrl.fixAddresses.meta.pagination.total_count">You have {{count}} mailing addresses to confirm.</strong>
@@ -19,20 +22,16 @@
                     ng-model="$ctrl.source">
                 <option value=""></option>
             </select>
-
             <button class="btn btn-gray" ng-click="$ctrl.save()" ng-disabled="!$ctrl.source">
                 <i class="fa fa-check-circle"></i>
                 <translate translate-params-source="$ctrl.source"
                            translate-params-count="$ctrl.fixAddresses.data.length">Confirm {{count}} as {{source}}</translate>
             </button>
         </div>
-        <div ng-show="$ctrl.fixAddresses.loading">
-            <div class="loading-box">
-                <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
-                <span class="sr-only" translate="">Loading</span>
-            </div>
+        <div class="blankslate blankslate-spacious" ng-if="$ctrl.fixAddresses.loading">
+          <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
         </div>
-        <div ng-show="!$ctrl.fixAddresses.loading">
+        <div ng-if="!$ctrl.fixAddresses.loading">
             <fix-addresses-item ng-repeat="contact in $ctrl.fixAddresses.data" ng-if="!contact.hidden" contact="contact"></fix-addresses-item>
         </div>
         <pagination ng-if="$ctrl.fixAddresses.meta.pagination.total_count > 0"

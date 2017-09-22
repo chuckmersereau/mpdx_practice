@@ -19,9 +19,9 @@ class BalancesController {
         this.load();
     }
     load() {
-        this.blockUI.start();
+        this.loading = true;
         return this.designationAccounts.load(true).then(() => {
-            this.blockUI.reset();
+            this.loading = false;
             this.updateTotal();
         });
     }
