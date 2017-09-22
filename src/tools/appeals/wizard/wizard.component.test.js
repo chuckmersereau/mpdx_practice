@@ -40,7 +40,6 @@ describe('tools.appeals.wizard.component', () => {
             expect($ctrl.statuses).toEqual([]);
             expect($ctrl.tags).toEqual([]);
             expect($ctrl.excludes).toEqual([]);
-            expect($ctrl.newTags).toEqual([]);
         });
         it('should build the goal object', () => {
             $ctrl.init();
