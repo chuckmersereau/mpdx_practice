@@ -221,4 +221,17 @@ describe('common.api.service', () => {
             expect(api.afterTransform({ id: 1 }, null, true)).toEqual('b');
         });
     });
+    describe('serializeData', () => {
+        beforeEach(() => {
+            spyOn(api, 'serialize').and.callFake(() => 'a');
+        });
+        it('should serialize an object', () => {
+            expect(api.serializeData({ id: 1 }, 'contact', 'b', 'post')).toEqual('"a"');
+        });
+        it('should serialize an array', () => {
+            expect(api.serializeData([{ id: 1 }, { id: 2 }], 'contact', 'b', 'post')).toEqual('{"data":["a","a"]}');
+            expect(api.serialize).toHaveBeenCalledWith('contact', 'b', { id: 1 }, 'post');
+            expect(api.serialize).toHaveBeenCalledWith('contact', 'b', { id: 2 }, 'post');
+        });
+    });
 });

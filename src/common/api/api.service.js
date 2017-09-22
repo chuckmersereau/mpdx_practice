@@ -131,14 +131,8 @@ class Api {
     transformRequest(data, url, method, type, overrideGetAsPost, doSerialization) {
         let params = angular.copy(jsonApiParams);
         if (this.isPutPostOrDelete(method, overrideGetAsPost)) {
-            if (!type) {
-                let arr = url.split('/');
-                if (this.isPutOrDelete(method) && arr.length % 2 === 0) {
-                    type = arr[arr.length - 2];
-                } else {
-                    type = arr[arr.length - 1];
-                }
-            }
+            type = this.getType(type, url, method);
+
             if (has(type, this.entityAttributes)) {
                 params = assign(params, this.entityAttributes[type]);
             } else {
@@ -148,6 +142,14 @@ class Api {
         return doSerialization
             ? this.serializeData(data, type, params, method)
             : angular.toJson(data);
+    }
+    getType(type, url, method) {
+        const arr = url.split('/');
+        return defaultTo(
+            this.isPutOrDelete(method) && arr.length % 2 === 0
+                ? arr[arr.length - 2]
+                : arr[arr.length - 1]
+            , type);
     }
     serializeData(data, type, params, method) {
         return isArray(data)
