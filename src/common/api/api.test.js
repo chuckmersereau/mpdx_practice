@@ -252,4 +252,41 @@ describe('common.api.service', () => {
             expect(api.serializeData).not.toHaveBeenCalled();
         });
     });
+    describe('handleOverride', () => {
+        beforeEach(() => {
+            spyOn(api, 'getTypeOverride').and.callFake(() => 'a');
+            spyOn(api, 'cleanFilters').and.callFake(() => 'b');
+        });
+        it('should return default if no override', () => {
+            expect(api.handleOverride(
+                false, { Accept: 'application/vnd.api+json' }, 'get', true, 'contacts', 'contacts', { id: 1 })
+            ).toEqual({
+                headers: { Accept: 'application/vnd.api+json' },
+                method: 'get',
+                doSerialization: true,
+                data: { id: 1 }
+            });
+        });
+        it('should handle override', () => {
+            expect(api.handleOverride(
+                true, { Accept: 'application/vnd.api+json' }, 'get', true, 'contacts', 'contacts', { id: 1 })
+            ).toEqual({
+                headers: {
+                    Accept: 'application/vnd.api+json',
+                    'X-HTTP-Method-Override': 'GET'
+                },
+                method: 'post',
+                doSerialization: false,
+                data: { id: 1, data: 'a', filter: 'b' }
+            });
+        });
+    });
+    describe('getTypeOverride', () => {
+        it('should return type if type', () => {
+            expect(api.getTypeOverride('contacts', 'contact')).toEqual({ type: 'contact' });
+        });
+        it('should return type if no type', () => {
+            expect(api.getTypeOverride('contacts', undefined)).toEqual({ type: 'contacts' });
+        });
+    });
 });

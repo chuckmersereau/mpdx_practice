@@ -45,29 +45,19 @@ class Api {
         beforeDeserializationTransform = null,
         responseType = ''
     }) {
-        let promise = this.$q.defer();
+        ({ headers, method, doSerialization, data } = this.handleOverride(
+            overrideGetAsPost, headers, method, doSerialization, type, url, data
+        ));
 
-        if (overrideGetAsPost) {
-            headers['X-HTTP-Method-Override'] = 'GET';
-            method = 'post';
-            doSerialization = false;
-            if (!type) {
-                let arr = url.split('/');
-                data.data = { type: arr[arr.length - 1] };
-            } else {
-                data.data = { type: type };
-            }
-            data.filter = this.cleanFilters(data.filter);
-        }
+        params = this.assignParams(method, params, data);
 
-        params = this.isGetOrDelete(method) ? assign(params, data) : params;
-
-        // set jsonapi content type
-        headers['Content-Type'] = defaultTo('application/vnd.api+json', headers['Content-Type']);
-        headers.Accept = defaultTo('application/vnd.api+json', headers.Accept);
-
-        // override the browsers language with the one from current user
-        headers['Accept-Language'] = this.language;
+        headers = assign(headers, {
+            // set jsonapi content type
+            'Content-Type': defaultTo('application/vnd.api+json', headers['Content-Type']),
+            Accept: defaultTo('application/vnd.api+json', headers.Accept),
+            // override the browsers language with the one from current user
+            'Accept-Language': this.language
+        });
 
         const request = {
             method: method,
@@ -77,22 +67,52 @@ class Api {
             headers: headers,
             paramSerializer: '$httpParamSerializerJQLike',
             responseType: responseType,
-            transformRequest: (data) => this.transformRequest(data, url, method, type, overrideGetAsPost,
-                doSerialization),
-            transformResponse: this.transformResponse(beforeDeserializationTransform, doDeSerialization,
-                deSerializationOptions),
+            transformRequest: (data) => this.transformRequest(
+                data, url, method, type, overrideGetAsPost, doSerialization
+            ),
+            transformResponse: this.transformResponse(
+                beforeDeserializationTransform, doDeSerialization, deSerializationOptions
+            ),
             cacheService: false,
             timeout: 50000
         };
 
-        this.$http(request).then((response) => {
-            promise.resolve(response.data);
+        return this.$http(request).then((response) => {
+            return response.data;
         }).catch((response) => {
             this.$log.error('API ERROR:', response);
-            promise.reject(response);
+            throw response;
         });
-
-        return promise.promise;
+    }
+    assignParams(method, params, data) {
+        return this.isGetOrDelete(method) ? assign(params, data) : params;
+    }
+    handleOverride(overrideGetAsPost, headers, method, doSerialization, type, url, data) {
+        const retVal = {
+            headers: headers,
+            method: method,
+            doSerialization: doSerialization,
+            data: data
+        };
+        return !overrideGetAsPost
+            ? retVal
+            : assign(retVal, {
+                headers: assign(headers, {
+                    'X-HTTP-Method-Override': 'GET'
+                }),
+                method: 'post',
+                doSerialization: false,
+                data: assign(data, {
+                    data: this.getTypeOverride(url, type),
+                    filter: this.cleanFilters(data.filter)
+                })
+            });
+    }
+    getTypeOverride(url, type) {
+        const arr = url.split('/');
+        return type
+            ? { type: type }
+            : { type: arr[arr.length - 1] };
     }
     isGetOrDelete(method) {
         return method === 'get' || method === 'delete';
