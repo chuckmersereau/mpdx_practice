@@ -132,12 +132,7 @@ class Api {
         let params = angular.copy(jsonApiParams);
         if (this.isPutPostOrDelete(method, overrideGetAsPost)) {
             type = this.getType(type, url, method);
-
-            if (has(type, this.entityAttributes)) {
-                params = assign(params, this.entityAttributes[type]);
-            } else {
-                this.$log.error(`undefined attributes for model: ${type} in api.service`);
-            }
+            params = this.getParams(params, type);
         }
         return doSerialization
             ? this.serializeData(data, type, params, method)
@@ -150,6 +145,12 @@ class Api {
                 ? arr[arr.length - 2]
                 : arr[arr.length - 1]
             , type);
+    }
+    getParams(params, type) {
+        if (!has(type, this.entityAttributes)) {
+            this.$log.error(`undefined attributes for model: ${type} in api.service`);
+        }
+        return assign(params, defaultTo({}, this.entityAttributes[type]));
     }
     serializeData(data, type, params, method) {
         return isArray(data)

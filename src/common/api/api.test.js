@@ -21,11 +21,12 @@ const jsonApiErrorResponse = {
 };
 
 describe('common.api.service', () => {
-    let api, $httpBackend;
+    let api, $httpBackend, log;
     beforeEach(() => {
         angular.mock.module(service);
-        inject((_api_, _$httpBackend_) => {
+        inject((_api_, _$httpBackend_, $log) => {
             api = _api_;
+            log = $log;
             $httpBackend = _$httpBackend_;
         });
     });
@@ -232,6 +233,23 @@ describe('common.api.service', () => {
             expect(api.serializeData([{ id: 1 }, { id: 2 }], 'contact', 'b', 'post')).toEqual('{"data":["a","a"]}');
             expect(api.serialize).toHaveBeenCalledWith('contact', 'b', { id: 1 }, 'post');
             expect(api.serialize).toHaveBeenCalledWith('contact', 'b', { id: 2 }, 'post');
+        });
+    });
+    describe('getParams', () => {
+        it('should error on bad entity', () => {
+            spyOn(log, 'error').and.callFake(() => {});
+            expect(api.getParams({ id: 1 }, 'donkey')).toEqual({ id: 1 });
+            expect(log.error).toHaveBeenCalledWith('undefined attributes for model: donkey in api.service');
+        });
+        it('should set params for jsonapi-serializer', () => {
+            expect(api.getParams([{ id: 1 }, 'bulk'])).toEqual({ 0: { id: 1 }, 1: 'bulk' });
+        });
+    });
+    describe('transformRequest', () => {
+        it('shouldn\'t serialize', () => {
+            spyOn(api, 'serializeData').and.callFake(() => {});
+            expect(api.transformRequest({ id: 1 }, 'contact/1', 'put', 'contact', false, false)).toEqual('{"id":1}');
+            expect(api.serializeData).not.toHaveBeenCalled();
         });
     });
 });
