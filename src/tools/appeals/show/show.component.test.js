@@ -49,7 +49,6 @@ describe('tools.appeals.show.component', () => {
             spyOn($ctrl, 'getCurrencyFromCode').and.callFake(() => currency);
             spyOn($ctrl, 'sumDonations').and.callFake(() => 30);
             spyOn($ctrl, 'fixPledgeAmount').and.callFake((data) => data);
-            // spyOn($ctrl, 'mutateDonations').and.callFake(() => []);
             spyOn($ctrl, 'getContactsNotGiven').and.callFake(() => ['b']);
         });
         it('should change state on account list change', () => {
@@ -136,6 +135,11 @@ describe('tools.appeals.show.component', () => {
                     }
                 }
             });
+        });
+    });
+    describe('combineAmounts', () => {
+        it('should combine the donation and pledge amount', () => {
+            expect($ctrl.combineAmounts({ amount: 50, contact: { id: 1 } }, { 1: { donationAmount: 50 } })).toEqual('100.00');
         });
     });
     describe('changeGoal', () => {
