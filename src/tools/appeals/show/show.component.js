@@ -110,19 +110,7 @@ class AppealController {
             })
         }), contacts);
     }
-    // mutateDonations(donations, contacts) {
-    //     return map((donation) => {
-    //         donation.contact = find({ id: donation.contact.id }, contacts);
-    //         donation.amount = fixed(2, defaultTo(0, donation.amount));
-    //         return donation;
-    //     }, donations);
-    // }
     getContactsNotGiven(contacts) { // , donations
-        // const allGiven = reduce((result, value) => {
-        //     const contact = get('id', value.contact);
-        //     return contact ? concat(result, contact) : result;
-        // }, [], donations);
-        // const contactsNotDonated = reject((contact) => contains(contact.id, allGiven), contacts);
         const allPledged = reduce((result, value) => union(result, keys(value))
             , [], this.viewData);
         const contactsNotGiven = reject((ref) => contains(ref.contact.id, allPledged), contacts);

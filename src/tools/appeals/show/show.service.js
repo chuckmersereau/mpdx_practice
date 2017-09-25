@@ -9,7 +9,8 @@ class Show {
         this.api = api;
     }
     getAppeal(appealId) {
-        return this.api.get({ url: `appeals/${appealId}`,
+        return this.api.get({
+            url: `appeals/${appealId}`,
             data: {
                 include: 'donations',
                 filter: {
@@ -31,9 +32,9 @@ class Show {
     getPledges(appealId) {
         return this.api.get(`account_lists/${this.api.account_list_id}/pledges`, {
             include: 'contact,donations',
-            // fields: {
-            //     contacts: 'name,pledge_amount,pledge_currency,pledge_frequency'
-            // },
+            fields: {
+                contacts: 'name,pledge_amount,pledge_currency,pledge_frequency'
+            },
             filter: {
                 appeal_id: appealId
             }

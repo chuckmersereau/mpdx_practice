@@ -1,4 +1,5 @@
 import component from './show.component';
+import moment from 'moment';
 
 describe('tools.appeals.show.component', () => {
     let $ctrl, scope, serverConstants, api, alerts, donations, mailchimp, modal, state;
@@ -104,6 +105,37 @@ describe('tools.appeals.show.component', () => {
             scope.$emit('accountListUpdated');
             scope.$digest();
             expect(state.go).not.toHaveBeenCalled();
+        });
+    });
+    describe('mutatePledges', () => {
+        it('should mutate pledge data', () => {
+            const pledges = [{
+                id: 1,
+                contact: {
+                    id: 12,
+                    name: 'a',
+                    pledge_amount: 2,
+                    pledge_currency: 'USD'
+                },
+                amount: 50,
+                expected_date: '2015-05-12',
+                donations: [{ donation_date: '5-11-2015' }]
+            }];
+            $ctrl.mutatePledges(pledges);
+            expect($ctrl.viewData).toEqual({
+                given_to_appeal: {
+                    12: {
+                        id: 1,
+                        contactId: 12,
+                        name: 'a',
+                        commitment: '2.00',
+                        commitmentCurrency: 'USD',
+                        amount: '50.00',
+                        expectedDate: '2015-05-12',
+                        donationDate: '5-11-2015'
+                    }
+                }
+            });
         });
     });
     describe('changeGoal', () => {
@@ -364,6 +396,24 @@ describe('tools.appeals.show.component', () => {
             $ctrl.appeal = { id: 1, name: 'a' };
             $ctrl.removeDonation({ id: 123 }).then(() => {
                 expect(donations.delete).toHaveBeenCalledWith({ id: 123 });
+                done();
+            });
+        });
+    });
+    describe('removeCommitment', () => {
+        it('should open confirm modal', () => {
+            spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
+            $ctrl.appeal = { id: 1, name: 'a' };
+            $ctrl.removeCommitment({ id: 123 });
+            expect($ctrl.gettext).toHaveBeenCalledWith('Are you sure you wish to remove this commitment?');
+            expect(modal.confirm).toHaveBeenCalledWith('Are you sure you wish to remove this commitment?');
+        });
+        it('should delete donation', (done) => {
+            spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            $ctrl.appeal = { id: 1, name: 'a' };
+            $ctrl.removeCommitment({ id: 123 }).then(() => {
+                expect(api.delete).toHaveBeenCalledWith(`account_lists/${api.account_list_id}/pledges/123`);
                 done();
             });
         });

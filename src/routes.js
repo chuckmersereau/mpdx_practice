@@ -324,7 +324,7 @@ export default class Routes {
             }
         }).state({
             name: 'tools.appeals.show',
-            url: '/show/{appealId}',
+            url: '/{appealId}',
             component: 'appealsShow',
             resolve: {
                 0: /* @ngInject*/ (serverConstants) => serverConstants.load(['pledge_currencies', 'pledge_frequency_hashes']),
