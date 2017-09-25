@@ -1,5 +1,4 @@
 import component from './show.component';
-import moment from 'moment';
 
 describe('tools.appeals.show.component', () => {
     let $ctrl, scope, serverConstants, api, alerts, donations, mailchimp, modal, state;
