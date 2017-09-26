@@ -44,8 +44,9 @@ describe('setup.connect.component', () => {
             spyOn(preferencesOrganization, 'createAccount').and.callFake(() => Promise.resolve());
             $ctrl.add().then(() => {
                 expect(users.listOrganizationAccounts).toHaveBeenCalledWith(true);
-                expect($ctrl.connecting).toBeFalsy();
-                expect($ctrl.showOrgs).toBeFalsy();
+                expect($ctrl.addOrganization).toEqual(false);
+                expect($ctrl.username).toEqual('');
+                expect($ctrl.password).toEqual('');
                 done();
             });
         });

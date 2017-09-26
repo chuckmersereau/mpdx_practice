@@ -34,6 +34,8 @@ class ConnectController {
             return this.users.listOrganizationAccounts(true).then(() => {
                 this.saving = false;
                 this.addOrganization = false;
+                this.username = '';
+                this.password = '';
             });
         }).catch((err) => {
             this.saving = false;
