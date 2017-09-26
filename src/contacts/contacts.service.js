@@ -7,6 +7,7 @@ import isArray from 'lodash/fp/isArray';
 import isEqual from 'lodash/fp/isEqual';
 import isFunction from 'lodash/fp/isFunction';
 import isNil from 'lodash/fp/isNil';
+import isNilOrEmpty from 'common/fp/isNilOrEmpty';
 import map from 'lodash/fp/map';
 import omitBy from 'lodash/fp/omitBy';
 import pull from 'lodash/fp/pull';
@@ -249,7 +250,12 @@ class ContactsService {
                 if (isNil(birthday)) {
                     return result;
                 }
-                if (birthday.birthday_year > 1800) {
+                if (
+                    !isNilOrEmpty(birthday.birthday_year)
+                    && !isNilOrEmpty(birthday.birthday_month)
+                    && !isNilOrEmpty(birthday.birthday_day)
+                    && birthday.birthday_year > 1800
+                ) {
                     birthday.birthday_date = moment()
                         .year(birthday.birthday_year)
                         .month(birthday.birthday_month - 1)
@@ -264,7 +270,12 @@ class ContactsService {
                     return result;
                 }
                 anniversary.people = reduce((iresult, person) => {
-                    if (person.anniversary_year > 1800) {
+                    if (
+                        !isNilOrEmpty(person.anniversary_year)
+                        && !isNilOrEmpty(person.anniversary_month)
+                        && !isNilOrEmpty(person.anniversary_day)
+                        && person.anniversary_year > 1800
+                    ) {
                         person.anniversary_date = moment()
                             .year(person.anniversary_year)
                             .month(person.anniversary_month - 1)

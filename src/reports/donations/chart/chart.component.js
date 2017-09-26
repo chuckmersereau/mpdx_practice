@@ -9,7 +9,7 @@ import moment from 'moment';
 class ChartController {
     constructor(
         $state, $rootScope, $filter, $log, gettextCatalog,
-        accounts, api, contacts, blockUI
+        accounts, api, contacts
     ) {
         this.$state = $state;
         this.$rootScope = $rootScope;
@@ -20,8 +20,7 @@ class ChartController {
         this.contacts = contacts;
         this.gettextCatalog = gettextCatalog;
 
-        this.blockUI = blockUI.instances.get('donationsChart');
-        this.noChart = true;
+        this.loading = false;
         this.colors = [
             { backgroundColor: '#fdb800' },
             { backgroundColor: '#df7d00' },
@@ -52,20 +51,17 @@ class ChartController {
         };
         if (this.inContact && this.contacts.current.donor_accounts) {
             params.donorAccountId = map('id', this.contacts.current.donor_accounts).join();
-            if (params.donorAccountId === '') { return Promise.reject(); }
+            if (params.donorAccountId === '') {
+                this.data = [];
+                return Promise.reject();
+            }
             if (this.contacts.current.pledge_currency) {
                 params.displayCurrency = this.contacts.current.pledge_currency;
             }
         }
-        this.blockUI.start();
+        this.loading = true;
         return this.getDonationChart(params).then((data) => {
-            this.blockUI.reset();
-            if (data.totals.length === 0) {
-                this.hasChart = false;
-                return;
-            } else {
-                this.hasChart = true;
-            }
+            this.loading = false;
             this.data = map((total) => {
                 return map((val) => round(val.converted, 2), total.month_totals);
             }, data.totals);
@@ -73,10 +69,12 @@ class ChartController {
                 this.labels = map((month) => moment(month, 'YYYY-MM-DD').format('MMM'), takeRight(12, data.months_to_dates));
                 this.series = [this.gettextCatalog.getString('Last Year'), this.gettextCatalog.getString('This Year')];
                 const primaryData = map((value) => sum(value), zip(...this.data));
-                this.data = [
-                    take(12, primaryData),
-                    takeRight(12, primaryData)
-                ];
+                if (primaryData.length > 0) {
+                    this.data = [
+                        take(12, primaryData),
+                        takeRight(12, primaryData)
+                    ];
+                }
             } else {
                 this.series = map('currency', data.totals);
                 this.labels = map((month) => moment(month, 'YYYY-MM-DD').format('MMM YY'), data.months_to_dates);
@@ -178,12 +176,11 @@ const Chart = {
 
 import accounts from 'common/accounts/accounts.service';
 import api from 'common/api/api.service';
-import blockUI from 'angular-block-ui';
 import contacts from 'contacts/contacts.service';
 import gettext from 'angular-gettext';
 import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('mpdx.reports.donations.chart.component', [
-    blockUI, gettext, uiRouter,
+    gettext, uiRouter,
     accounts, api, contacts
 ]).component('donationsChart', Chart).name;
