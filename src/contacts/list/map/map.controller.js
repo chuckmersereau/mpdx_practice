@@ -1,15 +1,24 @@
+import concat from 'lodash/fp/concat';
+import defaultTo from 'lodash/fp/defaultTo';
+import differenceBy from 'lodash/fp/differenceBy';
 import each from 'lodash/fp/each';
-import isNil from 'lodash/fp/isNil';
+import filter from 'lodash/fp/filter';
+import find from 'lodash/fp/find';
+import get from 'lodash/fp/get';
 import has from 'lodash/fp/has';
+import head from 'lodash/fp/head';
+import reduce from 'lodash/fp/reduce';
 
 class MapContactsController {
     constructor(
-        $scope, $window,
-        gettextCatalog, NgMap,
+        $scope, $window, gettextCatalog, NgMap,
+        api, contacts,
         selectedContacts
     ) {
         this.$scope = $scope;
         this.$window = $window;
+        this.api = api;
+        this.contacts = contacts;
         this.gettextCatalog = gettextCatalog;
         this.NgMap = NgMap;
         this.selectedContacts = selectedContacts;
@@ -74,35 +83,50 @@ class MapContactsController {
             }
         };
 
-        this.$onInit();
+        this.init();
     }
 
-    $onInit() {
-        this.deserializeContacts(this.selectedContacts);
-        this.setMap(this.statuses);
+    init() {
+        return this.getContacts().then((data) => {
+            this.deserializeContacts(data);
+            this.setMap(this.statuses);
+        });
     }
-
-    deserializeContacts(contacts) {
+    getContacts() {
+        const areComplete = has('name', head(this.selectedContacts));
+        return areComplete ? Promise.resolve(this.selectedContacts) : this.fromApi();
+    }
+    fromApi() {
+        return this.api.get({
+            url: 'contacts',
+            data: {
+                filter: this.contacts.buildFilterParams(),
+                fields: {
+                    contacts: 'addresses,name,status'
+                },
+                include: 'addresses',
+                per_page: 20000
+            },
+            overrideGetAsPost: true
+        });
+    }
+    deserializeContacts(data) {
+        const contacts = reduce((result, contact) => {
+            contact.address = find({ primary_mailing_address: true }, contact.addresses);
+            contact.invalid = !contact.address || !contact.address.geo ? true : contact.invalid;
+            return concat(result, contact);
+        }, [], defaultTo([], data));
+        this.invalidContacts = filter({ invalid: true }, contacts);
+        const mapContacts = differenceBy('id', contacts, this.invalidContacts);
         each((contact) => {
-            if (isNil(contact.addresses) || contact.addresses.length === 0) {
-                return this.invalidContacts.push(contact);
-            }
-            each((address) => {
-                if (address.primary_mailing_address === true) {
-                    if (isNil(address.geo)) {
-                        this.invalidAddresses.push({ contact: contact, address: address });
-                    } else {
-                        this.createMarker(contact, address);
-                    }
-                }
-            }, contact.addresses);
-        }, contacts);
+            this.createMarker(contact, contact.address);
+        }, mapContacts);
     }
 
     createMarker(contact, address) {
         const geo = address.geo.split(',');
-        const status = this.statuses[this.statusToString(contact.status)];
-        status.markers.push(
+        const status = get(this.statusToString(contact.status), this.statuses);
+        status.markers = concat(status.markers,
             new this.$window.google.maps.Marker({
                 position: new this.$window.google.maps.LatLng(geo[0], geo[1]),
                 icon: new this.$window.google.maps.MarkerImage(status.imageUrl, this.iconSize),
@@ -182,9 +206,12 @@ class MapContactsController {
     }
 }
 
+import api from 'common/api/api.service';
+import contacts from 'contacts/contacts.service';
 import gettextCatalog from 'angular-gettext';
 import NgMap from 'ngmap';
 
 export default angular.module('mpdx.contacts.list.map.controller', [
-    gettextCatalog, NgMap
+    gettextCatalog, NgMap,
+    api, contacts
 ]).controller('mapContactsController', MapContactsController).name;

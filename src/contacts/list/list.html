@@ -65,21 +65,19 @@
         </div>
     </div>
     <div class="column">
-        <div ng-if="!$ctrl.meta.to && !$ctrl.loading" class="contacts-empty">
+        <div class="blankslate blankslate-spacious" ng-if="!$ctrl.meta.to && !$ctrl.loading">
+            <i class="fa fa-home blankslate-icon"></i>
             <div ng-if="$ctrl.totalContactCount > 0">
-                <p>
-                    <strong translate translate-plural="You have {{$count}} total contacts" translate-n="::$ctrl.totalContactCount">You have 1 total contact</strong>.
-                    <span translate>Unfortunately none of them match your current search or filters.</span>
-                </p>
-                <a ng-click="$ctrl.contactFilter.reset()" class="btn btn-primary" translate>Reset All Search Filters</a>
-                <a ng-click="$ctrl.contacts.openNewContactModal()" class="btn btn-reverse" translate>Add New Contact</a>
+                <h3 translate translate-plural="You have {{$count}} total contacts" translate-n="::$ctrl.totalContactCount">You have 1 total contact</h3>
+                <p translate>Unfortunately none of them match your current search or filters.</p>
+                <a ng-click="$ctrl.contactFilter.reset()" class="btn btn-default" translate>Reset All Search Filters</a>
+                <a ng-click="$ctrl.contacts.openNewContactModal()" class="btn btn-primary" translate>Add New Contact</a>
             </div>
             <div ng-if="$ctrl.totalContactCount === 0">
-                <p translate>
-                    Looks like you haven't added any contacts yet. You can add one or import some from another service.
-                </p>
-                <a ui-sref="tools({setup: true})" class="btn btn-primary" translate>Import Contacts</a>
-                <a ng-click="$ctrl.contacts.openNewContactModal()" class="btn btn-reverse" translate>Add New Contact</a>
+                <h3 translate>Looks like you haven't added any contacts yet</h3>
+                <p translate>You can import contacts from another service or add a new contact.</p>
+                <a ui-sref="tools({setup: true})" class="btn btn-default" translate>Import Contacts</a>
+                <a ng-click="$ctrl.contacts.openNewContactModal()" class="btn btn-primary" translate>Add New Contact</a>
             </div>
         </div>
         <div ng-if="$ctrl.data.length > 0 || $ctrl.loading" infinite-scroll="$ctrl.loadMoreContacts()">
@@ -89,9 +87,8 @@
                                 data-hook="contact"
                                 selected="$ctrl.selected"
                                 ng-class="{ selected: $ctrl.allSelected || $ctrl.contacts.isSelected(contact.id) }"></contacts-list-item>
-            <div ng-show="$ctrl.loading" class="loading-spinner">
-                <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
-                <span class="sr-only" translate>Loading</span>
+            <div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
+              <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
             </div>
         </div>
     </div>

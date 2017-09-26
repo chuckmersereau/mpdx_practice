@@ -195,27 +195,67 @@ describe('contacts.service', () => {
                 done();
             });
         });
-    });
-    it('should handle bad birthdays and anniversaries', (done) => {
-        const transformable = {
-            birthdays_this_week: [{
-                birthday_year: 6,
-                birthday_day: 1,
-                birthday_month: 1
-            }, null],
-            anniversaries_this_week: [{
-                people: [{
-                    anniversary_year: 15,
-                    anniversary_day: 1,
-                    anniversary_month: 1
+        it('should handle bad birthday years', (done) => {
+            const transformable = {
+                birthdays_this_week: [{
+                    birthday_day: 1,
+                    birthday_month: 1
+                }],
+                anniversaries_this_week: [{
+                    people: [{
+                        anniversary_year: 2015,
+                        anniversary_day: 1,
+                        anniversary_month: 1
+                    }]
                 }]
-            }, null]
-        };
-        spyOn(api, 'get').and.callFake(() => Promise.resolve(transformable));
-        contacts.getAnalytics().then(() => {
-            expect(contacts.analytics.birthdays_this_week).toEqual([]);
-            expect(contacts.analytics.anniversaries_this_week).toEqual([]);
-            done();
+            };
+            spyOn(api, 'get').and.callFake(() => Promise.resolve(transformable));
+            contacts.getAnalytics().then(() => {
+                expect(contacts.analytics.birthdays_this_week.length).toBe(0);
+                done();
+            });
+        });
+
+        it('should handle bad anniversary years', (done) => {
+            const transformable = {
+                birthdays_this_week: [{
+                    birthday_day: 1,
+                    birthday_month: 1
+                }],
+                anniversaries_this_week: [{
+                    people: [{
+                        anniversary_day: 1,
+                        anniversary_month: 1
+                    }]
+                }]
+            };
+            spyOn(api, 'get').and.callFake(() => Promise.resolve(transformable));
+            contacts.getAnalytics().then(() => {
+                expect(contacts.analytics.anniversaries_this_week.length).toBe(0);
+                done();
+            });
+        });
+        it('should handle bad birthdays and anniversaries', (done) => {
+            const transformable = {
+                birthdays_this_week: [{
+                    birthday_year: 6,
+                    birthday_day: 1,
+                    birthday_month: 1
+                }, null],
+                anniversaries_this_week: [{
+                    people: [{
+                        anniversary_year: 15,
+                        anniversary_day: 1,
+                        anniversary_month: 1
+                    }]
+                }, null]
+            };
+            spyOn(api, 'get').and.callFake(() => Promise.resolve(transformable));
+            contacts.getAnalytics().then(() => {
+                expect(contacts.analytics.birthdays_this_week).toEqual([]);
+                expect(contacts.analytics.anniversaries_this_week).toEqual([]);
+                done();
+            });
         });
     });
     describe('merge', () => {
