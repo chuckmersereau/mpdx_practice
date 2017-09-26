@@ -3,11 +3,12 @@ import flatten from 'lodash/fp/flatten';
 class SetupService {
     constructor(
         $q, $state, gettextCatalog,
-        alerts, api, users
+        accounts, alerts, api, users
     ) {
         this.$q = $q;
         this.$state = $state;
         this.gettextCatalog = gettextCatalog;
+        this.accounts = accounts;
         this.alerts = alerts;
         this.api = api;
         this.users = users;
@@ -87,7 +88,13 @@ class SetupService {
     setDefaultAccountList() {
         this.users.current.preferences.default_account_list = this.users.current.account_lists[0].id;
         return this.users.saveCurrent().then(() => {
-            return this.hasOrganizationAccounts();
+            return this.accounts.swap(
+                this.users.current.preferences.default_account_list,
+                this.users.current.id,
+                true
+            ).then(() => {
+                return this.hasOrganizationAccounts();
+            });
         });
     }
 

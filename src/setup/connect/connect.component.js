@@ -42,6 +42,21 @@ class ConnectController {
         });
     }
 
+    disconnect(id) {
+        this.saving = true;
+        return this.preferencesOrganization.disconnect(id).then(() => {
+            this.saving = false;
+            this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed your organization integration'));
+            return this.users.listOrganizationAccounts(true).then(() => {
+                this.addOrganization = this.users.organizationAccounts.length === 0;
+            });
+        }).catch((err) => {
+            this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for that organization'), 'danger');
+            this.saving = false;
+            throw err;
+        });
+    }
+
     reset() {
         this.addOrganization = false;
         this.saving = false;

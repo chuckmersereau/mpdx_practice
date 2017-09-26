@@ -9,7 +9,12 @@
                 <div ng-if="$ctrl.users.organizationAccounts.length > 0">
                     <h2 translate>Sweet! You're connected.</h2>
                     <ul class="list-unstyled">
-                        <li ng-repeat="account in $ctrl.users.organizationAccounts">{{account.organization.name}}</li>
+                        <li ng-repeat="account in $ctrl.users.organizationAccounts">
+                            {{account.organization.name}}
+                            <a class="btn btn-danger pull-right" ng-click="$ctrl.disconnect(account.id)">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </li>
                     </ul>
                     <h3 translate>Do you receive donations in any other country or from any other organizations?</h3>
                     <a ng-click="$ctrl.addOrganization = true" class="btn btn-reverse" style="width: 48%;" translate>Yes</a>

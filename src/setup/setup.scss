@@ -37,15 +37,18 @@ setup-start, setup-connect, setup-account, setup-finish {
         }
         .list-unstyled {
             border: $cru-gray-silver 1px solid;
-            border-radius: $border-radius;
+            border-radius: 0;
             text-align: left;
-            padding-top: $gutter/2;
-            padding-bottom: $gutter/2;
             li {
+                padding: $gutter/2;
                 font-size: $font-size*1.25;
                 line-height: $font-size*2;
                 color: $color-link;
-                padding-left: $gutter/2;
+                .btn {
+                    line-height: $font-size*2;
+                    font-size: 15px;
+                    padding: 0 10px;
+                }
             }
         }
         label {

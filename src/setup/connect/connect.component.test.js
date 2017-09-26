@@ -58,6 +58,49 @@ describe('setup.connect.component', () => {
             });
         });
     });
+    describe('disconnect', () => {
+        beforeEach(() => {
+            spyOn(users, 'listOrganizationAccounts').and.callFake(() => Promise.resolve());
+        });
+        it('should disconnect', (done) => {
+            spyOn(preferencesOrganization, 'disconnect').and.callFake(() => Promise.resolve());
+            $ctrl.disconnect(1).then(() => {
+                expect(preferencesOrganization.disconnect).toHaveBeenCalledWith(1);
+                done();
+            });
+        });
+        it('should unset saving flag', (done) => {
+            spyOn(preferencesOrganization, 'disconnect').and.callFake(() => Promise.resolve());
+            $ctrl.disconnect(1).then(() => {
+                expect($ctrl.saving).toBeFalsy();
+                done();
+            });
+        });
+        it('should alert a translated confirmation', (done) => {
+            spyOn(preferencesOrganization, 'disconnect').and.callFake(() => Promise.resolve());
+            $ctrl.disconnect(1).then(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
+                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
+                done();
+            });
+        });
+        it('should refresh', (done) => {
+            spyOn(preferencesOrganization, 'disconnect').and.callFake(() => Promise.resolve());
+            $ctrl.disconnect(1).then(() => {
+                expect(users.listOrganizationAccounts).toHaveBeenCalledWith(true);
+                done();
+            });
+        });
+        it('should handle rejection', (done) => {
+            spyOn(preferencesOrganization, 'disconnect').and.callFake(() => Promise.reject());
+            $ctrl.disconnect(1).catch(() => {
+                expect($ctrl.saving).toBeFalsy();
+                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
+                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
+                done();
+            });
+        });
+    });
     describe('$onInit', () => {
         it('should call listOrganizationAccounts', () => {
             spyOn(users, 'listOrganizationAccounts').and.callFake(() => Promise.resolve());

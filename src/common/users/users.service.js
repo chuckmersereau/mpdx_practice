@@ -10,11 +10,10 @@ import config from 'config';
 
 class Users {
     constructor(
-        $log, $q, $rootScope, $state, $window, Rollbar,
+        $log, $rootScope, $state, $window, Rollbar,
         accounts, api, help, language, locale
     ) {
         this.$log = $log;
-        this.$q = $q;
         this.$rootScope = $rootScope;
         this.$state = $state;
         this.$window = $window;
@@ -27,7 +26,7 @@ class Users {
 
         this.current = null;
         this.currentInitialState = {};
-        this.currentOptions = null;
+        this.currentOptions = {};
         this.defaultIncludes = 'account_lists,email_addresses';
         this.defaultFields = {
             user: 'account_lists,email_addresses,first_name,last_name,options,preferences',
@@ -66,7 +65,9 @@ class Users {
             const accountListId = this.$window.localStorage.getItem(`${this.current.id}_accountListId`) || defaultAccountList;
 
             if (!accountListId) {
-                return this.$q.reject({ redirect: 'setup.account' });
+                return this.setOption({ key: 'setup_position', value: 'start' }).then(() => {
+                    return Promise.reject({ redirect: 'setup.start' });
+                });
             }
 
             return this.accounts.swap(accountListId, this.current.id).then(() => {
@@ -74,6 +75,10 @@ class Users {
                     return this.getKeyAccount().then(() => {
                         return this.current;
                     });
+                });
+            }).catch(() => {
+                return this.setOption({ key: 'setup_position', value: 'start' }).then(() => {
+                    return Promise.reject({ redirect: 'setup.start' });
                 });
             });
         });
@@ -97,7 +102,7 @@ class Users {
     }
     getOptions(reset = false, forRouting = false) {
         if (this.currentOptions && !reset) {
-            return this.$q.resolve();
+            return Promise.resolve();
         }
         return this.api.get('user/options').then((data) => {
             this.currentOptions = this.mapOptions(data);
@@ -106,11 +111,10 @@ class Users {
                 if (!has('setup_position', this.currentOptions)) { // force first time setup
                     return this.createOption('setup_position', 'start').then((pos) => {
                         this.currentOptions.setup_position = pos;
-                        //  = this.mapOptions(data);
-                        return this.$q.reject({ redirect: 'setup.start' });
+                        return Promise.reject({ redirect: 'setup.start' });
                     });
                 } else if (this.currentOptions.setup_position.value !== '') {
-                    return this.$q.reject({ redirect: `setup.${this.currentOptions.setup_position.value}` });
+                    return Promise.reject({ redirect: `setup.${this.currentOptions.setup_position.value}` });
                 }
             }
             return this.currentOptions;
@@ -154,7 +158,7 @@ class Users {
         const patch = createPatch(this.currentInitialState, this.current);
         this.$log.debug('user patch', patch);
         if (keys(patch).length < 2) {
-            return this.$q.resolve(this.current);
+            return Promise.resolve(this.current);
         }
         return this.api.put('user', patch).then(() => {
             return this.getCurrent(true); // force reload to reconcile as put response is incomplete
