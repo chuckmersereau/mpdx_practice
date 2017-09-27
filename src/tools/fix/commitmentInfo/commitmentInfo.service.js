@@ -1,6 +1,6 @@
+import assign from 'lodash/fp/assign';
 import concat from 'lodash/fp/concat';
-import get from 'lodash/fp/get';
-import isNil from 'lodash/fp/isNil';
+import defaultTo from 'lodash/fp/defaultTo';
 import reduce from 'lodash/fp/reduce';
 import reject from 'lodash/fp/reject';
 
@@ -42,36 +42,24 @@ class CommitmentInfoService {
             }
         ).then((data) => {
             this.setMeta(data.meta);
-
-            this.data = reduce((result, contact) => {
-                contact.original_pledge_amount = contact.pledge_amount;
-                contact.original_pledge_currency = contact.pledge_currency;
-                if (!isNil(contact.pledge_frequency)) {
-                    const frequency = this.serverConstants.getPledgeFrequency(contact.pledge_frequency);
-                    contact.original_pledge_frequency = get('value', frequency);
-                }
-                contact.original_status = contact.status;
-
-                contact.pledge_amount = parseFloat(contact.suggested_changes.pledge_amount);
-
-                if (!isNil(contact.suggested_changes.pledge_currency)) {
-                    contact.pledge_currency = contact.suggested_changes.pledge_currency;
-                }
-
-                if (!isNil(contact.suggested_changes.pledge_frequency)) {
-                    contact.pledge_frequency = parseFloat(contact.suggested_changes.pledge_frequency);
-                }
-
-                if (!isNil(contact.suggested_changes.status)) {
-                    contact.status = contact.suggested_changes.status;
-                }
-                return concat(result, contact);
-            }, [], angular.copy(data));
-
+            this.data = this.mutateContacts(data);
             this.loading = false;
-
             return this.data;
         });
+    }
+    mutateContacts(data) {
+        return reduce((result, contact) => {
+            return concat(result, assign(contact, {
+                original_pledge_amount: contact.pledge_amount,
+                original_pledge_currency: contact.pledge_currency,
+                original_status: contact.status,
+                original_pledge_frequency: this.serverConstants.getPledgeFrequencyValue(contact.pledge_frequency),
+                pledge_amount: parseFloat(defaultTo(contact.pledge_amount, contact.suggested_changes.pledge_amount)),
+                pledge_currency: defaultTo(contact.pledge_currency, contact.suggested_changes.pledge_currency),
+                status: defaultTo(contact.status, contact.suggested_changes.status),
+                pledge_frequency: defaultTo(contact.pledge_frequency, contact.suggested_changes.pledge_frequency)
+            }));
+        }, [], data);
     }
 
     setMeta(meta) {
@@ -109,8 +97,7 @@ class CommitmentInfoService {
     bulkSave() {
         let contacts = reduce((result, contact) => {
             contact.status_valid = true;
-            result.push(contact);
-            return result;
+            return concat(result, contact);
         }, [], this.data);
 
         return this.contacts.bulkSave(contacts).then(() => {
