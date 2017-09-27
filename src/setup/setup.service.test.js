@@ -66,11 +66,37 @@ describe('setup.service', () => {
                     };
                 });
 
-                it('should call goConnect', (done) => {
-                    spyOn(setup, 'goConnect');
-                    setup.hasAccountLists().then(() => {
-                        expect(setup.goConnect).toHaveBeenCalled();
-                        done();
+                describe('state is setup.connect', () => {
+                    beforeEach(() => {
+                        spyOn(state, 'includes').and.returnValue(true);
+                    });
+
+                    it('should not call goConnect', (done) => {
+                        spyOn(setup, 'goConnect');
+                        setup.hasAccountLists().then(() => {
+                            expect(setup.goConnect).not.toHaveBeenCalled();
+                            done();
+                        });
+                    });
+
+                    it('should call addAlert', (done) => {
+                        spyOn(alerts, 'addAlert');
+                        setup.hasAccountLists().then(() => {
+                            expect(alerts.addAlert).toHaveBeenCalledWith(
+                                'Something went wrong, please try removing your organization accounts and add them again.',
+                                'danger');
+                            done();
+                        });
+                    });
+                });
+
+                describe('state is not setup.connect', () => {
+                    it('should call goConnect', (done) => {
+                        spyOn(setup, 'goConnect');
+                        setup.hasAccountLists().then(() => {
+                            expect(setup.goConnect).toHaveBeenCalled();
+                            done();
+                        });
                     });
                 });
             });

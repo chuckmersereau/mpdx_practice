@@ -71,6 +71,13 @@ class ConnectController {
         this.selected = get(this.selectedKey, this.serverConstants.data.organizations_attributes);
     }
 
+    next() {
+        this.saving = true;
+        return this.setup.next().then(() => {
+            this.saving = false;
+        });
+    }
+
     showOrganizationHelp() {
         this.help.showArticle(this.gettextCatalog.getString('58f96cc32c7d3a057f886e20'));
     }

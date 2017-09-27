@@ -38,16 +38,19 @@ class Users {
     }
     getCurrent(reset = false, forRouting = false) {
         if (this.current && !reset) {
-            return this.getOptions(reset, forRouting).then(() => {
+            return this.getOptions(false, forRouting).then(() => {
                 return this.current;
             });
         }
-        return this.api.get('user', { include: this.defaultIncludes, fields: this.defaultFields }).then((response) => {
-            this.current = response;
-            this.currentInitialState = angular.copy(this.current);
-            this.$log.debug('current user: ', response);
+        return this.api.get('user', { include: this.defaultIncludes, fields: this.defaultFields }).then((data) => {
+            this.current = data;
 
-            this.configureRollbarPerson(response);
+            /* istanbul ignore next */
+            this.$log.debug('current user: ', this.current);
+
+            this.currentInitialState = angular.copy(this.current);
+
+            this.configureRollbarPerson(this.current);
             this.help.updateUser(this.current);
 
             if (reset) {
@@ -56,18 +59,16 @@ class Users {
                 });
             }
 
-            const localeDisplay = get('preferences.locale_display', response) || 'en-en';
+            const localeDisplay = get('preferences.locale_display', this.current) || 'en-en';
             this.locale.change(localeDisplay);
-            const locale = get('preferences.locale', response) || 'en-us';
+            const locale = get('preferences.locale', this.current) || 'en-us';
             this.language.change(locale);
 
-            const defaultAccountList = toString(get('preferences.default_account_list', response));
+            const defaultAccountList = toString(get('preferences.default_account_list', this.current));
             const accountListId = this.$window.localStorage.getItem(`${this.current.id}_accountListId`) || defaultAccountList;
 
             if (!accountListId) {
-                return this.setOption({ key: 'setup_position', value: 'start' }).then(() => {
-                    return Promise.reject({ redirect: 'setup.start' });
-                });
+                return this.redirectUserToStart();
             }
 
             return this.accounts.swap(accountListId, this.current.id).then(() => {
@@ -77,10 +78,18 @@ class Users {
                     });
                 });
             }).catch(() => {
-                return this.setOption({ key: 'setup_position', value: 'start' }).then(() => {
-                    return Promise.reject({ redirect: 'setup.start' });
-                });
+                if (!(has('setup_position', this.currentOptions) && this.currentOptions.setup_position.value === 'connect')) {
+                    return this.redirectUserToStart();
+                } else {
+                    return Promise.reject();
+                }
             });
+        });
+    }
+    redirectUserToStart() {
+        return this.setOption({ key: 'setup_position', value: 'start' }).then(() => {
+            this.$window.localStorage.removeItem(`${this.current.id}_accountListId`);
+            return Promise.reject({ redirect: 'setup.start' });
         });
     }
     configureRollbarPerson(data) {
@@ -137,7 +146,9 @@ class Users {
     }
     setOption(option) {
         return this.api.put({ url: `user/options/${option.key}`, data: option, type: 'user_options' }).then((data) => {
-            this.currentOptions[option.key] = data;
+            if (option && option.key) {
+                this.currentOptions[option.key] = data;
+            }
             return data;
         }); // use jsonapi key here since it doesn't match endpoint
     }
@@ -166,7 +177,9 @@ class Users {
     }
     getKeyAccount() {
         return this.api.get('user/key_accounts').then((data) => {
-            this.current.key_uuid = data[0].remote_id;
+            if (get('remote_id', data[0])) {
+                this.current.key_uuid = data[0].remote_id;
+            }
         });
     }
 }

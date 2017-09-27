@@ -24,7 +24,13 @@ class SetupService {
     hasAccountLists() {
         return this.users.getCurrent(true).then(() => {
             if (this.users.current.account_lists.length === 0) {
-                return this.goConnect();
+                if (this.$state.includes('setup.connect')) {
+                    this.alerts.addAlert(this.gettextCatalog.getString(
+                        'Something went wrong, please try removing your organization accounts and add them again.'
+                    ), 'danger');
+                } else {
+                    return this.goConnect();
+                }
             } else if (this.users.current.account_lists.length === 1) {
                 return this.setDefaultAccountList();
             } else {
