@@ -53,5 +53,16 @@ describe('contacts.sidebar.tags.add.controller', () => {
                 done();
             });
         });
+        it('should hide', (done) => {
+            $ctrl.tags = [];
+            spyOn(api, 'post').and.callFake(() => Promise.resolve());
+            spyOn(rootScope, '$emit').and.callFake(() => {});
+            spyOn(contactsTags, 'addTag').and.callFake(() => {});
+            spyOn(scope, '$hide').and.callFake(() => {});
+            $ctrl.save('a').then(() => {
+                expect(scope.$hide).toHaveBeenCalledWith();
+                done();
+            });
+        });
     });
 });
