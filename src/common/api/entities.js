@@ -50,7 +50,7 @@ export class EntityAttributes {
                 attributes: [
                     'account_list', 'amount', 'contacts', 'created_at', 'currencies', 'description', 'donations',
                     'end_date', 'name', 'total_currency', 'contact_statuses', 'contact_tags', 'contact_exclude',
-                    'tag_list', 'updated_at'
+                    'tag_list', 'updated_at', 'inclusion_filter', 'exclusion_filter'
                 ],
                 account_list: { ref: 'id' }
             },

@@ -48,7 +48,6 @@ describe('tools.appeals.show.component', () => {
             spyOn($ctrl, 'getCurrencyFromCode').and.callFake(() => currency);
             spyOn($ctrl, 'sumDonations').and.callFake(() => 30);
             spyOn($ctrl, 'fixPledgeAmount').and.callFake((data) => data);
-            // spyOn($ctrl, 'mutateDonations').and.callFake(() => []);
             spyOn($ctrl, 'getContactsNotGiven').and.callFake(() => ['b']);
         });
         it('should change state on account list change', () => {
@@ -80,7 +79,7 @@ describe('tools.appeals.show.component', () => {
         it('should get fix pledge amounts', () => {
             $ctrl.$onInit();
             expect($ctrl.contactsData).toEqual(contactsData);
-            expect($ctrl.fixPledgeAmount).toHaveBeenCalledWith(contactsData.contacts);
+            expect($ctrl.fixPledgeAmount).toHaveBeenCalledWith(contactsData);
         });
         it('should append to the appeal', () => {
             $ctrl.$onInit();
@@ -104,6 +103,42 @@ describe('tools.appeals.show.component', () => {
             scope.$emit('accountListUpdated');
             scope.$digest();
             expect(state.go).not.toHaveBeenCalled();
+        });
+    });
+    describe('mutatePledges', () => {
+        it('should mutate pledge data', () => {
+            const pledges = [{
+                id: 1,
+                contact: {
+                    id: 12,
+                    name: 'a',
+                    pledge_amount: 2,
+                    pledge_currency: 'USD'
+                },
+                amount: 50,
+                expected_date: '2015-05-12',
+                donations: [{ donation_date: '5-11-2015' }]
+            }];
+            $ctrl.mutatePledges(pledges);
+            expect($ctrl.viewData).toEqual({
+                given_to_appeal: {
+                    12: {
+                        id: 1,
+                        contactId: 12,
+                        name: 'a',
+                        commitment: '2.00',
+                        commitmentCurrency: 'USD',
+                        amount: '50.00',
+                        expectedDate: '2015-05-12',
+                        donationDate: '5-11-2015'
+                    }
+                }
+            });
+        });
+    });
+    describe('combineAmounts', () => {
+        it('should combine the donation and pledge amount', () => {
+            expect($ctrl.combineAmounts({ amount: 50, contact: { id: 1 } }, { 1: { donationAmount: 50 } })).toEqual('100.00');
         });
     });
     describe('changeGoal', () => {
@@ -364,6 +399,24 @@ describe('tools.appeals.show.component', () => {
             $ctrl.appeal = { id: 1, name: 'a' };
             $ctrl.removeDonation({ id: 123 }).then(() => {
                 expect(donations.delete).toHaveBeenCalledWith({ id: 123 });
+                done();
+            });
+        });
+    });
+    describe('removeCommitment', () => {
+        it('should open confirm modal', () => {
+            spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
+            $ctrl.appeal = { id: 1, name: 'a' };
+            $ctrl.removeCommitment({ id: 123 });
+            expect($ctrl.gettext).toHaveBeenCalledWith('Are you sure you wish to remove this commitment?');
+            expect(modal.confirm).toHaveBeenCalledWith('Are you sure you wish to remove this commitment?');
+        });
+        it('should delete donation', (done) => {
+            spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            $ctrl.appeal = { id: 1, name: 'a' };
+            $ctrl.removeCommitment({ id: 123 }).then(() => {
+                expect(api.delete).toHaveBeenCalledWith(`account_lists/${api.account_list_id}/pledges/123`);
                 done();
             });
         });
