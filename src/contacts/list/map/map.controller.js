@@ -102,7 +102,6 @@ class MapContactsController {
             data: {
                 filter: this.contacts.buildFilterParams(),
                 fields: {
-                    addresses: 'geo,primary_mailing_address',
                     contacts: 'addresses,name,status'
                 },
                 include: 'addresses',

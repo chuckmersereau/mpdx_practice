@@ -10,11 +10,10 @@ import config from 'config';
 
 class Users {
     constructor(
-        $log, $q, $rootScope, $state, $window, Rollbar,
+        $log, $rootScope, $state, $window, Rollbar,
         accounts, api, help, language, locale
     ) {
         this.$log = $log;
-        this.$q = $q;
         this.$rootScope = $rootScope;
         this.$state = $state;
         this.$window = $window;
@@ -27,7 +26,7 @@ class Users {
 
         this.current = null;
         this.currentInitialState = {};
-        this.currentOptions = null;
+        this.currentOptions = {};
         this.defaultIncludes = 'account_lists,email_addresses';
         this.defaultFields = {
             user: 'account_lists,email_addresses,first_name,last_name,options,preferences',
@@ -39,16 +38,19 @@ class Users {
     }
     getCurrent(reset = false, forRouting = false) {
         if (this.current && !reset) {
-            return this.getOptions(reset, forRouting).then(() => {
+            return this.getOptions(false, forRouting).then(() => {
                 return this.current;
             });
         }
-        return this.api.get('user', { include: this.defaultIncludes, fields: this.defaultFields }).then((response) => {
-            this.current = response;
-            this.currentInitialState = angular.copy(this.current);
-            this.$log.debug('current user: ', response);
+        return this.api.get('user', { include: this.defaultIncludes, fields: this.defaultFields }).then((data) => {
+            this.current = data;
 
-            this.configureRollbarPerson(response);
+            /* istanbul ignore next */
+            this.$log.debug('current user: ', this.current);
+
+            this.currentInitialState = angular.copy(this.current);
+
+            this.configureRollbarPerson(this.current);
             this.help.updateUser(this.current);
 
             if (reset) {
@@ -57,16 +59,16 @@ class Users {
                 });
             }
 
-            const localeDisplay = get('preferences.locale_display', response) || 'en-en';
+            const localeDisplay = get('preferences.locale_display', this.current) || 'en-en';
             this.locale.change(localeDisplay);
-            const locale = get('preferences.locale', response) || 'en-us';
+            const locale = get('preferences.locale', this.current) || 'en-us';
             this.language.change(locale);
 
-            const defaultAccountList = toString(get('preferences.default_account_list', response));
+            const defaultAccountList = toString(get('preferences.default_account_list', this.current));
             const accountListId = this.$window.localStorage.getItem(`${this.current.id}_accountListId`) || defaultAccountList;
 
             if (!accountListId) {
-                return this.$q.reject({ redirect: 'setup.account' });
+                return this.redirectUserToStart();
             }
 
             return this.accounts.swap(accountListId, this.current.id).then(() => {
@@ -75,7 +77,19 @@ class Users {
                         return this.current;
                     });
                 });
+            }).catch(() => {
+                if (!(has('setup_position', this.currentOptions) && this.currentOptions.setup_position.value === 'connect')) {
+                    return this.redirectUserToStart();
+                } else {
+                    return Promise.reject();
+                }
             });
+        });
+    }
+    redirectUserToStart() {
+        return this.setOption({ key: 'setup_position', value: 'start' }).then(() => {
+            this.$window.localStorage.removeItem(`${this.current.id}_accountListId`);
+            return Promise.reject({ redirect: 'setup.start' });
         });
     }
     configureRollbarPerson(data) {
@@ -97,7 +111,7 @@ class Users {
     }
     getOptions(reset = false, forRouting = false) {
         if (this.currentOptions && !reset) {
-            return this.$q.resolve();
+            return Promise.resolve();
         }
         return this.api.get('user/options').then((data) => {
             this.currentOptions = this.mapOptions(data);
@@ -106,11 +120,10 @@ class Users {
                 if (!has('setup_position', this.currentOptions)) { // force first time setup
                     return this.createOption('setup_position', 'start').then((pos) => {
                         this.currentOptions.setup_position = pos;
-                        //  = this.mapOptions(data);
-                        return this.$q.reject({ redirect: 'setup.start' });
+                        return Promise.reject({ redirect: 'setup.start' });
                     });
                 } else if (this.currentOptions.setup_position.value !== '') {
-                    return this.$q.reject({ redirect: `setup.${this.currentOptions.setup_position.value}` });
+                    return Promise.reject({ redirect: `setup.${this.currentOptions.setup_position.value}` });
                 }
             }
             return this.currentOptions;
@@ -133,7 +146,9 @@ class Users {
     }
     setOption(option) {
         return this.api.put({ url: `user/options/${option.key}`, data: option, type: 'user_options' }).then((data) => {
-            this.currentOptions[option.key] = data;
+            if (option && option.key) {
+                this.currentOptions[option.key] = data;
+            }
             return data;
         }); // use jsonapi key here since it doesn't match endpoint
     }
@@ -154,7 +169,7 @@ class Users {
         const patch = createPatch(this.currentInitialState, this.current);
         this.$log.debug('user patch', patch);
         if (keys(patch).length < 2) {
-            return this.$q.resolve(this.current);
+            return Promise.resolve(this.current);
         }
         return this.api.put('user', patch).then(() => {
             return this.getCurrent(true); // force reload to reconcile as put response is incomplete
@@ -162,7 +177,9 @@ class Users {
     }
     getKeyAccount() {
         return this.api.get('user/key_accounts').then((data) => {
-            this.current.key_uuid = data[0].remote_id;
+            if (get('remote_id', data[0])) {
+                this.current.key_uuid = data[0].remote_id;
+            }
         });
     }
 }

@@ -50,7 +50,7 @@ describe('contacts.service', () => {
         it('should mapUnderscore organizations_attributes', () => {
             expect(serverConstants.handleSpecialKeys('organizations_attributes', { a_r: {} })).toEqual({ 'a-r': {} });
         });
-        it('should mapFreqencies pledge_frequency_hashes', () => {
+        it('should mapFrequencies pledge_frequency_hashes', () => {
             expect(serverConstants.handleSpecialKeys('pledge_frequency_hashes', [{ key: '1.1' }])).toEqual([{ key: 1.1 }]);
         });
     });
@@ -62,6 +62,24 @@ describe('contacts.service', () => {
                 ]
             };
             expect(serverConstants.getPledgeFrequency('1')).toEqual({ key: 1, value: 'a' });
+        });
+    });
+    describe('getPledgeFrequencyValue', () => {
+        it('should return a pledge frequency value', () => {
+            serverConstants.data = {
+                pledge_frequency_hashes: [
+                    { key: 1, value: 'a' }
+                ]
+            };
+            expect(serverConstants.getPledgeFrequencyValue('1')).toEqual('a');
+        });
+        it('should handle nulls', () => {
+            serverConstants.data = {
+                pledge_frequency_hashes: [
+                    { key: 1, value: 'a' }
+                ]
+            };
+            expect(serverConstants.getPledgeFrequencyValue('2')).toBeUndefined();
         });
     });
 });
