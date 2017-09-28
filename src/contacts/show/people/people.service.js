@@ -183,14 +183,15 @@ class PersonService {
             type: 'people'
         });
     }
-    openPeopleModal(contact, personId) {
+    openPeopleModal(contact, personId, userProfile = false) {
         const modalOpen = (contact, person) => {
             return this.modal.open({
                 template: require('./modal/modal.html'),
                 controller: 'personModalController',
                 locals: {
                     contact: contact,
-                    person: person
+                    person: person,
+                    userProfile: userProfile
                 }
             });
         };

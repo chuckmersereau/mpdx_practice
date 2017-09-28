@@ -1,23 +1,48 @@
 class ContactPersonController {
     constructor(
-        $sce,
+        $rootScope, $sce,
         gettextCatalog,
         people
     ) {
+        this.$rootScope = $rootScope;
         this.$sce = $sce;
         this.people = people;
 
         this.translatedLocations = {
+            fax: gettextCatalog.getString('Fax'),
             home: gettextCatalog.getString('Home'),
             mobile: gettextCatalog.getString('Mobile'),
-            work: gettextCatalog.getString('Work'),
-            fax: gettextCatalog.getString('Fax'),
-            other: gettextCatalog.getString('Other')
+            other: gettextCatalog.getString('Other'),
+            personal: gettextCatalog.getString('Personal'),
+            work: gettextCatalog.getString('Work')
         };
     }
 
+    $onInit() {
+        this.watcher1 = this.$rootScope.$on('personUpdated', (event, personId) => {
+            if (this.person.id === personId) {
+                this.people.get(personId).then((person) => {
+                    this.person = person;
+                });
+            }
+        });
+
+        this.watcher2 = this.$rootScope.$on('peopleMerged', (event, personId) => {
+            if (this.person.id === personId) {
+                this.people.get(personId).then((person) => {
+                    this.person = person;
+                });
+            }
+        });
+    }
+
+    $onDestroy() {
+        this.watcher1();
+        this.watcher2();
+    }
+
     openModal() {
-        return this.people.openPeopleModal(this.contact, this.person.id);
+        return this.people.openPeopleModal(this.contact, this.person.id, this.userProfile);
     }
 
     selectCard() {
@@ -44,6 +69,7 @@ const Person = {
         isMerging: '<',
         onSelectPerson: '&',
         onPrimary: '&',
+        userProfile: '@',
         view: '<'
     }
 };

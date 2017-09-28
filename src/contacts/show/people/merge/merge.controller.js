@@ -19,12 +19,14 @@ class MergePeopleModalController {
     }
     save() {
         const selectedPeople = reject({ id: this.selectedPerson }, this.selectedPeople);
+        let loserIds = [];
         const selectedPeopleToMerge = map((person) => {
+            loserIds.push(person.id);
             return { winner_id: this.selectedPerson, loser_id: person.id };
         }, selectedPeople);
 
         return this.people.bulkMerge(selectedPeopleToMerge).then(() => {
-            this.$rootScope.$emit('personUpdated');
+            this.$rootScope.$emit('peopleMerged', this.selectedPerson, loserIds);
         }).then(() => {
             this.$scope.$hide();
         }).catch((err) => {

@@ -94,7 +94,7 @@
                                     <a type="button" class="btn btn-default btn-xs" ng-click="$ctrl.addEmailAddress()">
                                         <i class="fa fa-plus-circle"></i> <translate>Add Email</translate>
                                     </a>
-                                    <label class="checkbox-label pull-right" for="optout_enewsletter">
+                                    <label class="checkbox-label pull-right" for="optout_enewsletter" ng-if="::!$ctrl.userProfile">
                                         <input class="form-control" type="checkbox" id="optout_enewsletter" ng-model="$ctrl.person.optout_enewsletter" />
                                         &nbsp;
                                         <translate>Opt-out of Email Newsletter</translate>
@@ -130,7 +130,7 @@
                                     <input bs-datepicker id="anniversary" ng-model="$ctrl.person.anniversary" data-date-format="{{$ctrl.locale.dateTimeFormat}}" data-autoclose="1" class="form-control">
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row" ng-if="::!$ctrl.userProfile">
                                 <div class="col-md-12">
                                     <div><label class="block">&nbsp;</label></div>
                                     <label class="checkbox-label" for="deceased">

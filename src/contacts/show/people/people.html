@@ -24,7 +24,7 @@
     <h3 translate>No people associated with this contact</h3>
     <a ng-click="$ctrl.newPerson()" class="btn btn-default" translate>Add New Person</a>
 </div>
-<div class="row people-row">
+<div class="row people-row mb-2">
     <div class="col-sm-6" ng-repeat="remainder in [0,1]">
         <contact-person is-merging="$ctrl.isMerging"
                         ng-repeat="person in $ctrl.data track by person.id"
