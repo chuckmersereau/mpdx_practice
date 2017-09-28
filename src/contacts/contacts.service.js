@@ -7,7 +7,6 @@ import isArray from 'lodash/fp/isArray';
 import isEqual from 'lodash/fp/isEqual';
 import isFunction from 'lodash/fp/isFunction';
 import isNil from 'lodash/fp/isNil';
-import isNilOrEmpty from 'common/fp/isNilOrEmpty';
 import map from 'lodash/fp/map';
 import omitBy from 'lodash/fp/omitBy';
 import pull from 'lodash/fp/pull';
@@ -17,7 +16,6 @@ import relationshipId from '../common/fp/relationshipId';
 import reduce from 'lodash/fp/reduce';
 import reduceObject from '../common/fp/reduceObject';
 import emptyToNull from '../common/fp/emptyToNull';
-import moment from 'moment';
 
 class ContactsService {
     constructor(
@@ -35,7 +33,6 @@ class ContactsService {
         this.modal = modal;
         this.serverConstants = serverConstants;
 
-        this.analytics = null;
         this.current = null;
         this.selectedContacts = [];
     }
@@ -191,105 +188,6 @@ class ContactsService {
             concat(result, assign({ id: contact.id }, model))
             , [], contacts);
         return this.bulkSave(contacts);
-    }
-    getAnalytics(reset = false) {
-        if (this.analytics && !reset) {
-            return Promise.resolve(this.analytics);
-        }
-        return this.api.get({
-            url: 'contacts/analytics',
-            data: {
-                include:
-                'anniversaries_this_week,'
-                + 'anniversaries_this_week.people,'
-                + 'anniversaries_this_week.people.facebook_accounts,'
-                + 'anniversaries_this_week.people.twitter_accounts,'
-                + 'anniversaries_this_week.people.email_addresses,'
-                + 'birthdays_this_week,'
-                + 'birthdays_this_week.facebook_accounts,'
-                + 'birthdays_this_week.twitter_accounts,'
-                + 'birthdays_this_week.email_addresses',
-                fields: {
-                    contacts: 'people',
-                    people: 'anniversary_day,anniversary_month,anniversary_year,birthday_day,birthday_month,birthday_year,facebook_accounts,first_name,last_name,twitter_accounts,email_addresses,parent_contact',
-                    email_addresses: 'email,primary',
-                    facebook_accounts: 'username',
-                    twitter_accounts: 'screen_name'
-                },
-                filter: { account_list_id: this.api.account_list_id }
-            },
-            deSerializationOptions: relationshipId('parent_contact'), // for parent_contact
-            beforeDeserializationTransform: (data) => {
-                // this avoids infinite recursion between people & contacts
-                return reduceObject((result, value, key) => {
-                    if (key === 'included') {
-                        result[key] = reduce((dataResult, dataValue) => {
-                            if (has('relationships.parent_contact.data.type', dataValue)) {
-                                dataValue.relationships.parent_contact.data.type = 'parent_contact';
-                            }
-                            if (dataValue.type === 'contacts') {
-                                // duplicate contact include for parent_contact type
-                                dataResult = concat(dataResult, {
-                                    id: dataValue.id,
-                                    type: 'parent_contact'
-                                });
-                            }
-                            return concat(dataResult, dataValue);
-                        }, [], value);
-                    } else {
-                        result[key] = value;
-                    }
-                    return result;
-                }, {}, data);
-            },
-            overrideGetAsPost: true
-        }).then((data) => {
-            /* istanbul ignore next */
-            this.$log.debug('contacts/analytics', data);
-            data.birthdays_this_week = reduce((result, birthday) => {
-                if (isNil(birthday)) {
-                    return result;
-                }
-                if (
-                    !isNilOrEmpty(birthday.birthday_year)
-                    && !isNilOrEmpty(birthday.birthday_month)
-                    && !isNilOrEmpty(birthday.birthday_day)
-                    && birthday.birthday_year > 1800
-                ) {
-                    birthday.birthday_date = moment()
-                        .year(birthday.birthday_year)
-                        .month(birthday.birthday_month - 1)
-                        .date(birthday.birthday_day)
-                        .toDate();
-                    return concat(result, birthday);
-                }
-                return result;
-            }, [], data.birthdays_this_week);
-            data.anniversaries_this_week = reduce((result, anniversary) => {
-                if (isNil(anniversary)) {
-                    return result;
-                }
-                anniversary.people = reduce((iresult, person) => {
-                    if (
-                        !isNilOrEmpty(person.anniversary_year)
-                        && !isNilOrEmpty(person.anniversary_month)
-                        && !isNilOrEmpty(person.anniversary_day)
-                        && person.anniversary_year > 1800
-                    ) {
-                        person.anniversary_date = moment()
-                            .year(person.anniversary_year)
-                            .month(person.anniversary_month - 1)
-                            .date(person.anniversary_day)
-                            .toDate();
-                        return concat(iresult, person);
-                    }
-                    return iresult;
-                }, [], anniversary.people);
-                return anniversary.people.length > 0 ? concat(result, anniversary) : result;
-            }, [], data.anniversaries_this_week);
-            this.analytics = data;
-            return this.analytics;
-        });
     }
     merge(winnersAndLosers) {
         return this.api.post({ url: 'contacts/merges/bulk', data: winnersAndLosers, type: 'contacts' }).then((data) => {

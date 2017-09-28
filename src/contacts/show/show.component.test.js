@@ -2,7 +2,7 @@ import component from './show.component';
 import assign from 'lodash/fp/assign';
 
 describe('contacts.show.component', () => {
-    let $ctrl, contacts, rootScope, scope, componentController, api, alerts, gettextCatalog, state, tasks;
+    let $ctrl, contacts, rootScope, scope, componentController, api, alerts, gettextCatalog, state, tasks, contactsTags;
     beforeEach(() => {
         angular.mock.module(component);
         inject((
@@ -14,6 +14,7 @@ describe('contacts.show.component', () => {
             alerts = _alerts_;
             api = _api_;
             contacts = _contacts_;
+            contactsTags = _contactsTags_;
             gettextCatalog = _gettextCatalog_;
             state = $state;
             tasks = _tasks_;
@@ -86,6 +87,7 @@ describe('contacts.show.component', () => {
             contacts.current = { id: 1, name: 'a' };
             contacts.initialState = { id: 1 };
             spyOn(rootScope, '$emit').and.callFake(() => Promise.resolve());
+            spyOn(contactsTags, 'addTag').and.callFake(() => {});
         });
         it('should call save', () => {
             spyOn(contacts, 'save').and.callFake(() => Promise.resolve());
@@ -112,6 +114,7 @@ describe('contacts.show.component', () => {
             spyOn(contacts, 'save').and.callFake(() => Promise.resolve());
             $ctrl.save().then(() => {
                 expect(rootScope.$emit).toHaveBeenCalledWith('contactTagsAdded', { tags: ['a', 'b'] });
+                expect(contactsTags.addTag).toHaveBeenCalledWith({ tags: ['a', 'b'] });
                 done();
             });
         });

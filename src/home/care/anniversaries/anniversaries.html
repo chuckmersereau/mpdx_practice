@@ -1,6 +1,6 @@
 <h4 class="title" translate>Anniversaries This Week</h4>
-<ul class="list-unstyled" ng-if="$ctrl.contacts.analytics.anniversaries_this_week.length">
-    <li ng-repeat="contact in $ctrl.contacts.analytics.anniversaries_this_week | orderBy : $ctrl.partialDateSort | limitTo: $ctrl.limit">
+<ul class="list-unstyled" ng-if="$ctrl.anniversaries_this_week.length">
+    <li ng-repeat="contact in $ctrl.anniversaries_this_week | orderBy : $ctrl.partialDateSort | limitTo: $ctrl.limit">
         <span ng-repeat="person in contact.people track by person.id">
             <span ng-if="$index === 0">{{ person.anniversary_date | date: $ctrl.locale.dateTimeFormat }}</span>
             <a ui-sref="contacts.show({ contactId: contact.id })">{{person.first_name}} {{person.last_name}}</a>
@@ -9,13 +9,13 @@
             <email-link ng-repeat="email in person.email_addresses" ng-if="email.primary" email-address="email"></email-link>
         </span>
     </li>
-    <li ng-if="$ctrl.contacts.analytics.anniversaries_this_week.length > $ctrl.limit">
-        <a ng-click="$ctrl.limit = $ctrl.contacts.analytics.anniversaries_this_week.length">
+    <li ng-if="$ctrl.anniversaries_this_week.length > $ctrl.limit">
+        <a ng-click="$ctrl.limit = $ctrl.anniversaries_this_week.length">
             <i class="fa fa-plus-square-o"></i>
-            <translate translate-n="$ctrl.contacts.analytics.anniversaries_this_week.length" translate-plural="See all {{ $count }} Anniversaries">See 1 Anniversary</translate>
+            <translate translate-n="$ctrl.anniversaries_this_week.length" translate-plural="See all {{ $count }} Anniversaries">See 1 Anniversary</translate>
         </a>
     </li>
 </ul>
-<p ng-if="$ctrl.contacts.analytics.anniversaries_this_week.length === 0" translate>
+<p ng-if="$ctrl.anniversaries_this_week.length === 0" translate>
     No anniversaries this week
 </p>

@@ -29,4 +29,11 @@ describe('contacts.service', () => {
             });
         });
     });
+    describe('addTag', () => {
+        it('should add a tag to data', () => {
+            contactsTags.data = [{ name: 'a' }];
+            contactsTags.addTag({ tags: ['b'] });
+            expect(contactsTags.data[1].name).toEqual('b');
+        });
+    });
 });
