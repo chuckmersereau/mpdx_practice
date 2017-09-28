@@ -44,5 +44,10 @@ describe('common.language', () => {
             expect(gettextCatalog.loadRemote).toHaveBeenCalledWith('locale/fr-CA-undefined.json');
             expect(gettextCatalog.setCurrentLanguage).toHaveBeenCalledWith('fr_ca');
         });
+        it('should handle pt-br', () => {
+            language.change('pt-br');
+            expect(gettextCatalog.loadRemote).toHaveBeenCalledWith('locale/pt-BR-undefined.json');
+            expect(gettextCatalog.setCurrentLanguage).toHaveBeenCalledWith('pt_br');
+        });
     });
 });
