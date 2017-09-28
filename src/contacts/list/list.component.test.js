@@ -76,7 +76,6 @@ describe('contacts.list.component', () => {
                 rootScope.$digest();
                 expect($ctrl.load).toHaveBeenCalledWith();
             });
-            // xit until fix org_accounts accountListUpdated to not fire in service
             it('should fire contacts.load on accountListUpdated', () => {
                 rootScope.$emit('accountListUpdated');
                 rootScope.$digest();
@@ -100,6 +99,45 @@ describe('contacts.list.component', () => {
                 rootScope.$digest();
                 expect(contacts.clearSelectedContacts).toHaveBeenCalled();
             });
+            it('should clear contacts on contactTagDeleted', () => {
+                rootScope.$emit('contactTagDeleted');
+                rootScope.$digest();
+                expect(contacts.clearSelectedContacts).toHaveBeenCalled();
+            });
+            it('should clear contacts on taskAdded', () => {
+                rootScope.$emit('taskAdded');
+                rootScope.$digest();
+                expect(contacts.clearSelectedContacts).toHaveBeenCalled();
+            });
+            it('should clear contacts on taskLogged', () => {
+                rootScope.$emit('taskLogged');
+                rootScope.$digest();
+                expect(contacts.clearSelectedContacts).toHaveBeenCalled();
+            });
+        });
+    });
+    describe('$onDestroy', () => {
+        beforeEach(() => {
+            $ctrl.$onInit();
+        });
+        it('should remove watchers', () => {
+            spyOn($ctrl, 'watcher').and.callFake(() => {});
+            spyOn($ctrl, 'watcher2').and.callFake(() => {});
+            spyOn($ctrl, 'watcher3').and.callFake(() => {});
+            spyOn($ctrl, 'watcher4').and.callFake(() => {});
+            spyOn($ctrl, 'watcher5').and.callFake(() => {});
+            spyOn($ctrl, 'watcher6').and.callFake(() => {});
+            spyOn($ctrl, 'watcher7').and.callFake(() => {});
+            spyOn($ctrl, 'watcher8').and.callFake(() => {});
+            $ctrl.$onDestroy();
+            expect($ctrl.watcher).toHaveBeenCalledWith();
+            expect($ctrl.watcher2).toHaveBeenCalledWith();
+            expect($ctrl.watcher3).toHaveBeenCalledWith();
+            expect($ctrl.watcher4).toHaveBeenCalledWith();
+            expect($ctrl.watcher5).toHaveBeenCalledWith();
+            expect($ctrl.watcher6).toHaveBeenCalledWith();
+            expect($ctrl.watcher7).toHaveBeenCalledWith();
+            expect($ctrl.watcher8).toHaveBeenCalledWith();
         });
     });
     describe('loadMoreContacts', () => {
