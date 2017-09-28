@@ -55,13 +55,12 @@ class AppealController {
         this.contactsData = this.fixPledgeAmount(this.contactsData);
         this.appeal = assign(this.data, {
             amount: fixed(2, defaultTo(0, this.data.amount))
-            // donations: this.mutateDonations(this.data.donations, this.contactsData.contacts)
         });
 
         this.mutatePledges(this.pledges);
         this.$log.debug('viewData', this.viewData);
 
-        this.contactsNotGiven = this.getContactsNotGiven(this.contactsData);// , this.appeal.donations);
+        this.contactsNotGiven = this.getContactsNotGiven(this.contactsData);
 
         this.disableAccountListEvent = this.$rootScope.$on('accountListUpdated', () => {
             this.$state.go('tools.appeals');
@@ -144,7 +143,6 @@ class AppealController {
         });
     }
     contactSearch(keyword) {
-        // api missing exclude capability
         return this.api.get({
             url: 'contacts',
             data: {
@@ -333,9 +331,9 @@ class AppealController {
     getExcludedContacts(page = 1) {
         return this.api.get(`appeals/${this.appeal.id}/excluded_appeal_contacts`, {
             include: 'contact',
-            // fields: {
-            //     contact: 'name,pledge_amount,pledge_currency,pledge_frequency'
-            // },
+            fields: {
+                contact: 'name,pledge_amount,pledge_currency,pledge_frequency'
+            },
             per_page: 20,
             page: page // ,
             // sort: 'contact.name'
