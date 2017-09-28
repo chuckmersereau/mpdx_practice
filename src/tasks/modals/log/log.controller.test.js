@@ -9,10 +9,11 @@ let contactList = [];
 const defaultTask = { completed: true };
 
 describe('tasks.modals.log.controller', () => {
-    let $ctrl, controller, contacts, tasks, scope, state;
+    let $ctrl, controller, contacts, tasks, scope, state, rootScope;
     beforeEach(() => {
         angular.mock.module(log);
         inject(($controller, $rootScope, _contacts_, _tasks_, $state) => {
+            rootScope = $rootScope;
             scope = $rootScope.$new();
             state = $state;
             contacts = _contacts_;
@@ -111,6 +112,7 @@ describe('tasks.modals.log.controller', () => {
             spyOn(contacts, 'bulkSave').and.callFake(() => Promise.resolve({}));
             scope.$hide = () => {};
             spyOn(scope, '$hide');
+            spyOn(rootScope, '$emit').and.callFake(() => {});
         });
         it('should create a task', () => {
             $ctrl.save();
@@ -138,6 +140,12 @@ describe('tasks.modals.log.controller', () => {
                     task: $ctrl.task,
                     comments: [$ctrl.comment]
                 });
+                done();
+            });
+        });
+        it('should emit when finished', (done) => {
+            $ctrl.save().then(() => {
+                expect(rootScope.$emit).toHaveBeenCalledWith('taskLogged');
                 done();
             });
         });
