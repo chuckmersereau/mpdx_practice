@@ -56,42 +56,50 @@ describe('contacts.list.component', () => {
     });
     describe('$onInit', () => {
         beforeEach(() => {
-            spyOn($ctrl, 'load').and.callFake(() => new Promise((resolve) => resolve));
+            spyOn($ctrl, 'load').and.callFake(() => Promise.resolve());
+        });
+        afterEach(() => {
+            $ctrl.$onDestroy();
         });
         it('should call load', () => {
             $ctrl.$onInit();
             expect($ctrl.load).toHaveBeenCalled();
         });
-    });
-    describe('events', () => {
-        beforeEach(() => {
-            spyOn($ctrl, 'load').and.callFake(() => new Promise((resolve) => resolve));
-            spyOn(contactsTags, 'load').and.callFake(() => Promise.resolve());
-            spyOn(contacts, 'clearSelectedContacts').and.callFake(() => {});
-        });
-        it('should fire contacts.load on contactCreated', () => {
-            rootScope.$emit('contactCreated');
-            scope.$digest();
-            expect($ctrl.load).toHaveBeenCalledWith();
-        });
-        // xit until fix org_accounts accountListUpdated to not fire in service
-        xit('should fire contacts.load on accountListUpdated', () => {
-            rootScope.$emit('accountListUpdated');
-            scope.$digest();
-            expect($ctrl.load).toHaveBeenCalled();
-            expect(contacts.clearSelectedContacts).toHaveBeenCalled();
-        });
-        it('should fire contacts.load on contactsFilterChange', () => {
-            rootScope.$emit('contactsFilterChange');
-            scope.$digest();
-            expect($ctrl.load).toHaveBeenCalledWith();
-            expect(contacts.clearSelectedContacts).toHaveBeenCalled();
-        });
-        it('should fire contacts.load on contactsTagsChange', () => {
-            rootScope.$emit('contactsTagsChange');
-            scope.$digest();
-            expect($ctrl.load).toHaveBeenCalledWith();
-            expect(contacts.clearSelectedContacts).toHaveBeenCalled();
+        describe('events', () => {
+            beforeEach(() => {
+                $ctrl.$onInit();
+                spyOn(contactsTags, 'load').and.callFake(() => Promise.resolve());
+                spyOn(contacts, 'clearSelectedContacts').and.callFake(() => {});
+            });
+            it('should fire contacts.load on contactCreated', () => {
+                rootScope.$emit('contactCreated');
+                rootScope.$digest();
+                expect($ctrl.load).toHaveBeenCalledWith();
+            });
+            // xit until fix org_accounts accountListUpdated to not fire in service
+            it('should fire contacts.load on accountListUpdated', () => {
+                rootScope.$emit('accountListUpdated');
+                rootScope.$digest();
+                expect($ctrl.load).toHaveBeenCalled();
+                expect(contacts.clearSelectedContacts).toHaveBeenCalled();
+            });
+            it('should fire contacts.load on contactsFilterChange', () => {
+                rootScope.$emit('contactsFilterChange');
+                rootScope.$digest();
+                expect($ctrl.load).toHaveBeenCalledWith();
+                expect(contacts.clearSelectedContacts).toHaveBeenCalled();
+            });
+            it('should fire contacts.load on contactsTagsChange', () => {
+                rootScope.$emit('contactsTagsChange');
+                rootScope.$digest();
+                expect($ctrl.load).toHaveBeenCalledWith();
+                expect(contacts.clearSelectedContacts).toHaveBeenCalled();
+            });
+            it('should clear contacts on contactTagsAdded', () => {
+                rootScope.$emit('contactTagsAdded');
+                rootScope.$digest();
+                expect(contacts.clearSelectedContacts).toHaveBeenCalled();
+            });
         });
     });
     describe('loadMoreContacts', () => {
