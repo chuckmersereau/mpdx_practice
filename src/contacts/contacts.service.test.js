@@ -1,6 +1,5 @@
 import service from './contacts.service';
 import assign from 'lodash/fp/assign';
-import moment from 'moment';
 
 const accountListId = 123;
 const defaultParams = {};
