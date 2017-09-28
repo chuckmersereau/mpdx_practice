@@ -35,16 +35,18 @@ class AddTagController {
             },
             type: 'tags'
         }).then(() => {
-            const tag = { tags: map('name', tagToAdd), contactIds: this.selectedContacts };
-            this.$rootScope.$emit('contactTagsAdded', tag);
+            const tag = { tags: map((t) => ({ name: t }), tagToAdd), contactIds: this.selectedContacts };
+            this.$rootScope.$emit('contactTagsAdded', tagToAdd);
             this.contactsTags.addTag(tag);
             this.$scope.$hide();
         });
     }
 }
 
+import api from 'common/api/api.service';
+import contacts from 'contacts/contacts.service';
 import contactsTags from '../tags.service';
 
 export default angular.module('mpdxApp.contacts.sidebar.tags.add.controller', [
-    contactsTags
+    api, contacts, contactsTags
 ]).controller('addTagController', AddTagController).name;

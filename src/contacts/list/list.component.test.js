@@ -488,8 +488,10 @@ describe('contacts.list.component', () => {
         it('should hide the contacts from view', (done) => {
             $ctrl.data = [{ id: 1, status: 'Never Ask' }, { id: 1, status: 'Never Ask' }];
             contacts.selectedContacts = [1, 2];
+            spyOn(contacts, 'clearSelectedContacts').and.callFake(() => {});
             $ctrl.bulkHideContacts().then(() => {
                 expect($ctrl.data).toEqual([]);
+                expect(contacts.clearSelectedContacts).toHaveBeenCalledWith();
                 done();
             });
         });
