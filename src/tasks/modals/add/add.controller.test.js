@@ -8,10 +8,11 @@ import union from 'lodash/fp/union';
 let contactList = [];
 
 describe('tasks.modals.add.controller', () => {
-    let $ctrl, controller, contacts, tasks, scope, state;
+    let $ctrl, controller, contacts, tasks, scope, state, rootScope;
     beforeEach(() => {
         angular.mock.module(add);
         inject(($controller, $rootScope, _contacts_, _tasks_, $state, _users_) => {
+            rootScope = $rootScope;
             scope = $rootScope.$new();
             state = $state;
             contacts = _contacts_;
@@ -194,10 +195,17 @@ describe('tasks.modals.add.controller', () => {
             spyOn(tasks, 'create').and.callFake(() => Promise.resolve({}));
             scope.$hide = () => {};
             spyOn(scope, '$hide').and.callThrough();
+            spyOn(rootScope, '$emit').and.callFake(() => {});
         });
         it('should create a task', () => {
             $ctrl.save();
             expect(tasks.create).toHaveBeenCalledWith($ctrl.task, $ctrl.contactsList, $ctrl.comment);
+        });
+        it('should emit when finished', (done) => {
+            $ctrl.save().then(() => {
+                expect(rootScope.$emit).toHaveBeenCalledWith('taskAdded');
+                done();
+            });
         });
         it('should hide the modal when finished', (done) => {
             $ctrl.save().then(() => {
