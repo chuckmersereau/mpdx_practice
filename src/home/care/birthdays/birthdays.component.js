@@ -8,19 +8,25 @@ import reduce from 'lodash/fp/reduce';
 
 class BirthdaysController {
     constructor(
-        $log,
+        $log, $rootScope,
         api, locale
     ) {
         this.$log = $log;
+        this.$rootScope = $rootScope;
         this.api = api;
         this.locale = locale;
 
         this.limit = 5;
     }
     $onInit() {
-        this.getBirthdays().then((data) => {
-            this.birthdays_this_week = data;
+        this.getBirthdaysThisWeek();
+
+        this.watcher = this.$rootScope.$on('accountListUpdated', () => {
+            this.getBirthdaysThisWeek();
         });
+    }
+    $onDestroy() {
+        this.watcher();
     }
     partialDateSort(value) {
         let sortVal = defaultTo(0, get('birthday_month', value)) * 100;
@@ -30,7 +36,7 @@ class BirthdaysController {
         sortVal += defaultTo(0, get('birthday_day', value));
         return parseInt(sortVal);
     }
-    getBirthdays() {
+    getBirthdaysThisWeek() {
         return this.api.get({
             url: 'contacts/analytics',
             data: {
@@ -70,6 +76,7 @@ class BirthdaysController {
                 }
                 return result;
             }, [], data.birthdays_this_week);
+            this.birthdays_this_week = data.birthdays_this_week;
             return data.birthdays_this_week;
         });
     }

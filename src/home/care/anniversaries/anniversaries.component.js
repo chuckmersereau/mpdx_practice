@@ -8,21 +8,27 @@ import reduce from 'lodash/fp/reduce';
 
 class AnniversariesController {
     constructor(
-        $log,
+        $log, $rootScope,
         api, locale
     ) {
         this.$log = $log;
+        this.$rootScope = $rootScope;
         this.api = api;
         this.locale = locale;
 
         this.limit = 5;
     }
     $onInit() {
-        this.getAnniversaries().then((data) => {
-            this.anniversaries_this_week = data;
+        this.getAnniversariesThisWeek();
+
+        this.watcher = this.$rootScope.$on('accountListUpdated', () => {
+            this.getAnniversariesThisWeek();
         });
     }
-    getAnniversaries() {
+    $onDestroy() {
+        this.watcher();
+    }
+    getAnniversariesThisWeek() {
         return this.api.get({
             url: 'contacts/analytics',
             data: {
@@ -67,6 +73,7 @@ class AnniversariesController {
                 }, [], anniversary.people);
                 return anniversary.people.length > 0 ? concat(result, anniversary) : result;
             }, [], data.anniversaries_this_week);
+            this.anniversaries_this_week = data.anniversaries_this_week;
             return data.anniversaries_this_week;
         });
     }

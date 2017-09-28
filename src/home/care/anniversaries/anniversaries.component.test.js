@@ -26,6 +26,30 @@ describe('home.care.anniversaries', () => {
             expect($ctrl.limit).toEqual(5);
         });
     });
+    describe('$onInit', () => {
+        afterEach(() => {
+            $ctrl.$onDestroy();
+        });
+        it('should call getAnniversariesThisWeek', () => {
+            spyOn($ctrl, 'getAnniversariesThisWeek').and.callFake(() => {});
+            $ctrl.$onInit();
+            expect($ctrl.getAnniversariesThisWeek).toHaveBeenCalledWith();
+        });
+        it('should call getAnniversariesThisWeek', () => {
+            spyOn($ctrl, 'getAnniversariesThisWeek').and.callFake(() => {});
+            $ctrl.$onInit();
+            rootScope.$emit('accountListUpdated');
+            expect($ctrl.getAnniversariesThisWeek.calls.count()).toEqual(2);
+        });
+    });
+    describe('$onDestroy', () => {
+        it('should kill the watcher', () => {
+            $ctrl.$onInit();
+            spyOn($ctrl, 'watcher').and.callFake(() => {});
+            $ctrl.$onDestroy();
+            expect($ctrl.watcher).toHaveBeenCalledWith();
+        });
+    });
     describe('partialDateSort', () => {
         beforeEach(function() {
             jasmine.clock().install();
@@ -45,7 +69,7 @@ describe('home.care.anniversaries', () => {
     describe('getAnalytics', () => {
         it('should query the api', () => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve());
-            $ctrl.getAnniversaries();
+            $ctrl.getAnniversariesThisWeek();
             expect(api.get).toHaveBeenCalledWith({
                 url: 'contacts/analytics',
                 data: {
@@ -78,7 +102,7 @@ describe('home.care.anniversaries', () => {
                 }]
             };
             spyOn(api, 'get').and.callFake(() => Promise.resolve(transformable));
-            $ctrl.getAnniversaries().then((data) => {
+            $ctrl.getAnniversariesThisWeek().then((data) => {
                 expect(moment(data[0].people[0].anniversary_date).format('M-D-YYYY')).toEqual('1-1-2015');
                 done();
             });
@@ -93,7 +117,7 @@ describe('home.care.anniversaries', () => {
                 }]
             };
             spyOn(api, 'get').and.callFake(() => Promise.resolve(transformable));
-            $ctrl.getAnniversaries().then((data) => {
+            $ctrl.getAnniversariesThisWeek().then((data) => {
                 expect(data.length).toBe(0);
                 done();
             });
@@ -109,7 +133,7 @@ describe('home.care.anniversaries', () => {
                 }, null]
             };
             spyOn(api, 'get').and.callFake(() => Promise.resolve(transformable));
-            $ctrl.getAnniversaries().then((data) => {
+            $ctrl.getAnniversariesThisWeek().then((data) => {
                 expect(data).toEqual([]);
                 done();
             });
