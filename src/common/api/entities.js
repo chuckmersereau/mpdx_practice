@@ -1,4 +1,24 @@
 // This class provides all of the meta information needed to serialize jsonapi data
+import defaultTo from 'lodash/fp/defaultTo';
+
+export const contactsTypeForAttribute = (key) =>
+    defaultTo(key, {
+        'contacts_referred_by_me': 'contacts',
+        'referred_by': 'contacts',
+        'primary_person': 'people',
+        'contact_referrals_to_me': 'contact_referrals'
+    }[key]);
+
+export const importsTypeForAttribute = (key) =>
+    defaultTo(key, {
+        'sample_contacts': 'contacts',
+        'source_account': 'google_accounts'
+    }[key]);
+
+export const mergeTypeForAttribute = (key) => key === 'account_list_to_merge' ? 'account_lists' : key;
+
+export const peopleTypeForAttribute = (key) => key === 'related_person' ? 'people' : key;
+
 export class EntityAttributes {
     constructor() {
         this.attributes = {
@@ -98,19 +118,7 @@ export class EntityAttributes {
                     attributes: ['referred_by', '_destroy'],
                     contacts: { ref: 'id' }
                 },
-                typeForAttribute: (key) => {
-                    switch (key) {
-                        case 'contacts_referred_by_me':
-                        case 'referred_by':
-                            return 'contacts';
-                        case 'primary_person':
-                            return 'people';
-                        case 'contact_referrals_to_me':
-                            return 'contact_referrals';
-                        default:
-                            return key;
-                    }
-                }
+                typeForAttribute: contactsTypeForAttribute
             },
             donations: {
                 attributes: [
@@ -140,16 +148,7 @@ export class EntityAttributes {
                 ],
                 sample_contacts: { ref: 'id' },
                 source_account: { ref: 'id' },
-                typeForAttribute: (key) => {
-                    switch (key) {
-                        case 'sample_contacts':
-                            return 'contacts';
-                        case 'source_account':
-                            return 'google_accounts';
-                        default:
-                            return key;
-                    }
-                }
+                typeForAttribute: importsTypeForAttribute
             },
             impersonation: {
                 attributes: ['user', 'reason'],
@@ -157,12 +156,7 @@ export class EntityAttributes {
             },
             merge: {
                 attributes: ['account_list_to_merge'],
-                typeForAttribute: (key) => {
-                    if (key === 'account_list_to_merge') {
-                        return 'account_lists';
-                    }
-                    return key;
-                },
+                typeForAttribute: mergeTypeForAttribute,
                 account_list_to_merge: { ref: 'id' },
                 pluralizeType: false
             },
@@ -233,12 +227,7 @@ export class EntityAttributes {
                     ref: 'id',
                     attributes: ['_destroy', 'url', 'primary']
                 },
-                typeForAttribute: (key) => {
-                    if (key === 'related_person') {
-                        return 'people';
-                    }
-                    return key;
-                }
+                typeForAttribute: peopleTypeForAttribute
             },
             resets: {
                 attributes: ['resetted_user_email', 'reason', 'account_list_name']

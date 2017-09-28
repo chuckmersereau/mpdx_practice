@@ -1,4 +1,7 @@
-import { EntityAttributes } from './entities';
+import {
+    contactsTypeForAttribute, EntityAttributes, importsTypeForAttribute, mergeTypeForAttribute,
+    peopleTypeForAttribute
+} from './entities';
 
 describe('EntityAttributes', () => {
     const attributes = new EntityAttributes().attributes;
@@ -272,11 +275,13 @@ describe('EntityAttributes', () => {
         expect(attributes.tags).toEqual({
             attributes: ['name']
         });
-    }); it('should define user_options', () => {
+    });
+    it('should define user_options', () => {
         expect(attributes.user_options).toEqual({
             attributes: ['key', 'value']
         });
-    }); it('should define user', () => {
+    });
+    it('should define user', () => {
         expect(attributes.user).toEqual({
             attributes: [
                 'first_name', 'last_name', 'preferences', 'setup', 'email_addresses', 'access_token', 'time_zone',
@@ -287,9 +292,53 @@ describe('EntityAttributes', () => {
                 attributes: ['email']
             }
         });
-    }); it('should define mail_chimp_account', () => {
+    });
+    it('should define mail_chimp_account', () => {
         expect(attributes.mail_chimp_account).toEqual({
             attributes: ['api_key', 'primary_list_id', 'sync_all_active_contacts', 'auto_log_campaigns']
+        });
+    });
+
+    describe('contactsTypeForAttribute', () => {
+        it('should return contacts', () => {
+            expect(contactsTypeForAttribute('contacts_referred_by_me')).toEqual('contacts');
+            expect(contactsTypeForAttribute('referred_by')).toEqual('contacts');
+        });
+        it('should return people', () => {
+            expect(contactsTypeForAttribute('primary_person')).toEqual('people');
+        });
+        it('should return contact_referrals', () => {
+            expect(contactsTypeForAttribute('contact_referrals_to_me')).toEqual('contact_referrals');
+        });
+        it('should return param', () => {
+            expect(contactsTypeForAttribute('a')).toEqual('a');
+        });
+    });
+    describe('importsTypeForAttribute', () => {
+        it('should return contacts', () => {
+            expect(importsTypeForAttribute('sample_contacts')).toEqual('contacts');
+        });
+        it('should return google_accounts', () => {
+            expect(importsTypeForAttribute('source_account')).toEqual('google_accounts');
+        });
+        it('should return param', () => {
+            expect(importsTypeForAttribute('a')).toEqual('a');
+        });
+    });
+    describe('mergeTypeForAttribute', () => {
+        it('should return contacts', () => {
+            expect(mergeTypeForAttribute('account_list_to_merge')).toEqual('account_lists');
+        });
+        it('should return param', () => {
+            expect(mergeTypeForAttribute('a')).toEqual('a');
+        });
+    });
+    describe('peopleTypeForAttribute', () => {
+        it('should return contacts', () => {
+            expect(peopleTypeForAttribute('related_person')).toEqual('people');
+        });
+        it('should return param', () => {
+            expect(peopleTypeForAttribute('a')).toEqual('a');
         });
     });
 });
