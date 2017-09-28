@@ -79,6 +79,8 @@ describe('tools.fix.commitmentInfo.service', () => {
     describe('load', () => {
         beforeEach(() => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve(apiData));
+            spyOn(fixCommitmentInfo, 'mutateContacts').and.callThrough();
+            spyOn(serverConstants, 'getPledgeFrequencyValue').and.callFake(() => 'a');
         });
 
         it('should return a promise', () => {
@@ -127,16 +129,9 @@ describe('tools.fix.commitmentInfo.service', () => {
                 });
             });
 
-            it('should store data', (done) => {
-                fixCommitmentInfo.load().then((data) => {
-                    expect(data[0].original_pledge_amount).toEqual(apiData[0].pledge_amount);
-                    expect(data[0].original_pledge_currency).toEqual(apiData[0].pledge_currency);
-                    expect(data[0].original_pledge_frequency).toEqual('Monthly');
-                    expect(data[0].original_status).toEqual(apiData[0].status);
-                    expect(data[0].pledge_amount).toEqual(50.0);
-                    expect(data[0].pledge_currency).toEqual(apiData[0].suggested_changes.pledge_currency);
-                    expect(data[0].pledge_frequency).toEqual(apiData[0].suggested_changes.pledge_frequency);
-                    expect(data[0].status).toEqual(apiData[0].suggested_changes.status);
+            it('should mutate contact data', (done) => {
+                fixCommitmentInfo.load().then(() => {
+                    expect(fixCommitmentInfo.mutateContacts).toHaveBeenCalledWith(apiData);
                     done();
                 });
             });
@@ -202,6 +197,21 @@ describe('tools.fix.commitmentInfo.service', () => {
                     });
                 });
             });
+        });
+    });
+
+    describe('mutateContacts', () => {
+        it('should store data', () => {
+            spyOn(serverConstants, 'getPledgeFrequencyValue').and.callFake(() => 'Monthly');
+            const data = fixCommitmentInfo.mutateContacts(apiData);
+            expect(data[0].original_pledge_amount).toEqual(apiData[0].pledge_amount);
+            expect(data[0].original_pledge_currency).toEqual(apiData[0].pledge_currency);
+            expect(data[0].original_pledge_frequency).toEqual('Monthly');
+            expect(data[0].original_status).toEqual(apiData[0].status);
+            expect(data[0].pledge_amount).toEqual(50.0);
+            expect(data[0].pledge_currency).toEqual(apiData[0].suggested_changes.pledge_currency);
+            expect(data[0].pledge_frequency).toEqual(apiData[0].suggested_changes.pledge_frequency);
+            expect(data[0].status).toEqual(apiData[0].suggested_changes.status);
         });
     });
 

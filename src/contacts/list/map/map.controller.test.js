@@ -188,7 +188,6 @@ describe('contacts.list.map.controller', () => {
                     data: {
                         filter: 'bfp',
                         fields: {
-                            addresses: 'geo,primary_mailing_address',
                             contacts: 'addresses,name,status'
                         },
                         include: 'addresses',
