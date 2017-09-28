@@ -31,6 +31,10 @@ class Language {
                 temp = 'fr-CA';
                 language = 'fr_ca';
                 break;
+            case 'pt-br':
+                temp = 'pt-BR';
+                language = 'pt_br';
+                break;
         }
         this.api.language = language;
         this.gettextCatalog.setCurrentLanguage(language);

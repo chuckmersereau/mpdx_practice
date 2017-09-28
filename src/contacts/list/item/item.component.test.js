@@ -11,6 +11,38 @@ describe('contacts.list.item', () => {
             $ctrl = $componentController('contactsListItem', { $scope: scope });
         });
     });
+    describe('$onInit', () => {
+        beforeEach(() => {
+            $ctrl.$onInit();
+        });
+        afterEach(() => {
+            $ctrl.$onDestroy();
+        });
+        it('should handle contactTagDeleted', () => {
+            $ctrl.contact = { id: 1, tag_list: ['a'] };
+            rootScope.$emit('contactTagDeleted', { contactIds: [1], tag: 'a' });
+            rootScope.$digest();
+            expect($ctrl.contact.tag_list).toEqual([]);
+        });
+        it('should handle contactTagsAdded', () => {
+            $ctrl.contact = { id: 1, tag_list: [] };
+            rootScope.$emit('contactTagsAdded', { contactIds: [1], tags: ['a'] });
+            rootScope.$digest();
+            expect($ctrl.contact.tag_list).toEqual(['a']);
+        });
+    });
+    describe('$onDestroy', () => {
+        beforeEach(() => {
+            $ctrl.$onInit();
+        });
+        it('should remove watchers', () => {
+            spyOn($ctrl, 'watcher').and.callFake(() => {});
+            spyOn($ctrl, 'watcher2').and.callFake(() => {});
+            $ctrl.$onDestroy();
+            expect($ctrl.watcher).toHaveBeenCalledWith();
+            expect($ctrl.watcher2).toHaveBeenCalledWith();
+        });
+    });
     describe('daysLate', () => {
         describe('contact late_at 60 days ago', () => {
             beforeEach(() => {
