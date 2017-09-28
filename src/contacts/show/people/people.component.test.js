@@ -4,17 +4,24 @@ describe('contacts.show.people.component', () => {
     let $ctrl, rootScope, scope, componentController, alerts, api, gettextCatalog, people;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _alerts_, _api_, _gettextCatalog_, _people_) => {
+
+        inject((
+            $componentController, $rootScope,
+            _alerts_, _api_, _gettextCatalog_, _people_) => {
+            componentController = $componentController;
             rootScope = $rootScope;
             scope = $rootScope.$new();
-            api = _api_;
-            componentController = $componentController;
+
             alerts = _alerts_;
+            api = _api_;
             gettextCatalog = _gettextCatalog_;
-            api.account_list_id = 1234;
             people = _people_;
+
+            api.account_list_id = 1234;
+
             loadController();
         });
+
         spyOn(alerts, 'addAlert').and.callFake(() => {});
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
@@ -22,38 +29,78 @@ describe('contacts.show.people.component', () => {
     function loadController() {
         $ctrl = componentController('contactPeople', { $scope: scope }, { view: null, selected: null });
     }
+
     describe('constructor', () => {
         it('should have default values', () => {
             expect($ctrl.data).toEqual([]);
             expect($ctrl.isMerging).toBeFalsy();
         });
     });
-    describe('events', () => {
-        beforeEach(() => {
-            spyOn($ctrl, 'init').and.callFake(() => {});
-        });
-        xit('should handle accountListUpdated', () => { // will work once contact tags handles events in component
-            rootScope.$emit('accountListUpdated');
-            rootScope.$digest();
-            expect($ctrl.init).toHaveBeenCalled();
-        });
-        it('should handle personUpdated', () => { // will work once contact tags handles events in component
-            rootScope.$emit('personUpdated');
-            rootScope.$digest();
-            expect($ctrl.init).toHaveBeenCalled();
+
+    describe('$onInit', () => {
+        it('should call people.listAll', () => {
+            spyOn(people, 'listAll').and.callFake(() => {});
+            $ctrl.$onInit();
+            expect(people.listAll).toHaveBeenCalled();
         });
     });
+
+    describe('events', () => {
+        beforeEach(() => $ctrl.$onInit());
+
+        it('should handle accountListUpdated', () => {
+            spyOn($ctrl, 'init').and.callFake(() => {});
+            rootScope.$emit('accountListUpdated');
+            expect($ctrl.init).toHaveBeenCalled();
+        });
+
+        it('should handle personCreated', () => {
+            spyOn(people, 'get').and.callFake(() => Promise.resolve({ id: 123 }));
+            rootScope.$emit('personCreated', 123);
+            expect(people.get).toHaveBeenCalledWith(123);
+        });
+
+        it('should handle personDeleted', () => {
+            $ctrl.data = [{ id: 123 }];
+            rootScope.$emit('personDeleted', 123);
+            expect($ctrl.data).toEqual([]);
+        });
+
+        it('should handle peopleMerged', () => {
+            $ctrl.data = [{ id: 123 }, { id: 234 }];
+            rootScope.$emit('peopleMerged', 123, [234]);
+            expect($ctrl.data).toEqual([{ id: 123 }]);
+        });
+    });
+
+    describe('$onDestroy', () => {
+        it('should destroy watchers', () => {
+            $ctrl.$onInit();
+            spyOn($ctrl, 'watcher1');
+            spyOn($ctrl, 'watcher2');
+            spyOn($ctrl, 'watcher3');
+            spyOn($ctrl, 'watcher4');
+            $ctrl.$onDestroy();
+            expect($ctrl.watcher1).toHaveBeenCalled();
+            expect($ctrl.watcher2).toHaveBeenCalled();
+            expect($ctrl.watcher3).toHaveBeenCalled();
+            expect($ctrl.watcher4).toHaveBeenCalled();
+        });
+    });
+
     describe('init', () => {
         it('should exit if contact is undefined', () => {
             $ctrl.contact = null;
             expect($ctrl.init()).toBeUndefined();
         });
+
         it('should reset data before reloading to trigger rebinding', () => {
             $ctrl.contact = { id: 1 };
             $ctrl.data = [3, 4];
             $ctrl.init();
             expect($ctrl.data).toEqual([]);
         });
+
         it('should get a list of people for a contact', (done) => {
             $ctrl.contact = { id: 1 };
             spyOn(people, 'list').and.callFake(() => Promise.resolve([1, 2]));
@@ -64,6 +111,7 @@ describe('contacts.show.people.component', () => {
             expect(people.list).toHaveBeenCalledWith(1);
         });
     });
+
     describe('openMergeModal', () => {
         it('should display a translated message if at least 2 people aren\'t selected', () => {
             $ctrl.selectedPeople = [1];
@@ -71,6 +119,7 @@ describe('contacts.show.people.component', () => {
             expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
             expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
         });
+
         it('should open the merge modal', (done) => {
             spyOn(people, 'openMergePeopleModal').and.callFake(() => Promise.resolve());
             $ctrl.selectedPeople = [1, 2];
@@ -82,6 +131,7 @@ describe('contacts.show.people.component', () => {
             });
         });
     });
+
     describe('cancelMerge', () => {
         it('should set isMerging to false', () => {
             $ctrl.isMerging = true;

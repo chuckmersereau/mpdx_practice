@@ -1,5 +1,6 @@
 import concat from 'lodash/fp/concat';
 import each from 'lodash/fp/each';
+import filter from 'lodash/fp/filter';
 import has from 'lodash/fp/has';
 import includes from 'lodash/fp/includes';
 import reject from 'lodash/fp/reject';
@@ -19,32 +20,57 @@ class ContactPeopleController {
 
         this.data = [];
         this.isMerging = false;
-
-        $rootScope.$on('accountListUpdated', () => {
-            this.init();
-        });
-
-        $rootScope.$on('personUpdated', () => {
-            this.init();
-        });
     }
+
     $onInit() {
+        this.watcher1 = this.$rootScope.$on('accountListUpdated', () => this.init());
+
+        this.watcher2 = this.$rootScope.$on('personCreated', (event, personId) => {
+            this.people.get(personId).then((person) => {
+                this.data.push(person);
+            });
+        });
+
+        this.watcher3 = this.$rootScope.$on('personDeleted', (event, personId) => {
+            this.data = filter((person) => {
+                return person.id !== personId;
+            }, this.data);
+        });
+
+        this.watcher4 = this.$rootScope.$on('peopleMerged', (event, personId, loserIds) => {
+            this.data = filter((person) => {
+                return !includes(person.id, loserIds);
+            }, this.data);
+        });
+
         this.people.listAll(); // lazy load people so the people modal feels snappy
     }
+
+    $onDestroy() {
+        this.watcher1();
+        this.watcher2();
+        this.watcher3();
+        this.watcher4();
+    }
+
     $onChanges() {
         this.selectedPeople = [];
         this.init();
     }
+
     init() {
         if (!has('contact.id', this)) {
             return;
         }
+
         this.data = [];
+
         return this.people.list(this.contact.id).then((data) => {
             this.$log.debug('selected people: ', data);
             this.data = data;
         });
     }
+
     selectPerson(person) {
         if (includes(person, this.selectedPeople)) {
             person.selected_for_merge = false;
@@ -54,6 +80,7 @@ class ContactPeopleController {
             this.selectedPeople = concat(this.selectedPeople, person);
         }
     }
+
     openMergeModal() {
         if (this.selectedPeople.length < 2) {
             this.alerts.addAlert(this.gettextCatalog.getString('First select at least 2 people to merge'), 'danger');
@@ -64,6 +91,7 @@ class ContactPeopleController {
             });
         }
     }
+
     cancelMerge() {
         this.isMerging = false;
         each((person) => {
@@ -71,6 +99,7 @@ class ContactPeopleController {
         }, this.selectedPeople);
         this.selectedPeople = [];
     }
+
     newPerson() {
         this.people.openPeopleModal(this.contact);
     }

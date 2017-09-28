@@ -27,12 +27,10 @@ class Users {
         this.current = null;
         this.currentInitialState = {};
         this.currentOptions = {};
-        this.defaultIncludes = 'account_lists,email_addresses';
-        this.defaultFields = {
-            user: 'account_lists,email_addresses,first_name,last_name,options,preferences',
-            account_lists: 'name',
-            email_addresses: 'email,primary'
-        };
+        this.defaultIncludes
+            = 'account_lists,email_addresses,facebook_accounts,family_relationships,'
+              + 'family_relationships.related_person,linkedin_accounts,master_person,'
+              + 'phone_numbers,twitter_accounts,websites';
         this.hasAnyUsAccounts = false;
         this.organizationAccounts = [];
     }
@@ -42,7 +40,7 @@ class Users {
                 return this.current;
             });
         }
-        return this.api.get('user', { include: this.defaultIncludes, fields: this.defaultFields }).then((data) => {
+        return this.api.get('user', { include: this.defaultIncludes }).then((data) => {
             this.current = data;
 
             /* istanbul ignore next */

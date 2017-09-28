@@ -33,12 +33,9 @@ describe('common.users.service', () => {
             users.getCurrent();
             expect(api.get).toHaveBeenCalledWith(
                 'user', {
-                    include: 'account_lists,email_addresses',
-                    fields: {
-                        user: 'account_lists,email_addresses,first_name,last_name,options,preferences',
-                        account_lists: 'name',
-                        email_addresses: 'email,primary'
-                    }
+                    include: 'account_lists,email_addresses,facebook_accounts,family_relationships,'
+                      + 'family_relationships.related_person,linkedin_accounts,master_person,'
+                      + 'phone_numbers,twitter_accounts,websites'
                 }
             );
         });
