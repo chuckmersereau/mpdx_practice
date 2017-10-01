@@ -1,19 +1,30 @@
+import reject from 'lodash/fp/reject';
+
 class CommitmentInfoController {
     constructor(
         $rootScope, gettextCatalog, blockUI,
-        modal, fixCommitmentInfo
+        contacts, modal, fixCommitmentInfo
     ) {
+        this.$rootScope = $rootScope;
+        this.contacts = contacts;
         this.gettextCatalog = gettextCatalog;
-        this.blockUI = blockUI.instances.get('fix-commitment-info');
-
         this.modal = modal;
         this.fixCommitmentInfo = fixCommitmentInfo;
 
-        $rootScope.$on('accountListUpdated', () => {
+        this.blockUI = blockUI.instances.get('fix-commitment-info');
+    }
+    $onInit() {
+        this.watcher = this.$rootScope.$on('contactHidden', (e, id) => {
+            this.fixCommitmentInfo.data = reject({ id: id }, this.data);
+        });
+        this.watcher2 = this.$rootScope.$on('accountListUpdated', () => {
             this.load();
         });
     }
-
+    $onDestroy() {
+        this.watcher();
+        this.watcher2();
+    }
     save() {
         const message = this.gettextCatalog.getString(
             `You are updating all visible contacts to the visible Commitment Info.

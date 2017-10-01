@@ -177,6 +177,8 @@ class ContactsService {
             return this.save({
                 id: contact.id,
                 status: 'Never Ask'
+            }).then(() => {
+                this.$rootScope.$emit('contactHidden', contact.id);
             });
         });
     }

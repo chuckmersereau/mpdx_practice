@@ -64,7 +64,6 @@ const Item = {
     template: require('./item.html'),
     bindings: {
         contact: '=',
-        hide: '&',
         selected: '='
     }
 };

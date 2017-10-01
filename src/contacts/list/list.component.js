@@ -73,6 +73,12 @@ class ListController {
             this.contacts.clearSelectedContacts();
         });
 
+        this.watcher9 = this.$rootScope.$on('contactHidden', (e, id) => {
+            this.data = reject({ id: id }, this.data);
+            // handle repagination here (like tasks does)
+            this.contacts.clearSelectedContacts();
+        });
+
         this.watcher6 = this.$rootScope.$on('contactTagDeleted', () => {
             this.contacts.clearSelectedContacts();
         });
@@ -94,6 +100,7 @@ class ListController {
         this.watcher6();
         this.watcher7();
         this.watcher8();
+        this.watcher9();
     }
     loadMoreContacts() {
         if (this.loading || this.page >= this.meta.pagination.total_pages) {

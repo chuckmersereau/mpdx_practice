@@ -81,7 +81,7 @@
             </div>
         </div>
         <div ng-if="$ctrl.data.length > 0 || $ctrl.loading" infinite-scroll="$ctrl.loadMoreContacts()">
-            <contacts-list-item ng-repeat="contact in $ctrl.data track by contact.id" hide="$ctrl.hideContact(contact)"
+            <contacts-list-item ng-repeat="contact in $ctrl.data track by contact.id"
                                 contact="contact"
                                 id="contact_{{::contact.id}}"
                                 data-hook="contact"

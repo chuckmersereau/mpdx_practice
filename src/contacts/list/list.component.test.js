@@ -71,6 +71,9 @@ describe('contacts.list.component', () => {
                 spyOn(contactsTags, 'load').and.callFake(() => Promise.resolve());
                 spyOn(contacts, 'clearSelectedContacts').and.callFake(() => {});
             });
+            afterEach(() => {
+                $ctrl.$onDestroy();
+            });
             it('should fire contacts.load on contactCreated', () => {
                 rootScope.$emit('contactCreated');
                 rootScope.$digest();
@@ -114,6 +117,11 @@ describe('contacts.list.component', () => {
                 rootScope.$digest();
                 expect(contacts.clearSelectedContacts).toHaveBeenCalled();
             });
+            it('should remove contact on contactHidden', () => {
+                $ctrl.data = [{ id: 2 }];
+                rootScope.$emit('contactHidden', 2);
+                expect($ctrl.data).toEqual([]);
+            });
         });
     });
     describe('$onDestroy', () => {
@@ -129,6 +137,7 @@ describe('contacts.list.component', () => {
             spyOn($ctrl, 'watcher6').and.callFake(() => {});
             spyOn($ctrl, 'watcher7').and.callFake(() => {});
             spyOn($ctrl, 'watcher8').and.callFake(() => {});
+            spyOn($ctrl, 'watcher9').and.callFake(() => {});
             $ctrl.$onDestroy();
             expect($ctrl.watcher).toHaveBeenCalledWith();
             expect($ctrl.watcher2).toHaveBeenCalledWith();
@@ -138,6 +147,7 @@ describe('contacts.list.component', () => {
             expect($ctrl.watcher6).toHaveBeenCalledWith();
             expect($ctrl.watcher7).toHaveBeenCalledWith();
             expect($ctrl.watcher8).toHaveBeenCalledWith();
+            expect($ctrl.watcher9).toHaveBeenCalledWith();
         });
     });
     describe('loadMoreContacts', () => {
