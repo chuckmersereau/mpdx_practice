@@ -12,10 +12,10 @@
     <a id="mpd_progress_bar" ui-sref="contacts({ filters: {status: ['Partner - Financial'], pledge_received: 'false' } })"
        data-title="{{ $ctrl.title }}"
        bs-tooltip="tooltip" data-placement="bottom">
-        <div class="bar bar-pledged" ng-style="{ width: $ctrl.reports.goals.pledged_percent + '%' }"></div>
-        <div class="bar bar-received" ng-style="{ width: $ctrl.reports.goals.in_hand_percent + '%' }"></div>
-        <span class="value" ng-class="{ right: $ctrl.reports.goals.in_hand_percent < 60 }">
-          {{ $ctrl.reports.goals.in_hand_percent || '0.0' }}%/{{ $ctrl.reports.goals.pledged_percent || '0.0' }}%
+        <div class="bar bar-pledged" ng-style="{ width: $ctrl.goals.pledged_percent + '%' }"></div>
+        <div class="bar bar-received" ng-style="{ width: $ctrl.goals.in_hand_percent + '%' }"></div>
+        <span class="value" ng-class="{ right: $ctrl.goals.in_hand_percent < 60 }">
+          {{ $ctrl.goals.in_hand_percent || '0.0' }}%/{{ $ctrl.goals.pledged_percent || '0.0' }}%
         </span>
     </a>
 </div>
