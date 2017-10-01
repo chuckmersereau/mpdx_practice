@@ -30,7 +30,8 @@ class CommitmentInfoService {
             {
                 filter: {
                     status_valid: false,
-                    account_list_id: this.api.account_list_id
+                    account_list_id: this.api.account_list_id,
+                    deceased: false
                 },
                 fields: {
                     contact: 'status,pledge_currency,pledge_frequency,pledge_amount,name,avatar,suggested_changes,last_six_donations'

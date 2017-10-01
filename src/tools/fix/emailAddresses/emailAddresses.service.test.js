@@ -45,7 +45,8 @@ describe('tools.fix.emailAddresses.service', () => {
                 {
                     filter: {
                         email_address_valid: false,
-                        account_list_id: api.account_list_id
+                        account_list_id: api.account_list_id,
+                        deceased: false
                     },
                     fields: {
                         person: 'first_name,last_name,avatar,email_addresses,parent_contacts'

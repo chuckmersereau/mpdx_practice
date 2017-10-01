@@ -30,7 +30,8 @@ class AddressesService {
             {
                 filter: {
                     address_valid: false,
-                    account_list_id: this.api.account_list_id
+                    account_list_id: this.api.account_list_id,
+                    deceased: false
                 },
                 fields: {
                     contacts: 'name,avatar,addresses'
