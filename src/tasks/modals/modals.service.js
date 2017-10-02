@@ -6,12 +6,6 @@ class ModalsService {
         this.serverConstants = serverConstants;
         this.tasksTags = tasksTags;
     }
-    newsletter() {
-        return this.modal.open({
-            template: require('./newsletter/newsletter.html'),
-            controller: 'newsletterTaskController'
-        });
-    }
     bulkEdit(tasks) {
         return this.modal.open({
             template: require('./bulkEdit/bulkEdit.html'),
@@ -26,8 +20,10 @@ class ModalsService {
     }
 }
 
+import modal from 'common/modal/modal.service';
 import serverConstants from 'common/serverConstants/serverConstants.service';
+import tasksTags from 'tasks/filter/tags/tags.service';
 
 export default angular.module('mpdx.tasks.modals.service', [
-    serverConstants
+    modal, serverConstants, tasksTags
 ]).service('tasksModals', ModalsService).name;

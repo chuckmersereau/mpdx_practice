@@ -1,6 +1,7 @@
 import concat from 'lodash/fp/concat';
 import eq from 'lodash/fp/eq';
 import get from 'lodash/fp/get';
+import reject from 'lodash/fp/reject';
 
 class ItemController {
     constructor(
@@ -62,7 +63,7 @@ class ItemController {
         });
     }
     star() {
-        return this.tasks.star(this.task).then((data) => {
+        return this.api.put(`tasks/${this.task.id}`, { id: this.task.id, starred: !this.task.starred }).then((data) => {
             this.task.starred = data.starred;
         });
     }
@@ -101,8 +102,10 @@ class ItemController {
     }
     deleteComment(comment) {
         const message = this.gettextCatalog.getString('Are you sure you wish to delete the selected comment?');
-        this.modal.confirm(message).then(() => {
-            this.tasks.deleteComment(this.task, comment);
+        return this.modal.confirm(message).then(() => {
+            return this.api.delete(`tasks/${this.task.id}/comments/${comment.id}`).then(() => {
+                this.task.comments = reject({ id: comment.id }, this.task.comments);
+            });
         });
     }
     commentBelongsToUser(comment) {
