@@ -42,6 +42,17 @@ export default class Routes {
             url: '/logout',
             onEnter: logout
         }).state({
+            name: 'coaches',
+            title: gettext('Coaching Accounts'),
+            url: '/coaches',
+            component: 'coaches',
+            parent: 'root'
+        }).state({
+            name: 'coaches.show',
+            title: gettext('Coaching Account'),
+            url: '/{accountId}',
+            component: 'coachesShow'
+        }).state({
             name: 'contacts',
             title: gettext('Contacts'),
             url: '/contacts',

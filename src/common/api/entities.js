@@ -38,6 +38,10 @@ export class EntityAttributes {
                     ref: 'id',
                     attributes: ['actions', 'notification_type'],
                     notification_type: { ref: 'id' }
+                },
+                users: {
+                    ref: 'id',
+                    attributes: ['first_name', 'last_name', 'avatar']
                 }
             },
             addresses: {

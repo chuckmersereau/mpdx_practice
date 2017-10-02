@@ -5,7 +5,7 @@ class AvatarController {
     ) {
         this.gettextCatalog = gettextCatalog;
         this.alerts = alerts;
-
+        this.size = this.size || 'md';
         this.loading = false;
     }
 
@@ -54,9 +54,11 @@ const Avatar = {
     controller: AvatarController,
     template: require('./avatar.html'),
     bindings: {
-        src: '<',
         editable: '<',
-        onUpload: '&'
+        onUpload: '&',
+        size: '@',
+        src: '<',
+        title: '@'
     }
 };
 
