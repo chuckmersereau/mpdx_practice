@@ -12,10 +12,11 @@ import union from 'lodash/fp/union';
 
 class AddTaskController {
     constructor(
-        $rootScope, $scope, $state,
+        $log, $rootScope, $scope, $state,
         contacts, serverConstants, tasks, tasksTags, users,
         contactsList, activityType, task, comments
     ) {
+        this.$log = $log;
         this.$rootScope = $rootScope;
         this.$scope = $scope;
         this.$state = $state;
@@ -25,6 +26,13 @@ class AddTaskController {
         this.tasks = tasks;
         this.users = users;
 
+        /* istanbul ignore next */
+        $log.debug('Add task params', {
+            contactsList: contactsList,
+            activityType: activityType,
+            task: task,
+            comments: comments
+        });
         this.activate({ activityType: activityType, comments: comments, contactsList: contactsList, task: task });
     }
     activate({ activityType, comments, contactsList, task }) {
@@ -42,6 +50,8 @@ class AddTaskController {
                 tag_list: get('tag_list', task)
             }
             : { activity_type: activityType };
+        /* istanbul ignore next */
+        this.$log.debug('Add task mutated task', this.task);
         this.setDueDate = true;
         this.contactNames = null;
 
@@ -56,7 +66,7 @@ class AddTaskController {
         return get('result', task) && activityType;
     }
     useContacts(task, reuseTask) {
-        return !task || (task && reuseTask);
+        return isNilOrEmpty(task) || (task && reuseTask);
     }
     mutateComments(comments) {
         return emptyToNull(
