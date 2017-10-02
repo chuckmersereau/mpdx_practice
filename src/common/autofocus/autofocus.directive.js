@@ -9,7 +9,7 @@ function autofocusDirective(
                     element[0].focus();
                 }, 300);
             };
-            scope.$watch(attributes.autofocus, function(value) {
+            scope.$watch(attributes.autofocus, (value) => {
                 if (value) {
                     focus();
                 }

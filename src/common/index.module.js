@@ -8,9 +8,7 @@ import avatar from './avatar/avatar.component';
 import bgImg from './bgImg/bgImg.directive';
 import chosen from './chosen/chosen.directive';
 import collectionSelector from './collectionSelector/index.module';
-import convertToNumber from './convertToNumber/convertToNumber.directive';
-import cover from './cover/index.module';
-import currencySelect from './currencySelect/currencySelect.component';
+import cover from './cover/cover.component';
 import datetimepicker from './datetimepicker/datetimepicker.component';
 import designationAccounts from './designationAccounts/designationAccounts.service';
 import donorAccounts from './donorAccounts/donorAccounts.service';
@@ -47,9 +45,7 @@ export default angular.module('mpdx.common', [
     bgImg,
     chosen,
     collectionSelector,
-    convertToNumber,
     cover,
-    currencySelect,
     datetimepicker,
     designationAccounts,
     donorAccounts,
