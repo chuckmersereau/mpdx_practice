@@ -1,10 +1,6 @@
-import concat from 'lodash/fp/concat';
 import defaultTo from 'lodash/fp/defaultTo';
 import get from 'lodash/fp/get';
-import isNil from 'lodash/fp/isNil';
-import isNilOrEmpty from 'common/fp/isNilOrEmpty';
 import moment from 'moment';
-import reduce from 'lodash/fp/reduce';
 
 class AnniversariesController {
     constructor(
@@ -51,28 +47,6 @@ class AnniversariesController {
         }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug('contacts/analytics anniversaries', data);
-            data.anniversaries_this_week = reduce((result, anniversary) => {
-                if (isNil(anniversary)) {
-                    return result;
-                }
-                anniversary.people = reduce((iresult, person) => {
-                    if (
-                        !isNilOrEmpty(person.anniversary_year)
-                        && !isNilOrEmpty(person.anniversary_month)
-                        && !isNilOrEmpty(person.anniversary_day)
-                        && person.anniversary_year > 1800
-                    ) {
-                        person.anniversary_date = moment()
-                            .year(person.anniversary_year)
-                            .month(person.anniversary_month - 1)
-                            .date(person.anniversary_day)
-                            .toDate();
-                        return concat(iresult, person);
-                    }
-                    return iresult;
-                }, [], anniversary.people);
-                return anniversary.people.length > 0 ? concat(result, anniversary) : result;
-            }, [], data.anniversaries_this_week);
             this.anniversaries_this_week = data.anniversaries_this_week;
             return data.anniversaries_this_week;
         });

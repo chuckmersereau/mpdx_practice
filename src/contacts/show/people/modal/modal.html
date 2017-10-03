@@ -123,11 +123,19 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="birthday" translate>Birthday</label>
-                                    <input bs-datepicker id="birthday" ng-model="$ctrl.person.birthday" data-date-format="{{$ctrl.locale.dateTimeFormat}}" data-autoclose="1" class="form-control">
+                                    <three-part-date-picker day="$ctrl.person.birthday_day"
+                                                            month="$ctrl.person.birthday_month"
+                                                            year="$ctrl.person.birthday_year"
+                                                            id="birthday">
+                                    </three-part-date-picker>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="anniversary" translate>Anniversary</label>
-                                    <input bs-datepicker id="anniversary" ng-model="$ctrl.person.anniversary" data-date-format="{{$ctrl.locale.dateTimeFormat}}" data-autoclose="1" class="form-control">
+                                    <three-part-date-picker day="$ctrl.person.anniversary_day"
+                                                            month="$ctrl.person.anniversary_month"
+                                                            year="$ctrl.person.anniversary_year"
+                                                            id="anniversary">
+                                    </three-part-date-picker>
                                 </div>
                             </div>
                             <div class="row" ng-if="::!$ctrl.userProfile">

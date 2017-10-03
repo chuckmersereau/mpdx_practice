@@ -91,52 +91,5 @@ describe('home.care.anniversaries', () => {
                 overrideGetAsPost: true
             });
         });
-        it('should transform anniversaries to dates', (done) => {
-            const transformable = {
-                anniversaries_this_week: [{
-                    people: [{
-                        anniversary_year: 2015,
-                        anniversary_day: 1,
-                        anniversary_month: 1
-                    }]
-                }]
-            };
-            spyOn(api, 'get').and.callFake(() => Promise.resolve(transformable));
-            $ctrl.getAnniversariesThisWeek().then((data) => {
-                expect(moment(data[0].people[0].anniversary_date).format('M-D-YYYY')).toEqual('1-1-2015');
-                done();
-            });
-        });
-        it('should handle bad anniversary years', (done) => {
-            const transformable = {
-                anniversaries_this_week: [{
-                    people: [{
-                        anniversary_day: 1,
-                        anniversary_month: 1
-                    }]
-                }]
-            };
-            spyOn(api, 'get').and.callFake(() => Promise.resolve(transformable));
-            $ctrl.getAnniversariesThisWeek().then((data) => {
-                expect(data.length).toBe(0);
-                done();
-            });
-        });
-        it('should handle bad anniversaries', (done) => {
-            const transformable = {
-                anniversaries_this_week: [{
-                    people: [{
-                        anniversary_year: 15,
-                        anniversary_day: 1,
-                        anniversary_month: 1
-                    }]
-                }, null]
-            };
-            spyOn(api, 'get').and.callFake(() => Promise.resolve(transformable));
-            $ctrl.getAnniversariesThisWeek().then((data) => {
-                expect(data).toEqual([]);
-                done();
-            });
-        });
     });
 });

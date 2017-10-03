@@ -2,7 +2,9 @@
 <ul class="list-unstyled" ng-if="$ctrl.anniversaries_this_week.length">
     <li ng-repeat="contact in $ctrl.anniversaries_this_week | orderBy : $ctrl.partialDateSort | limitTo: $ctrl.limit">
         <span ng-repeat="person in contact.people track by person.id">
-            <span ng-if="$index === 0">{{ person.anniversary_date | date: $ctrl.locale.dateTimeFormat }}</span>
+            <span ng-if="$index === 0">
+                <two-part-date-display month="person.anniversary_month" day="person.anniversary_day"></two-part-date-display>
+            </span>
             <a ui-sref="contacts.show({ contactId: contact.id })">{{person.first_name}} {{person.last_name}}</a>
             <facebook-link facebook-account="person.facebook_accounts[0]" ng-if="person.facebook_accounts[0]"></facebook-link>
             <twitter-link twitter-account="person.twitter_accounts[0]" ng-if="person.twitter_accounts[0]"></twitter-link>

@@ -1,6 +1,5 @@
 import has from 'lodash/fp/has';
 import map from 'lodash/fp/map';
-import moment from 'moment';
 import uuid from 'uuid/v1';
 import createPatch from 'common/fp/createPatch';
 
@@ -37,13 +36,6 @@ class PersonModalController {
             } else {
                 this.modalTitle = this.gettextCatalog.getString('Edit Person');
             }
-            // bad data is bad
-            if (this.person.birthday_year) {
-                this.person.birthday = moment(`${this.person.birthday_year}-${this.person.birthday_month}-${this.person.birthday_day}`, 'YYYY-MM-DD').toDate();
-            }
-            if (this.person.anniversary_year) {
-                this.person.anniversary = moment(`${this.person.anniversary_year}-${this.person.anniversary_month}-${this.person.anniversary_day}`, 'YYYY-MM-DD').toDate();
-            }
         } else {
             this.modalTitle = this.gettextCatalog.getString('Add Person');
             this.person = {
@@ -58,21 +50,6 @@ class PersonModalController {
         }
     }
     save() {
-        // bad data is bad
-        if (this.person.birthday) {
-            const birthday = moment(this.person.birthday);
-            this.person.birthday_year = birthday.year();
-            this.person.birthday_month = birthday.month() + 1;
-            this.person.birthday_day = birthday.date();
-        }
-
-        if (this.person.anniversary) {
-            const anniversary = moment(this.person.anniversary);
-            this.person.anniversary_year = anniversary.year();
-            this.person.anniversary_month = anniversary.month() + 1;
-            this.person.anniversary_day = anniversary.date();
-        }
-
         if (has('id', this.person)) {
             const patch = createPatch(this.personInitialState, this.person);
             /* istanbul ignore next */

@@ -24,7 +24,7 @@
             </dd>
             <dd ng-if="$ctrl.person.marital_status">
                 <span>{{ $ctrl.person.marital_status }}</span>
-                <span ng-if="$ctrl.person.anniversary">{{ $ctrl.person.anniversary | localize }}</span>
+                <two-part-date-display day="$ctrl.person.anniversary_day" month="$ctrl.person.anniversary_month"></two-part-date-display>
             </dd>
             <dd ng-if="$ctrl.person.facebook_accounts.length > 0 || $ctrl.person.twitter_accounts.length > 0 || $ctrl.person.linkedin_accounts.length > 0 || $ctrl.person.websites.length > 0" class="networks">
                 <facebook-link ng-repeat="fb in $ctrl.person.facebook_accounts" facebook-account="fb"></facebook-link>

@@ -76,58 +76,19 @@ describe('home.care.birthdays', () => {
                     include: 'birthdays_this_week,'
                     + 'birthdays_this_week.facebook_accounts,'
                     + 'birthdays_this_week.twitter_accounts,'
-                    + 'birthdays_this_week.email_addresses',
+                    + 'birthdays_this_week.email_addresses,'
+                    + 'birthdays_this_week.parent_contact',
                     fields: {
                         contact_analytics: 'birthdays_this_week',
                         people: 'birthday_day,birthday_month,birthday_year,facebook_accounts,first_name,last_name,twitter_accounts,email_addresses,parent_contact',
                         email_addresses: 'email,primary',
                         facebook_accounts: 'username',
-                        twitter_accounts: 'screen_name'
+                        twitter_accounts: 'screen_name',
+                        contact: ''
                     },
                     filter: { account_list_id: api.account_list_id }
                 },
                 overrideGetAsPost: true
-            });
-        });
-        it('should transform birthdays dates', (done) => {
-            const transformable = {
-                birthdays_this_week: [{
-                    birthday_year: 2015,
-                    birthday_day: 1,
-                    birthday_month: 1
-                }]
-            };
-            spyOn(api, 'get').and.callFake(() => Promise.resolve(transformable));
-            $ctrl.getBirthdaysThisWeek().then((data) => {
-                expect(moment(data[0].birthday_date).format('M-D-YYYY')).toEqual('1-1-2015');
-                done();
-            });
-        });
-        it('should handle bad birthday years', (done) => {
-            const transformable = {
-                birthdays_this_week: [{
-                    birthday_day: 1,
-                    birthday_month: 1
-                }]
-            };
-            spyOn(api, 'get').and.callFake(() => Promise.resolve(transformable));
-            $ctrl.getBirthdaysThisWeek().then((data) => {
-                expect(data.length).toBe(0);
-                done();
-            });
-        });
-        it('should handle bad birthdays', (done) => {
-            const transformable = {
-                birthdays_this_week: [{
-                    birthday_year: 6,
-                    birthday_day: 1,
-                    birthday_month: 1
-                }, null]
-            };
-            spyOn(api, 'get').and.callFake(() => Promise.resolve(transformable));
-            $ctrl.getBirthdaysThisWeek().then((data) => {
-                expect(data).toEqual([]);
-                done();
             });
         });
     });

@@ -30,7 +30,9 @@ import session from './session/session.service';
 import sourceToStr from './sourceToStr/sourceToStr.filter';
 import pagination from './pagination/pagination.component';
 import tagSelector from './tagSelector/tagSelector.component';
+import threePartDatePicker from './threePartDatePicker/picker.component';
 import timeZone from './timeZone/timeZone.service';
+import twoPartDateDisplay from './twoPartDateDisplay/display.component';
 import urlParameter from './urlParameter/urlParameter.service';
 import users from './users/users.service';
 
@@ -67,7 +69,9 @@ export default angular.module('mpdx.common', [
     session,
     sourceToStr,
     tagSelector,
+    threePartDatePicker,
     timeZone,
+    twoPartDateDisplay,
     urlParameter,
     users
 ]).name;
