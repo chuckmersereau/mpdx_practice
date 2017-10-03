@@ -17,7 +17,10 @@
                 <span translate>and the</span>
                 <a href="http://mpdx.helpscoutdocs.com/article/329-terms-of-use" target="_blank" translate>Terms of Use</a>
             </p>
-            <a ng-click="$ctrl.setup.next()" class="btn btn-block btn-primary" translate>Let's Begin!</a>
+            <button ng-disabled="$ctrl.saving" ng-click="$ctrl.next()" class="btn btn-block btn-primary">
+                <translate>Let's Begin!</translate>
+                <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-class="{ 'hidden': !$ctrl.saving }"></i>
+            </button>
         </div>
     </div>
 </cover>

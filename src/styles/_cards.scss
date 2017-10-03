@@ -9,15 +9,18 @@
     .pull-right a {
         cursor: pointer;
     }
-    .primary-option {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        padding: 5px 10px;
-        background: $color-panel-border;
-        color: #fff;
-        border-top-left-radius: 5px;
-        cursor: pointer;
+    .primary-container {
+        height: 12px;
+        .primary-option {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            padding: 5px 10px;
+            background: $color-panel-border;
+            color: #fff;
+            border-top-left-radius: 5px;
+            cursor: pointer;
+        }
     }
     &.primary {
       border: 1px solid $color-primary;

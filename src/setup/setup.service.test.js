@@ -1,15 +1,16 @@
 import service from './setup.service';
 
 describe('setup.service', () => {
-    let state, alerts, api, setup, users, q, rootScope;
+    let state, accounts, alerts, api, setup, users, q, rootScope;
 
     beforeEach(() => {
         angular.mock.module(service);
-        inject(($q, $rootScope, $state, _alerts_, _api_, _setup_, _users_) => {
+        inject(($q, $rootScope, $state, _accounts_, _alerts_, _api_, _setup_, _users_) => {
             rootScope = $rootScope;
-            api = _api_;
             state = $state;
+            accounts = _accounts_;
             alerts = _alerts_;
+            api = _api_;
             setup = _setup_;
             users = _users_;
             q = $q;
@@ -65,11 +66,37 @@ describe('setup.service', () => {
                     };
                 });
 
-                it('should call goConnect', (done) => {
-                    spyOn(setup, 'goConnect');
-                    setup.hasAccountLists().then(() => {
-                        expect(setup.goConnect).toHaveBeenCalled();
-                        done();
+                describe('state is setup.connect', () => {
+                    beforeEach(() => {
+                        spyOn(state, 'includes').and.returnValue(true);
+                    });
+
+                    it('should not call goConnect', (done) => {
+                        spyOn(setup, 'goConnect');
+                        setup.hasAccountLists().then(() => {
+                            expect(setup.goConnect).not.toHaveBeenCalled();
+                            done();
+                        });
+                    });
+
+                    it('should call addAlert', (done) => {
+                        spyOn(alerts, 'addAlert');
+                        setup.hasAccountLists().then(() => {
+                            expect(alerts.addAlert).toHaveBeenCalledWith(
+                                'Something went wrong, please try removing your organization accounts and add them again.',
+                                'danger');
+                            done();
+                        });
+                    });
+                });
+
+                describe('state is not setup.connect', () => {
+                    it('should call goConnect', (done) => {
+                        spyOn(setup, 'goConnect');
+                        setup.hasAccountLists().then(() => {
+                            expect(setup.goConnect).toHaveBeenCalled();
+                            done();
+                        });
                     });
                 });
             });
@@ -365,9 +392,12 @@ describe('setup.service', () => {
                 preferences: {
                     default_account_list: null
                 },
-                account_lists: [{ id: 'account_list_id' }]
+                account_lists: [{ id: 'account_list_id' }],
+                id: 'user_id'
             };
             spyOn(users, 'saveCurrent').and.callFake(() => Promise.resolve());
+            spyOn(accounts, 'swap').and.callFake(() => Promise.resolve());
+            spyOn(setup, 'hasOrganizationAccounts').and.callFake(() => Promise.resolve());
         });
 
         it('should set default_account_list', () => {
@@ -385,8 +415,14 @@ describe('setup.service', () => {
         });
 
         describe('promise successful', () => {
+            it('should call accounts.swap', (done) => {
+                setup.setDefaultAccountList().then(() => {
+                    expect(accounts.swap).toHaveBeenCalledWith('account_list_id', 'user_id', true);
+                    done();
+                });
+            });
+
             it('should call hasOrganizationAccounts', (done) => {
-                spyOn(setup, 'hasOrganizationAccounts');
                 setup.setDefaultAccountList().then(() => {
                     expect(setup.hasOrganizationAccounts).toHaveBeenCalled();
                     done();

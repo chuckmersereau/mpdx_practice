@@ -1,15 +1,9 @@
-<modal title="{{'Pick the winner of the merge' | translate}}" cancel="$hide()" save="$ctrl.save()">
-    <div class="row">
-        <div class="col-sm-12" translate>
+<modal title="{{ 'Pick the winner of the merge' | translate }}" cancel="$hide()" save="$ctrl.save()">
+        <p translate>
             Data from the "losers" will get copied to the "winner". No data will be lost by merging.
+        </p>
+        <div ng-repeat="person in $ctrl.selectedPeople">
+            <input type="radio" ng-model="$ctrl.selectedPerson" id="{{ ::person.id }}" ng-value="person.id" autofocus="$index == 0">
+            <label for="{{ ::person.id }}">{{ ::person.first_name }} {{ ::person.last_name }}</label>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="row" ng-repeat="person in $ctrl.selectedPeople">
-                <input type="radio" ng-model="$ctrl.selectedPerson" ng-value="person.id" autofocus="$index == 0" />
-                <span>{{ person.first_name + ' ' + person.last_name }}</span>
-            </div>
-        </div>
-    </div>
 </modal>

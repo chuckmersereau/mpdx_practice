@@ -1,11 +1,18 @@
 class CareController {
     constructor(
-        tasks
+        $rootScope,
+        modal
     ) {
-        this.tasks = tasks;
+        this.$rootScope = $rootScope;
+        this.modal = modal;
     }
     addNewsletter() {
-        this.tasks.newsletterModal();
+        return this.modal.open({
+            template: require('../../tasks/modals/newsletter/newsletter.html'),
+            controller: 'newsletterTaskController'
+        }).then(() => {
+            this.$rootScope.$emit('taskChange');
+        });
     }
 }
 const Care = {
@@ -13,8 +20,8 @@ const Care = {
     controller: CareController
 };
 
-import tasks from 'tasks/tasks.service';
+import modal from 'common/modal/modal.service';
 
 export default angular.module('mpdx.home.care.component', [
-    tasks
+    modal
 ]).component('homeCare', Care).name;

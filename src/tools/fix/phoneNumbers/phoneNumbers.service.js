@@ -30,7 +30,8 @@ class PhoneNumbersService {
             {
                 filter: {
                     phone_number_valid: false,
-                    account_list_id: this.api.account_list_id
+                    account_list_id: this.api.account_list_id,
+                    deceased: false
                 },
                 fields: {
                     person: 'first_name,last_name,avatar,phone_numbers,parent_contacts'

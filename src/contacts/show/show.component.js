@@ -16,7 +16,7 @@ import set from 'lodash/fp/set';
 class ContactController {
     constructor(
         $log, $rootScope, $state, $stateParams, $anchorScroll, blockUI, gettextCatalog, help,
-        alerts, modal, contacts, tasks, contactFilter, people, users, session
+        alerts, contactFilter, contacts, contactsTags, modal, people, session, tasks, users
     ) {
         this.$anchorScroll = $anchorScroll;
         this.$log = $log;
@@ -25,6 +25,7 @@ class ContactController {
         this.$stateParams = $stateParams;
         this.alerts = alerts;
         this.blockUI = blockUI.instances.get('contactShow');
+        this.contactsTags = contactsTags;
         this.contacts = contacts;
         this.contactFilter = contactFilter;
         this.gettextCatalog = gettextCatalog;
@@ -126,6 +127,7 @@ class ContactController {
             if (patch.tag_list) {
                 const tags = patch.tag_list.split(',');
                 this.$rootScope.$emit('contactTagsAdded', { tags: tags });
+                this.contactsTags.addTag({ tags: tags });
             }
             if (patch.id === this.contacts.initialState.id) {
                 this.contacts.initialState = assign(this.contacts.initialState, patch);

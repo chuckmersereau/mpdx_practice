@@ -1,7 +1,5 @@
 contact-person {
   .card {
-    padding-bottom: 24px;
-    margin-bottom: 15px;
     .content {
       h3 {
         margin-top: 0;
@@ -27,6 +25,15 @@ contact-person {
           }
         }
       }
+    }
+    .edit {
+        font-weight: 500;
+        color: $gray;
+        font-size: $font-size-xs;
+        &:hover {
+            text-decoration: none;
+            cursor: pointer;
+        }
     }
     &.merging {
       cursor: pointer;

@@ -7,11 +7,12 @@ import union from 'lodash/fp/union';
 
 class LogTaskController {
     constructor(
-        $q, $scope, $state,
+        $q, $rootScope, $scope, $state,
         contacts, serverConstants, tasks, tasksTags, users,
         contactsList
     ) {
         this.$q = $q;
+        this.$rootScope = $rootScope;
         this.$scope = $scope;
         this.$state = $state;
         this.contacts = contacts;
@@ -57,6 +58,8 @@ class LogTaskController {
                     contactsList: this.contactsList,
                     task: this.task
                 });
+            } else {
+                this.$rootScope.$emit('taskLogged');
             }
         });
     }

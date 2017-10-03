@@ -3,11 +3,12 @@ import flatten from 'lodash/fp/flatten';
 class SetupService {
     constructor(
         $q, $state, gettextCatalog,
-        alerts, api, users
+        accounts, alerts, api, users
     ) {
         this.$q = $q;
         this.$state = $state;
         this.gettextCatalog = gettextCatalog;
+        this.accounts = accounts;
         this.alerts = alerts;
         this.api = api;
         this.users = users;
@@ -23,7 +24,13 @@ class SetupService {
     hasAccountLists() {
         return this.users.getCurrent(true).then(() => {
             if (this.users.current.account_lists.length === 0) {
-                return this.goConnect();
+                if (this.$state.includes('setup.connect')) {
+                    this.alerts.addAlert(this.gettextCatalog.getString(
+                        'Something went wrong, please try removing your organization accounts and add them again.'
+                    ), 'danger');
+                } else {
+                    return this.goConnect();
+                }
             } else if (this.users.current.account_lists.length === 1) {
                 return this.setDefaultAccountList();
             } else {
@@ -87,7 +94,13 @@ class SetupService {
     setDefaultAccountList() {
         this.users.current.preferences.default_account_list = this.users.current.account_lists[0].id;
         return this.users.saveCurrent().then(() => {
-            return this.hasOrganizationAccounts();
+            return this.accounts.swap(
+                this.users.current.preferences.default_account_list,
+                this.users.current.id,
+                true
+            ).then(() => {
+                return this.hasOrganizationAccounts();
+            });
         });
     }
 

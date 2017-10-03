@@ -7,6 +7,7 @@ window.angular = angular;
 
 import app from './app.directive';
 import bottom from 'bottom/bottom.component';
+import coaches from 'coaches/index.module';
 import common from 'common/index.module';
 import contacts from 'contacts/index.module';
 import home from 'home/index.module';
@@ -28,6 +29,7 @@ require('./images/mpdx-favicon.png');
 export default angular.module('mpdx', [
     app,
     bottom,
+    coaches,
     common,
     contacts,
     home,

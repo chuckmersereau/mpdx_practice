@@ -1,3 +1,13 @@
 contact-address {
-  
+    .card {
+        .edit {
+            font-weight: 500;
+            color: $gray;
+            font-size: $font-size-xs;
+            &:hover {
+                text-decoration: none;
+                cursor: pointer;
+            }
+        }
+    }
 }

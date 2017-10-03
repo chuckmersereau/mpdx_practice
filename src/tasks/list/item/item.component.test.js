@@ -162,4 +162,39 @@ describe('tasks.list.item.component', () => {
             expect(serverConstants.load).toHaveBeenCalledWith(['activity_hashes', 'results']);
         });
     });
+    describe('star', () => {
+        it('should call the api', (done) => {
+            spyOn(api, 'put').and.callFake(() => Promise.resolve({ starred: true }));
+            $ctrl.task = { id: 1, starred: false };
+            $ctrl.star().then(() => {
+                expect(api.put).toHaveBeenCalledWith('tasks/1', {
+                    id: 1,
+                    starred: true
+                });
+                expect($ctrl.task.starred).toBeTruthy();
+                done();
+            });
+        });
+    });
+    describe('deleteComment', () => {
+        beforeEach(() => {
+            $ctrl.task = { id: 1, comments: [{ id: 2 }] };
+            spyOn(gettextCatalog, 'getString').and.callFake(() => 'a');
+            spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+        });
+        it('should open a translated confirm dialog', () => {
+            $ctrl.deleteComment();
+            expect(gettextCatalog.getString)
+                .toHaveBeenCalledWith('Are you sure you wish to delete the selected comment?');
+            expect(modal.confirm).toHaveBeenCalledWith('a');
+        });
+        it('should delete the comment', (done) => {
+            $ctrl.deleteComment({ id: 2 }).then(() => {
+                expect(api.delete).toHaveBeenCalledWith('tasks/1/comments/2')
+                expect($ctrl.task.comments).toEqual([]);
+                done();
+            });
+        });
+    });
 });

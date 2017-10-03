@@ -28,7 +28,8 @@ class newsletterService {
                 filter: {
                     account_list_id: this.api.account_list_id,
                     newsletter: 'no_value',
-                    status: 'Partner - Financial,Partner - Special,Partner - Pray'
+                    status: 'Partner - Financial,Partner - Special,Partner - Pray',
+                    deceased: false
                 },
                 fields: {
                     contact: 'avatar,name,status,newsletter,addresses,primary_person'

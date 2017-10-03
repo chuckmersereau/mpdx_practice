@@ -92,5 +92,11 @@
         <button class="btn btn-default btn-block" ng-click="$ctrl.reject()" translate>
             Don't Change
         </button>
+        <a class="btn btn-sm btn-default" ui-sref="contacts.show({contactId: $ctrl.contact.id})" title="{{ ::'View Contact' | translate }}" ng-click="$event.stopPropagation()">
+            <i class="fa fa-search"></i>
+        </a>
+        <a class="btn btn-sm btn-default" title="{{ ::'Hide Contact' | translate }}" ng-if="::$ctrl.contact.status !== 'Never Ask'" ng-click="$ctrl.contacts.hideContact($ctrl.contact); $event.stopPropagation()">
+            <i class="fa fa-eye-slash"></i>
+        </a>
     </div>
 </div>
