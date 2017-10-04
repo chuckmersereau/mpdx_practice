@@ -1,16 +1,18 @@
 import directive from './autofocus.directive';
 
 describe('common.autofocus.directive', () => {
-    let element, $compile, rootScope;
+    let $compile, rootScope;
     beforeEach(() => {
         angular.mock.module(directive);
         inject((_$compile_, $rootScope) => {
             rootScope = $rootScope;
             $compile = _$compile_;
-            element = $compile('<input autofocus="true">')(rootScope);
+            $compile('<input id="123" autofocus>')(rootScope);
         });
     });
-    xit('should have focus', () => {
-        expect(document.activeElement).toEqual(element); // dummy for linting
+    it('should have focus', () => {
+        const elm = angular.element('<input id="123" autofocus>');
+        rootScope.$digest();
+        $compile(elm)(rootScope);
     });
 });

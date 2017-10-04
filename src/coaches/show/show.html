@@ -1,0 +1,14 @@
+<div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
+  <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
+</div>
+<div ng-if="!$ctrl.loading">
+    <div class="pull-right">
+        <a ui-sref="coaches" class="btn btn-default" translate>Back to Coaching Accounts</a>
+    </div>
+    <h2 class="mt-0 mb-3" translate-params-name="$ctrl.account.name" translate>Details for {{name}}</h2>
+    <div class="row users">
+        <div class="col-sm-4" ng-repeat="remainder in [0,1,2]">
+            <contact-person ng-repeat="user in $ctrl.account.users" person="user" user-profile="true" view="true" ng-if="$index % 3 == remainder"></contact-person>
+        </div>
+    </div>
+</div>

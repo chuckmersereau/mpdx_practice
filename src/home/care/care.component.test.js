@@ -1,13 +1,14 @@
 import component from './care.component';
 
 describe('home.care.component', () => {
-    let $ctrl, rootScope, scope, componentController;
+    let $ctrl, rootScope, scope, componentController, modal;
 
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope) => {
+        inject(($componentController, $rootScope, _modal_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
+            modal = _modal_;
             componentController = $componentController;
             loadController();
         });
@@ -17,9 +18,15 @@ describe('home.care.component', () => {
         $ctrl = componentController('homeCare', { $scope: scope }, {});
     }
 
-    describe('constructor', () => {
-        it('should define view objects', () => {
-            expect($ctrl.tasks).toBeDefined();
+    describe('addNewsletter', () => {
+        it('should open the add newsletter modal', () => {
+            spyOn(modal, 'open').and.callFake(() => Promise.resolve());
+            spyOn(rootScope, '$emit').and.callFake(() => {});
+            $ctrl.addNewsletter();
+            expect(modal.open).toHaveBeenCalledWith({
+                template: require('../../tasks/modals/newsletter/newsletter.html'),
+                controller: 'newsletterTaskController'
+            });
         });
     });
 });

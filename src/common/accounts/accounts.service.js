@@ -87,7 +87,8 @@ class AccountsService {
             fields: {
                 email_addresses: 'email,primary',
                 users: 'email_addresses,first_name,last_name'
-            }
+            },
+            per_page: 100
         }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug('account_lists/users:', data);

@@ -427,4 +427,26 @@ describe('common.accounts.service', () => {
             expect(accounts.destroyInvite(123)).toEqual(jasmine.any(Promise));
         });
     });
+
+    describe('load', () => {
+        beforeEach(() => {
+            spyOn(api, 'get').and.callFake(() => Promise.resolve([{ id: 2 }]));
+        });
+        it('shouldn\'t call api unless reset', (done) => {
+            accounts.data = [{ id: 1 }];
+            accounts.load().then(() => {
+                expect(api.get).not.toHaveBeenCalled();
+                expect(accounts.data).toEqual([{ id: 1 }]);
+                done();
+            });
+        });
+        it('should call api', (done) => {
+            accounts.data = [];
+            accounts.load().then(() => {
+                expect(api.get).toHaveBeenCalledWith('account_lists', { include: accounts.defaultIncludes });
+                expect(accounts.data).toEqual([{ id: 2 }]);
+                done();
+            });
+        });
+    });
 });

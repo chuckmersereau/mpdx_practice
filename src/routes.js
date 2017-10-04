@@ -42,6 +42,17 @@ export default class Routes {
             url: '/logout',
             onEnter: logout
         }).state({
+            name: 'coaches',
+            title: gettext('Coaching Accounts'),
+            url: '/coaches',
+            component: 'coaches',
+            parent: 'root'
+        }).state({
+            name: 'coaches.show',
+            title: gettext('Coaching Account'),
+            url: '/{accountId}',
+            component: 'coachesShow'
+        }).state({
             name: 'contacts',
             title: gettext('Contacts'),
             url: '/contacts',
@@ -324,11 +335,10 @@ export default class Routes {
             }
         }).state({
             name: 'tools.appeals.show',
-            url: '/show/{appealId}',
+            url: '/{appealId}',
             component: 'appealsShow',
             resolve: {
                 0: /* @ngInject*/ (serverConstants) => serverConstants.load(['pledge_currencies', 'pledge_frequency_hashes']),
-                1: /* @ngInject*/ (mailchimp) => mailchimp.load(),
                 data: /* @ngInject*/ (appealsShow, $stateParams) => appealsShow.getAppeal($stateParams.appealId),
                 contactsData: /* @ngInject*/ (appealsShow, $stateParams) =>
                     appealsShow.getAppealContacts($stateParams.appealId),

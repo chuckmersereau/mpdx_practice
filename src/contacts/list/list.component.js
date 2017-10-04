@@ -17,16 +17,15 @@ class ListController {
         accounts, alerts, api, contacts, contactFilter, contactsTags, modal, serverConstants, session, tasks
     ) {
         this.$log = $log;
+        this.$rootScope = $rootScope;
         this.$window = $window;
-
-        this.gettextCatalog = gettextCatalog;
-
         this.accounts = accounts;
         this.alerts = alerts;
         this.api = api;
         this.contacts = contacts;
         this.contactFilter = contactFilter;
         this.contactsTags = contactsTags;
+        this.gettextCatalog = gettextCatalog;
         this.modal = modal;
         this.serverConstants = serverConstants;
         this.session = session;
@@ -46,28 +45,62 @@ class ListController {
         this.page = 0;
         this.pageSize = 0;
         this.totalContactCount = 0;
-
-        $rootScope.$on('contactCreated', () => {
-            this.load();
-        });
-
-        $rootScope.$on('accountListUpdated', () => {
-            this.load();
-            this.contacts.clearSelectedContacts();
-        });
-
-        $rootScope.$on('contactsFilterChange', () => {
-            this.load();
-            this.contacts.clearSelectedContacts();
-        });
-
-        $rootScope.$on('contactsTagsChange', () => {
-            this.load();
-            this.contacts.clearSelectedContacts();
-        });
     }
     $onInit() {
         this.load();
+
+        this.watcher = this.$rootScope.$on('contactCreated', () => {
+            this.load();
+            this.contacts.clearSelectedContacts();
+        });
+
+        this.watcher2 = this.$rootScope.$on('accountListUpdated', () => {
+            this.load();
+            this.contacts.clearSelectedContacts();
+        });
+
+        this.watcher3 = this.$rootScope.$on('contactsFilterChange', () => {
+            this.load();
+            this.contacts.clearSelectedContacts();
+        });
+
+        this.watcher4 = this.$rootScope.$on('contactsTagsChange', () => {
+            this.load();
+            this.contacts.clearSelectedContacts();
+        });
+
+        this.watcher5 = this.$rootScope.$on('contactTagsAdded', () => {
+            this.contacts.clearSelectedContacts();
+        });
+
+        this.watcher9 = this.$rootScope.$on('contactHidden', (e, id) => {
+            this.data = reject({ id: id }, this.data);
+            // handle repagination here (like tasks does)
+            this.contacts.clearSelectedContacts();
+        });
+
+        this.watcher6 = this.$rootScope.$on('contactTagDeleted', () => {
+            this.contacts.clearSelectedContacts();
+        });
+
+        this.watcher7 = this.$rootScope.$on('taskAdded', () => {
+            this.contacts.clearSelectedContacts();
+        });
+
+        this.watcher8 = this.$rootScope.$on('taskLogged', () => {
+            this.contacts.clearSelectedContacts();
+        });
+    }
+    $onDestroy() {
+        this.watcher();
+        this.watcher2();
+        this.watcher3();
+        this.watcher4();
+        this.watcher5();
+        this.watcher6();
+        this.watcher7();
+        this.watcher8();
+        this.watcher9();
     }
     loadMoreContacts() {
         if (this.loading || this.page >= this.meta.pagination.total_pages) {
@@ -249,6 +282,7 @@ class ListController {
             }, this.contacts.selectedContacts);
             return this.contacts.bulkSave(contacts).then(() => {
                 this.data = pullAllBy('id', contacts, this.data);
+                this.contacts.clearSelectedContacts();
             });
         });
     }

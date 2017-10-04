@@ -59,7 +59,7 @@
         </div>
         <div>
             <button class="btn" ng-click="$ctrl.addCommitment()" translate>Add Commitment</button>
-            <button class="btn" ng-click="$ctrl.addDonation()" translate>Add Donation</button>
+            <!--<button class="btn" ng-click="$ctrl.addDonation()" translate>Add Donation</button>-->
             <button class="btn" ng-click="$ctrl.contacts.openAddTagModal($ctrl.selectedContactIds)" translate>Add Tag</button>
             <button class="btn" ng-click="$ctrl.tasks.addModal({ contactsList: $ctrl.selectedContactIds })" translate>Add Task</button>
         </div>
@@ -233,6 +233,53 @@
                 </table>
             </div>
             <div class="row panel-body">
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-9">
+                        <h4 translate>Contacts Excluded from Appeal</h4>
+                    </div>
+                    <div class="col-md-3">
+                        <a ng-click="$ctrl.getExcludedContacts()">Show Excluded</a>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-animate" ng-show="$ctrl.excludedContacts">
+                <div class="panel-body" >
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Contact</th>
+                            <th colspan="2">Commitment</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="rel in $ctrl.excludedContacts | orderBy : 'name'">
+                            <td>{{::rel.contact.name}}</td>
+                            <td>
+                                {{::rel.contact.currency.symbol}}{{::rel.contact.pledge_amount}}
+                                {{::$ctrl.serverConstants.getPledgeFrequency(rel.contact.pledge_frequency).value}}
+                            </td>
+                            <td>
+                                <button class="btn btn-xs btn-success" ng-click="$ctrl.addContact(rel.contact)" title="{{'Add' | translate}}">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th colspan="4">
+                                <pagination meta="$ctrl.excludedContacts.meta.pagination"
+                                            on-change="$ctrl.getExcludedContacts(page)">
+                                </pagination>
+                            </th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

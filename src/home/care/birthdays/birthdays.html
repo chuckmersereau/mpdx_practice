@@ -1,7 +1,7 @@
 <h4 class="title" translate>Birthdays This Week</h4>
-<ul class="list-unstyled" ng-if="$ctrl.contacts.analytics.birthdays_this_week.length">
-    <li ng-repeat="person in $ctrl.contacts.analytics.birthdays_this_week | orderBy: $ctrl.partialDateSort | limitTo: $ctrl.limit track by person.id">
-        {{ person.birthday_date | date: $ctrl.locale.dateTimeFormat }}
+<ul class="list-unstyled" ng-if="$ctrl.birthdays_this_week.length">
+    <li ng-repeat="person in $ctrl.birthdays_this_week | orderBy: $ctrl.partialDateSort | limitTo: $ctrl.limit track by person.id">
+        <two-part-date-display month="person.birthday_month" day="person.birthday_day"></two-part-date-display>
         <a ui-sref="contacts.show({ contactId: person.parent_contact.id })">
             {{person.first_name}} {{person.last_name}}
         </a>
@@ -9,13 +9,13 @@
         <twitter-link twitter-account="person.twitter_accounts[0]" ng-if="person.twitter_accounts.length"></twitter-link>
         <email-link ng-repeat="email in person.email_addresses" ng-if="email.primary" email-address="email"></email-link>
     </li>
-    <li ng-if="$ctrl.contacts.analytics.birthdays_this_week.length > $ctrl.limit">
-        <a ng-click="$ctrl.limit = $ctrl.contacts.analytics.birthdays_this_week.length">
+    <li ng-if="$ctrl.birthdays_this_week.length > $ctrl.limit">
+        <a ng-click="$ctrl.limit = $ctrl.birthdays_this_week.length">
             <i class="fa fa-plus-square-o"></i>
-            <translate translate-n="$ctrl.contacts.analytics.birthdays_this_week.length" translate-plural="See all {{ $count }} Birthdays">See 1 Birthday</translate>
+            <translate translate-n="$ctrl.birthdays_this_week.length" translate-plural="See all {{ $count }} Birthdays">See 1 Birthday</translate>
         </a>
     </li>
 </ul>
-<p ng-if="$ctrl.contacts.analytics.birthdays_this_week.length === 0" translate>
+<p ng-if="$ctrl.birthdays_this_week.length === 0" translate>
     No birthdays this week
 </p>

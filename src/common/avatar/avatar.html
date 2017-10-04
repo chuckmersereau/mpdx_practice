@@ -1,4 +1,4 @@
-<div class="avatar">
+<div class="avatar" data-title="{{ $ctrl.title }}" ng-class="'avatar--' + $ctrl.size" bs-tooltip>
     <img ng-src="{{$ctrl.src | stripMpdx}}">
     <a class="edit" ng-if="$ctrl.editable" translate>Edit</a>
     <form name="imageUploadForm">

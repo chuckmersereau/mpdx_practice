@@ -3,6 +3,7 @@ import assign from 'lodash/fp/assign';
 import concat from 'lodash/fp/concat';
 import difference from 'lodash/fp/difference';
 import find from 'lodash/fp/find';
+import get from 'lodash/fp/get';
 import keys from 'lodash/fp/keys';
 import reduce from 'lodash/fp/reduce';
 import toString from 'lodash/fp/toString';
@@ -53,7 +54,7 @@ class ServerConstantsService {
             case 'organizations_attributes':
                 return this.mapUnderscore(value);
             case 'pledge_frequency_hashes':
-                return this.mapFreqencies(value);
+                return this.mapFrequencies(value);
             default:
                 return value;
         }
@@ -65,14 +66,17 @@ class ServerConstantsService {
             return result;
         }, {}, objKeys);
     }
-    mapFreqencies(obj) {
+    mapFrequencies(obj) {
         return reduce((result, value) => {
             value.key = parseFloat(value.key);
             return concat(result, value);
         }, [], obj);
     }
     getPledgeFrequency(freq) {
-        return find({ key: parseFloat(freq) }, this.data.pledge_frequency_hashes);
+        return freq ? find({ key: parseFloat(freq) }, this.data.pledge_frequency_hashes) : null;
+    }
+    getPledgeFrequencyValue(freq) {
+        return get('value', this.getPledgeFrequency(freq));
     }
 }
 

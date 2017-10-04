@@ -8,9 +8,7 @@ import avatar from './avatar/avatar.component';
 import bgImg from './bgImg/bgImg.directive';
 import chosen from './chosen/chosen.directive';
 import collectionSelector from './collectionSelector/index.module';
-import convertToNumber from './convertToNumber/convertToNumber.directive';
-import cover from './cover/index.module';
-import currencySelect from './currencySelect/currencySelect.component';
+import cover from './cover/cover.component';
 import datetimepicker from './datetimepicker/datetimepicker.component';
 import designationAccounts from './designationAccounts/designationAccounts.service';
 import donorAccounts from './donorAccounts/donorAccounts.service';
@@ -32,7 +30,9 @@ import session from './session/session.service';
 import sourceToStr from './sourceToStr/sourceToStr.filter';
 import pagination from './pagination/pagination.component';
 import tagSelector from './tagSelector/tagSelector.component';
+import threePartDatePicker from './threePartDatePicker/picker.component';
 import timeZone from './timeZone/timeZone.service';
+import twoPartDateDisplay from './twoPartDateDisplay/display.component';
 import urlParameter from './urlParameter/urlParameter.service';
 import users from './users/users.service';
 
@@ -47,9 +47,7 @@ export default angular.module('mpdx.common', [
     bgImg,
     chosen,
     collectionSelector,
-    convertToNumber,
     cover,
-    currencySelect,
     datetimepicker,
     designationAccounts,
     donorAccounts,
@@ -71,7 +69,9 @@ export default angular.module('mpdx.common', [
     session,
     sourceToStr,
     tagSelector,
+    threePartDatePicker,
     timeZone,
+    twoPartDateDisplay,
     urlParameter,
     users
 ]).name;

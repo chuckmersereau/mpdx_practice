@@ -16,7 +16,23 @@ describe('common.cover.component', () => {
     function loadController() {
         $ctrl = componentController('cover', { $scope: scope }, {});
     }
-    xit('should do something', () => {
-        expect($ctrl).toEqual(1);
+
+    it('should define covers', () => {
+        expect($ctrl.covers).toEqual([
+            {
+                'url': require('./images/splash_sf.jpg'),
+                'copyright': 'San Francisco, California'
+            }, {
+                'url': require('./images/splash_machu.jpg'),
+                'copyright': 'Machu Picchu, Peru'
+            }, {
+                'url': require('./images/splash_china.jpg'),
+                'copyright': 'Guilin, China'
+            }
+        ]);
+    });
+    it('should pick a random cover', () => {
+        expect($ctrl.cover.url).toBeDefined();
+        expect($ctrl.cover.copyright).toBeDefined();
     });
 });

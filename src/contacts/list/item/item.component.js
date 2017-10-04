@@ -10,20 +10,26 @@ class ItemController {
         $rootScope,
         contacts, people, users
     ) {
+        this.$rootScope = $rootScope;
         this.contacts = contacts;
         this.people = people;
         this.users = users;
-
-        $rootScope.$on('contactTagDeleted', (e, val) => {
+    }
+    $onInit() {
+        this.watcher = this.$rootScope.$on('contactTagDeleted', (e, val) => {
             if (!val.contactIds || includes(this.contact.id, val.contactIds)) {
                 this.contact.tag_list = pull(val.tag, this.contact.tag_list);
             }
         });
-        $rootScope.$on('contactTagsAdded', (e, val) => {
+        this.watcher2 = this.$rootScope.$on('contactTagsAdded', (e, val) => {
             if (!val.contactIds || includes(this.contact.id, val.contactIds)) {
                 this.contact.tag_list = union(this.contact.tag_list, val.tags);
             }
         });
+    }
+    $onDestroy() {
+        this.watcher();
+        this.watcher2();
     }
     hasSendNewsletterError() {
         if (!this.contact.addresses || !this.contact.people) {
@@ -58,7 +64,6 @@ const Item = {
     template: require('./item.html'),
     bindings: {
         contact: '=',
-        hide: '&',
         selected: '='
     }
 };

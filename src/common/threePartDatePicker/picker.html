@@ -1,0 +1,28 @@
+<div class="row">
+    <div class="col-sm-4" ng-if="$ctrl.yearFirst">
+        <label for="birthday-year" translate>Year</label>
+        <input ng-model="$ctrl.year" id="birthday-year" type="number" class="form-control">
+    </div>
+    <div class="col-sm-3" ng-if="$ctrl.dayFirst">
+        <label for="birthday-day" translate>Day</label>
+        <input ng-model="$ctrl.day" id="birthday-day" type="number" max="31" min="1" class="form-control">
+    </div>
+    <div class="col-sm-5">
+        <label for="birthday-month" translate>Month</label>
+        <select chosen
+                id="birthday-month"
+                ng-options="opt.value as opt.display for opt in $ctrl.months"
+                ng-model="$ctrl.month"
+                allow-single-deselect="true">
+            <option value=""></option>
+        </select>
+    </div>
+    <div class="col-sm-3" ng-if="!$ctrl.dayFirst">
+        <label for="birthday-day" translate>Day</label>
+        <input ng-model="$ctrl.day" id="birthday-day" type="number" max="31" min="1" class="form-control">
+    </div>
+    <div class="col-sm-4" ng-if="!$ctrl.yearFirst">
+        <label for="birthday-year" translate>Year</label>
+        <input ng-model="$ctrl.year" id="birthday-year" type="number" class="form-control">
+    </div>
+</div>

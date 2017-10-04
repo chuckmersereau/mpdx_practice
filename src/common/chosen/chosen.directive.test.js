@@ -1,16 +1,18 @@
 import directive from './chosen.directive';
 
 describe('common.chosen.directive', () => {
-    let element, $compile, rootScope;
+    let $compile, rootScope;
     beforeEach(() => {
         angular.mock.module(directive);
         inject((_$compile_, $rootScope) => {
             rootScope = $rootScope;
             $compile = _$compile_;
-            element = $compile('<input chosen>')(rootScope);
+            $compile('<select chosen><option>b</option><option value="1">a</option></select>')(rootScope);
         });
     });
-    xit('should fix the chosen list when defined', () => {
-        expect(element).toBeDefined(); // dummy for linting
+    it('should fix the chosen list when defined', () => {
+        const elm = angular.element('<select chosen><option>b</option><option value="1">a</option></select>');
+        rootScope.$digest();
+        $compile(elm)(rootScope);
     });
 });

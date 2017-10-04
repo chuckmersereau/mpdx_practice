@@ -1,0 +1,115 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <div class="pull-right">
+                <translate>Balance:</translate> {{::$ctrl.account.balance}} {{::$ctrl.account.default_currency}}
+            </div>
+            {{::$ctrl.account.name}}
+        </h3>
+    </div>
+    <div class="panel-body">
+        <div class="mb-1">
+            <div class="pull-right">
+                <div ng-if="::$ctrl.account.monthly_goal" translate>
+                    <div class="pull-right" data-placement="top" data-title="{{ 'monthly goal' | translate }}" bs-tooltip>
+                        {{::$ctrl.account.monthly_goal | currency}} {{::$ctrl.account.default_currency}}
+                    </div>
+                    <div class="pull-right">/</div>
+                    <div class="pull-right" data-placement="top" data-title="{{ 'monthly committed' | translate }}" bs-tooltip>
+                        {{::$ctrl.account.committed | currency}}
+                    </div>
+                </div>
+                <div ng-if="::!$ctrl.account.monthly_goal" translate>
+                    No monthly goal set for this account
+                </div>
+            </div>
+            <strong translate>Monthly Progress</strong>
+        </div>
+        <div class="progress mb-2">
+            <div class="progress-bar progress-bar--dark"
+                 role="progressbar"
+                 aria-valuenow="{{::$ctrl.account.progress.pledged_percent}}"
+                 aria-valuemin="0"
+                 aria-valuemax="100"
+                 ng-style="{ width: $ctrl.account.progress.pledged_percent + '%' }">
+                <span class="sr-only" translate-params-percentage="$ctrl.account.progress.pledged_percent" translate>
+                    {{percentage}}% Complete
+                </span>
+            </div>
+            <div class="progress-bar progress-bar--light"
+                 role="progressbar"
+                 aria-valuenow="{{::$ctrl.account.progress.in_hand_percent}}"
+                 aria-valuemin="0"
+                 aria-valuemax="100"
+                 ng-style="{ width: $ctrl.account.progress.in_hand_percent + '%' }">
+                <span class="sr-only" translate-params-percentage="$ctrl.account.progress.in_hand_percent" translate>
+                    {{percentage}}% Complete
+                </span>
+            </div>
+            <div class="progress-text">
+                <div class="pull-right" data-placement="left" data-title="{{ 'percentage committed' | translate }}" bs-tooltip>
+                    {{::$ctrl.account.progress.pledged_percent || 0}}%
+                </div>
+                <div class="pull-right">/</div>
+                <div class="pull-right" data-placement="left" data-title="{{ 'percentage received' | translate }}" bs-tooltip>
+                    {{::$ctrl.account.progress.in_hand_percent || 0}}%
+                </div>
+            </div>
+        </div>
+        <div class="mb-1">
+            <div class="pull-right">
+                <div ng-if="::$ctrl.account.primary_appeal">
+                    <div class="pull-right" data-placement="top" data-title="{{ 'appeal goal' | translate }}" bs-tooltip>
+                        {{::$ctrl.account.primary_appeal.goal | currency}} {{::$ctrl.account.default_currency}}
+                    </div>
+                    <div class="pull-right">/</div>
+                    <div class="pull-right" data-placement="top" data-title="{{ 'appeal committed' | translate }}" bs-tooltip>
+                        {{::$ctrl.account.primary_appeal.amount | currency}}
+                    </div>
+                </div>
+                <div ng-if="::!$ctrl.account.primary_appeal" translate>
+                    No primary appeal set for this account
+                </div>
+            </div>
+            <strong translate>Primary Appeal Progress</strong>
+        </div>
+        <div class="progress mb-0">
+            <div class="progress-bar progress-bar--light"
+                 role="progressbar"
+                 aria-valuenow="{{::$ctrl.account.primary_appeal.pledged_percent}}"
+                 aria-valuemin="0"
+                 aria-valuemax="100"
+                 ng-style="{ width: $ctrl.account.primary_appeal.pledged_percent + '%' }">
+                <span class="sr-only" translate-params-percentage="$ctrl.account.primary_appeal.pledged_percent" translate>
+                    {{percentage}}% Complete
+                </span>
+            </div>
+            <div class="progress-bar progress-bar--dark"
+                 role="progressbar"
+                 aria-valuenow="{{::$ctrl.account.in_hand_percent}}"
+                 aria-valuemin="0"
+                 aria-valuemax="100"
+                 ng-style="{ width: $ctrl.account.in_hand_percent + '%' }">
+                <span class="sr-only" translate-params-percentage="$ctrl.account.primary_appeal.in_hand_percent" translate>
+                    {{percentage}}% Complete
+                </span>
+            </div>
+
+            <div class="progress-text">
+                <div class="pull-right" data-placement="left" data-title="{{ 'percentage committed' | translate }}" bs-tooltip>
+                    {{::$ctrl.account.primary_appeal.pledged_percent || 0}}%
+                </div>
+                <div class="pull-right">/</div>
+                <div class="pull-right" data-placement="left" data-title="{{ 'percentage received' | translate }}" bs-tooltip>
+                    {{::$ctrl.account.primary_appeal.in_hand_percent || 0}}%
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer clearfix">
+        <div ng-repeat="user in $ctrl.account.users track by user.id" class="clearfix pull-left mr-1">
+            <avatar src="user.avatar" title="{{ user.first_name + ' ' + user.last_name }}" size="xs"></avatar>
+        </div>
+        <a ui-sref="coaches.show({accountId: $ctrl.account.id})" class="btn btn-primary" translate>See Details</a>
+    </div>
+</div>

@@ -37,8 +37,28 @@ describe('tools.fix.commitmentInfo.component', () => {
     describe('events', () => {
         it('should fire load on accountListUpdated', () => {
             spyOn($ctrl, 'load').and.callFake(() => Promise.resolve());
+            $ctrl.$onInit();
             rootScope.$emit('accountListUpdated');
+            rootScope.$digest();
             expect($ctrl.load).toHaveBeenCalled();
+            $ctrl.$onDestroy();
+        });
+        it('should remove contact on contactHidden', () => {
+            fixCommitmentInfo.data = [{ id: 2 }];
+            $ctrl.$onInit();
+            rootScope.$emit('contactHidden', 2);
+            expect(fixCommitmentInfo.data).toEqual([]);
+            $ctrl.$onDestroy();
+        });
+    });
+    describe('$onDestroy', () => {
+        it('should kill the watchers', () => {
+            $ctrl.$onInit();
+            spyOn($ctrl, 'watcher').and.callFake(() => {});
+            spyOn($ctrl, 'watcher2').and.callFake(() => {});
+            $ctrl.$onDestroy();
+            expect($ctrl.watcher).toHaveBeenCalledWith();
+            expect($ctrl.watcher2).toHaveBeenCalledWith();
         });
     });
     describe('save', () => {

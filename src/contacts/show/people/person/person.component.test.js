@@ -16,18 +16,64 @@ describe('contacts.show.person.component', () => {
     });
 
     function loadController() {
-        $ctrl = componentController('contactPerson', { $scope: scope }, {});
+        $ctrl = componentController('contactPerson', { $scope: scope }, { userProfile: 'true' });
     }
 
     describe('constructor', () => {
         it('should have default values', () => {
             expect($ctrl.translatedLocations).toEqual({
+                fax: 'Fax',
                 home: 'Home',
                 mobile: 'Mobile',
-                work: 'Work',
-                fax: 'Fax',
-                other: 'Other'
+                other: 'Other',
+                personal: 'Personal',
+                work: 'Work'
             });
+        });
+    });
+
+    describe('events', () => {
+        beforeEach(() => $ctrl.$onInit());
+
+        it('should handle personCreated', () => {
+            spyOn(people, 'get').and.callFake(() => Promise.resolve({ id: 123 }));
+            $ctrl.person = { id: 123 };
+            rootScope.$emit('personUpdated', 123);
+            expect(people.get).toHaveBeenCalledWith(123);
+        });
+
+        it('should handle peopleMerged', () => {
+            spyOn(people, 'get').and.callFake(() => Promise.resolve({ id: 123 }));
+            $ctrl.person = { id: 123 };
+            rootScope.$emit('peopleMerged', 123, [234]);
+            expect(people.get).toHaveBeenCalledWith(123);
+        });
+
+        describe('person is not being updated or merged', () => {
+            it('should handle personCreated', () => {
+                spyOn(people, 'get');
+                $ctrl.person = { id: 456 };
+                rootScope.$emit('personUpdated', 123);
+                expect(people.get).not.toHaveBeenCalledWith(123);
+            });
+
+            it('should handle peopleMerged', () => {
+                spyOn(people, 'get');
+                $ctrl.person = { id: 456 };
+                rootScope.$emit('peopleMerged', 123, [234]);
+                expect(people.get).not.toHaveBeenCalledWith(123);
+            });
+        });
+    });
+
+    describe('$onDestroy', () => {
+        it('should destroy watchers', () => {
+            $ctrl.$onInit();
+            spyOn($ctrl, 'watcher1');
+            spyOn($ctrl, 'watcher2');
+            $ctrl.$onDestroy();
+            expect($ctrl.watcher1).toHaveBeenCalled();
+            expect($ctrl.watcher2).toHaveBeenCalled();
         });
     });
 
@@ -42,7 +88,8 @@ describe('contacts.show.person.component', () => {
             $ctrl.openModal();
             expect(people.openPeopleModal).toHaveBeenCalledWith(
                 { id: 'contact_id' },
-                'person_id'
+                'person_id',
+                'true'
             );
         });
 

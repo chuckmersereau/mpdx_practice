@@ -1,11 +1,12 @@
 import mc from './merge.controller';
 
-const person = { first_name: 'a', last_name: 'b' };
+const person = { id: 123, first_name: 'a', last_name: 'b' };
 
 describe('contacts.show.people.merge.controller', () => {
     let $ctrl, controller, alerts, people, rootScope, scope, gettextCatalog;
     beforeEach(() => {
         angular.mock.module(mc);
+
         inject(($controller, $rootScope, _alerts_, _people_, _gettextCatalog_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
@@ -16,6 +17,7 @@ describe('contacts.show.people.merge.controller', () => {
             controller = $controller;
             loadController(person);
         });
+
         spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
@@ -23,7 +25,7 @@ describe('contacts.show.people.merge.controller', () => {
     function loadController() {
         $ctrl = controller('mergePeopleModalController as $ctrl', {
             $scope: scope,
-            selectedPeople: [person]
+            selectedPeople: [person, { id: 456 }]
         });
     }
     describe('save', () => {
@@ -31,15 +33,17 @@ describe('contacts.show.people.merge.controller', () => {
             spyOn(rootScope, '$emit').and.callThrough();
             spyOn(scope, '$hide');
         });
-        it('should call personUpdated', (done) => {
+
+        it('should emit peopleMerged event', (done) => {
             spyOn(people, 'bulkMerge').and.callFake(() => Promise.resolve());
-            $ctrl.selectedPerson = person;
+            $ctrl.selectedPerson = person.id;
             $ctrl.save().then(() => {
-                expect(rootScope.$emit).toHaveBeenCalledWith('personUpdated');
+                expect(rootScope.$emit).toHaveBeenCalledWith('peopleMerged', 123, [456]);
                 expect(scope.$hide).toHaveBeenCalled();
                 done();
             });
         });
+
         it('should handle failure with a translated Message', (done) => {
             spyOn(people, 'bulkMerge').and.callFake(() => Promise.reject(Error('')));
             $ctrl.selectedPerson = person;

@@ -94,7 +94,7 @@
                                     <a type="button" class="btn btn-default btn-xs" ng-click="$ctrl.addEmailAddress()">
                                         <i class="fa fa-plus-circle"></i> <translate>Add Email</translate>
                                     </a>
-                                    <label class="checkbox-label pull-right" for="optout_enewsletter">
+                                    <label class="checkbox-label pull-right" for="optout_enewsletter" ng-if="::!$ctrl.userProfile">
                                         <input class="form-control" type="checkbox" id="optout_enewsletter" ng-model="$ctrl.person.optout_enewsletter" />
                                         &nbsp;
                                         <translate>Opt-out of Email Newsletter</translate>
@@ -123,14 +123,22 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="birthday" translate>Birthday</label>
-                                    <input bs-datepicker id="birthday" ng-model="$ctrl.person.birthday" data-date-format="{{$ctrl.locale.dateTimeFormat}}" data-autoclose="1" class="form-control">
+                                    <three-part-date-picker day="$ctrl.person.birthday_day"
+                                                            month="$ctrl.person.birthday_month"
+                                                            year="$ctrl.person.birthday_year"
+                                                            id="birthday">
+                                    </three-part-date-picker>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="anniversary" translate>Anniversary</label>
-                                    <input bs-datepicker id="anniversary" ng-model="$ctrl.person.anniversary" data-date-format="{{$ctrl.locale.dateTimeFormat}}" data-autoclose="1" class="form-control">
+                                    <three-part-date-picker day="$ctrl.person.anniversary_day"
+                                                            month="$ctrl.person.anniversary_month"
+                                                            year="$ctrl.person.anniversary_year"
+                                                            id="anniversary">
+                                    </three-part-date-picker>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row" ng-if="::!$ctrl.userProfile">
                                 <div class="col-md-12">
                                     <div><label class="block">&nbsp;</label></div>
                                     <label class="checkbox-label" for="deceased">

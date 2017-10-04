@@ -4,20 +4,60 @@ import moment from 'moment';
 
 class AnniversariesController {
     constructor(
-        contacts, locale
+        $log, $rootScope,
+        api, locale
     ) {
-        this.contacts = contacts;
+        this.$log = $log;
+        this.$rootScope = $rootScope;
+        this.api = api;
         this.locale = locale;
 
         this.limit = 5;
     }
+    $onInit() {
+        this.getAnniversariesThisWeek();
+
+        this.watcher = this.$rootScope.$on('accountListUpdated', () => {
+            this.getAnniversariesThisWeek();
+        });
+    }
+    $onDestroy() {
+        this.watcher();
+    }
+    getAnniversariesThisWeek() {
+        return this.api.get({
+            url: 'contacts/analytics',
+            data: {
+                include: 'anniversaries_this_week,'
+                + 'anniversaries_this_week.people,'
+                + 'anniversaries_this_week.people.facebook_accounts,'
+                + 'anniversaries_this_week.people.twitter_accounts,'
+                + 'anniversaries_this_week.people.email_addresses,',
+                fields: {
+                    contact_analytics: 'anniversaries_this_week',
+                    contacts: 'people',
+                    people: 'anniversary_day,anniversary_month,anniversary_year,facebook_accounts,first_name,last_name,twitter_accounts,email_addresses,parent_contact',
+                    email_addresses: 'email,primary',
+                    facebook_accounts: 'username',
+                    twitter_accounts: 'screen_name'
+                },
+                filter: { account_list_id: this.api.account_list_id }
+            },
+            overrideGetAsPost: true
+        }).then((data) => {
+            /* istanbul ignore next */
+            this.$log.debug('contacts/analytics anniversaries', data);
+            this.anniversaries_this_week = data.anniversaries_this_week;
+            return data.anniversaries_this_week;
+        });
+    }
     partialDateSort(value) {
-        let sortval = defaultTo(0, get('people[0].anniversary_month', value)) * 100;
-        if (sortval > 1100 && moment().month() === 11 && moment().date() > 20) { // reset for dec/jan sorting
-            sortval = 0;
+        let sortVal = defaultTo(0, get('people[0].anniversary_month', value)) * 100;
+        if (sortVal > 1100 && moment().month() === 11 && moment().date() > 20) { // reset for dec/jan sorting
+            sortVal = 0;
         }
-        sortval += defaultTo(0, get('people[0].anniversary_day', value));
-        return parseInt(sortval);
+        sortVal += defaultTo(0, get('people[0].anniversary_day', value));
+        return parseInt(sortVal);
     }
 }
 
@@ -26,10 +66,9 @@ const Anniversaries = {
     template: require('./anniversaries.html')
 };
 
-
-import contacts from 'contacts/contacts.service';
+import api from 'common/api/api.service';
 import locale from 'common/locale/locale.service';
 
 export default angular.module('mpdx.home.care.anniversaries', [
-    contacts, locale
+    api, locale
 ]).component('anniversaries', Anniversaries).name;

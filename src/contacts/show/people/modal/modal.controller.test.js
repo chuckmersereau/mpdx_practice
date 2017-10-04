@@ -7,6 +7,7 @@ describe('contacts.show.personModal.controller', () => {
     let $ctrl, controller, alerts, people, gettextCatalog, rootScope, scope, modal, api;
     beforeEach(() => {
         angular.mock.module(mc);
+
         inject(($controller, $rootScope, _alerts_, _people_, _gettextCatalog_, _modal_, _api_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
@@ -19,6 +20,7 @@ describe('contacts.show.personModal.controller', () => {
             controller = $controller;
             loadController(person);
         });
+
         spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
         spyOn(scope, '$hide').and.callFake(() => {});
@@ -29,20 +31,30 @@ describe('contacts.show.personModal.controller', () => {
             $scope: scope,
             contact: contact,
             peopleForRelationship: null,
-            person: null
+            person: null,
+            userProfile: null
         });
     }
     describe('activate', () => {
-        it('should set a translated title', () => {
+        it('should set a translated title when adding a person', () => {
             $ctrl.activate();
             expect($ctrl.modalTitle).toEqual('Add Person');
             expect(gettextCatalog.getString).toHaveBeenCalledWith('Add Person');
         });
-        it('should set a translated title', () => {
+
+        it('should set a translated title when edting a person', () => {
             $ctrl.person = { id: 1 };
             $ctrl.activate();
             expect($ctrl.modalTitle).toEqual('Edit Person');
             expect(gettextCatalog.getString).toHaveBeenCalledWith('Edit Person');
+        });
+
+        it('should set a translated title when edting a user profile', () => {
+            $ctrl.userProfile = 'true';
+            $ctrl.person = { id: 1 };
+            $ctrl.activate();
+            expect($ctrl.modalTitle).toEqual('Edit My Profile');
+            expect(gettextCatalog.getString).toHaveBeenCalledWith('Edit My Profile');
         });
     });
     describe('save', () => {
@@ -50,7 +62,7 @@ describe('contacts.show.personModal.controller', () => {
             spyOn(rootScope, '$emit').and.callThrough();
         });
         it('should create on create', (done) => {
-            spyOn(api, 'post').and.callFake(() => Promise.resolve());
+            spyOn(api, 'post').and.callFake(() => Promise.resolve({ id: 987 }));
             $ctrl.activate();
             $ctrl.person.first_name = 'a';
             $ctrl.save().then(() => {
@@ -67,8 +79,9 @@ describe('contacts.show.personModal.controller', () => {
                 done();
             });
         });
+
         it('should alert a translated message on create', (done) => {
-            spyOn(api, 'post').and.callFake(() => Promise.resolve());
+            spyOn(api, 'post').and.callFake(() => Promise.resolve({ id: 987 }));
             $ctrl.activate();
             $ctrl.person.first_name = 'a';
             $ctrl.save().then(() => {
@@ -77,15 +90,17 @@ describe('contacts.show.personModal.controller', () => {
                 done();
             });
         });
-        it('should call personUpdated on create', (done) => {
-            spyOn(api, 'post').and.callFake(() => Promise.resolve());
+
+        it('should call personCreated on create', (done) => {
+            spyOn(api, 'post').and.callFake(() => Promise.resolve({ id: 987 }));
             $ctrl.activate();
             $ctrl.person.first_name = 'a';
             $ctrl.save().then(() => {
-                expect(rootScope.$emit).toHaveBeenCalledWith('personUpdated');
+                expect(rootScope.$emit).toHaveBeenCalledWith('personCreated', 987);
                 done();
             });
         });
+
         it('should handle rejection', (done) => {
             spyOn(api, 'post').and.callFake(() => Promise.reject());
             $ctrl.save().catch(() => {
@@ -94,6 +109,7 @@ describe('contacts.show.personModal.controller', () => {
                 done();
             });
         });
+
         it('should call personUpdated on update', (done) => {
             spyOn(people, 'save').and.callFake(() => Promise.resolve());
             $ctrl.person = person;
@@ -101,10 +117,11 @@ describe('contacts.show.personModal.controller', () => {
             $ctrl.activate();
             $ctrl.person.first_name = 'b';
             $ctrl.save().then(() => {
-                expect(rootScope.$emit).toHaveBeenCalledWith('personUpdated');
+                expect(rootScope.$emit).toHaveBeenCalledWith('personUpdated', 123);
                 done();
             });
         });
+
         it('should handle rejection', (done) => {
             spyOn(people, 'save').and.callFake(() => Promise.reject(Error('')));
             $ctrl.person = person;
@@ -118,16 +135,19 @@ describe('contacts.show.personModal.controller', () => {
             });
         });
     });
+
     describe('delete', () => {
         beforeEach(() => {
             spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
             spyOn(api, 'delete').and.callFake(() => Promise.resolve());
         });
+
         it('should confirm with a translated message', () => {
             $ctrl.delete();
             expect(modal.confirm).toHaveBeenCalledWith(jasmine.any(String));
             expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
         });
+
         it('should call people.remove', (done) => {
             $ctrl.person.id = 1;
             $ctrl.delete().then(() => {
@@ -141,6 +161,7 @@ describe('contacts.show.personModal.controller', () => {
                 done();
             });
         });
+
         it('should hide the modal', (done) => {
             $ctrl.person.id = 1;
             $ctrl.delete().then(() => {
@@ -149,6 +170,7 @@ describe('contacts.show.personModal.controller', () => {
             });
         });
     });
+
     describe('changeTab', () => {
         describe('Form Valid', () => {
             const form = { $valid: true };
@@ -159,6 +181,7 @@ describe('contacts.show.personModal.controller', () => {
                 expect($ctrl.activeTab).toEqual('test');
             });
         });
+
         describe('Form Invalid', () => {
             const form = { $valid: false };
 

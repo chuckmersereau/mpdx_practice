@@ -12,11 +12,12 @@ import union from 'lodash/fp/union';
 
 class AddTaskController {
     constructor(
-        $log, $scope, $state,
+        $log, $rootScope, $scope, $state,
         contacts, serverConstants, tasks, tasksTags, users,
         contactsList, activityType, task, comments
     ) {
         this.$log = $log;
+        this.$rootScope = $rootScope;
         this.$scope = $scope;
         this.$state = $state;
         this.contacts = contacts;
@@ -102,6 +103,7 @@ class AddTaskController {
             this.contactsList,
             this.comment
         ).then(() => {
+            this.$rootScope.$emit('taskAdded');
             this.$scope.$hide();
         });
     }

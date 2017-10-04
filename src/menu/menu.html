@@ -74,6 +74,7 @@
                             <li class="item" ui-sref-active="active"><a ui-sref="tasks" translate>Tasks</a></li>
                             <li class="item" ng-class="{active: $ctrl.session.isInState('reports')}"><a ui-sref="reports.donations" translate>Reports</a></li>
                             <li class="item" ng-class="{active: $ctrl.session.isInState('tools')}"><a ui-sref="tools" translate>Tools</a></li>
+                            <li class="item" ng-class="{active: $ctrl.session.isInState('coaches')}" ng-if="$ctrl.users.current.preferences.admin"><a ui-sref="coaches" translate>Coaching</a></li>
                             <li class="item last" ui-sref-active="active"><a ng-click="$ctrl.help.showHelp()" translate>Help</a></li>
                         </ul>
                     </div>

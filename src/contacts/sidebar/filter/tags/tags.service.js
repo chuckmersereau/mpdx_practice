@@ -15,13 +15,12 @@ class TagsService {
         this.selectedTags = [];
         this.rejectedTags = [];
         this.anyTags = false;
-
-        $rootScope.$on('contactTagsAdded', (e, val) => {
-            const tags = map((obj) => {
-                return { id: uuid(), name: obj };
-            }, val.tags);
-            this.data = unionBy('name', this.data, tags);
-        });
+    }
+    addTag(val) {
+        const tags = map((obj) => {
+            return { id: uuid(), name: obj };
+        }, val.tags);
+        this.data = unionBy('name', this.data, tags);
     }
     load() {
         return this.api.get('contacts/tags', { filter: { account_list_id: this.api.account_list_id } }).then((data) => {

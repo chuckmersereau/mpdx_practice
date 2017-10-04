@@ -1,0 +1,19 @@
+<h2 class="mt-0 mb-3">Coaching Accounts</h2>
+<div class="blankslate blankslate-spacious" ng-if="$ctrl.data.length === 0 && !$ctrl.loading">
+    <i class="fa fa-drivers-license-o blankslate-icon"></i>
+    <h3 translate>Looks like you don't have access to coach any accounts</h3>
+    <p translate>You must request access from a user who has access to an account.</p>
+    <a ui-sref="home" class="btn btn-default" translate>Back to Dashboard</a>
+</div>
+<div ng-if="$ctrl.data.length > 0 || $ctrl.loading" infinite-scroll="$ctrl.loadMoreCoachingAccountLists()">
+    <coaches-list-item ng-repeat="account in $ctrl.data track by account.id" account="account"></coaches-list-item>
+    <div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
+      <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
+    </div>
+    <div class="mt-4 mb-4 text-center"
+         translate-params-from="$ctrl.data.length || 0"
+         translate-params-to="$ctrl.meta.pagination.total_count || 0"
+         translate>
+        Showing <strong>{{from}}</strong> of <strong>{{to}}</strong>
+    </div>
+</div>

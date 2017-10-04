@@ -25,4 +25,35 @@ describe('setup.start.component', () => {
             expect(setup.setPosition).toHaveBeenCalledWith('start');
         });
     });
+
+    describe('next', () => {
+        beforeEach(() => {
+            spyOn(setup, 'next').and.callFake(() => Promise.resolve());
+        });
+
+        it('should call setup.next', () => {
+            $ctrl.next();
+            expect(setup.next).toHaveBeenCalled();
+        });
+
+        it('should set saving to true', () => {
+            $ctrl.saving = false;
+            $ctrl.next();
+            expect($ctrl.saving).toEqual(true);
+        });
+
+        it('should return a promise', () => {
+            expect($ctrl.next()).toEqual(jasmine.any(Promise));
+        });
+
+        describe('promise successful', () => {
+            it('should set saving to false', (done) => {
+                $ctrl.saving = true;
+                $ctrl.next().then(() => {
+                    expect($ctrl.saving).toEqual(false);
+                    done();
+                });
+            });
+        });
+    });
 });

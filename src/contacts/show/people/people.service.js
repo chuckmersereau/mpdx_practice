@@ -1,7 +1,5 @@
 import config from 'config';
 import isFunction from 'lodash/fp/isFunction';
-import map from 'lodash/fp/map';
-import moment from 'moment';
 import uuid from 'uuid/v1';
 
 class PersonService {
@@ -20,7 +18,8 @@ class PersonService {
         this.contacts = contacts;
         this.modal = modal;
 
-        this.includes = 'email_addresses,facebook_accounts,family_relationships,family_relationships.related_person,linkedin_accounts,master_person,phone_numbers,twitter_accounts,websites';
+        this.includes = 'email_addresses,facebook_accounts,family_relationships,family_relationships.related_person,'
+            + 'linkedin_accounts,master_person,phone_numbers,twitter_accounts,websites';
         this.data = [];
     }
     get(personId) {
@@ -30,14 +29,7 @@ class PersonService {
         });
     }
     list(contactId) {
-        return this.api.get(`contacts/${contactId}/people`, { include: this.includes }).then((data) => {
-            return map((person) => {
-                if (person.anniversary_year) {
-                    person.anniversary = moment(`${person.anniversary_year}-${person.anniversary_month}-${person.anniversary_day}`, 'YYYY-MM-DD').toDate();
-                }
-                return person;
-            }, data);
-        });
+        return this.api.get(`contacts/${contactId}/people`, { include: this.includes });
     }
     listAll(reset = false) {
         if (!reset && this.data.length > 0) {
@@ -183,14 +175,15 @@ class PersonService {
             type: 'people'
         });
     }
-    openPeopleModal(contact, personId) {
+    openPeopleModal(contact, personId, userProfile = false) {
         const modalOpen = (contact, person) => {
             return this.modal.open({
                 template: require('./modal/modal.html'),
                 controller: 'personModalController',
                 locals: {
                     contact: contact,
-                    person: person
+                    person: person,
+                    userProfile: userProfile
                 }
             });
         };

@@ -1,6 +1,6 @@
 import component from './search.component';
 
-describe('common.cover.component', () => {
+describe('tasks.search.component', () => {
     let $ctrl, rootScope, scope, componentController;
 
     beforeEach(() => {
