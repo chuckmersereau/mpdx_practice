@@ -48,7 +48,8 @@ class MailchimpIntegrationPreferencesController {
         this.saving = true;
         return this.api.get(`account_lists/${this.api.account_list_id}/mail_chimp_account/sync`).then(() => {
             this.saving = false;
-            this.alerts.addAlert(this.gettextCatalog.getString('MPDX is now syncing your newsletter recipients with MailChimp'), 'success');
+            const message = this.gettextCatalog.getString('Your MailChimp sync has been started. This process may take 2-4 hours to complete.');
+            this.modal.info(message);
         }).catch((err) => {
             this.saving = false;
             this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for MailChimp'), 'danger');
