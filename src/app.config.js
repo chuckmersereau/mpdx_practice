@@ -9,8 +9,8 @@ export default function appConfig(
 ) {
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|file|tel|mailto):/);
     jwtOptionsProvider.config({
-        tokenGetter: () => {
-            return localStorage.getItem('token');
+        tokenGetter: /* @ngInject*/  ($window) => {
+            return $window.localStorage.getItem('token');
         },
         unauthenticatedRedirectPath: '/login',
         unauthenticatedRedirector: /* @ngInject*/ ($state, $location, $window) => {
