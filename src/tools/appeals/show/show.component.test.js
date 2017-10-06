@@ -89,8 +89,7 @@ describe('tools.appeals.show.component', () => {
         });
         it('should get contacts not given', () => {
             $ctrl.$onInit();
-            expect($ctrl.contactsNotGiven).toEqual(['b']);
-            // expect($ctrl.getContactsNotGiven).toHaveBeenCalledWith(contactsData.contacts, []);
+            expect($ctrl.getContactsNotGiven).toHaveBeenCalledWith();
         });
     });
     describe('$onDestroy', () => {
@@ -557,6 +556,53 @@ describe('tools.appeals.show.component', () => {
             $ctrl.doExportToMailChimp().catch(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith('Unable to add export contact(s) to Mailchimp', 'danger');
                 expect($ctrl.gettext).toHaveBeenCalledWith('Unable to add export contact(s) to Mailchimp');
+                done();
+            });
+        });
+    });
+    describe('getContactsNotGiven', () => {
+        beforeEach(() => {
+            spyOn(api, 'get').and.callFake(() => Promise.resolve({ meta: 'b' }));
+            spyOn($ctrl, 'fixPledgeAmount').and.callFake(() => ['a']);
+            $ctrl.appeal = { id: 1 };
+        });
+        it('should call the api', () => {
+            $ctrl.getContactsNotGiven();
+            expect(api.get).toHaveBeenCalledWith('appeals/1/appeal_contacts', {
+                page: 1,
+                per_page: 20,
+                include: 'contact',
+                filter: {
+                    pledged_to_appeal: false
+                },
+                fields: {
+                    contact: 'name,pledge_amount,pledge_currency,pledge_frequency'
+                }
+            });
+        });
+        it('should handle pagination', () => {
+            $ctrl.getContactsNotGiven(2);
+            expect(api.get).toHaveBeenCalledWith('appeals/1/appeal_contacts', {
+                page: 2,
+                per_page: 20,
+                include: 'contact',
+                filter: {
+                    pledged_to_appeal: false
+                },
+                fields: {
+                    contact: 'name,pledge_amount,pledge_currency,pledge_frequency'
+                }
+            });
+        });
+        it('should set contactsNotGiven', (done) => {
+            $ctrl.getContactsNotGiven().then(() => {
+                expect($ctrl.contactsNotGiven[0]).toEqual('a');
+                done();
+            });
+        });
+        it('should set meta', (done) => {
+            $ctrl.getContactsNotGiven().then(() => {
+                expect($ctrl.contactsNotGiven.meta).toEqual('b');
                 done();
             });
         });

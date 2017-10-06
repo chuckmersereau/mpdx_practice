@@ -212,24 +212,33 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="contact in $ctrl.contactsNotGiven | orderBy : 'name'">
+                    <tr ng-repeat="ref in $ctrl.contactsNotGiven | orderBy : 'name'">
                         <td>
                             <input type="checkbox"
-                                   ng-checked="$ctrl.selectedContactIds.includes(contact.id)"
-                                   ng-click="$ctrl.selectContact(contact.id)">
+                                   ng-checked="$ctrl.selectedContactIds.includes(ref.contact.id)"
+                                   ng-click="$ctrl.selectContact(ref.contact.id)">
                         </td>
-                        <td>{{::contact.name}}</td>
+                        <td>{{::ref.contact.name}}</td>
                         <td>
-                            {{::contact.currency.symbol}}{{::contact.pledge_amount}}
-                            {{::$ctrl.serverConstants.getPledgeFrequency(contact.pledge_frequency).value}}
+                            {{::ref.contact.currency.symbol}}{{::ref.contact.pledge_amount}}
+                            {{::$ctrl.serverConstants.getPledgeFrequency(ref.contact.pledge_frequency).value}}
                         </td>
                         <td>
-                            <button class="btn btn-xs btn-danger" ng-click="$ctrl.removeContact(contact)" title="{{'Remove' | translate}}">
+                            <button class="btn btn-xs btn-danger" ng-click="$ctrl.removeContact(ref.contact)" title="{{'Remove' | translate}}">
                                 <i class="fa fa-trash-o"></i>
                             </button>
                         </td>
                     </tr>
                     </tbody>
+                    <tfoot>
+                    <tr>
+                        <th colspan="4">
+                            <pagination meta="$ctrl.contactsNotGiven.meta.pagination"
+                                        on-change="$ctrl.getContactsNotGiven(page)">
+                            </pagination>
+                        </th>
+                    </tr>
+                    </tfoot>
                 </table>
             </div>
             <div class="row panel-body">

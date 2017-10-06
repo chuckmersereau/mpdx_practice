@@ -9,12 +9,10 @@ import fixed from 'common/fp/fixed';
 import get from 'lodash/fp/get';
 import isNilOrEmpty from 'common/fp/isNilOrEmpty';
 import joinComma from 'common/fp/joinComma';
-import keys from 'lodash/fp/keys';
 import map from 'lodash/fp/map';
 import moment from 'moment';
 import pull from 'lodash/fp/pull';
 import reduce from 'lodash/fp/reduce';
-// import reduceObject from 'common/fp/reduceObject';
 import reject from 'lodash/fp/reject';
 import sumBy from 'lodash/fp/sumBy';
 import union from 'lodash/fp/union';
@@ -60,7 +58,7 @@ class AppealController {
         this.mutatePledges(this.pledges);
         this.$log.debug('viewData', this.viewData);
 
-        this.contactsNotGiven = this.getContactsNotGiven(this.contactsData);
+        this.getContactsNotGiven();
 
         this.disableAccountListEvent = this.$rootScope.$on('accountListUpdated', () => {
             this.$state.go('tools.appeals');
@@ -68,6 +66,22 @@ class AppealController {
     }
     $onDestroy() {
         this.disableAccountListEvent();
+    }
+    getContactsNotGiven(page = 1) {
+        return this.api.get(`appeals/${this.appeal.id}/appeal_contacts`, {
+            page: page,
+            per_page: 20,
+            include: 'contact',
+            filter: {
+                pledged_to_appeal: false
+            },
+            fields: {
+                contact: 'name,pledge_amount,pledge_currency,pledge_frequency'
+            }
+        }).then((data) => {
+            this.contactsNotGiven = this.fixPledgeAmount(data);
+            this.contactsNotGiven.meta = data.meta;
+        });
     }
     mutatePledges(pledges) {
         this.viewData = reduce((result, pledge) => {
@@ -108,15 +122,6 @@ class AppealController {
                 pledge_amount: fixed(2, defaultTo(0, ref.contact.pledge_amount))
             })
         }), contacts);
-    }
-    getContactsNotGiven(contacts) { // , donations
-        const allPledged = reduce((result, value) => union(result, keys(value))
-            , [], this.viewData);
-        const contactsNotGiven = reject((ref) => contains(ref.contact.id, allPledged), contacts);
-        return map((ref) => {
-            ref.contact.currency = this.getCurrencyFromCode(ref.contact.pledge_currency);
-            return ref.contact;
-        }, contactsNotGiven);
     }
     getCurrencyFromCode(code) {
         return find({ code: code }, this.serverConstants.data.pledge_currencies);
