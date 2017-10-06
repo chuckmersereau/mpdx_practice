@@ -63,6 +63,57 @@ describe('common.api.service', () => {
                 $httpBackend.flush();
             });
         });
+        it('should auto add params with autoParams true', () => {
+            spyOn(api, '$http').and.callFake(() => Promise.resolve());
+            api.call({
+                url: 'contacts',
+                method: 'get',
+                data: {
+                    filter: {
+                        a: 'b'
+                    }
+                }
+            });
+            expect(api.$http).toHaveBeenCalledWith({
+                method: jasmine.any(String),
+                url: jasmine.any(String),
+                data: jasmine.any(Object),
+                params: { filter: { a: 'b' } },
+                headers: jasmine.any(Object),
+                paramSerializer: jasmine.any(String),
+                responseType: jasmine.any(String),
+                transformRequest: jasmine.any(Function),
+                transformResponse: jasmine.any(Array),
+                cacheService: jasmine.any(Boolean),
+                timeout: jasmine.any(Number)
+            });
+        });
+        it('shouldn\'t auto add params with autoParams false', () => {
+            spyOn(api, '$http').and.callFake(() => Promise.resolve());
+            api.call({
+                url: 'contacts',
+                method: 'get',
+                autoParams: false,
+                data: {
+                    filter: {
+                        a: 'b'
+                    }
+                }
+            });
+            expect(api.$http).toHaveBeenCalledWith({
+                method: jasmine.any(String),
+                url: jasmine.any(String),
+                data: jasmine.any(Object),
+                params: {},
+                headers: jasmine.any(Object),
+                paramSerializer: jasmine.any(String),
+                responseType: jasmine.any(String),
+                transformRequest: jasmine.any(Function),
+                transformResponse: jasmine.any(Array),
+                cacheService: jasmine.any(Boolean),
+                timeout: jasmine.any(Number)
+            });
+        });
     });
 
     describe('get', () => {
