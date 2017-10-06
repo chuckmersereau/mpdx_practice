@@ -15,6 +15,12 @@ import union from 'lodash/fp/union';
 import unionBy from 'lodash/fp/unionBy';
 import upsert from 'common/fp/upsert';
 
+export const defaultMeta = {
+    pagination: {
+        total_count: 0
+    }
+};
+
 class ListController {
     constructor(
         $log, $rootScope, gettextCatalog,
@@ -35,11 +41,7 @@ class ListController {
         this.data = [];
         this.dataLoadCount = 0;
         this.loading = false;
-        this.meta = {
-            pagination: {
-                total_count: 0
-            }
-        };
+        this.meta = defaultMeta;
         this.page = 1;
         this.selected = [];
         this.totalTaskCount = 0;
@@ -137,7 +139,7 @@ class ListController {
 
         if (reset) {
             this.page = 1;
-            this.meta = {};
+            this.meta = defaultMeta;
             this.data = [];
             this.dataLoadCount++;
             currentCount = angular.copy(this.dataLoadCount);

@@ -1,4 +1,4 @@
-import list from './list.component';
+import list, { defaultMeta } from './list.component';
 import assign from 'lodash/fp/assign';
 import range from 'lodash/fp/range';
 import moment from 'moment';
@@ -192,6 +192,9 @@ describe('tasks.list.component', () => {
                 $ctrl.data = [{ id: 1 }, { id: 2 }];
                 $ctrl.$onInit();
             });
+            afterEach(() => {
+                $ctrl.$onDestroy();
+            });
             it('should remove the tasks from data', () => {
                 rootScope.$emit('tasksDeleted', [{ id: 1 }]);
                 rootScope.$digest();
@@ -344,7 +347,7 @@ describe('tasks.list.component', () => {
             $ctrl.load();
             expect($ctrl.loading).toEqual(true);
             expect($ctrl.page).toEqual(1);
-            expect($ctrl.meta).toEqual({});
+            expect($ctrl.meta).toEqual(defaultMeta);
             expect($ctrl.data).toEqual([]);
             expect($ctrl.dataLoadCount).toEqual(1);
         });
