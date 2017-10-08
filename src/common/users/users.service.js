@@ -66,7 +66,9 @@ class Users {
             const accountListId = this.$window.localStorage.getItem(`${this.current.id}_accountListId`) || defaultAccountList;
 
             if (!accountListId) {
-                return this.redirectUserToStart();
+                return this.getOptions(true, true).then(() => {
+                    return this.redirectUserToStart();
+                });
             }
 
             return this.accounts.swap(accountListId, this.current.id).then(() => {
