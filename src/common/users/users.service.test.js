@@ -271,6 +271,11 @@ describe('common.users.service', () => {
             spyOn(users, 'setOption').and.callFake(() => Promise.resolve());
         });
 
+        it('should call setOption', () => {
+            users.redirectUserToStart();
+            expect(users.setOption).toHaveBeenCalledWith({ key: 'setup_position', value: 'start' });
+        });
+
         it('should return promise', () => {
             expect(users.redirectUserToStart()).toEqual(jasmine.any(Promise));
         });
