@@ -79,16 +79,14 @@ class Users {
                 if (!(has('setup_position', this.currentOptions) && this.currentOptions.setup_position.value === 'connect')) {
                     return this.redirectUserToStart();
                 } else {
-                    return Promise.reject();
+                    return Promise.reject({});
                 }
             });
         });
     }
     redirectUserToStart() {
-        return this.setOption({ key: 'setup_position', value: 'start' }).then(() => {
-            this.$window.localStorage.removeItem(`${this.current.id}_accountListId`);
-            return Promise.reject({ redirect: 'setup.start' });
-        });
+        this.$window.localStorage.removeItem(`${this.current.id}_accountListId`);
+        return Promise.reject({ redirect: 'setup.start' });
     }
     configureRollbarPerson(data) {
         if (!config.rollbarAccessToken) {
