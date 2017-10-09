@@ -1,7 +1,8 @@
 class ItemController {
     constructor(
-        locale
+        accounts, locale
     ) {
+        this.accounts = accounts;
         this.locale = locale;
     }
 }
@@ -10,12 +11,14 @@ const AppealsListItem = {
     controller: ItemController,
     template: require('./item.html'),
     bindings: {
-        appeal: '<'
+        appeal: '<',
+        onPrimary: '&'
     }
 };
 
+import accounts from 'common/accounts/accounts.service';
 import locale from 'common/locale/locale.service';
 
 export default angular.module('mpdx.tools.appeals.list.item.component', [
-    locale
+    accounts, locale
 ]).component('appealsListItem', AppealsListItem).name;
