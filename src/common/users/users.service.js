@@ -85,10 +85,8 @@ class Users {
         });
     }
     redirectUserToStart() {
-        return this.setOption({ key: 'setup_position', value: 'start' }).then(() => {
-            this.$window.localStorage.removeItem(`${this.current.id}_accountListId`);
-            return Promise.reject({ redirect: 'setup.start' });
-        });
+        this.$window.localStorage.removeItem(`${this.current.id}_accountListId`);
+        return Promise.reject({ redirect: 'setup.start' });
     }
     configureRollbarPerson(data) {
         if (!config.rollbarAccessToken) {
