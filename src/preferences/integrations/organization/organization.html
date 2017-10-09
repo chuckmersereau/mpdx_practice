@@ -25,7 +25,7 @@
                 <div ng-if="account.showTntDataSync">
                     <br>
                     <div class="alert alert-info">
-                        <p translate>This file should be in a TntConnect DataSync file (.tntdatasync or .tntmpd) from your organization, not your local TntConnect database file (.mpddb).</p>
+                        <p translate>This file should be a TntConnect DataSync file (.tntdatasync or .tntmpd) from your organization, not your local TntConnect database file (.mpddb).</p>
                         <p translate>To import your TntConnect database, go to <a ui-sref="tools.importFromTNT">Import from TntConnect</a></p>
                     </div>
                     <div class="field">
@@ -71,10 +71,9 @@
             </div>
             <div ng-if="$ctrl.selected">
                 <div ng-if="$ctrl.selected.api_class === 'Siebel'">
-                    <h4 translate>You must log into MPDX with your ministry email</h4>
-                    <p translate>This organization requires you to log into MPDX with your ministry email to access it.</p>
-                    <p translate>First you need to <a href="https://thekey.me/cas/logout" target="_blank" translate>click here to log out of your personal Key account</a></p>
-                    <p translate>Next, <a href="/logout" translate>click here to log out of MPDX</a> so you can log back in with your official key account.</p>
+                    <h4 translate>You must log into MPDX with your ministry email address</h4>
+                    <p translate>This organization requires you to log into MPDX with your ministry email address to access it.</p>
+                    <p translate><a href="/logout" translate>Click here to log out of MPDX and The Key</a> so you can log back in with the Key account that is associated with your ministry email address.</p>
                 </div>
                 <div ng-if="['DataServer', 'DataServerPtc', 'DataServerNavigators'].includes($ctrl.selected.api_class)">
                     <div class="form-group">
