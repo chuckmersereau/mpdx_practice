@@ -79,7 +79,7 @@ class Users {
                 if (!(has('setup_position', this.currentOptions) && this.currentOptions.setup_position.value === 'connect')) {
                     return this.redirectUserToStart();
                 } else {
-                    return Promise.reject();
+                    return Promise.reject({});
                 }
             });
         });
