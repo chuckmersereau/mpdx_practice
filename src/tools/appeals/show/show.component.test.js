@@ -362,6 +362,15 @@ describe('tools.appeals.show.component', () => {
             expect($ctrl.selectedContactIds).toEqual([2, 3, 1]);
         });
     });
+    describe('selectPledge', () => {
+        it('select/deselect the pledge', () => {
+            $ctrl.selectedPledgeIds = [1, 2, 3];
+            $ctrl.selectPledge(1);
+            expect($ctrl.selectedPledgeIds).toEqual([2, 3]);
+            $ctrl.selectPledge(1);
+            expect($ctrl.selectedPledgeIds).toEqual([2, 3, 1]);
+        });
+    });
     describe('getCurrencyFromCode', () => {
         it('should retrieve a currency object', () => {
             serverConstants.data.pledge_currencies = [{ code: 'USD', symbol: '$' }];

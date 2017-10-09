@@ -39,6 +39,7 @@ class AppealController {
 
         this.appeal = null;
         this.selectedContactIds = [];
+        this.selectedPledgeIds = [];
     }
     $onInit() {
         /* istanbul ignore next */
@@ -212,6 +213,11 @@ class AppealController {
         this.selectedContactIds = contains(contactId, this.selectedContactIds)
             ? pull(contactId, this.selectedContactIds)
             : concat(this.selectedContactIds, contactId);
+    }
+    selectPledge(id) {
+        this.selectedPledgeIds = contains(id, this.selectedPledgeIds)
+            ? pull(id, this.selectedPledgeIds)
+            : concat(this.selectedPledgeIds, id);
     }
     addDonation() {
         this.donations.openDonationModal({ appeal: { id: this.appeal.id, name: this.appeal.name } });
