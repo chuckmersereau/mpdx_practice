@@ -3,7 +3,11 @@
         Current Goals
     </div>
     <div ng-if="$ctrl.data.length > 0" class="panel-body" infinite-scroll="$ctrl.loadMoreAppeals()">
-        <appeals-list-item ng-repeat="appeal in $ctrl.data" appeal="appeal"></appeals-list-item>
+        <appeals-list-item ng-repeat="appeal in $ctrl.data"
+                           on-primary="$ctrl.onPrimary(appeal.id)"
+                           appeal="appeal">
+
+        </appeals-list-item>
     </div>
     <div ng-if="$ctrl.data.length === 0 && $ctrl.loading === false" class="panel-footer" translate>No Goals</div>
 </div>

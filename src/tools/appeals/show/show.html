@@ -72,7 +72,7 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th colspan="2">Contact</th>
+                            <th>Contact</th>
                             <th>Commitment</th>
                             <th>Donation(s)</th>
                             <th>
@@ -82,29 +82,35 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="pledge in $ctrl.viewData.given_to_appeal | orderBy : 'donationDate' : true">
-                            <td>
-                                <input type="checkbox"
-                                       ng-checked="$ctrl.selectedContactIds.includes(donation.contact.id)"
-                                       ng-click="$ctrl.selectContact(contact.id)">
-                            </td>
+                        <tr ng-repeat="pledge in $ctrl.viewData.given_to_appeal | orderBy : 'donationDate' : true"
+                            ng-click="$ctrl.selectPledge(pledge.id)"
+                            ng-class="{ selected: $ctrl.selectedPledgeIds.includes(pledge.id) }"
+                            class="selectable">
                             <td>{{::pledge.name}}</td>
                             <td>{{::pledge.commitment}}</td>
                             <td>{{::pledge.donations[0].amount}} {{::pledge.commitmentCurrency}} ({{::pledge.donationDate | localize}})</td>
                             <td>
-                                <button class="btn btn-xs btn-default" ng-click="$ctrl.editCommitment(pledge)" title="{{'Edit Commitment' | translate}}">
+                                <button class="btn btn-xs btn-default"
+                                        ng-click="$ctrl.editCommitment(pledge); $event.stopPropagation()"
+                                        title="{{'Edit Commitment' | translate}}">
                                     <i class="fa fa-pencil-square-o"></i>
                                 </button>
                                 &nbsp;
-                                <button class="btn btn-xs btn-default" ng-click="$ctrl.editDonation(pledge.donation)" title="{{'Edit Donation' | translate}}">
+                                <button class="btn btn-xs btn-default"
+                                        ng-click="$ctrl.editDonation(pledge.donation); $event.stopPropagation()"
+                                        title="{{'Edit Donation' | translate}}">
                                     <i class="fa fa-pencil-square-o"></i>
                                 </button>
                                 &nbsp;
-                                <button class="btn btn-xs btn-danger" ng-click="$ctrl.removeDonation(pledge)" title="{{'Remove Donation' | translate}}">
+                                <button class="btn btn-xs btn-danger"
+                                        ng-click="$ctrl.removeDonation(pledge); $event.stopPropagation()"
+                                        title="{{'Remove Donation' | translate}}">
                                     <i class="fa fa-trash-o"></i>
                                 </button>
                                 &nbsp;
-                                <button class="btn btn-xs btn-danger" ng-click="$ctrl.removeCommitment(pledge)" title="{{'Remove Commitment' | translate}}">
+                                <button class="btn btn-xs btn-danger"
+                                        ng-click="$ctrl.removeCommitment(pledge); $event.stopPropagation()"
+                                        title="{{'Remove Commitment' | translate}}">
                                     <i class="fa fa-trash-o"></i>
                                 </button>
                             </td>
@@ -121,7 +127,7 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th colspan="2">Contact</th>
+                        <th>Contact</th>
                         <th>Commitment</th>
                         <th>Amount Received</th>
                         <th>
@@ -131,21 +137,23 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="pledge in $ctrl.viewData.received_not_processed | toArray | orderBy : 'donationDate' : true">
-                        <td>
-                            <input type="checkbox"
-                                   ng-checked="$ctrl.selectedContactIds.includes(donation.contact.id)"
-                                   ng-click="$ctrl.selectContact(contact.id)">
-                        </td>
+                    <tr ng-repeat="pledge in $ctrl.viewData.received_not_processed | toArray | orderBy : 'donationDate' : true"
+                        ng-click="$ctrl.selectPledge(pledge.id)"
+                        ng-class="{ selected: $ctrl.selectedPledgeIds.includes(pledge.id) }"
+                        class="selectable">
                         <td>{{::pledge.name}}</td>
                         <td>{{::pledge.commitment}} {{::pledge.commitmentCurrency}}</td>
                         <td>{{::pledge.amount}} {{::pledge.commitmentCurrency}} ({{::pledge.donationDate | localize}})</td>
                         <td>
-                            <button class="btn btn-xs btn-default" ng-click="$ctrl.editCommitment(pledge)" title="{{'Edit' | translate}}">
+                            <button class="btn btn-xs btn-default"
+                                    ng-click="$ctrl.editCommitment(pledge); $event.stopPropagation()"
+                                    title="{{'Edit' | translate}}">
                                 <i class="fa fa-pencil-square-o"></i>
                             </button>
                             &nbsp;
-                            <button class="btn btn-xs btn-danger" ng-click="$ctrl.removeCommitment(pledge)" title="{{'Remove' | translate}}">
+                            <button class="btn btn-xs btn-danger"
+                                    ng-click="$ctrl.removeCommitment(pledge); $event.stopPropagation()"
+                                    title="{{'Remove' | translate}}">
                                 <i class="fa fa-trash-o"></i>
                             </button>
                         </td>
@@ -162,7 +170,7 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th colspan="2">Contact</th>
+                        <th>Contact</th>
                         <th>Commitment</th>
                         <th>Amount Committed</th>
                         <th>
@@ -172,7 +180,10 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="pledge in $ctrl.viewData.committed_not_received | toArray | orderBy : 'expectedDate' : true">
+                    <tr ng-repeat="pledge in $ctrl.viewData.committed_not_received | toArray | orderBy : 'expectedDate' : true"
+                        ng-click="$ctrl.selectPledge(pledge.id)"
+                        ng-class="{ selected: $ctrl.selectedPledgeIds.includes(pledge.id) }"
+                        class="selectable">
                         <td>
                             <input type="checkbox"
                                    ng-checked="$ctrl.selectedContactIds.includes(donation.contact.id)"
@@ -182,11 +193,15 @@
                         <td>{{::pledge.commitment}} {{::pledge.commitmentCurrency}}</td>
                         <td>{{::pledge.amount}} {{::pledge.commitmentCurrency}} ({{::pledge.expectedDate | localize}})</td>
                         <td>
-                            <button class="btn btn-xs btn-default" ng-click="$ctrl.editCommitment(pledge)" title="{{'Edit' | translate}}">
+                            <button class="btn btn-xs btn-default"
+                                    ng-click="$ctrl.editCommitment(pledge); $event.stopPropagation()"
+                                    title="{{'Edit' | translate}}">
                                 <i class="fa fa-pencil-square-o"></i>
                             </button>
                             &nbsp;
-                            <button class="btn btn-xs btn-danger" ng-click="$ctrl.removeCommitment(pledge)" title="{{'Remove' | translate}}">
+                            <button class="btn btn-xs btn-danger"
+                                    ng-click="$ctrl.removeCommitment(pledge); $event.stopPropagation()"
+                                    title="{{'Remove' | translate}}">
                                 <i class="fa fa-trash-o"></i>
                             </button>
                         </td>
@@ -203,7 +218,7 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th colspan="2">Contact</th>
+                        <th>Contact</th>
                         <th>Commitment</th>
                         <th>
                             <a ng-click="$ctrl.selectAllNotGiven()">select all</a> |
@@ -212,19 +227,19 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="ref in $ctrl.contactsNotGiven | orderBy : 'name'">
-                        <td>
-                            <input type="checkbox"
-                                   ng-checked="$ctrl.selectedContactIds.includes(ref.contact.id)"
-                                   ng-click="$ctrl.selectContact(ref.contact.id)">
-                        </td>
+                    <tr ng-repeat="ref in $ctrl.contactsNotGiven | orderBy : 'name'"
+                        ng-click="$ctrl.selectContact(ref.contact.id)"
+                        ng-class="{ selected: $ctrl.selectedContactIds.includes(ref.contact.id) }"
+                        class="selectable">
                         <td>{{::ref.contact.name}}</td>
                         <td>
                             {{::ref.contact.currency.symbol}}{{::ref.contact.pledge_amount}}
                             {{::$ctrl.serverConstants.getPledgeFrequency(ref.contact.pledge_frequency).value}}
                         </td>
                         <td>
-                            <button class="btn btn-xs btn-danger" ng-click="$ctrl.removeContact(ref.contact)" title="{{'Remove' | translate}}">
+                            <button class="btn btn-xs btn-danger"
+                                    ng-click="$ctrl.removeContact(ref.contact); $event.stopPropagation()"
+                                    title="{{'Remove' | translate}}">
                                 <i class="fa fa-trash-o"></i>
                             </button>
                         </td>

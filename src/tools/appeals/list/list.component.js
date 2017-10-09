@@ -8,9 +8,10 @@ import unionBy from 'lodash/fp/unionBy';
 class ListController {
     constructor(
         $log, $rootScope,
-        api
+        accounts, api
     ) {
         this.$log = $log;
+        this.accounts = accounts;
         this.api = api;
 
 
@@ -93,6 +94,10 @@ class ListController {
     resetOrAppendData(reset, deserializedData) {
         return reset ? deserializedData : unionBy('id', this.data, deserializedData);
     }
+    onPrimary(id) {
+        this.accounts.current.primary_appeal = { id: id };
+        this.accounts.saveCurrent();
+    }
 }
 
 const List = {
@@ -100,8 +105,9 @@ const List = {
     template: require('./list.html')
 };
 
+import accounts from 'common/accounts/accounts.service';
 import api from 'common/api/api.service';
 
 export default angular.module('mpdx.tools.appeals.list.component', [
-    api
+    accounts, api
 ]).component('appealsList', List).name;
