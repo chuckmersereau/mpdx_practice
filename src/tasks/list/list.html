@@ -17,7 +17,7 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop" ng-show="$ctrl.selected.length > 0">
                                     <li><a ng-click="$ctrl.bulkComplete()" translate>Complete Tasks</a></li>
-                                    <li><a ng-click="$ctrl.tasksModals.bulkEditModal()" translate>Edit Tasks</a></li>
+                                    <li><a ng-click="$ctrl.tasksModals.bulkEdit($ctrl.selected)" translate>Edit Tasks</a></li>
                                     <li class="divider"></li>
                                     <li><a ng-click="$ctrl.openRemoveTagModal()" translate>Remove Tag(s)</a></li>
                                     <li class="divider"></li>
@@ -28,7 +28,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <a class="btn btn-default" ng-click="$ctrl.tasks.toggleAll()" translate>Select All</a>
+                        <a class="btn btn-default" ng-click="$ctrl.toggleAll()" translate>Select All</a>
                         <a class="btn btn-default visible-sm" ng-class="{ 'btn-reverse' : $ctrl.session.showFiltersOnMobile }" ng-click="$ctrl.session.showFiltersOnMobile = !$ctrl.session.showFiltersOnMobile">
                             <i class="fa fa-sliders"></i>
                             <translate>Filters</translate>
@@ -65,7 +65,9 @@
                <div class="panel-heading" ng-class="category">{{$ctrl.categories[category]}}</div>
                <ul class="list-group">
                     <li class="list-group-item" ng-repeat="task in tasks | orderBy: ['task.completed','-task.completed_at','task.start_at','task.created_at']">
-                        <tasks-list-item task="task"></tasks-list-item>
+                        <tasks-list-item task="task"
+                            selected="$ctrl.isSelected(task.id)"
+                            on-select="$ctrl.select(task.id)"></tasks-list-item>
                     </li>
                 </ul>
             </div>
