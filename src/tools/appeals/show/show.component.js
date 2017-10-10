@@ -84,7 +84,8 @@ class AppealController {
             },
             fields: {
                 contact: 'name,pledge_amount,pledge_currency,pledge_frequency'
-            }
+            },
+            sort: 'contact.name'
         }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug(`contacts not given page ${page}`, data);
@@ -391,8 +392,8 @@ class AppealController {
                 contact: 'name,pledge_amount,pledge_currency,pledge_frequency'
             },
             per_page: 20,
-            page: page // ,
-            // sort: 'contact.name'
+            page: page,
+            sort: 'contact.name'
         }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug(`excluded contacts page ${page}`, data);
