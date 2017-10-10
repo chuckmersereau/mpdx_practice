@@ -42,7 +42,8 @@ describe('contacts.sidebar.tags.add.controller', () => {
                             contact_ids: ''
                         }
                     },
-                    doSerialization: false
+                    doSerialization: false,
+                    autoParams: false
                 });
                 done();
             });
