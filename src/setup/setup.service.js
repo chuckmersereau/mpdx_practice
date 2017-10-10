@@ -1,4 +1,7 @@
+import assign from 'lodash/fp/assign';
+import defaultTo from 'lodash/fp/defaultTo';
 import flatten from 'lodash/fp/flatten';
+import get from 'lodash/fp/get';
 
 class SetupService {
     constructor(
@@ -105,8 +108,13 @@ class SetupService {
     }
 
     setPosition(position) {
-        if (this.users.currentOptions.setup_position.value !== position) {
-            this.users.currentOptions.setup_position.value = position;
+        if (get('value', this.users.currentOptions.setup_position) !== position) {
+            this.users.currentOptions = assign(defaultTo({}, this.users.currentOptions), {
+                setup_position: {
+                    key: 'setup_position',
+                    value: position
+                }
+            });
             return this.users.setOption(this.users.currentOptions.setup_position);
         }
         return Promise.resolve();

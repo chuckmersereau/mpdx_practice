@@ -205,6 +205,14 @@ describe('common.users.service', () => {
             describe('no account list set', () => {
                 beforeEach(() => {
                     user.preferences = {};
+                    spyOn(users, 'getOptions').and.callFake(() => Promise.resolve());
+                });
+
+                it('should call getOptions', (done) => {
+                    users.getCurrent().catch(() => {
+                        expect(users.getOptions).toHaveBeenCalledWith(true, true);
+                        done();
+                    });
                 });
 
                 it('should call redirectUserToStart', (done) => {
@@ -261,6 +269,11 @@ describe('common.users.service', () => {
         beforeEach(() => {
             users.current = { id: 'user_id' };
             spyOn(users, 'setOption').and.callFake(() => Promise.resolve());
+        });
+
+        it('should call setOption', () => {
+            users.redirectUserToStart();
+            expect(users.setOption).toHaveBeenCalledWith({ key: 'setup_position', value: 'start' });
         });
 
         it('should return promise', () => {

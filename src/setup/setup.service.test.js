@@ -456,7 +456,7 @@ describe('setup.service', () => {
 
             it('should call users.setOption', () => {
                 setup.setPosition('connect');
-                expect(users.setOption).toHaveBeenCalledWith({ value: 'connect' });
+                expect(users.setOption).toHaveBeenCalledWith({ key: 'setup_position', value: 'connect' });
             });
         });
 
@@ -475,7 +475,7 @@ describe('setup.service', () => {
 
             it('should not call users.setOption', () => {
                 setup.setPosition('connect');
-                expect(users.setOption).not.toHaveBeenCalledWith({ value: 'connect' });
+                expect(users.setOption).not.toHaveBeenCalledWith({ key: 'setup_position', value: 'connect' });
             });
         });
     });

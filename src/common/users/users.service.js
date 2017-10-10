@@ -66,7 +66,9 @@ class Users {
             const accountListId = this.$window.localStorage.getItem(`${this.current.id}_accountListId`) || defaultAccountList;
 
             if (!accountListId) {
-                return this.redirectUserToStart();
+                return this.getOptions(true, true).then(() => {
+                    return this.redirectUserToStart();
+                });
             }
 
             return this.accounts.swap(accountListId, this.current.id).then(() => {
@@ -85,8 +87,10 @@ class Users {
         });
     }
     redirectUserToStart() {
-        this.$window.localStorage.removeItem(`${this.current.id}_accountListId`);
-        return Promise.reject({ redirect: 'setup.start' });
+        return this.setOption({ key: 'setup_position', value: 'start' }).then(() => {
+            this.$window.localStorage.removeItem(`${this.current.id}_accountListId`);
+            return Promise.reject({ redirect: 'setup.start' });
+        });
     }
     configureRollbarPerson(data) {
         if (!config.rollbarAccessToken) {
