@@ -585,7 +585,8 @@ describe('tools.appeals.show.component', () => {
                 },
                 fields: {
                     contact: 'name,pledge_amount,pledge_currency,pledge_frequency'
-                }
+                },
+                sort: 'contact.name'
             });
         });
         it('should handle pagination', () => {
@@ -599,7 +600,8 @@ describe('tools.appeals.show.component', () => {
                 },
                 fields: {
                     contact: 'name,pledge_amount,pledge_currency,pledge_frequency'
-                }
+                },
+                sort: 'contact.name'
             });
         });
         it('should set contactsNotGiven', (done) => {

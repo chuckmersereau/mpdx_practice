@@ -35,7 +35,8 @@ class AddTagController {
                     contact_ids: this.selectedContacts.join()
                 }
             },
-            doSerialization: false
+            doSerialization: false,
+            autoParams: false
         }).then(() => {
             const tag = { tags: tagToAdd, contactIds: this.selectedContacts };
             this.$rootScope.$emit('contactTagsAdded', tag);
