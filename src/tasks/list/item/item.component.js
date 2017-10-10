@@ -117,6 +117,7 @@ const Item = {
     controller: ItemController,
     template: require('./item.html'),
     bindings: {
+        onSelect: '&',
         selected: '<',
         task: '<'
     }
