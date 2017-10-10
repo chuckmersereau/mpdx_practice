@@ -10,7 +10,7 @@ class EditController {
         this.locale = locale;
         this.pledge = pledge;
         this.serverConstants = serverConstants;
-        this.selectedContact = pledge.name;
+        this.selectedContact = pledge.contact.name;
     }
     contactSearch(keyword) {
         // api missing exclude capability
@@ -32,7 +32,7 @@ class EditController {
         });
     }
     onContactSelected(contact) {
-        this.pledge.contactId = contact.id;
+        this.pledge.contact.id = contact.id;
         this.selectedContact = contact.name;
     }
     save() {

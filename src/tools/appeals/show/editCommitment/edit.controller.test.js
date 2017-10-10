@@ -17,7 +17,11 @@ describe('tools.appeals.show.editCommitment.controller', () => {
         return controller('editCommitmentController as $ctrl', {
             $scope: scope,
             appealId: 123,
-            pledge: {}
+            pledge: {
+                contact: {
+                    name: 'a'
+                }
+            }
         });
     }
     describe('contactSearch', () => {
@@ -46,7 +50,7 @@ describe('tools.appeals.show.editCommitment.controller', () => {
     describe('onContactSelected', () => {
         it('should set the contact id', () => {
             $ctrl.onContactSelected({ id: 1 });
-            expect($ctrl.pledge.contactId).toEqual(1);
+            expect($ctrl.pledge.contact.id).toEqual(1);
         });
         it('should set the contact name for display', () => {
             $ctrl.onContactSelected({ id: 1, name: 'a' });
