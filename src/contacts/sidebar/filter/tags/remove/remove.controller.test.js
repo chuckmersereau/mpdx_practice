@@ -75,16 +75,22 @@ describe('contacts.sidebar.tags.remove.controller', () => {
             $ctrl.untagContact([], 'a').then(() => {
                 expect(api.delete).toHaveBeenCalledWith({
                     url: 'contacts/tags/bulk',
-                    params: {
+                    data: {
+                        data: [{
+                            data: {
+                                type: 'tags',
+                                attributes: {
+                                    name: 'a'
+                                }
+                            }
+                        }],
                         filter: {
-                            account_list_id: api.account_list_id,
+                            account_list_id: 1234,
                             contact_ids: null
                         }
                     },
-                    data: [{
-                        name: 'a'
-                    }],
-                    type: 'tags'
+                    doSerialization: false,
+                    autoParams: false
                 });
                 done();
             });
@@ -93,16 +99,22 @@ describe('contacts.sidebar.tags.remove.controller', () => {
             $ctrl.untagContact([1, 2], 'a').then(() => {
                 expect(api.delete).toHaveBeenCalledWith({
                     url: 'contacts/tags/bulk',
-                    params: {
+                    data: {
+                        data: [{
+                            data: {
+                                type: 'tags',
+                                attributes: {
+                                    name: 'a'
+                                }
+                            }
+                        }],
                         filter: {
-                            account_list_id: api.account_list_id,
+                            account_list_id: 1234,
                             contact_ids: '1,2'
                         }
                     },
-                    data: [{
-                        name: 'a'
-                    }],
-                    type: 'tags'
+                    doSerialization: false,
+                    autoParams: false
                 });
                 done();
             });

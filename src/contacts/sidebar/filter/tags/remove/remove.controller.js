@@ -39,18 +39,27 @@ class RemoveTagController {
             , [], this.selectedContacts).sort();
     }
     untagContact(contactIds, tag) {
-        const params = {
-            filter: {
-                account_list_id: this.api.account_list_id,
-                contact_ids: emptyToNull(joinComma(contactIds))
-            }
-        };
-        const data = [{
-            name: tag
-        }];
         const message = this.gettextCatalog.getString('Are you sure you wish to remove the selected tag?');
         return this.modal.confirm(message).then(() => {
-            return this.api.delete({ url: 'contacts/tags/bulk', params: params, data: data, type: 'tags' }).then((data) => {
+            return this.api.delete({
+                url: 'contacts/tags/bulk',
+                data: {
+                    data: [{
+                        data: {
+                            type: 'tags',
+                            attributes: {
+                                name: tag
+                            }
+                        }
+                    }],
+                    filter: {
+                        account_list_id: this.api.account_list_id,
+                        contact_ids: emptyToNull(joinComma(contactIds))
+                    }
+                },
+                doSerialization: false,
+                autoParams: false
+            }).then((data) => {
                 this.$rootScope.$emit('contactTagDeleted', { tag: tag, contactIds: contactIds });
                 return data;
             });

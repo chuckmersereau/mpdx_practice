@@ -1,3 +1,5 @@
+import isNilOrEmpty from 'common/fp/isNilOrEmpty';
+
 const template = require('./impersonationBar.html');
 
 class ImpersonationController {
@@ -15,10 +17,10 @@ class ImpersonationController {
     $onInit() {
         this.$timeout(() => {
             this.impersonator = this.$window.localStorage.getItem('impersonator');
-            this.impersonated = `${this.users.current.first_name} ${this.users.current.last_name}`;
-            if (this.impersonator) {
-                this.session.navImpersonation = true;
-            }
+            this.impersonated = isNilOrEmpty(this.impersonator)
+                ? null
+                : `${this.users.current.first_name} ${this.users.current.last_name}`;
+            this.session.navImpersonation = !!this.impersonator;
         }, 500);
     }
     logout() {

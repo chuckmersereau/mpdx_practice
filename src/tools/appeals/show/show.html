@@ -59,7 +59,6 @@
         </div>
         <div>
             <button class="btn" ng-click="$ctrl.addCommitment()" translate>Add Commitment</button>
-            <!--<button class="btn" ng-click="$ctrl.addDonation()" translate>Add Donation</button>-->
             <button class="btn" ng-click="$ctrl.contacts.openAddTagModal($ctrl.selectedContactIds)" translate>Add Tag</button>
             <button class="btn" ng-click="$ctrl.tasks.addModal({ contactsList: $ctrl.selectedContactIds })" translate>Add Task</button>
         </div>
@@ -72,7 +71,7 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th colspan="2">Contact</th>
+                            <th>Contact</th>
                             <th>Commitment</th>
                             <th>Donation(s)</th>
                             <th>
@@ -82,34 +81,37 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="pledge in $ctrl.viewData.given_to_appeal | orderBy : 'donationDate' : true">
+                        <tr ng-repeat="pledge in $ctrl.pledgesProcessed"
+                            ng-click="$ctrl.selectPledge(pledge)"
+                            ng-class="{ selected: $ctrl.selectedPledgeIds.includes(pledge.id) }"
+                            class="selectable">
+                            <td>{{::pledge.contact.name}}</td>
+                            <td>{{::pledge.contact.pledge_amount}} {{::pledge.contact.pledge_currency}}</td>
+                            <td>{{::pledge.amount}} {{::pledge.contact.pledge_currency}} ({{::pledge.expected_date | localize}})</td>
                             <td>
-                                <input type="checkbox"
-                                       ng-checked="$ctrl.selectedContactIds.includes(donation.contact.id)"
-                                       ng-click="$ctrl.selectContact(contact.id)">
-                            </td>
-                            <td>{{::pledge.name}}</td>
-                            <td>{{::pledge.commitment}}</td>
-                            <td>{{::pledge.donations[0].amount}} {{::pledge.commitmentCurrency}} ({{::pledge.donationDate | localize}})</td>
-                            <td>
-                                <button class="btn btn-xs btn-default" ng-click="$ctrl.editCommitment(pledge)" title="{{'Edit Commitment' | translate}}">
+                                <button class="btn btn-xs btn-default"
+                                        ng-click="$ctrl.editCommitment(pledge); $event.stopPropagation()"
+                                        title="{{'Edit Commitment' | translate}}">
                                     <i class="fa fa-pencil-square-o"></i>
                                 </button>
                                 &nbsp;
-                                <button class="btn btn-xs btn-default" ng-click="$ctrl.editDonation(pledge.donation)" title="{{'Edit Donation' | translate}}">
-                                    <i class="fa fa-pencil-square-o"></i>
-                                </button>
-                                &nbsp;
-                                <button class="btn btn-xs btn-danger" ng-click="$ctrl.removeDonation(pledge)" title="{{'Remove Donation' | translate}}">
-                                    <i class="fa fa-trash-o"></i>
-                                </button>
-                                &nbsp;
-                                <button class="btn btn-xs btn-danger" ng-click="$ctrl.removeCommitment(pledge)" title="{{'Remove Commitment' | translate}}">
+                                <button class="btn btn-xs btn-danger"
+                                        ng-click="$ctrl.removeCommitment(pledge); $event.stopPropagation()"
+                                        title="{{'Remove Commitment' | translate}}">
                                     <i class="fa fa-trash-o"></i>
                                 </button>
                             </td>
                         </tr>
                     </tbody>
+                    <tfoot>
+                    <tr>
+                        <th colspan="4">
+                            <pagination meta="$ctrl.pledgesProcessed.meta.pagination"
+                                        on-change="$ctrl.getPledgesProcessed(page)">
+                            </pagination>
+                        </th>
+                    </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -121,36 +123,47 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th colspan="2">Contact</th>
+                        <th>Contact</th>
                         <th>Commitment</th>
                         <th>Amount Received</th>
                         <th>
-                            <a ng-click="$ctrl.selectAllGiven()">select all</a> |
-                            <a ng-click="$ctrl.deselectAllGiven()">deselect all</a>
+                            <a ng-click="$ctrl.selectAllNotProcessed()">select all</a> |
+                            <a ng-click="$ctrl.deselectAllNotProcessed()">deselect all</a>
                         </th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="pledge in $ctrl.viewData.received_not_processed | toArray | orderBy : 'donationDate' : true">
+                    <tr ng-repeat="pledge in $ctrl.pledgesNotProcessed"
+                        ng-click="$ctrl.selectPledge(pledge)"
+                        ng-class="{ selected: $ctrl.selectedPledgeIds.includes(pledge.id) }"
+                        class="selectable">
+                        <td>{{::pledge.contact.name}}</td>
+                        <td>{{::pledge.contact.pledge_amount}} {{::pledge.contact.pledge_currency}}</td>
+                        <td>{{::pledge.amount}} {{::pledge.contact.pledge_currency}} ({{::pledge.expected_date | localize}})</td>
                         <td>
-                            <input type="checkbox"
-                                   ng-checked="$ctrl.selectedContactIds.includes(donation.contact.id)"
-                                   ng-click="$ctrl.selectContact(contact.id)">
-                        </td>
-                        <td>{{::pledge.name}}</td>
-                        <td>{{::pledge.commitment}} {{::pledge.commitmentCurrency}}</td>
-                        <td>{{::pledge.amount}} {{::pledge.commitmentCurrency}} ({{::pledge.donationDate | localize}})</td>
-                        <td>
-                            <button class="btn btn-xs btn-default" ng-click="$ctrl.editCommitment(pledge)" title="{{'Edit' | translate}}">
+                            <button class="btn btn-xs btn-default"
+                                    ng-click="$ctrl.editCommitment(pledge); $event.stopPropagation()"
+                                    title="{{'Edit' | translate}}">
                                 <i class="fa fa-pencil-square-o"></i>
                             </button>
                             &nbsp;
-                            <button class="btn btn-xs btn-danger" ng-click="$ctrl.removeCommitment(pledge)" title="{{'Remove' | translate}}">
+                            <button class="btn btn-xs btn-danger"
+                                    ng-click="$ctrl.removeCommitment(pledge); $event.stopPropagation()"
+                                    title="{{'Remove' | translate}}">
                                 <i class="fa fa-trash-o"></i>
                             </button>
                         </td>
                     </tr>
                     </tbody>
+                    <tfoot>
+                    <tr>
+                        <th colspan="4">
+                            <pagination meta="$ctrl.pledgesNotProcessed.meta.pagination"
+                                        on-change="$ctrl.getPledgesNotProcessed(page)">
+                            </pagination>
+                        </th>
+                    </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -162,36 +175,47 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th colspan="2">Contact</th>
+                        <th>Contact</th>
                         <th>Commitment</th>
                         <th>Amount Committed</th>
                         <th>
-                            <a ng-click="$ctrl.selectAllGiven()">select all</a> |
-                            <a ng-click="$ctrl.deselectAllGiven()">deselect all</a>
+                            <a ng-click="$ctrl.selectAllNotReceived()">select all</a> |
+                            <a ng-click="$ctrl.deselectAllNotReceived()">deselect all</a>
                         </th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="pledge in $ctrl.viewData.committed_not_received | toArray | orderBy : 'expectedDate' : true">
+                    <tr ng-repeat="pledge in $ctrl.pledgesNotReceived | orderBy : 'contact.name'"
+                        ng-click="$ctrl.selectPledge(pledge)"
+                        ng-class="{ selected: $ctrl.selectedPledgeIds.includes(pledge.id) }"
+                        class="selectable">
+                        <td>{{::pledge.contact.name}}</td>
+                        <td>{{::pledge.contact.pledge_amount}} {{::pledge.contact.pledge_currency}}</td>
+                        <td>{{::pledge.amount}} {{::pledge.contact.pledge_currency}} ({{::pledge.expected_date | localize}})</td>
                         <td>
-                            <input type="checkbox"
-                                   ng-checked="$ctrl.selectedContactIds.includes(donation.contact.id)"
-                                   ng-click="$ctrl.selectContact(contact.id)">
-                        </td>
-                        <td>{{::pledge.name}}</td>
-                        <td>{{::pledge.commitment}} {{::pledge.commitmentCurrency}}</td>
-                        <td>{{::pledge.amount}} {{::pledge.commitmentCurrency}} ({{::pledge.expectedDate | localize}})</td>
-                        <td>
-                            <button class="btn btn-xs btn-default" ng-click="$ctrl.editCommitment(pledge)" title="{{'Edit' | translate}}">
+                            <button class="btn btn-xs btn-default"
+                                    ng-click="$ctrl.editCommitment(pledge); $event.stopPropagation()"
+                                    title="{{'Edit' | translate}}">
                                 <i class="fa fa-pencil-square-o"></i>
                             </button>
                             &nbsp;
-                            <button class="btn btn-xs btn-danger" ng-click="$ctrl.removeCommitment(pledge)" title="{{'Remove' | translate}}">
+                            <button class="btn btn-xs btn-danger"
+                                    ng-click="$ctrl.removeCommitment(pledge); $event.stopPropagation()"
+                                    title="{{'Remove' | translate}}">
                                 <i class="fa fa-trash-o"></i>
                             </button>
                         </td>
                     </tr>
                     </tbody>
+                    <tfoot>
+                    <tr>
+                        <th colspan="4">
+                            <pagination meta="$ctrl.pledgesNotReceived.meta.pagination"
+                                        on-change="$ctrl.getPledgesNotReceived(page)">
+                            </pagination>
+                        </th>
+                    </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -203,7 +227,7 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th colspan="2">Contact</th>
+                        <th>Contact</th>
                         <th>Commitment</th>
                         <th>
                             <a ng-click="$ctrl.selectAllNotGiven()">select all</a> |
@@ -212,24 +236,33 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="contact in $ctrl.contactsNotGiven | orderBy : 'name'">
+                    <tr ng-repeat="ref in $ctrl.contactsNotGiven | orderBy : 'name'"
+                        ng-click="$ctrl.selectContact(ref.contact.id)"
+                        ng-class="{ selected: $ctrl.selectedContactIds.includes(ref.contact.id) }"
+                        class="selectable">
+                        <td>{{::ref.contact.name}}</td>
                         <td>
-                            <input type="checkbox"
-                                   ng-checked="$ctrl.selectedContactIds.includes(contact.id)"
-                                   ng-click="$ctrl.selectContact(contact.id)">
-                        </td>
-                        <td>{{::contact.name}}</td>
-                        <td>
-                            {{::contact.currency.symbol}}{{::contact.pledge_amount}}
-                            {{::$ctrl.serverConstants.getPledgeFrequency(contact.pledge_frequency).value}}
+                            {{::ref.contact.currency.symbol}}{{::ref.contact.pledge_amount}}
+                            {{::$ctrl.serverConstants.getPledgeFrequency(ref.contact.pledge_frequency).value}}
                         </td>
                         <td>
-                            <button class="btn btn-xs btn-danger" ng-click="$ctrl.removeContact(contact)" title="{{'Remove' | translate}}">
+                            <button class="btn btn-xs btn-danger"
+                                    ng-click="$ctrl.removeContact(ref.contact); $event.stopPropagation()"
+                                    title="{{'Remove' | translate}}">
                                 <i class="fa fa-trash-o"></i>
                             </button>
                         </td>
                     </tr>
                     </tbody>
+                    <tfoot>
+                    <tr>
+                        <th colspan="4">
+                            <pagination meta="$ctrl.contactsNotGiven.meta.pagination"
+                                        on-change="$ctrl.getContactsNotGiven(page)">
+                            </pagination>
+                        </th>
+                    </tr>
+                    </tfoot>
                 </table>
             </div>
             <div class="row panel-body">
@@ -295,7 +328,7 @@
                         translate>
                     Export Selected
                 </button>
-                <div ng-if="$ctrl.mailchimp.data.lists_present">
+                <div ng-if="$ctrl.mailchimp.data && $ctrl.mailchimp.data.lists_present">
                     <h4>Export Selected to Mail Chimp List</h4>
                     <select name="primaryListId"
                             id="primaryListId"

@@ -1,19 +1,20 @@
 import component from './show.component';
 
 describe('tools.appeals.show.component', () => {
-    let $ctrl, scope, serverConstants, api, alerts, donations, mailchimp, modal, state;
+    let $ctrl, scope, serverConstants, api, alerts, mailchimp, modal, state, q;
     beforeEach(() => {
         angular.mock.module(component);
         inject((
             $componentController, $rootScope, _api_, _serverConstants_, _alerts_, _donations_, _mailchimp_, _modal_,
-            $state
+            $state, $q
         ) => {
             scope = $rootScope.$new();
             alerts = _alerts_;
             api = _api_;
-            donations = _donations_;
+            api.account_list_id = 123;
             mailchimp = _mailchimp_;
             modal = _modal_;
+            q = $q;
             serverConstants = _serverConstants_;
             state = $state;
             $ctrl = $componentController('appealsShow', { $scope: scope }, {});
@@ -46,9 +47,10 @@ describe('tools.appeals.show.component', () => {
             $ctrl.contactsData = contactsData;
             spyOn(state, 'go').and.callFake(() => {});
             spyOn($ctrl, 'getCurrencyFromCode').and.callFake(() => currency);
-            spyOn($ctrl, 'sumDonations').and.callFake(() => 30);
-            spyOn($ctrl, 'fixPledgeAmount').and.callFake((data) => data);
             spyOn($ctrl, 'getContactsNotGiven').and.callFake(() => ['b']);
+            spyOn($ctrl, 'getPledgesNotReceived').and.callFake(() => Promise.resolve(['c']));
+            spyOn($ctrl, 'getPledgesNotProcessed').and.callFake(() => Promise.resolve(['d']));
+            spyOn($ctrl, 'getPledgesProcessed').and.callFake(() => Promise.resolve(['e']));
         });
         it('should change state on account list change', () => {
             $ctrl.$onInit();
@@ -67,19 +69,25 @@ describe('tools.appeals.show.component', () => {
             expect($ctrl.currency).toEqual(currency);
             expect($ctrl.getCurrencyFromCode).toHaveBeenCalledWith(data.total_currency);
         });
-        it('should get donations sum', () => {
-            $ctrl.$onInit();
-            expect($ctrl.donationsSum).toEqual(30);
-            expect($ctrl.sumDonations).toHaveBeenCalledWith([]);
+        it('should get donations sum', (done) => {
+            spyOn(q, 'all').and.callFake(() => Promise.resolve());
+            $ctrl.pledgesNotReceived = [{ amount: 10 }];
+            $ctrl.pledgesNotProcessed = [{ amount: 10 }];
+            $ctrl.pledgesProcessed = [{ amount: 10 }];
+            $ctrl.$onInit().then(() => {
+                expect($ctrl.donationsSum).toEqual('30.00');
+                done();
+            });
         });
-        it('should get percentage raised', () => {
-            $ctrl.$onInit();
-            expect($ctrl.percentageRaised).toEqual(30);
-        });
-        it('should get fix pledge amounts', () => {
-            $ctrl.$onInit();
-            expect($ctrl.contactsData).toEqual(contactsData);
-            expect($ctrl.fixPledgeAmount).toHaveBeenCalledWith(contactsData);
+        it('should get percentage raised', (done) => {
+            spyOn(q, 'all').and.callFake(() => Promise.resolve());
+            $ctrl.pledgesNotReceived = [{ amount: 10 }];
+            $ctrl.pledgesNotProcessed = [{ amount: 10 }];
+            $ctrl.pledgesProcessed = [{ amount: 10 }];
+            $ctrl.$onInit().then(() => {
+                expect($ctrl.percentageRaised).toEqual(30);
+                done();
+            });
         });
         it('should append to the appeal', () => {
             $ctrl.$onInit();
@@ -89,8 +97,7 @@ describe('tools.appeals.show.component', () => {
         });
         it('should get contacts not given', () => {
             $ctrl.$onInit();
-            expect($ctrl.contactsNotGiven).toEqual(['b']);
-            // expect($ctrl.getContactsNotGiven).toHaveBeenCalledWith(contactsData.contacts, []);
+            expect($ctrl.getContactsNotGiven).toHaveBeenCalledWith();
         });
     });
     describe('$onDestroy', () => {
@@ -103,42 +110,6 @@ describe('tools.appeals.show.component', () => {
             scope.$emit('accountListUpdated');
             scope.$digest();
             expect(state.go).not.toHaveBeenCalled();
-        });
-    });
-    describe('mutatePledges', () => {
-        it('should mutate pledge data', () => {
-            const pledges = [{
-                id: 1,
-                contact: {
-                    id: 12,
-                    name: 'a',
-                    pledge_amount: 2,
-                    pledge_currency: 'USD'
-                },
-                amount: 50,
-                expected_date: '2015-05-12',
-                donations: [{ donation_date: '5-11-2015' }]
-            }];
-            $ctrl.mutatePledges(pledges);
-            expect($ctrl.viewData).toEqual({
-                given_to_appeal: {
-                    12: {
-                        id: 1,
-                        contactId: 12,
-                        name: 'a',
-                        commitment: '2.00',
-                        commitmentCurrency: 'USD',
-                        amount: '50.00',
-                        expectedDate: '2015-05-12',
-                        donationDate: '5-11-2015'
-                    }
-                }
-            });
-        });
-    });
-    describe('combineAmounts', () => {
-        it('should combine the donation and pledge amount', () => {
-            expect($ctrl.combineAmounts({ amount: 50, contact: { id: 1 } }, { 1: { donationAmount: 50 } })).toEqual('100.00');
         });
     });
     describe('changeGoal', () => {
@@ -309,26 +280,79 @@ describe('tools.appeals.show.component', () => {
     });
     describe('selectAllGiven', () => {
         it('should add contact ids from donations', () => {
-            $ctrl.appeal = {
-                donations: [
-                    { contact: { id: 1 } },
-                    { contact: { id: 2 } }
-                ]
-            };
+            $ctrl.selectedContactIds = [];
+            $ctrl.selectedPledgeIds = [];
+            $ctrl.pledgesProcessed = [
+                { id: 1, contact: { id: 1 } },
+                { id: 2, contact: { id: 2 } }
+            ];
             $ctrl.selectAllGiven();
+            expect($ctrl.selectedPledgeIds).toEqual([1, 2]);
             expect($ctrl.selectedContactIds).toEqual([1, 2]);
         });
     });
     describe('deselectAllGiven', () => {
         it('should remove contact ids', () => {
             $ctrl.selectedContactIds = [1, 2, 3];
-            $ctrl.appeal = {
-                donations: [
-                    { contact: { id: 1 } },
-                    { contact: { id: 2 } }
-                ]
-            };
+            $ctrl.selectedPledgeIds = [1, 2, 3];
+            $ctrl.pledgesProcessed = [
+                { id: 1, contact: { id: 1 } },
+                { id: 2, contact: { id: 2 } }
+            ];
             $ctrl.deselectAllGiven();
+            expect($ctrl.selectedPledgeIds).toEqual([3]);
+            expect($ctrl.selectedContactIds).toEqual([3]);
+        });
+    });
+    describe('selectAllNotReceived', () => {
+        it('should add contact ids from donations', () => {
+            $ctrl.selectedContactIds = [];
+            $ctrl.selectedPledgeIds = [];
+            $ctrl.pledgesNotReceived = [
+                { id: 1, contact: { id: 1 } },
+                { id: 2, contact: { id: 2 } }
+            ];
+            $ctrl.selectAllNotReceived();
+            expect($ctrl.selectedPledgeIds).toEqual([1, 2]);
+            expect($ctrl.selectedContactIds).toEqual([1, 2]);
+        });
+    });
+    describe('deselectAllNotReceived', () => {
+        it('should remove contact ids', () => {
+            $ctrl.selectedContactIds = [1, 2, 3];
+            $ctrl.selectedPledgeIds = [1, 2, 3];
+            $ctrl.pledgesNotReceived = [
+                { id: 1, contact: { id: 1 } },
+                { id: 2, contact: { id: 2 } }
+            ];
+            $ctrl.deselectAllNotReceived();
+            expect($ctrl.selectedPledgeIds).toEqual([3]);
+            expect($ctrl.selectedContactIds).toEqual([3]);
+        });
+    });
+    describe('selectAllNotProcessed', () => {
+        it('should add contact ids from donations', () => {
+            $ctrl.selectedContactIds = [];
+            $ctrl.selectedPledgeIds = [];
+            $ctrl.pledgesNotProcessed = [
+                { id: 1, contact: { id: 1 } },
+                { id: 2, contact: { id: 2 } }
+            ];
+            $ctrl.selectAllNotProcessed();
+            expect($ctrl.selectedPledgeIds).toEqual([1, 2]);
+            expect($ctrl.selectedContactIds).toEqual([1, 2]);
+        });
+    });
+    describe('deselectAllNotProcessed', () => {
+        it('should remove contact ids', () => {
+            $ctrl.selectedContactIds = [1, 2, 3];
+            $ctrl.selectedPledgeIds = [1, 2, 3];
+            $ctrl.pledgesNotProcessed = [
+                { id: 1, contact: { id: 1 } },
+                { id: 2, contact: { id: 2 } }
+            ];
+            $ctrl.deselectAllNotProcessed();
+            expect($ctrl.selectedPledgeIds).toEqual([3]);
             expect($ctrl.selectedContactIds).toEqual([3]);
         });
     });
@@ -363,44 +387,27 @@ describe('tools.appeals.show.component', () => {
             expect($ctrl.selectedContactIds).toEqual([2, 3, 1]);
         });
     });
+    describe('selectPledge', () => {
+        const pledge = { id: 1, contact: { id: 2 } };
+        it('select/deselect the pledge', () => {
+            $ctrl.selectedPledgeIds = [1, 2, 3];
+            $ctrl.selectPledge(pledge);
+            expect($ctrl.selectedPledgeIds).toEqual([2, 3]);
+            $ctrl.selectPledge(pledge);
+            expect($ctrl.selectedPledgeIds).toEqual([2, 3, 1]);
+        });
+        it('select/deselect the pledge contact', () => {
+            $ctrl.selectedContactIds = [1, 2, 3];
+            $ctrl.selectPledge(pledge);
+            expect($ctrl.selectedContactIds).toEqual([1, 3]);
+            $ctrl.selectPledge(pledge);
+            expect($ctrl.selectedContactIds).toEqual([1, 3, 2]);
+        });
+    });
     describe('getCurrencyFromCode', () => {
         it('should retrieve a currency object', () => {
             serverConstants.data.pledge_currencies = [{ code: 'USD', symbol: '$' }];
             expect($ctrl.getCurrencyFromCode('USD')).toEqual({ code: 'USD', symbol: '$' });
-        });
-    });
-    describe('addDonation', () => {
-        it('open donation modal with the appeal pre-filled', () => {
-            spyOn(donations, 'openDonationModal').and.callFake(() => {});
-            $ctrl.appeal = { id: 1, name: 'a' };
-            $ctrl.addDonation();
-            expect(donations.openDonationModal).toHaveBeenCalledWith({ appeal: $ctrl.appeal });
-        });
-    });
-    describe('editDonation', () => {
-        it('open donation modal with the appeal pre-filled', () => {
-            spyOn(donations, 'openDonationModal').and.callFake(() => {});
-            $ctrl.appeal = { id: 1, name: 'a' };
-            $ctrl.editDonation({ id: 123 });
-            expect(donations.openDonationModal).toHaveBeenCalledWith({ id: 123, appeal: $ctrl.appeal });
-        });
-    });
-    describe('removeDonation', () => {
-        it('should open confirm modal', () => {
-            spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
-            $ctrl.appeal = { id: 1, name: 'a' };
-            $ctrl.removeDonation({ id: 123 });
-            expect($ctrl.gettext).toHaveBeenCalledWith('Are you sure you wish to remove this donation?');
-            expect(modal.confirm).toHaveBeenCalledWith('Are you sure you wish to remove this donation?');
-        });
-        it('should delete donation', (done) => {
-            spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
-            spyOn(donations, 'delete').and.callFake(() => Promise.resolve());
-            $ctrl.appeal = { id: 1, name: 'a' };
-            $ctrl.removeDonation({ id: 123 }).then(() => {
-                expect(donations.delete).toHaveBeenCalledWith({ id: 123 });
-                done();
-            });
         });
     });
     describe('removeCommitment', () => {
@@ -558,6 +565,243 @@ describe('tools.appeals.show.component', () => {
                 expect(alerts.addAlert).toHaveBeenCalledWith('Unable to add export contact(s) to Mailchimp', 'danger');
                 expect($ctrl.gettext).toHaveBeenCalledWith('Unable to add export contact(s) to Mailchimp');
                 done();
+            });
+        });
+    });
+    describe('getContactsNotGiven', () => {
+        beforeEach(() => {
+            spyOn(api, 'get').and.callFake(() => Promise.resolve({ meta: 'b' }));
+            spyOn($ctrl, 'fixPledgeAmount').and.callFake(() => ['a']);
+            $ctrl.appeal = { id: 1 };
+        });
+        it('should call the api', () => {
+            $ctrl.getContactsNotGiven();
+            expect(api.get).toHaveBeenCalledWith('appeals/1/appeal_contacts', {
+                page: 1,
+                per_page: 20,
+                include: 'contact',
+                filter: {
+                    pledged_to_appeal: false
+                },
+                fields: {
+                    contact: 'name,pledge_amount,pledge_currency,pledge_frequency'
+                },
+                sort: 'contact.name'
+            });
+        });
+        it('should handle pagination', () => {
+            $ctrl.getContactsNotGiven(2);
+            expect(api.get).toHaveBeenCalledWith('appeals/1/appeal_contacts', {
+                page: 2,
+                per_page: 20,
+                include: 'contact',
+                filter: {
+                    pledged_to_appeal: false
+                },
+                fields: {
+                    contact: 'name,pledge_amount,pledge_currency,pledge_frequency'
+                },
+                sort: 'contact.name'
+            });
+        });
+        it('should set contactsNotGiven', (done) => {
+            $ctrl.getContactsNotGiven().then(() => {
+                expect($ctrl.contactsNotGiven[0]).toEqual('a');
+                done();
+            });
+        });
+        it('should set meta', (done) => {
+            $ctrl.getContactsNotGiven().then(() => {
+                expect($ctrl.contactsNotGiven.meta).toEqual('b');
+                done();
+            });
+        });
+    });
+    describe('getPledgesNotReceived', () => {
+        beforeEach(() => {
+            spyOn(api, 'get').and.callFake(() => Promise.resolve({ meta: 'b' }));
+            spyOn($ctrl, 'fixPledgeAmount').and.callFake(() => ['a']);
+            $ctrl.appeal = { id: 1 };
+        });
+        it('should call the api', () => {
+            $ctrl.getPledgesNotReceived();
+            expect(api.get).toHaveBeenCalledWith('account_lists/123/pledges', {
+                include: 'contact',
+                page: 1,
+                per_page: 20,
+                fields: {
+                    contacts: 'name,pledge_amount,pledge_currency,pledge_frequency'
+                },
+                filter: {
+                    appeal_id: 1,
+                    status: 'not_received'
+                }
+            });
+        });
+        it('should handle pagination', () => {
+            $ctrl.getPledgesNotReceived(2);
+            expect(api.get).toHaveBeenCalledWith('account_lists/123/pledges', {
+                page: 2,
+                per_page: 20,
+                include: 'contact',
+                fields: {
+                    contacts: 'name,pledge_amount,pledge_currency,pledge_frequency'
+                },
+                filter: {
+                    appeal_id: 1,
+                    status: 'not_received'
+                }
+            });
+        });
+        it('should set contactsNotGiven', (done) => {
+            $ctrl.getPledgesNotReceived().then(() => {
+                expect($ctrl.pledgesNotReceived[0]).toEqual('a');
+                done();
+            });
+        });
+        it('should set meta', (done) => {
+            $ctrl.getPledgesNotReceived().then(() => {
+                expect($ctrl.pledgesNotReceived.meta).toEqual('b');
+                done();
+            });
+        });
+    });
+    describe('getPledgesNotProcessed', () => {
+        beforeEach(() => {
+            spyOn(api, 'get').and.callFake(() => Promise.resolve({ meta: 'b' }));
+            spyOn($ctrl, 'fixPledgeAmount').and.callFake(() => ['a']);
+            $ctrl.appeal = { id: 1 };
+        });
+        it('should call the api', () => {
+            $ctrl.getPledgesNotProcessed();
+            expect(api.get).toHaveBeenCalledWith('account_lists/123/pledges', {
+                include: 'contact',
+                page: 1,
+                per_page: 20,
+                fields: {
+                    contacts: 'name,pledge_amount,pledge_currency,pledge_frequency'
+                },
+                filter: {
+                    appeal_id: 1,
+                    status: 'received_not_processed'
+                }
+            });
+        });
+        it('should handle pagination', () => {
+            $ctrl.getPledgesNotProcessed(2);
+            expect(api.get).toHaveBeenCalledWith('account_lists/123/pledges', {
+                page: 2,
+                per_page: 20,
+                include: 'contact',
+                fields: {
+                    contacts: 'name,pledge_amount,pledge_currency,pledge_frequency'
+                },
+                filter: {
+                    appeal_id: 1,
+                    status: 'received_not_processed'
+                }
+            });
+        });
+        it('should set contactsNotGiven', (done) => {
+            $ctrl.getPledgesNotProcessed().then(() => {
+                expect($ctrl.pledgesNotProcessed[0]).toEqual('a');
+                done();
+            });
+        });
+        it('should set meta', (done) => {
+            $ctrl.getPledgesNotProcessed().then(() => {
+                expect($ctrl.pledgesNotProcessed.meta).toEqual('b');
+                done();
+            });
+        });
+    });
+    describe('getPledgesProcessed', () => {
+        beforeEach(() => {
+            spyOn(api, 'get').and.callFake(() => Promise.resolve({ meta: 'b' }));
+            spyOn($ctrl, 'fixPledgeAmount').and.callFake(() => ['a']);
+            $ctrl.appeal = { id: 1 };
+        });
+        it('should call the api', () => {
+            $ctrl.getPledgesProcessed();
+            expect(api.get).toHaveBeenCalledWith('account_lists/123/pledges', {
+                include: 'contact',
+                page: 1,
+                per_page: 20,
+                fields: {
+                    contacts: 'name,pledge_amount,pledge_currency,pledge_frequency'
+                },
+                filter: {
+                    appeal_id: 1,
+                    status: 'processed'
+                }
+            });
+        });
+        it('should handle pagination', () => {
+            $ctrl.getPledgesProcessed(2);
+            expect(api.get).toHaveBeenCalledWith('account_lists/123/pledges', {
+                include: 'contact',
+                page: 2,
+                per_page: 20,
+                fields: {
+                    contacts: 'name,pledge_amount,pledge_currency,pledge_frequency'
+                },
+                filter: {
+                    appeal_id: 1,
+                    status: 'processed'
+                }
+            });
+        });
+        it('should set contactsNotGiven', (done) => {
+            $ctrl.getPledgesProcessed().then(() => {
+                expect($ctrl.pledgesProcessed[0]).toEqual('a');
+                done();
+            });
+        });
+        it('should set meta', (done) => {
+            $ctrl.getPledgesProcessed().then(() => {
+                expect($ctrl.pledgesProcessed.meta).toEqual('b');
+                done();
+            });
+        });
+    });
+    describe('fixPledgeAmount', () => {
+        it('should set pledge_amount to fixed value', () => {
+            expect($ctrl.fixPledgeAmount([{ contact: { pledge_amount: 10 } }]))
+                .toEqual([{ contact: { pledge_amount: '10.00' } }]);
+        });
+    });
+    describe('addCommitment', () => {
+        it('should open the add commitment modal', () => {
+            spyOn(modal, 'open').and.callFake(() => {});
+            $ctrl.appeal = { id: 3 };
+            $ctrl.addCommitment();
+            expect(modal.open).toHaveBeenCalledWith({
+                template: require('./addCommitment/add.html'),
+                controller: 'addCommitmentController',
+                locals: {
+                    appealId: 3
+                },
+                resolve: {
+                    0: jasmine.any(Function)
+                }
+            });
+        });
+    });
+    describe('editCommitment', () => {
+        it('should open the edit commitment modal', () => {
+            spyOn(modal, 'open').and.callFake(() => {});
+            $ctrl.appeal = { id: 3 };
+            $ctrl.editCommitment({ id: 2 });
+            expect(modal.open).toHaveBeenCalledWith({
+                template: require('./editCommitment/edit.html'),
+                controller: 'editCommitmentController',
+                locals: {
+                    appealId: 3,
+                    pledge: { id: 2 }
+                },
+                resolve: {
+                    0: jasmine.any(Function)
+                }
             });
         });
     });

@@ -1,13 +1,14 @@
 import component from './list.component';
 
 describe('tools.appeals.list.component', () => {
-    let $ctrl, scope, api;
+    let $ctrl, scope, api, accounts;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _api_) => {
+        inject(($componentController, $rootScope, _api_, _accounts_) => {
             scope = $rootScope.$new();
             api = _api_;
             api.account_list_id = 123;
+            accounts = _accounts_;
             $ctrl = $componentController('appealsList', { $scope: scope }, {});
         });
     });
@@ -203,6 +204,15 @@ describe('tools.appeals.list.component', () => {
         it('should append additional data', () => {
             $ctrl.data = initialData;
             expect($ctrl.resetOrAppendData(false, secondData)).toEqual([{ id: 'a' }, { id: 'b' }]);
+        });
+    });
+    describe('onPrimary', () => {
+        it('should set the primary appeal id', () => {
+            spyOn(accounts, 'saveCurrent').and.callFake(() => {});
+            accounts.current = { primary_appeal: { } };
+            $ctrl.onPrimary(1);
+            expect(accounts.current.primary_appeal.id).toEqual(1);
+            expect(accounts.saveCurrent).toHaveBeenCalledWith();
         });
     });
 });

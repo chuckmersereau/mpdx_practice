@@ -20,8 +20,9 @@ describe('common.accounts.service', () => {
             expect(accounts.current).toEqual(null);
             expect(accounts.data).toEqual({});
             expect(accounts.defaultIncludes).toEqual(
-                'notification_preferences,notification_preferences.notification_type'
+                'notification_preferences,notification_preferences.notification_type,primary_appeal'
             );
+            expect(accounts.defaultFields).toEqual({ primary_appeal: '' });
             expect(accounts.donations).toEqual(null);
             expect(accounts.inviteList).toEqual(null);
             expect(accounts.userList).toEqual(null);
@@ -35,7 +36,10 @@ describe('common.accounts.service', () => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve(retVal));
             spyOn(accounts, 'setLocalStorage').and.callFake(() => {});
             accounts.get(1).then((data) => {
-                expect(api.get).toHaveBeenCalledWith('account_lists/1', { include: accounts.defaultIncludes });
+                expect(api.get).toHaveBeenCalledWith('account_lists/1', {
+                    include: accounts.defaultIncludes,
+                    fields: accounts.defaultFields
+                });
                 expect(data).toEqual(retVal);
                 done();
             });
@@ -443,7 +447,10 @@ describe('common.accounts.service', () => {
         it('should call api', (done) => {
             accounts.data = [];
             accounts.load().then(() => {
-                expect(api.get).toHaveBeenCalledWith('account_lists', { include: accounts.defaultIncludes });
+                expect(api.get).toHaveBeenCalledWith('account_lists', {
+                    include: accounts.defaultIncludes,
+                    fields: accounts.defaultFields
+                });
                 expect(accounts.data).toEqual([{ id: 2 }]);
                 done();
             });

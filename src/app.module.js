@@ -4,7 +4,6 @@ window.$ = jQuery;
 import angular from 'angular';
 
 window.angular = angular;
-
 import app from './app.directive';
 import bottom from 'bottom/bottom.component';
 import coaches from 'coaches/index.module';

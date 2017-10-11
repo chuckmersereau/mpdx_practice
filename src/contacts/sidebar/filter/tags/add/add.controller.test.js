@@ -30,15 +30,21 @@ describe('contacts.sidebar.tags.add.controller', () => {
             $ctrl.save('a').then(() => {
                 expect(api.post).toHaveBeenCalledWith({
                     url: 'contacts/tags/bulk',
-                    data: ['a'],
-                    params: {
+                    data: {
+                        data: [{
+                            data: {
+                                type: 'tags',
+                                attributes: { name: 'a' }
+                            }
+                        }],
                         filter: {
                             account_list_id: 123,
                             contact_ids: ''
                         }
                     },
-                    type: 'tags'
-                })
+                    doSerialization: false,
+                    autoParams: false
+                });
                 done();
             });
         });
@@ -48,8 +54,8 @@ describe('contacts.sidebar.tags.add.controller', () => {
             spyOn(rootScope, '$emit').and.callFake(() => {});
             spyOn(contactsTags, 'addTag').and.callFake(() => {});
             $ctrl.save('a').then(() => {
-                expect(rootScope.$emit).toHaveBeenCalledWith('contactTagsAdded', ['a']);
-                expect(contactsTags.addTag).toHaveBeenCalledWith({ tags: [{ name: 'a' }], contactIds: [] });
+                expect(rootScope.$emit).toHaveBeenCalledWith('contactTagsAdded', { tags: ['a'], contactIds: [] });
+                expect(contactsTags.addTag).toHaveBeenCalledWith({ tags: ['a'], contactIds: [] });
                 done();
             });
         });

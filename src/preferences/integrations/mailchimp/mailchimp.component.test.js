@@ -160,9 +160,10 @@ describe('preferences.integrations.mailchimp.component', () => {
         });
         it('should alert a translated confirmation', (done) => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve());
+            spyOn(modal, 'info').and.callFake(() => Promise.resolve());
             $ctrl.sync().then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'success');
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
+                expect(modal.info).toHaveBeenCalledWith('Your MailChimp sync has been started. This process may take 2-4 hours to complete.');
+                expect(gettextCatalog.getString).toHaveBeenCalledWith('Your MailChimp sync has been started. This process may take 2-4 hours to complete.');
                 done();
             });
         });

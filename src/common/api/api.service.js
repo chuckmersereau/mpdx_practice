@@ -43,13 +43,14 @@ class Api {
         deSerializationOptions = {},
         doDeSerialization = true,
         beforeDeserializationTransform = null,
-        responseType = ''
+        responseType = '',
+        autoParams = true
     }) {
         ({ headers, method, doSerialization, data } = this.handleOverride(
             overrideGetAsPost, headers, method, doSerialization, type, url, data
         ));
 
-        params = this.assignParams(method, params, data);
+        params = autoParams ? this.assignParams(method, params, data) : params;
 
         headers = assign(headers, {
             // set jsonapi content type

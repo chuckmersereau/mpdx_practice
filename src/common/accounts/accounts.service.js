@@ -19,14 +19,18 @@ class AccountsService {
         this.analytics = null;
         this.current = null;
         this.data = {};
-        this.defaultIncludes = 'notification_preferences,notification_preferences.notification_type';
+        this.defaultIncludes = 'notification_preferences,notification_preferences.notification_type,primary_appeal';
+        this.defaultFields = { primary_appeal: '' };
         this.donations = null;
         this.inviteList = null;
         this.userList = null;
         this.currentInitialState = {};
     }
     get(id) {
-        return this.api.get(`account_lists/${id}`, { include: this.defaultIncludes }).then((data) => {
+        return this.api.get(`account_lists/${id}`, {
+            include: this.defaultIncludes,
+            fields: this.defaultFields
+        }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug(`account_lists/${id}`, data);
             return data;
@@ -169,7 +173,10 @@ class AccountsService {
             return Promise.resolve(this.data);
         }
 
-        return this.api.get('account_lists', { include: this.defaultIncludes }).then((data) => {
+        return this.api.get('account_lists', {
+            include: this.defaultIncludes,
+            fields: this.defaultFields
+        }).then((data) => {
             this.data = data;
         });
     }

@@ -13,6 +13,9 @@ class MailchimpService {
             /* istanbul ignore next */
             this.$log.debug(`account_lists/${this.api.account_list_id}/mail_chimp_account`, data);
             this.data = data;
+        }).catch(() => {
+            this.data = null;
+            return Promise.resolve(); // to keep route resolution from failing
         });
     }
 }

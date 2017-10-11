@@ -57,4 +57,12 @@ describe('contacts.service', () => {
             expect(filters.invertMultiselect(filter, params)).toEqual(['b']);
         });
     });
+    describe('returnOriginalAsPromise', () => {
+        it('should return the initial values as a promise', (done) => {
+            filters.returnOriginalAsPromise('a', 'b', 'c').then((data) => {
+                expect(data).toEqual({ data: 'a', params: 'b', defaultParams: 'c' });
+                done();
+            });
+        });
+    });
 });
