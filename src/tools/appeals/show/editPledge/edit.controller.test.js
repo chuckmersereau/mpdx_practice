@@ -1,6 +1,6 @@
 import edit from './edit.controller';
 
-describe('tools.appeals.show.editCommitment.controller', () => {
+describe('tools.appeals.show.editPledge.controller', () => {
     let $ctrl, controller, api, scope;
     beforeEach(() => {
         angular.mock.module(edit);
@@ -14,7 +14,7 @@ describe('tools.appeals.show.editCommitment.controller', () => {
     });
 
     function loadController() {
-        return controller('editCommitmentController as $ctrl', {
+        return controller('editPledgeController as $ctrl', {
             $scope: scope,
             appealId: 123,
             pledge: {
@@ -67,7 +67,7 @@ describe('tools.appeals.show.editCommitment.controller', () => {
             $ctrl.pledge = {
                 id: 1,
                 amount: 150,
-                commitmentCurrency: 'USD',
+                pledgeCurrency: 'USD',
                 expectedDate: '2007-01-01',
                 contactId: 3
             };

@@ -54,6 +54,6 @@ import api from 'common/api/api.service';
 import locale from 'common/locale/locale.service';
 import serverConstants from 'common/serverConstants/serverConstants.service';
 
-export default angular.module('mpdx.tools.appeals.show.addCommitment.controller', [
+export default angular.module('mpdx.tools.appeals.show.addPledge.controller', [
     api, locale, serverConstants
-]).controller('addCommitmentController', AddController).name;
+]).controller('addPledgeController', AddController).name;

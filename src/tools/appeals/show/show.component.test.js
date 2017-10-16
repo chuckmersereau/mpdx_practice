@@ -414,7 +414,7 @@ describe('tools.appeals.show.component', () => {
         it('should open confirm modal', () => {
             spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
             $ctrl.appeal = { id: 1, name: 'a' };
-            $ctrl.removeCommitment({ id: 123 });
+            $ctrl.removePledge({ id: 123 });
             expect($ctrl.gettext).toHaveBeenCalledWith('Are you sure you wish to remove this commitment?');
             expect(modal.confirm).toHaveBeenCalledWith('Are you sure you wish to remove this commitment?');
         });
@@ -422,7 +422,7 @@ describe('tools.appeals.show.component', () => {
             spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
             spyOn(api, 'delete').and.callFake(() => Promise.resolve());
             $ctrl.appeal = { id: 1, name: 'a' };
-            $ctrl.removeCommitment({ id: 123 }).then(() => {
+            $ctrl.removePledge({ id: 123 }).then(() => {
                 expect(api.delete).toHaveBeenCalledWith(`account_lists/${api.account_list_id}/pledges/123`);
                 done();
             });
@@ -770,14 +770,14 @@ describe('tools.appeals.show.component', () => {
                 .toEqual([{ contact: { pledge_amount: '10.00' } }]);
         });
     });
-    describe('addCommitment', () => {
-        it('should open the add commitment modal', () => {
+    describe('addPledge', () => {
+        it('should open the add Pledge modal', () => {
             spyOn(modal, 'open').and.callFake(() => {});
             $ctrl.appeal = { id: 3 };
-            $ctrl.addCommitment();
+            $ctrl.addPledge();
             expect(modal.open).toHaveBeenCalledWith({
-                template: require('./addCommitment/add.html'),
-                controller: 'addCommitmentController',
+                template: require('./addPledge/add.html'),
+                controller: 'addPledgeController',
                 locals: {
                     appealId: 3
                 },
@@ -787,14 +787,14 @@ describe('tools.appeals.show.component', () => {
             });
         });
     });
-    describe('editCommitment', () => {
-        it('should open the edit commitment modal', () => {
+    describe('editPledge', () => {
+        it('should open the edit pledge modal', () => {
             spyOn(modal, 'open').and.callFake(() => {});
             $ctrl.appeal = { id: 3 };
-            $ctrl.editCommitment({ id: 2 });
+            $ctrl.editPledge({ id: 2 });
             expect(modal.open).toHaveBeenCalledWith({
-                template: require('./editCommitment/edit.html'),
-                controller: 'editCommitmentController',
+                template: require('./editPledge/edit.html'),
+                controller: 'editPledgeController',
                 locals: {
                     appealId: 3,
                     pledge: { id: 2 }

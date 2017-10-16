@@ -277,7 +277,7 @@ class AppealController {
             ? pull(pledge.contact.id, this.selectedContactIds)
             : concat(this.selectedContactIds, pledge.contact.id);
     }
-    removeCommitment(pledge) {
+    removePledge(pledge) {
         const message = this.gettext('Are you sure you wish to remove this commitment?');
         return this.modal.confirm(message).then(() =>
             this.api.delete(`account_lists/${this.api.account_list_id}/pledges/${pledge.id}`)
@@ -360,10 +360,10 @@ class AppealController {
             throw ex;
         });
     }
-    addCommitment() {
+    addPledge() {
         this.modal.open({
-            template: require('./addCommitment/add.html'),
-            controller: 'addCommitmentController',
+            template: require('./addPledge/add.html'),
+            controller: 'addPledgeController',
             locals: {
                 appealId: this.appeal.id
             },
@@ -372,10 +372,10 @@ class AppealController {
             }
         });
     }
-    editCommitment(pledge) {
+    editPledge(pledge) {
         this.modal.open({
-            template: require('./editCommitment/edit.html'),
-            controller: 'editCommitmentController',
+            template: require('./editPledge/edit.html'),
+            controller: 'editPledgeController',
             locals: {
                 appealId: this.appeal.id,
                 pledge: pledge

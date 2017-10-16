@@ -58,7 +58,7 @@
             </div>
         </div>
         <div>
-            <button class="btn" ng-click="$ctrl.addCommitment()" translate>Add Commitment</button>
+            <button class="btn" ng-click="$ctrl.addPledge()" translate>Add Commitment</button>
             <button class="btn" ng-click="$ctrl.contacts.openAddTagModal($ctrl.selectedContactIds)" translate>Add Tag</button>
             <button class="btn" ng-click="$ctrl.tasks.addModal({ contactsList: $ctrl.selectedContactIds })" translate>Add Task</button>
         </div>
@@ -90,13 +90,13 @@
                             <td>{{::pledge.amount}} {{::pledge.contact.pledge_currency}} ({{::pledge.expected_date | localize}})</td>
                             <td>
                                 <button class="btn btn-xs btn-default"
-                                        ng-click="$ctrl.editCommitment(pledge); $event.stopPropagation()"
+                                        ng-click="$ctrl.editPledge(pledge); $event.stopPropagation()"
                                         title="{{'Edit Commitment' | translate}}">
                                     <i class="fa fa-pencil-square-o"></i>
                                 </button>
                                 &nbsp;
                                 <button class="btn btn-xs btn-danger"
-                                        ng-click="$ctrl.removeCommitment(pledge); $event.stopPropagation()"
+                                        ng-click="$ctrl.removePledge(pledge); $event.stopPropagation()"
                                         title="{{'Remove Commitment' | translate}}">
                                     <i class="fa fa-trash-o"></i>
                                 </button>
@@ -142,13 +142,13 @@
                         <td>{{::pledge.amount}} {{::pledge.contact.pledge_currency}} ({{::pledge.expected_date | localize}})</td>
                         <td>
                             <button class="btn btn-xs btn-default"
-                                    ng-click="$ctrl.editCommitment(pledge); $event.stopPropagation()"
+                                    ng-click="$ctrl.editPledge(pledge); $event.stopPropagation()"
                                     title="{{'Edit' | translate}}">
                                 <i class="fa fa-pencil-square-o"></i>
                             </button>
                             &nbsp;
                             <button class="btn btn-xs btn-danger"
-                                    ng-click="$ctrl.removeCommitment(pledge); $event.stopPropagation()"
+                                    ng-click="$ctrl.removePledge(pledge); $event.stopPropagation()"
                                     title="{{'Remove' | translate}}">
                                 <i class="fa fa-trash-o"></i>
                             </button>
@@ -194,13 +194,13 @@
                         <td>{{::pledge.amount}} {{::pledge.contact.pledge_currency}} ({{::pledge.expected_date | localize}})</td>
                         <td>
                             <button class="btn btn-xs btn-default"
-                                    ng-click="$ctrl.editCommitment(pledge); $event.stopPropagation()"
+                                    ng-click="$ctrl.editPledge(pledge); $event.stopPropagation()"
                                     title="{{'Edit' | translate}}">
                                 <i class="fa fa-pencil-square-o"></i>
                             </button>
                             &nbsp;
                             <button class="btn btn-xs btn-danger"
-                                    ng-click="$ctrl.removeCommitment(pledge); $event.stopPropagation()"
+                                    ng-click="$ctrl.removePledge(pledge); $event.stopPropagation()"
                                     title="{{'Remove' | translate}}">
                                 <i class="fa fa-trash-o"></i>
                             </button>
