@@ -38,7 +38,7 @@ class EditController {
     save() {
         return this.api.put(`account_lists/${this.api.account_list_id}/pledges/${this.pledge.id}`, {
             amount: this.pledge.amount,
-            amount_currency: this.pledge.commitmentCurrency,
+            amount_currency: this.pledge.pledgeCurrency,
             expected_date: this.pledge.expectedDate,
             appeal: {
                 id: this.appealId
@@ -56,6 +56,6 @@ import api from 'common/api/api.service';
 import locale from 'common/locale/locale.service';
 import serverConstants from 'common/serverConstants/serverConstants.service';
 
-export default angular.module('mpdx.tools.appeals.show.editCommitment.controller', [
+export default angular.module('mpdx.tools.appeals.show.editPledge.controller', [
     api, locale, serverConstants
-]).controller('editCommitmentController', EditController).name;
+]).controller('editPledgeController', EditController).name;

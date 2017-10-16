@@ -1,6 +1,6 @@
 import add from './add.controller';
 
-describe('tools.appeals.show.addCommitment.controller', () => {
+describe('tools.appeals.show.addPledge.controller', () => {
     let $ctrl, controller, api, scope;
     beforeEach(() => {
         angular.mock.module(add);
@@ -14,7 +14,7 @@ describe('tools.appeals.show.addCommitment.controller', () => {
     });
 
     function loadController() {
-        return controller('addCommitmentController as $ctrl', {
+        return controller('addPledgeController as $ctrl', {
             $scope: scope,
             appealId: 123
         });
