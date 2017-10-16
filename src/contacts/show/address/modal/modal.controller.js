@@ -14,7 +14,7 @@ class AddressModalController {
         this.$scope = $scope;
         this.$timeout = $timeout;
         this.$window = $window;
-        this.address = address;
+        this.address = angular.copy(address);
         this.contact = contact;
         this.contacts = contacts;
         this.gettextCatalog = gettextCatalog;
