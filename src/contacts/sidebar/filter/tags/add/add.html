@@ -2,7 +2,7 @@
     <p translate>Choose an existing tag</p>
     <ul>
         <li ng-repeat="tag in $ctrl.contactsTags.data">
-            <a ng-click="$ctrl.save(tag)">{{ tag.name }}</a>
+            <a ng-click="$ctrl.save(tag.name)">{{ tag.name }}</a>
         </li>
     </ul>
     <div class="form-group">

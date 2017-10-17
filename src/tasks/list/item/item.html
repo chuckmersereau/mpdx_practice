@@ -1,4 +1,4 @@
-<div class="item" ng-class="{ 'item--selected' : $ctrl.tasks.isSelected($ctrl.task.id) }" ng-click="$ctrl.tasks.select($ctrl.task.id)">
+<div class="item" ng-class="{ 'item--selected' : $ctrl.selected }" ng-click="$ctrl.onSelect()">
     <div class="pull-left">
         <div class="btn-group">
             <button class="btn btn-xs btn-default" ng-click="$ctrl.complete(); $event.stopPropagation();" title="{{::'Completed' | translate}}" ng-disabled="::$ctrl.task.completed">
