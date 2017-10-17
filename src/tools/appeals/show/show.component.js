@@ -15,6 +15,7 @@ import pull from 'lodash/fp/pull';
 import reject from 'lodash/fp/reject';
 import sumBy from 'lodash/fp/sumBy';
 import union from 'lodash/fp/union';
+import uuid from 'uuid/v1';
 
 class AppealController {
     constructor(
@@ -41,6 +42,11 @@ class AppealController {
         this.appeal = null;
         this.selectedContactIds = [];
         this.selectedPledgeIds = [];
+        this.contactsNotGivenPage = 1;
+        this.excludedContactsPage = 1;
+        this.pledgesNotReceivedPage = 1;
+        this.pledgesNotProcessedPage = 1;
+        this.pledgesProcessedPage = 1;
     }
     $onInit() {
         /* istanbul ignore next */
@@ -49,20 +55,15 @@ class AppealController {
         this.dataInitialState = angular.copy(this.data);
         this.currency = this.getCurrencyFromCode(this.data.total_currency);
         this.appeal = assign(this.data, {
-            amount: fixed(2, defaultTo(0, this.data.amount))
+            amount: fixed(2, defaultTo(0, this.data.amount)),
+            pledges_amount_processed: fixed(2, defaultTo(0, this.data.pledges_amount_processed))
         });
 
         this.disableAccountListEvent = this.$rootScope.$on('accountListUpdated', () => {
             this.$state.go('tools.appeals');
         });
 
-        this.getContactsNotGiven();
-
-        return this.$q.all(
-            this.getPledgesNotReceived(),
-            this.getPledgesNotProcessed(),
-            this.getPledgesProcessed()
-        ).then(() => {
+        return this.refreshLists().then(() => {
             this.donationsSum = fixed(2,
                 sumBy('amount', this.pledgesNotReceived)
                 + sumBy('amount', this.pledgesNotProcessed)
@@ -74,7 +75,7 @@ class AppealController {
     $onDestroy() {
         this.disableAccountListEvent();
     }
-    getContactsNotGiven(page = 1) {
+    getContactsNotGiven(page = this.contactsNotGivenPage) {
         return this.api.get(`appeals/${this.appeal.id}/appeal_contacts`, {
             page: page,
             per_page: 20,
@@ -91,9 +92,10 @@ class AppealController {
             this.$log.debug(`contacts not given page ${page}`, data);
             this.contactsNotGiven = this.fixPledgeAmount(data);
             this.contactsNotGiven.meta = data.meta;
+            this.contactsNotGivenPage = page;
         });
     }
-    getPledgesNotReceived(page = 1) {
+    getPledgesNotReceived(page = this.pledgesNotReceivedPage) {
         return this.api.get(`account_lists/${this.api.account_list_id}/pledges`, {
             include: 'contact',
             page: page,
@@ -110,9 +112,10 @@ class AppealController {
             this.$log.debug(`pledges not received page ${page}`, data);
             this.pledgesNotReceived = this.fixPledgeAmount(data);
             this.pledgesNotReceived.meta = data.meta;
+            this.pledgesNotReceivedPage = page;
         });
     }
-    getPledgesNotProcessed(page = 1) {
+    getPledgesNotProcessed(page = this.pledgesNotProcessedPage) {
         return this.api.get(`account_lists/${this.api.account_list_id}/pledges`, {
             include: 'contact',
             page: page,
@@ -129,9 +132,10 @@ class AppealController {
             this.$log.debug(`pledges received not processed page ${page}`, data);
             this.pledgesNotProcessed = this.fixPledgeAmount(data);
             this.pledgesNotProcessed.meta = data.meta;
+            this.pledgesNotProcessedPage = page;
         });
     }
-    getPledgesProcessed(page = 1) {
+    getPledgesProcessed(page = this.pledgesProcessedPage) {
         return this.api.get(`account_lists/${this.api.account_list_id}/pledges`, {
             include: 'contact',
             page: page,
@@ -148,6 +152,7 @@ class AppealController {
             this.$log.debug(`pledges processed page ${page}`, data);
             this.pledgesProcessed = this.fixPledgeAmount(data);
             this.pledgesProcessed.meta = data.meta;
+            this.pledgesProcessedPage = page;
         });
     }
     fixPledgeAmount(contacts) {
@@ -201,16 +206,21 @@ class AppealController {
         });
     }
     onContactSelected(contact) {
-        return this.api.post(`appeals/${this.appeal.id}/contacts/${contact.id}`).then(() => {
+        return this.api.post({
+            url: `appeals/${this.appeal.id}/appeal_contacts`,
+            data: {
+                id: uuid(),
+                appeal: {
+                    id: this.appeal.id
+                },
+                contact: {
+                    id: contact.id
+                }
+            },
+            type: 'appeal_contacts'
+        }).then(() => {
             this.alerts.addAlert(this.gettext('Contact successfully added to appeal'));
-        }).catch((ex) => {
-            this.alerts.addAlert(this.gettext('Unable to add contact to appeal'), 'danger');
-            throw ex;
-        });
-    }
-    addContact(contact) {
-        return this.api.post(`appeals/${this.appeal.id}/contacts/${contact.id}`).then(() => {
-            this.alerts.addAlert(this.gettext('Contact added to appeal'));
+            this.getContactsNotGiven();
         }).catch((ex) => {
             this.alerts.addAlert(this.gettext('Unable to add contact to appeal'), 'danger');
             throw ex;
@@ -219,13 +229,25 @@ class AppealController {
     removeContact(contact) {
         const message = this.gettext('Are you sure you wish to remove this contact from the appeal?');
         return this.modal.confirm(message).then(() =>
-            this.api.delete(`appeals/${this.appeal.id}/contacts/${contact.id}`).then(() => {
+            this.api.delete(`appeals/${this.appeal.id}/appeal_contacts/${contact}`).then(() => {
                 this.alerts.addAlert(this.gettext('Contact removed from appeal'));
+                this.refreshLists();
             }).catch((ex) => {
                 this.alerts.addAlert(this.gettext('Unable to remove contact from appeal'), 'danger');
                 throw ex;
             })
         );
+    }
+    addExcludedContact(rel) {
+        return this.removeExcludedContact(rel.id).then(() => {
+            this.onContactSelected(rel.contact).then(() => {
+                this.getExcludedContacts();
+                this.getContactsNotGiven();
+            });
+        });
+    }
+    removeExcludedContact(id) {
+        return this.api.delete(`appeals/${this.appeal.id}/excluded_appeal_contacts/${id}`);
     }
     selectAllGiven() {
         this.selectedPledgeIds = union(this.selectedPledgeIds, map('id', this.pledgesProcessed));
@@ -279,8 +301,31 @@ class AppealController {
     }
     removePledge(pledge) {
         const message = this.gettext('Are you sure you wish to remove this commitment?');
+        const status = angular.copy(pledge.status);
         return this.modal.confirm(message).then(() =>
-            this.api.delete(`account_lists/${this.api.account_list_id}/pledges/${pledge.id}`)
+            this.api.delete(`account_lists/${this.api.account_list_id}/pledges/${pledge.id}`).then(() => {
+                this.refreshLists(status);
+            })
+        );
+    }
+    getListToRefresh(status) {
+        const mapping = {
+            'processed': this.getPledgesProcessed,
+            'received_not_processed': this.getPledgesNotProcessed,
+            'not_received': this.getPledgesNotReceived
+        };
+        return get(status, mapping);
+    }
+    refreshLists(status = null) {
+        this.getContactsNotGiven();
+        const statusPageToUpdate = this.getListToRefresh(status);
+        return statusPageToUpdate ? statusPageToUpdate() : this.refreshAllStatuses();
+    }
+    refreshAllStatuses() {
+        return this.$q.all(
+            this.getPledgesProcessed(),
+            this.getPledgesNotProcessed(),
+            this.getPledgesNotReceived()
         );
     }
     exportToCSV() {
@@ -330,15 +375,13 @@ class AppealController {
             throw ex;
         });
     }
-    addPledge() {
+    addPledge(contact) {
         this.modal.open({
             template: require('./addPledge/add.html'),
             controller: 'addPledgeController',
             locals: {
-                appealId: this.appeal.id
-            },
-            resolve: {
-                0: () => this.serverConstants.load(['pledge_currencies'])
+                appealId: this.appeal.id,
+                contact: contact
             }
         });
     }
@@ -349,13 +392,10 @@ class AppealController {
             locals: {
                 appealId: this.appeal.id,
                 pledge: pledge
-            },
-            resolve: {
-                0: () => this.serverConstants.load(['pledge_currencies'])
             }
         });
     }
-    getExcludedContacts(page = 1) {
+    getExcludedContacts(page = this.excludedContactsPage) {
         return this.api.get(`appeals/${this.appeal.id}/excluded_appeal_contacts`, {
             include: 'contact',
             fields: {
@@ -368,7 +408,21 @@ class AppealController {
             /* istanbul ignore next */
             this.$log.debug(`excluded contacts page ${page}`, data);
             this.excludedContacts = data;
+            this.excludedContacts.meta = data.meta;
+            this.excludedContactsPage = page;
         });
+    }
+    getReason(rel) {
+        const reasons = {
+            gave_more_than_pledged_within: this.gettext('May have given a special gift in the last 3 months'),
+            started_giving_within: this.gettext('May have joined my team in the last 3 months'),
+            pledge_amount_increased_within: this.gettext('May have increased their giving in the last 3 months'),
+            stopped_giving_within: this.gettext('May have stopped giving for the last 2 months'),
+            no_appeals: this.gettext('Have Send Appeals set to No')
+        };
+        const key = get('[0]', rel.reasons);
+        const value = get(key, reasons);
+        return defaultTo('', value);
     }
 }
 

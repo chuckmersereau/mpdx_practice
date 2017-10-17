@@ -1,35 +1,17 @@
 <modal title="{{'Add Commitment' | translate}}" save="$ctrl.save()" cancel="$hide()">
-    <div class="form-group">
+    <div>
         <label><translate>Contact</translate></label>
-        <collection-selector item-name="{{ 'Contact' | translate }}"
-                             display-text="$ctrl.selectedContact"
-                             search="$ctrl.contactSearch(text)"
-                             select="$ctrl.onContactSelected(item)">
-        </collection-selector>
+        <div>{{ $ctrl.selectedContact }}</div>
     </div>
     <div class="row">
-        <div class="col-sm-7">
-            <div class="form-group">
-                <label for="amount" translate>Amount</label><br/>
-                <input ng-model="$ctrl.amount" id="amount" class="form-control">
-            </div>
+        <div class="col-sm-8 form-group">
+            <label for="amount" translate>Amount</label><br/>
+            <input ng-model="$ctrl.amount" id="amount" class="form-control">
         </div>
-        <div class="col-sm-5">
-            <div class="form-group">
-                <label for="pledge_currency" class="attribute-header" translate>Currency</label>
-                <div class="inline-input">
-                    <select chosen
-                            required
-                            ng-model-options="{ debounce: 1000 }"
-                            class="form-control"
-                            data-placeholder-text-single="'Select an Option' | translate"
-                            id="pledge_currency"
-                            ng-options="pc.code as pc.code_symbol_string for pc in $ctrl.serverConstants.data.pledge_currencies"
-                            ng-model="$ctrl.currency">
-                        <option value=""></option>
-                    </select>
-                </div>
-            </div>
+        <div class="col-sm-4 received">
+            <label>
+                <input type="checkbox" ng-model="$ctrl.received"> Received
+            </label>
         </div>
     </div>
     <div>
@@ -44,5 +26,4 @@
                    required>
         </div>
     </div>
-    <input type="hidden" ng-model="$ctrl.contactId" required>
 </modal>

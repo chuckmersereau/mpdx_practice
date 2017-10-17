@@ -5,7 +5,7 @@
         </div>
         <div class="col-sm-4">
             <div class="pull-right" style="margin: 10px 0">
-                {{::$ctrl.appeal.amount_raised}} / {{::$ctrl.appeal.amount}}
+                {{::$ctrl.appeal.pledges_amount_processed}} / {{::$ctrl.appeal.amount}}
             </div>
         </div>
     </div>
@@ -45,7 +45,7 @@
             </div>
         </div>
         <div class="col-sm-3">
-            <div class="primary-container">
+            <div class="primary-container" ng-class="{ 'primary' : $ctrl.accounts.current.primary_appeal.id === $ctrl.appeal.id }">
                 <div class="primary-option" ng-click="$ctrl.onPrimary(); $event.stopPropagation()">
                     <i class="fa fa-square-o" ng-if="$ctrl.accounts.current.primary_appeal.id !== $ctrl.appeal.id"></i>
                     <i class="fa fa-check-square-o" ng-if="$ctrl.accounts.current.primary_appeal.id === $ctrl.appeal.id"></i>

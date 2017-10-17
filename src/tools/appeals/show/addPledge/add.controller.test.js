@@ -16,49 +16,20 @@ describe('tools.appeals.show.addPledge.controller', () => {
     function loadController() {
         return controller('addPledgeController as $ctrl', {
             $scope: scope,
-            appealId: 123
+            appealId: 123,
+            contact: {
+                id: 3,
+                name: 'joe'
+            }
         });
     }
-    describe('contactSearch', () => {
-        it('should query the api', () => {
-            $ctrl.appealId = 1;
-            spyOn(api, 'get').and.callFake(() => Promise.resolve());
-            $ctrl.contactSearch('a');
-            expect(api.get).toHaveBeenCalledWith({
-                url: 'contacts',
-                data: {
-                    filter: {
-                        appeal: 1,
-                        account_list_id: api.account_list_id,
-                        wildcard_search: 'a'
-                    },
-                    fields: {
-                        contacts: 'name'
-                    },
-                    per_page: 6,
-                    sort: 'name'
-                },
-                overrideGetAsPost: true
-            });
-        });
-    });
-    describe('onContactSelected', () => {
-        it('should set the contact id', () => {
-            $ctrl.onContactSelected({ id: 1 });
-            expect($ctrl.contactId).toEqual(1);
-        });
-        it('should set the contact name for display', () => {
-            $ctrl.onContactSelected({ id: 1, name: 'a' });
-            expect($ctrl.selectedContact).toEqual('a');
-        });
-    });
     describe('save', () => {
         beforeEach(() => {
             spyOn(api, 'post').and.callFake(() => new Promise((resolve) => resolve({})));
             scope.$hide = () => {};
             spyOn(scope, '$hide').and.callFake(() => {});
         });
-        it('should create a task', () => {
+        it('should create a pledge', () => {
             $ctrl.amount = 150;
             $ctrl.currency = 'USD';
             $ctrl.expected_date = '2007-01-01';
@@ -67,8 +38,9 @@ describe('tools.appeals.show.addPledge.controller', () => {
             $ctrl.save();
             expect(api.post).toHaveBeenCalledWith('account_lists/321/pledges', {
                 amount: 150,
-                amount_currency: 'USD',
                 expected_date: '2007-01-01',
+                amount_currency: 'USD', // dead but required api field
+                status: 'not_received',
                 appeal: {
                     id: 2
                 },
