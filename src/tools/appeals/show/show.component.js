@@ -12,7 +12,6 @@ import joinComma from 'common/fp/joinComma';
 import map from 'lodash/fp/map';
 import moment from 'moment';
 import pull from 'lodash/fp/pull';
-import reduce from 'lodash/fp/reduce';
 import reject from 'lodash/fp/reject';
 import sumBy from 'lodash/fp/sumBy';
 import union from 'lodash/fp/union';
@@ -20,7 +19,7 @@ import union from 'lodash/fp/union';
 class AppealController {
     constructor(
         $log, $q, $rootScope, $state, $stateParams, gettext,
-        alerts, api, contacts, donations, mailchimp, modal, serverConstants, tasks,
+        alerts, api, contacts, donations, exportContacts, mailchimp, modal, serverConstants, tasks,
     ) {
         this.$log = $log;
         this.$q = $q;
@@ -31,6 +30,7 @@ class AppealController {
         this.api = api;
         this.contacts = contacts;
         this.donations = donations;
+        this.exportContacts = exportContacts;
         this.gettext = gettext;
         this.mailchimp = mailchimp;
         this.modal = modal;
@@ -284,48 +284,18 @@ class AppealController {
         );
     }
     exportToCSV() {
-        const columnHeaders = [[
-            this.gettext('Contact'),
-            this.gettext('Commitment'),
-            this.gettext('Donations')
-        ]];
-        const donationContacts = this.getSelectedDonationContacts();
-        const contactsNotGiven = this.getSelectedContactsNotGiven();
-        const rows = concat(donationContacts, contactsNotGiven);
-        return concat(columnHeaders, rows);
-    }
-    getSelectedDonationContacts() {
-        return reduce((result, donation) => {
-            const contactId = get('id', donation.contact);
-            return contains(contactId, this.selectedContactIds)
-                ? concat(result, this.mutateDonation(donation))
-                : result;
-        }, [], this.appeal.donations);
-    }
-    getSelectedContactsNotGiven() {
-        return reduce((result, contact) => {
-            return contains(contact.id, this.selectedContactIds)
-                ? concat(result, this.mutateContact(contact))
-                : result;
-        }, [], this.contactsNotGiven);
-    }
-    mutateDonation(donation) {
-        const contact = defaultTo({}, donation.contact);
-        const name = defaultTo('', contact.name);
-        const pledge = defaultTo('', contact.pledge_amount);
-        const amount = defaultTo('', donation.amount);
-        const currency = defaultTo('USD', donation.currency);
-        const date = defaultTo('', donation.donation_date);
-        const field = `${amount} ${currency} ${date}`;
-        return [[name, pledge, field]];
-    }
-    mutateContact(contact) {
-        const name = defaultTo('', contact.name);
-        const pledge = defaultTo('', contact.pledge_amount);
-        const currency = defaultTo('$', contact.currency.symbol);
-        const frequency = defaultTo('', get('value', this.serverConstants.getPledgeFrequency(contact.pledge_frequency)));
-        const field = `${currency}${pledge} ${frequency}`;
-        return [[name, field]];
+        const params = {
+            data: {
+                filter: {
+                    account_list_id: this.api.account_list_id,
+                    ids: joinComma(this.selectedContactIds),
+                    status: 'active,hidden,null'
+                }
+            },
+            doDeSerialization: false,
+            overrideGetAsPost: true
+        };
+        return this.exportContacts.primaryCSVLink(params);
     }
     exportMailchimp() {
         const alert = curry((message) => this.alerts.addAlert(this.gettext(message), 'danger'));
@@ -412,11 +382,12 @@ const Appeal = {
 
 import contacts from 'contacts/contacts.service';
 import donations from 'reports/donations/donations.service';
+import exportContacts from 'contacts/list/exportContacts/export.service';
 import mailchimp from 'preferences/integrations/mailchimp/mailchimp.service';
 import tasks from 'tasks/tasks.service';
 import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('tools.mpdx.appeals.show', [
     uiRouter,
-    contacts, donations, mailchimp, tasks
+    contacts, donations, exportContacts, mailchimp, tasks
 ]).component('appealsShow', Appeal).name;

@@ -1,4 +1,4 @@
-import exportContacts from './exportContacts.controller';
+import cntrl from './exportContacts.controller';
 import assign from 'lodash/fp/assign';
 
 let contactList = [];
@@ -15,16 +15,17 @@ const params = {
 };
 
 describe('contacts.list.exportContacts.controller', () => {
-    let $ctrl, controller, api, scope;
+    let $ctrl, controller, api, scope, exportContacts;
     beforeEach(() => {
-        angular.mock.module(exportContacts);
-        inject(($controller, $timeout, $rootScope, _contacts_, _api_, _blockUI_, $q) => {
+        angular.mock.module(cntrl);
+        inject(($controller, $timeout, $rootScope, _contacts_, _api_, _exportContacts_) => {
             scope = $rootScope.$new();
             api = _api_;
+            exportContacts = _exportContacts_;
             controller = $controller;
             $ctrl = loadController(contactList);
             spyOn($ctrl, 'blockUI').and.callFake(() => fakeBlockUI);
-            spyOn(api, 'get').and.callFake(() => $q.resolve(null));
+            spyOn(api, 'get').and.callFake(() => Promise.resolve(null));
             spyOn($ctrl.blockUI, 'reset').and.callThrough();
             spyOn($ctrl.blockUI, 'start').and.callThrough();
         });
@@ -43,28 +44,17 @@ describe('contacts.list.exportContacts.controller', () => {
     });
     describe('primaryCSVLink', () => {
         beforeEach(() => {
-            spyOn($ctrl, 'sendDownload').and.callFake(() => {});
+            spyOn(exportContacts, 'primaryCSVLink').and.callFake(() => Promise.resolve());
         });
         it('should start the loader', () => {
             $ctrl.primaryCSVLink();
             expect($ctrl.blockUI.start).toHaveBeenCalled();
         });
-        it('should query the api', () => {
+        it('should use the service method', () => {
             $ctrl.primaryCSVLink();
-            expect(api.get).toHaveBeenCalledWith(assign(params, {
-                url: 'contacts/exports.csv',
-                headers: {
-                    Accept: 'text/csv'
-                }
-            }));
+            expect(exportContacts.primaryCSVLink).toHaveBeenCalledWith(params);
         });
-        xit('should save the query', (done) => {
-            $ctrl.primaryCSVLink().then(() => {
-                expect($ctrl.sendDownload).toHaveBeenCalledWith(jasmine.any(Blob), jasmine.any(String));
-                done();
-            });
-        });
-        xit('should stop the loader', (done) => {
+        it('should stop the loader', (done) => {
             $ctrl.primaryCSVLink().then(() => {
                 expect($ctrl.blockUI.reset).toHaveBeenCalled();
                 done();
@@ -73,7 +63,7 @@ describe('contacts.list.exportContacts.controller', () => {
     });
     describe('primaryXLSXLink', () => {
         beforeEach(() => {
-            spyOn($ctrl, 'sendDownload').and.callFake(() => {});
+            spyOn(exportContacts, 'sendDownload').and.callFake(() => Promise.resolve());
         });
         it('should start the loader', () => {
             $ctrl.primaryXLSXLink();
@@ -89,13 +79,13 @@ describe('contacts.list.exportContacts.controller', () => {
                 responseType: 'arraybuffer'
             }));
         });
-        xit('should save the query', (done) => {
+        it('should save the query', (done) => {
             $ctrl.primaryXLSXLink().then(() => {
-                expect($ctrl.sendDownload).toHaveBeenCalledWith(jasmine.any(Blob), jasmine.any(String));
+                expect(exportContacts.sendDownload).toHaveBeenCalledWith(jasmine.any(Blob), jasmine.any(String));
                 done();
             });
         });
-        xit('should stop the loader', (done) => {
+        it('should stop the loader', (done) => {
             $ctrl.primaryXLSXLink().then(() => {
                 expect($ctrl.blockUI.reset).toHaveBeenCalled();
                 done();
@@ -104,7 +94,7 @@ describe('contacts.list.exportContacts.controller', () => {
     });
     describe('mailingCSVLink', () => {
         beforeEach(() => {
-            spyOn($ctrl, 'sendDownload').and.callFake(() => {});
+            spyOn(exportContacts, 'sendDownload').and.callFake(() => Promise.resolve());
         });
         it('should start the loader', () => {
             $ctrl.mailingCSVLink();
@@ -119,13 +109,13 @@ describe('contacts.list.exportContacts.controller', () => {
                 }
             }));
         });
-        xit('should save the query', (done) => {
+        it('should save the query', (done) => {
             $ctrl.mailingCSVLink().then(() => {
-                expect($ctrl.sendDownload).toHaveBeenCalledWith(jasmine.any(Blob), jasmine.any(String));
+                expect(exportContacts.sendDownload).toHaveBeenCalledWith(jasmine.any(Blob), jasmine.any(String));
                 done();
             });
         });
-        xit('should stop the loader', (done) => {
+        it('should stop the loader', (done) => {
             $ctrl.mailingCSVLink().then(() => {
                 expect($ctrl.blockUI.reset).toHaveBeenCalled();
                 done();

@@ -321,9 +321,7 @@
             <div class="panel-body">
                 <h4 translate>Export Selected to CSV</h4>
                 <button class="btn"
-                        ng-csv="$ctrl.exportToCSV()"
-                        lazy-load="true"
-                        filename="mpdx-appeal-export-{{$ctrl.moment().format('Y-MM-DD-HH:mm')}}.csv"
+                        ng-click="$ctrl.exportToCSV()"
                         ng-disabled="$ctrl.selectedContactIds.length < 1"
                         translate>
                     Export Selected
