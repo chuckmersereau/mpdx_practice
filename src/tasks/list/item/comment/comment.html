@@ -1,0 +1,32 @@
+<div class="panel panel-default comment">
+    <div class="panel-body">
+        <div ng-if="!$ctrl.comment.edit">
+            <div class="pull-right">
+                <a class="btn btn-xs btn-danger" ng-click="$ctrl.deleteComment()" title="{{::'Delete Comment' | translate}}" ng-if="::$ctrl.commentBelongsToUser($ctrl.comment)">
+                    <i class="fa fa-trash-o"></i>
+                </a>
+                <a class="btn btn-xs btn-primary" ng-click="$ctrl.comment.edit = true" title="{{::'Edit Comment' | translate}}" ng-if="::$ctrl.commentBelongsToUser($ctrl.comment)">
+                    <i class="fa fa-pencil"></i>
+                </a>
+            </div>
+            <div class="content">{{ $ctrl.comment.body }}</div>
+        </div>
+        <div ng-if="$ctrl.comment.edit">
+            <form ng-submit="$ctrl.editComment()">
+                <textarea class="form-control" ng-model="$ctrl.comment.body" required></textarea>
+                <div class="text-right">
+                    <button ng-click="$ctrl.comment.edit = false" class="btn btn-link" translate>Cancel</button>
+                    <button type="submit" class="btn btn-primary" translate>Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <small>
+            <span ng-if="::$ctrl.comment.person">
+                {{ ::$ctrl.comment.person.first_name }} {{ ::$ctrl.comment.person.last_name }},
+            </span>
+            {{ ::$ctrl.comment.created_at | localize }}
+        </small>
+    </div>
+</div>
