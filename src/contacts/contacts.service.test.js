@@ -96,6 +96,54 @@ describe('contacts.service', () => {
             });
         });
     });
+    describe('getRecommendation', () => {
+        let data;
+        beforeEach(() => {
+            data = [
+                { id: 'recommendation_id' }
+            ];
+            spyOn(api, 'get').and.callFake(() => Promise.resolve(data));
+        });
+
+        it('should call the api', () => {
+            contacts.getRecommendation(123);
+            expect(api.get).toHaveBeenCalledWith({
+                url: 'contacts/123/donation_amount_recommendations',
+                data: {
+                    page: 1,
+                    per_page: 1
+                }
+            }
+            );
+        });
+
+        it('should return promise', () => {
+            expect(contacts.getRecommendation(123)).toEqual(jasmine.any(Promise));
+        });
+
+        describe('promise successful', () => {
+            it('should return first array recommendation', (done) => {
+                contacts.getRecommendation(123).then((data) => {
+                    expect(data).toEqual({ id: 'recommendation_id' });
+                    done();
+                });
+            });
+
+            describe('data empty', () => {
+                beforeEach(() => {
+                    data = [
+                    ];
+                });
+
+                it('should return null', (done) => {
+                    contacts.getRecommendation(123).then((data) => {
+                        expect(data).not.toBeDefined();
+                        done();
+                    });
+                });
+            });
+        });
+    });
     describe('getNames', () => {
         it('should query an array of ids for names', () => {
             spyOn(api, 'get').and.callFake((data) => Promise.resolve(data));

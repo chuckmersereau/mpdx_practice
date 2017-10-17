@@ -111,6 +111,16 @@ export default class Routes {
             url: '/notes',
             component: 'contactNotes'
         }).state({
+            name: 'contacts.show.recommendation',
+            title: gettext('Contact - Recommendation'),
+            url: '/recommendation',
+            component: 'contactRecommendation',
+            resolve: {
+                recommendation: /* @ngInject*/ (contacts, $stateParams) => {
+                    return contacts.getRecommendation($stateParams.contactId);
+                }
+            }
+        }).state({
             name: 'contacts.show.referrals',
             title: gettext('Contact - Referrals'),
             url: '/referrals',
