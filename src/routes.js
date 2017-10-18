@@ -1,4 +1,5 @@
 import config from 'config';
+import values from 'lodash/fp/values';
 
 export default class Routes {
     static config($stateProvider, gettext) {
@@ -364,7 +365,11 @@ export default class Routes {
             url: '/csv',
             component: 'importCsv',
             resolve: {
-                0: /* @ngInject*/ (serverConstants) => serverConstants.load(['csv_import'])
+                // dynamically injected
+                0: /* @ngInject*/ (serverConstants) => serverConstants.load(['csv_import']).then(() => {
+                    const dynamicConstants = values(serverConstants.data.csv_import.constants_from_top_level);
+                    return serverConstants.load(dynamicConstants);
+                })
             }
         }).state({
             name: 'tools.import.csv.upload',
