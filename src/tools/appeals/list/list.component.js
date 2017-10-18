@@ -2,7 +2,6 @@ import concat from 'lodash/fp/concat';
 import defaultTo from 'lodash/fp/defaultTo';
 import fixed from 'common/fp/fixed';
 import reduce from 'lodash/fp/reduce';
-import sumBy from 'lodash/fp/sumBy';
 import unionBy from 'lodash/fp/unionBy';
 
 class ListController {
@@ -50,10 +49,8 @@ class ListController {
         this.page = page;
 
         let params = {
-            include: 'donations',
             fields: {
-                appeals: 'amount,donations,name,pledges_amount_not_received_not_processed,pledges_amount_processed,pledges_amount_received_not_processed',
-                donations: 'converted_amount'
+                appeals: 'amount,name,pledges_amount_not_received_not_processed,pledges_amount_processed,pledges_amount_received_not_processed'
             },
             filter: { account_list_id: this.api.account_list_id },
             sort: '-created_at',
@@ -80,9 +77,8 @@ class ListController {
     }
     mutateData(data) {
         return reduce((result, appeal) => {
-            appeal.amount_raised = fixed(2, sumBy((donation) => (
-                parseFloat(donation.converted_amount)
-            ), appeal.donations));
+            appeal.pledges_amount_processed = defaultTo(0, appeal.pledges_amount_processed);
+            appeal.pledges_amount_processed = fixed(2, appeal.pledges_amount_processed);
             appeal.amount = defaultTo(0, appeal.amount);
             appeal.amount = fixed(2, appeal.amount);
             return concat(result, appeal);

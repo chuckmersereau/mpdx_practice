@@ -12,7 +12,7 @@
                         </div>
                     </div>
                     <div class="col-md-5">
-                        {{:: $ctrl.currency.symbol}}{{:: $ctrl.donationsSum }} /
+                        {{:: $ctrl.currency.symbol}}{{:: $ctrl.appeal.pledges_amount_processed }} /
                         {{:: $ctrl.currency.symbol}}
                         <span class="inline-input inline-block">
                             <input ng-model="$ctrl.appeal.amount"
@@ -23,7 +23,6 @@
                     </div>
                 </div>
                 <div class="progress">
-                    <!--<div class="progress-bar" role="progressbar" aria-valuenow="{{$ctrl.percentageRaised}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$ctrl.percentageRaised}}%; min-width: 5%; max-width: 100%;"></div>-->
                     <div class="progress-bar color-0"
                          role="progressbar"
                          aria-valuenow="{{$ctrl.appeal.pledges_amount_not_received_not_processed }}"
@@ -58,7 +57,6 @@
             </div>
         </div>
         <div>
-            <button class="btn" ng-click="$ctrl.addPledge()" translate>Add Commitment</button>
             <button class="btn" ng-click="$ctrl.contacts.openAddTagModal($ctrl.selectedContactIds)" translate>Add Tag</button>
             <button class="btn" ng-click="$ctrl.tasks.addModal({ contactsList: $ctrl.selectedContactIds })" translate>Add Task</button>
         </div>
@@ -71,12 +69,12 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Contact</th>
-                            <th>Commitment</th>
-                            <th>Donation(s)</th>
+                            <th translate>Contact</th>
+                            <th translate>Commitment</th>
+                            <th translate>Donation(s)</th>
                             <th>
-                                <a ng-click="$ctrl.selectAllGiven()">select all</a> |
-                                <a ng-click="$ctrl.deselectAllGiven()">deselect all</a>
+                                <a ng-click="$ctrl.selectAllGiven()" translate>select all</a> |
+                                <a ng-click="$ctrl.deselectAllGiven()" translate>deselect all</a>
                             </th>
                         </tr>
                     </thead>
@@ -85,7 +83,11 @@
                             ng-click="$ctrl.selectPledge(pledge)"
                             ng-class="{ selected: $ctrl.selectedPledgeIds.includes(pledge.id) }"
                             class="selectable">
-                            <td>{{::pledge.contact.name}}</td>
+                            <td>
+                                <a ui-sref="contacts.show({ contactId: pledge.contact.id })" ng-click="$event.stopPropagation()" target="_blank">
+                                    {{::pledge.contact.name}}
+                                </a>
+                            </td>
                             <td>{{::pledge.contact.pledge_amount}} {{::pledge.contact.pledge_currency}}</td>
                             <td>{{::pledge.amount}} {{::pledge.contact.pledge_currency}} ({{::pledge.expected_date | localize}})</td>
                             <td>
@@ -123,12 +125,12 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>Contact</th>
-                        <th>Commitment</th>
-                        <th>Amount Received</th>
-                        <th>
-                            <a ng-click="$ctrl.selectAllNotProcessed()">select all</a> |
-                            <a ng-click="$ctrl.deselectAllNotProcessed()">deselect all</a>
+                        <th translate>Contact</th>
+                        <th translate>Commitment</th>
+                        <th translate>Amount Received</th>
+                        <th translate>
+                            <a ng-click="$ctrl.selectAllNotProcessed()" translate>select all</a> |
+                            <a ng-click="$ctrl.deselectAllNotProcessed()" translate>deselect all</a>
                         </th>
                     </tr>
                     </thead>
@@ -137,7 +139,11 @@
                         ng-click="$ctrl.selectPledge(pledge)"
                         ng-class="{ selected: $ctrl.selectedPledgeIds.includes(pledge.id) }"
                         class="selectable">
-                        <td>{{::pledge.contact.name}}</td>
+                        <td>
+                            <a ui-sref="contacts.show({ contactId: pledge.contact.id })" ng-click="$event.stopPropagation()" target="_blank">
+                                {{::pledge.contact.name}}
+                            </a>
+                        </td>
                         <td>{{::pledge.contact.pledge_amount}} {{::pledge.contact.pledge_currency}}</td>
                         <td>{{::pledge.amount}} {{::pledge.contact.pledge_currency}} ({{::pledge.expected_date | localize}})</td>
                         <td>
@@ -175,12 +181,12 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>Contact</th>
-                        <th>Commitment</th>
-                        <th>Amount Committed</th>
+                        <th translate>Contact</th>
+                        <th translate>Commitment</th>
+                        <th translate>Amount Committed</th>
                         <th>
-                            <a ng-click="$ctrl.selectAllNotReceived()">select all</a> |
-                            <a ng-click="$ctrl.deselectAllNotReceived()">deselect all</a>
+                            <a ng-click="$ctrl.selectAllNotReceived()" translate>select all</a> |
+                            <a ng-click="$ctrl.deselectAllNotReceived()" translate>deselect all</a>
                         </th>
                     </tr>
                     </thead>
@@ -189,7 +195,11 @@
                         ng-click="$ctrl.selectPledge(pledge)"
                         ng-class="{ selected: $ctrl.selectedPledgeIds.includes(pledge.id) }"
                         class="selectable">
-                        <td>{{::pledge.contact.name}}</td>
+                        <td>
+                            <a ui-sref="contacts.show({ contactId: pledge.contact.id })" ng-click="$event.stopPropagation()" target="_blank">
+                                {{::pledge.contact.name}}
+                            </a>
+                        </td>
                         <td>{{::pledge.contact.pledge_amount}} {{::pledge.contact.pledge_currency}}</td>
                         <td>{{::pledge.amount}} {{::pledge.contact.pledge_currency}} ({{::pledge.expected_date | localize}})</td>
                         <td>
@@ -227,11 +237,11 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>Contact</th>
-                        <th>Commitment</th>
-                        <th>
-                            <a ng-click="$ctrl.selectAllNotGiven()">select all</a> |
-                            <a ng-click="$ctrl.deselectAllNotGiven()">deselect all</a>
+                        <th translate>Contact</th>
+                        <th translate>Commitment</th>
+                        <th translate>
+                            <a ng-click="$ctrl.selectAllNotGiven()" translate>select all</a> |
+                            <a ng-click="$ctrl.deselectAllNotGiven()" translate>deselect all</a>
                         </th>
                     </tr>
                     </thead>
@@ -240,14 +250,21 @@
                         ng-click="$ctrl.selectContact(ref.contact.id)"
                         ng-class="{ selected: $ctrl.selectedContactIds.includes(ref.contact.id) }"
                         class="selectable">
-                        <td>{{::ref.contact.name}}</td>
+                        <td>
+                            <a ui-sref="contacts.show({ contactId: ref.contact.id })" ng-click="$event.stopPropagation()" target="_blank">
+                                {{::ref.contact.name}}
+                            </a>
+                        </td>
                         <td>
                             {{::ref.contact.currency.symbol}}{{::ref.contact.pledge_amount}}
                             {{::$ctrl.serverConstants.getPledgeFrequency(ref.contact.pledge_frequency).value}}
                         </td>
                         <td>
+                            <button class="btn btn-xs btn-success" ng-click="$ctrl.addPledge(ref.contact)" title="{{'Add Commitment' | translate}}">
+                                <i class="fa fa-plus"></i>
+                            </button>
                             <button class="btn btn-xs btn-danger"
-                                    ng-click="$ctrl.removeContact(ref.contact); $event.stopPropagation()"
+                                    ng-click="$ctrl.removeContact(ref.id); $event.stopPropagation()"
                                     title="{{'Remove' | translate}}">
                                 <i class="fa fa-trash-o"></i>
                             </button>
@@ -284,19 +301,27 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th>Contact</th>
-                            <th colspan="2">Commitment</th>
+                            <th translate>Contact</th>
+                            <th translate>Reason</th>
+                            <th colspan="2" translate>Commitment</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr ng-repeat="rel in $ctrl.excludedContacts | orderBy : 'name'">
-                            <td>{{::rel.contact.name}}</td>
+                            <td>
+                                <a ui-sref="contacts.show({ contactId: rel.contact.id })" target="_blank">
+                                    {{::rel.contact.name}}
+                                </a>
+                            </td>
+                            <td>
+                                {{::$ctrl.getReason(rel)}}
+                            </td>
                             <td>
                                 {{::rel.contact.currency.symbol}}{{::rel.contact.pledge_amount}}
                                 {{::$ctrl.serverConstants.getPledgeFrequency(rel.contact.pledge_frequency).value}}
                             </td>
                             <td>
-                                <button class="btn btn-xs btn-success" ng-click="$ctrl.addContact(rel.contact)" title="{{'Add' | translate}}">
+                                <button class="btn btn-xs btn-success" ng-click="$ctrl.addExcludedContact(rel)" title="{{'Add' | translate}}">
                                     <i class="fa fa-plus"></i>
                                 </button>
                             </td>
@@ -321,9 +346,7 @@
             <div class="panel-body">
                 <h4 translate>Export Selected to CSV</h4>
                 <button class="btn"
-                        ng-csv="$ctrl.exportToCSV()"
-                        lazy-load="true"
-                        filename="mpdx-appeal-export-{{$ctrl.moment().format('Y-MM-DD-HH:mm')}}.csv"
+                        ng-click="$ctrl.exportToCSV()"
                         ng-disabled="$ctrl.selectedContactIds.length < 1"
                         translate>
                     Export Selected

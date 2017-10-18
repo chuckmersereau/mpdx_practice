@@ -4188,10 +4188,11 @@ json5@^0.5.0, json5@^0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/json5/-/json5-0.5.1.tgz#1eade7acc012034ad84e2396767ead9fa5495821"
 
-jsonapi-serializer@3.5.5:
-  version "3.5.5"
-  resolved "https://registry.yarnpkg.com/jsonapi-serializer/-/jsonapi-serializer-3.5.5.tgz#bc345bbd6e94f01a90f5b2d4942afbb637212222"
+jsonapi-serializer@3.4.2:
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/jsonapi-serializer/-/jsonapi-serializer-3.4.2.tgz#c9f4f6ef5239a2063161bfe8907b2686382e4911"
   dependencies:
+    bluebird "^2.10.2"
     inflected "^1.1.6"
     lodash "^4.16.3"
 

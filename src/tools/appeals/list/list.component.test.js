@@ -88,10 +88,8 @@ describe('tools.appeals.list.component', () => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve(retVal));
             $ctrl.load();
             expect(api.get).toHaveBeenCalledWith('appeals', {
-                include: 'donations',
                 fields: {
-                    appeals: 'amount,donations,name,pledges_amount_not_received_not_processed,pledges_amount_processed,pledges_amount_received_not_processed',
-                    donations: 'converted_amount'
+                    appeals: 'amount,name,pledges_amount_not_received_not_processed,pledges_amount_processed,pledges_amount_received_not_processed'
                 },
                 filter: { account_list_id: 123 },
                 sort: '-created_at',
@@ -149,30 +147,27 @@ describe('tools.appeals.list.component', () => {
         it('should modify data', () => {
             const data = [{
                 amount: '10',
-                donations: [{ converted_amount: '10' }]
+                pledges_amount_processed: 10
             }, {
                 amount: '12',
-                donations: [{ converted_amount: '11' }]
+                pledges_amount_processed: 11
             }];
             expect($ctrl.mutateData(data)).toEqual([{
                 amount: '10.00',
-                amount_raised: '10.00',
-                donations: [{ converted_amount: '10' }]
+                pledges_amount_processed: '10.00'
             }, {
                 amount: '12.00',
-                amount_raised: '11.00',
-                donations: [{ converted_amount: '11' }]
+                pledges_amount_processed: '11.00'
             }]);
         });
         it('should handle appeal 0', () => {
             const data = [{
                 amount: null,
-                donations: [{ converted_amount: '10' }]
+                pledges_amount_processed: null
             }];
             expect($ctrl.mutateData(data)).toEqual([{
                 amount: '0.00',
-                amount_raised: '10.00',
-                donations: [{ converted_amount: '10' }]
+                pledges_amount_processed: '0.00'
             }]);
         });
     });

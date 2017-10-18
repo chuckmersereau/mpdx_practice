@@ -54,7 +54,7 @@ describe('contacts.show.personModal.family.component', () => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve());
             $ctrl.search('abc');
             expect(api.get).toHaveBeenCalledWith(
-                'contacts//people', {
+                'contacts/people', {
                     fields: {
                         people: 'first_name,last_name'
                     },
