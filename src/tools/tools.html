@@ -4,23 +4,14 @@
             <div class="col-md-12">
                 <div class="pull-left">
                     <div class="section">
-                        <div class="dropdown">
-                            <a bs-dropdown type="button" data-container="body">
-                                <i class="fa fa-angle-down"></i>
-                                <translate>Tools</translate>
-                            </a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li role="presentation" ng-repeat="tool in $ctrl.tools.data" ng-if="tool.enabled">
-                                    <a ng-click="$ctrl.$state.go(tool.link)">
-                                        <i class="{{tool.icon}}"></i>
-                                        {{tool.title}}
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                        <a class="dropdown" ng-class="{ 'selected' : $ctrl.dropdown }" ng-click="$ctrl.dropdown = !$ctrl.dropdown">
+                            <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.dropdown }"></i>
+                            &nbsp;
+                            <translate>Tools</translate>
+                        </a>
                     </div>
                     <div class="section" ng-if="$ctrl.$state.$current.name != 'tools'">
-                        {{$ctrl.$state.$current.title}}
+                        {{$ctrl.$rootScope.pageTitle}}
                     </div>
                 </div>
             </div>
@@ -44,7 +35,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="tool in $ctrl.tools.data" ng-if="tool.enabled">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="tool in $ctrl.tools.data" ng-if="tool.enabled || $ctrl.users.current.preferences.admin">
             <div class="tool well" ui-sref="{{tool.link}}" ng-class="{selected: ($ctrl.setup && tool.imports) || ($ctrl.tools.analytics[tool.analyticKey] > 0 && !$ctrl.setup)}">
                 <div class="icon">
                     <i class="{{tool.icon}}"></i><span class="badge" ng-if="$ctrl.tools.analytics[tool.analyticKey] > 0 && !$ctrl.setup">{{$ctrl.tools.analytics[tool.analyticKey]}}</span>
@@ -55,3 +46,18 @@
         </div>
     </div>
 </ui-view>
+<div class="horizontal-dropdown" ng-if="$ctrl.dropdown">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="tool in $ctrl.tools.data" ng-if="tool.enabled || $ctrl.users.current.preferences.admin">
+                <div class="tool well" ui-sref="{{tool.link}}" ng-class="{selected: ($ctrl.setup && tool.imports) || ($ctrl.tools.analytics[tool.analyticKey] > 0 && !$ctrl.setup)}" ng-click="$ctrl.dropdown = false">
+                    <div class="icon">
+                        <i class="{{tool.icon}}"></i><span class="badge" ng-if="$ctrl.tools.analytics[tool.analyticKey] > 0 && !$ctrl.setup">{{$ctrl.tools.analytics[tool.analyticKey]}}</span>
+                    </div>
+                    <h4 class="title">{{tool.title}}</h4>
+                    <p>{{tool.description}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -118,7 +118,7 @@ class ContactController {
     }
     $onChanges() {
         this.$log.debug('selected contact: ', this.contacts.current);
-        this.$rootScope.pageTitle = `Contact | ${this.contacts.current.name}`;
+        this.$rootScope.pageTitle = `${this.gettextCatalog.getString('Contact')} | ${this.contacts.current.name}`;
     }
     $onDestroy() {
         this.watcher();

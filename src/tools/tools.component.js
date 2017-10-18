@@ -2,7 +2,7 @@ class ToolsController {
     constructor(
         $rootScope,
         $state, $stateParams, gettextCatalog,
-        help, session, tools
+        help, session, tools, users
     ) {
         this.$rootScope = $rootScope;
         this.$state = $state;
@@ -10,7 +10,10 @@ class ToolsController {
         this.help = help;
         this.session = session;
         this.tools = tools;
+        this.users = users;
+
         this.setup = $stateParams.setup;
+        this.dropdown = false;
     }
 
 
@@ -48,8 +51,9 @@ import uiRouter from '@uirouter/angularjs';
 import help from 'common/help/help.service';
 import session from 'common/session/session.service';
 import tools from 'tools/tools.service';
+import users from 'common/users/users.service';
 
 export default angular.module('mpdx.tools.component', [
     gettextCatalog, uiRouter,
-    help, session, tools
+    help, session, tools, users
 ]).component('tools', Tools).name;

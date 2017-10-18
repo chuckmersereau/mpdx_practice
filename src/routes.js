@@ -337,9 +337,9 @@ export default class Routes {
             }
         }).state({
             name: 'tools.appeals',
-            url: '/appeals',
+            url: '/goals',
             component: 'appeals',
-            title: gettext('Appeals'),
+            title: gettext('Goals'),
             resolve: {
                 0: /* @ngInject*/ (contactsTags) => contactsTags.load(),
                 1: /* @ngInject*/ (serverConstants) => serverConstants.load(['status_hashes'])
@@ -347,6 +347,7 @@ export default class Routes {
         }).state({
             name: 'tools.appeals.show',
             url: '/{appealId}',
+            title: gettext('Goal'),
             component: 'appealsShow',
             resolve: {
                 0: /* @ngInject*/ (serverConstants) => serverConstants.load(['pledge_currencies', 'pledge_frequency_hashes']),

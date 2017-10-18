@@ -52,6 +52,7 @@ describe('tools.appeals.show.component', () => {
             spyOn($ctrl, 'getPledgesNotReceived').and.callFake(() => Promise.resolve(['c']));
             spyOn($ctrl, 'getPledgesNotProcessed').and.callFake(() => Promise.resolve(['d']));
             spyOn($ctrl, 'getPledgesProcessed').and.callFake(() => Promise.resolve(['e']));
+            spyOn($ctrl, 'getExcludedContacts').and.callFake(() => Promise.resolve(['f ']));
         });
         it('should change state on account list change', () => {
             $ctrl.$onInit();
@@ -387,8 +388,8 @@ describe('tools.appeals.show.component', () => {
         it('should add contact ids from donations', () => {
             $ctrl.selectedContactIds = [];
             $ctrl.contactsNotGiven = [
-                { id: 1 },
-                { id: 2 }
+                { contact: { id: 1 } },
+                { contact: { id: 2 } }
             ];
             $ctrl.selectAllNotGiven();
             expect($ctrl.selectedContactIds).toEqual([1, 2]);
@@ -398,10 +399,32 @@ describe('tools.appeals.show.component', () => {
         it('should remove contact ids', () => {
             $ctrl.selectedContactIds = [1, 2, 3];
             $ctrl.contactsNotGiven = [
-                { id: 1 },
-                { id: 2 }
+                { contact: { id: 1 } },
+                { contact: { id: 2 } }
             ];
             $ctrl.deselectAllNotGiven();
+            expect($ctrl.selectedContactIds).toEqual([3]);
+        });
+    });
+    describe('selectAllExcluded', () => {
+        it('should add contact ids', () => {
+            $ctrl.selectedContactIds = [];
+            $ctrl.excludedContacts = [
+                { contact: { id: 1 } },
+                { contact: { id: 2 } }
+            ];
+            $ctrl.selectAllExcluded();
+            expect($ctrl.selectedContactIds).toEqual([1, 2]);
+        });
+    });
+    describe('deselectAllExcluded', () => {
+        it('should remove contact ids', () => {
+            $ctrl.selectedContactIds = [1, 2, 3];
+            $ctrl.excludedContacts = [
+                { contact: { id: 1 } },
+                { contact: { id: 2 } }
+            ];
+            $ctrl.deselectAllExcluded();
             expect($ctrl.selectedContactIds).toEqual([3]);
         });
     });

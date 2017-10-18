@@ -128,21 +128,9 @@
                 ul.nav.nav-tabs {
                     margin: -15px;
                     margin-bottom: 15px;
-                    background-color: #fff;
-                    border-bottom: 1px solid $gray_light;
-                    text-align: center;
                     > li {
-                        > a {
-                            font-size: 1.0em;
-                            color: $color-link;
-                            border: none;
-                            background-color: transparent;
-                            padding: 6px 16px 4px 16px;
-                            border-bottom: 2px solid transparent;
-                        }
-                        &.active a {
-                            background-color: $color-bg;
-                            border-bottom-color: $color-secondary;
+                        &:first-child {
+                            margin-left: 15px;
                         }
                     }
                 }
