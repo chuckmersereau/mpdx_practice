@@ -1,6 +1,6 @@
 import edit from './edit.controller';
 
-describe('tools.appeals.show.editCommitment.controller', () => {
+describe('tools.appeals.show.editPledge.controller', () => {
     let $ctrl, controller, api, scope;
     beforeEach(() => {
         angular.mock.module(edit);
@@ -14,7 +14,7 @@ describe('tools.appeals.show.editCommitment.controller', () => {
     });
 
     function loadController() {
-        return controller('editCommitmentController as $ctrl', {
+        return controller('editPledgeController as $ctrl', {
             $scope: scope,
             appealId: 123,
             pledge: {
@@ -24,59 +24,28 @@ describe('tools.appeals.show.editCommitment.controller', () => {
             }
         });
     }
-    describe('contactSearch', () => {
-        it('should query the api', () => {
-            $ctrl.appealId = 1;
-            spyOn(api, 'get').and.callFake(() => Promise.resolve());
-            $ctrl.contactSearch('a');
-            expect(api.get).toHaveBeenCalledWith({
-                url: 'contacts',
-                data: {
-                    filter: {
-                        appeal: 1,
-                        account_list_id: api.account_list_id,
-                        wildcard_search: 'a'
-                    },
-                    fields: {
-                        contacts: 'name'
-                    },
-                    per_page: 6,
-                    sort: 'name'
-                },
-                overrideGetAsPost: true
-            });
-        });
-    });
-    describe('onContactSelected', () => {
-        it('should set the contact id', () => {
-            $ctrl.onContactSelected({ id: 1 });
-            expect($ctrl.pledge.contact.id).toEqual(1);
-        });
-        it('should set the contact name for display', () => {
-            $ctrl.onContactSelected({ id: 1, name: 'a' });
-            expect($ctrl.selectedContact).toEqual('a');
-        });
-    });
     describe('save', () => {
         beforeEach(() => {
             spyOn(api, 'put').and.callFake(() => Promise.resolve({}));
             scope.$hide = () => {};
             spyOn(scope, '$hide').and.callFake(() => {});
         });
-        it('should create a task', () => {
+        it('should create a pledge', () => {
             $ctrl.pledge = {
                 id: 1,
                 amount: 150,
-                commitmentCurrency: 'USD',
+                pledgeCurrency: 'USD',
                 expectedDate: '2007-01-01',
+                status: 'not_received',
                 contactId: 3
             };
             $ctrl.appealId = 2;
             $ctrl.save();
             expect(api.put).toHaveBeenCalledWith('account_lists/321/pledges/1', {
+                id: 1,
                 amount: 150,
-                amount_currency: 'USD',
                 expected_date: '2007-01-01',
+                status: 'not_received',
                 appeal: {
                     id: 2
                 },

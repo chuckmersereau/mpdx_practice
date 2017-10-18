@@ -2,18 +2,18 @@ import concat from 'lodash/fp/concat';
 import defaultTo from 'lodash/fp/defaultTo';
 import fixed from 'common/fp/fixed';
 import reduce from 'lodash/fp/reduce';
-import sumBy from 'lodash/fp/sumBy';
 import unionBy from 'lodash/fp/unionBy';
 
 class ListController {
     constructor(
-        $log, $rootScope,
-        accounts, api
+        $log, $rootScope, gettext,
+        accounts, alerts, api
     ) {
         this.$log = $log;
+        this.gettext = gettext;
         this.accounts = accounts;
+        this.alerts = alerts;
         this.api = api;
-
 
         this.enableNext = false;
         this.data = [];
@@ -50,10 +50,8 @@ class ListController {
         this.page = page;
 
         let params = {
-            include: 'donations',
             fields: {
-                appeals: 'amount,donations,name,pledges_amount_not_received_not_processed,pledges_amount_processed,pledges_amount_received_not_processed',
-                donations: 'converted_amount'
+                appeals: 'amount,name,pledges_amount_not_received_not_processed,pledges_amount_processed,pledges_amount_received_not_processed'
             },
             filter: { account_list_id: this.api.account_list_id },
             sort: '-created_at',
@@ -80,9 +78,8 @@ class ListController {
     }
     mutateData(data) {
         return reduce((result, appeal) => {
-            appeal.amount_raised = fixed(2, sumBy((donation) => (
-                parseFloat(donation.converted_amount)
-            ), appeal.donations));
+            appeal.pledges_amount_processed = defaultTo(0, appeal.pledges_amount_processed);
+            appeal.pledges_amount_processed = fixed(2, appeal.pledges_amount_processed);
             appeal.amount = defaultTo(0, appeal.amount);
             appeal.amount = fixed(2, appeal.amount);
             return concat(result, appeal);
@@ -94,9 +91,30 @@ class ListController {
     resetOrAppendData(reset, deserializedData) {
         return reset ? deserializedData : unionBy('id', this.data, deserializedData);
     }
-    onPrimary(id) {
-        this.accounts.current.primary_appeal = { id: id };
-        this.accounts.saveCurrent();
+    appealSearch(keyword) {
+        return this.api.get({
+            url: 'appeals',
+            data: {
+                filter: {
+                    account_list_id: this.api.account_list_id,
+                    wildcard_search: keyword
+                },
+                fields: {
+                    appeals: 'name'
+                },
+                per_page: 6
+            },
+            overrideGetAsPost: true
+        });
+    }
+    setPrimaryAppeal(appeal) {
+        this.accounts.current.primary_appeal = { id: appeal.id };
+        return this.accounts.saveCurrent().then(() => {
+            this.alerts.addAlert(this.gettext('Goal successfully set to primary'));
+        }).catch((ex) => {
+            this.alerts.addAlert(this.gettext('Unable to set Goal as primary'), 'danger');
+            throw ex;
+        });
     }
 }
 
@@ -105,9 +123,12 @@ const List = {
     template: require('./list.html')
 };
 
+import gettext from 'angular-gettext';
 import accounts from 'common/accounts/accounts.service';
+import alerts from 'common/alerts/alerts.service';
 import api from 'common/api/api.service';
 
 export default angular.module('mpdx.tools.appeals.list.component', [
-    accounts, api
+    gettext,
+    accounts, alerts, api
 ]).component('appealsList', List).name;

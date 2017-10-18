@@ -1,15 +1,32 @@
+<div class="row">
+    <div class="col-xs-3 mt-1">
+        <strong translate>
+            Primary Goal
+        </strong>
+    </div>
+    <div class="col-xs-9">
+        <collection-selector item-name="{{ 'Primary Goal' | translate }}"
+                             display-text="$ctrl.accounts.current.primary_appeal.name"
+                             search="$ctrl.appealSearch(text)"
+                             select="$ctrl.setPrimaryAppeal(item)">
+        </collection-selector>
+    </div>
+</div>
 <div class="panel panel-default" block-ui="appeals-list">
     <div class="panel-heading" translate>
         Current Goals
     </div>
-    <div ng-if="$ctrl.data.length > 0" class="panel-body" infinite-scroll="$ctrl.loadMoreAppeals()">
+    <div class="panel-body pt-0 pb-3" infinite-scroll="$ctrl.loadMoreAppeals()" ng-if="$ctrl.data.length > 0">
         <appeals-list-item ng-repeat="appeal in $ctrl.data"
                            on-primary="$ctrl.onPrimary(appeal.id)"
                            appeal="appeal">
-
         </appeals-list-item>
     </div>
-    <div ng-if="$ctrl.data.length === 0 && $ctrl.loading === false" class="panel-footer" translate>No Goals</div>
+
+    <div class="panel-body blankslate" ng-if="$ctrl.data.length === 0 && $ctrl.loading === false">
+        <i class="fa fa-trophy blankslate-icon"></i>
+        <h3 translate>No Goals have been setup yet</h3>
+    </div>
 </div>
 <div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
   <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>

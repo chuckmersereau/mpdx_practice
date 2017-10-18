@@ -8,11 +8,21 @@
             transition: background-color 0.5s;
             user-select: none;
             cursor: default;
-
+            line-height: 23px;
             > .pull-right {
                 font-size: 12px;
                 .btn {
                     padding: 0 5px;
+                }
+            }
+        }
+        > .table, > .panel-animate > .table {
+            tr {
+                td:first-child, th:first-child {
+                    padding-left: 15px;
+                }
+                td:last-child, th:last-child {
+                    padding-right: 15px;
                 }
             }
         }

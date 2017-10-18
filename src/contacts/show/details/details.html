@@ -67,12 +67,12 @@
                     <div class="field">
                         <h4 class="attribute-header" translate>Referred By</h4>
                         <div class="row">
-                            <div ng-class="{ 'col-sm-10': $ctrl.referrer }">
+                            <div ng-class="{ 'col-sm-10': $ctrl.referrer, 'col-sm-12': !$ctrl.referrer }">
                                 <collection-selector item-name="{{ 'contact' | translate }}"
                                                      display-text="$ctrl.referrerName"
                                                      search="$ctrl.contacts.search(text)"
                                                      select="$ctrl.onContactSelected(item)">
-                                </collection-selector>
+                                </collection-selector>``
                             </div>
                             <div class="col-sm-2" ng-if="$ctrl.referrer">
                                 <a class="btn btn-xs btn-danger" ng-click="$ctrl.removeReferrer()" title="{{ ::'Remove referrer' | translate }}">
@@ -105,7 +105,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="field">
-                        <h4 class="attribute-header" translate>Send Appeals?</h4>
+                        <h4 class="attribute-header" translate>Send Goals?</h4>
                         <div class="inline-input">
                             <select chosen
                                     required
@@ -161,13 +161,13 @@
                 <div class="col-sm-6">
                     <div class="field">
                         <h4 class="attribute-header" translate>Church</h4>
-                        <div class="inline-input disabled">
+                        <div class="inline-input">
                             <input type="text" ng-model="$ctrl.contact.church_name" ng-model-options="{ debounce: 1000 }" ng-change="$ctrl.save()">
                         </div>
                     </div>
                     <div class="field">
                         <h4 class="attribute-header" translate>Website</h4>
-                        <div class="inline-input disabled">
+                        <div class="inline-input">
                             <input type="text" ng-model="$ctrl.contact.website" ng-model-options="{ debounce: 1000 }" ng-change="$ctrl.save()">
                         </div>
                     </div>

@@ -60,33 +60,11 @@
             <i class="fa fa-times"></i>
         </a>
     </div>
-    <div class="panel panel-default comment" ng-repeat="comment in $ctrl.task.comments">
-        <div class="panel-body">
-            <div ng-if="!comment.edit">
-                <div class="pull-right">
-                    <a class="btn btn-xs btn-danger" ng-click="$ctrl.deleteComment(comment)" title="{{::'Delete Comment' | translate}}" ng-if="::$ctrl.commentBelongsToUser(comment)">
-                        <i class="fa fa-trash-o"></i>
-                    </a>
-                    <a class="btn btn-xs btn-primary" ng-click="comment.edit = true" title="{{::'Edit Comment' | translate}}" ng-if="::$ctrl.commentBelongsToUser(comment)">
-                        <i class="fa fa-pencil"></i>
-                    </a>
-                </div>
-                <div class="content">{{ comment.body }}</div>
-            </div>
-            <div ng-if="comment.edit">
-                <form ng-submit="$ctrl.editComment(comment)">
-                    <textarea class="form-control" ng-model="comment.body" required></textarea>
-                    <div class="text-right">
-                        <button ng-click="comment.edit = false" class="btn btn-link" translate>Cancel</button>
-                        <button type="submit" class="btn btn-primary" translate>Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="panel-footer">
-            <small><span ng-if="::comment.person">{{ ::comment.person.first_name }} {{ ::comment.person.last_name }},</span> {{ ::comment.created_at | localize }}</small>
-        </div>
-    </div>
+    <task-item-comment ng-repeat="comment in $ctrl.task.comments"
+                         comment="comment"
+                         on-comment-remove="$ctrl.commentRemoved(comment.id)"
+                         task-id="$ctrl.task.id">
+    </task-item-comment>
     <form class="input-group" ng-submit="$ctrl.addComment()">
       <input type="text" class="form-control" ng-model="$ctrl.comment" required>
       <span class="input-group-btn">
