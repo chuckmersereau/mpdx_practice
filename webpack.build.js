@@ -67,11 +67,6 @@ config = assign(config, {
             }
         }),
         new webpack.NoEmitOnErrorsPlugin(),
-        new MinifyPlugin({
-        }, {
-            comments: false,
-            sourceMap: false
-        }),
         new webpack.LoaderOptionsPlugin({
             options: {
                 sassLoader: {
