@@ -2,6 +2,7 @@
 /**
  * Webpack default config
  */
+
 const path = require('path');
 const webpack = require('webpack');
 
@@ -22,13 +23,13 @@ const config = {
         alias: {
             config: path.join(__dirname, 'config', configEnv + '.js')
         },
-        modules: [path.join(__dirname), 'node_modules', 'bower_components', 'src']
+        modules: [path.join(__dirname), 'node_modules', 'src']
     },
     module: {
         loaders: [{
             test: /\.js$/,
             loaders: ['babel-loader'],
-            exclude: /node_modules|bower_components\//
+            exclude: /node_modules/
         }, {
             test: /\.json/,
             use: 'json-loader'

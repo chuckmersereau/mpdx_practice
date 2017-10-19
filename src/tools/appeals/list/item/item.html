@@ -1,57 +1,40 @@
 <div class="appeal pointer" ui-sref=".show({appealId: $ctrl.appeal.id})">
-    <div class="row">
-        <div class="col-sm-8">
-            <h4>{{::$ctrl.appeal.name}}</h4>
+    <h4 class="mt-3">
+        {{::$ctrl.appeal.name}}
+        <div class="pull-right">
+            {{::$ctrl.appeal.pledges_amount_processed}} / {{::$ctrl.appeal.amount}}
         </div>
-        <div class="col-sm-4">
-            <div class="pull-right" style="margin: 10px 0">
-                {{::$ctrl.appeal.amount_raised}} / {{::$ctrl.appeal.amount}}
-            </div>
+    </h4>
+    <div class="progress">
+        <div class="progress-bar color-0"
+             role="progressbar"
+             aria-valuenow="{{$ctrl.appeal.pledges_amount_not_received_not_processed }}"
+             ng-if="$ctrl.appeal.pledges_amount_not_received_not_processed > 0"
+             title="{{$ctrl.appeal.pledges_amount_not_received_not_processed}}"
+             aria-valuemin="0"
+             aria-valuemax="{{$ctrl.appeal.amount}}"
+             style="width: {{($ctrl.appeal.pledges_amount_not_received_not_processed / $ctrl.appeal.amount) * 100}}%; min-width: 10%; max-width: 100%;">
+            <span translate>Pledged</span>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-9">
-            <div class="progress" style="clear: both">
-                <div class="progress-bar color-0"
-                     role="progressbar"
-                     aria-valuenow="{{$ctrl.appeal.pledges_amount_not_received_not_processed }}"
-                     ng-if="$ctrl.appeal.pledges_amount_not_received_not_processed > 0"
-                     title="{{$ctrl.appeal.pledges_amount_not_received_not_processed}}"
-                     aria-valuemin="0"
-                     aria-valuemax="{{$ctrl.appeal.amount}}"
-                     style="width: {{($ctrl.appeal.pledges_amount_not_received_not_processed / $ctrl.appeal.amount) * 100}}%; min-width: 10%; max-width: 100%;">
-                    <span translate>Pledged</span>
-                </div>
-                <div class="progress-bar color-1"
-                     ng-if="$ctrl.appeal.percentage_raised > 0"
-                     title="{{$ctrl.appeal.percentage_raised}}"
-                     role="progressbar"
-                     aria-valuenow="{{$ctrl.appeal.percentage_raised}}"
-                     aria-valuemin="0"
-                     aria-valuemax="{{$ctrl.appeal.amount}}"
-                     style="width: {{($ctrl.appeal.percentage_raised / $ctrl.appeal.amount) * 100}}%; min-width: 10%; max-width: 100%;">
-                    <span translate>Received</span>
-                </div>
-                <div class="progress-bar color-2"
-                     role="progressbar"
-                     ng-if="$ctrl.appeal.pledges_amount_processed > 0"
-                     title="{{$ctrl.appeal.pledges_amount_processed}}"
-                     aria-valuenow="{{$ctrl.appeal.pledges_amount_processed}}"
-                     aria-valuemin="0"
-                     aria-valuemax="{{$ctrl.appeal.amount}}"
-                     style="width: {{($ctrl.appeal.pledges_amount_processed / $ctrl.appeal.amount) * 100}}%; min-width: 10%; max-width: 100%;">
-                    <span translate>Processed</span>
-                </div>
-            </div>
+        <div class="progress-bar color-1"
+             ng-if="$ctrl.appeal.percentage_raised > 0"
+             title="{{$ctrl.appeal.percentage_raised}}"
+             role="progressbar"
+             aria-valuenow="{{$ctrl.appeal.percentage_raised}}"
+             aria-valuemin="0"
+             aria-valuemax="{{$ctrl.appeal.amount}}"
+             style="width: {{($ctrl.appeal.percentage_raised / $ctrl.appeal.amount) * 100}}%; min-width: 10%; max-width: 100%;">
+            <span translate>Received</span>
         </div>
-        <div class="col-sm-3">
-            <div class="primary-container">
-                <div class="primary-option" ng-click="$ctrl.onPrimary(); $event.stopPropagation()">
-                    <i class="fa fa-square-o" ng-if="$ctrl.accounts.current.primary_appeal.id !== $ctrl.appeal.id"></i>
-                    <i class="fa fa-check-square-o" ng-if="$ctrl.accounts.current.primary_appeal.id === $ctrl.appeal.id"></i>
-                    <translate>Primary</translate>
-                </div>
-            </div>
+        <div class="progress-bar color-2"
+             role="progressbar"
+             ng-if="$ctrl.appeal.pledges_amount_processed > 0"
+             title="{{$ctrl.appeal.pledges_amount_processed}}"
+             aria-valuenow="{{$ctrl.appeal.pledges_amount_processed}}"
+             aria-valuemin="0"
+             aria-valuemax="{{$ctrl.appeal.amount}}"
+             style="width: {{($ctrl.appeal.pledges_amount_processed / $ctrl.appeal.amount) * 100}}%; min-width: 10%; max-width: 100%;">
+            <span translate>Processed</span>
         </div>
     </div>
 </div>

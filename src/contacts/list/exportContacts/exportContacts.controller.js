@@ -1,18 +1,19 @@
 import assign from 'lodash/fp/assign';
-import joinComma from '../../../common/fp/joinComma';
+import joinComma from 'common/fp/joinComma';
 import moment from 'moment';
 import bowser from 'bowser';
 
 class ExportContactsController {
     constructor(
         $timeout, blockUI,
-        api, contacts,
+        api, contacts, exportContacts,
         selectedContactIds
     ) {
         this.$timeout = $timeout;
         this.api = api;
         this.blockUI = blockUI.instances.get('contact-export');
         this.contacts = contacts;
+        this.exportContacts = exportContacts;
         this.moment = moment;
 
         this.isSafari = bowser.name === 'Safari';
@@ -27,38 +28,10 @@ class ExportContactsController {
             this.params.data.filter.ids = joinComma(selectedContactIds);
         }
     }
-    sendDownload(blob, filename) {
-        if (window.navigator.msSaveOrOpenBlob) {
-            navigator.msSaveBlob(blob, filename);
-        } else {
-            const downloadContainer = angular.element('<div id="downloadLink" data-tap-disabled="true"><a></a></div>');
-            let downloadLink = angular.element(downloadContainer.children()[0]);
-            downloadLink.attr('href', window.URL.createObjectURL(blob));
-            downloadLink.attr('download', filename);
-            downloadLink.attr('target', '_blank');
 
-            angular.element('body').append(downloadContainer);
-            this.$timeout(() => {
-                downloadLink[0].click();
-                downloadLink.remove();
-                window.URL.revokeObjectURL(blob);
-            }, null);
-        }
-    }
     primaryCSVLink() {
         this.blockUI.start();
-        const params = assign(this.params, {
-            url: 'contacts/exports.csv',
-            headers: {
-                Accept: 'text/csv'
-            }
-        });
-        return this.api.get(params).then((data) => {
-            const blob = new Blob([data], {
-                type: 'text/csv;charset=utf-8;'
-            });
-            this.sendDownload(blob, `mpdx-contact-export-${moment().format('Y-MM-DD-HH:mm')}.csv`);
-        }).then(() => {
+        return this.exportContacts.primaryCSVLink(this.params).then(() => {
             this.blockUI.reset();
         }).catch(() => {
             this.blockUI.reset();
@@ -77,7 +50,7 @@ class ExportContactsController {
             const blob = new Blob([data], {
                 type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;'
             });
-            this.sendDownload(blob, `mpdx-contact-export-${moment().format('Y-MM-DD-HH:mm')}.xlsx`);
+            this.exportContacts.sendDownload(blob, `mpdx-contact-export-${moment().format('Y-MM-DD-HH:mm')}.xlsx`);
         }).then(() => {
             this.blockUI.reset();
         }).catch(() => {
@@ -96,7 +69,7 @@ class ExportContactsController {
             const blob = new Blob([data], {
                 type: 'text/csv;charset=utf-8;'
             });
-            this.sendDownload(blob, `mpdx-mailing-export-${moment().format('Y-MM-DD-HH:mm')}.csv`);
+            this.exportContacts.sendDownload(blob, `mpdx-mailing-export-${moment().format('Y-MM-DD-HH:mm')}.csv`);
         }).then(() => {
             this.blockUI.reset();
         }).catch(() => {
@@ -107,8 +80,9 @@ class ExportContactsController {
 
 import blockUI from 'angular-block-ui';
 import contacts from 'contacts/contacts.service';
+import exportContacts from './export.service';
 
 export default angular.module('mpdx.contacts.list.exportContacts.controller', [
     blockUI,
-    contacts
+    contacts, exportContacts
 ]).controller('exportContactsController', ExportContactsController).name;

@@ -9,7 +9,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const RollbarSourceMapPlugin = require('rollbar-sourcemap-webpack-plugin');
-const BabiliPlugin = require('babili-webpack-plugin');
+const MinifyPlugin = require('babel-minify-webpack-plugin');
 
 const rollbarAccessToken = '9b953d96d0e145f9a4b70b41b1390c3b';
 
@@ -32,7 +32,7 @@ switch (configEnv) {
 const postcssLoader = {
     loader: 'postcss-loader',
     options: {
-        plugins: [ require('autoprefixer')({browsers: ['last 2 version']}) ]
+        plugins: [ require('autoprefixer')({ browsers: ['last 2 version'] }) ]
     }
 };
 
@@ -67,16 +67,18 @@ config = assign(config, {
             }
         }),
         new webpack.NoEmitOnErrorsPlugin(),
-        new BabiliPlugin({}, {
-            comments: false,
-            sourceMap: true
-        }),
         new webpack.LoaderOptionsPlugin({
             options: {
                 sassLoader: {
-                    includePaths: [path.resolve(__dirname, 'node_modules'), path.resolve(__dirname, 'bower_components')]
+                    includePaths: [path.resolve(__dirname, 'node_modules')]
                 }
             }
+        }),
+        new MinifyPlugin({
+            mangle: false
+        }, {
+            comments: false,
+            sourceMap: true
         }),
         new HtmlWebpackPlugin({
             template: './src/index.ejs',
@@ -93,8 +95,7 @@ config = assign(config, {
         new ExtractTextPlugin({
             filename: '[name].[hash].css'
         })
-    ]),
-    devtool: 'source-map'
+    ])
 });
 
 if (!process.env.TRAVIS_PULL_REQUEST && (process.env.TRAVIS_BRANCH === 'master' || process.env.TRAVIS_BRANCH === 'staging' || process.env.TRAVIS_BRANCH === 'next')) {

@@ -17,7 +17,6 @@ describe('common.appealsShow.service', () => {
                 expect(api.get).toHaveBeenCalledWith({
                     url: 'appeals/123',
                     data: {
-                        include: 'donations',
                         filter: {
                             account_list_id: 2
                         }

@@ -825,7 +825,7 @@ describe('tools.import.csv.service', () => {
             phone_2: 'Phone 2',
             phone_3: 'Phone 3',
             region: 'Region',
-            send_appeals: 'Send Appeals?',
+            send_appeals: 'Send Goals?',
             spouse_email: 'Spouse Email',
             spouse_first_name: 'Spouse First Name',
             spouse_last_name: 'Spouse Last Name',

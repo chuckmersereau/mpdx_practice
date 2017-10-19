@@ -49,6 +49,12 @@ class ContactController {
             { key: 'notes', value: gettextCatalog.getString('Notes') }
         ];
 
+        if (this.showRecommendationTab()) {
+            tabsLabels.push(
+                { key: 'recommendation', value: gettextCatalog.getString('Recommendations') }
+            );
+        }
+
         if (has('currentOptions.contact_tabs_sort', users)) {
             forEachRight((tab) => {
                 const label = find({ key: tab }, tabsLabels);
@@ -60,7 +66,7 @@ class ContactController {
         }
 
         this.tabsLabels = tabsLabels;
-        this.contacts.activeTab = defaultTo(this.tabsLabels[0]['key'], this.contacts.activeTab, this.$state.$current.name.split('.')[2]);
+        this.contacts.activeTab = defaultTo(this.tabsLabels[0]['key'], this.$state.$current.name.split('.')[2], this.contacts.activeTab);
 
         if (this.contacts.activeTab !== 'details') {
             this.$state.go(`contacts.show.${this.contacts.activeTab}`);
@@ -106,16 +112,16 @@ class ContactController {
         ]);
     }
     $onInit() {
-        this.disableAccountListEvent = this.$rootScope.$on('accountListUpdated', () => {
+        this.watcher = this.$rootScope.$on('accountListUpdated', () => {
             this.$state.go('contacts');
         });
     }
     $onChanges() {
         this.$log.debug('selected contact: ', this.contacts.current);
-        this.$rootScope.pageTitle = `Contact | ${this.contacts.current.name}`;
+        this.$rootScope.pageTitle = `${this.gettextCatalog.getString('Contact')} | ${this.contacts.current.name}`;
     }
     $onDestroy() {
-        this.disableAccountListEvent();
+        this.watcher();
     }
     save() {
         const source = angular.copy(this.contacts.current); // to avoid onChanges changes
@@ -167,6 +173,12 @@ class ContactController {
         } else {
             this.$state.go(`contacts.show.${tab}`);
         }
+    }
+    showRecommendationTab() {
+        return find((organizationAccount) => {
+            return organizationAccount.organization.name === 'Cru - USA';
+        }, this.users.organizationAccounts)
+            && this.users.current.preferences.admin;
     }
 }
 
