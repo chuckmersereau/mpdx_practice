@@ -67,11 +67,7 @@ config = assign(config, {
             }
         }),
         new webpack.NoEmitOnErrorsPlugin(),
-        new BabiliPlugin({
-            deadcode: true,
-            mangle: true,
-            simplify: true
-        }, {
+        new BabiliPlugin({}, {
             comments: false,
             sourceMap: true
         }),
