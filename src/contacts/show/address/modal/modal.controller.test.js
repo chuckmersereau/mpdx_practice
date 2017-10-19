@@ -1,11 +1,5 @@
 import modal from './modal.controller';
 
-const address = {
-    street: '',
-    location: 'Home',
-    source: 'MPDX'
-};
-
 describe('contacts.show.address.modal.controller', () => {
     let $ctrl, controller, scope, NgMap, gettextCatalog;
     beforeEach(() => {
@@ -47,11 +41,6 @@ describe('contacts.show.address.modal.controller', () => {
         it('should be editable with source TntImport', () => {
             loadController({}, { source: 'TntImport' });
             expect($ctrl.isEditable).toBeTruthy();
-        });
-        it('should only use a copy of address', () => {
-            loadController(undefined, address);
-            expect($ctrl.address).toEqual(address);
-            expect($ctrl.address === address).toBeFalsy();
         });
     });
 });

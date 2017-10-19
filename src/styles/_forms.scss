@@ -184,7 +184,6 @@ tags-input {
         input[type="text"] {
             position: absolute;
             padding-left: 5px;
-            background-color: transparent;
             &:focus {
                 border-bottom: 1px dashed #979797;
             }
@@ -206,9 +205,4 @@ tags-input {
     &.inline-block {
         display: inline-block;
     }
-}
-
-div.col-sm-4.received {
-    padding-top: 40px;
-    padding-left: 10px;
 }

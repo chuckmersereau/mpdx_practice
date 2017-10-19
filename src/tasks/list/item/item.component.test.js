@@ -75,6 +75,42 @@ describe('tasks.list.item.component', () => {
             });
         });
     });
+    describe('editComment', () => {
+        beforeEach(() => {
+            $ctrl.task = { id: 1 };
+            users.current = { id: 2, first_name: 'a', last_name: 'b' };
+            spyOn(api, 'put').and.callFake(() => Promise.resolve({ id: 1, body: 'asdf' }));
+        });
+        it('should put to the api', () => {
+            let comment = { id: 3, body: 'asdf', person: { id: 2, first_name: 'a', last_name: 'b' } };
+            $ctrl.editComment(comment);
+            expect(api.put).toHaveBeenCalledWith('tasks/1/comments/3', { body: 'asdf' });
+        });
+        it('should reset the comment edit flag', (done) => {
+            let comment = { id: 3, body: 'asdf', person: { id: 2, first_name: 'a', last_name: 'b' } };
+            $ctrl.editComment(comment).then(() => {
+                expect(comment.edit).toBeFalsy();
+                done();
+            });
+        });
+    });
+    describe('commentBelongsToUser', () => {
+        it('should be true if comment belongs to current user', () => {
+            users.current = { id: 1 };
+            const comment = { person: { id: 1 } };
+            expect($ctrl.commentBelongsToUser(comment)).toBeTruthy();
+        });
+        it('should be false if comment belongs to different user', () => {
+            users.current = { id: 1 };
+            const comment = { person: { id: 2 } };
+            expect($ctrl.commentBelongsToUser(comment)).toBeFalsy();
+        });
+        it('should be false if null condition', () => {
+            users.current = { id: 1 };
+            const comment = {};
+            expect($ctrl.commentBelongsToUser(comment)).toBeFalsy();
+        });
+    });
     describe('load', () => {
         beforeEach(() => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve());
@@ -140,12 +176,25 @@ describe('tasks.list.item.component', () => {
             });
         });
     });
-    describe('commentRemoved', () => {
-        it('should remove the comment from the task', () => {
-            $ctrl.task = { id: 1, comments: [{ id: 1 }, { id: 2 }] };
-            $ctrl.commentRemoved(1);
-            expect($ctrl.task.comments.length).toEqual(1);
-            expect($ctrl.task.comments[0].id).toEqual(2);
+    describe('deleteComment', () => {
+        beforeEach(() => {
+            $ctrl.task = { id: 1, comments: [{ id: 2 }] };
+            spyOn(gettextCatalog, 'getString').and.callFake(() => 'a');
+            spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+        });
+        it('should open a translated confirm dialog', () => {
+            $ctrl.deleteComment();
+            expect(gettextCatalog.getString)
+                .toHaveBeenCalledWith('Are you sure you wish to delete the selected comment?');
+            expect(modal.confirm).toHaveBeenCalledWith('a');
+        });
+        it('should delete the comment', (done) => {
+            $ctrl.deleteComment({ id: 2 }).then(() => {
+                expect(api.delete).toHaveBeenCalledWith('tasks/1/comments/2')
+                expect($ctrl.task.comments).toEqual([]);
+                done();
+            });
         });
     });
 });

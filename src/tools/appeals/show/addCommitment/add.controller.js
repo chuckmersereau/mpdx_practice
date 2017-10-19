@@ -1,6 +1,6 @@
 class AddController {
     constructor(
-        appealId, contact,
+        appealId,
         $scope,
         api, locale, serverConstants
     ) {
@@ -9,18 +9,35 @@ class AddController {
         this.appealId = appealId;
         this.locale = locale;
         this.serverConstants = serverConstants;
-
+    }
+    contactSearch(keyword) {
+        // api missing exclude capability
+        return this.api.get({
+            url: 'contacts',
+            data: {
+                filter: {
+                    appeal: this.appealId,
+                    account_list_id: this.api.account_list_id,
+                    wildcard_search: keyword
+                },
+                fields: {
+                    contacts: 'name'
+                },
+                per_page: 6,
+                sort: 'name'
+            },
+            overrideGetAsPost: true
+        });
+    }
+    onContactSelected(contact) {
         this.contactId = contact.id;
         this.selectedContact = contact.name;
-        this.received = false;
     }
     save() {
-        const status = this.received ? 'received_not_processed' : 'not_received';
         return this.api.post(`account_lists/${this.api.account_list_id}/pledges`, {
             amount: this.amount,
+            amount_currency: this.currency,
             expected_date: this.expected_date,
-            amount_currency: 'USD', // dead but required api field
-            status: status,
             appeal: {
                 id: this.appealId
             },
@@ -37,6 +54,6 @@ import api from 'common/api/api.service';
 import locale from 'common/locale/locale.service';
 import serverConstants from 'common/serverConstants/serverConstants.service';
 
-export default angular.module('mpdx.tools.appeals.show.addPledge.controller', [
+export default angular.module('mpdx.tools.appeals.show.addCommitment.controller', [
     api, locale, serverConstants
-]).controller('addPledgeController', AddController).name;
+]).controller('addCommitmentController', AddController).name;

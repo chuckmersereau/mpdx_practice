@@ -21,7 +21,7 @@ class ContactFamilyRelationshipController {
         this.onRemove();
     }
     search(text) {
-        return this.api.get('contacts/people', {
+        return this.api.get('contacts//people', {
             fields: {
                 people: 'first_name,last_name'
             },

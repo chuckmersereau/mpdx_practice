@@ -19,7 +19,7 @@ describe('tools.service', () => {
         it('should set default values', () => {
             expect(tools.data).toEqual([
                 {
-                    title: gettextCatalog.getString('Goals'),
+                    title: gettextCatalog.getString('Goals & Appeals'),
                     icon: 'fa fa-trophy',
                     link: 'tools.appeals',
                     description: gettextCatalog.getString('Set goals, create asks, and track progress for one time needs'),

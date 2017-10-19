@@ -304,14 +304,14 @@ describe('reports.contributions.component', () => {
     describe('getMonthlyDonations', () => {
         const donor = {
             months: [
-                { donations: [{ amount: '1', converted_amount: 1.1 }, { amount: 1, converted_amount: 2.2 }] },
+                { donations: [{ amount: 1, converted_amount: 1.1 }, { amount: 1, converted_amount: 2.2 }] },
                 { donations: [{ amount: 2, converted_amount: 2.2 }, { amount: 2, converted_amount: 3.3 }] }
             ]
         };
         it('should add converted Totals and re-arrange object values', () => {
             expect($ctrl.getMonthlyDonations('salary', donor)).toEqual([
                 {
-                    donations: [{ amount: '1', converted_amount: 1.1 }, { amount: 1, converted_amount: 2.2 }],
+                    donations: [{ amount: 1, converted_amount: 1.1 }, { amount: 1, converted_amount: 2.2 }],
                     total: 3,
                     convertedTotal: 3,
                     nativeTotal: 2
@@ -327,7 +327,7 @@ describe('reports.contributions.component', () => {
         it('should add converted Totals and re-arrange object values for partner', () => {
             expect($ctrl.getMonthlyDonations('partner', donor)).toEqual([
                 {
-                    donations: [{ amount: '1', converted_amount: 1.1 }, { amount: 1, converted_amount: 2.2 }],
+                    donations: [{ amount: 1, converted_amount: 1.1 }, { amount: 1, converted_amount: 2.2 }],
                     total: 2,
                     convertedTotal: 3,
                     nativeTotal: 2

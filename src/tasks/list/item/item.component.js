@@ -1,4 +1,6 @@
 import concat from 'lodash/fp/concat';
+import eq from 'lodash/fp/eq';
+import get from 'lodash/fp/get';
 import reject from 'lodash/fp/reject';
 
 class ItemController {
@@ -93,8 +95,21 @@ class ItemController {
             });
         }
     }
-    commentRemoved(commentId) {
-        this.task.comments = reject({ id: commentId }, this.task.comments);
+    editComment(comment) {
+        return this.api.put(`tasks/${this.task.id}/comments/${comment.id}`, { body: comment.body }).then(() => {
+            comment.edit = false;
+        });
+    }
+    deleteComment(comment) {
+        const message = this.gettextCatalog.getString('Are you sure you wish to delete the selected comment?');
+        return this.modal.confirm(message).then(() => {
+            return this.api.delete(`tasks/${this.task.id}/comments/${comment.id}`).then(() => {
+                this.task.comments = reject({ id: comment.id }, this.task.comments);
+            });
+        });
+    }
+    commentBelongsToUser(comment) {
+        return eq(get('person.id', comment), this.users.current.id);
     }
 }
 

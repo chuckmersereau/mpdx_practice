@@ -6,23 +6,6 @@
 }
 
 tools {
-    .nav--secondary {
-        a.dropdown {
-            font-size: 16px;
-        }
-    }
-    .horizontal-dropdown {
-        position: fixed;
-        background: #fff;
-        left: 0;
-        right: 0;
-        top: 135px;
-        bottom: 30px;
-        padding: $gutter;
-        border: 1px solid #dadada;
-        overflow-x: auto;
-        z-index: 10;
-    }
     .tool.well {
         cursor: pointer;
         height: 200px;

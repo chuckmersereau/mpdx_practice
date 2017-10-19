@@ -2,14 +2,12 @@ import component from './show.component';
 import assign from 'lodash/fp/assign';
 
 describe('contacts.show.component', () => {
-    let $ctrl, componentController, gettextCatalog, rootScope, scope, state,
-        api, alerts, contacts, contactsTags, tasks, users;
-
+    let $ctrl, contacts, rootScope, scope, componentController, api, alerts, gettextCatalog, state, tasks, contactsTags;
     beforeEach(() => {
         angular.mock.module(component);
         inject((
             $componentController, $rootScope, _contacts_, _contactsTags_, _modal_, _tasks_, _alerts_,
-            _gettextCatalog_, _api_, _users_, $state
+            _gettextCatalog_, _api_, $state
         ) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
@@ -20,7 +18,6 @@ describe('contacts.show.component', () => {
             gettextCatalog = _gettextCatalog_;
             state = $state;
             tasks = _tasks_;
-            users = _users_;
             componentController = $componentController;
             api.account_list_id = 1234;
             contacts.current = { id: 1, name: 'a b' };
@@ -40,7 +37,7 @@ describe('contacts.show.component', () => {
             scope.$emit('accountListUpdated');
             scope.$digest();
             expect(state.go).toHaveBeenCalledWith('contacts');
-            expect($ctrl.watcher).toBeDefined();
+            expect($ctrl.disableAccountListEvent).toBeDefined();
         });
     });
     describe('$onChanges', () => {
@@ -51,11 +48,11 @@ describe('contacts.show.component', () => {
     });
     describe('$onDestroy', () => {
         it('should disable event', () => {
-            $ctrl.watcher = () => {};
+            $ctrl.disableAccountListEvent = () => {};
             spyOn(state, 'go').and.callFake(() => {});
-            spyOn($ctrl, 'watcher').and.callFake(() => {});
+            spyOn($ctrl, 'disableAccountListEvent').and.callFake(() => {});
             $ctrl.$onDestroy();
-            expect($ctrl.watcher).toHaveBeenCalled();
+            expect($ctrl.disableAccountListEvent).toHaveBeenCalled();
             scope.$emit('accountListUpdated');
             scope.$digest();
             expect(state.go).not.toHaveBeenCalled();
@@ -144,48 +141,6 @@ describe('contacts.show.component', () => {
             spyOn(tasks, 'addModal').and.callFake(() => {});
             $ctrl.openAddTaskModal();
             expect(tasks.addModal).toHaveBeenCalledWith({ contactsList: [contacts.current.id] });
-        });
-    });
-    describe('showRecommendationTab', () => {
-        beforeEach(() => {
-            users.current = {
-                preferences: {
-                    admin: false
-                }
-            };
-        });
-
-        it('should return false', () => {
-            expect($ctrl.showRecommendationTab()).toBeFalsy();
-        });
-
-        describe('user has Cru - USA organization', () => {
-            beforeEach(() => {
-                users.organizationAccounts = [
-                    {
-                        organization: {
-                            name: 'Cru - USA'
-                        }
-                    }
-                ];
-            });
-            it('should return false', () => {
-                expect($ctrl.showRecommendationTab()).toBeFalsy();
-            });
-
-            describe('user is admin', () => {
-                beforeEach(() => {
-                    users.current = {
-                        preferences: {
-                            admin: true
-                        }
-                    };
-                });
-
-                it('should return true', () => {
-                    expect($ctrl.showRecommendationTab()).toEqual(true);
-                });
-            });
         });
     });
 });
