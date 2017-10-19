@@ -75,6 +75,7 @@ config = assign(config, {
             }
         }),
         new MinifyPlugin({
+            mangle: false
         }, {
             comments: false,
             sourceMap: true
