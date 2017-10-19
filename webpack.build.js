@@ -9,7 +9,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const RollbarSourceMapPlugin = require('rollbar-sourcemap-webpack-plugin');
-const MinifyPlugin = require('babel-minify-webpack-plugin');
+const BabiliPlugin = require('babili-webpack-plugin');
 
 const rollbarAccessToken = '9b953d96d0e145f9a4b70b41b1390c3b';
 
@@ -67,17 +67,20 @@ config = assign(config, {
             }
         }),
         new webpack.NoEmitOnErrorsPlugin(),
+        new BabiliPlugin({
+            deadcode: true,
+            mangle: true,
+            simplify: true
+        }, {
+            comments: false,
+            sourceMap: true
+        }),
         new webpack.LoaderOptionsPlugin({
             options: {
                 sassLoader: {
                     includePaths: [path.resolve(__dirname, 'node_modules')]
                 }
             }
-        }),
-        new MinifyPlugin({
-        }, {
-            comments: false,
-            sourceMap: true
         }),
         new HtmlWebpackPlugin({
             template: './src/index.ejs',
