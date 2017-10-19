@@ -32,7 +32,7 @@ switch (configEnv) {
 const postcssLoader = {
     loader: 'postcss-loader',
     options: {
-        plugins: [ require('autoprefixer')({browsers: ['last 2 version']}) ]
+        plugins: [ require('autoprefixer')({ browsers: ['last 2 version'] }) ]
     }
 };
 
@@ -67,17 +67,17 @@ config = assign(config, {
             }
         }),
         new webpack.NoEmitOnErrorsPlugin(),
-        new webpack.LoaderOptionsPlugin({
-            options: {
-                sassLoader: {
-                    includePaths: [path.resolve(__dirname, 'node_modules'), path.resolve(__dirname, 'bower_components')]
-                }
-            }
-        }),
         new MinifyPlugin({
         }, {
             comments: false,
-            sourceMap: true
+            sourceMap: false
+        }),
+        new webpack.LoaderOptionsPlugin({
+            options: {
+                sassLoader: {
+                    includePaths: [path.resolve(__dirname, 'node_modules')]
+                }
+            }
         }),
         new HtmlWebpackPlugin({
             template: './src/index.ejs',
@@ -94,7 +94,8 @@ config = assign(config, {
         new ExtractTextPlugin({
             filename: '[name].[hash].css'
         })
-    ])
+    ]),
+    devtool: 'source-map'
 });
 
 if (!process.env.TRAVIS_PULL_REQUEST && (process.env.TRAVIS_BRANCH === 'master' || process.env.TRAVIS_BRANCH === 'staging' || process.env.TRAVIS_BRANCH === 'next')) {

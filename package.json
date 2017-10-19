@@ -120,7 +120,7 @@
     "url-loader": "^0.5.7",
     "wallaby-webpack": "^0.0.39",
     "webfonts-generator": "0.4.0",
-    "webpack": "^3.2.0",
-    "webpack-dev-server": "^2.5.1"
+    "webpack": "3.8.1",
+    "webpack-dev-server": "2.9.2"
   }
 }

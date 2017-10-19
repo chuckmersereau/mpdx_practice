@@ -7,13 +7,12 @@ const assign = require('lodash/fp/assign');
 const concat = require('lodash/fp/concat');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
 let config = require('./webpack.make');
 
 const postcssLoader = {
     loader: 'postcss-loader',
     options: {
-        plugins: [require('autoprefixer')({browsers: ['last 2 version']})]
+        plugins: [require('autoprefixer')({ browsers: ['last 2 version'] })]
     }
 };
 
@@ -29,7 +28,7 @@ config = assign(config, {
             {
                 enforce: 'pre',
                 test: /\.js$/,
-                exclude: /node_modules|bower_components\//,
+                exclude: /node_modules\//,
                 loaders: ['eslint-loader']
             }, {
                 test: /\.css$/,
@@ -44,14 +43,10 @@ config = assign(config, {
         new webpack.LoaderOptionsPlugin({
             options: {
                 eslint: {
-                    // parser: 'babel-eslint',
                     fix: true
                 },
                 sassLoader: {
-                    includePaths: [
-                        path.resolve(__dirname, 'node_modules'),
-                        path.resolve(__dirname, 'bower_components')
-                    ],
+                    includePaths: [path.resolve(__dirname, 'node_modules')],
                     sourceMaps: true,
                     sourceMapContents: true
                 },
@@ -67,7 +62,7 @@ config = assign(config, {
             minify: false
         }),
         new CopyWebpackPlugin([
-            {from: 'assets'}
+            { from: 'assets' }
         ])
     ]),
     devServer: {
