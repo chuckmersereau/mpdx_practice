@@ -61,13 +61,6 @@ export class EntityAttributes {
                 ],
                 account_list: { ref: 'id' }
             },
-            appeal_contacts: {
-                attributes: [
-                    'appeal', 'contact'
-                ],
-                appeal: { ref: 'id' },
-                contact: { ref: 'id' }
-            },
             bulk: {
                 attributes: ['tag_name'],
                 pluralizeType: false
@@ -192,7 +185,7 @@ export class EntityAttributes {
                 attributes: ['name', 'org_help_url', 'country', 'gift_aid_percentage']
             },
             pledges: {
-                attributes: ['amount', 'amount_currency', 'expected_date', 'appeal', 'contact', 'status'],
+                attributes: ['amount', 'amount_currency', 'expected_date', 'appeal', 'contact'],
                 contact: { ref: 'id' },
                 appeal: { ref: 'id' }
             },

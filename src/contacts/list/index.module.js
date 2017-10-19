@@ -1,6 +1,6 @@
 import component from './list.component';
 import editFields from './editFields/editFields.controller';
-import exportContacts from './exportContacts/index.module';
+import exportContacts from './exportContacts/exportContacts.controller';
 import item from './item/index.module';
 import map from './map/map.controller';
 import merge from './merge/merge.controller';

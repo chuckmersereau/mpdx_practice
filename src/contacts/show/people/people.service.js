@@ -35,7 +35,7 @@ class PersonService {
         if (!reset && this.data.length > 0) {
             return this.$q.resolve(this.data);
         }
-        return this.api.get('contacts/people', {
+        return this.api.get('contacts//people', {
             fields: {
                 people: 'first_name,last_name'
             },

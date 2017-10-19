@@ -12,6 +12,7 @@ class Show {
         return this.api.get({
             url: `appeals/${appealId}`,
             data: {
+                include: 'donations',
                 filter: {
                     account_list_id: this.api.account_list_id
                 }

@@ -140,7 +140,7 @@ class ContributionsController {
     getMonthlyDonations(type, donor) {
         return map((monthlyDonation) => {
             const convertedTotal = sumBy((amt) => round(amt.converted_amount), monthlyDonation.donations);
-            const total = toInteger(sumBy((donation) => parseFloat(donation.amount), monthlyDonation.donations));
+            const total = toInteger(sumBy('amount', monthlyDonation.donations));
             return {
                 donations: monthlyDonation.donations,
                 total: type === 'salary' ? convertedTotal : total,

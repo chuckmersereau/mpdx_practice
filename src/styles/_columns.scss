@@ -41,21 +41,13 @@
                 top: $nav-height;
             }
         }
-        &__appeals {
-            @include breakpoint(sm) {
-                top: $secondary-nav-height + 99px;
-            }
-            @include breakpoint(md) {
-                top: $nav-height;
-            }
-        }
     }
     &--heading {
         position: fixed;
         top: $nav-height;
         padding-top: $nav-padding;
         background: $cru-white;
-        z-index: 4;
+        z-index: 1;
         @include breakpoint(sm) {
             width: 720px;
         }
@@ -78,9 +70,6 @@
         }
         &__setup {
             height: 90px;
-        }
-        &__appeals {
-            height: 56px;
         }
     }
     &--body {

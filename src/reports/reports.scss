@@ -25,6 +25,14 @@
             }
         }
     }
+    .progress {
+        height: 35px;
+        .progress-bar {
+            font-size: 1.1em;
+            font-weight: bold;
+            line-height: 35px;
+        }
+    }
     .year-header-row {
         th {
             font-size: 1.3em;

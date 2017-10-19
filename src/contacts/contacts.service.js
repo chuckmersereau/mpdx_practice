@@ -63,19 +63,6 @@ class ContactsService {
             return data;
         });
     }
-    getRecommendation(id) {
-        return this.api.get({
-            url: `contacts/${id}/donation_amount_recommendations`,
-            data: {
-                page: 1,
-                per_page: 1
-            }
-        }).then((data) => {
-            /* istanbul ignore next */
-            this.$log.debug('recommendation by contact', id, data[0]);
-            return data[0];
-        });
-    }
     getReferrals(id) {
         return this.api.get({
             url: `contacts/${id}`,
@@ -87,7 +74,6 @@ class ContactsService {
             }
         }).then((data) => {
             data = data.contacts_referred_by_me;
-            /* istanbul ignore next */
             this.$log.debug('referrals by contact', id, data);
             return data;
         });

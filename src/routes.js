@@ -112,16 +112,6 @@ export default class Routes {
             url: '/notes',
             component: 'contactNotes'
         }).state({
-            name: 'contacts.show.recommendation',
-            title: gettext('Contact - Recommendation'),
-            url: '/recommendation',
-            component: 'contactRecommendation',
-            resolve: {
-                recommendation: /* @ngInject*/ (contacts, $stateParams) => {
-                    return contacts.getRecommendation($stateParams.contactId);
-                }
-            }
-        }).state({
             name: 'contacts.show.referrals',
             title: gettext('Contact - Referrals'),
             url: '/referrals',
@@ -337,9 +327,9 @@ export default class Routes {
             }
         }).state({
             name: 'tools.appeals',
-            url: '/goals',
+            url: '/appeals',
             component: 'appeals',
-            title: gettext('Goals'),
+            title: gettext('Appeals'),
             resolve: {
                 0: /* @ngInject*/ (contactsTags) => contactsTags.load(),
                 1: /* @ngInject*/ (serverConstants) => serverConstants.load(['status_hashes'])
@@ -347,7 +337,6 @@ export default class Routes {
         }).state({
             name: 'tools.appeals.show',
             url: '/{appealId}',
-            title: gettext('Goal'),
             component: 'appealsShow',
             resolve: {
                 0: /* @ngInject*/ (serverConstants) => serverConstants.load(['pledge_currencies', 'pledge_frequency_hashes']),
