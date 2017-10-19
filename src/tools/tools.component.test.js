@@ -23,6 +23,7 @@ describe('tools.component', () => {
     describe('constructor', () => {
         it('should set default values', () => {
             expect($ctrl.setup).toBeTruthy();
+            expect($ctrl.dropdown).toBeFalsy();
         });
     });
 

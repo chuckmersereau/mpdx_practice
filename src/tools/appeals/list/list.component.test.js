@@ -1,11 +1,12 @@
 import component from './list.component';
 
 describe('tools.appeals.list.component', () => {
-    let $ctrl, scope, api, accounts;
+    let $ctrl, scope, api, accounts, alerts;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _api_, _accounts_) => {
+        inject(($componentController, $rootScope, _api_, _accounts_, _alerts_) => {
             scope = $rootScope.$new();
+            alerts = _alerts_;
             api = _api_;
             api.account_list_id = 123;
             accounts = _accounts_;
@@ -201,13 +202,51 @@ describe('tools.appeals.list.component', () => {
             expect($ctrl.resetOrAppendData(false, secondData)).toEqual([{ id: 'a' }, { id: 'b' }]);
         });
     });
-    describe('onPrimary', () => {
-        it('should set the primary appeal id', () => {
-            spyOn(accounts, 'saveCurrent').and.callFake(() => {});
-            accounts.current = { primary_appeal: { } };
-            $ctrl.onPrimary(1);
-            expect(accounts.current.primary_appeal.id).toEqual(1);
+    describe('appealSearch', () => {
+        it('should query the api', () => {
+            $ctrl.appeal = { id: 1 };
+            spyOn(api, 'get').and.callFake(() => Promise.resolve());
+            $ctrl.appealSearch('a');
+            expect(api.get).toHaveBeenCalledWith({
+                url: 'appeals',
+                data: {
+                    filter: {
+                        account_list_id: api.account_list_id,
+                        wildcard_search: 'a'
+                    },
+                    fields: {
+                        appeals: 'name'
+                    },
+                    per_page: 6
+                },
+                overrideGetAsPost: true
+            });
+        });
+    });
+    describe('setPrimaryAppeal', () => {
+        beforeEach(() => {
+            $ctrl.appeal = { id: 123 };
+            accounts.current = { primary_appeal: null };
+            spyOn(alerts, 'addAlert').and.callFake(() => {});
+        });
+        it('should add the contact to the appeal', () => {
+            spyOn(accounts, 'saveCurrent').and.callFake(() => Promise.resolve());
+            $ctrl.setPrimaryAppeal({ id: 1 });
             expect(accounts.saveCurrent).toHaveBeenCalledWith();
+        });
+        it('should alert success', (done) => {
+            spyOn(accounts, 'saveCurrent').and.callFake(() => Promise.resolve());
+            $ctrl.setPrimaryAppeal({ id: 1 }).then(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith('Goal successfully set to primary');
+                done();
+            });
+        });
+        it('should alert failure', (done) => {
+            spyOn(accounts, 'saveCurrent').and.callFake(() => Promise.reject());
+            $ctrl.setPrimaryAppeal({ id: 1 }).catch(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith('Unable to set Goal as primary', 'danger');
+                done();
+            });
         });
     });
 });
