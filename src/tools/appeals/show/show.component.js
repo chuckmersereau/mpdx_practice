@@ -47,17 +47,18 @@ class AppealController {
         this.pledgesNotReceivedPage = 1;
         this.pledgesNotProcessedPage = 1;
         this.pledgesProcessedPage = 1;
+        this.activeTab = 'given';
     }
     $onInit() {
         /* istanbul ignore next */
         this.$log.debug('appeal', this.data);
-
         this.dataInitialState = angular.copy(this.data);
         this.currency = this.getCurrencyFromCode(this.data.total_currency);
         this.appeal = assign(this.data, {
             amount: fixed(2, defaultTo(0, this.data.amount)),
             pledges_amount_processed: fixed(2, defaultTo(0, this.data.pledges_amount_processed))
         });
+        this.$rootScope.pageTitle = `${this.gettext('Goal')} | ${this.appeal.name}`;
 
         this.disableAccountListEvent = this.$rootScope.$on('accountListUpdated', () => {
             this.$state.go('tools.appeals');
@@ -280,11 +281,18 @@ class AppealController {
         this.selectedContactIds = reject((id) => contains(id, allNotProcessedContacts), this.selectedContactIds);
     }
     selectAllNotGiven() {
-        this.selectedContactIds = union(this.selectedContactIds, map('id', this.contactsNotGiven));
+        this.selectedContactIds = union(this.selectedContactIds, map((p) => p.contact.id, this.contactsNotGiven));
     }
     deselectAllNotGiven() {
-        const allNotGiven = map('id', this.contactsNotGiven);
+        const allNotGiven = map((p) => p.contact.id, this.contactsNotGiven);
         this.selectedContactIds = reject((id) => contains(id, allNotGiven), this.selectedContactIds);
+    }
+    selectAllExcluded() {
+        this.selectedContactIds = union(this.selectedContactIds, map((p) => p.contact.id, this.excludedContacts));
+    }
+    deselectAllExcluded() {
+        const excluded = map((p) => p.contact.id, this.excludedContacts);
+        this.selectedContactIds = reject((id) => contains(id, excluded), this.selectedContactIds);
     }
     selectContact(contactId) {
         this.selectedContactIds = contains(contactId, this.selectedContactIds)
@@ -325,7 +333,8 @@ class AppealController {
         return this.$q.all(
             this.getPledgesProcessed(),
             this.getPledgesNotProcessed(),
-            this.getPledgesNotReceived()
+            this.getPledgesNotReceived(),
+            this.getExcludedContacts()
         );
     }
     exportToCSV() {
@@ -418,7 +427,7 @@ class AppealController {
             started_giving_within: this.gettext('May have joined my team in the last 3 months'),
             pledge_amount_increased_within: this.gettext('May have increased their giving in the last 3 months'),
             stopped_giving_within: this.gettext('May have stopped giving for the last 2 months'),
-            no_appeals: this.gettext('Have Send Appeals set to No')
+            no_appeals: this.gettext('"Send Goals?" set to No')
         };
         const key = get('[0]', rel.reasons);
         const value = get(key, reasons);

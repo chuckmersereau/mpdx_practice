@@ -79,6 +79,11 @@ config = assign(config, {
                 }
             }
         }),
+        new MinifyPlugin({
+        }, {
+            comments: false,
+            sourceMap: true
+        }),
         new HtmlWebpackPlugin({
             template: './src/index.ejs',
             favicon: './src/images/mpdx-favicon.png',
@@ -94,8 +99,7 @@ config = assign(config, {
         new ExtractTextPlugin({
             filename: '[name].[hash].css'
         })
-    ]),
-    devtool: 'source-map'
+    ])
 });
 
 if (!process.env.TRAVIS_PULL_REQUEST && (process.env.TRAVIS_BRANCH === 'master' || process.env.TRAVIS_BRANCH === 'staging' || process.env.TRAVIS_BRANCH === 'next')) {
