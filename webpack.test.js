@@ -6,7 +6,6 @@
 const assign = require('lodash/fp/assign');
 const concat = require('lodash/fp/concat');
 const path = require('path');
-
 let config = require('./webpack.make');
 
 config = assign(config, {

@@ -32,7 +32,7 @@ switch (configEnv) {
 const postcssLoader = {
     loader: 'postcss-loader',
     options: {
-        plugins: [ require('autoprefixer')({browsers: ['last 2 version']}) ]
+        plugins: [ require('autoprefixer')({ browsers: ['last 2 version'] }) ]
     }
 };
 
@@ -67,10 +67,15 @@ config = assign(config, {
             }
         }),
         new webpack.NoEmitOnErrorsPlugin(),
+        new MinifyPlugin({
+        }, {
+            comments: false,
+            sourceMap: false
+        }),
         new webpack.LoaderOptionsPlugin({
             options: {
                 sassLoader: {
-                    includePaths: [path.resolve(__dirname, 'node_modules'), path.resolve(__dirname, 'bower_components')]
+                    includePaths: [path.resolve(__dirname, 'node_modules')]
                 }
             }
         }),
