@@ -1,10 +1,11 @@
 import add from './add.controller';
 
 describe('tools.appeals.show.addPledge.controller', () => {
-    let $ctrl, controller, api, scope;
+    let $ctrl, controller, api, scope, rootScope;
     beforeEach(() => {
         angular.mock.module(add);
         inject(($controller, $rootScope, _api_) => {
+            rootScope = $rootScope;
             scope = $rootScope.$new();
             api = _api_;
             api.account_list_id = 321;
@@ -25,7 +26,7 @@ describe('tools.appeals.show.addPledge.controller', () => {
     }
     describe('save', () => {
         beforeEach(() => {
-            spyOn(api, 'post').and.callFake(() => new Promise((resolve) => resolve({})));
+            spyOn(api, 'post').and.callFake(() => Promise.resolve());
             scope.$hide = () => {};
             spyOn(scope, '$hide').and.callFake(() => {});
         });
@@ -50,7 +51,9 @@ describe('tools.appeals.show.addPledge.controller', () => {
             });
         });
         it('should hide the modal when finished', (done) => {
+            spyOn(rootScope, '$emit').and.callFake(() => {});
             $ctrl.save().then(() => {
+                expect(rootScope.$emit).toHaveBeenCalledWith('pledgeAdded', jasmine.any(Object));
                 expect(scope.$hide).toHaveBeenCalled();
                 done();
             });

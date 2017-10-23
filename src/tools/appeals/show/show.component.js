@@ -65,6 +65,10 @@ class AppealController {
             this.$state.go('tools.appeals');
         });
 
+        this.watcher = this.$rootScope.$on('pledgeAdded', (e, pledge) => {
+            this.refreshLists(get('status', pledge));
+        });
+
         this.reasons = {
             gave_more_than_pledged_within: this.gettext('May have given a special gift in the last 3 months'),
             started_giving_within: this.gettext('May have joined my team in the last 3 months'),
@@ -83,6 +87,7 @@ class AppealController {
         });
     }
     $onDestroy() {
+        this.watcher();
         this.disableAccountListEvent();
     }
     getContactsNotGiven(page = this.contactsNotGivenPage) {
@@ -328,18 +333,18 @@ class AppealController {
             })
         );
     }
-    getListToRefresh(status) {
-        const mapping = {
-            'processed': this.getPledgesProcessed,
-            'received_not_processed': this.getPledgesNotProcessed,
-            'not_received': this.getPledgesNotReceived
-        };
-        return get(status, mapping);
-    }
     refreshLists(status = null) {
         this.getContactsNotGiven();
-        const statusPageToUpdate = this.getListToRefresh(status);
-        return statusPageToUpdate ? statusPageToUpdate() : this.refreshAllStatuses();
+        switch (status) {
+            case 'processed':
+                return this.getPledgesProcessed();
+            case 'received_not_processed':
+                return this.getPledgesNotProcessed();
+            case 'not_received':
+                return this.getPledgesNotReceived();
+            default:
+                return this.refreshAllStatuses();
+        }
     }
     refreshAllStatuses() {
         return this.$q.all(

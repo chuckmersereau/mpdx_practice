@@ -1,9 +1,10 @@
 class EditController {
     constructor(
         appealId, pledge,
-        $scope,
+        $rootScope, $scope,
         api, locale, serverConstants
     ) {
+        this.$rootScope = $rootScope;
         this.$scope = $scope;
         this.api = api;
         this.appealId = appealId;
@@ -23,7 +24,7 @@ class EditController {
         return this.api.put(`account_lists/${this.api.account_list_id}/pledges/${this.pledge.id}`, {
             id: this.pledge.id,
             amount: this.pledge.amount,
-            expected_date: this.pledge.expectedDate,
+            expected_date: this.pledge.expected_date,
             status: status,
             appeal: {
                 id: this.appealId
@@ -32,6 +33,7 @@ class EditController {
                 id: this.pledge.contactId
             }
         }).then(() => {
+            this.$rootScope.$emit('pledgeAdded');
             this.$scope.$hide();
         });
     }

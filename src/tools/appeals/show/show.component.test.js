@@ -62,6 +62,14 @@ describe('tools.appeals.show.component', () => {
             expect($ctrl.disableAccountListEvent).toBeDefined();
             $ctrl.$onDestroy();
         });
+        it('should refresh on pledgeAdded', () => {
+            spyOn($ctrl, 'refreshLists').and.callFake(() => Promise.resolve());
+            $ctrl.$onInit();
+            scope.$emit('pledgeAdded', { status: 'a' });
+            scope.$digest();
+            expect($ctrl.refreshLists).toHaveBeenCalledWith('a');
+            expect($ctrl.watcher).toBeDefined();
+        });
         it('should set the initial data state copy for patch', () => {
             $ctrl.$onInit();
             expect($ctrl.dataInitialState).toEqual(data);
@@ -122,13 +130,19 @@ describe('tools.appeals.show.component', () => {
     describe('$onDestroy', () => {
         it('should disable event', () => {
             $ctrl.disableAccountListEvent = () => {};
+            $ctrl.watcher = () => {};
             spyOn(state, 'go').and.callFake(() => {});
             spyOn($ctrl, 'disableAccountListEvent').and.callFake(() => {});
+            spyOn($ctrl, 'watcher').and.callFake(() => {});
+            spyOn($ctrl, 'refreshLists').and.callFake(() => {});
             $ctrl.$onDestroy();
             expect($ctrl.disableAccountListEvent).toHaveBeenCalled();
+            expect($ctrl.watcher).toHaveBeenCalled();
             scope.$emit('accountListUpdated');
+            scope.$emit('pledgeAdded');
             scope.$digest();
             expect(state.go).not.toHaveBeenCalled();
+            expect($ctrl.refreshLists).not.toHaveBeenCalled();
         });
     });
     describe('changeGoal', () => {

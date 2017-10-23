@@ -1,9 +1,10 @@
 class AddController {
     constructor(
         appealId, contact,
-        $scope,
+        $rootScope, $scope,
         api, locale, serverConstants
     ) {
+        this.$rootScope = $rootScope;
         this.$scope = $scope;
         this.api = api;
         this.appealId = appealId;
@@ -16,7 +17,7 @@ class AddController {
     }
     save() {
         const status = this.received ? 'received_not_processed' : 'not_received';
-        return this.api.post(`account_lists/${this.api.account_list_id}/pledges`, {
+        const pledge = {
             amount: this.amount,
             expected_date: this.expected_date,
             amount_currency: 'USD', // dead but required api field
@@ -27,7 +28,9 @@ class AddController {
             contact: {
                 id: this.contactId
             }
-        }).then(() => {
+        };
+        return this.api.post(`account_lists/${this.api.account_list_id}/pledges`, pledge).then(() => {
+            this.$rootScope.$emit('pledgeAdded', pledge);
             this.$scope.$hide();
         });
     }
