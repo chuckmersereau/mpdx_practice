@@ -60,16 +60,19 @@ describe('tools.appeals.show.component', () => {
             scope.$digest();
             expect(state.go).toHaveBeenCalledWith('tools.appeals');
             expect($ctrl.disableAccountListEvent).toBeDefined();
+            $ctrl.$onDestroy();
         });
         it('should set the initial data state copy for patch', () => {
             $ctrl.$onInit();
             expect($ctrl.dataInitialState).toEqual(data);
             expect($ctrl.dataInitialState === data).toBeFalsy();
+            $ctrl.$onDestroy();
         });
         it('should get currency from server constants', () => {
             $ctrl.$onInit();
             expect($ctrl.currency).toEqual(currency);
             expect($ctrl.getCurrencyFromCode).toHaveBeenCalledWith(data.total_currency);
+            $ctrl.$onDestroy();
         });
         it('should get donations sum', (done) => {
             spyOn(q, 'all').and.callFake(() => Promise.resolve());
@@ -80,6 +83,7 @@ describe('tools.appeals.show.component', () => {
                 expect($ctrl.donationsSum).toEqual('30.00');
                 done();
             });
+            $ctrl.$onDestroy();
         });
         it('should get percentage raised', (done) => {
             spyOn(q, 'all').and.callFake(() => Promise.resolve());
@@ -90,16 +94,29 @@ describe('tools.appeals.show.component', () => {
                 expect($ctrl.percentageRaised).toEqual(30);
                 done();
             });
+            $ctrl.$onDestroy();
         });
         it('should append to the appeal', () => {
             $ctrl.$onInit();
             expect($ctrl.appeal.amount).toEqual('100.00');
             expect($ctrl.appeal.donations).toEqual([]);
-            // expect($ctrl.mutateDonations).toHaveBeenCalledWith([], contactsData.contacts);
+            $ctrl.$onDestroy();
         });
         it('should get contacts not given', () => {
             $ctrl.$onInit();
             expect($ctrl.getContactsNotGiven).toHaveBeenCalledWith();
+            $ctrl.$onDestroy();
+        });
+        it('should set exclusion reasons', () => {
+            $ctrl.$onInit();
+            expect($ctrl.reasons).toEqual({
+                gave_more_than_pledged_within: 'May have given a special gift in the last 3 months',
+                started_giving_within: 'May have joined my team in the last 3 months',
+                pledge_amount_increased_within: 'May have increased their giving in the last 3 months',
+                stopped_giving_within: 'May have stopped giving for the last 2 months',
+                no_appeals: '"Send Goals?" set to No'
+            });
+            $ctrl.$onDestroy();
         });
     });
     describe('$onDestroy', () => {
@@ -666,7 +683,8 @@ describe('tools.appeals.show.component', () => {
                 filter: {
                     appeal_id: 1,
                     status: 'not_received'
-                }
+                },
+                sort: 'contact.name'
             });
         });
         it('should handle pagination', () => {
@@ -681,7 +699,8 @@ describe('tools.appeals.show.component', () => {
                 filter: {
                     appeal_id: 1,
                     status: 'not_received'
-                }
+                },
+                sort: 'contact.name'
             });
         });
         it('should set contactsNotGiven', (done) => {
@@ -715,7 +734,8 @@ describe('tools.appeals.show.component', () => {
                 filter: {
                     appeal_id: 1,
                     status: 'received_not_processed'
-                }
+                },
+                sort: 'contact.name'
             });
         });
         it('should handle pagination', () => {
@@ -730,7 +750,8 @@ describe('tools.appeals.show.component', () => {
                 filter: {
                     appeal_id: 1,
                     status: 'received_not_processed'
-                }
+                },
+                sort: 'contact.name'
             });
         });
         it('should set contactsNotGiven', (done) => {
@@ -764,7 +785,8 @@ describe('tools.appeals.show.component', () => {
                 filter: {
                     appeal_id: 1,
                     status: 'processed'
-                }
+                },
+                sort: 'contact.name'
             });
         });
         it('should handle pagination', () => {
@@ -779,7 +801,8 @@ describe('tools.appeals.show.component', () => {
                 filter: {
                     appeal_id: 1,
                     status: 'processed'
-                }
+                },
+                sort: 'contact.name'
             });
         });
         it('should set contactsNotGiven', (done) => {
@@ -868,6 +891,37 @@ describe('tools.appeals.show.component', () => {
                 expect($ctrl.excludedContactsPage).toEqual(1);
                 done();
             });
+        });
+    });
+    describe('getReasons', () => {
+        const data = {
+            id: 1,
+            amount: '100',
+            total_currency: 'USD',
+            donations: []
+        };
+        const contactsData = {
+            contacts: [
+                { id: 1 },
+                { id: 2 }
+            ]
+        };
+        const currency = { code: 'USD', symbol: '$' };
+        beforeEach(() => {
+            $ctrl.data = data;
+            $ctrl.contactsData = contactsData;
+            spyOn(state, 'go').and.callFake(() => {});
+            spyOn($ctrl, 'getCurrencyFromCode').and.callFake(() => currency);
+            spyOn($ctrl, 'getContactsNotGiven').and.callFake(() => ['b']);
+            spyOn($ctrl, 'getPledgesNotReceived').and.callFake(() => Promise.resolve(['c']));
+            spyOn($ctrl, 'getPledgesNotProcessed').and.callFake(() => Promise.resolve(['d']));
+            spyOn($ctrl, 'getPledgesProcessed').and.callFake(() => Promise.resolve(['e']));
+            spyOn($ctrl, 'getExcludedContacts').and.callFake(() => Promise.resolve(['f ']));
+        });
+        it('should return reasons from excluded contacts', () => {
+            $ctrl.$onInit();
+            expect($ctrl.getReasons({ reasons: ['gave_more_than_pledged_within'] })).toEqual(['May have given a special gift in the last 3 months']);
+            $ctrl.$onDestroy();
         });
     });
 });

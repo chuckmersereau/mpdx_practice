@@ -386,9 +386,9 @@
                                     <thead>
                                         <tr>
                                             <th class="col-xs-3" translate>Contact</th>
-                                            <th class="col-xs-3" translate>Reason</th>
-                                            <th class="col-xs-3" translate>Commitment</th>
-                                            <th class="col-xs-3 text-right" translate>Actions</th>
+                                            <th class="col-xs-5" translate>Reason</th>
+                                            <th class="col-xs-2" translate>Commitment</th>
+                                            <th class="col-xs-1 text-right" translate>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -399,7 +399,9 @@
                                                 </a>
                                             </td>
                                             <td>
-                                                {{::$ctrl.getReason(rel)}}
+                                                <ul class="list-unstyled pl-0">
+                                                    <li ng-repeat="reason in ::$ctrl.getReasons(rel)">{{reason}}</li>
+                                                </ul>
                                             </td>
                                             <td>
                                                 {{::rel.contact.pledge_amount}} {{::rel.contact.pledge_currency}}

@@ -16,6 +16,7 @@ import reject from 'lodash/fp/reject';
 import sumBy from 'lodash/fp/sumBy';
 import union from 'lodash/fp/union';
 import uuid from 'uuid/v1';
+import values from 'lodash/fp/values';
 
 class AppealController {
     constructor(
@@ -64,6 +65,14 @@ class AppealController {
             this.$state.go('tools.appeals');
         });
 
+        this.reasons = {
+            gave_more_than_pledged_within: this.gettext('May have given a special gift in the last 3 months'),
+            started_giving_within: this.gettext('May have joined my team in the last 3 months'),
+            pledge_amount_increased_within: this.gettext('May have increased their giving in the last 3 months'),
+            stopped_giving_within: this.gettext('May have stopped giving for the last 2 months'),
+            no_appeals: this.gettext('"Send Goals?" set to No')
+        };
+
         return this.refreshLists().then(() => {
             this.donationsSum = fixed(2,
                 sumBy('amount', this.pledgesNotReceived)
@@ -107,7 +116,8 @@ class AppealController {
             filter: {
                 appeal_id: this.appeal.id,
                 status: 'not_received'
-            }
+            },
+            sort: 'contact.name'
         }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug(`pledges not received page ${page}`, data);
@@ -127,7 +137,8 @@ class AppealController {
             filter: {
                 appeal_id: this.appeal.id,
                 status: 'received_not_processed'
-            }
+            },
+            sort: 'contact.name'
         }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug(`pledges received not processed page ${page}`, data);
@@ -147,7 +158,8 @@ class AppealController {
             filter: {
                 appeal_id: this.appeal.id,
                 status: 'processed'
-            }
+            },
+            sort: 'contact.name'
         }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug(`pledges processed page ${page}`, data);
@@ -421,17 +433,9 @@ class AppealController {
             this.excludedContactsPage = page;
         });
     }
-    getReason(rel) {
-        const reasons = {
-            gave_more_than_pledged_within: this.gettext('May have given a special gift in the last 3 months'),
-            started_giving_within: this.gettext('May have joined my team in the last 3 months'),
-            pledge_amount_increased_within: this.gettext('May have increased their giving in the last 3 months'),
-            stopped_giving_within: this.gettext('May have stopped giving for the last 2 months'),
-            no_appeals: this.gettext('"Send Goals?" set to No')
-        };
-        const key = get('[0]', rel.reasons);
-        const value = get(key, reasons);
-        return defaultTo('', value);
+    getReasons(rel) {
+        const keys = values(rel.reasons);
+        return map((key) => get(key, this.reasons), keys);
     }
 }
 
