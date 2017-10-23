@@ -76,8 +76,14 @@
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="btn-group">
-                                        <button class="btn btn-default" ng-click="$ctrl.contacts.openAddTagModal($ctrl.selectedContactIds)" translate>Add Tag</button>
-                                        <button class="btn btn-default" ng-click="$ctrl.tasks.addModal({ contactsList: $ctrl.selectedContactIds })" translate>Add Task</button>
+                                        <button class="btn btn-default"
+                                                ng-click="$ctrl.contacts.openAddTagModal($ctrl.selectedContactIds)"
+                                                ng-disabled="$ctrl.selectedContactIds.length < 1"
+                                                translate>Add Tag</button>
+                                        <button class="btn btn-default"
+                                                ng-click="$ctrl.tasks.addModal({ contactsList: $ctrl.selectedContactIds })"
+                                                ng-disabled="$ctrl.selectedContactIds.length < 1"
+                                                translate>Add Task</button>
                                     </div>
                                 </div>
                             </div>
