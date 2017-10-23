@@ -46,6 +46,18 @@ describe('contacts.service', () => {
                 expect(filters.invertMultiselect(contactStatusFilter, { contact_status: 'a' })).toEqual(['b']);
             });
         });
+        describe('appeal filters', () => {
+            const appealFilter = { name: 'appeal', options: [{ id: 'a' }, { id: 'b' }] };
+            it('should return any/all if any', () => {
+                expect(filters.invertMultiselect(appealFilter, { appeal: '' })).toEqual(['a', 'b']);
+            });
+            it('should return any/all if no_appeal', () => {
+                expect(filters.invertMultiselect(appealFilter, { appeal: 'no_appeal' })).toEqual(['a', 'b']);
+            });
+            it('should handle normally w/o groupings', () => {
+                expect(filters.invertMultiselect(appealFilter, { appeal: 'a' })).toEqual(['b']);
+            });
+        });
         it('should return empty if params match filter', () => {
             const filter = { name: 'notStatus', options: [{ id: 'a' }, { id: 'b' }] };
             const params = { notStatus: 'a, b' };
