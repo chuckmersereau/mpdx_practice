@@ -164,8 +164,8 @@
                                 <div class="panel-heading">
                                     <translate>Given To Appeal</translate>
                                     <div class="pull-right">
-                                        <a ng-click="$ctrl.selectAllGiven()" translate>select all</a> |
-                                        <a ng-click="$ctrl.deselectAllGiven()" translate>deselect all</a>
+                                        <a ng-click="$ctrl.selectAllPledges('processed')" translate>select all</a> |
+                                        <a ng-click="$ctrl.deselectAll()" translate>deselect all</a>
                                     </div>
                                 </div>
                                 <table class="table">
@@ -178,8 +178,8 @@
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="pledge in $ctrl.pledgesProcessed"
-                                            ng-click="$ctrl.selectPledge(pledge)"
-                                            ng-class="{ selected: $ctrl.selectedPledgeIds.includes(pledge.id) }"
+                                            ng-click="$ctrl.selectContact(pledge.contact.id)"
+                                            ng-class="{ selected: $ctrl.selectedContactIds.includes(pledge.contact.id) }"
                                             class="selectable">
                                             <td>
                                                 <a ui-sref="contacts.show({ contactId: pledge.contact.id })" ng-click="$event.stopPropagation()" target="_blank">
@@ -216,8 +216,8 @@
                                 <div class="panel-heading">
                                     <translate>Received, Not Yet Processed</translate>
                                     <div class="pull-right">
-                                        <a ng-click="$ctrl.selectAllNotProcessed()" translate>select all</a> |
-                                        <a ng-click="$ctrl.deselectAllNotProcessed()" translate>deselect all</a>
+                                        <a ng-click="$ctrl.selectAllPledges('received_not_processed')" translate>select all</a> |
+                                        <a ng-click="$ctrl.deselectAll()" translate>deselect all</a>
                                     </div>
                                 </div>
                                 <table class="table">
@@ -230,8 +230,8 @@
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="pledge in $ctrl.pledgesNotProcessed"
-                                            ng-click="$ctrl.selectPledge(pledge)"
-                                            ng-class="{ selected: $ctrl.selectedPledgeIds.includes(pledge.id) }"
+                                            ng-click="$ctrl.selectContact(pledge.contact.id)"
+                                            ng-class="{ selected: $ctrl.selectedContactIds.includes(pledge.contact.id) }"
                                             class="selectable">
                                             <td>
                                                 <a ui-sref="contacts.show({ contactId: pledge.contact.id })" ng-click="$event.stopPropagation()" target="_blank">
@@ -268,8 +268,8 @@
                                 <div class="panel-heading">
                                     <translate>Committed, Not Yet Received</translate>
                                     <div class="pull-right">
-                                        <a ng-click="$ctrl.selectAllNotReceived()" translate>select all</a> |
-                                        <a ng-click="$ctrl.deselectAllNotReceived()" translate>deselect all</a>
+                                        <a ng-click="$ctrl.selectAllPledges('not_received')" translate>select all</a> |
+                                        <a ng-click="$ctrl.deselectAll()" translate>deselect all</a>
                                     </div>
                                 </div>
                                 <table class="table">
@@ -282,8 +282,8 @@
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="pledge in $ctrl.pledgesNotReceived | orderBy : 'contact.name'"
-                                            ng-click="$ctrl.selectPledge(pledge)"
-                                            ng-class="{ selected: $ctrl.selectedPledgeIds.includes(pledge.id) }"
+                                            ng-click="$ctrl.selectContact(pledge.contact.id)"
+                                            ng-class="{ selected: $ctrl.selectedContactIds.includes(pledge.contact.id) }"
                                             class="selectable">
                                             <td>
                                                 <a ui-sref="contacts.show({ contactId: pledge.contact.id })" ng-click="$event.stopPropagation()" target="_blank">
@@ -321,7 +321,7 @@
                                     <translate>Not Yet Committed</translate>
                                     <div class="pull-right">
                                         <a ng-click="$ctrl.selectAllNotGiven()" translate>select all</a> |
-                                        <a ng-click="$ctrl.deselectAllNotGiven()" translate>deselect all</a>
+                                        <a ng-click="$ctrl.deselectAll()" translate>deselect all</a>
                                     </div>
                                 </div>
                                 <table class="table">
@@ -371,10 +371,6 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <translate>Excluded from Appeal</translate>
-                                    <div class="pull-right">
-                                        <a ng-click="$ctrl.selectAllExcluded()" translate>select all</a> |
-                                        <a ng-click="$ctrl.deselectAllExcluded()" translate>deselect all</a>
-                                    </div>
                                 </div>
                                 <table class="table">
                                     <thead>

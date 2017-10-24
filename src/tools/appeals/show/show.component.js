@@ -12,9 +12,7 @@ import joinComma from 'common/fp/joinComma';
 import map from 'lodash/fp/map';
 import moment from 'moment';
 import pull from 'lodash/fp/pull';
-import reject from 'lodash/fp/reject';
 import sumBy from 'lodash/fp/sumBy';
-import union from 'lodash/fp/union';
 import uuid from 'uuid/v1';
 import values from 'lodash/fp/values';
 
@@ -42,7 +40,6 @@ class AppealController {
 
         this.appeal = null;
         this.selectedContactIds = [];
-        this.selectedPledgeIds = [];
         this.contactsNotGivenPage = 1;
         this.excludedContactsPage = 1;
         this.pledgesNotReceivedPage = 1;
@@ -267,62 +264,50 @@ class AppealController {
     removeExcludedContact(id) {
         return this.api.delete(`appeals/${this.appeal.id}/excluded_appeal_contacts/${id}`);
     }
-    selectAllGiven() {
-        this.selectedPledgeIds = union(this.selectedPledgeIds, map('id', this.pledgesProcessed));
-        this.selectedContactIds = union(this.selectedContactIds, map((p) => p.contact.id, this.pledgesProcessed));
+    deselectAll() {
+        this.selectedContactIds = [];
     }
-    deselectAllGiven() {
-        const allGiven = map('id', this.pledgesProcessed);
-        const allGivenContacts = map((p) => p.contact.id, this.pledgesProcessed);
-        this.selectedPledgeIds = reject((id) => contains(id, allGiven), this.selectedPledgeIds);
-        this.selectedContactIds = reject((id) => contains(id, allGivenContacts), this.selectedContactIds);
-    }
-    selectAllNotReceived() {
-        this.selectedPledgeIds = union(this.selectedPledgeIds, map('id', this.pledgesNotReceived));
-        this.selectedContactIds = union(this.selectedContactIds, map((p) => p.contact.id, this.pledgesNotReceived));
-    }
-    deselectAllNotReceived() {
-        const allNotGiven = map('id', this.pledgesNotReceived);
-        const allNotGivenContacts = map((p) => p.contact.id, this.pledgesNotReceived);
-        this.selectedPledgeIds = reject((id) => contains(id, allNotGiven), this.selectedPledgeIds);
-        this.selectedContactIds = reject((id) => contains(id, allNotGivenContacts), this.selectedContactIds);
-    }
-    selectAllNotProcessed() {
-        this.selectedPledgeIds = union(this.selectedPledgeIds, map('id', this.pledgesNotProcessed));
-        this.selectedContactIds = union(this.selectedContactIds, map((p) => p.contact.id, this.pledgesNotProcessed));
-    }
-    deselectAllNotProcessed() {
-        const allNotProcessed = map('id', this.pledgesNotProcessed);
-        const allNotProcessedContacts = map((p) => p.contact.id, this.pledgesNotProcessed);
-        this.selectedPledgeIds = reject((id) => contains(id, allNotProcessed), this.selectedPledgeIds);
-        this.selectedContactIds = reject((id) => contains(id, allNotProcessedContacts), this.selectedContactIds);
+    selectAllPledges(status) {
+        return this.api.get(`account_lists/${this.api.account_list_id}/pledges`, {
+            include: 'contact',
+            per_page: 10000,
+            fields: {
+                pledges: 'contact',
+                contacts: ''
+            },
+            filter: {
+                appeal_id: this.appeal.id,
+                status: status
+            }
+        }).then((data) => {
+            const contactIds = map((p) => p.contact.id, data);
+            /* istanbul ignore next */
+            this.$log.debug(`contact ids for ${status}`, contactIds);
+            this.selectedContactIds = contactIds;
+        });
     }
     selectAllNotGiven() {
-        this.selectedContactIds = union(this.selectedContactIds, map((p) => p.contact.id, this.contactsNotGiven));
-    }
-    deselectAllNotGiven() {
-        const allNotGiven = map((p) => p.contact.id, this.contactsNotGiven);
-        this.selectedContactIds = reject((id) => contains(id, allNotGiven), this.selectedContactIds);
-    }
-    selectAllExcluded() {
-        this.selectedContactIds = union(this.selectedContactIds, map((p) => p.contact.id, this.excludedContacts));
-    }
-    deselectAllExcluded() {
-        const excluded = map((p) => p.contact.id, this.excludedContacts);
-        this.selectedContactIds = reject((id) => contains(id, excluded), this.selectedContactIds);
+        return this.api.get(`appeals/${this.appeal.id}/appeal_contacts`, {
+            per_page: 10000,
+            include: 'contact',
+            filter: {
+                pledged_to_appeal: false
+            },
+            fields: {
+                appeal_contacts: 'contact',
+                contact: ''
+            }
+        }).then((data) => {
+            const contactIds = map((rel) => rel.contact.id, data);
+            /* istanbul ignore next */
+            this.$log.debug('select all contacts not given', contactIds);
+            this.selectedContactIds = contactIds;
+        });
     }
     selectContact(contactId) {
         this.selectedContactIds = contains(contactId, this.selectedContactIds)
             ? pull(contactId, this.selectedContactIds)
             : concat(this.selectedContactIds, contactId);
-    }
-    selectPledge(pledge) {
-        this.selectedPledgeIds = contains(pledge.id, this.selectedPledgeIds)
-            ? pull(pledge.id, this.selectedPledgeIds)
-            : concat(this.selectedPledgeIds, pledge.id);
-        this.selectedContactIds = contains(pledge.contact.id, this.selectedContactIds)
-            ? pull(pledge.contact.id, this.selectedContactIds)
-            : concat(this.selectedContactIds, pledge.contact.id);
     }
     removePledge(pledge) {
         const message = this.gettext('Are you sure you wish to remove this commitment?');

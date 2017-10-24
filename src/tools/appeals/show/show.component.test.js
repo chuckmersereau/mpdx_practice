@@ -337,126 +337,64 @@ describe('tools.appeals.show.component', () => {
             expect(api.delete).toHaveBeenCalledWith('appeals/1/excluded_appeal_contacts/2');
         });
     });
-    describe('selectAllGiven', () => {
-        it('should add contact ids from donations', () => {
-            $ctrl.selectedContactIds = [];
-            $ctrl.selectedPledgeIds = [];
-            $ctrl.pledgesProcessed = [
-                { id: 1, contact: { id: 1 } },
-                { id: 2, contact: { id: 2 } }
-            ];
-            $ctrl.selectAllGiven();
-            expect($ctrl.selectedPledgeIds).toEqual([1, 2]);
-            expect($ctrl.selectedContactIds).toEqual([1, 2]);
+    describe('selectAllPledges', () => {
+        beforeEach(() => {
+            $ctrl.appeal = { id: 123 };
+            spyOn(api, 'get').and.callFake(() => Promise.resolve([{ contact: { id: 1 } }, { contact: { id: 2 } }]));
         });
-    });
-    describe('deselectAllGiven', () => {
-        it('should remove contact ids', () => {
-            $ctrl.selectedContactIds = [1, 2, 3];
-            $ctrl.selectedPledgeIds = [1, 2, 3];
-            $ctrl.pledgesProcessed = [
-                { id: 1, contact: { id: 1 } },
-                { id: 2, contact: { id: 2 } }
-            ];
-            $ctrl.deselectAllGiven();
-            expect($ctrl.selectedPledgeIds).toEqual([3]);
-            expect($ctrl.selectedContactIds).toEqual([3]);
+        it('should query the api for all contacts', () => {
+            $ctrl.selectAllPledges('a');
+            expect(api.get).toHaveBeenCalledWith('account_lists/123/pledges', {
+                include: 'contact',
+                per_page: 10000,
+                fields: {
+                    pledges: 'contact',
+                    contacts: ''
+                },
+                filter: {
+                    appeal_id: 123,
+                    status: 'a'
+                }
+            });
         });
-    });
-    describe('selectAllNotReceived', () => {
-        it('should add contact ids from donations', () => {
-            $ctrl.selectedContactIds = [];
-            $ctrl.selectedPledgeIds = [];
-            $ctrl.pledgesNotReceived = [
-                { id: 1, contact: { id: 1 } },
-                { id: 2, contact: { id: 2 } }
-            ];
-            $ctrl.selectAllNotReceived();
-            expect($ctrl.selectedPledgeIds).toEqual([1, 2]);
-            expect($ctrl.selectedContactIds).toEqual([1, 2]);
-        });
-    });
-    describe('deselectAllNotReceived', () => {
-        it('should remove contact ids', () => {
-            $ctrl.selectedContactIds = [1, 2, 3];
-            $ctrl.selectedPledgeIds = [1, 2, 3];
-            $ctrl.pledgesNotReceived = [
-                { id: 1, contact: { id: 1 } },
-                { id: 2, contact: { id: 2 } }
-            ];
-            $ctrl.deselectAllNotReceived();
-            expect($ctrl.selectedPledgeIds).toEqual([3]);
-            expect($ctrl.selectedContactIds).toEqual([3]);
-        });
-    });
-    describe('selectAllNotProcessed', () => {
-        it('should add contact ids from donations', () => {
-            $ctrl.selectedContactIds = [];
-            $ctrl.selectedPledgeIds = [];
-            $ctrl.pledgesNotProcessed = [
-                { id: 1, contact: { id: 1 } },
-                { id: 2, contact: { id: 2 } }
-            ];
-            $ctrl.selectAllNotProcessed();
-            expect($ctrl.selectedPledgeIds).toEqual([1, 2]);
-            expect($ctrl.selectedContactIds).toEqual([1, 2]);
-        });
-    });
-    describe('deselectAllNotProcessed', () => {
-        it('should remove contact ids', () => {
-            $ctrl.selectedContactIds = [1, 2, 3];
-            $ctrl.selectedPledgeIds = [1, 2, 3];
-            $ctrl.pledgesNotProcessed = [
-                { id: 1, contact: { id: 1 } },
-                { id: 2, contact: { id: 2 } }
-            ];
-            $ctrl.deselectAllNotProcessed();
-            expect($ctrl.selectedPledgeIds).toEqual([3]);
-            expect($ctrl.selectedContactIds).toEqual([3]);
+        it('should map contact ids from donations', (done) => {
+            $ctrl.selectAllPledges('a').then(() => {
+                expect($ctrl.selectedContactIds).toEqual([1, 2]);
+                done();
+            });
         });
     });
     describe('selectAllNotGiven', () => {
-        it('should add contact ids from donations', () => {
-            $ctrl.selectedContactIds = [];
-            $ctrl.contactsNotGiven = [
-                { contact: { id: 1 } },
-                { contact: { id: 2 } }
-            ];
+        beforeEach(() => {
+            $ctrl.appeal = { id: 123 };
+            spyOn(api, 'get').and.callFake(() => Promise.resolve([{ contact: { id: 1 } }, { contact: { id: 2 } }]));
+        });
+        it('should query the api for all contacts', () => {
             $ctrl.selectAllNotGiven();
-            expect($ctrl.selectedContactIds).toEqual([1, 2]);
+            expect(api.get).toHaveBeenCalledWith('appeals/123/appeal_contacts', {
+                per_page: 10000,
+                include: 'contact',
+                filter: {
+                    pledged_to_appeal: false
+                },
+                fields: {
+                    appeal_contacts: 'contact',
+                    contact: ''
+                }
+            });
+        });
+        it('should map contact ids from donations', (done) => {
+            $ctrl.selectAllNotGiven().then(() => {
+                expect($ctrl.selectedContactIds).toEqual([1, 2]);
+                done();
+            });
         });
     });
-    describe('deselectAllNotGiven', () => {
-        it('should remove contact ids', () => {
+    describe('deselectAll', () => {
+        it('should remove all contact ids', () => {
             $ctrl.selectedContactIds = [1, 2, 3];
-            $ctrl.contactsNotGiven = [
-                { contact: { id: 1 } },
-                { contact: { id: 2 } }
-            ];
-            $ctrl.deselectAllNotGiven();
-            expect($ctrl.selectedContactIds).toEqual([3]);
-        });
-    });
-    describe('selectAllExcluded', () => {
-        it('should add contact ids', () => {
-            $ctrl.selectedContactIds = [];
-            $ctrl.excludedContacts = [
-                { contact: { id: 1 } },
-                { contact: { id: 2 } }
-            ];
-            $ctrl.selectAllExcluded();
-            expect($ctrl.selectedContactIds).toEqual([1, 2]);
-        });
-    });
-    describe('deselectAllExcluded', () => {
-        it('should remove contact ids', () => {
-            $ctrl.selectedContactIds = [1, 2, 3];
-            $ctrl.excludedContacts = [
-                { contact: { id: 1 } },
-                { contact: { id: 2 } }
-            ];
-            $ctrl.deselectAllExcluded();
-            expect($ctrl.selectedContactIds).toEqual([3]);
+            $ctrl.deselectAll();
+            expect($ctrl.selectedContactIds).toEqual([]);
         });
     });
     describe('selectContact', () => {
@@ -466,23 +404,6 @@ describe('tools.appeals.show.component', () => {
             expect($ctrl.selectedContactIds).toEqual([2, 3]);
             $ctrl.selectContact(1);
             expect($ctrl.selectedContactIds).toEqual([2, 3, 1]);
-        });
-    });
-    describe('selectPledge', () => {
-        const pledge = { id: 1, contact: { id: 2 } };
-        it('select/deselect the pledge', () => {
-            $ctrl.selectedPledgeIds = [1, 2, 3];
-            $ctrl.selectPledge(pledge);
-            expect($ctrl.selectedPledgeIds).toEqual([2, 3]);
-            $ctrl.selectPledge(pledge);
-            expect($ctrl.selectedPledgeIds).toEqual([2, 3, 1]);
-        });
-        it('select/deselect the pledge contact', () => {
-            $ctrl.selectedContactIds = [1, 2, 3];
-            $ctrl.selectPledge(pledge);
-            expect($ctrl.selectedContactIds).toEqual([1, 3]);
-            $ctrl.selectPledge(pledge);
-            expect($ctrl.selectedContactIds).toEqual([1, 3, 2]);
         });
     });
     describe('getCurrencyFromCode', () => {
