@@ -122,7 +122,7 @@ describe('tools.appeals.show.component', () => {
                 started_giving_within: 'May have joined my team in the last 3 months',
                 pledge_amount_increased_within: 'May have increased their giving in the last 3 months',
                 stopped_giving_within: 'May have stopped giving for the last 2 months',
-                no_appeals: '"Send Goals?" set to No'
+                no_appeals: '"Send Appeals?" set to No'
             });
             $ctrl.$onDestroy();
         });

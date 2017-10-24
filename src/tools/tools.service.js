@@ -11,11 +11,11 @@ class ToolsService {
 
         this.data = [
             {
-                title: gettextCatalog.getString('Goals'),
+                title: gettextCatalog.getString('Appeals'),
                 icon: 'fa fa-trophy',
                 link: 'tools.appeals',
                 description: gettextCatalog.getString('Set goals, create asks, and track progress for one time needs'),
-                enabled: false
+                enabled: true
             },
             {
                 title: gettextCatalog.getString('Import from Google'),

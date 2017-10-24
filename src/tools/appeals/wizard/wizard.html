@@ -1,7 +1,7 @@
 <form name="addGoalForm" ng-submit="$ctrl.save(addGoalForm)">
     <div class="panel panel-default">
         <div class="panel-heading" translate>
-            Add Goal
+            Add Appeal
         </div>
         <div class="panel-body">
             <div class="form-group">
@@ -42,7 +42,7 @@
                 </tbody>
             </table>
             <div class="alert alert-info" translate>
-                You can add contacts to your goal based on their status and/or tags.
+                You can add contacts to your appeal based on their status and/or tags.
                 You can also add additional contacts individually at a later time.
             </div>
             <div class="form-group" ng-if="::$ctrl.serverConstants.data.status_hashes.length">
@@ -75,14 +75,14 @@
                     <option value="joinedTeam3months" translate>May have joined my team in the last 3 months</option>
                     <option value="increasedGiving3months" translate>May have increased their giving in the last 3 months</option>
                     <option value="stoppedGiving2months" translate>May have stopped giving for the last 2 months</option>
-                    <option value="doNotAskAppeals" translate>Have "Send Goals?" set to No</option>
+                    <option value="doNotAskAppeals" translate>Have "Send Appeals?" set to No</option>
                 </select>
                 <small class="text-muted" translate>You can review the contacts MPDX excludes and add them back in on the next page.</small><br>
             </div>
         </div>
         <div class="panel-footer">
             <button class="btn btn-primary" ng-disabled="!addGoalForm.$valid || $ctrl.saving">
-                <span translate>Add Goal</span>
+                <span translate>Add Appeal</span>
                 &nbsp;
                 <span class="btn-progress" ng-show="$ctrl.saving">
                     <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>

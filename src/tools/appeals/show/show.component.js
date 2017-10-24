@@ -59,7 +59,7 @@ class AppealController {
             amount: fixed(2, defaultTo(0, this.data.amount)),
             pledges_amount_processed: fixed(2, defaultTo(0, this.data.pledges_amount_processed))
         });
-        this.$rootScope.pageTitle = `${this.gettext('Goal')} | ${this.appeal.name}`;
+        this.$rootScope.pageTitle = `${this.gettext('Appeal')} | ${this.appeal.name}`;
 
         this.disableAccountListEvent = this.$rootScope.$on('accountListUpdated', () => {
             this.$state.go('tools.appeals');
@@ -74,7 +74,7 @@ class AppealController {
             started_giving_within: this.gettext('May have joined my team in the last 3 months'),
             pledge_amount_increased_within: this.gettext('May have increased their giving in the last 3 months'),
             stopped_giving_within: this.gettext('May have stopped giving for the last 2 months'),
-            no_appeals: this.gettext('"Send Goals?" set to No')
+            no_appeals: this.gettext('"Send Appeals?" set to No')
         };
 
         return this.refreshLists().then(() => {

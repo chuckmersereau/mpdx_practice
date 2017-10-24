@@ -337,9 +337,9 @@ export default class Routes {
             }
         }).state({
             name: 'tools.appeals',
-            url: '/goals',
+            url: '/appeals',
             component: 'appeals',
-            title: gettext('Goals'),
+            title: gettext('Appeals'),
             resolve: {
                 0: /* @ngInject*/ (contactsTags) => contactsTags.load(),
                 1: /* @ngInject*/ (serverConstants) => serverConstants.load(['status_hashes'])
