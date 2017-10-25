@@ -287,13 +287,19 @@ describe('common.api.service', () => {
         });
     });
     describe('getParams', () => {
-        it('should error on bad entity', () => {
+        beforeEach(() => {
             spyOn(log, 'error').and.callFake(() => {});
-            expect(api.getParams({ id: 1 }, 'donkey')).toEqual({ id: 1 });
+        });
+        it('should error on bad entity', () => {
+            expect(api.getParams({ id: 1 }, 'donkey', true)).toEqual({ id: 1 });
             expect(log.error).toHaveBeenCalledWith('undefined attributes for model: donkey in api.service');
         });
         it('should set params for jsonapi-serializer', () => {
-            expect(api.getParams([{ id: 1 }, 'bulk'])).toEqual({ 0: { id: 1 }, 1: 'bulk' });
+            expect(api.getParams([{ id: 1 }, 'bulk'], undefined, true)).toEqual({ 0: { id: 1 }, 1: 'bulk' });
+        });
+        it('should handle non-serialized requests', () => {
+            expect(api.getParams({ id: 1 }, 'donkey', false)).toEqual({ id: 1 });
+            expect(log.error).not.toHaveBeenCalled();
         });
     });
     describe('transformRequest', () => {
