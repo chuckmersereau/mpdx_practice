@@ -1,14 +1,16 @@
 import component from './appeals.component';
 
+const result = { id: 1 };
+
 describe('home.progress.appeals.component', () => {
-    let $ctrl, componentController, scope, rootScope, api;
+    let $ctrl, componentController, scope, rootScope, accounts, appealsShow;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _api_) => {
+        inject(($componentController, $rootScope, _accounts_, _appealsShow_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
-            api = _api_;
-            api.account_list_id = 123;
+            accounts = _accounts_;
+            appealsShow = _appealsShow_;
             componentController = $componentController;
             loadController();
         });
@@ -17,41 +19,33 @@ describe('home.progress.appeals.component', () => {
     function loadController() {
         $ctrl = componentController('progressAppeals', { $scope: scope });
     }
-    describe('getCount', () => {
-        const result = { meta: { pagination: { total_count: 1 } } };
-
+    describe('$onInit', () => {
         beforeEach(() => {
-            spyOn(api, 'get').and.callFake(() => Promise.resolve(result));
+            spyOn(appealsShow, 'getAppeal').and.callFake(() => Promise.resolve(result));
+            accounts.current = { primary_appeal: {} };
         });
-
-        it('should query api for a count and return it', (done) => {
-            $ctrl.getCount().then((data) => {
-                expect(data).toBe(1);
+        it('should return null if no primary appeal', () => {
+            expect($ctrl.$onInit()).toEqual(null);
+            expect(appealsShow.getAppeal).not.toHaveBeenCalled();
+        });
+        it('should call getPrimaryAppeal if defined', (done) => {
+            accounts.current.primary_appeal.id = 123;
+            $ctrl.$onInit().then(() => {
+                expect(appealsShow.getAppeal).toHaveBeenCalledWith(123);
                 done();
-            });
-            expect(api.get).toHaveBeenCalledWith('appeals', {
-                fields: { appeals: '' },
-                filter: { account_list_id: api.account_list_id },
-                per_page: 0
             });
         });
     });
-
-    describe('getCount - no results', () => {
+    describe('getPrimaryAppeal', () => {
         beforeEach(() => {
-            spyOn(api, 'get').and.callFake(() => Promise.resolve({}));
+            spyOn(appealsShow, 'getAppeal').and.callFake(() => Promise.resolve(result));
         });
-
         it('should query api for a count and return it', (done) => {
-            $ctrl.getCount().then((data) => {
-                expect(data).toBe(0);
+            $ctrl.getPrimaryAppeal(1).then(() => {
+                expect($ctrl.appeal).toBe(result);
                 done();
             });
-            expect(api.get).toHaveBeenCalledWith('appeals', {
-                fields: { appeals: '' },
-                filter: { account_list_id: api.account_list_id },
-                per_page: 0
-            });
+            expect(appealsShow.getAppeal).toHaveBeenCalledWith(1);
         });
     });
 });

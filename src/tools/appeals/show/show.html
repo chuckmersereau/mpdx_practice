@@ -54,7 +54,7 @@
                                             <div class="inline-input header mb-0">
                                                 <input ng-model="$ctrl.appeal.name"
                                                        ng-change="$ctrl.save()"
-                                                       aria-label="Goal Name"
+                                                       aria-label="Appeal Name"
                                                        ng-model-options="{ debounce: 1000 }">
                                             </div>
                                         </div>
@@ -68,7 +68,7 @@
                                             <span class="inline-input header">
                                                 <input ng-model="$ctrl.appeal.amount"
                                                        ng-change="$ctrl.changeGoal()"
-                                                       aria-label="Goal Amount"
+                                                       aria-label="Appeal Amount"
                                                        ng-model-options="{ debounce: 1000 }">
                                             </span>
                                         </div>
@@ -90,38 +90,7 @@
                         </div>
                     </div>
                     <div class="column">
-                        <div class="progress mb-2">
-                            <div class="progress-bar color-0"
-                                 role="progressbar"
-                                 aria-valuenow="{{$ctrl.appeal.pledges_amount_not_received_not_processed }}"
-                                 ng-if="$ctrl.appeal.pledges_amount_not_received_not_processed > 0"
-                                 title="{{$ctrl.appeal.pledges_amount_not_received_not_processed}}"
-                                 aria-valuemin="0"
-                                 aria-valuemax="{{$ctrl.appeal.amount}}"
-                                 style="width: {{($ctrl.appeal.pledges_amount_not_received_not_processed / $ctrl.appeal.amount) * 100}}%; min-width: 10%; max-width: 100%;">
-                                <span translate>Pledged</span>
-                            </div>
-                            <div class="progress-bar color-1"
-                                 ng-if="$ctrl.appeal.percentage_raised > 0"
-                                 title="{{$ctrl.appeal.percentage_raised}}"
-                                 role="progressbar"
-                                 aria-valuenow="{{$ctrl.appeal.percentage_raised}}"
-                                 aria-valuemin="0"
-                                 aria-valuemax="{{$ctrl.appeal.amount}}"
-                                 style="width: {{($ctrl.appeal.percentage_raised / $ctrl.appeal.amount) * 100}}%; min-width: 10%; max-width: 100%;">
-                                <span translate>Received</span>
-                            </div>
-                            <div class="progress-bar color-2"
-                                 role="progressbar"
-                                 ng-if="$ctrl.appeal.pledges_amount_processed > 0"
-                                 title="{{$ctrl.appeal.pledges_amount_processed}}"
-                                 aria-valuenow="{{$ctrl.appeal.pledges_amount_processed}}"
-                                 aria-valuemin="0"
-                                 aria-valuemax="{{$ctrl.appeal.amount}}"
-                                 style="width: {{($ctrl.appeal.pledges_amount_processed / $ctrl.appeal.amount) * 100}}%; min-width: 10%; max-width: 100%;">
-                                <span translate>Processed</span>
-                            </div>
-                        </div>
+                        <appeals-progressbar appeal="$ctrl.appeal"></appeals-progressbar>
                         <ul class="nav nav-tabs">
                           <li ng-class="{'active': $ctrl.activeTab === 'given'}">
                               <a ng-click="$ctrl.switchTab('given')">
