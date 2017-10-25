@@ -859,4 +859,15 @@ describe('tools.appeals.show.component', () => {
             $ctrl.$onDestroy();
         });
     });
+    describe('switchTab', () => {
+        it('should change activeTab', () => {
+            $ctrl.switchTab('a');
+            expect($ctrl.activeTab).toEqual('a');
+        });
+        it('should deselect all contacts', () => {
+            spyOn($ctrl, 'deselectAll').and.callFake(() => {});
+            $ctrl.switchTab('a');
+            expect($ctrl.deselectAll).toHaveBeenCalledWith();
+        });
+    });
 });

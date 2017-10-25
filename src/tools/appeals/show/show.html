@@ -124,35 +124,35 @@
                         </div>
                         <ul class="nav nav-tabs">
                           <li ng-class="{'active': $ctrl.activeTab === 'given'}">
-                              <a ng-click="$ctrl.activeTab = 'given'">
+                              <a ng-click="$ctrl.switchTab('given')">
                                   <translate>Given</translate>
                                   &nbsp;
                                   <span class="label label-success">{{$ctrl.pledgesProcessed.meta.pagination.total_count}}</span>
                               </a>
                           </li>
                           <li ng-class="{'active': $ctrl.activeTab === 'received'}">
-                              <a ng-click="$ctrl.activeTab = 'received'">
+                              <a ng-click="$ctrl.switchTab('received')">
                                   <translate>Received</translate>
                                   &nbsp;
                                   <span class="label label-warning">{{$ctrl.pledgesNotProcessed.meta.pagination.total_count}}</span>
                               </a>
                           </li>
                           <li ng-class="{'active': $ctrl.activeTab === 'committed'}">
-                              <a ng-click="$ctrl.activeTab = 'committed'">
+                              <a ng-click="$ctrl.switchTab('committed')">
                                   <translate>Committed</translate>
                                   &nbsp;
                                   <span class="label label-warning">{{$ctrl.pledgesNotReceived.meta.pagination.total_count}}</span>
                               </a>
                           </li>
                           <li ng-class="{'active': $ctrl.activeTab === 'asking'}">
-                              <a ng-click="$ctrl.activeTab = 'asking'">
+                              <a ng-click="$ctrl.switchTab('asking')">
                                   <translate>Asked</translate>
                                   &nbsp;
                                   <span class="label label-default">{{$ctrl.contactsNotGiven.meta.pagination.total_count}}</span>
                               </a>
                           </li>
                           <li ng-class="{'active': $ctrl.activeTab === 'excluded'}">
-                              <a ng-click="$ctrl.activeTab = 'excluded'">
+                              <a ng-click="$ctrl.switchTab('excluded')">
                                   <translate>Excluded</translate>
                                   &nbsp;
                                   <span class="label label-danger">{{$ctrl.excludedContacts.meta.pagination.total_count}}</span>

@@ -427,6 +427,10 @@ class AppealController {
         const keys = values(rel.reasons);
         return map((key) => get(key, this.reasons), keys);
     }
+    switchTab(tab) {
+        this.activeTab = tab;
+        this.deselectAll();
+    }
 }
 
 const Appeal = {
