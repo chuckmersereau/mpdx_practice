@@ -40,7 +40,6 @@ describe('tools.appeals.show.addPledge.controller', () => {
             expect(api.post).toHaveBeenCalledWith('account_lists/321/pledges', {
                 amount: 150,
                 expected_date: '2007-01-01',
-                amount_currency: 'USD', // dead but required api field
                 status: 'not_received',
                 appeal: {
                     id: 2

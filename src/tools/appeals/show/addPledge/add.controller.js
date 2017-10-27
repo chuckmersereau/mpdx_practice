@@ -20,7 +20,6 @@ class AddController {
         const pledge = {
             amount: this.amount,
             expected_date: this.expected_date,
-            amount_currency: 'USD', // dead but required api field
             status: status,
             appeal: {
                 id: this.appealId
