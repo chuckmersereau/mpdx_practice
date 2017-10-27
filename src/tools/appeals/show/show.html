@@ -55,11 +55,12 @@
                                                 <input ng-model="$ctrl.appeal.name"
                                                        ng-change="$ctrl.save()"
                                                        aria-label="Appeal Name"
+                                                       style="padding-right: 0"
                                                        ng-model-options="{ debounce: 1000 }">
                                             </div>
                                         </div>
                                         <div class="col-md-3 text-right pr-1">
-                                            <h2 class="mt-0 mb-0">
+                                            <h2 class="mt-0 mb-0" style="white-space: nowrap">
                                                 {{:: $ctrl.currency.symbol}}{{:: $ctrl.appeal.pledges_amount_processed }} /
                                                 {{:: $ctrl.currency.symbol}}
                                             </h2>
@@ -157,12 +158,6 @@
                                             </td>
                                             <td>{{::pledge.amount | currency: ''}} {{::pledge.contact.pledge_currency}} ({{::pledge.expected_date | localize}})</td>
                                             <td class="text-right">
-                                                <button class="btn btn-xs btn-default"
-                                                        ng-click="$ctrl.editPledge(pledge); $event.stopPropagation()"
-                                                        title="{{'Edit Commitment' | translate}}">
-                                                    <i class="fa fa-pencil-square-o"></i>
-                                                </button>
-                                                &nbsp;
                                                 <button class="btn btn-xs btn-danger"
                                                         ng-click="$ctrl.removePledge(pledge); $event.stopPropagation()"
                                                         title="{{'Remove Commitment' | translate}}">

@@ -19,7 +19,7 @@ import values from 'lodash/fp/values';
 class AppealController {
     constructor(
         $log, $q, $rootScope, $state, $stateParams, gettext,
-        alerts, api, contacts, donations, exportContacts, mailchimp, modal, serverConstants, tasks,
+        alerts, api, appealsShow, contacts, donations, exportContacts, mailchimp, modal, serverConstants, tasks,
     ) {
         this.$log = $log;
         this.$q = $q;
@@ -28,6 +28,7 @@ class AppealController {
         this.$stateParams = $stateParams;
         this.alerts = alerts;
         this.api = api;
+        this.appealsShow = appealsShow;
         this.contacts = contacts;
         this.donations = donations;
         this.exportContacts = exportContacts;
@@ -322,14 +323,19 @@ class AppealController {
         this.getContactsNotGiven();
         switch (status) {
             case 'processed':
-                return this.getPledgesProcessed();
+                this.getPledgesProcessed();
+                break;
             case 'received_not_processed':
-                return this.getPledgesNotProcessed();
+                this.getPledgesNotProcessed();
+                break;
             case 'not_received':
-                return this.getPledgesNotReceived();
+                this.getPledgesNotReceived();
+                break;
             default:
-                return this.refreshAllStatuses();
+                this.refreshAllStatuses();
+                break;
         }
+        return this.reloadAppeal();
     }
     refreshAllStatuses() {
         return this.$q.all(
@@ -423,6 +429,11 @@ class AppealController {
             this.excludedContactsPage = page;
         });
     }
+    reloadAppeal() {
+        return this.appealsShow.getAppeal(this.appeal.id).then((data) => {
+            this.appeal = data;
+        });
+    }
     getReasons(rel) {
         const keys = values(rel.reasons);
         return map((key) => get(key, this.reasons), keys);
@@ -441,6 +452,7 @@ const Appeal = {
     }
 };
 
+import appealsShow from './show.service';
 import contacts from 'contacts/contacts.service';
 import donations from 'reports/donations/donations.service';
 import exportContacts from 'contacts/list/exportContacts/export.service';
@@ -450,5 +462,5 @@ import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('tools.mpdx.appeals.show', [
     uiRouter,
-    contacts, donations, exportContacts, mailchimp, tasks
+    appealsShow, contacts, donations, exportContacts, mailchimp, tasks
 ]).component('appealsShow', Appeal).name;

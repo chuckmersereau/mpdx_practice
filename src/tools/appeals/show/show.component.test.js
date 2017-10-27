@@ -1,17 +1,18 @@
 import component from './show.component';
 
 describe('tools.appeals.show.component', () => {
-    let $ctrl, scope, serverConstants, api, alerts, mailchimp, modal, state, q, exportContacts;
+    let $ctrl, scope, serverConstants, api, alerts, mailchimp, modal, state, q, exportContacts, appealsShow;
     beforeEach(() => {
         angular.mock.module(component);
         inject((
             $componentController, $rootScope, _api_, _serverConstants_, _alerts_, _donations_, _mailchimp_, _modal_,
-            $state, $q, _exportContacts_
+            $state, $q, _exportContacts_, _appealsShow_
         ) => {
             scope = $rootScope.$new();
             alerts = _alerts_;
             api = _api_;
             api.account_list_id = 123;
+            appealsShow = _appealsShow_;
             mailchimp = _mailchimp_;
             modal = _modal_;
             q = $q;
@@ -53,6 +54,7 @@ describe('tools.appeals.show.component', () => {
             spyOn($ctrl, 'getPledgesNotProcessed').and.callFake(() => Promise.resolve(['d']));
             spyOn($ctrl, 'getPledgesProcessed').and.callFake(() => Promise.resolve(['e']));
             spyOn($ctrl, 'getExcludedContacts').and.callFake(() => Promise.resolve(['f ']));
+            spyOn($ctrl, 'refreshLists').and.callFake(() => Promise.resolve());
         });
         it('should change state on account list change', () => {
             $ctrl.$onInit();
@@ -63,7 +65,6 @@ describe('tools.appeals.show.component', () => {
             $ctrl.$onDestroy();
         });
         it('should refresh on pledgeAdded', () => {
-            spyOn($ctrl, 'refreshLists').and.callFake(() => Promise.resolve());
             $ctrl.$onInit();
             scope.$emit('pledgeAdded', { status: 'a' });
             scope.$digest();
@@ -110,9 +111,9 @@ describe('tools.appeals.show.component', () => {
             expect($ctrl.appeal.donations).toEqual([]);
             $ctrl.$onDestroy();
         });
-        it('should get contacts not given', () => {
+        it('should get contacts', () => {
             $ctrl.$onInit();
-            expect($ctrl.getContactsNotGiven).toHaveBeenCalledWith();
+            expect($ctrl.refreshLists).toHaveBeenCalledWith();
             $ctrl.$onDestroy();
         });
         it('should set exclusion reasons', () => {
@@ -828,6 +829,22 @@ describe('tools.appeals.show.component', () => {
             });
         });
     });
+    describe('reloadAppeal', () => {
+        beforeEach(() => {
+            $ctrl.appeal = { id: 1 };
+            spyOn(appealsShow, 'getAppeal').and.callFake(() => Promise.resolve('a'));
+        });
+        it('should get appeal data', () => {
+            $ctrl.reloadAppeal();
+            expect(appealsShow.getAppeal).toHaveBeenCalledWith(1);
+        });
+        it('should set appeal data', (done) => {
+            $ctrl.reloadAppeal().then(() => {
+                expect($ctrl.appeal).toEqual('a');
+                done();
+            });
+        });
+    });
     describe('getReasons', () => {
         const data = {
             id: 1,
@@ -852,11 +869,59 @@ describe('tools.appeals.show.component', () => {
             spyOn($ctrl, 'getPledgesNotProcessed').and.callFake(() => Promise.resolve(['d']));
             spyOn($ctrl, 'getPledgesProcessed').and.callFake(() => Promise.resolve(['e']));
             spyOn($ctrl, 'getExcludedContacts').and.callFake(() => Promise.resolve(['f ']));
+            spyOn($ctrl, 'refreshLists').and.callFake(() => Promise.resolve());
         });
         it('should return reasons from excluded contacts', () => {
             $ctrl.$onInit();
             expect($ctrl.getReasons({ reasons: ['gave_more_than_pledged_within'] })).toEqual(['May have given a special gift in the last 3 months']);
             $ctrl.$onDestroy();
+        });
+    });
+    describe('refreshLists', () => {
+        beforeEach(() => {
+            spyOn($ctrl, 'getContactsNotGiven').and.callFake(() => ['b']);
+            spyOn($ctrl, 'getPledgesNotReceived').and.callFake(() => Promise.resolve());
+            spyOn($ctrl, 'getPledgesNotProcessed').and.callFake(() => Promise.resolve());
+            spyOn($ctrl, 'getPledgesProcessed').and.callFake(() => Promise.resolve());
+            spyOn($ctrl, 'getExcludedContacts').and.callFake(() => Promise.resolve());
+            spyOn($ctrl, 'refreshAllStatuses').and.callFake(() => Promise.resolve());
+            spyOn($ctrl, 'reloadAppeal').and.callFake(() => Promise.resolve());
+        });
+        it('should call getContactsNotGiven', () => {
+            $ctrl.refreshLists();
+            expect($ctrl.getContactsNotGiven).toHaveBeenCalledWith();
+        });
+        it('should call refreshAllStatuses', () => {
+            $ctrl.refreshLists();
+            expect($ctrl.refreshAllStatuses).toHaveBeenCalledWith();
+            expect($ctrl.getPledgesProcessed).not.toHaveBeenCalled();
+            expect($ctrl.getPledgesNotReceived).not.toHaveBeenCalled();
+            expect($ctrl.getPledgesNotProcessed).not.toHaveBeenCalled();
+        });
+        it('should call reloadAppeal', () => {
+            $ctrl.refreshLists();
+            expect($ctrl.reloadAppeal).toHaveBeenCalledWith();
+        });
+        it('should call getPledgesProcessed', () => {
+            $ctrl.refreshLists('processed');
+            expect($ctrl.getPledgesProcessed).toHaveBeenCalledWith();
+            expect($ctrl.getPledgesNotReceived).not.toHaveBeenCalled();
+            expect($ctrl.getPledgesNotProcessed).not.toHaveBeenCalled();
+            expect($ctrl.refreshAllStatuses).not.toHaveBeenCalled();
+        });
+        it('should call getPledgesNotProcessed', () => {
+            $ctrl.refreshLists('received_not_processed');
+            expect($ctrl.getPledgesNotProcessed).toHaveBeenCalledWith();
+            expect($ctrl.getPledgesProcessed).not.toHaveBeenCalled();
+            expect($ctrl.getPledgesNotReceived).not.toHaveBeenCalled();
+            expect($ctrl.refreshAllStatuses).not.toHaveBeenCalled();
+        });
+        it('should call getPledgesNotReceived', () => {
+            $ctrl.refreshLists('not_received');
+            expect($ctrl.getPledgesNotReceived).toHaveBeenCalledWith();
+            expect($ctrl.getPledgesProcessed).not.toHaveBeenCalled();
+            expect($ctrl.refreshAllStatuses).not.toHaveBeenCalled();
+            expect($ctrl.refreshAllStatuses).not.toHaveBeenCalled();
         });
     });
     describe('switchTab', () => {

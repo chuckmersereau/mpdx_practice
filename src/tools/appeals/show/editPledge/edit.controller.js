@@ -16,11 +16,9 @@ class EditController {
         this.received = pledge.status === 'received_not_processed';
     }
     save() {
-        const status = this.pledge.status === 'received_not_processed'
+        const status = this.received
             ? 'received_not_processed'
-            : this.received
-                ? 'received_not_processed'
-                : 'not_received';
+            : 'not_received';
         return this.api.put(`account_lists/${this.api.account_list_id}/pledges/${this.pledge.id}`, {
             id: this.pledge.id,
             amount: this.pledge.amount,
