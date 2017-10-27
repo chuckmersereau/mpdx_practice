@@ -48,9 +48,9 @@
                     <div class="column column--heading filter--heading text-right">
                         <div class="page-filters">
                             <div class="row">
-                                <div class="col-sm-9">
+                                <div class="col-sm-10">
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-7">
                                             <div class="inline-input header mb-0">
                                                 <input ng-model="$ctrl.appeal.name"
                                                        ng-change="$ctrl.save()"
@@ -65,26 +65,31 @@
                                                 {{:: $ctrl.currency.symbol}}
                                             </h2>
                                         </div>
-                                        <div class="col-md-3 pl-0">
+                                        <div class="col-md-2 pl-0">
                                             <span class="inline-input header">
                                                 <input ng-model="$ctrl.appeal.amount"
                                                        ng-change="$ctrl.changeGoal()"
                                                        aria-label="Appeal Amount"
+                                                       class="pr-0"
                                                        ng-model-options="{ debounce: 1000 }">
                                             </span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-3">
-                                    <div class="btn-group">
-                                        <button class="btn btn-default"
-                                                ng-click="$ctrl.contacts.openAddTagModal($ctrl.selectedContactIds)"
-                                                ng-disabled="$ctrl.selectedContactIds.length < 1"
-                                                translate>Add Tag</button>
-                                        <button class="btn btn-default"
-                                                ng-click="$ctrl.tasks.addModal({ contactsList: $ctrl.selectedContactIds })"
-                                                ng-disabled="$ctrl.selectedContactIds.length < 1"
-                                                translate>Add Task</button>
+                                <div class="col-sm-2">
+                                    <div class="dropdown">
+                                        <a class="btn btn-default dropdown-toggle" bs-dropdown type="button" data-toggle="dropdown" aria-expanded="true">
+                                            <span  translate>Actions</span> <span class="caret"></span>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop" ng-show="$ctrl.selectedContactIds.length > 0">
+                                            <li><a ng-click="$ctrl.contacts.openAddTagModal($ctrl.selectedContactIds)" translate>Add Tag</a></li>
+                                            <li class="divider"></li>
+                                            <li><a ng-click="$ctrl.tasks.addModal({ contactsList: $ctrl.selectedContactIds })" translate>Add Task</a></li>
+                                            <li><a ng-click="$ctrl.tasks.logModal($ctrl.selectedContactIds)" translate>Log Task(s)</a></li>
+                                        </ul>
+                                        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop" ng-show="$ctrl.selectedContactIds.length === 0">
+                                            <li class="dropdown-header" translate>Please select at least one contact by clicking anywhere on that contact to continue.</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
