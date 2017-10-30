@@ -119,10 +119,10 @@ describe('tools.appeals.show.component', () => {
         it('should set exclusion reasons', () => {
             $ctrl.$onInit();
             expect($ctrl.reasons).toEqual({
-                gave_more_than_pledged_within: 'May have given a special gift in the last 3 months',
-                started_giving_within: 'May have joined my team in the last 3 months',
-                pledge_amount_increased_within: 'May have increased their giving in the last 3 months',
-                stopped_giving_within: 'May have stopped giving for the last 2 months',
+                gave_more_than_pledged_range: 'May have given a special gift in the last 3 months',
+                started_giving_range: 'May have joined my team in the last 3 months',
+                pledge_amount_increased_range: 'May have increased their giving in the last 3 months',
+                stopped_giving_range: 'May have stopped giving for the last 2 months',
                 no_appeals: '"Send Appeals?" set to No'
             });
             $ctrl.$onDestroy();
@@ -873,7 +873,7 @@ describe('tools.appeals.show.component', () => {
         });
         it('should return reasons from excluded contacts', () => {
             $ctrl.$onInit();
-            expect($ctrl.getReasons({ reasons: ['gave_more_than_pledged_within'] })).toEqual(['May have given a special gift in the last 3 months']);
+            expect($ctrl.getReasons({ reasons: ['gave_more_than_pledged_range'] })).toEqual(['May have given a special gift in the last 3 months']);
             $ctrl.$onDestroy();
         });
     });

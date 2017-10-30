@@ -68,10 +68,10 @@ class AppealController {
         });
 
         this.reasons = {
-            gave_more_than_pledged_within: this.gettext('May have given a special gift in the last 3 months'),
-            started_giving_within: this.gettext('May have joined my team in the last 3 months'),
-            pledge_amount_increased_within: this.gettext('May have increased their giving in the last 3 months'),
-            stopped_giving_within: this.gettext('May have stopped giving for the last 2 months'),
+            gave_more_than_pledged_range: this.gettext('May have given a special gift in the last 3 months'),
+            started_giving_range: this.gettext('May have joined my team in the last 3 months'),
+            pledge_amount_increased_range: this.gettext('May have increased their giving in the last 3 months'),
+            stopped_giving_range: this.gettext('May have stopped giving for the last 2 months'),
             no_appeals: this.gettext('"Send Appeals?" set to No')
         };
 
