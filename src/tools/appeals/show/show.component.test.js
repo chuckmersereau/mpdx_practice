@@ -556,7 +556,13 @@ describe('tools.appeals.show.component', () => {
         beforeEach(() => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve({ meta: 'b' }));
             spyOn($ctrl, 'fixPledgeAmount').and.callFake(() => ['a']);
+            spyOn($ctrl.blockUIAsking, 'start').and.callFake(() => {});
+            spyOn($ctrl.blockUIAsking, 'reset').and.callFake(() => {});
             $ctrl.appeal = { id: 1 };
+        });
+        it('should block the UI', () => {
+            $ctrl.getContactsNotGiven();
+            expect($ctrl.blockUIAsking.start).toHaveBeenCalledWith();
         });
         it('should call the api', () => {
             $ctrl.getContactsNotGiven();
@@ -600,12 +606,24 @@ describe('tools.appeals.show.component', () => {
                 done();
             });
         });
+        it('should unblock the UI', (done) => {
+            $ctrl.getContactsNotGiven().then(() => {
+                expect($ctrl.blockUIAsking.reset).toHaveBeenCalledWith();
+                done();
+            });
+        });
     });
     describe('getPledgesNotReceived', () => {
         beforeEach(() => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve({ meta: 'b' }));
             spyOn($ctrl, 'fixPledgeAmount').and.callFake(() => ['a']);
+            spyOn($ctrl.blockUICommitted, 'start').and.callFake(() => {});
+            spyOn($ctrl.blockUICommitted, 'reset').and.callFake(() => {});
             $ctrl.appeal = { id: 1 };
+        });
+        it('should block the UI', () => {
+            $ctrl.getPledgesNotReceived();
+            expect($ctrl.blockUICommitted.start).toHaveBeenCalledWith();
         });
         it('should call the api', () => {
             $ctrl.getPledgesNotReceived();
@@ -651,12 +669,24 @@ describe('tools.appeals.show.component', () => {
                 done();
             });
         });
+        it('should unblock the UI', (done) => {
+            $ctrl.getPledgesNotReceived().then(() => {
+                expect($ctrl.blockUICommitted.reset).toHaveBeenCalledWith();
+                done();
+            });
+        });
     });
     describe('getPledgesNotProcessed', () => {
         beforeEach(() => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve({ meta: 'b' }));
             spyOn($ctrl, 'fixPledgeAmount').and.callFake(() => ['a']);
+            spyOn($ctrl.blockUIReceived, 'start').and.callFake(() => {});
+            spyOn($ctrl.blockUIReceived, 'reset').and.callFake(() => {});
             $ctrl.appeal = { id: 1 };
+        });
+        it('should block the UI', () => {
+            $ctrl.getPledgesNotProcessed();
+            expect($ctrl.blockUIReceived.start).toHaveBeenCalledWith();
         });
         it('should call the api', () => {
             $ctrl.getPledgesNotProcessed();
@@ -702,12 +732,24 @@ describe('tools.appeals.show.component', () => {
                 done();
             });
         });
+        it('should unblock the UI', (done) => {
+            $ctrl.getPledgesNotProcessed().then(() => {
+                expect($ctrl.blockUIReceived.reset).toHaveBeenCalledWith();
+                done();
+            });
+        });
     });
     describe('getPledgesProcessed', () => {
         beforeEach(() => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve({ meta: 'b' }));
             spyOn($ctrl, 'fixPledgeAmount').and.callFake(() => ['a']);
+            spyOn($ctrl.blockUIGiven, 'start').and.callFake(() => {});
+            spyOn($ctrl.blockUIGiven, 'reset').and.callFake(() => {});
             $ctrl.appeal = { id: 1 };
+        });
+        it('should block the UI', () => {
+            $ctrl.getPledgesProcessed();
+            expect($ctrl.blockUIGiven.start).toHaveBeenCalledWith();
         });
         it('should call the api', () => {
             $ctrl.getPledgesProcessed();
@@ -750,6 +792,12 @@ describe('tools.appeals.show.component', () => {
         it('should set meta', (done) => {
             $ctrl.getPledgesProcessed().then(() => {
                 expect($ctrl.pledgesProcessed.meta).toEqual('b');
+                done();
+            });
+        });
+        it('should unblock the UI', (done) => {
+            $ctrl.getPledgesProcessed().then(() => {
+                expect($ctrl.blockUIGiven.reset).toHaveBeenCalledWith();
                 done();
             });
         });
@@ -797,6 +845,12 @@ describe('tools.appeals.show.component', () => {
         beforeEach(() => {
             $ctrl.appeal = { id: 1 };
             spyOn(api, 'get').and.callFake(() => Promise.resolve(data));
+            spyOn($ctrl.blockUIExcluded, 'start').and.callFake(() => {});
+            spyOn($ctrl.blockUIExcluded, 'reset').and.callFake(() => {});
+        });
+        it('should block the UI', () => {
+            $ctrl.getExcludedContacts();
+            expect($ctrl.blockUIExcluded.start).toHaveBeenCalledWith();
         });
         it('should call the api', () => {
             $ctrl.getExcludedContacts();
@@ -825,6 +879,12 @@ describe('tools.appeals.show.component', () => {
         it('should set page', (done) => {
             $ctrl.getExcludedContacts().then(() => {
                 expect($ctrl.excludedContactsPage).toEqual(1);
+                done();
+            });
+        });
+        it('should unblock the UI', (done) => {
+            $ctrl.getExcludedContacts().then(() => {
+                expect($ctrl.blockUIExcluded.reset).toHaveBeenCalledWith();
                 done();
             });
         });

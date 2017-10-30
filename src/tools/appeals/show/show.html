@@ -135,7 +135,7 @@
                               </a>
                           </li>
                         </ul>
-                        <div ng-if="$ctrl.activeTab === 'given'">
+                        <div ng-if="$ctrl.activeTab === 'given'" block-ui="appealsGiven">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <translate>Given To Appeal</translate>
@@ -180,8 +180,8 @@
                             <pagination meta="$ctrl.pledgesProcessed.meta.pagination"
                                         on-change="$ctrl.getPledgesProcessed(page)">
                             </pagination>
-                        </div>
-                        <div ng-if="$ctrl.activeTab === 'received'">
+                        </div b>
+                        <div ng-if="$ctrl.activeTab === 'received'" block-ui="appealsReceived">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <translate>Received, Not Yet Processed</translate>
@@ -233,7 +233,7 @@
                                         on-change="$ctrl.getPledgesNotProcessed(page)">
                             </pagination>
                         </div>
-                        <div ng-if="$ctrl.activeTab === 'committed'">
+                        <div ng-if="$ctrl.activeTab === 'committed'" block-ui="appealsCommitted">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <translate>Committed, Not Yet Received</translate>
@@ -285,7 +285,7 @@
                                         on-change="$ctrl.getPledgesNotReceived(page)">
                             </pagination>
                         </div>
-                        <div ng-if="$ctrl.activeTab === 'asking'">
+                        <div ng-if="$ctrl.activeTab === 'asking'" block-ui="appealsAsking">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <translate>Not Yet Committed</translate>
@@ -337,7 +337,7 @@
                                         on-change="$ctrl.getContactsNotGiven(page)">
                             </pagination>
                         </div>
-                        <div ng-if="$ctrl.activeTab === 'excluded'">
+                        <div ng-if="$ctrl.activeTab === 'excluded'" block-ui="appealsExcluded">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <translate>Excluded from Appeal</translate>

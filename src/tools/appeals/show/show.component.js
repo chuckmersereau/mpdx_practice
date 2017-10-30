@@ -18,7 +18,7 @@ import values from 'lodash/fp/values';
 
 class AppealController {
     constructor(
-        $log, $q, $rootScope, $state, $stateParams, gettext,
+        $log, $q, $rootScope, $state, $stateParams, blockUI, gettext,
         alerts, api, appealsShow, contacts, donations, exportContacts, mailchimp, modal, serverConstants, tasks,
     ) {
         this.$log = $log;
@@ -40,6 +40,11 @@ class AppealController {
         this.tasks = tasks;
 
         this.appeal = null;
+        this.blockUIGiven = blockUI.instances.get('appealShow');
+        this.blockUIReceived = blockUI.instances.get('appealsReceived');
+        this.blockUICommitted = blockUI.instances.get('appealsCommitted');
+        this.blockUIAsking = blockUI.instances.get('appealsAsking');
+        this.blockUIExcluded = blockUI.instances.get('appealsExcluded');
         this.selectedContactIds = [];
         this.contactsNotGivenPage = 1;
         this.excludedContactsPage = 1;
@@ -89,6 +94,7 @@ class AppealController {
         this.disableAccountListEvent();
     }
     getContactsNotGiven(page = this.contactsNotGivenPage) {
+        this.blockUIAsking.start();
         return this.api.get(`appeals/${this.appeal.id}/appeal_contacts`, {
             page: page,
             per_page: 20,
@@ -106,9 +112,11 @@ class AppealController {
             this.contactsNotGiven = this.fixPledgeAmount(data);
             this.contactsNotGiven.meta = data.meta;
             this.contactsNotGivenPage = page;
+            this.blockUIAsking.reset();
         });
     }
     getPledgesNotReceived(page = this.pledgesNotReceivedPage) {
+        this.blockUICommitted.start();
         return this.api.get(`account_lists/${this.api.account_list_id}/pledges`, {
             include: 'contact',
             page: page,
@@ -127,9 +135,11 @@ class AppealController {
             this.pledgesNotReceived = this.fixPledgeAmount(data);
             this.pledgesNotReceived.meta = data.meta;
             this.pledgesNotReceivedPage = page;
+            this.blockUICommitted.reset();
         });
     }
     getPledgesNotProcessed(page = this.pledgesNotProcessedPage) {
+        this.blockUIReceived.start();
         return this.api.get(`account_lists/${this.api.account_list_id}/pledges`, {
             include: 'contact',
             page: page,
@@ -148,9 +158,11 @@ class AppealController {
             this.pledgesNotProcessed = this.fixPledgeAmount(data);
             this.pledgesNotProcessed.meta = data.meta;
             this.pledgesNotProcessedPage = page;
+            this.blockUIReceived.reset();
         });
     }
     getPledgesProcessed(page = this.pledgesProcessedPage) {
+        this.blockUIGiven.start();
         return this.api.get(`account_lists/${this.api.account_list_id}/pledges`, {
             include: 'contact',
             page: page,
@@ -169,6 +181,7 @@ class AppealController {
             this.pledgesProcessed = this.fixPledgeAmount(data);
             this.pledgesProcessed.meta = data.meta;
             this.pledgesProcessedPage = page;
+            this.blockUIGiven.reset();
         });
     }
     fixPledgeAmount(contacts) {
@@ -413,6 +426,7 @@ class AppealController {
         });
     }
     getExcludedContacts(page = this.excludedContactsPage) {
+        this.blockUIExcluded.start();
         return this.api.get(`appeals/${this.appeal.id}/excluded_appeal_contacts`, {
             include: 'contact',
             fields: {
@@ -427,6 +441,7 @@ class AppealController {
             this.excludedContacts = data;
             this.excludedContacts.meta = data.meta;
             this.excludedContactsPage = page;
+            this.blockUIExcluded.reset();
         });
     }
     reloadAppeal() {
@@ -453,6 +468,7 @@ const Appeal = {
 };
 
 import appealsShow from './show.service';
+import blockUI from 'angular-block-ui';
 import contacts from 'contacts/contacts.service';
 import donations from 'reports/donations/donations.service';
 import exportContacts from 'contacts/list/exportContacts/export.service';
@@ -461,6 +477,6 @@ import tasks from 'tasks/tasks.service';
 import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('tools.mpdx.appeals.show', [
-    uiRouter,
+    blockUI, uiRouter,
     appealsShow, contacts, donations, exportContacts, mailchimp, tasks
 ]).component('appealsShow', Appeal).name;
