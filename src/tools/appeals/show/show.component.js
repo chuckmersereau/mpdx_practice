@@ -269,10 +269,14 @@ class AppealController {
     }
     addExcludedContact(rel) {
         return this.removeExcludedContact(rel.id).then(() => {
-            this.onContactSelected(rel.contact).then(() => {
+            return this.onContactSelected(rel.contact).then(() => {
+                this.alerts.addAlert(this.gettext('Excluded contact successfully added to appeal'));
                 this.getExcludedContacts();
                 this.getContactsNotGiven();
             });
+        }).catch((ex) => {
+            this.alerts.addAlert(this.gettext('Unable to add excluded contact to appeal'), 'danger');
+            throw ex;
         });
     }
     removeExcludedContact(id) {
@@ -326,11 +330,15 @@ class AppealController {
     removePledge(pledge) {
         const message = this.gettext('Are you sure you wish to remove this commitment?');
         const status = angular.copy(pledge.status);
-        return this.modal.confirm(message).then(() =>
-            this.api.delete(`account_lists/${this.api.account_list_id}/pledges/${pledge.id}`).then(() => {
+        return this.modal.confirm(message).then(() => {
+            return this.api.delete(`account_lists/${this.api.account_list_id}/pledges/${pledge.id}`).then(() => {
+                this.alerts.addAlert(this.gettext('Successfully removed commitment from appeal'));
                 this.refreshLists(status);
-            })
-        );
+            }).catch((ex) => {
+                this.alerts.addAlert(this.gettext('Unable to remove commitment from appeal'), 'danger');
+                throw ex;
+            });
+        });
     }
     refreshLists(status = null) {
         this.getContactsNotGiven();

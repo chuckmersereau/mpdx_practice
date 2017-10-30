@@ -302,30 +302,49 @@ describe('tools.appeals.show.component', () => {
             contact: { id: 2 }
         };
         beforeEach(() => {
-            spyOn($ctrl, 'removeExcludedContact').and.callFake(() => Promise.resolve());
             spyOn($ctrl, 'onContactSelected').and.callFake(() => Promise.resolve());
             spyOn($ctrl, 'getExcludedContacts').and.callFake(() => {});
             spyOn($ctrl, 'getContactsNotGiven').and.callFake(() => {});
         });
         it('should remove the excluded contact', () => {
+            spyOn($ctrl, 'removeExcludedContact').and.callFake(() => Promise.resolve());
             $ctrl.addExcludedContact(rel);
             expect($ctrl.removeExcludedContact).toHaveBeenCalledWith(1);
         });
         it('should add the contact', (done) => {
+            spyOn($ctrl, 'removeExcludedContact').and.callFake(() => Promise.resolve());
             $ctrl.addExcludedContact(rel).then(() => {
                 expect($ctrl.onContactSelected).toHaveBeenCalledWith(rel.contact);
                 done();
             });
         });
         it('should refresh the current not-given contacts page', (done) => {
+            spyOn($ctrl, 'removeExcludedContact').and.callFake(() => Promise.resolve());
             $ctrl.addExcludedContact(rel).then(() => {
                 expect($ctrl.getContactsNotGiven).toHaveBeenCalledWith();
                 done();
             });
         });
         it('should refresh the current excluded contacts page', (done) => {
+            spyOn($ctrl, 'removeExcludedContact').and.callFake(() => Promise.resolve());
             $ctrl.addExcludedContact(rel).then(() => {
                 expect($ctrl.getExcludedContacts).toHaveBeenCalledWith();
+                done();
+            });
+        });
+        it('should alert on success', (done) => {
+            spyOn($ctrl, 'removeExcludedContact').and.callFake(() => Promise.resolve());
+            $ctrl.addExcludedContact(rel).then(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith('Excluded contact successfully added to appeal');
+                expect($ctrl.gettext).toHaveBeenCalledWith('Excluded contact successfully added to appeal');
+                done();
+            });
+        });
+        it('should alert on failure', (done) => {
+            spyOn($ctrl, 'removeExcludedContact').and.callFake(() => Promise.reject());
+            $ctrl.addExcludedContact(rel).catch(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith('Unable to add excluded contact to appeal', 'danger');
+                expect($ctrl.gettext).toHaveBeenCalledWith('Unable to add excluded contact to appeal');
                 done();
             });
         });
@@ -413,20 +432,45 @@ describe('tools.appeals.show.component', () => {
             expect($ctrl.getCurrencyFromCode('USD')).toEqual({ code: 'USD', symbol: '$' });
         });
     });
-    describe('removeCommitment', () => {
-        it('should open confirm modal', () => {
+    describe('removePledge', () => {
+        beforeEach(() => {
             spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
+            spyOn($ctrl, 'refreshLists').and.callFake(() => {});
+        });
+        it('should open confirm modal', () => {
             $ctrl.appeal = { id: 1, name: 'a' };
             $ctrl.removePledge({ id: 123 });
             expect($ctrl.gettext).toHaveBeenCalledWith('Are you sure you wish to remove this commitment?');
             expect(modal.confirm).toHaveBeenCalledWith('Are you sure you wish to remove this commitment?');
         });
         it('should delete donation', (done) => {
-            spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
             spyOn(api, 'delete').and.callFake(() => Promise.resolve());
             $ctrl.appeal = { id: 1, name: 'a' };
             $ctrl.removePledge({ id: 123 }).then(() => {
                 expect(api.delete).toHaveBeenCalledWith(`account_lists/${api.account_list_id}/pledges/123`);
+                done();
+            });
+        });
+        it('should call refreshLists on success', (done) => {
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            $ctrl.removePledge({ id: 123, status: 'abc' }).then(() => {
+                expect($ctrl.refreshLists).toHaveBeenCalledWith('abc');
+                done();
+            });
+        });
+        it('should alert on success', (done) => {
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            $ctrl.removePledge({ id: 123 }).then(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith('Successfully removed commitment from appeal');
+                expect($ctrl.gettext).toHaveBeenCalledWith('Successfully removed commitment from appeal');
+                done();
+            });
+        });
+        it('should alert on failure', (done) => {
+            spyOn(api, 'delete').and.callFake(() => Promise.reject());
+            $ctrl.removePledge({ id: 123 }).catch(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith('Unable to remove commitment from appeal', 'danger');
+                expect($ctrl.gettext).toHaveBeenCalledWith('Unable to remove commitment from appeal');
                 done();
             });
         });
