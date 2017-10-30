@@ -342,7 +342,7 @@ export default class Routes {
             title: gettext('Appeals'),
             resolve: {
                 0: /* @ngInject*/ (contactsTags) => contactsTags.load(),
-                1: /* @ngInject*/ (serverConstants) => serverConstants.load(['status_hashes'])
+                2: /* @ngInject*/ (contactFilter) => contactFilter.load()
             }
         }).state({
             name: 'tools.appeals.show',

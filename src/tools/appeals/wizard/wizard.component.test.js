@@ -2,22 +2,20 @@ import component from './wizard.component';
 import moment from 'moment';
 
 describe('tools.appeals.wizard.component', () => {
-    let $ctrl, scope, serverConstants, contactsTags, state;
+    let $ctrl, scope, contactsTags, state, contactFilter;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _contactsTags_, _serverConstants_, $state) => {
+        inject(($componentController, $rootScope, _contactsTags_, _contactFilter_, $state) => {
             scope = $rootScope.$new();
             contactsTags = _contactsTags_;
-            serverConstants = _serverConstants_;
+            contactFilter = _contactFilter_;
             state = $state;
             $ctrl = $componentController('appealsWizard', { $scope: scope }, {});
         });
-        serverConstants.data = {
-            status_hashes: [
-                { id: 'a' },
-                { id: 'b' }
-            ]
-        };
+        contactFilter.data = [{
+            name: 'status',
+            options: [{ id: 'a', name: 'A' }, { id: 'b', name: 'B' }]
+        }];
         contactsTags.data = [
             { name: 'b' },
             { name: 'c' }

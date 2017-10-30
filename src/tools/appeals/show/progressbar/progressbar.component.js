@@ -1,4 +1,6 @@
 import floor from 'lodash/fp/floor';
+import max from 'lodash/fp/max';
+import min from 'lodash/fp/min';
 
 class ProgressbarController {
     constructor() {
@@ -10,16 +12,16 @@ class ProgressbarController {
         this.givenWidth = this.getWidth(this.appeal.pledges_amount_processed);
 
         available -= this.givenWidth;
-        available = available < 0 ? 0 : available;
+        available = max([available, 0]);
 
         const receivedWidth = this.getWidth(this.appeal.pledges_amount_received_not_processed);
-        this.receivedWidth = receivedWidth > available ? available : receivedWidth;
+        this.receivedWidth = min([receivedWidth, available]);
 
         available -= this.receivedWidth;
-        available = available < 0 ? 0 : available;
+        available = max([available, 0]);
 
         const committedWidth = this.getWidth(this.appeal.pledges_amount_not_received_not_processed);
-        this.committedWidth = committedWidth > available ? available : committedWidth;
+        this.committedWidth = min([committedWidth, available]);
     }
     getWidth(value) {
         return floor((value / this.maxValue) * 100);

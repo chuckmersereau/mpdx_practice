@@ -1,21 +1,25 @@
 import assign from 'lodash/fp/assign';
 import contains from 'lodash/fp/contains';
+import concat from 'lodash/fp/concat';
 import emptyToNull from 'common/fp/emptyToNull';
+import find from 'lodash/fp/find';
 import joinComma from 'common/fp/joinComma';
 import map from 'lodash/fp/map';
 import moment from 'moment';
+import reduce from 'lodash/fp/reduce';
 import removeObjectNulls from 'common/fp/removeObjectNulls';
 
 class WizardController {
     constructor(
         $log, $q, $rootScope, $state,
-        api, contacts, contactsTags, serverConstants
+        api, contactFilter, contacts, contactsTags, serverConstants
     ) {
         this.$q = $q;
         this.$log = $log;
         this.$rootScope = $rootScope;
         this.$state = $state;
         this.api = api;
+        this.contactFilter = contactFilter;
         this.contacts = contacts;
         this.contactsTags = contactsTags;
         this.serverConstants = serverConstants;
@@ -27,6 +31,8 @@ class WizardController {
     }
     $onInit() {
         this.init();
+
+        this.statusFilter = find({ name: 'status' }, this.contactFilter.data);
     }
     init() {
         this.statuses = [];
@@ -49,10 +55,14 @@ class WizardController {
         this.appeal.amount = Math.round((initialGoal + letterCost) * adminPercent * 100) / 100;
     }
     selectAllStatuses() {
-        if (this.statuses.length === this.serverConstants.data.status_hashes.length) {
+        if (this.statuses.length === this.statusFilter.options.length) {
             this.statuses = [];
         } else {
-            this.statuses = map('id', this.serverConstants.data.status_hashes);
+            this.statuses = reduce((result, value) => {
+                return contains(value.id, ['hidden', 'active'])
+                    ? result
+                    : concat(result, value.id);
+            }, [], this.statusFilter.options);
         }
     }
     selectAllTags() {
@@ -116,11 +126,11 @@ const AppealsWizard = {
 };
 
 import contacts from 'contacts/contacts.service';
+import contactFilter from 'contacts/sidebar/filter/filter.service';
 import contactTags from 'contacts/sidebar/filter/tags/tags.service';
-import serverConstants from 'common/serverConstants/serverConstants.service';
 import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('mpdx.tools.appeals.wizard.component', [
     uiRouter,
-    contacts, contactTags, serverConstants
+    contactFilter, contacts, contactTags
 ]).component('appealsWizard', AppealsWizard).name;
