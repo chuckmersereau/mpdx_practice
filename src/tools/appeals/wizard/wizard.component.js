@@ -101,7 +101,7 @@ class WizardController {
     }
     buildExclusionFilter() {
         const today = moment().format('YYYY-MM-DD');
-        const oneMonthAgo = moment().startOf('month').subtract(1, 'months').format('YYYY-MM-DD');
+        const oneMonthAgo = moment().subtract(1, 'months').format('YYYY-MM-DD');
         const twoMonthsAgo = moment().startOf('month').subtract(2, 'months').format('YYYY-MM-DD');
         const threeMonthsAgo = moment().startOf('month').subtract(3, 'months').format('YYYY-MM-DD');
 

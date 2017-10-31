@@ -149,7 +149,7 @@ describe('tools.appeals.wizard.component', () => {
         let today, oneMonthAgo, twoMonthsAgo, threeMonthsAgo;
         beforeEach(() => {
             today = moment().format('YYYY-MM-DD');
-            oneMonthAgo = moment().startOf('month').subtract(1, 'months').format('YYYY-MM-DD');
+            oneMonthAgo = moment().subtract(1, 'months').format('YYYY-MM-DD');
             twoMonthsAgo = moment().startOf('month').subtract(2, 'months').format('YYYY-MM-DD');
             threeMonthsAgo = moment().startOf('month').subtract(3, 'months').format('YYYY-MM-DD');
         });
