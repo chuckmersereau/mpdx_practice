@@ -1,11 +1,11 @@
 <div class="row">
     <div class="col-xs-3 mt-1">
         <strong translate>
-            Primary Goal
+            Primary Appeal
         </strong>
     </div>
     <div class="col-xs-9">
-        <collection-selector item-name="{{ 'Primary Goal' | translate }}"
+        <collection-selector item-name="{{ 'Primary Appeal' | translate }}"
                              display-text="$ctrl.accounts.current.primary_appeal.name"
                              search="$ctrl.appealSearch(text)"
                              select="$ctrl.setPrimaryAppeal(item)">
@@ -14,7 +14,7 @@
 </div>
 <div class="panel panel-default" block-ui="appeals-list">
     <div class="panel-heading" translate>
-        Current Goals
+        Current Appeals
     </div>
     <div class="panel-body pt-0 pb-3" infinite-scroll="$ctrl.loadMoreAppeals()" ng-if="$ctrl.data.length > 0">
         <appeals-list-item ng-repeat="appeal in $ctrl.data"

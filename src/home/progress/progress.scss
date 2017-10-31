@@ -26,6 +26,24 @@ home-progress {
                 }
             }
         }
+        > .progress-panel {
+            padding-top: 10px;
+            padding-bottom: 1px;
+            .row {
+                margin: 0;
+                > div {
+                    text-align: center;
+                    border-right: 1px solid #ccc;
+                    padding: 0 10px;
+                    &:last-child {
+                        border-right: none;
+                    }
+                    h3 {
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
     }
     .row {
         .col-md-6:first-child {

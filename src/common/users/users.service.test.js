@@ -161,7 +161,7 @@ describe('common.users.service', () => {
                         spy.and.callFake(() => Promise.reject());
                     });
 
-                    describe('users.currentOptions.setup_position.value !== connect', () => {
+                    describe('users.currentOptions.setup_position exists', () => {
                         it('should call redirectUserToStart', (done) => {
                             users.getCurrent().catch(() => {
                                 expect(users.redirectUserToStart).toHaveBeenCalled();
@@ -170,12 +170,9 @@ describe('common.users.service', () => {
                         });
                     });
 
-                    describe('users.currentOptions.setup_position.value !== connect', () => {
-                        beforeEach(() => {
-                            users.currentOptions = { setup_position: { value: 'connect' } };
-                        });
-
+                    describe('users.currentOptions.setup_position does not exist', () => {
                         it('should call redirectUserToStart', (done) => {
+                            users.currentOptions = { setup_position: { value: 'connect' } };
                             users.getCurrent().catch(() => {
                                 expect(users.redirectUserToStart).not.toHaveBeenCalled();
                                 done();
@@ -186,19 +183,13 @@ describe('common.users.service', () => {
             });
 
             describe('localStorage.user_id_accountListId set', () => {
-                beforeEach(() => {
-                    $$window.localStorage.setItem('user_id_accountListId', 'local_storage_account_list_id');
-                });
-
                 it('should call accounts.swap with localStorage.user_id_accountListId', (done) => {
+                    $$window.localStorage.setItem('user_id_accountListId', 'local_storage_account_list_id');
                     users.getCurrent().then(() => {
                         expect(accounts.swap).toHaveBeenCalledWith('local_storage_account_list_id', 'user_id');
+                        $$window.localStorage.removeItem('user_id_accountListId');
                         done();
                     });
-                });
-
-                afterEach(() => {
-                    $$window.localStorage.removeItem('user_id_accountListId');
                 });
             });
 

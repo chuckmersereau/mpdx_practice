@@ -4,6 +4,7 @@ import concat from 'lodash/fp/concat';
 import createPatch from 'common/fp/createPatch';
 import defaultTo from 'lodash/fp/defaultTo';
 import difference from 'lodash/fp/difference';
+import find from 'lodash/fp/find';
 import flatten from 'lodash/fp/flatten';
 import has from 'lodash/fp/has';
 import includes from 'lodash/fp/includes';
@@ -90,7 +91,10 @@ class CsvService {
                 result[constant] = {};
                 each((array, key) => {
                     each((value) => {
-                        result[constant][value] = key || null;
+                        const constantHashKey = this.serverConstants.data.csv_import.constants_from_top_level[constant];
+                        const constantHash = this.serverConstants.data[constantHashKey];
+                        const selector = find({ value: value }, constantHash) || {};
+                        result[constant][value] = selector['value'] || key || null;
                     }, array);
                 }, object);
             }

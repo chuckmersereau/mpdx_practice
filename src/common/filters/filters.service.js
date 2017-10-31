@@ -104,6 +104,9 @@ class Filters {
                 allOption = ['active', 'null', 'hidden'];
             }
         }
+        if (filter.name === 'appeal') {
+            allOption = ['', 'no_appeals'];
+        }
         // If all options are selected other than All/Any/Grouped, then the inverse is 'All'
         if (isEqual(difference(allOptions, selectedOptions), allOption)) {
             return [''];

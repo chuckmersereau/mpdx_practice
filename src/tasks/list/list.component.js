@@ -304,7 +304,12 @@ class ListController {
             {}
         );
         return this.modal.confirm(message).then(() => {
-            return this.api.delete({ url: 'tasks/bulk', data: tasks, type: 'tasks' }).then(() => {
+            return this.api.delete({
+                url: 'tasks/bulk',
+                data: tasks,
+                type: 'tasks',
+                autoParams: false
+            }).then(() => {
                 this.alerts.addAlert(
                     this.gettextCatalog.getPlural(selected.length,
                         '1 task successfully removed.',

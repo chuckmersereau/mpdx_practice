@@ -1,17 +1,18 @@
 import component from './show.component';
 
 describe('tools.appeals.show.component', () => {
-    let $ctrl, scope, serverConstants, api, alerts, mailchimp, modal, state, q, exportContacts;
+    let $ctrl, scope, serverConstants, api, alerts, mailchimp, modal, state, q, exportContacts, appealsShow;
     beforeEach(() => {
         angular.mock.module(component);
         inject((
             $componentController, $rootScope, _api_, _serverConstants_, _alerts_, _donations_, _mailchimp_, _modal_,
-            $state, $q, _exportContacts_
+            $state, $q, _exportContacts_, _appealsShow_
         ) => {
             scope = $rootScope.$new();
             alerts = _alerts_;
             api = _api_;
             api.account_list_id = 123;
+            appealsShow = _appealsShow_;
             mailchimp = _mailchimp_;
             modal = _modal_;
             q = $q;
@@ -53,6 +54,7 @@ describe('tools.appeals.show.component', () => {
             spyOn($ctrl, 'getPledgesNotProcessed').and.callFake(() => Promise.resolve(['d']));
             spyOn($ctrl, 'getPledgesProcessed').and.callFake(() => Promise.resolve(['e']));
             spyOn($ctrl, 'getExcludedContacts').and.callFake(() => Promise.resolve(['f ']));
+            spyOn($ctrl, 'refreshLists').and.callFake(() => Promise.resolve());
         });
         it('should change state on account list change', () => {
             $ctrl.$onInit();
@@ -60,16 +62,26 @@ describe('tools.appeals.show.component', () => {
             scope.$digest();
             expect(state.go).toHaveBeenCalledWith('tools.appeals');
             expect($ctrl.disableAccountListEvent).toBeDefined();
+            $ctrl.$onDestroy();
+        });
+        it('should refresh on pledgeAdded', () => {
+            $ctrl.$onInit();
+            scope.$emit('pledgeAdded', { status: 'a' });
+            scope.$digest();
+            expect($ctrl.refreshLists).toHaveBeenCalledWith('a');
+            expect($ctrl.watcher).toBeDefined();
         });
         it('should set the initial data state copy for patch', () => {
             $ctrl.$onInit();
             expect($ctrl.dataInitialState).toEqual(data);
             expect($ctrl.dataInitialState === data).toBeFalsy();
+            $ctrl.$onDestroy();
         });
         it('should get currency from server constants', () => {
             $ctrl.$onInit();
             expect($ctrl.currency).toEqual(currency);
             expect($ctrl.getCurrencyFromCode).toHaveBeenCalledWith(data.total_currency);
+            $ctrl.$onDestroy();
         });
         it('should get donations sum', (done) => {
             spyOn(q, 'all').and.callFake(() => Promise.resolve());
@@ -80,6 +92,7 @@ describe('tools.appeals.show.component', () => {
                 expect($ctrl.donationsSum).toEqual('30.00');
                 done();
             });
+            $ctrl.$onDestroy();
         });
         it('should get percentage raised', (done) => {
             spyOn(q, 'all').and.callFake(() => Promise.resolve());
@@ -90,28 +103,47 @@ describe('tools.appeals.show.component', () => {
                 expect($ctrl.percentageRaised).toEqual(30);
                 done();
             });
+            $ctrl.$onDestroy();
         });
         it('should append to the appeal', () => {
             $ctrl.$onInit();
             expect($ctrl.appeal.amount).toEqual('100.00');
             expect($ctrl.appeal.donations).toEqual([]);
-            // expect($ctrl.mutateDonations).toHaveBeenCalledWith([], contactsData.contacts);
+            $ctrl.$onDestroy();
         });
-        it('should get contacts not given', () => {
+        it('should get contacts', () => {
             $ctrl.$onInit();
-            expect($ctrl.getContactsNotGiven).toHaveBeenCalledWith();
+            expect($ctrl.refreshLists).toHaveBeenCalledWith();
+            $ctrl.$onDestroy();
+        });
+        it('should set exclusion reasons', () => {
+            $ctrl.$onInit();
+            expect($ctrl.reasons).toEqual({
+                gave_more_than_pledged_range: 'May have given a special gift in the last 3 months',
+                started_giving_range: 'May have joined my team in the last 3 months',
+                pledge_amount_increased_range: 'May have increased their giving in the last 3 months',
+                stopped_giving_range: 'May have stopped giving for the last 2 months',
+                no_appeals: '"Send Appeals?" set to No'
+            });
+            $ctrl.$onDestroy();
         });
     });
     describe('$onDestroy', () => {
         it('should disable event', () => {
             $ctrl.disableAccountListEvent = () => {};
+            $ctrl.watcher = () => {};
             spyOn(state, 'go').and.callFake(() => {});
             spyOn($ctrl, 'disableAccountListEvent').and.callFake(() => {});
+            spyOn($ctrl, 'watcher').and.callFake(() => {});
+            spyOn($ctrl, 'refreshLists').and.callFake(() => {});
             $ctrl.$onDestroy();
             expect($ctrl.disableAccountListEvent).toHaveBeenCalled();
+            expect($ctrl.watcher).toHaveBeenCalled();
             scope.$emit('accountListUpdated');
+            scope.$emit('pledgeAdded');
             scope.$digest();
             expect(state.go).not.toHaveBeenCalled();
+            expect($ctrl.refreshLists).not.toHaveBeenCalled();
         });
     });
     describe('changeGoal', () => {
@@ -270,30 +302,49 @@ describe('tools.appeals.show.component', () => {
             contact: { id: 2 }
         };
         beforeEach(() => {
-            spyOn($ctrl, 'removeExcludedContact').and.callFake(() => Promise.resolve());
             spyOn($ctrl, 'onContactSelected').and.callFake(() => Promise.resolve());
             spyOn($ctrl, 'getExcludedContacts').and.callFake(() => {});
             spyOn($ctrl, 'getContactsNotGiven').and.callFake(() => {});
         });
         it('should remove the excluded contact', () => {
+            spyOn($ctrl, 'removeExcludedContact').and.callFake(() => Promise.resolve());
             $ctrl.addExcludedContact(rel);
             expect($ctrl.removeExcludedContact).toHaveBeenCalledWith(1);
         });
         it('should add the contact', (done) => {
+            spyOn($ctrl, 'removeExcludedContact').and.callFake(() => Promise.resolve());
             $ctrl.addExcludedContact(rel).then(() => {
                 expect($ctrl.onContactSelected).toHaveBeenCalledWith(rel.contact);
                 done();
             });
         });
         it('should refresh the current not-given contacts page', (done) => {
+            spyOn($ctrl, 'removeExcludedContact').and.callFake(() => Promise.resolve());
             $ctrl.addExcludedContact(rel).then(() => {
                 expect($ctrl.getContactsNotGiven).toHaveBeenCalledWith();
                 done();
             });
         });
         it('should refresh the current excluded contacts page', (done) => {
+            spyOn($ctrl, 'removeExcludedContact').and.callFake(() => Promise.resolve());
             $ctrl.addExcludedContact(rel).then(() => {
                 expect($ctrl.getExcludedContacts).toHaveBeenCalledWith();
+                done();
+            });
+        });
+        it('should alert on success', (done) => {
+            spyOn($ctrl, 'removeExcludedContact').and.callFake(() => Promise.resolve());
+            $ctrl.addExcludedContact(rel).then(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith('Excluded contact successfully added to appeal');
+                expect($ctrl.gettext).toHaveBeenCalledWith('Excluded contact successfully added to appeal');
+                done();
+            });
+        });
+        it('should alert on failure', (done) => {
+            spyOn($ctrl, 'removeExcludedContact').and.callFake(() => Promise.reject());
+            $ctrl.addExcludedContact(rel).catch(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith('Unable to add excluded contact to appeal', 'danger');
+                expect($ctrl.gettext).toHaveBeenCalledWith('Unable to add excluded contact to appeal');
                 done();
             });
         });
@@ -306,126 +357,64 @@ describe('tools.appeals.show.component', () => {
             expect(api.delete).toHaveBeenCalledWith('appeals/1/excluded_appeal_contacts/2');
         });
     });
-    describe('selectAllGiven', () => {
-        it('should add contact ids from donations', () => {
-            $ctrl.selectedContactIds = [];
-            $ctrl.selectedPledgeIds = [];
-            $ctrl.pledgesProcessed = [
-                { id: 1, contact: { id: 1 } },
-                { id: 2, contact: { id: 2 } }
-            ];
-            $ctrl.selectAllGiven();
-            expect($ctrl.selectedPledgeIds).toEqual([1, 2]);
-            expect($ctrl.selectedContactIds).toEqual([1, 2]);
+    describe('selectAllPledges', () => {
+        beforeEach(() => {
+            $ctrl.appeal = { id: 123 };
+            spyOn(api, 'get').and.callFake(() => Promise.resolve([{ contact: { id: 1 } }, { contact: { id: 2 } }]));
         });
-    });
-    describe('deselectAllGiven', () => {
-        it('should remove contact ids', () => {
-            $ctrl.selectedContactIds = [1, 2, 3];
-            $ctrl.selectedPledgeIds = [1, 2, 3];
-            $ctrl.pledgesProcessed = [
-                { id: 1, contact: { id: 1 } },
-                { id: 2, contact: { id: 2 } }
-            ];
-            $ctrl.deselectAllGiven();
-            expect($ctrl.selectedPledgeIds).toEqual([3]);
-            expect($ctrl.selectedContactIds).toEqual([3]);
+        it('should query the api for all contacts', () => {
+            $ctrl.selectAllPledges('a');
+            expect(api.get).toHaveBeenCalledWith('account_lists/123/pledges', {
+                include: 'contact',
+                per_page: 10000,
+                fields: {
+                    pledges: 'contact',
+                    contacts: ''
+                },
+                filter: {
+                    appeal_id: 123,
+                    status: 'a'
+                }
+            });
         });
-    });
-    describe('selectAllNotReceived', () => {
-        it('should add contact ids from donations', () => {
-            $ctrl.selectedContactIds = [];
-            $ctrl.selectedPledgeIds = [];
-            $ctrl.pledgesNotReceived = [
-                { id: 1, contact: { id: 1 } },
-                { id: 2, contact: { id: 2 } }
-            ];
-            $ctrl.selectAllNotReceived();
-            expect($ctrl.selectedPledgeIds).toEqual([1, 2]);
-            expect($ctrl.selectedContactIds).toEqual([1, 2]);
-        });
-    });
-    describe('deselectAllNotReceived', () => {
-        it('should remove contact ids', () => {
-            $ctrl.selectedContactIds = [1, 2, 3];
-            $ctrl.selectedPledgeIds = [1, 2, 3];
-            $ctrl.pledgesNotReceived = [
-                { id: 1, contact: { id: 1 } },
-                { id: 2, contact: { id: 2 } }
-            ];
-            $ctrl.deselectAllNotReceived();
-            expect($ctrl.selectedPledgeIds).toEqual([3]);
-            expect($ctrl.selectedContactIds).toEqual([3]);
-        });
-    });
-    describe('selectAllNotProcessed', () => {
-        it('should add contact ids from donations', () => {
-            $ctrl.selectedContactIds = [];
-            $ctrl.selectedPledgeIds = [];
-            $ctrl.pledgesNotProcessed = [
-                { id: 1, contact: { id: 1 } },
-                { id: 2, contact: { id: 2 } }
-            ];
-            $ctrl.selectAllNotProcessed();
-            expect($ctrl.selectedPledgeIds).toEqual([1, 2]);
-            expect($ctrl.selectedContactIds).toEqual([1, 2]);
-        });
-    });
-    describe('deselectAllNotProcessed', () => {
-        it('should remove contact ids', () => {
-            $ctrl.selectedContactIds = [1, 2, 3];
-            $ctrl.selectedPledgeIds = [1, 2, 3];
-            $ctrl.pledgesNotProcessed = [
-                { id: 1, contact: { id: 1 } },
-                { id: 2, contact: { id: 2 } }
-            ];
-            $ctrl.deselectAllNotProcessed();
-            expect($ctrl.selectedPledgeIds).toEqual([3]);
-            expect($ctrl.selectedContactIds).toEqual([3]);
+        it('should map contact ids from donations', (done) => {
+            $ctrl.selectAllPledges('a').then(() => {
+                expect($ctrl.selectedContactIds).toEqual([1, 2]);
+                done();
+            });
         });
     });
     describe('selectAllNotGiven', () => {
-        it('should add contact ids from donations', () => {
-            $ctrl.selectedContactIds = [];
-            $ctrl.contactsNotGiven = [
-                { contact: { id: 1 } },
-                { contact: { id: 2 } }
-            ];
+        beforeEach(() => {
+            $ctrl.appeal = { id: 123 };
+            spyOn(api, 'get').and.callFake(() => Promise.resolve([{ contact: { id: 1 } }, { contact: { id: 2 } }]));
+        });
+        it('should query the api for all contacts', () => {
             $ctrl.selectAllNotGiven();
-            expect($ctrl.selectedContactIds).toEqual([1, 2]);
+            expect(api.get).toHaveBeenCalledWith('appeals/123/appeal_contacts', {
+                per_page: 10000,
+                include: 'contact',
+                filter: {
+                    pledged_to_appeal: false
+                },
+                fields: {
+                    appeal_contacts: 'contact',
+                    contact: ''
+                }
+            });
+        });
+        it('should map contact ids from donations', (done) => {
+            $ctrl.selectAllNotGiven().then(() => {
+                expect($ctrl.selectedContactIds).toEqual([1, 2]);
+                done();
+            });
         });
     });
-    describe('deselectAllNotGiven', () => {
-        it('should remove contact ids', () => {
+    describe('deselectAll', () => {
+        it('should remove all contact ids', () => {
             $ctrl.selectedContactIds = [1, 2, 3];
-            $ctrl.contactsNotGiven = [
-                { contact: { id: 1 } },
-                { contact: { id: 2 } }
-            ];
-            $ctrl.deselectAllNotGiven();
-            expect($ctrl.selectedContactIds).toEqual([3]);
-        });
-    });
-    describe('selectAllExcluded', () => {
-        it('should add contact ids', () => {
-            $ctrl.selectedContactIds = [];
-            $ctrl.excludedContacts = [
-                { contact: { id: 1 } },
-                { contact: { id: 2 } }
-            ];
-            $ctrl.selectAllExcluded();
-            expect($ctrl.selectedContactIds).toEqual([1, 2]);
-        });
-    });
-    describe('deselectAllExcluded', () => {
-        it('should remove contact ids', () => {
-            $ctrl.selectedContactIds = [1, 2, 3];
-            $ctrl.excludedContacts = [
-                { contact: { id: 1 } },
-                { contact: { id: 2 } }
-            ];
-            $ctrl.deselectAllExcluded();
-            expect($ctrl.selectedContactIds).toEqual([3]);
+            $ctrl.deselectAll();
+            expect($ctrl.selectedContactIds).toEqual([]);
         });
     });
     describe('selectContact', () => {
@@ -437,43 +426,51 @@ describe('tools.appeals.show.component', () => {
             expect($ctrl.selectedContactIds).toEqual([2, 3, 1]);
         });
     });
-    describe('selectPledge', () => {
-        const pledge = { id: 1, contact: { id: 2 } };
-        it('select/deselect the pledge', () => {
-            $ctrl.selectedPledgeIds = [1, 2, 3];
-            $ctrl.selectPledge(pledge);
-            expect($ctrl.selectedPledgeIds).toEqual([2, 3]);
-            $ctrl.selectPledge(pledge);
-            expect($ctrl.selectedPledgeIds).toEqual([2, 3, 1]);
-        });
-        it('select/deselect the pledge contact', () => {
-            $ctrl.selectedContactIds = [1, 2, 3];
-            $ctrl.selectPledge(pledge);
-            expect($ctrl.selectedContactIds).toEqual([1, 3]);
-            $ctrl.selectPledge(pledge);
-            expect($ctrl.selectedContactIds).toEqual([1, 3, 2]);
-        });
-    });
     describe('getCurrencyFromCode', () => {
         it('should retrieve a currency object', () => {
             serverConstants.data.pledge_currencies = [{ code: 'USD', symbol: '$' }];
             expect($ctrl.getCurrencyFromCode('USD')).toEqual({ code: 'USD', symbol: '$' });
         });
     });
-    describe('removeCommitment', () => {
-        it('should open confirm modal', () => {
+    describe('removePledge', () => {
+        beforeEach(() => {
             spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
+            spyOn($ctrl, 'refreshLists').and.callFake(() => {});
+        });
+        it('should open confirm modal', () => {
             $ctrl.appeal = { id: 1, name: 'a' };
             $ctrl.removePledge({ id: 123 });
             expect($ctrl.gettext).toHaveBeenCalledWith('Are you sure you wish to remove this commitment?');
             expect(modal.confirm).toHaveBeenCalledWith('Are you sure you wish to remove this commitment?');
         });
         it('should delete donation', (done) => {
-            spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
             spyOn(api, 'delete').and.callFake(() => Promise.resolve());
             $ctrl.appeal = { id: 1, name: 'a' };
             $ctrl.removePledge({ id: 123 }).then(() => {
                 expect(api.delete).toHaveBeenCalledWith(`account_lists/${api.account_list_id}/pledges/123`);
+                done();
+            });
+        });
+        it('should call refreshLists on success', (done) => {
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            $ctrl.removePledge({ id: 123, status: 'abc' }).then(() => {
+                expect($ctrl.refreshLists).toHaveBeenCalledWith('abc');
+                done();
+            });
+        });
+        it('should alert on success', (done) => {
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            $ctrl.removePledge({ id: 123 }).then(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith('Successfully removed commitment from appeal');
+                expect($ctrl.gettext).toHaveBeenCalledWith('Successfully removed commitment from appeal');
+                done();
+            });
+        });
+        it('should alert on failure', (done) => {
+            spyOn(api, 'delete').and.callFake(() => Promise.reject());
+            $ctrl.removePledge({ id: 123 }).catch(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith('Unable to remove commitment from appeal', 'danger');
+                expect($ctrl.gettext).toHaveBeenCalledWith('Unable to remove commitment from appeal');
                 done();
             });
         });
@@ -603,7 +600,13 @@ describe('tools.appeals.show.component', () => {
         beforeEach(() => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve({ meta: 'b' }));
             spyOn($ctrl, 'fixPledgeAmount').and.callFake(() => ['a']);
+            spyOn($ctrl.blockUIAsking, 'start').and.callFake(() => {});
+            spyOn($ctrl.blockUIAsking, 'reset').and.callFake(() => {});
             $ctrl.appeal = { id: 1 };
+        });
+        it('should block the UI', () => {
+            $ctrl.getContactsNotGiven();
+            expect($ctrl.blockUIAsking.start).toHaveBeenCalledWith();
         });
         it('should call the api', () => {
             $ctrl.getContactsNotGiven();
@@ -647,12 +650,24 @@ describe('tools.appeals.show.component', () => {
                 done();
             });
         });
+        it('should unblock the UI', (done) => {
+            $ctrl.getContactsNotGiven().then(() => {
+                expect($ctrl.blockUIAsking.reset).toHaveBeenCalledWith();
+                done();
+            });
+        });
     });
     describe('getPledgesNotReceived', () => {
         beforeEach(() => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve({ meta: 'b' }));
             spyOn($ctrl, 'fixPledgeAmount').and.callFake(() => ['a']);
+            spyOn($ctrl.blockUICommitted, 'start').and.callFake(() => {});
+            spyOn($ctrl.blockUICommitted, 'reset').and.callFake(() => {});
             $ctrl.appeal = { id: 1 };
+        });
+        it('should block the UI', () => {
+            $ctrl.getPledgesNotReceived();
+            expect($ctrl.blockUICommitted.start).toHaveBeenCalledWith();
         });
         it('should call the api', () => {
             $ctrl.getPledgesNotReceived();
@@ -666,7 +681,8 @@ describe('tools.appeals.show.component', () => {
                 filter: {
                     appeal_id: 1,
                     status: 'not_received'
-                }
+                },
+                sort: 'contact.name'
             });
         });
         it('should handle pagination', () => {
@@ -681,7 +697,8 @@ describe('tools.appeals.show.component', () => {
                 filter: {
                     appeal_id: 1,
                     status: 'not_received'
-                }
+                },
+                sort: 'contact.name'
             });
         });
         it('should set contactsNotGiven', (done) => {
@@ -696,12 +713,24 @@ describe('tools.appeals.show.component', () => {
                 done();
             });
         });
+        it('should unblock the UI', (done) => {
+            $ctrl.getPledgesNotReceived().then(() => {
+                expect($ctrl.blockUICommitted.reset).toHaveBeenCalledWith();
+                done();
+            });
+        });
     });
     describe('getPledgesNotProcessed', () => {
         beforeEach(() => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve({ meta: 'b' }));
             spyOn($ctrl, 'fixPledgeAmount').and.callFake(() => ['a']);
+            spyOn($ctrl.blockUIReceived, 'start').and.callFake(() => {});
+            spyOn($ctrl.blockUIReceived, 'reset').and.callFake(() => {});
             $ctrl.appeal = { id: 1 };
+        });
+        it('should block the UI', () => {
+            $ctrl.getPledgesNotProcessed();
+            expect($ctrl.blockUIReceived.start).toHaveBeenCalledWith();
         });
         it('should call the api', () => {
             $ctrl.getPledgesNotProcessed();
@@ -715,7 +744,8 @@ describe('tools.appeals.show.component', () => {
                 filter: {
                     appeal_id: 1,
                     status: 'received_not_processed'
-                }
+                },
+                sort: 'contact.name'
             });
         });
         it('should handle pagination', () => {
@@ -730,7 +760,8 @@ describe('tools.appeals.show.component', () => {
                 filter: {
                     appeal_id: 1,
                     status: 'received_not_processed'
-                }
+                },
+                sort: 'contact.name'
             });
         });
         it('should set contactsNotGiven', (done) => {
@@ -745,12 +776,24 @@ describe('tools.appeals.show.component', () => {
                 done();
             });
         });
+        it('should unblock the UI', (done) => {
+            $ctrl.getPledgesNotProcessed().then(() => {
+                expect($ctrl.blockUIReceived.reset).toHaveBeenCalledWith();
+                done();
+            });
+        });
     });
     describe('getPledgesProcessed', () => {
         beforeEach(() => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve({ meta: 'b' }));
             spyOn($ctrl, 'fixPledgeAmount').and.callFake(() => ['a']);
+            spyOn($ctrl.blockUIGiven, 'start').and.callFake(() => {});
+            spyOn($ctrl.blockUIGiven, 'reset').and.callFake(() => {});
             $ctrl.appeal = { id: 1 };
+        });
+        it('should block the UI', () => {
+            $ctrl.getPledgesProcessed();
+            expect($ctrl.blockUIGiven.start).toHaveBeenCalledWith();
         });
         it('should call the api', () => {
             $ctrl.getPledgesProcessed();
@@ -764,7 +807,8 @@ describe('tools.appeals.show.component', () => {
                 filter: {
                     appeal_id: 1,
                     status: 'processed'
-                }
+                },
+                sort: 'contact.name'
             });
         });
         it('should handle pagination', () => {
@@ -779,7 +823,8 @@ describe('tools.appeals.show.component', () => {
                 filter: {
                     appeal_id: 1,
                     status: 'processed'
-                }
+                },
+                sort: 'contact.name'
             });
         });
         it('should set contactsNotGiven', (done) => {
@@ -791,6 +836,12 @@ describe('tools.appeals.show.component', () => {
         it('should set meta', (done) => {
             $ctrl.getPledgesProcessed().then(() => {
                 expect($ctrl.pledgesProcessed.meta).toEqual('b');
+                done();
+            });
+        });
+        it('should unblock the UI', (done) => {
+            $ctrl.getPledgesProcessed().then(() => {
+                expect($ctrl.blockUIGiven.reset).toHaveBeenCalledWith();
                 done();
             });
         });
@@ -838,6 +889,12 @@ describe('tools.appeals.show.component', () => {
         beforeEach(() => {
             $ctrl.appeal = { id: 1 };
             spyOn(api, 'get').and.callFake(() => Promise.resolve(data));
+            spyOn($ctrl.blockUIExcluded, 'start').and.callFake(() => {});
+            spyOn($ctrl.blockUIExcluded, 'reset').and.callFake(() => {});
+        });
+        it('should block the UI', () => {
+            $ctrl.getExcludedContacts();
+            expect($ctrl.blockUIExcluded.start).toHaveBeenCalledWith();
         });
         it('should call the api', () => {
             $ctrl.getExcludedContacts();
@@ -868,6 +925,118 @@ describe('tools.appeals.show.component', () => {
                 expect($ctrl.excludedContactsPage).toEqual(1);
                 done();
             });
+        });
+        it('should unblock the UI', (done) => {
+            $ctrl.getExcludedContacts().then(() => {
+                expect($ctrl.blockUIExcluded.reset).toHaveBeenCalledWith();
+                done();
+            });
+        });
+    });
+    describe('reloadAppeal', () => {
+        beforeEach(() => {
+            $ctrl.appeal = { id: 1 };
+            spyOn(appealsShow, 'getAppeal').and.callFake(() => Promise.resolve('a'));
+        });
+        it('should get appeal data', () => {
+            $ctrl.reloadAppeal();
+            expect(appealsShow.getAppeal).toHaveBeenCalledWith(1);
+        });
+        it('should set appeal data', (done) => {
+            $ctrl.reloadAppeal().then(() => {
+                expect($ctrl.appeal).toEqual('a');
+                done();
+            });
+        });
+    });
+    describe('getReasons', () => {
+        const data = {
+            id: 1,
+            amount: '100',
+            total_currency: 'USD',
+            donations: []
+        };
+        const contactsData = {
+            contacts: [
+                { id: 1 },
+                { id: 2 }
+            ]
+        };
+        const currency = { code: 'USD', symbol: '$' };
+        beforeEach(() => {
+            $ctrl.data = data;
+            $ctrl.contactsData = contactsData;
+            spyOn(state, 'go').and.callFake(() => {});
+            spyOn($ctrl, 'getCurrencyFromCode').and.callFake(() => currency);
+            spyOn($ctrl, 'getContactsNotGiven').and.callFake(() => ['b']);
+            spyOn($ctrl, 'getPledgesNotReceived').and.callFake(() => Promise.resolve(['c']));
+            spyOn($ctrl, 'getPledgesNotProcessed').and.callFake(() => Promise.resolve(['d']));
+            spyOn($ctrl, 'getPledgesProcessed').and.callFake(() => Promise.resolve(['e']));
+            spyOn($ctrl, 'getExcludedContacts').and.callFake(() => Promise.resolve(['f ']));
+            spyOn($ctrl, 'refreshLists').and.callFake(() => Promise.resolve());
+        });
+        it('should return reasons from excluded contacts', () => {
+            $ctrl.$onInit();
+            expect($ctrl.getReasons({ reasons: ['gave_more_than_pledged_range'] })).toEqual(['May have given a special gift in the last 3 months']);
+            $ctrl.$onDestroy();
+        });
+    });
+    describe('refreshLists', () => {
+        beforeEach(() => {
+            spyOn($ctrl, 'getContactsNotGiven').and.callFake(() => ['b']);
+            spyOn($ctrl, 'getPledgesNotReceived').and.callFake(() => Promise.resolve());
+            spyOn($ctrl, 'getPledgesNotProcessed').and.callFake(() => Promise.resolve());
+            spyOn($ctrl, 'getPledgesProcessed').and.callFake(() => Promise.resolve());
+            spyOn($ctrl, 'getExcludedContacts').and.callFake(() => Promise.resolve());
+            spyOn($ctrl, 'refreshAllStatuses').and.callFake(() => Promise.resolve());
+            spyOn($ctrl, 'reloadAppeal').and.callFake(() => Promise.resolve());
+        });
+        it('should call getContactsNotGiven', () => {
+            $ctrl.refreshLists();
+            expect($ctrl.getContactsNotGiven).toHaveBeenCalledWith();
+        });
+        it('should call refreshAllStatuses', () => {
+            $ctrl.refreshLists();
+            expect($ctrl.refreshAllStatuses).toHaveBeenCalledWith();
+            expect($ctrl.getPledgesProcessed).not.toHaveBeenCalled();
+            expect($ctrl.getPledgesNotReceived).not.toHaveBeenCalled();
+            expect($ctrl.getPledgesNotProcessed).not.toHaveBeenCalled();
+        });
+        it('should call reloadAppeal', () => {
+            $ctrl.refreshLists();
+            expect($ctrl.reloadAppeal).toHaveBeenCalledWith();
+        });
+        it('should call getPledgesProcessed', () => {
+            $ctrl.refreshLists('processed');
+            expect($ctrl.getPledgesProcessed).toHaveBeenCalledWith();
+            expect($ctrl.getPledgesNotReceived).not.toHaveBeenCalled();
+            expect($ctrl.getPledgesNotProcessed).not.toHaveBeenCalled();
+            expect($ctrl.refreshAllStatuses).not.toHaveBeenCalled();
+        });
+        it('should call getPledgesNotProcessed', () => {
+            $ctrl.refreshLists('received_not_processed');
+            expect($ctrl.getPledgesNotProcessed).toHaveBeenCalledWith();
+            expect($ctrl.getPledgesProcessed).not.toHaveBeenCalled();
+            expect($ctrl.getPledgesNotReceived).not.toHaveBeenCalled();
+            expect($ctrl.refreshAllStatuses).not.toHaveBeenCalled();
+        });
+        it('should call getPledgesNotReceived', () => {
+            $ctrl.refreshLists('not_received');
+            expect($ctrl.getPledgesNotReceived).toHaveBeenCalledWith();
+            expect($ctrl.getPledgesProcessed).not.toHaveBeenCalled();
+            expect($ctrl.refreshAllStatuses).not.toHaveBeenCalled();
+            expect($ctrl.refreshAllStatuses).not.toHaveBeenCalled();
+        });
+    });
+    describe('switchTab', () => {
+        it('should change activeTab', () => {
+            $ctrl.switchTab('a');
+            expect($ctrl.activeTab).toEqual('a');
+        });
+        it('should deselect all contacts', () => {
+            spyOn($ctrl, 'deselectAll').and.callFake(() => {});
+            $ctrl.switchTab('a');
+            expect($ctrl.deselectAll).toHaveBeenCalledWith();
         });
     });
 });

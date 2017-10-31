@@ -19,18 +19,19 @@
                     <div class="filters_section filter--filtergroup" ng-if="$ctrl.mailchimp.data && $ctrl.mailchimp.data.lists_present">
                         <div class="filter--filtergroup_title"><i class="fa fa-envelope-o"></i> <translate>Export Selected to MailChimp</translate></div>
                         <div class="mt-2 mb-4">
-                            <select name="primaryListId"
-                                    id="primaryListId"
-                                    ng-model="$ctrl.mailchimpListId"
-                                    class="form-control"
-                                    ng-options="option.id as option.name for option in $ctrl.mailchimp.data.lists_available_for_newsletters"
-                                    chosen>
-                            </select>
-                            <button class="btn btn-default btn-block mt-2" ng-click="$ctrl.exportMailchimp()" ng-disabled="!$ctrl.mailchimpListId || $ctrl.selectedContactIds.length < 1" translate-params-count="$ctrl.selectedContactIds.length" translate>Export {{count}} Selected</button>
+                            <!--<select name="primaryListId"-->
+                                    <!--id="primaryListId"-->
+                                    <!--ng-model="$ctrl.mailchimpListId"-->
+                                    <!--class="form-control"-->
+                                    <!--ng-options="option.id as option.name for option in $ctrl.mailchimp.data.lists_available_for_newsletters"-->
+                                    <!--chosen>-->
+                            <!--</select>-->
+                            <!--<button class="btn btn-default btn-block mt-2" ng-click="$ctrl.exportMailchimp()" ng-disabled="!$ctrl.mailchimpListId || $ctrl.selectedContactIds.length < 1" translate-params-count="$ctrl.selectedContactIds.length" translate>Export {{count}} Selected</button>-->
+                            <button class="btn btn-default btn-block mt-2" disabled translate>Coming Soon</button>
                         </div>
                     </div>
                     <div class="filters_section filter--filtergroup">
-                        <div class="filter--filtergroup_title"><i class="fa fa-home"></i> <translate>Add Contact to Goal</translate></div>
+                        <div class="filter--filtergroup_title"><i class="fa fa-home"></i> <translate>Add Contact to Appeal</translate></div>
                         <div class="mt-2 mb-4">
                             <collection-selector item-name="{{ 'Contact' | translate }}"
                                                  display-text="$ctrl.selectedContact"
@@ -48,133 +49,113 @@
                     <div class="column column--heading filter--heading text-right">
                         <div class="page-filters">
                             <div class="row">
-                                <div class="col-sm-9">
+                                <div class="col-sm-10">
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-7">
                                             <div class="inline-input header mb-0">
                                                 <input ng-model="$ctrl.appeal.name"
                                                        ng-change="$ctrl.save()"
-                                                       aria-label="Goal Name"
+                                                       aria-label="Appeal Name"
+                                                       style="padding-right: 0"
                                                        ng-model-options="{ debounce: 1000 }">
                                             </div>
                                         </div>
                                         <div class="col-md-3 text-right pr-1">
-                                            <h2 class="mt-0 mb-0">
+                                            <h2 class="mt-0 mb-0" style="white-space: nowrap">
                                                 {{:: $ctrl.currency.symbol}}{{:: $ctrl.appeal.pledges_amount_processed }} /
                                                 {{:: $ctrl.currency.symbol}}
                                             </h2>
                                         </div>
-                                        <div class="col-md-3 pl-0">
+                                        <div class="col-md-2 pl-0">
                                             <span class="inline-input header">
                                                 <input ng-model="$ctrl.appeal.amount"
                                                        ng-change="$ctrl.changeGoal()"
-                                                       aria-label="Goal Amount"
+                                                       aria-label="Appeal Amount"
+                                                       class="pr-0"
                                                        ng-model-options="{ debounce: 1000 }">
                                             </span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-3">
-                                    <div class="btn-group">
-                                        <button class="btn btn-default" ng-click="$ctrl.contacts.openAddTagModal($ctrl.selectedContactIds)" translate>Add Tag</button>
-                                        <button class="btn btn-default" ng-click="$ctrl.tasks.addModal({ contactsList: $ctrl.selectedContactIds })" translate>Add Task</button>
+                                <div class="col-sm-2">
+                                    <div class="dropdown">
+                                        <a class="btn btn-default dropdown-toggle" bs-dropdown type="button" data-toggle="dropdown" aria-expanded="true">
+                                            <span  translate>Actions</span> <span class="caret"></span>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop" ng-show="$ctrl.selectedContactIds.length > 0">
+                                            <li><a ng-click="$ctrl.contacts.openAddTagModal($ctrl.selectedContactIds)" translate>Add Tag</a></li>
+                                            <li class="divider"></li>
+                                            <li><a ng-click="$ctrl.tasks.addModal({ contactsList: $ctrl.selectedContactIds })" translate>Add Task</a></li>
+                                            <li><a ng-click="$ctrl.tasks.logModal($ctrl.selectedContactIds)" translate>Log Task(s)</a></li>
+                                        </ul>
+                                        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop" ng-show="$ctrl.selectedContactIds.length === 0">
+                                            <li class="dropdown-header" translate>Please select at least one contact by clicking anywhere on that contact to continue.</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="column">
-                        <div class="progress mb-2">
-                            <div class="progress-bar color-0"
-                                 role="progressbar"
-                                 aria-valuenow="{{$ctrl.appeal.pledges_amount_not_received_not_processed }}"
-                                 ng-if="$ctrl.appeal.pledges_amount_not_received_not_processed > 0"
-                                 title="{{$ctrl.appeal.pledges_amount_not_received_not_processed}}"
-                                 aria-valuemin="0"
-                                 aria-valuemax="{{$ctrl.appeal.amount}}"
-                                 style="width: {{($ctrl.appeal.pledges_amount_not_received_not_processed / $ctrl.appeal.amount) * 100}}%; min-width: 10%; max-width: 100%;">
-                                <span translate>Pledged</span>
-                            </div>
-                            <div class="progress-bar color-1"
-                                 ng-if="$ctrl.appeal.percentage_raised > 0"
-                                 title="{{$ctrl.appeal.percentage_raised}}"
-                                 role="progressbar"
-                                 aria-valuenow="{{$ctrl.appeal.percentage_raised}}"
-                                 aria-valuemin="0"
-                                 aria-valuemax="{{$ctrl.appeal.amount}}"
-                                 style="width: {{($ctrl.appeal.percentage_raised / $ctrl.appeal.amount) * 100}}%; min-width: 10%; max-width: 100%;">
-                                <span translate>Received</span>
-                            </div>
-                            <div class="progress-bar color-2"
-                                 role="progressbar"
-                                 ng-if="$ctrl.appeal.pledges_amount_processed > 0"
-                                 title="{{$ctrl.appeal.pledges_amount_processed}}"
-                                 aria-valuenow="{{$ctrl.appeal.pledges_amount_processed}}"
-                                 aria-valuemin="0"
-                                 aria-valuemax="{{$ctrl.appeal.amount}}"
-                                 style="width: {{($ctrl.appeal.pledges_amount_processed / $ctrl.appeal.amount) * 100}}%; min-width: 10%; max-width: 100%;">
-                                <span translate>Processed</span>
-                            </div>
-                        </div>
+                        <appeals-progressbar appeal="$ctrl.appeal"></appeals-progressbar>
                         <ul class="nav nav-tabs">
                           <li ng-class="{'active': $ctrl.activeTab === 'given'}">
-                              <a ng-click="$ctrl.activeTab = 'given'">
-                                  <translate>Processed</translate>
+                              <a ng-click="$ctrl.switchTab('given')">
+                                  <translate>Given</translate>
                                   &nbsp;
                                   <span class="label label-success">{{$ctrl.pledgesProcessed.meta.pagination.total_count}}</span>
                               </a>
                           </li>
                           <li ng-class="{'active': $ctrl.activeTab === 'received'}">
-                              <a ng-click="$ctrl.activeTab = 'received'">
+                              <a ng-click="$ctrl.switchTab('received')">
                                   <translate>Received</translate>
                                   &nbsp;
                                   <span class="label label-warning">{{$ctrl.pledgesNotProcessed.meta.pagination.total_count}}</span>
                               </a>
                           </li>
                           <li ng-class="{'active': $ctrl.activeTab === 'committed'}">
-                              <a ng-click="$ctrl.activeTab = 'committed'">
+                              <a ng-click="$ctrl.switchTab('committed')">
                                   <translate>Committed</translate>
                                   &nbsp;
                                   <span class="label label-warning">{{$ctrl.pledgesNotReceived.meta.pagination.total_count}}</span>
                               </a>
                           </li>
                           <li ng-class="{'active': $ctrl.activeTab === 'asking'}">
-                              <a ng-click="$ctrl.activeTab = 'asking'">
-                                  <translate>Yet to Ask</translate>
+                              <a ng-click="$ctrl.switchTab('asking')">
+                                  <translate>Asked</translate>
                                   &nbsp;
                                   <span class="label label-default">{{$ctrl.contactsNotGiven.meta.pagination.total_count}}</span>
                               </a>
                           </li>
                           <li ng-class="{'active': $ctrl.activeTab === 'excluded'}">
-                              <a ng-click="$ctrl.activeTab = 'excluded'">
+                              <a ng-click="$ctrl.switchTab('excluded')">
                                   <translate>Excluded</translate>
                                   &nbsp;
                                   <span class="label label-danger">{{$ctrl.excludedContacts.meta.pagination.total_count}}</span>
                               </a>
                           </li>
                         </ul>
-                        <div ng-if="$ctrl.activeTab === 'given'">
+                        <div ng-if="$ctrl.activeTab === 'given'" block-ui="appealsGiven">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <translate>Given To Goal</translate>
+                                    <translate>Given To Appeal</translate>
                                     <div class="pull-right">
-                                        <a ng-click="$ctrl.selectAllGiven()" translate>select all</a> |
-                                        <a ng-click="$ctrl.deselectAllGiven()" translate>deselect all</a>
+                                        <a ng-click="$ctrl.selectAllPledges('processed')" translate>select all</a> |
+                                        <a ng-click="$ctrl.deselectAll()" translate>deselect all</a>
                                     </div>
                                 </div>
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th class="col-xs-3" translate>Contact</th>
-                                            <th class="col-xs-3" translate>Donation(s)</th>
-                                            <th class="col-xs-3" translate>Commitment</th>
+                                            <th class="col-xs-5" translate>Contact</th>
+                                            <th class="col-xs-4" translate>Donation(s)</th>
                                             <th class="col-xs-3 text-right" translate>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="pledge in $ctrl.pledgesProcessed"
-                                            ng-click="$ctrl.selectPledge(pledge)"
-                                            ng-class="{ selected: $ctrl.selectedPledgeIds.includes(pledge.id) }"
+                                            ng-click="$ctrl.selectContact(pledge.contact.id)"
+                                            ng-class="{ selected: $ctrl.selectedContactIds.includes(pledge.contact.id) }"
                                             class="selectable">
                                             <td>
                                                 <a ui-sref="contacts.show({ contactId: pledge.contact.id })" ng-click="$event.stopPropagation()" target="_blank">
@@ -182,14 +163,7 @@
                                                 </a>
                                             </td>
                                             <td>{{::pledge.amount | currency: ''}} {{::pledge.contact.pledge_currency}} ({{::pledge.expected_date | localize}})</td>
-                                            <td>{{::pledge.contact.pledge_amount | currency: ''}} {{::pledge.contact.pledge_currency}}</td>
                                             <td class="text-right">
-                                                <button class="btn btn-xs btn-default"
-                                                        ng-click="$ctrl.editPledge(pledge); $event.stopPropagation()"
-                                                        title="{{'Edit Commitment' | translate}}">
-                                                    <i class="fa fa-pencil-square-o"></i>
-                                                </button>
-                                                &nbsp;
                                                 <button class="btn btn-xs btn-danger"
                                                         ng-click="$ctrl.removePledge(pledge); $event.stopPropagation()"
                                                         title="{{'Remove Commitment' | translate}}">
@@ -200,35 +174,34 @@
                                     </tbody>
                                 </table>
                                 <div class="panel-body blankslate" ng-if="$ctrl.pledgesProcessed.meta.pagination.total_count === 0">
-                                    <p translate>No commitments have been processed yet to this goal</p>
+                                    <p translate>No donations yet towards this appeal</p>
                                 </div>
                             </div>
                             <pagination meta="$ctrl.pledgesProcessed.meta.pagination"
                                         on-change="$ctrl.getPledgesProcessed(page)">
                             </pagination>
-                        </div>
-                        <div ng-if="$ctrl.activeTab === 'received'">
+                        </div b>
+                        <div ng-if="$ctrl.activeTab === 'received'" block-ui="appealsReceived">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <translate>Received, Not Yet Processed</translate>
                                     <div class="pull-right">
-                                        <a ng-click="$ctrl.selectAllNotProcessed()" translate>select all</a> |
-                                        <a ng-click="$ctrl.deselectAllNotProcessed()" translate>deselect all</a>
+                                        <a ng-click="$ctrl.selectAllPledges('received_not_processed')" translate>select all</a> |
+                                        <a ng-click="$ctrl.deselectAll()" translate>deselect all</a>
                                     </div>
                                 </div>
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th class="col-xs-3" translate>Contact</th>
-                                            <th class="col-xs-3" translate>Amount Received</th>
-                                            <th class="col-xs-3" translate>Commitment</th>
+                                            <th class="col-xs-5" translate>Contact</th>
+                                            <th class="col-xs-4" translate>Amount Received</th>
                                             <th class="col-xs-3 text-right" translate>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="pledge in $ctrl.pledgesNotProcessed"
-                                            ng-click="$ctrl.selectPledge(pledge)"
-                                            ng-class="{ selected: $ctrl.selectedPledgeIds.includes(pledge.id) }"
+                                            ng-click="$ctrl.selectContact(pledge.contact.id)"
+                                            ng-class="{ selected: $ctrl.selectedContactIds.includes(pledge.contact.id) }"
                                             class="selectable">
                                             <td>
                                                 <a ui-sref="contacts.show({ contactId: pledge.contact.id })" ng-click="$event.stopPropagation()" target="_blank">
@@ -236,7 +209,6 @@
                                                 </a>
                                             </td>
                                             <td>{{::pledge.amount | currency: ''}} {{::pledge.contact.pledge_currency}} ({{::pledge.expected_date | localize}})</td>
-                                            <td>{{::pledge.contact.pledge_amount | currency: ''}} {{::pledge.contact.pledge_currency}}</td>
                                             <td class="text-right">
                                                 <button class="btn btn-xs btn-default"
                                                         ng-click="$ctrl.editPledge(pledge); $event.stopPropagation()"
@@ -254,35 +226,34 @@
                                     </tbody>
                                 </table>
                                 <div class="panel-body blankslate" ng-if="$ctrl.pledgesNotProcessed.meta.pagination.total_count === 0">
-                                    <p translate>No commitments have been received and not yet processed to this goal</p>
+                                    <p translate>No gifts have been received and not yet processed to this appeal</p>
                                 </div>
                             </div>
                             <pagination meta="$ctrl.pledgesNotProcessed.meta.pagination"
                                         on-change="$ctrl.getPledgesNotProcessed(page)">
                             </pagination>
                         </div>
-                        <div ng-if="$ctrl.activeTab === 'committed'">
+                        <div ng-if="$ctrl.activeTab === 'committed'" block-ui="appealsCommitted">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <translate>Committed, Not Yet Received</translate>
                                     <div class="pull-right">
-                                        <a ng-click="$ctrl.selectAllNotReceived()" translate>select all</a> |
-                                        <a ng-click="$ctrl.deselectAllNotReceived()" translate>deselect all</a>
+                                        <a ng-click="$ctrl.selectAllPledges('not_received')" translate>select all</a> |
+                                        <a ng-click="$ctrl.deselectAll()" translate>deselect all</a>
                                     </div>
                                 </div>
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th class="col-xs-3" translate>Contact</th>
-                                            <th class="col-xs-3" translate>Amount Committed</th>
-                                            <th class="col-xs-3" translate>Commitment</th>
+                                            <th class="col-xs-5" translate>Contact</th>
+                                            <th class="col-xs-4" translate>Amount Committed</th>
                                             <th class="col-xs-3 text-right" translate>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="pledge in $ctrl.pledgesNotReceived | orderBy : 'contact.name'"
-                                            ng-click="$ctrl.selectPledge(pledge)"
-                                            ng-class="{ selected: $ctrl.selectedPledgeIds.includes(pledge.id) }"
+                                            ng-click="$ctrl.selectContact(pledge.contact.id)"
+                                            ng-class="{ selected: $ctrl.selectedContactIds.includes(pledge.contact.id) }"
                                             class="selectable">
                                             <td>
                                                 <a ui-sref="contacts.show({ contactId: pledge.contact.id })" ng-click="$event.stopPropagation()" target="_blank">
@@ -290,7 +261,6 @@
                                                 </a>
                                             </td>
                                             <td>{{::pledge.amount | currency: ''}} {{::pledge.contact.pledge_currency}} ({{::pledge.expected_date | localize}})</td>
-                                            <td>{{::pledge.contact.pledge_amount | currency: ''}} {{::pledge.contact.pledge_currency}}</td>
                                             <td class="text-right">
                                                 <button class="btn btn-xs btn-default"
                                                         ng-click="$ctrl.editPledge(pledge); $event.stopPropagation()"
@@ -308,27 +278,27 @@
                                     </tbody>
                                 </table>
                                 <div class="panel-body blankslate" ng-if="$ctrl.pledgesNotReceived.meta.pagination.total_count === 0">
-                                    <p translate>No commitments have been committed but not yet received to this goal</p>
+                                    <p translate>No commitments have committed to this appeal</p>
                                 </div>
                             </div>
                             <pagination meta="$ctrl.pledgesNotReceived.meta.pagination"
                                         on-change="$ctrl.getPledgesNotReceived(page)">
                             </pagination>
                         </div>
-                        <div ng-if="$ctrl.activeTab === 'asking'">
+                        <div ng-if="$ctrl.activeTab === 'asking'" block-ui="appealsAsking">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <translate>Not Yet Committed</translate>
                                     <div class="pull-right">
                                         <a ng-click="$ctrl.selectAllNotGiven()" translate>select all</a> |
-                                        <a ng-click="$ctrl.deselectAllNotGiven()" translate>deselect all</a>
+                                        <a ng-click="$ctrl.deselectAll()" translate>deselect all</a>
                                     </div>
                                 </div>
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th class="col-xs-6" translate>Contact</th>
-                                            <th class="col-xs-3" translate>Commitment</th>
+                                            <th class="col-xs-5" translate>Contact</th>
+                                            <th class="col-xs-4" translate>Regular Giving</th>
                                             <th class="col-xs-3 text-right" translate>Actions</th>
                                         </tr>
                                     </thead>
@@ -360,29 +330,25 @@
                                     </tbody>
                                 </table>
                                 <div class="panel-body blankslate" ng-if="$ctrl.contactsNotGiven.meta.pagination.total_count === 0">
-                                    <p translate>No contacts have not yet committed to give to this goal</p>
+                                    <p translate>All contacts for this appeal have committed to this appeal</p>
                                 </div>
                             </div>
                             <pagination meta="$ctrl.contactsNotGiven.meta.pagination"
                                         on-change="$ctrl.getContactsNotGiven(page)">
                             </pagination>
                         </div>
-                        <div ng-if="$ctrl.activeTab === 'excluded'">
+                        <div ng-if="$ctrl.activeTab === 'excluded'" block-ui="appealsExcluded">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <translate>Excluded from Appeal</translate>
-                                    <div class="pull-right">
-                                        <a ng-click="$ctrl.selectAllExcluded()" translate>select all</a> |
-                                        <a ng-click="$ctrl.deselectAllExcluded()" translate>deselect all</a>
-                                    </div>
                                 </div>
                                 <table class="table">
                                     <thead>
                                         <tr>
                                             <th class="col-xs-3" translate>Contact</th>
-                                            <th class="col-xs-3" translate>Reason</th>
-                                            <th class="col-xs-3" translate>Commitment</th>
-                                            <th class="col-xs-3 text-right" translate>Actions</th>
+                                            <th class="col-xs-5" translate>Reason</th>
+                                            <th class="col-xs-2" translate>Regular Giving</th>
+                                            <th class="col-xs-1 text-right" translate>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -393,7 +359,9 @@
                                                 </a>
                                             </td>
                                             <td>
-                                                {{::$ctrl.getReason(rel)}}
+                                                <ul class="list-unstyled pl-0">
+                                                    <li ng-repeat="reason in ::$ctrl.getReasons(rel)">{{reason}}</li>
+                                                </ul>
                                             </td>
                                             <td>
                                                 {{::rel.contact.pledge_amount}} {{::rel.contact.pledge_currency}}
@@ -408,7 +376,7 @@
                                     </tbody>
                                 </table>
                                 <div class="panel-body blankslate" ng-if="$ctrl.excludedContacts.meta.pagination.total_count === 0">
-                                    <p translate>No contacts have been excluded from this goal</p>
+                                    <p translate>No contacts have been excluded from this appeal</p>
                                 </div>
                             </div>
                             <pagination meta="$ctrl.excludedContacts.meta.pagination"

@@ -1,0 +1,26 @@
+<div class="progress mb-2">
+    <span class="progress-bar color-0"
+          role="progressbar"
+          aria-valuenow="{{$ctrl.appeal.pledges_amount_processed}}"
+          ng-if="$ctrl.appeal.pledges_amount_processed > 0"
+          title="{{$ctrl.appeal.pledges_amount_processed}}"
+          style="width: {{$ctrl.givenWidth}}%; min-width: 10%; max-width: 100%;">
+        <span translate>Given</span>
+    </span>
+    <span class="progress-bar color-1"
+          role="progressbar"
+          aria-valuenow="{{$ctrl.appeal.pledges_amount_received_not_processed}}"
+          ng-if="$ctrl.appeal.pledges_amount_received_not_processed > 0"
+          title="{{$ctrl.appeal.pledges_amount_received_not_processed}}"
+          style="width: {{$ctrl.receivedWidth}}%; max-width: 100%;">
+        <span translate>Received</span>
+    </span>
+    <span class="progress-bar color-2"
+          role="progressbar"
+          aria-valuenow="{{$ctrl.appeal.pledges_amount_not_received_not_processed }}"
+          ng-if="$ctrl.appeal.pledges_amount_not_received_not_processed > 0"
+          title="{{$ctrl.appeal.pledges_amount_not_received_not_processed}}"
+          style="width: {{$ctrl.committedWidth}}%; max-width: 100%;">
+        <span translate>Committed</span>
+    </span>
+</div>

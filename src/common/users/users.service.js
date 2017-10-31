@@ -1,7 +1,6 @@
 import defaultTo from 'lodash/fp/defaultTo';
 import find from 'lodash/fp/find';
 import get from 'lodash/fp/get';
-import has from 'lodash/fp/has';
 import keyBy from 'lodash/fp/keyBy';
 import keys from 'lodash/fp/keys';
 import toString from 'lodash/fp/toString';
@@ -27,8 +26,7 @@ class Users {
         this.current = null;
         this.currentInitialState = {};
         this.currentOptions = {};
-        this.defaultIncludes
-            = 'account_lists,email_addresses,facebook_accounts,family_relationships,'
+        this.defaultIncludes = 'account_lists,email_addresses,facebook_accounts,family_relationships,'
               + 'family_relationships.related_person,linkedin_accounts,master_person,'
               + 'phone_numbers,twitter_accounts,websites';
         this.hasAnyUsAccounts = false;
@@ -78,7 +76,7 @@ class Users {
                     });
                 });
             }).catch(() => {
-                if (!(has('setup_position', this.currentOptions) && this.currentOptions.setup_position.value === 'connect')) {
+                if (!get('setup_position', this.currentOptions)) {
                     return this.redirectUserToStart();
                 } else {
                     return Promise.reject({});
@@ -115,9 +113,10 @@ class Users {
         }
         return this.api.get('user/options').then((data) => {
             this.currentOptions = this.mapOptions(data);
+            /* istanbul ignore next */
             this.$log.debug('user/options', this.currentOptions);
             if (forRouting) {
-                if (!has('setup_position', this.currentOptions)) { // force first time setup
+                if (!get('setup_position', this.currentOptions)) { // force first time setup
                     return this.createOption('setup_position', 'start').then((pos) => {
                         this.currentOptions.setup_position = pos;
                         return Promise.reject({ redirect: 'setup.start' });

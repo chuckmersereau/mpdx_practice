@@ -222,22 +222,20 @@ describe('tools.import.csv.service', () => {
                                 'none_1',
                                 'none_2',
                                 'none_3',
-                                'none_4'
-                            ],
-                            physical: [
-                                'physical_1'
+                                'none_4',
+                                'physical'
                             ],
                             email: [
-                                'email_1'
+                                'email'
                             ],
                             both: [
-                                'both_1'
+                                'both'
                             ]
                         },
                         status: {
                             '': null,
                             never_contacted: [
-                                'never_contacted_1'
+                                'never_contacted'
                             ]
                         },
                         send_appeals: {
@@ -245,6 +243,18 @@ describe('tools.import.csv.service', () => {
                         }
                     }
                 };
+                serverConstants.data.csv_import.constants_from_top_level = {
+                    status: 'status_hashes',
+                    newsletter: 'newsletter_hashes'
+                };
+                serverConstants.data.status_hashes = [
+                    { id: 'never_contacted', value: 'never_contacted' }
+                ];
+                serverConstants.data.newsletter_hashes = [
+                    { id: 'physical', value: 'physical' },
+                    { id: 'email', value: 'email' },
+                    { id: 'both', value: 'both' }
+                ];
             });
 
             it('should set values_to_constants_mapping', () => {
@@ -256,12 +266,12 @@ describe('tools.import.csv.service', () => {
                             'none_2': null,
                             'none_3': null,
                             'none_4': null,
-                            'physical_1': 'physical',
-                            'email_1': 'email',
-                            'both_1': 'both'
+                            'physical': 'physical',
+                            'email': 'email',
+                            'both': 'both'
                         },
                         status: {
-                            'never_contacted_1': 'never_contacted'
+                            'never_contacted': 'never_contacted'
                         }
                     }
                 );

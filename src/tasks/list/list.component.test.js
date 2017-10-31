@@ -541,7 +541,8 @@ describe('tasks.list.component', () => {
                 expect(api.delete).toHaveBeenCalledWith({
                     url: 'tasks/bulk',
                     data: [{ id: 1 }, { id: 2 }],
-                    type: 'tasks'
+                    type: 'tasks',
+                    autoParams: false
                 });
                 done();
             });

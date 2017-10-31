@@ -12,15 +12,14 @@ import joinComma from 'common/fp/joinComma';
 import map from 'lodash/fp/map';
 import moment from 'moment';
 import pull from 'lodash/fp/pull';
-import reject from 'lodash/fp/reject';
 import sumBy from 'lodash/fp/sumBy';
-import union from 'lodash/fp/union';
 import uuid from 'uuid/v1';
+import values from 'lodash/fp/values';
 
 class AppealController {
     constructor(
-        $log, $q, $rootScope, $state, $stateParams, gettext,
-        alerts, api, contacts, donations, exportContacts, mailchimp, modal, serverConstants, tasks,
+        $log, $q, $rootScope, $state, $stateParams, blockUI, gettext,
+        alerts, api, appealsShow, contacts, donations, exportContacts, mailchimp, modal, serverConstants, tasks,
     ) {
         this.$log = $log;
         this.$q = $q;
@@ -29,6 +28,7 @@ class AppealController {
         this.$stateParams = $stateParams;
         this.alerts = alerts;
         this.api = api;
+        this.appealsShow = appealsShow;
         this.contacts = contacts;
         this.donations = donations;
         this.exportContacts = exportContacts;
@@ -40,8 +40,12 @@ class AppealController {
         this.tasks = tasks;
 
         this.appeal = null;
+        this.blockUIGiven = blockUI.instances.get('appealShow');
+        this.blockUIReceived = blockUI.instances.get('appealsReceived');
+        this.blockUICommitted = blockUI.instances.get('appealsCommitted');
+        this.blockUIAsking = blockUI.instances.get('appealsAsking');
+        this.blockUIExcluded = blockUI.instances.get('appealsExcluded');
         this.selectedContactIds = [];
-        this.selectedPledgeIds = [];
         this.contactsNotGivenPage = 1;
         this.excludedContactsPage = 1;
         this.pledgesNotReceivedPage = 1;
@@ -58,11 +62,23 @@ class AppealController {
             amount: fixed(2, defaultTo(0, this.data.amount)),
             pledges_amount_processed: fixed(2, defaultTo(0, this.data.pledges_amount_processed))
         });
-        this.$rootScope.pageTitle = `${this.gettext('Goal')} | ${this.appeal.name}`;
+        this.$rootScope.pageTitle = `${this.gettext('Appeal')} | ${this.appeal.name}`;
 
         this.disableAccountListEvent = this.$rootScope.$on('accountListUpdated', () => {
             this.$state.go('tools.appeals');
         });
+
+        this.watcher = this.$rootScope.$on('pledgeAdded', (e, pledge) => {
+            this.refreshLists(get('status', pledge));
+        });
+
+        this.reasons = {
+            gave_more_than_pledged_range: this.gettext('May have given a special gift in the last 3 months'),
+            started_giving_range: this.gettext('May have joined my team in the last 3 months'),
+            pledge_amount_increased_range: this.gettext('May have increased their giving in the last 3 months'),
+            stopped_giving_range: this.gettext('May have stopped giving for the last 2 months'),
+            no_appeals: this.gettext('"Send Appeals?" set to No')
+        };
 
         return this.refreshLists().then(() => {
             this.donationsSum = fixed(2,
@@ -74,9 +90,11 @@ class AppealController {
         });
     }
     $onDestroy() {
+        this.watcher();
         this.disableAccountListEvent();
     }
     getContactsNotGiven(page = this.contactsNotGivenPage) {
+        this.blockUIAsking.start();
         return this.api.get(`appeals/${this.appeal.id}/appeal_contacts`, {
             page: page,
             per_page: 20,
@@ -94,9 +112,11 @@ class AppealController {
             this.contactsNotGiven = this.fixPledgeAmount(data);
             this.contactsNotGiven.meta = data.meta;
             this.contactsNotGivenPage = page;
+            this.blockUIAsking.reset();
         });
     }
     getPledgesNotReceived(page = this.pledgesNotReceivedPage) {
+        this.blockUICommitted.start();
         return this.api.get(`account_lists/${this.api.account_list_id}/pledges`, {
             include: 'contact',
             page: page,
@@ -107,16 +127,19 @@ class AppealController {
             filter: {
                 appeal_id: this.appeal.id,
                 status: 'not_received'
-            }
+            },
+            sort: 'contact.name'
         }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug(`pledges not received page ${page}`, data);
             this.pledgesNotReceived = this.fixPledgeAmount(data);
             this.pledgesNotReceived.meta = data.meta;
             this.pledgesNotReceivedPage = page;
+            this.blockUICommitted.reset();
         });
     }
     getPledgesNotProcessed(page = this.pledgesNotProcessedPage) {
+        this.blockUIReceived.start();
         return this.api.get(`account_lists/${this.api.account_list_id}/pledges`, {
             include: 'contact',
             page: page,
@@ -127,16 +150,19 @@ class AppealController {
             filter: {
                 appeal_id: this.appeal.id,
                 status: 'received_not_processed'
-            }
+            },
+            sort: 'contact.name'
         }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug(`pledges received not processed page ${page}`, data);
             this.pledgesNotProcessed = this.fixPledgeAmount(data);
             this.pledgesNotProcessed.meta = data.meta;
             this.pledgesNotProcessedPage = page;
+            this.blockUIReceived.reset();
         });
     }
     getPledgesProcessed(page = this.pledgesProcessedPage) {
+        this.blockUIGiven.start();
         return this.api.get(`account_lists/${this.api.account_list_id}/pledges`, {
             include: 'contact',
             page: page,
@@ -147,13 +173,15 @@ class AppealController {
             filter: {
                 appeal_id: this.appeal.id,
                 status: 'processed'
-            }
+            },
+            sort: 'contact.name'
         }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug(`pledges processed page ${page}`, data);
             this.pledgesProcessed = this.fixPledgeAmount(data);
             this.pledgesProcessed.meta = data.meta;
             this.pledgesProcessedPage = page;
+            this.blockUIGiven.reset();
         });
     }
     fixPledgeAmount(contacts) {
@@ -241,93 +269,94 @@ class AppealController {
     }
     addExcludedContact(rel) {
         return this.removeExcludedContact(rel.id).then(() => {
-            this.onContactSelected(rel.contact).then(() => {
+            return this.onContactSelected(rel.contact).then(() => {
+                this.alerts.addAlert(this.gettext('Excluded contact successfully added to appeal'));
                 this.getExcludedContacts();
                 this.getContactsNotGiven();
             });
+        }).catch((ex) => {
+            this.alerts.addAlert(this.gettext('Unable to add excluded contact to appeal'), 'danger');
+            throw ex;
         });
     }
     removeExcludedContact(id) {
         return this.api.delete(`appeals/${this.appeal.id}/excluded_appeal_contacts/${id}`);
     }
-    selectAllGiven() {
-        this.selectedPledgeIds = union(this.selectedPledgeIds, map('id', this.pledgesProcessed));
-        this.selectedContactIds = union(this.selectedContactIds, map((p) => p.contact.id, this.pledgesProcessed));
+    deselectAll() {
+        this.selectedContactIds = [];
     }
-    deselectAllGiven() {
-        const allGiven = map('id', this.pledgesProcessed);
-        const allGivenContacts = map((p) => p.contact.id, this.pledgesProcessed);
-        this.selectedPledgeIds = reject((id) => contains(id, allGiven), this.selectedPledgeIds);
-        this.selectedContactIds = reject((id) => contains(id, allGivenContacts), this.selectedContactIds);
-    }
-    selectAllNotReceived() {
-        this.selectedPledgeIds = union(this.selectedPledgeIds, map('id', this.pledgesNotReceived));
-        this.selectedContactIds = union(this.selectedContactIds, map((p) => p.contact.id, this.pledgesNotReceived));
-    }
-    deselectAllNotReceived() {
-        const allNotGiven = map('id', this.pledgesNotReceived);
-        const allNotGivenContacts = map((p) => p.contact.id, this.pledgesNotReceived);
-        this.selectedPledgeIds = reject((id) => contains(id, allNotGiven), this.selectedPledgeIds);
-        this.selectedContactIds = reject((id) => contains(id, allNotGivenContacts), this.selectedContactIds);
-    }
-    selectAllNotProcessed() {
-        this.selectedPledgeIds = union(this.selectedPledgeIds, map('id', this.pledgesNotProcessed));
-        this.selectedContactIds = union(this.selectedContactIds, map((p) => p.contact.id, this.pledgesNotProcessed));
-    }
-    deselectAllNotProcessed() {
-        const allNotProcessed = map('id', this.pledgesNotProcessed);
-        const allNotProcessedContacts = map((p) => p.contact.id, this.pledgesNotProcessed);
-        this.selectedPledgeIds = reject((id) => contains(id, allNotProcessed), this.selectedPledgeIds);
-        this.selectedContactIds = reject((id) => contains(id, allNotProcessedContacts), this.selectedContactIds);
+    selectAllPledges(status) {
+        return this.api.get(`account_lists/${this.api.account_list_id}/pledges`, {
+            include: 'contact',
+            per_page: 10000,
+            fields: {
+                pledges: 'contact',
+                contacts: ''
+            },
+            filter: {
+                appeal_id: this.appeal.id,
+                status: status
+            }
+        }).then((data) => {
+            const contactIds = map((p) => p.contact.id, data);
+            /* istanbul ignore next */
+            this.$log.debug(`contact ids for ${status}`, contactIds);
+            this.selectedContactIds = contactIds;
+        });
     }
     selectAllNotGiven() {
-        this.selectedContactIds = union(this.selectedContactIds, map((p) => p.contact.id, this.contactsNotGiven));
-    }
-    deselectAllNotGiven() {
-        const allNotGiven = map((p) => p.contact.id, this.contactsNotGiven);
-        this.selectedContactIds = reject((id) => contains(id, allNotGiven), this.selectedContactIds);
-    }
-    selectAllExcluded() {
-        this.selectedContactIds = union(this.selectedContactIds, map((p) => p.contact.id, this.excludedContacts));
-    }
-    deselectAllExcluded() {
-        const excluded = map((p) => p.contact.id, this.excludedContacts);
-        this.selectedContactIds = reject((id) => contains(id, excluded), this.selectedContactIds);
+        return this.api.get(`appeals/${this.appeal.id}/appeal_contacts`, {
+            per_page: 10000,
+            include: 'contact',
+            filter: {
+                pledged_to_appeal: false
+            },
+            fields: {
+                appeal_contacts: 'contact',
+                contact: ''
+            }
+        }).then((data) => {
+            const contactIds = map((rel) => rel.contact.id, data);
+            /* istanbul ignore next */
+            this.$log.debug('select all contacts not given', contactIds);
+            this.selectedContactIds = contactIds;
+        });
     }
     selectContact(contactId) {
         this.selectedContactIds = contains(contactId, this.selectedContactIds)
             ? pull(contactId, this.selectedContactIds)
             : concat(this.selectedContactIds, contactId);
     }
-    selectPledge(pledge) {
-        this.selectedPledgeIds = contains(pledge.id, this.selectedPledgeIds)
-            ? pull(pledge.id, this.selectedPledgeIds)
-            : concat(this.selectedPledgeIds, pledge.id);
-        this.selectedContactIds = contains(pledge.contact.id, this.selectedContactIds)
-            ? pull(pledge.contact.id, this.selectedContactIds)
-            : concat(this.selectedContactIds, pledge.contact.id);
-    }
     removePledge(pledge) {
         const message = this.gettext('Are you sure you wish to remove this commitment?');
         const status = angular.copy(pledge.status);
-        return this.modal.confirm(message).then(() =>
-            this.api.delete(`account_lists/${this.api.account_list_id}/pledges/${pledge.id}`).then(() => {
+        return this.modal.confirm(message).then(() => {
+            return this.api.delete(`account_lists/${this.api.account_list_id}/pledges/${pledge.id}`).then(() => {
+                this.alerts.addAlert(this.gettext('Successfully removed commitment from appeal'));
                 this.refreshLists(status);
-            })
-        );
-    }
-    getListToRefresh(status) {
-        const mapping = {
-            'processed': this.getPledgesProcessed,
-            'received_not_processed': this.getPledgesNotProcessed,
-            'not_received': this.getPledgesNotReceived
-        };
-        return get(status, mapping);
+            }).catch((ex) => {
+                this.alerts.addAlert(this.gettext('Unable to remove commitment from appeal'), 'danger');
+                throw ex;
+            });
+        });
     }
     refreshLists(status = null) {
         this.getContactsNotGiven();
-        const statusPageToUpdate = this.getListToRefresh(status);
-        return statusPageToUpdate ? statusPageToUpdate() : this.refreshAllStatuses();
+        switch (status) {
+            case 'processed':
+                this.getPledgesProcessed();
+                break;
+            case 'received_not_processed':
+                this.getPledgesNotProcessed();
+                break;
+            case 'not_received':
+                this.getPledgesNotReceived();
+                break;
+            default:
+                this.refreshAllStatuses();
+                break;
+        }
+        return this.reloadAppeal();
     }
     refreshAllStatuses() {
         return this.$q.all(
@@ -405,6 +434,7 @@ class AppealController {
         });
     }
     getExcludedContacts(page = this.excludedContactsPage) {
+        this.blockUIExcluded.start();
         return this.api.get(`appeals/${this.appeal.id}/excluded_appeal_contacts`, {
             include: 'contact',
             fields: {
@@ -419,19 +449,21 @@ class AppealController {
             this.excludedContacts = data;
             this.excludedContacts.meta = data.meta;
             this.excludedContactsPage = page;
+            this.blockUIExcluded.reset();
         });
     }
-    getReason(rel) {
-        const reasons = {
-            gave_more_than_pledged_within: this.gettext('May have given a special gift in the last 3 months'),
-            started_giving_within: this.gettext('May have joined my team in the last 3 months'),
-            pledge_amount_increased_within: this.gettext('May have increased their giving in the last 3 months'),
-            stopped_giving_within: this.gettext('May have stopped giving for the last 2 months'),
-            no_appeals: this.gettext('"Send Goals?" set to No')
-        };
-        const key = get('[0]', rel.reasons);
-        const value = get(key, reasons);
-        return defaultTo('', value);
+    reloadAppeal() {
+        return this.appealsShow.getAppeal(this.appeal.id).then((data) => {
+            this.appeal = data;
+        });
+    }
+    getReasons(rel) {
+        const keys = values(rel.reasons);
+        return map((key) => get(key, this.reasons), keys);
+    }
+    switchTab(tab) {
+        this.activeTab = tab;
+        this.deselectAll();
     }
 }
 
@@ -443,6 +475,8 @@ const Appeal = {
     }
 };
 
+import appealsShow from './show.service';
+import blockUI from 'angular-block-ui';
 import contacts from 'contacts/contacts.service';
 import donations from 'reports/donations/donations.service';
 import exportContacts from 'contacts/list/exportContacts/export.service';
@@ -451,6 +485,6 @@ import tasks from 'tasks/tasks.service';
 import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('tools.mpdx.appeals.show', [
-    uiRouter,
-    contacts, donations, exportContacts, mailchimp, tasks
+    blockUI, uiRouter,
+    appealsShow, contacts, donations, exportContacts, mailchimp, tasks
 ]).component('appealsShow', Appeal).name;

@@ -1,3 +1,6 @@
+import get from 'lodash/fp/get';
+import replaceAll from 'common/fp/replaceAll';
+
 /* @ngInject*/
 export default function appRun(
     $document, $q, $log, $rootScope, $state, $transitions, $window, authManager, blockUI
@@ -6,22 +9,22 @@ export default function appRun(
     const block = blockUI.instances.get('root');
     authManager.checkAuthOnRefresh();
     authManager.redirectWhenUnauthenticated();
-    $transitions.onStart({ to: (state) => state.name !== 'login' && state.name !== 'auth' && state.name !== 'acceptInvite' }, (trans) => {
+    $transitions.onStart({
+        to: (state) => state.name !== 'login' && state.name !== 'auth' && state.name !== 'acceptInvite'
+    }, (trans) => {
         if (!authManager.isAuthenticated()) {
             return;
         }
         block.start();
         const users = trans.injector().get('users');
-        return users.getCurrent(false, true)
-            .then((currentUser) => {
-                $window.digitalData.user[0].profile[0].profileInfo.ssoGuid = currentUser.key_uuid;
-                $window.digitalData.page.pageInfo.language = currentUser.preferences.locale;
-            })
-            .catch((error) => {
-                if (error.redirect) {
-                    return trans.router.stateService.target(error.redirect);
-                }
-            });
+        return users.getCurrent(false, true).then((currentUser) => {
+            $window.digitalData.user[0].profile[0].profileInfo.ssoGuid = currentUser.key_uuid;
+            $window.digitalData.page.pageInfo.language = currentUser.preferences.locale;
+        }).catch((error) => {
+            if (error.redirect) {
+                return trans.router.stateService.target(error.redirect);
+            }
+        });
     });
     $transitions.onStart({ to: 'admin' }, (trans) => {
         if (!authManager.isAuthenticated()) {
@@ -29,16 +32,14 @@ export default function appRun(
         }
         block.start();
         const users = trans.injector().get('users');
-        return users.getCurrent(false, true)
-            .then((currentUser) => {
-                if (currentUser.preferences.admin) {
-                    return true;
-                }
-                return trans.router.stateService.target('unavailable');
-            })
-            .catch(() => {
-                return trans.router.stateService.target('unavailable');
-            });
+        return users.getCurrent(false, true).then((currentUser) => {
+            if (currentUser.preferences.admin) {
+                return true;
+            }
+            return trans.router.stateService.target('unavailable');
+        }).catch(() => {
+            return trans.router.stateService.target('unavailable');
+        });
     });
     $transitions.onFinish(null, (trans) => {
         changePageTitle(trans, $rootScope, $window);
@@ -62,5 +63,11 @@ function fireAdobeAnalyticsDirectRuleCall($window) {
 function changePageTitle(transition, $rootScope, $window) {
     const newState = transition.$to();
     $rootScope.pageTitle = newState.title;
-    $window.digitalData.page.pageInfo.pageName = newState.name.replace('.', ' : ');
+    const name = newState.name.toLowerCase();
+    const arr = name.split('.');
+    $window.digitalData.page.category.primaryCategory = get('[0]', arr);
+    $window.digitalData.page.category.subCategory1 = get('[1]', arr);
+    $window.digitalData.page.category.subCategory2 = get('[2]', arr);
+    $window.digitalData.page.category.subCategory3 = get('[3]', arr);
+    $window.digitalData.page.pageInfo.pageName = replaceAll('.', ' : ', name);
 }
