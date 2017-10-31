@@ -1,3 +1,6 @@
+import get from 'lodash/fp/get';
+import replaceAll from 'common/fp/replaceAll';
+
 /* @ngInject*/
 export default function appRun(
     $document, $q, $log, $rootScope, $state, $transitions, $window, authManager, blockUI
@@ -60,5 +63,11 @@ function fireAdobeAnalyticsDirectRuleCall($window) {
 function changePageTitle(transition, $rootScope, $window) {
     const newState = transition.$to();
     $rootScope.pageTitle = newState.title;
-    $window.digitalData.page.pageInfo.pageName = newState.name.replace('.', ' : ');
+    const name = newState.name.toLowerCase();
+    const arr = name.split('.');
+    $window.digitalData.page.category.primaryCategory = get('[0]', arr);
+    $window.digitalData.page.category.subCategory1 = get('[1]', arr);
+    $window.digitalData.page.category.subCategory2 = get('[2]', arr);
+    $window.digitalData.page.category.subCategory3 = get('[3]', arr);
+    $window.digitalData.page.pageInfo.pageName = replaceAll('.', ' : ', name);
 }

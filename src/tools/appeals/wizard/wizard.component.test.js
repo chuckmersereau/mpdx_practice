@@ -38,7 +38,7 @@ describe('tools.appeals.wizard.component', () => {
             expect($ctrl.appeal).toEqual({});
             expect($ctrl.statuses).toEqual([]);
             expect($ctrl.tags).toEqual([]);
-            expect($ctrl.excludes).toEqual([]);
+            expect($ctrl.excludes).toEqual(['doNotAskAppeals']);
         });
         it('should build the goal object', () => {
             $ctrl.init();

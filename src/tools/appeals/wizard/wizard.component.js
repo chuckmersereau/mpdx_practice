@@ -37,7 +37,7 @@ class WizardController {
     init() {
         this.statuses = [];
         this.tags = [];
-        this.excludes = [];
+        this.excludes = ['doNotAskAppeals'];
         this.appeal = {};
         this.saving = false;
         this.goal = {
