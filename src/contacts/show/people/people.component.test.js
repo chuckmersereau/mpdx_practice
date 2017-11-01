@@ -142,7 +142,7 @@ describe('contacts.show.people.component', () => {
         it('should set person.selected_for_merge to false', () => {
             let person1 = { selected_for_merge: true };
             let person2 = { selected_for_merge: true };
-            $ctrl.selectedPeople = [person1, person2];
+            $ctrl.data = [person1, person2];
             $ctrl.cancelMerge();
             expect(person1.selected_for_merge).toBeFalsy();
             expect(person2.selected_for_merge).toBeFalsy();
