@@ -3,7 +3,7 @@ import isEqual from 'lodash/fp/isEqual';
 
 describe('donation.modal.controller', () => {
     let $ctrl, controller, scope, gettextCatalog, accounts, alerts, designationAccounts, donations, api;
-    let donation = { id: 'donation_id' };
+    let donation = { id: 'donation_id', amount: '0.00' };
     beforeEach(() => {
         angular.mock.module(modalController);
         inject((
@@ -103,7 +103,7 @@ describe('donation.modal.controller', () => {
 
             it('should call donations.save', () => {
                 $ctrl.save();
-                expect(donations.save).toHaveBeenCalledWith(donation);
+                expect(donations.save).toHaveBeenCalledWith({ id: 'donation_id' });
             });
 
             it('should hide modal', (done) => {
