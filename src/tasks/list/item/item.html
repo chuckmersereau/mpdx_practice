@@ -40,7 +40,7 @@
             </a>
         </span>
         <span class="tags">
-            <span class="tag" ng-repeat="tag in ::$ctrl.task.tag_list">{{ ::tag |limitTo: 20 }}{{ ::tag.length > 20 ? '...' : '' }}</span>
+            <span class="tag" ng-repeat="tag in $ctrl.task.tag_list">{{ ::tag |limitTo: 20 }}{{ ::tag.length > 20 ? '...' : '' }}</span>
         </span>
     </div>
 </div>

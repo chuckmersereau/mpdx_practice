@@ -23,17 +23,29 @@ class RemoveTagController {
     }
     removeTag(tag) {
         const taskIds = map('id', this.selectedTasks);
-        const params = [{
-            filter: {
-                account_list_id: this.api.account_list_id,
-                task_ids: joinComma(taskIds)
-            },
-            name: tag
-        }];
         const message = this.gettextCatalog.getString('Are you sure you wish to remove the selected tag?');
         return this.modal.confirm(message).then(() => {
-            return this.api.delete({ url: 'tasks/tags/bulk', data: params, type: 'tags' }).then(() => {
+            return this.api.delete({
+                url: 'tasks/tags/bulk',
+                data: {
+                    data: [{
+                        data: {
+                            attributes: {
+                                name: tag
+                            }
+                        }
+                    }],
+                    filter: {
+                        account_list_id: this.api.account_list_id,
+                        task_ids: joinComma(taskIds)
+                    },
+                    type: 'tags'
+                },
+                autoParams: false,
+                doSerialization: false
+            }).then(() => {
                 this.alerts.addAlert(this.gettextCatalog.getString('Tag successfully removed.'));
+                this.$rootScope.$emit('taskTagDeleted', { taskIds: taskIds, tag: tag });
                 this.$scope.$hide();
             });
         });

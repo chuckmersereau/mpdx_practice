@@ -43,6 +43,23 @@ describe('tasks.list.item.component', () => {
             expect($ctrl.showContacts).toBeFalsy();
             expect($ctrl.showComments).toBeFalsy();
             expect($ctrl.loaded).toBeFalsy();
+            $ctrl.$onDestroy();
+        });
+        it('should handle tag deletion', () => {
+            $ctrl.task = { id: 1, tag_list: ['a', 'b'] };
+            $ctrl.$onInit();
+            rootScope.$emit('taskTagDeleted', { taskIds: [1], tag: 'a' });
+            rootScope.$digest();
+            expect($ctrl.task.tag_list).toEqual(['b']);
+            $ctrl.$onDestroy();
+        });
+        it('should ignore other task ids', () => {
+            $ctrl.task = { id: 1, tag_list: ['a', 'b'] };
+            $ctrl.$onInit();
+            rootScope.$emit('taskTagDeleted', { taskIds: [2], tag: 'a' });
+            rootScope.$digest();
+            expect($ctrl.task.tag_list).toEqual(['a', 'b']);
+            $ctrl.$onDestroy();
         });
     });
     describe('addComment', () => {
