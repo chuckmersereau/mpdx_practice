@@ -1,5 +1,6 @@
 import list from './list.component';
 import assign from 'lodash/fp/assign';
+import map from 'lodash/fp/map';
 
 describe('contacts.list.component', () => {
     let $ctrl, contacts, contactsTags, rootScope, scope, componentController, modal, tasks, alerts, gettextCatalog,
@@ -339,7 +340,7 @@ describe('contacts.list.component', () => {
             },
             overrideGetAsPost: true
         };
-        let contact = { id: 1, name: 'a' };
+        let contact = { id: 1, name: 'a', pledge_amount: null, pledge_frequency: null };
         let result = [contact];
         result.meta = {
             to: 1,
@@ -349,6 +350,7 @@ describe('contacts.list.component', () => {
             spyOn(contacts, 'buildFilterParams').and.callFake(() => { return {}; });
             $ctrl.page = 1;
             $ctrl.listLoadCount = 1;
+            spyOn(contacts, 'fixPledgeAmountAndFrequencies').and.callFake((data) => map(c => c, data));
         });
         it('should set the loading flag', () => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve(result));
@@ -396,7 +398,7 @@ describe('contacts.list.component', () => {
         });
         it('should set contacts on page 1', (done) => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve(result));
-            $ctrl.data = [{ id: 2, name: 'b' }];
+            $ctrl.data = [{ id: 2, name: 'b', pledge_amount: null, pledge_frequency: null }];
             $ctrl.load().then(() => {
                 expect($ctrl.data).toEqual([contact]);
                 done();

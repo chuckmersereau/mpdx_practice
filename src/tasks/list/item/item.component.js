@@ -6,11 +6,12 @@ import reject from 'lodash/fp/reject';
 class ItemController {
     constructor(
         $log, $rootScope, gettextCatalog,
-        api, modal, serverConstants, tasks, users
+        api, contacts, modal, serverConstants, tasks, users
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
         this.api = api;
+        this.contacts = contacts;
         this.gettextCatalog = gettextCatalog;
         this.modal = modal;
         this.serverConstants = serverConstants;
@@ -57,6 +58,7 @@ class ItemController {
         }).then((task) => {
             this.loaded = true;
             this.task = task;
+            this.task.contacts = this.contacts.fixPledgeAmountAndFrequencies(task.contacts);
             /* istanbul ignore next */
             this.$log.debug(`tasks/${task.id}`, task);
             return task;

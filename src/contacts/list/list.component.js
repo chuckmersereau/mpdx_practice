@@ -1,9 +1,7 @@
 import ceil from 'lodash/fp/ceil';
 import concat from 'lodash/fp/concat';
 import defaultTo from 'lodash/fp/defaultTo';
-import get from 'lodash/fp/get';
 import includes from 'lodash/fp/includes';
-import isNil from 'lodash/fp/isNil';
 import map from 'lodash/fp/map';
 import pullAllBy from 'lodash/fp/pullAllBy';
 import reduce from 'lodash/fp/reduce';
@@ -224,16 +222,7 @@ class ListController {
                 this.loading = false;
                 return;
             }
-            const newContacts = map((contact) => {
-                if (!isNil(contact.pledge_amount)) {
-                    contact.pledge_amount = parseFloat(contact.pledge_amount); // fix bad api serialization as string
-                }
-                if (!isNil(contact.pledge_frequency)) {
-                    const frequency = this.serverConstants.getPledgeFrequency(contact.pledge_frequency);
-                    contact.pledge_frequency = get('value', frequency);
-                }
-                return contact;
-            }, angular.copy(data));
+            const newContacts = this.contacts.fixPledgeAmountAndFrequencies(data);
             if (reset) {
                 this.data = newContacts;
             } else {

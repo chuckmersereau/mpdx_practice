@@ -324,7 +324,8 @@ export default class Routes {
                         tasksFilter.reset($stateParams.filters);
                     });
                 },
-                tag: /* @ngInject*/ (tasksTags) => tasksTags.load()
+                tag: /* @ngInject*/ (tasksTags) => tasksTags.load(),
+                0: /* @ngInject*/ (serverConstants) => serverConstants.load(['pledge_frequency_hashes'])
             }
         }).state({
             name: 'tools',

@@ -283,6 +283,15 @@ class ContactsService {
             }
         });
     }
+    fixPledgeAmountAndFrequencies(data) {
+        return map((contact) => {
+            contact.pledge_amount = isNil(contact.pledge_amount) ? null : parseFloat(contact.pledge_amount);
+            contact.pledge_frequency = isNil(contact.pledge_frequency)
+                ? null
+                : this.serverConstants.getPledgeFrequencyValue(contact.pledge_frequency);
+            return contact;
+        }, angular.copy(data));
+    }
 }
 
 import alerts from 'common/alerts/alerts.service';
