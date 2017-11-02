@@ -60,7 +60,7 @@ describe('tools.appeals.wizard.component', () => {
             $ctrl.goal.letterCost = 5;
             $ctrl.goal.adminPercent = 12;
             $ctrl.calculateGoal();
-            expect($ctrl.appeal.amount).toEqual(11.2);
+            expect($ctrl.appeal.amount).toEqual(11.36);
         });
     });
     describe('selectAllStatuses', () => {

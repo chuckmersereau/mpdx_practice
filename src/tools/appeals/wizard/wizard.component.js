@@ -49,10 +49,10 @@ class WizardController {
         this.calculateGoal();
     }
     calculateGoal() {
-        const adminPercent = Number(this.goal.adminPercent) / 100 + 1;
+        const adminPercent = 1 - Number(this.goal.adminPercent) / 100;
         const initialGoal = Number(this.goal.initial);
         const letterCost = Number(this.goal.letterCost);
-        this.appeal.amount = Math.round((initialGoal + letterCost) * adminPercent * 100) / 100;
+        this.appeal.amount = Math.round((initialGoal + letterCost) / adminPercent * 100) / 100;
     }
     selectAllStatuses() {
         if (this.statuses.length === this.statusFilter.options.length) {
