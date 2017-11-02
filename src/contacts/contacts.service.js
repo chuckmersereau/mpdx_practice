@@ -93,9 +93,14 @@ class ContactsService {
         });
     }
     getNames(ids) {
-        return this.api.get('contacts', {
-            fields: { contacts: 'name' },
-            filter: { ids: joinComma(ids) }
+        return this.api.get({
+            url: 'contacts',
+            data: {
+                fields: { contacts: 'name' },
+                filter: { ids: joinComma(ids) }
+            },
+            overrideGetAsPost: true,
+            autoParams: false
         });
     }
     search(keyword) {

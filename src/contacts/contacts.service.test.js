@@ -149,9 +149,14 @@ describe('contacts.service', () => {
         it('should query an array of ids for names', () => {
             spyOn(api, 'get').and.callFake((data) => Promise.resolve(data));
             contacts.getNames([1, 2]);
-            expect(api.get).toHaveBeenCalledWith('contacts', {
-                fields: { contacts: 'name' },
-                filter: { ids: '1,2' }
+            expect(api.get).toHaveBeenCalledWith({
+                url: 'contacts',
+                data: {
+                    fields: { contacts: 'name' },
+                    filter: { ids: '1,2' }
+                },
+                overrideGetAsPost: true,
+                autoParams: false
             });
         });
     });

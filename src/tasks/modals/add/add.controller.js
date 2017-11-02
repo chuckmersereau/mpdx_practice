@@ -107,6 +107,9 @@ class AddTaskController {
             this.$scope.$hide();
         });
     }
+    getName(contact) {
+        return get(contact, this.contactNames);
+    }
 }
 
 import contacts from 'contacts/contacts.service';
