@@ -202,7 +202,6 @@ class TasksService {
         const contactParams = angular.copy(contactsList);
         const inContactView = startsWith('contacts.show', $state.current.name);
         const contactIdList = inContactView ? union(contactParams, [contacts.current.id]) : contactParams;
-        console.log('contact id list: ', contactIdList);
         return this.getNames(contactIdList);
     }
 }
