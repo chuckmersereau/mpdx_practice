@@ -177,7 +177,10 @@ class TasksService {
             data: {
                 per_page: 10000,
                 fields: { contacts: 'name' },
-                filter: { ids: joinComma(ids) }
+                filter: {
+                    ids: joinComma(ids),
+                    status: 'active,hidden,null'
+                }
             },
             overrideGetAsPost: true,
             autoParams: false
@@ -196,10 +199,10 @@ class TasksService {
         });
     }
     getContactsForLogModal($state, contacts, contactsList) {
-        let contactIdList = angular.copy(contactsList);
-        if (startsWith('contacts.show', $state.current.name)) {
-            contactIdList = union(contactIdList, [contacts.current.id]);
-        }
+        const contactParams = angular.copy(contactsList);
+        const inContactView = startsWith('contacts.show', $state.current.name);
+        const contactIdList = inContactView ? union(contactParams, [contacts.current.id]) : contactParams;
+        console.log('contact id list: ', contactIdList);
         return this.getNames(contactIdList);
     }
 }

@@ -1,8 +1,5 @@
 import service from './tasks.service';
-import assign from 'lodash/fp/assign';
-import concat from 'lodash/fp/concat';
 import moment from 'moment';
-import isEqual from 'lodash/fp/isEqual';
 
 const accountListId = 123;
 const contactList = [];
@@ -224,7 +221,7 @@ describe('tasks.service', () => {
                 spyOn(tasks, 'reuseTask').and.callFake(() => true);
                 spyOn(tasks, 'useContacts').and.callFake(() => false);
                 spyOn(tasks, 'mutateComments').and.callFake(() => ['a']);
-                spyOn(tasks.$log, 'debug').and.callFake(() => {});
+                spyOn(tasks, 'getNames').and.callFake(() => Promise.resolve());
                 jasmine.clock().install();
                 const day = moment('2015-12-22').toDate();
                 jasmine.clock().mockDate(day);
@@ -255,7 +252,10 @@ describe('tasks.service', () => {
                 data: {
                     per_page: 10000,
                     fields: { contacts: 'name' },
-                    filter: { ids: '1,2' }
+                    filter: {
+                        ids: '1,2',
+                        status: 'active,hidden,null'
+                    }
                 },
                 overrideGetAsPost: true,
                 autoParams: false
@@ -283,10 +283,17 @@ describe('tasks.service', () => {
         });
         it('should handle the resolves', () => {
             spyOn(modal, 'open').and.callThrough();
-            tasks.logModal();
+            tasks.addModal({});
             expect(tasksTags.load).toHaveBeenCalledWith();
-            expect(serverConstants.load).toHaveBeenCalledWith(['activity_hashes', 'next_actions', 'results', 'status_hashes']);
-            expect(tasks.getDataForAddTask).toHaveBeenCalledWith({});
+            expect(serverConstants.load).toHaveBeenCalledWith(['activity_hashes']);
+            expect(tasks.getDataForAddTask).toHaveBeenCalledWith({
+                contacts: jasmine.any(Object),
+                $state: jasmine.any(Object),
+                contactsList: [],
+                activityType: null,
+                task: {},
+                comments: []
+            });
         });
     });
 });
