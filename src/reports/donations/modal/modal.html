@@ -22,18 +22,29 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="donation_date"><translate>Date</translate> <span class="text-danger">*</span></label>
-            <input bs-datepicker
-                   type="text"
-                   class="form-control"
-                   ng-model="$ctrl.donation.donation_date"
-                   name="date"
-                   id="donation_date"
-                   data-date-type="string"
-                   data-date-format="{{::$ctrl.locale.dateTimeFormat}}"
-                   data-model-date-format="yyyy-MM-dd"
-                   data-autoclose="1"
-                   required>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="donation_date"><translate>Date</translate> <span class="text-danger">*</span></label>
+                    <input bs-datepicker
+                           type="text"
+                           class="form-control"
+                           ng-model="$ctrl.donation.donation_date"
+                           name="date"
+                           id="donation_date"
+                           data-date-type="string"
+                           data-date-format="{{::$ctrl.locale.dateTimeFormat}}"
+                           data-model-date-format="yyyy-MM-dd"
+                           data-autoclose="1"
+                           required>
+                </div>
+                <div class="col-md-6">
+                    <label for="donation_motivation" translate>Motivation</label>
+                    <input class="form-control"
+                           id="donation_motivation"
+                           disabled
+                           ng-model="$ctrl.donation.motivation">
+                </div>
+            </div>
         </div>
         <div class="form-group">
             <div class="row">
