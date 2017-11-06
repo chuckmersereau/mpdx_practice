@@ -98,21 +98,6 @@ describe('tasks.modals.edit.controller', () => {
         });
     });
 
-    describe('addContact', () => {
-        it('should add empty object to contacts', () => {
-            $ctrl.addContact();
-            expect($ctrl.task.contacts).toEqual([{}]);
-        });
-    });
-
-    describe('setContact', () => {
-        it('should set contacts(index) to contact', () => {
-            $ctrl.task.contacts = [{}, {}];
-            $ctrl.setContact({ id: 'contact_id' }, 1);
-            expect($ctrl.task.contacts).toEqual([{}, { id: 'contact_id' }]);
-        });
-    });
-
     describe('delete', () => {
         beforeEach(() => {
             spyOn(tasks, 'delete').and.callFake(() => Promise.resolve());

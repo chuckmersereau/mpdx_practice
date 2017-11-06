@@ -8,6 +8,7 @@ import avatar from './avatar/avatar.component';
 import bgImg from './bgImg/bgImg.directive';
 import chosen from './chosen/chosen.directive';
 import collectionSelector from './collectionSelector/index.module';
+import contactsSelector from './contactsSelector/selector.component';
 import cover from './cover/cover.component';
 import datetimepicker from './datetimepicker/datetimepicker.component';
 import designationAccounts from './designationAccounts/designationAccounts.service';
@@ -47,6 +48,7 @@ export default angular.module('mpdx.common', [
     bgImg,
     chosen,
     collectionSelector,
+    contactsSelector,
     cover,
     datetimepicker,
     designationAccounts,

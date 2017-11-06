@@ -42,16 +42,6 @@ class EditTaskController {
         });
     }
 
-    addContact() {
-        this.task.contacts.push({});
-    }
-
-    setContact(contact, index) {
-        if (contact) {
-            this.task.contacts[index] = contact;
-        }
-    }
-
     delete() {
         return this.tasks.delete(
             this.task

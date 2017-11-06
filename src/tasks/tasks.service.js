@@ -8,6 +8,12 @@ import reject from 'lodash/fp/reject';
 import joinComma from 'common/fp/joinComma';
 import reduce from 'lodash/fp/reduce';
 import uuid from 'uuid/v1';
+import emptyToNull from 'common/fp/emptyToNull';
+import get from 'lodash/fp/get';
+import isString from 'lodash/fp/isString';
+import moment from 'moment';
+import startsWith from 'lodash/fp/startsWith';
+import union from 'lodash/fp/union';
 
 class TasksService {
     constructor(
@@ -103,14 +109,78 @@ class TasksService {
             controller: 'addTaskController',
             resolve: {
                 tags: () => this.tasksTags.load(),
-                0: () => this.serverConstants.load(['activity_hashes'])
-            },
-            locals: {
-                activityType: activityType,
-                comments: comments,
-                contactsList: contactsList,
-                task: task
+                0: () => this.serverConstants.load(['activity_hashes']),
+                resolveObject: /* @ngInject*/ (contacts, $state) =>
+                    this.getDataForAddTask({
+                        contacts: contacts,
+                        $state: $state,
+                        contactsList: contactsList,
+                        activityType: activityType,
+                        task: task,
+                        comments: comments
+                    })
             }
+        });
+    }
+    getDataForAddTask({ contacts, $state, contactsList, activityType, task, comments }) {
+        const reuseTask = this.reuseTask(task, activityType);
+        const useContacts = this.useContacts(task, reuseTask);
+        const contactParams = useContacts ? angular.copy(contactsList) : [];
+        const inContactView = startsWith('contacts.show', $state.current.name);
+        const contactIdList = inContactView ? union(contactParams, [contacts.current.id]) : contactParams;
+        const newTask = reuseTask
+            ? {
+                activity_type: activityType,
+                comments: this.mutateComments(comments),
+                start_at: moment().add(2, 'd').toISOString(),
+                subject: get('subject', task),
+                tag_list: get('tag_list', task)
+            }
+            : { activity_type: activityType };
+        /* istanbul ignore next */
+        this.$log.debug('Add task mutated task', newTask);
+
+        return this.getNames(contactIdList).then((data) => {
+            return {
+                contactsList: data,
+                task: newTask
+            };
+        });
+    }
+    reuseTask(task, activityType) {
+        return get('result', task) && activityType;
+    }
+    useContacts(task, reuseTask) {
+        return isNilOrEmpty(task) || (task && reuseTask);
+    }
+    mutateComments(comments) {
+        return emptyToNull(
+            reduce((result, comment) => {
+                const id = uuid();
+                return isNilOrEmpty(comment)
+                    ? result
+                    : concat(result,
+                        isString(comment)
+                            ? {
+                                id: id,
+                                body: comment,
+                                person: { id: this.users.current.id }
+                            }
+                            : assign(comment, { id: id })
+                    );
+            }, [], comments)
+        );
+    }
+    getNames(ids) {
+        return this.api.get({
+            url: 'contacts',
+            data: {
+                per_page: 10000,
+                fields: { contacts: 'name' },
+                filter: { ids: joinComma(ids) }
+            },
+            overrideGetAsPost: true,
+            autoParams: false
         });
     }
     logModal(contactsList = []) {
@@ -119,12 +189,18 @@ class TasksService {
             controller: 'logTaskController',
             resolve: {
                 tags: () => this.tasksTags.load(),
-                0: () => this.serverConstants.load(['activity_hashes', 'next_actions', 'results', 'status_hashes'])
-            },
-            locals: {
-                contactsList: contactsList
+                0: () => this.serverConstants.load(['activity_hashes', 'next_actions', 'results', 'status_hashes']),
+                contactsList: /* @ngInject*/ ($state, contacts) =>
+                    this.getContactsForLogModal($state, contacts, contactsList)
             }
         });
+    }
+    getContactsForLogModal($state, contacts, contactsList) {
+        let contactIdList = angular.copy(contactsList);
+        if (startsWith('contacts.show', $state.current.name)) {
+            contactIdList = union(contactIdList, [contacts.current.id]);
+        }
+        return this.getNames(contactIdList);
     }
 }
 
