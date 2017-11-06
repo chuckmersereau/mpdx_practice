@@ -153,7 +153,10 @@ describe('contacts.service', () => {
                 url: 'contacts',
                 data: {
                     fields: { contacts: 'name' },
-                    filter: { ids: '1,2' }
+                    filter: {
+                        ids: '1,2',
+                        status: 'active,hidden,null'
+                    }
                 },
                 overrideGetAsPost: true,
                 autoParams: false

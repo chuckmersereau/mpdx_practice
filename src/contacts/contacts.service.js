@@ -97,7 +97,10 @@ class ContactsService {
             url: 'contacts',
             data: {
                 fields: { contacts: 'name' },
-                filter: { ids: joinComma(ids) }
+                filter: {
+                    ids: joinComma(ids),
+                    status: 'active,hidden,null'
+                }
             },
             overrideGetAsPost: true,
             autoParams: false
