@@ -2,10 +2,12 @@ import get from 'lodash/fp/get';
 
 class ConnectController {
     constructor(
-        $rootScope, gettextCatalog,
+        $rootScope, $window,
+        gettextCatalog,
         accounts, alerts, api, help, preferencesOrganization, serverConstants, users, setup
     ) {
         this.$rootScope = $rootScope;
+        this.$window = $window;
         this.gettextCatalog = gettextCatalog;
 
         this.accounts = accounts;
@@ -80,6 +82,11 @@ class ConnectController {
 
     showOrganizationHelp() {
         this.help.showArticle(this.gettextCatalog.getString('58f96cc32c7d3a057f886e20'));
+    }
+
+    authenticate(organizationId) {
+        this.saving = true;
+        this.$window.location.href = this.preferencesOrganization.oAuth(organizationId, 'setup/connect');
     }
 }
 
