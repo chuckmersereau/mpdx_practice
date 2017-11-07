@@ -8,23 +8,19 @@ import reduce from 'lodash/fp/reduce';
 class EditTaskController {
     constructor(
         $log, $scope,
-        contacts, modal, serverConstants, tasks, tasksTags, users,
+        serverConstants, tasks, tasksTags,
         task
     ) {
         this.$log = $log;
         this.$scope = $scope;
-        this.contacts = contacts;
-        this.modal = modal;
         this.serverConstants = serverConstants;
         this.tasksTags = tasksTags;
         this.tasks = tasks;
-        this.users = users;
 
         this.task = angular.copy(task);
         this.taskInitialState = angular.copy(task);
         this.noDate = isNil(this.task.start_at);
     }
-
     save() {
         this.handleActivityContacts();
         if (this.noDate) {
@@ -33,6 +29,7 @@ class EditTaskController {
         let patch = createPatch(this.taskInitialState, this.task);
         /* istanbul ignore next */
         this.$log.debug('task patch', patch);
+
         return this.tasks.save(
             patch,
             this.comment
@@ -51,7 +48,6 @@ class EditTaskController {
             return find((a) => a.contact.id === value.id, this.task.activity_contacts) ? result : concat(result, value);
         }, [], this.task.contacts);
     }
-
     delete() {
         return this.tasks.delete(
             this.task
@@ -61,13 +57,10 @@ class EditTaskController {
     }
 }
 
-import contacts from 'contacts/contacts.service';
-import modal from 'common/modal/modal.service';
 import serverConstants from 'common/serverConstants/serverConstants.service';
 import tasksTags from 'tasks/filter/tags/tags.service';
 import tasks from 'tasks/tasks.service';
-import users from 'common/users/users.service';
 
 export default angular.module('mpdx.tasks.modals.edit.controller', [
-    contacts, modal, serverConstants, tasksTags, tasks, users
+    serverConstants, tasksTags, tasks
 ]).controller('editTaskController', EditTaskController).name;
