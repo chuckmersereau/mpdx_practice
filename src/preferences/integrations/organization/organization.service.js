@@ -2,12 +2,15 @@ import config from 'config';
 
 class OrganizationService {
     constructor(
-        $log, Upload,
+        $log, $window,
+        Upload,
         api, users
     ) {
+        this.$log = $log;
+        this.$window = $window;
+
         this.Upload = Upload;
 
-        this.$log = $log;
         this.api = api;
         this.users = users;
 
@@ -83,10 +86,23 @@ class OrganizationService {
             }
         });
     }
+    oAuth(organizationId, route = 'preferences/integrations?selectedTab=organization') {
+        const redirectUrl
+            = this.$window.encodeURIComponent(config.baseUrl + route);
+        const token = this.$window.localStorage.getItem('token');
+        const accountListId = this.api.account_list_id;
+        return `${config.oAuthUrl}donorhub?account_list_id=${accountListId}`
+                + `&redirect_to=${redirectUrl}`
+                + `&access_token=${token}`
+                + `&organization_id=${organizationId}`;
+    }
 }
 
 import Upload from 'ng-file-upload';
+import api from 'common/api/api.service';
+import users from 'common/users/users.service';
 
 export default angular.module('mpdx.preferences.integrations.organization.service', [
-    Upload
+    Upload,
+    api, users
 ]).service('preferencesOrganization', OrganizationService).name;

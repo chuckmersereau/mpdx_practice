@@ -49,7 +49,7 @@
                             <p translate>First you need to <a href="https://thekey.me/cas/logout" target="_blank" translate>click here to log out of your personal Key account</a></p>
                             <p translate>Next, <a href="/logout" translate>click here to log out of MPDX</a> so you can log back in with your offical key account.</p>
                         </div>
-                        <div class="row" ng-if="['DataServer', 'DataServerPtc', 'DataServerNavigators'].includes($ctrl.selected.api_class)">
+                        <div class="row" ng-if="['DataServer', 'DataServerPtc', 'DataServerNavigators'].includes($ctrl.selected.api_class) && !$ctrl.selected.oauth">
                             <div class="col-xs-6">
                                 <label for="username" translate>Username</label>
                                 <input type="text" class="form-control" id="username" ng-model="$ctrl.username" required>
@@ -59,9 +59,16 @@
                                 <input type="password" class="form-control" id="password" ng-model="$ctrl.password" required>
                             </div>
                         </div>
+                        <div ng-if="$ctrl.selected.oauth" class="mt-4">
+                            <div class="alert alert-info" translate>You will be taken to your organization's donation services system to grant MPDX permission to access your donation data.</div>
+                        </div>
                         <div class="panel__connect-links text-center">
                             <a ng-click="$ctrl.reset()" class="btn btn-link" style="width: 48%;" ng-if="$ctrl.users.organizationAccounts.length > 0" translate>Cancel</a>
-                            <button ng-disabled="!addOrganization.$valid || $ctrl.saving" class="btn btn-primary"style="width: 48%;">
+                            <button ng-disabled="!addOrganization.$valid || $ctrl.saving" class="btn btn-primary" style="width: 48%;" ng-if="!$ctrl.selected.oauth">
+                                <translate>Connect</translate>
+                                <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-class="{ 'hidden': !$ctrl.saving }"></i>
+                            </button>
+                            <button ng-click="$ctrl.authenticate($ctrl.selectedKey)" class="btn btn-primary" style="width: 48%;" ng-disabled="$ctrl.saving" ng-if="$ctrl.selected.oauth">
                                 <translate>Connect</translate>
                                 <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-class="{ 'hidden': !$ctrl.saving }"></i>
                             </button>
