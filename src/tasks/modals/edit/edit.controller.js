@@ -1,7 +1,9 @@
 import createPatch from 'common/fp/createPatch';
+import concat from 'lodash/fp/concat';
+import find from 'lodash/fp/find';
+import map from 'lodash/fp/map';
 import isNil from 'lodash/fp/isNil';
-import keys from 'lodash/fp/keys';
-import remove from 'lodash/fp/remove';
+import reduce from 'lodash/fp/reduce';
 
 class EditTaskController {
     constructor(
@@ -20,17 +22,14 @@ class EditTaskController {
 
         this.task = angular.copy(task);
         this.taskInitialState = angular.copy(task);
-        this.task.contacts = [];
         this.noDate = isNil(this.task.start_at);
     }
 
     save() {
+        this.handleActivityContacts();
         if (this.noDate) {
             this.task.start_at = null;
         }
-        this.task.contacts = remove((contact) => {
-            return keys(contact).length === 0;
-        }, this.task.contacts);
         let patch = createPatch(this.taskInitialState, this.task);
         /* istanbul ignore next */
         this.$log.debug('task patch', patch);
@@ -40,6 +39,17 @@ class EditTaskController {
         ).then(() => {
             this.$scope.$hide();
         });
+    }
+    handleActivityContacts() {
+        this.task.activity_contacts = map((activity) => {
+            if (!find({ id: activity.contact.id }, this.task.contacts)) {
+                activity._destroy = 1;
+            }
+            return activity;
+        }, this.task.activity_contacts);
+        this.task.contacts = reduce((result, value) => {
+            return find((a) => a.contact.id === value.id, this.task.activity_contacts) ? result : concat(result, value);
+        }, [], this.task.contacts);
     }
 
     delete() {

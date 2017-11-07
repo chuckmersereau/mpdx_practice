@@ -46,8 +46,10 @@ class ItemController {
     }
     load() {
         return this.api.get(`tasks/${this.task.id}`, {
-            include: 'comments,comments.person,contacts,contacts.addresses,contacts.people,contacts.people.facebook_accounts,contacts.people.phone_numbers,contacts.people.email_addresses',
+            include: 'activity_contacts,comments,comments.person,contacts,contacts.addresses,contacts.people,'
+            + 'contacts.people.facebook_accounts,contacts.people.phone_numbers,contacts.people.email_addresses',
             fields: {
+                activity_contacts: 'contact',
                 contacts: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people',
                 addresses: 'city,historic,primary_mailing_address,postal_code,state,source,street',
                 email_addresses: 'email,historic,primary',

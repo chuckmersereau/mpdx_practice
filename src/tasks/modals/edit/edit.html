@@ -71,18 +71,8 @@
             <option value=""></option>
         </select>
     </div>
-    <label translate>Contacts</label>
-    <div class="form-group" ng-repeat="activityContact in $ctrl.task.activity_contacts track by activityContact.id" ng-if="activityContact._destroy !== 1">
-        <div class="input-group">
-            <input class="form-control" type="text" value="{{activityContact.contact.name}}" disabled="disabled">
-            <span class="input-group-btn">
-                <button type="button" ng-click="activityContact._destroy = 1" class="btn btn-danger" title="{{::'Delete' | translate}}">
-                    <i class="fa fa-trash"></i>
-                </button>
-            </span>
-        </div>
-    </div>
     <div class="form-group">
+        <label translate>Contacts</label>
         <contacts-selector ng-model="$ctrl.task.contacts"></contacts-selector>
     </div>
     <div class="form-group">
