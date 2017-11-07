@@ -3,9 +3,7 @@
             ng-model="$ctrl.selectedContacts"
             display-property="name"
             on-tag-adding="$ctrl.addContact($tag)"
-            on-tag-added="$ctrl.onContactAdded({$tag: $tag})"
             on-tag-removing="$ctrl.removeContact($tag)"
-            on-tag-removed="$ctrl.onContactRemoved({$tag: $tag})"
             replace-spaces-with-dashes="false"
             max-length="255">
     <auto-complete source="$ctrl.contacts.search($query)" min-length="0" select-first-match="false"></auto-complete>

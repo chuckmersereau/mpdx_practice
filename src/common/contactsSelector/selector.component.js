@@ -3,10 +3,8 @@ import isArray from 'lodash/fp/isArray';
 
 class SelectorController {
     constructor(
-        $filter,
         contacts
     ) {
-        this.$filter = $filter;
         this.contacts = contacts;
     }
     $onInit() {
@@ -36,9 +34,7 @@ const Selector = {
     template: require('./selector.html'),
     controller: SelectorController,
     bindings: {
-        ngModel: '=',
-        onContactAdded: '&',
-        onContactRemoved: '&'
+        ngModel: '='
     }
 };
 

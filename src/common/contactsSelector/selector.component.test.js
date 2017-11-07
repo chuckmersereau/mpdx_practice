@@ -23,6 +23,11 @@ describe('common.contactsSelector.component', () => {
             onTagRemoved: () => {}
         });
     }
+    describe('constructor', () => {
+        it('should expose contacts service to view', () => {
+            expect($ctrl.contacts).toBeDefined();
+        });
+    });
     describe('$onInit', () => {
         beforeEach(() => {
             spyOn($ctrl, 'init').and.callFake(() => {});
