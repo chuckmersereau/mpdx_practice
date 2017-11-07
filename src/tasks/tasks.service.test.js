@@ -99,8 +99,8 @@ describe('tasks.service', () => {
                 template: require('./modals/log/log.html'),
                 controller: 'logTaskController',
                 resolve: {
-                    tags: jasmine.any(Function),
-                    0: jasmine.any(Function),
+                    tags: ['tasksTags', jasmine.any(Function)],
+                    0: ['serverConstants', jasmine.any(Function)],
                     contactsList: [ '$state', 'contacts', jasmine.any(Function) ]
                 }
             });
@@ -275,8 +275,8 @@ describe('tasks.service', () => {
                 template: require('./modals/add/add.html'),
                 controller: 'addTaskController',
                 resolve: {
-                    tags: jasmine.any(Function),
-                    0: jasmine.any(Function),
+                    tags: ['tasksTags', jasmine.any(Function)],
+                    0: ['serverConstants', jasmine.any(Function)],
                     resolveObject: [ 'contacts', '$state', jasmine.any(Function) ]
                 }
             });

@@ -18,16 +18,13 @@ import union from 'lodash/fp/union';
 class TasksService {
     constructor(
         $rootScope, $log, gettextCatalog,
-        api, modal, serverConstants, tasksModals, tasksTags, users
+        api, modal, users
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
         this.api = api;
         this.gettextCatalog = gettextCatalog;
         this.modal = modal;
-        this.serverConstants = serverConstants;
-        this.tasksModals = tasksModals;
-        this.tasksTags = tasksTags;
         this.users = users;
 
         this.analytics = null;
@@ -108,8 +105,8 @@ class TasksService {
             template: require('./modals/add/add.html'),
             controller: 'addTaskController',
             resolve: {
-                tags: () => this.tasksTags.load(),
-                0: () => this.serverConstants.load(['activity_hashes']),
+                tags: /* @ngInject*/ (tasksTags) => tasksTags.load(),
+                0: /* @ngInject*/ (serverConstants) => serverConstants.load(['activity_hashes']),
                 resolveObject: /* @ngInject*/ (contacts, $state) =>
                     this.getDataForAddTask({
                         contacts: contacts,
@@ -191,8 +188,9 @@ class TasksService {
             template: require('./modals/log/log.html'),
             controller: 'logTaskController',
             resolve: {
-                tags: () => this.tasksTags.load(),
-                0: () => this.serverConstants.load(['activity_hashes', 'next_actions', 'results', 'status_hashes']),
+                tags: /* @ngInject*/ (tasksTags) => tasksTags.load(),
+                0: /* @ngInject*/ (serverConstants) =>
+                    serverConstants.load(['activity_hashes', 'next_actions', 'results', 'status_hashes']),
                 contactsList: /* @ngInject*/ ($state, contacts) =>
                     this.getContactsForLogModal($state, contacts, contactsList)
             }
@@ -210,11 +208,10 @@ import api from 'common/api/api.service';
 import contacts from 'contacts/contacts.service';
 import getText from 'angular-gettext';
 import serverConstants from 'common/serverConstants/serverConstants.service';
-import tasksModals from './modals/modals.service';
 import tasksTags from './filter/tags/tags.service';
 import users from 'common/users/users.service';
 
 export default angular.module('mpdx.tasks.service', [
     getText,
-    api, contacts, serverConstants, tasksModals, tasksTags, users
+    api, contacts, serverConstants, tasksTags, users
 ]).service('tasks', TasksService).name;

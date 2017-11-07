@@ -33,7 +33,8 @@ class AddTaskController {
 
 import serverConstants from 'common/serverConstants/serverConstants.service';
 import tasks from 'tasks/tasks.service';
+import tasksTags from 'tasks/filter/tags/tags.service';
 
 export default angular.module('mpdx.tasks.modals.add.controller', [
-    serverConstants, tasks
+    serverConstants, tasks, tasksTags
 ]).controller('addTaskController', AddTaskController).name;
