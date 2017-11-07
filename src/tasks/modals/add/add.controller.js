@@ -1,22 +1,19 @@
 class AddTaskController {
     constructor(
-        $log, $rootScope, $scope, $state,
-        serverConstants, tasks, tasksTags, users,
+        $log, $rootScope, $scope,
+        serverConstants, tasks, tasksTags,
         resolveObject
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
         this.$scope = $scope;
-        this.$state = $state;
         this.serverConstants = serverConstants;
         this.tasksTags = tasksTags;
         this.tasks = tasks;
-        this.users = users;
 
         /* istanbul ignore next */
         $log.debug('Add task params', resolveObject);
 
-        this.contactsList = [];
         this.task = resolveObject.task;
         this.contactsList = resolveObject.contactsList;
         this.setDueDate = true;
@@ -35,7 +32,7 @@ class AddTaskController {
 }
 
 import serverConstants from 'common/serverConstants/serverConstants.service';
-import tasks from '../../tasks.service';
+import tasks from 'tasks/tasks.service';
 
 export default angular.module('mpdx.tasks.modals.add.controller', [
     serverConstants, tasks

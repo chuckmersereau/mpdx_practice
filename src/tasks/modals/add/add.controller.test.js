@@ -9,7 +9,7 @@ describe('tasks.modals.add.controller', () => {
     let $ctrl, controller, tasks, scope, rootScope;
     beforeEach(() => {
         angular.mock.module(add);
-        inject(($controller, $rootScope, _tasks_, $state, _users_) => {
+        inject(($controller, $rootScope, _tasks_, _users_) => {
             rootScope = $rootScope;
             scope = $rootScope.$new();
             tasks = _tasks_;
