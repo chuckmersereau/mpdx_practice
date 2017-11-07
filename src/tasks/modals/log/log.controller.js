@@ -5,19 +5,17 @@ import reduce from 'lodash/fp/reduce';
 
 class LogTaskController {
     constructor(
-        $q, $rootScope, $scope, $state,
-        contacts, serverConstants, tasks, tasksTags, users,
+        $q, $rootScope, $scope,
+        contacts, serverConstants, tasks, tasksTags,
         contactsList
     ) {
         this.$q = $q;
         this.$rootScope = $rootScope;
         this.$scope = $scope;
-        this.$state = $state;
         this.contacts = contacts;
         this.serverConstants = serverConstants;
         this.tasksTags = tasksTags;
         this.tasks = tasks;
-        this.users = users;
 
         this.task = { completed: true };
         this.contactsList = contactsList;

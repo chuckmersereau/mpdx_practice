@@ -1,21 +1,17 @@
 import log from './log.controller';
 import assign from 'lodash/fp/assign';
-import concat from 'lodash/fp/concat';
 import each from 'lodash/fp/each';
-import isEqual from 'lodash/fp/isEqual';
-import union from 'lodash/fp/union';
 
 let contactList = [];
 const defaultTask = { completed: true };
 
 describe('tasks.modals.log.controller', () => {
-    let $ctrl, controller, contacts, tasks, scope, state, rootScope;
+    let $ctrl, controller, contacts, tasks, scope, rootScope;
     beforeEach(() => {
         angular.mock.module(log);
-        inject(($controller, $rootScope, _contacts_, _tasks_, $state) => {
+        inject(($controller, $rootScope, _contacts_, _tasks_) => {
             rootScope = $rootScope;
             scope = $rootScope.$new();
-            state = $state;
             contacts = _contacts_;
             tasks = _tasks_;
             controller = $controller;
@@ -39,16 +35,6 @@ describe('tasks.modals.log.controller', () => {
     describe('constructor', () => {
         it('should set the new task model to complete', () => {
             expect($ctrl.task).toEqual(defaultTask);
-        });
-    });
-    describe('called from a contact view page', () => {
-        beforeEach(() => {
-            state.current.name = 'contacts.show';
-            contacts.current = { id: 2 };
-            loadController();
-        });
-        it('should add the current contact', () => {
-            expect($ctrl.contactsList).toEqual(union(contactList, 2));
         });
     });
     describe('save', () => {
