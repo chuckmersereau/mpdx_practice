@@ -296,4 +296,33 @@ describe('tasks.service', () => {
             });
         });
     });
+    describe('getContactsForLogModal', () => {
+        let state = {
+            current: {
+                name: undefined
+            }
+        };
+        let contacts = {
+            current: {
+                id: undefined
+            }
+        };
+        const contactsList = [];
+        beforeEach(() => {
+            spyOn(tasks, 'getNames').and.callFake(() => Promise.resolve(contactList));
+        });
+        it('should get and assign contact names', (done) => {
+            tasks.getContactsForLogModal(state, contacts, contactsList).then((data) => {
+                expect(data).toEqual([]);
+                done();
+            });
+            expect(tasks.getNames).toHaveBeenCalledWith(contactList);
+        });
+        it('should handle contacts.show state', () => {
+            state.current.name = 'contacts.show';
+            contacts.current.id = 1;
+            tasks.getContactsForLogModal(state, contacts, contactsList);
+            expect(tasks.getNames).toHaveBeenCalledWith([1]);
+        });
+    });
 });
