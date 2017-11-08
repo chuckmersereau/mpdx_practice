@@ -402,6 +402,7 @@ class AppealController {
             type: 'export_to_mail_chimps',
             data: {
                 filter: {
+                    account_list_id: this.api.account_list_id,
                     contact_ids: joinComma(this.selectedContactIds)
                 }
             },
