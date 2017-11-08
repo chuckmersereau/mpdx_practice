@@ -118,4 +118,13 @@ describe('tasks.modals.edit.controller', () => {
             });
         });
     });
+    describe('handleActivityContacts', () => {
+        it('should handle contact addition and removal', () => {
+            $ctrl.task.contacts = [{ id: 1 }, { id: 2 }];
+            $ctrl.task.activity_contacts = [{ contact: { id: 1 } }, { contact: { id: 3 } }];
+            $ctrl.handleActivityContacts();
+            expect($ctrl.task.contacts).toEqual([{ id: 2 }]);
+            expect($ctrl.task.activity_contacts).toEqual([{ contact: { id: 1 } }, { contact: { id: 3 }, _destroy: 1 }]);
+        });
+    });
 });
