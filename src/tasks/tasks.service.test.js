@@ -158,7 +158,7 @@ describe('tasks.service', () => {
     describe('getDataForAddTask', () => {
         describe('new task', () => {
             const activity = 'Call';
-            const params = {
+            let params = {
                 activityType: activity,
                 comments: null,
                 contactsList: [],
@@ -191,6 +191,12 @@ describe('tasks.service', () => {
                     done();
                 });
                 expect(tasks.getNames).toHaveBeenCalledWith(contactList);
+            });
+            it('should handle contacts.show state', () => {
+                params.$state.current.name = 'contacts.show';
+                params.contacts.current.id = 1;
+                tasks.getDataForAddTask(params);
+                expect(tasks.getNames).toHaveBeenCalledWith([1]);
             });
         });
         describe('follow up task', () => {
