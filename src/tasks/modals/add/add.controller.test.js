@@ -214,4 +214,12 @@ describe('tasks.modals.add.controller', () => {
             });
         });
     });
+    describe('getName', () => {
+        it('should get name from array', () => {
+            $ctrl.contactNames = {
+                a: 'b'
+            };
+            expect($ctrl.getName('a')).toEqual('b');
+        });
+    });
 });

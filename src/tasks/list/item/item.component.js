@@ -1,13 +1,17 @@
 import concat from 'lodash/fp/concat';
+import contains from 'lodash/fp/contains';
+import pull from 'lodash/fp/pull';
 import reject from 'lodash/fp/reject';
 
 class ItemController {
     constructor(
-        $log, gettextCatalog,
-        api, modal, serverConstants, tasks, users
+        $log, $rootScope, gettextCatalog,
+        api, contacts, modal, serverConstants, tasks, users
     ) {
         this.$log = $log;
+        this.$rootScope = $rootScope;
         this.api = api;
+        this.contacts = contacts;
         this.gettextCatalog = gettextCatalog;
         this.modal = modal;
         this.serverConstants = serverConstants;
@@ -18,6 +22,15 @@ class ItemController {
         this.showContacts = false;
         this.showComments = false;
         this.loaded = false;
+
+        this.watcher = this.$rootScope.$on('taskTagDeleted', (e, data) => {
+            if (contains(this.task.id, data.taskIds)) {
+                this.task.tag_list = pull(data.tag, this.task.tag_list);
+            }
+        });
+    }
+    $onDestroy() {
+        this.watcher();
     }
     toggleContacts() {
         this.showContacts = !this.showContacts;
@@ -45,6 +58,7 @@ class ItemController {
         }).then((task) => {
             this.loaded = true;
             this.task = task;
+            this.task.contacts = this.contacts.fixPledgeAmountAndFrequencies(task.contacts);
             /* istanbul ignore next */
             this.$log.debug(`tasks/${task.id}`, task);
             return task;

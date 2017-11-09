@@ -81,6 +81,9 @@ class LogTaskController {
     showPartnerStatus() {
         return this.contactsList.length > 0 && this.task.activity_type && !contains(this.task.activity_type, ['Pre Call Letter', 'Reminder Letter', 'Support Letter', 'Thank', 'To Do']);
     }
+    getName(contact) {
+        return get(contact, this.contactNames);
+    }
 }
 
 import contacts from 'contacts/contacts.service';

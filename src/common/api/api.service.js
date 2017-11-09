@@ -19,12 +19,13 @@ const jsonApiParams = { keyForAttribute: 'underscore_case' };
 
 class Api {
     constructor(
-        $http, $log, $q, $timeout,
+        $http, $log, $q, $timeout, $window
     ) {
         this.$http = $http;
         this.$log = $log;
         this.$q = $q;
         this.$timeout = $timeout;
+        this.$window = $window;
 
         this.apiUrl = config.apiUrl;
         this.account_list_id = null;
@@ -82,6 +83,7 @@ class Api {
             return response.data;
         }).catch((response) => {
             this.$log.error('API ERROR:', response);
+            this.$window._satellite.track('aa-mpdx-api-error');
             throw response;
         });
     }

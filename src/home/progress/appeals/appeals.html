@@ -6,7 +6,7 @@
         </a>
     </div>
     <div class="panel-body progress-panel">
-        <div class="row">
+        <div class="row" ng-if="$ctrl.appeal">
             <div class="col-sm-6">
                 <a ui-sref="tools.appeals.show({ appealId: $ctrl.appeal.id })">
                     {{$ctrl.appeal.name}}
@@ -16,7 +16,7 @@
                     {{:: $ctrl.appeal.pledges_amount_processed }} / {{$ctrl.appeal.amount}}
             </div>
         </div>
-        <div class="ml-3 mr-3 pt-2">
+        <div class="ml-3 mr-3 pt-2" ng-if="$ctrl.appeal">
             <appeals-progressbar appeal="$ctrl.appeal"></appeals-progressbar>
         </div>
     </div>

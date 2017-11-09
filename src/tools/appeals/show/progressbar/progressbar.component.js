@@ -1,4 +1,6 @@
+import defaultTo from 'lodash/fp/defaultTo';
 import floor from 'lodash/fp/floor';
+import get from 'lodash/fp/get';
 import max from 'lodash/fp/max';
 import min from 'lodash/fp/min';
 
@@ -7,20 +9,24 @@ class ProgressbarController {
         this.maxValue = 1;
     }
     $onChanges() {
-        this.maxValue = this.appeal.amount > 0 ? this.appeal.amount : 1;
+        const amount = defaultTo(1, get('amount', this.appeal));
+        this.maxValue = max([amount, 1]);
         let available = 100;
-        this.givenWidth = this.getWidth(this.appeal.pledges_amount_processed);
+        const processed = defaultTo(0, get('pledges_amount_processed', this.appeal));
+        this.givenWidth = this.getWidth(processed);
 
         available -= this.givenWidth;
         available = max([available, 0]);
 
-        const receivedWidth = this.getWidth(this.appeal.pledges_amount_received_not_processed);
+        const received = defaultTo(0, get('pledges_amount_received_not_processed', this.appeal));
+        const receivedWidth = this.getWidth(received);
         this.receivedWidth = min([receivedWidth, available]);
 
         available -= this.receivedWidth;
         available = max([available, 0]);
 
-        const committedWidth = this.getWidth(this.appeal.pledges_amount_not_received_not_processed);
+        const committed = defaultTo(0, get('pledges_amount_not_received_not_processed', this.appeal));
+        const committedWidth = this.getWidth(committed);
         this.committedWidth = min([committedWidth, available]);
     }
     getWidth(value) {

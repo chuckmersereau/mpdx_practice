@@ -19,13 +19,6 @@
                         <i ng-if="$ctrl.googleIntegration.email_integration" class="fa fa-circle text-success"></i>
                     </a>
                 </li>
-                <li ng-class="{ 'active' : $ctrl.activeTab == 'contacts' }">
-                    <a ng-click="$ctrl.activeTab = 'contacts'">
-                        <translate>Contacts</translate> &nbsp;
-                        <i ng-if="!$ctrl.googleIntegration.contacts_integration" class="fa fa-circle-o"></i>
-                        <i ng-if="$ctrl.googleIntegration.contacts_integration" class="fa fa-circle text-success"></i>
-                    </a>
-                </li>
                 <li ng-class="{ 'active' : $ctrl.activeTab == 'setup' }">
                     <a ng-click="$ctrl.activeTab = 'setup'" translate>
                         Setup
@@ -124,46 +117,6 @@
                         <button class="btn btn-link" ng-click="$hide()" translate>Close</button>
                         <button class="btn btn-primary" ng-click="$ctrl.save()" translate>Save Changes</button>
                         <button class="btn btn-primary" ng-click="$ctrl.sync('email')" translate>Sync Gmail</button>
-                    </div>
-                </div>
-            </div>
-            <div ng-if="$ctrl.activeTab == 'contacts'">
-                <p translate>
-                    MPDX can sync your active contacts to Google so you only have to keep your contacts up to date in one place.
-                    (Active contacts are those whose status field indicates that they are partners or in the MPD process.)
-                </p>
-                <p translate>
-                    This will synchronize existing contact information as well as future updates and deletions to your contact info
-                    to and from MPDX and Google. Once the sync is active, changes in either Google or MPDX will be reflected in
-                    the other system. If you make a change in both places between syncs, MPDX changes will take precedence.
-                </p>
-                <p translate>
-                    If you make a contact inactive in MPDX e.g. by selecting "Not Interested" for its status, the contact info will
-                    not be deleted in Google, but will be labeled "Inactive" so you can easily find those no-longer-synced contacts
-                    and delete them if you choose.
-                </p>
-                <p translate>
-                    If you delete a contact in Google contacts that is active in MPDX, you must also go in to MPDX and hide the
-                    contact, making it inactive in MPDX. Otherwise, it will get regenerated in Google once it syncs again.
-                <p>
-                <div class="alert alert-danger" translate>
-                    If a contact contains more than one person, a Google contact will be created for each person.
-                    Spouses and other family members are not merged in this process.
-                </div>
-                <div class="alert alert-danger" translate>
-                    Additionally, Google accounts which are heavily customized (groupings, etc) may cause sync issues with MPDX.
-                </div>
-                <div ng-if="!$ctrl.googleIntegration.contacts_integration">
-                    <div class="modal-footer">
-                        <button class="btn btn-link" ng-click="$hide()" translate>Close</button>
-                        <button class="btn btn-primary" ng-click="$ctrl.enable('contacts')" translate>Enable Contacts Integration</button>
-                    </div>
-                </div>
-                <div ng-if="$ctrl.googleIntegration.contacts_integration">
-                    <div class="modal-footer">
-                        <button class="btn btn-danger pull-left" ng-click="$ctrl.disable('contacts')" translate>Disable Contacts Integration</button>
-                        <button class="btn btn-link" ng-click="$hide()" translate>Close</button>
-                        <button class="btn btn-primary" ng-click="$ctrl.sync('contacts')" translate>Sync Contacts</button>
                     </div>
                 </div>
             </div>

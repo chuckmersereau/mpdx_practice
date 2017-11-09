@@ -1,6 +1,12 @@
+import defaultTo from 'lodash/fp/defaultTo';
+import get from 'lodash/fp/get';
+
 class FacebookLinkController {
     $onInit() {
-        this.url = `http://www.facebook.com/${this.facebookAccount.username || this.facebookAccount.remote_id}`;
+        const username = get('username', this.facebookAccount);
+        const remoteId = get('remote_id', this.facebookAccount);
+        const value = defaultTo('', defaultTo(remoteId, username));
+        this.url = `http://www.facebook.com/${value}`;
     }
 }
 

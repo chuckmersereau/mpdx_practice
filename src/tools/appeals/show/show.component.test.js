@@ -573,6 +573,7 @@ describe('tools.appeals.show.component', () => {
                 type: 'export_to_mail_chimps',
                 data: {
                     filter: {
+                        account_list_id: api.account_list_id,
                         contact_ids: '1,2'
                     }
                 },

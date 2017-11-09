@@ -1,4 +1,6 @@
 import createPatch from 'common/fp/createPatch';
+import defaultTo from 'lodash/fp/defaultTo';
+import fixed from 'common/fp/fixed';
 
 class DonationModalController {
     constructor(
@@ -31,6 +33,11 @@ class DonationModalController {
 
         if (!this.donation.currency && this.accounts.current.currency) {
             this.donation.currency = this.accounts.current.currency;
+        }
+        this.donation.amount = fixed(2, defaultTo(0, this.donation.amount));
+
+        if (!this.donation.motivation) {
+            this.donation.motivation = '';
         }
     }
 

@@ -16,7 +16,7 @@
                         </div>
                     </div>
                     <fix-phone-numbers-item-field
-                        ng-repeat="phoneNumber in $ctrl.person.phone_numbers"
+                        ng-repeat="phoneNumber in $ctrl.person.phone_numbers track by phoneNumber.id"
                         person="$ctrl.person"
                         phone-number="phoneNumber"></fix-phone-numbers-item-field>
                     <fix-phone-numbers-item-field

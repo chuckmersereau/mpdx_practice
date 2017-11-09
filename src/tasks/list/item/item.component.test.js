@@ -43,6 +43,23 @@ describe('tasks.list.item.component', () => {
             expect($ctrl.showContacts).toBeFalsy();
             expect($ctrl.showComments).toBeFalsy();
             expect($ctrl.loaded).toBeFalsy();
+            $ctrl.$onDestroy();
+        });
+        it('should handle tag deletion', () => {
+            $ctrl.task = { id: 1, tag_list: ['a', 'b'] };
+            $ctrl.$onInit();
+            rootScope.$emit('taskTagDeleted', { taskIds: [1], tag: 'a' });
+            rootScope.$digest();
+            expect($ctrl.task.tag_list).toEqual(['b']);
+            $ctrl.$onDestroy();
+        });
+        it('should ignore other task ids', () => {
+            $ctrl.task = { id: 1, tag_list: ['a', 'b'] };
+            $ctrl.$onInit();
+            rootScope.$emit('taskTagDeleted', { taskIds: [2], tag: 'a' });
+            rootScope.$digest();
+            expect($ctrl.task.tag_list).toEqual(['a', 'b']);
+            $ctrl.$onDestroy();
         });
     });
     describe('addComment', () => {
@@ -77,10 +94,11 @@ describe('tasks.list.item.component', () => {
     });
     describe('load', () => {
         beforeEach(() => {
-            spyOn(api, 'get').and.callFake(() => Promise.resolve());
+            spyOn(api, 'get').and.callFake(() => Promise.resolve({ contacts: ['a'] }));
+            spyOn(contacts, 'fixPledgeAmountAndFrequencies').and.callFake((data) => data);
+            $ctrl.task = { id: 1 };
         });
         it('should query the api for a tasks comments & contacts info', () => {
-            $ctrl.task = { id: 1 };
             $ctrl.load();
             expect(api.get).toHaveBeenCalledWith('tasks/1', {
                 include: 'comments,comments.person,contacts,contacts.addresses,contacts.people,contacts.people.facebook_accounts,contacts.people.phone_numbers,contacts.people.email_addresses',
@@ -92,6 +110,13 @@ describe('tasks.list.item.component', () => {
                     facebook_accounts: 'username',
                     person: 'first_name,last_name,deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers'
                 }
+            });
+        });
+        it('should mutate the contact data', (done) => {
+            $ctrl.load().then(() => {
+                expect(contacts.fixPledgeAmountAndFrequencies).toHaveBeenCalledWith(['a']);
+                expect($ctrl.task.contacts).toEqual(['a']);
+                done();
             });
         });
     });

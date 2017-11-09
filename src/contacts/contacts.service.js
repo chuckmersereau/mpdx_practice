@@ -93,9 +93,17 @@ class ContactsService {
         });
     }
     getNames(ids) {
-        return this.api.get('contacts', {
-            fields: { contacts: 'name' },
-            filter: { ids: joinComma(ids) }
+        return this.api.get({
+            url: 'contacts',
+            data: {
+                fields: { contacts: 'name' },
+                filter: {
+                    ids: joinComma(ids),
+                    status: 'active,hidden,null'
+                }
+            },
+            overrideGetAsPost: true,
+            autoParams: false
         });
     }
     search(keyword) {
@@ -282,6 +290,15 @@ class ContactsService {
                 selectedContacts: selectedContactIds
             }
         });
+    }
+    fixPledgeAmountAndFrequencies(data) {
+        return map((contact) => {
+            contact.pledge_amount = isNil(contact.pledge_amount) ? null : parseFloat(contact.pledge_amount);
+            contact.pledge_frequency = isNil(contact.pledge_frequency)
+                ? null
+                : this.serverConstants.getPledgeFrequencyValue(contact.pledge_frequency);
+            return contact;
+        }, angular.copy(data));
     }
 }
 

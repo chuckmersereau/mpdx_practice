@@ -40,6 +40,7 @@ describe('tasks.modals.removeTags.controller', () => {
             spyOn(alerts, 'addAlert').and.callFake((data) => data);
             scope.$hide = () => {};
             spyOn(scope, '$hide').and.callThrough();
+            spyOn($ctrl.$rootScope, '$emit').and.callFake(() => {});
         });
         it('should confirm with a translated message', () => {
             $ctrl.removeTag('a');
@@ -50,14 +51,22 @@ describe('tasks.modals.removeTags.controller', () => {
             $ctrl.removeTag('a').then(() => {
                 expect(api.delete).toHaveBeenCalledWith({
                     url: 'tasks/tags/bulk',
-                    data: [{
+                    data: {
+                        data: [{
+                            data: {
+                                attributes: {
+                                    name: 'a'
+                                }
+                            }
+                        }],
                         filter: {
                             account_list_id: api.account_list_id,
                             task_ids: '1,2'
                         },
-                        name: 'a'
-                    }],
-                    type: 'tags'
+                        type: 'tags'
+                    },
+                    autoParams: false,
+                    doSerialization: false
                 });
                 done();
             });
@@ -69,9 +78,15 @@ describe('tasks.modals.removeTags.controller', () => {
                 done();
             });
         });
+        it('should emit the deletion', (done) => {
+            $ctrl.removeTag('a').then(() => {
+                expect($ctrl.$rootScope.$emit).toHaveBeenCalledWith('taskTagDeleted', { taskIds: [1, 2], tag: 'a' });
+                done();
+            });
+        });
         it('should hide the modal', (done) => {
             $ctrl.removeTag('a').then(() => {
-                expect(scope.$hide).toHaveBeenCalled();
+                expect(scope.$hide).toHaveBeenCalledWith();
                 done();
             });
         });

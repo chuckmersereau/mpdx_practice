@@ -20,6 +20,26 @@ describe('tools.appeals.show.progressbar.component', () => {
                 pledges_amount_not_received_not_processed: 5000
             };
         });
+        it('should handle null appeal', () => {
+            $ctrl.appeal = undefined;
+            $ctrl.$onChanges();
+            expect($ctrl.maxValue).toEqual(1);
+        });
+        it('should handle null pledges_amount_processed', () => {
+            $ctrl.appeal.pledges_amount_processed = undefined;
+            $ctrl.$onChanges();
+            expect($ctrl.givenWidth).toEqual(0);
+        });
+        it('should handle null pledges_amount_received_not_processed', () => {
+            $ctrl.appeal.pledges_amount_received_not_processed = undefined;
+            $ctrl.$onChanges();
+            expect($ctrl.receivedWidth).toEqual(0);
+        });
+        it('should handle null pledges_amount_not_received_not_processed', () => {
+            $ctrl.appeal.pledges_amount_not_received_not_processed = undefined;
+            $ctrl.$onChanges();
+            expect($ctrl.committedWidth).toEqual(0);
+        });
         it('should set max value to amount', () => {
             $ctrl.$onChanges();
             expect($ctrl.maxValue).toEqual(5000);

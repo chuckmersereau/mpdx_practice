@@ -7,16 +7,17 @@ const params = { a: 'b' };
 const tags = [{ name: 'a' }, { name: 'b' }];
 
 describe('contacts.service', () => {
-    let api, contacts, contactFilter, contactsTags, rootScope, modal;
+    let api, contacts, contactFilter, contactsTags, rootScope, modal, serverConstants;
     beforeEach(() => {
         angular.mock.module(service);
-        inject(($rootScope, _api_, _contacts_, _contactFilter_, _contactsTags_, _modal_) => {
+        inject(($rootScope, _api_, _contacts_, _contactFilter_, _contactsTags_, _modal_, _serverConstants_) => {
             rootScope = $rootScope;
             api = _api_;
             contacts = _contacts_;
             contactFilter = _contactFilter_;
             contactsTags = _contactsTags_;
             modal = _modal_;
+            serverConstants = _serverConstants_;
             api.account_list_id = accountListId;
         });
         spyOn(api, 'put').and.callFake((data) => Promise.resolve(data));
@@ -148,9 +149,17 @@ describe('contacts.service', () => {
         it('should query an array of ids for names', () => {
             spyOn(api, 'get').and.callFake((data) => Promise.resolve(data));
             contacts.getNames([1, 2]);
-            expect(api.get).toHaveBeenCalledWith('contacts', {
-                fields: { contacts: 'name' },
-                filter: { ids: '1,2' }
+            expect(api.get).toHaveBeenCalledWith({
+                url: 'contacts',
+                data: {
+                    fields: { contacts: 'name' },
+                    filter: {
+                        ids: '1,2',
+                        status: 'active,hidden,null'
+                    }
+                },
+                overrideGetAsPost: true,
+                autoParams: false
             });
         });
     });
@@ -214,6 +223,16 @@ describe('contacts.service', () => {
                     selectedContacts: [1, 2]
                 }
             });
+        });
+    });
+    describe('fixPledgeAmountAndFrequencies', () => {
+        const data = [{ pledge_frequency: null, pledge_amount: null }, { pledge_frequency: '1', pledge_amount: '1' }];
+        it('should mutate contact values', () => {
+            spyOn(serverConstants, 'getPledgeFrequencyValue').and.callFake(() => 1);
+            expect(contacts.fixPledgeAmountAndFrequencies(data)).toEqual([
+                { pledge_frequency: null, pledge_amount: null },
+                { pledge_frequency: 1, pledge_amount: 1 }
+            ]);
         });
     });
 });

@@ -96,7 +96,7 @@ class ContactPeopleController {
         this.isMerging = false;
         each((person) => {
             person.selected_for_merge = false;
-        }, this.selectedPeople);
+        }, this.data);
         this.selectedPeople = [];
     }
 

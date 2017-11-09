@@ -41,6 +41,14 @@ describe('common.api.service', () => {
         });
     });
     describe('call', () => {
+        beforeEach(() => {
+            api.$window = {
+                _satellite: {
+                    track: () => {}
+                }
+            };
+            spyOn(api.$window._satellite, 'track').and.callFake(() => {});
+        })
         describe('promise', () => {
             it('should send a simple get request', () => {
                 $httpBackend.expectGET('/api/v1/contacts').respond(200, jsonApiResponse);
@@ -59,6 +67,16 @@ describe('common.api.service', () => {
                     fail('should have returned an error');
                 }).catch((response) => {
                     expect(response.status).toEqual(500);
+                });
+                $httpBackend.flush();
+            });
+            it('should send adobe analytics a failure event', () => {
+                $httpBackend.expectGET('/api/v1/contacts').respond(500, jsonApiErrorResponse);
+
+                api.get('contacts').then(() => {
+                    fail('should have returned an error');
+                }).catch(() => {
+                    expect(api.$window._satellite.track).toHaveBeenCalledWith('aa-mpdx-api-error');
                 });
                 $httpBackend.flush();
             });

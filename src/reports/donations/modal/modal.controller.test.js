@@ -3,7 +3,7 @@ import isEqual from 'lodash/fp/isEqual';
 
 describe('donation.modal.controller', () => {
     let $ctrl, controller, scope, gettextCatalog, accounts, alerts, designationAccounts, donations, api;
-    let donation = { id: 'donation_id' };
+    let donation = { id: 'donation_id', amount: '0.00', motivation: 'a' };
     beforeEach(() => {
         angular.mock.module(modalController);
         inject((
@@ -26,13 +26,13 @@ describe('donation.modal.controller', () => {
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
 
-    function loadController() {
+    function loadController(data = donation) {
         if (!accounts.current) {
             accounts.current = {};
         }
         $ctrl = controller('donationModalController as $ctrl', {
             $scope: scope,
-            donation: donation
+            donation: data
         });
     }
 
@@ -44,6 +44,11 @@ describe('donation.modal.controller', () => {
 
         it('should set the initialDonation', () => {
             expect($ctrl.initialDonation).toEqual(donation);
+        });
+        it('should handle a null motivation', () => {
+            const donation = { id: 'donation_id', amount: '0.00' };
+            loadController(donation);
+            expect($ctrl.donation.motivation).toEqual('');
         });
     });
 
@@ -103,7 +108,7 @@ describe('donation.modal.controller', () => {
 
             it('should call donations.save', () => {
                 $ctrl.save();
-                expect(donations.save).toHaveBeenCalledWith(donation);
+                expect(donations.save).toHaveBeenCalledWith({ id: 'donation_id' });
             });
 
             it('should hide modal', (done) => {
