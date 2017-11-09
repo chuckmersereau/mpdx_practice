@@ -2,10 +2,12 @@ import get from 'lodash/fp/get';
 
 class OrganizationIntegrationPreferencesController {
     constructor(
-        $rootScope, gettextCatalog, Upload,
+        $rootScope, $window,
+        gettextCatalog, Upload,
         alerts, help, modal, preferencesOrganization, serverConstants, users
     ) {
         this.$rootScope = $rootScope;
+        this.$window = $window;
         this.alerts = alerts;
         this.gettextCatalog = gettextCatalog;
         this.help = help;
@@ -108,6 +110,10 @@ class OrganizationIntegrationPreferencesController {
             this.importing = false;
             throw err;
         });
+    }
+    authenticate(organizationId) {
+        this.saving = true;
+        this.$window.location.href = this.preferencesOrganization.oAuth(organizationId);
     }
 }
 

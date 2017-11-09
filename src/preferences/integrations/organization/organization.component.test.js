@@ -1,19 +1,25 @@
 import component from './organization.component';
 
 describe('preferences.organization.component', () => {
-    let $ctrl, preferencesOrganization, rootScope, scope, componentController, alerts, gettextCatalog, modal, users;
+    let $ctrl, rootScope, scope, componentController,
+        gettextCatalog,
+        alerts, modal, preferencesOrganization, serverConstants, users;
+
     beforeEach(() => {
         angular.mock.module(component);
         inject((
-            $componentController, $rootScope, _preferencesOrganization_, _alerts_, _gettextCatalog_, _modal_, _users_
+            $componentController, $rootScope,
+            _gettextCatalog_,
+            _alerts_, _modal_, _preferencesOrganization_, _serverConstants_, _users_
         ) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
-            preferencesOrganization = _preferencesOrganization_;
+            gettextCatalog = _gettextCatalog_;
             alerts = _alerts_;
             modal = _modal_;
+            preferencesOrganization = _preferencesOrganization_;
+            serverConstants = _serverConstants_;
             users = _users_;
-            gettextCatalog = _gettextCatalog_;
             componentController = $componentController;
             loadController();
         });
@@ -298,6 +304,22 @@ describe('preferences.organization.component', () => {
                 expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
+        });
+    });
+    describe('select', () => {
+        beforeEach(() => {
+            serverConstants.data = {
+                organizations_attributes: {
+                    'org_1': {
+                        'key': 'value'
+                    }
+                }
+            };
+            $ctrl.selectedKey = 'org_1';
+        });
+        it('should set selected', () => {
+            $ctrl.select();
+            expect($ctrl.selected).toEqual({ 'key': 'value' });
         });
     });
 });

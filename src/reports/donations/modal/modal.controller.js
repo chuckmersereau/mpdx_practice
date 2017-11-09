@@ -35,6 +35,10 @@ class DonationModalController {
             this.donation.currency = this.accounts.current.currency;
         }
         this.donation.amount = fixed(2, defaultTo(0, this.donation.amount));
+
+        if (!this.donation.motivation) {
+            this.donation.motivation = '';
+        }
     }
 
     setDesignationAccount() {
