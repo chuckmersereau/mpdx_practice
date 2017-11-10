@@ -137,12 +137,14 @@ class TasksService {
         /* istanbul ignore next */
         this.$log.debug('Add task mutated task', newTask);
 
-        return this.getNames(contactIdList).then((data) => {
-            return {
-                contactsList: data,
-                task: newTask
-            };
-        });
+        return contactIdList.length === 0
+            ? Promise.resolve({ contactsList: [], task: newTask })
+            : this.getNames(contactIdList).then((data) => {
+                return {
+                    contactsList: data,
+                    task: newTask
+                };
+            });
     }
     reuseTask(task, activityType) {
         return get('result', task) && activityType;

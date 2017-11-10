@@ -161,7 +161,7 @@ describe('tasks.service', () => {
             let params = {
                 activityType: activity,
                 comments: null,
-                contactsList: [],
+                contactsList: [1],
                 task: null,
                 $state: {
                     current: {
@@ -190,7 +190,7 @@ describe('tasks.service', () => {
                     expect(data.contactsList).toEqual([]);
                     done();
                 });
-                expect(tasks.getNames).toHaveBeenCalledWith(contactList);
+                expect(tasks.getNames).toHaveBeenCalledWith([1]);
             });
             it('should handle contacts.show state', () => {
                 params.$state.current.name = 'contacts.show';
