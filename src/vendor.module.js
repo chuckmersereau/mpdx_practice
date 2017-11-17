@@ -12,6 +12,7 @@ import ngMap from 'ngmap';
 import ngSortable from 'ng-sortable';
 import angulartics from 'angulartics';
 import angularticsGoogleAnalytics from 'angulartics-google-analytics';
+import angularElastic from 'angular-elastic';
 // deps with no default exports
 import 'angular-block-ui';
 import 'angular-filter';
@@ -56,6 +57,7 @@ export default angular.module('mpdx.vendor', [
     ngSortable,
     angulartics,
     angularticsGoogleAnalytics,
+    angularElastic,
     'angular.filter',
     'blockUI',
     'LocalForageModule',
