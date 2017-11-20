@@ -466,6 +466,18 @@ class AppealController {
         this.activeTab = tab;
         this.deselectAll();
     }
+    deleteAppeal() {
+        const message = this.gettext('You are about to permanently delete this Appeal. This will remove all contacts, and delete all pledges, and progress towards this appeal. Are you sure you want to continue?');
+        return this.modal.confirm(message).then(() => {
+            return this.api.delete(`appeals/${this.appeal.id}`).then(() => {
+                this.$state.go('tools.appeals');
+            });
+        }).catch((ex) => {
+            const error = this.gettext('There was an error trying to delete the appeal.');
+            this.alerts.addAlert(error, 'danger');
+            throw ex;
+        });
+    }
 }
 
 const Appeal = {

@@ -1040,4 +1040,51 @@ describe('tools.appeals.show.component', () => {
             expect($ctrl.deselectAll).toHaveBeenCalledWith();
         });
     });
+    describe('deleteAppeal', () => {
+        beforeEach(() => {
+            spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            spyOn(state, 'go').and.callFake(() => () => {});
+        });
+        it('should translate a message', () => {
+            $ctrl.deleteAppeal();
+            expect($ctrl.gettext).toHaveBeenCalledWith('You are about to permanently delete this Appeal. This will remove all contacts, and delete all pledges, and progress towards this appeal. Are you sure you want to continue?');
+        });
+        it('should open a confirm modal', () => {
+            $ctrl.deleteAppeal();
+            expect(modal.confirm).toHaveBeenCalledWith('You are about to permanently delete this Appeal. This will remove all contacts, and delete all pledges, and progress towards this appeal. Are you sure you want to continue?');
+        });
+        it('should call delete', (done) => {
+            $ctrl.appeal = { id: 1 };
+            $ctrl.deleteAppeal().then(() => {
+                expect(api.delete).toHaveBeenCalledWith('appeals/1');
+                done();
+            });
+        });
+        it('should navigate to list view ', (done) => {
+            $ctrl.appeal = { id: 1 };
+            $ctrl.deleteAppeal().then(() => {
+                expect(state.go).toHaveBeenCalledWith('tools.appeals');
+                done();
+            });
+        });
+    });
+    describe('deleteAppeal - failure', () => {
+        beforeEach(() => {
+            spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
+            spyOn(api, 'delete').and.callFake(() => Promise.reject());
+        });
+        it('should translate a message', (done) => {
+            $ctrl.deleteAppeal().catch(() => {
+                expect($ctrl.gettext).toHaveBeenCalledWith('There was an error trying to delete the appeal.');
+                done();
+            });
+        });
+        it('should alert', (done) => {
+            $ctrl.deleteAppeal().catch(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith('There was an error trying to delete the appeal.', 'danger');
+                done();
+            });
+        });
+    });
 });

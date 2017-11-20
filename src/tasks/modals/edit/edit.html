@@ -17,19 +17,11 @@
     </div>
     <div ng-if="$ctrl.task.completed" class="form-group">
         <label for="completed" translate>Completed On</label>
-        <datetimepicker ng-model="$ctrl.task.completed_at"
-                        hour-step="1"
-                        minute-step="1"
-                        id="completed">
-        </datetimepicker>
+        <datetimepicker ng-model="$ctrl.task.completed_at" id="completed"></datetimepicker>
     </div>
     <div ng-if="!$ctrl.task.completed && !$ctrl.noDate" class="form-group">
         <label for="due-date" translate>Due Date</label>
-        <datetimepicker ng-model="$ctrl.task.start_at"
-                        hour-step="1"
-                        minute-step="1"
-                        id="due-date">
-        </datetimepicker>
+        <datetimepicker ng-model="$ctrl.task.start_at" id="due-date"></datetimepicker>
     </div>
     <div ng-if="!$ctrl.task.completed" class="checkbox">
         <label for="no-due-date">
@@ -90,6 +82,10 @@
     </div>
     <div class="form-group">
         <label for="comment" translate>Comment</label>
-        <textarea class="form-control" id='comment' ng-model="$ctrl.comment"></textarea>
+        <textarea msd-elastic
+                  class="form-control"
+                  id='comment'
+                  ng-model="$ctrl.comment"
+                  rows="1"></textarea>
     </div>
 </modal>
