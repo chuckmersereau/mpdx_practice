@@ -236,7 +236,7 @@ describe('tools.mergeContacts.component', () => {
             expect(api.get).toHaveBeenCalledWith('contacts/duplicates', {
                 include: 'records,records.addresses',
                 fields: {
-                    records: 'addresses,name,square_avatar,status,created_at',
+                    contacts: 'addresses,name,square_avatar,status,created_at',
                     addresses: 'city,postal_code,primary_mailing_address,state,street,source'
                 },
                 filter: { account_list_id: api.account_list_id, ignore: false },

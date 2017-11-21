@@ -236,7 +236,7 @@ describe('tools.mergePeople.component', () => {
             expect(api.get).toHaveBeenCalledWith('contacts/people/duplicates', {
                 include: 'records,records.phone_numbers,records.email_addresses',
                 fields: {
-                    records: 'avatar,email_addresses,phone_numbers,first_name,last_name,created_at',
+                    people: 'avatar,email_addresses,phone_numbers,first_name,last_name,created_at',
                     phone_numbers: 'primary,number,source',
                     email_addresses: 'primary,email,source',
                     person_duplicates: 'people,shared_contact'

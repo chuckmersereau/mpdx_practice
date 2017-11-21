@@ -360,7 +360,9 @@ describe('tools.appeals.show.component', () => {
     describe('selectAllPledges', () => {
         beforeEach(() => {
             $ctrl.appeal = { id: 123 };
-            spyOn(api, 'get').and.callFake(() => Promise.resolve([{ contact: { id: 1 } }, { contact: { id: 2 } }]));
+            spyOn(api, 'get').and.callFake(() => Promise.resolve([
+                { contact: { id: 1 } }, { contact: { id: 2 } }, { contact: null }
+            ]));
         });
         it('should query the api for all contacts', () => {
             $ctrl.selectAllPledges('a');
@@ -387,7 +389,9 @@ describe('tools.appeals.show.component', () => {
     describe('selectAllNotGiven', () => {
         beforeEach(() => {
             $ctrl.appeal = { id: 123 };
-            spyOn(api, 'get').and.callFake(() => Promise.resolve([{ contact: { id: 1 } }, { contact: { id: 2 } }]));
+            spyOn(api, 'get').and.callFake(() => Promise.resolve([
+                { contact: { id: 1 } }, { contact: { id: 2 } }, { contact: null }
+            ]));
         });
         it('should query the api for all contacts', () => {
             $ctrl.selectAllNotGiven();

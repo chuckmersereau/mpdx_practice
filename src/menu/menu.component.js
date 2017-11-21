@@ -1,10 +1,13 @@
+import config from 'config';
+
 class menuController {
     constructor(
-        $rootScope,
+        $rootScope, $window,
         $state,
         contacts, donations, help, session, tasks, tools, users
     ) {
         this.$rootScope = $rootScope;
+        this.$window = $window;
         this.$state = $state;
         this.contacts = contacts;
         this.donations = donations;
@@ -13,6 +16,7 @@ class menuController {
         this.tasks = tasks;
         this.tools = tools;
         this.users = users;
+        this.sidekiqUrl = `${config.oAuthUrl}sidekiq?access_token=${this.$window.localStorage.getItem('token')}`;
     }
 
     $onInit() {
