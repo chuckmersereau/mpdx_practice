@@ -32,8 +32,8 @@
                         to choose which types of tasks you want to sync. By default MPDX will add 'Appointment' tasks to your calendar.
                     </p>
                     <div class="modal-footer">
-                        <button class="btn btn-link" ng-click="$hide()" translate>Close</button>
-                        <button class="btn btn-primary" ng-click="$ctrl.enable('calendar')" translate>Enable Calendar Integration</button>
+                        <button type="button" class="btn btn-link" ng-click="$hide()" translate>Close</button>
+                        <button type="button" class="btn btn-primary" ng-click="$ctrl.enable('calendar')" translate>Enable Calendar Integration</button>
                     </div>
                 </div>
                 <div ng-if="$ctrl.googleIntegration.calendar_integration">
@@ -62,9 +62,9 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-danger pull-left" ng-click="$ctrl.disable('calendar')" translate>Disable Calendar Integration</button>
-                        <button class="btn btn-link" ng-click="$hide()" translate>Close</button>
-                        <button class="btn btn-primary" ng-click="$ctrl.sync('calendar')" translate>Sync Calendar</button>
+                        <button type="button" class="btn btn-danger pull-left" ng-click="$ctrl.disable('calendar')" translate>Disable Calendar Integration</button>
+                        <button type="button" class="btn btn-link" ng-click="$hide()" translate>Close</button>
+                        <button type="button" class="btn btn-primary" ng-click="$ctrl.sync('calendar')" translate>Sync Calendar</button>
                     </div>
                 </div>
             </div>
@@ -75,8 +75,8 @@
                 </p>
                 <div ng-if="!$ctrl.googleIntegration.email_integration">
                     <div class="modal-footer">
-                        <button class="btn btn-link" ng-click="$hide()" translate>Close</button>
-                        <button class="btn btn-primary" ng-click="$ctrl.enable('email')" translate>Enable Gmail Integration</button>
+                        <button type="button" class="btn btn-link" ng-click="$hide()" translate>Close</button>
+                        <button type="button" class="btn btn-primary" ng-click="$ctrl.enable('email')" translate>Enable Gmail Integration</button>
                     </div>
                 </div>
                 <div ng-if="$ctrl.googleIntegration.email_integration">
@@ -113,10 +113,10 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-danger pull-left" ng-click="$ctrl.disable('email')" translate>Disable Gmail Integration</button>
-                        <button class="btn btn-link" ng-click="$hide()" translate>Close</button>
-                        <button class="btn btn-primary" ng-click="$ctrl.save()" translate>Save Changes</button>
-                        <button class="btn btn-primary" ng-click="$ctrl.sync('email')" translate>Sync Gmail</button>
+                        <button type="button" class="btn btn-danger pull-left" ng-click="$ctrl.disable('email')" translate>Disable Gmail Integration</button>
+                        <button type="button" class="btn btn-link" ng-click="$hide()" translate>Close</button>
+                        <button type="button" class="btn btn-primary" ng-click="$ctrl.save()" translate>Save Changes</button>
+                        <button type="button" class="btn btn-primary" ng-click="$ctrl.sync('email')" translate>Sync Gmail</button>
                     </div>
                 </div>
             </div>
@@ -126,7 +126,7 @@
                     (You should only need to do this if you receive an email from MPDX)
                 </p>
                 <div class="modal-footer">
-                    <button class="btn btn-link" ng-click="$hide()" translate>Close</button>
+                    <button type="button" class="btn btn-link" ng-click="$hide()" translate>Close</button>
                     <a ng-href="{{ $ctrl.google.oAuth }}" class="btn btn-primary" translate>Refresh Google Account</a>
                 </div>
             </div>

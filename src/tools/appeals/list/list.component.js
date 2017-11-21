@@ -7,12 +7,13 @@ import unionBy from 'lodash/fp/unionBy';
 class ListController {
     constructor(
         $log, $rootScope, gettext,
-        accounts, alerts, api
+        accounts, alerts, appeals, api
     ) {
         this.$log = $log;
         this.gettext = gettext;
         this.accounts = accounts;
         this.alerts = alerts;
+        this.appeals = appeals;
         this.api = api;
 
         this.enableNext = false;
@@ -91,31 +92,6 @@ class ListController {
     resetOrAppendData(reset, deserializedData) {
         return reset ? deserializedData : unionBy('id', this.data, deserializedData);
     }
-    appealSearch(keyword) {
-        return this.api.get({
-            url: 'appeals',
-            data: {
-                filter: {
-                    account_list_id: this.api.account_list_id,
-                    wildcard_search: keyword
-                },
-                fields: {
-                    appeals: 'name'
-                },
-                per_page: 6
-            },
-            overrideGetAsPost: true
-        });
-    }
-    setPrimaryAppeal(appeal) {
-        this.accounts.current.primary_appeal = { id: appeal.id };
-        return this.accounts.saveCurrent().then(() => {
-            this.alerts.addAlert(this.gettext('Goal successfully set to primary'));
-        }).catch((ex) => {
-            this.alerts.addAlert(this.gettext('Unable to set Goal as primary'), 'danger');
-            throw ex;
-        });
-    }
 }
 
 const List = {
@@ -123,12 +99,13 @@ const List = {
     template: require('./list.html')
 };
 
-import gettext from 'angular-gettext';
 import accounts from 'common/accounts/accounts.service';
 import alerts from 'common/alerts/alerts.service';
+import appeals from '../appeals.service';
 import api from 'common/api/api.service';
+import gettext from 'angular-gettext';
 
 export default angular.module('mpdx.tools.appeals.list.component', [
     gettext,
-    accounts, alerts, api
+    accounts, alerts, appeals, api
 ]).component('appealsList', List).name;

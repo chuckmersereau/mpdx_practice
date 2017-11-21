@@ -3,11 +3,12 @@ import get from 'lodash/fp/get';
 class AppealsController {
     constructor(
         $log, $rootScope,
-        accounts, appealsShow
+        accounts, appeals, appealsShow
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
         this.accounts = accounts;
+        this.appeals = appeals;
         this.appealsShow = appealsShow;
 
         this.count = 0;
@@ -17,6 +18,7 @@ class AppealsController {
         });
     }
     $onInit() {
+        this.appeal = null;
         const primaryAppealId = get('id', this.accounts.current.primary_appeal);
         return primaryAppealId
             ? this.getPrimaryAppeal(primaryAppealId)
@@ -35,8 +37,9 @@ const progressAppeals = {
 };
 
 import accounts from 'common/accounts/accounts.service';
+import appeals from 'tools/appeals/appeals.service';
 import appealsShow from 'tools/appeals/show/show.service';
 
 export default angular.module('mpdx.home.progress.appeals', [
-    accounts, appealsShow
+    accounts, appeals, appealsShow
 ]).component('progressAppeals', progressAppeals).name;
