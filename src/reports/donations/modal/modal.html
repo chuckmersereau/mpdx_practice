@@ -63,7 +63,12 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="appeal_id" translate>Appeal</label>
-                        <collection-selector item-name="{{ ::'Appeal' | translate }}" display-text="$ctrl.donation.appeal.name" search-text="$ctrl.donation.appeal.name" search="$ctrl.search(text)" select="$ctrl.onAppealSelected(item)"></collection-selector>
+                        <collection-selector item-name="{{ ::'Appeal' | translate }}"
+                                             display-text="$ctrl.donation.appeal.name"
+                                             search-text="$ctrl.donation.appeal.name"
+                                             search="$ctrl.search(text)"
+                                             select="$ctrl.onAppealSelected(item)">
+                        </collection-selector>
                     </div>
                 </div>
                 <div class="col-md-8">
