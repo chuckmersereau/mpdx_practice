@@ -1,4 +1,5 @@
 import assign from 'lodash/fp/assign';
+import compact from 'lodash/fp/compact';
 import concat from 'lodash/fp/concat';
 import contains from 'lodash/fp/contains';
 import createPatch from 'common/fp/createPatch';
@@ -297,8 +298,12 @@ class AppealController {
                 appeal_id: this.appeal.id,
                 status: status
             }
-        }).then((data) => {
-            const contactIds = map((p) => p.contact.id, data);
+        }).then((appealContacts) => {
+            const contactIds = compact(map((appealContact) => {
+                if (appealContact.contact) {
+                    return appealContact.contact.id;
+                }
+            }, appealContacts));
             /* istanbul ignore next */
             this.$log.debug(`contact ids for ${status}`, contactIds);
             this.selectedContactIds = contactIds;
@@ -315,8 +320,12 @@ class AppealController {
                 appeal_contacts: 'contact',
                 contact: ''
             }
-        }).then((data) => {
-            const contactIds = map((rel) => rel.contact.id, data);
+        }).then((appealContacts) => {
+            const contactIds = compact(map((appealContact) => {
+                if (appealContact.contact) {
+                    return appealContact.contact.id;
+                }
+            }, appealContacts));
             /* istanbul ignore next */
             this.$log.debug('select all contacts not given', contactIds);
             this.selectedContactIds = contactIds;
