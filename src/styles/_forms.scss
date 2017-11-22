@@ -215,4 +215,7 @@ div.col-sm-4.received {
 
 textarea[msd-elastic] {
     min-height: 34px;
+    max-height: 60px;
+    overflow-y: auto !important;
+    resize: none !important;
 }
