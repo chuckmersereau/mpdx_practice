@@ -1,27 +1,21 @@
 import log from './log.controller';
 import assign from 'lodash/fp/assign';
-import concat from 'lodash/fp/concat';
 import each from 'lodash/fp/each';
-import isEqual from 'lodash/fp/isEqual';
-import union from 'lodash/fp/union';
 
 let contactList = [];
 const defaultTask = { completed: true };
 
 describe('tasks.modals.log.controller', () => {
-    let $ctrl, controller, contacts, tasks, scope, state, rootScope;
+    let $ctrl, controller, contacts, tasks, scope, rootScope;
     beforeEach(() => {
         angular.mock.module(log);
-        inject(($controller, $rootScope, _contacts_, _tasks_, $state) => {
+        inject(($controller, $rootScope, _contacts_, _tasks_) => {
             rootScope = $rootScope;
             scope = $rootScope.$new();
-            state = $state;
             contacts = _contacts_;
             tasks = _tasks_;
             controller = $controller;
             $ctrl = loadController();
-            const result = [{ id: 1, name: 'a' }];
-            spyOn(contacts, 'getNames').and.callFake(() => Promise.resolve(result));
         });
     });
 
@@ -39,70 +33,8 @@ describe('tasks.modals.log.controller', () => {
         $ctrl.contactsList = [1];
     }
     describe('constructor', () => {
-        it('should clone the list of contacts', () => {
-            expect(isEqual($ctrl.contactsList, contactList)).toBeTruthy();
-            expect($ctrl.contactsList !== contactList).toBeTruthy();
-        });
-
         it('should set the new task model to complete', () => {
             expect($ctrl.task).toEqual(defaultTask);
-        });
-    });
-    describe('called from a contact view page', () => {
-        beforeEach(() => {
-            state.current.name = 'contacts.show';
-            contacts.current = { id: 2 };
-            loadController();
-        });
-        it('should add the current contact', () => {
-            expect($ctrl.contactsList).toEqual(union(contactList, 2));
-        });
-    });
-    describe('activate', () => {
-        it('should get and assign contact names', (done) => {
-            $ctrl.activate().then(() => {
-                expect($ctrl.contactNames).toEqual({ 1: 'a' });
-                done();
-            });
-            expect(contacts.getNames).toHaveBeenCalledWith(contactList);
-        });
-    });
-    describe('addContact', () => {
-        it('should add an empty contact', () => {
-            const starterValue = angular.copy($ctrl.contactsList);
-            $ctrl.addContact();
-            expect($ctrl.contactsList).toEqual(concat(starterValue, ''));
-        });
-    });
-    describe('setContact', () => {
-        it('should do nothing on empty params', () => {
-            const startingContacts = angular.copy($ctrl.contactsList);
-            const startingNames = angular.copy($ctrl.contactNames);
-            $ctrl.setContact(null, 0);
-            expect($ctrl.contactNames).toEqual(startingNames);
-            expect($ctrl.contactsList).toEqual(startingContacts);
-        });
-        it('should set the contact id in contactList', () => {
-            const newVal = { id: 2, name: 'b' };
-            $ctrl.contactsList = [1];
-            $ctrl.contactNames = { 1: 'a' };
-            $ctrl.setContact(newVal, 0);
-            expect($ctrl.contactsList).toEqual([newVal.id]);
-        });
-        it('should update a contact name in contactNames', () => {
-            const newVal = { id: 1, name: 'b' };
-            $ctrl.contactsList = [1];
-            $ctrl.contactNames = { 1: 'a' };
-            $ctrl.setContact(newVal, 0);
-            expect($ctrl.contactNames).toEqual({ [newVal.id]: newVal.name });
-        });
-        it('should add a contact name in contactNames', () => {
-            const newVal = { id: 2, name: 'b' };
-            $ctrl.contactsList = [1];
-            $ctrl.contactNames = { 1: 'a' };
-            const startingVal = angular.copy($ctrl.contactNames);
-            $ctrl.setContact(newVal, 0);
-            expect($ctrl.contactNames).toEqual(assign(startingVal, { [newVal.id]: newVal.name }));
         });
     });
     describe('save', () => {
@@ -172,14 +104,6 @@ describe('tasks.modals.log.controller', () => {
                 $ctrl.task.activity_type = activity;
                 expect($ctrl.showPartnerStatus()).toBeFalsy();
             }, arr);
-        });
-    });
-    describe('getName', () => {
-        it('should get name from array', () => {
-            $ctrl.contactNames = {
-                a: 'b'
-            };
-            expect($ctrl.getName('a')).toEqual('b');
         });
     });
 });
