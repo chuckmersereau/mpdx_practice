@@ -19,15 +19,26 @@
                     <div class="filters_section filter--filtergroup" ng-if="$ctrl.mailchimp.data && $ctrl.mailchimp.data.lists_present">
                         <div class="filter--filtergroup_title"><i class="fa fa-envelope-o"></i> <translate>Export Selected to MailChimp</translate></div>
                         <div class="mt-2 mb-4">
-                            <!--<select name="primaryListId"-->
-                                    <!--id="primaryListId"-->
-                                    <!--ng-model="$ctrl.mailchimpListId"-->
-                                    <!--class="form-control"-->
-                                    <!--ng-options="option.id as option.name for option in $ctrl.mailchimp.data.lists_available_for_newsletters"-->
-                                    <!--chosen>-->
-                            <!--</select>-->
-                            <!--<button class="btn btn-default btn-block mt-2" ng-click="$ctrl.exportMailchimp()" ng-disabled="!$ctrl.mailchimpListId || $ctrl.selectedContactIds.length < 1" translate-params-count="$ctrl.selectedContactIds.length" translate>Export {{count}} Selected</button>-->
-                            <button class="btn btn-default btn-block mt-2" disabled translate>Coming Soon</button>
+                            <select name="primaryListId"
+                                    id="primaryListId"
+                                    ng-model="$ctrl.mailchimpListId"
+                                    class="form-control"
+                                    ng-options="option.id as option.name for option in $ctrl.mailchimp.data.lists_available_for_newsletters"
+                                    ng-if="$ctrl.users.current.preferences.admin"
+                                    chosen>
+                            </select>
+                            <button class="btn btn-default btn-block mt-2"
+                                    ng-if="$ctrl.users.current.preferences.admin"
+                                    ng-click="$ctrl.exportMailchimp()"
+                                    ng-disabled="!$ctrl.mailchimpListId || $ctrl.selectedContactIds.length < 1"
+                                    translate-params-count="$ctrl.selectedContactIds.length"
+                                    translate>Export {{count}} Selected
+                            </button>
+                            <button class="btn btn-default btn-block mt-2"
+                                    ng-if="!$ctrl.users.current.preferences.admin"
+                                    disabled
+                                    translate>Coming Soon
+                            </button>
                         </div>
                     </div>
                     <div class="filters_section filter--filtergroup">
