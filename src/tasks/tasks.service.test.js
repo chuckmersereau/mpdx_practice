@@ -318,11 +318,11 @@ describe('tasks.service', () => {
             spyOn(tasks, 'getNames').and.callFake(() => Promise.resolve(contactList));
         });
         it('should get and assign contact names', (done) => {
-            tasks.getContactsForLogModal(state, contacts, contactsList).then((data) => {
+            tasks.getContactsForLogModal(state, contacts, [undefined]).then((data) => {
                 expect(data).toEqual([]);
                 done();
             });
-            expect(tasks.getNames).toHaveBeenCalledWith(contactList);
+            expect(tasks.getNames).not.toHaveBeenCalled();
         });
         it('should handle contacts.show state', () => {
             state.current.name = 'contacts.show';
