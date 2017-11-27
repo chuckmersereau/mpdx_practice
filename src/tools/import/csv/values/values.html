@@ -9,27 +9,19 @@
                 <th class="col-md-6" translate>MPDX value</th>
             </tr>
         </thead>
-        <tbody ng-repeat="(constant, obj) in $ctrl.importCsv.values_to_constants_mapping">
+        <tbody ng-repeat="(constant, obj) in $ctrl.importCsv.values_to_constants_mappings">
             <tr>
                 <th>{{::$ctrl.fileHeader(constant)}}</th>
                 <th>{{::$ctrl.serverConstants.data.csv_import.supported_headers[constant]}}</th>
             </tr>
             <tr ng-repeat="(key, value) in obj">
                 <td class="text-left">{{key}}</td>
-                <td class="text-left" ng-if="constant !== 'commitment_currency'">
+                <td class="text-left">
                     <select chosen
                             class="form-control"
-                            ng-model="$ctrl.importCsv.values_to_constants_mapping[constant][key]"
-                            ng-options="item.id as item.value for item in $ctrl.serverConstants.data[$ctrl.serverConstants.data.csv_import.constants_from_top_level[constant]]">
-                            <option value="" ng-if="constant !== 'send_newsletter'" translate>None</option>
-                    </select>
-                </td>
-                <td class="text-left" ng-if="constant === 'commitment_currency'">
-                    <select chosen
-                            class="form-control"
-                            ng-model="$ctrl.importCsv.values_to_constants_mapping[constant][key]"
-                            ng-options="item.code as item.code_symbol_string for item in $ctrl.serverConstants.data[$ctrl.serverConstants.data.csv_import.constants_from_top_level[constant]]">
-                        <option value="" translate>None</option>
+                            ng-model="$ctrl.importCsv.values_to_constants_mappings[constant][key]"
+                            ng-options="item.id as item.value for item in $ctrl.serverConstants.data.csv_import.constants[constant]">
+                            <option value="" ng-if="constant !== 'newsletter'" translate>None</option>
                     </select>
                 </td>
             </tr>
