@@ -2,12 +2,13 @@ class PreviewController {
     constructor(
         $rootScope,
         gettextCatalog,
-        contactsTags, importCsv, modal
+        contactsTags, importCsv, modal, serverConstants
     ) {
         this.gettextCatalog = gettextCatalog;
         this.contactsTags = contactsTags;
         this.importCsv = importCsv;
         this.modal = modal;
+        this.serverConstants = serverConstants;
 
         this.accept = false;
 
@@ -44,8 +45,9 @@ import gettextCatalog from 'angular-gettext';
 import contactsTags from 'contacts/sidebar/filter/tags/tags.service';
 import importCsv from 'tools/import/csv/csv.service';
 import modal from 'common/modal/modal.service';
+import serverConstants from 'common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.tools.import.csv.preview.component', [
     gettextCatalog,
-    contactsTags, importCsv, modal
+    contactsTags, importCsv, modal, serverConstants
 ]).component('importCsvPreview', Preview).name;

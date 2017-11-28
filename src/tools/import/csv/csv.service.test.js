@@ -39,12 +39,12 @@ describe('tools.import.csv.service', () => {
         it('should set default values', () => {
             importCsv.data = {};
             importCsv.dataInitialState = {};
-            importCsv.values_to_constants_mapping = { key: 'value' };
+            importCsv.values_to_constants_mappings = { key: 'value' };
             importCsv.available_constants = { key: 'value' };
             importCsv.reset();
             expect(importCsv.data).toEqual(null);
             expect(importCsv.dataInitialState).toEqual(null);
-            expect(importCsv.values_to_constants_mapping).toEqual({});
+            expect(importCsv.values_to_constants_mappings).toEqual({});
         });
     });
 
@@ -213,37 +213,37 @@ describe('tools.import.csv.service', () => {
             });
         });
 
-        describe('values_to_constants_mapping', () => {
+        describe('values_to_constants_mappings', () => {
             beforeEach(() => {
                 data = {
                     file_constants_mappings: {
-                        newsletter: {
-                            '': [
-                                'none_1',
-                                'none_2',
-                                'none_3',
-                                'none_4',
-                                'physical'
-                            ],
-                            email: [
-                                'email'
-                            ],
-                            both: [
-                                'both'
-                            ]
-                        },
-                        status: {
-                            '': null,
-                            never_contacted: [
-                                'never_contacted'
-                            ]
-                        },
-                        send_appeals: {
-                            '': null
-                        }
+                        newsletter: [{
+                            id: '',
+                            values: ['none_1', 'none_2', 'none_3', 'none_4', 'physical']
+                        }, {
+                            id: 'email',
+                            values: ['email']
+                        }, {
+                            id: 'both',
+                            values: ['both']
+                        }, {
+                            id: 'physical',
+                            values: ['physical']
+                        }],
+                        status: [{
+                            id: '',
+                            values: [null]
+                        }, {
+                            id: 'never_contacted',
+                            values: ['never_contacted']
+                        }],
+                        send_appeals: [{
+                            id: '',
+                            values: [null]
+                        }]
                     }
                 };
-                serverConstants.data.csv_import.constants_from_top_level = {
+                serverConstants.data.csv_import.constants = {
                     status: 'status_hashes',
                     newsletter: 'newsletter_hashes'
                 };
@@ -257,9 +257,9 @@ describe('tools.import.csv.service', () => {
                 ];
             });
 
-            it('should set values_to_constants_mapping', () => {
+            it('should set values_to_constants_mappings', () => {
                 importCsv.process(data);
-                expect(importCsv.values_to_constants_mapping).toEqual(
+                expect(importCsv.values_to_constants_mappings).toEqual(
                     {
                         newsletter: {
                             'none_1': null,
@@ -272,7 +272,8 @@ describe('tools.import.csv.service', () => {
                         },
                         status: {
                             'never_contacted': 'never_contacted'
-                        }
+                        },
+                        send_appeals: {}
                     }
                 );
             });
@@ -312,10 +313,10 @@ describe('tools.import.csv.service', () => {
             expect(importCsv.get(importId)).toEqual(jasmine.any(Promise));
         });
 
-        it('should reset values_to_constants_mapping', () => {
-            importCsv.values_to_constants_mapping = { test: 'id' };
+        it('should reset values_to_constants_mappings', () => {
+            importCsv.values_to_constants_mappings = { test: 'id' };
             importCsv.get(importId);
-            expect(importCsv.values_to_constants_mapping).toEqual({});
+            expect(importCsv.values_to_constants_mappings).toEqual({});
         });
 
         it('should block the UI', () => {
@@ -374,6 +375,122 @@ describe('tools.import.csv.service', () => {
                     done();
                 });
             });
+        });
+    });
+
+    describe('constantsMappingsToValueMappings', () => {
+        it('should return deserialized object', () => {
+            let fileConstants = {
+                send_letter: [
+                    'abc',
+                    'def',
+                    'ghi',
+                    'jkl',
+                    'mno',
+                    'pqr'
+                ]
+            };
+            let fileHeadersMappings = {
+                send_letter: 'newsletter'
+            };
+            let data = {
+                newsletter: [
+                    {
+                        id: 'Physical',
+                        values: ['abc', 'def']
+                    },
+                    {
+                        id: 'Both',
+                        values: ['ghi', 'jkl']
+                    }
+                ]
+            };
+            let formattedData = {
+                newsletter: {
+                    'abc': 'Physical',
+                    'def': 'Physical',
+                    'ghi': 'Both',
+                    'jkl': 'Both',
+                    'mno': '',
+                    'pqr': ''
+                }
+            };
+
+            expect(importCsv.constantsMappingsToValueMappings(
+                data, fileConstants, fileHeadersMappings
+            )).toEqual(formattedData);
+        });
+    });
+
+    describe('valueMappingsToConstantsMappings', () => {
+        beforeEach(() => {
+            serverConstants.data = { csv_import: csvImport };
+        });
+
+        it('should return serialized object', () => {
+            let fileConstants = {
+                send_letter: [
+                    'abc',
+                    'def',
+                    'ghi',
+                    'jkl',
+                    'mno',
+                    'pqr'
+                ]
+            };
+            let fileHeadersMappings = {
+                send_letter: 'newsletter'
+            };
+            let formattedData = {
+                newsletter: {
+                    'abc': 'Physical',
+                    'def': 'Physical',
+                    'ghi': 'Both',
+                    'mno': null,
+                    'pqr': 'null'
+                }
+            };
+            let data = {
+                newsletter: [
+                    {
+                        id: 'Physical',
+                        values: ['abc', 'def']
+                    },
+                    {
+                        id: 'Both',
+                        values: ['ghi']
+                    },
+                    {
+                        id: '',
+                        values: ['mno', 'pqr', 'jkl']
+                    }
+                ]
+            };
+            expect(importCsv.valueMappingsToConstantsMappings(
+                formattedData, fileConstants, fileHeadersMappings
+            )).toEqual(data);
+        });
+    });
+
+    describe('getConstantValues', () => {
+        it('gets values from fileHeadersMappings based on constant name', () => {
+            const constants = {
+                send_letter: [
+                    'abc',
+                    'def',
+                    'ghi',
+                    'jkl',
+                    'mno',
+                    'pqr'
+                ]
+            };
+            const fileHeadersMappings = {
+                send_letter: 'newsletter'
+            };
+
+            expect(importCsv.getConstantValues('newsletter', constants, fileHeadersMappings)).toEqual([
+                'abc', 'def', 'ghi', 'jkl', 'mno', 'pqr'
+            ]);
         });
     });
 
@@ -439,7 +556,7 @@ describe('tools.import.csv.service', () => {
 
         describe('file_constants_mappings', () => {
             beforeEach(() => {
-                importCsv.values_to_constants_mapping = {
+                importCsv.values_to_constants_mappings = {
                     newsletter: {
                         'none_1': '',
                         'none_2': null,
@@ -455,23 +572,24 @@ describe('tools.import.csv.service', () => {
             it('should set file_constants_mappings', () => {
                 importCsv.save();
                 expect(importCsv.data.file_constants_mappings).toEqual({
-                    newsletter: {
-                        '': [
-                            'none_1',
-                            'none_2',
-                            'none_3',
-                            'none_4'
-                        ],
-                        physical: [
-                            'physical_1'
-                        ],
-                        email: [
-                            'email_1'
-                        ],
-                        both: [
-                            'both_1'
-                        ]
-                    }
+                    newsletter: [
+                        {
+                            id: '',
+                            values: ['none_1', 'none_2', 'none_3', 'none_4']
+                        },
+                        {
+                            id: 'physical',
+                            values: ['physical_1']
+                        },
+                        {
+                            id: 'email',
+                            values: ['email_1']
+                        },
+                        {
+                            id: 'both',
+                            values: ['both_1']
+                        }
+                    ]
                 });
             });
 
@@ -489,23 +607,23 @@ describe('tools.import.csv.service', () => {
                     importCsv.data.file_headers_mappings = {
                         categories: 'status'
                     };
-                    importCsv.values_to_constants_mapping = {};
+                    importCsv.values_to_constants_mappings = {};
                 });
 
                 it('should add unmapped constants to file_constants_mappings', () => {
                     importCsv.save();
                     expect(importCsv.data.file_constants_mappings).toEqual(
                         {
-                            status:
-                            {
-                                '': [
+                            status: [{
+                                id: '',
+                                values: [
                                     'test_1',
                                     'test_2',
                                     'test_3',
                                     'test_4',
                                     'test_5'
                                 ]
-                            }
+                            }]
                         });
                 });
             });
@@ -524,7 +642,7 @@ describe('tools.import.csv.service', () => {
                     importCsv.data.file_headers_mappings = {
                         categories: 'status'
                     };
-                    importCsv.values_to_constants_mapping = {
+                    importCsv.values_to_constants_mappings = {
                         status: {
                             'test_5': 'Never Contacted'
                         }
@@ -535,18 +653,20 @@ describe('tools.import.csv.service', () => {
                     importCsv.save();
                     expect(importCsv.data.file_constants_mappings).toEqual(
                         {
-                            status:
-                            {
-                                'Never Contacted': [
+                            status: [{
+                                id: 'Never Contacted',
+                                values: [
                                     'test_5'
-                                ],
-                                '': [
+                                ]
+                            }, {
+                                id: '',
+                                values: [
                                     'test_1',
                                     'test_2',
                                     'test_3',
                                     'test_4'
                                 ]
-                            }
+                            }]
                         });
                 });
             });
@@ -562,7 +682,7 @@ describe('tools.import.csv.service', () => {
                     importCsv.data.file_headers_mappings = {
                         categories: 'status'
                     };
-                    importCsv.values_to_constants_mapping = {
+                    importCsv.values_to_constants_mappings = {
                         status: {
                             'test_1': 'Never Contacted',
                             'test_2': 'Never Contacted'
@@ -574,13 +694,13 @@ describe('tools.import.csv.service', () => {
                     importCsv.save();
                     expect(importCsv.data.file_constants_mappings).toEqual(
                         {
-                            status:
-                            {
-                                'Never Contacted': [
+                            status: [{
+                                id: 'Never Contacted',
+                                values: [
                                     'test_1',
                                     'test_2'
                                 ]
-                            }
+                            }]
                         });
                 });
             });
@@ -696,7 +816,7 @@ describe('tools.import.csv.service', () => {
 
             describe('constants to map', () => {
                 beforeEach(() => {
-                    importCsv.values_to_constants_mapping = { map: 'constants' };
+                    importCsv.values_to_constants_mappings = { map: 'constants' };
                 });
 
                 it('should redirect to tools.import.csv.values', () => {
@@ -753,7 +873,7 @@ describe('tools.import.csv.service', () => {
 
             describe('constants to map', () => {
                 beforeEach(() => {
-                    importCsv.values_to_constants_mapping = { map: 'constants' };
+                    importCsv.values_to_constants_mappings = { map: 'constants' };
                 });
 
                 it('should redirect to tools.import.csv.values', () => {

@@ -19,5 +19,12 @@
         <div class="ml-3 mr-3 pt-2" ng-if="$ctrl.appeal">
             <appeals-progressbar appeal="$ctrl.appeal"></appeals-progressbar>
         </div>
+        <div ng-if="!$ctrl.appeal">
+            <collection-selector item-name="{{ 'Primary Appeal' | translate }}"
+                                 display-text="$ctrl.accounts.current.primary_appeal.name"
+                                 search="$ctrl.appeals.appealSearch(text)"
+                                 select="$ctrl.appeals.setPrimaryAppeal(item)">
+            </collection-selector>
+        </div>
     </div>
 </div>

@@ -1,4 +1,5 @@
 import assign from 'lodash/fp/assign';
+import compact from 'lodash/fp/compact';
 import concat from 'lodash/fp/concat';
 import contains from 'lodash/fp/contains';
 import createPatch from 'common/fp/createPatch';
@@ -19,7 +20,7 @@ import values from 'lodash/fp/values';
 class AppealController {
     constructor(
         $log, $q, $rootScope, $state, $stateParams, blockUI, gettext,
-        alerts, api, appealsShow, contacts, donations, exportContacts, mailchimp, modal, serverConstants, tasks,
+        alerts, api, appealsShow, contacts, donations, exportContacts, mailchimp, modal, serverConstants, tasks, users
     ) {
         this.$log = $log;
         this.$q = $q;
@@ -38,6 +39,7 @@ class AppealController {
         this.moment = moment;
         this.serverConstants = serverConstants;
         this.tasks = tasks;
+        this.users = users;
 
         this.appeal = null;
         this.blockUIGiven = blockUI.instances.get('appealShow');
@@ -297,8 +299,12 @@ class AppealController {
                 appeal_id: this.appeal.id,
                 status: status
             }
-        }).then((data) => {
-            const contactIds = map((p) => p.contact.id, data);
+        }).then((appealContacts) => {
+            const contactIds = compact(map((appealContact) => {
+                if (appealContact.contact) {
+                    return appealContact.contact.id;
+                }
+            }, appealContacts));
             /* istanbul ignore next */
             this.$log.debug(`contact ids for ${status}`, contactIds);
             this.selectedContactIds = contactIds;
@@ -315,8 +321,12 @@ class AppealController {
                 appeal_contacts: 'contact',
                 contact: ''
             }
-        }).then((data) => {
-            const contactIds = map((rel) => rel.contact.id, data);
+        }).then((appealContacts) => {
+            const contactIds = compact(map((appealContact) => {
+                if (appealContact.contact) {
+                    return appealContact.contact.id;
+                }
+            }, appealContacts));
             /* istanbul ignore next */
             this.$log.debug('select all contacts not given', contactIds);
             this.selectedContactIds = contactIds;

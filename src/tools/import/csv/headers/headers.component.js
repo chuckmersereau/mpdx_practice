@@ -35,7 +35,7 @@ class HeadersController {
     }
 
     save() {
-        this.importCsv.values_to_constants_mapping = {};
+        this.importCsv.values_to_constants_mappings = {};
         return this.importCsv.save();
     }
 

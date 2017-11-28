@@ -1,6 +1,7 @@
 import moment from 'moment';
 import defaultTo from 'lodash/fp/defaultTo';
 import isNil from 'lodash/fp/isNil';
+import times from 'lodash/fp/times';
 
 class DatetimepickerController {
     constructor(
@@ -12,8 +13,23 @@ class DatetimepickerController {
     }
 
     $onInit() {
+        if (!this.hourStep) {
+            this.hourStep = 1;
+        }
+        if (!this.minuteStep) {
+            this.minuteStep = 15;
+        }
+
         this.init();
-        this.$scope.$watch('$ctrl.date', () => {
+
+        const date = moment().startOf('d');
+        const hours = 24 / this.hourStep;
+        const intervals = hours * 60 / this.minuteStep;
+        this.times = times((index) => {
+            return moment(date).add(index * this.minuteStep, 'minutes').format('LT');
+        }, intervals);
+
+        this.dateWatcher = this.$scope.$watch('$ctrl.date', () => {
             if (this.date) {
                 this.model = this.model
                     ? moment(this.date).hour(this.model.hour()).minute(this.model.minute())
@@ -21,10 +37,11 @@ class DatetimepickerController {
                 this.ngModel = this.model.toISOString();
             }
         });
-        this.$scope.$watch('$ctrl.time', () => {
+
+        this.timeWatcher = this.$scope.$watch('$ctrl.time', () => {
             if (!isNil(this.time)) {
                 this.model = defaultTo(moment(), this.model);
-                const time = moment(this.time);
+                const time = moment(`${this.model.format('YYYY-MM-DD')} ${this.time}`, 'YYYY-MM-DD LT');
                 this.model = this.model.hour(time.hour()).minute(time.minute());
                 this.ngModel = this.model.toISOString();
             }
@@ -33,25 +50,25 @@ class DatetimepickerController {
     $onChanges() {
         this.init();
     }
+    $onDestroy() {
+        this.dateWatcher();
+        this.timeWatcher();
+    }
     init() {
-        if (!this.hourStep) {
-            this.hourStep = 1;
-        }
-        if (!this.minuteStep) {
-            this.minuteStep = 5;
-        }
-
         if (this.ngModel) {
             this.model = moment(this.ngModel);
             this.date = this.model.toDate();
-            this.time = this.model.toDate();
+            this.time = this.model.format('LT');
         }
     }
     focus() {
         if (!this.model) {
-            this.ngModel = moment().toISOString();
+            this.ngModel = moment().hour(12).minute(0).toISOString();
             this.init();
         }
+    }
+    selectTime(localTime) {
+        this.time = localTime;
     }
 }
 

@@ -1,21 +1,33 @@
 <div class="row">
     <div class="col-sm-6">
-        <input bs-datepicker type="text" class="form-control"
-               ng-model="$ctrl.date"
-               data-date-format="{{::$ctrl.locale.dateTimeFormat}}"
-               name="dp_{{::$id}}"
-               ng-focus="$ctrl.focus()"
-               data-autoclose="1">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            <input bs-datepicker
+                   class="form-control"
+                   ng-model="$ctrl.date"
+                   data-date-format="{{::$ctrl.locale.dateTimeFormat}}"
+                   name="dp_{{::$id}}"
+                   id="dp_{{::$id}}"
+                   ng-focus="$ctrl.focus()"
+                   data-autoclose="1">
+        </div>
         <div ng-if="$ctrl.form['dp_' + $id].$invalid" translate>
             Invalid date format
         </div>
     </div>
     <div class="col-sm-6">
-        <input type="text" class="form-control" bs-timepicker
-               ng-model="$ctrl.time" name="tp_{{::$id}}"
-               data-length="{{::$ctrl.hourStep}}"
-               data-minute-step="{{::$ctrl.minuteStep}}"
-               ng-focus="$ctrl.focus()">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+            <input bs-dropdown
+                   class="form-control"
+                   ng-model="$ctrl.time"
+                   name="tp_{{::$id}}"
+                   data-trigger="focus"
+                   ng-focus="$ctrl.focus()">
+            <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop">
+                <li><a ng-click="$ctrl.selectTime(time)" ng-repeat="time in $ctrl.times track by $index">{{time}}</a></li>
+            </ul>
+        </div>
         <div ng-if="$ctrl.form['tp_' + $id].$invalid" translate>
             Invalid time format
         </div>

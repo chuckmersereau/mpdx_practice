@@ -92,6 +92,12 @@ describe('tools.import.csv.headers.component', () => {
     describe('save', () => {
         beforeEach(() => {
             spyOn(importCsv, 'save').and.callFake(() => Promise.resolve());
+            importCsv.values_to_constants_mappings = { 'test': 'test' };
+        });
+
+        it('should set values_to_constants_mappings to {}', () => {
+            $ctrl.save();
+            expect(importCsv.values_to_constants_mappings).toEqual({});
         });
 
         it('should call importCsv.save', () => {
