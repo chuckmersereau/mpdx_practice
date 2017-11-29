@@ -1,5 +1,4 @@
 import config from 'config';
-import values from 'lodash/fp/values';
 
 export default class Routes {
     static config($stateProvider, gettext) {
@@ -367,11 +366,7 @@ export default class Routes {
             url: '/csv',
             component: 'importCsv',
             resolve: {
-                // dynamically injected
-                0: /* @ngInject*/ (serverConstants) => serverConstants.load(['csv_import']).then(() => {
-                    const dynamicConstants = values(serverConstants.data.csv_import.constants_from_top_level);
-                    return serverConstants.load(dynamicConstants);
-                })
+                0: /* @ngInject*/ (serverConstants) => serverConstants.load(['csv_import'])
             }
         }).state({
             name: 'tools.import.csv.upload',
@@ -400,7 +395,8 @@ export default class Routes {
             url: '/preview/:importId',
             component: 'importCsvPreview',
             resolve: {
-                0: /* @ngInject*/ ($stateParams, importCsv) => importCsv.get($stateParams.importId)
+                0: /* @ngInject*/ ($stateParams, importCsv) => importCsv.get($stateParams.importId),
+                1: /* @ngInject*/ (serverConstants) => serverConstants.load(['pledge_frequency_hashes'])
             }
         }).state({
             name: 'tools.import.google',

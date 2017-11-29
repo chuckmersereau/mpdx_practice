@@ -72,7 +72,7 @@
                 <td>{{contact.status}}</td>
                 <td>{{contact.pledge_amount}}</td>
                 <td>{{contact.notes}}</td>
-                <td>{{contact.pledge_frequency}}</td>
+                <td>{{$ctrl.serverConstants.getPledgeFrequency(contact.pledge_frequency).value}}</td>
                 <td>{{contact.send_newsletter}}</td>
                 <td>{{contact.pledge_currency}}</td>
                 <td>{{contact.likely_to_give}}</td>
