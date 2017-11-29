@@ -137,7 +137,7 @@ class TasksService {
         /* istanbul ignore next */
         this.$log.debug('Add task mutated task', newTask);
 
-        return contactIdList.length === 0
+        return isNilOrEmpty(contactIdList)
             ? Promise.resolve({ contactsList: [], task: newTask })
             : this.getNames(contactIdList).then((data) => {
                 return {
@@ -199,10 +199,14 @@ class TasksService {
         });
     }
     getContactsForLogModal($state, contacts, contactsList) {
+        contactsList = get('[0]', contactsList) ? contactsList : []; // null contact check
         const contactParams = angular.copy(contactsList);
         const inContactView = startsWith('contacts.show', $state.current.name);
         const contactIdList = inContactView ? union(contactParams, [contacts.current.id]) : contactParams;
-        return this.getNames(contactIdList);
+        this.$log.debug('contactsList', contactsList);
+        return isNilOrEmpty(contactIdList)
+            ? Promise.resolve([])
+            : this.getNames(contactIdList);
     }
 }
 
