@@ -28,10 +28,7 @@ class EditTaskController {
         /* istanbul ignore next */
         this.$log.debug('task patch', patch);
 
-        return this.tasks.save(
-            patch,
-            this.comment
-        ).then(() => {
+        return this.tasks.save(patch).then(() => {
             this.$scope.$hide();
         });
     }

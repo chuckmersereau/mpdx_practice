@@ -39,7 +39,6 @@ describe('tasks.modals.edit.controller', () => {
                 abc: 123,
                 def: 456
             };
-            $ctrl.comment = 'hello world';
             $ctrl.taskInitialState = angular.copy(task);
             $ctrl.task = angular.copy(task);
             $ctrl.task.change = '789';
@@ -49,7 +48,7 @@ describe('tasks.modals.edit.controller', () => {
                 change: '789',
                 notification_type: null,
                 contacts: []
-            }, 'hello world');
+            });
         });
 
         it('should return a promise', () => {
