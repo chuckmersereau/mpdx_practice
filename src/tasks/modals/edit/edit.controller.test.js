@@ -27,37 +27,11 @@ describe('tasks.modals.edit.controller', () => {
         it('should clone the task', () => {
             expect(isEqual($ctrl.task, { })).toBeTruthy();
         });
-
-        it('should set noDate to true', () => {
-            expect($ctrl.noDate).toEqual(true);
-        });
-
-        describe('start_at set', () => {
-            beforeEach(() => {
-                $ctrl = loadController({ start_at: '123' });
-            });
-
-            it('should set noDate to false', () => {
-                expect($ctrl.noDate).toEqual(false);
-            });
-        });
     });
 
     describe('save', () => {
         beforeEach(() => {
             spyOn(tasks, 'save').and.callFake(() => Promise.resolve());
-        });
-
-        describe('noDate is true', () => {
-            beforeEach(() => {
-                $ctrl.task.start_at = '123';
-                $ctrl.noDate = true;
-            });
-
-            it('should set start_at to null', () => {
-                $ctrl.save();
-                expect($ctrl.task.start_at).toEqual(null);
-            });
         });
 
         it('should call tasks.save', () => {
@@ -73,7 +47,7 @@ describe('tasks.modals.edit.controller', () => {
             expect(tasks.save).toHaveBeenCalledWith({
                 activity_contacts: [],
                 change: '789',
-                start_at: null,
+                notification_type: null,
                 contacts: []
             }, 'hello world');
         });
