@@ -30,7 +30,7 @@ describe('tasks.modals.log.controller', () => {
         $ctrl.task = assign(defaultTask, {
             activity_type: 'Active'
         });
-        $ctrl.contactsList = [1];
+        $ctrl.contactsList = [{ id:1 }];
     }
     describe('constructor', () => {
         it('should set the new task model to complete', () => {

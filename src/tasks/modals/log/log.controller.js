@@ -1,6 +1,7 @@
 import concat from 'lodash/fp/concat';
 import contains from 'lodash/fp/contains';
 import get from 'lodash/fp/get';
+import map from 'lodash/fp/map';
 import reduce from 'lodash/fp/reduce';
 
 class LogTaskController {
@@ -41,17 +42,24 @@ class LogTaskController {
         return contactPromise ? this.$q.all([taskPromise, contactPromise]) : taskPromise;
     }
     createTask() {
-        return this.tasks.create(this.task, this.contactsList, this.comment);
+        const contactIdList = map('id', this.contactsList);
+        return this.tasks.create(this.task, contactIdList, this.comment);
     }
     getContactPromise() {
+        const contactIdList = map('id', this.contactsList);
         return (this.status && this.showPartnerStatus())
             ? this.contacts.bulkSave(reduce((result, contact) =>
                 concat(result, { id: contact, status: this.status })
-                , [], this.contactsList))
+                , [], contactIdList))
             : false;
     }
     showPartnerStatus() {
-        return this.contactsList.length > 0 && this.task.activity_type && !contains(this.task.activity_type, ['Pre Call Letter', 'Reminder Letter', 'Support Letter', 'Thank', 'To Do']);
+        return this.contactsList.length > 0
+            && this.task.activity_type
+            && !contains(
+                this.task.activity_type,
+                ['Pre Call Letter', 'Reminder Letter', 'Support Letter', 'Thank', 'To Do']
+            );
     }
 }
 
