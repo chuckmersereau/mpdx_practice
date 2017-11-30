@@ -15,15 +15,9 @@
             <option value=""></option>
         </select>
     </div>
-    <div class="checkbox">
-        <label for="set-due-date">
-            <input id="set-due-date" ng-model="$ctrl.setDueDate" type="checkbox"/>
-            <translate>Set Due Date</translate>
-        </label>
-    </div>
     <div class="row">
         <div class="col-md-6">
-            <div class="form-group" ng-if="$ctrl.setDueDate">
+            <div class="form-group">
                 <label for="due-date" translate>Due Date</label>
                 <datetimepicker ng-model="$ctrl.task.start_at" id="due-date"></datetimepicker>
             </div>
@@ -37,12 +31,6 @@
         <label translate>Tags</label>
         <tag-selector ng-model="$ctrl.task.tag_list" tag-list="$ctrl.tasksTags.data"></tag-selector>
     </div>
-    <div class="checkbox">
-        <label for="notification-type">
-            <input id="notification-type" ng-model="$ctrl.task.notification_type" type="checkbox" ng-true-value="'email'" ng-false-value="null"/>
-            <translate>Send Email Notification</translate>
-        </label>
-    </div>
     <div class="row">
         <div class="col-md-2"><span class="no-wrap" translate>Notify me</span></div>
         <div class="col-md-2">
@@ -54,7 +42,10 @@
                    min="0">
         </div>
         <div class="col-md-3">
-            <select chosen ng-model="$ctrl.task.notification_time_unit" ng-required="$ctrl.task.notification_type">
+            <select chosen
+                    ng-model="$ctrl.task.notification_time_unit"
+                    disable-search="true"
+                    ng-required="$ctrl.task.notification_type">
                 <option value="minutes">Minutes</option>
                 <option value="hours">Hours</option>
             </select>
