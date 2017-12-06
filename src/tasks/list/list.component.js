@@ -155,8 +155,8 @@ class ListController {
                 fields: {
                     activity_contacts: 'contact',
                     contact: 'name',
-                    tasks: 'activity_contacts,activity_type,completed,completed_at,no_date,starred,start_at,subject,'
-                    + 'tag_list,comments_count,location,result,notification_type,notification_time_before,'
+                    tasks: 'activity_contacts,activity_type,completed,completed_at,no_date,contacts,starred,start_at,'
+                    + 'subject,tag_list,comments_count,location,result,notification_type,notification_time_before,'
                     + 'notification_time_unit'
                 }
             },
@@ -344,9 +344,10 @@ import modal from 'common/modal/modal.service';
 import session from 'common/session/session.service';
 import tasks from '../tasks.service';
 import tasksFilter from '../filter/filter.service';
+import tasksModals from '../modals/modals.service';
 import tasksTags from '../filter/tags/tags.service';
 
 export default angular.module('mpdx.tasks.list.component', [
     gettextCatalog,
-    alerts, modal, session, tasks, tasksFilter, tasksTags
+    alerts, modal, session, tasks, tasksFilter, tasksModals, tasksTags
 ]).component('tasksList', TaskList).name;

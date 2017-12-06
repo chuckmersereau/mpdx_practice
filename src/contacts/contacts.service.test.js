@@ -145,24 +145,6 @@ describe('contacts.service', () => {
             });
         });
     });
-    describe('getNames', () => {
-        it('should query an array of ids for names', () => {
-            spyOn(api, 'get').and.callFake((data) => Promise.resolve(data));
-            contacts.getNames([1, 2]);
-            expect(api.get).toHaveBeenCalledWith({
-                url: 'contacts',
-                data: {
-                    fields: { contacts: 'name' },
-                    filter: {
-                        ids: '1,2',
-                        status: 'active,hidden,null'
-                    }
-                },
-                overrideGetAsPost: true,
-                autoParams: false
-            });
-        });
-    });
     describe('save', () => {
         let contact = { id: 1, name: 'a' };
         it('should save a contact', () => {
