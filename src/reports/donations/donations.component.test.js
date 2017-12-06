@@ -45,13 +45,28 @@ describe('reports.donations.component', () => {
     });
 
     describe('$onInit', () => {
+        const donation = { id: 1 };
+        let result = [donation];
+        const meta = {
+            pagination: {
+                page: 1
+            }
+        };
+        result.meta = meta;
+
+        beforeEach(() => {
+            spyOn($ctrl, 'calculateTotals').and.callFake(() => {});
+        });
+        afterEach(() => {
+            $ctrl.$onDestroy();
+        });
         it('should set startDate', () => {
             $ctrl.$onInit();
             expect($ctrl.startDate).toEqual(moment().startOf('month'));
         });
 
         it('should call $ctrl.load', () => {
-            spyOn($ctrl, 'load').and.returnValue();
+            spyOn($ctrl, 'load').and.callFake(() => {});
             $ctrl.$onInit();
             expect($ctrl.load).toHaveBeenCalledWith(1, true);
         });
@@ -66,11 +81,50 @@ describe('reports.donations.component', () => {
                 expect($ctrl.startDate).toEqual(moment().startOf('month').subtract(1, 'month'));
             });
         });
+
+        it('should set watchers', () => {
+            $ctrl.$onInit();
+            expect($ctrl.watcher).toBeDefined();
+            expect($ctrl.watcher2).toBeDefined();
+        });
+
+        it('should handle donation additions', () => {
+            $ctrl.data = [];
+            $ctrl.$onInit();
+            $ctrl.meta = meta;
+            rootScope.$emit('donationUpdated', donation);
+            expect($ctrl.data).toEqual([donation]);
+        });
+
+        it('should handle donation updates', () => {
+            const patch = { id: 1, v: 'a' };
+            $ctrl.data = [donation];
+            $ctrl.$onInit();
+            $ctrl.meta = meta;
+            rootScope.$emit('donationUpdated', patch);
+            expect($ctrl.data).toEqual([patch]);
+        });
+
+        it('should re-calculate total', () => {
+            $ctrl.data = [];
+            $ctrl.$onInit();
+            $ctrl.meta = meta;
+            rootScope.$emit('donationUpdated', donation);
+            expect($ctrl.calculateTotals).toHaveBeenCalledWith();
+        });
+
+        it('should remove a donation', () => {
+            $ctrl.data = [donation];
+            $ctrl.$onInit();
+            $ctrl.meta = meta;
+            rootScope.$emit('donationRemoved', 1);
+            expect($ctrl.data).toEqual([]);
+        });
     });
 
     describe('$onChanges', () => {
         it('should call $ctrl.load', () => {
-            spyOn($ctrl, 'load').and.returnValue();
+            spyOn($ctrl, 'load').and.callFake(() => {});
             $ctrl.$onChanges({
                 contact: {
                     isFirstChange: () => false
@@ -83,7 +137,7 @@ describe('reports.donations.component', () => {
 
     describe('loadMoreDonations', () => {
         beforeEach(() => {
-            spyOn($ctrl, 'load').and.returnValue();
+            spyOn($ctrl, 'load').and.callFake(() => {});
             $ctrl.meta = {
                 pagination: {
                     total_pages: 1
@@ -285,31 +339,6 @@ describe('reports.donations.component', () => {
         it('should call $ctrl.load', () => {
             $ctrl.gotoPrevMonth();
             expect($ctrl.load).toHaveBeenCalledWith(1, true);
-        });
-    });
-
-    describe('openDonationModal', () => {
-        beforeEach(() => {
-            spyOn(donations, 'openDonationModal').and.callFake((data) => Promise.resolve(data));
-        });
-
-        it('should call donations openDonationModal', () => {
-            $ctrl.openDonationModal({ id: 1 });
-            expect(donations.openDonationModal).toHaveBeenCalledWith({ id: 1 });
-        });
-
-        it('should return a promise', () => {
-            expect($ctrl.openDonationModal({ id: 1 })).toEqual(jasmine.any(Promise));
-        });
-
-        describe('promise successful', () => {
-            it('should call $ctrl.load', (done) => {
-                spyOn($ctrl, 'load').and.returnValue();
-                $ctrl.openDonationModal({ id: 1 }).then(() => {
-                    expect($ctrl.load).toHaveBeenCalled();
-                    done();
-                });
-            });
         });
     });
 });

@@ -33,16 +33,16 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="donation in $ctrl.data">
-                        <td ng-if="::$ctrl.inContact">{{ ::donation.donor_account.account_number }}</td>
-                        <td class="date">{{ ::donation.donation_date | date: $ctrl.locale.dateTimeFormat }}</td>
-                        <td ng-if="!$ctrl.inContact">
-                            <a ui-sref="contacts.show({ contactId: donation.contact.id })">{{ ::$ctrl.donations.displayName(donation) }}</a>
+                        <td ng-if="::$ctrl.inContact">{{ donation.donor_account.account_number }}</td>
+                        <td class="date">{{ donation.donation_date | date: $ctrl.locale.dateTimeFormat }}</td>
+                        <td ng-if="::!$ctrl.inContact">
+                            <a ui-sref="contacts.show({ contactId: donation.contact.id })">{{ $ctrl.donations.displayName(donation) }}</a>
                         </td>
-                        <td class="text-right">{{ ::donation.amount | currency:'':0 }} {{ ::donation.currency }}</td>
-                        <td>{{ ::donation.designation_account.display_name }}</td>
-                        <td>{{ ::donation.payment_method }}</td>
-                        <td>{{ ::donation.appeal.name }}</td>
-                        <td class="text-right"><a ng-click="$ctrl.openDonationModal(donation)"><i class="fa fa-pencil-square-o"></i></a></td>
+                        <td class="text-right">{{ donation.amount | currency:'':0 }} {{ donation.currency }}</td>
+                        <td>{{ donation.designation_account.display_name }}</td>
+                        <td>{{ donation.payment_method }}</td>
+                        <td>{{ donation.appeal.name }}</td>
+                        <td class="text-right"><a ng-click="$ctrl.donations.openDonationModal(donation)"><i class="fa fa-pencil-square-o"></i></a></td>
                     </tr>
                 </tbody>
                 <tfoot>
