@@ -48,7 +48,7 @@ describe('coaches.show', () => {
         it('should call api.get', () => {
             $ctrl.load();
             expect(api.get).toHaveBeenCalledWith({
-                url: 'coaching_account_lists/account_list_id',
+                url: 'coaching/account_lists/account_list_id',
                 data: {
                     include: 'users,users.email_addresses,users.phone_numbers,users.facebook_accounts,users.linkedin_accounts,users.twitter_accounts',
                     fields: {
