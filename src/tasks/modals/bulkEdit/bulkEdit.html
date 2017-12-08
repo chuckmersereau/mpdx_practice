@@ -1,13 +1,12 @@
 <modal title="{{'Edit Tasks' | translate}}" save="$ctrl.save()" cancel="$hide()">
     <div class="alert alert-info" translate>Blank fields will not be affected!</div>
     <div class="form-group">
-        <label for="subject" translate>Subject</label>
+        <label for="subject" translate>Task Name</label>
         <input class="form-control" id='subject' ng-model="$ctrl.task.subject" autofocus>
     </div>
     <div class="form-group">
         <label for="action" translate>Action</label>
         <select chosen
-                disable-search="true"
                 class="form-control"
                 id='action'
                 ng-options="opt.id as opt.value for opt in $ctrl.serverConstants.data.activity_hashes"

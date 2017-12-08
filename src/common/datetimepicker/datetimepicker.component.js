@@ -35,6 +35,8 @@ class DatetimepickerController {
                     ? moment(this.date).hour(this.model.hour()).minute(this.model.minute())
                     : moment(this.date);
                 this.ngModel = this.model.toISOString();
+            } else {
+                this.ngModel = undefined;
             }
         });
 

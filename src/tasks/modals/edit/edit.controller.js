@@ -1,8 +1,8 @@
 import createPatch from 'common/fp/createPatch';
 import concat from 'lodash/fp/concat';
 import find from 'lodash/fp/find';
+import isNilOrEmpty from 'common/fp/isNilOrEmpty';
 import map from 'lodash/fp/map';
-import isNil from 'lodash/fp/isNil';
 import reduce from 'lodash/fp/reduce';
 
 class EditTaskController {
@@ -19,21 +19,16 @@ class EditTaskController {
 
         this.task = angular.copy(task);
         this.taskInitialState = angular.copy(task);
-        this.noDate = isNil(this.task.start_at);
     }
     save() {
         this.handleActivityContacts();
-        if (this.noDate) {
-            this.task.start_at = null;
-        }
+        this.task.notification_type = isNilOrEmpty(this.task.notification_time_before) ? null : 'email';
+
         let patch = createPatch(this.taskInitialState, this.task);
         /* istanbul ignore next */
         this.$log.debug('task patch', patch);
 
-        return this.tasks.save(
-            patch,
-            this.comment
-        ).then(() => {
+        return this.tasks.save(patch).then(() => {
             this.$scope.$hide();
         });
     }

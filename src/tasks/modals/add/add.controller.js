@@ -1,3 +1,7 @@
+import defaultTo from 'lodash/fp/defaultTo';
+import isNilOrEmpty from 'common/fp/isNilOrEmpty';
+import map from 'lodash/fp/map';
+
 class AddTaskController {
     constructor(
         $log, $rootScope, $scope,
@@ -15,14 +19,15 @@ class AddTaskController {
         $log.debug('Add task params', resolveObject);
 
         this.task = resolveObject.task;
+        this.task.notification_time_unit = defaultTo('minutes', this.task.notification_time_unit);
         this.contactsList = resolveObject.contactsList;
-        this.setDueDate = true;
     }
     save() {
-        this.task.start_at = this.setDueDate ? this.task.start_at : null;
+        this.task.notification_type = isNilOrEmpty(this.task.notification_time_before) ? null : 'email';
+        const contactIds = map('id', this.contactsList);
         return this.tasks.create(
             this.task,
-            this.contactsList,
+            contactIds,
             this.comment
         ).then(() => {
             this.$rootScope.$emit('taskAdded');

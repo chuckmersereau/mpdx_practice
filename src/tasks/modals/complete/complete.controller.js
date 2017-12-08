@@ -3,7 +3,6 @@ import createPatch from 'common/fp/createPatch';
 import defaultTo from 'lodash/fp/defaultTo';
 import isEmpty from 'lodash/fp/isEmpty';
 import map from 'lodash/fp/map';
-import union from 'lodash/fp/union';
 
 class CompleteTaskController {
     constructor(
@@ -39,7 +38,7 @@ class CompleteTaskController {
         const patch = createPatch(this.taskInitialState, this.task);
         /* istanbul ignore next */
         this.$log.debug('task patch', patch);
-        return this.tasks.save(patch, this.comment);
+        return this.tasks.save(patch);
     }
     getContactPromise() {
         return (this.status && this.showPartnerStatus())
@@ -50,7 +49,7 @@ class CompleteTaskController {
         return this.task.next_action
             ? this.tasks.addModal({
                 activityType: this.task.next_action,
-                comments: union(defaultTo([], this.task.comments), defaultTo([], this.comment)),
+                comments: defaultTo([], this.task.comments),
                 contactsList: map('id', this.task.contacts),
                 task: this.task
             })

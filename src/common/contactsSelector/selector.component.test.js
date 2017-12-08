@@ -2,6 +2,7 @@ import list from './selector.component';
 
 let defaultModel = ['a'];
 let tagList = [{ name: 'a' }, { name: 'b' }];
+const element = angular.element('<div></div>')
 
 describe('common.contactsSelector.component', () => {
     let $ctrl, rootScope, scope, componentController;
@@ -16,7 +17,7 @@ describe('common.contactsSelector.component', () => {
     });
 
     function loadController() {
-        $ctrl = componentController('contactsSelector', { $scope: scope }, {
+        $ctrl = componentController('contactsSelector', { $scope: scope, $element: element }, {
             ngModel: defaultModel,
             tagList: tagList,
             onTagAdded: () => {},
