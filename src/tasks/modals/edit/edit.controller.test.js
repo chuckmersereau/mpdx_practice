@@ -25,7 +25,7 @@ describe('tasks.modals.edit.controller', () => {
 
     describe('constructor', () => {
         it('should clone the task', () => {
-            expect(isEqual($ctrl.task, { contacts: [] })).toBeTruthy();
+            expect(isEqual($ctrl.task, { })).toBeTruthy();
         });
 
         it('should set noDate to true', () => {
@@ -60,12 +60,6 @@ describe('tasks.modals.edit.controller', () => {
             });
         });
 
-        it('should remove all empty contacts from task.contacts', () => {
-            $ctrl.task.contacts = [{ id: '123' }, {}, null];
-            $ctrl.save();
-            expect($ctrl.task.contacts).toEqual([{ id: '123' }]);
-        });
-
         it('should call tasks.save', () => {
             let task = {
                 abc: 123,
@@ -77,6 +71,7 @@ describe('tasks.modals.edit.controller', () => {
             $ctrl.task.change = '789';
             $ctrl.save();
             expect(tasks.save).toHaveBeenCalledWith({
+                activity_contacts: [],
                 change: '789',
                 start_at: null,
                 contacts: []
@@ -95,21 +90,6 @@ describe('tasks.modals.edit.controller', () => {
                     done();
                 });
             });
-        });
-    });
-
-    describe('addContact', () => {
-        it('should add empty object to contacts', () => {
-            $ctrl.addContact();
-            expect($ctrl.task.contacts).toEqual([{}]);
-        });
-    });
-
-    describe('setContact', () => {
-        it('should set contacts(index) to contact', () => {
-            $ctrl.task.contacts = [{}, {}];
-            $ctrl.setContact({ id: 'contact_id' }, 1);
-            expect($ctrl.task.contacts).toEqual([{}, { id: 'contact_id' }]);
         });
     });
 
@@ -136,6 +116,15 @@ describe('tasks.modals.edit.controller', () => {
                     done();
                 });
             });
+        });
+    });
+    describe('handleActivityContacts', () => {
+        it('should handle contact addition and removal', () => {
+            $ctrl.task.contacts = [{ id: 1 }, { id: 2 }];
+            $ctrl.task.activity_contacts = [{ contact: { id: 1 } }, { contact: { id: 3 } }];
+            $ctrl.handleActivityContacts();
+            expect($ctrl.task.contacts).toEqual([{ id: 2 }]);
+            expect($ctrl.task.activity_contacts).toEqual([{ contact: { id: 1 } }, { contact: { id: 3 }, _destroy: 1 }]);
         });
     });
 });

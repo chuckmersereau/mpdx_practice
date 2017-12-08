@@ -92,20 +92,6 @@ class ContactsService {
             return data;
         });
     }
-    getNames(ids) {
-        return this.api.get({
-            url: 'contacts',
-            data: {
-                fields: { contacts: 'name' },
-                filter: {
-                    ids: joinComma(ids),
-                    status: 'active,hidden,null'
-                }
-            },
-            overrideGetAsPost: true,
-            autoParams: false
-        });
-    }
     search(keyword) {
         return this.api.get({
             url: 'contacts',
