@@ -4,12 +4,12 @@ import fixed from 'common/fp/fixed';
 
 class DonationModalController {
     constructor(
-        $scope, gettextCatalog,
+        $rootScope, $scope, gettextCatalog,
         accounts, api, alerts, donations, locale, donorAccounts, designationAccounts, serverConstants,
         donation
     ) {
+        this.$rootScope = $rootScope;
         this.$scope = $scope;
-
         this.accounts = accounts;
         this.alerts = alerts;
         this.api = api;
@@ -57,7 +57,8 @@ class DonationModalController {
         }
         const patch = createPatch(this.initialDonation, donation);
         return this.donations.save(patch).then(() => {
-            this.alerts.addAlert(this.gettextCatalog.getString('Donation saved successfullly'), 'success');
+            this.alerts.addAlert(this.gettextCatalog.getString('Donation saved successfully'), 'success');
+            this.$rootScope.$emit('donationUpdated', patch);
             this.$scope.$hide();
         }).catch((err) => {
             this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes to donation'), 'danger', null, 5, true);
@@ -68,6 +69,7 @@ class DonationModalController {
     delete() {
         return this.donations.delete(this.donation).then(() => {
             this.alerts.addAlert(this.gettextCatalog.getString('Donation deleted successfullly'), 'success');
+            this.$rootScope.$emit('donationRemoved', this.donation.id);
             this.$scope.$hide();
         }).catch((err) => {
             this.alerts.addAlert(this.gettextCatalog.getString('Unable to remove donation'), 'danger', null, 5, true);

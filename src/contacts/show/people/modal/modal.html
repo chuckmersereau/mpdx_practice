@@ -62,8 +62,11 @@
                                         <span translate>No Phone Numbers.</span>
                                         <a ng-click="$ctrl.addPhone()" translate>Add one.</a>
                                     </div>
-                                    <div ng-repeat="phone in $ctrl.person.phone_numbers track by phone.id" name="phones">
-                                        <contact-phone phone="phone" on-remove="$ctrl.remove('phone_numbers', $index)" on-primary="$ctrl.changePrimary('phone_numbers', phone.id)" on-historic="$ctrl.changeHistoric(phone)"></contact-phone>
+                                    <div ng-repeat="phone in $ctrl.person.phone_numbers track by $index" name="phones">
+                                        <contact-phone phone="phone"
+                                                       on-remove="$ctrl.remove('phone_numbers', $index)"
+                                                       on-primary="$ctrl.changePrimary('phone_numbers', phone.id)"
+                                                       on-historic="$ctrl.changeHistoric(phone)"></contact-phone>
                                     </div>
                                     <a type="button" class="btn btn-default btn-xs" ng-click="$ctrl.addPhone()">
                                         <i class="fa fa-plus-circle"></i> <translate>Add Phone</translate>

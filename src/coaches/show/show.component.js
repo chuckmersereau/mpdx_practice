@@ -18,7 +18,7 @@ class ShowController {
     load() {
         this.loading = true;
         return this.api.get({
-            url: `coaching_account_lists/${this.$stateParams.accountId}`,
+            url: `coaching/account_lists/${this.$stateParams.accountId}`,
             data: {
                 include: 'users,users.email_addresses,users.phone_numbers,users.facebook_accounts,users.linkedin_accounts,users.twitter_accounts',
                 fields: {

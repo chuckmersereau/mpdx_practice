@@ -6,6 +6,7 @@
             on-tag-removing="$ctrl.removeContact($tag)"
             replace-spaces-with-dashes="false"
             add-from-autocomplete-only="true"
-            max-length="255">
+            max-length="255"
+            id="{{::$id}}">
     <auto-complete source="$ctrl.contacts.search($query)" min-length="0" select-first-match="false"></auto-complete>
 </tags-input>

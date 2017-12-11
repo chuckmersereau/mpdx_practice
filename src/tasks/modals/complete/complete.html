@@ -4,7 +4,6 @@
         <label for="result"><translate>Result</translate> <span class="text-danger">*</span></label>
         <select chosen
                 required
-                disable-search="true"
                 data-placeholder-text-single="'Select an Option' | translate"
                 class="form-control"
                 ng-options="opt for opt in $ctrl.serverConstants.data.results[ $ctrl.task.activity_type.toLowerCase() ]"
@@ -15,7 +14,6 @@
     <div class="form-group" ng-if="$ctrl.serverConstants.data.next_actions[ $ctrl.task.activity_type.toLowerCase() ]">
         <label for="nextActions" translate>Next Action</label>
         <select chosen
-                disable-search="true"
                 data-placeholder-text-single="'Select an Option' | translate"
                 class="form-control"
                 ng-options="opt for opt in $ctrl.serverConstants.data.next_actions[ $ctrl.task.activity_type.toLowerCase() ]"
@@ -27,7 +25,6 @@
     <div class="form-group" ng-if="$ctrl.showPartnerStatus()">
         <label translate>Partner Status</label>
         <select chosen
-                disable-search="true"
                 data-placeholder-text-single="'Select an Option' | translate"
                 class="form-control"
                 ng-options="opt.id as opt.value for opt in $ctrl.serverConstants.data.status_hashes"

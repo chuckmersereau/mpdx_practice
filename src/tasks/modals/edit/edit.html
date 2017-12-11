@@ -44,9 +44,8 @@
         <label for="result" translate>Result</label>
         <select chosen
                 ng-required="$ctrl.task.completed"
-                disable-search="true"
                 class="form-control"
-                id='result'
+                id="result"
                 ng-options="opt for opt in $ctrl.serverConstants.data.results[$ctrl.task.activity_type.toLowerCase()] || $ctrl.serverConstants.data.results['default']"
                 ng-model="$ctrl.task.result">
             <option value=""></option>
