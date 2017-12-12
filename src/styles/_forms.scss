@@ -81,6 +81,13 @@ tags-input {
     }
 }
 
+.scrollable-tags {
+    div.tags {
+        max-height: 64px;
+        overflow-y: auto;
+    }
+}
+
 .inline-input {
     > .chosen-container {
         .chosen-single {

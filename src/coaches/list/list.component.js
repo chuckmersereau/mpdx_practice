@@ -28,7 +28,7 @@ class ListController {
         currentCount = angular.copy(this.listLoadCount);
         this.page = page;
         return this.api.get({
-            url: 'coaching_account_lists',
+            url: 'coaching/account_lists',
             data: {
                 page: page,
                 per_page: 10,

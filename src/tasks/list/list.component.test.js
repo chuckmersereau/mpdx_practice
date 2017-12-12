@@ -331,7 +331,7 @@ describe('tasks.list.component', () => {
                     fields: {
                         activity_contacts: 'contact',
                         contact: 'name',
-                        tasks: 'activity_contacts,activity_type,completed,completed_at,no_date,starred,start_at,subject,tag_list,comments_count,location,result,notification_type,notification_time_before,notification_time_unit'
+                        tasks: 'activity_contacts,activity_type,completed,completed_at,no_date,contacts,starred,start_at,subject,tag_list,comments_count,location,result,notification_type,notification_time_before,notification_time_unit'
                     }
                 },
                 deSerializationOptions: jasmine.any(Object),

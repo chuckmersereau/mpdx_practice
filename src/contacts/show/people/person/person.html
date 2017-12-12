@@ -14,7 +14,7 @@
                 <i ng-if="email.historic" class="fa fa-close text-danger"></i>
             </dd>
             <dd ng-if="$ctrl.person.optout_enewsletter" translate>opted out of newsletter</dd>
-            <dd ng-repeat="phone in $ctrl.person.phone_numbers track by phone.id">
+            <dd ng-repeat="phone in $ctrl.person.phone_numbers track by $index">
                 <a ng-href="tel:{{phone.number}}" target="_blank">
                     {{ phone.number }}
                 </a>

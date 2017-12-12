@@ -1,5 +1,8 @@
+import assign from 'lodash/fp/assign';
 import defaultTo from 'lodash/fp/defaultTo';
+import findIndex from 'lodash/fp/findIndex';
 import map from 'lodash/fp/map';
+import pullAllBy from 'lodash/fp/pullAllBy';
 import unionBy from 'lodash/fp/unionBy';
 import moment from 'moment';
 import reduceObject from 'common/fp/reduceObject';
@@ -11,6 +14,7 @@ class DonationsController {
         contacts, designationAccounts, donations, locale
     ) {
         this.$log = $log;
+        this.$rootScope = $rootScope;
         this.$stateParams = $stateParams;
         this.contacts = contacts;
         this.designationAccounts = designationAccounts;
@@ -41,12 +45,30 @@ class DonationsController {
             this.startDate = defaultTo(moment().startOf('month'), this.$stateParams.startDate);
         }
         this.load(1, true);
+
+        this.watcher = this.$rootScope.$on('donationUpdated', (e, donation) => {
+            const foundIndex = findIndex({ id: donation.id }, this.data);
+            const index = foundIndex > -1 ? foundIndex : this.data.length;
+            this.data[index] = assign(this.data[index], donation);
+
+            this.calculateTotals();
+        });
+
+        this.watcher2 = this.$rootScope.$on('donationRemoved', (e, donationId) => {
+            this.data = pullAllBy('id', [donationId], this.data);
+            this.load();
+        });
     }
 
     $onChanges(changesObj) {
         if (changesObj.contact && !changesObj.contact.isFirstChange()) {
             this.load(1, true);
         }
+    }
+
+    $onDestroy() {
+        this.watcher();
+        this.watcher2();
     }
 
     loadMoreDonations() {
@@ -56,7 +78,7 @@ class DonationsController {
         this.load(this.page + 1);
     }
 
-    load(page, reset = false) {
+    load(page = this.page, reset = false) {
         let currentCount;
         if (reset) {
             this.meta = {};
@@ -93,19 +115,23 @@ class DonationsController {
             } else {
                 this.data = unionBy('id', this.data, data);
             }
-            if (parseInt(this.meta.pagination.page) === this.meta.pagination.total_pages) {
-                this.totals = reduceObject((result, donation) => {
-                    if (result[donation.currency]) {
-                        result[donation.currency]['amount'] += parseFloat(donation.amount);
-                    } else {
-                        result[donation.currency] = { amount: parseFloat(donation.amount), count: 0 };
-                    }
-                    result[donation.currency]['count']++;
-                    return result;
-                }, {}, this.data);
-            }
+            this.calculateTotals();
             return this.data;
         });
+    }
+
+    calculateTotals() {
+        if (parseInt(this.meta.pagination.page) === this.meta.pagination.total_pages) {
+            this.totals = reduceObject((result, donation) => {
+                if (result[donation.currency]) {
+                    result[donation.currency].amount += parseFloat(donation.amount);
+                } else {
+                    result[donation.currency] = { amount: parseFloat(donation.amount), count: 0 };
+                }
+                result[donation.currency]['count']++;
+                return result;
+            }, {}, this.data);
+        }
     }
 
     setMonths() {
@@ -123,12 +149,6 @@ class DonationsController {
     gotoPrevMonth() {
         this.startDate = this.previousMonth;
         this.load(1, true);
-    }
-
-    openDonationModal(donation) {
-        return this.donations.openDonationModal(donation).then(() => {
-            this.load();
-        });
     }
 }
 

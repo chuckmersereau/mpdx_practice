@@ -81,7 +81,7 @@ describe('coaches.list', () => {
         it('should call api.get', () => {
             $ctrl.load();
             expect(api.get).toHaveBeenCalledWith({
-                url: 'coaching_account_lists',
+                url: 'coaching/account_lists',
                 data: {
                     page: 1,
                     per_page: 10,

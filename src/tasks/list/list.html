@@ -8,14 +8,25 @@
                 </div>
                 <div class="col-md-7 col-sm-8 text-right">
                     <div class="btn-group">
-                        <a class="btn btn-default" ng-click="$ctrl.tasks.addModal({ contactsList: [$ctrl.contact.id] })" translate>Add Task</a>
-                        <a class="btn btn-default" ng-click="$ctrl.tasks.logModal([$ctrl.contact.id])" translate>Log Task</a>
+                        <a class="btn btn-default"
+                           ng-click="$ctrl.tasks.addModal({ contactsList: $ctrl.contact.id ? [$ctrl.contact.id] : [] })"
+                           translate>Add Task</a>
+                        <a class="btn btn-default"
+                           ng-click="$ctrl.tasks.logModal([$ctrl.contact.id])"
+                           translate>Log Task</a>
                         <div class="btn-group">
                             <div class="dropdown">
-                                <a class="btn btn-default dropdown-toggle" bs-dropdown type="button" data-toggle="dropdown" aria-expanded="true">
+                                <a class="btn btn-default dropdown-toggle"
+                                   bs-dropdown
+                                   type="button"
+                                   data-toggle="dropdown"
+                                   aria-expanded="true">
                                     <span  translate>Actions</span> <span class="caret"></span>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop" ng-show="$ctrl.selected.length > 0">
+                                <ul class="dropdown-menu dropdown-menu-right"
+                                    role="menu"
+                                    aria-labelledby="action-drop"
+                                    ng-show="$ctrl.selected.length > 0">
                                     <li><a ng-click="$ctrl.bulkComplete()" translate>Complete Tasks</a></li>
                                     <li><a ng-click="$ctrl.tasksModals.bulkEdit($ctrl.selected)" translate>Edit Tasks</a></li>
                                     <li class="divider"></li>
@@ -23,13 +34,18 @@
                                     <li class="divider"></li>
                                     <li><a ng-click="$ctrl.bulkDelete($ctrl.selected)" translate>Delete Tasks</a></li>
                                 </ul>
-                                <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop" ng-show="$ctrl.selected.length === 0">
+                                <ul class="dropdown-menu dropdown-menu-right"
+                                    role="menu"
+                                    aria-labelledby="action-drop"
+                                    ng-show="$ctrl.selected.length === 0">
                                     <li class="dropdown-header" translate>Please select at least one task by clicking anywhere on that task to continue.</li>
                                 </ul>
                             </div>
                         </div>
                         <a class="btn btn-default" ng-click="$ctrl.toggleAll()" translate>Select All</a>
-                        <a class="btn btn-default visible-sm" ng-class="{ 'btn-reverse' : $ctrl.session.showFiltersOnMobile }" ng-click="$ctrl.session.showFiltersOnMobile = !$ctrl.session.showFiltersOnMobile">
+                        <a class="btn btn-default visible-sm"
+                           ng-class="{ 'btn-reverse' : $ctrl.session.showFiltersOnMobile }"
+                           ng-click="$ctrl.session.showFiltersOnMobile = !$ctrl.session.showFiltersOnMobile">
                             <i class="fa fa-sliders"></i>
                             <translate>Filters</translate>
                         </a>
@@ -88,17 +104,17 @@
                 <h3 translate translate-plural="You have {{$count}} total tasks" translate-n="$ctrl.totalTaskCount">You have 1 total task</h3>
                 <p translate>Unfortunately none of them match your current search or filters.</p>
                 <a ng-click="$ctrl.tasksFilter.reset()" class="btn btn-default" translate>Reset All Search Filters</a>
-                <a ng-click="$ctrl.tasks.addModal({ contactsList: [$ctrl.contact.id] })" class="btn btn-primary" translate>Add New Task</a>
+                <a ng-click="$ctrl.tasks.addModal({ contactsList: $ctrl.contact.id ? [$ctrl.contact.id] : [] })" class="btn btn-primary" translate>Add New Task</a>
             </div>
             <div ng-if="$ctrl.totalTaskCount > 0 && $ctrl.contact">
                 <h3 translate>Looks like you haven't added any tasks for this contact yet</h3>
-                <a ng-click="$ctrl.tasks.addModal({ contactsList: [$ctrl.contact.id] })" class="btn btn-default" translate>Add New Task</a>
+                <a ng-click="$ctrl.tasks.addModal({ contactsList: $ctrl.contact.id ? [$ctrl.contact.id] : [] })" class="btn btn-default" translate>Add New Task</a>
             </div>
             <div ng-if="$ctrl.totalTaskCount === 0">
                 <h3 translate>Looks like you haven't added any tasks yet</h3>
                 <p translate>You can import tasks from another service or add a new task.</p>
                 <a ui-sref="tools({setup: true})" class="btn btn-default" translate>Import Tasks</a>
-                <a ng-click="$ctrl.tasks.addModal({ contactsList: [$ctrl.contact.id] })" class="btn btn-primary" translate>Add New Task</a>
+                <a ng-click="$ctrl.tasks.addModal({ contactsList: $ctrl.contact.id ? [$ctrl.contact.id] : [] })" class="btn btn-primary" translate>Add New Task</a>
             </div>
         </div>
     </div>

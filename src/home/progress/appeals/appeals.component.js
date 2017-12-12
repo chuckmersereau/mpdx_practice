@@ -19,7 +19,9 @@ class AppealsController {
     }
     $onInit() {
         this.appeal = null;
-        const primaryAppealId = get('id', this.accounts.current.primary_appeal);
+        const currentAccount = get('current', this.accounts);
+        const primaryAppeal = get('primary_appeal', currentAccount);
+        const primaryAppealId = get('id', primaryAppeal);
         return primaryAppealId
             ? this.getPrimaryAppeal(primaryAppealId)
             : null;
