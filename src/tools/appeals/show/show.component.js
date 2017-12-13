@@ -166,11 +166,12 @@ class AppealController {
     getPledgesProcessed(page = this.pledgesProcessedPage) {
         this.blockUIGiven.start();
         return this.api.get(`account_lists/${this.api.account_list_id}/pledges`, {
-            include: 'contact',
+            include: 'contact,donations',
             page: page,
             per_page: 20,
             fields: {
-                contacts: 'name,pledge_amount,pledge_currency,pledge_frequency'
+                contacts: 'name',
+                donations: 'converted_amount,converted_currency,donation_date'
             },
             filter: {
                 appeal_id: this.appeal.id,
