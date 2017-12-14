@@ -11,7 +11,6 @@ before_install:
 branches:
   only:
   - master
-  - next
   - staging
 env:
     matrix:
@@ -29,19 +28,6 @@ deploy:
   on:
     repo: CruGlobal/mpdx_web
     branch: master
-    condition: '"$RUN_BUILD" = "true"'
-- provider: s3
-  access_key_id: AKIAI4EEUDXF23GRIX4A
-  secret_access_key:
-    secure:
-      "AJ1JZOUXzi+DXcgMZd08RAXgu6tkICSg9VqOf3wYtsxT6MLGHONU1HOKSiNMC4zgM9OPoCKgxdZZYLQCA1O5M6Ah2G5qSFOuZ6mfwuz36aMLV+40oyceMo/mCQ83SBhu4tlDOiTgFokb7jXAQirqOUZqe4Hlg7LvK0T46QcBBhI47W8GUEn9CD7Y+XntX2YYDv+jm2KDFBNV5tv9Y/mrKn0qMvVvbRyY4zBirg/CedjGgNmU3SYtaC8TXtflYjm0oZZZ9+gzRx14OrWnHQ60jWR4gCsvePMURaMkXp7QAFg7KfI6rPiWzHU7RouYxRlo6DJLFhdDxuQewPSApI/2uxsvL58Gr5RzcvvQAzGT4ijnyqlGIwZEagxWw/Ifg7fspWQR63a/7a3NfEQiOJaMus1joYoDd+7RBfIQFjZy60xVU8jqHOdB/jkQP+DeTUMfo9kKdZKp2gbZ84xrkrLve+Ceo0jy74zoLuF7MpUFJp3yMSLm95SrT3avGW0QgK1orwAii/lW1IjqoMtH2IYFwfAYEfbfKkAOt7uCx6jqYW5v8MCkqtrLVJUFnGJVxJQCT60uFwXacU+eCb0IWTcJnziBIdFBlmgj/ehUPusNWjQ86sbtg8cvS3U3QvAMRKnjl41QaQBBixWqKy2EmFy1G0CJBUf5/lz8b1nXO6tfVus="
-  bucket: cru-mpdx-web-next
-  skip_cleanup: true
-  local_dir: public
-  acl: public_read
-  on:
-    repo: CruGlobal/mpdx_web
-    branch: next
     condition: '"$RUN_BUILD" = "true"'
 - provider: s3
   access_key_id: AKIAJCDUBSRAJGJTF5AA
