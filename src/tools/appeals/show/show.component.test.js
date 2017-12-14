@@ -578,7 +578,7 @@ describe('tools.appeals.show.component', () => {
                 data: {
                     filter: {
                         account_list_id: api.account_list_id,
-                        contact_ids: '1,2'
+                        contact_ids: [1, 2]
                     }
                 },
                 doSerialization: false

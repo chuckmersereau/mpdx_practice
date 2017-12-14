@@ -414,7 +414,7 @@ class AppealController {
             data: {
                 filter: {
                     account_list_id: this.api.account_list_id,
-                    contact_ids: joinComma(this.selectedContactIds)
+                    contact_ids: this.selectedContactIds
                 }
             },
             doSerialization: false
