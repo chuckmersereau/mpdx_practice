@@ -482,11 +482,10 @@ class AppealController {
         return this.modal.confirm(message).then(() => {
             return this.api.delete(`appeals/${this.appeal.id}`).then(() => {
                 this.$state.go('tools.appeals');
+            }).catch(() => {
+                const error = this.gettext('There was an error trying to delete the appeal.');
+                this.alerts.addAlert(error, 'danger');
             });
-        }).catch((ex) => {
-            const error = this.gettext('There was an error trying to delete the appeal.');
-            this.alerts.addAlert(error, 'danger');
-            throw ex;
         });
     }
 }
