@@ -26,6 +26,7 @@ class Language {
                 break;
             case 'en-us':
                 language = 'en_us';
+                temp = 'en-US';
                 break;
             case 'fr-ca':
                 temp = 'fr-CA';
