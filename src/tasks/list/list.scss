@@ -17,6 +17,13 @@ tasks-list {
             &.no-due-date {
                 border-color: #3eb1c8;
             }
+            > .task-category-title {
+                height: 23px;
+                width: 78px;
+                color: #393939;
+                font-size: 18px;
+                line-height: 23px;
+            }
         }
         .list-group {
             .list-group-item {

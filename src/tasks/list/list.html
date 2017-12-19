@@ -75,11 +75,25 @@
             </div>
         </div>
     </div>
-    <div class="column">
-        <div ng-repeat="(category, tasks) in $ctrl.data | orderBy: 'category.id' | groupBy: 'category.name'" infinite-scroll="$ctrl.loadMoreTasks()" infinite-scroll-disabled="$ctrl.loading">
-            <div class="panel panel-default">
-               <div class="panel-heading" ng-class="category">{{$ctrl.categories[category]}}</div>
-               <ul class="list-group">
+    <div class="column" ng-init="activeCategory = {}">
+        <div ng-repeat="(category, tasks) in $ctrl.data | orderBy: 'category.id' | groupBy: 'category.name'"
+             infinite-scroll="$ctrl.loadMoreTasks()"
+             infinite-scroll-disabled="$ctrl.loading">
+            <div class="panel panel-default"
+                 ng-class="category"
+                 role="tablist"
+                 aria-multiselectable="true"
+                 bs-collapse
+                 ng-init="activeCategory[category] = false"
+                 ng-model="activeCategory[category]">
+                <div class="panel-heading" bs-collapse-toggle>
+                    <span class="task-category-title">
+                        <i class="glyphicon"
+                           ng-class="{'glyphicon-chevron-down': !activeCategory[category], 'glyphicon-chevron-right': activeCategory[category]}"></i>
+                        {{$ctrl.categories[category]}}
+                    </span>
+                </div>
+               <ul class="list-group" role="tabpanel" bs-collapse-target>
                     <li class="list-group-item" ng-repeat="task in tasks | orderBy: ['task.completed','-task.completed_at','task.start_at','task.created_at']">
                         <tasks-list-item task="task"
                             selected="$ctrl.isSelected(task.id)"
