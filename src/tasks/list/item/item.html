@@ -11,7 +11,7 @@
     </div>
     <div class="pull-right">
         <div class="btn-group">
-            <a class="btn btn-xs btn-default" ng-click="$ctrl.toggleComments(); $event.stopPropagation();" title="{{ ::'View Comments' | translate }}">
+            <a class="btn btn-xs btn-default" ng-click="$ctrl.openComments(); $event.stopPropagation();" title="{{ ::'View Comments' | translate }}">
                 <i class="fa fa-commenting-o"></i>
                 &nbsp;
                 {{ $ctrl.task.comments.length || $ctrl.task.comments_count }}
@@ -34,7 +34,7 @@
             {{ ::$ctrl.task.completed_at | localizeWithTime }}
         </span>
         <span ng-repeat="activityContact in ::$ctrl.task.activity_contacts | limitTo : 5">
-            <a ng-click="$ctrl.toggleContacts(); $event.stopPropagation();">
+            <a ng-click="$ctrl.openContacts(); $event.stopPropagation();">
                 <span ng-if="::$index < 4">{{ ::activityContact.contact.name }}</span>
                 <span ng-if="::$index === 4" translate translate-plural="and {{$count}} others" translate-n="::$ctrl.task.activity_contacts.length - 4">and 1 other</span>
             </a>
@@ -44,31 +44,4 @@
         </span>
     </div>
 </div>
-<div class="contacts" ng-if="$ctrl.showContacts">
-    <div class="links">
-        <translate>Contacts</translate>
-        <a class="pull-right" ng-click="$ctrl.toggleContacts()">
-            <i class="fa fa-times"></i>
-        </a>
-    </div>
-    <contacts-list-item ng-repeat="contact in $ctrl.task.contacts track by contact.id" contact="contact"></contacts-list-item>
-</div>
-<div class="comments" ng-if="$ctrl.showComments">
-    <div class="links">
-        <translate>Comments</translate>
-        <a class="pull-right" ng-click="$ctrl.toggleComments()">
-            <i class="fa fa-times"></i>
-        </a>
-    </div>
-    <task-item-comment ng-repeat="comment in $ctrl.task.comments"
-                         comment="comment"
-                         on-comment-remove="$ctrl.commentRemoved(comment.id)"
-                         task-id="$ctrl.task.id">
-    </task-item-comment>
-    <form class="input-group" ng-submit="$ctrl.addComment()">
-      <input type="text" class="form-control" ng-model="$ctrl.comment" required>
-      <span class="input-group-btn">
-          <button type="submit" class="btn btn-primary" translate>Add Comment</button>
-      </span>
-    </form>
-</div>
+

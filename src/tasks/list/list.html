@@ -97,7 +97,8 @@
                     <li class="list-group-item" ng-repeat="task in tasks | orderBy: ['task.completed','-task.completed_at','task.start_at','task.created_at']">
                         <tasks-list-item task="task"
                             selected="$ctrl.isSelected(task.id)"
-                            on-select="$ctrl.select(task.id)"></tasks-list-item>
+                            on-select="$ctrl.select(task.id)"
+                            on-open="$ctrl.onOpen(task, $action)"></tasks-list-item>
                     </li>
                 </ul>
             </div>
@@ -133,3 +134,6 @@
         </div>
     </div>
 </div>
+<side-drawer ng-if="$ctrl.selectedTask" on-close="$ctrl.onClose()" class="slide-left">
+    <task-item-drawer view="$ctrl.drawerView" task="$ctrl.selectedTask"></task-item-drawer>
+</side-drawer>

@@ -13,6 +13,7 @@ import cover from './cover/cover.component';
 import datetimepicker from './datetimepicker/datetimepicker.component';
 import designationAccounts from './designationAccounts/designationAccounts.service';
 import donorAccounts from './donorAccounts/donorAccounts.service';
+import drawer from './sideDrawer/drawer.component';
 import faCheckbox from './faCheckbox/faCheckbox.component';
 import filters from './filters/filters.service';
 import help from './help/help.service';
@@ -53,6 +54,7 @@ export default angular.module('mpdx.common', [
     datetimepicker,
     designationAccounts,
     donorAccounts,
+    drawer,
     faCheckbox,
     filters,
     help,

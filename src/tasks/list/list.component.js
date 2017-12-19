@@ -94,6 +94,11 @@ class ListController {
             this.reset();
         });
 
+        this.watcher8 = this.$rootScope.$on('taskCommentsChanged', (e, task) => {
+            const existingTask = find({ id: task.id }, this.data);
+            existingTask.comments = map('id', task.comments);
+        });
+
         this.load();
     }
     $onDestroy() {
@@ -104,6 +109,7 @@ class ListController {
         this.watcher5();
         this.watcher6();
         this.watcher7();
+        this.watcher8();
     }
     $onChanges() {
         this.reset();
@@ -327,6 +333,13 @@ class ListController {
                 throw err;
             });
         });
+    }
+    onOpen(task, action) {
+        this.selectedTask = angular.copy(task);
+        this.drawerView = action;
+    }
+    onClose() {
+        this.selectedTask = null;
     }
 }
 

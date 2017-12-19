@@ -10,6 +10,7 @@ class CommentController {
         this.gettext = gettext;
         this.modal = modal;
         this.users = users;
+        this.showEdit = false;
     }
     commentBelongsToUser(comment) {
         return eq(get('person.id', comment), this.users.current.id);
@@ -27,6 +28,12 @@ class CommentController {
             this.comment.edit = false;
         });
     }
+    mouseOver() {
+        this.showEdit = true;
+    }
+    mouseOut() {
+        this.showEdit = false;
+    }
 }
 
 const Comment = {
@@ -43,7 +50,7 @@ import gettextCatalog from 'angular-gettext';
 import modal from 'common/modal/modal.service';
 import users from 'common/users/users.service';
 
-export default angular.module('mpdx.tasks.list.item.comment.component', [
+export default angular.module('mpdx.tasks.list.drawer.comment.component', [
     gettextCatalog,
     modal, users
 ]).component('taskItemComment', Comment).name;

@@ -18,11 +18,12 @@ import union from 'lodash/fp/union';
 class TasksService {
     constructor(
         $rootScope, $log, gettextCatalog,
-        api, modal, users
+        api, contacts, modal, users
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
         this.api = api;
+        this.contacts = contacts;
         this.gettextCatalog = gettextCatalog;
         this.modal = modal;
         this.users = users;
@@ -206,6 +207,26 @@ class TasksService {
         return isNilOrEmpty(contactIdList)
             ? Promise.resolve([])
             : this.getNames(contactIdList);
+    }
+    load(taskId) {
+        return this.api.get(`tasks/${taskId}`, {
+            include: 'activity_contacts,comments,comments.person,contacts,contacts.addresses,contacts.people,'
+            + 'contacts.people.facebook_accounts,contacts.people.phone_numbers,contacts.people.email_addresses',
+            fields: {
+                activity_contacts: 'contact',
+                contacts: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people',
+                addresses: 'city,historic,primary_mailing_address,postal_code,state,source,street',
+                email_addresses: 'email,historic,primary',
+                phone_numbers: 'historic,location,number,primary',
+                facebook_accounts: 'username',
+                person: 'first_name,last_name,deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers'
+            }
+        }).then((task) => {
+            task.contacts = this.contacts.fixPledgeAmountAndFrequencies(task.contacts);
+            /* istanbul ignore next */
+            this.$log.debug(`tasks/${task.id}`, task);
+            return task;
+        });
     }
 }
 

@@ -1,0 +1,39 @@
+.fade-in {
+    &.ng-enter {
+        animation: fadein .5s;
+    }
+    &.ng-leave {
+        animation: fadeout .5s;
+    }
+}
+
+.slide-left {
+    &.ng-enter {
+        animation: slide-left 0.5s forwards;
+    }
+    &.ng-leave {
+        animation: slide-left 0.5s reverse;
+    }
+}
+
+@keyframes slide-left {
+    from {
+        margin-left: 0;
+        width: 0;
+    }
+
+    to {
+        margin-left: 528px;
+        width: 528px;
+    }
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes fadeout {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+}

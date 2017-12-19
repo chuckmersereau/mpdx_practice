@@ -6,12 +6,12 @@ const contactList = [];
 const currentUser = { id: 321 };
 
 describe('tasks.service', () => {
-    let api, users, tasks, tasksTags, gettextCatalog, modal, serverConstants;
+    let api, users, tasks, tasksTags, gettextCatalog, modal, serverConstants, contacts;
     beforeEach(() => {
         angular.mock.module(service);
         inject((
             $rootScope, _api_, _tasks_, _tasksTags_, _users_, _alerts_, _gettextCatalog_, _modal_,
-            _serverConstants_
+            _serverConstants_, _contacts_
         ) => {
             api = _api_;
             modal = _modal_;
@@ -20,6 +20,7 @@ describe('tasks.service', () => {
             tasksTags = _tasksTags_;
             gettextCatalog = _gettextCatalog_;
             serverConstants = _serverConstants_;
+            contacts = _contacts_;
             api.account_list_id = accountListId;
             users.current = currentUser;
         });
@@ -325,6 +326,34 @@ describe('tasks.service', () => {
             contacts.current.id = 1;
             tasks.getContactsForLogModal(state, contacts, contactsList);
             expect(tasks.getNames).toHaveBeenCalledWith([1]);
+        });
+    });
+    describe('load', () => {
+        beforeEach(() => {
+            spyOn(api, 'get').and.callFake(() => Promise.resolve({ contacts: ['a'] }));
+            spyOn(contacts, 'fixPledgeAmountAndFrequencies').and.callFake((data) => data);
+        });
+        it('should query the api for a tasks comments & contacts info', () => {
+            tasks.load(1);
+            expect(api.get).toHaveBeenCalledWith('tasks/1', {
+                include: 'activity_contacts,comments,comments.person,contacts,contacts.addresses,contacts.people,contacts.people.facebook_accounts,contacts.people.phone_numbers,contacts.people.email_addresses',
+                fields: {
+                    activity_contacts: 'contact',
+                    contacts: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people',
+                    addresses: 'city,historic,primary_mailing_address,postal_code,state,source,street',
+                    email_addresses: 'email,historic,primary',
+                    phone_numbers: 'historic,location,number,primary',
+                    facebook_accounts: 'username',
+                    person: 'first_name,last_name,deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers'
+                }
+            });
+        });
+        it('should mutate the contact data', (done) => {
+            tasks.load(1).then((task) => {
+                expect(contacts.fixPledgeAmountAndFrequencies).toHaveBeenCalledWith(['a']);
+                expect(task.contacts).toEqual(['a']);
+                done();
+            });
         });
     });
 });

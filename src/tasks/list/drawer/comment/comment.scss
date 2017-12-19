@@ -1,0 +1,33 @@
+task-item-comment {
+    margin-bottom: 10px;
+    .comment {
+        margin-right: 5px;
+        margin-left: 5px;
+        padding: 5px;
+        border: 1px solid $cru-white;
+        border-radius: $border-radius;
+        transition: border .5s linear;
+        &:hover {
+            border: 1px solid $cru-gray-silver;
+        }
+        .comment-edit-controls {
+            width: 51px;
+        }
+        .comment-body {
+            height: 15px;
+            color: $color-text;
+            font-size: 12px;
+            line-height: 15px;
+        }
+        .comment-foot {
+            height: 13px;
+            color: #ADADAD;
+            font-size: 10px;
+            line-height: 13px;
+        }
+    }
+
+    textarea {
+        margin-bottom: 15px;
+    }
+}

@@ -1,0 +1,32 @@
+<div class="comment" ng-class="{ hover: $ctrl.showEdit }">
+    <div ng-if="!$ctrl.comment.edit" ng-mouseover="$ctrl.mouseOver()" ng-mouseleave="$ctrl.mouseOut()">
+        <div class="pull-right comment-edit-controls fade-in" ng-if="$ctrl.showEdit && $ctrl.commentBelongsToUser($ctrl.comment)">
+            <a class="btn btn-xs btn-danger"
+               ng-click="$ctrl.deleteComment()"
+               title="{{::'Delete Comment' | translate}}">
+                <i class="fa fa-trash-o"></i>
+            </a>
+            <a class="btn btn-xs btn-primary"
+               ng-click="$ctrl.comment.edit = true"
+               title="{{::'Edit Comment' | translate}}">
+                <i class="fa fa-pencil"></i>
+            </a>
+        </div>
+        <div class="comment-body">{{ $ctrl.comment.body }}</div>
+        <div class="comment-foot">
+            <span ng-if="::$ctrl.comment.person">
+                {{ ::$ctrl.comment.person.first_name }} {{ ::$ctrl.comment.person.last_name }},
+            </span>
+            {{ ::$ctrl.comment.created_at | localize }}
+        </div>
+    </div>
+    <div ng-if="$ctrl.comment.edit">
+        <form ng-submit="$ctrl.editComment()">
+            <textarea class="form-control" ng-model="$ctrl.comment.body" required></textarea>
+            <div class="text-right">
+                <button ng-click="$ctrl.comment.edit = false" class="btn btn-link" translate>Cancel</button>
+                <button type="submit" class="btn btn-primary" translate>Save</button>
+            </div>
+        </form>
+    </div>
+</div>
