@@ -2,14 +2,15 @@ import map from 'lodash/fp/map';
 import find from 'lodash/fp/find';
 import reduce from 'lodash/fp/reduce';
 import reject from 'lodash/fp/reject';
-import uniq from 'lodash/fp/uniq';
-import union from 'lodash/fp/union';
+import sortBy from 'lodash/fp/sortBy';
+import unionBy from 'lodash/fp/unionBy';
 
 class AddressesController {
     constructor(
-        $rootScope, gettextCatalog, blockUI,
+        $filter, $rootScope, gettextCatalog, blockUI,
         api, contacts, modal, tools
     ) {
+        this.$filter = $filter;
         this.$rootScope = $rootScope;
         this.api = api;
         this.contacts = contacts;
@@ -58,14 +59,17 @@ class AddressesController {
                 sort: 'name'
             }
         ).then((data) => {
-            this.loading = false;
-            const sources = union(['MPDX'], reduce((result, contact) => {
-                return union(result, uniq(map('source', contact.addresses)));
+            const initial = [{ id: 'MPDX', value: this.$filter('sourceToStr')('MPDX') }];
+            const sources = unionBy('id', initial, reduce((result, contact) => {
+                return unionBy('id', result, map((address) => ({
+                    id: address.source,
+                    value: this.$filter('sourceToStr')(address.source)
+                }), contact.addresses));
             }, [], data));
-            this.sources = sources.sort();
+            this.sources = sortBy('value', sources);
             this.data = data;
             this.setMeta(data.meta);
-
+            this.loading = false;
             return this.data;
         });
     }
@@ -133,9 +137,10 @@ import blockUI from 'angular-block-ui';
 import contacts from 'contacts/contacts.service';
 import gettextCatalog from 'angular-gettext';
 import modal from 'common/modal/modal.service';
+import sourceToStr from 'common/sourceToStr/sourceToStr.filter';
 import tools from 'tools/tools.service';
 
 export default angular.module('mpdx.tools.fix.addresses.component', [
     gettextCatalog, blockUI,
-    api, contacts, modal, tools
+    api, contacts, modal, sourceToStr, tools
 ]).component('fixAddresses', Addresses).name;

@@ -6,10 +6,13 @@ const fakeBlockUI = {
 };
 
 describe('tools.fix.addresses.component', () => {
-    let $ctrl, rootScope, scope, componentController, gettextCatalog, blockUI, modal, contacts, tools, api;
+    let $ctrl, rootScope, scope, componentController, gettextCatalog, blockUI, modal, contacts, tools, api, filter;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _gettextCatalog_, _blockUI_, _modal_, _contacts_, _tools_, _api_) => {
+        inject((
+            $componentController, $rootScope, _gettextCatalog_, _blockUI_, _modal_, _contacts_, _tools_, _api_, $filter
+        ) => {
+            filter = $filter;
             rootScope = $rootScope;
             scope = rootScope.$new();
             gettextCatalog = _gettextCatalog_;
@@ -55,28 +58,22 @@ describe('tools.fix.addresses.component', () => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve(apiData));
         });
 
-        it('should return a promise', () => {
-            expect($ctrl.load()).toEqual(jasmine.any(Promise));
-        });
-
         it('should call the api', () => {
             $ctrl.load();
-            expect(api.get).toHaveBeenCalledWith(
-                'contacts',
-                {
-                    filter: {
-                        address_valid: false,
-                        account_list_id: api.account_list_id,
-                        deceased: false
-                    },
-                    fields: {
-                        contacts: 'name,avatar,addresses'
-                    },
-                    include: 'addresses',
-                    page: 1,
-                    per_page: 25,
-                    sort: 'name'
-                });
+            expect(api.get).toHaveBeenCalledWith('contacts', {
+                filter: {
+                    address_valid: false,
+                    account_list_id: api.account_list_id,
+                    deceased: false
+                },
+                fields: {
+                    contacts: 'name,avatar,addresses'
+                },
+                include: 'addresses',
+                page: 1,
+                per_page: 25,
+                sort: 'name'
+            });
         });
 
         describe('promise successful', () => {
@@ -98,7 +95,12 @@ describe('tools.fix.addresses.component', () => {
 
             it('should collect list of sources', (done) => {
                 $ctrl.load().then(() => {
-                    expect($ctrl.sources).toEqual(['Dataserver', 'MPDX', 'Sibel', 'Tntmpd']);
+                    expect($ctrl.sources).toEqual([
+                        { id: 'Dataserver', value: filter('sourceToStr')('Dataserver') },
+                        { id: 'MPDX', value: filter('sourceToStr')('MPDX') },
+                        { id: 'Sibel', value: filter('sourceToStr')('Sibel') },
+                        { id: 'Tntmpd', value: filter('sourceToStr')('Tntmpd') }
+                    ]);
                     done();
                 });
             });

@@ -18,13 +18,13 @@
                     disable-search="true"
                     allow-single-deselect="true"
                     class="form-control"
-                    ng-options="opt for opt in $ctrl.sources"
+                    ng-options="opt.id as opt.value for opt in $ctrl.sources"
                     ng-model="$ctrl.source">
                 <option value=""></option>
             </select>
             <button class="btn btn-gray" ng-click="$ctrl.save()" ng-disabled="!$ctrl.source">
                 <i class="fa fa-check-circle"></i>
-                <translate translate-params-source="$ctrl.source"
+                <translate translate-params-source="$ctrl.source | sourceToStr"
                            translate-params-count="$ctrl.data.length">Confirm {{count}} as {{source}}</translate>
             </button>
         </div>
