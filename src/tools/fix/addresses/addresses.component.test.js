@@ -6,16 +6,18 @@ const fakeBlockUI = {
 };
 
 describe('tools.fix.addresses.component', () => {
-    let $ctrl, rootScope, scope, componentController, gettextCatalog, blockUI, modal, fixAddresses;
+    let $ctrl, rootScope, scope, componentController, gettextCatalog, blockUI, modal, contacts, tools, api;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _gettextCatalog_, _blockUI_, _modal_, _fixAddresses_) => {
+        inject(($componentController, $rootScope, _gettextCatalog_, _blockUI_, _modal_, _contacts_, _tools_, _api_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             gettextCatalog = _gettextCatalog_;
             blockUI = _blockUI_;
             modal = _modal_;
-            fixAddresses = _fixAddresses_;
+            contacts = _contacts_;
+            tools = _tools_;
+            api = _api_;
             componentController = $componentController;
             loadController();
         });
@@ -40,11 +42,137 @@ describe('tools.fix.addresses.component', () => {
     });
     describe('events', () => {
         it('should fire load on accountListUpdated', () => {
+            $ctrl.$onInit();
             spyOn($ctrl, 'load').and.callFake(() => Promise.resolve());
             rootScope.$emit('accountListUpdated');
             expect($ctrl.load).toHaveBeenCalled();
+            $ctrl.$onDestroy();
         });
     });
+
+    describe('load', () => {
+        beforeEach(() => {
+            spyOn(api, 'get').and.callFake(() => Promise.resolve(apiData));
+        });
+
+        it('should return a promise', () => {
+            expect($ctrl.load()).toEqual(jasmine.any(Promise));
+        });
+
+        it('should call the api', () => {
+            $ctrl.load();
+            expect(api.get).toHaveBeenCalledWith(
+                'contacts',
+                {
+                    filter: {
+                        address_valid: false,
+                        account_list_id: api.account_list_id,
+                        deceased: false
+                    },
+                    fields: {
+                        contacts: 'name,avatar,addresses'
+                    },
+                    include: 'addresses',
+                    page: 1,
+                    per_page: 25,
+                    sort: 'name'
+                });
+        });
+
+        describe('promise successful', () => {
+            it('should set loading to false', (done) => {
+                $ctrl.loading = true;
+                $ctrl.load().then(() => {
+                    expect($ctrl.loading).toBeFalsy();
+                    done();
+                });
+            });
+
+            it('should call set meta', (done) => {
+                spyOn($ctrl, 'setMeta').and.callThrough();
+                $ctrl.load().then(() => {
+                    expect($ctrl.setMeta).toHaveBeenCalled();
+                    done();
+                });
+            });
+
+            it('should collect list of sources', (done) => {
+                $ctrl.load().then(() => {
+                    expect($ctrl.sources).toEqual(['Dataserver', 'MPDX', 'Sibel', 'Tntmpd']);
+                    done();
+                });
+            });
+
+            it('should store data', (done) => {
+                $ctrl.load().then((data) => {
+                    expect(data).toEqual(apiData);
+                    done();
+                });
+            });
+
+            it('should store meta', (done) => {
+                $ctrl.load().then((data) => {
+                    expect(data.meta).toEqual(apiData.meta);
+                    done();
+                });
+            });
+
+            describe('data set', () => {
+                beforeEach(() => {
+                    $ctrl.data = apiData;
+                    $ctrl.page = 1;
+                });
+                describe('reset set to true', () => {
+                    it('should call the api', (done) => {
+                        $ctrl.load(true).then(() => {
+                            expect(api.get).toHaveBeenCalled();
+                            done();
+                        });
+                    });
+                });
+
+                describe('reset set to false', () => {
+                    describe('page is current page', () => {
+                        it('should not call the api', (done) => {
+                            $ctrl.load(false, 1).then(() => {
+                                expect(api.get).not.toHaveBeenCalled();
+                                done();
+                            });
+                        });
+
+                        it('should return set data', (done) => {
+                            $ctrl.load(false, 1).then((data) => {
+                                expect(data).toEqual($ctrl.data);
+                                done();
+                            });
+                        });
+
+                        it('should return a promise', () => {
+                            expect($ctrl.load(false, 1)).toEqual(jasmine.any(Promise));
+                        });
+                    });
+
+                    describe('page is not current page', () => {
+                        it('should call the api', (done) => {
+                            $ctrl.load(false, 2).then(() => {
+                                expect(api.get).toHaveBeenCalled();
+                                done();
+                            });
+                        });
+
+                        it('should set page', (done) => {
+                            expect($ctrl.page).toEqual(1);
+                            $ctrl.load(false, 2).then(() => {
+                                expect($ctrl.page).toEqual(2);
+                                done();
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
+
     describe('save', () => {
         beforeEach(() => {
             spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
@@ -70,12 +198,12 @@ describe('tools.fix.addresses.component', () => {
 
         describe('on confirmation', () => {
             beforeEach(() => {
-                spyOn(fixAddresses, 'bulkSave').and.callFake(() => Promise.resolve());
+                spyOn($ctrl, 'bulkSave').and.callFake(() => Promise.resolve());
             });
 
             it('should call bulk save with source', (done) => {
                 $ctrl.save().then(() => {
-                    expect(fixAddresses.bulkSave).toHaveBeenCalledWith('MPDX');
+                    expect($ctrl.bulkSave).toHaveBeenCalledWith('MPDX');
                     done();
                 });
             });
@@ -90,27 +218,135 @@ describe('tools.fix.addresses.component', () => {
         });
     });
 
-    describe('load', () => {
+    describe('bulkSave', () => {
         beforeEach(() => {
-            spyOn(fixAddresses, 'load').and.callFake(() => Promise.resolve());
+            $ctrl.data = [{
+                id: 'contact_id_0',
+                addresses: [
+                    {
+                        id: 'address_id_0',
+                        source: 'Sibel',
+                        primary_mailing_address: true
+                    }, {
+                        id: 'address_id_1',
+                        source: 'MPDX',
+                        primary_mailing_address: false
+                    }, {
+                        id: 'address_id_2',
+                        source: 'MPDX',
+                        primary_mailing_address: false
+                    }
+                ]
+            }, {
+                id: 'contact_id_1',
+                addresses: [
+                    {
+                        id: 'address_id_3',
+                        source: 'Sibel',
+                        primary_mailing_address: true
+                    }
+                ]
+            }];
+            spyOn(contacts, 'bulkSave').and.callFake(() => Promise.resolve());
         });
+
 
         it('should return a promise', () => {
-            expect($ctrl.load()).toEqual(jasmine.any(Promise));
+            expect($ctrl.bulkSave('MPDX')).toEqual(jasmine.any(Promise));
         });
 
-        describe('page == 1', () => {
-            it('should call fixAddresses.load with page', () => {
-                $ctrl.load(1);
-                expect(fixAddresses.load).toHaveBeenCalledWith(true, 1);
+        it('should call the contacts service', () => {
+            $ctrl.bulkSave('MPDX');
+            expect(contacts.bulkSave).toHaveBeenCalledWith(
+                [{
+                    id: 'contact_id_0',
+                    addresses: [
+                        {
+                            id: 'address_id_0',
+                            source: 'Sibel',
+                            primary_mailing_address: false,
+                            valid_values: true
+                        }, {
+                            id: 'address_id_1',
+                            source: 'MPDX',
+                            primary_mailing_address: true,
+                            valid_values: true
+                        }, {
+                            id: 'address_id_2',
+                            source: 'MPDX',
+                            primary_mailing_address: false,
+                            valid_values: true
+                        }
+                    ]
+                }]
+            );
+        });
+
+        describe('promise successful', () => {
+            beforeEach(() => {
+                spyOn($ctrl, 'load').and.callFake(() => Promise.resolve());
             });
-        });
 
-        describe('page not set', () => {
-            it('should call fixAddresses.load with null', () => {
-                $ctrl.load();
-                expect(fixAddresses.load).toHaveBeenCalledWith(true, null);
+            it('should call load', (done) => {
+                $ctrl.bulkSave('MPDX').then(() => {
+                    expect($ctrl.load).toHaveBeenCalledWith(true);
+                    done();
+                });
             });
         });
     });
+
+    describe('setMeta', () => {
+        it('should set meta', () => {
+            $ctrl.setMeta(['data']);
+            expect($ctrl.meta).toEqual(['data']);
+        });
+
+        it('should set tools.analytics', () => {
+            $ctrl.setMeta({ pagination: { total_count: 123 } });
+            expect(tools.analytics['fix-addresses']).toEqual(123);
+        });
+    });
+
+    describe('onSave', () => {
+        const contact = { id: 'contact_id', addresses: [{}, {}] };
+        beforeEach(() => {
+            $ctrl.page = 1;
+            $ctrl.meta = { pagination: { total_count: 2 } };
+            $ctrl.data = [contact];
+            spyOn($ctrl, 'load').and.callFake(() => Promise.resolve());
+        });
+
+        it('should remove contact from data', () => {
+            $ctrl.onSave({ contact: contact });
+            expect($ctrl.data).toEqual([]);
+        });
+
+        it('should subtract 1 from the total_count', () => {
+            $ctrl.onSave({ contact: contact });
+            expect($ctrl.meta.pagination.total_count).toEqual(1);
+        });
+
+        it('should call setMeta', () => {
+            spyOn($ctrl, 'setMeta').and.callThrough();
+            $ctrl.onSave({ contact: contact });
+            expect($ctrl.setMeta).toHaveBeenCalled();
+        });
+
+        describe('data empty', () => {
+            it('should call load', () => {
+                $ctrl.onSave({ contact: contact });
+                expect($ctrl.load).toHaveBeenCalledWith(true, 1);
+            });
+        });
+    });
+
+    const apiData = [
+        { addresses: [{ source: 'Sibel' }] },
+        { addresses: [{ source: 'Tntmpd' }] },
+        { addresses: [{ source: 'Dataserver' }] },
+        { addresses: [{ source: 'Dataserver' }] }
+    ];
+
+    apiData.meta = { page: 1 };
 });

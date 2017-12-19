@@ -464,10 +464,7 @@ export default class Routes {
             name: 'tools.fix.addresses',
             title: gettext('Tools - Fix - Addresses'),
             url: '/addresses',
-            component: 'fixAddresses',
-            resolve: {
-                0: /* @ngInject*/ (fixAddresses) => fixAddresses.load()
-            }
+            component: 'fixAddresses'
         }).state({
             name: 'tools.merge',
             title: gettext('Tools - Merge'),

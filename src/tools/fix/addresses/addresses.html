@@ -1,14 +1,14 @@
 <div block-ui="fix-addresses">
     <h1 translate>Fix Mailing Addresses</h1>
-    <div class="blankslate blankslate-spacious" ng-if="!$ctrl.fixAddresses.meta.pagination.total_count && !$ctrl.fixAddresses.loading">
+    <div class="blankslate blankslate-spacious" ng-if="!$ctrl.meta.pagination.total_count && !$ctrl.loading">
         <i class="fa fa-map blankslate-icon"></i>
         <h3 translate>No contacts with mailing addresses need attention</h3>
         <p translate>Contacts with new addresses or multiple primary mailing addresses will appear here.</p>
         <a class="btn btn-default" ui-sref="tools" translate>Back to Tools</a>
     </div>
-    <div ng-if="$ctrl.fixAddresses.meta.pagination.total_count">
+    <div ng-if="$ctrl.meta.pagination.total_count">
         <p>
-            <strong translate translate-params-count="$ctrl.fixAddresses.meta.pagination.total_count">You have {{count}} mailing addresses to confirm.</strong>
+            <strong translate translate-params-count="$ctrl.meta.pagination.total_count">You have {{count}} mailing addresses to confirm.</strong>
             <br>
             <translate>Choose below which mailing address will be set as primary. Primary mailing addresses will be used for Newsletter exports.</translate>
         </p>
@@ -18,25 +18,28 @@
                     disable-search="true"
                     allow-single-deselect="true"
                     class="form-control"
-                    ng-options="opt for opt in $ctrl.fixAddresses.sources"
+                    ng-options="opt for opt in $ctrl.sources"
                     ng-model="$ctrl.source">
                 <option value=""></option>
             </select>
             <button class="btn btn-gray" ng-click="$ctrl.save()" ng-disabled="!$ctrl.source">
                 <i class="fa fa-check-circle"></i>
                 <translate translate-params-source="$ctrl.source"
-                           translate-params-count="$ctrl.fixAddresses.data.length">Confirm {{count}} as {{source}}</translate>
+                           translate-params-count="$ctrl.data.length">Confirm {{count}} as {{source}}</translate>
             </button>
         </div>
-        <div class="blankslate blankslate-spacious" ng-if="$ctrl.fixAddresses.loading">
+        <div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
           <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
         </div>
-        <div ng-if="!$ctrl.fixAddresses.loading">
-            <fix-addresses-item ng-repeat="contact in $ctrl.fixAddresses.data" ng-if="!contact.hidden" contact="contact"></fix-addresses-item>
+        <div ng-if="!$ctrl.loading">
+            <fix-addresses-item ng-repeat="contact in $ctrl.data"
+                                ng-if="!contact.hidden"
+                                on-save="$ctrl.onSave({ contact: contact })"
+                                contact="contact"></fix-addresses-item>
         </div>
-        <pagination ng-if="$ctrl.fixAddresses.meta.pagination.total_count > 0"
-                    meta="$ctrl.fixAddresses.meta.pagination"
-                    on-change="$ctrl.load(page)"
+        <pagination ng-if="$ctrl.meta.pagination.total_count > 0"
+                    meta="$ctrl.meta.pagination"
+                    on-change="$ctrl.fixAddresses.load(true, page)"
                     class="text-center">
         </pagination>
     </div>
