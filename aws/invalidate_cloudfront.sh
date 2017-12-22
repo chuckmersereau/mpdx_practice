@@ -11,7 +11,7 @@ fi
 if [ "$TRAVIS_BRANCH" = "next" ]
 then
   echo 'invalidate master on Cloudfront'
-  aws cloudfront create-invalidation --distribution-id E2OO8ZWC4BSK94 --paths /index.html
+  aws cloudfront create-invalidation --distribution-id E2ZXTGH9Q1D654 --paths /index.html
 fi
 
 if [ "$TRAVIS_BRANCH" = "staging" ]
