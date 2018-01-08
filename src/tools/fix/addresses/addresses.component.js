@@ -42,23 +42,20 @@ class AddressesController {
 
         this.page = page;
 
-        return this.api.get(
-            'contacts',
-            {
-                filter: {
-                    address_valid: false,
-                    account_list_id: this.api.account_list_id,
-                    deceased: false
-                },
-                fields: {
-                    contacts: 'name,avatar,addresses'
-                },
-                include: 'addresses',
-                page: this.page,
-                per_page: 25,
-                sort: 'name'
-            }
-        ).then((data) => {
+        return this.api.get('contacts', {
+            filter: {
+                address_valid: false,
+                account_list_id: this.api.account_list_id,
+                deceased: false
+            },
+            fields: {
+                contacts: 'name,avatar,addresses'
+            },
+            include: 'addresses',
+            page: this.page,
+            per_page: 25,
+            sort: 'name'
+        }).then((data) => {
             const initial = [{ id: 'MPDX', value: this.$filter('sourceToStr')('MPDX') }];
             const sources = unionBy('id', initial, reduce((result, contact) => {
                 return unionBy('id', result, map((address) => ({
