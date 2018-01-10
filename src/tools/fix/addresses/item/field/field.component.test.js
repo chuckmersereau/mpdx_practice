@@ -1,13 +1,13 @@
 import component from './field.component';
 
 describe('tools.fix.addresses.item.field.component', () => {
-    let $ctrl, rootScope, scope, componentController, fixAddresses, contact, address;
+    let $ctrl, rootScope, scope, componentController, contact, address, contacts;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _fixAddresses_) => {
+        inject(($componentController, $rootScope, _contacts_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
-            fixAddresses = _fixAddresses_;
+            contacts = _contacts_;
             componentController = $componentController;
             contact = { id: 'contact_id' };
             address = { id: 'address_id' };
@@ -67,25 +67,77 @@ describe('tools.fix.addresses.item.field.component', () => {
         });
     });
 
-    describe('remove', () => {
+    describe('removeAddress', () => {
+        const contact = {
+            id: 'contact_id',
+            addresses: [
+                {
+                    id: 'address_0',
+                    primary_mailing_address: true
+                }, {
+                    id: 'address_1',
+                    primary_mailing_address: true
+                }, {
+                    id: 'address_2',
+                    primary_mailing_address: false
+                }]
+        };
+
+        const address = { id: 'address_1' };
+
         beforeEach(() => {
-            spyOn(fixAddresses, 'removeAddress').and.returnValue();
+            spyOn(contacts, 'deleteAddress').and.callFake(() => Promise.resolve({}));
         });
 
-        it('should call fixAddresses', () => {
+        it('should call the contacts service', () => {
+            $ctrl.contact = contact;
+            $ctrl.address = address;
             $ctrl.remove();
-            expect(fixAddresses.removeAddress).toHaveBeenCalledWith(contact, address);
+            expect(contacts.deleteAddress).toHaveBeenCalledWith(
+                'contact_id', 'address_1'
+            );
+        });
+
+        it('should remove address from contact object', (done) => {
+            $ctrl.contact = contact;
+            $ctrl.address = address;
+            $ctrl.remove().then(() => {
+                expect($ctrl.contact).toEqual({
+                    id: 'contact_id',
+                    addresses: [
+                        {
+                            id: 'address_0',
+                            primary_mailing_address: true
+                        }, {
+                            id: 'address_2',
+                            primary_mailing_address: false
+                        }
+                    ]
+                });
+                done();
+            });
         });
     });
 
     describe('setPrimary', () => {
-        beforeEach(() => {
-            spyOn(fixAddresses, 'setPrimary').and.returnValue();
-        });
-
-        it('should call fixAddresses', () => {
+        it('should set the primary_mailing_address address as primary_mailing_address in the contact object', () => {
+            let contact = {
+                addresses: [{
+                    id: 'address_0',
+                    primary_mailing_address: true
+                }, {
+                    id: 'address_1',
+                    primary_mailing_address: true
+                }, {
+                    id: 'address_2',
+                    primary_mailing_address: false
+                }]
+            };
+            $ctrl.contact = contact;
+            $ctrl.address = { id: 'address_2' };
+            expect(contact.addresses[2].primary_mailing_address).toBeFalsy();
             $ctrl.setPrimary();
-            expect(fixAddresses.setPrimary).toHaveBeenCalledWith(contact, address);
+            expect(contact.addresses[2].primary_mailing_address).toBeTruthy();
         });
     });
 });

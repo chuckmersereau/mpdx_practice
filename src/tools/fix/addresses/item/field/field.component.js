@@ -1,8 +1,10 @@
+import map from 'lodash/fp/map';
+import reject from 'lodash/fp/reject';
+
 class FieldController {
     constructor(
-        fixAddresses, contacts
+        contacts
     ) {
-        this.fixAddresses = fixAddresses;
         this.contacts = contacts;
     }
 
@@ -26,11 +28,16 @@ class FieldController {
     }
 
     remove() {
-        this.fixAddresses.removeAddress(this.contact, this.address);
+        return this.contacts.deleteAddress(this.contact.id, this.address.id).then(() => {
+            this.contact.addresses = reject({ id: this.address.id }, this.contact.addresses);
+        });
     }
 
     setPrimary() {
-        this.fixAddresses.setPrimary(this.contact, this.address);
+        this.contact.addresses = map((address) => {
+            address.primary_mailing_address = address.id === this.address.id;
+            return address;
+        }, this.contact.addresses);
     }
 }
 
@@ -38,15 +45,14 @@ const Field = {
     controller: FieldController,
     template: require('./field.html'),
     bindings: {
-        contact: '<',
+        contact: '=',
         address: '<'
     }
 };
 
-import fixAddresses from '../../addresses.service';
 import contacts from 'contacts/contacts.service';
 import locale from 'common/locale/locale.service';
 
 export default angular.module('mpdx.tools.fix.addresses.item.field.component', [
-    fixAddresses, locale, contacts
+    locale, contacts
 ]).component('fixAddressesItemField', Field).name;

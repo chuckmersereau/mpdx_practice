@@ -15,16 +15,16 @@
                         <account-lists></account-lists>
                     </div>
                     <div class="section" ng-if="!$ctrl.setup">
-                        <div class="dropdown">
+                        <div class="dropdown" id="quick-add-dropdown">
                             <a bs-dropdown class="btn btn-default" type="button" data-placement="bottom-right">
                                 <i class="fa fa-plus"></i> <translate>Add</translate>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="quick-drop">
-                                <li role="presentation"><a ng-click="$ctrl.contacts.openNewContactModal()" translate>Add Contact</a></li>
-                                <li role="presentation"><a ng-click="$ctrl.contacts.openMultipleAddModal()" translate>Multiple Contacts</a></li>
-                                <li role="presentation"><a ng-click="$ctrl.donations.openDonationModal()" translate>Add Donation</a></li>
-                                <li role="presentation"><a ng-click="$ctrl.tasks.addModal({})" translate>Add Task</a></li>
-                                <li role="presentation"><a ng-click="$ctrl.tasks.logModal()" translate>Log Task</a></li>
+                                <li role="presentation"><a class="add-contact" ng-click="$ctrl.contacts.openNewContactModal()" translate>Add Contact</a></li>
+                                <li role="presentation"><a class="multi-add-contact" ng-click="$ctrl.contacts.openMultipleAddModal()" translate>Multiple Contacts</a></li>
+                                <li role="presentation"><a class="add-donation" ng-click="$ctrl.donations.openDonationModal()" translate>Add Donation</a></li>
+                                <li role="presentation"><a class="add-task" ng-click="$ctrl.tasks.addModal({})" translate>Add Task</a></li>
+                                <li role="presentation"><a class="log-task" ng-click="$ctrl.tasks.logModal()" translate>Log Task</a></li>
                             </ul>
                         </div>
                     </div>
