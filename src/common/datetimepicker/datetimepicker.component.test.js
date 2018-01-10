@@ -2,6 +2,10 @@ import component from './datetimepicker.component';
 import moment from 'moment';
 
 const defaultModel = moment().toISOString();
+const defaultEvent = {
+    preventDefault: () => {}
+};
+
 describe('common.datetimepicker.component', () => {
     let $ctrl, rootScope, scope, componentController;
     beforeEach(() => {
@@ -29,6 +33,10 @@ describe('common.datetimepicker.component', () => {
         it('should set time to the ngModel', () => {
             $ctrl.init();
             expect($ctrl.time).toEqual(moment($ctrl.model).format('LT'));
+        });
+        it('should hide the time dropdown', () => {
+            $ctrl.init();
+            expect($ctrl.showDropdown).toBeFalsy();
         });
     });
     describe('$onInit', () => {
@@ -105,18 +113,172 @@ describe('common.datetimepicker.component', () => {
             expect($ctrl.model).toBeUndefined();
         });
     });
-    describe('focus', () => {
+    describe('onFocus', () => {
         it('should init on focus', () => {
             spyOn($ctrl, 'init').and.callFake(() => {});
-            $ctrl.focus();
+            $ctrl.onFocus();
             expect($ctrl.ngModel).toBeDefined();
             expect($ctrl.init).toHaveBeenCalled();
         });
     });
-    describe('selectTime', () => {
+    describe('onSelectTime', () => {
+        beforeEach(() => {
+            spyOn($ctrl, 'focusElementById').and.callFake(() => {});
+            spyOn($ctrl, 'focusTimeInputElement').and.callFake(() => {});
+        });
         it('should set the time', () => {
-            $ctrl.selectTime('a');
+            $ctrl.onSelectTime('a');
             expect($ctrl.time).toEqual('a');
+        });
+        it('should focus time input', () => {
+            $ctrl.onSelectTime('a');
+            expect($ctrl.focusTimeInputElement).toHaveBeenCalledWith();
+        });
+    });
+    describe('onTimeFocus', () => {
+        const event = { relatedTarget: { id: 'time_123_0' } };
+        beforeEach(() => {
+            spyOn($ctrl, 'onFocus').and.callFake(() => {});
+            $ctrl.showDropdown = false;
+        });
+        it('should call focus', () => {
+            $ctrl.onTimeFocus(event);
+            expect($ctrl.onFocus).toHaveBeenCalledWith();
+        });
+        it('shouldn\'t show dropdown on menu item', () => {
+            $ctrl.onTimeFocus(event);
+            expect($ctrl.showDropdown).toBeFalsy();
+        });
+        it('should show dropdown', () => {
+            const ddEvent = { relatedTarget: {} };
+            $ctrl.onTimeFocus(ddEvent);
+            expect($ctrl.showDropdown).toBeTruthy();
+        });
+    });
+    describe('onTimeBlur', () => {
+        beforeEach(() => {
+            spyOn($ctrl, 'onFocus').and.callFake(() => {});
+            $ctrl.showDropdown = true;
+        });
+        it('shouldn\'t show dropdown on menu item', () => {
+            const event = { relatedTarget: { id: 'time_123_0' } };
+            $ctrl.onTimeBlur(event);
+            expect($ctrl.showDropdown).toBeTruthy();
+        });
+        it('should show dropdown', () => {
+            const ddEvent = { relatedTarget: {} };
+            $ctrl.onTimeBlur(ddEvent);
+            expect($ctrl.showDropdown).toBeFalsy();
+        });
+    });
+    describe('onTimeKeydown', () => {
+        let event;
+        beforeEach(() => {
+            event = defaultEvent;
+            spyOn($ctrl, 'focusElementById').and.callFake(() => {});
+            spyOn(event, 'preventDefault').and.callFake(() => {});
+            $ctrl.showDropdown = false;
+        });
+        it('should show dropdown on down arrow', () => {
+            event.key = 'ArrowDown';
+            $ctrl.onTimeKeydown(event);
+            expect($ctrl.showDropdown).toBeTruthy();
+        });
+        it('should prevent default', () => {
+            event.key = 'ArrowDown';
+            $ctrl.onTimeKeydown(event);
+            expect(event.preventDefault).toHaveBeenCalledWith();
+        });
+    });
+    describe('onMenuItemKeydown', () => {
+        let event;
+        beforeEach(() => {
+            spyOn($ctrl, 'focusElementById').and.callFake(() => {});
+            spyOn($ctrl, 'onSelectTime').and.callFake(() => {});
+            spyOn($ctrl, 'focusTimeInputElement').and.callFake(() => {});
+            $ctrl.times = ['a', 'b'];
+            event = defaultEvent;
+            $ctrl.showDropdown = true;
+        });
+        it('should focus next element', () => {
+            event.key = 'ArrowDown';
+            $ctrl.onMenuItemKeydown(event, 0);
+            expect($ctrl.focusElementById).toHaveBeenCalledWith(`a#time_${$ctrl.$scope.$id}_1`);
+        });
+        it('should focus time input', () => {
+            event.key = 'ArrowDown';
+            $ctrl.onMenuItemKeydown(event, 1);
+            expect($ctrl.focusTimeInputElement).toHaveBeenCalledWith();
+        });
+        it('should focus previous element', () => {
+            event.key = 'ArrowUp';
+            $ctrl.onMenuItemKeydown(event, 1);
+            expect($ctrl.focusElementById).toHaveBeenCalledWith(`a#time_${$ctrl.$scope.$id}_0`);
+        });
+        it('should focus time input', () => {
+            event.key = 'ArrowUp';
+            $ctrl.onMenuItemKeydown(event, 0);
+            expect($ctrl.focusTimeInputElement).toHaveBeenCalledWith();
+        });
+        it('should select time on space', () => {
+            event.key = ' ';
+            $ctrl.onMenuItemKeydown(event, 0);
+            expect($ctrl.onSelectTime).toHaveBeenCalledWith();
+        });
+        it('should focus last element', () => {
+            event.key = 'End';
+            $ctrl.onMenuItemKeydown(event, 0);
+            expect($ctrl.focusElementById).toHaveBeenCalledWith(`a#time_${$ctrl.$scope.$id}_1`);
+        });
+        it('should focus first element', () => {
+            event.key = 'Home';
+            $ctrl.onMenuItemKeydown(event, 0);
+            expect($ctrl.focusElementById).toHaveBeenCalledWith(`a#time_${$ctrl.$scope.$id}_0`);
+        });
+        it('should hide dropdown', () => {
+            event.key = 'Tab';
+            $ctrl.onMenuItemKeydown(event, 1);
+            expect($ctrl.showDropdown).toBeFalsy();
+        });
+    });
+    describe('focusTimeInputElement', () => {
+        beforeEach(() => {
+            spyOn($ctrl, 'focusElementById').and.callFake(() => {});
+        });
+        it('should focus the time input', () => {
+            $ctrl.focusTimeInputElement();
+            expect($ctrl.focusElementById).toHaveBeenCalledWith(`input#tp_${$ctrl.$scope.$id}`);
+        });
+        it('should hide dropdown', () => {
+            $ctrl.focusTimeInputElement();
+            expect($ctrl.showDropdown).toBeFalsy();
+        });
+    });
+    describe('onFocusTime', () => {
+        it('should set focusedTime', () => {
+            const time = '123';
+            $ctrl.onFocusTime(time);
+            expect($ctrl.focusedTime).toEqual(time);
+        });
+    });
+    describe('focusElementById', () => {
+        let spy;
+        let resp = ['a'];
+        resp.focus = () => {};
+        beforeEach(() => {
+            spy = spyOn(angular, 'element').and.callFake(() => resp);
+            spyOn(resp, 'focus').and.callFake(() => resp);
+            spyOn(document, 'querySelector').and.callFake(() => 'element');
+        });
+        afterEach(() => {
+            spy.and.callThrough();
+        });
+        it('should focus element', () => {
+            $ctrl.focusElementById('input#tp');
+            expect(document.querySelector).toHaveBeenCalledWith('input#tp');
+            expect(angular.element).toHaveBeenCalledWith('element');
+            expect(angular.element).toHaveBeenCalledWith('a');
+            expect(resp.focus).toHaveBeenCalledWith();
         });
     });
 });
