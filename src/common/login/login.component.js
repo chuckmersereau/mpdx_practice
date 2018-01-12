@@ -1,5 +1,3 @@
-import config from 'config';
-
 class LoginController {
     constructor(
         $state, authManager
@@ -8,8 +6,8 @@ class LoginController {
             $state.go('home');
         }
         this.year = new Date().getFullYear();
-        this.loginUrl = `${config.authUrl}${config.authLoginPath}`;
-        this.signupUrl = `${config.authUrl}${config.authSignupPath}`;
+        this.loginUrl = `${window.config.authUrl}${window.config.authLoginPath}`;
+        this.signupUrl = `${window.config.authUrl}${window.config.authSignupPath}`;
     }
 }
 

@@ -166,11 +166,12 @@ class AppealController {
     getPledgesProcessed(page = this.pledgesProcessedPage) {
         this.blockUIGiven.start();
         return this.api.get(`account_lists/${this.api.account_list_id}/pledges`, {
-            include: 'contact',
+            include: 'contact,donations',
             page: page,
             per_page: 20,
             fields: {
-                contacts: 'name,pledge_amount,pledge_currency,pledge_frequency'
+                contacts: 'name',
+                donations: 'converted_amount,converted_currency,donation_date'
             },
             filter: {
                 appeal_id: this.appeal.id,
@@ -413,7 +414,7 @@ class AppealController {
             data: {
                 filter: {
                     account_list_id: this.api.account_list_id,
-                    contact_ids: joinComma(this.selectedContactIds)
+                    contact_ids: this.selectedContactIds
                 }
             },
             doSerialization: false
@@ -481,11 +482,10 @@ class AppealController {
         return this.modal.confirm(message).then(() => {
             return this.api.delete(`appeals/${this.appeal.id}`).then(() => {
                 this.$state.go('tools.appeals');
+            }).catch(() => {
+                const error = this.gettext('There was an error trying to delete the appeal.');
+                this.alerts.addAlert(error, 'danger');
             });
-        }).catch((ex) => {
-            const error = this.gettext('There was an error trying to delete the appeal.');
-            this.alerts.addAlert(error, 'danger');
-            throw ex;
         });
     }
 }

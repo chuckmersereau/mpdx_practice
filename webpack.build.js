@@ -20,7 +20,7 @@ const configEnv = process.env.NODE_ENV || 'development';
 let publicPath;
 switch (configEnv) {
     case 'staging':
-        publicPath = 'https://next.stage.mpdx.org';
+        publicPath = 'https://stage.mpdx.org';
         break;
     case 'next':
         publicPath = 'https://next.mpdx.org';
