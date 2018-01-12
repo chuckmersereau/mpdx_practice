@@ -9,14 +9,17 @@
                 <div class="col-md-7 col-sm-8 text-right">
                     <div class="btn-group">
                         <a class="btn btn-default"
+                           id="tasks-add-task"
                            ng-click="$ctrl.tasks.addModal({ contactsList: $ctrl.contact.id ? [$ctrl.contact.id] : [] })"
                            translate>Add Task</a>
                         <a class="btn btn-default"
+                           id="tasks-log-task"
                            ng-click="$ctrl.tasks.logModal([$ctrl.contact.id])"
                            translate>Log Task</a>
                         <div class="btn-group">
                             <div class="dropdown">
                                 <a class="btn btn-default dropdown-toggle"
+                                   id="tasks-bulk-actions"
                                    bs-dropdown
                                    type="button"
                                    data-toggle="dropdown"
@@ -27,12 +30,12 @@
                                     role="menu"
                                     aria-labelledby="action-drop"
                                     ng-show="$ctrl.selected.length > 0">
-                                    <li><a ng-click="$ctrl.bulkComplete()" translate>Complete Tasks</a></li>
-                                    <li><a ng-click="$ctrl.tasksModals.bulkEdit($ctrl.selected)" translate>Edit Tasks</a></li>
+                                    <li><a id="tasks-bulk-complete" ng-click="$ctrl.bulkComplete()" translate>Complete Tasks</a></li>
+                                    <li><a id="tasks-bulk-edit" ng-click="$ctrl.tasksModals.bulkEdit($ctrl.selected)" translate>Edit Tasks</a></li>
                                     <li class="divider"></li>
-                                    <li><a ng-click="$ctrl.openRemoveTagModal()" translate>Remove Tag(s)</a></li>
+                                    <li><a id="tasks-bulk-remove-tags" ng-click="$ctrl.openRemoveTagModal()" translate>Remove Tag(s)</a></li>
                                     <li class="divider"></li>
-                                    <li><a ng-click="$ctrl.bulkDelete($ctrl.selected)" translate>Delete Tasks</a></li>
+                                    <li><a id="tasks-bulk-delete" ng-click="$ctrl.bulkDelete($ctrl.selected)" translate>Delete Tasks</a></li>
                                 </ul>
                                 <ul class="dropdown-menu dropdown-menu-right"
                                     role="menu"
@@ -42,7 +45,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <a class="btn btn-default" ng-click="$ctrl.toggleAll()" translate>Select All</a>
+                        <a class="btn btn-default" ng-click="$ctrl.toggleAll()" id="tasks-select-all" translate>Select All</a>
                         <a class="btn btn-default visible-sm"
                            ng-class="{ 'btn-reverse' : $ctrl.session.showFiltersOnMobile }"
                            ng-click="$ctrl.session.showFiltersOnMobile = !$ctrl.session.showFiltersOnMobile">

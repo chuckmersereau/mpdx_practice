@@ -1,14 +1,17 @@
 import moment from 'moment';
 import defaultTo from 'lodash/fp/defaultTo';
+import get from 'lodash/fp/get';
 import isNil from 'lodash/fp/isNil';
+import startsWith from 'lodash/fp/startsWith';
 import times from 'lodash/fp/times';
 
 class DatetimepickerController {
     constructor(
-        $scope,
+        $scope, $timeout,
         locale
     ) {
         this.$scope = $scope;
+        this.$timeout = $timeout;
         this.locale = locale;
     }
 
@@ -62,15 +65,85 @@ class DatetimepickerController {
             this.date = this.model.toDate();
             this.time = this.model.format('LT');
         }
+        this.showDropdown = false;
     }
-    focus() {
+    onFocus() {
         if (!this.model) {
             this.ngModel = moment().hour(12).minute(0).toISOString();
             this.init();
         }
     }
-    selectTime(localTime) {
-        this.time = localTime;
+    onTimeBlur(event) {
+        if (!startsWith('time_', get('id', event.relatedTarget))) {
+            this.showDropdown = false;
+        }
+    }
+    onTimeFocus(event) {
+        this.onFocus();
+        if (!startsWith('time_', get('id', event.relatedTarget))) {
+            this.showDropdown = true;
+        }
+    }
+    onTimeKeydown(event) {
+        if (event.key === 'ArrowDown') {
+            this.showDropdown = true;
+            this.focusElementById(`a#time_${this.$scope.$id}_0`);
+            event.preventDefault();
+        }
+    }
+    onMenuItemKeydown(event, index) {
+        switch (event.key) {
+            case 'ArrowDown':
+                if (index < this.times.length - 1) {
+                    this.focusElementById(`a#time_${this.$scope.$id}_${index + 1}`);
+                } else {
+                    this.focusTimeInputElement();
+                }
+                event.preventDefault();
+                break;
+            case 'ArrowUp':
+                if (index > 0) {
+                    this.focusElementById(`a#time_${this.$scope.$id}_${index - 1}`);
+                } else {
+                    this.focusTimeInputElement();
+                }
+                event.preventDefault();
+                break;
+            case ' ':
+                this.onSelectTime();
+                break;
+            case 'End':
+                this.focusElementById(`a#time_${this.$scope.$id}_${this.times.length - 1}`);
+                event.preventDefault();
+                break;
+            case 'Home':
+                this.focusElementById(`a#time_${this.$scope.$id}_0`);
+                event.preventDefault();
+                break;
+            case 'Tab':
+                if (index === this.times.length - 1) {
+                    this.showDropdown = false;
+                }
+                break;
+        }
+    }
+    onSelectTime(localTime) {
+        this.time = defaultTo(this.focusedTime, localTime);
+        this.focusTimeInputElement();
+    }
+    focusTimeInputElement() {
+        this.showDropdown = false;
+        this.focusElementById(`input#tp_${this.$scope.$id}`);
+    }
+    // for keyboard navigation
+    onFocusTime(localTime) {
+        this.focusedTime = localTime;
+    }
+    focusElementById(s) {
+        const elementById = document.querySelector(s);
+        const $elementsById = angular.element(elementById);
+        const el = get(0, $elementsById);
+        angular.element(el).focus();
     }
 }
 

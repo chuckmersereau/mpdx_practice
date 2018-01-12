@@ -36,7 +36,7 @@ describe('common.language', () => {
         });
         it('should handle en-us', () => {
             language.change('en-us');
-            expect(gettextCatalog.loadRemote).toHaveBeenCalledWith('locale/en-us-undefined.json');
+            expect(gettextCatalog.loadRemote).toHaveBeenCalledWith('locale/en-US-undefined.json');
             expect(gettextCatalog.setCurrentLanguage).toHaveBeenCalledWith('en_us');
         });
         it('should handle fr-ca', () => {

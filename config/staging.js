@@ -2,7 +2,7 @@ export default {
     'env': 'staging',
     'apiUrl': 'https://api.stage.mpdx.org/api/v2/',
     'baseUrl': 'https://stage.mpdx.org/',
-    'authUrl': 'https://thekey.me/cas/',
+    'authUrl': 'https://stage.thekey.me/cas/',
     'authLoginPath': 'login?client_id=1151388713555353789&scope=fullticket&response_type=token&redirect_uri=https://stage.mpdx.org/auth',
     'authSignupPath': 'service/selfservice?target=signup&client_id=1151388713555353789&scope=fullticket&response_type=token&redirect_uri=https://stage.mpdx.org/auth',
     'authLogout': 'logout?service=https://stage.mpdx.org/login',

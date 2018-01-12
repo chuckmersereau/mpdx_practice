@@ -29,7 +29,7 @@ class MergeContactsController {
     }
 }
 
-import contacts from 'contacts/contacts.service';
+import contacts from '../../contacts.service';
 
 export default angular.module('mpdx.contacts.list.merge.controller', [
     contacts

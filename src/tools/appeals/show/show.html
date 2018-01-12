@@ -179,7 +179,13 @@
                                                     {{::pledge.contact.name}}
                                                 </a>
                                             </td>
-                                            <td>{{::pledge.amount | currency: ''}} {{::pledge.contact.pledge_currency}} ({{::pledge.expected_date | localize}})</td>
+                                            <td>
+                                                <div ng-repeat="donation in pledge.donations">
+                                                    {{::donation.converted_amount | currency: ''}}
+                                                    {{::donation.converted_currency}}
+                                                    ({{::donation.donation_date | localize}})
+                                                </div>
+                                            </td>
                                             <td class="text-right">
                                                 <button class="btn btn-xs btn-danger"
                                                         ng-click="$ctrl.removePledge(pledge); $event.stopPropagation()"
