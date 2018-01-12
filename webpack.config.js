@@ -62,7 +62,8 @@ config = assign(config, {
             minify: false
         }),
         new CopyWebpackPlugin([
-            { from: 'assets' }
+            { from: 'assets' },
+            { from: 'src/google144ccea737ed252d.html' }
         ])
     ]),
     devServer: {

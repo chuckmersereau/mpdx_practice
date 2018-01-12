@@ -87,7 +87,8 @@ config = assign(config, {
             env: configEnv
         }),
         new CopyWebpackPlugin([
-            { from: 'assets' }
+            { from: 'assets' },
+            { from: 'src/google144ccea737ed252d.html' }
         ]),
         new ExtractTextPlugin({
             filename: '[name].[hash].css'
