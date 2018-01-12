@@ -22,6 +22,9 @@ switch (configEnv) {
     case 'staging':
         publicPath = 'https://stage.mpdx.org';
         break;
+    case 'next':
+        publicPath = 'https://next.mpdx.org';
+        break;
     default:
         publicPath = 'https://mpdx.org';
 }
@@ -95,7 +98,7 @@ config = assign(config, {
     ])
 });
 
-if (!process.env.TRAVIS_PULL_REQUEST && (process.env.TRAVIS_BRANCH === 'master' || process.env.TRAVIS_BRANCH === 'staging')) {
+if (!process.env.TRAVIS_PULL_REQUEST && (process.env.TRAVIS_BRANCH === 'master' || process.env.TRAVIS_BRANCH === 'staging' || process.env.TRAVIS_BRANCH === 'next')) {
     console.log('Uploading sourcemaps to Rollbar');
     config.plugins.push(
         new RollbarSourceMapPlugin({
