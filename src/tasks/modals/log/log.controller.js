@@ -3,6 +3,7 @@ import contains from 'lodash/fp/contains';
 import get from 'lodash/fp/get';
 import map from 'lodash/fp/map';
 import reduce from 'lodash/fp/reduce';
+import moment from 'moment';
 
 class LogTaskController {
     constructor(
@@ -18,7 +19,10 @@ class LogTaskController {
         this.tasksTags = tasksTags;
         this.tasks = tasks;
 
-        this.task = { completed: true };
+        this.task = {
+            completed: true,
+            completed_at: moment().toISOString()
+        };
         this.contactsList = contactsList;
     }
     save() {

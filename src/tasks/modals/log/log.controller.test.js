@@ -1,13 +1,20 @@
 import log from './log.controller';
 import assign from 'lodash/fp/assign';
 import each from 'lodash/fp/each';
+import moment from 'moment';
 
 let contactList = [];
-const defaultTask = { completed: true };
+const day = moment().toDate();
+const defaultTask = {
+    completed: true,
+    completed_at: moment(day).toISOString()
+};
 
 describe('tasks.modals.log.controller', () => {
     let $ctrl, controller, contacts, tasks, scope, rootScope;
     beforeEach(() => {
+        jasmine.clock().install();
+        jasmine.clock().mockDate(day);
         angular.mock.module(log);
         inject(($controller, $rootScope, _contacts_, _tasks_) => {
             rootScope = $rootScope;
@@ -17,6 +24,9 @@ describe('tasks.modals.log.controller', () => {
             controller = $controller;
             $ctrl = loadController();
         });
+    });
+    afterEach(() => {
+        jasmine.clock().uninstall();
     });
 
     function loadController() {
@@ -30,7 +40,7 @@ describe('tasks.modals.log.controller', () => {
         $ctrl.task = assign(defaultTask, {
             activity_type: 'Active'
         });
-        $ctrl.contactsList = [{ id:1 }];
+        $ctrl.contactsList = [{ id: 1 }];
     }
     describe('constructor', () => {
         it('should set the new task model to complete', () => {
