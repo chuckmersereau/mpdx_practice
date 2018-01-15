@@ -39,7 +39,6 @@ class DonationsController {
             this.load(1, true);
         });
     }
-
     $onInit() {
         if (!this.inContact) {
             this.startDate = defaultTo(moment().startOf('month'), this.$stateParams.startDate);
@@ -59,25 +58,21 @@ class DonationsController {
             this.load();
         });
     }
-
     $onChanges(changesObj) {
         if (changesObj.contact && !changesObj.contact.isFirstChange()) {
             this.load(1, true);
         }
     }
-
     $onDestroy() {
         this.watcher();
         this.watcher2();
     }
-
     loadMoreDonations() {
         if (this.loading || this.page >= this.meta.pagination.total_pages) {
             return;
         }
         this.load(this.page + 1);
     }
-
     load(page = this.page, reset = false) {
         let currentCount;
         if (reset) {
@@ -119,7 +114,6 @@ class DonationsController {
             return this.data;
         });
     }
-
     calculateTotals() {
         if (parseInt(this.meta.pagination.page) === this.meta.pagination.total_pages) {
             this.totals = reduceObject((result, donation) => {
@@ -133,19 +127,16 @@ class DonationsController {
             }, {}, this.data);
         }
     }
-
     setMonths() {
         this.previousMonth = moment(this.startDate).subtract(1, 'month');
         this.nextMonth = moment(this.startDate).add(1, 'month');
         this.endDate = moment(this.startDate).endOf('month');
         this.enableNext = moment(this.nextMonth).isBefore(moment());
     }
-
     gotoNextMonth() {
         this.startDate = this.nextMonth;
         this.load(1, true);
     }
-
     gotoPrevMonth() {
         this.startDate = this.previousMonth;
         this.load(1, true);

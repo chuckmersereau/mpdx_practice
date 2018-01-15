@@ -37,7 +37,6 @@ class CommitmentInfoController {
             });
         });
     }
-
     load(page = null) {
         return this.fixCommitmentInfo.load(true, page);
     }

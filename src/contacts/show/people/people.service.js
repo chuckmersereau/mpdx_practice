@@ -103,7 +103,6 @@ class PersonService {
             }
         });
     }
-
     bulkSave(people) {
         return this.api.put({
             url: 'contacts/people/bulk',

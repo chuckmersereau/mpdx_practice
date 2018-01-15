@@ -17,7 +17,6 @@ class EmailAddressesService {
         this.loading = false;
         this.page = 1;
     }
-
     load(reset = false, page = 1) {
         if (!reset && this.data && this.page === page) {
             return Promise.resolve(this.data);
@@ -52,7 +51,6 @@ class EmailAddressesService {
             return this.data;
         });
     }
-
     setMeta(meta) {
         this.meta = meta;
 
@@ -60,7 +58,6 @@ class EmailAddressesService {
             this.tools.analytics['fix-email-addresses'] = this.meta.pagination.total_count;
         }
     }
-
     save(person) {
         person.email_addresses = each((emailAddress) => {
             emailAddress.valid_values = true;
@@ -77,7 +74,6 @@ class EmailAddressesService {
             }
         });
     }
-
     bulkSave(source) {
         let people = reduce((result, person) => {
             let primaryEmailAddress = find(['source', source], person.email_addresses);
@@ -96,24 +92,20 @@ class EmailAddressesService {
             return this.load(true);
         });
     }
-
     setPrimary(person, primaryEmailAddress) {
         person.email_addresses = map((emailAddress) => {
             emailAddress.primary = emailAddress.id === primaryEmailAddress.id;
             return emailAddress;
         }, person.email_addresses);
     }
-
     removeEmailAddress(person, emailAddress) {
         return this.people.deleteEmailAddress(person, emailAddress).then(() => {
             person.email_addresses = reject({ id: emailAddress.id }, person.email_addresses);
         });
     }
-
     saveEmailAddress(person, emailAddress) {
         return this.people.saveEmailAddress(person, emailAddress);
     }
-
     hasPrimary(person) {
         return filter((emailAddress) => emailAddress.primary, person.email_addresses).length === 1;
     }

@@ -12,7 +12,6 @@ class DonationsService {
         this.modal = modal;
         this.serverConstants = serverConstants;
     }
-
     getDonations({ startDate = null, endDate = null, donorAccountId = null, page = null } = {}) {
         let params = {
             fields: {
@@ -39,7 +38,6 @@ class DonationsService {
             return data;
         });
     }
-
     save(donation) {
         if (has('amount', donation)) {
             donation.amount = donation.amount.replace(/[^\d.-]/g, '');
@@ -50,14 +48,12 @@ class DonationsService {
             return this.api.post(`account_lists/${this.api.account_list_id}/donations`, donation);
         }
     }
-
     delete(donation) {
         const message = this.gettextCatalog.getString('Are you sure you wish to delete the selected donation?');
         return this.modal.confirm(message).then(() => {
             return this.api.delete(`account_lists/${this.api.account_list_id}/donations/${donation.id}`, { id: donation.id });
         });
     }
-
     displayName(donation) {
         if (donation.contact) {
             return `${donation.contact.name} (${donation.donor_account.account_number})`;
@@ -65,7 +61,6 @@ class DonationsService {
             return donation.donor_account.display_name;
         }
     }
-
     openDonationModal(donation) {
         if (!donation) {
             donation = {};

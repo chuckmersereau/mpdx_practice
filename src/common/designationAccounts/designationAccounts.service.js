@@ -14,7 +14,6 @@ class DesignationAccountsService {
         this.list = [];
         this.organizations = [];
     }
-
     load(reset = false) {
         if (!reset && this.data.length > 0) {
             return Promise.resolve(this.data);
@@ -35,7 +34,6 @@ class DesignationAccountsService {
             return this.data;
         });
     }
-
     search(keywords) {
         return this.api.get(`account_lists/${this.api.account_list_id}/designation_accounts`, {
             filter: {

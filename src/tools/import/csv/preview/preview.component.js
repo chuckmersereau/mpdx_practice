@@ -19,7 +19,6 @@ class PreviewController {
     $onInit() {
         this.contactsTags.load();
     }
-
     save() {
         this.importCsv.data.in_preview = false;
         return this.importCsv.save().then(() => {
@@ -30,7 +29,6 @@ class PreviewController {
             return this.modal.info(message);
         });
     }
-
     back() {
         this.importCsv.back();
     }

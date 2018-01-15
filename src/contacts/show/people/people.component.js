@@ -26,7 +26,6 @@ class ContactPeopleController {
         this.isMerging = false;
         this.isSafari = bowser.name === 'Safari';
     }
-
     $onInit() {
         this.watcher1 = this.$rootScope.$on('accountListUpdated', () => this.init());
 
@@ -50,19 +49,16 @@ class ContactPeopleController {
 
         this.people.listAll(); // lazy load people so the people modal feels snappy
     }
-
     $onDestroy() {
         this.watcher1();
         this.watcher2();
         this.watcher3();
         this.watcher4();
     }
-
     $onChanges() {
         this.selectedPeople = [];
         this.init();
     }
-
     init() {
         if (!has('contact.id', this)) {
             return;
@@ -75,7 +71,6 @@ class ContactPeopleController {
             this.data = data;
         });
     }
-
     selectPerson(person) {
         if (includes(person, this.selectedPeople)) {
             person.selected_for_merge = false;
@@ -85,7 +80,6 @@ class ContactPeopleController {
             this.selectedPeople = concat(this.selectedPeople, person);
         }
     }
-
     openMergeModal() {
         if (this.selectedPeople.length < 2) {
             this.alerts.addAlert(this.gettextCatalog.getString('First select at least 2 people to merge'), 'danger');
@@ -96,7 +90,6 @@ class ContactPeopleController {
             });
         }
     }
-
     cancelMerge() {
         this.isMerging = false;
         each((person) => {
@@ -104,7 +97,6 @@ class ContactPeopleController {
         }, this.data);
         this.selectedPeople = [];
     }
-
     newPerson() {
         this.people.openPeopleModal(this.contact);
     }

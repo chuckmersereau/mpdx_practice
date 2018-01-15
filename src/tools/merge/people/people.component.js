@@ -23,7 +23,6 @@ class MergePeopleController {
         this.duplicates = [];
         this.total = 0;
     }
-
     $onInit() {
         this.$rootScope.$on('accountListUpdated', () => {
             this.load();
@@ -31,7 +30,6 @@ class MergePeopleController {
 
         this.load();
     }
-
     select(duplicate, index) {
         duplicate.ignore = false;
         const alreadySelected = !!duplicate.people[index].selected;
@@ -40,13 +38,11 @@ class MergePeopleController {
             return concat(result, value);
         }, [], duplicate.people);
     }
-
     selectIgnore(duplicate) {
         duplicate.ignore = true;
         duplicate.people[0].selected = false;
         duplicate.people[1].selected = false;
     }
-
     confirm() {
         let promises = [];
         const peopleToMerge = filter((duplicate) => {
@@ -63,19 +59,16 @@ class MergePeopleController {
             this.alerts.addAlert(this.gettextCatalog.getString('People successfully merged'));
         });
     }
-
     confirmAndContinue() {
         return this.confirm().then(() => {
             return this.load();
         });
     }
-
     confirmThenLeave() {
         return this.confirm().then(() => {
             this.$state.go('tools');
         });
     }
-
     ignore(duplicates) {
         return map((duplicate) =>
             this.api.put({
@@ -84,7 +77,6 @@ class MergePeopleController {
                 type: 'duplicate_record_pairs' })
             , duplicates);
     }
-
     merge(duplicates) {
         const winnersAndLosers = map((duplicate) => {
             if (duplicate.people[0].selected) {
@@ -94,7 +86,6 @@ class MergePeopleController {
         }, duplicates);
         return this.people.bulkMerge(winnersAndLosers);
     }
-
     load() {
         this.loading = true;
         this.duplicates = [];
@@ -127,7 +118,6 @@ class MergePeopleController {
             this.duplicates.meta = data.meta;
         });
     }
-
     setMeta(meta) {
         this.meta = meta;
 
@@ -135,7 +125,6 @@ class MergePeopleController {
             this.tools.analytics['duplicate-people'] = this.meta.pagination.total_count;
         }
     }
-
     confirmButtonDisabled() {
         return filter((duplicate) => {
             return duplicate.ignore === true

@@ -6,7 +6,6 @@ class FieldController {
     ) {
         this.fixPhoneNumbers = fixPhoneNumbers;
     }
-
     $onInit() {
         if (!this.phoneNumber) {
             this.phoneNumber = {
@@ -18,7 +17,6 @@ class FieldController {
             };
         }
     }
-
     save() {
         return this.fixPhoneNumbers.savePhoneNumber(this.person, this.phoneNumber).then(() => {
             if (this.phoneNumber.new) {
@@ -34,11 +32,9 @@ class FieldController {
             }
         });
     }
-
     remove() {
         this.fixPhoneNumbers.removePhoneNumber(this.person, this.phoneNumber);
     }
-
     setPrimary() {
         this.fixPhoneNumbers.setPrimary(this.person, this.phoneNumber);
     }

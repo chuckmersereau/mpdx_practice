@@ -65,15 +65,12 @@ class HelpService {
             $log.debug('Help Service', err);
         }
     }
-
     showHelp() {
         HS.beacon.open();
     }
-
     showArticle(articleId) {
         HS.beacon.show(articleId);
     }
-
     updateUser(user) {
         if (!user) { return; }
         const primaryEmailAddress = find(['primary', true], user.email_addresses);
@@ -85,7 +82,6 @@ class HelpService {
             });
         });
     }
-
     suggest(articleIds) {
         HS.beacon.ready(() => {
             HS.beacon.suggest(articleIds);

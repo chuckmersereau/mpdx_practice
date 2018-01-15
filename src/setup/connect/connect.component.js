@@ -19,7 +19,6 @@ class ConnectController {
         this.setup = setup;
         this.users = users;
     }
-
     $onInit() {
         this.reset();
         this.users.listOrganizationAccounts().then(() => {
@@ -29,7 +28,6 @@ class ConnectController {
             this.users.listOrganizationAccounts(true);
         });
     }
-
     add() {
         this.saving = true;
         return this.preferencesOrganization.createAccount(this.username, this.password, this.selectedKey).then(() => {
@@ -45,7 +43,6 @@ class ConnectController {
             throw err;
         });
     }
-
     disconnect(id) {
         this.saving = true;
         return this.preferencesOrganization.disconnect(id).then(() => {
@@ -60,7 +57,6 @@ class ConnectController {
             throw err;
         });
     }
-
     reset() {
         this.addOrganization = false;
         this.saving = false;
@@ -68,22 +64,18 @@ class ConnectController {
         this.username = '';
         this.password = '';
     }
-
     select() {
         this.selected = get(this.selectedKey, this.serverConstants.data.organizations_attributes);
     }
-
     next() {
         this.saving = true;
         return this.setup.next().then(() => {
             this.saving = false;
         });
     }
-
     showOrganizationHelp() {
         this.help.showArticle(this.gettextCatalog.getString('58f96cc32c7d3a057f886e20'));
     }
-
     authenticate(organizationId) {
         this.saving = true;
         this.$window.location.href = this.preferencesOrganization.oAuth(organizationId, 'setup/connect');

@@ -10,11 +10,9 @@ class ShowController {
 
         this.loading = false;
     }
-
     $onInit() {
         this.load();
     }
-
     load() {
         this.loading = true;
         return this.api.get({

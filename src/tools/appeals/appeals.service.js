@@ -24,7 +24,6 @@ class Appeals {
             overrideGetAsPost: true
         });
     }
-
     setPrimaryAppeal(appeal) {
         this.accounts.current.primary_appeal = { id: appeal.id };
         return this.accounts.saveCurrent().then(() => {

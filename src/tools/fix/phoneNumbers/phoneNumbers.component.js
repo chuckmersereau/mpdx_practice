@@ -14,7 +14,6 @@ class PhoneNumbersController {
             this.load(true);
         });
     }
-
     save() {
         const message = this.gettextCatalog.getString(
             `You are updating all contacts visible on this page, setting the first {{source}} phone number as the
@@ -29,7 +28,6 @@ class PhoneNumbersController {
             });
         });
     }
-
     load(page = null) {
         return this.fixPhoneNumbers.load(true, page);
     }

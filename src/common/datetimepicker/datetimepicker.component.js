@@ -14,7 +14,6 @@ class DatetimepickerController {
         this.$timeout = $timeout;
         this.locale = locale;
     }
-
     $onInit() {
         if (!this.hourStep) {
             this.hourStep = 1;

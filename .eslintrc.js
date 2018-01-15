@@ -18,6 +18,7 @@ module.exports = {
             ArrayExpression: 1
         }],
         'linebreak-style': 'off',
+        'lines-between-class-members': ['error', 'never'],
         'max-len': ['error', {
             code: 120,
             ignoreRegExpLiterals: true,

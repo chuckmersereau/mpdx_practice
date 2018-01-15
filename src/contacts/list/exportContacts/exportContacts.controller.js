@@ -30,7 +30,6 @@ class ExportContactsController {
             this.params.data.filter.ids = joinComma(selectedContactIds);
         }
     }
-
     primaryCSVLink() {
         this.blockUI.start();
         return this.exportContacts.primaryCSVLink(this.params).then(() => {

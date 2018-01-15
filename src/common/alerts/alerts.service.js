@@ -8,7 +8,6 @@ class AlertsService {
         this.$timeout = $timeout;
         this.data = [];
     }
-
     addAlert(message, type = 'success', status = null, displayTime = 5, modal = false) {
         if (!message) { return; }
 
