@@ -1,0 +1,23 @@
+@import "filter/filter";
+@import "list/list";
+@import "search/search";
+
+tasks {
+    display: grid;
+    height: 100%;
+    grid-template-columns: auto auto;
+    grid-template-rows: 100%;
+    overflow: hidden;
+    > tasks-filter {
+        grid-column: 1;
+        grid-row: 1;
+        overflow-y: auto;
+        width: 250px;
+    }
+    > tasks-list {
+        width: 100%;
+        grid-column: 2;
+        grid-row: 1;
+        overflow: hidden;
+    }
+}

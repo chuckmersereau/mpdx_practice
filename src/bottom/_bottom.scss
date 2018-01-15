@@ -1,0 +1,19 @@
+bottom {
+    background: $color-menu-bg;
+    border-top: 1px solid $color-menu-border;
+
+    .footer--nav {
+        margin-bottom: 0;
+        margin-left: 0;
+        li {
+            border-right: 1px solid $color-menu-border;
+            font-size: 12px;
+            padding: $gutter/5 $gutter/2;
+            margin-right: -2px;
+
+            &:first-child {
+                padding-left: 0;
+            }
+        }
+    }
+}

@@ -17,7 +17,7 @@
                     {{::address.state}}
                     {{::address.postal_code}}
                     <div translate translate-params-source="::(address.source | sourceToStr)">From: {{source}}</div>
-                    <i class="fa fa-exclamation-triangle" ng-if="address.duplicate"></i>
+                    <i class="fas fa-exclamation-triangle" ng-if="address.duplicate"></i>
                 </div>
                 <div translate translate-params-date="(contact.created_at | localize)">On: {{date}}</div>
             </div>

@@ -1,17 +1,17 @@
 .ico {
-  background: url("images/sprite.png") 
-  no-repeat 50% 0; 
-  width: 16px; 
-  height: 16px; 
+  background: url("images/sprite.png")
+  no-repeat 50% 0;
+  width: 16px;
+  height: 16px;
   display: inline-block;
-  overflow: hidden; 
+  overflow: hidden;
   text-indent: -100000px;
 }
 
 .ico_edit {
   background: none;
   color: $gray_dark;
-  font: 0 FontAwesome;
+  font: 0 'Font Awesome 5 Pro';
   margin-left: 4px;
   text-indent: 0;
   &:before {

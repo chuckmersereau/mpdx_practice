@@ -84,3 +84,10 @@
 .pointer {
     cursor: pointer;
 }
+
+.well {
+    border-radius: 0;
+    border-color: $color-panel-border;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}

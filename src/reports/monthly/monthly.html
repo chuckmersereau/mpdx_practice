@@ -2,11 +2,11 @@
 <div class="reports">
     <h2 translate>Expected Monthly Total</h2>
     <div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
-      <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
+      <i class="far fa-circle-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
     </div>
     <div ng-if="!$ctrl.loading">
         <div class="blankslate blankslate-spacious" ng-if="$ctrl.donationsByType.length === 0">
-            <i class="fa fa-money blankslate-icon"></i>
+            <i class="fas fa-money blankslate-icon"></i>
             <h3 translate>You have no expected donations this month</h3>
             <p translate>You can setup an organization account to import historic donations or add a new donation.</p>
             <a ui-sref="preferences.integrations" class="btn btn-default" translate>Connect Services</a>
@@ -28,7 +28,7 @@
             <div class="panel panel-default" ng-repeat="donationType in $ctrl.donationsByType | orderBy: 'order'">
                 <div class="panel-heading" role="tab" bs-collapse-toggle ng-switch="donationType.type">
                     <h4 class="panel-title">
-                        <i class="fa fa-angle-up" aria-hidden="true" ng-class="{ 'fa-rotate-180': $ctrl.isOpen($index) }"></i>
+                        <i class="fas fa-angle-up" aria-hidden="true" ng-class="{ 'fa-rotate-180': $ctrl.isOpen($index) }"></i>
                         <span ng-switch-when="received" translate>Donations So Far This Month</span>
                         <span ng-switch-when="likely" translate>Likely Partners This Month</span>
                         <span ng-switch-when="unlikely" translate>Possible Partners This Month</span>

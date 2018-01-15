@@ -12,7 +12,7 @@
                         <li ng-repeat="account in $ctrl.users.organizationAccounts">
                             {{account.organization.name}}
                             <a class="btn btn-danger pull-right" ng-click="$ctrl.disconnect(account.id)" ng-disabled="$ctrl.saving">
-                                <i class="fa fa-trash"></i>
+                                <i class="fas fa-trash"></i>
                             </a>
                         </li>
                     </ul>
@@ -20,7 +20,7 @@
                     <a ng-click="$ctrl.addOrganization = true" ng-disabled="$ctrl.saving" class="btn btn-default" style="width: 48%;" translate>Yes</a>
                     <a ng-click="$ctrl.next()" ng-disabled="$ctrl.saving" class="btn btn-primary" style="width: 48%;">
                         <translate>No</translate>
-                        <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-class="{ 'hidden': !$ctrl.saving }"></i>
+                        <i class="far fa-circle-notch fa-spin fa-fw" ng-class="{ 'hidden': !$ctrl.saving }"></i>
                     </a>
                 </div>
             </div>
@@ -66,11 +66,11 @@
                             <a ng-click="$ctrl.reset()" class="btn btn-link" style="width: 48%;" ng-if="$ctrl.users.organizationAccounts.length > 0" translate>Cancel</a>
                             <button ng-disabled="!addOrganization.$valid || $ctrl.saving" class="btn btn-primary" style="width: 48%;" ng-if="!$ctrl.selected.oauth">
                                 <translate>Connect</translate>
-                                <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-class="{ 'hidden': !$ctrl.saving }"></i>
+                                <i class="far fa-circle-notch fa-spin fa-fw" ng-class="{ 'hidden': !$ctrl.saving }"></i>
                             </button>
                             <button ng-click="$ctrl.authenticate($ctrl.selectedKey)" class="btn btn-primary" style="width: 48%;" ng-disabled="$ctrl.saving" ng-if="$ctrl.selected.oauth">
                                 <translate>Connect</translate>
-                                <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-class="{ 'hidden': !$ctrl.saving }"></i>
+                                <i class="far fa-circle-notch fa-spin fa-fw" ng-class="{ 'hidden': !$ctrl.saving }"></i>
                             </button>
                         </div>
                     </form>

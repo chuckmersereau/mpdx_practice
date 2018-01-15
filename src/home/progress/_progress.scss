@@ -1,0 +1,40 @@
+@import "appeals/appeals";
+@import "appointments/appointments";
+@import "contacts/contacts";
+@import "correspondence/correspondence";
+@import "electronicContacts/electronicContacts";
+@import "phone/phone";
+
+home-progress {
+    .panel-default {
+        min-height: 84px;
+        > .panel-heading i {
+            margin-right: 5px;
+        }
+        > .statistics {
+            padding: 10px 0;
+            display: grid;
+            grid-template-rows: 1fr;
+            .item {
+                text-align: center;
+                border-right: 1px solid #ccc;
+                &:last-child {
+                    border-right: none;
+                }
+            }
+        }
+    }
+    .progress-content {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        grid-gap: 5px;
+        h3 {
+            margin: 0;
+        }
+    }
+    hr {
+        width: 100%;
+        margin: 15px 0;
+    }
+}

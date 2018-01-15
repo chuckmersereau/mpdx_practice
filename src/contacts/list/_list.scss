@@ -1,0 +1,33 @@
+@import "item/item";
+
+contacts-list {
+    @extend .lists;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    grid-template-columns: 1fr auto;
+    overflow: hidden;
+    height: 100%;
+    margin-top: $nav-padding;
+    > div.menu {
+        @extend .lists.item-list-menu;
+        grid-row: 1;
+        grid-column: 1;
+        > .search-bar {
+            @extend .lists.item-list-menu.search-bar;
+        }
+        > div.menu-buttons {
+            @extend .lists.item-list-menu.menu-buttons;
+        }
+    }
+    > div.sub-menu {
+        @extend .lists.item-list-sub-menu;
+        grid-column: 1;
+        grid-row: 2;
+        padding-right: $container-padding-right;
+    }
+    > div.content {
+        @extend .lists.content;
+        grid-column: 1;
+        grid-row: 3;
+    }
+}

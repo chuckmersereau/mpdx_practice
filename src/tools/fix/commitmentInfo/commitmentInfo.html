@@ -1,7 +1,7 @@
 <div block-ui="fix-commitment-info">
     <h1 translate>Fix Commitment Info</h1>
     <div class="blankslate blankslate-spacious" ng-if="!$ctrl.fixCommitmentInfo.meta.pagination.total_count && !$ctrl.fixCommitmentInfo.loading">
-        <i class="fa fa-usd blankslate-icon"></i>
+        <i class="fas fa-usd blankslate-icon"></i>
         <h3 translate>No contacts with commitment info need attention</h3>
         <p translate>Contacts with possibly incorrect commitment info will appear here.</p>
         <a class="btn btn-default" ui-sref="tools" translate>Back to Tools</a>
@@ -15,7 +15,7 @@
             However, you will need to confirm them to be sure MPDX’s matching was accurate.</translate>
         </p>
         <div class="blankslate blankslate-spacious" ng-if="$ctrl.fixCommitmentInfo.loading">
-            <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
+            <i class="far fa-circle-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
         </div>
         <div ng-if="!$ctrl.fixCommitmentInfo.loading">
             <fix-commitment-info-item ng-repeat="contact in $ctrl.fixCommitmentInfo.data" ng-if="!contact.hidden" contact="contact"></fix-commitment-info-item>

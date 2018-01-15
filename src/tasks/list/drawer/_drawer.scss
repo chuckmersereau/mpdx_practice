@@ -1,0 +1,48 @@
+@import "comment/comment";
+
+$task-drawer-width: $side-drawer-width - 2px;
+
+task-item-drawer {
+    height: 96%;
+    width: 538px;
+
+    > div.head {
+        width: $task-drawer-width;
+        > div.task-info {
+            padding-left: $content-padding-left;
+            padding-bottom: 5px;
+            > h2 {
+                margin: 0;
+            }
+        }
+        > div.horizontal-tab-sortable {
+            padding-left: $content-padding-left;
+        }
+    }
+    > div.contacts {
+        width: $task-drawer-width;
+        height: calc(100% - 40px);
+        padding: 5px;
+        overflow-y: auto;
+    }
+    > div.comments {
+        width: $task-drawer-width;
+        height: 100%;
+        overflow-y: auto;
+        position: relative;
+        > div.bottom {
+            background-color: $cru-gray-tint;
+            width: 100%;
+            position: absolute;
+            padding: 5px 5px 5px 10px;
+            bottom: 97px;
+            left: 0;
+            i {
+                padding-right: 5px;
+            }
+            input {
+                width: 495px;
+            }
+        }
+    }
+}

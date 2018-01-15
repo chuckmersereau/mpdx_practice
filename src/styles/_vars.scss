@@ -6,6 +6,7 @@ $cru-gray:                  #5A5A5A;
 $cru-gray-silver:           #BEBEBE;
 $cru-gray-tint:             #E6E6E6;
 $cru-gray-dark:             #323232;
+$light-blue-selected:       rgba(74,144,226,0.09);
 
 $color-primary:             $cru-blue;
 $color-secondary:           $cru-gold;
@@ -48,3 +49,7 @@ $setup-nav-height: $nav-height + $setup-height;
 $secondary-impersonation-nav-height: $nav-height + $secondary-height + $impersonation-height;
 $setup-impersonation-nav-height: $nav-height + $setup-height + $impersonation-height;
 $nav-padding: 20px;
+$container-padding-left: 10px;
+$container-padding-right: 10px;
+$content-padding-left: 5px;
+$content-padding-right: 10px;

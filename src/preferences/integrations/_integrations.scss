@@ -1,0 +1,29 @@
+preferences-integration {
+    .panel-heading {
+        .state {
+            margin-right: 30px;
+            float: right;
+        }
+    }
+    .integration_subhead {
+        font-weight: 600;
+        margin-top: 0;
+    }
+    ol {
+        padding-left: $gutter/2;
+    }
+    .well {
+        border-radius: $border-radius;
+        .btn-link {
+            font-size: 18px;
+            padding: 0;
+            margin-right: 20px;
+            &:last-of-type {margin-right: 0;}
+            &.disabled {
+                opacity: 1;
+                color: $color-text;
+            }
+        }
+        p:not(:first-child) {margin-top: 10px;}
+    }
+}

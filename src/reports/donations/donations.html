@@ -4,12 +4,12 @@
         <translate>Donations</translate>
         <div class="pull-right">
             <button ng-click="$ctrl.gotoPrevMonth()" class="btn btn-default">
-                <i class="fa fa-angle-left"></i>
+                <i class="fas fa-angle-left"></i>
                 <translate>Previous Month</translate>
             </button>
             <button ng-click="$ctrl.gotoNextMonth()" class="btn btn-default" ng-disabled="!$ctrl.enableNext">
                 <translate>Next Month</translate>
-                <i class="fa fa-angle-right"></i>
+                <i class="fas fa-angle-right"></i>
             </button>
         </div>
     </h2>
@@ -42,7 +42,7 @@
                         <td>{{ donation.designation_account.display_name }}</td>
                         <td>{{ donation.payment_method }}</td>
                         <td>{{ donation.appeal.name }}</td>
-                        <td class="text-right"><a ng-click="$ctrl.donations.openDonationModal(donation)"><i class="fa fa-pencil-square-o"></i></a></td>
+                        <td class="text-right"><a ng-click="$ctrl.donations.openDonationModal(donation)"><i class="far fa-pencil-square"></i></a></td>
                     </tr>
                 </tbody>
                 <tfoot>
@@ -63,7 +63,7 @@
         </div>
     </div>
     <div class="blankslate" ng-class="{ 'blankslate-spacious' : !$ctrl.inContact }" ng-if="$ctrl.data.length === 0 && !$ctrl.loading">
-        <i class="fa fa-money blankslate-icon"></i>
+        <i class="fas fa-money blankslate-icon"></i>
         <div ng-if="::$ctrl.inContact">
             <h3 translate>No donations received for this contact</h3>
             <p translate>Try adding a donation to a partner account associated with this contact.</p>
@@ -77,7 +77,7 @@
         </div>
     </div>
     <div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
-      <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
+      <i class="far fa-circle-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
     </div>
     <div ng-if="$ctrl.data.length !== 0"
          class="text-center"

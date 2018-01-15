@@ -12,12 +12,12 @@
         </translate>
     </p>
     <div ng-if="$ctrl.address.street">
-        <a ng-href="{{$ctrl.mapLink}}" target="_blank" class="btn btn-reverse btn-xs"><i class="fa fa-map-marker"></i> <translate>Google Maps</translate></a>
+        <a ng-href="{{$ctrl.mapLink}}" target="_blank" class="btn btn-reverse btn-xs"><i class="fas fa-map-marker"></i> <translate>Google Maps</translate></a>
     </div>
     <div class="primary-container">
         <div class="primary-option" ng-click="$ctrl.onPrimary()">
-            <i class="fa fa-square-o" ng-if="!$ctrl.address.primary_mailing_address"></i>
-            <i class="fa fa-check-square-o" ng-if="$ctrl.address.primary_mailing_address"></i>
+            <i class="far fa-square" ng-if="!$ctrl.address.primary_mailing_address"></i>
+            <i class="far fa-check-square" ng-if="$ctrl.address.primary_mailing_address"></i>
             <translate>Primary</translate>
         </div>
     </div>

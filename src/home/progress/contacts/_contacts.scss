@@ -1,0 +1,11 @@
+progress-contacts {
+    height: 100%;
+    .panel-body.statistics {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: 1fr;
+        > a, > div {
+            @extend .item;
+            grid-row: 1;
+        }
+    }
+}

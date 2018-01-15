@@ -1,0 +1,16 @@
+root {
+    height: 100vh;
+    width: 100vw;
+    display: grid;
+    grid-template-rows: auto 1fr 30px;
+    menu {
+        grid-row: 1;
+    }
+    div.root {
+        overflow: hidden;
+        grid-row: 2;
+    }
+    bottom {
+        grid-row: 3;
+    }
+}

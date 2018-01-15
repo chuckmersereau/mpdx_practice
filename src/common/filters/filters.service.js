@@ -1,19 +1,14 @@
 import assign from 'lodash/fp/assign';
 import concat from 'lodash/fp/concat';
-import contains from 'lodash/fp/contains';
 import defaultTo from 'lodash/fp/defaultTo';
-import difference from 'lodash/fp/difference';
 import filter from 'lodash/fp/filter';
 import findIndex from 'lodash/fp/findIndex';
 import isArray from 'lodash/fp/isArray';
 import isEqual from 'lodash/fp/isEqual';
 import keys from 'lodash/fp/keys';
-import map from 'lodash/fp/map';
 import reduce from 'lodash/fp/reduce';
 import sortBy from 'lodash/fp/sortBy';
 import toInteger from 'lodash/fp/toInteger';
-import split from 'lodash/fp/split';
-import trim from 'lodash/fp/trim';
 
 class Filters {
     constructor(
@@ -84,36 +79,6 @@ class Filters {
         params = angular.copy(defaultParams);
         onChange(params);
         return params;
-    }
-    // Invert the selected options of a multiselect filter
-    invertMultiselect(filter, params) {
-        const allOptions = map('id', filter.options);
-        let selectedOptions = map(trim, split(',', params[filter.name]));
-
-        let allOption = [];
-
-        if (filter.name === 'status' || filter.name === 'contact_status') {
-            if (contains('active', selectedOptions) || contains('null', selectedOptions)) {
-                return ['hidden'];
-            } else if (contains('hidden', selectedOptions)) {
-                return [''];
-            }
-            if (filter.name === 'contact_status') {
-                allOption = ['', 'active', 'null', 'hidden'];
-            } else {
-                allOption = ['active', 'null', 'hidden'];
-            }
-        }
-        if (filter.name === 'appeal') {
-            allOption = ['', 'no_appeals'];
-        }
-        // If all options are selected other than All/Any/Grouped, then the inverse is 'All'
-        if (isEqual(difference(allOptions, selectedOptions), allOption)) {
-            return [''];
-        }
-
-        selectedOptions = concat(selectedOptions, allOption); // Exclude the All/Any/Grouped/Hidden options when inverting
-        return difference(allOptions, selectedOptions);
     }
 }
 

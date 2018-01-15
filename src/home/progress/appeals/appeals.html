@@ -1,22 +1,22 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <a ui-sref="tools.appeals">
-            <i class="fa fa-money"></i>
+            <i class="fas fa-money"></i>
             <translate>Appeals</translate>
         </a>
     </div>
     <div class="panel-body progress-panel">
-        <div class="row" ng-if="$ctrl.appeal">
-            <div class="col-sm-6">
-                <a ui-sref="tools.appeals.show({ appealId: $ctrl.appeal.id })">
-                    {{$ctrl.appeal.name}}
-                </a>
+        <div class="panel-row" ng-if="$ctrl.appeal">
+            <div class="item">
+                <h3>
+                    <a ui-sref="tools.appeals.show({ appealId: $ctrl.appeal.id })">
+                        {{$ctrl.appeal.name}}
+                    </a>
+                </h3>
             </div>
-            <div class="col-sm-6 text-right pr-1">
-                    {{:: $ctrl.appeal.pledges_amount_processed }} / {{$ctrl.appeal.amount}}
+            <div class="item">
+                <h3>{{:: $ctrl.appeal.pledges_amount_processed }} / {{$ctrl.appeal.amount}}</h3>
             </div>
-        </div>
-        <div class="ml-3 mr-3 pt-2" ng-if="$ctrl.appeal">
             <appeals-progressbar appeal="$ctrl.appeal"></appeals-progressbar>
         </div>
         <div ng-if="!$ctrl.appeal">

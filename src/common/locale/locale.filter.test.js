@@ -1,4 +1,5 @@
 import filters from './locale.filter';
+import moment from 'moment/moment';
 
 const date = Date.parse('2000-02-01T14:48:00');
 
@@ -17,5 +18,8 @@ describe('The test filter', () => {
     });
     it('output a formatted date', () => {
         expect($filter('localizeWithTime')(date)).toEqual($filter('date')(date, locale.dateTimeFormat + ' hh:mm a'));
+    });
+    it('output a formatted date', () => {
+        expect($filter('localizeShort')(date)).toEqual(moment(date).format('MMM D'));
     });
 });

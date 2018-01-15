@@ -5,7 +5,7 @@
             <div class="filter--sidebar filter--sidebar__appeals">
                 <div class="filter">
                     <div class="filters_section filter--filtergroup">
-                        <div class="filter--filtergroup_title"><i class="fa fa-table"></i> <translate>Export Selected to CSV</translate></div>
+                        <div class="filter--filtergroup_title"><i class="fas fa-table"></i> <translate>Export Selected to CSV</translate></div>
                         <div class="mt-2 mb-4">
                             <button class="btn btn-default btn-block"
                                     ng-click="$ctrl.exportToCSV()"
@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <div class="filters_section filter--filtergroup" ng-if="$ctrl.mailchimp.data && $ctrl.mailchimp.data.lists_present">
-                        <div class="filter--filtergroup_title"><i class="fa fa-envelope-o"></i> <translate>Export Selected to MailChimp</translate></div>
+                        <div class="filter--filtergroup_title"><i class="far fa-envelope"></i> <translate>Export Selected to MailChimp</translate></div>
                         <div class="mt-2 mb-4">
                             <select name="primaryListId"
                                     id="primaryListId"
@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     <div class="filters_section filter--filtergroup">
-                        <div class="filter--filtergroup_title"><i class="fa fa-home"></i> <translate>Add Contact to Appeal</translate></div>
+                        <div class="filter--filtergroup_title"><i class="fas fa-home"></i> <translate>Add Contact to Appeal</translate></div>
                         <div class="mt-2 mb-4">
                             <collection-selector item-name="{{ 'Contact' | translate }}"
                                                  display-text="$ctrl.selectedContact"
@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     <div class="filters_section filter--filtergroup">
-                        <div class="filter--filtergroup_title"><i class="fa fa-home"></i> <translate>Delete Appeal</translate></div>
+                        <div class="filter--filtergroup_title"><i class="fas fa-home"></i> <translate>Delete Appeal</translate></div>
                         <div class="mt-2 mb-4">
                             <button class="btn btn-default btn-block mt-2" ng-click="$ctrl.deleteAppeal()" translate>Permanently Delete Appeal</button>
                         </div>
@@ -190,7 +190,7 @@
                                                 <button class="btn btn-xs btn-danger"
                                                         ng-click="$ctrl.removePledge(pledge); $event.stopPropagation()"
                                                         title="{{'Remove Commitment' | translate}}">
-                                                    <i class="fa fa-trash-o"></i>
+                                                    <i class="far fa-trash"></i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -236,13 +236,13 @@
                                                 <button class="btn btn-xs btn-default"
                                                         ng-click="$ctrl.editPledge(pledge); $event.stopPropagation()"
                                                         title="{{'Edit' | translate}}">
-                                                    <i class="fa fa-pencil-square-o"></i>
+                                                    <i class="far fa-pencil-square"></i>
                                                 </button>
                                                 &nbsp;
                                                 <button class="btn btn-xs btn-danger"
                                                         ng-click="$ctrl.removePledge(pledge); $event.stopPropagation()"
                                                         title="{{'Remove' | translate}}">
-                                                    <i class="fa fa-trash-o"></i>
+                                                    <i class="far fa-trash"></i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -288,13 +288,13 @@
                                                 <button class="btn btn-xs btn-default"
                                                         ng-click="$ctrl.editPledge(pledge); $event.stopPropagation()"
                                                         title="{{'Edit' | translate}}">
-                                                    <i class="fa fa-pencil-square-o"></i>
+                                                    <i class="far fa-pencil-square"></i>
                                                 </button>
                                                 &nbsp;
                                                 <button class="btn btn-xs btn-danger"
                                                         ng-click="$ctrl.removePledge(pledge); $event.stopPropagation()"
                                                         title="{{'Remove' | translate}}">
-                                                    <i class="fa fa-trash-o"></i>
+                                                    <i class="far fa-trash"></i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -341,12 +341,12 @@
                                             </td>
                                             <td class="text-right">
                                                 <button class="btn btn-xs btn-success" ng-click="$ctrl.addPledge(ref.contact)" title="{{'Add Commitment' | translate}}">
-                                                    <i class="fa fa-plus"></i>
+                                                    <i class="fas fa-plus"></i>
                                                 </button>
                                                 <button class="btn btn-xs btn-danger"
                                                         ng-click="$ctrl.removeContact(ref.id); $event.stopPropagation()"
                                                         title="{{'Remove' | translate}}">
-                                                    <i class="fa fa-trash-o"></i>
+                                                    <i class="far fa-trash"></i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -392,7 +392,7 @@
                                             </td>
                                             <td class="text-right">
                                                 <button class="btn btn-xs btn-success" ng-click="$ctrl.addExcludedContact(rel)" title="{{'Add' | translate}}">
-                                                    <i class="fa fa-plus"></i>
+                                                    <i class="fas fa-plus"></i>
                                                 </button>
                                             </td>
                                         </tr>

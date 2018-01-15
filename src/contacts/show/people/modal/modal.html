@@ -69,7 +69,7 @@
                                                        on-historic="$ctrl.changeHistoric(phone)"></contact-phone>
                                     </div>
                                     <a type="button" class="btn btn-default btn-xs" ng-click="$ctrl.addPhone()">
-                                        <i class="fa fa-plus-circle"></i> <translate>Add Phone</translate>
+                                        <i class="fas fa-plus-circle"></i> <translate>Add Phone</translate>
                                     </a>
                                 </div>
                             </div>
@@ -95,7 +95,7 @@
                                         <contact-email-address email="email" on-remove="$ctrl.remove('email_addresses', $index)" on-primary="$ctrl.changePrimary('email_addresses', email.id)" on-historic="$ctrl.changeHistoric(email)"></contact-email-address>
                                     </div>
                                     <a type="button" class="btn btn-default btn-xs" ng-click="$ctrl.addEmailAddress()">
-                                        <i class="fa fa-plus-circle"></i> <translate>Add Email</translate>
+                                        <i class="fas fa-plus-circle"></i> <translate>Add Email</translate>
                                     </a>
                                     <label class="checkbox-label pull-right" for="optout_enewsletter" ng-if="::!$ctrl.userProfile">
                                         <input class="form-control" type="checkbox" id="optout_enewsletter" ng-model="$ctrl.person.optout_enewsletter" />
@@ -199,16 +199,16 @@
                                 <div class="col-md-12">
                                     <strong translate>Add:</strong>
                                     <a type="button" class="btn btn-default btn-xs" ng-click="$ctrl.addFacebook()">
-                                        <i class="fa fa-facebook-square"></i> <translate>Facebook</translate>
+                                        <i class="fas fa-facebook-square"></i> <translate>Facebook</translate>
                                     </a>
                                     <a type="button" class="btn btn-default btn-xs" ng-click="$ctrl.addTwitter()">
-                                        <i class="fa fa-twitter"></i> <translate>Twitter</translate>
+                                        <i class="fas fa-twitter"></i> <translate>Twitter</translate>
                                     </a>
                                     <a type="button" class="btn btn-default btn-xs" ng-click="$ctrl.addLinkedin()">
-                                        <i class="fa fa-linkedin"></i> <translate>Linked In</translate>
+                                        <i class="fas fa-linkedin"></i> <translate>Linked In</translate>
                                     </a>
                                     <a type="button" class="btn btn-default btn-xs" ng-click="$ctrl.addWebsite()">
-                                        <i class="fa fa-globe"></i> <translate>Website</translate>
+                                        <i class="fas fa-globe"></i> <translate>Website</translate>
                                     </a>
                                 </div>
                             </div>
@@ -257,7 +257,7 @@
                                         <contact-family-relationship person="$ctrl.person" family-relationship="familyRelationship" on-remove="$ctrl.remove('family_relationships', $index)" contact="$ctrl.contact" people-for-relationship="$ctrl.peopleForRelationship"></contact-family-relationship>
                                     </div>
                                     <a type="button" class="btn btn-default btn-xs" ng-click="$ctrl.addFamilyRelationship()">
-                                        <i class="fa fa-plus-circle"></i> <translate>Add Relationship</translate>
+                                        <i class="fas fa-plus-circle"></i> <translate>Add Relationship</translate>
                                     </a>
                                 </div>
                             </div>

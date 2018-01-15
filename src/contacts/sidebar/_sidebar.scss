@@ -1,0 +1,29 @@
+@import "filter/filter";
+@import "filter/tags/tags";
+@import "list/list";
+
+contacts-sidebar {
+    background-color: $filter-bar-bg-color;
+    width: 250px;
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: auto 100%;
+    > div.filters {
+        grid-row: 1;
+    }
+    > div.contact_drawer {
+        grid-row: 2;
+        display: grid;
+        grid-template-rows: auto 100%;
+        > div.edit-filters {
+            border: 1px solid $color-menu-border;
+            color: $cru-white;
+            padding: 5px;
+            line-height: 29px;
+            grid-row: 1;
+        }
+        > div.list {
+            grid-row: 2;
+        }
+    }
+}

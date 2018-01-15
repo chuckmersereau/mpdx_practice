@@ -1,9 +1,21 @@
-<div class="horizontal-tab-sortable">
-    <div ng-class="{ 'active-item': $ctrl.view === 'contacts'}" class="as-sortable-item">
-        <a class="as-sortable-item-handle" ng-click="$ctrl.view = 'contacts'">Contacts</a>
+<div class="head">
+    <div class="task-info">
+        <h2>{{$ctrl.task.subject}}</h2>
+        {{ $ctrl.task.activity_type | translate }}
+        <span ng-if="!$ctrl.task.no_date && $ctrl.task.start_at && !$ctrl.task.completed">
+            {{ $ctrl.task.start_at | localizeWithTime }}
+        </span>
+        <span ng-if="!$ctrl.task.no_date && $ctrl.task.start_at && $ctrl.task.completed">
+            {{ $ctrl.task.completed_at | localizeWithTime }}
+        </span>
     </div>
-    <div ng-class="{ 'active-item': $ctrl.view === 'comments'}" class="as-sortable-item">
-    <a class="as-sortable-item-handle" ng-click="$ctrl.view = 'comments'">Comments</a>
+    <div class="horizontal-tab-sortable">
+        <div ng-class="{ 'active-item': $ctrl.view === 'contacts'}" class="as-sortable-item">
+            <a class="as-sortable-item-handle" ng-click="$ctrl.view = 'contacts'">Contacts</a>
+        </div>
+        <div ng-class="{ 'active-item': $ctrl.view === 'comments'}" class="as-sortable-item">
+        <a class="as-sortable-item-handle" ng-click="$ctrl.view = 'comments'">Comments</a>
+        </div>
     </div>
 </div>
 <div class="contacts" ng-if="$ctrl.view === 'contacts'">
@@ -17,7 +29,7 @@
     </task-item-comment>
     <div class="bottom">
         <form class="form-inline" ng-submit="$ctrl.addComment()" novalidate>
-            <i class="fa fa-comment-o"></i>
+            <i class="far fa-comment"></i>
             <input type="text"
                    class="form-control"
                    ng-model="$ctrl.comment"

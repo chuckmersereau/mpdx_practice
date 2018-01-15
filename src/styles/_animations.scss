@@ -7,6 +7,16 @@
     }
 }
 
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes fadeout {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+}
+
 .slide-left {
     &.ng-enter {
         animation: slide-left 0.5s forwards;
@@ -23,17 +33,58 @@
     }
 
     to {
-        margin-left: 528px;
         width: 528px;
     }
 }
 
-@keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+.collapse.am-collapse {
+    animation-duration: .3s;
+    animation-timing-function: ease;
+    animation-fill-mode: backwards;
+    overflow: hidden;
+    &.in-remove {
+        animation-name: collapse;
+        display: block;
+    }
+    &.in-add {
+        animation-name: expand;
+    }
 }
 
-@keyframes fadeout {
-    from { opacity: 1; }
-    to   { opacity: 0; }
+.panel-animate {
+    -moz-transition-duration: 0.8s;
+    -webkit-transition-duration: 0.8s;
+    -o-transition-duration: 0.8s;
+    transition-duration: 0.8s;
+    -moz-transition-timing-function: ease-in;
+    -webkit-transition-timing-function: ease-in;
+    -o-transition-timing-function: ease-in;
+    transition-timing-function: ease-in;
+    max-height: 1000px;
+    > .table {
+        margin-bottom: 0;
+    }
+}
+
+.panel-animate.ng-hide {
+    max-height: 0;
+    -moz-transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+    -webkit-transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+    -o-transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+}
+
+.panel-animate.ng-animate {
+    overflow: hidden;
+}
+
+.panel-heading.pref-head {
+    cursor: pointer;
+    i {
+        -webkit-transition: 0.5s ease-in-out;
+        -moz-transition: 0.5s ease-in-out;
+        -o-transition: 0.5s ease-in-out;
+        transition: 0.5s ease-in-out;
+        margin-right: 5px;
+    }
 }

@@ -1,20 +1,21 @@
-<contacts-filter ng-if="!$ctrl.session.isInState('contacts.show')"></contacts-filter>
-<div id="contact_drawer" ng-if="$ctrl.session.isInState('contacts.show')">
-    <div class="contact_drawer_inner" role="complementary">
-        <div class="edit-filters clearfix">
-            <translate translate-plural="{{$count}} filters applied" translate-n="$ctrl.contactFilter.count()">1 filter applied</translate>
-            <div class="pull-right">
-                <button type="button" class="btn btn-primary btn-xs" ng-click="$ctrl.showFilters = !$ctrl.showFilters">
-                    <span ng-if="$ctrl.showFilters"><i class="fa fa-users"></i> <span translate>Contacts</span></span>
-                    <span ng-if="!$ctrl.showFilters"><i class="fa fa-sliders"></i> <span translate>Filters</span></span>
-                </button>
-            </div>
+<div class="filters">
+    <contacts-filter ng-if="!$ctrl.session.isInState('contacts.show')"></contacts-filter>
+</div>
+<div class="contact_drawer" ng-if="$ctrl.session.isInState('contacts.show')" role="complementary">
+    <div class="edit-filters">
+        <translate translate-plural="{{$count}} filters applied"
+                   translate-n="$ctrl.contactFilter.count()">1 filter applied</translate>
+        <div class="pull-right">
+            <button type="button" class="btn btn-primary btn-xs" ng-click="$ctrl.showFilters = !$ctrl.showFilters">
+                <span ng-if="$ctrl.showFilters"><i class="fas fa-users"></i> <span translate>Contacts</span></span>
+                <span ng-if="!$ctrl.showFilters"><i class="fas fa-sliders"></i> <span translate>Filters</span></span>
+            </button>
         </div>
-        <div ng-if="$ctrl.showFilters">
-            <contacts-filter></contacts-filter>
-        </div>
-        <div ng-if="!$ctrl.showFilters">
-            <contacts-sidebar-list selected="$ctrl.selected"></contacts-sidebar-list>
-        </div>
+    </div>
+    <div class="list" ng-if="$ctrl.showFilters">
+        <contacts-filter></contacts-filter>
+    </div>
+    <div class="list" ng-if="!$ctrl.showFilters">
+        <contacts-sidebar-list selected="$ctrl.selected"></contacts-sidebar-list>
     </div>
 </div>

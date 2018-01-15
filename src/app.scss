@@ -1,95 +1,26 @@
-/* Dependencies */
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700');
+/* 3rd Party Styles */
+@import "styles/vendor";
 
-$fa-font-path: "~font-awesome/fonts";
-@import "~font-awesome/scss/font-awesome";
-@import "~ng-tags-input/build/ng-tags-input";
-@import "~ng-tags-input/build/ng-tags-input.bootstrap";
-@import "~angular-motion/dist/angular-motion";
-@import "~bootstrap-additions/dist/bootstrap-additions";
-@import "~bootstrap-daterangepicker/daterangepicker";
-@import "~angular-xeditable/dist/css/xeditable";
-@import "~ng-sortable/dist/ng-sortable";
-$flag-icon-css-path: "~flag-icon-css/flags";
-@import "~flag-icon-css/sass/flag-icon";
-
-/* Internal */
-@import "styles/vars";
-@import "styles/utility";
-@import "styles/elements";
-@import "styles/elements";
-@import "styles/columns";
-@import "styles/forms";
-@import "styles/filters";
-@import "styles/layout";
-@import "styles/placeholders";
-@import "styles/nav_tabs";
-@import "styles/notices";
-@import "styles/popovers";
-@import "styles/primary_container";
-@import "styles/progress";
-@import "styles/cards";
-@import "styles/ico";
-@import "styles/chosen_bootstrap";
-@import "styles/buttons";
-@import "styles/blankslates";
-@import "styles/panels";
-@import "styles/fonts/cru/ci.css";
-@import "styles/tables";
-@import "styles/tags";
-@import "styles/merges";
-@import "styles/typography";
-@import "styles/horizontalTabsSortable";
-@import "styles/animations";
+/* Global MPDX Styles */
+@import "styles/styles";
+@import "styles/fonts/cru/ci.css"; /* doesn't work nested */
 
 /* Components */
-@import "tools/appeals/wizard/wizard";
 @import "blockUI/blockUI";
+@import "bottom/bottom";
 @import "menu/menu";
-@import "menu/accountLists/accountLists";
-@import "menu/search/search";
-@import "coaches/list/item/item";
-@import "coaches/show/show";
-@import "common/alerts/alerts";
-@import "common/avatar/avatar";
-@import "common/cover/cover";
-@import "common/datetimepicker/datetimepicker";
-@import "common/modal/modal";
-@import "common/tagSelector/tasgSelector";
-@import "common/login/login";
-@import "common/collectionSelector/modal/modal";
-@import "common/sideDrawer/drawer";
-@import "contacts/list/map/map";
-@import "contacts/sidebar/filter/tags/tags";
-@import "contacts/sidebar/list/list";
-@import "contacts/list/list";
-@import "contacts/list/item/item";
-@import "contacts/show/show";
-@import "contacts/show/details/details";
-@import "contacts/show/address/address";
-@import "contacts/show/people/people";
-@import "contacts/show/people/person/person";
+@import "coaches/coaches";
+@import "common/common";
+@import "contacts/contacts";
 @import "home/home";
-@import "home/progress/progress";
 @import "preferences/preferences";
+@import "reports/reports";
 @import "root/root";
 @import "setup/setup";
-@import "setup/preferences/preferences";
-@import "tasks/list/add/add";
-@import "tasks/list/drawer/drawer";
-@import "tasks/list/drawer/comment/comment";
-@import "tasks/list/list";
-@import "tasks/list/item/item";
-@import "tasks/search/search";
+@import "tasks/tasks";
 @import "tools/tools";
-@import "tools/appeals/show/show";
-@import 'tools/fix/sendNewsletter/item/item';
-@import "tools/import/csv/csv";
-@import "reports/reports";
-@import "bottom/bottom";
+@import "unavailable/unavailable";
 
-/* Overrides */
-@import "styles/glyphicons";
 
 /* replace with sass variable once new style is ready */
 .border-secondary {

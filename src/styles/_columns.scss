@@ -8,15 +8,7 @@
         padding-top: $nav-padding;
         background: $cru-white;
         z-index: 1;
-        @include breakpoint(sm) {
-            width: 720px;
-        }
-        @include breakpoint(md) {
-            width: 215px;
-        }
-        @include breakpoint(lg) {
-            width: 265px;
-        }
+        width: 265px;
         &__contacts {
             @include breakpoint(sm) {
                 top: $secondary-nav-height + 99px;
@@ -51,20 +43,8 @@
         }
     }
     &--heading {
-        position: fixed;
-        top: $nav-height;
         padding-top: $nav-padding;
         background: $cru-white;
-        z-index: 4;
-        @include breakpoint(sm) {
-            width: 720px;
-        }
-        @include breakpoint(md) {
-            width: 698px;
-        }
-        @include breakpoint(lg) {
-            width: 848px;
-        }
     }
     &--spacer {
         &__contacts {

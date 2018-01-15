@@ -8,15 +8,15 @@
                 <li ng-class="{ 'active' : $ctrl.activeTab == 'calendar' }">
                     <a ng-click="$ctrl.activeTab = 'calendar'">
                         <translate>Calendar</translate> &nbsp;
-                        <i ng-if="!$ctrl.googleIntegration.calendar_integration" class="fa fa-circle-o"></i>
-                        <i ng-if="$ctrl.googleIntegration.calendar_integration" class="fa fa-circle text-success"></i>
+                        <i ng-if="!$ctrl.googleIntegration.calendar_integration" class="far fa-circle"></i>
+                        <i ng-if="$ctrl.googleIntegration.calendar_integration" class="fas fa-circle text-success"></i>
                     </a>
                 </li>
                 <li ng-class="{ 'active' : $ctrl.activeTab == 'gmail' }">
                     <a ng-click="$ctrl.activeTab = 'gmail'">
                         <translate>Gmail</translate> &nbsp;
-                        <i ng-if="!$ctrl.googleIntegration.email_integration" class="fa fa-circle-o"></i>
-                        <i ng-if="$ctrl.googleIntegration.email_integration" class="fa fa-circle text-success"></i>
+                        <i ng-if="!$ctrl.googleIntegration.email_integration" class="far fa-circle"></i>
+                        <i ng-if="$ctrl.googleIntegration.email_integration" class="fas fa-circle text-success"></i>
                     </a>
                 </li>
                 <li ng-class="{ 'active' : $ctrl.activeTab == 'setup' }">
@@ -102,13 +102,13 @@
                                                 ng-click="$ctrl.removeEmail($index)"
                                                 class="btn btn-block btn-default"
                                                 title="{{::'Delete' | translate}}">
-                                            <i class="fa fa-trash"></i>
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
                                 </div>
                             </div>
                             <a type="button" class="btn btn-default btn-xs" ng-click="$ctrl.addEmailAddress()">
-                                <i class="fa fa-plus-circle"></i> <translate>Add Email</translate>
+                                <i class="fas fa-plus-circle"></i> <translate>Add Email</translate>
                             </a>
                         </div>
                     </div>

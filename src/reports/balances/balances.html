@@ -1,10 +1,10 @@
 <div class="reports">
     <h2 translate>Balances</h2>
     <div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
-      <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
+      <i class="far fa-circle-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
     </div>
     <div class="blankslate blankslate-spacious" ng-if="!$ctrl.loading && $ctrl.designationAccounts.data.length === 0">
-        <i class="fa fa-handshake-o blankslate-icon"></i>
+        <i class="far fa-handshake blankslate-icon"></i>
         <h3 translate>You have no designation accounts with balances</h3>
         <p translate>You can setup an organization account to import your designation accounts.</p>
         <a ui-sref="preferences.integrations" class="btn btn-default" translate>Connect Services</a>

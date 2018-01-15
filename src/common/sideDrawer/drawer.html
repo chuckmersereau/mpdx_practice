@@ -1,2 +1,7 @@
-<span ng-click="$ctrl.onClose()" class="pull-right pointer"><i class="fa fa-close cursor-pointer"></i></span>
+<span ng-click="$ctrl.onClose()" class="pull-right pointer" ng-init="hover = false; hidden = false">
+    <i class="fa-window-close cursor-pointer"
+       ng-mouseenter="hover = true"
+       ng-mouseleave="hover = false"
+       ng-class="hover ? 'fas' : 'far'"></i>
+</span>
 <ng-transclude></ng-transclude>

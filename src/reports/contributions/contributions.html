@@ -3,11 +3,11 @@
         <button class="btn btn-primary" ng-click="$ctrl.expanded = !$ctrl.expanded">
             <span ng-if="!$ctrl.expanded">
                 <span translate>Expand partner info</span>
-                <i class="fa fa-expand" aria-hidden="true"></i>
+                <i class="fas fa-expand" aria-hidden="true"></i>
             </span>
             <span ng-if="$ctrl.expanded">
                 <span translate>Hide partner info</span>
-                <i class="fa fa-compress" aria-hidden="true"></i>
+                <i class="fas fa-compress" aria-hidden="true"></i>
             </span>
         </button>
         <button class="btn btn-default" ng-csv="$ctrl.toCSV()" lazy-load="true" filename="mpdx-{{$ctrl.type}}-contributions-export-{{$ctrl.moment().format('Y-MM-DD-HH:mm')}}.csv" translate>
@@ -19,11 +19,11 @@
         <span ng-if="::$ctrl.type === 'salary'" translate>Contributions by Salary Currency</span>
     </h2>
     <div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
-      <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
+      <i class="far fa-circle-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
     </div>
     <div ng-if="!$ctrl.loading">
         <div class="blankslate blankslate-spacious" ng-if="$ctrl.data.currencies.length === 0">
-            <i class="fa fa-money blankslate-icon"></i>
+            <i class="fas fa-money blankslate-icon"></i>
             <h3 translate>You have received no donations in the last thirteen months</h3>
             <p translate>You can setup an organization account to import them or add a new donation.</p>
             <a ui-sref="preferences.integrations" class="btn btn-default" translate>Connect Services</a>
@@ -69,11 +69,11 @@
                         <tbody>
                             <tr ng-repeat="donor in currency.donors">
                                 <td>
-                                    <i class="fa fa-info-circle" ng-if="!$ctrl.expanded" data-template-url="reports/contributions/popovers/name.tpl.html" data-trigger="hover" data-placement="top" bs-popover></i>
+                                    <i class="fas fa-info-circle" ng-if="!$ctrl.expanded" data-template-url="reports/contributions/popovers/name.tpl.html" data-trigger="hover" data-placement="top" bs-popover></i>
                                     <a ui-sref="contacts.show({contactId: donor.contact.contact_id})" >{{::donor.contact.contact_name}}</a>
                                     <span ng-switch="donor.contact.late_by_60_days ? 60 : (donor.contact.late_by_30_days ? 30 : false)">
-                                        <i class="fa fa-circle circle-late" ng-switch-when="30" data-title="{{ ::'30+ days late' | translate }}" bs-tooltip></i>
-                                        <i class="fa fa-circle circle-very-late" ng-switch-when="60" data-title="{{ ::'60+ days late' | translate }}" bs-tooltip></i>
+                                        <i class="fas fa-circle circle-late" ng-switch-when="30" data-title="{{ ::'30+ days late' | translate }}" bs-tooltip></i>
+                                        <i class="fas fa-circle circle-very-late" ng-switch-when="60" data-title="{{ ::'60+ days late' | translate }}" bs-tooltip></i>
                                     </span>
                                 </td>
                                 <td ng-if="$ctrl.expanded">

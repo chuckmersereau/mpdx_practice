@@ -1,6 +1,6 @@
 <modal title="{{$ctrl.modalTitle}}" cancel="$hide()" save="$ctrl.save()" delete="$ctrl.delete()" show-delete="$ctrl.address.id && $ctrl.isEditable" hide-footer="!$ctrl.contact">
     <div class="empty-map" ng-if="!$ctrl.place">
-        <i class="fa fa-map"></i>
+        <i class="fas fa-map"></i>
     </div>
     <ng-map disable-default-u-i="true" center="{{$ctrl.place.formatted_address}}">
         <marker position="{{$ctrl.place.formatted_address}}" title="{{$ctrl.place.formatted_address}}"></marker>

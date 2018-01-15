@@ -1,13 +1,15 @@
+import compact from 'lodash/fp/compact';
 import defaultTo from 'lodash/fp/defaultTo';
 import flow from 'lodash/fp/flow';
+import isArray from 'lodash/fp/isArray';
 import isEmpty from 'lodash/fp/isEmpty';
 import isEqual from 'lodash/fp/isEqual';
 import isNil from 'lodash/fp/isNil';
 import assign from 'lodash/fp/assign';
 import map from 'lodash/fp/map';
 import omitBy from 'lodash/fp/omitBy';
-import joinComma from '../../common/fp/joinComma';
-import emptyToNull from '../../common/fp/emptyToNull';
+import joinComma from 'common/fp/joinComma';
+import emptyToNull from 'common/fp/emptyToNull';
 
 class TasksFilterService {
     constructor(
@@ -90,15 +92,31 @@ class TasksFilterService {
     count() {
         return this.filters.count({ defaultParams: this.defaultParams, params: this.params });
     }
-    change() {
-        this.$log.debug('task filters change');
+    change(filter) {
+        this.handleFilterChange(filter);
+        this.$log.debug('task filters change:', this.params);
         this.$rootScope.$emit('tasksFilterChange');
+    }
+    handleFilterChange(filter) {
+        if (filter) {
+            const currentFilter = this.params[filter.name];
+            if (isArray(currentFilter) && currentFilter.length > 1) {
+                this.params[filter.name] = compact(currentFilter);
+            }
+            if (isArray(currentFilter) && currentFilter.length === 0) {
+                this.params[filter.name] = this.defaultParams[filter.name];
+            }
+        }
     }
     reset(stateParams = {}) {
         this.assignDefaultParamsAndGroup('all');
         this.params = assign(this.defaultParams, stateParams);
         this.wildcard_search = '';
         this.tasksTags.reset();
+        this.data = map((filter) => {
+            filter.reverse = false;
+            return filter;
+        }, this.data);
         this.change();
     }
     changeGroup(group) {
@@ -127,11 +145,37 @@ class TasksFilterService {
         });
         return omitBy(isNil, filters);
     }
+    // Invert the selected options of a multiselect filter
+    invertMultiselect(filter) {
+        if (filter.type !== 'multiselect') {
+            return;
+        }
+        const reverseName = `reverse_${filter.name}`;
+        if (this.params[reverseName]) {
+            delete this.params[reverseName];
+        } else {
+            this.params[reverseName] = true;
+        }
+        filter.reverse = !!this.params[reverseName];
+        this.change();
+    }
+    removeFilter(filter) {
+        const reverseName = `reverse_${filter.name}`;
+        this.params[filter.name] = this.defaultParams[filter.name];
+        delete this.params[reverseName];
+        filter.reverse = false;
+    }
+    showReset() {
+        return this.tasksTags.isResettable() || this.isResettable();
+    }
 }
 
+import filters from 'common/filters/filters.service';
+import gettext from 'angular-gettext';
 import tasksTags from './tags/tags.service';
-import filters from '../../common/filters/filters.service';
+
 
 export default angular.module('mpdx.tasks.filter.service', [
+    gettext,
     filters, tasksTags
 ]).service('tasksFilter', TasksFilterService).name;

@@ -1,16 +1,2 @@
-<div class="filter--body without-subnav">
-    <div class="filter--spacer filter--spacer__tasks"></div>
-    <div class="row">
-        <div class="col-md-3">
-            <div class="filter--sidebar filter--sidebar__tasks" ng-class="{ 'hidden-sm' : !$ctrl.session.showFiltersOnMobile }">
-                <alerts padding-only="true"></alerts>
-                <tasks-filter></tasks-filter>
-            </div>
-        </div>
-        <div class="col-md-9">
-            <div class="filter--content">
-                <tasks-list></tasks-list>
-            </div>
-        </div>
-    </div>
-</div>
+<tasks-filter ng-class="{ 'hidden-sm hidden-xs' : !$ctrl.session.showFiltersOnMobile }"></tasks-filter>
+<tasks-list></tasks-list>

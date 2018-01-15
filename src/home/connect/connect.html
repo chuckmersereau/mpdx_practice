@@ -1,9 +1,9 @@
 <div class="panel panel-default" block-ui="connect">
     <div class="panel-heading">
-        <a class="btn btn-default pull-right" ng-click="$ctrl.tasks.addModal({})">
+        <div translate>Connect</div>
+        <a class="btn btn-default" ng-click="$ctrl.tasks.addModal({})">
             <translate>Add a New Task</translate>
         </a>
-        <translate>Connect</translate>
     </div>
     <div class="panel-body">
         <h4 class="title" translate translate-plural="{{$count}} Tasks overdue or due today" translate-n="$ctrl.totalTasks()">
@@ -19,7 +19,7 @@
         </ul>
         <div ng-if="$ctrl.limit < $ctrl.totalTypes()">
             <a ng-click="$ctrl.limit = $ctrl.totalTypes()">
-                <i class="fa fa-plus-square-o"></i>
+                <i class="far fa-plus-square"></i>
                 <translate translate-n="$ctrl.totalTypes()" translate-plural="See all {{$count}} task types">See 1 task type</translate>
             </a>
         </div>

@@ -13,11 +13,7 @@ class AlertsController {
 
 const Alerts = {
     template: require('./alerts.html'),
-    controller: AlertsController,
-    bindings: {
-        modal: '@',
-        paddingOnly: '@'
-    }
+    controller: AlertsController
 };
 
 import alerts from './alerts.service';

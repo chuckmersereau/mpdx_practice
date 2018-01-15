@@ -1,7 +1,9 @@
 class FilterController {
     constructor(
+        $scope,
         filters, gettextCatalog, modal, tasksFilter, tasksTags, tasks
     ) {
+        this.$scope = $scope;
         this.filters = filters;
         this.modal = modal;
         this.tasks = tasks;
@@ -13,17 +15,11 @@ class FilterController {
             applyLabel: this.gettextCatalog.getString('Filter'),
             cancelLabel: this.gettextCatalog.getString('Clear')
         };
+
+        this.selectedSort = 'all';
     }
     resetFiltersAndTags() {
         this.tasksFilter.reset();
-    }
-    showReset() {
-        return this.tasksTags.isResettable() || this.tasksFilter.isResettable();
-    }
-    // Invert the selected options of a multiselect filter
-    invertMultiselect(filter) {
-        this.tasksFilter.params[filter.name] = this.filters.invertMultiselect(filter, this.tasksFilter.params);
-        this.tasksFilter.change();
     }
 }
 
@@ -32,5 +28,13 @@ const Filter = {
     template: require('./filter.html')
 };
 
-export default angular.module('mpdx.tasks.filter.component', [])
-    .component('tasksFilter', Filter).name;
+import filters from 'common/filters/filters.service';
+import gettext from 'angular-gettext';
+import modal from 'common/modal/modal.service';
+import tasks from 'tasks/tasks.service';
+import tasksFilter from './filter.service';
+
+export default angular.module('mpdx.tasks.filter.component', [
+    gettext,
+    filters, modal, tasks, tasksFilter
+]).component('tasksFilter', Filter).name;

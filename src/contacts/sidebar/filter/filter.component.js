@@ -29,13 +29,6 @@ class FilterController {
             this.contactFilter.reset();
         }
     }
-    showReset() {
-        return this.contactsTags.isResettable() || this.contactFilter.isResettable();
-    }
-    invertMultiselect(filter) {
-        this.contactFilter.params[filter.name] = this.filters.invertMultiselect(filter, this.contactFilter.params);
-        this.contactFilter.change();
-    }
 }
 
 const Filter = {

@@ -1,5 +1,6 @@
-<div class="alerts" ng-if="!$ctrl.paddingOnly">
-    <div ng-repeat="alert in $ctrl.alerts.data | filter: { modal: $ctrl.modal } track by alert.id " class="alert alert-{{::alert.type}}" style="animation-duration: {{::alert.displayTime}}s;">
+<div class="alerts">
+    <div ng-repeat="alert in $ctrl.alerts.data | filter: { modal: $ctrl.modal } track by alert.id "
+         class="alert alert-{{::alert.type}}" style="animation-duration: {{::alert.displayTime}}s;">
         <div class="container">
             <span class="label label-{{::alert.type}}" ng-if="alert.status">{{::alert.status}}</span>
             {{::alert.message}}

@@ -1,0 +1,87 @@
+tasks-list-item {
+    div.item {
+        display: grid;
+        grid-template-columns: 24px auto auto 45px 52px 20px 20px;
+        padding: 10px 15px;
+        height: 40px;
+        white-space: nowrap;
+        font-size: 14px;
+        &:hover {
+            > div.trash {
+                @extend .fade-in.ng-enter;
+                opacity: 1;
+            }
+        }
+        > a.complete {
+            text-align: center;
+            grid-column: 1;
+            &:hover {
+                > i {
+                    font-weight: 900;
+                }
+                color: $color-success;
+            }
+        }
+        > div.content {
+            grid-column: 2;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            > span.contacts {
+                margin-left: 5px;
+            }
+        }
+        > div.tags {
+            padding-right: 5px;
+            text-align: right;
+            grid-column: 3;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        > div.date {
+            grid-column: 4;
+        }
+        > div.comments {
+            text-align: center;
+            grid-column: 5;
+            .btn {
+                width: 51px;
+            }
+        }
+        > a.star {
+            text-align: center;
+            grid-column: 6;
+            &:hover {
+                > i {
+                    font-weight: 900;
+                }
+            }
+        }
+        > div.trash {
+            text-align: center;
+            grid-column: 7;
+            @extend .fade-in.ng-leave;
+            opacity: 0;
+            &:hover {
+                > a > i {
+                    font-weight: 900;
+                    color: $color-danger;
+                }
+            }
+        }
+        .item-text {
+            color: #297AE3;
+            > a a:visited {
+                color: #297AE3;
+            }
+        }
+
+        .tag {
+            margin-top: -2px;
+            line-height: 20px;
+            height: 20px;
+        }
+        &--selected {
+            background-color: $light-blue-selected;
+        }
+    }
+}

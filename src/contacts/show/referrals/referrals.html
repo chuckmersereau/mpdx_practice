@@ -19,7 +19,7 @@
                 </td>
                 <td class="text-right">
                     <a ui-sref="contacts.show({ contactId: referral.id })">
-                        <i class="fa fa-search"></i>
+                        <i class="fas fa-search"></i>
                     </a>
                 </td>
             </tr>
@@ -27,7 +27,7 @@
     </table>
 </div>
 <div class="blankslate" ng-if="$ctrl.referrals.length === 0">
-    <i class="fa fa-home blankslate-icon"></i>
+    <i class="fas fa-home blankslate-icon"></i>
     <h3 translate>Looks like you haven't added any referrals for this contact yet</h3>
     <a ng-click="$ctrl.openAddReferralsModal()" class="btn btn-default" translate>Add Referrals</a>
 </div>

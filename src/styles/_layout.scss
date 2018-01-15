@@ -22,7 +22,7 @@ body {
         &:before {
             content: "\f105";
             display: block;
-            font-family: "fontawesome";
+            font-family: "Font Awesome 5 Pro";
             float: left;
             margin-left: -1.25em;
         }
@@ -151,9 +151,6 @@ $userheight: 72px;
 .page-filters-plain {
     border-bottom: 4px solid $borders;
     padding-bottom: 10px;
-    .right {
-        float: right;
-    }
 }
 
 .page-filters-plain {
@@ -312,7 +309,7 @@ div.name {font-size: 14px; margin-bottom: 4px;}
         position: relative;
         &:before {
             display:block;
-            font-family: "FontAwesome";
+            font-family: "Font Awesome 5 Pro";
             left: 11px;
             position: absolute;
         }
@@ -376,7 +373,7 @@ div.name {font-size: 14px; margin-bottom: 4px;}
             content: "\f196";
             display: block;
             float: left;
-            font-family: "FontAwesome";
+            font-family: "Font Awesome 5 Pro";
             margin-right: 5px;
             transition: .2s all;
             font-size: 12px;
@@ -498,27 +495,6 @@ div.name {font-size: 14px; margin-bottom: 4px;}
     }
 }
 
-
-.bootstrap-tagsinput,
-.tags {
-    line-height: 1.3em;
-    .tag {
-        font-weight: 600;
-        background: $cru-blue;
-        border: 0;
-        height: auto;
-        line-height: 20px;
-        font-size: 12px;
-        margin-top: 3px;
-        margin-right: 3px;
-        padding: 0 5px;
-        border-radius: 5px;
-        color: $color-reverse;
-        display: inline-block;
-        word-break: break-all;
-    }
-}
-
 /* ************************************************************** */
 
 .corner_close {
@@ -593,7 +569,7 @@ div.name {font-size: 14px; margin-bottom: 4px;}
 
 .phone-type:before {
     display: inline-block;
-    font-family: FontAwesome;
+    font-family: "Font Awesome 5 Pro";
 }
 .phone-type-home:before {content: "\f015";}
 .phone-type-mobile:before {content: "\f10b";}
@@ -709,7 +685,7 @@ table tbody.tasks {
     }
     input[type=checkbox] { display:none; } /* to hide the checkbox itself */
     input[type=checkbox] + label:before {
-        font-family: FontAwesome;
+        font-family: "Font Awesome 5 Pro";
         display: inline-block;
     }
 
@@ -747,108 +723,6 @@ table tbody.tasks {
 .addresses ul {
     list-style: none;
 }
-
-/* ************************************************************** */
-
-
-
-/* ************************************************************** */
-.contact_controls {
-    border-bottom: 5px solid #ccc;
-    display: block;
-    padding-bottom: 20px;
-}
-
-#contact_paging {
-    display: inline-block;
-    span { padding: 0 5px; }
-}
-
-#contact_drawer {
-    h3 {
-        color: $color-text;
-        margin: 0;
-        line-height: 2.25em;
-        display: inline-block;
-    }
-    .filters {
-        height: auto;
-    }
-    .filtered_message {
-        display: block;
-        font-weight: bold;
-        padding: 8px 0;
-        text-align: center;
-        a { display: block;}
-    }
-}
-
-.contact_drawer_inner {
-    > .filters {
-        display: block;
-        margin-bottom: 10px;
-        > .dropdown {
-            display: block;
-        }
-    }
-    .edit-filters {
-        border: 1px solid $color-menu-border;
-        margin-bottom: 10px;
-        padding: 5px;
-        line-height: 29px;
-    }
-}
-
-.contact_list {
-    @include listclear;
-    height: 415px;
-    overflow: auto;
-    background: $color-reverse;
-    li {border-bottom: 1px dotted $gray_light;}
-    li a {
-        display: block;
-        line-height: 1.85em;
-        height: 1.85em;
-        padding: 0 8px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-    }
-    li a:hover,
-    li a:active {
-        background: $color-bg;
-        text-decoration: none;
-    }
-    li a.active {
-        background: $color-primary;
-        color: $color-reverse;
-    }
-}
-
-.contact_loading{
-    opacity: .4;
-}
-
-/* duplicate merge page */
-.duplicate_contacts {
-    margin-top: 10px;
-
-    .duplicate_set {
-        margin: 10px 10px 0 0;
-        padding: 5px;
-        border: solid 1px $blue;
-        .contact {
-            margin: 3px;
-        }
-        .contact-header {
-            font-weight: bold;
-        }
-        .person {
-            margin: 3px;
-        }
-    }
-}
-
 
 /* ************************************************************** */
 
@@ -942,53 +816,6 @@ body.google_integrations_controller {
         a {
             line-height: 40px;
         }
-    }
-}
-
-/* ********************* Tasks Row ************************** */
-.tasklist {
-    width: 100%;
-    .high {
-        a.ico_trash {
-            vertical-align: text-bottom;
-        }
-    }
-    .check {
-        padding-right: 5px;
-        padding-left: 8px;
-    }
-    a:hover,
-    a:before:hover,
-    .fav:hover {
-        text-decoration: none;
-        color: $color-primary;
-    }
-    .tags {
-        .tag:hover {
-            color: $color-reverse;
-        }
-    }
-    .contact-task-address {
-        line-height: 1.25em;
-    }
-    td.data {
-        width: 89%;
-    }
-}
-
-.task-actions {
-    margin-left: 10px;
-}
-
-.comment_status {
-    font-weight: 500;
-    line-height: 1.5em;
-    margin-left: 4px;
-    :before {
-        color: $gray_dark;
-        font: 18px FontAwesome;
-        content: "\f0e6";
-        padding-right: 4px;
     }
 }
 
@@ -1108,7 +935,7 @@ appeals-list .show-all {
         &:before {
             content: "\f055";
             display: inline-block;
-            font-family: "fontawesome";
+            font-family: "Font Awesome 5 Pro";
             margin-right: 4px;
             margin-left: 8px;
         }
@@ -1211,46 +1038,6 @@ h4.title {
     margin-top: .5em;
 }
 
-/* ********************* Angular Animate (Slide) ************************** */
-
-.panel-animate {
-    -moz-transition-duration: 0.8s;
-    -webkit-transition-duration: 0.8s;
-    -o-transition-duration: 0.8s;
-    transition-duration: 0.8s;
-    -moz-transition-timing-function: ease-in;
-    -webkit-transition-timing-function: ease-in;
-    -o-transition-timing-function: ease-in;
-    transition-timing-function: ease-in;
-    max-height: 1000px;
-    > .table {
-        margin-bottom: 0;
-    }
-}
-
-.panel-animate.ng-hide {
-    max-height: 0;
-    -moz-transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
-    -webkit-transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
-    -o-transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
-    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
-}
-
-.panel-animate.ng-animate {
-    overflow: hidden;
-}
-
-.panel-heading.pref-head {
-    cursor: pointer;
-    i {
-        -webkit-transition: 0.5s ease-in-out;
-        -moz-transition: 0.5s ease-in-out;
-        -o-transition: 0.5s ease-in-out;
-        transition: 0.5s ease-in-out;
-        margin-right: 5px;
-    }
-}
-
 /* ********************* Asides ************************** */
 .aside {
     max-width: 250px;
@@ -1291,12 +1078,6 @@ span.best_in_place_once {
     border-radius: 6px;
 }
 
-.import_by_group {
-    margin-bottom: 10px;
-    tags-input .tags .tag-item {
-        background: #007398;
-    }
-}
 .import-tags-table {
     width: 100%;
     .google_import_group {
@@ -1317,27 +1098,11 @@ span.best_in_place_once {
     align-items: center;
     justify-content: center;
 }
+
 .loading-spinner {
     color: $color-primary;
     padding: 20px 0;
     text-align: center;
-}
-
-.row-eq-height {
-    margin: 0 -15px;
-    display: flex;
-}
-
-.row-small-gutter {
-    > div {
-        padding: 0 2.5px;
-        &:first-child {
-            padding-left: 0;
-        }
-        &:last-child {
-            padding-right: 0;
-        }
-    }
 }
 
 //force gmaps auto-complete zindex +1 to modal
@@ -1345,16 +1110,8 @@ span.best_in_place_once {
     z-index: 1051;
 }
 
-.collapse.am-collapse {
-    animation-duration: .3s;
-    animation-timing-function: ease;
-    animation-fill-mode: backwards;
-    overflow: hidden;
-    &.in-remove {
-        animation-name: collapse;
-        display: block;
-    }
-    &.in-add {
-        animation-name: expand;
-    }
+
+.content-container {
+    padding-left: $container-padding-left;
+    padding-right: $container-padding-right;
 }

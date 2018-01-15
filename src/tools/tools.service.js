@@ -12,14 +12,14 @@ class ToolsService {
         this.data = [
             {
                 title: gettextCatalog.getString('Appeals'),
-                icon: 'fa fa-trophy',
+                icon: 'fas fa-trophy',
                 link: 'tools.appeals',
                 description: gettextCatalog.getString('Set goals, create asks, and track progress for one time needs'),
                 enabled: true
             },
             {
                 title: gettextCatalog.getString('Import from Google'),
-                icon: 'fa fa-google',
+                icon: 'fas fa-google',
                 link: 'tools.import.google',
                 description: gettextCatalog.getString('Import your contact information from your Google account'),
                 enabled: true,
@@ -27,7 +27,7 @@ class ToolsService {
             },
             {
                 title: gettextCatalog.getString('Import from CSV'),
-                icon: 'fa fa-table',
+                icon: 'fas fa-table',
                 link: 'tools.import.csv',
                 description: gettextCatalog.getString('Import contacts you have saved in a CSV file'),
                 enabled: true,
@@ -35,7 +35,7 @@ class ToolsService {
             },
             {
                 title: gettextCatalog.getString('Import from TntConnect'),
-                icon: 'fa fa-cloud-upload',
+                icon: 'fas fa-cloud-upload',
                 link: 'tools.import.tnt',
                 description: gettextCatalog.getString('Import your contacts from your TntConnect database'),
                 enabled: true,
@@ -43,7 +43,7 @@ class ToolsService {
             },
             {
                 title: gettextCatalog.getString('Fix Commitment Info'),
-                icon: 'fa fa-usd',
+                icon: 'fas fa-usd',
                 link: 'tools.fix.commitmentInfo',
                 description: gettextCatalog.getString('Set the correct contacts commitment info for each contact'),
                 enabled: true,
@@ -51,7 +51,7 @@ class ToolsService {
             },
             {
                 title: gettextCatalog.getString('Fix Email Addresses'),
-                icon: 'fa fa-envelope-o',
+                icon: 'far fa-envelope',
                 link: 'tools.fix.emailAddresses',
                 description: gettextCatalog.getString('Set the correct primary email address for each person'),
                 enabled: true,
@@ -59,7 +59,7 @@ class ToolsService {
             },
             {
                 title: gettextCatalog.getString('Fix Mailing Addresses'),
-                icon: 'fa fa-map',
+                icon: 'fas fa-map',
                 link: 'tools.fix.addresses',
                 description: gettextCatalog.getString('Set the correct primary mailing address for each contact'),
                 enabled: true,
@@ -67,7 +67,7 @@ class ToolsService {
             },
             {
                 title: gettextCatalog.getString('Fix Phone Numbers'),
-                icon: 'fa fa-phone-square',
+                icon: 'fas fa-phone-square',
                 link: 'tools.fix.phoneNumbers',
                 description: gettextCatalog.getString('Set the correct primary phone number for each person'),
                 enabled: true,
@@ -75,7 +75,7 @@ class ToolsService {
             },
             {
                 title: gettextCatalog.getString('Fix Send Newsletter'),
-                icon: 'fa fa-newspaper-o',
+                icon: 'far fa-newspaper',
                 link: 'tools.fix.sendNewsletter',
                 description: gettextCatalog.getString('Set the correct newsletter state for each contact'),
                 enabled: true,
@@ -83,7 +83,7 @@ class ToolsService {
             },
             {
                 title: gettextCatalog.getString('Merge Contacts'),
-                icon: 'fa fa-home',
+                icon: 'fas fa-home',
                 link: 'tools.merge.contacts',
                 description: gettextCatalog.getString('Review and merge duplicate contacts'),
                 enabled: true,
@@ -91,7 +91,7 @@ class ToolsService {
             },
             {
                 title: gettextCatalog.getString('Merge People'),
-                icon: 'fa fa-users',
+                icon: 'fas fa-users',
                 link: 'tools.merge.people',
                 description: gettextCatalog.getString('Review and merge duplicate people'),
                 enabled: true,

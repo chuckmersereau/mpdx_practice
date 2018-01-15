@@ -90,7 +90,6 @@ describe('contacts.sidebar.list.component', () => {
             $ctrl.$onInit();
             expect($ctrl.listLoadCount).toEqual(0);
             expect($ctrl.selected).toEqual(contactId);
-            expect(angular.element).toHaveBeenCalledWith('#sidebarScrollParent');
         });
     });
     describe('switchContact', () => {

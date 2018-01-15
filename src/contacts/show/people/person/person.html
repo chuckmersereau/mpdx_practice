@@ -10,8 +10,8 @@
                     {{ email.email }}
                 </a>
                 <span ng-if="email.location">{{ ' - ' + $ctrl.translatedLocations[email.location] }}</span>
-                <i ng-if="email.primary" class="fa fa-check text-success"></i>
-                <i ng-if="email.historic" class="fa fa-close text-danger"></i>
+                <i ng-if="email.primary" class="fas fa-check text-success"></i>
+                <i ng-if="email.historic" class="fas fa-window-close text-danger"></i>
             </dd>
             <dd ng-if="$ctrl.person.optout_enewsletter" translate>opted out of newsletter</dd>
             <dd ng-repeat="phone in $ctrl.person.phone_numbers track by $index">
@@ -19,8 +19,8 @@
                     {{ phone.number }}
                 </a>
                 <span ng-if="phone.location">{{ ' - ' + $ctrl.translatedLocations[phone.location] }}</span>
-                <i ng-if="phone.primary" class="fa fa-check text-success"></i>
-                <i ng-if="phone.historic" class="fa fa-close text-danger"></i>
+                <i ng-if="phone.primary" class="fas fa-check text-success"></i>
+                <i ng-if="phone.historic" class="fas fa-window-close text-danger"></i>
             </dd>
             <dd ng-if="$ctrl.person.marital_status">
                 <span>{{ $ctrl.person.marital_status }}</span>
@@ -35,8 +35,8 @@
         </dl>
         <div class="primary-container" ng-if="::!$ctrl.userProfile">
             <div class="primary-option" ng-click="$ctrl.onPrimary({$personId: $ctrl.person.id}); $event.stopPropagation()">
-                <i class="fa fa-square-o" ng-if="$ctrl.contact.primary_person.id !== $ctrl.person.id"></i>
-                <i class="fa fa-check-square-o" ng-if="$ctrl.contact.primary_person.id === $ctrl.person.id"></i>
+                <i class="far fa-square" ng-if="$ctrl.contact.primary_person.id !== $ctrl.person.id"></i>
+                <i class="far fa-check-square" ng-if="$ctrl.contact.primary_person.id === $ctrl.person.id"></i>
                 <translate>Primary</translate>
             </div>
         </div>

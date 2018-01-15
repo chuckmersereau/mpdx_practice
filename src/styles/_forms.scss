@@ -28,65 +28,6 @@
     font-size: 14px;
     margin-bottom: 11px;
 }
-tags-input {
-    &.ng-invalid .tags {
-        border-color: red;
-        box-shadow: none;
-    }
-    .tags {
-        box-shadow: none;
-        &.focused {
-            box-shadow: none;
-            border-color: rgba(82, 168, 236, 0.8);
-        }
-        input.input {
-            font-size: 14px;
-            font-family: "Source Sans Pro", sans-serif;
-        }
-        .tag-item {
-            font-family: "Source Sans Pro", sans-serif;
-            background: #05699B;
-            border: 0;
-            .remove-button {
-                color: #fff;
-                opacity: .35;
-            }
-            &.selected {
-                border: 0;
-            }
-        }
-    }
-    .autocomplete {
-        box-shadow: none;
-        border-color: rgba(82, 168, 236, 0.8);
-        .suggestion-item {
-            font-size: 14px;
-            font-family: "Source Sans Pro", sans-serif;
-            margin: 0 4px;
-            padding: 5px 6px;
-            &.selected {
-                color: #fff;
-                background: #428bca;
-                em {
-                    color: #fff;
-                    background-color: #428bca;
-                }
-            }
-            em {
-                color: #000;
-                font-size: 14px;
-                font-family: "Source Sans Pro", sans-serif;
-            }
-        }
-    }
-}
-
-.scrollable-tags {
-    div.tags {
-        max-height: 64px;
-        overflow-y: auto;
-    }
-}
 
 .inline-input {
     > .chosen-container {
@@ -103,7 +44,7 @@ tags-input {
             div b {
                 background: none;
                 &:before {
-                    font-family: 'FontAwesome';
+                    font-family: "Font Awesome 5 Pro";
                     color: $icon_gray;
                     position: absolute;
                     content: "\f107";
@@ -116,7 +57,7 @@ tags-input {
                 top: 0;
                 right: 18px;
                 &:before {
-                    font-family: 'FontAwesome';
+                    font-family: "Font Awesome 5 Pro";
                     font-size: 12px;
                     color: $icon_gray;
                     content: "\f00d";
@@ -149,7 +90,7 @@ tags-input {
                 }
                 &:after {
                     content: "\f002";
-                    font-family: FontAwesome;
+                    font-family: "Font Awesome 5 Pro";
                     position: absolute;
                     color: $icon_gray;
                     right: 10px;

@@ -17,9 +17,9 @@
                     <span>{{::$ctrl.contact.pledge_currency_symbol}}</span>
                     <span>{{::$ctrl.contact.pledge_currency_symbol}}</span>
                 </span>
-                <i class="fa fa-circle circle-on-time" ng-if="::$ctrl.daysLate() < 0" data-title="{{ ::'on time' | translate }}" bs-tooltip></i>
-                <i class="fa fa-circle circle-late" ng-if="::$ctrl.daysLate() >= 30 && $ctrl.daysLate() < 60" data-title="{{ ::'30+ days late' | translate }}" bs-tooltip></i>
-                <i class="fa fa-circle circle-very-late" ng-if="::$ctrl.daysLate() >= 60" data-title="{{ ::'60+ days late' | translate }}" bs-tooltip></i>
+                <i class="fas fa-circle circle-on-time" ng-if="::$ctrl.daysLate() < 0" data-title="{{ ::'on time' | translate }}" bs-tooltip></i>
+                <i class="fas fa-circle circle-late" ng-if="::$ctrl.daysLate() >= 30 && $ctrl.daysLate() < 60" data-title="{{ ::'30+ days late' | translate }}" bs-tooltip></i>
+                <i class="fas fa-circle circle-very-late" ng-if="::$ctrl.daysLate() >= 60" data-title="{{ ::'60+ days late' | translate }}" bs-tooltip></i>
             </h4>
             <div class="people">
                 <div ng-repeat="person in ::$ctrl.contact.people track by person.id" ng-if="::!person.deceased" class="people-single-contact">
@@ -31,7 +31,7 @@
                         <i class="ci ci-email_icon" title="{{ ::'Email' | translate }}"></i>
                     </a>
                     <a ng-repeat="facebook_account in ::person.facebook_accounts" ng-href="{{::facebook_account.url}}" target="_blank">
-                        <i class="fa fa-facebook-square" title="{{ ::'Facebook profile' | translate }}"></i>
+                        <i class="fas fa-facebook-square" title="{{ ::'Facebook profile' | translate }}"></i>
                     </a>
                 </div>
             </div>
@@ -64,10 +64,10 @@
         <div class="col-sm-2 text-right" ng-if="::$ctrl.view !== 'task'">
             <div class="btn-group">
                 <a class="btn btn-sm btn-default" ui-sref="contacts.show({contactId: $ctrl.contact.id})" title="{{ ::'View Contact' | translate }}" ng-click="$event.stopPropagation()">
-                    <i class="fa fa-search"></i>
+                    <i class="fas fa-search"></i>
                 </a>
                 <a class="btn btn-sm btn-default" title="{{ ::'Hide Contact' | translate }}" ng-if="::$ctrl.contact.status !== 'Never Ask'" ng-click="$ctrl.contacts.hideContact($ctrl.contact); $event.stopPropagation()">
-                    <i class="fa fa-eye-slash"></i>
+                    <i class="fas fa-eye-slash"></i>
                 </a>
             </div>
         </div>

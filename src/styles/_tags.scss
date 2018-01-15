@@ -29,7 +29,7 @@
     color: #FFF;
     &:after {
         content: "\f00d";
-        font-family: "FontAwesome";
+        font-family: "Font Awesome 5 Pro";
         padding: 0px 0px;
     }
     &:hover:active, &:after {
@@ -40,5 +40,79 @@
         color: $color-reverse;
         opacity: 1;
         text-decoration: none;
+    }
+}
+
+.bootstrap-tagsinput,
+.tags {
+    line-height: 1.3em;
+    .tag {
+        font-weight: 600;
+        background: $filter-select-bg-color;
+        border: 0;
+        height: auto;
+        line-height: 20px;
+        font-size: 12px;
+        margin-top: 3px;
+        margin-right: 3px;
+        padding: 0 5px;
+        border-radius: 5px;
+        color: $color-reverse;
+        display: inline-block;
+        word-break: break-all;
+        user-select: none;
+    }
+}
+
+tags-input {
+    &.ng-invalid .tags {
+        border-color: red;
+        box-shadow: none;
+    }
+    .tags {
+        box-shadow: none;
+        &.focused {
+            box-shadow: none;
+            border-color: rgba(82, 168, 236, 0.8);
+        }
+        input.input {
+            font-size: 14px;
+            font-family: "Source Sans Pro", sans-serif;
+        }
+        .tag-item {
+            font-family: "Source Sans Pro", sans-serif;
+            background: #05699B;
+            border: 0;
+            .remove-button {
+                color: #fff;
+                opacity: .35;
+            }
+            &.selected {
+                border: 0;
+            }
+        }
+    }
+    .autocomplete {
+        box-shadow: none;
+        border-color: rgba(82, 168, 236, 0.8);
+        .suggestion-item {
+            font-size: 14px;
+            font-family: "Source Sans Pro", sans-serif;
+            margin: 0 4px;
+            padding: 5px 6px;
+            &.selected {
+                color: #fff;
+                background: #428bca;
+                em {
+                    color: #fff;
+                    background-color: #428bca;
+                }
+            }
+            em {
+                color: #000;
+                font-size: 14px;
+                font-family: "Source Sans Pro", sans-serif;
+            }
+        }
     }
 }

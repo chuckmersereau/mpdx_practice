@@ -1,7 +1,10 @@
 import ceil from 'lodash/fp/ceil';
 import concat from 'lodash/fp/concat';
 import defaultTo from 'lodash/fp/defaultTo';
+import find from 'lodash/fp/find';
+import get from 'lodash/fp/get';
 import includes from 'lodash/fp/includes';
+import isArray from 'lodash/fp/isArray';
 import map from 'lodash/fp/map';
 import pullAllBy from 'lodash/fp/pullAllBy';
 import reduce from 'lodash/fp/reduce';
@@ -297,6 +300,12 @@ class ListController {
         }).then((data) => {
             this.totalContactCount = data.meta.pagination.total_count;
         });
+    }
+    getOption(filter, id) {
+        return get('name', find({ id: id }, filter.options));
+    }
+    isArray(obj) {
+        return isArray(obj);
     }
 }
 

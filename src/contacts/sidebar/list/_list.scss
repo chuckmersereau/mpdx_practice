@@ -1,0 +1,54 @@
+contacts-sidebar-list {
+    height: 100%;
+    display: grid;
+    overflow: hidden;
+    grid-template-rows: 34px 100%;
+    > form {
+        grid-row: 1;
+    }
+    > div.content {
+        grid-row: 2;
+        overflow-y: auto;
+        .item {
+            padding: 0;
+            font-size: $font-size-sm;
+            &:not(:first-child) { //all except first
+                border-top: 1px solid $color-bg;
+            }
+            a {
+                display: grid;
+                grid-template-columns: auto auto;
+                transition: background-color 0.2s ease-in, color 0.2s ease-in;
+                line-height: 2.2em;
+                font-size: $font-size-sm;
+                padding: 0;
+                white-space: nowrap;
+                width: 100%;
+                cursor: pointer;
+                &:hover {
+                    background-color: lighten($filter-bar-bg-color, 20%);
+                    text-decoration: none;
+                }
+                &.active {
+                    background-color: $filter-select-bg-color;
+                    color: $cru-white;
+                }
+                > div.name {
+                    padding-left: 8px;
+                    color: $cru-white;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    grid-column: 1;
+                    width: 100%;
+                }
+                > div.overdue {
+                    grid-column: 2;
+                    justify-content: end;
+                    text-align: right;
+                    padding-right: 8px;
+                }
+            }
+        }
+    }
+}

@@ -5,8 +5,8 @@
     </div>
     <div class="col-xs-2 text-center">
         <span class="fa-stack" ng-click="$ctrl.setPrimary($ctrl.contact, $ctrl.address)" ng-if="::$ctrl.address">
-            <i class="fa fa-circle-thin fa-stack-2x"></i>
-            <i class="fa fa-circle fa-stack-1x" ng-if="$ctrl.address.primary_mailing_address"></i>
+            <i class="fas fa-circle-thin fa-stack-2x"></i>
+            <i class="fas fa-circle fa-stack-1x" ng-if="$ctrl.address.primary_mailing_address"></i>
         </span>
     </div>
     <div class="col-xs-5">
@@ -14,13 +14,13 @@
     </div>
     <div class="col-xs-1">
         <button ng-click="$ctrl.remove()" class="btn btn-link btn-xs" title="{{ ::'Locked' | translate }}" ng-if="::$ctrl.address && $ctrl.address.source !== 'MPDX'" disabled>
-            <i class="fa fa-lock"></i>
+            <i class="fas fa-lock"></i>
         </button>
         <button ng-click="$ctrl.remove()" class="btn btn-danger btn-xs" title="{{ ::'Delete' | translate }}" ng-if="::$ctrl.address && $ctrl.address.source === 'MPDX'">
-            <i class="fa fa-trash"></i>
+            <i class="fas fa-trash"></i>
         </button>
         <button ng-click="$ctrl.contacts.openAddressModal($ctrl.contact, $ctrl.address)" class="btn btn-xs btn-default" title="{{ ::'Add' | translate }}" ng-if="!$ctrl.address">
-            <i class="fa fa-plus"></i>
+            <i class="fas fa-plus"></i>
         </button>
     </div>
 </div>

@@ -18,10 +18,11 @@ import union from 'lodash/fp/union';
 class TasksService {
     constructor(
         $rootScope, $log, gettextCatalog,
-        api, contacts, modal, users
+        alerts, api, contacts, modal, users
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
+        this.alerts = alerts;
         this.api = api;
         this.contacts = contacts;
         this.gettextCatalog = gettextCatalog;
@@ -89,15 +90,26 @@ class TasksService {
         task.contacts = map((contactId) => { return { id: contactId }; }, contactIds);
         return this.api.post('tasks', task).then((data) => {
             this.$rootScope.$emit('taskCreated', task);
+            const message = this.gettextCatalog.getString('Task created successfully');
+            this.alerts.addAlert(message);
             return data;
+        }).catch(() => {
+            const message = this.gettextCatalog.getString('Unable to create task');
+            this.alerts.addAlert(message, 'danger');
         });
     }
     delete(task) {
         const message = this.gettextCatalog.getString('Are you sure you wish to delete the selected task?');
-        return this.modal.confirm(message).then(() => {
-            return this.api.delete(`tasks/${task.id}`).then(() => {
-                this.$rootScope.$emit('taskDeleted', task.id);
-            });
+        return this.modal.confirm(message).then(() => this.deleteAfterConfirm(task));
+    }
+    deleteAfterConfirm(task) {
+        return this.api.delete(`tasks/${task.id}`).then(() => {
+            this.$rootScope.$emit('taskDeleted', task.id);
+            const message = this.gettextCatalog.getString('Task successfully deleted');
+            this.alerts.addAlert(message);
+        }).catch(() => {
+            const message = this.gettextCatalog.getString('Unable to delete task');
+            this.alerts.addAlert(message, 'danger');
         });
     }
     addModal({ contactsList = [], activityType = null, task = {}, comments = [] }) {

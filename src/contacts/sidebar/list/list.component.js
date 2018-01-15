@@ -30,7 +30,6 @@ class ListController {
     $onInit() {
         this.listLoadCount = 0;
         this.selected = this.$stateParams.contactId;
-        this.scrollParent = angular.element('#sidebarScrollParent');
     }
     switchContact(id) {
         this.selected = id;

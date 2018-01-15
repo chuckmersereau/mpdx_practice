@@ -1,86 +1,106 @@
-<div class="columns columns--fixed">
-    <div class="column column--heading" ng-class="{'filter--heading': !$ctrl.contact}">
-        <alerts padding-only="true"></alerts>
-        <div class="page-filters">
-            <div class="row">
-                <div class="col-md-5 col-sm-4">
-                    <tasks-search></tasks-search>
-                </div>
-                <div class="col-md-7 col-sm-8 text-right">
-                    <div class="btn-group">
-                        <a class="btn btn-default"
-                           id="tasks-add-task"
-                           ng-click="$ctrl.tasks.addModal({ contactsList: $ctrl.contact.id ? [$ctrl.contact.id] : [] })"
-                           translate>Add Task</a>
-                        <a class="btn btn-default"
-                           id="tasks-log-task"
-                           ng-click="$ctrl.tasks.logModal([$ctrl.contact.id])"
-                           translate>Log Task</a>
-                        <div class="btn-group">
-                            <div class="dropdown">
-                                <a class="btn btn-default dropdown-toggle"
-                                   id="tasks-bulk-actions"
-                                   bs-dropdown
-                                   type="button"
-                                   data-toggle="dropdown"
-                                   aria-expanded="true">
-                                    <span  translate>Actions</span> <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-right"
-                                    role="menu"
-                                    aria-labelledby="action-drop"
-                                    ng-show="$ctrl.selected.length > 0">
-                                    <li><a id="tasks-bulk-complete" ng-click="$ctrl.bulkComplete()" translate>Complete Tasks</a></li>
-                                    <li><a id="tasks-bulk-edit" ng-click="$ctrl.tasksModals.bulkEdit($ctrl.selected)" translate>Edit Tasks</a></li>
-                                    <li class="divider"></li>
-                                    <li><a id="tasks-bulk-remove-tags" ng-click="$ctrl.openRemoveTagModal()" translate>Remove Tag(s)</a></li>
-                                    <li class="divider"></li>
-                                    <li><a id="tasks-bulk-delete" ng-click="$ctrl.bulkDelete($ctrl.selected)" translate>Delete Tasks</a></li>
-                                </ul>
-                                <ul class="dropdown-menu dropdown-menu-right"
-                                    role="menu"
-                                    aria-labelledby="action-drop"
-                                    ng-show="$ctrl.selected.length === 0">
-                                    <li class="dropdown-header" translate>Please select at least one task by clicking anywhere on that task to continue.</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <a class="btn btn-default" ng-click="$ctrl.toggleAll()" id="tasks-select-all" translate>Select All</a>
-                        <a class="btn btn-default visible-sm"
-                           ng-class="{ 'btn-reverse' : $ctrl.session.showFiltersOnMobile }"
-                           ng-click="$ctrl.session.showFiltersOnMobile = !$ctrl.session.showFiltersOnMobile">
-                            <i class="fa fa-sliders"></i>
-                            <translate>Filters</translate>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row page-controls">
-            <div class="col-sm-12">
-                <translate translate-params-from="$ctrl.data.length || 0"
-                           translate-params-to="$ctrl.meta.pagination.total_count || 0">
-                    Showing <strong>{{from}}</strong> of <strong>{{to}}</strong>
-                </translate>
-                <span class="label label-primary" ng-if="$ctrl.selected.length > 0">
-                    {{$ctrl.selected.length }} <span translate>Selected</span>
-                    &nbsp;
-                    <a ng-click="$ctrl.clearSelected()"><i class="fa fa-times" ></i></a>
-                </span>&nbsp;
-                <small>
-                    <a ng-if="$ctrl.selected.length > 0 && $ctrl.selected.length < $ctrl.meta.pagination.total_count" ng-click="$ctrl.selectAll()">
-                        <span translate translate-plural="Select all {{$count}} tasks" translate-n="$ctrl.meta.pagination.total_count">Select 1 task</span>
+<div class="menu">
+    <tasks-search class="search-bar"></tasks-search>
+    <div class="menu-buttons">
+        <div class="btn-group">
+            <a class="btn btn-default visible-sm visible-xs"
+               ng-class="{ 'btn-reverse' : $ctrl.session.showFiltersOnMobile }"
+               ng-click="$ctrl.session.showFiltersOnMobile = !$ctrl.session.showFiltersOnMobile">
+                <i class="fas fa-sliders"></i>
+                <translate>Filters</translate>
+            </a>
+            <a class="btn btn-default"
+               id="tasks-add-task"
+               ng-click="$ctrl.tasks.addModal({ contactsList: $ctrl.contact.id ? [$ctrl.contact.id] : [] })"
+               translate>Add Task</a>
+            <a class="btn btn-default"
+               id="tasks-log-task"
+               ng-click="$ctrl.tasks.logModal([$ctrl.contact.id])"
+               translate>Log Task</a>
+            <div class="btn-group">
+                <div class="dropdown">
+                    <a class="btn btn-default dropdown-toggle"
+                       id="tasks-bulk-actions"
+                       bs-dropdown
+                       type="button"
+                       data-toggle="dropdown"
+                       aria-expanded="true">
+                        <span  translate>Actions</span> <span class="caret"></span>
                     </a>
-                </small>
+                    <ul class="dropdown-menu dropdown-menu-right"
+                        role="menu"
+                        aria-labelledby="action-drop"
+                        ng-show="$ctrl.selected.length > 0">
+                        <li><a id="tasks-bulk-complete" ng-click="$ctrl.bulkComplete()" translate>Complete Tasks</a></li>
+                        <li><a id="tasks-bulk-edit" ng-click="$ctrl.tasksModals.bulkEdit($ctrl.selected)" translate>Edit Tasks</a></li>
+                        <li class="divider"></li>
+                        <li><a id="tasks-bulk-remove-tags" ng-click="$ctrl.openRemoveTagModal()" translate>Remove Tag(s)</a></li>
+                        <li class="divider"></li>
+                        <li><a id="tasks-bulk-delete" ng-click="$ctrl.bulkDelete($ctrl.selected)" translate>Delete Tasks</a></li>
+                    </ul>
+                    <ul class="dropdown-menu dropdown-menu-right"
+                        role="menu"
+                        aria-labelledby="action-drop"
+                        ng-show="$ctrl.selected.length === 0">
+                        <li class="dropdown-header" translate>Please select at least one task by clicking anywhere on that task to continue.</li>
+                    </ul>
+                </div>
             </div>
-            <div class="col-sm-12" ng-if="$ctrl.contact">
-                <tasks-list-add></tasks-list-add>
-            </div>
+            <a class="btn btn-default" ng-click="$ctrl.toggleAll()" id="tasks-select-all" translate>Select All</a>
         </div>
     </div>
+</div>
+<div class="sub-menu">
+    <div>
+        <translate translate-params-from="$ctrl.data.length || 0"
+                   translate-params-to="$ctrl.meta.pagination.total_count || 0">
+            Showing <strong>{{from}}</strong> of <strong>{{to}}</strong>
+        </translate>
+        <span class="label label-primary" ng-if="$ctrl.selected.length > 0">
+            {{$ctrl.selected.length }} <span translate>Selected</span>
+            &nbsp;
+            <a ng-click="$ctrl.clearSelected()"><i class="fas fa-times" ></i></a>
+        </span>&nbsp;
+        <small>
+            <a ng-if="$ctrl.selected.length > 0 && $ctrl.selected.length < $ctrl.meta.pagination.total_count" ng-click="$ctrl.selectAll()">
+                <span translate translate-plural="Select all {{$count}} tasks" translate-n="$ctrl.meta.pagination.total_count">Select 1 task</span>
+            </a>
+        </small>
+    </div>
+    <div ng-if="$ctrl.tasksFilter.isResettable()" class="filters am-collapse">
+        <div>
+            Filters
+        </div>
+        <span ng-repeat="filter in $ctrl.tasksFilter.data" class="tags">
+            <span class="tag"
+                  ng-click="$ctrl.tasksFilter.invertMultiselect(filter)"
+                  ng-class="{ 'reverse': filter.reverse, 'pointer': filter.type === 'multiselect' }"
+                  ng-if="$ctrl.tasksFilter.params[filter.name] !== $ctrl.tasksFilter.defaultParams[filter.name] || filter.reverse"
+                  title="{{::filter.title}}">
+                <span class="tag-text">
+                    <span class="title">{{ ::filter.title }}:</span>
+                    <span ng-if="::$ctrl.isArray($ctrl.tasksFilter.params[filter.name])"
+                          ng-repeat="value in $ctrl.tasksFilter.params[filter.name]">
+                        <span ng-if="value !== ''">
+                            {{ ::$ctrl.getOption(filter, value) }}<span ng-if="!$last">,</span>
+                        </span>
+                    </span>
+                    <span ng-if="::!$ctrl.isArray($ctrl.tasksFilter.params[filter.name])">
+                        {{ ::$ctrl.getOption(filter, $ctrl.tasksFilter.params[filter.name]) }}
+                    </span>
+                </span>
+                <a ng-click="$ctrl.tasksFilter.removeFilter(filter); $event.stopPropagation()" class="tag_remove pull-right"></a>
+            </span>
+          </span>
+    </div>
+    <div ng-if="$ctrl.contact">
+        <tasks-list-add></tasks-list-add>
+    </div>
+</div>
+<div class="content" id="taskListParent">
     <div class="column" ng-init="activeCategory = {}">
         <div ng-repeat="(category, tasks) in $ctrl.data | orderBy: 'category.id' | groupBy: 'category.name'"
              infinite-scroll="$ctrl.loadMoreTasks()"
+             infinite-scroll-container="'#taskListParent'"
              infinite-scroll-disabled="$ctrl.loading">
             <div class="panel panel-default"
                  ng-class="category"
@@ -89,10 +109,10 @@
                  bs-collapse
                  ng-init="activeCategory[category] = false"
                  ng-model="activeCategory[category]">
-                <div class="panel-heading" bs-collapse-toggle>
+                <div class="panel-heading" style="cursor: pointer" bs-collapse-toggle>
                     <span class="task-category-title">
-                        <i class="glyphicon"
-                           ng-class="{'glyphicon-chevron-down': !activeCategory[category], 'glyphicon-chevron-right': activeCategory[category]}"></i>
+                        <i class="fas"
+                           ng-class="{'fa-chevron-down': !activeCategory[category], 'fa-chevron-right': activeCategory[category]}"></i>
                         {{$ctrl.categories[category]}}
                     </span>
                 </div>
@@ -114,10 +134,10 @@
             </div>
         </div>
         <div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
-          <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
+          <i class="far fa-circle-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
         </div>
         <div class="blankslate"  ng-class="{ 'blankslate-spacious' : !$ctrl.contact }" ng-if="$ctrl.data.length === 0 && !$ctrl.loading">
-            <i class="fa fa-tasks blankslate-icon"></i>
+            <i class="fas fa-tasks blankslate-icon"></i>
             <div ng-if="$ctrl.totalTaskCount > 0 && !$ctrl.contact">
                 <h3 translate translate-plural="You have {{$count}} total tasks" translate-n="$ctrl.totalTaskCount">You have 1 total task</h3>
                 <p translate>Unfortunately none of them match your current search or filters.</p>

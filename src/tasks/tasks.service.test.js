@@ -6,13 +6,14 @@ const contactList = [];
 const currentUser = { id: 321 };
 
 describe('tasks.service', () => {
-    let api, users, tasks, tasksTags, gettextCatalog, modal, serverConstants, contacts;
+    let api, users, tasks, tasksTags, gettextCatalog, modal, serverConstants, contacts, alerts;
     beforeEach(() => {
         angular.mock.module(service);
         inject((
             $rootScope, _api_, _tasks_, _tasksTags_, _users_, _alerts_, _gettextCatalog_, _modal_,
             _serverConstants_, _contacts_
         ) => {
+            alerts = _alerts_;
             api = _api_;
             modal = _modal_;
             users = _users_;
@@ -24,15 +25,13 @@ describe('tasks.service', () => {
             api.account_list_id = accountListId;
             users.current = currentUser;
         });
-        spyOn(api, 'post').and.callFake(() => Promise.resolve({ id: 1 }));
         spyOn(gettextCatalog, 'getString').and.callThrough();
         spyOn(gettextCatalog, 'getPlural').and.callThrough();
+        spyOn(alerts, 'addAlert').and.callFake((data) => data);
     });
     describe('create', () => {
-        it('should return a Promise', () => {
-            expect(tasks.create({})).toEqual(jasmine.any(Promise));
-        });
         it('should only add 1 and only 1 comment on creation', (done) => {
+            spyOn(api, 'post').and.callFake(() => Promise.resolve({ id: 1 }));
             tasks.create({}, [], 'comment').then(() => {
                 tasks.create({}, [], 'comment').then(() => {
                     let task = api.post.calls.argsFor(1)[1];
@@ -43,6 +42,7 @@ describe('tasks.service', () => {
             });
         });
         it('should only add 1 and only 1 comment on creation with contacts', (done) => {
+            spyOn(api, 'post').and.callFake(() => Promise.resolve({ id: 1 }));
             tasks.create({}, ['1', '2'], 'comment').then(() => {
                 tasks.create({}, ['1', '2'], 'comment').then(() => {
                     let task = api.post.calls.argsFor(1)[0].data[0];
@@ -50,6 +50,24 @@ describe('tasks.service', () => {
                     expect(task.comments[0].body).toEqual('comment');
                     done();
                 });
+            });
+        });
+        it('should alert', (done) => {
+            spyOn(api, 'post').and.callFake(() => Promise.resolve({ id: 1 }));
+            tasks.create({}, [], 'comment').then(() => {
+                const msg = 'Task created successfully';
+                expect(gettextCatalog.getString).toHaveBeenCalledWith(msg);
+                expect(alerts.addAlert).toHaveBeenCalledWith(msg);
+                done();
+            });
+        });
+        it('should alert failure', (done) => {
+            spyOn(api, 'post').and.callFake(() => Promise.reject({ id: 1 }));
+            tasks.create({}, [], 'comment').then(() => {
+                const msg = 'Unable to create task';
+                expect(gettextCatalog.getString).toHaveBeenCalledWith(msg);
+                expect(alerts.addAlert).toHaveBeenCalledWith(msg, 'danger');
+                done();
             });
         });
     });
@@ -352,6 +370,54 @@ describe('tasks.service', () => {
             tasks.load(1).then((task) => {
                 expect(contacts.fixPledgeAmountAndFrequencies).toHaveBeenCalledWith(['a']);
                 expect(task.contacts).toEqual(['a']);
+                done();
+            });
+        });
+    });
+    describe('delete', () => {
+        const msg = 'Are you sure you wish to delete the selected task?';
+        const task = { id: 1 };
+        beforeEach(() => {
+            spyOn(tasks, 'deleteAfterConfirm').and.callFake(() => {});
+            spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
+        });
+        it('should translate', () => {
+            tasks.delete(task);
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(msg);
+        });
+        it('should confirm modal', () => {
+            tasks.delete(task);
+            expect(modal.confirm).toHaveBeenCalledWith(msg);
+        });
+        it('should call deleteAfterConfirm', (done) => {
+            tasks.delete(task).then(() => {
+                expect(tasks.deleteAfterConfirm).toHaveBeenCalledWith(task);
+                done();
+            });
+        });
+    });
+    describe('deleteAfterConfirm', () => {
+        const task = { id: 1 };
+        it('should call api delete', () => {
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            tasks.deleteAfterConfirm(task);
+            expect(api.delete).toHaveBeenCalledWith('tasks/1');
+        });
+        it('should alert success', (done) => {
+            const msg = 'Task successfully deleted';
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            tasks.deleteAfterConfirm(task).then(() => {
+                expect(gettextCatalog.getString).toHaveBeenCalledWith(msg);
+                expect(alerts.addAlert).toHaveBeenCalledWith(msg);
+                done();
+            });
+        });
+        it('should alert failure', (done) => {
+            const msg = 'Unable to delete task';
+            spyOn(api, 'delete').and.callFake(() => Promise.reject());
+            tasks.deleteAfterConfirm(task).then(() => {
+                expect(gettextCatalog.getString).toHaveBeenCalledWith(msg);
+                expect(alerts.addAlert).toHaveBeenCalledWith(msg, 'danger');
                 done();
             });
         });

@@ -1,87 +1,67 @@
 <impersonation-bar></impersonation-bar>
 <div class="nav--global">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                <div id="brand" class="pull-left">
-                    <a class="nav--logo" ng-if="!$ctrl.setup" ui-sref="home"></a>
-                    <a class="nav--logo" ng-if="$ctrl.setup"></a>
-                </div>
-                <div class="pull-right navbar-quick">
-                    <div class="section pull-left" ng-if="!$ctrl.setup" style="max-width: 200px; margin-right: 5px;">
-                        <menu-search></menu-search>
-                    </div>
-                    <div class="section" ng-if="!$ctrl.setup">
-                        <account-lists></account-lists>
-                    </div>
-                    <div class="section" ng-if="!$ctrl.setup">
-                        <div class="dropdown" id="quick-add-dropdown">
-                            <a bs-dropdown class="btn btn-default" type="button" data-placement="bottom-right">
-                                <i class="fa fa-plus"></i> <translate>Add</translate>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="quick-drop">
-                                <li role="presentation"><a class="add-contact" ng-click="$ctrl.contacts.openNewContactModal()" translate>Add Contact</a></li>
-                                <li role="presentation"><a class="multi-add-contact" ng-click="$ctrl.contacts.openMultipleAddModal()" translate>Multiple Contacts</a></li>
-                                <li role="presentation"><a class="add-donation" ng-click="$ctrl.donations.openDonationModal()" translate>Add Donation</a></li>
-                                <li role="presentation"><a class="add-task" ng-click="$ctrl.tasks.addModal({})" translate>Add Task</a></li>
-                                <li role="presentation"><a class="log-task" ng-click="$ctrl.tasks.logModal()" translate>Log Task</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="section">
-                        <div class="dropdown">
-                            <a bs-dropdown class="settings-drop btn btn-reverse" type="button" data-placement="bottom-right">
-                                <i class="fa fa-cog"></i> <translate>Settings</translate>
-                            </a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="preferences.personal" translate>Preferences</a></li>
-                                <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="preferences.notifications" translate>Notifications</a></li>
-                                <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="tools" translate>Import Contacts</a></li>
-                                <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="preferences.integrations" translate>Connect Services</a></li>
-                                <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="preferences.accounts" translate>Manage Account</a></li>
-                                <li role="presentation" ng-if="!$ctrl.setup && $ctrl.users.current.preferences.admin"><a ui-sref="preferences.coaches" translate>Manage Coaches</a></li>
-                                <li role="presentation" ng-if="!$ctrl.setup && $ctrl.users.current.preferences.admin"><a ui-sref="preferences.admin" translate>Admin Console</a></li>
-                                <li role="presentation" ng-if="!$ctrl.setup && $ctrl.users.current.preferences.developer"><a ng-href="{{ $ctrl.sidekiqUrl }}" target="_blank" translate>Sidekiq</a></li>
-                                <li role="presentation" ng-if="!$ctrl.setup" class="divider"></li>
-                                <li role="presentation"><a ui-sref="logout" translate>Log out</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="section" ng-if="!$ctrl.setup">
-                        <a ui-sref="tools" class="btn btn-block notifications-link" ng-class="{ 'active' : $ctrl.tools.getTotal() > 0 }">
-                            <i class=" fa fa-bell"></i><span class="badge" ng-if="$ctrl.tools.getTotal() > 0">{{$ctrl.tools.getTotal()}}</span>
-                        </a>
-                    </div>
-                </div>
+    <div id="brand">
+        <a class="nav--logo" ng-if="!$ctrl.setup" ui-sref="home"></a>
+        <a class="nav--logo" ng-if="$ctrl.setup"></a>
+    </div>
+    <div class="navbar-quick">
+        <div class="search">
+            <menu-search class="hidden-xs" ng-if="!$ctrl.setup"></menu-search>
+        </div>
+        <div class="account" ng-if="!$ctrl.setup">
+            <account-lists></account-lists>
+        </div>
+        <div class="quick-add" ng-if="!$ctrl.setup">
+            <div class="dropdown" id="quick-add-dropdown">
+                <a bs-dropdown class="btn btn-default" type="button" data-placement="bottom-right">
+                    <i class="fas fa-plus"></i> <translate>Add</translate>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="quick-drop">
+                    <li role="presentation"><a ng-click="$ctrl.contacts.openNewContactModal()" translate>Add Contact</a></li>
+                    <li role="presentation"><a ng-click="$ctrl.contacts.openMultipleAddModal()" translate>Multiple Contacts</a></li>
+                    <li role="presentation"><a ng-click="$ctrl.donations.openDonationModal()" translate>Add Donation</a></li>
+                    <li role="presentation"><a class="add-task" ng-click="$ctrl.tasks.addModal({})" translate>Add Task</a></li>
+                    <li role="presentation"><a ng-click="$ctrl.tasks.logModal()" translate>Log Task</a></li>
+                </ul>
             </div>
+        </div>
+        <div class="settings">
+            <div class="dropdown">
+                <a bs-dropdown class="settings-drop btn btn-reverse" type="button" data-placement="bottom-right">
+                    <i class="fas fa-cog"></i> <translate>Settings</translate>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="preferences.personal" translate>Preferences</a></li>
+                    <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="preferences.notifications" translate>Notifications</a></li>
+                    <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="tools" translate>Import Contacts</a></li>
+                    <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="preferences.integrations" translate>Connect Services</a></li>
+                    <li role="presentation" ng-if="!$ctrl.setup"><a ui-sref="preferences.accounts" translate>Manage Account</a></li>
+                    <li role="presentation" ng-if="!$ctrl.setup && $ctrl.users.current.preferences.admin"><a ui-sref="preferences.coaches" translate>Manage Coaches</a></li>
+                    <li role="presentation" ng-if="!$ctrl.setup && $ctrl.users.current.preferences.admin"><a ui-sref="preferences.admin" translate>Admin Console</a></li>
+                    <li role="presentation" ng-if="!$ctrl.setup && $ctrl.users.current.preferences.developer"><a ng-href="{{ $ctrl.sidekiqUrl }}" target="_blank" translate>Sidekiq</a></li>
+                    <li role="presentation" ng-if="!$ctrl.setup" class="divider"></li>
+                    <li role="presentation"><a ui-sref="logout" translate>Log out</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="notifications" ng-if="!$ctrl.setup">
+            <a ui-sref="tools" class="btn btn-block notifications-link" ng-class="{ 'active' : $ctrl.tools.getTotal() > 0 }">
+                <i class=" fas fa-bell"></i><span class="badge" ng-if="$ctrl.tools.getTotal() > 0">{{$ctrl.tools.getTotal()}}</span>
+            </a>
         </div>
     </div>
 </div>
-<div class="nav--menu" ng-if="!$ctrl.setup">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                <nav class="navbar navbar-toggleable-md pull-left">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="mpdx-nav">
-                        <ul class="nav navbar-nav">
-                            <li class="item" ui-sref-active="active"><a ui-sref="home" translate>Dashboard</a></li>
-                            <li class="item" ng-class="{active: $ctrl.session.isInState('contact')}"><a ui-sref="contacts" translate>Contacts</a></li>
-                            <li class="item" ui-sref-active="active"><a ui-sref="tasks" translate>Tasks</a></li>
-                            <li class="item" ng-class="{active: $ctrl.session.isInState('reports')}"><a ui-sref="reports.donations" translate>Reports</a></li>
-                            <li class="item" ng-class="{active: $ctrl.session.isInState('tools')}"><a ui-sref="tools" translate>Tools</a></li>
-                            <li class="item" ng-class="{active: $ctrl.session.isInState('coaches')}" ng-if="$ctrl.users.current.preferences.admin"><a ui-sref="coaches" translate>Coaching</a></li>
-                            <li class="item last" ui-sref-active="active"><a ng-click="$ctrl.help.showHelp()" translate>Help</a></li>
-                        </ul>
-                    </div>
-                </nav>
-                <menu-balances class="pull-right"></menu-balances>
-            </div>
-        </div>
-    </div>
+<div class="menu" ng-if="!$ctrl.setup">
+    <nav class="navbar">
+        <ul class="nav navbar-nav">
+            <li class="item" ui-sref-active="active"><a ui-sref="home" translate>Dashboard</a></li>
+            <li class="item" ng-class="{active: $ctrl.session.isInState('contact')}"><a ui-sref="contacts" translate>Contacts</a></li>
+            <li class="item" ui-sref-active="active"><a ui-sref="tasks" translate>Tasks</a></li>
+            <li class="item" ng-class="{active: $ctrl.session.isInState('reports')}"><a ui-sref="reports.donations" translate>Reports</a></li>
+            <li class="item" ng-class="{active: $ctrl.session.isInState('tools')}"><a ui-sref="tools" translate>Tools</a></li>
+            <li class="item" ng-class="{active: $ctrl.session.isInState('coaches')}" ng-if="$ctrl.users.current.preferences.admin"><a ui-sref="coaches" translate>Coaching</a></li>
+            <li class="item last" ui-sref-active="active"><a ng-click="$ctrl.help.showHelp()" translate>Help</a></li>
+        </ul>
+    </nav>
+    <menu-balances></menu-balances>
 </div>

@@ -15,19 +15,19 @@
     </div>
     <div class="col-sm-1">
         <a class="btn btn-block btn-default" title="{{::'Primary' | translate}}" ng-click="$ctrl.onPrimary()">
-            <i ng-if="$ctrl.email.primary" class="fa fa-check text-success"></i>
-            <i ng-if="!$ctrl.email.primary" class="fa"></i>
+            <i ng-if="$ctrl.email.primary" class="fas fa-check text-success"></i>
+            <i ng-if="!$ctrl.email.primary" class="fas"></i>
         </a>
     </div>
     <div class="col-sm-1">
         <a class="btn btn-block btn-default" title="{{::'No longer valid' | translate}}" ng-click="$ctrl.onHistoric()">
-            <i ng-if="$ctrl.email.historic" class="fa fa-close text-danger"></i>
-            <i ng-if="!$ctrl.email.historic" class="fa"></i>
+            <i ng-if="$ctrl.email.historic" class="fas fa-window-close text-danger"></i>
+            <i ng-if="!$ctrl.email.historic" class="fas"></i>
         </a>
     </div>
     <div class="col-sm-1">
         <button type="button" ng-click="$ctrl.remove()" class="btn btn-block btn-default" title="{{::'Delete' | translate}}">
-            <i class="fa fa-trash"></i>
+            <i class="fas fa-trash"></i>
         </button>
     </div>
 </div>

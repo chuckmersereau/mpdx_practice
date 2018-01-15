@@ -18,8 +18,8 @@ describe('tasks.filter.component', () => {
     }
 
     describe('constructor', () => {
-        xit('should do something', () => {
-            expect($ctrl).toBeDefined();
+        it('should do something', () => {
+            expect($ctrl.selectedSort).toEqual('all')
         });
     });
 });

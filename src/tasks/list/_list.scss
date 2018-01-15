@@ -1,0 +1,72 @@
+@import "add/add";
+@import "drawer/drawer";
+@import "item/item";
+
+tasks-list {
+    @extend .lists;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto 1fr;
+    > div.menu {
+        @extend .lists.item-list-menu;
+        margin-top: $nav-padding;
+        grid-column: 1;
+        grid-row: 1;
+        > .search-bar {
+            @extend .lists.item-list-menu.search-bar;
+        }
+        > div.menu-buttons {
+            @extend .lists.item-list-menu.menu-buttons;
+        }
+    }
+
+    > div.sub-menu {
+        @extend .lists.item-list-sub-menu;
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    > div.content {
+        @extend .lists.content;
+        grid-column: 1;
+        grid-row: 3;
+    }
+
+    > side-drawer {
+        grid-column: 2;
+        grid-row: 1 / span 3;
+        padding-top: 6px;
+    }
+    .panel {
+        &.panel-default {
+            border: none;
+        }
+        .panel-heading {
+            background-color: $cru-white;
+            &.today {
+                border-color: $color-secondary;
+            }
+            &.overdue {
+                border-color: #F6921E;
+            }
+            &.upcoming {
+                border-color: #56AA00;
+            }
+            &.no-due-date {
+                border-color: #3eb1c8;
+            }
+            > .task-category-title {
+                height: 23px;
+                width: 78px;
+                color: #393939;
+                font-size: 18px;
+                line-height: 23px;
+            }
+        }
+        .list-group {
+            .list-group-item {
+                padding: 0;
+            }
+        }
+    }
+}

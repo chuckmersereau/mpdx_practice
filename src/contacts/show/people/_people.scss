@@ -1,0 +1,17 @@
+@import "person/person";
+
+contact-people {
+    margin-bottom: 10px;
+    .row {
+        padding-top: 10px;
+    }
+    .col-sm-6 {
+        &:nth-child(odd) {
+            padding-right: 2.5px;
+        }
+        &:nth-child(even) {
+            padding-left: 2.5px;
+        }
+
+    }
+}

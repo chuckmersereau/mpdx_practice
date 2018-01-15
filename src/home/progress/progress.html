@@ -6,14 +6,14 @@
         {{$ctrl.startDate.format('MMM D')}} — {{$ctrl.endDate.format('MMM D')}}
         &nbsp;
         <a class="btn btn-default" title="" ng-click="$ctrl.previousWeek()">
-            <i class="fa fa-angle-left"></i>
+            <i class="fas fa-angle-left"></i>
             &nbsp;
             <translate>Previous Week</translate>
         </a>
         <a class="btn btn-default" title="{{ 'Next' | translate }}" ng-click="$ctrl.nextWeek()">
             <translate>Next Week</translate>
             &nbsp;
-            <i class="fa fa-angle-right"></i>
+            <i class="fas fa-angle-right"></i>
         </a>
         <a class="btn btn-reverse" href="https://staffweb.cru.org/mpd-donations/reports/mpd-weekly-update/" target="_blank" ng-if="$ctrl.showWeeklyProgressReport()" translate>
             Weekly Progress Report
@@ -21,18 +21,12 @@
     </div>
     <h3 class="progress-heading" translate>Progress</h3>
     <hr>
-    <div block-ui="homeProgress">
-        <div class="row">
-            <div class="col-md-6">
-                <progress-contacts></progress-contacts>
-                <progress-electronic-contacts></progress-electronic-contacts>
-                <progress-correspondence></progress-correspondence>
-            </div>
-            <div class="col-md-6">
-                <progress-appointments></progress-appointments>
-                <progress-phone-dials></progress-phone-dials>
-                <progress-appeals></progress-appeals>
-            </div>
-        </div>
+    <div block-ui="homeProgress" class="progress-content">
+        <progress-contacts></progress-contacts>
+        <progress-appointments></progress-appointments>
+        <progress-electronic-contacts></progress-electronic-contacts>
+        <progress-phone-dials></progress-phone-dials>
+        <progress-correspondence></progress-correspondence>
+        <progress-appeals></progress-appeals>
     </div>
 </div>

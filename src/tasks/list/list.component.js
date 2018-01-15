@@ -4,6 +4,7 @@ import each from 'lodash/fp/each';
 import find from 'lodash/fp/find';
 import get from 'lodash/fp/get';
 import includes from 'lodash/fp/includes';
+import isArray from 'lodash/fp/isArray';
 import map from 'lodash/fp/map';
 import moment from 'moment';
 import pull from 'lodash/fp/pull';
@@ -340,6 +341,12 @@ class ListController {
     }
     onClose() {
         this.selectedTask = null;
+    }
+    getOption(filter, id) {
+        return get('name', find({ id: id }, filter.options));
+    }
+    isArray(obj) {
+        return isArray(obj);
     }
 }
 

@@ -1,0 +1,24 @@
+merge-preferences {
+    .well {
+        label {
+            display: block;
+            text-align: center;
+        }
+    }
+    .merge-direction {
+        @include breakpoint(xs) {
+            padding-bottom: 20px;
+        }
+        .fa {
+            line-height: 101px;
+            @include breakpoint(xs) {
+                -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=1)";
+                -webkit-transform: rotate(90deg);
+                -ms-transform: rotate(90deg);
+                transform: rotate(90deg);
+                font-size: 3em;
+                line-height: 1;
+            }
+        }
+    }
+}

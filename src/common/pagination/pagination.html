@@ -9,7 +9,7 @@
     <ul class="pagination">
       <li ng-class="{'disabled': $ctrl.meta.page == 1}">
         <a ng-click="$ctrl.previous()" aria-label="Previous">
-          <i class="fa fa-angle-double-left"></i>
+          <i class="fas fa-angle-double-left"></i>
         </a>
       </li>
       <li ng-repeat="i in $ctrl.getTotalPages() track by $index" ng-class="{'active' : i + 1 == $ctrl.meta.page}">
@@ -18,7 +18,7 @@
       </li>
       <li ng-class="{'disabled': $ctrl.meta.page == $ctrl.meta.total_pages}">
         <a ng-click="$ctrl.next()" aria-label="Next">
-          <i class="fa fa-angle-double-right"></i>
+          <i class="fas fa-angle-double-right"></i>
         </a>
       </li>
     </ul>

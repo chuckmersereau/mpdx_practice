@@ -1,30 +1,32 @@
-<div>
-    <form >
-        <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-search"></i></span>
-            <input type="text"
-                   class="search_filter form-control"
-                   autocomplete="off"
-                   placeholder="{{ 'Search Contacts' | translate }}"
-                   ng-model="$ctrl.contactFilter.wildcard_search"
-                   ng-change="$ctrl.search()"
-                   ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }">
-        </div>
-    </form>
-    <div infinite-scroll="$ctrl.loadMoreContacts()" infinite-scroll-disabled="$ctrl.loading" infinite-scroll-use-document-bottom="false" infinite-scroll-container="$ctrl.scrollParent">
-        <div ng-repeat="contact in $ctrl.data track by contact.id" class="contact-row item" ng-class="{ selected: contact.selected }">
+<form>
+    <div class="input-group">
+        <span class="input-group-addon"><i class="fas fa-search"></i></span>
+        <input type="text"
+               class="search_filter form-control"
+               autocomplete="off"
+               placeholder="{{ 'Search Contacts' | translate }}"
+               ng-model="$ctrl.contactFilter.wildcard_search"
+               ng-change="$ctrl.search()"
+               ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }">
+    </div>
+</form>
+<div class="content" id="contactSidebarListParent">
+    <div infinite-scroll="$ctrl.loadMoreContacts()"
+         infinite-scroll-disabled="$ctrl.loading"
+         infinite-scroll-use-document-bottom="false"
+         infinite-scroll-container="'#contactSidebarListParent'">
+        <div ng-repeat="contact in $ctrl.data track by contact.id" class="item" ng-class="{ selected: contact.selected }">
             <a ng-click="$ctrl.switchContact(contact.id)" ng-class="{'active': $ctrl.selected == contact.id }">
-                <div class="pull-right">
-                    <i class="fa fa-circle circle-on-time" ng-if="::$ctrl.daysLate(contact) < 0" data-title="{{ ::'on time' | translate }}" data-placement="left" bs-tooltip></i>
-                    <i class="fa fa-circle circle-late" ng-if="::$ctrl.daysLate(contact) >= 30 && $ctrl.daysLate(contact) < 60" data-title="{{ ::'30+ days late' | translate }}" data-placement="left" bs-tooltip></i>
-                    <i class="fa fa-circle circle-very-late" ng-if="::$ctrl.daysLate(contact) >= 60" data-title="{{ ::'60+ days late' | translate }}" data-placement="left" bs-tooltip></i>
+                <div class="name">{{contact.name}}</div>
+                <div class="overdue">
+                    <i class="fas fa-circle circle-on-time" ng-if="::$ctrl.daysLate(contact) < 0" data-title="{{ ::'on time' | translate }}" data-placement="left" bs-tooltip></i>
+                    <i class="fas fa-circle circle-late" ng-if="::$ctrl.daysLate(contact) >= 30 && $ctrl.daysLate(contact) < 60" data-title="{{ ::'30+ days late' | translate }}" data-placement="left" bs-tooltip></i>
+                    <i class="fas fa-circle circle-very-late" ng-if="::$ctrl.daysLate(contact) >= 60" data-title="{{ ::'60+ days late' | translate }}" data-placement="left" bs-tooltip></i>
                 </div>
-                {{contact.name}}
             </a>
         </div>
     </div>
-    <div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
-      <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
-    </div>
-    <div>&nbsp;</div>
+</div>
+<div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
+  <i class="far fa-circle-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
 </div>

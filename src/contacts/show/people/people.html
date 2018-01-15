@@ -1,10 +1,10 @@
 <div ng-if="!$ctrl.isMerging">
     <a class="btn btn-primary" ng-click="$ctrl.newPerson()">
-        <i class="fa fa-plus-circle"></i>
+        <i class="fas fa-plus-circle"></i>
         <translate>Add New Person</translate>
     </a>
     <button class="btn btn-reverse" ng-click="$ctrl.isMerging = true" ng-disabled="$ctrl.data.length < 2">
-        <i class="fa fa-code-fork"></i>
+        <i class="fas fa-code-fork"></i>
         <translate>Merge People</translate>
     </button>
 </div>
@@ -13,14 +13,14 @@
         Cancel
     </a>
     <a class="btn btn-primary" ng-click="$ctrl.openMergeModal()">
-        <i class="fa fa-code-fork"></i>
+        <i class="fas fa-code-fork"></i>
         <translate>Merge Selected People</translate>
     </a>
     &nbsp;
-    <a class="tip ng-scope" data-trigger="hover" data-content="{{ 'Select people to merge by tapping on the person.' | translate }}" data-placement="top" bs-popover=""><i class="fa fa-question-circle"></i></a>
+    <a class="tip ng-scope" data-trigger="hover" data-content="{{ 'Select people to merge by tapping on the person.' | translate }}" data-placement="top" bs-popover=""><i class="fas fa-question-circle"></i></a>
 </div>
 <div class="blankslate mt-2" ng-if="$ctrl.data.length === 0 && !$ctrl.loading">
-    <i class="fa fa-users blankslate-icon"></i>
+    <i class="fas fa-users blankslate-icon"></i>
     <h3 translate>No people associated with this contact</h3>
     <a ng-click="$ctrl.newPerson()" class="btn btn-default" translate>Add New Person</a>
 </div>

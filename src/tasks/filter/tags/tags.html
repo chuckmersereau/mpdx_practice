@@ -1,43 +1,53 @@
-<span class="filter--filtergroup_title tags_title">
-<span><i class="fa fa-tags"></i> <translate>Tags</translate></span>
-<ul class="nav nav-pills pull-right">
-  <li ng-class="{ 'active': $ctrl.tasksTags.anyTags }">
-    <a ng-click="$ctrl.tasksTags.anyTags = true" title="{{ ::'Look up contacts with Any of the tags selected (a or b or c).' | translate }}"
-       translate>Any</a>
-  </li>
-  <li ng-class="{ 'active': !$ctrl.tasksTags.anyTags }">
-    <a ng-click="$ctrl.tasksTags.anyTags = false"
-       title="{{ ::'Look up contacts with ALL of the tags selected (a and b and c).' | translate }}" translate>All</a>
-  </li>
-</ul>
-</span>
-<div class="filter_hint" translate>Click a tag twice to look up all contacts who do not have that tag.</div>
-<div class="left_tag_list tags" ng-class="{'show_all_tags': $ctrl.showAllTags}">
-  <span class="tag"
-        ng-class="{ 'selected': !$ctrl.tasksTags.isTagActive(tag), 'rejected': $ctrl.tasksTags.isTagRejected(tag) }"
-        ng-click="$ctrl.tasksTags.tagClick(tag, $event)"
-        ng-repeat="tag in $ctrl.tasksTags.data"
-        title="{{::tag.name}}">
-      {{ ::tag.name |limitTo: 20 }}{{ ::tag.name.length > 20 ? '...' : '' }}
-      <a ng-click="$event.stopPropagation()"
-         data-template-url="task_tags_delete_popover.html"
-         data-auto-close="'outsideClick'"
-         class="tag_remove"
-         data-container="body"
-         bs-popover></a>
-  </span>
-    <a class="show_all_tags_btn">
-        <div ng-click="$ctrl.showAllTags = !$ctrl.showAllTags" ng-if="$ctrl.tasksTags.data.length > 25">
-            <div ng-if="!$ctrl.showAllTags">
-                <i class="fa fa-plus"></i>
-                <span translate>Show all</span> {{$ctrl.tasksTags.data.length}} <span translate>tags</span>
-            </div>
-            <div ng-if="$ctrl.showAllTags">
-                <i class="fa fa-minus"></i>
-                <span translate>Show fewer tags</span>
-            </div>
+<div ng-model="isCollapsed" ng-init="isCollapsed = false" bs-collapse>
+    <div class="filter--filtergroup_title tags_title pointer" bs-collapse-toggle>
+        <span>
+            <i class="fas fa-tags"></i> <translate>Tags</translate>
+            &nbsp;
+            <i class="fas"
+               ng-class="{ 'fa-chevron-down': isCollapsed, 'fa-chevron-up': !isCollapsed }"></i>
+        </span>
+
+        <ul class="nav nav-pills pull-right fade-in" ng-if="!isCollapsed">
+          <li ng-class="{ 'active': $ctrl.tasksTags.anyTags }">
+            <a ng-click="$ctrl.tasksTags.anyTags = true; $event.stopPropagation()" title="{{ ::'Look up contacts with Any of the tags selected (a or b or c).' | translate }}"
+               translate>Any</a>
+          </li>
+          <li ng-class="{ 'active': !$ctrl.tasksTags.anyTags }">
+            <a ng-click="$ctrl.tasksTags.anyTags = false; $event.stopPropagation()"
+               title="{{ ::'Look up contacts with ALL of the tags selected (a and b and c).' | translate }}" translate>All</a>
+          </li>
+        </ul>
+    </div>
+    <div bs-collapse-target>
+        <div class="filter_hint" translate>Click a tag twice to look up all tasks that do not have that tag.</div>
+        <div class="left_tag_list tags" ng-class="{'show_all_tags': $ctrl.showAllTags}">
+          <span class="tag"
+                ng-class="{ 'selected': !$ctrl.tasksTags.isTagActive(tag), 'rejected': $ctrl.tasksTags.isTagRejected(tag) }"
+                ng-click="$ctrl.tasksTags.tagClick(tag, $event)"
+                ng-repeat="tag in $ctrl.tasksTags.data"
+                title="{{::tag.name}}">
+              {{ ::tag.name |limitTo: 20 }}{{ ::tag.name.length > 20 ? '...' : '' }}
+              <a ng-click="$event.stopPropagation()"
+                 data-template-url="task_tags_delete_popover.html"
+                 data-auto-close="'outsideClick'"
+                 class="tag_remove"
+                 data-container="body"
+                 bs-popover></a>
+          </span>
+            <a class="show_all_tags_btn">
+                <div ng-click="$ctrl.showAllTags = !$ctrl.showAllTags" ng-if="$ctrl.tasksTags.data.length > 25">
+                    <div ng-if="!$ctrl.showAllTags">
+                        <i class="fas fa-plus"></i>
+                        <span translate>Show all</span> {{$ctrl.tasksTags.data.length}} <span translate>tags</span>
+                    </div>
+                    <div ng-if="$ctrl.showAllTags">
+                        <i class="fas fa-minus"></i>
+                        <span translate>Show fewer tags</span>
+                    </div>
+                </div>
+            </a>
         </div>
-    </a>
+    </div>
 </div>
 
 <script type="text/ng-template" id="task_tags_delete_popover.html">

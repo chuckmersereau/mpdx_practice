@@ -39,7 +39,7 @@
         <div class="form-group">
             <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                 <translate>Save</translate>
-                <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
+                <i class="far fa-circle-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
             </button>
             <a class="btn btn-link" ng-click="$ctrl.disconnect()" translate>Disconnect</a>
         </div>
@@ -71,7 +71,7 @@
     </ul>
     <button type="submit" ng-click="$ctrl.sync()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
         <translate>Sync Now</translate>
-        <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
+        <i class="far fa-circle-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
     </button>
     <a class="btn btn-default" ng-click="$ctrl.showSettings = true" translate>Modify Settings</a>
     <a class="btn btn-link" ng-click="$ctrl.disconnect()" translate>Disconnect</a>

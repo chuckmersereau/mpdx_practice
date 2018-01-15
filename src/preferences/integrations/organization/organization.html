@@ -9,16 +9,16 @@
         <div class="panel-heading">
             <div class="pull-right">
                 <a class="btn btn-default btn-xs" ng-click="$ctrl.editAccount(account)" ng-if="['DataServer', 'DataServerPtc', 'DataServerNavigators'].includes($ctrl.serverConstants.data.organizations_attributes[account.organization.id].api_class) && !account.organization.oauth">
-                    <i class="fa fa-pencil"></i>
+                    <i class="fas fa-pencil"></i>
                     <translate>Edit</translate>
                 </a>
                 <button ng-click="$ctrl.authenticate(account.organization.id)" class="btn btn-default btn-xs" ng-disabled="$ctrl.saving" ng-if="account.organization.oauth">
-                    <i class="fa fa-refresh" ng-class="{ 'fa-spin fa-fw' : $ctrl.saving }"></i>
+                    <i class="fas fa-refresh" ng-class="{ 'fa-spin fa-fw' : $ctrl.saving }"></i>
                     <translate>Refresh</translate>
                 </button>
                 &nbsp;
                 <a class="btn btn-danger btn-xs" ng-click="$ctrl.disconnect(account.id)">
-                    <i class="fa fa-trash"></i>
+                    <i class="fas fa-trash"></i>
                 </a>
             </div>
             <strong>{{account.organization.name}}</strong> {{account.username}}
@@ -98,11 +98,11 @@
             <a class="btn" ng-click="$ctrl.revert()" translate>Cancel</a>
             <button ng-disabled="!addOrganization.$valid || $ctrl.saving" class="btn btn-primary btn-actionable" ng-if="!$ctrl.selected.oauth">
                 <translate>Save</translate>
-                <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
+                <i class="far fa-circle-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
             </button>
             <button ng-click="$ctrl.authenticate($ctrl.selectedKey)" class="btn btn-primary btn-actionable" ng-disabled="$ctrl.saving" ng-if="$ctrl.selected.oauth">
                 <translate>Connect</translate>
-                <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
+                <i class="far fa-circle-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
             </button>
         </div>
     </div>
@@ -128,7 +128,7 @@
             <a class="btn btn-link" ng-click="$ctrl.revert()" translate>Cancel</a>
             <button type="submit" ng-disabled="!editOrganization.$valid || $ctrl.saving" class="btn btn-primary btn-actionable">
                 <translate>Save</translate>
-                <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
+                <i class="far fa-circle-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
             </button>
         </div>
     </div>

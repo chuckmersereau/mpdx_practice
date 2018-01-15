@@ -1,4 +1,6 @@
 import assign from 'lodash/fp/assign';
+import compact from 'lodash/fp/compact';
+import isArray from 'lodash/fp/isArray';
 import isEmpty from 'lodash/fp/isEmpty';
 
 class FilterService {
@@ -47,13 +49,41 @@ class FilterService {
         this.wildcard_search = '';
         this.change();
     }
-    change() {
+    change(filter) {
+        this.handleFilterChange(filter);
         this.$rootScope.$emit('contactsFilterChange');
+    }
+    handleFilterChange(filter) {
+        if (filter) {
+            const currentFilter = this.params[filter.name];
+            if (isArray(currentFilter) && currentFilter.length > 1) {
+                this.params[filter.name] = compact(currentFilter);
+            }
+            if (isArray(currentFilter) && currentFilter.length === 0) {
+                this.params[filter.name] = this.default_params[filter.name];
+            }
+        }
     }
     isResettable() {
         return !angular.equals(this.params, this.default_params)
             || this.contactsTags.isResettable()
             || !isEmpty(this.wildcard_search);
+    }
+    invertMultiselect(filter) {
+        const reverseName = `reverse_${filter.name}`;
+        if (this.params[reverseName]) {
+            delete this.params[reverseName];
+        } else {
+            this.params[reverseName] = true;
+        }
+        filter.reverse = !!this.params[reverseName];
+        this.change();
+    }
+    removeFilter(filter) {
+        const reverseName = `reverse_${filter.name}`;
+        this.params[filter.name] = this.default_params[filter.name];
+        delete this.params[reverseName];
+        filter.reverse = false;
     }
 }
 

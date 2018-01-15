@@ -107,5 +107,4 @@ describe('tasks.list.item.component', () => {
             });
         });
     });
-
 });
