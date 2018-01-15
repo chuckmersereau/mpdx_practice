@@ -1,25 +1,30 @@
 import concat from 'lodash/fp/concat';
 import each from 'lodash/fp/each';
 import filter from 'lodash/fp/filter';
+import flattenCompactAndJoin from 'common/fp/flattenCompactAndJoin';
 import has from 'lodash/fp/has';
 import includes from 'lodash/fp/includes';
 import reject from 'lodash/fp/reject';
+import bowser from 'bowser';
 
 class ContactPeopleController {
     constructor(
-        $log, $state, $rootScope,
-        alerts, api, people, gettextCatalog
+        $log, $state, $rootScope, $window,
+        alerts, api, contacts, people, gettextCatalog
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
         this.$state = $state;
+        this.$window = $window;
         this.alerts = alerts;
         this.api = api;
+        this.contacts = contacts;
         this.people = people;
         this.gettextCatalog = gettextCatalog;
 
         this.data = [];
         this.isMerging = false;
+        this.isSafari = bowser.name === 'Safari';
     }
 
     $onInit() {
@@ -102,6 +107,15 @@ class ContactPeopleController {
 
     newPerson() {
         this.people.openPeopleModal(this.contact);
+    }
+
+    emailAll() {
+        const emails = flattenCompactAndJoin((email) => email, this.contacts.getEmailsFromPeople(this.data));
+        if (this.isSafari) {
+            this.$window.href = `mailto:${emails}`;
+        } else {
+            this.$window.open(`mailto:${emails}`);
+        }
     }
 }
 

@@ -32,6 +32,7 @@ module.exports = {
         'no-multiple-empty-lines': ['error', {'max': 2}],
         'no-unneeded-ternary': 'error',
         'no-unused-vars': ['warn', 'all'],
+        'no-useless-constructor': 'warn',
         'no-var': 'error',
         'object-curly-spacing': ['error', 'always'],
         'operator-linebreak': ['error', 'before'],

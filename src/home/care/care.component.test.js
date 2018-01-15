@@ -29,4 +29,34 @@ describe('home.care.component', () => {
             });
         });
     });
+    describe('exportPhysical', () => {
+        it('should open the exportEmail modal', () => {
+            spyOn(modal, 'open').and.callFake(() => Promise.resolve());
+            spyOn(rootScope, '$emit').and.callFake(() => {});
+            $ctrl.exportPhysical();
+            expect(modal.open).toHaveBeenCalledWith({
+                template: require('../../contacts/list/exportContacts/exportContacts.html'),
+                controller: 'exportContactsController',
+                locals: {
+                    selectedContactIds: [],
+                    filter: {
+                        account_list_id: null,
+                        newsletter: 'address',
+                        status: 'active'
+                    }
+                }
+            });
+        });
+    });
+    describe('exportEmail', () => {
+        it('should open the exportPhysical modal', () => {
+            spyOn(modal, 'open').and.callFake(() => Promise.resolve());
+            spyOn(rootScope, '$emit').and.callFake(() => {});
+            $ctrl.exportEmail();
+            expect(modal.open).toHaveBeenCalledWith({
+                template: require('./newsletters/export/export.html'),
+                controller: 'exportContactEmailsController'
+            });
+        });
+    });
 });

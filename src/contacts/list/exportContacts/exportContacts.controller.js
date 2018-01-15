@@ -1,4 +1,5 @@
 import assign from 'lodash/fp/assign';
+import defaultTo from 'lodash/fp/defaultTo';
 import joinComma from 'common/fp/joinComma';
 import moment from 'moment';
 import bowser from 'bowser';
@@ -7,7 +8,7 @@ class ExportContactsController {
     constructor(
         $timeout, blockUI,
         api, contacts, exportContacts,
-        selectedContactIds
+        selectedContactIds, filter
     ) {
         this.$timeout = $timeout;
         this.api = api;
@@ -17,9 +18,10 @@ class ExportContactsController {
         this.moment = moment;
 
         this.isSafari = bowser.name === 'Safari';
+        filter = defaultTo(this.api.cleanFilters(this.contacts.buildFilterParams()), filter);
         this.params = {
             data: {
-                filter: this.api.cleanFilters(this.contacts.buildFilterParams())
+                filter: filter
             },
             doDeSerialization: false,
             overrideGetAsPost: true

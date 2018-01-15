@@ -217,4 +217,43 @@ describe('contacts.service', () => {
             ]);
         });
     });
+
+    describe('getEmails', () => {
+        const filter = {};
+        beforeEach(() => {
+            spyOn(contacts, 'mapEmails').and.callFake(() => 'a');
+            spyOn(api, 'get').and.callFake(() => Promise.resolve(null));
+        });
+        it('should call the api', () => {
+            contacts.getEmails(filter);
+            expect(api.get).toHaveBeenCalledWith('contacts', {
+                filter: { account_list_id: 123, newsletter: 'email', status: 'active' },
+                include: 'people,people.email_addresses',
+                fields: {
+                    contact: 'people',
+                    people: 'deceased,email_addresses',
+                    email_addresses: 'email,primary'
+                },
+                per_page: 25000
+            });
+        });
+        it('should map data to emails', (done) => {
+            contacts.getEmails(filter).then((data) => {
+                expect(data).toEqual('a');
+                done();
+            });
+        });
+    });
+
+    describe('mapEmails', () => {
+        const data = [
+            { people: [{ email_addresses: [{ primary: true, email: 'a' }] }] },
+            { people: [{ email_addresses: [{ email: 'b' }] }] },
+            { people: [{ deceased: true, email_addresses: [{ primary: true, email: 'b' }] }] },
+            { people: [{ email_addresses: [{ email: 'c' }, { email: 'd', primary: true }] }] }
+        ];
+        it('should map primary emails from contacts', () => {
+            expect(contacts.mapEmails(data)).toEqual('a,d');
+        });
+    });
 });

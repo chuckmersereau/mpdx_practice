@@ -60,6 +60,7 @@
     "ng-rollbar": "2.2.4",
     "ng-sortable": "1.3.8",
     "ng-tags-input": "3.2.0",
+    "ngclipboard": "^1.1.2",
     "ngmap": "1.18.4",
     "uuid": "3.1.0"
   },
