@@ -4,7 +4,6 @@ class DonorAccountsService {
     ) {
         this.api = api;
     }
-
     search(keywords) {
         return this.api.get(
             `account_lists/${this.api.account_list_id}/donor_accounts`,

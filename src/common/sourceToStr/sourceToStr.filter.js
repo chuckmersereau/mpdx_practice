@@ -18,7 +18,6 @@ class SourceToStrFilter {
             }
         };
     }
-
     static sourceToStrFactory(gettextCatalog) {
         return new SourceToStrFilter(gettextCatalog);
     }

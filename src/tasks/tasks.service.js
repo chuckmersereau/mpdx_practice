@@ -41,8 +41,9 @@ class TasksService {
             return this.analytics;
         });
     }
-    save(task) {
+    save(task, comment) {
         task = this.mutateTagList(task);
+        task = this.mutateComment(task, comment);
 
         return this.api.put(`tasks/${task.id}`, task).then(() => {
             this.change();

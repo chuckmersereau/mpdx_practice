@@ -34,7 +34,6 @@ class AddressesController {
     $onDestroy() {
         this.watcher();
     }
-
     load(reset = false, page = 1) {
         if (!reset && this.data && this.page === page) {
             return Promise.resolve(this.data);
@@ -70,7 +69,6 @@ class AddressesController {
             return this.data;
         });
     }
-
     setMeta(meta) {
         this.meta = meta;
 
@@ -78,7 +76,6 @@ class AddressesController {
             this.tools.analytics['fix-addresses'] = this.meta.pagination.total_count;
         }
     }
-
     save() {
         const message = this.gettextCatalog.getString(
             `You are updating all contacts visible on this page, setting the first {{source}} address as the primary address.
@@ -92,8 +89,6 @@ class AddressesController {
             });
         });
     }
-
-
     bulkSave(source) {
         let contacts = reduce((result, contact) => {
             let primaryAddress = find(['source', source], contact.addresses);
@@ -112,7 +107,6 @@ class AddressesController {
             return this.load(true);
         });
     }
-
     onSave(params) {
         const contact = params.contact;
         this.data = reject({ id: contact.id }, this.data);

@@ -15,8 +15,6 @@ class ToolsController {
         this.setup = $stateParams.setup;
         this.dropdown = false;
     }
-
-
     $onInit() {
         this.help.suggest([
             this.gettextCatalog.getString('5845aa229033600698176a54'),
@@ -35,7 +33,6 @@ class ToolsController {
 
         this.tools.getAnalytics();
     }
-
     $onDestroy() {
         this.session.navSecondary = false;
     }

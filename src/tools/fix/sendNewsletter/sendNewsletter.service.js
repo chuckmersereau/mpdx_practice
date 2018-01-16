@@ -13,7 +13,6 @@ class newsletterService {
         this.loading = false;
         this.page = 1;
     }
-
     load(reset = false, page = 1) {
         if (!reset && this.data && this.page === page) {
             return Promise.resolve(this.data);
@@ -73,7 +72,6 @@ class newsletterService {
             return this.data;
         });
     }
-
     setMeta(meta) {
         this.meta = meta;
 
@@ -81,7 +79,6 @@ class newsletterService {
             this.tools.analytics['fix-send-newsletter'] = this.meta.pagination.total_count;
         }
     }
-
     save(contact) {
         return this.contacts.save({
             id: contact.id,
@@ -90,7 +87,6 @@ class newsletterService {
             this.removeContactFromData(contact.id);
         });
     }
-
     removeContactFromData(contactId) {
         this.data = reject({ id: contactId }, this.data);
         if (this.meta && this.meta.pagination && this.meta.pagination.total_count) {
@@ -101,7 +97,6 @@ class newsletterService {
             this.load(true, this.page);
         }
     }
-
     bulkSave() {
         let contacts = reduce((result, contact) => {
             if (!contact.send_newsletter) {

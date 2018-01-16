@@ -15,7 +15,6 @@ class EditFieldsController {
         this.models = {};
         this.languages = locale.getLocalesMap();
     }
-
     save() {
         return this.contacts.bulkEditFields(
             this.models,

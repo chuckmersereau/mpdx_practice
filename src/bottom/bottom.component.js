@@ -4,7 +4,6 @@ export class BottomController {
 
         this.year = new Date().getFullYear();
     }
-
     showHelp() {
         this.help.showHelp();
     }

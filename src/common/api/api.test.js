@@ -48,7 +48,7 @@ describe('common.api.service', () => {
                 }
             };
             spyOn(api.$window._satellite, 'track').and.callFake(() => {});
-        })
+        });
         describe('promise', () => {
             it('should send a simple get request', () => {
                 $httpBackend.expectGET('/api/v1/contacts').respond(200, jsonApiResponse);

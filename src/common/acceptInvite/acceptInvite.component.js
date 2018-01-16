@@ -11,7 +11,6 @@ class AcceptInviteController {
         this.alerts = alerts;
         this.api = api;
     }
-
     $onInit() {
         if (!isEmpty(this.$stateParams.code)
             && !isEmpty(this.$stateParams.account_list_id)

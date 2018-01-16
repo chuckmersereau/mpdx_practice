@@ -81,7 +81,7 @@ config = assign(config, {
             sourceMap: true
         }),
         new HtmlWebpackPlugin({
-            template: './src/index.ejs',
+            template: './src/index.html',
             favicon: './src/images/mpdx-favicon.png',
             inject: 'body',
             minify: {
@@ -90,7 +90,8 @@ config = assign(config, {
             env: configEnv
         }),
         new CopyWebpackPlugin([
-            { from: 'assets' }
+            { from: 'assets' },
+            { from: 'src/google144ccea737ed252d.html' }
         ]),
         new ExtractTextPlugin({
             filename: '[name].[hash].css'

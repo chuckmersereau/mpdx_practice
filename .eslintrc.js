@@ -18,6 +18,7 @@ module.exports = {
             ArrayExpression: 1
         }],
         'linebreak-style': 'off',
+        'lines-between-class-members': ['error', 'never'],
         'max-len': ['error', {
             code: 120,
             ignoreRegExpLiterals: true,
@@ -32,6 +33,7 @@ module.exports = {
         'no-multiple-empty-lines': ['error', {'max': 2}],
         'no-unneeded-ternary': 'error',
         'no-unused-vars': ['warn', 'all'],
+        'no-useless-constructor': 'warn',
         'no-var': 'error',
         'object-curly-spacing': ['error', 'always'],
         'operator-linebreak': ['error', 'before'],

@@ -1,12 +1,12 @@
 import component from './people.component';
 
 describe('contacts.show.people.component', () => {
-    let $ctrl, rootScope, scope, componentController, alerts, api, gettextCatalog, people;
+    let $ctrl, rootScope, scope, componentController, alerts, api, gettextCatalog, people, _$window;
     beforeEach(() => {
         angular.mock.module(component);
 
         inject((
-            $componentController, $rootScope,
+            $componentController, $rootScope, $window,
             _alerts_, _api_, _gettextCatalog_, _people_) => {
             componentController = $componentController;
             rootScope = $rootScope;
@@ -14,6 +14,7 @@ describe('contacts.show.people.component', () => {
 
             alerts = _alerts_;
             api = _api_;
+            _$window = $window;
             gettextCatalog = _gettextCatalog_;
             people = _people_;
 
@@ -152,6 +153,14 @@ describe('contacts.show.people.component', () => {
             $ctrl.selectedPeople = [{}, {}];
             $ctrl.cancelMerge();
             expect($ctrl.selectedPeople).toEqual([]);
+        });
+    });
+    describe('emailAll', () => {
+        it('should open a mailto window', () => {
+            spyOn(_$window, 'open').and.callFake(() => ({ close: () => {} }));
+            $ctrl.data = [{ email_addresses: [{ primary: true, email: 'a@b.c' }, { email: 'b@b.c' }] }];
+            $ctrl.emailAll();
+            expect(_$window.open).toHaveBeenCalledWith('mailto:a@b.c');
         });
     });
 });

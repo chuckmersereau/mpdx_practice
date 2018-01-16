@@ -11,7 +11,6 @@ class AccountController {
         this.setup = setup;
         this.users = users;
     }
-
     $onInit() {
         const firstAccount = get('data[0].id', this.accounts);
         this.users.current.preferences.default_account_list = defaultTo(firstAccount, get('current.preferences.default_account_list', this.users));
@@ -20,7 +19,6 @@ class AccountController {
             this.users.listOrganizationAccounts(true);
         });
     }
-
     next() {
         return this.users.saveCurrent().then(() => {
             return this.accounts.swap(

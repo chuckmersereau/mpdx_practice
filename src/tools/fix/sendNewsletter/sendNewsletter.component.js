@@ -12,7 +12,6 @@ class newsletterController {
             this.load();
         });
     }
-
     save() {
         const message = this.gettextCatalog.getString(
             `You are updating all contacts visible on this page, setting it to the visible newsletter selection.
@@ -22,7 +21,6 @@ class newsletterController {
             return this.fixSendNewsletter.bulkSave();
         });
     }
-
     load(page = null) {
         return this.fixSendNewsletter.load(true, page);
     }
