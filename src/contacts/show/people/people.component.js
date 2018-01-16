@@ -100,7 +100,6 @@ class ContactPeopleController {
     newPerson() {
         this.people.openPeopleModal(this.contact);
     }
-
     emailAll() {
         const emails = flattenCompactAndJoin((email) => email, this.contacts.getEmailsFromPeople(this.data));
         if (this.isSafari) {
