@@ -34,17 +34,14 @@ class CsvService {
         this.help = help;
         this.serverConstants = serverConstants;
     }
-
     $onInit() {
         this.reset();
     }
-
     reset() {
         this.data = null;
         this.dataInitialState = null;
         this.values_to_constants_mappings = {};
     }
-
     upload(file) {
         this.blockUI.start();
         return this.Upload.upload({
@@ -69,7 +66,6 @@ class CsvService {
             throw error;
         });
     }
-
     process(data) {
         this.data = data;
         this.dataInitialState = angular.copy(this.data);
@@ -95,7 +91,6 @@ class CsvService {
         /* istanbul ignore next */
         this.$log.debug('import', this.data);
     }
-
     get(importId) {
         if (this.data && this.data.id === importId) {
             return Promise.resolve(this.data);
@@ -114,7 +109,6 @@ class CsvService {
             this.process(data);
         });
     }
-
     constantsMappingsToValueMappings(constantsMappings, fileConstants, fileHeadersMappings) {
         return reduceObject((result, array, key) => {
             result[key] = this.reduceConstants(array);
@@ -126,7 +120,6 @@ class CsvService {
             return result;
         }, {}, constantsMappings);
     }
-
     reduceConstants(array) {
         return reduce((result, constant) => {
             const group = reduce((group, value) => {
@@ -138,7 +131,6 @@ class CsvService {
             return merge(result, group);
         }, {}, array);
     }
-
     mergeFileConstants(result, key, fileConstants, fileHeadersMappings) {
         const values = keys(result[key]);
         const allValues = this.getConstantValues(key, fileConstants, fileHeadersMappings);
@@ -148,7 +140,6 @@ class CsvService {
         }, {}, difference(allValues, values));
         return merge(unmappedValues, result[key]);
     }
-
     valueMappingsToConstantsMappings(valueMappings, fileConstants, fileHeadersMappings) {
         valueMappings = this.buildValueMappings(valueMappings, fileHeadersMappings);
 
@@ -162,7 +153,6 @@ class CsvService {
             return result;
         }, {}, valueMappings);
     }
-
     buildFileConstantValues(result, key, fileConstants, fileHeadersMappings) {
         const values = reduce((result, object) => concat(result, object.values), [], result[key]);
         const allValues = this.getConstantValues(key, fileConstants, fileHeadersMappings);
@@ -174,7 +164,6 @@ class CsvService {
             return object;
         }, result[key], difference(allValues, values));
     }
-
     buildConstantValues(object) {
         return reduceObject((array, constant, value) => {
             constant = constant === null || constant === 'null'
@@ -187,7 +176,6 @@ class CsvService {
             return array;
         }, [], object);
     }
-
     buildValueMappings(valueMappings, fileHeadersMappings) {
         valueMappings = defaultTo({}, valueMappings);
 
@@ -200,12 +188,10 @@ class CsvService {
             return object;
         }, valueMappings, mappedHeaders);
     }
-
     getConstantValues(constant, fileConstants, fileHeadersMappings) {
         const key = findKey((item) => item === constant, fileHeadersMappings);
         return defaultTo([], fileConstants[key]);
     }
-
     save() {
         if (this.data.tag_list) {
             this.data.tag_list = joinComma(this.data.tag_list);
@@ -252,7 +238,6 @@ class CsvService {
             throw data;
         });
     }
-
     next(importId) {
         const stateSwitch = (state) => ({
             'tools.import.csv.upload': 'tools.import.csv.headers',
@@ -269,7 +254,6 @@ class CsvService {
             this.$state.go('tools');
         }
     }
-
     back() {
         const stateSwitch = (state) => ({
             'tools.import.csv.preview': keys(this.values_to_constants_mappings).length === 0

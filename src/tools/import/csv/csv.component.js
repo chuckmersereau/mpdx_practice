@@ -15,7 +15,6 @@ class ImportCsvController {
 
         this.deregisterTransitionHook = null;
     }
-
     $onInit() {
         if (this.$state.$current.name === 'tools.import.csv') {
             this.$state.go('tools.import.csv.upload');
@@ -46,7 +45,6 @@ class ImportCsvController {
             }
         );
     }
-
     $onDestroy() {
         this.$window.onbeforeunload = undefined;
 

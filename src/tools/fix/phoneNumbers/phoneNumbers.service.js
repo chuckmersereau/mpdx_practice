@@ -16,7 +16,6 @@ class PhoneNumbersService {
         this.loading = false;
         this.page = 1;
     }
-
     load(reset = false, page = 1) {
         if (!reset && this.data && this.page === page) {
             return Promise.resolve(this.data);
@@ -57,7 +56,6 @@ class PhoneNumbersService {
             return this.data;
         });
     }
-
     setMeta(meta) {
         this.meta = meta;
 
@@ -65,7 +63,6 @@ class PhoneNumbersService {
             this.tools.analytics['fix-phone-numbers'] = this.meta.pagination.total_count;
         }
     }
-
     save(person) {
         person.phone_numbers = each((phoneNumber) => {
             phoneNumber.valid_values = true;
@@ -82,7 +79,6 @@ class PhoneNumbersService {
             }
         });
     }
-
     bulkSave(source) {
         let people = reduce((result, person) => {
             let primaryPhoneNumber = find(['source', source], person.phone_numbers);
@@ -101,24 +97,20 @@ class PhoneNumbersService {
             return this.load(true);
         });
     }
-
     setPrimary(person, primaryPhoneNumber) {
         person.phone_numbers = map((phoneNumber) => {
             phoneNumber.primary = phoneNumber.id === primaryPhoneNumber.id;
             return phoneNumber;
         }, person.phone_numbers);
     }
-
     removePhoneNumber(person, phoneNumber) {
         return this.people.deletePhoneNumber(person, phoneNumber).then(() => {
             person.phone_numbers = reject({ id: phoneNumber.id }, person.phone_numbers);
         });
     }
-
     savePhoneNumber(person, phoneNumber) {
         return this.people.savePhoneNumber(person, phoneNumber);
     }
-
     hasPrimary(person) {
         return filter((phoneNumber) => phoneNumber.primary, person.phone_numbers).length === 1;
     }

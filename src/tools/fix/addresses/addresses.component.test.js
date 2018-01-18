@@ -98,8 +98,8 @@ describe('tools.fix.addresses.component', () => {
                     expect($ctrl.sources).toEqual([
                         { id: 'Dataserver', value: filter('sourceToStr')('Dataserver') },
                         { id: 'MPDX', value: filter('sourceToStr')('MPDX') },
-                        { id: 'Sibel', value: filter('sourceToStr')('Sibel') },
-                        { id: 'Tntmpd', value: filter('sourceToStr')('Tntmpd') }
+                        { id: 'Tntmpd', value: filter('sourceToStr')('Tntmpd') },
+                        { id: 'Siebel', value: filter('sourceToStr')('Siebel') }
                     ]);
                     done();
                 });
@@ -227,7 +227,7 @@ describe('tools.fix.addresses.component', () => {
                 addresses: [
                     {
                         id: 'address_id_0',
-                        source: 'Sibel',
+                        source: 'Siebel',
                         primary_mailing_address: true
                     }, {
                         id: 'address_id_1',
@@ -244,7 +244,7 @@ describe('tools.fix.addresses.component', () => {
                 addresses: [
                     {
                         id: 'address_id_3',
-                        source: 'Sibel',
+                        source: 'Siebel',
                         primary_mailing_address: true
                     }
                 ]
@@ -265,7 +265,7 @@ describe('tools.fix.addresses.component', () => {
                     addresses: [
                         {
                             id: 'address_id_0',
-                            source: 'Sibel',
+                            source: 'Siebel',
                             primary_mailing_address: false,
                             valid_values: true
                         }, {
@@ -344,7 +344,7 @@ describe('tools.fix.addresses.component', () => {
     });
 
     const apiData = [
-        { addresses: [{ source: 'Sibel' }] },
+        { addresses: [{ source: 'Siebel' }] },
         { addresses: [{ source: 'Tntmpd' }] },
         { addresses: [{ source: 'Dataserver' }] },
         { addresses: [{ source: 'Dataserver' }] }

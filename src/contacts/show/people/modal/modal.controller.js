@@ -77,7 +77,6 @@ class PersonModalController {
             });
         }
     }
-
     changeTab(form, tab) {
         if (form.$valid) {
             this.activeTab = tab;
@@ -85,7 +84,6 @@ class PersonModalController {
             this.alerts.addAlert(this.gettextCatalog.getString('Please complete required fields before changing tabs'), 'danger', null, 5, true);
         }
     }
-
     remove(property, index) {
         if (this.person[property][index].new) {
             this.person[property].splice(index, 1);
@@ -93,46 +91,36 @@ class PersonModalController {
             this.person[property][index]._destroy = 1;
         }
     }
-
     addEmailAddress() {
         this.person.email_addresses.push({ id: uuid(), email: '', location: '', new: true });
     }
-
     addPhone() {
         this.person.phone_numbers.push({ id: uuid(), number: '', location: '', new: true });
     }
-
     addFamilyRelationship() {
         this.person.family_relationships.push({ id: uuid(), related_person: { id: null }, new: true });
     }
-
     addFacebook() {
         this.person.facebook_accounts.push({ id: uuid(), username: '', new: true });
     }
-
     addTwitter() {
         this.person.twitter_accounts.push({ id: uuid(), screen_name: '', new: true });
     }
-
     addLinkedin() {
         this.person.linkedin_accounts.push({ id: uuid(), username: '', new: true });
     }
-
     addWebsite() {
         this.person.websites.push({ id: uuid(), url: '', new: true });
     }
-
     changePrimary(property, id) {
         this.person[property] = map((val) => {
             val.primary = val.id === id;
             return val;
         }, this.person[property]);
     }
-
     changeHistoric(obj) {
         obj.historic = !obj.historic;
     }
-
     delete() {
         return this.modal.confirm(this.gettextCatalog.getString('Are you sure you wish to delete this person?')).then(() => {
             return this.api.delete({

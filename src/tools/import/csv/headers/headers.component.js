@@ -17,11 +17,9 @@ class HeadersController {
         this.mappedHeaders = [];
         this.unmappedHeaders = [];
     }
-
     $onInit() {
         this.updateHeaders();
     }
-
     updateHeaders() {
         this.mappedHeaders = values(this.importCsv.data.file_headers_mappings);
         let requiredHeaders = keys(this.serverConstants.data.csv_import.required_headers);
@@ -29,16 +27,13 @@ class HeadersController {
         requiredHeaders = this.containsName() ? difference(requiredHeaders, ['first_name', 'last_name', 'full_name']) : requiredHeaders;
         this.unmappedHeaders = difference(requiredHeaders, this.mappedHeaders);
     }
-
     containsName() {
         return (includes('first_name', this.mappedHeaders) && includes('last_name', this.mappedHeaders)) || includes('full_name', this.mappedHeaders);
     }
-
     save() {
         this.importCsv.values_to_constants_mappings = {};
         return this.importCsv.save();
     }
-
     back() {
         const message = this.gettextCatalog.getString(
             'Are you sure you want to navigate back to the upload step? You will lose all unsaved progress.');

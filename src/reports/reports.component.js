@@ -7,7 +7,6 @@ class ReportsController {
         this.session = session;
         this.help = help;
     }
-
     $onInit() {
         this.help.suggest([
             this.gettextCatalog.getString('584820bc9033600698177a95'),
@@ -22,7 +21,6 @@ class ReportsController {
 
         this.session.navSecondary = true;
     }
-
     $onDestroy() {
         this.session.navSecondary = false;
     }

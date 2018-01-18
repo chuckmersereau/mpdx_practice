@@ -13,7 +13,6 @@ class AuthController {
         this.$state = $state;
         this.$stateParams = $stateParams;
     }
-
     $onInit() {
         if (!isEmpty(this.$stateParams.access_token)) {
             return this.$http.get(
@@ -36,7 +35,6 @@ class AuthController {
             });
         }
     }
-
     convertTicketToJWT(ticket) {
         return this.$http.post(
             `${config.apiUrl}user/authenticate`,

@@ -25,7 +25,6 @@ class DonationModalController {
 
         this.activate();
     }
-
     activate() {
         if (!this.donation.designation_account) {
             this.setDesignationAccount();
@@ -40,7 +39,6 @@ class DonationModalController {
             this.donation.motivation = '';
         }
     }
-
     setDesignationAccount() {
         return this.designationAccounts.load().then((data) => {
             if (data.length === 1) {
@@ -48,7 +46,6 @@ class DonationModalController {
             }
         });
     }
-
     save() {
         let donation = angular.copy(this.donation);
 
@@ -65,7 +62,6 @@ class DonationModalController {
             throw err;
         });
     }
-
     delete() {
         return this.donations.delete(this.donation).then(() => {
             this.alerts.addAlert(this.gettextCatalog.getString('Donation deleted successfullly'), 'success');
@@ -76,19 +72,15 @@ class DonationModalController {
             throw err;
         });
     }
-
     onDonorAccountSelected(donorAccount) {
         this.donation.donor_account = donorAccount;
     }
-
     onDesignationAccountSelected(designationAccount) {
         this.donation.designation_account = designationAccount;
     }
-
     onAppealSelected(appeal) {
         this.donation.appeal = appeal;
     }
-
     search(keywords) {
         return this.api.get('appeals', {
             filter: {

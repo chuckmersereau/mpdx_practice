@@ -2,11 +2,9 @@ class SetupController {
     constructor(session) {
         this.session = session;
     }
-
     $onInit() {
         this.session.navSetup = true;
     }
-
     $onDestroy() {
         this.session.navSetup = false;
     }

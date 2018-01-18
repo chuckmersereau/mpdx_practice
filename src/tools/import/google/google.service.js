@@ -7,7 +7,6 @@ class ImportGoogleService {
     ) {
         this.api = api;
     }
-
     save(data) {
         let transformedData = angular.copy(data);
 

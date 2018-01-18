@@ -100,7 +100,6 @@ class ToolsService {
         ];
         this.analytics = {};
     }
-
     getAnalytics(reset = false) {
         if (this.analytics && values(this.analytics).length > 1 && !reset) {
             return Promise.resolve(this.analytics);
@@ -117,7 +116,6 @@ class ToolsService {
             return this.analytics;
         });
     }
-
     getTotal() {
         return sum(values(this.analytics));
     }

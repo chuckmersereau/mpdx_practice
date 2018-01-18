@@ -90,6 +90,10 @@ describe('tasks.service', () => {
             tasks.save(task);
             expect(tasks.mutateTagList).toHaveBeenCalledWith(task);
         });
+        it('should call mutateComment', () => {
+            tasks.save(task, 'abc');
+            expect(tasks.mutateComment).toHaveBeenCalledWith(task, 'abc');
+        });
         it('should call the api', () => {
             tasks.save(task);
             expect(api.put).toHaveBeenCalledWith(`tasks/${task.id}`, task);

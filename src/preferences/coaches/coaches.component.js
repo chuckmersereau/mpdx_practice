@@ -9,7 +9,6 @@ class CoachesController {
 
         this.tabId = 'share_coaching_account';
     }
-
     $onInit() {
         this.help.suggest([
             this.gettextCatalog.getString('57e2f280c697910d0784d307')
@@ -19,7 +18,6 @@ class CoachesController {
             this.setTab(this.$stateParams.id);
         }
     }
-
     setTab(service) {
         if (this.tabId === service) {
             this.tabId = '';

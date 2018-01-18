@@ -4,7 +4,6 @@ class AlertsController {
     ) {
         this.alerts = alerts;
     }
-
     $onInit() {
         this.modal = this.modal || false;
         this.paddingOnly = this.paddingOnly || false;

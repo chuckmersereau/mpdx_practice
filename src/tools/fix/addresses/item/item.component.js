@@ -10,11 +10,9 @@ class ItemController {
         this.blockUI = blockUI;
         this.contacts = contacts;
     }
-
     $onInit() {
         this.blockUI = this.blockUI.instances.get(`fix-addresses-item-${this.contact.id}`);
     }
-
     save() {
         this.blockUI.start();
         this.contact.addresses = map((address) => {
@@ -28,7 +26,6 @@ class ItemController {
             this.onSave({ contact: this.contact });
         });
     }
-
     hasPrimary() {
         return filter((address) => address.primary_mailing_address, this.contact.addresses).length === 1;
     }

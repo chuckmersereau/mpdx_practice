@@ -16,14 +16,12 @@ class SetupService {
         this.api = api;
         this.users = users;
     }
-
     next() {
         return this.hasAccountLists().catch((err) => {
             this.alerts.addAlert(this.gettextCatalog.getString('Something went wrong, please try again.'), 'danger');
             throw err;
         });
     }
-
     hasAccountLists() {
         return this.users.getCurrent(true).then(() => {
             if (this.users.current.account_lists.length === 0) {
@@ -41,7 +39,6 @@ class SetupService {
             }
         });
     }
-
     hasDefaultAccountList() {
         if (this.users.current.preferences.default_account_list === null) {
             return this.goAccount();
@@ -49,7 +46,6 @@ class SetupService {
             return this.hasOrganizationAccounts();
         }
     }
-
     hasOrganizationAccounts() {
         return this.$q.all([
             this.getAccountListOrganizationAccounts(),
@@ -62,29 +58,24 @@ class SetupService {
             }
         });
     }
-
     goAccount() {
         return this.setPosition('account').then(() => {
             this.$state.go('setup.account');
         });
     }
-
     goConnect() {
         return this.setPosition('connect').then(() => {
             this.$state.go('setup.connect');
         });
     }
-
     goPreferences() {
         return this.setPosition('preferences.personal').then(() => {
             this.$state.go('setup.preferences.personal');
         });
     }
-
     getUserOrganizationAccounts() {
         return this.users.listOrganizationAccounts(true);
     }
-
     getAccountListOrganizationAccounts() {
         return this.api.get(
             `account_lists/${this.users.current.preferences.default_account_list}`,
@@ -93,7 +84,6 @@ class SetupService {
             return data.organization_accounts;
         });
     }
-
     setDefaultAccountList() {
         this.users.current.preferences.default_account_list = this.users.current.account_lists[0].id;
         return this.users.saveCurrent().then(() => {
@@ -106,7 +96,6 @@ class SetupService {
             });
         });
     }
-
     setPosition(position) {
         if (get('value', this.users.currentOptions.setup_position) !== position) {
             this.users.currentOptions = assign(defaultTo({}, this.users.currentOptions), {

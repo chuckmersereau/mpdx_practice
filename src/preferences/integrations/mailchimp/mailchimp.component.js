@@ -26,7 +26,6 @@ class MailchimpIntegrationPreferencesController {
         this.oAuth = `${config.oAuthUrl}mailchimp?account_list_id=${this.api.account_list_id}&redirect_to=${this.$window.encodeURIComponent(config.baseUrl + 'preferences/integrations?selectedTab=mailchimp')}&access_token=${this.$window.localStorage.getItem('token')}`;
         this.mailchimp.load();
     }
-
     save(showSettings = false) {
         this.saving = true;
         return this.api.post({ url: `account_lists/${this.api.account_list_id}/mail_chimp_account`, data: this.mailchimp.data }).then(() => {

@@ -300,7 +300,8 @@ describe('contacts.list.component', () => {
                 template: require('./exportContacts/exportContacts.html'),
                 controller: 'exportContactsController',
                 locals: {
-                    selectedContactIds: $ctrl.contacts.selectedContacts
+                    selectedContactIds: $ctrl.contacts.selectedContacts,
+                    filter: null
                 }
             });
         });
@@ -350,7 +351,7 @@ describe('contacts.list.component', () => {
             spyOn(contacts, 'buildFilterParams').and.callFake(() => { return {}; });
             $ctrl.page = 1;
             $ctrl.listLoadCount = 1;
-            spyOn(contacts, 'fixPledgeAmountAndFrequencies').and.callFake((data) => map(c => c, data));
+            spyOn(contacts, 'fixPledgeAmountAndFrequencies').and.callFake((data) => map((c) => c, data));
         });
         it('should set the loading flag', () => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve(result));

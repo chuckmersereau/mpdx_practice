@@ -16,7 +16,6 @@ class CommitmentInfoService {
         this.loading = false;
         this.page = 1;
     }
-
     load(reset = false, page = 1) {
         if (!reset && this.data && this.page === page) {
             return Promise.resolve(this.data);
@@ -62,7 +61,6 @@ class CommitmentInfoService {
             }));
         }, [], data);
     }
-
     setMeta(meta) {
         this.meta = meta;
 
@@ -70,12 +68,10 @@ class CommitmentInfoService {
             this.tools.analytics['fix-commitment-info'] = this.meta.pagination.total_count;
         }
     }
-
     save(contact) {
         contact.status_valid = true;
         return this.contacts.save(contact).then(() => this.removeContactFromData(contact.id));
     }
-
     reject(contact) {
         const params = {
             id: contact.id,
@@ -83,7 +79,6 @@ class CommitmentInfoService {
         };
         return this.contacts.save(params).then(() => this.removeContactFromData(contact.id));
     }
-
     removeContactFromData(contactId) {
         this.data = reject({ id: contactId }, this.data);
         if (this.meta && this.meta.pagination && this.meta.pagination.total_count) {
@@ -94,7 +89,6 @@ class CommitmentInfoService {
             this.load(true, this.page);
         }
     }
-
     bulkSave() {
         let contacts = reduce((result, contact) => {
             contact.status_valid = true;

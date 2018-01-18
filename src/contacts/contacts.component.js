@@ -13,7 +13,6 @@ class ContactsController {
         this.help = help;
         this.session = session;
     }
-
     $onInit() {
         this.help.suggest([
             this.gettextCatalog.getString('5845aa229033600698176a54'),
@@ -33,7 +32,6 @@ class ContactsController {
         this.selected = this.$stateParams.contactId;
         this.session.navSecondary = true;
     }
-
     $onDestroy() {
         this.session.navSecondary = false;
     }

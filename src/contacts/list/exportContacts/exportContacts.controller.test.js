@@ -34,7 +34,8 @@ describe('contacts.list.exportContacts.controller', () => {
     function loadController(contacts) {
         return controller('exportContactsController as $ctrl', {
             $scope: scope,
-            selectedContactIds: contacts
+            selectedContactIds: contacts,
+            filter: null
         });
     }
     describe('constructor', () => {

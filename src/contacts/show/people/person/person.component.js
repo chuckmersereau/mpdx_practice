@@ -17,7 +17,6 @@ class ContactPersonController {
             work: gettextCatalog.getString('Work')
         };
     }
-
     $onInit() {
         this.watcher1 = this.$rootScope.$on('personUpdated', (event, personId) => {
             if (this.person.id === personId) {
@@ -35,26 +34,21 @@ class ContactPersonController {
             }
         });
     }
-
     $onDestroy() {
         this.watcher1();
         this.watcher2();
     }
-
     openModal() {
         return this.people.openPeopleModal(this.contact, this.person.id, this.userProfile);
     }
-
     selectCard() {
         if (this.isMerging) {
             this.onSelectPerson({ person: this.person });
         }
     }
-
     trustSrc(src) {
         return this.$sce.trustAsResourceUrl(src);
     }
-
     updateAvatar(avatar) {
         return this.people.updateAvatar(this.person, avatar);
     }

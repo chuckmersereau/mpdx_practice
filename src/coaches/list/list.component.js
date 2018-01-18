@@ -14,11 +14,9 @@ class ListController {
         this.listLoadCount = 0;
         this.page = 1;
     }
-
     $onInit() {
         this.load();
     }
-
     load(page = 1, reset = page === 1) {
         this.loading = true;
         if (reset) {
@@ -45,13 +43,11 @@ class ListController {
             this.setData(data, reset, currentCount);
         });
     }
-
     reset() {
         this.meta = {};
         this.data = [];
         this.listLoadCount++;
     }
-
     setData(data, reset, currentCount) {
         if (currentCount === this.listLoadCount) {
             this.meta = data.meta;
@@ -62,7 +58,6 @@ class ListController {
             }
         }
     }
-
     loadMoreCoachingAccountLists() {
         if (this.loading || (this.meta.pagination && this.page >= this.meta.pagination.total_pages)) {
             return;

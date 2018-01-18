@@ -14,7 +14,6 @@ class EmailAddressesController {
             this.load(true);
         });
     }
-
     save() {
         const message = this.gettextCatalog.getString(
             `You are updating all contacts visible on this page, setting the first {{source}} email address as the
@@ -29,7 +28,6 @@ class EmailAddressesController {
             });
         });
     }
-
     load(page = null) {
         return this.fixEmailAddresses.load(true, page);
     }

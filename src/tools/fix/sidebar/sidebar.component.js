@@ -8,7 +8,6 @@ class SidebarController {
         this.$state = $state;
         this.tools = tools;
     }
-
     $onInit() {
         this.$rootScope.$on('accountListUpdated', () => {
             this.tools.getAnalytics(true);

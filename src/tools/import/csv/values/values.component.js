@@ -7,15 +7,12 @@ class ValuesController {
         this.importCsv = importCsv;
         this.serverConstants = serverConstants;
     }
-
     save() {
         this.importCsv.save();
     }
-
     back() {
         this.importCsv.back();
     }
-
     fileHeader(constant) {
         return this.importCsv.data.file_headers[invert(this.importCsv.data.file_headers_mappings)[constant]];
     }

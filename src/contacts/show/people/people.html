@@ -7,6 +7,9 @@
         <i class="fas fa-code-fork"></i>
         <translate>Merge People</translate>
     </button>
+    <button type="button" class="btn btn-reverse" ng-click="$ctrl.emailAll()">
+        <i class="far fa-envelope"></i> <translate>Email All</translate>
+    </button>
 </div>
 <div ng-if="$ctrl.isMerging">
     <a class="btn btn-link" ng-click="$ctrl.cancelMerge()" translate>
