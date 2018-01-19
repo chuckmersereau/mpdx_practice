@@ -19,7 +19,7 @@ class ToolsService {
             },
             {
                 title: gettextCatalog.getString('Import from Google'),
-                icon: 'fas fa-google',
+                icon: 'fab fa-google',
                 link: 'tools.import.google',
                 description: gettextCatalog.getString('Import your contact information from your Google account'),
                 enabled: true,
@@ -43,7 +43,7 @@ class ToolsService {
             },
             {
                 title: gettextCatalog.getString('Fix Commitment Info'),
-                icon: 'fas fa-usd',
+                icon: 'fas fa-dollar-sign',
                 link: 'tools.fix.commitmentInfo',
                 description: gettextCatalog.getString('Set the correct contacts commitment info for each contact'),
                 enabled: true,
