@@ -1,22 +1,20 @@
 <div class="nav--secondary menu">
-        <div class="section" ng-class="{active: $ctrl.session.isInState('reports.donations')}">
-            <a ui-sref="reports.donations" translate>Donations</a>
-        </div>
-        <div class="section" ng-class="{active: $ctrl.session.isInState('reports.monthly')}">
-            <a ui-sref="reports.monthly" translate>Expected Monthly Total</a>
-        </div>
-        <div class="section" ng-class="{active: $ctrl.session.isInState('reports.balances')}">
-            <a ui-sref="reports.balances" translate>Balances</a>
-        </div>
-        <div class="section" ng-class="{active: $ctrl.session.isInState('reports.salary')}">
-            <a ui-sref="reports.salary" translate>Contributions by Salary Currency</a>
-        </div>
-        <div class="section" ng-class="{active: $ctrl.session.isInState('reports.partner')}">
-            <a ui-sref="reports.partner" translate>Contributions by Partner Currency</a>
-        </div>
-</div>
-<div class="content">
-    <div class="container">
-        <ui-view></ui-view>
+    <div class="section" ng-class="{active: $ctrl.session.isInState('reports.donations')}">
+        <a ui-sref="reports.donations" translate>Donations</a>
     </div>
+    <div class="section" ng-class="{active: $ctrl.session.isInState('reports.monthly')}">
+        <a ui-sref="reports.monthly" translate>Expected Monthly Total</a>
+    </div>
+    <div class="section" ng-class="{active: $ctrl.session.isInState('reports.balances')}">
+        <a ui-sref="reports.balances" translate>Balances</a>
+    </div>
+    <div class="section" ng-class="{active: $ctrl.session.isInState('reports.salary')}">
+        <a ui-sref="reports.salary" translate>Contributions by Salary Currency</a>
+    </div>
+    <div class="section" ng-class="{active: $ctrl.session.isInState('reports.partner')}">
+        <a ui-sref="reports.partner" translate>Contributions by Partner Currency</a>
+    </div>
+</div>
+<div class="content content-container">
+    <ui-view></ui-view>
 </div>

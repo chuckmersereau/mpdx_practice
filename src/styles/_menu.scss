@@ -3,9 +3,14 @@
     border-bottom: 1px solid $color-menu-border;
     padding: 10px 0 10px $container-padding-left;
 
-    .section.right {
-        margin-right: 0;
-        margin-left: 12px;
+    .section {
+        display: inline-block;
+        margin-right: 24px;
+        vertical-align: top;
+        &.right {
+            margin-right: 0;
+            margin-left: 12px;
+        }
     }
     a {
         color: $cru-gray-dark;

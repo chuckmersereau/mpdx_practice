@@ -13,12 +13,12 @@
         <div class="panel-heading">
             <h4 class="panel-title">
                 <translate>Balances by Organization</translate>
-                <div class="pull-right">
+                <span class="pull-right">
                     <span translate>Converted Report Total</span>:
                     {{$ctrl.total_currency_symbol}}
                     {{$ctrl.converted_total | number : 0}}
                     {{$ctrl.total_currency}}
-                </div>
+                </span>
             </h4>
         </div>
         <div class="panel-body" ng-if="$ctrl.designationAccounts.data">
