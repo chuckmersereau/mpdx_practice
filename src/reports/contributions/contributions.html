@@ -183,7 +183,7 @@
             <div>
                 {{currency.symbol}}{{currency.totals.year | number : 0}} {{currency.code}}
             </div>
-            <div>
+            <div ng-if="currency.code != $ctrl.data.salaryCurrency.code">
                 <span translate>Converted to</span>:
                 {{$ctrl.data.salaryCurrency.symbol_native}}{{currency.totals.year_converted | number : 0}}
                 {{$ctrl.data.salaryCurrency.code}})
