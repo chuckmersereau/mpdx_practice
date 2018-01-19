@@ -469,7 +469,7 @@ export default class Routes {
             name: 'tools.merge',
             title: gettext('Tools - Merge'),
             abstract: true,
-            component: 'merge',
+            component: 'fix',
             url: '/merge'
         }).state({
             name: 'tools.merge.contacts',

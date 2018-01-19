@@ -1,4 +1,4 @@
-<div class="merges">
+<div class="content-container merges">
     <h1 translate>Merge People</h1>
     <div ng-if="$ctrl.duplicates.length > 0 && !$ctrl.loading">
         <p>
@@ -16,32 +16,24 @@
             <strong class="text-danger" translate>This cannot be undone.</strong>
         </p>
         <div block-ui="merge-people">
-            <div class="row">
-                <div class="col-sm-10 col-sm-offset-1">
-                    <div class="row" ng-repeat="duplicate in $ctrl.duplicates track by $index">
-                        <div class="col-sm-5">
-                            <merge-people-item person="duplicate.people[0]" contact="duplicate.shared_contact" on-click="$ctrl.select(duplicate, 0)" ignore="duplicate.ignore"></merge-people-item>
-                        </div>
-                        <div class="col-sm-2 text-center choices">
-                            <i class="fas fa-arrow-left choice-left" ng-class="{'selected': duplicate.people[0].selected}" ng-click="$ctrl.select(duplicate, 0)"></i>
-                            <i class="fas fa-arrow-right choice-right" ng-class="{'selected': duplicate.people[1].selected}" ng-click="$ctrl.select(duplicate, 1)"></i>
-                            <i class="fas fa-window-close choice-cancel" ng-class="{'selected': duplicate.ignore}" ng-click="$ctrl.selectIgnore(duplicate)"></i>
-                        </div>
-                        <div class="col-sm-5">
-                            <merge-people-item person="duplicate.people[1]" contact="duplicate.shared_contact" on-click="$ctrl.select(duplicate, 1)" ignore="duplicate.ignore"></merge-people-item>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-5 text-right">
-                            <button class="btn btn-primary" ng-click="$ctrl.confirmAndContinue()" ng-disabled="$ctrl.confirmButtonDisabled()" translate>Confirm and Continue</button>
-                        </div>
-                        <div class="col-sm-2 text-center confirm-or">
-                            <span>OR</span>
-                        </div>
-                        <div class="col-sm-5">
-                            <button class="btn btn-primary" ng-click="$ctrl.confirmThenLeave()" ng-disabled="$ctrl.confirmButtonDisabled()" translate>Confirm and Leave</button>
-                        </div>
-                    </div>
+            <div class="merge-row" ng-repeat="duplicate in $ctrl.duplicates track by $index">
+                <merge-people-item person="duplicate.people[0]" contact="duplicate.shared_contact" on-click="$ctrl.select(duplicate, 0)" ignore="duplicate.ignore"></merge-people-item>
+                <div class="choices">
+                    <i class="fas fa-arrow-left choice-left" ng-class="{'selected': duplicate.people[0].selected}" ng-click="$ctrl.select(duplicate, 0)"></i>
+                    <i class="fas fa-arrow-right choice-right" ng-class="{'selected': duplicate.people[1].selected}" ng-click="$ctrl.select(duplicate, 1)"></i>
+                    <i class="fas fa-times choice-cancel" ng-class="{'selected': duplicate.ignore}" ng-click="$ctrl.selectIgnore(duplicate)"></i>
+                </div>
+                <merge-people-item person="duplicate.people[1]" contact="duplicate.shared_contact" on-click="$ctrl.select(duplicate, 1)" ignore="duplicate.ignore"></merge-people-item>
+            </div>
+            <div class="merge-row">
+                <div class="text-right">
+                    <button class="btn btn-primary" ng-click="$ctrl.confirmAndContinue()" ng-disabled="$ctrl.confirmButtonDisabled()" translate>Confirm and Continue</button>
+                </div>
+                <div class="text-center confirm-or">
+                    <span>OR</span>
+                </div>
+                <div>
+                    <button class="btn btn-primary" ng-click="$ctrl.confirmThenLeave()" ng-disabled="$ctrl.confirmButtonDisabled()" translate>Confirm and Leave</button>
                 </div>
             </div>
         </div>

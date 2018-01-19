@@ -1,6 +1,7 @@
 @import "appeals/appeals";
-@import 'fix/sendNewsletter/item/item';
+@import "fix/fix";
 @import "import/csv/csv";
+@import "merge/merge";
 
 tools {
     display: grid;

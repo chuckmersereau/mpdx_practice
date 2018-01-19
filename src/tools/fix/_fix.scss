@@ -1,0 +1,17 @@
+@import 'sendNewsletter/item/item';
+
+fix {
+    display: grid;
+    grid-template-columns: 225px 1fr;
+    height: 100%;
+    overflow: hidden;
+    > ui-view {
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    .fix-item-content {
+        display: grid;
+        grid-template-columns: 1fr 150px;
+        grid-gap: 10px;
+    }
+}
