@@ -1,0 +1,18 @@
+@import "list/list";
+@import "show/show";
+@import "wizard/wizard";
+
+appeals {
+    .content-container {
+        display: grid;
+        grid-template-rows: auto 1fr;
+        > .content {
+            display: grid;
+            grid-gap: 10px;
+            grid-template-columns: 1fr 1fr;
+        }
+        h2 {
+            margin-top: 0;
+        }
+    }
+}

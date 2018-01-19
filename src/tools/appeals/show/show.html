@@ -1,65 +1,56 @@
-<div class="filter--body">
-    <div class="filter--spacer filter--spacer__appeals"></div>
-    <div class="row">
-        <div class="col-md-3">
-            <div class="filter--sidebar filter--sidebar__appeals">
-                <div class="filter">
-                    <div class="filters_section filter--filtergroup">
-                        <div class="filter--filtergroup_title"><i class="fas fa-table"></i> <translate>Export Selected to CSV</translate></div>
-                        <div class="mt-2 mb-4">
-                            <button class="btn btn-default btn-block"
-                                    ng-click="$ctrl.exportToCSV()"
-                                    ng-disabled="$ctrl.selectedContactIds.length < 1"
-                                    translate-params-count="$ctrl.selectedContactIds.length"
-                                    translate>
-                                Export {{count}} Selected
-                            </button>
-                        </div>
-                    </div>
-                    <div class="filters_section filter--filtergroup" ng-if="$ctrl.mailchimp.data && $ctrl.mailchimp.data.lists_present">
-                        <div class="filter--filtergroup_title"><i class="far fa-envelope"></i> <translate>Export Selected to MailChimp</translate></div>
-                        <div class="mt-2 mb-4">
-                            <select name="primaryListId"
-                                    id="primaryListId"
-                                    ng-model="$ctrl.mailchimpListId"
-                                    class="form-control"
-                                    ng-options="option.id as option.name for option in $ctrl.mailchimp.data.lists_available_for_newsletters"
-                                    ng-if="$ctrl.users.current.preferences.admin"
-                                    chosen>
-                            </select>
-                            <button class="btn btn-default btn-block mt-2"
-                                    ng-if="$ctrl.users.current.preferences.admin"
-                                    ng-click="$ctrl.exportMailchimp()"
-                                    ng-disabled="!$ctrl.mailchimpListId || $ctrl.selectedContactIds.length < 1"
-                                    translate-params-count="$ctrl.selectedContactIds.length"
-                                    translate>Export {{count}} Selected
-                            </button>
-                            <button class="btn btn-default btn-block mt-2"
-                                    ng-if="!$ctrl.users.current.preferences.admin"
-                                    disabled
-                                    translate>Coming Soon
-                            </button>
-                        </div>
-                    </div>
-                    <div class="filters_section filter--filtergroup">
-                        <div class="filter--filtergroup_title"><i class="fas fa-home"></i> <translate>Add Contact to Appeal</translate></div>
-                        <div class="mt-2 mb-4">
-                            <collection-selector item-name="{{ 'Contact' | translate }}"
-                                                 display-text="$ctrl.selectedContact"
-                                                 search="$ctrl.contactSearch(text)"
-                                                 select="$ctrl.onContactSelected(item)">
-                            </collection-selector>
-                        </div>
-                    </div>
-                    <div class="filters_section filter--filtergroup">
-                        <div class="filter--filtergroup_title"><i class="fas fa-home"></i> <translate>Delete Appeal</translate></div>
-                        <div class="mt-2 mb-4">
-                            <button class="btn btn-default btn-block mt-2" ng-click="$ctrl.deleteAppeal()" translate>Permanently Delete Appeal</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div class="sidebar">
+    <div class="filter--filtergroup_title"><i class="fas fa-table"></i> <translate>Export Selected to CSV</translate></div>
+    <div class="mt-2 mb-4">
+        <button class="btn btn-default btn-block"
+                ng-click="$ctrl.exportToCSV()"
+                ng-disabled="$ctrl.selectedContactIds.length < 1"
+                translate-params-count="$ctrl.selectedContactIds.length"
+                translate>
+            Export {{count}} Selected
+        </button>
+    </div>
+    <div class="filters_section filter--filtergroup" ng-if="$ctrl.mailchimp.data && $ctrl.mailchimp.data.lists_present">
+        <div class="filter--filtergroup_title"><i class="far fa-envelope"></i> <translate>Export Selected to MailChimp</translate></div>
+        <div class="mt-2 mb-4">
+            <select name="primaryListId"
+                    id="primaryListId"
+                    ng-model="$ctrl.mailchimpListId"
+                    class="form-control"
+                    ng-options="option.id as option.name for option in $ctrl.mailchimp.data.lists_available_for_newsletters"
+                    ng-if="$ctrl.users.current.preferences.admin"
+                    chosen>
+            </select>
+            <button class="btn btn-default btn-block mt-2"
+                    ng-if="$ctrl.users.current.preferences.admin"
+                    ng-click="$ctrl.exportMailchimp()"
+                    ng-disabled="!$ctrl.mailchimpListId || $ctrl.selectedContactIds.length < 1"
+                    translate-params-count="$ctrl.selectedContactIds.length"
+                    translate>Export {{count}} Selected
+            </button>
+            <button class="btn btn-default btn-block mt-2"
+                    ng-if="!$ctrl.users.current.preferences.admin"
+                    disabled
+                    translate>Coming Soon
+            </button>
         </div>
+    </div>
+    <div class="filters_section filter--filtergroup">
+        <div class="filter--filtergroup_title"><i class="fas fa-home"></i> <translate>Add Contact to Appeal</translate></div>
+        <div class="mt-2 mb-4">
+            <collection-selector item-name="{{ 'Contact' | translate }}"
+                                 display-text="$ctrl.selectedContact"
+                                 search="$ctrl.contactSearch(text)"
+                                 select="$ctrl.onContactSelected(item)">
+            </collection-selector>
+        </div>
+    </div>
+    <div class="filters_section filter--filtergroup">
+        <div class="filter--filtergroup_title"><i class="fas fa-home"></i> <translate>Delete Appeal</translate></div>
+        <div class="mt-2 mb-4">
+            <button class="btn btn-default btn-block mt-2" ng-click="$ctrl.deleteAppeal()" translate>Permanently Delete Appeal</button>
+        </div>
+    </div>
+</div>
         <div class="col-md-9">
             <div class="filter--content">
                 <div class="columns columns--fixed">
@@ -411,4 +402,3 @@
             </div>
         </div>
     </div>
-</div>

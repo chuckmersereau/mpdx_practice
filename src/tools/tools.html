@@ -11,8 +11,8 @@
     </div>
 </div>
 <div class="content">
-    <div class="container">
-        <ui-view>
+    <ui-view>
+        <div class="content-container">
             <div class="panel panel-default panel-selected panel__prompt mb-4" ng-if="$ctrl.setup">
                 <div class="panel-body setup container-fluid">
                     <div class="row">
@@ -39,8 +39,8 @@
                     </div>
                 </div>
             </div>
-        </ui-view>
-    </div>
+        </div>
+    </ui-view>
 </div>
 <div class="horizontal-dropdown" ng-if="$ctrl.dropdown">
     <div class="container">

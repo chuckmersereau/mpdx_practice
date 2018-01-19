@@ -1,31 +1,32 @@
-<div class="row">
-    <div class="col-xs-3 mt-1">
-        <strong translate>
-            Primary Appeal
-        </strong>
-    </div>
-    <div class="col-xs-9">
-        <collection-selector item-name="{{ 'Primary Appeal' | translate }}"
-                             display-text="$ctrl.accounts.current.primary_appeal.name"
-                             search="$ctrl.appeals.appealSearch(text)"
-                             select="$ctrl.appeals.setPrimaryAppeal(item)">
-        </collection-selector>
-    </div>
+<div class="header">
+    <strong translate>
+        Primary Appeal
+    </strong>
+    <collection-selector item-name="{{ 'Primary Appeal' | translate }}"
+                         display-text="$ctrl.accounts.current.primary_appeal.name"
+                         search="$ctrl.appeals.appealSearch(text)"
+                         select="$ctrl.appeals.setPrimaryAppeal(item)">
+    </collection-selector>
 </div>
-<div class="panel panel-default" block-ui="appeals-list">
-    <div class="panel-heading" translate>
-        Current Appeals
-    </div>
-    <div class="panel-body pt-0 pb-3" infinite-scroll="$ctrl.loadMoreAppeals()" ng-if="$ctrl.data.length > 0">
-        <appeals-list-item ng-repeat="appeal in $ctrl.data"
-                           on-primary="$ctrl.onPrimary(appeal.id)"
-                           appeal="appeal">
-        </appeals-list-item>
-    </div>
+<div id="appealListParent">
+    <div class="panel panel-default" block-ui="appeals-list">
+        <div class="panel-heading" translate>
+            Current Appeals
+        </div>
+        <div class="panel-body"
+             infinite-scroll="$ctrl.loadMoreAppeals()"
+             infinite-scroll-container="'#appealListParent'"
+             ng-if="$ctrl.data.length > 0">
+            <appeals-list-item ng-repeat="appeal in $ctrl.data"
+                               on-primary="$ctrl.onPrimary(appeal.id)"
+                               appeal="appeal">
+            </appeals-list-item>
+        </div>
 
-    <div class="panel-body blankslate" ng-if="$ctrl.data.length === 0 && $ctrl.loading === false">
-        <i class="fas fa-trophy blankslate-icon"></i>
-        <h3 translate>No Goals have been setup yet</h3>
+        <div class="panel-body blankslate" ng-if="$ctrl.data.length === 0 && $ctrl.loading === false">
+            <i class="fas fa-trophy blankslate-icon"></i>
+            <h3 translate>No Goals have been setup yet</h3>
+        </div>
     </div>
 </div>
 <div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">

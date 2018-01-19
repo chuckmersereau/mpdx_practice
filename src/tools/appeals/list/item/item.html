@@ -1,9 +1,9 @@
 <div class="appeal pointer" ui-sref=".show({appealId: $ctrl.appeal.id})">
-    <h4 class="mt-3">
-        {{::$ctrl.appeal.name}}
-        <div class="pull-right">
+    <h4>
+        <span>{{::$ctrl.appeal.name}}</span>
+        <span>
             {{::$ctrl.appeal.pledges_amount_processed}} / {{::$ctrl.appeal.amount}}
-        </div>
+        </span>
     </h4>
     <appeals-progressbar appeal="$ctrl.appeal"></appeals-progressbar>
 </div>
