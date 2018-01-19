@@ -240,6 +240,11 @@ describe('common.datetimepicker.component', () => {
             $ctrl.onMenuItemKeydown(event, 1);
             expect($ctrl.showDropdown).toBeFalsy();
         });
+        it('should focus input', () => {
+            event.key = 'Tab';
+            $ctrl.onMenuItemKeydown(event, 1);
+            expect($ctrl.focusTimeInputElement).toHaveBeenCalledWith();
+        });
     });
     describe('focusTimeInputElement', () => {
         beforeEach(() => {

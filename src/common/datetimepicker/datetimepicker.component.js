@@ -120,9 +120,9 @@ class DatetimepickerController {
                 event.preventDefault();
                 break;
             case 'Tab':
-                if (index === this.times.length - 1) {
-                    this.showDropdown = false;
-                }
+                this.showDropdown = false;
+                this.focusTimeInputElement();
+                event.preventDefault();
                 break;
         }
     }
