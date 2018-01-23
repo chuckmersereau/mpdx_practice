@@ -23,7 +23,6 @@ class MergeContactsController {
         this.duplicates = [];
         this.total = 0;
     }
-
     $onInit() {
         this.$rootScope.$on('accountListUpdated', () => {
             this.load();
@@ -31,7 +30,6 @@ class MergeContactsController {
 
         this.load();
     }
-
     select(duplicate, index) {
         duplicate.ignore = false;
         const alreadySelected = !!duplicate.contacts[index].selected;
@@ -40,13 +38,11 @@ class MergeContactsController {
             return concat(result, value);
         }, [], duplicate.contacts);
     }
-
     selectIgnore(duplicate) {
         duplicate.ignore = true;
         duplicate.contacts[0].selected = false;
         duplicate.contacts[1].selected = false;
     }
-
     confirm() {
         let promises = [];
         const contactsToMerge = filter((duplicate) => {
@@ -63,19 +59,16 @@ class MergeContactsController {
             this.alerts.addAlert(this.gettextCatalog.getString('Contacts successfully merged'));
         });
     }
-
     confirmAndContinue() {
         return this.confirm().then(() => {
             return this.load();
         });
     }
-
     confirmThenLeave() {
         return this.confirm().then(() => {
             this.$state.go('tools');
         });
     }
-
     ignore(duplicates) {
         return map((duplicate) =>
             this.api.put({
@@ -84,7 +77,6 @@ class MergeContactsController {
                 type: 'duplicate_record_pairs' })
             , duplicates);
     }
-
     merge(duplicates) {
         const winnersAndLosers = map((duplicate) => {
             if (duplicate.contacts[0].selected) {
@@ -94,7 +86,6 @@ class MergeContactsController {
         }, duplicates);
         return this.contacts.merge(winnersAndLosers);
     }
-
     load() {
         this.loading = true;
         this.duplicates = [];
@@ -124,7 +115,6 @@ class MergeContactsController {
             return this.duplicates;
         });
     }
-
     setMeta(meta) {
         this.meta = meta;
 
@@ -132,7 +122,6 @@ class MergeContactsController {
             this.tools.analytics['duplicate-contacts'] = this.meta.pagination.total_count;
         }
     }
-
     confirmButtonDisabled() {
         return filter((duplicate) => {
             return duplicate.ignore === true

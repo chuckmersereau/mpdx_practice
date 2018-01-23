@@ -7,18 +7,15 @@ class ItemController {
         this.serverConstants = serverConstants;
         this.fixCommitmentInfo = fixCommitmentInfo;
     }
-
     $onInit() {
         this.blockUI = this.blockUI.instances.get(`fix-commitment-info-item-${this.contact.id}`);
     }
-
     save() {
         this.blockUI.start();
         return this.fixCommitmentInfo.save(this.contact).then(() => {
             this.blockUI.reset();
         });
     }
-
     reject() {
         this.blockUI.start();
         return this.fixCommitmentInfo.reject(this.contact).then(() => {

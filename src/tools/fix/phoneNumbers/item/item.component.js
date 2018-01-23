@@ -9,18 +9,15 @@ class ItemController {
         this.fixPhoneNumbers = fixPhoneNumbers;
         this.people = people;
     }
-
     $onInit() {
         this.blockUI = this.blockUI.instances.get(`fix-phone-numbers-item-${this.person.id}`);
     }
-
     save() {
         this.blockUI.start();
         return this.fixPhoneNumbers.save(this.person).then(() => {
             this.blockUI.reset();
         });
     }
-
     hasPrimary() {
         return this.fixPhoneNumbers.hasPrimary(this.person);
     }

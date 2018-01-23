@@ -1,7 +1,6 @@
 import component from './progressbar.component';
 
 
-
 describe('tools.appeals.show.progressbar.component', () => {
     let $ctrl, scope;
     beforeEach(() => {

@@ -19,11 +19,9 @@ class ModalController {
 
         this.$onInit();
     }
-
     $onInit() {
         this.search();
     }
-
     search() {
         this.selectedItem = null;
         this.collection = [];
@@ -38,7 +36,6 @@ class ModalController {
             this.loading = false;
         });
     }
-
     save() {
         this.$scope.$hide();
         this.select(this.selectedItem);

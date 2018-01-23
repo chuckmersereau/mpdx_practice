@@ -8,7 +8,6 @@ class Session {
         this.navImpersonation = false;
         this.showFiltersOnMobile = false;
     }
-
     isInState(match) {
         return this.$state.$current.name.indexOf(match) === 0;
     }

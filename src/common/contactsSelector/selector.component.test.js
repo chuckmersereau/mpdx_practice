@@ -2,7 +2,7 @@ import list from './selector.component';
 
 let defaultModel = ['a'];
 let tagList = [{ name: 'a' }, { name: 'b' }];
-const element = angular.element('<div></div>')
+const element = angular.element('<div></div>');
 
 describe('common.contactsSelector.component', () => {
     let $ctrl, rootScope, scope, componentController;

@@ -1,21 +1,24 @@
 import assign from 'lodash/fp/assign';
 import concat from 'lodash/fp/concat';
+import emptyToNull from '../common/fp/emptyToNull';
+import find from 'lodash/fp/find';
+import flattenCompactAndJoin from 'common/fp/flattenCompactAndJoin';
 import flow from 'lodash/fp/flow';
+import get from 'lodash/fp/get';
 import has from 'lodash/fp/has';
 import includes from 'lodash/fp/includes';
 import isArray from 'lodash/fp/isArray';
 import isEqual from 'lodash/fp/isEqual';
 import isFunction from 'lodash/fp/isFunction';
 import isNil from 'lodash/fp/isNil';
+import joinComma from '../common/fp/joinComma';
 import map from 'lodash/fp/map';
 import omitBy from 'lodash/fp/omitBy';
 import pull from 'lodash/fp/pull';
-import union from 'lodash/fp/union';
-import joinComma from '../common/fp/joinComma';
-import relationshipId from '../common/fp/relationshipId';
 import reduce from 'lodash/fp/reduce';
 import reduceObject from '../common/fp/reduceObject';
-import emptyToNull from '../common/fp/emptyToNull';
+import relationshipId from '../common/fp/relationshipId';
+import union from 'lodash/fp/union';
 
 class ContactsService {
     constructor(
@@ -285,6 +288,35 @@ class ContactsService {
                 : this.serverConstants.getPledgeFrequencyValue(contact.pledge_frequency);
             return contact;
         }, angular.copy(data));
+    }
+    getEmails() {
+        return this.api.get('contacts', {
+            filter: {
+                account_list_id: this.api.account_list_id,
+                newsletter: 'email',
+                status: 'active'
+            },
+            include: 'people,people.email_addresses',
+            fields: {
+                contact: 'people',
+                people: 'deceased,email_addresses',
+                email_addresses: 'email,primary'
+            },
+            per_page: 25000
+        }).then((data) => {
+            return this.mapEmails(data);
+        });
+    }
+    mapEmails(data) {
+        return flattenCompactAndJoin((contact) => this.getEmailsFromPeople(contact.people), data);
+    }
+    getEmailsFromPeople(data) {
+        const getEmail = get('email');
+        const findPrimary = find({ primary: true });
+        const getEmailFromPrimary = flow(findPrimary, getEmail);
+        return map((person) => {
+            return person.deceased ? null : getEmailFromPrimary(person.email_addresses);
+        }, data);
     }
 }
 

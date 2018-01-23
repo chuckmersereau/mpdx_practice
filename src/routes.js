@@ -8,7 +8,7 @@ export default class Routes {
             component: 'root'
         }).state({
             name: 'home',
-            title: gettext('Home'),
+            title: gettext('Dashboard'),
             url: '/',
             component: 'home',
             parent: 'root',

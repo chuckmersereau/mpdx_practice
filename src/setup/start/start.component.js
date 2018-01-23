@@ -4,11 +4,9 @@ class StartController {
     ) {
         this.setup = setup;
     }
-
     $onInit() {
         this.setup.setPosition('start');
     }
-
     next() {
         this.saving = true;
         return this.setup.next().then(() => {

@@ -18,7 +18,6 @@ class menuController {
         this.users = users;
         this.sidekiqUrl = `${config.oAuthUrl}sidekiq?access_token=${this.$window.localStorage.getItem('token')}`;
     }
-
     $onInit() {
         this.$rootScope.$on('accountListUpdated', () => {
             this.tools.getAnalytics(true);

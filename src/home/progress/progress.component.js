@@ -19,7 +19,6 @@ class progressController {
         this.startDate = moment(this.endDate).subtract(1, 'week').add(1, 'day');
         this.errorOccurred = false;
     }
-
     $onInit() {
         this.$rootScope.$on('accountListUpdated', () => {
             this.refreshData();
@@ -32,19 +31,16 @@ class progressController {
             this.users.listOrganizationAccounts(true);
         });
     }
-
     nextWeek() {
         this.startDate.add(1, 'week');
         this.endDate.add(1, 'week');
         this.refreshData();
     }
-
     previousWeek() {
         this.startDate.subtract(1, 'week');
         this.endDate.subtract(1, 'week');
         this.refreshData();
     }
-
     refreshData() {
         this.blockUI.start();
         this.accounts.analytics = null;
@@ -56,7 +52,6 @@ class progressController {
             throw err;
         });
     }
-
     showWeeklyProgressReport() {
         return find((organizationAccount) => organizationAccount.organization.name === 'Cru - USA', this.users.organizationAccounts);
     }

@@ -78,7 +78,7 @@ config = assign(config, {
             sourceMap: true
         }),
         new HtmlWebpackPlugin({
-            template: './src/index.ejs',
+            template: './src/index.html',
             favicon: './src/images/mpdx-favicon.png',
             inject: 'body',
             minify: {

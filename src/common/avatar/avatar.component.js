@@ -8,7 +8,6 @@ class AvatarController {
         this.size = this.size || 'md';
         this.loading = false;
     }
-
     upload(form) {
         if (this.valid(form)) {
             this.loading = true;
@@ -24,7 +23,6 @@ class AvatarController {
             });
         }
     }
-
     valid(form) {
         if (this.avatar && form.$valid) {
             return true;

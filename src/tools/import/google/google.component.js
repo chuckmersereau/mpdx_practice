@@ -28,7 +28,6 @@ class ImportGoogleController {
             in_preview: false
         };
     }
-
     $onInit() {
         this.$rootScope.$on('accountListUpdated', () => {
             this.contactsTags.load();
@@ -41,7 +40,6 @@ class ImportGoogleController {
             this.updateAccount();
         }
     }
-
     save() {
         this.blockUI.start();
         return this.importGoogle.save(this.import).then(() => {
@@ -57,7 +55,6 @@ class ImportGoogleController {
             throw err;
         });
     }
-
     updateAccount() {
         this.import.source_account = { id: this.selectedAccount.id };
         this.import.groups = [];
@@ -66,11 +63,9 @@ class ImportGoogleController {
             this.import.group_tags[group.id] = [group.tag];
         }, this.selectedAccount.contact_groups);
     }
-
     checkAllGoogleContactGroups() {
         this.import.groups = map((group) => group.id, this.selectedAccount.contact_groups);
     }
-
     uncheckAllGoogleContactGroups() {
         this.import.groups = [];
     }

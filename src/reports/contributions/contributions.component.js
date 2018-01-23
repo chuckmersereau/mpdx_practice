@@ -152,7 +152,6 @@ class ContributionsController {
     percentage(amount) {
         return this.data.total ? (amount / parseFloat(this.data.total)) * 100 : NaN;
     }
-
     moment(str) {
         return moment(str);
     }

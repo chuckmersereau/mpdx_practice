@@ -13,6 +13,7 @@ import ngSortable from 'ng-sortable';
 import angulartics from 'angulartics';
 import angularticsGoogleAnalytics from 'angulartics-google-analytics';
 import angularElastic from 'angular-elastic';
+import ngClipboard from 'ngclipboard';
 // deps with no default exports
 import 'angular-block-ui';
 import 'angular-filter';
@@ -58,6 +59,7 @@ export default angular.module('mpdx.vendor', [
     angulartics,
     angularticsGoogleAnalytics,
     angularElastic,
+    ngClipboard,
     'angular.filter',
     'blockUI',
     'LocalForageModule',

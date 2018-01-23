@@ -85,7 +85,6 @@ class MapContactsController {
 
         this.init();
     }
-
     init() {
         return this.getContacts().then((data) => {
             this.deserializeContacts(data);
@@ -122,7 +121,6 @@ class MapContactsController {
             this.createMarker(contact, contact.address);
         }, mapContacts);
     }
-
     createMarker(contact, address) {
         const geo = address.geo.split(',');
         const status = get(this.statusToString(contact.status), this.statuses);
@@ -135,7 +133,6 @@ class MapContactsController {
             })
         );
     }
-
     setMap(statuses = {}) {
         this.loading = true;
         return this.NgMap.getMap({ id: this.$scope.id }).then((evtMap) => {
@@ -165,7 +162,6 @@ class MapContactsController {
             return this.map;
         });
     }
-
     setTab(service) {
         if (this.tabId === service) {
             this.tabId = '';
@@ -173,18 +169,15 @@ class MapContactsController {
             this.tabId = service;
         }
     }
-
     tabSelected(service) {
         return this.tabId === service;
     }
-
     statusToString(status) {
         if (has(status, this.statuses)) {
             return status;
         }
         return 'All Inactive';
     }
-
     centerOnMarker(marker, shiftViewport = true) {
         this.selectedAddress = marker.address;
         this.selectedContact = marker.contact;

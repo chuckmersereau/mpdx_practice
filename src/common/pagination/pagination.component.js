@@ -7,14 +7,12 @@ class PaginationController {
         this.windowSize = 5;
         this.$log = $log;
     }
-
     $onChanges(data) {
         this.meta = reduceObject((result, value, key) => {
             result[key] = toInteger(value);
             return result;
         }, {}, data.meta.currentValue);
     }
-
     getTotalPages() {
         let pageArray = range(0, this.meta.total_pages);
 
@@ -30,26 +28,21 @@ class PaginationController {
         }
         return pageArray;
     }
-
     goto(page) {
         this.$log.debug(`page change: ${page}`);
         this.onChange({ page: page });
     }
-
     next() {
         if (this.meta.page === this.meta.total_pages) { return; }
         this.goto(this.meta.page + 1);
     }
-
     previous() {
         if (this.meta.page === 1) { return; }
         this.goto(this.meta.page - 1);
     }
-
     from() {
         return Math.ceil((this.meta.page - 1) * this.meta.per_page + 1);
     }
-
     to() {
         if (this.meta.page === this.meta.total_pages) {
             return this.meta.total_count;

@@ -164,7 +164,8 @@ class ListController {
             template: require('./exportContacts/exportContacts.html'),
             controller: 'exportContactsController',
             locals: {
-                selectedContactIds: this.contacts.selectedContacts
+                selectedContactIds: this.contacts.selectedContacts,
+                filter: null
             }
         });
     }

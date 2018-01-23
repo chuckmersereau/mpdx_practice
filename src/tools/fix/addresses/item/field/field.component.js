@@ -7,7 +7,6 @@ class FieldController {
     ) {
         this.contacts = contacts;
     }
-
     addressSummary() {
         if (!this.address || !this.address.street) {
             return '';
@@ -26,13 +25,11 @@ class FieldController {
         }
         return summary;
     }
-
     remove() {
         return this.contacts.deleteAddress(this.contact.id, this.address.id).then(() => {
             this.contact.addresses = reject({ id: this.address.id }, this.contact.addresses);
         });
     }
-
     setPrimary() {
         this.contact.addresses = map((address) => {
             address.primary_mailing_address = address.id === this.address.id;

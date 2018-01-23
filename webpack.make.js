@@ -11,6 +11,7 @@ const configEnv = process.env.NODE_ENV || 'development';
 const config = {
     devtool: 'eval',
     entry: {
+        analytics: './src/analytics.js',
         app: './src/app.module.js',
         helpscout: './src/helpscout.js',
         moment_locales: './src/moment-locales.js'

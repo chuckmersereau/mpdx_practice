@@ -6,29 +6,41 @@
                    class="form-control"
                    ng-model="$ctrl.date"
                    data-date-format="{{::$ctrl.locale.dateTimeFormat}}"
-                   name="dp_{{::$id}}"
-                   id="dp_{{::$id}}"
-                   ng-focus="$ctrl.focus()"
+                   name="dp_{{::$ctrl.$scope.$id}}"
+                   id="dp_{{::$ctrl.$scope.$id}}"
+                   ng-focus="$ctrl.onFocus()"
                    data-autoclose="1">
         </div>
-        <div ng-if="$ctrl.form['dp_' + $id].$invalid" translate>
+        <div ng-if="$ctrl.form['dp_' + $ctrl.$scope.$id].$invalid" translate>
             Invalid date format
         </div>
     </div>
     <div class="col-sm-6">
         <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-            <input bs-dropdown
-                   class="form-control"
+            <input class="form-control"
                    ng-model="$ctrl.time"
-                   name="tp_{{::$id}}"
-                   data-trigger="focus"
-                   ng-focus="$ctrl.focus()">
-            <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop">
-                <li><a ng-click="$ctrl.selectTime(time)" ng-repeat="time in $ctrl.times track by $index">{{time}}</a></li>
+                   name="tp_{{::$ctrl.$scope.$id}}"
+                   id="tp_{{::$ctrl.$scope.$id}}"
+                   data-trigger="click"
+                   ng-blur="$ctrl.onTimeBlur($event)"
+                   ng-keydown="$ctrl.onTimeKeydown($event)"
+                   ng-focus="$ctrl.onTimeFocus($event)">
+            <ul class="dropdown-menu dropdown-menu-right am-fade"
+                role="menu"
+                id="tdd_{{::$ctrl.$scope.$id}}"
+                ng-if="$ctrl.showDropdown"
+                style="display: block">
+                <li ng-repeat="time in $ctrl.times track by $index" role="menuitem">
+                    <a href="javascript:;"
+                       id="time_{{::$ctrl.$scope.$id}}_{{::$index}}"
+                       ng-click="$ctrl.onSelectTime(time)"
+                       ng-focus="$ctrl.onFocusTime(time)"
+                       ng-keydown="$ctrl.onMenuItemKeydown($event, $index)">{{time}}</a>
+                </li>
             </ul>
         </div>
-        <div ng-if="$ctrl.form['tp_' + $id].$invalid" translate>
+        <div ng-if="$ctrl.form['tp_' + $ctrl.$scope.$id].$invalid" translate>
             Invalid time format
         </div>
     </div>

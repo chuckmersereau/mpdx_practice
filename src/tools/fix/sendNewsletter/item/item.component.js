@@ -8,11 +8,9 @@ class ItemController {
         this.fixSendNewsletter = fixSendNewsletter;
         this.serverConstants = serverConstants;
     }
-
     $onInit() {
         this.blockUI = this.blockUI.instances.get(`fix-send-newsletter-item-${this.contact.id}`);
     }
-
     save() {
         this.blockUI.start();
         return this.fixSendNewsletter.save(this.contact).then(() => {

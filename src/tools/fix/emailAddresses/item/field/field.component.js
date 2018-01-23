@@ -6,7 +6,6 @@ class FieldController {
     ) {
         this.fixEmailAddresses = fixEmailAddresses;
     }
-
     $onInit() {
         if (!this.emailAddress) {
             this.emailAddress = {
@@ -18,7 +17,6 @@ class FieldController {
             };
         }
     }
-
     save() {
         return this.fixEmailAddresses.saveEmailAddress(this.person, this.emailAddress).then(() => {
             if (this.emailAddress.new) {
@@ -34,11 +32,9 @@ class FieldController {
             }
         });
     }
-
     remove() {
         this.fixEmailAddresses.removeEmailAddress(this.person, this.emailAddress);
     }
-
     setPrimary() {
         this.fixEmailAddresses.setPrimary(this.person, this.emailAddress);
     }

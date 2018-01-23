@@ -6,17 +6,14 @@ class FinishController {
         this.$state = $state;
         this.setup = setup;
     }
-
     $onInit() {
         this.setup.setPosition('finish');
     }
-
     next() {
         return this.setup.setPosition('').then(() => {
             this.$state.go('tools', { setup: true });
         });
     }
-
     dashboard() {
         return this.setup.setPosition('').then(() => {
             this.$state.go('home');

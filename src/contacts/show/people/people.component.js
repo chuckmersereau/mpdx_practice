@@ -1,27 +1,31 @@
 import concat from 'lodash/fp/concat';
 import each from 'lodash/fp/each';
 import filter from 'lodash/fp/filter';
+import flattenCompactAndJoin from 'common/fp/flattenCompactAndJoin';
 import has from 'lodash/fp/has';
 import includes from 'lodash/fp/includes';
 import reject from 'lodash/fp/reject';
+import bowser from 'bowser';
 
 class ContactPeopleController {
     constructor(
-        $log, $state, $rootScope,
-        alerts, api, people, gettextCatalog
+        $log, $state, $rootScope, $window,
+        alerts, api, contacts, people, gettextCatalog
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
         this.$state = $state;
+        this.$window = $window;
         this.alerts = alerts;
         this.api = api;
+        this.contacts = contacts;
         this.people = people;
         this.gettextCatalog = gettextCatalog;
 
         this.data = [];
         this.isMerging = false;
+        this.isSafari = bowser.name === 'Safari';
     }
-
     $onInit() {
         this.watcher1 = this.$rootScope.$on('accountListUpdated', () => this.init());
 
@@ -45,19 +49,16 @@ class ContactPeopleController {
 
         this.people.listAll(); // lazy load people so the people modal feels snappy
     }
-
     $onDestroy() {
         this.watcher1();
         this.watcher2();
         this.watcher3();
         this.watcher4();
     }
-
     $onChanges() {
         this.selectedPeople = [];
         this.init();
     }
-
     init() {
         if (!has('contact.id', this)) {
             return;
@@ -70,7 +71,6 @@ class ContactPeopleController {
             this.data = data;
         });
     }
-
     selectPerson(person) {
         if (includes(person, this.selectedPeople)) {
             person.selected_for_merge = false;
@@ -80,7 +80,6 @@ class ContactPeopleController {
             this.selectedPeople = concat(this.selectedPeople, person);
         }
     }
-
     openMergeModal() {
         if (this.selectedPeople.length < 2) {
             this.alerts.addAlert(this.gettextCatalog.getString('First select at least 2 people to merge'), 'danger');
@@ -91,7 +90,6 @@ class ContactPeopleController {
             });
         }
     }
-
     cancelMerge() {
         this.isMerging = false;
         each((person) => {
@@ -99,9 +97,16 @@ class ContactPeopleController {
         }, this.data);
         this.selectedPeople = [];
     }
-
     newPerson() {
         this.people.openPeopleModal(this.contact);
+    }
+    emailAll() {
+        const emails = flattenCompactAndJoin((email) => email, this.contacts.getEmailsFromPeople(this.data));
+        if (this.isSafari) {
+            this.$window.href = `mailto:${emails}`;
+        } else {
+            this.$window.open(`mailto:${emails}`);
+        }
     }
 }
 

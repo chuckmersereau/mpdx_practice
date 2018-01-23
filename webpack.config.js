@@ -56,7 +56,7 @@ config = assign(config, {
             }
         }),
         new HtmlWebpackPlugin({
-            template: './src/index.ejs',
+            template: './src/index.html',
             favicon: './src/images/mpdx-favicon.png',
             inject: 'body',
             minify: false
