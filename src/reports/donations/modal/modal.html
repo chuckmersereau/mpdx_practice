@@ -4,7 +4,13 @@
             <div class="row">
                 <div class="col-md-8">
                     <label for="tendered_amount"><translate>Amount</translate> <span class="text-danger">*</span></label>
-                    <input type="text" ng-model="$ctrl.donation.amount" id="tendered_amount" class="form-control" pattern="\$?[1-9][0-9.,]*" required autofocus>
+                    <input type="text"
+                           ng-model="$ctrl.donation.amount"
+                           id="tendered_amount"
+                           class="form-control"
+                           pattern="\$?[0-9][0-9.,]*"
+                           required
+                           autofocus>
                 </div>
                 <div class="col-md-4">
                     <label for="currency"><translate>Currency</translate> <span class="text-danger">*</span></label>
@@ -73,12 +79,14 @@
                 </div>
                 <div class="col-md-8">
                     <label for="appeal_amount" translate>Appeal Amount</label>
+
                     <input type="text"
                            ng-model="$ctrl.donation.appeal_amount"
                            id="appeal_amount"
                            class="form-control"
                            placeholder="{{ ::'Leave empty to use full donation amount' | translate }}"
-                           ng-disabled="!$ctrl.donation.appeal">
+                           ng-disabled="!$ctrl.donation.appeal"
+                           pattern="\$?[0-9][0-9.,]*">
                 </div>
             </div>
         </div>
