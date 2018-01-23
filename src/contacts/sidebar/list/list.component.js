@@ -61,7 +61,7 @@ class ListController {
             data: {
                 filter: this.contacts.buildFilterParams(),
                 fields: {
-                    contacts: 'name,late_at'
+                    contacts: 'name,status,late_at'
                 },
                 page: this.page,
                 per_page: 50,
