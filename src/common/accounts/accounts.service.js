@@ -19,7 +19,7 @@ class AccountsService {
         this.analytics = null;
         this.current = null;
         this.data = {};
-        this.defaultIncludes = 'notification_preferences,notification_preferences.notification_type,primary_appeal';
+        this.defaultIncludes = 'primary_appeal';
         this.defaultFields = { primary_appeal: '' };
         this.donations = null;
         this.inviteList = null;
