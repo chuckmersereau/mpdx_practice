@@ -20,7 +20,7 @@ describe('common.accounts.service', () => {
             expect(accounts.current).toEqual(null);
             expect(accounts.data).toEqual({});
             expect(accounts.defaultIncludes).toEqual(
-                'notification_preferences,notification_preferences.notification_type,primary_appeal'
+                'primary_appeal'
             );
             expect(accounts.defaultFields).toEqual({ primary_appeal: '' });
             expect(accounts.donations).toEqual(null);

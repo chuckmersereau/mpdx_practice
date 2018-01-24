@@ -18,10 +18,11 @@
         <div ng-repeat="contact in $ctrl.data track by contact.id" class="item" ng-class="{ selected: contact.selected }">
             <a ng-click="$ctrl.switchContact(contact.id)" ng-class="{'active': $ctrl.selected == contact.id }">
                 <div class="name">{{contact.name}}</div>
-                <div class="overdue">
-                    <i class="fas fa-circle circle-on-time" ng-if="::$ctrl.daysLate(contact) < 0" data-title="{{ ::'on time' | translate }}" data-placement="left" bs-tooltip></i>
-                    <i class="fas fa-circle circle-late" ng-if="::$ctrl.daysLate(contact) >= 30 && $ctrl.daysLate(contact) < 60" data-title="{{ ::'30+ days late' | translate }}" data-placement="left" bs-tooltip></i>
-                    <i class="fas fa-circle circle-very-late" ng-if="::$ctrl.daysLate(contact) >= 60" data-title="{{ ::'60+ days late' | translate }}" data-placement="left" bs-tooltip></i>
+                <div class="overdue" ng-if="::contact.status === 'Partner - Financial'">
+                    <i class="fas fa-circle circle-success" ng-if="::$ctrl.daysLate(contact) < 0" data-title="{{ ::'on time' | translate }}" data-placement="left" bs-tooltip></i>
+                    <i class="fas fa-circle circle-default" ng-if="::$ctrl.daysLate(contact) >= 0 && $ctrl.daysLate(contact) < 30" data-title="{{ ::'0+ days late' | translate }}" data-placement="left" bs-tooltip></i>
+                    <i class="fas fa-circle circle-warning" ng-if="::$ctrl.daysLate(contact) >= 30 && $ctrl.daysLate(contact) < 60" data-title="{{ ::'30+ days late' | translate }}" data-placement="left" bs-tooltip></i>
+                    <i class="fas fa-circle circle-danger" ng-if="::$ctrl.daysLate(contact) >= 60" data-title="{{ ::'60+ days late' | translate }}" data-placement="left" bs-tooltip></i>
                 </div>
             </a>
         </div>

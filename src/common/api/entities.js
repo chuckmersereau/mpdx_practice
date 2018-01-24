@@ -31,14 +31,9 @@ export class EntityAttributes {
             account_lists: {
                 attributes: [
                     'creator_id', 'created_at', 'currency', 'home_country', 'monthly_goal', 'name',
-                    'notification_preferences', 'primary_appeal', 'settings', 'salary_organization', 'tester',
+                    'primary_appeal', 'settings', 'salary_organization', 'tester',
                     'total_pledges', 'updated_at'
                 ],
-                notification_preferences: {
-                    ref: 'id',
-                    attributes: ['actions', 'notification_type'],
-                    notification_type: { ref: 'id' }
-                },
                 primary_appeal: {
                     ref: 'id'
                 },
@@ -182,6 +177,12 @@ export class EntityAttributes {
                     'contact_id', 'notification_type_id', 'event_date', 'cleared', 'created_at', 'updated_at',
                     'donation_id'
                 ]
+            },
+            notification_preferences: {
+                ref: 'id',
+                attributes: ['email', 'notification_type', 'task', 'user'],
+                notification_type: { ref: 'id' },
+                user: { ref: 'id' }
             },
             organization_accounts: {
                 attributes: ['organization', 'password', 'username', 'person'],
