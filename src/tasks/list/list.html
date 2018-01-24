@@ -98,7 +98,7 @@
 </div>
 <div class="content" id="taskListParent">
     <div class="column" ng-init="activeCategory = {}">
-        <div ng-repeat="(category, tasks) in $ctrl.data | orderBy: 'category.id' | groupBy: 'category.name'"
+        <div ng-repeat="(category, tasks) in $ctrl.data | groupBy: 'category.name'"
              infinite-scroll="$ctrl.loadMoreTasks()"
              infinite-scroll-container="'#taskListParent'"
              infinite-scroll-disabled="$ctrl.loading">
@@ -117,10 +117,11 @@
                     </span>
                 </div>
                <ul class="list-group" role="tabpanel" bs-collapse-target>
-                    <li class="list-group-item" ng-repeat="task in tasks | orderBy: ['task.completed','-task.completed_at','task.start_at','task.created_at']">
+                    <li class="list-group-item" ng-repeat="task in tasks">
                         <tasks-list-item task="task"
                             selected="$ctrl.isSelected(task.id)"
                             on-select="$ctrl.select(task.id)"
+                            on-multi-select="$ctrl.multiSelect(task.id)"
                             on-open="$ctrl.onOpen(task, $action)"></tasks-list-item>
                     </li>
                 </ul>

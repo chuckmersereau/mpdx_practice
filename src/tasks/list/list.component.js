@@ -2,6 +2,7 @@ import concat from 'lodash/fp/concat';
 import defaultTo from 'lodash/fp/defaultTo';
 import each from 'lodash/fp/each';
 import find from 'lodash/fp/find';
+import findIndex from 'lodash/fp/findIndex';
 import get from 'lodash/fp/get';
 import includes from 'lodash/fp/includes';
 import isArray from 'lodash/fp/isArray';
@@ -12,6 +13,7 @@ import pullAllBy from 'lodash/fp/pullAllBy';
 import reduce from 'lodash/fp/reduce';
 import reject from 'lodash/fp/reject';
 import relationshipId from 'common/fp/relationshipId';
+import sortBy from 'lodash/fp/sortBy';
 import union from 'lodash/fp/union';
 import unionBy from 'lodash/fp/unionBy';
 import upsert from 'common/fp/upsert';
@@ -185,11 +187,10 @@ class ListController {
                 return;
             }
             const tasks = map((task) => this.process(task), data);
-            if (reset) {
-                this.data = tasks;
-            } else {
-                this.data = unionBy('id', this.data, tasks);
-            }
+            const sortedTasks = sortBy(
+                ['category.id', 'completed', '-completed_at', 'start_at', 'created_at']
+                , tasks);
+            this.data = reset ? sortedTasks : unionBy('id', this.data, sortedTasks);
             count += data.length;
             this.meta.to = count;
             this.page = parseInt(this.meta.pagination.page);
@@ -237,11 +238,20 @@ class ListController {
         return includes(id, this.selected);
     }
     select(id) {
-        if (includes(id, this.selected)) {
-            this.selected = pull(id, this.selected);
-        } else {
-            this.selected = union(this.selected, [id]);
-        }
+        this.selected = includes(id, this.selected)
+            ? pull(id, this.selected)
+            : union(this.selected, [id]);
+        this.lastSelectedIndex = findIndex({ id: id }, this.data);
+    }
+    multiSelect(id) {
+        const lastSelectedIndex = defaultTo(0, this.lastSelectedIndex);
+        const index = findIndex({ id: id }, this.data);
+        const items = lastSelectedIndex < index
+            ? this.data.slice(lastSelectedIndex, index + 1)
+            : this.data.slice(index, lastSelectedIndex);
+        const ids = map('id', items);
+        this.selected = union(this.selected, ids);
+        this.lastSelectedIndex = index;
     }
     selectAll(all = true) {
         if (all) {

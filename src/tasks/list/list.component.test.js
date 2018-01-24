@@ -2,7 +2,6 @@ import list, { defaultMeta } from './list.component';
 import assign from 'lodash/fp/assign';
 import range from 'lodash/fp/range';
 import moment from 'moment';
-import unionBy from 'lodash/fp/unionBy';
 
 const selected = [1, 2];
 
@@ -313,7 +312,16 @@ describe('tasks.list.component', () => {
         });
     });
     describe('load', () => {
-        let resp = [{ id: 1, subject: 'a' }];
+        let resp = [
+            { id: 1, subject: 'a', category: { id: 2 }, completed: false, completed_at: null, start_at: null, created_at: null },
+            { id: 2, subject: 'b', category: { id: 1 }, completed: true, completed_at: null, start_at: null, created_at: null },
+            { id: 3, subject: 'c', category: { id: 1 }, completed: false, completed_at: null, start_at: null, created_at: null },
+            { id: 4, subject: 'd', category: { id: 1 }, completed: true, completed_at: '2018-01-09T16:49:19Z', start_at: null, created_at: null },
+            { id: 5, subject: 'e', category: { id: 1 }, completed: true, completed_at: '2018-02-09T16:49:19Z', start_at: null, created_at: null },
+            { id: 6, subject: 'f', category: { id: 1 }, completed: true, completed_at: '2018-02-09T16:49:19Z', start_at: '2018-02-09T16:49:19Z', created_at: null },
+            { id: 7, subject: 'g', category: { id: 1 }, completed: true, completed_at: '2018-02-09T16:49:19Z', start_at: '2018-03-09T16:49:19Z', created_at: null },
+            { id: 8, subject: 'h', category: { id: 1 }, completed: true, completed_at: '2018-02-09T16:49:19Z', start_at: '2018-03-09T16:49:19Z', created_at: '2018-03-09T16:49:19Z' }
+        ];
         let spy;
         resp.meta = { pagination: { page: 1 } };
         beforeEach(() => {
@@ -355,21 +363,34 @@ describe('tasks.list.component', () => {
             $ctrl.load().then(() => {
                 expect($ctrl.loading).toEqual(false);
                 expect($ctrl.page).toEqual(resp.meta.pagination.page);
-                expect($ctrl.data).toEqual([resp[0]]);
+                expect($ctrl.data[0]).toEqual(resp[0]);
                 expect($ctrl.meta).toEqual(resp.meta);
                 done();
             });
         });
         it('should handle pages', (done) => {
-            const oldData = [{ id: 2, subject: 'b' }];
+            const oldData = [{ id: 9, subject: 'b' }];
             $ctrl.data = oldData;
             $ctrl.load(2).then(() => {
                 expect($ctrl.page).toEqual(resp.meta.pagination.page);
-                expect($ctrl.data).toEqual(unionBy('id', oldData, [resp[0]]));
+                expect($ctrl.data[8]).toEqual(resp[4]);
                 done();
             });
             const args = api.get.calls.argsFor(0)[0];
             expect(args.data.page).toEqual(2);
+        });
+        it('should sort', (done) => {
+            $ctrl.load().then(() => {
+                expect($ctrl.data[0]).toEqual(resp[0]);
+                expect($ctrl.data[1]).toEqual(resp[2]);
+                expect($ctrl.data[2]).toEqual(resp[5]);
+                expect($ctrl.data[3]).toEqual(resp[7]);
+                expect($ctrl.data[4]).toEqual(resp[6]);
+                expect($ctrl.data[5]).toEqual(resp[1]);
+                expect($ctrl.data[6]).toEqual(resp[3]);
+                expect($ctrl.data[7]).toEqual(resp[4]);
+                done();
+            });
         });
         describe('no results', () => {
             it('should call getTotalCount if no results', (done) => {
@@ -414,6 +435,24 @@ describe('tasks.list.component', () => {
             $ctrl.selected = [1, 2];
             $ctrl.select(2);
             expect($ctrl.selected).toEqual([1]);
+        });
+    });
+    describe('multiSelect', () => {
+        it('should select forward', () => {
+            $ctrl.data = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
+            $ctrl.selected = [2];
+            $ctrl.lastSelectedIndex = 1;
+            $ctrl.multiSelect(3);
+            expect($ctrl.selected).toEqual([2, 3]);
+            expect($ctrl.lastSelectedIndex).toEqual(2);
+        });
+        it('should select in reverse', () => {
+            $ctrl.data = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
+            $ctrl.selected = [3];
+            $ctrl.lastSelectedIndex = 2;
+            $ctrl.multiSelect(2);
+            expect($ctrl.selected).toEqual([2, 3]);
+            expect($ctrl.lastSelectedIndex).toEqual(1);
         });
     });
     describe('selectAll', () => {

@@ -24,7 +24,7 @@ describe('tasks.list.item.component', () => {
     });
 
     function loadController() {
-        $ctrl = componentController('tasksListItem', { $scope: scope }, { task: null, selected: null });
+        $ctrl = componentController('tasksListItem', { $scope: scope }, { task: null, selected: null, onSelect: () => {}, onMultiSelect: () => {} });
     }
     describe('constructor', () => {
         beforeEach(() => {
@@ -105,6 +105,20 @@ describe('tasks.list.item.component', () => {
                 expect($ctrl.task.starred).toBeTruthy();
                 done();
             });
+        });
+    });
+    describe('select', () => {
+        beforeEach(() => {
+            spyOn($ctrl, 'onMultiSelect').and.callFake(() => {});
+            spyOn($ctrl, 'onSelect').and.callFake(() => {});
+        });
+        it('should call onSelect', () => {
+            $ctrl.select({ shiftKey: false });
+            expect($ctrl.onSelect).toHaveBeenCalledWith();
+        });
+        it('should call onMultiSelect', () => {
+            $ctrl.select({ shiftKey: true });
+            expect($ctrl.onMultiSelect).toHaveBeenCalledWith();
         });
     });
 });

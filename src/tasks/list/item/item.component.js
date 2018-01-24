@@ -62,6 +62,13 @@ class ItemController {
     delete() {
         this.tasks.delete(this.task);
     }
+    select(event) {
+        if (event.shiftKey) {
+            this.onMultiSelect();
+        } else {
+            this.onSelect();
+        }
+    }
 }
 
 const Item = {
@@ -69,6 +76,7 @@ const Item = {
     template: require('./item.html'),
     bindings: {
         onOpen: '&',
+        onMultiSelect: '&',
         onSelect: '&',
         selected: '<',
         task: '<'
