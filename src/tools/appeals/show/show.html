@@ -181,8 +181,10 @@
                                             </td>
                                             <td>
                                                 <div ng-repeat="donation in pledge.donations">
-                                                    {{::donation.converted_amount | currency: ''}}
-                                                    {{::donation.converted_currency}}
+                                                    {{::donation.converted_appeal_amount | currency: donation.converted_symbol}}
+                                                    <span ng-if="donation.currency !== donation.converted_currency">
+                                                        ({{:: donation.appeal_amount | currency: donation.symbol}})
+                                                    </span>
                                                     ({{::donation.donation_date | localize}})
                                                 </div>
                                             </td>
@@ -203,7 +205,7 @@
                             <pagination meta="$ctrl.pledgesProcessed.meta.pagination"
                                         on-change="$ctrl.getPledgesProcessed(page)">
                             </pagination>
-                        </div b>
+                        </div>
                         <div ng-if="$ctrl.activeTab === 'received'" block-ui="appealsReceived">
                             <div class="panel panel-default">
                                 <div class="panel-heading">

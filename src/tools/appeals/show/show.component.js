@@ -173,7 +173,7 @@ class AppealController {
             per_page: 20,
             fields: {
                 contacts: 'name',
-                donations: 'converted_amount,converted_currency,donation_date'
+                donations: 'appeal_amount,converted_appeal_amount,currency,converted_currency,donation_date'
             },
             filter: {
                 appeal_id: this.appeal.id,
@@ -183,7 +183,8 @@ class AppealController {
         }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug(`pledges processed page ${page}`, data);
-            this.pledgesProcessed = this.fixPledgeAmount(data);
+            const fixedData = this.fixPledgeAmount(data);
+            this.pledgesProcessed = this.addSymbols(fixedData);
             this.pledgesProcessed.meta = data.meta;
             this.pledgesProcessedPage = page;
             this.blockUIGiven.reset();
@@ -196,8 +197,25 @@ class AppealController {
             })
         }), contacts);
     }
+    addSymbols(data) {
+        return map((ref) => assign(ref, {
+            donations: this.getCurrencySymbols(ref.donations)
+        }), data);
+    }
+    getCurrencySymbols(donations) {
+        return map((donation) => {
+            return assign(donation, {
+                symbol: this.getCurrencySymbolFromCode(donation.currency),
+                converted_symbol: this.getCurrencySymbolFromCode(donation.converted_currency)
+            });
+        }, donations);
+    }
     getCurrencyFromCode(code) {
         return find({ code: code }, this.serverConstants.data.pledge_currencies);
+    }
+    getCurrencySymbolFromCode(code) {
+        const currency = this.getCurrencyFromCode(code);
+        return get('symbol', currency);
     }
     changeGoal() {
         return this.save().then(() => {
