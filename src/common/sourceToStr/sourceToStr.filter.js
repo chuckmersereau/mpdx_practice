@@ -5,7 +5,7 @@ class SourceToStrFilter {
             switch (str) {
                 case 'Siebel':
                     return this.gettextCatalog.getString('US Donation Services');
-                case 'Dataserver':
+                case 'DataServer':
                     return this.gettextCatalog.getString('DonorHub');
                 case 'MPDX':
                     return this.gettextCatalog.getString('MPDX');

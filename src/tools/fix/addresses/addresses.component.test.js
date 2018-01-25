@@ -96,7 +96,7 @@ describe('tools.fix.addresses.component', () => {
             it('should collect list of sources', (done) => {
                 $ctrl.load().then(() => {
                     expect($ctrl.sources).toEqual([
-                        { id: 'Dataserver', value: filter('sourceToStr')('Dataserver') },
+                        { id: 'DataServer', value: filter('sourceToStr')('DataServer') },
                         { id: 'MPDX', value: filter('sourceToStr')('MPDX') },
                         { id: 'Tntmpd', value: filter('sourceToStr')('Tntmpd') },
                         { id: 'Siebel', value: filter('sourceToStr')('Siebel') }
@@ -346,8 +346,8 @@ describe('tools.fix.addresses.component', () => {
     const apiData = [
         { addresses: [{ source: 'Siebel' }] },
         { addresses: [{ source: 'Tntmpd' }] },
-        { addresses: [{ source: 'Dataserver' }] },
-        { addresses: [{ source: 'Dataserver' }] }
+        { addresses: [{ source: 'DataServer' }] },
+        { addresses: [{ source: 'DataServer' }] }
     ];
 
     apiData.meta = { page: 1 };

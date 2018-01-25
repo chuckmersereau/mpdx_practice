@@ -21,18 +21,15 @@ class NotificationPreferencesController {
         this.notificationPreferences = [];
         this.loading = false;
     }
-
     $onInit() {
         this.watcher = this.$rootScope.$on('accountListUpdated', () => {
             this.load();
         });
         this.load();
     }
-
     $onDestroy() {
         this.watcher();
     }
-
     load() {
         this.loading = true;
         return this.api.get(
@@ -58,7 +55,6 @@ class NotificationPreferencesController {
             throw ex;
         });
     }
-
     save() {
         this.loading = true;
         return this.api.post({
@@ -75,7 +71,6 @@ class NotificationPreferencesController {
             throw ex;
         });
     }
-
     next() {
         this.users.currentOptions.setup_position.value = '';
         this.users.setOption(this.users.currentOptions.setup_position).then(() => {
