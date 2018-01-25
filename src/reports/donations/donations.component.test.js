@@ -114,11 +114,22 @@ describe('reports.donations.component', () => {
         });
 
         it('should remove a donation', () => {
-            $ctrl.data = [donation];
-            $ctrl.$onInit();
+            spyOn($ctrl, 'load').and.callFake(() => {});
+            $ctrl.data = [donation, { id: 2 }];
             $ctrl.meta = meta;
-            rootScope.$emit('donationRemoved', 1);
-            expect($ctrl.data).toEqual([]);
+            $ctrl.$onInit();
+            rootScope.$emit('donationRemoved', { id: 1 });
+            rootScope.$digest();
+            expect($ctrl.data).toEqual([{ id: 2 }]);
+        });
+        it('should call $ctrl.load', () => {
+            spyOn($ctrl, 'load').and.callFake(() => {});
+            $ctrl.data = [donation, { id: 2 }];
+            $ctrl.meta = meta;
+            $ctrl.$onInit();
+            rootScope.$emit('donationRemoved', { id: 1 });
+            rootScope.$digest();
+            expect($ctrl.load).toHaveBeenCalledWith();
         });
     });
 

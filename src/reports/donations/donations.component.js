@@ -1,4 +1,11 @@
-import { assign, defaultTo, findIndex, map, pullAllBy, unionBy } from 'lodash/fp';
+import {
+    assign,
+    defaultTo,
+    findIndex,
+    map,
+    pullAllBy,
+    unionBy
+} from 'lodash/fp';
 import moment from 'moment';
 import reduceObject from 'common/fp/reduceObject';
 
@@ -48,8 +55,8 @@ class DonationsController {
             this.calculateTotals();
         });
 
-        this.watcher2 = this.$rootScope.$on('donationRemoved', (e, donationId) => {
-            this.data = pullAllBy('id', [donationId], this.data);
+        this.watcher2 = this.$rootScope.$on('donationRemoved', (e, donation) => {
+            this.data = pullAllBy('id', [donation], this.data);
             this.load();
         });
     }

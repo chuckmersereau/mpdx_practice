@@ -1,4 +1,17 @@
-import { assign, concat, defaultTo, has, isArray, isFunction, isNil, isObject, map, omit, pull } from 'lodash/fp';
+import {
+    assign,
+    concat,
+    defaultTo,
+    get,
+    has,
+    isArray,
+    isFunction,
+    isNil,
+    isObject,
+    map,
+    omit,
+    pull
+} from 'lodash/fp';
 import config from 'config';
 import { EntityAttributes } from './entities';
 import japi from 'jsonapi-serializer';
@@ -73,7 +86,9 @@ class Api {
             return response.data;
         }).catch((response) => {
             this.$log.error('API ERROR:', response);
-            this.$window._satellite.track('aa-mpdx-api-error');
+            if (get('track', this.$window._satellite)) {
+                this.$window._satellite.track('aa-mpdx-api-error');
+            }
             throw response;
         });
     }
