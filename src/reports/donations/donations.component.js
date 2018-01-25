@@ -1,9 +1,4 @@
-import assign from 'lodash/fp/assign';
-import defaultTo from 'lodash/fp/defaultTo';
-import findIndex from 'lodash/fp/findIndex';
-import map from 'lodash/fp/map';
-import pullAllBy from 'lodash/fp/pullAllBy';
-import unionBy from 'lodash/fp/unionBy';
+import { assign, defaultTo, findIndex, map, pullAllBy, unionBy } from 'lodash/fp';
 import moment from 'moment';
 import reduceObject from 'common/fp/reduceObject';
 

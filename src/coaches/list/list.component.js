@@ -1,4 +1,4 @@
-import unionBy from 'lodash/fp/unionBy';
+import { unionBy } from 'lodash/fp';
 
 class ListController {
     constructor(

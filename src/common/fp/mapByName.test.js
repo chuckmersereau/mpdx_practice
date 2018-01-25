@@ -1,5 +1,5 @@
 import mapByName from './mapByName';
-import isFunction from 'lodash/fp/isFunction';
+import { isFunction } from 'lodash/fp';
 
 const arr = [{
     name: 'a',

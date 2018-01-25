@@ -1,4 +1,4 @@
-import indexOf from 'lodash/fp/indexOf';
+import { indexOf } from 'lodash/fp';
 
 class PersonalController {
     constructor(

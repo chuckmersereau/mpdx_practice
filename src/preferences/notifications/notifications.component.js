@@ -1,7 +1,4 @@
-import concat from 'lodash/fp/concat';
-import defaultTo from 'lodash/fp/defaultTo';
-import find from 'lodash/fp/find';
-import reduce from 'lodash/fp/reduce';
+import { concat, defaultTo, find, reduce } from 'lodash/fp';
 import uuid from 'uuid/v1';
 
 class NotificationPreferencesController {

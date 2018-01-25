@@ -1,4 +1,4 @@
-import assign from 'lodash/fp/assign';
+import { assign } from 'lodash/fp';
 
 class ModalService {
     constructor($modal, $q) {

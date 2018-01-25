@@ -1,6 +1,5 @@
-import has from 'lodash/fp/has';
+import { has, unionBy } from 'lodash/fp';
 import moment from 'moment';
-import unionBy from 'lodash/fp/unionBy';
 
 class ListController {
     constructor(

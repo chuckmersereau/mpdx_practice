@@ -1,4 +1,3 @@
-import curry from 'lodash/fp/curry';
-import pickBy from 'lodash/fp/pickBy';
+import { curry, pickBy } from 'lodash/fp';
 
 export default curry((collection) => pickBy((val) => val !== null, collection));

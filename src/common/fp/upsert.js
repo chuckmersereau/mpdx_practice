@@ -1,4 +1,3 @@
-import curry from 'lodash/fp/curry';
-import unionBy from 'lodash/fp/unionBy';
+import { curry, unionBy } from 'lodash/fp';
 
 export default curry((iteratee, object, collection) => unionBy(iteratee, collection, [object]));

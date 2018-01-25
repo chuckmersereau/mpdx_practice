@@ -1,21 +1,23 @@
-import assign from 'lodash/fp/assign';
-import compact from 'lodash/fp/compact';
-import concat from 'lodash/fp/concat';
-import contains from 'lodash/fp/contains';
+import {
+    assign,
+    compact,
+    concat,
+    contains,
+    curry,
+    defaultTo,
+    find,
+    get,
+    map,
+    pull,
+    sumBy,
+    values
+} from 'lodash/fp';
 import createPatch from 'common/fp/createPatch';
-import curry from 'lodash/fp/curry';
-import defaultTo from 'lodash/fp/defaultTo';
-import find from 'lodash/fp/find';
 import fixed from 'common/fp/fixed';
-import get from 'lodash/fp/get';
 import isNilOrEmpty from 'common/fp/isNilOrEmpty';
 import joinComma from 'common/fp/joinComma';
-import map from 'lodash/fp/map';
 import moment from 'moment';
-import pull from 'lodash/fp/pull';
-import sumBy from 'lodash/fp/sumBy';
 import uuid from 'uuid/v1';
-import values from 'lodash/fp/values';
 
 class AppealController {
     constructor(

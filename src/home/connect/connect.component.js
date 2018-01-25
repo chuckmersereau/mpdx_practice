@@ -1,8 +1,4 @@
-import defaultTo from 'lodash/fp/defaultTo';
-import filter from 'lodash/fp/filter';
-import find from 'lodash/fp/find';
-import get from 'lodash/fp/get';
-import sumBy from 'lodash/fp/sumBy';
+import { defaultTo, filter, find, get, sumBy } from 'lodash/fp';
 
 class ConnectController {
     constructor(

@@ -1,6 +1,5 @@
 import list from './list.component';
-import assign from 'lodash/fp/assign';
-import map from 'lodash/fp/map';
+import { assign, map } from 'lodash/fp';
 
 describe('contacts.list.component', () => {
     let $ctrl, contacts, contactsTags, rootScope, scope, componentController, modal, tasks, alerts, gettextCatalog,

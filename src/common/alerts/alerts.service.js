@@ -1,4 +1,4 @@
-import reject from 'lodash/fp/reject';
+import { reject } from 'lodash/fp';
 import uuid from 'uuid/v1';
 
 class AlertsService {

@@ -1,19 +1,21 @@
-import assign from 'lodash/fp/assign';
-import concat from 'lodash/fp/concat';
-import contains from 'lodash/fp/contains';
-import defaultTo from 'lodash/fp/defaultTo';
-import difference from 'lodash/fp/difference';
-import filter from 'lodash/fp/filter';
-import findIndex from 'lodash/fp/findIndex';
-import isArray from 'lodash/fp/isArray';
-import isEqual from 'lodash/fp/isEqual';
-import keys from 'lodash/fp/keys';
-import map from 'lodash/fp/map';
-import reduce from 'lodash/fp/reduce';
-import sortBy from 'lodash/fp/sortBy';
-import toInteger from 'lodash/fp/toInteger';
-import split from 'lodash/fp/split';
-import trim from 'lodash/fp/trim';
+import {
+    assign,
+    concat,
+    contains,
+    defaultTo,
+    difference,
+    filter,
+    findIndex,
+    isArray,
+    isEqual,
+    keys,
+    map,
+    reduce,
+    sortBy,
+    toInteger,
+    split,
+    trim
+} from 'lodash/fp';
 
 class Filters {
     constructor(

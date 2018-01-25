@@ -1,6 +1,4 @@
-import concat from 'lodash/fp/concat';
-import find from 'lodash/fp/find';
-import reduce from 'lodash/fp/reduce';
+import { concat, find, reduce } from 'lodash/fp';
 
 class DesignationAccountsService {
     constructor(

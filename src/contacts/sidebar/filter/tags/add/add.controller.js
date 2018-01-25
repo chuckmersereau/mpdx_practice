@@ -1,4 +1,4 @@
-import map from 'lodash/fp/map';
+import { map } from 'lodash/fp';
 
 class AddTagController {
     constructor(

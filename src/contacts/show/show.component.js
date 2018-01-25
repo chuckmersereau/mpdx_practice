@@ -1,17 +1,6 @@
-import assign from 'lodash/fp/assign';
+import { assign, concat, defaultTo, eq, find, forEachRight, get, has, isNil, map, reject, set } from 'lodash/fp';
 import createPatch from 'common/fp/createPatch';
 import joinComma from 'common/fp/joinComma';
-import concat from 'lodash/fp/concat';
-import defaultTo from 'lodash/fp/defaultTo';
-import eq from 'lodash/fp/eq';
-import find from 'lodash/fp/find';
-import forEachRight from 'lodash/fp/forEachRight';
-import get from 'lodash/fp/get';
-import has from 'lodash/fp/has';
-import isNil from 'lodash/fp/isNil';
-import map from 'lodash/fp/map';
-import reject from 'lodash/fp/reject';
-import set from 'lodash/fp/set';
 
 class ContactController {
     constructor(

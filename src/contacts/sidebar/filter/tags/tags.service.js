@@ -1,5 +1,4 @@
-import map from 'lodash/fp/map';
-import unionBy from 'lodash/fp/unionBy';
+import { map, unionBy } from 'lodash/fp';
 import uuid from 'uuid/v1';
 
 class TagsService {

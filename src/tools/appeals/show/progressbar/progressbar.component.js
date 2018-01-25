@@ -1,8 +1,4 @@
-import defaultTo from 'lodash/fp/defaultTo';
-import floor from 'lodash/fp/floor';
-import get from 'lodash/fp/get';
-import max from 'lodash/fp/max';
-import min from 'lodash/fp/min';
+import { defaultTo, floor, get, max, min } from 'lodash/fp';
 
 class ProgressbarController {
     constructor() {

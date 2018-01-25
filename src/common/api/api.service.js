@@ -1,18 +1,8 @@
-import assign from 'lodash/fp/assign';
-import concat from 'lodash/fp/concat';
+import { assign, concat, defaultTo, has, isArray, isFunction, isNil, isObject, map, omit, pull } from 'lodash/fp';
 import config from 'config';
-import defaultTo from 'lodash/fp/defaultTo';
 import { EntityAttributes } from './entities';
-import has from 'lodash/fp/has';
-import isArray from 'lodash/fp/isArray';
-import isFunction from 'lodash/fp/isFunction';
-import isNil from 'lodash/fp/isNil';
-import isObject from 'lodash/fp/isObject';
 import japi from 'jsonapi-serializer';
 import joinComma from '../fp/joinComma';
-import map from 'lodash/fp/map';
-import omit from 'lodash/fp/omit';
-import pull from 'lodash/fp/pull';
 import reduceObject from '../fp/reduceObject';
 
 const jsonApiParams = { keyForAttribute: 'underscore_case' };

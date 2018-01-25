@@ -1,5 +1,5 @@
 import modalController from './modal.controller';
-import isEqual from 'lodash/fp/isEqual';
+import { isEqual } from 'lodash/fp';
 
 describe('donation.modal.controller', () => {
     let $ctrl, controller, scope, gettextCatalog, accounts, alerts, designationAccounts, donations, api;

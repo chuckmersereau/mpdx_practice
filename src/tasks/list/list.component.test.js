@@ -1,8 +1,6 @@
 import list, { defaultMeta } from './list.component';
-import assign from 'lodash/fp/assign';
-import range from 'lodash/fp/range';
+import { assign, range, unionBy } from 'lodash/fp';
 import moment from 'moment';
-import unionBy from 'lodash/fp/unionBy';
 
 const selected = [1, 2];
 

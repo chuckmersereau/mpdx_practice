@@ -1,9 +1,5 @@
-import map from 'lodash/fp/map';
-import round from 'lodash/fp/round';
-import sum from 'lodash/fp/sum';
-import take from 'lodash/fp/take';
-import takeRight from 'lodash/fp/takeRight';
-import zip from 'lodash/zip';
+import { map, round, sum, take, takeRight } from 'lodash/fp';
+import { zip } from 'lodash';
 import moment from 'moment';
 
 class ChartController {

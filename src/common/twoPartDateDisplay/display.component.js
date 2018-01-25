@@ -1,5 +1,4 @@
-import get from 'lodash/fp/get';
-import find from 'lodash/fp/find';
+import { get, find } from 'lodash/fp';
 
 class DisplayController {
     constructor(

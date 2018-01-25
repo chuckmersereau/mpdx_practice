@@ -1,9 +1,4 @@
-import map from 'lodash/fp/map';
-import find from 'lodash/fp/find';
-import reduce from 'lodash/fp/reduce';
-import reject from 'lodash/fp/reject';
-import sortBy from 'lodash/fp/sortBy';
-import unionBy from 'lodash/fp/unionBy';
+import { find, map, reduce, reject, sortBy, unionBy } from 'lodash/fp';
 
 class AddressesController {
     constructor(

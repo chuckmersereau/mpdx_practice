@@ -1,8 +1,4 @@
-import concat from 'lodash/fp/concat';
-import contains from 'lodash/fp/contains';
-import get from 'lodash/fp/get';
-import map from 'lodash/fp/map';
-import reduce from 'lodash/fp/reduce';
+import { concat, contains, get, map, reduce } from 'lodash/fp';
 import moment from 'moment';
 
 class LogTaskController {

@@ -1,5 +1,4 @@
-import assign from 'lodash/fp/assign';
-import defaultTo from 'lodash/fp/defaultTo';
+import { assign, defaultTo } from 'lodash/fp';
 import joinComma from 'common/fp/joinComma';
 import moment from 'moment';
 import bowser from 'bowser';

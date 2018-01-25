@@ -1,5 +1,5 @@
 import createPatch from 'common/fp/createPatch';
-import defaultTo from 'lodash/fp/defaultTo';
+import { defaultTo } from 'lodash/fp';
 import fixed from 'common/fp/fixed';
 
 class DonationModalController {

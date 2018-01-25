@@ -1,7 +1,4 @@
-import concat from 'lodash/fp/concat';
-import filter from 'lodash/fp/filter';
-import map from 'lodash/fp/map';
-import reduce from 'lodash/fp/reduce';
+import { concat, filter, map, reduce } from 'lodash/fp';
 import reduceObject from 'common/fp/reduceObject';
 
 class MergePeopleController {

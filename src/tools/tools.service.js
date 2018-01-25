@@ -1,6 +1,4 @@
-import reduce from 'lodash/fp/reduce';
-import sum from 'lodash/fp/sum';
-import values from 'lodash/fp/values';
+import { reduce, sum, values } from 'lodash/fp';
 
 class ToolsService {
     constructor(

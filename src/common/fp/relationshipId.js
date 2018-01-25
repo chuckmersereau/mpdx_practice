@@ -1,5 +1,4 @@
-import isArray from 'lodash/fp/isArray';
-import reduce from 'lodash/fp/reduce';
+import { isArray, reduce } from 'lodash/fp';
 
 export default (keys) => {
     if (!isArray(keys)) {

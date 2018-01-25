@@ -1,5 +1,5 @@
 import component from './search.component';
-import findIndex from 'lodash/fp/findIndex';
+import { findIndex } from 'lodash/fp';
 
 describe('menu.search.component', () => {
     let $ctrl, state, scope, contactFilter, contacts, timeout;

@@ -1,4 +1,4 @@
-import defaultTo from 'lodash/fp/defaultTo';
+import { defaultTo } from 'lodash/fp';
 
 class CollectionSelectorController {
     constructor(

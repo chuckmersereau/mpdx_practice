@@ -1,5 +1,5 @@
 import config from 'config';
-import isEmpty from 'lodash/fp/isEmpty';
+import { isEmpty } from 'lodash/fp';
 
 class AuthController {
     constructor(

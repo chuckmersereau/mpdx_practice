@@ -1,18 +1,20 @@
-import concat from 'lodash/fp/concat';
-import defaultTo from 'lodash/fp/defaultTo';
-import each from 'lodash/fp/each';
-import find from 'lodash/fp/find';
-import get from 'lodash/fp/get';
-import includes from 'lodash/fp/includes';
-import map from 'lodash/fp/map';
+import {
+    concat,
+    defaultTo,
+    each,
+    find,
+    get,
+    includes,
+    map,
+    pull,
+    pullAllBy,
+    reduce,
+    reject,
+    union,
+    unionBy
+} from 'lodash/fp';
 import moment from 'moment';
-import pull from 'lodash/fp/pull';
-import pullAllBy from 'lodash/fp/pullAllBy';
-import reduce from 'lodash/fp/reduce';
-import reject from 'lodash/fp/reject';
 import relationshipId from 'common/fp/relationshipId';
-import union from 'lodash/fp/union';
-import unionBy from 'lodash/fp/unionBy';
 import upsert from 'common/fp/upsert';
 
 export const defaultMeta = {

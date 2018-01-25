@@ -1,5 +1,5 @@
 import config from 'config';
-import isFunction from 'lodash/fp/isFunction';
+import { isFunction } from 'lodash/fp';
 import uuid from 'uuid/v1';
 
 class PersonService {

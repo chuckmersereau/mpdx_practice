@@ -1,6 +1,4 @@
-import curry from 'lodash/fp/curry';
-import isArray from 'lodash/fp/isArray';
-import join from 'lodash/fp/join';
+import { curry, isArray, join } from 'lodash/fp';
 
 export default curry((val) => {
     if (isArray(val)) {

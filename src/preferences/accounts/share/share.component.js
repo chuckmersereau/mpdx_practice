@@ -1,4 +1,4 @@
-import reject from 'lodash/fp/reject';
+import { reject } from 'lodash/fp';
 
 class SharePreferencesController {
     constructor(
