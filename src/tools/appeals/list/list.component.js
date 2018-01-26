@@ -1,8 +1,5 @@
-import concat from 'lodash/fp/concat';
-import defaultTo from 'lodash/fp/defaultTo';
+import { concat, defaultTo, reduce, unionBy } from 'lodash/fp';
 import fixed from 'common/fp/fixed';
-import reduce from 'lodash/fp/reduce';
-import unionBy from 'lodash/fp/unionBy';
 
 class ListController {
     constructor(

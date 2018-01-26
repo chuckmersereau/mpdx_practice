@@ -1,4 +1,4 @@
-import startsWith from 'lodash/fp/startsWith';
+import { startsWith } from 'lodash/fp';
 
 class AddController {
     constructor(

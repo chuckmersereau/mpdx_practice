@@ -1,15 +1,6 @@
-import compact from 'lodash/fp/compact';
-import defaultTo from 'lodash/fp/defaultTo';
-import flow from 'lodash/fp/flow';
-import isArray from 'lodash/fp/isArray';
-import isEmpty from 'lodash/fp/isEmpty';
-import isEqual from 'lodash/fp/isEqual';
-import isNil from 'lodash/fp/isNil';
-import assign from 'lodash/fp/assign';
-import map from 'lodash/fp/map';
-import omitBy from 'lodash/fp/omitBy';
-import joinComma from 'common/fp/joinComma';
-import emptyToNull from 'common/fp/emptyToNull';
+import { assign, defaultTo, flow, isEmpty, isEqual, isNil, map, omitBy } from 'lodash/fp';
+import joinComma from '../../common/fp/joinComma';
+import emptyToNull from '../../common/fp/emptyToNull';
 
 class TasksFilterService {
     constructor(

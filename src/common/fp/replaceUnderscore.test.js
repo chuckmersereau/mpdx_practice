@@ -1,5 +1,5 @@
 import replaceUnderscore from './replaceUnderscore';
-import isFunction from 'lodash/fp/isFunction';
+import { isFunction } from 'lodash/fp';
 
 describe('common.fp.replaceUnderscore', () => {
     it('should curry', () => {

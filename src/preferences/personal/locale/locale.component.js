@@ -1,5 +1,4 @@
-import defaultTo from 'lodash/fp/defaultTo';
-import find from 'lodash/fp/find';
+import { defaultTo, find } from 'lodash/fp';
 
 class LocaleController {
     constructor(

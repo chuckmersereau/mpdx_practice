@@ -68,7 +68,7 @@ describe('tools.fix.emailAddresses.service', () => {
 
             it('should collect list of sources', (done) => {
                 fixEmailAddresses.load().then(() => {
-                    expect(fixEmailAddresses.sources).toEqual(['Dataserver', 'MPDX', 'Siebel', 'Tntmpd']);
+                    expect(fixEmailAddresses.sources).toEqual(['DataServer', 'MPDX', 'Siebel', 'Tntmpd']);
                     done();
                 });
             });
@@ -464,8 +464,8 @@ describe('tools.fix.emailAddresses.service', () => {
     const apiData = [
         { email_addresses: [{ source: 'Siebel' }] },
         { email_addresses: [{ source: 'Tntmpd' }] },
-        { email_addresses: [{ source: 'Dataserver' }] },
-        { email_addresses: [{ source: 'Dataserver' }] }
+        { email_addresses: [{ source: 'DataServer' }] },
+        { email_addresses: [{ source: 'DataServer' }] }
     ];
 
     apiData.meta = { page: 1 };

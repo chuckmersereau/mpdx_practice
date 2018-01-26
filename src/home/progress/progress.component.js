@@ -1,5 +1,5 @@
 import moment from 'moment';
-import find from 'lodash/fp/find';
+import { find } from 'lodash/fp';
 
 class progressController {
     constructor(

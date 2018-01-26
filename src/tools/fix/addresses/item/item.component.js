@@ -1,7 +1,4 @@
-import assign from 'lodash/fp/assign';
-import map from 'lodash/fp/map';
-import filter from 'lodash/fp/filter';
-
+import { assign, filter, map } from 'lodash/fp';
 
 class ItemController {
     constructor(

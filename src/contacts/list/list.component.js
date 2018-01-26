@@ -1,15 +1,17 @@
-import ceil from 'lodash/fp/ceil';
-import concat from 'lodash/fp/concat';
-import defaultTo from 'lodash/fp/defaultTo';
-import find from 'lodash/fp/find';
-import get from 'lodash/fp/get';
-import includes from 'lodash/fp/includes';
-import isArray from 'lodash/fp/isArray';
-import map from 'lodash/fp/map';
-import pullAllBy from 'lodash/fp/pullAllBy';
-import reduce from 'lodash/fp/reduce';
-import reject from 'lodash/fp/reject';
-import unionBy from 'lodash/fp/unionBy';
+import {
+    ceil,
+    concat,
+    defaultTo,
+    find,
+    get,
+    includes,
+    isArray,
+    map,
+    pullAllBy,
+    reduce,
+    reject,
+    unionBy
+} from 'lodash/fp';
 
 class ListController {
     constructor(

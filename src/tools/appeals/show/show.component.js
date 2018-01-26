@@ -1,21 +1,23 @@
-import assign from 'lodash/fp/assign';
-import compact from 'lodash/fp/compact';
-import concat from 'lodash/fp/concat';
-import contains from 'lodash/fp/contains';
+import {
+    assign,
+    compact,
+    concat,
+    contains,
+    curry,
+    defaultTo,
+    find,
+    get,
+    map,
+    pull,
+    sumBy,
+    values
+} from 'lodash/fp';
 import createPatch from 'common/fp/createPatch';
-import curry from 'lodash/fp/curry';
-import defaultTo from 'lodash/fp/defaultTo';
-import find from 'lodash/fp/find';
 import fixed from 'common/fp/fixed';
-import get from 'lodash/fp/get';
 import isNilOrEmpty from 'common/fp/isNilOrEmpty';
 import joinComma from 'common/fp/joinComma';
-import map from 'lodash/fp/map';
 import moment from 'moment';
-import pull from 'lodash/fp/pull';
-import sumBy from 'lodash/fp/sumBy';
 import uuid from 'uuid/v1';
-import values from 'lodash/fp/values';
 
 class AppealController {
     constructor(
@@ -171,7 +173,7 @@ class AppealController {
             per_page: 20,
             fields: {
                 contacts: 'name',
-                donations: 'converted_amount,converted_currency,donation_date'
+                donations: 'appeal_amount,converted_appeal_amount,currency,converted_currency,donation_date'
             },
             filter: {
                 appeal_id: this.appeal.id,
@@ -181,7 +183,8 @@ class AppealController {
         }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug(`pledges processed page ${page}`, data);
-            this.pledgesProcessed = this.fixPledgeAmount(data);
+            const fixedData = this.fixPledgeAmount(data);
+            this.pledgesProcessed = this.addSymbols(fixedData);
             this.pledgesProcessed.meta = data.meta;
             this.pledgesProcessedPage = page;
             this.blockUIGiven.reset();
@@ -194,8 +197,25 @@ class AppealController {
             })
         }), contacts);
     }
+    addSymbols(data) {
+        return map((ref) => assign(ref, {
+            donations: this.getCurrencySymbols(ref.donations)
+        }), data);
+    }
+    getCurrencySymbols(donations) {
+        return map((donation) => {
+            return assign(donation, {
+                symbol: this.getCurrencySymbolFromCode(donation.currency),
+                converted_symbol: this.getCurrencySymbolFromCode(donation.converted_currency)
+            });
+        }, donations);
+    }
     getCurrencyFromCode(code) {
         return find({ code: code }, this.serverConstants.data.pledge_currencies);
+    }
+    getCurrencySymbolFromCode(code) {
+        const currency = this.getCurrencyFromCode(code);
+        return get('symbol', currency);
     }
     changeGoal() {
         return this.save().then(() => {

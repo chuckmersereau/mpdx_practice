@@ -1,5 +1,4 @@
-import defaultTo from 'lodash/fp/defaultTo';
-import reduce from 'lodash/fp/reduce';
+import { defaultTo, reduce } from 'lodash/fp';
 import moment from 'moment';
 
 class FilterDaterangeController {

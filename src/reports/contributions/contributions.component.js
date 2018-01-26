@@ -1,22 +1,24 @@
-import assign from 'lodash/fp/assign';
-import concat from 'lodash/fp/concat';
-import constant from 'lodash/fp/constant';
-import defaultTo from 'lodash/fp/defaultTo';
-import find from 'lodash/fp/find';
-import flatten from 'lodash/fp/flatten';
-import flatMap from 'lodash/fp/flatMap';
-import get from 'lodash/fp/get';
-import isNil from 'lodash/fp/isNil';
-import map from 'lodash/fp/map';
+import {
+    assign,
+    concat,
+    constant,
+    defaultTo,
+    find,
+    flatten,
+    flatMap,
+    get,
+    isNil,
+    map,
+    reduce,
+    reject,
+    round,
+    sortBy,
+    sumBy,
+    times,
+    toInteger
+} from 'lodash/fp';
 import moment from 'moment';
-import reduce from 'lodash/fp/reduce';
 import reduceObject from 'common/fp/reduceObject';
-import reject from 'lodash/fp/reject';
-import round from 'lodash/fp/round';
-import sortBy from 'lodash/fp/sortBy';
-import sumBy from 'lodash/fp/sumBy';
-import times from 'lodash/fp/times';
-import toInteger from 'lodash/fp/toInteger';
 
 class ContributionsController {
     constructor(

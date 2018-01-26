@@ -1,4 +1,4 @@
-import isEmpty from 'lodash/fp/isEmpty';
+import { isEmpty } from 'lodash/fp';
 
 class AcceptInviteController {
     constructor(

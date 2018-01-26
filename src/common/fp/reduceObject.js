@@ -1,5 +1,5 @@
-import curry from 'lodash/fp/curry';
+import { curry, reduce } from 'lodash/fp';
 
-const reduce = require('lodash/fp/reduce').convert({ 'cap': false });
+const reduceO = reduce.convert({ 'cap': false });
 
-export default curry((a, b, c) => reduce(a, b, c));
+export default curry((a, b, c) => reduceO(a, b, c));

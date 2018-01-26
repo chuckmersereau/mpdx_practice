@@ -1,11 +1,4 @@
-import each from 'lodash/fp/each';
-import filter from 'lodash/fp/filter';
-import find from 'lodash/fp/find';
-import map from 'lodash/fp/map';
-import reduce from 'lodash/fp/reduce';
-import reject from 'lodash/fp/reject';
-import flatMap from 'lodash/fp/flatMap';
-import union from 'lodash/fp/union';
+import { each, filter, find, map, reduce, reject, flatMap, union } from 'lodash/fp';
 
 class EmailAddressesService {
     constructor(

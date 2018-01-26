@@ -1,5 +1,5 @@
 import remove from './removeTags.controller';
-import assign from 'lodash/fp/assign';
+import { assign } from 'lodash/fp';
 
 
 describe('tasks.modals.removeTags.controller', () => {

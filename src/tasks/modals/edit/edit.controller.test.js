@@ -1,5 +1,5 @@
 import editController from './edit.controller';
-import isEqual from 'lodash/fp/isEqual';
+import { isEqual } from 'lodash/fp';
 
 
 describe('tasks.modals.edit.controller', () => {

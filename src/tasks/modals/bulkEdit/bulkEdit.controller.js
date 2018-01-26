@@ -1,9 +1,6 @@
-import assign from 'lodash/fp/assign';
+import { assign, isNil, map, omitBy } from 'lodash/fp';
 import emptyToNull from 'common/fp/emptyToNull';
-import isNil from 'lodash/fp/isNil';
 import joinComma from 'common/fp/joinComma';
-import map from 'lodash/fp/map';
-import omitBy from 'lodash/fp/omitBy';
 import uuid from 'uuid/v1';
 
 class BulkEditTaskController {

@@ -1,7 +1,4 @@
-import concat from 'lodash/fp/concat';
-import each from 'lodash/fp/each';
-import findIndex from 'lodash/fp/findIndex';
-import reject from 'lodash/fp/reject';
+import { concat, each, findIndex, reject } from 'lodash/fp';
 import createPatch from '../../../../common/fp/createPatch';
 
 class AddressModalController {

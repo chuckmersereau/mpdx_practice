@@ -1,5 +1,4 @@
-import reduce from 'lodash/fp/reduce';
-import toInteger from 'lodash/fp/toInteger';
+import { reduce, toInteger } from 'lodash/fp';
 
 class BalancesController {
     constructor(

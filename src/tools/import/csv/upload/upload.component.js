@@ -1,4 +1,4 @@
-import round from 'lodash/fp/round';
+import { round } from 'lodash/fp';
 
 class UploadController {
     constructor(

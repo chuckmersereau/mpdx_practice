@@ -1,8 +1,8 @@
 import modalController from './modal.controller';
-import isEqual from 'lodash/fp/isEqual';
+import { isEqual } from 'lodash/fp';
 
 describe('donation.modal.controller', () => {
-    let $ctrl, controller, scope, gettextCatalog, accounts, alerts, designationAccounts, donations, api;
+    let $ctrl, controller, scope, gettextCatalog, accounts, alerts, designationAccounts, donations, api, rootScope;
     let donation = { id: 'donation_id', amount: '0.00', motivation: 'a' };
     beforeEach(() => {
         angular.mock.module(modalController);
@@ -10,6 +10,7 @@ describe('donation.modal.controller', () => {
             $controller, $rootScope, _gettextCatalog_, _accounts_, _alerts_, _designationAccounts_, _donations_, _api_
         ) => {
             controller = $controller;
+            rootScope = $rootScope;
             scope = $rootScope.$new();
             scope.$hide = () => {};
 
@@ -24,6 +25,7 @@ describe('donation.modal.controller', () => {
         });
         spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
+        spyOn(rootScope, '$emit').and.callFake(() => {});
     });
 
     function loadController(data = donation) {
@@ -77,20 +79,11 @@ describe('donation.modal.controller', () => {
     });
 
     describe('setDesignationAccount', () => {
-        beforeEach(() => {
+        it('should set the designation_account', (done) => {
             spyOn(designationAccounts, 'load').and.callFake(() => Promise.resolve([{ id: 'designation_id' }]));
-        });
-
-        it('should return a promise', () => {
-            expect($ctrl.setDesignationAccount()).toEqual(jasmine.any(Promise));
-        });
-
-        describe('promise successful', () => {
-            it('should set the designation_account', (done) => {
-                $ctrl.setDesignationAccount().then(() => {
-                    expect($ctrl.donation.designation_account).toEqual({ id: 'designation_id' });
-                    done();
-                });
+            $ctrl.setDesignationAccount().then(() => {
+                expect($ctrl.donation.designation_account).toEqual({ id: 'designation_id' });
+                done();
             });
         });
     });
@@ -100,10 +93,6 @@ describe('donation.modal.controller', () => {
             beforeEach(() => {
                 spyOn(donations, 'save').and.callFake((data) => Promise.resolve(data));
                 spyOn(scope, '$hide').and.returnValue();
-            });
-
-            it('should return a promise', () => {
-                expect($ctrl.save()).toEqual(jasmine.any(Promise));
             });
 
             it('should call donations.save', () => {
@@ -188,10 +177,6 @@ describe('donation.modal.controller', () => {
                 spyOn(scope, '$hide').and.returnValue();
             });
 
-            it('should return a promise', () => {
-                expect($ctrl.delete()).toEqual(jasmine.any(Promise));
-            });
-
             it('should call donations.delete', () => {
                 $ctrl.delete();
                 expect(donations.delete).toHaveBeenCalledWith(donation);
@@ -200,6 +185,13 @@ describe('donation.modal.controller', () => {
             it('should hide modal', (done) => {
                 $ctrl.delete().then(() => {
                     expect(scope.$hide).toHaveBeenCalled();
+                    done();
+                });
+            });
+
+            it('emit to the rootscope', (done) => {
+                $ctrl.delete().then(() => {
+                    expect(rootScope.$emit).toHaveBeenCalledWith('donationRemoved', { id: donation.id });
                     done();
                 });
             });
@@ -214,11 +206,8 @@ describe('donation.modal.controller', () => {
         });
 
         describe('promise rejected', () => {
-            beforeEach(() => {
-                spyOn(donations, 'delete').and.callFake(() => Promise.reject(Error('fail')));
-            });
-
             it('should add a translated alert', (done) => {
+                spyOn(donations, 'delete').and.callFake(() => Promise.reject(Error('fail')));
                 $ctrl.delete().catch(() => {
                     expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger', null, 5, true);
                     expect(gettextCatalog.getString).toHaveBeenCalled();

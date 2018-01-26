@@ -1,11 +1,4 @@
-import assign from 'lodash/fp/assign';
-import concat from 'lodash/fp/concat';
-import defaultTo from 'lodash/fp/defaultTo';
-import eq from 'lodash/fp/eq';
-import get from 'lodash/fp/get';
-import map from 'lodash/fp/map';
-import round from 'lodash/fp/round';
-import sumBy from 'lodash/fp/sumBy';
+import { assign, concat, defaultTo, eq, get, map, round, sumBy } from 'lodash/fp';
 import uuid from 'uuid/v1';
 
 class ContactDetailsController {
