@@ -1,5 +1,5 @@
 import list, { defaultMeta } from './list.component';
-import { assign, range, unionBy } from 'lodash/fp';
+import { assign, range } from 'lodash/fp';
 import moment from 'moment';
 
 const selected = [1, 2];
