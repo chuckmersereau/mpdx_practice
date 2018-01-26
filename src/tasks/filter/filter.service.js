@@ -1,4 +1,15 @@
-import { assign, defaultTo, flow, isEmpty, isEqual, isNil, map, omitBy } from 'lodash/fp';
+import {
+    assign,
+    compact,
+    defaultTo,
+    flow,
+    isArray,
+    isEmpty,
+    isEqual,
+    isNil,
+    map,
+    omitBy
+} from 'lodash/fp';
 import joinComma from '../../common/fp/joinComma';
 import emptyToNull from '../../common/fp/emptyToNull';
 

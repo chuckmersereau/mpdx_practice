@@ -1,4 +1,4 @@
-import { concat, contains, pull, reject } from 'lodash/fp';
+import { contains, pull } from 'lodash/fp';
 
 class ItemController {
     constructor(
