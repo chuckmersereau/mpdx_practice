@@ -1,5 +1,5 @@
 import mapObject from './mapObject';
-import isFunction from 'lodash/fp/isFunction';
+import { isFunction } from 'lodash/fp';
 
 const obj = {
     a: 'b'

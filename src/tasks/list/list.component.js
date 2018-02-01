@@ -1,21 +1,23 @@
-import concat from 'lodash/fp/concat';
-import defaultTo from 'lodash/fp/defaultTo';
-import each from 'lodash/fp/each';
-import find from 'lodash/fp/find';
-import findIndex from 'lodash/fp/findIndex';
-import get from 'lodash/fp/get';
-import includes from 'lodash/fp/includes';
-import isArray from 'lodash/fp/isArray';
-import map from 'lodash/fp/map';
+import {
+    concat,
+    defaultTo,
+    each,
+    find,
+    findIndex,
+    get,
+    includes,
+    isArray,
+    map,
+    pull,
+    pullAllBy,
+    reduce,
+    reject,
+    sortBy,
+    union,
+    unionBy
+} from 'lodash/fp';
 import moment from 'moment';
-import pull from 'lodash/fp/pull';
-import pullAllBy from 'lodash/fp/pullAllBy';
-import reduce from 'lodash/fp/reduce';
-import reject from 'lodash/fp/reject';
 import relationshipId from 'common/fp/relationshipId';
-import sortBy from 'lodash/fp/sortBy';
-import union from 'lodash/fp/union';
-import unionBy from 'lodash/fp/unionBy';
 import upsert from 'common/fp/upsert';
 
 export const defaultMeta = {

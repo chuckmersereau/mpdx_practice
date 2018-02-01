@@ -1,5 +1,4 @@
-import eq from 'lodash/fp/eq';
-import get from 'lodash/fp/get';
+import { eq, get } from 'lodash/fp';
 
 class CommentController {
     constructor(

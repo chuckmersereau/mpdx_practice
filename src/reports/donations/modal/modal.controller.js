@@ -1,5 +1,5 @@
 import createPatch from 'common/fp/createPatch';
-import defaultTo from 'lodash/fp/defaultTo';
+import { defaultTo } from 'lodash/fp';
 import fixed from 'common/fp/fixed';
 
 class DonationModalController {
@@ -64,8 +64,8 @@ class DonationModalController {
     }
     delete() {
         return this.donations.delete(this.donation).then(() => {
-            this.alerts.addAlert(this.gettextCatalog.getString('Donation deleted successfullly'), 'success');
-            this.$rootScope.$emit('donationRemoved', this.donation.id);
+            this.alerts.addAlert(this.gettextCatalog.getString('Donation deleted successfully'), 'success');
+            this.$rootScope.$emit('donationRemoved', { id: this.donation.id });
             this.$scope.$hide();
         }).catch((err) => {
             this.alerts.addAlert(this.gettextCatalog.getString('Unable to remove donation'), 'danger', null, 5, true);

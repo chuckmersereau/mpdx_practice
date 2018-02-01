@@ -1,5 +1,5 @@
 import emptyToNull from './emptyToNull';
-import isFunction from 'lodash/fp/isFunction';
+import { isFunction } from 'lodash/fp';
 
 describe('common.fp.emptyToNull', () => {
     it('should curry', () => {

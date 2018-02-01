@@ -436,6 +436,21 @@ describe('tools.appeals.show.component', () => {
             expect($ctrl.getCurrencyFromCode('USD')).toEqual({ code: 'USD', symbol: '$' });
         });
     });
+    describe('getCurrencySymbolFromCode', () => {
+        it('should retrieve a currency symbol', () => {
+            serverConstants.data.pledge_currencies = [{ code: 'USD', symbol: '$' }];
+            expect($ctrl.getCurrencySymbolFromCode('USD')).toEqual('$');
+        });
+    });
+    describe('getCurrencySymbols', () => {
+        it('should retrieve a currency symbol', () => {
+            spyOn($ctrl, 'getCurrencySymbolFromCode').and.callFake(() => '$');
+            serverConstants.data.pledge_currencies = [{ code: 'USD', symbol: '$' }];
+            expect($ctrl.getCurrencySymbols([{ currency: 'USD' }])).toEqual([
+                { currency: 'USD', symbol: '$', converted_symbol: '$' }
+            ]);
+        });
+    });
     describe('removePledge', () => {
         beforeEach(() => {
             spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
@@ -790,8 +805,10 @@ describe('tools.appeals.show.component', () => {
     });
     describe('getPledgesProcessed', () => {
         beforeEach(() => {
-            spyOn(api, 'get').and.callFake(() => Promise.resolve({ meta: 'b' }));
-            spyOn($ctrl, 'fixPledgeAmount').and.callFake(() => ['a']);
+            let retVal = [{ id: 1 }];
+            retVal.meta = 'b';
+            spyOn(api, 'get').and.callFake(() => Promise.resolve(retVal));
+            spyOn($ctrl, 'fixPledgeAmount').and.callFake(() => [{ id: 1 }]);
             spyOn($ctrl.blockUIGiven, 'start').and.callFake(() => {});
             spyOn($ctrl.blockUIGiven, 'reset').and.callFake(() => {});
             $ctrl.appeal = { id: 1 };
@@ -808,7 +825,7 @@ describe('tools.appeals.show.component', () => {
                 per_page: 20,
                 fields: {
                     contacts: 'name',
-                    donations: 'converted_amount,converted_currency,donation_date'
+                    donations: 'appeal_amount,converted_appeal_amount,currency,converted_currency,donation_date'
                 },
                 filter: {
                     appeal_id: 1,
@@ -825,7 +842,7 @@ describe('tools.appeals.show.component', () => {
                 per_page: 20,
                 fields: {
                     contacts: 'name',
-                    donations: 'converted_amount,converted_currency,donation_date'
+                    donations: 'appeal_amount,converted_appeal_amount,currency,converted_currency,donation_date'
                 },
                 filter: {
                     appeal_id: 1,
@@ -836,7 +853,7 @@ describe('tools.appeals.show.component', () => {
         });
         it('should set contactsNotGiven', (done) => {
             $ctrl.getPledgesProcessed().then(() => {
-                expect($ctrl.pledgesProcessed[0]).toEqual('a');
+                expect($ctrl.pledgesProcessed[0].id).toEqual(1);
                 done();
             });
         });

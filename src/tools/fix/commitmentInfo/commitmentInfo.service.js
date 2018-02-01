@@ -1,8 +1,4 @@
-import assign from 'lodash/fp/assign';
-import concat from 'lodash/fp/concat';
-import defaultTo from 'lodash/fp/defaultTo';
-import reduce from 'lodash/fp/reduce';
-import reject from 'lodash/fp/reject';
+import { assign, concat, defaultTo, reduce, reject } from 'lodash/fp';
 
 class CommitmentInfoService {
     constructor(

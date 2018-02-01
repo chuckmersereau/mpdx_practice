@@ -1,5 +1,5 @@
 import joinComma from './joinComma';
-import isFunction from 'lodash/fp/isFunction';
+import { isFunction } from 'lodash/fp';
 
 describe('common.fp.joinComma', () => {
     it('should curry', () => {

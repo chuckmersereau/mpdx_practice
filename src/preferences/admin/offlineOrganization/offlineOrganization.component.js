@@ -1,4 +1,4 @@
-import isFunction from 'lodash/fp/isFunction';
+import { isFunction } from 'lodash/fp';
 
 class OfflineOrganizationController {
     constructor(

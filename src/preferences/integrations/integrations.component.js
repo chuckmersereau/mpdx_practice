@@ -1,4 +1,4 @@
-import isNil from 'lodash/fp/isNil';
+import { isNil } from 'lodash/fp';
 
 class IntegrationPreferencesController {
     constructor(

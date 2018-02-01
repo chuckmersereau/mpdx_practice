@@ -1,5 +1,4 @@
-import isEmpty from 'lodash/fp/isEmpty';
-import isNil from 'lodash/fp/isNil';
+import { isEmpty, isNil } from 'lodash/fp';
 
 class ModalController {
     constructor(

@@ -1,4 +1,4 @@
-import find from 'lodash/fp/find';
+import { find } from 'lodash/fp';
 import config from 'config';
 
 const HSMock = {

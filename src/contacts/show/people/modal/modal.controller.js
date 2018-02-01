@@ -1,5 +1,4 @@
-import has from 'lodash/fp/has';
-import map from 'lodash/fp/map';
+import { has, map } from 'lodash/fp';
 import uuid from 'uuid/v1';
 import createPatch from 'common/fp/createPatch';
 

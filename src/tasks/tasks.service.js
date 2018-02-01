@@ -1,19 +1,9 @@
-import concat from 'lodash/fp/concat';
-import defaultTo from 'lodash/fp/defaultTo';
-import assign from 'lodash/fp/assign';
-import isEmpty from 'lodash/fp/isEmpty';
+import { assign, concat, defaultTo, get, isEmpty, isString, map, reject, reduce, startsWith, union } from 'lodash/fp';
 import isNilOrEmpty from 'common/fp/isNilOrEmpty';
-import map from 'lodash/fp/map';
-import reject from 'lodash/fp/reject';
 import joinComma from 'common/fp/joinComma';
-import reduce from 'lodash/fp/reduce';
 import uuid from 'uuid/v1';
 import emptyToNull from 'common/fp/emptyToNull';
-import get from 'lodash/fp/get';
-import isString from 'lodash/fp/isString';
 import moment from 'moment';
-import startsWith from 'lodash/fp/startsWith';
-import union from 'lodash/fp/union';
 
 class TasksService {
     constructor(

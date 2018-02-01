@@ -1,5 +1,5 @@
 import service from './export.service';
-import assign from 'lodash/fp/assign';
+import { assign } from 'lodash/fp';
 
 const params = {
     data: {

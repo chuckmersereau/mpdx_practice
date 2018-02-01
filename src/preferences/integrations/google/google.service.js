@@ -1,6 +1,5 @@
 import config from 'config';
-import find from 'lodash/fp/find';
-import isObject from 'lodash/fp/isObject';
+import { find, isObject } from 'lodash/fp';
 
 class GoogleService {
     constructor(

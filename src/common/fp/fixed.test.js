@@ -1,5 +1,5 @@
 import fixed from './fixed';
-import isFunction from 'lodash/fp/isFunction';
+import { isFunction } from 'lodash/fp';
 
 describe('common.fp.fixed', () => {
     it('should curry', () => {

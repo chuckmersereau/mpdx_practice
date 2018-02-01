@@ -1,6 +1,4 @@
-import map from 'lodash/fp/map';
-import reduce from 'lodash/fp/reduce';
-import union from 'lodash/fp/union';
+import { map, reduce, union } from 'lodash/fp';
 import joinComma from 'common/fp/joinComma';
 
 class RemoveTagController {

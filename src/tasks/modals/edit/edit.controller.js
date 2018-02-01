@@ -1,9 +1,6 @@
 import createPatch from 'common/fp/createPatch';
-import concat from 'lodash/fp/concat';
-import find from 'lodash/fp/find';
+import { concat, find, map, reduce } from 'lodash/fp';
 import isNilOrEmpty from 'common/fp/isNilOrEmpty';
-import map from 'lodash/fp/map';
-import reduce from 'lodash/fp/reduce';
 
 class EditTaskController {
     constructor(

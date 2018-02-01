@@ -1,9 +1,4 @@
-import assign from 'lodash/fp/assign';
-import findIndex from 'lodash/fp/findIndex';
-import get from 'lodash/fp/get';
-import isNil from 'lodash/fp/isNil';
-import keys from 'lodash/fp/keys';
-import toString from 'lodash/fp/toString';
+import { assign, findIndex, get, isNil, keys, toString } from 'lodash/fp';
 import createPatch from '../fp/createPatch';
 
 class AccountsService {

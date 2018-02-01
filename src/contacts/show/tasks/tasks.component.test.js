@@ -1,5 +1,5 @@
 import component from './tasks.component';
-import assign from 'lodash/fp/assign';
+import { assign } from 'lodash/fp';
 
 const currentContact = { id: 1 };
 describe('contacts.show.tasks.component', () => {

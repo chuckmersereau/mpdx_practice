@@ -1,9 +1,5 @@
-import contains from 'lodash/fp/contains';
+import { contains, defaultTo, isEmpty, map, union } from 'lodash/fp';
 import createPatch from 'common/fp/createPatch';
-import defaultTo from 'lodash/fp/defaultTo';
-import isEmpty from 'lodash/fp/isEmpty';
-import map from 'lodash/fp/map';
-import union from 'lodash/fp/union';
 
 class CompleteTaskController {
     constructor(

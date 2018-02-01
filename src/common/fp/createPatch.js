@@ -1,5 +1,4 @@
-import curry from 'lodash/fp/curry';
-import isEqual from 'lodash/fp/isEqual';
+import { curry, isEqual } from 'lodash/fp';
 import reduceObject from './reduceObject';
 
 export default curry((target, source) => {

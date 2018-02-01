@@ -1,14 +1,16 @@
-import assign from 'lodash/fp/assign';
-import concat from 'lodash/fp/concat';
-import defaultTo from 'lodash/fp/defaultTo';
-import filter from 'lodash/fp/filter';
-import findIndex from 'lodash/fp/findIndex';
-import isArray from 'lodash/fp/isArray';
-import isEqual from 'lodash/fp/isEqual';
-import keys from 'lodash/fp/keys';
-import reduce from 'lodash/fp/reduce';
-import sortBy from 'lodash/fp/sortBy';
-import toInteger from 'lodash/fp/toInteger';
+import {
+    assign,
+    concat,
+    defaultTo,
+    filter,
+    findIndex,
+    isArray,
+    isEqual,
+    keys,
+    reduce,
+    sortBy,
+    toInteger
+} from 'lodash/fp';
 
 class Filters {
     constructor(

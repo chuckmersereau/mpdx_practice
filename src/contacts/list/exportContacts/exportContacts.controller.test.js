@@ -1,5 +1,5 @@
 import cntrl from './exportContacts.controller';
-import assign from 'lodash/fp/assign';
+import { assign } from 'lodash/fp';
 
 let contactList = [];
 const fakeBlockUI = {

@@ -1,6 +1,5 @@
 import upsert from './upsert';
-import concat from 'lodash/fp/concat';
-import isFunction from 'lodash/fp/isFunction';
+import { concat, isFunction } from 'lodash/fp';
 
 const arr = [{
     id: 1,

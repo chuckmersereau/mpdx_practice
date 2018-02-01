@@ -1,5 +1,5 @@
 import config from 'config';
-import each from 'lodash/fp/each';
+import { each } from 'lodash/fp';
 
 class MailchimpIntegrationPreferencesController {
     constructor(

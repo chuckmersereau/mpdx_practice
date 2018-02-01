@@ -1,7 +1,5 @@
 import add from './bulkEdit.controller';
-import assign from 'lodash/fp/assign';
-import each from 'lodash/fp/each';
-import map from 'lodash/fp/map';
+import { assign, each, map } from 'lodash/fp';
 
 const selected = [1, 2];
 const currentUser = { id: 321 };

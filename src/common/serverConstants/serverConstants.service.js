@@ -1,14 +1,7 @@
-import replaceUnderscore from '../fp/replaceUnderscore';
-import assign from 'lodash/fp/assign';
-import concat from 'lodash/fp/concat';
-import difference from 'lodash/fp/difference';
-import find from 'lodash/fp/find';
-import get from 'lodash/fp/get';
-import keys from 'lodash/fp/keys';
-import reduce from 'lodash/fp/reduce';
-import toString from 'lodash/fp/toString';
+import { assign, concat, difference, find, get, keys, reduce, toString } from 'lodash/fp';
 import joinComma from '../fp/joinComma';
 import reduceObject from '../fp/reduceObject';
+import replaceUnderscore from '../fp/replaceUnderscore';
 
 class ServerConstantsService {
     constructor(

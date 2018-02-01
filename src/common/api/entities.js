@@ -1,5 +1,5 @@
 // This class provides all of the meta information needed to serialize jsonapi data
-import defaultTo from 'lodash/fp/defaultTo';
+import { defaultTo } from 'lodash/fp';
 
 export const contactsTypeForAttribute = (key) =>
     defaultTo(key, {

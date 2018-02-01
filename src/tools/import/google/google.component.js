@@ -1,5 +1,4 @@
-import each from 'lodash/fp/each';
-import map from 'lodash/fp/map';
+import { each, map } from 'lodash/fp';
 
 class ImportGoogleController {
     constructor(

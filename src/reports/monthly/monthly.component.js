@@ -1,8 +1,4 @@
-import concat from 'lodash/fp/concat';
-import groupBy from 'lodash/fp/groupBy';
-import includes from 'lodash/fp/includes';
-import indexOf from 'lodash/fp/indexOf';
-import sumBy from 'lodash/fp/sumBy';
+import { concat, groupBy, includes, indexOf, sumBy } from 'lodash/fp';
 import reduceObject from 'common/fp/reduceObject';
 
 class MonthlyController {

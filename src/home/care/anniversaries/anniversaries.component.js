@@ -1,5 +1,4 @@
-import defaultTo from 'lodash/fp/defaultTo';
-import get from 'lodash/fp/get';
+import { defaultTo, get } from 'lodash/fp';
 import moment from 'moment';
 
 class AnniversariesController {

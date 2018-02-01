@@ -1,11 +1,4 @@
-import defaultTo from 'lodash/fp/defaultTo';
-import each from 'lodash/fp/each';
-import find from 'lodash/fp/find';
-import findIndex from 'lodash/fp/findIndex';
-import get from 'lodash/fp/get';
-import map from 'lodash/fp/map';
-import split from 'lodash/fp/split';
-import toLower from 'lodash/fp/toLower';
+import { defaultTo, each, find, findIndex, get, map, split, toLower } from 'lodash/fp';
 import uuid from 'uuid/v1';
 
 class PersonalController {

@@ -1,7 +1,4 @@
-import assign from 'lodash/fp/assign';
-import compact from 'lodash/fp/compact';
-import isArray from 'lodash/fp/isArray';
-import isEmpty from 'lodash/fp/isEmpty';
+import { assign, compact, isArray, isEmpty } from 'lodash/fp';
 
 class FilterService {
     constructor(

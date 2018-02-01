@@ -1,5 +1,5 @@
-import curry from 'lodash/fp/curry';
+import { curry, map } from 'lodash/fp';
 
-const map = require('lodash/fp/map').convert({ 'cap': false });
+const mapO = map.convert({ 'cap': false });
 
-export default curry((a, b) => map(a, b));
+export default curry((a, b) => mapO(a, b));

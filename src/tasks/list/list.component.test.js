@@ -1,6 +1,5 @@
 import list, { defaultMeta } from './list.component';
-import assign from 'lodash/fp/assign';
-import range from 'lodash/fp/range';
+import { assign, range } from 'lodash/fp';
 import moment from 'moment';
 
 const selected = [1, 2];

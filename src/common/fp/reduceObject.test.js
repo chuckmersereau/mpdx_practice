@@ -1,5 +1,5 @@
 import reduceObject from './reduceObject';
-import isFunction from 'lodash/fp/isFunction';
+import { isFunction } from 'lodash/fp';
 
 const obj = {
     a: 'b'

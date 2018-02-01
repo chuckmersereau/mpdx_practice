@@ -1,5 +1,5 @@
 import component from './show.component';
-import assign from 'lodash/fp/assign';
+import { assign } from 'lodash/fp';
 
 describe('contacts.show.component', () => {
     let $ctrl, componentController, gettextCatalog, rootScope, scope, state,

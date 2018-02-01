@@ -1,6 +1,4 @@
-import assign from 'lodash/fp/assign';
-import findIndex from 'lodash/fp/findIndex';
-import reject from 'lodash/fp/reject';
+import { assign, findIndex, reject } from 'lodash/fp';
 
 class MergePreferencesController {
     constructor(

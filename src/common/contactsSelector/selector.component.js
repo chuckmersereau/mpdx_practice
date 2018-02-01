@@ -1,5 +1,4 @@
-import findIndex from 'lodash/fp/findIndex';
-import isArray from 'lodash/fp/isArray';
+import { findIndex, isArray } from 'lodash/fp';
 
 class SelectorController {
     constructor(
