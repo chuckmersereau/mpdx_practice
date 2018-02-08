@@ -96,6 +96,7 @@ class ListController {
             this.tasksFilter.reset();
             this.tasksFilter.load(true);
             this.tasksTags.load(true);
+            this.selectedTask = null;
             this.reset();
         });
 

@@ -1,0 +1,57 @@
+task-list-contact {
+    padding: 10px 0;
+    font-size: $font-size-sm;
+    & + & { //all except first
+        border-top: 1px solid $color-bg;
+    }
+    > .top-row {
+        display: grid;
+        grid-template-columns: 50px 1fr 1fr;
+        grid-gap: 10px;
+        .main-details {
+            h4 {
+                margin-bottom: 0;
+                margin-top: 0;
+                font-size: 1.0rem;
+                font-weight: 600;
+            }
+            address {
+                display: inline-block;
+                text-align: left;
+                line-height: 1.25;
+                font-weight: 300;
+            }
+            .people {
+                margin: 5px 0;
+                .people-single-contact {
+                    line-height: 1.25em;
+                }
+            }
+            .more-details {
+                line-height: 1.35em;
+                .pledge_not_received_icon {
+                    font-size: 70%;
+                }
+            }
+            .address > address {
+                margin-bottom: 0;
+            }
+            button.email-all {
+                line-height: 1.25em;
+                padding: 0 12px;
+            }
+        }
+    }
+    > div.tags-row {
+        display: grid;
+        grid-template-columns: 1fr 20px;
+        > div.tags {
+            height: 25px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            &.expanded {
+                height: 100%;
+            }
+        }
+    }
+}

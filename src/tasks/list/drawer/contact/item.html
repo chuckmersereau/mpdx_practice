@@ -1,0 +1,131 @@
+<div class="top-row">
+    <avatar src="$ctrl.contact.square_avatar"></avatar>
+    <div class="main-details">
+        <h4 class="name">
+            <a ui-sref="contacts.show({contactId: $ctrl.contact.id})" ng-click="$event.stopPropagation()">
+                {{::$ctrl.contact.name}}
+            </a>
+            <i class="fas fa-circle circle-on-time"
+               ng-if="::$ctrl.daysLate() < 0"
+               data-title="{{ ::'on time' | translate }}"
+               bs-tooltip></i>
+            <i class="fas fa-circle circle-late"
+               ng-if="::$ctrl.daysLate() >= 30 && $ctrl.daysLate() < 60"
+               data-title="{{ ::'30+ days late' | translate }}"
+               bs-tooltip></i>
+            <i class="fas fa-circle circle-very-late"
+               ng-if="::$ctrl.daysLate() >= 60"
+               data-title="{{ ::'60+ days late' | translate }}"
+               bs-tooltip></i>
+        </h4>
+        <button class="btn email-all" ng-if="$ctrl.contact.people.length > 1" ng-click="$ctrl.emailAll()">
+            <i class="fas fa-envelope"></i> Email All</button>
+        <div class="people">
+            <div ng-repeat="person in ::$ctrl.contact.people | limitTo: 2 track by person.id"
+                 ng-if="::!person.deceased"
+                 class="people-single-contact">
+                <a ng-click="$ctrl.people.openPeopleModal($ctrl.contact, person.id); $event.stopPropagation()">
+                    {{::person.first_name}} {{::person.last_name}}
+                </a>
+                <span ng-repeat="phone_number in ::person.phone_numbers"
+                      ng-if="::phone_number.primary && !phone_number.historic"
+                      class="phone-type phone-type-{{phone_number.location}}">
+                    {{::phone_number.number}}
+                </span>
+                <a ng-repeat="email_address in ::person.email_addresses"
+                   ng-if="::email_address.primary && !email_address.historic"
+                   ng-href="mailto:{{::email_address.email}}" target="_blank">
+                    <i class="ci ci-email_icon" title="{{ ::'Email' | translate }}"></i>
+                </a>
+                <a ng-repeat="facebook_account in ::person.facebook_accounts"
+                   ng-href="{{::facebook_account.url}}" target="_blank">
+                    <i class="fas fa-facebook-square" title="{{ ::'Facebook profile' | translate }}"></i>
+                </a>
+            </div>
+        </div>
+        <div class="address">
+            <address class="address"
+                     ng-repeat="address in ::$ctrl.contact.addresses track by address.id"
+                     ng-if="::address.primary_mailing_address">
+                <span ng-if="::address.street">{{::address.street}}<br></span>
+                <span ng-if="::address.city">{{::address.city}},</span>
+                {{::address.state}}
+                {{::address.postal_code}}
+            </address>
+        </div>
+        <div class="last-donation" ng-if="$ctrl.contact.last_donation">
+            {{$ctrl.contact.last_donation.amount | currency: $ctrl.currency}} ({{$ctrl.contact.last_donation.donation_date | localize}})
+        </div>
+    </div>
+    <div class="more-details">
+        <label translate>Status</label>
+        <select chosen
+                required
+                ng-change="$ctrl.save()"
+                ng-model-options="{ debounce: 1000 }"
+                disable-search="true"
+                data-placeholder-text-single="'Select an Option' | translate"
+                class="form-control"
+                id="status"
+                ng-options="opt.id as opt.value for opt in $ctrl.serverConstants.data.status_hashes"
+                ng-model="$ctrl.contact.status">
+            <option value=""></option>
+        </select>
+        <label translate>Newsletter</label>
+        <select chosen
+                required
+                ng-change="$ctrl.saveWithEmptyCheck('send_newsletter')"
+                ng-model-options="{ debounce: 1000 }"
+                disable-search="true"
+                data-placeholder-text-single="'Select an Option' | translate"
+                allow-single-deselect="true"
+                class="form-control"
+                id="send_newsletter"
+                ng-options="opt.id as opt.value for opt in $ctrl.serverConstants.data.assignable_send_newsletter_hashes"
+                ng-model="$ctrl.contact.send_newsletter">
+            <option value=""></option>
+        </select>
+        <label translate>Commitment</label>
+        <input type="number"
+               class="form-control"
+               step="0.01"
+               ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"
+               ng-model="$ctrl.contact.pledge_amount"
+               ng-change="$ctrl.save()"
+               ng-model-options="{ debounce: 1000 }" />
+        <label translate>Currency</label>
+        <select chosen
+                required
+                ng-change="$ctrl.save()"
+                ng-model-options="{ debounce: 1000 }"
+                class="form-control"
+                data-placeholder-text-single="'Select an Option' | translate"
+                id="pledge_currency"
+                ng-options="pc.code as pc.code_symbol_string for pc in $ctrl.serverConstants.data.pledge_currencies"
+                ng-model="$ctrl.contact.pledge_currency">
+            <option value=""></option>
+        </select>
+        <label translate>Freq.</label>
+        <select chosen
+                ng-change="$ctrl.save()"
+                ng-model-options="{ debounce: 1000 }"
+                disable-search="true"
+                data-placeholder-text-single="'Select an Option' | translate"
+                class="form-control"
+                allow-single-deselect="true"
+                id="pledge_frequency"
+                ng-options="opt.key as opt.value for opt in $ctrl.serverConstants.data.pledge_frequency_hashes"
+                ng-model="$ctrl.contact.pledge_frequency">
+            <option value=""></option>
+        </select>
+    </div>
+</div>
+<div class="tags-row pointer" ng-click="$ctrl.expandTags()">
+    <div class="tags" ng-class="{ expanded: $ctrl.tagsExpanded }">
+        <span class="tag"
+              ng-repeat="tag in ::$ctrl.contact.tag_list track by $index">
+            {{ tag }}
+        </span>
+    </div>
+    <i class="fas" ng-class="{ 'fa-chevron-down': !$ctrl.tagsExpanded, 'fa-chevron-up': $ctrl.tagsExpanded }"></i>
+</div>

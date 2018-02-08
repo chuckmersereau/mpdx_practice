@@ -1,4 +1,13 @@
 tasks-list-item {
+    &.selected:before {
+        font-family: "Font Awesome 5 Pro";
+        content: "\f142";
+        float: left;
+        margin-right: -8px;
+        padding-left: 4px;
+        position: absolute;
+        top: 7px;
+    }
     div.item {
         display: grid;
         grid-template-columns: 24px auto auto 45px 52px 20px 20px;

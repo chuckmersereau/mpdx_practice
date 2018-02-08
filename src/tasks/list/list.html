@@ -122,7 +122,8 @@
                             selected="$ctrl.isSelected(task.id)"
                             on-select="$ctrl.select(task.id)"
                             on-multi-select="$ctrl.multiSelect(task.id)"
-                            on-open="$ctrl.onOpen(task, $action)"></tasks-list-item>
+                            on-open="$ctrl.onOpen(task, $action)"
+                            ng-class="{ 'selected': $ctrl.selectedTask.id === task.id }"></tasks-list-item>
                     </li>
                 </ul>
             </div>

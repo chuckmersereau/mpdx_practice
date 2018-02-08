@@ -1,25 +1,80 @@
 import component from './drawer.component';
 
 describe('tasks.list.drawer.component', () => {
-    let $ctrl, rootScope, scope, componentController, users, api;
+    let $ctrl, rootScope, scope, componentController, users, api, tasks, alerts;
 
     beforeEach(() => {
         angular.mock.module(component);
         inject((
-            $componentController, $rootScope, _api_, _users_
+            $componentController, $rootScope, _api_, _users_, _tasks_, _alerts_
         ) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
+            alerts = _alerts_;
             api = _api_;
+            tasks = _tasks_;
             users = _users_;
             componentController = $componentController;
             loadController();
         });
+        spyOn(alerts, 'addAlert').and.callFake(() => {});
+        spyOn($ctrl, 'gettext').and.callThrough();
     });
 
     function loadController() {
         $ctrl = componentController('taskItemDrawer', { $scope: scope }, { task: null, selected: null });
     }
+    describe('constructor', () => {
+        it('should set loaded to false', () => {
+            expect($ctrl.loaded).toBeFalsy();
+        });
+    });
+    describe('$onChanges', () => {
+        it('shouldn\'t load task if same id', () => {
+            spyOn(tasks, 'load').and.callFake(() => Promise.resolve());
+            $ctrl.task = { id: 1 };
+            $ctrl.$onChanges({ task: { previousValue: { id: 1 } } });
+            expect(tasks.load).not.toHaveBeenCalled();
+        });
+        it('should load task if new', () => {
+            spyOn(tasks, 'load').and.callFake(() => Promise.resolve());
+            $ctrl.task = { id: 1 };
+            $ctrl.$onChanges({ task: { previousValue: { id: 2 } } });
+            expect(tasks.load).toHaveBeenCalledWith(1);
+        });
+        it('should set task', (done) => {
+            const retVal = { id: 2 };
+            spyOn(tasks, 'load').and.callFake(() => Promise.resolve(retVal));
+            $ctrl.task = { id: 1 };
+            $ctrl.$onChanges({ task: { previousValue: { id: 2 } } }).then(() => {
+                expect($ctrl.task).toEqual(retVal);
+                done();
+            });
+        });
+        it('should set loaded to true', (done) => {
+            spyOn(tasks, 'load').and.callFake(() => Promise.resolve({}));
+            $ctrl.task = { id: 1 };
+            $ctrl.$onChanges({ task: { previousValue: { id: 2 } } }).then(() => {
+                expect($ctrl.loaded).toBeTruthy();
+                done();
+            });
+        });
+        it('should initially set loading to false', () => {
+            spyOn(tasks, 'load').and.callFake(() => Promise.resolve());
+            $ctrl.task = { id: 1 };
+            $ctrl.$onChanges({ task: { previousValue: { id: 2 } } });
+            expect($ctrl.loaded).toBeFalsy();
+        });
+        it('should handle failure', (done) => {
+            spyOn(tasks, 'load').and.callFake(() => Promise.reject({}));
+            $ctrl.task = { id: 1 };
+            $ctrl.$onChanges({ task: { previousValue: { id: 2 } } }).then(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith('Unable to load requested task', 'danger');
+                expect($ctrl.gettext).toHaveBeenCalledWith('Unable to load requested task');
+                done();
+            });
+        });
+    });
     describe('addComment', () => {
         beforeEach(() => {
             $ctrl.task = { id: 1 };

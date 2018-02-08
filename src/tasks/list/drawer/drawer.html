@@ -18,10 +18,13 @@
         </div>
     </div>
 </div>
-<div class="contacts" ng-if="$ctrl.view === 'contacts'">
-    <contacts-list-item ng-repeat="contact in $ctrl.task.contacts track by contact.id" contact="contact"></contacts-list-item>
+<div class="contacts am-fade" ng-if="$ctrl.view === 'contacts' && $ctrl.loaded">
+    <task-list-contact ng-repeat="contact in $ctrl.task.contacts track by contact.id"
+                       contact="contact"
+                       loaded="$ctrl.loaded">
+    </task-list-contact>
 </div>
-<div class="comments" ng-if="$ctrl.view === 'comments'">
+<div class="comments am-fade" ng-if="$ctrl.view === 'comments' && $ctrl.loaded">
     <task-item-comment ng-repeat="comment in $ctrl.task.comments"
                        comment="comment"
                        on-comment-remove="$ctrl.commentRemoved(comment.id)"

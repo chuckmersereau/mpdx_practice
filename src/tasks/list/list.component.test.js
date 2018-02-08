@@ -220,6 +220,7 @@ describe('tasks.list.component', () => {
                 expect(tasksFilter.load).toHaveBeenCalledWith(true);
                 expect(tasksTags.load).toHaveBeenCalledWith(true);
                 expect($ctrl.reset).toHaveBeenCalledWith();
+                expect($ctrl.selectedTask).toEqual(null);
             });
         });
     });

@@ -1,25 +1,32 @@
-import get from 'lodash/fp/get';
-import concat from 'lodash/fp/concat';
-import reject from 'lodash/fp/reject';
+import { concat, get, reject } from 'lodash/fp';
 
 class DrawerController {
     constructor(
         $log, $rootScope, $scope,
-        api, contacts, tasks, users
+        alerts, api, contacts, gettext, tasks, users
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
         this.$scope = $scope;
+        this.alerts = alerts;
         this.api = api;
         this.contacts = contacts;
+        this.gettext = gettext;
         this.tasks = tasks;
         this.users = users;
+        this.loaded = false;
     }
     $onChanges(changes) {
         const taskId = get('id', this.task);
-        if (taskId !== get('id', changes.previousValue)) {
-            this.tasks.load(this.task.id).then((task) => {
+        const task = get('task', changes);
+        if (taskId !== get('id', task.previousValue)) {
+            this.loaded = false;
+            return this.tasks.load(this.task.id).then((task) => {
                 this.task = task;
+                this.loaded = true;
+            }).catch(() => {
+                const msg = this.gettext('Unable to load requested task');
+                this.alerts.addAlert(msg, 'danger');
             });
         }
     }
@@ -53,8 +60,9 @@ const Drawer = {
 };
 
 import contacts from 'contacts/contacts.service';
+import contact from './contact/item.component';
 import tasks from 'tasks/tasks.service';
 
 export default angular.module('mpdx.tasks.list.drawer.component', [
-    contacts, tasks
+    contact, contacts, tasks
 ]).component('taskItemDrawer', Drawer).name;
