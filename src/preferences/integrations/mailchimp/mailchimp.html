@@ -14,20 +14,7 @@
             &nbsp;
             <label for="autoLogCampaigns" translate>Automatically log sent MailChimp campaigns in contact task history</label>
         </div>
-        <div class="form-group">
-            <div class="panel panel-default">
-                <div class="panel-heading" translate>Contact Sync Settings</div>
-                <div class="panel-body">
-                    <input id="syncNewsletterContacts" name="syncType" type="radio" ng-model="$ctrl.mailchimp.data.sync_all_active_contacts" ng-value="false">
-                    &nbsp;
-                    <label for="syncNewsletterContacts" translate>Sync contacts with newsletter field set to email or both</label>
-                    <br>
-                    <input id="syncActiveContacts" name="syncType" type="radio" ng-model="$ctrl.mailchimp.data.sync_all_active_contacts" ng-value="true">
-                    &nbsp;
-                    <label for="syncActiveContacts" translate>Sync all active contacts with a valid email address</label>
-                </div>
-            </div>
-        </div>
+
         <div class="form-group">
             <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
                 <translate>Save</translate>
@@ -49,12 +36,6 @@
         <li>
             <translate>MailChimp list to use for your newsletter:</translate>
             <strong>{{$ctrl.mailchimp.data.primary_list_name}}</strong>
-        </li>
-        <li ng-if="$ctrl.mailchimp.data.sync_all_active_contacts" translate>
-            You are syncing all active contacts
-        </li>
-        <li ng-if="!$ctrl.mailchimp.data.sync_all_active_contacts" translate>
-            You are only syncing contacts in your newsletter list
         </li>
         <li>
             <translate>Automatic logging of campaigns: </translate>
