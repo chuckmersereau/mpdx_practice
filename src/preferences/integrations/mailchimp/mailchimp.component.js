@@ -17,6 +17,7 @@ class MailchimpIntegrationPreferencesController {
 
         this.saving = false;
         this.showSettings = false;
+        this.isProduction = config.env === 'production';
 
         $rootScope.$on('accountListUpdated', () => {
             this.mailchimp.load();

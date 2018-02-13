@@ -1,63 +1,77 @@
-<div ng-if="$ctrl.mailchimp.data.validate_key && !$ctrl.mailchimp.data.valid || $ctrl.showSettings == true">
-    <div class="alert alert-info" translate>
-        Please choose a list to sync with MailChimp.
+<div ng-if="$ctrl.isProduction">
+    <div class="alert alert-danger" translate>
+        We are currently experiencing significant issues with MailChimp. <br/>
+        We have disabled the ability to create a new sync or update your current sync until we have resolved the current issue. If you would like, you can still disconnect your MailChimp sync for now.
     </div>
-    <div ng-if="$ctrl.mailchimp.data.lists_present">
-        <div class="form-group">
-            <label for="primaryListId" translate>Pick a list to use for your newsletter</label>
-            <select name="primaryListId" id="primaryListId" ng-model="$ctrl.mailchimp.data.primary_list_id" class="form-control" chosen>
-                <option ng-repeat="option in $ctrl.mailchimp.data.lists_available_for_newsletters" value="{{option.id}}">{{option.name}}</option>
-            </select>
+    <div ng-if="$ctrl.mailchimp.data.validate_key && $ctrl.mailchimp.data.valid && $ctrl.showSettings == false">
+        <div class="alert alert-info" translate>
+            Your contacts are now automatically syncing with MailChimp
         </div>
-        <div class="form-group">
-            <input type="checkbox" id="autoLogCampaigns" ng-model="$ctrl.mailchimp.data.auto_log_campaigns">
-            &nbsp;
-            <label for="autoLogCampaigns" translate>Automatically log sent MailChimp campaigns in contact task history</label>
+        <a class="btn btn-link" ng-click="$ctrl.disconnect()" translate>Disconnect</a>
+    </div>
+</div>
+<div ng-if="!$ctrl.isProduction">
+    <div ng-if="$ctrl.mailchimp.data.validate_key && !$ctrl.mailchimp.data.valid || $ctrl.showSettings == true">
+        <div class="alert alert-info" translate>
+            Please choose a list to sync with MailChimp.
         </div>
+        <div ng-if="$ctrl.mailchimp.data.lists_present">
+            <div class="form-group">
+                <label for="primaryListId" translate>Pick a list to use for your newsletter</label>
+                <select name="primaryListId" id="primaryListId" ng-model="$ctrl.mailchimp.data.primary_list_id" class="form-control" chosen>
+                    <option ng-repeat="option in $ctrl.mailchimp.data.lists_available_for_newsletters" value="{{option.id}}">{{option.name}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="checkbox" id="autoLogCampaigns" ng-model="$ctrl.mailchimp.data.auto_log_campaigns">
+                &nbsp;
+                <label for="autoLogCampaigns" translate>Automatically log sent MailChimp campaigns in contact task history</label>
+            </div>
 
-        <div class="form-group">
-            <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
-                <translate>Save</translate>
-                <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
-            </button>
-            <a class="btn btn-link" ng-click="$ctrl.disconnect()" translate>Disconnect</a>
+            <div class="form-group">
+                <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
+                    <translate>Save</translate>
+                    <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
+                </button>
+                <a class="btn btn-link" ng-click="$ctrl.disconnect()" translate>Disconnect</a>
+            </div>
+        </div>
+        <div ng-if="!$ctrl.mailchimp.data.lists_present">
+            <span translate>You need to create a list on Mail Chimp that MPDX can use for your newsletter.</span><br />
+            <a ng-href="{{$ctrl.mailchimp.data.lists_link}}" target="_blank">Go to MailChimp to create a list.</a>
         </div>
     </div>
-    <div ng-if="!$ctrl.mailchimp.data.lists_present">
-        <span translate>You need to create a list on Mail Chimp that MPDX can use for your newsletter.</span><br />
-        <a ng-href="{{$ctrl.mailchimp.data.lists_link}}" target="_blank">Go to MailChimp to create a list.</a>
+    <div ng-if="$ctrl.mailchimp.data.validate_key && $ctrl.mailchimp.data.valid && $ctrl.showSettings == false">
+        <div class="alert alert-info" translate>
+            Your contacts are now automatically syncing with MailChimp
+        </div>
+        <ul class="list-unstyled">
+            <li>
+                <translate>MailChimp list to use for your newsletter:</translate>
+                <strong>{{$ctrl.mailchimp.data.primary_list_name}}</strong>
+            </li>
+            <li>
+                <translate>Automatic logging of campaigns: </translate>
+                <strong>{{$ctrl.mailchimp.data.auto_log_campaigns ? ('On' | translate) : ('Off' | translate)}}</strong>
+            </li>
+        </ul>
+        <button type="submit" ng-click="$ctrl.sync()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
+            <translate>Sync Now</translate>
+            <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
+        </button>
+        <a class="btn btn-default" ng-click="$ctrl.showSettings = true" translate>Modify Settings</a>
+        <a class="btn btn-link" ng-click="$ctrl.disconnect()" translate>Disconnect</a>
     </div>
-</div>
-<div ng-if="$ctrl.mailchimp.data.validate_key && $ctrl.mailchimp.data.valid && $ctrl.showSettings == false">
-    <div class="alert alert-info" translate>
-        Your contacts are now automatically syncing with MailChimp
+    <div ng-if="!$ctrl.mailchimp.data.validate_key">
+        <h4 class="integration_subhead" translate>MailChimp Overview</h4>
+        <p translate>MailChimp makes keeping in touch with your ministry partners easy and streamlined. Here’s how it works:</p>
+        <ol>
+            <li translate>If you have an existing MailChimp list you’d like to use, Great! Or, create a new one for your MPDX connection.</li>
+            <li translate>Select your MPDX MailChimp list to stream your MPDX contacts into.</li>
+        </ol>
+        <p translate>
+            That's it! Set it and leave it! Now your MailChimp list is continuously up to date with your MPDX Contacts. That's just the surface. Click over to the MPDX Help site for more in depth details.
+        </p>
+        <a ng-href="{{ $ctrl.oAuth }}" class="btn btn-primary" translate>Connect MailChimp</a>
     </div>
-    <ul class="list-unstyled">
-        <li>
-            <translate>MailChimp list to use for your newsletter:</translate>
-            <strong>{{$ctrl.mailchimp.data.primary_list_name}}</strong>
-        </li>
-        <li>
-            <translate>Automatic logging of campaigns: </translate>
-            <strong>{{$ctrl.mailchimp.data.auto_log_campaigns ? ('On' | translate) : ('Off' | translate)}}</strong>
-        </li>
-    </ul>
-    <button type="submit" ng-click="$ctrl.sync()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
-        <translate>Sync Now</translate>
-        <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
-    </button>
-    <a class="btn btn-default" ng-click="$ctrl.showSettings = true" translate>Modify Settings</a>
-    <a class="btn btn-link" ng-click="$ctrl.disconnect()" translate>Disconnect</a>
-</div>
-<div ng-if="!$ctrl.mailchimp.data.validate_key">
-    <h4 class="integration_subhead" translate>MailChimp Overview</h4>
-    <p translate>MailChimp makes keeping in touch with your ministry partners easy and streamlined. Here’s how it works:</p>
-    <ol>
-        <li translate>If you have an existing MailChimp list you’d like to use, Great! Or, create a new one for your MPDX connection.</li>
-        <li translate>Select your MPDX MailChimp list to stream your MPDX contacts into.</li>
-    </ol>
-    <p translate>
-        That's it! Set it and leave it! Now your MailChimp list is continuously up to date with your MPDX Contacts. That's just the surface. Click over to the MPDX Help site for more in depth details.
-    </p>
-    <a ng-href="{{ $ctrl.oAuth }}" class="btn btn-primary" translate>Connect MailChimp</a>
 </div>
