@@ -1,6 +1,5 @@
-import defaultTo from 'lodash/fp/defaultTo';
+import { defaultTo, map } from 'lodash/fp';
 import isNilOrEmpty from 'common/fp/isNilOrEmpty';
-import map from 'lodash/fp/map';
 
 class AddTaskController {
     constructor(

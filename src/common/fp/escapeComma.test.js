@@ -1,5 +1,5 @@
 import escapeComma from './escapeComma';
-import isFunction from 'lodash/fp/isFunction';
+import { isFunction } from 'lodash/fp';
 
 describe('common.fp.escapeComma', () => {
     it('should curry', () => {

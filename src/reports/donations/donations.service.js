@@ -1,4 +1,4 @@
-import has from 'lodash/fp/has';
+import { has } from 'lodash/fp';
 import moment from 'moment';
 
 class DonationsService {

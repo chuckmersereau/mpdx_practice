@@ -1,7 +1,4 @@
-import assign from 'lodash/fp/assign';
-import defaultTo from 'lodash/fp/defaultTo';
-import flatten from 'lodash/fp/flatten';
-import get from 'lodash/fp/get';
+import { assign, defaultTo, flatten, get } from 'lodash/fp';
 
 class SetupService {
     constructor(

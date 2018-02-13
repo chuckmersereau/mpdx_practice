@@ -1,5 +1,4 @@
-import keys from 'lodash/fp/keys';
-import map from 'lodash/fp/map';
+import { keys, map } from 'lodash/fp';
 import moment from 'moment';
 
 class Locale {

@@ -1,10 +1,4 @@
-import each from 'lodash/fp/each';
-import filter from 'lodash/fp/filter';
-import find from 'lodash/fp/find';
-import map from 'lodash/fp/map';
-import reduce from 'lodash/fp/reduce';
-import reject from 'lodash/fp/reject';
-import uniq from 'lodash/fp/uniq';
+import { each, filter, find, map, reduce, reject, uniq } from 'lodash/fp';
 
 class PhoneNumbersService {
     constructor(

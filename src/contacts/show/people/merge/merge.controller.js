@@ -1,5 +1,4 @@
-import map from 'lodash/fp/map';
-import reject from 'lodash/fp/reject';
+import { map, reject } from 'lodash/fp';
 
 class MergePeopleModalController {
     constructor(

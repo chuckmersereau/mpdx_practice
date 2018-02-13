@@ -1,5 +1,4 @@
-import find from 'lodash/fp/find';
-import findIndex from 'lodash/fp/findIndex';
+import { find, findIndex } from 'lodash/fp';
 
 class ContactsSearchController {
     constructor(

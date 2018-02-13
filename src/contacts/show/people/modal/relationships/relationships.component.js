@@ -1,7 +1,4 @@
-import get from 'lodash/fp/get';
-import isNil from 'lodash/fp/isNil';
-import map from 'lodash/fp/map';
-import assign from 'lodash/fp/assign';
+import { assign, get, isNil, map } from 'lodash/fp';
 
 class ContactFamilyRelationshipController {
     constructor(

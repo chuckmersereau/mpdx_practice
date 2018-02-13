@@ -1,5 +1,5 @@
 // This class provides all of the meta information needed to serialize jsonapi data
-import defaultTo from 'lodash/fp/defaultTo';
+import { defaultTo } from 'lodash/fp';
 
 export const contactsTypeForAttribute = (key) =>
     defaultTo(key, {
@@ -31,14 +31,9 @@ export class EntityAttributes {
             account_lists: {
                 attributes: [
                     'creator_id', 'created_at', 'currency', 'home_country', 'monthly_goal', 'name',
-                    'notification_preferences', 'primary_appeal', 'settings', 'salary_organization', 'tester',
+                    'primary_appeal', 'settings', 'salary_organization', 'tester',
                     'total_pledges', 'updated_at'
                 ],
-                notification_preferences: {
-                    ref: 'id',
-                    attributes: ['actions', 'notification_type'],
-                    notification_type: { ref: 'id' }
-                },
                 primary_appeal: {
                     ref: 'id'
                 },
@@ -183,6 +178,12 @@ export class EntityAttributes {
                     'donation_id'
                 ]
             },
+            notification_preferences: {
+                ref: 'id',
+                attributes: ['email', 'notification_type', 'task', 'user'],
+                notification_type: { ref: 'id' },
+                user: { ref: 'id' }
+            },
             organization_accounts: {
                 attributes: ['organization', 'password', 'username', 'person'],
                 organization: { ref: 'id' },
@@ -284,7 +285,7 @@ export class EntityAttributes {
                 attributes: ['key', 'value']
             },
             mail_chimp_account: {
-                attributes: ['api_key', 'primary_list_id', 'sync_all_active_contacts', 'auto_log_campaigns']
+                attributes: ['api_key', 'primary_list_id', 'auto_log_campaigns']
             }
         };
     }

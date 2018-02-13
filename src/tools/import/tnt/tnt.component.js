@@ -1,4 +1,4 @@
-import round from 'lodash/fp/round';
+import { round } from 'lodash/fp';
 import joinComma from 'common/fp/joinComma';
 import config from 'config';
 

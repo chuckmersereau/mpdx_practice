@@ -1,7 +1,4 @@
-import defaultTo from 'lodash/fp/defaultTo';
-import get from 'lodash/fp/get';
-import keys from 'lodash/fp/keys';
-import map from 'lodash/fp/map';
+import { defaultTo, get, keys, map } from 'lodash/fp';
 
 class LanguageController {
     constructor(

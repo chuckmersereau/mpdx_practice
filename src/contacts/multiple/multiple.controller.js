@@ -1,6 +1,4 @@
-import concat from 'lodash/fp/concat';
-import range from 'lodash/fp/range';
-import reduce from 'lodash/fp/reduce';
+import { concat, range, reduce } from 'lodash/fp';
 import uuid from 'uuid/v1';
 
 class MultipleController {

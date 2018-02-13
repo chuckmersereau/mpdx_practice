@@ -1,6 +1,4 @@
-import concat from 'lodash/fp/concat';
-import reduce from 'lodash/fp/reduce';
-import reject from 'lodash/fp/reject';
+import { concat, reduce, reject } from 'lodash/fp';
 
 class newsletterService {
     constructor(

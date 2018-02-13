@@ -1,5 +1,4 @@
-import assign from 'lodash/fp/assign';
-import isFunction from 'lodash/fp/isFunction';
+import { assign, isFunction } from 'lodash/fp';
 import createPatch from './createPatch';
 
 const initial = {

@@ -1,5 +1,4 @@
-import concat from 'lodash/fp/concat';
-import pullAt from 'lodash/fp/pullAt';
+import { concat, pullAt } from 'lodash/fp';
 
 class GoogleIntegrationsModalController {
     constructor(

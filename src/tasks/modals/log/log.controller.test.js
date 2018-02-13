@@ -1,6 +1,5 @@
 import log from './log.controller';
-import assign from 'lodash/fp/assign';
-import each from 'lodash/fp/each';
+import { assign, each } from 'lodash/fp';
 import moment from 'moment';
 
 let contactList = [];

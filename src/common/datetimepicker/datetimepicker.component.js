@@ -1,9 +1,5 @@
 import moment from 'moment';
-import defaultTo from 'lodash/fp/defaultTo';
-import get from 'lodash/fp/get';
-import isNil from 'lodash/fp/isNil';
-import startsWith from 'lodash/fp/startsWith';
-import times from 'lodash/fp/times';
+import { defaultTo, get, isNil, startsWith, times } from 'lodash/fp';
 
 class DatetimepickerController {
     constructor(

@@ -1,7 +1,5 @@
 import component from './contributions.component';
-import assign from 'lodash/fp/assign';
-import constant from 'lodash/fp/constant';
-import times from 'lodash/fp/times';
+import { assign, constant, times } from 'lodash/fp';
 import moment from 'moment';
 
 describe('reports.contributions.component', () => {

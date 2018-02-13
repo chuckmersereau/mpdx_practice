@@ -1,21 +1,23 @@
-import concat from 'lodash/fp/concat';
+import {
+    concat,
+    defaultTo,
+    difference,
+    each,
+    findIndex,
+    findKey,
+    has,
+    includes,
+    invert,
+    isNil,
+    keys,
+    merge,
+    omitBy,
+    reduce,
+    values
+} from 'lodash/fp';
 import createPatch from 'common/fp/createPatch';
-import defaultTo from 'lodash/fp/defaultTo';
-import difference from 'lodash/fp/difference';
-import each from 'lodash/fp/each';
-import findIndex from 'lodash/fp/findIndex';
-import findKey from 'lodash/fp/findKey';
-import has from 'lodash/fp/has';
-import includes from 'lodash/fp/includes';
-import invert from 'lodash/fp/invert';
-import isNil from 'lodash/fp/isNil';
 import joinComma from 'common/fp/joinComma';
-import keys from 'lodash/fp/keys';
-import merge from 'lodash/fp/merge';
-import omitBy from 'lodash/fp/omitBy';
-import reduce from 'lodash/fp/reduce';
 import reduceObject from 'common/fp/reduceObject';
-import values from 'lodash/fp/values';
 
 class CsvService {
     constructor(

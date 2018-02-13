@@ -1,4 +1,4 @@
-import get from 'lodash/fp/get';
+import { get } from 'lodash/fp';
 
 class ConnectController {
     constructor(

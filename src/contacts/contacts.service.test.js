@@ -1,5 +1,5 @@
 import service from './contacts.service';
-import assign from 'lodash/fp/assign';
+import { assign } from 'lodash/fp';
 
 const accountListId = 123;
 const defaultParams = {};

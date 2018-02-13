@@ -1,13 +1,4 @@
-import concat from 'lodash/fp/concat';
-import defaultTo from 'lodash/fp/defaultTo';
-import differenceBy from 'lodash/fp/differenceBy';
-import each from 'lodash/fp/each';
-import filter from 'lodash/fp/filter';
-import find from 'lodash/fp/find';
-import get from 'lodash/fp/get';
-import has from 'lodash/fp/has';
-import head from 'lodash/fp/head';
-import reduce from 'lodash/fp/reduce';
+import { concat, defaultTo, differenceBy, each, filter, find, get, has, head, reduce } from 'lodash/fp';
 
 class MapContactsController {
     constructor(

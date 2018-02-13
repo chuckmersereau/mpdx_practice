@@ -1,6 +1,4 @@
-import isArray from 'lodash/fp/isArray';
-import isObject from 'lodash/fp/isObject';
-import map from 'lodash/fp/map';
+import { isArray, isObject, map } from 'lodash/fp';
 
 const ifNotObject = (tag) => {
     if (!isObject(tag)) {

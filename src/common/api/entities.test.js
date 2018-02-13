@@ -17,14 +17,9 @@ describe('EntityAttributes', () => {
         expect(attributes.account_lists).toEqual({
             attributes: [
                 'creator_id', 'created_at', 'currency', 'home_country', 'monthly_goal', 'name',
-                'notification_preferences', 'primary_appeal', 'settings', 'salary_organization', 'tester',
+                'primary_appeal', 'settings', 'salary_organization', 'tester',
                 'total_pledges', 'updated_at'
             ],
-            notification_preferences: {
-                ref: 'id',
-                attributes: ['actions', 'notification_type'],
-                notification_type: { ref: 'id' }
-            },
             primary_appeal: { ref: 'id' },
             users: {
                 ref: 'id',
@@ -300,7 +295,7 @@ describe('EntityAttributes', () => {
     });
     it('should define mail_chimp_account', () => {
         expect(attributes.mail_chimp_account).toEqual({
-            attributes: ['api_key', 'primary_list_id', 'sync_all_active_contacts', 'auto_log_campaigns']
+            attributes: ['api_key', 'primary_list_id', 'auto_log_campaigns']
         });
     });
 

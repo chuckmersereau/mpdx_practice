@@ -76,7 +76,7 @@ describe('tools.fix.phoneNumbers.service', () => {
 
             it('should collect list of sources', (done) => {
                 fixPhoneNumbers.load().then(() => {
-                    expect(fixPhoneNumbers.sources).toEqual(['Dataserver', 'MPDX', 'Siebel', 'Tntmpd']);
+                    expect(fixPhoneNumbers.sources).toEqual(['DataServer', 'MPDX', 'Siebel', 'Tntmpd']);
                     done();
                 });
             });
@@ -472,8 +472,8 @@ describe('tools.fix.phoneNumbers.service', () => {
     const apiData = [
         { phone_numbers: [{ source: 'Siebel' }] },
         { phone_numbers: [{ source: 'Tntmpd' }] },
-        { phone_numbers: [{ source: 'Dataserver' }] },
-        { phone_numbers: [{ source: 'Dataserver' }] }
+        { phone_numbers: [{ source: 'DataServer' }] },
+        { phone_numbers: [{ source: 'DataServer' }] }
     ];
 
     apiData.meta = { page: 1 };

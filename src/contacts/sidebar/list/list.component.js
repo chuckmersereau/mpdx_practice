@@ -1,6 +1,5 @@
-import has from 'lodash/fp/has';
+import { has, unionBy } from 'lodash/fp';
 import moment from 'moment';
-import unionBy from 'lodash/fp/unionBy';
 
 class ListController {
     constructor(
@@ -61,7 +60,7 @@ class ListController {
             data: {
                 filter: this.contacts.buildFilterParams(),
                 fields: {
-                    contacts: 'name,late_at'
+                    contacts: 'name,status,late_at'
                 },
                 page: this.page,
                 per_page: 50,

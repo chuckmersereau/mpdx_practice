@@ -1,6 +1,5 @@
 import complete from './complete.controller';
-import assign from 'lodash/fp/assign';
-import each from 'lodash/fp/each';
+import { assign, each } from 'lodash/fp';
 
 const defaultTask = { id: 1, contacts: [{ id: 1 }] };
 

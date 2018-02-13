@@ -1,7 +1,4 @@
-import first from 'lodash/fp/first';
-import get from 'lodash/fp/get';
-import map from 'lodash/fp/map';
-import reject from 'lodash/fp/reject';
+import { first, get, map, reject } from 'lodash/fp';
 
 class MergeContactsController {
     constructor(

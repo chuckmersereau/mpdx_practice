@@ -1,9 +1,5 @@
-import flatten from 'lodash/fp/flatten';
-import includes from 'lodash/fp/includes';
-import map from 'lodash/fp/map';
+import { flatten, includes, map, pull, union } from 'lodash/fp';
 import moment from 'moment';
-import pull from 'lodash/fp/pull';
-import union from 'lodash/fp/union';
 
 class ItemController {
     constructor(

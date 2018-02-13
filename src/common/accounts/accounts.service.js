@@ -1,9 +1,4 @@
-import assign from 'lodash/fp/assign';
-import findIndex from 'lodash/fp/findIndex';
-import get from 'lodash/fp/get';
-import isNil from 'lodash/fp/isNil';
-import keys from 'lodash/fp/keys';
-import toString from 'lodash/fp/toString';
+import { assign, findIndex, get, isNil, keys, toString } from 'lodash/fp';
 import createPatch from '../fp/createPatch';
 
 class AccountsService {
@@ -19,7 +14,7 @@ class AccountsService {
         this.analytics = null;
         this.current = null;
         this.data = {};
-        this.defaultIncludes = 'notification_preferences,notification_preferences.notification_type,primary_appeal';
+        this.defaultIncludes = 'primary_appeal';
         this.defaultFields = { primary_appeal: '' };
         this.donations = null;
         this.inviteList = null;

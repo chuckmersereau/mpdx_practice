@@ -1,11 +1,6 @@
-import concat from 'lodash/fp/concat';
-import each from 'lodash/fp/each';
-import filter from 'lodash/fp/filter';
+import { concat, each, filter, has, includes, reject } from 'lodash/fp';
 import flattenCompactAndJoin from 'common/fp/flattenCompactAndJoin';
-import has from 'lodash/fp/has';
-import includes from 'lodash/fp/includes';
-import reject from 'lodash/fp/reject';
-import bowser from 'bowser';
+import * as bowser from 'bowser';
 
 class ContactPeopleController {
     constructor(

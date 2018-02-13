@@ -1,5 +1,4 @@
-import includes from 'lodash/fp/includes';
-import reject from 'lodash/fp/reject';
+import { includes, reject } from 'lodash/fp';
 
 class TagsController {
     constructor(

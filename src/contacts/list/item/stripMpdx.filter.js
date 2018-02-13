@@ -1,4 +1,4 @@
-import isString from 'lodash/fp/isString';
+import { isString } from 'lodash/fp';
 
 function stripMpdx() {
     return function(val) {

@@ -1,4 +1,4 @@
-import includes from 'lodash/fp/includes';
+import { includes } from 'lodash/fp';
 
 class ImportCsvController {
     constructor(

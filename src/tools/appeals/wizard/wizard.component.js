@@ -1,12 +1,7 @@
-import assign from 'lodash/fp/assign';
-import contains from 'lodash/fp/contains';
-import concat from 'lodash/fp/concat';
+import { assign, contains, concat, find, map, reduce } from 'lodash/fp';
 import emptyToNull from 'common/fp/emptyToNull';
-import find from 'lodash/fp/find';
 import joinComma from 'common/fp/joinComma';
-import map from 'lodash/fp/map';
 import moment from 'moment';
-import reduce from 'lodash/fp/reduce';
 import removeObjectNulls from 'common/fp/removeObjectNulls';
 
 class WizardController {

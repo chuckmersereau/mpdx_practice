@@ -1,5 +1,5 @@
 import removeObjectNulls from './removeObjectNulls';
-import isFunction from 'lodash/fp/isFunction';
+import { isFunction } from 'lodash/fp';
 
 describe('common.fp.removeObjectNulls', () => {
     it('should curry', () => {

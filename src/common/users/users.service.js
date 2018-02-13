@@ -1,9 +1,4 @@
-import defaultTo from 'lodash/fp/defaultTo';
-import find from 'lodash/fp/find';
-import get from 'lodash/fp/get';
-import keyBy from 'lodash/fp/keyBy';
-import keys from 'lodash/fp/keys';
-import toString from 'lodash/fp/toString';
+import { defaultTo, find, get, keyBy, keys, toString } from 'lodash/fp';
 import createPatch from '../fp/createPatch';
 import config from 'config';
 

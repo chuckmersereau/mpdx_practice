@@ -1,24 +1,26 @@
-import assign from 'lodash/fp/assign';
-import concat from 'lodash/fp/concat';
+import {
+    assign,
+    concat,
+    find,
+    flow,
+    get,
+    has,
+    includes,
+    isArray,
+    isEqual,
+    isFunction,
+    isNil,
+    map,
+    omitBy,
+    pull,
+    reduce,
+    union
+} from 'lodash/fp';
 import emptyToNull from '../common/fp/emptyToNull';
-import find from 'lodash/fp/find';
 import flattenCompactAndJoin from 'common/fp/flattenCompactAndJoin';
-import flow from 'lodash/fp/flow';
-import get from 'lodash/fp/get';
-import has from 'lodash/fp/has';
-import includes from 'lodash/fp/includes';
-import isArray from 'lodash/fp/isArray';
-import isEqual from 'lodash/fp/isEqual';
-import isFunction from 'lodash/fp/isFunction';
-import isNil from 'lodash/fp/isNil';
 import joinComma from '../common/fp/joinComma';
-import map from 'lodash/fp/map';
-import omitBy from 'lodash/fp/omitBy';
-import pull from 'lodash/fp/pull';
-import reduce from 'lodash/fp/reduce';
 import reduceObject from '../common/fp/reduceObject';
 import relationshipId from '../common/fp/relationshipId';
-import union from 'lodash/fp/union';
 
 class ContactsService {
     constructor(

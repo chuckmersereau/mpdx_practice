@@ -1,8 +1,4 @@
-import difference from 'lodash/fp/difference';
-import includes from 'lodash/fp/includes';
-import keys from 'lodash/fp/keys';
-import union from 'lodash/fp/union';
-import values from 'lodash/fp/values';
+import { difference, includes, keys, union, values } from 'lodash/fp';
 
 class HeadersController {
     constructor(
