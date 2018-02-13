@@ -1,8 +1,13 @@
 /* CRU BRAND COLORS */
+$brand-primary:         $color-primary;
+$color-gray: black;
+$color-background: black;
+$color-danger: red;
 $text-muted: #333;
 $screen-sm-min: 768px;
 $screen-sm-max: 992px;
 $screen-xs-max: 992px;
+
 
 $gray: #929497;
 $gray_light: #E6E7E8;
@@ -19,13 +24,6 @@ $menu_bg: #909B9C;
 $icon_gray: #4A4A4A;
 $progress: #EAC347;
 $progress_dark: #CB773B;
-
-$brand-primary: $color-primary;
-$color-gray: black;
-$color-background: black;
-$color-danger: red;
-$color-info: $blue;
-$color-warning: #F5BE19;
 
 $page_bg: $color-reverse;
 $content_bg: $color-reverse;
@@ -158,22 +156,14 @@ $appealHeight: 20px;
 }
 
 
-.circle-default {
+.circle-late {
   color: $gray_dark;
 }
 
-.circle-warning {
-  color: $color-warning;
-}
-
-.circle-danger {
+.circle-very-late {
   color: $color-danger;
 }
 
-.circle-info {
-  color: $color-info;
-}
-
-.circle-success {
+.circle-on-time {
   color: $color-success;
 }
