@@ -11,46 +11,30 @@
     control that behavior.
 </p>
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <div class="row">
-            <div class="col-sm-10" translate>
-                Select the types of notifications you'd like to receive
-            </div>
-            <div class="col-sm-1 text-center p-0">
-                <i class="fa fa-envelope-o"></i>
-                <br>
-                <small translate>Email</small>
-            </div>
-            <div class="col-sm-1 text-center p-0">
-                <i class="fa fa-tasks"></i>
-                <br>
-                <small translate>Task</small>
-            </div>
-        </div>
+    <div class="panel-heading" translate>
+        Select the types of notifications you'd like to receive
     </div>
     <ul class="list-group">
-        <li class="list-group-item" ng-repeat="notificationPreference in $ctrl.notificationPreferences">
-            <div class="row">
-                <div class="col-sm-10">
-                    {{ notificationPreference.title }}
-                </div>
-                <div class="col-sm-1 text-center">
-                    <input type="checkbox" ng-model="notificationPreference.email" autofocus="$index == 0">
-                </div>
-                <div class="col-sm-1 text-center">
-                    <input type="checkbox" ng-model="notificationPreference.task">
+        <li class="list-group-item" ng-repeat="notification in $ctrl.notifications">
+            <div class="pull-right">
+                <div class="form-group">
+                    <label class="checkbox-inline">
+                        <input type="checkbox" ng-model="notification.email" autofocus="$index == 0">
+                        <span translate>Email me</span>
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" ng-model="notification.task">
+                        <span translate>Create a task</span>
+                    </label>
                 </div>
             </div>
+            {{ notification.title }}
         </li>
     </ul>
-    <div class="panel-body" ng-if="$ctrl.notificationPreferences.length == 0 && $ctrl.loading">
-        <div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
-          <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
-        </div>
-    </div>
     <div class="panel-footer text-right">
-        <a ng-click="$ctrl.save()" ng-disabled="$ctrl.loading" class="btn btn-primary">
+        <a ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary">
             <translate>Save</translate>
+            <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
         </a>
     </div>
 </div>

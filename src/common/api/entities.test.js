@@ -17,9 +17,14 @@ describe('EntityAttributes', () => {
         expect(attributes.account_lists).toEqual({
             attributes: [
                 'creator_id', 'created_at', 'currency', 'home_country', 'monthly_goal', 'name',
-                'primary_appeal', 'settings', 'salary_organization', 'tester',
+                'notification_preferences', 'primary_appeal', 'settings', 'salary_organization', 'tester',
                 'total_pledges', 'updated_at'
             ],
+            notification_preferences: {
+                ref: 'id',
+                attributes: ['actions', 'notification_type'],
+                notification_type: { ref: 'id' }
+            },
             primary_appeal: { ref: 'id' },
             users: {
                 ref: 'id',
