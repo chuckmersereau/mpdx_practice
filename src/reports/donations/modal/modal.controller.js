@@ -80,6 +80,7 @@ class DonationModalController {
     }
     onAppealSelected(appeal) {
         this.donation.appeal = appeal;
+        this.donation.appeal_amount = appeal ? this.donation.appeal_amount : null;
     }
     search(keywords) {
         return this.api.get('appeals', {

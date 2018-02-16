@@ -254,6 +254,16 @@ describe('donation.modal.controller', () => {
             $ctrl.onAppealSelected(appeal);
             expect($ctrl.donation.appeal).toEqual(appeal);
         });
+        it('should set amount to amount if appeal isn\'t null', () => {
+            $ctrl.donation.appeal_amount = 12;
+            $ctrl.onAppealSelected(appeal);
+            expect($ctrl.donation.appeal_amount).toEqual(12);
+        });
+        it('should set amount to null if appeal is null', () => {
+            $ctrl.donation.appeal_amount = 12;
+            $ctrl.onAppealSelected(null);
+            expect($ctrl.donation.appeal_amount).toEqual(null);
+        });
     });
 
     describe('search', () => {
