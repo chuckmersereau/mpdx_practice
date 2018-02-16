@@ -19,6 +19,7 @@ class EditTaskController {
     }
     save() {
         this.handleActivityContacts();
+        this.handleDates();
         this.task.notification_type = isNilOrEmpty(this.task.notification_time_before) ? null : 'email';
 
         let patch = createPatch(this.taskInitialState, this.task);
@@ -39,6 +40,17 @@ class EditTaskController {
         this.task.contacts = reduce((result, value) => {
             return find((a) => a.contact.id === value.id, this.task.activity_contacts) ? result : concat(result, value);
         }, [], this.task.contacts);
+    }
+    handleDates() {
+        this.task.start_at = this.isoDateOrNull(this.task.start_at);
+        this.task.completed_at = this.isoDateOrNull(this.task.completed_at);
+    }
+    isoDateOrNull(val) {
+        return this.isIsoDate(val) ? val : null;
+    }
+    isIsoDate(s) {
+        const isoDateRegExp = new RegExp(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/);
+        return isoDateRegExp.test(s);
     }
     delete() {
         return this.tasks.delete(
