@@ -1,5 +1,4 @@
 import {
-    ceil,
     concat,
     defaultTo,
     find,
@@ -9,18 +8,19 @@ import {
     map,
     pullAllBy,
     reduce,
-    reject,
-    unionBy
+    reject
 } from 'lodash/fp';
+import pagination from 'common/pagination/pagination';
 
 class ListController {
     constructor(
-        $log, $rootScope, $window,
+        $log, $rootScope, $scope, $window,
         gettextCatalog,
-        accounts, alerts, api, contacts, contactFilter, contactsTags, modal, serverConstants, session, tasks
+        accounts, alerts, api, contacts, contactFilter, contactsTags, modal, serverConstants, session, tasks, users
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
+        this.$scope = $scope;
         this.$window = $window;
         this.accounts = accounts;
         this.alerts = alerts;
@@ -30,9 +30,11 @@ class ListController {
         this.contactsTags = contactsTags;
         this.gettextCatalog = gettextCatalog;
         this.modal = modal;
+        this.pagination = pagination;
         this.serverConstants = serverConstants;
         this.session = session;
         this.tasks = tasks;
+        this.users = users;
 
         this.contacts.clearSelectedContacts();
         this.allSelected = false;
@@ -46,7 +48,7 @@ class ListController {
             }
         };
         this.page = 0;
-        this.pageSize = 0;
+        this.pageSize = defaultTo(25, this.users.getCurrentOptionValue('page_size_contacts'));
         this.totalContactCount = 0;
     }
     $onInit() {
@@ -104,12 +106,6 @@ class ListController {
         this.watcher7();
         this.watcher8();
         this.watcher9();
-    }
-    loadMoreContacts() {
-        if (this.loading || this.page >= this.meta.pagination.total_pages) {
-            return;
-        }
-        this.load(this.page + 1);
     }
     toggleAllContacts() {
         if (this.data && this.contacts.selectedContacts && this.contacts.selectedContacts.length < this.data.length) {
@@ -185,17 +181,12 @@ class ListController {
     }
     load(page = 1) {
         this.loading = true;
-        const reset = page === 1;
 
         let currentCount;
-        if (reset) {
-            this.meta = {};
-            this.data = null;
-            this.listLoadCount++;
-            currentCount = angular.copy(this.listLoadCount);
-            const contactHeight = 70; // min pixel height of contact items
-            this.pageSize = defaultTo(12, ceil(this.$window.innerHeight / contactHeight) - 2); // minimally adjust for menus (always pull at least a few extra)
-        }
+        this.meta = {};
+        this.data = null;
+        this.listLoadCount++;
+        currentCount = angular.copy(this.listLoadCount);
         this.page = page;
         return this.api.get({
             url: 'contacts',
@@ -218,24 +209,16 @@ class ListController {
         }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug('contacts page ' + data.meta.pagination.page, data);
-            if (reset && currentCount !== this.listLoadCount) {
+            if (currentCount !== this.listLoadCount) {
                 return;
             }
-            let count = reset ? 0 : defaultTo(0, this.meta.to);
             this.meta = data.meta;
             if (data.length === 0) {
                 this.getTotalCount();
                 this.loading = false;
                 return;
             }
-            const newContacts = this.contacts.fixPledgeAmountAndFrequencies(data);
-            if (reset) {
-                this.data = newContacts;
-            } else {
-                this.data = unionBy('id', this.data, newContacts);
-            }
-            count += data.length;
-            this.meta.to = count;
+            this.data = this.contacts.fixPledgeAmountAndFrequencies(data);
             this.loading = false;
             return this.data;
         });
@@ -310,6 +293,10 @@ class ListController {
     isArray(obj) {
         return isArray(obj);
     }
+    pageSizeChange(size) {
+        this.pageSize = size;
+        this.load(1);
+    }
 }
 
 const ContactList = {
@@ -330,8 +317,9 @@ import contactsTags from '../sidebar/filter/tags/tags.service';
 import modal from 'common/modal/modal.service';
 import session from 'common/session/session.service';
 import tasks from 'tasks/tasks.service';
+import users from 'common/users/users.service';
 
 export default angular.module('mpdx.contacts.list.component', [
     gettextCatalog,
-    accounts, alerts, api, contacts, contactFilter, contactsTags, modal, session, tasks
+    accounts, alerts, api, contacts, contactFilter, contactsTags, modal, session, tasks, users
 ]).component('contactsList', ContactList).name;

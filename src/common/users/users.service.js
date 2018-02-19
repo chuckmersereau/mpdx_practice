@@ -132,6 +132,9 @@ class Users {
             return data;
         }); // use jsonapi key here since it doesn't match endpoint
     }
+    getCurrentOptionValue(key) {
+        return get('value', get(key, this.currentOptions));
+    }
     deleteOption(option) {
         return this.api.delete(`user/options/${option}`);
     }

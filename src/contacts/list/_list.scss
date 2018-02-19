@@ -24,6 +24,10 @@ contacts-list {
         grid-column: 1;
         grid-row: 2;
         padding-right: $container-padding-right;
+        > div.sub-line-1 {
+            display: grid;
+            grid-template-columns: 1fr auto;
+        }
     }
     > div.content {
         @extend .lists.content;

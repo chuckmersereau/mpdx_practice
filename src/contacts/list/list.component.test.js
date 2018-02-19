@@ -3,12 +3,12 @@ import { assign, map } from 'lodash/fp';
 
 describe('contacts.list.component', () => {
     let $ctrl, contacts, contactsTags, rootScope, scope, componentController, modal, tasks, alerts, gettextCatalog,
-        api, serverConstants;
+        api, serverConstants, users;
     beforeEach(() => {
         angular.mock.module(list);
         inject((
             $componentController, $rootScope, _contacts_, _contactsTags_, _modal_, _tasks_, _alerts_,
-            _gettextCatalog_, _api_, _serverConstants_
+            _gettextCatalog_, _api_, _serverConstants_, _users_
         ) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
@@ -20,6 +20,7 @@ describe('contacts.list.component', () => {
             modal = _modal_;
             tasks = _tasks_;
             serverConstants = _serverConstants_;
+            users = _users_;
             componentController = $componentController;
             api.account_list_id = 1234;
             loadController();
@@ -52,6 +53,16 @@ describe('contacts.list.component', () => {
             });
             expect($ctrl.page).toEqual(0);
             expect($ctrl.totalContactCount).toEqual(0);
+        });
+        it('should default page size to 25', () => {
+            expect($ctrl.pageSize).toEqual(25);
+        });
+        it('should set page size to user option', () => {
+            users.currentOptions = {
+                'page_size_contacts': { value: 10 }
+            };
+            loadController();
+            expect($ctrl.pageSize).toEqual(10);
         });
     });
     describe('$onInit', () => {
@@ -148,28 +159,6 @@ describe('contacts.list.component', () => {
             expect($ctrl.watcher7).toHaveBeenCalledWith();
             expect($ctrl.watcher8).toHaveBeenCalledWith();
             expect($ctrl.watcher9).toHaveBeenCalledWith();
-        });
-    });
-    describe('loadMoreContacts', () => {
-        beforeEach(() => {
-            spyOn($ctrl, 'load').and.callFake(() => Promise.resolve());
-            $ctrl.page = 0;
-            $ctrl.loading = false;
-            $ctrl.meta = { pagination: { total_pages: 4 } };
-        });
-        it('should call load', () => {
-            $ctrl.loadMoreContacts();
-            expect($ctrl.load).toHaveBeenCalledWith(1);
-        });
-        it('should exit if already loading', () => {
-            $ctrl.loading = true;
-            $ctrl.loadMoreContacts();
-            expect($ctrl.load).not.toHaveBeenCalled();
-        });
-        it('should exit if on last page of results', () => {
-            $ctrl.page = 4;
-            $ctrl.loadMoreContacts();
-            expect($ctrl.load).not.toHaveBeenCalled();
         });
     });
     describe('toggleAllContacts', () => {
@@ -404,14 +393,6 @@ describe('contacts.list.component', () => {
                 done();
             });
         });
-        it('should union contacts on page 2', (done) => {
-            spyOn(api, 'get').and.callFake(() => Promise.resolve(result));
-            $ctrl.data = [{ id: 2, name: 'b' }, { id: 1, name: 'b' }];
-            $ctrl.load(2).then(() => {
-                expect($ctrl.data[1].name).toEqual('b');
-                done();
-            });
-        });
         it('should return data', (done) => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve(result));
             $ctrl.load().then((data) => {
@@ -564,6 +545,17 @@ describe('contacts.list.component', () => {
         });
         it('should catch an object', () => {
             expect($ctrl.isArray({})).toBeFalsy();
+        });
+    });
+    describe('pageSizeChange', () => {
+        it('should change pageSize', () => {
+            $ctrl.pageSizeChange(50);
+            expect($ctrl.pageSize).toEqual(50);
+        });
+        it('should reload the 1st page', () => {
+            spyOn($ctrl, 'load').and.callFake(() => {});
+            $ctrl.pageSizeChange(50);
+            expect($ctrl.load).toHaveBeenCalledWith(1);
         });
     });
 });

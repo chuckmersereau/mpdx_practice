@@ -1,10 +1,14 @@
+import pagination from './pagination';
 import { range, toInteger } from 'lodash/fp';
 import reduceObject from '../fp/reduceObject';
 
 class PaginationController {
-    constructor($log) {
+    constructor(
+        $log
+    ) {
         this.windowSize = 5;
         this.$log = $log;
+        this.pagination = pagination;
     }
     $onChanges(data) {
         this.meta = reduceObject((result, value, key) => {
@@ -39,16 +43,6 @@ class PaginationController {
         if (this.meta.page === 1) { return; }
         this.goto(this.meta.page - 1);
     }
-    from() {
-        return Math.ceil((this.meta.page - 1) * this.meta.per_page + 1);
-    }
-    to() {
-        if (this.meta.page === this.meta.total_pages) {
-            return this.meta.total_count;
-        }
-
-        return this.meta.per_page * this.meta.page;
-    }
 }
 
 const Pagination = {
@@ -56,7 +50,8 @@ const Pagination = {
     template: require('./pagination.html'),
     bindings: {
         meta: '<',
-        onChange: '&'
+        onChange: '&',
+        hideCount: '<'
     }
 };
 

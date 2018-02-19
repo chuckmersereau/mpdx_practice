@@ -1,5 +1,3 @@
-import { unionBy } from 'lodash/fp';
-
 class ListController {
     constructor(
         $log,
@@ -12,19 +10,14 @@ class ListController {
         this.loading = false;
         this.meta = {};
         this.listLoadCount = 0;
-        this.page = 1;
     }
     $onInit() {
         this.load();
     }
-    load(page = 1, reset = page === 1) {
+    load(page = 1) {
         this.loading = true;
-        if (reset) {
-            this.reset();
-        }
-        let currentCount;
-        currentCount = angular.copy(this.listLoadCount);
-        this.page = page;
+        this.reset();
+        let currentCount = angular.copy(this.listLoadCount);
         return this.api.get({
             url: 'coaching/account_lists',
             data: {
@@ -37,10 +30,10 @@ class ListController {
             },
             type: 'account_lists'
         }).then((data) => {
+            this.setData(data, currentCount);
             this.loading = false;
             /* istanbul ignore next */
             this.$log.debug(`coaching account lists page ${data.meta.pagination.page}`, data);
-            this.setData(data, reset, currentCount);
         });
     }
     reset() {
@@ -48,21 +41,12 @@ class ListController {
         this.data = [];
         this.listLoadCount++;
     }
-    setData(data, reset, currentCount) {
+    setData(data, currentCount) {
+        // ensures the last request becomes the data, not the latest response
         if (currentCount === this.listLoadCount) {
             this.meta = data.meta;
-            if (reset) {
-                this.data = data;
-            } else {
-                this.data = unionBy('id', this.data, data);
-            }
+            this.data = data;
         }
-    }
-    loadMoreCoachingAccountLists() {
-        if (this.loading || (this.meta.pagination && this.page >= this.meta.pagination.total_pages)) {
-            return;
-        }
-        this.load(this.page + 1);
     }
 }
 

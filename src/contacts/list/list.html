@@ -40,22 +40,32 @@
     </div>
 </div>
 <div class="sub-menu">
-    <div>
-        <translate translate-params-from="$ctrl.data.length || 0"
-                   translate-params-to="$ctrl.meta.pagination.total_count || 0">
-            Showing <strong>{{from}}</strong> of <strong>{{to}}</strong>
-        </translate>
-        <span class="label label-primary" ng-if="$ctrl.contacts.selectedContacts.length > 0">
-            {{$ctrl.contacts.selectedContacts.length}} <span translate>Selected</span>
-            <a href="javascript:;" class="label-action" ng-click="$ctrl.contacts.clearSelectedContacts()"><i class="fas fa-times"></i></a>
-        </span>&nbsp;
-        <small>
-            <a href="javascript:;"
-               ng-if="$ctrl.contacts.selectedContacts.length > 0 && $ctrl.contacts.selectedContacts.length < $ctrl.meta.pagination.total_count"
-               ng-click="$ctrl.selectAllContacts()">
-                <span translate translate-plural="Select all {{$count}} contacts" translate-n="::$ctrl.meta.pagination.total_count">Select 1 contact</span>
-            </a>
-        </small>
+    <div class="sub-line-1">
+        <div>
+            <translate ng-if="$ctrl.meta.pagination.total_count > 0"
+                       translate-params-from="$ctrl.pagination.from($ctrl.meta.pagination.page, $ctrl.meta.pagination.per_page) || 0"
+                       translate-params-to="$ctrl.pagination.to($ctrl.meta.pagination.page, $ctrl.meta.pagination.per_page, $ctrl.meta.pagination.total_pages, $ctrl.meta.pagination.total_count) || 0"
+                       translate-params-total="$ctrl.meta.pagination.total_count || 0">
+                Showing <strong>{{from}}</strong> to <strong>{{to}}</strong> of <strong>{{total}}</strong>
+            </translate>
+            <span class="label label-primary" ng-if="$ctrl.contacts.selectedContacts.length > 0">
+                {{$ctrl.contacts.selectedContacts.length}} <span translate>Selected</span>
+                <a href="javascript:;" class="label-action" ng-click="$ctrl.contacts.clearSelectedContacts()"><i class="fas fa-times"></i></a>
+            </span>&nbsp;
+            <small>
+                <a href="javascript:;"
+                   ng-if="$ctrl.contacts.selectedContacts.length > 0 && $ctrl.contacts.selectedContacts.length < $ctrl.meta.pagination.total_count"
+                   ng-click="$ctrl.selectAllContacts()">
+                    <span translate translate-plural="Select all {{$count}} contacts" translate-n="::$ctrl.meta.pagination.total_count">Select 1 contact</span>
+                </a>
+            </small>
+        </div>
+        <div>
+            <pagination-dropdown selected="$ctrl.pageSize"
+                                 on-change="$ctrl.pageSizeChange(size)"
+                                 user-option="contacts">
+            </pagination-dropdown>
+        </div>
     </div>
     <div ng-if="$ctrl.contactFilter.isResettable()" class="filters am-collapse">
         <div>
@@ -85,7 +95,7 @@
     </div>
 </div>
 <div class="content" id="contactListParent">
-    <div class="blankslate blankslate-spacious" ng-if="!$ctrl.meta.to && !$ctrl.loading">
+    <div class="blankslate blankslate-spacious" ng-if="$ctrl.meta.pagination.total_count === 0 && !$ctrl.loading">
         <i class="fas fa-home blankslate-icon"></i>
         <div ng-if="$ctrl.totalContactCount > 0">
             <h3 translate translate-plural="You have {{$count}} total contacts" translate-n="::$ctrl.totalContactCount">You have 1 total contact</h3>
@@ -100,9 +110,7 @@
             <a ng-click="$ctrl.contacts.openNewContactModal()" class="btn btn-primary" translate>Add New Contact</a>
         </div>
     </div>
-    <div ng-if="$ctrl.data.length > 0 || $ctrl.loading"
-         infinite-scroll="$ctrl.loadMoreContacts()"
-         infinite-scroll-container="'#contactListParent'">
+    <div ng-if="$ctrl.data.length > 0 || $ctrl.loading">
         <contacts-list-item ng-repeat="contact in $ctrl.data track by contact.id"
                             contact="contact"
                             id="contact_{{::contact.id}}"
@@ -112,5 +120,10 @@
         <div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
           <i class="far fa-circle-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
         </div>
+        <pagination meta="$ctrl.meta.pagination"
+                    on-change="$ctrl.load(page)"
+                    hide-count="true"
+                    class="text-center">
+        </pagination>
     </div>
 </div>

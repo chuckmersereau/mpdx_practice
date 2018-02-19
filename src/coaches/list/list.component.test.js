@@ -23,7 +23,6 @@ describe('coaches.list', () => {
             expect($ctrl.data).toEqual([]);
             expect($ctrl.meta).toEqual({});
             expect($ctrl.listLoadCount).toEqual(0);
-            expect($ctrl.page).toEqual(1);
         });
     });
 
@@ -64,20 +63,6 @@ describe('coaches.list', () => {
             expect($ctrl.reset).toHaveBeenCalled();
         });
 
-        describe('not reset', () => {
-            it('should not call reset', () => {
-                spyOn($ctrl, 'reset').and.callFake(() => {});
-                $ctrl.load(2);
-                expect($ctrl.reset).not.toHaveBeenCalled();
-            });
-        });
-
-        it('should set page', () => {
-            $ctrl.page = 2;
-            $ctrl.load();
-            expect($ctrl.page).toEqual(1);
-        });
-
         it('should call api.get', () => {
             $ctrl.load();
             expect(api.get).toHaveBeenCalledWith({
@@ -111,19 +96,8 @@ describe('coaches.list', () => {
                 spyOn($ctrl, 'setData').and.callFake(() => {});
                 $ctrl.loading = true;
                 $ctrl.load().then(() => {
-                    expect($ctrl.setData).toHaveBeenCalledWith(data, true, 1);
+                    expect($ctrl.setData).toHaveBeenCalledWith(data, 1);
                     done();
-                });
-            });
-
-            describe('not reset', () => {
-                it('should call setData', (done) => {
-                    spyOn($ctrl, 'setData').and.callFake(() => {});
-                    $ctrl.loading = true;
-                    $ctrl.load(2).then(() => {
-                        expect($ctrl.setData).toHaveBeenCalledWith(data, false, 0);
-                        done();
-                    });
                 });
             });
         });
@@ -165,57 +139,20 @@ describe('coaches.list', () => {
         });
 
         it('should set $ctrl.data to data', () => {
-            $ctrl.setData(data, true, 0);
+            $ctrl.setData(data, 0);
             expect($ctrl.data).toEqual(data);
         });
 
         it('should set $ctrl.meta to data.meta', () => {
-            $ctrl.setData(data, true, 0);
+            $ctrl.setData(data, 0);
             expect($ctrl.meta).toEqual(data.meta);
         });
 
         describe('currentCount !== listLoadCount', () => {
             it('should not set $ctrl.data to data', () => {
-                $ctrl.setData(data, true, 1);
+                $ctrl.setData(data, 1);
                 expect($ctrl.data).not.toEqual(data);
             });
-        });
-
-        describe('not reset', () => {
-            it('joins data to $ctrl.data', () => {
-                $ctrl.data = [{
-                    id: 'account_list_id_0'
-                }];
-                $ctrl.setData(data, false, 0);
-                expect($ctrl.data).toEqual([{
-                    id: 'account_list_id_0'
-                }, {
-                    id: 'account_list_id_1'
-                }]);
-            });
-        });
-    });
-
-    describe('loadMoreCoachingAccountLists', () => {
-        beforeEach(() => {
-            spyOn($ctrl, 'load').and.callFake(() => Promise.resolve());
-            $ctrl.page = 0;
-            $ctrl.loading = false;
-            $ctrl.meta = { pagination: { total_pages: 4 } };
-        });
-        it('should call load', () => {
-            $ctrl.loadMoreCoachingAccountLists();
-            expect($ctrl.load).toHaveBeenCalledWith(1);
-        });
-        it('should exit if already loading', () => {
-            $ctrl.loading = true;
-            $ctrl.loadMoreCoachingAccountLists();
-            expect($ctrl.load).not.toHaveBeenCalled();
-        });
-        it('should exit if on last page of results', () => {
-            $ctrl.page = 4;
-            $ctrl.loadMoreCoachingAccountLists();
-            expect($ctrl.load).not.toHaveBeenCalled();
         });
     });
 });

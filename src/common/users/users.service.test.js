@@ -288,4 +288,22 @@ describe('common.users.service', () => {
             });
         });
     });
+    describe('getCurrentOptionValue', () => {
+        it('should return null', () => {
+            users.currentOptions = {};
+            expect(users.getCurrentOptionValue('a')).toBeUndefined();
+        });
+        it('should also return null', () => {
+            users.currentOptions = {
+                a: {}
+            };
+            expect(users.getCurrentOptionValue('a')).toBeUndefined();
+        });
+        it('should return value', () => {
+            users.currentOptions = {
+                a: { value: 1 }
+            };
+            expect(users.getCurrentOptionValue('a')).toEqual(1);
+        });
+    });
 });

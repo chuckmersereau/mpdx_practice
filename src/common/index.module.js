@@ -31,6 +31,7 @@ import serverConstants from './serverConstants/serverConstants.service';
 import session from './session/session.service';
 import sourceToStr from './sourceToStr/sourceToStr.filter';
 import pagination from './pagination/pagination.component';
+import paginationDropdown from './pagination/dropdown/dropdown.component';
 import tagSelector from './tagSelector/tagSelector.component';
 import threePartDatePicker from './threePartDatePicker/picker.component';
 import timeZone from './timeZone/timeZone.service';
@@ -67,6 +68,7 @@ export default angular.module('mpdx.common', [
     momentFilter,
     monthRange,
     pagination,
+    paginationDropdown,
     rawNumber,
     selectionStore,
     serverConstants,
