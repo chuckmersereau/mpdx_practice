@@ -13,10 +13,10 @@ import {
     reduce,
     reject,
     sortBy,
-    union,
-    unionBy
+    union
 } from 'lodash/fp';
 import moment from 'moment';
+import pagination from 'common/pagination/pagination';
 import relationshipId from 'common/fp/relationshipId';
 import upsert from 'common/fp/upsert';
 
@@ -29,13 +29,14 @@ export const defaultMeta = {
 class ListController {
     constructor(
         $log, $rootScope, gettextCatalog,
-        alerts, api, modal, session, tasks, tasksFilter, tasksModals, tasksTags
+        alerts, api, modal, session, tasks, tasksFilter, tasksModals, tasksTags, users
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
         this.alerts = alerts;
         this.api = api;
         this.gettextCatalog = gettextCatalog;
+        this.pagination = pagination;
         this.modal = modal;
         this.session = session;
         this.tasks = tasks;
@@ -50,6 +51,7 @@ class ListController {
         this.page = 1;
         this.selected = [];
         this.totalTaskCount = 0;
+        this.pageSize = defaultTo(25, users.getCurrentOptionValue('page_size_tasks'));
     }
     $onInit() {
         this.categories = {
@@ -144,25 +146,18 @@ class ListController {
         }, [], this.data);
     }
     load(page = 1) {
-        const reset = page === 1;
         this.loading = true;
-
-        let currentCount;
-
-        if (reset) {
-            this.page = 1;
-            this.meta = defaultMeta;
-            this.data = [];
-            this.dataLoadCount++;
-            currentCount = angular.copy(this.dataLoadCount);
-        }
+        this.meta = defaultMeta;
+        this.data = [];
+        this.dataLoadCount++;
+        let currentCount = angular.copy(this.dataLoadCount);
 
         return this.api.get({
             url: 'tasks',
             data: {
                 filter: this.tasksFilter.toParams(),
                 page: page,
-                per_page: 25,
+                per_page: this.pageSize,
                 include: 'activity_contacts,activity_contacts.contact',
                 fields: {
                     activity_contacts: 'contact',
@@ -179,10 +174,9 @@ class ListController {
             this.$log.debug('tasks page ' + data.meta.pagination.page, data);
 
             /* istanbul ignore next */
-            if (reset && currentCount !== this.dataLoadCount) { // case for slow prior query returning after faster newer query
+            if (currentCount !== this.dataLoadCount) { // case for slow prior query returning after faster newer query
                 return;
             }
-            let count = reset ? 0 : defaultTo(0, this.meta.to);
             this.meta = data.meta;
             if (data.length === 0) {
                 this.getTotalCount();
@@ -190,22 +184,13 @@ class ListController {
                 return;
             }
             const tasks = map((task) => this.process(task), data);
-            const sortedTasks = sortBy(
+            this.data = sortBy(
                 ['category.id', 'completed', '-completed_at', 'start_at', 'created_at']
                 , tasks);
-            this.data = reset ? sortedTasks : unionBy('id', this.data, sortedTasks);
-            count += data.length;
-            this.meta.to = count;
             this.page = parseInt(this.meta.pagination.page);
             this.loading = false;
             return this.data;
         });
-    }
-    loadMoreTasks() {
-        return this.canLoadMoreTasks() ? this.load(this.page + 1) : null;
-    }
-    canLoadMoreTasks() {
-        return !this.loading && this.page < parseInt(this.meta.pagination.total_pages);
     }
     /* eslint-disable complexity */
     process(task) {
@@ -361,6 +346,10 @@ class ListController {
     isArray(obj) {
         return isArray(obj);
     }
+    pageSizeChange(size) {
+        this.pageSize = size;
+        this.load(1);
+    }
 }
 
 const TaskList = {
@@ -379,8 +368,9 @@ import tasks from '../tasks.service';
 import tasksFilter from '../filter/filter.service';
 import tasksModals from '../modals/modals.service';
 import tasksTags from '../filter/tags/tags.service';
+import users from 'common/users/users.service';
 
 export default angular.module('mpdx.tasks.list.component', [
     gettextCatalog,
-    alerts, modal, session, tasks, tasksFilter, tasksModals, tasksTags
+    alerts, modal, session, tasks, tasksFilter, tasksModals, tasksTags, users
 ]).component('tasksList', TaskList).name;

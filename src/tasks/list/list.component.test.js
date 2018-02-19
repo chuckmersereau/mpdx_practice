@@ -6,12 +6,12 @@ const selected = [1, 2];
 
 describe('tasks.list.component', () => {
     let $ctrl, scope, componentController, modal, tasks, api, rootScope, tasksFilter, log, tasksTags, alerts,
-        gettextCatalog;
+        gettextCatalog, users;
     beforeEach(() => {
         angular.mock.module(list);
         inject((
             $componentController, $rootScope, _modal_, _tasks_, _api_, _tasksFilter_, $log, _tasksTags_, _alerts_,
-            _gettextCatalog_
+            _gettextCatalog_, _users_
         ) => {
             rootScope = $rootScope;
             scope = $rootScope.$new();
@@ -22,6 +22,7 @@ describe('tasks.list.component', () => {
             api = _api_;
             modal = _modal_;
             tasks = _tasks_;
+            users = _users_;
             gettextCatalog = _gettextCatalog_;
             componentController = $componentController;
             loadController();
@@ -48,6 +49,16 @@ describe('tasks.list.component', () => {
             expect($ctrl.selected).toEqual([]);
             expect($ctrl.loading).toEqual(false);
             expect($ctrl.totalTaskCount).toEqual(0);
+        });
+        it('should default page size to 25', () => {
+            expect($ctrl.pageSize).toEqual(25);
+        });
+        it('should set page size to user option', () => {
+            users.currentOptions = {
+                'page_size_tasks': { value: 10 }
+            };
+            loadController();
+            expect($ctrl.pageSize).toEqual(10);
         });
     });
     describe('openRemoveTagModal', () => {
@@ -246,45 +257,6 @@ describe('tasks.list.component', () => {
             expect($ctrl.watcher7).toHaveBeenCalledWith();
         });
     });
-    describe('canLoadMoreTasks', () => {
-        beforeEach(() => {
-            $ctrl.page = 1;
-            $ctrl.meta = {
-                pagination: {
-                    total_pages: 2
-                }
-            };
-            $ctrl.loading = false;
-        });
-        it('should return true', () => {
-            expect($ctrl.canLoadMoreTasks()).toEqual(true);
-        });
-        it('should return false', () => {
-            $ctrl.loading = true;
-            expect($ctrl.canLoadMoreTasks()).toEqual(false);
-        });
-        it('should return false', () => {
-            $ctrl.meta.pagination.total_pages = 1;
-            expect($ctrl.canLoadMoreTasks()).toEqual(false);
-        });
-    });
-    describe('loadMoreTasks', () => {
-        beforeEach(() => {
-            $ctrl.page = 1;
-        });
-        it('should load the next tasks', () => {
-            spyOn($ctrl, 'canLoadMoreTasks').and.callFake(() => true);
-            spyOn($ctrl, 'load').and.callFake(() => Promise.resolve());
-            $ctrl.loadMoreTasks();
-            expect($ctrl.load).toHaveBeenCalledWith(2);
-        });
-        it('shouldn\'t load the next tasks', () => {
-            spyOn($ctrl, 'canLoadMoreTasks').and.callFake(() => false);
-            spyOn($ctrl, 'load').and.callFake(() => Promise.resolve());
-            $ctrl.loadMoreTasks();
-            expect($ctrl.load).not.toHaveBeenCalled();
-        });
-    });
     describe('process', () => {
         let task;
         beforeEach(() => {
@@ -346,15 +318,16 @@ describe('tasks.list.component', () => {
                 overrideGetAsPost: true
             });
         });
-        it('should set reset values on 1st page', () => {
+        it('should set reset values', () => {
             $ctrl.loading = false;
             $ctrl.page = 2;
             $ctrl.meta = { junk: 'value' };
             $ctrl.data = [1, 2, 3];
             $ctrl.dataLoadCount = 0;
-            $ctrl.load();
+            $ctrl.load().then(() => {
+                expect($ctrl.page).toEqual(1);
+            });
             expect($ctrl.loading).toEqual(true);
-            expect($ctrl.page).toEqual(1);
             expect($ctrl.meta).toEqual(defaultMeta);
             expect($ctrl.data).toEqual([]);
             expect($ctrl.dataLoadCount).toEqual(1);
@@ -373,7 +346,7 @@ describe('tasks.list.component', () => {
             $ctrl.data = oldData;
             $ctrl.load(2).then(() => {
                 expect($ctrl.page).toEqual(resp.meta.pagination.page);
-                expect($ctrl.data[8]).toEqual(resp[4]);
+                expect($ctrl.data[0]).toEqual(resp[0]);
                 done();
             });
             const args = api.get.calls.argsFor(0)[0];
@@ -610,6 +583,17 @@ describe('tasks.list.component', () => {
                     .toHaveBeenCalledWith(2, jasmine.any(String), jasmine.any(String), jasmine.any(Object));
                 done();
             });
+        });
+    });
+    describe('pageSizeChange', () => {
+        it('should change pageSize', () => {
+            $ctrl.pageSizeChange(50);
+            expect($ctrl.pageSize).toEqual(50);
+        });
+        it('should reload the 1st page', () => {
+            spyOn($ctrl, 'load').and.callFake(() => {});
+            $ctrl.pageSizeChange(50);
+            expect($ctrl.load).toHaveBeenCalledWith(1);
         });
     });
 });
