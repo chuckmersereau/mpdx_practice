@@ -13,10 +13,7 @@
         <div class="panel-heading" translate>
             Current Appeals
         </div>
-        <div class="panel-body"
-             infinite-scroll="$ctrl.loadMoreAppeals()"
-             infinite-scroll-container="'#appealListParent'"
-             ng-if="$ctrl.data.length > 0">
+        <div class="panel-body" ng-if="$ctrl.data.length > 0">
             <appeals-list-item ng-repeat="appeal in $ctrl.data"
                                on-primary="$ctrl.onPrimary(appeal.id)"
                                appeal="appeal">
@@ -33,9 +30,9 @@
   <i class="far fa-circle-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
 </div>
 <br>
-<div ng-if="$ctrl.data.length !== 0"
-     class="text-center"
-     translate-params-from="$ctrl.data.length || 0"
-     translate-params-to="$ctrl.meta.pagination.total_count || 0" translate>
-    Showing <strong>{{from}}</strong> of <strong>{{to}}</strong>
-</div>
+<pagination ng-if="$ctrl.meta.pagination.total_count > 0"
+            meta="$ctrl.meta.pagination"
+            on-change="$ctrl.load(page)"
+            class="text-center">
+</pagination>
+

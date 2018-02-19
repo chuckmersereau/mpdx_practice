@@ -26,42 +26,6 @@ describe('tools.appeals.list.component', () => {
             expect($ctrl.load).toHaveBeenCalledWith();
         });
     });
-    describe('canLoadMore', () => {
-        it('should return false if loading', () => {
-            $ctrl.loading = true;
-            expect($ctrl.canLoadMore()).toBeFalsy();
-        });
-        it('should return false if no more pages', () => {
-            $ctrl.loading = false;
-            $ctrl.page = 1;
-            $ctrl.meta = { pagination: { total_pages: 1 } };
-            expect($ctrl.canLoadMore()).toBeFalsy();
-        });
-        it('should return true', () => {
-            $ctrl.loading = false;
-            $ctrl.page = 1;
-            $ctrl.meta = { pagination: { total_pages: 2 } };
-            expect($ctrl.canLoadMore()).toBeTruthy();
-        });
-    });
-    describe('loadMoreAppeals', () => {
-        it('should load more appeals', (done) => {
-            $ctrl.page = 1;
-            spyOn($ctrl, 'canLoadMore').and.callFake(() => true);
-            spyOn($ctrl, 'load').and.callFake(() => Promise.resolve());
-            $ctrl.loadMoreAppeals().then(() => {
-                expect($ctrl.load).toHaveBeenCalledWith(2);
-                done();
-            });
-        });
-        it('should load more appeals', () => {
-            $ctrl.page = 1;
-            spyOn($ctrl, 'canLoadMore').and.callFake(() => false);
-            spyOn($ctrl, 'load').and.callFake(() => Promise.resolve());
-            $ctrl.loadMoreAppeals();
-            expect($ctrl.load).not.toHaveBeenCalled();
-        });
-    });
     describe('load', () => {
         const retVal = [];
         retVal.meta = 'a';
@@ -119,17 +83,7 @@ describe('tools.appeals.list.component', () => {
         });
         it('should mutate data', (done) => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve(retVal));
-            spyOn($ctrl, 'resetOrAppendData').and.callFake(() => []);
             spyOn($ctrl, 'mutateData').and.callFake(() => ['b']);
-            $ctrl.load().then(() => {
-                expect($ctrl.data).toEqual([]);
-                done();
-            });
-        });
-        it('should reset or append data', (done) => {
-            spyOn(api, 'get').and.callFake(() => Promise.resolve(retVal));
-            spyOn($ctrl, 'resetOrAppendData').and.callFake(() => ['b']);
-            spyOn($ctrl, 'mutateData').and.callFake(() => []);
             $ctrl.load().then(() => {
                 expect($ctrl.data).toEqual(['b']);
                 done();
@@ -171,33 +125,13 @@ describe('tools.appeals.list.component', () => {
         });
     });
     describe('loadedOutOfTurn', () => {
-        it('should return true if reset & wrong load count', () => {
+        it('should return true if wrong load count', () => {
             $ctrl.listLoadCount = 0;
-            expect($ctrl.loadedOutOfTurn(true, 1)).toBeTruthy();
+            expect($ctrl.loadedOutOfTurn(1)).toBeTruthy();
         });
-        it('shouldn\'t return true if not reset & wrong load count', () => {
+        it('shouldn\'t return true if correct count', () => {
             $ctrl.listLoadCount = 0;
-            expect($ctrl.loadedOutOfTurn(false, 1)).toBeFalsy();
-        });
-        it('shouldn\'t return true if reset & correct count', () => {
-            $ctrl.listLoadCount = 0;
-            expect($ctrl.loadedOutOfTurn(true, 0)).toBeFalsy();
-        });
-        it('shouldn\'t return true if not reset & correct count', () => {
-            $ctrl.listLoadCount = 0;
-            expect($ctrl.loadedOutOfTurn(false, 0)).toBeFalsy();
-        });
-    });
-    describe('resetOrAppendData', () => {
-        const initialData = [{ id: 'a' }];
-        const secondData = [{ id: 'b' }];
-        it('should remove initial data', () => {
-            $ctrl.data = initialData;
-            expect($ctrl.resetOrAppendData(true, secondData)).toEqual([{ id: 'b' }]);
-        });
-        it('should append additional data', () => {
-            $ctrl.data = initialData;
-            expect($ctrl.resetOrAppendData(false, secondData)).toEqual([{ id: 'a' }, { id: 'b' }]);
+            expect($ctrl.loadedOutOfTurn(0)).toBeFalsy();
         });
     });
 });

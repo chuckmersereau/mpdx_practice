@@ -1,4 +1,4 @@
-import { concat, defaultTo, reduce, unionBy } from 'lodash/fp';
+import { concat, defaultTo, reduce } from 'lodash/fp';
 import fixed from 'common/fp/fixed';
 
 class ListController {
@@ -28,22 +28,12 @@ class ListController {
     $onInit() {
         this.load();
     }
-    loadMoreAppeals() {
-        return this.canLoadMore() ? this.load(this.page + 1) : null;
-    }
-    canLoadMore() {
-        return !this.loading && this.page < this.meta.pagination.total_pages;
-    }
     load(page = 1) {
-        const reset = page === 1;
-        let currentCount;
-        if (reset) {
-            this.meta = {};
-            this.data = [];
-            this.totals = {};
-            this.listLoadCount++;
-            currentCount = angular.copy(this.listLoadCount);
-        }
+        this.meta = {};
+        this.data = [];
+        this.totals = {};
+        this.listLoadCount++;
+        let currentCount = angular.copy(this.listLoadCount);
 
         this.page = page;
 
@@ -61,11 +51,10 @@ class ListController {
         return this.api.get('appeals', params).then((data) => {
             /* istanbul ignore next */
             this.$log.debug('appeals', data);
-            if (this.loadedOutOfTurn(reset, currentCount)) {
+            if (this.loadedOutOfTurn(currentCount)) {
                 return;
             }
-            const deserializedData = this.mutateData(data);
-            this.data = this.resetOrAppendData(reset, deserializedData);
+            this.data = this.mutateData(data);
             this.meta = data.meta;
             this.loading = false;
             return this.data;
@@ -83,11 +72,8 @@ class ListController {
             return concat(result, appeal);
         }, [], data);
     }
-    loadedOutOfTurn(reset, currentCount) {
-        return reset && currentCount !== this.listLoadCount;
-    }
-    resetOrAppendData(reset, deserializedData) {
-        return reset ? deserializedData : unionBy('id', this.data, deserializedData);
+    loadedOutOfTurn(currentCount) {
+        return currentCount !== this.listLoadCount;
     }
 }
 
