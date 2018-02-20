@@ -27,6 +27,9 @@ class CollectionSelectorController {
     collectionSearchText() {
         return defaultTo(this.displayText, this.searchText) || '';
     }
+    remove() {
+        this.select({ item: null });
+    }
 }
 
 const CollectionSelector = {
@@ -38,7 +41,8 @@ const CollectionSelector = {
         search: '&',
         searchText: '<',
         select: '&',
-        required: '<'
+        required: '<',
+        allowRemove: '<'
     }
 };
 

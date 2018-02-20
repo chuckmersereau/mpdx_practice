@@ -4,11 +4,10 @@ import uuid from 'uuid/v1';
 class ContactDetailsController {
     constructor(
         $log, $rootScope, gettextCatalog,
-        alerts, api, contactsTags, contacts, locale, modal, timeZone, users
+        api, contactsTags, contacts, locale, modal, timeZone, users
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
-        this.alerts = alerts;
         this.api = api;
         this.contacts = contacts;
         this.contactsTags = contactsTags;
@@ -125,16 +124,16 @@ class ContactDetailsController {
                 }
             }
         };
+        const errorMessage = this.gettextCatalog.getString('Unable to save changes.');
+        const successMessage = this.gettextCatalog.getString('Changes saved successfully.');
         return this.api.put({
             url: `contacts/${this.contact.id}`,
             data: request,
-            doSerialization: false
+            doSerialization: false,
+            errorMessage: errorMessage,
+            successMessage: successMessage
         }).then(() => {
             this.contact.contacts_that_referred_me = [{ id: this.referrer }];
-            this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
-        }).catch((err) => {
-            this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger');
-            throw err;
         });
     }
     destroyReferrals(referrals) {
@@ -153,13 +152,14 @@ class ContactDetailsController {
             const addressPatch = map((address) => {
                 return { id: address.id, primary_mailing_address: address.primary_mailing_address };
             }, addresses);
-            return this.contacts.save({ id: this.contacts.current.id, addresses: addressPatch }).then(() => {
-                this.contact.addresses = addresses;
-                this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
-            }).catch((err) => {
-                this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger');
-                throw err;
-            });
+            const successMessage = this.gettextCatalog.getString('Changes saved successfully.');
+            const errorMessage = this.gettextCatalog.getString('Unable to save changes.');
+
+            return this.contacts.save(
+                { id: this.contacts.current.id, addresses: addressPatch },
+                successMessage,
+                errorMessage
+            );
         });
     }
     getName(id) {
@@ -196,7 +196,6 @@ const Details = {
 };
 
 import api from 'common/api/api.service';
-import alerts from 'common/alerts/alerts.service';
 import contacts from 'contacts/contacts.service';
 import contactsTags from 'contacts/sidebar/filter/tags/tags.service';
 import locale from 'common/locale/locale.service';
@@ -206,5 +205,5 @@ import timeZone from 'common/timeZone/timeZone.service';
 import users from 'common/users/users.service';
 
 export default angular.module('mpdx.contacts.show.details.component', [
-    alerts, api, contactsTags, contacts, locale, modal, serverConstants, timeZone, users
+    api, contactsTags, contacts, locale, modal, serverConstants, timeZone, users
 ]).component('contactDetails', Details).name;

@@ -162,13 +162,13 @@ class Users {
     destroy(id) {
         return this.api.delete(`users/${id}`);
     }
-    saveCurrent() {
+    saveCurrent(successMessage) {
         const patch = createPatch(this.currentInitialState, this.current);
         this.$log.debug('user patch', patch);
         if (keys(patch).length < 2) {
             return Promise.resolve(this.current);
         }
-        return this.api.put('user', patch).then(() => {
+        return this.api.put('user', patch, successMessage).then(() => {
             return this.getCurrent(true); // force reload to reconcile as put response is incomplete
         });
     }

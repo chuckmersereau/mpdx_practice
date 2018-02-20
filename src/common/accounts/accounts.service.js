@@ -94,8 +94,11 @@ class AccountsService {
             this.userList = data;
         });
     }
-    destroyUser(id) {
-        return this.api.delete(`account_lists/${this.api.account_list_id}/users/${id}`);
+    destroyUser(id, successMessage, errorMessage) {
+        return this.api.delete(
+            `account_lists/${this.api.account_list_id}/users/${id}`,
+            undefined, successMessage, errorMessage
+        );
     }
     listCoachesInvites() {
         this.inviteCoachList = null;
@@ -127,31 +130,40 @@ class AccountsService {
             this.coachList = data;
         });
     }
-    destroyCoach(id) {
-        return this.api.delete(`account_lists/${this.api.account_list_id}/coaches/${id}`);
+    destroyCoach(id, successMessage, errorMessage) {
+        return this.api.delete({
+            url: `account_lists/${this.api.account_list_id}/coaches/${id}`,
+            successMessage: successMessage,
+            errorMessage: errorMessage
+        });
     }
-    destroyInvite(id) {
-        return this.api.delete({ url: `account_lists/${this.api.account_list_id}/invites/${id}`, type: 'account_list_invites' });
+    destroyInvite(id, successMessage, errorMessage) {
+        return this.api.delete({
+            url: `account_lists/${this.api.account_list_id}/invites/${id}`,
+            type: 'account_list_invites',
+            successMessage: successMessage,
+            errorMessage: errorMessage
+        });
     }
-    getAnalytics(params) {
+    getAnalytics(params, errorMessage) {
         return this.api.get(`account_lists/${this.api.account_list_id}/analytics`, {
             filter: {
                 date_range: `${params.startDate.format('YYYY-MM-DD')}..${params.endDate.format('YYYY-MM-DD')}`
             }
-        }).then((data) => {
+        }, undefined, errorMessage).then((data) => {
             /* istanbul ignore next */
             this.$log.debug('account_lists/analytics', data);
             this.analytics = data;
             return this.analytics;
         });
     }
-    saveCurrent() {
+    saveCurrent(successMessage, errorMessage) {
         const patch = createPatch(this.currentInitialState, this.current);
         /* istanbul ignore next */
         this.$log.debug('account patch', patch);
         return keys(patch).length < 2
             ? Promise.resolve(this.current)
-            : this.api.put(`account_lists/${this.current.id}`, patch).then(() => {
+            : this.api.put(`account_lists/${this.current.id}`, patch, successMessage, errorMessage).then(() => {
                 this.get(this.current.id).then((data) => { // get complete due to include object diffs
                     this.current = data;
                     this.currentInitialState = angular.copy(this.current);

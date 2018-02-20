@@ -5,14 +5,13 @@ import joinComma from 'common/fp/joinComma';
 class ContactController {
     constructor(
         $log, $rootScope, $state, $stateParams, $anchorScroll, blockUI, gettextCatalog, help,
-        alerts, contactFilter, contacts, contactsTags, modal, people, session, tasks, users
+        contactFilter, contacts, contactsTags, modal, people, session, tasks, users
     ) {
         this.$anchorScroll = $anchorScroll;
         this.$log = $log;
         this.$rootScope = $rootScope;
         this.$state = $state;
         this.$stateParams = $stateParams;
-        this.alerts = alerts;
         this.blockUI = blockUI.instances.get('contactShow');
         this.contactsTags = contactsTags;
         this.contacts = contacts;
@@ -117,8 +116,10 @@ class ContactController {
         const target = angular.copy(this.contacts.initialState); // to avoid onChanges changes
         const patch = createPatch(target, source);
         this.$log.debug('contact patch', patch);
+        const errorMessage = this.gettextCatalog.getString('Unable to save changes.');
+        const successMessage = this.gettextCatalog.getString('Changes saved successfully.');
 
-        return this.contacts.save(patch).then(() => {
+        return this.contacts.save(patch, successMessage, errorMessage).then(() => {
             if (patch.tag_list) {
                 const tags = patch.tag_list.split(',');
                 this.$rootScope.$emit('contactTagsAdded', { tags: tags });
@@ -127,12 +128,6 @@ class ContactController {
             if (patch.id === this.contacts.initialState.id) {
                 this.contacts.initialState = assign(this.contacts.initialState, patch);
             }
-            const message = this.gettextCatalog.getString('Changes saved successfully.');
-            this.alerts.addAlert(message);
-        }).catch((err) => {
-            const message = this.gettextCatalog.getString('Unable to save changes.');
-            this.alerts.addAlert(message, 'danger');
-            throw err;
         });
     }
     onPrimary(personId) {
@@ -176,7 +171,6 @@ const Show = {
     template: require('./show.html')
 };
 
-import alerts from 'common/alerts/alerts.service';
 import blockUI from 'angular-block-ui';
 import contacts from '../contacts.service';
 import contactFilter from '../sidebar/filter/filter.service';
@@ -191,6 +185,6 @@ import session from 'common/session/session.service';
 
 export default angular.module('mpdx.contacts.show.component', [
     blockUI, gettextCatalog, uiRouter,
-    alerts, help, modal, contacts, tasks, contactFilter, people, users, session
+    help, modal, contacts, tasks, contactFilter, people, users, session
 ])
     .component('contact', Show).name;

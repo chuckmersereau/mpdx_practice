@@ -31,50 +31,54 @@ class OrganizationIntegrationPreferencesController {
     }
     save() {
         this.saving = true;
-        return this.preferencesOrganization.save().then(() => {
-            this.alerts.addAlert(this.gettextCatalog.getString('Preferences saved successfully'));
+        const successMessage = this.gettextCatalog.getString('Preferences saved successfully');
+        const errorMessage = this.gettextCatalog.getString('Unable to save preferences');
+        return this.preferencesOrganization.save(successMessage, errorMessage).then(() => {
             this.users.listOrganizationAccounts(true);
             this.saving = false;
         }).catch((err) => {
-            this.alerts.addAlert(this.gettextCatalog.getString('Unable to save preferences'), 'danger');
             this.saving = false;
             throw err;
         });
     }
     disconnect(id) {
         this.saving = true;
-        return this.preferencesOrganization.disconnect(id).then(() => {
+        const successMessage = this.gettextCatalog.getString('MPDX removed your organization integration');
+        const errorMessage = this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for that organization');
+        return this.preferencesOrganization.disconnect(id, successMessage, errorMessage).then(() => {
             this.saving = false;
-            this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed your organization integration'));
             this.users.listOrganizationAccounts(true);
         }).catch((err) => {
-            this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for that organization'), 'danger');
             this.saving = false;
             throw err;
         });
     }
     createAccount() {
         this.saving = true;
-        return this.preferencesOrganization.createAccount(this.username, this.password, this.selectedKey).then(() => {
+        const successMessage = this.gettextCatalog.getString('MPDX added your organization account');
+        const errorMessage = this.gettextCatalog.getString('Unable to add your organization account');
+        return this.preferencesOrganization.createAccount(
+            this.username, this.password, this.selectedKey, successMessage, errorMessage
+        ).then(() => {
             this.saving = false;
             this.users.listOrganizationAccounts(true);
             this.revert();
-            this.alerts.addAlert(this.gettextCatalog.getString('MPDX added your organization account'));
         }).catch((err) => {
-            this.alerts.addAlert(this.gettextCatalog.getString('Unable to add your organization account'), 'danger');
             this.saving = false;
             throw err;
         });
     }
     updateAccount() {
         this.saving = true;
-        return this.preferencesOrganization.updateAccount(this.username, this.password, this.selected.id).then(() => {
+        const successMessage = this.gettextCatalog.getString('MPDX updated your organization account');
+        const errorMessage = this.gettextCatalog.getString('Unable to update your organization account');
+        return this.preferencesOrganization.updateAccount(
+            this.username, this.password, this.selected.id, successMessage, errorMessage
+        ).then(() => {
             this.saving = false;
             this.users.listOrganizationAccounts(true);
             this.revert();
-            this.alerts.addAlert(this.gettextCatalog.getString('MPDX updated your organization account'));
         }).catch((err) => {
-            this.alerts.addAlert(this.gettextCatalog.getString('Unable to update your organization account'), 'danger');
             this.saving = false;
             throw err;
         });

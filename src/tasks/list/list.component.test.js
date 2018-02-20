@@ -537,14 +537,15 @@ describe('tasks.list.component', () => {
             const selected = range(0, 151);
             $ctrl.bulkDelete(selected).catch(() => {
                 expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
+                expect(gettextCatalog.getString).toHaveBeenCalledWith('Too many tasks selected, please select a maximum of 150 tasks.');
                 done();
             });
         });
         it('should confirm with a translated message', () => {
             $ctrl.bulkDelete(selected);
             expect(gettextCatalog.getPlural)
-                .toHaveBeenCalledWith(2, jasmine.any(String), jasmine.any(String), jasmine.any(Object));
+                .toHaveBeenCalledWith(2, 'Are you sure you wish to delete the selected task?',
+                    'Are you sure you wish to delete the {{$count}} selected tasks?', { $count: 2 });
             expect(modal.confirm).toHaveBeenCalledWith(jasmine.any(String));
         });
         it('should call delete', (done) => {
@@ -554,17 +555,16 @@ describe('tasks.list.component', () => {
                     url: 'tasks/bulk',
                     data: [{ id: 1 }, { id: 2 }],
                     type: 'tasks',
-                    autoParams: false
+                    autoParams: false,
+                    successMessage: '2 tasks successfully removed.',
+                    errorMessage: 'Unable to delete the 2 selected tasks.'
                 });
-                done();
-            });
-        });
-        it('should alert a translated message', (done) => {
-            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
-            $ctrl.bulkDelete(selected).then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
                 expect(gettextCatalog.getPlural)
-                    .toHaveBeenCalledWith(2, jasmine.any(String), jasmine.any(String), jasmine.any(Object));
+                    .toHaveBeenCalledWith(2, '1 task successfully removed.',
+                        '{{$count}} tasks successfully removed.', { $count: 2 });
+                expect(gettextCatalog.getPlural)
+                    .toHaveBeenCalledWith(2, 'Unable to delete the selected task.',
+                        'Unable to delete the {{$count}} selected tasks.', { $count: 2 });
                 done();
             });
         });
@@ -572,15 +572,6 @@ describe('tasks.list.component', () => {
             spyOn(api, 'delete').and.callFake(() => Promise.resolve());
             $ctrl.bulkDelete(selected).then(() => {
                 expect(rootScope.$emit).toHaveBeenCalledWith('tasksDeleted', [{ id: 1 }, { id: 2 }]);
-                done();
-            });
-        });
-        it('should handle rejection', (done) => {
-            spyOn(api, 'delete').and.callFake(() => Promise.reject());
-            $ctrl.bulkDelete(selected).catch(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
-                expect(gettextCatalog.getPlural)
-                    .toHaveBeenCalledWith(2, jasmine.any(String), jasmine.any(String), jasmine.any(Object));
                 done();
             });
         });

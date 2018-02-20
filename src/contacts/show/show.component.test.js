@@ -3,17 +3,16 @@ import { assign } from 'lodash/fp';
 
 describe('contacts.show.component', () => {
     let $ctrl, componentController, gettextCatalog, rootScope, scope, state,
-        api, alerts, contacts, contactsTags, tasks, users;
+        api, contacts, contactsTags, tasks, users;
 
     beforeEach(() => {
         angular.mock.module(component);
         inject((
-            $componentController, $rootScope, _contacts_, _contactsTags_, _modal_, _tasks_, _alerts_,
+            $componentController, $rootScope, _contacts_, _contactsTags_, _modal_, _tasks_,
             _gettextCatalog_, _api_, _users_, $state
         ) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
-            alerts = _alerts_;
             api = _api_;
             contacts = _contacts_;
             contactsTags = _contactsTags_;
@@ -26,7 +25,6 @@ describe('contacts.show.component', () => {
             contacts.current = { id: 1, name: 'a b' };
             loadController();
         });
-        spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callFake((data) => data);
     });
 
@@ -95,15 +93,11 @@ describe('contacts.show.component', () => {
         it('should call save', () => {
             spyOn(contacts, 'save').and.callFake(() => Promise.resolve());
             $ctrl.save();
-            expect(contacts.save).toHaveBeenCalledWith({ id: 1, name: 'a' });
-        });
-        it('should alert if successful', (done) => {
-            spyOn(contacts, 'save').and.callFake(() => Promise.resolve());
-            $ctrl.save().then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
-                done();
-            });
+            const errorMessage = 'Unable to save changes.';
+            const successMessage = 'Changes saved successfully.';
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(successMessage);
+            expect(contacts.save).toHaveBeenCalledWith({ id: 1, name: 'a' }, successMessage, errorMessage);
         });
         it('shouldn\'t broadcast if tag_list is unchanged', (done) => {
             spyOn(contacts, 'save').and.callFake(() => Promise.resolve());
@@ -127,14 +121,6 @@ describe('contacts.show.component', () => {
             spyOn(contacts, 'save').and.callFake(() => Promise.resolve());
             $ctrl.save().then(() => {
                 expect(contacts.initialState.no_gift_aid).toEqual(true);
-                done();
-            });
-        });
-        it('should alert if rejected', (done) => {
-            spyOn(contacts, 'save').and.callFake(() => Promise.reject());
-            $ctrl.save().catch(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });

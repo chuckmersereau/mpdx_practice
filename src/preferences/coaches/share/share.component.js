@@ -3,11 +3,10 @@ import { reject } from 'lodash/fp';
 class SharePreferencesController {
     constructor(
         $rootScope, gettextCatalog,
-        accounts, alerts, users
+        accounts, users
     ) {
         this.$rootScope = $rootScope;
         this.accounts = accounts;
-        this.alerts = alerts;
         this.gettextCatalog = gettextCatalog;
         this.users = users;
 
@@ -29,24 +28,24 @@ class SharePreferencesController {
     }
     removeCoachInvite(id) {
         this.saving = true;
-        return this.accounts.destroyInvite(id).then(() => {
+        const successMessage = this.gettextCatalog.getString('MPDX removed the coaching invite successfully');
+        const errorMessage = this.gettextCatalog.getString('MPDX couldn\'t remove the coaching invite');
+        return this.accounts.destroyInvite(id, successMessage, errorMessage).then(() => {
             this.saving = false;
-            this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed the coaching invite successfully'));
             this.accounts.inviteCoachList = reject({ id: id }, this.accounts.inviteCoachList);
         }).catch((err) => {
-            this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t remove the coaching invite'), 'danger');
             this.saving = false;
             throw err;
         });
     }
     removeCoach(id) {
         this.saving = true;
-        return this.accounts.destroyCoach(id).then(() => {
+        const successMessage = this.gettextCatalog.getString('MPDX removed the coach successfully');
+        const errorMessage = this.gettextCatalog.getString('MPDX couldn\'t remove the coach');
+        return this.accounts.destroyCoach(id, successMessage, errorMessage).then(() => {
             this.saving = false;
-            this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed the coach successfully'));
             this.accounts.coachList = reject({ id: id }, this.accounts.coachList);
         }).catch((err) => {
-            this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t remove the coach'), 'danger');
             this.saving = false;
             throw err;
         });
@@ -63,11 +62,10 @@ const Share = {
 
 
 import accounts from 'common/accounts/accounts.service';
-import alerts from 'common/alerts/alerts.service';
 import gettext from 'angular-gettext';
 import users from 'common/users/users.service';
 
 export default angular.module('mpdx.preferences.coaches.share', [
     gettext,
-    accounts, alerts, users
+    accounts, users
 ]).component('coachesSharePreferences', Share).name;

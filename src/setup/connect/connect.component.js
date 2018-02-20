@@ -4,14 +4,13 @@ class ConnectController {
     constructor(
         $rootScope, $window,
         gettextCatalog,
-        accounts, alerts, api, help, preferencesOrganization, serverConstants, users, setup
+        accounts, api, help, preferencesOrganization, serverConstants, users, setup
     ) {
         this.$rootScope = $rootScope;
         this.$window = $window;
         this.gettextCatalog = gettextCatalog;
 
         this.accounts = accounts;
-        this.alerts = alerts;
         this.api = api;
         this.help = help;
         this.preferencesOrganization = preferencesOrganization;
@@ -30,7 +29,10 @@ class ConnectController {
     }
     add() {
         this.saving = true;
-        return this.preferencesOrganization.createAccount(this.username, this.password, this.selectedKey).then(() => {
+        const errorMessage = this.gettextCatalog.getString('Invalid username or password.');
+        return this.preferencesOrganization.createAccount(
+            this.username, this.password, this.selectedKey, errorMessage
+        ).then(() => {
             return this.users.listOrganizationAccounts(true).then(() => {
                 this.saving = false;
                 this.addOrganization = false;
@@ -39,20 +41,19 @@ class ConnectController {
             });
         }).catch((err) => {
             this.saving = false;
-            this.alerts.addAlert(this.gettextCatalog.getString('Invalid username or password.'), 'danger');
             throw err;
         });
     }
     disconnect(id) {
         this.saving = true;
-        return this.preferencesOrganization.disconnect(id).then(() => {
+        const successMessage = this.gettextCatalog.getString('MPDX removed your organization integration');
+        const errorMessage = this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for that organization');
+        return this.preferencesOrganization.disconnect(id, successMessage, errorMessage).then(() => {
             this.saving = false;
-            this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed your organization integration'));
             return this.users.listOrganizationAccounts(true).then(() => {
                 this.addOrganization = this.users.organizationAccounts.length === 0;
             });
         }).catch((err) => {
-            this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for that organization'), 'danger');
             this.saving = false;
             throw err;
         });
@@ -89,7 +90,6 @@ const Connect = {
 
 import gettextCatalog from 'angular-gettext';
 import accounts from 'common/accounts/accounts.service';
-import alerts from 'common/alerts/alerts.service';
 import api from 'common/api/api.service';
 import help from 'common/help/help.service';
 import preferencesOrganization from 'preferences/integrations/organization/organization.service';
@@ -99,5 +99,5 @@ import users from 'common/users/users.service';
 
 export default angular.module('mpdx.setup.connect.component', [
     gettextCatalog,
-    accounts, alerts, api, help, preferencesOrganization, serverConstants, setup, users
+    accounts, api, help, preferencesOrganization, serverConstants, setup, users
 ]).component('setupConnect', Connect).name;

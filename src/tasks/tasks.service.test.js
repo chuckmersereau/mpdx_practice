@@ -10,7 +10,7 @@ describe('tasks.service', () => {
     beforeEach(() => {
         angular.mock.module(service);
         inject((
-            $rootScope, _api_, _tasks_, _tasksTags_, _users_, _alerts_, _gettextCatalog_, _modal_,
+            $rootScope, _api_, _tasks_, _tasksTags_, _users_, _gettextCatalog_, _modal_,
             _serverConstants_, _contacts_
         ) => {
             alerts = _alerts_;

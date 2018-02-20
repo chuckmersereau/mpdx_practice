@@ -149,12 +149,12 @@ describe('contacts.service', () => {
         let contact = { id: 1, name: 'a' };
         it('should save a contact', () => {
             contacts.save(contact);
-            expect(api.put).toHaveBeenCalledWith(`contacts/${contact.id}`, contact);
+            expect(api.put).toHaveBeenCalledWith(`contacts/${contact.id}`, contact, undefined, undefined);
         });
         it('should change tag_list array to comma delim list', () => {
             contact.tag_list = ['tag1', 'tag2'];
             contacts.save(contact);
-            expect(api.put).toHaveBeenCalledWith(`contacts/${contact.id}`, assign(contact, { tag_list: 'tag1,tag2' }));
+            expect(api.put).toHaveBeenCalledWith(`contacts/${contact.id}`, assign(contact, { tag_list: 'tag1,tag2' }), undefined, undefined);
         });
         it('should trigger contactCreated if name changed', (done) => {
             contacts.save(contact).then(() => {
@@ -219,13 +219,12 @@ describe('contacts.service', () => {
     });
 
     describe('getEmails', () => {
-        const filter = {};
         beforeEach(() => {
             spyOn(contacts, 'mapEmails').and.callFake(() => 'a');
             spyOn(api, 'get').and.callFake(() => Promise.resolve(null));
         });
         it('should call the api', () => {
-            contacts.getEmails(filter);
+            contacts.getEmails();
             expect(api.get).toHaveBeenCalledWith('contacts', {
                 filter: { account_list_id: 123, newsletter: 'email', status: 'active' },
                 include: 'people,people.email_addresses',
@@ -235,10 +234,10 @@ describe('contacts.service', () => {
                     email_addresses: 'email,primary'
                 },
                 per_page: 25000
-            });
+            }, undefined, undefined);
         });
         it('should map data to emails', (done) => {
-            contacts.getEmails(filter).then((data) => {
+            contacts.getEmails().then((data) => {
                 expect(data).toEqual('a');
                 done();
             });

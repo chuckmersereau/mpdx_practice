@@ -1,19 +1,20 @@
 import component from './impersonateUser.component';
 
 describe('preferences.admin.impersonateUser.component', () => {
-    let $ctrl, componentController, scope, rootScope, $$window, alerts, api, users;
+    let $ctrl, componentController, scope, rootScope, $$window, gettextCatalog, api, users;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, $window, _alerts_, _api_, _users_) => {
+        inject(($componentController, $rootScope, $window, _gettextCatalog_, _api_, _users_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             componentController = $componentController;
             $$window = $window;
-            alerts = _alerts_;
+            gettextCatalog = _gettextCatalog_;
             api = _api_;
             users = _users_;
             loadController();
         });
+        spyOn(gettextCatalog, 'getString').and.callThrough();
     });
 
     function loadController() {
@@ -40,12 +41,15 @@ describe('preferences.admin.impersonateUser.component', () => {
         });
 
         it('should call the api', () => {
+            const errorMessage = 'Unable to impersonate provided user';
             $ctrl.save();
             expect(api.post).toHaveBeenCalledWith({
                 url: 'admin/impersonation',
                 data: { user: '', reason: '' },
-                type: 'impersonation'
+                type: 'impersonation',
+                errorMessage: errorMessage
             });
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
         });
 
         it('should return a promise', () => {
@@ -100,14 +104,6 @@ describe('preferences.admin.impersonateUser.component', () => {
             it('should set saving to false', (done) => {
                 $ctrl.save().then(() => {
                     expect($ctrl.saving).toEqual(false);
-                    done();
-                });
-            });
-
-            it('should call alerts.addAlert', (done) => {
-                spyOn(alerts, 'addAlert').and.callThrough();
-                $ctrl.save().then(() => {
-                    expect(alerts.addAlert).toHaveBeenCalledWith('Unable to impersonate provided user', 'danger');
                     done();
                 });
             });

@@ -4,12 +4,11 @@ import fixed from 'common/fp/fixed';
 class ListController {
     constructor(
         $log, $rootScope, gettext,
-        accounts, alerts, appeals, api
+        accounts, appeals, api
     ) {
         this.$log = $log;
         this.gettext = gettext;
         this.accounts = accounts;
-        this.alerts = alerts;
         this.appeals = appeals;
         this.api = api;
 
@@ -83,12 +82,11 @@ const List = {
 };
 
 import accounts from 'common/accounts/accounts.service';
-import alerts from 'common/alerts/alerts.service';
 import appeals from '../appeals.service';
 import api from 'common/api/api.service';
 import gettext from 'angular-gettext';
 
 export default angular.module('mpdx.tools.appeals.list.component', [
     gettext,
-    accounts, alerts, appeals, api
+    accounts, appeals, api
 ]).component('appealsList', List).name;

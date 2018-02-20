@@ -62,6 +62,8 @@ describe('contacts.show.personModal.controller', () => {
             spyOn(rootScope, '$emit').and.callThrough();
         });
         it('should create on create', (done) => {
+            const errorMessage = 'Unable to save changes.';
+            const successMessage = 'Changes saved successfully.';
             spyOn(api, 'post').and.callFake(() => Promise.resolve({ id: 987 }));
             $ctrl.activate();
             $ctrl.person.first_name = 'a';
@@ -75,18 +77,9 @@ describe('contacts.show.personModal.controller', () => {
                     twitter_accounts: [],
                     linkedin_accounts: [],
                     websites: []
-                });
-                done();
-            });
-        });
-
-        it('should alert a translated message on create', (done) => {
-            spyOn(api, 'post').and.callFake(() => Promise.resolve({ id: 987 }));
-            $ctrl.activate();
-            $ctrl.person.first_name = 'a';
-            $ctrl.save().then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
+                }, successMessage, errorMessage);
+                expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
+                expect(gettextCatalog.getString).toHaveBeenCalledWith(successMessage);
                 done();
             });
         });
@@ -101,15 +94,6 @@ describe('contacts.show.personModal.controller', () => {
             });
         });
 
-        it('should handle rejection', (done) => {
-            spyOn(api, 'post').and.callFake(() => Promise.reject());
-            $ctrl.save().catch(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger', null, 5, true);
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
-                done();
-            });
-        });
-
         it('should call personUpdated on update', (done) => {
             spyOn(people, 'save').and.callFake(() => Promise.resolve());
             $ctrl.person = person;
@@ -118,19 +102,6 @@ describe('contacts.show.personModal.controller', () => {
             $ctrl.person.first_name = 'b';
             $ctrl.save().then(() => {
                 expect(rootScope.$emit).toHaveBeenCalledWith('personUpdated', 123);
-                done();
-            });
-        });
-
-        it('should handle rejection', (done) => {
-            spyOn(people, 'save').and.callFake(() => Promise.reject(Error('')));
-            $ctrl.person = person;
-            $ctrl.person.id = 123;
-            $ctrl.activate();
-            $ctrl.person.first_name = 'b';
-            $ctrl.save().catch(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger', null, 5, true);
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });

@@ -32,6 +32,7 @@ describe('tasks.modals.edit.controller', () => {
     describe('save', () => {
         beforeEach(() => {
             spyOn(tasks, 'save').and.callFake(() => Promise.resolve());
+            spyOn($ctrl, 'handleDates').and.callFake(() => {});
         });
 
         it('should call tasks.save', () => {
@@ -51,15 +52,18 @@ describe('tasks.modals.edit.controller', () => {
             });
         });
 
-        it('should return a promise', () => {
-            expect($ctrl.save()).toEqual(jasmine.any(Promise));
+        it('should call handle Dates', (done) => {
+            $ctrl.save().then(() => {
+                expect($ctrl.handleDates).toHaveBeenCalledWith();
+                done();
+            });
         });
 
         describe('promise successful', () => {
             it('should call $scope.hide', (done) => {
                 spyOn(scope, '$hide').and.callThrough();
                 $ctrl.save().then(() => {
-                    expect(scope.$hide).toHaveBeenCalled();
+                    expect(scope.$hide).toHaveBeenCalledWith();
                     done();
                 });
             });
@@ -98,6 +102,37 @@ describe('tasks.modals.edit.controller', () => {
             $ctrl.handleActivityContacts();
             expect($ctrl.task.contacts).toEqual([{ id: 2 }]);
             expect($ctrl.task.activity_contacts).toEqual([{ contact: { id: 1 } }, { contact: { id: 3 }, _destroy: 1 }]);
+        });
+    });
+    describe('handleDates', () => {
+        beforeEach(() => {
+            spyOn($ctrl, 'isoDateOrNull').and.callFake(() => 'a');
+        });
+        it('should set start_at to iso date or null', () => {
+            $ctrl.handleDates();
+            expect($ctrl.task.start_at).toEqual('a');
+        });
+        it('should set completed_at to iso date or null', () => {
+            $ctrl.handleDates();
+            expect($ctrl.task.completed_at).toEqual('a');
+        });
+    });
+    describe('isoDateOrNull', () => {
+        it('should handle true', () => {
+            spyOn($ctrl, 'isIsoDate').and.callFake(() => true);
+            expect($ctrl.isoDateOrNull('a')).toEqual('a');
+        });
+        it('should handle false', () => {
+            spyOn($ctrl, 'isIsoDate').and.callFake(() => false);
+            expect($ctrl.isoDateOrNull('a')).toEqual(null);
+        });
+    });
+    describe('isIsoDate', () => {
+        it('should return true', () => {
+            expect($ctrl.isIsoDate('2018-02-13T16:35:51Z')).toBeTruthy();
+        });
+        it('should handle false', () => {
+            expect($ctrl.isIsoDate('a')).toBeFalsy();
         });
     });
 });

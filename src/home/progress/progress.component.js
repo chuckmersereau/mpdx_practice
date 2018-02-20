@@ -5,13 +5,12 @@ class progressController {
     constructor(
         $rootScope,
         blockUI, gettextCatalog,
-        accounts, alerts, users
+        accounts, users
     ) {
         this.$rootScope = $rootScope;
         this.gettextCatalog = gettextCatalog;
 
         this.accounts = accounts;
-        this.alerts = alerts;
         this.blockUI = blockUI.instances.get('homeProgress');
         this.users = users;
 
@@ -44,11 +43,14 @@ class progressController {
     refreshData() {
         this.blockUI.start();
         this.accounts.analytics = null;
-        return this.accounts.getAnalytics({ startDate: this.startDate, endDate: this.endDate }).then(() => {
+        const errorMessage = this.gettextCatalog.getString('Unable to update Progress Report');
+        return this.accounts.getAnalytics(
+            { startDate: this.startDate, endDate: this.endDate },
+            errorMessage
+        ).then(() => {
             this.blockUI.reset();
         }).catch((err) => {
             this.blockUI.reset();
-            this.alerts.addAlert(this.gettextCatalog.getString('Unable to update Progress Report'), 'danger');
             throw err;
         });
     }
@@ -65,10 +67,9 @@ const Progress = {
 import blockUI from 'angular-block-ui';
 import gettextCatalog from 'angular-gettext';
 import accounts from 'common/accounts/accounts.service';
-import alerts from 'common/alerts/alerts.service';
 import users from 'common/users/users.service';
 
 export default angular.module('mpdx.home.progress.component', [
     blockUI, gettextCatalog,
-    accounts, alerts, users
+    accounts, users
 ]).component('homeProgress', Progress).name;

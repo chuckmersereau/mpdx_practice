@@ -20,7 +20,6 @@ describe('setup.preferences.personal.component', () => {
     describe('constructor', () => {
         it('should define view objects', () => {
             expect($ctrl.accounts).toBeDefined();
-            expect($ctrl.alerts).toBeDefined();
             expect($ctrl.users).toBeDefined();
         });
     });

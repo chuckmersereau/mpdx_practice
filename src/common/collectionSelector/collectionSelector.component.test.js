@@ -108,4 +108,11 @@ describe('common.collectionSelector.component', () => {
             });
         });
     });
+    describe('remove', () => {
+        it('should call select with null item', () => {
+            spyOn($ctrl, 'select').and.callFake(() => {});
+            $ctrl.remove();
+            expect($ctrl.select).toHaveBeenCalledWith({ item: null });
+        });
+    });
 });

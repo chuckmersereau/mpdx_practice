@@ -3,11 +3,10 @@ import { reject } from 'lodash/fp';
 class SharePreferencesController {
     constructor(
         $rootScope, gettextCatalog,
-        accounts, alerts, users
+        accounts, users
     ) {
         this.$rootScope = $rootScope;
         this.accounts = accounts;
-        this.alerts = alerts;
         this.gettextCatalog = gettextCatalog;
         this.users = users;
 
@@ -29,24 +28,24 @@ class SharePreferencesController {
     }
     cancelInvite(id) {
         this.saving = true;
-        return this.accounts.destroyInvite(id).then(() => {
+        const successMessage = this.gettextCatalog.getString('MPDX removed the invite successfully');
+        const errorMessage = this.gettextCatalog.getString('MPDX couldn\'t remove the invite');
+        return this.accounts.destroyInvite(id, successMessage, errorMessage).then(() => {
             this.saving = false;
-            this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed the invite successfully'));
             this.accounts.inviteList = reject({ id: id }, this.accounts.inviteList);
         }).catch((err) => {
-            this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t remove the invite'), 'danger');
             this.saving = false;
             throw err;
         });
     }
     removeUser(id) {
         this.saving = true;
-        return this.accounts.destroyUser(id).then(() => {
+        const successMessage = this.gettextCatalog.getString('MPDX removed the user successfully');
+        const errorMessage = this.gettextCatalog.getString('MPDX couldn\'t remove the user');
+        return this.accounts.destroyUser(id, successMessage, errorMessage).then(() => {
             this.saving = false;
-            this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed the user successfully'));
             this.accounts.userList = reject({ id: id }, this.accounts.userList);
         }).catch((err) => {
-            this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t remove the user'), 'danger');
             this.saving = false;
             throw err;
         });
@@ -63,11 +62,10 @@ const Share = {
 
 
 import accounts from 'common/accounts/accounts.service';
-import alerts from 'common/alerts/alerts.service';
 import gettext from 'angular-gettext';
 import users from 'common/users/users.service';
 
 export default angular.module('mpdx.preferences.accounts.share', [
     gettext,
-    accounts, alerts, users
+    accounts, users
 ]).component('sharePreferences', Share).name;

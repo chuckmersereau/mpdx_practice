@@ -23,13 +23,13 @@ class PrayerLettersService {
             this.data = null;
         });
     }
-    sync() {
-        return this.api.get(`account_lists/${this.api.account_list_id}/prayer_letters_account/sync`);
-    }
-    disconnect() {
-        return this.api.delete(`account_lists/${this.api.account_list_id}/prayer_letters_account`).then(() => {
+    disconnect(successMessage, errorMessage) {
+        return this.api.delete(
+            `account_lists/${this.api.account_list_id}/prayer_letters_account`,
+            undefined, successMessage, errorMessage
+        ).then(() => {
             this.data = null;
-            this.updateState();
+            this.updateState(); // TODO: dead call?
         });
     }
 }

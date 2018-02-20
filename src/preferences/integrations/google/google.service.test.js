@@ -60,8 +60,13 @@ describe('preferences.integrations.google.service', () => {
         it('should delete the relationship', (done) => {
             spyOn(api, 'delete').and.callFake(() => Promise.resolve());
             spyOn(google, 'load').and.callFake(() => Promise.resolve());
-            google.disconnect(123).then(() => {
-                expect(api.delete).toHaveBeenCalledWith({ url: 'user/google_accounts/123', type: 'google_accounts' });
+            google.disconnect(123, 'a', 'b').then(() => {
+                expect(api.delete).toHaveBeenCalledWith({
+                    url: 'user/google_accounts/123',
+                    type: 'google_accounts',
+                    successMessage: 'a',
+                    errorMessage: 'b'
+                });
                 done();
             });
         });

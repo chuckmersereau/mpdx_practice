@@ -295,7 +295,7 @@ describe('EntityAttributes', () => {
     });
     it('should define mail_chimp_account', () => {
         expect(attributes.mail_chimp_account).toEqual({
-            attributes: ['api_key', 'primary_list_id', 'sync_all_active_contacts', 'auto_log_campaigns']
+            attributes: ['api_key', 'primary_list_id', 'auto_log_campaigns']
         });
     });
 

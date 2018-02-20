@@ -1,4 +1,10 @@
-<modal title="{{$ctrl.modalTitle}}" cancel="$hide()" save="$ctrl.save()" delete="$ctrl.delete()" show-delete="$ctrl.address.id && $ctrl.isEditable" hide-footer="!$ctrl.contact">
+<modal title="{{$ctrl.modalTitle}}"
+       class="address-modal"
+       cancel="$hide()"
+       save="$ctrl.save()"
+       delete="$ctrl.delete()"
+       show-delete="$ctrl.address.id && $ctrl.isEditable"
+       hide-footer="!$ctrl.contact">
     <div class="empty-map" ng-if="!$ctrl.place">
         <i class="fas fa-map"></i>
     </div>
@@ -28,14 +34,23 @@
         <div class="row">
             <div class="col-sm-9">
                 <label for="street"><translate>Street</translate> <span class="text-danger">*</span></label>
-                <input name="street"
-                       class="form-control" id="street"
-                       places-auto-complete
-                       on-place-changed="$ctrl.updateAddress()"
-                       ng-model="$ctrl.address.street"
-                       ng-required="$ctrl.isEditable"
-                       ng-disabled="!$ctrl.isEditable"
-                       autofocus="$ctrl.isEditable">
+                <textarea msd-elastic
+                          id="street"
+                          class="form-control"
+                          rows="2"
+                          ng-model="$ctrl.address.street"
+                          ng-required="$ctrl.isEditable"
+                          ng-disabled="!$ctrl.isEditable"
+                          ng-keyup="$ctrl.streetKeyUp($event)"
+                          ng-model-options="{ debounce: 1000 }"
+                          autocomplete="dont_fill_this_{{::$id}}_{{$ctrl.$scope.$id}}"
+                          autofocus="$ctrl.isEditable"></textarea>
+                <div id="google_places_container" style="display: none"></div>
+                <ul class="dropdown-menu" role="menu" ng-show="$ctrl.addressResults.length > 0">
+                    <li ng-repeat="address in $ctrl.addressResults">
+                        <a ng-click="$ctrl.updateAddress(address)">{{ address.description }}</a>
+                    </li>
+                </ul>
             </div>
             <div class="col-sm-3">
                 <label for="location"><translate>Location</translate></label>

@@ -1,4 +1,13 @@
-import { concat, each, findIndex, reject } from 'lodash/fp';
+import config from 'config';
+import {
+    compact,
+    concat,
+    defaultTo,
+    findIndex,
+    join,
+    reduce,
+    reject
+} from 'lodash/fp';
 import createPatch from '../../../../common/fp/createPatch';
 
 class AddressModalController {
@@ -20,73 +29,92 @@ class AddressModalController {
 
         this.place = null;
         this.addressInitialState = angular.copy(address);
-
-        NgMap.getMap().then((map) => {
-            this.map = map;
-            if (this.address) {
-                let address = `${this.address.street}`;
-                if (this.address.city) {
-                    address += `, ${this.address.city}`;
-                }
-                if (this.address.state) {
-                    address += `, ${this.address.state}`;
-                }
-                if (this.address.postal_code) {
-                    address += `, ${this.address.postal_code}`;
-                }
-                this.place = { formatted_address: address };
-            }
-            this.refreshMap();
-        });
-
-        let $ctrl = this;
-        this.updateAddress = function() { // workaround for weird bindings in google places
-            $ctrl.place = this.getPlace();
-            $ctrl.address.street = '';
-            each((component) => {
-                switch (component.types[0]) {
-                    case 'subpremise':
-                        $ctrl.address.street += component.long_name + '/';
-                        break;
-                    case 'street_number':
-                        $ctrl.address.street += component.long_name + ' ';
-                        break;
-                    case 'route':
-                        $ctrl.address.street += component.long_name;
-                        break;
-                    case 'administrative_area_level_1':
-                        $ctrl.address.state = component.short_name;
-                        break;
-                    case 'administrative_area_level_2':
-                        $ctrl.address.region = component.long_name;
-                        break;
-                    case 'administrative_area_level_3':
-                        $ctrl.address.metro_area = component.long_name;
-                        break;
-                    case 'country':
-                        $ctrl.address.country = component.long_name;
-                        break;
-                    case 'postal_code':
-                        $ctrl.address.postal_code = component.long_name;
-                        break;
-                    case 'locality':
-                        $ctrl.address.city = component.long_name;
-                        break;
-                }
-            }, $ctrl.place.address_components);
-            $ctrl.refreshMap();
-        };
+        // null is for unit tests
+        this.autocompleteService = config.env === 'test' ? null : new $window.google.maps.places.AutocompleteService();
+        this.modalTitle = this.setTitle(this.address, this.contact);
 
         if (this.address) {
-            if (this.contact) {
-                this.modalTitle = this.gettextCatalog.getString('Edit Address');
-            } else {
-                this.modalTitle = this.gettextCatalog.getString('Address');
-            }
-            this.isEditable = !this.address.remote_id && (this.address.source === 'MPDX' || this.address.source === 'manual' || this.address.source === 'TntImport');
+            const fields = [this.address.street, this.address.city, this.address.state, this.address.postal_code];
+            const formattedAddress = join(', ', compact(fields));
+            this.place = { formatted_address: formattedAddress };
+            this.isEditable = !this.address.remote_id
+                && ['MPDX', 'manual', 'TntImport'].indexOf(this.address.source) > -1;
         } else {
-            this.modalTitle = this.gettextCatalog.getString('Add Address');
             this.address = { street: '', location: 'Home', source: 'MPDX' };
+        }
+
+        NgMap.getMap().then((map) => {
+            this.placesService = config.env === 'test' ? null : new $window.google.maps.places.PlacesService(map);
+            this.map = map;
+            this.refreshMap();
+        });
+    }
+    setTitle(address, contact) {
+        return this.gettextCatalog.getString(address
+            ? contact
+                ? 'Edit Address'
+                : 'Address'
+            : 'Add Address'
+        );
+    }
+    updateAddress(address) {
+        this.placesService.getDetails({ placeId: address.place_id }, (data) => {
+            this.place = data;
+            this.address = this.parsePlace(data);
+            this.addressResults = undefined;
+            this.refreshMap();
+            this.$timeout(this.$scope.$digest()); // callback doesn't fire $digest
+        });
+    }
+    parsePlace(data) {
+        return reduce((result, value) => {
+            switch (value.types[0]) {
+                case 'subpremise':
+                    result.street += value.long_name + '/';
+                    break;
+                case 'street_number':
+                    result.street += value.long_name + ' ';
+                    break;
+                case 'route':
+                    result.street += value.long_name;
+                    break;
+                case 'administrative_area_level_1':
+                    result.state = value.short_name;
+                    break;
+                case 'administrative_area_level_2':
+                    result.region = value.long_name;
+                    break;
+                case 'administrative_area_level_3':
+                    result.metro_area = value.long_name;
+                    break;
+                case 'country':
+                    result.country = value.long_name;
+                    break;
+                case 'postal_code':
+                    result.postal_code = value.long_name;
+                    break;
+                case 'locality':
+                    result.city = value.long_name;
+                    break;
+            }
+            return result;
+        }, {
+            street: '',
+            location: defaultTo('Home', this.address.location),
+            source: defaultTo('MPDX', this.address.source)
+        }, data.address_components);
+    }
+    streetKeyUp(event) {
+        const noReturn = event.currentTarget.value.indexOf('\n') === -1;
+        if (event.key === 'Escape') {
+            this.addressResults = null;
+        } else if (event.key !== 'Enter' && noReturn) {
+            this.autocompleteService.getPlacePredictions({ input: event.currentTarget.value }, (results) => {
+                this.addressResults = results;
+                this.$log.debug('address query results', this.addressResults);
+            });
+        } else if (noReturn) {
+            this.addressResults = null;
         }
     }
     save() {

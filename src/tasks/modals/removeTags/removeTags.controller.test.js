@@ -3,7 +3,7 @@ import { assign } from 'lodash/fp';
 
 
 describe('tasks.modals.removeTags.controller', () => {
-    let $ctrl, controller, tasksTags, scope, rootScope, api, modal, gettextCatalog, alerts;
+    let $ctrl, controller, tasksTags, scope, rootScope, api, modal, gettextCatalog;
 
     function defaultScope() {
         return {
@@ -14,10 +14,9 @@ describe('tasks.modals.removeTags.controller', () => {
     }
     beforeEach(() => {
         angular.mock.module(remove);
-        inject(($controller, $rootScope, _tasksTags_, _api_, _modal_, _gettextCatalog_, _alerts_) => {
+        inject(($controller, $rootScope, _tasksTags_, _api_, _modal_, _gettextCatalog_) => {
             rootScope = $rootScope.$new();
             scope = rootScope.$new();
-            alerts = _alerts_;
             api = _api_;
             api.account_list_id = 123;
             gettextCatalog = _gettextCatalog_;
@@ -37,17 +36,18 @@ describe('tasks.modals.removeTags.controller', () => {
             spyOn(api, 'delete').and.callFake(() => Promise.resolve({}));
             spyOn(modal, 'confirm').and.callFake(() => Promise.resolve({}));
             spyOn(gettextCatalog, 'getString').and.callFake((data) => data);
-            spyOn(alerts, 'addAlert').and.callFake((data) => data);
             scope.$hide = () => {};
             spyOn(scope, '$hide').and.callThrough();
             spyOn($ctrl.$rootScope, '$emit').and.callFake(() => {});
         });
         it('should confirm with a translated message', () => {
+            const message = 'Are you sure you wish to remove the selected tag?';
             $ctrl.removeTag('a');
-            expect(modal.confirm).toHaveBeenCalledWith(jasmine.any(String));
-            expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
+            expect(modal.confirm).toHaveBeenCalledWith(message);
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(message);
         });
         it('should remove a tag from selected contacts', (done) => {
+            const successMessage = 'Tag successfully removed.';
             $ctrl.removeTag('a').then(() => {
                 expect(api.delete).toHaveBeenCalledWith({
                     url: 'tasks/tags/bulk',
@@ -66,15 +66,10 @@ describe('tasks.modals.removeTags.controller', () => {
                         type: 'tags'
                     },
                     autoParams: false,
-                    doSerialization: false
+                    doSerialization: false,
+                    successMessage: successMessage
                 });
-                done();
-            });
-        });
-        it('should alert the user on successful removal', (done) => {
-            $ctrl.removeTag('a').then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
-                expect(gettextCatalog.getString.calls.argsFor(1)[0]).toEqual(jasmine.any(String));
+                expect(gettextCatalog.getString).toHaveBeenCalledWith(successMessage);
                 done();
             });
         });
