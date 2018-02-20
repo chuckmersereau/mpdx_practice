@@ -1,21 +1,18 @@
 import component from './notifications.component';
 
 describe('contacts.list.component', () => {
-    let $ctrl, api, serverConstants, scope, componentController, rootScope, alerts, gettextCatalog;
+    let $ctrl, api, serverConstants, scope, componentController, rootScope;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _api_, _serverConstants_, _alerts_, _gettextCatalog_) => {
+        inject(($componentController, $rootScope, _api_, _serverConstants_) => {
             rootScope = $rootScope;
             scope = $rootScope.$new();
             api = _api_;
-            alerts = _alerts_;
-            gettextCatalog = _gettextCatalog_;
             serverConstants = _serverConstants_;
             componentController = $componentController;
             loadController();
         });
-        spyOn(alerts, 'addAlert').and.callFake((data) => data);
-        spyOn(gettextCatalog, 'getString').and.callThrough();
+        spyOn($ctrl, 'gettext').and.callThrough();
     });
 
     function loadController() {
@@ -79,10 +76,13 @@ describe('contacts.list.component', () => {
         });
 
         it('should call api.get', () => {
+            const errorMessage = 'Unable to load notification preferences';
             $ctrl.load();
             expect(api.get).toHaveBeenCalledWith(
-                'account_lists/account_list_id/notification_preferences?include=notification_type'
+                'account_lists/account_list_id/notification_preferences?include=notification_type',
+                undefined, undefined, errorMessage
             );
+            expect($ctrl.gettext).toHaveBeenCalledWith(errorMessage);
         });
 
         it('should return a promise', () => {
@@ -144,13 +144,6 @@ describe('contacts.list.component', () => {
                 });
             });
 
-            it('should call alert.addAlert', (done) => {
-                $ctrl.load().catch(() => {
-                    expect(alerts.addAlert).toHaveBeenCalledWith('Unable to load notification preferences', 'danger');
-                    done();
-                });
-            });
-
             it('should throw exception', (done) => {
                 $ctrl.load().catch((ex) => {
                     expect(ex).toEqual(Error('something went wrong'));
@@ -175,12 +168,18 @@ describe('contacts.list.component', () => {
         });
 
         it('should call api.post', () => {
+            const successMessage = 'Notifications saved successfully';
+            const errorMessage = 'Unable to save changes';
             $ctrl.save();
             expect(api.post).toHaveBeenCalledWith({
                 url: 'account_lists/account_list_id/notification_preferences/bulk',
                 data: $ctrl.notificationPreferences,
-                type: 'notification_preferences'
+                type: 'notification_preferences',
+                successMessage: successMessage,
+                errorMessage: errorMessage
             });
+            expect($ctrl.gettext).toHaveBeenCalledWith(successMessage);
+            expect($ctrl.gettext).toHaveBeenCalledWith(errorMessage);
         });
 
         it('should return a promise', () => {
@@ -204,13 +203,6 @@ describe('contacts.list.component', () => {
                     done();
                 });
             });
-
-            it('should call alert.addAlert', (done) => {
-                $ctrl.save().then(() => {
-                    expect(alerts.addAlert).toHaveBeenCalledWith('Notifications saved successfully', 'success');
-                    done();
-                });
-            });
         });
 
         describe('promise unsuccessful', () => {
@@ -222,13 +214,6 @@ describe('contacts.list.component', () => {
                 $ctrl.loading = true;
                 $ctrl.save().catch(() => {
                     expect($ctrl.loading).toEqual(false);
-                    done();
-                });
-            });
-
-            it('should call alert.addAlert', (done) => {
-                $ctrl.save().catch(() => {
-                    expect(alerts.addAlert).toHaveBeenCalledWith('Unable to save changes', 'danger');
                     done();
                 });
             });

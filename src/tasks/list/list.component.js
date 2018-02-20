@@ -306,27 +306,25 @@ class ListController {
             {}
         );
         return this.modal.confirm(message).then(() => {
+            const successMessage = this.gettextCatalog.getPlural(selected.length,
+                '1 task successfully removed.',
+                '{{$count}} tasks successfully removed.',
+                {}
+            );
+            const errorMessage = this.gettextCatalog.getPlural(selected.length,
+                'Unable to delete the selected task.',
+                'Unable to delete the {{$count}} selected tasks.',
+                {}
+            );
             return this.api.delete({
                 url: 'tasks/bulk',
                 data: tasks,
                 type: 'tasks',
-                autoParams: false
+                autoParams: false,
+                successMessage: successMessage,
+                errorMessage: errorMessage
             }).then(() => {
-                this.alerts.addAlert(
-                    this.gettextCatalog.getPlural(selected.length,
-                        '1 task successfully removed.',
-                        '{{$count}} tasks successfully removed.',
-                        {}
-                    )
-                );
                 this.$rootScope.$emit('tasksDeleted', tasks);
-            }).catch((err) => {
-                this.alerts.addAlert(this.gettextCatalog.getPlural(selected.length,
-                    'Unable to delete the selected task.',
-                    'Unable to delete the {{$count}} selected tasks.',
-                    {}
-                ), 'danger');
-                throw err;
             });
         });
     }

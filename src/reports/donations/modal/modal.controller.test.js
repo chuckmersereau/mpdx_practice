@@ -2,12 +2,12 @@ import modalController from './modal.controller';
 import { isEqual } from 'lodash/fp';
 
 describe('donation.modal.controller', () => {
-    let $ctrl, controller, scope, gettextCatalog, accounts, alerts, designationAccounts, donations, api, rootScope;
+    let $ctrl, controller, scope, gettextCatalog, accounts, modal, designationAccounts, api, rootScope;
     let donation = { id: 'donation_id', amount: '0.00', motivation: 'a' };
     beforeEach(() => {
         angular.mock.module(modalController);
         inject((
-            $controller, $rootScope, _gettextCatalog_, _accounts_, _alerts_, _designationAccounts_, _donations_, _api_
+            $controller, $rootScope, _gettextCatalog_, _accounts_, _designationAccounts_, _api_, _modal_
         ) => {
             controller = $controller;
             rootScope = $rootScope;
@@ -17,13 +17,10 @@ describe('donation.modal.controller', () => {
             api = _api_;
             gettextCatalog = _gettextCatalog_;
             accounts = _accounts_;
-            alerts = _alerts_;
+            modal = _modal_;
             designationAccounts = _designationAccounts_;
-            donations = _donations_;
-
             loadController();
         });
-        spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
         spyOn(rootScope, '$emit').and.callFake(() => {});
     });
@@ -89,42 +86,22 @@ describe('donation.modal.controller', () => {
     });
 
     describe('save', () => {
+        const successMessage = 'Donation saved successfully';
+        const errorMessage = 'Unable to save changes to donation';
         describe('promise resolved', () => {
             beforeEach(() => {
-                spyOn(donations, 'save').and.callFake((data) => Promise.resolve(data));
+                spyOn($ctrl, 'getSavePromise').and.callFake((data) => Promise.resolve(data));
                 spyOn(scope, '$hide').and.returnValue();
             });
-
             it('should call donations.save', () => {
                 $ctrl.save();
-                expect(donations.save).toHaveBeenCalledWith({ id: 'donation_id' });
+                expect($ctrl.getSavePromise).toHaveBeenCalledWith({ id: 'donation_id' }, successMessage, errorMessage);
+                expect(gettextCatalog.getString).toHaveBeenCalledWith(successMessage);
+                expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
             });
-
             it('should hide modal', (done) => {
                 $ctrl.save().then(() => {
                     expect(scope.$hide).toHaveBeenCalled();
-                    done();
-                });
-            });
-
-            it('should add a translated alert', (done) => {
-                $ctrl.save().then(() => {
-                    expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'success');
-                    expect(gettextCatalog.getString).toHaveBeenCalled();
-                    done();
-                });
-            });
-        });
-
-        describe('promise rejected', () => {
-            beforeEach(() => {
-                spyOn(donations, 'save').and.callFake(() => Promise.reject(Error('fail')));
-            });
-
-            it('should add a translated alert', (done) => {
-                $ctrl.save().catch(() => {
-                    expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger', null, 5, true);
-                    expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                     done();
                 });
             });
@@ -132,17 +109,19 @@ describe('donation.modal.controller', () => {
 
         describe('remove appeal', () => {
             beforeEach(() => {
-                spyOn(donations, 'save').and.callFake((data) => Promise.resolve(data));
+                spyOn($ctrl, 'getSavePromise').and.callFake((data) => Promise.resolve(data));
                 $ctrl.initialDonation.appeal = { id: 'appeal_id' };
                 $ctrl.donation.appeal = null;
             });
 
             it('should update with empty appeal', (done) => {
                 $ctrl.save().then(() => {
-                    expect(donations.save).toHaveBeenCalledWith({
+                    expect($ctrl.getSavePromise).toHaveBeenCalledWith({
                         id: 'donation_id',
                         appeal: { id: 'none' }
-                    });
+                    }, successMessage, errorMessage);
+                    expect(gettextCatalog.getString).toHaveBeenCalledWith(successMessage);
+                    expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
                     done();
                 });
             });
@@ -150,7 +129,7 @@ describe('donation.modal.controller', () => {
 
         describe('calls save with patch only', () => {
             beforeEach(() => {
-                spyOn(donations, 'save').and.callFake((data) => Promise.resolve(data));
+                spyOn($ctrl, 'getSavePromise').and.callFake((data) => Promise.resolve(data));
                 $ctrl.initialDonation
                     = { id: 'donation_id', sameVal: 'value', sameObj: {}, patchVal: null, patchObj: null };
                 $ctrl.donation
@@ -158,12 +137,14 @@ describe('donation.modal.controller', () => {
             });
 
             it('should update with empty appeal', (done) => {
+                const successMessage = 'Donation saved successfully';
+                const errorMessage = 'Unable to save changes to donation';
                 $ctrl.save().then(() => {
-                    expect(donations.save).toHaveBeenCalledWith({
+                    expect($ctrl.getSavePromise).toHaveBeenCalledWith({
                         id: 'donation_id',
                         patchVal: 'value',
                         patchObj: {}
-                    });
+                    }, successMessage, errorMessage);
                     done();
                 });
             });
@@ -173,13 +154,31 @@ describe('donation.modal.controller', () => {
     describe('delete', () => {
         describe('promise resolved', () => {
             beforeEach(() => {
-                spyOn(donations, 'delete').and.callFake((data) => Promise.resolve(data));
+                spyOn(api, 'delete').and.callFake(() => Promise.resolve());
                 spyOn(scope, '$hide').and.returnValue();
+                spyOn(modal, 'confirm').and.returnValue(Promise.resolve());
             });
 
-            it('should call donations.delete', () => {
+            it('should call modal.confirm', () => {
                 $ctrl.delete();
-                expect(donations.delete).toHaveBeenCalledWith(donation);
+                expect(modal.confirm).toHaveBeenCalled();
+                expect(gettextCatalog.getString).toHaveBeenCalledWith('Are you sure you wish to delete the selected donation?');
+            });
+
+            it('should call donations.delete', (done) => {
+                const successMessage = 'Donation deleted successfully';
+                const errorMessage = 'Unable to remove donation';
+                $ctrl.delete().then(() => {
+                    expect(api.delete).toHaveBeenCalledWith(
+                        `account_lists/${api.account_list_id}/donations/${donation.id}`,
+                        { id: donation.id },
+                        successMessage,
+                        errorMessage
+                    );
+                    expect(gettextCatalog.getString).toHaveBeenCalledWith(successMessage);
+                    expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
+                    done();
+                });
             });
 
             it('should hide modal', (done) => {
@@ -192,25 +191,6 @@ describe('donation.modal.controller', () => {
             it('emit to the rootscope', (done) => {
                 $ctrl.delete().then(() => {
                     expect(rootScope.$emit).toHaveBeenCalledWith('donationRemoved', { id: donation.id });
-                    done();
-                });
-            });
-
-            it('should add a translated alert', (done) => {
-                $ctrl.delete().then(() => {
-                    expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'success');
-                    expect(gettextCatalog.getString).toHaveBeenCalled();
-                    done();
-                });
-            });
-        });
-
-        describe('promise rejected', () => {
-            it('should add a translated alert', (done) => {
-                spyOn(donations, 'delete').and.callFake(() => Promise.reject(Error('fail')));
-                $ctrl.delete().catch(() => {
-                    expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger', null, 5, true);
-                    expect(gettextCatalog.getString).toHaveBeenCalled();
                     done();
                 });
             });
@@ -292,6 +272,55 @@ describe('donation.modal.controller', () => {
                     per_page: 6
                 }
             );
+        });
+    });
+
+    describe('getSavePromise', () => {
+        const successMessage = 'a';
+        const errorMessage = 'b';
+        beforeEach(() => {
+            spyOn(api, 'post').and.callFake(() => Promise.resolve());
+            spyOn(api, 'put').and.callFake(() => Promise.resolve());
+            api.account_list_id = '123';
+        });
+        describe('donation exists', () => {
+            const donation = { id: 'donation_id' };
+            it('should call api.put', (done) => {
+                $ctrl.getSavePromise(donation, successMessage, errorMessage).then(() => {
+                    expect(api.put).toHaveBeenCalledWith(
+                        'account_lists/123/donations/donation_id',
+                        donation, successMessage, errorMessage
+                    );
+                    done();
+                });
+            });
+        });
+
+        describe('donation does not exist', () => {
+            const donation = {};
+            it('should call api.post', (done) => {
+                $ctrl.getSavePromise(donation, successMessage, errorMessage).then(() => {
+                    expect(api.post).toHaveBeenCalledWith(
+                        'account_lists/123/donations',
+                        donation, successMessage, errorMessage
+                    );
+                    done();
+                });
+            });
+        });
+
+        describe('amount contains non-numeric characters', () => {
+            const donation = { amount: '$10.10 USD' };
+            it('should remove characters from amount', (done) => {
+                $ctrl.getSavePromise(donation, successMessage, errorMessage).then(() => {
+                    expect(api.post).toHaveBeenCalledWith(
+                        'account_lists/123/donations',
+                        { amount: '10.10' },
+                        successMessage, errorMessage
+                    );
+                    done();
+                });
+            });
         });
     });
 });

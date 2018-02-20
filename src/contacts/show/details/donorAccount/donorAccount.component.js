@@ -1,12 +1,12 @@
 class ContactDonorAccountController {
     constructor(
         gettext,
-        accounts, alerts, contacts
+        accounts, contacts, session
     ) {
         this.accounts = accounts;
-        this.alerts = alerts;
         this.contacts = contacts;
         this.gettext = gettext;
+        this.session = session;
     }
     remove() {
         this.donorAccount._destroy = '1';
@@ -15,7 +15,9 @@ class ContactDonorAccountController {
     save() {
         if (!this.accounts.current) {
             const message = this.gettext('A serious error has occurred. Please refresh your browser or try logging out.');
-            this.alerts.addAlert(message, 'danger');
+            this.session.errors.push({
+                message: message
+            });
             return;
         }
         if (this.donorAccount.account_number === '') {
@@ -38,11 +40,10 @@ const DonorAccount = {
 };
 
 import accounts from 'common/accounts/accounts.service';
-import alerts from 'common/alerts/alerts.service';
 import contacts from 'contacts/contacts.service';
 import gettext from 'angular-gettext';
 
 export default angular.module('mpdx.contacts.show.details.donorAccount.component', [
     gettext,
-    accounts, alerts, contacts
+    accounts, contacts
 ]).component('contactDonorAccount', DonorAccount).name;

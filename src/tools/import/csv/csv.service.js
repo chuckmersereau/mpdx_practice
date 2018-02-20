@@ -2,10 +2,8 @@ import {
     concat,
     defaultTo,
     difference,
-    each,
     findIndex,
     findKey,
-    has,
     includes,
     invert,
     isNil,
@@ -101,12 +99,11 @@ class CsvService {
         this.values_to_constants_mappings = {};
 
         this.blockUI.start();
-        return this.api.get(
-            `account_lists/${this.api.account_list_id}/imports/csv/${importId}`,
-            {
-                include: 'sample_contacts,sample_contacts.addresses,sample_contacts.primary_person,sample_contacts.primary_person.email_addresses,sample_contacts.primary_person.phone_numbers,sample_contacts.spouse,sample_contacts.spouse.email_addresses,sample_contacts.spouse.phone_numbers'
-            }
-        ).then((data) => {
+        return this.api.get(`account_lists/${this.api.account_list_id}/imports/csv/${importId}`, {
+            include: 'sample_contacts,sample_contacts.addresses,sample_contacts.primary_person,'
+            + 'sample_contacts.primary_person.email_addresses,sample_contacts.primary_person.phone_numbers,'
+            + 'sample_contacts.spouse,sample_contacts.spouse.email_addresses,sample_contacts.spouse.phone_numbers'
+        }).then((data) => {
             this.blockUI.reset();
             this.process(data);
         });
@@ -212,10 +209,14 @@ class CsvService {
         const patch = createPatch(this.dataInitialState, this.data);
 
         this.blockUI.start();
+
+        const errorMessage = this.gettextCatalog.getString('Unable to save your CSV import settings - See help docs or send us a message with your CSV attached');
+
         return this.api.put({
             url: `account_lists/${this.api.account_list_id}/imports/csv/${this.data.id}?include=sample_contacts,sample_contacts.addresses,sample_contacts.primary_person,sample_contacts.primary_person.email_addresses,sample_contacts.primary_person.phone_numbers,sample_contacts.spouse,sample_contacts.spouse.email_addresses,sample_contacts.spouse.phone_numbers`,
             data: patch,
-            type: 'imports'
+            type: 'imports',
+            errorMessage: errorMessage
         }).then((data) => {
             this.blockUI.reset();
             this.process(data);
@@ -226,17 +227,6 @@ class CsvService {
             this.data.file_headers_mappings = invert(this.data.file_headers_mappings);
             /* istanbul ignore next */
             this.$log.error(data);
-            if (has('data.errors', data)) {
-                each((error) => {
-                    this.alerts.addAlert(error.detail, 'danger', null, 10);
-                }, data.data.errors);
-            } else {
-                this.alerts.addAlert(
-                    this.gettextCatalog.getString(
-                        'Unable to save your CSV import settings - See help docs or send us a message with your CSV attached'),
-                    'danger', 10);
-            }
-
             throw data;
         });
     }

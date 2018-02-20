@@ -1,15 +1,14 @@
-import { defaultTo, each, find, findIndex, get, map, split, toLower } from 'lodash/fp';
+import { defaultTo, find, findIndex, get, map, split, toLower } from 'lodash/fp';
 import uuid from 'uuid/v1';
 
 class PersonalController {
     constructor(
         $state, $stateParams, gettextCatalog,
-        accounts, api, alerts, designationAccounts, locale, serverConstants, users
+        accounts, api, designationAccounts, locale, serverConstants, users
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.accounts = accounts;
-        this.alerts = alerts;
         this.api = api;
         this.designationAccounts = designationAccounts;
         this.locale = locale;
@@ -55,34 +54,24 @@ class PersonalController {
     }
     save() {
         this.saving = true;
-        return this.users.saveCurrent().then(() => {
-            this.alerts.addAlert(this.gettextCatalog.getString('Preferences saved successfully'), 'success');
+        const successMessage = this.gettextCatalog.getString('Preferences saved successfully');
+        return this.users.saveCurrent(successMessage).then(() => {
             this.setTab('');
             this.saving = false;
             this.onSave();
         }).catch((data) => {
-            if (data) {
-                each((value) => {
-                    this.alerts.addAlert(value, 'danger');
-                }, data.errors);
-            }
             this.saving = false;
             throw data;
         });
     }
     saveAccount() {
         this.saving = true;
-        return this.accounts.saveCurrent().then(() => {
-            this.alerts.addAlert(this.gettextCatalog.getString('Preferences saved successfully'), 'success');
+        const successMessage = this.gettextCatalog.getString('Preferences saved successfully');
+        return this.accounts.saveCurrent(successMessage).then(() => {
             this.setTab('');
             this.onSave();
             this.saving = false;
         }).catch((data) => {
-            if (data) {
-                each((value) => {
-                    this.alerts.addAlert(value, 'danger');
-                }, data.errors);
-            }
             this.saving = false;
             throw data;
         });
@@ -145,7 +134,6 @@ import uiRouter from '@uirouter/angularjs';
 import gettextCatalog from 'angular-gettext';
 import accounts from 'common/accounts/accounts.service';
 import api from 'common/api/api.service';
-import alerts from 'common/alerts/alerts.service';
 import designationAccounts from 'common/designationAccounts/designationAccounts.service';
 import locale from 'common/locale/locale.service';
 import serverConstants from 'common/serverConstants/serverConstants.service';
@@ -153,5 +141,5 @@ import users from 'common/users/users.service';
 
 export default angular.module('mpdx.preferences.personal.component', [
     uiRouter, gettextCatalog,
-    accounts, api, alerts, designationAccounts, locale, serverConstants, users
+    accounts, api, designationAccounts, locale, serverConstants, users
 ]).component('preferencesPersonal', Personal).name;

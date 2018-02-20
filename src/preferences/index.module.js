@@ -3,7 +3,7 @@ import admin from './admin/index.module';
 import coaches from './coaches/index.module';
 import component from './preferences.component';
 import integrations from './integrations/index.module';
-import notifications from './notifications/index.module';
+import notifications from './notifications/notifications.component';
 import personal from './personal/index.module';
 import sidebar from './sidebar/sidebar.component';
 

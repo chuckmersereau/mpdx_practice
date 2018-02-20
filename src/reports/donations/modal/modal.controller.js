@@ -1,23 +1,22 @@
 import createPatch from 'common/fp/createPatch';
-import { defaultTo } from 'lodash/fp';
+import { defaultTo, has } from 'lodash/fp';
 import fixed from 'common/fp/fixed';
 
 class DonationModalController {
     constructor(
         $rootScope, $scope, gettextCatalog,
-        accounts, api, alerts, donations, locale, donorAccounts, designationAccounts, serverConstants,
+        accounts, api, locale, donorAccounts, designationAccounts, modal, serverConstants,
         donation
     ) {
         this.$rootScope = $rootScope;
         this.$scope = $scope;
         this.accounts = accounts;
-        this.alerts = alerts;
         this.api = api;
-        this.donations = donations;
         this.donorAccounts = donorAccounts;
         this.designationAccounts = designationAccounts;
         this.gettextCatalog = gettextCatalog;
         this.locale = locale;
+        this.modal = modal;
         this.serverConstants = serverConstants;
 
         this.initialDonation = donation;
@@ -53,23 +52,42 @@ class DonationModalController {
             donation.appeal = { id: 'none' }; // fudge around api shortcoming
         }
         const patch = createPatch(this.initialDonation, donation);
-        return this.donations.save(patch).then(() => {
-            this.alerts.addAlert(this.gettextCatalog.getString('Donation saved successfully'), 'success');
+        const successMessage = this.gettextCatalog.getString('Donation saved successfully');
+        const errorMessage = this.gettextCatalog.getString('Unable to save changes to donation');
+        return this.getSavePromise(patch, successMessage, errorMessage).then(() => {
             this.$rootScope.$emit('donationUpdated', patch);
             this.$scope.$hide();
-        }).catch((err) => {
-            this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes to donation'), 'danger', null, 5, true);
-            throw err;
         });
     }
+    getSavePromise(donation, successMessage, errorMessage) {
+        if (has('amount', donation)) {
+            donation.amount = donation.amount.replace(/[^\d.-]/g, '');
+        }
+        if (has('id', donation)) {
+            return this.api.put(
+                `account_lists/${this.api.account_list_id}/donations/${donation.id}`,
+                donation, successMessage, errorMessage
+            );
+        }
+        return this.api.post(
+            `account_lists/${this.api.account_list_id}/donations`,
+            donation, successMessage, errorMessage
+        );
+    }
     delete() {
-        return this.donations.delete(this.donation).then(() => {
-            this.alerts.addAlert(this.gettextCatalog.getString('Donation deleted successfully'), 'success');
+        const message = this.gettextCatalog.getString('Are you sure you wish to delete the selected donation?');
+        return this.modal.confirm(message).then(() => {
+            const successMessage = this.gettextCatalog.getString('Donation deleted successfully');
+            const errorMessage = this.gettextCatalog.getString('Unable to remove donation');
+            return this.api.delete(
+                `account_lists/${this.api.account_list_id}/donations/${this.donation.id}`,
+                { id: this.donation.id },
+                successMessage,
+                errorMessage
+            );
+        }).then(() => {
             this.$rootScope.$emit('donationRemoved', { id: this.donation.id });
             this.$scope.$hide();
-        }).catch((err) => {
-            this.alerts.addAlert(this.gettextCatalog.getString('Unable to remove donation'), 'danger', null, 5, true);
-            throw err;
         });
     }
     onDonorAccountSelected(donorAccount) {
@@ -97,17 +115,16 @@ class DonationModalController {
     }
 }
 
-import gettextCatalog from 'angular-gettext';
 import accounts from 'common/accounts/accounts.service';
 import api from 'common/api/api.service';
-import alerts from 'common/alerts/alerts.service';
-import donations from 'reports/donations/donations.service';
-import locale from 'common/locale/locale.service';
-import donorAccounts from 'common/donorAccounts/donorAccounts.service';
 import designationAccounts from 'common/designationAccounts/designationAccounts.service';
+import donorAccounts from 'common/donorAccounts/donorAccounts.service';
+import gettextCatalog from 'angular-gettext';
+import locale from 'common/locale/locale.service';
+import modal from 'common/modal/modal.service';
 import serverConstants from 'common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.donation.modal.controller', [
     gettextCatalog,
-    accounts, api, alerts, donations, locale, donorAccounts, designationAccounts, serverConstants
+    accounts, api, designationAccounts, donorAccounts, locale, modal, serverConstants
 ]).controller('donationModalController', DonationModalController).name;

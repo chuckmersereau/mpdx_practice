@@ -22,13 +22,16 @@ const jsonApiParams = { keyForAttribute: 'underscore_case' };
 
 class Api {
     constructor(
-        $http, $log, $q, $timeout, $window
+        $http, $log, $q, $timeout, $window,
+        alerts, session
     ) {
         this.$http = $http;
         this.$log = $log;
         this.$q = $q;
         this.$timeout = $timeout;
         this.$window = $window;
+        this.alerts = alerts;
+        this.session = session;
 
         this.apiUrl = config.apiUrl;
         this.account_list_id = null;
@@ -48,7 +51,10 @@ class Api {
         doDeSerialization = true,
         beforeDeserializationTransform = null,
         responseType = '',
-        autoParams = true
+        autoParams = true,
+        errorMessage = null,
+        successMessage = null,
+        overridePromise = false
     }) {
         ({ headers, method, doSerialization, data } = this.handleOverride(
             overrideGetAsPost, headers, method, doSerialization, type, url, data
@@ -82,15 +88,32 @@ class Api {
             timeout: 50000
         };
 
-        return this.$http(request).then((response) => {
-            return response.data;
-        }).catch((response) => {
-            this.$log.error('API ERROR:', response);
-            if (get('track', this.$window._satellite)) {
-                this.$window._satellite.track('aa-mpdx-api-error');
+        const deferred = this.$q.defer();
+        this.$http(request).then((response) => {
+            if (successMessage) {
+                this.alerts.addAlert(successMessage);
             }
-            throw response;
+            deferred.resolve(response.data);
+        }).catch((ex) => {
+            this.callFailed(ex, request, deferred, errorMessage, overridePromise);
         });
+        return deferred.promise;
+    }
+    callFailed(ex, request, deferred, errorMessage, overridePromise) {
+        if (overridePromise) {
+            deferred.reject(ex);
+        } else {
+            this.session.errors.push({
+                exception: ex,
+                message: errorMessage,
+                request: request,
+                promise: deferred
+            });
+        }
+        this.$log.error('API ERROR:', ex);
+        if (get('track', this.$window._satellite)) {
+            this.$window._satellite.track('aa-mpdx-api-error');
+        }
     }
     assignParams(method, params, data) {
         return this.isGetOrDelete(method) ? assign(params, data) : params;
@@ -152,7 +175,12 @@ class Api {
             return params[0];
         }
         if (isArray(params)) {
-            params = { url: params[0], data: params[1] || {} };
+            params = {
+                url: params[0],
+                data: defaultTo({}, params[1]),
+                successMessage: defaultTo(null, params[2]),
+                errorMessage: defaultTo(null, params[3])
+            };
         }
         return params;
     }
@@ -256,5 +284,9 @@ class Api {
     }
 }
 
-export default angular.module('mpdx.common.api', [])
-    .service('api', Api).name;
+import alerts from '../alerts/alerts.service';
+import session from '../session/session.service';
+
+export default angular.module('mpdx.common.api', [
+    alerts, session
+]).service('api', Api).name;

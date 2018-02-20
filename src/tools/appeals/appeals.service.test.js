@@ -1,13 +1,12 @@
 import service from './appeals.service';
 
 describe('tools.appeals.service', () => {
-    let appeals, alerts, accounts, api;
+    let appeals, accounts, api;
 
     beforeEach(() => {
         angular.mock.module(service);
-        inject(($rootScope, _alerts_, _appeals_, _accounts_, _api_) => {
+        inject(($rootScope, _appeals_, _accounts_, _api_) => {
             accounts = _accounts_;
-            alerts = _alerts_;
             appeals = _appeals_;
             api = _api_;
         });
@@ -35,26 +34,16 @@ describe('tools.appeals.service', () => {
     describe('setPrimaryAppeal', () => {
         beforeEach(() => {
             accounts.current = { primary_appeal: null };
-            spyOn(alerts, 'addAlert').and.callFake(() => {});
+            spyOn(appeals, 'gettext').and.callFake((data) => data);
         });
         it('should add the contact to the appeal', () => {
             spyOn(accounts, 'saveCurrent').and.callFake(() => Promise.resolve());
+            const successMessage = 'Appeal successfully set to primary';
+            const errorMessage = 'Unable to set Appeal as primary';
             appeals.setPrimaryAppeal({ id: 1 });
-            expect(accounts.saveCurrent).toHaveBeenCalledWith();
-        });
-        it('should alert success', (done) => {
-            spyOn(accounts, 'saveCurrent').and.callFake(() => Promise.resolve());
-            appeals.setPrimaryAppeal({ id: 1 }).then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith('Appeal successfully set to primary');
-                done();
-            });
-        });
-        it('should alert failure', (done) => {
-            spyOn(accounts, 'saveCurrent').and.callFake(() => Promise.reject());
-            appeals.setPrimaryAppeal({ id: 1 }).catch(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith('Unable to set Appeal as primary', 'danger');
-                done();
-            });
+            expect(accounts.saveCurrent).toHaveBeenCalledWith(successMessage, errorMessage);
+            expect(appeals.gettext).toHaveBeenCalledWith(successMessage);
+            expect(appeals.gettext).toHaveBeenCalledWith(errorMessage);
         });
     });
 });

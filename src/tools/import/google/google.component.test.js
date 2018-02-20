@@ -7,22 +7,22 @@ const fakeBlockUI = {
 
 describe('tools.import.google.component', () => {
     let $ctrl, rootScope, scope, componentController, state, blockUI, gettextCatalog,
-        alerts, contactsTags, google, importGoogle, modal;
+        api, contactsTags, google, modal;
     beforeEach(() => {
         angular.mock.module(component);
         inject((
-            $componentController, $rootScope, $state, _blockUI_, _gettextCatalog_, _alerts_, _contactsTags_, _google_,
-            _importGoogle_, _modal_
+            $componentController, $rootScope, $state, _blockUI_, _gettextCatalog_, _contactsTags_, _google_,
+            _api_, _modal_
         ) => {
             rootScope = $rootScope;
             scope = $rootScope.$new();
             state = $state;
             blockUI = _blockUI_;
             gettextCatalog = _gettextCatalog_;
-            alerts = _alerts_;
             contactsTags = _contactsTags_;
             google = _google_;
-            importGoogle = _importGoogle_;
+            api = _api_;
+            api.account_list_id = 'account_list_id';
             modal = _modal_;
             componentController = $componentController;
             loadController();
@@ -30,6 +30,7 @@ describe('tools.import.google.component', () => {
     });
 
     function loadController() {
+        spyOn(gettextCatalog, 'getString').and.callThrough();
         spyOn(blockUI.instances, 'get').and.callFake(() => fakeBlockUI);
         $ctrl = componentController('importGoogle', { $scope: scope }, {});
         spyOn($ctrl.blockUI, 'reset').and.callThrough();
@@ -81,16 +82,21 @@ describe('tools.import.google.component', () => {
         let spy;
 
         beforeEach(() => {
-            spy = spyOn(importGoogle, 'save').and.callFake(() => Promise.resolve());
+            spy = spyOn($ctrl, 'apiSave').and.callFake(() => Promise.resolve());
         });
 
         it('should call importGoogle.save', () => {
             $ctrl.save();
-            expect(importGoogle.save).toHaveBeenCalled();
-        });
-
-        it('should return a promise', () => {
-            expect($ctrl.save()).toEqual(jasmine.any(Promise));
+            expect($ctrl.apiSave).toHaveBeenCalledWith({
+                source: 'google',
+                import_by_group: 'false',
+                override: 'false',
+                tag_list: [],
+                in_preview: false
+            }, 'Unable to save changes.');
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(
+                'Unable to save changes.'
+            );
         });
 
         it('should start blockUI', () => {
@@ -119,7 +125,6 @@ describe('tools.import.google.component', () => {
             });
 
             it('should translate message', (done) => {
-                spyOn(gettextCatalog, 'getString').and.returnValue();
                 $ctrl.save().then(() => {
                     expect(gettextCatalog.getString).toHaveBeenCalledWith(
                         'Your Google import has started and your contacts will be in MPDX shortly. We will email you when your import is complete.'
@@ -137,37 +142,11 @@ describe('tools.import.google.component', () => {
                 });
             });
         });
-
-        describe('promise rejected', () => {
-            beforeEach(() => {
-                spy.and.callFake(() => Promise.reject(new Error('something bad happened')));
-            });
-
-            it('should translate message', (done) => {
-                spyOn(gettextCatalog, 'getString').and.returnValue();
-                $ctrl.save().catch(() => {
-                    expect(gettextCatalog.getString).toHaveBeenCalledWith(
-                        'Unable to save changes.'
-                    );
-                    done();
-                });
-            });
-
-            it('should call alerts.addAlert', (done) => {
-                spyOn(alerts, 'addAlert').and.returnValue();
-                $ctrl.save().catch(() => {
-                    expect(alerts.addAlert).toHaveBeenCalledWith(
-                        'Unable to save changes.', 'danger'
-                    );
-                    done();
-                });
-            });
-
-            it('should call blockUI.reset', (done) => {
-                $ctrl.save().catch(() => {
-                    expect($ctrl.blockUI.reset).toHaveBeenCalled();
-                    done();
-                });
+        it('should call blockUI.reset', (done) => {
+            spy.and.callFake(() => Promise.reject(new Error('something bad happened')));
+            $ctrl.save().catch(() => {
+                expect($ctrl.blockUI.reset).toHaveBeenCalled();
+                done();
             });
         });
     });
@@ -228,6 +207,37 @@ describe('tools.import.google.component', () => {
             $ctrl.import.groups = ['group_0', 'group_1'];
             $ctrl.uncheckAllGoogleContactGroups();
             expect($ctrl.import.groups).toEqual([]);
+        });
+    });
+
+    describe('apiSave', () => {
+        const data = {
+            tag_list: ['tag_1', 'tag_2'],
+            group_tags: { test_1: ['tag_1', 'tag_2'], test_2: ['tag_3', 'tag_4'] }
+        };
+
+        const transformedData = {
+            tag_list: 'tag_1,tag_2',
+            group_tags: { test_1: 'tag_1,tag_2', test_2: 'tag_3,tag_4' }
+
+        };
+
+        beforeEach(() => {
+            spyOn(api, 'post').and.callFake(() => Promise.resolve());
+        });
+
+        it('should return a promise', () => {
+            expect($ctrl.apiSave(data)).toEqual(jasmine.any(Promise));
+        });
+
+        it('should call the api', () => {
+            $ctrl.apiSave(data, 'a');
+            expect(api.post).toHaveBeenCalledWith({
+                url: `account_lists/${api.account_list_id}/imports/google`,
+                data: transformedData,
+                type: 'imports',
+                errorMessage: 'a'
+            });
         });
     });
 });

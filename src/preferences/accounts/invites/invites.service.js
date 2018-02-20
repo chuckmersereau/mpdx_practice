@@ -4,11 +4,13 @@ class InvitesService {
     ) {
         this.api = api;
     }
-    create(email) {
+    create(email, successMessage, errorMessage) {
         return this.api.post({
             url: `account_lists/${this.api.account_list_id}/invites`,
             data: { recipient_email: email, invite_user_as: 'user' },
-            type: 'account_list_invites'
+            type: 'account_list_invites',
+            successMessage: successMessage,
+            errorMessage: errorMessage
         });
     }
 }
