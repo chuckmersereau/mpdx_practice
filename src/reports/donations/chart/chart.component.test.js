@@ -19,6 +19,36 @@ describe('reports.donations.chart.component', () => {
         $ctrl = componentController('donationsChart', { $scope: scope }, { inContact: false });
     }
 
+    describe('$onInit', () => {
+        afterEach(() => {
+            $ctrl.$onDestroy();
+        });
+        it('should handle donation updated', () => {
+            spyOn($ctrl, 'load').and.callFake(() => {});
+            $ctrl.$onInit();
+            rootScope.$emit('donationUpdated');
+            expect($ctrl.load).toHaveBeenCalledWith();
+        });
+    });
+    describe('$onChanges', () => {
+        it('should handle donation updated', () => {
+            spyOn($ctrl, 'load').and.callFake(() => {});
+            $ctrl.$onChanges();
+            expect($ctrl.load).toHaveBeenCalledWith();
+        });
+    });
+    describe('$onDestroy', () => {
+        beforeEach(() => {
+            $ctrl.$onInit();
+        });
+        it('should cancel watchers', () => {
+            spyOn($ctrl, 'watcher').and.callThrough();
+            spyOn($ctrl, 'watcher2').and.callThrough();
+            $ctrl.$onDestroy();
+            expect($ctrl.watcher).toHaveBeenCalledWith();
+            expect($ctrl.watcher2).toHaveBeenCalledWith();
+        });
+    });
     describe('load', () => {
         let spy;
 

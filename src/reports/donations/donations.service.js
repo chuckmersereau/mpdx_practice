@@ -1,5 +1,4 @@
 import { has } from 'lodash/fp';
-import moment from 'moment';
 
 class DonationsService {
     constructor(
@@ -11,32 +10,6 @@ class DonationsService {
         this.api = api;
         this.modal = modal;
         this.serverConstants = serverConstants;
-    }
-    getDonations({ startDate = null, endDate = null, donorAccountId = null, page = null } = {}) {
-        let params = {
-            fields: {
-                contacts: 'name',
-                designation_account: 'display_name,designation_number',
-                donor_account: 'display_name,account_number',
-                appeal: 'name'
-            },
-            filter: {},
-            include: 'designation_account,donor_account,contact,appeal',
-            sort: '-donation_date'
-        };
-        if (donorAccountId) {
-            params.filter.donor_account_id = donorAccountId;
-        }
-        if (page) {
-            params.page = page;
-        }
-        if (startDate && endDate && moment.isMoment(startDate) && moment.isMoment(endDate)) {
-            params.filter.donation_date = `${startDate.format('YYYY-MM-DD')}..${endDate.format('YYYY-MM-DD')}`;
-        }
-        return this.api.get(`account_lists/${this.api.account_list_id}/donations`, params).then((data) => {
-            this.$log.debug(`account_lists/${this.api.account_list_id}/donations`, data);
-            return data;
-        });
     }
     save(donation) {
         if (has('amount', donation)) {
