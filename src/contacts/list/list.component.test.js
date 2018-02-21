@@ -529,7 +529,7 @@ describe('contacts.list.component', () => {
         const filter = {
             options: [
                 { name: 'a', id: 1 },
-                { name: 'b', id: 2 },
+                { name: 'b', id: 2 }
             ]
         };
         it('should return the selected option name by id', () => {

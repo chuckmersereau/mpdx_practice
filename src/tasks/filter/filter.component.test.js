@@ -19,7 +19,7 @@ describe('tasks.filter.component', () => {
 
     describe('constructor', () => {
         it('should do something', () => {
-            expect($ctrl.selectedSort).toEqual('all')
+            expect($ctrl.selectedSort).toEqual('all');
         });
     });
 });
