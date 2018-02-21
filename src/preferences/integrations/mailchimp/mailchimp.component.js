@@ -36,6 +36,8 @@ class MailchimpIntegrationPreferencesController {
             this.saving = false;
             this.showSettings = false;
             return this.mailchimp.load().then(() => {
+                const message = this.gettextCatalog.getString('Your MailChimp sync has been started. This process may take 2-4 hours to complete.');
+                this.modal.info(message);
                 this.showSettings = showSettings;
             });
         }).catch((err) => {
