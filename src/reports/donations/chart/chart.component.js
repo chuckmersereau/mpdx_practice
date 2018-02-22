@@ -5,7 +5,7 @@ import moment from 'moment';
 class ChartController {
     constructor(
         $state, $rootScope, $filter, $log, gettextCatalog,
-        accounts, api, contacts
+        accounts, api, contacts, donations
     ) {
         this.$state = $state;
         this.$rootScope = $rootScope;
@@ -14,6 +14,7 @@ class ChartController {
         this.accounts = accounts;
         this.api = api;
         this.contacts = contacts;
+        this.donations = donations;
         this.gettextCatalog = gettextCatalog;
 
         this.loading = false;
@@ -27,19 +28,25 @@ class ChartController {
         ];
     }
     $onInit() {
-        this.$rootScope.$on('accountListUpdated', () => {
+        this.watcher = this.$rootScope.$on('accountListUpdated', () => {
             this.load();
         });
+
+        this.watcher2 = this.$rootScope.$on('donationUpdated', () => {
+            this.load();
+        });
+    }
+    $onDestroy() {
+        this.watcher();
+        this.watcher2();
     }
     $onChanges() {
         this.load();
     }
     load() {
-        if (this.inContact) {
-            this.startDate = moment().startOf('month').subtract(23, 'months');
-        } else {
-            this.startDate = moment().startOf('month').subtract(12, 'months');
-        }
+        this.startDate = this.inContact
+            ? moment().startOf('month').subtract(23, 'months')
+            : moment().startOf('month').subtract(12, 'months');
         this.endDate = moment().endOf('month');
         let params = {
             startDate: this.startDate,
@@ -58,9 +65,9 @@ class ChartController {
         this.loading = true;
         return this.getDonationChart(params).then((data) => {
             this.loading = false;
-            this.data = map((total) => {
-                return map((val) => round(val.converted, 2), total.month_totals);
-            }, data.totals);
+            this.data = this.mutateData(data);
+            this.donations.chartData = data;
+            this.$rootScope.$emit('chartDataUpdated');
             if (this.inContact) {
                 this.labels = map((month) => moment(month, 'YYYY-MM-DD').format('MMM'), takeRight(12, data.months_to_dates));
                 this.series = [this.gettextCatalog.getString('Last Year'), this.gettextCatalog.getString('This Year')];
@@ -134,6 +141,11 @@ class ChartController {
             this.chartData = data;
         });
     }
+    mutateData(data) {
+        const roundValues = map((val) => round(val.converted, 2));
+        const mapTotals = map((total) => roundValues(total.month_totals));
+        return mapTotals(data.totals);
+    }
     onClick(event, legendItem) {
         if (legendItem.length === 0 || this.inContact) { return; }
         const startDate = moment(`01 ${legendItem[0]._model.label}`, 'DD MMM YY');
@@ -173,10 +185,11 @@ const Chart = {
 import accounts from 'common/accounts/accounts.service';
 import api from 'common/api/api.service';
 import contacts from 'contacts/contacts.service';
+import donations from '../donations.service';
 import gettext from 'angular-gettext';
 import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('mpdx.reports.donations.chart.component', [
     gettext, uiRouter,
-    accounts, api, contacts
+    accounts, api, contacts, donations
 ]).component('donationsChart', Chart).name;

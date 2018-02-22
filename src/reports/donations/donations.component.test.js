@@ -2,14 +2,16 @@ import component from './donations.component';
 import moment from 'moment';
 
 describe('reports.donations.component', () => {
-    let $ctrl, componentController, scope, rootScope, stateParams, donations;
+    let $ctrl, componentController, scope, rootScope, stateParams, donations, api;
 
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, $stateParams, _donations_) => {
+        inject(($componentController, $rootScope, $stateParams, _donations_, _api_) => {
             componentController = $componentController;
             rootScope = $rootScope;
             scope = rootScope.$new();
+            api = _api_;
+            api.account_list_id = 'account_list_id';
             stateParams = $stateParams;
             donations = _donations_;
             loadController();
@@ -27,13 +29,8 @@ describe('reports.donations.component', () => {
             expect($ctrl.listLoadCount).toEqual(0);
             expect($ctrl.loading).toEqual(false);
             expect($ctrl.meta).toEqual({});
-            expect($ctrl.models).toEqual({
-                addTags: {
-                    newTag: ''
-                }
-            });
             expect($ctrl.page).toEqual(0);
-            expect($ctrl.pageSize).toEqual(0);
+            expect($ctrl.pageSize).toEqual(25);
             expect($ctrl.totalContactCount).toEqual(0);
         });
 
@@ -56,6 +53,7 @@ describe('reports.donations.component', () => {
 
         beforeEach(() => {
             spyOn($ctrl, 'calculateTotals').and.callFake(() => {});
+            spyOn($ctrl, 'load').and.callFake(() => {});
         });
         afterEach(() => {
             $ctrl.$onDestroy();
@@ -66,9 +64,8 @@ describe('reports.donations.component', () => {
         });
 
         it('should call $ctrl.load', () => {
-            spyOn($ctrl, 'load').and.callFake(() => {});
             $ctrl.$onInit();
-            expect($ctrl.load).toHaveBeenCalledWith(1, true);
+            expect($ctrl.load).toHaveBeenCalledWith(1);
         });
 
         describe('stateParams.startDate set', () => {
@@ -87,7 +84,6 @@ describe('reports.donations.component', () => {
             expect($ctrl.watcher).toBeDefined();
             expect($ctrl.watcher2).toBeDefined();
         });
-
         it('should handle donation additions', () => {
             $ctrl.data = [];
             $ctrl.$onInit();
@@ -95,7 +91,6 @@ describe('reports.donations.component', () => {
             rootScope.$emit('donationUpdated', donation);
             expect($ctrl.data).toEqual([donation]);
         });
-
         it('should handle donation updates', () => {
             const patch = { id: 1, v: 'a' };
             $ctrl.data = [donation];
@@ -104,17 +99,7 @@ describe('reports.donations.component', () => {
             rootScope.$emit('donationUpdated', patch);
             expect($ctrl.data).toEqual([patch]);
         });
-
-        it('should re-calculate total', () => {
-            $ctrl.data = [];
-            $ctrl.$onInit();
-            $ctrl.meta = meta;
-            rootScope.$emit('donationUpdated', donation);
-            expect($ctrl.calculateTotals).toHaveBeenCalledWith();
-        });
-
         it('should remove a donation', () => {
-            spyOn($ctrl, 'load').and.callFake(() => {});
             $ctrl.data = [donation, { id: 2 }];
             $ctrl.meta = meta;
             $ctrl.$onInit();
@@ -123,13 +108,28 @@ describe('reports.donations.component', () => {
             expect($ctrl.data).toEqual([{ id: 2 }]);
         });
         it('should call $ctrl.load', () => {
-            spyOn($ctrl, 'load').and.callFake(() => {});
             $ctrl.data = [donation, { id: 2 }];
             $ctrl.meta = meta;
             $ctrl.$onInit();
             rootScope.$emit('donationRemoved', { id: 1 });
             rootScope.$digest();
             expect($ctrl.load).toHaveBeenCalledWith();
+        });
+        it('should handle chart data', () => {
+            donations.chartData = {
+                months_to_dates: ['a', 'b']
+            };
+            $ctrl.$onInit();
+            rootScope.$emit('chartDataUpdated');
+            expect($ctrl.calculateTotals).toHaveBeenCalledWith();
+        });
+        it('should handle chart data', () => {
+            donations.chartData = {
+                months_to_dates: ['a', 'b']
+            };
+            $ctrl.$onInit();
+            rootScope.$emit('chartDataUpdated');
+            expect($ctrl.totalsPosition).toEqual(1);
         });
     });
 
@@ -141,58 +141,18 @@ describe('reports.donations.component', () => {
                     isFirstChange: () => false
                 }
             });
-            expect($ctrl.load).toHaveBeenCalledWith(1, true);
-        });
-    });
-
-
-    describe('loadMoreDonations', () => {
-        beforeEach(() => {
-            spyOn($ctrl, 'load').and.callFake(() => {});
-            $ctrl.meta = {
-                pagination: {
-                    total_pages: 1
-                }
-            };
-        });
-
-        it('should call $ctrl.load', () => {
-            $ctrl.loadMoreDonations();
             expect($ctrl.load).toHaveBeenCalledWith(1);
         });
-
-        describe('loading', () => {
-            beforeEach(() => {
-                $ctrl.loading = true;
-            });
-
-            it('should not call $ctrl.load', () => {
-                $ctrl.loadMoreDonations();
-                expect($ctrl.load).not.toHaveBeenCalled();
-            });
-        });
-
-        describe('all pages loaded', () => {
-            beforeEach(() => {
-                $ctrl.page = 1;
-            });
-
-            it('should not call $ctrl.load', () => {
-                $ctrl.loadMoreDonations();
-                expect($ctrl.load).not.toHaveBeenCalled();
-            });
-        });
     });
-
     describe('load', () => {
         beforeEach(() => {
             $ctrl.startDate = moment().startOf('month');
-            spyOn(donations, 'getDonations').and.callFake(() => Promise.resolve(data));
+            spyOn($ctrl, 'getDonations').and.callFake(() => Promise.resolve(data));
         });
 
         it('should set params', () => {
-            $ctrl.load(1, true);
-            expect(donations.getDonations).toHaveBeenCalledWith({
+            $ctrl.load(1);
+            expect($ctrl.getDonations).toHaveBeenCalledWith({
                 page: 1,
                 startDate: $ctrl.startDate,
                 endDate: $ctrl.endDate
@@ -200,50 +160,33 @@ describe('reports.donations.component', () => {
         });
 
         it('should set loading to true', () => {
-            $ctrl.load(1, true);
+            $ctrl.load(1);
             expect($ctrl.loading).toEqual(true);
         });
-
-        it('should return promise', () => {
-            expect($ctrl.load(1, true)).toEqual(jasmine.any(Promise));
+        it('should set loading to false', (done) => {
+            $ctrl.load(1).then(() => {
+                expect($ctrl.loading).toEqual(false);
+                done();
+            });
         });
-
-        describe('promise successful', () => {
-            it('should set loading to false', (done) => {
-                $ctrl.load(1, true).then(() => {
-                    expect($ctrl.loading).toEqual(false);
-                    done();
-                });
+        it('should set meta', (done) => {
+            $ctrl.load(1).then(() => {
+                expect($ctrl.meta).toEqual(data.meta);
+                done();
             });
-
-            it('should set meta', (done) => {
-                $ctrl.load(1, true).then(() => {
-                    expect($ctrl.meta).toEqual(data.meta);
-                    done();
-                });
+        });
+        it('should reset data', (done) => {
+            $ctrl.data = [{ id: 'test' }];
+            $ctrl.load(1).then(() => {
+                expect($ctrl.data).toEqual(data);
+                done();
             });
-
-            it('should set totals', (done) => {
-                $ctrl.load(1, true).then(() => {
-                    expect($ctrl.totals).toEqual({
-                        CAD: { amount: 105, count: 2 },
-                        USD: { amount: 185, count: 2 }
-                    });
-                    done();
-                });
-            });
-
-            describe('reset', () => {
-                beforeEach(() => {
-                    $ctrl.data = [{ id: 'test' }];
-                });
-
-                it('should reset data', (done) => {
-                    $ctrl.load(1, true).then(() => {
-                        expect($ctrl.data).toEqual(data);
-                        done();
-                    });
-                });
+        });
+        it('shouldn\'t load out of turn', (done) => {
+            spyOn($ctrl, 'loadedOutOfTurn').and.callFake(() => true);
+            $ctrl.load(1).then((data) => {
+                expect(data).toEqual(null);
+                done();
             });
         });
 
@@ -262,21 +205,15 @@ describe('reports.donations.component', () => {
 
             it('should set params', () => {
                 $ctrl.load(1);
-                expect(donations.getDonations).toHaveBeenCalledWith({
+                expect($ctrl.getDonations).toHaveBeenCalledWith({
                     page: 1,
                     donorAccountId: '123'
                 });
             });
-
-            describe('no donor accounts', () => {
-                beforeEach(() => {
-                    $ctrl.contacts.current.donor_accounts = [];
-                });
-
-                it('should return rejected promise', (done) => {
-                    $ctrl.load().catch(() => {
-                        done();
-                    });
+            it('should return rejected promise when no donor accounts', (done) => {
+                $ctrl.contacts.current.donor_accounts = [];
+                $ctrl.load(1).catch(() => {
+                    done();
                 });
             });
         });
@@ -322,7 +259,7 @@ describe('reports.donations.component', () => {
     describe('gotoNextMonth', () => {
         beforeEach(() => {
             $ctrl.nextMonth = moment().startOf('month').add(1, 'month');
-            spyOn($ctrl, 'load').and.returnValue();
+            spyOn($ctrl, 'load').and.callFake(() => Promise.resolve());
         });
 
         it('should set startDate to nextMonth', () => {
@@ -332,14 +269,14 @@ describe('reports.donations.component', () => {
 
         it('should call $ctrl.load', () => {
             $ctrl.gotoNextMonth();
-            expect($ctrl.load).toHaveBeenCalledWith(1, true);
+            expect($ctrl.load).toHaveBeenCalledWith(1);
         });
     });
 
     describe('gotoPrevMonth', () => {
         beforeEach(() => {
             $ctrl.previousMonth = moment().startOf('month').subtract(1, 'month');
-            spyOn($ctrl, 'load').and.returnValue();
+            spyOn($ctrl, 'load').and.callFake(() => Promise.resolve());
         });
 
         it('should set startDate to previousMonth', () => {
@@ -349,7 +286,143 @@ describe('reports.donations.component', () => {
 
         it('should call $ctrl.load', () => {
             $ctrl.gotoPrevMonth();
-            expect($ctrl.load).toHaveBeenCalledWith(1, true);
+            expect($ctrl.load).toHaveBeenCalledWith(1);
+        });
+    });
+    describe('getDonations', () => {
+        beforeEach(() => {
+            spyOn(api, 'get').and.callFake((url, data) => Promise.resolve(data));
+        });
+        it('should call api.get', () => {
+            $ctrl.getDonations();
+            expect(api.get).toHaveBeenCalledWith(
+                'account_lists/account_list_id/donations',
+                {
+                    fields: {
+                        contacts: 'name',
+                        designation_account: 'display_name,designation_number',
+                        donor_account: 'display_name,account_number',
+                        appeal: 'name'
+                    },
+                    filter: {},
+                    include: 'designation_account,donor_account,contact,appeal',
+                    sort: '-donation_date'
+                }
+            );
+        });
+
+        describe('date range', () => {
+            let params = {};
+
+            describe('only startDate set', () => {
+                beforeEach(() => {
+                    params = { startDate: moment().startOf('month') };
+                });
+
+                it('should not set donation_date in params', (done) => {
+                    $ctrl.getDonations(params).then((data) => {
+                        expect(data.filter).toEqual({});
+                        done();
+                    });
+                });
+            });
+
+            describe('only endDate set', () => {
+                beforeEach(() => {
+                    params = { endDate: moment().endOf('month') };
+                });
+
+                it('should not set donation_date in params', (done) => {
+                    $ctrl.getDonations(params).then((data) => {
+                        expect(data.filter).toEqual({});
+                        done();
+                    });
+                });
+            });
+
+            describe('both startDate and endDate set', () => {
+                describe('both are instances of moment', () => {
+                    beforeEach(() => {
+                        params = {
+                            startDate: moment().startOf('month'),
+                            endDate: moment().endOf('month')
+                        };
+                    });
+
+                    it('should set donation_date range in params', (done) => {
+                        $ctrl.getDonations(params).then((data) => {
+                            expect(data.filter.donation_date).toEqual(
+                                `${params.startDate.format('YYYY-MM-DD')}..${params.endDate.format('YYYY-MM-DD')}`
+                            );
+                            done();
+                        });
+                    });
+                });
+
+                describe('startDate is not instance of moment', () => {
+                    beforeEach(() => {
+                        params = {
+                            startDate: {},
+                            endDate: moment().endOf('month')
+                        };
+                    });
+
+                    it('should not set donation_date in params', (done) => {
+                        $ctrl.getDonations(params).then((data) => {
+                            expect(data.filter).toEqual({});
+                            done();
+                        });
+                    });
+                });
+
+                describe('endDate is not instance of moment', () => {
+                    beforeEach(() => {
+                        params = {
+                            startDate: moment().startOf('month'),
+                            endDate: {}
+                        };
+                    });
+
+                    it('should not set donation_date in params', (done) => {
+                        $ctrl.getDonations(params).then((data) => {
+                            expect(data.filter).toEqual({});
+                            done();
+                        });
+                    });
+                });
+            });
+        });
+
+        describe('donorAccountId', () => {
+            const params = { donorAccountId: 'donor_account_id' };
+
+            it('should set donorAccountId in params', (done) => {
+                $ctrl.getDonations(params).then((data) => {
+                    expect(data.filter.donor_account_id).toEqual(params.donorAccountId);
+                    done();
+                });
+            });
+        });
+
+        describe('page', () => {
+            const params = { page: 1 };
+
+            it('should set page in params', (done) => {
+                $ctrl.getDonations(params).then((data) => {
+                    expect(data.page).toEqual(params.page);
+                    done();
+                });
+            });
+        });
+    });
+    describe('loadedOutOfTurn', () => {
+        it('should return true if wrong load count', () => {
+            $ctrl.listLoadCount = 0;
+            expect($ctrl.loadedOutOfTurn(1)).toBeTruthy();
+        });
+        it('shouldn\'t return true if correct count', () => {
+            $ctrl.listLoadCount = 0;
+            expect($ctrl.loadedOutOfTurn(0)).toBeFalsy();
         });
     });
 });
