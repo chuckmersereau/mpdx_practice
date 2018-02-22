@@ -8,6 +8,7 @@ describe('reports.donations.service', () => {
         inject((_api_, _donations_, _gettextCatalog_, _modal_) => {
             api = _api_;
             donations = _donations_;
+            gettextCatalog = _gettextCatalog_;
             modal = _modal_;
             api.account_list_id = 'account_list_id';
         });
