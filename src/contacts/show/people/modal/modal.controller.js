@@ -49,30 +49,24 @@ class PersonModalController {
         }
     }
     save() {
+        const errorMessage = this.gettextCatalog.getString('Unable to save changes.');
+        const successMessage = this.gettextCatalog.getString('Changes saved successfully.');
         if (has('id', this.person)) {
             const patch = createPatch(this.personInitialState, this.person);
             /* istanbul ignore next */
             this.$log.debug('person patch', patch);
-            return this.people.save(patch).then(() => {
+            return this.people.save(patch, successMessage, errorMessage).then(() => {
                 /* istanbul ignore next */
                 this.$log.debug('person saved:', this.person);
                 this.$rootScope.$emit('personUpdated', this.person.id);
-                this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
                 this.$scope.$hide();
-            }).catch((err) => {
-                this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger', null, 5, true);
-                throw err;
             });
         } else {
-            return this.api.post(`contacts/${this.contact.id}/people`, this.person).then((person) => {
+            return this.api.post(`contacts/${this.contact.id}/people`, this.person, successMessage, errorMessage).then((person) => {
                 /* istanbul ignore next */
                 this.$log.debug('person created:', this.person);
                 this.$rootScope.$emit('personCreated', person.id);
-                this.alerts.addAlert(this.gettextCatalog.getString('Changes saved successfully.'));
                 this.$scope.$hide();
-            }).catch((err) => {
-                this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger', null, 5, true);
-                throw err;
             });
         }
     }

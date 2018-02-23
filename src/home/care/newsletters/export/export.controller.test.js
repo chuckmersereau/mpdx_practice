@@ -16,7 +16,6 @@ describe('home.care.newsletter.export.controller', () => {
             controller = $controller;
             $ctrl = loadController();
             spyOn($ctrl, 'blockUI').and.callFake(() => fakeBlockUI);
-            spyOn($ctrl.alerts, 'addAlert').and.callFake(() => {});
             spyOn($ctrl, 'gettext').and.callFake((data) => data);
 
             spyOn($ctrl.blockUI, 'reset').and.callThrough();
@@ -41,7 +40,9 @@ describe('home.care.newsletter.export.controller', () => {
             });
             it('should call the api', () => {
                 $ctrl.getEmails();
-                expect(contacts.getEmails).toHaveBeenCalledWith();
+                const errorMessage = 'Unable to retrieve contacts. Please try again.';
+                expect($ctrl.gettext).toHaveBeenCalledWith(errorMessage);
+                expect(contacts.getEmails).toHaveBeenCalledWith(errorMessage);
             });
             it('should map data to emails', (done) => {
                 $ctrl.getEmails().then(() => {
@@ -60,13 +61,6 @@ describe('home.care.newsletter.export.controller', () => {
             beforeEach(() => {
                 spyOn(contacts, 'getEmails').and.callFake(() => Promise.reject());
             });
-            it('should alert the user', (done) => {
-                $ctrl.getEmails().catch(() => {
-                    expect($ctrl.gettext).toHaveBeenCalledWith('Unable to retrieve contacts. Please try again.');
-                    expect($ctrl.alerts.addAlert).toHaveBeenCalledWith('Unable to retrieve contacts. Please try again.', 'danger');
-                    done();
-                });
-            });
             it('should reset blockUI', (done) => {
                 $ctrl.getEmails().catch(() => {
                     expect($ctrl.blockUI.reset).toHaveBeenCalledWith();
@@ -75,5 +69,4 @@ describe('home.care.newsletter.export.controller', () => {
             });
         });
     });
-
 });

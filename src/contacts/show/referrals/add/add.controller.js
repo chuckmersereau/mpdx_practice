@@ -4,11 +4,10 @@ import uuid from 'uuid/v1';
 class AddReferralsModalController {
     constructor(
         $scope,
-        api, alerts, contacts,
+        api, contacts,
         contact
     ) {
         this.$scope = $scope;
-        this.alerts = alerts;
         this.api = api;
         this.contact = contact;
         this.contacts = contacts;

@@ -1,19 +1,17 @@
 import component from './share.component';
 
 describe('preferences.accounts.share', () => {
-    let $ctrl, accounts, rootScope, scope, componentController, alerts, gettextCatalog;
+    let $ctrl, accounts, rootScope, scope, componentController, gettextCatalog;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _accounts_, _alerts_, _gettextCatalog_) => {
+        inject(($componentController, $rootScope, _accounts_, _gettextCatalog_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             accounts = _accounts_;
-            alerts = _alerts_;
             gettextCatalog = _gettextCatalog_;
             componentController = $componentController;
             loadController();
         });
-        spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
         spyOn(accounts, 'listUsers').and.callFake(() => {});
         spyOn(accounts, 'listInvites').and.callFake(() => {});
@@ -65,21 +63,17 @@ describe('preferences.accounts.share', () => {
         });
         it('should destroy an invite', () => {
             spyOn(accounts, 'destroyInvite').and.callFake(() => Promise.resolve());
+            const successMessage = 'MPDX removed the invite successfully';
+            const errorMessage = 'MPDX couldn\'t remove the invite';
             $ctrl.cancelInvite(1);
-            expect(accounts.destroyInvite).toHaveBeenCalledWith(1);
+            expect(accounts.destroyInvite).toHaveBeenCalledWith(1, successMessage, errorMessage);
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(successMessage);
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
         });
         it('should unset saving flag', (done) => {
             spyOn(accounts, 'destroyInvite').and.callFake(() => Promise.resolve());
             $ctrl.cancelInvite(1).then(() => {
                 expect($ctrl.saving).toBeFalsy();
-                done();
-            });
-        });
-        it('should alert a translated confirmation', (done) => {
-            spyOn(accounts, 'destroyInvite').and.callFake(() => Promise.resolve());
-            $ctrl.cancelInvite(1).then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });
@@ -94,8 +88,6 @@ describe('preferences.accounts.share', () => {
             spyOn(accounts, 'destroyInvite').and.callFake(() => Promise.reject(Error('')));
             $ctrl.cancelInvite(1).catch(() => {
                 expect($ctrl.saving).toBeFalsy();
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });
@@ -110,21 +102,17 @@ describe('preferences.accounts.share', () => {
         });
         it('should remove a user', () => {
             spyOn(accounts, 'destroyUser').and.callFake(() => Promise.resolve());
+            const successMessage = 'MPDX removed the user successfully';
+            const errorMessage = 'MPDX couldn\'t remove the user';
             $ctrl.removeUser(1);
-            expect(accounts.destroyUser).toHaveBeenCalledWith(1);
+            expect(accounts.destroyUser).toHaveBeenCalledWith(1, successMessage, errorMessage);
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(successMessage);
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
         });
         it('should unset saving flag', (done) => {
             spyOn(accounts, 'destroyUser').and.callFake(() => Promise.resolve());
             $ctrl.removeUser(1).then(() => {
                 expect($ctrl.saving).toBeFalsy();
-                done();
-            });
-        });
-        it('should alert a translated confirmation', (done) => {
-            spyOn(accounts, 'destroyUser').and.callFake(() => Promise.resolve());
-            $ctrl.removeUser(1).then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });
@@ -139,8 +127,6 @@ describe('preferences.accounts.share', () => {
             spyOn(accounts, 'destroyUser').and.callFake(() => Promise.reject(Error('')));
             $ctrl.removeUser(1).catch(() => {
                 expect($ctrl.saving).toBeFalsy();
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });

@@ -1,10 +1,12 @@
 import { each, map } from 'lodash/fp';
+import joinComma from 'common/fp/joinComma';
+import reduceObject from 'common/fp/reduceObject';
 
 class ImportGoogleController {
     constructor(
         $rootScope,
         $state, blockUI, gettextCatalog,
-        alerts, contactsTags, google, importGoogle, modal
+        api, contactsTags, google, modal
     ) {
         this.$rootScope = $rootScope;
 
@@ -12,10 +14,9 @@ class ImportGoogleController {
         this.blockUI = blockUI.instances.get('tools-import-google');
         this.gettextCatalog = gettextCatalog;
 
-        this.alerts = alerts;
+        this.api = api;
         this.contactsTags = contactsTags;
         this.google = google;
-        this.importGoogle = importGoogle;
         this.modal = modal;
 
         this.selected_account = null;
@@ -41,17 +42,31 @@ class ImportGoogleController {
     }
     save() {
         this.blockUI.start();
-        return this.importGoogle.save(this.import).then(() => {
+        const errorMessage = this.gettextCatalog.getString('Unable to save changes.');
+        return this.apiSave(this.import, errorMessage).then(() => {
             this.blockUI.reset();
-            const message = this.gettextCatalog.getString(
-                'Your Google import has started and your contacts will be in MPDX shortly. We will email you when your import is complete.'
-            );
+            const message = this.gettextCatalog.getString('Your Google import has started and your contacts will be in MPDX shortly. We will email you when your import is complete.');
             this.$state.go('tools');
             return this.modal.info(message);
         }).catch((err) => {
             this.blockUI.reset();
-            this.alerts.addAlert(this.gettextCatalog.getString('Unable to save changes.'), 'danger');
             throw err;
+        });
+    }
+    apiSave(data, errorMessage) {
+        let transformedData = angular.copy(data);
+
+        transformedData.tag_list = joinComma(transformedData.tag_list);
+        transformedData.group_tags = reduceObject((result, tags, key) => {
+            result[key] = joinComma(tags);
+            return result;
+        }, {}, transformedData.group_tags);
+
+        return this.api.post({
+            url: `account_lists/${this.api.account_list_id}/imports/google`,
+            data: transformedData,
+            type: 'imports',
+            errorMessage: errorMessage
         });
     }
     updateAccount() {
@@ -75,16 +90,15 @@ const ImportGoogle = {
     template: require('./google.html')
 };
 
+import api from 'common/api/api.service';
 import uiRouter from '@uirouter/angularjs';
 import blockUI from 'angular-block-ui';
 import gettextCatalog from 'angular-gettext';
-import alerts from 'common/alerts/alerts.service';
 import contactsTags from 'contacts/sidebar/filter/tags/tags.service';
 import google from 'preferences/integrations/google/google.service';
-import importGoogle from './google.service';
 import modal from 'common/modal/modal.service';
 
 export default angular.module('mpdx.tools.import.google.component', [
     uiRouter, blockUI, gettextCatalog,
-    alerts, contactsTags, google, importGoogle, modal
+    api, contactsTags, google, modal
 ]).component('importGoogle', ImportGoogle).name;

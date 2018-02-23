@@ -54,10 +54,11 @@ describe('tasks.modals.log.controller', () => {
             scope.$hide = () => {};
             spyOn(scope, '$hide');
             spyOn(rootScope, '$emit').and.callFake(() => {});
+            $ctrl.contactsList = [{ id: '7e4a26d6-64fc-42e7-a55e-95c7995e500d' }];
         });
         it('should create a task', () => {
             $ctrl.save();
-            expect(tasks.create).toHaveBeenCalledWith($ctrl.task, $ctrl.contactsList, $ctrl.comment);
+            expect(tasks.create).toHaveBeenCalledWith($ctrl.task, [$ctrl.contactsList[0].id], $ctrl.comment);
         });
         it('should update contacts if conditions are met', () => {
             $ctrl.status = 'Active';
@@ -76,7 +77,7 @@ describe('tasks.modals.log.controller', () => {
             $ctrl.comment = 'ghi';
             $ctrl.save().then(() => {
                 expect(tasks.addModal).toHaveBeenCalledWith({
-                    contactsList: $ctrl.contactsList,
+                    contactsList: [$ctrl.contactsList[0].id],
                     activityType: $ctrl.task.next_action,
                     task: $ctrl.task,
                     comments: [$ctrl.comment]

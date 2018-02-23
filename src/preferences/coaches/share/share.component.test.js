@@ -1,19 +1,17 @@
 import component from './share.component';
 
 describe('preferences.coaches.share', () => {
-    let $ctrl, accounts, rootScope, scope, componentController, alerts, gettextCatalog;
+    let $ctrl, accounts, rootScope, scope, componentController, gettextCatalog;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _accounts_, _alerts_, _gettextCatalog_) => {
+        inject(($componentController, $rootScope, _accounts_, _gettextCatalog_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             accounts = _accounts_;
-            alerts = _alerts_;
             gettextCatalog = _gettextCatalog_;
             componentController = $componentController;
             loadController();
         });
-        spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
         spyOn(accounts, 'listCoaches').and.callFake(() => {});
         spyOn(accounts, 'listCoachesInvites').and.callFake(() => {});
@@ -72,9 +70,13 @@ describe('preferences.coaches.share', () => {
         });
 
         it('should destroy an invite', () => {
+            const successMessage = 'MPDX removed the coaching invite successfully';
+            const errorMessage = 'MPDX couldn\'t remove the coaching invite';
             spyOn(accounts, 'destroyInvite').and.callFake(() => Promise.resolve());
             $ctrl.removeCoachInvite(1);
-            expect(accounts.destroyInvite).toHaveBeenCalledWith(1);
+            expect(accounts.destroyInvite).toHaveBeenCalledWith(1, successMessage, errorMessage);
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(successMessage);
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
         });
 
         it('should unset saving flag', (done) => {
@@ -85,14 +87,6 @@ describe('preferences.coaches.share', () => {
             });
         });
 
-        it('should alert a translated confirmation', (done) => {
-            spyOn(accounts, 'destroyInvite').and.callFake(() => Promise.resolve());
-            $ctrl.removeCoachInvite(1).then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
-                done();
-            });
-        });
         it('should remove the invite', (done) => {
             spyOn(accounts, 'destroyInvite').and.callFake(() => Promise.resolve());
             $ctrl.removeCoachInvite(1).then(() => {
@@ -105,8 +99,6 @@ describe('preferences.coaches.share', () => {
             spyOn(accounts, 'destroyInvite').and.callFake(() => Promise.reject(Error('')));
             $ctrl.removeCoachInvite(1).catch(() => {
                 expect($ctrl.saving).toBeFalsy();
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });
@@ -123,23 +115,18 @@ describe('preferences.coaches.share', () => {
 
         it('should remove a user', () => {
             spyOn(accounts, 'destroyCoach').and.callFake(() => Promise.resolve());
+            const successMessage = 'MPDX removed the coach successfully';
+            const errorMessage = 'MPDX couldn\'t remove the coach';
             $ctrl.removeCoach(1);
-            expect(accounts.destroyCoach).toHaveBeenCalledWith(1);
+            expect(accounts.destroyCoach).toHaveBeenCalledWith(1, successMessage, errorMessage);
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(successMessage);
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
         });
 
         it('should unset saving flag', (done) => {
             spyOn(accounts, 'destroyCoach').and.callFake(() => Promise.resolve());
             $ctrl.removeCoach(1).then(() => {
                 expect($ctrl.saving).toBeFalsy();
-                done();
-            });
-        });
-
-        it('should alert a translated confirmation', (done) => {
-            spyOn(accounts, 'destroyCoach').and.callFake(() => Promise.resolve());
-            $ctrl.removeCoach(1).then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });
@@ -156,8 +143,6 @@ describe('preferences.coaches.share', () => {
             spyOn(accounts, 'destroyCoach').and.callFake(() => Promise.reject(Error('')));
             $ctrl.removeCoach(1).catch(() => {
                 expect($ctrl.saving).toBeFalsy();
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });

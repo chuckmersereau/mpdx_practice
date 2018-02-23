@@ -28,7 +28,7 @@ class LogTaskController {
                 this.tasks.addModal({
                     activityType: this.task.next_action,
                     comments: [this.comment],
-                    contactsList: this.contactsList,
+                    contactsList: map('id', this.contactsList),
                     task: this.task
                 });
             } else {

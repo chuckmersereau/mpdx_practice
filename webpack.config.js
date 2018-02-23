@@ -66,6 +66,7 @@ config = assign(config, {
             { from: 'src/google144ccea737ed252d.html' }
         ])
     ]),
+    devtool: 'source-map',
     devServer: {
         contentBase: './public',
         stats: {

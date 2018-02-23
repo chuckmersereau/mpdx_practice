@@ -150,12 +150,12 @@ describe('common.accounts.service', () => {
         });
 
         it('should call the api', () => {
-            accounts.getAnalytics(params);
+            accounts.getAnalytics(params, 'a');
             expect(api.get).toHaveBeenCalledWith('account_lists/234/analytics', {
                 filter: {
                     date_range: '2015-07-02..2015-07-05'
                 }
-            });
+            }, undefined, 'a');
         });
 
         it('should set userList', (done) => {
@@ -186,8 +186,8 @@ describe('common.accounts.service', () => {
             accounts.current = { id: 1, name: 'a', prop: 'b' };
             spyOn(api, 'put').and.callFake(() => Promise.resolve());
             spyOn(accounts, 'get').and.callFake(() => Promise.resolve());
-            accounts.saveCurrent().then(() => {
-                expect(api.put).toHaveBeenCalledWith('account_lists/1', { id: 1, prop: 'b' });
+            accounts.saveCurrent('a', 'b').then(() => {
+                expect(api.put).toHaveBeenCalledWith('account_lists/1', { id: 1, prop: 'b' }, 'a', 'b');
                 done();
             });
         });
@@ -302,9 +302,10 @@ describe('common.accounts.service', () => {
         });
 
         it('should call the api', () => {
-            accounts.destroyUser(123);
+            accounts.destroyUser(123, 'a', 'b');
             expect(api.delete).toHaveBeenCalledWith(
-                'account_lists/123/users/123'
+                'account_lists/123/users/123',
+                undefined, 'a', 'b'
             );
         });
 
@@ -402,10 +403,12 @@ describe('common.accounts.service', () => {
         });
 
         it('should call the api', () => {
-            accounts.destroyCoach(123);
-            expect(api.delete).toHaveBeenCalledWith(
-                'account_lists/123/coaches/123'
-            );
+            accounts.destroyCoach(123, 'a', 'b');
+            expect(api.delete).toHaveBeenCalledWith({
+                url: 'account_lists/123/coaches/123',
+                successMessage: 'a',
+                errorMessage: 'b'
+            });
         });
 
         it('should return promise', () => {
@@ -420,10 +423,12 @@ describe('common.accounts.service', () => {
         });
 
         it('should call the api', () => {
-            accounts.destroyInvite(123);
+            accounts.destroyInvite(123, 'a', 'b');
             expect(api.delete).toHaveBeenCalledWith({
                 url: 'account_lists/123/invites/123',
-                type: 'account_list_invites'
+                type: 'account_list_invites',
+                successMessage: 'a',
+                errorMessage: 'b'
             });
         });
 

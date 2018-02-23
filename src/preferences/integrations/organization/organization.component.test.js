@@ -65,21 +65,17 @@ describe('preferences.organization.component', () => {
         });
         it('should save', () => {
             spyOn(preferencesOrganization, 'save').and.callFake(() => Promise.resolve());
+            const successMessage = 'Preferences saved successfully';
+            const errorMessage = 'Unable to save preferences';
             $ctrl.save();
-            expect(preferencesOrganization.save).toHaveBeenCalledWith();
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(successMessage);
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
+            expect(preferencesOrganization.save).toHaveBeenCalledWith(successMessage, errorMessage);
         });
         it('should unset saving flag', (done) => {
             spyOn(preferencesOrganization, 'save').and.callFake(() => Promise.resolve());
             $ctrl.save().then(() => {
                 expect($ctrl.saving).toBeFalsy();
-                done();
-            });
-        });
-        it('should alert a translated confirmation', (done) => {
-            spyOn(preferencesOrganization, 'save').and.callFake(() => Promise.resolve());
-            $ctrl.save().then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });
@@ -101,8 +97,6 @@ describe('preferences.organization.component', () => {
             spyOn(preferencesOrganization, 'save').and.callFake(() => Promise.reject({ errors: ['a'] }));
             $ctrl.save().catch(() => {
                 expect($ctrl.saving).toBeFalsy();
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });
@@ -113,8 +107,12 @@ describe('preferences.organization.component', () => {
         });
         it('should disconnect', (done) => {
             spyOn(preferencesOrganization, 'disconnect').and.callFake(() => Promise.resolve());
+            const errorMessage = 'MPDX couldn\'t save your configuration changes for that organization';
+            const successMessage = 'MPDX removed your organization integration';
             $ctrl.disconnect(1).then(() => {
-                expect(preferencesOrganization.disconnect).toHaveBeenCalledWith(1);
+                expect(preferencesOrganization.disconnect).toHaveBeenCalledWith(1, successMessage, errorMessage);
+                expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
+                expect(gettextCatalog.getString).toHaveBeenCalledWith(successMessage);
                 done();
             });
         });
@@ -122,14 +120,6 @@ describe('preferences.organization.component', () => {
             spyOn(preferencesOrganization, 'disconnect').and.callFake(() => Promise.resolve());
             $ctrl.disconnect(1).then(() => {
                 expect($ctrl.saving).toBeFalsy();
-                done();
-            });
-        });
-        it('should alert a translated confirmation', (done) => {
-            spyOn(preferencesOrganization, 'disconnect').and.callFake(() => Promise.resolve());
-            $ctrl.disconnect(1).then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });
@@ -144,8 +134,6 @@ describe('preferences.organization.component', () => {
             spyOn(preferencesOrganization, 'disconnect').and.callFake(() => Promise.reject());
             $ctrl.disconnect(1).catch(() => {
                 expect($ctrl.saving).toBeFalsy();
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });
@@ -163,8 +151,12 @@ describe('preferences.organization.component', () => {
         });
         it('should create an account', () => {
             spyOn(preferencesOrganization, 'createAccount').and.callFake(() => Promise.resolve());
+            const errorMessage = 'Unable to add your organization account';
+            const successMessage = 'MPDX added your organization account';
             $ctrl.createAccount();
-            expect(preferencesOrganization.createAccount).toHaveBeenCalledWith('a', 'b', 'c');
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(successMessage);
+            expect(preferencesOrganization.createAccount).toHaveBeenCalledWith('a', 'b', 'c', successMessage, errorMessage);
         });
         it('should unset saving flag', (done) => {
             spyOn(preferencesOrganization, 'createAccount').and.callFake(() => Promise.resolve());
@@ -173,20 +165,10 @@ describe('preferences.organization.component', () => {
                 done();
             });
         });
-        it('should alert a translated confirmation', (done) => {
-            spyOn(preferencesOrganization, 'createAccount').and.callFake(() => Promise.resolve());
-            $ctrl.createAccount().then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
-                done();
-            });
-        });
         it('should handle rejection', (done) => {
             spyOn(preferencesOrganization, 'createAccount').and.callFake(() => Promise.reject({ errors: ['a'] }));
             $ctrl.createAccount().catch(() => {
                 expect($ctrl.saving).toBeFalsy();
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });
@@ -208,21 +190,17 @@ describe('preferences.organization.component', () => {
         });
         it('should update an account', () => {
             spyOn(preferencesOrganization, 'updateAccount').and.callFake(() => Promise.resolve());
+            const successMessage = 'MPDX updated your organization account';
+            const errorMessage = 'Unable to update your organization account';
             $ctrl.updateAccount();
-            expect(preferencesOrganization.updateAccount).toHaveBeenCalledWith('a', 'b', 2);
+            expect(preferencesOrganization.updateAccount).toHaveBeenCalledWith('a', 'b', 2, successMessage, errorMessage);
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(successMessage);
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
         });
         it('should unset saving flag', (done) => {
             spyOn(preferencesOrganization, 'createAccount').and.callFake(() => Promise.resolve());
             $ctrl.createAccount().then(() => {
                 expect($ctrl.saving).toBeFalsy();
-                done();
-            });
-        });
-        it('should alert a translated confirmation', (done) => {
-            spyOn(preferencesOrganization, 'updateAccount').and.callFake(() => Promise.resolve());
-            $ctrl.updateAccount().then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });
@@ -244,8 +222,6 @@ describe('preferences.organization.component', () => {
             spyOn(preferencesOrganization, 'updateAccount').and.callFake(() => Promise.reject({ errors: ['a'] }));
             $ctrl.updateAccount().catch(() => {
                 expect($ctrl.saving).toBeFalsy();
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });

@@ -28,8 +28,13 @@ class GoogleService {
             this.data = data;
         });
     }
-    disconnect(id) {
-        return this.api.delete({ url: `user/google_accounts/${id}`, type: 'google_accounts' }).then(() => {
+    disconnect(id, successMessage, errorMessage) {
+        return this.api.delete({
+            url: `user/google_accounts/${id}`,
+            type: 'google_accounts',
+            successMessage: successMessage,
+            errorMessage: errorMessage
+        }).then(() => {
             return this.load(true);
         });
     }

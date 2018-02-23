@@ -9,6 +9,7 @@ import bottom from 'bottom/bottom.component';
 import coaches from 'coaches/index.module';
 import common from 'common/index.module';
 import contacts from 'contacts/index.module';
+import error from './error/error.component';
 import home from 'home/index.module';
 import menu from 'menu/index.module';
 import preferences from 'preferences/index.module';
@@ -31,6 +32,7 @@ export default angular.module('mpdx', [
     coaches,
     common,
     contacts,
+    error,
     home,
     menu,
     preferences,

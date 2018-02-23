@@ -178,24 +178,13 @@ describe('tools.appeals.show.component', () => {
         });
         it('should call the api', () => {
             spyOn(api, 'put').and.callFake(() => Promise.resolve());
+            const successMessage = 'Appeal saved successfully';
+            const errorMessage = 'Unable to save appeal';
             $ctrl.save();
-            expect(api.put).toHaveBeenCalledWith(`appeals/${appeal.id}`, appeal);
-        });
-        it('should alert success', (done) => {
-            spyOn(api, 'put').and.callFake(() => Promise.resolve());
-            $ctrl.save().then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith('Appeal saved successfully');
-                expect($ctrl.gettext).toHaveBeenCalledWith('Appeal saved successfully');
-                done();
-            });
-        });
-        it('should alert failure', (done) => {
-            spyOn(api, 'put').and.callFake(() => Promise.reject());
-            $ctrl.save().catch(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith('Unable to save appeal', 'danger');
-                expect($ctrl.gettext).toHaveBeenCalledWith('Unable to save appeal');
-                done();
-            });
+            expect(api.put).toHaveBeenCalledWith(`appeals/${appeal.id}`, appeal, successMessage, errorMessage);
+
+            expect($ctrl.gettext).toHaveBeenCalledWith(successMessage);
+            expect($ctrl.gettext).toHaveBeenCalledWith(errorMessage);
         });
     });
     describe('contactSearch', () => {
@@ -228,6 +217,8 @@ describe('tools.appeals.show.component', () => {
         });
         it('should add the contact to the appeal', () => {
             spyOn(api, 'post').and.callFake(() => Promise.resolve());
+            const successMessage = 'Contact successfully added to appeal';
+            const errorMessage = 'Unable to add contact to appeal';
             $ctrl.onContactSelected({ id: 1 });
             expect(api.post).toHaveBeenCalledWith({
                 url: 'appeals/123/appeal_contacts',
@@ -240,24 +231,12 @@ describe('tools.appeals.show.component', () => {
                         id: 1
                     }
                 },
-                type: 'appeal_contacts'
+                type: 'appeal_contacts',
+                successMessage: successMessage,
+                errorMessage: errorMessage
             });
-        });
-        it('should alert success', (done) => {
-            spyOn(api, 'post').and.callFake(() => Promise.resolve());
-            $ctrl.onContactSelected({ id: 1 }).then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith('Contact successfully added to appeal');
-                expect($ctrl.gettext).toHaveBeenCalledWith('Contact successfully added to appeal');
-                done();
-            });
-        });
-        it('should alert failure', (done) => {
-            spyOn(api, 'post').and.callFake(() => Promise.reject());
-            $ctrl.onContactSelected({ id: 1 }).catch(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith('Unable to add contact to appeal', 'danger');
-                expect($ctrl.gettext).toHaveBeenCalledWith('Unable to add contact to appeal');
-                done();
-            });
+            expect($ctrl.gettext).toHaveBeenCalledWith(successMessage);
+            expect($ctrl.gettext).toHaveBeenCalledWith(errorMessage);
         });
     });
     describe('removeContact', () => {
@@ -274,24 +253,14 @@ describe('tools.appeals.show.component', () => {
         });
         it('should delete contact', (done) => {
             spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            const successMessage = 'Contact removed from appeal';
+            const errorMessage = 'Unable to remove contact from appeal';
             $ctrl.removeContact(1).then(() => {
-                expect(api.delete).toHaveBeenCalledWith('appeals/123/appeal_contacts/1');
-                done();
-            });
-        });
-        it('should alert success', (done) => {
-            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
-            $ctrl.removeContact({ id: 1 }).then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith('Contact removed from appeal');
-                expect($ctrl.gettext).toHaveBeenCalledWith('Contact removed from appeal');
-                done();
-            });
-        });
-        it('should alert failure', (done) => {
-            spyOn(api, 'delete').and.callFake(() => Promise.reject());
-            $ctrl.removeContact({ id: 1 }).catch(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith('Unable to remove contact from appeal', 'danger');
-                expect($ctrl.gettext).toHaveBeenCalledWith('Unable to remove contact from appeal');
+                expect(api.delete).toHaveBeenCalledWith(
+                    'appeals/123/appeal_contacts/1', undefined, successMessage, errorMessage
+                );
+                expect($ctrl.gettext).toHaveBeenCalledWith(successMessage);
+                expect($ctrl.gettext).toHaveBeenCalledWith(errorMessage);
                 done();
             });
         });
@@ -313,8 +282,12 @@ describe('tools.appeals.show.component', () => {
         });
         it('should add the contact', (done) => {
             spyOn($ctrl, 'removeExcludedContact').and.callFake(() => Promise.resolve());
+            const successMessage = 'Excluded contact successfully added to appeal';
+            const errorMessage = 'Unable to add excluded contact to appeal';
             $ctrl.addExcludedContact(rel).then(() => {
-                expect($ctrl.onContactSelected).toHaveBeenCalledWith(rel.contact);
+                expect($ctrl.onContactSelected).toHaveBeenCalledWith(rel.contact, successMessage, errorMessage);
+                expect($ctrl.gettext).toHaveBeenCalledWith(successMessage);
+                expect($ctrl.gettext).toHaveBeenCalledWith(errorMessage);
                 done();
             });
         });
@@ -329,22 +302,6 @@ describe('tools.appeals.show.component', () => {
             spyOn($ctrl, 'removeExcludedContact').and.callFake(() => Promise.resolve());
             $ctrl.addExcludedContact(rel).then(() => {
                 expect($ctrl.getExcludedContacts).toHaveBeenCalledWith();
-                done();
-            });
-        });
-        it('should alert on success', (done) => {
-            spyOn($ctrl, 'removeExcludedContact').and.callFake(() => Promise.resolve());
-            $ctrl.addExcludedContact(rel).then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith('Excluded contact successfully added to appeal');
-                expect($ctrl.gettext).toHaveBeenCalledWith('Excluded contact successfully added to appeal');
-                done();
-            });
-        });
-        it('should alert on failure', (done) => {
-            spyOn($ctrl, 'removeExcludedContact').and.callFake(() => Promise.reject());
-            $ctrl.addExcludedContact(rel).catch(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith('Unable to add excluded contact to appeal', 'danger');
-                expect($ctrl.gettext).toHaveBeenCalledWith('Unable to add excluded contact to appeal');
                 done();
             });
         });
@@ -465,8 +422,14 @@ describe('tools.appeals.show.component', () => {
         it('should delete donation', (done) => {
             spyOn(api, 'delete').and.callFake(() => Promise.resolve());
             $ctrl.appeal = { id: 1, name: 'a' };
+            const successMessage = 'Successfully removed commitment from appeal';
+            const errorMessage = 'Unable to remove commitment from appeal';
             $ctrl.removePledge({ id: 123 }).then(() => {
-                expect(api.delete).toHaveBeenCalledWith(`account_lists/${api.account_list_id}/pledges/123`);
+                expect(api.delete).toHaveBeenCalledWith(
+                    `account_lists/${api.account_list_id}/pledges/123`, undefined, successMessage, errorMessage
+                );
+                expect($ctrl.gettext).toHaveBeenCalledWith(successMessage);
+                expect($ctrl.gettext).toHaveBeenCalledWith(errorMessage);
                 done();
             });
         });
@@ -474,22 +437,6 @@ describe('tools.appeals.show.component', () => {
             spyOn(api, 'delete').and.callFake(() => Promise.resolve());
             $ctrl.removePledge({ id: 123, status: 'abc' }).then(() => {
                 expect($ctrl.refreshLists).toHaveBeenCalledWith('abc');
-                done();
-            });
-        });
-        it('should alert on success', (done) => {
-            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
-            $ctrl.removePledge({ id: 123 }).then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith('Successfully removed commitment from appeal');
-                expect($ctrl.gettext).toHaveBeenCalledWith('Successfully removed commitment from appeal');
-                done();
-            });
-        });
-        it('should alert on failure', (done) => {
-            spyOn(api, 'delete').and.callFake(() => Promise.reject());
-            $ctrl.removePledge({ id: 123 }).catch(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith('Unable to remove commitment from appeal', 'danger');
-                expect($ctrl.gettext).toHaveBeenCalledWith('Unable to remove commitment from appeal');
                 done();
             });
         });
@@ -586,6 +533,8 @@ describe('tools.appeals.show.component', () => {
         });
         it('should call the api', () => {
             spyOn(api, 'post').and.callFake(() => Promise.resolve());
+            const successMessage = 'Contact(s) successfully exported to Mailchimp';
+            const errorMessage = 'Unable to add export contact(s) to Mailchimp';
             $ctrl.doExportToMailChimp();
             expect(api.post).toHaveBeenCalledWith({
                 url: 'contacts/export_to_mail_chimp?mail_chimp_list_id=234',
@@ -596,24 +545,12 @@ describe('tools.appeals.show.component', () => {
                         contact_ids: [1, 2]
                     }
                 },
-                doSerialization: false
+                doSerialization: false,
+                successMessage: successMessage,
+                errorMessage: errorMessage
             });
-        });
-        it('should alert success', (done) => {
-            spyOn(api, 'post').and.callFake(() => Promise.resolve());
-            $ctrl.doExportToMailChimp().then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith('Contact(s) successfully exported to Mailchimp');
-                expect($ctrl.gettext).toHaveBeenCalledWith('Contact(s) successfully exported to Mailchimp');
-                done();
-            });
-        });
-        it('should alert failure', (done) => {
-            spyOn(api, 'post').and.callFake(() => Promise.reject());
-            $ctrl.doExportToMailChimp().catch(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith('Unable to add export contact(s) to Mailchimp', 'danger');
-                expect($ctrl.gettext).toHaveBeenCalledWith('Unable to add export contact(s) to Mailchimp');
-                done();
-            });
+            expect($ctrl.gettext).toHaveBeenCalledWith(successMessage);
+            expect($ctrl.gettext).toHaveBeenCalledWith(errorMessage);
         });
     });
     describe('getContactsNotGiven', () => {
@@ -1064,6 +1001,7 @@ describe('tools.appeals.show.component', () => {
         });
     });
     describe('deleteAppeal', () => {
+        const msg = 'You are about to permanently delete this Appeal. This will remove all contacts, and delete all pledges, and progress towards this appeal. Are you sure you want to continue?';
         beforeEach(() => {
             spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
             spyOn(api, 'delete').and.callFake(() => Promise.resolve());
@@ -1071,16 +1009,18 @@ describe('tools.appeals.show.component', () => {
         });
         it('should translate a message', () => {
             $ctrl.deleteAppeal();
-            expect($ctrl.gettext).toHaveBeenCalledWith('You are about to permanently delete this Appeal. This will remove all contacts, and delete all pledges, and progress towards this appeal. Are you sure you want to continue?');
+            expect($ctrl.gettext).toHaveBeenCalledWith(msg);
         });
         it('should open a confirm modal', () => {
             $ctrl.deleteAppeal();
-            expect(modal.confirm).toHaveBeenCalledWith('You are about to permanently delete this Appeal. This will remove all contacts, and delete all pledges, and progress towards this appeal. Are you sure you want to continue?');
+            expect(modal.confirm).toHaveBeenCalledWith(msg);
         });
         it('should call delete', (done) => {
             $ctrl.appeal = { id: 1 };
+            const errorMessage = 'There was an error trying to delete the appeal.';
             $ctrl.deleteAppeal().then(() => {
-                expect(api.delete).toHaveBeenCalledWith('appeals/1');
+                expect($ctrl.gettext).toHaveBeenCalledWith(errorMessage);
+                expect(api.delete).toHaveBeenCalledWith('appeals/1', undefined, undefined, errorMessage);
                 done();
             });
         });
@@ -1088,24 +1028,6 @@ describe('tools.appeals.show.component', () => {
             $ctrl.appeal = { id: 1 };
             $ctrl.deleteAppeal().then(() => {
                 expect(state.go).toHaveBeenCalledWith('tools.appeals');
-                done();
-            });
-        });
-    });
-    xdescribe('deleteAppeal - failure', () => {
-        beforeEach(() => {
-            spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
-            spyOn(api, 'delete').and.callFake(() => Promise.reject());
-        });
-        it('should translate a message', (done) => {
-            $ctrl.deleteAppeal().catch(() => {
-                expect($ctrl.gettext).toHaveBeenCalledWith('There was an error trying to delete the appeal.');
-                done();
-            });
-        });
-        it('should alert', (done) => {
-            $ctrl.deleteAppeal().catch(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith('There was an error trying to delete the appeal.', 'danger');
                 done();
             });
         });

@@ -7,18 +7,16 @@ const fakeBlockUI = {
 };
 
 describe('home.progress.component', () => {
-    let $ctrl, componentController, rootScope, scope, gettextCatalog, accounts, alerts, users, blockUI;
+    let $ctrl, componentController, rootScope, scope, gettextCatalog, accounts, users, blockUI;
 
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _gettextCatalog_, _accounts_, _alerts_, _users_, _blockUI_) => {
+        inject(($componentController, $rootScope, _gettextCatalog_, _accounts_, _users_, _blockUI_) => {
             componentController = $componentController;
             rootScope = $rootScope;
             scope = $rootScope.$new();
-
             gettextCatalog = _gettextCatalog_;
             accounts = _accounts_;
-            alerts = _alerts_;
             users = _users_;
             blockUI = _blockUI_;
             loadController();
@@ -28,6 +26,7 @@ describe('home.progress.component', () => {
     function loadController() {
         spyOn(blockUI.instances, 'get').and.callFake(() => fakeBlockUI);
         spyOn(rootScope, '$on').and.callThrough();
+        spyOn(gettextCatalog, 'getString').and.callThrough();
         $ctrl = componentController('homeProgress', { $scope: scope }, { view: null });
         spyOn($ctrl.blockUI, 'reset').and.callThrough();
         spyOn($ctrl.blockUI, 'start').and.callThrough();
@@ -145,7 +144,12 @@ describe('home.progress.component', () => {
 
         it('should call accounts.getAnalytics', () => {
             $ctrl.refreshData();
-            expect(accounts.getAnalytics).toHaveBeenCalledWith({ startDate: $ctrl.startDate, endDate: $ctrl.endDate });
+            const errorMessage = 'Unable to update Progress Report';
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
+            expect(accounts.getAnalytics).toHaveBeenCalledWith(
+                { startDate: $ctrl.startDate, endDate: $ctrl.endDate },
+                errorMessage
+            );
         });
 
         it('should return promise', () => {
@@ -169,22 +173,6 @@ describe('home.progress.component', () => {
             it('should call blockUI.reset', (done) => {
                 $ctrl.refreshData().catch(() => {
                     expect($ctrl.blockUI.reset).toHaveBeenCalled();
-                    done();
-                });
-            });
-
-            it('should call alerts.addAlert', (done) => {
-                spyOn(alerts, 'addAlert').and.returnValue();
-                $ctrl.refreshData().catch(() => {
-                    expect(alerts.addAlert).toHaveBeenCalledWith('Unable to update Progress Report', 'danger');
-                    done();
-                });
-            });
-
-            it('should call gettext.getString', (done) => {
-                spyOn(gettextCatalog, 'getString').and.returnValue();
-                $ctrl.refreshData().catch(() => {
-                    expect(gettextCatalog.getString).toHaveBeenCalledWith('Unable to update Progress Report');
                     done();
                 });
             });
