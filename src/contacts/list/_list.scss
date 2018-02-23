@@ -1,22 +1,93 @@
 @import "item/item";
 
 contacts-list {
+    $search-bar-width: 275px;
     @extend .lists;
     display: grid;
     grid-template-rows: auto auto 1fr;
     grid-template-columns: 1fr auto;
     overflow: hidden;
     height: 100%;
-    margin-top: $nav-padding;
     > div.menu {
         @extend .lists.item-list-menu;
         grid-row: 1;
         grid-column: 1;
+        grid-template-columns: 1fr auto $search-bar-width;
+
+        grid-column-gap: 20px;
+        padding: 15px;
+        @media (max-width: $contact-menu-breakpoint) {
+            grid-template-rows: 1fr 1fr;
+            grid-row-gap: 5px;
+        }
+        &.selected {
+            background-color: $cru-selected-items-bgcolor;
+        }
+        > .selected-count {
+            grid-column: 1;
+            color: $cru-white;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            grid-template-rows: 1fr 0; // 0 row for odd chrome display
+            grid-column-gap: 15px;
+            @media (max-width: $contact-menu-breakpoint) {
+                grid-column: 1;
+                grid-row: 2;
+            }
+            .dropdown {
+                grid-column: 1;
+                grid-row: 1;
+            }
+            .count {
+                line-height: 33px;
+                font-size: 14px;
+                grid-column: 2;
+                grid-row: 1;
+            }
+        }
         > .search-bar {
             @extend .lists.item-list-menu.search-bar;
+            grid-column: 3;
+            width: $search-bar-width;
+            @media (max-width: $contact-menu-breakpoint) {
+                width: 100%;
+                grid-column: 1 / span 3;
+            }
+            .input-group-addon {
+                background-color: $cru-white;
+            }
+            input {
+                border-left-width: 0;
+            }
         }
         > div.menu-buttons {
             @extend .lists.item-list-menu.menu-buttons;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            @media (max-width: $contact-menu-breakpoint) {
+                width: 100%;
+                grid-column: 2 / span 3;
+                grid-row: 2;
+            }
+            .dropdown-menu {
+                border-radius: 0;
+                border-top: 0;
+                background-color: $cru-selected-items-bgcolor;
+                li > a, li > a:visited {
+                    color: $cru-white;
+                    &:hover {
+                        color: $gray_mid;
+                    }
+                }
+            }
+            .dropdown-toggle {
+                color: $cru-white;
+            }
+            .show-small {
+                @media (min-width: $contact-menu-breakpoint) {
+                    display: none;
+                }
+            }
         }
     }
     > div.sub-menu {
@@ -24,6 +95,7 @@ contacts-list {
         grid-column: 1;
         grid-row: 2;
         padding-right: $container-padding-right;
+        margin-left: 14px;
         > div.sub-line-1 {
             display: grid;
             grid-template-columns: 1fr auto;
@@ -33,5 +105,6 @@ contacts-list {
         @extend .lists.content;
         grid-column: 1;
         grid-row: 3;
+        margin-left: 14px;
     }
 }

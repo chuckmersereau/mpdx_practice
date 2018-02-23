@@ -1,43 +1,78 @@
-<div class="menu">
-    <contacts-list-search class="search-bar"></contacts-list-search>
+<div class="menu" ng-class="{ selected: $ctrl.contacts.selectedContacts.length > 0 }">
+    <div class="selected-count">
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle"
+                    bs-dropdown
+                    type="button"
+                    data-toggle="dropdown"
+                    ng-if="$ctrl.data.length > 0"
+                    aria-expanded="true">
+                <translate>Select</translate> <i class="fa fa-caret-down"></i>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="action-drop">
+                <li ng-if="$ctrl.contacts.selectedContacts.length < $ctrl.meta.pagination.total_count">
+                    <a ng-click="$ctrl.selectAllContacts(false)"
+                       translate>Select All Contacts on Page</a>
+                </li>
+                <li ng-if="$ctrl.meta.pagination.total_count > $ctrl.contacts.selectedContacts.length && $ctrl.meta.pagination.total_count > 0">
+                    <a ng-click="$ctrl.selectAllContacts()" translate>
+                        <span translate
+                              translate-plural="Select all {{$count}} contacts"
+                              translate-n="::$ctrl.meta.pagination.total_count">Select 1 contact</span></a>
+                </li>
+                <li><a ng-click="$ctrl.contacts.clearSelectedContacts()"
+                       ng-if="$ctrl.contacts.selectedContacts.length > 0"
+                       translate>Deselect All</a></li>
+            </ul>
+        </div>
+        <div class="count" ng-if="$ctrl.contacts.selectedContacts.length > 0">
+            {{$ctrl.contacts.selectedContacts.length}} <translate>Selected</translate>
+        </div>&nbsp;
+    </div>
     <div class="menu-buttons">
+        <div class="dropdown">
+            <button class="btn btn-link dropdown-toggle"
+                    bs-dropdown
+                    type="button"
+                    data-toggle="dropdown"
+                    ng-if="$ctrl.contacts.selectedContacts.length > 0"
+                    aria-expanded="true">
+                <translate>Actions</translate> <i class="fa fa-caret-down"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop" ng-show="$ctrl.contacts.selectedContacts.length > 0">
+                <li><a ng-click="$ctrl.contacts.openAddTagModal($ctrl.contacts.selectedContacts)" translate>Add Tags</a></li>
+                <li><a ng-click="$ctrl.openRemoveTagModal()" translate>Remove Tags</a></li>
+                <li><a ng-click="$ctrl.openAddTaskModal()" translate>Add Task</a></li>
+                <li><a ng-click="$ctrl.tasks.logModal($ctrl.contacts.selectedContacts)" translate>Log Task</a></li>
+                <li><a ng-click="$ctrl.openEditFieldsModal()" translate>Edit Fields</a></li>
+                <li ng-click="$ctrl.bulkHideContacts()"><a translate>Hide Contacts</a></li>
+                <li><a ng-click="$ctrl.openMapContactsModal()" translate>Map Contacts</a></li>
+            </ul>
+        </div>
         <div class="btn-group">
-            <span class="btn btn-default visible-sm visible-xs"
+            <button type="button" class="btn btn-default show-small"
                   ng-class="{ 'btn-reverse' : $ctrl.session.showFiltersOnMobile }"
                   ng-click="$ctrl.session.showFiltersOnMobile = !$ctrl.session.showFiltersOnMobile">
                 <i class="fas fa-sliders"></i>
                 <translate>Filters</translate>
-            </span>
-            <div class="btn-group">
-                <div class="dropdown">
-                    <a class="btn btn-default dropdown-toggle" bs-dropdown type="button" data-toggle="dropdown" aria-expanded="true">
-                        <span  translate>Actions</span> <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop" ng-show="$ctrl.contacts.selectedContacts.length > 0">
-                        <li><a ng-click="$ctrl.contacts.openAddTagModal($ctrl.contacts.selectedContacts)" translate>Add Tags</a></li>
-                        <li><a ng-click="$ctrl.openRemoveTagModal()" translate>Remove Tags</a></li>
-                        <li><a ng-click="$ctrl.openAddTaskModal()" translate>Add Task</a></li>
-                        <li><a ng-click="$ctrl.tasks.logModal($ctrl.contacts.selectedContacts)" translate>Log Task</a></li>
-                        <li><a ng-click="$ctrl.openEditFieldsModal()" translate>Edit Fields</a></li>
-                        <li ng-click="$ctrl.bulkHideContacts()"><a translate>Hide Contacts</a></li>
-                        <li><a ng-click="$ctrl.openMapContactsModal()" translate>Map Contacts</a></li>
-                    </ul>
-                    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop" ng-if="$ctrl.contacts.selectedContacts.length === 0">
-                        <li class="dropdown-header" translate>Please select at least one contact by clicking anywhere on that contact to continue.</li>
-                    </ul>
-                </div>
-            </div>
-            <a class="btn btn-default" ng-click="$ctrl.openMergeContactsModal()" translate>
+            </button>
+            <button type="button"
+                    class="btn btn-default"
+                    ng-click="$ctrl.openMergeContactsModal()"
+                    ng-if="$ctrl.contacts.selectedContacts.length > 0"
+                    translate>
                 Merge
-            </a>
-            <a class="btn btn-default" ng-click="$ctrl.openExportContactsModal()" translate>
+            </button>
+            <button type="button"
+                    class="btn btn-default"
+                    ng-click="$ctrl.openExportContactsModal()"
+                    translate>
                 Export
-            </a>
-            <span class="btn btn-default" ng-click="$ctrl.toggleAllContacts()" translate>
-                Select All
-            </span>
+            </button>
+
         </div>
     </div>
+    <contacts-list-search class="search-bar"></contacts-list-search>
 </div>
 <div class="sub-menu">
     <div class="sub-line-1">
@@ -48,17 +83,6 @@
                        translate-params-total="$ctrl.meta.pagination.total_count || 0">
                 Showing <strong>{{from}}</strong> to <strong>{{to}}</strong> of <strong>{{total}}</strong>
             </translate>
-            <span class="label label-primary" ng-if="$ctrl.contacts.selectedContacts.length > 0">
-                {{$ctrl.contacts.selectedContacts.length}} <span translate>Selected</span>
-                <a href="javascript:;" class="label-action" ng-click="$ctrl.contacts.clearSelectedContacts()"><i class="fas fa-times"></i></a>
-            </span>&nbsp;
-            <small>
-                <a href="javascript:;"
-                   ng-if="$ctrl.contacts.selectedContacts.length > 0 && $ctrl.contacts.selectedContacts.length < $ctrl.meta.pagination.total_count"
-                   ng-click="$ctrl.selectAllContacts()">
-                    <span translate translate-plural="Select all {{$count}} contacts" translate-n="::$ctrl.meta.pagination.total_count">Select 1 contact</span>
-                </a>
-            </small>
         </div>
         <div>
             <pagination-dropdown selected="$ctrl.pageSize"
@@ -94,7 +118,7 @@
           </span>
     </div>
 </div>
-<div class="content" id="contactListParent">
+<div class="content">
     <div class="blankslate blankslate-spacious" ng-if="$ctrl.meta.pagination.total_count === 0 && !$ctrl.loading">
         <i class="fas fa-home blankslate-icon"></i>
         <div ng-if="$ctrl.totalContactCount > 0">
@@ -115,7 +139,7 @@
                             contact="contact"
                             id="contact_{{::contact.id}}"
                             data-hook="contact"
-                            selected="$ctrl.selected"
+                            selected="$ctrl.allSelected || $ctrl.contacts.isSelected(contact.id)"
                             ng-class="{ selected: $ctrl.allSelected || $ctrl.contacts.isSelected(contact.id) }"></contacts-list-item>
         <div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
           <i class="far fa-circle-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>

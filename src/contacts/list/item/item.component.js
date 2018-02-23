@@ -1,17 +1,21 @@
+import isOverflown from 'common/fp/isOverflown';
 import { flatten, includes, map, pull, union } from 'lodash/fp';
 import moment from 'moment';
 
 class ItemController {
     constructor(
-        $rootScope,
+        $rootScope, $scope,
         contacts, people, users
     ) {
         this.$rootScope = $rootScope;
+        this.$scope = $scope;
         this.contacts = contacts;
+        this.isOverflown = isOverflown; // to allow testing
         this.people = people;
         this.users = users;
     }
     $onInit() {
+        this.tagsExpanded = false;
         this.watcher = this.$rootScope.$on('contactTagDeleted', (e, val) => {
             if (!val.contactIds || includes(this.contact.id, val.contactIds)) {
                 this.contact.tag_list = pull(val.tag, this.contact.tag_list);
@@ -52,6 +56,12 @@ class ItemController {
     }
     daysLate() {
         return moment().diff(moment(this.contact.late_at), 'days') || 0;
+    }
+    expandTags() {
+        this.tagsExpanded = !this.tagsExpanded;
+    }
+    showCaret() {
+        return this.isOverflown(document.querySelector(`#tags_list_${this.$scope.$id}`));
     }
 }
 

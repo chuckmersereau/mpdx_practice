@@ -1,76 +1,107 @@
 <div class="contact-row" ng-click="$ctrl.contacts.selectContact($ctrl.contact.id)">
+    <div class="select-box" ng-class="{ 'selected': $ctrl.selected }">&nbsp;</div>
     <avatar src="$ctrl.contact.square_avatar"></avatar>
     <div class="contact-details">
-        <div class="col-sm-7 main-details">
+        <div class="main-details">
             <h4 class="name">
-                <a ui-sref="contacts.show({contactId: $ctrl.contact.id})" ng-click="$event.stopPropagation()">{{::$ctrl.contact.name}}</a>
-                <span ng-class="{'text-danger': $ctrl.hasSendNewsletterError()}" ng-if="::$ctrl.contact.send_newsletter">
-                    <i class="ci ci-letter_icon" title="{{::'Both' | translate}}" ng-if="::$ctrl.contact.send_newsletter == 'Both'"></i>
-                    <i class="ci ci-email_icon" title="{{::'Both' | translate}}" ng-if="::$ctrl.contact.send_newsletter == 'Both'"></i>
-                    <i class="ci ci-letter_icon" title="{{::'Physical' | translate}}" ng-if="::$ctrl.contact.send_newsletter == 'Physical'"></i>
-                    <i class="ci ci-email_icon" title="{{::'Email' | translate}}" ng-if="::$ctrl.contact.send_newsletter == 'Email'"></i>
-                </span>
-                <span title="{{ ::'Partner - Special' | translate }}" ng-if="::$ctrl.contact.status === 'Partner - Special'">
-                    <span>{{::$ctrl.contact.pledge_currency_symbol}}</span>
-                </span>
-                <span title="{{ ::'Partner - Financial' | translate }}" ng-if="::$ctrl.contact.status === 'Partner - Financial'">
-                    <span>{{::$ctrl.contact.pledge_currency_symbol}}</span>
-                    <span>{{::$ctrl.contact.pledge_currency_symbol}}</span>
-                </span>
-                <i class="fas fa-circle circle-on-time" ng-if="::$ctrl.daysLate() < 0" data-title="{{ ::'on time' | translate }}" bs-tooltip></i>
-                <i class="fas fa-circle circle-default" ng-if="::$ctrl.daysLate() >= 0 && $ctrl.daysLate() < 30" data-title="{{ ::'0+ days late' | translate }}" bs-tooltip></i>
-                <i class="fas fa-circle circle-late" ng-if="::$ctrl.daysLate() >= 30 && $ctrl.daysLate() < 60" data-title="{{ ::'30+ days late' | translate }}" bs-tooltip></i>
-                <i class="fas fa-circle circle-very-late" ng-if="::$ctrl.daysLate() >= 60" data-title="{{ ::'60+ days late' | translate }}" bs-tooltip></i>
+                <a ui-sref="contacts.show({contactId: $ctrl.contact.id})"
+                   ng-click="$event.stopPropagation()">{{::$ctrl.contact.name}}</a>
             </h4>
             <div class="people">
-                <div ng-repeat="person in ::$ctrl.contact.people track by person.id" ng-if="::!person.deceased" class="people-single-contact">
-                    <a ng-click="$ctrl.people.openPeopleModal($ctrl.contact, person.id); $event.stopPropagation()">{{::person.first_name}} {{::person.last_name}}</a>
-                    <span ng-repeat="phone_number in ::person.phone_numbers" ng-if="::phone_number.primary && !phone_number.historic" class="phone-type phone-type-{{phone_number.location}}">
-                        {{::phone_number.number}}
-                    </span>
-                    <a ng-repeat="email_address in ::person.email_addresses" ng-if="::email_address.primary && !email_address.historic" ng-href="mailto:{{::email_address.email}}" target="_blank">
-                        <i class="ci ci-email_icon" title="{{ ::'Email' | translate }}"></i>
+                <div ng-repeat="person in ::$ctrl.contact.people | limitTo: 2 track by person.id"
+                     ng-if="::!person.deceased"
+                     class="people-single-contact">
+                    <a ng-click="$ctrl.people.openPeopleModal($ctrl.contact, person.id); $event.stopPropagation()"
+                       class="person-name">
+                        {{::person.first_name}} {{::person.last_name}}
                     </a>
-                    <a ng-repeat="facebook_account in ::person.facebook_accounts" ng-href="{{::facebook_account.url}}" target="_blank">
-                        <i class="fas fa-facebook-square" title="{{ ::'Facebook profile' | translate }}"></i>
+                    <a ng-repeat="email_address in ::person.email_addresses"
+                       ng-if="::email_address.primary && !email_address.historic"
+                       ng-href="mailto:{{::email_address.email}}"
+                       class="person-email"
+                       target="_blank">
+                        {{::email_address.email}}
+                    </a>
+                    <a ng-repeat="facebook_account in ::person.facebook_accounts"
+                       ng-href="{{::facebook_account.url}}"
+                       class="person-fb"
+                       target="_blank">
+                        <i class="fab fa-facebook-square" title="{{ ::'Facebook profile' | translate }}"></i>
                     </a>
                 </div>
             </div>
             <div class="address">
-                <address class="address" ng-repeat="address in ::$ctrl.contact.addresses track by address.id" ng-if="::address.primary_mailing_address">
-                    <span ng-if="::address.street">{{::address.street}}<br></span>
-                    <span ng-if="::address.city">{{::address.city}},</span>
-                    {{::address.state}}
-                    {{::address.postal_code}}
+                <address class="address" ng-repeat="address in ::$ctrl.contact.addresses track by address.id"
+                         ng-if="::address.primary_mailing_address">
+                    <span class="address-street">
+                    <span ng-if="::address.street">{{::address.street}}</span>
+                        <span ng-if="::address.city">{{::address.city}},</span>
+                        {{::address.state}}
+                        {{::address.postal_code}}
+                    </span>
                 </address>
-            </div>
-            <div class="tags">
-                <span class="tag" ng-repeat="tag in $ctrl.contact.tag_list track by $index">{{ tag |limitTo: 20 }}{{ tag.length > 20 ? '...' : '' }}</span>
-            </div>
-        </div>
-        <div class="col-sm-3 more-details">
-            <div ng-if="::$ctrl.contact.status !== ''">{{::$ctrl.contact.status | translate}}</div>
-            <div ng-if="::$ctrl.contact.pledge_amount > 0">
-                {{::$ctrl.contact.pledge_amount | currency: $ctrl.contact.pledge_currency_symbol}} {{::$ctrl.contact.pledge_frequency}}
-                <div ng-if="::$ctrl.contact.status == 'Partner - Financial'" ng-switch="::$ctrl.contact.pledge_received">
-                    <div ng-switch-when="true" class="text-success" translate>Commitment Received</div>
-                    <div ng-switch-when="false" class="text-warning" translate>Commitment Not Received</div>
-                </div>
-            </div>
-
-            <a ui-sref="tasks({ filters: { contact_ids: $ctrl.contact.id } })" ng-if="::$ctrl.contact.uncompleted_tasks_count > 0" ng-click="$event.stopPropagation()">
-                <span translate>Tasks</span>: {{::$ctrl.contact.uncompleted_tasks_count}}
-            </a>
-        </div>
-        <div class="col-sm-2 text-right" ng-if="::$ctrl.view !== 'task'">
-            <div class="btn-group">
-                <a class="btn btn-sm btn-default" ui-sref="contacts.show({contactId: $ctrl.contact.id})" title="{{ ::'View Contact' | translate }}" ng-click="$event.stopPropagation()">
-                    <i class="fas fa-search"></i>
-                </a>
-                <a class="btn btn-sm btn-default" title="{{ ::'Hide Contact' | translate }}" ng-if="::$ctrl.contact.status !== 'Never Ask'" ng-click="$ctrl.contacts.hideContact($ctrl.contact); $event.stopPropagation()">
-                    <i class="fas fa-eye-slash"></i>
-                </a>
             </div>
         </div>
     </div>
+    <div class="contact-details-2">
+        <div ng-if="::$ctrl.contact.status !== ''">{{::$ctrl.contact.status | translate}}</div>
+        <div ng-if="::$ctrl.contact.pledge_amount > 0">
+            {{::$ctrl.contact.pledge_amount | currency: $ctrl.contact.pledge_currency_symbol}}
+            {{::$ctrl.contact.pledge_frequency}}
+            <div ng-if="::$ctrl.contact.status == 'Partner - Financial'" ng-switch="::$ctrl.contact.pledge_received">
+                <div ng-switch-when="true" class="text-success" translate>Commitment Received</div>
+                <div ng-switch-when="false" class="text-warning" translate>Commitment Not Received</div>
+            </div>
+        </div>
+        <a ui-sref="tasks({ filters: { contact_ids: $ctrl.contact.id } })"
+           ng-if="::$ctrl.contact.uncompleted_tasks_count > 0"
+           ng-click="$event.stopPropagation()">
+            <span translate>Tasks</span>: {{::$ctrl.contact.uncompleted_tasks_count}}
+        </a>
+    </div>
+    <div class="contact-details-3">
+        <div ng-class="{'text-danger': $ctrl.hasSendNewsletterError()}" ng-if="::$ctrl.contact.send_newsletter">
+            <translate>Newsletter</translate> -
+            <translate ng-if="::$ctrl.contact.send_newsletter == 'Both'">Both</translate>
+            <translate ng-if="::$ctrl.contact.send_newsletter == 'Physical'">Physical</translate>
+            <translate ng-if="::$ctrl.contact.send_newsletter == 'Email'">Email</translate>
+        </div>
+        <div ng-if="::$ctrl.contact.status === 'Partner - Financial'">
+            <span ng-if="::$ctrl.daysLate() < 0">
+                <i class="fas fa-circle circle-success"></i>
+                <translate>on time</translate>
+            </span>
+            <span ng-if="::$ctrl.daysLate() >= 0 && $ctrl.daysLate() < 30">
+                <i class="fas fa-circle circle-default"></i>
+                <translate>0-30 days late</translate>
+            </span>
+            <span ng-if="::$ctrl.daysLate() >= 30 && $ctrl.daysLate() < 60">
+                <i class="fas fa-circle circle-warning"></i>
+                <translate>30-60 days late</translate>
+            </span>
+            <span ng-if="::$ctrl.daysLate() >= 60">
+                <i class="fas fa-circle circle-danger"></i>
+                <translate>60+ days late</translate>
+            </span>
+        </div>
+    </div>
+    <div class="hover-buttons text-right" ng-if="::$ctrl.view !== 'task'">
+        <div class="btn-group">
+            <a class="btn btn-sm btn-default" ui-sref="contacts.show({contactId: $ctrl.contact.id})" title="{{ ::'View Contact' | translate }}" ng-click="$event.stopPropagation()">
+                <i class="far fa-search"></i>
+            </a>
+            <a class="btn btn-sm btn-default" title="{{ ::'Hide Contact' | translate }}" ng-if="::$ctrl.contact.status !== 'Never Ask'" ng-click="$ctrl.contacts.hideContact($ctrl.contact); $event.stopPropagation()">
+                <i class="far fa-eye-slash"></i>
+            </a>
+        </div>
+    </div>
+    <div class="tags-row pointer" ng-click="$ctrl.expandTags(); $event.stopPropagation()">
+        <div class="tags" ng-class="{ expanded: $ctrl.tagsExpanded }" id="tags_list_{{::$ctrl.$scope.$id}}">
+            <span class="tag" ng-repeat="tag in $ctrl.contact.tag_list track by $index">{{ tag }}</span>
+        </div>
+        <i class="fas"
+           ng-class="{ 'fa-chevron-down': !$ctrl.tagsExpanded, 'fa-chevron-up': $ctrl.tagsExpanded }" ng-if="::$ctrl.showCaret()"></i>
+    </div>
 </div>
+
+

@@ -26,4 +26,9 @@ contacts-sidebar {
             grid-row: 2;
         }
     }
+    &.hide-small {
+        @media (max-width: $contact-menu-breakpoint) {
+            display: none;
+        }
+    }
 }
