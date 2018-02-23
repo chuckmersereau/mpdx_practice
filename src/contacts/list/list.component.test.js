@@ -161,34 +161,6 @@ describe('contacts.list.component', () => {
             expect($ctrl.watcher9).toHaveBeenCalledWith();
         });
     });
-    describe('toggleAllContacts', () => {
-        beforeEach(() => {
-            $ctrl.data = [{ id: 1 }];
-            spyOn($ctrl, 'selectAllContacts').and.callFake(() => {});
-            spyOn(contacts, 'clearSelectedContacts').and.callFake(() => {});
-        });
-        it('should call selectAllContacts if all contacts are not selected', () => {
-            contacts.selectedContacts = [];
-            $ctrl.toggleAllContacts();
-            expect($ctrl.selectAllContacts).toHaveBeenCalledWith(false);
-        });
-        it('should call clearSelectedContacts if all contacts are selected', () => {
-            contacts.selectedContacts = [1];
-            $ctrl.toggleAllContacts();
-            expect(contacts.clearSelectedContacts).toHaveBeenCalledWith();
-        });
-        it('should call clearSelectedContacts if contacts are undefined', () => {
-            contacts.selectedContacts = null;
-            $ctrl.toggleAllContacts();
-            expect(contacts.clearSelectedContacts).toHaveBeenCalledWith();
-        });
-        it('should call clearSelectedContacts if no data', () => {
-            contacts.selectedContacts = [1];
-            $ctrl.data = null;
-            $ctrl.toggleAllContacts();
-            expect(contacts.clearSelectedContacts).toHaveBeenCalledWith();
-        });
-    });
     describe('hideContact', () => {
         let contact = { id: 1, name: 'a' };
         beforeEach(() => {
@@ -318,7 +290,9 @@ describe('contacts.list.component', () => {
                 per_page: jasmine.any(Number),
                 include: 'addresses,people,people.facebook_accounts,people.phone_numbers,people.email_addresses',
                 fields: {
-                    contact: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people,created_at,late_at',
+                    contact: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol'
+                    + ',pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people,'
+                    + 'created_at,late_at,primary_person',
                     people: 'deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
                     addresses: 'city,geo,historic,primary_mailing_address,postal_code,state,source,street,updated_at',
                     email_addresses: 'email,historic,primary',

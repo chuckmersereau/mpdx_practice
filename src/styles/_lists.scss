@@ -1,7 +1,5 @@
 .lists {
-    padding-left: $content-padding-left;
     &.item-list-menu {
-        $menu-breakpoint: 800px;
         display: grid;
         grid-template-rows: 1fr;
         grid-template-columns: 1fr 1fr;

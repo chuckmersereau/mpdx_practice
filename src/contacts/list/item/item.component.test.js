@@ -69,4 +69,23 @@ describe('contacts.list.item', () => {
             });
         });
     });
+    describe('expandTags', () => {
+        it('should reverse tagsExpanded value', () => {
+            $ctrl.tagsExpanded = false;
+            $ctrl.expandTags();
+            expect($ctrl.tagsExpanded).toBeTruthy();
+            $ctrl.expandTags();
+            expect($ctrl.tagsExpanded).toBeFalsy();
+        });
+    });
+    describe('showCaret', () => {
+        it('should call isOverFlown', () => {
+            const element = `#tags_list_${scope.$id}`;
+            spyOn(document, 'querySelector').and.callFake(() => 'a');
+            spyOn($ctrl, 'isOverflown').and.callFake(() => {});
+            $ctrl.showCaret();
+            expect($ctrl.isOverflown).toHaveBeenCalledWith('a');
+            expect(document.querySelector).toHaveBeenCalledWith(element);
+        });
+    });
 });

@@ -9,7 +9,7 @@
         <a ui-sref="tools.merge.people" translate>Merge People</a>
     </div>
 </div>
-<contacts-sidebar ng-class="{ 'hidden-sm hidden-xs' : !$ctrl.session.showFiltersOnMobile }"></contacts-sidebar>
+<contacts-sidebar ng-class="{ 'hide-small' : !$ctrl.session.showFiltersOnMobile }"></contacts-sidebar>
 <ui-view>
     <contacts-list></contacts-list>
 </ui-view>

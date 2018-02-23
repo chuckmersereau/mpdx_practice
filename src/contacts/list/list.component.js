@@ -8,7 +8,8 @@ import {
     map,
     pullAllBy,
     reduce,
-    reject
+    reject,
+    sortBy
 } from 'lodash/fp';
 import pagination from 'common/pagination/pagination';
 
@@ -34,7 +35,6 @@ class ListController {
         this.serverConstants = serverConstants;
         this.session = session;
         this.tasks = tasks;
-        this.users = users;
 
         this.contacts.clearSelectedContacts();
         this.allSelected = false;
@@ -48,7 +48,7 @@ class ListController {
             }
         };
         this.page = 0;
-        this.pageSize = defaultTo(25, this.users.getCurrentOptionValue('page_size_contacts'));
+        this.pageSize = defaultTo(25, users.getCurrentOptionValue('page_size_contacts'));
         this.totalContactCount = 0;
     }
     $onInit() {
@@ -106,13 +106,6 @@ class ListController {
         this.watcher7();
         this.watcher8();
         this.watcher9();
-    }
-    toggleAllContacts() {
-        if (this.data && this.contacts.selectedContacts && this.contacts.selectedContacts.length < this.data.length) {
-            this.selectAllContacts(false);
-        } else {
-            this.contacts.clearSelectedContacts();
-        }
     }
     hideContact(contact) {
         return this.contacts.hideContact(contact).then(() => {
@@ -196,7 +189,9 @@ class ListController {
                 per_page: this.pageSize,
                 include: 'addresses,people,people.facebook_accounts,people.phone_numbers,people.email_addresses',
                 fields: {
-                    contact: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,people,created_at,late_at',
+                    contact: 'addresses,name,status,square_avatar,send_newsletter,pledge_currency_symbol,'
+                        + 'pledge_frequency,pledge_received,uncompleted_tasks_count,tag_list,pledge_amount,'
+                        + 'people,created_at,late_at,primary_person',
                     people: 'deceased,email_addresses,facebook_accounts,first_name,last_name,phone_numbers',
                     addresses: 'city,geo,historic,primary_mailing_address,postal_code,state,source,street,updated_at',
                     email_addresses: 'email,historic,primary',
@@ -218,10 +213,18 @@ class ListController {
                 this.loading = false;
                 return;
             }
-            this.data = this.contacts.fixPledgeAmountAndFrequencies(data);
+            const fixedData = this.contacts.fixPledgeAmountAndFrequencies(data);
+            this.data = this.sortPeoplePrimary(fixedData);
             this.loading = false;
             return this.data;
         });
+    }
+    sortPeoplePrimary(data) {
+        return map((contact) => {
+            // put primary on top
+            contact.people = sortBy((person) => person.id !== contact.primary_person.id, contact.people);
+            return contact;
+        }, data);
     }
     getSelectedContacts() {
         if (this.contacts.selectedContacts.length > this.data.length) {
