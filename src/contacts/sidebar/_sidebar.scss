@@ -4,26 +4,24 @@
 
 contacts-sidebar {
     background-color: $filter-bar-bg-color;
-    width: 250px;
-    overflow: hidden;
-    display: grid;
-    grid-template-rows: auto 100%;
-    > div.filters {
-        grid-row: 1;
-    }
+    overflow-y: auto;
     > div.contact_drawer {
-        grid-row: 2;
         display: grid;
-        grid-template-rows: auto 100%;
+        grid-template-rows: auto 1fr;
         > div.edit-filters {
             border: 1px solid $color-menu-border;
             color: $cru-white;
             padding: 5px;
             line-height: 29px;
-            grid-row: 1;
+            grid-row: 1 / 1;
         }
         > div.list {
-            grid-row: 2;
+            grid-row: 2 / 2;
+        }
+    }
+    &.hide-small {
+        @media (max-width: $contact-menu-breakpoint) {
+            display: none;
         }
     }
     &.hide-small {

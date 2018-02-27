@@ -1,3 +1,6 @@
 contacts-filter {
-    overflow-y: auto;
+    > div.filter {
+        height: 100%;
+        display: block;
+    }
 }

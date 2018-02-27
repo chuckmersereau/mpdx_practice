@@ -2,16 +2,6 @@
     background: $color-reverse;
     border-bottom: 1px solid $color-menu-border;
     padding: 10px 0 10px $container-padding-left;
-
-    .section {
-        display: inline-block;
-        margin-right: 24px;
-        vertical-align: top;
-        &.right {
-            margin-right: 0;
-            margin-left: 12px;
-        }
-    }
     a {
         color: $cru-gray-dark;
         font-size: 14px;
@@ -23,4 +13,21 @@
     }
     translate {vertical-align: top;}
     .badge {vertical-align: text-top;}
+}
+div.nav--secondary {
+    .section {
+        display: inline-block;
+        margin-right: 24px;
+        vertical-align: top;
+        &.right {
+            margin-right: 0;
+            margin-left: 12px;
+        }
+    }
+}
+
+ul.nav--secondary {
+    @extend .list-inline;
+    padding-left: 12px;
+    margin-bottom: 0;
 }

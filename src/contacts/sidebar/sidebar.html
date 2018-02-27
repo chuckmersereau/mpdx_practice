@@ -1,6 +1,4 @@
-<div class="filters">
-    <contacts-filter ng-if="!$ctrl.session.isInState('contacts.show')"></contacts-filter>
-</div>
+<contacts-filter ng-if="!$ctrl.session.isInState('contacts.show')"></contacts-filter>
 <div class="contact_drawer" ng-if="$ctrl.session.isInState('contacts.show')" role="complementary">
     <div class="edit-filters">
         <translate translate-plural="{{$count}} filters applied"
