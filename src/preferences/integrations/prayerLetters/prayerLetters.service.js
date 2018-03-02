@@ -16,10 +16,13 @@ class PrayerLettersService {
             return this.$q.resolve(this.data);
         }
         this.oAuth = `${config.oAuthUrl}prayer_letters?account_list_id=${this.api.account_list_id}&redirect_to=${this.$window.encodeURIComponent(config.baseUrl + 'preferences/integrations?selectedTab=prayerletters')}&access_token=${this.$window.localStorage.getItem('token')}`;
-        this.api.get(`account_lists/${this.api.account_list_id}/prayer_letters_account`).then((data) => {
+        return this.api.get({
+            url: `account_lists/${this.api.account_list_id}/prayer_letters_account`,
+            overridePromise: true
+        }).then((data) => {
             this.$log.debug(`account_lists/${this.api.account_list_id}/prayer_letters_account`, data);
             this.data = data;
-        }, () => {
+        }).catch(() => {
             this.data = null;
         });
     }

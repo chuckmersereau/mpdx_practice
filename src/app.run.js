@@ -13,7 +13,7 @@ export default function appRun(
         to: (state) => state.name !== 'login' && state.name !== 'auth' && state.name !== 'acceptInvite'
     }, (trans) => {
         if (!authManager.isAuthenticated()) {
-            return;
+            return trans.router.stateService.target('login');
         }
         block.start();
         const users = trans.injector().get('users');
