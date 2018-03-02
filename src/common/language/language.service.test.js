@@ -49,5 +49,10 @@ describe('common.language', () => {
             expect(gettextCatalog.loadRemote).toHaveBeenCalledWith('locale/pt-BR-undefined.json');
             expect(gettextCatalog.setCurrentLanguage).toHaveBeenCalledWith('pt_br');
         });
+        it('should handle nl-nl', () => {
+            language.change('nl-nl');
+            expect(gettextCatalog.loadRemote).toHaveBeenCalledWith('locale/nl-NL-undefined.json');
+            expect(gettextCatalog.setCurrentLanguage).toHaveBeenCalledWith('nl_nl');
+        });
     });
 });
