@@ -300,7 +300,7 @@ class ContactsService {
             include: 'people,people.email_addresses',
             fields: {
                 contact: 'people',
-                people: 'deceased,email_addresses',
+                people: 'deceased,email_addresses,optout_enewsletter',
                 email_addresses: 'email,primary'
             },
             per_page: 25000
@@ -316,7 +316,7 @@ class ContactsService {
         const findPrimary = find({ primary: true });
         const getEmailFromPrimary = flow(findPrimary, getEmail);
         return map((person) => {
-            return person.deceased ? null : getEmailFromPrimary(person.email_addresses);
+            return person.deceased || person.optout_enewsletter ? null : getEmailFromPrimary(person.email_addresses);
         }, data);
     }
 }

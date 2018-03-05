@@ -230,7 +230,7 @@ describe('contacts.service', () => {
                 include: 'people,people.email_addresses',
                 fields: {
                     contact: 'people',
-                    people: 'deceased,email_addresses',
+                    people: 'deceased,email_addresses,optout_enewsletter',
                     email_addresses: 'email,primary'
                 },
                 per_page: 25000
@@ -246,13 +246,13 @@ describe('contacts.service', () => {
 
     describe('mapEmails', () => {
         const data = [
-            { people: [{ email_addresses: [{ primary: true, email: 'a' }] }] },
+            { people: [{ optout_enewsletter: true, email_addresses: [{ primary: true, email: 'a' }] }] },
             { people: [{ email_addresses: [{ email: 'b' }] }] },
             { people: [{ deceased: true, email_addresses: [{ primary: true, email: 'b' }] }] },
             { people: [{ email_addresses: [{ email: 'c' }, { email: 'd', primary: true }] }] }
         ];
         it('should map primary emails from contacts', () => {
-            expect(contacts.mapEmails(data)).toEqual('a,d');
+            expect(contacts.mapEmails(data)).toEqual('d');
         });
     });
 });
