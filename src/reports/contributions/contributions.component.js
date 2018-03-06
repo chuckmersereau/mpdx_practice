@@ -97,18 +97,16 @@ class ContributionsController {
         }, [], data.currency_groups);
     }
     getDonorTotals(value, donors, months) {
-        const sumColumn = (column, donors) =>
-            sumBy((donor) => donor.monthlyDonations[column].convertedTotal, donors);
-        const sumAverages = (donors) =>
-            sumBy((donor) => parseInt(defaultTo(0, donor.average)), donors);
-        const sumMins = (donors) =>
-            sumBy((donor) => parseInt(defaultTo(0, donor.minimum)), donors);
-        const sumMaxes = (donors) =>
-            sumBy((donor) => parseInt(defaultTo(0, donor.maximum)), donors);
+        const sumConvertedMonths
+            = (column, donors) => sumBy((donor) => donor.monthlyDonations[column].convertedTotal, donors);
+        const sumMonths
+            = (column, donors) => sumBy((donor) => donor.monthlyDonations[column].total, donors);
+        const sumAverages = (donors) => sumBy((donor) => parseInt(defaultTo(0, donor.average)), donors);
+        const sumMins = (donors) => sumBy((donor) => parseInt(defaultTo(0, donor.minimum)), donors);
+        const sumMaxes = (donors) => sumBy((donor) => parseInt(defaultTo(0, donor.maximum)), donors);
         return assign(value.totals, {
-            months: times((index) =>
-                sumColumn(index, donors)
-                , months.length),
+            months: times((index) => sumMonths(index, donors), months.length),
+            convertedMonths: times((index) => sumConvertedMonths(index, donors), months.length),
             average: sumAverages(donors),
             minimum: sumMins(donors),
             maximum: sumMaxes(donors)
