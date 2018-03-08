@@ -64,8 +64,8 @@ describe('contacts.service', () => {
                     include: 'addresses,donor_accounts,primary_person,contact_referrals_to_me',
                     fields: {
                         contacts: 'avatar,church_name,envelope_greeting,greeting,last_donation,lifetime_donations,'
-                                  + 'likely_to_give,locale,magazine,name,no_appeals,notes,notes_saved_at,pledge_amount,'
-                                  + 'pledge_currency,pledge_currency_symbol,pledge_frequency,pledge_received,'
+                                  + 'likely_to_give,locale,magazine,name,next_ask,no_appeals,notes,notes_saved_at,'
+                                  + 'pledge_amount,pledge_currency,pledge_currency_symbol,pledge_frequency,pledge_received,'
                                   + 'pledge_start_date,send_newsletter,square_avatar,status,status_valid,suggested_changes,'
                                   + 'tag_list,timezone,website,addresses,contact_referrals_by_me,contact_referrals_to_me,'
                                   + 'contacts_that_referred_me,donor_accounts,primary_person,no_gift_aid,timezone',
