@@ -22,7 +22,7 @@ import uuid from 'uuid/v1';
 class AppealController {
     constructor(
         $log, $q, $rootScope, $state, $stateParams, blockUI, gettext,
-        alerts, api, appealsShow, contacts, donations, exportContacts, mailchimp, modal, serverConstants, tasks, users
+        alerts, api, appealsShow, contacts, donations, exportContacts, mailchimp, modal, serverConstants, tasks
     ) {
         this.$log = $log;
         this.$q = $q;
@@ -41,7 +41,6 @@ class AppealController {
         this.moment = moment;
         this.serverConstants = serverConstants;
         this.tasks = tasks;
-        this.users = users;
 
         this.appeal = null;
         this.blockUIGiven = blockUI.instances.get('appealShow');
