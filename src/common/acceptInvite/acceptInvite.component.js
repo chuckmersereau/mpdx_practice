@@ -35,7 +35,7 @@ class AcceptInviteController {
             });
         } else {
             return Promise.reject().catch((err) => {
-                this.alerts.addAlert(errorMessage, 'danger', null, 10);
+                this.alerts.addAlert(errorMessage, 'danger', 10);
                 this.$state.go('home');
                 throw err;
             });

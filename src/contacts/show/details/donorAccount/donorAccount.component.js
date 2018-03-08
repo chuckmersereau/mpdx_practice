@@ -1,12 +1,12 @@
 class ContactDonorAccountController {
     constructor(
         gettext,
-        accounts, contacts, session
+        accounts, alerts, contacts
     ) {
         this.accounts = accounts;
+        this.alerts = alerts;
         this.contacts = contacts;
         this.gettext = gettext;
-        this.session = session;
     }
     remove() {
         this.donorAccount._destroy = '1';
@@ -15,9 +15,7 @@ class ContactDonorAccountController {
     save() {
         if (!this.accounts.current) {
             const message = this.gettext('A serious error has occurred. Please refresh your browser or try logging out.');
-            this.session.errors.push({
-                message: message
-            });
+            this.alerts.addAlert(message, 'danger');
             return;
         }
         if (this.donorAccount.account_number === '') {

@@ -165,7 +165,7 @@ describe('contacts.show.personModal.controller', () => {
             it('should add alert', () => {
                 $ctrl.activeTab = 'other';
                 $ctrl.changeTab(form, 'test');
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger', null, 5, true);
+                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger', 5);
             });
         });
     });

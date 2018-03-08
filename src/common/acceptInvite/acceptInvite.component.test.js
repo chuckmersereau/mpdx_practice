@@ -72,7 +72,7 @@ describe('common.acceptInvite.component', () => {
             $ctrl.$stateParams.code = '';
             $ctrl.$onInit().catch(() => {
                 expect(gettextCatalog.getString).toHaveBeenCalledWith('Unable to accept invite. Try asking the account holder to resend the invite.');
-                expect(alerts.addAlert).toHaveBeenCalledWith('Unable to accept invite. Try asking the account holder to resend the invite.', 'danger', null, 10);
+                expect(alerts.addAlert).toHaveBeenCalledWith('Unable to accept invite. Try asking the account holder to resend the invite.', 'danger', 10);
                 done();
             });
         });

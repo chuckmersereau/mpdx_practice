@@ -74,7 +74,7 @@ class PersonModalController {
         if (form.$valid) {
             this.activeTab = tab;
         } else {
-            this.alerts.addAlert(this.gettextCatalog.getString('Please complete required fields before changing tabs'), 'danger', null, 5, true);
+            this.alerts.addAlert(this.gettextCatalog.getString('Please complete required fields before changing tabs'), 'danger', 5);
         }
     }
     remove(property, index) {
