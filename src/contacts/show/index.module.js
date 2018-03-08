@@ -1,4 +1,4 @@
-import address from './address/index.module';
+import addresses from './addresses/addresses.component';
 import component from './show.component';
 import details from './details/index.module';
 import info from './info/info.component';
@@ -9,7 +9,7 @@ import referrals from './referrals/index.module';
 import tasks from './tasks/tasks.component';
 
 export default angular.module('mpdx.contacts.show', [
-    address,
+    addresses,
     component,
     details,
     info,

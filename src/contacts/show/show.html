@@ -1,64 +1,27 @@
 <div block-ui="contactShow" class="contact-show">
-    <div class="contact-actions">
-        <div class="btn-group">
-            <a class="btn btn-default" ng-click="$ctrl.contacts.openAddReferralsModal()">
-                <i class="fas fa-users"></i>
-                <translate>Add Referrals</translate>
-            </a>
-            <a class="btn btn-default" ng-click="$ctrl.openAddTaskModal()">
-                <i class="far fa-square"></i>
-                <translate>Add Task</translate>
-            </a>
-            <a class="btn btn-default" ng-click="$ctrl.tasks.logModal([$ctrl.contacts.current.id])">
-                <i class="far fa-check-square"></i>
-                <translate>Log Task</translate>
-            </a>
-            <a class="btn btn-default" ng-click="$ctrl.hideContact()" ng-hide="$ctrl.contacts.current.status == 'Never Ask'">
-                <i class="fas fa-eye-slash"></i>
-                <translate>Hide Contact</translate>
-            </a>
-            <a class="btn btn-default visible-sm visible-xs"
-               ng-class="{ 'btn-reverse' : $ctrl.session.showFiltersOnMobile }"
-               ng-click="$ctrl.session.showFiltersOnMobile = !$ctrl.session.showFiltersOnMobile">
-                <i class="fas fa-sliders"></i>
-                <translate>Filters</translate>
-            </a>
-        </div>
-        <a class="btn btn-reverse pull-right" ng-click="$ctrl.displayNotes()">
-            <i class="far fa-sticky-note"></i>
-            <translate>See Notes</translate>
-        </a>
-    </div>
-    <div class="contact-card">
-        <avatar src="$ctrl.contacts.current.square_avatar"></avatar>
-        <div class="avatar-on-left">
-            <contact-info contact="$ctrl.contacts.current" on-save="$ctrl.save()"></contact-info>
-        </div>
-        <div class="contacts-gray-line"></div>
-        <div>
-            <contact-people contact="$ctrl.contacts.current" on-primary="$ctrl.onPrimary($personId)"></contact-people>
-        </div>
-        <div id="contact-tabs" class="horizontal-tab-sortable">
+    <contact-info contact="$ctrl.contacts.current" on-save="$ctrl.save()"></contact-info>
+    <div id="contact-tabs">
+        <div class="horizontal-tab-sortable">
             <div class="sortable-row left-tabs" as-sortable="$ctrl.sortableOptions" data-ng-model="$ctrl.tabsLabels">
-                <div ng-repeat="item in $ctrl.tabsLabels" as-sortable-item ng-class="{'active-item': $ctrl.contacts.activeTab === item.key}">
-                    <a as-sortable-item-handle ng-click="$ctrl.setActiveTab(item.key)">{{ item.value | translate }}</a>
+                <div ng-repeat="item in $ctrl.tabsLabels"
+                     as-sortable-item
+                     class="contact-tab-{{item.key}} as-sortable-item"
+                     ng-class="{'active-item': $ctrl.contacts.activeTab === item.key}">
+                    <span as-sortable-item-handle>
+                        <a ng-click="$ctrl.setActiveTab(item.key)">{{ item.value | translate }}</a>
+                    </span>
                 </div>
             </div>
-            <div class="tabs-info">
-                <a class="tip"
-                   data-trigger="hover"
-                   data-title="{{ 'You can reorder these tabs to your liking! Just Drag them left or right.' | translate }}"
-                   data-placement="left"
-                   bs-tooltip>
-                    <i class="fas fa-question-circle"></i>
-                </a>
-            </div>
         </div>
-        <ui-view>
-            <contact-details contact="$ctrl.contacts.current"
-                             donor-accounts="$ctrl.contacts.current.donor_accounts"
-                             on-save="$ctrl.save()">
-            </contact-details>
-        </ui-view>
+        <div class="tab-content">
+            <ui-view>
+                <donations in-contact="true"></donations>
+            </ui-view>
+        </div>
     </div>
+    <contact-details class="side-bar"
+                     contact="$ctrl.contacts.current"
+                     donor-accounts="$ctrl.contacts.current.donor_accounts"
+                     on-save="$ctrl.save()">
+    </contact-details>
 </div>

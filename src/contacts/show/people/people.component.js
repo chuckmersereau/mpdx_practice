@@ -109,8 +109,7 @@ const People = {
     controller: ContactPeopleController,
     template: require('./people.html'),
     bindings: {
-        contact: '<',
-        onPrimary: '&'
+        contact: '<'
     }
 };
 

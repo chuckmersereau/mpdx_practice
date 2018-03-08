@@ -34,6 +34,6 @@ const Address = {
 
 import contacts from 'contacts/contacts.service';
 
-export default angular.module('mpdx.contacts.show.address.component', [
+export default angular.module('mpdx.contacts.show.addresses.address.component', [
     contacts
 ]).component('contactAddress', Address).name;

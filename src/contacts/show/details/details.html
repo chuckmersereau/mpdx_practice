@@ -1,231 +1,180 @@
-<div class="row">
-    <div class="col-sm-8">
-        <div class="fieldset">
-            <h3 translate>Financial</h3>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="field">
-                        <h4 class="attribute-header" translate>Last Donation</h4>
-                        <div class="inline-input disabled">
-                            <input type="text" value="{{$ctrl.last_donation}}" readonly />
-                            <a class="tip"
-                               data-trigger="hover"
-                               data-content="{{ 'This field is updated live from donation services and cannot be edited directly here' | translate }}"
-                               data-placement="top" bs-popover>
-                                <i class="fas fa-lock"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <h4 class="attribute-header" translate>Giving Method</h4>
-                        <div class="inline-input disabled">
-                            <input type="text" value="{{$ctrl.giving_method}}" readonly />
-                            <a class="tip"
-                               data-trigger="hover"
-                               data-content="{{ 'This field is updated live from donation services and cannot be edited directly here' |  translate }}"
-                               data-placement="top" bs-popover>
-                                <i class="fas fa-lock"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="field">
-                        <h4 class="attribute-header" translate>Lifetime Donations</h4>
-                        <div class="inline-input disabled">
-                            <input type="text" value="{{$ctrl.lifetime_donations}}" readonly />
-                            <a class="tip"
-                               data-trigger="hover"
-                               data-content="{{ 'This field is updated live from donation services and cannot be edited directly here' | translate }}"
-                               data-placement="top" bs-popover>
-                                <i class="fas fa-lock"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="field" ng-if="$ctrl.showGiftAid()">
-                        <h4 class="attribute-header" translate>Gift Aid?</h4>
-                        <div class="inline-input">
-                            <select chosen
-                                    required
-                                    ng-change="$ctrl.save()"
-                                    ng-model-options="{ debounce: 1000 }"
-                                    disable-search="true"
-                                    data-placeholder-text-single="'Select an Option' | translate"
-                                    class="form-control"
-                                    ng-model="$ctrl.contact.no_gift_aid"
-                                    ng-options="o.key as o.value for o in $ctrl.translations.no_gift_aid">
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="fieldset">
-            <h3 translate>Communications</h3>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="field">
-                        <h4 class="attribute-header" translate>Referred By</h4>
-                        <div class="row">
-                            <div ng-class="{ 'col-sm-10': $ctrl.referrer, 'col-sm-12': !$ctrl.referrer }">
-                                <collection-selector item-name="{{ 'contact' | translate }}"
-                                                     display-text="$ctrl.referrerName"
-                                                     search="$ctrl.contacts.search(text)"
-                                                     select="$ctrl.onContactSelected(item)">
-                                </collection-selector>
-                            </div>
-                            <div class="col-sm-2" ng-if="$ctrl.referrer">
-                                <a class="btn btn-xs btn-danger" ng-click="$ctrl.removeReferrer()" title="{{ ::'Remove referrer' | translate }}">
-                                    <i class="far fa-trash trash"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="field">
-                        <h4 class="attribute-header" translate>Language</h4>
-                        <div class="inline-input">
-                            <select chosen
-                                    required
-                                    ng-change="$ctrl.saveWithEmptyCheck('locale')"
-                                    ng-model-options="{ debounce: 1000 }"
-                                    data-placeholder-text-single="'Select an Option' | translate"
-                                    class="form-control"
-                                    id="locale"
-                                    ng-options="option.alias as option.value for option in $ctrl.languages"
-                                    allow-single-deselect="true"
-                                    ng-model="$ctrl.contact.locale" >
-                                <option value=""></option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="field">
-                        <h4 class="attribute-header" translate>Send Appeals?</h4>
-                        <div class="inline-input">
-                            <select chosen
-                                    required
-                                    ng-change="$ctrl.save()"
-                                    ng-model-options="{ debounce: 1000 }"
-                                    disable-search="true"
-                                    data-placeholder-text-single="'Select an Option' | translate"
-                                    class="form-control"
-                                    ng-model="$ctrl.contact.no_appeals"
-                                    ng-options="o.key as o.value for o in $ctrl.translations.no_appeals">
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="field">
-                        <h4 class="attribute-header" translate>Timezone</h4>
-                        <div class="inline-input">
-                            <select chosen
-                                    required
-                                    ng-change="$ctrl.save()"
-                                    ng-model-options="{ debounce: 1000 }"
-                                    data-placeholder-text-single="'Select an Option' | translate"
-                                    class="form-control"
-                                    id="timezone"
-                                    ng-options="timeZone.key as timeZone.value for timeZone in $ctrl.timeZone.data"
-                                    allow-single-deselect="true"
-                                    ng-model="$ctrl.contact.timezone">
-                                <option value=""></option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<h3 translate>Contact Details</h3>
+<hr>
 
-        <div class="row fieldset">
-            <div class="col-sm-12 ">
-                <h4 class="attribute-header" translate>Tags</h4>
-                <div class="inline-input">
-                    <tag-selector ng-model="$ctrl.contact.tag_list"
-                                  tag-list="$ctrl.contactsTags.data"
-                                  on-tag-added="$ctrl.save()"
-                                  on-tag-removed="$ctrl.save()">
-                    </tag-selector>
-                </div>
-            </div>
-        </div>
-
-        <div class="fieldset">
-            <h3 translate>Other Details</h3>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="field">
-                        <h4 class="attribute-header" translate>Church</h4>
-                        <div class="inline-input">
-                            <input type="text" ng-model="$ctrl.contact.church_name" ng-model-options="{ debounce: 1000 }" ng-change="$ctrl.save()">
-                        </div>
-                    </div>
-                    <div class="field">
-                        <h4 class="attribute-header" translate>Website</h4>
-                        <div class="inline-input">
-                            <input type="text" ng-model="$ctrl.contact.website" ng-model-options="{ debounce: 1000 }" ng-change="$ctrl.save()">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="field">
-                        <h4 class="attribute-header" translate>Magazine</h4>
-                        <div class="inline-input disabled">
-                            <select chosen
-                                    ng-change="$ctrl.save()"
-                                    ng-model-options="{ debounce: 1000 }"
-                                    disable-search="true"
-                                    class="form-control"
-                                    id="magazine"
-                                    ng-model="$ctrl.contact.magazine"
-                                    ng-options="o.key as o.value for o in $ctrl.translations.magazine">
-                            </select>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <h4 class="attribute-header" translate>Next Ask</h4>
-                        <div class="inline-input">
-                            <input bs-datepicker
-                                   type="text"
-                                   ng-model="$ctrl.contact.next_ask"
-                                   ng-change="$ctrl.save()"
-                                   ng-model-options="{ debounce: 1000 }"
-                                   data-autoclose="true"
-                                   data-date-type="string"
-                                   data-date-format="{{$ctrl.locale.dateTimeFormat}}"
-                                   data-model-date-format="yyyy-MM-dd">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<h5 translate>Financial</h5>
+<div class="financial">
+    <div>
+        <label translate>Last Donation</label>
+        <div>{{$ctrl.last_donation}}</div>
     </div>
-    <div class="col-sm-4">
-        <div class="fieldset">
-            <h3 translate>Partner Accounts</h3>
-            <contact-donor-account ng-repeat="donorAccount in $ctrl.contact.donor_accounts"
-                                   contact="$ctrl.contact"
-                                   donor-account="donorAccount"
-                                   on-save="$ctrl.onSave()"></contact-donor-account>
-            <div class="add-partner-account">
-                <button type="button" class="btn btn-primary" ng-click="$ctrl.addPartnerAccount()">
-                    <i class="fas fa-plus-circle"></i> <translate>Add Partner Account</translate>
-                </button>
-            </div>
-        </div>
-        <div class="fieldset">
-            <h3 translate>Addresses</h3>
-            <div ng-repeat="address in $ctrl.contact.addresses track by address.id">
-                <contact-address address="address" contact="$ctrl.contact" on-primary="$ctrl.onAddressPrimary(address.id)"></contact-address>
-            </div>
-            <button type="button" class="btn btn-primary" ng-click="$ctrl.contacts.openAddressModal($ctrl.contact)">
-                <i class="fas fa-plus-circle"></i> <translate>Add Address</translate>
-            </button>
+    <div>
+        <label translate>Giving Method</label>
+        <div>{{$ctrl.giving_method}}</div>
+    </div>
+    <div>
+        <label translate>Lifetime Donations</label>
+        <div>{{$ctrl.lifetime_donations}}</div>
+    </div>
+    <div ng-if="$ctrl.showGiftAid()">
+        <label translate>Gift Aid?</label>
+        <div class="inline-input">
+            <select chosen
+                    required
+                    ng-change="$ctrl.save()"
+                    ng-model-options="{ debounce: 1000 }"
+                    disable-search="true"
+                    data-placeholder-text-single="'Select an Option' | translate"
+                    class="form-control"
+                    ng-model="$ctrl.contact.no_gift_aid"
+                    ng-options="o.key as o.value for o in $ctrl.translations.no_gift_aid">
+            </select>
         </div>
     </div>
 </div>
+
+<h5 translate>Communications</h5>
+<div class="communication">
+    <div>
+        <label translate>Referred By</label>
+        <div class="collection-selector">
+            <collection-selector item-name="{{ 'contact' | translate }}"
+                                 display-text="$ctrl.referrerName"
+                                 search="$ctrl.contacts.search(text)"
+                                 select="$ctrl.onContactSelected(item)">
+            </collection-selector>
+            <div>
+                <a class="btn btn-xs btn-danger"
+                   ng-if="$ctrl.referrer"
+                   ng-click="$ctrl.removeReferrer()"
+                   title="{{ ::'Remove referrer' | translate }}">
+                    <i class="far fa-trash trash"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div>
+        <label translate>Send Appeals?</label>
+        <div class="inline-input">
+            <select chosen
+                    required
+                    ng-change="$ctrl.save()"
+                    ng-model-options="{ debounce: 1000 }"
+                    disable-search="true"
+                    data-placeholder-text-single="'Select an Option' | translate"
+                    class="form-control"
+                    ng-model="$ctrl.contact.no_appeals"
+                    ng-options="o.key as o.value for o in $ctrl.translations.no_appeals">
+            </select>
+        </div>
+    </div>
+    <div>
+        <label translate>Language</label>
+        <div class="inline-input">
+            <select chosen
+                    required
+                    ng-change="$ctrl.saveWithEmptyCheck('locale')"
+                    ng-model-options="{ debounce: 1000 }"
+                    data-placeholder-text-single="'Select an Option' | translate"
+                    class="form-control"
+                    id="locale"
+                    ng-options="option.alias as option.value for option in $ctrl.languages"
+                    allow-single-deselect="true"
+                    ng-model="$ctrl.contact.locale" >
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div>
+        <label translate>Timezone</label>
+        <div class="inline-input">
+            <select chosen
+                    required
+                    ng-change="$ctrl.save()"
+                    ng-model-options="{ debounce: 1000 }"
+                    data-placeholder-text-single="'Select an Option' | translate"
+                    class="form-control"
+                    id="timezone"
+                    ng-options="timeZone.key as timeZone.value for timeZone in $ctrl.timeZone.data"
+                    allow-single-deselect="true"
+                    ng-model="$ctrl.contact.timezone">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="tags">
+        <label translate>Tags</label>
+        <div class="inline-input">
+            <tag-selector ng-model="$ctrl.contact.tag_list"
+                          tag-list="$ctrl.contactsTags.data"
+                          on-tag-added="$ctrl.save()"
+                          on-tag-removed="$ctrl.save()">
+            </tag-selector>
+        </div>
+    </div>
+</div>
+
+<h5 translate>Other Details</h5>
+<div class="other">
+    <div>
+        <label translate>Church</label>
+        <div class="inline-input">
+            <input type="text"
+                   ng-model="$ctrl.contact.church_name"
+                   ng-model-options="{ debounce: 1000 }"
+                   ng-change="$ctrl.save()">
+        </div>
+    </div>
+    <div>
+        <label translate>Next Ask</label>
+        <div class="inline-input">
+            <input bs-datepicker
+                   type="text"
+                   ng-model="$ctrl.contact.next_ask"
+                   ng-change="$ctrl.save()"
+                   ng-model-options="{ debounce: 1000 }"
+                   data-autoclose="true"
+                   data-date-type="string"
+                   data-date-format="{{$ctrl.locale.dateTimeFormat}}"
+                   data-model-date-format="yyyy-MM-dd">
+        </div>
+    </div>
+    <div>
+        <label translate>Website</label>
+        <div class="inline-input">
+            <input type="text"
+                   ng-model="$ctrl.contact.website"
+                   ng-model-options="{ debounce: 1000 }"
+                   ng-change="$ctrl.save()">
+        </div>
+    </div>
+    <div>
+        <label translate>Magazine</label>
+        <div class="inline-input disabled">
+            <select chosen
+                    ng-change="$ctrl.save()"
+                    ng-model-options="{ debounce: 1000 }"
+                    disable-search="true"
+                    class="form-control"
+                    id="magazine"
+                    ng-model="$ctrl.contact.magazine"
+                    ng-options="o.key as o.value for o in $ctrl.translations.magazine">
+            </select>
+        </div>
+    </div>
+</div>
+
+<div class="partner-accounts">
+    <h5 translate>Partner Accounts</h5>
+    <div>
+        <button type="button" class="btn btn-primary" ng-click="$ctrl.addPartnerAccount()">
+            <i class="fas fa-plus-circle"></i> <translate>Add Partner Account</translate>
+        </button>
+    </div>
+</div>
+<contact-donor-account ng-repeat="donorAccount in $ctrl.contact.donor_accounts"
+                       contact="$ctrl.contact"
+                       donor-account="donorAccount"
+                       on-save="$ctrl.onSave()"></contact-donor-account>
+
+
+

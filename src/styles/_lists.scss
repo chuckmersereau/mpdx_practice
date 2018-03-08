@@ -34,23 +34,6 @@
         padding-top: 5px;
         > div.filters {
             font-size: 16px;
-            .tags > .tag {
-                background-color: $filter-bar-bg-color;
-                &.reverse {
-                    background-color: $filter-reverse-color;
-                }
-                > span.tag-text {
-                    > span.title {
-                        font-weight: normal;
-                    }
-                    height: 15px;
-                    display: inline-block;
-                    white-space: nowrap;
-                    max-width: 300px;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                }
-            }
         }
     }
     &.content {

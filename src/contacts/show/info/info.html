@@ -1,163 +1,176 @@
-<div>
+<div class="header">
+    <avatar src="$ctrl.contacts.current.square_avatar"></avatar>
     <div class="inline-input header">
         <input type="text"
                ng-change="$ctrl.save()"
                ng-model="$ctrl.contact.name"
                ng-model-options="{ debounce: 1000 }" />
     </div>
-    <div class="row fieldset">
-        <div class="col-sm-6 ">
-            <h4 class="attribute-header" translate>Envelope Name Line</h4>
-            <div class="inline-input">
-                <input type="text" ng-model="$ctrl.contact.envelope_greeting"
-                       placeholder="{{ 'Mr. J Smith' | translate }}"
-                       ng-change="$ctrl.save()"
-                       ng-model-options="{ debounce: 1000 }">
-            </div>
-        </div>
-        <div class="col-sm-6 ">
-            <h4 class="attribute-header" translate>Greeting (used in export)</h4>
-            <div class="inline-input">
-                <input type="text"
-                       ng-model="$ctrl.contact.greeting"
-                       ng-change="$ctrl.save()"
-                       ng-model-options="{ debounce: 1000 }">
-            </div>
-        </div>
-    </div>
-
-    <div class="row fieldset">
-        <div class="col-sm-4 ">
-            <h4 class="attribute-header" translate>Newsletter</h4>
-            <div class="inline-input">
-                <select chosen
-                        required
-                        ng-change="$ctrl.saveWithEmptyCheck('send_newsletter')"
-                        ng-model-options="{ debounce: 1000 }"
-                        disable-search="true"
-                        data-placeholder-text-single="'Select an Option' | translate"
-                        allow-single-deselect="true"
-                        class="form-control"
-                        id="send_newsletter"
-                        ng-options="opt.id as opt.value for opt in $ctrl.serverConstants.data.assignable_send_newsletter_hashes"
-                        ng-model="$ctrl.contact.send_newsletter">
-                    <option value=""></option>
-                </select>
-            </div>
-        </div>
-        <div class="col-sm-4 ">
-            <h4 class="attribute-header" translate>Status</h4>
-            <div class="inline-input">
-                <select chosen
-                        required
-                        ng-change="$ctrl.save()"
-                        ng-model-options="{ debounce: 1000 }"
-                        disable-search="true"
-                        data-placeholder-text-single="'Select an Option' | translate"
-                        class="form-control"
-                        id="status"
-                        ng-options="opt.id as opt.value for opt in $ctrl.serverConstants.data.status_hashes"
-                        ng-model="$ctrl.contact.status">
-                    <option value=""></option>
-                </select>
-            </div>
-        </div>
-        <div class="col-sm-4 ">
-            <h4 class="attribute-header" translate>Likely to Give</h4>
-            <div class="inline-input">
-                <select chosen
-                        required
-                        ng-change="$ctrl.saveWithEmptyCheck('likely_to_give')"
-                        ng-model-options="{ debounce: 1000 }"
-                        disable-search="true"
-                        data-placeholder-text-single="'Select an Option' | translate"
-                        class="form-control"
-                        id="likely_to_give"
-                        allow-single-deselect="true"
-                        ng-options="opt.id as opt.value for opt in $ctrl.serverConstants.data.assignable_likely_to_give_hashes"
-                        ng-model="$ctrl.contact.likely_to_give">
-                    <option value=""></option>
-                </select>
-            </div>
+    <div class="contact-actions">
+        <div class="btn-group">
+            <a class="btn btn-default" ng-click="$ctrl.contacts.openAddReferralsModal()">
+                <translate>Add Referrals</translate>
+            </a>
+            <a class="btn btn-default" ng-click="$ctrl.openAddTaskModal()">
+                <translate>Add Task</translate>
+            </a>
+            <a class="btn btn-default" ng-click="$ctrl.tasks.logModal([$ctrl.contacts.current.id])">
+                <translate>Log Task</translate>
+            </a>
+            <a class="btn btn-default"
+               ng-click="$ctrl.hideContact()"
+               ng-hide="$ctrl.contacts.current.status == 'Never Ask'">
+                <translate>Hide Contact</translate>
+            </a>
+            <a class="btn btn-default visible-sm visible-xs"
+               ng-class="{ 'btn-reverse' : $ctrl.session.showFiltersOnMobile }"
+               ng-click="$ctrl.session.showFiltersOnMobile = !$ctrl.session.showFiltersOnMobile">
+                <i class="fas fa-sliders"></i>
+                <translate>Filters</translate>
+            </a>
         </div>
     </div>
-    <div class="row fieldset">
-        <div class="col-sm-4 ">
-            <h4 class="attribute-header" translate>Commitment</h4>
-            <div class="inline-input">
-                <input type="number"
-                       step="0.01"
-                       ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"
-                       ng-model="$ctrl.contact.pledge_amount"
-                       ng-change="$ctrl.save()"
-                       ng-model-options="{ debounce: 1000 }" />
-            </div>
-        </div>
-        <div class="col-sm-4 ">
-            <h4 class="attribute-header" translate>Currency</h4>
-            <div class="inline-input">
-                <select chosen
-                        required
-                        ng-change="$ctrl.save()"
-                        ng-model-options="{ debounce: 1000 }"
-                        class="form-control"
-                        data-placeholder-text-single="'Select an Option' | translate"
-                        id="pledge_currency"
-                        ng-options="pc.code as pc.code_symbol_string for pc in $ctrl.serverConstants.data.pledge_currencies"
-                        ng-model="$ctrl.contact.pledge_currency">
-                    <option value=""></option>
-                </select>
-            </div>
-        </div>
-        <div class="col-sm-4 ">
-            <h4 class="attribute-header" translate>Freq.</h4>
-            <div class="inline-input">
-                <select chosen
-                        ng-change="$ctrl.save()"
-                        ng-model-options="{ debounce: 1000 }"
-                        disable-search="true"
-                        data-placeholder-text-single="'Select an Option' | translate"
-                        class="form-control"
-                        allow-single-deselect="true"
-                        id="pledge_frequency"
-                        ng-options="opt.key as opt.value for opt in $ctrl.serverConstants.data.pledge_frequency_hashes"
-                        ng-model="$ctrl.contact.pledge_frequency">
-                    <option value=""></option>
-                </select>
-            </div>
-        </div>
+</div>
+<div class="content">
+    <div class="envelope-name">
+        <label translate>Envelope Name Line</label>
+        <input type="text" ng-model="$ctrl.contact.envelope_greeting"
+               placeholder="{{ 'Mr. J Smith' | translate }}"
+               ng-change="$ctrl.save()"
+               ng-model-options="{ debounce: 1000 }">
+    </div>
+    <div class="greeting">
+        <label translate>Greeting (used in export)</label>
+        <input type="text"
+               ng-model="$ctrl.contact.greeting"
+               ng-change="$ctrl.save()"
+               ng-model-options="{ debounce: 1000 }">
+    </div>
+    <div></div>
+    <div class="address">
+        <label translate>Primary Address</label>
+        <address ng-repeat="address in ::$ctrl.contact.addresses track by address.id"
+                 ng-if="::address.primary_mailing_address">
+                    <span class="address-street">
+                    <span ng-if="::address.street">{{::address.street}}</span>
+                        <span ng-if="::address.city">{{::address.city}},</span>
+                        {{::address.state}}
+                        {{::address.postal_code}}
+                    </span>
+        </address>
     </div>
 
-    <div class="row fieldset">
-        <div class="col-sm-6 ">
-            <h4 class="attribute-header" translate>Commitment Received</h4>
-            <div class="inline-input">
-                <select chosen
-                        disable-search="true"
-                        data-placeholder-text-single="'Select an Option' | translate"
-                        class="form-control"
-                        id="pledge_received"
-                        ng-change="$ctrl.save()"
-                        ng-model-options="{ debounce: 1000 }"
-                        ng-options="o.key as o.value for o in $ctrl.translations.pledge_received"
-                        ng-model="$ctrl.contact.pledge_received">
-                    <option value=""></option>
-                </select>
-            </div>
-        </div>
+    <div class="status">
+        <label translate>Status</label>
+        <select chosen
+                required
+                ng-change="$ctrl.save()"
+                ng-model-options="{ debounce: 1000 }"
+                disable-search="true"
+                data-placeholder-text-single="'Select an Option' | translate"
+                class="form-control"
+                id="status"
+                ng-options="opt.id as opt.value for opt in $ctrl.serverConstants.data.status_hashes"
+                ng-model="$ctrl.contact.status">
+            <option value=""></option>
+        </select>
+    </div>
+    <div class="newsletter">
+        <label translate>Newsletter</label>
+        <select chosen
+                required
+                ng-change="$ctrl.saveWithEmptyCheck('send_newsletter')"
+                ng-model-options="{ debounce: 1000 }"
+                disable-search="true"
+                data-placeholder-text-single="'Select an Option' | translate"
+                allow-single-deselect="true"
+                class="form-control"
+                id="send_newsletter"
+                ng-options="opt.id as opt.value for opt in $ctrl.serverConstants.data.assignable_send_newsletter_hashes"
+                ng-model="$ctrl.contact.send_newsletter">
+            <option value=""></option>
+        </select>
+    </div>
+    <div class="commitment ">
+        <label translate>Commitment</label>
+        <input type="number"
+               step="0.01"
+               ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"
+               ng-model="$ctrl.contact.pledge_amount"
+               ng-change="$ctrl.save()"
+               ng-model-options="{ debounce: 1000 }" />
+    </div>
 
-        <div class="col-sm-6 ">
-            <h4 class="attribute-header" translate>Commitment Start Date</h4>
-            <div class="inline-input">
-                <input bs-datepicker
-                       type="text"
-                       ng-model="$ctrl.contact.pledge_start_date"
-                       ng-change="$ctrl.save()"
-                       data-autoclose="true"
-                       data-date-type="string"
-                       data-date-format="{{$ctrl.locale.dateTimeFormat}}"
-                       data-model-date-format="yyyy-MM-dd">
-            </div>
-        </div>
+    <div class="currency">
+        <label translate>Currency</label>
+        <select chosen
+                required
+                ng-change="$ctrl.save()"
+                ng-model-options="{ debounce: 1000 }"
+                class="form-control"
+                data-placeholder-text-single="'Select an Option' | translate"
+                id="pledge_currency"
+                ng-options="pc.code as pc.code_symbol_string for pc in $ctrl.serverConstants.data.pledge_currencies"
+                ng-model="$ctrl.contact.pledge_currency">
+            <option value=""></option>
+        </select>
+    </div>
+    <div class="frequency">
+        <label translate>Frequency</label>
+        <select chosen
+                ng-change="$ctrl.save()"
+                ng-model-options="{ debounce: 1000 }"
+                disable-search="true"
+                data-placeholder-text-single="'Select an Option' | translate"
+                class="form-control"
+                allow-single-deselect="true"
+                id="pledge_frequency"
+                ng-options="opt.key as opt.value for opt in $ctrl.serverConstants.data.pledge_frequency_hashes"
+                ng-model="$ctrl.contact.pledge_frequency">
+            <option value=""></option>
+        </select>
+    </div>
+    <div class="likely">
+        <label translate>Likely to Give</label>
+        <select chosen
+                required
+                ng-change="$ctrl.saveWithEmptyCheck('likely_to_give')"
+                ng-model-options="{ debounce: 1000 }"
+                disable-search="true"
+                data-placeholder-text-single="'Select an Option' | translate"
+                class="form-control"
+                id="likely_to_give"
+                allow-single-deselect="true"
+                ng-options="opt.id as opt.value for opt in $ctrl.serverConstants.data.assignable_likely_to_give_hashes"
+                ng-model="$ctrl.contact.likely_to_give">
+            <option value=""></option>
+        </select>
+    </div>
+
+
+    <div class="commitment-received">
+        <label translate>Commitment Received</label>
+        <select chosen
+                disable-search="true"
+                data-placeholder-text-single="'Select an Option' | translate"
+                class="form-control"
+                id="pledge_received"
+                ng-change="$ctrl.save()"
+                ng-model-options="{ debounce: 1000 }"
+                ng-options="o.key as o.value for o in $ctrl.translations.pledge_received"
+                ng-model="$ctrl.contact.pledge_received">
+            <option value=""></option>
+        </select>
+    </div>
+    <div class="commitment-start-date">
+        <label translate>Commitment Start Date</label>
+        <input bs-datepicker
+               type="text"
+               ng-model="$ctrl.contact.pledge_start_date"
+               ng-change="$ctrl.save()"
+               data-autoclose="true"
+               data-date-type="string"
+               data-date-format="{{$ctrl.locale.dateTimeFormat}}"
+               data-model-date-format="yyyy-MM-dd">
     </div>
 </div>

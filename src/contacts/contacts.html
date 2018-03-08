@@ -1,9 +1,4 @@
-<ul class="nav--secondary">
-    <li><a ui-sref="tools({setup: true})" translate>Import Contacts</a></li>
-    <li><a ui-sref="tools.merge.contacts" translate>Merge Contacts</a></li>
-    <li><a ui-sref="tools.merge.people" translate>Merge People</a></li>
-</ul>
-<contacts-sidebar ng-class="{ 'hide-small' : !$ctrl.session.showFiltersOnMobile }"></contacts-sidebar>
+<contacts-sidebar ng-class="{ 'hide-small' : !$ctrl.session.showFiltersOnMobile }" id="contactSidebarListParent"></contacts-sidebar>
 <ui-view>
     <contacts-list></contacts-list>
 </ui-view>

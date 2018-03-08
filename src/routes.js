@@ -75,7 +75,7 @@ export default class Routes {
         }).state({
             name: 'contacts.show',
             title: gettext('Contact'),
-            url: '/{contactId}?personId',
+            url: '/{contactId}?personId&drawer',
             component: 'contact',
             params: {
                 personId: null
@@ -98,9 +98,23 @@ export default class Routes {
                     })
             }
         }).state({
+            name: 'contacts.show.addresses',
+            title: gettext('Contact - Addresses'),
+            url: '/addresses',
+            component: 'contactAddresses'
+        }).state({
+            name: 'contacts.show.details',
+            title: gettext('Contact'),
+            url: '/details',
+            component: 'contactDetails',
+            resolve: {
+                contact: /* @ngInject*/ (contacts) => contacts.current,
+                donorAccounts: /* @ngInject*/ (contacts) => contacts.current.donor_accounts
+            }
+        }).state({
             name: 'contacts.show.donations',
             title: gettext('Contact - Donations'),
-            url: '/donations',
+            url: '/',
             component: 'donations',
             resolve: {
                 inContact: () => true
@@ -110,6 +124,11 @@ export default class Routes {
             title: gettext('Contact - Notes'),
             url: '/notes',
             component: 'contactNotes'
+        }).state({
+            name: 'contacts.show.people',
+            title: gettext('Contact - People'),
+            url: '/people',
+            component: 'contactPeople'
         }).state({
             name: 'contacts.show.recommendation',
             title: gettext('Contact - Recommendation'),

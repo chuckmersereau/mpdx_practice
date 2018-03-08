@@ -50,10 +50,13 @@ describe('contacts.show.component', () => {
     describe('$onDestroy', () => {
         it('should disable event', () => {
             $ctrl.watcher = () => {};
+            $ctrl.watcher2 = () => {};
             spyOn(state, 'go').and.callFake(() => {});
             spyOn($ctrl, 'watcher').and.callFake(() => {});
+            spyOn($ctrl, 'watcher2').and.callFake(() => {});
             $ctrl.$onDestroy();
             expect($ctrl.watcher).toHaveBeenCalled();
+            expect($ctrl.watcher2).toHaveBeenCalled();
             scope.$emit('accountListUpdated');
             scope.$digest();
             expect(state.go).not.toHaveBeenCalled();

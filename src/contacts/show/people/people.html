@@ -20,7 +20,13 @@
         <translate>Merge Selected People</translate>
     </a>
     &nbsp;
-    <a class="tip ng-scope" data-trigger="hover" data-content="{{ 'Select people to merge by tapping on the person.' | translate }}" data-placement="top" bs-popover=""><i class="fas fa-question-circle"></i></a>
+    <a class="tip ng-scope"
+       data-trigger="hover"
+       data-content="{{ 'Select people to merge by tapping on the person.' | translate }}"
+       data-placement="top"
+       bs-popover="">
+        <i class="fas fa-question-circle"></i>
+    </a>
 </div>
 <div class="blankslate mt-2" ng-if="$ctrl.data.length === 0 && !$ctrl.loading">
     <i class="fas fa-users blankslate-icon"></i>
@@ -32,10 +38,9 @@
         <contact-person is-merging="$ctrl.isMerging"
                         ng-repeat="person in $ctrl.data track by person.id"
                         ng-if="$index % 2 == remainder"
-                        contact="$ctrl.contact"
+                        contact="$ctrl.contacts.current"
                         person="person"
-                        on-select-person="$ctrl.selectPerson(person)"
-                        on-primary="$ctrl.onPrimary({$personId: $personId})">
+                        on-select-person="$ctrl.selectPerson(person)">
         </contact-person>
     </div>
 </div>

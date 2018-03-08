@@ -1,4 +1,4 @@
-import { assign, concat, defaultTo, eq, get, map, round, sumBy } from 'lodash/fp';
+import { assign, concat, defaultTo, get, map, round, sumBy } from 'lodash/fp';
 import uuid from 'uuid/v1';
 
 class ContactDetailsController {
@@ -140,27 +140,6 @@ class ContactDetailsController {
         return map((referee) => {
             return { id: referee.id, _destroy: 1 };
         }, referrals);
-    }
-    onAddressPrimary(addressId) {
-        /* istanbul ignore next */
-        this.$log.debug('change primary: ', addressId);
-        return this.modal.confirm(this.gettextCatalog.getString('This address will be used for your newsletters. Would you like to change to have this address as primary?')).then(() => {
-            const addresses = map((address) => {
-                address.primary_mailing_address = eq(address.id, addressId);
-                return address;
-            }, this.contact.addresses);
-            const addressPatch = map((address) => {
-                return { id: address.id, primary_mailing_address: address.primary_mailing_address };
-            }, addresses);
-            const successMessage = this.gettextCatalog.getString('Changes saved successfully.');
-            const errorMessage = this.gettextCatalog.getString('Unable to save changes.');
-
-            return this.contacts.save(
-                { id: this.contacts.current.id, addresses: addressPatch },
-                successMessage,
-                errorMessage
-            );
-        });
     }
     getName(id) {
         return this.api.get(`contacts/${id}`, {

@@ -8,7 +8,7 @@ import {
     reduce,
     reject
 } from 'lodash/fp';
-import createPatch from '../../../../common/fp/createPatch';
+import createPatch from 'common/fp/createPatch';
 
 class AddressModalController {
     constructor(
@@ -168,7 +168,7 @@ import ngmap from 'ngmap';
 import serverConstants from 'common/serverConstants/serverConstants.service';
 import users from 'common/users/users.service';
 
-export default angular.module('mpdx.contacts.show.address.modal.controller', [
+export default angular.module('mpdx.contacts.show.addresses.address.modal.controller', [
     gettextCatalog, ngmap,
     contacts, serverConstants, users
 ]).controller('addressModalController', AddressModalController).name;

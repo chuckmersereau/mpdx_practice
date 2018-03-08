@@ -215,7 +215,7 @@ class ContactsService {
         let promise = this.$q.defer();
 
         this.modal.open({
-            template: require('./show/address/modal/modal.html'),
+            template: require('./show/addresses/address/modal/modal.html'),
             controller: 'addressModalController',
             locals: {
                 contact: contact,

@@ -1,0 +1,9 @@
+<h3 translate>Addresses</h3>
+<div ng-repeat="address in $ctrl.contacts.current.addresses track by address.id">
+    <contact-address address="address"
+                     contact="$ctrl.contacts.current"
+                     on-primary="$ctrl.onAddressPrimary(address.id)"></contact-address>
+</div>
+<button type="button" class="btn btn-primary" ng-click="$ctrl.contacts.openAddressModal($ctrl.contact)">
+    <i class="fas fa-plus-circle"></i> <translate>Add Address</translate>
+</button>

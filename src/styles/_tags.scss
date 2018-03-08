@@ -1,6 +1,6 @@
-$tag-bgcolor: #317494;
+$tag-bgcolor: $color-primary;
 .bootstrap-tagsinput {
-    background-color: #fff;
+    background-color: $cru-white;
     border: 1px solid #ccc;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
     display: inline-block;
@@ -27,11 +27,11 @@ $tag-bgcolor: #317494;
 .tag [data-role="remove"], .tag_remove {
     margin-left: 2px;
     cursor: pointer;
-    color: #FFF;
+    color: $cru-white;
     &:after {
         content: "\f00d";
         font-family: "Font Awesome 5 Pro";
-        padding: 0px 0px;
+        padding: 0;
     }
     &:hover:active, &:after {
         opacity: .35;
@@ -62,6 +62,20 @@ $tag-bgcolor: #317494;
         display: inline-block;
         word-break: break-all;
         user-select: none;
+        &.reverse {
+            background-color: $filter-reverse-color;
+        }
+        > span.tag-text {
+            > span.title {
+                font-weight: normal;
+            }
+            height: 15px;
+            display: inline-block;
+            white-space: nowrap;
+            max-width: 145px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     }
 }
 
@@ -82,7 +96,7 @@ tags-input {
         }
         .tag-item {
             font-family: "Source Sans Pro", sans-serif;
-            background: #05699B;
+            background-color: $tag-bgcolor;
             border: 0;
             .remove-button {
                 color: #fff;

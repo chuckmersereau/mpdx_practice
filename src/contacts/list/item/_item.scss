@@ -27,13 +27,9 @@ contacts-list-item {
         }
         avatar {
             grid-column: 2;
-            .avatar {
+            .avatar, .avatar img {
                 width: 25px;
                 height: 25px;
-                img {
-                    width: 25px;
-                    height: 25px;
-                }
             }
         }
         .contact-details {
@@ -66,7 +62,7 @@ contacts-list-item {
                         line-height: 1.25em;
                         text-overflow: ellipsis;
                         height: 18px;
-                        display: inline-block;
+                        display: block;
                     }
                     .person-name {
                         margin-right: 10px;

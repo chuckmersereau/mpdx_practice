@@ -52,6 +52,9 @@ class ContactPersonController {
     updateAvatar(avatar) {
         return this.people.updateAvatar(this.person, avatar);
     }
+    onPrimary(personId) {
+        this.$rootScope.$emit('changePrimaryPerson', personId);
+    }
 }
 
 const Person = {
@@ -62,7 +65,6 @@ const Person = {
         person: '<',
         isMerging: '<',
         onSelectPerson: '&',
-        onPrimary: '&',
         userProfile: '@',
         view: '<'
     }

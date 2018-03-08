@@ -32,6 +32,8 @@ class ContactController {
         let tabsLabels = [
             { key: 'details', value: gettextCatalog.getString('Details') },
             { key: 'donations', value: gettextCatalog.getString('Donations') },
+            { key: 'addresses', value: gettextCatalog.getString('Addresses') },
+            { key: 'people', value: gettextCatalog.getString('People') },
             { key: 'tasks', value: gettextCatalog.getString('Tasks') },
             { key: 'referrals', value: gettextCatalog.getString('Referrals') },
             { key: 'notes', value: gettextCatalog.getString('Notes') }
@@ -54,10 +56,10 @@ class ContactController {
         }
 
         this.tabsLabels = tabsLabels;
-        this.contacts.activeTab = defaultTo(this.tabsLabels[0]['key'], this.$state.$current.name.split('.')[2], this.contacts.activeTab);
+        this.contacts.activeTab = defaultTo(this.tabsLabels[1]['key'], this.$state.$current.name.split('.')[3], this.contacts.activeTab);
 
-        if (this.contacts.activeTab !== 'details') {
-            this.$state.go(`contacts.show.${this.contacts.activeTab}`);
+        if (this.contacts.activeTab !== 'donations') {
+            this.$state.go(`contacts.show.views.${this.contacts.activeTab}`);
         }
 
         this.sortableOptions = {
@@ -100,8 +102,12 @@ class ContactController {
         ]);
     }
     $onInit() {
+        this.contacts.activeDrawer = defaultTo('details', this.contacts.activeDrawer);
         this.watcher = this.$rootScope.$on('accountListUpdated', () => {
             this.$state.go('contacts');
+        });
+        this.watcher2 = this.$rootScope.$on('changePrimaryPerson', (e, personId) => {
+            this.onPrimary(personId);
         });
     }
     $onChanges() {
@@ -110,6 +116,7 @@ class ContactController {
     }
     $onDestroy() {
         this.watcher();
+        this.watcher2();
     }
     save() {
         const source = angular.copy(this.contacts.current); // to avoid onChanges changes
@@ -152,11 +159,7 @@ class ContactController {
     }
     setActiveTab(tab) {
         this.contacts.activeTab = tab;
-        if (tab === 'details') {
-            this.$state.go('contacts.show');
-        } else {
-            this.$state.go(`contacts.show.${tab}`);
-        }
+        this.$state.go(`contacts.show.${tab}`);
     }
     showRecommendationTab() {
         return find((organizationAccount) => {

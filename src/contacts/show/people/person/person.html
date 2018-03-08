@@ -34,7 +34,7 @@
             </dd>
         </dl>
         <div class="primary-container" ng-if="::!$ctrl.userProfile">
-            <div class="primary-option" ng-click="$ctrl.onPrimary({$personId: $ctrl.person.id}); $event.stopPropagation()">
+            <div class="primary-option" ng-click="$ctrl.onPrimary($ctrl.person.id); $event.stopPropagation()">
                 <i class="far fa-square" ng-if="$ctrl.contact.primary_person.id !== $ctrl.person.id"></i>
                 <i class="far fa-check-square" ng-if="$ctrl.contact.primary_person.id === $ctrl.person.id"></i>
                 <translate>Primary</translate>

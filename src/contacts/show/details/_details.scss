@@ -1,4 +1,14 @@
 contact-details {
+    display: block;
+    height: 100%;
+    width: 100%;
+    h3 {
+        margin-top: 0;
+    }
+    h5 {
+        margin-top: 30px;
+        margin-bottom: 5px;
+    }
     .inline-input {
         tags-input {
             .tags {
@@ -13,6 +23,47 @@ contact-details {
             .autocomplete {
                 border-radius: 0;
             }
+        }
+    }
+    label {
+        @extend h4;
+        font-size: 12px;
+        margin-bottom: 3px;
+        text-transform: uppercase;
+        font-weight: bold;
+        color: #9B9B9B;
+    }
+    .financial {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .communication {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-column-gap: 20px;
+        > div.tags {
+            grid-column: 1 / span 2;
+        }
+        .collection-selector {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            grid-column-gap: 10px;
+        }
+    }
+    .other {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-column-gap: 20px;
+    }
+    .partner-accounts {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        margin-top: 30px;
+        h5 {
+            margin-top: 0;
+        }
+        > div {
+            justify-self: right;
         }
     }
 }
