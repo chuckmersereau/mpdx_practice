@@ -1,21 +1,19 @@
 import component from './merge.component';
 
 describe('preferences.accounts.merge.component', () => {
-    let $ctrl, accounts, api, rootScope, scope, componentController, alerts, gettextCatalog, users;
+    let $ctrl, accounts, api, rootScope, scope, componentController, gettextCatalog, users;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _accounts_, _api_, _alerts_, _gettextCatalog_, _users_) => {
+        inject(($componentController, $rootScope, _accounts_, _api_, _gettextCatalog_, _users_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             accounts = _accounts_;
-            alerts = _alerts_;
             api = _api_;
             users = _users_;
             gettextCatalog = _gettextCatalog_;
             componentController = $componentController;
             loadController();
         });
-        spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
 
@@ -42,21 +40,22 @@ describe('preferences.accounts.merge.component', () => {
         });
         it('should merge and account', () => {
             spyOn(api, 'post').and.callFake(() => Promise.resolve());
+            const successMessage = 'MPDX merged your account successfully';
+            const errorMessage = 'MPDX couldn\'t merge your account';
             $ctrl.merge();
-            expect(api.post).toHaveBeenCalledWith(`account_lists/${api.account_list_id}/merge`, { account_list_to_merge: { id: 123 } });
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(successMessage);
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
+            expect(api.post).toHaveBeenCalledWith(
+                `account_lists/${api.account_list_id}/merge`,
+                { account_list_to_merge: { id: 123 } },
+                successMessage,
+                errorMessage
+            );
         });
         it('should unset saving flag', (done) => {
             spyOn(api, 'post').and.callFake(() => Promise.resolve());
             $ctrl.merge().then(() => {
                 expect($ctrl.saving).toBeFalsy();
-                done();
-            });
-        });
-        it('should alert a translated confirmation', (done) => {
-            spyOn(api, 'post').and.callFake(() => Promise.resolve());
-            $ctrl.merge().then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'success');
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });
@@ -85,8 +84,6 @@ describe('preferences.accounts.merge.component', () => {
             spyOn(api, 'post').and.callFake(() => Promise.reject(Error('')));
             $ctrl.merge().catch(() => {
                 expect($ctrl.saving).toBeFalsy();
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });

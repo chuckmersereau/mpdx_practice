@@ -1,10 +1,9 @@
 class Appeals {
     constructor(
         gettext,
-        accounts, alerts, api
+        accounts, api
     ) {
         this.accounts = accounts;
-        this.alerts = alerts;
         this.api = api;
         this.gettext = gettext;
     }
@@ -26,20 +25,16 @@ class Appeals {
     }
     setPrimaryAppeal(appeal) {
         this.accounts.current.primary_appeal = { id: appeal.id };
-        return this.accounts.saveCurrent().then(() => {
-            this.alerts.addAlert(this.gettext('Appeal successfully set to primary'));
-        }).catch((ex) => {
-            this.alerts.addAlert(this.gettext('Unable to set Appeal as primary'), 'danger');
-            throw ex;
-        });
+        const successMessage = this.gettext('Appeal successfully set to primary');
+        const errorMessage = this.gettext('Unable to set Appeal as primary');
+        return this.accounts.saveCurrent(successMessage, errorMessage);
     }
 }
 
 import accounts from 'common/accounts/accounts.service';
-import alerts from 'common/alerts/alerts.service';
 import gettext from 'angular-gettext';
 
 export default angular.module('mpdx.tools.appeals.service', [
     gettext,
-    accounts, alerts
+    accounts
 ]).service('appeals', Appeals).name;

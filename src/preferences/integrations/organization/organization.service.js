@@ -17,14 +17,19 @@ class OrganizationService {
         this.data = {};
         this.state = 'disabled';
     }
-    save() {
-        this.api.put('user/organization_accounts', this.data).then((data) => {
+    save(successMessage, errorMessage) {
+        this.api.put('user/organization_accounts', this.data, successMessage, errorMessage).then((data) => {
             this.data.organization_accounts = data;
             return this.updateState();
         });
     }
-    disconnect(id) {
-        return this.api.delete({ url: `user/organization_accounts/${id}`, type: 'organization_accounts' });
+    disconnect(id, successMessage, errorMessage) {
+        return this.api.delete({
+            url: `user/organization_accounts/${id}`,
+            type: 'organization_accounts',
+            successMessage: successMessage,
+            errorMessage: errorMessage
+        });
     }
     updateState() {
         if (this.data.active) {
@@ -37,7 +42,7 @@ class OrganizationService {
             this.state = 'disabled';
         }
     }
-    createAccount(username, password, organizationId) {
+    createAccount(username, password, organizationId, successMessage, errorMessage) {
         let org = {
             organization: {
                 id: organizationId
@@ -52,9 +57,9 @@ class OrganizationService {
         if (password && password.length > 0) {
             org.password = password;
         }
-        return this.api.post('user/organization_accounts', org);
+        return this.api.post('user/organization_accounts', org, successMessage, errorMessage);
     }
-    updateAccount(username, password, accountId) {
+    updateAccount(username, password, accountId, successMessage, errorMessage) {
         return this.api.put({
             url: `user/organization_accounts/${accountId}`,
             data: {
@@ -62,7 +67,9 @@ class OrganizationService {
                 username: username,
                 password: password
             },
-            type: 'organization_accounts'
+            type: 'organization_accounts',
+            successMessage: successMessage,
+            errorMessage: errorMessage
         });
     }
     import(account) {

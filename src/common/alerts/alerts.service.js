@@ -1,32 +1,41 @@
-import { reject } from 'lodash/fp';
-import uuid from 'uuid/v1';
-
 class AlertsService {
     constructor(
-        $timeout
+        $q, toaster
     ) {
-        this.$timeout = $timeout;
-        this.data = [];
+        this.$q = $q;
+        this.toaster = toaster;
     }
-    addAlert(message, type = 'success', status = null, displayTime = 5, modal = false) {
+    addAlert(message, type = 'success', displayTime = 1.5, retryable = false) {
         if (!message) { return; }
+        let promise = this.$q.defer();
+        type = type === 'danger' ? 'error' : type; // fix for angularjs-toaster
 
-        const alert = {
-            id: uuid(),
-            displayTime: displayTime,
-            message: message,
-            status: status,
+        this.toaster.pop({
             type: type,
-            modal: modal
-        };
-
-        this.data.push(alert);
-
-        this.$timeout(() => {
-            this.data = reject({ id: alert.id }, this.data);
-        }, alert.displayTime * 1000);
+            body: 'alert-template',
+            bodyOutputType: 'directive',
+            directiveData: {
+                error: message,
+                retryable: retryable,
+                type: type
+            },
+            timeout: displayTime * 1000,
+            showCloseButton: true,
+            clickHandler: (toast, isCloseButton) => {
+                if (!isCloseButton) {
+                    promise.resolve();
+                }
+                return true;
+            },
+            onHideCallback: () => {
+                promise.reject();
+            }
+        });
+        return promise.promise;
     }
 }
 
-export default angular.module('mpdx.common.alerts.service', []
-).service('alerts', AlertsService).name;
+import 'angularjs-toaster';
+
+export default angular.module('mpdx.common.alerts.service', ['toaster'])
+    .service('alerts', AlertsService).name;

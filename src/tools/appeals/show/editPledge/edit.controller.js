@@ -2,12 +2,11 @@ class EditController {
     constructor(
         appealId, pledge,
         $rootScope, $scope, gettext,
-        alerts, api, locale, serverConstants
+        api, locale, serverConstants
     ) {
         this.$rootScope = $rootScope;
         this.$scope = $scope;
         this.api = api;
-        this.alerts = alerts;
         this.appealId = appealId;
         this.locale = locale;
         this.gettext = gettext;
@@ -21,6 +20,9 @@ class EditController {
         const status = this.received
             ? 'received_not_processed'
             : 'not_received';
+        const successMessage = this.gettext('Successfully edited commitment');
+        const errorMessage = this.gettext('Unable to edit commitment');
+
         return this.api.put(`account_lists/${this.api.account_list_id}/pledges/${this.pledge.id}`, {
             id: this.pledge.id,
             amount: this.pledge.amount,
@@ -32,17 +34,13 @@ class EditController {
             contact: {
                 id: this.pledge.contactId
             }
-        }).then(() => {
+        }, successMessage, errorMessage).then(() => {
             this.$rootScope.$emit('pledgeAdded');
-            this.alerts.addAlert(this.gettext('Successfully edited commitment'));
             this.$scope.$hide();
-        }).catch(() => {
-            this.alerts.addAlert(this.gettext('Unable to edit commitment'), 'danger');
         });
     }
 }
 
-import alerts from 'common/alerts/alerts.service';
 import api from 'common/api/api.service';
 import gettext from 'angular-gettext';
 import locale from 'common/locale/locale.service';
@@ -50,5 +48,5 @@ import serverConstants from 'common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.tools.appeals.show.editPledge.controller', [
     gettext,
-    alerts, api, locale, serverConstants
+    api, locale, serverConstants
 ]).controller('editPledgeController', EditController).name;

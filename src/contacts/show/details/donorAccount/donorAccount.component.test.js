@@ -13,7 +13,7 @@ describe('contacts.show.details.donorAccount.component', () => {
             loadController();
         });
         spyOn($ctrl, 'gettext').and.callFake(() => 'a');
-        spyOn(alerts, 'addAlert').and.callFake((data) => data);
+        spyOn(alerts, 'addAlert').and.callFake(() => {});
     });
 
     function loadController() {

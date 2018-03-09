@@ -53,19 +53,26 @@ class PersonService {
             return data;
         });
     }
-    bulkMerge(winnersAndLosers) {
-        return this.api.post({ url: 'contacts/people/merges/bulk', data: winnersAndLosers, type: 'people' }).then((data) => {
+    bulkMerge(winnersAndLosers, errorMessage) {
+        return this.api.post({
+            url: 'contacts/people/merges/bulk',
+            data: winnersAndLosers,
+            type: 'people',
+            errorMessage: errorMessage
+        }).then((data) => {
             if (isFunction(data.success)) {
                 data.success();
             }
             return data;
         });
     }
-    save(person) {
+    save(person, successMessage, errorMessage) {
         return this.api.put({
             url: `contacts/people/${person.id}`,
             data: person,
-            type: 'people'
+            type: 'people',
+            successMessage: successMessage,
+            errorMessage: errorMessage
         }); // reload after use, otherwise add reconcile
     }
     updateAvatar(person, avatar) {

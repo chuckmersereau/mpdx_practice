@@ -18,11 +18,13 @@ describe('preferences.coaches.invites.service', () => {
         });
 
         it('should call the api', () => {
-            invites.create('test@example.com');
+            invites.create('test@example.com', 'a', 'b');
             expect(api.post).toHaveBeenCalledWith({
                 url: 'account_lists/123/invites',
                 data: { recipient_email: 'test@example.com', invite_user_as: 'user' },
-                type: 'account_list_invites'
+                type: 'account_list_invites',
+                successMessage: 'a',
+                errorMessage: 'b'
             });
         });
 

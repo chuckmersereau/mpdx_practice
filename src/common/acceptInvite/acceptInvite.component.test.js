@@ -26,13 +26,15 @@ describe('common.acceptInvite.component', () => {
     });
 
     describe('$onInit', () => {
-        it('should return promise', () => {
+        it('should translate the error message', () => {
             spyOn(api, 'put').and.callFake(() => Promise.resolve());
-            expect($ctrl.$onInit()).toEqual(jasmine.any(Promise));
+            $ctrl.$onInit();
+            expect(gettextCatalog.getString).toHaveBeenCalledWith('Unable to accept invite. Try asking the account holder to resend the invite.');
         });
-
         it('should call the api', () => {
             spyOn(api, 'put').and.callFake(() => Promise.resolve());
+            const successMessage = 'Accepted invite to account successfully.';
+            const errorMessage = 'Unable to accept invite. Try asking the account holder to resend the invite.';
             $ctrl.$onInit();
             expect(api.put).toHaveBeenCalledWith({
                 url: 'account_lists/account_list_id/invites/account_list_invite_id/accept',
@@ -40,17 +42,12 @@ describe('common.acceptInvite.component', () => {
                     id: 'account_list_invite_id',
                     code: 'abc'
                 },
-                type: 'account_list_invites'
+                type: 'account_list_invites',
+                errorMessage: errorMessage,
+                successMessage: successMessage
             });
-        });
-
-        it('should call alert', (done) => {
-            spyOn(api, 'put').and.callFake(() => Promise.resolve());
-            $ctrl.$onInit().then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
-                done();
-            });
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(successMessage);
         });
 
         it('should call state.go', (done) => {
@@ -62,15 +59,6 @@ describe('common.acceptInvite.component', () => {
         });
 
         describe('promise rejected', () => {
-            it('should call alert', (done) => {
-                spyOn(api, 'put').and.callFake(() => Promise.reject(new Error('something bad happened')));
-                $ctrl.$onInit().catch(() => {
-                    expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger', null, 10);
-                    expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
-                    done();
-                });
-            });
-
             it('should call state.go', (done) => {
                 spyOn(api, 'put').and.callFake(() => Promise.reject(new Error('something bad happened')));
                 $ctrl.$onInit().catch(() => {
@@ -84,7 +72,7 @@ describe('common.acceptInvite.component', () => {
             $ctrl.$stateParams.code = '';
             $ctrl.$onInit().catch(() => {
                 expect(gettextCatalog.getString).toHaveBeenCalledWith('Unable to accept invite. Try asking the account holder to resend the invite.');
-                expect(alerts.addAlert).toHaveBeenCalledWith('Unable to accept invite. Try asking the account holder to resend the invite.', 'danger', null, 10);
+                expect(alerts.addAlert).toHaveBeenCalledWith('Unable to accept invite. Try asking the account holder to resend the invite.', 'danger', 10);
                 done();
             });
         });

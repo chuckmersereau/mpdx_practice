@@ -16,10 +16,11 @@
                 <span title="{{ ::'Partner - Financial' | translate }}" ng-if="::$ctrl.contact.status === 'Partner - Financial'">
                     <span>{{::$ctrl.contact.pledge_currency_symbol}}</span>
                     <span>{{::$ctrl.contact.pledge_currency_symbol}}</span>
+                    <i class="fa fa-circle circle-success" ng-if="::$ctrl.daysLate() < 0" data-title="{{ ::'on time' | translate }}" bs-tooltip></i>
+                    <i class="fa fa-circle circle-default" ng-if="::$ctrl.daysLate() >= 0 && $ctrl.daysLate() < 30" data-title="{{ ::'0+ days late' | translate }}" bs-tooltip></i>
+                    <i class="fa fa-circle circle-warning" ng-if="::$ctrl.daysLate() >= 30 && $ctrl.daysLate() < 60" data-title="{{ ::'30+ days late' | translate }}" bs-tooltip></i>
+                    <i class="fa fa-circle circle-danger" ng-if="::$ctrl.daysLate() >= 60" data-title="{{ ::'60+ days late' | translate }}" bs-tooltip></i>
                 </span>
-                <i class="fa fa-circle circle-on-time" ng-if="::$ctrl.daysLate() < 0" data-title="{{ ::'on time' | translate }}" bs-tooltip></i>
-                <i class="fa fa-circle circle-late" ng-if="::$ctrl.daysLate() >= 30 && $ctrl.daysLate() < 60" data-title="{{ ::'30+ days late' | translate }}" bs-tooltip></i>
-                <i class="fa fa-circle circle-very-late" ng-if="::$ctrl.daysLate() >= 60" data-title="{{ ::'60+ days late' | translate }}" bs-tooltip></i>
             </h4>
             <div class="people">
                 <div ng-repeat="person in ::$ctrl.contact.people track by person.id" ng-if="::!person.deceased" class="people-single-contact">

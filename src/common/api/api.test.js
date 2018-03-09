@@ -21,10 +21,11 @@ const jsonApiErrorResponse = {
 };
 
 describe('common.api.service', () => {
-    let api, $httpBackend, log;
+    let api, $httpBackend, log, alerts;
     beforeEach(() => {
         angular.mock.module(service);
-        inject((_api_, _$httpBackend_, $log) => {
+        inject((_api_, _$httpBackend_, $log, _alerts_) => {
+            alerts = _alerts_;
             api = _api_;
             log = $log;
             $httpBackend = _$httpBackend_;
@@ -362,6 +363,29 @@ describe('common.api.service', () => {
         });
         it('should return type if no type', () => {
             expect(api.getTypeOverride('contacts', undefined)).toEqual({ type: 'contacts' });
+        });
+    });
+    describe('callFailed', () => {
+        const ex = new Error('a');
+        const request = 'request';
+        let deferred = Promise;
+        const errorMessage = 'error';
+        let overridePromise = false;
+        beforeEach(() => {
+            spyOn(api, 'gettext').and.callThrough();
+            spyOn(api, 'call').and.callFake(() => Promise.resolve());
+        });
+        it('should handle override', () => {
+            spyOn(deferred, 'reject').and.callFake(() => {});
+            api.callFailed(ex, request, deferred, errorMessage, true);
+            expect(deferred.reject).toHaveBeenCalled();
+        });
+        it('should translate a default error message', () => {
+            spyOn(alerts, 'addAlert').and.callFake(() => Promise.resolve());
+            const msg = 'An error occurred while contacting the server.';
+            api.callFailed(ex, request, deferred, undefined, overridePromise);
+            expect(api.gettext).toHaveBeenCalledWith(msg);
+            expect(alerts.addAlert).toHaveBeenCalledWith(msg, 'danger', 0, true);
         });
     });
 });

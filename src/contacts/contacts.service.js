@@ -25,12 +25,11 @@ import relationshipId from '../common/fp/relationshipId';
 class ContactsService {
     constructor(
         $log, $q, $rootScope, gettextCatalog,
-        alerts, api, contactFilter, contactsTags, modal, serverConstants
+        api, contactFilter, contactsTags, modal, serverConstants
     ) {
         this.$log = $log;
         this.$q = $q;
         this.$rootScope = $rootScope;
-        this.alerts = alerts;
         this.api = api;
         this.contactFilter = contactFilter;
         this.contactsTags = contactsTags;
@@ -48,8 +47,8 @@ class ContactsService {
                 include: 'addresses,donor_accounts,primary_person,contact_referrals_to_me',
                 fields: {
                     contacts: 'avatar,church_name,envelope_greeting,greeting,last_donation,lifetime_donations,'
-                              + 'likely_to_give,locale,magazine,name,no_appeals,notes,notes_saved_at,pledge_amount,'
-                              + 'pledge_currency,pledge_currency_symbol,pledge_frequency,pledge_received,'
+                              + 'likely_to_give,locale,magazine,name,next_ask,no_appeals,notes,notes_saved_at,'
+                              + 'pledge_amount,pledge_currency,pledge_currency_symbol,pledge_frequency,pledge_received,'
                               + 'pledge_start_date,send_newsletter,square_avatar,status,status_valid,suggested_changes,'
                               + 'tag_list,timezone,website,addresses,contact_referrals_by_me,contact_referrals_to_me,'
                               + 'contacts_that_referred_me,donor_accounts,primary_person,no_gift_aid,timezone',
@@ -125,11 +124,11 @@ class ContactsService {
         });
         return omitBy(isNil, filterParams);
     }
-    save(contact) {
+    save(contact, successMessage, errorMessage) {
         if (contact.tag_list) {
             contact.tag_list = joinComma(contact.tag_list); // fix for api mis-match
         }
-        return this.api.put(`contacts/${contact.id}`, contact).then((data) => {
+        return this.api.put(`contacts/${contact.id}`, contact, successMessage, errorMessage).then((data) => {
             if (contact.name) {
                 this.$rootScope.$emit('contactCreated');
             }
@@ -291,7 +290,7 @@ class ContactsService {
             return contact;
         }, angular.copy(data));
     }
-    getEmails() {
+    getEmails(errorMessage) {
         return this.api.get('contacts', {
             filter: {
                 account_list_id: this.api.account_list_id,
@@ -301,11 +300,11 @@ class ContactsService {
             include: 'people,people.email_addresses',
             fields: {
                 contact: 'people',
-                people: 'deceased,email_addresses',
+                people: 'deceased,email_addresses,optout_enewsletter',
                 email_addresses: 'email,primary'
             },
             per_page: 25000
-        }).then((data) => {
+        }, undefined, errorMessage).then((data) => {
             return this.mapEmails(data);
         });
     }
@@ -317,12 +316,11 @@ class ContactsService {
         const findPrimary = find({ primary: true });
         const getEmailFromPrimary = flow(findPrimary, getEmail);
         return map((person) => {
-            return person.deceased ? null : getEmailFromPrimary(person.email_addresses);
+            return person.deceased || person.optout_enewsletter ? null : getEmailFromPrimary(person.email_addresses);
         }, data);
     }
 }
 
-import alerts from 'common/alerts/alerts.service';
 import api from 'common/api/api.service';
 import contactFilter from './sidebar/filter/filter.service';
 import contactsTags from './sidebar/filter/tags/tags.service';
@@ -332,5 +330,5 @@ import serverConstants from 'common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.contacts.service', [
     getText,
-    alerts, api, contactFilter, contactsTags, modal, serverConstants
+    api, contactFilter, contactsTags, modal, serverConstants
 ]).service('contacts', ContactsService).name;

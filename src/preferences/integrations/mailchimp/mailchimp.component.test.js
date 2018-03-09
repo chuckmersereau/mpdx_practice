@@ -1,22 +1,20 @@
 import component from './mailchimp.component';
 
 describe('preferences.integrations.mailchimp.component', () => {
-    let $ctrl, mailchimp, rootScope, scope, componentController, alerts, gettextCatalog, modal, api;
+    let $ctrl, mailchimp, rootScope, scope, componentController, gettextCatalog, modal, api;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _mailchimp_, _alerts_, _gettextCatalog_, _modal_, _api_) => {
+        inject(($componentController, $rootScope, _mailchimp_, _gettextCatalog_, _modal_, _api_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             api = _api_;
             mailchimp = _mailchimp_;
-            alerts = _alerts_;
             modal = _modal_;
             gettextCatalog = _gettextCatalog_;
             componentController = $componentController;
             api.account_list_id = 123;
             loadController();
         });
-        spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
 
@@ -52,21 +50,19 @@ describe('preferences.integrations.mailchimp.component', () => {
         });
         it('should create an invite', () => {
             spyOn(api, 'post').and.callFake(() => Promise.resolve());
+            const successMessage = 'Preferences saved successfully';
             $ctrl.save();
-            expect(api.post).toHaveBeenCalledWith({ url: 'account_lists/123/mail_chimp_account', data: mailchimp.data });
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
+            expect(api.post).toHaveBeenCalledWith({
+                url: 'account_lists/123/mail_chimp_account',
+                data: mailchimp.data,
+                successMessage: successMessage
+            });
         });
         it('should unset saving flag', (done) => {
             spyOn(api, 'post').and.callFake(() => Promise.resolve());
             $ctrl.save().then(() => {
                 expect($ctrl.saving).toBeFalsy();
-                done();
-            });
-        });
-        it('should alert a translated confirmation', (done) => {
-            spyOn(api, 'post').and.callFake(() => Promise.resolve());
-            $ctrl.save().then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'success');
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });
@@ -84,11 +80,19 @@ describe('preferences.integrations.mailchimp.component', () => {
                 done();
             });
         });
+        it('should alert a translated confirmation', (done) => {
+            spyOn(api, 'post').and.callFake(() => Promise.resolve());
+            spyOn(modal, 'info').and.callFake(() => Promise.resolve());
+            $ctrl.save().then(() => {
+                expect(modal.info).toHaveBeenCalledWith('Your MailChimp sync has been started. This process may take up to 4 hours to complete.');
+                expect(gettextCatalog.getString).toHaveBeenCalledWith('Your MailChimp sync has been started. This process may take up to 4 hours to complete.');
+                done();
+            });
+        });
         it('should handle rejection', (done) => {
             spyOn(api, 'post').and.callFake(() => Promise.reject({ errors: ['a'] }));
             $ctrl.save().catch(() => {
                 expect($ctrl.saving).toBeFalsy();
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
                 done();
             });
         });
@@ -104,8 +108,14 @@ describe('preferences.integrations.mailchimp.component', () => {
         });
         it('should disconnect', (done) => {
             spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            const errorMessage = 'MPDX couldn\'t save your configuration changes for MailChimp';
+            const successMessage = 'MPDX removed your integration with MailChimp';
             $ctrl.disconnect().then(() => {
-                expect(api.delete).toHaveBeenCalledWith('account_lists/123/mail_chimp_account');
+                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
+                expect(api.delete).toHaveBeenCalledWith(
+                    'account_lists/123/mail_chimp_account',
+                    undefined, successMessage, errorMessage
+                );
                 done();
             });
         });
@@ -113,14 +123,6 @@ describe('preferences.integrations.mailchimp.component', () => {
             spyOn(api, 'delete').and.callFake(() => Promise.resolve());
             $ctrl.disconnect().then(() => {
                 expect($ctrl.saving).toBeFalsy();
-                done();
-            });
-        });
-        it('should alert a translated confirmation', (done) => {
-            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
-            $ctrl.disconnect().then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'success');
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });
@@ -135,8 +137,6 @@ describe('preferences.integrations.mailchimp.component', () => {
             spyOn(api, 'delete').and.callFake(() => Promise.reject({ errors: ['a'] }));
             $ctrl.disconnect().catch(() => {
                 expect($ctrl.saving).toBeFalsy();
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });
@@ -148,8 +148,13 @@ describe('preferences.integrations.mailchimp.component', () => {
         });
         it('should create an invite', () => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve());
+            const errorMessage = 'MPDX couldn\'t save your configuration changes for MailChimp';
             $ctrl.sync();
-            expect(api.get).toHaveBeenCalledWith('account_lists/123/mail_chimp_account/sync');
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
+            expect(api.get).toHaveBeenCalledWith(
+                'account_lists/123/mail_chimp_account/sync',
+                undefined, undefined, errorMessage
+            );
         });
         it('should unset saving flag', (done) => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve());
@@ -162,8 +167,8 @@ describe('preferences.integrations.mailchimp.component', () => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve());
             spyOn(modal, 'info').and.callFake(() => Promise.resolve());
             $ctrl.sync().then(() => {
-                expect(modal.info).toHaveBeenCalledWith('Your MailChimp sync has been started. This process may take 2-4 hours to complete.');
-                expect(gettextCatalog.getString).toHaveBeenCalledWith('Your MailChimp sync has been started. This process may take 2-4 hours to complete.');
+                expect(modal.info).toHaveBeenCalledWith('Your MailChimp sync has been started. This process may take up to 4 hours to complete.');
+                expect(gettextCatalog.getString).toHaveBeenCalledWith('Your MailChimp sync has been started. This process may take up to 4 hours to complete.');
                 done();
             });
         });
@@ -171,8 +176,6 @@ describe('preferences.integrations.mailchimp.component', () => {
             spyOn(api, 'get').and.callFake(() => Promise.reject({ errors: ['a'] }));
             $ctrl.sync().catch(() => {
                 expect($ctrl.saving).toBeFalsy();
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });

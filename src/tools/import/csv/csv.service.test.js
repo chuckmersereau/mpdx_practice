@@ -520,11 +520,13 @@ describe('tools.import.csv.service', () => {
         });
 
         it('should call the api', () => {
+            const errorMessage = 'Unable to save your CSV import settings - See help docs or send us a message with your CSV attached';
             importCsv.save();
             expect(api.put).toHaveBeenCalledWith({
                 url: `account_lists/${api.account_list_id}/imports/csv/${data.id}?include=sample_contacts,sample_contacts.addresses,sample_contacts.primary_person,sample_contacts.primary_person.email_addresses,sample_contacts.primary_person.phone_numbers,sample_contacts.spouse,sample_contacts.spouse.email_addresses,sample_contacts.spouse.phone_numbers`,
                 data: { id: importId },
-                type: 'imports'
+                type: 'imports',
+                errorMessage: errorMessage
             });
         });
 
@@ -735,18 +737,8 @@ describe('tools.import.csv.service', () => {
         });
 
         describe('promise unsuccessful', () => {
-            let errors = {
-                data: {
-                    errors: [
-                        { detail: 'test_1' },
-                        { detail: 'test_2' }
-                    ]
-                }
-            };
-
             beforeEach(() => {
                 spyApi.and.callFake(() => Promise.reject(new Error('something bad happened')));
-                spyOn(alerts, 'addAlert').and.returnValue();
                 spyOn(gettextCatalog, 'getString').and.callFake((string) => string);
             });
 
@@ -762,30 +754,6 @@ describe('tools.import.csv.service', () => {
                     expect(gettextCatalog.getString).toHaveBeenCalledWith(
                         'Unable to save your CSV import settings - See help docs or send us a message with your CSV attached');
                     done();
-                });
-            });
-
-            it('should call addAlert', (done) => {
-                importCsv.save().catch(() => {
-                    expect(alerts.addAlert).toHaveBeenCalledWith(
-                        'Unable to save your CSV import settings - See help docs or send us a message with your CSV attached',
-                        'danger', 10);
-                    done();
-                });
-            });
-
-
-            describe('errors present', () => {
-                beforeEach(() => {
-                    spyApi.and.callFake(() => Promise.reject(errors));
-                });
-
-                it('should call addAlert with error detail', (done) => {
-                    importCsv.save().catch(() => {
-                        expect(alerts.addAlert).toHaveBeenCalledWith('test_1', 'danger', null, 10);
-                        expect(alerts.addAlert).toHaveBeenCalledWith('test_2', 'danger', null, 10);
-                        done();
-                    });
                 });
             });
         });

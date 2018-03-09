@@ -1,21 +1,19 @@
 import component from './invites.component';
 
 describe('preferences.accounts.invites.component', () => {
-    let $ctrl, accounts, invites, rootScope, scope, componentController, alerts, gettextCatalog;
+    let $ctrl, accounts, invites, rootScope, scope, componentController, gettextCatalog;
 
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _accounts_, _invites_, _alerts_, _gettextCatalog_) => {
+        inject(($componentController, $rootScope, _accounts_, _invites_, _gettextCatalog_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             accounts = _accounts_;
-            alerts = _alerts_;
             invites = _invites_;
             gettextCatalog = _gettextCatalog_;
             componentController = $componentController;
             loadController();
         });
-        spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
 
@@ -42,8 +40,13 @@ describe('preferences.accounts.invites.component', () => {
 
         it('should create an invite', () => {
             spyOn(invites, 'create').and.callFake(() => Promise.resolve());
+            const successMessage = 'MPDX sent an invite to a@b.c';
+            const errorMessage = 'MPDX couldn\'t send an invite (check to see if email address is valid)';
+
             $ctrl.sendInvite();
-            expect(invites.create).toHaveBeenCalledWith('a@b.c');
+            expect(invites.create).toHaveBeenCalledWith('a@b.c', successMessage, errorMessage);
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
+            expect(gettextCatalog.getString).toHaveBeenCalledWith('MPDX sent an invite to {{email}}', { email: 'a@b.c' });
         });
 
         it('should unset saving flag', (done) => {
@@ -51,16 +54,6 @@ describe('preferences.accounts.invites.component', () => {
             spyOn(accounts, 'listInvites').and.callFake(() => Promise.resolve());
             $ctrl.sendInvite().then(() => {
                 expect($ctrl.saving).toBeFalsy();
-                done();
-            });
-        });
-
-        it('should alert a translated confirmation', (done) => {
-            spyOn(invites, 'create').and.callFake(() => Promise.resolve());
-            spyOn(accounts, 'listInvites').and.callFake(() => Promise.resolve());
-            $ctrl.sendInvite().then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'success');
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String), { email: 'a@b.c' });
                 done();
             });
         });
@@ -79,16 +72,6 @@ describe('preferences.accounts.invites.component', () => {
             spyOn(accounts, 'listInvites').and.callFake(() => Promise.resolve());
             $ctrl.sendInvite().then(() => {
                 expect(accounts.listInvites).toHaveBeenCalled();
-                done();
-            });
-        });
-
-        it('should handle rejection', (done) => {
-            spyOn(invites, 'create').and.callFake(() => Promise.reject(Error('')));
-            $ctrl.sendInvite().catch(() => {
-                expect($ctrl.saving).toBeFalsy();
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });

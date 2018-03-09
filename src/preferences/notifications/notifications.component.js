@@ -5,11 +5,10 @@ class NotificationPreferencesController {
     constructor(
         $rootScope,
         $state, gettext,
-        alerts, api, serverConstants, users
+        api, serverConstants, users
     ) {
         this.$rootScope = $rootScope;
         this.$state = $state;
-        this.alerts = alerts;
         this.api = api;
         this.gettext = gettext;
         this.serverConstants = serverConstants;
@@ -29,8 +28,10 @@ class NotificationPreferencesController {
     }
     load() {
         this.loading = true;
+        const errorMessage = this.gettext('Unable to load notification preferences');
         return this.api.get(
-            `account_lists/${this.api.account_list_id}/notification_preferences?include=notification_type`
+            `account_lists/${this.api.account_list_id}/notification_preferences?include=notification_type`,
+            undefined, undefined, errorMessage
         ).then((data) => {
             this.notificationPreferences = reduce((result, notification) => {
                 const notificationPreference = defaultTo({}, find((object) => {
@@ -47,23 +48,24 @@ class NotificationPreferencesController {
             }, [], this.serverConstants.data.notification_translated_hashes);
             this.loading = false;
         }).catch((ex) => {
-            this.alerts.addAlert(this.gettext('Unable to load notification preferences'), 'danger');
             this.loading = false;
             throw ex;
         });
     }
     save() {
         this.loading = true;
+        const successMessage = this.gettext('Notifications saved successfully');
+        const errorMessage = this.gettext('Unable to save changes');
         return this.api.post({
             url: `account_lists/${this.api.account_list_id}/notification_preferences/bulk`,
             data: this.notificationPreferences,
-            type: 'notification_preferences'
+            type: 'notification_preferences',
+            errorMessage: errorMessage,
+            successMessage: successMessage
         }).then(() => {
-            this.alerts.addAlert(this.gettext('Notifications saved successfully'), 'success');
             this.onSave();
             this.loading = false;
         }).catch((ex) => {
-            this.alerts.addAlert(this.gettext('Unable to save changes'), 'danger');
             this.loading = false;
             throw ex;
         });
@@ -87,12 +89,11 @@ const Notifications = {
 
 import gettext from 'angular-gettext';
 import uiRouter from '@uirouter/angularjs';
-import alerts from 'common/alerts/alerts.service';
 import api from 'common/api/api.service';
 import serverConstants from 'common/serverConstants/serverConstants.service';
 import users from 'common/users/users.service';
 
 export default angular.module('mpdx.preferences.notifications.component', [
     gettext, uiRouter,
-    alerts, api, serverConstants, users
+    api, serverConstants, users
 ]).component('preferencesNotifications', Notifications).name;

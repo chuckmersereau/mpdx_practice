@@ -4,12 +4,11 @@ import joinComma from 'common/fp/joinComma';
 class RemoveTagController {
     constructor(
         $rootScope, $scope, gettextCatalog,
-        alerts, api, modal, tasksTags,
+        api, modal, tasksTags,
         selectedTasks, currentListSize
     ) {
         this.$rootScope = $rootScope;
         this.$scope = $scope;
-        this.alerts = alerts;
         this.api = api;
         this.gettextCatalog = gettextCatalog;
         this.modal = modal;
@@ -23,6 +22,7 @@ class RemoveTagController {
         const taskIds = map('id', this.selectedTasks);
         const message = this.gettextCatalog.getString('Are you sure you wish to remove the selected tag?');
         return this.modal.confirm(message).then(() => {
+            const successMessage = this.gettextCatalog.getString('Tag successfully removed.');
             return this.api.delete({
                 url: 'tasks/tags/bulk',
                 data: {
@@ -40,9 +40,9 @@ class RemoveTagController {
                     type: 'tags'
                 },
                 autoParams: false,
-                doSerialization: false
+                doSerialization: false,
+                successMessage: successMessage
             }).then(() => {
-                this.alerts.addAlert(this.gettextCatalog.getString('Tag successfully removed.'));
                 this.$rootScope.$emit('taskTagDeleted', { taskIds: taskIds, tag: tag });
                 this.$scope.$hide();
             });
@@ -59,7 +59,6 @@ class RemoveTagController {
     }
 }
 
-import alerts from 'common/alerts/alerts.service';
 import api from 'common/api/api.service';
 import gettextCatalog from 'angular-gettext';
 import modal from 'common/modal/modal.service';
@@ -67,5 +66,5 @@ import tasksTags from 'tasks/filter/tags/tags.service';
 
 export default angular.module('mpdx.tasks.modals.removeTags.controller', [
     gettextCatalog,
-    alerts, api, modal, tasksTags
+    api, modal, tasksTags
 ]).controller('removeTaskTagController', RemoveTagController).name;

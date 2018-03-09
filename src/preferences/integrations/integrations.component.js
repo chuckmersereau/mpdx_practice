@@ -3,12 +3,12 @@ import { isNil } from 'lodash/fp';
 class IntegrationPreferencesController {
     constructor(
         $window, $rootScope, $state, $stateParams, gettextCatalog,
-        alerts, help, integrations, modal, google, mailchimp, prayerLetters
+        api, help, integrations, modal, google, mailchimp, prayerLetters
     ) {
         this.$state = $state;
         this.$stateParams = $stateParams;
         this.$window = $window;
-        this.alerts = alerts;
+        this.api = api;
         this.gettextCatalog = gettextCatalog;
         this.integrations = integrations;
         this.modal = modal;
@@ -55,16 +55,21 @@ class IntegrationPreferencesController {
     }
     disconnect(service, id) {
         this.saving = true;
-        this.service = service;
-        return this.integrations.disconnect(service).then(() => {
-            this.saving = false;
-            this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed your integration with {{service}}.', { service: this.service }), 'success');
-            this.integrations.load();
-        }).catch((err) => {
-            this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for {{service}}. {{error}}', { service: this.service, error: err.error }), 'danger');
-            this.saving = false;
-            throw err;
-        }, id);
+        const successMessage = this.gettextCatalog.getString('MPDX removed your integration with {{service}}.', { service: service });
+        const errorMessage = this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for {{service}}.', { service: service });
+        const serviceToDisconnect = service.toLowerCase();
+        if (serviceToDisconnect === 'key') {
+            return this.api.delete(
+                `user/key_accounts/${id}`,
+                undefined, successMessage, errorMessage
+            ).then(() => {
+                this.saving = false;
+                this.integrations.load();
+            }).catch((err) => {
+                this.saving = false;
+                throw err;
+            });
+        }
     }
     reload() {
         this.integrations.load();
@@ -104,7 +109,7 @@ const Integrations = {
     }
 };
 
-import alerts from '../../common/alerts/alerts.service';
+import api from '../../common/api/api.service';
 import google from './google/google.service';
 import help from '../../common/help/help.service';
 import integrations from './integrations.service';
@@ -115,5 +120,5 @@ import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('mpdx.preferences.integrations.component', [
     uiRouter,
-    alerts, help, google, integrations, mailchimp, modal, prayerLetters
+    api, help, google, integrations, mailchimp, modal, prayerLetters
 ]).component('preferencesIntegration', Integrations).name;

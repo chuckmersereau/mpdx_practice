@@ -7,6 +7,7 @@ class Session {
         this.navSetup = false;
         this.navImpersonation = false;
         this.showFiltersOnMobile = false;
+        this.errors = [];
     }
     isInState(match) {
         return this.$state.$current.name.indexOf(match) === 0;

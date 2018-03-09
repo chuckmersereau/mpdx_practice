@@ -1,9 +1,8 @@
 class ExportController {
     constructor(
         blockUI, gettext,
-        alerts, contacts
+        contacts
     ) {
-        this.alerts = alerts;
         this.blockUI = blockUI.instances.get('contact-export');
         this.contacts = contacts;
         this.gettext = gettext;
@@ -12,12 +11,11 @@ class ExportController {
     }
     getEmails() {
         this.blockUI.start();
-        return this.contacts.getEmails().then((data) => {
+        const errorMessage = this.gettext('Unable to retrieve contacts. Please try again.');
+        return this.contacts.getEmails(errorMessage).then((data) => {
             this.emails = data;
             this.blockUI.reset();
         }).catch((ex) => {
-            const msg = this.gettext('Unable to retrieve contacts. Please try again.');
-            this.alerts.addAlert(msg, 'danger');
             this.blockUI.reset();
             throw ex;
         });

@@ -1,14 +1,12 @@
 import config from 'config';
-import { each } from 'lodash/fp';
 
 class MailchimpIntegrationPreferencesController {
     constructor(
         $log, $rootScope, $window, gettextCatalog,
-        api, alerts, help, mailchimp, modal
+        api, help, mailchimp, modal
     ) {
         this.$log = $log;
         this.$window = $window;
-        this.alerts = alerts;
         this.api = api;
         this.gettextCatalog = gettextCatalog;
         this.help = help;
@@ -28,43 +26,53 @@ class MailchimpIntegrationPreferencesController {
     }
     save(showSettings = false) {
         this.saving = true;
-        return this.api.post({ url: `account_lists/${this.api.account_list_id}/mail_chimp_account`, data: this.mailchimp.data }).then(() => {
-            this.alerts.addAlert(this.gettextCatalog.getString('Preferences saved successfully'), 'success');
+        const successMessage = this.gettextCatalog.getString('Preferences saved successfully');
+        return this.api.post({
+            url: `account_lists/${this.api.account_list_id}/mail_chimp_account`,
+            data: this.mailchimp.data,
+            successMessage: successMessage
+        }).then(() => {
             this.saving = false;
             this.showSettings = false;
             return this.mailchimp.load().then(() => {
+                const message = this.gettextCatalog.getString('Your MailChimp sync has been started. This process may take up to 4 hours to complete.');
+                this.modal.info(message);
                 this.showSettings = showSettings;
             });
         }).catch((err) => {
-            each((value) => {
-                this.alerts.addAlert(value, 'danger');
-            }, err.errors);
             this.saving = false;
             throw err;
         });
     }
     sync() {
         this.saving = true;
-        return this.api.get(`account_lists/${this.api.account_list_id}/mail_chimp_account/sync`).then(() => {
+        const errorMessage = this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for MailChimp');
+        return this.api.get(
+            `account_lists/${this.api.account_list_id}/mail_chimp_account/sync`,
+            undefined, undefined, errorMessage
+        ).then(() => {
             this.saving = false;
-            const message = this.gettextCatalog.getString('Your MailChimp sync has been started. This process may take 2-4 hours to complete.');
+            const message = this.gettextCatalog.getString('Your MailChimp sync has been started. This process may take up to 4 hours to complete.');
             this.modal.info(message);
         }).catch((err) => {
             this.saving = false;
-            this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for MailChimp'), 'danger');
             throw err;
         });
     }
     disconnect() {
-        return this.modal.confirm(this.gettextCatalog.getString('Are you sure you wish to disconnect this MailChimp account?')).then(() => {
+        const msg = this.gettextCatalog.getString('Are you sure you wish to disconnect this MailChimp account?');
+        return this.modal.confirm(msg).then(() => {
             this.saving = true;
-            return this.api.delete(`account_lists/${this.api.account_list_id}/mail_chimp_account`).then(() => {
+            const errorMessage = this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for MailChimp');
+            const successMessage = this.gettextCatalog.getString('MPDX removed your integration with MailChimp');
+            return this.api.delete(
+                `account_lists/${this.api.account_list_id}/mail_chimp_account`,
+                undefined, successMessage, errorMessage
+            ).then(() => {
                 this.mailchimp.data = null;
                 this.showSettings = false;
                 this.saving = false;
-                this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed your integration with MailChimp'), 'success');
             }).catch((err) => {
-                this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for MailChimp'), 'danger');
                 this.saving = false;
                 throw err;
             });
@@ -83,11 +91,10 @@ const Mailchimp = {
 import api from 'common/api/api.service';
 import gettextCatalog from 'angular-gettext';
 import mailchimp from './mailchimp.service';
-import alerts from 'common/alerts/alerts.service';
 import help from 'common/help/help.service';
 import modal from 'common/modal/modal.service';
 
 export default angular.module('mpdx.preferences.integrations.mailchimp.component', [
     gettextCatalog,
-    api, mailchimp, alerts, help, modal
+    api, mailchimp, help, modal
 ]).component('mailchimpIntegrationPreferences', Mailchimp).name;

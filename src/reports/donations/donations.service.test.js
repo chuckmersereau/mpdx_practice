@@ -2,15 +2,14 @@ import service from './donations.service';
 import moment from 'moment';
 
 describe('reports.donations.service', () => {
-    let $log, api, donations, gettextCatalog, modal;
+    let $log, api, donations, modal;
 
     beforeEach(() => {
         angular.mock.module(service);
-        inject((_$log_, _api_, _donations_, _gettextCatalog_, _modal_) => {
+        inject((_$log_, _api_, _donations_, _modal_) => {
             $log = _$log_;
             api = _api_;
             donations = _donations_;
-            gettextCatalog = _gettextCatalog_;
             modal = _modal_;
             api.account_list_id = 'account_list_id';
         });
@@ -150,99 +149,6 @@ describe('reports.donations.service', () => {
             it('should set page in params', (done) => {
                 donations.getDonations(params).then((data) => {
                     expect(data.page).toEqual(params.page);
-                    done();
-                });
-            });
-        });
-    });
-
-    describe('save', () => {
-        describe('donation exists', () => {
-            const donation = { id: 'donation_id' };
-
-            beforeEach(() => {
-                spyOn(api, 'put').and.callFake((url, data) => Promise.resolve(data));
-            });
-
-            it('should return a promise', () => {
-                expect(donations.save(donation)).toEqual(jasmine.any(Promise));
-            });
-
-            it('should call api.put', () => {
-                donations.save(donation);
-                expect(api.put).toHaveBeenCalledWith(
-                    'account_lists/account_list_id/donations/donation_id',
-                    donation
-                );
-            });
-        });
-
-        describe('donation does not exist', () => {
-            const donation = {};
-
-            beforeEach(() => {
-                spyOn(api, 'post').and.callFake((url, data) => Promise.resolve(data));
-            });
-
-            it('should return a promise', () => {
-                expect(donations.save(donation)).toEqual(jasmine.any(Promise));
-            });
-
-            it('should call api.post', () => {
-                donations.save(donation);
-                expect(api.post).toHaveBeenCalledWith(
-                    'account_lists/account_list_id/donations',
-                    donation
-                );
-            });
-        });
-
-        describe('amount contains non-numeric characters', () => {
-            const donation = { amount: '$10.10 USD' };
-
-            beforeEach(() => {
-                spyOn(api, 'post').and.callFake((url, data) => Promise.resolve(data));
-            });
-
-            it('should remove characters from amount', () => {
-                donations.save(donation);
-                expect(api.post).toHaveBeenCalledWith(
-                    'account_lists/account_list_id/donations',
-                    { amount: '10.10' }
-                );
-            });
-        });
-    });
-
-    describe('delete', () => {
-        const donation = { id: 'donation_id' };
-
-        beforeEach(() => {
-            spyOn(gettextCatalog, 'getString').and.callThrough();
-            spyOn(modal, 'confirm').and.returnValue(Promise.resolve());
-        });
-
-        it('should return a promise', () => {
-            expect(donations.delete(donation)).toEqual(jasmine.any(Promise));
-        });
-
-        it('should call modal.confirm', () => {
-            donations.delete(donation);
-            expect(modal.confirm).toHaveBeenCalled();
-            expect(gettextCatalog.getString).toHaveBeenCalled();
-        });
-
-        describe('on confirmation', () => {
-            beforeEach(() => {
-                spyOn(api, 'delete').and.callFake((url, data) => Promise.resolve(data));
-            });
-
-            it('should call api.post', function(done) {
-                donations.delete(donation).then(() => {
-                    expect(api.delete).toHaveBeenCalledWith(
-                        'account_lists/account_list_id/donations/donation_id',
-                        donation
-                    );
                     done();
                 });
             });
