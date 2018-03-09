@@ -105,7 +105,8 @@
             <span class="tag" ng-repeat="tag in $ctrl.contact.tag_list track by $index">{{ tag }}</span>
         </div>
         <i class="fas"
-           ng-class="{ 'fa-chevron-down': !$ctrl.tagsExpanded, 'fa-chevron-up': $ctrl.tagsExpanded }" ng-if="::$ctrl.showCaret()"></i>
+           ng-class="{ 'fa-chevron-down': !$ctrl.tagsExpanded, 'fa-chevron-up': $ctrl.tagsExpanded }"
+           ng-if="::$ctrl.showCaret()"></i>
     </div>
 </div>
 

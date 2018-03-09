@@ -2,13 +2,12 @@ import component from './item.component';
 import moment from 'moment';
 
 describe('tasks.list.drawer.contact.component', () => {
-    let $ctrl, rootScope, scope, serverConstants, contacts, alerts, _$window;
+    let $ctrl, rootScope, scope, serverConstants, alerts, _$window;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _serverConstants_, _contacts_, _alerts_, $window) => {
+        inject(($componentController, $rootScope, _serverConstants_, _alerts_, $window) => {
             rootScope = $rootScope;
             alerts = _alerts_;
-            contacts = _contacts_;
             serverConstants = _serverConstants_;
             _$window = $window;
             scope = rootScope.$new();
@@ -18,7 +17,7 @@ describe('tasks.list.drawer.contact.component', () => {
             pledge_currencies: {
                 usd: {
                     code: 'USD',
-                    symbol: '$'
+                    name: 'US Dollar'
                 }
             }
         };
@@ -38,14 +37,11 @@ describe('tasks.list.drawer.contact.component', () => {
     });
     describe('$onChanges', () => {
         beforeEach(() => {
-            $ctrl.contact = { id: 1, last_donation: { currency: 'USD' } };
+            $ctrl.contact = { id: 1, pledge_currency: 'USD' };
             $ctrl.$onChanges();
         });
-        it('should set initialContact', () => {
-            expect($ctrl.initialContact).toEqual($ctrl.contact);
-        });
         it('should set currency', () => {
-            expect($ctrl.currency).toEqual('$');
+            expect($ctrl.currency).toEqual('US Dollar');
         });
     });
     describe('daysLate', () => {
@@ -81,40 +77,6 @@ describe('tasks.list.drawer.contact.component', () => {
             expect($ctrl.tagsExpanded).toBeTruthy();
             $ctrl.expandTags();
             expect($ctrl.tagsExpanded).toBeFalsy();
-        });
-    });
-    describe('save', () => {
-        beforeEach(() => {
-            $ctrl.contact = { id: 1, last_donation: { currency: 'USD' }, name: 'b' };
-            $ctrl.initialContact = { id: 1, last_donation: { currency: 'USD' }, name: 'a' };
-        });
-        it('should save a patch', () => {
-            spyOn(contacts, 'save').and.callFake(() => Promise.resolve());
-            $ctrl.save();
-            expect(contacts.save).toHaveBeenCalledWith({ id: 1, name: 'b' });
-        });
-        it('should reset initial contact', (done) => {
-            spyOn(contacts, 'save').and.callFake(() => Promise.resolve());
-            $ctrl.save().then(() => {
-                expect($ctrl.initialContact).toEqual($ctrl.contact);
-                done();
-            });
-        });
-        it('should alert success', (done) => {
-            spyOn(contacts, 'save').and.callFake(() => Promise.resolve());
-            $ctrl.save().then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith('Changes saved successfully.');
-                expect($ctrl.gettext).toHaveBeenCalledWith('Changes saved successfully.');
-                done();
-            });
-        });
-        it('should alert on failure', (done) => {
-            spyOn(contacts, 'save').and.callFake(() => Promise.reject());
-            $ctrl.save().catch(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith('Unable to save changes.', 'danger');
-                expect($ctrl.gettext).toHaveBeenCalledWith('Unable to save changes.');
-                done();
-            });
         });
     });
     describe('emailAll', () => {

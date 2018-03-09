@@ -1,16 +1,32 @@
 task-list-contact {
     padding: 10px 0;
     font-size: $font-size-sm;
+    $avatar-size: 26px;
     & + & { //all except first
         border-top: 1px solid $color-bg;
     }
+    label {
+        @extend h4;
+        font-size: 12px;
+        margin-bottom: 3px;
+        text-transform: uppercase;
+        font-weight: bold;
+        color: #9B9B9B;
+    }
     > .top-row {
         display: grid;
-        grid-template-columns: 50px 1fr 1fr;
+        grid-template-columns: $avatar-size 1fr 150px 14px;
         grid-gap: 10px;
+        avatar {
+            grid-column: 1;
+            &, .avatar, .avatar img {
+                width: $avatar-size;
+                height: $avatar-size;
+            }
+        }
         .main-details {
             h4 {
-                margin-bottom: 0;
+                margin-bottom: 10px;
                 margin-top: 0;
                 font-size: 1.0rem;
                 font-weight: 600;
@@ -27,20 +43,20 @@ task-list-contact {
                     line-height: 1.25em;
                 }
             }
-            .more-details {
-                line-height: 1.35em;
-                .pledge_not_received_icon {
-                    font-size: 70%;
-                }
-            }
             .address > address {
                 margin-bottom: 0;
             }
             button.email-all {
                 line-height: 1.25em;
                 padding: 0 12px;
+                margin-bottom: 10px;
             }
         }
+    }
+    .more-details > div {
+        display: block;
+        font-weight: 600;
+        height: 20px;
     }
     > div.tags-row {
         display: grid;
@@ -51,6 +67,12 @@ task-list-contact {
             text-overflow: ellipsis;
             &.expanded {
                 height: 100%;
+            }
+            .tag {
+                max-width: 100px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
         }
     }

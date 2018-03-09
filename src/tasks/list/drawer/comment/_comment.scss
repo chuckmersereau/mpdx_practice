@@ -7,9 +7,10 @@ task-item-comment {
         margin-right: 5px;
         margin-left: 5px;
         padding: 5px;
-        border: 1px solid $cru-white;
+        border: 1px solid $cru-gray-tint;
         border-radius: $border-radius;
         transition: border .5s linear;
+        background-color: $cru-white;
         &:hover {
             border: 1px solid $cru-gray-silver;
             > div.comment-container > div.comment-edit-controls {

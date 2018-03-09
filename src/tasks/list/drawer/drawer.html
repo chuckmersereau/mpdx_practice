@@ -1,21 +1,16 @@
 <div class="head">
-    <div class="task-info">
-        <h2>{{$ctrl.task.subject}}</h2>
-        {{ $ctrl.task.activity_type | translate }}
-        <span ng-if="!$ctrl.task.no_date && $ctrl.task.start_at && !$ctrl.task.completed">
-            {{ $ctrl.task.start_at | localizeWithTime }}
-        </span>
-        <span ng-if="!$ctrl.task.no_date && $ctrl.task.start_at && $ctrl.task.completed">
-            {{ $ctrl.task.completed_at | localizeWithTime }}
-        </span>
-    </div>
     <div class="horizontal-tab-sortable">
-        <div ng-class="{ 'active-item': $ctrl.view === 'contacts'}" class="as-sortable-item">
-            <a class="as-sortable-item-handle" ng-click="$ctrl.view = 'contacts'">Contacts</a>
+        <div class="sortable-row">
+            <div ng-class="{ 'active-item': $ctrl.view === 'contacts'}" class="as-sortable-item">
+                <a class="as-sortable-item-handle" ng-click="$ctrl.view = 'contacts'">Contacts</a>
+            </div>
+            <div ng-class="{ 'active-item': $ctrl.view === 'comments'}" class="as-sortable-item">
+                <a class="as-sortable-item-handle" ng-click="$ctrl.view = 'comments'">Comments</a>
+            </div>
         </div>
-        <div ng-class="{ 'active-item': $ctrl.view === 'comments'}" class="as-sortable-item">
-        <a class="as-sortable-item-handle" ng-click="$ctrl.view = 'comments'">Comments</a>
-        </div>
+    </div>
+    <div class="task-info">
+        <h2 class="text-primary">{{ $ctrl.task.activity_type | translate }} {{$ctrl.task.subject}}</h2>
     </div>
 </div>
 <div class="contacts am-fade" ng-if="$ctrl.view === 'contacts' && $ctrl.loaded">

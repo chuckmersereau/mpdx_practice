@@ -1,20 +1,22 @@
-import createPatch from '../../../../common/fp/createPatch';
-import flattenCompactAndJoin from '../../../../common/fp/flattenCompactAndJoin';
-import { defaultTo, find, get } from 'lodash/fp';
+import flattenCompactAndJoin from 'common/fp/flattenCompactAndJoin';
+import isOverflown from 'common/fp/isOverflown';
+import { find, get } from 'lodash/fp';
 import bowser from 'bowser';
 import moment from 'moment';
 
 class ItemController {
     constructor(
-        $log, $rootScope, $window,
+        $log, $rootScope, $scope, $window,
         alerts, contacts, gettext, people, serverConstants, users
     ) {
         this.$log = $log;
         this.$rootScope = $rootScope;
+        this.$scope = $scope;
         this.$window = $window;
         this.alerts = alerts;
         this.contacts = contacts;
         this.gettext = gettext;
+        this.isOverflown = isOverflown;
         this.people = people;
         this.serverConstants = serverConstants;
         this.users = users;
@@ -24,34 +26,15 @@ class ItemController {
         this.isSafari = bowser.name === 'Safari';
     }
     $onChanges() {
-        this.initialContact = angular.copy(this.contact);
-        const lastDonation = get('last_donation', this.contact);
-        if (lastDonation) {
-            const currency = find({ code: lastDonation.currency }, this.serverConstants.data.pledge_currencies);
-            const symbol = get('symbol', currency);
-            this.currency = defaultTo(lastDonation.currency, symbol);
-        }
+        const pledgeCurrency = get('pledge_currency', this.contact);
+        const currency = find({ code: pledgeCurrency }, this.serverConstants.data.pledge_currencies);
+        this.currency = get('name', currency);
     }
     daysLate() {
         return moment().diff(moment(this.contact.late_at), 'days') || 0;
     }
     expandTags() {
         this.tagsExpanded = !this.tagsExpanded;
-    }
-    save() {
-        let patch = createPatch(this.initialContact, this.contact);
-        delete patch.people; // task mutation causes change in people
-        this.$log.debug('contact patch', patch);
-
-        return this.contacts.save(patch).then(() => {
-            this.initialContact = angular.copy(this.contact);
-            const message = this.gettext('Changes saved successfully.');
-            this.alerts.addAlert(message);
-        }).catch((err) => {
-            const message = this.gettext('Unable to save changes.');
-            this.alerts.addAlert(message, 'danger');
-            throw err;
-        });
     }
     emailAll() {
         const emails = flattenCompactAndJoin((email) => email, this.contacts.getEmailsFromPeople(this.contact.people));
@@ -60,6 +43,9 @@ class ItemController {
         } else {
             this.$window.open(`mailto:${emails}`);
         }
+    }
+    showCaret() {
+        return this.isOverflown(document.querySelector(`#tags_list_${this.$scope.$id}`));
     }
 }
 

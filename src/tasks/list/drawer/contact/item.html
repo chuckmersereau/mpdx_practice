@@ -2,7 +2,7 @@
     <avatar src="$ctrl.contact.square_avatar"></avatar>
     <div class="main-details">
         <h4 class="name">
-            <a ui-sref="contacts.show({contactId: $ctrl.contact.id})" ng-click="$event.stopPropagation()">
+            <a ui-sref="contacts.show({contactId: $ctrl.contact.id})" ng-click="$event.stopPropagation()" class="text-primary">
                 {{::$ctrl.contact.name}}
             </a>
             <i class="fas fa-circle circle-on-time"
@@ -35,11 +35,11 @@
                 <a ng-repeat="email_address in ::person.email_addresses"
                    ng-if="::email_address.primary && !email_address.historic"
                    ng-href="mailto:{{::email_address.email}}" target="_blank">
-                    <i class="ci ci-email_icon" title="{{ ::'Email' | translate }}"></i>
+                    <i class="fas fa-envelope" title="{{ ::'Email' | translate }}"></i>
                 </a>
                 <a ng-repeat="facebook_account in ::person.facebook_accounts"
                    ng-href="{{::facebook_account.url}}" target="_blank">
-                    <i class="fas fa-facebook-square" title="{{ ::'Facebook profile' | translate }}"></i>
+                    <i class="fab fa-facebook-square" title="{{ ::'Facebook profile' | translate }}"></i>
                 </a>
             </div>
         </div>
@@ -59,73 +59,35 @@
     </div>
     <div class="more-details">
         <label translate>Status</label>
-        <select chosen
-                required
-                ng-change="$ctrl.save()"
-                ng-model-options="{ debounce: 1000 }"
-                disable-search="true"
-                data-placeholder-text-single="'Select an Option' | translate"
-                class="form-control"
-                id="status"
-                ng-options="opt.id as opt.value for opt in $ctrl.serverConstants.data.status_hashes"
-                ng-model="$ctrl.contact.status">
-            <option value=""></option>
-        </select>
+        <div>{{ $ctrl.contact.status }}</div>
+
         <label translate>Newsletter</label>
-        <select chosen
-                required
-                ng-change="$ctrl.saveWithEmptyCheck('send_newsletter')"
-                ng-model-options="{ debounce: 1000 }"
-                disable-search="true"
-                data-placeholder-text-single="'Select an Option' | translate"
-                allow-single-deselect="true"
-                class="form-control"
-                id="send_newsletter"
-                ng-options="opt.id as opt.value for opt in $ctrl.serverConstants.data.assignable_send_newsletter_hashes"
-                ng-model="$ctrl.contact.send_newsletter">
-            <option value=""></option>
-        </select>
+        <div>{{ $ctrl.contact.send_newsletter}}</div>
+
         <label translate>Commitment</label>
-        <input type="number"
-               class="form-control"
-               step="0.01"
-               ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/"
-               ng-model="$ctrl.contact.pledge_amount"
-               ng-change="$ctrl.save()"
-               ng-model-options="{ debounce: 1000 }" />
+        <div>{{ $ctrl.contact.pledge_amount | currency: $ctrl.contact.pledge_currency_symbol }}</div>
+
         <label translate>Currency</label>
-        <select chosen
-                required
-                ng-change="$ctrl.save()"
-                ng-model-options="{ debounce: 1000 }"
-                class="form-control"
-                data-placeholder-text-single="'Select an Option' | translate"
-                id="pledge_currency"
-                ng-options="pc.code as pc.code_symbol_string for pc in $ctrl.serverConstants.data.pledge_currencies"
-                ng-model="$ctrl.contact.pledge_currency">
-            <option value=""></option>
-        </select>
+        <div>{{ $ctrl.currency }}</div>
+
         <label translate>Freq.</label>
-        <select chosen
-                ng-change="$ctrl.save()"
-                ng-model-options="{ debounce: 1000 }"
-                disable-search="true"
-                data-placeholder-text-single="'Select an Option' | translate"
-                class="form-control"
-                allow-single-deselect="true"
-                id="pledge_frequency"
-                ng-options="opt.key as opt.value for opt in $ctrl.serverConstants.data.pledge_frequency_hashes"
-                ng-model="$ctrl.contact.pledge_frequency">
-            <option value=""></option>
-        </select>
+        <div>{{ $ctrl.contact.pledge_frequency }}</div>
+    </div>
+    <div class="edit">
+        <a ui-sref="contacts.show({contactId: $ctrl.contact.id})">
+            <i class="fas fa-edit"></i>
+        </a>
     </div>
 </div>
 <div class="tags-row pointer" ng-click="$ctrl.expandTags()">
-    <div class="tags" ng-class="{ expanded: $ctrl.tagsExpanded }">
+    <div class="tags" ng-class="{ expanded: $ctrl.tagsExpanded }" id="tags_list_{{::$ctrl.$scope.$id}}">
         <span class="tag"
+              title="{{tag}}"
               ng-repeat="tag in ::$ctrl.contact.tag_list track by $index">
             {{ tag }}
         </span>
     </div>
-    <i class="fas" ng-class="{ 'fa-chevron-down': !$ctrl.tagsExpanded, 'fa-chevron-up': $ctrl.tagsExpanded }"></i>
+    <i class="fas"
+       ng-class="{ 'fa-chevron-down': !$ctrl.tagsExpanded, 'fa-chevron-up': $ctrl.tagsExpanded }"
+       ng-if="::$ctrl.showCaret()"></i>
 </div>
