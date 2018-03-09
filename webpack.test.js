@@ -18,7 +18,7 @@ config = assign(config, {
         }
     }),
     module: assign(config.module, {
-        loaders: concat(config.module.loaders, [
+        rules: concat(config.module.rules, [
             {
                 test: /\.css$|\.scss$/,
                 use: 'null-loader'

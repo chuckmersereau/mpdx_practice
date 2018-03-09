@@ -16,7 +16,7 @@ var webpackPostprocessor = wallabyWebpack({
         modules: [path.join(__dirname), 'node_modules', 'bower_components', 'src']
     },
     module: {
-        loaders: [{
+        rules: [{
             test: /\.(json|html)$/,
             use: 'null-loader'
         }]
