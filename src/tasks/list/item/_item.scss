@@ -1,29 +1,40 @@
 tasks-list-item {
-    &.selected:before {
-        font-family: "Font Awesome 5 Pro";
-        content: "\f142";
-        float: left;
-        margin-right: -8px;
-        padding-left: 4px;
-        position: absolute;
-        top: 7px;
-    }
     div.item {
         display: grid;
-        grid-template-columns: 24px auto auto 45px 52px 20px 20px;
+        grid-template-columns: 14px 30px auto auto 45px 52px 20px 20px;
         padding: 10px 15px;
-        height: 40px;
+        height: 45px;
         white-space: nowrap;
         font-size: 14px;
+        line-height: 25px;
+        background-color: $cru-white;
+        transition: background-color 0.2s;
+        cursor: pointer;
+        > .select-box {
+            grid-column: 1;
+            display: block;
+            height: 11px;
+            border-radius: 3px;
+            line-height: 22px;
+            align-self: center;
+            &.selected {
+                background-color: $cru-blue;
+            }
+        }
         &:hover {
             > div.trash {
                 @extend .fade-in.ng-enter;
                 opacity: 1;
             }
+            div.select-box {
+                @extend .fade-in.ng-enter;
+                border: 1px solid $tag-bgcolor;
+            }
         }
         > a.complete {
             text-align: center;
-            grid-column: 1;
+            grid-column: 2;
+            line-height: 29px;
             &:hover {
                 > i {
                     font-weight: 900;
@@ -32,7 +43,7 @@ tasks-list-item {
             }
         }
         > div.content {
-            grid-column: 2;
+            grid-column: 3;
             overflow: hidden;
             text-overflow: ellipsis;
             > span.contacts {
@@ -42,23 +53,23 @@ tasks-list-item {
         > div.tags {
             padding-right: 5px;
             text-align: right;
-            grid-column: 3;
+            grid-column: 4;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         > div.date {
-            grid-column: 4;
+            grid-column: 5;
         }
         > div.comments {
             text-align: center;
-            grid-column: 5;
+            grid-column: 6;
             .btn {
                 width: 51px;
             }
         }
         > a.star {
             text-align: center;
-            grid-column: 6;
+            grid-column: 7;
             &:hover {
                 > i {
                     font-weight: 900;
@@ -67,7 +78,7 @@ tasks-list-item {
         }
         > div.trash {
             text-align: center;
-            grid-column: 7;
+            grid-column: 8;
             @extend .fade-in.ng-leave;
             opacity: 0;
             &:hover {
@@ -78,9 +89,9 @@ tasks-list-item {
             }
         }
         .item-text {
-            color: #297AE3;
+            color: $cru-blue;
             > a a:visited {
-                color: #297AE3;
+                color: $cru-blue;
             }
         }
 
@@ -89,8 +100,14 @@ tasks-list-item {
             line-height: 20px;
             height: 20px;
         }
+        &:hover {
+            background-color: $hover_bg;
+        }
         &--selected {
-            background-color: $light-blue-selected;
+            background-color: $selected_bg;
+            &:hover {
+                background-color: $selected_hover_bg;
+            }
         }
     }
 }

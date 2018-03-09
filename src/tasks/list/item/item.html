@@ -1,6 +1,7 @@
 <div class="item"
      ng-class="{ 'item--selected' : $ctrl.selected }"
      ng-click="$ctrl.select($event)">
+     <div class="select-box" ng-class="{ 'selected': $ctrl.selected }"></div>
     <a ng-click="$ctrl.complete(); $event.stopPropagation();"
        class="complete item-text"
        title="{{::'Completed' | translate}}"
@@ -54,4 +55,3 @@
         </a>
     </div>
 </div>
-

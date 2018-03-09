@@ -10,7 +10,7 @@
                ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }">
     </div>
 </form>
-<div class="content"">
+<div class="content">
     <div infinite-scroll="$ctrl.loadMoreContacts()"
          infinite-scroll-disabled="$ctrl.loading"
          infinite-scroll-use-document-bottom="false"
@@ -28,6 +28,6 @@
         </div>
     </div>
 </div>
-<div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
-  <i class="far fa-circle-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
+<div class="loading" ng-if="$ctrl.loading">
+  <i class="far fa-circle-notch fa-spin fa-3x fa-fw"></i>
 </div>

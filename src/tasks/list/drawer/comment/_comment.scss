@@ -4,8 +4,7 @@ task-item-comment {
     $comment-footer-background-color: #ADADAD;
     margin-bottom: 10px;
     > div.comment {
-        margin-right: 5px;
-        margin-left: 5px;
+        margin: 0 15px;
         padding: 5px;
         border: 1px solid $cru-gray-tint;
         border-radius: $border-radius;

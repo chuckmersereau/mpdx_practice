@@ -23,6 +23,9 @@ task-item-drawer {
         }
         > div.horizontal-tab-sortable {
             background-color: $cru-white;
+            .sortable-row {
+                padding-left: 0;
+            }
             .active-item {
                 background-color: $cru-gray-tint;
                 border-bottom-color: $cru-gray-tint;
@@ -56,7 +59,7 @@ task-item-drawer {
                 padding-right: 5px;
             }
             input {
-                width: 495px;
+                width: 475px;
             }
         }
     }

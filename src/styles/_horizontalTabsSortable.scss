@@ -2,7 +2,6 @@
     display: block;
     width: 100%;
     height: auto;
-    margin-top: 10px;
     .as-sortable-item {
         display: inline-block;
         list-style: none;
@@ -10,6 +9,7 @@
         position: relative;
         z-index: 0;
         height: 40px;
+        border: 1px transparent solid;
         > .as-sortable-item-handle {
             transition: all 0.2s ease-out;
             display: block;
@@ -17,15 +17,12 @@
             font-weight: 600;
             font-size: 14px;
             padding: 10px 20px;
-            > a, a:visited {
+            > a, a:link, a:visited {
                 margin-right: 5px;
                 color: #4A4A4A;
             }
             &:hover {
-                background-color: transparent;
-                border-bottom-color: $color-secondary;
                 color: $color-secondary;
-                text-decoration: none;
             }
         }
     }
@@ -37,8 +34,8 @@
         list-style: none;
         margin: 0 20px 0 0;
     }
-
     .active-item {
+        background-color: $cru-white;
         border: 1px $color-menu-border solid;
         border-top-color: $color-secondary;
         border-bottom-color: $cru-white;
@@ -46,7 +43,10 @@
         z-index: 2;
         .as-sortable-item-handle {
             &:hover {
+                a, a:link, a:visited {
                 color: $color-text;
+                text-decoration: none;
+                }
             }
         }
     }
@@ -54,6 +54,7 @@
         width: 100%;
         height: 40px;
         position: relative;
+        padding-left: 15px;
         &:after {
             position: absolute;
             content: "";

@@ -6,17 +6,14 @@
 contact {
     $hide-sidebar-width: 1320px;
     overflow-y: auto;
-    display: block;
+    display: grid;
     height: 100%;
-    border-bottom: $cru-gray-tint 1px solid;
-    padding-bottom: 5px;
     > div.contact-show {
-        padding-left: $container-padding-left;
-        padding-right: $container-padding-right;
         display: grid;
         grid-template-rows: auto 1fr;
         grid-template-columns: 1fr auto;
-        grid-column-gap: 20px;
+        grid-column-gap: 0;
+        background-color: rgba(74,144,226,0.05);
         h5 {
             font-weight: 600;
             font-size: 16px;
@@ -30,45 +27,6 @@ contact {
                 text-transform: uppercase;
                 font-weight: bold;
                 color: #9B9B9B;
-            }
-            .tabs {
-                margin-top: 10px;
-                padding-top: 10px;
-                .tab-content {
-                    border-top: 1px solid #9B9B9B;
-                }
-                ul.nav.nav-tabs {
-                    > li {
-                        margin-left: 20px;
-                        &:first-child {
-                            margin-left: 0;
-                        }
-                        > a {
-                            font-size: 14px;
-                            font-weight: bold;
-                            border: 0;
-                            border-bottom: 2px solid transparent;
-                            padding: 6px 16px 4px 16px;
-                            transition: color 1s ease-out;
-                            transition: border-color 0.2s ease-out;
-                            transition: background 0.2s ease-out;
-                            cursor: pointer;
-                            color: #525252;
-                            &:hover {
-                                background-color: transparent;
-                                border-bottom: 2px solid rgb(249, 182, 37);
-                                color: rgb(249, 182, 37);
-                            }
-                        }
-                        &.active {
-                            > a {
-                                background-color: #F1F1F1;
-                                border-color: rgb(249, 182, 37);
-                                color: $icon_gray;
-                            }
-                        }
-                    }
-                }
             }
             .btn-reverse {
                 background-color: $color-text;
@@ -116,15 +74,11 @@ contact {
         #contact-tabs {
             grid-column: 1;
             grid-row: 2;
-            margin-top: 10px;
             display: grid;
             grid-template-rows: 40px 1fr;
-            .horizontal-tab-sortable {
-                margin-top: 0;
-                div.contact-tab-details {
-                    @media(min-width: $hide-sidebar-width) {
-                        display: none;
-                    }
+            .horizontal-tab-sortable div.contact-tab-details {
+                @media(min-width: $hide-sidebar-width) {
+                    display: none;
                 }
             }
             .tabs-info {
@@ -133,9 +87,8 @@ contact {
                 }
             }
             > .tab-content {
-                border: 1px $color-menu-border solid;
-                border-top: 0;
-                padding: 10px;
+                padding: 15px;
+                background: $cru-white;
             }
         }
         .see-notes {
@@ -146,13 +99,13 @@ contact {
             margin-top: 10px;
         }
         contact-details {
+            background: $cru-white;
             grid-column: 2;
             grid-row: 1 / -1;
             &.side-bar {
-                padding: 20px;
+                padding: 15px;
                 width: 450px;
-                border: 1px $color-menu-border solid;
-                border-top: 0;
+                border-left: 1px $color-menu-border solid;
                 .communication {
                     > div {
                         max-width: 194px;

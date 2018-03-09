@@ -13,15 +13,10 @@ contacts-list {
         grid-row: 1;
         grid-column: 1;
         grid-template-columns: 1fr auto $search-bar-width;
-
-        grid-column-gap: 20px;
-        padding: 15px;
+        grid-column-gap: 10px;
         @media (max-width: $contact-menu-breakpoint) {
             grid-template-rows: 1fr 1fr;
             grid-row-gap: 5px;
-        }
-        &.selected {
-            background-color: $cru-selected-items-bgcolor;
         }
         > .selected-count {
             grid-column: 1;
@@ -55,6 +50,7 @@ contacts-list {
             }
             .input-group-addon {
                 background-color: $cru-white;
+                padding-right: 0;
             }
             input {
                 border-left-width: 0;
@@ -80,17 +76,15 @@ contacts-list {
         @extend .lists.item-list-sub-menu;
         grid-column: 1;
         grid-row: 2;
-        padding-right: $container-padding-right;
-        margin-left: 14px;
         > div.sub-line-1 {
             display: grid;
             grid-template-columns: 1fr auto;
+            line-height: 34px;
         }
     }
     > div.content {
         @extend .lists.content;
         grid-column: 1;
         grid-row: 3;
-        margin-left: 14px;
     }
 }

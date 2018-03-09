@@ -1,11 +1,11 @@
 .lists {
     &.item-list-menu {
+        padding: 15px;
         display: grid;
         grid-template-rows: 1fr;
         grid-template-columns: 1fr 1fr;
         border-bottom: 1px solid $color-menu-border;
-        padding-right: $container-padding-right;
-        padding-bottom: 5px;
+        transition: background-color 0.2s;
         @media (max-width: $menu-breakpoint) {
             grid-template-rows: 1fr 1fr;
             grid-template-columns: 1fr;
@@ -28,16 +28,26 @@
                 padding-top: 5px;
             }
         }
+        &.selected {
+            background-color: $cru-selected-items-bgcolor;
+        }
     }
     &.item-list-sub-menu {
         padding-bottom: 5px;
         padding-top: 5px;
+        padding: 6px 15px;
+        border-bottom: 1px solid $cru-gray-tint;
         > div.filters {
             font-size: 16px;
         }
     }
     &.content {
-        padding-right: $content-padding-right;
         overflow-y: auto;
+        pagination > div {
+            padding: 15px 0;
+        }
+        .blankslate {
+            margin: 15px;
+        }
     }
 }

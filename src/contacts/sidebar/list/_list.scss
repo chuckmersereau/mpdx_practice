@@ -5,10 +5,18 @@ contacts-sidebar-list {
     grid-template-rows: 34px 100%;
     > form {
         grid-row: 1;
+        .input-group {
+            .input-group-addon, .form-control {
+                color: $cru-white;
+                background-color: $filter-select-bg-color;
+                border: 1px solid $borders;
+            }
+        }
     }
     > div.content {
         grid-row: 2;
         overflow-y: auto;
+        padding-top: 10px;
         .item {
             padding: 0;
             font-size: $font-size-sm;
@@ -50,4 +58,10 @@ contacts-sidebar-list {
             }
         }
     }
+    > div.loading {
+        text-align: center;
+        color: $cru-white;
+        padding: 15px 0;
+    }
+
 }

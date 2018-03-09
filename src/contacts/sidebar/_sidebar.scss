@@ -5,15 +5,15 @@
 contacts-sidebar {
     background-color: $filter-bar-bg-color;
     overflow-y: auto;
+    padding: 15px;
     > div.contact_drawer {
         display: grid;
         grid-template-rows: auto 1fr;
         > div.edit-filters {
-            border: 1px solid $color-menu-border;
             color: $cru-white;
-            padding: 5px;
             line-height: 29px;
             grid-row: 1 / 1;
+            padding-bottom: 10px;
         }
         > div.list {
             grid-row: 2 / 2;

@@ -24,6 +24,9 @@ $menu_bg: #909B9C;
 $icon_gray: #4A4A4A;
 $progress: #EAC347;
 $progress_dark: #CB773B;
+$selected_bg: #EEF5FC;
+$selected_hover_bg: darken($selected_bg, 10%);
+$hover_bg: lighten($cru-blue, 50%);
 
 $page_bg: $color-reverse;
 $content_bg: $color-reverse;
