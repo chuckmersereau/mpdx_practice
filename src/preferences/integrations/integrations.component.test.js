@@ -7,14 +7,16 @@ const defaultBindings = {
 };
 
 describe('preferences.integrations.component', () => {
-    let $ctrl, componentController, state, scope, help, rootScope, integrations, alerts, gettextCatalog;
+    let $ctrl, componentController, state, scope, help, rootScope, integrations, gettextCatalog, api;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, $state, _help_, _integrations_, _alerts_, _gettextCatalog_) => {
+        inject((
+            $componentController, $rootScope, $state, _help_, _integrations_, _gettextCatalog_, _api_
+        ) => {
             help = _help_;
             rootScope = $rootScope;
             scope = rootScope.$new();
-            alerts = _alerts_;
+            api = _api_;
             gettextCatalog = _gettextCatalog_;
             state = $state;
             integrations = _integrations_;
@@ -23,7 +25,6 @@ describe('preferences.integrations.component', () => {
         });
         spyOn(state, 'go').and.callFake(() => {});
         spyOn(help, 'suggest').and.callFake(() => {});
-        spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
 
@@ -63,44 +64,40 @@ describe('preferences.integrations.component', () => {
     });
     describe('disconnect', () => {
         it('should set saving flag', () => {
-            spyOn(integrations, 'disconnect').and.callFake(() => Promise.resolve());
-            $ctrl.disconnect('google');
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            $ctrl.disconnect('key');
             expect($ctrl.saving).toBeTruthy();
         });
         it('should call disconnect', () => {
-            spyOn(integrations, 'disconnect').and.callFake(() => Promise.resolve());
-            $ctrl.disconnect('google');
-            expect(integrations.disconnect).toHaveBeenCalledWith('google');
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            $ctrl.disconnect('key', 1);
+            expect(gettextCatalog.getString).toHaveBeenCalledWith('MPDX removed your integration with {{service}}.', { service: 'key' });
+            expect(gettextCatalog.getString).toHaveBeenCalledWith('MPDX couldn\'t save your configuration changes for {{service}}.', { service: 'key' });
+            expect(api.delete).toHaveBeenCalledWith(
+                'user/key_accounts/1',
+                undefined,
+                'MPDX removed your integration with key.',
+                'MPDX couldn\'t save your configuration changes for key.'
+            );
         });
         it('should unset saving flag', (done) => {
-            spyOn(integrations, 'disconnect').and.callFake(() => Promise.resolve());
-            $ctrl.disconnect('google').then(() => {
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            $ctrl.disconnect('key').then(() => {
                 expect($ctrl.saving).toBeFalsy();
-                done();
-            });
-        });
-        it('should alert a translated confirmation', (done) => {
-            spyOn(integrations, 'disconnect').and.callFake(() => Promise.resolve());
-            $ctrl.disconnect('google').then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'success');
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String), { service: 'google' });
                 done();
             });
         });
         it('should reload integrations', (done) => {
-            spyOn(integrations, 'disconnect').and.callFake(() => Promise.resolve());
-            spyOn(integrations, 'load').and.callFake(() => Promise.resolve());
-            $ctrl.disconnect('google').then(() => {
-                expect(integrations.load).toHaveBeenCalled();
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            $ctrl.disconnect('key').then(() => {
+                expect(api.delete).toHaveBeenCalled();
                 done();
             });
         });
         it('should handle rejection', (done) => {
-            spyOn(integrations, 'disconnect').and.callFake(() => Promise.reject(Error('')));
-            $ctrl.disconnect('google').catch(() => {
+            spyOn(api, 'delete').and.callFake(() => Promise.reject());
+            $ctrl.disconnect('key').catch(() => {
                 expect($ctrl.saving).toBeFalsy();
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String), { service: 'google', error: undefined });
                 done();
             });
         });

@@ -35,6 +35,7 @@ class DatetimepickerController {
                 this.ngModel = this.model.toISOString();
             } else {
                 this.ngModel = undefined;
+                this.time = null;
             }
         });
 

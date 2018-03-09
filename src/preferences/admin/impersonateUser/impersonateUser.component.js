@@ -2,11 +2,10 @@ class ImpersonateUserController {
     constructor(
         $window,
         gettextCatalog,
-        alerts, api, users
+        api, users
     ) {
         this.$window = $window;
         this.gettextCatalog = gettextCatalog;
-        this.alerts = alerts;
         this.api = api;
         this.users = users;
 
@@ -15,10 +14,12 @@ class ImpersonateUserController {
     }
     save() {
         this.saving = true;
+        const errorMessage = this.gettextCatalog.getString('Unable to impersonate provided user');
         return this.api.post({
             url: 'admin/impersonation',
             data: this.impersonateUser,
-            type: 'impersonation'
+            type: 'impersonation',
+            errorMessage: errorMessage
         }).then((data) => {
             this.$window.localStorage.setItem('impersonatorToken', this.$window.localStorage.getItem('token'));
             this.$window.localStorage.setItem('impersonator', `${this.users.current.first_name} ${this.users.current.last_name}`);
@@ -26,7 +27,6 @@ class ImpersonateUserController {
             this.redirectHome();
         }).catch(() => {
             this.saving = false;
-            this.alerts.addAlert(this.gettextCatalog.getString('Unable to impersonate provided user'), 'danger');
         });
     }
     redirectHome() {
@@ -41,11 +41,10 @@ const ImpersonateUser = {
 };
 
 import gettextCatalog from 'angular-gettext';
-import alerts from 'common/alerts/alerts.service';
 import api from 'common/api/api.service';
 import users from 'common/users/users.service';
 
 export default angular.module('mpdx.preferences.admin.impersonateUser.component', [
     gettextCatalog,
-    alerts, api, users
+    api, users
 ]).component('preferencesAdminImpersonateUser', ImpersonateUser).name;

@@ -1,10 +1,10 @@
 class PrayerLettersController {
     constructor(
         $log, $rootScope, gettextCatalog,
-        alerts, modal, prayerLetters
+        api, modal, prayerLetters
     ) {
         this.$log = $log;
-        this.alerts = alerts;
+        this.api = api;
         this.gettextCatalog = gettextCatalog;
         this.modal = modal;
         this.prayerLetters = prayerLetters;
@@ -18,23 +18,27 @@ class PrayerLettersController {
     }
     sync() {
         this.saving = true;
-        return this.prayerLetters.sync().then(() => {
+        const errorMessage = this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for Prayer Letters');
+        const successMessage = this.gettextCatalog.getString('MPDX is now syncing your newsletter recipients with Prayer Letters');
+        return this.api.get(
+            `account_lists/${this.api.account_list_id}/prayer_letters_account/sync`,
+            undefined, successMessage, errorMessage
+        ).then(() => {
             this.saving = false;
-            this.alerts.addAlert(this.gettextCatalog.getString('MPDX is now syncing your newsletter recipients with Prayer Letters'), 'success');
         }).catch((err) => {
             this.saving = false;
-            this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for Prayer Letters'), 'danger');
             throw err;
         });
     }
     disconnect() {
-        return this.modal.confirm(this.gettextCatalog.getString('Are you sure you wish to disconnect this Prayer Letters account?')).then(() => {
+        const msg = this.gettextCatalog.getString('Are you sure you wish to disconnect this Prayer Letters account?');
+        return this.modal.confirm(msg).then(() => {
             this.saving = true;
-            return this.prayerLetters.disconnect().then(() => {
+            const errorMessage = this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for Prayer Letters');
+            const successMessage = this.gettextCatalog.getString('MPDX removed your integration with Prayer Letters');
+            return this.prayerLetters.disconnect(successMessage, errorMessage).then(() => {
                 this.saving = false;
-                this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed your integration with Prayer Letters'), 'success');
             }).catch((err) => {
-                this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for Prayer Letters'), 'danger');
                 this.saving = false;
                 throw err;
             });
@@ -47,12 +51,12 @@ const PrayerLetters = {
     controller: PrayerLettersController
 };
 
+import api from '../../../common/api/api.service';
 import gettextCatalog from 'angular-gettext';
-import alerts from 'common/alerts/alerts.service';
 import modal from 'common/modal/modal.service';
 import prayerLetters from './prayerLetters.service';
 
 export default angular.module('mpdx.preferences.integrations.prayerLetters.component', [
     gettextCatalog,
-    alerts, modal, prayerLetters
+    api, modal, prayerLetters
 ]).component('prayerLettersIntegrationsPreferences', PrayerLetters).name;

@@ -12,6 +12,7 @@ $fa-font-path: "~font-awesome/fonts";
 @import "~ng-sortable/dist/ng-sortable";
 $flag-icon-css-path: "~flag-icon-css/flags";
 @import "~flag-icon-css/sass/flag-icon";
+@import "~angularjs-toaster/toaster";
 
 /* Internal */
 @import "styles/vars";
@@ -48,7 +49,7 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "menu/search/search";
 @import "coaches/list/item/item";
 @import "coaches/show/show";
-@import "common/alerts/alerts";
+@import "common/alerts/alert/alert";
 @import "common/avatar/avatar";
 @import "common/cover/cover";
 @import "common/datetimepicker/datetimepicker";
@@ -56,6 +57,7 @@ $flag-icon-css-path: "~flag-icon-css/flags";
 @import "common/tagSelector/tasgSelector";
 @import "common/login/login";
 @import "common/collectionSelector/modal/modal";
+@import "common/collectionSelector/collectionSelector";
 @import "contacts/list/map/map";
 @import "contacts/sidebar/filter/tags/tags";
 @import "contacts/sidebar/list/list";

@@ -2,21 +2,19 @@ import component from './connect.component';
 
 describe('setup.connect.component', () => {
     let $ctrl, rootScope, scope, componentController,
-        alerts, api, gettextCatalog, preferencesOrganization, setup, users;
+        api, gettextCatalog, preferencesOrganization, setup, users;
 
     beforeEach(() => {
         angular.mock.module(component);
         inject((
             $componentController, $rootScope,
-            _accounts_, _alerts_, _api_, _gettextCatalog_, _help_,
-            _preferencesOrganization_, _serverConstants_, _setup_,
+            _accounts_, _api_, _gettextCatalog_, _help_, _preferencesOrganization_, _serverConstants_, _setup_,
             _users_
         ) => {
             rootScope = $rootScope;
             componentController = $componentController;
             scope = rootScope.$new();
 
-            alerts = _alerts_;
             api = _api_;
             gettextCatalog = _gettextCatalog_;
             preferencesOrganization = _preferencesOrganization_;
@@ -29,7 +27,6 @@ describe('setup.connect.component', () => {
 
             loadController();
         });
-        spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callFake((data) => data);
     });
 
@@ -64,8 +61,10 @@ describe('setup.connect.component', () => {
 
         it('should call createAccount', () => {
             spyOn(preferencesOrganization, 'createAccount').and.callFake(() => Promise.resolve());
+            const errorMessage = 'Invalid username or password.';
             $ctrl.add();
-            expect(preferencesOrganization.createAccount).toHaveBeenCalledWith('a', 'b', 'c');
+            expect(preferencesOrganization.createAccount).toHaveBeenCalledWith('a', 'b', 'c', errorMessage);
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
         });
 
         it('should refresh if successful', (done) => {
@@ -78,15 +77,6 @@ describe('setup.connect.component', () => {
                 done();
             });
         });
-
-        it('should alert if rejected', (done) => {
-            spyOn(preferencesOrganization, 'createAccount').and.callFake(() => Promise.reject());
-            $ctrl.add().catch(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
-                done();
-            });
-        });
     });
 
     describe('disconnect', () => {
@@ -95,9 +85,13 @@ describe('setup.connect.component', () => {
         });
 
         it('should disconnect', (done) => {
+            const successMessage = 'MPDX removed your organization integration';
+            const errorMessage = 'MPDX couldn\'t save your configuration changes for that organization';
             spyOn(preferencesOrganization, 'disconnect').and.callFake(() => Promise.resolve());
             $ctrl.disconnect(1).then(() => {
-                expect(preferencesOrganization.disconnect).toHaveBeenCalledWith(1);
+                expect(preferencesOrganization.disconnect).toHaveBeenCalledWith(1, successMessage, errorMessage);
+                expect(gettextCatalog.getString).toHaveBeenCalledWith(successMessage);
+                expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
                 done();
             });
         });
@@ -106,15 +100,6 @@ describe('setup.connect.component', () => {
             spyOn(preferencesOrganization, 'disconnect').and.callFake(() => Promise.resolve());
             $ctrl.disconnect(1).then(() => {
                 expect($ctrl.saving).toBeFalsy();
-                done();
-            });
-        });
-
-        it('should alert a translated confirmation', (done) => {
-            spyOn(preferencesOrganization, 'disconnect').and.callFake(() => Promise.resolve());
-            $ctrl.disconnect(1).then(() => {
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String));
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });
@@ -131,8 +116,6 @@ describe('setup.connect.component', () => {
             spyOn(preferencesOrganization, 'disconnect').and.callFake(() => Promise.reject());
             $ctrl.disconnect(1).catch(() => {
                 expect($ctrl.saving).toBeFalsy();
-                expect(alerts.addAlert).toHaveBeenCalledWith(jasmine.any(String), 'danger');
-                expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
                 done();
             });
         });

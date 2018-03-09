@@ -23,12 +23,6 @@ class IntegrationsService {
     sendToChalkline() {
         return this.api.post(`account_lists/${this.api.account_list_id}/chalkline_mail`);
     }
-    disconnect(service, id) {
-        const serviceToDisconnect = service.toLowerCase();
-        if (serviceToDisconnect === 'key') {
-            return this.api.delete('user/key_accounts/' + id);
-        }
-    }
 }
 
 import api from 'common/api/api.service';

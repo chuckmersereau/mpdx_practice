@@ -1,11 +1,10 @@
 class GoogleController {
     constructor(
         $rootScope, $log, $window, gettextCatalog,
-        alerts, modal, google, googleIntegrations
+        modal, google, googleIntegrations
     ) {
         this.$log = $log;
         this.$window = $window;
-        this.alerts = alerts;
         this.gettextCatalog = gettextCatalog;
         this.modal = modal;
         this.google = google;
@@ -19,13 +18,14 @@ class GoogleController {
         this.google.load(true);
     }
     disconnect(id) {
-        return this.modal.confirm(this.gettextCatalog.getString('Are you sure you wish to disconnect this Google account?')).then(() => {
-            return this.google.disconnect(id).then(() => {
+        const msg = this.gettextCatalog.getString('Are you sure you wish to disconnect this Google account?');
+        return this.modal.confirm(msg).then(() => {
+            const successMessage = this.gettextCatalog.getString('MPDX removed your integration with Google.');
+            const errorMessage = this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for Google.');
+            return this.google.disconnect(id, successMessage, errorMessage).then(() => {
                 this.saving = false;
-                this.alerts.addAlert(this.gettextCatalog.getString('MPDX removed your integration with Google.'));
-            }).catch((data) => {
+            }).catch(() => {
                 this.saving = false;
-                this.alerts.addAlert(this.gettextCatalog.getString('MPDX couldn\'t save your configuration changes for Google. {error}', { error: data.error }), 'danger');
             });
         });
     }
@@ -36,5 +36,13 @@ const Google = {
     controller: GoogleController
 };
 
-export default angular.module('mpdx.preferences.integrations.google.component', [])
-    .component('googleIntegrationPreferences', Google).name;
+import gettext from 'angular-gettext';
+import google from './google.service';
+import googleIntegrations from './integrations/integrations.service';
+import modal from 'common/modal/modal.service';
+import serverConstants from 'common/serverConstants/serverConstants.service';
+
+export default angular.module('mpdx.preferences.integrations.google.component', [
+    gettext,
+    google, googleIntegrations, modal, serverConstants
+]).component('googleIntegrationPreferences', Google).name;

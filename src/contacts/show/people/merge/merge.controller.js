@@ -3,10 +3,9 @@ import { map, reject } from 'lodash/fp';
 class MergePeopleModalController {
     constructor(
         $rootScope, $scope, gettextCatalog,
-        people, alerts,
+        people,
         selectedPeople
     ) {
-        this.alerts = alerts;
         this.$rootScope = $rootScope;
         this.$scope = $scope;
         this.gettextCatalog = gettextCatalog;
@@ -23,23 +22,21 @@ class MergePeopleModalController {
             loserIds.push(person.id);
             return { winner_id: this.selectedPerson, loser_id: person.id };
         }, selectedPeople);
+        const errorMessage = this.gettextCatalog.getString('There was an error while trying to merge the people');
 
-        return this.people.bulkMerge(selectedPeopleToMerge).then(() => {
+        return this.people.bulkMerge(selectedPeopleToMerge, errorMessage).then(() => {
             this.$rootScope.$emit('peopleMerged', this.selectedPerson, loserIds);
         }).then(() => {
             this.$scope.$hide();
         }).catch((err) => {
-            const message = this.gettextCatalog.getString('There was an error while trying to merge the people');
-            this.alerts.addAlert(message, 'danger');
             this.$scope.$hide();
             return err;
         });
     }
 }
 
-import alerts from 'common/alerts/alerts.service';
 import people from '../people.service';
 
 export default angular.module('mpdx.contacts.show.people.merge.controller', [
-    alerts, people
+    people
 ]).controller('mergePeopleModalController', MergePeopleModalController).name;

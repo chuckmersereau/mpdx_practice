@@ -1,19 +1,17 @@
 import add from './add.controller';
 
 describe('tools.appeals.show.addPledge.controller', () => {
-    let $ctrl, controller, api, scope, rootScope, alerts;
+    let $ctrl, controller, api, scope, rootScope;
     beforeEach(() => {
         angular.mock.module(add);
-        inject(($controller, $rootScope, _api_, _alerts_) => {
+        inject(($controller, $rootScope, _api_) => {
             rootScope = $rootScope;
             scope = $rootScope.$new();
-            alerts = _alerts_;
             api = _api_;
             api.account_list_id = 321;
             controller = $controller;
             $ctrl = loadController();
         });
-        spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn($ctrl, 'gettext').and.callFake((data) => data);
     });
 
@@ -40,6 +38,8 @@ describe('tools.appeals.show.addPledge.controller', () => {
             $ctrl.expected_date = '2007-01-01';
             $ctrl.appealId = 2;
             $ctrl.contactId = 3;
+            const successMessage = 'Successfully added commitment to appeal';
+            const errorMessage = 'Unable to add commitment to appeal';
             $ctrl.save();
             expect(api.post).toHaveBeenCalledWith('account_lists/321/pledges', {
                 amount: 150,
@@ -51,14 +51,9 @@ describe('tools.appeals.show.addPledge.controller', () => {
                 contact: {
                     id: 3
                 }
-            });
-        });
-        it('should alert when finished', (done) => {
-            $ctrl.save().then(() => {
-                expect($ctrl.gettext).toHaveBeenCalledWith('Successfully added commitment to appeal');
-                expect(alerts.addAlert).toHaveBeenCalledWith('Successfully added commitment to appeal');
-                done();
-            });
+            }, successMessage, errorMessage);
+            expect($ctrl.gettext).toHaveBeenCalledWith(successMessage);
+            expect($ctrl.gettext).toHaveBeenCalledWith(errorMessage);
         });
         it('should hide the modal when finished', (done) => {
             $ctrl.save().then(() => {
@@ -69,18 +64,6 @@ describe('tools.appeals.show.addPledge.controller', () => {
         it('should notify other components when finished', (done) => {
             $ctrl.save().then(() => {
                 expect(rootScope.$emit).toHaveBeenCalledWith('pledgeAdded', jasmine.any(Object));
-                done();
-            });
-        });
-    });
-    describe('save - failed', () => {
-        beforeEach(() => {
-            spyOn(api, 'post').and.callFake(() => Promise.reject());
-        });
-        it('should alert on reject', (done) => {
-            $ctrl.save().then(() => {
-                expect($ctrl.gettext).toHaveBeenCalledWith('Unable to add commitment to appeal');
-                expect(alerts.addAlert).toHaveBeenCalledWith('Unable to add commitment to appeal', 'danger');
                 done();
             });
         });

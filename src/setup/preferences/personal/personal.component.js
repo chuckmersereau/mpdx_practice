@@ -3,11 +3,10 @@ import { indexOf } from 'lodash/fp';
 class PersonalController {
     constructor(
         $state,
-        accounts, alerts, users
+        accounts, users
     ) {
         this.$state = $state;
         this.accounts = accounts;
-        this.alerts = alerts;
         this.users = users;
 
         this.selectableTabs = ['locale', 'monthly_goal', 'home_country'];
@@ -36,11 +35,10 @@ const Personal = {
 };
 
 import accounts from 'common/accounts/accounts.service';
-import alerts from 'common/alerts/alerts.service';
 import uiRouter from '@uirouter/angularjs';
 import users from 'common/users/users.service';
 
 export default angular.module('mpdx.setup.preferences.personal.component', [
-    accounts, alerts, users,
+    accounts, users,
     uiRouter
 ]).component('setupPreferencesPersonal', Personal).name;

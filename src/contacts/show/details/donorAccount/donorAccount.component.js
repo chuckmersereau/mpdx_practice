@@ -38,11 +38,10 @@ const DonorAccount = {
 };
 
 import accounts from 'common/accounts/accounts.service';
-import alerts from 'common/alerts/alerts.service';
 import contacts from 'contacts/contacts.service';
 import gettext from 'angular-gettext';
 
 export default angular.module('mpdx.contacts.show.details.donorAccount.component', [
     gettext,
-    accounts, alerts, contacts
+    accounts, contacts
 ]).component('contactDonorAccount', DonorAccount).name;

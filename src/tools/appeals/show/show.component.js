@@ -229,13 +229,9 @@ class AppealController {
         delete patch.contacts;
         delete patch.donations;
         this.$log.debug('appeal save', patch);
-        return this.api.put(`appeals/${this.appeal.id}`, patch).then((data) => {
-            this.alerts.addAlert(this.gettext('Appeal saved successfully'));
-            return data;
-        }).catch((ex) => {
-            this.alerts.addAlert(this.gettext('Unable to save appeal'), 'danger');
-            throw ex;
-        });
+        const successMessage = this.gettext('Appeal saved successfully');
+        const errorMessage = this.gettext('Unable to save appeal');
+        return this.api.put(`appeals/${this.appeal.id}`, patch, successMessage, errorMessage);
     }
     contactSearch(keyword) {
         return this.api.get({
@@ -256,7 +252,9 @@ class AppealController {
             overrideGetAsPost: true
         });
     }
-    onContactSelected(contact) {
+    onContactSelected(contact, successMessage, errorMessage) {
+        successMessage = defaultTo(this.gettext('Contact successfully added to appeal'), successMessage);
+        errorMessage = defaultTo(this.gettext('Unable to add contact to appeal'), errorMessage);
         return this.api.post({
             url: `appeals/${this.appeal.id}/appeal_contacts`,
             data: {
@@ -268,37 +266,34 @@ class AppealController {
                     id: contact.id
                 }
             },
-            type: 'appeal_contacts'
+            type: 'appeal_contacts',
+            successMessage: successMessage,
+            errorMessage: errorMessage
         }).then(() => {
-            this.alerts.addAlert(this.gettext('Contact successfully added to appeal'));
             this.getContactsNotGiven();
-        }).catch((ex) => {
-            this.alerts.addAlert(this.gettext('Unable to add contact to appeal'), 'danger');
-            throw ex;
         });
     }
     removeContact(contact) {
         const message = this.gettext('Are you sure you wish to remove this contact from the appeal?');
-        return this.modal.confirm(message).then(() =>
-            this.api.delete(`appeals/${this.appeal.id}/appeal_contacts/${contact}`).then(() => {
-                this.alerts.addAlert(this.gettext('Contact removed from appeal'));
+        return this.modal.confirm(message).then(() => {
+            const successMessage = this.gettext('Contact removed from appeal');
+            const errorMessage = this.gettext('Unable to remove contact from appeal');
+            this.api.delete(
+                `appeals/${this.appeal.id}/appeal_contacts/${contact}`,
+                undefined, successMessage, errorMessage
+            ).then(() => {
                 this.refreshLists();
-            }).catch((ex) => {
-                this.alerts.addAlert(this.gettext('Unable to remove contact from appeal'), 'danger');
-                throw ex;
-            })
-        );
+            });
+        });
     }
     addExcludedContact(rel) {
         return this.removeExcludedContact(rel.id).then(() => {
-            return this.onContactSelected(rel.contact).then(() => {
-                this.alerts.addAlert(this.gettext('Excluded contact successfully added to appeal'));
+            const successMessage = this.gettext('Excluded contact successfully added to appeal');
+            const errorMessage = this.gettext('Unable to add excluded contact to appeal');
+            return this.onContactSelected(rel.contact, successMessage, errorMessage).then(() => {
                 this.getExcludedContacts();
                 this.getContactsNotGiven();
             });
-        }).catch((ex) => {
-            this.alerts.addAlert(this.gettext('Unable to add excluded contact to appeal'), 'danger');
-            throw ex;
         });
     }
     removeExcludedContact(id) {
@@ -361,12 +356,13 @@ class AppealController {
         const message = this.gettext('Are you sure you wish to remove this commitment?');
         const status = angular.copy(pledge.status);
         return this.modal.confirm(message).then(() => {
-            return this.api.delete(`account_lists/${this.api.account_list_id}/pledges/${pledge.id}`).then(() => {
-                this.alerts.addAlert(this.gettext('Successfully removed commitment from appeal'));
+            const successMessage = this.gettext('Successfully removed commitment from appeal');
+            const errorMessage = this.gettext('Unable to remove commitment from appeal');
+            return this.api.delete(
+                `account_lists/${this.api.account_list_id}/pledges/${pledge.id}`,
+                undefined, successMessage, errorMessage
+            ).then(() => {
                 this.refreshLists(status);
-            }).catch((ex) => {
-                this.alerts.addAlert(this.gettext('Unable to remove commitment from appeal'), 'danger');
-                throw ex;
             });
         });
     }
@@ -427,6 +423,8 @@ class AppealController {
         return get('primary_list_id', this.mailchimp.data) === this.mailchimpListId ? message : false;
     }
     doExportToMailChimp() {
+        const successMessage = this.gettext('Contact(s) successfully exported to Mailchimp');
+        const errorMessage = this.gettext('Unable to add export contact(s) to Mailchimp');
         return this.api.post({
             url: `contacts/export_to_mail_chimp?mail_chimp_list_id=${this.mailchimpListId}`,
             type: 'export_to_mail_chimps',
@@ -436,12 +434,9 @@ class AppealController {
                     contact_ids: this.selectedContactIds
                 }
             },
-            doSerialization: false
-        }).then(() => {
-            this.alerts.addAlert(this.gettext('Contact(s) successfully exported to Mailchimp'));
-        }).catch((ex) => {
-            this.alerts.addAlert(this.gettext('Unable to add export contact(s) to Mailchimp'), 'danger');
-            throw ex;
+            doSerialization: false,
+            successMessage: successMessage,
+            errorMessage: errorMessage
         });
     }
     addPledge(contact) {
@@ -499,11 +494,9 @@ class AppealController {
     deleteAppeal() {
         const message = this.gettext('You are about to permanently delete this Appeal. This will remove all contacts, and delete all pledges, and progress towards this appeal. Are you sure you want to continue?');
         return this.modal.confirm(message).then(() => {
-            return this.api.delete(`appeals/${this.appeal.id}`).then(() => {
+            const errorMessage = this.gettext('There was an error trying to delete the appeal.');
+            return this.api.delete(`appeals/${this.appeal.id}`, undefined, undefined, errorMessage).then(() => {
                 this.$state.go('tools.appeals');
-            }).catch(() => {
-                const error = this.gettext('There was an error trying to delete the appeal.');
-                this.alerts.addAlert(error, 'danger');
             });
         });
     }

@@ -3,11 +3,10 @@ import { concat, pullAt } from 'lodash/fp';
 class GoogleIntegrationsModalController {
     constructor(
         $log, blockUI, gettextCatalog,
-        alerts, api, googleIntegrations, modal, serverConstants, google,
+        api, googleIntegrations, modal, serverConstants, google,
         googleIntegration, googleAccount
     ) {
         this.$log = $log;
-        this.alerts = alerts;
         this.api = api;
         this.gettextCatalog = gettextCatalog;
         this.google = google;
@@ -48,15 +47,14 @@ class GoogleIntegrationsModalController {
         });
     }
     save() {
+        const successMessage = this.gettextCatalog.getString('Google integration saved.');
+        const errorMessage = this.gettextCatalog.getString('Unable to save Google integration.');
         return this.api.put({
             url: `user/google_accounts/${this.googleAccount.id}/google_integrations/${this.googleIntegration.id}`,
             data: this.googleIntegration,
-            type: 'google_integrations'
-        }).then(() => {
-            this.alerts.addAlert(this.gettextCatalog.getString('Google integration saved.'));
-        }).catch((ex) => {
-            this.alerts.addAlert(this.gettextCatalog.getString('Unable to save Google integration.'), 'danger');
-            throw ex;
+            type: 'google_integrations',
+            successMessage: successMessage,
+            errorMessage: errorMessage
         });
     }
     addEmailAddress() {
@@ -67,7 +65,6 @@ class GoogleIntegrationsModalController {
     }
 }
 
-import alerts from 'common/alerts/alerts.service';
 import api from 'common/api/api.service';
 import blockUI from 'angular-block-ui';
 import gettextCatalog from 'angular-gettext';
@@ -78,5 +75,5 @@ import serverConstants from 'common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.preferences.integrations.google.integrations.controller', [
     blockUI, gettextCatalog,
-    alerts, api, googleIntegrations, modal, serverConstants, google
+    api, googleIntegrations, modal, serverConstants, google
 ]).controller('googleIntegrationsModalController', GoogleIntegrationsModalController).name;

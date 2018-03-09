@@ -1,19 +1,17 @@
 import edit from './edit.controller';
 
 describe('tools.appeals.show.editPledge.controller', () => {
-    let $ctrl, controller, api, scope, rootScope, alerts;
+    let $ctrl, controller, api, scope, rootScope;
     beforeEach(() => {
         angular.mock.module(edit);
-        inject(($controller, $rootScope, _api_, _alerts_) => {
+        inject(($controller, $rootScope, _api_) => {
             rootScope = $rootScope;
             scope = $rootScope.$new();
-            alerts = _alerts_;
             api = _api_;
             api.account_list_id = 321;
             controller = $controller;
             $ctrl = loadController();
         });
-        spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn($ctrl, 'gettext').and.callFake((data) => data);
     });
 
@@ -45,6 +43,9 @@ describe('tools.appeals.show.editPledge.controller', () => {
                 contactId: 3
             };
             $ctrl.appealId = 2;
+            const successMessage = 'Successfully edited commitment';
+            const errorMessage = 'Unable to edit commitment';
+
             $ctrl.save();
             expect(api.put).toHaveBeenCalledWith('account_lists/321/pledges/1', {
                 id: 1,
@@ -57,14 +58,7 @@ describe('tools.appeals.show.editPledge.controller', () => {
                 contact: {
                     id: 3
                 }
-            });
-        });
-        it('should alert when finished', (done) => {
-            $ctrl.save().then(() => {
-                expect($ctrl.gettext).toHaveBeenCalledWith('Successfully edited commitment');
-                expect(alerts.addAlert).toHaveBeenCalledWith('Successfully edited commitment');
-                done();
-            });
+            }, successMessage, errorMessage);
         });
         it('should hide the modal when finished', (done) => {
             $ctrl.save().then(() => {
@@ -75,18 +69,6 @@ describe('tools.appeals.show.editPledge.controller', () => {
         it('should notify other components when finished', (done) => {
             $ctrl.save().then(() => {
                 expect(rootScope.$emit).toHaveBeenCalledWith('pledgeAdded');
-                done();
-            });
-        });
-    });
-    describe('save - failed', () => {
-        beforeEach(() => {
-            spyOn(api, 'put').and.callFake(() => Promise.reject());
-        });
-        it('should alert on reject', (done) => {
-            $ctrl.save().then(() => {
-                expect($ctrl.gettext).toHaveBeenCalledWith('Unable to edit commitment');
-                expect(alerts.addAlert).toHaveBeenCalledWith('Unable to edit commitment', 'danger');
                 done();
             });
         });
