@@ -116,7 +116,14 @@ contacts-list-item {
                 @extend .fade-in.ng-enter;
                 opacity: 1;
             }
+            div.select-box {
+                @extend .fade-in.ng-enter;
+                border: 1px solid $tag-bgcolor;
+            }
         }
+    }
+    &:hover {
+        background-color: lighten($cru-blue, 50%);
     }
     &.selected {
         $contact-item-selected-bgcolor: rgba(74,144,226,0.09);
