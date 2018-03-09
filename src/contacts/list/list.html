@@ -66,6 +66,7 @@
             <button type="button"
                     class="btn btn-default"
                     ng-click="$ctrl.openExportContactsModal()"
+                    ng-if="$ctrl.contacts.selectedContacts.length > 0"
                     translate>
                 Export
             </button>
