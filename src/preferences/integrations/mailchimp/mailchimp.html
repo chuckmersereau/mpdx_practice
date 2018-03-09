@@ -1,9 +1,3 @@
-<div ng-if="$ctrl.isProduction">
-    <div class="alert alert-danger" translate>
-        We are currently experiencing significant issues with MailChimp. <br/>
-        We have disabled the ability to add a new sync account until we have resolved the current issue. If you would like, you can still disconnect and sync to MailChimp for now.
-    </div>
-</div>
 <div ng-if="$ctrl.mailchimp.data.validate_key && !$ctrl.mailchimp.data.valid || $ctrl.showSettings == true">
     <div class="alert alert-info" translate>
         Please choose a list to sync with MailChimp.
@@ -11,8 +5,12 @@
     <div ng-if="$ctrl.mailchimp.data.lists_present">
         <div class="form-group">
             <label for="primaryListId" translate>Pick a list to use for your newsletter</label>
-            <select name="primaryListId" id="primaryListId" ng-model="$ctrl.mailchimp.data.primary_list_id" class="form-control" chosen>
-                <option ng-repeat="option in $ctrl.mailchimp.data.lists_available_for_newsletters" value="{{option.id}}">{{option.name}}</option>
+            <select chosen
+                    name="primaryListId"
+                    id="primaryListId"
+                    ng-model="$ctrl.mailchimp.data.primary_list_id"
+                    class="form-control"
+                    ng-options="option.id as option.name for option in $ctrl.mailchimp.data.lists_available_for_newsletters">
             </select>
         </div>
         <div class="form-group">
@@ -26,7 +24,7 @@
                 <translate>Save</translate>
                 <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
             </button>
-            <a class="btn btn-link" ng-click="$ctrl.disconnect()" translate>Disconnect</a>
+            <button type="button" class="btn btn-link" ng-click="$ctrl.showSettings = false" translate>Cancel</button>
         </div>
     </div>
     <div ng-if="!$ctrl.mailchimp.data.lists_present">
@@ -55,7 +53,7 @@
     <a class="btn btn-default" ng-click="$ctrl.showSettings = true" translate>Modify Settings</a>
     <a class="btn btn-link" ng-click="$ctrl.disconnect()" translate>Disconnect</a>
 </div>
-<div ng-if="!$ctrl.mailchimp.data.validate_key && !$ctrl.isProduction">
+<div ng-if="!$ctrl.mailchimp.data.validate_key">
     <h4 class="integration_subhead" translate>MailChimp Overview</h4>
     <p translate>MailChimp makes keeping in touch with your ministry partners easy and streamlined. Here’s how it works:</p>
     <ol>
