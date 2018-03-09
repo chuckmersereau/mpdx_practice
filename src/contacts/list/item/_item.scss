@@ -63,13 +63,11 @@ contacts-list-item {
                         text-overflow: ellipsis;
                         height: 18px;
                         display: block;
-                    }
-                    .person-name {
-                        margin-right: 10px;
-                    }
-                    .person-email {
-                        margin-right: 10px;
+                        white-space: nowrap;
                         overflow: hidden;
+                        a, span {
+                            margin-right: 10px;
+                        }
                     }
                 }
             }

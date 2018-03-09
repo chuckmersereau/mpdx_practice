@@ -22,6 +22,11 @@
                        target="_blank">
                         {{::email_address.email}}
                     </a>
+                    <span ng-repeat="phone_number in ::person.phone_numbers"
+                          ng-if="::phone_number.primary && !phone_number.historic"
+                          class="phone-type phone-type-{{phone_number.location}}">
+                        {{::phone_number.number}}
+                    </span>
                     <a ng-repeat="facebook_account in ::person.facebook_accounts"
                        ng-href="{{::facebook_account.url}}"
                        class="person-fb"
