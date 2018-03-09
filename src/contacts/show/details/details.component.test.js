@@ -224,4 +224,18 @@ describe('contacts.show.details.component', () => {
             });
         });
     });
+    describe('removeNextAsk', () => {
+        beforeEach(() => {
+            contacts.current = { next_ask: '2000-8-10' };
+            spyOn($ctrl, 'onSave').and.callFake(() => {});
+        });
+        it('should nullify next ask', () => {
+            $ctrl.removeNextAsk();
+            expect(contacts.current.next_ask).toEqual(null);
+        });
+        it('should save', () => {
+            $ctrl.removeNextAsk();
+            expect($ctrl.onSave).toHaveBeenCalledWith();
+        });
+    });
 });

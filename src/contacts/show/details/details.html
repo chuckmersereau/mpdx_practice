@@ -187,18 +187,32 @@
                             </select>
                         </div>
                     </div>
+                    <button bs-datepicker
+                            type="button"
+                            class="next-ask btn btn-xs btn-primary pull-right"
+                            ng-model="$ctrl.contact.next_ask"
+                            ng-change="$ctrl.save()"
+                            ng-model-options="{ debounce: 1000 }"
+                            data-autoclose="true"
+                            data-date-type="string"
+                            data-date-format="{{$ctrl.locale.dateTimeFormat}}"
+                            data-placement="top-right"
+                            data-model-date-format="yyyy-MM-dd">
+                        <i class="fa fa-calendar"></i>
+                    </button>
+                    <button class="next-ask btn btn-xs btn-danger pull-right"
+                            type="button"
+                            ng-click="$ctrl.removeNextAsk()"
+                            ng-if="$ctrl.contact.next_ask"
+                            title="{{ ::'Remove Next Ask' | translate }}">
+                        <i class="fa fa-trash-o trash"></i>
+                    </button>
+
                     <div class="field">
                         <h4 class="attribute-header" translate>Next Ask</h4>
                         <div class="inline-input">
-                            <input bs-datepicker
-                                   type="text"
-                                   ng-model="$ctrl.contact.next_ask"
-                                   ng-change="$ctrl.save()"
-                                   ng-model-options="{ debounce: 1000 }"
-                                   data-autoclose="true"
-                                   data-date-type="string"
-                                   data-date-format="{{$ctrl.locale.dateTimeFormat}}"
-                                   data-model-date-format="yyyy-MM-dd">
+                            <span ng-if="$ctrl.contact.next_ask">{{ $ctrl.contact.next_ask | localize }}</span>
+                            <span ng-if="!$ctrl.contact.next_ask" translate>N/A</span>
                         </div>
                     </div>
                 </div>
