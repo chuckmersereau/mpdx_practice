@@ -47,8 +47,8 @@ class ContactsService {
                 include: 'addresses,donor_accounts,primary_person,contact_referrals_to_me',
                 fields: {
                     contacts: 'avatar,church_name,envelope_greeting,greeting,last_donation,lifetime_donations,'
-                              + 'likely_to_give,locale,magazine,name,no_appeals,notes,notes_saved_at,pledge_amount,'
-                              + 'pledge_currency,pledge_currency_symbol,pledge_frequency,pledge_received,'
+                              + 'likely_to_give,locale,magazine,name,next_ask,no_appeals,notes,notes_saved_at,'
+                              + 'pledge_amount,pledge_currency,pledge_currency_symbol,pledge_frequency,pledge_received,'
                               + 'pledge_start_date,send_newsletter,square_avatar,status,status_valid,suggested_changes,'
                               + 'tag_list,timezone,website,addresses,contact_referrals_by_me,contact_referrals_to_me,'
                               + 'contacts_that_referred_me,donor_accounts,primary_person,no_gift_aid,timezone',
@@ -300,7 +300,7 @@ class ContactsService {
             include: 'people,people.email_addresses',
             fields: {
                 contact: 'people',
-                people: 'deceased,email_addresses',
+                people: 'deceased,email_addresses,optout_enewsletter',
                 email_addresses: 'email,primary'
             },
             per_page: 25000
@@ -316,7 +316,7 @@ class ContactsService {
         const findPrimary = find({ primary: true });
         const getEmailFromPrimary = flow(findPrimary, getEmail);
         return map((person) => {
-            return person.deceased ? null : getEmailFromPrimary(person.email_addresses);
+            return person.deceased || person.optout_enewsletter ? null : getEmailFromPrimary(person.email_addresses);
         }, data);
     }
 }

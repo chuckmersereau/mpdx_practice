@@ -7,7 +7,7 @@
                     data-toggle="dropdown"
                     ng-if="$ctrl.data.length > 0"
                     aria-expanded="true">
-                <translate>Select</translate> <i class="fa fa-caret-down"></i>
+                <translate>Select</translate> <i class="fas fa-caret-down"></i>
             </button>
             <ul class="dropdown-menu" role="menu" aria-labelledby="action-drop">
                 <li ng-if="$ctrl.contacts.selectedContacts.length < $ctrl.meta.pagination.total_count">
@@ -37,7 +37,7 @@
                     data-toggle="dropdown"
                     ng-if="$ctrl.contacts.selectedContacts.length > 0"
                     aria-expanded="true">
-                <translate>Actions</translate> <i class="fa fa-caret-down"></i>
+                <translate>Actions</translate> <i class="fas fa-caret-down"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop" ng-show="$ctrl.contacts.selectedContacts.length > 0">
                 <li><a ng-click="$ctrl.contacts.openAddTagModal($ctrl.contacts.selectedContacts)" translate>Add Tags</a></li>

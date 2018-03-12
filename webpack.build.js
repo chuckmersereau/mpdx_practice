@@ -5,11 +5,10 @@ const webpack = require('webpack');
 const path = require('path');
 const assign = require('lodash/fp/assign');
 const concat = require('lodash/fp/concat');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const RollbarSourceMapPlugin = require('rollbar-sourcemap-webpack-plugin');
-const MinifyPlugin = require('babel-minify-webpack-plugin');
 
 const rollbarAccessToken = '9b953d96d0e145f9a4b70b41b1390c3b';
 
@@ -44,19 +43,13 @@ config = assign(config, {
         chunkFilename: '[name].[hash].js'
     },
     module: assign(config.module, {
-        loaders: concat(config.module.loaders, [
+        rules: concat(config.module.rules, [
             {
                 test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    use: ['css-loader', postcssLoader],
-                    fallback: 'style-loader'
-                })
+                use: [MiniCssExtractPlugin.loader, 'css-loader', postcssLoader]
             }, {
                 test: /\.scss$/,
-                use: ExtractTextPlugin.extract({
-                    use: ['css-loader', postcssLoader, 'sass-loader'],
-                    fallback: 'style-loader'
-                })
+                use: [MiniCssExtractPlugin.loader, 'css-loader', postcssLoader, 'sass-loader']
             }
         ])
     }),
@@ -66,19 +59,12 @@ config = assign(config, {
                 TRAVIS_COMMIT: JSON.stringify(process.env.TRAVIS_COMMIT)
             }
         }),
-        new webpack.NoEmitOnErrorsPlugin(),
         new webpack.LoaderOptionsPlugin({
             options: {
                 sassLoader: {
                     includePaths: [path.resolve(__dirname, 'node_modules')]
                 }
             }
-        }),
-        new MinifyPlugin({
-            mangle: false
-        }, {
-            comments: false,
-            sourceMap: true
         }),
         new HtmlWebpackPlugin({
             template: './src/index.html',
@@ -93,10 +79,11 @@ config = assign(config, {
             { from: 'assets' },
             { from: 'src/google144ccea737ed252d.html' }
         ]),
-        new ExtractTextPlugin({
+        new MiniCssExtractPlugin({
             filename: '[name].[hash].css'
         })
-    ])
+    ]),
+    mode: 'production'
 });
 
 if (!process.env.TRAVIS_PULL_REQUEST && (process.env.TRAVIS_BRANCH === 'master' || process.env.TRAVIS_BRANCH === 'staging' || process.env.TRAVIS_BRANCH === 'next')) {

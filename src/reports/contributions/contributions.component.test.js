@@ -234,24 +234,27 @@ describe('reports.contributions.component', () => {
         const value = { totals: { totes: {} } };
         const data = [{
             monthlyDonations: [
-                { convertedTotal: 1 }, { convertedTotal: 2 },
-                { convertedTotal: 4 }
+                { total: 100, convertedTotal: 1 },
+                { total: 200, convertedTotal: 2 },
+                { total: 400, convertedTotal: 4 }
             ],
             average: '20',
             minimum: '1',
             maximum: '30'
         }, {
             monthlyDonations: [
-                { convertedTotal: 1 }, { convertedTotal: 2 },
-                { convertedTotal: 4 }
+                { total: 100, convertedTotal: 1 },
+                { total: 200, convertedTotal: 2 },
+                { total: 400, convertedTotal: 4 }
             ],
             average: '20',
             minimum: '1',
             maximum: '30'
         }, {
             monthlyDonations: [
-                { convertedTotal: 1 }, { convertedTotal: 2 },
-                { convertedTotal: 4 }
+                { total: 100, convertedTotal: 1 },
+                { total: 200, convertedTotal: 2 },
+                { total: 400, convertedTotal: 4 }
             ],
             average: '20',
             minimum: '1',
@@ -261,7 +264,8 @@ describe('reports.contributions.component', () => {
         it('should add converted Totals and re-arrange object values', () => {
             expect($ctrl.getDonorTotals(value, data, months)).toEqual({
                 totes: {},
-                months: [3, 6, 12],
+                months: [300, 600, 1200],
+                convertedMonths: [3, 6, 12],
                 average: 60,
                 minimum: 3,
                 maximum: 90

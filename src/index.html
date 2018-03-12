@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body app>
-    <alerts></alerts>
+    <toaster-container></toaster-container>
     <ui-view>
         <div class="full-page">
             <div class="loading-spinner">
@@ -21,6 +21,5 @@
         <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T7BQCNL"
                 height="0" width="0" style="display:none;visibility:hidden"></iframe>
     </noscript>
-    <error ng-if="$ctrl.session.errors.length > 0"></error>
 </body>
 </html>

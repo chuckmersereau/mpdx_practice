@@ -22,8 +22,8 @@ const jsonApiParams = { keyForAttribute: 'underscore_case' };
 
 class Api {
     constructor(
-        $http, $log, $q, $timeout, $window,
-        alerts, session
+        $http, $log, $q, $timeout, $window, gettext,
+        alerts
     ) {
         this.$http = $http;
         this.$log = $log;
@@ -31,7 +31,7 @@ class Api {
         this.$timeout = $timeout;
         this.$window = $window;
         this.alerts = alerts;
-        this.session = session;
+        this.gettext = gettext;
 
         this.apiUrl = config.apiUrl;
         this.account_list_id = null;
@@ -103,11 +103,11 @@ class Api {
         if (overridePromise) {
             deferred.reject(ex);
         } else {
-            this.session.errors.push({
-                exception: ex,
-                message: errorMessage,
-                request: request,
-                promise: deferred
+            errorMessage = this.gettext('An error occurred while contacting the server.');
+            this.alerts.addAlert(errorMessage, 'danger', 0, true).then(() => {
+                deferred.promise = this.call(request);
+            }).catch(() => {
+                deferred.reject();
             });
         }
         this.$log.error('API ERROR:', ex);
@@ -285,8 +285,9 @@ class Api {
 }
 
 import alerts from '../alerts/alerts.service';
-import session from '../session/session.service';
+import gettext from 'angular-gettext';
 
 export default angular.module('mpdx.common.api', [
-    alerts, session
+    gettext,
+    alerts
 ]).service('api', Api).name;

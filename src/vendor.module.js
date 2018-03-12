@@ -24,6 +24,7 @@ import 'angular-strap/dist/modules/debounce';
 import 'angular-chosen-localytics';
 import 'angular-localforage';
 import 'angular-timeago';
+import 'angularjs-toaster';
 import 'ng-tags-input';
 import 'ng-rollbar';
 // non-angular deps
@@ -69,5 +70,6 @@ export default angular.module('mpdx.vendor', [
     'mgcrea.ngStrap.helpers.debounce',
     'ngTagsInput',
     'yaru22.angular-timeago',
-    'tandibar/ng-rollbar'
+    'tandibar/ng-rollbar',
+    'toaster'
 ]).name;

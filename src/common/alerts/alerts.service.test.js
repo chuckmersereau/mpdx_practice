@@ -1,116 +1,81 @@
 import service from './alerts.service';
 
 describe('common.alerts.service', () => {
-    let timeout, alerts;
+    let toaster, alerts, q;
 
     beforeEach(() => {
         angular.mock.module(service);
-        inject(($rootScope, $timeout, _alerts_) => {
-            timeout = $timeout;
+        inject((_alerts_, _toaster_, $q) => {
             alerts = _alerts_;
+            q = $q;
+            toaster = _toaster_;
         });
-    });
-
-    describe('constructor', () => {
-        it('should set default values', () => {
-            expect(alerts.data).toEqual([]);
-        });
+        spyOn(toaster, 'pop').and.callFake(() => {});
     });
 
     describe('addAlert', () => {
+        const message = 'Message';
+        const type = 'danger';
+        const displayTime = 10;
         describe('no message', () => {
-            it('should not change data', () => {
+            it('should not add a toast', () => {
                 alerts.addAlert();
-                expect(alerts.data).toEqual([]);
+                expect(toaster.pop).not.toHaveBeenCalled();
             });
         });
-
-        describe('has message', () => {
-            const message = 'Message';
-
-            it('should change data', () => {
-                alerts.addAlert(message);
-                expect(alerts.data).toEqual([{
-                    id: jasmine.any(String),
-                    displayTime: 5,
-                    message: message,
-                    status: null,
-                    type: 'success',
-                    modal: false
-                }]);
+        it('should add a success toast', () => {
+            alerts.addAlert(message);
+            expect(toaster.pop).toHaveBeenCalledWith({
+                type: 'success',
+                body: 'alert-template',
+                bodyOutputType: 'directive',
+                directiveData: {
+                    error: message,
+                    retryable: false,
+                    type: 'success'
+                },
+                timeout: 1.5 * 1000,
+                showCloseButton: true,
+                clickHandler: jasmine.any(Function),
+                onHideCallback: jasmine.any(Function)
             });
-
-            it('should remove alert from data after displayTime', () => {
-                alerts.addAlert(message);
-                expect(alerts.data).not.toEqual([]);
-                timeout.flush(5001);
-                timeout.verifyNoPendingTasks();
-                expect(alerts.data).toEqual([]);
+        });
+        it('should add a "type" toast', () => {
+            alerts.addAlert(message, type);
+            expect(toaster.pop).toHaveBeenCalledWith({
+                type: 'error',
+                body: 'alert-template',
+                bodyOutputType: 'directive',
+                directiveData: {
+                    error: message,
+                    retryable: false,
+                    type: 'error'
+                },
+                timeout: 1.5 * 1000,
+                showCloseButton: true,
+                clickHandler: jasmine.any(Function),
+                onHideCallback: jasmine.any(Function)
             });
-
-            describe('has type', () => {
-                const type = 'danger';
-
-                it('should change data', () => {
-                    alerts.addAlert(message, type);
-                    expect(alerts.data).toEqual([{
-                        id: jasmine.any(String),
-                        displayTime: 5,
-                        message: message,
-                        status: null,
-                        type: type,
-                        modal: false
-                    }]);
-                });
-
-                describe('has status', () => {
-                    const status = '500';
-
-                    it('should change data', () => {
-                        alerts.addAlert(message, type, status);
-                        expect(alerts.data).toEqual([{
-                            id: jasmine.any(String),
-                            displayTime: 5,
-                            message: message,
-                            status: status,
-                            type: type,
-                            modal: false
-                        }]);
-                    });
-
-                    describe('has displayTime', () => {
-                        const displayTime = 10;
-
-                        it('should change data', () => {
-                            alerts.addAlert(message, type, status, displayTime);
-                            expect(alerts.data).toEqual([{
-                                id: jasmine.any(String),
-                                displayTime: displayTime,
-                                message: message,
-                                status: status,
-                                type: type,
-                                modal: false
-                            }]);
-                        });
-
-                        describe('has modal', () => {
-                            const modal = true;
-
-                            it('should change data', () => {
-                                alerts.addAlert(message, type, status, displayTime, modal);
-                                expect(alerts.data).toEqual([{
-                                    id: jasmine.any(String),
-                                    displayTime: displayTime,
-                                    message: message,
-                                    status: status,
-                                    type: type,
-                                    modal: modal
-                                }]);
-                            });
-                        });
-                    });
-                });
+        });
+        it('should change timeout', () => {
+            alerts.addAlert(message, undefined, displayTime);
+            expect(toaster.pop).toHaveBeenCalledWith({
+                type: 'success',
+                body: 'alert-template',
+                bodyOutputType: 'directive',
+                directiveData: {
+                    error: message,
+                    retryable: false,
+                    type: 'success'
+                },
+                timeout: 10 * 1000,
+                showCloseButton: true,
+                clickHandler: jasmine.any(Function),
+                onHideCallback: jasmine.any(Function)
             });
+        });
+        it('should return a promise', () => {
+            expect(alerts.addAlert(message)).toEqual(jasmine.any(q));
         });
     });
 });

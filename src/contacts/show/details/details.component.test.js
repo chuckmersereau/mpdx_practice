@@ -1,15 +1,16 @@
 import component from './details.component';
 
 describe('contacts.show.details.component', () => {
-    let $ctrl, scope, api, serverConstants, gettextCatalog, users, rootScope;
+    let $ctrl, scope, api, serverConstants, gettextCatalog, users, rootScope, contacts;
     beforeEach(() => {
         angular.mock.module(component);
         inject((
-            $componentController, $rootScope, _serverConstants_, _gettextCatalog_, _api_, _users_
+            $componentController, $rootScope, _serverConstants_, _gettextCatalog_, _api_, _users_, _contacts_
         ) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             api = _api_;
+            contacts = _contacts_;
             gettextCatalog = _gettextCatalog_;
             serverConstants = _serverConstants_;
             users = _users_;
@@ -182,6 +183,20 @@ describe('contacts.show.details.component', () => {
                 expect($ctrl.referrerName).toEqual(null);
                 done();
             });
+        });
+    });
+    describe('removeNextAsk', () => {
+        beforeEach(() => {
+            contacts.current = { next_ask: '2000-8-10' };
+            spyOn($ctrl, 'onSave').and.callFake(() => {});
+        });
+        it('should nullify next ask', () => {
+            $ctrl.removeNextAsk();
+            expect(contacts.current.next_ask).toEqual(null);
+        });
+        it('should save', () => {
+            $ctrl.removeNextAsk();
+            expect($ctrl.onSave).toHaveBeenCalledWith();
         });
     });
 });

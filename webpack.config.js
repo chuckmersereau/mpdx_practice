@@ -24,7 +24,7 @@ config = assign(config, {
         chunkFilename: '[name].bundle.js'
     },
     module: assign(config.module, {
-        loaders: concat(config.module.loaders, [
+        rules: concat(config.module.rules, [
             {
                 enforce: 'pre',
                 test: /\.js$/,

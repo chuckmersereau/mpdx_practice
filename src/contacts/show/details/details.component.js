@@ -163,6 +163,10 @@ class ContactDetailsController {
             this.referrerName = null;
         });
     }
+    removeNextAsk() {
+        this.contacts.current.next_ask = null;
+        this.onSave();
+    }
 }
 const Details = {
     controller: ContactDetailsController,

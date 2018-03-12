@@ -4,7 +4,6 @@
  */
 
 const path = require('path');
-const webpack = require('webpack');
 
 const configEnv = process.env.NODE_ENV || 'development';
 
@@ -27,13 +26,10 @@ const config = {
         modules: [path.join(__dirname), 'node_modules', 'src']
     },
     module: {
-        loaders: [{
+        rules: [{
             test: /\.js$/,
             loaders: ['babel-loader'],
             exclude: /node_modules/
-        }, {
-            test: /\.json/,
-            use: 'json-loader'
         }, {
             test: /\.html$/,
             use: 'html-loader'
@@ -48,9 +44,8 @@ const config = {
             use: 'file-loader'
         }]
     },
-    plugins: [
-        new webpack.optimize.ModuleConcatenationPlugin()
-    ]
+    plugins: [],
+    mode: 'development'
 };
 
 module.exports = config;
