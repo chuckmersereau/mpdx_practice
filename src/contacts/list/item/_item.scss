@@ -105,6 +105,12 @@ contacts-list-item {
                 &.expanded {
                     max-height: 100%;
                 }
+                .tag {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    max-width: 150px;
+                }
             }
         }
         &:hover {
