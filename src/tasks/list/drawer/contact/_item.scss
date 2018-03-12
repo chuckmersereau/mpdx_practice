@@ -62,14 +62,15 @@ task-list-contact {
         display: grid;
         grid-template-columns: 1fr 20px;
         > div.tags {
-            height: 25px;
+            max-height: 27px;
             overflow: hidden;
             text-overflow: ellipsis;
             &.expanded {
-                height: 100%;
+                max-height: 100%;
             }
             .tag {
                 max-width: 100px;
+                max-height: 27px;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
