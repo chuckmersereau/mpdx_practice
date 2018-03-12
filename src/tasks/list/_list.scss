@@ -67,20 +67,6 @@ tasks-list {
                 grid-column: 2 / span 3;
                 grid-row: 2;
             }
-            .dropdown-menu {
-                border-radius: 0;
-                border-top: 0;
-                background-color: $cru-selected-items-bgcolor;
-                li > a, li > a:visited {
-                    color: $cru-white;
-                    &:hover {
-                        color: $gray_mid;
-                    }
-                }
-            }
-            .dropdown-toggle {
-                color: $cru-white;
-            }
             .show-small {
                 @media (min-width: $contact-menu-breakpoint) {
                     display: none;
