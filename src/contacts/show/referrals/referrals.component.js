@@ -8,6 +8,11 @@ class ContactReferralsController {
         this.contacts = contacts;
         this.locale = locale;
     }
+    $onInit() {
+        return this.contacts.getReferrals(this.contacts.current.id).then((data) => {
+            this.referrals = data;
+        });
+    }
     openAddReferralsModal() {
         return this.contacts.openAddReferralsModal().then(() => {
             this.$state.go('contacts', { filters: { referrer: this.$stateParams.contactId } });
@@ -17,10 +22,7 @@ class ContactReferralsController {
 
 const Referrals = {
     controller: ContactReferralsController,
-    template: require('./referrals.html'),
-    bindings: {
-        referrals: '<'
-    }
+    template: require('./referrals.html')
 };
 
 import uiRouter from '@uirouter/angularjs';

@@ -1,19 +1,29 @@
-@import "addresses/address/address";
+//using view width for units here due to odd sub-component stretching behavior
+
+@import "addresses/addresses";
 @import "details/details";
 @import "info/info";
 @import "people/people";
 
 contact {
-    $hide-sidebar-width: 1320px;
+    $contact-drawer-width: 450px;
+    $hide-drawer-width: 1386px;
     overflow-y: auto;
     display: grid;
     height: 100%;
     > div.contact-show {
         display: grid;
         grid-template-rows: auto 1fr;
-        grid-template-columns: 1fr auto;
+        grid-template-columns: calc(100vw - #{$contact-sidebar-width + $contact-drawer-width}) $contact-drawer-width;
         grid-column-gap: 0;
         background-color: rgba(74,144,226,0.05);
+        width: calc(100vw - #{$contact-sidebar-width});
+        @media(max-width: $hide-drawer-width) {
+            grid-template-columns: 1fr 0;
+        }
+        @media (max-width: $contact-menu-breakpoint) {
+            width: 100%;
+        }
         h5 {
             font-weight: 600;
             font-size: 16px;
@@ -32,39 +42,6 @@ contact {
                 background-color: $color-text;
             }
         }
-        .tasks-tab, .history-tab {
-            .tasks-table {
-                border-bottom: 1px solid #ddd;
-                .comments-section > td {
-                    border-top: none;
-                }
-            }
-            .comments-count, .starred, .complete_task, .trash {
-                cursor: pointer;
-            }
-            .trash, .starred {
-                &:hover {
-                    color: #A8A8A8;
-                }
-            }
-            .complete_task {
-                &:hover {
-                    &:before {
-                        color: #A8A8A8;
-                        content: "\f046";
-                    }
-                }
-            }
-            .comments-count:hover {
-                color: #A8A8A8;
-            }
-            .comments-count-has-comments {
-                color: #dd7d1b;
-                &:hover {
-                    color: #EBBB8A;
-                }
-            }
-        }
         .contacts-gray-line {
             width: 100%;
             height: 1px;
@@ -76,8 +53,8 @@ contact {
             grid-row: 2;
             display: grid;
             grid-template-rows: 40px 1fr;
-            .horizontal-tab-sortable div.contact-tab-details {
-                @media(min-width: $hide-sidebar-width) {
+            .horizontal-tab-sortable div.active-drawer {
+                @media(min-width: $hide-drawer-width) {
                     display: none;
                 }
             }
@@ -89,6 +66,19 @@ contact {
             > .tab-content {
                 padding: 15px;
                 background: $cru-white;
+                width: calc(100vw - #{$contact-sidebar-width + $contact-drawer-width});
+                @media(max-width: $hide-drawer-width) {
+                    width: calc(100vw - #{$contact-sidebar-width});
+                }
+                @media (max-width: $contact-menu-breakpoint) {
+                    width: 100vw;
+                }
+            }
+            .expand-link {
+                padding: 5px;
+                @media(max-width: $hide-drawer-width) {
+                    display: none;
+                }
             }
         }
         .see-notes {
@@ -98,25 +88,23 @@ contact {
         .add-partner-account {
             margin-top: 10px;
         }
-        contact-details {
+        > div.contact-drawer {
             background: $cru-white;
             grid-column: 2;
             grid-row: 1 / -1;
-            &.side-bar {
-                padding: 15px;
-                width: 450px;
-                border-left: 1px $color-menu-border solid;
-                .communication {
-                    > div {
-                        max-width: 194px;
-                    }
-                    > div.tags {
-                        max-width: 408px;
-                    }
+            padding: 15px;
+            width: $contact-drawer-width;
+            border-left: 1px $color-menu-border solid;
+            overflow-x: hidden;
+            @media(max-width: $hide-drawer-width) {
+                display: none;
+            }
+            > * {
+                @extend .am-fade-and-scale;
+                &.ng-leave {
+                    animation: slide-left 0 reverse;
                 }
-                @media(max-width: $hide-sidebar-width) {
-                    display: none;
-                }
+                display: block;
             }
         }
     }

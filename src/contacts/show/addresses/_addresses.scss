@@ -1,7 +1,7 @@
-@import "person/person";
+@import "address/address";
 
-contact-people {
-    .people-row {
+contact-addresses {
+    .address-row {
         padding-top: 10px;
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));

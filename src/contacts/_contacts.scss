@@ -1,3 +1,4 @@
+$contact-sidebar-width: 250px;
 @import "list/map/map";
 @import "sidebar/sidebar";
 @import "list/list";
@@ -12,14 +13,14 @@ contacts {
         grid-template-columns: 1fr;
     }
     > contacts-sidebar {
-        width: 250px;
+        width: $contact-sidebar-width;
         grid-column: 1;
     }
     > ui-view {
         grid-column: 2;
         overflow: hidden;
         width: 100%;
-        @media (max-width: $container-sm) {
+        @media (max-width: $contact-menu-breakpoint) {
             grid-column: 1;
         }
     }

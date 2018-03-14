@@ -30,13 +30,13 @@ class ContactController {
         this.moveContact = { previous_contact: 0, following_contact: 0 };
 
         let tabsLabels = [
-            { key: 'details', value: gettextCatalog.getString('Details') },
+            { key: 'details', value: gettextCatalog.getString('Details'), drawerable: true },
             { key: 'donations', value: gettextCatalog.getString('Donations') },
-            { key: 'addresses', value: gettextCatalog.getString('Addresses') },
-            { key: 'people', value: gettextCatalog.getString('People') },
+            { key: 'addresses', value: gettextCatalog.getString('Addresses'), drawerable: true },
+            { key: 'people', value: gettextCatalog.getString('People'), drawerable: true },
             { key: 'tasks', value: gettextCatalog.getString('Tasks') },
-            { key: 'referrals', value: gettextCatalog.getString('Referrals') },
-            { key: 'notes', value: gettextCatalog.getString('Notes') }
+            { key: 'referrals', value: gettextCatalog.getString('Referrals'), drawerable: true },
+            { key: 'notes', value: gettextCatalog.getString('Notes'), drawerable: true }
         ];
 
         if (this.showRecommendationTab()) {
@@ -159,7 +159,16 @@ class ContactController {
     }
     setActiveTab(tab) {
         this.contacts.activeTab = tab;
+        if (tab === this.contacts.activeDrawer && tab !== 'details') { // collapsed case on details
+            this.setActiveDrawer('details');
+        }
         this.$state.go(`contacts.show.${tab}`);
+    }
+    setActiveDrawer(tab) {
+        this.contacts.activeDrawer = tab;
+        if (tab === this.contacts.activeTab) {
+            this.setActiveTab('donations');
+        }
     }
     showRecommendationTab() {
         return find((organizationAccount) => {

@@ -39,6 +39,7 @@ class ContactsService {
 
         this.current = null;
         this.selectedContacts = [];
+        this.activeDrawer = 'details';
     }
     get(id) {
         return this.api.get({

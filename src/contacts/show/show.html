@@ -5,10 +5,13 @@
             <div class="sortable-row left-tabs" as-sortable="$ctrl.sortableOptions" data-ng-model="$ctrl.tabsLabels">
                 <div ng-repeat="item in $ctrl.tabsLabels"
                      as-sortable-item
-                     class="contact-tab-{{item.key}} as-sortable-item"
-                     ng-class="{'active-item': $ctrl.contacts.activeTab === item.key}">
+                     class="as-sortable-item"
+                     ng-class="{'active-item': $ctrl.contacts.activeTab === item.key, 'active-drawer': $ctrl.contacts.activeDrawer === item.key}">
                     <span as-sortable-item-handle>
                         <a ng-click="$ctrl.setActiveTab(item.key)">{{ item.value | translate }}</a>
+                        <a ng-click="$ctrl.setActiveDrawer(item.key); $event.stopPropagation()"
+                           ng-if="item.drawerable"
+                           class="expand-link"><i class="fas fa-expand"></i></a>
                     </span>
                 </div>
             </div>
@@ -19,9 +22,16 @@
             </ui-view>
         </div>
     </div>
-    <contact-details class="side-bar"
-                     contact="$ctrl.contacts.current"
-                     donor-accounts="$ctrl.contacts.current.donor_accounts"
-                     on-save="$ctrl.save()">
-    </contact-details>
+    <div class="contact-drawer">
+        <contact-addresses ng-if="$ctrl.contacts.activeDrawer === 'addresses'"></contact-addresses>
+        <contact-details contact="$ctrl.contacts.current"
+                         donor-accounts="$ctrl.contacts.current.donor_accounts"
+                         on-save="$ctrl.save()"
+                         ng-if="$ctrl.contacts.activeDrawer === 'details'">
+        </contact-details>
+        <contact-people contact="$ctrl.contacts.current"
+                        ng-if="$ctrl.contacts.activeDrawer === 'people'"></contact-people>
+        <contact-notes ng-if="$ctrl.contacts.activeDrawer === 'notes'"></contact-notes>
+        <contact-referrals ng-if="$ctrl.contacts.activeDrawer === 'referrals'"></contact-referrals>
+    </div>
 </div>

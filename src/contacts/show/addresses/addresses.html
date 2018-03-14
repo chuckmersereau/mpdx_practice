@@ -1,6 +1,7 @@
-<h3 translate>Addresses</h3>
-<div ng-repeat="address in $ctrl.contacts.current.addresses track by address.id">
-    <contact-address address="address"
+<h3  ng-if="$ctrl.contacts.activeDrawer === 'addresses'" translate>Addresses</h3>
+<div class="address-row">
+    <contact-address ng-repeat="address in $ctrl.contacts.current.addresses track by address.id"
+                     address="address"
                      contact="$ctrl.contacts.current"
                      on-primary="$ctrl.onAddressPrimary(address.id)"></contact-address>
 </div>

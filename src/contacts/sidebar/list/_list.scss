@@ -11,6 +11,9 @@ contacts-sidebar-list {
                 background-color: $filter-select-bg-color;
                 border: 1px solid $borders;
             }
+            .input-group-addon {
+                border-right: 0;
+            }
         }
     }
     > div.content {

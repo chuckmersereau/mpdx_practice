@@ -1,5 +1,5 @@
 import component from './show.component';
-import { assign } from 'lodash/fp';
+import { assign, each } from 'lodash/fp';
 
 describe('contacts.show.component', () => {
     let $ctrl, componentController, gettextCatalog, rootScope, scope, state,
@@ -31,6 +31,16 @@ describe('contacts.show.component', () => {
     function loadController() {
         $ctrl = componentController('contact', { $scope: scope }, {});
     }
+    describe('constructor', () => {
+        it('should set tab data', () => {
+            expect($ctrl.tabsLabels).toEqual(jasmine.any(Array));
+            each((tab) => {
+                expect(tab.key).toEqual(jasmine.any(String));
+                expect(tab.value).toEqual(jasmine.any(String));
+                expect([jasmine.any(Boolean), undefined]).toContain(tab.drawerable);
+            }, $ctrl.tabsLabels);
+        });
+    });
     describe('$onInit', () => {
         it('should change state on account list change', () => {
             spyOn(state, 'go').and.callFake(() => {});
@@ -175,6 +185,45 @@ describe('contacts.show.component', () => {
                     expect($ctrl.showRecommendationTab()).toEqual(true);
                 });
             });
+        });
+    });
+    describe('setActiveTab', () => {
+        it('should set active tab', () => {
+            const tab = 'a';
+            $ctrl.setActiveTab(tab);
+            expect(contacts.activeTab).toEqual(tab);
+        });
+        it('should handle drawer duplicate', () => {
+            contacts.activeDrawer = 'a';
+            const tab = 'a';
+            $ctrl.setActiveTab(tab);
+            expect(contacts.activeDrawer).toEqual('details');
+        });
+        it('shouldn\'t handle drawer duplicate on details', () => {
+            contacts.activeDrawer = 'details';
+            const tab = 'details';
+            $ctrl.setActiveTab(tab);
+            expect(contacts.activeDrawer).toEqual('details');
+            expect(contacts.activeTab).toEqual('details');
+        });
+        it('should change state', () => {
+            spyOn(state, 'go').and.callFake(() => {});
+            const tab = 'a';
+            $ctrl.setActiveTab(tab);
+            expect(state.go).toHaveBeenCalledWith(`contacts.show.${tab}`);
+        });
+    });
+    describe('setActiveDrawer', () => {
+        it('should set active drawer', () => {
+            const drawer = 'a';
+            $ctrl.setActiveDrawer(drawer);
+            expect(contacts.activeDrawer).toEqual(drawer);
+        });
+        it('should handle tab duplicate', () => {
+            contacts.activeTab = 'a';
+            const drawer = 'a';
+            $ctrl.setActiveDrawer(drawer);
+            expect(contacts.activeTab).toEqual('donations');
         });
     });
 });

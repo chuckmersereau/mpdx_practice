@@ -23,6 +23,11 @@ describe('contacts.service', () => {
         spyOn(api, 'put').and.callFake((data) => Promise.resolve(data));
         spyOn(rootScope, '$emit').and.callThrough();
     });
+    describe('constructor', () => {
+        it('should set default contact drawer', () => {
+            expect(contacts.activeDrawer).toEqual('details');
+        });
+    });
     describe('buildFilterParams', () => {
         const defaultResult = assign(params, { account_list_id: accountListId, any_tags: false });
         beforeEach(() => {

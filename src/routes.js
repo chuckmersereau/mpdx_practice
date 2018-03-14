@@ -143,10 +143,7 @@ export default class Routes {
             name: 'contacts.show.referrals',
             title: gettext('Contact - Referrals'),
             url: '/referrals',
-            component: 'contactReferrals',
-            resolve: {
-                referrals: /* @ngInject*/ (contacts, $stateParams) => contacts.getReferrals($stateParams.contactId)
-            }
+            component: 'contactReferrals'
         }).state({
             name: 'contacts.show.tasks',
             title: gettext('Contact - Tasks'),

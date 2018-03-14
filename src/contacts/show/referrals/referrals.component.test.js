@@ -19,6 +19,18 @@ describe('contacts.show.referrals.component', () => {
         $ctrl = componentController('contactReferrals', { $scope: scope }, {});
     }
 
+    describe('$onInit', () => {
+        it('should get referrals', (done) => {
+            const data = 'a';
+            contacts.current = { id: 1 };
+            spyOn(contacts, 'getReferrals').and.callFake(() => Promise.resolve(data));
+            $ctrl.$onInit().then(() => {
+                expect($ctrl.referrals).toEqual(data);
+                done();
+            });
+            expect(contacts.getReferrals).toHaveBeenCalledWith(1);
+        });
+    });
     describe('openAddReferralsModal', () => {
         beforeEach(() => {
             spyOn(contacts, 'openAddReferralsModal').and.callFake(() => Promise.resolve());
