@@ -328,6 +328,15 @@ class ListController {
             });
         });
     }
+    openAddTagModal(selectedTaskIds) {
+        return this.modal.open({
+            template: require('../filter/tags/add/add.html'),
+            controller: 'addTaskTagController',
+            locals: {
+                selectedTasks: selectedTaskIds
+            }
+        });
+    }
 }
 
 const TaskList = {
