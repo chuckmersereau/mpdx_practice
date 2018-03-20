@@ -3,17 +3,15 @@ import { assign, each, map } from 'lodash/fp';
 
 const selected = [1, 2];
 const currentUser = { id: 321 };
-const tags = [{ name: 'a' }, { name: 'b' }];
 
 describe('tasks.bulkEdit.controller', () => {
-    let $ctrl, controller, scope, api, tasksTags, tasks, users;
+    let $ctrl, controller, scope, api, tasks, users;
     beforeEach(() => {
         angular.mock.module(add);
-        inject(($controller, $rootScope, _api_, _tasksTags_, _tasks_, _users_) => {
+        inject(($controller, $rootScope, _api_, _tasks_, _users_) => {
             scope = $rootScope.$new();
             api = _api_;
             tasks = _tasks_;
-            tasksTags = _tasksTags_;
             users = _users_;
             users.current = currentUser;
             controller = $controller;
@@ -31,7 +29,6 @@ describe('tasks.bulkEdit.controller', () => {
     describe('bulkEdit', () => {
         beforeEach(() => {
             spyOn(api, 'put').and.callFake((url, data) => new Promise((resolve) => resolve(data)));
-            spyOn(tasksTags, 'change').and.callFake(() => {});
             spyOn(tasks, 'change').and.callFake(() => {});
         });
         const model = { activity_type: 'activity' };
@@ -39,7 +36,6 @@ describe('tasks.bulkEdit.controller', () => {
             const result = map((id) => assign({ id: id }, model), selected);
             $ctrl.bulkEdit(model).then((data) => {
                 expect(data).toEqual(result);
-                expect(tasksTags.change).toHaveBeenCalled();
                 done();
             });
             expect(api.put).toHaveBeenCalledWith('tasks/bulk', result);
@@ -50,14 +46,6 @@ describe('tasks.bulkEdit.controller', () => {
                 each((task) => {
                     expect(task.comments[0].body).toEqual(comment);
                     expect(task.comments[0].person.id).toEqual(currentUser.id);
-                }, data);
-                done();
-            });
-        });
-        it('should handle tags', (done) => {
-            $ctrl.bulkEdit(model, null, map('name', tags)).then((data) => {
-                each((task) => {
-                    expect(task.tag_list).toEqual('a,b');
                 }, data);
                 done();
             });

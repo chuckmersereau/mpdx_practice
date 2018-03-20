@@ -1,4 +1,4 @@
-import { includes, reject } from 'lodash/fp';
+import { includes, map, reject, unionBy } from 'lodash/fp';
 
 class TagsService {
     constructor(
@@ -91,17 +91,19 @@ class TagsService {
     getTagsByQuery(query) {
         return this.$filter('filter')(this.data, query);
     }
-    addTag(ids, tag) {
-        const obj = {
-            add_tag_task_ids: ids.join(),
-            add_tag_name: tag
-        };
-        return this.api.post('tasks/tags/bulk_create', obj);
+    addTag(val) {
+        const tags = map((obj) => {
+            return { name: obj };
+        }, val.tags);
+        this.data = unionBy('name', this.data, tags);
     }
 }
 
+import api from 'common/api/api.service';
+import gettext from 'angular-gettext';
 import modal from 'common/modal/modal.service';
 
 export default angular.module('mpdx.tasks.tags.service', [
-    modal
+    gettext,
+    api, modal
 ]).service('tasksTags', TagsService).name;

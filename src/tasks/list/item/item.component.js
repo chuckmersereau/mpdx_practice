@@ -1,4 +1,4 @@
-import { concat, contains, pull, reject } from 'lodash/fp';
+import { concat, contains, includes, pull, reject, union } from 'lodash/fp';
 
 class ItemController {
     constructor(
@@ -25,9 +25,16 @@ class ItemController {
                 this.task.tag_list = pull(data.tag, this.task.tag_list);
             }
         });
+
+        this.watcher2 = this.$rootScope.$on('taskTagsAdded', (e, val) => {
+            if (!val.taskIds || includes(this.task.id, val.taskIds)) {
+                this.task.tag_list = union(this.task.tag_list, val.tags);
+            }
+        });
     }
     $onDestroy() {
         this.watcher();
+        this.watcher2();
     }
     toggleContacts() {
         this.showContacts = !this.showContacts;
