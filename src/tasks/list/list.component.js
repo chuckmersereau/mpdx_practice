@@ -348,6 +348,15 @@ class ListController {
         this.pageSize = size;
         this.load(1);
     }
+    openAddTagModal(selectedTaskIds) {
+        return this.modal.open({
+            template: require('../filter/tags/add/add.html'),
+            controller: 'addTaskTagController',
+            locals: {
+                selectedTasks: selectedTaskIds
+            }
+        });
+    }
 }
 
 const TaskList = {

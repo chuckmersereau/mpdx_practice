@@ -1,0 +1,12 @@
+<modal title="{{'Add Tags' | translate}}" cancel="$hide()" save="$ctrl.save()">
+    <p translate>Choose an existing tag</p>
+    <ul>
+        <li ng-repeat="tag in $ctrl.tasksTags.data">
+            <a ng-click="$ctrl.save(tag.name)">{{ tag.name }}</a>
+        </li>
+    </ul>
+    <div class="form-group">
+        <label for="new-tag"><translate>Create New Tags (separate multiple tags with Enter key)</translate> <span class="text-danger">*</span></label>
+        <tag-selector ng-model="$ctrl.tags" tag-list="$ctrl.tasksTags.data" id="new-tag"></tag-selector>
+    </div>
+</modal>

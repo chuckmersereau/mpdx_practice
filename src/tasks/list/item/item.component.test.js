@@ -38,12 +38,14 @@ describe('tasks.list.item.component', () => {
         });
     });
     describe('$onInit', () => {
+        afterEach(() => {
+            $ctrl.$onDestroy();
+        });
         it('should set default values', () => {
             $ctrl.$onInit();
             expect($ctrl.showContacts).toBeFalsy();
             expect($ctrl.showComments).toBeFalsy();
             expect($ctrl.loaded).toBeFalsy();
-            $ctrl.$onDestroy();
         });
         it('should handle tag deletion', () => {
             $ctrl.task = { id: 1, tag_list: ['a', 'b'] };
@@ -51,7 +53,6 @@ describe('tasks.list.item.component', () => {
             rootScope.$emit('taskTagDeleted', { taskIds: [1], tag: 'a' });
             rootScope.$digest();
             expect($ctrl.task.tag_list).toEqual(['b']);
-            $ctrl.$onDestroy();
         });
         it('should ignore other task ids', () => {
             $ctrl.task = { id: 1, tag_list: ['a', 'b'] };
@@ -59,7 +60,13 @@ describe('tasks.list.item.component', () => {
             rootScope.$emit('taskTagDeleted', { taskIds: [2], tag: 'a' });
             rootScope.$digest();
             expect($ctrl.task.tag_list).toEqual(['a', 'b']);
-            $ctrl.$onDestroy();
+        });
+        it('should handle taskTagsAdded', () => {
+            $ctrl.task = { id: 1, tag_list: [] };
+            $ctrl.$onInit();
+            rootScope.$emit('taskTagsAdded', { taskIds: [1], tags: ['a'] });
+            rootScope.$digest();
+            expect($ctrl.task.tag_list).toEqual(['a']);
         });
     });
     describe('complete', () => {
