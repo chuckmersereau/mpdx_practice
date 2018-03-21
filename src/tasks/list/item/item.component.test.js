@@ -40,7 +40,7 @@ describe('tasks.list.item.component', () => {
     describe('$onInit', () => {
         afterEach(() => {
             $ctrl.$onDestroy();
-        })
+        });
         it('should set default values', () => {
             $ctrl.$onInit();
             expect($ctrl.showContacts).toBeFalsy();
