@@ -587,4 +587,17 @@ describe('tasks.list.component', () => {
             expect($ctrl.load).toHaveBeenCalledWith(1);
         });
     });
+    describe('openAddTagModal', () => {
+        it('should open the add tag modal', () => {
+            spyOn(modal, 'open').and.callFake(() => {});
+            $ctrl.openAddTagModal([1, 2]);
+            expect(modal.open).toHaveBeenCalledWith({
+                template: require('../filter/tags/add/add.html'),
+                controller: 'addTaskTagController',
+                locals: {
+                    selectedTasks: [1, 2]
+                }
+            });
+        });
+    });
 });
