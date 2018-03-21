@@ -16,11 +16,12 @@ import {
     reduce,
     union
 } from 'lodash/fp';
-import emptyToNull from '../common/fp/emptyToNull';
+import { convertTags } from 'common/fp/tags';
+import emptyToNull from 'common/fp/emptyToNull';
 import flattenCompactAndJoin from 'common/fp/flattenCompactAndJoin';
-import joinComma from '../common/fp/joinComma';
-import reduceObject from '../common/fp/reduceObject';
-import relationshipId from '../common/fp/relationshipId';
+import joinComma from 'common/fp/joinComma';
+import reduceObject from 'common/fp/reduceObject';
+import relationshipId from 'common/fp/relationshipId';
 
 class ContactsService {
     constructor(
@@ -115,7 +116,6 @@ class ContactsService {
     }
     buildFilterParams() {
         let filterParams = this.findChangedFilters(this.contactFilter.default_params, this.contactFilter.params);
-        const convertTags = flow(map('name'), joinComma, emptyToNull);
         filterParams = assign(filterParams, {
             account_list_id: this.api.account_list_id,
             wildcard_search: emptyToNull(this.contactFilter.wildcard_search),

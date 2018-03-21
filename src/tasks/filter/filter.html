@@ -3,6 +3,10 @@
        ng-show="$ctrl.tasksFilter.showReset()" analytics-on analytics-event="Reset Filters" analytics-category="Tasks Events" analytics-label="Filter">
         <i class="fas fa-undo"></i> <span translate>Reset Filters</span>
     </a>
+    <a ng-click="$ctrl.openSaveModal()" class="btn btn-primary btn-xs btn-block btn-filter-left ng-cloak"
+       ng-show="$ctrl.tasksFilter.showReset()" analytics-on analytics-event="Save Filter" analytics-category="Tasks Events" analytics-label="Filter">
+        <i class="fas fa-save"></i> <span translate>Save Filters</span>
+    </a>
     <div class="title">
         <select chosen
                 class="form-control"
@@ -23,7 +27,7 @@
     <div class="filter--filtergroup" bs-collapse ng-model="isCollapsed" ng-init="isCollapsed = false">
         <form ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }">
             <span class="filter--filtergroup_title pointer" bs-collapse-toggle>
-                <i class="fas fa-sliders"></i> <translate>Filters</translate>
+                <i class="far fa-sliders-h"></i> <translate>Filters</translate>
                 &nbsp;
                 <i class="fas"
                    ng-class="{ 'fa-chevron-down': isCollapsed, 'fa-chevron-up': !isCollapsed }"></i>
@@ -178,4 +182,7 @@
             </div>
         </form>
     </div>
+    <saved-filters type="tasks"
+                   selected="$ctrl.tasksFilter.selectedSave"
+                   on-select="$ctrl.useSavedFilter($name)"></saved-filters>
 </div>

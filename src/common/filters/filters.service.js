@@ -86,6 +86,6 @@ class Filters {
 
 import api from 'common/api/api.service';
 
-export default angular.module('mpdx.common.filters', [
+export default angular.module('mpdx.common.filters.service', [
     api
 ]).service('filters', Filters).name;

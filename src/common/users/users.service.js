@@ -136,7 +136,12 @@ class Users {
         return get('value', get(key, this.currentOptions));
     }
     deleteOption(option) {
-        return this.api.delete(`user/options/${option}`);
+        return this.api.delete({
+            url: `user/options/${option}`,
+            type: 'user_options'
+        }).then(() => {
+            delete this.currentOptions[option];
+        });
     }
     getOption(key) {
         return this.api.get(`user/options/${key}`);

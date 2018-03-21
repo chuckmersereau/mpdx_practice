@@ -1,0 +1,19 @@
+<div class="filter--filtergroup"
+     bs-collapse ng-model="isCollapsed"
+     ng-init="isCollapsed = false"
+     ng-if="$ctrl.savedFilterNames && $ctrl.savedFilterNames.length > 0">
+        <span class="filter--filtergroup_title pointer" bs-collapse-toggle>
+            <i class="fas fa-save"></i> <translate>Saved Filters</translate>
+            &nbsp;
+            <i class="fas"
+               ng-class="{ 'fa-chevron-down': isCollapsed, 'fa-chevron-up': !isCollapsed }"></i>
+        </span>
+    <div bs-collapse-target class="collapse-target">
+        <div ng-repeat="key in $ctrl.savedFilterNames | orderBy : key"
+             class="saved-filter"
+             ng-class="{active: $ctrl.selected === key}">
+            <a href="javascript:;" ng-click="$ctrl.onSelect({$name: key})" class="filter-key">{{key | strReplace: '_' : ' '}}</a>
+            <a href="javascript:;" ng-click="$ctrl.remove(key)" class="filter-delete"><i class="fas fa-times"></i></a>
+        </div>
+    </div>
+</div>

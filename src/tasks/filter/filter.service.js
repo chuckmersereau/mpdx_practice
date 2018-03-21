@@ -2,7 +2,6 @@ import {
     assign,
     compact,
     defaultTo,
-    flow,
     isArray,
     isEmpty,
     isEqual,
@@ -10,8 +9,7 @@ import {
     map,
     omitBy
 } from 'lodash/fp';
-import joinComma from '../../common/fp/joinComma';
-import emptyToNull from '../../common/fp/emptyToNull';
+import { convertTags } from 'common/fp/tags';
 
 class TasksFilterService {
     constructor(
@@ -95,6 +93,7 @@ class TasksFilterService {
         return this.filters.count({ defaultParams: this.defaultParams, params: this.params });
     }
     change(filter) {
+        this.selectedSave = null;
         this.handleFilterChange(filter);
         this.$log.debug('task filters change:', this.params);
         this.$rootScope.$emit('tasksFilterChange');
@@ -120,6 +119,7 @@ class TasksFilterService {
             return filter;
         }, this.data);
         this.change();
+        this.selectedSave = undefined;
     }
     changeGroup(group) {
         this.assignDefaultParamsAndGroup(group);
@@ -137,7 +137,6 @@ class TasksFilterService {
     toParams() {
         let defaultParams = defaultTo({}, this.defaultParams);
         let filters = assign(defaultParams, this.params);
-        const convertTags = flow(map('name'), joinComma, emptyToNull);
         filters = assign(filters, {
             any_tags: this.tasksTags.anyTags,
             account_list_id: this.api.account_list_id,

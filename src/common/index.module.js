@@ -15,7 +15,7 @@ import designationAccounts from './designationAccounts/designationAccounts.servi
 import donorAccounts from './donorAccounts/donorAccounts.service';
 import drawer from './sideDrawer/drawer.component';
 import faCheckbox from './faCheckbox/faCheckbox.component';
-import filters from './filters/filters.service';
+import filters from './filters/index.module';
 import help from './help/help.service';
 import language from './language/language.service';
 import layoutSettings from './layoutSettings/layoutSettings.directive';

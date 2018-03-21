@@ -306,4 +306,24 @@ describe('common.users.service', () => {
             expect(users.getCurrentOptionValue('a')).toEqual(1);
         });
     });
+    describe('deleteOption', () => {
+        const key = 'name';
+        beforeEach(() => {
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+        });
+        it('should call api delete', () => {
+            users.deleteOption(key);
+            expect(api.delete).toHaveBeenCalledWith({
+                url: `user/options/${key}`,
+                type: 'user_options'
+            });
+        });
+        it('should remove the user option', (done) => {
+            users.currentOptions = { [key]: {} };
+            users.deleteOption(key).then(() => {
+                expect(users.currentOptions).toEqual({});
+                done();
+            });
+        });
+    });
 });

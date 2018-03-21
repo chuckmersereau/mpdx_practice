@@ -1,0 +1,4 @@
+<modal title="{{ 'Save filter' | translate }}" cancel="$hide()" save="$ctrl.save()">
+    <label for="filter-name" translate>Filter name</label>
+    <input ng-model="$ctrl.name" id="filter-name" class="form-control" pattern="[a-zA-Z0-9-\s]+" required>
+</modal>

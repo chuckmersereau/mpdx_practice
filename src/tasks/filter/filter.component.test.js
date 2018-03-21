@@ -1,16 +1,39 @@
 import component from './filter.component';
+import { assign } from 'lodash/fp';
 
+const accountListId = 123;
+const name = 'my_filter';
+const key = `saved_tasks_filter_${name}`;
+const obj = {
+    account_list_id: accountListId,
+    any_tags: true,
+    exclude_tags: 'home,alone',
+    params: {
+        activity_type: 'Call'
+    },
+    tags: 'fun,tonight',
+    wildcard_search: 'a'
+};
+const options = {
+    [key]: { key: key, title: key, value: JSON.stringify(obj) }
+};
 describe('tasks.filter.component', () => {
-    let $ctrl, rootScope, scope, componentController;
+    let $ctrl, rootScope, scope, componentController, api, users, tasksFilter, tasksTags, modal;
 
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope) => {
+        inject(($componentController, $rootScope, _api_, _users_, _tasksFilter_, _tasksTags_, _modal_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
+            api = _api_;
+            modal = _modal_;
+            tasksFilter = _tasksFilter_;
+            tasksTags = _tasksTags_;
+            users = _users_;
             componentController = $componentController;
             loadController();
         });
+        api.account_list_id = accountListId;
     });
 
     function loadController() {
@@ -20,6 +43,70 @@ describe('tasks.filter.component', () => {
     describe('constructor', () => {
         it('should do something', () => {
             expect($ctrl.selectedSort).toEqual('all');
+        });
+    });
+    describe('useSavedFilter', () => {
+        beforeEach(() => {
+            users.currentOptions = options;
+            spyOn(tasksFilter, 'assignDefaultParamsAndGroup').and.callThrough();
+            spyOn(tasksFilter, 'change').and.callFake(() => {});
+        });
+        it('should set filter defaults', () => {
+            $ctrl.useSavedFilter(name);
+            expect(tasksFilter.assignDefaultParamsAndGroup).toHaveBeenCalledWith('all');
+        });
+        it('should set filter params over defaults', () => {
+            $ctrl.useSavedFilter(name);
+            expect(tasksFilter.params).toEqual(assign(tasksFilter.defaultParams, obj.params));
+        });
+        it('should set wildcard search', () => {
+            $ctrl.useSavedFilter(name);
+            expect(tasksFilter.wildcard_search).toEqual(obj.wildcard_search);
+        });
+        it('should set any_tags', () => {
+            $ctrl.useSavedFilter(name);
+            expect(tasksTags.any_tags).toBeTruthy();
+        });
+        it('should set rejectedTags', () => {
+            $ctrl.useSavedFilter(name);
+            expect(tasksTags.rejectedTags).toEqual([{ name: 'home' }, { name: 'alone' }]);
+        });
+        it('should set selectedTags', () => {
+            $ctrl.useSavedFilter(name);
+            expect(tasksTags.selectedTags).toEqual([{ name: 'fun' }, { name: 'tonight' }]);
+        });
+        it('should trigger filter change', () => {
+            $ctrl.useSavedFilter(name);
+            expect(tasksFilter.change).toHaveBeenCalledWith();
+        });
+        it('should set selectedSave', () => {
+            $ctrl.useSavedFilter(name);
+            expect(tasksFilter.selectedSave).toEqual(name);
+        });
+    });
+    describe('resetFiltersAndTags', () => {
+        it('should trigger filter service reset', () => {
+            spyOn(tasksFilter, 'reset').and.callFake(() => {});
+            $ctrl.resetFiltersAndTags();
+            expect(tasksFilter.reset).toHaveBeenCalledWith();
+        });
+    });
+    describe('openSaveModal', () => {
+        it('should open the save modal', () => {
+            spyOn(modal, 'open').and.callFake(() => Promise.resolve());
+            $ctrl.openSaveModal();
+            expect(modal.open).toHaveBeenCalledWith({
+                controller: 'saveFilterModal',
+                template: require('../../common/filters/save/save.html'),
+                locals: {
+                    anyTags: tasksTags.any_tags,
+                    filterType: 'tasks',
+                    params: tasksFilter.params,
+                    rejectedTags: tasksTags.rejectedTags,
+                    selectedTags: tasksTags.selectedTags,
+                    wildcardSearch: tasksFilter.wildcardSearch
+                }
+            });
         });
     });
 });

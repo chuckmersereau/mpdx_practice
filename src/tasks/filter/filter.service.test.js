@@ -14,6 +14,11 @@ describe('tasks.filter.service', () => {
         beforeEach(() => {
             spyOn(tasksFilter, 'handleFilterChange').and.callFake(() => {});
         });
+        it('should reset the selected saved filter', () => {
+            tasksFilter.selectedSave = 'a';
+            tasksFilter.change('a');
+            expect(tasksFilter.selectedSave).toEqual(null);
+        });
         it('should call handleFilterChange', () => {
             tasksFilter.change('a');
             expect(tasksFilter.handleFilterChange).toHaveBeenCalledWith('a');
@@ -23,6 +28,13 @@ describe('tasks.filter.service', () => {
                 done();
             });
             tasksFilter.change('a');
+        });
+    });
+    describe('reset', () => {
+        it('should reset the selected saved filter', () => {
+            tasksFilter.selectedSave = 'a';
+            tasksFilter.reset();
+            expect(tasksFilter.selectedSave).toBeUndefined();
         });
     });
     describe('handleFilterChange', () => {
