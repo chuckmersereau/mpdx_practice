@@ -3,6 +3,10 @@
        ng-if="$ctrl.contactFilter.isResettable()" analytics-on analytics-event="Reset Filters" analytics-category="Contacts Events" analytics-label="Filter">
         <i class="fas fa-undo"></i> <span translate>Reset Filters</span>
     </a>
+    <a ng-click="$ctrl.openSaveModal()" class="btn btn-primary btn-xs btn-block btn-filter-left ng-cloak"
+       ng-show="$ctrl.contactFilter.isResettable()" analytics-on analytics-event="Save Filter" analytics-category="Contacts Events" analytics-label="Filter">
+        <i class="fas fa-save"></i> <span translate>Save Filters</span>
+    </a>
     <contacts-tags class="filter--filtergroup"></contacts-tags>
     <div class="filters_section filter--filtergroup" bs-collapse ng-model="isCollapsed" ng-init="isCollapsed = false">
         <form ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }">
@@ -161,4 +165,7 @@
             </div>
         </form>
     </div>
+    <saved-filters type="contacts"
+                   selected="$ctrl.contactFilter.selectedSave"
+                   on-select="$ctrl.useSavedFilter($name)"></saved-filters>
 </div>
