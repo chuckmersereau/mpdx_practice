@@ -6,7 +6,6 @@ import {
     findIndex,
     get,
     includes,
-    isArray,
     map,
     pull,
     pullAllBy,
@@ -337,12 +336,6 @@ class ListController {
     }
     onClose() {
         this.selectedTask = null;
-    }
-    getOption(filter, id) {
-        return get('name', find({ id: id }, filter.options));
-    }
-    isArray(obj) {
-        return isArray(obj);
     }
     pageSizeChange(size) {
         this.pageSize = size;

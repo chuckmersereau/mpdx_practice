@@ -33,7 +33,4 @@ describe('contacts.filter.tags.component', () => {
             expect(contactsTags.anyTags).toBeFalsy();
         });
     });
-    describe('delete', () => {
-
-    });
 });

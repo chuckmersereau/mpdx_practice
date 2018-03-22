@@ -92,32 +92,19 @@
             </pagination-dropdown>
         </div>
     </div>
-    <div ng-if="$ctrl.contactFilter.isResettable()" class="filters am-collapse">
-        <div>
-            Filters
-        </div>
-        <span ng-repeat="filter in $ctrl.contactFilter.data" class="tags">
-            <span class="tag"
-                  ng-click="$ctrl.contactFilter.invertMultiselect(filter)"
-                  ng-class="{ 'reverse': filter.reverse, 'pointer': filter.type === 'multiselect' }"
-                  ng-if="$ctrl.contactFilter.params[filter.name] !== $ctrl.contactFilter.default_params[filter.name] || filter.reverse"
-                  title="{{::filter.title}}">
-                <span class="tag-text">
-                    <span class="title">{{ ::filter.title }}:</span>
-                    <span ng-if="::$ctrl.isArray($ctrl.contactFilter.params[filter.name])"
-                          ng-repeat="value in $ctrl.contactFilter.params[filter.name]">
-                        <span ng-if="value !== ''">
-                            {{ ::$ctrl.getOption(filter, value) }}<span ng-if="!$last">,</span>
-                        </span>
-                    </span>
-                    <span ng-if="::!$ctrl.isArray($ctrl.contactFilter.params[filter.name])">
-                        {{ ::$ctrl.getOption(filter, $ctrl.contactFilter.params[filter.name]) }}
-                    </span>
-                </span>
-                <a ng-click="$ctrl.contactFilter.removeFilter(filter); $event.stopPropagation()" class="tag_remove pull-right"></a>
-            </span>
-          </span>
-    </div>
+    <header-filter-display filters="$ctrl.contactFilter.data"
+                           filter-default-params="$ctrl.contactFilter.default_params"
+                           filter-params="$ctrl.contactFilter.params"
+                           selected-tags="$ctrl.contactsTags.selectedTags"
+                           rejected-tags="$ctrl.contactsTags.rejectedTags"
+                           invert-filter="$ctrl.contactFilter.invertMultiselect($filter)"
+                           display-filters="$ctrl.contactFilter.isResettable()"
+                           remove-filter="$ctrl.contactFilter.removeFilter($filter)"
+                           reject-tag="$ctrl.contactsTags.rejectTag($tag)"
+                           remove-selected-tag="$ctrl.contactsTags.removeFromSelected($tag)"
+                           select-tag="$ctrl.contactsTags.selectTag($tag)"
+                           remove-rejected-tag="$ctrl.contactsTags.removeFromRejected($tag)">
+    </header-filter-display>
 </div>
 <div class="content">
     <div class="blankslate blankslate-spacious" ng-if="$ctrl.meta.pagination.total_count === 0 && !$ctrl.loading">

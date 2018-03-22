@@ -89,32 +89,19 @@
             </pagination-dropdown>
         </div>
     </div>
-    <div ng-if="$ctrl.tasksFilter.isResettable()" class="filters am-collapse">
-        <div>
-            Filters
-        </div>
-        <span ng-repeat="filter in $ctrl.tasksFilter.data" class="tags">
-            <span class="tag"
-                  ng-click="$ctrl.tasksFilter.invertMultiselect(filter)"
-                  ng-class="{ 'reverse': filter.reverse, 'pointer': filter.type === 'multiselect' }"
-                  ng-if="$ctrl.tasksFilter.params[filter.name] !== $ctrl.tasksFilter.defaultParams[filter.name] || filter.reverse"
-                  title="{{::filter.title}}">
-                <span class="tag-text">
-                    <span class="title">{{ ::filter.title }}:</span>
-                    <span ng-if="::$ctrl.isArray($ctrl.tasksFilter.params[filter.name])"
-                          ng-repeat="value in $ctrl.tasksFilter.params[filter.name]">
-                        <span ng-if="value !== ''">
-                            {{ ::$ctrl.getOption(filter, value) }}<span ng-if="!$last">,</span>
-                        </span>
-                    </span>
-                    <span ng-if="::!$ctrl.isArray($ctrl.tasksFilter.params[filter.name])">
-                        {{ ::$ctrl.getOption(filter, $ctrl.tasksFilter.params[filter.name]) }}
-                    </span>
-                </span>
-                <a ng-click="$ctrl.tasksFilter.removeFilter(filter); $event.stopPropagation()" class="tag_remove pull-right"></a>
-            </span>
-          </span>
-    </div>
+    <header-filter-display filters="$ctrl.tasksFilter.data"
+                           filter-default-params="$ctrl.tasksFilter.defaultParams"
+                           filter-params="$ctrl.tasksFilter.params"
+                           selected-tags="$ctrl.tasksTags.selectedTags"
+                           rejected-tags="$ctrl.tasksTags.rejectedTags"
+                           invert-filter="$ctrl.tasksFilter.invertMultiselect($filter)"
+                           display-filters="$ctrl.tasksFilter.isResettable()"
+                           remove-filter="$ctrl.tasksFilter.removeFilter($filter)"
+                           reject-tag="$ctrl.tasksTags.rejectTag($tag)"
+                           remove-selected-tag="$ctrl.tasksTags.removeFromSelected($tag)"
+                           select-tag="$ctrl.tasksTags.selectTag($tag)"
+                           remove-rejected-tag="$ctrl.tasksTags.removeFromRejected($tag)">
+    </header-filter-display>
     <div ng-if="$ctrl.contact">
         <tasks-list-add></tasks-list-add>
     </div>

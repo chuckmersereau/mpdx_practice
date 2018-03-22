@@ -2,9 +2,10 @@ import { assign, compact, isArray, isEmpty } from 'lodash/fp';
 
 class FilterService {
     constructor(
-        $rootScope,
+        $log, $rootScope,
         api, contactsTags, filters
     ) {
+        this.$log = $log;
         this.$rootScope = $rootScope;
         this.api = api;
         this.contactsTags = contactsTags;
@@ -49,6 +50,9 @@ class FilterService {
     change(filter) {
         this.handleFilterChange(filter);
         this.$rootScope.$emit('contactsFilterChange');
+        this.$log.debug('contactFilter: params', this.params);
+        this.$log.debug('contactsTags: selectedTags', this.contactsTags.selectedTags);
+        this.$log.debug('contactsTags: rejectedTags', this.contactsTags.rejectedTags);
     }
     handleFilterChange(filter) {
         if (filter) {

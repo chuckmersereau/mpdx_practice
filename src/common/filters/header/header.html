@@ -1,0 +1,46 @@
+<div ng-if="$ctrl.displayFilters()" class="filters am-collapse">
+    <span>
+        Filters
+    </span>
+    <span ng-repeat="filter in $ctrl.filters" class="tags">
+        <span class="tag"
+              ng-click="$ctrl.invertFilter({ $filter: filter })"
+              ng-class="{ 'reverse': filter.reverse, 'pointer': filter.type === 'multiselect' }"
+              ng-if="$ctrl.filterParams[filter.name].length > 0 && ($ctrl.filterParams[filter.name] !== $ctrl.filterDefaultParams[filter.name] || filter.reverse)"
+              title="{{::filter.title}}">
+            <span class="tag-text">
+                <span class="title">{{ ::filter.title }}:</span>
+                <span ng-if="::$ctrl.isArray($ctrl.filterParams[filter.name])"
+                      ng-repeat="value in $ctrl.filterParams[filter.name]">
+                    <span ng-if="value !== ''">
+                        {{ ::$ctrl.getOption(filter, value) }}<span ng-if="!$last">,</span>
+                    </span>
+                </span>
+                <span ng-if="::!$ctrl.isArray($ctrl.filterParams[filter.name])">
+                    {{ ::$ctrl.getOption(filter, $ctrl.filterParams[filter.name]) }}
+                </span>
+            </span>
+            <a ng-click="$ctrl.removeFilter({ $filter: filter }); $event.stopPropagation()" class="tag_remove pull-right"></a>
+        </span>
+    </span>
+    <span ng-repeat="tag in $ctrl.selectedTags" class="tags pointer">
+        <span class="tag"
+              ng-click="$ctrl.rejectTag({ $tag: tag })"
+              title="{{::tag.name}}">
+            <span class="tag-text">
+                <span class="title">tag: {{ ::tag.name }}</span>
+            </span>
+            <a ng-click="$ctrl.removeSelectedTag({ $tag: tag }); $event.stopPropagation()" class="tag_remove pull-right"></a>
+        </span>
+    </span>
+    <span ng-repeat="tag in $ctrl.rejectedTags" class="tags pointer">
+        <span class="tag reverse"
+              ng-click="$ctrl.selectTag({ $tag: tag })"
+              title="{{::tag.name}}">
+            <span class="tag-text">
+                <span class="title">tag: {{ ::tag.name }}</span>
+            </span>
+            <a ng-click="$ctrl.removeRejectedTag({ $tag: tag }); $event.stopPropagation()" class="tag_remove pull-right"></a>
+        </span>
+    </span>
+</div>

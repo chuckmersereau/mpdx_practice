@@ -1,4 +1,4 @@
-import { includes, map, reject, unionBy } from 'lodash/fp';
+import { find, includes, map, reject, unionBy } from 'lodash/fp';
 
 class TagsService {
     constructor(
@@ -69,16 +69,32 @@ class TagsService {
         return this.rejectedTags.indexOf(tag) >= 0;
     }
     tagClick(tag) {
-        const selectedIndex = this.selectedTags.indexOf(tag);
-        const rejectedIndex = this.rejectedTags.indexOf(tag);
-        if (selectedIndex >= 0) {
-            this.selectedTags.splice(selectedIndex, 1);
-            this.rejectedTags.push(tag);
-        } else if (rejectedIndex >= 0) {
-            this.rejectedTags.splice(rejectedIndex, 1);
+        if (find({ name: tag.name }, this.selectedTags)) {
+            this.rejectTag(tag);
+        } else if (find({ name: tag.name }, this.rejectedTags)) {
+            this.rejectedTags = reject({ name: tag.name }, this.rejectedTags);
+            this.selectedTags = reject({ name: tag.name }, this.selectedTags);
+            this.change();
         } else {
-            this.selectedTags.push(tag);
+            this.selectTag(tag);
         }
+    }
+    selectTag(tag) {
+        this.selectedTags = unionBy({ name: tag.name }, [tag], this.selectedTags);
+        this.rejectedTags = reject({ name: tag.name }, this.rejectedTags);
+        this.change();
+    }
+    rejectTag(tag) {
+        this.selectedTags = reject({ name: tag.name }, this.selectedTags);
+        this.rejectedTags = unionBy({ name: tag.name }, [tag], this.rejectedTags);
+        this.change();
+    }
+    removeFromRejected(tag) {
+        this.rejectedTags = reject({ name: tag.name }, this.rejectedTags);
+        this.change();
+    }
+    removeFromSelected(tag) {
+        this.selectedTags = reject({ name: tag.name }, this.selectedTags);
         this.change();
     }
     isResettable() {

@@ -499,28 +499,6 @@ describe('contacts.list.component', () => {
             });
         });
     });
-    describe('getOption', () => {
-        const filter = {
-            options: [
-                { name: 'a', id: 1 },
-                { name: 'b', id: 2 }
-            ]
-        };
-        it('should return the selected option name by id', () => {
-            expect($ctrl.getOption(filter, 1)).toEqual('a');
-        });
-        it('should handle null', () => {
-            expect($ctrl.getOption({}, 1)).toBeUndefined();
-        });
-    });
-    describe('isArray', () => {
-        it('should catch an array', () => {
-            expect($ctrl.isArray([])).toBeTruthy();
-        });
-        it('should catch an object', () => {
-            expect($ctrl.isArray({})).toBeFalsy();
-        });
-    });
     describe('pageSizeChange', () => {
         it('should change pageSize', () => {
             $ctrl.pageSizeChange(50);

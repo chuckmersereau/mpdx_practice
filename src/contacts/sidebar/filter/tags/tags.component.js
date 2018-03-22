@@ -15,13 +15,9 @@ class TagsController {
             this.contactsTags.load();
         });
     }
-    change() {
-        this.$log.debug('contact/tags: change');
-        this.$rootScope.$emit('contactsTagsChange');
-    }
     changeAny(val) {
         this.contactsTags.anyTags = val;
-        this.change();
+        this.contactsTags.change();
     }
     delete(tag) {
         const params = {
@@ -48,19 +44,6 @@ class TagsController {
     }
     isTagRejected(tag) {
         return this.contactsTags.rejectedTags.indexOf(tag) >= 0;
-    }
-    tagClick(tag) {
-        const selectedIndex = this.contactsTags.selectedTags.indexOf(tag);
-        const rejectedIndex = this.contactsTags.rejectedTags.indexOf(tag);
-        if (selectedIndex >= 0) {
-            this.contactsTags.selectedTags.splice(selectedIndex, 1);
-            this.contactsTags.rejectedTags.push(tag);
-        } else if (rejectedIndex >= 0) {
-            this.contactsTags.rejectedTags.splice(rejectedIndex, 1);
-        } else {
-            this.contactsTags.selectedTags.push(tag);
-        }
-        this.change();
     }
 }
 

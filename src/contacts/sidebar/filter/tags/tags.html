@@ -21,7 +21,7 @@
         <div class="left_tag_list tags" ng-class="{'show_all_tags': $ctrl.showAllTags}">
             <span class="tag"
                   ng-class="{ 'selected': !$ctrl.isTagActive(tag), 'rejected': $ctrl.isTagRejected(tag) }"
-                  ng-click="$ctrl.tagClick(tag, $event)"
+                  ng-click="$ctrl.contactsTags.tagClick(tag)"
                   ng-repeat="tag in $ctrl.contactsTags.data"
                   title="{{::tag.name}}">
                 {{ ::tag.name |limitTo: 20 }}{{ ::tag.name.length > 20 ? '...' : '' }}
