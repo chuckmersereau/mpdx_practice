@@ -7,7 +7,7 @@
         {{$ctrl.address.street}}<br>
         {{$ctrl.address.city}} {{$ctrl.address.state}} {{$ctrl.address.postal_code}}<br>
         {{$ctrl.address.country}}<br>
-        <translate translate-params-source="$ctrl.address.source | sourceToStr" translate-params-date="$ctrl.address.updated_at | localize">
+        <translate translate-params-source="$ctrl.address.source | sourceToStr" translate-params-date="$ctrl.address.created_at | localize">
             Source: {{source}} ({{date}})
         </translate>
     </p>
