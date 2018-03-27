@@ -1,11 +1,14 @@
+import { get } from 'lodash/fp';
+
 class ImpersonateUserController {
     constructor(
         $window,
         gettextCatalog,
-        api, users
+        alerts, api, users
     ) {
         this.$window = $window;
         this.gettextCatalog = gettextCatalog;
+        this.alerts = alerts;
         this.api = api;
         this.users = users;
 
@@ -14,19 +17,25 @@ class ImpersonateUserController {
     }
     save() {
         this.saving = true;
-        const errorMessage = this.gettextCatalog.getString('Unable to impersonate provided user');
+
         return this.api.post({
             url: 'admin/impersonation',
             data: this.impersonateUser,
             type: 'impersonation',
-            errorMessage: errorMessage
+            overridePromise: true
         }).then((data) => {
             this.$window.localStorage.setItem('impersonatorToken', this.$window.localStorage.getItem('token'));
             this.$window.localStorage.setItem('impersonator', `${this.users.current.first_name} ${this.users.current.last_name}`);
             this.$window.localStorage.setItem('token', data.json_web_token);
             this.redirectHome();
-        }).catch(() => {
+        }).catch((error) => {
+            const errorMessage = get('status', error) === 404
+                ? this.gettextCatalog.getString('Unable to find a user with provided credentials.')
+                : this.gettextCatalog.getString('Unable to impersonate provided user');
+            const errorLevel = get('status', error) === 404 ? 'warning' : 'danger';
+            this.alerts.addAlert(errorMessage, errorLevel, 3);
             this.saving = false;
+            throw error;
         });
     }
     redirectHome() {
