@@ -3,12 +3,13 @@ reports {
     height: 100%;
     grid-template-columns: auto;
     grid-template-rows: 43px 1fr;
-
+    justify-content: center;
     > div.menu {
         grid-column: 1;
         grid-row: 1;
     }
     > div.content {
+        @extend .container;
         grid-column: 1;
         grid-row: 2;
         overflow-y: auto;
