@@ -10,7 +10,8 @@ import {
     isObject,
     map,
     omit,
-    pull
+    pull,
+    startsWith
 } from 'lodash/fp';
 import config from 'config';
 import { EntityAttributes } from './entities';
@@ -72,7 +73,7 @@ class Api {
 
         const request = {
             method: method,
-            url: this.apiUrl + url,
+            url: startsWith(this.apiUrl, url) ? url : this.apiUrl + url,
             data: data,
             params: params,
             headers: headers,
@@ -104,8 +105,10 @@ class Api {
             deferred.reject(ex);
         } else {
             errorMessage = this.gettext('An error occurred while contacting the server.');
-            this.alerts.addAlert(errorMessage, 'danger', 0, true).then(() => {
-                deferred.promise = this.call(request);
+            return this.alerts.addAlert(errorMessage, 'danger', 0, true).then(() => {
+                return this.call(request).then((data) => {
+                    deferred.resolve(data);
+                });
             }).catch(() => {
                 deferred.reject();
             });
