@@ -47,6 +47,8 @@ const CollectionSelector = {
 };
 
 import modal from 'common/modal/modal.service';
+import modalController from './modal/modal.controller';
 
-export default angular.module('mpdx.common.collectionSelector.component', [modal])
-    .component('collectionSelector', CollectionSelector).name;
+export default angular.module('mpdx.common.collectionSelector.component', [
+    modal, modalController
+]).component('collectionSelector', CollectionSelector).name;
