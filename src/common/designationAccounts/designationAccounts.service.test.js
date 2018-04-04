@@ -19,10 +19,6 @@ describe('common.designationAccounts.service', () => {
             spyOn($log, 'debug').and.returnValue();
         });
 
-        it('should return a promise', () => {
-            expect(designationAccounts.load()).toEqual(jasmine.any(Promise));
-        });
-
         it('should call api.get', () => {
             designationAccounts.load();
             expect(api.get).toHaveBeenCalledWith(
@@ -60,10 +56,6 @@ describe('common.designationAccounts.service', () => {
             it('should not call the api', () => {
                 designationAccounts.load();
                 expect(api.get).not.toHaveBeenCalled();
-            });
-
-            it('should return a resolved promise', () => {
-                expect(designationAccounts.load()).toEqual(Promise.resolve(data));
             });
 
             it('should return already fetched data', (done) => {
