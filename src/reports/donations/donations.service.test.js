@@ -31,13 +31,15 @@ describe('reports.donations.service', () => {
                 'account_lists/account_list_id/donations',
                 {
                     fields: {
+                        pledge_contact: '',
                         contacts: 'name',
                         designation_account: 'display_name,designation_number',
                         donor_account: 'display_name,account_number',
-                        appeal: 'name'
+                        appeal: 'name',
+                        pledge: 'contact'
                     },
                     filter: {},
-                    include: 'designation_account,donor_account,contact,appeal',
+                    include: 'designation_account,donor_account,contact,appeal,pledge,pledge.contact',
                     sort: '-donation_date'
                 }
             );

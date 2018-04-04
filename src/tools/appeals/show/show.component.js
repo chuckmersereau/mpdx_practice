@@ -22,7 +22,8 @@ import uuid from 'uuid/v1';
 class AppealController {
     constructor(
         $log, $q, $rootScope, $state, $stateParams, blockUI, gettext,
-        alerts, api, appealsShow, contacts, donations, exportContacts, mailchimp, modal, serverConstants, tasks, users
+        alerts, api, appeals, appealsShow, contacts, donations, exportContacts, mailchimp, modal, serverConstants,
+        tasks, users
     ) {
         this.$log = $log;
         this.$q = $q;
@@ -31,6 +32,7 @@ class AppealController {
         this.$stateParams = $stateParams;
         this.alerts = alerts;
         this.api = api;
+        this.appeals = appeals;
         this.appealsShow = appealsShow;
         this.contacts = contacts;
         this.donations = donations;
@@ -277,12 +279,7 @@ class AppealController {
     removeContact(contact) {
         const message = this.gettext('Are you sure you wish to remove this contact from the appeal?');
         return this.modal.confirm(message).then(() => {
-            const successMessage = this.gettext('Contact removed from appeal');
-            const errorMessage = this.gettext('Unable to remove contact from appeal');
-            this.api.delete(
-                `appeals/${this.appeal.id}/appeal_contacts/${contact}`,
-                undefined, successMessage, errorMessage
-            ).then(() => {
+            return this.appeals.removeContact(this.appeal.id, contact.id).then(() => {
                 this.refreshLists();
             });
         });
@@ -355,17 +352,11 @@ class AppealController {
     }
     removePledge(pledge) {
         const message = this.gettext('Are you sure you wish to remove this commitment?');
-        const status = angular.copy(pledge.status);
-        return this.modal.confirm(message).then(() => {
-            const successMessage = this.gettext('Successfully removed commitment from appeal');
-            const errorMessage = this.gettext('Unable to remove commitment from appeal');
-            return this.api.delete(
-                `account_lists/${this.api.account_list_id}/pledges/${pledge.id}`,
-                undefined, successMessage, errorMessage
-            ).then(() => {
-                this.refreshLists(status);
-            });
-        });
+        return this.modal.confirm(message).then(() =>
+            this.appeals.removePledge(pledge.id).then(() =>
+                this.refreshLists()
+            )
+        );
     }
     refreshLists(status = null) {
         this.getContactsNotGiven();
@@ -511,6 +502,7 @@ const Appeal = {
     }
 };
 
+import appeals from 'tools/appeals/appeals.service';
 import appealsShow from './show.service';
 import blockUI from 'angular-block-ui';
 import contacts from 'contacts/contacts.service';
@@ -522,5 +514,5 @@ import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('tools.mpdx.appeals.show', [
     blockUI, uiRouter,
-    appealsShow, contacts, donations, exportContacts, mailchimp, tasks
+    appeals, appealsShow, contacts, donations, exportContacts, mailchimp, tasks
 ]).component('appealsShow', Appeal).name;
