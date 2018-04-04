@@ -12,13 +12,15 @@ import pagination from 'common/pagination/pagination';
 
 class ListController {
     constructor(
-        $log, $rootScope, $scope, $window,
-        gettextCatalog,
+        $log, $q, $rootScope, $scope, $state, $stateParams, $window, gettextCatalog,
         accounts, alerts, api, contacts, contactFilter, contactsTags, modal, serverConstants, session, tasks, users
     ) {
         this.$log = $log;
+        this.$q = $q;
         this.$rootScope = $rootScope;
         this.$scope = $scope;
+        this.$state = $state;
+        this.$stateParams = $stateParams;
         this.$window = $window;
         this.accounts = accounts;
         this.alerts = alerts;
@@ -49,25 +51,28 @@ class ListController {
         this.totalContactCount = 0;
     }
     $onInit() {
-        this.load();
+        this.page = defaultTo(1, this.$stateParams.page);
+        this.load(this.page);
 
         this.watcher = this.$rootScope.$on('contactCreated', () => {
-            this.load();
+            this.pageChange();
             this.contacts.clearSelectedContacts();
         });
 
         this.watcher2 = this.$rootScope.$on('accountListUpdated', () => {
-            this.load();
+            this.refreshFiltersAndTags().then(() => {
+                this.pageChange();
+            });
             this.contacts.clearSelectedContacts();
         });
 
         this.watcher3 = this.$rootScope.$on('contactsFilterChange', () => {
-            this.load();
+            this.pageChange();
             this.contacts.clearSelectedContacts();
         });
 
         this.watcher4 = this.$rootScope.$on('contactsTagsChange', () => {
-            this.load();
+            this.pageChange();
             this.contacts.clearSelectedContacts();
         });
 
@@ -103,6 +108,12 @@ class ListController {
         this.watcher7();
         this.watcher8();
         this.watcher9();
+    }
+    refreshFiltersAndTags() {
+        return this.$q.all([
+            this.contactFilter.load(),
+            this.contactsTags.load()
+        ]);
     }
     hideContact(contact) {
         return this.contacts.hideContact(contact).then(() => {
@@ -290,6 +301,12 @@ class ListController {
     pageSizeChange(size) {
         this.pageSize = size;
         this.load(1);
+    }
+    pageChange(page = 1) {
+        if (this.$stateParams.page === 1 && page === 1) {
+            this.load();
+        }
+        this.$state.go('contacts', { page: page }, { reload: false });
     }
 }
 

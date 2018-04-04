@@ -55,21 +55,30 @@ export default class Routes {
         }).state({
             name: 'contacts',
             title: gettext('Contacts'),
-            url: '/contacts',
+            url: '/contacts?{page:int}',
             component: 'contacts',
             params: {
-                filters: null
+                filters: null,
+                page: 1
             },
             parent: 'root',
             resolve: {
                 filter: /* @ngInject*/ ($stateParams, contactFilter) => {
-                    return contactFilter.load().then(() => {
-                        if ($stateParams.filters) {
-                            contactFilter.reset($stateParams.filters);
-                        }
-                    });
+                    if ($stateParams.page === 1 || !contactFilter.data) {
+                        return contactFilter.load().then(() => {
+                            if ($stateParams.filters) {
+                                contactFilter.reset($stateParams.filters);
+                            }
+                        });
+                    }
+                    return true;
                 },
-                tag: /* @ngInject*/ (contactsTags) => contactsTags.load(),
+                tag: /* @ngInject*/ (contactsTags, $stateParams) => {
+                    if ($stateParams.page === 1 || !contactsTags.data) {
+                        return contactsTags.load();
+                    }
+                    return true;
+                },
                 0: /* @ngInject*/ (serverConstants) => serverConstants.load(['pledge_frequency_hashes'])
             }
         }).state({

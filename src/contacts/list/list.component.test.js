@@ -3,19 +3,21 @@ import { assign, map } from 'lodash/fp';
 
 describe('contacts.list.component', () => {
     let $ctrl, contacts, contactsTags, rootScope, scope, componentController, modal, tasks, alerts, gettextCatalog,
-        api, serverConstants, users;
+        api, serverConstants, users, contactFilter, state;
     beforeEach(() => {
         angular.mock.module(list);
         inject((
             $componentController, $rootScope, _contacts_, _contactsTags_, _modal_, _tasks_, _alerts_,
-            _gettextCatalog_, _api_, _serverConstants_, _users_
+            _gettextCatalog_, _api_, _serverConstants_, _users_, _contactFilter_, $state
         ) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             alerts = _alerts_;
             api = _api_;
+            state = $state;
             contacts = _contacts_;
             contactsTags = _contactsTags_;
+            contactFilter = _contactFilter_;
             gettextCatalog = _gettextCatalog_;
             modal = _modal_;
             tasks = _tasks_;
@@ -79,7 +81,8 @@ describe('contacts.list.component', () => {
         describe('events', () => {
             beforeEach(() => {
                 $ctrl.$onInit();
-                spyOn(contactsTags, 'load').and.callFake(() => Promise.resolve());
+                spyOn($ctrl, 'refreshFiltersAndTags').and.callFake(() => Promise.resolve());
+                spyOn($ctrl, 'pageChange').and.callFake(() => Promise.resolve());
                 spyOn(contacts, 'clearSelectedContacts').and.callFake(() => {});
             });
             afterEach(() => {
@@ -88,24 +91,25 @@ describe('contacts.list.component', () => {
             it('should fire contacts.load on contactCreated', () => {
                 rootScope.$emit('contactCreated');
                 rootScope.$digest();
-                expect($ctrl.load).toHaveBeenCalledWith();
+                expect($ctrl.pageChange).toHaveBeenCalledWith();
             });
             it('should fire contacts.load on accountListUpdated', () => {
                 rootScope.$emit('accountListUpdated');
                 rootScope.$digest();
+                expect($ctrl.refreshFiltersAndTags).toHaveBeenCalled();
                 expect($ctrl.load).toHaveBeenCalled();
                 expect(contacts.clearSelectedContacts).toHaveBeenCalled();
             });
             it('should fire contacts.load on contactsFilterChange', () => {
                 rootScope.$emit('contactsFilterChange');
                 rootScope.$digest();
-                expect($ctrl.load).toHaveBeenCalledWith();
+                expect($ctrl.pageChange).toHaveBeenCalledWith();
                 expect(contacts.clearSelectedContacts).toHaveBeenCalled();
             });
             it('should fire contacts.load on contactsTagsChange', () => {
                 rootScope.$emit('contactsTagsChange');
                 rootScope.$digest();
-                expect($ctrl.load).toHaveBeenCalledWith();
+                expect($ctrl.pageChange).toHaveBeenCalledWith();
                 expect(contacts.clearSelectedContacts).toHaveBeenCalled();
             });
             it('should clear contacts on contactTagsAdded', () => {
@@ -508,6 +512,37 @@ describe('contacts.list.component', () => {
             spyOn($ctrl, 'load').and.callFake(() => {});
             $ctrl.pageSizeChange(50);
             expect($ctrl.load).toHaveBeenCalledWith(1);
+        });
+    });
+    describe('refreshFiltersAndTags', () => {
+        beforeEach(() => {
+            spyOn(contactsTags, 'load').and.callFake(() => Promise.resolve());
+            spyOn(contactFilter, 'load').and.callFake(() => Promise.resolve());
+        });
+        afterEach(() => {
+            rootScope.$apply();
+            // $q.all workaround
+        });
+        it('should refresh tags', () => {
+            $ctrl.refreshFiltersAndTags();
+            expect(contactsTags.load).toHaveBeenCalledWith();
+        });
+        it('should refresh filters', () => {
+            $ctrl.refreshFiltersAndTags();
+            expect(contactFilter.load).toHaveBeenCalledWith();
+        });
+    });
+    describe('pageChange', () => {
+        beforeEach(() => {
+            spyOn(state, 'go').and.callFake(() => {});
+        });
+        it('should go to 1st page', () => {
+            $ctrl.pageChange();
+            expect(state.go).toHaveBeenCalledWith('contacts', { page: 1 }, { reload: false });
+        });
+        it('should go to nth page', () => {
+            $ctrl.pageChange(2);
+            expect(state.go).toHaveBeenCalledWith('contacts', { page: 2 }, { reload: false });
         });
     });
 });
