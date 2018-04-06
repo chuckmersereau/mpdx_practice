@@ -23,7 +23,7 @@ class AppealController {
     constructor(
         $log, $q, $rootScope, $state, $stateParams, blockUI, gettext,
         alerts, api, appeals, appealsShow, contacts, donations, exportContacts, mailchimp, modal, serverConstants,
-        tasks, users
+        tasks
     ) {
         this.$log = $log;
         this.$q = $q;
@@ -43,7 +43,6 @@ class AppealController {
         this.moment = moment;
         this.serverConstants = serverConstants;
         this.tasks = tasks;
-        this.users = users;
 
         this.appeal = null;
         this.blockUIGiven = blockUI.instances.get('appealShow');
