@@ -25,7 +25,8 @@ class ImpersonationController {
     }
     logout() {
         this.loading = true;
-        if (this.impersonator) {
+        const token = this.$window.localStorage.getItem('impersonatorToken');
+        if (this.impersonator && token) {
             const token = this.$window.localStorage.getItem('impersonatorToken');
             this.$window.localStorage.setItem('token', token);
             this.$window.localStorage.removeItem('impersonator');
