@@ -2,25 +2,28 @@
     Error loading progress stats. Please try again or contact support.
 </div>
 <div ng-if="!$ctrl.errorOccurred">
-    <div class="pull-right">
-        {{$ctrl.startDate.format('MMM D')}} — {{$ctrl.endDate.format('MMM D')}}
-        &nbsp;
-        <a class="btn btn-default" title="" ng-click="$ctrl.previousWeek()">
-            <i class="fas fa-angle-left"></i>
+    <div class="progress-heading row">
+        <div class="col-sm-6">
+            <h3 class="progress-title" translate>Progress</h3>
+        </div>
+        <div class="col-sm-6 text-right">
+            {{$ctrl.startDate.format('MMM D')}} — {{$ctrl.endDate.format('MMM D')}}
             &nbsp;
-            <translate>Previous Week</translate>
-        </a>
-        <a class="btn btn-default" title="{{ 'Next' | translate }}" ng-click="$ctrl.nextWeek()">
-            <translate>Next Week</translate>
-            &nbsp;
-            <i class="fas fa-angle-right"></i>
-        </a>
-        <a class="btn btn-reverse" href="https://staffweb.cru.org/mpd-donations/reports/mpd-weekly-update/" target="_blank" ng-if="$ctrl.showWeeklyProgressReport()" translate>
-            Weekly Progress Report
-        </a>
+            <a class="btn btn-default" title="" ng-click="$ctrl.previousWeek()">
+                <i class="fas fa-angle-left"></i>
+                &nbsp;
+                <translate>Previous Week</translate>
+            </a>
+            <a class="btn btn-default" title="{{ 'Next' | translate }}" ng-click="$ctrl.nextWeek()">
+                <translate>Next Week</translate>
+                &nbsp;
+                <i class="fas fa-angle-right"></i>
+            </a>
+            <a class="btn btn-reverse" href="https://staffweb.cru.org/mpd-donations/reports/mpd-weekly-update/" target="_blank" ng-if="$ctrl.showWeeklyProgressReport()" translate>
+                Weekly Progress Report
+            </a>
+        </div>
     </div>
-    <h3 class="progress-heading" translate>Progress</h3>
-    <hr>
     <div block-ui="homeProgress" class="progress-content">
         <progress-contacts></progress-contacts>
         <progress-appointments></progress-appointments>

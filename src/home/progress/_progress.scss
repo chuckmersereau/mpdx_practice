@@ -6,11 +6,9 @@
 @import "phone/phone";
 
 home-progress {
-    .panel-default {
+    .panel.panel-default {
         min-height: 84px;
-        > .panel-heading i {
-            margin-right: 5px;
-        }
+        margin-bottom: 0;
         > .statistics {
             padding: 10px 0;
             display: grid;
@@ -24,11 +22,18 @@ home-progress {
             }
         }
     }
+    .progress-heading {
+        padding-bottom: $container-padding;
+        .progress-title {
+            margin: 0;
+            line-height: 33px;
+        }
+    }
     .progress-content {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(3, 1fr);
-        grid-gap: 5px;
+        grid-template-rows: auto;
+        grid-gap: $container-padding;
         h3 {
             margin: 0;
         }

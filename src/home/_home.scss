@@ -2,13 +2,19 @@
 
 home {
     @extend .content-container;
+    padding: $container-padding;
     display: grid;
-    grid-template-rows: 69px 330px auto 1fr;
+    grid-template-rows: 39px 330px auto 1fr;
     grid-template-columns: 100%;
-    grid-gap: 10px;
+    grid-gap: $container-padding;
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
+    donations-chart {
+        .blankslate {
+            height: 330px;
+        }
+    }
     a:hover {
         text-decoration: none;
     }
@@ -19,24 +25,11 @@ home {
     home-connect,
     home-commitments,
     home-care {
-        .panel-default > .panel-heading {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            align-self: center;
-            .btn {
-                font-size: 12px;
-                padding: 0 5px;
-            }
-        }
-        .panel {
+        .panel.panel-default {
             height: 100%;
             min-height: 275px;
+            margin-bottom: 0;
         }
-    }
-    .panel-default > .panel-heading {
-        line-height: 2em;
-        padding: 10px 15px;
-        text-transform: none;
     }
     h4.title {
         margin: 10px 0 5px;
@@ -47,6 +40,6 @@ home {
     .row-eq-height {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        grid-gap: 5px;
+        grid-gap: $container-padding;
     }
 }
