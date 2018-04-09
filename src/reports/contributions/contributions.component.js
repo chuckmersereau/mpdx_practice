@@ -18,16 +18,19 @@ import {
     toInteger
 } from 'lodash/fp';
 import moment from 'moment';
+import joinComma from 'common/fp/joinComma';
 import reduceObject from 'common/fp/reduceObject';
 
 class ContributionsController {
     constructor(
         $log, $rootScope,
         gettextCatalog,
-        api, donations, serverConstants
+        api, designationAccounts, donations, serverConstants
     ) {
         this.$log = $log;
+        this.$rootScope = $rootScope;
         this.api = api;
+        this.designationAccounts = designationAccounts;
         this.donations = donations;
         this.gettextCatalog = gettextCatalog;
         this.serverConstants = serverConstants;
@@ -35,12 +38,16 @@ class ContributionsController {
         this.data = {};
         this.expanded = false;
         this.loading = false;
-
-        $rootScope.$on('accountListUpdated', () => {
-            this.load();
-        });
     }
     $onInit() {
+        this.watcher = this.$rootScope.$on('accountListUpdated', () => {
+            this.load();
+        });
+
+        this.watcher2 = this.$rootScope.$on('designationAccountSelectorChanged', () => {
+            this.load();
+        });
+
         /**
             Report Types
             The type binding can be 'partner' or 'salary'
@@ -51,19 +58,26 @@ class ContributionsController {
                 Donors are grouped into a single category which is the user's salary currency
                 The converted amount and currency fields are used (using 'converted_' prefix)
         **/
+
         this.type = defaultTo('salary', this.type);
         this.load();
     }
+    $onDestroy() {
+        this.watcher();
+        this.watcher2();
+    }
     load() {
         this.loading = true;
-        return this.loadAfterServerConstants(this.type);
-    }
-    loadAfterServerConstants(type) {
-        const endpoint = type === 'salary' ? 'reports/salary_currency_donations' : 'reports/donor_currency_donations';
-        return this.api.get(endpoint, {
+        const endpoint
+            = this.type === 'salary' ? 'reports/salary_currency_donations' : 'reports/donor_currency_donations';
+        let params = {
             filter: { account_list_id: this.api.account_list_id }
-        }).then((data) => {
-            const currencies = this.getSortedCurrencies(type, data);
+        };
+        if (this.designationAccounts.selected.length > 0) {
+            params.filter.designation_account_id = joinComma(this.designationAccounts.selected);
+        }
+        return this.api.get(endpoint, params).then((data) => {
+            const currencies = this.getSortedCurrencies(this.type, data);
             this.data = {
                 currencies: currencies,
                 years: this.buildYears(data.months),
@@ -227,10 +241,11 @@ const Contributions = {
 
 import gettextCatalog from 'angular-gettext';
 import api from 'common/api/api.service';
+import designationAccounts from 'common/designationAccounts/designationAccounts.service';
 import donations from 'reports/donations/donations.service';
 import serverConstants from 'common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.reports.contributions.component', [
     gettextCatalog,
-    api, donations, serverConstants
+    api, designationAccounts, donations, serverConstants
 ]).component('contributions', Contributions).name;

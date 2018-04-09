@@ -1,11 +1,12 @@
 import { map, round, sum, take, takeRight } from 'lodash/fp';
 import { zip } from 'lodash';
+import joinComma from 'common/fp/joinComma';
 import moment from 'moment';
 
 class ChartController {
     constructor(
         $state, $rootScope, $filter, $log, gettextCatalog,
-        accounts, api, contacts, donations
+        accounts, api, contacts, designationAccounts, donations
     ) {
         this.$state = $state;
         this.$rootScope = $rootScope;
@@ -14,6 +15,7 @@ class ChartController {
         this.accounts = accounts;
         this.api = api;
         this.contacts = contacts;
+        this.designationAccounts = designationAccounts;
         this.donations = donations;
         this.gettextCatalog = gettextCatalog;
 
@@ -35,10 +37,15 @@ class ChartController {
         this.watcher2 = this.$rootScope.$on('donationUpdated', () => {
             this.load();
         });
+
+        this.watcher3 = this.$rootScope.$on('designationAccountSelectorChanged', () => {
+            this.load();
+        });
     }
     $onDestroy() {
         this.watcher();
         this.watcher2();
+        this.watcher3();
     }
     $onChanges() {
         this.load();
@@ -61,6 +68,9 @@ class ChartController {
             if (this.contacts.current.pledge_currency) {
                 params.displayCurrency = this.contacts.current.pledge_currency;
             }
+        }
+        if (this.designationAccounts.selected.length > 0) {
+            params.designationAccountId = joinComma(this.designationAccounts.selected);
         }
         this.loading = true;
         return this.getDonationChart(params).then((data) => {
@@ -151,7 +161,9 @@ class ChartController {
         const startDate = moment(`01 ${legendItem[0]._model.label}`, 'DD MMM YY');
         this.$state.go('reports.donations', { startDate: startDate });
     }
-    getDonationChart({ startDate = null, endDate = null, donorAccountId = null, displayCurrency = null } = {}) {
+    getDonationChart({
+        startDate = null, endDate = null, donorAccountId = null, displayCurrency = null, designationAccountId = null
+    } = {}) {
         let params = {
             filter: {
                 account_list_id: this.api.account_list_id
@@ -162,6 +174,9 @@ class ChartController {
         }
         if (displayCurrency) {
             params.filter.display_currency = displayCurrency;
+        }
+        if (designationAccountId) {
+            params.filter.designation_account_id = designationAccountId;
         }
         if (startDate && endDate && moment.isMoment(startDate) && moment.isMoment(endDate)) {
             params.filter.donation_date = `${startDate.format('YYYY-MM-DD')}..${endDate.format('YYYY-MM-DD')}`;
@@ -185,11 +200,12 @@ const Chart = {
 import accounts from 'common/accounts/accounts.service';
 import api from 'common/api/api.service';
 import contacts from 'contacts/contacts.service';
+import designationAccounts from 'common/designationAccounts/designationAccounts.service';
 import donations from '../donations.service';
 import gettext from 'angular-gettext';
 import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('mpdx.reports.donations.chart.component', [
     gettext, uiRouter,
-    accounts, api, contacts, donations
+    accounts, api, contacts, designationAccounts, donations
 ]).component('donationsChart', Chart).name;

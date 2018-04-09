@@ -2,15 +2,17 @@ import { concat, find, reduce } from 'lodash/fp';
 
 class DesignationAccountsService {
     constructor(
-        $log,
+        $log, $rootScope,
         api
     ) {
         this.$log = $log;
+        this.$rootScope = $rootScope;
         this.api = api;
 
         this.data = [];
         this.list = [];
         this.organizations = [];
+        this.selected = [];
     }
     load(reset = false) {
         if (!reset && this.data.length > 0) {
@@ -42,6 +44,10 @@ class DesignationAccountsService {
             },
             per_page: 6
         });
+    }
+    resetSelected() {
+        this.selected = [];
+        this.$rootScope.$emit('designationAccountSelectorChanged', this.selected);
     }
 }
 

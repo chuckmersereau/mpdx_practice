@@ -12,6 +12,7 @@ import contactsSelector from './contactsSelector/selector.component';
 import cover from './cover/cover.component';
 import datetimepicker from './datetimepicker/datetimepicker.component';
 import designationAccounts from './designationAccounts/designationAccounts.service';
+import designationAccountsSelector from './designationAccounts/selector/selector.component';
 import donorAccounts from './donorAccounts/donorAccounts.service';
 import drawer from './sideDrawer/drawer.component';
 import faCheckbox from './faCheckbox/faCheckbox.component';
@@ -55,6 +56,7 @@ export default angular.module('mpdx.common', [
     cover,
     datetimepicker,
     designationAccounts,
+    designationAccountsSelector,
     donorAccounts,
     drawer,
     faCheckbox,

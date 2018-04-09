@@ -1,34 +1,46 @@
 import { concat, groupBy, includes, indexOf, sumBy } from 'lodash/fp';
+import joinComma from 'common/fp/joinComma';
 import reduceObject from 'common/fp/reduceObject';
 
 class MonthlyController {
     constructor(
         $log,
         $rootScope,
-        api
+        api, designationAccounts
     ) {
         this.$log = $log;
+        this.$rootScope = $rootScope;
         this.api = api;
+        this.designationAccounts = designationAccounts;
 
         this.sumOfAllCategories = 0;
-
         this.errorOccurred = false;
         this.loading = true;
         this.activePanels = [0, 1, 2];
-
-        this.watcher = $rootScope.$on('accountListUpdated', () => {
-            this.loadExpectedMonthlyTotals();
+    }
+    $onInit() {
+        this.watcher = this.$rootScope.$on('accountListUpdated', () => {
+            this.load();
         });
 
-        this.loadExpectedMonthlyTotals();
+        this.watcher2 = this.$rootScope.$on('designationAccountSelectorChanged', () => {
+            this.load();
+        });
+
+        this.load();
     }
     $onDestroy() {
         this.watcher();
+        this.watcher2();
     }
-    loadExpectedMonthlyTotals() {
+    load() {
         this.activePanels = [0, 1, 2];
         this.loading = true;
-        this.api.get('reports/expected_monthly_totals', { filter: { account_list_id: this.api.account_list_id } }).then((data) => {
+        let params = { filter: { account_list_id: this.api.account_list_id } };
+        if (this.designationAccounts.selected.length > 0) {
+            params.filter.designation_account_id = joinComma(this.designationAccounts.selected);
+        }
+        return this.api.get('reports/expected_monthly_totals', params).then((data) => {
             this.$log.debug('reports/expected_monthly_totals', data);
             this.total_currency = data.total_currency;
             this.total_currency_symbol = data.total_currency_symbol;
@@ -49,6 +61,7 @@ class MonthlyController {
             this.loading = false;
         }).catch(() => {
             this.errorOccurred = true;
+            this.loading = false;
         });
     }
     percentage(donationType) {
@@ -69,7 +82,8 @@ const Monthly = {
 };
 
 import api from 'common/api/api.service';
+import designationAccounts from 'common/designationAccounts/designationAccounts.service';
 
 export default angular.module('mpdx.reports.monthly.component', [
-    api
+    api, designationAccounts
 ]).component('monthly', Monthly).name;

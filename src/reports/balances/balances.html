@@ -35,7 +35,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="designation in $ctrl.designationAccounts.data">
+                <tr ng-repeat="designation in $ctrl.designationAccounts.data track by designation.id">
                     <td>{{::designation.organization_name}}</td>
                     <td>{{::designation.designation_number}}</td>
                     <td>{{::designation.balance_updated_at | localize}}</td>

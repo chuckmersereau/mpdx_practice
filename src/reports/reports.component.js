@@ -1,11 +1,12 @@
 class ReportsController {
     constructor(
         gettextCatalog,
-        help, session
+        designationAccounts, help, session
     ) {
         this.gettextCatalog = gettextCatalog;
-        this.session = session;
+        this.designationAccounts = designationAccounts;
         this.help = help;
+        this.session = session;
     }
     $onInit() {
         this.help.suggest([
@@ -32,10 +33,11 @@ const Reports = {
 };
 
 import gettextCatalog from 'angular-gettext';
+import designationAccounts from 'common/designationAccounts/designationAccounts.service';
 import help from 'common/help/help.service';
 import session from 'common/session/session.service';
 
 export default angular.module('mpdx.reports.component', [
     gettextCatalog,
-    help, session
+    designationAccounts, help, session
 ]).component('reports', Reports).name;

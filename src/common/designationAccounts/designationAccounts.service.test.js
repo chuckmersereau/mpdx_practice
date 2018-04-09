@@ -1,15 +1,25 @@
 import service from './designationAccounts.service';
 
 describe('common.designationAccounts.service', () => {
-    let $log, api, designationAccounts;
+    let $log, rootScope, api, designationAccounts;
 
     beforeEach(() => {
         angular.mock.module(service);
-        inject((_$log_, _api_, _designationAccounts_) => {
+        inject(($rootScope, _$log_, _api_, _designationAccounts_) => {
+            rootScope = $rootScope;
             $log = _$log_;
             api = _api_;
             designationAccounts = _designationAccounts_;
             api.account_list_id = 'account_list_id';
+        });
+    });
+
+    describe('constructor', () => {
+        it('should set default variables', () => {
+            expect(designationAccounts.data).toEqual([]);
+            expect(designationAccounts.list).toEqual([]);
+            expect(designationAccounts.organizations).toEqual([]);
+            expect(designationAccounts.selected).toEqual([]);
         });
     });
 
@@ -106,6 +116,20 @@ describe('common.designationAccounts.service', () => {
                     per_page: 6
                 }
             );
+        });
+    });
+
+    describe('resetSelected', () => {
+        it('should set selected to []', () => {
+            designationAccounts.selected = ['abc', 'def'];
+            designationAccounts.resetSelected();
+            expect(designationAccounts.selected).toEqual([]);
+        });
+
+        it('should call $emit', () => {
+            spyOn(rootScope, '$emit').and.callThrough();
+            designationAccounts.resetSelected();
+            expect(rootScope.$emit).toHaveBeenCalledWith('designationAccountSelectorChanged', []);
         });
     });
 });

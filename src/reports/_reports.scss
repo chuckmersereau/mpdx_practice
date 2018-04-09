@@ -1,21 +1,64 @@
 reports {
     display: grid;
     height: 100%;
-    grid-template-columns: auto;
-    grid-template-rows: 43px 1fr;
-    justify-content: center;
+    grid-template-rows: 65px 1fr;
     > div.menu {
         grid-column: 1;
         grid-row: 1;
     }
     > div.content {
-        @extend .container;
         grid-column: 1;
         grid-row: 2;
         overflow-y: auto;
-        padding-top: 10px;
+        padding-top: $container-padding;
     }
-
+    .nav--secondary.menu {
+        transition: background-color 0.2s ease-out;
+        &.selected {
+            background-color: $cru-selected-items-bgcolor;
+            .section {
+                > a.menu-item {
+                    color: $cru-white;
+                    transition: color 0.2s ease-out;
+                    &:hover {
+                        background-color: darken($cru-selected-items-bgcolor, 10%);
+                    }
+                }
+                &.active {
+                    > a.menu-item {
+                        background-color: darken($cru-selected-items-bgcolor, 10%);
+                    }
+                }
+            }
+        }
+        .section {
+            &-field {
+                margin-top: -2px;
+                height: 35px;
+                font-size: 14px;
+                color: $cru-white;
+                padding: $container-padding 10px;
+                .chosen-choices {
+                    max-height: 34px;
+                    width: 250px;
+                    overflow-y: auto;
+                    transition: max-height 0.2s;
+                }
+                .chosen-container-active {
+                    .chosen-choices {
+                        max-height: 250px;
+                    }
+                }
+            }
+            &-selector {
+                color: $cru-white;
+                padding: $container-padding 10px;
+                > a {
+                    color: $cru-white;
+                }
+            }
+        }
+    }
     .reports {
         h2 {
             margin-top: 0;
@@ -57,4 +100,3 @@ reports {
         }
     }
 }
-

@@ -1,23 +1,42 @@
 <div class="reports">
-    <div class="pull-right" ng-if="!$ctrl.loading && $ctrl.data.currencies.length > 0">
-        <button class="btn btn-primary" ng-click="$ctrl.expanded = !$ctrl.expanded">
-            <span ng-if="!$ctrl.expanded">
-                <span translate>Expand partner info</span>
-                <i class="fas fa-expand" aria-hidden="true"></i>
+    <div class="mb-3">
+        <div class="pull-right">
+            <span ng-if="!$ctrl.loading && $ctrl.data.currencies.length > 0">
+                <button class="btn btn-primary" ng-click="$ctrl.expanded = !$ctrl.expanded">
+                    <span ng-if="!$ctrl.expanded">
+                        <span translate>Expand partner info</span>
+                        <i class="fas fa-expand" aria-hidden="true"></i>
+                    </span>
+                    <span ng-if="$ctrl.expanded">
+                        <span translate>Hide partner info</span>
+                        <i class="fas fa-compress" aria-hidden="true"></i>
+                    </span>
+                </button>
+                <button class="btn btn-default" ng-csv="$ctrl.toCSV()" lazy-load="true" filename="mpdx-{{$ctrl.type}}-contributions-export-{{$ctrl.moment().format('Y-MM-DD-HH:mm')}}.csv" translate>
+                    Export CSV
+                </button>
             </span>
-            <span ng-if="$ctrl.expanded">
-                <span translate>Hide partner info</span>
-                <i class="fas fa-compress" aria-hidden="true"></i>
-            </span>
-        </button>
-        <button class="btn btn-default" ng-csv="$ctrl.toCSV()" lazy-load="true" filename="mpdx-{{$ctrl.type}}-contributions-export-{{$ctrl.moment().format('Y-MM-DD-HH:mm')}}.csv" translate>
-            Export CSV
-        </button>
+        </div>
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle"
+                    bs-dropdown
+                    type="button"
+                    data-toggle="dropdown"
+                    aria-expanded="true">
+                <span ng-if="::$ctrl.type === 'partner'" translate>Contributions by Partner Currency</span>
+                <span ng-if="::$ctrl.type === 'salary'" translate>Contributions by Salary Currency</span>
+                <i class="fas fa-caret-down"></i>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="action-drop">
+                <li ng-if="::$ctrl.type === 'salary'">
+                    <a ui-sref="reports.partner" translate>Contributions by Partner Currency</a>
+                </li>
+                <li ng-if="::$ctrl.type === 'partner'">
+                    <a ui-sref="reports.salary" translate>Contributions by Salary Currency</a>
+                </li>
+            </ul>
+        </div>
     </div>
-    <h2>
-        <span ng-if="::$ctrl.type === 'partner'" translate>Contributions by Partner Currency</span>
-        <span ng-if="::$ctrl.type === 'salary'" translate>Contributions by Salary Currency</span>
-    </h2>
     <div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
       <i class="far fa-circle-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
     </div>

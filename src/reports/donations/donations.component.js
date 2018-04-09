@@ -7,6 +7,7 @@ import {
     reduce,
     toNumber
 } from 'lodash/fp';
+import joinComma from 'common/fp/joinComma';
 import moment from 'moment';
 
 class DonationsController {
@@ -62,6 +63,10 @@ class DonationsController {
             this.totalsPosition = this.donations.chartData.months_to_dates.length - 1;
             this.calculateTotals();
         });
+
+        this.watcher4 = this.$rootScope.$on('designationAccountSelectorChanged', () => {
+            this.load();
+        });
     }
     $onChanges(changesObj) {
         if (changesObj.contact && !changesObj.contact.isFirstChange()) {
@@ -80,6 +85,10 @@ class DonationsController {
         const currentCount = angular.copy(this.listLoadCount);
 
         let params = {};
+
+        if (this.designationAccounts.selected.length > 0) {
+            params.designationAccountId = joinComma(this.designationAccounts.selected);
+        }
 
         if (!this.inContact) {
             this.setMonths();
@@ -141,7 +150,9 @@ class DonationsController {
             this.calculateTotals();
         });
     }
-    getDonations({ startDate = null, endDate = null, donorAccountId = null } = {}) {
+    getDonations({
+        startDate = null, endDate = null, donorAccountId = null, designationAccountId = null
+    } = {}) {
         let params = {
             per_page: 10000,
             fields: {
@@ -155,6 +166,9 @@ class DonationsController {
         };
         if (donorAccountId) {
             params.filter.donor_account_id = donorAccountId;
+        }
+        if (designationAccountId) {
+            params.filter.designation_account_id = designationAccountId;
         }
         if (startDate && endDate && moment.isMoment(startDate) && moment.isMoment(endDate)) {
             params.filter.donation_date = `${startDate.format('YYYY-MM-DD')}..${endDate.format('YYYY-MM-DD')}`;

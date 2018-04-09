@@ -2,15 +2,16 @@ import component from './chart.component';
 import moment from 'moment';
 
 describe('reports.donations.chart.component', () => {
-    let $ctrl, componentController, scope, rootScope, api;
+    let $ctrl, componentController, scope, rootScope, api, designationAccounts;
 
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _api_) => {
+        inject(($componentController, $rootScope, _api_, _designationAccounts_) => {
             componentController = $componentController;
             rootScope = $rootScope;
             scope = rootScope.$new();
             api = _api_;
+            designationAccounts = _designationAccounts_;
             loadController();
         });
     });
@@ -23,13 +24,32 @@ describe('reports.donations.chart.component', () => {
         afterEach(() => {
             $ctrl.$onDestroy();
         });
-        it('should handle donation updated', () => {
-            spyOn($ctrl, 'load').and.callFake(() => {});
-            $ctrl.$onInit();
-            rootScope.$emit('donationUpdated');
-            expect($ctrl.load).toHaveBeenCalledWith();
+
+        describe('events', () => {
+            beforeEach(() => {
+                $ctrl.$onInit();
+            });
+
+            it('should watch accountListUpdated', () => {
+                spyOn($ctrl, 'load').and.callFake(() => {});
+                rootScope.$emit('accountListUpdated');
+                expect($ctrl.load).toHaveBeenCalledWith();
+            });
+
+            it('should watch donationUpdated', () => {
+                spyOn($ctrl, 'load').and.callFake(() => {});
+                rootScope.$emit('donationUpdated');
+                expect($ctrl.load).toHaveBeenCalledWith();
+            });
+
+            it('should watch designationAccountSelectorChanged', () => {
+                spyOn($ctrl, 'load').and.callFake(() => {});
+                rootScope.$emit('designationAccountSelectorChanged');
+                expect($ctrl.load).toHaveBeenCalledWith();
+            });
         });
     });
+
     describe('$onChanges', () => {
         it('should handle donation updated', () => {
             spyOn($ctrl, 'load').and.callFake(() => {});
@@ -37,16 +57,20 @@ describe('reports.donations.chart.component', () => {
             expect($ctrl.load).toHaveBeenCalledWith();
         });
     });
+
     describe('$onDestroy', () => {
         beforeEach(() => {
             $ctrl.$onInit();
         });
+
         it('should cancel watchers', () => {
             spyOn($ctrl, 'watcher').and.callThrough();
             spyOn($ctrl, 'watcher2').and.callThrough();
+            spyOn($ctrl, 'watcher3').and.callThrough();
             $ctrl.$onDestroy();
             expect($ctrl.watcher).toHaveBeenCalledWith();
             expect($ctrl.watcher2).toHaveBeenCalledWith();
+            expect($ctrl.watcher3).toHaveBeenCalledWith();
         });
     });
     describe('load', () => {
@@ -77,6 +101,20 @@ describe('reports.donations.chart.component', () => {
             expect($ctrl.getDonationChart).toHaveBeenCalledWith({
                 startDate: moment().startOf('month').subtract(12, 'months'),
                 endDate: moment().endOf('month')
+            });
+        });
+
+        describe('selected designationAccounts', () => {
+            beforeEach(() => {
+                designationAccounts.selected = ['abc', 'def'];
+            });
+            it('should call $ctrl.getDonationChart with params', () => {
+                $ctrl.load();
+                expect($ctrl.getDonationChart).toHaveBeenCalledWith({
+                    startDate: moment().startOf('month').subtract(12, 'months'),
+                    endDate: moment().endOf('month'),
+                    designationAccountId: 'abc,def'
+                });
             });
         });
 
@@ -327,6 +365,27 @@ describe('reports.donations.chart.component', () => {
                     }
                 }
             );
+        });
+
+        describe('selected designationAccounts', () => {
+            let params = {};
+
+            beforeEach(() => {
+                params = { designationAccountId: 'abc,def' };
+            });
+
+            it('should call $ctrl.getDonationChart with params', () => {
+                $ctrl.getDonationChart(params);
+                expect(api.get).toHaveBeenCalledWith(
+                    'reports/monthly_giving_graph',
+                    {
+                        filter: {
+                            account_list_id: api.account_list_id,
+                            designation_account_id: 'abc,def'
+                        }
+                    }
+                );
+            });
         });
 
         describe('date range', () => {

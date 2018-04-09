@@ -163,7 +163,10 @@ export default class Routes {
             title: gettext('Reports'),
             url: '/reports',
             component: 'reports',
-            parent: 'root'
+            parent: 'root',
+            resolve: {
+                0: /* @ngInject*/ (designationAccounts) => designationAccounts.load()
+            }
         }).state({
             name: 'reports.balances',
             title: gettext('Reports - Balances'),

@@ -2,16 +2,19 @@ import component from './donations.component';
 import moment from 'moment';
 
 describe('reports.donations.component', () => {
-    let $ctrl, componentController, scope, rootScope, stateParams, donations, api, serverConstants;
+    let $ctrl, componentController, scope, rootScope, stateParams, donations, designationAccounts, api, serverConstants;
 
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, $stateParams, _donations_, _api_, _serverConstants_) => {
+        inject((
+            $componentController, $rootScope, $stateParams, _donations_, _api_, _designationAccounts_, _serverConstants_
+        ) => {
             componentController = $componentController;
             rootScope = $rootScope;
             scope = rootScope.$new();
             api = _api_;
             api.account_list_id = 'account_list_id';
+            designationAccounts = _designationAccounts_;
             serverConstants = _serverConstants_;
             stateParams = $stateParams;
             donations = _donations_;
@@ -58,9 +61,11 @@ describe('reports.donations.component', () => {
             spyOn($ctrl, 'calculateTotals').and.callFake(() => {});
             spyOn($ctrl, 'load').and.callFake(() => {});
         });
+
         afterEach(() => {
             $ctrl.$onDestroy();
         });
+
         it('should set startDate', () => {
             $ctrl.$onInit();
             expect($ctrl.startDate).toEqual(moment().startOf('month'));
@@ -86,7 +91,9 @@ describe('reports.donations.component', () => {
             $ctrl.$onInit();
             expect($ctrl.watcher).toBeDefined();
             expect($ctrl.watcher2).toBeDefined();
+            expect($ctrl.watcher3).toBeDefined();
         });
+
         it('should handle donation additions', () => {
             $ctrl.data = [];
             $ctrl.$onInit();
@@ -94,6 +101,7 @@ describe('reports.donations.component', () => {
             rootScope.$emit('donationUpdated', donation);
             expect($ctrl.data).toEqual([donation]);
         });
+
         it('should handle donation updates', () => {
             const patch = { id: 1, v: 'a' };
             $ctrl.data = [donation];
@@ -102,6 +110,7 @@ describe('reports.donations.component', () => {
             rootScope.$emit('donationUpdated', patch);
             expect($ctrl.data).toEqual([patch]);
         });
+
         it('should remove a donation', () => {
             $ctrl.data = [donation, { id: 2 }];
             $ctrl.meta = meta;
@@ -110,6 +119,13 @@ describe('reports.donations.component', () => {
             rootScope.$digest();
             expect($ctrl.data).toEqual([{ id: 2 }]);
         });
+
+        it('should call load on designationAccountSelectorChanged', () => {
+            $ctrl.$onInit();
+            rootScope.$emit('designationAccountSelectorChanged');
+            expect($ctrl.load).toHaveBeenCalledWith();
+        });
+
         it('should call $ctrl.load', () => {
             $ctrl.data = [donation, { id: 2 }];
             $ctrl.meta = meta;
@@ -118,6 +134,7 @@ describe('reports.donations.component', () => {
             rootScope.$digest();
             expect($ctrl.load).toHaveBeenCalledWith();
         });
+
         it('should handle chart data', () => {
             donations.chartData = {
                 months_to_dates: ['a', 'b']
@@ -126,6 +143,7 @@ describe('reports.donations.component', () => {
             rootScope.$emit('chartDataUpdated');
             expect($ctrl.calculateTotals).toHaveBeenCalledWith();
         });
+
         it('should handle chart data', () => {
             donations.chartData = {
                 months_to_dates: ['a', 'b']
@@ -147,6 +165,7 @@ describe('reports.donations.component', () => {
             expect($ctrl.load).toHaveBeenCalledWith(1);
         });
     });
+
     describe('load', () => {
         beforeEach(() => {
             $ctrl.startDate = moment().startOf('month');
@@ -164,18 +183,21 @@ describe('reports.donations.component', () => {
             $ctrl.load();
             expect($ctrl.loading).toEqual(true);
         });
+
         it('should set loading to false', (done) => {
             $ctrl.load().then(() => {
                 expect($ctrl.loading).toEqual(false);
                 done();
             });
         });
+
         it('should set meta', (done) => {
             $ctrl.load().then(() => {
                 expect($ctrl.meta).toEqual(data.meta);
                 done();
             });
         });
+
         it('should reset data', (done) => {
             $ctrl.data = [{ id: 'test' }];
             $ctrl.load().then(() => {
@@ -183,11 +205,27 @@ describe('reports.donations.component', () => {
                 done();
             });
         });
+
         it('shouldn\'t load out of turn', (done) => {
             spyOn($ctrl, 'loadedOutOfTurn').and.callFake(() => true);
             $ctrl.load().then((data) => {
                 expect(data).toEqual(null);
                 done();
+            });
+        });
+
+        describe('designationAccounts selected', () => {
+            beforeEach(() => {
+                designationAccounts.selected = ['abc', 'def'];
+            });
+
+            it('should call api with params', () => {
+                $ctrl.load();
+                expect($ctrl.getDonations).toHaveBeenCalledWith({
+                    designationAccountId: 'abc,def',
+                    startDate: $ctrl.startDate,
+                    endDate: $ctrl.endDate
+                });
             });
         });
 
@@ -210,6 +248,7 @@ describe('reports.donations.component', () => {
                     donorAccountId: '123'
                 });
             });
+
             it('should return rejected promise when no donor accounts', (done) => {
                 $ctrl.contacts.current.donor_accounts = [];
                 $ctrl.load(1).catch(() => {
@@ -293,6 +332,7 @@ describe('reports.donations.component', () => {
         beforeEach(() => {
             spyOn(api, 'get').and.callFake((url, data) => Promise.resolve(data));
         });
+
         it('should call api.get', () => {
             $ctrl.getDonations();
             expect(api.get).toHaveBeenCalledWith(
@@ -309,6 +349,34 @@ describe('reports.donations.component', () => {
                     include: 'designation_account,donor_account,contact,appeal'
                 }
             );
+        });
+
+        describe('selected designationAccounts', () => {
+            let params = {};
+
+            beforeEach(() => {
+                params = { designationAccountId: 'abc,def' };
+            });
+
+            it('should call $ctrl.getDonationChart with params', () => {
+                $ctrl.getDonations(params);
+                expect(api.get).toHaveBeenCalledWith(
+                    `account_lists/${api.account_list_id}/donations`,
+                    {
+                        per_page: 10000,
+                        fields: {
+                            contacts: 'name',
+                            designation_account: 'display_name,designation_number',
+                            donor_account: 'display_name,account_number',
+                            appeal: 'name'
+                        },
+                        filter: {
+                            designation_account_id: 'abc,def'
+                        },
+                        include: 'designation_account,donor_account,contact,appeal'
+                    }
+                );
+            });
         });
 
         describe('date range', () => {
@@ -409,6 +477,7 @@ describe('reports.donations.component', () => {
             $ctrl.listLoadCount = 0;
             expect($ctrl.loadedOutOfTurn(1)).toBeTruthy();
         });
+
         it('shouldn\'t return true if correct count', () => {
             $ctrl.listLoadCount = 0;
             expect($ctrl.loadedOutOfTurn(0)).toBeFalsy();
@@ -422,7 +491,7 @@ describe('reports.donations.component', () => {
         }];
         beforeEach(() => {
             spyOn(serverConstants, 'getPledgeCurrencySymbol').and.callFake((data) => 't' + data);
-        })
+        });
         it('should set converted_amount to a Number', () => {
             const result = $ctrl.mutateDataForSorts(data);
             expect(result[0].converted_amount).toEqual(1);
