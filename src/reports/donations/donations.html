@@ -19,24 +19,68 @@
                 <th colspan="8"><h4>{{$ctrl.startDate.format('MMMM YYYY')}}</h4></th>
             </tr>
             <tr>
-                <th ng-if="::$ctrl.inContact" class="col-md-2" translate>Partner No.</th>
-                <th class="col-md-2 date" translate>Date</th>
-                <th ng-if="::!$ctrl.inContact" class="col-md-3" translate>Partner</th>
-                <th class="col-md-1 text-right" translate>Amount</th>
-                <th class="col-md-3" ng-if="$ctrl.designationAccounts.data.length > 0" translate>Designation</th>
-                <th class="col-md-1" translate>Method</th>
-                <th class="col-md-1" translate>Appeal</th>
+                <th ng-if="::$ctrl.inContact"
+                    ng-click="$ctrl.changeSort('donor_account.account_number')"
+                    class="col-md-2 pointer text-nowrap">
+                    <translate>Partner No.</translate>
+                    <sort-header-caret ng-if="$ctrl.sort === 'donor_account.account_number'"
+                                       reverse="$ctrl.sortReverse"></sort-header-caret>
+                </th>
+                <th ng-click="$ctrl.changeSort('donation_date')"
+                    class="col-md-2 date pointer text-nowrap">
+                    <translate>Date</translate>
+                    <sort-header-caret ng-if="$ctrl.sort === 'donation_date'"
+                                       reverse="$ctrl.sortReverse"></sort-header-caret>
+                </th>
+                <th ng-if="::!$ctrl.inContact"
+                    ng-click="$ctrl.changeSort('donor_account.display_name')"
+                    class="col-md-3 pointer text-nowrap">
+                    <translate>Partner</translate>
+                    <sort-header-caret ng-if="$ctrl.sort === 'donor_account.display_name'"
+                                       reverse="$ctrl.sortReverse"></sort-header-caret>
+                </th>
+                <th class="col-md-1 text-right pointer text-nowrap"
+                    ng-click="$ctrl.changeSort('converted_amount')">
+                    <translate>Amount</translate>
+                    <sort-header-caret ng-if="$ctrl.sort === 'converted_amount'"
+                                       reverse="$ctrl.sortReverse"></sort-header-caret>
+                </th>
+                <th class="col-md-3 pointer text-nowrap"
+                    ng-if="$ctrl.designationAccounts.data.length > 0"
+                    ng-click="$ctrl.changeSort('designation_account.display_name')">
+                    <translate>Designation</translate>
+                    <sort-header-caret ng-if="$ctrl.sort === 'designation_account.display_name'"
+                                       reverse="$ctrl.sortReverse"></sort-header-caret>
+                </th>
+                <th class="col-md-1 pointer text-nowrap"
+                    ng-click="$ctrl.changeSort('payment_method')">
+                    <translate>Method</translate>
+                    <sort-header-caret ng-if="$ctrl.sort === 'payment_method'"
+                                       reverse="$ctrl.sortReverse"></sort-header-caret>
+                </th>
+                <th class="col-md-1 pointer text-nowrap"
+                    ng-click="$ctrl.changeSort('appeal.name')">
+                    <translate>Appeal</translate>
+                    <sort-header-caret ng-if="$ctrl.sort === 'appeal.name'"
+                                       reverse="$ctrl.sortReverse"></sort-header-caret>
+                </th>
                 <th class="col-md-1"></th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="donation in $ctrl.data">
+            <tr ng-repeat="donation in $ctrl.data | orderBy: $ctrl.sort : $ctrl.sortReverse">
                 <td ng-if="::$ctrl.inContact">{{ donation.donor_account.account_number }}</td>
                 <td class="date">{{ donation.donation_date | date: $ctrl.locale.dateTimeFormat }}</td>
                 <td ng-if="::!$ctrl.inContact">
                     <a ui-sref="contacts.show({ contactId: donation.contact.id })">{{ $ctrl.donations.displayName(donation) }}</a>
                 </td>
-                <td class="text-right">{{ donation.amount | currency:'':0 }} {{ donation.currency }}</td>
+                <td class="text-right text-nowrap"
+                    data-title="{{ donation.amount | currency: donation.currency_symbol : 0 }}"
+                    data-container="body"
+                    data-placement="right"
+                    bs-tooltip>
+                    {{ donation.converted_amount | currency: donation.converted_symbol : 0}}
+                </td>
                 <td>{{ donation.designation_account.display_name }}</td>
                 <td>{{ donation.payment_method }}</td>
                 <td>{{ donation.appeal.name }}</td>
@@ -44,10 +88,6 @@
             </tr>
         </tbody>
     </table>
-    <pagination meta="$ctrl.meta.pagination"
-                on-change="$ctrl.load(page)"
-                class="text-center">
-    </pagination>
     <table class="table table-striped" ng-if="$ctrl.data.length > 0">
         <tbody>
             <tr ng-repeat="(currency, total) in $ctrl.totals" ng-if="total > 0">

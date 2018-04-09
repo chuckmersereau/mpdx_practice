@@ -176,6 +176,9 @@ export default class Routes {
             component: 'donations',
             params: {
                 startDate: null
+            },
+            resolve: {
+                0: /* @ngInject*/ (serverConstants) => serverConstants.load(['pledge_currencies'])
             }
         }).state({
             name: 'reports.monthly',

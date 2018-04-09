@@ -29,6 +29,7 @@ import rawNumber from './rawNumber/rawNumber.directive';
 import selectionStore from './selectionStore/selectionStore.service';
 import serverConstants from './serverConstants/serverConstants.service';
 import session from './session/session.service';
+import sortHeaderCaret from './sortHeaderCaret/caret.component';
 import sourceToStr from './sourceToStr/sourceToStr.filter';
 import pagination from './pagination/pagination.component';
 import paginationDropdown from './pagination/dropdown/dropdown.component';
@@ -73,6 +74,7 @@ export default angular.module('mpdx.common', [
     selectionStore,
     serverConstants,
     session,
+    sortHeaderCaret,
     sourceToStr,
     tagSelector,
     threePartDatePicker,

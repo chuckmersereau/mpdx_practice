@@ -71,6 +71,9 @@ class ServerConstantsService {
     getPledgeFrequencyValue(freq) {
         return get('value', this.getPledgeFrequency(freq));
     }
+    getPledgeCurrencySymbol(code) {
+        return get('symbol', find({ code: code }, this.data.pledge_currencies));
+    }
 }
 
 import api from '../api/api.service';

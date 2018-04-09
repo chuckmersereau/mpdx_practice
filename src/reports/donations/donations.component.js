@@ -4,7 +4,8 @@ import {
     findIndex,
     map,
     pullAllBy,
-    reduce
+    reduce,
+    toNumber
 } from 'lodash/fp';
 import moment from 'moment';
 
@@ -12,7 +13,7 @@ class DonationsController {
     constructor(
         $log, $q, $rootScope,
         $stateParams,
-        api, contacts, designationAccounts, donations, locale
+        api, contacts, designationAccounts, donations, locale, serverConstants
     ) {
         this.$log = $log;
         this.$q = $q;
@@ -23,6 +24,7 @@ class DonationsController {
         this.designationAccounts = designationAccounts;
         this.donations = donations;
         this.locale = locale;
+        this.serverConstants = serverConstants;
 
         this.enableNext = false;
         this.data = [];
@@ -32,6 +34,8 @@ class DonationsController {
         this.page = 0;
         this.pageSize = 25;
         this.totalContactCount = 0;
+        this.sort = 'donation_date';
+        this.sortReverse = true;
 
         $rootScope.$on('accountListUpdated', () => {
             this.load(1);
@@ -69,16 +73,13 @@ class DonationsController {
         this.watcher2();
         this.watcher3();
     }
-    load(page = this.page) {
+    load() {
         this.meta = {};
         this.data = [];
         this.listLoadCount++;
         const currentCount = angular.copy(this.listLoadCount);
-        this.page = page;
 
-        let params = {
-            page: this.page
-        };
+        let params = {};
 
         if (!this.inContact) {
             this.setMonths();
@@ -94,18 +95,26 @@ class DonationsController {
         this.loading = true;
         return this.getDonations(params).then((data) => {
             /* istanbul ignore next */
-            this.$log.debug('donations page ' + data.meta.pagination.page, data);
+            this.$log.debug('donations report', data);
             this.loading = false;
             if (this.loadedOutOfTurn(currentCount)) {
                 return null;
             }
             this.meta = data.meta;
-            this.data = data;
+            this.data = this.mutateDataForSorts(data);
             return this.data;
         });
     }
     loadedOutOfTurn(currentCount) {
         return currentCount !== this.listLoadCount;
+    }
+    mutateDataForSorts(data) {
+        return map((donation) => {
+            donation.converted_amount = toNumber(donation.converted_amount);
+            donation.currency_symbol = this.serverConstants.getPledgeCurrencySymbol(donation.currency);
+            donation.converted_symbol = this.serverConstants.getPledgeCurrencySymbol(donation.converted_currency);
+            return donation;
+        }, data);
     }
     calculateTotals() {
         this.totals = reduce((result, donation) => assign(result, {
@@ -121,19 +130,20 @@ class DonationsController {
     gotoNextMonth() {
         this.startDate = this.nextMonth;
         this.totalsPosition++;
-        this.load(1).then(() => {
+        this.load().then(() => {
             this.calculateTotals();
         });
     }
     gotoPrevMonth() {
         this.startDate = this.previousMonth;
         this.totalsPosition--;
-        this.load(1).then(() => {
+        this.load().then(() => {
             this.calculateTotals();
         });
     }
-    getDonations({ startDate = null, endDate = null, donorAccountId = null, page = null } = {}) {
+    getDonations({ startDate = null, endDate = null, donorAccountId = null } = {}) {
         let params = {
+            per_page: 10000,
             fields: {
                 contacts: 'name',
                 designation_account: 'display_name,designation_number',
@@ -141,14 +151,10 @@ class DonationsController {
                 appeal: 'name'
             },
             filter: {},
-            include: 'designation_account,donor_account,contact,appeal',
-            sort: '-donation_date'
+            include: 'designation_account,donor_account,contact,appeal'
         };
         if (donorAccountId) {
             params.filter.donor_account_id = donorAccountId;
-        }
-        if (page) {
-            params.page = page;
         }
         if (startDate && endDate && moment.isMoment(startDate) && moment.isMoment(endDate)) {
             params.filter.donation_date = `${startDate.format('YYYY-MM-DD')}..${endDate.format('YYYY-MM-DD')}`;
@@ -157,6 +163,14 @@ class DonationsController {
             this.$log.debug(`account_lists/${this.api.account_list_id}/donations`, data);
             return data;
         });
+    }
+    changeSort(field) {
+        if (this.sort === field) {
+            this.sortReverse = !this.sortReverse;
+            return;
+        }
+        this.sort = field;
+        this.sortReverse = false;
     }
 }
 

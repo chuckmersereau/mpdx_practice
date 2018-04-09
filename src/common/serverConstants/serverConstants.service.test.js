@@ -82,4 +82,15 @@ describe('contacts.service', () => {
             expect(serverConstants.getPledgeFrequencyValue('2')).toBeUndefined();
         });
     });
+    describe('getPledgeCurrencySymbol', () => {
+        it('should get symbol for code', () => {
+            serverConstants.data = {
+                pledge_currencies: [
+                    { code: 'AUD', symbol: 'nope' },
+                    { code: 'USD', symbol: '$' }
+                ]
+            };
+            expect(serverConstants.getPledgeCurrencySymbol('USD')).toEqual('$');
+        });
+    });
 });

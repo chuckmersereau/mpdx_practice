@@ -2,16 +2,17 @@ import component from './donations.component';
 import moment from 'moment';
 
 describe('reports.donations.component', () => {
-    let $ctrl, componentController, scope, rootScope, stateParams, donations, api;
+    let $ctrl, componentController, scope, rootScope, stateParams, donations, api, serverConstants;
 
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, $stateParams, _donations_, _api_) => {
+        inject(($componentController, $rootScope, $stateParams, _donations_, _api_, _serverConstants_) => {
             componentController = $componentController;
             rootScope = $rootScope;
             scope = rootScope.$new();
             api = _api_;
             api.account_list_id = 'account_list_id';
+            serverConstants = _serverConstants_;
             stateParams = $stateParams;
             donations = _donations_;
             loadController();
@@ -32,6 +33,8 @@ describe('reports.donations.component', () => {
             expect($ctrl.page).toEqual(0);
             expect($ctrl.pageSize).toEqual(25);
             expect($ctrl.totalContactCount).toEqual(0);
+            expect($ctrl.sort).toEqual('donation_date');
+            expect($ctrl.sortReverse).toBeTruthy();
         });
 
         it('should call $ctrl.load on accountListUpdated', () => {
@@ -148,43 +151,41 @@ describe('reports.donations.component', () => {
         beforeEach(() => {
             $ctrl.startDate = moment().startOf('month');
             spyOn($ctrl, 'getDonations').and.callFake(() => Promise.resolve(data));
+            spyOn($ctrl, 'mutateDataForSorts').and.callFake((data) => data);
         });
-
         it('should set params', () => {
-            $ctrl.load(1);
+            $ctrl.load();
             expect($ctrl.getDonations).toHaveBeenCalledWith({
-                page: 1,
                 startDate: $ctrl.startDate,
                 endDate: $ctrl.endDate
             });
         });
-
         it('should set loading to true', () => {
-            $ctrl.load(1);
+            $ctrl.load();
             expect($ctrl.loading).toEqual(true);
         });
         it('should set loading to false', (done) => {
-            $ctrl.load(1).then(() => {
+            $ctrl.load().then(() => {
                 expect($ctrl.loading).toEqual(false);
                 done();
             });
         });
         it('should set meta', (done) => {
-            $ctrl.load(1).then(() => {
+            $ctrl.load().then(() => {
                 expect($ctrl.meta).toEqual(data.meta);
                 done();
             });
         });
         it('should reset data', (done) => {
             $ctrl.data = [{ id: 'test' }];
-            $ctrl.load(1).then(() => {
+            $ctrl.load().then(() => {
                 expect($ctrl.data).toEqual(data);
                 done();
             });
         });
         it('shouldn\'t load out of turn', (done) => {
             spyOn($ctrl, 'loadedOutOfTurn').and.callFake(() => true);
-            $ctrl.load(1).then((data) => {
+            $ctrl.load().then((data) => {
                 expect(data).toEqual(null);
                 done();
             });
@@ -204,9 +205,8 @@ describe('reports.donations.component', () => {
             });
 
             it('should set params', () => {
-                $ctrl.load(1);
+                $ctrl.load();
                 expect($ctrl.getDonations).toHaveBeenCalledWith({
-                    page: 1,
                     donorAccountId: '123'
                 });
             });
@@ -269,7 +269,7 @@ describe('reports.donations.component', () => {
 
         it('should call $ctrl.load', () => {
             $ctrl.gotoNextMonth();
-            expect($ctrl.load).toHaveBeenCalledWith(1);
+            expect($ctrl.load).toHaveBeenCalledWith();
         });
     });
 
@@ -286,7 +286,7 @@ describe('reports.donations.component', () => {
 
         it('should call $ctrl.load', () => {
             $ctrl.gotoPrevMonth();
-            expect($ctrl.load).toHaveBeenCalledWith(1);
+            expect($ctrl.load).toHaveBeenCalledWith();
         });
     });
     describe('getDonations', () => {
@@ -298,6 +298,7 @@ describe('reports.donations.component', () => {
             expect(api.get).toHaveBeenCalledWith(
                 'account_lists/account_list_id/donations',
                 {
+                    per_page: 10000,
                     fields: {
                         contacts: 'name',
                         designation_account: 'display_name,designation_number',
@@ -305,8 +306,7 @@ describe('reports.donations.component', () => {
                         appeal: 'name'
                     },
                     filter: {},
-                    include: 'designation_account,donor_account,contact,appeal',
-                    sort: '-donation_date'
+                    include: 'designation_account,donor_account,contact,appeal'
                 }
             );
         });
@@ -403,17 +403,6 @@ describe('reports.donations.component', () => {
                 });
             });
         });
-
-        describe('page', () => {
-            const params = { page: 1 };
-
-            it('should set page in params', (done) => {
-                $ctrl.getDonations(params).then((data) => {
-                    expect(data.page).toEqual(params.page);
-                    done();
-                });
-            });
-        });
     });
     describe('loadedOutOfTurn', () => {
         it('should return true if wrong load count', () => {
@@ -423,6 +412,44 @@ describe('reports.donations.component', () => {
         it('shouldn\'t return true if correct count', () => {
             $ctrl.listLoadCount = 0;
             expect($ctrl.loadedOutOfTurn(0)).toBeFalsy();
+        });
+    });
+    describe('mutateDataForSorts', () => {
+        const data = [{
+            converted_amount: '1.0',
+            currency: 'USD',
+            converted_currency: 'AUD'
+        }];
+        beforeEach(() => {
+            spyOn(serverConstants, 'getPledgeCurrencySymbol').and.callFake((data) => 't' + data);
+        })
+        it('should set converted_amount to a Number', () => {
+            const result = $ctrl.mutateDataForSorts(data);
+            expect(result[0].converted_amount).toEqual(1);
+        });
+        it('should get currency symbol', () => {
+            const result = $ctrl.mutateDataForSorts(data);
+            expect(result[0].currency_symbol).toEqual('tUSD');
+        });
+        it('should get currency symbol', () => {
+            const result = $ctrl.mutateDataForSorts(data);
+            expect(result[0].converted_symbol).toEqual('tAUD');
+        });
+    });
+    describe('changeSort', () => {
+        beforeEach(() => {
+            $ctrl.sort = 'a';
+            $ctrl.sortReverse = true;
+        });
+        it('should change sort', () => {
+            $ctrl.changeSort('b');
+            expect($ctrl.sort).toEqual('b');
+            expect($ctrl.sortReverse).toBeFalsy();
+        });
+        it('should reverse sort', () => {
+            $ctrl.changeSort('a');
+            expect($ctrl.sort).toEqual('a');
+            expect($ctrl.sortReverse).toBeFalsy();
         });
     });
 });
