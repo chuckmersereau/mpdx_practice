@@ -47,13 +47,13 @@ describe('common.filters.header.component', () => {
         const filterParams = {
             status: 'none,active',
             commitment_amount: '1',
-            commitment_currency: 'CAD',
+            commitment_currency: ['CAD'],
             newsletter: 'both'
         };
         const filterDefaultParams = {
             status: 'space',
             commitment_amount: '0',
-            commitment_currency: 'CAD',
+            commitment_currency: ['CAD'],
             newsletter: 'both'
         };
         const filters = [{
@@ -143,6 +143,50 @@ describe('common.filters.header.component', () => {
             });
             it('should return true', () => {
                 expect($ctrl.filterInUse(filter)).toEqual(false);
+            });
+        });
+    });
+    describe('display', () => {
+        describe('filter count > 0', () => {
+            beforeEach(() => {
+                spyOn($ctrl, 'count').and.returnValue(1);
+            });
+            describe('displayFilters is true', () => {
+                beforeEach(() => {
+                    $ctrl.displayFilters = () => true;
+                });
+                it('should return true', () => {
+                    expect($ctrl.display()).toEqual(true);
+                });
+            });
+            describe('displayFilters is false', () => {
+                beforeEach(() => {
+                    $ctrl.displayFilters = () => false;
+                });
+                it('should return false', () => {
+                    expect($ctrl.display()).toEqual(false);
+                });
+            });
+        });
+        describe('filter count == 0', () => {
+            beforeEach(() => {
+                spyOn($ctrl, 'count').and.returnValue(0);
+            });
+            describe('displayFilters is true', () => {
+                beforeEach(() => {
+                    $ctrl.displayFilters = () => true;
+                });
+                it('should return false', () => {
+                    expect($ctrl.display()).toEqual(false);
+                });
+            });
+            describe('displayFilters is false', () => {
+                beforeEach(() => {
+                    $ctrl.displayFilters = () => false;
+                });
+                it('should return false', () => {
+                    expect($ctrl.display()).toEqual(false);
+                });
             });
         });
     });

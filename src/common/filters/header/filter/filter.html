@@ -1,4 +1,4 @@
-<div class="filters-header__filter" ng-if="$ctrl.filterParams[$ctrl.filter.name].length > 0 && ($ctrl.filterParams[$ctrl.filter.name] !== $ctrl.filterDefaultParams[$ctrl.filter.name] || $ctrl.filter.reverse)">
+<div class="filters-header__filter">
     <div class="filters-header__filter__title">
         <i ng-click="$ctrl.remove({ $filter: $ctrl.filter })" class="fal fa-times"></i>
         <span class="filters-header__filter__title__value">{{ ::$ctrl.filter.title }}</span>

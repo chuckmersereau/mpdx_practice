@@ -15,4 +15,20 @@ contacts-tags {
             }
         }
     }
+    .show-all-tags {
+        display: flex;
+        align-items: center;
+        padding: 8px 0;
+        cursor: pointer;
+        span {
+            flex-grow: 1;
+            font-size: 12px;
+        }
+        i {
+            transition: transform 0.2s ease-out;
+            &.rotate {
+                transform: rotate(45deg);
+            }
+        }
+    }
 }

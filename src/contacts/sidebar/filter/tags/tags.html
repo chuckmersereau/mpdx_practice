@@ -16,7 +16,7 @@
     </div>
     <div bs-collapse-target>
         <div class="filter_hint" translate>Click a tag twice to look up all contacts who do not have that tag.</div>
-        <div class="left_tag_list tags" ng-class="{'show_all_tags': $ctrl.showAllTags}">
+        <div class="left_tag_list tags" ng-class="{'show_all_tags': $ctrl.showAllTags }">
             <span class="tag"
                   ng-class="{ 'selected': !$ctrl.isTagActive(tag), 'rejected': $ctrl.isTagRejected(tag) }"
                   ng-click="$ctrl.contactsTags.tagClick(tag)"
@@ -30,16 +30,11 @@
                    data-container="body"
                    bs-popover></a>
             </span>
-            <a class="btn btn-link" ng-click="$ctrl.showAllTags = !$ctrl.showAllTags" ng-if="$ctrl.contactsTags.data.length > 25">
-                <span ng-if="!$ctrl.showAllTags">
-                    <i class="fas fa-plus"></i>
-                    <translate translate-params-tag-count="$ctrl.contactsTags.data.length">Show all {{tagCount}} tags</translate>
-                </span>
-                <span ng-if="$ctrl.showAllTags">
-                    <i class="fas fa-minus"></i>
-                    <translate>Show fewer tags</translate>
-                </span>
-            </a>
+            <div class="show-all-tags" ng-click="$ctrl.showAllTags = !$ctrl.showAllTags" ng-if="$ctrl.contactsTags.data.length > 25">
+                <span ng-if="!$ctrl.showAllTags" translate translate-params-tag-count="$ctrl.contactsTags.data.length">Show all {{tagCount}} tags</span>
+                <span ng-if="$ctrl.showAllTags" translate>Show fewer tags</span>
+                <i class="fal fa-plus" ng-class="{'rotate': $ctrl.showAllTags}"></i>
+            </div>
         </div>
     </div>
 </div>

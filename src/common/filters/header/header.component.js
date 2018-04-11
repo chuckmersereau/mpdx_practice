@@ -1,4 +1,4 @@
-import { sumBy } from 'lodash/fp';
+import { sumBy, isEqual } from 'lodash/fp';
 
 class HeaderController {
     constructor() {
@@ -26,8 +26,11 @@ class HeaderController {
         return filter.reverse || (
             filter.type !== 'container'
             && this.filterParams[filter.name].length > 0
-            && this.filterParams[filter.name] !== this.filterDefaultParams[filter.name]
+            && !isEqual(this.filterParams[filter.name], this.filterDefaultParams[filter.name])
         );
+    }
+    display() {
+        return this.displayFilters() && this.count() > 0;
     }
 }
 
