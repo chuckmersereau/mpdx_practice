@@ -38,7 +38,7 @@
                 <div ng-click="$ctrl.showAllTags = !$ctrl.showAllTags" ng-if="$ctrl.tasksTags.data.length > 25">
                     <div ng-if="!$ctrl.showAllTags">
                         <i class="fas fa-plus"></i>
-                        <span translate>Show all</span> {{$ctrl.tasksTags.data.length}} <span translate>tags</span>
+                        <span translate-params-tag-count="$ctrl.tasksTags.data.length" translate>Show all {{tagCount}} tags</span>
                     </div>
                     <div ng-if="$ctrl.showAllTags">
                         <i class="fas fa-minus"></i>

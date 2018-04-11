@@ -13,29 +13,137 @@ describe('common.filters.header.component', () => {
     });
 
     function loadController() {
-        $ctrl = componentController('headerFilterDisplay', { $scope: scope }, {});
+        const bindings = {
+            invertFilter: () => {},
+            removeFilter: () => {},
+            selectedTags: ['abc', 'def'],
+            rejectedTags: ['hij']
+        };
+        $ctrl = componentController('filtersHeader', { $scope: scope }, bindings);
     }
 
-    describe('getOption', () => {
-        const filter = {
-            options: [
-                { name: 'a', id: 1 },
-                { name: 'b', id: 2 }
-            ]
-        };
-        it('should return the selected option name by id', () => {
-            expect($ctrl.getOption(filter, 1)).toEqual('a');
-        });
-        it('should handle null', () => {
-            expect($ctrl.getOption({}, 1)).toBeUndefined();
+    describe('constructor', () => {
+        it('should set default values', () => {
+            expect($ctrl.isCollapsed).toEqual(true);
         });
     });
-    describe('isArray', () => {
-        it('should catch an array', () => {
-            expect($ctrl.isArray([])).toBeTruthy();
+    describe('invert', () => {
+        const filter = { test: 123 };
+        it('should call invertFilter', () => {
+            spyOn($ctrl, 'invertFilter').and.returnValue();
+            $ctrl.invert(filter);
+            expect($ctrl.invertFilter).toHaveBeenCalledWith({ $filter: filter });
         });
-        it('should catch an object', () => {
-            expect($ctrl.isArray({})).toBeFalsy();
+    });
+    describe('remove', () => {
+        const filter = { test: 123 };
+        it('should call removeFilter', () => {
+            spyOn($ctrl, 'removeFilter').and.returnValue();
+            $ctrl.remove(filter);
+            expect($ctrl.removeFilter).toHaveBeenCalledWith({ $filter: filter });
+        });
+    });
+    describe('count', () => {
+        const filterParams = {
+            status: 'none,active',
+            commitment_amount: '1',
+            commitment_currency: 'CAD',
+            newsletter: 'both'
+        };
+        const filterDefaultParams = {
+            status: 'space',
+            commitment_amount: '0',
+            commitment_currency: 'CAD',
+            newsletter: 'both'
+        };
+        const filters = [{
+            type: 'container',
+            children: [
+                {
+                    type: 'multiselect',
+                    name: 'status'
+                }
+            ]
+        }, {
+            type: 'text',
+            name: 'commitment_amount'
+        }, {
+            type: 'multiselect',
+            name: 'commitment_currency'
+        }, {
+            type: 'multiselect',
+            name: 'newsletter',
+            reverse: true
+        }];
+        beforeEach(() => {
+            $ctrl.filterParams = filterParams;
+            $ctrl.filterDefaultParams = filterDefaultParams;
+            $ctrl.filters = filters;
+        });
+        it('should total active filters', () => {
+            expect($ctrl.count()).toEqual(6);
+        });
+    });
+    describe('filterInUse', () => {
+        describe('filter is reversed', () => {
+            const filter = { reverse: true };
+            it('should return true', () => {
+                expect($ctrl.filterInUse(filter)).toEqual(true);
+            });
+        });
+        describe('filter is container', () => {
+            const filter = { type: 'container' };
+            it('should return false', () => {
+                expect($ctrl.filterInUse(filter)).toEqual(false);
+            });
+        });
+        describe('filter is unchanged', () => {
+            const filterParams = {
+                newsletter: 'both'
+            };
+            const filterDefaultParams = {
+                newsletter: 'both'
+            };
+            const filter = { name: 'newsletter', type: 'multiselect' };
+            beforeEach(() => {
+                $ctrl.filterParams = filterParams;
+                $ctrl.filterDefaultParams = filterDefaultParams;
+            });
+            it('should return false', () => {
+                expect($ctrl.filterInUse(filter)).toEqual(false);
+            });
+        });
+        describe('filter is changed', () => {
+            const filterParams = {
+                newsletter: 'email'
+            };
+            const filterDefaultParams = {
+                newsletter: 'both'
+            };
+            const filter = { name: 'newsletter', type: 'multiselect' };
+            beforeEach(() => {
+                $ctrl.filterParams = filterParams;
+                $ctrl.filterDefaultParams = filterDefaultParams;
+            });
+            it('should return true', () => {
+                expect($ctrl.filterInUse(filter)).toEqual(true);
+            });
+        });
+        describe('filter is has no contents', () => {
+            const filterParams = {
+                newsletter: ''
+            };
+            const filterDefaultParams = {
+                newsletter: 'both'
+            };
+            const filter = { name: 'newsletter', type: 'multiselect' };
+            beforeEach(() => {
+                $ctrl.filterParams = filterParams;
+                $ctrl.filterDefaultParams = filterDefaultParams;
+            });
+            it('should return true', () => {
+                expect($ctrl.filterInUse(filter)).toEqual(false);
+            });
         });
     });
 });

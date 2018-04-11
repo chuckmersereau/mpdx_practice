@@ -1,34 +1,86 @@
 $filter-bar-bg-color: #4A535E;
 $filter-select-bg-color: #2F363F;
 $filter-group-border-color: #5E6B7B;
-$filter-selected-color: $filter-group-border-color;
-$filter-reverse-color: #9b0000;
+$filter-selected-color: $cru-blue;
+$filter-reverse-color: #e45c5c;
+$filter-reverse-color-bg: #9b0000;
 
 .filter {
     color: $cru-white;
     font-size: 14px;
     height: calc(100% - #{$nav-padding});
+    div.resettable {
+    	overflow-y: hidden;
+        height: 0;
+    	transition: all 0.2s ease-out;
+        opacity: 0;
+        &.open {
+            opacity: 1;
+            height: 80px;
+        }
+    }
     div.title > div.chosen-container.chosen-container-single > a.chosen-single:before {
         font-family: "Font Awesome 5 Pro";
         content: '\f1d8';
         float: left;
         padding-right: 8px;
     }
+    .form-control {
+        background-color: $filter-select-bg-color;
+        color: $cru-white;
+        border-color: $filter-group-border-color;
+        border-radius: 4px;
+    }
     .chosen-container-single > a.chosen-single,
     .chosen-container-multi,
     select {
         background-color: $filter-select-bg-color;
+        border-color: $filter-group-border-color;
+        border-radius: 4px;
         color: $cru-white;
     }
-    ul.chosen-choices > li.search-choice {
-        background-color: $filter-selected-color;
+    ul.chosen-choices {
+        > li.search-field {
+            .chosen-search-input {
+                color: $cru-white !important;
+            }
+        }
+        > li.search-choice {
+            border: 0;
+            border-radius: 2px;
+            font-size: 12px;
+            line-height: 20px;
+            background-color: $filter-selected-color;
+            transition: background-color 0.2s ease-out;
+            margin: 3px 0 0 3px;
+            .search-choice-close {
+                background: none;
+                &:after {
+                    font-size: 12px;
+                    font-family: "Font Awesome 5 Pro";
+                    content: '\F00D';
+                    height: 20px;
+                    opacity: 0.35;
+                    color: #fff;
+                    display: inline-block;
+                    margin-top: -1px;
+                    transition: opacity 0.2s ease-out;
+                }
+                &:hover {
+                    &:after {
+                        opacity: 1;
+                    }
+                }
+            }
+        }
     }
     div.filter_multiselect.reverse ul.chosen-choices > li.search-choice {
-        background-color: $filter-reverse-color;
+        background-color: $filter-reverse-color-bg;
     }
     div.chosen-container {
         > div.chosen-drop,
         > ul.chosen-choices {
+            border-color: $filter-group-border-color;
             background-color: $filter-select-bg-color;
             li {
                 color: $cru-white;
@@ -38,11 +90,22 @@ $filter-reverse-color: #9b0000;
             max-height: 100px;
             overflow-y: auto;
         }
-        > div.chosen-drop > ul.chosen-results > li.highlighted {
-            background-color: $filter-bar-bg-color;
+        > div.chosen-drop > ul.chosen-results {
+            > li.no-results {
+                background-color: transparent;
+            }
+            > li.active-result {
+                transition: background-color 0.2s ease-out;
+                &.highlighted {
+                    background-color: darken($filter-bar-bg-color, 5%);
+                }
+            }
         }
         &-active {
+            border-radius: 4px 4px 0 0;
             .chosen-choices {
+                box-shadow: none;
+                border-radius: 4px 4px 0 0;
                 border-top-color: $filter-group-border-color;
                 border-left-color: $filter-group-border-color;
                 border-right-color: $filter-group-border-color;
@@ -56,26 +119,31 @@ $filter-reverse-color: #9b0000;
     }
     &--filtergroup {
         overflow: visible;
-        .collapse-target,
+        border-bottom: 1px solid $filter-group-border-color;
         &_filter_radio {
             overflow: visible !important;
         }
         &_title {
             color: $color-reverse;
-            display: block;
-            text-transform: capitalize;
-            font-weight: bold;
-            line-height: 2.5em;
-            position: relative;
-
-            .fa {
-                margin-right: 5px;
+            display: flex;
+            text-transform: uppercase;
+            padding: 10px 0;
+            cursor: pointer;
+            > i {
+                align-self: center;
+                &:first-child {
+                    width: 25px;
+                }
+                &:last-child {
+                    margin-left: 10px;
+                }
             }
-
-            .nav {
-                margin-top: 5px;
+            .fa-chevron-down {
+                transition: transform 0.2s ease-out;
             }
-
+            > div {
+                flex-grow: 1;
+            }
             > ul.nav {
                 a {
                     padding: 3px 6px;
@@ -132,9 +200,7 @@ $filter-reverse-color: #9b0000;
                 padding-left: 6px;
             }
             li {
-                padding-left: 0;
-                padding-bottom: 4px;
-                padding-top: 2px;
+                padding: 4px 0;
                 &.filter_set {
                     border-top: 1px solid $filter-group-border-color;
                 }
@@ -147,24 +213,23 @@ $filter-reverse-color: #9b0000;
                     font-weight: 500;
                     margin-bottom: 0;
                     width: 100%;
-                    a {
-                        color: $cru-white;
-                        .reverse {
+                    display: flex;
+                    > span:first-child {
+                        flex-grow: 1;
+                    }
+                    >i {
+                        align-self: center;
+                    }
+                    > i.reverse-filter {
+                        transition: all 0.2s ease-out;
+                        &.reverse {
                             color: $filter-reverse-color;
                         }
                     }
-                }
-                &.opened {
-                    .filter_set_inner {
-                        max-height: 700px;
+                    > i.fa-chevron-down {
+                        margin-left: 10px;
+                        transition: transform 0.2s ease-out;
                     }
-                }
-                .collapse {
-                    padding: 10px;
-                    background: #fff;
-                    width: 85%;
-                    margin: 0 auto 5px;
-                    border-radius: 2px;
                 }
             }
         }
@@ -172,32 +237,34 @@ $filter-reverse-color: #9b0000;
             line-height: 1.3em;
             padding-top: 10px;
             .tag {
-                $tag-color: $filter-select-bg-color;
-                $tag-reverse-color: $filter-reverse-color;
-                display: none;
+                $tag-color: $cru-blue;
+                $tag-reverse-color: $filter-reverse-color-bg;
                 text-decoration: none;
                 cursor: pointer;
                 margin-right: 3px;
-                &.selected,
-                &.selected:hover {
+                &:hover {
+                    background-color: lighten($tag-color, 5%);
+                }
+                &.selected {
                     background: $color-gray;
                 }
-                &.rejected,
-                &.rejected:hover {
+                &.selected:hover {
+                    background: lighten($color-gray, 20%);
+                }
+                &.rejected {
                     background: $tag-reverse-color;
                 }
-                &:hover {
-                    background-color: darken($tag-color, 5%);
+                &.rejected:hover {
+                    background: lighten($tag-reverse-color, 5%);
                 }
-                &:nth-child(-n+25) {
-                    display: inline-block;
-                }
-            }
-            &.show_all_tags .tag {
-                display: inline-block;
             }
         }
-
+        .filter_container {
+            margin-bottom: 10px;
+            &:first-child {
+                margin-top: 10px;
+            }
+        }
         .filter_radio,
         .filter_dates,
         .filter_text,
@@ -213,8 +280,16 @@ $filter-reverse-color: #9b0000;
                 margin-bottom: 0;
                 > a {
                     color: $cru-white;
-                    &.reverse {
-                        color: $filter-reverse-color;
+                    &.reverse-filter {
+                        &:hover {
+                            text-decoration: none;
+                        }
+                        i {
+                            transition: all 0.2s ease-out;
+                            &.reverse {
+                                color: $filter-reverse-color;
+                            }
+                        }
                     }
                 }
             }
@@ -228,16 +303,11 @@ $filter-reverse-color: #9b0000;
                 cursor: pointer;
             }
         }
-
         .filter_set_inner {
-            transition: all .5s;
-            max-height: 0;
-            overflow: hidden;
-            &.open {
-                overflow: visible;
+            &.collapse.in {
+                overflow: visible !important;
             }
         }
-
         .filter_hint {
             font-size: .9em;
             line-height: 100%;

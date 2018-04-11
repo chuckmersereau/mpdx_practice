@@ -329,41 +329,6 @@ div.name {font-size: 14px; margin-bottom: 4px;}
         margin-bottom: 1.5em;
     }
 
-    .left_tag_list {
-        line-height: 1.3em;
-        padding: 10px 8px 20px;
-        .tag {
-            display: none;
-            text-decoration: none;
-            cursor: pointer;
-            margin-right: 3px;
-            &.selected, &.selected:hover {
-                background: $color-gray;
-            }
-            &.rejected, &.rejected:hover {
-                background: $color-danger;
-            }
-            &:hover {
-                background-color: darken($cru-blue, 5%);
-            }
-            &:nth-child(-n+15) {
-                display: inline-block;
-            }
-        }
-        &.show_all_tags .tag {
-            display: inline-block;
-        }
-    }
-
-    .show_all_tags_btn {
-        display: block;
-        font-size: .9em;
-        font-weight: 500;
-        margin-top: 1em;
-        color: $color-primary;
-        text-decoration: none;
-    }
-
     .filter_title {
         padding-left: 8px;
         line-height: 22px;

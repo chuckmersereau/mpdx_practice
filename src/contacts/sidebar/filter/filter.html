@@ -1,52 +1,64 @@
 <div class="filter">
-    <a ng-click="$ctrl.resetFiltersAndTags()" class="btn btn-primary btn-xs btn-block btn-filter-left ng-cloak"
-       ng-if="$ctrl.contactFilter.isResettable()" analytics-on analytics-event="Reset Filters" analytics-category="Contacts Events" analytics-label="Filter">
-        <i class="fas fa-undo"></i> <span translate>Reset Filters</span>
-    </a>
-    <a ng-click="$ctrl.openSaveModal()" class="btn btn-primary btn-xs btn-block btn-filter-left ng-cloak"
-       ng-show="$ctrl.contactFilter.isResettable()" analytics-on analytics-event="Save Filter" analytics-category="Contacts Events" analytics-label="Filter">
-        <i class="fas fa-save"></i> <span translate>Save Filters</span>
-    </a>
+    <filters-header filters="$ctrl.contactFilter.data"
+                    filter-default-params="$ctrl.contactFilter.default_params"
+                    filter-params="$ctrl.contactFilter.params"
+                    selected-tags="$ctrl.contactsTags.selectedTags"
+                    rejected-tags="$ctrl.contactsTags.rejectedTags"
+                    invert-filter="$ctrl.contactFilter.invertMultiselect($filter)"
+                    display-filters="$ctrl.contactFilter.isResettable()"
+                    remove-filter="$ctrl.contactFilter.removeFilter($filter)"
+                    reject-tag="$ctrl.contactsTags.rejectTag($tag)"
+                    remove-selected-tag="$ctrl.contactsTags.removeFromSelected($tag)"
+                    select-tag="$ctrl.contactsTags.selectTag($tag)"
+                    remove-rejected-tag="$ctrl.contactsTags.removeFromRejected($tag)">
+    </filters-header>
+    <div ng-class="{ 'open': $ctrl.contactFilter.isResettable() }" class="resettable">
+        <a ng-click="$ctrl.resetFiltersAndTags()" class="btn btn-primary btn-xs btn-block fade-in"
+           analytics-on analytics-event="Reset Filters" analytics-category="Contacts Events" analytics-label="Filter">
+            <i class="fas fa-undo"></i> <span translate>Reset Filters</span>
+        </a>
+        <a ng-click="$ctrl.openSaveModal()" class="btn btn-primary btn-xs btn-block"
+           analytics-on analytics-event="Save Filter" analytics-category="Contacts Events" analytics-label="Filter">
+            <i class="fas fa-save"></i> <span translate>Save Filters</span>
+        </a>
+    </div>
     <contacts-tags class="filter--filtergroup"></contacts-tags>
     <div class="filters_section filter--filtergroup" bs-collapse ng-model="isCollapsed" ng-init="isCollapsed = false">
         <form ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }">
-            <span class="filter--filtergroup_title pointer" bs-collapse-toggle>
-                <i class="fas fa-sliders"></i> <translate>Filters</translate>
-                &nbsp;
-                <i class="fas"
-                   ng-class="{ 'fa-chevron-down': isCollapsed, 'fa-chevron-up': !isCollapsed }"></i>
-            </span>
+            <div class="filter--filtergroup_title" bs-collapse-toggle>
+                <i class="fas fa-filter"></i>
+                <div translate>Filters</div>
+                <i class="fal fa-chevron-down" ng-class="{ 'fa-rotate-180': isCollapsed }"></i>
+            </div>
             <div bs-collapse-target class="collapse-target">
                 <div class="filter_hint">
                     <span  translate>Click the</span>
-                    <i class="fas fa-exchange" aria-hidden="true"></i>
+                    <i class="fal fa-exchange" aria-hidden="true"></i>
                     <span translate>to look up all contacts who do not have that filter.</span>
                 </div>
-                <ul class="filter--filtergroup_filters list-unstyled">
-                    <li class="filter_set" ng-repeat="filter in $ctrl.contactFilter.data | orderBy: 'priority'" ng-class="{ 'opened': filter.opened }">
-                        <label id="filter_{{::filter.name}}" class="filter_title" ng-click="filter.opened = !filter.opened">
-                            {{::filter.title}}
-                            <span class="pull-right">
-                                    <a ng-if="::filter.type === 'multiselect'"
-                                       ng-click="$ctrl.contactFilter.invertMultiselect(filter); $event.stopPropagation()"
-                                       title="{{ ::'Reverse Filter' | translate }}">
-                                        <i class="fas fa-exchange" ng-class="{ 'reverse': filter.reverse }"></i>
-                                    </a>
-                                    <i class="fas" ng-class="{ 'fa-chevron-down': !filter.opened,  'fa-chevron-up': filter.opened}"></i>
-                               </span>
+                <ul class="filter--filtergroup_filters list-unstyled" ng-model="$ctrl.activeFilters" data-allow-multiple="true" bs-collapse>
+                    <li class="filter_set" ng-repeat="filter in $ctrl.contactFilter.data | orderBy: 'priority'">
+                        <label id="filter_{{::filter.name}}" class="filter_title" bs-collapse-toggle="{{::$index}}">
+                            <span>{{::filter.title}}</span>
+                            <i ng-if="::filter.type === 'multiselect'"
+                               ng-click="$ctrl.contactFilter.invertMultiselect(filter); $event.stopPropagation()"
+                               title="{{ ::'Reverse Filter' | translate }}"
+                               class="reverse-filter fal fa-exchange" ng-class="{ 'reverse fa-rotate-180': filter.reverse }"></i>
+                            </a>
+                            <i class="fal fa-chevron-down" ng-class="{ 'fa-rotate-180': $ctrl.activeFilters.indexOf($index) === -1 }"></i>
                         </label>
-                        <div class="filter_set_inner" ng-class="{ open: filter.opened }">
-                            <div ng-if="::filter.type == 'container'" ng-repeat="child in ::filter.children | orderBy: 'priority'">
+                        <div class="filter_set_inner" bs-collapse-target="{{::$index}}">
+                            <div class="filter_container" ng-if="::filter.type == 'container'" ng-repeat="child in ::filter.children | orderBy: 'priority'">
                                 <div class="filter_multiselect"
                                      ng-if="::child.type == 'multiselect'"
                                      ng-class="{ reverse: child.reverse }">
                                     <label for="multiselect" >
                                         {{::child.title}}
-                                        <a class="filter_invert_multiselect pull-right"
+                                        <a class="filter_invert_multiselect reverse-filter pull-right"
                                            ng-click="$ctrl.contactFilter.invertMultiselect(child); $event.stopPropagation()"
                                            ng-class="{ reverse: child.reverse }"
                                            title="{{ ::'Reverse Filter' | translate }}">
-                                            <i class="fas fa-exchange"></i>
+                                            <i class="fal fa-exchange" ng-class="{ 'reverse fa-rotate-180': child.reverse }"></i>
                                         </a>
                                     </label>
                                     <select chosen
@@ -106,7 +118,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <div class="filter_multiselect"
+                            <div class="filter_container filter_multiselect"
                                  ng-if="::filter.type == 'multiselect'"
                                  ng-class="{ reverse: filter.reverse }">
                                 <select chosen
@@ -116,14 +128,14 @@
                                         ng-change="$ctrl.contactFilter.change(filter)"
                                         multiple></select>
                             </div>
-                            <div class="filter_radio" ng-if="::filter.type == 'radio'">
+                            <div class="filter_container filter_radio" ng-if="::filter.type == 'radio'">
                                 <select chosen
                                         name="{{::filter.name}}"
                                         ng-options="item.id as item.name for item in ::filter.options"
                                         ng-model="$ctrl.contactFilter.params[filter.name]"
                                         ng-change="$ctrl.contactFilter.change(filter)"></select>
                             </div>
-                            <label ng-if="::filter.type == 'single_checkbox'">
+                            <label class="filter_container" ng-if="::filter.type == 'single_checkbox'">
                                 <input name="{{::filter.name}}"
                                        type="checkbox"
                                        ng-model="$ctrl.contactFilter.params[filter.name]"
@@ -131,7 +143,7 @@
                                        ng-change="$ctrl.contactFilter.change(filter)">
                                 {{::filter.title}}
                             </label>
-                            <div class="filter_dates" ng-if="::filter.type == 'dates'">
+                            <div class="filter_container filter_dates" ng-if="::filter.type == 'dates'">
                                 <label ng-repeat="option in ::filter.options">
                                     {{::option.name}}<br>
                                     <input bs-datepicker
@@ -140,7 +152,7 @@
                                            data-autoclose="1">
                                 </label>
                             </div>
-                            <div class="filter_dates" ng-if="::filter.type == 'daterange'">
+                            <div class="filter_container filter_dates" ng-if="::filter.type == 'daterange'">
                                 <contacts-filter-daterange
                                     model="$ctrl.contactFilter.params[filter.name]"
                                     locale="{ applyLabel: '{{ ::'Filter' | translate }}', cancelLabel: '{{ ::'Clear' | translate }}' }"
@@ -148,7 +160,7 @@
                                     on-change="$ctrl.contactFilter.change(filter)">
                                 </contacts-filter-daterange>
                             </div>
-                            <div class="filter_text" ng-if="::filter.type == 'text'">
+                            <div class="filter_container filter_text" ng-if="::filter.type == 'text'">
                                 <label ng-repeat="option in ::filter.options">
                                     {{::option.name}}<br>
                                     <input class="form-control"

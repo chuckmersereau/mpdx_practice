@@ -89,7 +89,7 @@
             </pagination-dropdown>
         </div>
     </div>
-    <header-filter-display filters="$ctrl.tasksFilter.data"
+    <filters-header filters="$ctrl.tasksFilter.data"
                            filter-default-params="$ctrl.tasksFilter.defaultParams"
                            filter-params="$ctrl.tasksFilter.params"
                            selected-tags="$ctrl.tasksTags.selectedTags"
@@ -101,7 +101,7 @@
                            remove-selected-tag="$ctrl.tasksTags.removeFromSelected($tag)"
                            select-tag="$ctrl.tasksTags.selectTag($tag)"
                            remove-rejected-tag="$ctrl.tasksTags.removeFromRejected($tag)">
-    </header-filter-display>
+    </filters-header>
     <div ng-if="$ctrl.contact">
         <tasks-list-add></tasks-list-add>
     </div>

@@ -100,12 +100,12 @@
             </a>
         </div>
     </div>
-    <div class="tags-row pointer" ng-click="$ctrl.expandTags(); $event.stopPropagation()">
+    <div class="tags-row">
         <div class="tags" ng-class="{ expanded: $ctrl.tagsExpanded }" id="tags_list_{{::$ctrl.$scope.$id}}">
             <span class="tag" title="{{tag}}" ng-repeat="tag in $ctrl.contact.tag_list track by $index">{{ tag }}</span>
         </div>
-        <i class="fas"
-           ng-class="{ 'fa-chevron-down': !$ctrl.tagsExpanded, 'fa-chevron-up': $ctrl.tagsExpanded }"
-           ng-if="::$ctrl.showCaret()"></i>
+        <div class="show-more" ng-if="$ctrl.showCaret() && !$ctrl.tagsExpanded">
+            <a ng-click="$ctrl.expandTags(); $event.stopPropagation()" translate-params-tag-count="$ctrl.contact.tag_list.length" translate>Show all {{tagCount}} tags</a>
+        </div>
     </div>
 </div>

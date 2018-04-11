@@ -1,33 +1,38 @@
 saved-filters {
-    div.saved-filter {
-        display: grid;
-        grid-template-columns: 1fr auto;
+    .saved-filter {
+        display: flex;
+        color: $cru-white;
+        padding: 4px 0;
         line-height: 22px;
-        border-radius: 5px;
-        margin: 0 -10px; //for selection highlight
-        padding: 0 10px;
-        a, a:visited {
-            text-decoration: none;
-        }
-        a.filter-key, a.filter-key:visited {
-            font-weight: 500;
-            margin-bottom: 0;
-            color: $cru-white;
-            &:hover {
-                font-weight: 600;
-            }
-        }
-        a.filter-delete, a.filter-delete:visited {
-            color: $cru-gray-tint;
-            &:hover {
-                color: $color-danger;
-            }
-        }
-        &.active {
-            background-color: $filter-select-bg-color;
+        border-bottom: 1px solid $filter-group-border-color;
+        &:last-child {
+            border-bottom: none;
         }
         &:hover {
-            background-color: $color-panel-bg;
+            text-decoration: none;
+        }
+        &_text {
+            flex-grow: 1;
+        }
+        &_delete {
+            align-self: center;
+            transition: opacity 0.2s ease-out;
+            opacity: 0.8;
+            &:hover {
+                opacity: 1;
+            }
+        }
+        i.fa-caret-right {
+            align-self: center;
+            opacity: 0;
+            transition: all 0.2s ease-out;
+            width: 0;
+        }
+        &.active {
+            i.fa-caret-right {
+                opacity: 1;
+                width: 10px;
+            }
         }
     }
 }

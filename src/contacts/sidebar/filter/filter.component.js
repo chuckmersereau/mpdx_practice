@@ -24,6 +24,8 @@ class FilterController {
         if (angular.isObject($stateParams.filters)) {
             this.contactFilter.params = assign({}, this.contactFilter.params, $stateParams.filters);
         }
+
+        this.activeFilters = [];
     }
     resetFiltersAndTags() {
         if (this.contactsTags.isResettable()) {
