@@ -2,7 +2,7 @@
     <contact-info contact="$ctrl.contacts.current" on-save="$ctrl.save()"></contact-info>
     <div id="contact-tabs">
         <div class="horizontal-tab-sortable">
-            <div class="sortable-row left-tabs" as-sortable="$ctrl.sortableOptions" data-ng-model="$ctrl.tabsLabels">
+            <div class="sortable-row" as-sortable="$ctrl.sortableOptions" data-ng-model="$ctrl.tabsLabels">
                 <div ng-repeat="item in $ctrl.tabsLabels"
                      as-sortable-item
                      class="as-sortable-item"

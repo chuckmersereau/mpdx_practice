@@ -53,8 +53,13 @@ contact {
             grid-row: 2;
             display: grid;
             grid-template-rows: 40px 1fr;
-            .horizontal-tab-sortable div.active-drawer {
+            div.active-drawer {
                 @media(min-width: $hide-drawer-width) {
+                    display: none;
+                }
+            }
+            .expand-link {
+                @media(max-width: $hide-drawer-width) {
                     display: none;
                 }
             }
@@ -72,12 +77,6 @@ contact {
                 }
                 @media (max-width: $contact-menu-breakpoint) {
                     width: 100vw;
-                }
-            }
-            .expand-link {
-                padding: 5px;
-                @media(max-width: $hide-drawer-width) {
-                    display: none;
                 }
             }
         }

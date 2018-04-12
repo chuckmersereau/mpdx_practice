@@ -1,24 +1,36 @@
 .horizontal-tab-sortable {
-    display: block;
     width: 100%;
     height: auto;
-    .as-sortable-item {
-        display: inline-block;
-        list-style: none;
-        margin: 0;
-        position: relative;
-        z-index: 0;
+    position: relative;
+    &::after {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        content: '';
+        border-bottom: 1px $color-menu-border solid;
+    }
+    .sortable-row {
+        display: flex;
         height: 40px;
+        padding-left: $container-padding;
+    }
+    .as-sortable-item {
+        z-index: 0;
         border: 1px transparent solid;
         > .as-sortable-item-handle {
             transition: all 0.2s ease-out;
-            display: block;
-            text-align: center;
+            display: flex;
+            align-items: center;
             font-weight: 600;
             font-size: 14px;
-            padding: 10px 20px;
             > a, a:link, a:visited {
                 color: #4A4A4A;
+                line-height: 38px;
+                padding: 0 $container-padding;
+                &:nth-child(2) {
+                    padding-left: 0;
+                }
             }
             &:hover {
                 color: $color-secondary;
@@ -49,21 +61,6 @@
             }
         }
     }
-    .sortable-row {
-        width: 100%;
-        height: 40px;
-        position: relative;
-        padding-left: 15px;
-        &:after {
-            position: absolute;
-            content: "";
-            width: 100%;
-            bottom: 0;
-            left: 0;
-            border-bottom: 1px $color-menu-border solid;
-            z-index: 1;
-        }
-    }
     .as-sortable-placeholder {
         border: 1px dotted $color-menu-border !important;
         opacity: .4;
@@ -76,9 +73,6 @@
         top: 0;
         opacity: .5;
         z-index: 20000 !important;
-    }
-    .left-tabs {
-        float: left;
     }
     .tabs-info {
         width: auto;
