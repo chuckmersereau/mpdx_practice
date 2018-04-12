@@ -9,6 +9,8 @@ class TagsController {
         this.$rootScope = $rootScope;
         this.api = api;
         this.contactsTags = contactsTags;
+
+        this.hideTags = true;
     }
     $onInit() {
         this.$rootScope.$on('accountListUpdated', () => {

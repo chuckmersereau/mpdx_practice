@@ -20,7 +20,7 @@
             <span class="tag"
                   ng-class="{ 'selected': !$ctrl.isTagActive(tag), 'rejected': $ctrl.isTagRejected(tag) }"
                   ng-click="$ctrl.contactsTags.tagClick(tag)"
-                  ng-repeat="tag in $ctrl.contactsTags.data | limitTo: ($ctrl.showAllTags ? $ctrl.contactsTags.data.length : 25)"
+                  ng-repeat="tag in $ctrl.contactsTags.data | limitTo: 25"
                   title="{{::tag.name}}">
                 {{ ::tag.name | limitTo: 20 }}{{ ::tag.name.length > 20 ? '...' : '' }}
                 <a ng-click="$event.stopPropagation()"
@@ -30,10 +30,27 @@
                    data-container="body"
                    bs-popover></a>
             </span>
-            <div class="show-all-tags" ng-click="$ctrl.showAllTags = !$ctrl.showAllTags" ng-if="$ctrl.contactsTags.data.length > 25">
-                <span ng-if="!$ctrl.showAllTags" translate translate-params-tag-count="$ctrl.contactsTags.data.length">Show all {{tagCount}} tags</span>
-                <span ng-if="$ctrl.showAllTags" translate>Show fewer tags</span>
-                <i class="fal fa-plus" ng-class="{'rotate': $ctrl.showAllTags}"></i>
+            <div ng-model="$ctrl.hideTags" ng-if="$ctrl.contactsTags.data.length > 25" bs-collapse>
+                <div bs-collapse-target>
+                    <span class="tag"
+                          ng-class="{ 'selected': !$ctrl.isTagActive(tag), 'rejected': $ctrl.isTagRejected(tag) }"
+                          ng-click="$ctrl.contactsTags.tagClick(tag)"
+                          ng-repeat="tag in $ctrl.contactsTags.data | limitTo: $ctrl.contactsTags.data.length:25"
+                          title="{{::tag.name}}">
+                        {{ ::tag.name | limitTo: 20 }}{{ ::tag.name.length > 20 ? '...' : '' }}
+                        <a ng-click="$event.stopPropagation()"
+                           data-template-url="tags_delete_popover.html"
+                           data-auto-close="'outsideClick'"
+                           class="tag_remove"
+                           data-container="body"
+                           bs-popover></a>
+                    </span>
+                </div>
+                <div class="show-all-tags" bs-collapse-toggle>
+                    <span ng-if="$ctrl.hideTags" translate translate-params-tag-count="$ctrl.contactsTags.data.length">Show all {{tagCount}} tags</span>
+                    <span ng-if="!$ctrl.hideTags" translate>Show fewer tags</span>
+                    <i class="fal fa-plus" ng-class="{'rotate': !$ctrl.hideTags}"></i>
+                </div>
             </div>
         </div>
     </div>
