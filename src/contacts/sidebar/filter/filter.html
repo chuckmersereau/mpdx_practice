@@ -1,17 +1,4 @@
 <div class="filter">
-    <filters-header filters="$ctrl.contactFilter.data"
-                    filter-default-params="$ctrl.contactFilter.default_params"
-                    filter-params="$ctrl.contactFilter.params"
-                    selected-tags="$ctrl.contactsTags.selectedTags"
-                    rejected-tags="$ctrl.contactsTags.rejectedTags"
-                    invert-filter="$ctrl.contactFilter.invertMultiselect($filter)"
-                    display-filters="$ctrl.contactFilter.isResettable()"
-                    remove-filter="$ctrl.contactFilter.removeFilter($filter)"
-                    reject-tag="$ctrl.contactsTags.rejectTag($tag)"
-                    remove-selected-tag="$ctrl.contactsTags.removeFromSelected($tag)"
-                    select-tag="$ctrl.contactsTags.selectTag($tag)"
-                    remove-rejected-tag="$ctrl.contactsTags.removeFromRejected($tag)">
-    </filters-header>
     <div ng-class="{ 'open': $ctrl.contactFilter.isResettable() }" class="resettable">
         <a ng-click="$ctrl.resetFiltersAndTags()" class="btn btn-primary btn-xs btn-block fade-in"
            analytics-on analytics-event="Reset Filters" analytics-category="Contacts Events" analytics-label="Filter">

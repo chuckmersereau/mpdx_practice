@@ -1,19 +1,32 @@
+<filters-header filters="$ctrl.contactFilter.data"
+                filter-default-params="$ctrl.contactFilter.default_params"
+                filter-params="$ctrl.contactFilter.params"
+                selected-tags="$ctrl.contactsTags.selectedTags"
+                rejected-tags="$ctrl.contactsTags.rejectedTags"
+                invert-filter="$ctrl.contactFilter.invertMultiselect($filter)"
+                display-filters="$ctrl.contactFilter.isResettable()"
+                remove-filter="$ctrl.contactFilter.removeFilter($filter)"
+                reject-tag="$ctrl.contactsTags.rejectTag($tag)"
+                remove-selected-tag="$ctrl.contactsTags.removeFromSelected($tag)"
+                select-tag="$ctrl.contactsTags.selectTag($tag)"
+                remove-rejected-tag="$ctrl.contactsTags.removeFromRejected($tag)">
+</filters-header>
 <contacts-filter ng-if="!$ctrl.session.isInState('contacts.show')"></contacts-filter>
 <div class="contact_drawer" ng-if="$ctrl.session.isInState('contacts.show')" role="complementary">
     <div class="edit-filters">
-        <translate translate-plural="{{$count}} filters applied"
-                   translate-n="$ctrl.contactFilter.count()">1 filter applied</translate>
-        <div class="pull-right">
-            <button type="button" class="btn btn-primary btn-xs" ng-click="$ctrl.showFilters = !$ctrl.showFilters">
-                <span ng-if="$ctrl.showFilters"><i class="fas fa-users"></i> <span translate>Contacts</span></span>
-                <span ng-if="!$ctrl.showFilters"><i class="fas fa-sliders"></i> <span translate>Filters</span></span>
-            </button>
+        <div class="btn-group btn-group-justified" role="group">
+          <button type="button" class="btn btn-reverse" ng-click="$ctrl.showFilters = false" ng-class="{'active':!$ctrl.showFilters}">
+              <i class="fas fa-users"></i> <span translate>Contacts</span>
+          </button>
+          <button type="button" class="btn btn-reverse" ng-click="$ctrl.showFilters = true" ng-class="{'active': $ctrl.showFilters}">
+              <i class="fas fa-filter"></i> <span translate>Filters</span>
+          </button>
         </div>
     </div>
-    <div class="list" ng-if="$ctrl.showFilters">
+    <div class="list" ng-show="$ctrl.showFilters">
         <contacts-filter></contacts-filter>
     </div>
-    <div class="list" ng-if="!$ctrl.showFilters">
+    <div class="list" ng-show="!$ctrl.showFilters">
         <contacts-sidebar-list selected="$ctrl.selected"></contacts-sidebar-list>
     </div>
 </div>
