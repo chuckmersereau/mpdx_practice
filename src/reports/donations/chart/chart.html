@@ -18,15 +18,17 @@
         </span>
     </div>
     <div class="panel-body">
-        <canvas class="chart chart-bar"
-                chart-data="$ctrl.data"
-                chart-labels="$ctrl.labels"
-                chart-series="$ctrl.series"
-                chart-options="$ctrl.options"
-                chart-colors="$ctrl.colors"
-                chart-dataset-override="$ctrl.datasetOverride"
-                height="250">
-        </canvas>
+        <div class="container">
+            <canvas class="chart chart-bar"
+                    chart-data="$ctrl.data"
+                    chart-labels="$ctrl.labels"
+                    chart-series="$ctrl.series"
+                    chart-options="$ctrl.options"
+                    chart-colors="$ctrl.colors"
+                    chart-dataset-override="$ctrl.datasetOverride"
+                    height="250">
+            </canvas>
+        </div>
     </div>
 </div>
 <div class="blankslate mb-1" ng-if="!$ctrl.loading && $ctrl.data.length === 0">
