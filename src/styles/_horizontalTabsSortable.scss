@@ -17,7 +17,8 @@
     }
     .as-sortable-item {
         z-index: 0;
-        border: 1px transparent solid;
+        border: 1px $color-menu-border solid;
+        margin-right: 3px;
         > .as-sortable-item-handle {
             transition: all 0.2s ease-out;
             display: flex;
@@ -31,9 +32,12 @@
                 &:nth-child(2) {
                     padding-left: 0;
                 }
+                &:hover {
+                    text-decoration: none;
+                }
             }
             &:hover {
-                color: $color-secondary;
+                background-color: $color-menu-border;
             }
         }
     }
@@ -54,6 +58,7 @@
         z-index: 2;
         .as-sortable-item-handle {
             &:hover {
+                background-color: $cru-white;
                 a, a:link, a:visited {
                 color: $color-text;
                 text-decoration: none;
