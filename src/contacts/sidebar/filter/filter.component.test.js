@@ -38,6 +38,12 @@ describe('contacts.filter.component', () => {
     function loadController() {
         $ctrl = componentController('contactsFilter', { $scope: scope }, {});
     }
+
+    describe('constructor', () => {
+        it('should set default values', () => {
+            expect($ctrl.activeFilters).toEqual([]);
+        });
+    });
     describe('useSavedFilter', () => {
         beforeEach(() => {
             users.currentOptions = options;

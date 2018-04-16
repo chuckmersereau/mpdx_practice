@@ -48,7 +48,8 @@ $tag-bgcolor: $color-primary;
 .tags {
     line-height: 1.3em;
     .tag {
-        font-weight: 600;
+        transition: background-color 0.2s ease-out;
+        font-weight: lighter;
         background: $tag-bgcolor;
         border: 0;
         height: auto;
@@ -56,14 +57,14 @@ $tag-bgcolor: $color-primary;
         font-size: 12px;
         margin-top: 3px;
         margin-right: 3px;
-        padding: 0 5px;
-        border-radius: 5px;
+        padding: 2px 5px;
+        border-radius: 2px;
         color: $color-reverse;
         display: inline-block;
         word-break: break-all;
         user-select: none;
         &.reverse {
-            background-color: $filter-reverse-color;
+            background-color: $filter-reverse-color-bg;
         }
         > span.tag-text {
             > span.title {

@@ -1,6 +1,5 @@
 contacts-list-item {
     display: block;
-    padding: 15px 0;
     font-size: $font-size-sm;
     border-bottom: 1px solid $color-bg;
     transition: background-color 0.2s;
@@ -9,7 +8,7 @@ contacts-list-item {
         grid-template-columns: 14px 25px 2fr 1fr 1fr auto;
         grid-template-rows: 1fr auto;
         grid-column-gap: 15px;
-        padding-left: 15px;
+        padding: $container-padding;
         cursor: pointer;
         font-size: 14px;
         .select-box {
@@ -18,13 +17,17 @@ contacts-list-item {
             height: 11px;
             border-radius: 3px;
             line-height: 22px;
-            align-self: center;
+            border: 1px solid transparent;
+            margin-top: 3px;
             &.selected {
                 background-color: $cru-blue;
             }
         }
         avatar {
             grid-column: 2;
+            .avatar {
+                margin-top: -4px;
+            }
             .avatar, .avatar img {
                 width: 25px;
                 height: 25px;
@@ -39,7 +42,7 @@ contacts-list-item {
                     font-size: 1.0rem;
                     font-weight: 600;
                     a, a:visited {
-                        color: #317494;
+                        color: $cru-blue;
                     }
                 }
                 address {
@@ -95,13 +98,13 @@ contacts-list-item {
         }
         div.tags-row {
             grid-row: 2;
-            grid-column: 3 / span 5;
-            display: grid;
-            grid-template-columns: 1fr 20px;
+            grid-column: 3 / span 4;
+            display: flex;
             .tags {
+                flex-grow: 1;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                max-height: 25px;
+                max-height: 31px;
                 &.expanded {
                     max-height: 100%;
                 }
@@ -112,6 +115,12 @@ contacts-list-item {
                     max-width: 150px;
                 }
             }
+            .show-more {
+                width: 250px;
+                line-height: 31px;
+                text-align: right;
+                font-size: 12px;
+            }
         }
         &:hover {
             div.hover-buttons {
@@ -119,8 +128,8 @@ contacts-list-item {
                 opacity: 1;
             }
             div.select-box {
-                @extend .fade-in.ng-enter;
-                border: 1px solid $tag-bgcolor;
+                transition: border-color 0.2s ease-out;
+                border-color: $tag-bgcolor;
             }
         }
     }

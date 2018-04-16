@@ -1,11 +1,36 @@
-import { find, get, isArray } from 'lodash/fp';
+import { sumBy, isEqual } from 'lodash/fp';
 
 class HeaderController {
-    isArray(obj) {
-        return isArray(obj);
+    constructor() {
+        this.isCollapsed = true;
     }
-    getOption(filter, id) {
-        return get('name', find({ id: id }, filter.options));
+    invert(filter) {
+        this.invertFilter({ $filter: filter });
+    }
+    remove(filter) {
+        this.removeFilter({ $filter: filter });
+    }
+    count() {
+        let count = this.selectedTags.length + this.rejectedTags.length;
+        count += sumBy((filter) => {
+            let filterCount = 0;
+            if (this.filterInUse(filter)) filterCount += 1;
+            sumBy((child) => {
+                if (this.filterInUse(child)) filterCount += 1;
+            }, filter.children);
+            return filterCount;
+        }, this.filters);
+        return count;
+    }
+    filterInUse(filter) {
+        return filter.reverse || (
+            filter.type !== 'container'
+            && this.filterParams[filter.name].length > 0
+            && !isEqual(this.filterParams[filter.name], this.filterDefaultParams[filter.name])
+        );
+    }
+    display() {
+        return this.displayFilters() && this.count() > 0;
     }
 }
 
@@ -29,4 +54,4 @@ const header = {
 };
 
 export default angular.module('mpdx.common.filters.header.component', [])
-    .component('headerFilterDisplay', header).name;
+    .component('filtersHeader', header).name;

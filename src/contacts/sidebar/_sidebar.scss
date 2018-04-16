@@ -5,7 +5,7 @@
 contacts-sidebar {
     background-color: $filter-bar-bg-color;
     overflow-y: auto;
-    padding: 15px;
+    padding: $container-padding 0;
     > div.contact_drawer {
         display: grid;
         grid-template-rows: auto 1fr;
@@ -13,15 +13,23 @@ contacts-sidebar {
             color: $cru-white;
             line-height: 29px;
             grid-row: 1 / 1;
-            padding-bottom: 10px;
+            padding: 0 $container-padding 10px;
+            .btn-group-justified {
+                display: flex;
+                button.btn {
+                    flex-grow: 1;
+                    transition: background-color 0.2s ease-out;
+                    &:focus {
+                        outline: none;
+                    }
+                    &.active {
+                        background-color: #606B79;
+                    }
+                }
+            }
         }
         > div.list {
             grid-row: 2 / 2;
-        }
-    }
-    &.hide-small {
-        @media (max-width: $contact-menu-breakpoint) {
-            display: none;
         }
     }
     &.hide-small {

@@ -5,7 +5,7 @@
                     bs-dropdown
                     type="button"
                     data-toggle="dropdown"
-                    ng-if="$ctrl.data.length > 0"
+                    ng-disabled="$ctrl.meta.pagination.total_count === 0"
                     aria-expanded="true">
                 <translate>Select</translate> <i class="fas fa-caret-down"></i>
             </button>
@@ -27,6 +27,8 @@
         </div>
         <div class="count" ng-if="$ctrl.contacts.selectedContacts.length > 0">
             {{$ctrl.contacts.selectedContacts.length}} <translate>Selected</translate>
+            &nbsp;
+            <i class="fas fa-times pointer" ng-click="$ctrl.contacts.clearSelectedContacts()"></i>
         </div>
     </div>
     <div class="menu-buttons">
@@ -92,19 +94,6 @@
             </pagination-dropdown>
         </div>
     </div>
-    <header-filter-display filters="$ctrl.contactFilter.data"
-                           filter-default-params="$ctrl.contactFilter.default_params"
-                           filter-params="$ctrl.contactFilter.params"
-                           selected-tags="$ctrl.contactsTags.selectedTags"
-                           rejected-tags="$ctrl.contactsTags.rejectedTags"
-                           invert-filter="$ctrl.contactFilter.invertMultiselect($filter)"
-                           display-filters="$ctrl.contactFilter.isResettable()"
-                           remove-filter="$ctrl.contactFilter.removeFilter($filter)"
-                           reject-tag="$ctrl.contactsTags.rejectTag($tag)"
-                           remove-selected-tag="$ctrl.contactsTags.removeFromSelected($tag)"
-                           select-tag="$ctrl.contactsTags.selectTag($tag)"
-                           remove-rejected-tag="$ctrl.contactsTags.removeFromRejected($tag)">
-    </header-filter-display>
 </div>
 <div class="content">
     <div class="blankslate blankslate-spacious" ng-if="$ctrl.meta.pagination.total_count === 0 && !$ctrl.loading">

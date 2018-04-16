@@ -15,6 +15,7 @@ contacts-sidebar-list {
                 border-right: 0;
             }
         }
+        padding: 0 $container-padding;
     }
     > div.content {
         grid-row: 2;
@@ -23,29 +24,29 @@ contacts-sidebar-list {
         .item {
             padding: 0;
             font-size: $font-size-sm;
-            &:not(:first-child) { //all except first
-                border-top: 1px solid $color-bg;
+            border-top: 1px solid $filter-group-border-color;
+            &:first-child {
+                border-top: none;
             }
             a {
                 display: grid;
                 grid-template-columns: auto auto;
                 transition: background-color 0.2s ease-in, color 0.2s ease-in;
-                line-height: 2.2em;
+                line-height: 35px;
                 font-size: $font-size-sm;
-                padding: 0;
+                padding: 0 $container-padding;
                 white-space: nowrap;
                 width: 100%;
                 cursor: pointer;
                 &:hover {
-                    background-color: lighten($filter-bar-bg-color, 20%);
+                    background-color: #606B79;
                     text-decoration: none;
                 }
                 &.active {
-                    background-color: $filter-select-bg-color;
+                    background-color: #606B79;
                     color: $cru-white;
                 }
                 > div.name {
-                    padding-left: 8px;
                     color: $cru-white;
                     white-space: nowrap;
                     overflow: hidden;
@@ -56,7 +57,6 @@ contacts-sidebar-list {
                     grid-column: 2;
                     justify-content: end;
                     text-align: right;
-                    padding-right: 8px;
                 }
             }
         }

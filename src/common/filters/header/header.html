@@ -1,46 +1,41 @@
-<div ng-if="$ctrl.displayFilters()" class="filters am-collapse">
-    <span>
-        Filters
-    </span>
-    <span ng-repeat="filter in $ctrl.filters" class="tags">
-        <span class="tag"
-              ng-click="$ctrl.invertFilter({ $filter: filter })"
-              ng-class="{ 'reverse': filter.reverse, 'pointer': filter.type === 'multiselect' }"
-              ng-if="$ctrl.filterParams[filter.name].length > 0 && ($ctrl.filterParams[filter.name] !== $ctrl.filterDefaultParams[filter.name] || filter.reverse)"
-              title="{{::filter.title}}">
-            <span class="tag-text">
-                <span class="title">{{ ::filter.title }}:</span>
-                <span ng-if="::$ctrl.isArray($ctrl.filterParams[filter.name])"
-                      ng-repeat="value in $ctrl.filterParams[filter.name]">
-                    <span ng-if="value !== ''">
-                        {{ ::$ctrl.getOption(filter, value) }}<span ng-if="!$last">,</span>
-                    </span>
-                </span>
-                <span ng-if="::!$ctrl.isArray($ctrl.filterParams[filter.name])">
-                    {{ ::$ctrl.getOption(filter, $ctrl.filterParams[filter.name]) }}
-                </span>
-            </span>
-            <a ng-click="$ctrl.removeFilter({ $filter: filter }); $event.stopPropagation()" class="tag_remove pull-right"></a>
+<div ng-if="$ctrl.display()" class="filters-header am-collapse" bs-collapse ng-model="$ctrl.isCollapsed">
+    <div class="filters-header__title" bs-collapse-toggle>
+        <span class="filters-header__title__value" translate-n="$ctrl.count()" translate-plural="{{$count}} filters applied" translate>
+        1 filter applied
         </span>
-    </span>
-    <span ng-repeat="tag in $ctrl.selectedTags" class="tags pointer">
-        <span class="tag"
-              ng-click="$ctrl.rejectTag({ $tag: tag })"
-              title="{{::tag.name}}">
-            <span class="tag-text">
-                <span class="title">tag: {{ ::tag.name }}</span>
-            </span>
-            <a ng-click="$ctrl.removeSelectedTag({ $tag: tag }); $event.stopPropagation()" class="tag_remove pull-right"></a>
-        </span>
-    </span>
-    <span ng-repeat="tag in $ctrl.rejectedTags" class="tags pointer">
-        <span class="tag reverse"
-              ng-click="$ctrl.selectTag({ $tag: tag })"
-              title="{{::tag.name}}">
-            <span class="tag-text">
-                <span class="title">tag: {{ ::tag.name }}</span>
-            </span>
-            <a ng-click="$ctrl.removeRejectedTag({ $tag: tag }); $event.stopPropagation()" class="tag_remove pull-right"></a>
-        </span>
-    </span>
+        <i class="fal fa-chevron-down" ng-class="{ 'fa-rotate-180': $ctrl.isCollapsed }"></i>
+    </div>
+    <div class="filters-header__content" bs-collapse-target>
+        <div ng-repeat="filter in $ctrl.filters">
+            <filters-header-filter filter="filter"
+                                   filter-default-params="$ctrl.filterDefaultParams"
+                                   filter-params="$ctrl.filterParams"
+                                   invert="$ctrl.invert($filter)"
+                                   remove="$ctrl.remove($filter)"
+                                   ng-if="$ctrl.filterInUse(filter)"></filters-header-filter>
+            <div ng-repeat="filter in filter.children">
+                <filters-header-filter filter="filter"
+                                       filter-default-params="$ctrl.filterDefaultParams"
+                                       filter-params="$ctrl.filterParams"
+                                       invert="$ctrl.invert($filter)"
+                                       remove="$ctrl.remove($filter)"
+                                       ng-if="$ctrl.filterInUse(filter)"></filters-header-filter>
+            </div>
+        </div>
+        <div class="filters-header__filter" ng-if="$ctrl.selectedTags.length > 0 || $ctrl.rejectedTags.length > 0">
+            <div class="filters-header__filter__title" translate>
+                <span class="filters-header__filter__title__value">Tags</span>
+            </div>
+            <div ng-repeat="tag in $ctrl.selectedTags" class="filters-header__filter__option">
+                <i ng-click="$ctrl.removeSelectedTag({ $tag: tag })" class="fal fa-times"></i>
+                <span class="filters-header__filter__option__value">{{ ::tag.name }}</span>
+                <i ng-click="$ctrl.rejectTag({ $tag: tag })" class="filters-header__filter__reversable fal fa-exchange"></i>
+            </div>
+            <div ng-repeat="tag in $ctrl.rejectedTags" class="filters-header__filter__option">
+                <i ng-click="$ctrl.removeRejectedTag({ $tag: tag })" class="fal fa-times"></i>
+                <span class="filters-header__filter__option__value">{{ ::tag.name }}</span>
+                <i ng-click="$ctrl.selectTag({ $tag: tag })" class="filters-header__filter__reversable fal fa-exchange reverse"></i>
+            </div>
+        </div>
+    </div>
 </div>

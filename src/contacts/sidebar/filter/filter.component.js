@@ -24,6 +24,8 @@ class FilterController {
         if (angular.isObject($stateParams.filters)) {
             this.contactFilter.params = assign({}, this.contactFilter.params, $stateParams.filters);
         }
+
+        this.activeFilters = [];
     }
     resetFiltersAndTags() {
         if (this.contactsTags.isResettable()) {
@@ -73,9 +75,10 @@ const Filter = {
 
 import contacts from 'contacts/contacts.service';
 import contactFilter from './filter.service';
+import contactsTags from './tags/tags.service';
 import modal from 'common/modal/modal.service';
 import users from 'common/users/users.service';
 
 export default angular.module('mpdx.contacts.filter.component', [
-    contactFilter, contacts, modal, users
+    contactFilter, contactsTags, contacts, modal, users
 ]).component('contactsFilter', Filter).name;
