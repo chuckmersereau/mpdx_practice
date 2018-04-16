@@ -36,7 +36,7 @@
             border: 0;
             box-shadow: none;
             border-radius: 0;
-            border-bottom: 1px dashed #979797;
+            border-bottom: 1px solid #E4E6E8;
             padding: 0 30px 5px 0;
             line-height: 21px;
             height: auto;
@@ -111,11 +111,11 @@
     > input {
         border: 0;
         box-shadow: none;
-        padding: 0 30px 5px 0;
+        padding: 0 0 5px 0;
         line-height: 18px;
         height: auto;
         border-radius: 0;
-        border-bottom: 1px dashed #979797;
+        border-bottom: 1px solid #E4E6E8;
         transition: border-bottom-color 0.3s ease-in;
         position: relative;
         background: transparent;
@@ -135,7 +135,7 @@
             padding-left: 5px;
             background-color: transparent;
             &:focus {
-                border-bottom: 1px dashed #979797;
+                border-bottom: 1px solid #E4E6E8;
             }
         }
         a.tip {

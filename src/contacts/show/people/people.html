@@ -1,4 +1,4 @@
-<div class="text-right mb-2">
+<div class="actions">
     <div class="btn-group" ng-if="!$ctrl.isMerging">
         <button class="btn btn-default" ng-click="$ctrl.isMerging = true" ng-disabled="$ctrl.data.length < 2">
             <i class="fas fa-code-fork"></i>
@@ -30,7 +30,7 @@
         </a>
     </div>
 </div>
-<div class="blankslate mt-2" ng-if="$ctrl.data.length === 0 && !$ctrl.loading">
+<div class="blankslate" ng-if="$ctrl.data.length === 0 && !$ctrl.loading">
     <i class="fas fa-users blankslate-icon"></i>
     <h3 translate>No people associated with this contact</h3>
     <a ng-click="$ctrl.newPerson()" class="btn btn-default" translate>Add New Person</a>

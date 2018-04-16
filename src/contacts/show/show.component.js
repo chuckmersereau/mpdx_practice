@@ -33,7 +33,7 @@ class ContactController {
             { key: 'donations', value: gettextCatalog.getString('Donations') },
             { key: 'addresses', value: gettextCatalog.getString('Addresses'), drawerable: true },
             { key: 'people', value: gettextCatalog.getString('People'), drawerable: true },
-            { key: 'tasks', value: gettextCatalog.getString('Tasks') },
+            { key: 'tasks', value: gettextCatalog.getString('Tasks'), drawerable: true },
             { key: 'referrals', value: gettextCatalog.getString('Referrals'), drawerable: true },
             { key: 'notes', value: gettextCatalog.getString('Notes'), drawerable: true }
         ];
@@ -55,11 +55,6 @@ class ContactController {
         }
 
         this.tabsLabels = tabsLabels;
-        this.contacts.activeTab = defaultTo(this.tabsLabels[1]['key'], this.$state.$current.name.split('.')[3], this.contacts.activeTab);
-
-        if (this.contacts.activeTab !== 'donations') {
-            this.$state.go(`contacts.show.views.${this.contacts.activeTab}`);
-        }
 
         this.sortableOptions = {
             containment: '#contact-tabs .horizontal-tab-sortable',
@@ -101,7 +96,12 @@ class ContactController {
         ]);
     }
     $onInit() {
-        this.contacts.activeDrawer = defaultTo('details', this.contacts.activeDrawer);
+        this.setActiveDrawer(this.contacts.activeDrawer);
+
+        if (this.contacts.activeTab !== 'donations') {
+            this.$state.go(`contacts.show.${this.contacts.activeTab}`);
+        }
+
         this.watcher = this.$rootScope.$on('accountListUpdated', () => {
             this.$state.go('contacts');
         });
@@ -143,10 +143,6 @@ class ContactController {
         this.$log.debug('change primary: ', personId);
         this.contacts.current = set('primary_person.id', personId, this.contacts.current);
         this.save();
-    }
-    displayNotes() {
-        this.$anchorScroll('contact-tabs');
-        this.setActiveTab('notes');
     }
     setActiveTab(tab) {
         this.contacts.activeTab = tab;

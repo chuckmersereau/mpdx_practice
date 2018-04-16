@@ -29,6 +29,7 @@
             <span ng-if="$ctrl.contacts.activeDrawer === 'notes'" translate>Notes</span>
             <span ng-if="$ctrl.contacts.activeDrawer === 'referrals'" translate>Referrals</span>
             <span ng-if="$ctrl.contacts.activeDrawer === 'people'" translate>People</span>
+            <span ng-if="$ctrl.contacts.activeDrawer === 'tasks'" translate>Tasks</span>
             <i ng-click="$ctrl.setActiveDrawer(null)" class="fal fa-times"></i>
         </h3>
         <contact-addresses ng-if="$ctrl.contacts.activeDrawer === 'addresses'"></contact-addresses>
@@ -41,5 +42,6 @@
                         ng-if="$ctrl.contacts.activeDrawer === 'people'"></contact-people>
         <contact-notes ng-if="$ctrl.contacts.activeDrawer === 'notes'"></contact-notes>
         <contact-referrals ng-if="$ctrl.contacts.activeDrawer === 'referrals'"></contact-referrals>
+        <contact-tasks ng-if="$ctrl.contacts.activeDrawer === 'tasks'"></contact-tasks>
     </div>
 </div>

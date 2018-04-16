@@ -4,6 +4,7 @@
 @import "details/details";
 @import "info/info";
 @import "people/people";
+@import "referrals/referrals";
 
 contact {
     $contact-drawer-width: 450px;
@@ -71,7 +72,7 @@ contact {
                 }
             }
             > .tab-content {
-                padding: 15px;
+                padding: 10px $container-padding;
                 background: $cru-white;
             }
         }

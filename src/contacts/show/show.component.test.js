@@ -3,12 +3,12 @@ import { assign, each } from 'lodash/fp';
 
 describe('contacts.show.component', () => {
     let $ctrl, componentController, gettextCatalog, rootScope, scope, state,
-        api, contacts, contactsTags, tasks, users;
+        api, contacts, contactsTags, users;
 
     beforeEach(() => {
         angular.mock.module(component);
         inject((
-            $componentController, $rootScope, _contacts_, _contactsTags_, _modal_, _tasks_,
+            $componentController, $rootScope, _contacts_, _contactsTags_, _modal_,
             _gettextCatalog_, _api_, _users_, $state
         ) => {
             rootScope = $rootScope;
@@ -18,7 +18,6 @@ describe('contacts.show.component', () => {
             contactsTags = _contactsTags_;
             gettextCatalog = _gettextCatalog_;
             state = $state;
-            tasks = _tasks_;
             users = _users_;
             componentController = $componentController;
             api.account_list_id = 1234;
@@ -49,6 +48,22 @@ describe('contacts.show.component', () => {
             scope.$digest();
             expect(state.go).toHaveBeenCalledWith('contacts');
             expect($ctrl.watcher).toBeDefined();
+        });
+        it('should call setActiveDrawer', () => {
+            spyOn($ctrl, 'setActiveDrawer').and.callFake(() => {});
+            contacts.activeDrawer = 'abc';
+            $ctrl.$onInit();
+            expect($ctrl.setActiveDrawer).toHaveBeenCalledWith('abc');
+        });
+        describe('activeTab === addresses', () => {
+            beforeEach(() => {
+                contacts.activeTab = 'addresses';
+            });
+            it('should call $state.go', () => {
+                spyOn(state, 'go').and.callFake(() => {});
+                $ctrl.$onInit();
+                expect(state.go).toHaveBeenCalledWith('contacts.show.addresses');
+            });
         });
     });
     describe('$onChanges', () => {
@@ -136,13 +151,6 @@ describe('contacts.show.component', () => {
                 expect(contacts.initialState.no_gift_aid).toEqual(true);
                 done();
             });
-        });
-    });
-    describe('openAddTaskModal', () => {
-        it('should open the add task modal', () => {
-            spyOn(tasks, 'addModal').and.callFake(() => {});
-            $ctrl.openAddTaskModal();
-            expect(tasks.addModal).toHaveBeenCalledWith({ contactsList: [contacts.current.id] });
         });
     });
     describe('showRecommendationTab', () => {

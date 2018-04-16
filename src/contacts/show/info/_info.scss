@@ -14,6 +14,12 @@ contact-info {
         }
         > div.inline-input {
             grid-column: 2;
+            input {
+                border-bottom-color: transparent;
+                &:focus {
+                    border-bottom-color: #007398;
+                }
+            }
         }
         > div.contact-actions {
             grid-column: 3;
@@ -23,7 +29,7 @@ contact-info {
         display: grid;
         grid-gap: 10px;
         grid-template-columns: repeat(3, 1fr) 210px;
-        grid-template-rows: repeat(4, 1fr);
+        grid-template-rows: repeat(4, 50px);
         > div {
             @extend .inline-input;
         }
@@ -38,6 +44,9 @@ contact-info {
             grid-row: 1 / span 4;
             font-size: 14px;
             color: $cru-gray;
+            label {
+                margin-bottom: 6px;
+            }
         }
     }
 }

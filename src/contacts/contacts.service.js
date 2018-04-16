@@ -41,6 +41,7 @@ class ContactsService {
         this.current = null;
         this.selectedContacts = [];
         this.activeDrawer = 'details';
+        this.activeTab = 'donations';
     }
     get(id) {
         return this.api.get({

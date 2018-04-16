@@ -1,4 +1,4 @@
-<div class="panel panel-default mb-1" ng-if="!$ctrl.loading && $ctrl.data.length > 0">
+<div class="panel panel-default" ng-if="!$ctrl.loading && $ctrl.data.length > 0">
     <div class="panel-heading text-center">
         <span ng-if="!$ctrl.contact">
             <span class="pledges-color">
@@ -31,11 +31,11 @@
         </div>
     </div>
 </div>
-<div class="blankslate mb-1" ng-if="!$ctrl.loading && $ctrl.data.length === 0">
+<div class="blankslate" ng-if="!$ctrl.loading && $ctrl.data.length === 0">
     <i class="fas fa-chart-bar blankslate-icon"></i>
     <h3 translate>No chart to display</h3>
     <p translate>No donations received to populate graph.</p>
 </div>
-<div class="blankslate blankslate-spacious mb-1" ng-if="$ctrl.loading">
+<div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
   <i class="far fa-circle-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
 </div>
