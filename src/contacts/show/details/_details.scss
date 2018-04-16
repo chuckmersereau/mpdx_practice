@@ -8,6 +8,9 @@ contact-details {
     h5 {
         margin-top: 30px;
         margin-bottom: 5px;
+        &:first-child {
+            margin-top: 0;
+        }
     }
     .inline-input {
         tags-input {
@@ -29,9 +32,17 @@ contact-details {
         @extend h4;
         font-size: 12px;
         margin-bottom: 3px;
-        text-transform: uppercase;
-        font-weight: bold;
         color: #9B9B9B;
+    }
+    .static-field {
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 21px;
+        display: flex;
+        align-items: center;
+        .content {
+            flex-grow: 1;
+        }
     }
     .financial {
         display: grid;
@@ -44,10 +55,26 @@ contact-details {
         > div.tags {
             grid-column: 1 / span 2;
         }
-        .collection-selector {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            grid-column-gap: 10px;
+        .referred-by {
+            .collection-selector {
+                display: flex;
+                collection-selector {
+                    flex-grow: 1;
+                    button.btn {
+                        margin-bottom: 0;
+                        border: 0;
+                        border-bottom: 1px dashed #979797;
+                        border-radius: 0;
+                        padding: 0 30px 5px 0;
+                        text-align: left;
+                        font-weight: 600;
+                        line-height: 22px;
+                    }
+                }
+                a {
+                    margin-left: 10px;
+                }
+            }
         }
     }
     .other {
@@ -56,20 +83,20 @@ contact-details {
         grid-column-gap: 20px;
     }
     .partner-accounts {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        margin-top: 30px;
+        display: flex;
+        margin: 30px 0 8px 0;
+        align-items: center;
         h5 {
-            margin-top: 0;
-        }
-        > div {
-            justify-self: right;
+            margin: 0;
+            flex-grow: 1;
         }
     }
-    .next-ask {
-        margin-top: 8px;
-        margin-left: 5px;
+    contact-donor-account {
+        .field {
+            margin-bottom: 10px;
+        }
     }
+
 }
 
 contact > div > div.contact-drawer > contact-details .communication {

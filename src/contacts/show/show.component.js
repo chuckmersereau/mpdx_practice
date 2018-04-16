@@ -5,7 +5,7 @@ import joinComma from 'common/fp/joinComma';
 class ContactController {
     constructor(
         $log, $rootScope, $state, $stateParams, $anchorScroll, blockUI, gettextCatalog, help,
-        contactFilter, contacts, contactsTags, modal, people, session, tasks, users
+        contactFilter, contacts, contactsTags, modal, people, session, users
     ) {
         this.$anchorScroll = $anchorScroll;
         this.$log = $log;
@@ -19,7 +19,6 @@ class ContactController {
         this.gettextCatalog = gettextCatalog;
         this.modal = modal;
         this.people = people;
-        this.tasks = tasks;
         this.users = users;
         this.session = session;
 
@@ -145,14 +144,6 @@ class ContactController {
         this.contacts.current = set('primary_person.id', personId, this.contacts.current);
         this.save();
     }
-    openAddTaskModal() {
-        this.tasks.addModal({ contactsList: this.contacts.current.id ? [this.contacts.current.id] : [] });
-    }
-    hideContact() {
-        this.contacts.hideContact(this.contacts.current).then(() => {
-            this.$state.go('contacts');
-        });
-    }
     displayNotes() {
         this.$anchorScroll('contact-tabs');
         this.setActiveTab('notes');
@@ -190,13 +181,12 @@ import gettextCatalog from 'angular-gettext';
 import help from 'common/help/help.service';
 import modal from 'common/modal/modal.service';
 import people from './people/people.service';
-import tasks from 'tasks/tasks.service';
 import uiRouter from '@uirouter/angularjs';
 import users from 'common/users/users.service';
 import session from 'common/session/session.service';
 
 export default angular.module('mpdx.contacts.show.component', [
     blockUI, gettextCatalog, uiRouter,
-    help, modal, contacts, tasks, contactFilter, people, users, session
+    help, modal, contacts, contactFilter, people, users, session
 ])
     .component('contact', Show).name;

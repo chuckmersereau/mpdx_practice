@@ -4,7 +4,7 @@ contact-info {
     > div.header {
         display: grid;
         grid-template-columns: 38px 1fr auto;
-        grid-gap: 5px;
+        grid-gap: 10px;
         avatar {
             grid-column: 1;
             &, .avatar, .avatar img {
@@ -21,8 +21,8 @@ contact-info {
     }
     > div.content {
         display: grid;
-        grid-gap: 5px;
-        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 10px;
+        grid-template-columns: repeat(3, 1fr) 210px;
         grid-template-rows: repeat(4, 1fr);
         > div {
             @extend .inline-input;
@@ -30,9 +30,7 @@ contact-info {
         label {
             @extend h4;
             font-size: 12px;
-            margin-bottom: 3px;
-            text-transform: uppercase;
-            font-weight: bold;
+            margin: 0 0 3px 0;
             color: #9B9B9B;
         }
         > div.address {

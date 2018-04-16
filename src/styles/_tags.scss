@@ -34,6 +34,7 @@ $tag-bgcolor: $color-primary;
         padding: 0;
     }
     &:hover:active, &:after {
+        transition: opacity 0.2s ease-out;
         opacity: .35;
         text-decoration: none;
     }
@@ -92,16 +93,50 @@ tags-input {
             border-color: rgba(82, 168, 236, 0.8);
         }
         input.input {
+            margin: 0 2px;
+            height: 26px;
             font-size: 14px;
+            font-weight: 600;
             font-family: "Source Sans Pro", sans-serif;
         }
         .tag-item {
+            font-size: 12px;
+            height: 24px;
             font-family: "Source Sans Pro", sans-serif;
             background-color: $tag-bgcolor;
             border: 0;
+            border-radius: 2px;
+            margin: 0 2px 2px 0;
+            line-height: 23px;
+            padding: 0 2px 0 5px;
+            span {
+                margin-right: 2px;
+            }
             .remove-button {
-                color: #fff;
-                opacity: .35;
+                visibility: hidden;
+                position: relative;
+                margin: 0;
+                padding: 0 0 0 5px;
+                line-height: 15px;
+                &:after {
+                    color: #fff;
+                    visibility: visible;
+                    transition: opacity 0.2s ease-out;
+                    content: "\F00D";
+                    font-family: "Font Awesome 5 Pro";
+                    font-size: 12px;
+                    opacity: .35;
+                    text-decoration: none;
+                	position: absolute;
+                	top: 0;
+                	left: 0;
+                    font-weight: 100;
+                }
+                &:hover:after {
+                    color: $color-reverse;
+                    opacity: 1;
+                    text-decoration: none;
+                }
             }
             &.selected {
                 border: 0;

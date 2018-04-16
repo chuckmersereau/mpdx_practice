@@ -2,13 +2,15 @@ import { defaultTo } from 'lodash/fp';
 
 class ContactInfoController {
     constructor(
-        gettextCatalog,
-        contacts, locale, serverConstants
+        $state, gettextCatalog,
+        contacts, locale, serverConstants, tasks
     ) {
-        this.contacts = contacts;
+        this.$state = $state;
         this.gettextCatalog = gettextCatalog;
+        this.contacts = contacts;
         this.locale = locale;
         this.serverConstants = serverConstants;
+        this.tasks = tasks;
     }
     $onInit() {
         const yes = this.gettextCatalog.getString('Yes');
@@ -31,6 +33,11 @@ class ContactInfoController {
         this.contact[property] = defaultTo('', this.contact[property]);
         this.save();
     }
+    hideContact() {
+        this.contacts.hideContact(this.contacts.current).then(() => {
+            this.$state.go('contacts');
+        });
+    }
     save() {
         this.onSave();
     }
@@ -44,10 +51,14 @@ const Info = {
     }
 };
 
+import uiRouter from '@uirouter/angularjs';
+import gettextCatalog from 'angular-gettext';
 import contacts from 'contacts/contacts.service';
 import locale from 'common/locale/locale.service';
 import serverConstants from 'common/serverConstants/serverConstants.service';
+import tasks from 'tasks/tasks.service';
 
 export default angular.module('mpdx.contacts.show.info.component', [
-    contacts, locale, serverConstants
+    uiRouter, gettextCatalog,
+    contacts, locale, serverConstants, tasks
 ]).component('contactInfo', Info).name;
