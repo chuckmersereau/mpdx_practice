@@ -23,13 +23,15 @@ class LogTaskController {
     }
     save() {
         return this.getPromise().then(() => {
+            let task = angular.copy(this.task);
             this.$scope.$hide();
-            if (get('next_action', this.task)) {
+            if (get('next_action', task)) {
+                task.subject = task.next_action === task.activity_type ? task.subject : null;
                 this.tasks.addModal({
-                    activityType: this.task.next_action,
+                    activityType: task.next_action,
                     comments: [this.comment],
                     contactsList: map('id', this.contactsList),
-                    task: this.task
+                    task: task
                 });
             } else {
                 this.$rootScope.$emit('taskLogged');

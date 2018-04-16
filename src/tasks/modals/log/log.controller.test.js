@@ -55,6 +55,11 @@ describe('tasks.modals.log.controller', () => {
             spyOn(scope, '$hide');
             spyOn(rootScope, '$emit').and.callFake(() => {});
             $ctrl.contactsList = [{ id: '7e4a26d6-64fc-42e7-a55e-95c7995e500d' }];
+            $ctrl.task = {
+                subject: 'a',
+                activity_type: 'Call',
+                next_action: 'Call'
+            };
         });
         it('should create a task', () => {
             $ctrl.save();
@@ -73,7 +78,6 @@ describe('tasks.modals.log.controller', () => {
             });
         });
         it('should open next automation task if defined', (done) => {
-            $ctrl.task.next_action = 'Call';
             $ctrl.comment = 'ghi';
             $ctrl.save().then(() => {
                 expect(tasks.addModal).toHaveBeenCalledWith({
@@ -85,7 +89,34 @@ describe('tasks.modals.log.controller', () => {
                 done();
             });
         });
+        it('should set next automation task subject if same type', (done) => {
+            $ctrl.comment = 'ghi';
+            $ctrl.save().then(() => {
+                expect(tasks.addModal).toHaveBeenCalledWith({
+                    contactsList: jasmine.any(Array),
+                    activityType: jasmine.any(String),
+                    task: $ctrl.task,
+                    comments: jasmine.any(Array)
+                });
+                done();
+            });
+        });
+        it('shouldn\'t set next automation task subject if not same type', (done) => {
+            $ctrl.task.next_action = 'Answer';
+            $ctrl.comment = 'ghi';
+            const task = assign($ctrl.task, { next_action: 'Answer', subject: null });
+            $ctrl.save().then(() => {
+                expect(tasks.addModal).toHaveBeenCalledWith({
+                    contactsList: jasmine.any(Array),
+                    activityType: jasmine.any(String),
+                    task: task,
+                    comments: jasmine.any(Array)
+                });
+                done();
+            });
+        });
         it('should emit when finished', (done) => {
+            $ctrl.task.next_action = undefined;
             $ctrl.save().then(() => {
                 expect(rootScope.$emit).toHaveBeenCalledWith('taskLogged');
                 done();
