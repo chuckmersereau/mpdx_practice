@@ -3,12 +3,12 @@
 
 $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
-$fa-font-path: "styles/fontawesome-pro-5.0.2/web-fonts-with-css/webfonts";
-@import "styles/fontawesome-pro-5.0.2/web-fonts-with-css/scss/fontawesome";
-@import "styles/fontawesome-pro-5.0.2/web-fonts-with-css/scss/fa-solid";
-@import "styles/fontawesome-pro-5.0.2/web-fonts-with-css/scss/fa-regular";
-@import "styles/fontawesome-pro-5.0.2/web-fonts-with-css/scss/fa-light";
-@import "styles/fontawesome-pro-5.0.2/web-fonts-with-css/scss/fa-brands";
+$fa-font-path: "styles/fontawesome-pro-5.0.9/web-fonts-with-css/webfonts";
+@import "fontawesome-pro-5.0.9/web-fonts-with-css/scss/fontawesome";
+@import "fontawesome-pro-5.0.9/web-fonts-with-css/scss/fa-solid";
+@import "fontawesome-pro-5.0.9/web-fonts-with-css/scss/fa-regular";
+@import "fontawesome-pro-5.0.9/web-fonts-with-css/scss/fa-light";
+@import "fontawesome-pro-5.0.9/web-fonts-with-css/scss/fa-brands";
 @import "~ng-tags-input/build/ng-tags-input";
 @import "~ng-tags-input/build/ng-tags-input.bootstrap";
 @import "~angular-motion/dist/angular-motion";
