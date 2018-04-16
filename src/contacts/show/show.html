@@ -1,4 +1,4 @@
-<div block-ui="contactShow" class="contact-show">
+<div block-ui="contactShow" class="contact-show" ng-class="{'drawer': $ctrl.contacts.activeDrawer}">
     <contact-info contact="$ctrl.contacts.current" on-save="$ctrl.save()"></contact-info>
     <div id="contact-tabs">
         <div class="horizontal-tab-sortable">
@@ -23,6 +23,14 @@
         </div>
     </div>
     <div class="contact-drawer">
+        <h3 class="contact-drawer-title">
+            <span ng-if="$ctrl.contacts.activeDrawer === 'addresses'" translate>Addresses</span>
+            <span ng-if="$ctrl.contacts.activeDrawer === 'details'" translate>Contact Details</span>
+            <span ng-if="$ctrl.contacts.activeDrawer === 'notes'" translate>Notes</span>
+            <span ng-if="$ctrl.contacts.activeDrawer === 'referrals'" translate>Referrals</span>
+            <span ng-if="$ctrl.contacts.activeDrawer === 'people'" translate>People</span>
+            <i ng-click="$ctrl.setActiveDrawer(null)" class="fal fa-times"></i>
+        </h3>
         <contact-addresses ng-if="$ctrl.contacts.activeDrawer === 'addresses'"></contact-addresses>
         <contact-details contact="$ctrl.contacts.current"
                          donor-accounts="$ctrl.contacts.current.donor_accounts"

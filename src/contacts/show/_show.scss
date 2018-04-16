@@ -14,15 +14,17 @@ contact {
     > div.contact-show {
         display: grid;
         grid-template-rows: auto 1fr;
-        grid-template-columns: calc(100vw - #{$contact-sidebar-width + $contact-drawer-width}) $contact-drawer-width;
+        grid-template-columns: 1fr 0;
         grid-column-gap: 0;
         background-color: rgba(74,144,226,0.05);
-        width: calc(100vw - #{$contact-sidebar-width});
         @media(max-width: $hide-drawer-width) {
             grid-template-columns: 1fr 0;
         }
-        @media (max-width: $contact-menu-breakpoint) {
-            width: 100%;
+        &.drawer {
+            grid-template-columns: auto $contact-drawer-width;
+            @media(max-width: $hide-drawer-width) {
+                grid-template-columns: 1fr 0;
+            }
         }
         h5 {
             font-weight: 600;
@@ -71,13 +73,6 @@ contact {
             > .tab-content {
                 padding: 15px;
                 background: $cru-white;
-                width: calc(100vw - #{$contact-sidebar-width + $contact-drawer-width});
-                @media(max-width: $hide-drawer-width) {
-                    width: calc(100vw - #{$contact-sidebar-width});
-                }
-                @media (max-width: $contact-menu-breakpoint) {
-                    width: 100vw;
-                }
             }
         }
         .see-notes {
@@ -90,11 +85,26 @@ contact {
         > div.contact-drawer {
             background: $cru-white;
             grid-column: 2;
-            grid-row: 1 / -1;
-            padding: 15px;
+            grid-row: 1 / span 2;
+            padding: $container-padding;
             width: $contact-drawer-width;
             border-left: 1px $color-menu-border solid;
             overflow-x: hidden;
+            h3.contact-drawer-title {
+                margin: -$container-padding;
+                margin-bottom: 10px;
+                line-height: 60px;
+                padding: 0 $container-padding;
+                border-bottom: 1px #dadada solid;
+                display: flex;
+                align-items: center;
+                span {
+                    flex-grow: 1;
+                }
+                i {
+                    cursor: pointer;
+                }
+            }
             @media(max-width: $hide-drawer-width) {
                 display: none;
             }

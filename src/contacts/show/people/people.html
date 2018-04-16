@@ -1,33 +1,34 @@
-<h3 ng-if="$ctrl.contacts.activeDrawer === 'people'" translate>People</h3>
-<div ng-if="!$ctrl.isMerging">
-    <a class="btn btn-primary" ng-click="$ctrl.newPerson()">
-        <i class="fas fa-plus-circle"></i>
-        <translate>Add New Person</translate>
-    </a>
-    <button class="btn btn-reverse" ng-click="$ctrl.isMerging = true" ng-disabled="$ctrl.data.length < 2">
-        <i class="fas fa-code-fork"></i>
-        <translate>Merge People</translate>
-    </button>
-    <button type="button" class="btn btn-reverse" ng-click="$ctrl.emailAll()">
-        <i class="far fa-envelope"></i> <translate>Email All</translate>
-    </button>
-</div>
-<div ng-if="$ctrl.isMerging">
-    <a class="btn btn-link" ng-click="$ctrl.cancelMerge()" translate>
-        Cancel
-    </a>
-    <a class="btn btn-primary" ng-click="$ctrl.openMergeModal()">
-        <i class="fas fa-code-fork"></i>
-        <translate>Merge Selected People</translate>
-    </a>
-    &nbsp;
-    <a class="tip ng-scope"
-       data-trigger="hover"
-       data-content="{{ 'Select people to merge by tapping on the person.' | translate }}"
-       data-placement="top"
-       bs-popover="">
-        <i class="fas fa-question-circle"></i>
-    </a>
+<div class="text-right mb-2">
+    <div class="btn-group" ng-if="!$ctrl.isMerging">
+        <button class="btn btn-default" ng-click="$ctrl.isMerging = true" ng-disabled="$ctrl.data.length < 2">
+            <i class="fas fa-code-fork"></i>
+            <translate>Merge People</translate>
+        </button>
+        <button type="button" class="btn btn-default" ng-click="$ctrl.emailAll()">
+            <i class="far fa-envelope"></i> <translate>Email All</translate>
+        </button>
+            <a class="btn btn-primary" ng-click="$ctrl.newPerson()">
+                <i class="fas fa-plus-circle"></i>
+                <translate>Add New Person</translate>
+            </a>
+    </div>
+    <div ng-if="$ctrl.isMerging">
+        <a class="btn btn-link" ng-click="$ctrl.cancelMerge()" translate>
+            Cancel
+        </a>
+        <a class="btn btn-primary" ng-click="$ctrl.openMergeModal()">
+            <i class="fas fa-code-fork"></i>
+            <translate>Merge Selected People</translate>
+        </a>
+        &nbsp;
+        <a class="tip ng-scope"
+           data-trigger="hover"
+           data-content="{{ 'Select people to merge by tapping on the person.' | translate }}"
+           data-placement="top"
+           bs-popover="">
+            <i class="fas fa-question-circle"></i>
+        </a>
+    </div>
 </div>
 <div class="blankslate mt-2" ng-if="$ctrl.data.length === 0 && !$ctrl.loading">
     <i class="fas fa-users blankslate-icon"></i>
