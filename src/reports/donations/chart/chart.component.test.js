@@ -75,9 +75,11 @@ describe('reports.donations.chart.component', () => {
     });
     describe('load', () => {
         let spy;
+        const mutatedValues = 'mutatedValues';
 
         beforeEach(() => {
             spy = spyOn($ctrl, 'getDonationChart').and.callFake(() => Promise.resolve(data));
+            spyOn($ctrl, 'mutateUnconverted').and.callFake(() => 'mutatedValues');
         });
 
         it('should set startDate to 12 months ago', () => {
@@ -116,10 +118,6 @@ describe('reports.donations.chart.component', () => {
                     designationAccountId: 'abc,def'
                 });
             });
-        });
-
-        it('should return promise', () => {
-            expect($ctrl.load()).toEqual(jasmine.any(Promise));
         });
 
         describe('promise successful', () => {
@@ -175,7 +173,12 @@ describe('reports.donations.chart.component', () => {
                             }],
                             drawTime: 'beforeDatasetsDraw'
                         },
-                        onClick: jasmine.any(Function)
+                        onClick: jasmine.any(Function),
+                        tooltips: {
+                            callbacks: {
+                                label: jasmine.any(Function)
+                            }
+                        }
                     });
                     done();
                 });
@@ -213,6 +216,13 @@ describe('reports.donations.chart.component', () => {
                 $ctrl.loading = true;
                 $ctrl.load().then(() => {
                     expect($ctrl.loading).toEqual(false);
+                    done();
+                });
+            });
+
+            it('should set mutate unconverted values', (done) => {
+                $ctrl.load().then(() => {
+                    expect($ctrl.unConvertedData).toEqual(mutatedValues);
                     done();
                 });
             });
@@ -283,7 +293,12 @@ describe('reports.donations.chart.component', () => {
                                 }],
                                 drawTime: 'beforeDatasetsDraw'
                             },
-                            onClick: jasmine.any(Function)
+                            onClick: jasmine.any(Function),
+                            tooltips: {
+                                callbacks: {
+                                    label: jasmine.any(Function)
+                                }
+                            }
                         });
                         done();
                     });
@@ -490,6 +505,43 @@ describe('reports.donations.chart.component', () => {
                     done();
                 });
             });
+        });
+    });
+
+    describe('generateTooltip', () => {
+        let tooltip;
+        let data;
+        beforeEach(() => {
+            tooltip = {
+                index: 1,
+                datasetIndex: 1
+            };
+            data = {
+                datasets: [{ label: 'USD' }, { label: 'NZD' }]
+            };
+            $ctrl.unConvertedData = [[0, 1], [2, 3]];
+        });
+        it('should return undefined if empty', () => {
+            tooltip.index = 0;
+            tooltip.datasetIndex = 0;
+            expect($ctrl.generateTooltip(tooltip, data)).toBeUndefined();
+        });
+        it('should display value with label', () => {
+            expect($ctrl.generateTooltip(tooltip, data)).toEqual('NZD: 3');
+        });
+        it('should display value without label', () => {
+            data.datasets[1].label = undefined;
+            expect($ctrl.generateTooltip(tooltip, data)).toEqual(3);
+        });
+    });
+    describe('mutateUnconverted', () => {
+        const data = {
+            totals: [{
+                month_totals: [{ amount: 1.2 }]
+            }]
+        };
+        it('should round month totals', () => {
+            expect($ctrl.mutateUnconverted(data)).toEqual([[1]]);
         });
     });
 });

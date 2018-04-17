@@ -1,4 +1,4 @@
-import { map, round, sum, take, takeRight } from 'lodash/fp';
+import { get, map, round, sum, take, takeRight } from 'lodash/fp';
 import { zip } from 'lodash';
 import joinComma from 'common/fp/joinComma';
 import moment from 'moment';
@@ -76,6 +76,7 @@ class ChartController {
         return this.getDonationChart(params).then((data) => {
             this.loading = false;
             this.data = this.mutateData(data);
+            this.unConvertedData = this.mutateUnconverted(data);
             this.donations.chartData = data;
             this.$rootScope.$emit('chartDataUpdated');
             if (this.inContact) {
@@ -128,7 +129,12 @@ class ChartController {
                     }],
                     drawTime: 'beforeDatasetsDraw'
                 },
-                onClick: (event, legendItem) => this.onClick(event, legendItem)
+                onClick: (event, legendItem) => this.onClick(event, legendItem),
+                tooltips: {
+                    callbacks: {
+                        label: (tooltipItem, data) => this.generateTooltip(tooltipItem, data)
+                    }
+                }
             };
 
             if (!this.inContact) {
@@ -151,8 +157,22 @@ class ChartController {
             this.chartData = data;
         });
     }
+    generateTooltip(tooltipItem, data) {
+        const newVal = get(`[${tooltipItem.index}]`, get(`[${tooltipItem.datasetIndex}]`, this.unConvertedData));
+        const label = get('label', data.datasets[tooltipItem.datasetIndex]);
+        return newVal <= 0
+            ? undefined
+            : label
+                ? `${label}: ${newVal}`
+                : newVal;
+    }
     mutateData(data) {
         const roundValues = map((val) => round(val.converted, 2));
+        const mapTotals = map((total) => roundValues(total.month_totals));
+        return mapTotals(data.totals);
+    }
+    mutateUnconverted(data) {
+        const roundValues = map((val) => round(val.amount, 2));
         const mapTotals = map((total) => roundValues(total.month_totals));
         return mapTotals(data.totals);
     }
