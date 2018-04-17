@@ -1,11 +1,11 @@
-import { assign, concat, defaultTo, eq, find, forEachRight, get, has, isNil, map, reject, set } from 'lodash/fp';
+import { assign, concat, eq, find, forEachRight, get, has, isNil, map, reject, set } from 'lodash/fp';
 import createPatch from 'common/fp/createPatch';
 import joinComma from 'common/fp/joinComma';
 
 class ContactController {
     constructor(
         $log, $rootScope, $state, $stateParams, $anchorScroll, blockUI, gettextCatalog, help,
-        contactFilter, contacts, contactsTags, modal, people, session, tasks, users
+        contactFilter, contacts, contactsTags, modal, people, session, users
     ) {
         this.$anchorScroll = $anchorScroll;
         this.$log = $log;
@@ -19,7 +19,6 @@ class ContactController {
         this.gettextCatalog = gettextCatalog;
         this.modal = modal;
         this.people = people;
-        this.tasks = tasks;
         this.users = users;
         this.session = session;
 
@@ -34,7 +33,7 @@ class ContactController {
             { key: 'donations', value: gettextCatalog.getString('Donations') },
             { key: 'addresses', value: gettextCatalog.getString('Addresses'), drawerable: true },
             { key: 'people', value: gettextCatalog.getString('People'), drawerable: true },
-            { key: 'tasks', value: gettextCatalog.getString('Tasks') },
+            { key: 'tasks', value: gettextCatalog.getString('Tasks'), drawerable: true },
             { key: 'referrals', value: gettextCatalog.getString('Referrals'), drawerable: true },
             { key: 'notes', value: gettextCatalog.getString('Notes'), drawerable: true }
         ];
@@ -56,14 +55,9 @@ class ContactController {
         }
 
         this.tabsLabels = tabsLabels;
-        this.contacts.activeTab = defaultTo(this.tabsLabels[1]['key'], this.$state.$current.name.split('.')[3], this.contacts.activeTab);
-
-        if (this.contacts.activeTab !== 'donations') {
-            this.$state.go(`contacts.show.views.${this.contacts.activeTab}`);
-        }
 
         this.sortableOptions = {
-            containment: '#contact-tabs',
+            containment: '#contact-tabs .horizontal-tab-sortable',
             // restrict move across columns. move only within column.
             accept: (sourceItemHandleScope, destSortableScope) =>
                 sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id,
@@ -102,7 +96,12 @@ class ContactController {
         ]);
     }
     $onInit() {
-        this.contacts.activeDrawer = defaultTo('details', this.contacts.activeDrawer);
+        this.setActiveDrawer(this.contacts.activeDrawer);
+
+        if (this.contacts.activeTab !== 'donations') {
+            this.$state.go(`contacts.show.${this.contacts.activeTab}`);
+        }
+
         this.watcher = this.$rootScope.$on('accountListUpdated', () => {
             this.$state.go('contacts');
         });
@@ -145,18 +144,6 @@ class ContactController {
         this.contacts.current = set('primary_person.id', personId, this.contacts.current);
         this.save();
     }
-    openAddTaskModal() {
-        this.tasks.addModal({ contactsList: this.contacts.current.id ? [this.contacts.current.id] : [] });
-    }
-    hideContact() {
-        this.contacts.hideContact(this.contacts.current).then(() => {
-            this.$state.go('contacts');
-        });
-    }
-    displayNotes() {
-        this.$anchorScroll('contact-tabs');
-        this.setActiveTab('notes');
-    }
     setActiveTab(tab) {
         this.contacts.activeTab = tab;
         if (tab === this.contacts.activeDrawer && tab !== 'details') { // collapsed case on details
@@ -190,13 +177,12 @@ import gettextCatalog from 'angular-gettext';
 import help from 'common/help/help.service';
 import modal from 'common/modal/modal.service';
 import people from './people/people.service';
-import tasks from 'tasks/tasks.service';
 import uiRouter from '@uirouter/angularjs';
 import users from 'common/users/users.service';
 import session from 'common/session/session.service';
 
 export default angular.module('mpdx.contacts.show.component', [
     blockUI, gettextCatalog, uiRouter,
-    help, modal, contacts, tasks, contactFilter, people, users, session
+    help, modal, contacts, contactFilter, people, users, session
 ])
     .component('contact', Show).name;

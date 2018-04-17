@@ -61,9 +61,13 @@ class ContactPeopleController {
 
         this.data = [];
 
+        this.loading = true;
         return this.people.list(this.contact.id).then((data) => {
             this.$log.debug('selected people: ', data);
             this.data = data;
+            this.loading = false;
+        }).catch(() => {
+            this.loading = false;
         });
     }
     selectPerson(person) {

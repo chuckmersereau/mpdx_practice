@@ -4,7 +4,7 @@ contact-info {
     > div.header {
         display: grid;
         grid-template-columns: 38px 1fr auto;
-        grid-gap: 5px;
+        grid-gap: 10px;
         avatar {
             grid-column: 1;
             &, .avatar, .avatar img {
@@ -14,6 +14,12 @@ contact-info {
         }
         > div.inline-input {
             grid-column: 2;
+            input {
+                border-bottom-color: transparent;
+                &:focus {
+                    border-bottom-color: #007398;
+                }
+            }
         }
         > div.contact-actions {
             grid-column: 3;
@@ -21,18 +27,16 @@ contact-info {
     }
     > div.content {
         display: grid;
-        grid-gap: 5px;
-        grid-template-columns: repeat(4, 1fr);
-        grid-template-rows: repeat(4, 1fr);
+        grid-gap: 10px;
+        grid-template-columns: repeat(3, 1fr) 210px;
+        grid-template-rows: repeat(4, 50px);
         > div {
             @extend .inline-input;
         }
         label {
             @extend h4;
             font-size: 12px;
-            margin-bottom: 3px;
-            text-transform: uppercase;
-            font-weight: bold;
+            margin: 0 0 3px 0;
             color: #9B9B9B;
         }
         > div.address {
@@ -40,6 +44,9 @@ contact-info {
             grid-row: 1 / span 4;
             font-size: 14px;
             color: $cru-gray;
+            label {
+                margin-bottom: 6px;
+            }
         }
     }
 }

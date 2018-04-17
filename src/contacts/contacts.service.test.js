@@ -26,6 +26,7 @@ describe('contacts.service', () => {
     describe('constructor', () => {
         it('should set default contact drawer', () => {
             expect(contacts.activeDrawer).toEqual('details');
+            expect(contacts.activeTab).toEqual('donations');
         });
     });
     describe('buildFilterParams', () => {

@@ -1,19 +1,22 @@
-<h3 ng-if="$ctrl.contacts.activeDrawer === 'details'" translate>Contact Details</h3>
-<hr>
-
 <h5 translate>Financial</h5>
 <div class="financial">
     <div>
         <label translate>Last Donation</label>
-        <div>{{$ctrl.last_donation}}</div>
+        <div class="static-field">
+            <div class="content">{{$ctrl.last_donation}}</div>
+        </div>
     </div>
     <div>
         <label translate>Giving Method</label>
-        <div>{{$ctrl.giving_method}}</div>
+        <div class="static-field">
+            <div class="content">{{$ctrl.giving_method}}</div>
+        </div>
     </div>
     <div>
         <label translate>Lifetime Donations</label>
-        <div>{{$ctrl.lifetime_donations}}</div>
+        <div class="static-field">
+            <div class="content">{{$ctrl.lifetime_donations}}</div>
+        </div>
     </div>
     <div ng-if="$ctrl.showGiftAid()">
         <label translate>Gift Aid?</label>
@@ -34,7 +37,7 @@
 
 <h5 translate>Communications</h5>
 <div class="communication">
-    <div>
+    <div class="referred-by">
         <label translate>Referred By</label>
         <div class="collection-selector">
             <collection-selector item-name="{{ 'contact' | translate }}"
@@ -42,14 +45,12 @@
                                  search="$ctrl.contacts.search(text)"
                                  select="$ctrl.onContactSelected(item)">
             </collection-selector>
-            <div>
-                <a class="btn btn-xs btn-danger"
-                   ng-if="$ctrl.referrer"
-                   ng-click="$ctrl.removeReferrer()"
-                   title="{{ ::'Remove referrer' | translate }}">
-                    <i class="far fa-trash trash"></i>
-                </a>
-            </div>
+            <a class="btn btn-xs btn-danger"
+               ng-if="$ctrl.referrer"
+               ng-click="$ctrl.removeReferrer()"
+               title="{{ ::'Remove referrer' | translate }}">
+                <i class="far fa-trash trash"></i>
+            </a>
         </div>
     </div>
     <div>
@@ -126,30 +127,32 @@
     </div>
     <div>
         <label translate>Next Ask</label>
-        <button bs-datepicker
-                type="button"
-                class="next-ask btn btn-xs btn-primary pull-right"
-                ng-model="$ctrl.contact.next_ask"
-                ng-change="$ctrl.save()"
-                ng-model-options="{ debounce: 1000 }"
-                data-autoclose="true"
-                data-date-type="string"
-                data-date-format="{{$ctrl.locale.dateTimeFormat}}"
-                data-placement="top-right"
-                data-model-date-format="yyyy-MM-dd">
-            <i class="fas fa-calendar"></i>
-        </button>
-        <button class="next-ask btn btn-xs btn-danger pull-right"
-                type="button"
-                ng-click="$ctrl.removeNextAsk()"
-                ng-if="$ctrl.contact.next_ask"
-                title="{{ ::'Remove Next Ask' | translate }}">
-            <i class="far fa-trash trash"></i>
-        </button>
-        <div class="field">
-            <div class="inline-input">
+        <div class="static-field">
+            <div class="content">
                 <span ng-if="$ctrl.contact.next_ask">{{ $ctrl.contact.next_ask | localize }}</span>
                 <span ng-if="!$ctrl.contact.next_ask" translate>N/A</span>
+            </div>
+            <div class="actions">
+            <button bs-datepicker
+                        type="button"
+                        class="btn btn-xs btn-primary"
+                        ng-model="$ctrl.contact.next_ask"
+                        ng-change="$ctrl.save()"
+                        ng-model-options="{ debounce: 1000 }"
+                        data-autoclose="true"
+                        data-date-type="string"
+                        data-date-format="{{$ctrl.locale.dateTimeFormat}}"
+                        data-placement="top-right"
+                        data-model-date-format="yyyy-MM-dd">
+                    <i class="fas fa-calendar"></i>
+                </button>
+                <button class="btn btn-xs btn-danger"
+                        type="button"
+                        ng-click="$ctrl.removeNextAsk()"
+                        ng-if="$ctrl.contact.next_ask"
+                        title="{{ ::'Remove Next Ask' | translate }}">
+                    <i class="far fa-trash trash"></i>
+                </button>
             </div>
         </div>
     </div>
@@ -180,16 +183,17 @@
 
 <div class="partner-accounts">
     <h5 translate>Partner Accounts</h5>
-    <div>
-        <button type="button" class="btn btn-primary" ng-click="$ctrl.addPartnerAccount()">
-            <i class="fas fa-plus-circle"></i> <translate>Add Partner Account</translate>
-        </button>
-    </div>
+    <button type="button" class="btn btn-primary" ng-click="$ctrl.addPartnerAccount()">
+        <i class="fas fa-plus-circle"></i> <translate>Add Partner Account</translate>
+    </button>
 </div>
 <contact-donor-account ng-repeat="donorAccount in $ctrl.contact.donor_accounts"
                        contact="$ctrl.contact"
                        donor-account="donorAccount"
                        on-save="$ctrl.onSave()"></contact-donor-account>
-
-
-
+<div class="blankslate ng-scope" ng-if="$ctrl.contact.donor_accounts.length === 0">
+    <i class="fas fa-money-bill-alt blankslate-icon"></i>
+    <h3 translate="">No partner accounts added to this contact</h3>
+    <a ng-click="$ctrl.addPartnerAccount()" class="btn btn-default" translate="">Add Partner Account</a>
+    </div>
+</div>

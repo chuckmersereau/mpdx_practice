@@ -1,8 +1,12 @@
 @import "person/person";
 
 contact-people {
+    .actions {
+        display: block;
+        margin-bottom: 10px;
+        text-align: right;
+    }
     .people-row {
-        padding-top: 10px;
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         grid-gap: 10px;

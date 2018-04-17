@@ -11,7 +11,7 @@
             <a class="btn btn-default" ng-click="$ctrl.contacts.openAddReferralsModal()">
                 <translate>Add Referrals</translate>
             </a>
-            <a class="btn btn-default" ng-click="$ctrl.openAddTaskModal()">
+            <a class="btn btn-default" ng-click="$ctrl.tasks.addModal({ contactsList: this.contacts.current.id })">
                 <translate>Add Task</translate>
             </a>
             <a class="btn btn-default" ng-click="$ctrl.tasks.logModal([$ctrl.contacts.current.id])">
@@ -49,17 +49,11 @@
     <div></div>
     <div class="address">
         <label translate>Primary Address</label>
-        <address ng-repeat="address in ::$ctrl.contact.addresses track by address.id"
-                 ng-if="::address.primary_mailing_address">
-                    <span class="address-street">
-                    <span ng-if="::address.street">{{::address.street}}</span>
-                        <span ng-if="::address.city">{{::address.city}},</span>
-                        {{::address.state}}
-                        {{::address.postal_code}}
-                    </span>
-        </address>
+        <contact-address ng-repeat="address in ::$ctrl.contact.addresses track by address.id"
+                         ng-if="::address.primary_mailing_address"
+                         address="address"
+                         contact="$ctrl.contacts.current"></contact-address>
     </div>
-
     <div class="status">
         <label translate>Status</label>
         <select chosen
@@ -91,6 +85,22 @@
             <option value=""></option>
         </select>
     </div>
+    <div class="likely">
+        <label translate>Likely to Give</label>
+        <select chosen
+                required
+                ng-change="$ctrl.saveWithEmptyCheck('likely_to_give')"
+                ng-model-options="{ debounce: 1000 }"
+                disable-search="true"
+                data-placeholder-text-single="'Select an Option' | translate"
+                class="form-control"
+                id="likely_to_give"
+                allow-single-deselect="true"
+                ng-options="opt.id as opt.value for opt in $ctrl.serverConstants.data.assignable_likely_to_give_hashes"
+                ng-model="$ctrl.contact.likely_to_give">
+            <option value=""></option>
+        </select>
+    </div>
     <div class="commitment ">
         <label translate>Commitment</label>
         <input type="number"
@@ -100,7 +110,6 @@
                ng-change="$ctrl.save()"
                ng-model-options="{ debounce: 1000 }" />
     </div>
-
     <div class="currency">
         <label translate>Currency</label>
         <select chosen
@@ -130,24 +139,6 @@
             <option value=""></option>
         </select>
     </div>
-    <div class="likely">
-        <label translate>Likely to Give</label>
-        <select chosen
-                required
-                ng-change="$ctrl.saveWithEmptyCheck('likely_to_give')"
-                ng-model-options="{ debounce: 1000 }"
-                disable-search="true"
-                data-placeholder-text-single="'Select an Option' | translate"
-                class="form-control"
-                id="likely_to_give"
-                allow-single-deselect="true"
-                ng-options="opt.id as opt.value for opt in $ctrl.serverConstants.data.assignable_likely_to_give_hashes"
-                ng-model="$ctrl.contact.likely_to_give">
-            <option value=""></option>
-        </select>
-    </div>
-
-
     <div class="commitment-received">
         <label translate>Commitment Received</label>
         <select chosen
