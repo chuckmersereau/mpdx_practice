@@ -1,4 +1,4 @@
-import { assign, concat, defaultTo, eq, find, forEachRight, get, has, isNil, map, reject, set } from 'lodash/fp';
+import { assign, concat, eq, find, forEachRight, get, has, isNil, map, reject, set } from 'lodash/fp';
 import createPatch from 'common/fp/createPatch';
 import joinComma from 'common/fp/joinComma';
 
