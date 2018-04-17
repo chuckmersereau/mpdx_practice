@@ -34,7 +34,7 @@ class ContactInfoController {
         this.save();
     }
     hideContact() {
-        this.contacts.hideContact(this.contacts.current).then(() => {
+        return this.contacts.hideContact(this.contacts.current).then(() => {
             this.$state.go('contacts');
         });
     }
