@@ -1,12 +1,12 @@
 import component from './show.component';
 
 describe('tools.appeals.show.component', () => {
-    let $ctrl, scope, serverConstants, api, alerts, mailchimp, modal, state, q, exportContacts, appealsShow;
+    let $ctrl, scope, serverConstants, api, alerts, mailchimp, modal, state, q, exportContacts, appealsShow, appeals;
     beforeEach(() => {
         angular.mock.module(component);
         inject((
             $componentController, $rootScope, _api_, _serverConstants_, _alerts_, _donations_, _mailchimp_, _modal_,
-            $state, $q, _exportContacts_, _appealsShow_
+            $state, $q, _exportContacts_, _appealsShow_, _appeals_
         ) => {
             scope = $rootScope.$new();
             alerts = _alerts_;
@@ -18,6 +18,7 @@ describe('tools.appeals.show.component', () => {
             q = $q;
             exportContacts = _exportContacts_;
             serverConstants = _serverConstants_;
+            appeals = _appeals_;
             state = $state;
             $ctrl = $componentController('appealsShow', { $scope: scope }, {});
         });
@@ -240,27 +241,22 @@ describe('tools.appeals.show.component', () => {
         });
     });
     describe('removeContact', () => {
+        const contact = { id: 1 };
         beforeEach(() => {
             $ctrl.appeal = { id: 123 };
             spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
+            spyOn(appeals, 'removeContact').and.callFake(() => Promise.resolve());
         });
         it('should open confirm modal', () => {
             spyOn(api, 'delete').and.callFake(() => Promise.resolve());
             $ctrl.appeal = { id: 1, name: 'a' };
-            $ctrl.removeContact({ id: 1 });
+            $ctrl.removeContact(contact);
             expect($ctrl.gettext).toHaveBeenCalledWith('Are you sure you wish to remove this contact from the appeal?');
             expect(modal.confirm).toHaveBeenCalledWith('Are you sure you wish to remove this contact from the appeal?');
         });
         it('should delete contact', (done) => {
-            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
-            const successMessage = 'Contact removed from appeal';
-            const errorMessage = 'Unable to remove contact from appeal';
-            $ctrl.removeContact(1).then(() => {
-                expect(api.delete).toHaveBeenCalledWith(
-                    'appeals/123/appeal_contacts/1', undefined, successMessage, errorMessage
-                );
-                expect($ctrl.gettext).toHaveBeenCalledWith(successMessage);
-                expect($ctrl.gettext).toHaveBeenCalledWith(errorMessage);
+            $ctrl.removeContact(contact).then(() => {
+                expect(appeals.removeContact).toHaveBeenCalledWith($ctrl.appeal.id, contact.id);
                 done();
             });
         });
@@ -409,34 +405,26 @@ describe('tools.appeals.show.component', () => {
         });
     });
     describe('removePledge', () => {
+        const pledge = { id: 123 };
         beforeEach(() => {
             spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
             spyOn($ctrl, 'refreshLists').and.callFake(() => {});
+            spyOn(appeals, 'removePledge').and.callFake(() => Promise.resolve());
         });
         it('should open confirm modal', () => {
-            $ctrl.appeal = { id: 1, name: 'a' };
-            $ctrl.removePledge({ id: 123 });
+            $ctrl.removePledge(pledge);
             expect($ctrl.gettext).toHaveBeenCalledWith('Are you sure you wish to remove this commitment?');
             expect(modal.confirm).toHaveBeenCalledWith('Are you sure you wish to remove this commitment?');
         });
         it('should delete donation', (done) => {
-            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
-            $ctrl.appeal = { id: 1, name: 'a' };
-            const successMessage = 'Successfully removed commitment from appeal';
-            const errorMessage = 'Unable to remove commitment from appeal';
-            $ctrl.removePledge({ id: 123 }).then(() => {
-                expect(api.delete).toHaveBeenCalledWith(
-                    `account_lists/${api.account_list_id}/pledges/123`, undefined, successMessage, errorMessage
-                );
-                expect($ctrl.gettext).toHaveBeenCalledWith(successMessage);
-                expect($ctrl.gettext).toHaveBeenCalledWith(errorMessage);
+            $ctrl.removePledge(pledge).then(() => {
+                expect(appeals.removePledge).toHaveBeenCalledWith(pledge.id);
                 done();
             });
         });
         it('should call refreshLists on success', (done) => {
-            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
-            $ctrl.removePledge({ id: 123, status: 'abc' }).then(() => {
-                expect($ctrl.refreshLists).toHaveBeenCalledWith('abc');
+            $ctrl.removePledge(pledge).then(() => {
+                expect($ctrl.refreshLists).toHaveBeenCalledWith();
                 done();
             });
         });

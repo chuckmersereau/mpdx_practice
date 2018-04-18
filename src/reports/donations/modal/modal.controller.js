@@ -1,16 +1,17 @@
 import createPatch from 'common/fp/createPatch';
-import { defaultTo, has } from 'lodash/fp';
+import { defaultTo, get, has } from 'lodash/fp';
 import fixed from 'common/fp/fixed';
 
 class DonationModalController {
     constructor(
         $rootScope, $scope, gettextCatalog,
-        accounts, api, locale, donorAccounts, designationAccounts, modal, serverConstants,
+        accounts, appeals, api, locale, donorAccounts, designationAccounts, modal, serverConstants,
         donation
     ) {
         this.$rootScope = $rootScope;
         this.$scope = $scope;
         this.accounts = accounts;
+        this.appeals = appeals;
         this.api = api;
         this.donorAccounts = donorAccounts;
         this.designationAccounts = designationAccounts;
@@ -21,6 +22,7 @@ class DonationModalController {
 
         this.initialDonation = donation;
         this.donation = angular.copy(donation);
+        this.originalAppealId = get('id', donation.appeal);
 
         this.activate();
     }
@@ -47,7 +49,7 @@ class DonationModalController {
     }
     save() {
         let donation = angular.copy(this.donation);
-
+        const originalAppealId = angular.copy(this.originalAppealId);
         if (this.initialDonation.appeal && !donation.appeal) { // appeal removed case
             donation.appeal = { id: 'none' }; // fudge around api shortcoming
         }
@@ -57,7 +59,25 @@ class DonationModalController {
         return this.getSavePromise(patch, successMessage, errorMessage).then(() => {
             this.$rootScope.$emit('donationUpdated', patch);
             this.$scope.$hide();
+            if (get('id', donation.appeal) === 'none') {
+                this.removePledgeThenContact(donation, originalAppealId);
+            }
         });
+    }
+    removePledgeThenContact(donation, originalAppealId) {
+        if (get('id', get('pledge', donation))) {
+            const pledgeMsg = this.gettextCatalog.getString('Would you also like to remove the associated commitment from the appeal?');
+            return this.modal.confirm(pledgeMsg).then(() =>
+                this.appeals.removePledge(donation.pledge.id).then(() =>
+                    this.removeContact(donation, originalAppealId))
+            );
+        }
+    }
+    removeContact(donation, originalAppealId) {
+        const msg = this.gettextCatalog.getString('Would you like to also remove the contact from the the appeal?');
+        return this.modal.confirm(msg).then(() =>
+            this.appeals.removeContact(originalAppealId, donation.contact.id)
+        );
     }
     getSavePromise(donation, successMessage, errorMessage) {
         if (has('amount', donation)) {
@@ -75,6 +95,8 @@ class DonationModalController {
         );
     }
     delete() {
+        let donation = angular.copy(this.donation);
+        const originalAppealId = angular.copy(this.originalAppealId);
         const message = this.gettextCatalog.getString('Are you sure you wish to delete the selected donation?');
         return this.modal.confirm(message).then(() => {
             const successMessage = this.gettextCatalog.getString('Donation deleted successfully');
@@ -88,6 +110,7 @@ class DonationModalController {
         }).then(() => {
             this.$rootScope.$emit('donationRemoved', { id: this.donation.id });
             this.$scope.$hide();
+            return this.removePledgeThenContact(donation, originalAppealId);
         });
     }
     onDonorAccountSelected(donorAccount) {
@@ -116,6 +139,7 @@ class DonationModalController {
 }
 
 import accounts from 'common/accounts/accounts.service';
+import appeals from 'tools/appeals/appeals.service';
 import api from 'common/api/api.service';
 import designationAccounts from 'common/designationAccounts/designationAccounts.service';
 import donorAccounts from 'common/donorAccounts/donorAccounts.service';
@@ -126,5 +150,5 @@ import serverConstants from 'common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.donation.modal.controller', [
     gettextCatalog,
-    accounts, api, designationAccounts, donorAccounts, locale, modal, serverConstants
+    accounts, appeals, api, designationAccounts, donorAccounts, locale, modal, serverConstants
 ]).controller('donationModalController', DonationModalController).name;

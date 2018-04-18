@@ -1,11 +1,13 @@
 class ModalController {
     constructor(
-        $element, $attrs, $scope,
+        $element, $attrs, $q, $scope, $timeout,
         blockUI, gettextCatalog
     ) {
         this.$element = $element;
         this.$attrs = $attrs;
+        this.$q = $q;
         this.$scope = $scope;
+        this.$timeout = $timeout;
         this.blockUI = blockUI.instances.get('modalBlockUI_' + this.$scope.$id);
         this.gettextCatalog = gettextCatalog;
     }
@@ -26,15 +28,20 @@ class ModalController {
     saveAndBlock() {
         this.saving = true;
         this.blockUI.start();
-        return this.save().then((data) => {
-            this.saving = false;
-            this.blockUI.reset();
-            return data;
-        }).catch((err) => {
-            this.saving = false;
-            this.blockUI.reset();
-            throw err;
-        });
+        let deferred = this.$q.defer();
+        // $timeout to allow for digest cycle and js input events
+        this.$timeout(() => {
+            this.save().then((data) => {
+                this.saving = false;
+                this.blockUI.reset();
+                deferred.resolve(data);
+            }).catch((err) => {
+                this.saving = false;
+                this.blockUI.reset();
+                deferred.reject(err);
+            });
+        }, 200);
+        return deferred.promise;
     }
     deleteAndBlock() {
         this.saving = true;

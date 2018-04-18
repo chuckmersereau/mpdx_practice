@@ -14,13 +14,15 @@ class DonationsService {
     getDonations({ startDate = null, endDate = null, donorAccountId = null, page = null } = {}) {
         let params = {
             fields: {
+                pledge_contact: '',
                 contacts: 'name',
                 designation_account: 'display_name,designation_number',
                 donor_account: 'display_name,account_number',
-                appeal: 'name'
+                appeal: 'name',
+                pledge: 'contact'
             },
             filter: {},
-            include: 'designation_account,donor_account,contact,appeal',
+            include: 'designation_account,donor_account,contact,appeal,pledge,pledge.contact',
             sort: '-donation_date'
         };
         if (donorAccountId) {

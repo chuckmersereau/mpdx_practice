@@ -69,5 +69,4 @@ describe('home.care.newsletter.export.controller', () => {
             });
         });
     });
-
 });

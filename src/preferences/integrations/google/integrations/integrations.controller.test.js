@@ -27,7 +27,7 @@ describe('preferences.integrations.google.integrations.controller', () => {
         it('should put to the api', () => {
             spyOn(api, 'put').and.callFake(() => Promise.resolve());
             $ctrl.save();
-            const errorMessage ='Unable to save Google integration.';
+            const errorMessage = 'Unable to save Google integration.';
             const successMessage = 'Google integration saved.';
             expect(gettextCatalog.getString).toHaveBeenCalledWith(successMessage);
             expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
