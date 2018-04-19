@@ -410,7 +410,15 @@ describe('common.api.service', () => {
         });
         it('should translate a default error message', () => {
             spyOn(alerts, 'addAlert').and.callFake(() => Promise.resolve());
-            const msg = 'An error occurred while contacting the server.';
+            const msg = 'An error occurred while processing your request.';
+            api.callFailed(ex, request, deferred, undefined, overridePromise);
+            expect(api.gettext).toHaveBeenCalledWith(msg);
+            expect(alerts.addAlert).toHaveBeenCalledWith(msg, 'danger', 0, true);
+        });
+        it('should translate a 504 error message', () => {
+            spyOn(alerts, 'addAlert').and.callFake(() => Promise.resolve());
+            const msg = 'An error occurred while connecting to MPDX.';
+            ex.status = 504;
             api.callFailed(ex, request, deferred, undefined, overridePromise);
             expect(api.gettext).toHaveBeenCalledWith(msg);
             expect(alerts.addAlert).toHaveBeenCalledWith(msg, 'danger', 0, true);
