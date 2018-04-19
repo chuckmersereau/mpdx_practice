@@ -1,0 +1,42 @@
+@mixin btn-variant($color, $alt-color, $background, $alt-background, $color-border, $alt-border) {
+    border-color: $color-border;
+    background-color: $background;
+    color: $color;
+    &:focus,
+    &.focus {
+        border-color: $alt-border;
+        background-color: $alt-background;
+        color: $alt-color;
+    }
+    &:hover {
+        border-color: $alt-border;
+        background-color: $alt-background;
+        color: $alt-color;
+    }
+    &:active,
+    &.active,
+    .open > &.dropdown-toggle {
+        border-color: $alt-border;
+        background-color: $alt-background;
+        background-image: none;
+        color: $alt-color;
+        box-shadow: none;
+        &:hover,
+        &:focus,
+        &.focus {
+            border-color: $alt-border;
+            background-color: $alt-background;
+            color: $alt-color;
+        }
+    }
+    &.disabled,
+    &[disabled],
+    fieldset[disabled] & {
+        &:hover,
+        &:focus,
+        &.focus {
+            border-color: $alt-border;
+            background-color: $alt-background;
+        }
+    }
+}

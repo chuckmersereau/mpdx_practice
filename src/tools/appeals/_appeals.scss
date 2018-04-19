@@ -1,7 +1,6 @@
-@import "list/list";
-@import "show/show";
-@import "wizard/wizard";
-
+@import 'list/list';
+@import 'show/show';
+@import 'wizard/wizard';
 appeals {
     .content-container {
         display: grid;

@@ -1,35 +1,26 @@
-/* 3rd Party Styles */
-@import "styles/vendor";
+@import 'styles/styles';
 
-/* Global MPDX Styles */
-@import "styles/styles";
-@import "styles/fonts/cru/ci.css"; /* doesn't work nested */
-
-/* Components */
-@import "blockUI/blockUI";
-@import "bottom/bottom";
-@import "menu/menu";
-@import "coaches/coaches";
-@import "common/common";
-@import "contacts/contacts";
-@import "home/home";
-@import "preferences/preferences";
-@import "reports/reports";
-@import "root/root";
-@import "setup/setup";
-@import "tasks/tasks";
-@import "tools/tools";
-@import "unavailable/unavailable";
-
-
-/* replace with sass variable once new style is ready */
+// Components
+@import 'blockUI/blockUI';
+@import 'bottom/bottom';
+@import 'menu/menu';
+@import 'coaches/coaches';
+@import 'common/common';
+@import 'contacts/contacts';
+@import 'home/home';
+@import 'preferences/preferences';
+@import 'reports/reports';
+@import 'root/root';
+@import 'setup/setup';
+@import 'tasks/tasks';
+@import 'tools/tools';
+@import 'unavailable/unavailable';
+// replace with sass variable once new style is ready
 .border-secondary {
     border-color: $color-secondary;
 }
-
 .text-success {color: $color-success;}
 .border-success {border-color: $color-success;}
-
 .strike {
     text-decoration: line-through;
 }

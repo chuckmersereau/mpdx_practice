@@ -1,42 +1,42 @@
 menu-balances {
     .section {
         display: inline-block;
+        margin-left: $gutter / 4;
         vertical-align: top;
-        margin-left: $gutter/4;
     }
     .account_balances {
         display: block;
-        font-size: 14px;
+        height: $height-progress-bar;
+        font-size: $font-size-sm;
         font-weight: 100;
-        line-height: $progress-bar-height;
-        height: $progress-bar-height;
+        line-height: $height-progress-bar;
         text-transform: none;
     }
-    #mpd_progress_bar {
-        text-align: left;
-        background: $cru-gray;
+    .mpd-progress-bar {
         display: block;
-        height: $progress-bar-height;
-        overflow: hidden;
-        width: 150px;
         position: relative;
+        width: 150px;
+        height: $height-progress-bar;
         border-radius: 0;
-        font-size: 80%;
+        background: color-gray(35);
+        font-size: $font-size-xs;
+        text-align: left;
+        overflow: hidden;
         .bar {
-            background: $progress;
+            background: $color-progress;
         }
         .bar-pledged {
-            background: $progress_dark;
+            background: $color-progress-dark;
         }
-        .value, .bar {
-            height: $progress-bar-height;
+        .value,
+        .bar {
             position: absolute;
+            height: $height-progress-bar;
         }
         .value {
-            line-height: normal;
             padding: 0 10px;
-            line-height: $progress-bar-height;
-            color: $cru-white;
+            color: $color-white;
+            line-height: $height-progress-bar;
         }
         .value.right {
             right: 0;

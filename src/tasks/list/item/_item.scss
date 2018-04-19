@@ -1,51 +1,52 @@
 tasks-list-item {
     div.item {
         display: grid;
-        grid-template-columns: 14px 30px auto auto 45px 52px 20px 20px;
-        padding: 10px 15px;
         height: 45px;
-        white-space: nowrap;
-        font-size: 14px;
-        line-height: 25px;
-        background-color: $cru-white;
+        padding: 10px 15px;
         transition: background-color 0.2s;
+        background-color: $color-white;
+        font-size: $font-size-sm;
+        line-height: 25px;
+        white-space: nowrap;
         cursor: pointer;
+        grid-template-columns: 14px 30px auto auto 45px 52px 20px 20px;
         > .select-box {
-            grid-column: 1;
             display: block;
+            align-self: center;
             height: 11px;
             border-radius: 3px;
             line-height: 22px;
-            align-self: center;
+            grid-column: 1;
             &.selected {
-                background-color: $cru-blue;
+                background-color: $color-blue;
             }
         }
         &:hover {
+            background-color: $color-bg-hover;
             > div.trash {
                 @extend .fade-in.ng-enter;
                 opacity: 1;
             }
             div.select-box {
                 @extend .fade-in.ng-enter;
-                border: 1px solid $tag-bgcolor;
+                border: 1px solid $color-primary;
             }
         }
         > a.complete {
+            line-height: 29px;
             text-align: center;
             grid-column: 2;
-            line-height: 29px;
             &:hover {
+                color: $color-success;
                 > i {
                     font-weight: 900;
                 }
-                color: $color-success;
             }
         }
         > div.content {
-            grid-column: 3;
-            overflow: hidden;
             text-overflow: ellipsis;
+            overflow: hidden;
+            grid-column: 3;
             > span.contacts {
                 margin-left: 5px;
             }
@@ -53,9 +54,9 @@ tasks-list-item {
         > div.tags {
             padding-right: 5px;
             text-align: right;
-            grid-column: 4;
-            overflow: hidden;
             text-overflow: ellipsis;
+            overflow: hidden;
+            grid-column: 4;
         }
         > div.date {
             grid-column: 5;
@@ -77,36 +78,32 @@ tasks-list-item {
             }
         }
         > div.trash {
-            text-align: center;
-            grid-column: 8;
             @extend .fade-in.ng-leave;
+            text-align: center;
             opacity: 0;
+            grid-column: 8;
             &:hover {
                 > a > i {
-                    font-weight: 900;
                     color: $color-danger;
+                    font-weight: 900;
                 }
             }
         }
         .item-text {
-            color: $cru-blue;
-            > a a:visited {
-                color: $cru-blue;
+            color: $color-blue;
+            > a:visited {
+                color: $color-blue;
             }
         }
-
         .tag {
+            height: 20px;
             margin-top: -2px;
             line-height: 20px;
-            height: 20px;
-        }
-        &:hover {
-            background-color: $hover_bg;
         }
         &--selected {
-            background-color: $selected_bg;
+            background-color: $color-selected-bg;
             &:hover {
-                background-color: $selected_hover_bg;
+                background-color: $color-selected-bg-hover;
             }
         }
     }

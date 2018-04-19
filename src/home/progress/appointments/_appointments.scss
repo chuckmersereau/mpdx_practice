@@ -3,7 +3,8 @@ progress-appointments {
     .panel-body.statistics {
         grid-template-columns: 1fr;
         grid-template-rows: 1fr;
-        > a, > div {
+        > a,
+        > div {
             @extend .item;
             grid-row: 1;
         }

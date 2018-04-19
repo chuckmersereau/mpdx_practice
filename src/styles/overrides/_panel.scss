@@ -1,0 +1,110 @@
+.panel {
+    border-radius: 1px;
+    border-color: $color-panel-border;
+    &.panel-default {
+        margin-bottom: 5px;
+        transition: border-color 0.5s;
+        .panel-heading {
+            line-height: 23px;
+            cursor: default;
+            user-select: none;
+            &-flex {
+                display: flex;
+                flex-direction: row;
+                padding: 0;
+                > i {
+                    width: 50px;
+                    padding: 10px $container-padding;
+                    border-right: 1px solid color-gray(85);
+                    line-height: 23px;
+                    text-align: center;
+                }
+                .panel-title {
+                    padding: 10px $container-padding;
+                }
+                .spacer {
+                    flex-grow: 1;
+                }
+                .btn {
+                    padding: 10px $container-padding;
+                    border: 0;
+                    border-left: 1px solid color-gray(85);
+                    border-radius: 0;
+                    line-height: 23px;
+                    &:focus {
+                        outline: 0;
+                    }
+                }
+            }
+        }
+        > .table,
+        > .panel-animate > .table {
+            tr {
+                td:first-child,
+                th:first-child {
+                    padding-left: 15px;
+                }
+                td:last-child,
+                th:last-child {
+                    padding-right: 15px;
+                }
+            }
+        }
+        .panel-footer {
+            transition: background-color 0.5s;
+            text-align: right;
+        }
+        &.panel-disabled {
+            > .panel-heading {
+                color: color-gray(25);
+                cursor: default;
+            }
+        }
+        &.panel-selected {
+            border-color: $color-secondary;
+            > .panel-heading,
+            > .panel-footer {
+                border-color: $color-secondary;
+                background-color: $color-secondary-alpha-50;
+            }
+        }
+        &--no-animate {
+            transition: none;
+        }
+    }
+    &-body {
+        .alert {
+            position: relative;
+        }
+    }
+    &-empty {
+        line-height: 150px;
+    }
+    &-group .panel {
+        border-radius: 1px;
+    }
+    &__prompt {
+        border-top: $color-secondary 5px solid;
+        .panel-body {
+            padding-top: 27px;
+            padding-bottom: 27px;
+        }
+        h2 {
+            margin-top: 0;
+            margin-bottom: 0;
+            font-size: 24px;
+            line-height: 39px;
+        }
+        .icon-alert {
+            display: inline-block;
+            width: 50px;
+            margin-right: 5px;
+            vertical-align: top;
+        }
+        .btn-primary {
+            min-width: 130px;
+            font-size: $font-size-md;
+            line-height: 25px;
+        }
+    }
+}

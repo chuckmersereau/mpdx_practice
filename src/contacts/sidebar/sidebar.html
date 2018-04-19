@@ -12,7 +12,7 @@
                 remove-rejected-tag="$ctrl.contactsTags.removeFromRejected($tag)">
 </filters-header>
 <contacts-filter ng-if="!$ctrl.session.isInState('contacts.show')"></contacts-filter>
-<div class="contact_drawer" ng-if="$ctrl.session.isInState('contacts.show')" role="complementary">
+<div class="contact-drawer" ng-if="$ctrl.session.isInState('contacts.show')" role="complementary">
     <div class="edit-filters">
         <div class="btn-group btn-group-justified" role="group">
           <button type="button" class="btn btn-reverse" ng-click="$ctrl.showFilters = false" ng-class="{'active':!$ctrl.showFilters}">

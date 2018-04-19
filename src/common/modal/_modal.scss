@@ -1,25 +1,26 @@
 .modal.center {
     position: fixed;
-    left: 0;
     top: 0;
-    bottom: 0;
     right: 0;
+    bottom: 0;
+    left: 0;
     overflow-y: auto;
     .modal-dialog {
-        margin: 0 auto;
         position: relative;
         top: auto;
         left: auto;
+        margin: 0 auto;
         transform: none;
         .modal-content {
-            margin: 3pc 0 5pc 0;
             position: relative;
+            margin: 3pc 0 5pc;
+            border-radius: 0;
             .alerts {
                 position: relative;
                 top: auto;
-                left: auto;
-                bottom: auto;
                 right: auto;
+                bottom: auto;
+                left: auto;
             }
             .alert-padding {
                 display: none;
@@ -31,19 +32,19 @@
                 }
                 .empty-map {
                     position: absolute;
-                    left: 0;
-                    right: 0;
                     top: 0;
-                    z-index: 10;
+                    right: 0;
+                    left: 0;
                     height: 200px;
+                    background-color: color-gray(25);
+                    color: $color-white;
+                    font-size: 75px;
                     line-height: 200px;
                     text-align: center;
-                    font-size: 75px;
-                    background-color: #3a3a3a;
-                    color: #fff;
+                    z-index: 10;
                 }
                 ng-map {
-                    margin: -15px -15px 15px -15px;
+                    margin: -15px -15px 15px;
                     > div {
                         min-height: 200px;
                     }
@@ -52,40 +53,39 @@
                     }
                 }
                 .modal-footer {
-                    margin: 0 -15px -15px -15px;
+                    margin: 0 -15px -15px;
                 }
             }
-            border-radius: 0;
         }
         .modal-header {
             padding: 0;
             .modal-title {
+                letter-spacing: 0.025em;
+                line-height: 56px;
                 text-align: center;
                 text-transform: uppercase;
-                letter-spacing: 0.025em;
-                line-height: 56px;
             }
             a.close {
-                border-left: 1px solid #e5e5e5;
-                font-size: 25px;
-                line-height: 56px;
-                padding: 0 20px;
                 margin: 0;
-                opacity: 1;
-                letter-spacing: 0.025em;
-                color: $gray_light;
+                padding: 0 20px;
                 transition: color 0.2s;
+                border-left: 1px solid color-gray(90);
+                color: color-gray(90);
+                font-size: 25px;
+                letter-spacing: 0.025em;
+                line-height: 56px;
+                opacity: 1;
                 i.fa-angle-left {
                     margin-left: -5px;
                 }
                 &:hover {
-                    color: $gray_dark;
+                    color: color-gray(35);
                 }
             }
         }
         .modal-footer {
             .btn-link {
-                color: $gray_dark;
+                color: color-gray(35);
                 &:hover {
                     text-decoration: none;
                 }
@@ -95,10 +95,10 @@
             }
         }
         .row {
-            margin: 0 0 5px 0;
-            [class*="col-"] {
-                padding-left: 5px;
+            margin: 0 0 5px;
+            [class*='col-'] {
                 padding-right: 5px;
+                padding-left: 5px;
             }
         }
         .checkbox-label {
@@ -107,21 +107,21 @@
         .modal-panel-container {
             margin: -15px;
             .modal-panel-title {
-                text-align: center;
-                text-transform: uppercase;
+                border-bottom: 1px solid color-gray(90);
+                background-color: $color-white;
+                font-size: 1.25rem;
                 letter-spacing: 0.025em;
                 line-height: 40px;
-                font-size: 1.25rem;
-                border-bottom: 1px solid $gray_light;
-                background-color: #fff;
+                text-align: center;
+                text-transform: uppercase;
             }
             .modal-panel-left {
-                border-right: 1px solid $gray_light;
                 padding: 0;
+                border-right: 1px solid color-gray(90);
             }
             .modal-panel-right {
                 padding: 0;
-                background-color: #f9fafa;
+                background-color: color-gray(95);
             }
             .modal-panel-content {
                 padding: 15px;
@@ -137,30 +137,14 @@
             }
         }
     }
-
-    #contacts-map{
-        margin-right: 188px;
-    }
-
-    #contacts_map_modal{
-        height: 390px;
-        .contacts-map-markers{
-            top: 20px;
-        }
-    }
-
-    .excel_export{
-        margin-top: 17px;
-    }
-
-    >.modal-size-lg{
-        max-width: 80% !important;
+    >.modal-size-lg {
         width: 80% !important;
+        max-width: 80% !important;
     }
 }
 .fade {
+    transition: opacity 0.15s linear;
     opacity: 0;
-    transition: opacity .15s linear;
 }
 .fade.in {
     opacity: 1;
@@ -169,19 +153,72 @@
     overflow: hidden;
 }
 .modal {
+    display: none;
     position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 1050;
-    display: none;
-    overflow: hidden;
     outline: 0;
+    overflow: hidden;
+    z-index: 1050;
+    .modal-dialog {
+        .modal-content {
+            border-radius: 0;
+            .modal-body {
+                position: relative;
+                .empty-map {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    left: 0;
+                    height: 200px;
+                    background-color: color-gray(25);
+                    color: $color-white;
+                    font-size: 75px;
+                    line-height: 200px;
+                    text-align: center;
+                    z-index: 10;
+                }
+                ng-map {
+                    margin: -15px -15px 15px;
+                    > div {
+                        min-height: 200px;
+                    }
+                    &:first-child {
+                        margin-top: -15px;
+                    }
+                }
+            }
+        }
+        .modal-header {
+            min-height: 56px;
+            a.close {
+                font-size: 25px;
+                line-height: 25px;
+            }
+        }
+        &.modal-small {
+            max-width: 400px;
+        }
+        .row {
+            margin: 0;
+            [class*='col-'] {
+                padding-right: 5px;
+                padding-left: 5px;
+                &:first-child {
+                    padding-left: 0;
+                }
+                &:last-child {
+                    padding-right: 0;
+                }
+            }
+        }
+    }
 }
 .modal.fade .modal-dialog {
-    transition:         transform .3s ease-out;
     transform: translate3d(0, -25%, 0);
+    transition: transform 0.3s ease-out;
 }
 .modal.in .modal-dialog {
     transform: translate3d(0, 0, 0);
@@ -197,13 +234,12 @@
 }
 .modal-content {
     position: relative;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #999;
-    border: 1px solid rgba(0, 0, 0, .2);
+    border: 1px solid $color-black-alpha-20;
     border-radius: 6px;
     outline: 0;
-    box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+    background-clip: padding-box;
+    background-color: $color-white;
+    box-shadow: 0 3px 9px $color-black-alpha-50;
 }
 .modal-backdrop {
     position: fixed;
@@ -211,21 +247,21 @@
     right: 0;
     bottom: 0;
     left: 0;
+    background-color: $color-black;
     z-index: 1040;
-    background-color: #000;
 }
 .modal-backdrop.fade {
-    filter: alpha(opacity=0);
     opacity: 0;
+    filter: alpha(opacity=0);
 }
 .modal-backdrop.in {
+    opacity: 0.5;
     filter: alpha(opacity=50);
-    opacity: .5;
 }
 .modal-header {
     min-height: 16.42857143px;
     padding: 15px;
-    border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid color-gray(90);
 }
 .modal-header .close {
     margin-top: -2px;
@@ -240,8 +276,8 @@
 }
 .modal-footer {
     padding: 15px;
+    border-top: 1px solid color-gray(90);
     text-align: right;
-    border-top: 1px solid #e5e5e5;
 }
 .modal-footer .btn + .btn {
     margin-bottom: 0;
@@ -260,83 +296,13 @@
     height: 50px;
     overflow: scroll;
 }
-.modal {
-    .modal-dialog {
-        .modal-content {
-            .modal-body {
-                position: relative;
-                .empty-map {
-                    position: absolute;
-                    left: 0;
-                    right: 0;
-                    top: 0;
-                    z-index: 10;
-                    height: 200px;
-                    line-height: 200px;
-                    text-align: center;
-                    font-size: 75px;
-                    background-color: #3a3a3a;
-                    color: #fff;
-                }
-                ng-map {
-                    margin: -15px -15px 15px -15px;
-                    > div {
-                        min-height: 200px;
-                    }
-                    &:first-child {
-                        margin-top: -15px;
-                    }
-                }
-            }
-            border-radius: 0;
-        }
-        .modal-header {
-            min-height: 56px;
-            a.close {
-                line-height: 25px;
-                font-size: 25px;
-            }
-        }
-        &.modal-small {
-            max-width: 400px;
-        }
-        .row {
-            margin: 0;
-            [class*="col-"] {
-                padding-left: 5px;
-                padding-right: 5px;
-                &:first-child {
-                    padding-left: 0;
-                }
-                &:last-child {
-                    padding-right: 0;
-                }
-            }
-        }
-    }
-
-    #contacts-map{
-        margin-right: 188px;
-    }
-
-    #contacts_map_modal{
-        height: 390px;
-        .contacts-map-markers{
-            top: 20px;
-        }
-    }
-
-    .excel_export{
-        margin-top: 17px;
-    }
-}
 @media (min-width: 768px) {
     .modal-dialog {
         width: 600px;
         margin: 30px auto;
     }
     .modal-content {
-        box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+        box-shadow: 0 5px 15px $color-black-alpha-50;
     }
     .modal-sm {
         width: 300px;

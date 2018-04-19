@@ -5,12 +5,12 @@ progress-appeals {
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: repeat(2, 1fr);
         > div.item {
-            grid-row: 1;
-            text-align: center;
-            border-right: 1px solid #ccc;
             align-self: center;
+            border-right: 1px solid color-gray(80);
+            text-align: center;
+            grid-row: 1;
             &:nth-child(2) {
-                border-right: none;
+                border-right: 0;
             }
         }
         > appeals-progressbar {

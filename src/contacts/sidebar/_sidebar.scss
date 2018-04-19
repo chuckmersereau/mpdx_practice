@@ -1,30 +1,29 @@
-@import "filter/filter";
-@import "filter/tags/tags";
-@import "list/list";
-
+@import 'filter/filter';
+@import 'filter/tags/tags';
+@import 'list/list';
 contacts-sidebar {
-    background-color: $filter-bar-bg-color;
-    overflow-y: auto;
     padding: $container-padding 0;
-    > div.contact_drawer {
+    background-color: $color-filter-bar;
+    overflow-y: auto;
+    > div.contact-drawer {
         display: grid;
         grid-template-rows: auto 1fr;
         > div.edit-filters {
-            color: $cru-white;
+            padding: 0 $container-padding 10px;
+            color: $color-white;
             line-height: 29px;
             grid-row: 1 / 1;
-            padding: 0 $container-padding 10px;
             .btn-group-justified {
                 display: flex;
                 button.btn {
                     flex-grow: 1;
                     transition: background-color 0.2s ease-out;
-                    &:focus {
-                        outline: none;
-                    }
-                    &.active {
-                        background-color: #606B79;
-                    }
+                }
+                button.btn:focus {
+                    outline: none;
+                }
+                button.btn.active {
+                    background-color: $color-sidebar-bg;
                 }
             }
         }

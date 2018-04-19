@@ -5,15 +5,15 @@
             <a ui-sref="contacts.show({contactId: $ctrl.contact.id})" ng-click="$event.stopPropagation()" class="text-primary">
                 {{::$ctrl.contact.name}}
             </a>
-            <i class="fas fa-circle circle-on-time"
+            <i class="fas fa-circle fa-circle-sucess"
                ng-if="::$ctrl.daysLate() < 0"
                data-title="{{ ::'on time' | translate }}"
                bs-tooltip></i>
-            <i class="fas fa-circle circle-late"
+            <i class="fas fa-circle fa-circle-warning"
                ng-if="::$ctrl.daysLate() >= 30 && $ctrl.daysLate() < 60"
                data-title="{{ ::'30+ days late' | translate }}"
                bs-tooltip></i>
-            <i class="fas fa-circle circle-very-late"
+            <i class="fas fa-circle fa-circle-danger"
                ng-if="::$ctrl.daysLate() >= 60"
                data-title="{{ ::'60+ days late' | translate }}"
                bs-tooltip></i>

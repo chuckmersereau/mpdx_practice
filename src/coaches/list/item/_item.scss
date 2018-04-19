@@ -1,28 +1,28 @@
 coaches-list-item {
     .progress {
-        background: $cru-gray;
-        border-radius: 0;
-        height: 24px;
         position: relative;
+        height: 24px;
+        border-radius: 0;
+        background: color-gray(35);
         .progress-bar {
             position: absolute;
             left: 0;
             box-shadow: none;
             &--light {
-                background: $progress;
+                background: $color-progress;
             }
             &--dark {
-                background: $progress_dark;
+                background: $color-progress-dark;
             }
         }
         .progress-text {
             position: absolute;
             right: 0;
-            line-height: 24px;
-            color: $cru-white;
-            text-align: right;
-            font-size: 90%;
             margin-right: 6px;
+            color: $color-white;
+            font-size: $font-size-sm;
+            line-height: 24px;
+            text-align: right;
         }
     }
 }

@@ -1,26 +1,27 @@
+
 contacts-list-item {
     display: block;
-    font-size: $font-size-sm;
-    border-bottom: 1px solid $color-bg;
     transition: background-color 0.2s;
+    border-bottom: 1px solid $color-bg;
+    font-size: $font-size-sm;
     .contact-row {
         display: grid;
+        padding: $container-padding;
+        font-size: $font-size-sm;
+        cursor: pointer;
+        grid-column-gap: 15px;
         grid-template-columns: 14px 25px 2fr 1fr 1fr auto;
         grid-template-rows: 1fr auto;
-        grid-column-gap: 15px;
-        padding: $container-padding;
-        cursor: pointer;
-        font-size: 14px;
         .select-box {
-            grid-column: 1;
             display: block;
             height: 11px;
+            margin-top: 3px;
+            border: 1px solid transparent;
             border-radius: 3px;
             line-height: 22px;
-            border: 1px solid transparent;
-            margin-top: 3px;
+            grid-column: 1;
             &.selected {
-                background-color: $cru-blue;
+                background-color: $color-blue;
             }
         }
         avatar {
@@ -28,7 +29,8 @@ contacts-list-item {
             .avatar {
                 margin-top: -4px;
             }
-            .avatar, .avatar img {
+            .avatar,
+            .avatar img {
                 width: 25px;
                 height: 25px;
             }
@@ -37,36 +39,38 @@ contacts-list-item {
             grid-column: 3;
             .main-details {
                 h4 {
-                    margin-bottom: 0;
                     margin-top: 0;
-                    font-size: 1.0rem;
+                    margin-bottom: 0;
+                    font-size: 1rem;
                     font-weight: 600;
-                    a, a:visited {
-                        color: $cru-blue;
+                    a,
+                    a:visited {
+                        color: $color-blue;
                     }
                 }
                 address {
                     display: inline-block;
-                    text-align: left;
-                    line-height: 1.25;
                     font-weight: 300;
+                    line-height: 1.25;
+                    text-align: left;
                     span.address-street {
                         display: block;
                         max-height: 18px;
-                        overflow: hidden;
                         text-overflow: ellipsis;
+                        overflow: hidden;
                     }
                 }
                 .people {
                     margin: 0;
                     .people-single-contact {
+                        display: block;
+                        height: 18px;
                         line-height: 1.25em;
                         text-overflow: ellipsis;
-                        height: 18px;
-                        display: block;
                         white-space: nowrap;
                         overflow: hidden;
-                        a, span {
+                        a,
+                        span {
                             margin-right: 10px;
                         }
                     }
@@ -74,9 +78,6 @@ contacts-list-item {
             }
             .more-details {
                 line-height: 1.35em;
-                .pledge_not_received_icon {
-                    font-size: 70%;
-                }
             }
             .address > address {
                 margin-bottom: 0;
@@ -92,34 +93,34 @@ contacts-list-item {
             }
         }
         .hover-buttons {
-            grid-column: 6;
             @extend .fade-in.ng-leave;
             opacity: 0;
+            grid-column: 6;
         }
         div.tags-row {
+            display: flex;
             grid-row: 2;
             grid-column: 3 / span 4;
-            display: flex;
             .tags {
                 flex-grow: 1;
-                overflow: hidden;
-                text-overflow: ellipsis;
                 max-height: 31px;
+                text-overflow: ellipsis;
+                overflow: hidden;
                 &.expanded {
                     max-height: 100%;
                 }
                 .tag {
-                    overflow: hidden;
+                    max-width: 150px;
                     text-overflow: ellipsis;
                     white-space: nowrap;
-                    max-width: 150px;
+                    overflow: hidden;
                 }
             }
             .show-more {
                 width: 250px;
+                font-size: $font-size-xs;
                 line-height: 31px;
                 text-align: right;
-                font-size: 12px;
             }
         }
         &:hover {
@@ -129,17 +130,17 @@ contacts-list-item {
             }
             div.select-box {
                 transition: border-color 0.2s ease-out;
-                border-color: $tag-bgcolor;
+                border-color: $color-primary;
             }
         }
     }
     &:hover {
-        background-color: $hover_bg;
+        background-color: $color-bg-hover;
     }
     &.selected {
-        background-color: $selected_bg;
+        background-color: $color-selected-bg;
         &:hover {
-            background-color: $selected_hover_bg;
+            background-color: $color-selected-bg-hover;
         }
     }
 }

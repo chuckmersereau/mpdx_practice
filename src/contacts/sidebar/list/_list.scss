@@ -1,70 +1,71 @@
 contacts-sidebar-list {
-    height: 100%;
     display: grid;
+    height: 100%;
     overflow: hidden;
     grid-template-rows: 34px 100%;
     > form {
+        padding: 0 $container-padding;
         grid-row: 1;
         .input-group {
-            .input-group-addon, .form-control {
-                color: $cru-white;
-                background-color: $filter-select-bg-color;
-                border: 1px solid $borders;
+            .input-group-addon,
+            .form-control {
+                border: 1px solid $color-border;
+                background-color: $color-filter-select-bg;
+                color: $color-white;
             }
             .input-group-addon {
                 border-right: 0;
             }
         }
-        padding: 0 $container-padding;
     }
     > div.content {
-        grid-row: 2;
-        overflow-y: auto;
         padding-top: 10px;
+        overflow-y: auto;
+        grid-row: 2;
         .item {
             padding: 0;
+            border-top: 1px solid $color-gray-blue;
             font-size: $font-size-sm;
-            border-top: 1px solid $filter-group-border-color;
             &:first-child {
-                border-top: none;
+                border-top: 0;
             }
             a {
                 display: grid;
-                grid-template-columns: auto auto;
-                transition: background-color 0.2s ease-in, color 0.2s ease-in;
-                line-height: 35px;
-                font-size: $font-size-sm;
-                padding: 0 $container-padding;
-                white-space: nowrap;
                 width: 100%;
+                padding: 0 $container-padding;
+                transition: background-color 0.2s ease-in, color 0.2s ease-in;
+                font-size: $font-size-sm;
+                line-height: 35px;
+                white-space: nowrap;
                 cursor: pointer;
+                grid-template-columns: auto auto;
                 &:hover {
-                    background-color: #606B79;
+                    background-color: $color-sidebar-bg;
                     text-decoration: none;
                 }
                 &.active {
-                    background-color: #606B79;
-                    color: $cru-white;
+                    background-color: $color-sidebar-bg;
+                    color: $color-white;
                 }
                 > div.name {
-                    color: $cru-white;
+                    color: $color-white;
+                    text-overflow: ellipsis;
                     white-space: nowrap;
                     overflow: hidden;
-                    text-overflow: ellipsis;
                     grid-column: 1;
                 }
                 > div.overdue {
-                    grid-column: 2;
                     justify-content: end;
                     text-align: right;
+                    grid-column: 2;
                 }
             }
         }
     }
     > div.loading {
-        text-align: center;
-        color: $cru-white;
         padding: 15px 0;
+        color: $color-white;
+        text-align: center;
     }
 
 }

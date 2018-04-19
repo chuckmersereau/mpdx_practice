@@ -57,7 +57,7 @@ class ContactController {
         this.tabsLabels = tabsLabels;
 
         this.sortableOptions = {
-            containment: '#contact-tabs .horizontal-tab-sortable',
+            containment: '.contact-tabs .horizontal-tab-sortable',
             // restrict move across columns. move only within column.
             accept: (sourceItemHandleScope, destSortableScope) =>
                 sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id,

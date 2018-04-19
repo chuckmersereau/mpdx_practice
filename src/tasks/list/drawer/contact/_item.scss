@@ -6,12 +6,12 @@ task-list-contact {
         border-top: 1px solid $color-bg;
     }
     label {
-        @extend h4;
-        font-size: 12px;
+        @extend .h4;
         margin-bottom: 3px;
-        text-transform: uppercase;
+        color: color-gray(60);
+        font-size: $font-size-xs;
         font-weight: bold;
-        color: #9B9B9B;
+        text-transform: uppercase;
     }
     > .top-row {
         display: grid;
@@ -19,23 +19,25 @@ task-list-contact {
         grid-gap: 10px;
         avatar {
             grid-column: 1;
-            &, .avatar, .avatar img {
+            &,
+            .avatar,
+            .avatar img {
                 width: $avatar-size;
                 height: $avatar-size;
             }
         }
         .main-details {
             h4 {
-                margin-bottom: 10px;
                 margin-top: 0;
-                font-size: 1.0rem;
+                margin-bottom: 10px;
+                font-size: 1rem;
                 font-weight: 600;
             }
             address {
                 display: inline-block;
-                text-align: left;
-                line-height: 1.25;
                 font-weight: 300;
+                line-height: 1.25;
+                text-align: left;
             }
             .people {
                 margin: 5px 0;
@@ -47,33 +49,33 @@ task-list-contact {
                 margin-bottom: 0;
             }
             button.email-all {
-                line-height: 1.25em;
-                padding: 0 12px;
                 margin-bottom: 10px;
+                padding: 0 12px;
+                line-height: 1.25em;
             }
         }
     }
     .more-details > div {
         display: block;
-        font-weight: 600;
         height: 20px;
+        font-weight: 600;
     }
     > div.tags-row {
         display: grid;
         grid-template-columns: 1fr 20px;
         > div.tags {
             max-height: 27px;
-            overflow: hidden;
             text-overflow: ellipsis;
+            overflow: hidden;
             &.expanded {
                 max-height: 100%;
             }
             .tag {
                 max-width: 100px;
                 max-height: 27px;
-                overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
+                overflow: hidden;
             }
         }
     }

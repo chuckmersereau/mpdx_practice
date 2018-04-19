@@ -1,0 +1,15 @@
+.glyphicon {
+    @extend .fas;
+    &-chevron-left {
+        @extend .fa-chevron-left;
+    }
+    &-chevron-right {
+        @extend .fa-chevron-right;
+    }
+    &-chevron-up {
+        @extend .fa-chevron-up;
+    }
+    &-chevron-down {
+        @extend .fa-chevron-down;
+    }
+}

@@ -1,14 +1,14 @@
 impersonation-bar {
     .nav--impersonation {
-        background: $gray_light;
-        text-align: center;
-        font-weight: bold;
+        background: color-gray(90);
         font-size: 18px;
-        line-height: $impersonation-height;
+        font-weight: bold;
+        line-height: $height-impersonation;
+        text-align: center;
         .btn {
-            display:inline-block;
-            vertical-align: middle;
+            display: inline-block;
             margin: 0 0 5px 10px;
+            vertical-align: middle;
         }
     }
 }

@@ -117,11 +117,11 @@
     "postcss-loader": "^2.1.1",
     "raw-loader": "^0.5.1",
     "rollbar-sourcemap-webpack-plugin": "^2.0.1",
+    "sass-lint": "^1.12.1",
     "sass-loader": "^6.0.7",
     "style-loader": "^0.20.3",
     "url-loader": "^1.0.1",
     "wallaby-webpack": "^3.9.5",
-    "webfonts-generator": "0.4.0",
     "webpack": "^4.1.1",
     "webpack-cli": "^2.0.10",
     "webpack-dev-server": "^3.1.0"

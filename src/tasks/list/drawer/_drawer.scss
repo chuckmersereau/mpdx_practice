@@ -1,60 +1,57 @@
-@import "comment/comment";
-@import "contact/item";
-
+@import 'comment/comment';
+@import 'contact/item';
 $task-drawer-width: $side-drawer-width - 2px;
-
 task-item-drawer {
     display: block;
-    height: 99%;
     width: 538px;
-    background-color: $cru-gray-tint;
-
+    height: 99%;
+    background-color: color-gray(90);
     > div.head {
         width: $task-drawer-width;
         > div.task-info {
-            padding-left: 5px;
-            padding-bottom: 5px;
             margin-top: 20px;
             margin-left: 15px;
+            padding-bottom: 5px;
+            padding-left: 5px;
             > h2 {
                 margin: 0;
                 font-weight: 600;
             }
         }
         > div.horizontal-tab-sortable {
-            background-color: $cru-white;
+            background-color: $color-white;
             .sortable-row {
                 padding-left: 0;
             }
             .active-item {
-                background-color: $cru-gray-tint;
-                border-bottom-color: $cru-gray-tint;
+                border-bottom-color: color-gray(90);
+                background-color: color-gray(90);
             }
         }
     }
     > div.contacts {
         width: $task-drawer-width;
         height: calc(100% - 40px);
-        overflow-y: auto;
         padding: 5px;
+        overflow-y: auto;
         task-list-contact {
-            padding: 15px;
             display: block;
-            background-color: $cru-white;
+            padding: 15px;
+            background-color: $color-white;
         }
     }
     > div.comments {
+        position: relative;
         width: $task-drawer-width;
         height: 100%;
         overflow-y: auto;
-        position: relative;
         > div.bottom {
-            background-color: $cru-gray-tint;
-            width: 100%;
             position: absolute;
-            padding: 5px 5px 5px 10px;
             bottom: 97px;
             left: 0;
+            width: 100%;
+            padding: 5px 5px 5px 10px;
+            background-color: color-gray(90);
             i {
                 padding-right: 5px;
             }

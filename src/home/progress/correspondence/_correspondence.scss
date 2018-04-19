@@ -1,6 +1,6 @@
 progress-correspondence {
     height: 100%;
-    .panel-body.statistics{
+    .panel-body.statistics {
         grid-template-columns: repeat(4, 1fr);
         > div {
             @extend .item;

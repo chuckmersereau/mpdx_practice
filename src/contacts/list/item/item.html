@@ -73,19 +73,19 @@
         </div>
         <div ng-if="::$ctrl.contact.status === 'Partner - Financial'">
             <span ng-if="::$ctrl.daysLate() < 0">
-                <i class="fas fa-circle circle-success"></i>
+                <i class="fas fa-circle fa-circle-success"></i>
                 <translate>on time</translate>
             </span>
             <span ng-if="::$ctrl.daysLate() >= 0 && $ctrl.daysLate() < 30">
-                <i class="fas fa-circle circle-default"></i>
+                <i class="fas fa-circle fa-circle-default"></i>
                 <translate>0-30 days late</translate>
             </span>
             <span ng-if="::$ctrl.daysLate() >= 30 && $ctrl.daysLate() < 60">
-                <i class="fas fa-circle circle-warning"></i>
+                <i class="fas fa-circle fa-circle-warning"></i>
                 <translate>30-60 days late</translate>
             </span>
             <span ng-if="::$ctrl.daysLate() >= 60">
-                <i class="fas fa-circle circle-danger"></i>
+                <i class="fas fa-circle fa-circle-danger"></i>
                 <translate>60+ days late</translate>
             </span>
         </div>

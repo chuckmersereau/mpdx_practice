@@ -1,6 +1,6 @@
 <div block-ui="contactShow" class="contact-show" ng-class="{'drawer': $ctrl.contacts.activeDrawer}">
     <contact-info contact="$ctrl.contacts.current" on-save="$ctrl.save()"></contact-info>
-    <div id="contact-tabs">
+    <div class="contact-tabs">
         <div class="horizontal-tab-sortable">
             <div class="sortable-row" as-sortable="$ctrl.sortableOptions" data-ng-model="$ctrl.tabsLabels">
                 <div ng-repeat="item in $ctrl.tabsLabels"

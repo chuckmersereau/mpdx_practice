@@ -1,15 +1,14 @@
-@import "add/add";
-@import "drawer/drawer";
-@import "item/item";
-
+@import 'add/add';
+@import 'drawer/drawer';
+@import 'item/item';
+$search-bar-width: 275px;
 tasks-list {
-    $search-bar-width: 275px;
     @extend .lists;
     display: grid;
+    height: 100%;
+    overflow: hidden;
     grid-template-rows: auto auto 1fr;
     grid-template-columns: 1fr auto;
-    overflow: hidden;
-    height: 100%;
     > div.menu {
         @extend .lists.item-list-menu;
         grid-row: 1;
@@ -21,9 +20,9 @@ tasks-list {
             grid-row-gap: 5px;
         }
         > .selected-count {
-            grid-column: 1;
-            color: $cru-white;
             display: grid;
+            color: $color-white;
+            grid-column: 1;
             grid-template-columns: auto 1fr;
             grid-template-rows: 1fr 0; // 0 row for odd chrome display
             grid-column-gap: 15px;
@@ -36,23 +35,23 @@ tasks-list {
                 grid-row: 1;
             }
             .count {
+                font-size: $font-size-sm;
                 line-height: 33px;
-                font-size: 14px;
                 grid-column: 2;
                 grid-row: 1;
             }
         }
         > .search-bar {
             @extend .lists.item-list-menu.search-bar;
-            grid-column: 3;
             width: $search-bar-width;
+            grid-column: 3;
             @media (max-width: $contact-menu-breakpoint) {
                 width: 100%;
                 grid-column: 1 / span 3;
             }
             .input-group-addon {
-                background-color: $cru-white;
                 padding-right: 0;
+                background-color: $color-white;
             }
             input {
                 border-left-width: 0;
@@ -74,50 +73,47 @@ tasks-list {
             }
         }
     }
-
     > div.sub-menu {
         @extend .lists.item-list-sub-menu;
         grid-column: 1;
         grid-row: 2;
         > div.sub-line-1 {
             display: grid;
-            grid-template-columns: 1fr auto;
             line-height: 34px;
+            grid-template-columns: 1fr auto;
         }
     }
-
     > div.content {
         @extend .lists.content;
         grid-column: 1;
         grid-row: 3;
     }
-
     > side-drawer {
         grid-column: 2;
         grid-row: 1 / span 3;
     }
     .panel {
         &.panel-default {
-            border: none;
+            border: 0;
         }
         .panel-heading {
-            background-color: $cru-white;
+            background-color: $color-white;
             &.today {
                 border-color: $color-secondary;
             }
             &.overdue {
-                border-color: #F6921E;
+                border-color: $color-orange;
             }
             &.upcoming {
-                border-color: #56AA00;
+                border-color: $color-green-dark;
             }
             &.no-due-date {
-                border-color: #3eb1c8;
+                border-color: $color-cyan-dark;
             }
             > .task-category-title {
-                height: 23px;
                 width: 78px;
-                color: #393939;
+                height: 23px;
+                color: color-gray(20);
                 font-size: 18px;
                 line-height: 23px;
             }

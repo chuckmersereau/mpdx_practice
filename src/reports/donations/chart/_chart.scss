@@ -1,20 +1,16 @@
-$pledges-color: #007398;
-$montly-goal-color: #3eb1c8;
-$montly-average-color: #666062;
-
 donations-chart {
     .chart-container {
-        margin: 0 auto;
         max-width: 1024px;
+        margin: 0 auto;
     }
     .pledges-color {
-        color: $pledges-color;
+        color: $color-pledges;
     }
-    .montly-goal-color {
-        color: $montly-goal-color;
+    .color-montly-goal {
+        color: $color-montly-goal;
     }
-    .montly-average-color {
-        color: $montly-average-color;
+    .color-montly-average {
+        color: $color-montly-average;
     }
     .panel.panel-default {
         margin-bottom: 0;

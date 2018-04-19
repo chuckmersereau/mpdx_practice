@@ -7,7 +7,7 @@ script:
 - bin/run_lint.sh
 after_deploy: aws/invalidate_cloudfront.sh
 before_install:
-  - yarn global add gulp codecov
+  - yarn global add gulp codecov sass-lint
 branches:
   only:
   - master

@@ -1,0 +1,113 @@
+// color base
+$color-black:                  #000;
+$color-blue:                   #317494;
+$color-blue-lighter:           #d6ecf2;
+$color-blue-light:             #428bca;
+$color-blue-deep:              #52a8ec;
+$color-cyan-dark:              #3eb1c8;
+$color-cyan-darker:            #007398;
+$color-gold:                   #f5be19;
+$color-green:                  #37a922;
+$color-green-dark:             #56aa00;
+$color-green-darker:           #090;
+$color-green-light:            #def8cf;
+$color-mustard:                #ead50e;
+$color-mustard-dark:           #4e4001;
+$color-orange-lighter:         #f7e5c1;
+$color-orange:                 #f6921e;
+$color-orange-dark:            #dd7d1b;
+$color-orange-light:           #f9b625;
+$color-red:                    #f00;
+$color-red-light:              #fcc;
+$color-red-dark:               #98191c;
+$color-white:                  #fff;
+$color-yellow-light:           #feffde;
+$color-gray-blue:              #5e6b7b;
+$color-gray-cyan:              #909b9c;
+$color-gray-pink:              #666062;
+
+// color grey
+@function color-gray($gray-value) {
+    @return lighten(#000, (round($gray-value / 5) * 5));
+}
+
+// color custom
+$color-primary:                $color-blue;
+$color-secondary:              $color-gold;
+$color-secondary-light:        lighten($color-secondary, 38%);
+$color-text:                   color-gray(35);
+$color-text-muted:             color-gray(20);
+$color-link:                   color-gray(35);
+$color-reverse:                $color-white;
+$color-bg:                     color-gray(90);
+$color-info:                   $color-blue;
+$color-link:                   $color-info;
+$color-success:                $color-green;
+$color-warning:                $color-gold;
+$color-danger:                 #f00;
+$color-nav-selected:           #4a90e2;
+$color-nav-selected-dark:      darken($color-nav-selected, 10%);
+$color-menu-bg:                color-gray(95);
+$color-menu-border:            lighten(color-gray(35), 50%);
+$color-panel-bg:               color-gray(35);
+$color-panel-border:           color-gray(75);
+$color-merge-selected:         #bbcd5c;
+$color-merge-ignored:          #e55b36;
+$color-merge-default:          #dbdbdb;
+$color-pledges:                $color-blue;
+$color-montly-goal:            $color-cyan-dark;
+$color-montly-average:         $color-gray-pink;
+$color-filter-bar:             #4a535e;
+$color-filter-bar-dark:        darken($color-filter-bar, 5%);
+$color-filter-select-bg:       #2f363f;
+$color-filter-reverse:         #e45c5c;
+$color-filter-reverse-dark:    #9b0000;
+$color-sidebar-bg:             #606b79;
+$color-border:                 color-gray(60);
+$color-progress:               $color-gold;
+$color-progress-dark:          $color-orange-dark;
+$color-selected-bg:            color-gray(95);
+$color-selected-bg-hover:      darken($color-selected-bg, 10%);
+$color-bg-hover:               lighten($color-blue, 50%);
+$color-tag:                    $color-blue;
+$color-tag-light:              lighten($color-tag, 5%);
+$color-tag-reverse:            $color-filter-reverse-dark;
+$color-tag-reverse-light:      lighten($color-tag-reverse, 5%);
+
+// color alpha
+$color-black-alpha-50:         rgba($color-black, 0.5);
+$color-black-alpha-20:         rgba($color-black, 0.2);
+$color-black-alpha-10:         rgba($color-black, 0.1);
+$color-blue-deep-alpha-80:     rgba($color-blue-deep, 0.8);
+$color-blue-deep-alpha-60:     rgba($color-blue-deep, 0.6);
+$color-blue-deep-alpha-10:     rgba($color-blue-deep, 0.1);
+$color-secondary-alpha-50:     rgba($color-secondary, 0.5);
+$color-secondary-alpha-20:     rgba($color-secondary, 0.2);
+
+$gutter:                    30px;
+$border-radius:             3px;
+
+// height
+$height-progress-bar:                24px;
+$height-nav:                         93px;
+$height-secondary:                   43px;
+$height-setup:                       -40px;
+$height-impersonation:               35px;
+$height-impersonation-nav:           $height-nav + $height-impersonation;
+$height-secondary-nav:               $height-nav + $height-secondary;
+$height-setup-nav:                   $height-nav + $height-setup;
+$height-secondary-impersonation-nav: $height-nav + $height-secondary + $height-impersonation;
+$height-setup-impersonation-nav:     $height-nav + $height-setup + $height-impersonation;
+$height-footer: 30px;
+$height-comment-body: 15px;
+$height-comment-footer: 13px;
+
+$nav-padding: 20px;
+$container-padding: 15px;
+$container-padding-left: $container-padding;
+$container-padding-right: $container-padding;
+$content-padding-left: 5px;
+$content-padding-right: 10px;
+
+$contact-menu-breakpoint: 1000px;
+$menu-breakpoint: 800px;

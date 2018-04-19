@@ -7,7 +7,9 @@ contact-info {
         grid-gap: 10px;
         avatar {
             grid-column: 1;
-            &, .avatar, .avatar img {
+            &,
+            .avatar,
+            .avatar img {
                 width: 38px;
                 height: 38px;
             }
@@ -17,7 +19,7 @@ contact-info {
             input {
                 border-bottom-color: transparent;
                 &:focus {
-                    border-bottom-color: #007398;
+                    border-bottom-color: $color-blue;
                 }
             }
         }
@@ -35,15 +37,15 @@ contact-info {
         }
         label {
             @extend h4;
-            font-size: 12px;
-            margin: 0 0 3px 0;
-            color: #9B9B9B;
+            margin: 0 0 3px;
+            color: color-gray(60);
+            font-size: $font-size-xs;
         }
         > div.address {
+            color: color-gray(35);
+            font-size: $font-size-sm;
             grid-column: 4;
             grid-row: 1 / span 4;
-            font-size: 14px;
-            color: $cru-gray;
             label {
                 margin-bottom: 6px;
             }

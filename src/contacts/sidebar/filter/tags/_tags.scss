@@ -1,6 +1,6 @@
 contacts-tags {
     > div {
-        border-bottom: 1px solid $filter-group-border-color;
+        border-bottom: 1px solid $color-gray-blue;
     }
     .filter--filtergroup_title {
         padding-top: 0;
@@ -12,7 +12,7 @@ contacts-tags {
         cursor: pointer;
         span {
             flex-grow: 1;
-            font-size: 12px;
+            font-size: $font-size-xs;
         }
         i {
             transition: transform 0.2s ease-out;
@@ -22,7 +22,6 @@ contacts-tags {
         }
     }
 }
-
 .tags-popover.popover {
     > .popover-content {
         padding: 10px $container-padding;

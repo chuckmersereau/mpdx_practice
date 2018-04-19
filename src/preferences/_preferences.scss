@@ -1,18 +1,17 @@
-@import "integrations/integrations";
-@import "accounts/merge/merge";
-@import "notifications/notifications";
-
+@import 'integrations/integrations';
+@import 'accounts/merge/merge';
+@import 'accounts/share/share';
+@import 'notifications/notifications';
 preferences {
     display: grid;
-    grid-template-columns: 250px auto;
-    grid-template-rows: auto;
     height: 100%;
     overflow: hidden;
-
+    grid-template-columns: 250px auto;
+    grid-template-rows: auto;
     > preferences-sidebar {
+        margin-bottom: $gutter;
         grid-column: 1;
         grid-row: 1;
-        margin-bottom: $gutter;
         .selector {
             margin-top: 20px;
             .account-list-dropdown {
@@ -20,56 +19,48 @@ preferences {
             }
         }
     }
-
     > ui-view {
-        grid-column: 2;
-        grid-row: 1;
-        padding-left: $content-padding-left;
         padding-right: $content-padding-right;
+        padding-left: $content-padding-left;
         overflow-y: auto;
+        grid-row: 1;
+        grid-column: 2;
     }
-
     .panel.panel-default {
         .panel-heading {
             position: relative;
             cursor: pointer;
             .row {position: relative;}
             .fa-chevron-right {
+                display: block;
                 position: absolute;
                 top: 50%;
                 right: 14px;
-                margin-top: -10px;
-                font-size: 13px;
-                color: $color-panel-border;
-                display: block;
                 width: 20px;
-                padding-left: 3px;
+                margin-top: -10px;
                 padding-top: 1px;
+                padding-left: 3px;
+                transition: transform 0.5s, color 0.5s, border-color 0.5s;
+                border: $color-panel-border 2px solid;
+                border-radius: 50%;
+                color: $color-panel-border;
+                font-size: $font-size-sm;
                 line-height: 15px;
                 text-align: center;
-                border-radius: 50%;
-                border: $color-panel-border 2px solid;
-            }
-            .fa-chevron-right {
-                transition: transform 0.5s, color 0.5s, border-color 0.5s;
             }
         }
         .panel-selected > .panel-heading {
             .fa-chevron-right {
-                color: $color-panel-bg;
-            }
-            .fa-chevron-right {
-                border-color: $color-panel-bg;
-                line-height: 14px;
                 padding-top: 2px;
+                border-color: $color-panel-bg;
+                color: $color-panel-bg;
+                line-height: 14px;
             }
         }
     }
     .btn-primary {
-        font-size: $font-size;
-        line-height: 25px;
         min-width: 130px;
+        font-size: $font-size-md;
+        line-height: 25px;
     }
 }
-
-

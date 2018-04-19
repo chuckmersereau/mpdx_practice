@@ -1,0 +1,19 @@
+.fa {
+    .fa-circle {
+        &-default {
+            color: color-gray(35);
+        }
+        &-warning {
+            color: $color-warning;
+        }
+        &-danger {
+            color: $color-danger;
+        }
+        &-info {
+            color: $color-info;
+        }
+        &-success {
+            color: $color-success;
+        }
+    }
+}

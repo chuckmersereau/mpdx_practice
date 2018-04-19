@@ -1,45 +1,74 @@
 contact-person {
-  .card {
-    .content {
-      h3 {
-        margin-top: 0;
-        margin-bottom: 0;
-      }
-      dl {
-        margin-bottom: 0;
-        dd {
-          line-height: 20px;
-          &:first-child {
-            margin-top: 5px;
-          }
-          &.networks {
-            line-height: 30px;
-            a {
-              margin-right: 5px;
-              font-size: 20px;
-              color: $icon_gray;
-              &:hover {
-                text-decoration: none;
-              }
-            }
-          }
-        }
-      }
-    }
-    .edit {
-        font-weight: 500;
-        color: $gray;
-        font-size: $font-size-xs;
-        &:hover {
-            text-decoration: none;
+    > div {
+        position: relative;
+        margin-bottom: 5px;
+        padding: 15px;
+        border: 1px solid $color-panel-border;
+        background-color: color-gray(95);
+        font-size: $font-size-sm;
+        line-height: 20px;
+        .pull-right a {
             cursor: pointer;
         }
+        .primary-container {
+            height: 12px;
+            .primary-option {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                padding: 5px 10px;
+                border-top-left-radius: 5px;
+                background: $color-panel-border;
+                color: $color-white;
+                cursor: pointer;
+            }
+        }
+        &.primary {
+            border: 1px solid $color-primary;
+            .primary-option {
+                background-color: $color-primary;
+            }
+        }
+        .content {
+            h3 {
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+            dl {
+                margin-bottom: 0;
+                dd {
+                    line-height: 20px;
+                    &:first-child {
+                        margin-top: 5px;
+                    }
+                    &.networks {
+                        line-height: 30px;
+                        a {
+                            margin-right: 5px;
+                            color: color-gray(30);
+                            font-size: 20px;
+                            &:hover {
+                                text-decoration: none;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .edit {
+            color: color-gray(60);
+            font-size: $font-size-xs;
+            font-weight: 500;
+            &:hover {
+                text-decoration: none;
+                cursor: pointer;
+            }
+        }
+        &.merging {
+            cursor: pointer;
+        }
+        &.selected {
+            background-color: color-gray(80);
+        }
     }
-    &.merging {
-      cursor: pointer;
-    }
-    &.selected {
-      background-color: #CCCCCC;
-    }
-  }
 }

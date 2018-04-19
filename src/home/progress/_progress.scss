@@ -1,23 +1,22 @@
-@import "appeals/appeals";
-@import "appointments/appointments";
-@import "contacts/contacts";
-@import "correspondence/correspondence";
-@import "electronicContacts/electronicContacts";
-@import "phone/phone";
-
+@import 'appeals/appeals';
+@import 'appointments/appointments';
+@import 'contacts/contacts';
+@import 'correspondence/correspondence';
+@import 'electronicContacts/electronicContacts';
+@import 'phone/phone';
 home-progress {
     .panel.panel-default {
         min-height: 84px;
         margin-bottom: 0;
         > .statistics {
-            padding: 10px 0;
             display: grid;
+            padding: 10px 0;
             grid-template-rows: 1fr;
             .item {
+                border-right: 1px solid color-gray(80);
                 text-align: center;
-                border-right: 1px solid #ccc;
                 &:last-child {
-                    border-right: none;
+                    border-right: 0;
                 }
             }
         }

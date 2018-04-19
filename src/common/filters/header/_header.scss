@@ -1,17 +1,17 @@
 filters-header {
     .filters-header {
-        background: #30363E;
-        border-top: 1px solid #5E6B7B;
-        border-bottom: 1px solid #5E6B7B;
-        padding: 10px $container-padding 0;
         margin-bottom: 10px;
-        color: $cru-white;
-        font-size: 14px;
+        padding: 10px $container-padding 0;
+        border-top: 1px solid $color-gray-blue;
+        border-bottom: 1px solid $color-gray-blue;
+        background: color-gray(20);
+        color: $color-white;
+        font-size: $font-size-sm;
         &__title {
             display: flex;
             align-items: center;
-            cursor: pointer;
             padding-bottom: 10px;
+            cursor: pointer;
             &__value {
                 flex-grow: 1;
             }
@@ -22,7 +22,7 @@ filters-header {
         &__filter {
             margin-bottom: 10px;
             padding-top: 10px;
-            border-top: 1px solid #5E6B7B;
+            border-top: 1px solid $color-gray-blue;
             &__title {
                 display: flex;
                 align-items: center;
@@ -47,8 +47,8 @@ filters-header {
                 &__value {
                     flex-grow: 1;
                     height: 19px;
-                    overflow: hidden;
                     text-overflow: ellipsis;
+                    overflow: hidden;
                 }
                 i {
                     cursor: pointer;
@@ -63,7 +63,7 @@ filters-header {
             &__reversable {
                 transition: all 0.2s ease-out;
                 &.reverse {
-                    color: $filter-reverse-color;
+                    color: $color-filter-reverse;
                 }
             }
         }

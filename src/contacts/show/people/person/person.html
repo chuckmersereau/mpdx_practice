@@ -1,4 +1,4 @@
-<div class="card mb-1" ng-class="{'merging': $ctrl.isMerging, 'selected' : $ctrl.person.selected_for_merge === true, 'primary': $ctrl.contact.primary_person.id === $ctrl.person.id }" ng-click="$ctrl.selectCard()">
+<div ng-class="{'merging': $ctrl.isMerging, 'selected' : $ctrl.person.selected_for_merge === true, 'primary': $ctrl.contact.primary_person.id === $ctrl.person.id }" ng-click="$ctrl.selectCard()">
     <avatar src="$ctrl.person.avatar" editable="!$ctrl.view" on-upload="$ctrl.updateAvatar(avatar)"></avatar>
     <div class="content avatar-on-left">
         <a class="pull-right edit" ng-click="$ctrl.openModal(); $event.stopPropagation()" ng-if="!$ctrl.view" translate>Edit</a>

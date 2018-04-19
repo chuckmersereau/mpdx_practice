@@ -1,0 +1,99 @@
+.horizontal-tab-sortable {
+    position: relative;
+    width: 100%;
+    height: auto;
+    &::after {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        border-bottom: 1px $color-menu-border solid;
+        content: '';
+    }
+    .sortable-row {
+        display: flex;
+        height: 40px;
+        padding-left: $container-padding;
+    }
+    .as-sortable-item {
+        margin-right: 3px;
+        border: 1px $color-menu-border solid;
+        z-index: 0;
+        > .as-sortable-item-handle {
+            display: flex;
+            align-items: center;
+            transition: all 0.2s ease-out;
+            font-size: $font-size-sm;
+            font-weight: 600;
+            > a,
+            a:link,
+            a:visited {
+                color: color-gray(30);
+                line-height: 38px;
+                &:hover {
+                    text-decoration: none;
+                }
+            }
+            > * {
+                padding-right: 15px;
+            }
+            > :first-child {
+                padding-left: 15px;
+            }
+            &:hover {
+                background-color: $color-menu-border;
+            }
+        }
+    }
+    .as-sortable-placeholder {
+        display: inline-block;
+        width: 100px;
+        height: 40px;
+        margin: 0 20px 0 0;
+        float: left;
+        border: 1px dotted $color-menu-border !important;
+        list-style: none;
+        opacity: 0.4;
+    }
+    .active-item {
+        border: 1px $color-menu-border solid;
+        border-radius: 2px 2px 0 0;
+        border-top-color: $color-secondary;
+        border-bottom-color: $color-white;
+        background-color: $color-white;
+        z-index: 2;
+        .as-sortable-item-handle {
+            &:hover {
+                background-color: $color-white;
+                a,
+                a:link,
+                a:visited {
+                    color: $color-text;
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+    .as-sortable-dragging {
+        background-color: $color-menu-border;
+    }
+    .as-sortable-drag {
+        position: absolute;
+        top: 0;
+        opacity: 0.5;
+        z-index: 20000 !important;
+    }
+    .tabs-info {
+        width: auto;
+        height: auto;
+        padding-top: 5px;
+        float: right;
+    }
+    .tabs-info::after {
+        display: block;
+        height: 0;
+        clear: both;
+        content: '.';
+        visibility: hidden;
+    }
+}

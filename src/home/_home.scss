@@ -1,15 +1,14 @@
-@import "progress/progress";
-
+@import 'progress/progress';
 home {
     @extend .content-container;
-    padding: $container-padding;
     display: grid;
+    height: 100%;
+    padding: $container-padding;
+    overflow-y: auto;
+    overflow-x: hidden;
     grid-template-rows: 39px 330px auto 1fr;
     grid-template-columns: 100%;
     grid-gap: $container-padding;
-    height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
     donations-chart {
         .blankslate {
             height: 330px;
@@ -19,8 +18,8 @@ home {
         text-decoration: none;
     }
     .title {
-        text-transform: none;
         margin: 0;
+        text-transform: none;
     }
     home-connect,
     home-commitments,

@@ -1,5 +1,4 @@
 @import 'donations/donations';
-
 reports {
     display: grid;
     height: 100%;
@@ -9,42 +8,42 @@ reports {
         grid-row: 1;
     }
     > div.content {
+        padding-top: $container-padding;
         grid-column: 1;
         grid-row: 2;
         overflow-y: auto;
-        padding-top: $container-padding;
     }
-    .nav--secondary.menu {
+    .nav-secondary.menu {
         transition: background-color 0.2s ease-out;
         &.selected {
-            background-color: $cru-selected-items-bgcolor;
+            background-color: $color-nav-selected;
             .section {
                 > a.menu-item {
-                    color: $cru-white;
                     transition: color 0.2s ease-out;
+                    color: $color-white;
                     &:hover {
-                        background-color: darken($cru-selected-items-bgcolor, 10%);
+                        background-color: $color-nav-selected-dark;
                     }
                 }
                 &.active {
                     > a.menu-item {
-                        background-color: darken($cru-selected-items-bgcolor, 10%);
+                        background-color: $color-nav-selected-dark;
                     }
                 }
             }
         }
         .section {
             &-field {
-                margin-top: -2px;
                 height: 35px;
-                font-size: 14px;
-                color: $cru-white;
+                margin-top: -2px;
                 padding: $container-padding 10px;
+                color: $color-white;
+                font-size: $font-size-sm;
                 .chosen-choices {
-                    max-height: 34px;
                     width: 250px;
-                    overflow-y: auto;
+                    max-height: 34px;
                     transition: max-height 0.2s;
+                    overflow-y: auto;
                 }
                 .chosen-container-active {
                     .chosen-choices {
@@ -53,10 +52,10 @@ reports {
                 }
             }
             &-selector {
-                color: $cru-white;
                 padding: $container-padding 10px;
+                color: $color-white;
                 > a {
-                    color: $cru-white;
+                    color: $color-white;
                 }
             }
         }
@@ -68,13 +67,13 @@ reports {
         .panel {
             margin-bottom: 29px;
             .panel-heading {
-                background: #fff;
+                background: $color-white;
             }
             .panel-body {
                 padding: 0;
                 .table {
                     margin-bottom: 0;
-                    font-size: $font-size*.9;
+                    font-size: $font-size-sm;
                     tr {
                         th:first-child,
                         td:first-child {
@@ -93,7 +92,7 @@ reports {
                 font-size: 1.3em;
                 text-align: center;
                 > div {
-                    border-left: 1px solid #ccc;
+                    border-left: 1px solid color-gray(80);
                 }
             }
             th:first-child {

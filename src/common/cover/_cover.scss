@@ -2,28 +2,28 @@ cover {
     .cover {
         position: absolute;
         top: 0;
-        left: 0;
         right: 0;
         bottom: 0;
+        left: 0;
         background: $color-reverse;
-        background-size: cover;
         background-position: center center;
+        background-size: cover;
         overflow: auto;
     }
     .cover-item {
         max-width: 550px;
         margin: 110px auto;
         border-width: 16px 0 0;
-        border-color: $color-secondary;
         border-style: solid;
+        border-color: $color-secondary;
     }
     .cover-copyright {
         position: fixed;
-        padding: 5px 10px;
         bottom: 10px;
         left: 10px;
-        background: rgba(0,0,0,0.4);
-        color: #fff;
-        font-size: 12px;
+        padding: 5px 10px;
+        background: $color-black-alpha-50;
+        color: $color-white;
+        font-size: $font-size-xs;
     }
 }

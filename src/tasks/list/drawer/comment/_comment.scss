@@ -1,17 +1,14 @@
 task-item-comment {
-    $comment-body-height: 15px;
-    $comment-footer-height: 13px;
-    $comment-footer-background-color: #ADADAD;
     margin-bottom: 10px;
     > div.comment {
         margin: 0 15px;
         padding: 5px;
-        border: 1px solid $cru-gray-tint;
+        transition: border 0.5s linear;
+        border: 1px solid color-gray(90);
         border-radius: $border-radius;
-        transition: border .5s linear;
-        background-color: $cru-white;
+        background-color: $color-white;
         &:hover {
-            border: 1px solid $cru-gray-silver;
+            border: 1px solid color-gray(75);
             > div.comment-container > div.comment-edit-controls {
                 @extend .fade-in.ng-enter;
                 opacity: 1;
@@ -20,30 +17,29 @@ task-item-comment {
         > div.comment-container {
             display: grid;
             grid-template-columns: auto 60px;
-            grid-template-rows: $comment-body-height $comment-footer-height;
+            grid-template-rows: $height-comment-body $height-comment-footer;
             div.comment-body {
+                color: $color-text;
+                font-size: $font-size-xs;
+                line-height: $height-comment-body;
                 grid-column: 1;
                 grid-row: 1;
-                color: $color-text;
-                font-size: 12px;
-                line-height: $comment-body-height;
             }
             div.comment-foot {
+                color: color-gray(70);
+                font-size: $font-size-xs;
+                line-height: $height-comment-footer;
                 grid-column: 1;
                 grid-row: 2;
-                color: $comment-footer-background-color;
-                font-size: 10px;
-                line-height: $comment-footer-height;
             }
             div.comment-edit-controls {
-                grid-column: 2;
-                grid-row: 1 / 2;
                 @extend .fade-in.ng-leave;
                 opacity: 0;
+                grid-row: 1 / 2;
+                grid-column: 2;
             }
         }
     }
-
     textarea {
         margin-bottom: 15px;
     }
