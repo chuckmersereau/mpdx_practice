@@ -1,0 +1,51 @@
+mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    border-top: 5px solid $color-gold;
+    text-align: center;
+    .close {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        font-size: $font-size-xl;
+    }
+    .logo {
+        flex: 0 0 10%;
+        width: 60%;
+        max-width: 250px;
+        margin-top: 20px;
+        background-image: url('images/mpdx-logo-svg.svg');
+        background-repeat: no-repeat;
+        background-position: top center;
+        background-size: contain;
+    }
+    h3 {
+        margin: 20px 0 30px;
+    }
+    .badges {
+        display: flex;
+        align-items: center;
+        .badge-ios {
+            height: 60px;
+        }
+        .badge-android {
+            height: 90px;
+        }
+    }
+    .homepage {
+        flex-grow: 1;
+        width: 100%;
+        background-repeat: no-repeat;
+        background-position: top center;
+        background-size: cover;
+        &-ios {
+            background-image: url('images/mobile/ios_homepage.png');
+        }
+        &-android {
+            background-image: url('images/mobile/android_homepage.png');
+        }
+    }
+}

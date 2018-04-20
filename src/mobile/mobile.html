@@ -1,0 +1,14 @@
+<a ui-sref="home" class="close">
+    <i class="fal fa-times"></i>
+</a>
+<div class="logo"></div>
+<h3 translate>Do more with the MPDX Mobile App</h3>
+<div class="badges">
+    <a href="https://itunes.apple.com/us/app/mpdx/id571838934?mt=8" target="_blank" ng-if="$ctrl.isIos || !$ctrl.isMobile">
+        <img class="badge-ios" src="../images/mobile/apple-app-badge.svg">
+    </a>
+    <a href="https://play.google.com/store/apps/details?id=org.mpdx" target="_blank" ng-if="$ctrl.isAndroid || !$ctrl.isMobile">
+        <img class="badge-android" src="../images/mobile/google-play-badge.png">
+    </a>
+</div>
+<div class="homepage homepage-ios" ng-class="{'homepage-android': $ctrl.isAndroid }"></div>
