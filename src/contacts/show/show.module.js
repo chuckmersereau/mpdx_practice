@@ -1,5 +1,5 @@
-import address from './address/address.component';
-import addressModal from './address/modal/modal.controller';
+import addresses from './addresses/addresses.component';
+import addressModal from './addresses/address/modal/modal.controller';
 import component from './show.component';
 import details from './details/details.component';
 import donorAccount from './details/donor/donor.component';
@@ -13,7 +13,7 @@ import tasks from './tasks/tasks.component';
 
 export default angular.module('mpdx.contacts.show', [
     addReferrals,
-    address,
+    addresses,
     addressModal,
     component,
     details,

@@ -9,6 +9,8 @@ import collectionSelector from './collectionSelector/collectionSelector.componen
 import contactsSelector from './contactsSelector/selector.component';
 import cover from './cover/cover.component';
 import datetimepicker from './datetimepicker/datetimepicker.component';
+import designationAccountsSelector from './designationAccounts/selector/selector.component';
+import drawer from './sideDrawer/drawer.component';
 import faCheckbox from './faCheckbox/faCheckbox.component';
 import layoutSettings from './layoutSettings/layoutSettings.directive';
 import links from './links/links.module';
