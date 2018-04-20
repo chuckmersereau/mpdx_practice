@@ -434,7 +434,7 @@ describe('tasks.service', () => {
         const task = { id: 1, account_list: { id: accountListId } };
         const contactIds = [{ id: 2 }, { id: 3 }];
         beforeEach(() => {
-            // spyOn(tasks, 'mutateTagList').and.callFake(() => task);
+            spyOn(api, 'post').and.callFake(() => Promise.resolve());
         });
         it('should call the api', () => {
             tasks.create(task, contactIds);

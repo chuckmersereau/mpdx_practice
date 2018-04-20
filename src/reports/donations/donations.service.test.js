@@ -1,12 +1,14 @@
 import service from './donations.service';
+import moment from 'moment';
 
 describe('reports.donations.service', () => {
-    let api, donations, gettextCatalog, modal;
+    let api, donations, gettextCatalog, modal, $log;
 
     beforeEach(() => {
         angular.mock.module(service);
-        inject((_api_, _donations_, _gettextCatalog_, _modal_) => {
+        inject((_api_, _donations_, _gettextCatalog_, _modal_, _$log_) => {
             api = _api_;
+            $log = _$log_;
             donations = _donations_;
             gettextCatalog = _gettextCatalog_;
             modal = _modal_;
