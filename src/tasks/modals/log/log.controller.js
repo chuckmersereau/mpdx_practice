@@ -63,6 +63,9 @@ class LogTaskController {
                 ['Pre Call Letter', 'Reminder Letter', 'Support Letter', 'Thank', 'To Do']
             );
     }
+    activityChanged() {
+        this.task.result = get('[0]', this.serverConstants.data.results[this.task.activity_type.toLowerCase()]);
+    }
 }
 
 import contacts from 'contacts/contacts.service';

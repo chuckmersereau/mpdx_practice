@@ -11,6 +11,7 @@
                 id="action"
                 name="action"
                 ng-options="opt.id as opt.value for opt in $ctrl.serverConstants.data.activity_hashes"
+                ng-change="$ctrl.activityChanged()"
                 ng-model="$ctrl.task.activity_type">
             <option value=""></option>
         </select>

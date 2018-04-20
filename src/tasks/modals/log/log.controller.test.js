@@ -147,4 +147,14 @@ describe('tasks.modals.log.controller', () => {
             }, arr);
         });
     });
+    describe('activityChanged', () => {
+        it('should get the 1st value for an activity type', () => {
+            $ctrl.task.activity_type = 'Call';
+            $ctrl.serverConstants.data.results = {
+                call: ['Complete']
+            };
+            $ctrl.activityChanged();
+            expect($ctrl.task.result).toEqual('Complete');
+        });
+    });
 });
