@@ -80,13 +80,13 @@ class TagsService {
         }
     }
     selectTag(tag) {
-        this.selectedTags = unionBy({ name: tag.name }, [tag], this.selectedTags);
+        this.selectedTags = unionBy('name', this.selectedTags, [tag]);
         this.rejectedTags = reject({ name: tag.name }, this.rejectedTags);
         this.change();
     }
     rejectTag(tag) {
         this.selectedTags = reject({ name: tag.name }, this.selectedTags);
-        this.rejectedTags = unionBy({ name: tag.name }, [tag], this.rejectedTags);
+        this.rejectedTags = unionBy('name', this.rejectedTags, [tag]);
         this.change();
     }
     removeFromRejected(tag) {

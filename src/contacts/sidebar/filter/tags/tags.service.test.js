@@ -43,6 +43,7 @@ describe('contacts.service', () => {
             contactsTags.selectedTags = [];
             contactsTags.rejectedTags = [];
             spyOn(contactsTags, 'change').and.callFake(() => {});
+            spyOn(contactsTags, 'selectTag').and.callFake(() => {});
         });
         it('should handle a selected tag', () => {
             contactsTags.selectedTags = [tag];
@@ -60,20 +61,20 @@ describe('contacts.service', () => {
         });
         it('should handle an unselected tag', () => {
             contactsTags.tagClick(tag);
-            expect(contactsTags.selectedTags).toEqual([tag]);
-            expect(contactsTags.rejectedTags).toEqual([]);
-            expect(contactsTags.change).toHaveBeenCalledWith();
+            expect(contactsTags.selectTag).toHaveBeenCalledWith(tag);
         });
     });
     describe('selectTag', () => {
+        const initialSelectedTag = { name: 'b' };
+        const initialSelectedTag2 = { name: 'c' };
         beforeEach(() => {
-            contactsTags.selectedTags = [];
+            contactsTags.selectedTags = [initialSelectedTag, initialSelectedTag2];
             contactsTags.rejectedTags = [tag];
             spyOn(contactsTags, 'change').and.callFake(() => {});
         });
         it('should select tag', () => {
             contactsTags.selectTag(tag);
-            expect(contactsTags.selectedTags).toEqual([tag]);
+            expect(contactsTags.selectedTags).toEqual([initialSelectedTag, initialSelectedTag2, tag]);
         });
         it('should deselect tag from reject list', () => {
             contactsTags.selectTag(tag);

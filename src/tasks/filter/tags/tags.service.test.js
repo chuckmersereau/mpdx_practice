@@ -46,14 +46,16 @@ describe('tasks.tags.service', () => {
         });
     });
     describe('selectTag', () => {
+        const initialSelectedTag = { name: 'b' };
+        const initialSelectedTag2 = { name: 'c' };
         beforeEach(() => {
-            tasksTags.selectedTags = [];
+            tasksTags.selectedTags = [initialSelectedTag, initialSelectedTag2];
             tasksTags.rejectedTags = [tag];
             spyOn(tasksTags, 'change').and.callFake(() => {});
         });
         it('should select tag', () => {
             tasksTags.selectTag(tag);
-            expect(tasksTags.selectedTags).toEqual([tag]);
+            expect(tasksTags.selectedTags).toEqual([initialSelectedTag, initialSelectedTag2, tag]);
         });
         it('should deselect tag from reject list', () => {
             tasksTags.selectTag(tag);
