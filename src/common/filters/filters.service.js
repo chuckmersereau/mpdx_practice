@@ -3,7 +3,9 @@ import {
     concat,
     defaultTo,
     filter,
+    find,
     findIndex,
+    get,
     isArray,
     isEqual,
     keys,
@@ -11,6 +13,8 @@ import {
     sortBy,
     toInteger
 } from 'lodash/fp';
+import reduceObject from '../fp/reduceObject';
+import { split } from '../fp/strings';
 
 class Filters {
     constructor(
@@ -81,6 +85,14 @@ class Filters {
         params = angular.copy(defaultParams);
         onChange(params);
         return params;
+    }
+    fromStrings(params, filters) {
+        return reduceObject((result, value, key) => {
+            const filter = find({ name: key }, filters);
+            const isMultiselect = get('type', filter) === 'multiselect';
+            result[key] = isMultiselect ? split(',', value) : value;
+            return result;
+        }, {}, params);
     }
 }
 

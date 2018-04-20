@@ -38,12 +38,11 @@ class FilterService {
             + this.contactsTags.rejectedTags.length;
     }
     reset(stateParams = null) {
-        this.params = angular.copy(this.default_params);
+        const defaultParams = angular.copy(this.default_params);
         this.$rootScope.$emit('contactSearchReset');
         this.contactsTags.reset();
-        if (stateParams) {
-            this.params = assign(this.params, stateParams);
-        }
+        const params = this.filters.fromStrings(stateParams, this.data);
+        this.params = assign(defaultParams, params);
         this.wildcard_search = '';
         this.change();
     }

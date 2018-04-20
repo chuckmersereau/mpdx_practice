@@ -1,6 +1,4 @@
-import { assign, find, get } from 'lodash/fp';
-import { split } from 'common/fp/strings';
-import reduceObject from 'common/fp/reduceObject';
+import { assign } from 'lodash/fp';
 import { stringToNameObjectArray } from 'common/fp/tags';
 
 class FilterController {
@@ -38,12 +36,7 @@ class FilterController {
     useSavedFilter(name) {
         const option = this.users.getCurrentOptionValue(`saved_contacts_filter_${name}`);
         const value = JSON.parse(option);
-        const params = reduceObject((result, value, key) => {
-            const filter = find({ name: key }, this.contactFilter.data);
-            const isMultiselect = get('type', filter) === 'multiselect';
-            result[key] = isMultiselect ? split(',', value) : value;
-            return result;
-        }, {}, value.params);
+        const params = this.filters.fromStrings(value.params, this.contactFilter.data);
         this.contactFilter.params = assign(this.contactFilter.default_params, params);
         this.contactFilter.wildcard_search = value.wildcard_search;
         this.contactsTags.any_tags = value.any_tags;

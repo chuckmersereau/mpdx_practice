@@ -1,6 +1,4 @@
-import { assign, find, get } from 'lodash/fp';
-import reduceObject from 'common/fp/reduceObject';
-import { split } from 'common/fp/strings';
+import { assign } from 'lodash/fp';
 import { stringToNameObjectArray } from 'common/fp/tags';
 
 class FilterController {
@@ -27,12 +25,7 @@ class FilterController {
     useSavedFilter(name) {
         const option = this.users.getCurrentOptionValue(`saved_tasks_filter_${name}`);
         const value = JSON.parse(option);
-        const params = reduceObject((result, value, key) => {
-            const filter = find({ name: key }, this.tasksFilter.data);
-            const isMultiselect = get('type', filter) === 'multiselect';
-            result[key] = isMultiselect ? split(',', value) : value;
-            return result;
-        }, {}, value.params);
+        const params = this.filters.fromStrings(value.params, this.tasksFilter.data);
         this.tasksFilter.assignDefaultParamsAndGroup('all');
         this.tasksFilter.params = assign(this.tasksFilter.defaultParams, params);
         this.tasksFilter.wildcard_search = value.wildcard_search;

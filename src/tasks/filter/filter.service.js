@@ -111,7 +111,8 @@ class TasksFilterService {
     }
     reset(stateParams = {}) {
         this.assignDefaultParamsAndGroup('all');
-        this.params = assign(this.defaultParams, stateParams);
+        const params = this.filters.fromStrings(stateParams, this.data);
+        this.params = assign(this.defaultParams, params);
         this.wildcard_search = '';
         this.tasksTags.reset();
         this.data = map((filter) => {

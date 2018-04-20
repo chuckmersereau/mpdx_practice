@@ -35,4 +35,17 @@ describe('contacts.service', () => {
             });
         });
     });
+    describe('fromStrings', () => {
+        const params = {
+            activity_type: 'Call',
+            status: 'a,b'
+        };
+        const filterArr = [{ name: 'status', type: 'multiselect' }, { name: 'activity_type', type: '' }];
+        it('should split strings', () => {
+            expect(filters.fromStrings(params, filterArr).status).toEqual(['a', 'b']);
+        });
+        it('should leave strings alone', () => {
+            expect(filters.fromStrings(params, filterArr).activity_type).toEqual('Call');
+        });
+    });
 });
