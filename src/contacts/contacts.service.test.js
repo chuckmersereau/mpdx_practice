@@ -255,4 +255,27 @@ describe('contacts.service', () => {
             expect(contacts.mapEmails(data)).toEqual('d');
         });
     });
+    describe('addBulk', () => {
+        const contactArr = [{ id: 1 }, { id: 2 }];
+        beforeEach(() => {
+            spyOn(api, 'post').and.callFake(() => Promise.resolve());
+        });
+        it('should call api post', () => {
+            contacts.addBulk(contactArr);
+            expect(api.post).toHaveBeenCalledWith({
+                url: 'contacts/bulk',
+                data: contactArr,
+                type: 'contacts',
+                fields: {
+                    contacts: ''
+                }
+            });
+        });
+        it('should emit a complete event', (done) => {
+            contacts.addBulk(contacts).then(() => {
+                expect(rootScope.$emit).toHaveBeenCalledWith('contactCreated');
+                done();
+            });
+        });
+    });
 });

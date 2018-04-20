@@ -37,7 +37,10 @@ class RemoveTagController {
                         account_list_id: this.api.account_list_id,
                         task_ids: joinComma(taskIds)
                     },
-                    type: 'tags'
+                    type: 'tags',
+                    fields: {
+                        tasks: ''
+                    }
                 },
                 autoParams: false,
                 doSerialization: false,

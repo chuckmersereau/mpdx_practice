@@ -60,6 +60,9 @@ class NotificationPreferencesController {
             url: `account_lists/${this.api.account_list_id}/notification_preferences/bulk`,
             data: this.notificationPreferences,
             type: 'notification_preferences',
+            fields: {
+                notification_preferences: ''
+            },
             errorMessage: errorMessage,
             successMessage: successMessage
         }).then(() => {

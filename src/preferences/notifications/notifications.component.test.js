@@ -175,6 +175,7 @@ describe('contacts.list.component', () => {
                 url: 'account_lists/account_list_id/notification_preferences/bulk',
                 data: $ctrl.notificationPreferences,
                 type: 'notification_preferences',
+                fields: { notification_preferences: '' },
                 successMessage: successMessage,
                 errorMessage: errorMessage
             });

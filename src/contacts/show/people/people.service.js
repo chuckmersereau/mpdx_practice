@@ -58,7 +58,10 @@ class PersonService {
             url: 'contacts/people/merges/bulk',
             data: winnersAndLosers,
             type: 'people',
-            errorMessage: errorMessage
+            errorMessage: errorMessage,
+            fields: {
+                people: ''
+            }
         }).then((data) => {
             if (isFunction(data.success)) {
                 data.success();
@@ -114,7 +117,10 @@ class PersonService {
         return this.api.put({
             url: 'contacts/people/bulk',
             data: people,
-            type: 'people'
+            type: 'people',
+            fields: {
+                people: ''
+            }
         });
     }
     deleteEmailAddress(person, emailAddress) {
