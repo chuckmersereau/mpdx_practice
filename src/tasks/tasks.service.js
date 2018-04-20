@@ -70,7 +70,14 @@ class TasksService {
                 }
                 return result;
             }, [], contactIds);
-            return this.api.post({ url: 'tasks/bulk', data: tasks, type: 'tasks' }).then(() => {
+            return this.api.post({
+                url: 'tasks/bulk',
+                data: tasks,
+                type: 'tasks',
+                fields: {
+                    tasks: ''
+                }
+            }).then(() => {
                 if (contactIds.length > 0) {
                     this.$rootScope.$emit('contactCreated');
                 }

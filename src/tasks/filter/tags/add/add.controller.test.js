@@ -40,6 +40,9 @@ describe('tasks.filter.tags.add.controller', () => {
                         filter: {
                             account_list_id: 123,
                             task_ids: ''
+                        },
+                        fields: {
+                            tasks: ''
                         }
                     },
                     doSerialization: false,

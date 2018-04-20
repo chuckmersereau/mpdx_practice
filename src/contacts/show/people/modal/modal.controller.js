@@ -25,6 +25,11 @@ class PersonModalController {
         this.maps = [];
         this.activeTab = 'contact-info';
 
+        this.titles = [
+            'Mr.', 'Mrs.', 'Miss', 'Ms.', 'Rev.', 'Hon.', 'Dr.', 'Frau', 'Mlle', 'Mr. and Mrs.', 'Mme', 'Rev', 'M.',
+            'Esq.', 'Jr.', 'Messrs.', 'Mmes.', 'Msgr.', 'Prof.', 'Rt. Hon.', 'St.'
+        ];
+        this.suffixes = ['Jr.', 'Sr.', 'MD.'];
         this.activate();
     }
     activate() {

@@ -1,4 +1,4 @@
-<div class="alert alert-warning" ng-if="$ctrl.unmappedHeaders.length !== 0">
+<div class="alert alert-danger" ng-if="$ctrl.unmappedHeaders.length !== 0">
     <div ng-repeat="header in $ctrl.unmappedHeaders"
          ng-if="::$ctrl.serverConstants.data.csv_import.required_headers[header]"
          translate-params-name="::$ctrl.serverConstants.data.csv_import.required_headers[header]"
@@ -25,7 +25,7 @@
                 <select chosen
                         class="form-control"
                         ng-model='$ctrl.importCsv.data.file_headers_mappings[header_key]'
-                        ng-options="k as v disable when ($ctrl.mappedHeaders.indexOf(k) >= 0 && $ctrl.importCsv.data.file_headers_mappings[header_key] !== k) for (k, v) in $ctrl.serverConstants.data.csv_import.supported_headers"
+                        ng-options="key as value disable when ($ctrl.mappedHeaders.indexOf(key) >= 0 && $ctrl.importCsv.data.file_headers_mappings[header_key] !== key) for (key, value) in $ctrl.serverConstants.data.csv_import.supported_headers"
                         ng-change="$ctrl.updateHeaders()">
                     <option value="" translate>Do Not Import</option>
                 </select>
@@ -34,7 +34,12 @@
         </tbody>
     </table>
     <div class="panel-footer">
-        <button class="btn btn-reverse pull-left" ng-click="$ctrl.back()" translate>Back</button>
-        <button class="btn btn-primary" ng-click="$ctrl.save()" ng-disabled="!$ctrl.importCsv.data || $ctrl.unmappedHeaders.length !== 0" translate>Next</button>
+        <button class="btn btn-reverse pull-left"
+                ng-click="$ctrl.back()"
+                translate>Back</button>
+        <button class="btn btn-primary"
+                ng-click="$ctrl.save()"
+                ng-disabled="!$ctrl.importCsv.data || $ctrl.unmappedHeaders.length !== 0"
+                translate>Next</button>
     </div>
 </div>

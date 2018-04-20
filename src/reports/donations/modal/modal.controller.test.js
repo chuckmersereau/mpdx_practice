@@ -1,19 +1,27 @@
 import modalController from './modal.controller';
 import { isEqual } from 'lodash/fp';
 
+let donation = {
+    id: 'donation_id',
+    amount: '0.00',
+    motivation: 'a',
+    pledge: { id: 'pledge_id' },
+    contact: { id: 'contact_id' }
+};
+const appealId = 'appeal_id';
+
 describe('donation.modal.controller', () => {
-    let $ctrl, controller, scope, gettextCatalog, accounts, modal, designationAccounts, api, rootScope;
-    let donation = { id: 'donation_id', amount: '0.00', motivation: 'a' };
+    let $ctrl, controller, scope, gettextCatalog, accounts, modal, designationAccounts, api, rootScope, appeals;
     beforeEach(() => {
         angular.mock.module(modalController);
         inject((
-            $controller, $rootScope, _gettextCatalog_, _accounts_, _designationAccounts_, _api_, _modal_
+            $controller, $rootScope, _gettextCatalog_, _accounts_, _designationAccounts_, _api_, _modal_, _appeals_
         ) => {
             controller = $controller;
             rootScope = $rootScope;
             scope = $rootScope.$new();
             scope.$hide = () => {};
-
+            appeals = _appeals_;
             api = _api_;
             gettextCatalog = _gettextCatalog_;
             accounts = _accounts_;
@@ -157,6 +165,7 @@ describe('donation.modal.controller', () => {
                 spyOn(api, 'delete').and.callFake(() => Promise.resolve());
                 spyOn(scope, '$hide').and.returnValue();
                 spyOn(modal, 'confirm').and.returnValue(Promise.resolve());
+                spyOn($ctrl, 'removePledgeThenContact').and.returnValue(Promise.resolve());
             });
 
             it('should call modal.confirm', () => {
@@ -188,9 +197,17 @@ describe('donation.modal.controller', () => {
                 });
             });
 
-            it('emit to the rootscope', (done) => {
+            it('should emit to the rootscope', (done) => {
                 $ctrl.delete().then(() => {
                     expect(rootScope.$emit).toHaveBeenCalledWith('donationRemoved', { id: donation.id });
+                    done();
+                });
+            });
+
+            it('should call removePledgeThenContact', (done) => {
+                $ctrl.originalAppealId = appealId;
+                $ctrl.delete().then(() => {
+                    expect($ctrl.removePledgeThenContact).toHaveBeenCalledWith(donation, appealId);
                     done();
                 });
             });
@@ -320,6 +337,59 @@ describe('donation.modal.controller', () => {
                     );
                     done();
                 });
+            });
+        });
+    });
+
+    describe('removePledgeThenContact', () => {
+        const msg = 'Would you also like to remove the associated commitment from the appeal?';
+        beforeEach(() => {
+            spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
+            spyOn(appeals, 'removePledge').and.callFake(() => Promise.resolve());
+            spyOn($ctrl, 'removeContact').and.callFake(() => Promise.resolve());
+        });
+        it('shouldn\'t continue without a pledge id ', () => {
+            expect($ctrl.removePledgeThenContact()).toBeUndefined();
+        });
+        it('should translate a message', () => {
+            $ctrl.removePledgeThenContact(donation, appealId);
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(msg);
+        });
+        it('should confirm before delete', () => {
+            $ctrl.removePledgeThenContact(donation, appealId);
+            expect(modal.confirm).toHaveBeenCalledWith(msg);
+        });
+        it('should remove the pledge', (done) => {
+            $ctrl.removePledgeThenContact(donation, appealId).then(() => {
+                expect(appeals.removePledge).toHaveBeenCalledWith(donation.pledge.id);
+                done();
+            });
+        });
+        it('should remove the contact', (done) => {
+            $ctrl.removePledgeThenContact(donation, appealId).then(() => {
+                expect($ctrl.removeContact).toHaveBeenCalledWith(donation, appealId);
+                done();
+            });
+        });
+    });
+    describe('removeContact', () => {
+        beforeEach(() => {
+            spyOn(modal, 'confirm').and.callFake(() => Promise.resolve());
+            spyOn(appeals, 'removeContact').and.callFake(() => Promise.resolve());
+        });
+        const msg = 'Would you like to also remove the contact from the the appeal?';
+        it('should translate a message', () => {
+            $ctrl.removeContact(donation, appealId);
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(msg);
+        });
+        it('should confirm before delete', () => {
+            $ctrl.removeContact(donation, appealId);
+            expect(modal.confirm).toHaveBeenCalledWith(msg);
+        });
+        it('should remove the contact', (done) => {
+            $ctrl.removeContact(donation, appealId).then(() => {
+                expect(appeals.removeContact).toHaveBeenCalledWith(appealId, donation.contact.id);
+                done();
             });
         });
     });

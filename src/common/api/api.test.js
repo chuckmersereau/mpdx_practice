@@ -1,5 +1,6 @@
 import service from './api.service';
 import { assign } from 'lodash/fp';
+import config from 'config';
 
 const jsonApiResponse = {
     data: {
@@ -122,6 +123,32 @@ describe('common.api.service', () => {
             expect(api.$http).toHaveBeenCalledWith({
                 method: jasmine.any(String),
                 url: jasmine.any(String),
+                data: jasmine.any(Object),
+                params: {},
+                headers: jasmine.any(Object),
+                paramSerializer: jasmine.any(String),
+                responseType: jasmine.any(String),
+                transformRequest: jasmine.any(Function),
+                transformResponse: jasmine.any(Array),
+                cacheService: jasmine.any(Boolean),
+                timeout: jasmine.any(Number)
+            });
+        });
+        it('should handle url repetition on retry', () => {
+            spyOn(api, '$http').and.callFake(() => Promise.resolve());
+            api.call({
+                url: config.apiUrl + 'contacts',
+                method: 'get',
+                autoParams: false,
+                data: {
+                    filter: {
+                        a: 'b'
+                    }
+                }
+            });
+            expect(api.$http).toHaveBeenCalledWith({
+                method: jasmine.any(String),
+                url: config.apiUrl + 'contacts',
                 data: jasmine.any(Object),
                 params: {},
                 headers: jasmine.any(Object),
@@ -368,12 +395,13 @@ describe('common.api.service', () => {
     describe('callFailed', () => {
         const ex = new Error('a');
         const request = 'request';
+        const data = ['a'];
         let deferred = Promise;
         const errorMessage = 'error';
         let overridePromise = false;
         beforeEach(() => {
             spyOn(api, 'gettext').and.callThrough();
-            spyOn(api, 'call').and.callFake(() => Promise.resolve());
+            spyOn(api, 'call').and.callFake(() => Promise.resolve(data));
         });
         it('should handle override', () => {
             spyOn(deferred, 'reject').and.callFake(() => {});
@@ -382,10 +410,33 @@ describe('common.api.service', () => {
         });
         it('should translate a default error message', () => {
             spyOn(alerts, 'addAlert').and.callFake(() => Promise.resolve());
-            const msg = 'An error occurred while contacting the server.';
+            const msg = 'An error occurred while processing your request.';
             api.callFailed(ex, request, deferred, undefined, overridePromise);
             expect(api.gettext).toHaveBeenCalledWith(msg);
             expect(alerts.addAlert).toHaveBeenCalledWith(msg, 'danger', 0, true);
+        });
+        it('should translate a 504 error message', () => {
+            spyOn(alerts, 'addAlert').and.callFake(() => Promise.resolve());
+            const msg = 'An error occurred while connecting to MPDX.';
+            ex.status = 504;
+            api.callFailed(ex, request, deferred, undefined, overridePromise);
+            expect(api.gettext).toHaveBeenCalledWith(msg);
+            expect(alerts.addAlert).toHaveBeenCalledWith(msg, 'danger', 0, true);
+        });
+        it('should retry the call', (done) => {
+            spyOn(alerts, 'addAlert').and.callFake(() => Promise.resolve());
+            api.callFailed(ex, request, deferred, undefined, overridePromise).then(() => {
+                expect(api.call).toHaveBeenCalledWith(request);
+                done();
+            });
+        });
+        it('should resolve', (done) => {
+            spyOn(alerts, 'addAlert').and.callFake(() => Promise.resolve());
+            spyOn(deferred, 'resolve').and.callThrough();
+            api.callFailed(ex, request, deferred, undefined, overridePromise).then(() => {
+                expect(deferred.resolve).toHaveBeenCalledWith(data);
+                done();
+            });
         });
     });
 });

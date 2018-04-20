@@ -63,6 +63,9 @@ describe('tasks.modals.removeTags.controller', () => {
                             account_list_id: api.account_list_id,
                             task_ids: '1,2'
                         },
+                        fields: {
+                            tasks: ''
+                        },
                         type: 'tags'
                     },
                     autoParams: false,
