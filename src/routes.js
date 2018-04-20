@@ -7,6 +7,11 @@ export default class Routes {
             abstract: true,
             component: 'root'
         }).state({
+            name: 'mobile',
+            title: gettext('Mobile'),
+            url: '/mobile',
+            component: 'mobile'
+        }).state({
             name: 'home',
             title: gettext('Dashboard'),
             url: '/',
