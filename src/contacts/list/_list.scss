@@ -76,9 +76,16 @@ contacts-list {
         grid-column: 1;
         grid-row: 2;
         > div.sub-line-1 {
-            display: grid;
+            display: flex;
             line-height: 34px;
-            grid-template-columns: 1fr auto;
+            .page-size {
+                flex-grow: 1;
+                text-align: right;
+                .chosen-container {
+                    width: 60px !important;
+                    text-align: left;
+                }
+            }
         }
     }
     > div.content {

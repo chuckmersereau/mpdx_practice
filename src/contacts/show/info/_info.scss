@@ -1,3 +1,4 @@
+@import 'person/person';
 contact-info {
     padding: 15px;
     font-weight: 600;
@@ -31,7 +32,7 @@ contact-info {
         display: grid;
         grid-gap: 10px;
         grid-template-columns: repeat(3, 1fr) 210px;
-        grid-template-rows: repeat(4, 50px);
+        grid-template-rows: repeat(3, 50px);
         > div {
             @extend .inline-input;
         }
@@ -41,13 +42,46 @@ contact-info {
             color: color-gray(60);
             font-size: $font-size-xs;
         }
+        > div.person {
+            grid-column: 1 / span 3;
+            grid-row: 1;
+        }
         > div.address {
             color: color-gray(35);
             font-size: $font-size-sm;
             grid-column: 4;
-            grid-row: 1 / span 4;
+            grid-row: 1 / span 2;
             label {
                 margin-bottom: 6px;
+            }
+        }
+    }
+    contact-address {
+        .wrapper {
+            flex-direction: column;
+            align-items: flex-start;
+            padding-top: 0;
+            border: 0;
+            .content {
+                flex-grow: 0;
+                line-height: $font-size-sm * 1.8;
+                h3 {
+                    margin-bottom: 3px;
+                    font-size: $font-size-sm;
+                    font-weight: 600;
+                }
+                .source {
+                    display: none;
+                }
+            }
+            .actions {
+                a i {
+                    margin-right: 2px;
+                    font-size: $font-size-xs;
+                }
+                .primary {
+                    display: none;
+                }
             }
         }
     }

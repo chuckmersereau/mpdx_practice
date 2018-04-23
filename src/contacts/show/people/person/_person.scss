@@ -1,74 +1,52 @@
 contact-person {
-    > div {
-        position: relative;
-        margin-bottom: 5px;
-        padding: 15px;
-        border: 1px solid $color-panel-border;
-        background-color: color-gray(95);
-        font-size: $font-size-sm;
-        line-height: 20px;
-        .pull-right a {
-            cursor: pointer;
-        }
-        .primary-container {
-            height: 12px;
-            .primary-option {
-                position: absolute;
-                right: 0;
-                bottom: 0;
-                padding: 5px 10px;
-                border-top-left-radius: 5px;
-                background: $color-panel-border;
-                color: $color-white;
-                cursor: pointer;
-            }
-        }
-        &.primary {
-            border: 1px solid $color-primary;
-            .primary-option {
-                background-color: $color-primary;
-            }
+    .wrapper {
+        display: flex;
+        padding: 10px 0;
+        border-top: 1px solid $color-border;
+        border-bottom: 1px solid $color-border;
+        avatar {
+            padding-right: 10px;
         }
         .content {
+            flex-grow: 1;
             h3 {
-                margin-top: 0;
-                margin-bottom: 0;
-            }
-            dl {
-                margin-bottom: 0;
-                dd {
-                    line-height: 20px;
-                    &:first-child {
-                        margin-top: 5px;
-                    }
-                    &.networks {
-                        line-height: 30px;
-                        a {
-                            margin-right: 5px;
-                            color: color-gray(30);
-                            font-size: 20px;
-                            &:hover {
-                                text-decoration: none;
-                            }
-                        }
-                    }
-                }
+                margin: 0;
             }
         }
-        .edit {
-            color: color-gray(60);
-            font-size: $font-size-xs;
-            font-weight: 500;
+    }
+    &:first-child {
+        .wrapper {
+            padding-top: 0;
+            border-top: 0;
+        }
+    }
+    .actions {
+        align-self: flex-end;
+        a,
+        a:link,
+        a:visited {
+            margin-right: 10px;
+            cursor: pointer;
             &:hover {
                 text-decoration: none;
-                cursor: pointer;
+            }
+            i {
+                margin-right: 5px;
             }
         }
-        &.merging {
-            cursor: pointer;
-        }
-        &.selected {
-            background-color: color-gray(80);
+    }
+}
+.contact-drawer {
+    contact-person {
+        .wrapper {
+            flex-direction: column;
+            .content {
+                flex-grow: 0;
+            }
+            .actions {
+                align-self: flex-start;
+                margin-top: 10px;
+            }
         }
     }
 }

@@ -30,7 +30,9 @@
             <span ng-if="$ctrl.contacts.activeDrawer === 'referrals'" translate>Referrals</span>
             <span ng-if="$ctrl.contacts.activeDrawer === 'people'" translate>People</span>
             <span ng-if="$ctrl.contacts.activeDrawer === 'tasks'" translate>Tasks</span>
-            <i ng-click="$ctrl.setActiveDrawer(null)" class="fal fa-times"></i>
+            <div class="contact-drawer-title-close text-muted">
+                <i ng-click="$ctrl.setActiveDrawer(null)" class="fal fa-times"></i>
+            </div>
         </h3>
         <contact-addresses ng-if="$ctrl.contacts.activeDrawer === 'addresses'"></contact-addresses>
         <contact-details contact="$ctrl.contacts.current"

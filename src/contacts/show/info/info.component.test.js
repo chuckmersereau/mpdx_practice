@@ -15,18 +15,6 @@ describe('contacts.show.details.component', () => {
         });
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
-    describe('$onInit', () => {
-        it('should setup translation object', () => {
-            $ctrl.$onInit();
-            expect($ctrl.translations).toEqual({
-                pledge_received: [
-                    { key: true, value: 'Yes' },
-                    { key: false, value: 'No' }
-                ]
-            });
-            expect(gettextCatalog.getString.calls.count()).toEqual(2);
-        });
-    });
     describe('hideContact', () => {
         beforeEach(() => {
             spyOn(contacts, 'hideContact').and.callFake(() => Promise.resolve());

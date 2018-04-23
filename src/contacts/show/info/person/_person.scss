@@ -1,0 +1,8 @@
+contact-info-person {
+    display: grid;
+    grid-column-gap: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    .static-field {
+        font-size: $font-size-sm;
+    }
+}

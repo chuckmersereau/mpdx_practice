@@ -34,6 +34,10 @@ class ContactDetailsController {
             magazine: [
                 { key: true, value: yes },
                 { key: false, value: no }
+            ],
+            pledge_received: [
+                { key: true, value: yes },
+                { key: false, value: no }
             ]
         };
         this.users.listOrganizationAccounts();

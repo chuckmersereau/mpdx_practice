@@ -79,15 +79,18 @@
 </div>
 <div class="sub-menu">
     <div class="sub-line-1">
-        <div>
-            <translate ng-if="$ctrl.meta.pagination.total_count > 0"
-                       translate-params-from="$ctrl.pagination.from($ctrl.meta.pagination.page, $ctrl.meta.pagination.per_page) || 0"
-                       translate-params-to="$ctrl.pagination.to($ctrl.meta.pagination.page, $ctrl.meta.pagination.per_page, $ctrl.meta.pagination.total_pages, $ctrl.meta.pagination.total_count) || 0"
-                       translate-params-total="$ctrl.meta.pagination.total_count || 0">
-                Showing <strong>{{from}}</strong> to <strong>{{to}}</strong> of <strong>{{total}}</strong>
-            </translate>
+        <div class="loading" ng-if="$ctrl.loading">
+            <i class="far fa-circle-notch fa-spin fa-fw"></i>
         </div>
-        <div>
+        <div class="fade-in"
+             ng-if="$ctrl.meta.pagination.total_count > 0"
+             translate-params-from="$ctrl.pagination.from($ctrl.meta.pagination.page, $ctrl.meta.pagination.per_page) || 0"
+             translate-params-to="$ctrl.pagination.to($ctrl.meta.pagination.page, $ctrl.meta.pagination.per_page, $ctrl.meta.pagination.total_pages, $ctrl.meta.pagination.total_count) || 0"
+             translate-params-total="$ctrl.meta.pagination.total_count || 0"
+             translate>
+            Showing <strong>{{from}}</strong> to <strong>{{to}}</strong> of <strong>{{total}}</strong>
+        </div>
+        <div class="page-size">
             <pagination-dropdown selected="$ctrl.pageSize"
                                  on-change="$ctrl.pageSizeChange(size)"
                                  user-option="contacts">

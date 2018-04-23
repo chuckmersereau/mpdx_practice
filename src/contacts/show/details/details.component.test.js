@@ -40,6 +40,10 @@ describe('contacts.show.details.component', () => {
                 magazine: [
                     { key: true, value: 'Yes' },
                     { key: false, value: 'No' }
+                ],
+                pledge_received: [
+                    { key: true, value: 'Yes' },
+                    { key: false, value: 'No' }
                 ]
             });
             expect(gettextCatalog.getString.calls.count()).toEqual(2);

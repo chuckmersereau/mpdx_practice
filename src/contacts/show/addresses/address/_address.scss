@@ -1,42 +1,52 @@
 @import 'modal/modal';
 contact-address {
-    > div {
-        position: relative;
-        margin-bottom: 5px;
-        padding: 15px;
-        border: 1px solid $color-panel-border;
-        background-color: color-gray(95);
-        font-size: $font-size-sm;
-        line-height: 20px;
-        .pull-right a {
+    .wrapper {
+        display: flex;
+        align-items: flex-end;
+        padding: 10px 0;
+        border-top: 1px solid $color-border;
+        border-bottom: 1px solid $color-border;
+        .content {
+            flex-grow: 1;
+            div:empty {
+                display: none;
+            }
+            h3 {
+                margin: 0;
+            }
+        }
+    }
+    &:first-child {
+        .wrapper {
+            padding-top: 0;
+            border-top: 0;
+        }
+    }
+    .actions {
+        a,
+        a:link,
+        a:visited {
+            margin-right: 10px;
             cursor: pointer;
-        }
-        .primary-container {
-            height: 12px;
-            .primary-option {
-                position: absolute;
-                right: 0;
-                bottom: 0;
-                padding: 5px 10px;
-                border-top-left-radius: 5px;
-                background: $color-panel-border;
-                color: $color-white;
-                cursor: pointer;
-            }
-        }
-        &.primary {
-            border: 1px solid $color-primary;
-            .primary-option {
-                background-color: $color-primary;
-            }
-        }
-        .edit {
-            color: color-gray(60);
-            font-size: $font-size-xs;
-            font-weight: 500;
             &:hover {
                 text-decoration: none;
-                cursor: pointer;
+            }
+            i {
+                margin-right: 5px;
+            }
+        }
+    }
+}
+.contact-drawer {
+    contact-address {
+        .wrapper {
+            flex-direction: column;
+            align-items: flex-start;
+            .content {
+                flex-grow: 0;
+            }
+            .actions {
+                margin-top: 10px;
             }
         }
     }

@@ -12,16 +12,6 @@ class ContactInfoController {
         this.serverConstants = serverConstants;
         this.tasks = tasks;
     }
-    $onInit() {
-        const yes = this.gettextCatalog.getString('Yes');
-        const no = this.gettextCatalog.getString('No');
-        this.translations = {
-            pledge_received: [
-                { key: true, value: yes },
-                { key: false, value: no }
-            ]
-        };
-    }
     $onChanges(obj) {
         if (obj.contact) {
             if (parseInt(obj.contact.currentValue.pledge_frequency) > 0) {

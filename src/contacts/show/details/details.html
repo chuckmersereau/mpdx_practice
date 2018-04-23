@@ -1,42 +1,95 @@
 <h5 translate>Financial</h5>
 <div class="financial">
-    <div>
-        <label translate>Last Donation</label>
-        <div class="static-field">
-            <div class="content">{{$ctrl.last_donation}}</div>
+    <div class="commitment">
+        <div>
+            <label translate>Commitment Received</label>
+            <div class="inline-input">
+                <select chosen
+                        disable-search="true"
+                        data-placeholder-text-single="'Select an Option' | translate"
+                        class="form-control"
+                        id="pledge_received"
+                        ng-change="$ctrl.save()"
+                        ng-model-options="{ debounce: 1000 }"
+                        ng-options="o.key as o.value for o in $ctrl.translations.pledge_received"
+                        ng-model="$ctrl.contact.pledge_received">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+        <div>
+            <label translate>Commitment Start Date</label>
+            <div class="inline-input">
+                <input bs-datepicker
+                       type="text"
+                       ng-model="$ctrl.contact.pledge_start_date"
+                       ng-change="$ctrl.save()"
+                       data-autoclose="true"
+                       data-date-type="string"
+                       data-date-format="{{$ctrl.locale.dateTimeFormat}}"
+                       data-model-date-format="yyyy-MM-dd">
+            </div>
         </div>
     </div>
-    <div>
-        <label translate>Giving Method</label>
-        <div class="static-field">
-            <div class="content">{{$ctrl.giving_method}}</div>
+    <div class="donations">
+        <div>
+            <label translate>Last Donation</label>
+            <div class="static-field">
+                <div class="content">{{$ctrl.last_donation}}</div>
+            </div>
+        </div>
+        <div>
+            <label translate>Giving Method</label>
+            <div class="static-field">
+                <div class="content">{{$ctrl.giving_method}}</div>
+            </div>
         </div>
     </div>
-    <div>
-        <label translate>Lifetime Donations</label>
-        <div class="static-field">
-            <div class="content">{{$ctrl.lifetime_donations}}</div>
+    <div class="donations">
+        <div>
+            <label translate>Lifetime Donations</label>
+            <div class="static-field">
+                <div class="content">{{$ctrl.lifetime_donations}}</div>
+            </div>
         </div>
-    </div>
-    <div ng-if="$ctrl.showGiftAid()">
-        <label translate>Gift Aid?</label>
-        <div class="inline-input">
-            <select chosen
-                    required
-                    ng-change="$ctrl.save()"
-                    ng-model-options="{ debounce: 1000 }"
-                    disable-search="true"
-                    data-placeholder-text-single="'Select an Option' | translate"
-                    class="form-control"
-                    ng-model="$ctrl.contact.no_gift_aid"
-                    ng-options="o.key as o.value for o in $ctrl.translations.no_gift_aid">
-            </select>
+        <div ng-if="$ctrl.showGiftAid()">
+            <label translate>Gift Aid?</label>
+            <div class="inline-input">
+                <select chosen
+                        required
+                        ng-change="$ctrl.save()"
+                        ng-model-options="{ debounce: 1000 }"
+                        disable-search="true"
+                        data-placeholder-text-single="'Select an Option' | translate"
+                        class="form-control"
+                        ng-model="$ctrl.contact.no_gift_aid"
+                        ng-options="o.key as o.value for o in $ctrl.translations.no_gift_aid">
+                </select>
+            </div>
         </div>
     </div>
 </div>
 
 <h5 translate>Communications</h5>
 <div class="communication">
+    <div>
+        <label translate>Envelope Name Line</label>
+        <div class="inline-input">
+            <input type="text" ng-model="$ctrl.contact.envelope_greeting"
+                   placeholder="{{ 'Mr. J Smith' | translate }}"
+                   ng-change="$ctrl.save()"
+                   ng-model-options="{ debounce: 1000 }">
+        </div>
+    </div>
+    <div>
+        <label translate>Greeting (used in export)</label>
+        <div class="inline-input">
+            <input type="text"
+                   ng-model="$ctrl.contact.greeting"
+                   ng-change="$ctrl.save()"
+                   ng-model-options="{ debounce: 1000 }">
+        </div>
+    </div>
     <div class="referred-by">
         <label translate>Referred By</label>
         <div class="collection-selector">

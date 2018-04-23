@@ -22,7 +22,7 @@ tasks-list-item {
             }
         }
         &:hover {
-            background-color: $color-bg-hover;
+            background-color: $color-list-item-hover;
             > div.trash {
                 @extend .fade-in.ng-enter;
                 opacity: 1;
@@ -101,9 +101,9 @@ tasks-list-item {
             line-height: 20px;
         }
         &--selected {
-            background-color: $color-selected-bg;
+            background-color: $color-list-item-active;
             &:hover {
-                background-color: $color-selected-bg-hover;
+                background-color: $color-list-item-active-hover;
             }
         }
     }

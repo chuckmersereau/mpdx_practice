@@ -45,8 +45,16 @@ contact-details {
         }
     }
     .financial {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        .commitment {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-column-gap: 20px;
+        }
+        .donations {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-column-gap: 20px;
+        }
     }
     .communication {
         display: grid;
