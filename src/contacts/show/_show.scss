@@ -94,14 +94,25 @@ contact {
                 align-items: center;
                 margin: -$container-padding;
                 margin-bottom: 10px;
-                padding: 0 $container-padding;
+                padding: 0;
                 border-bottom: 1px color-gray(85) solid;
                 line-height: 60px;
                 span {
                     flex-grow: 1;
+                    padding-left: $container-padding;
                 }
-                i {
-                    cursor: pointer;
+                .contact-drawer-title-close {
+                    width: 60px;
+                    transition: color 0.2s;
+                    border-left: 1px $color-menu-border solid;
+                    color: color-gray(90);
+                    text-align: center;
+                    i {
+                        cursor: pointer;
+                    }
+                    &:hover {
+                        color: color-gray(35);
+                    }
                 }
             }
             @media(max-width: $hide-drawer-width) {

@@ -99,6 +99,25 @@ class ContactsService {
             return data;
         });
     }
+    getPrimaryPerson(id) {
+        return this.api.get({
+            url: `contacts/${id}`,
+            data: {
+                include: 'primary_person,people.email_addresses,people.phone_numbers',
+                fields: {
+                    contacts: 'primary_person',
+                    people: 'first_name,last_name,phone_numbers,email_addresses',
+                    phone_numbers: 'primary,historic,number',
+                    email_addresses: 'primary,historic,email'
+                }
+            }
+        }).then((data) => {
+            data = data.primary_person;
+            /* istanbul ignore next */
+            this.$log.debug('primary person', id, data);
+            return data;
+        });
+    }
     search(keyword) {
         return this.api.get({
             url: 'contacts',

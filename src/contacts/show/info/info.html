@@ -32,21 +32,9 @@
     </div>
 </div>
 <div class="content">
-    <div class="envelope-name">
-        <label translate>Envelope Name Line</label>
-        <input type="text" ng-model="$ctrl.contact.envelope_greeting"
-               placeholder="{{ 'Mr. J Smith' | translate }}"
-               ng-change="$ctrl.save()"
-               ng-model-options="{ debounce: 1000 }">
+    <div class="person">
+        <contact-info-person contact="$ctrl.contacts.current"></contact-info-person>
     </div>
-    <div class="greeting">
-        <label translate>Greeting (used in export)</label>
-        <input type="text"
-               ng-model="$ctrl.contact.greeting"
-               ng-change="$ctrl.save()"
-               ng-model-options="{ debounce: 1000 }">
-    </div>
-    <div></div>
     <div class="address">
         <label translate>Primary Address</label>
         <contact-address ng-repeat="address in ::$ctrl.contact.addresses track by address.id"
@@ -110,20 +98,6 @@
                ng-change="$ctrl.save()"
                ng-model-options="{ debounce: 1000 }" />
     </div>
-    <div class="currency">
-        <label translate>Currency</label>
-        <select chosen
-                required
-                ng-change="$ctrl.save()"
-                ng-model-options="{ debounce: 1000 }"
-                class="form-control"
-                data-placeholder-text-single="'Select an Option' | translate"
-                id="pledge_currency"
-                ng-options="pc.code as pc.code_symbol_string for pc in $ctrl.serverConstants.data.pledge_currencies"
-                ng-model="$ctrl.contact.pledge_currency">
-            <option value=""></option>
-        </select>
-    </div>
     <div class="frequency">
         <label translate>Frequency</label>
         <select chosen
@@ -139,29 +113,18 @@
             <option value=""></option>
         </select>
     </div>
-    <div class="commitment-received">
-        <label translate>Commitment Received</label>
+    <div class="currency">
+        <label translate>Currency</label>
         <select chosen
-                disable-search="true"
-                data-placeholder-text-single="'Select an Option' | translate"
-                class="form-control"
-                id="pledge_received"
+                required
                 ng-change="$ctrl.save()"
                 ng-model-options="{ debounce: 1000 }"
-                ng-options="o.key as o.value for o in $ctrl.translations.pledge_received"
-                ng-model="$ctrl.contact.pledge_received">
+                class="form-control"
+                data-placeholder-text-single="'Select an Option' | translate"
+                id="pledge_currency"
+                ng-options="pc.code as pc.code_symbol_string for pc in $ctrl.serverConstants.data.pledge_currencies"
+                ng-model="$ctrl.contact.pledge_currency">
             <option value=""></option>
         </select>
-    </div>
-    <div class="commitment-start-date">
-        <label translate>Commitment Start Date</label>
-        <input bs-datepicker
-               type="text"
-               ng-model="$ctrl.contact.pledge_start_date"
-               ng-change="$ctrl.save()"
-               data-autoclose="true"
-               data-date-type="string"
-               data-date-format="{{$ctrl.locale.dateTimeFormat}}"
-               data-model-date-format="yyyy-MM-dd">
     </div>
 </div>

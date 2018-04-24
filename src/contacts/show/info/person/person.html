@@ -1,0 +1,33 @@
+<div>
+    <label>Primary Person Name</label>
+    <div class="static-field">
+        <a ui-sref=".people">
+            {{$ctrl.person.first_name}} {{$ctrl.person.last_name}}
+            <span ng-if="!$ctrl.person.first_name && !$ctrl.person.last_name && !$ctrl.loading" translate>
+                N/A
+            </span>
+        </a>
+    </div>
+</div>
+<div>
+    <label>Primary Person Phone Number</label>
+    <div class="static-field">
+        <a ng-href="tel:{{$ctrl.person.primaryPhoneNumber.number}}" target="_blank">
+            {{$ctrl.person.primaryPhoneNumber.number}}
+        </a>
+        <a ui-sref=".people" ng-if="!$ctrl.person.primaryPhoneNumber && !$ctrl.loading" translate>
+            N/A
+        </a>
+    </div>
+</div>
+<div>
+    <label>Primary Person Email Address</label>
+    <div class="static-field">
+        <a ng-href="mailto:{{$ctrl.person.primaryEmailAddress.email}}" target="_blank">
+            {{$ctrl.person.primaryEmailAddress.email}}
+        </a>
+        <a ui-sref=".people" ng-if="!$ctrl.person.primaryEmailAddress && !$ctrl.loading" translate>
+            N/A
+        </a>
+    </div>
+</div>

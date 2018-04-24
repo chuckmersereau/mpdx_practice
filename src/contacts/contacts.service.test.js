@@ -151,6 +151,62 @@ describe('contacts.service', () => {
             });
         });
     });
+    describe('getPrimaryPerson', () => {
+        let data;
+        beforeEach(() => {
+            data = {
+                primary_person: {
+                    id: 'person_id'
+                }
+            };
+            spyOn(api, 'get').and.callFake(() => Promise.resolve(data));
+        });
+
+        it('should call the api', () => {
+            contacts.getPrimaryPerson(123);
+            expect(api.get).toHaveBeenCalledWith({
+                url: 'contacts/123',
+                data: {
+                    include: 'primary_person,people.email_addresses,people.phone_numbers',
+                    fields: {
+                        contacts: 'primary_person',
+                        people: 'first_name,last_name,phone_numbers,email_addresses',
+                        phone_numbers: 'primary,historic,number',
+                        email_addresses: 'primary,historic,email'
+                    }
+                }
+            }
+            );
+        });
+
+        it('should return promise', () => {
+            expect(contacts.getPrimaryPerson(123)).toEqual(jasmine.any(Promise));
+        });
+
+        describe('promise successful', () => {
+            it('should return the primary person', (done) => {
+                contacts.getPrimaryPerson(123).then((data) => {
+                    expect(data).toEqual({ id: 'person_id' });
+                    done();
+                });
+            });
+
+            describe('data empty', () => {
+                beforeEach(() => {
+                    data = {
+                        primary_person: null
+                    };
+                });
+
+                it('should return null', (done) => {
+                    contacts.getRecommendation(123).then((data) => {
+                        expect(data).not.toBeDefined();
+                        done();
+                    });
+                });
+            });
+        });
+    });
     describe('save', () => {
         let contact = { id: 1, name: 'a' };
         it('should save a contact', () => {

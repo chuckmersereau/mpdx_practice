@@ -1,44 +1,45 @@
-<div ng-class="{'merging': $ctrl.isMerging, 'selected' : $ctrl.person.selected_for_merge === true, 'primary': $ctrl.contact.primary_person.id === $ctrl.person.id }" ng-click="$ctrl.selectCard()">
+<div class="wrapper" ng-class="{'merging': $ctrl.isMerging, 'selected' : $ctrl.person.selected_for_merge === true, 'primary': $ctrl.contact.primary_person.id === $ctrl.person.id }" ng-click="$ctrl.selectCard()">
     <avatar src="$ctrl.person.avatar" editable="!$ctrl.view" on-upload="$ctrl.updateAvatar(avatar)"></avatar>
-    <div class="content avatar-on-left">
-        <a class="pull-right edit" ng-click="$ctrl.openModal(); $event.stopPropagation()" ng-if="!$ctrl.view" translate>Edit</a>
+    <div class="content">
         <h3 ng-class="{ strike: $ctrl.person.deceased }">{{ $ctrl.person.title }} {{ $ctrl.person.first_name }} {{ $ctrl.person.last_name }} {{ $ctrl.person.suffix }}</h3>
-        <dl>
-            <dd>{{ $ctrl.person.occupation }} <span ng-if="$ctrl.person.employer"> - {{ $ctrl.person.employer }}</span></dd>
-            <dd ng-repeat="email in $ctrl.person.email_addresses">
-                <a ng-href="mailto:{{email.email}}" target="_blank">
-                    {{ email.email }}
-                </a>
-                <span ng-if="email.location">{{ ' - ' + $ctrl.translatedLocations[email.location] }}</span>
-                <i ng-if="email.primary" class="fas fa-check text-success"></i>
-                <i ng-if="email.historic" class="fas fa-window-close text-danger"></i>
-            </dd>
-            <dd ng-if="$ctrl.person.optout_enewsletter" translate>opted out of newsletter</dd>
-            <dd ng-repeat="phone in $ctrl.person.phone_numbers track by $index">
-                <a ng-href="tel:{{phone.number}}" target="_blank">
-                    {{ phone.number }}
-                </a>
-                <span ng-if="phone.location">{{ ' - ' + $ctrl.translatedLocations[phone.location] }}</span>
-                <i ng-if="phone.primary" class="fas fa-check text-success"></i>
-                <i ng-if="phone.historic" class="fas fa-window-close text-danger"></i>
-            </dd>
-            <dd ng-if="$ctrl.person.marital_status">
-                <span>{{ $ctrl.person.marital_status }}</span>
-                <two-part-date-display day="$ctrl.person.anniversary_day" month="$ctrl.person.anniversary_month"></two-part-date-display>
-            </dd>
-            <dd ng-if="$ctrl.person.facebook_accounts.length > 0 || $ctrl.person.twitter_accounts.length > 0 || $ctrl.person.linkedin_accounts.length > 0 || $ctrl.person.websites.length > 0" class="networks">
-                <facebook-link ng-repeat="fb in $ctrl.person.facebook_accounts" facebook-account="fb"></facebook-link>
-                <twitter-link ng-repeat="twit in $ctrl.person.twitter_accounts" twitter-account="twit"></twitter-link>
-                <linkedin-link ng-repeat="li in $ctrl.person.linkedin_accounts" linkedin-account="li"></linkedin-link>
-                <website-link ng-repeat="website in $ctrl.person.websites" website="website"></website-link>
-            </dd>
-        </dl>
-        <div class="primary-container" ng-if="::!$ctrl.userProfile">
-            <div class="primary-option" ng-click="$ctrl.onPrimary($ctrl.person.id); $event.stopPropagation()">
-                <i class="far fa-square" ng-if="$ctrl.contact.primary_person.id !== $ctrl.person.id"></i>
-                <i class="far fa-check-square" ng-if="$ctrl.contact.primary_person.id === $ctrl.person.id"></i>
-                <translate>Primary</translate>
-            </div>
+        <div>{{ $ctrl.person.occupation }} <span ng-if="$ctrl.person.employer"> - {{ $ctrl.person.employer }}</span></div>
+        <div ng-repeat="email in $ctrl.person.email_addresses">
+            <a ng-href="mailto:{{email.email}}" target="_blank">
+                {{ email.email }}
+            </a>
+            <span ng-if="email.location">{{ ' - ' + $ctrl.translatedLocations[email.location] }}</span>
+            <i ng-if="email.primary" class="fas fa-check text-success"></i>
+            <i ng-if="email.historic" class="fas fa-window-close text-danger"></i>
         </div>
+        <div ng-if="$ctrl.person.optout_enewsletter" translate>opted out of newsletter</div>
+        <div ng-repeat="phone in $ctrl.person.phone_numbers track by $index">
+            <a ng-href="tel:{{phone.number}}" target="_blank">
+                {{ phone.number }}
+            </a>
+            <span ng-if="phone.location">{{ ' - ' + $ctrl.translatedLocations[phone.location] }}</span>
+            <i ng-if="phone.primary" class="fas fa-check text-success"></i>
+            <i ng-if="phone.historic" class="fas fa-window-close text-danger"></i>
+        </div>
+        <div ng-if="$ctrl.person.marital_status">
+            <span>{{ $ctrl.person.marital_status }}</span>
+            <two-part-date-display day="$ctrl.person.anniversary_day" month="$ctrl.person.anniversary_month"></two-part-date-display>
+        </div>
+        <div ng-if="$ctrl.person.facebook_accounts.length > 0 || $ctrl.person.twitter_accounts.length > 0 || $ctrl.person.linkedin_accounts.length > 0 || $ctrl.person.websites.length > 0" class="networks">
+            <facebook-link ng-repeat="fb in $ctrl.person.facebook_accounts" facebook-account="fb"></facebook-link>
+            <twitter-link ng-repeat="twit in $ctrl.person.twitter_accounts" twitter-account="twit"></twitter-link>
+            <linkedin-link ng-repeat="li in $ctrl.person.linkedin_accounts" linkedin-account="li"></linkedin-link>
+            <website-link ng-repeat="website in $ctrl.person.websites" website="website"></website-link>
+        </div>
+    </div>
+    <div class="actions">
+        <a ng-click="$ctrl.openModal(); $event.stopPropagation()" ng-if="!$ctrl.view" translate>
+            <i class="fas fa-edit"></i>
+            <translate>Edit</translate>
+        </a>
+        <a ng-click="$ctrl.onPrimary($ctrl.person.id); $event.stopPropagation()" ng-if="::!$ctrl.userProfile">
+            <i class="far fa-star" ng-if="$ctrl.contact.primary_person.id !== $ctrl.person.id"></i>
+            <i class="fas fa-star" ng-if="$ctrl.contact.primary_person.id === $ctrl.person.id"></i>
+            <translate>Primary</translate>
+        </a>
     </div>
 </div>

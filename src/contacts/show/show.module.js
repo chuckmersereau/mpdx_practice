@@ -4,6 +4,7 @@ import component from './show.component';
 import details from './details/details.component';
 import donorAccount from './details/donor/donor.component';
 import info from './info/info.component';
+import infoPerson from './info/person/person.component';
 import notes from './notes/notes.component';
 import people from './people/people.module';
 import recommendation from './recommendation/recommendation.component';
@@ -19,6 +20,7 @@ export default angular.module('mpdx.contacts.show', [
     details,
     donorAccount,
     info,
+    infoPerson,
     notes,
     people,
     recommendation,

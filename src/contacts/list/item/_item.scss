@@ -135,12 +135,12 @@ contacts-list-item {
         }
     }
     &:hover {
-        background-color: $color-bg-hover;
+        background-color: $color-list-item-hover;
     }
     &.selected {
-        background-color: $color-selected-bg;
+        background-color: $color-list-item-active;
         &:hover {
-            background-color: $color-selected-bg-hover;
+            background-color: $color-list-item-active-hover;
         }
     }
 }
