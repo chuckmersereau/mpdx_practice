@@ -75,18 +75,6 @@ contacts-list {
         @extend .lists.item-list-sub-menu;
         grid-column: 1;
         grid-row: 2;
-        > div.sub-line-1 {
-            display: flex;
-            line-height: 34px;
-            .page-size {
-                flex-grow: 1;
-                text-align: right;
-                .chosen-container {
-                    width: 60px !important;
-                    text-align: left;
-                }
-            }
-        }
     }
     > div.content {
         @extend .lists.content;

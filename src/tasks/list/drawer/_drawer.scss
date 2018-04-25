@@ -2,62 +2,25 @@
 @import 'contact/item';
 $task-drawer-width: $side-drawer-width - 2px;
 task-item-drawer {
-    display: block;
-    width: 538px;
-    height: 99%;
-    background-color: color-gray(90);
-    > div.head {
-        width: $task-drawer-width;
-        > div.task-info {
-            margin-top: 20px;
-            margin-left: 15px;
-            padding-bottom: 5px;
-            padding-left: 5px;
-            > h2 {
-                margin: 0;
-                font-weight: 600;
-            }
-        }
-        > div.horizontal-tab-sortable {
-            background-color: $color-white;
-            .sortable-row {
-                padding-left: 0;
-            }
-            .active-item {
-                border-bottom-color: color-gray(90);
-                background-color: color-gray(90);
+    > .heading {
+        padding-top: 8px;
+        > .horizontal-tab-sortable {
+            .sortable-row >.as-sortable-item > .as-sortable-item-handle {
+                cursor: pointer;
             }
         }
     }
-    > div.contacts {
-        width: $task-drawer-width;
-        height: calc(100% - 40px);
-        padding: 5px;
-        overflow-y: auto;
-        task-list-contact {
-            display: block;
-            padding: 15px;
-            background-color: $color-white;
+    > .content {
+        > .contacts {
+            padding: $container-padding;
         }
     }
-    > div.comments {
-        position: relative;
-        width: $task-drawer-width;
-        height: 100%;
-        overflow-y: auto;
-        > div.bottom {
-            position: absolute;
-            bottom: 97px;
-            left: 0;
-            width: 100%;
-            padding: 5px 5px 5px 10px;
-            background-color: color-gray(90);
-            i {
-                padding-right: 5px;
-            }
-            input {
-                width: 475px;
-            }
-        }
+    > .comment-form {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        padding: 5px 120px 5px 10px;
+        background-color: color-gray(90);
     }
 }

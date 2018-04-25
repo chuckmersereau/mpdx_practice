@@ -18,8 +18,8 @@ describe('tasks.tags', () => {
     }
 
     describe('constructor', () => {
-        xit('should define view objects', () => {
-            expect($ctrl.tasks).toBeDefined();
+        it('should define default values', () => {
+            expect($ctrl.hideTags).toEqual(true);
         });
     });
 });

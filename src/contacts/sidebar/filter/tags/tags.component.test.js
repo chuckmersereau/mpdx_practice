@@ -17,6 +17,13 @@ describe('contacts.filter.tags.component', () => {
     function loadController() {
         $ctrl = componentController('contactsTags', { $scope: scope }, {});
     }
+
+    describe('constructor', () => {
+        it('should define default values', () => {
+            expect($ctrl.hideTags).toEqual(true);
+        });
+    });
+
     describe('events', () => {
         it('should handle account list change', () => {
             spyOn(contactsTags, 'load').and.callFake(() => {});
@@ -26,6 +33,7 @@ describe('contacts.filter.tags.component', () => {
             expect(contactsTags.load).toHaveBeenCalled();
         });
     });
+
     describe('changeAny', () => {
         it('should change contactsTags.anyTags', () => {
             $ctrl.changeAny(true);

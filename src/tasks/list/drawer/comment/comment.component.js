@@ -9,6 +9,8 @@ class CommentController {
         this.gettext = gettext;
         this.modal = modal;
         this.users = users;
+
+        this.edit = false;
     }
     commentBelongsToUser(comment) {
         return eq(get('person.id', comment), this.users.current.id);
@@ -23,7 +25,7 @@ class CommentController {
     }
     editComment() {
         return this.api.put(`tasks/${this.taskId}/comments/${this.comment.id}`, { body: this.comment.body }).then(() => {
-            this.comment.edit = false;
+            this.edit = false;
         });
     }
 }

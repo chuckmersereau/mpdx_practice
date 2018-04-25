@@ -3,21 +3,21 @@
      ng-click="$ctrl.select($event)">
      <div class="select-box" ng-class="{ 'selected': $ctrl.selected }"></div>
     <a ng-click="$ctrl.complete(); $event.stopPropagation();"
-       class="complete item-text"
+       class="complete"
        title="{{::'Completed' | translate}}"
        ng-disabled="::$ctrl.task.completed">
-        <i class="far fa-lg" ng-class="::$ctrl.task.completed ? 'fa-check-circle text-success' : 'fa-circle'" ></i>
+        <i class="far" ng-class="::$ctrl.task.completed ? 'fa-check-circle text-success' : 'fa-circle'" ></i>
     </a>
     <div class="content">
-        <a ng-click="$ctrl.edit(); $event.stopPropagation();" class="subject item-text">
+        <a ng-click="$ctrl.edit(); $event.stopPropagation();" class="subject">
             <strong>{{ ::$ctrl.task.activity_type | translate }}</strong>
             {{ ::$ctrl.task.subject }}
         </a>
-        <span ng-if="::$ctrl.task.completed" translate-params-result="::$ctrl.task.result" class="result item-text" translate>
+        <span ng-if="::$ctrl.task.completed" translate-params-result="::$ctrl.task.result" class="result" translate>
             ({{ result }})
         </span>
         <span class="contacts">
-            <strong class="item-text"
+            <strong
                     ng-repeat="activityContact in ::$ctrl.task.activity_contacts | limitTo : 10">
                 <a ng-click="$ctrl.openContacts(); $event.stopPropagation();">
                     {{ ::activityContact.contact.name }}

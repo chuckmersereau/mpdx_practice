@@ -221,11 +221,11 @@ class TasksService {
     load(taskId) {
         return this.api.get(`tasks/${taskId}`, {
             include: 'activity_contacts,comments,comments.person,contacts,contacts.addresses,contacts.last_donation,'
-                + 'contacts.people,contacts.people.facebook_accounts,contacts.people.phone_numbers,'
-                + 'contacts.people.email_addresses',
+                + 'contacts.primary_person,contacts.primary_person.facebook_accounts,contacts.primary_person.phone_numbers,'
+                + 'contacts.primary_person.email_addresses',
             fields: {
                 activity_contacts: 'contact',
-                contacts: 'addresses,name,last_donation,people,pledge_amount,pledge_currency,pledge_currency_symbol,'
+                contacts: 'addresses,name,last_donation,primary_person,pledge_amount,pledge_currency,pledge_currency_symbol,'
                     + 'pledge_frequency,pledge_received,send_newsletter,square_avatar,status,tag_list,'
                     + 'uncompleted_tasks_count',
                 addresses: 'city,historic,primary_mailing_address,postal_code,state,source,street',

@@ -40,6 +40,18 @@
         > div.filters {
             font-size: $font-size-md;
         }
+        > div.sub-line-1 {
+            display: flex;
+            line-height: 34px;
+            .page-size {
+                flex-grow: 1;
+                text-align: right;
+                .chosen-container {
+                    width: 60px !important;
+                    text-align: left;
+                }
+            }
+        }
         .loading {
             font-size: $font-size-md;
         }
