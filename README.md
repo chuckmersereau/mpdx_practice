@@ -33,6 +33,15 @@ All scripts are run with `yarn [script]`, for example: `yarn test`.
 * `test` - run all tests
 * `test:live` - continuously run unit tests watching for changes
 
+## Working with local API
+
+If you are running a local copy of the api and want the front-end to connect to that, cross-env is your friend:
+
+```shell
+$ npm install -g cross-env
+$ cross-env NODE_ENV=local yarn start
+```
+
 ## Commonly used libraries
 
 #### Lodash FP: https://github.com/lodash/lodash/wiki/FP-Guide
