@@ -5,7 +5,7 @@
                     bs-dropdown
                     type="button"
                     data-toggle="dropdown"
-                    ng-if="$ctrl.data.length > 0"
+                    ng-disabled="$ctrl.data.length === 0"
                     aria-expanded="true">
                 <translate>Select</translate> <i class="fas fa-caret-down"></i>
             </button>
@@ -27,6 +27,8 @@
         </div>
         <div class="count" ng-if="$ctrl.selected.length > 0">
             {{$ctrl.selected.length}} <translate>Selected</translate>
+            &nbsp;
+            <i class="fas fa-times pointer" ng-click="$ctrl.clearSelected()"></i>
         </div>
     </div>
     <div class="menu-buttons">
@@ -74,13 +76,14 @@
 </div>
 <div class="sub-menu">
     <div class="sub-line-1">
-        <div>
-            <div translate ng-if="$ctrl.meta.pagination.total_count > 0"
-                       translate-params-from="$ctrl.pagination.from($ctrl.meta.pagination.page, $ctrl.meta.pagination.per_page) || 0"
-                       translate-params-to="$ctrl.pagination.to($ctrl.meta.pagination.page, $ctrl.meta.pagination.per_page, $ctrl.meta.pagination.total_pages, $ctrl.meta.pagination.total_count) || 0"
-                       translate-params-total="$ctrl.meta.pagination.total_count || 0">
-                Showing <strong>{{from}}</strong> to <strong>{{to}}</strong> of <strong>{{total}}</strong>
-            </div>
+        <div class="loading" ng-if="$ctrl.loading">
+            <i class="far fa-circle-notch fa-spin fa-fw"></i>
+        </div>
+        <div translate ng-if="$ctrl.meta.pagination.total_count > 0"
+                   translate-params-from="$ctrl.pagination.from($ctrl.meta.pagination.page, $ctrl.meta.pagination.per_page) || 0"
+                   translate-params-to="$ctrl.pagination.to($ctrl.meta.pagination.page, $ctrl.meta.pagination.per_page, $ctrl.meta.pagination.total_pages, $ctrl.meta.pagination.total_count) || 0"
+                   translate-params-total="$ctrl.meta.pagination.total_count || 0">
+            Showing <strong>{{from}}</strong> to <strong>{{to}}</strong> of <strong>{{total}}</strong>
         </div>
         <div>
             <pagination-dropdown selected="$ctrl.pageSize"
@@ -89,19 +92,6 @@
             </pagination-dropdown>
         </div>
     </div>
-    <filters-header filters="$ctrl.tasksFilter.data"
-                           filter-default-params="$ctrl.tasksFilter.defaultParams"
-                           filter-params="$ctrl.tasksFilter.params"
-                           selected-tags="$ctrl.tasksTags.selectedTags"
-                           rejected-tags="$ctrl.tasksTags.rejectedTags"
-                           invert-filter="$ctrl.tasksFilter.invertMultiselect($filter)"
-                           display-filters="$ctrl.tasksFilter.isResettable()"
-                           remove-filter="$ctrl.tasksFilter.removeFilter($filter)"
-                           reject-tag="$ctrl.tasksTags.rejectTag($tag)"
-                           remove-selected-tag="$ctrl.tasksTags.removeFromSelected($tag)"
-                           select-tag="$ctrl.tasksTags.selectTag($tag)"
-                           remove-rejected-tag="$ctrl.tasksTags.removeFromRejected($tag)">
-    </filters-header>
     <div ng-if="$ctrl.contact">
         <tasks-list-add></tasks-list-add>
     </div>
@@ -109,21 +99,17 @@
 <div class="content">
     <div class="column" ng-init="activeCategory = {}">
         <div ng-repeat="(category, tasks) in $ctrl.data | groupBy: 'category.name'">
-            <div class="panel panel-default"
-                 ng-class="category"
+            <div class="task-category"
                  role="tablist"
                  aria-multiselectable="true"
                  bs-collapse
                  ng-init="activeCategory[category] = false"
                  ng-model="activeCategory[category]">
-                <div class="panel-heading" style="cursor: pointer" bs-collapse-toggle>
-                    <span class="task-category-title">
-                        <i class="fas"
-                           ng-class="{'fa-chevron-down': !activeCategory[category], 'fa-chevron-right': activeCategory[category]}"></i>
-                        {{$ctrl.categories[category]}}
-                    </span>
+                <div class="task-category-title" ng-class="category" bs-collapse-toggle>
+                    <span class="task-category-title-text">{{$ctrl.categories[category]}}</span>
+                    <i class="fal fa-chevron-down" ng-class="{'fa-rotate-180': activeCategory[category]}"></i>
                 </div>
-               <ul class="list-group" role="tabpanel" bs-collapse-target>
+               <ul class="task-category-list list-group" role="tabpanel" bs-collapse-target>
                     <li class="list-group-item" ng-repeat="task in tasks">
                         <tasks-list-item task="task"
                             selected="$ctrl.isSelected(task.id)"
@@ -163,6 +149,6 @@
                     class="text-center"></pagination>
     </div>
 </div>
-<side-drawer ng-if="$ctrl.selectedTask" on-close="$ctrl.onClose()" class="slide-left">
+<side-drawer ng-if="$ctrl.selectedTask" on-close="$ctrl.onClose()" title="{{ $ctrl.selectedTask.activity_type | translate }} {{$ctrl.selectedTask.subject}}" class="slide-left">
     <task-item-drawer view="$ctrl.drawerView" task="$ctrl.selectedTask"></task-item-drawer>
 </side-drawer>

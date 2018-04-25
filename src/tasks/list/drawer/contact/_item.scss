@@ -1,70 +1,63 @@
 task-list-contact {
-    padding: 10px 0;
-    font-size: $font-size-sm;
     $avatar-size: 26px;
+    display: grid;
+    grid-template-columns: $avatar-size 1fr;
+    grid-gap: 10px;
     & + & { //all except first
         border-top: 1px solid $color-bg;
     }
-    label {
-        @extend .h4;
-        margin-bottom: 3px;
-        color: color-gray(60);
-        font-size: $font-size-xs;
-        font-weight: bold;
-        text-transform: uppercase;
+    avatar {
+        grid-column: 1;
+        &,
+        .avatar,
+        .avatar img {
+            width: $avatar-size;
+            height: $avatar-size;
+        }
     }
-    > .top-row {
-        display: grid;
-        grid-template-columns: $avatar-size 1fr 150px 14px;
-        grid-gap: 10px;
-        avatar {
-            grid-column: 1;
-            &,
-            .avatar,
-            .avatar img {
-                width: $avatar-size;
-                height: $avatar-size;
+    .heading {
+        margin-top: 2px;
+        font-weight: bold;
+    }
+    .details {
+        display: flex;
+        flex-direction: column;
+        grid-column: 2;
+        label {
+            @extend .h4;
+            display: block;
+            margin: 0;
+            color: color-gray(60);
+            font-size: $font-size-xs;
+        }
+        .address {
+            address {
+                margin-bottom: 10px;
+                font-size: $font-size-sm;
+                font-weight: bold;
             }
         }
-        .main-details {
-            h4 {
-                margin-top: 0;
-                margin-bottom: 10px;
-                font-size: 1rem;
-                font-weight: 600;
-            }
-            address {
-                display: inline-block;
-                font-weight: 300;
-                line-height: 1.25;
-                text-align: left;
-            }
-            .people {
-                margin: 5px 0;
-                .people-single-contact {
-                    line-height: 1.25em;
+        .person,
+        .status,
+        .commitment {
+            display: grid;
+            margin-bottom: 10px;
+            grid-template-columns: repeat(3, 1fr);
+            > div {
+                a,
+                span {
+                    font-size: $font-size-sm;
+                    font-weight: bold;
                 }
             }
-            .address > address {
-                margin-bottom: 0;
-            }
-            button.email-all {
-                margin-bottom: 10px;
-                padding: 0 12px;
-                line-height: 1.25em;
-            }
         }
-    }
-    .more-details > div {
-        display: block;
-        height: 20px;
-        font-weight: 600;
     }
     > div.tags-row {
         display: grid;
         grid-template-columns: 1fr 20px;
         > div.tags {
             max-height: 27px;
+            margin-top: 3px;
             text-overflow: ellipsis;
             overflow: hidden;
             &.expanded {

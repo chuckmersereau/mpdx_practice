@@ -27,8 +27,7 @@ class ItemController {
     }
     $onChanges() {
         const pledgeCurrency = get('pledge_currency', this.contact);
-        const currency = find({ code: pledgeCurrency }, this.serverConstants.data.pledge_currencies);
-        this.currency = get('name', currency);
+        this.currency = find({ code: pledgeCurrency }, this.serverConstants.data.pledge_currencies);
     }
     daysLate() {
         return moment().diff(moment(this.contact.late_at), 'days') || 0;

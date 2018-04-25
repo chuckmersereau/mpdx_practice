@@ -92,12 +92,17 @@ tasks-list {
         grid-column: 2;
         grid-row: 1 / span 3;
     }
-    .panel {
-        &.panel-default {
-            border: 0;
-        }
-        .panel-heading {
+    .task-category {
+        &-title {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border-bottom: 2px solid $color-border;
             background-color: $color-white;
+            font-size: 18px;
+            &-text {
+                flex-grow: 1;
+            }
             &.today {
                 border-color: $color-secondary;
             }
@@ -110,17 +115,17 @@ tasks-list {
             &.no-due-date {
                 border-color: $color-cyan-dark;
             }
-            > .task-category-title {
-                width: 78px;
-                height: 23px;
-                color: color-gray(20);
-                font-size: 18px;
-                line-height: 23px;
+            > i {
+                transition: transform 0.2s ease-out;
             }
         }
-        .list-group {
+        &-list {
+            margin-bottom: 0;
             .list-group-item {
+                margin: 0;
                 padding: 0;
+                border: 0;
+                border-bottom: 1px solid $color-border;
             }
         }
     }

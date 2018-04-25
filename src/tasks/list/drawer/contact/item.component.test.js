@@ -41,7 +41,7 @@ describe('tasks.list.drawer.contact.component', () => {
             $ctrl.$onChanges();
         });
         it('should set currency', () => {
-            expect($ctrl.currency).toEqual('US Dollar');
+            expect($ctrl.currency).toEqual({ code: 'USD', name: 'US Dollar' });
         });
     });
     describe('daysLate', () => {

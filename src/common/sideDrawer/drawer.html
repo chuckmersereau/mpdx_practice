@@ -1,10 +1,9 @@
-<span ng-click="$ctrl.onClose()"
-      ng-if="$ctrl.onClose"
-      class="pull-right pointer"
-      ng-init="hover = false; hidden = false">
-    <i class="fa-window-close cursor-pointer"
-       ng-mouseenter="hover = true"
-       ng-mouseleave="hover = false"
-       ng-class="hover ? 'fas' : 'far'"></i>
-</span>
+<h3 class="drawer-title">
+    <div class="drawer-title-container">
+        <span class="drawer-title-text">{{$ctrl.title}}</span>
+        <span class="drawer-title-close" ng-click="$ctrl.onClose()" ng-if="$ctrl.onClose">
+            <i class="fal fa-times"></i>
+        </span>
+    </div>
+</h3>
 <ng-transclude></ng-transclude>

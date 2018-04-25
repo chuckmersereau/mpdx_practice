@@ -1,93 +1,99 @@
-<div class="top-row">
-    <avatar src="$ctrl.contact.square_avatar"></avatar>
-    <div class="main-details">
-        <h4 class="name">
-            <a ui-sref="contacts.show({contactId: $ctrl.contact.id})" ng-click="$event.stopPropagation()" class="text-primary">
-                {{::$ctrl.contact.name}}
-            </a>
-            <i class="fas fa-circle fa-circle-sucess"
-               ng-if="::$ctrl.daysLate() < 0"
-               data-title="{{ ::'on time' | translate }}"
-               bs-tooltip></i>
-            <i class="fas fa-circle fa-circle-warning"
-               ng-if="::$ctrl.daysLate() >= 30 && $ctrl.daysLate() < 60"
-               data-title="{{ ::'30+ days late' | translate }}"
-               bs-tooltip></i>
-            <i class="fas fa-circle fa-circle-danger"
-               ng-if="::$ctrl.daysLate() >= 60"
-               data-title="{{ ::'60+ days late' | translate }}"
-               bs-tooltip></i>
-        </h4>
-        <button class="btn email-all" ng-if="$ctrl.contact.people.length > 1" ng-click="$ctrl.emailAll()">
-            <i class="fas fa-envelope"></i> Email All</button>
-        <div class="people">
-            <div ng-repeat="person in ::$ctrl.contact.people | limitTo: 2 track by person.id"
-                 ng-if="::!person.deceased"
-                 class="people-single-contact">
-                <a ng-click="$ctrl.people.openPeopleModal($ctrl.contact, person.id); $event.stopPropagation()">
-                    {{::person.first_name}} {{::person.last_name}}
-                </a>
-                <span ng-repeat="phone_number in ::person.phone_numbers"
-                      ng-if="::phone_number.primary && !phone_number.historic"
-                      class="phone-type phone-type-{{phone_number.location}}">
-                    {{::phone_number.number}}
-                </span>
-                <a ng-repeat="email_address in ::person.email_addresses"
-                   ng-if="::email_address.primary && !email_address.historic"
-                   ng-href="mailto:{{::email_address.email}}" target="_blank">
-                    <i class="fas fa-envelope" title="{{ ::'Email' | translate }}"></i>
-                </a>
-                <a ng-repeat="facebook_account in ::person.facebook_accounts"
-                   ng-href="{{::facebook_account.url}}" target="_blank">
-                    <i class="fab fa-facebook-square" title="{{ ::'Facebook profile' | translate }}"></i>
-                </a>
-            </div>
-        </div>
-        <div class="address">
-            <address class="address"
-                     ng-repeat="address in ::$ctrl.contact.addresses track by address.id"
-                     ng-if="::address.primary_mailing_address">
-                <span ng-if="::address.street">{{::address.street}}<br></span>
-                <span ng-if="::address.city">{{::address.city}},</span>
-                {{::address.state}}
-                {{::address.postal_code}}
-            </address>
-        </div>
-        <div class="last-donation" ng-if="$ctrl.contact.last_donation">
-            {{$ctrl.contact.last_donation.amount | currency: $ctrl.currency}} ({{$ctrl.contact.last_donation.donation_date | localize}})
-        </div>
-    </div>
-    <div class="more-details">
-        <label translate>Status</label>
-        <div>{{ $ctrl.contact.status }}</div>
-
-        <label translate>Newsletter</label>
-        <div>{{ $ctrl.contact.send_newsletter}}</div>
-
-        <label translate>Commitment</label>
-        <div>{{ $ctrl.contact.pledge_amount | currency: $ctrl.contact.pledge_currency_symbol }}</div>
-
-        <label translate>Currency</label>
-        <div>{{ $ctrl.currency }}</div>
-
-        <label translate>Freq.</label>
-        <div>{{ $ctrl.contact.pledge_frequency }}</div>
-    </div>
-    <div class="edit">
-        <a ui-sref="contacts.show({contactId: $ctrl.contact.id})">
-            <i class="fas fa-edit"></i>
+<avatar src="$ctrl.contact.square_avatar"></avatar>
+<div class="details">
+    <h4 class="heading">
+        <a ui-sref="contacts.show({contactId: $ctrl.contact.id})" ng-click="$event.stopPropagation()">
+            {{::$ctrl.contact.name}}
         </a>
+        <i class="fas fa-circle fa-circle-sucess"
+           ng-if="::$ctrl.daysLate() < 0"
+           data-title="{{ ::'on time' | translate }}"
+           bs-tooltip></i>
+        <i class="fas fa-circle fa-circle-warning"
+           ng-if="::$ctrl.daysLate() >= 30 && $ctrl.daysLate() < 60"
+           data-title="{{ ::'30+ days late' | translate }}"
+           bs-tooltip></i>
+        <i class="fas fa-circle fa-circle-danger"
+           ng-if="::$ctrl.daysLate() >= 60"
+           data-title="{{ ::'60+ days late' | translate }}"
+           bs-tooltip></i>
+    </h4>
+    <div class="address">
+        <label translate>Primary Address</label>
+        <address class="address"
+                 ng-repeat="address in ::$ctrl.contact.addresses track by address.id"
+                 ng-if="::address.primary_mailing_address">
+            <span ng-if="::address.street">{{::address.street}}</span>
+            <span ng-if="::address.city">{{::address.city}},</span>
+            {{::address.state}}
+            {{::address.postal_code}}
+        </address>
     </div>
-</div>
-<div class="tags-row pointer" ng-click="$ctrl.expandTags()">
-    <div class="tags" ng-class="{ expanded: $ctrl.tagsExpanded }" id="tags_list_{{::$ctrl.$scope.$id}}">
-        <span class="tag"
-              title="{{tag}}"
-              ng-repeat="tag in ::$ctrl.contact.tag_list track by $index">
-            {{ tag }}
-        </span>
+    <div class="person" ng-if="::$ctrl.contact.primary_person">
+        <div>
+            <label translate>Primary Person Name</label>
+            <a ng-click="$ctrl.people.openPeopleModal($ctrl.contact, $ctrl.contact.primary_person.id); $event.stopPropagation()">
+                {{::$ctrl.contact.primary_person.first_name}} {{::$ctrl.contact.primary_person.last_name}}
+            </a>
+        </div>
+        <div>
+            <label translate>Primary Person Phone</label>
+            <a ng-repeat="phone_number in ::$ctrl.contact.primary_person.phone_numbers"
+                  ng-if="::phone_number.primary && !phone_number.historic"
+                  class="phone-type phone-type-{{phone_number.location}}"
+                  ng-href="tel:{{::phone_number.number}}" target="_blank">
+                {{::phone_number.number}}
+            </a>
+        </div>
+        <div>
+            <label translate>Primary Person Email</label>
+            <a ng-repeat="email_address in ::$ctrl.contact.primary_person.email_addresses"
+               ng-if="::email_address.primary && !email_address.historic"
+               ng-href="mailto:{{::email_address.email}}" target="_blank">
+               {{::email_address.email}}
+            </a>
+        </div>
     </div>
-    <i class="fas"
-       ng-class="{ 'fa-chevron-down': !$ctrl.tagsExpanded, 'fa-chevron-up': $ctrl.tagsExpanded }"
-       ng-if="::$ctrl.showCaret()"></i>
+    <div class="status">
+        <div>
+            <label translate>Status</label>
+            <span>{{ $ctrl.contact.status }}</span>
+        </div>
+        <div>
+            <label translate>Newsletter</label>
+            <span>{{ $ctrl.contact.send_newsletter}}</span>
+        </div>
+        <div>
+            <label translate>Last Donation</label>
+            <span ng-if="$ctrl.contact.last_donation">
+                {{$ctrl.contact.last_donation.amount | currency: $ctrl.currency.symbol}} ({{$ctrl.contact.last_donation.donation_date | localize}})
+            </span>
+        </div>
+    </div>
+    <div class="commitment">
+        <div>
+            <label translate>Commitment</label>
+            <span>{{ $ctrl.contact.pledge_amount | currency: $ctrl.contact.pledge_currency_symbol }}</span>
+        </div>
+        <div>
+            <label translate>Freqency</label>
+            <span>{{ $ctrl.contact.pledge_frequency }}</span>
+        </div>
+        <div>
+            <label translate>Currency</label>
+            <span>{{ $ctrl.currency.name }}</span>
+        </div>
+    </div>
+    <div class="tags-row" ng-click="$ctrl.expandTags()">
+        <label translate>Tags</label>
+        <div class="tags" ng-class="{ expanded: $ctrl.tagsExpanded }" id="tags_list_{{::$ctrl.$scope.$id}}">
+            <span class="tag"
+                  title="{{tag}}"
+                  ng-repeat="tag in ::$ctrl.contact.tag_list track by $index">
+                {{ tag }}
+            </span>
+        </div>
+        <i class="fas"
+           ng-class="{ 'fa-chevron-down': !$ctrl.tagsExpanded, 'fa-chevron-up': $ctrl.tagsExpanded }"
+           ng-if="::$ctrl.showCaret()"></i>
+    </div>
 </div>

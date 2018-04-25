@@ -1,4 +1,8 @@
+@import 'tags/tags';
 tasks-filter {
-    padding: 15px;
+    padding: 15px 0;
     background-color: $color-filter-bar;
+    > .filter > .title {
+        margin-bottom: 10px;
+    }
 }

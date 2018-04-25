@@ -31,7 +31,6 @@
                                ng-click="$ctrl.contactFilter.invertMultiselect(filter); $event.stopPropagation()"
                                title="{{ ::'Reverse Filter' | translate }}"
                                class="reverse-filter fal fa-exchange" ng-class="{ 'reverse fa-rotate-180': filter.reverse }"></i>
-                            </a>
                             <i class="fal fa-chevron-down" ng-class="{ 'fa-rotate-180': $ctrl.activeFilters.indexOf($index) === -1 }"></i>
                         </label>
                         <div class="filter_set_inner" bs-collapse-target="{{::$index}}">
@@ -39,7 +38,7 @@
                                 <div class="filter_multiselect"
                                      ng-if="::child.type == 'multiselect'"
                                      ng-class="{ reverse: child.reverse }">
-                                    <label for="multiselect" >
+                                    <label for="multiselect">
                                         {{::child.title}}
                                         <a class="filter_invert_multiselect reverse-filter pull-right"
                                            ng-click="$ctrl.contactFilter.invertMultiselect(child); $event.stopPropagation()"

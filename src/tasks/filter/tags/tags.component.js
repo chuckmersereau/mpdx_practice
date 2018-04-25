@@ -1,6 +1,8 @@
 class TagsController {
     constructor(tasksTags) {
         this.tasksTags = tasksTags;
+
+        this.hideTags = true;
     }
 }
 

@@ -21,6 +21,7 @@ class FilterController {
         };
 
         this.selectedSort = 'all';
+        this.activeFilters = [];
     }
     useSavedFilter(name) {
         const option = this.users.getCurrentOptionValue(`saved_tasks_filter_${name}`);

@@ -1,43 +1,29 @@
 task-item-comment {
-    margin-bottom: 10px;
-    > div.comment {
-        margin: 0 15px;
-        padding: 5px;
-        transition: border 0.5s linear;
-        border: 1px solid color-gray(90);
-        border-radius: $border-radius;
-        background-color: $color-white;
-        &:hover {
-            border: 1px solid color-gray(75);
-            > div.comment-container > div.comment-edit-controls {
-                @extend .fade-in.ng-enter;
-                opacity: 1;
-            }
+    display: block;
+    padding: $container-padding;
+    border-bottom: 1px solid $color-border;
+    &:hover {
+        > div.comment-container > div.comment-edit-controls {
+            opacity: 1;
         }
-        > div.comment-container {
-            display: grid;
-            grid-template-columns: auto 60px;
-            grid-template-rows: $height-comment-body $height-comment-footer;
-            div.comment-body {
-                color: $color-text;
-                font-size: $font-size-xs;
-                line-height: $height-comment-body;
-                grid-column: 1;
-                grid-row: 1;
-            }
-            div.comment-foot {
-                color: color-gray(70);
-                font-size: $font-size-xs;
-                line-height: $height-comment-footer;
-                grid-column: 1;
-                grid-row: 2;
-            }
-            div.comment-edit-controls {
-                @extend .fade-in.ng-leave;
-                opacity: 0;
-                grid-row: 1 / 2;
-                grid-column: 2;
-            }
+    }
+    > div.comment-container {
+        display: grid;
+        grid-template-columns: auto 60px;
+        div.comment-body {
+            grid-column: 1;
+            grid-row: 1;
+        }
+        div.comment-foot {
+            font-size: $font-size-sm;
+            grid-column: 1;
+            grid-row: 2;
+        }
+        div.comment-edit-controls {
+            transition: opacity 0.2s ease-out;
+            opacity: 0;
+            grid-row: 1 / span 2;
+            grid-column: 2;
         }
     }
     textarea {
