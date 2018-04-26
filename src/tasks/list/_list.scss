@@ -87,6 +87,10 @@ tasks-list {
         @extend .lists.content;
         grid-column: 1;
         grid-row: 3;
+        .tasks-lists-add {
+            padding: 10px 15px;
+            border-bottom: 2px solid $color-border;
+        }
     }
     > side-drawer {
         grid-column: 2;

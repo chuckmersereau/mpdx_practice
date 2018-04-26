@@ -1,0 +1,14 @@
+.tasks-modals-add,
+.tasks-modals-edit {
+    .notify {
+        display: flex;
+        align-items: center;
+        > * {
+            margin-right: 10px;
+        }
+        .notification-time-before,
+        .notification-time-unit {
+            width: 100px;
+        }
+    }
+}

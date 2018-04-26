@@ -4,6 +4,7 @@
 @import 'info/info';
 @import 'people/people';
 @import 'referrals/referrals';
+@import 'tasks/tasks';
 contact {
     $contact-drawer-width: 450px;
     $hide-drawer-width: 1386px;
@@ -113,6 +114,11 @@ contact {
                     &:hover {
                         color: color-gray(35);
                     }
+                }
+            }
+            tasks-list {
+                .menu {
+                    display: none;
                 }
             }
             @media(max-width: $hide-drawer-width) {

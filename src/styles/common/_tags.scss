@@ -86,21 +86,22 @@ tags-input {
         box-shadow: none;
     }
     .tags {
+        min-height: 34px;
+        padding: 1px 6px;
         box-shadow: none;
         &.focused {
             border-color: $color-blue-deep-alpha-80;
             box-shadow: none;
         }
         input.input {
-            height: 26px;
+            height: 30px;
             margin: 0 2px;
             font-family: $font-primary;
             font-size: $font-size-sm;
-            font-weight: 600;
         }
         .tag-item {
             height: 24px;
-            margin: 0 2px 2px 0;
+            margin: 3px 2px 3px 0;
             padding: 0 2px 0 5px;
             border: 0;
             border-radius: 2px;

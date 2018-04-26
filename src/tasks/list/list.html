@@ -92,11 +92,11 @@
             </pagination-dropdown>
         </div>
     </div>
-    <div ng-if="$ctrl.contact">
-        <tasks-list-add></tasks-list-add>
-    </div>
 </div>
 <div class="content">
+    <div class="tasks-lists-add" ng-if="$ctrl.contact">
+        <tasks-list-add></tasks-list-add>
+    </div>
     <div class="column" ng-init="activeCategory = {}">
         <div ng-repeat="(category, tasks) in $ctrl.data | groupBy: 'category.name'">
             <div class="task-category"

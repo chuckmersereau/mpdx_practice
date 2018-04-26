@@ -1,5 +1,5 @@
 <modal title="{{'Finish Task' | translate}}" save="$ctrl.save()" cancel="$hide()">
-    <h3 class="text-muted center">{{::$ctrl.task.subject}}</h3>
+    <h3 class="text-muted m-0">{{::$ctrl.task.subject}}</h3>
     <div class="form-group" ng-if="$ctrl.serverConstants.data.results[ $ctrl.task.activity_type.toLowerCase() ]">
         <label for="result"><translate>Result</translate> <span class="text-danger">*</span></label>
         <select chosen

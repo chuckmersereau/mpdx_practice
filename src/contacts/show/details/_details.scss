@@ -62,6 +62,18 @@ contact-details {
         grid-column-gap: 20px;
         > div.tags {
             grid-column: 1 / span 2;
+            tags-input {
+                .tags {
+                    padding: 1px;
+                    .tag-item {
+                        margin: 1px 2px 1px 0;
+                    }
+                    .input {
+                        height: 26px;
+                        font-weight: 600;
+                    }
+                }
+            }
         }
         .referred-by {
             .collection-selector {
