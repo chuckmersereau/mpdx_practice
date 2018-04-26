@@ -87,6 +87,9 @@ describe('contacts.sidebar.tags.remove.controller', () => {
                         filter: {
                             account_list_id: 1234,
                             contact_ids: null
+                        },
+                        fields: {
+                            contacts: ''
                         }
                     },
                     doSerialization: false,
@@ -111,6 +114,9 @@ describe('contacts.sidebar.tags.remove.controller', () => {
                         filter: {
                             account_list_id: 1234,
                             contact_ids: '1,2'
+                        },
+                        fields: {
+                            contacts: ''
                         }
                     },
                     doSerialization: false,

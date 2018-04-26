@@ -164,7 +164,14 @@ class ContactsService {
         });
     }
     addBulk(contacts) {
-        return this.api.post({ url: 'contacts/bulk', data: contacts, type: 'contacts' }).then(() => {
+        return this.api.post({
+            url: 'contacts/bulk',
+            data: contacts,
+            type: 'contacts',
+            fields: {
+                contacts: ''
+            }
+        }).then(() => {
             this.$rootScope.$emit('contactCreated');
         });
     }

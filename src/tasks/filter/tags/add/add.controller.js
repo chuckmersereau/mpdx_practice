@@ -33,6 +33,9 @@ class AddTagController {
                 filter: {
                     account_list_id: this.api.account_list_id,
                     task_ids: this.selectedTasks.join()
+                },
+                fields: {
+                    tasks: ''
                 }
             },
             doSerialization: false,

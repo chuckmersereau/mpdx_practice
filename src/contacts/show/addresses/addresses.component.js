@@ -38,7 +38,7 @@ const Addresses = {
     controller: AddressesController
 };
 
-import address from './address/index.module';
+import address from './address/address.component';
 
 export default angular.module('mpdx.contacts.details.addresses.component', [
     address

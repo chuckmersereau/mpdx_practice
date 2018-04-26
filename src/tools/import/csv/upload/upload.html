@@ -18,7 +18,10 @@
                ngf-max-size="{{$ctrl.maxSize}}"
                name="file"
                translate>Select CSV file</button>
-            <div ng-if="importForm.file.$error.maxSize" translate translate-params-size="::$ctrl.maxSizeInMB" class="text-danger">File too large, {{size}}MB max</div>
+            <div ng-if="importForm.file.$error.maxSize"
+                 class="text-danger"
+                 translate
+                 translate-params-size="::$ctrl.maxSizeInMB">File too large, {{size}}MB max</div>
         </form>
     </div>
 </div>

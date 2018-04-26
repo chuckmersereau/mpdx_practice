@@ -7,16 +7,11 @@
                         <div class="row">
                             <div class="col-md-2">
                                 <label for="title" translate>Title</label>
-                                <select class="form-control" id="title" ng-model="$ctrl.person.title" disable-search="true" allow-single-deselect="true" chosen>
-                                    <option value=""></option>
-                                    <option selected="selected" value="Mr.">Mr.</option>
-                                    <option value="Mrs.">Mrs.</option>
-                                    <option value="Miss">Miss</option>
-                                    <option value="Ms.">Ms.</option>
-                                    <option value="Rev.">Rev.</option>
-                                    <option value="Hon.">Hon.</option>
-                                    <option value="Dr.">Dr.</option>
-                                </select>
+                                <input bs-typeahead
+                                       class="form-control"
+                                       id="title"
+                                       ng-model="$ctrl.person.title"
+                                       bs-options="title for title in $ctrl.titles">
                             </div>
                             <div class="col-md-4">
                                 <label for="first_name"><translate>First Name</translate> <span class="text-danger">*</span></label>
@@ -28,11 +23,11 @@
                             </div>
                             <div class="col-md-2">
                                 <label for="suffix" translate>Suffix</label>
-                                <select class="form-control" id="suffix" ng-model="$ctrl.person.suffix" disable-search="true" allow-single-deselect="true" chosen>
-                                    <option value=""></option>
-                                    <option value="Jr.">Jr.</option>
-                                    <option value="Sr.">Sr.</option>
-                                </select>
+                                <input bs-typeahead
+                                       class="form-control"
+                                       id="suffix"
+                                       ng-model="$ctrl.person.suffix"
+                                       bs-options="suffix for suffix in $ctrl.suffixes">
                             </div>
                         </div>
                     </form>

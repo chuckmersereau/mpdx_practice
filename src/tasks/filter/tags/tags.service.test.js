@@ -3,11 +3,12 @@ import service from './tags.service';
 const tag = { name: 'a' };
 
 describe('tasks.tags.service', () => {
-    let tasksTags, rootScope;
+    let tasksTags, rootScope, api;
     beforeEach(() => {
         angular.mock.module(service);
-        inject(($rootScope, _tasksTags_) => {
+        inject(($rootScope, _tasksTags_, _api_) => {
             rootScope = $rootScope;
+            api = _api_;
             tasksTags = _tasksTags_;
         });
     });
@@ -118,6 +119,30 @@ describe('tasks.tags.service', () => {
             spyOn(rootScope, '$emit').and.callFake(() => {});
             tasksTags.change();
             expect(rootScope.$emit).toHaveBeenCalledWith('tasksTagsChanged');
+        });
+    });
+    describe('delete', () => {
+        const tag = { name: 'a' };
+        beforeEach(() => {
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+        });
+        it('should call api', () => {
+            tasksTags.delete(tag);
+            expect(api.delete).toHaveBeenCalledWith({
+                url: 'tasks/tags/bulk',
+                params: {
+                    filter: {
+                        account_list_id: api.account_list_id
+                    }
+                },
+                data: [{
+                    name: tag.name
+                }],
+                type: 'tags',
+                fields: {
+                    tasks: ''
+                }
+            });
         });
     });
 });

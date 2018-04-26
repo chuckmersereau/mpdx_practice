@@ -1,5 +1,9 @@
 import service from './appeals.service';
 
+const appealId = 'appeal_id';
+const contactId = 'contact_id';
+const contactRef = { contact: { id: contactId } };
+
 describe('tools.appeals.service', () => {
     let appeals, accounts, api;
 
@@ -10,6 +14,7 @@ describe('tools.appeals.service', () => {
             appeals = _appeals_;
             api = _api_;
         });
+        spyOn(appeals, 'gettext').and.callThrough();
     });
     describe('appealSearch', () => {
         it('should query the api', () => {
@@ -34,7 +39,6 @@ describe('tools.appeals.service', () => {
     describe('setPrimaryAppeal', () => {
         beforeEach(() => {
             accounts.current = { primary_appeal: null };
-            spyOn(appeals, 'gettext').and.callFake((data) => data);
         });
         it('should add the contact to the appeal', () => {
             spyOn(accounts, 'saveCurrent').and.callFake(() => Promise.resolve());
@@ -44,6 +48,70 @@ describe('tools.appeals.service', () => {
             expect(accounts.saveCurrent).toHaveBeenCalledWith(successMessage, errorMessage);
             expect(appeals.gettext).toHaveBeenCalledWith(successMessage);
             expect(appeals.gettext).toHaveBeenCalledWith(errorMessage);
+        });
+    });
+    describe('removePledge', () => {
+        const pledgeId = 123;
+        it('should delete donation', (done) => {
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+            const successMessage = 'Successfully removed commitment from appeal';
+            const errorMessage = 'Unable to remove commitment from appeal';
+            appeals.removePledge(pledgeId).then(() => {
+                expect(api.delete).toHaveBeenCalledWith(
+                    `account_lists/${api.account_list_id}/pledges/123`, undefined, successMessage, errorMessage
+                );
+                expect(appeals.gettext).toHaveBeenCalledWith(successMessage);
+                expect(appeals.gettext).toHaveBeenCalledWith(errorMessage);
+                done();
+            });
+        });
+    });
+    describe('removeContact', () => {
+        const successMessage = 'Contact removed from appeal';
+        const errorMessage = 'Unable to remove contact from appeal';
+        beforeEach(() => {
+            spyOn(appeals, 'findContactRef').and.callFake(() => Promise.resolve(appealId));
+            spyOn(api, 'delete').and.callFake(() => Promise.resolve());
+        });
+        it('should open confirm modal', () => {
+            appeals.removeContact(appealId);
+        });
+        it('should translate response messages', () => {
+            appeals.removeContact(appealId);
+            expect(appeals.gettext).toHaveBeenCalledWith(successMessage);
+            expect(appeals.gettext).toHaveBeenCalledWith(errorMessage);
+        });
+        it('should delete contact', (done) => {
+            appeals.removeContact(appealId).then(() => {
+                expect(api.delete).toHaveBeenCalledWith(
+                    `appeals/${appealId}/appeal_contacts/undefined`,
+                    undefined, successMessage, errorMessage);
+                done();
+            });
+        });
+    });
+    describe('findContactRef', () => {
+        beforeEach(() => {
+            spyOn(api, 'get').and.callFake(() => Promise.resolve([contactRef]));
+        });
+        it('should call api', () => {
+            appeals.findContactRef(appealId, contactId);
+            expect(api.get).toHaveBeenCalledWith(`appeals/${appealId}/appeal_contacts`, {
+                per_page: 1000,
+                include: 'contact',
+                filter: {
+                    pledged_to_appeal: false
+                },
+                fields: {
+                    contact: ''
+                }
+            });
+        });
+        it('should return contact ref if found', (done) => {
+            appeals.findContactRef(appealId, contactId).then((data) => {
+                expect(data).toEqual(contactRef);
+                done();
+            });
         });
     });
 });

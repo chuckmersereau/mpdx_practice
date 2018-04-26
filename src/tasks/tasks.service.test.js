@@ -431,4 +431,30 @@ describe('tasks.service', () => {
             });
         });
     });
+    describe('create', () => {
+        const task = { id: 1, account_list: { id: accountListId } };
+        const contactIds = [{ id: 2 }, { id: 3 }];
+        beforeEach(() => {
+            spyOn(api, 'post').and.callFake(() => Promise.resolve());
+        });
+        it('should call the api', () => {
+            tasks.create(task, contactIds);
+            expect(api.post).toHaveBeenCalledWith({
+                url: 'tasks/bulk',
+                data: [{
+                    id: jasmine.any(String),
+                    account_list: { id: accountListId },
+                    contacts: [{ id: { id: 2 } }]
+                }, {
+                    id: jasmine.any(String),
+                    account_list: { id: accountListId },
+                    contacts: [{ id: { id: 3 } }]
+                }],
+                type: 'tasks',
+                fields: {
+                    tasks: ''
+                }
+            });
+        });
+    });
 });

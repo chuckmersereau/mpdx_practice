@@ -35,6 +35,17 @@ describe('contacts.show.personModal.controller', () => {
             userProfile: null
         });
     }
+    describe('constructor', () => {
+        it('should list title suggestions', () => {
+            expect($ctrl.titles).toEqual([
+                'Mr.', 'Mrs.', 'Miss', 'Ms.', 'Rev.', 'Hon.', 'Dr.', 'Frau', 'Mlle', 'Mr. and Mrs.', 'Mme', 'Rev', 'M.',
+                'Esq.', 'Jr.', 'Messrs.', 'Mmes.', 'Msgr.', 'Prof.', 'Rt. Hon.', 'St.'
+            ]);
+        });
+        it('should list suffix suggestions', () => {
+            expect($ctrl.suffixes).toEqual(['Jr.', 'Sr.', 'MD.']);
+        });
+    });
     describe('activate', () => {
         it('should set a translated title when adding a person', () => {
             $ctrl.activate();

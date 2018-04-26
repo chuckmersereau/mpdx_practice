@@ -1,20 +1,22 @@
 import component from './impersonateUser.component';
 
 describe('preferences.admin.impersonateUser.component', () => {
-    let $ctrl, componentController, scope, rootScope, $$window, gettextCatalog, api, users;
+    let $ctrl, componentController, scope, rootScope, $$window, gettextCatalog, api, users, alerts;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, $window, _gettextCatalog_, _api_, _users_) => {
+        inject(($componentController, $rootScope, $window, _gettextCatalog_, _api_, _users_, _alerts_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             componentController = $componentController;
             $$window = $window;
             gettextCatalog = _gettextCatalog_;
+            alerts = _alerts_;
             api = _api_;
             users = _users_;
             loadController();
         });
         spyOn(gettextCatalog, 'getString').and.callThrough();
+        spyOn(alerts, 'addAlert').and.callFake(() => {});
     });
 
     function loadController() {
@@ -41,15 +43,13 @@ describe('preferences.admin.impersonateUser.component', () => {
         });
 
         it('should call the api', () => {
-            const errorMessage = 'Unable to impersonate provided user';
             $ctrl.save();
             expect(api.post).toHaveBeenCalledWith({
                 url: 'admin/impersonation',
                 data: { user: '', reason: '' },
                 type: 'impersonation',
-                errorMessage: errorMessage
+                overridePromise: true
             });
-            expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
         });
 
         it('should return a promise', () => {
@@ -101,9 +101,30 @@ describe('preferences.admin.impersonateUser.component', () => {
                 spy.and.callFake(() => Promise.reject());
             });
 
+            it('should translate an error message', (done) => {
+                $ctrl.save().catch(() => {
+                    const errorMessage = 'Unable to impersonate provided user';
+                    expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
+                    expect(alerts.addAlert).toHaveBeenCalledWith(errorMessage, 'danger', 3);
+                    done();
+                });
+            });
             it('should set saving to false', (done) => {
-                $ctrl.save().then(() => {
+                $ctrl.save().catch(() => {
                     expect($ctrl.saving).toEqual(false);
+                    done();
+                });
+            });
+        });
+        describe('user not found', () => {
+            beforeEach(() => {
+                spy.and.callFake(() => Promise.reject({ status: 404 }));
+            });
+            it('should translate an error message for 404', (done) => {
+                $ctrl.save().catch(() => {
+                    const errorMessage = 'Unable to find a user with provided credentials.';
+                    expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
+                    expect(alerts.addAlert).toHaveBeenCalledWith(errorMessage, 'warning', 3);
                     done();
                 });
             });

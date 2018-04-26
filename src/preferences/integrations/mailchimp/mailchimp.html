@@ -1,36 +1,23 @@
-<div ng-if="$ctrl.isProduction">
-    <div class="alert alert-danger" translate>
-        We are currently experiencing significant issues with MailChimp. <br/>
-        We have disabled the ability to create a new sync or update your current sync until we have resolved the current issue. If you would like, you can still disconnect your MailChimp sync for now.
+<div ng-if="$ctrl.mailchimp.data.validate_key && !$ctrl.mailchimp.data.valid || $ctrl.showSettings == true">
+    <div class="alert alert-info" translate>
+        Please choose a list to sync with MailChimp.
     </div>
-    <div ng-if="$ctrl.mailchimp.data.validate_key && $ctrl.mailchimp.data.valid && $ctrl.showSettings == false">
-        <div class="alert alert-info" translate>
-            Your contacts are now automatically syncing with MailChimp
+    <div ng-if="$ctrl.mailchimp.data.lists_present">
+        <div class="form-group">
+            <label for="primaryListId" translate>Pick a list to use for your newsletter</label>
+            <select chosen
+                    name="primaryListId"
+                    id="primaryListId"
+                    ng-model="$ctrl.mailchimp.data.primary_list_id"
+                    class="form-control"
+                    ng-options="option.id as option.name for option in $ctrl.mailchimp.data.lists_available_for_newsletters">
+            </select>
         </div>
-        <a class="btn btn-link" ng-click="$ctrl.disconnect()" translate>Disconnect</a>
-    </div>
-</div>
-<div ng-if="!$ctrl.isProduction">
-    <div ng-if="$ctrl.mailchimp.data.validate_key && !$ctrl.mailchimp.data.valid || $ctrl.showSettings == true">
-        <div class="alert alert-info" translate>
-            Please choose a list to sync with MailChimp.
+        <div class="form-group">
+            <input type="checkbox" id="autoLogCampaigns" ng-model="$ctrl.mailchimp.data.auto_log_campaigns">
+            &nbsp;
+            <label for="autoLogCampaigns" translate>Automatically log sent MailChimp campaigns in contact task history</label>
         </div>
-        <div ng-if="$ctrl.mailchimp.data.lists_present">
-            <div class="form-group">
-                <label for="primaryListId" translate>Pick a list to use for your newsletter</label>
-                <select chosen
-                        name="primaryListId"
-                        id="primaryListId"
-                        ng-model="$ctrl.mailchimp.data.primary_list_id"
-                        class="form-control"
-                        ng-options="option.id as option.name for option in $ctrl.mailchimp.data.lists_available_for_newsletters">
-                </select>
-            </div>
-            <div class="form-group">
-                <input type="checkbox" id="autoLogCampaigns" ng-model="$ctrl.mailchimp.data.auto_log_campaigns">
-                &nbsp;
-                <label for="autoLogCampaigns" translate>Automatically log sent MailChimp campaigns in contact task history</label>
-            </div>
 
             <div class="form-group">
                 <button type="submit" ng-click="$ctrl.save()" ng-disabled="$ctrl.saving" class="btn btn-primary btn-actionable">
