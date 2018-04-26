@@ -1,0 +1,15 @@
+preferences-personal {
+    > h3 {
+        margin: 0;
+    }
+    contact-person {
+        .wrapper {
+            padding: 10px $container-padding;
+            border: 1px solid $color-border;
+        }
+    }
+    .actions {
+        padding: 10px 0;
+        text-align: right;
+    }
+}

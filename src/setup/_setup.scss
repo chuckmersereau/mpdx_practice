@@ -1,74 +1,99 @@
 @import 'preferences/preferences';
 setup {
-    display: block;
-    margin: 70px 0 80px;
-}
-setup-start,
-setup-connect,
-setup-account,
-setup-finish {
-    .panel {
-        border: 0;
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    grid-template-rows: auto 1fr $height-footer;
+    > menu {
+        border-bottom: 1px solid $color-border;
+        grid-row: 1;
     }
-    .panel-heading {
-        margin-bottom: 20px;
-        padding: 35px 20px 40px 100px;
-        border-color: color-gray(75);
-        background: url('images/setup/icon_alert_2x.png');
-        background-repeat: no-repeat;
-        background-position: $gutter center;
-        background-size: auto 55px;
-        font-size: $font-size-xl;
-        font-weight: 600;
-        line-height: 44px;
-        text-align: center;
-    }
-    .panel-body {
-        margin-right: $gutter;
-        margin-left: $gutter;
-        padding: 0 0 30px;
-        > h2,
-        > div > h2 {
-            margin-top: 0;
+    > div.root {
+        overflow: hidden;
+        grid-row: 2;
+        > ui-view {
+            display: block;
+            height: 100%;
         }
-        p {
-            margin-bottom: $font-size-lg;
-            &:last-child {
-                margin-bottom: 0;
+    }
+    > bottom {
+        grid-row: 3;
+    }
+    setup-start,
+    setup-connect,
+    setup-account,
+    setup-finish {
+        .panel {
+            border: 0;
+        }
+        .panel-heading {
+            margin-bottom: 20px;
+            padding: 35px 20px 40px 100px;
+            border-color: color-gray(75);
+            background: url('images/setup/icon_alert_2x.png');
+            background-repeat: no-repeat;
+            background-position: $gutter center;
+            background-size: auto 55px;
+            font-size: $font-size-xl;
+            font-weight: 600;
+            line-height: 44px;
+            text-align: center;
+        }
+        .panel-body {
+            margin-right: $gutter;
+            margin-left: $gutter;
+            padding: 0 0 30px;
+            > h2,
+            > div > h2 {
+                margin-top: 0;
             }
-        }
-        .list-unstyled {
-            border: color-gray(75) 1px solid;
-            border-radius: 0;
-            text-align: left;
-            li {
-                padding: $gutter / 2;
-                color: $color-link;
-                font-size: $font-size-lg;
-                line-height: $font-size-lg;
-                .btn {
-                    padding: 0 10px;
+            p {
+                margin-bottom: $font-size-lg;
+                &:last-child {
+                    margin-bottom: 0;
                 }
             }
+            .list-unstyled {
+                border: color-gray(75) 1px solid;
+                border-radius: 0;
+                text-align: left;
+                li {
+                    padding: $gutter / 2;
+                    color: $color-link;
+                    font-size: $font-size-lg;
+                    line-height: $font-size-lg;
+                    .btn {
+                        padding: 0 10px;
+                    }
+                }
+            }
+            label {
+                margin: 5px 0 0;
+                font-size: $font-size-md;
+                font-weight: normal;
+            }
+            a {
+                cursor: pointer;
+            }
         }
-        label {
-            margin: 5px 0 0;
-            font-size: $font-size-md;
-            font-weight: normal;
+        .panel--language {
+            width: 300px;
+            margin: 5px auto 0;
+        }
+        .panel__connect-links {
+            margin-top: $font-size-lg;
+        }
+        .btn {
+            padding: 20px;
+            font-size: $font-size-lg;
         }
     }
-    .panel--language {
-        width: 300px;
-        margin: 5px auto 0;
+    cover {
+        .cover {
+            top: 60px;
+        }
+        .cover-item {
+            margin: 50px auto;
+        }
     }
-    .panel__connect-links {
-        margin-top: $font-size-lg;
-    }
-    .btn {
-        padding: 20px;
-        font-size: $font-size-lg;
-    }
-}
-setup-preferences {
-    @extend preferences;
 }

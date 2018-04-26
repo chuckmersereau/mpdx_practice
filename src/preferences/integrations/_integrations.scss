@@ -1,8 +1,7 @@
 preferences-integration {
     .panel-heading {
         .state {
-            margin-right: 30px;
-            float: right;
+            margin-right: 10px;
         }
     }
     .integration-subhead {
@@ -11,6 +10,12 @@ preferences-integration {
     }
     ol {
         padding-left: $gutter / 2;
+    }
+    .network_logo {
+        img {
+            max-width: 200px;
+            max-height: 100px;
+        }
     }
     .well {
         border-radius: $border-radius;

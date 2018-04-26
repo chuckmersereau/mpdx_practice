@@ -3,7 +3,7 @@ cover {
         position: absolute;
         top: 0;
         right: 0;
-        bottom: 0;
+        bottom: 30px;
         left: 0;
         background: $color-reverse;
         background-position: center center;
@@ -19,7 +19,7 @@ cover {
     }
     .cover-copyright {
         position: fixed;
-        bottom: 10px;
+        bottom: 40px;
         left: 10px;
         padding: 5px 10px;
         background: $color-black-alpha-50;

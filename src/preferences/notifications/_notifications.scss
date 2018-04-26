@@ -1,6 +1,17 @@
 preferences-notifications {
+    .panel-heading {
+        .row {
+            > div:first-child {
+                line-height: 47px;
+            }
+        }
+    }
     .list-group {
         .pull-right {margin-left: $gutter / 2;}
         .form-group {margin-bottom: 0;}
+    }
+    .actions {
+        padding: 10px $container-padding;
+        text-align: right;
     }
 }

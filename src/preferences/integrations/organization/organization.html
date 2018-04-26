@@ -7,21 +7,20 @@
     </div>
     <div ng-repeat="account in $ctrl.users.organizationAccounts track by account.id" class="panel panel-default panel-default--no-animate">
         <div class="panel-heading">
-            <div class="pull-right">
-                <a class="btn btn-default btn-xs" ng-click="$ctrl.editAccount(account)" ng-if="['DataServer', 'DataServerPtc', 'DataServerNavigators'].includes($ctrl.serverConstants.data.organizations_attributes[account.organization.id].api_class) && !account.organization.oauth">
-                    <i class="fas fa-pencil"></i>
-                    <translate>Edit</translate>
-                </a>
-                <button ng-click="$ctrl.authenticate(account.organization.id)" class="btn btn-default btn-xs" ng-disabled="$ctrl.saving" ng-if="account.organization.oauth">
-                    <i class="fas fa-refresh" ng-class="{ 'fa-spin fa-fw' : $ctrl.saving }"></i>
-                    <translate>Refresh</translate>
-                </button>
-                &nbsp;
-                <a class="btn btn-danger btn-xs" ng-click="$ctrl.disconnect(account.id)">
-                    <i class="fas fa-trash"></i>
-                </a>
-            </div>
-            <strong>{{account.organization.name}}</strong> {{account.username}}
+            <div><strong>{{account.organization.name}}</strong> {{account.username}}</div>
+            <a class="btn btn-default btn-xs" ng-click="$ctrl.editAccount(account)" ng-if="['DataServer', 'DataServerPtc', 'DataServerNavigators'].includes($ctrl.serverConstants.data.organizations_attributes[account.organization.id].api_class) && !account.organization.oauth">
+                <i class="fas fa-pencil"></i>
+                <translate>Edit</translate>
+            </a>
+            &nbsp;
+            <button ng-click="$ctrl.authenticate(account.organization.id)" class="btn btn-default btn-xs" ng-disabled="$ctrl.saving" ng-if="account.organization.oauth">
+                <i class="fas fa-refresh" ng-class="{ 'fa-spin fa-fw' : $ctrl.saving }"></i>
+                <translate>Refresh</translate>
+            </button>
+            &nbsp;
+            <a class="btn btn-danger btn-xs" ng-click="$ctrl.disconnect(account.id)">
+                <i class="fas fa-trash"></i>
+            </a>
         </div>
         <form ng-submit="$ctrl.import(account)" ng-if="$ctrl.serverConstants.data.organizations_attributes[account.organization.id].api_class === 'OfflineOrg'">
             <div class="panel-body">

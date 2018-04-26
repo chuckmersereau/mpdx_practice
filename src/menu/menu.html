@@ -1,8 +1,8 @@
 <impersonation-bar></impersonation-bar>
-<div class="nav--global">
-    <div id="brand">
-        <a class="nav--logo" ng-if="!$ctrl.setup" ui-sref="home"></a>
-        <a class="nav--logo" ng-if="$ctrl.setup"></a>
+<div class="nav-global">
+    <div class="logo">
+        <a ng-if="!$ctrl.setup" ui-sref="home"></a>
+        <a ng-if="$ctrl.setup"></a>
     </div>
     <div class="navbar-quick">
         <div class="search">
@@ -11,8 +11,8 @@
         <div class="account" ng-if="!$ctrl.setup">
             <account-lists></account-lists>
         </div>
-        <div class="quick-add" ng-if="!$ctrl.setup">
-            <div class="dropdown" id="quick-add-dropdown">
+        <div class="btn-group">
+            <div class="btn-group" id="quick-add-dropdown" ng-if="!$ctrl.setup">
                 <a bs-dropdown class="btn btn-default" type="button" data-placement="bottom-right">
                     <i class="fas fa-plus"></i> <translate>Add</translate>
                 </a>
@@ -24,10 +24,8 @@
                     <li role="presentation"><a ng-click="$ctrl.tasks.logModal()" translate>Log Task</a></li>
                 </ul>
             </div>
-        </div>
-        <div class="settings">
-            <div class="dropdown">
-                <a bs-dropdown class="settings-drop btn btn-reverse" type="button" data-placement="bottom-right">
+            <div class="btn-group">
+                <a bs-dropdown class="btn btn-reverse" type="button" data-placement="bottom-right">
                     <i class="fas fa-cog"></i> <translate>Settings</translate>
                 </a>
                 <ul class="dropdown-menu" role="menu">

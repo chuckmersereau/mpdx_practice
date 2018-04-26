@@ -1,4 +1,23 @@
 login {
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    grid-template-rows: auto 1fr $height-footer;
+    > menu {
+        border-bottom: 1px solid $color-border;
+        grid-row: 1;
+    }
+    > cover {
+        overflow: hidden;
+        grid-row: 2;
+        > ui-view {
+            display: block;
+            height: 100%;
+        }
+    }
+    > bottom {
+        grid-row: 3;
+    }
     .btn.btn-login {
         padding: 20px;
         img {

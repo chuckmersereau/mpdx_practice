@@ -1,21 +1,42 @@
-<h3 translate>Settings</h3>
+<h3 class="heading">
+    <i class="fas fa-cog"></i>
+    <translate>Settings</translate>
+</h3>
 <ul class="nav nav-pills nav-stacked">
     <li ng-class="{'active' : $ctrl.$state.includes('**.personal') }">
-        <a ng-click="$ctrl.go('preferences.personal')" translate>Preferences</a>
+        <a ng-click="$ctrl.go('preferences.personal')">
+            <span translate>Preferences</span>
+            <i class="fal fa-chevron-right"></i>
+        </a>
     </li>
     <li ng-class="{'active' : $ctrl.$state.includes('**.notifications') }">
-        <a ng-click="$ctrl.go('preferences.notifications')" translate>Notifications</a>
+        <a ng-click="$ctrl.go('preferences.notifications')">
+            <span translate>Notifications</span>
+            <i class="fal fa-chevron-right"></i>
+        </a>
     </li>
     <li ng-class="{'active' : $ctrl.$state.includes('**.integrations') }">
-        <a ng-click="$ctrl.go('preferences.integrations')" translate>Connect Services</a>
+        <a ng-click="$ctrl.go('preferences.integrations')">
+            <span translate>Connect Services</span>
+            <i class="fal fa-chevron-right"></i>
+        </a>
     </li>
     <li ng-class="{'active' : $ctrl.$state.includes('**.accounts') }">
-        <a ng-click="$ctrl.go('preferences.accounts')" translate>Manage Accounts</a>
+        <a ng-click="$ctrl.go('preferences.accounts')">
+            <span>Manage Accounts</span>
+            <i class="fal fa-chevron-right"></i>
+        </a>
     </li>
     <li ng-if="$ctrl.users.current.preferences.admin" ng-class="{'active' : $ctrl.$state.includes('**.coaches') }">
-        <a ng-click="$ctrl.go('preferences.coaches')" translate>Manage Coaches</a>
+        <a ng-click="$ctrl.go('preferences.coaches')">
+            <span translate>Manage Coaches</span>
+            <i class="fal fa-chevron-right"></i>
+        </a>
     </li>
     <li ng-if="$ctrl.users.current.preferences.admin" ng-class="{'active' : $ctrl.$state.includes('**.admin') }">
-        <a ng-click="$ctrl.go('preferences.admin')" translate>Admin Console</a>
+        <a ng-click="$ctrl.go('preferences.admin')">
+            <span translate>Admin Console</span>
+            <i class="fal fa-chevron-right"></i>
+        </a>
     </li>
 </ul>

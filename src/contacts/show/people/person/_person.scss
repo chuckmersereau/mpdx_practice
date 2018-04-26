@@ -27,6 +27,9 @@ contact-person {
         a:visited {
             margin-right: 10px;
             cursor: pointer;
+            &:last-child {
+                margin-right: 0;
+            }
             &:hover {
                 text-decoration: none;
             }
