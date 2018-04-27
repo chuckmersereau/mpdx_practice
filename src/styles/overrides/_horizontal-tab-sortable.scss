@@ -18,6 +18,7 @@
     .as-sortable-item {
         margin-right: 3px;
         border: 1px $color-menu-border solid;
+        background-color: color-gray(95);
         z-index: 0;
         > .as-sortable-item-handle {
             display: flex;
