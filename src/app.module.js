@@ -18,7 +18,7 @@ import root from 'root/root.component';
 import setup from 'setup/setup.module';
 import tasks from 'tasks/tasks.module';
 import tools from 'tools/tools.module';
-import unavailable from 'unavailable/unavailable.module';
+import unavailable from 'unavailable/unavailable.component';
 import vendor from './vendor.module';
 import appConfig from './app.config';
 import appRun from './app.run';
