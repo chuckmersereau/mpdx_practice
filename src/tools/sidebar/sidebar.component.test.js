@@ -1,6 +1,6 @@
 import component from './sidebar.component';
 
-describe('tools.fix.sidebar.component', () => {
+describe('tools.sidebar.component', () => {
     let $ctrl, rootScope, scope, componentController, tools;
 
     beforeEach(() => {
@@ -15,7 +15,7 @@ describe('tools.fix.sidebar.component', () => {
     });
 
     function loadController() {
-        $ctrl = componentController('fixSidebar', { $scope: scope });
+        $ctrl = componentController('toolsSidebar', { $scope: scope });
     }
 
     describe('$onInit', () => {

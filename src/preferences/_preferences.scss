@@ -15,9 +15,16 @@ preferences {
         grid-row: 1;
     }
     > ui-view {
-        padding: 10px $container-padding;
+        padding: 10px $container-padding 60px;
+        overflow: auto;
         grid-row: 1;
         grid-column: 2;
+        h1.heading {
+            margin: 0 -15px 15px;
+            padding: 11px 15px 15px;
+            border-bottom: 1px solid $color-border;
+            font-size: $font-size-lg;
+        }
     }
     .panel.panel-default {
         &:last-child {

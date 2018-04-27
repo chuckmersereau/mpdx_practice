@@ -367,6 +367,48 @@ describe('tools.appeals.show.component', () => {
             });
         });
     });
+    describe('selectAll', () => {
+        beforeEach(() => {
+            spyOn($ctrl, 'selectAllPledges').and.returnValue();
+            spyOn($ctrl, 'selectAllNotGiven').and.returnValue();
+        });
+        describe('activeTab == given', () => {
+            beforeEach(() => {
+                $ctrl.activeTab = 'given';
+            });
+            it('should call selectAllPledges', () => {
+                $ctrl.selectAll();
+                expect($ctrl.selectAllPledges).toHaveBeenCalledWith('processed');
+            });
+        });
+        describe('activeTab == received', () => {
+            beforeEach(() => {
+                $ctrl.activeTab = 'received';
+            });
+            it('should call selectAllPledges', () => {
+                $ctrl.selectAll();
+                expect($ctrl.selectAllPledges).toHaveBeenCalledWith('received_not_processed');
+            });
+        });
+        describe('activeTab == committed', () => {
+            beforeEach(() => {
+                $ctrl.activeTab = 'committed';
+            });
+            it('should call selectAllPledges', () => {
+                $ctrl.selectAll();
+                expect($ctrl.selectAllPledges).toHaveBeenCalledWith('not_received');
+            });
+        });
+        describe('activeTab == asking', () => {
+            beforeEach(() => {
+                $ctrl.activeTab = 'asking';
+            });
+            it('should call selectAllPledges', () => {
+                $ctrl.selectAll();
+                expect($ctrl.selectAllNotGiven).toHaveBeenCalled();
+            });
+        });
+    });
     describe('deselectAll', () => {
         it('should remove all contact ids', () => {
             $ctrl.selectedContactIds = [1, 2, 3];
@@ -375,7 +417,7 @@ describe('tools.appeals.show.component', () => {
         });
     });
     describe('selectContact', () => {
-        it('select/deselect the contact', () => {
+        it('should select/deselect the contact', () => {
             $ctrl.selectedContactIds = [1, 2, 3];
             $ctrl.selectContact(1);
             expect($ctrl.selectedContactIds).toEqual([2, 3]);

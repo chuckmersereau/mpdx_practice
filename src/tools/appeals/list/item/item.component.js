@@ -1,9 +1,9 @@
 class ItemController {
     constructor(
-        accounts, locale
+        accounts, appeals
     ) {
         this.accounts = accounts;
-        this.locale = locale;
+        this.appeals = appeals;
     }
 }
 
@@ -17,8 +17,8 @@ const AppealsListItem = {
 };
 
 import accounts from 'common/accounts/accounts.service';
-import locale from 'common/locale/locale.service';
+import appeals from '../../appeals.service';
 
 export default angular.module('mpdx.tools.appeals.list.item.component', [
-    accounts, locale
+    accounts, appeals
 ]).component('appealsListItem', AppealsListItem).name;

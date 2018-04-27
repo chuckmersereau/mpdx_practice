@@ -11,7 +11,8 @@ describe('tools.appeals.list.component', () => {
     });
     describe('constructor', () => {
         it('should set public properties', () => {
-            expect($ctrl.locale).toBeDefined();
+            expect($ctrl.accounts).toBeDefined();
+            expect($ctrl.appeals).toBeDefined();
         });
     });
 });

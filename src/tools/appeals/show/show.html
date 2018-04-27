@@ -1,6 +1,51 @@
 <div class="sidebar">
-    <div class="filter--filtergroup_title"><i class="fas fa-table"></i> <translate>Export Selected to CSV</translate></div>
-    <div class="mt-2 mb-4">
+    <h3 class="heading" ui-sref="tools.appeals">
+        <i class="fal fa-chevron-left text-muted"></i>
+        &nbsp;
+        <i class="fas fa-trophy"></i>
+        <translate>Appeals</translate>
+    </h3>
+    <ul class="nav nav-pills nav-stacked">
+      <li ng-class="{'active': $ctrl.activeTab === 'given'}">
+          <a ng-click="$ctrl.switchTab('given')">
+              <translate>Given</translate>
+              <span class="label label-success">{{$ctrl.pledgesProcessed.meta.pagination.total_count}}</span>
+              <i class="fal fa-chevron-right"></i>
+          </a>
+      </li>
+      <li ng-class="{'active': $ctrl.activeTab === 'received'}">
+          <a ng-click="$ctrl.switchTab('received')">
+              <translate>Received</translate>
+              <span class="label label-warning">{{$ctrl.pledgesNotProcessed.meta.pagination.total_count}}</span>
+              <i class="fal fa-chevron-right"></i>
+          </a>
+      </li>
+      <li ng-class="{'active': $ctrl.activeTab === 'committed'}">
+          <a ng-click="$ctrl.switchTab('committed')">
+              <translate>Committed</translate>
+              <span class="label label-warning">{{$ctrl.pledgesNotReceived.meta.pagination.total_count}}</span>
+              <i class="fal fa-chevron-right"></i>
+          </a>
+      </li>
+      <li ng-class="{'active': $ctrl.activeTab === 'asking'}">
+          <a ng-click="$ctrl.switchTab('asking')">
+              <translate>Asked</translate>
+              <span class="label label-default">{{$ctrl.contactsNotGiven.meta.pagination.total_count}}</span>
+              <i class="fal fa-chevron-right"></i>
+          </a>
+      </li>
+      <li ng-class="{'active': $ctrl.activeTab === 'excluded'}">
+          <a ng-click="$ctrl.switchTab('excluded')">
+              <translate>Excluded</translate>
+              <span class="label label-danger">{{$ctrl.excludedContacts.meta.pagination.total_count}}</span>
+              <i class="fal fa-chevron-right"></i>
+          </a>
+      </li>
+    </ul>
+    <div class="filters_section filter--filtergroup">
+        <div class="filter--filtergroup_title">
+            <translate>Export to CSV</translate>
+        </div>
         <button class="btn btn-default btn-block"
                 ng-click="$ctrl.exportToCSV()"
                 ng-disabled="$ctrl.selectedContactIds.length < 1"
@@ -9,391 +54,295 @@
             Export {{count}} Selected
         </button>
     </div>
-    <div class="filters_section filter--filtergroup" ng-if="$ctrl.mailchimp.data && $ctrl.mailchimp.data.lists_present">
-        <div class="filter--filtergroup_title"><i class="far fa-envelope"></i> <translate>Export Selected to MailChimp</translate></div>
-        <div class="mt-2 mb-4">
-            <select name="primaryListId"
-                    id="primaryListId"
-                    ng-model="$ctrl.mailchimpListId"
-                    class="form-control"
-                    ng-options="option.id as option.name for option in $ctrl.mailchimp.data.lists_available_for_newsletters"
-                    chosen>
-            </select>
-            <button class="btn btn-default btn-block mt-2"
-                    ng-click="$ctrl.exportMailchimp()"
-                    ng-disabled="!$ctrl.mailchimpListId || $ctrl.selectedContactIds.length < 1"
-                    translate-params-count="$ctrl.selectedContactIds.length"
-                    translate>Export {{count}} Selected
-            </button>
+    <div class="filters_section filter--filtergroup"
+         ng-if="$ctrl.mailchimp.data && $ctrl.mailchimp.data.lists_present">
+        <div class="filter--filtergroup_title">
+            <translate>Export to MailChimp</translate>
         </div>
+        <select name="primaryListId"
+                id="primaryListId"
+                ng-model="$ctrl.mailchimpListId"
+                class="form-control"
+                ng-options="option.id as option.name for option in $ctrl.mailchimp.data.lists_available_for_newsletters"
+                chosen>
+        </select>
+        <button class="btn btn-default btn-block mt-2"
+                ng-click="$ctrl.exportMailchimp()"
+                ng-disabled="!$ctrl.mailchimpListId || $ctrl.selectedContactIds.length < 1"
+                translate-params-count="$ctrl.selectedContactIds.length"
+                translate>Export {{count}} Selected
+        </button>
     </div>
     <div class="filters_section filter--filtergroup">
-        <div class="filter--filtergroup_title"><i class="fas fa-home"></i> <translate>Add Contact to Appeal</translate></div>
-        <div class="mt-2 mb-4">
-            <collection-selector item-name="{{ 'Contact' | translate }}"
-                                 display-text="$ctrl.selectedContact"
-                                 search="$ctrl.contactSearch(text)"
-                                 select="$ctrl.onContactSelected(item)">
-            </collection-selector>
+        <div class="filter--filtergroup_title">
+            <translate>Add Contact to Appeal</translate>
         </div>
+        <collection-selector item-name="{{ 'Contact' | translate }}"
+                             display-text="$ctrl.selectedContact"
+                             search="$ctrl.contactSearch(text)"
+                             select="$ctrl.onContactSelected(item)">
+        </collection-selector>
     </div>
     <div class="filters_section filter--filtergroup">
-        <div class="filter--filtergroup_title"><i class="fas fa-home"></i> <translate>Delete Appeal</translate></div>
-        <div class="mt-2 mb-4">
-            <button class="btn btn-default btn-block mt-2" ng-click="$ctrl.deleteAppeal()" translate>Permanently Delete Appeal</button>
+        <div class="filter--filtergroup_title">
+            <translate>Delete Appeal</translate>
         </div>
+        <button class="btn btn-default btn-block mt-2" ng-click="$ctrl.deleteAppeal()" translate>Permanently Delete Appeal</button>
     </div>
 </div>
-        <div class="col-md-9">
-            <div class="filter--content">
-                <div class="columns columns--fixed">
-                    <div class="column column--heading filter--heading text-right">
-                        <div class="page-filters">
-                            <div class="row">
-                                <div class="col-sm-10">
-                                    <div class="row">
-                                        <div class="col-md-7">
-                                            <div class="inline-input header mb-0">
-                                                <input ng-model="$ctrl.appeal.name"
-                                                       ng-change="$ctrl.save()"
-                                                       aria-label="Appeal Name"
-                                                       style="padding-right: 0"
-                                                       ng-model-options="{ debounce: 1000 }">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3 text-right pr-1">
-                                            <h2 class="mt-0 mb-0" style="white-space: nowrap">
-                                                {{:: $ctrl.currency.symbol}}{{:: $ctrl.appeal.pledges_amount_processed }} /
-                                                {{:: $ctrl.currency.symbol}}
-                                            </h2>
-                                        </div>
-                                        <div class="col-md-2 pl-0">
-                                            <span class="inline-input header">
-                                                <input ng-model="$ctrl.appeal.amount"
-                                                       ng-change="$ctrl.changeGoal()"
-                                                       aria-label="Appeal Amount"
-                                                       class="pr-0"
-                                                       ng-model-options="{ debounce: 1000 }">
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="dropdown">
-                                        <a class="btn btn-default dropdown-toggle" bs-dropdown type="button" data-toggle="dropdown" aria-expanded="true">
-                                            <span  translate>Actions</span> <span class="caret"></span>
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop" ng-show="$ctrl.selectedContactIds.length > 0">
-                                            <li><a ng-click="$ctrl.contacts.openAddTagModal($ctrl.selectedContactIds)" translate>Add Tag</a></li>
-                                            <li class="divider"></li>
-                                            <li><a ng-click="$ctrl.tasks.addModal({ contactsList: $ctrl.selectedContactIds })" translate>Add Task</a></li>
-                                            <li><a ng-click="$ctrl.tasks.logModal($ctrl.selectedContactIds)" translate>Log Task(s)</a></li>
-                                        </ul>
-                                        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop" ng-show="$ctrl.selectedContactIds.length === 0">
-                                            <li class="dropdown-header" translate>Please select at least one contact by clicking anywhere on that contact to continue.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="column">
-                        <appeals-progressbar appeal="$ctrl.appeal"></appeals-progressbar>
-                        <ul class="nav nav-tabs">
-                          <li ng-class="{'active': $ctrl.activeTab === 'given'}">
-                              <a ng-click="$ctrl.switchTab('given')">
-                                  <translate>Given</translate>
-                                  &nbsp;
-                                  <span class="label label-success">{{$ctrl.pledgesProcessed.meta.pagination.total_count}}</span>
-                              </a>
-                          </li>
-                          <li ng-class="{'active': $ctrl.activeTab === 'received'}">
-                              <a ng-click="$ctrl.switchTab('received')">
-                                  <translate>Received</translate>
-                                  &nbsp;
-                                  <span class="label label-warning">{{$ctrl.pledgesNotProcessed.meta.pagination.total_count}}</span>
-                              </a>
-                          </li>
-                          <li ng-class="{'active': $ctrl.activeTab === 'committed'}">
-                              <a ng-click="$ctrl.switchTab('committed')">
-                                  <translate>Committed</translate>
-                                  &nbsp;
-                                  <span class="label label-warning">{{$ctrl.pledgesNotReceived.meta.pagination.total_count}}</span>
-                              </a>
-                          </li>
-                          <li ng-class="{'active': $ctrl.activeTab === 'asking'}">
-                              <a ng-click="$ctrl.switchTab('asking')">
-                                  <translate>Asked</translate>
-                                  &nbsp;
-                                  <span class="label label-default">{{$ctrl.contactsNotGiven.meta.pagination.total_count}}</span>
-                              </a>
-                          </li>
-                          <li ng-class="{'active': $ctrl.activeTab === 'excluded'}">
-                              <a ng-click="$ctrl.switchTab('excluded')">
-                                  <translate>Excluded</translate>
-                                  &nbsp;
-                                  <span class="label label-danger">{{$ctrl.excludedContacts.meta.pagination.total_count}}</span>
-                              </a>
-                          </li>
-                        </ul>
-                        <div ng-if="$ctrl.activeTab === 'given'" block-ui="appealsGiven">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <translate>Given To Appeal</translate>
-                                    <div class="pull-right">
-                                        <a ng-click="$ctrl.selectAllPledges('processed')" translate>select all</a> |
-                                        <a ng-click="$ctrl.deselectAll()" translate>deselect all</a>
-                                    </div>
-                                </div>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th class="col-xs-5" translate>Contact</th>
-                                            <th class="col-xs-4" translate>Donation(s)</th>
-                                            <th class="col-xs-3 text-right" translate>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr ng-repeat="pledge in $ctrl.pledgesProcessed"
-                                            ng-click="$ctrl.selectContact(pledge.contact.id)"
-                                            ng-class="{ selected: $ctrl.selectedContactIds.includes(pledge.contact.id) }"
-                                            class="selectable">
-                                            <td>
-                                                <a ui-sref="contacts.show({ contactId: pledge.contact.id })" ng-click="$event.stopPropagation()" target="_blank">
-                                                    {{::pledge.contact.name}}
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <div ng-repeat="donation in pledge.donations">
-                                                    {{::donation.converted_appeal_amount | currency: donation.converted_symbol}}
-                                                    <span ng-if="donation.currency !== donation.converted_currency">
-                                                        ({{:: donation.appeal_amount | currency: donation.symbol}})
-                                                    </span>
-                                                    ({{::donation.donation_date | localize}})
-                                                </div>
-                                            </td>
-                                            <td class="text-right">
-                                                <button class="btn btn-xs btn-danger"
-                                                        ng-click="$ctrl.removePledge(pledge); $event.stopPropagation()"
-                                                        title="{{'Remove Commitment' | translate}}">
-                                                    <i class="far fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div class="panel-body blankslate" ng-if="$ctrl.pledgesProcessed.meta.pagination.total_count === 0">
-                                    <p translate>No donations yet towards this appeal</p>
-                                </div>
-                            </div>
-                            <pagination meta="$ctrl.pledgesProcessed.meta.pagination"
-                                        on-change="$ctrl.getPledgesProcessed(page)">
-                            </pagination>
-                        </div>
-                        <div ng-if="$ctrl.activeTab === 'received'" block-ui="appealsReceived">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <translate>Received, Not Yet Processed</translate>
-                                    <div class="pull-right">
-                                        <a ng-click="$ctrl.selectAllPledges('received_not_processed')" translate>select all</a> |
-                                        <a ng-click="$ctrl.deselectAll()" translate>deselect all</a>
-                                    </div>
-                                </div>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th class="col-xs-5" translate>Contact</th>
-                                            <th class="col-xs-4" translate>Amount Received</th>
-                                            <th class="col-xs-3 text-right" translate>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr ng-repeat="pledge in $ctrl.pledgesNotProcessed"
-                                            ng-click="$ctrl.selectContact(pledge.contact.id)"
-                                            ng-class="{ selected: $ctrl.selectedContactIds.includes(pledge.contact.id) }"
-                                            class="selectable">
-                                            <td>
-                                                <a ui-sref="contacts.show({ contactId: pledge.contact.id })" ng-click="$event.stopPropagation()" target="_blank">
-                                                    {{::pledge.contact.name}}
-                                                </a>
-                                            </td>
-                                            <td>{{::pledge.amount | currency: ''}} {{::pledge.contact.pledge_currency}} ({{::pledge.expected_date | localize}})</td>
-                                            <td class="text-right">
-                                                <button class="btn btn-xs btn-default"
-                                                        ng-click="$ctrl.editPledge(pledge); $event.stopPropagation()"
-                                                        title="{{'Edit' | translate}}">
-                                                    <i class="far fa-pencil-square"></i>
-                                                </button>
-                                                &nbsp;
-                                                <button class="btn btn-xs btn-danger"
-                                                        ng-click="$ctrl.removePledge(pledge); $event.stopPropagation()"
-                                                        title="{{'Remove' | translate}}">
-                                                    <i class="far fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div class="panel-body blankslate" ng-if="$ctrl.pledgesNotProcessed.meta.pagination.total_count === 0">
-                                    <p translate>No gifts have been received and not yet processed to this appeal</p>
-                                </div>
-                            </div>
-                            <pagination meta="$ctrl.pledgesNotProcessed.meta.pagination"
-                                        on-change="$ctrl.getPledgesNotProcessed(page)">
-                            </pagination>
-                        </div>
-                        <div ng-if="$ctrl.activeTab === 'committed'" block-ui="appealsCommitted">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <translate>Committed, Not Yet Received</translate>
-                                    <div class="pull-right">
-                                        <a ng-click="$ctrl.selectAllPledges('not_received')" translate>select all</a> |
-                                        <a ng-click="$ctrl.deselectAll()" translate>deselect all</a>
-                                    </div>
-                                </div>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th class="col-xs-5" translate>Contact</th>
-                                            <th class="col-xs-4" translate>Amount Committed</th>
-                                            <th class="col-xs-3 text-right" translate>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr ng-repeat="pledge in $ctrl.pledgesNotReceived | orderBy : 'contact.name'"
-                                            ng-click="$ctrl.selectContact(pledge.contact.id)"
-                                            ng-class="{ selected: $ctrl.selectedContactIds.includes(pledge.contact.id) }"
-                                            class="selectable">
-                                            <td>
-                                                <a ui-sref="contacts.show({ contactId: pledge.contact.id })" ng-click="$event.stopPropagation()" target="_blank">
-                                                    {{::pledge.contact.name}}
-                                                </a>
-                                            </td>
-                                            <td>{{::pledge.amount | currency: ''}} {{::pledge.contact.pledge_currency}} ({{::pledge.expected_date | localize}})</td>
-                                            <td class="text-right">
-                                                <button class="btn btn-xs btn-default"
-                                                        ng-click="$ctrl.editPledge(pledge); $event.stopPropagation()"
-                                                        title="{{'Edit' | translate}}">
-                                                    <i class="far fa-pencil-square"></i>
-                                                </button>
-                                                &nbsp;
-                                                <button class="btn btn-xs btn-danger"
-                                                        ng-click="$ctrl.removePledge(pledge); $event.stopPropagation()"
-                                                        title="{{'Remove' | translate}}">
-                                                    <i class="far fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div class="panel-body blankslate" ng-if="$ctrl.pledgesNotReceived.meta.pagination.total_count === 0">
-                                    <p translate>No commitments have committed to this appeal</p>
-                                </div>
-                            </div>
-                            <pagination meta="$ctrl.pledgesNotReceived.meta.pagination"
-                                        on-change="$ctrl.getPledgesNotReceived(page)">
-                            </pagination>
-                        </div>
-                        <div ng-if="$ctrl.activeTab === 'asking'" block-ui="appealsAsking">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <translate>Not Yet Committed</translate>
-                                    <div class="pull-right">
-                                        <a ng-click="$ctrl.selectAllNotGiven()" translate>select all</a> |
-                                        <a ng-click="$ctrl.deselectAll()" translate>deselect all</a>
-                                    </div>
-                                </div>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th class="col-xs-5" translate>Contact</th>
-                                            <th class="col-xs-4" translate>Regular Giving</th>
-                                            <th class="col-xs-3 text-right" translate>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr ng-repeat="ref in $ctrl.contactsNotGiven | orderBy : 'name'"
-                                            ng-click="$ctrl.selectContact(ref.contact.id)"
-                                            ng-class="{ selected: $ctrl.selectedContactIds.includes(ref.contact.id) }"
-                                            class="selectable">
-                                            <td>
-                                                <a ui-sref="contacts.show({ contactId: ref.contact.id })" ng-click="$event.stopPropagation()" target="_blank">
-                                                    {{::ref.contact.name}}
-                                                </a>
-                                            </td>
-                                            <td>
-                                                {{::ref.contact.pledge_amount | currency: ''}} {{::ref.contact.pledge_currency}}
-                                                {{::$ctrl.serverConstants.getPledgeFrequency(ref.contact.pledge_frequency).value}}
-                                            </td>
-                                            <td class="text-right">
-                                                <button class="btn btn-xs btn-success" ng-click="$ctrl.addPledge(ref.contact)" title="{{'Add Commitment' | translate}}">
-                                                    <i class="fas fa-plus"></i>
-                                                </button>
-                                                <button class="btn btn-xs btn-danger"
-                                                        ng-click="$ctrl.removeContact(ref.id); $event.stopPropagation()"
-                                                        title="{{'Remove' | translate}}">
-                                                    <i class="far fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div class="panel-body blankslate" ng-if="$ctrl.contactsNotGiven.meta.pagination.total_count === 0">
-                                    <p translate>All contacts for this appeal have committed to this appeal</p>
-                                </div>
-                            </div>
-                            <pagination meta="$ctrl.contactsNotGiven.meta.pagination"
-                                        on-change="$ctrl.getContactsNotGiven(page)">
-                            </pagination>
-                        </div>
-                        <div ng-if="$ctrl.activeTab === 'excluded'" block-ui="appealsExcluded">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <translate>Excluded from Appeal</translate>
-                                </div>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th class="col-xs-3" translate>Contact</th>
-                                            <th class="col-xs-5" translate>Reason</th>
-                                            <th class="col-xs-2" translate>Regular Giving</th>
-                                            <th class="col-xs-1 text-right" translate>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr ng-repeat="rel in $ctrl.excludedContacts | orderBy : 'name'">
-                                            <td>
-                                                <a ui-sref="contacts.show({ contactId: rel.contact.id })" target="_blank">
-                                                    {{::rel.contact.name}}
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <ul class="list-unstyled pl-0">
-                                                    <li ng-repeat="reason in ::$ctrl.getReasons(rel)">{{reason}}</li>
-                                                </ul>
-                                            </td>
-                                            <td>
-                                                {{::rel.contact.pledge_amount}} {{::rel.contact.pledge_currency}}
-                                                {{::$ctrl.serverConstants.getPledgeFrequency(rel.contact.pledge_frequency).value}}
-                                            </td>
-                                            <td class="text-right">
-                                                <button class="btn btn-xs btn-success" ng-click="$ctrl.addExcludedContact(rel)" title="{{'Add' | translate}}">
-                                                    <i class="fas fa-plus"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div class="panel-body blankslate" ng-if="$ctrl.excludedContacts.meta.pagination.total_count === 0">
-                                    <p translate>No contacts have been excluded from this appeal</p>
-                                </div>
-                            </div>
-                            <pagination meta="$ctrl.excludedContacts.meta.pagination"
-                                        on-change="$ctrl.getExcludedContacts(page)">
-                            </pagination>
-                        </div>
-                    </div>
+<div class="content">
+    <div class="wrapper">
+        <div class="menu" ng-class="{ selected: $ctrl.selectedContactIds.length > 0 }">
+            <button class="btn btn-default" ng-click="$ctrl.selectAll()" ng-disabled="$ctrl.activeTab === 'excluded'" translate>Select All</button>
+            <div class="selected-count" ng-if="$ctrl.selectedContactIds.length > 0">
+                <translate translate-params-count="$ctrl.selectedContactIds.length">{{count}} Selected</translate>
+                &nbsp;
+                <a ng-click="$ctrl.deselectAll()">
+                    <i class="fas fa-times"></i>
+                </a>
+            </div>
+            <div class="spacer"></div>
+            <div class="dropdown" ng-show="$ctrl.selectedContactIds.length > 0">
+                <a class="btn btn-default dropdown-toggle" bs-dropdown type="button" data-toggle="dropdown" aria-expanded="true">
+                    <span  translate>Actions</span> <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop">
+                    <li><a ng-click="$ctrl.contacts.openAddTagModal($ctrl.selectedContactIds)" translate>Add Tag</a></li>
+                    <li class="divider"></li>
+                    <li><a ng-click="$ctrl.tasks.addModal({ contactsList: $ctrl.selectedContactIds })" translate>Add Task</a></li>
+                    <li><a ng-click="$ctrl.tasks.logModal($ctrl.selectedContactIds)" translate>Log Task(s)</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="list">
+            <div class="appeal">
+                <div class="inline-input header">
+                    <input ng-model="$ctrl.appeal.name"
+                           ng-change="$ctrl.save()"
+                           aria-label="Appeal Name"
+                           style="padding-right: 0"
+                           ng-model-options="{ debounce: 1000 }">
                 </div>
+                <div class="spacer"></div>
+                <h2>
+                    {{:: $ctrl.currency.symbol}}{{:: $ctrl.appeal.pledges_amount_processed }} /
+                    {{:: $ctrl.currency.symbol}}
+                </h2>
+                <div class="inline-input header amount">
+                    <input ng-model="$ctrl.appeal.amount"
+                           ng-change="$ctrl.changeGoal()"
+                           aria-label="Appeal Amount"
+                           class="pr-0"
+                           ng-model-options="{ debounce: 1000 }">
+                </div>
+            </div>
+            <appeals-progressbar appeal="$ctrl.appeal"></appeals-progressbar>
+            <div ng-if="$ctrl.activeTab === 'given'" block-ui="appealsGiven">
+                <table class="table" ng-if="$ctrl.pledgesProcessed.meta.pagination.total_count > 0">
+                    <thead>
+                        <tr>
+                            <th class="col-xs-5" translate>Contact</th>
+                            <th class="col-xs-4" translate>Donation(s)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="pledge in $ctrl.pledgesProcessed"
+                            ng-click="$ctrl.selectContact(pledge.contact.id)"
+                            ng-class="{ selected: $ctrl.selectedContactIds.includes(pledge.contact.id) }">
+                            <td>
+                                <a ui-sref="contacts.show({ contactId: pledge.contact.id })" ng-click="$event.stopPropagation()" target="_blank">
+                                    {{::pledge.contact.name}}
+                                </a>
+                            </td>
+                            <td>
+                                <div ng-repeat="donation in pledge.donations">
+                                    {{::donation.converted_appeal_amount | currency: donation.converted_symbol}}
+                                    <span ng-if="donation.currency !== donation.converted_currency">
+                                        ({{:: donation.appeal_amount | currency: donation.symbol}})
+                                    </span>
+                                    ({{::donation.donation_date | localize}})
+                                </div>
+                            </td>
+                            <td class="actions">
+                                <a ng-click="$ctrl.removePledge(pledge); $event.stopPropagation()"
+                                   title="{{'Remove Commitment' | translate}}">
+                                    <i class="far fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="blankslate" ng-if="$ctrl.pledgesProcessed.meta.pagination.total_count === 0">
+                    <p translate>No donations yet towards this appeal</p>
+                </div>
+                <pagination meta="$ctrl.pledgesProcessed.meta.pagination"
+                            on-change="$ctrl.getPledgesProcessed(page)">
+                </pagination>
+            </div>
+            <div ng-if="$ctrl.activeTab === 'received'" block-ui="appealsReceived">
+                <table class="table" ng-if="$ctrl.pledgesNotProcessed.meta.pagination.total_count > 0">
+                    <thead>
+                        <tr>
+                            <th class="col-xs-5" translate>Contact</th>
+                            <th class="col-xs-4" translate>Amount Received</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="pledge in $ctrl.pledgesNotProcessed"
+                            ng-click="$ctrl.selectContact(pledge.contact.id)"
+                            ng-class="{ selected: $ctrl.selectedContactIds.includes(pledge.contact.id) }"
+                            class="selectable">
+                            <td>
+                                <a ui-sref="contacts.show({ contactId: pledge.contact.id })" ng-click="$event.stopPropagation()" target="_blank">
+                                    {{::pledge.contact.name}}
+                                </a>
+                            </td>
+                            <td>{{::pledge.amount | currency: ''}} {{::pledge.contact.pledge_currency}} ({{::pledge.expected_date | localize}})</td>
+                            <td class="text-right">
+                                <button class="btn btn-xs btn-default"
+                                        ng-click="$ctrl.editPledge(pledge); $event.stopPropagation()"
+                                        title="{{'Edit' | translate}}">
+                                    <i class="far fa-pencil-square"></i>
+                                </button>
+                                &nbsp;
+                                <button class="btn btn-xs btn-danger"
+                                        ng-click="$ctrl.removePledge(pledge); $event.stopPropagation()"
+                                        title="{{'Remove' | translate}}">
+                                    <i class="far fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="blankslate" ng-if="$ctrl.pledgesNotProcessed.meta.pagination.total_count === 0">
+                    <p translate>No gifts have been received and not yet processed to this appeal</p>
+                </div>
+                <pagination meta="$ctrl.pledgesNotProcessed.meta.pagination"
+                            on-change="$ctrl.getPledgesNotProcessed(page)">
+                </pagination>
+            </div>
+            <div ng-if="$ctrl.activeTab === 'committed'" block-ui="appealsCommitted">
+                <table class="table" ng-if="$ctrl.pledgesNotReceived.meta.pagination.total_count > 0">
+                    <thead>
+                        <tr>
+                            <th class="col-xs-5" translate>Contact</th>
+                            <th class="col-xs-4" translate>Amount Committed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="pledge in $ctrl.pledgesNotReceived | orderBy : 'contact.name'"
+                            ng-click="$ctrl.selectContact(pledge.contact.id)"
+                            ng-class="{ selected: $ctrl.selectedContactIds.includes(pledge.contact.id) }"
+                            class="selectable">
+                            <td>
+                                <a ui-sref="contacts.show({ contactId: pledge.contact.id })" ng-click="$event.stopPropagation()" target="_blank">
+                                    {{::pledge.contact.name}}
+                                </a>
+                            </td>
+                            <td>{{::pledge.amount | currency: ''}} {{::pledge.contact.pledge_currency}} ({{::pledge.expected_date | localize}})</td>
+                            <td class="actions">
+                                <a ng-click="$ctrl.editPledge(pledge); $event.stopPropagation()"
+                                   title="{{'Edit' | translate}}">
+                                    <i class="far fa-pencil-square"></i>
+                                </a>
+                                <a ng-click="$ctrl.removePledge(pledge); $event.stopPropagation()"
+                                   title="{{'Remove' | translate}}">
+                                    <i class="far fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="blankslate" ng-if="$ctrl.pledgesNotReceived.meta.pagination.total_count === 0">
+                    <p translate>No commitments have committed to this appeal</p>
+                </div>
+                <pagination meta="$ctrl.pledgesNotReceived.meta.pagination"
+                            on-change="$ctrl.getPledgesNotReceived(page)">
+                </pagination>
+            </div>
+            <div ng-if="$ctrl.activeTab === 'asking'" block-ui="appealsAsking">
+                <table class="table" ng-if="$ctrl.contactsNotGiven.meta.pagination.total_count > 0">
+                    <thead>
+                        <tr>
+                            <th class="col-xs-5" translate>Contact</th>
+                            <th class="col-xs-4" translate>Regular Giving</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="ref in $ctrl.contactsNotGiven | orderBy : 'name'"
+                            ng-click="$ctrl.selectContact(ref.contact.id)"
+                            ng-class="{ selected: $ctrl.selectedContactIds.includes(ref.contact.id) }"
+                            class="selectable">
+                            <td>
+                                <a ui-sref="contacts.show({ contactId: ref.contact.id })" ng-click="$event.stopPropagation()" target="_blank">
+                                    {{::ref.contact.name}}
+                                </a>
+                            </td>
+                            <td>
+                                {{::ref.contact.pledge_amount | currency: ''}} {{::ref.contact.pledge_currency}}
+                                {{::$ctrl.serverConstants.getPledgeFrequency(ref.contact.pledge_frequency).value}}
+                            </td>
+                            <td class="actions">
+                                <a ng-click="$ctrl.addPledge(ref.contact)"
+                                   title="{{'Add Commitment' | translate}}">
+                                    <i class="fas fa-plus"></i>
+                                </a>
+                                <a ng-click="$ctrl.removeContact(ref.id); $event.stopPropagation()"
+                                   title="{{'Remove' | translate}}">
+                                    <i class="far fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="blankslate" ng-if="$ctrl.contactsNotGiven.meta.pagination.total_count === 0">
+                    <p translate>All contacts for this appeal have committed to this appeal</p>
+                </div>
+                <pagination meta="$ctrl.contactsNotGiven.meta.pagination"
+                            on-change="$ctrl.getContactsNotGiven(page)">
+                </pagination>
+            </div>
+            <div ng-if="$ctrl.activeTab === 'excluded'" block-ui="appealsExcluded">
+                <table class="table" ng-if="$ctrl.excludedContacts.meta.pagination.total_count > 0">
+                    <thead>
+                        <tr>
+                            <th class="col-xs-3" translate>Contact</th>
+                            <th class="col-xs-5" translate>Reason</th>
+                            <th class="col-xs-2" translate>Regular Giving</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="rel in $ctrl.excludedContacts | orderBy : 'name'">
+                            <td>
+                                <a ui-sref="contacts.show({ contactId: rel.contact.id })" target="_blank">
+                                    {{::rel.contact.name}}
+                                </a>
+                            </td>
+                            <td>
+                                <ul class="list-unstyled pl-0">
+                                    <li ng-repeat="reason in ::$ctrl.getReasons(rel)">{{reason}}</li>
+                                </ul>
+                            </td>
+                            <td>
+                                {{::rel.contact.pledge_amount}} {{::rel.contact.pledge_currency}}
+                                {{::$ctrl.serverConstants.getPledgeFrequency(rel.contact.pledge_frequency).value}}
+                            </td>
+                            <td class="actions">
+                                <a ng-click="$ctrl.addExcludedContact(rel)"
+                                   title="{{'Add' | translate}}">
+                                    <i class="fas fa-plus"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="blankslate" ng-if="$ctrl.excludedContacts.meta.pagination.total_count === 0">
+                    <p translate>No contacts have been excluded from this appeal</p>
+                </div>
+                <pagination meta="$ctrl.excludedContacts.meta.pagination"
+                            on-change="$ctrl.getExcludedContacts(page)">
+                </pagination>
             </div>
         </div>
     </div>
+</div>

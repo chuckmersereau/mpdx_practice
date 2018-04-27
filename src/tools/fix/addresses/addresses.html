@@ -1,10 +1,9 @@
-<div class="content-container" block-ui="fix-addresses">
-    <h1 translate>Fix Mailing Addresses</h1>
+<div block-ui="fix-addresses">
+    <h1 class="heading" translate>Fix Mailing Addresses</h1>
     <div class="blankslate blankslate-spacious" ng-if="!$ctrl.meta.pagination.total_count && !$ctrl.loading">
         <i class="fas fa-map blankslate-icon"></i>
         <h3 translate>No contacts with mailing addresses need attention</h3>
         <p translate>Contacts with new addresses or multiple primary mailing addresses will appear here.</p>
-        <a class="btn btn-default" ui-sref="tools" translate>Back to Tools</a>
     </div>
     <div ng-if="$ctrl.meta.pagination.total_count">
         <p>

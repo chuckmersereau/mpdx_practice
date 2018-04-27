@@ -1,9 +1,11 @@
-<div class="appeal" ui-sref=".show({appealId: $ctrl.appeal.id})">
-    <h4>
-        <span>{{::$ctrl.appeal.name}}</span>
-        <span>
-            {{::$ctrl.appeal.pledges_amount_processed}} / {{::$ctrl.appeal.amount}}
-        </span>
-    </h4>
-    <appeals-progressbar appeal="$ctrl.appeal"></appeals-progressbar>
-</div>
+<h4>
+    <a class="name" ui-sref=".show({appealId: $ctrl.appeal.id})">{{$ctrl.appeal.name}}</a>
+    <span>
+        {{$ctrl.appeal.pledges_amount_processed}} / {{$ctrl.appeal.amount}}
+    </span>
+    <a ng-click="$ctrl.appeals.setPrimaryAppeal($ctrl.appeal)">
+        <i class="far fa-star" ng-if="$ctrl.appeal.id !== $ctrl.accounts.current.primary_appeal.id"></i>
+        <i class="fas fa-star" ng-if="$ctrl.appeal.id === $ctrl.accounts.current.primary_appeal.id"></i>
+    </a>
+</h4>
+<appeals-progressbar appeal="$ctrl.appeal"></appeals-progressbar>

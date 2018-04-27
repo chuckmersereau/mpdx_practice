@@ -2,16 +2,17 @@
 @import 'show/show';
 @import 'wizard/wizard';
 appeals {
-    .content-container {
-        display: grid;
-        grid-template-rows: auto 1fr;
+    > ui-view {
         > .content {
             display: grid;
-            grid-gap: 10px;
             grid-template-columns: 1fr 1fr;
-        }
-        h2 {
-            margin-top: 0;
+            grid-gap: 10px;
+            > appeals-list {
+                grid-column: 1;
+            }
+            > appeals-wizard {
+                grid-column: 2;
+            }
         }
     }
 }

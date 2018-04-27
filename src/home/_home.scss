@@ -1,6 +1,5 @@
 @import 'progress/progress';
 home {
-    @extend .content-container;
     display: grid;
     height: 100%;
     padding: $container-padding;

@@ -4,9 +4,9 @@
         <span class="text-muted" ng-if="::$ctrl.address.created_at">({{ ::$ctrl.address.created_at | localize }})</span>
     </div>
     <div class="col-xs-2 text-center">
-        <span class="fa-stack" ng-click="$ctrl.setPrimary($ctrl.contact, $ctrl.address)" ng-if="::$ctrl.address">
-            <i class="fas fa-circle-thin fa-stack-2x"></i>
-            <i class="fas fa-circle fa-stack-1x" ng-if="$ctrl.address.primary_mailing_address"></i>
+        <span ng-click="$ctrl.setPrimary($ctrl.contact, $ctrl.address)" ng-if="::$ctrl.address">
+            <i class="far fa-star" ng-if="!$ctrl.address.primary_mailing_address"></i>
+            <i class="fas fa-star" ng-if="$ctrl.address.primary_mailing_address"></i>
         </span>
     </div>
     <div class="col-xs-5">

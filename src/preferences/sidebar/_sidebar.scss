@@ -1,60 +1,9 @@
 preferences-sidebar {
-    background-color: $color-filter-bar;
-    color: $color-white;
-    .heading {
-        display: flex;
-        align-items: center;
-        margin-bottom: 0;
-        padding: 10px $container-padding $container-padding;
-        border-bottom: 1px solid $color-gray-blue;
-        i {
-            margin-right: 5px;
-        }
-    }
+    @extend .sidebar;
     .selector {
         margin-top: 20px;
         .account-list-dropdown {
             margin-top: 5px;
-        }
-    }
-    .nav.nav-pills {
-        li {
-            + li {
-                margin: 0;
-            }
-            a {
-                display: flex;
-                align-items: center;
-                margin: 0;
-                padding: 10px $container-padding;
-                transition: background-color 0.2s ease-out;
-                border-bottom: 1px solid $color-gray-blue;
-                border-radius: 0;
-                background-color: transparent;
-                color: $color-white;
-                cursor: pointer;
-                span {
-                    flex-grow: 1;
-                }
-                i {
-                    transition: opacity 0.2s ease-out;
-                    opacity: 0.2;
-                }
-                &:hover {
-                    background-color: $color-filter-bar-dark;
-                    i {
-                        opacity: 0.5;
-                    }
-                }
-            }
-            &.active {
-                a {
-                    background-color: $color-filter-bar-dark;
-                    i {
-                        opacity: 1;
-                    }
-                }
-            }
         }
     }
 }

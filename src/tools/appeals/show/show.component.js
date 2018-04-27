@@ -296,6 +296,17 @@ class AppealController {
     removeExcludedContact(id) {
         return this.api.delete(`appeals/${this.appeal.id}/excluded_appeal_contacts/${id}`);
     }
+    selectAll() {
+        if (this.activeTab === 'given') {
+            this.selectAllPledges('processed');
+        } else if (this.activeTab === 'received') {
+            this.selectAllPledges('received_not_processed');
+        } else if (this.activeTab === 'committed') {
+            this.selectAllPledges('not_received');
+        } else if (this.activeTab === 'asking') {
+            this.selectAllNotGiven();
+        }
+    }
     deselectAll() {
         this.selectedContactIds = [];
     }

@@ -1,10 +1,9 @@
-<div class="content-container" block-ui="fix-email-addresses">
-    <h1 translate>Fix Email Addresses</h1>
+<div block-ui="fix-email-addresses">
+    <h1 class="heading" translate>Fix Email Addresses</h1>
     <div class="blankslate blankslate-spacious" ng-if="!$ctrl.fixEmailAddresses.meta.pagination.total_count && !$ctrl.fixEmailAddresses.loading">
         <i class="far fa-envelope blankslate-icon"></i>
         <h3 translate>No people with email addresses need attention</h3>
         <p translate>People with new email addresses or multiple primary email addresses will appear here.</p>
-        <a class="btn btn-default" ui-sref="tools" translate>Back to Tools</a>
     </div>
     <div ng-if="$ctrl.fixEmailAddresses.meta.pagination.total_count">
         <p>

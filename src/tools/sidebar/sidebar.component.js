@@ -24,7 +24,7 @@ const Sidebar = {
 import uiRouter from '@uirouter/angularjs';
 import tools from 'tools/tools.service';
 
-export default angular.module('mpdx.tools.fix.sidebar.component', [
+export default angular.module('mpdx.tools.sidebar.component', [
     uiRouter,
     tools
-]).component('fixSidebar', Sidebar).name;
+]).component('toolsSidebar', Sidebar).name;

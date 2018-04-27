@@ -1,18 +1,11 @@
 @import 'item/item';
 appeals-list {
-    > .header {
-        display: grid;
-        margin-bottom: 5px;
-        grid-template-columns: 150px 1fr;
-        > strong {
-            align-self: center;
-        }
-        .btn {
-            margin-bottom: 0;
-        }
+    > .heading {
+        margin: 0;
+        padding: 10px $container-padding;
+        border-bottom: 1px solid $color-border;
     }
-    .panel-body {
-        padding-top: 0;
-        padding-bottom: 3px;
+    > .blankslate {
+        margin: 10px $container-padding;
     }
 }

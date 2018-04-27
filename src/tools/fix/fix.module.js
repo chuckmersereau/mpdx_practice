@@ -4,7 +4,6 @@ import commitmentInfo from './commitment/commitment.module';
 import emailAddresses from './email/email.module';
 import phoneNumbers from './phone/phone.module';
 import sendNewsletter from './newsletter/newsletter.module';
-import sidebar from './sidebar/sidebar.component';
 
 export default angular.module('mpdx.tools.fix', [
     component,
@@ -12,6 +11,5 @@ export default angular.module('mpdx.tools.fix', [
     commitmentInfo,
     emailAddresses,
     phoneNumbers,
-    sendNewsletter,
-    sidebar
+    sendNewsletter
 ]).name;

@@ -1,10 +1,9 @@
-<div class="content-container" block-ui="fix-commitment-info">
-    <h1 translate>Fix Commitment Info</h1>
+<div block-ui="fix-commitment-info">
+    <h1 class="heading" translate>Fix Commitment Info</h1>
     <div class="blankslate blankslate-spacious" ng-if="!$ctrl.fixCommitmentInfo.meta.pagination.total_count && !$ctrl.fixCommitmentInfo.loading">
         <i class="fas fa-usd blankslate-icon"></i>
         <h3 translate>No contacts with commitment info need attention</h3>
         <p translate>Contacts with possibly incorrect commitment info will appear here.</p>
-        <a class="btn btn-default" ui-sref="tools" translate>Back to Tools</a>
     </div>
     <div ng-if="$ctrl.fixCommitmentInfo.meta.pagination.total_count">
         <p>
