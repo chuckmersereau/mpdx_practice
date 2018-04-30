@@ -1,42 +1,109 @@
 import service from './export.service';
-import { assign } from 'lodash/fp';
 
-const params = {
-    data: {
-        filter: { any_tags: false }
-    },
-    doDeSerialization: false,
-    overrideGetAsPost: true
+let filters = {
+    any_tags: false
 };
 
 describe('contacts.list.exportContacts.controller', () => {
-    let exportContacts, api;
+    let $$window, exportContacts, api;
     beforeEach(() => {
         angular.mock.module(service);
-        inject(($timeout, $rootScope, _exportContacts_, _api_) => {
+        inject(($window, _exportContacts_, _api_) => {
+            $$window = $window;
             api = _api_;
             exportContacts = _exportContacts_;
-            spyOn(api, 'get').and.callFake(() => Promise.resolve(null));
         });
     });
 
-    describe('primaryCSVLink', () => {
+    describe('create', () => {
         beforeEach(() => {
-            spyOn(exportContacts, 'sendDownload').and.callFake(() => {});
+            spyOn(api, 'post').and.callFake(() => Promise.resolve({ id: 'export_id' }));
+            spyOn($$window.localStorage, 'getItem').and.returnValue('access_token');
+            spyOn($$window.location, 'replace').and.returnValue();
         });
-        it('should query the api', () => {
-            exportContacts.primaryCSVLink(params);
-            expect(api.get).toHaveBeenCalledWith(assign(params, {
-                url: 'contacts/exports.csv',
-                headers: {
-                    Accept: 'text/csv'
-                }
-            }));
+
+        it('should call api.post', () => {
+            exportContacts.create(filters);
+            expect(api.post).toHaveBeenCalledWith({
+                url: 'contacts/exports',
+                data: {
+                    params: {
+                        filter: filters
+                    }
+                },
+                type: 'export_logs'
+            });
         });
-        it('should save the query', (done) => {
-            exportContacts.primaryCSVLink(params).then(() => {
-                expect(exportContacts.sendDownload).toHaveBeenCalledWith(jasmine.any(Blob), jasmine.any(String));
-                done();
+
+        it('should return promise', () => {
+            expect(exportContacts.create(filters)).toEqual(jasmine.any(Promise));
+        });
+
+        describe('promise successful', () => {
+            it('should call $window.localStorage.getItem', (done) => {
+                exportContacts.create(filters).then(() => {
+                    expect($$window.localStorage.getItem).toHaveBeenCalledWith(
+                        'token'
+                    );
+                    done();
+                });
+            });
+
+            it('should call $window.location.replace', (done) => {
+                exportContacts.create(filters).then(() => {
+                    expect($$window.location.replace).toHaveBeenCalledWith(
+                        '/api/v1/contacts/exports/export_id.csv?access_token=access_token'
+                    );
+                    done();
+                });
+            });
+
+            describe('format xlsx', () => {
+                it('should call $window.location.replace', (done) => {
+                    exportContacts.create(filters, 'xlsx').then(() => {
+                        expect($$window.location.replace).toHaveBeenCalledWith(
+                            '/api/v1/contacts/exports/export_id.xlsx?access_token=access_token'
+                        );
+                        done();
+                    });
+                });
+            });
+        });
+
+        describe('Mailing', () => {
+            it('should call api.post', () => {
+                exportContacts.create(filters, 'csv', true);
+                expect(api.post).toHaveBeenCalledWith({
+                    url: 'contacts/exports/mailing',
+                    data: {
+                        params: {
+                            filter: filters
+                        }
+                    },
+                    type: 'export_logs'
+                });
+            });
+
+            describe('promise successful', () => {
+                it('should call $window.location.replace', (done) => {
+                    exportContacts.create(filters, 'csv', true).then(() => {
+                        expect($$window.location.replace).toHaveBeenCalledWith(
+                            '/api/v1/contacts/exports/mailing/export_id.csv?access_token=access_token'
+                        );
+                        done();
+                    });
+                });
+
+                describe('format xlsx', () => {
+                    it('should call $window.location.replace', (done) => {
+                        exportContacts.create(filters, 'xlsx', true).then(() => {
+                            expect($$window.location.replace).toHaveBeenCalledWith(
+                                '/api/v1/contacts/exports/mailing/export_id.xlsx?access_token=access_token'
+                            );
+                            done();
+                        });
+                    });
+                });
             });
         });
     });

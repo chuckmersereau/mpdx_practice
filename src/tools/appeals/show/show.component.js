@@ -384,18 +384,11 @@ class AppealController {
         );
     }
     exportToCSV() {
-        const params = {
-            data: {
-                filter: {
-                    account_list_id: this.api.account_list_id,
-                    ids: joinComma(this.selectedContactIds),
-                    status: 'active,hidden,null'
-                }
-            },
-            doDeSerialization: false,
-            overrideGetAsPost: true
-        };
-        return this.exportContacts.primaryCSVLink(params);
+        return this.exportContacts.create({
+            account_list_id: this.api.account_list_id,
+            ids: joinComma(this.selectedContactIds),
+            status: 'active,hidden,null'
+        });
     }
     exportMailchimp() {
         const alert = curry((message) => this.alerts.addAlert(this.gettext(message), 'danger'));

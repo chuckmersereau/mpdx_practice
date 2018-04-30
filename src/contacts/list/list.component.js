@@ -157,7 +157,7 @@ class ListController {
             controller: 'exportContactsController',
             locals: {
                 selectedContactIds: this.contacts.selectedContacts,
-                filter: null
+                filters: null
             }
         });
     }

@@ -142,6 +142,9 @@ export class EntityAttributes {
             duplicate_record_pairs: {
                 attributes: ['reason', 'ignore']
             },
+            export_logs: {
+                attributes: ['params']
+            },
             google_integrations: {
                 attributes: [
                     'account_list', 'calendar_integration', 'calendar_integrations', 'calendar_id', 'calendar_name',
