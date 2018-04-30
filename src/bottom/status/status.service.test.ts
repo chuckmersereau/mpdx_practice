@@ -40,7 +40,7 @@ let processedComponents = {
     }
 };
 
-const path = 'https://7j1jhswhjws0.statuspage.io/api/v2/summary.json?api_key=e9eecb49-b24e-42e9-8425-860d19889313';
+const path = 'https://7j1jhswhjws0.statuspage.io/api/v2/summary.json';
 
 describe('bottom.status.service', () => {
     let http, statusPage, q, rootScope;
