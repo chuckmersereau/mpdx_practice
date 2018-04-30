@@ -1,6 +1,6 @@
 'use strict';
 
-const onesky = require('onesky-utils');
+const onesky = require('@brainly/onesky-utils');
 const fs = require('fs');
 
 const contents = fs.readFileSync('src/locale/mpdx.pot', 'utf8').toString();

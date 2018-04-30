@@ -5,7 +5,7 @@
            id="tasks-wildcard-search"
            autocomplete="off"
            placeholder="{{ ::'Search Tasks' | translate }}"
-           ng-model="$ctrl.tasksFilter.wildcard_search"
+           ng-model="$ctrl.tasksFilter.wildcardSearch"
            ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }"
            ng-change="$ctrl.tasksFilter.change()"
            ng-focus="$ctrl.focused = true"

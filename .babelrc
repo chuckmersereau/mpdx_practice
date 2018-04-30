@@ -1,12 +1,5 @@
 {
-    "presets": [
-        ["env", {
-            "targets": {
-                "browsers": ["last 2 versions"]
-            }
-        }],
-        "stage-1"
-    ],
+    "presets": [],
     "plugins": [
         "angularjs-annotate"
     ],

@@ -25,7 +25,6 @@ menu {
         grid-column: 1;
         .logo {
             display: flex;
-            flex-grow: 1;
             align-items: center;
             a {
                 display: inline-block;
@@ -36,6 +35,14 @@ menu {
                 background-size: contain;
                 cursor: pointer;
             }
+        }
+        a.btn-link {
+            &:hover {
+                text-decoration: none;
+            }
+        }
+        .spacer {
+            flex-grow: 1;
         }
         .navbar-quick {
             display: flex;

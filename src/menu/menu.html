@@ -4,6 +4,9 @@
         <a ng-if="!$ctrl.setup" ui-sref="home"></a>
         <a ng-if="$ctrl.setup"></a>
     </div>
+    <menu-incidents></menu-incidents>
+    <menu-maintenances></menu-maintenances>
+    <div class="spacer"></div>
     <div class="navbar-quick">
         <div class="search">
             <menu-search class="hidden-xs" ng-if="!$ctrl.setup"></menu-search>

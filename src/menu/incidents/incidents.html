@@ -1,0 +1,34 @@
+<div ng-if="$ctrl.statusPage.data.incidents.length > 0">
+    <a class="btn btn-link" bs-dropdown>
+        <span class="label label-danger">{{$ctrl.statusPage.data.incidents.length}}</span>
+        &nbsp;
+        <i class="fa fa-exclamation-triangle text-danger"></i>
+        <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+        <li class="dropdown-header" translate>Incidents</li>
+        <li ng-repeat="incident in $ctrl.statusPage.data.incidents track by incident.id">
+            <a ng-href="{{::incident.shortlink}}" target="_blank">
+                <strong ng-switch="::incident.status">
+                    <span ng-switch-when="investigating" translate>
+                        Investigating
+                    </span>
+                    <span ng-switch-when="identified" translate>
+                        Identified
+                    </span>
+                    <span ng-switch-when="monitoring" translate>
+                        Monitoring
+                    </span>
+                    <span ng-switch-default>
+                        {{::incident.status}}
+                    </span>
+                </strong>
+                {{::incident.name}}
+                <br ng-if="incident.incident_updates[0].body">
+                <span class="text-muted">{{::incident.incident_updates[0].body}}</span>
+                <br>
+                {{::$ctrl.moment(incident.updated_at).fromNow()}}
+            </a>
+        </li>
+    </ul>
+</div>

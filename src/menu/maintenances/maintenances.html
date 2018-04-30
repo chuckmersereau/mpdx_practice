@@ -1,0 +1,34 @@
+<div ng-if="$ctrl.statusPage.data.scheduled_maintenances.length > 0">
+    <a class="btn btn-link" bs-dropdown>
+        <span class="label label-info">{{$ctrl.statusPage.data.scheduled_maintenances.length}}</span>
+        &nbsp;
+        <i class="fa fa-wrench text-info"></i>
+        <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+        <li class="dropdown-header" translate>Maintenance</li>
+        <li ng-repeat="maintenance in $ctrl.statusPage.data.scheduled_maintenances track by maintenance.id">
+            <a ng-href="{{::maintenance.shortlink}}" target="_blank">
+                <strong ng-switch="::maintenance.status">
+                    <span ng-switch-when="scheduled" translate>
+                        Scheduled
+                    </span>
+                    <span ng-switch-when="in_progress" translate>
+                        In Progress
+                    </span>
+                    <span ng-switch-when="verifying" translate>
+                        Verifying
+                    </span>
+                    <span ng-switch-default>
+                        {{::maintenance.status}}
+                    </span>
+                </strong>
+                {{::maintenance.name}}
+                <br ng-if="maintenance.incident_updates[0].body">
+                <span class="text-muted">{{::maintenance.incident_updates[0].body}}</span>
+                <br>
+                {{::$ctrl.moment(maintenance.scheduled_for).fromNow()}}
+            </a>
+        </li>
+    </ul>
+</div>

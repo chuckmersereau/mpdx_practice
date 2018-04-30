@@ -4,31 +4,32 @@
  */
 
 const path = require('path');
-
-const configEnv = process.env.NODE_ENV || 'development';
+const webpack = require('webpack');
 
 const config = {
     devtool: 'eval',
     entry: {
-        analytics: './src/analytics.js',
-        app: './src/app.module.js',
-        helpscout: './src/helpscout.js',
-        moment_locales: './src/moment-locales.js'
+        analytics: './src/analytics.ts',
+        app: './src/app.module.ts',
+        helpscout: './src/helpscout.ts',
+        moment_locales: './src/moment-locales.ts'
     },
     externals: [{
         'window': 'window',
         'google': 'window.google'
     }],
     resolve: {
-        alias: {
-            config: path.join(__dirname, 'config', configEnv + '.js')
-        },
-        modules: [path.join(__dirname), 'node_modules', 'src']
+        modules: [path.join(__dirname), 'node_modules', 'src'],
+        extensions: ['.ts', '.js']
     },
     module: {
         rules: [{
-            test: /\.js$/,
-            loaders: ['babel-loader'],
+            test: /\.ts$/,
+            use: [{
+                loader: 'babel-loader'
+            }, {
+                loader: 'ts-loader'
+            }],
             exclude: /node_modules/
         }, {
             test: /\.html$/,
@@ -44,7 +45,11 @@ const config = {
             use: 'file-loader'
         }]
     },
-    plugins: [],
+    plugins: [
+        new webpack.DefinePlugin({
+            'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+        })
+    ],
     mode: 'development'
 };
 

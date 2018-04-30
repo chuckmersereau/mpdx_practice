@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "module": "es2015",
+        "moduleResolution": "node",
+        "target": "es5",
+        "sourceMap": true,
+        "removeComments": false,
+        "noErrorTruncation": true,
+        "pretty": true
+    },
+    "include": [
+        "src/**/*.ts"
+    ],
+    "exclude": [
+        ".awcache",
+        ".idea",
+        "assets",
+        "aws",
+        "bin",
+        "helpers",
+        "locale",
+        "node_modules",
+        "onesky",
+        "public"
+    ]
+}

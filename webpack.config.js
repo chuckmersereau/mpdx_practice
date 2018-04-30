@@ -27,7 +27,7 @@ config = assign(config, {
         rules: concat(config.module.rules, [
             {
                 enforce: 'pre',
-                test: /\.js$/,
+                test: /\.ts$/,
                 exclude: /node_modules\//,
                 loaders: ['eslint-loader']
             }, {
@@ -64,6 +64,10 @@ config = assign(config, {
         new CopyWebpackPlugin([
             { from: 'assets' },
             { from: 'src/google144ccea737ed252d.html' }
+        ]),
+        new webpack.WatchIgnorePlugin([
+            /\.js$/,
+            /\.d\.ts$/
         ])
     ]),
     devtool: 'eval',

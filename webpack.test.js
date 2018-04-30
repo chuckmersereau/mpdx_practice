@@ -4,27 +4,35 @@
  */
 
 const assign = require('lodash/fp/assign');
-const concat = require('lodash/fp/concat');
 const path = require('path');
-let config = require('./webpack.make');
+const webpack = require('webpack');
 
-config = assign(config, {
-    entry: null,
+const config = {
     devtool: 'inline-source-map',
-    output: {},
-    resolve: assign(config.resolve, {
-        alias: {
-            config: path.join(__dirname, 'config', 'test.js')
-        }
-    }),
-    module: assign(config.module, {
-        rules: concat(config.module.rules, [
-            {
-                test: /\.css$|\.scss$/,
-                use: 'null-loader'
-            }
-        ])
-    })
-});
+    mode: 'development',
+    module: {
+        rules: [{
+            test: /\.ts$/,
+            use: [{
+                loader: 'babel-loader'
+            }, {
+                loader: 'ts-loader'
+            }],
+            exclude: /node_modules/
+        }, {
+            test: /\.(css|scss|json|html|png|jpg|jpeg|gif)$/,
+            use: 'null-loader'
+        }]
+    },
+    resolve: {
+        modules: [path.join(__dirname), 'node_modules', 'src'],
+        extensions: ['.ts', '.js']
+    },
+    plugins: [
+        new webpack.DefinePlugin({
+            'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+        })
+    ]
+};
 
 module.exports = config;

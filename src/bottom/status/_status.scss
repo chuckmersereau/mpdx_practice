@@ -1,0 +1,65 @@
+status-page {
+    .sheet {
+        position: fixed;
+        right: 0;
+        bottom: 30px;
+        left: 0;
+        height: 132px;
+        border-top: 1px solid $color-border;
+        background: $color-white;
+        font-size: $font-size-md;
+        overflow: hidden;
+        &-title {
+            display: flex;
+            border-bottom: 1px solid $color-border;
+            &-text {
+                flex-grow: 1;
+                padding: 10px $container-padding;
+            }
+            &-close {
+                padding: 10px $container-padding;
+                border-left: 1px solid $color-border;
+                cursor: pointer;
+                i {
+                    transition: opacity 0.2s ease-out;
+                    opacity: 0.5;
+                }
+                &:hover {
+                    i {
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+        &-body {
+            display: flex;
+            padding: 20px 125px 20px $container-padding;
+            .component {
+                display: flex;
+                flex-grow: 1;
+                &-status {
+                    padding-top: 2px;
+                }
+                &-details {
+                    padding-left: 10px;
+                }
+                &-name {
+                    margin: 0;
+                }
+            }
+        }
+        &.ng-enter,
+        &.ng-leave {
+            transition: all ease-out 0.2s;
+        }
+        &.ng-enter,
+        &.ng-leave.ng-leave-active {
+            height: 122px;
+            opacity: 0;
+        }
+        &.ng-leave,
+        &.ng-enter.ng-enter-active {
+            opacity: 1;
+        }
+    }
+}

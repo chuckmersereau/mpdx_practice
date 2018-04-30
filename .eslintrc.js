@@ -12,6 +12,7 @@ module.exports = {
         'eol-last': 'off',
         'eqeqeq': ['error', 'smart'],
         'import/first': 'off',
+        // 'import/order': ["error", {"newlines-between": "never"}],
         'import/no-webpack-loader-syntax': 'off',
         'indent': ['error', 4, {
             SwitchCase: 1,
@@ -81,5 +82,15 @@ module.exports = {
     },
     plugins: [
         'jasmine'
-    ]
+    ],
+    overrides: {
+        files: ['**/*.ts'],
+        parser: 'typescript-eslint-parser',
+        rules: {
+            'camelcase': 'off',
+            'no-undef': 'off',
+            'no-useless-constructor': 'off',
+            'no-unused-vars': 'off'
+        }
+    }
 };

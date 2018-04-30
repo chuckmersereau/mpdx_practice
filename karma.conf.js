@@ -5,14 +5,18 @@ module.exports = function karmaConfig(config) {
             'jasmine'
         ],
         reporters: [
+            'super-dots',
             'spec',
             'coverage'
         ],
         files: [
-            'src/tests.webpack.js'
+            'src/tests.webpack.ts'
+        ],
+        helpers: [
+            'helpers/**/*.js'
         ],
         preprocessors: {
-            'src/tests.webpack.js': ['webpack', 'sourcemap']
+            'src/tests.webpack.ts': ['webpack']
         },
         browsers: [
             'PhantomJS'
@@ -21,6 +25,26 @@ module.exports = function karmaConfig(config) {
             captureConsole: true
         },
         singleRun: true,
+        specReporter: {
+            suppressErrorSummary: false,
+            suppressFailed: false,
+            suppressPassed: true,
+            suppressSkipped: true,
+            showSpecTiming: false,
+            failFast: true
+        },
+        superDotsReporter: {
+            icon: {
+                success: '.',
+                failure: 'X',
+                ignore: 'i'
+            },
+            color: {
+                success: 'green',
+                failure: 'red',
+                ignore: 'grey'
+            }
+        },
         coverageReporter: {
             reporters: [
                 { type: 'lcovonly', subdir: '.' }
@@ -28,7 +52,7 @@ module.exports = function karmaConfig(config) {
         },
         webpack: require('./webpack.test'),
         webpackMiddleware: {
-            noInfo: true
+            stats: 'errors-only'
         }
     });
 };

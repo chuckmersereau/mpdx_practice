@@ -1,0 +1,72 @@
+<span ng-switch="$ctrl.statusPage.data.status.indicator">
+    <i ng-switch-when="none" class="fas fa-circle fa-circle-success"></i>
+    <i ng-switch-when="minor" class="fas fa-circle fa-circle-warning"></i>
+    <i ng-switch-when="major" class="fas fa-circle fa-circle-warning"></i>
+    <i ng-switch-when="critical" class="fas fa-circle fa-circle-danger"></i>
+    <i ng-switch-when="maintenance" class="fas fa-circle fa-circle-info"></i>
+    <i ng-switch-default class="fas fa-circle fa-circle-default"></i>
+</span>
+&nbsp;
+<a ng-click="$ctrl.showStatus = !$ctrl.showStatus" ng-switch="$ctrl.statusPage.data.status.description">
+    <span ng-switch-when="All Systems Operational" translate>
+        All Systems Operational
+    </span>
+    <span ng-switch-when="Partially Degraded Service" translate>
+        Partially Degraded Service
+    </span>
+    <span ng-switch-when="Partial System Outage" translate>
+        Partial System Outage
+    </span>
+    <span ng-switch-when="Major Service Outage" translate>
+        Major Service Outage
+    </span>
+    <span ng-switch-when="Service Under Maintenance" translate>
+        Service Under Maintenance
+    </span>
+    <span ng-switch-default>
+        {{$ctrl.statusPage.data.status.description}}
+    </span>
+</a>
+<div class="sheet" ng-if="$ctrl.showStatus">
+    <div class="sheet-title">
+        <div class="sheet-title-text" translate>
+            View on <a href="http://status.mpdx.org" target="_blank">status.mpdx.org</a>
+        </div>
+        <div class="sheet-title-close" ng-click="$ctrl.showStatus = false">
+            <i class="fal fa-times"></i>
+        </div>
+    </div>
+    <div class="sheet-body">
+        <div class="component" ng-repeat="component in $ctrl.statusPage.data.components track by component.id">
+            <div class="component-status" ng-switch="component.status">
+                <i ng-switch-when="operational" class="fas fa-circle fa-circle-success"></i>
+                <i ng-switch-when="degraded_performance" class="fas fa-circle fa-circle-warning"></i>
+                <i ng-switch-when="under_maintenance" class="fas fa-circle fa-circle-info"></i>
+                <i ng-switch-when="partial_outage" class="fas fa-circle fa-circle-warning"></i>
+                <i ng-switch-when="major_outage" class="fas fa-circle fa-circle-danger"></i>
+            </div>
+            <div class="component-details">
+                <h3 class="component-name">
+                    {{component.name}}
+                </h3>
+                <div class="component-string" ng-switch="component.status">
+                    <span ng-switch-when="operational" translate>
+                        All Systems Operational
+                    </span>
+                    <span ng-switch-when="degraded_performance" translate>
+                        Partially Degraded Service
+                    </span>
+                    <span ng-switch-when="partial_outage" translate>
+                        Partial System Outage
+                    </span>
+                    <span ng-switch-when="under_maintenance" translate>
+                        Service Under Maintenance
+                    </span>
+                    <span ng-switch-when="major_outage" translate>
+                        Major Service Outage
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
