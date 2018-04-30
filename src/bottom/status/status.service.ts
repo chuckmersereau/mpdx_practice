@@ -12,7 +12,7 @@ export class StatusPageService {
         this.$timeout(() => this.load(), 600000); // 60000 ms is 1 minute
 
         return this.$http.get(
-            'https://7j1jhswhjws0.statuspage.io/api/v2/summary.json?api_key=e9eecb49-b24e-42e9-8425-860d19889313'
+            'https://7j1jhswhjws0.statuspage.io/api/v2/summary.json'
         ).then((data) => {
             this.data = data.data;
             this.data.components = this.groupComponents(this.data.components);
