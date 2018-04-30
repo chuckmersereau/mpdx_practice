@@ -15,7 +15,7 @@ const Maintenances = {
     template: require('./maintenances.html')
 };
 
-import statusPage, {StatusPageService} from "../../bottom/status/status.service";
+import statusPage, { StatusPageService } from '../../bottom/status/status.service';
 
 export default angular.module('mpdx.menu.maintenances.component', [
     statusPage
