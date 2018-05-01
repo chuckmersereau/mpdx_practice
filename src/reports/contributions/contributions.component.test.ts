@@ -75,6 +75,8 @@ describe('reports.contributions.component', () => {
             expect($ctrl.data).toEqual({});
             expect($ctrl.expanded).toBeFalsy();
             expect($ctrl.loading).toBeFalsy();
+            expect($ctrl.sort).toEqual('contact.contact_name');
+            expect($ctrl.sortReverse).toBeFalsy();
         });
     });
 
@@ -319,7 +321,7 @@ describe('reports.contributions.component', () => {
         it('should create a sorted array of donors', () => {
             expect($ctrl.getDonors(data, 'salary', info)).toEqual([
                 {
-                    contact: { contact_id: 2, contact_name: 'a, b' },
+                    contact: { contact_id: 2, contact_name: 'a, b', pledge_amount: 0 },
                     total: 2,
                     average: 3,
                     maximum: 4,
@@ -327,7 +329,7 @@ describe('reports.contributions.component', () => {
                     monthlyDonations: ['a']
                 },
                 {
-                    contact: { contact_id: 1, contact_name: 'b, c' },
+                    contact: { contact_id: 1, contact_name: 'b, c', pledge_amount: 0 },
                     total: 1,
                     average: 2,
                     maximum: 3,
@@ -514,6 +516,23 @@ describe('reports.contributions.component', () => {
     describe('moment', () => {
         it('should return a moment object', () => {
             expect(moment.isMoment($ctrl.moment('05-12-2017'))).toBeTruthy();
+        });
+    });
+
+    describe('changeSort', () => {
+        beforeEach(() => {
+            $ctrl.sort = 'a';
+            $ctrl.sortReverse = true;
+        });
+        it('should change sort', () => {
+            $ctrl.changeSort('b');
+            expect($ctrl.sort).toEqual('b');
+            expect($ctrl.sortReverse).toBeFalsy();
+        });
+        it('should reverse sort', () => {
+            $ctrl.changeSort('a');
+            expect($ctrl.sort).toEqual('a');
+            expect($ctrl.sortReverse).toBeFalsy();
         });
     });
 

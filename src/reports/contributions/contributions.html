@@ -50,7 +50,13 @@
             <a ng-click="$ctrl.donations.openDonationModal()" class="btn btn-primary" translate>Add New Donation</a>
         </div>
         <div ng-if="$ctrl.type === 'partner' && $ctrl.data.currencies.length > 0" class="progress">
-            <div ng-repeat="currency in $ctrl.data.currencies" class="progress-bar color-{{$index % 6}}" style="width: {{$ctrl.percentage(currency.totals.year_converted) }}%" data-template-url="reports/contributions/popovers/progress.tpl.html" data-trigger="hover" data-placement="bottom" bs-popover>
+            <div ng-repeat="currency in $ctrl.data.currencies"
+                 class="progress-bar color-{{$index % 6}}"
+                 ng-style="{ width: $ctrl.percentage(currency.totals.year_converted) + '%' }"
+                 data-template-url="reports/contributions/popovers/progress.tpl.html"
+                 data-trigger="hover"
+                 data-placement="bottom"
+                 bs-popover>
                 <span ng-if="$ctrl.percentage(currency.totals.year_converted) > 7">
                     {{currency.code}} ({{currency.symbol}})
                 </span>
@@ -65,7 +71,8 @@
                                 <th colspan="{{$ctrl.expanded ? 5 : 1}}">
                                     {{::currency.code}} ({{::currency.symbol}})
                                 </th>
-                                <th ng-repeat="(year, numberOfMonths) in $ctrl.data.years" colspan="{{::numberOfMonths}}">
+                                <th ng-repeat="(year, numberOfMonths) in $ctrl.data.years"
+                                    colspan="{{::numberOfMonths}}">
                                     <div>{{::year}}</div>
                                 </th>
                                 <th>
@@ -73,21 +80,58 @@
                                 </th>
                             </tr>
                             <tr>
-                                <th class="col-md-2" translate>Partner</th>
-                                <th ng-if="$ctrl.expanded" translate>Status</th>
-                                <th ng-if="$ctrl.expanded" translate>Pledge</th>
-                                <th ng-if="$ctrl.expanded" translate>Avg</th>
-                                <th ng-if="$ctrl.expanded" translate>Min</th>
-                                <th class="text-right" ng-repeat="date in $ctrl.data.months track by $index">
-                                    <span data-title="{{ ::'This last month is excluded from totals and averages' | translate }}" data-trigger="{{::$last ? 'hover' : 'manual'}}" ng-class="::{'text-muted': $last}" bs-tooltip>
+                                <th class="col-md-2"
+                                    ng-click="$ctrl.changeSort('contact.contact_name')">
+                                    <translate>Partner</translate>
+                                    <sort-header-caret ng-if="$ctrl.sort === 'contact.contact_name'"
+                                                       reverse="$ctrl.sortReverse"></sort-header-caret>
+                                </th>
+                                <th ng-if="$ctrl.expanded"
+                                    ng-click="$ctrl.changeSort('contact.status')">
+                                    <translate>Status</translate>
+                                    <sort-header-caret ng-if="$ctrl.sort === 'contact.status'"
+                                                       reverse="$ctrl.sortReverse"></sort-header-caret>
+                                </th>
+                                <th ng-if="$ctrl.expanded"
+                                    ng-click="$ctrl.changeSort('contact.pledge_amount')">
+                                    <translate>Pledge</translate>
+                                    <sort-header-caret ng-if="$ctrl.sort === 'contact.pledge_amount'"
+                                                       reverse="$ctrl.sortReverse"></sort-header-caret>
+                                </th>
+                                <th ng-if="$ctrl.expanded"
+                                    ng-click="$ctrl.changeSort('average')">
+                                    <translate>Avg</translate>
+                                    <sort-header-caret ng-if="$ctrl.sort === 'average'"
+                                                       reverse="$ctrl.sortReverse"></sort-header-caret>
+                                </th>
+                                <th ng-if="$ctrl.expanded"
+                                    ng-click="$ctrl.changeSort('minimum')">
+                                    <translate>Min</translate>
+                                    <sort-header-caret ng-if="$ctrl.sort === 'minimum'"
+                                                       reverse="$ctrl.sortReverse"></sort-header-caret>
+                                </th>
+                                <th class="text-right pointer"
+                                    ng-repeat="date in $ctrl.data.months track by $index"
+                                    ng-click="$ctrl.changeSort('monthlyDonations[' + $index + '].total')">
+                                    <span data-title="{{ ::'This last month is excluded from totals and averages' | translate }}"
+                                          data-trigger="{{::$last ? 'hover' : 'manual'}}"
+                                          ng-class="::{'text-muted': $last}"
+                                          bs-tooltip>
                                         {{::$ctrl.moment(date).format('MMM')}}
                                     </span>
+                                    <sort-header-caret ng-if="$ctrl.sort === 'monthlyDonations[' + $index + '].total'"
+                                                       reverse="$ctrl.sortReverse"></sort-header-caret>
                                 </th>
-                                <th class="col-md-1 text-right" translate>Total</th>
+                                <th class="col-md-1 text-right pointer"
+                                    ng-click="$ctrl.changeSort('total')">
+                                    <translate>Total</translate>
+                                    <sort-header-caret ng-if="$ctrl.sort === 'total'"
+                                                       reverse="$ctrl.sortReverse"></sort-header-caret>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="donor in currency.donors">
+                            <tr ng-repeat="donor in currency.donors | orderBy : $ctrl.sort : $ctrl.sortReverse">
                                 <td>
                                     <i class="fas fa-info-circle" ng-if="!$ctrl.expanded" data-template-url="reports/contributions/popovers/name.tpl.html" data-trigger="hover" data-placement="top" bs-popover></i>
                                     <a ui-sref="contacts.show({contactId: donor.contact.contact_id})" >{{::donor.contact.contact_name}}</a>
@@ -102,16 +146,16 @@
                                 <td ng-if="$ctrl.expanded">
                                     <span ng-if="::donor.contact.pledge_amount > 0">
                                         {{::currency.symbol}}
-                                        {{::donor.contact.pledge_amount | number:0}}
+                                        {{::donor.contact.pledge_amount | number : 0}}
                                         {{::currency.code}}
                                         {{::donor.contact.pledge_frequency}}
                                     </span>
                                 </td>
                                 <td class="text-right" ng-if="$ctrl.expanded">
-                                    {{::donor.average | number:0}}
+                                    {{::donor.average | number : 0}}
                                 </td>
                                 <td class="text-right" ng-if="$ctrl.expanded">
-                                    {{::donor.minimum | number:0}}
+                                    {{::donor.minimum | number : 0}}
                                 </td>
 
                                 <td class="text-right" ng-repeat="monthlyDonation in ::donor.monthlyDonations track by $index" ng-class="::{'text-muted': $last}">

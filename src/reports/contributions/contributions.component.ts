@@ -25,6 +25,8 @@ class ContributionsController {
     data: any;
     expanded: boolean;
     loading: boolean;
+    sort: string;
+    sortReverse: boolean;
     type: string;
     watcher: any;
     watcher2: any;
@@ -40,6 +42,8 @@ class ContributionsController {
         this.data = {};
         this.expanded = false;
         this.loading = false;
+        this.sort = 'contact.contact_name';
+        this.sortReverse = false;
     }
     $onInit() {
         this.watcher = this.$rootScope.$on('accountListUpdated', () => {
@@ -147,6 +151,7 @@ class ContributionsController {
         if (contact) {
             const frequencyValue = parseFloat(contact.pledge_frequency);
             const frequency = this.serverConstants.getPledgeFrequency(frequencyValue);
+            contact.pledge_amount = toInteger(contact.pledge_amount);
             if (frequency) {
                 contact.pledge_frequency = get('value', frequency);
             }
@@ -230,6 +235,14 @@ class ContributionsController {
 
             return concat(concat(combinedHeaders, donorRows), [totals]);
         }, contributions.currencies);
+    }
+    changeSort(field) {
+        if (this.sort === field) {
+            this.sortReverse = !this.sortReverse;
+            return;
+        }
+        this.sort = field;
+        this.sortReverse = false;
     }
 }
 
