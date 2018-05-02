@@ -8,7 +8,7 @@
                      class="as-sortable-item"
                      ng-class="{'active-item': $ctrl.contacts.activeTab === item.key, 'active-drawer': $ctrl.contacts.activeDrawer === item.key}">
                     <span as-sortable-item-handle>
-                        <a ng-click="$ctrl.setActiveTab(item.key)">{{ item.value | translate }}</a>
+                        <a ui-sref="contacts.show.{{item.key}}">{{ item.value | translate }}</a>
                         <a ng-click="$ctrl.setActiveDrawer(item.key); $event.stopPropagation()"
                            ng-if="item.drawerable"
                            class="expand-link"><i class="fas fa-expand-alt"></i></a>

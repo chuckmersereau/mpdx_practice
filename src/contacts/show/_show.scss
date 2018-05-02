@@ -61,6 +61,7 @@ contact {
                 }
             }
             .expand-link {
+                cursor: pointer;
                 @media(max-width: $hide-drawer-width) {
                     display: none;
                 }
@@ -87,7 +88,7 @@ contact {
             padding: $container-padding;
             border-left: 1px $color-menu-border solid;
             background: $color-white;
-            overflow-x: hidden;
+            overflow: hidden;
             grid-column: 2;
             grid-row: 1 / span 2;
             h3.contact-drawer-title {

@@ -2,14 +2,15 @@ import component from './show.component';
 import { assign, each } from 'lodash/fp';
 
 describe('contacts.show.component', () => {
-    let $ctrl, componentController, gettextCatalog, rootScope, scope, state,
-        api, contacts, contactsTags, users, q;
+    let $ctrl, componentController, gettextCatalog, rootScope, scope,
+        api, contacts, contactsTags, users,
+        state, transitions, q;
 
     beforeEach(() => {
         angular.mock.module(component);
         inject((
             $componentController, $rootScope, _contacts_, _contactsTags_, _modal_,
-            _gettextCatalog_, _api_, _users_, $state, $q
+            _gettextCatalog_, _api_, _users_, $state, $transitions, $q
         ) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
@@ -17,8 +18,9 @@ describe('contacts.show.component', () => {
             contacts = _contacts_;
             contactsTags = _contactsTags_;
             gettextCatalog = _gettextCatalog_;
-            state = $state;
             users = _users_;
+            state = $state;
+            transitions = $transitions;
             q = $q;
             componentController = $componentController;
             api.account_list_id = 1234;
@@ -65,6 +67,20 @@ describe('contacts.show.component', () => {
                 $ctrl.$onInit();
                 expect(state.go).toHaveBeenCalledWith('contacts.show.addresses');
             });
+        });
+        describe('$transitions.onStart callback', () => {
+            it('should set call', () => {
+                spyOn(transitions, 'onStart').and.callFake((options, fn) => {
+                    spyOn($ctrl, 'setActiveTab').and.callFake(() => {});
+                    fn();
+                    expect($ctrl.setActiveTab).toHaveBeenCalled();
+                });
+                $ctrl.$onInit();
+                expect(transitions.onStart).toHaveBeenCalledWith(
+                    { to: 'contacts.show.*' },
+                    jasmine.any(Function)
+                )
+            })
         });
     });
     describe('$onChanges', () => {
@@ -200,29 +216,21 @@ describe('contacts.show.component', () => {
         });
     });
     describe('setActiveTab', () => {
-        it('should set active tab', () => {
-            const tab = 'a';
-            $ctrl.setActiveTab(tab);
-            expect(contacts.activeTab).toEqual(tab);
+        const transition = {
+            to: () => {
+                return { name: 'contacts.show.tasks' }
+            }
+        };
+
+        it('should set activeTab', () => {
+            $ctrl.setActiveTab(transition);
+            expect(contacts.activeTab).toEqual('tasks');
         });
-        it('should handle drawer duplicate', () => {
-            contacts.activeDrawer = 'a';
-            const tab = 'a';
-            $ctrl.setActiveTab(tab);
-            expect(contacts.activeDrawer).toEqual('details');
-        });
-        it('shouldn\'t handle drawer duplicate on details', () => {
-            contacts.activeDrawer = 'details';
-            const tab = 'details';
-            $ctrl.setActiveTab(tab);
-            expect(contacts.activeDrawer).toEqual('details');
-            expect(contacts.activeTab).toEqual('details');
-        });
-        it('should change state', () => {
-            spyOn(state, 'go').and.callFake(() => {});
-            const tab = 'a';
-            $ctrl.setActiveTab(tab);
-            expect(state.go).toHaveBeenCalledWith(`contacts.show.${tab}`);
+
+        it('should set activeDrawer', () => {
+            contacts.activeDrawer = 'tasks';
+            $ctrl.setActiveTab(transition);
+            expect(contacts.activeDrawer).toEqual('');
         });
     });
     describe('setActiveDrawer', () => {
@@ -232,10 +240,11 @@ describe('contacts.show.component', () => {
             expect(contacts.activeDrawer).toEqual(drawer);
         });
         it('should handle tab duplicate', () => {
+            spyOn(state, 'go').and.callFake(() => {})
             contacts.activeTab = 'a';
             const drawer = 'a';
             $ctrl.setActiveDrawer(drawer);
-            expect(contacts.activeTab).toEqual('donations');
+            expect(state.go).toHaveBeenCalledWith('contacts.show.donations');
         });
     });
 });

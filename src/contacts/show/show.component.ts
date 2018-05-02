@@ -11,13 +11,14 @@ class ContactController {
     moveContact: any;
     sortableOptions: any;
     tabsLabels: any[];
-    watcher: any;
-    watcher2: any;
+    watcher: () => void;
+    watcher2: () => void;
     constructor(
         private $log: ng.ILogService,
         private $rootScope: ICustomRootScope,
         private $state: StateService,
         private $stateParams: StateParams,
+        private $transitions: TransitionService,
         private $anchorScroll: ng.IAnchorScrollService,
         blockUI: IBlockUIService,
         private gettextCatalog: ng.gettext.gettextCatalog,
@@ -118,6 +119,10 @@ class ContactController {
         this.watcher2 = this.$rootScope.$on('changePrimaryPerson', (e, personId) => {
             this.onPrimary(personId);
         });
+
+        this.$transitions.onStart({ to: 'contacts.show.*' }, (transition) => {
+            this.setActiveTab(transition);
+        });
     }
     $onChanges() {
         this.$log.debug('selected contact: ', this.contacts.current);
@@ -154,17 +159,17 @@ class ContactController {
         this.contacts.current = set('primary_person.id', personId, this.contacts.current);
         this.save();
     }
-    setActiveTab(tab) {
+    setActiveTab(transition:Transition) {
+        let tab = transition.to().name.replace('contacts.show.', '');
         this.contacts.activeTab = tab;
-        if (tab === this.contacts.activeDrawer && tab !== 'details') { // collapsed case on details
-            this.setActiveDrawer('details');
+        if (this.contacts.activeDrawer === tab) {
+            this.contacts.activeDrawer = '';
         }
-        this.$state.go(`contacts.show.${tab}`);
     }
-    setActiveDrawer(tab) {
+    setActiveDrawer(tab:string) {
         this.contacts.activeDrawer = tab;
         if (tab === this.contacts.activeTab) {
-            this.setActiveTab('donations');
+            this.$state.go('contacts.show.donations');
         }
     }
     showRecommendationTab() {
@@ -187,7 +192,7 @@ import 'angular-gettext';
 import help, { HelpService } from '../../common/help/help.service';
 import modal, { ModalService } from '../../common/modal/modal.service';
 import people, { PeopleService } from './people/people.service';
-import uiRouter from '@uirouter/angularjs';
+import uiRouter, { Transition, TransitionService } from '@uirouter/angularjs';
 import users, { UsersService } from '../../common/users/users.service';
 import session, { SessionService } from '../../common/session/session.service';
 import { StateParams, StateService } from '@uirouter/core';
