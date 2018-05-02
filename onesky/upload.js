@@ -1,9 +1,11 @@
+/* eslint no-console: ["off"] */
+
 'use strict';
 
 const onesky = require('@brainly/onesky-utils');
 const fs = require('fs');
 
-const contents = fs.readFileSync('src/locale/mpdx.pot', 'utf8').toString();
+const contents = fs.readFileSync('src/locale/mpdx-merged.pot', 'utf8').toString();
 const options = {
     language: 'en',
     secret: process.env.ONESKY_API_SECRET,
@@ -14,6 +16,7 @@ const options = {
     content: contents,
     keepStrings: false
 };
+
 onesky.postFile(options).then((content) => {
     console.log('file successfully uploaded to onesky.');
     console.log(content);
