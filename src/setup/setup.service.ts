@@ -10,13 +10,13 @@ export class SetupService {
         private api: ApiService,
         private users: UsersService
     ) {}
-    next() {
+    next(): ng.IPromise<any> {
         return this.hasAccountLists().catch((err) => {
             this.alerts.addAlert(this.gettextCatalog.getString('Something went wrong, please try again.'), 'danger');
             throw err;
         });
     }
-    hasAccountLists() {
+    private hasAccountLists(): ng.IPromise<any> {
         return this.users.getCurrent(true).then(() => {
             if (this.users.current.account_lists.length === 0) {
                 if (this.$state.includes('setup.connect')) {
@@ -33,14 +33,14 @@ export class SetupService {
             }
         });
     }
-    hasDefaultAccountList() {
+    private hasDefaultAccountList(): ng.IPromise<any> {
         if (this.users.current.preferences.default_account_list === null) {
             return this.goAccount();
         } else {
             return this.hasOrganizationAccounts();
         }
     }
-    hasOrganizationAccounts() {
+    private hasOrganizationAccounts(): ng.IPromise<void> {
         return this.$q.all([
             this.getAccountListOrganizationAccounts(),
             this.getUserOrganizationAccounts()
@@ -52,25 +52,25 @@ export class SetupService {
             }
         });
     }
-    goAccount() {
+    private goAccount(): ng.IPromise<void> {
         return this.setPosition('account').then(() => {
             this.$state.go('setup.account');
         });
     }
-    goConnect() {
+    private goConnect(): ng.IPromise<void> {
         return this.setPosition('connect').then(() => {
             this.$state.go('setup.connect');
         });
     }
-    goPreferences() {
+    private goPreferences(): ng.IPromise<void> {
         return this.setPosition('preferences.personal').then(() => {
             this.$state.go('setup.preferences.personal');
         });
     }
-    getUserOrganizationAccounts() {
+    private getUserOrganizationAccounts(): ng.IPromise<any> {
         return this.users.listOrganizationAccounts(true);
     }
-    getAccountListOrganizationAccounts() {
+    private getAccountListOrganizationAccounts(): ng.IPromise<any> {
         return this.api.get(
             `account_lists/${this.users.current.preferences.default_account_list}`,
             { include: 'organization_accounts' }
@@ -78,7 +78,7 @@ export class SetupService {
             return data.organization_accounts;
         });
     }
-    setDefaultAccountList() {
+    private setDefaultAccountList(): ng.IPromise<any> {
         this.users.current.preferences.default_account_list = this.users.current.account_lists[0].id;
         return this.users.saveCurrent().then(() => {
             return this.accounts.swap(
@@ -90,7 +90,7 @@ export class SetupService {
             });
         });
     }
-    setPosition(position: string) {
+    setPosition(position: string): ng.IPromise<any> {
         if (get('value', this.users.currentOptions.setup_position) !== position) {
             this.users.currentOptions = assign(defaultTo({}, this.users.currentOptions), {
                 setup_position: {

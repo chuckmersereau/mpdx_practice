@@ -8,7 +8,7 @@ export class LanguageService {
     ) {
         this.dateTimeFormat = null;
     }
-    change(language) {
+    change(language: string): void {
         let temp = angular.copy(language);
         // hardcoded until the data is fixed
         switch (language) {

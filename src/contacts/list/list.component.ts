@@ -148,7 +148,7 @@ class ListController {
         });
     }
     openAddTaskModal() {
-        this.tasks.addModal({ contactsList: (this.contacts.selectedContacts as any) });
+        this.tasks.addModal({ contactsList: this.contacts.selectedContacts });
     }
     openEditFieldsModal() {
         this.modal.open({

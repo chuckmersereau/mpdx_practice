@@ -15,7 +15,7 @@ export class FixPhoneNumbersService {
         this.loading = false;
         this.page = 1;
     }
-    load(reset = false, page = 1) {
+    load(reset: boolean = false, page: number = 1): ng.IPromise<any> {
         if (!reset && this.data && this.page === page) {
             return this.$q.resolve(this.data);
         }
@@ -55,14 +55,14 @@ export class FixPhoneNumbersService {
             return this.data;
         });
     }
-    setMeta(meta) {
+    private setMeta(meta: any): void {
         this.meta = meta;
 
         if (this.meta && this.meta.pagination && this.meta.pagination.total_count >= 0 && this.tools.analytics) {
             this.tools.analytics['fix-phone-numbers'] = this.meta.pagination.total_count;
         }
     }
-    save(person) {
+    save(person: any): ng.IPromise<void> {
         person.phone_numbers = each((phoneNumber) => {
             phoneNumber.valid_values = true;
         }, person.phone_numbers);
@@ -78,7 +78,7 @@ export class FixPhoneNumbersService {
             }
         });
     }
-    bulkSave(source) {
+    bulkSave(source: any): ng.IPromise<any> {
         let people = reduce((result, person) => {
             let primaryPhoneNumber = find(['source', source], person.phone_numbers);
             if (primaryPhoneNumber) {
@@ -96,21 +96,21 @@ export class FixPhoneNumbersService {
             return this.load(true);
         });
     }
-    setPrimary(person, primaryPhoneNumber) {
+    setPrimary(person: any, primaryPhoneNumber: any): void {
         person.phone_numbers = map((phoneNumber) => {
             phoneNumber.primary = phoneNumber.id === primaryPhoneNumber.id;
             return phoneNumber;
         }, person.phone_numbers);
     }
-    removePhoneNumber(person, phoneNumber) {
+    removePhoneNumber(person: any, phoneNumber: any): ng.IPromise<void> {
         return this.people.deletePhoneNumber(person, phoneNumber).then(() => {
             person.phone_numbers = reject({ id: phoneNumber.id }, person.phone_numbers);
         });
     }
-    savePhoneNumber(person, phoneNumber) {
+    savePhoneNumber(person: any, phoneNumber: any): ng.IPromise<any> {
         return this.people.savePhoneNumber(person, phoneNumber);
     }
-    hasPrimary(person) {
+    hasPrimary(person: any): boolean {
         return filter((phoneNumber) => phoneNumber.primary, person.phone_numbers).length === 1;
     }
 }

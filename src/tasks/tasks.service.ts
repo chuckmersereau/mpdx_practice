@@ -25,7 +25,7 @@ export class TasksService {
         this.completeList = [];
         this.loading = true; // TODO: maybe should become false until actually loading
     }
-    getAnalytics() {
+    getAnalytics(): ng.IPromise<void> {
         return this.api.get('tasks/analytics', { filter: { account_list_id: this.api.account_list_id } }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug('tasks/analytics', data);
@@ -33,7 +33,7 @@ export class TasksService {
             return this.analytics;
         });
     }
-    save(task, comment?) {
+    save(task: any, comment?: string): ng.IPromise<any> {
         task = this.mutateTagList(task);
         task = this.mutateComment(task, comment);
 
@@ -41,13 +41,13 @@ export class TasksService {
             this.change();
         });
     }
-    mutateTagList(task) {
+    private mutateTagList(task: any): any {
         // fix for api mis-match
         return task.tag_list ? assign(task, {
             tag_list: joinComma(task.tag_list)
         }) : task;
     }
-    mutateComment(task, comment) {
+    private mutateComment(task: any, comment?: string): any {
         return !isNilOrEmpty(comment) ? assign(task, {
             comments: concat(defaultTo([], task.comments), {
                 id: uuid(),
@@ -56,10 +56,10 @@ export class TasksService {
             })
         }) : task;
     }
-    change() {
+    change(): void {
         this.$rootScope.$emit('taskChange');
     }
-    create(task, contactIds = [], comment?) {
+    create(task: any, contactIds: string[] = [], comment?: string): ng.IPromise<any> {
         task.account_list = { id: this.api.account_list_id };
         contactIds = reject('', contactIds);
         task = this.mutateTagList(task);
@@ -98,11 +98,11 @@ export class TasksService {
             this.alerts.addAlert(message, 'danger');
         });
     }
-    delete(task) {
+    delete(task: any): ng.IPromise<any> {
         const message = this.gettextCatalog.getString('Are you sure you wish to delete the selected task?');
         return this.modal.confirm(message).then(() => this.deleteAfterConfirm(task));
     }
-    deleteAfterConfirm(task) {
+    private deleteAfterConfirm(task): ng.IPromise<void> {
         return this.api.delete(`tasks/${task.id}`).then(() => {
             this.$rootScope.$emit('taskDeleted', task.id);
             const message = this.gettextCatalog.getString('Task successfully deleted');
@@ -112,7 +112,12 @@ export class TasksService {
             this.alerts.addAlert(message, 'danger');
         });
     }
-    addModal({ contactsList = [], activityType = null, task = {}, comments = [] }) {
+    addModal({ contactsList = [], activityType = null, task = {}, comments = [] }: {
+        contactsList?: string[],
+        activityType?: string,
+        task?: any,
+        comments?: string[]
+        }): ng.IPromise<any> {
         return this.modal.open({
             template: require('./modals/add/add.html'),
             controller: 'addTaskController',
@@ -132,7 +137,14 @@ export class TasksService {
             }
         });
     }
-    getDataForAddTask({ contacts, $state, contactsList, activityType, task, comments }) {
+    private getDataForAddTask({ contacts, $state, contactsList, activityType, task, comments }: {
+        contacts: ContactsService,
+        $state: StateService,
+        contactsList: string[],
+        activityType: string,
+        task: any,
+        comments: string[]
+        }): ng.IPromise<any> {
         const reuseTask = this.reuseTask(task, activityType);
         const useContacts = this.useContacts(task, reuseTask);
         const contactParams = useContacts ? angular.copy(contactsList) : [];
@@ -159,13 +171,13 @@ export class TasksService {
                 };
             });
     }
-    reuseTask(task, activityType) {
-        return get('result', task) && activityType;
+    private reuseTask(task: any, activityType: string): boolean {
+        return get('result', task) && !!activityType;
     }
-    useContacts(task, reuseTask) {
+    private useContacts(task: any, reuseTask: boolean): boolean {
         return isNilOrEmpty(task) || (task && reuseTask);
     }
-    mutateComments(comments) {
+    private mutateComments(comments: string[]): any[] {
         return emptyToNull(
             reduce((result, comment) => {
                 const id = uuid();
@@ -181,9 +193,9 @@ export class TasksService {
                             : assign(comment, { id: id })
                     );
             }, [], comments)
-        );
+        ) as any[];
     }
-    getNames(ids) {
+    getNames(ids: string[]): ng.IPromise<any> {
         return this.api.get({
             url: 'contacts',
             data: {
@@ -198,7 +210,7 @@ export class TasksService {
             autoParams: false
         });
     }
-    logModal(contactsList = []) {
+    logModal(contactsList: string[] = []): ng.IPromise<any> {
         return this.modal.open({
             template: require('./modals/log/log.html'),
             controller: 'logTaskController',
@@ -211,7 +223,8 @@ export class TasksService {
             }
         });
     }
-    getContactsForLogModal($state, contacts, contactsList) {
+    getContactsForLogModal($state: StateService, contacts: ContactsService, contactsList: string[])
+        : ng.IPromise<string[]> {
         contactsList = get('[0]', contactsList) ? contactsList : []; // null contact check
         const contactParams = angular.copy(contactsList);
         const inContactView = startsWith('contacts.show', $state.current.name);
@@ -221,7 +234,7 @@ export class TasksService {
             ? this.$q.resolve([])
             : this.getNames(contactIdList);
     }
-    load(taskId) {
+    load(taskId: string): ng.IPromise<any> {
         return this.api.get(`tasks/${taskId}`, {
             include: 'activity_contacts,comments,comments.person,contacts,contacts.addresses,contacts.last_donation,'
                 + 'contacts.primary_person,contacts.primary_person.facebook_accounts,contacts.primary_person.phone_numbers,'

@@ -15,7 +15,7 @@ export class FixEmailAddressesService {
         this.loading = false;
         this.page = 1;
     }
-    load(reset = false, page = 1) {
+    load(reset: boolean = false, page: number = 1): ng.IPromise<any> {
         if (!reset && this.data && this.page === page) {
             return this.$q.resolve(this.data);
         }
@@ -49,14 +49,14 @@ export class FixEmailAddressesService {
             return this.data;
         });
     }
-    setMeta(meta) {
+    private setMeta(meta: any): void {
         this.meta = meta;
 
         if (this.meta && this.meta.pagination && this.meta.pagination.total_count >= 0 && this.tools.analytics) {
             this.tools.analytics['fix-email-addresses'] = this.meta.pagination.total_count;
         }
     }
-    save(person) {
+    save(person: any): ng.IPromise<void> {
         person.email_addresses = each((emailAddress) => {
             emailAddress.valid_values = true;
         }, person.email_addresses);
@@ -72,7 +72,7 @@ export class FixEmailAddressesService {
             }
         });
     }
-    bulkSave(source) {
+    bulkSave(source: any): ng.IPromise<any> {
         let people = reduce((result, person) => {
             let primaryEmailAddress = find(['source', source], person.email_addresses);
             if (primaryEmailAddress) {
@@ -90,21 +90,21 @@ export class FixEmailAddressesService {
             return this.load(true);
         });
     }
-    setPrimary(person, primaryEmailAddress) {
+    setPrimary(person: any, primaryEmailAddress: any): void {
         person.email_addresses = map((emailAddress) => {
             emailAddress.primary = emailAddress.id === primaryEmailAddress.id;
             return emailAddress;
         }, person.email_addresses);
     }
-    removeEmailAddress(person, emailAddress) {
+    removeEmailAddress(person: any, emailAddress: any): ng.IPromise<void> {
         return this.people.deleteEmailAddress(person, emailAddress).then(() => {
             person.email_addresses = reject({ id: emailAddress.id }, person.email_addresses);
         });
     }
-    saveEmailAddress(person, emailAddress) {
+    saveEmailAddress(person: any, emailAddress: any): ng.IPromise<any> {
         return this.people.saveEmailAddress(person, emailAddress);
     }
-    hasPrimary(person) {
+    hasPrimary(person: any): boolean {
         return filter((emailAddress) => emailAddress.primary, person.email_addresses).length === 1;
     }
 }

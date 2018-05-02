@@ -15,7 +15,7 @@ export class FixCommitmentInfoService {
         this.loading = false;
         this.page = 1;
     }
-    load(reset = false, page = 1) {
+    load(reset: boolean = false, page: number = 1): ng.IPromise<any> {
         if (!reset && this.data && this.page === page) {
             return this.$q.resolve(this.data);
         }
@@ -46,7 +46,7 @@ export class FixCommitmentInfoService {
             return this.data;
         });
     }
-    mutateContacts(data) {
+    private mutateContacts(data: any): any[] {
         return reduce((result, contact) => {
             return concat(result, assign(contact, {
                 original_pledge_amount: contact.pledge_amount,
@@ -60,25 +60,25 @@ export class FixCommitmentInfoService {
             }));
         }, [], data);
     }
-    setMeta(meta) {
+    private setMeta(meta: any): void {
         this.meta = meta;
 
         if (this.meta && this.meta.pagination && this.meta.pagination.total_count >= 0 && this.tools.analytics) {
             this.tools.analytics['fix-commitment-info'] = this.meta.pagination.total_count;
         }
     }
-    save(contact) {
+    save(contact: any): ng.IPromise<any> {
         contact.status_valid = true;
         return this.contacts.save(contact).then(() => this.removeContactFromData(contact.id));
     }
-    reject(contact) {
+    reject(contact: any): ng.IPromise<any> {
         const params = {
             id: contact.id,
             status_valid: true
         };
         return this.contacts.save(params).then(() => this.removeContactFromData(contact.id));
     }
-    removeContactFromData(contactId) {
+    private removeContactFromData(contactId: string): void {
         this.data = reject({ id: contactId }, this.data);
         if (this.meta && this.meta.pagination && this.meta.pagination.total_count) {
             this.meta.pagination.total_count -= 1;
@@ -88,7 +88,7 @@ export class FixCommitmentInfoService {
             this.load(true, this.page);
         }
     }
-    bulkSave() {
+    bulkSave(): ng.IPromise<any> {
         let contacts = reduce((result, contact) => {
             contact.status_valid = true;
             return concat(result, contact);

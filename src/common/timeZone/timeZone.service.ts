@@ -7,7 +7,7 @@ export class TimeZoneService {
 
         this.load();
     }
-    load() {
+    private load(): void {
         this.data = [
             { key: 'American Samoa', value: this.gettextCatalog.getString('(GMT-11:00) American Samoa') },
             { key: 'International Date Line West', value: this.gettextCatalog.getString('(GMT-11:00) International Date Line West') },

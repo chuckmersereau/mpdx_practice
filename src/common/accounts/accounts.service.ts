@@ -30,7 +30,7 @@ export class AccountsService {
         this.userList = null;
         this.currentInitialState = {};
     }
-    get(id): ng.IPromise<any> {
+    get(id: string): ng.IPromise<any> {
         return this.api.get(`account_lists/${id}`, {
             include: this.defaultIncludes,
             fields: this.defaultFields
@@ -40,7 +40,7 @@ export class AccountsService {
             return data;
         });
     }
-    swap(id?, userId?, reset = false): ng.IPromise<any> {
+    swap(id?: string, userId?: string, reset: boolean = false): ng.IPromise<any> {
         if (!reset && (isNil(id) || id === get('id', this.current))) {
             return this.$q.reject({});
         }
@@ -56,14 +56,14 @@ export class AccountsService {
         });
     }
     /* istanbul ignore next */
-    setLocalStorage(key, value) {
+    private setLocalStorage(key: string, value: string): void {
         // abstracted for test failures
         this.$window.localStorage.setItem(key, value);
     }
-    getCurrent(userId, reset = false) {
+    getCurrent(userId: string, reset: boolean = false): ng.IPromise<any> {
         return this.swap(this.api.account_list_id, userId, reset);
     }
-    getDonations(params = {}) {
+    getDonations(params: any = {}): ng.IPromise<any> {
         return this.api.get(`account_lists/${this.api.account_list_id}/donations`, params).then((resp) => {
             /* istanbul ignore next */
             this.$log.debug(`accounts.getDonations - account_lists/${this.api.account_list_id}/donations`, resp);
@@ -71,7 +71,7 @@ export class AccountsService {
             return resp;
         });
     }
-    listInvites() {
+    listInvites(): ng.IPromise<any> {
         this.inviteList = null;
         return this.api.get(`account_lists/${this.api.account_list_id}/invites`, {
             include: 'invited_by_user',
@@ -88,7 +88,7 @@ export class AccountsService {
             return data;
         });
     }
-    listUsers() {
+    listUsers(): ng.IPromise<any> {
         this.userList = null;
         return this.api.get(`account_lists/${this.api.account_list_id}/users`, {
             include: 'email_addresses',
@@ -103,13 +103,13 @@ export class AccountsService {
             this.userList = data;
         });
     }
-    destroyUser(id, successMessage, errorMessage) {
+    destroyUser(id: string, successMessage: string, errorMessage: string): ng.IPromise<any> {
         return this.api.delete(
             `account_lists/${this.api.account_list_id}/users/${id}`,
             undefined, successMessage, errorMessage
         );
     }
-    listCoachesInvites() {
+    listCoachesInvites(): ng.IPromise<any> {
         this.inviteCoachList = null;
         return this.api.get(`account_lists/${this.api.account_list_id}/invites`, {
             include: 'invited_by_user',
@@ -125,7 +125,7 @@ export class AccountsService {
             this.inviteCoachList = data;
         });
     }
-    listCoaches() {
+    listCoaches(): ng.IPromise<any> {
         this.coachList = null;
         return this.api.get(`account_lists/${this.api.account_list_id}/coaches`, {
             include: 'email_addresses',
@@ -139,14 +139,14 @@ export class AccountsService {
             this.coachList = data;
         });
     }
-    destroyCoach(id, successMessage, errorMessage) {
+    destroyCoach(id: string, successMessage: string, errorMessage: string): ng.IPromise<any> {
         return this.api.delete({
             url: `account_lists/${this.api.account_list_id}/coaches/${id}`,
             successMessage: successMessage,
             errorMessage: errorMessage
         });
     }
-    destroyInvite(id, successMessage, errorMessage) {
+    destroyInvite(id: string, successMessage: string, errorMessage: string): ng.IPromise<any> {
         return this.api.delete({
             url: `account_lists/${this.api.account_list_id}/invites/${id}`,
             type: 'account_list_invites',
@@ -154,7 +154,7 @@ export class AccountsService {
             errorMessage: errorMessage
         });
     }
-    getAnalytics(params, errorMessage) {
+    getAnalytics(params: any, errorMessage: string): ng.IPromise<any> {
         return this.api.get(`account_lists/${this.api.account_list_id}/analytics`, {
             filter: {
                 date_range: `${params.startDate.format('YYYY-MM-DD')}..${params.endDate.format('YYYY-MM-DD')}`
@@ -166,7 +166,7 @@ export class AccountsService {
             return this.analytics;
         });
     }
-    saveCurrent(successMessage, errorMessage?) {
+    saveCurrent(successMessage: string, errorMessage?: string): ng.IPromise<any> {
         const patch = createPatch(this.currentInitialState, this.current);
         /* istanbul ignore next */
         this.$log.debug('account patch', patch);
@@ -184,7 +184,7 @@ export class AccountsService {
                 });
             });
     }
-    load(reset = false) {
+    load(reset: boolean = false): ng.IPromise<any> {
         if (!reset && this.data.length > 0) {
             return this.$q.resolve(this.data);
         }

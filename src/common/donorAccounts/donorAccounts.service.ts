@@ -2,7 +2,7 @@ export class DonorAccountsService {
     constructor(
         private api: ApiService
     ) {}
-    search(keywords) {
+    search(keywords: string): ng.IPromise<any> {
         return this.api.get(
             `account_lists/${this.api.account_list_id}/donor_accounts`,
             {

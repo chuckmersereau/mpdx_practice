@@ -19,11 +19,11 @@ export class TasksTagsService {
         this.rejectedTags = [];
         this.anyTags = false;
     }
-    change() {
+    change(): void {
         this.$log.debug('task/tags: change');
         this.$rootScope.$emit('tasksTagsChanged');
     }
-    load(reset = true) {
+    load(reset: boolean = true): ng.IPromise<any> {
         if (!reset && this.data) {
             return this.$q.resolve(this.data);
         }
@@ -35,7 +35,7 @@ export class TasksTagsService {
             return data;
         });
     }
-    delete(tag) {
+    delete(tag: any): ng.IPromise<any> {
         const params = {
             filter: {
                 account_list_id: this.api.account_list_id
@@ -61,17 +61,17 @@ export class TasksTagsService {
             this.data = reject({ name: tag.name }, this.data);
         });
     }
-    isTagActive(tag) {
+    isTagActive(tag: any): boolean {
         if (this.selectedTags.length === 0) {
             return true;
         } else {
-            return includes(tag, this.selectedTags);
+            return includes(tag, this.selectedTags) as any;
         }
     }
-    isTagRejected(tag) {
+    isTagRejected(tag: any): boolean {
         return this.rejectedTags.indexOf(tag) >= 0;
     }
-    tagClick(tag) {
+    tagClick(tag: any): void {
         if (find({ name: tag.name }, this.selectedTags)) {
             this.rejectTag(tag);
         } else if (find({ name: tag.name }, this.rejectedTags)) {
@@ -82,35 +82,32 @@ export class TasksTagsService {
             this.selectTag(tag);
         }
     }
-    selectTag(tag) {
+    selectTag(tag: any): void {
         this.selectedTags = unionBy('name', this.selectedTags, [tag]);
         this.rejectedTags = reject({ name: tag.name }, this.rejectedTags);
         this.change();
     }
-    rejectTag(tag) {
+    rejectTag(tag: any): void {
         this.selectedTags = reject({ name: tag.name }, this.selectedTags);
         this.rejectedTags = unionBy('name', this.rejectedTags, [tag]);
         this.change();
     }
-    removeFromRejected(tag) {
+    removeFromRejected(tag: any): void {
         this.rejectedTags = reject({ name: tag.name }, this.rejectedTags);
         this.change();
     }
-    removeFromSelected(tag) {
+    removeFromSelected(tag: any): void {
         this.selectedTags = reject({ name: tag.name }, this.selectedTags);
         this.change();
     }
-    isResettable() {
+    isResettable(): boolean {
         return (this.selectedTags.length > 0 || this.rejectedTags.length > 0);
     }
-    reset() {
+    reset(): void {
         this.selectedTags = [];
         this.rejectedTags = [];
     }
-    getTagsByQuery(query) {
-        return this.$filter('filter')(this.data, query);
-    }
-    addTag(val) {
+    addTag(val: any): void {
         const tags = map((obj) => {
             return { name: obj };
         }, val.tags);

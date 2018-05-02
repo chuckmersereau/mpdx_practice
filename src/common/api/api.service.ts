@@ -21,6 +21,29 @@ import reduceObject from '../fp/reduceObject';
 
 const jsonApiParams = { keyForAttribute: 'underscore_case' };
 
+interface ApiBaseParams {
+    method?: string,
+    url: string,
+    data?: any,
+    params?: any,
+    headers?: any,
+    overrideGetAsPost?: boolean,
+    type?: string,
+    doSerialization?: boolean,
+    deSerializationOptions?: any,
+    doDeSerialization?: boolean,
+    beforeDeserializationTransform?: any,
+    responseType?: string
+    autoParams?: boolean,
+    errorMessage?: string,
+    successMessage?: string,
+    overridePromise?: boolean
+}
+
+interface ApiCallParams extends ApiBaseParams {
+    method: string
+}
+
 export class ApiService {
     apiUrl: string;
     account_list_id: string;
@@ -57,7 +80,7 @@ export class ApiService {
         errorMessage = null,
         successMessage = null,
         overridePromise = false
-    }: any): ng.IPromise<any> {
+    }: ApiCallParams): ng.IPromise<any> {
         ({ headers, method, doSerialization, data } = this.handleOverride(
             overrideGetAsPost, headers, method, doSerialization, type, url, data
         ));
@@ -101,7 +124,8 @@ export class ApiService {
         });
         return deferred.promise;
     }
-    callFailed(ex: any, request: any, deferred: any, errorMessage: string, overridePromise: boolean) {
+    private callFailed(ex: any, request: any, deferred: any, errorMessage: string, overridePromise: boolean)
+        : void | ng.IPromise<any> {
         if (overridePromise) {
             deferred.reject(ex);
         } else {
@@ -121,11 +145,12 @@ export class ApiService {
             this.$window._satellite.track('aa-mpdx-api-error');
         }
     }
-    assignParams(method, params, data) {
+    private assignParams(method, params, data): any {
         return this.isGetOrDelete(method) ? assign(params, data) : params;
     }
-    handleOverride(overrideGetAsPost: boolean, headers: any, method: string, doSerialization: boolean, type: string,
-        url: string, data: any) {
+    private handleOverride(overrideGetAsPost: boolean, headers: any, method: string, doSerialization: boolean,
+        type: string, url: string, data: any)
+        : { headers: any, method: string, doSerialization: boolean, data: any } {
         const retVal = {
             headers: headers,
             method: method,
@@ -146,53 +171,53 @@ export class ApiService {
                 })
             });
     }
-    getTypeOverride(url: string, type: string) {
+    private getTypeOverride(url: string, type: string): { type: string } {
         const arr = url.split('/');
         return type
             ? { type: type }
             : { type: arr[arr.length - 1] };
     }
-    isGetOrDelete(method: string) {
+    private isGetOrDelete(method: string): boolean {
         return method === 'get' || method === 'delete';
     }
-    isPutOrDelete(method: string) {
+    private isPutOrDelete(method: string): boolean {
         return method === 'put' || method === 'delete';
     }
-    isPutPostOrDelete(method, overrideGetAsPost) {
+    private isPutPostOrDelete(method: string, overrideGetAsPost: boolean): boolean {
         return this.isPutOrDelete(method) || (method === 'post' && !overrideGetAsPost);
     }
     get(...params) {
-        params = assign(this.handleParamsAsOther(params), { method: 'get' });
-        return this.call(params);
+        const newParams: ApiCallParams = assign(this.handleParamsAsOther(params), { method: 'get' });
+        return this.call(newParams);
     }
     post(...params) {
-        params = assign(this.handleParamsAsOther(params), { method: 'post' });
-        return this.call(params);
+        const newParams: ApiCallParams = assign(this.handleParamsAsOther(params), { method: 'post' });
+        return this.call(newParams);
     }
     put(...params) {
-        params = assign(this.handleParamsAsOther(params), { method: 'put' });
-        return this.call(params);
+        const newParams: ApiCallParams = assign(this.handleParamsAsOther(params), { method: 'put' });
+        return this.call(newParams);
     }
     delete(...params) {
-        params = assign(this.handleParamsAsOther(params), { method: 'delete' });
-        return this.call(params);
+        const newParams: ApiCallParams = assign(this.handleParamsAsOther(params), { method: 'delete' });
+        return this.call(newParams);
     }
-    handleParamsAsOther(params) {
+    private handleParamsAsOther(params:any)
+        : ApiBaseParams {
         if (params.length === 1 && isObject(params[0])) {
             return params[0];
         }
         if (isArray(params)) {
-            params = {
-                url: params[0],
+            return {
+                url: params[0] as string,
                 data: defaultTo({}, params[1]),
-                successMessage: defaultTo(null, params[2]),
-                errorMessage: defaultTo(null, params[3])
+                successMessage: defaultTo(null, params[2]) as any,
+                errorMessage: defaultTo(null, params[3]) as any
             };
         }
-        return params;
     }
-    transformRequest(data: any, url: string, method: string, type: string, overrideGetAsPost: boolean,
-        doSerialization: boolean) {
+    private transformRequest(data: any, url: string, method: string, type: string, overrideGetAsPost: boolean,
+        doSerialization: boolean): string {
         let params = angular.copy(jsonApiParams);
         if (this.isPutPostOrDelete(method, overrideGetAsPost)) {
             type = this.getType(type, url, method);
@@ -202,7 +227,7 @@ export class ApiService {
             ? this.serializeData(data, type, params, method)
             : angular.toJson(data);
     }
-    getType(type: string, url: string, method: string) {
+    private getType(type: string, url: string, method: string): string {
         const arr = url.split('/');
         return defaultTo(
             this.isPutOrDelete(method) && arr.length % 2 === 0
@@ -210,36 +235,38 @@ export class ApiService {
                 : arr[arr.length - 1]
             , type);
     }
-    getParams(params: any, type: string, doSerialization: boolean) {
+    private getParams(params: any, type: string, doSerialization: boolean): any {
         if (doSerialization && !has(type, this.entityAttributes)) {
             this.$log.error(`undefined attributes for model: ${type} in api.service`);
         }
         return doSerialization ? assign(params, defaultTo({}, this.entityAttributes[type])) : params;
     }
-    serializeData(data, type, params, method) {
+    private serializeData(data: any, type: string, params: any, method: string): string {
         return isArray(data)
             ? angular.toJson({
                 data: map((item) => this.serialize(type, params, item, method), data)
             })
             : angular.toJson(this.serialize(type, params, data, method));
     }
-    transformResponse(beforeDeserializationTransform, doDeSerialization, deSerializationOptions) {
+    private transformResponse(beforeDeserializationTransform: any, doDeSerialization: boolean,
+        deSerializationOptions: any): any {
         return this.appendTransform(this.$http.defaults.transformResponse, (data) =>
             this.afterTransform(data, beforeDeserializationTransform, doDeSerialization, deSerializationOptions));
     }
-    afterTransform(data, beforeDeserializationTransform, doDeSerialization, deSerializationOptions) {
+    private afterTransform(data: any, beforeDeserializationTransform: any, doDeSerialization: boolean,
+        deSerializationOptions: any) {
         data = this.doBeforeSerialization(beforeDeserializationTransform, data);
         return doDeSerialization ? this.deserializeData(data, deSerializationOptions) : data;
     }
-    deserializeData(data, deSerializationOptions) {
+    private deserializeData(data: any, deSerializationOptions: any): any {
         return isArray(data)
             ? map((item) => this.deserialize(item, deSerializationOptions), data)
             : this.deserialize(data, deSerializationOptions);
     }
-    doBeforeSerialization(beforeDeserializationTransform, data) {
+    private doBeforeSerialization(beforeDeserializationTransform: any, data: any): any {
         return isFunction(beforeDeserializationTransform) ? beforeDeserializationTransform(data) : data;
     }
-    encodeURLarray(array) {
+    private encodeURLarray(array) {
         return map(encodeURIComponent, array);
     }
     cleanFilters(filter) {
@@ -255,14 +282,14 @@ export class ApiService {
             return result;
         }, {}, filter);
     }
-    appendTransform(defaults, transform) {
+    private appendTransform(defaults, transform): any[] {
         // We can't guarantee that the default transformation is an array
         defaults = isArray(defaults) ? defaults : [defaults];
 
         // Append the new transformation to the defaults
         return concat(defaults, transform);
     }
-    deserialize(data, deSerializationOptions) {
+    private deserialize(data, deSerializationOptions): any {
         const options = assign(jsonApiParams, deSerializationOptions);
         return this.isDataObject(data)
             ? new japi.Deserializer(options).deserialize(data).then((deserializedData) => {
@@ -271,19 +298,19 @@ export class ApiService {
             })
             : data;
     }
-    isDataObject(data: any) {
+    private isDataObject(data: any): boolean {
         return isObject(data) && data.data;
     }
-    removeIdIfUndefined(serialized: any, method: string) {
+    private removeIdIfUndefined(serialized: any, method: string): any {
         return method === 'post' && serialized.data.id === 'undefined' ? omit(['data.id'], serialized) : serialized;
     }
-    serialize(key: string, params: any, item: any, method: string) {
+    private serialize(key: string, params: any, item: any, method: string): any {
         let serialized = new japi.Serializer(key, params).serialize(item);
         serialized = this.removeIdIfUndefined(serialized, method);
         serialized = this.enablePutOverwrite(serialized, method);
         return serialized;
     }
-    enablePutOverwrite(serialized: any, method: string) {
+    private enablePutOverwrite(serialized: any, method: string): any {
         if (method === 'put') {
             serialized.data.attributes = defaultTo({}, serialized.data.attributes);
             serialized.data.attributes.overwrite = true;

@@ -1,8 +1,13 @@
 import { find, map, reject, unionBy } from 'lodash/fp';
 import * as uuid from 'uuid/v1';
 
+interface ITag {
+    id?: string,
+    name: string
+}
+
 export class ContactsTagsService {
-    anyTags: boolean
+    anyTags: boolean;
     data: any;
     rejectedTags: any[];
     selectedTags: any[];
@@ -16,13 +21,13 @@ export class ContactsTagsService {
         this.rejectedTags = [];
         this.anyTags = false;
     }
-    addTag(val) {
+    addTag(val: any): void {
         const tags = map((obj) => {
             return { id: uuid(), name: obj };
         }, val.tags);
         this.data = unionBy('name', this.data, tags);
     }
-    load() {
+    load(): ng.IPromise<any> {
         return this.api.get('contacts/tags', { filter: { account_list_id: this.api.account_list_id } }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug('contact/tags:', data);
@@ -30,15 +35,15 @@ export class ContactsTagsService {
             return data;
         });
     }
-    isResettable() {
+    isResettable(): boolean {
         return (this.selectedTags.length > 0 || this.rejectedTags.length > 0);
     }
-    reset() {
+    reset(): void {
         this.selectedTags = [];
         this.rejectedTags = [];
         this.$rootScope.$emit('contactsTagsChange');
     }
-    tagClick(tag) {
+    tagClick(tag: ITag): void {
         if (find({ name: tag.name }, this.selectedTags)) {
             this.rejectTag(tag);
         } else if (find({ name: tag.name }, this.rejectedTags)) {
@@ -49,25 +54,25 @@ export class ContactsTagsService {
             this.selectTag(tag);
         }
     }
-    selectTag(tag) {
+    selectTag(tag: ITag): void {
         this.selectedTags = unionBy('name', this.selectedTags, [tag]);
         this.rejectedTags = reject({ name: tag.name }, this.rejectedTags);
         this.change();
     }
-    rejectTag(tag) {
+    rejectTag(tag: ITag): void {
         this.selectedTags = reject({ name: tag.name }, this.selectedTags);
         this.rejectedTags = unionBy('name', this.rejectedTags, [tag]);
         this.change();
     }
-    removeFromRejected(tag) {
+    removeFromRejected(tag: ITag): void {
         this.rejectedTags = reject({ name: tag.name }, this.rejectedTags);
         this.change();
     }
-    removeFromSelected(tag) {
+    removeFromSelected(tag: ITag): void {
         this.selectedTags = reject({ name: tag.name }, this.selectedTags);
         this.change();
     }
-    change() {
+    change(): void {
         this.$log.debug('contact/tags: change');
         this.$rootScope.$emit('contactsTagsChange');
     }

@@ -10,7 +10,7 @@ export class DonationsService {
         private modal: ModalService,
         private serverConstants: ServerConstantsService
     ) {}
-    save(donation) {
+    save(donation: any): ng.IPromise<any> {
         if (has('amount', donation)) {
             donation.amount = donation.amount.replace(/[^\d.-]/g, '');
         }
@@ -20,7 +20,12 @@ export class DonationsService {
             return this.api.post(`account_lists/${this.api.account_list_id}/donations`, donation);
         }
     }
-    getDonations({ startDate = null, endDate = null, donorAccountId = null, page = null } = {}) {
+    getDonations({ startDate = null, endDate = null, donorAccountId = null, page = null }: {
+        startDate?: string | moment.Moment,
+        endDate?: string | moment.Moment,
+        donorAccountId?: string,
+        page?: number
+        } = {}): ng.IPromise<any> {
         let params: any = {
             fields: {
                 pledge_contact: '',
@@ -48,23 +53,20 @@ export class DonationsService {
             return data;
         });
     }
-    delete(donation) {
+    delete(donation: any): ng.IPromise<any> {
         const message = this.gettextCatalog.getString('Are you sure you wish to delete the selected donation?');
         return this.modal.confirm(message).then(() => {
             return this.api.delete(`account_lists/${this.api.account_list_id}/donations/${donation.id}`, { id: donation.id });
         });
     }
-    displayName(donation) {
+    displayName(donation: any): string {
         if (donation.contact) {
             return `${donation.contact.name} (${donation.donor_account.account_number})`;
         } else {
             return donation.donor_account.display_name;
         }
     }
-    openDonationModal(donation) {
-        if (!donation) {
-            donation = {};
-        }
+    openDonationModal(donation: any = {}): ng.IPromise<any> {
         return this.modal.open({
             template: require('./modal/modal.html'),
             controller: 'donationModalController',

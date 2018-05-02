@@ -7,7 +7,7 @@ export class AppealsService {
         private api: ApiService,
         private modal: ModalService
     ) {}
-    appealSearch(keyword) {
+    appealSearch(keyword: string): ng.IPromise<any> {
         return this.api.get({
             url: 'appeals',
             data: {
@@ -23,7 +23,7 @@ export class AppealsService {
             overrideGetAsPost: true
         });
     }
-    findContactRef(appealId, contactId) {
+    private findContactRef(appealId: string, contactId: string): ng.IPromise<any> {
         return this.api.get(`appeals/${appealId}/appeal_contacts`, {
             per_page: 1000,
             include: 'contact',
@@ -37,7 +37,7 @@ export class AppealsService {
             return find((ref) => ref.contact.id === contactId, data);
         });
     }
-    removeContact(appealId, contactId) {
+    removeContact(appealId: string, contactId: string): ng.IPromise<any> {
         const successMessage = this.gettext('Contact removed from appeal');
         const errorMessage = this.gettext('Unable to remove contact from appeal');
         return this.findContactRef(appealId, contactId).then((contactRef) => {
@@ -49,7 +49,7 @@ export class AppealsService {
             }
         });
     }
-    removePledge(id) {
+    removePledge(id: string): ng.IPromise<any> {
         const successMessage = this.gettext('Successfully removed commitment from appeal');
         const errorMessage = this.gettext('Unable to remove commitment from appeal');
         return this.api.delete(
@@ -57,7 +57,7 @@ export class AppealsService {
             undefined, successMessage, errorMessage
         );
     }
-    setPrimaryAppeal(appeal) {
+    setPrimaryAppeal(appeal: any): ng.IPromise<any> {
         this.accounts.current.primary_appeal = { id: appeal.id };
         const successMessage = this.gettext('Appeal successfully set to primary');
         const errorMessage = this.gettext('Unable to set Appeal as primary');

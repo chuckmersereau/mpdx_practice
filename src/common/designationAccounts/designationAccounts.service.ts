@@ -16,7 +16,7 @@ export class DesignationAccountsService {
         this.organizations = [];
         this.selected = [];
     }
-    load(reset: boolean = false) {
+    load(reset: boolean = false): ng.IPromise<any> {
         if (!reset && this.data.length > 0) {
             return this.$q.resolve(this.data);
         }
@@ -36,7 +36,7 @@ export class DesignationAccountsService {
             return this.data;
         });
     }
-    search(keywords) {
+    search(keywords: string): ng.IPromise<any> {
         return this.api.get(`account_lists/${this.api.account_list_id}/designation_accounts`, {
             filter: {
                 wildcard_search: keywords
@@ -47,7 +47,7 @@ export class DesignationAccountsService {
             per_page: 6
         });
     }
-    resetSelected() {
+    resetSelected(): void {
         this.selected = [];
         this.$rootScope.$emit('designationAccountSelectorChanged', this.selected);
     }

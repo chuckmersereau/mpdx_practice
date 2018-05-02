@@ -1,8 +1,8 @@
 export default class Pagination {
-    static from(page, perPage) {
+    static from(page: number, perPage: number): number {
         return Math.ceil((page - 1) * perPage + 1);
     }
-    static to(page, perPage, totalPages, totalCount) {
+    static to(page: number, perPage: number, totalPages: number, totalCount: number): number {
         if (page === totalPages) {
             return totalCount;
         }

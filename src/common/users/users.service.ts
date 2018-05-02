@@ -31,7 +31,7 @@ export class UsersService {
         this.hasAnyUsAccounts = false;
         this.organizationAccounts = [];
     }
-    getCurrent(reset = false, forRouting = false) {
+    getCurrent(reset: boolean = false, forRouting: boolean = false): ng.IPromise<any> {
         if (this.current && !reset) {
             return this.getOptions(false, forRouting).then(() => {
                 return this.current;
@@ -54,9 +54,9 @@ export class UsersService {
                 });
             }
 
-            const localeDisplay = get('preferences.locale_display', this.current) || 'en-en';
+            const localeDisplay = get('preferences.locale_display', this.current) as any || 'en-en';
             this.locale.change(localeDisplay);
-            const locale = get('preferences.locale', this.current) || 'en-us';
+            const locale = get('preferences.locale', this.current) as any || 'en-us';
             this.language.change(locale);
 
             const defaultAccountList = toString(get('preferences.default_account_list', this.current));
@@ -83,18 +83,18 @@ export class UsersService {
             });
         });
     }
-    redirectUserToStart() {
+    private redirectUserToStart(): ng.IPromise<any> {
         return this.setOption({ key: 'setup_position', value: 'start' }).then(() => {
             this.$window.localStorage.removeItem(`${this.current.id}_accountListId`);
             return this.$q.reject({ redirect: 'setup.start' });
         });
     }
-    configureRollbarPerson(data) {
+    private configureRollbarPerson(data: any): void {
         if (!config.rollbarAccessToken) {
             return;
         }
         const primaryEmail = find({ primary: true }, data.email_addresses) as any;
-        const firstEmail = get('email_addresses[0]', data);
+        const firstEmail = get('email_addresses[0]', data) as any;
         const email = defaultTo(defaultTo('', firstEmail.email), primaryEmail.email);
         this.Rollbar.configure({
             payload: {
@@ -106,7 +106,7 @@ export class UsersService {
             }
         });
     }
-    getOptions(reset = false, forRouting = false) {
+    private getOptions(reset: boolean = false, forRouting: boolean = false): ng.IPromise<any> {
         if (this.currentOptions && !reset) {
             return this.$q.resolve();
         }
@@ -127,19 +127,19 @@ export class UsersService {
             return this.currentOptions;
         });
     }
-    mapOptions(options) {
+    private mapOptions(options: any): any {
         return keyBy('key', options);
     }
-    createOption(key, value) {
+    createOption(key: string, value: any): ng.IPromise<any> {
         return this.api.post({ url: 'user/options', data: { key: key, value: value }, type: 'user_options' }).then((data) => {
             this.currentOptions[key] = data;
             return data;
         }); // use jsonapi key here since it doesn't match endpoint
     }
-    getCurrentOptionValue(key) {
+    getCurrentOptionValue(key: string): any {
         return get('value', get(key, this.currentOptions));
     }
-    deleteOption(option) {
+    deleteOption(option: string): ng.IPromise<any> {
         return this.api.delete({
             url: `user/options/${option}`,
             type: 'user_options'
@@ -147,10 +147,10 @@ export class UsersService {
             delete this.currentOptions[option];
         });
     }
-    getOption(key) {
+    getOption(key: string): ng.IPromise<any> {
         return this.api.get(`user/options/${key}`);
     }
-    setOption(option) {
+    setOption(option: any): ng.IPromise<any> {
         return this.api.put({ url: `user/options/${option.key}`, data: option, type: 'user_options' }).then((data) => {
             if (option && option.key) {
                 this.currentOptions[option.key] = data;
@@ -158,7 +158,7 @@ export class UsersService {
             return data;
         }); // use jsonapi key here since it doesn't match endpoint
     }
-    listOrganizationAccounts(reset = false) {
+    listOrganizationAccounts(reset = false): ng.IPromise<any> {
         if (this.organizationAccounts.length > 0 && !reset) {
             return this.$q.resolve(this.organizationAccounts);
         }
@@ -168,10 +168,10 @@ export class UsersService {
             return data;
         });
     }
-    destroy(id) {
+    private destroy(id: string): ng.IPromise<any> {
         return this.api.delete(`users/${id}`);
     }
-    saveCurrent(successMessage?) {
+    saveCurrent(successMessage?: string): ng.IPromise<any> {
         const patch = createPatch(this.currentInitialState, this.current);
         this.$log.debug('user patch', patch);
         if (keys(patch).length < 2) {
@@ -181,7 +181,7 @@ export class UsersService {
             return this.getCurrent(true); // force reload to reconcile as put response is incomplete
         });
     }
-    getKeyAccount() {
+    private getKeyAccount(): ng.IPromise<void> {
         return this.api.get('user/key_accounts').then((data) => {
             if (get('remote_id', data[0])) {
                 this.current.key_uuid = data[0].remote_id;

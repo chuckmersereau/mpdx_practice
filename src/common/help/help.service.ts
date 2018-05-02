@@ -69,13 +69,13 @@ export class HelpService {
             $log.debug('Help Service', err);
         }
     }
-    showHelp() {
+    showHelp(): void {
         HS.beacon.open();
     }
-    showArticle(articleId) {
+    showArticle(articleId: string): void {
         HS.beacon.show(articleId);
     }
-    updateUser(user) {
+    updateUser(user: any): void {
         if (!user) { return; }
         const primaryEmailAddress = find(['primary', true], user.email_addresses);
         HS.beacon.ready(() => {
@@ -86,7 +86,7 @@ export class HelpService {
             });
         });
     }
-    suggest(articleIds) {
+    suggest(articleIds: string[]): void {
         HS.beacon.ready(() => {
             HS.beacon.suggest(articleIds);
         });

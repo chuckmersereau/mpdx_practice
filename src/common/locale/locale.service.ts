@@ -10,11 +10,11 @@ export class LocaleService {
         this.dateTimeFormat = null;
         this.init();
     }
-    change(locale) {
+    change(locale: string): void {
         this.dateTimeFormat = this.formats[locale] || 'MM/dd/yyyy';
         moment.locale(this.handleMomentMisnomers(locale));
     }
-    handleMomentMisnomers(locale) {
+    private handleMomentMisnomers(locale: string) {
         // handle differences between api and moment naming
         switch (locale) {
             case 'fil':
@@ -28,13 +28,13 @@ export class LocaleService {
                 return locale;
         }
     }
-    getLocalesMap() {
+    getLocalesMap(): any[] {
         return map((locale) => ({
             alias: locale,
             value: `${this.serverConstants.data.locales[locale].english_name} (${this.serverConstants.data.locales[locale].native_name} - ${locale})`
         }), keys(this.serverConstants.data.locales));
     }
-    init() {
+    private init(): void {
         this.formats = {
             'en-gb': 'dd/MM/yyyy',
             // Not real locales, but this is what the API sends us

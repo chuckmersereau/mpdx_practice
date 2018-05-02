@@ -45,7 +45,7 @@ export class ContactsService {
         this.activeDrawer = 'details';
         this.activeTab = 'donations';
     }
-    get(id) {
+    get(id: string): ng.IPromise<any> {
         return this.api.get({
             url: `contacts/${id}`,
             data: {
@@ -72,7 +72,7 @@ export class ContactsService {
             return data;
         });
     }
-    getRecommendation(id) {
+    getRecommendation(id: string): ng.IPromise<any> {
         return this.api.get({
             url: `contacts/${id}/donation_amount_recommendations`,
             data: {
@@ -85,7 +85,7 @@ export class ContactsService {
             return data[0];
         });
     }
-    getReferrals(id) {
+    getReferrals(id: string): ng.IPromise<any> {
         return this.api.get({
             url: `contacts/${id}`,
             data: {
@@ -101,7 +101,7 @@ export class ContactsService {
             return data;
         });
     }
-    getPrimaryPerson(id) {
+    getPrimaryPerson(id: string): ng.IPromise<any> {
         return this.api.get({
             url: `contacts/${id}`,
             data: {
@@ -120,7 +120,7 @@ export class ContactsService {
             return data;
         });
     }
-    search(keyword) {
+    search(keyword: string): ng.IPromise<any> {
         return this.api.get({
             url: 'contacts',
             data: {
@@ -136,7 +136,7 @@ export class ContactsService {
             }
         });
     }
-    buildFilterParams() {
+    buildFilterParams(): any {
         let filterParams = this.findChangedFilters(this.contactFilter.default_params, this.contactFilter.params);
         filterParams = assign(filterParams, {
             account_list_id: this.api.account_list_id,
@@ -147,7 +147,7 @@ export class ContactsService {
         });
         return omitBy(isNil, filterParams);
     }
-    save(contact, successMessage?, errorMessage?) {
+    save(contact: any, successMessage?: string, errorMessage?: string): ng.IPromise<any> {
         if (contact.tag_list) {
             contact.tag_list = joinComma(contact.tag_list); // fix for api mis-match
         }
@@ -158,14 +158,14 @@ export class ContactsService {
             return data;
         });
     }
-    create(contact) {
+    create(contact: any): ng.IPromise<any> {
         contact.account_list = { id: this.api.account_list_id };
         return this.api.post('contacts', contact).then((data) => {
             this.$rootScope.$emit('contactCreated');
             return data;
         });
     }
-    addBulk(contacts) {
+    addBulk(contacts: any[]): ng.IPromise<any> {
         return this.api.post({
             url: 'contacts/bulk',
             data: contacts,
@@ -177,7 +177,7 @@ export class ContactsService {
             this.$rootScope.$emit('contactCreated');
         });
     }
-    addReferrals(contact, contacts) {
+    addReferrals(contact: any, contacts: any[]): ng.IPromise<any> {
         return this.api.put(`contacts/${contact.id}`, {
             id: contact.id,
             contacts_referred_by_me: contacts
@@ -185,7 +185,7 @@ export class ContactsService {
             this.$rootScope.$emit('contactCreated');
         });
     }
-    findChangedFilters(defaultParams, params) {
+    private findChangedFilters(defaultParams: any, params: any): any {
         return reduceObject((result, filter, key) => {
             if (has(key, this.contactFilter.params)) {
                 const currentDefault = defaultParams[key];
@@ -200,20 +200,20 @@ export class ContactsService {
             return result;
         }, {}, params);
     }
-    isSelected(contactId) {
+    isSelected(contactId: string): boolean {
         return includes(contactId, this.selectedContacts);
     }
-    selectContact(contactId) {
+    selectContact(contactId: string): void {
         if (includes(contactId, this.selectedContacts)) {
             this.selectedContacts = pull(contactId, this.selectedContacts);
         } else {
             this.selectedContacts = union(this.selectedContacts, [contactId]);
         }
     }
-    clearSelectedContacts() {
+    clearSelectedContacts(): void {
         this.selectedContacts = [];
     }
-    hideContact(contact) {
+    hideContact(contact: any): ng.IPromise<any> {
         const message = this.gettextCatalog.getString('Are you sure you wish to hide the selected contact? Hiding a contact in MPDX actually sets the contact status to "Never Ask".');
         return this.modal.confirm(message).then(() => {
             return this.save({
@@ -224,16 +224,16 @@ export class ContactsService {
             });
         });
     }
-    bulkSave(contacts) {
+    bulkSave(contacts: any[]): ng.IPromise<any> {
         return this.api.put('contacts/bulk', contacts);
     }
-    bulkEditFields(model, contacts) {
+    bulkEditFields(model: any, contacts: any[]): ng.IPromise<any> {
         contacts = reduce((result, contact) =>
             concat(result, assign({ id: contact.id }, model))
             , [], contacts);
         return this.bulkSave(contacts);
     }
-    merge(winnersAndLosers) {
+    merge(winnersAndLosers: any): ng.IPromise<any> {
         return this.api.post({
             url: 'contacts/merges/bulk',
             data: winnersAndLosers,
@@ -245,7 +245,7 @@ export class ContactsService {
             return data;
         });
     }
-    openAddressModal(contact, address) {
+    openAddressModal(contact: any, address: any): ng.IPromise<any> {
         let promise = this.$q.defer();
 
         this.modal.open({
@@ -264,19 +264,19 @@ export class ContactsService {
         });
         return promise.promise;
     }
-    saveAddress(contactId, address) {
+    saveAddress(contactId: string, address: any): ng.IPromise<any> {
         return this.api.put(`contacts/${contactId}/addresses/${address.id}`, address);
     }
-    addAddress(contactId, address) {
+    addAddress(contactId: string, address: any): ng.IPromise<any> {
         return this.api.post(`contacts/${contactId}/addresses`, address);
     }
-    deleteAddress(contactId, addressId) {
+    deleteAddress(contactId: string, addressId: string): ng.IPromise<any> {
         const message = this.gettextCatalog.getString('Are you sure you wish to delete this address?');
         return this.modal.confirm(message).then(() => {
             return this.api.delete(`contacts/${contactId}/addresses/${addressId}`);
         });
     }
-    openAddReferralsModal() {
+    openAddReferralsModal(): ng.IPromise<any> {
         return this.modal.open({
             template: require('./show/referrals/add/add.html'),
             controller: 'addReferralsModalController',
@@ -285,13 +285,13 @@ export class ContactsService {
             }
         });
     }
-    openNewContactModal() {
+    openNewContactModal(): ng.IPromise<any> {
         return this.modal.open({
             template: require('./new/new.html'),
             controller: 'contactNewModalController'
         });
     }
-    openMapContactsModal(selectedContacts) {
+    openMapContactsModal(selectedContacts: any[]): ng.IPromise<any> {
         return this.modal.open({
             template: require('./list/map/map.html'),
             controller: 'mapContactsController',
@@ -300,13 +300,13 @@ export class ContactsService {
             }
         });
     }
-    openMultipleAddModal() {
+    openMultipleAddModal(): ng.IPromise<any> {
         return this.modal.open({
             template: require('./multiple/multiple.html'),
             controller: 'multipleContactController'
         });
     }
-    openAddTagModal(selectedContactIds) {
+    openAddTagModal(selectedContactIds: any[]): ng.IPromise<any> {
         return this.modal.open({
             template: require('./sidebar/filter/tags/add/add.html'),
             controller: 'addTagController',
@@ -315,7 +315,7 @@ export class ContactsService {
             }
         });
     }
-    fixPledgeAmountAndFrequencies(data) {
+    fixPledgeAmountAndFrequencies(data: any): any[] {
         return map((contact) => {
             contact.pledge_amount = isNil(contact.pledge_amount) ? null : parseFloat(contact.pledge_amount);
             contact.pledge_frequency = isNil(contact.pledge_frequency)
@@ -324,7 +324,7 @@ export class ContactsService {
             return contact;
         }, angular.copy(data));
     }
-    getEmails(errorMessage) {
+    getEmails(errorMessage: string): ng.IPromise<any> {
         return this.api.get('contacts', {
             filter: {
                 account_list_id: this.api.account_list_id,
@@ -342,10 +342,10 @@ export class ContactsService {
             return this.mapEmails(data);
         });
     }
-    mapEmails(data) {
+    private mapEmails(data: any): any {
         return flattenCompactAndJoin((contact) => this.getEmailsFromPeople(contact.people), data);
     }
-    getEmailsFromPeople(data) {
+    getEmailsFromPeople(data: any): any {
         const getEmail = get('email');
         const findPrimary = find({ primary: true });
         const getEmailFromPrimary = flow(findPrimary, getEmail);

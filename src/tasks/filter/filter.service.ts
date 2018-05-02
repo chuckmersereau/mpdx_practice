@@ -76,7 +76,7 @@ export class TasksFilterService {
         };
         this.defaultParams = {};
     }
-    load(reset = false) {
+    load(reset: boolean = false): ng.IPromise<any> {
         if (!reset && this.data) {
             this.loading = false;
             return this.$q.resolve(this.data);
@@ -94,16 +94,16 @@ export class TasksFilterService {
             this.changeGroup(this.group);
         });
     }
-    count() {
+    count(): number {
         return this.filters.count({ defaultParams: this.defaultParams, params: this.params });
     }
-    change(filter?) {
+    change(filter?: any): void {
         this.selectedSave = null;
         this.handleFilterChange(filter);
         this.$log.debug('task filters change:', this.params);
         this.$rootScope.$emit('tasksFilterChange');
     }
-    handleFilterChange(filter) {
+    private handleFilterChange(filter: any): void {
         if (filter) {
             const currentFilter = this.params[filter.name];
             if (isArray(currentFilter) && currentFilter.length > 1) {
@@ -114,7 +114,7 @@ export class TasksFilterService {
             }
         }
     }
-    reset(stateParams = {}) {
+    reset(stateParams: any = {}): void {
         this.assignDefaultParamsAndGroup('all');
         const params = this.filters.fromStrings(stateParams, this.data);
         this.params = assign(this.defaultParams, params);
@@ -127,20 +127,20 @@ export class TasksFilterService {
         this.change();
         this.selectedSave = undefined;
     }
-    changeGroup(group) {
+    changeGroup(group: string): void {
         this.assignDefaultParamsAndGroup(group);
         this.change();
     }
-    assignDefaultParamsAndGroup(group) {
+    assignDefaultParamsAndGroup(group: string): void {
         this.group = group;
         const paramsForGroup = this.defaultParamsForGroup[this.group];
         this.defaultParams = assign(this.defaultParams, paramsForGroup);
         this.params = assign(this.params, paramsForGroup);
     }
-    isResettable() {
+    isResettable(): boolean {
         return !isEqual(this.params, this.defaultParams) || !isEmpty(this.wildcardSearch);
     }
-    toParams() {
+    toParams(): any {
         let defaultParams = defaultTo({}, this.defaultParams);
         let filters = assign(defaultParams, this.params);
         filters = assign(filters, {
@@ -153,7 +153,7 @@ export class TasksFilterService {
         return omitBy(isNil, filters);
     }
     // Invert the selected options of a multiselect filter
-    invertMultiselect(filter) {
+    invertMultiselect(filter: any): void {
         if (filter.type !== 'multiselect') {
             return;
         }
@@ -166,13 +166,13 @@ export class TasksFilterService {
         filter.reverse = !!this.params[reverseName];
         this.change();
     }
-    removeFilter(filter) {
+    removeFilter(filter: any): void {
         const reverseName = `reverse_${filter.name}`;
         this.params[filter.name] = this.defaultParams[filter.name];
         delete this.params[reverseName];
         filter.reverse = false;
     }
-    showReset() {
+    showReset(): boolean {
         return this.tasksTags.isResettable() || this.isResettable();
     }
 }

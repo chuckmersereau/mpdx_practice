@@ -13,9 +13,9 @@ export class ModalService {
             locals: {}
         };
     }
-    open(params) {
+    open(params: any): ng.IPromise<any> {
         let deferred = this.$q.defer();
-        let openParams = assign(this.defaultParams, params);
+        let openParams: any = assign(this.defaultParams, params);
         openParams.onHide = (value) => {
             deferred.resolve();
             if (params.onHide) {
@@ -26,7 +26,7 @@ export class ModalService {
         this.$modal(openParams);
         return deferred.promise;
     }
-    confirm(message, title = null) {
+    confirm(message: string, title: string = null): ng.IPromise<any> {
         let deferred = this.$q.defer();
         const params = {
             template: require('./confirm/confirm.html'),
@@ -40,7 +40,7 @@ export class ModalService {
         this.open(params);
         return deferred.promise;
     }
-    info(message, title = null) {
+    info(message: string, title: string = null): ng.IPromise<any> {
         let deferred = this.$q.defer();
         const params = {
             template: require('./info/info.html'),

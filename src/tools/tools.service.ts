@@ -99,7 +99,7 @@ export class ToolsService {
         ];
         this.analytics = {};
     }
-    getAnalytics(reset = false) {
+    getAnalytics(reset: boolean = false): ng.IPromise<any> {
         if (this.analytics && values(this.analytics).length > 1 && !reset) {
             return this.$q.resolve(this.analytics);
         }
@@ -115,7 +115,7 @@ export class ToolsService {
             return this.analytics;
         });
     }
-    getTotal() {
+    getTotal(): number {
         return sum(values(this.analytics));
     }
 }

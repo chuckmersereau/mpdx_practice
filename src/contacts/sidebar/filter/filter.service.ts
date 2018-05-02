@@ -20,7 +20,7 @@ export class ContactFilterService {
         this.default_params = {};
         this.loading = true;
     }
-    load(reset = false) {
+    load(reset: boolean = false): ng.IPromise<any> {
         if (reset) {
             this.data = null;
         }
@@ -35,12 +35,12 @@ export class ContactFilterService {
             this.params = params;
         });
     }
-    count() {
+    count(): number {
         return this.filters.count({ defaultParams: this.default_params, params: this.params })
             + this.contactsTags.selectedTags.length
             + this.contactsTags.rejectedTags.length;
     }
-    reset(stateParams = null) {
+    reset(stateParams: StateParams = null): void {
         const defaultParams = angular.copy(this.default_params);
         this.$rootScope.$emit('contactSearchReset');
         this.contactsTags.reset();
@@ -49,14 +49,14 @@ export class ContactFilterService {
         this.wildcardSearch = '';
         this.change();
     }
-    change(filter?) {
+    change(filter?: any): void {
         this.handleFilterChange(filter);
         this.$rootScope.$emit('contactsFilterChange');
         this.$log.debug('contactFilter: params', this.params);
         this.$log.debug('contactsTags: selectedTags', this.contactsTags.selectedTags);
         this.$log.debug('contactsTags: rejectedTags', this.contactsTags.rejectedTags);
     }
-    handleFilterChange(filter) {
+    private handleFilterChange(filter: any): void {
         if (filter) {
             const currentFilter = this.params[filter.name];
             if (isArray(currentFilter) && currentFilter.length > 1) {
@@ -67,12 +67,12 @@ export class ContactFilterService {
             }
         }
     }
-    isResettable() {
+    isResettable(): boolean {
         return !angular.equals(this.params, this.default_params)
             || this.contactsTags.isResettable()
             || !isEmpty(this.wildcardSearch);
     }
-    invertMultiselect(filter) {
+    invertMultiselect(filter: any): void {
         const reverseName = `reverse_${filter.name}`;
         if (this.params[reverseName]) {
             delete this.params[reverseName];
@@ -82,7 +82,7 @@ export class ContactFilterService {
         filter.reverse = !!this.params[reverseName];
         this.change();
     }
-    removeFilter(filter) {
+    removeFilter(filter: any): void {
         const reverseName = `reverse_${filter.name}`;
         this.params[filter.name] = this.default_params[filter.name];
         delete this.params[reverseName];
@@ -93,6 +93,7 @@ export class ContactFilterService {
 import contactsTags, { ContactsTagsService } from './tags/tags.service';
 import api, { ApiService } from '../../../common/api/api.service';
 import filters, { FiltersService } from '../../../common/filters/filters.service';
+import { StateParams } from '@uirouter/core';
 
 export default angular.module('mpdx.contacts.sidebar.filter.service', [
     api, contactsTags, filters

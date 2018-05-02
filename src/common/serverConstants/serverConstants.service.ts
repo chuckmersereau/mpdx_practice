@@ -1,4 +1,4 @@
-import { assign, concat, difference, find, get, keys, reduce, toString } from 'lodash/fp';
+import { assign, concat, difference, find, get, keys, reduce, toNumber, toString } from 'lodash/fp';
 import joinComma from '../fp/joinComma';
 import reduceObject from '../fp/reduceObject';
 import replaceUnderscore from '../fp/replaceUnderscore';
@@ -12,7 +12,7 @@ export class ServerConstantsService {
     ) {
         this.data = {};
     }
-    load(constants = []) {
+    load(constants: string[] = []): ng.IPromise<any> {
         /* istanbul ignore next */
         this.$log.debug('constants requested', constants);
         const differences = difference(constants, keys(this.data));
@@ -38,7 +38,7 @@ export class ServerConstantsService {
             return data;
         });
     }
-    handleSpecialKeys(key, value) {
+    private handleSpecialKeys(key: string, value: any): any {
         switch (key) {
             case 'languages':
             case 'locales':
@@ -50,26 +50,26 @@ export class ServerConstantsService {
                 return value;
         }
     }
-    mapUnderscore(obj) {
+    mapUnderscore(obj: any): any {
         const objKeys = keys(obj);
         return reduce((result, key) => {
             result[toString(replaceUnderscore(key))] = obj[key];
             return result;
         }, {}, objKeys);
     }
-    mapFrequencies(obj) {
+    mapFrequencies(obj: any[]): any[] {
         return reduce((result, value) => {
             value.key = parseFloat(value.key);
             return concat(result, value);
         }, [], obj);
     }
-    getPledgeFrequency(freq) {
-        return freq ? find({ key: parseFloat(freq) }, this.data.pledge_frequency_hashes) : null;
+    getPledgeFrequency(freq: string | number): any {
+        return freq ? find({ key: toNumber(freq) }, this.data.pledge_frequency_hashes) : null;
     }
-    getPledgeFrequencyValue(freq) {
+    getPledgeFrequencyValue(freq: string | number): string {
         return get('value', this.getPledgeFrequency(freq));
     }
-    getPledgeCurrencySymbol(code) {
+    getPledgeCurrencySymbol(code: string): string {
         return get('symbol', find({ code: code }, this.data.pledge_currencies));
     }
 }

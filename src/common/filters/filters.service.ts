@@ -22,23 +22,26 @@ export class FiltersService {
         private $q: ng.IQService,
         private api: ApiService
     ) {}
-    count({ params, defaultParams }) {
+    count({ params, defaultParams }: { params: any, defaultParams: any }): number {
         return filter((key) => !isEqual(params[key], defaultParams[key]), keys(params)).length;
     }
-    load({ data, defaultParams, params, url }): ng.IPromise<any> {
+    load({ data, defaultParams, params, url }: { data: any, defaultParams: any, params: any, url: string})
+        : ng.IPromise<any> {
         return data
             ? this.returnOriginalAsPromise(data, params, defaultParams)
             : this.getDataFromApi(data, defaultParams, params, url);
     }
-    returnOriginalAsPromise(data, params, defaultParams): ng.IPromise<any> {
+    private returnOriginalAsPromise(data: any, params: any, defaultParams: any): ng.IPromise<any> {
         return this.$q.resolve({
             data: data,
             params: params,
             defaultParams: defaultParams
         });
     }
-    getDataFromApi(data: any, defaultParams: any, params: any, url: string) {
-        return this.api.get(url, { filter: { account_list_id: this.api.account_list_id } }).then((response) => {
+    private getDataFromApi(data: any, defaultParams: any, params: any, url: string): ng.IPromise<any> {
+        return this.api.get(url, {
+            filter: { account_list_id: this.api.account_list_id }
+        }).then((response) => {
             data = defaultTo([], response);
             data = sortBy((filter) => toInteger(filter.id), data);
             /* istanbul ignore next */
@@ -53,7 +56,7 @@ export class FiltersService {
             };
         });
     }
-    makeDefaultParams(data) {
+    private makeDefaultParams(data: any): any {
         return reduce((result, filter) => {
             if (filter.multiple && !isArray(filter.default_selection)) {
                 result[filter.name] = [filter.default_selection];
@@ -63,12 +66,19 @@ export class FiltersService {
             return result;
         }, {}, data);
     }
-    mutateData(data) {
+    private mutateData(data: any): any[] {
         return reduce((result, filter) => {
             if (filter.parent !== null) {
-                let parentIndex = findIndex((parent) => parent.title === filter.parent && parent.type === 'container', result);
+                let parentIndex = findIndex(
+                    (parent) => parent.title === filter.parent && parent.type === 'container'
+                    , result);
                 if (parentIndex === -1) {
-                    const parentObj = { title: filter.parent, type: 'container', priority: filter.priority, children: [filter] };
+                    const parentObj = {
+                        title: filter.parent,
+                        type: 'container',
+                        priority: filter.priority,
+                        children: [filter]
+                    };
                     result = concat(result, parentObj);
                 } else {
                     result[parentIndex].children = concat(result[parentIndex].children, filter);
@@ -79,12 +89,12 @@ export class FiltersService {
             return result;
         }, [], data);
     }
-    reset({ defaultParams, params, onChange }) {
+    reset({ defaultParams, params, onChange }: { defaultParams: any, params: any, onChange: any }): any {
         params = angular.copy(defaultParams);
         onChange(params);
         return params;
     }
-    fromStrings(params, filters) {
+    fromStrings(params: any, filters: any): any {
         return reduceObject((result, value, key) => {
             const filter = find({ name: key }, filters);
             const isMultiselect = get('type', filter) === 'multiselect';

@@ -14,7 +14,7 @@ export class FixSendNewsletterService {
         this.loading = false;
         this.page = 1;
     }
-    load(reset = false, page = 1) {
+    load(reset: boolean = false, page: number = 1): ng.IPromise<any> {
         if (!reset && this.data && this.page === page) {
             return this.$q.resolve(this.data);
         }
@@ -73,14 +73,14 @@ export class FixSendNewsletterService {
             return this.data;
         });
     }
-    setMeta(meta) {
+    private setMeta(meta: any): void {
         this.meta = meta;
 
         if (this.meta && this.meta.pagination && this.meta.pagination.total_count >= 0 && this.tools.analytics) {
             this.tools.analytics['fix-send-newsletter'] = this.meta.pagination.total_count;
         }
     }
-    save(contact) {
+    save(contact: any): ng.IPromise<void> {
         return this.contacts.save({
             id: contact.id,
             send_newsletter: contact.send_newsletter
@@ -88,7 +88,7 @@ export class FixSendNewsletterService {
             this.removeContactFromData(contact.id);
         });
     }
-    removeContactFromData(contactId) {
+    private removeContactFromData(contactId: string): void {
         this.data = reject({ id: contactId }, this.data);
         if (this.meta && this.meta.pagination && this.meta.pagination.total_count) {
             this.meta.pagination.total_count -= 1;
@@ -98,7 +98,7 @@ export class FixSendNewsletterService {
             this.load(true, this.page);
         }
     }
-    bulkSave() {
+    bulkSave(): ng.IPromise<any> {
         let contacts = reduce((result, contact) => {
             if (!contact.send_newsletter) {
                 return result;

@@ -6,7 +6,7 @@ export class TasksModalsService {
         private serverConstants: ServerConstantsService,
         private tasksTags: TasksService
     ) {}
-    bulkEdit(tasks) {
+    bulkEdit(tasks: any[]): ng.IPromise<any> {
         return this.modal.open({
             template: require('./bulkEdit/bulkEdit.html'),
             controller: 'bulkEditTaskController',

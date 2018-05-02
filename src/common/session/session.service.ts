@@ -13,7 +13,7 @@ export class SessionService {
         this.navImpersonation = false;
         this.showFiltersOnMobile = false;
     }
-    isInState(match) {
+    isInState(match: string): boolean {
         return this.$state.$current.name.indexOf(match) === 0;
     }
 }

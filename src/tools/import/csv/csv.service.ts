@@ -36,15 +36,15 @@ export class ImportCsvService {
     ) {
         this.blockUI = blockUI.instances.get('tools-import-csv');
     }
-    $onInit() {
+    $onInit(): void {
         this.reset();
     }
-    reset() {
+    reset(): void {
         this.data = null;
         this.dataInitialState = null;
         this.values_to_constants_mappings = {};
     }
-    upload(file) {
+    upload(file: any): ng.IPromise<void> {
         this.blockUI.start();
         return this.Upload.upload({
             method: 'POST',
@@ -69,7 +69,7 @@ export class ImportCsvService {
             throw error;
         });
     }
-    process(data) {
+    private process(data: any): void {
         this.data = data;
         this.dataInitialState = angular.copy(this.data);
 
@@ -94,7 +94,7 @@ export class ImportCsvService {
         /* istanbul ignore next */
         this.$log.debug('import', this.data);
     }
-    get(importId) {
+    get(importId: string): ng.IPromise<void> {
         if (this.data && this.data.id === importId) {
             return this.$q.resolve(this.data);
         }
@@ -111,7 +111,7 @@ export class ImportCsvService {
             this.process(data);
         });
     }
-    constantsMappingsToValueMappings(constantsMappings, fileConstants, fileHeadersMappings) {
+    constantsMappingsToValueMappings(constantsMappings: any, fileConstants: any, fileHeadersMappings: any): any {
         return reduceObject((result, array, key) => {
             result[key] = this.reduceConstants(array);
 
@@ -122,7 +122,7 @@ export class ImportCsvService {
             return result;
         }, {}, constantsMappings);
     }
-    reduceConstants(array) {
+    private reduceConstants(array: any[]): any {
         return reduce((result, constant) => {
             const group = reduce((group, value) => {
                 if (value) {
@@ -133,7 +133,7 @@ export class ImportCsvService {
             return merge(result, group);
         }, {}, array);
     }
-    mergeFileConstants(result, key, fileConstants, fileHeadersMappings) {
+    private mergeFileConstants(result: any, key: string, fileConstants: any, fileHeadersMappings: any): any {
         const values = keys(result[key]);
         const allValues = this.getConstantValues(key, fileConstants, fileHeadersMappings);
         const unmappedValues = reduce((object, csvValue) => {
@@ -142,7 +142,7 @@ export class ImportCsvService {
         }, {}, difference(allValues, values));
         return merge(unmappedValues, result[key]);
     }
-    valueMappingsToConstantsMappings(valueMappings, fileConstants, fileHeadersMappings) {
+    private valueMappingsToConstantsMappings(valueMappings: any, fileConstants: any, fileHeadersMappings: any): any {
         valueMappings = this.buildValueMappings(valueMappings, fileHeadersMappings);
 
         return reduceObject((result, object, key) => {
@@ -155,7 +155,7 @@ export class ImportCsvService {
             return result;
         }, {}, valueMappings);
     }
-    buildFileConstantValues(result, key, fileConstants, fileHeadersMappings) {
+    private buildFileConstantValues(result: any, key: string, fileConstants: any, fileHeadersMappings: any): any {
         const values = reduce((result, object) => concat(result, object.values), [], result[key]);
         const allValues = this.getConstantValues(key, fileConstants, fileHeadersMappings);
         return reduce((object, csvValue) => {
@@ -166,7 +166,7 @@ export class ImportCsvService {
             return object;
         }, result[key], difference(allValues, values));
     }
-    buildConstantValues(object) {
+    private buildConstantValues(object: any): any[] {
         return reduceObject((array, constant, value) => {
             constant = constant === null || constant === 'null'
                 ? ''
@@ -178,7 +178,7 @@ export class ImportCsvService {
             return array;
         }, [], object);
     }
-    buildValueMappings(valueMappings, fileHeadersMappings) {
+    private buildValueMappings(valueMappings: any, fileHeadersMappings: any): any {
         valueMappings = defaultTo({}, valueMappings);
 
         const mappedHeaders = values(fileHeadersMappings);
@@ -190,11 +190,11 @@ export class ImportCsvService {
             return object;
         }, valueMappings, mappedHeaders);
     }
-    getConstantValues(constant, fileConstants, fileHeadersMappings) {
+    private getConstantValues(constant: string, fileConstants: any[], fileHeadersMappings: any): any[] {
         const key = findKey((item) => item === constant, fileHeadersMappings);
         return defaultTo([], fileConstants[key]);
     }
-    save() {
+    save(): ng.IPromise<any> {
         if (this.data.tag_list) {
             this.data.tag_list = joinComma(this.data.tag_list);
         }
@@ -233,7 +233,7 @@ export class ImportCsvService {
             throw data;
         });
     }
-    next(importId) {
+    next(importId: string): void {
         const stateSwitch = (state) => ({
             'tools.import.csv.upload': 'tools.import.csv.headers',
             'tools.import.csv.headers': keys(this.values_to_constants_mappings).length === 0
@@ -249,7 +249,7 @@ export class ImportCsvService {
             this.$state.go('tools');
         }
     }
-    back() {
+    back(): void {
         const stateSwitch = (state) => ({
             'tools.import.csv.preview': keys(this.values_to_constants_mappings).length === 0
                 ? 'tools.import.csv.headers'
