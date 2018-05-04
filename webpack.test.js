@@ -6,18 +6,15 @@
 const assign = require('lodash/fp/assign');
 const path = require('path');
 const webpack = require('webpack');
+const HappyPack = require('happypack');
 
 const config = {
-    devtool: 'inline-source-map',
+    devtool: 'eval-source-map',
     mode: 'development',
     module: {
         rules: [{
             test: /\.ts$/,
-            use: [{
-                loader: 'babel-loader'
-            }, {
-                loader: 'ts-loader'
-            }],
+            loader: 'happypack/loader?id=ts',
             exclude: /node_modules/
         }, {
             test: /\.(css|scss|json|html|png|jpg|jpeg|gif)$/,
@@ -31,6 +28,17 @@ const config = {
     plugins: [
         new webpack.DefinePlugin({
             'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+        }),
+        new HappyPack({
+            id: 'ts',
+            loaders: [{
+                path: 'babel-loader'
+            }, {
+                path: 'ts-loader',
+                query: {
+                    happyPackMode: true
+                }
+            }]
         })
     ]
 };

@@ -5,6 +5,7 @@
 
 const path = require('path');
 const webpack = require('webpack');
+const HappyPack = require('happypack');
 
 const config = {
     devtool: 'eval',
@@ -25,11 +26,7 @@ const config = {
     module: {
         rules: [{
             test: /\.ts$/,
-            use: [{
-                loader: 'babel-loader'
-            }, {
-                loader: 'ts-loader'
-            }],
+            loader: 'happypack/loader?id=ts',
             exclude: /node_modules/
         }, {
             test: /\.html$/,
@@ -48,8 +45,30 @@ const config = {
     plugins: [
         new webpack.DefinePlugin({
             'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+        }),
+        new HappyPack({
+            id: 'ts',
+            loaders: [{
+                path: 'babel-loader'
+            }, {
+                path: 'ts-loader',
+                query: {
+                    happyPackMode: true
+                }
+            }]
         })
     ],
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all'
+                }
+            }
+        }
+    },
     mode: 'development'
 };
 

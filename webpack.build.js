@@ -9,6 +9,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const RollbarSourceMapPlugin = require('rollbar-sourcemap-webpack-plugin');
+const WebpackMd5Hash = require('webpack-md5-hash');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const rollbarAccessToken = '9b953d96d0e145f9a4b70b41b1390c3b';
 
@@ -39,17 +41,26 @@ config = assign(config, {
     output: {
         path: path.join(__dirname, 'public'),
         publicPath: '/',
-        filename: '[name].[hash].js',
-        chunkFilename: '[name].[hash].js'
+        filename: '[name].[chunkhash].js',
+        chunkFilename: '[name].[chunkhash].js'
     },
     module: assign(config.module, {
         rules: concat(config.module.rules, [
             {
                 test: /\.css$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', postcssLoader]
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    { loader: 'css-loader', options: { minimize: true } },
+                    postcssLoader
+                ]
             }, {
                 test: /\.scss$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', postcssLoader, 'sass-loader']
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    { loader: 'css-loader', options: { minimize: true } },
+                    postcssLoader,
+                    'sass-loader'
+                ]
             }
         ])
     }),
@@ -80,10 +91,19 @@ config = assign(config, {
             { from: 'src/google144ccea737ed252d.html' }
         ]),
         new MiniCssExtractPlugin({
-            filename: '[name].[hash].css'
+            filename: '[name].[chunkhash].css'
+        }),
+        new WebpackMd5Hash(),
+        new UglifyJsPlugin({
+            parallel: true,
+            sourceMap: true,
+            uglifyOptions: {
+                ecma: 5
+            }
         })
     ]),
-    mode: 'production'
+    mode: 'production',
+    devtool: 'source-map' // do not change, needed for rollbar and js size
 });
 
 if (!process.env.TRAVIS_PULL_REQUEST && (process.env.TRAVIS_BRANCH === 'master' || process.env.TRAVIS_BRANCH === 'staging' || process.env.TRAVIS_BRANCH === 'next')) {

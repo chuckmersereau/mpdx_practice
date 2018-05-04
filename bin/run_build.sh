@@ -16,6 +16,12 @@ then
         export NODE_ENV=staging
     fi
 
+    if [ "$TRAVIS_PULL_REQUEST" = "false" ]
+    then
+        echo '-- extract translations from source --'
+        gulp extract
+    fi
+
     echo '-- run build --'
     yarn run build
 
@@ -23,9 +29,6 @@ then
 
     if [ "$TRAVIS_PULL_REQUEST" = "false" ]
     then
-        echo '-- extract translations from source --'
-        gulp extract
-
         echo '-- download mpdx.pot from onesky --'
         node onesky/downloadPotFile
 
