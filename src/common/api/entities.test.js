@@ -134,6 +134,11 @@ describe('EntityAttributes', () => {
             attributes: ['reason', 'ignore']
         });
     });
+    it('should define export_logs', () => {
+        expect(attributes.export_logs).toEqual({
+            attributes: ['params']
+        });
+    });
     it('should define google_integrations', () => {
         expect(attributes.google_integrations).toEqual({
             attributes: [

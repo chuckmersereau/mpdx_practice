@@ -53,6 +53,9 @@ class RemoveTagController {
                     filter: {
                         account_list_id: this.api.account_list_id,
                         contact_ids: emptyToNull(joinComma(contactIds))
+                    },
+                    fields: {
+                        contacts: ''
                     }
                 },
                 doSerialization: false,

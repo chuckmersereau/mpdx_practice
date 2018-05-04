@@ -11,6 +11,7 @@ import common from 'common/common.module';
 import contacts from 'contacts/contacts.module';
 import home from 'home/home.module';
 import menu from 'menu/menu.module';
+import mobile from 'mobile/mobile.component';
 import preferences from 'preferences/preferences.module';
 import reports from 'reports/reports.module';
 import root from 'root/root.component';
@@ -33,6 +34,7 @@ export default angular.module('mpdx', [
     contacts,
     home,
     menu,
+    mobile,
     preferences,
     reports,
     root,

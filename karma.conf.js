@@ -5,11 +5,14 @@ module.exports = function karmaConfig(config) {
             'jasmine'
         ],
         reporters: [
-            'spec',
+            'super-dots',
             'coverage'
         ],
         files: [
             'src/tests.webpack.js'
+        ],
+        helpers: [
+            'helpers/**/*.js'
         ],
         preprocessors: {
             'src/tests.webpack.js': ['webpack', 'sourcemap']
@@ -18,9 +21,21 @@ module.exports = function karmaConfig(config) {
             'PhantomJS'
         ],
         client: {
-            captureConsole: true
+            captureConsole: false
         },
         singleRun: true,
+        superDotsReporter: {
+            icon: {
+                success: '.',
+                failure: 'X',
+                ignore: 'i'
+            },
+            color: {
+                success: 'green',
+                failure: 'red',
+                ignore: 'grey'
+            }
+        },
         coverageReporter: {
             reporters: [
                 { type: 'lcovonly', subdir: '.' }

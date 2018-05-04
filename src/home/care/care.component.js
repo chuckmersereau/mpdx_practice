@@ -22,7 +22,7 @@ class CareController {
             controller: 'exportContactsController',
             locals: {
                 selectedContactIds: [],
-                filter: {
+                filters: {
                     account_list_id: this.api.account_list_id,
                     newsletter: 'address',
                     status: 'active'

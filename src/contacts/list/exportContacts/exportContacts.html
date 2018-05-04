@@ -1,7 +1,7 @@
-<modal title="{{'Export Contacts' | translate}}" cancel="$hide()">
+<modal title="{{'Export Contacts' | translate}}" cancel="$hide()" hide-footer="true">
     <div class="row" block-ui="contact-export" ng-if="::!$ctrl.isSafari">
         <div class="col-sm-4">
-            <a ng-click="$ctrl.mailingCSVLink()"
+            <a ng-click="$ctrl.exportMailingCSV()"
                class="btn btn-primary btn-block"
                translate>
                 CSV for Mail Merge
@@ -9,7 +9,7 @@
             <p translate>Best for making mailing labels. Addresses will be formatted based on country.</p>
         </div>
         <div class="col-sm-4">
-            <a ng-click="$ctrl.primaryCSVLink()"
+            <a ng-click="$ctrl.exportCSV()"
                class="btn btn-primary btn-block"
                translate>
                 Advanced CSV
@@ -19,7 +19,7 @@
             </p>
         </div>
         <div class="col-sm-4">
-            <a ng-click="$ctrl.primaryXLSXLink()"
+            <a ng-click="$ctrl.exportXLSX()"
                class="btn btn-primary btn-block"
                translate>
                 Advanced Excel (XLSX)
@@ -28,8 +28,5 @@
                 All of the information for your contacts in Excel's default XLSX format.
             </p>
         </div>
-    </div>
-    <div ng-if="::$ctrl.isSafari" class="alert alert-danger" translate>
-        Safari currently doesn't allow our exports. We are working on a solution, but for now exports are only available in Chrome browser. Sorry for the inconvenience.
     </div>
 </modal>

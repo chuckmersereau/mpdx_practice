@@ -431,19 +431,13 @@ describe('tools.appeals.show.component', () => {
     });
     describe('exportToCSV', () => {
         it('should build a csv export table', () => {
-            spyOn(exportContacts, 'primaryCSVLink').and.callFake(() => Promise.resolve());
+            spyOn(exportContacts, 'create').and.callFake(() => Promise.resolve());
             $ctrl.selectedContactIds = [1, 2];
             $ctrl.exportToCSV();
-            expect(exportContacts.primaryCSVLink).toHaveBeenCalledWith({
-                data: {
-                    filter: {
-                        account_list_id: api.account_list_id,
-                        ids: '1,2',
-                        status: 'active,hidden,null'
-                    }
-                },
-                doDeSerialization: false,
-                overrideGetAsPost: true
+            expect(exportContacts.create).toHaveBeenCalledWith({
+                account_list_id: api.account_list_id,
+                ids: '1,2',
+                status: 'active,hidden,null'
             });
         });
     });

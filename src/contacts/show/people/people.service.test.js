@@ -77,4 +77,54 @@ describe('contacts.service', () => {
             });
         });
     });
+    describe('bulkMerge', () => {
+        const winnersAndLosers = 'a';
+        const errorMessage = 'b';
+        const retVal = {
+            success: () => 'c'
+        };
+        beforeEach(() => {
+            spyOn(api, 'post').and.callFake(() => Promise.resolve(retVal));
+            spyOn(retVal, 'success').and.callFake(() => 'c');
+        });
+        it('should call the api', () => {
+            people.bulkMerge(winnersAndLosers, errorMessage);
+            expect(api.post).toHaveBeenCalledWith({
+                url: 'contacts/people/merges/bulk',
+                data: winnersAndLosers,
+                type: 'people',
+                errorMessage: errorMessage,
+                fields: {
+                    people: ''
+                }
+            });
+        });
+        it('should call the success fn', (done) => {
+            people.bulkMerge(winnersAndLosers, errorMessage).then(() => {
+                expect(retVal.success).toHaveBeenCalledWith();
+                done();
+            });
+        });
+        it('should pass the data', (done) => {
+            people.bulkMerge(winnersAndLosers, errorMessage).then((data) => {
+                expect(data).toEqual(retVal);
+                done();
+            });
+        });
+    });
+    describe('bulkSave', () => {
+        const peopleArr = ['a', 'b'];
+
+        it('should call the api', () => {
+            people.bulkSave(peopleArr);
+            expect(api.put).toHaveBeenCalledWith({
+                url: 'contacts/people/bulk',
+                data: peopleArr,
+                type: 'people',
+                fields: {
+                    people: ''
+                }
+            });
+        });
+    });
 });

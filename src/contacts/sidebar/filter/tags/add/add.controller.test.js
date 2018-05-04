@@ -40,6 +40,9 @@ describe('contacts.sidebar.tags.add.controller', () => {
                         filter: {
                             account_list_id: 123,
                             contact_ids: ''
+                        },
+                        fields: {
+                            contacts: ''
                         }
                     },
                     doSerialization: false,

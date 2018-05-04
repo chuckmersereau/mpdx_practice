@@ -104,7 +104,9 @@ class Api {
         if (overridePromise) {
             deferred.reject(ex);
         } else {
-            errorMessage = this.gettext('An error occurred while contacting the server.');
+            errorMessage = get('status', ex) === 504
+                ? this.gettext('An error occurred while connecting to MPDX.')
+                : this.gettext('An error occurred while processing your request.');
             return this.alerts.addAlert(errorMessage, 'danger', 0, true).then(() => {
                 return this.call(request).then((data) => {
                     deferred.resolve(data);

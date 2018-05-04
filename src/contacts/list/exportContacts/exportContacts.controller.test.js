@@ -1,125 +1,188 @@
 import cntrl from './exportContacts.controller';
-import { assign } from 'lodash/fp';
 
-let contactList = [];
-const fakeBlockUI = {
-    reset: () => {},
-    start: () => {}
-};
-const params = {
-    data: {
-        filter: { any_tags: false }
-    },
-    doDeSerialization: false,
-    overrideGetAsPost: true
+const filters = {
+    any_tags: false
 };
 
 describe('contacts.list.exportContacts.controller', () => {
-    let $ctrl, controller, api, scope, exportContacts;
+    let $ctrl, controller, scope, alerts, api, contacts, exportContacts, gettextCatalog;
     beforeEach(() => {
         angular.mock.module(cntrl);
-        inject(($controller, $timeout, $rootScope, _contacts_, _api_, _exportContacts_) => {
+        inject((
+            $controller, $timeout, $rootScope, _alerts_, _api_, _contacts_, _exportContacts_, _gettextCatalog_
+        ) => {
             scope = $rootScope.$new();
+            scope.$hide = () => {};
+            alerts = _alerts_;
             api = _api_;
+            contacts = _contacts_;
             exportContacts = _exportContacts_;
+            gettextCatalog = _gettextCatalog_;
             controller = $controller;
-            $ctrl = loadController(contactList);
-            spyOn($ctrl, 'blockUI').and.callFake(() => fakeBlockUI);
-            spyOn(api, 'get').and.callFake(() => Promise.resolve(null));
-            spyOn($ctrl.blockUI, 'reset').and.callThrough();
-            spyOn($ctrl.blockUI, 'start').and.callThrough();
+            $ctrl = loadController();
         });
     });
 
-    function loadController(contacts) {
+    function loadController() {
         return controller('exportContactsController as $ctrl', {
             $scope: scope,
-            selectedContactIds: contacts,
-            filter: null
+            selectedContactIds: [123, 456],
+            filters: filters
         });
     }
+
     describe('constructor', () => {
-        it('should set default params', () => {
-            expect($ctrl.params).toEqual(params);
+        it('should set default filters', () => {
+            expect($ctrl.filters).toEqual(filters);
         });
     });
-    describe('primaryCSVLink', () => {
+
+    describe('exportMailingCSV', () => {
         beforeEach(() => {
-            spyOn(exportContacts, 'primaryCSVLink').and.callFake(() => Promise.resolve());
+            spyOn(exportContacts, 'create').and.callFake(() => Promise.resolve());
         });
-        it('should start the loader', () => {
-            $ctrl.primaryCSVLink();
-            expect($ctrl.blockUI.start).toHaveBeenCalled();
+
+        it('should call exportContacts.create', () => {
+            $ctrl.exportMailingCSV();
+            expect(exportContacts.create).toHaveBeenCalledWith($ctrl.filters, 'csv', true);
         });
-        it('should use the service method', () => {
-            $ctrl.primaryCSVLink();
-            expect(exportContacts.primaryCSVLink).toHaveBeenCalledWith(params);
+
+        it('should return promise', () => {
+            expect($ctrl.exportMailingCSV()).toEqual(jasmine.any(Promise));
         });
-        it('should stop the loader', (done) => {
-            $ctrl.primaryCSVLink().then(() => {
-                expect($ctrl.blockUI.reset).toHaveBeenCalled();
-                done();
+
+        describe('promise successful', () => {
+            it('should call alerts.addAlert', (done) => {
+                spyOn(alerts, 'addAlert').and.callThrough();
+                spyOn(gettextCatalog, 'getString').and.callThrough();
+                $ctrl.exportMailingCSV().then(() => {
+                    expect(alerts.addAlert).toHaveBeenCalledWith(
+                        'Mailing Addresses for contacts exported successfully as a CSV file'
+                    );
+                    done();
+                });
             });
-        });
-    });
-    describe('primaryXLSXLink', () => {
-        beforeEach(() => {
-            spyOn(exportContacts, 'sendDownload').and.callFake(() => Promise.resolve());
-        });
-        it('should start the loader', () => {
-            $ctrl.primaryXLSXLink();
-            expect($ctrl.blockUI.start).toHaveBeenCalled();
-        });
-        it('should query the api', () => {
-            $ctrl.primaryXLSXLink();
-            expect(api.get).toHaveBeenCalledWith(assign(params, {
-                url: 'contacts/exports.xlsx',
-                headers: {
-                    Accept: 'application/xlsx'
-                },
-                responseType: 'arraybuffer'
-            }));
-        });
-        it('should save the query', (done) => {
-            $ctrl.primaryXLSXLink().then(() => {
-                expect(exportContacts.sendDownload).toHaveBeenCalledWith(jasmine.any(Blob), jasmine.any(String));
-                done();
-            });
-        });
-        it('should stop the loader', (done) => {
-            $ctrl.primaryXLSXLink().then(() => {
-                expect($ctrl.blockUI.reset).toHaveBeenCalled();
-                done();
+
+            it('should call $scope.$hide', (done) => {
+                spyOn(scope, '$hide').and.callThrough();
+                $ctrl.exportMailingCSV().then(() => {
+                    expect(scope.$hide).toHaveBeenCalled();
+                    done();
+                });
             });
         });
     });
-    describe('mailingCSVLink', () => {
+
+    describe('exportCSV', () => {
         beforeEach(() => {
-            spyOn(exportContacts, 'sendDownload').and.callFake(() => Promise.resolve());
+            spyOn(exportContacts, 'create').and.callFake(() => Promise.resolve());
         });
-        it('should start the loader', () => {
-            $ctrl.mailingCSVLink();
-            expect($ctrl.blockUI.start).toHaveBeenCalled();
+
+        it('should call exportContacts.create', () => {
+            $ctrl.exportCSV();
+            expect(exportContacts.create).toHaveBeenCalledWith($ctrl.filters, 'csv');
         });
-        it('should query the api', () => {
-            $ctrl.mailingCSVLink();
-            expect(api.get).toHaveBeenCalledWith(assign(params, {
-                url: 'contacts/exports/mailing.csv',
-                headers: {
-                    Accept: 'text/csv'
-                }
-            }));
+
+        it('should return promise', () => {
+            expect($ctrl.exportCSV()).toEqual(jasmine.any(Promise));
         });
-        it('should save the query', (done) => {
-            $ctrl.mailingCSVLink().then(() => {
-                expect(exportContacts.sendDownload).toHaveBeenCalledWith(jasmine.any(Blob), jasmine.any(String));
-                done();
+
+        describe('promise successful', () => {
+            it('should call alerts.addAlert', (done) => {
+                spyOn(alerts, 'addAlert').and.callThrough();
+                spyOn(gettextCatalog, 'getString').and.callThrough();
+                $ctrl.exportCSV().then(() => {
+                    expect(alerts.addAlert).toHaveBeenCalledWith(
+                        'Contacts exported successfully as a CSV file'
+                    );
+                    done();
+                });
+            });
+
+            it('should call $scope.$hide', (done) => {
+                spyOn(scope, '$hide').and.callThrough();
+                $ctrl.exportCSV().then(() => {
+                    expect(scope.$hide).toHaveBeenCalled();
+                    done();
+                });
             });
         });
-        it('should stop the loader', (done) => {
-            $ctrl.mailingCSVLink().then(() => {
-                expect($ctrl.blockUI.reset).toHaveBeenCalled();
-                done();
+    });
+
+    describe('exportXLSX', () => {
+        beforeEach(() => {
+            spyOn(exportContacts, 'create').and.callFake(() => Promise.resolve());
+        });
+
+        it('should call exportContacts.create', () => {
+            $ctrl.exportXLSX();
+            expect(exportContacts.create).toHaveBeenCalledWith($ctrl.filters, 'xlsx');
+        });
+
+        it('should return promise', () => {
+            expect($ctrl.exportXLSX()).toEqual(jasmine.any(Promise));
+        });
+
+        describe('promise successful', () => {
+            it('should call alerts.addAlert', (done) => {
+                spyOn(alerts, 'addAlert').and.callThrough();
+                spyOn(gettextCatalog, 'getString').and.callThrough();
+                $ctrl.exportXLSX().then(() => {
+                    expect(alerts.addAlert).toHaveBeenCalledWith(
+                        'Contacts exported successfully as a XLSX file'
+                    );
+                    done();
+                });
+            });
+
+            it('should call $scope.$hide', (done) => {
+                spyOn(scope, '$hide').and.callThrough();
+                $ctrl.exportXLSX().then(() => {
+                    expect(scope.$hide).toHaveBeenCalled();
+                    done();
+                });
+            });
+        });
+    });
+
+    describe('filterParams', () => {
+        it('should set filters', () => {
+            expect($ctrl.filterParams({ test: 'test' }, null)).toEqual({
+                test: 'test'
+            });
+        });
+
+        it('should add ids', () => {
+            expect($ctrl.filterParams({ test: 'test' }, [123, 456])).toEqual({
+                test: 'test',
+                ids: '123,456'
+            });
+        });
+
+        describe('no filters', () => {
+            it('should set default filters', () => {
+                expect($ctrl.filterParams(null, null)).toEqual({
+                    any_tags: false
+                });
+            });
+
+            it('should call contacts.buildFilterParams', () => {
+                spyOn(contacts, 'buildFilterParams').and.callThrough();
+                $ctrl.filterParams(null, null);
+                expect(contacts.buildFilterParams).toHaveBeenCalled();
+            });
+
+            it('should call api.cleanFilters', () => {
+                spyOn(api, 'cleanFilters').and.callThrough();
+                $ctrl.filterParams(null, null);
+                expect(api.cleanFilters).toHaveBeenCalledWith({ any_tags: false });
+            });
+
+            it('should add ids', () => {
+                expect($ctrl.filterParams(null, [123, 456])).toEqual({
+                    any_tags: false,
+                    ids: '123,456'
+                });
             });
         });
     });

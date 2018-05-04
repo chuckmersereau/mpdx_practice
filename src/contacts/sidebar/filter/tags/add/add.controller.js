@@ -33,6 +33,9 @@ class AddTagController {
                 filter: {
                     account_list_id: this.api.account_list_id,
                     contact_ids: this.selectedContacts.join()
+                },
+                fields: {
+                    contacts: ''
                 }
             },
             doSerialization: false,

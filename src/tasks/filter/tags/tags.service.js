@@ -46,16 +46,18 @@ class TagsService {
             name: tag.name
         }];
 
-        return this.api.delete({ url: 'tasks/tags/bulk', params: params, data: data, type: 'tags' }).then(() => {
+        return this.api.delete({
+            url: 'tasks/tags/bulk',
+            params: params,
+            data: data,
+            type: 'tags',
+            fields: {
+                tasks: ''
+            }
+        }).then(() => {
             this.selectedTags = reject({ name: tag.name }, this.selectedTags);
             this.rejectedTags = reject({ name: tag.name }, this.rejectedTags);
             this.data = reject({ name: tag.name }, this.data);
-        });
-    }
-    tag(contextIds, tag) {
-        return this.api.post('tasks/bulk_create', {
-            add_tag_task_ids: contextIds.join(),
-            add_tag_name: tag
         });
     }
     isTagActive(tag) {

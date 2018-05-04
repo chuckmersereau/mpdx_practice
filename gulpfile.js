@@ -1,5 +1,5 @@
-var gulp = require('gulp');
-var gettext = require('gulp-angular-gettext');
+const gulp = require('gulp');
+const gettext = require('gulp-angular-gettext');
 
 gulp.task('extract', function() {
     return gulp.src(['src/**/*.html', 'src/**/*.js'])
