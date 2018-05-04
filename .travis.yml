@@ -26,7 +26,7 @@ deploy:
   skip_cleanup: true
   local_dir: public
   acl: public_read
-  cache_control: "max-age=31536000"
+  cache_control: "max-age=31536000,public"
   on:
     repo: CruGlobal/mpdx_web
     branch: master
@@ -39,7 +39,7 @@ deploy:
   skip_cleanup: true
   local_dir: public
   acl: public_read
-  cache_control: "max-age=31536000"
+  cache_control: "max-age=31536000,public"
   on:
     repo: CruGlobal/mpdx_web
     branch: next
@@ -52,7 +52,7 @@ deploy:
   skip_cleanup: true
   local_dir: public
   acl: public_read
-  cache_control: "max-age=31536000"
+  cache_control: "max-age=31536000,public"
   on:
     repo: CruGlobal/mpdx_web
     branch: staging
