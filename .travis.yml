@@ -5,7 +5,7 @@ script:
 - bin/run_build.sh
 - bin/run_test.sh
 - bin/run_lint.sh
-after_deploy: aws/invalidate_cloudfront.sh
+after_deploy: aws/set_s3_max_age.sh
 before_install:
   - yarn global add gulp codecov sass-lint
 branches:
@@ -26,6 +26,7 @@ deploy:
   skip_cleanup: true
   local_dir: public
   acl: public_read
+  cache_control: "max-age=31536000"
   on:
     repo: CruGlobal/mpdx_web
     branch: master
@@ -38,6 +39,7 @@ deploy:
   skip_cleanup: true
   local_dir: public
   acl: public_read
+  cache_control: "max-age=31536000"
   on:
     repo: CruGlobal/mpdx_web
     branch: next
@@ -50,6 +52,7 @@ deploy:
   skip_cleanup: true
   local_dir: public
   acl: public_read
+  cache_control: "max-age=31536000"
   on:
     repo: CruGlobal/mpdx_web
     branch: staging
