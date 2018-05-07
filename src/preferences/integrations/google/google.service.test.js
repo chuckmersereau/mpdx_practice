@@ -32,7 +32,7 @@ describe('preferences.integrations.google.service', () => {
         });
         it('find failures', (done) => {
             spyOn(api, 'get').and.callFake(() => Promise.resolve([
-                { token_failure: true }
+                { token_expired: true }
             ]));
             google.load(true).then(() => {
                 expect(google.failure).toBeTruthy();
