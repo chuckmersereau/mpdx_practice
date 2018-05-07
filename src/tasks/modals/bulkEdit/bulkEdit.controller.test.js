@@ -5,11 +5,12 @@ const selected = [1, 2];
 const currentUser = { id: 321 };
 
 describe('tasks.bulkEdit.controller', () => {
-    let $ctrl, controller, scope, api, tasks, users;
+    let $ctrl, controller, q, scope, api, tasks, users;
     beforeEach(() => {
         angular.mock.module(add);
-        inject(($controller, $rootScope, _api_, _tasks_, _users_) => {
+        inject(($controller, $q, $rootScope, _api_, _tasks_, _users_) => {
             scope = $rootScope.$new();
+            q = $q;
             api = _api_;
             tasks = _tasks_;
             users = _users_;
@@ -28,7 +29,7 @@ describe('tasks.bulkEdit.controller', () => {
 
     describe('bulkEdit', () => {
         beforeEach(() => {
-            spyOn(api, 'put').and.callFake((url, data) => new Promise((resolve) => resolve(data)));
+            spyOn(api, 'put').and.callFake((url, data) => q.resolve(data));
             spyOn(tasks, 'change').and.callFake(() => {});
         });
         const model = { activity_type: 'activity' };
@@ -39,6 +40,19 @@ describe('tasks.bulkEdit.controller', () => {
                 done();
             });
             expect(api.put).toHaveBeenCalledWith('tasks/bulk', result);
+            scope.$digest();
+        });
+        it('should set start_at to nil if no_date is set', (done) => {
+            model.no_date = true;
+            let modifiedModel = angular.copy(model);
+            modifiedModel.start_at = null;
+            const result = map((id) => assign({ id: id }, modifiedModel), selected);
+            $ctrl.bulkEdit(model).then((data) => {
+                expect(data).toEqual(result);
+                done();
+            });
+            expect(api.put).toHaveBeenCalledWith('tasks/bulk', result);
+            scope.$digest();
         });
         it('should handle a comment', (done) => {
             const comment = 'comment';
@@ -49,6 +63,7 @@ describe('tasks.bulkEdit.controller', () => {
                 }, data);
                 done();
             });
+            scope.$digest();
         });
     });
 });
