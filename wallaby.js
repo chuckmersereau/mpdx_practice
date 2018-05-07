@@ -5,7 +5,7 @@ process.env.NODE_ENV = 'test';
 var wallabyWebpack = require('wallaby-webpack');
 var webpack = require('webpack');
 var webpackPostprocessor = wallabyWebpack({
-    devtool: 'source-map',
+    devtool: 'eval-source-map',
     entryPatterns: [
         'src/**/*.test.js'
     ],

@@ -17,7 +17,7 @@ const config = {
             loader: 'happypack/loader?id=ts',
             exclude: /node_modules/
         }, {
-            test: /\.(css|scss|json|html|png|jpg|jpeg|gif)$/,
+            test: /\.(json|html)$/,
             use: 'null-loader'
         }]
     },
@@ -29,11 +29,10 @@ const config = {
         new webpack.DefinePlugin({
             'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
         }),
+        new webpack.NormalModuleReplacementPlugin(/\.(gif|png|jpg|jpeg|scss|css)$/, 'node-noop'),
         new HappyPack({
             id: 'ts',
             loaders: [{
-                path: 'babel-loader'
-            }, {
                 path: 'ts-loader',
                 query: {
                     happyPackMode: true

@@ -10,6 +10,11 @@ module.exports = function karmaConfig(config) {
             'coverage'
         ],
         files: [
+            { pattern: 'node_modules/angular/angular.js', instrument: false },
+            { pattern: 'node_modules/angular-mocks/angular-mocks.js', instrument: false },
+            { pattern: 'node_modules/angular-strap/dist/angular-strap.js', instrument: false },
+            { pattern: 'node_modules/angular-strap/dist/angular-strap.tpl.js', instrument: false },
+            { pattern: 'node_modules/ng-rollbar/ng-rollbar.js', instrument: false },
             'src/tests.webpack.ts'
         ],
         helpers: [
