@@ -1,97 +1,64 @@
-import { assign, defaultTo } from 'lodash/fp';
+import { defaultTo } from 'lodash/fp';
 import joinComma from '../../../common/fp/joinComma';
-import * as moment from 'moment';
-import * as bowser from 'bowser';
 
 class ExportContactsController {
-    blockUI: IBlockUIService;
+    filters: any;
     isSafari: boolean;
-    moment: any;
     params: any;
     constructor(
+        private $scope: mgcrea.ngStrap.modal.IModalScope,
         private $timeout: ng.ITimeoutService,
-        blockUI: IBlockUIService,
+        private gettextCatalog: ng.gettext.gettextCatalog,
+        private alerts: AlertsService,
         private api: ApiService,
         private contacts: ContactsService,
         private exportContacts: ExportContactsService,
         selectedContactIds: string[],
-        filter: any
+        filters: any
     ) {
-        this.$timeout = $timeout;
-        this.api = api;
-        this.blockUI = blockUI.instances.get('contact-export');
-        this.contacts = contacts;
-        this.exportContacts = exportContacts;
-        this.moment = moment;
-
-        this.isSafari = bowser.name === 'Safari';
-        filter = defaultTo(this.api.cleanFilters(this.contacts.buildFilterParams()), filter);
-        this.params = {
-            data: {
-                filter: filter
-            },
-            doDeSerialization: false,
-            overrideGetAsPost: true
-        };
-        if (selectedContactIds.length > 0) {
-            this.params.data.filter.ids = joinComma(selectedContactIds);
+        this.filters = this.filterParams(filters, selectedContactIds);
+    }
+    exportMailingCSV(): ng.IPromise<void> {
+        return this.exportContacts.create(this.filters, 'csv', true).then(() => {
+            this.alerts.addAlert(this.gettextCatalog.getString(
+                'Mailing Addresses for contacts exported successfully as a CSV file'
+            ));
+            this.$scope.$hide();
+        });
+    }
+    exportCSV(): ng.IPromise<void> {
+        return this.exportContacts.create(this.filters, 'csv').then(() => {
+            this.alerts.addAlert(this.gettextCatalog.getString(
+                'Contacts exported successfully as a CSV file'
+            ));
+            this.$scope.$hide();
+        });
+    }
+    exportXLSX(): ng.IPromise<void> {
+        return this.exportContacts.create(this.filters, 'xlsx').then(() => {
+            this.alerts.addAlert(this.gettextCatalog.getString(
+                'Contacts exported successfully as a XLSX file'
+            ));
+            this.$scope.$hide();
+        });
+    }
+    filterParams(filters: any, selectedContactIds: string[]): any {
+        filters = defaultTo(this.api.cleanFilters(this.contacts.buildFilterParams()), filters);
+        if (selectedContactIds && selectedContactIds.length > 0) {
+            filters.ids = joinComma(selectedContactIds);
         }
-    }
-    primaryCSVLink() {
-        this.blockUI.start();
-        return this.exportContacts.primaryCSVLink(this.params).then(() => {
-            this.blockUI.reset();
-        }).catch(() => {
-            this.blockUI.reset();
-        });
-    }
-    primaryXLSXLink() {
-        this.blockUI.start();
-        const params = assign(this.params, {
-            url: 'contacts/exports.xlsx',
-            headers: {
-                Accept: 'application/xlsx'
-            },
-            responseType: 'arraybuffer'
-        });
-        return this.api.get(params).then((data) => {
-            const blob = new Blob([data], {
-                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;'
-            });
-            this.exportContacts.sendDownload(blob, `mpdx-contact-export-${moment().format('Y-MM-DD-HH:mm')}.xlsx`);
-        }).then(() => {
-            this.blockUI.reset();
-        }).catch(() => {
-            this.blockUI.reset();
-        });
-    }
-    mailingCSVLink() {
-        this.blockUI.start();
-        const params = assign(this.params, {
-            url: 'contacts/exports/mailing.csv',
-            headers: {
-                Accept: 'text/csv'
-            }
-        });
-        return this.api.get(params).then((data) => {
-            const blob = new Blob([data], {
-                type: 'text/csv;charset=utf-8;'
-            });
-            this.exportContacts.sendDownload(blob, `mpdx-mailing-export-${moment().format('Y-MM-DD-HH:mm')}.csv`);
-        }).then(() => {
-            this.blockUI.reset();
-        }).catch(() => {
-            this.blockUI.reset();
-        });
+        return filters;
     }
 }
 
 import 'angular-block-ui';
+import 'angular-gettext';
+import alerts, { AlertsService } from '../../../common/alerts/alerts.service';
 import contacts, { ContactsService } from '../../../contacts/contacts.service';
 import exportContacts, { ExportContactsService } from './export.service';
-import { ApiService } from '../../../common/api/api.service';
+import api, { ApiService } from '../../../common/api/api.service';
 
 export default angular.module('mpdx.contacts.list.exportContacts.controller', [
-    'blockUI',
-    contacts, exportContacts
+    'gettext',
+    alerts, api, contacts, exportContacts
 ]).controller('exportContactsController', ExportContactsController).name;

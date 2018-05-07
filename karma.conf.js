@@ -27,7 +27,7 @@ module.exports = function karmaConfig(config) {
             'PhantomJS'
         ],
         client: {
-            captureConsole: true
+            captureConsole: false
         },
         singleRun: true,
         specReporter: {

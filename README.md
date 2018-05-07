@@ -11,7 +11,7 @@
 * Development server with hot reload.
 * Production builds with cache busting and asset minification.
 * Testing environment using karma to run tests and jasmine as the framework.
-* In-development testing/coverage using wallabyjs. 
+* In-development testing/coverage using wallabyjs.
 
 ## Installation
 
@@ -53,3 +53,6 @@ https://ui-router.github.io/guide/ng1/migrate-to-1_0
 
 ## Additional credits
 Initial version was a direct fork of https://github.com/mike-allison/angular-webpack-workflow
+
+## apple-app-site-association
+This file has been uploaded directly to S3. To make changes to this you need to login to the AWS S3 Management Console and update the file in the bucket directly.

@@ -40,7 +40,7 @@ describe('home.care.component', () => {
                 controller: 'exportContactsController',
                 locals: {
                     selectedContactIds: [],
-                    filter: {
+                    filters: {
                         account_list_id: null,
                         newsletter: 'address',
                         status: 'active'

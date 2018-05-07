@@ -267,7 +267,7 @@ describe('contacts.list.component', () => {
                 controller: 'exportContactsController',
                 locals: {
                     selectedContactIds: $ctrl.contacts.selectedContacts,
-                    filter: null
+                    filters: null
                 }
             });
         });

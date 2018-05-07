@@ -1,42 +1,29 @@
-import { assign } from 'lodash/fp';
-import * as moment from 'moment';
+import config from '../../../config';
 
 export class ExportContactsService {
     constructor(
-        private $timeout: ng.ITimeoutService,
+        private $window: ng.IWindowService,
         private api: ApiService
     ) {}
-    primaryCSVLink(params) {
-        params = assign(params, {
-            url: 'contacts/exports.csv',
-            headers: {
-                Accept: 'text/csv'
-            }
-        });
-        return this.api.get(params).then((data) => {
-            const blob = new Blob([data], {
-                type: 'text/csv;charset=utf-8;'
-            });
-            this.sendDownload(blob, `mpdx-contact-export-${moment().format('Y-MM-DD-HH:mm')}.csv`);
-        });
-    }
-    sendDownload(blob, filename) {
-        if (window.navigator.msSaveOrOpenBlob) {
-            navigator.msSaveBlob(blob, filename);
-        } else {
-            const downloadContainer = angular.element('<div id="downloadLink" data-tap-disabled="true"><a></a></div>');
-            let downloadLink = angular.element(downloadContainer.children()[0]);
-            downloadLink.attr('href', window.URL.createObjectURL(blob));
-            downloadLink.attr('download', filename);
-            downloadLink.attr('target', '_blank');
-
-            angular.element('body').append(downloadContainer);
-            this.$timeout(() => {
-                downloadLink[0].click();
-                downloadLink.remove();
-                window.URL.revokeObjectURL(blob);
-            }, null);
+    create(filters: any, format: string = 'csv', mailing: boolean = false): ng.IPromise<void> {
+        let pathAddition = '';
+        if (mailing) {
+            pathAddition = '/mailing';
         }
+        return this.api.post({
+            url: `contacts/exports${pathAddition}`,
+            data: {
+                params: {
+                    filter: filters
+                }
+            },
+            type: 'export_logs'
+        }).then((data) => {
+            let token = this.$window.localStorage.getItem('token');
+            this.$window.location.replace(
+                `${config.apiUrl}contacts/exports${pathAddition}/${data.id}.${format}?access_token=${token}`
+            );
+        });
     }
 }
 

@@ -89,7 +89,7 @@ class AppealController {
         this.pledgesProcessedPage = 1;
         this.activeTab = 'given';
     }
-    $onInit() {
+    $onInit(): ng.IPromise<void> {
         /* istanbul ignore next */
         this.$log.debug('appeal', this.data);
         this.dataInitialState = angular.copy(this.data);
@@ -125,11 +125,11 @@ class AppealController {
             this.percentageRaised = toNumber(this.donationsSum) / this.data.amount * 100;
         });
     }
-    $onDestroy() {
+    $onDestroy(): void {
         this.watcher();
         this.disableAccountListEvent();
     }
-    getContactsNotGiven(page = this.contactsNotGivenPage) {
+    getContactsNotGiven(page: number = this.contactsNotGivenPage): ng.IPromise<void> {
         this.blockUIAsking.start();
         return this.api.get(`appeals/${this.appeal.id}/appeal_contacts`, {
             page: page,
@@ -151,7 +151,7 @@ class AppealController {
             this.blockUIAsking.reset();
         });
     }
-    getPledgesNotReceived(page = this.pledgesNotReceivedPage) {
+    getPledgesNotReceived(page: number = this.pledgesNotReceivedPage): ng.IPromise<void> {
         this.blockUICommitted.start();
         return this.api.get(`account_lists/${this.api.account_list_id}/pledges`, {
             include: 'contact',
@@ -174,7 +174,7 @@ class AppealController {
             this.blockUICommitted.reset();
         });
     }
-    getPledgesNotProcessed(page = this.pledgesNotProcessedPage) {
+    getPledgesNotProcessed(page: number = this.pledgesNotProcessedPage): ng.IPromise<void> {
         this.blockUIReceived.start();
         return this.api.get(`account_lists/${this.api.account_list_id}/pledges`, {
             include: 'contact',
@@ -197,7 +197,7 @@ class AppealController {
             this.blockUIReceived.reset();
         });
     }
-    getPledgesProcessed(page = this.pledgesProcessedPage) {
+    getPledgesProcessed(page: number = this.pledgesProcessedPage): ng.IPromise<void> {
         this.blockUIGiven.start();
         return this.api.get(`account_lists/${this.api.account_list_id}/pledges`, {
             include: 'contact,donations',
@@ -222,19 +222,19 @@ class AppealController {
             this.blockUIGiven.reset();
         });
     }
-    fixPledgeAmount(contacts) {
+    fixPledgeAmount(contacts: any): any[] {
         return map((ref) => assign(ref, {
             contact: assign(ref.contact, {
                 pledge_amount: fixed(2, defaultTo(0, ref.contact.pledge_amount))
             })
         }), contacts);
     }
-    addSymbols(data) {
+    addSymbols(data: any[]): any[] {
         return map((ref) => assign(ref, {
             donations: this.getCurrencySymbols(ref.donations)
         }), data);
     }
-    getCurrencySymbols(donations) {
+    getCurrencySymbols(donations: any): any[] {
         return map((donation) => {
             return assign(donation, {
                 symbol: this.getCurrencySymbolFromCode(donation.currency),
@@ -242,22 +242,22 @@ class AppealController {
             });
         }, donations);
     }
-    getCurrencyFromCode(code) {
+    getCurrencyFromCode(code: string): any {
         return find({ code: code }, this.serverConstants.data.pledge_currencies);
     }
-    getCurrencySymbolFromCode(code) {
+    getCurrencySymbolFromCode(code: string): string {
         const currency = this.getCurrencyFromCode(code);
         return get('symbol', currency);
     }
-    changeGoal() {
+    changeGoal(): ng.IPromise<void> {
         return this.save().then(() => {
             this.changePercentage();
         });
     }
-    changePercentage() {
+    changePercentage(): void {
         this.percentageRaised = toNumber(this.donationsSum) / this.appeal.amount * 100;
     }
-    save() {
+    save(): ng.IPromise<any> {
         let patch: any = createPatch(this.dataInitialState, this.appeal);
         delete patch.contacts;
         delete patch.donations;
@@ -266,7 +266,7 @@ class AppealController {
         const errorMessage = this.gettext('Unable to save appeal');
         return this.api.put(`appeals/${this.appeal.id}`, patch, successMessage, errorMessage);
     }
-    contactSearch(keyword) {
+    contactSearch(keyword: string): ng.IPromise<any> {
         return this.api.get({
             url: 'contacts',
             data: {
@@ -285,9 +285,11 @@ class AppealController {
             overrideGetAsPost: true
         });
     }
-    onContactSelected(contact, successMessage, errorMessage) {
-        successMessage = defaultTo(this.gettext('Contact successfully added to appeal'), successMessage);
-        errorMessage = defaultTo(this.gettext('Unable to add contact to appeal'), errorMessage);
+    onContactSelected(
+        contact: any,
+        successMessage: string = this.gettext('Contact successfully added to appeal'),
+        errorMessage: string = this.gettext('Unable to add contact to appeal')
+    ): ng.IPromise<any> {
         return this.api.post({
             url: `appeals/${this.appeal.id}/appeal_contacts`,
             data: {
@@ -306,7 +308,7 @@ class AppealController {
             this.getContactsNotGiven();
         });
     }
-    removeContact(contact) {
+    removeContact(contact: any): ng.IPromise<void> {
         const message = this.gettext('Are you sure you wish to remove this contact from the appeal?');
         return this.modal.confirm(message).then(() => {
             return this.appeals.removeContact(this.appeal.id, contact.id).then(() => {
@@ -314,7 +316,7 @@ class AppealController {
             });
         });
     }
-    addExcludedContact(rel) {
+    addExcludedContact(rel: any): ng.IPromise<void> {
         return this.removeExcludedContact(rel.id).then(() => {
             const successMessage = this.gettext('Excluded contact successfully added to appeal');
             const errorMessage = this.gettext('Unable to add excluded contact to appeal');
@@ -324,10 +326,10 @@ class AppealController {
             });
         });
     }
-    removeExcludedContact(id) {
+    removeExcludedContact(id: string): ng.IPromise<any> {
         return this.api.delete(`appeals/${this.appeal.id}/excluded_appeal_contacts/${id}`);
     }
-    selectAll() {
+    selectAll(): void {
         if (this.activeTab === 'given') {
             this.selectAllPledges('processed');
         } else if (this.activeTab === 'received') {
@@ -338,10 +340,10 @@ class AppealController {
             this.selectAllNotGiven();
         }
     }
-    deselectAll() {
+    deselectAll(): void {
         this.selectedContactIds = [];
     }
-    selectAllPledges(status) {
+    selectAllPledges(status: string): ng.IPromise<void> {
         return this.api.get(`account_lists/${this.api.account_list_id}/pledges`, {
             include: 'contact',
             per_page: 10000,
@@ -364,7 +366,7 @@ class AppealController {
             this.selectedContactIds = contactIds;
         });
     }
-    selectAllNotGiven() {
+    selectAllNotGiven(): ng.IPromise<void> {
         return this.api.get(`appeals/${this.appeal.id}/appeal_contacts`, {
             per_page: 10000,
             include: 'contact',
@@ -386,12 +388,12 @@ class AppealController {
             this.selectedContactIds = contactIds;
         });
     }
-    selectContact(contactId) {
+    selectContact(contactId: string): void {
         this.selectedContactIds = contains(contactId, this.selectedContactIds)
             ? pull(contactId, this.selectedContactIds)
             : concat(this.selectedContactIds, contactId);
     }
-    removePledge(pledge) {
+    removePledge(pledge: any): ng.IPromise<void> {
         const message = this.gettext('Are you sure you wish to remove this commitment?');
         return this.modal.confirm(message).then(() =>
             this.appeals.removePledge(pledge.id).then(() =>
@@ -399,7 +401,7 @@ class AppealController {
             )
         );
     }
-    refreshLists(status = null) {
+    refreshLists(status: string = null): ng.IPromise<void> {
         this.getContactsNotGiven();
         switch (status) {
             case 'processed':
@@ -417,7 +419,7 @@ class AppealController {
         }
         return this.reloadAppeal();
     }
-    refreshAllStatuses() {
+    refreshAllStatuses(): ng.IPromise<any> {
         return this.$q.all([
             this.getPledgesProcessed(),
             this.getPledgesNotProcessed(),
@@ -425,37 +427,30 @@ class AppealController {
             this.getExcludedContacts()
         ]);
     }
-    exportToCSV() {
-        const params = {
-            data: {
-                filter: {
-                    account_list_id: this.api.account_list_id,
-                    ids: joinComma(this.selectedContactIds),
-                    status: 'active,hidden,null'
-                }
-            },
-            doDeSerialization: false,
-            overrideGetAsPost: true
-        };
-        return this.exportContacts.primaryCSVLink(params);
+    exportToCSV(): ng.IPromise<void> {
+        return this.exportContacts.create({
+            account_list_id: this.api.account_list_id,
+            ids: joinComma(this.selectedContactIds),
+            status: 'active,hidden,null'
+        });
     }
-    exportMailchimp() {
+    exportMailchimp(): ng.IPromise<void> {
         const alert = curry((message: string) => this.alerts.addAlert(this.gettext(message), 'danger'));
         const result = this.cantExportToMailChimp();
-        return result ? alert(result) : this.doExportToMailChimp();
+        return result ? alert(result as string) : this.doExportToMailChimp();
     }
-    cantExportToMailChimp() {
+    cantExportToMailChimp(): boolean | string {
         return defaultTo(this.isSelectedPrimary(), this.isMailChimpListUndefined());
     }
-    isMailChimpListUndefined() {
+    isMailChimpListUndefined(): string | null {
         const message = 'No primary Mailchimp list defined. Please select a list in preferences.';
         return isNilOrEmpty(get('primary_list_id', this.mailchimp.data)) ? message : null;
     }
-    isSelectedPrimary() {
+    isSelectedPrimary(): boolean | string {
         const message = 'Please select a list other than your primary Mailchimp list.';
         return get('primary_list_id', this.mailchimp.data) === this.mailchimpListId ? message : false;
     }
-    doExportToMailChimp() {
+    doExportToMailChimp(): ng.IPromise<any> {
         const successMessage = this.gettext('Contact(s) successfully exported to Mailchimp');
         const errorMessage = this.gettext('Unable to add export contact(s) to Mailchimp');
         return this.api.post({
@@ -472,7 +467,7 @@ class AppealController {
             errorMessage: errorMessage
         });
     }
-    addPledge(contact) {
+    addPledge(contact: any): void {
         this.modal.open({
             template: require('./addPledge/add.html'),
             controller: 'addPledgeController',
@@ -482,7 +477,7 @@ class AppealController {
             }
         });
     }
-    editPledge(pledge) {
+    editPledge(pledge: any): void {
         this.modal.open({
             template: require('./editPledge/edit.html'),
             controller: 'editPledgeController',
@@ -492,7 +487,7 @@ class AppealController {
             }
         });
     }
-    getExcludedContacts(page = this.excludedContactsPage) {
+    getExcludedContacts(page: number = this.excludedContactsPage): ng.IPromise<void> {
         this.blockUIExcluded.start();
         return this.api.get(`appeals/${this.appeal.id}/excluded_appeal_contacts`, {
             include: 'contact',
@@ -511,20 +506,20 @@ class AppealController {
             this.blockUIExcluded.reset();
         });
     }
-    reloadAppeal() {
+    reloadAppeal(): ng.IPromise<void> {
         return this.appealsShow.getAppeal(this.appeal.id).then((data) => {
             this.appeal = data;
         });
     }
-    getReasons(rel) {
+    getReasons(rel: any): string[] {
         const keys = values(rel.reasons);
         return map((key) => get(key, this.reasons), keys);
     }
-    switchTab(tab) {
+    switchTab(tab: string): void {
         this.activeTab = tab;
         this.deselectAll();
     }
-    deleteAppeal() {
+    deleteAppeal(): ng.IPromise<void> {
         const message = this.gettext('You are about to permanently delete this Appeal. This will remove all contacts, and delete all pledges, and progress towards this appeal. Are you sure you want to continue?');
         return this.modal.confirm(message).then(() => {
             const errorMessage = this.gettext('There was an error trying to delete the appeal.');
@@ -535,7 +530,7 @@ class AppealController {
     }
 }
 
-const Appeal = {
+const Appeal: ng.IComponentOptions = {
     controller: AppealController,
     template: require('./show.html'),
     bindings: {
