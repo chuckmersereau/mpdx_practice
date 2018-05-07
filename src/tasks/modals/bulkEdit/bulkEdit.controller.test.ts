@@ -1,5 +1,5 @@
 import add from './bulkEdit.controller';
-import { assign, each, map } from 'lodash/fp';
+import { assign, each, isNil, map, omitBy } from 'lodash/fp';
 
 const selected = [1, 2];
 const currentUser = { id: 321 };
@@ -32,9 +32,21 @@ describe('tasks.bulkEdit.controller', () => {
             spyOn(api, 'put').and.callFake((url, data) => new q((resolve) => resolve(data)));
             spyOn(tasks, 'change').and.callFake(() => {});
         });
-        const model = { activity_type: 'activity' };
+        const model = { activity_type: 'activity', no_date: null, start_at: null };
         it('should build a task from the provided model', (done) => {
-            const result = map((id) => assign({ id: id }, model), selected);
+            const result = map((id) => assign({ id: id }, omitBy(isNil, model)), selected);
+            $ctrl.bulkEdit(model).then((data) => {
+                expect(data).toEqual(result);
+                done();
+            });
+            expect(api.put).toHaveBeenCalledWith('tasks/bulk', result);
+            scope.$digest();
+        });
+        it('should set start_at to nil if no_date is set', (done) => {
+            model.no_date = true;
+            let modifiedModel = angular.copy(model);
+            modifiedModel.start_at = null;
+            const result = map((id) => assign({ id: id }, modifiedModel), selected);
             $ctrl.bulkEdit(model).then((data) => {
                 expect(data).toEqual(result);
                 done();
