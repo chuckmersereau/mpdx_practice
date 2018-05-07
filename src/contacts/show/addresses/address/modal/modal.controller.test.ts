@@ -7,14 +7,15 @@ const address = {
 };
 
 describe('contacts.show.address.modal.controller', () => {
-    let $ctrl, controller, scope, NgMap, gettextCatalog, q;
+    let $ctrl, controller, scope, NgMap, gettextCatalog, q, users;
     beforeEach(() => {
         angular.mock.module(modal);
-        inject(($controller, $rootScope, _NgMap_, _gettextCatalog_, $q) => {
+        inject(($controller, $rootScope, _NgMap_, _gettextCatalog_, $q, _users_) => {
             scope = $rootScope.$new();
             NgMap = _NgMap_;
             gettextCatalog = _gettextCatalog_;
             q = $q;
+            users = _users_;
             controller = $controller;
             loadController();
         });
@@ -175,6 +176,35 @@ describe('contacts.show.address.modal.controller', () => {
                 done();
             });
             scope.$digest();
+        });
+    });
+    describe('reqUpdateEmailBodyRequest', () => {
+        beforeEach(() => {
+            $ctrl.contact = { name: 'a' };
+            users.current = { first_name: 'Tom' };
+        });
+        it('should return empty if not Siebel', () => {
+            address.source = '';
+            expect($ctrl.reqUpdateEmailBodyRequest()).toEqual('');
+        });
+        it('should handle a donor account', () => {
+            $ctrl.address.source = 'Siebel';
+            $ctrl.address.source_donor_account = { account_number: 123 };
+            expect($ctrl.reqUpdateEmailBodyRequest()).toEqual('Dear Donation Services,%0D%0A%0D%0AOne of my donors, a (donor #123) has a new current address.%0D%0APlease update their address to:%0D%0AREPLACE WITH NEW STREET%0D%0AREPLACE WITH NEW CITY, STATE, ZIP%0D%0A%0D%0AThanks,%0D%0ATom');
+        });
+        it('should handle no donor account', () => {
+            $ctrl.address.source = 'Siebel';
+            $ctrl.address.source_donor_account = undefined;
+            expect($ctrl.reqUpdateEmailBodyRequest()).toEqual('Dear Donation Services,%0D%0A%0D%0AOne of my donors, a has a new current address.%0D%0APlease update their address to:%0D%0AREPLACE WITH NEW STREET%0D%0AREPLACE WITH NEW CITY, STATE, ZIP%0D%0A%0D%0AThanks,%0D%0ATom');
+        });
+        it('should prior address', () => {
+            $ctrl.address.source = 'Siebel';
+            $ctrl.address.street = 'street';
+            $ctrl.address.city = 'city';
+            $ctrl.address.state = 'state';
+            $ctrl.address.postal_code = 'postal_code';
+            $ctrl.address.source_donor_account = undefined;
+            expect($ctrl.reqUpdateEmailBodyRequest()).toEqual('Dear Donation Services,%0D%0A%0D%0AOne of my donors, a, previously located at:%0D%0Astreet%0D%0Acity, state postal_code,%0D%0Ahas a new current address.%0D%0APlease update their address to:%0D%0AREPLACE WITH NEW STREET%0D%0AREPLACE WITH NEW CITY, STATE, ZIP%0D%0A%0D%0AThanks,%0D%0ATom');
         });
     });
 });

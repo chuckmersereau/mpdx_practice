@@ -18,7 +18,10 @@ class AddressController {
                 address += `, ${this.address.postal_code}`;
             }
             this.mapLink = `https://www.google.com/maps/search/?api=1&query=${address}`;
-            this.isEditable = !this.address.remote_id && (this.address.source === 'MPDX' || this.address.source === 'manual' || this.address.source === 'TntImport');
+            this.isEditable = !this.address.remote_id
+                && (this.address.source === 'MPDX'
+                    || this.address.source === 'manual'
+                    || this.address.source === 'TntImport');
         }
     }
 }
