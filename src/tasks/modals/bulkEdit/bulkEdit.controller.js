@@ -31,7 +31,11 @@ class BulkEditTaskController {
             if (comment) {
                 task.comments = [{ id: uuid(), body: comment, person: { id: this.users.current.id } }];
             }
-            return omitBy(isNil, task);
+            task = omitBy(isNil, task);
+            if (task.no_date) {
+                task.start_at = null;
+            }
+            return task;
         }, this.selectedTasks);
         return this.api.put('tasks/bulk', tasks).then((data) => {
             this.$rootScope.$emit('taskChange');
