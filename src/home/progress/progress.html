@@ -1,35 +1,34 @@
 <div ng-if="$ctrl.errorOccurred" translate>
     Error loading progress stats. Please try again or contact support.
 </div>
-<div ng-if="!$ctrl.errorOccurred">
-    <div class="progress-heading row">
-        <div class="col-sm-6">
-            <h3 class="progress-title" translate>Progress</h3>
-        </div>
-        <div class="col-sm-6 text-right">
+<div ng-if="!$ctrl.errorOccurred" class="panel panel-default">
+    <div class="panel-heading">
+        <div translate>Weekly Activity</div>
+        <div>
             {{$ctrl.startDate.format('MMM D')}} — {{$ctrl.endDate.format('MMM D')}}
-            &nbsp;
+        </div>
+        <div class="buttons">
             <a class="btn btn-default" title="" ng-click="$ctrl.previousWeek()">
-                <i class="fas fa-angle-left"></i>
-                &nbsp;
-                <translate>Previous Week</translate>
+                <i class="fal fa-chevron-left pr-2"></i>
+                <translate>Previous</translate>
             </a>
             <a class="btn btn-default" title="{{ 'Next' | translate }}" ng-click="$ctrl.nextWeek()">
-                <translate>Next Week</translate>
-                &nbsp;
-                <i class="fas fa-angle-right"></i>
+                <translate>Next</translate>
+                <i class="fal fa-chevron-right pl-2"></i>
             </a>
-            <a class="btn btn-reverse" href="https://staffweb.cru.org/mpd-donations/reports/mpd-weekly-update/" target="_blank" ng-if="$ctrl.showWeeklyProgressReport()" translate>
+            <a class="btn btn-default" href="https://staffweb.cru.org/mpd-donations/reports/mpd-weekly-update/" target="_blank" ng-if="$ctrl.showWeeklyProgressReport()" translate>
                 Weekly Progress Report
             </a>
         </div>
     </div>
-    <div block-ui="homeProgress" class="progress-content">
-        <progress-contacts></progress-contacts>
-        <progress-appointments></progress-appointments>
-        <progress-electronic-contacts></progress-electronic-contacts>
-        <progress-phone-dials></progress-phone-dials>
-        <progress-correspondence></progress-correspondence>
-        <progress-appeals></progress-appeals>
+    <div block-ui="homeProgress" class="panel-body">
+        <div class="progress-content">
+            <progress-contacts></progress-contacts>
+            <progress-appointments></progress-appointments>
+            <progress-correspondence></progress-correspondence>
+            <progress-phone-dials></progress-phone-dials>
+            <progress-electronic-contacts></progress-electronic-contacts>
+            <progress-appeals></progress-appeals>
+        </div>
     </div>
 </div>

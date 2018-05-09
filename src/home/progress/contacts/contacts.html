@@ -1,14 +1,15 @@
-<div class="panel panel-default">
-    <div class="panel-heading panel-heading-flex">
-        <i class="far fa-user"></i>
+<div class="progress-component">
+    <div class="header">
+        <i class="far fa-4x fa-users"></i>
         <div class="panel-title" translate>Contacts</div>
     </div>
-    <div class="panel-body statistics">
-        <a ui-sref="contacts({ filters: { status: ['Never Contacted','Contact for Appointment'] } })">
+    <div class="statistics">
+        <a ui-sref="contacts({ filters: { status: ['Never Contacted','Contact for Appointment'] } })" class="item">
             <h3>{{$ctrl.accounts.analytics.contacts.active || 0}}</h3>
             <strong translate>Active</strong>
         </a>
-        <a ui-sref="contacts({ filters: { referrer: ['any'], status: ['null', 'Never Contacted', 'Cultivate Relationship', 'Ask in Future', 'Contact for Appointment'] } })">
+        <a class="item"
+            ui-sref="contacts({ filters: { referrer: ['any'], status: ['null', 'Never Contacted', 'Cultivate Relationship', 'Ask in Future', 'Contact for Appointment'] } })">
             <h3>{{$ctrl.accounts.analytics.contacts.referrals_on_hand || 0}}</h3>
             <strong translate>Referrals On-hand</strong>
         </a>

@@ -5,9 +5,9 @@ home {
     padding: $container-padding;
     overflow-y: auto;
     overflow-x: hidden;
-    grid-template-rows: 39px 330px auto 1fr;
+    grid-template-rows: 50px 330px auto auto 1fr;
     grid-template-columns: 100%;
-    grid-gap: $container-padding;
+    grid-gap: ($container-padding / 2);
     donations-chart {
         .blankslate {
             height: 330px;
@@ -38,6 +38,20 @@ home {
     .row-eq-height {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
+        grid-gap: ($container-padding / 2);
+    }
+    @media (max-width: $breakpoint-tablet) {
         grid-gap: $container-padding;
+        .row-eq-height {
+            grid-template-columns: 1fr;
+            grid-gap: $container-padding;
+            home-connect,
+            home-commitments,
+            home-care {
+                .panel.panel-default {
+                    min-height: 0;
+                }
+            }
+        }
     }
 }
