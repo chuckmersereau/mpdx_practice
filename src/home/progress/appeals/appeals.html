@@ -1,24 +1,22 @@
-<div class="panel panel-default">
-    <div class="panel-heading panel-heading-flex">
-        <i class="far fa-money-bill-alt"></i>
-        <div class="panel-title" translate>Appeals</div>
-        <div class="spacer"></div>
-        <a class="btn btn-default" ui-sref="tools.appeals">View Appeals</a>
+<div class="progress-component">
+    <div class="header">
+        <a ui-sref="tools.appeals">
+            <i class="far fa-4x fa-money-bill-alt"></i>
+            <div class="panel-title" translate>Primary Appeal</div>
+        </a>
     </div>
-    <div class="panel-body progress-panel">
+    <div class="progress-panel">
         <div class="panel-row" ng-if="$ctrl.appeal">
             <div class="item">
-                <h3>
-                    <a ui-sref="tools.appeals.show({ appealId: $ctrl.appeal.id })">
-                        {{$ctrl.appeal.name}}
-                    </a>
-                </h3>
+                <a ui-sref="tools.appeals.show({ appealId: $ctrl.appeal.id })">
+                    {{$ctrl.appeal.name}}
+                </a>
             </div>
             <div class="item">
-                <h3>{{:: $ctrl.appeal.pledges_amount_processed }} / {{$ctrl.appeal.amount}}</h3>
+                {{:: $ctrl.appeal.pledges_amount_processed }} / {{$ctrl.appeal.amount}}
             </div>
-            <appeals-progressbar appeal="$ctrl.appeal"></appeals-progressbar>
         </div>
+        <appeals-progressbar appeal="$ctrl.appeal"></appeals-progressbar>
         <div ng-if="!$ctrl.appeal">
             <collection-selector item-name="{{ 'Primary Appeal' | translate }}"
                                  display-text="$ctrl.accounts.current.primary_appeal.name"
