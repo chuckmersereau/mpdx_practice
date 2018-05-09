@@ -1,5 +1,5 @@
 import { map, round, sum, take, takeRight } from 'lodash/fp';
-import { zip } from 'lodash';
+import { defaultTo, zip } from 'lodash';
 import moment from 'moment';
 
 class ChartController {
@@ -142,7 +142,7 @@ class ChartController {
     getDonationChart({ startDate = null, endDate = null, donorAccountId = null, displayCurrency = null } = {}) {
         let params = {
             filter: {
-                account_list_id: this.api.account_list_id
+                account_list_id: defaultTo(this.accountListId, this.api.account_list_id)
             }
         };
         if (donorAccountId) {
@@ -166,7 +166,8 @@ const Chart = {
     controller: ChartController,
     template: require('./chart.html'),
     bindings: {
-        inContact: '<'
+        inContact: '<',
+        accountListId: '<'
     }
 };
 
