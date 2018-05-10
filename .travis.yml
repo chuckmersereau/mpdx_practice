@@ -5,7 +5,6 @@ script:
 - bin/run_build.sh
 - bin/run_test.sh
 - bin/run_lint.sh
-before_deploy: aws/gzip_files.sh
 after_deploy: aws/set_s3_max_age.sh
 before_install:
   - yarn global add gulp codecov sass-lint
@@ -28,7 +27,6 @@ deploy:
   local_dir: public
   acl: public_read
   cache_control: "max-age=31536000,public"
-  detect_encoding: true
   on:
     repo: CruGlobal/mpdx_web
     branch: master
@@ -42,7 +40,6 @@ deploy:
   local_dir: public
   acl: public_read
   cache_control: "max-age=31536000,public"
-  detect_encoding: true
   on:
     repo: CruGlobal/mpdx_web
     branch: next
@@ -56,7 +53,6 @@ deploy:
   local_dir: public
   acl: public_read
   cache_control: "max-age=31536000,public"
-  detect_encoding: true
   on:
     repo: CruGlobal/mpdx_web
     branch: staging
