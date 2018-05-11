@@ -4,7 +4,7 @@
         <div class="panel-title" translate>Commitments Unfulfilled</div>
     </div>
     <div class="panel-body" ng-if="$ctrl.analytics.first_gift_not_received_count !== null">
-        <a ui-sref="contacts({filters: {pledge_received: 'false', status: ['Partner - Financial']} })" class="dash-stat">
+        <a ui-sref="contacts({filters: {pledge_received: 'false', status: 'Partner - Financial'} })" class="dash-stat">
             <span class="count-big">
                 {{ $ctrl.analytics.first_gift_not_received_count }}
             </span>
