@@ -1,15 +1,15 @@
-import component from './show.component';
 import { assign, each } from 'lodash/fp';
+import component from './show.component';
 
 describe('contacts.show.component', () => {
-    let $ctrl, componentController, gettextCatalog, rootScope, scope,
+    let $ctrl, gettextCatalog, rootScope, scope,
         api, contacts, contactsTags, users,
         state, transitions, q;
 
     beforeEach(() => {
         angular.mock.module(component);
         inject((
-            $componentController, $rootScope, _contacts_, _contactsTags_, _modal_,
+            $componentController, $rootScope, _contacts_, _contactsTags_,
             _gettextCatalog_, _api_, _users_, $state, $transitions, $q
         ) => {
             rootScope = $rootScope;
@@ -22,17 +22,13 @@ describe('contacts.show.component', () => {
             state = $state;
             transitions = $transitions;
             q = $q;
-            componentController = $componentController;
             api.account_list_id = 1234;
             contacts.current = { id: 1, name: 'a b' };
-            loadController();
+            $ctrl = $componentController('contact', { $scope: scope }, {});
         });
         spyOn(gettextCatalog, 'getString').and.callFake((data) => data);
     });
 
-    function loadController() {
-        $ctrl = componentController('contact', { $scope: scope }, {});
-    }
     describe('constructor', () => {
         it('should set tab data', () => {
             expect($ctrl.tabsLabels).toEqual(jasmine.any(Array));
@@ -43,6 +39,7 @@ describe('contacts.show.component', () => {
             }, $ctrl.tabsLabels);
         });
     });
+
     describe('$onInit', () => {
         it('should change state on account list change', () => {
             spyOn(state, 'go').and.callFake(() => {});
@@ -52,22 +49,26 @@ describe('contacts.show.component', () => {
             expect(state.go).toHaveBeenCalledWith('contacts');
             expect($ctrl.watcher).toBeDefined();
         });
+
         it('should call setActiveDrawer', () => {
             spyOn($ctrl, 'setActiveDrawer').and.callFake(() => {});
             contacts.activeDrawer = 'abc';
             $ctrl.$onInit();
             expect($ctrl.setActiveDrawer).toHaveBeenCalledWith('abc');
         });
+
         describe('activeTab === addresses', () => {
             beforeEach(() => {
                 contacts.activeTab = 'addresses';
             });
+
             it('should call $state.go', () => {
                 spyOn(state, 'go').and.callFake(() => {});
                 $ctrl.$onInit();
                 expect(state.go).toHaveBeenCalledWith('contacts.show.addresses');
             });
         });
+
         describe('$transitions.onStart callback', () => {
             it('should set call', () => {
                 spyOn(transitions, 'onStart').and.callFake((options, fn) => {
@@ -79,16 +80,18 @@ describe('contacts.show.component', () => {
                 expect(transitions.onStart).toHaveBeenCalledWith(
                     { to: 'contacts.show.*' },
                     jasmine.any(Function)
-                )
-            })
+                );
+            });
         });
     });
+
     describe('$onChanges', () => {
         it('should display contact name in page title', () => {
             $ctrl.$onChanges();
             expect(rootScope.pageTitle).toEqual('Contact | a b');
         });
     });
+
     describe('$onDestroy', () => {
         it('should disable event', () => {
             $ctrl.watcher = () => {};
@@ -104,16 +107,19 @@ describe('contacts.show.component', () => {
             expect(state.go).not.toHaveBeenCalled();
         });
     });
+
     describe('onPrimary', () => {
         beforeEach(() => {
             spyOn($ctrl, 'save').and.callFake(() => {});
         });
+
         it('should return if personId isn\'t set', () => {
             const initialValue = angular.copy(contacts.current.primary_person);
             $ctrl.onPrimary();
             expect(contacts.current.primary_person).toEqual(initialValue);
             expect($ctrl.save).not.toHaveBeenCalled();
         });
+
         it('should return if personId is already the same value', () => {
             contacts.current.primary_person = { id: 1 };
             const initialValue = angular.copy(contacts.current.primary_person);
@@ -121,6 +127,7 @@ describe('contacts.show.component', () => {
             expect(contacts.current.primary_person).toEqual(initialValue);
             expect($ctrl.save).not.toHaveBeenCalled();
         });
+
         it('should set the primary person', () => {
             contacts.current = { id: 1 };
             $ctrl.onPrimary(1);
@@ -128,6 +135,7 @@ describe('contacts.show.component', () => {
             expect(contacts.current.primary_person.id).toEqual(1);
         });
     });
+
     describe('save', () => {
         beforeEach(() => {
             contacts.current = { id: 1, name: 'a' };
@@ -135,6 +143,7 @@ describe('contacts.show.component', () => {
             spyOn(rootScope, '$emit').and.callFake(() => q.resolve());
             spyOn(contactsTags, 'addTag').and.callFake(() => {});
         });
+
         it('should call save', () => {
             spyOn(contacts, 'save').and.callFake(() => q.resolve());
             $ctrl.save();
@@ -144,6 +153,7 @@ describe('contacts.show.component', () => {
             expect(gettextCatalog.getString).toHaveBeenCalledWith(successMessage);
             expect(contacts.save).toHaveBeenCalledWith({ id: 1, name: 'a' }, successMessage, errorMessage);
         });
+
         it('shouldn\'t broadcast if tag_list is unchanged', (done) => {
             spyOn(contacts, 'save').and.callFake(() => q.resolve());
             $ctrl.save().then(() => {
@@ -152,6 +162,7 @@ describe('contacts.show.component', () => {
             });
             rootScope.$digest();
         });
+
         it('should broadcast if tag_list changed', (done) => {
             contacts.current = assign(contacts.current, { tag_list: 'a,b' });
             spyOn(contacts, 'save').and.callFake(() => q.resolve());
@@ -162,6 +173,7 @@ describe('contacts.show.component', () => {
             });
             rootScope.$digest();
         });
+
         it('should update initialState', (done) => {
             contacts.initialState.no_gift_aid = false;
             contacts.current.no_gift_aid = true;
@@ -173,6 +185,7 @@ describe('contacts.show.component', () => {
             rootScope.$digest();
         });
     });
+
     describe('showRecommendationTab', () => {
         beforeEach(() => {
             users.current = {
@@ -196,6 +209,7 @@ describe('contacts.show.component', () => {
                     }
                 ];
             });
+
             it('should return false', () => {
                 expect($ctrl.showRecommendationTab()).toBeFalsy();
             });
@@ -215,10 +229,11 @@ describe('contacts.show.component', () => {
             });
         });
     });
+
     describe('setActiveTab', () => {
         const transition = {
             to: () => {
-                return { name: 'contacts.show.tasks' }
+                return { name: 'contacts.show.tasks' };
             }
         };
 
@@ -233,14 +248,16 @@ describe('contacts.show.component', () => {
             expect(contacts.activeDrawer).toEqual('');
         });
     });
+
     describe('setActiveDrawer', () => {
         it('should set active drawer', () => {
             const drawer = 'a';
             $ctrl.setActiveDrawer(drawer);
             expect(contacts.activeDrawer).toEqual(drawer);
         });
+
         it('should handle tab duplicate', () => {
-            spyOn(state, 'go').and.callFake(() => {})
+            spyOn(state, 'go').and.callFake(() => {});
             contacts.activeTab = 'a';
             const drawer = 'a';
             $ctrl.setActiveDrawer(drawer);

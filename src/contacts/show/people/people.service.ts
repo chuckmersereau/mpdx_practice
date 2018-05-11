@@ -1,6 +1,11 @@
-import config from '../../../config';
-import { isFunction } from 'lodash/fp';
+import 'angular-gettext';
+import * as Upload from 'ng-file-upload';
 import * as uuid from 'uuid/v1';
+import { isFunction } from 'lodash/fp';
+import api, { ApiService } from '../../../common/api/api.service';
+import config from '../../../config';
+import contacts, { ContactsService } from '../../contacts.service';
+import modal, { ModalService } from '../../../common/modal/modal.service';
 
 export class PeopleService {
     data: any;
@@ -219,13 +224,6 @@ export class PeopleService {
         });
     }
 }
-
-
-import 'angular-gettext';
-import * as Upload from 'ng-file-upload';
-import api, { ApiService } from '../../../common/api/api.service';
-import contacts, { ContactsService } from '../../contacts.service';
-import modal, { ModalService } from '../../../common/modal/modal.service';
 
 export default angular.module('mpdx.contacts.show.people.service', [
     'gettext', Upload,

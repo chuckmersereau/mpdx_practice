@@ -4,7 +4,7 @@ const person = { first_name: 'a', last_name: 'b' };
 const contact = { id: 123 };
 
 describe('contacts.show.personModal.controller', () => {
-    let $ctrl, controller, alerts, people, gettextCatalog, rootScope, scope, modal, api, q;
+    let $ctrl, alerts, people, gettextCatalog, rootScope, scope, modal, api, q;
     beforeEach(() => {
         angular.mock.module(mc);
 
@@ -18,24 +18,19 @@ describe('contacts.show.personModal.controller', () => {
             modal = _modal_;
             people = _people_;
             q = $q;
-            controller = $controller;
-            loadController();
+            $ctrl = $controller('personModalController as $ctrl', {
+                $scope: scope,
+                contact: contact,
+                peopleForRelationship: null,
+                person: null,
+                userProfile: null
+            });
         });
-
         spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
         spyOn(scope, '$hide').and.callFake(() => {});
     });
 
-    function loadController() {
-        $ctrl = controller('personModalController as $ctrl', {
-            $scope: scope,
-            contact: contact,
-            peopleForRelationship: null,
-            person: null,
-            userProfile: null
-        });
-    }
     describe('constructor', () => {
         it('should list title suggestions', () => {
             expect($ctrl.titles).toEqual([
@@ -43,10 +38,12 @@ describe('contacts.show.personModal.controller', () => {
                 'Esq.', 'Jr.', 'Messrs.', 'Mmes.', 'Msgr.', 'Prof.', 'Rt. Hon.', 'St.'
             ]);
         });
+
         it('should list suffix suggestions', () => {
             expect($ctrl.suffixes).toEqual(['Jr.', 'Sr.', 'MD.']);
         });
     });
+
     describe('activate', () => {
         it('should set a translated title when adding a person', () => {
             $ctrl.activate();
@@ -69,10 +66,12 @@ describe('contacts.show.personModal.controller', () => {
             expect(gettextCatalog.getString).toHaveBeenCalledWith('Edit My Profile');
         });
     });
+
     describe('save', () => {
         beforeEach(() => {
             spyOn(rootScope, '$emit').and.callThrough();
         });
+
         it('should create on create', (done) => {
             const errorMessage = 'Unable to save changes.';
             const successMessage = 'Changes saved successfully.';

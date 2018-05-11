@@ -1,7 +1,7 @@
 import component from './google.component';
 
 describe('preferences.integrations.google.component', () => {
-    let $ctrl, rootScope, scope, componentController, modal, google, gettextCatalog, q;
+    let $ctrl, rootScope, scope, modal, google, gettextCatalog, q;
 
     beforeEach(() => {
         angular.mock.module(component);
@@ -12,21 +12,17 @@ describe('preferences.integrations.google.component', () => {
             gettextCatalog = _gettextCatalog_;
             google = _google_;
             q = $q;
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('googleIntegrationPreferences', { $scope: scope }, {});
         });
         spyOn(modal, 'confirm').and.callFake(() => q.resolve());
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
 
-    function loadController() {
-        $ctrl = componentController('googleIntegrationPreferences', { $scope: scope }, {});
-    }
-
     describe('disconnect', () => {
         beforeEach(() => {
             spyOn(google, 'disconnect').and.callFake(() => q.resolve());
         });
+
         it('should call the google service', () => {
             const successMessage = 'MPDX removed your integration with Google.';
             const errorMessage = 'MPDX couldn\'t save your configuration changes for Google.';

@@ -1,3 +1,5 @@
+import designationAccounts, { DesignationAccountsService } from '../designationAccounts.service';
+
 class SelectorController {
     constructor(
         private $rootScope: ng.IRootScopeService,
@@ -12,8 +14,6 @@ const Selector = {
     controller: SelectorController,
     template: require('./selector.html')
 };
-
-import designationAccounts, { DesignationAccountsService } from '../designationAccounts.service';
 
 export default angular.module('mpdx.common.designationAccounts.selector.component', [
     designationAccounts

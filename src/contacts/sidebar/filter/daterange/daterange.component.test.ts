@@ -1,5 +1,5 @@
-import component from './daterange.component';
 import * as moment from 'moment';
+import component from './daterange.component';
 
 const foundElement = {
     daterangepicker: () => {
@@ -12,41 +12,41 @@ const element = {
         return foundElement;
     }
 };
+
 describe('contacts.sidebar.filter.daterange.component', () => {
-    let $ctrl, rootScope, scope, componentController, gettextCatalog;
+    let $ctrl, rootScope, scope, gettextCatalog;
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _gettextCatalog_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             gettextCatalog = _gettextCatalog_;
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('contactsFilterDaterange', {
+                $scope: scope,
+                $element: element
+            }, {
+                locale: 'en'
+            });
         });
         spyOn(gettextCatalog, 'getPlural').and.callThrough();
     });
 
-    function loadController() {
-        $ctrl = componentController('contactsFilterDaterange', {
-            $scope: scope,
-            $element: element
-        }, {
-            locale: 'en'
-        });
-    }
     describe('constructor', () => {
         it('should define global dependencies', () => {
             expect($ctrl.gettextCatalog).toBeDefined();
             expect($ctrl.$element).toBeDefined();
         });
     });
+
     describe('$onInit', () => {
         beforeEach(function() {
             jasmine.clock().install();
         });
+
         afterEach(function() {
             jasmine.clock().uninstall();
         });
+
         it('should build the options for the jq daterange picker', () => {
             const day = moment('2015-12-22').toDate();
             jasmine.clock().mockDate(day);
@@ -72,29 +72,34 @@ describe('contacts.sidebar.filter.daterange.component', () => {
             expect(moment(day).startOf('month').subtract(13, 'months').isSame($ctrl.options.ranges['Last 13 Months'][0], 'date')).toBeTruthy();
             expect(moment(day).isSame($ctrl.options.ranges['Last 13 Months'][1], 'date')).toBeTruthy();
         });
+
         it('should initialize the jq datepicker', () => {
             spyOn(foundElement, 'daterangepicker').and.callFake(() => {});
             $ctrl.$onInit();
             expect(foundElement.daterangepicker).toHaveBeenCalledWith($ctrl.options);
         });
+
         it('should set the datepicker on event', () => {
             spyOn(foundElement, 'on').and.callFake(() => {});
             $ctrl.apply = 'apply';
             $ctrl.$onInit();
             expect(foundElement.on).toHaveBeenCalledWith('apply.daterangepicker', 'apply');
         });
+
         it('should set the datepicker cancel event', () => {
             spyOn(foundElement, 'on').and.callFake(() => {});
             $ctrl.cancel = 'cancel';
             $ctrl.$onInit();
             expect(foundElement.on).toHaveBeenCalledWith('cancel.daterangepicker', 'cancel');
         });
+
         it('should call parseCustomOptions', () => {
             spyOn($ctrl, 'parseCustomOptions').and.callFake(() => {});
             $ctrl.$onInit();
             expect($ctrl.parseCustomOptions).toHaveBeenCalledWith();
         });
     });
+
     describe('parseCustomOptions', () => {
         it('should set ranges', () => {
             $ctrl.customOptions = [{ name: 'a', start: '2015-12-22', end: '2015-12-23' }];

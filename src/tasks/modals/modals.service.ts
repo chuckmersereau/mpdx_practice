@@ -1,4 +1,7 @@
 import { TasksService } from '../tasks.service';
+import modal, { ModalService } from '../../common/modal/modal.service';
+import serverConstants, { ServerConstantsService } from '../../common/serverConstants/serverConstants.service';
+import tasksTags from '../filter/tags/tags.service';
 
 export class TasksModalsService {
     constructor(
@@ -19,10 +22,6 @@ export class TasksModalsService {
         });
     }
 }
-
-import modal, { ModalService } from '../../common/modal/modal.service';
-import serverConstants, { ServerConstantsService } from '../../common/serverConstants/serverConstants.service';
-import tasksTags from '../filter/tags/tags.service';
 
 export default angular.module('mpdx.tasks.modals.service', [
     modal, serverConstants, tasksTags

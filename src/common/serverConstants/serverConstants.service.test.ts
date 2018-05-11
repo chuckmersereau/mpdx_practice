@@ -10,11 +10,13 @@ describe('contacts.service', () => {
             q = $q;
         });
     });
+
     describe('constructor', () => {
         it('should set data to an empty object', () => {
             expect(serverConstants.data).toEqual({});
         });
     });
+
     describe('load', () => {
         it('should get constants', () => {
             spyOn(api, 'get').and.callFake(() => q.resolve());
@@ -25,6 +27,7 @@ describe('contacts.service', () => {
                 }
             });
         });
+
         it('should only get new constants', () => {
             spyOn(api, 'get').and.callFake(() => q.resolve());
             serverConstants.data = { a: {} };
@@ -35,26 +38,32 @@ describe('contacts.service', () => {
                 }
             });
         });
+
         it('should exit if nothing to get', () => {
             spyOn(api, 'get').and.callFake(() => q.reject());
             serverConstants.load([]);
             expect(api.get).not.toHaveBeenCalled();
         });
     });
+
     describe('handleSpecialKeys', () => {
         it('should mapUnderscore languages', () => {
             expect(serverConstants.handleSpecialKeys('languages', { a_r: {} })).toEqual({ 'a-r': {} });
         });
+
         it('should mapUnderscore locales', () => {
             expect(serverConstants.handleSpecialKeys('locales', { a_r: {} })).toEqual({ 'a-r': {} });
         });
+
         it('should mapUnderscore organizations_attributes', () => {
             expect(serverConstants.handleSpecialKeys('organizations_attributes', { a_r: {} })).toEqual({ 'a-r': {} });
         });
+
         it('should mapFrequencies pledge_frequency_hashes', () => {
             expect(serverConstants.handleSpecialKeys('pledge_frequency_hashes', [{ key: '1.1' }])).toEqual([{ key: 1.1 }]);
         });
     });
+
     describe('getPledgeFrequency', () => {
         it('should return a pledge frequency object', () => {
             serverConstants.data = {
@@ -65,6 +74,7 @@ describe('contacts.service', () => {
             expect(serverConstants.getPledgeFrequency('1')).toEqual({ key: 1, value: 'a' });
         });
     });
+
     describe('getPledgeFrequencyValue', () => {
         it('should return a pledge frequency value', () => {
             serverConstants.data = {
@@ -74,6 +84,7 @@ describe('contacts.service', () => {
             };
             expect(serverConstants.getPledgeFrequencyValue('1')).toEqual('a');
         });
+
         it('should handle nulls', () => {
             serverConstants.data = {
                 pledge_frequency_hashes: [
@@ -83,6 +94,7 @@ describe('contacts.service', () => {
             expect(serverConstants.getPledgeFrequencyValue('2')).toBeUndefined();
         });
     });
+
     describe('getPledgeCurrencySymbol', () => {
         it('should get symbol for code', () => {
             serverConstants.data = {

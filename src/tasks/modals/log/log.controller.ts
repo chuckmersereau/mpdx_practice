@@ -1,5 +1,9 @@
-import { concat, contains, get, map, reduce } from 'lodash/fp';
 import * as moment from 'moment';
+import { concat, contains, get, map, reduce } from 'lodash/fp';
+import { TasksTagsService } from '../../filter/tags/tags.service';
+import contacts, { ContactsService } from '../../../contacts/contacts.service';
+import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
+import tasks, { TasksService } from '../../tasks.service';
 
 class LogTaskController {
     comment: any; // addModal type issue w/ string
@@ -66,11 +70,6 @@ class LogTaskController {
         this.task.result = get('[0]', this.serverConstants.data.results[this.task.activity_type.toLowerCase()]);
     }
 }
-
-import contacts, { ContactsService } from '../../../contacts/contacts.service';
-import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
-import tasks, { TasksService } from '../../tasks.service';
-import { TasksTagsService } from '../../filter/tags/tags.service';
 
 export default angular.module('mpdx.contacts.logTask.controller', [
     contacts, serverConstants, tasks

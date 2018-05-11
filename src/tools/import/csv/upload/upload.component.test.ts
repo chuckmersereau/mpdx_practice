@@ -1,7 +1,7 @@
 import component from './upload.component';
 
 describe('tools.import.csv.upload.component', () => {
-    let $ctrl, rootScope, scope, componentController, serverConstants;
+    let $ctrl, rootScope, scope, serverConstants;
 
     beforeEach(() => {
         angular.mock.module(component);
@@ -9,19 +9,14 @@ describe('tools.import.csv.upload.component', () => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             serverConstants = _serverConstants_;
-            componentController = $componentController;
             serverConstants.data = {
                 csv_import: {
                     max_file_size_in_bytes: 512000000
                 }
             };
-            loadController();
+            $ctrl = $componentController('importCsvUpload', { $scope: scope }, {});
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('importCsvUpload', { $scope: scope }, {});
-    }
 
     describe('constructor', () => {
         it('should set default values', () => {

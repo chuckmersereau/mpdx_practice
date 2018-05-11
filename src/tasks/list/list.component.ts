@@ -1,3 +1,6 @@
+import 'angular-gettext';
+import * as moment from 'moment';
+import { ApiService } from '../../common/api/api.service';
 import {
     concat,
     defaultTo,
@@ -14,10 +17,17 @@ import {
     sortBy,
     union
 } from 'lodash/fp';
-import * as moment from 'moment';
+import alerts, { AlertsService } from '../../common/alerts/alerts.service';
+import modal, { ModalService } from '../../common/modal/modal.service';
 import pagination from '../../common/pagination/pagination';
 import relationshipId from '../../common/fp/relationshipId';
+import session, { SessionService } from '../../common/session/session.service';
+import tasks, { TasksService } from '../tasks.service';
+import tasksFilter, { TasksFilterService } from '../filter/filter.service';
+import tasksModals, { TasksModalsService } from '../modals/modals.service';
+import tasksTags, { TasksTagsService } from '../filter/tags/tags.service';
 import upsert from '../../common/fp/upsert';
+import users, { UsersService } from '../../common/users/users.service';
 
 export const defaultMeta = {
     pagination: {
@@ -380,17 +390,6 @@ const TaskList = {
         contact: '<'
     }
 };
-
-import alerts, { AlertsService } from '../../common/alerts/alerts.service';
-import 'angular-gettext';
-import modal, { ModalService } from '../../common/modal/modal.service';
-import session, { SessionService } from '../../common/session/session.service';
-import tasks, { TasksService } from '../tasks.service';
-import tasksFilter, { TasksFilterService } from '../filter/filter.service';
-import tasksModals, { TasksModalsService } from '../modals/modals.service';
-import tasksTags, { TasksTagsService } from '../filter/tags/tags.service';
-import users, { UsersService } from '../../common/users/users.service';
-import { ApiService } from '../../common/api/api.service';
 
 export default angular.module('mpdx.tasks.list.component', [
     'gettext',

@@ -1,18 +1,16 @@
 import component from './connect.component';
 
 describe('setup.connect.component', () => {
-    let $ctrl, rootScope, scope, componentController,
-        api, gettextCatalog, preferencesOrganization, setup, users, q;
+    let $ctrl, rootScope, scope, api, gettextCatalog, preferencesOrganization, setup, users, q;
 
     beforeEach(() => {
         angular.mock.module(component);
         inject((
             $componentController, $rootScope,
-            _accounts_, _api_, _gettextCatalog_, _help_, _preferencesOrganization_, _serverConstants_, _setup_,
+            _api_, _gettextCatalog_, _preferencesOrganization_, _setup_,
             _users_, $q
         ) => {
             rootScope = $rootScope;
-            componentController = $componentController;
             scope = rootScope.$new();
             q = $q;
             api = _api_;
@@ -25,14 +23,10 @@ describe('setup.connect.component', () => {
             users.current = { preferences: {} };
             users.currentOptions = { setup_position: {} };
 
-            loadController();
+            $ctrl = $componentController('setupConnect', { $scope: scope }, {});
         });
         spyOn(gettextCatalog, 'getString').and.callFake((data) => data);
     });
-
-    function loadController() {
-        $ctrl = componentController('setupConnect', { $scope: scope }, {});
-    }
 
     describe('$onInit', () => {
         it('should call listOrganizationAccounts', () => {

@@ -1,3 +1,5 @@
+import setup, { SetupService } from '../setup.service';
+
 class StartController {
     saving: boolean;
     constructor(
@@ -20,8 +22,6 @@ const Start = {
     template: require('./start.html'),
     controller: StartController
 };
-
-import setup, { SetupService } from '../setup.service';
 
 export default angular.module('mpdx.setup.start.component', [
     setup

@@ -1,3 +1,8 @@
+import 'angular-block-ui';
+import fixCommitmentInfo, { FixCommitmentInfoService } from '../commitment.service';
+import locale from '../../../../common/locale/locale.service';
+import serverConstants, { ServerConstantsService } from '../../../../common/serverConstants/serverConstants.service';
+
 class ItemController {
     contact: any;
     constructor(
@@ -22,18 +27,13 @@ class ItemController {
     }
 }
 
-const Item = {
+const Item: ng.IComponentOptions = {
     controller: ItemController,
     template: require('./item.html'),
     bindings: {
         contact: '<'
     }
 };
-
-import 'angular-block-ui';
-import serverConstants, { ServerConstantsService } from '../../../../common/serverConstants/serverConstants.service';
-import fixCommitmentInfo, { FixCommitmentInfoService } from '../commitment.service';
-import locale from '../../../../common/locale/locale.service';
 
 export default angular.module('mpdx.tools.fix.commitmentInfo.item.component', [
     'blockUI',

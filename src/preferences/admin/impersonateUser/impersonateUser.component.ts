@@ -1,4 +1,8 @@
+import 'angular-gettext';
 import { get } from 'lodash/fp';
+import alerts, { AlertsService } from '../../../common/alerts/alerts.service';
+import api, { ApiService } from '../../../common/api/api.service';
+import users, { UsersService } from '../../../common/users/users.service';
 
 class ImpersonateUserController {
     impersonateUser: any;
@@ -46,11 +50,6 @@ const ImpersonateUser = {
     template: require('./impersonateUser.html'),
     controller: ImpersonateUserController
 };
-
-import 'angular-gettext';
-import alerts, { AlertsService } from '../../../common/alerts/alerts.service';
-import api, { ApiService } from '../../../common/api/api.service';
-import users, { UsersService } from '../../../common/users/users.service';
 
 export default angular.module('mpdx.preferences.admin.impersonateUser.component', [
     'gettext',

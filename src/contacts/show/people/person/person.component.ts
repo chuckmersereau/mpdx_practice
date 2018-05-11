@@ -1,3 +1,6 @@
+import 'angular-gettext';
+import people, { PeopleService } from '../people.service';
+
 class ContactPersonController {
     contact: any;
     isMerging: boolean;
@@ -74,9 +77,6 @@ const Person = {
         view: '<'
     }
 };
-
-import 'angular-gettext';
-import people, { PeopleService } from '../people.service';
 
 export default angular.module('mpdx.contacts.show.person.component', [
     'gettext',

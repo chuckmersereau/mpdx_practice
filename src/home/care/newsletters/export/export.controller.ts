@@ -1,3 +1,6 @@
+import 'angular-block-ui';
+import contacts, { ContactsService } from '../../../../contacts/contacts.service';
+
 class ExportController {
     blockUI: IBlockUIService;
     emails: any;
@@ -22,9 +25,6 @@ class ExportController {
         });
     }
 }
-
-import 'angular-block-ui';
-import contacts, { ContactsService } from '../../../../contacts/contacts.service';
 
 export default angular.module('mpdx.home.care.newsletter.export.controller', [
     'blockUI',

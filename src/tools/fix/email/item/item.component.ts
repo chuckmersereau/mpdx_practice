@@ -1,4 +1,8 @@
+import 'angular-block-ui';
 import { get } from 'lodash/fp';
+import fixEmailAddresses, { FixEmailAddressesService } from '../email.service';
+import modal, { ModalService } from '../../../../common/modal/modal.service';
+import people, { PeopleService } from '../../../../contacts/show/people/people.service';
 
 class ItemController {
     blockUI: IBlockUIService;
@@ -34,11 +38,6 @@ const Item = {
         person: '<'
     }
 };
-
-import 'angular-block-ui';
-import fixEmailAddresses, { FixEmailAddressesService } from '../email.service';
-import modal, { ModalService } from '../../../../common/modal/modal.service';
-import people, { PeopleService } from '../../../../contacts/show/people/people.service';
 
 export default angular.module('mpdx.tools.fix.emailAddresses.item.component', [
     'blockUI',

@@ -78,6 +78,7 @@ describe('contacts.service', () => {
             });
         });
     });
+
     describe('bulkMerge', () => {
         const winnersAndLosers = 'a';
         const errorMessage = 'b';
@@ -88,6 +89,7 @@ describe('contacts.service', () => {
             spyOn(api, 'post').and.callFake(() => q.resolve(retVal));
             spyOn(retVal, 'success').and.callFake(() => 'c');
         });
+
         it('should call the api', () => {
             people.bulkMerge(winnersAndLosers, errorMessage);
             expect(api.post).toHaveBeenCalledWith({
@@ -100,6 +102,7 @@ describe('contacts.service', () => {
                 }
             });
         });
+
         it('should call the success fn', (done) => {
             people.bulkMerge(winnersAndLosers, errorMessage).then(() => {
                 expect(retVal.success).toHaveBeenCalledWith();
@@ -107,6 +110,7 @@ describe('contacts.service', () => {
             });
             rootScope.$digest();
         });
+
         it('should pass the data', (done) => {
             people.bulkMerge(winnersAndLosers, errorMessage).then((data) => {
                 expect(data).toEqual(retVal);
@@ -115,6 +119,7 @@ describe('contacts.service', () => {
             rootScope.$digest();
         });
     });
+
     describe('bulkSave', () => {
         const peopleArr = ['a', 'b'];
 

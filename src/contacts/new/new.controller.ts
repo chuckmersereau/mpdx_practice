@@ -1,3 +1,6 @@
+import { StateService } from '@uirouter/core';
+import contacts, { ContactsService } from '../contacts.service';
+
 class ContactNewModalController {
     contact: any;
     constructor(
@@ -19,9 +22,6 @@ class ContactNewModalController {
         });
     }
 }
-
-import { StateService } from '@uirouter/core';
-import contacts, { ContactsService } from '../contacts.service';
 
 export default angular.module('mpdx.contacts.new.controller', [
     contacts

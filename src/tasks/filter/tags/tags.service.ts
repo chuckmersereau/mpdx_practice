@@ -1,4 +1,7 @@
+import 'angular-gettext';
 import { find, includes, map, reject, unionBy } from 'lodash/fp';
+import api, { ApiService } from '../../../common/api/api.service';
+import modal, { ModalService } from '../../../common/modal/modal.service';
 
 export class TasksTagsService {
     anyTags: boolean;
@@ -41,7 +44,6 @@ export class TasksTagsService {
                 account_list_id: this.api.account_list_id
             }
         };
-
 
         const data = [{
             name: tag.name
@@ -114,10 +116,6 @@ export class TasksTagsService {
         this.data = unionBy('name', this.data, tags);
     }
 }
-
-import 'angular-gettext';
-import api, { ApiService } from '../../../common/api/api.service';
-import modal, { ModalService } from '../../../common/modal/modal.service';
 
 export default angular.module('mpdx.tasks.tags.service', [
     'gettext',

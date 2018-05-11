@@ -1,3 +1,5 @@
+import people, { PeopleService } from '../../../../contacts/show/people/people.service';
+
 class ItemController {
     constructor(
         private people: PeopleService
@@ -13,8 +15,6 @@ const Item = {
         ignore: '<'
     }
 };
-
-import people, { PeopleService } from '../../../../contacts/show/people/people.service';
 
 export default angular.module('mpdx.tools.merge.people.item.component', [
     people

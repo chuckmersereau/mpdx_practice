@@ -1,24 +1,19 @@
 import component from './resetAccount.component';
 
 describe('preferences.admin.resetAccount.component', () => {
-    let $ctrl, componentController, scope, rootScope, gettextCatalog, api, q;
+    let $ctrl, scope, rootScope, gettextCatalog, api, q;
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _gettextCatalog_, _api_, $q) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
-            componentController = $componentController;
             gettextCatalog = _gettextCatalog_;
             api = _api_;
             q = $q;
-            loadController();
+            $ctrl = $componentController('preferencesAdminResetAccount', { $scope: scope }, {});
         });
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
-
-    function loadController() {
-        $ctrl = componentController('preferencesAdminResetAccount', { $scope: scope }, {});
-    }
 
     describe('constructor', () => {
         it('should set default values', () => {

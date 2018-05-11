@@ -1,9 +1,37 @@
- import component from './donations.component';
 import * as moment from 'moment';
+import component from './donations.component';
+
+let data: any = [
+    {
+        id: 'b0a2f8fd-812d-4119-8949-55845128c651',
+        amount: '75.0',
+        currency: 'CAD'
+    },
+    {
+        id: '59ef07db-adca-4445-8f25-c812be712cf7',
+        amount: '30.0',
+        currency: 'CAD'
+    },
+    {
+        id: '0599e04b-9e35-4afb-9ba9-f5f047ce14c5',
+        amount: '175.0',
+        currency: 'USD'
+    },
+    {
+        id: 'c1877e5b-70b1-4a1f-8120-10a73e3c6c70',
+        amount: '10.0',
+        currency: 'USD'
+    }
+];
+data.meta = {
+    pagination: {
+        page: '1',
+        total_pages: 1
+    }
+};
 
 describe('reports.donations.component', () => {
-    let $ctrl, componentController, scope, rootScope, stateParams, donations, designationAccounts, api, serverConstants,
-    q;
+    let $ctrl, scope, rootScope, stateParams, donations, designationAccounts, api, serverConstants, q;
 
     beforeEach(() => {
         angular.mock.module(component);
@@ -11,7 +39,6 @@ describe('reports.donations.component', () => {
             $componentController, $rootScope, $stateParams, _donations_, _api_, _designationAccounts_,
             _serverConstants_, $q
         ) => {
-            componentController = $componentController;
             rootScope = $rootScope;
             scope = rootScope.$new();
             api = _api_;
@@ -21,13 +48,9 @@ describe('reports.donations.component', () => {
             stateParams = $stateParams;
             donations = _donations_;
             q = $q;
-            loadController();
+            $ctrl = $componentController('donations', { $scope: scope }, { inContact: false });
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('donations', { $scope: scope }, { inContact: false });
-    }
 
     describe('constructor', () => {
         it('should set default values', () => {
@@ -175,6 +198,7 @@ describe('reports.donations.component', () => {
             spyOn($ctrl, 'getDonations').and.callFake(() => q.resolve(data));
             spyOn($ctrl, 'mutateDataForSorts').and.callFake((data) => data);
         });
+
         it('should set params', () => {
             $ctrl.load();
             expect($ctrl.getDonations).toHaveBeenCalledWith({
@@ -182,6 +206,7 @@ describe('reports.donations.component', () => {
                 endDate: $ctrl.endDate
             });
         });
+
         it('should set loading to true', () => {
             $ctrl.load();
             expect($ctrl.loading).toEqual(true);
@@ -336,6 +361,7 @@ describe('reports.donations.component', () => {
             expect($ctrl.load).toHaveBeenCalledWith();
         });
     });
+
     describe('getDonations', () => {
         beforeEach(() => {
             spyOn(api, 'get').and.callFake((url, data) => q.resolve(data));
@@ -486,6 +512,7 @@ describe('reports.donations.component', () => {
             });
         });
     });
+
     describe('loadedOutOfTurn', () => {
         it('should return true if wrong load count', () => {
             $ctrl.listLoadCount = 0;
@@ -497,6 +524,7 @@ describe('reports.donations.component', () => {
             expect($ctrl.loadedOutOfTurn(0)).toBeFalsy();
         });
     });
+
     describe('mutateDataForSorts', () => {
         const data = [{
             converted_amount: '1.0',
@@ -506,29 +534,35 @@ describe('reports.donations.component', () => {
         beforeEach(() => {
             spyOn(serverConstants, 'getPledgeCurrencySymbol').and.callFake((data) => 't' + data);
         });
+
         it('should set converted_amount to a Number', () => {
             const result = $ctrl.mutateDataForSorts(data);
             expect(result[0].converted_amount).toEqual(1);
         });
+
         it('should get currency symbol', () => {
             const result = $ctrl.mutateDataForSorts(data);
             expect(result[0].currency_symbol).toEqual('tUSD');
         });
+
         it('should get currency symbol', () => {
             const result = $ctrl.mutateDataForSorts(data);
             expect(result[0].converted_symbol).toEqual('tAUD');
         });
     });
+
     describe('changeSort', () => {
         beforeEach(() => {
             $ctrl.sort = 'a';
             $ctrl.sortReverse = true;
         });
+
         it('should change sort', () => {
             $ctrl.changeSort('b');
             expect($ctrl.sort).toEqual('b');
             expect($ctrl.sortReverse).toBeFalsy();
         });
+
         it('should reverse sort', () => {
             $ctrl.changeSort('a');
             expect($ctrl.sort).toEqual('a');
@@ -536,33 +570,3 @@ describe('reports.donations.component', () => {
         });
     });
 });
-
-let data: any = [
-    {
-        id: 'b0a2f8fd-812d-4119-8949-55845128c651',
-        amount: '75.0',
-        currency: 'CAD'
-    },
-    {
-        id: '59ef07db-adca-4445-8f25-c812be712cf7',
-        amount: '30.0',
-        currency: 'CAD'
-    },
-    {
-        id: '0599e04b-9e35-4afb-9ba9-f5f047ce14c5',
-        amount: '175.0',
-        currency: 'USD'
-    },
-    {
-        id: 'c1877e5b-70b1-4a1f-8120-10a73e3c6c70',
-        amount: '10.0',
-        currency: 'USD'
-    }
-];
-
-data.meta = {
-    pagination: {
-        page: '1',
-        total_pages: 1
-    }
-};

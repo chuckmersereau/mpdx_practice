@@ -1,4 +1,6 @@
+import 'angular-gettext';
 import { reduce, sum, values } from 'lodash/fp';
+import api, { ApiService } from '../common/api/api.service';
 
 export class ToolsService {
     analytics: any;
@@ -119,9 +121,6 @@ export class ToolsService {
         return sum(values(this.analytics));
     }
 }
-
-import 'angular-gettext';
-import api, { ApiService } from '../common/api/api.service';
 
 export default angular.module('mpdx.tools.service', [
     'gettext',

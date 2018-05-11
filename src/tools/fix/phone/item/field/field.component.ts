@@ -1,4 +1,5 @@
 import * as uuid from 'uuid/v1';
+import fixPhoneNumbers, { FixPhoneNumbersService } from '../../phone.service';
 
 class FieldController {
     person: any;
@@ -40,7 +41,7 @@ class FieldController {
     }
 }
 
-const Field = {
+const Field: ng.IComponentOptions = {
     controller: FieldController,
     template: require('./field.html'),
     bindings: {
@@ -48,8 +49,6 @@ const Field = {
         phoneNumber: '<'
     }
 };
-
-import fixPhoneNumbers, { FixPhoneNumbersService } from '../../phone.service';
 
 export default angular.module('mpdx.tools.fix.phoneNumbers.item.field.component', [
     fixPhoneNumbers

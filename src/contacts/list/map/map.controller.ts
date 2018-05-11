@@ -1,4 +1,8 @@
+import 'angular-gettext';
+import 'ngmap';
 import { concat, defaultTo, differenceBy, each, filter, find, get, has, head, reduce } from 'lodash/fp';
+import api, { ApiService } from '../../../common/api/api.service';
+import contacts, { ContactsService } from '../../../contacts/contacts.service';
 
 interface ICustomIModalScope extends mgcrea.ngStrap.modal.IModalScope {
     id: string;
@@ -199,11 +203,6 @@ class MapContactsController {
         }, 200);
     }
 }
-
-import api, { ApiService } from '../../../common/api/api.service';
-import contacts, { ContactsService } from '../../../contacts/contacts.service';
-import 'angular-gettext';
-import 'ngmap';
 
 export default angular.module('mpdx.contacts.list.map.controller', [
     'gettext', 'ngMap',

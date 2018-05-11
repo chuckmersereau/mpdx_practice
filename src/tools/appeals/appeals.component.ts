@@ -1,4 +1,4 @@
-const Appeals = {
+const Appeals: ng.IComponentOptions = {
     template: require('./appeals.html')
 };
 

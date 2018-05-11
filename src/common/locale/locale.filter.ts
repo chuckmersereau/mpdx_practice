@@ -1,4 +1,5 @@
 import * as moment from 'moment';
+import locale, { LocaleService } from './locale.service';
 
 function localeFilter(
     $filter: ng.IFilterService,
@@ -17,8 +18,6 @@ function localeFilterWithTime(
 function localeFilterShort() {
     return (val) => moment(val).format('MMM D');
 }
-
-import locale, { LocaleService } from './locale.service';
 
 export default angular.module('mpdx.common.locale.filter', [locale])
     .filter('localize', localeFilter)

@@ -11,5 +11,6 @@ function chosenDirective(
         }
     };
 }
+
 export default angular.module('mpdx.common.chosen', [])
     .directive('chosen', chosenDirective).name;

@@ -1,22 +1,17 @@
 import component from './contacts.component';
 
 describe('contacts.component', () => {
-    let $ctrl, componentController, scope, rootScope, help;
+    let $ctrl, scope, rootScope, help;
 
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, $stateParams, _help_) => {
-            componentController = $componentController;
+        inject(($componentController, $rootScope, _help_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             help = _help_;
-            loadController();
+            $ctrl = $componentController('contacts', { $scope: scope });
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('contacts', { $scope: scope });
-    }
 
     describe('$onInit', () => {
         it('should call help service', () => {

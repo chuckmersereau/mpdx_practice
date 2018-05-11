@@ -6,7 +6,7 @@ const fakeBlockUI = {
 };
 
 describe('tools.fix.phoneNumbers.item.component', () => {
-    let $ctrl, rootScope, scope, componentController, blockUI, fixPhoneNumbers, person, q;
+    let $ctrl, rootScope, scope, blockUI, fixPhoneNumbers, person, q;
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _blockUI_, _fixPhoneNumbers_, $q) => {
@@ -15,18 +15,13 @@ describe('tools.fix.phoneNumbers.item.component', () => {
             blockUI = _blockUI_;
             fixPhoneNumbers = _fixPhoneNumbers_;
             q = $q;
-            componentController = $componentController;
             person = { id: 'person_id' };
-            loadController();
+            spyOn(blockUI.instances, 'get').and.callFake(() => fakeBlockUI);
+            $ctrl = $componentController('fixPhoneNumbersItem', { $scope: scope }, { person: person });
         });
-    });
-
-    function loadController() {
-        spyOn(blockUI.instances, 'get').and.callFake(() => fakeBlockUI);
-        $ctrl = componentController('fixPhoneNumbersItem', { $scope: scope }, { person: person });
         spyOn($ctrl.blockUI, 'start').and.callThrough();
         spyOn($ctrl.blockUI, 'reset').and.callThrough();
-    }
+    });
 
     describe('$onInit', () => {
         it('should get instance of blockUI', () => {

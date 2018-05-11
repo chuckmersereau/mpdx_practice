@@ -1,3 +1,6 @@
+import api, { ApiService } from '../api/api.service';
+import users, { UsersService } from '../users/users.service';
+
 class SelectionStore {
     constructor(
         private $localForage: ng.localForage.ILocalForageService,
@@ -23,9 +26,6 @@ class SelectionStore {
         return 'selectedContacts-userId:' + this.users.current.id + '-accountListId:' + this.api.account_list_id;
     }
 }
-
-import api, {ApiService} from "../api/api.service";
-import users, {UsersService} from "../users/users.service";
 
 export default angular.module('mpdx.common.selectionStore.service', [
     api, users

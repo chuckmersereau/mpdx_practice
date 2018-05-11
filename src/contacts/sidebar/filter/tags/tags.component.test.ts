@@ -1,7 +1,7 @@
 import component from './tags.component';
 
 describe('contacts.filter.tags.component', () => {
-    let rootScope, scope, componentController, contactsTags, $ctrl, api, q;
+    let rootScope, scope, contactsTags, $ctrl, api, q;
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _contactsTags_, _api_, $q) => {
@@ -10,14 +10,9 @@ describe('contacts.filter.tags.component', () => {
             api = _api_;
             contactsTags = _contactsTags_;
             q = $q;
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('contactsTags', { $scope: scope }, {});
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('contactsTags', { $scope: scope }, {});
-    }
 
     describe('constructor', () => {
         it('should define default values', () => {
@@ -43,11 +38,13 @@ describe('contacts.filter.tags.component', () => {
             expect(contactsTags.anyTags).toBeFalsy();
         });
     });
+
     describe('delete', () => {
         const tag = { name: 'a' };
         beforeEach(() => {
             spyOn(api, 'delete').and.callFake(() => q.resolve());
         });
+
         it('should call api', () => {
             $ctrl.delete(tag);
             expect(api.delete).toHaveBeenCalledWith({

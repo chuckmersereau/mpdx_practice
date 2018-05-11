@@ -1,3 +1,6 @@
+import 'angular-gettext';
+import locale, { LocaleService } from '../locale/locale.service';
+
 class PickerController {
     dayFirst: boolean;
     months: any[];
@@ -42,9 +45,6 @@ const Picker = {
         day: '='
     }
 };
-
-import 'angular-gettext';
-import locale, { LocaleService } from '../locale/locale.service';
 
 export default angular.module('mpdx.common.threePartDatePicker.component', [
     'gettext',

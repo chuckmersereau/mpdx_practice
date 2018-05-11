@@ -1,3 +1,5 @@
+import 'angular-gettext';
+import api, { ApiService } from '../api/api.service';
 import config from '../../config';
 
 export class LanguageService {
@@ -48,9 +50,6 @@ export class LanguageService {
         }
     }
 }
-
-import api, { ApiService } from '../api/api.service';
-import 'angular-gettext';
 
 export default angular.module('mpdx.common.language.service', [
     'gettext',

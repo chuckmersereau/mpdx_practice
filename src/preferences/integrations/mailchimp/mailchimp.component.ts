@@ -1,9 +1,15 @@
+import 'angular-gettext';
+import api, { ApiService } from '../../../common/api/api.service';
 import config from '../../../config';
+import help, { HelpService } from '../../../common/help/help.service';
+import mailchimp, { MailchimpService } from './mailchimp.service';
+import modal, { ModalService } from '../../../common/modal/modal.service';
 
 class MailchimpIntegrationPreferencesController {
     oAuth: string;
     saving: boolean;
     showSettings: boolean;
+    watcher: () => void;
     constructor(
         private $log: ng.ILogService,
         private $rootScope: ng.IRootScopeService,
@@ -17,13 +23,16 @@ class MailchimpIntegrationPreferencesController {
         this.saving = false;
         this.showSettings = false;
 
-        $rootScope.$on('accountListUpdated', () => {
+        this.watcher = $rootScope.$on('accountListUpdated', () => {
             this.mailchimp.load();
         });
     }
     $onInit() {
         this.oAuth = `${config.oAuthUrl}mailchimp?account_list_id=${this.api.account_list_id}&redirect_to=${this.$window.encodeURIComponent(config.baseUrl + 'preferences/integrations?selectedTab=mailchimp')}&access_token=${this.$window.localStorage.getItem('token')}`;
         this.mailchimp.load();
+    }
+    $onDestroy() {
+        this.watcher();
     }
     save(showSettings = false) {
         this.saving = true;
@@ -88,12 +97,6 @@ const Mailchimp = {
     controller: MailchimpIntegrationPreferencesController,
     template: require('./mailchimp.html')
 };
-
-import 'angular-gettext';
-import mailchimp, { MailchimpService } from './mailchimp.service';
-import api, { ApiService } from '../../../common/api/api.service';
-import help, { HelpService } from '../../../common/help/help.service';
-import modal, { ModalService } from '../../../common/modal/modal.service';
 
 export default angular.module('mpdx.preferences.integrations.mailchimp.component', [
     'gettext',

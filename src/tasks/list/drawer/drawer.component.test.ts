@@ -1,7 +1,7 @@
 import component from './drawer.component';
 
 describe('tasks.list.drawer.component', () => {
-    let $ctrl, rootScope, scope, componentController, users, api, tasks, alerts, q;
+    let $ctrl, rootScope, scope, users, api, tasks, alerts, q;
 
     beforeEach(() => {
         angular.mock.module(component);
@@ -15,21 +15,18 @@ describe('tasks.list.drawer.component', () => {
             tasks = _tasks_;
             users = _users_;
             q = $q;
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('taskItemDrawer', { $scope: scope }, { task: null, selected: null });
         });
         spyOn(alerts, 'addAlert').and.callFake(() => {});
         spyOn($ctrl, 'gettext').and.callThrough();
     });
 
-    function loadController() {
-        $ctrl = componentController('taskItemDrawer', { $scope: scope }, { task: null, selected: null });
-    }
     describe('constructor', () => {
         it('should set loaded to false', () => {
             expect($ctrl.loaded).toBeFalsy();
         });
     });
+
     describe('$onChanges', () => {
         it('shouldn\'t load task if same id', () => {
             spyOn(tasks, 'load').and.callFake(() => q.resolve());
@@ -37,12 +34,14 @@ describe('tasks.list.drawer.component', () => {
             $ctrl.$onChanges({ task: { previousValue: { id: 1 } } });
             expect(tasks.load).not.toHaveBeenCalled();
         });
+
         it('should load task if new', () => {
             spyOn(tasks, 'load').and.callFake(() => q.resolve());
             $ctrl.task = { id: 1 };
             $ctrl.$onChanges({ task: { previousValue: { id: 2 } } });
             expect(tasks.load).toHaveBeenCalledWith(1);
         });
+
         it('should set task', (done) => {
             const retVal = { id: 2 };
             spyOn(tasks, 'load').and.callFake(() => q.resolve(retVal));
@@ -53,6 +52,7 @@ describe('tasks.list.drawer.component', () => {
             });
             scope.$digest();
         });
+
         it('should set loaded to true', (done) => {
             spyOn(tasks, 'load').and.callFake(() => q.resolve({}));
             $ctrl.task = { id: 1 };
@@ -62,12 +62,14 @@ describe('tasks.list.drawer.component', () => {
             });
             scope.$digest();
         });
+
         it('should initially set loading to false', () => {
             spyOn(tasks, 'load').and.callFake(() => q.resolve());
             $ctrl.task = { id: 1 };
             $ctrl.$onChanges({ task: { previousValue: { id: 2 } } });
             expect($ctrl.loaded).toBeFalsy();
         });
+
         it('should handle failure', (done) => {
             spyOn(tasks, 'load').and.callFake(() => q.reject({}));
             $ctrl.task = { id: 1 };
@@ -79,6 +81,7 @@ describe('tasks.list.drawer.component', () => {
             scope.$digest();
         });
     });
+
     describe('addComment', () => {
         beforeEach(() => {
             $ctrl.task = { id: 1 };

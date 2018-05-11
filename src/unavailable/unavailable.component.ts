@@ -1,4 +1,4 @@
-const Unavailable = {
+const Unavailable: ng.IComponentOptions = {
     template: require('./unavailable.html')
 };
 

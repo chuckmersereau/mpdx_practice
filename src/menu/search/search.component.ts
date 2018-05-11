@@ -1,4 +1,8 @@
 import { find, findIndex } from 'lodash/fp';
+import { StateService } from '@uirouter/core';
+import contactFilter, { ContactFilterService } from '../../contacts/sidebar/filter/filter.service';
+import contacts, { ContactsService } from '../../contacts/contacts.service';
+import uiRouter from '@uirouter/angularjs';
 
 class ContactsSearchController {
     contactList: any;
@@ -78,11 +82,6 @@ const Search = {
     controller: ContactsSearchController,
     template: require('./search.html')
 };
-
-import contacts, { ContactsService } from '../../contacts/contacts.service';
-import contactFilter, { ContactFilterService } from '../../contacts/sidebar/filter/filter.service';
-import uiRouter from '@uirouter/angularjs';
-import { StateService } from '@uirouter/core';
 
 export default angular.module('mpdx.menu.search.component', [
     uiRouter,

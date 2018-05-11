@@ -1,4 +1,8 @@
+import 'angular-gettext';
 import { reduce, toInteger } from 'lodash/fp';
+import accounts, { AccountsService } from '../../common/accounts/accounts.service';
+import api, { ApiService } from '../../common/api/api.service';
+import designationAccounts, { DesignationAccountsService } from '../../common/designationAccounts/designationAccounts.service';
 
 class BalancesController {
     balance: number;
@@ -53,11 +57,6 @@ const Balances = {
     controller: BalancesController,
     template: require('./balances.html')
 };
-
-import 'angular-gettext';
-import accounts, { AccountsService } from '../../common/accounts/accounts.service';
-import api, { ApiService } from '../../common/api/api.service';
-import designationAccounts, { DesignationAccountsService } from '../../common/designationAccounts/designationAccounts.service';
 
 export default angular.module('mpdx.menu.balances.component', [
     'gettext',

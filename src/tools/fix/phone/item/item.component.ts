@@ -1,4 +1,7 @@
+import 'angular-block-ui';
 import { get } from 'lodash/fp';
+import fixPhoneNumbers, { FixPhoneNumbersService } from '../phone.service';
+import people, { PeopleService } from '../../../../contacts/show/people/people.service';
 
 class ItemController {
     person: any;
@@ -25,17 +28,13 @@ class ItemController {
     }
 }
 
-const Item = {
+const Item: ng.IComponentOptions = {
     controller: ItemController,
     template: require('./item.html'),
     bindings: {
         person: '<'
     }
 };
-
-import 'angular-block-ui';
-import fixPhoneNumbers, { FixPhoneNumbersService } from '../phone.service';
-import people, { PeopleService } from '../../../../contacts/show/people/people.service';
 
 export default angular.module('mpdx.tools.fix.phoneNumbers.item.component', [
     'blockUI',

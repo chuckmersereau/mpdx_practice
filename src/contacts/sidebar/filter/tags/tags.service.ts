@@ -1,9 +1,10 @@
-import { find, map, reject, unionBy } from 'lodash/fp';
 import * as uuid from 'uuid/v1';
+import { find, map, reject, unionBy } from 'lodash/fp';
+import api, { ApiService } from '../../../../common/api/api.service';
 
 interface ITag {
-    id?: string,
-    name: string
+    id?: string;
+    name: string;
 }
 
 export class ContactsTagsService {
@@ -77,8 +78,6 @@ export class ContactsTagsService {
         this.$rootScope.$emit('contactsTagsChange');
     }
 }
-
-import api, { ApiService } from '../../../../common/api/api.service';
 
 export default angular.module('mpdx.common.tags.service', [
     api

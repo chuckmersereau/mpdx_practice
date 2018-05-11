@@ -1,4 +1,5 @@
 import { defaultTo, find, get } from 'lodash/fp';
+import contacts, { ContactsService } from '../../../contacts.service';
 
 class PersonController {
     contact: any;
@@ -63,8 +64,6 @@ const Person = {
         contact: '<'
     }
 };
-
-import contacts, { ContactsService } from '../../../contacts.service';
 
 export default angular.module('mpdx.contacts.show.info.person.component', [
     contacts

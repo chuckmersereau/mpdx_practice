@@ -1,5 +1,11 @@
-import { concat, defaultTo, find, reduce } from 'lodash/fp';
+import 'angular-gettext';
 import * as uuid from 'uuid/v1';
+import { concat, defaultTo, find, reduce } from 'lodash/fp';
+import { StateService } from '@uirouter/core';
+import api, { ApiService } from '../../common/api/api.service';
+import serverConstants, { ServerConstantsService } from '../../common/serverConstants/serverConstants.service';
+import uiRouter from '@uirouter/angularjs';
+import users, { UsersService } from '../../common/users/users.service';
 
 class NotificationPreferencesController {
     loading: boolean;
@@ -89,13 +95,6 @@ const Notifications = {
         setup: '<'
     }
 };
-
-import 'angular-gettext';
-import uiRouter from '@uirouter/angularjs';
-import { StateService } from '@uirouter/core';
-import api, { ApiService } from '../../common/api/api.service';
-import serverConstants, { ServerConstantsService } from '../../common/serverConstants/serverConstants.service';
-import users, { UsersService } from '../../common/users/users.service';
 
 export default angular.module('mpdx.preferences.notifications.component', [
     'gettext', uiRouter,

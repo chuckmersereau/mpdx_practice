@@ -1,3 +1,8 @@
+import 'angular-gettext';
+import accounts, { AccountsService } from '../../../../common/accounts/accounts.service';
+import alerts, { AlertsService } from '../../../../common/alerts/alerts.service';
+import contacts, { ContactsService } from '../../../contacts.service';
+
 class ContactDonorAccountController {
     donorAccount: any;
     onSave: any;
@@ -35,11 +40,6 @@ const DonorAccount = {
         onSave: '&'
     }
 };
-
-import accounts, { AccountsService } from '../../../../common/accounts/accounts.service';
-import alerts, { AlertsService } from '../../../../common/alerts/alerts.service';
-import contacts, { ContactsService } from '../../../contacts.service';
-import 'angular-gettext';
 
 export default angular.module('mpdx.contacts.show.details.donorAccount.component', [
     'gettext',

@@ -1,4 +1,8 @@
 import { startsWith } from 'lodash/fp';
+import { StateService } from '@uirouter/core';
+import contacts, { ContactsService } from '../../../contacts/contacts.service';
+import tasks, { TasksService } from '../../tasks.service';
+import uiRouter from '@uirouter/angularjs';
 
 class AddController {
     task: any;
@@ -27,11 +31,6 @@ const Add = {
     controller: AddController,
     template: require('./add.html')
 };
-
-import contacts, { ContactsService } from '../../../contacts/contacts.service';
-import tasks, { TasksService } from '../../tasks.service';
-import uiRouter from '@uirouter/angularjs';
-import { StateService } from '@uirouter/core';
 
 export default angular.module('mpdx.tasks.list.add.component', [
     uiRouter,

@@ -12,6 +12,7 @@ describe('common.appealsShow.service', () => {
             appealsShow = _appealsShow_;
         });
     });
+
     describe('getAppeal', () => {
         it('should hit the api', (done) => {
             spyOn(api, 'get').and.callFake(() => q.resolve('a'));

@@ -3,6 +3,10 @@ import component from './donor.component';
 describe('contacts.show.details.donorAccount.component', () => {
     let $ctrl, rootScope, scope, componentController, alerts;
 
+    function loadController() {
+        $ctrl = componentController('contactDonorAccount', { $scope: scope }, {});
+    }
+
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _alerts_) => {
@@ -15,10 +19,6 @@ describe('contacts.show.details.donorAccount.component', () => {
         spyOn($ctrl, 'gettext').and.callFake(() => 'a');
         spyOn(alerts, 'addAlert').and.callFake(() => {});
     });
-
-    function loadController() {
-        $ctrl = componentController('contactDonorAccount', { $scope: scope }, {});
-    }
 
     describe('save', () => {
         it('should throw an error when current account is not present', () => {

@@ -1,5 +1,12 @@
 import { assign } from 'lodash/fp';
+import { FiltersService } from '../../../common/filters/filters.service';
+import { StateParams } from '@uirouter/core';
 import { stringToNameObjectArray } from '../../../common/fp/tags';
+import contactFilter, { ContactFilterService } from './filter.service';
+import contacts, { ContactsService } from '../../contacts.service';
+import contactsTags, { ContactsTagsService } from './tags/tags.service';
+import modal, { ModalService } from '../../../common/modal/modal.service';
+import users, { UsersService } from '../../../common/users/users.service';
 
 class FilterController {
     activeFilters: any[];
@@ -65,14 +72,6 @@ const Filter = {
     controller: FilterController,
     template: require('./filter.html')
 };
-
-import contacts, { ContactsService } from '../../contacts.service';
-import contactFilter, { ContactFilterService } from './filter.service';
-import contactsTags, { ContactsTagsService } from './tags/tags.service';
-import modal, { ModalService } from '../../../common/modal/modal.service';
-import users, { UsersService } from '../../../common/users/users.service';
-import { StateParams } from '@uirouter/core';
-import { FiltersService } from '../../../common/filters/filters.service';
 
 export default angular.module('mpdx.contacts.filter.component', [
     contactFilter, contactsTags, contacts, modal, users

@@ -1,6 +1,12 @@
+import 'angular-block-ui';
+import 'angular-gettext';
+import fixEmailAddresses, { FixEmailAddressesService } from './email.service';
+import modal, { ModalService } from '../../../common/modal/modal.service';
+
 class EmailAddressesController {
     blockUI: IBlockUIService;
     source: string;
+    watcher: () => void;
     constructor(
         $rootScope: ng.IRootScopeService,
         private gettextCatalog: ng.gettext.gettextCatalog,
@@ -11,9 +17,12 @@ class EmailAddressesController {
         this.blockUI = blockUI.instances.get('fix-email-addresses');
         this.source = 'MPDX';
 
-        $rootScope.$on('accountListUpdated', () => {
+        this.watcher = $rootScope.$on('accountListUpdated', () => {
             this.load(true);
         });
+    }
+    $onDestroy() {
+        this.watcher();
     }
     save() {
         const message = this.gettextCatalog.getString(
@@ -34,15 +43,10 @@ class EmailAddressesController {
     }
 }
 
-const EmailAddresses = {
+const EmailAddresses: ng.IComponentOptions = {
     controller: EmailAddressesController,
     template: require('./email.html')
 };
-
-import 'angular-gettext';
-import 'angular-block-ui';
-import modal, { ModalService } from '../../../common/modal/modal.service';
-import fixEmailAddresses, { FixEmailAddressesService } from './email.service';
 
 export default angular.module('mpdx.tools.fix.emailAddresses.component', [
     'gettext', 'blockUI',

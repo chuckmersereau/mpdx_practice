@@ -1,5 +1,5 @@
-import config from '../../config';
 import { StateService } from '@uirouter/core';
+import config from '../../config';
 
 class LoginController {
     loginUrl: string;

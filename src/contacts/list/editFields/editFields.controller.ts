@@ -1,3 +1,8 @@
+import contacts, { ContactsService } from '../../contacts.service';
+import contactsTags, { ContactsTagsService } from '../../sidebar/filter/tags/tags.service';
+import locale, { LocaleService } from '../../../common/locale/locale.service';
+import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
+
 class EditFieldsController {
     languages: any[];
     models: any;
@@ -23,11 +28,6 @@ class EditFieldsController {
         });
     }
 }
-
-import contactsTags, { ContactsTagsService } from '../../sidebar/filter/tags/tags.service';
-import locale, { LocaleService } from '../../../common/locale/locale.service';
-import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
-import contacts, { ContactsService } from '../../contacts.service';
 
 export default angular.module('mpdx.contacts.list.editFields.controller', [
     contacts, contactsTags, locale, serverConstants

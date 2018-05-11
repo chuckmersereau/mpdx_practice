@@ -1,3 +1,7 @@
+import accounts, { AccountsService } from '../../common/accounts/accounts.service';
+import api, { ApiService } from '../../common/api/api.service';
+import users, { UsersService } from '../../common/users/users.service';
+
 class AccountListsController {
     showAllTags: boolean;
     constructor(
@@ -12,10 +16,6 @@ const AccountLists = {
     controller: AccountListsController,
     template: require('./accountLists.html')
 };
-
-import accounts, { AccountsService } from '../../common/accounts/accounts.service';
-import api, { ApiService } from '../../common/api/api.service';
-import users, { UsersService } from '../../common/users/users.service';
 
 export default angular.module('mpdx.menu.accountLists.component', [
     accounts, api, users

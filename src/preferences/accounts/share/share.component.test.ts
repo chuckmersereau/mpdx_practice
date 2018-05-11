@@ -1,7 +1,7 @@
 import component from './share.component';
 
 describe('preferences.accounts.share', () => {
-    let $ctrl, accounts, rootScope, scope, componentController, gettextCatalog, q;
+    let $ctrl, accounts, rootScope, scope, gettextCatalog, q;
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _accounts_, _gettextCatalog_, $q) => {
@@ -10,38 +10,38 @@ describe('preferences.accounts.share', () => {
             accounts = _accounts_;
             gettextCatalog = _gettextCatalog_;
             q = $q;
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('sharePreferences', { $scope: scope }, { setup: false });
         });
         spyOn(gettextCatalog, 'getString').and.callThrough();
         spyOn(accounts, 'listUsers').and.callFake(() => {});
         spyOn(accounts, 'listInvites').and.callFake(() => {});
     });
 
-    function loadController() {
-        $ctrl = componentController('sharePreferences', { $scope: scope }, { setup: false });
-    }
     describe('constructor', () => {
         it('should set default values', () => {
             expect($ctrl.saving).toBeFalsy();
             expect($ctrl.inviteEmail).toEqual('');
         });
     });
+
     describe('$onInit', () => {
         beforeEach(() => {
             $ctrl.setup = false;
         });
+
         it('shouldn\'t run services on setup', () => {
             $ctrl.setup = true;
             $ctrl.$onInit();
             expect(accounts.listUsers).not.toHaveBeenCalled();
         });
+
         it('should call services if not in setup', () => {
             $ctrl.$onInit();
             expect(accounts.listUsers).toHaveBeenCalled();
             expect(accounts.listInvites).toHaveBeenCalled();
         });
     });
+
     describe('events', () => {
         beforeEach(() => {
             $ctrl.$onInit();
@@ -54,14 +54,17 @@ describe('preferences.accounts.share', () => {
             expect(accounts.listInvites).toHaveBeenCalled();
         });
     });
+
     describe('cancelInvite', () => {
         beforeEach(() => {
             accounts.inviteList = [{ id: 1 }, { id: 2 }];
         });
+
         it('should set saving flag', () => {
             $ctrl.cancelInvite(1);
             expect($ctrl.saving).toBeTruthy();
         });
+
         it('should destroy an invite', () => {
             spyOn(accounts, 'destroyInvite').and.callFake(() => q.resolve());
             const successMessage = 'MPDX removed the invite successfully';
@@ -71,6 +74,7 @@ describe('preferences.accounts.share', () => {
             expect(gettextCatalog.getString).toHaveBeenCalledWith(successMessage);
             expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
         });
+
         it('should unset saving flag', (done) => {
             spyOn(accounts, 'destroyInvite').and.callFake(() => q.resolve());
             $ctrl.cancelInvite(1).then(() => {
@@ -79,6 +83,7 @@ describe('preferences.accounts.share', () => {
             });
             scope.$digest();
         });
+
         it('should remove the invite', (done) => {
             spyOn(accounts, 'destroyInvite').and.callFake(() => q.resolve());
             $ctrl.cancelInvite(1).then(() => {
@@ -87,6 +92,7 @@ describe('preferences.accounts.share', () => {
             });
             scope.$digest();
         });
+
         it('should handle rejection', (done) => {
             spyOn(accounts, 'destroyInvite').and.callFake(() => q.reject(Error('')));
             $ctrl.cancelInvite(1).catch(() => {
@@ -96,14 +102,17 @@ describe('preferences.accounts.share', () => {
             scope.$digest();
         });
     });
+
     describe('removeUser', () => {
         beforeEach(() => {
             accounts.userList = [{ id: 1 }, { id: 2 }];
         });
+
         it('should set saving flag', () => {
             $ctrl.removeUser(1);
             expect($ctrl.saving).toBeTruthy();
         });
+
         it('should remove a user', () => {
             spyOn(accounts, 'destroyUser').and.callFake(() => q.resolve());
             const successMessage = 'MPDX removed the user successfully';
@@ -113,6 +122,7 @@ describe('preferences.accounts.share', () => {
             expect(gettextCatalog.getString).toHaveBeenCalledWith(successMessage);
             expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
         });
+
         it('should unset saving flag', (done) => {
             spyOn(accounts, 'destroyUser').and.callFake(() => q.resolve());
             $ctrl.removeUser(1).then(() => {
@@ -121,6 +131,7 @@ describe('preferences.accounts.share', () => {
             });
             scope.$digest();
         });
+
         it('should remove the user', (done) => {
             spyOn(accounts, 'destroyUser').and.callFake(() => q.resolve());
             $ctrl.removeUser(1).then(() => {
@@ -129,6 +140,7 @@ describe('preferences.accounts.share', () => {
             });
             scope.$digest();
         });
+
         it('should handle rejection', (done) => {
             spyOn(accounts, 'destroyUser').and.callFake(() => q.reject(Error('')));
             $ctrl.removeUser(1).catch(() => {

@@ -1,7 +1,7 @@
 import component from './care.component';
 
 describe('home.care.component', () => {
-    let $ctrl, rootScope, scope, componentController, modal, q;
+    let $ctrl, rootScope, scope, modal, q;
 
     beforeEach(() => {
         angular.mock.module(component);
@@ -10,14 +10,9 @@ describe('home.care.component', () => {
             scope = rootScope.$new();
             modal = _modal_;
             q = $q;
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('homeCare', { $scope: scope }, {});
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('homeCare', { $scope: scope }, {});
-    }
 
     describe('addNewsletter', () => {
         it('should open the add newsletter modal', () => {
@@ -30,6 +25,7 @@ describe('home.care.component', () => {
             });
         });
     });
+
     describe('exportPhysical', () => {
         it('should open the exportEmail modal', () => {
             spyOn(modal, 'open').and.callFake(() => q.resolve());
@@ -49,6 +45,7 @@ describe('home.care.component', () => {
             });
         });
     });
+
     describe('exportEmail', () => {
         it('should open the exportPhysical modal', () => {
             spyOn(modal, 'open').and.callFake(() => q.resolve());

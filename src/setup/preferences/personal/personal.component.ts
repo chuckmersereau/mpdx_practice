@@ -1,4 +1,8 @@
 import { indexOf } from 'lodash/fp';
+import { StateService } from '@uirouter/core';
+import accounts, { AccountsService } from '../../../common/accounts/accounts.service';
+import uiRouter from '@uirouter/angularjs';
+import users, { UsersService } from '../../../common/users/users.service';
 
 class PersonalController {
     selectableTabs: string[];
@@ -32,11 +36,6 @@ const Personal = {
     template: require('./personal.html'),
     controller: PersonalController
 };
-
-import uiRouter from '@uirouter/angularjs';
-import { StateService } from '@uirouter/core';
-import accounts, { AccountsService } from '../../../common/accounts/accounts.service';
-import users, { UsersService } from '../../../common/users/users.service';
 
 export default angular.module('mpdx.setup.preferences.personal.component', [
     accounts, users,

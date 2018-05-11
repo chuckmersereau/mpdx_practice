@@ -1,4 +1,6 @@
 import { StateService } from '@uirouter/core';
+import uiRouter from '@uirouter/angularjs';
+import users, { UsersService } from '../../../common/users/users.service';
 
 class NotificationsController {
     constructor(
@@ -24,9 +26,6 @@ const Notifications = {
     template: require('./notifications.html'),
     controller: NotificationsController
 };
-
-import uiRouter from '@uirouter/angularjs';
-import users, { UsersService } from '../../../common/users/users.service';
 
 export default angular.module('mpdx.setup.preferences.notifications.component', [
     uiRouter,

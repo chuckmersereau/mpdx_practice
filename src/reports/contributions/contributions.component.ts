@@ -1,11 +1,13 @@
+import 'angular-gettext';
+import * as moment from 'moment';
 import {
     assign,
     concat,
     constant,
     defaultTo,
     find,
-    flatten,
     flatMap,
+    flatten,
     get,
     isNil,
     map,
@@ -17,9 +19,12 @@ import {
     times,
     toInteger
 } from 'lodash/fp';
-import * as moment from 'moment';
+import api, { ApiService } from '../../common/api/api.service';
+import designationAccounts, { DesignationAccountsService } from '../../common/designationAccounts/designationAccounts.service';
+import donations, { DonationsService } from '../donations/donations.service';
 import joinComma from '../../common/fp/joinComma';
 import reduceObject from '../../common/fp/reduceObject';
+import serverConstants, { ServerConstantsService } from '../../common/serverConstants/serverConstants.service';
 
 class ContributionsController {
     data: any;
@@ -253,12 +258,6 @@ const Contributions = {
         type: '<'
     }
 };
-
-import 'angular-gettext';
-import api, { ApiService } from '../../common/api/api.service';
-import designationAccounts, { DesignationAccountsService } from '../../common/designationAccounts/designationAccounts.service';
-import donations, { DonationsService } from '../donations/donations.service';
-import serverConstants, { ServerConstantsService } from '../../common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.reports.contributions.component', [
     'gettext',

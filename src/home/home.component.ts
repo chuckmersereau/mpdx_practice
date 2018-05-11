@@ -4,6 +4,8 @@ import tasks, { TasksService } from '../tasks/tasks.service';
 class HomeController {
     blockUI: IBlockUIService;
     blockUI2: IBlockUIService;
+    watcher: () => void;
+    watcher2: () => void;
     constructor(
         $rootScope: ng.IRootScopeService,
         blockUI: IBlockUIService,
@@ -27,16 +29,20 @@ class HomeController {
             this.gettextCatalog.getString('58496bf1903360069817816c')
         ]);
 
-        $rootScope.$on('taskChange', () => {
+        this.watcher = $rootScope.$on('taskChange', () => {
             this.load();
         });
 
-        $rootScope.$on('accountListUpdated', () => {
+        this.watcher2 = $rootScope.$on('accountListUpdated', () => {
             this.load();
         });
     }
     $onInit() {
         this.load();
+    }
+    $onDestroy() {
+        this.watcher();
+        this.watcher2();
     }
     load() {
         this.blockUI.start();

@@ -1,4 +1,5 @@
 import { assign, concat, difference, find, get, keys, reduce, toNumber, toString } from 'lodash/fp';
+import api, { ApiService } from '../api/api.service';
 import joinComma from '../fp/joinComma';
 import reduceObject from '../fp/reduceObject';
 import replaceUnderscore from '../fp/replaceUnderscore';
@@ -73,8 +74,6 @@ export class ServerConstantsService {
         return get('symbol', find({ code: code }, this.data.pledge_currencies));
     }
 }
-
-import api, { ApiService } from '../api/api.service';
 
 export default angular.module('mpdx.common.serverConstants', [
     api

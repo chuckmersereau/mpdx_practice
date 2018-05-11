@@ -1,8 +1,12 @@
 import { get } from 'lodash/fp';
+import accounts, { AccountsService } from '../../../common/accounts/accounts.service';
+import appeals, { AppealsService } from '../../../tools/appeals/appeals.service';
+import appealsShow, { AppealsShowService } from '../../../tools/appeals/show/show.service';
 
 class AppealsController {
     appeal: any;
     count: number;
+    watcher: () => void;
     constructor(
         private $log: ng.ILogService,
         private $rootScope: ng.IRootScopeService,
@@ -12,7 +16,7 @@ class AppealsController {
     ) {
         this.count = 0;
 
-        $rootScope.$on('accountListUpdated', () => {
+        this.watcher = $rootScope.$on('accountListUpdated', () => {
             this.$onInit();
         });
     }
@@ -25,6 +29,9 @@ class AppealsController {
             ? this.getPrimaryAppeal(primaryAppealId)
             : null;
     }
+    $onDestroy() {
+        this.watcher();
+    }
     getPrimaryAppeal(primaryAppealId) {
         return this.appealsShow.getAppeal(primaryAppealId).then((data) => {
             this.appeal = data;
@@ -36,10 +43,6 @@ const progressAppeals = {
     template: require('./appeals.html'),
     controller: AppealsController
 };
-
-import accounts, { AccountsService } from '../../../common/accounts/accounts.service';
-import appeals, { AppealsService } from '../../../tools/appeals/appeals.service';
-import appealsShow, { AppealsShowService } from '../../../tools/appeals/show/show.service';
 
 export default angular.module('mpdx.home.progress.appeals', [
     accounts, appeals, appealsShow

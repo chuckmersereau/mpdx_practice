@@ -1,7 +1,7 @@
 import component from './invites.component';
 
 describe('preferences.accounts.invites.component', () => {
-    let $ctrl, accounts, invites, rootScope, scope, componentController, gettextCatalog, q;
+    let $ctrl, accounts, invites, rootScope, scope, gettextCatalog, q;
 
     beforeEach(() => {
         angular.mock.module(component);
@@ -12,15 +12,10 @@ describe('preferences.accounts.invites.component', () => {
             invites = _invites_;
             gettextCatalog = _gettextCatalog_;
             q = $q;
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('invitePreferences', { $scope: scope }, {});
         });
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
-
-    function loadController() {
-        $ctrl = componentController('invitePreferences', { $scope: scope }, {});
-    }
 
     describe('constructor', () => {
         it('should set default values', () => {

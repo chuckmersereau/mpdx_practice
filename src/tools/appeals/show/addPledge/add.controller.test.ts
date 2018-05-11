@@ -1,7 +1,7 @@
 import add from './add.controller';
 
 describe('tools.appeals.show.addPledge.controller', () => {
-    let $ctrl, controller, api, scope, rootScope, q;
+    let $ctrl, api, scope, rootScope, q;
     beforeEach(() => {
         angular.mock.module(add);
         inject(($controller, $rootScope, _api_, $q) => {
@@ -10,22 +10,18 @@ describe('tools.appeals.show.addPledge.controller', () => {
             api = _api_;
             q = $q;
             api.account_list_id = 321;
-            controller = $controller;
-            $ctrl = loadController();
+            $ctrl = $controller('addPledgeController as $ctrl', {
+                $scope: scope,
+                appealId: 123,
+                contact: {
+                    id: 3,
+                    name: 'joe'
+                }
+            });
         });
         spyOn($ctrl, 'gettext').and.callFake((data) => data);
     });
 
-    function loadController() {
-        return controller('addPledgeController as $ctrl', {
-            $scope: scope,
-            appealId: 123,
-            contact: {
-                id: 3,
-                name: 'joe'
-            }
-        });
-    }
     describe('save', () => {
         beforeEach(() => {
             spyOn(api, 'post').and.callFake(() => q.resolve());
@@ -33,6 +29,7 @@ describe('tools.appeals.show.addPledge.controller', () => {
             spyOn(scope, '$hide').and.callFake(() => {});
             spyOn(rootScope, '$emit').and.callFake(() => {});
         });
+
         it('should create a pledge', () => {
             $ctrl.amount = 150;
             $ctrl.currency = 'USD';
@@ -56,6 +53,7 @@ describe('tools.appeals.show.addPledge.controller', () => {
             expect($ctrl.gettext).toHaveBeenCalledWith(successMessage);
             expect($ctrl.gettext).toHaveBeenCalledWith(errorMessage);
         });
+
         it('should hide the modal when finished', (done) => {
             $ctrl.save().then(() => {
                 expect(scope.$hide).toHaveBeenCalled();
@@ -63,6 +61,7 @@ describe('tools.appeals.show.addPledge.controller', () => {
             });
             scope.$digest();
         });
+
         it('should notify other components when finished', (done) => {
             $ctrl.save().then(() => {
                 expect(rootScope.$emit).toHaveBeenCalledWith('pledgeAdded', jasmine.any(Object));

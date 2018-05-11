@@ -1,3 +1,6 @@
+import accounts, { AccountsService } from '../../../../common/accounts/accounts.service';
+import appeals, { AppealsService } from '../../appeals.service';
+
 class ItemController {
     constructor(
         private accounts: AccountsService,
@@ -13,9 +16,6 @@ const AppealsListItem = {
         onPrimary: '&'
     }
 };
-
-import accounts, { AccountsService } from '../../../../common/accounts/accounts.service';
-import appeals, { AppealsService } from '../../appeals.service';
 
 export default angular.module('mpdx.tools.appeals.list.item.component', [
     accounts, appeals

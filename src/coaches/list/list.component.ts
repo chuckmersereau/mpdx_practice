@@ -1,3 +1,5 @@
+import api, { ApiService } from '../../common/api/api.service';
+
 class ListController {
     data: any[];
     loading: boolean;
@@ -55,8 +57,6 @@ const List = {
     controller: ListController,
     template: require('./list.html')
 };
-
-import api, { ApiService } from '../../common/api/api.service';
 
 export default angular.module('mpdx.coaches.list.component', [
     api

@@ -1,21 +1,16 @@
 import add from './add.controller';
 
 describe('contacts.show.referrals.add.controller', () => {
-    let $ctrl, controller, scope;
+    let $ctrl, scope;
     beforeEach(() => {
         angular.mock.module(add);
         inject(($controller, $rootScope) => {
             scope = $rootScope.$new();
-            controller = $controller;
-            $ctrl = loadController();
+            $ctrl = $controller('addReferralsModalController as $ctrl', {
+                $scope: scope
+            });
         });
     });
-
-    function loadController() {
-        return controller('addReferralsModalController as $ctrl', {
-            $scope: scope
-        });
-    }
 
     xit('should do something', () => {
         expect($ctrl).toEqual(1);

@@ -1,4 +1,8 @@
+import 'angular-gettext';
 import { concat, defaultTo, reduce } from 'lodash/fp';
+import accounts, { AccountsService } from '../../../common/accounts/accounts.service';
+import api, { ApiService } from '../../../common/api/api.service';
+import appeals, { AppealsService } from '../appeals.service';
 import fixed from '../../../common/fp/fixed';
 
 class ListController {
@@ -10,6 +14,7 @@ class ListController {
     page: number;
     pageSize: number;
     totals: any;
+    watcher: () => void;
     constructor(
         private $log: ng.ILogService,
         $rootScope: ng.IRootScopeService,
@@ -26,12 +31,15 @@ class ListController {
         this.page = 0;
         this.pageSize = 0;
 
-        $rootScope.$on('accountListUpdated', () => {
+        this.watcher = $rootScope.$on('accountListUpdated', () => {
             this.load();
         });
     }
     $onInit() {
         this.load();
+    }
+    $onDestroy() {
+        this.watcher();
     }
     load(page = 1) {
         this.meta = {};
@@ -86,11 +94,6 @@ const List = {
     controller: ListController,
     template: require('./list.html')
 };
-
-import appeals, { AppealsService } from '../appeals.service';
-import 'angular-gettext';
-import accounts, { AccountsService } from '../../../common/accounts/accounts.service';
-import api, { ApiService } from '../../../common/api/api.service';
 
 export default angular.module('mpdx.tools.appeals.list.component', [
     'gettext',

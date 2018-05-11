@@ -1,6 +1,11 @@
-import { has, map } from 'lodash/fp';
 import * as uuid from 'uuid/v1';
+import { ApiService } from '../../../../common/api/api.service';
+import { has, map } from 'lodash/fp';
+import alerts, { AlertsService } from '../../../../common/alerts/alerts.service';
 import createPatch from '../../../../common/fp/createPatch';
+import locale, { LocaleService } from '../../../../common/locale/locale.service';
+import modal, { ModalService } from '../../../../common/modal/modal.service';
+import people, { PeopleService } from '../people.service';
 
 class PersonModalController {
     activeTab: string;
@@ -137,12 +142,6 @@ class PersonModalController {
         });
     }
 }
-
-import alerts, { AlertsService } from '../../../../common/alerts/alerts.service';
-import locale, { LocaleService } from '../../../../common/locale/locale.service';
-import modal, { ModalService } from '../../../../common/modal/modal.service';
-import people, { PeopleService } from '../people.service';
-import { ApiService } from '../../../../common/api/api.service';
 
 export default angular.module('mpdx.contacts.show.personModal.controller', [
     alerts, locale, modal, people

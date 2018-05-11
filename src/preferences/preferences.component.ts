@@ -1,3 +1,7 @@
+import 'angular-gettext';
+import accounts, { AccountsService } from '../common/accounts/accounts.service';
+import help, { HelpService } from '../common/help/help.service';
+
 class PreferencesController {
     constructor(
         private gettextCatalog: ng.gettext.gettextCatalog,
@@ -21,10 +25,6 @@ const Preferences = {
     controller: PreferencesController,
     template: require('./preferences.html')
 };
-
-import accounts, { AccountsService } from '../common/accounts/accounts.service';
-import 'angular-gettext';
-import help, { HelpService } from '../common/help/help.service';
 
 export default angular.module('mpdx.preferences.component', [
     'gettext',

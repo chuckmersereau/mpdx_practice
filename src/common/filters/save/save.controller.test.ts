@@ -7,6 +7,19 @@ const data = 'a';
 
 describe('common.filter.save.controller', () => {
     let $ctrl, controller, api, users, scope, rootScope, gettextCatalog, modal, q;
+
+    function loadController() {
+        return controller('saveFilterModal as $ctrl', {
+            $scope: scope,
+            anyTags: false,
+            filterType: 'tasks',
+            params: {},
+            rejectedTags: [],
+            selectedTags: [],
+            wildcardSearch: null
+        });
+    }
+
     beforeEach(() => {
         angular.mock.module(save);
         inject(($controller, $rootScope, _api_, _users_, _gettextCatalog_, _modal_, $q) => {
@@ -24,17 +37,6 @@ describe('common.filter.save.controller', () => {
         api.account_list_id = 123;
     });
 
-    function loadController() {
-        return controller('saveFilterModal as $ctrl', {
-            $scope: scope,
-            anyTags: false,
-            filterType: 'tasks',
-            params: {},
-            rejectedTags: [],
-            selectedTags: [],
-            wildcardSearch: null
-        });
-    }
     describe('save', () => {
         beforeEach(() => {
             spyOn($ctrl, 'checkUpdateOption').and.callFake(() => q.resolve({}));
@@ -43,6 +45,7 @@ describe('common.filter.save.controller', () => {
             spyOn(scope, '$hide').and.callThrough();
             spyOn(rootScope, '$emit').and.callFake(() => {});
         });
+
         it('should create an option', () => {
             users.currentOptions = {};
             $ctrl.name = name;
@@ -59,6 +62,7 @@ describe('common.filter.save.controller', () => {
                 wildcard_search: null
             });
         });
+
         it('should update an option', () => {
             users.currentOptions = options;
             $ctrl.name = name;
@@ -76,6 +80,7 @@ describe('common.filter.save.controller', () => {
                 wildcard_search: null
             });
         });
+
         it('should emit event on change', (done) => {
             users.currentOptions = {};
             $ctrl.name = name;
@@ -85,6 +90,7 @@ describe('common.filter.save.controller', () => {
             });
             rootScope.$digest();
         });
+
         it('should hide on change', (done) => {
             users.currentOptions = {};
             $ctrl.name = name;
@@ -95,11 +101,13 @@ describe('common.filter.save.controller', () => {
             rootScope.$digest();
         });
     });
+
     describe('createOption', () => {
         beforeEach(() => {
             spyOn(api, 'post').and.callFake(() => q.resolve());
             spyOn($ctrl, 'afterSave').and.callFake(() => q.resolve());
         });
+
         it('should call the api', () => {
             $ctrl.createOption(key, data);
             expect(api.post).toHaveBeenCalledWith({
@@ -117,6 +125,7 @@ describe('common.filter.save.controller', () => {
                 autoParams: false
             });
         });
+
         it('should call afterSave', (done) => {
             $ctrl.createOption(key, data).then(() => {
                 expect($ctrl.afterSave).toHaveBeenCalledWith(key, data);
@@ -125,11 +134,13 @@ describe('common.filter.save.controller', () => {
             rootScope.$digest();
         });
     });
+
     describe('updateOption', () => {
         beforeEach(() => {
             spyOn(api, 'put').and.callFake(() => q.resolve());
             spyOn($ctrl, 'afterSave').and.callFake(() => q.resolve());
         });
+
         it('should call the api', () => {
             $ctrl.updateOption(options[key], data);
             expect(api.put).toHaveBeenCalledWith({
@@ -148,6 +159,7 @@ describe('common.filter.save.controller', () => {
                 autoParams: false
             });
         });
+
         it('should call afterSave', (done) => {
             $ctrl.updateOption(options[key], data).then(() => {
                 expect($ctrl.afterSave).toHaveBeenCalledWith(key, data);
@@ -156,20 +168,24 @@ describe('common.filter.save.controller', () => {
             rootScope.$digest();
         });
     });
+
     describe('checkUpdateOption', () => {
         const msg = 'A filter with that name already exists. Do you wish to replace it.';
         beforeEach(() => {
             spyOn(modal, 'confirm').and.callFake(() => q.resolve());
             spyOn($ctrl, 'updateOption').and.callFake(() => {});
         });
+
         it('should translate the msg', () => {
             $ctrl.checkUpdateOption(options[key], data);
             expect(gettextCatalog.getString).toHaveBeenCalledWith(msg);
         });
+
         it('should confirm', () => {
             $ctrl.checkUpdateOption(options[key], data);
             expect(modal.confirm).toHaveBeenCalledWith(msg);
         });
+
         it('should update the option', (done) => {
             $ctrl.checkUpdateOption(options[key], data).then(() => {
                 expect($ctrl.updateOption).toHaveBeenCalledWith(options[key], data);
@@ -178,6 +194,7 @@ describe('common.filter.save.controller', () => {
             rootScope.$digest();
         });
     });
+
     describe('afterSave', () => {
         it('should set the option in users service', () => {
             $ctrl.afterSave(key, data);

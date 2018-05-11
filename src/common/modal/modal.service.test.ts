@@ -9,6 +9,7 @@ describe('common.modal.service', () => {
             modal = _modal_;
         });
     });
+
     xit('should do something', () => {
         expect(modal).toEqual(1);
         expect(rootScope).toEqual(1);

@@ -3,7 +3,7 @@ import component from './appeals.component';
 const result = { id: 1 };
 
 describe('home.progress.appeals.component', () => {
-    let $ctrl, componentController, scope, rootScope, accounts, appealsShow, q;
+    let $ctrl, scope, rootScope, accounts, appealsShow, q;
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _accounts_, _appealsShow_, $q) => {
@@ -12,23 +12,21 @@ describe('home.progress.appeals.component', () => {
             accounts = _accounts_;
             appealsShow = _appealsShow_;
             q = $q;
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('progressAppeals', { $scope: scope });
         });
     });
 
-    function loadController() {
-        $ctrl = componentController('progressAppeals', { $scope: scope });
-    }
     describe('$onInit', () => {
         beforeEach(() => {
             spyOn(appealsShow, 'getAppeal').and.callFake(() => q.resolve(result));
             accounts.current = { primary_appeal: {} };
         });
+
         it('should return null if no primary appeal', () => {
             expect($ctrl.$onInit()).toEqual(null);
             expect(appealsShow.getAppeal).not.toHaveBeenCalled();
         });
+
         it('should call getPrimaryAppeal if defined', (done) => {
             accounts.current.primary_appeal.id = 123;
             $ctrl.$onInit().then(() => {
@@ -38,10 +36,12 @@ describe('home.progress.appeals.component', () => {
             scope.$digest();
         });
     });
+
     describe('getPrimaryAppeal', () => {
         beforeEach(() => {
             spyOn(appealsShow, 'getAppeal').and.callFake(() => q.resolve(result));
         });
+
         it('should query api for a count and return it', (done) => {
             $ctrl.getPrimaryAppeal(1).then(() => {
                 expect($ctrl.appeal).toBe(result);

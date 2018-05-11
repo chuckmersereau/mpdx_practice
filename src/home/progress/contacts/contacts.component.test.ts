@@ -1,21 +1,16 @@
 import component from './contacts.component';
 
 describe('home.progress.contacts.component', () => {
-    let $ctrl, rootScope, scope, componentController;
+    let $ctrl, rootScope, scope;
 
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('progressContacts', { $scope: scope }, {});
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('progressContacts', { $scope: scope }, {});
-    }
 
     describe('constructor', () => {
         it('should define view objects', () => {

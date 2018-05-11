@@ -1,4 +1,6 @@
+import 'angular-block-ui';
 import { reduce, toInteger } from 'lodash/fp';
+import designationAccounts, { DesignationAccountsService } from '../../common/designationAccounts/designationAccounts.service';
 
 class BalancesController {
     blockUI: IBlockUIService;
@@ -43,9 +45,6 @@ const Balances = {
     controller: BalancesController,
     template: require('./balances.html')
 };
-
-import 'angular-block-ui';
-import designationAccounts, { DesignationAccountsService } from '../../common/designationAccounts/designationAccounts.service';
 
 export default angular.module('mpdx.reports.balances.component', [
     'blockUI',

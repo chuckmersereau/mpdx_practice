@@ -9,13 +9,18 @@ const options = {
 };
 const data = 'a';
 
-
 describe('common.filters.saved.component', () => {
     let $ctrl, componentController, scope, rootScope, users, api, gettextCatalog, modal, q;
 
+    function loadController() {
+        $ctrl = componentController('savedFilters', { $scope: scope }, {
+            type: type
+        });
+    }
+
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, $stateParams, _users_, _api_, _gettextCatalog_, _modal_, $q) => {
+        inject(($componentController, $rootScope, _users_, _api_, _gettextCatalog_, _modal_, $q) => {
             componentController = $componentController;
             rootScope = $rootScope;
             scope = rootScope.$new();
@@ -31,20 +36,16 @@ describe('common.filters.saved.component', () => {
         $ctrl.start = `saved_${type}_filter_`;
     });
 
-    function loadController() {
-        $ctrl = componentController('savedFilters', { $scope: scope }, {
-            type: type
-        });
-    }
-
     describe('$onInit', () => {
         beforeEach(() => {
             $ctrl.savedFilterNames = ['a'];
             spyOn($ctrl, 'getSavedFilters').and.callFake(() => {});
         });
+
         afterEach(() => {
             $ctrl.$onDestroy();
         });
+
         it('should set a prefix', () => {
             $ctrl.$onInit();
             expect($ctrl.start).toEqual(`saved_${type}_filter_`);
@@ -61,6 +62,7 @@ describe('common.filters.saved.component', () => {
             rootScope.$digest();
             expect($ctrl.savedFilterNames).toEqual([data, name]);
         });
+
         it('should handle accountListUpdated', () => {
             $ctrl.$onInit();
             rootScope.$emit('accountListUpdated', `${$ctrl.start}${name}`);
@@ -68,6 +70,7 @@ describe('common.filters.saved.component', () => {
             expect($ctrl.getSavedFilters).toHaveBeenCalledWith();
         });
     });
+
     describe('$onDestroy', () => {
         it('should clear watchers', () => {
             $ctrl.$onInit();
@@ -78,6 +81,7 @@ describe('common.filters.saved.component', () => {
             expect($ctrl.watcher2).toHaveBeenCalledWith();
         });
     });
+
     describe('getSavedFilters', () => {
         it('should get saved filters', () => {
             users.currentOptions = options;
@@ -85,19 +89,23 @@ describe('common.filters.saved.component', () => {
             expect($ctrl.savedFilterNames).toEqual([name]);
         });
     });
+
     describe('remove', () => {
         beforeEach(() => {
             spyOn(modal, 'confirm').and.callFake(() => q.resolve());
             spyOn(users, 'deleteOption').and.callFake(() => q.resolve());
         });
+
         it('should translate a confirm message', () => {
             $ctrl.remove(name);
             expect(gettextCatalog.getString).toHaveBeenCalledWith('Are you sure you wish to delete the saved filter "{{ name }}"?', { name: 'my filter' });
         });
+
         it('should confirm message', () => {
             $ctrl.remove(name);
             expect(modal.confirm).toHaveBeenCalledWith('Are you sure you wish to delete the saved filter "my filter"?');
         });
+
         it('should delete on confirm', (done) => {
             $ctrl.savedFilterNames = [key];
             $ctrl.remove(name).then(() => {
@@ -106,6 +114,7 @@ describe('common.filters.saved.component', () => {
             });
             rootScope.$digest();
         });
+
         it('should pull key from the list', (done) => {
             $ctrl.start = `saved_${type}_filter_`;
             $ctrl.savedFilterNames = [name];
@@ -116,6 +125,7 @@ describe('common.filters.saved.component', () => {
             rootScope.$digest();
         });
     });
+
     describe('strReplace', () => {
         it('should replace all instances of a string in a string', () => {
             expect(strReplace()('a_b_c', '_', ' ')).toEqual('a b c');

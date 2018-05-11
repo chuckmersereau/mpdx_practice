@@ -1,4 +1,5 @@
 import { map, reject } from 'lodash/fp';
+import people, { PeopleService } from '../people.service';
 
 class MergePeopleModalController {
     currentlyMerging: boolean;
@@ -32,8 +33,6 @@ class MergePeopleModalController {
         });
     }
 }
-
-import people, { PeopleService } from '../people.service';
 
 export default angular.module('mpdx.contacts.show.people.merge.controller', [
     people

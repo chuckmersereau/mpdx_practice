@@ -1,21 +1,16 @@
 import component from './preferences.component';
 
 describe('preferences.component', () => {
-    let $ctrl, rootScope, scope, componentController;
+    let $ctrl, rootScope, scope;
 
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('preferences', { $scope: scope }, {});
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('preferences', { $scope: scope }, {});
-    }
 
     describe('constructor', () => {
         it('should define view objects', () => {

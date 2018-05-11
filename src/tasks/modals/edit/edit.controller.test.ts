@@ -1,9 +1,8 @@
-import editController from './edit.controller';
 import { isEqual } from 'lodash/fp';
-
+import editController from './edit.controller';
 
 describe('tasks.modals.edit.controller', () => {
-    let $ctrl, controller, tasks, scope, q;
+    let $ctrl, tasks, scope, q;
     beforeEach(() => {
         angular.mock.module(editController);
         inject(($controller, $rootScope, _tasks_, $q) => {
@@ -11,18 +10,12 @@ describe('tasks.modals.edit.controller', () => {
             scope.$hide = () => {};
             tasks = _tasks_;
             q = $q;
-            controller = $controller;
-
-            $ctrl = loadController();
+            $ctrl = $controller('editTaskController as $ctrl', {
+                $scope: scope,
+                task: {}
+            });
         });
     });
-
-    function loadController(task = {}) {
-        return controller('editTaskController as $ctrl', {
-            $scope: scope,
-            task: task
-        });
-    }
 
     describe('constructor', () => {
         it('should clone the task', () => {
@@ -99,6 +92,7 @@ describe('tasks.modals.edit.controller', () => {
             });
         });
     });
+
     describe('handleActivityContacts', () => {
         it('should handle contact addition and removal', () => {
             $ctrl.task.contacts = [{ id: 1 }, { id: 2 }];
@@ -108,33 +102,40 @@ describe('tasks.modals.edit.controller', () => {
             expect($ctrl.task.activity_contacts).toEqual([{ contact: { id: 1 } }, { contact: { id: 3 }, _destroy: 1 }]);
         });
     });
+
     describe('handleDates', () => {
         beforeEach(() => {
             spyOn($ctrl, 'isoDateOrNull').and.callFake(() => 'a');
         });
+
         it('should set start_at to iso date or null', () => {
             $ctrl.handleDates();
             expect($ctrl.task.start_at).toEqual('a');
         });
+
         it('should set completed_at to iso date or null', () => {
             $ctrl.handleDates();
             expect($ctrl.task.completed_at).toEqual('a');
         });
     });
+
     describe('isoDateOrNull', () => {
         it('should handle true', () => {
             spyOn($ctrl, 'isIsoDate').and.callFake(() => true);
             expect($ctrl.isoDateOrNull('a')).toEqual('a');
         });
+
         it('should handle false', () => {
             spyOn($ctrl, 'isIsoDate').and.callFake(() => false);
             expect($ctrl.isoDateOrNull('a')).toEqual(null);
         });
     });
+
     describe('isIsoDate', () => {
         it('should return true', () => {
             expect($ctrl.isIsoDate('2018-02-13T16:35:51Z')).toBeTruthy();
         });
+
         it('should handle false', () => {
             expect($ctrl.isIsoDate('a')).toBeFalsy();
         });

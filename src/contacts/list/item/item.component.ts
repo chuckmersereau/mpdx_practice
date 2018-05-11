@@ -1,6 +1,9 @@
-import isOverflown from '../../../common/fp/isOverflown';
-import { flatten, includes, map, pull, union } from 'lodash/fp';
 import * as moment from 'moment';
+import { flatten, includes, map, pull, union } from 'lodash/fp';
+import contacts, { ContactsService } from '../../../contacts/contacts.service';
+import isOverflown from '../../../common/fp/isOverflown';
+import people, { PeopleService } from '../../../contacts/show/people/people.service';
+import users, { UsersService } from '../../../common/users/users.service';
 
 class ItemController {
     contact: any;
@@ -72,10 +75,6 @@ const Item = {
         selected: '='
     }
 };
-
-import contacts, { ContactsService } from '../../../contacts/contacts.service';
-import people, { PeopleService } from '../../../contacts/show/people/people.service';
-import users, { UsersService } from '../../../common/users/users.service';
 
 export default angular.module('mpdx.contacts.list.item.component', [
     contacts, people, users

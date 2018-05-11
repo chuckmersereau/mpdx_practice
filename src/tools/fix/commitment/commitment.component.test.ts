@@ -6,7 +6,7 @@ const fakeBlockUI = {
 };
 
 describe('tools.fix.commitmentInfo.component', () => {
-    let $ctrl, rootScope, scope, componentController, gettextCatalog, blockUI, modal, fixCommitmentInfo, q;
+    let $ctrl, rootScope, scope, gettextCatalog, blockUI, modal, fixCommitmentInfo, q;
     beforeEach(() => {
         angular.mock.module(commitmentInfo);
         inject(($componentController, $rootScope, _gettextCatalog_, _blockUI_, _modal_, _fixCommitmentInfo_, $q) => {
@@ -17,17 +17,12 @@ describe('tools.fix.commitmentInfo.component', () => {
             modal = _modal_;
             fixCommitmentInfo = _fixCommitmentInfo_;
             q = $q;
-            componentController = $componentController;
-            loadController();
+            spyOn(blockUI.instances, 'get').and.callFake(() => fakeBlockUI);
+            $ctrl = $componentController('fixCommitmentInfo', { $scope: scope });
         });
-    });
-
-    function loadController() {
-        spyOn(blockUI.instances, 'get').and.callFake(() => fakeBlockUI);
-        $ctrl = componentController('fixCommitmentInfo', { $scope: scope });
         spyOn($ctrl.blockUI, 'start').and.callThrough();
         spyOn($ctrl.blockUI, 'reset').and.callThrough();
-    }
+    });
 
     describe('constructor', () => {
         it('should get instance of blockUI', () => {
@@ -35,6 +30,7 @@ describe('tools.fix.commitmentInfo.component', () => {
             expect($ctrl.blockUI).toEqual(fakeBlockUI);
         });
     });
+
     describe('events', () => {
         it('should fire load on accountListUpdated', () => {
             spyOn($ctrl, 'load').and.callFake(() => q.resolve());
@@ -44,6 +40,7 @@ describe('tools.fix.commitmentInfo.component', () => {
             expect($ctrl.load).toHaveBeenCalled();
             $ctrl.$onDestroy();
         });
+
         it('should remove contact on contactHidden', () => {
             fixCommitmentInfo.data = [{ id: 2 }];
             $ctrl.$onInit();
@@ -52,6 +49,7 @@ describe('tools.fix.commitmentInfo.component', () => {
             $ctrl.$onDestroy();
         });
     });
+
     describe('$onDestroy', () => {
         it('should kill the watchers', () => {
             $ctrl.$onInit();
@@ -62,6 +60,7 @@ describe('tools.fix.commitmentInfo.component', () => {
             expect($ctrl.watcher2).toHaveBeenCalledWith();
         });
     });
+
     describe('save', () => {
         beforeEach(() => {
             spyOn(modal, 'confirm').and.callFake(() => q.resolve());

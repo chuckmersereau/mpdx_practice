@@ -5,7 +5,7 @@ describe('preferences.coaches.invites.service', () => {
 
     beforeEach(() => {
         angular.mock.module(service);
-        inject(($rootScope, _api_, _invites_, $q) => {
+        inject((_api_, _invites_, $q) => {
             invites = _invites_;
             api = _api_;
             q = $q;

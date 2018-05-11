@@ -1,4 +1,7 @@
+import * as Upload from 'ng-file-upload';
+import api, { ApiService } from '../../../common/api/api.service';
 import config from '../../../config';
+import users, { UsersService } from '../../../common/users/users.service';
 
 export class PreferencesOrganizationService {
     data: any;
@@ -101,10 +104,6 @@ export class PreferencesOrganizationService {
                 + `&organization_id=${organizationId}`;
     }
 }
-
-import * as Upload from 'ng-file-upload';
-import api, { ApiService } from '../../../common/api/api.service';
-import users, { UsersService } from '../../../common/users/users.service';
 
 export default angular.module('mpdx.preferences.integrations.organization.service', [
     Upload,

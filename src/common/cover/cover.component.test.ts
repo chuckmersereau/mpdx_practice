@@ -3,6 +3,10 @@ import component from './cover.component';
 describe('common.cover.component', () => {
     let $ctrl, rootScope, scope, componentController;
 
+    function loadController() {
+        $ctrl = componentController('cover', { $scope: scope }, {});
+    }
+
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope) => {
@@ -12,10 +16,6 @@ describe('common.cover.component', () => {
             loadController();
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('cover', { $scope: scope }, {});
-    }
 
     it('should define covers', () => {
         expect($ctrl.covers).toEqual([
@@ -31,6 +31,7 @@ describe('common.cover.component', () => {
             }
         ]);
     });
+
     it('should pick a random cover', () => {
         expect($ctrl.cover.url).toBeDefined();
         expect($ctrl.cover.copyright).toBeDefined();

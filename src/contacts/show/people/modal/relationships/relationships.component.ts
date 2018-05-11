@@ -1,4 +1,5 @@
 import { assign, get, isNil, map } from 'lodash/fp';
+import api, { ApiService } from '../../../../../common/api/api.service';
 
 class ContactFamilyRelationshipController {
     deleted: boolean;
@@ -49,8 +50,6 @@ const Relationships = {
         onRemove: '&'
     }
 };
-
-import api, { ApiService } from '../../../../../common/api/api.service';
 
 export default angular.module('mpdx.contacts.show.personModal.family.component', [
     api

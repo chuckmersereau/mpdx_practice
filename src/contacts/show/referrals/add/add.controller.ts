@@ -1,7 +1,7 @@
-import { reduce } from 'lodash/fp';
 import * as uuid from 'uuid/v1';
 import { ApiService } from '../../../../common/api/api.service';
 import { ContactsService } from '../../../contacts.service';
+import { reduce } from 'lodash/fp';
 
 class AddReferralsModalController {
     models: any;
@@ -61,5 +61,6 @@ class AddReferralsModalController {
         });
     }
 }
+
 export default angular.module('mpdx.contacts.show.referrals.add.controller', [])
     .controller('addReferralsModalController', AddReferralsModalController).name;

@@ -3,6 +3,10 @@ import component from './selector.component';
 describe('selector.component', () => {
     let $ctrl, rootScope, scope, componentController, designationAccounts;
 
+    function loadController() {
+        $ctrl = componentController('designationAccountsSelector', { $scope: scope });
+    }
+
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope,
@@ -14,10 +18,6 @@ describe('selector.component', () => {
             loadController();
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('designationAccountsSelector', { $scope: scope });
-    }
 
     describe('onChange', () => {
         beforeEach(() => {

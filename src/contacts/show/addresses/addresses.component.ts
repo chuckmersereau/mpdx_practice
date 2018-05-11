@@ -1,4 +1,6 @@
 import { eq, map } from 'lodash/fp';
+import contacts, { ContactsService } from '../../contacts.service';
+import modal, { ModalService } from '../../../common/modal/modal.service';
 
 class AddressesController {
     constructor(
@@ -34,9 +36,6 @@ const Addresses = {
     template: require('./addresses.html'),
     controller: AddressesController
 };
-
-import contacts, { ContactsService } from '../../contacts.service';
-import modal, { ModalService } from '../../../common/modal/modal.service';
 
 export default angular.module('mpdx.contacts.details.addresses.component', [
     contacts, modal

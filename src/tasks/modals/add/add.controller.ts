@@ -1,5 +1,8 @@
 import { defaultTo, map } from 'lodash/fp';
 import isNilOrEmpty from '../../../common/fp/isNilOrEmpty';
+import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
+import tasks, { TasksService } from '../../tasks.service';
+import tasksTags, { TasksTagsService } from '../../filter/tags/tags.service';
 
 class AddTaskController {
     comment: any;
@@ -34,10 +37,6 @@ class AddTaskController {
         });
     }
 }
-
-import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
-import tasks, { TasksService } from '../../tasks.service';
-import tasksTags, { TasksTagsService } from '../../filter/tags/tags.service';
 
 export default angular.module('mpdx.tasks.modals.add.controller', [
     serverConstants, tasks, tasksTags

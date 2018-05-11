@@ -1,4 +1,4 @@
-const Import = {
+const Import: ng.IComponentOptions = {
     template: require('./import.html')
 };
 

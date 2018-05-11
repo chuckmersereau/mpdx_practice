@@ -1,22 +1,17 @@
-import component from './mobile.component';
 import * as bowser from 'bowser';
+import component from './mobile.component';
 
 describe('mobile.component', () => {
-    let $ctrl, componentController, scope, rootScope;
+    let $ctrl, scope, rootScope;
 
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope) => {
-            componentController = $componentController;
             rootScope = $rootScope;
             scope = rootScope.$new();
-            loadController();
+            $ctrl = $componentController('mobile', { $scope: scope });
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('mobile', { $scope: scope });
-    }
 
     describe('$onInit', () => {
         beforeEach(() => {
@@ -52,6 +47,7 @@ describe('mobile.component', () => {
                 expect($ctrl.isMobile).toEqual(true);
             });
         });
+
         describe('ios', () => {
             beforeEach(() => {
                 (bowser as any).ios = true;

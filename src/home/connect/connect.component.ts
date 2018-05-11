@@ -1,4 +1,6 @@
 import { defaultTo, filter, find, get, sumBy } from 'lodash/fp';
+import serverConstants, { ServerConstantsService } from '../../common/serverConstants/serverConstants.service';
+import tasks, { TasksService } from '../../tasks/tasks.service';
 
 class ConnectController {
     limit: number;
@@ -23,9 +25,6 @@ const Connect = {
     template: require('./connect.html'),
     controller: ConnectController
 };
-
-import serverConstants, { ServerConstantsService } from '../../common/serverConstants/serverConstants.service';
-import tasks, { TasksService } from '../../tasks/tasks.service';
 
 export default angular.module('mpdx.home.connect', [
     serverConstants, tasks

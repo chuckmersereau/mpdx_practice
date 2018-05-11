@@ -1,5 +1,12 @@
+import 'angular-gettext';
 import { assign } from 'lodash/fp';
 import { stringToNameObjectArray } from '../../common/fp/tags';
+import { TasksTagsService } from './tags/tags.service';
+import { UsersService } from '../../common/users/users.service';
+import filters, { FiltersService } from '../../common/filters/filters.service';
+import modal, { ModalService } from '../../common/modal/modal.service';
+import tasks, { TasksService } from '../tasks.service';
+import tasksFilter, { TasksFilterService } from './filter.service';
 
 class FilterController {
     activeFilters: any[];
@@ -59,14 +66,6 @@ const Filter = {
     controller: FilterController,
     template: require('./filter.html')
 };
-
-import filters, { FiltersService } from '../../common/filters/filters.service';
-import 'angular-gettext';
-import modal, { ModalService } from '../../common/modal/modal.service';
-import tasks, { TasksService } from '../tasks.service';
-import tasksFilter, { TasksFilterService } from './filter.service';
-import { TasksTagsService } from './tags/tags.service';
-import { UsersService } from '../../common/users/users.service';
 
 export default angular.module('mpdx.tasks.filter.component', [
     'gettext',

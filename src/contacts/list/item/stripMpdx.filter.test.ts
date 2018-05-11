@@ -8,6 +8,7 @@ describe('common.stripMpdx.filter', () => {
             $filter = _$filter_;
         });
     });
+
     xit('output a formatted date', () => {
         expect($filter('stripMpdx')('')).toEqual(1);
     });

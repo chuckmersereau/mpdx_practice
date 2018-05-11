@@ -10,6 +10,7 @@ class MobileController {
         this.isMobile = this.isAndroid || this.isIos;
     }
 }
+
 const Mobile = {
     template: require('./mobile.html'),
     controller: MobileController

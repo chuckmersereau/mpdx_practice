@@ -9,6 +9,7 @@ describe('common.selectionStore.service', () => {
             selectionStore = _selectionStore_;
         });
     });
+
     xit('should do something', () => {
         expect(selectionStore).toEqual(1);
         expect(rootScope).toEqual(1);

@@ -1,5 +1,6 @@
-import { defaultTo, reduce } from 'lodash/fp';
+import 'angular-gettext';
 import * as moment from 'moment';
+import { defaultTo, reduce } from 'lodash/fp';
 
 interface ICustomElement extends ng.IRootElementService{
     daterangepicker: any;
@@ -70,8 +71,6 @@ const Daterange = {
         onChange: '&'
     }
 };
-
-import 'angular-gettext';
 
 export default angular.module('mpdx.contacts.filter.daterange', [
     'gettext'

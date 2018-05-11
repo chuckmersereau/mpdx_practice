@@ -1,7 +1,7 @@
 import component from './commitments.component';
 
 describe('home.commitments', () => {
-    let $ctrl, rootScope, scope, componentController, api, q;
+    let $ctrl, rootScope, scope, api, q;
 
     beforeEach(() => {
         angular.mock.module(component);
@@ -11,22 +11,20 @@ describe('home.commitments', () => {
             q = $q;
             api.account_list_id = 111;
             scope = rootScope.$new();
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('homeCommitments', { $scope: scope }, {});
         });
     });
 
-    function loadController() {
-        $ctrl = componentController('homeCommitments', { $scope: scope }, {});
-    }
     describe('$onInit', () => {
         beforeEach(() => {
             spyOn($ctrl, 'load').and.callFake(() => q.resolve('a'));
         });
+
         it('should load', () => {
             $ctrl.$onInit();
             expect($ctrl.load).toHaveBeenCalledWith();
         });
+
         it('should load on account list change', () => {
             $ctrl.$onInit();
             expect($ctrl.watcher).toBeDefined();
@@ -35,6 +33,7 @@ describe('home.commitments', () => {
             expect($ctrl.load).toHaveBeenCalledWith();
         });
     });
+
     describe('$onDestroy', () => {
         it('should destroy the account list change watcher', () => {
             $ctrl.$onInit();
@@ -43,14 +42,17 @@ describe('home.commitments', () => {
             expect($ctrl.watcher).toHaveBeenCalledWith();
         });
     });
+
     describe('load', () => {
         beforeEach(() => {
             spyOn($ctrl, 'getAnalytics').and.callFake(() => q.resolve('a'));
         });
+
         it('should get analytics', () => {
             $ctrl.load();
             expect($ctrl.getAnalytics).toHaveBeenCalledWith();
         });
+
         it('should set analytics', (done) => {
             $ctrl.load().then(() => {
                 expect($ctrl.analytics).toEqual('a');
@@ -59,10 +61,12 @@ describe('home.commitments', () => {
             scope.$digest();
         });
     });
+
     describe('getAnalytics', () => {
         beforeEach(() => {
             $ctrl.analytics = null;
         });
+
         it('should query the api', () => {
             spyOn(api, 'get').and.callFake(() => q.resolve());
             $ctrl.getAnalytics();

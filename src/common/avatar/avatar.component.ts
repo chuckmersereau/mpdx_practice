@@ -1,3 +1,6 @@
+import 'angular-gettext';
+import alerts, { AlertsService } from '../alerts/alerts.service';
+
 class AvatarController {
     avatar: any;
     loading: boolean;
@@ -62,9 +65,6 @@ const Avatar = {
         title: '@'
     }
 };
-
-import alerts, { AlertsService } from '../alerts/alerts.service';
-import 'angular-gettext';
 
 export default angular.module('mpdx.common.avatar.component', [
     'gettext',

@@ -14,11 +14,13 @@ describe('contacts.list.search', () => {
             $ctrl = $componentController('contactsListSearch', { $scope: scope }, { view: null, selected: null });
         });
     });
+
     describe('constructor', () => {
         it('should start with an empty search string', () => {
             expect($ctrl.searchParams).toEqual('');
         });
     });
+
     describe('events', () => {
         it('should set search to empty on contactSearchReset', () => {
             rootScope.$emit('contactSearchReset');
@@ -26,16 +28,19 @@ describe('contacts.list.search', () => {
             expect($ctrl.searchParams).toEqual('');
         });
     });
+
     describe('$onInit', () => {
         it('should set search to contact filter wildcard search', () => {
             $ctrl.$onInit();
             expect($ctrl.searchParams).toEqual(wildcardSearch);
         });
     });
+
     describe('search text changed', () => {
         beforeEach(() => {
             spyOn(contactFilter, 'change').and.callFake(() => {});
         });
+
         it('should change contact filter', () => {
             const search = 'fdsa';
             $ctrl.searchParams = search;

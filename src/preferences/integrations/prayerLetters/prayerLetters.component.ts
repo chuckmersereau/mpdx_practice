@@ -1,5 +1,11 @@
+import 'angular-gettext';
+import api, { ApiService } from '../../../common/api/api.service';
+import modal, { ModalService } from '../../../common/modal/modal.service';
+import prayerLetters, { PrayerLettersService } from './prayerLetters.service';
+
 class PrayerLettersController {
     saving: boolean;
+    watcher: () => void;
     constructor(
         private $log: ng.ILogService,
         $rootScope: ng.IRootScopeService,
@@ -8,12 +14,15 @@ class PrayerLettersController {
         private modal: ModalService,
         private prayerLetters: PrayerLettersService
     ) {
-        $rootScope.$on('accountListUpdated', () => {
+        this.watcher = $rootScope.$on('accountListUpdated', () => {
             this.prayerLetters.load(true);
         });
     }
     $onInit() {
         this.prayerLetters.load(true);
+    }
+    $onDestroy() {
+        this.watcher();
     }
     sync() {
         this.saving = true;
@@ -49,11 +58,6 @@ const PrayerLetters = {
     template: require('./prayerLetters.html'),
     controller: PrayerLettersController
 };
-
-import api, { ApiService } from '../../../common/api/api.service';
-import 'angular-gettext';
-import modal, { ModalService } from '../../../common/modal/modal.service';
-import prayerLetters, { PrayerLettersService } from './prayerLetters.service';
 
 export default angular.module('mpdx.preferences.integrations.prayerLetters.component', [
     'gettext',

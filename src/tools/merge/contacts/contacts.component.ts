@@ -1,5 +1,12 @@
+import 'angular-gettext';
 import { concat, filter, map, reduce } from 'lodash/fp';
+import { StateService } from '@uirouter/core';
+import alerts, { AlertsService } from '../../../common/alerts/alerts.service';
+import api, { ApiService } from '../../../common/api/api.service';
+import contacts, { ContactsService } from '../../../contacts/contacts.service';
 import reduceObject from '../../../common/fp/reduceObject';
+import tools, { ToolsService } from '../../tools.service';
+import uiRouter from '@uirouter/angularjs';
 
 class MergeContactsController {
     duplicates: any;
@@ -15,7 +22,7 @@ class MergeContactsController {
         private alerts: AlertsService,
         private api: ApiService,
         private contacts: ContactsService,
-        private tools:ToolsService
+        private tools: ToolsService
     ) {
         this.duplicates = [];
         this.total = 0;
@@ -131,14 +138,6 @@ const MergeContacts = {
     controller: MergeContactsController,
     template: require('./contacts.html')
 };
-
-import 'angular-gettext';
-import uiRouter from '@uirouter/angularjs';
-import alerts, { AlertsService } from '../../../common/alerts/alerts.service';
-import api, { ApiService } from '../../../common/api/api.service';
-import contacts, { ContactsService } from '../../../contacts/contacts.service';
-import tools, { ToolsService } from '../../tools.service';
-import { StateService } from '@uirouter/core';
 
 export default angular.module('mpdx.tools.merge.contacts.component', [
     uiRouter, 'gettext',

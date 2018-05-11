@@ -1,3 +1,4 @@
+import 'angular-gettext';
 import {
     assign,
     concat,
@@ -17,11 +18,16 @@ import {
     union
 } from 'lodash/fp';
 import { convertTags } from '../common/fp/tags';
+import api, { ApiService } from '../common/api/api.service';
+import contactFilter, { ContactFilterService } from './sidebar/filter/filter.service';
+import contactsTags, { ContactsTagsService } from './sidebar/filter/tags/tags.service';
 import emptyToNull from '../common/fp/emptyToNull';
 import flattenCompactAndJoin from '../common/fp/flattenCompactAndJoin';
 import joinComma from '../common/fp/joinComma';
+import modal, { ModalService } from '../common/modal/modal.service';
 import reduceObject from '../common/fp/reduceObject';
 import relationshipId from '../common/fp/relationshipId';
+import serverConstants, { ServerConstantsService } from '../common/serverConstants/serverConstants.service';
 
 export class ContactsService {
     activeDrawer: string;
@@ -354,13 +360,6 @@ export class ContactsService {
         }, data);
     }
 }
-
-import api, { ApiService } from '../common/api/api.service';
-import contactFilter, { ContactFilterService } from './sidebar/filter/filter.service';
-import contactsTags, { ContactsTagsService } from './sidebar/filter/tags/tags.service';
-import modal, { ModalService } from '../common/modal/modal.service';
-import 'angular-gettext';
-import serverConstants, { ServerConstantsService } from '../common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.contacts.service', [
     'gettext',

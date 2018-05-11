@@ -1,7 +1,7 @@
 import component from './mailchimp.component';
 
 describe('preferences.integrations.mailchimp.component', () => {
-    let $ctrl, mailchimp, rootScope, scope, componentController, gettextCatalog, modal, api, q;
+    let $ctrl, mailchimp, rootScope, scope, gettextCatalog, modal, api, q;
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _mailchimp_, _gettextCatalog_, _modal_, _api_, $q) => {
@@ -12,44 +12,46 @@ describe('preferences.integrations.mailchimp.component', () => {
             modal = _modal_;
             gettextCatalog = _gettextCatalog_;
             q = $q;
-            componentController = $componentController;
             api.account_list_id = 123;
-            loadController();
+            $ctrl = $componentController('mailchimpIntegrationPreferences', { $scope: scope }, {});
         });
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
 
-    function loadController() {
-        $ctrl = componentController('mailchimpIntegrationPreferences', { $scope: scope }, {});
-    }
     describe('constructor', () => {
         it('should set default values', () => {
             expect($ctrl.saving).toBeFalsy();
             expect($ctrl.showSettings).toBeFalsy();
         });
     });
+
     describe('$onInit', () => {
         beforeEach(() => {
             spyOn(mailchimp, 'load').and.callFake(() => {});
         });
+
         it('should build the oAuth url', () => {
             $ctrl.$onInit();
             expect($ctrl.oAuth).toBeDefined();
         });
+
         it('should call load', () => {
             $ctrl.$onInit();
             expect(mailchimp.load).toHaveBeenCalledWith();
         });
     });
+
     describe('save', () => {
         beforeEach(() => {
             spyOn(mailchimp, 'load').and.callFake(() => q.resolve());
             spyOn(modal, 'info').and.callFake(() => q.resolve());
         });
+
         it('should set saving flag', () => {
             $ctrl.save();
             expect($ctrl.saving).toBeTruthy();
         });
+
         it('should create an invite', () => {
             spyOn(api, 'post').and.callFake(() => q.resolve());
             const successMessage = 'Preferences saved successfully';
@@ -61,6 +63,7 @@ describe('preferences.integrations.mailchimp.component', () => {
                 successMessage: successMessage
             });
         });
+
         it('should unset saving flag', (done) => {
             spyOn(api, 'post').and.callFake(() => q.resolve());
             $ctrl.save().then(() => {
@@ -69,6 +72,7 @@ describe('preferences.integrations.mailchimp.component', () => {
             });
             scope.$digest();
         });
+
         it('should set showSettings false', (done) => {
             spyOn(api, 'post').and.callFake(() => q.resolve());
             $ctrl.save().then(() => {
@@ -77,6 +81,7 @@ describe('preferences.integrations.mailchimp.component', () => {
             });
             scope.$digest();
         });
+
         it('should refresh', (done) => {
             spyOn(api, 'post').and.callFake(() => q.resolve());
             $ctrl.save().then(() => {
@@ -85,6 +90,7 @@ describe('preferences.integrations.mailchimp.component', () => {
             });
             rootScope.$digest();
         });
+
         it('should alert a translated confirmation', (done) => {
             spyOn(api, 'post').and.callFake(() => q.resolve());
             $ctrl.save().then(() => {
@@ -94,6 +100,7 @@ describe('preferences.integrations.mailchimp.component', () => {
             });
             scope.$digest();
         });
+
         it('should handle rejection', (done) => {
             spyOn(api, 'post').and.callFake(() => q.reject({ errors: ['a'] }));
             $ctrl.save().catch(() => {
@@ -103,15 +110,18 @@ describe('preferences.integrations.mailchimp.component', () => {
             scope.$digest();
         });
     });
+
     describe('disconnect', () => {
         beforeEach(() => {
             spyOn(modal, 'confirm').and.callFake(() => q.resolve());
         });
+
         it('should confirm with translated message', () => {
             $ctrl.disconnect();
             expect(modal.confirm).toHaveBeenCalledWith(jasmine.any(String));
             expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
         });
+
         it('should disconnect', (done) => {
             spyOn(api, 'delete').and.callFake(() => q.resolve());
             const errorMessage = 'MPDX couldn\'t save your configuration changes for MailChimp';
@@ -126,6 +136,7 @@ describe('preferences.integrations.mailchimp.component', () => {
             });
             scope.$digest();
         });
+
         it('should unset saving flag', (done) => {
             spyOn(api, 'delete').and.callFake(() => q.resolve());
             $ctrl.disconnect().then(() => {
@@ -134,6 +145,7 @@ describe('preferences.integrations.mailchimp.component', () => {
             });
             scope.$digest();
         });
+
         it('should set showSettings false', (done) => {
             spyOn(api, 'delete').and.callFake(() => q.resolve());
             $ctrl.disconnect().then(() => {
@@ -142,6 +154,7 @@ describe('preferences.integrations.mailchimp.component', () => {
             });
             scope.$digest();
         });
+
         it('should handle rejection', (done) => {
             spyOn(api, 'delete').and.callFake(() => q.reject({ errors: ['a'] }));
             $ctrl.disconnect().catch(() => {
@@ -151,15 +164,18 @@ describe('preferences.integrations.mailchimp.component', () => {
             scope.$digest();
         });
     });
+
     describe('sync', () => {
         beforeEach(() => {
-            spyOn(mailchimp, 'load').and.callFake(() => q.resolve())
+            spyOn(mailchimp, 'load').and.callFake(() => q.resolve());
             spyOn(modal, 'info').and.callFake(() => q.resolve());
         });
+
         it('should set saving flag', () => {
             $ctrl.sync();
             expect($ctrl.saving).toBeTruthy();
         });
+
         it('should create an invite', () => {
             spyOn(api, 'get').and.callFake(() => q.resolve());
             const errorMessage = 'MPDX couldn\'t save your configuration changes for MailChimp';
@@ -170,6 +186,7 @@ describe('preferences.integrations.mailchimp.component', () => {
                 undefined, undefined, errorMessage
             );
         });
+
         it('should unset saving flag', (done) => {
             spyOn(api, 'get').and.callFake(() => q.resolve());
             $ctrl.sync().then(() => {
@@ -178,6 +195,7 @@ describe('preferences.integrations.mailchimp.component', () => {
             });
             rootScope.$digest();
         });
+
         it('should alert a translated confirmation', (done) => {
             spyOn(api, 'get').and.callFake(() => q.resolve());
             $ctrl.sync().then(() => {
@@ -187,6 +205,7 @@ describe('preferences.integrations.mailchimp.component', () => {
             });
             scope.$digest();
         });
+
         it('should handle rejection', (done) => {
             spyOn(api, 'get').and.callFake(() => q.reject({ errors: ['a'] }));
             $ctrl.sync().catch(() => {

@@ -1,3 +1,5 @@
+import 'angular-gettext';
+
 export class TimeZoneService {
     data: any[];
     constructor(
@@ -161,8 +163,6 @@ export class TimeZoneService {
         ];
     }
 }
-
-import 'angular-gettext';
 
 export default angular.module('mpdx.common.timeZone.service', [
     'gettext'

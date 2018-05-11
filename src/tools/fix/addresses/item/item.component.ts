@@ -1,4 +1,6 @@
+import 'angular-block-ui';
 import { assign, filter, map } from 'lodash/fp';
+import contacts, { ContactsService } from '../../../../contacts/contacts.service';
 
 class ItemController {
     contact: any;
@@ -36,9 +38,6 @@ const Item = {
         onSave: '&'
     }
 };
-
-import 'angular-block-ui';
-import contacts, { ContactsService } from '../../../../contacts/contacts.service';
 
 export default angular.module('mpdx.tools.fix.addresses.item.component', [
     'blockUI',

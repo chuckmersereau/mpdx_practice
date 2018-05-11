@@ -1,3 +1,4 @@
+import addReferrals from './referrals/add/add.controller';
 import address from './addresses/address/address.component';
 import addresses from './addresses/addresses.component';
 import addressModal from './addresses/address/modal/modal.controller';
@@ -10,7 +11,6 @@ import notes from './notes/notes.component';
 import people from './people/people.module';
 import recommendation from './recommendation/recommendation.component';
 import referrals from './referrals/referrals.component';
-import addReferrals from './referrals/add/add.controller';
 import tasks from './tasks/tasks.component';
 
 export default angular.module('mpdx.contacts.show', [

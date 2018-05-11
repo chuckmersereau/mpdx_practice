@@ -13,8 +13,9 @@ import {
     sortBy,
     toInteger
 } from 'lodash/fp';
-import reduceObject from '../fp/reduceObject';
 import { split } from '../fp/strings';
+import api, { ApiService } from '../api/api.service';
+import reduceObject from '../fp/reduceObject';
 
 export class FiltersService {
     constructor(
@@ -25,8 +26,8 @@ export class FiltersService {
     count({ params, defaultParams }: { params: any, defaultParams: any }): number {
         return filter((key) => !isEqual(params[key], defaultParams[key]), keys(params)).length;
     }
-    load({ data, defaultParams, params, url }: { data: any, defaultParams: any, params: any, url: string})
-        : ng.IPromise<any> {
+    load({ data, defaultParams, params, url }: { data: any, defaultParams: any, params: any, url: string}):
+        ng.IPromise<any> {
         return data
             ? this.returnOriginalAsPromise(data, params, defaultParams)
             : this.getDataFromApi(data, defaultParams, params, url);
@@ -103,8 +104,6 @@ export class FiltersService {
         }, {}, params);
     }
 }
-
-import api, { ApiService } from '../api/api.service';
 
 export default angular.module('mpdx.common.filters.service', [
     api

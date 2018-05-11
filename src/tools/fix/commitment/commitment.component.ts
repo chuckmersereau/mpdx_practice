@@ -1,4 +1,9 @@
+import 'angular-block-ui';
+import 'angular-gettext';
 import { reject } from 'lodash/fp';
+import contacts, { ContactsService } from '../../../contacts/contacts.service';
+import fixCommitmentInfo, { FixCommitmentInfoService } from './commitment.service';
+import modal, { ModalService } from '../../../common/modal/modal.service';
 
 class CommitmentInfoController {
     blockUI: IBlockUIService;
@@ -48,12 +53,6 @@ const FixCommitmentInfo = {
     controller: CommitmentInfoController,
     template: require('./commitment.html')
 };
-
-import 'angular-gettext';
-import 'angular-block-ui';
-import fixCommitmentInfo, { FixCommitmentInfoService } from './commitment.service';
-import contacts, { ContactsService } from '../../../contacts/contacts.service';
-import modal, { ModalService } from '../../../common/modal/modal.service';
 
 export default angular.module('mpdx.tools.fixCommitmentInfo.component', [
     'gettext', 'blockUI',

@@ -1,3 +1,6 @@
+import 'angular-block-ui';
+import * as moment from 'moment';
+import * as uuid from 'uuid/v1';
 import {
     assign,
     compact,
@@ -13,12 +16,23 @@ import {
     toNumber,
     values
 } from 'lodash/fp';
+import { StateParams, StateService } from '@uirouter/core';
+import alerts, { AlertsService } from '../../../common/alerts/alerts.service';
+import api, { ApiService } from '../../../common/api/api.service';
+import appeals, { AppealsService } from '../../../tools/appeals/appeals.service';
+import appealsShow, { AppealsShowService } from './show.service';
+import contacts, { ContactsService } from '../../../contacts/contacts.service';
 import createPatch from '../../../common/fp/createPatch';
+import donations, { DonationsService } from '../../../reports/donations/donations.service';
+import exportContacts, { ExportContactsService } from '../../../contacts/list/exportContacts/export.service';
 import fixed from '../../../common/fp/fixed';
 import isNilOrEmpty from '../../../common/fp/isNilOrEmpty';
 import joinComma from '../../../common/fp/joinComma';
-import * as moment from 'moment';
-import * as uuid from 'uuid/v1';
+import mailchimp, { MailchimpService } from '../../../preferences/integrations/mailchimp/mailchimp.service';
+import modal, { ModalService } from '../../../common/modal/modal.service';
+import serverconstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
+import tasks, { TasksService } from '../../../tasks/tasks.service';
+import uiRouter from '@uirouter/angularjs';
 
 interface ICustomRootScope extends ng.IRootScopeService {
     pageTitle: string;
@@ -537,21 +551,6 @@ const Appeal: ng.IComponentOptions = {
         data: '<'
     }
 };
-
-import 'angular-block-ui';
-import uiRouter from '@uirouter/angularjs';
-import appeals, { AppealsService } from '../../../tools/appeals/appeals.service';
-import appealsShow, { AppealsShowService } from './show.service';
-import contacts, { ContactsService } from '../../../contacts/contacts.service';
-import donations, { DonationsService } from '../../../reports/donations/donations.service';
-import exportContacts, { ExportContactsService } from '../../../contacts/list/exportContacts/export.service';
-import mailchimp, { MailchimpService } from '../../../preferences/integrations/mailchimp/mailchimp.service';
-import tasks, { TasksService } from '../../../tasks/tasks.service';
-import { StateParams, StateService } from '@uirouter/core';
-import alerts, { AlertsService } from '../../../common/alerts/alerts.service';
-import api, { ApiService } from '../../../common/api/api.service';
-import modal, { ModalService } from '../../../common/modal/modal.service';
-import serverconstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
 
 export default angular.module('tools.mpdx.appeals.show', [
     'blockUI', uiRouter,

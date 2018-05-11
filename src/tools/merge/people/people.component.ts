@@ -1,5 +1,12 @@
+import 'angular-gettext';
 import { concat, filter, map, reduce } from 'lodash/fp';
+import { StateService } from '@uirouter/core';
+import alerts, { AlertsService } from '../../../common/alerts/alerts.service';
+import api, { ApiService } from '../../../common/api/api.service';
+import people, { PeopleService } from '../../../contacts/show/people/people.service';
 import reduceObject from '../../../common/fp/reduceObject';
+import tools, { ToolsService } from '../../tools.service';
+import uiRouter from '@uirouter/angularjs';
 
 class MergePeopleController {
     duplicates: any;
@@ -135,14 +142,6 @@ const MergePeople = {
     controller: MergePeopleController,
     template: require('./people.html')
 };
-
-import 'angular-gettext';
-import uiRouter from '@uirouter/angularjs';
-import alerts, { AlertsService } from '../../../common/alerts/alerts.service';
-import api, { ApiService } from '../../../common/api/api.service';
-import people, { PeopleService } from '../../../contacts/show/people/people.service';
-import tools, { ToolsService } from '../../tools.service';
-import { StateService } from '@uirouter/core';
 
 export default angular.module('mpdx.tools.merge.people.component', [
     uiRouter, 'gettext',

@@ -3,6 +3,10 @@ import component from './twitter.component';
 describe('contacts.show.personModal.twitter.component', () => {
     let $ctrl, rootScope, scope, componentController;
 
+    function loadController() {
+        $ctrl = componentController('peopleTwitter', { $scope: scope }, {});
+    }
+
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope) => {
@@ -13,9 +17,6 @@ describe('contacts.show.personModal.twitter.component', () => {
         });
     });
 
-    function loadController() {
-        $ctrl = componentController('peopleTwitter', { $scope: scope }, {});
-    }
     xit('should do something', () => {
         expect($ctrl).toEqual(1);
     });

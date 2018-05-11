@@ -1,3 +1,6 @@
+import tasks, { TasksService } from '../tasks.service';
+import tasksFilter, { TasksFilterService } from '../filter/filter.service';
+
 class TasksSearchController {
     constructor(
         private tasks: TasksService,
@@ -7,14 +10,12 @@ class TasksSearchController {
         this.tasksFilter = tasksFilter;
     }
 }
-const Search = {
+
+const Search: ng.IComponentOptions = {
     controller: TasksSearchController,
     template: require('./search.html'),
     bindings: {}
 };
-
-import tasks, { TasksService } from '../tasks.service';
-import tasksFilter, { TasksFilterService } from '../filter/filter.service';
 
 export default angular.module('mpdx.common.tasks.search', [
     tasks, tasksFilter

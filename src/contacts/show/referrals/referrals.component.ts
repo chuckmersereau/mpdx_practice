@@ -1,4 +1,7 @@
 import { StateParams, StateService } from '@uirouter/core';
+import contacts, { ContactsService } from '../../contacts.service';
+import locale, { LocaleService } from '../../../common/locale/locale.service';
+import uiRouter from '@uirouter/angularjs';
 
 class ContactReferralsController {
     referrals: any;
@@ -24,10 +27,6 @@ const Referrals = {
     controller: ContactReferralsController,
     template: require('./referrals.html')
 };
-
-import uiRouter from '@uirouter/angularjs';
-import contacts, { ContactsService } from '../../contacts.service';
-import locale, { LocaleService } from '../../../common/locale/locale.service';
 
 export default angular.module('mpdx.contacts.show.referrals.component', [
     uiRouter,

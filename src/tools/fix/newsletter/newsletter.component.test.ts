@@ -1,7 +1,7 @@
 import newsletter from './newsletter.component';
 
 describe('tools.fix.sendNewsletter.component', () => {
-    let $ctrl, rootScope, scope, componentController, gettextCatalog, modal, fixSendNewsletter, q;
+    let $ctrl, rootScope, scope, gettextCatalog, modal, fixSendNewsletter, q;
     beforeEach(() => {
         angular.mock.module(newsletter);
         inject(($componentController, $rootScope, _gettextCatalog_, _modal_, _fixSendNewsletter_, $q) => {
@@ -11,14 +11,9 @@ describe('tools.fix.sendNewsletter.component', () => {
             modal = _modal_;
             fixSendNewsletter = _fixSendNewsletter_;
             q = $q;
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('fixSendNewsletter', { $scope: scope });
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('fixSendNewsletter', { $scope: scope });
-    }
 
     describe('events', () => {
         it('should fire load on accountListUpdated', () => {
@@ -27,6 +22,7 @@ describe('tools.fix.sendNewsletter.component', () => {
             expect($ctrl.load).toHaveBeenCalled();
         });
     });
+
     describe('save', () => {
         beforeEach(() => {
             spyOn(modal, 'confirm').and.callFake(() => q.resolve());

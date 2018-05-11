@@ -1,14 +1,13 @@
 import component from './people.component';
 
 describe('contacts.show.people.component', () => {
-    let $ctrl, rootScope, scope, componentController, alerts, api, gettextCatalog, people, _$window, q;
+    let $ctrl, rootScope, scope, alerts, api, gettextCatalog, people, _$window, q;
     beforeEach(() => {
         angular.mock.module(component);
 
         inject((
             $componentController, $rootScope, $window,
             _alerts_, _api_, _gettextCatalog_, _people_, $q) => {
-            componentController = $componentController;
             rootScope = $rootScope;
             scope = $rootScope.$new();
 
@@ -18,10 +17,8 @@ describe('contacts.show.people.component', () => {
             gettextCatalog = _gettextCatalog_;
             people = _people_;
             q = $q;
-
             api.account_list_id = 1234;
-
-            loadController();
+            $ctrl = $componentController('contactPeople', { $scope: scope }, { view: null, selected: null });
         });
 
         spyOn(alerts, 'addAlert').and.callFake(() => {});
@@ -29,7 +26,6 @@ describe('contacts.show.people.component', () => {
     });
 
     function loadController() {
-        $ctrl = componentController('contactPeople', { $scope: scope }, { view: null, selected: null });
     }
 
     describe('constructor', () => {
@@ -158,6 +154,7 @@ describe('contacts.show.people.component', () => {
             expect($ctrl.selectedPeople).toEqual([]);
         });
     });
+
     describe('emailAll', () => {
         it('should open a mailto window', () => {
             spyOn(_$window, 'open').and.callFake(() => ({ close: () => {} }));

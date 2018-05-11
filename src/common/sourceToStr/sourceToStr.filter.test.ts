@@ -8,6 +8,7 @@ describe('common.sourceToStr.filter', () => {
             $filter = _$filter_;
         });
     });
+
     xit('output a formatted date', () => {
         expect($filter('sourceToStr')('')).toEqual(1);
     });

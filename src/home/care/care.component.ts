@@ -1,3 +1,7 @@
+import api, { ApiService } from '../../common/api/api.service';
+import contactFilter from '../../contacts/sidebar/filter/filter.service';
+import modal, { ModalService } from '../../common/modal/modal.service';
+
 class CareController {
     constructor(
         private $rootScope: ng.IRootScopeService,
@@ -43,10 +47,6 @@ const Care = {
     template: require('./care.html'),
     controller: CareController
 };
-
-import api, { ApiService } from '../../common/api/api.service';
-import contactFilter from '../../contacts/sidebar/filter/filter.service';
-import modal, { ModalService } from '../../common/modal/modal.service';
 
 export default angular.module('mpdx.home.care.component', [
     api, contactFilter, modal

@@ -1,4 +1,5 @@
 import * as moment from 'moment';
+import statusPage, { StatusPageService } from '../../bottom/status/status.service';
 
 class IncidentsController {
     moment: any;
@@ -14,8 +15,6 @@ const Incidents = {
     controller: IncidentsController,
     template: require('./incidents.html')
 };
-
-import statusPage, { StatusPageService } from '../../bottom/status/status.service';
 
 export default angular.module('mpdx.menu.incidents.component', [
     statusPage

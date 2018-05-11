@@ -1,24 +1,19 @@
 import component from './tools.component';
 
 describe('tools.component', () => {
-    let $ctrl, componentController, scope, rootScope, help, tools;
+    let $ctrl, scope, rootScope, help, tools;
 
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, $stateParams, _help_, _tools_) => {
-            componentController = $componentController;
             rootScope = $rootScope;
             scope = rootScope.$new();
             help = _help_;
             tools = _tools_;
             $stateParams.setup = true;
-            loadController();
+            $ctrl = $componentController('tools', { $scope: scope });
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('tools', { $scope: scope });
-    }
 
     describe('constructor', () => {
         it('should set default values', () => {

@@ -1,4 +1,11 @@
+import 'angular-block-ui';
+import 'angular-gettext';
 import { find, map, reduce, reject, sortBy, unionBy } from 'lodash/fp';
+import api, { ApiService } from '../../../common/api/api.service';
+import contacts, { ContactsService } from '../../../contacts/contacts.service';
+import modal, { ModalService } from '../../../common/modal/modal.service';
+import sourceToStr from '../../../common/sourceToStr/sourceToStr.filter';
+import tools, { ToolsService } from '../../tools.service';
 
 class AddressesController {
     blockUI: IBlockUIService;
@@ -132,14 +139,6 @@ const Addresses = {
     controller: AddressesController,
     template: require('./addresses.html')
 };
-
-import 'angular-block-ui';
-import 'angular-gettext';
-import sourceToStr from '../../../common/sourceToStr/sourceToStr.filter';
-import api, { ApiService } from '../../../common/api/api.service';
-import contacts, { ContactsService } from '../../../contacts/contacts.service';
-import modal, { ModalService } from '../../../common/modal/modal.service';
-import tools, { ToolsService } from '../../tools.service';
 
 export default angular.module('mpdx.tools.fix.addresses.component', [
     'gettext', 'blockUI',

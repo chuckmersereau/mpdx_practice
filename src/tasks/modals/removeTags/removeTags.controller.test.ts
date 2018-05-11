@@ -1,5 +1,5 @@
-import remove from './removeTags.controller';
 import { assign } from 'lodash/fp';
+import remove from './removeTags.controller';
 
 describe('tasks.modals.removeTags.controller', () => {
     let $ctrl, controller, tasksTags, scope, rootScope, api, modal, gettextCatalog, q;
@@ -11,6 +11,11 @@ describe('tasks.modals.removeTags.controller', () => {
             currentListSize: 25
         };
     }
+
+    function loadController(scope) {
+        return controller('removeTaskTagController as $ctrl', scope);
+    }
+
     beforeEach(() => {
         angular.mock.module(remove);
         inject(($controller, $rootScope, _tasksTags_, _api_, _modal_, _gettextCatalog_, $q) => {
@@ -28,9 +33,6 @@ describe('tasks.modals.removeTags.controller', () => {
         });
     });
 
-    function loadController(scope) {
-        return controller('removeTaskTagController as $ctrl', scope);
-    }
     describe('removeTag', () => {
         beforeEach(() => {
             spyOn(api, 'delete').and.callFake(() => q.resolve({}));
@@ -40,12 +42,14 @@ describe('tasks.modals.removeTags.controller', () => {
             spyOn(scope, '$hide').and.callThrough();
             spyOn($ctrl.$rootScope, '$emit').and.callFake(() => {});
         });
+
         it('should confirm with a translated message', () => {
             const message = 'Are you sure you wish to remove the selected tag?';
             $ctrl.removeTag('a');
             expect(modal.confirm).toHaveBeenCalledWith(message);
             expect(gettextCatalog.getString).toHaveBeenCalledWith(message);
         });
+
         it('should remove a tag from selected contacts', (done) => {
             const successMessage = 'Tag successfully removed.';
             $ctrl.removeTag('a').then(() => {
@@ -77,6 +81,7 @@ describe('tasks.modals.removeTags.controller', () => {
             });
             scope.$digest();
         });
+
         it('should emit the deletion', (done) => {
             $ctrl.removeTag('a').then(() => {
                 expect($ctrl.$rootScope.$emit).toHaveBeenCalledWith('taskTagDeleted', { taskIds: [1, 2], tag: 'a' });
@@ -84,6 +89,7 @@ describe('tasks.modals.removeTags.controller', () => {
             });
             scope.$digest();
         });
+
         it('should hide the modal', (done) => {
             $ctrl.removeTag('a').then(() => {
                 expect(scope.$hide).toHaveBeenCalledWith();
@@ -92,10 +98,12 @@ describe('tasks.modals.removeTags.controller', () => {
             scope.$digest();
         });
     });
+
     describe('getTagsFromSelectedTasks', () => {
         it('should show a sorted list of tags', () => {
             expect($ctrl.getTagsFromSelectedTasks()).toEqual(['a', 'b']);
         });
+
         it('should show a complete list of tags if selected > data', () => {
             $ctrl = loadController(assign(defaultScope(), { currentListSize: 1 }));
             expect($ctrl.getTagsFromSelectedTasks()).toEqual(['b', 'c']);

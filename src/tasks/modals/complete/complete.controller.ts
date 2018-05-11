@@ -1,5 +1,8 @@
 import { contains, defaultTo, isEmpty, map, union } from 'lodash/fp';
+import contacts, { ContactsService } from '../../../contacts/contacts.service';
 import createPatch from '../../../common/fp/createPatch';
+import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
+import tasks, { TasksService } from '../../tasks.service';
 
 class CompleteTaskController {
     comment: any;
@@ -66,10 +69,6 @@ class CompleteTaskController {
             ]);
     }
 }
-
-import contacts, { ContactsService } from '../../../contacts/contacts.service';
-import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
-import tasks, { TasksService } from '../../tasks.service';
 
 export default angular.module('mpdx.tasks.modals.complete.controller', [
     contacts, serverConstants, tasks

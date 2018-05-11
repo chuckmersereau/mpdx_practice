@@ -1,7 +1,7 @@
 import component from './preview.component';
 
 describe('tools.import.csv.preview.component', () => {
-    let $ctrl, rootScope, scope, componentController, gettextCatalog, importCsv, modal, contactsTags, q;
+    let $ctrl, rootScope, scope, gettextCatalog, importCsv, modal, contactsTags, q;
 
     beforeEach(() => {
         angular.mock.module(component);
@@ -13,14 +13,9 @@ describe('tools.import.csv.preview.component', () => {
             modal = _modal_;
             contactsTags = _contactsTags_;
             q = $q;
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('importCsvPreview', { $scope: scope }, {});
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('importCsvPreview', { $scope: scope }, {});
-    }
 
     describe('constructor', () => {
         it('should set default values', () => {

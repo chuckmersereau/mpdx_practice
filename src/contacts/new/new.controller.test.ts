@@ -2,6 +2,13 @@ import add from './new.controller';
 
 describe('contacts.list.new.controller', () => {
     let $ctrl, controller, scope;
+
+    function loadController() {
+        return controller('contactNewModalController as $ctrl', {
+            $scope: scope
+        });
+    }
+
     beforeEach(() => {
         angular.mock.module(add);
         inject(($controller, $rootScope) => {
@@ -10,12 +17,6 @@ describe('contacts.list.new.controller', () => {
             $ctrl = loadController();
         });
     });
-
-    function loadController() {
-        return controller('contactNewModalController as $ctrl', {
-            $scope: scope
-        });
-    }
 
     xit('should do something', () => {
         expect($ctrl).toEqual(1);

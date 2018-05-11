@@ -1,5 +1,4 @@
 import service from './appeals.service';
-import {root} from "@uirouter/core";
 
 const appealId = 'appeal_id';
 const contactId = 'contact_id';
@@ -19,6 +18,7 @@ describe('tools.appeals.service', () => {
         });
         spyOn(appeals, 'gettext').and.callThrough();
     });
+
     describe('appealSearch', () => {
         it('should query the api', () => {
             spyOn(api, 'get').and.callFake(() => q.resolve());
@@ -39,10 +39,12 @@ describe('tools.appeals.service', () => {
             });
         });
     });
+
     describe('setPrimaryAppeal', () => {
         beforeEach(() => {
             accounts.current = { primary_appeal: null };
         });
+
         it('should add the contact to the appeal', () => {
             spyOn(accounts, 'saveCurrent').and.callFake(() => q.resolve());
             const successMessage = 'Appeal successfully set to primary';
@@ -53,6 +55,7 @@ describe('tools.appeals.service', () => {
             expect(appeals.gettext).toHaveBeenCalledWith(errorMessage);
         });
     });
+
     describe('removePledge', () => {
         const pledgeId = 123;
         it('should delete donation', (done) => {
@@ -70,6 +73,7 @@ describe('tools.appeals.service', () => {
             rootScope.$digest();
         });
     });
+
     describe('removeContact', () => {
         const successMessage = 'Contact removed from appeal';
         const errorMessage = 'Unable to remove contact from appeal';
@@ -77,14 +81,17 @@ describe('tools.appeals.service', () => {
             spyOn(appeals, 'findContactRef').and.callFake(() => q.resolve(appealId));
             spyOn(api, 'delete').and.callFake(() => q.resolve());
         });
+
         it('should open confirm modal', () => {
             appeals.removeContact(appealId);
         });
+
         it('should translate response messages', () => {
             appeals.removeContact(appealId);
             expect(appeals.gettext).toHaveBeenCalledWith(successMessage);
             expect(appeals.gettext).toHaveBeenCalledWith(errorMessage);
         });
+
         it('should delete contact', (done) => {
             appeals.removeContact(appealId).then(() => {
                 expect(api.delete).toHaveBeenCalledWith(
@@ -95,10 +102,12 @@ describe('tools.appeals.service', () => {
             rootScope.$digest();
         });
     });
+
     describe('findContactRef', () => {
         beforeEach(() => {
             spyOn(api, 'get').and.callFake(() => q.resolve([contactRef]));
         });
+
         it('should call api', () => {
             appeals.findContactRef(appealId, contactId);
             expect(api.get).toHaveBeenCalledWith(`appeals/${appealId}/appeal_contacts`, {
@@ -112,6 +121,7 @@ describe('tools.appeals.service', () => {
                 }
             });
         });
+
         it('should return contact ref if found', (done) => {
             appeals.findContactRef(appealId, contactId).then((data) => {
                 expect(data).toEqual(contactRef);

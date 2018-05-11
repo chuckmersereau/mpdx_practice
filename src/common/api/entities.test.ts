@@ -13,6 +13,7 @@ describe('EntityAttributes', () => {
             ]
         });
     });
+
     it('should define account_lists', () => {
         expect(attributes.account_lists).toEqual({
             attributes: [
@@ -27,6 +28,7 @@ describe('EntityAttributes', () => {
             }
         });
     });
+
     it('should define addresses', () => {
         expect(attributes.addresses).toEqual({
             attributes: [
@@ -35,6 +37,7 @@ describe('EntityAttributes', () => {
             ]
         });
     });
+
     it('should define appeals', () => {
         expect(attributes.appeals).toEqual({
             attributes: [
@@ -45,18 +48,21 @@ describe('EntityAttributes', () => {
             account_list: { ref: 'id' }
         });
     });
+
     it('should define bulk', () => {
         expect(attributes.bulk).toEqual({
             attributes: ['tag_name'],
             pluralizeType: false
         });
     });
+
     it('should define comments', () => {
         expect(attributes.comments).toEqual({
             attributes: ['body', 'person'],
             person: { ref: 'id', pluralizeType: false }
         });
     });
+
     it('should define contacts', () => {
         expect(attributes.contacts).toEqual({
             attributes: [
@@ -117,6 +123,7 @@ describe('EntityAttributes', () => {
             typeForAttribute: jasmine.any(Function)
         });
     });
+
     it('should define donations', () => {
         expect(attributes.donations).toEqual({
             attributes: [
@@ -129,16 +136,19 @@ describe('EntityAttributes', () => {
             appeal: { ref: 'id' }
         });
     });
+
     it('should define duplicate_record_pairs', () => {
         expect(attributes.duplicate_record_pairs).toEqual({
             attributes: ['reason', 'ignore']
         });
     });
+
     it('should define export_logs', () => {
         expect(attributes.export_logs).toEqual({
             attributes: ['params']
         });
     });
+
     it('should define google_integrations', () => {
         expect(attributes.google_integrations).toEqual({
             attributes: [
@@ -148,6 +158,7 @@ describe('EntityAttributes', () => {
             account_list: { ref: 'id' }
         });
     });
+
     it('should define imports', () => {
         expect(attributes.imports).toEqual({
             attributes: [
@@ -160,12 +171,14 @@ describe('EntityAttributes', () => {
             typeForAttribute: jasmine.any(Function)
         });
     });
+
     it('should define impersonation', () => {
         expect(attributes.impersonation).toEqual({
             attributes: ['user', 'reason'],
             pluralizeType: false
         });
     });
+
     it('should define merge', () => {
         expect(attributes.merge).toEqual({
             attributes: ['account_list_to_merge'],
@@ -174,11 +187,13 @@ describe('EntityAttributes', () => {
             pluralizeType: false
         });
     });
+
     it('should define merges', () => {
         expect(attributes.merges).toEqual({
             attributes: ['winner_id', 'loser_id']
         });
     });
+
     it('should define notifications', () => {
         expect(attributes.notifications).toEqual({
             attributes: [
@@ -187,6 +202,7 @@ describe('EntityAttributes', () => {
             ]
         });
     });
+
     it('should define organization_accounts', () => {
         expect(attributes.organization_accounts).toEqual({
             attributes: ['organization', 'password', 'username', 'person'],
@@ -194,11 +210,13 @@ describe('EntityAttributes', () => {
             person: { ref: 'id' }
         });
     });
+
     it('should define organizations', () => {
         expect(attributes.organizations).toEqual({
             attributes: ['name', 'org_help_url', 'country', 'gift_aid_percentage']
         });
     });
+
     it('should define people', () => {
         expect(attributes.people).toEqual({
             attributes: [
@@ -248,11 +266,13 @@ describe('EntityAttributes', () => {
             typeForAttribute: jasmine.any(Function)
         });
     });
+
     it('should define resets', () => {
         expect(attributes.resets).toEqual({
             attributes: ['resetted_user_email', 'reason', 'account_list_name']
         });
     });
+
     it('should define tasks', () => {
         expect(attributes.tasks).toEqual({
             attributes: [
@@ -276,16 +296,19 @@ describe('EntityAttributes', () => {
             contacts: { ref: 'id' }
         });
     });
+
     it('should define tags', () => {
         expect(attributes.tags).toEqual({
             attributes: ['name']
         });
     });
+
     it('should define user_options', () => {
         expect(attributes.user_options).toEqual({
             attributes: ['key', 'value']
         });
     });
+
     it('should define user', () => {
         expect(attributes.user).toEqual({
             attributes: [
@@ -298,6 +321,7 @@ describe('EntityAttributes', () => {
             }
         });
     });
+
     it('should define mail_chimp_account', () => {
         expect(attributes.mail_chimp_account).toEqual({
             attributes: ['api_key', 'primary_list_id', 'auto_log_campaigns']
@@ -309,39 +333,49 @@ describe('EntityAttributes', () => {
             expect(contactsTypeForAttribute('contacts_referred_by_me')).toEqual('contacts');
             expect(contactsTypeForAttribute('referred_by')).toEqual('contacts');
         });
+
         it('should return people', () => {
             expect(contactsTypeForAttribute('primary_person')).toEqual('people');
         });
+
         it('should return contact_referrals', () => {
             expect(contactsTypeForAttribute('contact_referrals_to_me')).toEqual('contact_referrals');
         });
+
         it('should return param', () => {
             expect(contactsTypeForAttribute('a')).toEqual('a');
         });
     });
+
     describe('importsTypeForAttribute', () => {
         it('should return contacts', () => {
             expect(importsTypeForAttribute('sample_contacts')).toEqual('contacts');
         });
+
         it('should return google_accounts', () => {
             expect(importsTypeForAttribute('source_account')).toEqual('google_accounts');
         });
+
         it('should return param', () => {
             expect(importsTypeForAttribute('a')).toEqual('a');
         });
     });
+
     describe('mergeTypeForAttribute', () => {
         it('should return contacts', () => {
             expect(mergeTypeForAttribute('account_list_to_merge')).toEqual('account_lists');
         });
+
         it('should return param', () => {
             expect(mergeTypeForAttribute('a')).toEqual('a');
         });
     });
+
     describe('peopleTypeForAttribute', () => {
         it('should return contacts', () => {
             expect(peopleTypeForAttribute('related_person')).toEqual('people');
         });
+
         it('should return param', () => {
             expect(peopleTypeForAttribute('a')).toEqual('a');
         });

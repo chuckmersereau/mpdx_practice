@@ -1,4 +1,6 @@
 import { StateService } from '@uirouter/core';
+import tools, { ToolsService } from '../tools.service';
+import uiRouter from '@uirouter/angularjs';
 
 class SidebarController {
     constructor(
@@ -18,9 +20,6 @@ const Sidebar = {
     controller: SidebarController,
     template: require('./sidebar.html')
 };
-
-import uiRouter from '@uirouter/angularjs';
-import tools, { ToolsService } from '../tools.service';
 
 export default angular.module('mpdx.tools.sidebar.component', [
     uiRouter,

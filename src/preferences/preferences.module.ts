@@ -7,7 +7,6 @@ import notifications from './notifications/notifications.component';
 import personal from './personal/personal.module';
 import sidebar from './sidebar/sidebar.component';
 
-
 export default angular.module('mpdx.preferences', [
     accounts,
     admin,

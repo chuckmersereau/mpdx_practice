@@ -1,5 +1,11 @@
+import 'angular-gettext';
+import { AlertsService } from '../alerts/alerts.service';
+import { ApiService } from '../api/api.service';
 import { isEmpty } from 'lodash/fp';
 import { StateParams, StateService } from '@uirouter/core';
+import alerts from '../../common/alerts/alerts.service';
+import api from '../../common/api/api.service';
+import uiRouter from '@uirouter/angularjs';
 
 class AcceptInviteController {
     constructor(
@@ -46,13 +52,6 @@ const AcceptInvite = {
     controller: AcceptInviteController,
     template: require('./acceptInvite.html')
 };
-
-import uiRouter from '@uirouter/angularjs';
-import 'angular-gettext';
-import alerts from '../../common/alerts/alerts.service';
-import api from '../../common/api/api.service';
-import { AlertsService } from '../alerts/alerts.service';
-import { ApiService } from '../api/api.service';
 
 export default angular.module('mpdx.common.acceptInvite.component', [
     uiRouter, 'gettext',

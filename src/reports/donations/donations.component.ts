@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import {
     assign,
     defaultTo,
@@ -7,8 +8,15 @@ import {
     reduce,
     toNumber
 } from 'lodash/fp';
+import { StateParams } from '@uirouter/core';
+import api, { ApiService } from '../../common/api/api.service';
+import contacts, { ContactsService } from '../../contacts/contacts.service';
+import designationAccounts, { DesignationAccountsService } from '../../common/designationAccounts/designationAccounts.service';
+import donations, { DonationsService } from './donations.service';
 import joinComma from '../../common/fp/joinComma';
-import * as moment from 'moment';
+import locale, { LocaleService } from '../../common/locale/locale.service';
+import serverConstants, { ServerConstantsService } from '../../common/serverConstants/serverConstants.service';
+import uiRouter from '@uirouter/angularjs';
 
 class DonationsController {
     data: any;
@@ -28,10 +36,11 @@ class DonationsController {
     totals: any;
     totalContactCount: number;
     totalsPosition: number;
-    watcher: any;
-    watcher2: any;
-    watcher3: any;
-    watcher4: any;
+    watcher: () => void;
+    watcher2: () => void;
+    watcher3: () => void;
+    watcher4: () => void;
+    watcher5: () => void;
     constructor(
         private $log: ng.ILogService,
         private $q: ng.IQService,
@@ -55,7 +64,7 @@ class DonationsController {
         this.sort = 'donation_date';
         this.sortReverse = true;
 
-        $rootScope.$on('accountListUpdated', () => {
+        this.watcher5 = $rootScope.$on('accountListUpdated', () => {
             this.load();
         });
     }
@@ -94,6 +103,8 @@ class DonationsController {
         this.watcher();
         this.watcher2();
         this.watcher3();
+        this.watcher4();
+        this.watcher5();
     }
     load() {
         this.meta = {};
@@ -212,15 +223,6 @@ const Donations = {
         inContact: '<'
     }
 };
-
-import uiRouter from '@uirouter/angularjs';
-import { StateParams } from '@uirouter/core';
-import api, { ApiService } from '../../common/api/api.service';
-import contacts, { ContactsService } from '../../contacts/contacts.service';
-import designationAccounts, { DesignationAccountsService } from '../../common/designationAccounts/designationAccounts.service';
-import donations, { DonationsService } from './donations.service';
-import locale, { LocaleService } from '../../common/locale/locale.service';
-import serverConstants, { ServerConstantsService } from '../../common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.reports.donations.component', [
     uiRouter,

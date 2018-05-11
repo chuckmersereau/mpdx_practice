@@ -1,4 +1,8 @@
+import 'angular-gettext';
 import { find } from 'lodash/fp';
+import accounts, { AccountsService } from '../../common/accounts/accounts.service';
+import api, { ApiService } from '../../common/api/api.service';
+import modal, { ModalService } from '../../common/modal/modal.service';
 
 export class AppealsService {
     constructor(
@@ -64,11 +68,6 @@ export class AppealsService {
         return this.accounts.saveCurrent(successMessage, errorMessage);
     }
 }
-
-import 'angular-gettext';
-import accounts, { AccountsService } from '../../common/accounts/accounts.service';
-import api, { ApiService } from '../../common/api/api.service';
-import modal, { ModalService } from '../../common/modal/modal.service';
 
 export default angular.module('mpdx.tools.appeals.service', [
     'gettext',

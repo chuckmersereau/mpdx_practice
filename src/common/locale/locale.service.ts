@@ -1,5 +1,6 @@
-import { keys, map } from 'lodash/fp';
 import * as moment from 'moment';
+import { keys, map } from 'lodash/fp';
+import serverConstants, { ServerConstantsService } from '../serverConstants/serverConstants.service';
 
 export class LocaleService {
     dateTimeFormat: string;
@@ -301,8 +302,6 @@ export class LocaleService {
         };
     }
 }
-
-import serverConstants, { ServerConstantsService } from '../serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.common.locale.service', [
     serverConstants

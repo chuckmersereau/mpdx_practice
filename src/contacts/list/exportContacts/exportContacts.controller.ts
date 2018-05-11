@@ -1,4 +1,9 @@
+import 'angular-block-ui';
 import { defaultTo } from 'lodash/fp';
+import alerts, { AlertsService } from '../../../common/alerts/alerts.service';
+import api, { ApiService } from '../../../common/api/api.service';
+import contacts, { ContactsService } from '../../../contacts/contacts.service';
+import exportContacts, { ExportContactsService } from './export.service';
 import joinComma from '../../../common/fp/joinComma';
 
 class ExportContactsController {
@@ -50,13 +55,6 @@ class ExportContactsController {
         return filters;
     }
 }
-
-import 'angular-block-ui';
-import 'angular-gettext';
-import alerts, { AlertsService } from '../../../common/alerts/alerts.service';
-import contacts, { ContactsService } from '../../../contacts/contacts.service';
-import exportContacts, { ExportContactsService } from './export.service';
-import api, { ApiService } from '../../../common/api/api.service';
 
 export default angular.module('mpdx.contacts.list.exportContacts.controller', [
     'gettext',

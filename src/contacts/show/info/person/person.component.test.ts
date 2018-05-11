@@ -2,6 +2,11 @@ import component from './person.component';
 
 describe('contacts.show.info.person.component', () => {
     let $ctrl, rootScope, scope, componentController, contacts, q;
+
+    function loadController() {
+        $ctrl = componentController('contactInfoPerson', { $scope: scope }, { contact: { id: 'contact_id' } });
+    }
+
     beforeEach(() => {
         angular.mock.module(component);
 
@@ -17,10 +22,6 @@ describe('contacts.show.info.person.component', () => {
             loadController();
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('contactInfoPerson', { $scope: scope }, { contact: { id: 'contact_id' } });
-    }
 
     describe('$onInit', () => {
         it('should setup watchers', () => {
@@ -202,6 +203,7 @@ describe('contacts.show.info.person.component', () => {
                 rootScope.$digest();
             });
         });
+
         describe('promise unsuccessful', () => {
             beforeEach(() => {
                 spy.and.callFake(() => q.reject(Error('something went wrong')));

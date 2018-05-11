@@ -1,7 +1,11 @@
+import 'angular-block-ui';
+import 'angular-gettext';
 import * as moment from 'moment';
 import { find } from 'lodash/fp';
+import accounts, { AccountsService } from '../../common/accounts/accounts.service';
+import users, { UsersService } from '../../common/users/users.service';
 
-class progressController {
+class ProgressController {
     blockUI: IBlockUIService;
     endDate: moment.Moment;
     errorOccurred: boolean;
@@ -61,14 +65,9 @@ class progressController {
 }
 
 const Progress = {
-    controller: progressController,
+    controller: ProgressController,
     template: require('./progress.html')
 };
-
-import 'angular-block-ui';
-import 'angular-gettext';
-import accounts, { AccountsService } from '../../common/accounts/accounts.service';
-import users, { UsersService } from '../../common/users/users.service';
 
 export default angular.module('mpdx.home.progress.component', [
     'blockUI', 'gettext',

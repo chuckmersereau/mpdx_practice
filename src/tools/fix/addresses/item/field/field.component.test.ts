@@ -1,7 +1,7 @@
 import component from './field.component';
 
 describe('tools.fix.addresses.item.field.component', () => {
-    let $ctrl, rootScope, scope, componentController, contact, address, contacts, q;
+    let $ctrl, rootScope, scope, contact, address, contacts, q;
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _contacts_, $q) => {
@@ -9,16 +9,13 @@ describe('tools.fix.addresses.item.field.component', () => {
             scope = rootScope.$new();
             contacts = _contacts_;
             q = $q;
-            componentController = $componentController;
             contact = { id: 'contact_id' };
             address = { id: 'address_id' };
-            loadController();
+            $ctrl = $componentController('fixAddressesItemField',
+                { $scope: scope },
+                { contact: contact, address: address });
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('fixAddressesItemField', { $scope: scope }, { contact: contact, address: address });
-    }
 
     describe('addressSummary', () => {
         describe('has no street', () => {
@@ -26,6 +23,7 @@ describe('tools.fix.addresses.item.field.component', () => {
                 expect($ctrl.addressSummary()).toEqual('');
             });
         });
+
         describe('has street', () => {
             beforeEach(() => {
                 address.street = 'street_name';

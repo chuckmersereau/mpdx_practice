@@ -1,10 +1,8 @@
 import '!expose-loader?jQuery!jquery'; // import before angular to replace jqlite
-
-(window as any).$ = (window as any).jQuery;
 import * as angular from 'angular';
-
-(window as any).angular = angular;
 import app from './app.directive';
+import appConfig from './app.config';
+import appRun from './app.run';
 import bottom from './bottom/bottom.module';
 import coaches from './coaches/coaches.module';
 import common from './common/common.module';
@@ -20,8 +18,10 @@ import tasks from './tasks/tasks.module';
 import tools from './tools/tools.module';
 import unavailable from './unavailable/unavailable.component';
 import vendor from './vendor.module';
-import appConfig from './app.config';
-import appRun from './app.run';
+
+(window as any).$ = (window as any).jQuery;
+
+(window as any).angular = angular;
 
 require('./app.scss');
 require('./images/mpdx-favicon.png');

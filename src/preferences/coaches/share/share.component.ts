@@ -1,4 +1,7 @@
+import 'angular-gettext';
 import { reject } from 'lodash/fp';
+import accounts, { AccountsService } from '../../../common/accounts/accounts.service';
+import users, { UsersService } from '../../../common/users/users.service';
 
 class SharePreferencesController {
     inviteEmail: string;
@@ -59,11 +62,6 @@ const Share = {
         setup: '<'
     }
 };
-
-
-import 'angular-gettext';
-import accounts, { AccountsService } from '../../../common/accounts/accounts.service';
-import users, { UsersService } from '../../../common/users/users.service';
 
 export default angular.module('mpdx.preferences.coaches.share', [
     'gettext',

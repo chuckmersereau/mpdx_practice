@@ -2,6 +2,11 @@ import component from './email.component';
 
 describe('contacts.show.personModal.email.component', () => {
     let $ctrl, scope, componentController;
+
+    function loadController() {
+        $ctrl = componentController('contactEmailAddress', { $scope: scope }, { email: {} });
+    }
+
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope) => {
@@ -10,10 +15,6 @@ describe('contacts.show.personModal.email.component', () => {
             loadController();
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('contactEmailAddress', { $scope: scope }, { email: {} });
-    }
 
     describe('constructor', () => {
         it('should have default values', () => {

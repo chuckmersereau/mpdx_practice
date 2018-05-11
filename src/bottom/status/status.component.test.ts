@@ -2,6 +2,11 @@ import component from './status.component';
 
 describe('bottom.status.component', () => {
     let $ctrl, scope, componentController, statusPage;
+
+    function loadController() {
+        $ctrl = componentController('statusPage', { $scope: scope }, { });
+    }
+
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _statusPage_) => {
@@ -11,10 +16,6 @@ describe('bottom.status.component', () => {
             loadController();
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('statusPage', { $scope: scope }, { });
-    }
 
     describe('constructor', () => {
         it('should set services', () => {

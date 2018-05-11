@@ -1,5 +1,9 @@
-import { has } from 'lodash/fp';
+import 'angular-gettext';
 import * as moment from 'moment';
+import { has } from 'lodash/fp';
+import api, { ApiService } from '../../common/api/api.service';
+import modal, { ModalService } from '../../common/modal/modal.service';
+import serverConstants, { ServerConstantsService } from '../../common/serverConstants/serverConstants.service';
 
 export class DonationsService {
     chartData: any;
@@ -21,11 +25,11 @@ export class DonationsService {
         }
     }
     getDonations({ startDate = null, endDate = null, donorAccountId = null, page = null }: {
-        startDate?: string | moment.Moment,
-        endDate?: string | moment.Moment,
-        donorAccountId?: string,
-        page?: number
-        } = {}): ng.IPromise<any> {
+    startDate?: string | moment.Moment,
+    endDate?: string | moment.Moment,
+    donorAccountId?: string,
+    page?: number
+    } = {}): ng.IPromise<any> {
         let params: any = {
             fields: {
                 pledge_contact: '',
@@ -79,11 +83,6 @@ export class DonationsService {
         });
     }
 }
-
-import 'angular-gettext';
-import api, { ApiService } from '../../common/api/api.service';
-import modal, { ModalService } from '../../common/modal/modal.service';
-import serverConstants, { ServerConstantsService } from '../../common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.reports.donations.service', [
     'gettext',

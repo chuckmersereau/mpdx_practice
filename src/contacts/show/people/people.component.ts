@@ -1,6 +1,13 @@
-import { concat, each, filter, has, includes, reject } from 'lodash/fp';
-import flattenCompactAndJoin from '../../../common/fp/flattenCompactAndJoin';
+import 'angular-gettext';
 import * as bowser from 'bowser';
+import { concat, each, filter, has, includes, reject } from 'lodash/fp';
+import { ContactsService } from '../../contacts.service';
+import { StateService } from '@uirouter/core';
+import alerts, { AlertsService } from '../../../common/alerts/alerts.service';
+import api, { ApiService } from '../../../common/api/api.service';
+import flattenCompactAndJoin from '../../../common/fp/flattenCompactAndJoin';
+import people, { PeopleService } from './people.service';
+import uiRouter from '@uirouter/angularjs';
 
 class ContactPeopleController {
     contact: any;
@@ -123,14 +130,6 @@ const People = {
         contact: '<'
     }
 };
-
-import alerts, { AlertsService } from '../../../common/alerts/alerts.service';
-import api, { ApiService } from '../../../common/api/api.service';
-import 'angular-gettext';
-import people, { PeopleService } from './people.service';
-import uiRouter from '@uirouter/angularjs';
-import { StateService } from '@uirouter/core';
-import { ContactsService } from '../../contacts.service';
 
 export default angular.module('mpdx.contacts.show.people.component', [
     api, 'gettext', uiRouter,

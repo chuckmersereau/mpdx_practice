@@ -1,4 +1,8 @@
 import { assign, compact, isArray, isEmpty } from 'lodash/fp';
+import { StateParams } from '@uirouter/core';
+import api, { ApiService } from '../../../common/api/api.service';
+import contactsTags, { ContactsTagsService } from './tags/tags.service';
+import filters, { FiltersService } from '../../../common/filters/filters.service';
 
 export class ContactFilterService {
     data: any;
@@ -89,11 +93,6 @@ export class ContactFilterService {
         filter.reverse = false;
     }
 }
-
-import contactsTags, { ContactsTagsService } from './tags/tags.service';
-import api, { ApiService } from '../../../common/api/api.service';
-import filters, { FiltersService } from '../../../common/filters/filters.service';
-import { StateParams } from '@uirouter/core';
 
 export default angular.module('mpdx.contacts.sidebar.filter.service', [
     api, contactsTags, filters

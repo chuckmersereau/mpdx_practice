@@ -1,5 +1,14 @@
-import { defaultTo, find, findIndex, get, map, split, toLower } from 'lodash/fp';
+import 'angular-gettext';
 import * as uuid from 'uuid/v1';
+import { defaultTo, find, findIndex, get, map, split, toLower } from 'lodash/fp';
+import { StateParams, StateService } from '@uirouter/core';
+import accounts, { AccountsService } from '../../common/accounts/accounts.service';
+import api, { ApiService } from '../../common/api/api.service';
+import designationAccounts, { DesignationAccountsService } from '../../common/designationAccounts/designationAccounts.service';
+import locale, { LocaleService } from '../../common/locale/locale.service';
+import serverConstants, { ServerConstantsService } from '../../common/serverConstants/serverConstants.service';
+import uiRouter from '@uirouter/angularjs';
+import users, { UsersService } from '../../common/users/users.service';
 
 class PersonalController {
     currencies: any[];
@@ -123,16 +132,6 @@ const Personal = {
         onSave: '&'
     }
 };
-
-import uiRouter from '@uirouter/angularjs';
-import 'angular-gettext';
-import { StateParams, StateService } from '@uirouter/core';
-import accounts, { AccountsService } from '../../common/accounts/accounts.service';
-import api, { ApiService } from '../../common/api/api.service';
-import designationAccounts, { DesignationAccountsService } from '../../common/designationAccounts/designationAccounts.service';
-import locale, { LocaleService } from '../../common/locale/locale.service';
-import serverConstants, { ServerConstantsService } from '../../common/serverConstants/serverConstants.service';
-import users, { UsersService } from '../../common/users/users.service';
 
 export default angular.module('mpdx.preferences.personal.component', [
     uiRouter, 'gettext',

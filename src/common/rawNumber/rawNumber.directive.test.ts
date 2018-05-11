@@ -10,6 +10,7 @@ describe('common.rawNumber.directive', () => {
             element = $compile('<div raw-number=""></div>')(rootScope);
         });
     });
+
     xit('should do something', () => {
         expect(element).toEqual(1);
     });

@@ -1,3 +1,5 @@
+import 'angular-gettext';
+
 function SourceToStrFilter(
     gettextCatalog: ng.gettext.gettextCatalog
 ) {
@@ -18,8 +20,6 @@ function SourceToStrFilter(
         }
     };
 }
-
-import 'angular-gettext';
 
 export default angular.module('mpdx.common.sourceToStr', [
     'gettext'

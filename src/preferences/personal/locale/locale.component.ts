@@ -1,4 +1,7 @@
 import { defaultTo, find } from 'lodash/fp';
+import locale, { LocaleService } from '../../../common/locale/locale.service';
+import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
+import users, { UsersService } from '../../../common/users/users.service';
 
 class LocaleController {
     languages: any[];
@@ -33,10 +36,6 @@ const Locale = {
         listOnly: '<'
     }
 };
-
-import locale, { LocaleService } from '../../../common/locale/locale.service';
-import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
-import users, { UsersService } from '../../../common/users/users.service';
 
 export default angular.module('mpdx.preferences.personal.locale.component', [
     locale, serverConstants, users

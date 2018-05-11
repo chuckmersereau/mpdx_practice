@@ -1,5 +1,7 @@
-import { concat, LodashRange, range, reduce } from 'lodash/fp';
 import * as uuid from 'uuid/v1';
+import { concat, LodashRange, range, reduce } from 'lodash/fp';
+import api, { ApiService } from '../../common/api/api.service';
+import contacts, { ContactsService } from '../contacts.service';
 
 class MultipleController {
     range: LodashRange;
@@ -69,9 +71,6 @@ class MultipleController {
         });
     }
 }
-
-import api, { ApiService } from '../../common/api/api.service';
-import contacts, { ContactsService } from '../contacts.service';
 
 export default angular.module('mpdx.contacts.multiple.controller', [
     api, contacts

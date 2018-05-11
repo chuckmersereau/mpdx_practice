@@ -1,4 +1,9 @@
 import { concat, get, reject } from 'lodash/fp';
+import alerts, { AlertsService } from '../../../common/alerts/alerts.service';
+import api, { ApiService } from '../../../common/api/api.service';
+import contacts, { ContactsService } from '../../../contacts/contacts.service';
+import tasks, { TasksService } from '../../tasks.service';
+import users, { UsersService } from '../../../common/users/users.service';
 
 class DrawerController {
     comment: any;
@@ -59,12 +64,6 @@ const Drawer = {
         task: '<'
     }
 };
-
-import contacts, { ContactsService } from '../../../contacts/contacts.service';
-import tasks, { TasksService } from '../../tasks.service';
-import alerts, { AlertsService } from '../../../common/alerts/alerts.service';
-import api, { ApiService } from '../../../common/api/api.service';
-import users, { UsersService } from '../../../common/users/users.service';
 
 export default angular.module('mpdx.tasks.list.drawer.component', [
     api, alerts, contacts, tasks, users

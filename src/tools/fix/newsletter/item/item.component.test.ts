@@ -15,18 +15,13 @@ describe('tools.fix.sendNewsletter.item.component', () => {
             blockUI = _blockUI_;
             fixSendNewsletter = _fixSendNewsletter_;
             q = $q;
-            componentController = $componentController;
             contact = { id: 'contact_id' };
-            loadController();
+            spyOn(blockUI.instances, 'get').and.callFake(() => fakeBlockUI);
+            $ctrl = $componentController('fixSendNewsletterItem', { $scope: scope }, { contact: contact });
         });
-    });
-
-    function loadController() {
-        spyOn(blockUI.instances, 'get').and.callFake(() => fakeBlockUI);
-        $ctrl = componentController('fixSendNewsletterItem', { $scope: scope }, { contact: contact });
         spyOn($ctrl.blockUI, 'start').and.callThrough();
         spyOn($ctrl.blockUI, 'reset').and.callThrough();
-    }
+    });
 
     describe('$onInit', () => {
         it('should get instance of blockUI', () => {

@@ -1,21 +1,16 @@
-import component from './maintenances.component';
 import * as moment from 'moment';
+import component from './maintenances.component';
 
 describe('menu.maintenances.component', () => {
-    let $ctrl, scope, componentController, statusPage;
+    let $ctrl, scope, statusPage;
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _statusPage_) => {
             scope = $rootScope.$new();
             statusPage = _statusPage_;
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('menuMaintenances', { $scope: scope }, { });
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('menuMaintenances', { $scope: scope }, { });
-    }
 
     describe('constructor', () => {
         it('should set services', () => {

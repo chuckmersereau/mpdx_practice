@@ -1,5 +1,4 @@
 import component from './addresses.component';
-import {root} from "@uirouter/core";
 
 describe('contacts.show.addresses.component', () => {
     let $ctrl, scope, modal, contacts, rootScope, gettextCatalog, q;
@@ -16,6 +15,7 @@ describe('contacts.show.addresses.component', () => {
         });
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
+
     describe('onAddressPrimary', () => {
         beforeEach(() => {
             spyOn(modal, 'confirm').and.callFake(() => q.resolve());
@@ -27,11 +27,13 @@ describe('contacts.show.addresses.component', () => {
                 ]
             };
         });
+
         it('should confirm with a translated message', () => {
             $ctrl.onAddressPrimary();
             expect(modal.confirm).toHaveBeenCalledWith(jasmine.any(String));
             expect(gettextCatalog.getString).toHaveBeenCalledWith(jasmine.any(String));
         });
+
         it('should save', (done) => {
             spyOn(contacts, 'save').and.callFake(() => q.resolve());
             const successMessage = 'Changes saved successfully.';

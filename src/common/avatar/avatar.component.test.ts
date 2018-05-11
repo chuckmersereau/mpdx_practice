@@ -3,6 +3,10 @@ import component from './avatar.component';
 describe('common.avatar.component', () => {
     let $ctrl, rootScope, scope, componentController, alerts, q;
 
+    function loadController() {
+        $ctrl = componentController('avatar', { $scope: scope }, {});
+    }
+
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _alerts_, $q) => {
@@ -14,10 +18,6 @@ describe('common.avatar.component', () => {
             loadController();
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('avatar', { $scope: scope }, {});
-    }
 
     describe('constructor', () => {
         it('should have default values', () => {

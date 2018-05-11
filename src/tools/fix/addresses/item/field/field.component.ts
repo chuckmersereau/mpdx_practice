@@ -1,4 +1,5 @@
 import { map, reject } from 'lodash/fp';
+import contacts, { ContactsService } from '../../../../../contacts/contacts.service';
 
 class FieldController {
     address: any;
@@ -45,8 +46,6 @@ const Field = {
         address: '<'
     }
 };
-
-import contacts, { ContactsService } from '../../../../../contacts/contacts.service';
 
 export default angular.module('mpdx.tools.fix.addresses.item.field.component', [
     contacts

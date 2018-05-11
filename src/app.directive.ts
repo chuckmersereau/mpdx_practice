@@ -1,3 +1,5 @@
+import session, { SessionService } from './common/session/session.service';
+
 class AppController {
     year: number;
     constructor(
@@ -14,8 +16,6 @@ function App() {
         controllerAs: '$ctrl'
     };
 }
-
-import session, { SessionService } from './common/session/session.service';
 
 export default angular.module('mpdx.app', [session])
     .directive('app', App).name;

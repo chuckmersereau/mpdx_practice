@@ -1,4 +1,7 @@
 import { indexOf } from 'lodash/fp';
+import { StateService } from '@uirouter/core';
+import uiRouter from '@uirouter/angularjs';
+import users, { UsersService } from '../../../common/users/users.service';
 
 class IntegrationsController {
     selectableTabs: string[];
@@ -34,10 +37,6 @@ const Integrations = {
     template: require('./integrations.html'),
     controller: IntegrationsController
 };
-
-import users, { UsersService } from '../../../common/users/users.service';
-import uiRouter from '@uirouter/angularjs';
-import { StateService } from '@uirouter/core';
 
 export default angular.module('mpdx.setup.preferences.integrations.component', [
     users,

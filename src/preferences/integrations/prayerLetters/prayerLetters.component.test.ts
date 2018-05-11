@@ -1,7 +1,7 @@
 import component from './prayerLetters.component';
 
 describe('preferences.integrations.prayerLetters.component', () => {
-    let $ctrl, prayerLetters, rootScope, scope, componentController, gettextCatalog, modal, api, q;
+    let $ctrl, prayerLetters, rootScope, scope, gettextCatalog, modal, api, q;
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _prayerLetters_, _gettextCatalog_, _modal_, _api_, $q) => {
@@ -12,15 +12,11 @@ describe('preferences.integrations.prayerLetters.component', () => {
             modal = _modal_;
             gettextCatalog = _gettextCatalog_;
             q = $q;
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('prayerLettersIntegrationsPreferences', { $scope: scope }, {});
         });
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
 
-    function loadController() {
-        $ctrl = componentController('prayerLettersIntegrationsPreferences', { $scope: scope }, {});
-    }
     describe('$onInit', () => {
         beforeEach(() => {
             spyOn(prayerLetters, 'load').and.callFake(() => {});
@@ -28,12 +24,14 @@ describe('preferences.integrations.prayerLetters.component', () => {
             expect(prayerLetters.load).toHaveBeenCalledWith(true);
         });
     });
+
     describe('sync', () => {
         it('should set saving flag', () => {
             spyOn(api, 'get').and.callFake(() => q.resolve());
             $ctrl.sync();
             expect($ctrl.saving).toBeTruthy();
         });
+
         it('should sync', () => {
             spyOn(api, 'get').and.callFake(() => q.resolve());
             const successMessage = 'MPDX is now syncing your newsletter recipients with Prayer Letters';
@@ -47,6 +45,7 @@ describe('preferences.integrations.prayerLetters.component', () => {
             expect(gettextCatalog.getString).toHaveBeenCalledWith(successMessage);
             expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
         });
+
         it('should unset saving flag', (done) => {
             spyOn(api, 'get').and.callFake(() => q.resolve());
             $ctrl.sync().then(() => {
@@ -55,6 +54,7 @@ describe('preferences.integrations.prayerLetters.component', () => {
             });
             scope.$digest();
         });
+
         it('should handle rejection', (done) => {
             spyOn(api, 'get').and.callFake(() => q.reject({ errors: ['a'] }));
             $ctrl.sync().catch(() => {
@@ -64,10 +64,12 @@ describe('preferences.integrations.prayerLetters.component', () => {
             scope.$digest();
         });
     });
+
     describe('disconnect', () => {
         beforeEach(() => {
             spyOn(modal, 'confirm').and.callFake(() => q.resolve());
         });
+
         it('should disconnect', (done) => {
             spyOn(prayerLetters, 'disconnect').and.callFake(() => q.resolve());
             const errorMessage = 'MPDX couldn\'t save your configuration changes for Prayer Letters';
@@ -80,6 +82,7 @@ describe('preferences.integrations.prayerLetters.component', () => {
             });
             scope.$digest();
         });
+
         it('should unset saving flag', (done) => {
             spyOn(prayerLetters, 'disconnect').and.callFake(() => q.resolve());
             $ctrl.disconnect().then(() => {
@@ -88,6 +91,7 @@ describe('preferences.integrations.prayerLetters.component', () => {
             });
             scope.$digest();
         });
+
         it('should handle rejection', (done) => {
             spyOn(prayerLetters, 'disconnect').and.callFake(() => q.reject({}));
             $ctrl.disconnect().catch(() => {

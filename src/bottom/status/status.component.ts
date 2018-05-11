@@ -1,3 +1,5 @@
+import statusPage, { StatusPageService } from './status.service';
+
 class StatusPageController {
     constructor(
         private statusPage: StatusPageService
@@ -10,8 +12,6 @@ const StatusPage = {
     controller: StatusPageController,
     template: require('./status.html')
 };
-
-import statusPage, { StatusPageService } from './status.service';
 
 export default angular.module('mpdx.bottom.status.component', [
     statusPage

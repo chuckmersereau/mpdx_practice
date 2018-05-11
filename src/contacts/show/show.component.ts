@@ -1,6 +1,18 @@
+import 'angular-block-ui';
+import 'angular-gettext';
 import { assign, concat, eq, find, forEachRight, get, has, isNil, map, reject, set } from 'lodash/fp';
+import { ContactsTagsService } from '../sidebar/filter/tags/tags.service';
+import { StateParams, StateService } from '@uirouter/core';
+import contactFilter, { ContactFilterService } from '../sidebar/filter/filter.service';
+import contacts, { ContactsService } from '../contacts.service';
 import createPatch from '../../common/fp/createPatch';
+import help, { HelpService } from '../../common/help/help.service';
 import joinComma from '../../common/fp/joinComma';
+import modal, { ModalService } from '../../common/modal/modal.service';
+import people, { PeopleService } from './people/people.service';
+import session, { SessionService } from '../../common/session/session.service';
+import uiRouter, { Transition, TransitionService } from '@uirouter/angularjs';
+import users, { UsersService } from '../../common/users/users.service';
 
 interface ICustomRootScope extends ng.IRootScopeService {
     pageTitle: string;
@@ -159,14 +171,14 @@ class ContactController {
         this.contacts.current = set('primary_person.id', personId, this.contacts.current);
         this.save();
     }
-    setActiveTab(transition:Transition) {
+    setActiveTab(transition: Transition) {
         let tab = transition.to().name.replace('contacts.show.', '');
         this.contacts.activeTab = tab;
         if (this.contacts.activeDrawer === tab) {
             this.contacts.activeDrawer = '';
         }
     }
-    setActiveDrawer(tab:string) {
+    setActiveDrawer(tab: string) {
         this.contacts.activeDrawer = tab;
         if (tab === this.contacts.activeTab) {
             this.$state.go('contacts.show.donations');
@@ -184,19 +196,6 @@ const Show = {
     controller: ContactController,
     template: require('./show.html')
 };
-
-import 'angular-block-ui';
-import contacts, { ContactsService } from '../contacts.service';
-import contactFilter, { ContactFilterService } from '../sidebar/filter/filter.service';
-import 'angular-gettext';
-import help, { HelpService } from '../../common/help/help.service';
-import modal, { ModalService } from '../../common/modal/modal.service';
-import people, { PeopleService } from './people/people.service';
-import uiRouter, { Transition, TransitionService } from '@uirouter/angularjs';
-import users, { UsersService } from '../../common/users/users.service';
-import session, { SessionService } from '../../common/session/session.service';
-import { StateParams, StateService } from '@uirouter/core';
-import { ContactsTagsService } from '../sidebar/filter/tags/tags.service';
 
 export default angular.module('mpdx.contacts.show.component', [
     'blockUI', 'gettext', uiRouter,

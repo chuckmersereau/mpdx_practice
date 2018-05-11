@@ -1,3 +1,5 @@
+import api, { ApiService } from '../../../common/api/api.service';
+
 export class MailchimpService {
     data: any;
     constructor(
@@ -21,8 +23,6 @@ export class MailchimpService {
         });
     }
 }
-
-import api, { ApiService } from '../../../common/api/api.service';
 
 export default angular.module('mpdx.preferences.accounts.integrations.mailchimp.service', [
     api

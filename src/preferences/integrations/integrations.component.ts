@@ -1,10 +1,20 @@
 import { isNil } from 'lodash/fp';
+import { StateParams, StateService } from '@uirouter/core';
+import api, { ApiService } from '../../common/api/api.service';
+import google, { GoogleService } from './google/google.service';
+import help, { HelpService } from '../../common/help/help.service';
+import integrations, { IntegrationsService } from './integrations.service';
+import mailchimp, { MailchimpService } from './mailchimp/mailchimp.service';
+import modal, { ModalService } from '../../common/modal/modal.service';
+import prayerLetters, { PrayerLettersService } from './prayerLetters/prayerLetters.service';
+import uiRouter from '@uirouter/angularjs';
 
 class IntegrationPreferencesController {
     mailchimpAccStatus: string;
     saving: boolean;
     selectedTab: string;
     tabId: string;
+    watcher: () => void;
     constructor(
         private $window: ng.IWindowService,
         $rootScope: ng.IRootScopeService,
@@ -40,7 +50,7 @@ class IntegrationPreferencesController {
             this.gettextCatalog.getString('584718e390336006981774ee')
         ]);
 
-        $rootScope.$on('accountListUpdated', () => {
+        this.watcher = $rootScope.$on('accountListUpdated', () => {
             this.integrations.load();
         });
     }
@@ -54,6 +64,9 @@ class IntegrationPreferencesController {
         if (data.selectedTab) {
             this.setTab(this.selectedTab);
         }
+    }
+    $onDestroy() {
+        this.watcher();
     }
     disconnect(service, id) {
         this.saving = true;
@@ -110,16 +123,6 @@ const Integrations = {
         onSave: '&'
     }
 };
-
-import api, { ApiService } from '../../common/api/api.service';
-import google, { GoogleService } from './google/google.service';
-import help, { HelpService } from '../../common/help/help.service';
-import integrations, { IntegrationsService } from './integrations.service';
-import mailchimp, { MailchimpService } from './mailchimp/mailchimp.service';
-import modal, { ModalService } from '../../common/modal/modal.service';
-import prayerLetters, { PrayerLettersService } from './prayerLetters/prayerLetters.service';
-import uiRouter from '@uirouter/angularjs';
-import { StateParams, StateService } from '@uirouter/core';
 
 export default angular.module('mpdx.preferences.integrations.component', [
     uiRouter,

@@ -1,5 +1,18 @@
 import config from './config';
 
+/* @ngInject*/
+function logout(
+    $window,
+    users
+) {
+    $window.localStorage.removeItem('token');
+    if (users.current) {
+        $window.localStorage.removeItem(`${users.current.id}_accountListId`);
+    }
+    $window.location.href = config.authUrl + config.authLogout;
+    delete $window.digitalData.user[0].profile[0].profileInfo.ssoGuid;
+}
+
 export default class Routes {
     static config(
         $stateProvider,
@@ -529,17 +542,4 @@ export default class Routes {
             parent: 'root'
         });
     }
-}
-
-/* @ngInject*/
-function logout(
-    $window,
-    users
-) {
-    $window.localStorage.removeItem('token');
-    if (users.current) {
-        $window.localStorage.removeItem(`${users.current.id}_accountListId`);
-    }
-    $window.location.href = config.authUrl + config.authLogout;
-    delete $window.digitalData.user[0].profile[0].profileInfo.ssoGuid;
 }

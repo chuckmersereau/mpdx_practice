@@ -1,6 +1,10 @@
-import { defaultTo, find } from 'lodash/fp';
+import 'angular-gettext';
 import { convertTags } from '../../fp/tags';
+import { defaultTo, find } from 'lodash/fp';
+import api, { ApiService } from '../../api/api.service';
+import modal, { ModalService } from '../../modal/modal.service';
 import replaceAll from '../../fp/replaceAll';
+import users, { UsersService } from '../../users/users.service';
 
 class Save {
     name: string;
@@ -76,16 +80,11 @@ class Save {
         }).then(() => this.afterSave(option.key, data));
     }
     afterSave(key, data) {
-        let option = <any>defaultTo({}, find({ key: key }, this.users.currentOptions));
+        let option: any = defaultTo({}, find({ key: key }, this.users.currentOptions));
         option.value = data;
         this.users.currentOptions[key] = option;
     }
 }
-
-import 'angular-gettext';
-import users, {UsersService} from '../../users/users.service';
-import api, {ApiService} from "../../api/api.service";
-import modal, {ModalService} from "../../modal/modal.service";
 
 export default angular.module('mpdx.common.filter.save.controller', [
     'gettext',

@@ -23,6 +23,7 @@ describe('common.alerts.service', () => {
                 expect(toaster.pop).not.toHaveBeenCalled();
             });
         });
+
         it('should add a success toast', () => {
             alerts.addAlert(message);
             expect(toaster.pop).toHaveBeenCalledWith({
@@ -40,6 +41,7 @@ describe('common.alerts.service', () => {
                 onHideCallback: jasmine.any(Function)
             });
         });
+
         it('should add a "type" toast', () => {
             alerts.addAlert(message, type);
             expect(toaster.pop).toHaveBeenCalledWith({
@@ -57,6 +59,7 @@ describe('common.alerts.service', () => {
                 onHideCallback: jasmine.any(Function)
             });
         });
+
         it('should change timeout', () => {
             alerts.addAlert(message, undefined, displayTime);
             expect(toaster.pop).toHaveBeenCalledWith({
@@ -74,6 +77,7 @@ describe('common.alerts.service', () => {
                 onHideCallback: jasmine.any(Function)
             });
         });
+
         it('should return a promise', () => {
             expect(alerts.addAlert(message)).toEqual(jasmine.any(q));
         });

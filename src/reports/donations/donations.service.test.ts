@@ -1,5 +1,5 @@
-import service from './donations.service';
 import * as moment from 'moment';
+import service from './donations.service';
 
 describe('reports.donations.service', () => {
     let api, donations, gettextCatalog, modal, $log, q, rootScope;
@@ -75,6 +75,7 @@ describe('reports.donations.service', () => {
             });
         });
     });
+
     describe('getDonations', () => {
         beforeEach(() => {
             spyOn(api, 'get').and.callFake((url, data) => q.resolve(data));
@@ -224,7 +225,6 @@ describe('reports.donations.service', () => {
             });
         });
     });
-
 
     describe('delete', () => {
         const donation = { id: 'donation_id' };

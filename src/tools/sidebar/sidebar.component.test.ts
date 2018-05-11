@@ -1,7 +1,7 @@
 import component from './sidebar.component';
 
 describe('tools.sidebar.component', () => {
-    let $ctrl, rootScope, scope, componentController, tools;
+    let $ctrl, rootScope, scope, tools;
 
     beforeEach(() => {
         angular.mock.module(component);
@@ -9,14 +9,9 @@ describe('tools.sidebar.component', () => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             tools = _tools_;
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('toolsSidebar', { $scope: scope });
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('toolsSidebar', { $scope: scope });
-    }
 
     describe('$onInit', () => {
         beforeEach(() => {

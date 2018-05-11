@@ -1,3 +1,5 @@
+import tasks, { TasksService } from '../..//tasks.service';
+
 class NewsletterTaskController {
     comment: string;
     task: any;
@@ -27,8 +29,6 @@ class NewsletterTaskController {
         });
     }
 }
-
-import tasks, { TasksService } from '../..//tasks.service';
 
 export default angular.module('mpdx.tasks.newsletter.controller', [
     tasks

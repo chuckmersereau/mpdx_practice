@@ -1,10 +1,18 @@
-import { assign, concat, defaultTo, get, isEmpty, isString, map, reject, reduce, startsWith, union } from 'lodash/fp';
+import 'angular-gettext';
+import * as moment from 'moment';
+import * as uuid from 'uuid/v1';
+import { AlertsService } from '../common/alerts/alerts.service';
+import { assign, concat, defaultTo, get, isEmpty, isString, map, reduce, reject, startsWith, union } from 'lodash/fp';
+import { ModalService } from '../common/modal/modal.service';
+import { StateService } from '@uirouter/core';
+import api, { ApiService } from '../common/api/api.service';
+import contacts, { ContactsService } from '../contacts/contacts.service';
+import emptyToNull from '../common/fp/emptyToNull';
 import isNilOrEmpty from '../common/fp/isNilOrEmpty';
 import joinComma from '../common/fp/joinComma';
-import * as uuid from 'uuid/v1';
-import emptyToNull from '../common/fp/emptyToNull';
-import * as moment from 'moment';
-import { StateService } from '@uirouter/core';
+import serverConstants, { ServerConstantsService } from '../common/serverConstants/serverConstants.service';
+import tasksTags, { TasksTagsService } from './filter/tags/tags.service';
+import users, { UsersService } from '../common/users/users.service';
 
 export class TasksService {
     analytics: any;
@@ -113,11 +121,11 @@ export class TasksService {
         });
     }
     addModal({ contactsList = [], activityType = null, task = {}, comments = [] }: {
-        contactsList?: string[],
-        activityType?: string,
-        task?: any,
-        comments?: string[]
-        }): ng.IPromise<any> {
+    contactsList?: string[],
+    activityType?: string,
+    task?: any,
+    comments?: string[]
+    }): ng.IPromise<any> {
         return this.modal.open({
             template: require('./modals/add/add.html'),
             controller: 'addTaskController',
@@ -138,13 +146,13 @@ export class TasksService {
         });
     }
     private getDataForAddTask({ contacts, $state, contactsList, activityType, task, comments }: {
-        contacts: ContactsService,
-        $state: StateService,
-        contactsList: string[],
-        activityType: string,
-        task: any,
-        comments: string[]
-        }): ng.IPromise<any> {
+    contacts: ContactsService,
+    $state: StateService,
+    contactsList: string[],
+    activityType: string,
+    task: any,
+    comments: string[]
+    }): ng.IPromise<any> {
         const reuseTask = this.reuseTask(task, activityType);
         const useContacts = this.useContacts(task, reuseTask);
         const contactParams = useContacts ? angular.copy(contactsList) : [];
@@ -223,8 +231,8 @@ export class TasksService {
             }
         });
     }
-    getContactsForLogModal($state: StateService, contacts: ContactsService, contactsList: string[])
-        : ng.IPromise<string[]> {
+    getContactsForLogModal($state: StateService, contacts: ContactsService, contactsList: string[]):
+        ng.IPromise<string[]> {
         contactsList = get('[0]', contactsList) ? contactsList : []; // null contact check
         const contactParams = angular.copy(contactsList);
         const inContactView = startsWith('contacts.show', $state.current.name);
@@ -258,15 +266,6 @@ export class TasksService {
         });
     }
 }
-
-import api, { ApiService } from '../common/api/api.service';
-import contacts, { ContactsService } from '../contacts/contacts.service';
-import 'angular-gettext';
-import serverConstants, { ServerConstantsService } from '../common/serverConstants/serverConstants.service';
-import tasksTags, { TasksTagsService } from './filter/tags/tags.service';
-import users, { UsersService } from '../common/users/users.service';
-import { AlertsService } from '../common/alerts/alerts.service';
-import { ModalService } from '../common/modal/modal.service';
 
 export default angular.module('mpdx.tasks.service', [
     'gettext',

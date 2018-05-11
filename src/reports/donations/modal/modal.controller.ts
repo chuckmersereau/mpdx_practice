@@ -1,6 +1,15 @@
-import createPatch from '../../../common/fp/createPatch';
+import 'angular-gettext';
 import { defaultTo, get, has } from 'lodash/fp';
+import accounts, { AccountsService } from '../../../common/accounts/accounts.service';
+import api, { ApiService } from '../../../common/api/api.service';
+import appeals, { AppealsService } from '../../../tools/appeals/appeals.service';
+import createPatch from '../../../common/fp/createPatch';
+import designationAccounts, { DesignationAccountsService } from '../../../common/designationAccounts/designationAccounts.service';
+import donorAccounts, { DonorAccountsService } from '../../../common/donorAccounts/donorAccounts.service';
 import fixed from '../../../common/fp/fixed';
+import locale, { LocaleService } from '../../../common/locale/locale.service';
+import modal, { ModalService } from '../../../common/modal/modal.service';
+import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
 
 class DonationModalController {
     donation: any;
@@ -137,17 +146,6 @@ class DonationModalController {
         });
     }
 }
-
-import 'angular-gettext';
-import accounts, { AccountsService } from '../../../common/accounts/accounts.service';
-import appeals, { AppealsService } from '../../../tools/appeals/appeals.service';
-import api, { ApiService } from '../../../common/api/api.service';
-import locale, { LocaleService } from '../../../common/locale/locale.service';
-import designationAccounts, { DesignationAccountsService } from '../../../common/designationAccounts/designationAccounts.service';
-import donorAccounts, { DonorAccountsService } from '../../../common/donorAccounts/donorAccounts.service';
-import modal, { ModalService } from '../../../common/modal/modal.service';
-import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
-
 
 export default angular.module('mpdx.donation.modal.controller', [
     'gettext',

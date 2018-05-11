@@ -1,4 +1,9 @@
+import 'angular-gettext';
 import { StateParams, StateService } from '@uirouter/core';
+import contactFilter, { ContactFilterService } from './sidebar/filter/filter.service';
+import help, { HelpService } from '../common/help/help.service';
+import session, { SessionService } from '../common/session/session.service';
+import uiRouter from '@uirouter/angularjs';
 
 class ContactsController {
     selected: string;
@@ -39,12 +44,6 @@ const Contacts = {
     controller: ContactsController,
     template: require('./contacts.html')
 };
-
-import 'angular-gettext';
-import uiRouter from '@uirouter/angularjs';
-import contactFilter, { ContactFilterService } from './sidebar/filter/filter.service';
-import help, { HelpService } from '../common/help/help.service';
-import session, { SessionService } from '../common/session/session.service';
 
 export default angular.module('mpdx.contacts.component', [
     'gettext', uiRouter,

@@ -1,3 +1,4 @@
+import 'angular-gettext';
 import { find } from 'lodash/fp';
 import config from '../../config';
 
@@ -92,8 +93,6 @@ export class HelpService {
         });
     }
 }
-
-import 'angular-gettext';
 
 export default angular.module('mpdx.common.help', [
     'gettext'

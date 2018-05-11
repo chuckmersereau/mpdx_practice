@@ -2,6 +2,14 @@ import list from './display.component';
 
 describe('common.twoPartDateDisplay.component', () => {
     let $ctrl, rootScope, scope, componentController, locale;
+
+    function loadController() {
+        $ctrl = componentController('twoPartDateDisplay', { $scope: scope }, {
+            day: 1,
+            month: 2
+        });
+    }
+
     beforeEach(() => {
         angular.mock.module(list);
         inject(($componentController, $rootScope, _locale_) => {
@@ -13,22 +21,18 @@ describe('common.twoPartDateDisplay.component', () => {
         });
     });
 
-    function loadController() {
-        $ctrl = componentController('twoPartDateDisplay', { $scope: scope }, {
-            day: 1,
-            month: 2
-        });
-    }
     describe('constructor', () => {
         it('should set default values', () => {
             expect($ctrl.dayFirst).toBeFalsy();
         });
     });
+
     describe('$onChanges', () => {
         beforeEach(() => {
             spyOn($ctrl, 'gettext').and.callFake((data) => data);
             locale.dateTimeFormat = 'dd/MM/yyyy';
         });
+
         it('should set months', () => {
             $ctrl.$onChanges();
             expect($ctrl.months).toEqual([
@@ -47,11 +51,13 @@ describe('common.twoPartDateDisplay.component', () => {
             ]);
             expect($ctrl.gettext.calls.count()).toEqual(12);
         });
+
         it('should set dayFirst', () => {
             locale.dateTimeFormat = 'yyyy/dd/MM';
             $ctrl.$onChanges();
             expect($ctrl.dayFirst).toBeTruthy();
         });
+
         it('should set yearFirst false', () => {
             locale.dateTimeFormat = 'MM/dd/yyyy';
             $ctrl.$onChanges();

@@ -1,3 +1,6 @@
+import 'angular-block-ui';
+import api, { ApiService } from '../../common/api/api.service';
+
 class CommitmentsController {
     analytics: any;
     blockUI: IBlockUIService;
@@ -44,9 +47,6 @@ class CommitmentsController {
         });
     }
 }
-
-import api, { ApiService } from '../../common/api/api.service';
-import 'angular-block-ui';
 
 const Commitments = {
     template: require('./commitments.html'),

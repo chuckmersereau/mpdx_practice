@@ -9,6 +9,7 @@ describe('tools.appeals.list.component', () => {
             $ctrl = $componentController('appealsListItem', { $scope: scope }, {});
         });
     });
+
     describe('constructor', () => {
         it('should set public properties', () => {
             expect($ctrl.accounts).toBeDefined();

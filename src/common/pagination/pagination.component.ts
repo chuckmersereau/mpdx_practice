@@ -1,5 +1,5 @@
-import pagination from './pagination';
 import { range, toInteger } from 'lodash/fp';
+import pagination from './pagination';
 import reduceObject from '../fp/reduceObject';
 
 class PaginationController {

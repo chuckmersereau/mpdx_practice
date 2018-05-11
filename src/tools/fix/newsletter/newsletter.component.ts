@@ -1,13 +1,21 @@
-class newsletterController {
+import 'angular-gettext';
+import fixSendNewsletter, { FixSendNewsletterService } from './newsletter.service';
+import modal, { ModalService } from '../../../common/modal/modal.service';
+
+class NewsletterController {
+    watcher: () => void;
     constructor(
         $rootScope: ng.IRootScopeService,
         private gettextCatalog: ng.gettext.gettextCatalog,
         private modal: ModalService,
         private fixSendNewsletter: FixSendNewsletterService
     ) {
-        $rootScope.$on('accountListUpdated', () => {
+        this.watcher = $rootScope.$on('accountListUpdated', () => {
             this.load();
         });
+    }
+    $onDestroy() {
+        this.watcher();
     }
     save() {
         const message = this.gettextCatalog.getString(
@@ -23,16 +31,12 @@ class newsletterController {
     }
 }
 
-const Fixnewsletter = {
-    controller: newsletterController,
+const FixNewsletter: ng.IComponentOptions = {
+    controller: NewsletterController,
     template: require('./newsletter.html')
 };
-
-import 'angular-gettext';
-import modal, { ModalService } from '../../../common/modal/modal.service';
-import fixSendNewsletter, { FixSendNewsletterService } from './newsletter.service';
 
 export default angular.module('mpdx.tools.fixSendNewsletter.component', [
     'gettext',
     modal, fixSendNewsletter
-]).component('fixSendNewsletter', Fixnewsletter).name;
+]).component('fixSendNewsletter', FixNewsletter).name;

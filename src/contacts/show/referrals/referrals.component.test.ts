@@ -1,23 +1,21 @@
 import component from './referrals.component';
 
 describe('contacts.show.referrals.component', () => {
-    let $ctrl, scope, componentController, state, stateParams, contacts, q;
+    let $ctrl, scope, state, stateParams, contacts, q;
 
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, $state, $stateParams, _contacts_, $q) => {
             scope = $rootScope.$new();
-            componentController = $componentController;
             contacts = _contacts_;
             state = $state;
             stateParams = $stateParams;
             q = $q;
-            loadController();
+            $ctrl = $componentController('contactReferrals', { $scope: scope }, {});
         });
     });
 
     function loadController() {
-        $ctrl = componentController('contactReferrals', { $scope: scope }, {});
     }
 
     describe('$onInit', () => {
@@ -33,6 +31,7 @@ describe('contacts.show.referrals.component', () => {
             scope.$digest();
         });
     });
+
     describe('openAddReferralsModal', () => {
         beforeEach(() => {
             spyOn(contacts, 'openAddReferralsModal').and.callFake(() => q.resolve());

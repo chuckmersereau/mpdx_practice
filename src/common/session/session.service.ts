@@ -1,4 +1,5 @@
 import { StateService } from '@uirouter/core';
+import uiRouter from '@uirouter/angularjs';
 
 export class SessionService {
     navImpersonation: boolean;
@@ -17,8 +18,6 @@ export class SessionService {
         return this.$state.$current.name.indexOf(match) === 0;
     }
 }
-
-import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('mpdx.services.session', [
     uiRouter

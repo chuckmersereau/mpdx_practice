@@ -1,3 +1,5 @@
+import api, { ApiService } from '../../../common/api/api.service';
+
 export class InvitesService {
     constructor(
         private api: ApiService
@@ -12,8 +14,6 @@ export class InvitesService {
         });
     }
 }
-
-import api, { ApiService } from '../../../common/api/api.service';
 
 export default angular.module('mpdx.preferences.accounts.invites.service', [
     api

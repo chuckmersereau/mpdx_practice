@@ -1,5 +1,5 @@
-import config from './config';
 import * as scriptJs from 'scriptjs';
+import config from './config';
 
 // google analytics
 (window as any)._gaq = (window as any)._gaq || [];

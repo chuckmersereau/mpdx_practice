@@ -1,4 +1,11 @@
+import 'angular-gettext';
 import { defaultTo } from 'lodash/fp';
+import { StateService } from '@uirouter/core';
+import contacts, { ContactsService } from '../../contacts.service';
+import locale, { LocaleService } from '../../../common/locale/locale.service';
+import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
+import tasks, { TasksService } from '../../../tasks/tasks.service';
+import uiRouter from '@uirouter/angularjs';
 
 class ContactInfoController {
     contact: any;
@@ -39,14 +46,6 @@ const Info = {
         onSave: '&'
     }
 };
-
-import uiRouter from '@uirouter/angularjs';
-import 'angular-gettext';
-import contacts, { ContactsService } from '../../contacts.service';
-import locale, { LocaleService } from '../../../common/locale/locale.service';
-import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
-import tasks, { TasksService } from '../../../tasks/tasks.service';
-import { StateService } from '@uirouter/core';
 
 export default angular.module('mpdx.contacts.show.info.component', [
     uiRouter, 'gettext',

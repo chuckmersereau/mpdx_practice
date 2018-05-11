@@ -1,5 +1,5 @@
-import service from './contacts.service';
 import { assign } from 'lodash/fp';
+import service from './contacts.service';
 
 const accountListId = 123;
 const defaultParams = {};
@@ -24,37 +24,44 @@ describe('contacts.service', () => {
         spyOn(api, 'put').and.callFake((data) => q.resolve(data));
         spyOn(rootScope, '$emit').and.callThrough();
     });
+
     describe('constructor', () => {
         it('should set default contact drawer', () => {
             expect(contacts.activeDrawer).toEqual('details');
             expect(contacts.activeTab).toEqual('donations');
         });
     });
+
     describe('buildFilterParams', () => {
         const defaultResult = assign(params, { account_list_id: accountListId, any_tags: false });
         beforeEach(() => {
             contactFilter.default_params = defaultParams;
             contactFilter.params = params;
         });
+
         it('should handle default params', () => {
             expect(contacts.buildFilterParams()).toEqual(defaultResult);
         });
+
         it('should handle wildcard search', () => {
             contactFilter.wildcardSearch = 'abc';
             expect(contacts.buildFilterParams()).toEqual(assign(defaultResult, { wildcard_search: 'abc' }));
             contactFilter.wildcardSearch = null;
         });
+
         it('should handle tags', () => {
             contactsTags.selectedTags = tags;
             expect(contacts.buildFilterParams()).toEqual(assign(defaultResult, { tags: 'a,b' }));
             contactFilter.selectedTags = [];
         });
+
         it('should handle tag exclusions', () => {
             contactsTags.rejectedTags = tags;
             expect(contacts.buildFilterParams()).toEqual(assign(defaultResult, { exclude_tags: 'a,b' }));
             contactFilter.rejectedTags = [];
         });
     });
+
     describe('get', () => {
         beforeEach(() => {
             const data = {
@@ -63,6 +70,7 @@ describe('contacts.service', () => {
             };
             spyOn(api, 'get').and.returnValue(q.resolve(data));
         });
+
         it('should call the api with a contact id', () => {
             contacts.get(123);
             expect(api.get).toHaveBeenCalledWith({
@@ -88,9 +96,11 @@ describe('contacts.service', () => {
                 }
             });
         });
+
         it('should return promise', () => {
             expect(contacts.get(123)).toEqual(jasmine.any(q));
         });
+
         it('should set pledge_amount to float', (done) => {
             contacts.get(123).then((data) => {
                 expect(data.pledge_amount).toEqual(100.1);
@@ -98,6 +108,7 @@ describe('contacts.service', () => {
             });
             rootScope.$digest();
         });
+
         it('should parse pledge_frequency for value consistency', (done) => {
             contacts.get(123).then((data) => {
                 expect(data.pledge_frequency).toEqual(1.1);
@@ -106,6 +117,7 @@ describe('contacts.service', () => {
             rootScope.$digest();
         });
     });
+
     describe('getRecommendation', () => {
         let data;
         beforeEach(() => {
@@ -156,6 +168,7 @@ describe('contacts.service', () => {
             });
         });
     });
+
     describe('getPrimaryPerson', () => {
         let data;
         beforeEach(() => {
@@ -214,17 +227,20 @@ describe('contacts.service', () => {
             });
         });
     });
+
     describe('save', () => {
         let contact: any = { id: 1, name: 'a' };
         it('should save a contact', () => {
             contacts.save(contact);
             expect(api.put).toHaveBeenCalledWith(`contacts/${contact.id}`, contact, undefined, undefined);
         });
+
         it('should change tag_list array to comma delim list', () => {
             contact.tag_list = ['tag1', 'tag2'];
             contacts.save(contact);
             expect(api.put).toHaveBeenCalledWith(`contacts/${contact.id}`, assign(contact, { tag_list: 'tag1,tag2' }), undefined, undefined);
         });
+
         it('should trigger contactCreated if name changed', (done) => {
             contacts.save(contact).then(() => {
                 expect(rootScope.$emit).toHaveBeenCalledWith('contactCreated');
@@ -232,6 +248,7 @@ describe('contacts.service', () => {
             });
             rootScope.$digest();
         });
+
         it('should return the server response', (done) => {
             contacts.save(contact).then((data) => {
                 expect(data).toBeDefined();
@@ -240,12 +257,14 @@ describe('contacts.service', () => {
             rootScope.$digest();
         });
     });
+
     describe('merge', () => {
         it('should post to api', () => {
             spyOn(api, 'post').and.callFake(() => q.resolve());
             contacts.merge('a');
             expect(api.post).toHaveBeenCalledWith({ url: 'contacts/merges/bulk', data: 'a', type: 'contacts' });
         });
+
         it('should return data', (done) => {
             let data = { success: () => 'a' };
             spyOn(data, 'success').and.callThrough();
@@ -256,6 +275,7 @@ describe('contacts.service', () => {
             });
             rootScope.$digest();
         });
+
         it('should call a success fn', (done) => {
             let data = { success: () => 'a' };
             spyOn(data, 'success').and.callThrough();
@@ -267,6 +287,7 @@ describe('contacts.service', () => {
             rootScope.$digest();
         });
     });
+
     describe('openAddTagModal', () => {
         it('should open the add tag modal', () => {
             spyOn(modal, 'open').and.callFake(() => {});
@@ -280,6 +301,7 @@ describe('contacts.service', () => {
             });
         });
     });
+
     describe('fixPledgeAmountAndFrequencies', () => {
         const data = [{ pledge_frequency: null, pledge_amount: null }, { pledge_frequency: '1', pledge_amount: '1' }];
         it('should mutate contact values', () => {
@@ -296,6 +318,7 @@ describe('contacts.service', () => {
             spyOn(contacts, 'mapEmails').and.callFake(() => 'a');
             spyOn(api, 'get').and.callFake(() => q.resolve(null));
         });
+
         it('should call the api', () => {
             contacts.getEmails();
             expect(api.get).toHaveBeenCalledWith('contacts', {
@@ -309,6 +332,7 @@ describe('contacts.service', () => {
                 per_page: 25000
             }, undefined, undefined);
         });
+
         it('should map data to emails', (done) => {
             contacts.getEmails().then((data) => {
                 expect(data).toEqual('a');
@@ -329,11 +353,13 @@ describe('contacts.service', () => {
             expect(contacts.mapEmails(data)).toEqual('d');
         });
     });
+
     describe('addBulk', () => {
         const contactArr = [{ id: 1 }, { id: 2 }];
         beforeEach(() => {
             spyOn(api, 'post').and.callFake(() => q.resolve());
         });
+
         it('should call api post', () => {
             contacts.addBulk(contactArr);
             expect(api.post).toHaveBeenCalledWith({
@@ -345,6 +371,7 @@ describe('contacts.service', () => {
                 }
             });
         });
+
         it('should emit a complete event', (done) => {
             contacts.addBulk(contacts).then(() => {
                 expect(rootScope.$emit).toHaveBeenCalledWith('contactCreated');

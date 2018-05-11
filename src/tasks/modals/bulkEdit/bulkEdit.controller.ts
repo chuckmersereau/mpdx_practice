@@ -1,5 +1,9 @@
-import { assign, isNil, map, omitBy } from 'lodash/fp';
 import * as uuid from 'uuid/v1';
+import { assign, isNil, map, omitBy } from 'lodash/fp';
+import { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
+import api, { ApiService } from '../../../common/api/api.service';
+import tasks, { TasksService } from '../../tasks.service';
+import users, { UsersService } from '../../../common/users/users.service';
 
 class BulkEditTaskController {
     comment: any;
@@ -41,11 +45,6 @@ class BulkEditTaskController {
         });
     }
 }
-
-import api, { ApiService } from '../../../common/api/api.service';
-import tasks, { TasksService } from '../../tasks.service';
-import users, { UsersService } from '../../../common/users/users.service';
-import { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.tasks.bulkEdit.controller', [
     api, tasks, users

@@ -1,3 +1,7 @@
+import 'angular-gettext';
+import help, { HelpService } from '../common/help/help.service';
+import session, { SessionService } from '../common/session/session.service';
+
 class TasksController {
     constructor(
         private gettextCatalog: ng.gettext.gettextCatalog,
@@ -22,10 +26,6 @@ const Tasks = {
     controller: TasksController,
     template: require('./tasks.html')
 };
-
-import 'angular-gettext';
-import help, { HelpService } from '../common/help/help.service';
-import session, { SessionService } from '../common/session/session.service';
 
 export default angular.module('mpdx.tasks.component', [
     'gettext',

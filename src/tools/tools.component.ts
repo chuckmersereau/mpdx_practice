@@ -1,3 +1,11 @@
+import 'angular-gettext';
+import { StateParams, StateService } from '@uirouter/core';
+import help, { HelpService } from '../common/help/help.service';
+import session, { SessionService } from '../common/session/session.service';
+import tools, { ToolsService } from './tools.service';
+import uiRouter from '@uirouter/angularjs';
+import users, { UsersService } from '../common/users/users.service';
+
 class ToolsController {
     dropdown: boolean;
     setup: boolean;
@@ -37,18 +45,10 @@ class ToolsController {
     }
 }
 
-const Tools = {
+const Tools: ng.IComponentOptions = {
     controller: ToolsController,
     template: require('./tools.html')
 };
-
-import 'angular-gettext';
-import { StateParams, StateService } from '@uirouter/core';
-import uiRouter from '@uirouter/angularjs';
-import help, { HelpService } from '../common/help/help.service';
-import session, { SessionService } from '../common/session/session.service';
-import tools, { ToolsService } from './tools.service';
-import users, { UsersService } from '../common/users/users.service';
 
 export default angular.module('mpdx.tools.component', [
     'gettext', uiRouter,

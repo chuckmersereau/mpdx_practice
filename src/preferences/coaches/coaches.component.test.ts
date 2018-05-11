@@ -1,7 +1,7 @@
 import component from './coaches.component';
 
 describe('preferences.coaches.component', () => {
-    let $ctrl, componentController, scope, stateParams, rootScope, help;
+    let $ctrl, scope, stateParams, rootScope, help;
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, $stateParams, _help_) => {
@@ -9,14 +9,9 @@ describe('preferences.coaches.component', () => {
             help = _help_;
             rootScope = $rootScope;
             scope = rootScope.$new();
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('preferencesCoaches', { $scope: scope }, {});
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('preferencesCoaches', { $scope: scope }, {});
-    }
 
     describe('constructor', () => {
         it('should set default values', () => {

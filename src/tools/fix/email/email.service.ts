@@ -1,4 +1,7 @@
-import { each, filter, find, map, reduce, reject, flatMap, union } from 'lodash/fp';
+import { each, filter, find, flatMap, map, reduce, reject, union } from 'lodash/fp';
+import api, { ApiService } from '../../../common/api/api.service';
+import people, { PeopleService } from '../../../contacts/show/people/people.service';
+import tools, { ToolsService } from '../../tools.service';
 
 export class FixEmailAddressesService {
     data: any;
@@ -108,10 +111,6 @@ export class FixEmailAddressesService {
         return filter((emailAddress) => emailAddress.primary, person.email_addresses).length === 1;
     }
 }
-
-import api, { ApiService } from '../../../common/api/api.service';
-import people, { PeopleService } from '../../../contacts/show/people/people.service';
-import tools, { ToolsService } from '../../tools.service';
 
 export default angular.module('mpdx.tools.fix.emailAddresses.service', [
     api, people, tools

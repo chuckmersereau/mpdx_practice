@@ -1,25 +1,217 @@
-import component from './chart.component';
 import * as moment from 'moment';
+import component from './chart.component';
+
+const data = {
+    monthly_average: 6254,
+    monthly_goal: 200,
+    months_to_dates: [
+        '2017-04-01T00:00:00+00:00',
+        '2017-05-01T00:00:00+00:00',
+        '2017-06-01T00:00:00+00:00',
+        '2017-07-01T00:00:00+00:00'
+    ],
+    pledges: 500,
+    display_currency: 'CAD',
+    totals: [
+        {
+            currency: 'CAD',
+            total_amount: '81244.65',
+            total_converted: 81244.65,
+            month_totals: [
+                {
+                    amount: '5860.78',
+                    converted: 5860.78
+                },
+                {
+                    amount: '7235.78',
+                    converted: 7235.78
+                },
+                {
+                    amount: '6206.12',
+                    converted: 6206.12
+                },
+                {
+                    amount: '5855.75',
+                    converted: 5855.75
+                }
+            ]
+        },
+        {
+            currency: 'USD',
+            total_amount: '50.0',
+            total_converted: '64.79085',
+            month_totals: [
+                {
+                    amount: '0.0',
+                    converted: '0.0'
+                },
+                {
+                    amount: '0.0',
+                    converted: '0.0'
+                },
+                {
+                    amount: '25.0',
+                    converted: '33.18825'
+                },
+                {
+                    amount: '25.0',
+                    converted: '31.6026'
+                }
+            ]
+        }
+    ]
+};
+
+const inContactData = {
+    monthly_average: 136,
+    months_to_dates: [
+        '2015-08-01T00:00:00+00:00',
+        '2015-09-01T00:00:00+00:00',
+        '2015-10-01T00:00:00+00:00',
+        '2015-11-01T00:00:00+00:00',
+        '2015-12-01T00:00:00+00:00',
+        '2016-01-01T00:00:00+00:00',
+        '2016-02-01T00:00:00+00:00',
+        '2016-03-01T00:00:00+00:00',
+        '2016-04-01T00:00:00+00:00',
+        '2016-05-01T00:00:00+00:00',
+        '2016-06-01T00:00:00+00:00',
+        '2016-07-01T00:00:00+00:00',
+        '2016-08-01T00:00:00+00:00',
+        '2016-09-01T00:00:00+00:00',
+        '2016-10-01T00:00:00+00:00',
+        '2016-11-01T00:00:00+00:00',
+        '2016-12-01T00:00:00+00:00',
+        '2017-01-01T00:00:00+00:00',
+        '2017-02-01T00:00:00+00:00',
+        '2017-03-01T00:00:00+00:00',
+        '2017-04-01T00:00:00+00:00',
+        '2017-05-01T00:00:00+00:00',
+        '2017-06-01T00:00:00+00:00',
+        '2017-07-01T00:00:00+00:00'
+    ],
+    display_currency: 'CAD',
+    totals: [
+        {
+            currency: 'CAD',
+            total_amount: '3268.79',
+            total_converted: 3268.790000000001,
+            month_totals: [
+                {
+                    amount: '100.0',
+                    converted: 100
+                },
+                {
+                    amount: '100.0',
+                    converted: 100
+                },
+                {
+                    amount: '100.0',
+                    converted: 100
+                },
+                {
+                    amount: '100.0',
+                    converted: 100
+                },
+                {
+                    amount: '100.0',
+                    converted: 100
+                },
+                {
+                    amount: '100.0',
+                    converted: 100
+                },
+                {
+                    amount: '315.0',
+                    converted: 315
+                },
+                {
+                    amount: '134.42',
+                    converted: 134.42
+                },
+                {
+                    amount: '134.42',
+                    converted: 134.42
+                },
+                {
+                    amount: '133.0',
+                    converted: 133
+                },
+                {
+                    amount: '132.11',
+                    converted: 132.11
+                },
+                {
+                    amount: '132.11',
+                    converted: 132.11
+                },
+                {
+                    amount: '264.22',
+                    converted: 264.22
+                },
+                {
+                    amount: '134.76',
+                    converted: 134.76
+                },
+                {
+                    amount: '134.32',
+                    converted: 134.32
+                },
+                {
+                    amount: '137.06',
+                    converted: 137.06
+                },
+                {
+                    amount: '129.65',
+                    converted: 129.65
+                },
+                {
+                    amount: '130.1',
+                    converted: 130.1
+                },
+                {
+                    amount: '129.99',
+                    converted: 129.99
+                },
+                {
+                    amount: '133.61',
+                    converted: 133.61
+                },
+                {
+                    amount: '129.99',
+                    converted: 129.99
+                },
+                {
+                    amount: '129.99',
+                    converted: 129.99
+                },
+                {
+                    amount: '100.0',
+                    converted: 100
+                },
+                {
+                    amount: '134.04',
+                    converted: 134.04
+                }
+            ]
+        }
+    ]
+};
 
 describe('reports.donations.chart.component', () => {
-    let $ctrl, componentController, scope, rootScope, api, designationAccounts, q;
+    let $ctrl, scope, rootScope, api, designationAccounts, q;
 
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _api_, _designationAccounts_, $q) => {
-            componentController = $componentController;
             rootScope = $rootScope;
             scope = rootScope.$new();
             api = _api_;
             designationAccounts = _designationAccounts_;
             q = $q;
-            loadController();
+            $ctrl = $componentController('donationsChart', { $scope: scope }, { inContact: false });
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('donationsChart', { $scope: scope }, { inContact: false });
-    }
 
     describe('$onInit', () => {
         afterEach(() => {
@@ -32,19 +224,22 @@ describe('reports.donations.chart.component', () => {
             });
 
             it('should watch accountListUpdated', () => {
-                spyOn($ctrl, 'load').and.callFake(() => {});
+                spyOn($ctrl, 'load').and.callFake(() => {
+                });
                 rootScope.$emit('accountListUpdated');
                 expect($ctrl.load).toHaveBeenCalledWith();
             });
 
             it('should watch donationUpdated', () => {
-                spyOn($ctrl, 'load').and.callFake(() => {});
+                spyOn($ctrl, 'load').and.callFake(() => {
+                });
                 rootScope.$emit('donationUpdated');
                 expect($ctrl.load).toHaveBeenCalledWith();
             });
 
             it('should watch designationAccountSelectorChanged', () => {
-                spyOn($ctrl, 'load').and.callFake(() => {});
+                spyOn($ctrl, 'load').and.callFake(() => {
+                });
                 rootScope.$emit('designationAccountSelectorChanged');
                 expect($ctrl.load).toHaveBeenCalledWith();
             });
@@ -53,7 +248,8 @@ describe('reports.donations.chart.component', () => {
 
     describe('$onChanges', () => {
         it('should handle donation updated', () => {
-            spyOn($ctrl, 'load').and.callFake(() => {});
+            spyOn($ctrl, 'load').and.callFake(() => {
+            });
             $ctrl.$onChanges();
             expect($ctrl.load).toHaveBeenCalledWith();
         });
@@ -74,6 +270,7 @@ describe('reports.donations.chart.component', () => {
             expect($ctrl.watcher3).toHaveBeenCalledWith();
         });
     });
+
     describe('load', () => {
         let spy;
         const mutatedValues = 'mutatedValues';
@@ -111,6 +308,7 @@ describe('reports.donations.chart.component', () => {
             beforeEach(() => {
                 designationAccounts.selected = ['abc', 'def'];
             });
+
             it('should call $ctrl.getDonationChart with params', () => {
                 $ctrl.load();
                 expect($ctrl.getDonationChart).toHaveBeenCalledWith({
@@ -542,19 +740,23 @@ describe('reports.donations.chart.component', () => {
             };
             $ctrl.unConvertedData = [[0, 1], [2, 3]];
         });
+
         it('should return undefined if empty', () => {
             tooltip.index = 0;
             tooltip.datasetIndex = 0;
             expect($ctrl.generateTooltip(tooltip, data)).toBeUndefined();
         });
+
         it('should display value with label', () => {
             expect($ctrl.generateTooltip(tooltip, data)).toEqual('NZD: 3');
         });
+
         it('should display value without label', () => {
             data.datasets[1].label = undefined;
             expect($ctrl.generateTooltip(tooltip, data)).toEqual(3);
         });
     });
+
     describe('mutateUnconverted', () => {
         const data = {
             totals: [{
@@ -566,200 +768,3 @@ describe('reports.donations.chart.component', () => {
         });
     });
 });
-
-const data = {
-    monthly_average: 6254,
-    monthly_goal: 200,
-    months_to_dates: [
-        '2017-04-01T00:00:00+00:00',
-        '2017-05-01T00:00:00+00:00',
-        '2017-06-01T00:00:00+00:00',
-        '2017-07-01T00:00:00+00:00'
-    ],
-    pledges: 500,
-    display_currency: 'CAD',
-    totals: [
-        {
-            currency: 'CAD',
-            total_amount: '81244.65',
-            total_converted: 81244.65,
-            month_totals: [
-                {
-                    amount: '5860.78',
-                    converted: 5860.78
-                },
-                {
-                    amount: '7235.78',
-                    converted: 7235.78
-                },
-                {
-                    amount: '6206.12',
-                    converted: 6206.12
-                },
-                {
-                    amount: '5855.75',
-                    converted: 5855.75
-                }
-            ]
-        },
-        {
-            currency: 'USD',
-            total_amount: '50.0',
-            total_converted: '64.79085',
-            month_totals: [
-                {
-                    amount: '0.0',
-                    converted: '0.0'
-                },
-                {
-                    amount: '0.0',
-                    converted: '0.0'
-                },
-                {
-                    amount: '25.0',
-                    converted: '33.18825'
-                },
-                {
-                    amount: '25.0',
-                    converted: '31.6026'
-                }
-            ]
-        }
-    ]
-};
-
-const inContactData = {
-    monthly_average: 136,
-    months_to_dates: [
-        '2015-08-01T00:00:00+00:00',
-        '2015-09-01T00:00:00+00:00',
-        '2015-10-01T00:00:00+00:00',
-        '2015-11-01T00:00:00+00:00',
-        '2015-12-01T00:00:00+00:00',
-        '2016-01-01T00:00:00+00:00',
-        '2016-02-01T00:00:00+00:00',
-        '2016-03-01T00:00:00+00:00',
-        '2016-04-01T00:00:00+00:00',
-        '2016-05-01T00:00:00+00:00',
-        '2016-06-01T00:00:00+00:00',
-        '2016-07-01T00:00:00+00:00',
-        '2016-08-01T00:00:00+00:00',
-        '2016-09-01T00:00:00+00:00',
-        '2016-10-01T00:00:00+00:00',
-        '2016-11-01T00:00:00+00:00',
-        '2016-12-01T00:00:00+00:00',
-        '2017-01-01T00:00:00+00:00',
-        '2017-02-01T00:00:00+00:00',
-        '2017-03-01T00:00:00+00:00',
-        '2017-04-01T00:00:00+00:00',
-        '2017-05-01T00:00:00+00:00',
-        '2017-06-01T00:00:00+00:00',
-        '2017-07-01T00:00:00+00:00'
-    ],
-    display_currency: 'CAD',
-    totals: [
-        {
-            currency: 'CAD',
-            total_amount: '3268.79',
-            total_converted: 3268.790000000001,
-            month_totals: [
-                {
-                    amount: '100.0',
-                    converted: 100
-                },
-                {
-                    amount: '100.0',
-                    converted: 100
-                },
-                {
-                    amount: '100.0',
-                    converted: 100
-                },
-                {
-                    amount: '100.0',
-                    converted: 100
-                },
-                {
-                    amount: '100.0',
-                    converted: 100
-                },
-                {
-                    amount: '100.0',
-                    converted: 100
-                },
-                {
-                    amount: '315.0',
-                    converted: 315
-                },
-                {
-                    amount: '134.42',
-                    converted: 134.42
-                },
-                {
-                    amount: '134.42',
-                    converted: 134.42
-                },
-                {
-                    amount: '133.0',
-                    converted: 133
-                },
-                {
-                    amount: '132.11',
-                    converted: 132.11
-                },
-                {
-                    amount: '132.11',
-                    converted: 132.11
-                },
-                {
-                    amount: '264.22',
-                    converted: 264.22
-                },
-                {
-                    amount: '134.76',
-                    converted: 134.76
-                },
-                {
-                    amount: '134.32',
-                    converted: 134.32
-                },
-                {
-                    amount: '137.06',
-                    converted: 137.06
-                },
-                {
-                    amount: '129.65',
-                    converted: 129.65
-                },
-                {
-                    amount: '130.1',
-                    converted: 130.1
-                },
-                {
-                    amount: '129.99',
-                    converted: 129.99
-                },
-                {
-                    amount: '133.61',
-                    converted: 133.61
-                },
-                {
-                    amount: '129.99',
-                    converted: 129.99
-                },
-                {
-                    amount: '129.99',
-                    converted: 129.99
-                },
-                {
-                    amount: '100.0',
-                    converted: 100
-                },
-                {
-                    amount: '134.04',
-                    converted: 134.04
-                }
-            ]
-        }
-    ]
-};

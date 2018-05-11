@@ -1,3 +1,7 @@
+import api, { ApiService } from '../../../../common/api/api.service';
+import modal, { ModalService } from '../../../../common/modal/modal.service';
+import serverconstants, { ServerConstantsService } from '../../../../common/serverConstants/serverConstants.service';
+
 export class GoogleIntegrationsService {
     constructor(
         private $log: ng.ILogService,
@@ -66,10 +70,6 @@ export class GoogleIntegrationsService {
         });
     }
 }
-
-import api, { ApiService } from '../../../../common/api/api.service';
-import modal, { ModalService } from '../../../../common/modal/modal.service';
-import serverconstants, { ServerConstantsService } from '../../../../common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.preferences.accounts.integrations.google.integrations.service', [
     api, modal, serverconstants

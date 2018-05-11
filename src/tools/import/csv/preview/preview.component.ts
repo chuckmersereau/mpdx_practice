@@ -1,5 +1,12 @@
+import 'angular-gettext';
+import contactsTags, { ContactsTagsService } from '../../../../contacts/sidebar/filter/tags/tags.service';
+import importCsv, { ImportCsvService } from '../csv.service';
+import modal, { ModalService } from '../../../../common/modal/modal.service';
+import serverConstants, { ServerConstantsService } from '../../../../common/serverConstants/serverConstants.service';
+
 class PreviewController {
     accept: boolean;
+    watcher: () => void;
     constructor(
         $rootScope: ng.IRootScopeService,
         private gettextCatalog: ng.gettext.gettextCatalog,
@@ -10,12 +17,15 @@ class PreviewController {
     ) {
         this.accept = false;
 
-        $rootScope.$on('accountListUpdated', () => {
+        this.watcher = $rootScope.$on('accountListUpdated', () => {
             this.contactsTags.load();
         });
     }
     $onInit() {
         this.contactsTags.load();
+    }
+    $onDestroy() {
+        this.watcher();
     }
     save() {
         this.importCsv.data.in_preview = false;
@@ -32,16 +42,10 @@ class PreviewController {
     }
 }
 
-const Preview = {
+const Preview: ng.IComponentOptions = {
     controller: PreviewController,
     template: require('./preview.html')
 };
-
-import 'angular-gettext';
-import contactsTags, { ContactsTagsService } from '../../../../contacts/sidebar/filter/tags/tags.service';
-import importCsv, { ImportCsvService } from '../csv.service';
-import modal, { ModalService } from '../../../../common/modal/modal.service';
-import serverConstants, { ServerConstantsService } from '../../../../common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.tools.import.csv.preview.component', [
     'gettext',

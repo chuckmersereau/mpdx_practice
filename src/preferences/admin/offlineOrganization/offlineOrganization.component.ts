@@ -1,4 +1,6 @@
+import 'angular-gettext';
 import { isFunction } from 'lodash/fp';
+import api, { ApiService } from '../../../common/api/api.service';
 
 class OfflineOrganizationController {
     offlineOrganization: any;
@@ -41,9 +43,6 @@ const OfflineOrganization = {
     template: require('./offlineOrganization.html'),
     controller: OfflineOrganizationController
 };
-
-import 'angular-gettext';
-import api, { ApiService } from '../../../common/api/api.service';
 
 export default angular.module('mpdx.preferences.admin.offlineOrganization.component', [
     'gettext',

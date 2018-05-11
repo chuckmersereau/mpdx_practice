@@ -2,6 +2,17 @@ import modalController from './modal.controller';
 
 describe('common.collectionSelector.modal.controller', () => {
     let $ctrl, controller, scope, q;
+
+    function loadController() {
+        $ctrl = controller('collectionSelectionModalController as $ctrl', {
+            $scope: scope,
+            itemName: 'contact',
+            collectionSearch: () => q.resolve(),
+            searchText: 'Smith, John',
+            select: () => {}
+        });
+    }
+
     beforeEach(() => {
         angular.mock.module(modalController);
         inject(($controller, $rootScope, $q) => {
@@ -13,16 +24,6 @@ describe('common.collectionSelector.modal.controller', () => {
             loadController();
         });
     });
-
-    function loadController() {
-        $ctrl = controller('collectionSelectionModalController as $ctrl', {
-            $scope: scope,
-            itemName: 'contact',
-            collectionSearch: () => q.resolve(),
-            searchText: 'Smith, John',
-            select: () => {}
-        });
-    }
 
     describe('constructor', () => {
         it('should set the itemName', () => {
@@ -109,6 +110,7 @@ describe('common.collectionSelector.modal.controller', () => {
         it('should return a promise', () => {
             expect($ctrl.search()).toEqual(jasmine.any(q));
         });
+
         describe('promise resolved', () => {
             it('should set loading to false', (done) => {
                 $ctrl.loading = true;
@@ -118,6 +120,7 @@ describe('common.collectionSelector.modal.controller', () => {
                 });
                 scope.$digest();
             });
+
             it('should set data to collection', (done) => {
                 $ctrl.search().then(() => {
                     expect($ctrl.collection).toEqual($ctrl.searchText);

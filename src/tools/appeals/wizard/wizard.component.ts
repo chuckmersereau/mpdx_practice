@@ -1,8 +1,15 @@
-import { assign, contains, concat, find, map, reduce } from 'lodash/fp';
+import * as moment from 'moment';
+import { assign, concat, contains, find, map, reduce } from 'lodash/fp';
+import { StateService } from '@uirouter/core';
+import api, { ApiService } from '../../../common/api/api.service';
+import contactFilter, { ContactFilterService } from '../../../contacts/sidebar/filter/filter.service';
+import contacts, { ContactsService } from '../../../contacts/contacts.service';
+import contactTags, { ContactsTagsService } from '../../../contacts/sidebar/filter/tags/tags.service';
 import emptyToNull from '../../../common/fp/emptyToNull';
 import joinComma from '../../../common/fp/joinComma';
-import * as moment from 'moment';
 import removeObjectNulls from '../../../common/fp/removeObjectNulls';
+import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
+import uiRouter from '@uirouter/angularjs';
 
 class WizardController {
     appeal: any;
@@ -12,6 +19,7 @@ class WizardController {
     statuses: any[];
     statusFilter: any;
     tags: any[];
+    watcher: () => void;
     constructor(
         private $log: ng.ILogService,
         private $q: ng.IQService,
@@ -23,7 +31,7 @@ class WizardController {
         private contactsTags: ContactsTagsService,
         private serverConstants: ServerConstantsService
     ) {
-        $rootScope.$on('accountListUpdated', () => {
+        this.watcher = $rootScope.$on('accountListUpdated', () => {
             this.contactsTags.load();
             this.init();
         });
@@ -32,6 +40,9 @@ class WizardController {
         this.init();
 
         this.statusFilter = find({ name: 'status' }, this.contactFilter.data);
+    }
+    $onDestroy() {
+        this.watcher();
     }
     init() {
         this.statuses = [];
@@ -124,15 +135,7 @@ const AppealsWizard = {
     template: require('./wizard.html')
 };
 
-import uiRouter from '@uirouter/angularjs';
-import { StateService } from '@uirouter/core';
-import api, { ApiService } from '../../../common/api/api.service';
-import contactFilter, { ContactFilterService } from '../../../contacts/sidebar/filter/filter.service';
-import contacts, { ContactsService } from '../../../contacts/contacts.service';
-import contactTags, { ContactsTagsService } from '../../../contacts/sidebar/filter/tags/tags.service';
-import serverconstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
-
 export default angular.module('mpdx.tools.appeals.wizard.component', [
     uiRouter,
-    api, contactFilter, contacts, contactTags, serverconstants
+    api, contactFilter, contacts, contactTags, serverConstants
 ]).component('appealsWizard', AppealsWizard).name;

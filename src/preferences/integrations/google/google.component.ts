@@ -1,5 +1,11 @@
+import 'angular-gettext';
+import google, { GoogleService } from './google.service';
+import googleIntegrations, { GoogleIntegrationsService } from './integrations/integrations.service';
+import modal, { ModalService } from '../../../common/modal/modal.service';
+
 class GoogleController {
     saving: boolean;
+    watcher: () => void;
     constructor(
         private $rootScope: ng.IRootScopeService,
         private $log: ng.ILogService,
@@ -9,12 +15,15 @@ class GoogleController {
         private google: GoogleService,
         private googleIntegrations: GoogleIntegrationsService
     ) {
-        $rootScope.$on('accountListUpdated', () => {
+        this.watcher = $rootScope.$on('accountListUpdated', () => {
             this.google.load(true);
         });
     }
     $onInit() {
         this.google.load(true);
+    }
+    $onDestroy() {
+        this.watcher();
     }
     disconnect(id) {
         const msg = this.gettextCatalog.getString('Are you sure you wish to disconnect this Google account?');
@@ -34,11 +43,6 @@ const Google = {
     template: require('./google.html'),
     controller: GoogleController
 };
-
-import 'angular-gettext';
-import google, { GoogleService } from './google.service';
-import googleIntegrations, { GoogleIntegrationsService } from './integrations/integrations.service';
-import modal, { ModalService } from '../../../common/modal/modal.service';
 
 export default angular.module('mpdx.preferences.integrations.google.component', [
     'gettext',

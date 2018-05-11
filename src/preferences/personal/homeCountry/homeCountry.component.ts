@@ -1,3 +1,5 @@
+import accounts, { AccountsService } from '../../../common/accounts/accounts.service';
+
 class HomeCountryController {
     saving: boolean;
     constructor(
@@ -11,8 +13,6 @@ const HomeCountry = {
     template: require('./homeCountry.html'),
     controller: HomeCountryController
 };
-
-import accounts, { AccountsService } from '../../../common/accounts/accounts.service';
 
 export default angular.module('mpdx.preferences.personal.homeCountry.component', [
     accounts

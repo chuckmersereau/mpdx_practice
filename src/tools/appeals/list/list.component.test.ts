@@ -12,6 +12,7 @@ describe('tools.appeals.list.component', () => {
             $ctrl = $componentController('appealsList', { $scope: scope }, {});
         });
     });
+
     describe('events', () => {
         it('should handle account list change', () => {
             spyOn($ctrl, 'load').and.callFake(() => {});
@@ -20,6 +21,7 @@ describe('tools.appeals.list.component', () => {
             expect($ctrl.load).toHaveBeenCalledWith();
         });
     });
+
     describe('$onInit', () => {
         it('should call load', () => {
             spyOn($ctrl, 'load').and.callFake(() => {});
@@ -27,6 +29,7 @@ describe('tools.appeals.list.component', () => {
             expect($ctrl.load).toHaveBeenCalledWith();
         });
     });
+
     describe('load', () => {
         const retVal: any = [];
         retVal.meta = 'a';
@@ -36,6 +39,7 @@ describe('tools.appeals.list.component', () => {
             $ctrl.totals = { a: 'b' };
             $ctrl.listLoadCount = 1;
         });
+
         it('should reset values by default', () => {
             $ctrl.load();
             expect($ctrl.meta).toEqual({});
@@ -44,10 +48,12 @@ describe('tools.appeals.list.component', () => {
             expect($ctrl.listLoadCount).toEqual(2);
             expect($ctrl.page).toEqual(1);
         });
+
         it('should set page loading to true', () => {
             $ctrl.load();
             expect($ctrl.loading).toEqual(true);
         });
+
         it('should call the api', () => {
             spyOn(api, 'get').and.callFake(() => q.resolve(retVal));
             $ctrl.load();
@@ -60,6 +66,7 @@ describe('tools.appeals.list.component', () => {
                 page: 1
             });
         });
+
         it('should test for out of turn loading', (done) => {
             spyOn(api, 'get').and.callFake(() => q.resolve(retVal));
             spyOn($ctrl, 'loadedOutOfTurn').and.callFake(() => true);
@@ -69,6 +76,7 @@ describe('tools.appeals.list.component', () => {
             });
             scope.$digest();
         });
+
         it('should set page loading to false', (done) => {
             spyOn(api, 'get').and.callFake(() => q.resolve(retVal));
             $ctrl.load().then(() => {
@@ -77,6 +85,7 @@ describe('tools.appeals.list.component', () => {
             });
             scope.$digest();
         });
+
         it('should set meta', (done) => {
             spyOn(api, 'get').and.callFake(() => q.resolve(retVal));
             $ctrl.load().then(() => {
@@ -85,6 +94,7 @@ describe('tools.appeals.list.component', () => {
             });
             scope.$digest();
         });
+
         it('should mutate data', (done) => {
             spyOn(api, 'get').and.callFake(() => q.resolve(retVal));
             spyOn($ctrl, 'mutateData').and.callFake(() => ['b']);
@@ -94,6 +104,7 @@ describe('tools.appeals.list.component', () => {
             });
             scope.$digest();
         });
+
         it('should set loading to false on fail', (done) => {
             spyOn(api, 'get').and.callFake(() => q.reject({}));
             $ctrl.load().catch(() => {
@@ -102,6 +113,7 @@ describe('tools.appeals.list.component', () => {
             scope.$digest();
         });
     });
+
     describe('mutateData', () => {
         it('should modify data', () => {
             const data = [{
@@ -119,6 +131,7 @@ describe('tools.appeals.list.component', () => {
                 pledges_amount_processed: '11.00'
             }]);
         });
+
         it('should handle appeal 0', () => {
             const data = [{
                 amount: null,
@@ -130,11 +143,13 @@ describe('tools.appeals.list.component', () => {
             }]);
         });
     });
+
     describe('loadedOutOfTurn', () => {
         it('should return true if wrong load count', () => {
             $ctrl.listLoadCount = 0;
             expect($ctrl.loadedOutOfTurn(1)).toBeTruthy();
         });
+
         it('shouldn\'t return true if correct count', () => {
             $ctrl.listLoadCount = 0;
             expect($ctrl.loadedOutOfTurn(0)).toBeFalsy();

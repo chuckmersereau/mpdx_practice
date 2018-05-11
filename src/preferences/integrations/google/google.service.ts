@@ -1,5 +1,6 @@
-import config from '../../../config';
 import { find, isObject } from 'lodash/fp';
+import api, { ApiService } from '../../../common/api/api.service';
+import config from '../../../config';
 
 export class GoogleService {
     data: any;
@@ -41,8 +42,6 @@ export class GoogleService {
         });
     }
 }
-
-import api, { ApiService } from '../../../common/api/api.service';
 
 export default angular.module('mpdx.preferences.accounts.integrations.google.service', [
     api

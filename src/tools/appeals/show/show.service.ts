@@ -1,3 +1,4 @@
+import api, { ApiService } from '../../../common/api/api.service';
 import relationshipId from '../../../common/fp/relationshipId';
 
 export class AppealsShowService {
@@ -17,8 +18,6 @@ export class AppealsShowService {
         });
     }
 }
-
-import api, { ApiService } from '../../../common/api/api.service';
 
 export default angular.module('mpdx.tools.appeals.show.service', [
     api

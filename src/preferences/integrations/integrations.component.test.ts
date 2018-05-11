@@ -1,7 +1,7 @@
 import component from './integrations.component';
 
 describe('preferences.integrations.component', () => {
-    let $ctrl, componentController, state, scope, help, rootScope, integrations, gettextCatalog, api, q;
+    let $ctrl, state, scope, help, rootScope, integrations, gettextCatalog, api, q;
     beforeEach(() => {
         angular.mock.module(component);
         inject((
@@ -15,61 +15,62 @@ describe('preferences.integrations.component', () => {
             state = $state;
             integrations = _integrations_;
             q = $q;
-            componentController = $componentController;
-            $ctrl = loadController();
+            spyOn(help, 'suggest').and.callFake(() => {});
+            $ctrl = $componentController('preferencesIntegration', { $scope: scope }, {
+                selectedTab: null,
+                setup: false,
+                onSave: () => q.$resolve()
+            });
         });
         spyOn(state, 'go').and.callFake(() => {});
-        spyOn(help, 'suggest').and.callFake(() => {});
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
 
-    function loadController() {
-        return componentController('preferencesIntegration', { $scope: scope }, {
-            selectedTab: null,
-            setup: false,
-            onSave: () => q.$resolve()
-        });
-    }
     describe('constructor', () => {
-        beforeEach(() => {
-            loadController();
-        });
         it('should have help', () => {
             expect(help.suggest).toHaveBeenCalled();
         });
     });
+
     describe('events', () => {
         beforeEach(() => {
             spyOn(integrations, 'load').and.callFake(() => {});
         });
+
         it('should reload integration data on account list change', () => {
             rootScope.$emit('accountListUpdated');
             rootScope.$digest();
             expect(integrations.load).toHaveBeenCalled();
         });
     });
+
     describe('tabSelectable', () => {
         it('should allow tabs to be selectable by default', () => {
             expect($ctrl.tabSelectable()).toBeTruthy();
         });
+
         it('should not allow tabs to be selectable when selectedTab does not match', () => {
             $ctrl.selectedTab = 'google';
             expect($ctrl.tabSelectable('key')).toBeFalsy();
         });
+
         it('should allow tabs to be selectable under when selectedTab matches', () => {
             $ctrl.selectedTab = 'google';
             expect($ctrl.tabSelectable('google')).toBeTruthy();
         });
     });
+
     describe('disconnect', () => {
         beforeEach(() => {
             spyOn(integrations, 'load').and.callFake(() => {});
         });
+
         it('should set saving flag', () => {
             spyOn(api, 'delete').and.callFake(() => q.resolve());
             $ctrl.disconnect('key');
             expect($ctrl.saving).toBeTruthy();
         });
+
         it('should call disconnect', () => {
             spyOn(api, 'delete').and.callFake(() => q.resolve());
             $ctrl.disconnect('key', 1);
@@ -82,6 +83,7 @@ describe('preferences.integrations.component', () => {
                 'MPDX couldn\'t save your configuration changes for key.'
             );
         });
+
         it('should unset saving flag', (done) => {
             spyOn(api, 'delete').and.callFake(() => q.resolve());
             $ctrl.disconnect('key').then(() => {
@@ -90,6 +92,7 @@ describe('preferences.integrations.component', () => {
             });
             scope.$digest();
         });
+
         it('should reload integrations', (done) => {
             spyOn(api, 'delete').and.callFake(() => q.resolve());
             $ctrl.disconnect('key').then(() => {
@@ -98,6 +101,7 @@ describe('preferences.integrations.component', () => {
             });
             scope.$digest();
         });
+
         it('should handle rejection', (done) => {
             spyOn(api, 'delete').and.callFake(() => q.reject());
             $ctrl.disconnect('key').catch(() => {

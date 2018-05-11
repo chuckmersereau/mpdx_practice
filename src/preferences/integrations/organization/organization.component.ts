@@ -1,4 +1,12 @@
+import 'angular-gettext';
+import * as Upload from 'ng-file-upload';
 import { get } from 'lodash/fp';
+import alerts, { AlertsService } from '../../../common/alerts/alerts.service';
+import help, { HelpService } from '../../../common/help/help.service';
+import modal, { ModalService } from '../../../common/modal/modal.service';
+import preferencesOrganization, { PreferencesOrganizationService } from './organization.service';
+import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
+import users, { UsersService } from '../../../common/users/users.service';
 
 class OrganizationIntegrationPreferencesController {
     importing: boolean;
@@ -128,15 +136,6 @@ const Organization = {
     controller: OrganizationIntegrationPreferencesController,
     template: require('./organization.html')
 };
-
-import 'angular-gettext';
-import * as Upload from 'ng-file-upload';
-import preferencesOrganization, { PreferencesOrganizationService } from './organization.service';
-import alerts, { AlertsService } from '../../../common/alerts/alerts.service';
-import help, { HelpService } from '../../../common/help/help.service';
-import modal, { ModalService } from '../../../common/modal/modal.service';
-import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
-import users, { UsersService } from '../../../common/users/users.service';
 
 export default angular.module('mpdx.preferences.organization.component', [
     'gettext', Upload,

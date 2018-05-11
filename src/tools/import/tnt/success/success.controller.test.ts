@@ -1,7 +1,7 @@
 import success from './success.controller';
 
 describe('tools.import.tnt.success.controller', () => {
-    let $ctrl, controller, scope, state;
+    let $ctrl, scope, state;
 
     beforeEach(() => {
         angular.mock.module(success);
@@ -9,17 +9,12 @@ describe('tools.import.tnt.success.controller', () => {
             scope = $rootScope.$new();
             scope.$hide = () => {};
             state = $state;
-            controller = $controller;
-            $ctrl = loadController();
+            $ctrl = $controller('importTntSuccessController as $ctrl', {
+                $scope: scope,
+                $state: state
+            });
         });
     });
-
-    function loadController() {
-        return controller('importTntSuccessController as $ctrl', {
-            $scope: scope,
-            $state: state
-        });
-    }
 
     describe('setup', () => {
         beforeEach(() => {

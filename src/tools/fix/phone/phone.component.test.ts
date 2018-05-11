@@ -6,7 +6,7 @@ const fakeBlockUI = {
 };
 
 describe('tools.fix.phoneNumbers.component', () => {
-    let $ctrl, rootScope, scope, componentController, gettextCatalog, blockUI, modal, fixPhoneNumbers, q;
+    let $ctrl, rootScope, scope, gettextCatalog, blockUI, modal, fixPhoneNumbers, q;
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _gettextCatalog_, _blockUI_, _modal_, _fixPhoneNumbers_, $q) => {
@@ -17,17 +17,12 @@ describe('tools.fix.phoneNumbers.component', () => {
             modal = _modal_;
             fixPhoneNumbers = _fixPhoneNumbers_;
             q = $q;
-            componentController = $componentController;
-            loadController();
+            spyOn(blockUI.instances, 'get').and.callFake(() => fakeBlockUI);
+            $ctrl = $componentController('fixPhoneNumbers', { $scope: scope });
         });
-    });
-
-    function loadController() {
-        spyOn(blockUI.instances, 'get').and.callFake(() => fakeBlockUI);
-        $ctrl = componentController('fixPhoneNumbers', { $scope: scope });
         spyOn($ctrl.blockUI, 'start').and.callThrough();
         spyOn($ctrl.blockUI, 'reset').and.callThrough();
-    }
+    });
 
     describe('constructor', () => {
         it('should set default values', () => {
@@ -39,6 +34,7 @@ describe('tools.fix.phoneNumbers.component', () => {
             expect($ctrl.blockUI).toEqual(fakeBlockUI);
         });
     });
+
     describe('events', () => {
         it('should fire load on accountListUpdated', () => {
             spyOn($ctrl, 'load').and.callFake(() => q.resolve());
@@ -46,6 +42,7 @@ describe('tools.fix.phoneNumbers.component', () => {
             expect($ctrl.load).toHaveBeenCalled();
         });
     });
+
     describe('save', () => {
         beforeEach(() => {
             spyOn(modal, 'confirm').and.callFake(() => q.resolve());
@@ -83,7 +80,7 @@ describe('tools.fix.phoneNumbers.component', () => {
                     expect(fixPhoneNumbers.bulkSave).toHaveBeenCalledWith('MPDX');
                     done();
                 });
-                scope.$digest()
+                scope.$digest();
             });
 
             it('should have toggled blockUI', (done) => {

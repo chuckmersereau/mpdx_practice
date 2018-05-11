@@ -28,6 +28,23 @@ let contactList = [
 
 xdescribe('contacts.list.map.controller', () => {
     let $ctrl, controller, scope, _window, gettextCatalog, NgMap, map, markerClusterer, bounds, api, contacts, q;
+
+    function loadController() {
+        map = {
+            setCenter: () => {},
+            fitBounds: () => {},
+            panToBounds: () => {},
+            showInfoWindow: () => {}
+        };
+
+        spyOn(NgMap, 'getMap').and.callFake(() => q.resolve(map));
+
+        return controller('mapContactsController as $ctrl', {
+            $scope: scope,
+            selectedContacts: contactList
+        });
+    }
+
     beforeEach(() => {
         angular.mock.module(mapController);
         inject(($controller, $rootScope, $window, _gettextCatalog_, _NgMap_, _api_, _contacts_, $q) => {
@@ -64,21 +81,6 @@ xdescribe('contacts.list.map.controller', () => {
         });
     });
 
-    function loadController() {
-        map = {
-            setCenter: () => {},
-            fitBounds: () => {},
-            panToBounds: () => {},
-            showInfoWindow: () => {}
-        };
-
-        spyOn(NgMap, 'getMap').and.callFake(() => q.resolve(map));
-
-        return controller('mapContactsController as $ctrl', {
-            $scope: scope,
-            selectedContacts: contactList
-        });
-    }
     describe('constructor', () => {
         it('should set default values', () => {
             expect($ctrl.invalidContacts).toEqual(jasmine.any(Array));
@@ -157,6 +159,7 @@ xdescribe('contacts.list.map.controller', () => {
             });
             scope.$digest();
         });
+
         it('should call deserializeContacts', (done) => {
             $ctrl.init().then(() => {
                 expect($ctrl.deserializeContacts).toHaveBeenCalled();
@@ -173,12 +176,14 @@ xdescribe('contacts.list.map.controller', () => {
             scope.$digest();
         });
     });
+
     describe('getContacts', () => {
         beforeEach(() => {
             spyOn(api, 'get').and.callFake(() => q.resolve());
             spyOn(contacts, 'buildFilterParams').and.callFake(() => 'bfp');
             spyOn($ctrl, 'createMarker').and.callFake(() => 'bm');
         });
+
         it('shouldn\'t call the api', (done) => {
             $ctrl.getContacts().then(() => {
                 expect(api.get).not.toHaveBeenCalled();
@@ -186,6 +191,7 @@ xdescribe('contacts.list.map.controller', () => {
             });
             scope.$digest();
         });
+
         it('should call the api when no data is present', (done) => {
             $ctrl.selectedContacts = [{ id: 1 }, { id: 2 }];
             $ctrl.getContacts().then(() => {
@@ -264,6 +270,7 @@ xdescribe('contacts.list.map.controller', () => {
             spyOn(map, 'fitBounds').and.callThrough();
             spyOn(map, 'panToBounds').and.callThrough();
         });
+
         it('should return promise', () => {
             expect($ctrl.setMap()).toEqual(jasmine.any(q));
         });
@@ -448,6 +455,7 @@ xdescribe('contacts.list.map.controller', () => {
                 expect($ctrl.statusToString('Appointment Scheduled')).toEqual('Appointment Scheduled');
             });
         });
+
         describe('status is invalid', () => {
             it('should return All Inactive', () => {
                 expect($ctrl.statusToString('Test Test')).toEqual('All Inactive');

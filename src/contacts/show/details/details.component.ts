@@ -1,5 +1,13 @@
-import { assign, concat, defaultTo, get, map, round, sumBy } from 'lodash/fp';
 import * as uuid from 'uuid/v1';
+import { assign, concat, defaultTo, get, map, round, sumBy } from 'lodash/fp';
+import api, { ApiService } from '../../../common/api/api.service';
+import contacts, { ContactsService } from '../../contacts.service';
+import contactsTags, { ContactsTagsService } from '../../sidebar/filter/tags/tags.service';
+import locale, { LocaleService } from '../../../common/locale/locale.service';
+import modal, { ModalService } from '../../../common/modal/modal.service';
+import serverConstants from '../../../common/serverConstants/serverConstants.service';
+import timeZone, { TimeZoneService } from '../../../common/timeZone/timeZone.service';
+import users, { UsersService } from '../../../common/users/users.service';
 
 class ContactDetailsController {
     contact: any;
@@ -187,15 +195,6 @@ const Details = {
         onSave: '&'
     }
 };
-
-import api, { ApiService } from '../../../common/api/api.service';
-import contacts, { ContactsService } from '../../contacts.service';
-import contactsTags, { ContactsTagsService } from '../../sidebar/filter/tags/tags.service';
-import locale, { LocaleService } from '../../../common/locale/locale.service';
-import modal, { ModalService } from '../../../common/modal/modal.service';
-import serverConstants from '../../../common/serverConstants/serverConstants.service';
-import timeZone, { TimeZoneService } from '../../../common/timeZone/timeZone.service';
-import users, { UsersService } from '../../../common/users/users.service';
 
 export default angular.module('mpdx.contacts.show.details.component', [
     api, contactsTags, contacts, locale, modal, serverConstants, timeZone, users

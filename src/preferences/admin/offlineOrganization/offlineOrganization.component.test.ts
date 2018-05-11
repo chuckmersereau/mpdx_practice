@@ -1,24 +1,19 @@
 import component from './offlineOrganization.component';
 
 describe('preferences.admin.offlineOrganization.component', () => {
-    let $ctrl, componentController, scope, rootScope, gettextCatalog, api, q;
+    let $ctrl, scope, rootScope, gettextCatalog, api, q;
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _api_, _gettextCatalog_, $q) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
-            componentController = $componentController;
             gettextCatalog = _gettextCatalog_;
             q = $q;
             api = _api_;
-            loadController();
+            $ctrl = $componentController('preferencesAdminOfflineOrganization', { $scope: scope }, {});
         });
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
-
-    function loadController() {
-        $ctrl = componentController('preferencesAdminOfflineOrganization', { $scope: scope }, {});
-    }
 
     describe('constructor', () => {
         it('should set default values', () => {

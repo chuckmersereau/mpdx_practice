@@ -1,22 +1,17 @@
 import component from './values.component';
 
 describe('tools.import.csv.values.component', () => {
-    let $ctrl, rootScope, scope, componentController, importCsv;
+    let $ctrl, rootScope, scope, importCsv;
 
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _gettextCatalog_, _importCsv_) => {
+        inject(($componentController, $rootScope, _importCsv_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             importCsv = _importCsv_;
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('importCsvValues', { $scope: scope }, {});
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('importCsvValues', { $scope: scope }, {});
-    }
 
     describe('save', () => {
         it('should call importCsv.save', () => {

@@ -1,4 +1,12 @@
+import 'angular-gettext';
 import { get } from 'lodash/fp';
+import accounts, { AccountsService } from '../../common/accounts/accounts.service';
+import api, { ApiService } from '../../common/api/api.service';
+import help, { HelpService } from '../../common/help/help.service';
+import preferencesOrganization, { PreferencesOrganizationService } from '../../preferences/integrations/organization/organization.service';
+import serverConstants, { ServerConstantsService } from '../../common/serverConstants/serverConstants.service';
+import setup, { SetupService } from '../setup.service';
+import users, { UsersService } from '../../common/users/users.service';
 
 class ConnectController {
     addOrganization: boolean;
@@ -89,15 +97,6 @@ const Connect = {
     template: require('./connect.html'),
     controller: ConnectController
 };
-
-import 'angular-gettext';
-import accounts, { AccountsService } from '../../common/accounts/accounts.service';
-import api, { ApiService } from '../../common/api/api.service';
-import help, { HelpService } from '../../common/help/help.service';
-import serverConstants, { ServerConstantsService } from '../../common/serverConstants/serverConstants.service';
-import users, { UsersService } from '../../common/users/users.service';
-import setup, { SetupService } from '../setup.service';
-import preferencesOrganization, { PreferencesOrganizationService } from '../../preferences/integrations/organization/organization.service';
 
 export default angular.module('mpdx.setup.connect.component', [
     'gettext',

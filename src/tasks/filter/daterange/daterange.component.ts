@@ -1,5 +1,5 @@
-import { reduce } from 'lodash/fp';
 import * as moment from 'moment';
+import { reduce } from 'lodash/fp';
 
 interface ICustomElement extends ng.IRootElementService{
     daterangepicker: any;

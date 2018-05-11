@@ -1,10 +1,12 @@
+import 'angularjs-toaster';
+
 export class AlertsService {
     constructor(
         private $q: ng.IQService,
         private toaster: any // IToasterService has wrong type for pop
     ) {}
-    addAlert(message: string, type: string = 'success', displayTime: number = 1.5, retryable: boolean = false)
-        : ng.IPromise<any> {
+    addAlert(message: string, type: string = 'success', displayTime: number = 1.5, retryable: boolean = false):
+        ng.IPromise<any> {
         if (!message) { return; }
         let promise = this.$q.defer();
         type = type === 'danger' ? 'error' : type; // fix for angularjs-toaster
@@ -33,8 +35,6 @@ export class AlertsService {
         return promise.promise;
     }
 }
-
-import 'angularjs-toaster';
 
 export default angular.module('mpdx.common.alerts.service', ['toaster'])
     .service('alerts', AlertsService).name;

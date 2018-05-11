@@ -13,6 +13,7 @@ describe('tasks.tags.service', () => {
             q = $q;
         });
     });
+
     describe('addTag', () => {
         it('should add a tag to data', () => {
             tasksTags.data = [{ name: 'a' }];
@@ -20,12 +21,14 @@ describe('tasks.tags.service', () => {
             expect(tasksTags.data[1].name).toEqual('b');
         });
     });
+
     describe('tagClick', () => {
         beforeEach(() => {
             tasksTags.selectedTags = [];
             tasksTags.rejectedTags = [];
             spyOn(tasksTags, 'change').and.callFake(() => {});
         });
+
         it('should handle a selected tag', () => {
             tasksTags.selectedTags = [tag];
             tasksTags.tagClick(tag);
@@ -33,6 +36,7 @@ describe('tasks.tags.service', () => {
             expect(tasksTags.rejectedTags).toEqual([tag]);
             expect(tasksTags.change).toHaveBeenCalledWith();
         });
+
         it('should handle a rejected tag', () => {
             tasksTags.rejectedTags = [tag];
             tasksTags.tagClick(tag);
@@ -40,6 +44,7 @@ describe('tasks.tags.service', () => {
             expect(tasksTags.rejectedTags).toEqual([]);
             expect(tasksTags.change).toHaveBeenCalledWith();
         });
+
         it('should handle an unselected tag', () => {
             tasksTags.tagClick(tag);
             expect(tasksTags.selectedTags).toEqual([tag]);
@@ -47,6 +52,7 @@ describe('tasks.tags.service', () => {
             expect(tasksTags.change).toHaveBeenCalledWith();
         });
     });
+
     describe('selectTag', () => {
         const initialSelectedTag = { name: 'b' };
         const initialSelectedTag2 = { name: 'c' };
@@ -55,66 +61,80 @@ describe('tasks.tags.service', () => {
             tasksTags.rejectedTags = [tag];
             spyOn(tasksTags, 'change').and.callFake(() => {});
         });
+
         it('should select tag', () => {
             tasksTags.selectTag(tag);
             expect(tasksTags.selectedTags).toEqual([initialSelectedTag, initialSelectedTag2, tag]);
         });
+
         it('should deselect tag from reject list', () => {
             tasksTags.selectTag(tag);
             expect(tasksTags.rejectedTags).toEqual([]);
         });
+
         it('should call change', () => {
             tasksTags.selectTag(tag);
             expect(tasksTags.change).toHaveBeenCalledWith();
         });
     });
+
     describe('rejectTag', () => {
         beforeEach(() => {
             tasksTags.rejectedTags = [];
             tasksTags.selectedTags = [tag];
             spyOn(tasksTags, 'change').and.callFake(() => {});
         });
+
         it('should reject tag', () => {
             tasksTags.rejectTag(tag);
             expect(tasksTags.rejectedTags).toEqual([tag]);
         });
+
         it('should deselect tag from selected list', () => {
             tasksTags.rejectTag(tag);
             expect(tasksTags.selectedTags).toEqual([]);
         });
+
         it('should call change', () => {
             tasksTags.rejectTag(tag);
             expect(tasksTags.change).toHaveBeenCalledWith();
         });
     });
+
     describe('removeFromRejected', () => {
         beforeEach(() => {
             spyOn(tasksTags, 'change').and.callFake(() => {});
             tasksTags.rejectedTags = [tag];
         });
+
         it('should remove tag from rejected list', () => {
             tasksTags.removeFromRejected(tag);
             expect(tasksTags.rejectedTags).toEqual([]);
         });
+
         it('should call change', () => {
             tasksTags.removeFromRejected(tag);
             expect(tasksTags.change).toHaveBeenCalledWith();
         });
     });
+
     describe('removeFromSelected', () => {
         beforeEach(() => {
             spyOn(tasksTags, 'change').and.callFake(() => {});
             tasksTags.selectedTags = [tag];
         });
+
         it('should remove tag from rejected list', () => {
             tasksTags.removeFromSelected(tag);
             expect(tasksTags.selectedTags).toEqual([]);
         });
+
         it('should call change', () => {
             tasksTags.removeFromSelected(tag);
             expect(tasksTags.change).toHaveBeenCalledWith();
         });
     });
+
     describe('change', () => {
         it('should emit tasksTagsChange', () => {
             spyOn(rootScope, '$emit').and.callFake(() => {});
@@ -122,12 +142,11 @@ describe('tasks.tags.service', () => {
             expect(rootScope.$emit).toHaveBeenCalledWith('tasksTagsChanged');
         });
     });
+
     describe('delete', () => {
         const tag = { name: 'a' };
-        beforeEach(() => {
-            spyOn(api, 'delete').and.callFake(() => q.resolve());
-        });
         it('should call api', () => {
+            spyOn(api, 'delete').and.callFake(() => q.resolve());
             tasksTags.delete(tag);
             expect(api.delete).toHaveBeenCalledWith({
                 url: 'tasks/tags/bulk',

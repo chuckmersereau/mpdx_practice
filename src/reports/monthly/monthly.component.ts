@@ -1,4 +1,6 @@
 import { concat, groupBy, includes, indexOf, sumBy } from 'lodash/fp';
+import api, { ApiService } from '../../common/api/api.service';
+import designationAccounts, { DesignationAccountsService } from '../../common/designationAccounts/designationAccounts.service';
 import joinComma from '../../common/fp/joinComma';
 import reduceObject from '../../common/fp/reduceObject';
 
@@ -85,9 +87,6 @@ const Monthly = {
     controller: MonthlyController,
     template: require('./monthly.html')
 };
-
-import api, { ApiService } from '../../common/api/api.service';
-import designationAccounts, { DesignationAccountsService } from '../../common/designationAccounts/designationAccounts.service';
 
 export default angular.module('mpdx.reports.monthly.component', [
     api, designationAccounts

@@ -4,9 +4,16 @@ const fakeBlockUI = {
     reset: () => {},
     start: () => {}
 };
+const apiData: any = [
+    { addresses: [{ source: 'Siebel' }] },
+    { addresses: [{ source: 'Tntmpd' }] },
+    { addresses: [{ source: 'DataServer' }] },
+    { addresses: [{ source: 'DataServer' }] }
+];
+apiData.meta = { page: 1 };
 
 describe('tools.fix.addresses.component', () => {
-    let $ctrl, rootScope, scope, componentController, gettextCatalog, blockUI, modal, contacts, tools, api, filter, q;
+    let $ctrl, rootScope, scope, gettextCatalog, blockUI, modal, contacts, tools, api, filter, q;
     beforeEach(() => {
         angular.mock.module(component);
         inject((
@@ -23,17 +30,12 @@ describe('tools.fix.addresses.component', () => {
             tools = _tools_;
             api = _api_;
             q = $q;
-            componentController = $componentController;
-            loadController();
+            spyOn(blockUI.instances, 'get').and.callFake(() => fakeBlockUI);
+            $ctrl = $componentController('fixAddresses', { $scope: scope });
         });
-    });
-
-    function loadController() {
-        spyOn(blockUI.instances, 'get').and.callFake(() => fakeBlockUI);
-        $ctrl = componentController('fixAddresses', { $scope: scope });
         spyOn($ctrl.blockUI, 'start').and.callThrough();
         spyOn($ctrl.blockUI, 'reset').and.callThrough();
-    }
+    });
 
     describe('constructor', () => {
         it('should set default values', () => {
@@ -45,6 +47,7 @@ describe('tools.fix.addresses.component', () => {
             expect($ctrl.blockUI).toEqual(fakeBlockUI);
         });
     });
+
     describe('events', () => {
         it('should fire load on accountListUpdated', () => {
             $ctrl.$onInit();
@@ -131,6 +134,7 @@ describe('tools.fix.addresses.component', () => {
                     $ctrl.data = apiData;
                     $ctrl.page = 1;
                 });
+
                 describe('reset set to true', () => {
                     it('should call the api', (done) => {
                         $ctrl.load(true).then(() => {
@@ -197,7 +201,7 @@ describe('tools.fix.addresses.component', () => {
             $ctrl.save();
             expect(gettextCatalog.getString).toHaveBeenCalledWith(`You are updating all contacts visible on this page, setting the first {{source}} address as the primary address.
             If no such address exists the contact will not be updated. Are you sure you want to do this?`,
-                { source: 'MPDX' });
+            { source: 'MPDX' });
         });
 
         it('should open a confirm modal', () => {
@@ -265,7 +269,6 @@ describe('tools.fix.addresses.component', () => {
             }];
             spyOn(contacts, 'bulkSave').and.callFake(() => q.resolve());
         });
-
 
         it('should return a promise', () => {
             expect($ctrl.bulkSave('MPDX')).toEqual(jasmine.any(q));
@@ -357,13 +360,4 @@ describe('tools.fix.addresses.component', () => {
             });
         });
     });
-
-    const apiData: any = [
-        { addresses: [{ source: 'Siebel' }] },
-        { addresses: [{ source: 'Tntmpd' }] },
-        { addresses: [{ source: 'DataServer' }] },
-        { addresses: [{ source: 'DataServer' }] }
-    ];
-
-    apiData.meta = { page: 1 };
 });

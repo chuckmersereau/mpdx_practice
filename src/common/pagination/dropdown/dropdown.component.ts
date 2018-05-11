@@ -1,4 +1,5 @@
 import { get } from 'lodash/fp';
+import users, { UsersService } from '../../users/users.service';
 
 class DropdownController {
     onChange: any;
@@ -40,8 +41,6 @@ const Dropdown = {
         onChange: '&'
     }
 };
-
-import users, { UsersService } from '../../users/users.service';
 
 export default angular.module('mpdx.common.pagination.dropdown.component', [
     users

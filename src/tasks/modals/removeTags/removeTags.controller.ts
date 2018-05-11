@@ -1,5 +1,9 @@
+import 'angular-gettext';
 import { map, reduce, union } from 'lodash/fp';
+import api, { ApiService } from '../../../common/api/api.service';
 import joinComma from '../../../common/fp/joinComma';
+import modal, { ModalService } from '../../../common/modal/modal.service';
+import tasksTags, { TasksTagsService } from '../../filter/tags/tags.service';
 
 class RemoveTagController {
     tags: any[];
@@ -58,11 +62,6 @@ class RemoveTagController {
             , [], this.selectedTasks).sort();
     }
 }
-
-import api, { ApiService } from '../../../common/api/api.service';
-import 'angular-gettext';
-import modal, { ModalService } from '../../../common/modal/modal.service';
-import tasksTags, { TasksTagsService } from '../../filter/tags/tags.service';
 
 export default angular.module('mpdx.tasks.modals.removeTags.controller', [
     'gettext',

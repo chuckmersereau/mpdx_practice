@@ -1,5 +1,6 @@
 import * as moment from 'moment';
 import { defaultTo, get, isNil, startsWith, times } from 'lodash/fp';
+import locale, { LocaleService } from '../locale/locale.service';
 
 class DatetimepickerController {
     date: moment.Moment;
@@ -162,8 +163,6 @@ const Datetimepicker = {
         minuteStep: '<'
     }
 };
-
-import locale, { LocaleService } from '../locale/locale.service';
 
 export default angular.module('mpdx.common.datetimepicker.component', [
     locale

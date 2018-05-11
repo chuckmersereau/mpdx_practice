@@ -1,4 +1,5 @@
 import * as uuid from 'uuid/v1';
+import fixEmailAddresses, { FixEmailAddressesService } from '../../email.service';
 
 class FieldController {
     emailAddress: any;
@@ -48,8 +49,6 @@ const Field = {
         emailAddress: '<'
     }
 };
-
-import fixEmailAddresses, { FixEmailAddressesService } from '../../email.service';
 
 export default angular.module('mpdx.tools.fix.emailAddresses.item.field.component', [
     fixEmailAddresses

@@ -6,7 +6,8 @@ const fakeBlockUI = {
 };
 
 describe('tools.fix.emailAddresses.component', () => {
-    let $ctrl, rootScope, scope, componentController, gettextCatalog, blockUI, modal, fixEmailAddresses, q;
+    let $ctrl, rootScope, scope, gettextCatalog, blockUI, modal, fixEmailAddresses, q;
+
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _gettextCatalog_, _blockUI_, _modal_, _fixEmailAddresses_, $q) => {
@@ -17,17 +18,12 @@ describe('tools.fix.emailAddresses.component', () => {
             modal = _modal_;
             fixEmailAddresses = _fixEmailAddresses_;
             q = $q;
-            componentController = $componentController;
-            loadController();
+            spyOn(blockUI.instances, 'get').and.callFake(() => fakeBlockUI);
+            $ctrl = $componentController('fixEmailAddresses', { $scope: scope });
         });
-    });
-
-    function loadController() {
-        spyOn(blockUI.instances, 'get').and.callFake(() => fakeBlockUI);
-        $ctrl = componentController('fixEmailAddresses', { $scope: scope });
         spyOn($ctrl.blockUI, 'start').and.callThrough();
         spyOn($ctrl.blockUI, 'reset').and.callThrough();
-    }
+    });
 
     describe('constructor', () => {
         it('should set default values', () => {
@@ -39,6 +35,7 @@ describe('tools.fix.emailAddresses.component', () => {
             expect($ctrl.blockUI).toEqual(fakeBlockUI);
         });
     });
+
     describe('events', () => {
         it('should fire load on accountListUpdated', () => {
             spyOn($ctrl, 'load').and.callFake(() => q.resolve());
@@ -46,6 +43,7 @@ describe('tools.fix.emailAddresses.component', () => {
             expect($ctrl.load).toHaveBeenCalled();
         });
     });
+
     describe('save', () => {
         beforeEach(() => {
             spyOn(modal, 'confirm').and.callFake(() => q.resolve());

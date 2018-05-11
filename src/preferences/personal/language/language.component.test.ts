@@ -2,6 +2,14 @@ import component from './language.component';
 
 describe('preferences.personal.language.component', () => {
     let $ctrl, language, rootScope, scope, componentController, transitions, serverConstants, users, q;
+
+    function loadController() {
+        $ctrl = componentController(
+            'preferencesPersonalLanguage',
+            { $scope: scope },
+            { onSave: () => q.resolve() });
+    }
+
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _language_, _users_, _serverConstants_, $transitions, $q) => {
@@ -19,12 +27,6 @@ describe('preferences.personal.language.component', () => {
         });
     });
 
-    function loadController() {
-        $ctrl = componentController(
-            'preferencesPersonalLanguage',
-            { $scope: scope },
-            { onSave: () => q.resolve() });
-    }
     describe('$onInit', () => {
         it('should set the handler for moving away', () => {
             spyOn(transitions, 'onBefore').and.callThrough();
@@ -36,38 +38,45 @@ describe('preferences.personal.language.component', () => {
             }, jasmine.any(Function));
         });
     });
+
     describe('$onChanges', () => {
         it('should default', () => {
             users.current.preferences.locale = null;
             $ctrl.$onChanges();
             expect(users.current.preferences.locale).toEqual('en-us');
         });
+
         it('should handle a valid language', () => {
             users.current.preferences.locale = 'fr-fr';
             $ctrl.$onChanges();
             expect(users.current.preferences.locale).toEqual('fr-fr');
         });
+
         it('should remap languages', () => {
             users.current.preferences.locale = 'fr-fr';
             $ctrl.$onChanges();
             expect($ctrl.languages).toEqual([{ alias: 'en-us', value: 'US English' }, { alias: 'fr-fr', value: 'French' }]);
         });
+
         it('should set lastLanguage', () => {
             $ctrl.$onChanges();
             expect($ctrl.lastLanguage).toEqual('en-us');
         });
     });
+
     describe('save', () => {
         it('should set saving flag', () => {
             spyOn($ctrl, 'onSave').and.callThrough();
             $ctrl.save();
             expect($ctrl.saving).toBeTruthy();
         });
+
         it('should save', () => {
             spyOn($ctrl, 'onSave').and.callThrough();
             $ctrl.save();
             expect($ctrl.onSave).toHaveBeenCalledWith();
         });
+
         it('should unset saving flag', (done) => {
             $ctrl.save().then(() => {
                 expect($ctrl.saving).toBeFalsy();
@@ -75,6 +84,7 @@ describe('preferences.personal.language.component', () => {
             });
             scope.$digest();
         });
+
         it('should unset saving flag on reject', (done) => {
             spyOn($ctrl, 'onSave').and.callFake(() => q.reject({}));
             $ctrl.save().catch(() => {
@@ -83,6 +93,7 @@ describe('preferences.personal.language.component', () => {
             });
             scope.$digest();
         });
+
         it('should set lastLanguage', (done) => {
             users.current.preferences.locale = 'fr';
             $ctrl.save().then(() => {
@@ -92,15 +103,18 @@ describe('preferences.personal.language.component', () => {
             scope.$digest();
         });
     });
+
     describe('setLanguage', () => {
         beforeEach(() => {
             spyOn(language, 'change').and.callFake(() => {});
         });
+
         it('should change language', () => {
             users.current.preferences.locale = 'en';
             $ctrl.setLanguage();
             expect(language.change).toHaveBeenCalledWith('en');
         });
+
         describe('listOnly', () => {
             beforeEach(() => {
                 $ctrl = componentController(
@@ -119,11 +133,13 @@ describe('preferences.personal.language.component', () => {
             });
         });
     });
+
     describe('revertLanguage', () => {
         beforeEach(() => {
             $ctrl.lastLanguage = 'en';
             spyOn($ctrl, 'setLanguage').and.callFake(() => {});
         });
+
         it('should change language', () => {
             users.current.preferences.locale = 'fr';
             $ctrl.revertLanguage();
@@ -131,10 +147,12 @@ describe('preferences.personal.language.component', () => {
             expect(users.current.preferences.locale).toEqual('en');
         });
     });
+
     describe('$onDestroy', () => {
         beforeEach(() => {
             $ctrl.$onInit();
         });
+
         it('should destroy the deregisterTransitionHook', () => {
             spyOn($ctrl, 'deregisterTransitionHook').and.callFake(() => {});
             $ctrl.$onDestroy();

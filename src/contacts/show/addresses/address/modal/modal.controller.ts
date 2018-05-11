@@ -1,4 +1,5 @@
-import config from '../../../../../config';
+import 'angular-gettext';
+import 'ngmap';
 import {
     compact,
     concat,
@@ -8,7 +9,11 @@ import {
     reduce,
     reject
 } from 'lodash/fp';
+import config from '../../../../../config';
+import contacts, { ContactsService } from '../../../../contacts.service';
 import createPatch from '../../../../../common/fp/createPatch';
+import serverConstants, { ServerConstantsService } from '../../../../../common/serverConstants/serverConstants.service';
+import users, { UsersService } from '../../../../../common/users/users.service';
 
 class AddressModalController {
     address: any;
@@ -169,12 +174,6 @@ class AddressModalController {
         });
     }
 }
-
-import contacts, { ContactsService } from '../../../../contacts.service';
-import 'angular-gettext';
-import 'ngmap';
-import serverConstants, { ServerConstantsService } from '../../../../../common/serverConstants/serverConstants.service';
-import users, { UsersService } from '../../../../../common/users/users.service';
 
 export default angular.module('mpdx.contacts.show.addresses.address.modal.controller', [
     'gettext', 'ngMap',

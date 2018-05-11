@@ -1,7 +1,7 @@
 import component from './monthly.component';
 
 describe('reports.monthly.component', () => {
-    let $ctrl, rootScope, scope, componentController, api, designationAccounts, q;
+    let $ctrl, rootScope, scope, api, designationAccounts, q;
 
     beforeEach(() => {
         angular.mock.module(component);
@@ -11,14 +11,9 @@ describe('reports.monthly.component', () => {
             designationAccounts = _designationAccounts_;
             q = $q;
             scope = rootScope.$new();
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('monthly', { $scope: scope }, {});
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('monthly', { $scope: scope }, {});
-    }
 
     describe('constructor', () => {
         it('should define variables', () => {
@@ -63,6 +58,7 @@ describe('reports.monthly.component', () => {
         beforeEach(() => {
             $ctrl.$onInit();
         });
+
         it('should call watchers', () => {
             spyOn($ctrl, 'watcher').and.callThrough();
             spyOn($ctrl, 'watcher2').and.callThrough();
@@ -71,7 +67,6 @@ describe('reports.monthly.component', () => {
             expect($ctrl.watcher2).toHaveBeenCalled();
         });
     });
-
 
     describe('load', () => {
         beforeEach(() => {

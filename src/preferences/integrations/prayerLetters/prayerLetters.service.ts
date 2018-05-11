@@ -1,3 +1,4 @@
+import api, { ApiService } from '../../../common/api/api.service';
 import config from '../../../config';
 
 export class PrayerLettersService {
@@ -39,8 +40,6 @@ export class PrayerLettersService {
         });
     }
 }
-
-import api, { ApiService } from '../../../common/api/api.service';
 
 export default angular.module('mpdx.preferences.accounts.integrations.prayerLetters.service', [
     api

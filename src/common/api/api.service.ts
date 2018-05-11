@@ -1,3 +1,4 @@
+import 'angular-gettext';
 import {
     assign,
     concat,
@@ -13,35 +14,36 @@ import {
     pull,
     startsWith
 } from 'lodash/fp';
-import config from '../../config';
 import { EntityAttributes } from './entities';
+import alerts, { AlertsService } from '../alerts/alerts.service';
+import config from '../../config';
 import japi from 'jsonapi-serializer';
 import joinComma from '../fp/joinComma';
 import reduceObject from '../fp/reduceObject';
 
 const jsonApiParams = { keyForAttribute: 'underscore_case' };
 
-interface ApiBaseParams {
-    method?: string,
-    url: string,
-    data?: any,
-    params?: any,
-    headers?: any,
-    overrideGetAsPost?: boolean,
-    type?: string,
-    doSerialization?: boolean,
-    deSerializationOptions?: any,
-    doDeSerialization?: boolean,
-    beforeDeserializationTransform?: any,
-    responseType?: string
-    autoParams?: boolean,
-    errorMessage?: string,
-    successMessage?: string,
-    overridePromise?: boolean
+interface IApiBaseParams {
+    method?: string;
+    url: string;
+    data?: any;
+    params?: any;
+    headers?: any;
+    overrideGetAsPost?: boolean;
+    type?: string;
+    doSerialization?: boolean;
+    deSerializationOptions?: any;
+    doDeSerialization?: boolean;
+    beforeDeserializationTransform?: any;
+    responseType?: string;
+    autoParams?: boolean;
+    errorMessage?: string;
+    successMessage?: string;
+    overridePromise?: boolean;
 }
 
-interface ApiCallParams extends ApiBaseParams {
-    method: string
+interface IApiCallParams extends IApiBaseParams {
+    method: string;
 }
 
 export class ApiService {
@@ -80,7 +82,7 @@ export class ApiService {
         errorMessage = null,
         successMessage = null,
         overridePromise = false
-    }: ApiCallParams): ng.IPromise<any> {
+    }: IApiCallParams): ng.IPromise<any> {
         ({ headers, method, doSerialization, data } = this.handleOverride(
             overrideGetAsPost, headers, method, doSerialization, type, url, data
         ));
@@ -124,8 +126,8 @@ export class ApiService {
         });
         return deferred.promise;
     }
-    private callFailed(ex: any, request: any, deferred: any, errorMessage: string, overridePromise: boolean)
-        : void | ng.IPromise<any> {
+    private callFailed(ex: any, request: any, deferred: any, errorMessage: string, overridePromise: boolean):
+        void | ng.IPromise<any> {
         if (overridePromise) {
             deferred.reject(ex);
         } else {
@@ -149,8 +151,8 @@ export class ApiService {
         return this.isGetOrDelete(method) ? assign(params, data) : params;
     }
     private handleOverride(overrideGetAsPost: boolean, headers: any, method: string, doSerialization: boolean,
-        type: string, url: string, data: any)
-        : { headers: any, method: string, doSerialization: boolean, data: any } {
+        type: string, url: string, data: any):
+        { headers: any, method: string, doSerialization: boolean, data: any } {
         const retVal = {
             headers: headers,
             method: method,
@@ -187,23 +189,22 @@ export class ApiService {
         return this.isPutOrDelete(method) || (method === 'post' && !overrideGetAsPost);
     }
     get(...params) {
-        const newParams: ApiCallParams = assign(this.handleParamsAsOther(params), { method: 'get' });
+        const newParams: IApiCallParams = assign(this.handleParamsAsOther(params), { method: 'get' });
         return this.call(newParams);
     }
     post(...params) {
-        const newParams: ApiCallParams = assign(this.handleParamsAsOther(params), { method: 'post' });
+        const newParams: IApiCallParams = assign(this.handleParamsAsOther(params), { method: 'post' });
         return this.call(newParams);
     }
     put(...params) {
-        const newParams: ApiCallParams = assign(this.handleParamsAsOther(params), { method: 'put' });
+        const newParams: IApiCallParams = assign(this.handleParamsAsOther(params), { method: 'put' });
         return this.call(newParams);
     }
     delete(...params) {
-        const newParams: ApiCallParams = assign(this.handleParamsAsOther(params), { method: 'delete' });
+        const newParams: IApiCallParams = assign(this.handleParamsAsOther(params), { method: 'delete' });
         return this.call(newParams);
     }
-    private handleParamsAsOther(params:any)
-        : ApiBaseParams {
+    private handleParamsAsOther(params: any): IApiBaseParams {
         if (params.length === 1 && isObject(params[0])) {
             return params[0];
         }
@@ -318,9 +319,6 @@ export class ApiService {
         return serialized;
     }
 }
-
-import alerts, { AlertsService } from '../alerts/alerts.service';
-import 'angular-gettext';
 
 export default angular.module('mpdx.common.api', [
     'gettext',

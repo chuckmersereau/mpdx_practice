@@ -1,4 +1,7 @@
+import 'angular-gettext';
 import { StateParams } from '@uirouter/core';
+import help, { HelpService } from '../../common/help/help.service';
+import uiRouter from '@uirouter/angularjs';
 
 class CoachesController {
     tabId: string;
@@ -31,10 +34,6 @@ const Coaches = {
     controller: CoachesController,
     template: require('./coaches.html')
 };
-
-import uiRouter from '@uirouter/angularjs';
-import 'angular-gettext';
-import help, { HelpService } from '../../common/help/help.service';
 
 export default angular.module('mpdx.preferences.coaches.component', [
     uiRouter, 'gettext',

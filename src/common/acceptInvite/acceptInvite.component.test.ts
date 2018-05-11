@@ -32,6 +32,7 @@ describe('common.acceptInvite.component', () => {
             $ctrl.$onInit();
             expect(gettextCatalog.getString).toHaveBeenCalledWith('Unable to accept invite. Try asking the account holder to resend the invite.');
         });
+
         it('should call the api', () => {
             spyOn(api, 'put').and.callFake(() => q.resolve());
             const successMessage = 'Accepted invite to account successfully.';

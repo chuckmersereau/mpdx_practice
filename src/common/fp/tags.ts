@@ -1,7 +1,7 @@
 import { flow, map } from 'lodash/fp';
-import joinComma from './joinComma';
-import emptyToNull from './emptyToNull';
 import { split } from './strings';
+import emptyToNull from './emptyToNull';
+import joinComma from './joinComma';
 
 export const convertTags = flow(map('name'), joinComma, emptyToNull);
 

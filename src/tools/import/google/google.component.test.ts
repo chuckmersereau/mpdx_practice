@@ -6,7 +6,7 @@ const fakeBlockUI = {
 };
 
 describe('tools.import.google.component', () => {
-    let $ctrl, rootScope, scope, componentController, state, blockUI, gettextCatalog,
+    let $ctrl, rootScope, scope, state, blockUI, gettextCatalog,
         api, contactsTags, google, modal, q;
     beforeEach(() => {
         angular.mock.module(component);
@@ -25,18 +25,13 @@ describe('tools.import.google.component', () => {
             api.account_list_id = 'account_list_id';
             modal = _modal_;
             q = $q;
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('importGoogle', { $scope: scope }, {});
         });
-    });
-
-    function loadController() {
         spyOn(gettextCatalog, 'getString').and.callThrough();
         spyOn(blockUI.instances, 'get').and.callFake(() => fakeBlockUI);
-        $ctrl = componentController('importGoogle', { $scope: scope }, {});
         spyOn($ctrl.blockUI, 'reset').and.callThrough();
         spyOn($ctrl.blockUI, 'start').and.callThrough();
-    }
+    });
 
     describe('constructor', () => {
         it('should set default values', () => {
@@ -147,6 +142,7 @@ describe('tools.import.google.component', () => {
                 rootScope.$digest();
             });
         });
+
         it('should call blockUI.reset', (done) => {
             spy.and.callFake(() => q.reject(new Error('something bad happened')));
             $ctrl.save().catch(() => {

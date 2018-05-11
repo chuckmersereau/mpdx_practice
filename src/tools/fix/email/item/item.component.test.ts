@@ -15,18 +15,13 @@ describe('tools.fix.emailAddresses.item.component', () => {
             blockUI = _blockUI_;
             fixEmailAddresses = _fixEmailAddresses_;
             q = $q;
-            componentController = $componentController;
             person = { id: 'person_id' };
-            loadController();
+            spyOn(blockUI.instances, 'get').and.callFake(() => fakeBlockUI);
+            $ctrl = $componentController('fixEmailAddressesItem', { $scope: scope }, { person: person });
         });
-    });
-
-    function loadController() {
-        spyOn(blockUI.instances, 'get').and.callFake(() => fakeBlockUI);
-        $ctrl = componentController('fixEmailAddressesItem', { $scope: scope }, { person: person });
         spyOn($ctrl.blockUI, 'start').and.callThrough();
         spyOn($ctrl.blockUI, 'reset').and.callThrough();
-    }
+    });
 
     describe('hasMultiplePrimaries', () => {
         beforeEach(() => {

@@ -1,6 +1,6 @@
-import service from './api.service';
 import { assign } from 'lodash/fp';
 import config from '../../config';
+import service from './api.service';
 
 const jsonApiResponse = {
     data: {
@@ -34,6 +34,7 @@ describe('common.api.service', () => {
             rootScope = $rootScope;
         });
     });
+
     afterEach(() => {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
@@ -44,6 +45,7 @@ describe('common.api.service', () => {
             expect(api.language).toEqual('en-US');
         });
     });
+
     describe('call', () => {
         beforeEach(() => {
             api.$window = {
@@ -53,6 +55,7 @@ describe('common.api.service', () => {
             };
             spyOn(api.$window._satellite, 'track').and.callFake(() => {});
         });
+
         describe('promise', () => {
             it('should send a simple get request', () => {
                 $httpBackend.expectGET('/api/v1/contacts').respond(200, jsonApiResponse);
@@ -64,6 +67,7 @@ describe('common.api.service', () => {
                 });
                 $httpBackend.flush();
             });
+
             it('should handle an error in a get request', () => {
                 $httpBackend.expectGET('/api/v1/contacts').respond(500, jsonApiErrorResponse);
 
@@ -74,6 +78,7 @@ describe('common.api.service', () => {
                 });
                 $httpBackend.flush();
             });
+
             it('should send adobe analytics a failure event', () => {
                 $httpBackend.expectGET('/api/v1/contacts').respond(500, jsonApiErrorResponse);
 
@@ -85,6 +90,7 @@ describe('common.api.service', () => {
                 $httpBackend.flush();
             });
         });
+
         it('should auto add params with autoParams true', () => {
             spyOn(api, '$http').and.callFake(() => q.resolve());
             api.call({
@@ -110,6 +116,7 @@ describe('common.api.service', () => {
                 timeout: jasmine.any(Number)
             });
         });
+
         it('shouldn\'t auto add params with autoParams false', () => {
             spyOn(api, '$http').and.callFake(() => q.resolve());
             api.call({
@@ -136,6 +143,7 @@ describe('common.api.service', () => {
                 timeout: jasmine.any(Number)
             });
         });
+
         it('should handle url repetition on retry', () => {
             spyOn(api, '$http').and.callFake(() => q.resolve());
             api.call({
@@ -188,6 +196,7 @@ describe('common.api.service', () => {
             });
             $httpBackend.flush();
         });
+
         it('should send a simple delete request', () => {
             $httpBackend.expectDELETE('/api/v1/contacts/1').respond(200, jsonApiResponse);
 
@@ -210,6 +219,7 @@ describe('common.api.service', () => {
         it('should add overwrite', () => {
             expect(api.enablePutOverwrite({ data: { attributes: { id: 1 } } }, 'put')).toEqual({ data: { attributes: { id: 1, overwrite: true } } });
         });
+
         it('shouldn\'t add overwrite', () => {
             expect(api.enablePutOverwrite({ data: { attributes: { id: 1 } } }, 'post')).toEqual({ data: { attributes: { id: 1 } } });
         });
@@ -219,6 +229,7 @@ describe('common.api.service', () => {
         it('should create an array', () => {
             expect(api.appendTransform('a', 'b')).toEqual(['a', 'b']);
         });
+
         it('should handle an array', () => {
             expect(api.appendTransform(['a'], 'b')).toEqual(['a', 'b']);
         });
@@ -230,6 +241,7 @@ describe('common.api.service', () => {
                 a: ''
             })).toEqual({});
         });
+
         it('should pull empty strings from array', () => {
             expect(api.cleanFilters({
                 a: ['', 'b', 'c']
@@ -241,6 +253,7 @@ describe('common.api.service', () => {
         it('should remove undefined objects', () => {
             expect(api.removeIdIfUndefined({ data: { id: 'undefined' } }, 'post')).toEqual({ data: {} });
         });
+
         it('shouldn\'t remove defined objects', () => {
             expect(api.removeIdIfUndefined({ data: { id: '1' } }, 'post')).toEqual({ data: { id: '1' } });
         });
@@ -256,6 +269,7 @@ describe('common.api.service', () => {
             });
             rootScope.$digest();
         });
+
         it('should deserialize valid data', () => {
             spyOn(api, 'isDataObject').and.callFake(() => false);
             expect(api.deserialize({ a: 'b' }, {})).toEqual({ a: 'b' });
@@ -267,40 +281,49 @@ describe('common.api.service', () => {
         it('should return true if object and contains data attribute', () => {
             expect(api.isDataObject({ data: {} })).toBeTruthy();
         });
+
         it('should return false if object and doesn\'t contain data attribute', () => {
             expect(api.isDataObject({})).toBeFalsy();
         });
+
         it('should return false if not an object', () => {
             expect(api.isDataObject('a')).toBeFalsy();
         });
     });
+
     describe('doBeforeSerialization', () => {
         it('should run the function', () => {
             const doStuff = () => 'a';
             expect(api.doBeforeSerialization(doStuff, {})).toEqual('a');
         });
+
         it('should return data', () => {
             const doStuff = 'a';
             expect(api.doBeforeSerialization(doStuff, {})).toEqual({});
         });
     });
+
     describe('deserializeData', () => {
         beforeEach(() => {
             spyOn(api, 'deserialize').and.callFake(() => 'a');
         });
+
         it('should deserialize an object', () => {
             expect(api.deserializeData({ id: 1 }, 'b')).toEqual('a');
         });
+
         it('should deserialize an array', () => {
             expect(api.deserializeData([{ id: 1 }, { id: 2 }], 'b')).toEqual(['a', 'a']);
             expect(api.deserialize).toHaveBeenCalledWith({ id: 1 }, 'b');
             expect(api.deserialize).toHaveBeenCalledWith({ id: 2 }, 'b');
         });
     });
+
     describe('transformResponse', () => {
         beforeEach(() => {
             spyOn(api, 'appendTransform').and.callFake(() => q.resolve());
         });
+
         it('should call appendTransform', (done) => {
             api.transformResponse(null, true, {}).then(() => {
                 expect(api.appendTransform).toHaveBeenCalledWith(api.$http.defaults.transformResponse,
@@ -310,48 +333,59 @@ describe('common.api.service', () => {
             rootScope.$digest();
         });
     });
+
     describe('afterTransform', () => {
         beforeEach(() => {
             spyOn(api, 'doBeforeSerialization').and.callFake(() => 'a');
             spyOn(api, 'deserializeData').and.callFake(() => 'b');
         });
+
         it('should deserialize', () => {
             expect(api.afterTransform({ id: 1 }, null, false)).toEqual('a');
             expect(api.doBeforeSerialization).toHaveBeenCalledWith(null, { id: 1 });
         });
+
         it('should not deserialize', () => {
             expect(api.afterTransform({ id: 1 }, null, true)).toEqual('b');
         });
     });
+
     describe('serializeData', () => {
         beforeEach(() => {
             spyOn(api, 'serialize').and.callFake(() => 'a');
         });
+
         it('should serialize an object', () => {
             expect(api.serializeData({ id: 1 }, 'contact', 'b', 'post')).toEqual('"a"');
         });
+
         it('should serialize an array', () => {
             expect(api.serializeData([{ id: 1 }, { id: 2 }], 'contact', 'b', 'post')).toEqual('{"data":["a","a"]}');
             expect(api.serialize).toHaveBeenCalledWith('contact', 'b', { id: 1 }, 'post');
             expect(api.serialize).toHaveBeenCalledWith('contact', 'b', { id: 2 }, 'post');
         });
     });
+
     describe('getParams', () => {
         beforeEach(() => {
             spyOn(log, 'error').and.callFake(() => {});
         });
+
         it('should error on bad entity', () => {
             expect(api.getParams({ id: 1 }, 'donkey', true)).toEqual({ id: 1 });
             expect(log.error).toHaveBeenCalledWith('undefined attributes for model: donkey in api.service');
         });
+
         it('should set params for jsonapi-serializer', () => {
             expect(api.getParams([{ id: 1 }, 'bulk'], undefined, true)).toEqual({ 0: { id: 1 }, 1: 'bulk' });
         });
+
         it('should handle non-serialized requests', () => {
             expect(api.getParams({ id: 1 }, 'donkey', false)).toEqual({ id: 1 });
             expect(log.error).not.toHaveBeenCalled();
         });
     });
+
     describe('transformRequest', () => {
         it('shouldn\'t serialize', () => {
             spyOn(api, 'serializeData').and.callFake(() => {});
@@ -359,11 +393,13 @@ describe('common.api.service', () => {
             expect(api.serializeData).not.toHaveBeenCalled();
         });
     });
+
     describe('handleOverride', () => {
         beforeEach(() => {
             spyOn(api, 'getTypeOverride').and.callFake(() => 'a');
             spyOn(api, 'cleanFilters').and.callFake(() => 'b');
         });
+
         it('should return default if no override', () => {
             expect(api.handleOverride(
                 false, { Accept: 'application/vnd.api+json' }, 'get', true, 'contacts', 'contacts', { id: 1 })
@@ -374,6 +410,7 @@ describe('common.api.service', () => {
                 data: { id: 1 }
             });
         });
+
         it('should handle override', () => {
             expect(api.handleOverride(
                 true, { Accept: 'application/vnd.api+json' }, 'get', true, 'contacts', 'contacts', { id: 1 })
@@ -388,14 +425,17 @@ describe('common.api.service', () => {
             });
         });
     });
+
     describe('getTypeOverride', () => {
         it('should return type if type', () => {
             expect(api.getTypeOverride('contacts', 'contact')).toEqual({ type: 'contact' });
         });
+
         it('should return type if no type', () => {
             expect(api.getTypeOverride('contacts', undefined)).toEqual({ type: 'contacts' });
         });
     });
+
     describe('callFailed', () => {
         const ex: any = new Error('a');
         const request = 'request';
@@ -408,11 +448,13 @@ describe('common.api.service', () => {
             spyOn(api, 'gettext').and.callThrough();
             spyOn(api, 'call').and.callFake(() => q.resolve(data));
         });
+
         it('should handle override', () => {
             spyOn(deferred, 'reject').and.callFake(() => {});
             api.callFailed(ex, request, deferred, errorMessage, true);
             expect(deferred.reject).toHaveBeenCalled();
         });
+
         it('should translate a default error message', () => {
             spyOn(alerts, 'addAlert').and.callFake(() => q.resolve());
             const msg = 'An error occurred while processing your request.';
@@ -420,6 +462,7 @@ describe('common.api.service', () => {
             expect(api.gettext).toHaveBeenCalledWith(msg);
             expect(alerts.addAlert).toHaveBeenCalledWith(msg, 'danger', 0, true);
         });
+
         it('should translate a 504 error message', () => {
             spyOn(alerts, 'addAlert').and.callFake(() => q.resolve());
             const msg = 'An error occurred while connecting to MPDX.';
@@ -428,6 +471,7 @@ describe('common.api.service', () => {
             expect(api.gettext).toHaveBeenCalledWith(msg);
             expect(alerts.addAlert).toHaveBeenCalledWith(msg, 'danger', 0, true);
         });
+
         it('should retry the call', (done) => {
             spyOn(alerts, 'addAlert').and.callFake(() => q.resolve());
             api.callFailed(ex, request, deferred, undefined, overridePromise).then(() => {
@@ -436,6 +480,7 @@ describe('common.api.service', () => {
             });
             rootScope.$digest();
         });
+
         it('should resolve', (done) => {
             spyOn(alerts, 'addAlert').and.callFake(() => q.resolve());
             spyOn(deferred, 'resolve').and.callThrough();

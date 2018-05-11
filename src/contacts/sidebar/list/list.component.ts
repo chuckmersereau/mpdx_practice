@@ -1,5 +1,10 @@
-import { has, unionBy } from 'lodash/fp';
 import * as moment from 'moment';
+import { ApiService } from '../../../common/api/api.service';
+import { ContactFilterService } from '../filter/filter.service';
+import { has, unionBy } from 'lodash/fp';
+import { StateParams, StateService } from '@uirouter/core';
+import contacts, { ContactsService } from '../../contacts.service';
+import uiRouter from '@uirouter/angularjs';
 
 class ListController {
     data: any;
@@ -9,6 +14,8 @@ class ListController {
     page: number;
     searchText: string;
     selected: string;
+    watcher: () => void;
+    watcher2: () => void;
     constructor(
         private $log: ng.ILogService,
         $rootScope: ng.IRootScopeService,
@@ -23,11 +30,11 @@ class ListController {
         this.page = 0;
         this.searchText = null;
 
-        $rootScope.$on('accountListUpdated', () => {
+        this.watcher = $rootScope.$on('accountListUpdated', () => {
             this.load();
         });
 
-        $rootScope.$on('contactsFilterChange', () => {
+        this.watcher2 = $rootScope.$on('contactsFilterChange', () => {
             this.load();
         });
     }
@@ -94,12 +101,6 @@ const List = {
     template: require('./list.html'),
     controller: ListController
 };
-
-import contacts, { ContactsService } from '../../contacts.service';
-import uiRouter from '@uirouter/angularjs';
-import { StateParams, StateService } from '@uirouter/core';
-import { ApiService } from '../../../common/api/api.service';
-import { ContactFilterService } from '../filter/filter.service';
 
 export default angular.module('mpdx.contacts.sidebar.list.component', [
     uiRouter,

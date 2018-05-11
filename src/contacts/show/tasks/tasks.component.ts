@@ -1,3 +1,6 @@
+import contacts, { ContactsService } from '../../contacts.service';
+import tasksFilter, { TasksFilterService } from '../../../tasks/filter/filter.service';
+
 class ContactTasksController {
     constructor(
         private contacts: ContactsService,
@@ -14,9 +17,6 @@ const Tasks = {
     controller: ContactTasksController,
     template: require('./tasks.html')
 };
-
-import contacts, { ContactsService } from '../../contacts.service';
-import tasksFilter, { TasksFilterService } from '../../../tasks/filter/filter.service';
 
 export default angular.module('mpdx.contacts.show.tasks.component', [
     contacts, tasksFilter

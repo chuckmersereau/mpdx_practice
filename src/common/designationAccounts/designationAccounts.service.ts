@@ -1,4 +1,5 @@
 import { concat, find, reduce } from 'lodash/fp';
+import api, { ApiService } from '../api/api.service';
 
 export class DesignationAccountsService {
     data: any;
@@ -52,8 +53,6 @@ export class DesignationAccountsService {
         this.$rootScope.$emit('designationAccountSelectorChanged', this.selected);
     }
 }
-
-import api, { ApiService } from '../api/api.service';
 
 export default angular.module('mpdx.common.designationAccounts.service', [api])
     .service('designationAccounts', DesignationAccountsService).name;

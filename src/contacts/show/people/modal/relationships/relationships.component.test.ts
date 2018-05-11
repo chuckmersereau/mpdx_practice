@@ -2,6 +2,11 @@ import component from './relationships.component';
 
 describe('contacts.show.personModal.family.component', () => {
     let $ctrl, rootScope, scope, componentController, api, q;
+
+    function loadController() {
+        $ctrl = componentController('contactFamilyRelationship', { $scope: scope }, { onRemove: () => {} });
+    }
+
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _api_, $q) => {
@@ -15,9 +20,6 @@ describe('contacts.show.personModal.family.component', () => {
         });
     });
 
-    function loadController() {
-        $ctrl = componentController('contactFamilyRelationship', { $scope: scope }, { onRemove: () => {} });
-    }
     describe('$onInit', () => {
         it('should set the display_name for the search button/box', () => {
             $ctrl.familyRelationship = {
@@ -29,6 +31,7 @@ describe('contacts.show.personModal.family.component', () => {
             $ctrl.$onInit();
             expect($ctrl.familyRelationship.related_person.display_name).toEqual('a b');
         });
+
         it('should properly handle undefined', () => {
             $ctrl.familyRelationship = {
                 related_person: {}
@@ -37,19 +40,23 @@ describe('contacts.show.personModal.family.component', () => {
             expect($ctrl.familyRelationship.related_person.display_name).toBeUndefined();
         });
     });
+
     describe('remove', () => {
         beforeEach(() => {
             spyOn($ctrl, 'onRemove').and.callThrough();
         });
+
         it('should set remove flag', () => {
             $ctrl.remove();
             expect($ctrl.deleted).toEqual(true);
         });
+
         it('should call remove fn', () => {
             $ctrl.remove();
             expect($ctrl.onRemove).toHaveBeenCalledWith();
         });
     });
+
     describe('search', () => {
         it('should query the api', () => {
             spyOn(api, 'get').and.callFake(() => q.resolve());
@@ -66,6 +73,7 @@ describe('contacts.show.personModal.family.component', () => {
                 }
             );
         });
+
         it('should map the results', (done) => {
             spyOn(api, 'get').and.callFake(() => q.resolve([{ first_name: 'a', last_name: 'b' }]));
             $ctrl.search('').then((data) => {
@@ -75,6 +83,7 @@ describe('contacts.show.personModal.family.component', () => {
             rootScope.$digest();
         });
     });
+
     describe('select', () => {
         it('should set the related_person', () => {
             $ctrl.familyRelationship = {};

@@ -1,4 +1,4 @@
-import { sumBy, each, isEqual } from 'lodash/fp';
+import { each, isEqual, sumBy } from 'lodash/fp';
 
 class HeaderController {
     displayFilters: any;

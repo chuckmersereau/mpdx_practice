@@ -1,6 +1,13 @@
+import 'angular-gettext';
+import * as Upload from 'ng-file-upload';
+import { ApiService } from '../../../common/api/api.service';
 import { round, toInteger } from 'lodash/fp';
-import joinComma from '../../../common/fp/joinComma';
+import alerts, { AlertsService } from '../../../common/alerts/alerts.service';
 import config from '../../../config';
+import contactsTags, { ContactsTagsService } from '../../../contacts/sidebar/filter/tags/tags.service';
+import joinComma from '../../../common/fp/joinComma';
+import modal, { ModalService } from '../../../common/modal/modal.service';
+import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
 
 class ImportTntController {
     importing: boolean;
@@ -9,6 +16,7 @@ class ImportTntController {
     override: string;
     progressPercentage: number;
     tags: any[];
+    watcher: () => void;
     constructor(
         $rootScope: ng.IRootScopeService,
         private $window: ng.IWindowService,
@@ -24,13 +32,16 @@ class ImportTntController {
         this.override = 'true';
         this.tags = [];
 
-        $rootScope.$on('accountListUpdated', () => {
+        this.watcher = $rootScope.$on('accountListUpdated', () => {
             this.contactsTags.load();
         });
     }
     $onInit() {
         this.maxSize = this.serverConstants.data.tnt_import.max_file_size_in_bytes;
         this.maxSizeInMB = round(this.maxSize / 1000000);
+    }
+    $onDestroy() {
+        this.watcher();
     }
     save(form) {
         this.importing = true;
@@ -69,14 +80,6 @@ const ImportTnt = {
     controller: ImportTntController,
     template: require('./tnt.html')
 };
-
-import * as Upload from 'ng-file-upload';
-import alerts, { AlertsService } from '../../../common/alerts/alerts.service';
-import contactsTags, { ContactsTagsService } from '../../../contacts/sidebar/filter/tags/tags.service';
-import 'angular-gettext';
-import modal, { ModalService } from '../../../common/modal/modal.service';
-import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
-import { ApiService } from '../../../common/api/api.service';
 
 export default angular.module('mpdx.tools.import.tnt.component', [
     'gettext', Upload,

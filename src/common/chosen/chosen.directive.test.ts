@@ -10,6 +10,7 @@ describe('common.chosen.directive', () => {
             $compile('<select chosen><option>b</option><option value="1">a</option></select>')(rootScope);
         });
     });
+
     it('should fix the chosen list when defined', () => {
         const elm = angular.element('<select chosen><option>b</option><option value="1">a</option></select>');
         rootScope.$digest();

@@ -1,6 +1,15 @@
+import { StateService } from '@uirouter/core';
 import config from '../config';
+import contacts, { ContactsService } from '../contacts/contacts.service';
+import donations, { DonationsService } from '../reports/donations/donations.service';
+import help, { HelpService } from '../common/help/help.service';
+import session, { SessionService } from '../common/session/session.service';
+import tasks, { TasksService } from '../tasks/tasks.service';
+import tools, { ToolsService } from '../tools/tools.service';
+import uiRouter from '@uirouter/angularjs';
+import users, { UsersService } from '../common/users/users.service';
 
-class menuController {
+class MenuController {
     setup: boolean;
     sidekiqUrl: string;
     constructor(
@@ -29,22 +38,12 @@ class menuController {
 }
 
 const menuComponent = {
-    controller: menuController,
+    controller: MenuController,
     template: require('./menu.html'),
     bindings: {
         setup: '<'
     }
 };
-
-import uiRouter from '@uirouter/angularjs';
-import { StateService } from '@uirouter/core';
-import contacts, { ContactsService } from '../contacts/contacts.service';
-import help, { HelpService } from '../common/help/help.service';
-import session, { SessionService } from '../common/session/session.service';
-import tasks, { TasksService } from '../tasks/tasks.service';
-import users, { UsersService } from '../common/users/users.service';
-import donations, { DonationsService } from '../reports/donations/donations.service';
-import tools, { ToolsService } from '../tools/tools.service';
 
 // use help mock in test
 export default angular.module('mpdx.menu.component', [

@@ -1,3 +1,7 @@
+import 'angular-gettext';
+import accounts, { AccountsService } from '../../../common/accounts/accounts.service';
+import invites, { InvitesService } from './invites.service';
+
 class InvitePreferencesController {
     email: string;
     saving: boolean;
@@ -28,10 +32,6 @@ const Invites = {
     controller: InvitePreferencesController,
     template: require('./invites.html')
 };
-
-import accounts, { AccountsService } from '../../../common/accounts/accounts.service';
-import 'angular-gettext';
-import invites, { InvitesService } from './invites.service';
 
 export default angular.module('mpdx.preferences.accounts.invites.component', [
     'gettext',

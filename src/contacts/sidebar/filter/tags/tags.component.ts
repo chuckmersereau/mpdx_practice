@@ -1,4 +1,6 @@
 import { includes, reject } from 'lodash/fp';
+import api, { ApiService } from '../../../../common/api/api.service';
+import contactsTags, { ContactsTagsService } from './tags.service';
 
 class TagsController {
     hideTags: boolean;
@@ -59,9 +61,6 @@ const Tags = {
     controller: TagsController,
     template: require('./tags.html')
 };
-
-import contactsTags, { ContactsTagsService } from './tags.service';
-import api, { ApiService } from '../../../../common/api/api.service';
 
 export default angular.module('mpdx.contacts.filter.tags.component', [
     api, contactsTags

@@ -1,3 +1,5 @@
+import 'angular-gettext';
+import { ApiService } from '../../common/api/api.service';
 import {
     assign,
     compact,
@@ -10,6 +12,8 @@ import {
     omitBy
 } from 'lodash/fp';
 import { convertTags } from '../../common/fp/tags';
+import filters, { FiltersService } from '../../common/filters/filters.service';
+import tasksTags, { TasksTagsService } from './tags/tags.service';
 
 export class TasksFilterService {
     data: any;
@@ -176,11 +180,6 @@ export class TasksFilterService {
         return this.tasksTags.isResettable() || this.isResettable();
     }
 }
-
-import filters, { FiltersService } from '../../common/filters/filters.service';
-import 'angular-gettext';
-import tasksTags, { TasksTagsService } from './tags/tags.service';
-import { ApiService } from '../../common/api/api.service';
 
 export default angular.module('mpdx.tasks.filter.service', [
     'gettext',

@@ -1,19 +1,14 @@
 import component from './phone.component';
 
 describe('contacts.show.personModal.phone.component', () => {
-    let $ctrl, scope, componentController;
+    let $ctrl, scope;
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope) => {
             scope = $rootScope.$new();
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('contactPhone', { $scope: scope }, { phone: {} });
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('contactPhone', { $scope: scope }, { phone: {} });
-    }
 
     describe('constructor', () => {
         it('should have default values', () => {

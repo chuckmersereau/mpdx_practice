@@ -13,11 +13,13 @@ describe('contacts.show.details.component', () => {
         });
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
+
     describe('save', () => {
         const contact = { id: 123, notes: 'a' };
         beforeEach(() => {
             contacts.current = contact;
         });
+
         it('should save', (done) => {
             spyOn(contacts, 'save').and.callFake(() => q.resolve());
             const successMessage = 'Changes saved successfully.';

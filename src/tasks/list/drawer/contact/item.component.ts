@@ -1,8 +1,13 @@
-import flattenCompactAndJoin from '../../../../common/fp/flattenCompactAndJoin';
-import isOverflown from '../../../../common/fp/isOverflown';
-import { find, get } from 'lodash/fp';
 import * as bowser from 'bowser';
 import * as moment from 'moment';
+import { AlertsService } from '../../../../common/alerts/alerts.service';
+import { find, get } from 'lodash/fp';
+import { ServerConstantsService } from '../../../../common/serverConstants/serverConstants.service';
+import contacts, { ContactsService } from '../../../../contacts/contacts.service';
+import flattenCompactAndJoin from '../../../../common/fp/flattenCompactAndJoin';
+import isOverflown from '../../../../common/fp/isOverflown';
+import people, { PeopleService } from '../../../../contacts/show/people/people.service';
+import users, { UsersService } from '../../../../common/users/users.service';
 
 class ItemController {
     contact: any;
@@ -59,12 +64,6 @@ const Item = {
         loaded: '<' // triggers onchange once nested data is loaded
     }
 };
-
-import contacts, { ContactsService } from '../../../../contacts/contacts.service';
-import people, { PeopleService } from '../../../../contacts/show/people/people.service';
-import users, { UsersService } from '../../../../common/users/users.service';
-import { AlertsService } from '../../../../common/alerts/alerts.service';
-import { ServerConstantsService } from '../../../../common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.tasks.list.drawer.contact.component', [
     contacts, people, users

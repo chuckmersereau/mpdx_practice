@@ -14,15 +14,11 @@ describe('preferences.admin.impersonateUser.component', () => {
             api = _api_;
             users = _users_;
             q = $q;
-            loadController();
+            $ctrl = componentController('preferencesAdminImpersonateUser', { $scope: scope }, {});
         });
         spyOn(gettextCatalog, 'getString').and.callThrough();
         spyOn(alerts, 'addAlert').and.callFake(() => {});
     });
-
-    function loadController() {
-        $ctrl = componentController('preferencesAdminImpersonateUser', { $scope: scope }, {});
-    }
 
     describe('constructor', () => {
         it('should set default values', () => {
@@ -66,6 +62,7 @@ describe('preferences.admin.impersonateUser.component', () => {
                     last_name: 'Smith'
                 };
             });
+
             it('should set impersonatorToken to token', (done) => {
                 spyOn($$window.localStorage, 'getItem').and.returnValue('impersonator_token');
 
@@ -115,6 +112,7 @@ describe('preferences.admin.impersonateUser.component', () => {
                 });
                 scope.$digest();
             });
+
             it('should set saving to false', (done) => {
                 $ctrl.save().catch(() => {
                     expect($ctrl.saving).toEqual(false);
@@ -123,10 +121,12 @@ describe('preferences.admin.impersonateUser.component', () => {
                 scope.$digest();
             });
         });
+
         describe('user not found', () => {
             beforeEach(() => {
                 spy.and.callFake(() => q.reject({ status: 404 }));
             });
+
             it('should translate an error message for 404', (done) => {
                 $ctrl.save().catch(() => {
                     const errorMessage = 'Unable to find a user with provided credentials.';

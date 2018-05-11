@@ -3,17 +3,6 @@ import component from './collectionSelector.component';
 describe('common.collectionSelector.component', () => {
     let $ctrl, componentController, scope, modal;
 
-    beforeEach(() => {
-        angular.mock.module(component);
-        inject(($componentController, $rootScope, _modal_) => {
-            componentController = $componentController;
-            scope = $rootScope.$new();
-            modal = _modal_;
-
-            loadController();
-        });
-    });
-
     function loadController() {
         $ctrl = componentController('collectionSelector', { $scope: scope }, {
             displayText: 'display',
@@ -23,6 +12,16 @@ describe('common.collectionSelector.component', () => {
             select: ({ item = {} }) => item
         });
     }
+
+    beforeEach(() => {
+        angular.mock.module(component);
+        inject(($componentController, $rootScope, _modal_) => {
+            componentController = $componentController;
+            scope = $rootScope.$new();
+            modal = _modal_;
+            loadController();
+        });
+    });
 
     describe('openModal', () => {
         beforeEach(() => {
@@ -108,6 +107,7 @@ describe('common.collectionSelector.component', () => {
             });
         });
     });
+
     describe('remove', () => {
         it('should call select with null item', () => {
             spyOn($ctrl, 'select').and.callFake(() => {});

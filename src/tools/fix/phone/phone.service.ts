@@ -1,4 +1,7 @@
 import { each, filter, find, map, reduce, reject, uniq } from 'lodash/fp';
+import api, { ApiService } from '../../../common/api/api.service';
+import people, { PeopleService } from '../../../contacts/show/people/people.service';
+import tools, { ToolsService } from '../../../tools/tools.service';
 
 export class FixPhoneNumbersService {
     data: any;
@@ -114,10 +117,6 @@ export class FixPhoneNumbersService {
         return filter((phoneNumber) => phoneNumber.primary, person.phone_numbers).length === 1;
     }
 }
-
-import api, { ApiService } from '../../../common/api/api.service';
-import people, { PeopleService } from '../../../contacts/show/people/people.service';
-import tools, { ToolsService } from '../../../tools/tools.service';
 
 export default angular.module('mpdx.tools.fix.phoneNumbers.service', [
     api, people, tools

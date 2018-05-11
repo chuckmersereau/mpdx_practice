@@ -1,21 +1,19 @@
 import component from './reports.component';
 
 describe('reports.component', () => {
-    let $ctrl, componentController, scope, rootScope, help;
+    let $ctrl, scope, rootScope, help;
 
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, $stateParams, _help_) => {
-            componentController = $componentController;
+        inject(($componentController, $rootScope, _help_) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             help = _help_;
-            loadController();
+            $ctrl = $componentController('reports', { $scope: scope });
         });
     });
 
     function loadController() {
-        $ctrl = componentController('reports', { $scope: scope });
     }
 
     describe('$onInit', () => {

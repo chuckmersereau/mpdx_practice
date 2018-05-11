@@ -1,6 +1,13 @@
+import { ApiService } from '../api/api.service';
 import { defaultTo, find, get, keyBy, keys, toString } from 'lodash/fp';
-import createPatch from '../fp/createPatch';
+import { StateService } from '@uirouter/core';
+import accounts, { AccountsService } from '../accounts/accounts.service';
 import config from '../../config';
+import createPatch from '../fp/createPatch';
+import help, { HelpService } from '../help/help.service';
+import language, { LanguageService } from '../language/language.service';
+import locale, { LocaleService } from '../locale/locale.service';
+import uiRouter from '@uirouter/angularjs';
 
 export class UsersService {
     current: any;
@@ -189,14 +196,6 @@ export class UsersService {
         });
     }
 }
-
-import accounts, { AccountsService } from '../accounts/accounts.service';
-import help, { HelpService } from '../help/help.service';
-import language, { LanguageService } from '../language/language.service';
-import locale, { LocaleService } from '../locale/locale.service';
-import uiRouter from '@uirouter/angularjs';
-import { ApiService } from '../api/api.service';
-import { StateService } from '@uirouter/core';
 
 export default angular.module('mpdx.common.users.service', [
     'tandibar/ng-rollbar',

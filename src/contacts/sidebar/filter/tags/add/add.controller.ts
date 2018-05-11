@@ -1,4 +1,7 @@
 import { map } from 'lodash/fp';
+import api, { ApiService } from '../../../../../common/api/api.service';
+import contacts, { ContactsService } from '../../../../contacts.service';
+import contactsTags, { ContactsTagsService } from '../tags.service';
 
 class AddTagController {
     tags: any[];
@@ -45,10 +48,6 @@ class AddTagController {
         });
     }
 }
-
-import api, { ApiService } from '../../../../../common/api/api.service';
-import contacts, { ContactsService } from '../../../../contacts.service';
-import contactsTags, { ContactsTagsService } from '../tags.service';
 
 export default angular.module('mpdxApp.contacts.sidebar.tags.add.controller', [
     api, contacts, contactsTags

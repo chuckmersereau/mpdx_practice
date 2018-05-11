@@ -1,4 +1,5 @@
 import { assign, findIndex, get, isNil, keys, toString } from 'lodash/fp';
+import api, { ApiService } from '../api/api.service';
 import createPatch from '../fp/createPatch';
 
 export class AccountsService {
@@ -197,8 +198,6 @@ export class AccountsService {
         });
     }
 }
-
-import api, { ApiService } from '../api/api.service';
 
 export default angular.module('mpdx.common.accounts.service', [
     api

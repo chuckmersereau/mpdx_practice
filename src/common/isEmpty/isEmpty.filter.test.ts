@@ -8,9 +8,11 @@ describe('The test filter', () => {
             $filter = _$filter_;
         });
     });
+
     it('should be true', () => {
         expect($filter('isEmpty')('')).toBeTruthy();
     });
+
     it('should be false', () => {
         expect($filter('isEmpty')('a')).toBeFalsy();
     });

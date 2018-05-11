@@ -1,7 +1,7 @@
 import component from './share.component';
 
 describe('preferences.coaches.share', () => {
-    let $ctrl, accounts, rootScope, scope, componentController, gettextCatalog, q;
+    let $ctrl, accounts, rootScope, scope, gettextCatalog, q;
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _accounts_, _gettextCatalog_, $q) => {
@@ -10,17 +10,12 @@ describe('preferences.coaches.share', () => {
             accounts = _accounts_;
             gettextCatalog = _gettextCatalog_;
             q = $q;
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('coachesSharePreferences', { $scope: scope }, { setup: false });
         });
         spyOn(gettextCatalog, 'getString').and.callThrough();
         spyOn(accounts, 'listCoaches').and.callFake(() => {});
         spyOn(accounts, 'listCoachesInvites').and.callFake(() => {});
     });
-
-    function loadController() {
-        $ctrl = componentController('coachesSharePreferences', { $scope: scope }, { setup: false });
-    }
 
     describe('constructor', () => {
         it('should set default values', () => {
@@ -107,6 +102,7 @@ describe('preferences.coaches.share', () => {
             scope.$digest();
         });
     });
+
     describe('removeCoach', () => {
         beforeEach(() => {
             accounts.coachList = [{ id: 1 }, { id: 2 }];

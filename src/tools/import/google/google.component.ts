@@ -1,6 +1,14 @@
+import 'angular-block-ui';
+import 'angular-gettext';
 import { each, map } from 'lodash/fp';
+import { StateService } from '@uirouter/core';
+import api, { ApiService } from '../../../common/api/api.service';
+import contactsTags, { ContactsTagsService } from '../../../contacts/sidebar/filter/tags/tags.service';
+import google, { GoogleService } from '../../../preferences/integrations/google/google.service';
 import joinComma from '../../../common/fp/joinComma';
+import modal, { ModalService } from '../../../common/modal/modal.service';
 import reduceObject from '../../../common/fp/reduceObject';
+import uiRouter from '@uirouter/angularjs';
 
 class ImportGoogleController {
     blockUI: IBlockUIService;
@@ -32,7 +40,6 @@ class ImportGoogleController {
             this.contactsTags.load();
             this.google.load(true);
         });
-
 
         if (this.google.data.length > 0) {
             this.selectedAccount = this.google.data[0];
@@ -88,15 +95,6 @@ const ImportGoogle = {
     controller: ImportGoogleController,
     template: require('./google.html')
 };
-
-import api, { ApiService } from '../../../common/api/api.service';
-import uiRouter from '@uirouter/angularjs';
-import 'angular-block-ui';
-import 'angular-gettext';
-import contactsTags, { ContactsTagsService } from '../../../contacts/sidebar/filter/tags/tags.service';
-import google, { GoogleService } from '../../../preferences/integrations/google/google.service';
-import modal, { ModalService } from '../../../common/modal/modal.service';
-import { StateService } from '@uirouter/core';
 
 export default angular.module('mpdx.tools.import.google.component', [
     uiRouter, 'blockUI', 'gettext',

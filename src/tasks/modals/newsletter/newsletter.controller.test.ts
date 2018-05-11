@@ -1,21 +1,16 @@
 import newsletter from './newsletter.controller';
 
 describe('tasks.modals.newsletter.controller', () => {
-    let $ctrl, controller, scope, tasks, q;
+    let $ctrl, scope, tasks, q;
     beforeEach(() => {
         angular.mock.module(newsletter);
         inject(($rootScope, $controller, _tasks_, $q) => {
             scope = $rootScope.$new();
             tasks = _tasks_;
             q = $q;
-            controller = $controller;
-            $ctrl = loadController();
+            $ctrl = $controller('newsletterTaskController as $ctrl', { $scope: scope });
         });
     });
-
-    function loadController() {
-        return controller('newsletterTaskController as $ctrl', { $scope: scope });
-    }
 
     describe('constructor', () => {
         it('should set default values', () => {

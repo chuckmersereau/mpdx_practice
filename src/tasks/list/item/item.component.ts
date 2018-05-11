@@ -1,4 +1,10 @@
+import { ApiService } from '../../../common/api/api.service';
 import { contains, includes, pull, union } from 'lodash/fp';
+import { ModalService } from '../../../common/modal/modal.service';
+import { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
+import { UsersService } from '../../../common/users/users.service';
+import contacts, { ContactsService } from '../../../contacts/contacts.service';
+import tasks, { TasksService } from '../../tasks.service';
 
 class ItemController {
     onMultiSelect: any;
@@ -91,13 +97,6 @@ const Item = {
         task: '<'
     }
 };
-
-import contacts, { ContactsService } from '../../../contacts/contacts.service';
-import tasks, { TasksService } from '../../tasks.service';
-import { ApiService } from '../../../common/api/api.service';
-import { ModalService } from '../../../common/modal/modal.service';
-import { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
-import { UsersService } from '../../../common/users/users.service';
 
 export default angular.module('mpdx.tasks.list.item.component', [
     contacts, tasks

@@ -1,6 +1,7 @@
-import config from '../../config';
 import { isEmpty } from 'lodash/fp';
 import { StateParams, StateService } from '@uirouter/core';
+import config from '../../config';
+import uiRouter from '@uirouter/angularjs';
 
 class AuthController {
     constructor(
@@ -76,8 +77,6 @@ const Auth = {
     controller: AuthController,
     template: require('./auth.html')
 };
-
-import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('mpdx.common.auth.component', [
     uiRouter

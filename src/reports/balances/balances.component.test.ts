@@ -1,25 +1,20 @@
 import component from './balances.component';
 
 describe('reports.balances.component', () => {
-    let $ctrl, componentController, rootScope, scope, designationAccounts, q;
+    let $ctrl, rootScope, scope, designationAccounts, q;
 
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _designationAccounts_, $q) => {
-            componentController = $componentController;
             rootScope = $rootScope;
             q = $q;
             scope = $rootScope.$new();
 
             designationAccounts = _designationAccounts_;
-            loadController();
+            spyOn(rootScope, '$on').and.callThrough();
+            $ctrl = $componentController('balances', { $scope: scope }, { view: null });
         });
     });
-
-    function loadController() {
-        spyOn(rootScope, '$on').and.callThrough();
-        $ctrl = componentController('balances', { $scope: scope }, { view: null });
-    }
 
     describe('constructor', () => {
         it('should set watcher on accountListUpdated', () => {

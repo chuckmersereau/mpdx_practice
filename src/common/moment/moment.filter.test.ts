@@ -11,6 +11,7 @@ describe('common.moment.filter', () => {
             $filter = _$filter_;
         });
     });
+
     it('output a formatted date', () => {
         expect($filter('moment')(date, 'YYYY-MM-DD')).toEqual(moment(date).format('YYYY-MM-DD'));
     });

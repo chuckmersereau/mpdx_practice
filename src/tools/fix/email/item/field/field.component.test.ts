@@ -1,7 +1,7 @@
 import component from './field.component';
 
 describe('tools.fix.emailEmailAddresses.item.field.component', () => {
-    let $ctrl, rootScope, scope, componentController, fixEmailAddresses, person, emailAddress, q;
+    let $ctrl, rootScope, scope, fixEmailAddresses, person, emailAddress, q;
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _fixEmailAddresses_, $q) => {
@@ -9,18 +9,13 @@ describe('tools.fix.emailEmailAddresses.item.field.component', () => {
             scope = rootScope.$new();
             fixEmailAddresses = _fixEmailAddresses_;
             q = $q;
-            componentController = $componentController;
             person = { id: 'person_id', email_addresses: [] };
             emailAddress = { id: 'email_address_id', new: true };
-            loadController();
+            $ctrl = $componentController('fixEmailAddressesItemField',
+                { $scope: scope },
+                { person: person, emailAddress: emailAddress });
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('fixEmailAddressesItemField',
-            { $scope: scope },
-            { person: person, emailAddress: emailAddress });
-    }
 
     describe('$onInit', () => {
         describe('email_address set', () => {
@@ -94,6 +89,7 @@ describe('tools.fix.emailEmailAddresses.item.field.component', () => {
                     scope.$digest();
                 });
             });
+
             describe('saved emailAddress is not new', () => {
                 beforeEach(() => {
                     $ctrl.emailAddress.new = false;

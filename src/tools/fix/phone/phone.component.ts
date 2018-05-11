@@ -1,6 +1,12 @@
+import 'angular-block-ui';
+import 'angular-gettext';
+import fixPhoneNumbers, { FixPhoneNumbersService } from './phone.service';
+import modal, { ModalService } from '../../../common/modal/modal.service';
+
 class PhoneNumbersController {
     blockUI: IBlockUIService;
     source: string;
+    watcher: () => void;
     constructor(
         $rootScope: ng.IRootScopeService,
         private gettextCatalog: ng.gettext.gettextCatalog,
@@ -11,9 +17,12 @@ class PhoneNumbersController {
         this.blockUI = blockUI.instances.get('fix-phone-numbers');
         this.source = 'MPDX';
 
-        $rootScope.$on('accountListUpdated', () => {
+        this.watcher = $rootScope.$on('accountListUpdated', () => {
             this.load(true);
         });
+    }
+    $onDestroy() {
+        this.watcher();
     }
     save() {
         const message = this.gettextCatalog.getString(
@@ -34,15 +43,10 @@ class PhoneNumbersController {
     }
 }
 
-const PhoneNumbers = {
+const PhoneNumbers: ng.IComponentOptions = {
     controller: PhoneNumbersController,
     template: require('./phone.html')
 };
-
-import 'angular-gettext';
-import 'angular-block-ui';
-import modal, { ModalService } from '../../../common/modal/modal.service';
-import fixPhoneNumbers, { FixPhoneNumbersService } from './phone.service';
 
 export default angular.module('mpdx.tools.fix.phoneNumbers.component', [
     'gettext', 'blockUI',

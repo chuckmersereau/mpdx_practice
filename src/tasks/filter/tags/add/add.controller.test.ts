@@ -1,7 +1,7 @@
 import add from './add.controller';
 
 describe('tasks.filter.tags.add.controller', () => {
-    let $ctrl, controller, scope, api, rootScope, tasksTags, q;
+    let $ctrl, scope, api, rootScope, tasksTags, q;
     beforeEach(() => {
         angular.mock.module(add);
         inject(($controller, $rootScope, _api_, _tasksTags_, $q) => {
@@ -12,17 +12,12 @@ describe('tasks.filter.tags.add.controller', () => {
             api.account_list_id = 123;
             tasksTags = _tasksTags_;
             q = $q;
-            controller = $controller;
-            $ctrl = loadController();
+            $ctrl = $controller('addTaskTagController as $ctrl', {
+                $scope: scope,
+                selectedTasks: []
+            });
         });
     });
-
-    function loadController() {
-        return controller('addTaskTagController as $ctrl', {
-            $scope: scope,
-            selectedTasks: []
-        });
-    }
 
     describe('save', () => {
         it('should save a custom tag', (done) => {
@@ -53,6 +48,7 @@ describe('tasks.filter.tags.add.controller', () => {
             });
             scope.$digest();
         });
+
         it('should add tag', (done) => {
             $ctrl.tags = [];
             spyOn(api, 'post').and.callFake(() => q.resolve());
@@ -65,6 +61,7 @@ describe('tasks.filter.tags.add.controller', () => {
             });
             scope.$digest();
         });
+
         it('should hide', (done) => {
             $ctrl.tags = [];
             spyOn(api, 'post').and.callFake(() => q.resolve());

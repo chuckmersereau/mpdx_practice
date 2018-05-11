@@ -1,4 +1,6 @@
 import { invert } from 'lodash/fp';
+import importCsv, { ImportCsvService } from '../../../import/csv/csv.service';
+import serverConstants, { ServerConstantsService } from '../../../../common/serverConstants/serverConstants.service';
 
 class ValuesController {
     constructor(
@@ -16,13 +18,10 @@ class ValuesController {
     }
 }
 
-const Values = {
+const Values: ng.IComponentOptions = {
     controller: ValuesController,
     template: require('./values.html')
 };
-
-import importCsv, { ImportCsvService } from '../../../import/csv/csv.service';
-import serverConstants, { ServerConstantsService } from '../../../../common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.tools.import.csv.values.component', [
     importCsv, serverConstants

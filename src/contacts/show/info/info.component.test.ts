@@ -16,6 +16,7 @@ describe('contacts.show.details.component', () => {
         });
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
+
     describe('hideContact', () => {
         beforeEach(() => {
             spyOn(contacts, 'hideContact').and.callFake(() => q.resolve());
@@ -23,6 +24,7 @@ describe('contacts.show.details.component', () => {
                 id: 'contact_id'
             };
         });
+
         it('should call contacts.hideContact', () => {
             $ctrl.hideContact();
             expect(contacts.hideContact).toHaveBeenCalledWith({ id: 'contact_id' });

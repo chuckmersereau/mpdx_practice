@@ -1,7 +1,7 @@
 import add from './add.controller';
 
 describe('contacts.sidebar.tags.add.controller', () => {
-    let $ctrl, controller, scope, api, rootScope, contactsTags, q;
+    let $ctrl, scope, api, rootScope, contactsTags, q;
     beforeEach(() => {
         angular.mock.module(add);
         inject(($controller, $rootScope, _api_, _contactsTags_, $q) => {
@@ -12,17 +12,12 @@ describe('contacts.sidebar.tags.add.controller', () => {
             api.account_list_id = 123;
             contactsTags = _contactsTags_;
             q = $q;
-            controller = $controller;
-            $ctrl = loadController();
+            $ctrl = $controller('addTagController as $ctrl', {
+                $scope: scope,
+                selectedContacts: []
+            });
         });
     });
-
-    function loadController() {
-        return controller('addTagController as $ctrl', {
-            $scope: scope,
-            selectedContacts: []
-        });
-    }
 
     describe('save', () => {
         it('should save a custom tag', (done) => {
@@ -53,6 +48,7 @@ describe('contacts.sidebar.tags.add.controller', () => {
             });
             rootScope.$digest();
         });
+
         it('should add tag', (done) => {
             $ctrl.tags = [];
             spyOn(api, 'post').and.callFake(() => q.resolve());
@@ -65,6 +61,7 @@ describe('contacts.sidebar.tags.add.controller', () => {
             });
             rootScope.$digest();
         });
+
         it('should hide', (done) => {
             $ctrl.tags = [];
             spyOn(api, 'post').and.callFake(() => q.resolve());

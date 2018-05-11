@@ -1,7 +1,7 @@
 import component from './notifications.component';
 
 describe('contacts.list.component', () => {
-    let $ctrl, api, serverConstants, scope, componentController, rootScope, q;
+    let $ctrl, api, serverConstants, scope, rootScope, q;
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _api_, _serverConstants_, $q) => {
@@ -10,17 +10,13 @@ describe('contacts.list.component', () => {
             api = _api_;
             serverConstants = _serverConstants_;
             q = $q;
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController(
+                'preferencesNotifications', { $scope: scope }, { onSave: () => q.resolve(), setup: null }
+            );
         });
         spyOn($ctrl, 'gettext').and.callThrough();
     });
 
-    function loadController() {
-        $ctrl = componentController(
-            'preferencesNotifications', { $scope: scope }, { onSave: () => q.resolve(), setup: null }
-        );
-    }
     describe('$onInit', () => {
         it('should transform the users notification preferences with server constants', () => {
             spyOn($ctrl, 'load').and.callFake(() => q.resolve());
@@ -134,6 +130,7 @@ describe('contacts.list.component', () => {
                 scope.$digest();
             });
         });
+
         describe('promise unsuccessful', () => {
             beforeEach(() => {
                 spy.and.callFake(() => q.reject(Error('something went wrong')));
@@ -191,7 +188,6 @@ describe('contacts.list.component', () => {
         it('should return a promise', () => {
             expect($ctrl.save()).toEqual(jasmine.any(q));
         });
-
 
         describe('promise successful', () => {
             it('should set loading to false', (done) => {

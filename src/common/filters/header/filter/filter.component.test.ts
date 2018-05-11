@@ -2,6 +2,11 @@ import component from './filter.component';
 
 describe('common.filters.header.filter.component', () => {
     let $ctrl, scope, componentController;
+
+    function loadController() {
+        $ctrl = componentController('filtersHeaderFilter', { $scope: scope }, {});
+    }
+
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope) => {
@@ -10,10 +15,6 @@ describe('common.filters.header.filter.component', () => {
             loadController();
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('filtersHeaderFilter', { $scope: scope }, {});
-    }
 
     describe('getOption', () => {
         const filter = {
@@ -25,14 +26,17 @@ describe('common.filters.header.filter.component', () => {
         it('should return the selected option name by id', () => {
             expect($ctrl.getOption(filter, 1)).toEqual('a');
         });
+
         it('should handle null', () => {
             expect($ctrl.getOption({}, 1)).toBeUndefined();
         });
     });
+
     describe('isArray', () => {
         it('should catch an array', () => {
             expect($ctrl.isArray([])).toBeTruthy();
         });
+
         it('should catch an object', () => {
             expect($ctrl.isArray({})).toBeFalsy();
         });

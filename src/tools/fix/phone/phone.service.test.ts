@@ -1,6 +1,13 @@
 import service from './phone.service';
 
 const accountListId = 123;
+const apiData: any = [
+    { phone_numbers: [{ source: 'Siebel' }] },
+    { phone_numbers: [{ source: 'Tntmpd' }] },
+    { phone_numbers: [{ source: 'DataServer' }] },
+    { phone_numbers: [{ source: 'DataServer' }] }
+];
+apiData.meta = { page: 1 };
 
 describe('tools.fix.phoneNumbers.service', () => {
     let api, fixPhoneNumbers, people, tools, q, rootScope;
@@ -107,6 +114,7 @@ describe('tools.fix.phoneNumbers.service', () => {
                     fixPhoneNumbers.data = apiData;
                     fixPhoneNumbers.page = 1;
                 });
+
                 describe('reset set to true', () => {
                     it('should call the api', (done) => {
                         fixPhoneNumbers.load(true).then(() => {
@@ -487,13 +495,4 @@ describe('tools.fix.phoneNumbers.service', () => {
             });
         });
     });
-
-    const apiData: any = [
-        { phone_numbers: [{ source: 'Siebel' }] },
-        { phone_numbers: [{ source: 'Tntmpd' }] },
-        { phone_numbers: [{ source: 'DataServer' }] },
-        { phone_numbers: [{ source: 'DataServer' }] }
-    ];
-
-    apiData.meta = { page: 1 };
 });

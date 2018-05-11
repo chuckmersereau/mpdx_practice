@@ -1,5 +1,5 @@
-import component from './filter.component';
 import { assign } from 'lodash/fp';
+import component from './filter.component';
 
 const accountListId = 123;
 const name = 'my_filter';
@@ -18,7 +18,7 @@ const options = {
     [key]: { key: key, title: key, value: JSON.stringify(obj) }
 };
 describe('tasks.filter.component', () => {
-    let $ctrl, rootScope, scope, componentController, api, users, tasksFilter, tasksTags, modal,q
+    let $ctrl, rootScope, scope, api, users, tasksFilter, tasksTags, modal, q;
 
     beforeEach(() => {
         angular.mock.module(component);
@@ -31,60 +31,65 @@ describe('tasks.filter.component', () => {
             tasksTags = _tasksTags_;
             users = _users_;
             q = $q;
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('tasksFilter', { $scope: scope }, {});
         });
         api.account_list_id = accountListId;
     });
-
-    function loadController() {
-        $ctrl = componentController('tasksFilter', { $scope: scope }, {});
-    }
 
     describe('constructor', () => {
         it('should do something', () => {
             expect($ctrl.selectedSort).toEqual('all');
         });
     });
+
     describe('useSavedFilter', () => {
         beforeEach(() => {
             users.currentOptions = options;
             spyOn(tasksFilter, 'assignDefaultParamsAndGroup').and.callThrough();
             spyOn(tasksFilter, 'change').and.callFake(() => {});
         });
+
         it('should set filter defaults', () => {
             $ctrl.useSavedFilter(name);
             expect(tasksFilter.assignDefaultParamsAndGroup).toHaveBeenCalledWith('all');
         });
+
         it('should set filter params over defaults', () => {
             $ctrl.useSavedFilter(name);
             expect(tasksFilter.params).toEqual(assign(tasksFilter.defaultParams, obj.params));
         });
+
         it('should set wildcard search', () => {
             $ctrl.useSavedFilter(name);
             expect(tasksFilter.wildcardSearch).toEqual(obj.wildcard_search);
         });
+
         it('should set any_tags', () => {
             $ctrl.useSavedFilter(name);
             expect(tasksTags.anyTags).toBeTruthy();
         });
+
         it('should set rejectedTags', () => {
             $ctrl.useSavedFilter(name);
             expect(tasksTags.rejectedTags).toEqual([{ name: 'home' }, { name: 'alone' }]);
         });
+
         it('should set selectedTags', () => {
             $ctrl.useSavedFilter(name);
             expect(tasksTags.selectedTags).toEqual([{ name: 'fun' }, { name: 'tonight' }]);
         });
+
         it('should trigger filter change', () => {
             $ctrl.useSavedFilter(name);
             expect(tasksFilter.change).toHaveBeenCalledWith();
         });
+
         it('should set selectedSave', () => {
             $ctrl.useSavedFilter(name);
             expect(tasksFilter.selectedSave).toEqual(name);
         });
     });
+
     describe('resetFiltersAndTags', () => {
         it('should trigger filter service reset', () => {
             spyOn(tasksFilter, 'reset').and.callFake(() => {});
@@ -92,6 +97,7 @@ describe('tasks.filter.component', () => {
             expect(tasksFilter.reset).toHaveBeenCalledWith();
         });
     });
+
     describe('openSaveModal', () => {
         it('should open the save modal', () => {
             spyOn(modal, 'open').and.callFake(() => q.resolve());

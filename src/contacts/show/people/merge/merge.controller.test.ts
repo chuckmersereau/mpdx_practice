@@ -4,6 +4,14 @@ const person = { id: 123, first_name: 'a', last_name: 'b' };
 
 describe('contacts.show.people.merge.controller', () => {
     let $ctrl, controller, people, rootScope, scope, gettextCatalog, q;
+
+    function loadController() {
+        $ctrl = controller('mergePeopleModalController as $ctrl', {
+            $scope: scope,
+            selectedPeople: [person, { id: 456 }]
+        });
+    }
+
     beforeEach(() => {
         angular.mock.module(mc);
 
@@ -21,12 +29,6 @@ describe('contacts.show.people.merge.controller', () => {
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
 
-    function loadController() {
-        $ctrl = controller('mergePeopleModalController as $ctrl', {
-            $scope: scope,
-            selectedPeople: [person, { id: 456 }]
-        });
-    }
     describe('save', () => {
         beforeEach(() => {
             spyOn(rootScope, '$emit').and.callThrough();

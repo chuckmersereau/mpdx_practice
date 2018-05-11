@@ -1,5 +1,8 @@
 import * as bowser from 'bowser';
 import { defaultTo } from 'lodash/fp';
+import { StateService } from '@uirouter/core';
+import session, { SessionService } from '../common/session/session.service';
+import uiRouter from '@uirouter/angularjs';
 
 class RootController {
     constructor(
@@ -21,10 +24,6 @@ const Root = {
     template: require('./root.html'),
     controller: RootController
 };
-
-import uiRouter from '@uirouter/angularjs';
-import { StateService } from '@uirouter/core';
-import session, { SessionService } from '../common/session/session.service';
 
 export default angular.module('mpdx.root.component', [
     uiRouter,

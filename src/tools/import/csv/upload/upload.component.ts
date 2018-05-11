@@ -1,4 +1,6 @@
 import { round } from 'lodash/fp';
+import importCsv, { ImportCsvService } from '../../../import/csv/csv.service';
+import serverConstants, { ServerConstantsService } from '../../../../common/serverConstants/serverConstants.service';
 
 class UploadController {
     maxSize: number;
@@ -12,13 +14,10 @@ class UploadController {
     }
 }
 
-const Upload = {
+const Upload: ng.IComponentOptions = {
     controller: UploadController,
     template: require('./upload.html')
 };
-
-import importCsv, { ImportCsvService } from '../../../import/csv/csv.service';
-import serverConstants, { ServerConstantsService } from '../../../../common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.tools.import.csv.upload.component', [
     importCsv, serverConstants

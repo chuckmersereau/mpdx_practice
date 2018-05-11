@@ -1,7 +1,15 @@
-import { get, map, round, sum, take, takeRight } from 'lodash/fp';
-import { zip } from 'lodash';
-import joinComma from '../../../common/fp/joinComma';
+import 'angular-gettext';
 import * as moment from 'moment';
+import { get, map, round, sum, take, takeRight } from 'lodash/fp';
+import { StateService } from '@uirouter/core';
+import { zip } from 'lodash';
+import accounts, { AccountsService } from '../../../common/accounts/accounts.service';
+import api, { ApiService } from '../../../common/api/api.service';
+import contacts, { ContactsService } from '../../../contacts/contacts.service';
+import designationAccounts, { DesignationAccountsService } from '../../../common/designationAccounts/designationAccounts.service';
+import donations, { DonationsService } from '../donations.service';
+import joinComma from '../../../common/fp/joinComma';
+import uiRouter from '@uirouter/angularjs';
 
 class ChartController {
     chartData: any;
@@ -228,15 +236,6 @@ const Chart = {
         inContact: '<'
     }
 };
-
-import donations, { DonationsService } from '../donations.service';
-import 'angular-gettext';
-import uiRouter from '@uirouter/angularjs';
-import { StateService } from '@uirouter/core';
-import accounts, { AccountsService } from '../../../common/accounts/accounts.service';
-import api, { ApiService } from '../../../common/api/api.service';
-import contacts, { ContactsService } from '../../../contacts/contacts.service';
-import designationAccounts, { DesignationAccountsService } from '../../../common/designationAccounts/designationAccounts.service';
 
 export default angular.module('mpdx.reports.donations.chart.component', [
     'gettext', uiRouter,

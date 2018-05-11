@@ -1,3 +1,5 @@
+import session, { SessionService } from '../common/session/session.service';
+
 class SetupController {
     constructor(
         private session: SessionService
@@ -14,8 +16,6 @@ const Setup = {
     template: require('./setup.html'),
     controller: SetupController
 };
-
-import session, { SessionService } from '../common/session/session.service';
 
 export default angular.module('mpdx.setup.component', [
     session

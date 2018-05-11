@@ -1,4 +1,11 @@
+import 'angular-gettext';
 import { assign, defaultTo, flatten, get } from 'lodash/fp';
+import { StateService } from '@uirouter/core';
+import accounts, { AccountsService } from '../common/accounts/accounts.service';
+import alerts, { AlertsService } from '../common/alerts/alerts.service';
+import api, { ApiService } from '../common/api/api.service';
+import uiRouter from '@uirouter/angularjs';
+import users, { UsersService } from '../common/users/users.service';
 
 export class SetupService {
     constructor(
@@ -103,14 +110,6 @@ export class SetupService {
         return this.$q.resolve();
     }
 }
-
-import uiRouter from '@uirouter/angularjs';
-import 'angular-gettext';
-import { StateService } from '@uirouter/core';
-import accounts, { AccountsService } from '../common/accounts/accounts.service';
-import alerts, { AlertsService } from '../common/alerts/alerts.service';
-import api, { ApiService } from '../common/api/api.service';
-import users, { UsersService } from '../common/users/users.service';
 
 export default angular.module('mpdx.setup.service', [
     uiRouter, 'gettext',

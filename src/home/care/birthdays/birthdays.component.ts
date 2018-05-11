@@ -1,5 +1,7 @@
-import { defaultTo, get, toInteger } from 'lodash/fp';
 import * as moment from 'moment';
+import { defaultTo, get, toInteger } from 'lodash/fp';
+import api, { ApiService } from '../../../common/api/api.service';
+import locale, { LocaleService } from '../../../common/locale/locale.service';
 
 class BirthdaysController {
     birthdays_this_week: number;
@@ -66,9 +68,6 @@ const Birthdays = {
     controller: BirthdaysController,
     template: require('./birthdays.html')
 };
-
-import api, { ApiService } from '../../../common/api/api.service';
-import locale, { LocaleService } from '../../../common/locale/locale.service';
 
 export default angular.module('mpdx.home.care.birthdays', [
     api, locale

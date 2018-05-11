@@ -1,3 +1,7 @@
+import contactFilter, { ContactFilterService } from './filter/filter.service';
+import contactsTags, { ContactsTagsService } from './filter/tags/tags.service';
+import session, { SessionService } from '../../common/session/session.service';
+
 class SidebarController {
     constructor(
         private contactFilter: ContactFilterService,
@@ -10,10 +14,6 @@ const Sidebar = {
     template: require('./sidebar.html'),
     controller: SidebarController
 };
-
-import contactFilter, { ContactFilterService } from './filter/filter.service';
-import contactsTags, { ContactsTagsService } from './filter/tags/tags.service';
-import session, { SessionService } from '../../common/session/session.service';
 
 export default angular.module('mpdx.contacts.sidebar.component', [
     contactFilter, contactsTags, session

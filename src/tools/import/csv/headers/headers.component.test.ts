@@ -1,7 +1,7 @@
 import component from './headers.component';
 
 describe('tools.import.csv.headers.component', () => {
-    let $ctrl, rootScope, scope, componentController, gettextCatalog, importCsv, modal, serverConstants, q;
+    let $ctrl, rootScope, scope, gettextCatalog, importCsv, modal, serverConstants, q;
 
     beforeEach(() => {
         angular.mock.module(component);
@@ -13,14 +13,9 @@ describe('tools.import.csv.headers.component', () => {
             modal = _modal_;
             serverConstants = _serverConstants_;
             q = $q;
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('importCsvHeaders', { $scope: scope }, {});
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('importCsvHeaders', { $scope: scope }, {});
-    }
 
     describe('constructor', () => {
         it('should set default values', () => {

@@ -1,7 +1,7 @@
 import component from './field.component';
 
 describe('tools.fix.phoneNumbers.item.field.component', () => {
-    let $ctrl, rootScope, scope, componentController, fixPhoneNumbers, person, phoneNumber, q;
+    let $ctrl, rootScope, scope, fixPhoneNumbers, person, phoneNumber, q;
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _fixPhoneNumbers_, $q) => {
@@ -9,18 +9,13 @@ describe('tools.fix.phoneNumbers.item.field.component', () => {
             scope = rootScope.$new();
             fixPhoneNumbers = _fixPhoneNumbers_;
             q = $q;
-            componentController = $componentController;
             person = { id: 'person_id', phone_numbers: [] };
             phoneNumber = { id: 'phone_number_id', new: true };
-            loadController();
+            $ctrl = $componentController('fixPhoneNumbersItemField',
+                { $scope: scope },
+                { person: person, phoneNumber: phoneNumber });
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('fixPhoneNumbersItemField',
-            { $scope: scope },
-            { person: person, phoneNumber: phoneNumber });
-    }
 
     describe('$onInit', () => {
         describe('phone_number set', () => {

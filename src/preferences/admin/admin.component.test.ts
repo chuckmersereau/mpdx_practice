@@ -1,20 +1,15 @@
 import component from './admin.component';
 
 describe('preferences.admin.component', () => {
-    let $ctrl, componentController, scope, rootScope;
+    let $ctrl, scope, rootScope;
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('preferencesAdmin', { $scope: scope }, {});
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('preferencesAdmin', { $scope: scope }, {});
-    }
 
     describe('constructor', () => {
         it('should set default values', () => {

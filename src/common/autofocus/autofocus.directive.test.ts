@@ -10,6 +10,7 @@ describe('common.autofocus.directive', () => {
             $compile('<input id="123" autofocus>')(rootScope);
         });
     });
+
     it('should have focus', () => {
         const elm = angular.element('<input id="123" autofocus>');
         rootScope.$digest();

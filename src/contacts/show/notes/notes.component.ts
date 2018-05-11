@@ -1,4 +1,6 @@
+import 'angular-gettext';
 import * as moment from 'moment';
+import contacts, { ContactsService } from '../../contacts.service';
 
 class ContactNotesController {
     moment: any;
@@ -23,9 +25,6 @@ const Notes = {
     controller: ContactNotesController,
     template: require('./notes.html')
 };
-
-import contacts, { ContactsService } from '../../contacts.service';
-import 'angular-gettext';
 
 export default angular.module('mpdx.contacts.show.notes.component', [
     'gettext',

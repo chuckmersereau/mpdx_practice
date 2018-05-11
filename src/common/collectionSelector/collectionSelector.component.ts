@@ -1,4 +1,6 @@
 import { defaultTo } from 'lodash/fp';
+import modal, { ModalService } from '../modal/modal.service';
+import modalController from './modal/modal.controller';
 
 class CollectionSelectorController {
     displayText: string;
@@ -48,9 +50,6 @@ const CollectionSelector = {
         allowRemove: '<'
     }
 };
-
-import modal, { ModalService } from '../modal/modal.service';
-import modalController from './modal/modal.controller';
 
 export default angular.module('mpdx.common.collectionSelector.component', [
     modal, modalController

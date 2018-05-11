@@ -1,3 +1,6 @@
+import 'angular-block-ui';
+import 'angular-gettext';
+
 class ModalController {
     blockUI: IBlockUIService;
     cancelText: string;
@@ -83,9 +86,6 @@ const Modal = {
         valid: '<'
     }
 };
-
-import 'angular-block-ui';
-import 'angular-gettext';
 
 export default angular.module('mpdx.common.modal.component', [
     'blockUI', 'gettext'

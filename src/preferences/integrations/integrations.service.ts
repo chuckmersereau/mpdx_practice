@@ -1,3 +1,5 @@
+import api, { ApiService } from '../../common/api/api.service';
+
 export class IntegrationsService {
     data: any;
     loading: boolean;
@@ -23,8 +25,6 @@ export class IntegrationsService {
         return this.api.post(`account_lists/${this.api.account_list_id}/chalkline_mail`);
     }
 }
-
-import api, { ApiService } from '../../common/api/api.service';
 
 export default angular.module('mpdx.preferences.integrations.service', [
     api

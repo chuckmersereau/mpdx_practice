@@ -1,4 +1,6 @@
+import 'angular-gettext';
 import { isFunction } from 'lodash/fp';
+import api, { ApiService } from '../../../common/api/api.service';
 
 class ResetAccountController {
     resetAccount: any;
@@ -41,9 +43,6 @@ const ResetAccount = {
     template: require('./resetAccount.html'),
     controller: ResetAccountController
 };
-
-import 'angular-gettext';
-import api, { ApiService } from '../../../common/api/api.service';
 
 export default angular.module('mpdx.preferences.admin.resetAccount.component', [
     'gettext',

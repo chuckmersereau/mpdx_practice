@@ -1,7 +1,7 @@
 import component from './csv.component';
 
 describe('tools.import.csv.component', () => {
-    let $ctrl, rootScope, scope, componentController, transitions, state, importCsv, modal, q;
+    let $ctrl, rootScope, scope, transitions, state, importCsv, modal, q;
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, $transitions, $state, _importCsv_, _modal_, $q) => {
@@ -12,14 +12,9 @@ describe('tools.import.csv.component', () => {
             importCsv = _importCsv_;
             modal = _modal_;
             q = $q;
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('importCsv', { $scope: scope }, {});
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('importCsv', { $scope: scope }, {});
-    }
 
     describe('constructor', () => {
         it('should set default values', () => {

@@ -14,6 +14,7 @@ describe('preferences.integrations.google.service', () => {
             api.account_list_id = accountListId;
         });
     });
+
     describe('load', () => {
         it('should build the google oAuth link', (done) => {
             spyOn(api, 'get').and.callFake(() => q.resolve());
@@ -23,6 +24,7 @@ describe('preferences.integrations.google.service', () => {
             });
             rootScope.$digest();
         });
+
         it('should query the API', (done) => {
             spyOn(api, 'get').and.callFake(() => q.resolve());
             google.load(true).then(() => {
@@ -34,6 +36,7 @@ describe('preferences.integrations.google.service', () => {
             });
             rootScope.$digest();
         });
+
         it('find failures', (done) => {
             spyOn(api, 'get').and.callFake(() => q.resolve([
                 { token_failure: true }
@@ -44,6 +47,7 @@ describe('preferences.integrations.google.service', () => {
             });
             rootScope.$digest();
         });
+
         it('find no failures', (done) => {
             spyOn(api, 'get').and.callFake(() => q.resolve([
                 {}
@@ -54,6 +58,7 @@ describe('preferences.integrations.google.service', () => {
             });
             rootScope.$digest();
         });
+
         it('should cache results', (done) => {
             google.data = [{}];
             google.load().then(() => {
@@ -63,6 +68,7 @@ describe('preferences.integrations.google.service', () => {
             rootScope.$digest();
         });
     });
+
     describe('disconnect', () => {
         it('should delete the relationship', (done) => {
             spyOn(api, 'delete').and.callFake(() => q.resolve());
@@ -78,6 +84,7 @@ describe('preferences.integrations.google.service', () => {
             });
             rootScope.$digest();
         });
+
         it('should re-load list after delete', (done) => {
             spyOn(api, 'delete').and.callFake(() => q.resolve());
             spyOn(google, 'load').and.callFake(() => q.resolve());

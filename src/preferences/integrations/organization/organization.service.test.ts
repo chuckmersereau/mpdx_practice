@@ -10,11 +10,13 @@ describe('preferences.integrations.organization.service', () => {
             api = _api_;
         });
     });
+
     describe('oAuth', () => {
         beforeEach(() => {
             api.account_list_id = 'account_list_id';
             spyOn(_window.localStorage, 'getItem').and.returnValue('json_web_token');
         });
+
         it('should return an organization oAuthUrl', () => {
             expect(preferencesOrganization.oAuth('123')).toEqual(
                 '/auth/user/donorhub?'
@@ -24,6 +26,7 @@ describe('preferences.integrations.organization.service', () => {
                 + 'organization_id=123'
             );
         });
+
         it('should add custom route', () => {
             expect(preferencesOrganization.oAuth('123', 'setup/connect')).toEqual(
                 '/auth/user/donorhub?'

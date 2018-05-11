@@ -2,24 +2,19 @@ import * as bowser from 'bowser';
 import component from './root.component';
 
 describe('root.component', () => {
-    let $ctrl, state, componentController, scope, rootScope, session, $$window;
+    let $ctrl, state, scope, rootScope, session, $$window;
 
     beforeEach(() => {
         angular.mock.module(component);
         inject(($window, $state, $componentController, $rootScope, _session_) => {
             state = $state;
             $$window = $window;
-            componentController = $componentController;
             rootScope = $rootScope;
             scope = rootScope.$new();
             session = _session_;
-            loadController();
+            $ctrl = $componentController('root', { $scope: scope });
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('root', { $scope: scope });
-    }
 
     describe('constructor', () => {
         it('should set default values', () => {
@@ -68,7 +63,7 @@ describe('root.component', () => {
                 });
 
                 it('should not call state.go', () => {
-                    spyOn(state, 'go').and.callFake(() =>{ });
+                    spyOn(state, 'go').and.callFake(() => { });
                     $ctrl.$onInit();
                     expect(state.go).not.toHaveBeenCalledWith('mobile');
                 });
@@ -84,7 +79,7 @@ describe('root.component', () => {
             let spy;
 
             beforeEach(() => {
-                spy = spyOn($$window.localStorage, 'getItem').and.callFake(() =>{});
+                spy = spyOn($$window.localStorage, 'getItem').and.callFake(() => {});
                 (bowser as any).ios = true;
             });
 

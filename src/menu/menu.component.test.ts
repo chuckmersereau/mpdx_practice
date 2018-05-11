@@ -1,7 +1,7 @@
 import component from './menu.component';
 
 describe('menu.component', () => {
-    let $ctrl, rootScope, scope, componentController, tools;
+    let $ctrl, rootScope, scope, tools;
 
     beforeEach(() => {
         angular.mock.module(component);
@@ -10,14 +10,9 @@ describe('menu.component', () => {
             rootScope = $rootScope;
             scope = rootScope.$new();
             tools = _tools_;
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('menu', { $scope: scope });
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('menu', { $scope: scope });
-    }
 
     describe('$onInit', () => {
         beforeEach(() => {

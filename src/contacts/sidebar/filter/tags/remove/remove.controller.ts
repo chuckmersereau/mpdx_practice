@@ -1,6 +1,11 @@
+import 'angular-gettext';
 import { map, reduce, union } from 'lodash/fp';
-import joinComma from '../../../../../common/fp/joinComma';
+import api, { ApiService } from '../../../../../common/api/api.service';
+import contacts from '../../../../contacts.service';
+import contactsTags, { ContactsTagsService } from '../tags.service';
 import emptyToNull from '../../../../../common/fp/emptyToNull';
+import joinComma from '../../../../../common/fp/joinComma';
+import modal, { ModalService } from '../../../../../common/modal/modal.service';
 
 class RemoveTagController {
     tags: any[];
@@ -63,12 +68,6 @@ class RemoveTagController {
         });
     }
 }
-
-import api, { ApiService } from '../../../../../common/api/api.service';
-import contacts from '../../../../contacts.service';
-import contactsTags, { ContactsTagsService } from '../tags.service';
-import 'angular-gettext';
-import modal, { ModalService } from '../../../../../common/modal/modal.service';
 
 export default angular.module('mpdx.contacts.sidebar.tags.remove.controller', [
     'gettext',

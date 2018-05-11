@@ -2,6 +2,13 @@ import add from './editFields.controller';
 
 describe('contacts.list.editFields.controller', () => {
     let $ctrl, controller, scope;
+
+    function loadController() {
+        return controller('editFieldsController as $ctrl', {
+            $scope: scope
+        });
+    }
+
     beforeEach(() => {
         angular.mock.module(add);
         inject(($controller, $rootScope) => {
@@ -10,12 +17,6 @@ describe('contacts.list.editFields.controller', () => {
             $ctrl = loadController();
         });
     });
-
-    function loadController() {
-        return controller('editFieldsController as $ctrl', {
-            $scope: scope
-        });
-    }
 
     xit('should do something', () => {
         expect($ctrl).toEqual(1);

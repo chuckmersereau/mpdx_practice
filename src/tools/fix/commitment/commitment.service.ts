@@ -1,4 +1,8 @@
 import { assign, concat, defaultTo, reduce, reject } from 'lodash/fp';
+import api, { ApiService } from '../../../common/api/api.service';
+import contacts, { ContactsService } from '../../../contacts/contacts.service';
+import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
+import tools, { ToolsService } from '../../tools.service';
 
 export class FixCommitmentInfoService {
     data: any;
@@ -99,11 +103,6 @@ export class FixCommitmentInfoService {
         });
     }
 }
-
-import api, { ApiService } from '../../../common/api/api.service';
-import contacts, { ContactsService } from '../../../contacts/contacts.service';
-import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
-import tools, { ToolsService } from '../../tools.service';
 
 export default angular.module('mpdx.tools.fix.commitmentInfo.service', [
     api, contacts, serverConstants, tools

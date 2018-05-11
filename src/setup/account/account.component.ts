@@ -1,4 +1,7 @@
 import { defaultTo, get } from 'lodash/fp';
+import accounts, { AccountsService } from '../../common/accounts/accounts.service';
+import setup, { SetupService } from '../setup.service';
+import users, { UsersService } from '../../common/users/users.service';
 
 class AccountController {
     constructor(
@@ -32,10 +35,6 @@ const Account = {
     template: require('./account.html'),
     controller: AccountController
 };
-
-import accounts, { AccountsService } from '../../common/accounts/accounts.service';
-import users, { UsersService } from '../../common/users/users.service';
-import setup, { SetupService } from '../setup.service';
 
 export default angular.module('mpdx.setup.account.component', [
     accounts, setup, users

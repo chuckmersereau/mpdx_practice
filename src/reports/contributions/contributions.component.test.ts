@@ -1,6 +1,114 @@
-import component from './contributions.component';
-import { assign, constant, times } from 'lodash/fp';
 import * as moment from 'moment';
+import { assign, constant, times } from 'lodash/fp';
+import component from './contributions.component';
+
+const loadData = {
+    currencies: [
+        {
+            code: 'NZD',
+            code_symbol_string: 'NZD ($)',
+            name: 'New Zealand dollar',
+            symbol: '$',
+            totals: {
+                year: '25.0',
+                year_converted: 25,
+                months: [50, 0],
+                minimum: 1,
+                maximum: 30,
+                average: 20
+            },
+            donors: [
+                {
+                    contact: {
+                        contact_id: 'contact_id_2',
+                        contact_name: 'Abraham, Adam',
+                        late_by_30_days: false,
+                        late_by_60_days: false,
+                        pledge_amount: '25.0',
+                        pledge_currency: 'NZD',
+                        pledge_frequency: null,
+                        status: 'Never Contacted'
+                    },
+                    monthlyDonations: [
+                        {
+                            donations: [
+                                {
+                                    date: '2016-05-19',
+                                    amount: '25.0',
+                                    currency: {
+                                        code: 'NZD',
+                                        symbol: '$'
+                                    }
+                                }
+                            ],
+                            total: 25,
+                            nativeTotal: 25,
+                            convertedTotal: 25
+                        },
+                        { donations: [], total: 0, nativeTotal: 0, convertedTotal: 0 }
+                    ],
+                    average: 12.5,
+                    maximum: 25,
+                    minimum: 25,
+                    total: 25
+                }, {
+                    contact: {
+                        contact_id: 'contact_id_1',
+                        contact_name: 'Smith, Sarah',
+                        late_by_30_days: false,
+                        late_by_60_days: false,
+                        pledge_amount: '25.0',
+                        pledge_currency: 'NZD',
+                        pledge_frequency: 'Monthly',
+                        status: 'Partner - Financial'
+                    },
+                    monthlyDonations: [
+                        {
+                            donations: [
+                                {
+                                    date: '2016-05-19',
+                                    amount: '25.0',
+                                    currency: {
+                                        code: 'NZD',
+                                        symbol: '$'
+                                    }
+                                }
+                            ],
+                            total: 25,
+                            nativeTotal: 25,
+                            convertedTotal: 25
+                        },
+                        { donations: [], total: 0, nativeTotal: 0, convertedTotal: 0 }
+                    ],
+                    average: 12.5,
+                    maximum: 25,
+                    minimum: 25,
+                    total: 25
+                }
+            ]
+        }
+    ],
+    years: { '2016': 2 },
+    months: ['2016-05-01', '2016-06-01'],
+    total: 25,
+    salaryCurrency: {
+        code: 'NZD',
+        code_symbol_string: 'NZD ($)',
+        name: 'New Zealand dollar',
+        symbol: '$'
+    }
+};
+
+const csvData = [
+    ['Currency', 'NZD', '$'],
+    [
+        'Partner', 'Status', 'Pledge', 'Average', 'Minimum', 'Maximum', 'May 16',
+        'Jun 16', 'Total (last month excluded from total)'
+    ],
+    ['Abraham, Adam', 'Never Contacted', '$25.0 NZD ', 13, 25, 25, 25, 0, 25],
+    ['Smith, Sarah', 'Partner - Financial', '$25.0 NZD Monthly', 13, 25, 25, 25, 0, 25],
+    ['Totals', '', '', 20, 1, 30, 50, 0, 25]
+];
 
 describe('reports.contributions.component', () => {
     let $ctrl, rootScope, scope, serverConstants, componentController, api, designationAccounts, gettextCatalog, q;
@@ -263,6 +371,7 @@ describe('reports.contributions.component', () => {
             })]);
         });
     });
+
     describe('getDonorTotals', () => {
         const value = { totals: { totes: {} } };
         const data = [{
@@ -306,6 +415,7 @@ describe('reports.contributions.component', () => {
             });
         });
     });
+
     describe('getDonors', () => {
         const data = { donor_infos: [{ contact_id: 2, contact_name: 'a, b' }, { contact_id: 1, contact_name: 'b, c' }] };
         const info = [
@@ -339,6 +449,7 @@ describe('reports.contributions.component', () => {
             ]);
         });
     });
+
     describe('getMonthlyDonations', () => {
         const donor = {
             months: [
@@ -432,6 +543,7 @@ describe('reports.contributions.component', () => {
             });
         });
     });
+
     describe('percentage', () => {
         describe('total set > 0', () => {
             beforeEach(() => {
@@ -524,123 +636,17 @@ describe('reports.contributions.component', () => {
             $ctrl.sort = 'a';
             $ctrl.sortReverse = true;
         });
+
         it('should change sort', () => {
             $ctrl.changeSort('b');
             expect($ctrl.sort).toEqual('b');
             expect($ctrl.sortReverse).toBeFalsy();
         });
+
         it('should reverse sort', () => {
             $ctrl.changeSort('a');
             expect($ctrl.sort).toEqual('a');
             expect($ctrl.sortReverse).toBeFalsy();
         });
     });
-
-    const loadData = {
-        currencies: [
-            {
-                code: 'NZD',
-                code_symbol_string: 'NZD ($)',
-                name: 'New Zealand dollar',
-                symbol: '$',
-                totals: {
-                    year: '25.0',
-                    year_converted: 25,
-                    months: [50, 0],
-                    minimum: 1,
-                    maximum: 30,
-                    average: 20
-                },
-                donors: [
-                    {
-                        contact: {
-                            contact_id: 'contact_id_2',
-                            contact_name: 'Abraham, Adam',
-                            late_by_30_days: false,
-                            late_by_60_days: false,
-                            pledge_amount: '25.0',
-                            pledge_currency: 'NZD',
-                            pledge_frequency: null,
-                            status: 'Never Contacted'
-                        },
-                        monthlyDonations: [
-                            {
-                                donations: [
-                                    {
-                                        date: '2016-05-19',
-                                        amount: '25.0',
-                                        currency: {
-                                            code: 'NZD',
-                                            symbol: '$'
-                                        }
-                                    }
-                                ],
-                                total: 25,
-                                nativeTotal: 25,
-                                convertedTotal: 25
-                            },
-                            { donations: [], total: 0, nativeTotal: 0, convertedTotal: 0 }
-                        ],
-                        average: 12.5,
-                        maximum: 25,
-                        minimum: 25,
-                        total: 25
-                    }, {
-                        contact: {
-                            contact_id: 'contact_id_1',
-                            contact_name: 'Smith, Sarah',
-                            late_by_30_days: false,
-                            late_by_60_days: false,
-                            pledge_amount: '25.0',
-                            pledge_currency: 'NZD',
-                            pledge_frequency: 'Monthly',
-                            status: 'Partner - Financial'
-                        },
-                        monthlyDonations: [
-                            {
-                                donations: [
-                                    {
-                                        date: '2016-05-19',
-                                        amount: '25.0',
-                                        currency: {
-                                            code: 'NZD',
-                                            symbol: '$'
-                                        }
-                                    }
-                                ],
-                                total: 25,
-                                nativeTotal: 25,
-                                convertedTotal: 25
-                            },
-                            { donations: [], total: 0, nativeTotal: 0, convertedTotal: 0 }
-                        ],
-                        average: 12.5,
-                        maximum: 25,
-                        minimum: 25,
-                        total: 25
-                    }
-                ]
-            }
-        ],
-        years: { '2016': 2 },
-        months: ['2016-05-01', '2016-06-01'],
-        total: 25,
-        salaryCurrency: {
-            code: 'NZD',
-            code_symbol_string: 'NZD ($)',
-            name: 'New Zealand dollar',
-            symbol: '$'
-        }
-    };
-
-    const csvData = [
-        ['Currency', 'NZD', '$'],
-        [
-            'Partner', 'Status', 'Pledge', 'Average', 'Minimum', 'Maximum', 'May 16',
-            'Jun 16', 'Total (last month excluded from total)'
-        ],
-        ['Abraham, Adam', 'Never Contacted', '$25.0 NZD ', 13, 25, 25, 25, 0, 25],
-        ['Smith, Sarah', 'Partner - Financial', '$25.0 NZD Monthly', 13, 25, 25, 25, 0, 25],
-        ['Totals', '', '', 20, 1, 30, 50, 0, 25]
-    ];
 });

@@ -1,3 +1,5 @@
+import api, { ApiService } from '../api/api.service';
+
 export class DonorAccountsService {
     constructor(
         private api: ApiService
@@ -17,8 +19,6 @@ export class DonorAccountsService {
         );
     }
 }
-
-import api, { ApiService } from '../api/api.service';
 
 export default angular.module('mpdx.common.donorAccounts.service', [api])
     .service('donorAccounts', DonorAccountsService).name;

@@ -1,4 +1,4 @@
-const Fix = {
+const Fix: ng.IComponentOptions = {
     template: require('./fix.html')
 };
 

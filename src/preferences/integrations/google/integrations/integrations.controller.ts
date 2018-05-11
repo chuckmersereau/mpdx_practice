@@ -1,4 +1,11 @@
+import 'angular-block-ui';
+import 'angular-gettext';
 import { concat, pullAt } from 'lodash/fp';
+import api, { ApiService } from '../../../../common/api/api.service';
+import google, { GoogleService } from '../google.service';
+import googleIntegrations, { GoogleIntegrationsService } from './integrations.service';
+import modal, { ModalService } from '../../../../common/modal/modal.service';
+import serverConstants, { ServerConstantsService } from '../../../../common/serverConstants/serverConstants.service';
 
 class GoogleIntegrationsModalController {
     activeTab: string;
@@ -62,14 +69,6 @@ class GoogleIntegrationsModalController {
         this.googleIntegration.email_blacklist = pullAt([index], this.googleIntegration.email_blacklist);
     }
 }
-
-import 'angular-block-ui';
-import 'angular-gettext';
-import google, { GoogleService } from '../google.service';
-import googleIntegrations, { GoogleIntegrationsService } from './integrations.service';
-import api, { ApiService } from '../../../../common/api/api.service';
-import modal, { ModalService } from '../../../../common/modal/modal.service';
-import serverConstants, { ServerConstantsService } from '../../../../common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.preferences.integrations.google.integrations.controller', [
     'blockUI', 'gettext',

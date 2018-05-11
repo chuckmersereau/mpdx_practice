@@ -1,5 +1,5 @@
-import service from './accounts.service';
 import * as moment from 'moment';
+import service from './accounts.service';
 
 describe('common.accounts.service', () => {
     let rootScope, accounts, api, q;
@@ -461,6 +461,7 @@ describe('common.accounts.service', () => {
         beforeEach(() => {
             spyOn(api, 'get').and.callFake(() => q.resolve([{ id: 2 }]));
         });
+
         it('shouldn\'t call api unless reset', (done) => {
             accounts.data = [{ id: 1 }];
             accounts.load().then(() => {
@@ -470,6 +471,7 @@ describe('common.accounts.service', () => {
             });
             rootScope.$digest();
         });
+
         it('should call api', (done) => {
             accounts.data = [];
             accounts.load().then(() => {

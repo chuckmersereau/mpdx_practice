@@ -8,14 +8,9 @@ describe('home.progress.welcome.component', () => {
         inject(($componentController, $rootScope) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('homeWelcome', { $scope: scope }, {});
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('homeWelcome', { $scope: scope }, {});
-    }
 
     describe('constructor', () => {
         it('should define view objects', () => {

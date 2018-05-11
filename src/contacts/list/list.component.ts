@@ -1,3 +1,4 @@
+import 'angular-gettext';
 import {
     concat,
     defaultTo,
@@ -8,7 +9,19 @@ import {
     reject,
     sortBy
 } from 'lodash/fp';
+import { ServerConstantsService } from '../../common/serverConstants/serverConstants.service';
+import { StateParams, StateService } from '@uirouter/core';
+import accounts, { AccountsService } from '../../common/accounts/accounts.service';
+import alerts, { AlertsService } from '../../common/alerts/alerts.service';
+import api, { ApiService } from '../../common/api/api.service';
+import contactFilter, { ContactFilterService } from '../sidebar/filter/filter.service';
+import contacts, { ContactsService } from '../contacts.service';
+import contactsTags, { ContactsTagsService } from '../sidebar/filter/tags/tags.service';
+import modal, { ModalService } from '../../common/modal/modal.service';
 import pagination from '../../common/pagination/pagination';
+import session, { SessionService } from '../../common/session/session.service';
+import tasks, { TasksService } from '../../tasks/tasks.service';
+import users, { UsersService } from '../../common/users/users.service';
 
 class ListController {
     allSelected: boolean;
@@ -334,20 +347,6 @@ const ContactList = {
         selected: '='
     }
 };
-
-import 'angular-gettext';
-import accounts, { AccountsService } from '../../common/accounts/accounts.service';
-import alerts, { AlertsService } from '../../common/alerts/alerts.service';
-import api, { ApiService } from '../../common/api/api.service';
-import contacts, { ContactsService } from '../contacts.service';
-import contactFilter, { ContactFilterService } from '../sidebar/filter/filter.service';
-import contactsTags, { ContactsTagsService } from '../sidebar/filter/tags/tags.service';
-import modal, { ModalService } from '../../common/modal/modal.service';
-import session, { SessionService } from '../../common/session/session.service';
-import tasks, { TasksService } from '../../tasks/tasks.service';
-import users, { UsersService } from '../../common/users/users.service';
-import { StateParams, StateService } from '@uirouter/core';
-import { ServerConstantsService } from '../../common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.contacts.list.component', [
     'gettext',

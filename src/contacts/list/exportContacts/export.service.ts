@@ -1,3 +1,4 @@
+import api, { ApiService } from '../../../common/api/api.service';
 import config from '../../../config';
 
 export class ExportContactsService {
@@ -26,8 +27,6 @@ export class ExportContactsService {
         });
     }
 }
-
-import api, { ApiService } from '../../../common/api/api.service';
 
 export default angular.module('mpdx.contacts.list.exportContacts.service', [
     api

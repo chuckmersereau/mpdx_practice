@@ -1,3 +1,6 @@
+import { StateService } from '@uirouter/core';
+import uiRouter from '@uirouter/angularjs';
+
 class ImportTntSuccessController {
     constructor(
         private $scope: mgcrea.ngStrap.modal.IModalScope,
@@ -12,9 +15,6 @@ class ImportTntSuccessController {
         this.$scope.$hide();
     }
 }
-
-import { StateService } from '@uirouter/core';
-import uiRouter from '@uirouter/angularjs';
 
 export default angular.module('mpdx.tools.import.tnt.success.controller', [
     uiRouter

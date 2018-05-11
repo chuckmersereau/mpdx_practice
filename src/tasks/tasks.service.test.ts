@@ -1,5 +1,5 @@
-import service from './tasks.service';
 import * as moment from 'moment';
+import service from './tasks.service';
 
 const accountListId = 123;
 const contactList = [];
@@ -31,6 +31,7 @@ describe('tasks.service', () => {
         spyOn(gettextCatalog, 'getPlural').and.callThrough();
         spyOn(alerts, 'addAlert').and.callFake((data) => data);
     });
+
     describe('create', () => {
         xit('should only add 1 and only 1 comment on creation', (done) => {
             spyOn(api, 'post').and.callFake(() => q.resolve({ id: 1 }));
@@ -44,6 +45,7 @@ describe('tasks.service', () => {
             });
             rootScope.$digest();
         });
+
         xit('should only add 1 and only 1 comment on creation with contacts', (done) => {
             spyOn(api, 'post').and.callFake(() => q.resolve({ id: 1 }));
             tasks.create({}, ['1', '2'], 'comment').then(() => {
@@ -56,6 +58,7 @@ describe('tasks.service', () => {
             });
             rootScope.$digest();
         });
+
         it('should alert', (done) => {
             spyOn(api, 'post').and.callFake(() => q.resolve({ id: 1 }));
             tasks.create({}, [], 'comment').then(() => {
@@ -66,6 +69,7 @@ describe('tasks.service', () => {
             });
             rootScope.$digest();
         });
+
         it('should alert failure', (done) => {
             spyOn(api, 'post').and.callFake(() => q.reject({ id: 1 }));
             tasks.create({}, [], 'comment').then(() => {
@@ -77,6 +81,7 @@ describe('tasks.service', () => {
             rootScope.$digest();
         });
     });
+
     describe('constructor', () => {
         it('should set default values', () => {
             expect(tasks.analytics).toEqual(null);
@@ -84,6 +89,7 @@ describe('tasks.service', () => {
             expect(tasks.loading).toEqual(true);
         });
     });
+
     describe('save', () => {
         beforeEach(() => {
             spyOn(tasks, 'mutateTagList').and.callFake((data) => data);
@@ -96,14 +102,17 @@ describe('tasks.service', () => {
             tasks.save(task);
             expect(tasks.mutateTagList).toHaveBeenCalledWith(task);
         });
+
         it('should call mutateComment', () => {
             tasks.save(task, 'abc');
             expect(tasks.mutateComment).toHaveBeenCalledWith(task, 'abc');
         });
+
         it('should call the api', () => {
             tasks.save(task);
             expect(api.put).toHaveBeenCalledWith(`tasks/${task.id}`, task);
         });
+
         it('should call change', (done) => {
             tasks.save(task).then(() => {
                 expect(tasks.change).toHaveBeenCalledWith();
@@ -112,12 +121,14 @@ describe('tasks.service', () => {
             rootScope.$digest();
         });
     });
+
     describe('logModal', () => {
         beforeEach(() => {
             spyOn(serverConstants, 'load').and.callFake(() => q.resolve());
             spyOn(tasksTags, 'load').and.callFake(() => q.resolve());
             spyOn(tasks, 'getContactsForLogModal').and.callFake(() => q.resolve());
         });
+
         it('should open the log task modal', () => {
             spyOn(modal, 'open').and.callFake(() => {});
             tasks.logModal();
@@ -127,6 +138,7 @@ describe('tasks.service', () => {
                 resolve: jasmine.any(Object)
             });
         });
+
         it('should handle the resolves', () => {
             spyOn(modal, 'open').and.callThrough();
             tasks.logModal();
@@ -135,6 +147,7 @@ describe('tasks.service', () => {
             expect(tasks.getContactsForLogModal).toHaveBeenCalledWith(jasmine.any(Object), jasmine.any(Object), []);
         });
     });
+
     describe('mutateComments', () => {
         it('should build a comment array', () => {
             users.current.id = 234;
@@ -143,6 +156,7 @@ describe('tasks.service', () => {
                 { id: jasmine.any(String), body: 'def', person: { id: 234 } }
             ]);
         });
+
         it('should still build a comment array', () => {
             users.current.id = 321;
             expect(tasks.mutateComments([{ id: 333, body: 'abc', person: { id: 234 } }, 'def'])).toEqual([
@@ -150,33 +164,40 @@ describe('tasks.service', () => {
                 { id: jasmine.any(String), body: 'def', person: { id: 321 } }
             ]);
         });
+
         it('should handle no comments', () => {
             expect(tasks.mutateComments([])).toEqual(null);
         });
+
         it('should handle empty comments', () => {
             expect(tasks.mutateComments([''])).toEqual(null);
         });
     });
+
     describe('reuseTask', () => {
         it('should be true', () => {
             expect(tasks.reuseTask({ result: 'Attempted' }, 'call')).toBeTruthy();
             expect(tasks.reuseTask({ result: 'Attempted - Left Message' }, 'call')).toBeTruthy();
         });
+
         it('should be false', () => {
             expect(tasks.reuseTask({ result: null }, 'call')).toBeFalsy();
             expect(tasks.reuseTask({ result: 'Attempted - Left Message' }, undefined)).toBeFalsy();
         });
     });
+
     describe('useContacts', () => {
         it('should be true', () => {
             expect(tasks.useContacts(undefined, false)).toBeTruthy();
             expect(tasks.useContacts({ result: 'Attempted - Left Message' }, true)).toBeTruthy();
         });
+
         it('should be false', () => {
             expect(tasks.useContacts({ result: '' }, false)).toBeFalsy();
             expect(tasks.useContacts({ result: 'Attempted - Left Message' }, undefined)).toBeFalsy();
         });
     });
+
     describe('getDataForAddTask', () => {
         describe('new task', () => {
             const activity = 'Call';
@@ -201,6 +222,7 @@ describe('tasks.service', () => {
                 spyOn(tasks, 'useContacts').and.callFake(() => true);
                 spyOn(tasks, 'getNames').and.callFake(() => q.resolve(contactList));
             });
+
             it('should set task activity_type to injected param', (done) => {
                 tasks.getDataForAddTask(params).then((data) => {
                     expect(data.task.activity_type).toEqual(activity);
@@ -208,6 +230,7 @@ describe('tasks.service', () => {
                 });
                 rootScope.$digest();
             });
+
             it('should get and assign contact names', (done) => {
                 tasks.getDataForAddTask(params).then((data) => {
                     expect(data.contactsList).toEqual([]);
@@ -216,6 +239,7 @@ describe('tasks.service', () => {
                 expect(tasks.getNames).toHaveBeenCalledWith([1]);
                 rootScope.$digest();
             });
+
             it('should handle contacts.show state', () => {
                 params.$state.current.name = 'contacts.show';
                 params.contacts.current.id = 1;
@@ -223,6 +247,7 @@ describe('tasks.service', () => {
                 expect(tasks.getNames).toHaveBeenCalledWith([1]);
             });
         });
+
         describe('follow up task', () => {
             const activity = 'Call';
             const comments = ['abc', 'def'];
@@ -256,9 +281,11 @@ describe('tasks.service', () => {
                 const day = moment('2015-12-22').toDate();
                 jasmine.clock().mockDate(day);
             });
+
             afterEach(function() {
                 jasmine.clock().uninstall();
             });
+
             it('should create a task', (done) => {
                 tasks.getDataForAddTask(params).then((data) => {
                     expect(data.task).toEqual({
@@ -274,6 +301,7 @@ describe('tasks.service', () => {
             });
         });
     });
+
     describe('getNames', () => {
         it('should query an array of ids for names', () => {
             spyOn(api, 'get').and.callFake((data) => q.resolve(data));
@@ -293,12 +321,14 @@ describe('tasks.service', () => {
             });
         });
     });
+
     describe('addModal', () => {
         beforeEach(() => {
             spyOn(serverConstants, 'load').and.callFake(() => q.resolve());
             spyOn(tasksTags, 'load').and.callFake(() => q.resolve());
             spyOn(tasks, 'getDataForAddTask').and.callFake(() => q.resolve());
         });
+
         it('should open the add modal', () => {
             spyOn(modal, 'open').and.callFake(() => {});
             tasks.addModal({});
@@ -308,6 +338,7 @@ describe('tasks.service', () => {
                 resolve: jasmine.any(Object)
             });
         });
+
         it('should handle the resolves', () => {
             spyOn(modal, 'open').and.callThrough();
             tasks.addModal({});
@@ -323,6 +354,7 @@ describe('tasks.service', () => {
             });
         });
     });
+
     describe('getContactsForLogModal', () => {
         let state = {
             current: {
@@ -338,6 +370,7 @@ describe('tasks.service', () => {
         beforeEach(() => {
             spyOn(tasks, 'getNames').and.callFake(() => q.resolve(contactList));
         });
+
         it('should get and assign contact names', (done) => {
             tasks.getContactsForLogModal(state, contacts, [undefined]).then((data) => {
                 expect(data).toEqual([]);
@@ -346,6 +379,7 @@ describe('tasks.service', () => {
             expect(tasks.getNames).not.toHaveBeenCalled();
             rootScope.$digest();
         });
+
         it('should handle contacts.show state', () => {
             state.current.name = 'contacts.show';
             contacts.current.id = 1;
@@ -353,11 +387,13 @@ describe('tasks.service', () => {
             expect(tasks.getNames).toHaveBeenCalledWith([1]);
         });
     });
+
     describe('load', () => {
         beforeEach(() => {
             spyOn(api, 'get').and.callFake(() => q.resolve({ contacts: ['a'] }));
             spyOn(contacts, 'fixPledgeAmountAndFrequencies').and.callFake((data) => data);
         });
+
         it('should query the api for a tasks comments & contacts info', () => {
             tasks.load(1);
             expect(api.get).toHaveBeenCalledWith('tasks/1', {
@@ -378,6 +414,7 @@ describe('tasks.service', () => {
                 }
             });
         });
+
         it('should mutate the contact data', (done) => {
             tasks.load(1).then((task) => {
                 expect(contacts.fixPledgeAmountAndFrequencies).toHaveBeenCalledWith(['a']);
@@ -387,6 +424,7 @@ describe('tasks.service', () => {
             rootScope.$digest();
         });
     });
+
     describe('delete', () => {
         const msg = 'Are you sure you wish to delete the selected task?';
         const task = { id: 1 };
@@ -394,14 +432,17 @@ describe('tasks.service', () => {
             spyOn(tasks, 'deleteAfterConfirm').and.callFake(() => {});
             spyOn(modal, 'confirm').and.callFake(() => q.resolve());
         });
+
         it('should translate', () => {
             tasks.delete(task);
             expect(gettextCatalog.getString).toHaveBeenCalledWith(msg);
         });
+
         it('should confirm modal', () => {
             tasks.delete(task);
             expect(modal.confirm).toHaveBeenCalledWith(msg);
         });
+
         it('should call deleteAfterConfirm', (done) => {
             tasks.delete(task).then(() => {
                 expect(tasks.deleteAfterConfirm).toHaveBeenCalledWith(task);
@@ -410,6 +451,7 @@ describe('tasks.service', () => {
             rootScope.$digest();
         });
     });
+
     describe('deleteAfterConfirm', () => {
         const task = { id: 1 };
         it('should call api delete', () => {
@@ -417,6 +459,7 @@ describe('tasks.service', () => {
             tasks.deleteAfterConfirm(task);
             expect(api.delete).toHaveBeenCalledWith('tasks/1');
         });
+
         it('should alert success', (done) => {
             const msg = 'Task successfully deleted';
             spyOn(api, 'delete').and.callFake(() => q.resolve());
@@ -427,6 +470,7 @@ describe('tasks.service', () => {
             });
             rootScope.$digest();
         });
+
         it('should alert failure', (done) => {
             const msg = 'Unable to delete task';
             spyOn(api, 'delete').and.callFake(() => q.reject(''));
@@ -438,12 +482,14 @@ describe('tasks.service', () => {
             rootScope.$digest();
         });
     });
+
     describe('create', () => {
         const task = { id: 1, account_list: { id: accountListId } };
         const contactIds = [{ id: 2 }, { id: 3 }];
         beforeEach(() => {
             spyOn(api, 'post').and.callFake(() => q.resolve());
         });
+
         it('should call the api', () => {
             tasks.create(task, contactIds);
             expect(api.post).toHaveBeenCalledWith({

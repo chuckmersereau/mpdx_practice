@@ -1,21 +1,16 @@
 import component from './daterange.component';
 
 describe('tasks.filter.daterange', () => {
-    let $ctrl, rootScope, scope, componentController;
+    let $ctrl, rootScope, scope;
 
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('tasksFilterDaterange', { $scope: scope }, {});
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('tasksFilterDaterange', { $scope: scope }, {});
-    }
 
     describe('constructor', () => {
         xit('should do something', () => {

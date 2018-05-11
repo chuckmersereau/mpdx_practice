@@ -1,8 +1,12 @@
-import component from './auth.component';
 import { Promise } from 'core-js';
+import component from './auth.component';
 
 describe('auth.component', () => {
     let $ctrl, componentController, scope, rootScope, http, location, $$window, state;
+
+    function loadController() {
+        $ctrl = componentController('auth', { $scope: scope });
+    }
 
     beforeEach(() => {
         angular.mock.module(component);
@@ -18,10 +22,6 @@ describe('auth.component', () => {
             spyOn(state, 'go').and.callThrough();
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('auth', { $scope: scope });
-    }
 
     describe('$onInit', () => {
         let spy;

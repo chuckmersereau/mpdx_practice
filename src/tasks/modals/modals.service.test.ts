@@ -9,6 +9,7 @@ describe('common.tasksModals.service', () => {
             tasksModals = _tasksModals_;
         });
     });
+
     xit('should do something', () => {
         expect(tasksModals).toEqual(1);
         expect(rootScope).toEqual(1);

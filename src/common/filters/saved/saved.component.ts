@@ -1,5 +1,9 @@
+import 'angular-gettext';
 import { defaultTo, filter, get, map, pull, replace, startsWith, union } from 'lodash/fp';
+import api, { ApiService } from '../../api/api.service';
+import modal, { ModalService } from '../../modal/modal.service';
 import replaceAll from '../../fp/replaceAll';
+import users, { UsersService } from '../../users/users.service';
 
 class SavedController {
     savedFilterNames: string[];
@@ -68,12 +72,6 @@ export function strReplace() {
         return input.replace(new RegExp(from, 'g'), to);
     };
 }
-
-
-import 'angular-gettext';
-import api, {ApiService} from "../../api/api.service";
-import modal, {ModalService} from "../../modal/modal.service";
-import users, {UsersService} from "../../users/users.service";
 
 export default angular.module('mpdx.common.filters.saved.component', [
     api, 'gettext', modal,

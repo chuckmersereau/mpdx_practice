@@ -1,4 +1,5 @@
 import { findIndex, isArray } from 'lodash/fp';
+import contacts, { ContactsService } from '../../contacts/contacts.service';
 
 class SelectorController {
     inputTag: Element;
@@ -49,8 +50,6 @@ const Selector = {
         ngModel: '='
     }
 };
-
-import contacts, { ContactsService } from '../../contacts/contacts.service';
 
 export default angular.module('mpdx.common.contactsSelector.component', [
     contacts

@@ -1,4 +1,8 @@
+import 'angular-gettext';
 import { eq, get } from 'lodash/fp';
+import api, { ApiService } from '../../../../common/api/api.service';
+import modal, { ModalService } from '../../../../common/modal/modal.service';
+import users, { UsersService } from '../../../../common/users/users.service';
 
 class CommentController {
     comment: any;
@@ -40,11 +44,6 @@ const Comment = {
         onCommentRemove: '&'
     }
 };
-
-import 'angular-gettext';
-import modal, { ModalService } from '../../../../common/modal/modal.service';
-import api, { ApiService } from '../../../../common/api/api.service';
-import users, { UsersService } from '../../../../common/users/users.service';
 
 export default angular.module('mpdx.tasks.list.drawer.comment.component', [
     'gettext',

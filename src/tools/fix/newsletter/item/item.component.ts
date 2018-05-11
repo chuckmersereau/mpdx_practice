@@ -1,3 +1,8 @@
+import 'angular-block-ui';
+import contacts, { ContactsService } from '../../../../contacts/contacts.service';
+import fixSendNewsletter, { FixSendNewsletterService } from '../newsletter.service';
+import serverConstants, { ServerConstantsService } from '../../../../common/serverConstants/serverConstants.service';
+
 class ItemController {
     contact: any;
     constructor(
@@ -17,18 +22,13 @@ class ItemController {
     }
 }
 
-const Item = {
+const Item: ng.IComponentOptions = {
     controller: ItemController,
     template: require('./item.html'),
     bindings: {
         contact: '<'
     }
 };
-
-import 'angular-block-ui';
-import contacts, { ContactsService } from '../../../../contacts/contacts.service';
-import fixSendNewsletter, { FixSendNewsletterService } from '../newsletter.service';
-import serverConstants, { ServerConstantsService } from '../../../../common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.tools.fix.sendNewsletter.item.component', [
     'blockUI',

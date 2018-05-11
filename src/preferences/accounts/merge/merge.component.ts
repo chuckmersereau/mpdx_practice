@@ -1,4 +1,10 @@
+import 'angular-gettext';
 import { assign, findIndex, reject } from 'lodash/fp';
+import { StateService } from '@uirouter/core';
+import accounts, { AccountsService } from '../../../common/accounts/accounts.service';
+import api, { ApiService } from '../../../common/api/api.service';
+import uiRouter from '@uirouter/angularjs';
+import users, { UsersService } from '../../../common/users/users.service';
 
 class MergePreferencesController {
     onSave: any;
@@ -44,13 +50,6 @@ const Merge = {
         onSave: '&'
     }
 };
-
-import 'angular-gettext';
-import uiRouter from '@uirouter/angularjs';
-import { StateService } from '@uirouter/core';
-import accounts, { AccountsService } from '../../../common/accounts/accounts.service';
-import api, { ApiService } from '../../../common/api/api.service';
-import users, { UsersService } from '../../../common/users/users.service';
 
 export default angular.module('mpdx.preferences.accounts.merge.component', [
     'gettext', uiRouter,

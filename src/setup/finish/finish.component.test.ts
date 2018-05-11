@@ -1,24 +1,19 @@
 import component from './finish.component';
 
 describe('setup.start.component', () => {
-    let $ctrl, componentController, scope, rootScope, state, setup, q;
+    let $ctrl, scope, rootScope, state, setup, q;
 
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, $state, _setup_, $q) => {
-            componentController = $componentController;
             rootScope = $rootScope;
             state = $state;
             setup = _setup_;
             q = $q;
             scope = rootScope.$new();
-            loadController();
+            $ctrl = $componentController('setupFinish', { $scope: scope });
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('setupFinish', { $scope: scope });
-    }
 
     describe('$onInit', () => {
         it('should call setPosition', () => {

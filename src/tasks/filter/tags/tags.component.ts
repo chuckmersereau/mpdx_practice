@@ -1,3 +1,5 @@
+import tasksTags, { TasksTagsService } from './tags.service';
+
 class TagsController {
     hideTags: boolean;
     constructor(
@@ -11,8 +13,6 @@ const Tags = {
     controller: TagsController,
     template: require('./tags.html')
 };
-
-import tasksTags, { TasksTagsService } from './tags.service';
 
 export default angular.module('mpdx.tasks.tags', [
     tasksTags

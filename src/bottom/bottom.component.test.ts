@@ -1,8 +1,13 @@
-import bottom from './bottom.component';
 import { HelpMock } from '../common/help/help.service';
+import bottom from './bottom.component';
 
 describe('bottom.component', () => {
     let $ctrl, scope, componentController, help;
+
+    function loadController() {
+        $ctrl = componentController('bottom', { $scope: scope }, { });
+    }
+
     beforeEach(() => {
         angular.mock.module(HelpMock);
         angular.mock.module(bottom);
@@ -14,14 +19,12 @@ describe('bottom.component', () => {
         });
     });
 
-    function loadController() {
-        $ctrl = componentController('bottom', { $scope: scope }, { });
-    }
     describe('constructor', () => {
         it('should set the year', () => {
             expect($ctrl.year).toEqual(new Date().getFullYear());
         });
     });
+
     describe('showHelp', () => {
         it('should show help', () => {
             spyOn(help, 'showHelp').and.callFake(() => {});

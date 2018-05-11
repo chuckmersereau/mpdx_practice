@@ -1,4 +1,7 @@
 import { map } from 'lodash/fp';
+import api, { ApiService } from '../../../../common/api/api.service';
+import contacts from '../../../tasks.service';
+import contactsTags, { TasksTagsService } from '../tags.service';
 
 class AddTagController {
     tags: any[];
@@ -45,10 +48,6 @@ class AddTagController {
         });
     }
 }
-
-import api, { ApiService } from '../../../../common/api/api.service';
-import contacts from '../../../tasks.service';
-import contactsTags, { TasksTagsService } from '../tags.service';
 
 export default angular.module('mpdxApp.tasks.filter.tags.add.controller', [
     api, contacts, contactsTags

@@ -1,4 +1,6 @@
-import { get, find } from 'lodash/fp';
+import 'angular-gettext';
+import { find, get } from 'lodash/fp';
+import locale, { LocaleService } from '../locale/locale.service';
 
 class DisplayController {
     dayFirst: boolean;
@@ -44,9 +46,6 @@ const Display = {
         day: '<'
     }
 };
-
-import 'angular-gettext';
-import locale, { LocaleService } from '../locale/locale.service';
 
 export default angular.module('mpdx.common.twoPartDateDisplay.component', [
     'gettext',

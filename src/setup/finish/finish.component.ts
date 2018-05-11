@@ -1,4 +1,6 @@
 import { StateService } from '@uirouter/core';
+import setup, { SetupService } from '../setup.service';
+import uiRouter from '@uirouter/angularjs';
 
 class FinishController {
     constructor(
@@ -27,9 +29,6 @@ const Finish = {
     template: require('./finish.html'),
     controller: FinishController
 };
-
-import uiRouter from '@uirouter/angularjs';
-import setup, { SetupService } from '../setup.service';
 
 export default angular.module('mpdx.setup.finish.component', [
     uiRouter,

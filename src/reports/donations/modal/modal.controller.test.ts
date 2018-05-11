@@ -1,5 +1,5 @@
-import modalController from './modal.controller';
 import { isEqual } from 'lodash/fp';
+import modalController from './modal.controller';
 
 let donation = {
     id: 'donation_id',
@@ -12,6 +12,17 @@ const appealId = 'appeal_id';
 
 xdescribe('donation.modal.controller', () => {
     let $ctrl, controller, scope, gettextCatalog, accounts, modal, designationAccounts, api, rootScope, appeals, q;
+
+    function loadController(data: any = donation) {
+        if (!accounts.current) {
+            accounts.current = {};
+        }
+        $ctrl = controller('donationModalController as $ctrl', {
+            $scope: scope,
+            donation: data
+        });
+    }
+
     beforeEach(() => {
         angular.mock.module(modalController);
         inject((
@@ -34,16 +45,6 @@ xdescribe('donation.modal.controller', () => {
         spyOn(rootScope, '$emit').and.callFake(() => {});
     });
 
-    function loadController(data: any = donation) {
-        if (!accounts.current) {
-            accounts.current = {};
-        }
-        $ctrl = controller('donationModalController as $ctrl', {
-            $scope: scope,
-            donation: data
-        });
-    }
-
     describe('constructor', () => {
         it('should clone the donation', () => {
             expect(isEqual($ctrl.donation, donation)).toBeTruthy();
@@ -53,6 +54,7 @@ xdescribe('donation.modal.controller', () => {
         it('should set the initialDonation', () => {
             expect($ctrl.initialDonation).toEqual(donation);
         });
+
         it('should handle a null motivation', () => {
             const donation = { id: 'donation_id', amount: '0.00' };
             loadController(donation);
@@ -103,12 +105,14 @@ xdescribe('donation.modal.controller', () => {
                 spyOn($ctrl, 'getSavePromise').and.callFake((data) => q.resolve(data));
                 spyOn(scope, '$hide').and.callFake(() => {});
             });
+
             it('should call donations.save', () => {
                 $ctrl.save();
                 expect($ctrl.getSavePromise).toHaveBeenCalledWith({ id: 'donation_id' }, successMessage, errorMessage);
                 expect(gettextCatalog.getString).toHaveBeenCalledWith(successMessage);
                 expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
             });
+
             it('should hide modal', (done) => {
                 $ctrl.save().then(() => {
                     expect(scope.$hide).toHaveBeenCalled();
@@ -260,11 +264,13 @@ xdescribe('donation.modal.controller', () => {
             $ctrl.onAppealSelected(appeal);
             expect($ctrl.donation.appeal).toEqual(appeal);
         });
+
         it('should set amount to amount if appeal isn\'t null', () => {
             $ctrl.donation.appeal_amount = 12;
             $ctrl.onAppealSelected(appeal);
             expect($ctrl.donation.appeal_amount).toEqual(12);
         });
+
         it('should set amount to null if appeal is null', () => {
             $ctrl.donation.appeal_amount = 12;
             $ctrl.onAppealSelected(null);
@@ -309,6 +315,7 @@ xdescribe('donation.modal.controller', () => {
             spyOn(api, 'put').and.callFake(() => q.resolve());
             api.account_list_id = '123';
         });
+
         describe('donation exists', () => {
             const donation = { id: 'donation_id' };
             it('should call api.put', (done) => {
@@ -360,17 +367,21 @@ xdescribe('donation.modal.controller', () => {
             spyOn(appeals, 'removePledge').and.callFake(() => q.resolve());
             spyOn($ctrl, 'removeContact').and.callFake(() => q.resolve());
         });
+
         it('shouldn\'t continue without a pledge id ', () => {
             expect($ctrl.removePledgeThenContact()).toBeUndefined();
         });
+
         it('should translate a message', () => {
             $ctrl.removePledgeThenContact(donation, appealId);
             expect(gettextCatalog.getString).toHaveBeenCalledWith(msg);
         });
+
         it('should confirm before delete', () => {
             $ctrl.removePledgeThenContact(donation, appealId);
             expect(modal.confirm).toHaveBeenCalledWith(msg);
         });
+
         it('should remove the pledge', (done) => {
             $ctrl.removePledgeThenContact(donation, appealId).then(() => {
                 expect(appeals.removePledge).toHaveBeenCalledWith(donation.pledge.id);
@@ -378,6 +389,7 @@ xdescribe('donation.modal.controller', () => {
             });
             rootScope.$digest();
         });
+
         it('should remove the contact', (done) => {
             $ctrl.removePledgeThenContact(donation, appealId).then(() => {
                 expect($ctrl.removeContact).toHaveBeenCalledWith(donation, appealId);
@@ -386,20 +398,24 @@ xdescribe('donation.modal.controller', () => {
             rootScope.$digest();
         });
     });
+
     describe('removeContact', () => {
         beforeEach(() => {
             spyOn(modal, 'confirm').and.callFake(() => q.resolve());
             spyOn(appeals, 'removeContact').and.callFake(() => q.resolve());
         });
         const msg = 'Would you like to also remove the contact from the the appeal?';
+
         it('should translate a message', () => {
             $ctrl.removeContact(donation, appealId);
             expect(gettextCatalog.getString).toHaveBeenCalledWith(msg);
         });
+
         it('should confirm before delete', () => {
             $ctrl.removeContact(donation, appealId);
             expect(modal.confirm).toHaveBeenCalledWith(msg);
         });
+
         it('should remove the contact', (done) => {
             $ctrl.removeContact(donation, appealId).then(() => {
                 expect(appeals.removeContact).toHaveBeenCalledWith(appealId, donation.contact.id);

@@ -1,5 +1,5 @@
-import component from './search.component';
 import { findIndex } from 'lodash/fp';
+import component from './search.component';
 
 describe('menu.search.component', () => {
     let $ctrl, state, scope, contactFilter, contacts, timeout, q;
@@ -172,6 +172,7 @@ describe('menu.search.component', () => {
                 });
             });
         });
+
         describe('keyCode 40', () => {
             beforeEach(() => {
                 event = { keyCode: 40 };

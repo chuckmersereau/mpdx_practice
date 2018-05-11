@@ -17,6 +17,7 @@ describe('preferences.accounts.integrations.prayerLetters.service', () => {
         beforeEach(() => {
             spyOn(api, 'get').and.callFake(() => q.resolve(['data']));
         });
+
         it('should call the api', () => {
             prayerLetters.load();
             expect(api.get).toHaveBeenCalledWith({
@@ -24,6 +25,7 @@ describe('preferences.accounts.integrations.prayerLetters.service', () => {
                 overridePromise: true
             });
         });
+
         it('should set the prayerLetters service data', (done) => {
             prayerLetters.load().then(() => {
                 expect(prayerLetters.data).toEqual(['data']);

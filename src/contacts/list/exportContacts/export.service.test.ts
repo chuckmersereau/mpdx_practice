@@ -1,3 +1,4 @@
+import { assign } from 'lodash/fp';
 import service from './export.service';
 
 let filters = {

@@ -1,6 +1,6 @@
 interface ICover {
-    url: string,
-    copyright: string
+    url: string;
+    copyright: string;
 }
 
 class CoverController {

@@ -1,3 +1,5 @@
+import contacts, { ContactsService } from '../../../contacts.service';
+
 class AddressController {
     address: any;
     isEditable: boolean;
@@ -35,8 +37,6 @@ const Address = {
         onPrimary: '&'
     }
 };
-
-import contacts, { ContactsService } from '../../../contacts.service';
 
 export default angular.module('mpdx.contacts.show.addresses.address.component', [
     contacts

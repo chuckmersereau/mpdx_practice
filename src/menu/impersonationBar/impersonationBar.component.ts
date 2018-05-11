@@ -1,6 +1,6 @@
 import isNilOrEmpty from '../../common/fp/isNilOrEmpty';
-
-const template = require('./impersonationBar.html');
+import session, { SessionService } from '../../common/session/session.service';
+import users, { UsersService } from '../../common/users/users.service';
 
 class ImpersonationController {
     impersonated: string;
@@ -44,12 +44,9 @@ class ImpersonationController {
 }
 
 const ImpersonationBar = {
-    template: template,
+    template: require('./impersonationBar.html'),
     controller: ImpersonationController
 };
-
-import users, { UsersService } from '../../common/users/users.service';
-import session, { SessionService } from '../../common/session/session.service';
 
 export default angular.module('mpdx.menu.impersonationBar', [
     session, users

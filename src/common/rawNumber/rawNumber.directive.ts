@@ -7,5 +7,6 @@ function rawNumberDirective() {
         }
     };
 }
+
 export default angular.module('mpdx.common.rawNumber.directive', [])
     .directive('rawNumber', rawNumberDirective).name;

@@ -1,21 +1,16 @@
 import component from './setup.component';
 
 describe('setup.component', () => {
-    let $ctrl, componentController, scope, rootScope;
+    let $ctrl, scope, rootScope;
 
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope) => {
-            componentController = $componentController;
             rootScope = $rootScope;
             scope = rootScope.$new();
-            loadController();
+            $ctrl = $componentController('setup', { $scope: scope });
         });
     });
-
-    function loadController() {
-        $ctrl = componentController('setup', { $scope: scope });
-    }
 
     describe('$onInit', () => {
         it('should set session.navSetup', () => {

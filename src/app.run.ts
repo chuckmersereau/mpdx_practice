@@ -1,6 +1,22 @@
 import { get } from 'lodash/fp';
-import replaceAll from './common/fp/replaceAll';
 import { StateService, TransitionService } from '@uirouter/core';
+import replaceAll from './common/fp/replaceAll';
+
+function fireAdobeAnalyticsDirectRuleCall($window) {
+    $window._satellite && $window._satellite.track('page view');
+}
+
+function changePageTitle(transition, $rootScope, $window) {
+    const newState = transition.$to();
+    $rootScope.pageTitle = newState.title;
+    const name = newState.name.toLowerCase();
+    const arr = name.split('.');
+    $window.digitalData.page.category.primaryCategory = get('[0]', arr);
+    $window.digitalData.page.category.subCategory1 = get('[1]', arr);
+    $window.digitalData.page.category.subCategory2 = get('[2]', arr);
+    $window.digitalData.page.category.subCategory3 = get('[3]', arr);
+    $window.digitalData.page.pageInfo.pageName = replaceAll('.', ' : ', name);
+}
 
 /* @ngInject*/
 export default function appRun(
@@ -59,24 +75,8 @@ export default function appRun(
     $transitions.onError(null, () => {
         block.reset();
     });
-    $rootScope.$on('$locationChangeSuccess', () => {
+    const uncalledWatch = $rootScope.$on('$locationChangeSuccess', () => {
         !initialPage && fireAdobeAnalyticsDirectRuleCall($window);
         $document[0].body.scrollTop = $document[0].documentElement.scrollTop = 0;
     });
-}
-
-function fireAdobeAnalyticsDirectRuleCall($window) {
-    $window._satellite && $window._satellite.track('page view');
-}
-
-function changePageTitle(transition, $rootScope, $window) {
-    const newState = transition.$to();
-    $rootScope.pageTitle = newState.title;
-    const name = newState.name.toLowerCase();
-    const arr = name.split('.');
-    $window.digitalData.page.category.primaryCategory = get('[0]', arr);
-    $window.digitalData.page.category.subCategory1 = get('[1]', arr);
-    $window.digitalData.page.category.subCategory2 = get('[2]', arr);
-    $window.digitalData.page.category.subCategory3 = get('[3]', arr);
-    $window.digitalData.page.pageInfo.pageName = replaceAll('.', ' : ', name);
 }

@@ -1,4 +1,5 @@
 import * as moment from 'moment';
+import statusPage, { StatusPageService } from '../../bottom/status/status.service';
 
 class MaintenancesController {
     moment: any;
@@ -14,8 +15,6 @@ const Maintenances = {
     controller: MaintenancesController,
     template: require('./maintenances.html')
 };
-
-import statusPage, { StatusPageService } from '../../bottom/status/status.service';
 
 export default angular.module('mpdx.menu.maintenances.component', [
     statusPage

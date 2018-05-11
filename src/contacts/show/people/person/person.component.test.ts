@@ -1,23 +1,21 @@
 import component from './person.component';
 
 describe('contacts.show.person.component', () => {
-    let $ctrl, rootScope, sce, scope, componentController, people, q;
+    let $ctrl, rootScope, sce, scope, people, q;
 
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, $sce, _people_, $q) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
-            componentController = $componentController;
             sce = $sce;
             people = _people_;
             q = $q;
-            loadController();
+            $ctrl = $componentController('contactPerson', { $scope: scope }, { userProfile: 'true' });
         });
     });
 
     function loadController() {
-        $ctrl = componentController('contactPerson', { $scope: scope }, { userProfile: 'true' });
     }
 
     describe('constructor', () => {

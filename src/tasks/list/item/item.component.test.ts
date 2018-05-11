@@ -1,7 +1,7 @@
 import component from './item.component';
 
 describe('tasks.list.item.component', () => {
-    let $ctrl, contacts, rootScope, scope, componentController, modal, tasks, gettextCatalog, users, api,
+    let $ctrl, contacts, rootScope, scope, modal, tasks, gettextCatalog, users, api,
         serverConstants, q;
     beforeEach(() => {
         angular.mock.module(component);
@@ -19,18 +19,18 @@ describe('tasks.list.item.component', () => {
             tasks = _tasks_;
             serverConstants = _serverConstants_;
             q = $q;
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('tasksListItem',
+                { $scope: scope },
+                { task: null, selected: null, onSelect: () => {}, onMultiSelect: () => {} }
+            );
         });
     });
 
-    function loadController() {
-        $ctrl = componentController('tasksListItem', { $scope: scope }, { task: null, selected: null, onSelect: () => {}, onMultiSelect: () => {} });
-    }
     describe('constructor', () => {
         beforeEach(() => {
             spyOn(contacts, 'clearSelectedContacts').and.callFake(() => {});
         });
+
         it('should expose dependencies', () => {
             expect($ctrl.gettextCatalog).toEqual(gettextCatalog);
             expect($ctrl.modal).toEqual(modal);
@@ -38,16 +38,19 @@ describe('tasks.list.item.component', () => {
             expect($ctrl.users).toEqual(users);
         });
     });
+
     describe('$onInit', () => {
         afterEach(() => {
             $ctrl.$onDestroy();
         });
+
         it('should set default values', () => {
             $ctrl.$onInit();
             expect($ctrl.showContacts).toBeFalsy();
             expect($ctrl.showComments).toBeFalsy();
             expect($ctrl.loaded).toBeFalsy();
         });
+
         it('should handle tag deletion', () => {
             $ctrl.task = { id: 1, tag_list: ['a', 'b'] };
             $ctrl.$onInit();
@@ -55,6 +58,7 @@ describe('tasks.list.item.component', () => {
             rootScope.$digest();
             expect($ctrl.task.tag_list).toEqual(['b']);
         });
+
         it('should ignore other task ids', () => {
             $ctrl.task = { id: 1, tag_list: ['a', 'b'] };
             $ctrl.$onInit();
@@ -62,6 +66,7 @@ describe('tasks.list.item.component', () => {
             rootScope.$digest();
             expect($ctrl.task.tag_list).toEqual(['a', 'b']);
         });
+
         it('should handle taskTagsAdded', () => {
             $ctrl.task = { id: 1, tag_list: [] };
             $ctrl.$onInit();
@@ -70,6 +75,7 @@ describe('tasks.list.item.component', () => {
             expect($ctrl.task.tag_list).toEqual(['a']);
         });
     });
+
     describe('complete', () => {
         it('should open the complete modal', () => {
             spyOn(modal, 'open').and.callThrough();
@@ -86,6 +92,7 @@ describe('tasks.list.item.component', () => {
             expect(serverConstants.load).toHaveBeenCalledWith(['next_actions', 'results', 'status_hashes']);
         });
     });
+
     describe('edit', () => {
         it('should open the edit modal', () => {
             spyOn(modal, 'open').and.callThrough();
@@ -101,6 +108,7 @@ describe('tasks.list.item.component', () => {
             expect(serverConstants.load).toHaveBeenCalledWith(['activity_hashes', 'results']);
         });
     });
+
     describe('star', () => {
         it('should call the api', (done) => {
             spyOn(api, 'put').and.callFake(() => q.resolve({ starred: true }));
@@ -116,15 +124,18 @@ describe('tasks.list.item.component', () => {
             scope.$digest();
         });
     });
+
     describe('select', () => {
         beforeEach(() => {
             spyOn($ctrl, 'onMultiSelect').and.callFake(() => {});
             spyOn($ctrl, 'onSelect').and.callFake(() => {});
         });
+
         it('should call onSelect', () => {
             $ctrl.select({ shiftKey: false });
             expect($ctrl.onSelect).toHaveBeenCalledWith();
         });
+
         it('should call onMultiSelect', () => {
             $ctrl.select({ shiftKey: true });
             expect($ctrl.onMultiSelect).toHaveBeenCalledWith();

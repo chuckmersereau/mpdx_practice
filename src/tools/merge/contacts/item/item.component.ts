@@ -1,4 +1,4 @@
-const Item = {
+const Item: ng.IComponentOptions = {
     template: require('./item.html'),
     bindings: {
         contact: '<',

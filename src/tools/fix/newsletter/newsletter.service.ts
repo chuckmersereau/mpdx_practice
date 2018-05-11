@@ -1,4 +1,7 @@
 import { concat, reduce, reject } from 'lodash/fp';
+import api, { ApiService } from '../../../common/api/api.service';
+import contacts, { ContactsService } from '../../../contacts/contacts.service';
+import tools, { ToolsService } from '../../tools.service';
 
 export class FixSendNewsletterService {
     data: any;
@@ -117,10 +120,6 @@ export class FixSendNewsletterService {
         });
     }
 }
-
-import api, { ApiService } from '../../../common/api/api.service';
-import contacts, { ContactsService } from '../../../contacts/contacts.service';
-import tools, { ToolsService } from '../../tools.service';
 
 export default angular.module('mpdx.tools.fix.sendNewsletter.service', [
     api, contacts, tools

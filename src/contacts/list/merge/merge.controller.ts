@@ -1,4 +1,5 @@
 import { first, get, map, reject } from 'lodash/fp';
+import contacts, { ContactsService } from '../../contacts.service';
 
 class MergeContactsController {
     winner: any;
@@ -22,8 +23,6 @@ class MergeContactsController {
         });
     }
 }
-
-import contacts, { ContactsService } from '../../contacts.service';
 
 export default angular.module('mpdx.contacts.list.merge.controller', [
     contacts

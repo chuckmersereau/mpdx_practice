@@ -1,5 +1,5 @@
-import component from './progress.component';
 import * as moment from 'moment';
+import component from './progress.component';
 
 const fakeBlockUI = {
     reset: () => {},
@@ -20,18 +20,14 @@ describe('home.progress.component', () => {
             users = _users_;
             blockUI = _blockUI_;
             q = $q;
-            loadController();
+            spyOn(blockUI.instances, 'get').and.callFake(() => fakeBlockUI);
+            spyOn(rootScope, '$on').and.callThrough();
+            $ctrl = componentController('homeProgress', { $scope: scope }, { view: null });
+            spyOn(gettextCatalog, 'getString').and.callThrough();
+            spyOn($ctrl.blockUI, 'reset').and.callThrough();
+            spyOn($ctrl.blockUI, 'start').and.callThrough();
         });
     });
-
-    function loadController() {
-        spyOn(blockUI.instances, 'get').and.callFake(() => fakeBlockUI);
-        spyOn(rootScope, '$on').and.callThrough();
-        spyOn(gettextCatalog, 'getString').and.callThrough();
-        $ctrl = componentController('homeProgress', { $scope: scope }, { view: null });
-        spyOn($ctrl.blockUI, 'reset').and.callThrough();
-        spyOn($ctrl.blockUI, 'start').and.callThrough();
-    }
 
     describe('constructor', () => {
         it('should get instance of blockUI', () => {
@@ -190,6 +186,7 @@ describe('home.progress.component', () => {
                     { organization: { name: 'Cru - USA' } }
                 ];
             });
+
             it('should return true', () => {
                 expect($ctrl.showWeeklyProgressReport()).toBeTruthy();
             });
@@ -202,6 +199,7 @@ describe('home.progress.component', () => {
                     { organization: { name: 'Power To Change' } }
                 ];
             });
+
             it('should return false', () => {
                 expect($ctrl.showWeeklyProgressReport()).toBeFalsy();
             });

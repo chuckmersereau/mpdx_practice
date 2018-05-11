@@ -1,3 +1,8 @@
+import 'angular-gettext';
+import api, { ApiService } from '../../../../common/api/api.service';
+import locale, { LocaleService } from '../../../../common/locale/locale.service';
+import serverConstants, { ServerConstantsService } from '../../../../common/serverConstants/serverConstants.service';
+
 class AddController {
     amount: number;
     contactId: string;
@@ -42,11 +47,6 @@ class AddController {
         });
     }
 }
-
-import 'angular-gettext';
-import api, { ApiService } from '../../../../common/api/api.service';
-import locale, { LocaleService } from '../../../../common/locale/locale.service';
-import serverConstants, { ServerConstantsService } from '../../../../common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.tools.appeals.show.addPledge.controller', [
     'gettext',

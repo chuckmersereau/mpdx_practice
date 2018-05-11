@@ -1,3 +1,6 @@
+import api, { ApiService } from '../../common/api/api.service';
+import uiRouter from '@uirouter/angularjs';
+
 class ShowController {
     account: any[];
     loading: boolean;
@@ -35,9 +38,6 @@ const Show = {
     controller: ShowController,
     template: require('./show.html')
 };
-
-import uiRouter from '@uirouter/angularjs';
-import api, { ApiService } from '../../common/api/api.service';
 
 export default angular.module('mpdx.coaches.show.component', [
     uiRouter,

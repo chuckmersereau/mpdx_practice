@@ -300,17 +300,20 @@ describe('common.users.service', () => {
             });
         });
     });
+
     describe('getCurrentOptionValue', () => {
         it('should return null', () => {
             users.currentOptions = {};
             expect(users.getCurrentOptionValue('a')).toBeUndefined();
         });
+
         it('should also return null', () => {
             users.currentOptions = {
                 a: {}
             };
             expect(users.getCurrentOptionValue('a')).toBeUndefined();
         });
+
         it('should return value', () => {
             users.currentOptions = {
                 a: { value: 1 }
@@ -318,11 +321,13 @@ describe('common.users.service', () => {
             expect(users.getCurrentOptionValue('a')).toEqual(1);
         });
     });
+
     describe('deleteOption', () => {
         const key = 'name';
         beforeEach(() => {
             spyOn(api, 'delete').and.callFake(() => q.resolve());
         });
+
         it('should call api delete', () => {
             users.deleteOption(key);
             expect(api.delete).toHaveBeenCalledWith({
@@ -330,6 +335,7 @@ describe('common.users.service', () => {
                 type: 'user_options'
             });
         });
+
         it('should remove the user option', (done) => {
             users.currentOptions = { [key]: {} };
             users.deleteOption(key).then(() => {

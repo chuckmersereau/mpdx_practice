@@ -1,10 +1,13 @@
-import createPatch from '../../../common/fp/createPatch';
 import { concat, find, map, reduce } from 'lodash/fp';
+import createPatch from '../../../common/fp/createPatch';
 import isNilOrEmpty from '../../../common/fp/isNilOrEmpty';
+import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
+import tasks, { TasksService } from '../../tasks.service';
+import tasksTags, { TasksTagsService } from '../../filter/tags/tags.service';
 
 class EditTaskController {
     task: any;
-    taskInitialState: any
+    taskInitialState: any;
     constructor(
         private $log: ng.ILogService,
         private $scope: mgcrea.ngStrap.modal.IModalScope,
@@ -65,10 +68,6 @@ class EditTaskController {
         });
     }
 }
-
-import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
-import tasksTags, { TasksTagsService } from '../../filter/tags/tags.service';
-import tasks, { TasksService } from '../../tasks.service';
 
 export default angular.module('mpdx.tasks.modals.edit.controller', [
     serverConstants, tasksTags, tasks

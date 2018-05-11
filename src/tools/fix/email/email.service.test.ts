@@ -1,6 +1,13 @@
 import service from './email.service';
 
 const accountListId = 123;
+const apiData: any = [
+    { email_addresses: [{ source: 'Siebel' }] },
+    { email_addresses: [{ source: 'Tntmpd' }] },
+    { email_addresses: [{ source: 'DataServer' }] },
+    { email_addresses: [{ source: 'DataServer' }] }
+];
+apiData.meta = { page: 1 };
 
 describe('tools.fix.emailAddresses.service', () => {
     let api, fixEmailAddresses, people, tools, q, rootScope;
@@ -98,6 +105,7 @@ describe('tools.fix.emailAddresses.service', () => {
                     fixEmailAddresses.data = apiData;
                     fixEmailAddresses.page = 1;
                 });
+
                 describe('reset set to true', () => {
                     it('should call the api', (done) => {
                         fixEmailAddresses.load(true).then(() => {
@@ -478,13 +486,4 @@ describe('tools.fix.emailAddresses.service', () => {
             });
         });
     });
-
-    const apiData: any = [
-        { email_addresses: [{ source: 'Siebel' }] },
-        { email_addresses: [{ source: 'Tntmpd' }] },
-        { email_addresses: [{ source: 'DataServer' }] },
-        { email_addresses: [{ source: 'DataServer' }] }
-    ];
-
-    apiData.meta = { page: 1 };
 });

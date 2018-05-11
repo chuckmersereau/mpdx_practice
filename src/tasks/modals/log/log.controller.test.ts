@@ -1,6 +1,6 @@
-import log from './log.controller';
-import { assign, each } from 'lodash/fp';
 import * as moment from 'moment';
+import { assign, each } from 'lodash/fp';
+import log from './log.controller';
 
 let contactList = [];
 const day = moment().toDate();
@@ -10,7 +10,7 @@ const defaultTask = {
 };
 
 describe('tasks.modals.log.controller', () => {
-    let $ctrl, controller, contacts, tasks, scope, rootScope, q;
+    let $ctrl, contacts, tasks, scope, rootScope, q;
     beforeEach(() => {
         jasmine.clock().install();
         jasmine.clock().mockDate(day);
@@ -21,20 +21,16 @@ describe('tasks.modals.log.controller', () => {
             contacts = _contacts_;
             tasks = _tasks_;
             q = $q;
-            controller = $controller;
-            $ctrl = loadController();
+            $ctrl = $controller('logTaskController as $ctrl', {
+                $scope: scope,
+                contactsList: contactList
+            });
         });
     });
+
     afterEach(() => {
         jasmine.clock().uninstall();
     });
-
-    function loadController() {
-        return controller('logTaskController as $ctrl', {
-            $scope: scope,
-            contactsList: contactList
-        });
-    }
 
     function defaultPartnerStatus() {
         $ctrl.task = assign(defaultTask, {
@@ -42,11 +38,13 @@ describe('tasks.modals.log.controller', () => {
         });
         $ctrl.contactsList = [{ id: 1 }];
     }
+
     describe('constructor', () => {
         it('should set the new task model to complete', () => {
             expect($ctrl.task).toEqual(defaultTask);
         });
     });
+
     describe('save', () => {
         beforeEach(() => {
             spyOn(tasks, 'create').and.callFake(() => q.resolve({}));
@@ -62,16 +60,19 @@ describe('tasks.modals.log.controller', () => {
                 next_action: 'Call'
             };
         });
+
         it('should create a task', () => {
             $ctrl.save();
             expect(tasks.create).toHaveBeenCalledWith($ctrl.task, [$ctrl.contactsList[0].id], $ctrl.comment);
         });
+
         it('should update contacts if conditions are met', () => {
             $ctrl.status = 'Active';
             defaultPartnerStatus();
             $ctrl.save();
             expect(contacts.bulkSave).toHaveBeenCalledWith([{ id: 1, status: $ctrl.status }]);
         });
+
         it('should hide the modal when finished', (done) => {
             $ctrl.save().then(() => {
                 expect(scope.$hide).toHaveBeenCalled();
@@ -79,6 +80,7 @@ describe('tasks.modals.log.controller', () => {
             });
             scope.$digest();
         });
+
         it('should open next automation task if defined', (done) => {
             $ctrl.comment = 'ghi';
             $ctrl.save().then(() => {
@@ -92,6 +94,7 @@ describe('tasks.modals.log.controller', () => {
             });
             scope.$digest();
         });
+
         it('should set next automation task subject if same type', (done) => {
             $ctrl.comment = 'ghi';
             $ctrl.save().then(() => {
@@ -105,6 +108,7 @@ describe('tasks.modals.log.controller', () => {
             });
             scope.$digest();
         });
+
         it('shouldn\'t set next automation task subject if not same type', (done) => {
             $ctrl.task.next_action = 'Answer';
             $ctrl.comment = 'ghi';
@@ -120,6 +124,7 @@ describe('tasks.modals.log.controller', () => {
             });
             scope.$digest();
         });
+
         it('should emit when finished', (done) => {
             $ctrl.task.next_action = undefined;
             $ctrl.save().then(() => {
@@ -129,22 +134,27 @@ describe('tasks.modals.log.controller', () => {
             scope.$digest();
         });
     });
+
     describe('showPartnerStatus', () => {
         beforeEach(() => {
             // default to true conditions
             defaultPartnerStatus();
         });
+
         it('should be true when conditions are met', () => {
             expect($ctrl.showPartnerStatus()).toBeTruthy();
         });
+
         it('should be false with empty contactList', () => {
             $ctrl.contactsList = [];
             expect($ctrl.showPartnerStatus()).toBeFalsy();
         });
+
         it('should be false without a task activity_type', () => {
             $ctrl.task = defaultTask;
             expect($ctrl.showPartnerStatus()).toBeFalsy();
         });
+
         it('should be false when certain activity_types are set', () => {
             const arr = ['Pre Call Letter', 'Reminder Letter', 'Support Letter', 'Thank', 'To Do'];
             each((activity) => {
@@ -153,6 +163,7 @@ describe('tasks.modals.log.controller', () => {
             }, arr);
         });
     });
+
     describe('activityChanged', () => {
         it('should get the 1st value for an activity type', () => {
             $ctrl.task.activity_type = 'Call';

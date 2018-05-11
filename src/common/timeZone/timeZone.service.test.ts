@@ -5,9 +5,7 @@ describe('common.timeZone.service', () => {
 
     beforeEach(() => {
         angular.mock.module(service);
-        inject((
-            $rootScope, _timeZone_
-        ) => {
+        inject((_timeZone_) => {
             timeZone = _timeZone_;
         });
     });

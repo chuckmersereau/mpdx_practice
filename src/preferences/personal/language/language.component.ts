@@ -1,4 +1,8 @@
 import { defaultTo, get, keys, map } from 'lodash/fp';
+import { TransitionService } from '@uirouter/core';
+import language, { LanguageService } from '../../../common/language/language.service';
+import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
+import users, { UsersService } from '../../../common/users/users.service';
 
 class LanguageController {
     deregisterTransitionHook: any;
@@ -75,11 +79,6 @@ const Language = {
         listOnly: '<'
     }
 };
-
-import { TransitionService } from '@uirouter/core';
-import language, { LanguageService } from '../../../common/language/language.service';
-import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
-import users, { UsersService } from '../../../common/users/users.service';
 
 export default angular.module('mpdx.preferences.personal.language.component', [
     language, serverConstants, users

@@ -1,5 +1,5 @@
-import component from './tasks.component';
 import { assign } from 'lodash/fp';
+import component from './tasks.component';
 
 const currentContact = { id: 1 };
 describe('contacts.show.tasks.component', () => {
@@ -14,12 +14,14 @@ describe('contacts.show.tasks.component', () => {
             $ctrl = $componentController('contactTasks', { $scope: scope }, {});
         });
     });
+
     describe('$onInit', () => {
         beforeEach(() => {
             spyOn(tasksFilter, 'assignDefaultParamsAndGroup').and.callThrough();
             spyOn(tasksFilter, 'change').and.returnValue('');
             $ctrl.$onInit();
         });
+
         it('should reset task Filters', () => {
             expect(tasksFilter.params).toEqual(assign(tasksFilter.defaultParams, { contact_ids: currentContact.id }));
             expect(tasksFilter.assignDefaultParamsAndGroup).toHaveBeenCalledWith('contact');

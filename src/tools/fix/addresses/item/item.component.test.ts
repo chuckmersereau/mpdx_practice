@@ -6,7 +6,7 @@ const fakeBlockUI = {
 };
 
 describe('tools.fix.addresses.item.component', () => {
-    let $ctrl, rootScope, scope, componentController, blockUI, contact, contacts, q;
+    let $ctrl, rootScope, scope, blockUI, contact, contacts, q;
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _blockUI_, _contacts_, $q) => {
@@ -15,16 +15,11 @@ describe('tools.fix.addresses.item.component', () => {
             blockUI = _blockUI_;
             contacts = _contacts_;
             q = $q;
-            componentController = $componentController;
             contact = { id: 'contact_id' };
-            loadController();
+            spyOn(blockUI.instances, 'get').and.callFake(() => fakeBlockUI);
+            $ctrl = $componentController('fixAddressesItem', { $scope: scope }, { contact: contact, onSave: () => {} });
         });
     });
-
-    function loadController() {
-        spyOn(blockUI.instances, 'get').and.callFake(() => fakeBlockUI);
-        $ctrl = componentController('fixAddressesItem', { $scope: scope }, { contact: contact, onSave: () => {} });
-    }
 
     describe('$onInit', () => {
         it('should get instance of blockUI', () => {
@@ -86,6 +81,7 @@ describe('tools.fix.addresses.item.component', () => {
             spyOn($ctrl.blockUI, 'reset').and.callThrough();
             spyOn(contacts, 'save').and.callFake(() => q.resolve());
         });
+
         it('should have toggled blockUI', (done) => {
             $ctrl.save().then(() => {
                 expect($ctrl.blockUI.reset).toHaveBeenCalled();
@@ -94,6 +90,7 @@ describe('tools.fix.addresses.item.component', () => {
             });
             scope.$digest();
         });
+
         it('should call the contacts service', () => {
             $ctrl.contact = contact;
             $ctrl.save();

@@ -1,7 +1,8 @@
 import component from './tnt.component';
 
 describe('tools.import.tnt.component', () => {
-    let rootScope, scope, componentController, $ctrl, contactsTags, Upload, alerts, gettextCatalog, q;
+    let rootScope, scope, $ctrl, contactsTags, Upload, alerts, gettextCatalog, q;
+
     beforeEach(() => {
         angular.mock.module(component);
         inject(($componentController, $rootScope, _contactsTags_, _Upload_, _alerts_, _gettextCatalog_, $q) => {
@@ -12,16 +13,12 @@ describe('tools.import.tnt.component', () => {
             alerts = _alerts_;
             q = $q;
             gettextCatalog = _gettextCatalog_;
-            componentController = $componentController;
-            loadController();
+            $ctrl = $componentController('importTnt', { $scope: scope }, {});
         });
         spyOn(alerts, 'addAlert').and.callFake((data) => data);
         spyOn(gettextCatalog, 'getString').and.callThrough();
     });
 
-    function loadController() {
-        $ctrl = componentController('importTnt', { $scope: scope }, {});
-    }
     describe('events', () => {
         it('should handle account list change', () => {
             spyOn(contactsTags, 'load').and.callFake(() => {});
@@ -30,6 +27,7 @@ describe('tools.import.tnt.component', () => {
             expect(contactsTags.load).toHaveBeenCalled();
         });
     });
+
     describe('save', () => {
         it('should handle errors', () => {
             spyOn(Upload, 'upload').and.callFake(() => q.reject());

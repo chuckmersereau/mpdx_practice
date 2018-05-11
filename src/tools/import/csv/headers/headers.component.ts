@@ -1,4 +1,8 @@
+import 'angular-gettext';
 import { difference, includes, keys, union, values } from 'lodash/fp';
+import importCsv, { ImportCsvService } from '../../../import/csv/csv.service';
+import modal, { ModalService } from '../../../../common/modal/modal.service';
+import serverConstants, { ServerConstantsService } from '../../../../common/serverConstants/serverConstants.service';
 
 class HeadersController {
     mappedHeaders: any[];
@@ -43,11 +47,6 @@ const Headers = {
     controller: HeadersController,
     template: require('./headers.html')
 };
-
-import 'angular-gettext';
-import importCsv, { ImportCsvService } from '../../../import/csv/csv.service';
-import modal, { ModalService } from '../../../../common/modal/modal.service';
-import serverConstants, { ServerConstantsService } from '../../../../common/serverConstants/serverConstants.service';
 
 export default angular.module('mpdx.tools.import.csv.headers.component', [
     'gettext',

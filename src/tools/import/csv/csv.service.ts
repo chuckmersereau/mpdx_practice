@@ -1,3 +1,6 @@
+import 'angular-block-ui';
+import 'angular-gettext';
+import * as Upload from 'ng-file-upload';
 import {
     concat,
     defaultTo,
@@ -13,9 +16,15 @@ import {
     reduce,
     values
 } from 'lodash/fp';
+import { StateService } from '@uirouter/core';
+import alerts, { AlertsService } from '../../../common/alerts/alerts.service';
+import api, { ApiService } from '../../../common/api/api.service';
 import createPatch from '../../../common/fp/createPatch';
+import help, { HelpService } from '../../../common/help/help.service';
 import joinComma from '../../../common/fp/joinComma';
 import reduceObject from '../../../common/fp/reduceObject';
+import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
+import uiRouter from '@uirouter/angularjs';
 
 export class ImportCsvService {
     data: any;
@@ -269,16 +278,6 @@ export class ImportCsvService {
         }
     }
 }
-
-import 'angular-block-ui';
-import 'angular-gettext';
-import * as Upload from 'ng-file-upload';
-import uiRouter from '@uirouter/angularjs';
-import alerts, { AlertsService } from '../../../common/alerts/alerts.service';
-import api, { ApiService } from '../../../common/api/api.service';
-import help, { HelpService } from '../../../common/help/help.service';
-import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
-import { StateService } from '@uirouter/core';
 
 export default angular.module('mpdx.tools.import.csv.service', [
     'blockUI', 'gettext', Upload, uiRouter,

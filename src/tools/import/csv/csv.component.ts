@@ -1,4 +1,9 @@
+import 'angular-gettext';
 import { includes } from 'lodash/fp';
+import { StateService, TransitionService } from '@uirouter/core';
+import importCsv, { ImportCsvService } from '../../import/csv/csv.service';
+import modal, { ModalService } from '../../../common/modal/modal.service';
+import uiRouter from '@uirouter/angularjs';
 
 class ImportCsvController {
     deregisterTransitionHook: any;
@@ -54,12 +59,6 @@ const ImportCsv = {
     controller: ImportCsvController,
     template: require('./csv.html')
 };
-
-import 'angular-gettext';
-import uiRouter from '@uirouter/angularjs';
-import importCsv, { ImportCsvService } from '../../import/csv/csv.service';
-import modal, { ModalService } from '../../../common/modal/modal.service';
-import { StateService, TransitionService } from '@uirouter/core';
 
 export default angular.module('mpdx.tools.import.csv.component', [
     'gettext', uiRouter,

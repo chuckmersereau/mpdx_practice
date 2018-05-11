@@ -1,3 +1,4 @@
+import { assign } from 'lodash/fp';
 import cntrl from './exportContacts.controller';
 
 const filters = {
@@ -6,10 +7,19 @@ const filters = {
 
 describe('contacts.list.exportContacts.controller', () => {
     let $ctrl, controller, alerts, api, contacts, scope, exportContacts, q, gettextCatalog;
+
+    function loadController(contacts) {
+        return controller('exportContactsController as $ctrl', {
+            $scope: scope,
+            selectedContactIds: [123, 456],
+            filters: filters
+        });
+    }
+
     beforeEach(() => {
         angular.mock.module(cntrl);
         inject((
-            $controller, $timeout, $rootScope, _contacts_, _alerts_, _api_, _exportContacts_, $q, _gettextCatalog_
+            $controller, $rootScope, _contacts_, _alerts_, _api_, _exportContacts_, $q, _gettextCatalog_
         ) => {
             scope = $rootScope.$new();
             scope.$hide = () => {};
@@ -24,14 +34,6 @@ describe('contacts.list.exportContacts.controller', () => {
             spyOn(api, 'get').and.callFake(() => q.resolve(null));
         });
     });
-
-    function loadController() {
-        return controller('exportContactsController as $ctrl', {
-            $scope: scope,
-            selectedContactIds: [123, 456],
-            filters: filters
-        });
-    }
 
     describe('constructor', () => {
         it('should set default filters', () => {
@@ -65,6 +67,7 @@ describe('contacts.list.exportContacts.controller', () => {
                 });
                 scope.$digest();
             });
+
             it('should call $scope.$hide', (done) => {
                 spyOn(scope, '$hide').and.callThrough();
                 $ctrl.exportMailingCSV().then(() => {

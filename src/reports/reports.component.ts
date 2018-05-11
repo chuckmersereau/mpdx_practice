@@ -1,3 +1,8 @@
+import 'angular-gettext';
+import designationAccounts, { DesignationAccountsService } from '../common/designationAccounts/designationAccounts.service';
+import help, { HelpService } from '../common/help/help.service';
+import session, { SessionService } from '../common/session/session.service';
+
 class ReportsController {
     constructor(
         private gettextCatalog: ng.gettext.gettextCatalog,
@@ -33,11 +38,6 @@ const Reports = {
     controller: ReportsController,
     template: require('./reports.html')
 };
-
-import 'angular-gettext';
-import designationAccounts, { DesignationAccountsService } from '../common/designationAccounts/designationAccounts.service';
-import help, { HelpService } from '../common/help/help.service';
-import session, { SessionService } from '../common/session/session.service';
 
 export default angular.module('mpdx.reports.component', [
     'gettext',
