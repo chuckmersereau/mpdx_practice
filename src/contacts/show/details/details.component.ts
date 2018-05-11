@@ -1,5 +1,6 @@
 import * as uuid from 'uuid/v1';
 import { assign, concat, defaultTo, get, map, round, sumBy } from 'lodash/fp';
+import { StateService } from '@uirouter/core';
 import api, { ApiService } from '../../../common/api/api.service';
 import contacts, { ContactsService } from '../../contacts.service';
 import contactsTags, { ContactsTagsService } from '../../sidebar/filter/tags/tags.service';
@@ -22,6 +23,7 @@ class ContactDetailsController {
     constructor(
         private $log: ng.ILogService,
         private $rootScope: ng.IRootScopeService,
+        private $state: StateService,
         private gettextCatalog: ng.gettext.gettextCatalog,
         private api: ApiService,
         private contactsTags: ContactsTagsService,
@@ -184,6 +186,20 @@ class ContactDetailsController {
     removeNextAsk() {
         this.contacts.current.next_ask = null;
         this.onSave();
+    }
+    remove(): ng.IPromise<void> {
+        const msg = this.gettextCatalog.getString(
+            'Are you sure you wish to permanently delete {{name}}?',
+            { name: this.contacts.current.name }
+        );
+        return this.modal.confirm(msg).then(() => {
+            return this.api.delete({
+                url: `contacts/${this.contacts.current.id}`,
+                type: 'contact'
+            }).then(() => {
+                this.$state.go('contacts');
+            });
+        });
     }
 }
 const Details = {

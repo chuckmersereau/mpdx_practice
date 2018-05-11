@@ -1,11 +1,12 @@
 import component from './details.component';
 
 describe('contacts.show.details.component', () => {
-    let $ctrl, scope, api, serverConstants, gettextCatalog, users, rootScope, contacts, q;
+    let $ctrl, scope, api, serverConstants, gettextCatalog, users, rootScope, contacts, q, modal, state;
     beforeEach(() => {
         angular.mock.module(component);
         inject((
-            $componentController, $rootScope, _serverConstants_, _gettextCatalog_, _api_, _users_, _contacts_, $q
+            $componentController, $rootScope, _serverConstants_, _gettextCatalog_, _api_, _users_, _contacts_, $q,
+            _modal_, $state
         ) => {
             rootScope = $rootScope;
             scope = rootScope.$new();
@@ -15,6 +16,8 @@ describe('contacts.show.details.component', () => {
             serverConstants = _serverConstants_;
             users = _users_;
             q = $q;
+            modal = _modal_;
+            state = $state;
             serverConstants.data = { locales: {} };
             api.account_list_id = 1234;
             $ctrl = $componentController('contactDetails', { $scope: scope }, { donorAccounts: [], contact: {}, onSave: () => q.resolve() });
@@ -230,6 +233,44 @@ describe('contacts.show.details.component', () => {
         it('should save', () => {
             $ctrl.removeNextAsk();
             expect($ctrl.onSave).toHaveBeenCalledWith();
+        });
+    });
+    describe('remove', () => {
+        beforeEach(() => {
+            contacts.current = {
+                id: 'contact_id',
+                name: 'joe'
+            };
+            spyOn(modal, 'confirm').and.callFake(() => q.resolve());
+            spyOn(api, 'delete').and.callFake(() => q.resolve());
+            spyOn(state, 'go').and.callFake(() => {});
+        });
+        it('should translate the confirm message', () => {
+            $ctrl.remove();
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(
+                'Are you sure you wish to permanently delete {{name}}?',
+                { name: 'joe' });
+        });
+        it('should display confirmation modal', () => {
+            $ctrl.remove();
+            expect(modal.confirm).toHaveBeenCalledWith('Are you sure you wish to permanently delete joe?')
+        });
+        it('should delete the contact', (done) => {
+            $ctrl.remove().then(() => {
+                expect(api.delete).toHaveBeenCalledWith({
+                    url: 'contacts/contact_id',
+                    type: 'contact'
+                });
+                done();
+            });
+            scope.$digest();
+        });
+        it('should return to the contact list', (done) => {
+            $ctrl.remove().then(() => {
+                expect(state.go).toHaveBeenCalledWith('contacts');
+                done();
+            });
+            scope.$digest();
         });
     });
 });

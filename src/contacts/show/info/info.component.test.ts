@@ -1,16 +1,19 @@
 import component from './info.component';
 
 describe('contacts.show.details.component', () => {
-    let $ctrl, scope, serverConstants, state, gettextCatalog, contacts, q;
+    let $ctrl, scope, serverConstants, state, gettextCatalog, contacts, q, api;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, $state, _serverConstants_, _gettextCatalog_, _contacts_, $q) => {
+        inject((
+            $componentController, $rootScope, $state, _serverConstants_, _gettextCatalog_, _contacts_, $q, _api_
+        ) => {
             scope = $rootScope.$new();
             state = $state;
             gettextCatalog = _gettextCatalog_;
             contacts = _contacts_;
             serverConstants = _serverConstants_;
             q = $q;
+            api = _api_;
             serverConstants.data = { locales: {} };
             $ctrl = $componentController('contactInfo', { $scope: scope }, { contact: {}, onSave: () => q.resolve() });
         });
