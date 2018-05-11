@@ -36,11 +36,14 @@
         <contact-info-person contact="$ctrl.contacts.current"></contact-info-person>
     </div>
     <div class="address">
-        <label translate>Primary Address</label>
+        <label translate>Primary Address</label><br/>
         <contact-address ng-repeat="address in ::$ctrl.contact.addresses track by address.id"
-                         ng-if="::address.primary_mailing_address"
+                         ng-if="address.primary_mailing_address"
                          address="address"
                          contact="$ctrl.contacts.current"></contact-address>
+        <a ui-sref=".addresses" ng-if="$ctrl.contact.addresses.length === 0 && !$ctrl.loading" translate>
+            N/A
+        </a>
     </div>
     <div class="status">
         <label translate>Status</label>
