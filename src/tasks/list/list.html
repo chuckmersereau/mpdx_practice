@@ -98,7 +98,7 @@
         <tasks-list-add></tasks-list-add>
     </div>
     <div class="column" ng-init="activeCategory = {}">
-        <div ng-repeat="(category, tasks) in $ctrl.data | groupBy: 'category.name'">
+        <div ng-repeat="(category, tasks) in $ctrl.data | groupBy: 'category'">
             <div class="task-category"
                  role="tablist"
                  aria-multiselectable="true"

@@ -300,27 +300,27 @@ describe('tasks.list.component', () => {
 
         it('should handle completed', () => {
             task.completed = true;
-            expect($ctrl.process(task).category).toEqual({ name: 'completed', id: 4 });
+            expect($ctrl.process(task).category).toEqual('completed');
         });
 
         it('should handle today', () => {
             task.start_at = moment();
-            expect($ctrl.process(task).category).toEqual({ name: 'today', id: 1 });
+            expect($ctrl.process(task).category).toEqual('today');
         });
 
         it('should handle overdue', () => {
             task.start_at = moment().subtract(2, 'd');
-            expect($ctrl.process(task).category).toEqual({ name: 'overdue', id: 0 });
+            expect($ctrl.process(task).category).toEqual('overdue');
         });
 
         it('should handle upcoming', () => {
             task.start_at = moment().add(2, 'd');
-            expect($ctrl.process(task).category).toEqual({ name: 'upcoming', id: 2 });
+            expect($ctrl.process(task).category).toEqual('upcoming');
         });
 
         it('should handle no due date', () => {
             task.start_at = null;
-            expect($ctrl.process(task).category).toEqual({ name: 'no-due-date', id: 3 });
+            expect($ctrl.process(task).category).toEqual('no-date');
         });
     });
 
@@ -400,22 +400,6 @@ describe('tasks.list.component', () => {
             expect(args.data.page).toEqual(2);
             scope.$digest();
         });
-
-        it('should sort', (done) => {
-            $ctrl.load().then(() => {
-                expect($ctrl.data[0]).toEqual(resp[0]);
-                expect($ctrl.data[1]).toEqual(resp[2]);
-                expect($ctrl.data[2]).toEqual(resp[5]);
-                expect($ctrl.data[3]).toEqual(resp[7]);
-                expect($ctrl.data[4]).toEqual(resp[6]);
-                expect($ctrl.data[5]).toEqual(resp[1]);
-                expect($ctrl.data[6]).toEqual(resp[3]);
-                expect($ctrl.data[7]).toEqual(resp[4]);
-                done();
-            });
-            scope.$digest();
-        });
-
         describe('no results', () => {
             it('should call getTotalCount if no results', (done) => {
                 let result: any = [];

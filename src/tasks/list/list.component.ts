@@ -7,6 +7,7 @@ import {
     each,
     find,
     findIndex,
+    findLastIndex,
     get,
     includes,
     map,
@@ -89,7 +90,7 @@ class ListController {
             'today': this.gettextCatalog.getString('Today'),
             'overdue': this.gettextCatalog.getString('Overdue'),
             'upcoming': this.gettextCatalog.getString('Upcoming'),
-            'no-due-date': this.gettextCatalog.getString('No Due Date')
+            'no-date': this.gettextCatalog.getString('No Due Date')
         };
 
         this.watcher = this.$rootScope.$on('taskChange', () => {
@@ -213,10 +214,7 @@ class ListController {
                 this.loading = false;
                 return;
             }
-            const tasks = map((task) => this.process(task), data);
-            this.data = sortBy(
-                ['category.id', 'completed', '-completed_at', 'start_at', 'created_at']
-                , tasks);
+            this.data = map((task) => this.process(task), data);
             this.page = parseInt(this.meta.pagination.page);
             this.loading = false;
             return this.data;
@@ -226,15 +224,15 @@ class ListController {
     process(task) {
         const startAt = moment(task.start_at);
         if (task.completed) {
-            task.category = { name: 'completed', id: 4 };
+            task.category = 'completed';
         } else if (!get('start_at', task)) {
-            task.category = { name: 'no-due-date', id: 3 };
+            task.category = 'no-date';
         } else if (moment().isSame(startAt, 'day')) {
-            task.category = { name: 'today', id: 1 };
+            task.category = 'today';
         } else if (moment().isAfter(startAt, 'day')) {
-            task.category = { name: 'overdue', id: 0 };
+            task.category = 'overdue';
         } else if (moment().isBefore(startAt, 'day')) {
-            task.category = { name: 'upcoming', id: 2 };
+            task.category = 'upcoming';
         }
         return task;
     }
