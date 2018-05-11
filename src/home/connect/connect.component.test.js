@@ -45,6 +45,9 @@ describe('home.connect', () => {
         });
     });
     describe('getTranslatedLabel', () => {
+        beforeEach(() => {
+            spyOn($ctrl, 'gettext').and.callThrough();
+        });
         it('should return label by default', () => {
             serverConstants.data = {};
             expect($ctrl.getTranslatedLabel('a')).toEqual('a');
@@ -56,6 +59,12 @@ describe('home.connect', () => {
         it('should return translated value', () => {
             serverConstants.data = { activity_hashes: [{ id: 'a', value: 'b' }] };
             expect($ctrl.getTranslatedLabel('a')).toEqual('b');
+        });
+
+        it('should handle nil task type', () => {
+            const val = 'No Action Set';
+            expect($ctrl.getTranslatedLabel(null)).toEqual(val);
+            expect($ctrl.gettext).toHaveBeenCalledWith(val);
         });
     });
 });
