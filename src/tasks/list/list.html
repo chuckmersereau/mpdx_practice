@@ -80,11 +80,11 @@
         </div>
     </div>
     <div class="column">
-        <div ng-repeat="(category, tasks) in $ctrl.data | orderBy: 'category.id' | groupBy: 'category.name'" infinite-scroll="$ctrl.loadMoreTasks()" infinite-scroll-disabled="$ctrl.loading">
+        <div ng-repeat="(category, tasks) in $ctrl.data | groupBy: 'category.name'" infinite-scroll="$ctrl.loadMoreTasks()" infinite-scroll-disabled="$ctrl.loading">
             <div class="panel panel-default">
                <div class="panel-heading" ng-class="category">{{$ctrl.categories[category]}}</div>
                <ul class="list-group">
-                    <li class="list-group-item" ng-repeat="task in tasks | orderBy: ['task.completed','-task.completed_at','task.start_at','task.created_at']">
+                    <li class="list-group-item" ng-repeat="task in tasks">
                         <tasks-list-item task="task"
                             selected="$ctrl.isSelected(task.id)"
                             on-select="$ctrl.select(task.id)"></tasks-list-item>
