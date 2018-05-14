@@ -299,6 +299,19 @@ describe('reports.donations.chart.component', () => {
             );
         });
 
+        it('should call api.get with bound accountListId', () => {
+            $ctrl.accountListId = 'test_account_list_id';
+            $ctrl.getDonationChart();
+            expect(api.get).toHaveBeenCalledWith(
+                'reports/monthly_giving_graph',
+                {
+                    filter: {
+                        account_list_id: $ctrl.accountListId
+                    }
+                }
+            );
+        });
+
         describe('date range', () => {
             let params = {};
 
