@@ -198,18 +198,15 @@
                                 </a>
                             </td>
                             <td>{{::pledge.amount | currency: ''}} {{::pledge.contact.pledge_currency}} ({{::pledge.expected_date | localize}})</td>
-                            <td class="text-right">
-                                <button class="btn btn-xs btn-default"
-                                        ng-click="$ctrl.editPledge(pledge); $event.stopPropagation()"
+                            <td class="actions">
+                                <a ng-click="$ctrl.editPledge(pledge); $event.stopPropagation()"
                                         title="{{'Edit' | translate}}">
-                                    <i class="far fa-pencil-square"></i>
-                                </button>
-                                &nbsp;
-                                <button class="btn btn-xs btn-danger"
-                                        ng-click="$ctrl.removePledge(pledge); $event.stopPropagation()"
+                                    <i class="far fa-edit"></i>
+                                </a>
+                                <a ng-click="$ctrl.removePledge(pledge); $event.stopPropagation()"
                                         title="{{'Remove' | translate}}">
                                     <i class="far fa-trash"></i>
-                                </button>
+                                </a>
                             </td>
                         </tr>
                     </tbody>
@@ -243,7 +240,7 @@
                             <td class="actions">
                                 <a ng-click="$ctrl.editPledge(pledge); $event.stopPropagation()"
                                    title="{{'Edit' | translate}}">
-                                    <i class="far fa-pencil-square"></i>
+                                    <i class="far fa-edit"></i>
                                 </a>
                                 <a ng-click="$ctrl.removePledge(pledge); $event.stopPropagation()"
                                    title="{{'Remove' | translate}}">
