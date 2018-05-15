@@ -116,6 +116,9 @@ menu {
             .navbar-nav {
                 margin-top: 0 !important;
                 margin-bottom: 0 !important;
+                .help {
+                    cursor: pointer;
+                }
             }
         }
         .item {

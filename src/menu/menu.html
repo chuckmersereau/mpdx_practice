@@ -56,12 +56,12 @@
     <nav class="navbar">
         <ul class="nav navbar-nav">
             <li class="item" ui-sref-active="active"><a ui-sref="home" translate>Dashboard</a></li>
-            <li class="item" ng-class="{active: $ctrl.session.isInState('contact')}"><a ui-sref="contacts" translate>Contacts</a></li>
+            <li class="item" ui-sref-active="active"><a ui-sref="contacts" translate>Contacts</a></li>
             <li class="item" ui-sref-active="active"><a ui-sref="tasks" translate>Tasks</a></li>
-            <li class="item" ng-class="{active: $ctrl.session.isInState('reports')}"><a ui-sref="reports.salary" translate>Reports</a></li>
-            <li class="item" ng-class="{active: $ctrl.session.isInState('tools')}"><a ui-sref="tools" translate>Tools</a></li>
-            <li class="item" ng-class="{active: $ctrl.session.isInState('coaches')}" ng-if="$ctrl.users.current.preferences.admin"><a ui-sref="coaches" translate>Coaching</a></li>
-            <li class="item last" ui-sref-active="active"><a ng-click="$ctrl.help.showHelp()" translate>Help</a></li>
+            <li class="item" ng-class="{active: $ctrl.session.isInState('reports')}"><a ui-sref="reports.donations" translate>Reports</a></li>
+            <li class="item" ui-sref-active="active"><a ui-sref="tools" translate>Tools</a></li>
+            <li class="item" ui-sref-active="active" ng-if="$ctrl.users.current.preferences.admin"><a ui-sref="coaches" translate>Coaching</a></li>
+            <li class="item help"><a ng-click="$ctrl.help.showHelp()" translate>Help</a></li>
         </ul>
     </nav>
     <menu-balances></menu-balances>

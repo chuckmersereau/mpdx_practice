@@ -1,14 +1,14 @@
 <div class="nav-secondary menu" ng-class="{ 'selected' : $ctrl.designationAccounts.selected.length > 0 }">
-    <div class="section" ng-class="{active: $ctrl.session.isInState('reports.donations')}">
+    <div class="section" ui-sref-active="active">
         <a class="menu-item" ui-sref="reports.donations" translate>Donations</a>
     </div>
     <div class="section" ng-class="{active: $ctrl.session.isInState('reports.partner') || $ctrl.session.isInState('reports.salary')}">
         <a class="menu-item" ui-sref="reports.salary" translate>13-Month Report</a>
     </div>
-    <div class="section" ng-class="{active: $ctrl.session.isInState('reports.balances')}">
+    <div class="section" ui-sref-active="active">
         <a class="menu-item" ui-sref="reports.balances" translate>Balances</a>
     </div>
-    <div class="section" ng-class="{active: $ctrl.session.isInState('reports.monthly')}">
+    <div class="section" ui-sref-active="active">
         <a class="menu-item" ui-sref="reports.monthly" translate>Expected Monthly Total</a>
     </div>
     <div class="section section-spacer"></div>
