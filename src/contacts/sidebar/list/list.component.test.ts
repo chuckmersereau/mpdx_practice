@@ -72,38 +72,33 @@ describe('contacts.sidebar.list.component', () => {
         });
     });
 
-    describe('events', () => {
+    describe('$onInit', () => {
         beforeEach(() => {
             spyOn($ctrl, 'load').and.callFake(() => {});
         });
 
-        it('should load on accountListUpdated', () => {
-            rootScope.$emit('accountListUpdated');
-            rootScope.$digest();
-            expect($ctrl.load).toHaveBeenCalledWith();
-        });
-
-        it('should load on contactsFilterChange', () => {
-            rootScope.$emit('contactsFilterChange');
-            rootScope.$digest();
-            expect($ctrl.load).toHaveBeenCalledWith();
-        });
-    });
-
-    describe('$onInit', () => {
-        let spy;
-        beforeEach(() => {
-            spy = spyOn(angular, 'element').and.callFake(() => {});
-        });
-
         afterEach(() => {
-            spy.and.callThrough();
+            $ctrl.$onDestroy();
         });
 
         it('should initialize post-binding default values', () => {
             $ctrl.$onInit();
             expect($ctrl.listLoadCount).toEqual(0);
             expect($ctrl.selected).toEqual(contactId);
+        });
+
+        it('should load on accountListUpdated', () => {
+            $ctrl.$onInit();
+            rootScope.$emit('accountListUpdated');
+            rootScope.$digest();
+            expect($ctrl.load).toHaveBeenCalledWith();
+        });
+
+        it('should load on contactsFilterChange', () => {
+            $ctrl.$onInit();
+            rootScope.$emit('contactsFilterChange');
+            rootScope.$digest();
+            expect($ctrl.load).toHaveBeenCalledWith();
         });
     });
 
@@ -175,6 +170,16 @@ describe('contacts.sidebar.list.component', () => {
             it('should return 0', () => {
                 expect($ctrl.daysLate({})).toEqual(0);
             });
+        });
+    });
+    describe('$onDestroy', () => {
+        it('should destroy watchers', () => {
+            $ctrl.$onInit();
+            spyOn($ctrl, 'watcher').and.callFake(() => {});
+            spyOn($ctrl, 'watcher2').and.callFake(() => {});
+            $ctrl.$onDestroy();
+            expect($ctrl.watcher).toHaveBeenCalledWith();
+            expect($ctrl.watcher2).toHaveBeenCalledWith();
         });
     });
 });

@@ -18,7 +18,7 @@ class ListController {
     watcher2: () => void;
     constructor(
         private $log: ng.ILogService,
-        $rootScope: ng.IRootScopeService,
+        private $rootScope: ng.IRootScopeService,
         private $state: StateService,
         private $stateParams: StateParams,
         private api: ApiService,
@@ -29,18 +29,21 @@ class ListController {
         this.loading = false;
         this.page = 0;
         this.searchText = null;
-
-        this.watcher = $rootScope.$on('accountListUpdated', () => {
-            this.load();
-        });
-
-        this.watcher2 = $rootScope.$on('contactsFilterChange', () => {
-            this.load();
-        });
     }
     $onInit() {
+        this.watcher = this.$rootScope.$on('accountListUpdated', () => {
+            this.load();
+        });
+
+        this.watcher2 = this.$rootScope.$on('contactsFilterChange', () => {
+            this.load();
+        });
         this.listLoadCount = 0;
         this.selected = this.$stateParams.contactId;
+    }
+    $onDestroy() {
+        this.watcher();
+        this.watcher2();
     }
     switchContact(id) {
         this.selected = id;
