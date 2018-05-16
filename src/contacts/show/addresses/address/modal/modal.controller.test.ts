@@ -149,11 +149,11 @@ describe('contacts.show.address.modal.controller', () => {
         });
 
         it('should return for edit', () => {
-            expect($ctrl.setTitle({})).toEqual('Address');
+            expect($ctrl.setTitle({ id: 1, source: 'MPDX' }, {})).toEqual('Edit Address');
         });
 
         it('should return for read-only', () => {
-            expect($ctrl.setTitle({}, {})).toEqual('Edit Address');
+            expect($ctrl.setTitle({ id: 1 })).toEqual('Address');
         });
     });
 

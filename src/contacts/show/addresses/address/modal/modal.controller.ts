@@ -5,6 +5,7 @@ import {
     concat,
     defaultTo,
     findIndex,
+    get,
     join,
     reduce,
     reject
@@ -61,13 +62,12 @@ class AddressModalController {
             this.refreshMap();
         });
     }
-    setTitle(address, contact) {
-        return this.gettextCatalog.getString(address
+    setTitle(address: any, contact?: any) {
+        return get('id', address)
             ? contact
-                ? 'Edit Address'
-                : 'Address'
-            : 'Add Address'
-        );
+                ? this.gettextCatalog.getString('Edit Address')
+                : this.gettextCatalog.getString('Address')
+            : this.gettextCatalog.getString('Add Address');
     }
     updateAddress(address) {
         this.placesService.getDetails({ placeId: address.place_id }, (data) => {
