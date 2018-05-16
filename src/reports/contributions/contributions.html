@@ -99,12 +99,14 @@
                                                        reverse="$ctrl.sortReverse"></sort-header-caret>
                                 </th>
                                 <th ng-if="$ctrl.expanded"
+                                    class="text-right"
                                     ng-click="$ctrl.changeSort('average')">
                                     <translate>Avg</translate>
                                     <sort-header-caret ng-if="$ctrl.sort === 'average'"
                                                        reverse="$ctrl.sortReverse"></sort-header-caret>
                                 </th>
                                 <th ng-if="$ctrl.expanded"
+                                    class="text-right"
                                     ng-click="$ctrl.changeSort('minimum')">
                                     <translate>Min</translate>
                                     <sort-header-caret ng-if="$ctrl.sort === 'minimum'"
@@ -175,8 +177,8 @@
                                         Totals
                                     </strong>
                                 </td>
-                                <td ng-if="$ctrl.expanded">{{::currency.totals.average}}</td>
-                                <td ng-if="$ctrl.expanded">{{::currency.totals.minimum}}</td>
+                                <td ng-if="$ctrl.expanded" class="text-right">{{::currency.totals.average}}</td>
+                                <td ng-if="$ctrl.expanded" class="text-right">{{::currency.totals.minimum}}</td>
                                 <td class="text-right" ng-repeat="total in ::currency.totals.months track by $index">
                                     <strong ng-class="::{'text-muted': $last}">
                                         {{::total | number : 0}}
