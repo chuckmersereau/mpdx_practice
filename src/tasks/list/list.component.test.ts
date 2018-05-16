@@ -400,6 +400,7 @@ describe('tasks.list.component', () => {
             expect(args.data.page).toEqual(2);
             scope.$digest();
         });
+
         describe('no results', () => {
             it('should call getTotalCount if no results', (done) => {
                 let result: any = [];
