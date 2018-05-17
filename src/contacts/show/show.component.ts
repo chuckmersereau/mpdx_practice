@@ -25,6 +25,7 @@ class ContactController {
     tabsLabels: any[];
     watcher: () => void;
     watcher2: () => void;
+    watcher3: Function;
     constructor(
         private $log: ng.ILogService,
         private $rootScope: ICustomRootScope,
@@ -132,7 +133,7 @@ class ContactController {
             this.onPrimary(personId);
         });
 
-        this.$transitions.onStart({ to: 'contacts.show.*' }, (transition) => {
+        this.watcher3 = this.$transitions.onStart({ to: 'contacts.show.*' }, (transition) => {
             this.setActiveTab(transition);
         });
     }
@@ -143,6 +144,7 @@ class ContactController {
     $onDestroy() {
         this.watcher();
         this.watcher2();
+        this.watcher3();
     }
     save() {
         const source = angular.copy(this.contacts.current); // to avoid onChanges changes
@@ -172,7 +174,7 @@ class ContactController {
         this.save();
     }
     setActiveTab(transition: Transition) {
-        let tab = transition.to().name.replace('contacts.show.', '');
+        const tab = transition.to().name.replace('contacts.show.', '');
         this.contacts.activeTab = tab;
         if (this.contacts.activeDrawer === tab) {
             this.contacts.activeDrawer = '';

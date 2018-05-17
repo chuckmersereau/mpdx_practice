@@ -29,6 +29,7 @@ menu-search {
                     font-size: $font-size-sm !important;
                     line-height: 25px;
                     text-align: left !important;
+                    cursor: pointer;
                     &:hover,
                     &:focus {
                         background-color: color-gray(95);
