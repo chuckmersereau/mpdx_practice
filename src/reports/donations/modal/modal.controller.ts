@@ -1,5 +1,5 @@
 import 'angular-gettext';
-import { defaultTo, get, has } from 'lodash/fp';
+import { assign, defaultTo, get, has } from 'lodash/fp';
 import accounts, { AccountsService } from '../../../common/accounts/accounts.service';
 import api, { ApiService } from '../../../common/api/api.service';
 import appeals, { AppealsService } from '../../../tools/appeals/appeals.service';
@@ -65,8 +65,9 @@ class DonationModalController {
         const patch = createPatch(this.initialDonation, donation);
         const successMessage = this.gettextCatalog.getString('Donation saved successfully');
         const errorMessage = this.gettextCatalog.getString('Unable to save changes to donation');
-        return this.getSavePromise(patch, successMessage, errorMessage).then(() => {
-            this.$rootScope.$emit('donationUpdated', patch);
+        return this.getSavePromise(patch, successMessage, errorMessage).then((data) => {
+            const newVal = assign(data, patch);
+            this.$rootScope.$emit('donationUpdated', newVal);
             this.$scope.$hide();
             if (get('id', donation.appeal) === 'none') {
                 this.removePledgeThenContact(donation, originalAppealId);

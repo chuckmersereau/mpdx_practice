@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash/fp';
+import { assign, isEqual } from 'lodash/fp';
 import modalController from './modal.controller';
 
 let donation = {
@@ -10,7 +10,7 @@ let donation = {
 };
 const appealId = 'appeal_id';
 
-xdescribe('donation.modal.controller', () => {
+describe('donation.modal.controller', () => {
     let $ctrl, controller, scope, gettextCatalog, accounts, modal, designationAccounts, api, rootScope, appeals, q;
 
     function loadController(data: any = donation) {
@@ -39,6 +39,7 @@ xdescribe('donation.modal.controller', () => {
             modal = _modal_;
             q = $q;
             designationAccounts = _designationAccounts_;
+            spyOn(designationAccounts, 'load').and.callFake(() => q.resolve([{ id: 'designation_id' }]));
             loadController();
         });
         spyOn(gettextCatalog, 'getString').and.callThrough();
@@ -88,7 +89,6 @@ xdescribe('donation.modal.controller', () => {
 
     describe('setDesignationAccount', () => {
         it('should set the designation_account', (done) => {
-            spyOn(designationAccounts, 'load').and.callFake(() => q.resolve([{ id: 'designation_id' }]));
             $ctrl.setDesignationAccount().then(() => {
                 expect($ctrl.donation.designation_account).toEqual({ id: 'designation_id' });
                 done();
@@ -102,7 +102,8 @@ xdescribe('donation.modal.controller', () => {
         const errorMessage = 'Unable to save changes to donation';
         describe('promise resolved', () => {
             beforeEach(() => {
-                spyOn($ctrl, 'getSavePromise').and.callFake((data) => q.resolve(data));
+                spyOn($ctrl, 'getSavePromise').and.callFake((data) =>
+                    q.resolve(assign(data, { converted_amount: '10' })));
                 spyOn(scope, '$hide').and.callFake(() => {});
             });
 
@@ -120,6 +121,17 @@ xdescribe('donation.modal.controller', () => {
                 });
                 rootScope.$digest();
             });
+
+            it('should combine values with server response', (done) => {
+                $ctrl.save().then(() => {
+                    expect(rootScope.$emit).toHaveBeenCalledWith('donationUpdated', {
+                        id: 'donation_id',
+                        converted_amount: '10'
+                    });
+                    done();
+                });
+                rootScope.$digest();
+            });
         });
 
         describe('remove appeal', () => {
@@ -129,7 +141,7 @@ xdescribe('donation.modal.controller', () => {
                 $ctrl.donation.appeal = null;
             });
 
-            it('should update with empty appeal', (done) => {
+            xit('should update with empty appeal', (done) => {
                 $ctrl.save().then(() => {
                     expect($ctrl.getSavePromise).toHaveBeenCalledWith({
                         id: 'donation_id',
