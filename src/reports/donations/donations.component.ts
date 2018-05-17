@@ -154,9 +154,14 @@ class DonationsController {
         }, data);
     }
     calculateTotals() {
-        this.totals = reduce((result, donation) => assign(result, {
-            [donation.currency]: donation.month_totals[this.totalsPosition].amount
-        }), {}, this.donations.chartData.totals);
+        const totalIfInContact = (donation) => this.inContact
+            ? donation.total_amount
+            : donation.month_totals[this.totalsPosition].amount;
+        const mergeResult = (result, donation) => assign(result, {
+            [donation.currency]: totalIfInContact(donation)
+        });
+        const reduceResults = reduce(mergeResult, {});
+        this.totals = reduceResults(this.donations.chartData.totals);
     }
     setMonths() {
         this.previousMonth = moment(this.startDate).subtract(1, 'month');

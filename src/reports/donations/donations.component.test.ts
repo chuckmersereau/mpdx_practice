@@ -569,4 +569,28 @@ describe('reports.donations.component', () => {
             expect($ctrl.sortReverse).toBeFalsy();
         });
     });
+
+    describe('calculateTotals', () => {
+        beforeEach(() => {
+            donations.chartData = {
+                totals: [{
+                    currency: 'USD',
+                    total_amount: '135',
+                    month_totals: [{ amount: '1' }, { amount: '2' }]
+                }]
+            };
+        });
+
+        it('should set the month total', () => {
+            $ctrl.totalsPosition = 1;
+            $ctrl.calculateTotals();
+            expect($ctrl.totals['USD']).toEqual('2');
+        });
+
+        it('should set the period total', () => {
+            $ctrl.inContact = true;
+            $ctrl.calculateTotals();
+            expect($ctrl.totals['USD']).toEqual('135');
+        });
+    });
 });
