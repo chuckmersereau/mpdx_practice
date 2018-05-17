@@ -5,6 +5,7 @@ saved-filters {
         border-bottom: 1px solid $color-gray-blue;
         color: $color-white;
         line-height: 22px;
+        cursor: pointer;
         &:last-child {
             border-bottom: 0;
         }
