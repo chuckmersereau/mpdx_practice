@@ -1,10 +1,10 @@
 import { find, get, isArray } from 'lodash/fp';
 
 class FilterController {
-    isArray(obj: any) {
+    isArray(obj: any): boolean {
         return isArray(obj);
     }
-    getOption(filter, id) {
+    getOption(filter: any, id: string): string {
         return get('name', find({ id: id }, filter.options));
     }
 }
@@ -21,5 +21,5 @@ const filter: ng.IComponentOptions = {
     }
 };
 
-export default angular.module('mpdx.common.filters.header.filter.component', [])
+export default angular.module('mpdx.common.filter.header.filter.component', [])
     .component('filtersHeaderFilter', filter).name;

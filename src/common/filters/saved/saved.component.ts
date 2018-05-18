@@ -6,11 +6,11 @@ import replaceAll from '../../fp/replaceAll';
 import users, { UsersService } from '../../users/users.service';
 
 class SavedController {
-    savedFilterNames: string[];
-    start: string;
-    type: string;
-    watcher: any;
-    watcher2: any;
+    protected savedFilterNames: string[];
+    private start: string;
+    private type: string;
+    private watcher: () => void;
+    private watcher2: () => void;
     constructor(
         private $rootScope: ng.IRootScopeService,
         private gettextCatalog: ng.gettext.gettextCatalog,
@@ -73,7 +73,7 @@ export function strReplace() {
     };
 }
 
-export default angular.module('mpdx.common.filters.saved.component', [
+export default angular.module('mpdx.common.filter.saved.component', [
     'gettext',
     api, modal, users
 ]).component('savedFilters', saved)

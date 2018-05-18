@@ -7,7 +7,7 @@ import replaceAll from '../../fp/replaceAll';
 import users, { UsersService } from '../../users/users.service';
 
 class Save {
-    name: string;
+    protected name: string;
     constructor(
         private $rootScope: ng.IRootScopeService,
         private $scope: mgcrea.ngStrap.modal.IModalScope,
@@ -22,7 +22,7 @@ class Save {
         private selectedTags: any,
         private wildcardSearch: string
     ) {}
-    save() {
+    save(): ng.IPromise<void> {
         const value = {
             any_tags: this.anyTags,
             account_list_id: this.api.account_list_id,
@@ -34,7 +34,7 @@ class Save {
         const jsonFilters = JSON.stringify(value);
         const name = replaceAll(' ', '_', this.name);
         const key = `saved_${this.filterType}_filter_${name}`;
-        let option = find({ key: key }, this.users.currentOptions);
+        const option = find({ key: key }, this.users.currentOptions);
         const promise = option ? this.checkUpdateOption(option, jsonFilters) : this.createOption(key, jsonFilters);
         promise.then(() => {
             this.$rootScope.$emit('savedFilterAdded', key);
@@ -42,7 +42,7 @@ class Save {
         });
         return promise;
     }
-    createOption(key, data) {
+    private createOption(key: string, data: any): ng.IPromise<void> {
         return this.api.post({
             url: 'user/options',
             data: {
@@ -58,11 +58,11 @@ class Save {
             autoParams: false
         }).then(() => this.afterSave(key, data));
     }
-    checkUpdateOption(option, data) {
+    private checkUpdateOption(option: any, data: any): ng.IPromise<void> {
         const msg = this.gettextCatalog.getString('A filter with that name already exists. Do you wish to replace it.');
         return this.modal.confirm(msg).then(() => this.updateOption(option, data));
     }
-    updateOption(option, data) {
+    private updateOption(option: any, data: any): ng.IPromise<void> {
         return this.api.put({
             url: `user/options/${option.key}`,
             data: {
@@ -79,7 +79,7 @@ class Save {
             autoParams: false
         }).then(() => this.afterSave(option.key, data));
     }
-    afterSave(key, data) {
+    private afterSave(key: string, data: any): void {
         let option: any = defaultTo({}, find({ key: key }, this.users.currentOptions));
         option.value = data;
         this.users.currentOptions[key] = option;

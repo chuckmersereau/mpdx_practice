@@ -64,5 +64,5 @@ const header: ng.IComponentOptions = {
     }
 };
 
-export const headerComponent = angular.module('mpdx.common.filters.header.component', [])
+export default angular.module('mpdx.common.filter.header.component', [])
     .component('filtersHeader', header).name;

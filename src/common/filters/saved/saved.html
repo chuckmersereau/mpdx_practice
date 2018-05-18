@@ -1,7 +1,8 @@
 <div class="filter--filtergroup"
-     bs-collapse ng-model="isCollapsed"
+     ng-model="isCollapsed"
      ng-init="isCollapsed = false"
-     ng-if="$ctrl.savedFilterNames && $ctrl.savedFilterNames.length > 0">
+     ng-if="$ctrl.savedFilterNames && $ctrl.savedFilterNames.length > 0"
+     bs-collapse>
     <div class="filter--filtergroup_title" bs-collapse-toggle>
         <i class="fas fa-save"></i>
         <div translate>Saved Filters</div>
@@ -14,7 +15,8 @@
            ng-class="{active: $ctrl.selected === key}">
            <i class="fas fa-caret-right"></i>
             <span class="saved-filter_text">{{key | strReplace: '_' : ' '}}</span>
-            <i class="saved-filter_delete fal fa-times" ng-click="$ctrl.remove(key); $event.stopPropagation()"></i>
+            <i class="saved-filter_delete fal fa-times"
+               ng-click="$ctrl.remove(key); $event.stopPropagation()"></i>
         </a>
     </div>
 </div>
