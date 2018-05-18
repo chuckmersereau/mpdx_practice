@@ -43,7 +43,7 @@ class HeaderController {
     }
 }
 
-const header = {
+const header: ng.IComponentOptions = {
     template: require('./header.html'),
     controller: HeaderController,
     bindings: {

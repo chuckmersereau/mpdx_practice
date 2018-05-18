@@ -3,7 +3,7 @@
 import save from './save/save.controller';
 // import saved from './saved/saved.component';
 
-export default angular.module('mpdx.common.filters', [
+export default angular.module('mpdx.common.filters.module', [
     // header
     // headerFilter,
     save

@@ -57,7 +57,7 @@ class SavedController {
     }
 }
 
-const Saved = {
+const saved: ng.IComponentOptions = {
     template: require('./saved.html'),
     controller: SavedController,
     bindings: {
@@ -74,7 +74,7 @@ export function strReplace() {
 }
 
 export default angular.module('mpdx.common.filters.saved.component', [
-    api, 'gettext', modal,
-    users
-]).component('savedFilters', Saved)
+    'gettext',
+    api, modal, users
+]).component('savedFilters', saved)
     .filter('strReplace', strReplace).name;

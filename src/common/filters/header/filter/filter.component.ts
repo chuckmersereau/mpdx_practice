@@ -9,7 +9,7 @@ class FilterController {
     }
 }
 
-const filtersHeaderFilter = {
+const filter: ng.IComponentOptions = {
     template: require('./filter.html'),
     controller: FilterController,
     bindings: {
@@ -22,4 +22,4 @@ const filtersHeaderFilter = {
 };
 
 export default angular.module('mpdx.common.filters.header.filter.component', [])
-    .component('filtersHeaderFilter', filtersHeaderFilter).name;
+    .component('filtersHeaderFilter', filter).name;
