@@ -12,7 +12,7 @@ import datetimepicker from './datetimepicker/datetimepicker.component';
 import designationAccountsSelector from './designationAccounts/selector/selector.component';
 import drawer from './sideDrawer/drawer.component';
 import faCheckbox from './faCheckbox/faCheckbox.component';
-// import filters from './filters/filters.module';
+import filters from './filters/filters.module';
 import links from './links/links.module';
 import locale from './locale/locale.filter';
 import login from './login/login.component';
@@ -42,7 +42,7 @@ export default angular.module('mpdx.common', [
     designationAccountsSelector,
     drawer,
     faCheckbox,
-    // filters,
+    filters,
     links,
     locale,
     login,
