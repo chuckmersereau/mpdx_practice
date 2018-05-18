@@ -1,4 +1,4 @@
-import component from './header.component';
+import { headerComponent } from './header.component';
 
 describe('common.filters.header.component', () => {
     let $ctrl, scope, componentController;
@@ -14,7 +14,7 @@ describe('common.filters.header.component', () => {
     }
 
     beforeEach(() => {
-        angular.mock.module(component);
+        angular.mock.module(headerComponent);
         inject(($componentController, $rootScope) => {
             scope = $rootScope.$new();
             componentController = $componentController;

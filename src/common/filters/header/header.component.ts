@@ -1,44 +1,46 @@
-import { each, isEqual, sumBy } from 'lodash/fp';
+import { isEqual, sumBy } from 'lodash/fp';
 
 class HeaderController {
-    displayFilters: any;
+    displayFilters: () => boolean;
     filterDefaultParams: any;
     filterParams: any;
-    filters: any;
-    invertFilter: any;
+    filters: any[];
+    invertFilter: (any) => void;
     isCollapsed: boolean;
-    removeFilter: any;
-    rejectedTags: any;
-    selectedTags: any;
+    removeFilter: (any) => void;
+    rejectedTags: any[];
+    selectedTags: any[];
     constructor() {
         this.isCollapsed = true;
     }
-    invert(filter) {
+    invert(filter: any): void {
         this.invertFilter({ $filter: filter });
     }
-    remove(filter) {
+    remove(filter: any): void {
         this.removeFilter({ $filter: filter });
     }
-    count() {
-        let count = this.selectedTags.length + this.rejectedTags.length;
-        count += sumBy((filter: any) => {
-            let filterCount = 0;
-            if (this.filterInUse(filter)) filterCount += 1;
-            each((child) => {
-                if (this.filterInUse(child)) filterCount += 1;
-            }, filter.children);
-            return filterCount;
-        }, this.filters);
-        return count;
+    count(): number {
+        return this.countTags() + this.sumFilters(this.filters);
     }
-    filterInUse(filter) {
+    private sumFilters(filters: any[]): number {
+        return sumBy((filter: any) => {
+            return this.countInUse(filter) + this.sumFilters(filter.children);
+        }, filters);
+    }
+    private countTags(): number {
+        return this.selectedTags.length + this.rejectedTags.length;
+    }
+    private countInUse(filter: any): number {
+        return this.filterInUse(filter) ? 1 : 0;
+    }
+    filterInUse(filter: any): boolean {
         return filter.reverse || (
             filter.type !== 'container'
             && this.filterParams[filter.name].length > 0
             && !isEqual(this.filterParams[filter.name], this.filterDefaultParams[filter.name])
         );
     }
-    display() {
+    display(): boolean {
         return this.displayFilters() && this.count() > 0;
     }
 }
@@ -62,5 +64,5 @@ const header: ng.IComponentOptions = {
     }
 };
 
-export default angular.module('mpdx.common.filters.header.component', [])
+export const headerComponent = angular.module('mpdx.common.filters.header.component', [])
     .component('filtersHeader', header).name;
