@@ -1,6 +1,6 @@
 import component from './header.component';
 
-xdescribe('common.filters.header.component', () => {
+describe('common.filters.header.component', () => {
     let $ctrl, scope, componentController;
 
     function loadController() {
