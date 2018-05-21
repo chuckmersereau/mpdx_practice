@@ -10,7 +10,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const RollbarSourceMapPlugin = require('rollbar-sourcemap-webpack-plugin');
 const WebpackMd5Hash = require('webpack-md5-hash');
-// const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const rollbarAccessToken = '9b953d96d0e145f9a4b70b41b1390c3b';
 
@@ -93,14 +93,14 @@ config = assign(config, {
         new MiniCssExtractPlugin({
             filename: '[name].[chunkhash].css'
         }),
-        new WebpackMd5Hash()// ,
-        // new UglifyJsPlugin({
-        //     parallel: true,
-        //     sourceMap: true,
-        //     uglifyOptions: {
-        //         ecma: 5
-        //     }
-        // })
+        new WebpackMd5Hash(),
+        new UglifyJsPlugin({
+            parallel: true,
+            sourceMap: true,
+            uglifyOptions: {
+                ecma: 5
+            }
+        })
     ]),
     mode: 'production',
     devtool: 'source-map' // do not change, needed for rollbar and js size
