@@ -143,10 +143,10 @@ class ContributionsController {
                 return {
                     contact: this.getContact(donor, data),
                     monthlyDonations: this.getMonthlyDonations(type, donor),
-                    average: donor.average,
-                    maximum: donor.maximum,
-                    minimum: donor.minimum,
-                    total: donor.total
+                    average: toInteger(donor.average),
+                    maximum: toInteger(donor.maximum),
+                    minimum: toInteger(donor.minimum),
+                    total: toInteger(donor.total)
                 };
             }, reject((donor) => isNil(donor.total), info))
         );
