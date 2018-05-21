@@ -47,21 +47,21 @@ class HeaderController {
 
 const header: ng.IComponentOptions = {
     template: require('./header.html'),
-    controller: HeaderController
-    // bindings: {
-    //     filters: '<',
-    //     filterParams: '<',
-    //     filterDefaultParams: '<',
-    //     selectedTags: '<',
-    //     rejectedTags: '<',
-    //     displayFilters: '&',
-    //     invertFilter: '&',
-    //     removeFilter: '&',
-    //     rejectTag: '&',
-    //     selectTag: '&',
-    //     removeSelectedTag: '&',
-    //     removeRejectedTag: '&'
-    // }
+    controller: HeaderController,
+    bindings: {
+        filters: '<',
+        filterParams: '<',
+        filterDefaultParams: '<',
+        selectedTags: '<',
+        rejectedTags: '<',
+        displayFilters: '&',
+        invertFilter: '&',
+        removeFilter: '&',
+        rejectTag: '&',
+        selectTag: '&',
+        removeSelectedTag: '&',
+        removeRejectedTag: '&'
+    }
 };
 
 export default angular.module('mpdx.common.filter.header.component', [])
