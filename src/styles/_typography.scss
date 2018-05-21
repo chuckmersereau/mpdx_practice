@@ -9,4 +9,7 @@ body {
     color: $color-text;
     font-family: $font-primary;
     font-size: $font-size-md;
+    a {
+        cursor: pointer;
+    }
 }
