@@ -1,4 +1,4 @@
-import { isEqual, sumBy } from 'lodash/fp';
+// import { isEqual, sumBy } from 'lodash/fp';
 
 class HeaderController {
     displayFilters: () => boolean;
@@ -46,22 +46,22 @@ class HeaderController {
 }
 
 const header: ng.IComponentOptions = {
-    template: require('./header.html'),
-    controller: HeaderController,
-    bindings: {
-        filters: '<',
-        filterParams: '<',
-        filterDefaultParams: '<',
-        selectedTags: '<',
-        rejectedTags: '<',
-        displayFilters: '&',
-        invertFilter: '&',
-        removeFilter: '&',
-        rejectTag: '&',
-        selectTag: '&',
-        removeSelectedTag: '&',
-        removeRejectedTag: '&'
-    }
+    // template: require('./header.html'),
+    controller: HeaderController // ,
+    // bindings: {
+    //     filters: '<',
+    //     filterParams: '<',
+    //     filterDefaultParams: '<',
+    //     selectedTags: '<',
+    //     rejectedTags: '<',
+    //     displayFilters: '&',
+    //     invertFilter: '&',
+    //     removeFilter: '&',
+    //     rejectTag: '&',
+    //     selectTag: '&',
+    //     removeSelectedTag: '&',
+    //     removeRejectedTag: '&'
+    // }
 };
 
 export default angular.module('mpdx.common.filter.header.component', [])
