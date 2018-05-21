@@ -1,3 +1,4 @@
+import 'expose-loader?$!jquery'; // import before angular to replace jqlite
 import * as angular from 'angular';
 import app from './app.directive';
 import appConfig from './app.config';
