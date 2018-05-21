@@ -1,4 +1,3 @@
-// import '!expose-loader?jQuery!jquery'; // import before angular to replace jqlite
 import * as angular from 'angular';
 import app from './app.directive';
 import appConfig from './app.config';
@@ -18,8 +17,6 @@ import tasks from './tasks/tasks.module';
 import tools from './tools/tools.module';
 import unavailable from './unavailable/unavailable.component';
 import vendor from './vendor.module';
-
-(window as any).angular = angular;
 
 require('./app.scss');
 require('./images/mpdx-favicon.png');
