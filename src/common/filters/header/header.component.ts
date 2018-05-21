@@ -47,7 +47,7 @@ class HeaderController {
 
 const header: ng.IComponentOptions = {
     template: require('./header.html'),
-    controller: HeaderController,
+    controller: HeaderController
     // bindings: {
     //     filters: '<',
     //     filterParams: '<',
