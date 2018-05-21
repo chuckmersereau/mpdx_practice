@@ -60,15 +60,15 @@ class ContributionsController {
         });
 
         /**
-            Report Types
-            The type binding can be 'partner' or 'salary'
-            - Partner
-                Partners are grouped by the currency they gave in
-                The normal amount and currency fields are used
-            - Salary
-                Donors are grouped into a single category which is the user's salary currency
-                The converted amount and currency fields are used (using 'converted_' prefix)
-        **/
+         Report Types
+         The type binding can be 'partner' or 'salary'
+         - Partner
+         Partners are grouped by the currency they gave in
+         The normal amount and currency fields are used
+         - Salary
+         Donors are grouped into a single category which is the user's salary currency
+         The converted amount and currency fields are used (using 'converted_' prefix)
+         **/
 
         this.type = defaultTo('salary', this.type);
         this.load();
@@ -222,18 +222,18 @@ class ContributionsController {
                     defaultTo('', donor.contact.status),
                     amount,
                     round(donor.average),
-                    donor.minimum,
-                    donor.maximum,
-                    ...map('total', donor.monthlyDonations),
-                    donor.total
+                    round(donor.minimum),
+                    round(donor.maximum),
+                    ...map((d) => round(d.total), donor.monthlyDonations),
+                    round(donor.total)
                 ];
             }, currency.donors);
             const totals = [
                 this.gettextCatalog.getString('Totals'),
                 ...times(constant(''), 2),
-                currency.totals.average,
-                currency.totals.minimum,
-                currency.totals.maximum,
+                round(currency.totals.average),
+                round(currency.totals.minimum),
+                round(currency.totals.maximum),
                 ...currency.totals.months,
                 round(currency.totals.year_converted)
             ];
