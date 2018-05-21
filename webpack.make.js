@@ -67,6 +67,7 @@ const config = {
             }]
         })
     ],
+    // breaking prod suddenly
     // optimization: {
     //     splitChunks: {
     //         cacheGroups: {
