@@ -235,6 +235,7 @@ describe('contacts.show.details.component', () => {
             expect($ctrl.onSave).toHaveBeenCalledWith();
         });
     });
+
     describe('remove', () => {
         beforeEach(() => {
             contacts.current = {
@@ -245,16 +246,19 @@ describe('contacts.show.details.component', () => {
             spyOn(api, 'delete').and.callFake(() => q.resolve());
             spyOn(state, 'go').and.callFake(() => {});
         });
+
         it('should translate the confirm message', () => {
             $ctrl.remove();
             expect(gettextCatalog.getString).toHaveBeenCalledWith(
                 'Are you sure you wish to permanently delete {{name}}?',
                 { name: 'joe' });
         });
+
         it('should display confirmation modal', () => {
             $ctrl.remove();
-            expect(modal.confirm).toHaveBeenCalledWith('Are you sure you wish to permanently delete joe?')
+            expect(modal.confirm).toHaveBeenCalledWith('Are you sure you wish to permanently delete joe?');
         });
+
         it('should delete the contact', (done) => {
             $ctrl.remove().then(() => {
                 expect(api.delete).toHaveBeenCalledWith({
@@ -265,6 +269,7 @@ describe('contacts.show.details.component', () => {
             });
             scope.$digest();
         });
+
         it('should return to the contact list', (done) => {
             $ctrl.remove().then(() => {
                 expect(state.go).toHaveBeenCalledWith('contacts');

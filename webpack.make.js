@@ -45,7 +45,7 @@ const config = {
             use: [{
                 loader: 'expose-loader',
                 options: 'jQuery'
-            },{
+            }, {
                 loader: 'expose-loader',
                 options: '$'
             }]

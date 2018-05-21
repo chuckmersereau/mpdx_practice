@@ -172,6 +172,7 @@ describe('contacts.sidebar.list.component', () => {
             });
         });
     });
+
     describe('$onDestroy', () => {
         it('should destroy watchers', () => {
             $ctrl.$onInit();
