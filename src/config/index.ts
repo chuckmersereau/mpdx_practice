@@ -5,9 +5,7 @@ import production from './production';
 import staging from './staging';
 import test from './test';
 
-declare global {
-    const NODE_ENV: any;
-}
+declare const NODE_ENV: any;
 
 const configEnv = NODE_ENV || 'development';
 
