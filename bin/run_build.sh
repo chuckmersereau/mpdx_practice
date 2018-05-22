@@ -23,7 +23,7 @@ then
     fi
 
     echo '-- run build --'
-    yarn run build
+    yarn cross-env NODE_ENV="${NODE_ENV}" yarn build
 
     echo '<!-- COMMIT:' $TRAVIS_COMMIT '-->' >> public/index.html
 
