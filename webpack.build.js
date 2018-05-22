@@ -9,7 +9,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const RollbarSourceMapPlugin = require('rollbar-sourcemap-webpack-plugin');
-const WebpackMd5Hash = require('webpack-md5-hash');
+// const WebpackMd5Hash = require('webpack-md5-hash');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const rollbarAccessToken = '9b953d96d0e145f9a4b70b41b1390c3b';
@@ -41,8 +41,8 @@ config = assign(config, {
     output: {
         path: path.join(__dirname, 'public'),
         publicPath: '/',
-        filename: '[name].[chunkhash].js',
-        chunkFilename: '[name].[chunkhash].js'
+        filename: '[name].[hash].js',
+        chunkFilename: '[name].[hash].js'
     },
     module: assign(config.module, {
         rules: concat(config.module.rules, [
@@ -91,9 +91,9 @@ config = assign(config, {
             { from: 'src/google144ccea737ed252d.html' }
         ]),
         new MiniCssExtractPlugin({
-            filename: '[name].[chunkhash].css'
+            filename: '[name].[hash].css'
         }),
-        new WebpackMd5Hash(),
+        // new WebpackMd5Hash(),
         new UglifyJsPlugin({
             parallel: true,
             sourceMap: true,
