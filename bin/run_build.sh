@@ -23,9 +23,10 @@ then
     fi
 
     echo '-- run build --'
-    yarn cross-env NODE_ENV="${NODE_ENV}" yarn build
+    yarn build
 
     echo '<!-- COMMIT:' $TRAVIS_COMMIT '-->' >> public/index.html
+    echo '<!-- BRANCH:' $TRAVIS_BRANCH '-->' >> public/index.html
 
     if [ "$TRAVIS_PULL_REQUEST" = "false" ]
     then
