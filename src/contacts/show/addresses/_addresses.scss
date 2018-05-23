@@ -1,0 +1,7 @@
+@import 'address/address';
+contact-addresses {
+    > .actions {
+        margin-bottom: 10px;
+        text-align: right;
+    }
+}

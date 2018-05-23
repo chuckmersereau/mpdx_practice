@@ -1,0 +1,75 @@
+task-list-contact {
+    $avatar-size: 26px;
+    display: grid;
+    grid-template-columns: $avatar-size 1fr;
+    grid-gap: 10px;
+    & + & { //all except first
+        border-top: 1px solid $color-bg;
+    }
+    avatar {
+        grid-column: 1;
+        &,
+        .avatar,
+        .avatar img {
+            width: $avatar-size;
+            height: $avatar-size;
+        }
+    }
+    .heading {
+        margin-top: 2px;
+        font-weight: bold;
+    }
+    .details {
+        display: flex;
+        flex-direction: column;
+        grid-column: 2;
+        label {
+            @extend .h4;
+            display: block;
+            margin: 0;
+            color: color-gray(60);
+            font-size: $font-size-xs;
+        }
+        .address {
+            address {
+                margin-bottom: 10px;
+                font-size: $font-size-sm;
+                font-weight: bold;
+            }
+        }
+        .person,
+        .status,
+        .commitment {
+            display: grid;
+            margin-bottom: 10px;
+            grid-template-columns: repeat(3, 1fr);
+            > div {
+                a,
+                span {
+                    font-size: $font-size-sm;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+    > div.tags-row {
+        display: grid;
+        grid-template-columns: 1fr 20px;
+        > div.tags {
+            max-height: 27px;
+            margin-top: 3px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            &.expanded {
+                max-height: 100%;
+            }
+            .tag {
+                max-width: 100px;
+                max-height: 27px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+        }
+    }
+}

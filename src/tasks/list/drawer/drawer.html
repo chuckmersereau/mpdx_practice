@@ -1,0 +1,44 @@
+<div class="heading">
+    <div class="horizontal-tab-sortable">
+        <div class="sortable-row">
+            <div ng-class="{ 'active-item': $ctrl.view === 'contacts'}" class="as-sortable-item">
+                <div class="as-sortable-item-handle">
+                    <a ng-click="$ctrl.view = 'contacts'" translate>Contacts</a>
+                </div>
+            </div>
+            <div ng-class="{ 'active-item': $ctrl.view === 'comments'}" class="as-sortable-item">
+                <div class="as-sortable-item-handle">
+                    <a ng-click="$ctrl.view = 'comments'" translate>Comments</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content">
+    <div class="contacts am-fade" ng-if="$ctrl.view === 'contacts' && $ctrl.loaded">
+        <task-list-contact ng-repeat="contact in $ctrl.task.contacts track by contact.id"
+                           contact="contact"
+                           loaded="$ctrl.loaded">
+        </task-list-contact>
+    </div>
+    <div class="comments am-fade" ng-if="$ctrl.view === 'comments' && $ctrl.loaded">
+        <task-item-comment ng-repeat="comment in $ctrl.task.comments"
+                           comment="comment"
+                           on-comment-remove="$ctrl.commentRemoved(comment.id)"
+                           task-id="$ctrl.task.id">
+        </task-item-comment>
+    </div>
+</div>
+<form class="comment-form am-fade" ng-submit="$ctrl.addComment()" ng-if="$ctrl.view === 'comments' && $ctrl.loaded" novalidate>
+    <div class="input-group">
+      <span class="input-group-addon">
+          <i class="far fa-comment"></i>
+      </span>
+
+      <input type="text"
+             class="form-control"
+             ng-model="$ctrl.comment"
+             placeholder="{{ 'Add a comment' | translate }}"
+             required>
+    </div>
+</form>

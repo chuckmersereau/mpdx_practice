@@ -1,0 +1,9 @@
+preferences-sidebar {
+    @extend .sidebar;
+    .selector {
+        margin-top: 20px;
+        .account-list-dropdown {
+            margin-top: 5px;
+        }
+    }
+}

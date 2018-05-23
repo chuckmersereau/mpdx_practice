@@ -1,14 +1,14 @@
 <form ng-submit="$ctrl.gotoList()">
     <div class="dropdown">
         <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+            <span class="input-group-addon"><i class="fas fa-search"></i></span>
             <input type="text"
-                   class="search_filter form-control"
+                   class="search-filter form-control"
                    autocomplete="off"
                    placeholder="{{ 'Search Contacts' | translate }}"
                    bs-tooltip
                    data-placement="left"
-                   data-title="{{ 'Search name, phone, email, notes, partner #' | translate }}"
+                   data-title="{{ 'Search name, phone, email, partner #' | translate }}"
                    data-trigger="focus"
                    ng-model="$ctrl.searchParams"
                    ng-change="$ctrl.search()"

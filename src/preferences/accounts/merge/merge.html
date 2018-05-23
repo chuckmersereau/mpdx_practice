@@ -7,11 +7,11 @@
 </p>
 <div class="alert alert-danger">
     <p>
-        <i class="fa fa-warning"></i>
+        <i class="fas fa-warning"></i>
         <translate>THIS MERGE WILL AFFECT ALL PEOPLE WITH ACCESS TO THIS ACCOUNT AND CANNOT BE UNDONE</translate>
     </p>
     <p>
-        <i class="fa fa-warning"></i>
+        <i class="fas fa-warning"></i>
         <translate>DO NOT MERGE MINISTRY ACCOUNTS THROUGH MPDX</translate>
     </p>
 </div>
@@ -37,7 +37,7 @@
             </select>
         </div>
         <div class="col-sm-1 text-center merge-direction">
-            <i class="fa fa-2x fa-angle-right text-success"></i>
+            <i class="fas fa-2x fa-angle-right text-success"></i>
         </div>
         <div class="col-sm-5 well border-success">
             <label for="into" translate>
@@ -54,7 +54,7 @@
     <p>
         <button type="submit" ng-click="$ctrl.merge()" ng-disabled="$ctrl.saving || !accept || !$ctrl.selected_account_id" class="btn btn-primary">
             <translate>Merge</translate>
-            <i class="fa fa-circle-o-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
+            <i class="far fa-circle-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
         </button>
     </p>
 </div>

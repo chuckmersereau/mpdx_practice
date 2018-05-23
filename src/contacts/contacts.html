@@ -1,37 +1,4 @@
-<div class="nav--secondary">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="pull-left">
-                    <div class="section">
-                        <a ui-sref="tools({setup: true})" translate>Import Contacts</a>
-                    </div>
-                    <div class="section">
-                        <a ui-sref="tools.merge.contacts" translate>Merge Contacts</a>
-                    </div>
-                    <div class="section">
-                        <a ui-sref="tools.merge.people" translate>Merge People</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="filter--body">
-    <div class="filter--spacer filter--spacer__contacts" ng-class="{ 'filter--spacer__contact': $ctrl.session.isInState('contacts.show') }"></div>
-    <div class="row">
-        <div class="col-md-3">
-            <div class="filter--sidebar filter--sidebar__contacts" id="sidebarScrollParent" ng-class="{ 'hidden-sm' : !$ctrl.session.showFiltersOnMobile,'filter--sidebar__contact': $ctrl.session.isInState('contacts.show') }">
-                <alerts padding-only="true"></alerts>
-                <contacts-sidebar></contacts-sidebar>
-            </div>
-        </div>
-        <div class="col-md-9">
-            <div class="filter--content">
-                <ui-view>
-                    <contacts-list></contacts-list>
-                </ui-view>
-            </div>
-        </div>
-    </div>
-</div>
+<contacts-sidebar ng-class="{ 'hide-small' : !$ctrl.session.showFiltersOnMobile }" id="contactSidebarListParent"></contacts-sidebar>
+<ui-view>
+    <contacts-list></contacts-list>
+</ui-view>

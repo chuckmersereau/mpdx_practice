@@ -1,0 +1,68 @@
+.fade-in {
+    &.ng-enter {
+        animation: fade-in 0.5s;
+    }
+    &.ng-leave {
+        animation: fade-out 0.5s;
+    }
+}
+@keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+@keyframes fade-out {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+}
+.slide-left {
+    &.ng-enter {
+        animation: slide-left 0.5s forwards;
+    }
+    &.ng-leave {
+        animation: slide-left 0.5s reverse;
+    }
+}
+@keyframes slide-left {
+    from {
+        width: 0;
+        margin-left: 0;
+    }
+    to {
+        width: 528px;
+    }
+}
+.collapse.am-collapse {
+    overflow: hidden;
+    animation-duration: 0.3s;
+    animation-timing-function: ease;
+    animation-fill-mode: backwards;
+    &.in-remove {
+        display: block;
+        animation-name: collapse;
+    }
+    &.in-add {
+        animation-name: expand;
+    }
+}
+.panel-animate {
+    max-height: 1000px;
+    transition-duration: 0.8s;
+    transition-timing-function: ease-in;
+    > .table {
+        margin-bottom: 0;
+    }
+}
+.panel-animate.ng-hide {
+    max-height: 0;
+    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+}
+.panel-animate.ng-animate {
+    overflow: hidden;
+}
+.panel-heading.pref-head {
+    cursor: pointer;
+    i {
+        margin-right: 5px;
+        transition: 0.5s ease-in-out;
+    }
+}

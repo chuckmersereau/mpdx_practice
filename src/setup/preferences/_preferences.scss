@@ -1,0 +1,44 @@
+setup-preferences {
+    @extend preferences;
+    > ui-view {
+        padding: 0;
+    }
+    preferences-sidebar {
+        .nav > li {
+            transition: opacity 0.2s ease-out;
+            opacity: 0.5;
+            &.active {
+                opacity: 1;
+            }
+        }
+    }
+    setup-preferences-personal,
+    setup-preferences-notifications,
+    setup-preferences-integrations,
+    setup-preferences-accounts {
+        display: grid;
+        height: 100%;
+        grid-template-rows: 114px auto;
+        > .panel.panel-default {
+            margin: $container-padding;
+            margin-bottom: 0;
+        }
+        preferences-personal,
+        preferences-notifications,
+        preferences-integration,
+        preferences-accounts {
+            padding: 10px $container-padding 60px;
+            overflow: auto;
+            .panel.panel-default {
+                transition: opacity 0.2s ease-out;
+                opacity: 0.5;
+                &.panel-selected {
+                    opacity: 1;
+                    .panel-heading {
+                        cursor: default;
+                    }
+                }
+            }
+        }
+    }
+}

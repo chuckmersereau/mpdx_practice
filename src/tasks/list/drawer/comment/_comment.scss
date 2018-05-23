@@ -1,0 +1,32 @@
+task-item-comment {
+    display: block;
+    padding: $container-padding;
+    border-bottom: 1px solid $color-border;
+    &:hover {
+        > div.comment-container > div.comment-edit-controls {
+            opacity: 1;
+        }
+    }
+    > div.comment-container {
+        display: grid;
+        grid-template-columns: auto 60px;
+        div.comment-body {
+            grid-column: 1;
+            grid-row: 1;
+        }
+        div.comment-foot {
+            font-size: $font-size-sm;
+            grid-column: 1;
+            grid-row: 2;
+        }
+        div.comment-edit-controls {
+            transition: opacity 0.2s ease-out;
+            opacity: 0;
+            grid-row: 1 / span 2;
+            grid-column: 2;
+        }
+    }
+    textarea {
+        margin-bottom: 15px;
+    }
+}

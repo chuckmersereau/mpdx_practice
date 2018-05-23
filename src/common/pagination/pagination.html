@@ -1,27 +1,25 @@
 <div class="clearfix" ng-if="$ctrl.meta.total_count > 0">
-  <h4 translate
-      translate-params-from="$ctrl.from() || 0"
-      translate-params-to="$ctrl.to() || 0"
-      translate-params-total="$ctrl.meta.total_count || 0">
-      {{from}} to {{to}} of {{total}}
-  </h4>
-  <nav aria-label="Page navigation" ng-show="$ctrl.meta.total_pages > 1">
-    <ul class="pagination">
-      <li ng-class="{'disabled': $ctrl.meta.page == 1}">
-        <a ng-click="$ctrl.previous()" aria-label="Previous">
-          <i class="fa fa-angle-double-left"></i>
-        </a>
-      </li>
-      <li ng-repeat="i in $ctrl.getTotalPages() track by $index" ng-class="{'active' : i + 1 == $ctrl.meta.page}">
-        <a ng-if="i >= 0" ng-click="$ctrl.goto(i + 1)">{{i + 1}}</a>
-        <a ng-if="i < 0">...</a>
-      </li>
-      <li ng-class="{'disabled': $ctrl.meta.page == $ctrl.meta.total_pages}">
-        <a ng-click="$ctrl.next()" aria-label="Next">
-          <i class="fa fa-angle-double-right"></i>
-        </a>
-      </li>
-    </ul>
-  </nav>
-  <br>
+    <h4 translate
+        translate-params-from="$ctrl.pagination.from($ctrl.meta.page, $ctrl.meta.per_page) || 0"
+        translate-params-to="$ctrl.pagination.to($ctrl.meta.page, $ctrl.meta.per_page, $ctrl.meta.total_pages, $ctrl.meta.total_count) || 0"
+        translate-params-total="$ctrl.meta.total_count || 0"
+        ng-if="!$ctrl.hideCount">{{from}} to {{to}} of {{total}}</h4>
+    <nav aria-label="Page navigation" ng-show="$ctrl.meta.total_pages > 1">
+        <ul class="pagination">
+            <li ng-class="{'disabled': $ctrl.meta.page == 1}">
+                <a ng-click="$ctrl.previous()" aria-label="Previous">
+                    <i class="fal fa-angle-double-left"></i>
+                </a>
+            </li>
+            <li ng-repeat="i in $ctrl.getTotalPages() track by $index" ng-class="{'active' : i + 1 == $ctrl.meta.page}">
+                <a ng-if="i >= 0" ng-click="$ctrl.goto(i + 1)">{{i + 1}}</a>
+                <a ng-if="i < 0">...</a>
+            </li>
+            <li ng-class="{'disabled': $ctrl.meta.page == $ctrl.meta.total_pages}">
+                <a ng-click="$ctrl.next()" aria-label="Next">
+                    <i class="fal fa-angle-double-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
 </div>

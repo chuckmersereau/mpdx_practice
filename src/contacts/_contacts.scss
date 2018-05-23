@@ -1,0 +1,25 @@
+@import 'sidebar/sidebar';
+@import 'list/list';
+@import 'show/show';
+$contact-sidebar-width: 250px;
+contacts {
+    display: grid;
+    height: 100%;
+    overflow: hidden;
+    grid-template-columns: 250px auto;
+    @media (max-width: $contact-menu-breakpoint) {
+        grid-template-columns: 1fr;
+    }
+    > contacts-sidebar {
+        width: $contact-sidebar-width;
+        grid-column: 1;
+    }
+    > ui-view {
+        width: 100%;
+        overflow: hidden;
+        grid-column: 2;
+        @media (max-width: $contact-menu-breakpoint) {
+            grid-column: 1;
+        }
+    }
+}

@@ -1,0 +1,34 @@
+<div class="wrapper" ng-class="{ 'primary': $ctrl.address.primary_mailing_address }">
+    <div class="content" ng-class="{strike: $ctrl.address.historic}">
+        <h3 class="street">{{$ctrl.address.street}}</h3>
+        <div class="city">{{$ctrl.address.city}} {{$ctrl.address.state}} {{$ctrl.address.postal_code}}</div>
+        <div class="country">{{$ctrl.address.country}}</div>
+        <div class="source"
+             translate-params-source="$ctrl.address.source | sourceToStr"
+             translate-params-date="$ctrl.address.updated_at | localize"
+             translate>
+            Source: {{source}} ({{date}})
+        </div>
+    </div>
+    <div class="actions">
+        <a ng-click="$ctrl.contacts.openAddressModal($ctrl.contact, $ctrl.address)">
+            <span ng-if="$ctrl.isEditable">
+                <i class="fas fa-edit"></i>
+                <translate>Edit</translate>
+            </span>
+            <span ng-if="!$ctrl.isEditable">
+                <i class="fas fa-search"></i>
+                <translate>View</translate>
+            </span>
+        </a>
+        <a ng-href="{{$ctrl.mapLink}}" target="_blank" ng-if="$ctrl.address.street">
+            <i class="fas fa-map-marker"></i>
+            <translate>Google Maps</translate>
+        </a>
+        <a class="primary" ng-click="$ctrl.onPrimary()">
+            <i class="far fa-star" ng-if="!$ctrl.address.primary_mailing_address"></i>
+            <i class="fas fa-star" ng-if="$ctrl.address.primary_mailing_address"></i>
+            <translate>Primary</translate>
+        </a>
+    </div>
+</div>

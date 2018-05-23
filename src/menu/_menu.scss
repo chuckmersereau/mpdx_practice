@@ -1,0 +1,152 @@
+@import 'accountLists/accountLists';
+@import 'balances/balances';
+@import 'impersonationBar/impersonationBar';
+@import 'search/search';
+$menu-breakpoint: 900px;
+$height-primary-menu: 48px;
+menu {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    border-top: 5px solid $color-secondary;
+    background: $color-reverse;
+    grid-template-rows: auto 53px 40px;
+    &.setup {
+        grid-template-rows: auto 53px;
+    }
+    impersonation-bar {
+        grid-row: 1;
+    }
+    > .nav-global {
+        display: flex;
+        align-items: center;
+        margin: 0 $container-padding;
+        grid-row: 2;
+        grid-column: 1;
+        .logo {
+            display: flex;
+            align-items: center;
+            a {
+                display: inline-block;
+                width: 83px;
+                height: 48px;
+                background: url('images/mpdx-logo-svg.svg') no-repeat;
+                background-position: 0 50%;
+                background-size: contain;
+                cursor: pointer;
+            }
+        }
+        a.btn-link {
+            &:hover {
+                text-decoration: none;
+            }
+        }
+        .spacer {
+            flex-grow: 1;
+        }
+        .navbar-quick {
+            display: flex;
+            > div {
+                margin-left: 5px;
+                &.account {
+                    max-width: 200px;
+                }
+                &.btn-group .btn {
+                    height: 35px;
+                }
+                &.notifications {
+                    display: inline-block;
+                    .notifications-link {
+                        width: 34px;
+                        height: 34px;
+                        margin: 0;
+                        padding: 0;
+                        border: 0;
+                        border-radius: 55px;
+                        color: $color-text;
+                        line-height: 34px;
+                        .badge {
+                            position: absolute;
+                            top: 10px;
+                            right: 5px;
+                            padding: 1px 3px;
+                            border: 1px solid $color-secondary;
+                            background: $color-reverse;
+                            color: $color-secondary;
+                        }
+                        &.active {
+                            background: $color-secondary;
+                            color: $color-reverse;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    > div.menu {
+        display: grid;
+        background: $color-bg;
+        grid-row: 3;
+        grid-template-columns: 700px 1fr;
+        grid-template-rows: auto;
+        @media (max-width: $menu-breakpoint) {
+            grid-template-columns: auto;
+            grid-template-rows: 1fr 1fr;
+        }
+        .navbar {
+            height: 40px;
+            padding: 0;
+            border: 0;
+            grid-row: 1;
+            grid-column: 1;
+            // bootstrap collapse overrides
+            .navbar-collapse.collapse {
+                display: block !important;
+            }
+            .navbar-nav>li,
+            .navbar-nav {
+                float: left !important;
+            }
+            .navbar-nav.navbar-right:last-child {
+                margin-right: -15px !important;
+            }
+            .navbar-right {
+                float: right !important;
+            }
+            .navbar-nav {
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+                .help {
+                    cursor: pointer;
+                }
+            }
+        }
+        .item {
+            font-size: $font-size-md;
+            font-weight: normal;
+            letter-spacing: 0.5px;
+            a {
+                display: block;
+                padding: $gutter / 3 $gutter / 2;
+                color: color-gray(20);
+            }
+            &.active {
+                a {
+                    background: color-gray(85);
+                }
+            }
+        }
+        menu-balances {
+            margin: 8px $container-padding-right 8px 0;
+            justify-self: right;
+            grid-row: 1;
+            grid-column: 2;
+            @media (max-width: $menu-breakpoint) {
+                display: none;
+            }
+        }
+        .navbar-collapse {
+            padding-left: 0;
+        }
+    }
+}

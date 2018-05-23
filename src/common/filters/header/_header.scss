@@ -1,0 +1,71 @@
+filters-header {
+    .filters-header {
+        margin-bottom: 10px;
+        padding: 10px $container-padding 0;
+        border-top: 1px solid $color-gray-blue;
+        border-bottom: 1px solid $color-gray-blue;
+        background: color-gray(20);
+        color: $color-white;
+        font-size: $font-size-sm;
+        &__title {
+            display: flex;
+            align-items: center;
+            padding-bottom: 10px;
+            cursor: pointer;
+            &__value {
+                flex-grow: 1;
+            }
+            i {
+                transition: transform 0.2s ease-out;
+            }
+        }
+        &__filter {
+            margin-bottom: 10px;
+            padding-top: 10px;
+            border-top: 1px solid $color-gray-blue;
+            &__title {
+                display: flex;
+                align-items: center;
+                padding-bottom: 5px;
+                &__value {
+                    flex-grow: 1;
+                }
+                i {
+                    cursor: pointer;
+                    &:first-child {
+                        margin-right: 5px;
+                    }
+                }
+            }
+            &__option {
+                display: flex;
+                align-items: center;
+                padding-bottom: 5px;
+                &:last-child {
+                    padding-bottom: 0;
+                }
+                &__value {
+                    flex-grow: 1;
+                    height: 19px;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                }
+                i {
+                    cursor: pointer;
+                    &:first-child {
+                        margin-right: 5px;
+                    }
+                    &:last-child {
+                        margin-left: 10px;
+                    }
+                }
+            }
+            &__reversable {
+                transition: all 0.2s ease-out;
+                &.reverse {
+                    color: $color-filter-reverse;
+                }
+            }
+        }
+    }
+}

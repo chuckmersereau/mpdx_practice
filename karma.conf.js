@@ -6,16 +6,22 @@ module.exports = function karmaConfig(config) {
         ],
         reporters: [
             'super-dots',
+            'spec',
             'coverage'
         ],
         files: [
-            'src/tests.webpack.js'
+            { pattern: 'node_modules/angular/angular.js', instrument: false },
+            { pattern: 'node_modules/angular-mocks/angular-mocks.js', instrument: false },
+            { pattern: 'node_modules/angular-strap/dist/angular-strap.js', instrument: false },
+            { pattern: 'node_modules/angular-strap/dist/angular-strap.tpl.js', instrument: false },
+            { pattern: 'node_modules/ng-rollbar/ng-rollbar.js', instrument: false },
+            'src/tests.webpack.ts'
         ],
         helpers: [
             'helpers/**/*.js'
         ],
         preprocessors: {
-            'src/tests.webpack.js': ['webpack', 'sourcemap']
+            'src/tests.webpack.ts': ['webpack']
         },
         browsers: [
             'PhantomJS'
@@ -24,6 +30,14 @@ module.exports = function karmaConfig(config) {
             captureConsole: false
         },
         singleRun: true,
+        specReporter: {
+            suppressErrorSummary: false,
+            suppressFailed: false,
+            suppressPassed: true,
+            suppressSkipped: true,
+            showSpecTiming: false,
+            failFast: true
+        },
         superDotsReporter: {
             icon: {
                 success: '.',
@@ -43,7 +57,7 @@ module.exports = function karmaConfig(config) {
         },
         webpack: require('./webpack.test'),
         webpackMiddleware: {
-            noInfo: true
+            stats: 'errors-only'
         }
     });
 };

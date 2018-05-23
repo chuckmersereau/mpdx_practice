@@ -1,0 +1,70 @@
+merge-people,
+.merge-modal,
+merge-contacts {
+    .merges {
+        .merge-row {
+            display: grid;
+            margin-bottom: 30px;
+            grid-template-columns: 1fr 100px 1fr;
+        }
+        .item {
+            position: relative;
+            height: 152.5px;
+            padding: 10px;
+            border: solid 2px $color-merge-default;
+            cursor: pointer;
+            overflow: hidden;
+            &.selected {
+                border-color: $color-merge-selected;
+            }
+            &.ignored {
+                border-color: $color-merge-ignored;
+            }
+            .merge-state {
+                position: absolute;
+                top: 0;
+                right: 0;
+                padding: 2px 4px;
+                color: $color-white;
+                font-size: $font-size-xs;
+                &.selected {
+                    background-color: $color-merge-selected;
+                }
+                &.ignored {
+                    background-color: $color-merge-ignored;
+                }
+            }
+        }
+        .choices {
+            align-self: center;
+            justify-self: center;
+            i {
+                display: block;
+                margin-bottom: 9px;
+                color: $color-merge-default;
+                font-size: 32px;
+                cursor: pointer;
+            }
+            .choice-left,
+            .choice-right {
+                &.selected {
+                    color: $color-merge-selected;
+                }
+            }
+            .choice-cancel {
+                &.selected {
+                    color: $color-merge-ignored;
+                }
+            }
+        }
+        .confirm-or {
+            font-weight: bold;
+            line-height: 34px;
+        }
+        &__list {
+            .item {
+                margin-bottom: 10px;
+            }
+        }
+    }
+}

@@ -1,12 +1,9 @@
-<h1>
-    <i class="fa fa-google"></i>
-    <translate>Import from Google</translate>
-</h1>
+<h1 class="heading" translate>Import from Google</h1>
 <div block-ui="tools-import-google">
 
     <div ng-if="$ctrl.google.data.length == 0">
         <div class="blankslate blankslate-spacious">
-          <i class="fa fa-google blankslate-icon"></i>
+          <i class="fab fa-google blankslate-icon"></i>
           <h3 translate>You haven't connected a Google account yet</h3>
           <p translate>Add a Google account then try to import from Google.</p>
           <a class="btn btn-default" ui-sref="preferences.integrations({selectedTab: 'google'})" translate>Connect Google Account</a>

@@ -1,0 +1,34 @@
+preferences-integration {
+    .panel-heading {
+        .state {
+            margin-right: 10px;
+        }
+    }
+    .integration-subhead {
+        margin-top: 0;
+        font-weight: 600;
+    }
+    ol {
+        padding-left: $gutter / 2;
+    }
+    .network_logo {
+        img {
+            max-width: 200px;
+            max-height: 100px;
+        }
+    }
+    .well {
+        border-radius: $border-radius;
+        .btn-link {
+            margin-right: 20px;
+            padding: 0;
+            font-size: $font-size-md;
+            &:last-of-type {margin-right: 0;}
+            &.disabled {
+                color: $color-text;
+                opacity: 1;
+            }
+        }
+        p:not(:first-child) {margin-top: 10px;}
+    }
+}

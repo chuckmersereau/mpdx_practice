@@ -3,6 +3,6 @@
     <span ng-if="$ctrl.displayText" class="display-text">{{ $ctrl.displayText }}</span>
     <span ng-click="$ctrl.remove(); $event.stopPropagation()"
           class="pull-right"
-          ng-if="$ctrl.displayText && $ctrl.allowRemove"><i class="fa fa-times"></i></span>
+          ng-if="$ctrl.displayText && $ctrl.allowRemove"><i class="fas fa-times"></i></span>
 </button>
 <input type="hidden" ng-model="$ctrl.displayText" ng-if="$ctrl.required" required>

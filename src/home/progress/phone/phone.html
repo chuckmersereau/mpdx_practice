@@ -1,38 +1,34 @@
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <i class="fa fa-mobile"></i>
-        <translate>Phone Calls</translate>
+<div class="progress-component">
+    <div class="header">
+        <i class="far fa-4x fa-mobile"></i>
+        <div class="panel-title" translate>Phone Calls</div>
     </div>
-    <div class="panel-body statistics">
-        <div class="row">
-            <div class="col-xs-4">
-                <h3>{{($ctrl.accounts.analytics.phone.attempted + $ctrl.accounts.analytics.phone.completed) || 0}}</h3>
-                <strong translate>Outgoing</strong>
-            </div>
-            <div class="col-xs-4">
-                <h3>{{($ctrl.accounts.analytics.phone.completed + $ctrl.accounts.analytics.phone.received) || 0}}</h3>
-                <strong translate>Talked To</strong>
-            </div>
-            <div class="col-xs-4">
-                <h3>{{$ctrl.accounts.analytics.phone.appointments || 0}}</h3>
-                <strong translate>Appts Produced</strong>
-            </div>
+    <div class="statistics">
+        <div class="item">
+            <h3>{{($ctrl.accounts.analytics.phone.attempted + $ctrl.accounts.analytics.phone.completed) || 0}}</h3>
+            <strong translate>Outgoing</strong>
+        </div>
+        <div class="item">
+            <h3>{{($ctrl.accounts.analytics.phone.completed + $ctrl.accounts.analytics.phone.received) || 0}}</h3>
+            <strong translate>Talked To</strong>
+        </div>
+        <div>
+            <h3>{{$ctrl.accounts.analytics.phone.appointments || 0}}</h3>
+            <strong translate>Appts Produced</strong>
         </div>
     </div>
     <div class="panel-footer statistics">
-        <div class="row">
-            <div class="col-xs-4">
-                <strong translate>Completed</strong><br>
-                {{$ctrl.accounts.analytics.phone.completed || 0}}
-            </div>
-            <div class="col-xs-4">
-                <strong translate>Attempted</strong><br>
-                {{$ctrl.accounts.analytics.phone.attempted || 0}}
-            </div>
-            <div class="col-xs-4">
-                <strong translate>Received</strong><br>
-                {{$ctrl.accounts.analytics.phone.received || 0}}
-            </div>
+        <div class="item">
+            <strong translate>Completed</strong><br>
+            {{$ctrl.accounts.analytics.phone.completed || 0}}
+        </div>
+        <div class="item">
+            <strong translate>Attempted</strong><br>
+            {{$ctrl.accounts.analytics.phone.attempted || 0}}
+        </div>
+        <div>
+            <strong translate>Received</strong><br>
+            {{$ctrl.accounts.analytics.phone.received || 0}}
         </div>
     </div>
 </div>

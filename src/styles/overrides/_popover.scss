@@ -1,0 +1,13 @@
+.popover {
+    border-radius: 0;
+    background-color: $color-white;
+    box-shadow: none;
+    .popover-content {
+        padding: 5px;
+        font-size: $font-size-xs;
+        line-height: 15px;
+    }
+    &:focus {
+        outline: none;
+    }
+}

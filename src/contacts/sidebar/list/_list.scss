@@ -1,0 +1,71 @@
+contacts-sidebar-list {
+    display: grid;
+    height: 100%;
+    overflow: hidden;
+    grid-template-rows: 34px 100%;
+    > form {
+        padding: 0 $container-padding;
+        grid-row: 1;
+        .input-group {
+            .input-group-addon,
+            .form-control {
+                border: 1px solid $color-border;
+                background-color: $color-filter-select-bg;
+                color: $color-white;
+            }
+            .input-group-addon {
+                border-right: 0;
+            }
+        }
+    }
+    > div.content {
+        padding-top: 10px;
+        overflow-y: auto;
+        grid-row: 2;
+        .item {
+            padding: 0;
+            border-top: 1px solid $color-gray-blue;
+            font-size: $font-size-sm;
+            &:first-child {
+                border-top: 0;
+            }
+            a {
+                display: grid;
+                width: 100%;
+                padding: 0 $container-padding;
+                transition: background-color 0.2s ease-in, color 0.2s ease-in;
+                font-size: $font-size-sm;
+                line-height: 35px;
+                white-space: nowrap;
+                cursor: pointer;
+                grid-template-columns: auto auto;
+                &:hover {
+                    background-color: $color-sidebar-bg;
+                    text-decoration: none;
+                }
+                &.active {
+                    background-color: $color-sidebar-bg;
+                    color: $color-white;
+                }
+                > div.name {
+                    color: $color-white;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    grid-column: 1;
+                }
+                > div.overdue {
+                    justify-content: end;
+                    text-align: right;
+                    grid-column: 2;
+                }
+            }
+        }
+    }
+    > div.loading {
+        padding: 15px 0;
+        color: $color-white;
+        text-align: center;
+    }
+
+}

@@ -1,26 +1,24 @@
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <i class="fa fa-envelope-o"></i>
-        <translate>Correspondence</translate>
+<div class="progress-component">
+    <div class="header">
+        <i class="far fa-4x fa-envelope"></i>
+        <div class="panel-title" translate>Correspondence</div>
     </div>
-    <div class="panel-body statistics">
-        <div class="row">
-            <div class="col-xs-3">
-                <h3>{{$ctrl.accounts.analytics.correspondence.precall || 0}}</h3>
-                <strong translate>Pre-call</strong>
-            </div>
-            <div class="col-xs-3">
-                <h3>{{$ctrl.accounts.analytics.correspondence.support_letters || 0}}</h3>
-                <strong translate>Support</strong>
-            </div>
-            <div class="col-xs-3">
-                <h3>{{$ctrl.accounts.analytics.correspondence.thank_yous || 0}}</h3>
-                <strong translate>Thank You</strong>
-            </div>
-            <div class="col-xs-3">
-                <h3>{{$ctrl.accounts.analytics.correspondence.reminders || 0}}</h3>
-                <strong translate>Reminder</strong>
-            </div>
+    <div class="statistics">
+        <div class="item">
+            <h3>{{$ctrl.accounts.analytics.correspondence.precall || 0}}</h3>
+            <strong translate>Pre-call</strong>
+        </div>
+        <div class="item">
+            <h3>{{$ctrl.accounts.analytics.correspondence.support_letters || 0}}</h3>
+            <strong translate>Support</strong>
+        </div>
+        <div class="item">
+            <h3>{{$ctrl.accounts.analytics.correspondence.thank_yous || 0}}</h3>
+            <strong translate>Thank You</strong>
+        </div>
+        <div>
+            <h3>{{$ctrl.accounts.analytics.correspondence.reminders || 0}}</h3>
+            <strong translate>Reminder</strong>
         </div>
     </div>
 </div>

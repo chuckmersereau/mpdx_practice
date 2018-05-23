@@ -1,0 +1,22 @@
+appeals-list-item {
+    display: block;
+    padding: 10px $container-padding;
+    border-bottom: 1px solid $color-border;
+    h4 {
+        display: grid;
+        height: 20px;
+        margin-top: 3px;
+        grid-template-columns: 1fr auto auto;
+        grid-gap: 10px;
+        .name {
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+        a {
+            cursor: pointer;
+        }
+    }
+    .progress {
+        margin-bottom: 0;
+    }
+}

@@ -1,0 +1,26 @@
+@import 'comment/comment';
+@import 'contact/item';
+$task-drawer-width: $side-drawer-width - 2px;
+task-item-drawer {
+    > .heading {
+        padding-top: 8px;
+        > .horizontal-tab-sortable {
+            .sortable-row >.as-sortable-item > .as-sortable-item-handle {
+                cursor: pointer;
+            }
+        }
+    }
+    > .content {
+        > .contacts {
+            padding: $container-padding;
+        }
+    }
+    > .comment-form {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        padding: 5px 120px 5px 10px;
+        background-color: color-gray(90);
+    }
+}

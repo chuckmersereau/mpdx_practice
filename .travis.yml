@@ -5,12 +5,13 @@ script:
 - bin/run_build.sh
 - bin/run_test.sh
 - bin/run_lint.sh
-after_deploy: aws/invalidate_cloudfront.sh
+after_deploy: aws/set_s3_max_age.sh
 before_install:
-  - yarn global add gulp codecov
+  - yarn global add gulp codecov sass-lint
 branches:
   only:
   - master
+  - next
   - staging
 env:
     matrix:
@@ -25,9 +26,23 @@ deploy:
   skip_cleanup: true
   local_dir: public
   acl: public_read
+  cache_control: "max-age=31536000,public"
   on:
     repo: CruGlobal/mpdx_web
     branch: master
+    condition: '"$RUN_BUILD" = "true"'
+- provider: s3
+  access_key_id: AKIAINTBHNVXDMJEZ7UQ
+  secret_access_key:
+    secure: "h+UvsVaLtZz4fnwKFwpFnDVScs+4hdUvnQvE3yWox1pHaBnJyQ9Qh7V2lnsgKTTXaJfFrt8LYwpZPNCak+J1ql/mefpXmacIfV7yBKjrBpRvnKbGF6hd8wZCQ//QxfHEyQNwie6H6+TuSISpcvaOmz2ofI2p5lm2CUObF6ggd3mSYBRAi3gzzQSELuJx5D9ZyXu/YROPknKo/CiFQVPHxJPPun97nH4hXkzmGzY6s1lyJ4ylLxA8MBObIUPYm0H4yMVI6RTpPbd4KN/VkDSNBbXvuYRMOvQOs5I4QldrD0NBmP4jGWRgVTsvo6Bniapaau4VeHZOwUbEk+AWfBHFu2Q43hjxJi63K1pYKcDHCkH1lpbaLM5t5tnm9M4xglxikCIAAagw7/4pJmATj8eTEb5TUxIQYxNOu9EpFZjPwe5r+Su4Z4xk7LPDRAppmN5hOyGs2AnzodCqllUaUvrhBpy1zVosLe1aDv1X8GncxbhfIYJRL75n/PmKqsyTGQBGV+q0qwqq4MmSrDealJszmQ2j6QwpRV+UFGfNXNlMaFmwJPUEkSNaI9kMWNm0M/iBp7vQUj+5+6cMrRmj4Tcrz9BFz8WPTMZgyPrCaroxO+diYX1so8bMheEsC597ROg+brK3cmghhaEMxgsFZ86kO9gu/NdlZi4QNavYOjTWmsI="
+  bucket: cru-mpdx-web-next
+  skip_cleanup: true
+  local_dir: public
+  acl: public_read
+  cache_control: "max-age=31536000,public"
+  on:
+    repo: CruGlobal/mpdx_web
+    branch: next
     condition: '"$RUN_BUILD" = "true"'
 - provider: s3
   access_key_id: AKIAJCDUBSRAJGJTF5AA
@@ -37,6 +52,7 @@ deploy:
   skip_cleanup: true
   local_dir: public
   acl: public_read
+  cache_control: "max-age=31536000,public"
   on:
     repo: CruGlobal/mpdx_web
     branch: staging

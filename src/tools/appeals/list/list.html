@@ -1,40 +1,24 @@
-<div class="row">
-    <div class="col-xs-3 mt-1">
-        <strong translate>
-            Primary Appeal
-        </strong>
-    </div>
-    <div class="col-xs-9">
-        <collection-selector item-name="{{ 'Primary Appeal' | translate }}"
-                             display-text="$ctrl.accounts.current.primary_appeal.name"
-                             search="$ctrl.appeals.appealSearch(text)"
-                             select="$ctrl.appeals.setPrimaryAppeal(item)">
-        </collection-selector>
-    </div>
+<h4 class="heading" translate>Primary Appeal</h4>
+<appeals-list-item appeal="$ctrl.accounts.current.primary_appeal"
+                   ng-if="$ctrl.accounts.current.primary_appeal">
+</appeals-list-item>
+<div class="blankslate" ng-if="!$ctrl.accounts.current.primary_appeal">
+    <p translate>No Primary Appeal has been selected</p>
 </div>
-<div class="panel panel-default" block-ui="appeals-list">
-    <div class="panel-heading" translate>
-        Current Appeals
-    </div>
-    <div class="panel-body pt-0 pb-3" infinite-scroll="$ctrl.loadMoreAppeals()" ng-if="$ctrl.data.length > 0">
-        <appeals-list-item ng-repeat="appeal in $ctrl.data"
-                           on-primary="$ctrl.onPrimary(appeal.id)"
-                           appeal="appeal">
-        </appeals-list-item>
-    </div>
-
-    <div class="panel-body blankslate" ng-if="$ctrl.data.length === 0 && $ctrl.loading === false">
-        <i class="fa fa-trophy blankslate-icon"></i>
-        <h3 translate>No Goals have been setup yet</h3>
-    </div>
+<h4 class="heading" translate>Appeals</h4>
+<appeals-list-item ng-repeat="appeal in $ctrl.data"
+                   ng-if="appeal.id !== $ctrl.accounts.current.primary_appeal.id"
+                   appeal="appeal">
+</appeals-list-item>
+<div class="blankslate" ng-if="$ctrl.data.length === 0 && $ctrl.loading === false">
+    <i class="fas fa-trophy blankslate-icon"></i>
+    <h3 translate>No Appeals have been setup yet</h3>
 </div>
 <div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
-  <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
+  <i class="far fa-circle-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
 </div>
-<br>
-<div ng-if="$ctrl.data.length !== 0"
-     class="text-center"
-     translate-params-from="$ctrl.data.length || 0"
-     translate-params-to="$ctrl.meta.pagination.total_count || 0" translate>
-    Showing <strong>{{from}}</strong> of <strong>{{to}}</strong>
-</div>
+<pagination ng-if="$ctrl.meta.pagination.total_count > 0"
+            meta="$ctrl.meta.pagination"
+            on-change="$ctrl.load(page)"
+            class="text-center">
+</pagination>

@@ -1,0 +1,66 @@
+avatar {
+    .avatar {
+        position: relative;
+        float: left;
+        border-radius: 100%;
+        overflow: hidden;
+        &,
+        img {
+            width: 50px;
+            height: 50px;
+        }
+        .loading-spinner,
+        .cover {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            border-radius: 100%;
+        }
+        .loading-spinner {
+            padding-top: 7px;
+            background-color: $color-black-alpha-50;
+            color: $color-secondary;
+            font-size: $font-size-xs;
+            text-align: center;
+        }
+        .cover {
+            background: transparent;
+            cursor: pointer;
+        }
+        .edit {
+            display: block;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            transition: opacity 0.2s;
+            background: $color-black-alpha-50;
+            color: $color-white;
+            font-size: $font-size-xs;
+            text-align: center;
+            opacity: 0;
+            &:hover {
+                text-decoration: none;
+            }
+        }
+        &:hover {
+            .edit {
+                opacity: 1;
+            }
+        }
+        &--xs {
+            width: 34px;
+            height: 34px;
+            img {
+                width: 34px;
+                height: 34px;
+            }
+        }
+    }
+}
+.avatar-on-left {
+    min-height: 50px;
+    margin-left: 65px;
+}

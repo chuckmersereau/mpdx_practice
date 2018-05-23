@@ -1,36 +1,62 @@
 <div class="reports">
-    <div class="pull-right" ng-if="!$ctrl.loading && $ctrl.data.currencies.length > 0">
-        <button class="btn btn-primary" ng-click="$ctrl.expanded = !$ctrl.expanded">
-            <span ng-if="!$ctrl.expanded">
-                <span translate>Expand partner info</span>
-                <i class="fa fa-expand" aria-hidden="true"></i>
-            </span>
-            <span ng-if="$ctrl.expanded">
-                <span translate>Hide partner info</span>
-                <i class="fa fa-compress" aria-hidden="true"></i>
-            </span>
-        </button>
-        <button class="btn btn-default" ng-csv="$ctrl.toCSV()" lazy-load="true" filename="mpdx-{{$ctrl.type}}-contributions-export-{{$ctrl.moment().format('Y-MM-DD-HH:mm')}}.csv" translate>
-            Export CSV
-        </button>
+    <div class="heading">
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle"
+                    bs-dropdown
+                    type="button"
+                    data-toggle="dropdown"
+                    aria-expanded="true">
+                <span ng-if="::$ctrl.type === 'partner'" translate>Contributions by Partner Currency</span>
+                <span ng-if="::$ctrl.type === 'salary'" translate>Contributions by Salary Currency</span>
+                <i class="fas fa-caret-down"></i>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="action-drop">
+                <li ng-if="::$ctrl.type === 'salary'">
+                    <a ui-sref="reports.partner" translate>Contributions by Partner Currency</a>
+                </li>
+                <li ng-if="::$ctrl.type === 'partner'">
+                    <a ui-sref="reports.salary" translate>Contributions by Salary Currency</a>
+                </li>
+            </ul>
+        </div>
+        <div class="spacer"></div>
+        <div class="actions" ng-if="!$ctrl.loading && $ctrl.data.currencies.length > 0">
+            <div class="btn-group">
+                <button class="btn btn-default" ng-click="$ctrl.expanded = !$ctrl.expanded">
+                    <span ng-if="!$ctrl.expanded">
+                        <i class="fas fa-expand" aria-hidden="true"></i>
+                        <span translate>Expand partner info</span>
+                    </span>
+                    <span ng-if="$ctrl.expanded">
+                        <i class="fas fa-compress" aria-hidden="true"></i>
+                        <span translate>Hide partner info</span>
+                    </span>
+                </button>
+                <button class="btn btn-default" ng-csv="$ctrl.toCSV()" lazy-load="true" filename="mpdx-{{$ctrl.type}}-contributions-export-{{$ctrl.moment().format('Y-MM-DD-HH:mm')}}.csv" translate>
+                    Export CSV
+                </button>
+            </div>
+        </div>
     </div>
-    <h2>
-        <span ng-if="::$ctrl.type === 'partner'" translate>Contributions by Partner Currency</span>
-        <span ng-if="::$ctrl.type === 'salary'" translate>Contributions by Salary Currency</span>
-    </h2>
     <div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
-      <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
+      <i class="far fa-circle-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
     </div>
     <div ng-if="!$ctrl.loading">
         <div class="blankslate blankslate-spacious" ng-if="$ctrl.data.currencies.length === 0">
-            <i class="fa fa-money blankslate-icon"></i>
+            <i class="fas fa-money blankslate-icon"></i>
             <h3 translate>You have received no donations in the last thirteen months</h3>
             <p translate>You can setup an organization account to import them or add a new donation.</p>
             <a ui-sref="preferences.integrations" class="btn btn-default" translate>Connect Services</a>
             <a ng-click="$ctrl.donations.openDonationModal()" class="btn btn-primary" translate>Add New Donation</a>
         </div>
         <div ng-if="$ctrl.type === 'partner' && $ctrl.data.currencies.length > 0" class="progress">
-            <div ng-repeat="currency in $ctrl.data.currencies" class="progress-bar color-{{$index % 6}}" style="width: {{$ctrl.percentage(currency.totals.year_converted) }}%" data-template-url="reports/contributions/popovers/progress.tpl.html" data-trigger="hover" data-placement="bottom" bs-popover>
+            <div ng-repeat="currency in $ctrl.data.currencies"
+                 class="progress-bar color-{{$index % 6}}"
+                 ng-style="{ width: $ctrl.percentage(currency.totals.year_converted) + '%' }"
+                 data-template-url="reports/contributions/popovers/progress.tpl.html"
+                 data-trigger="hover"
+                 data-placement="bottom"
+                 bs-popover>
                 <span ng-if="$ctrl.percentage(currency.totals.year_converted) > 7">
                     {{currency.code}} ({{currency.symbol}})
                 </span>
@@ -45,7 +71,8 @@
                                 <th colspan="{{$ctrl.expanded ? 5 : 1}}">
                                     {{::currency.code}} ({{::currency.symbol}})
                                 </th>
-                                <th ng-repeat="(year, numberOfMonths) in $ctrl.data.years" colspan="{{::numberOfMonths}}">
+                                <th ng-repeat="(year, numberOfMonths) in $ctrl.data.years"
+                                    colspan="{{::numberOfMonths}}">
                                     <div>{{::year}}</div>
                                 </th>
                                 <th>
@@ -53,27 +80,66 @@
                                 </th>
                             </tr>
                             <tr>
-                                <th class="col-md-3" translate>Partner</th>
-                                <th ng-if="$ctrl.expanded" translate>Status</th>
-                                <th ng-if="$ctrl.expanded" translate>Pledge</th>
-                                <th ng-if="$ctrl.expanded" translate>Avg</th>
-                                <th ng-if="$ctrl.expanded" translate>Min</th>
-                                <th class="text-right" ng-repeat="date in $ctrl.data.months track by $index">
-                                    <span data-title="{{ ::'This last month is excluded from totals and averages' | translate }}" data-trigger="{{::$last ? 'hover' : 'manual'}}" ng-class="::{'text-muted': $last}" bs-tooltip>
+                                <th class="col-md-2"
+                                    ng-click="$ctrl.changeSort('contact.contact_name')">
+                                    <translate>Partner</translate>
+                                    <sort-header-caret ng-if="$ctrl.sort === 'contact.contact_name'"
+                                                       reverse="$ctrl.sortReverse"></sort-header-caret>
+                                </th>
+                                <th ng-if="$ctrl.expanded"
+                                    ng-click="$ctrl.changeSort('contact.status')">
+                                    <translate>Status</translate>
+                                    <sort-header-caret ng-if="$ctrl.sort === 'contact.status'"
+                                                       reverse="$ctrl.sortReverse"></sort-header-caret>
+                                </th>
+                                <th ng-if="$ctrl.expanded"
+                                    ng-click="$ctrl.changeSort('contact.pledge_amount')">
+                                    <translate>Pledge</translate>
+                                    <sort-header-caret ng-if="$ctrl.sort === 'contact.pledge_amount'"
+                                                       reverse="$ctrl.sortReverse"></sort-header-caret>
+                                </th>
+                                <th ng-if="$ctrl.expanded"
+                                    class="text-right"
+                                    ng-click="$ctrl.changeSort('average')">
+                                    <translate>Avg</translate>
+                                    <sort-header-caret ng-if="$ctrl.sort === 'average'"
+                                                       reverse="$ctrl.sortReverse"></sort-header-caret>
+                                </th>
+                                <th ng-if="$ctrl.expanded"
+                                    class="text-right"
+                                    ng-click="$ctrl.changeSort('minimum')">
+                                    <translate>Min</translate>
+                                    <sort-header-caret ng-if="$ctrl.sort === 'minimum'"
+                                                       reverse="$ctrl.sortReverse"></sort-header-caret>
+                                </th>
+                                <th class="text-right pointer"
+                                    ng-repeat="date in $ctrl.data.months track by $index"
+                                    ng-click="$ctrl.changeSort('monthlyDonations[' + $index + '].total')">
+                                    <span data-title="{{ ::'This last month is excluded from totals and averages' | translate }}"
+                                          data-trigger="{{::$last ? 'hover' : 'manual'}}"
+                                          ng-class="::{'text-muted': $last}"
+                                          bs-tooltip>
                                         {{::$ctrl.moment(date).format('MMM')}}
                                     </span>
+                                    <sort-header-caret ng-if="$ctrl.sort === 'monthlyDonations[' + $index + '].total'"
+                                                       reverse="$ctrl.sortReverse"></sort-header-caret>
                                 </th>
-                                <th class="col-md-1 text-right" translate>Total</th>
+                                <th class="col-md-1 text-right pointer"
+                                    ng-click="$ctrl.changeSort('total')">
+                                    <translate>Total</translate>
+                                    <sort-header-caret ng-if="$ctrl.sort === 'total'"
+                                                       reverse="$ctrl.sortReverse"></sort-header-caret>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="donor in currency.donors">
+                            <tr ng-repeat="donor in currency.donors | orderBy : $ctrl.sort : $ctrl.sortReverse">
                                 <td>
-                                    <i class="fa fa-info-circle" ng-if="!$ctrl.expanded" data-template-url="reports/contributions/popovers/name.tpl.html" data-trigger="hover" data-placement="top" bs-popover></i>
+                                    <i class="fas fa-info-circle" ng-if="!$ctrl.expanded" data-template-url="reports/contributions/popovers/name.tpl.html" data-trigger="hover" data-placement="top" bs-popover></i>
                                     <a ui-sref="contacts.show({contactId: donor.contact.contact_id})" >{{::donor.contact.contact_name}}</a>
                                     <span ng-switch="donor.contact.late_by_60_days ? 60 : (donor.contact.late_by_30_days ? 30 : false)">
-                                        <i class="fa fa-circle circle-warning" ng-switch-when="30" data-title="{{ ::'30+ days late' | translate }}" bs-tooltip></i>
-                                        <i class="fa fa-circle circle-danger" ng-switch-when="60" data-title="{{ ::'60+ days late' | translate }}" bs-tooltip></i>
+                                        <i class="fas fa-circle fa-circle-warning" ng-switch-when="30" data-title="{{ ::'30+ days late' | translate }}" bs-tooltip></i>
+                                        <i class="fas fa-circle fa-circle-danger" ng-switch-when="60" data-title="{{ ::'60+ days late' | translate }}" bs-tooltip></i>
                                     </span>
                                 </td>
                                 <td ng-if="$ctrl.expanded">
@@ -82,16 +148,16 @@
                                 <td ng-if="$ctrl.expanded">
                                     <span ng-if="::donor.contact.pledge_amount > 0">
                                         {{::currency.symbol}}
-                                        {{::donor.contact.pledge_amount | number:0}}
+                                        {{::donor.contact.pledge_amount | number : 0}}
                                         {{::currency.code}}
                                         {{::donor.contact.pledge_frequency}}
                                     </span>
                                 </td>
                                 <td class="text-right" ng-if="$ctrl.expanded">
-                                    {{::donor.average | number:0}}
+                                    {{::donor.average | number : 0}}
                                 </td>
                                 <td class="text-right" ng-if="$ctrl.expanded">
-                                    {{::donor.minimum | number:0}}
+                                    {{::donor.minimum | number : 0}}
                                 </td>
 
                                 <td class="text-right" ng-repeat="monthlyDonation in ::donor.monthlyDonations track by $index" ng-class="::{'text-muted': $last}">
@@ -111,8 +177,8 @@
                                         Totals
                                     </strong>
                                 </td>
-                                <td ng-if="$ctrl.expanded">{{::currency.totals.average}}</td>
-                                <td ng-if="$ctrl.expanded">{{::currency.totals.minimum}}</td>
+                                <td ng-if="$ctrl.expanded" class="text-right">{{::currency.totals.average}}</td>
+                                <td ng-if="$ctrl.expanded" class="text-right">{{::currency.totals.minimum}}</td>
                                 <td class="text-right" ng-repeat="total in ::currency.totals.months track by $index">
                                     <strong ng-class="::{'text-muted': $last}">
                                         {{::total | number : 0}}

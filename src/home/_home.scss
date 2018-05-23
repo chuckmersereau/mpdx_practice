@@ -1,0 +1,57 @@
+@import 'progress/progress';
+home {
+    display: grid;
+    height: 100%;
+    padding: $container-padding;
+    overflow-y: auto;
+    overflow-x: hidden;
+    grid-template-rows: 50px 330px auto auto 1fr;
+    grid-template-columns: 100%;
+    grid-gap: ($container-padding / 2);
+    donations-chart {
+        .blankslate {
+            height: 330px;
+        }
+    }
+    a:hover {
+        text-decoration: none;
+    }
+    .title {
+        margin: 0;
+        text-transform: none;
+    }
+    home-connect,
+    home-commitments,
+    home-care {
+        .panel.panel-default {
+            height: 100%;
+            min-height: 275px;
+            margin-bottom: 0;
+        }
+    }
+    h4.title {
+        margin: 10px 0 5px;
+    }
+    .panel {
+        height: 100%;
+    }
+    .row-eq-height {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: ($container-padding / 2);
+    }
+    @media (max-width: $breakpoint-tablet) {
+        grid-gap: $container-padding;
+        .row-eq-height {
+            grid-template-columns: 1fr;
+            grid-gap: $container-padding;
+            home-connect,
+            home-commitments,
+            home-care {
+                .panel.panel-default {
+                    min-height: 0;
+                }
+            }
+        }
+    }
+}

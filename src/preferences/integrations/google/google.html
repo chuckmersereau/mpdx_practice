@@ -6,7 +6,7 @@
     </div>
     <div class="col-md-8">
         <div ng-if="$ctrl.google.data.length === 0">
-            <h4 class="integration_subhead" translate>Google Integration Overview</h4>
+            <h4 class="integration-subhead" translate>Google Integration Overview</h4>
             <p translate>
                 Google’s suite of tools are great at connecting you to your Ministry Partners.
             </p>
@@ -26,12 +26,12 @@
             <div class="panel-heading">
                 <div class="pull-right">
                     <a class="btn btn-default btn-xs" ng-click="$ctrl.googleIntegrations.openModal(account)">
-                        <i class="fa fa-pencil"></i>
+                        <i class="fas fa-pencil"></i>
                         <translate>Edit</translate>
                     </a>
                     &nbsp;
                     <a class="btn btn-danger btn-xs" ng-click="$ctrl.disconnect(account.id)">
-                        <i class="fa fa-trash"></i>
+                        <i class="fas fa-trash"></i>
                     </a>
                 </div>
                 {{account.email}}

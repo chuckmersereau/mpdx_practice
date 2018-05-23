@@ -1,0 +1,57 @@
+@import 'accounts/merge/merge';
+@import 'accounts/share/share';
+@import 'integrations/integrations';
+@import 'notifications/notifications';
+@import 'personal/personal';
+@import 'sidebar/sidebar';
+preferences {
+    display: grid;
+    height: 100%;
+    overflow: hidden;
+    grid-template-columns: 250px auto;
+    grid-template-rows: auto;
+    > preferences-sidebar {
+        grid-column: 1;
+        grid-row: 1;
+    }
+    > ui-view {
+        padding: 10px $container-padding 60px;
+        overflow: auto;
+        grid-row: 1;
+        grid-column: 2;
+        h1.heading {
+            margin: 0 -15px 15px;
+            padding: 11px 15px 15px;
+            border-bottom: 1px solid $color-border;
+            font-size: $font-size-lg;
+        }
+    }
+    .panel.panel-default {
+        &:last-child {
+            margin-bottom: 0;
+        }
+        .panel-heading {
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s ease-out;
+            cursor: pointer;
+            > *:first-child {
+                flex-grow: 1;
+            }
+            i {
+                transition: transform 0.2s ease-out;
+            }
+        }
+    }
+    h3 {
+        margin: $container-padding 0;
+    }
+    .panel-group {
+        margin: 0;
+    }
+    .btn-primary {
+        min-width: 130px;
+        font-size: $font-size-md;
+        line-height: 25px;
+    }
+}

@@ -1,0 +1,20 @@
+root {
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    grid-template-rows: auto 1fr $height-footer;
+    > menu {
+        grid-row: 1;
+    }
+    > div.root {
+        overflow: hidden;
+        grid-row: 2;
+        > ui-view {
+            display: block;
+            height: 100%;
+        }
+    }
+    > bottom {
+        grid-row: 3;
+    }
+}

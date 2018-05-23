@@ -4,27 +4,42 @@
  */
 
 const assign = require('lodash/fp/assign');
-const concat = require('lodash/fp/concat');
 const path = require('path');
-let config = require('./webpack.make');
+const webpack = require('webpack');
+const HappyPack = require('happypack');
 
-config = assign(config, {
-    entry: null,
-    devtool: 'inline-source-map',
-    output: {},
-    resolve: assign(config.resolve, {
-        alias: {
-            config: path.join(__dirname, 'config', 'test.js')
-        }
-    }),
-    module: assign(config.module, {
-        rules: concat(config.module.rules, [
-            {
-                test: /\.css$|\.scss$/,
-                use: 'null-loader'
-            }
-        ])
-    })
-});
+const config = {
+    devtool: 'eval-source-map',
+    mode: 'development',
+    module: {
+        rules: [{
+            test: /\.ts$/,
+            loader: 'happypack/loader?id=ts',
+            exclude: /node_modules/
+        }, {
+            test: /\.(json|html)$/,
+            use: 'null-loader'
+        }]
+    },
+    resolve: {
+        modules: [path.join(__dirname), 'node_modules', 'src'],
+        extensions: ['.ts', '.js']
+    },
+    plugins: [
+        new webpack.DefinePlugin({
+            'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+        }),
+        new webpack.NormalModuleReplacementPlugin(/\.(gif|png|jpg|jpeg|scss|css)$/, 'node-noop'),
+        new HappyPack({
+            id: 'ts',
+            loaders: [{
+                path: 'ts-loader',
+                query: {
+                    happyPackMode: true
+                }
+            }]
+        })
+    ]
+};
 
 module.exports = config;

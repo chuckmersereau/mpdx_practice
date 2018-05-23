@@ -1,0 +1,29 @@
+cover {
+    .cover {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 30px;
+        left: 0;
+        background: $color-reverse;
+        background-position: center center;
+        background-size: cover;
+        overflow: auto;
+    }
+    .cover-item {
+        max-width: 550px;
+        margin: 110px auto;
+        border-width: 16px 0 0;
+        border-style: solid;
+        border-color: $color-secondary;
+    }
+    .cover-copyright {
+        position: fixed;
+        bottom: 40px;
+        left: 10px;
+        padding: 5px 10px;
+        background: $color-black-alpha-50;
+        color: $color-white;
+        font-size: $font-size-xs;
+    }
+}

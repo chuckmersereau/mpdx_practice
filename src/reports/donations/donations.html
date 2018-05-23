@@ -1,88 +1,119 @@
-<div class="reports">
-    <donations-chart in-contact="::$ctrl.inContact"></donations-chart>
-    <h2 translate ng-if="::!$ctrl.inContact" class="mt-3 mb-4">
-        <translate>Donations</translate>
-        <div class="pull-right">
-            <button ng-click="$ctrl.gotoPrevMonth()" class="btn btn-default">
-                <i class="fa fa-angle-left"></i>
-                <translate>Previous Month</translate>
-            </button>
-            <button ng-click="$ctrl.gotoNextMonth()" class="btn btn-default" ng-disabled="!$ctrl.enableNext">
-                <translate>Next Month</translate>
-                <i class="fa fa-angle-right"></i>
-            </button>
-        </div>
-    </h2>
-    <div class="panel panel-default" ng-if="$ctrl.data.length > 0">
-        <div class="panel-heading" ng-if="::!$ctrl.inContact">
-            <h4 class="panel-title">{{$ctrl.startDate.format('MMMM YYYY')}}</h4>
-        </div>
-        <div class="panel-body" infinite-scroll="$ctrl.loadMoreDonations()" ng-if="$ctrl.data.length > 0">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th ng-if="::$ctrl.inContact" class="col-md-2" translate>Partner No.</th>
-                        <th class="col-md-2 date" translate>Date</th>
-                        <th ng-if="::!$ctrl.inContact" class="col-md-3" translate>Partner</th>
-                        <th class="col-md-1 text-right" translate>Amount</th>
-                        <th class="col-md-3" ng-if="$ctrl.designationAccounts.data.length > 0" translate>Designation</th>
-                        <th class="col-md-1" translate>Method</th>
-                        <th class="col-md-1" translate>Appeal</th>
-                        <th class="col-md-1"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="donation in $ctrl.data">
-                        <td ng-if="::$ctrl.inContact">{{ donation.donor_account.account_number }}</td>
-                        <td class="date">{{ donation.donation_date | date: $ctrl.locale.dateTimeFormat }}</td>
-                        <td ng-if="::!$ctrl.inContact">
-                            <a ui-sref="contacts.show({ contactId: donation.contact.id })">{{ $ctrl.donations.displayName(donation) }}</a>
-                        </td>
-                        <td class="text-right">{{ donation.amount | currency:'':0 }} {{ donation.currency }}</td>
-                        <td>{{ donation.designation_account.display_name }}</td>
-                        <td>{{ donation.payment_method }}</td>
-                        <td>{{ donation.appeal.name }}</td>
-                        <td class="text-right"><a ng-click="$ctrl.donations.openDonationModal(donation)"><i class="fa fa-pencil-square-o"></i></a></td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr ng-repeat="(currency, total) in $ctrl.totals">
-                        <td class="text-right" colspan="2">
-                            <strong translate-params-currency="currency" translate-params-count="total.count" translate>
-                                Total {{currency}} Donations ({{count}}):
-                            </strong>
-                        </td>
-                        <td class="text-right">
-                            {{ total.amount | currency:'':0 }} {{currency}}
-                        </td>
-                        <td colspan="4">
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+<donations-chart in-contact="::$ctrl.inContact"></donations-chart>
+<div class="heading" ng-if="::!$ctrl.inContact">
+    <h2 translate>Donations</h2>
+    <div>
+        <button ng-click="$ctrl.gotoPrevMonth()" class="btn btn-default">
+            <i class="fas fa-angle-left"></i>
+            <translate>Previous Month</translate>
+        </button>
+        <button ng-click="$ctrl.gotoNextMonth()" class="btn btn-default" ng-disabled="!$ctrl.enableNext">
+            <translate>Next Month</translate>
+            <i class="fas fa-angle-right"></i>
+        </button>
     </div>
-    <div class="blankslate" ng-class="{ 'blankslate-spacious' : !$ctrl.inContact }" ng-if="$ctrl.data.length === 0 && !$ctrl.loading">
-        <i class="fa fa-money blankslate-icon"></i>
-        <div ng-if="::$ctrl.inContact">
-            <h3 translate>No donations received for this contact</h3>
-            <p translate>Try adding a donation to a partner account associated with this contact.</p>
-            <a ng-click="$ctrl.donations.openDonationModal()" class="btn btn-default" translate>Add New Donation</a>
-        </div>
-        <div ng-if="::!$ctrl.inContact">
-            <h3 translate translate-params-month="$ctrl.startDate.format('MMMM YYYY')">No donations received in {{month}}</h3>
-            <p translate>You can setup an organization account to import them or add a new donation.</p>
-            <a ui-sref="preferences.integrations" class="btn btn-default" translate>Connect Services</a>
-            <a ng-click="$ctrl.donations.openDonationModal()" class="btn btn-primary" translate>Add New Donation</a>
-        </div>
+</div>
+<table class="table table-striped" ng-if="$ctrl.data.length > 0">
+    <thead>
+        <tr ng-if="::!$ctrl.inContact">
+            <th colspan="8"><h4>{{$ctrl.startDate.format('MMMM YYYY')}}</h4></th>
+        </tr>
+        <tr>
+            <th ng-if="::$ctrl.inContact"
+                ng-click="$ctrl.changeSort('donor_account.account_number')"
+                class="col-md-2 pointer text-nowrap">
+                <translate>Partner No.</translate>
+                <sort-header-caret ng-if="$ctrl.sort === 'donor_account.account_number'"
+                                   reverse="$ctrl.sortReverse"></sort-header-caret>
+            </th>
+            <th ng-click="$ctrl.changeSort('donation_date')"
+                class="col-md-2 date pointer text-nowrap">
+                <translate>Date</translate>
+                <sort-header-caret ng-if="$ctrl.sort === 'donation_date'"
+                                   reverse="$ctrl.sortReverse"></sort-header-caret>
+            </th>
+            <th ng-if="::!$ctrl.inContact"
+                ng-click="$ctrl.changeSort('donor_account.display_name')"
+                class="col-md-3 pointer text-nowrap">
+                <translate>Partner</translate>
+                <sort-header-caret ng-if="$ctrl.sort === 'donor_account.display_name'"
+                                   reverse="$ctrl.sortReverse"></sort-header-caret>
+            </th>
+            <th class="col-md-1 text-right pointer text-nowrap"
+                ng-click="$ctrl.changeSort('converted_amount')">
+                <translate>Amount</translate>
+                <sort-header-caret ng-if="$ctrl.sort === 'converted_amount'"
+                                   reverse="$ctrl.sortReverse"></sort-header-caret>
+            </th>
+            <th class="col-md-3 pointer text-nowrap"
+                ng-if="$ctrl.designationAccounts.data.length > 0"
+                ng-click="$ctrl.changeSort('designation_account.display_name')">
+                <translate>Designation</translate>
+                <sort-header-caret ng-if="$ctrl.sort === 'designation_account.display_name'"
+                                   reverse="$ctrl.sortReverse"></sort-header-caret>
+            </th>
+            <th class="col-md-1 pointer text-nowrap"
+                ng-click="$ctrl.changeSort('payment_method')">
+                <translate>Method</translate>
+                <sort-header-caret ng-if="$ctrl.sort === 'payment_method'"
+                                   reverse="$ctrl.sortReverse"></sort-header-caret>
+            </th>
+            <th class="col-md-1 pointer text-nowrap"
+                ng-click="$ctrl.changeSort('appeal.name')">
+                <translate>Appeal</translate>
+                <sort-header-caret ng-if="$ctrl.sort === 'appeal.name'"
+                                   reverse="$ctrl.sortReverse"></sort-header-caret>
+            </th>
+            <th class="col-md-1"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="donation in $ctrl.data | orderBy: $ctrl.sort : $ctrl.sortReverse">
+            <td ng-if="::$ctrl.inContact">{{ donation.donor_account.account_number }}</td>
+            <td class="date">{{ donation.donation_date | date: $ctrl.locale.dateTimeFormat }}</td>
+            <td ng-if="::!$ctrl.inContact">
+                <a ui-sref="contacts.show({ contactId: donation.contact.id })">{{ $ctrl.donations.displayName(donation) }}</a>
+            </td>
+            <td class="text-right text-nowrap"
+                data-title="{{ donation.amount | currency: donation.currency_symbol : 0 }}"
+                data-container="body"
+                data-placement="right"
+                bs-tooltip>
+                {{ donation.converted_amount | currency: donation.converted_symbol : 0}}
+            </td>
+            <td>{{ donation.designation_account.display_name }}</td>
+            <td>{{ donation.payment_method }}</td>
+            <td>{{ donation.appeal.name }}</td>
+            <td class="text-right"><a ng-click="$ctrl.donations.openDonationModal(donation)"><i class="far fa-pencil-square"></i></a></td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr ng-repeat="(currency, total) in $ctrl.totals" ng-if="total > 0">
+            <td colspan="2" class="text-right">
+                <strong translate-params-currency="currency" translate-params-count="total.count" translate>
+                    Total {{currency}} Donations:
+                </strong>
+            </td>
+            <td class="text-right">
+                {{ total | currency:'':0 }} {{currency}}
+            </td>
+            <td colspan="4"></td>
+        </tr>
+    </tfoot>
+</table>
+<div class="blankslate" ng-class="{ 'blankslate-spacious' : !$ctrl.inContact }" ng-if="$ctrl.data.length === 0 && !$ctrl.loading">
+    <i class="fas fa-money-bill-alt blankslate-icon"></i>
+    <div ng-if="::$ctrl.inContact">
+        <h3 translate>No donations received for this contact</h3>
+        <p translate>Try adding a donation to a partner account associated with this contact.</p>
+        <a ng-click="$ctrl.donations.openDonationModal()" class="btn btn-default" translate>Add New Donation</a>
     </div>
-    <div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
-      <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
+    <div ng-if="::!$ctrl.inContact">
+        <h3 translate translate-params-month="$ctrl.startDate.format('MMMM YYYY')">No donations received in {{month}}</h3>
+        <p translate>You can setup an organization account to import them or add a new donation.</p>
+        <a ui-sref="preferences.integrations" class="btn btn-default" translate>Connect Services</a>
+        <a ng-click="$ctrl.donations.openDonationModal()" class="btn btn-primary" translate>Add New Donation</a>
     </div>
-    <div ng-if="$ctrl.data.length !== 0"
-         class="text-center"
-         translate-params-from="$ctrl.data.length || 0"
-         translate-params-to="$ctrl.meta.pagination.total_count || 0" translate>
-        Showing <strong>{{from}}</strong> of <strong>{{to}}</strong>
-    </div>
+</div>
+<div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
+  <i class="far fa-circle-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
 </div>

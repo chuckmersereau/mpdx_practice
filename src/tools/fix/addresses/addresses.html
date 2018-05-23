@@ -1,10 +1,9 @@
 <div block-ui="fix-addresses">
-    <h1 translate>Fix Mailing Addresses</h1>
+    <h1 class="heading" translate>Fix Mailing Addresses</h1>
     <div class="blankslate blankslate-spacious" ng-if="!$ctrl.meta.pagination.total_count && !$ctrl.loading">
-        <i class="fa fa-map blankslate-icon"></i>
+        <i class="fas fa-map blankslate-icon"></i>
         <h3 translate>No contacts with mailing addresses need attention</h3>
         <p translate>Contacts with new addresses or multiple primary mailing addresses will appear here.</p>
-        <a class="btn btn-default" ui-sref="tools" translate>Back to Tools</a>
     </div>
     <div ng-if="$ctrl.meta.pagination.total_count">
         <p>
@@ -23,13 +22,13 @@
                 <option value=""></option>
             </select>
             <button class="btn btn-gray" ng-click="$ctrl.save()" ng-disabled="!$ctrl.source">
-                <i class="fa fa-check-circle"></i>
+                <i class="fas fa-check-circle"></i>
                 <translate translate-params-source="$ctrl.source | sourceToStr"
                            translate-params-count="$ctrl.data.length">Confirm {{count}} as {{source}}</translate>
             </button>
         </div>
         <div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
-          <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
+          <i class="far fa-circle-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
         </div>
         <div ng-if="!$ctrl.loading">
             <fix-addresses-item ng-repeat="contact in $ctrl.data"

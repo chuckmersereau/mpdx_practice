@@ -1,0 +1,8 @@
+<select chosen
+    class="form-control"
+    ng-options="item.id as item.display_name for item in $ctrl.designationAccounts.data"
+    ng-model="$ctrl.designationAccounts.selected"
+    ng-change="$ctrl.onChange()"
+    placeholder-text-multiple="'Filter by Designation Account' | translate"
+    multiple>
+</select>;

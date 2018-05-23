@@ -1,0 +1,45 @@
+menu-balances {
+    .section {
+        display: inline-block;
+        margin-left: $gutter / 4;
+        vertical-align: top;
+    }
+    .account_balances {
+        display: block;
+        height: $height-progress-bar;
+        font-size: $font-size-sm;
+        font-weight: 100;
+        line-height: $height-progress-bar;
+        text-transform: none;
+    }
+    .mpd-progress-bar {
+        display: block;
+        position: relative;
+        width: 150px;
+        height: $height-progress-bar;
+        border-radius: $height-progress-bar;
+        background: color-gray(35);
+        font-size: $font-size-xs;
+        text-align: left;
+        overflow: hidden;
+        .bar {
+            background: $color-progress;
+        }
+        .bar-pledged {
+            background: $color-progress-dark;
+        }
+        .value,
+        .bar {
+            position: absolute;
+            height: $height-progress-bar;
+        }
+        .value {
+            padding: 0 10px;
+            color: $color-white;
+            line-height: $height-progress-bar;
+        }
+        .value.right {
+            right: 0;
+        }
+    }
+}

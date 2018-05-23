@@ -1,0 +1,38 @@
+.btn {
+    transition: background-color 0.1s ease-out;
+    border-width: 1px;
+    border-radius: $border-radius;
+    font-size: $font-size-sm;
+    font-weight: 400;
+    &-primary {
+        @include btn-variant($color-reverse, $color-reverse, $color-primary, $color-primary, transparent, transparent);
+    }
+    &-secondary {
+        @include btn-variant($color-reverse, $color-reverse, $color-secondary, $color-secondary, transparent, transparent);
+    }
+    &-gray {
+        @include btn-variant($color-reverse, $color-reverse, $color-link, $color-link, transparent, transparent);
+    }
+    &-green {
+        @include btn-variant($color-reverse, $color-reverse, $color-success, $color-success, transparent, transparent);
+    }
+    &-reverse {
+        @include btn-variant($color-reverse, $color-reverse, color-gray(20), color-gray(20), transparent, transparent);
+    }
+    &-lg {
+        font-size: $font-size-lg;
+    }
+    &-block {
+        display: block;
+        margin-bottom: 8px;
+    }
+    &-xxs {
+        padding: 2px 6px;
+        border-radius: 1px;
+        font-size: $font-size-xs;
+        line-height: 1.25;
+    }
+    &-squared {
+        border-radius: 0;
+    }
+}

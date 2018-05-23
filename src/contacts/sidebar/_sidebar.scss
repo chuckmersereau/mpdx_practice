@@ -1,0 +1,39 @@
+@import 'filter/filter';
+@import 'filter/tags/tags';
+@import 'list/list';
+contacts-sidebar {
+    padding: $container-padding 0;
+    background-color: $color-filter-bar;
+    overflow-y: auto;
+    > div.contact-drawer {
+        display: grid;
+        grid-template-rows: auto 1fr;
+        > div.edit-filters {
+            padding: 0 $container-padding 10px;
+            color: $color-white;
+            line-height: 29px;
+            grid-row: 1 / 1;
+            .btn-group-justified {
+                display: flex;
+                button.btn {
+                    flex-grow: 1;
+                    transition: background-color 0.2s ease-out;
+                }
+                button.btn:focus {
+                    outline: none;
+                }
+                button.btn.active {
+                    background-color: $color-sidebar-bg;
+                }
+            }
+        }
+        > div.list {
+            grid-row: 2 / 2;
+        }
+    }
+    &.hide-small {
+        @media (max-width: $contact-menu-breakpoint) {
+            display: none;
+        }
+    }
+}

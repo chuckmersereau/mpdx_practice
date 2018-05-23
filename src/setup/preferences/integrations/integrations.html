@@ -1,23 +1,16 @@
-<div class="columns columns--fixed">
-    <div class="column column--heading filter--heading">
-        <div class="panel panel-default panel-selected panel__prompt">
-            <div class="panel-body container-fluid">
-                <div class="row">
-                    <div class="col-sm-9">
-                        <h2>
-                            <img src="../../../images/setup/icon_alert_2x.png" class="icon_alert" />
-                            <translate>Make MPDX a part of your everyday life</translate>
-                        </h2>
-                    </div>
-                    <div class="col-sm-3 text-right">
-                        <a ng-click="$ctrl.next()" class="btn btn-primary" translate>Next Step</a>
-                    </div>
-                </div>
+<div class="panel panel-default panel-selected panel__prompt">
+    <div class="panel-body container-fluid">
+        <div class="row">
+            <div class="col-sm-9">
+                <h2>
+                    <img src="../../../images/setup/icon_alert_2x.png" class="icon-alert" />
+                    <translate>Make MPDX a part of your everyday life</translate>
+                </h2>
+            </div>
+            <div class="col-sm-3 text-right">
+                <a ng-click="$ctrl.next()" class="btn btn-primary" translate>Next Step</a>
             </div>
         </div>
     </div>
-    <div class="column">
-        <preferences-integration on-save="$ctrl.onSave()" setup="true" selected-tab="$ctrl.selectedTab"></preferences-integration>
-        <a ng-click="$ctrl.next()" class="btn btn-primary pull-right" translate>Next Step</a>
-    </div>
 </div>
+<preferences-integration on-save="$ctrl.onSave()" setup="true" selected-tab="$ctrl.selectedTab"></preferences-integration>

@@ -1,31 +1,29 @@
-<div class="row">
-    <div class="col-xs-10">
-        <div class="panel" block-ui="fix-addresses-item-{{$ctrl.contact.id}}">
-            <div class="panel-body">
-                <avatar src="$ctrl.contact.avatar"></avatar>
-                <div class="avatar-on-left">
-                    <h4>{{$ctrl.contact.name}}</h4>
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <label translate>Source</label>
-                        </div>
-                        <div class="col-xs-2 text-center">
-                            <label translate>Primary</label>
-                        </div>
+<div class="fix-item-content">
+    <div class="panel" block-ui="fix-addresses-item-{{$ctrl.contact.id}}">
+        <div class="panel-body">
+            <avatar src="$ctrl.contact.avatar"></avatar>
+            <div class="avatar-on-left">
+                <h4>{{$ctrl.contact.name}}</h4>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <label translate>Source</label>
                     </div>
-                    <fix-addresses-item-field
-                        ng-repeat="address in $ctrl.contact.addresses"
-                        contact="$ctrl.contact"
-                        address="address"></fix-addresses-item-field>
-                    <fix-addresses-item-field
-                        contact="$ctrl.contact"></fix-addresses-item-field>
+                    <div class="col-xs-2 text-center">
+                        <label translate>Primary</label>
+                    </div>
                 </div>
+                <fix-addresses-item-field
+                    ng-repeat="address in $ctrl.contact.addresses"
+                    contact="$ctrl.contact"
+                    address="address"></fix-addresses-item-field>
+                <fix-addresses-item-field
+                    contact="$ctrl.contact"></fix-addresses-item-field>
             </div>
         </div>
     </div>
-    <div class="col-xs-2">
-        <button class="btn btn-gray btn-block confirm-item" ng-click="$ctrl.save()" ng-disabled="!$ctrl.hasPrimary()">
-            <i class="fa fa-check-circle"></i> <translate>Confirm</translate>
+    <div>
+        <button class="btn btn-gray btn-block" ng-click="$ctrl.save()" ng-disabled="!$ctrl.hasPrimary()">
+            <i class="fas fa-check-circle"></i> <translate>Confirm</translate>
         </button>
     </div>
 </div>

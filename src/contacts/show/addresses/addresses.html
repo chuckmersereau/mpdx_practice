@@ -1,0 +1,16 @@
+<div class="actions">
+    <button type="button" class="btn btn-primary" ng-click="$ctrl.contacts.openAddressModal($ctrl.contacts.current)">
+        <i class="fas fa-plus-circle"></i> <translate>Add Address</translate>
+    </button>
+</div>
+<div class="address-row">
+    <contact-address ng-repeat="address in $ctrl.contacts.current.addresses track by address.id"
+                     address="address"
+                     contact="$ctrl.contacts.current"
+                     on-primary="$ctrl.onAddressPrimary(address.id)"></contact-address>
+</div>
+<div class="blankslate" ng-if="$ctrl.contacts.current.addresses.length === 0">
+    <i class="fas fa-map-marker-alt blankslate-icon"></i>
+    <h3 translate>Looks like you haven't added any addresses to this contact yet</h3>
+    <a ng-click="$ctrl.contacts.openAddressModal($ctrl.contacts.current)" class="btn btn-default" translate>Add Address</a>
+</div>

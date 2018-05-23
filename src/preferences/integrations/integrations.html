@@ -1,13 +1,13 @@
-<h3 translate>Internal Services</h3>
+<h1 class="heading" translate>Connect Services</h1>
 <div class="panel-group">
     <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('key'), 'panel-disabled' : !$ctrl.tabSelectable('key') }">
         <div class="panel-heading" ng-click="$ctrl.setTab('key')">
-            <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('key') }"></i>
             <span translate>Key / Relay</span>
             <div class="state">
-                <div class="accstatus accstatus-enabled" ng-if="$ctrl.integrations.data.length > 0"><i class="fa fa-circle"></i></div>
-                <div class="accstatus accstatus-disabled" ng-if="$ctrl.integrations.data.length === 0"><i class="fa fa-circle-o"></i></div>
+                <div class="accstatus accstatus-enabled" ng-if="$ctrl.integrations.data.length > 0"><i class="fas fa-circle"></i></div>
+                <div class="accstatus accstatus-disabled" ng-if="$ctrl.integrations.data.length === 0"><i class="far fa-circle"></i></div>
             </div>
+            <i class="fal fa-chevron-up" ng-class="{ 'fa-rotate-180' : $ctrl.tabSelected('key') }"></i>
         </div>
         <div class="panel-animate" ng-show="$ctrl.tabSelected('key')">
             <div class="panel-body">
@@ -20,10 +20,10 @@
                     <div class="col-md-8">
                         <div ng-repeat="account in $ctrl.integrations.data.key_accounts" class="panel panel-default">
                             <div class="panel-heading">
-                                <a class="btn btn-danger btn-xs pull-right" ng-click="$ctrl.disconnect('Key', account.id)">
-                                    <i class="fa fa-trash"></i>
+                                <span>{{account.email}}</span>
+                                <a class="btn btn-danger btn-xs" ng-click="$ctrl.disconnect('Key', account.id)">
+                                    <i class="fas fa-trash"></i>
                                 </a>
-                                {{account.email}}
                             </div>
                         </div>
                     </div>
@@ -33,8 +33,8 @@
     </div>
     <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('organization'), 'panel-disabled' : !$ctrl.tabSelectable('organization') }">
         <div class="panel-heading" ng-click="$ctrl.setTab('organization')">
-            <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('organization') }"></i>
             <span translate>Organization</span>
+            <i class="fal fa-chevron-up" ng-class="{ 'fa-rotate-180' : $ctrl.tabSelected('organization') }"></i>
         </div>
         <div class="panel-animate" ng-show="$ctrl.tabSelected('organization')">
             <div class="panel-body">
@@ -62,11 +62,11 @@
         <div class="panel-heading" ng-click="$ctrl.setTab('google')">
             <translate>Google</translate>
             <div class="state">
-                <i class="fa fa-circle text-success" ng-show="$ctrl.google.data.length > 0 && !$ctrl.google.failure"></i>
-                <i class="fa fa-circle text-danger" ng-show="$ctrl.google.data.length > 0 && $ctrl.google.failure"></i>
-                <i class="fa fa-circle-o text-muted" ng-show="$ctrl.google.data.length == 0"></i>
+                <i class="fas fa-circle text-success" ng-show="$ctrl.google.data.length > 0 && !$ctrl.google.failure"></i>
+                <i class="fas fa-circle text-danger" ng-show="$ctrl.google.data.length > 0 && $ctrl.google.failure"></i>
+                <i class="far fa-circle text-muted" ng-show="$ctrl.google.data.length == 0"></i>
             </div>
-            <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('google') }"></i>
+            <i class="fal fa-chevron-up" ng-class="{ 'fa-rotate-180' : $ctrl.tabSelected('google') }"></i>
         </div>
         <div class="panel-animate" ng-show="$ctrl.tabSelected('google')">
             <div class="panel-body">
@@ -76,13 +76,13 @@
     </div>
     <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('mailchimp'), 'panel-disabled' : !$ctrl.tabSelectable('mailchimp') }">
         <div class="panel-heading" ng-click="$ctrl.setTab('mailchimp')">
-            <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('mailchimp') }"></i>
             <span translate>MailChimp</span>
             <div class="state">
-                <i class="fa fa-circle text-success" ng-if="$ctrl.mailchimp.data.active && $ctrl.mailchimp.data.valid"></i>
-                <i class="fa fa-circle text-danger" ng-if="$ctrl.mailchimp.data.active && !$ctrl.mailchimp.data.valid"></i>
-                <i class="fa fa-circle-o text-muted" ng-if="!$ctrl.mailchimp.data.active"></i>
+                <i class="fas fa-circle text-success" ng-if="$ctrl.mailchimp.data.active && $ctrl.mailchimp.data.valid"></i>
+                <i class="fas fa-circle text-danger" ng-if="$ctrl.mailchimp.data.active && !$ctrl.mailchimp.data.valid"></i>
+                <i class="far fa-circle text-muted" ng-if="!$ctrl.mailchimp.data.active"></i>
             </div>
+            <i class="fal fa-chevron-up" ng-class="{ 'fa-rotate-180' : $ctrl.tabSelected('mailchimp') }"></i>
         </div>
         <div class="panel-animate" ng-show="$ctrl.tabSelected('mailchimp')">
             <div class="panel-body">
@@ -103,12 +103,12 @@
     </div>
     <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('prayerletters'), 'panel-disabled' : !$ctrl.tabSelectable('prayerletters') }">
         <div class="panel-heading" ng-click="$ctrl.setTab('prayerletters')">
-            <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('prayerletters') }"></i>
             <span translate>Prayer Letters</span>
             <div class="state">
-                <i class="fa fa-circle text-success" ng-if="$ctrl.prayerLetters.data"></i>
-                <i class="fa fa-circle-o text-muted" ng-if="!$ctrl.prayerLetters.data"></i>
+                <i class="fas fa-circle text-success" ng-if="$ctrl.prayerLetters.data"></i>
+                <i class="far fa-circle text-muted" ng-if="!$ctrl.prayerLetters.data"></i>
             </div>
+            <i class="fal fa-chevron-up" ng-class="{ 'fa-rotate-180' : $ctrl.tabSelected('prayerletters') }"></i>
         </div>
         <div class="panel-animate" ng-show="$ctrl.tabSelected('prayerletters')">
             <div class="panel-body">
@@ -118,8 +118,8 @@
     </div>
     <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabSelected('chalkline'), 'panel-disabled' : !$ctrl.tabSelectable('chalkline') }">
         <div class="panel-heading" ng-click="$ctrl.setTab('chalkline')">
-            <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabSelected('chalkline') }"></i>
             <span translate>Chalkline</span>
+            <i class="fal fa-chevron-up" ng-class="{ 'fa-rotate-180' : $ctrl.tabSelected('chalkline') }"></i>
         </div>
         <div class="panel-animate" ng-show="$ctrl.tabSelected('chalkline')">
             <div class="panel-body">
@@ -131,7 +131,7 @@
                     </div>
                     <div class="col-md-8">
                         <div class="network_button">
-                            <h4 class="integration_subhead" translate>Chalkline Overview</h4>
+                            <h4 class="integration-subhead" translate>Chalkline Overview</h4>
                             <p translate>
                                 Chalkline is a significant way to save valuable ministry time while more effectively connecting with your partners. Send physical newsletters to your current list using Chalkline with a simple click.  Chalkline is a one way send available anytime you’re ready to send a new newsletter out.
                             </p>

@@ -4,8 +4,8 @@ collection-selector {
         span.display-text {
             display: inline-block;
             max-width: calc(100% - 20px);
-            white-space: nowrap;
             text-overflow: ellipsis;
+            white-space: nowrap;
             overflow: hidden;
         }
     }

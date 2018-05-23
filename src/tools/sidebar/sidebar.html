@@ -1,0 +1,97 @@
+<h3 class="heading">
+    <i class="fas fa-wrench"></i>
+    <translate>Tools</translate>
+</h3>
+<ul class="nav nav-pills nav-stacked">
+    <li role="presentation" ng-class="{'active' : $ctrl.$state.includes('tools.appeals')}">
+        <a ui-sref="tools.appeals">
+            <translate>Appeals</translate>
+            <i class="fal fa-chevron-right"></i>
+        </a>
+    </li>
+</ul>
+<h4 class="heading">
+    <i class="fas fa-home"></i>
+    <translate>Contacts</translate>
+</h4>
+<ul class="nav nav-pills nav-stacked">
+    <li role="presentation" ng-class="{'active' : $ctrl.$state.includes('tools.fix.commitmentInfo')}">
+        <a ui-sref="tools.fix.commitmentInfo">
+            <translate>Fix Commitment Info</translate>
+            <span class="badge" ng-if="$ctrl.tools.analytics['fix-commitment-info'] > 0">{{$ctrl.tools.analytics['fix-commitment-info']}}</span>
+            <i class="fal fa-chevron-right"></i>
+        </a>
+    </li>
+    <li role="presentation" ng-class="{'active': $ctrl.$state.includes('tools.fix.addresses')}">
+        <a ui-sref="tools.fix.addresses">
+            <translate>Fix Mailing Addresses</translate>
+            <span class="badge" ng-if="$ctrl.tools.analytics['fix-addresses'] > 0">{{$ctrl.tools.analytics['fix-addresses']}}</span>
+            <i class="fal fa-chevron-right"></i>
+        </a>
+    </li>
+    <li role="presentation" ng-class="{'active' : $ctrl.$state.includes('tools.fix.sendNewsletter')}">
+        <a ui-sref="tools.fix.sendNewsletter">
+            <translate>Fix Send Newsletter</translate>
+            <span class="badge" ng-if="$ctrl.tools.analytics['fix-send-newsletter'] > 0">{{$ctrl.tools.analytics['fix-send-newsletter']}}</span>
+            <i class="fal fa-chevron-right"></i>
+        </a>
+    </li>
+    <li role="presentation" ng-class="{'active' : $ctrl.$state.includes('tools.merge.contacts')}">
+        <a ui-sref="tools.merge.contacts">
+            <translate>Merge Contacts</translate>
+            <span class="badge" ng-if="$ctrl.tools.analytics['duplicate-contacts'] > 0">{{$ctrl.tools.analytics['duplicate-contacts']}}</span>
+            <i class="fal fa-chevron-right"></i>
+        </a>
+    </li>
+</ul>
+<h4 class="heading">
+    <i class="fas fa-users"></i>
+    <translate>People</translate>
+</h4>
+<ul class="nav nav-pills nav-stacked">
+    <li role="presentation" ng-class="{'active': $ctrl.$state.includes('tools.fix.emailAddresses')}">
+        <a ui-sref="tools.fix.emailAddresses">
+            <translate>Fix Email Addresses</translate>
+            <span class="badge" ng-if="$ctrl.tools.analytics['fix-email-addresses'] > 0">{{$ctrl.tools.analytics['fix-email-addresses']}}</span>
+            <i class="fal fa-chevron-right"></i>
+        </a>
+    </li>
+    <li role="presentation" ng-class="{'active' : $ctrl.$state.includes('tools.fix.phoneNumbers')}">
+        <a ui-sref="tools.fix.phoneNumbers">
+            <translate>Fix Phone Numbers</translate>
+            <span class="badge" ng-if="$ctrl.tools.analytics['fix-phone-numbers'] > 0">{{$ctrl.tools.analytics['fix-phone-numbers']}}</span>
+            <i class="fal fa-chevron-right"></i>
+        </a>
+    </li>
+    <li role="presentation" ng-class="{'active': $ctrl.$state.includes('tools.merge.people')}">
+        <a ui-sref="tools.merge.people">
+            <translate>Merge People</translate>
+            <span class="badge" ng-if="$ctrl.tools.analytics['duplicate-people'] > 0">{{$ctrl.tools.analytics['duplicate-people']}}</span>
+            <i class="fal fa-chevron-right"></i>
+        </a>
+    </li>
+</ul>
+<h4 class="heading">
+    <i class="fas fa-cloud-upload"></i>
+    <translate>Imports</translate>
+</h4>
+<ul class="nav nav-pills nav-stacked">
+    <li role="presentation" ng-class="{'active' : $ctrl.$state.includes('tools.import.google')}">
+        <a ui-sref="tools.import.google">
+            <translate>Google</translate>
+            <i class="fal fa-chevron-right"></i>
+        </a>
+    </li>
+    <li role="presentation" ng-class="{'active': $ctrl.$state.includes('tools.import.tnt')}">
+        <a ui-sref="tools.import.tnt">
+            <translate>TnTConnect</translate>
+            <i class="fal fa-chevron-right"></i>
+        </a>
+    </li>
+    <li role="presentation" ng-class="{'active' : $ctrl.$state.includes('tools.import.csv')}">
+        <a ui-sref="tools.import.csv">
+            <translate>CSV</translate>
+            <i class="fal fa-chevron-right"></i>
+        </a>
+    </li>
+</ul>

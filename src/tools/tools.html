@@ -1,30 +1,11 @@
-<div class="nav--secondary">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="pull-left">
-                    <div class="section">
-                        <a class="dropdown" ng-class="{ 'selected' : $ctrl.dropdown }" ng-click="$ctrl.dropdown = !$ctrl.dropdown">
-                            <i class="fa fa-angle-right" ng-class="{ 'fa-rotate-90' : $ctrl.dropdown }"></i>
-                            &nbsp;
-                            <translate>Tools</translate>
-                        </a>
-                    </div>
-                    <div class="section" ng-if="$ctrl.$state.$current.name != 'tools'">
-                        {{$ctrl.$rootScope.pageTitle}}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<ui-view>
-    <div class="panel panel-default panel-selected panel__prompt mb-4" ng-if="$ctrl.setup">
+<tools-sidebar ng-class="{'no-sidebar' : $ctrl.$state.is('tools') || $ctrl.$state.is('tools.appeals.show') }"></tools-sidebar>
+<ui-view ng-class="{'no-sidebar' : $ctrl.$state.is('tools') || $ctrl.$state.is('tools.appeals.show') }">
+    <div class="panel panel-default panel-selected panel__prompt" ng-if="$ctrl.setup">
         <div class="panel-body setup container-fluid">
             <div class="row">
                 <div class="col-sm-9">
                     <h2>
-                        <img src="../images/setup/icon_alert_2x.png" class="icon_alert" />
+                        <img src="../images/setup/icon_alert_2x.png" class="icon-alert" />
                         <translate>Select one of the highlighted tools below to begin importing your data.</translate>
                     </h2>
                 </div>
@@ -34,30 +15,17 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="tool in $ctrl.tools.data" ng-if="tool.enabled || $ctrl.users.current.preferences.admin">
-            <div class="tool well" ui-sref="{{tool.link}}" ng-class="{selected: ($ctrl.setup && tool.imports) || ($ctrl.tools.analytics[tool.analyticKey] > 0 && !$ctrl.setup)}">
-                <div class="icon">
-                    <i class="{{tool.icon}}"></i><span class="badge" ng-if="$ctrl.tools.analytics[tool.analyticKey] > 0 && !$ctrl.setup">{{$ctrl.tools.analytics[tool.analyticKey]}}</span>
-                </div>
-                <h4 class="title">{{tool.title}}</h4>
-                <p>{{tool.description}}</p>
+    <div class="tools">
+        <div class="tool"
+             ui-sref="{{tool.link}}"
+             ng-class="{selected: ($ctrl.setup && tool.imports) || ($ctrl.tools.analytics[tool.analyticKey] > 0 && !$ctrl.setup)}"
+             ng-repeat="tool in $ctrl.tools.data"
+             ng-if="tool.enabled || $ctrl.users.current.preferences.admin">
+            <div class="icon">
+                <i class="{{tool.icon}}"></i><span class="badge" ng-if="$ctrl.tools.analytics[tool.analyticKey] > 0 && !$ctrl.setup">{{$ctrl.tools.analytics[tool.analyticKey]}}</span>
             </div>
+            <h4 class="title">{{tool.title}}</h4>
+            <p>{{tool.description}}</p>
         </div>
     </div>
 </ui-view>
-<div class="horizontal-dropdown" ng-if="$ctrl.dropdown">
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="tool in $ctrl.tools.data" ng-if="tool.enabled || $ctrl.users.current.preferences.admin">
-                <div class="tool well" ui-sref="{{tool.link}}" ng-class="{selected: ($ctrl.setup && tool.imports) || ($ctrl.tools.analytics[tool.analyticKey] > 0 && !$ctrl.setup)}" ng-click="$ctrl.dropdown = false">
-                    <div class="icon">
-                        <i class="{{tool.icon}}"></i><span class="badge" ng-if="$ctrl.tools.analytics[tool.analyticKey] > 0 && !$ctrl.setup">{{$ctrl.tools.analytics[tool.analyticKey]}}</span>
-                    </div>
-                    <h4 class="title">{{tool.title}}</h4>
-                    <p>{{tool.description}}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>

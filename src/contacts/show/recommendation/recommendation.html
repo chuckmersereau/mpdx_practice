@@ -5,7 +5,7 @@
             <div class="inline-input disabled">
                 <input type="text" value="{{::$ctrl.recommendation.suggested_pledge_amount | currency}}" readonly />
                 <a class="tip">
-                    <i class="fa fa-lock"></i>
+                    <i class="fas fa-lock"></i>
                 </a>
             </div>
         </div>
@@ -14,7 +14,7 @@
             <div class="inline-input disabled">
                 <input type="text" value="{{::$ctrl.recommendation.suggested_special_amount | currency}}" readonly />
                 <a class="tip">
-                    <i class="fa fa-lock"></i>
+                    <i class="fas fa-lock"></i>
                 </a>
             </div>
         </div>
@@ -25,7 +25,7 @@
             <div class="inline-input disabled">
                 <input type="text" value="{{::$ctrl.recommendation.started_at | localize}}" readonly />
                 <a class="tip">
-                    <i class="fa fa-lock"></i>
+                    <i class="fas fa-lock"></i>
                 </a>
             </div>
         </div>
@@ -34,13 +34,13 @@
             <div class="inline-input disabled">
                 <input type="text" value="{{::$ctrl.recommendation.ask_at | localize}}" readonly />
                 <a class="tip">
-                    <i class="fa fa-lock"></i>
+                    <i class="fas fa-lock"></i>
                 </a>
             </div>
         </div>
     </div>
 </div>
 <div class="blankslate" ng-if="::!$ctrl.recommendation">
-    <i class="fa fa-home blankslate-icon"></i>
+    <i class="fas fa-home blankslate-icon"></i>
     <h3 translate>Looks like there are no recommendations for this contact</h3>
 </div>

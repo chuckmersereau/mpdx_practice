@@ -1,0 +1,39 @@
+saved-filters {
+    .saved-filter {
+        display: flex;
+        padding: 4px 0;
+        border-bottom: 1px solid $color-gray-blue;
+        color: $color-white;
+        line-height: 22px;
+        cursor: pointer;
+        &:last-child {
+            border-bottom: 0;
+        }
+        &:hover {
+            text-decoration: none;
+        }
+        &_text {
+            flex-grow: 1;
+        }
+        &_delete {
+            align-self: center;
+            transition: opacity 0.2s ease-out;
+            opacity: 0.8;
+            &:hover {
+                opacity: 1;
+            }
+        }
+        i.fa-caret-right {
+            align-self: center;
+            width: 0;
+            transition: all 0.2s ease-out;
+            opacity: 0;
+        }
+        &.active {
+            i.fa-caret-right {
+                width: 10px;
+                opacity: 1;
+            }
+        }
+    }
+}

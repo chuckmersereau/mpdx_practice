@@ -1,0 +1,58 @@
+.blankslate {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    border: 1px solid color-gray(90);
+    border-radius: 3px;
+    background-color: color-gray(95);
+    text-align: center;
+    box-shadow: inset 0 0 10px color-gray(85);
+    &-icon {
+        margin-right: 4px;
+        margin-bottom: 8px;
+        margin-left: 4px;
+        color: color-gray(65);
+        font-size: $font-size-xl;
+        &.blankslate-loading {
+            color: $color-primary;
+        }
+    }
+    &-capped {
+        border-radius: 0 0 3px 3px;
+    }
+    &-spacious {
+        padding: (40px * 2) 40px;
+    }
+    &-narrow {
+        width: 485px;
+        margin: 0 auto;
+    }
+    &-large {
+        h3 {
+            margin: 16px 0;
+            font-size: $font-size-lg;
+        }
+        p {
+            font-size: $font-size-md;
+        }
+    }
+    &-clean-background {
+        border: 0;
+        background: none;
+        box-shadow: none;
+    }
+    code {
+        padding: 2px 5px 3px;
+        border: 1px solid color-gray(95);
+        border-radius: 3px;
+        background: $color-white;
+        font-size: $font-size-sm;
+    }
+    &.panel-body {
+        border: 0;
+        border-radius: 0;
+    }
+}

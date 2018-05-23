@@ -1,0 +1,22 @@
+progress-appeals {
+    .header {
+        a,
+        a:visited {
+            color: $color-text;
+        }
+    }
+    .progress-panel {
+        align-self: center;
+        height: 135px;
+        padding-right: 30px;
+        padding-left: 30px;
+        .panel-row {
+            display: grid;
+            height: 25px;
+            grid-template-columns: 1fr auto;
+        }
+        .item {
+            font-weight: 600;
+        }
+    }
+}

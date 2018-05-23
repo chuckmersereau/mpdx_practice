@@ -1,0 +1,35 @@
+contacts-tags {
+    > div {
+        border-bottom: 1px solid $color-gray-blue;
+    }
+    .filter--filtergroup_title {
+        padding-top: 0;
+    }
+    .show-all-tags {
+        display: flex;
+        align-items: center;
+        padding: 8px 0;
+        cursor: pointer;
+        span {
+            flex-grow: 1;
+            font-size: $font-size-xs;
+        }
+        i {
+            transition: transform 0.2s ease-out;
+            &.rotate {
+                transform: rotate(45deg);
+            }
+        }
+    }
+}
+.tags-popover.popover {
+    > .popover-content {
+        padding: 10px $container-padding;
+        > div {
+            margin-bottom: 10px;
+        }
+        .btn {
+            margin-bottom: 0;
+        }
+    }
+}

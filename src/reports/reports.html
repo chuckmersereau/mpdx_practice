@@ -1,26 +1,28 @@
-<div class="nav--secondary">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="pull-left">
-                    <div class="section" ng-class="{active: $ctrl.session.isInState('reports.donations')}">
-                        <a ui-sref="reports.donations" translate>Donations</a>
-                    </div>
-                    <div class="section" ng-class="{active: $ctrl.session.isInState('reports.monthly')}">
-                        <a ui-sref="reports.monthly" translate>Expected Monthly Total</a>
-                    </div>
-                    <div class="section" ng-class="{active: $ctrl.session.isInState('reports.balances')}">
-                        <a ui-sref="reports.balances" translate>Balances</a>
-                    </div>
-                    <div class="section" ng-class="{active: $ctrl.session.isInState('reports.salary')}">
-                        <a ui-sref="reports.salary" translate>Contributions by Salary Currency</a>
-                    </div>
-                    <div class="section" ng-class="{active: $ctrl.session.isInState('reports.partner')}">
-                        <a ui-sref="reports.partner" translate>Contributions by Partner Currency</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="nav-secondary menu" ng-class="{ 'selected' : $ctrl.designationAccounts.selected.length > 0 }">
+    <div class="section" ui-sref-active="active">
+        <a class="menu-item" ui-sref="reports.donations" translate>Donations</a>
+    </div>
+    <div class="section" ng-class="{active: $ctrl.session.isInState('reports.partner') || $ctrl.session.isInState('reports.salary')}">
+        <a class="menu-item" ui-sref="reports.salary" translate>13-Month Report</a>
+    </div>
+    <div class="section" ui-sref-active="active">
+        <a class="menu-item" ui-sref="reports.balances" translate>Balances</a>
+    </div>
+    <div class="section" ui-sref-active="active">
+        <a class="menu-item" ui-sref="reports.monthly" translate>Expected Monthly Total</a>
+    </div>
+    <div class="section section-spacer"></div>
+    <div class="section section-selector" ng-if="$ctrl.designationAccounts.selected.length > 0">
+        {{$ctrl.designationAccounts.selected.length}} <translate>Selected</translate>
+        &nbsp;
+        <a ng-click="$ctrl.designationAccounts.resetSelected()">
+            <i class="fas fa-times"></i>
+        </a>
+    </div>
+    <div class="section section-field" ng-if="$ctrl.designationAccounts.data.length > 1">
+        <designation-accounts-selector></designation-accounts-selector>
     </div>
 </div>
-<ui-view></ui-view>
+<div class="content">
+    <ui-view></ui-view>
+</div>

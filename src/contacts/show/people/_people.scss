@@ -1,0 +1,7 @@
+@import 'person/person';
+contact-people {
+    > .actions {
+        margin-bottom: 10px;
+        text-align: right;
+    }
+}

@@ -1,10 +1,9 @@
-<h1 translate>Fix Send Newsletter</h1>
+<h1 class="heading" translate>Fix Send Newsletter</h1>
 <div ng-if="!$ctrl.fixSendNewsletter.meta.pagination.total_count && !$ctrl.fixSendNewsletter.loading">
     <div class="blankslate blankslate-spacious">
-      <i class="fa fa-newspaper-o blankslate-icon"></i>
+      <i class="far fa-newspaper blankslate-icon"></i>
       <h3 translate>No Contacts with an empty newsletter status need attention</h3>
       <p translate>Contacts that appear here have an empty newsletter status and partner status set to financial, special, or pray.</p>
-      <a class="btn btn-default" ui-sref="tools" translate>Back to Tools</a>
     </div>
 </div>
 <div ng-if="$ctrl.fixSendNewsletter.meta.pagination.total_count">
@@ -16,12 +15,12 @@
     </p>
     <div class="bulk">
         <button class="btn btn-gray" ng-click="$ctrl.save()">
-            <i class="fa fa-check-circle"></i>
+            <i class="fas fa-check-circle"></i>
             <translate translate-params-count="$ctrl.fixSendNewsletter.data.length">Confirm {{count}}</translate>
         </button>
     </div>
     <div class="blankslate blankslate-spacious" ng-if="$ctrl.fixSendNewsletter.loading">
-      <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
+      <i class="far fa-circle-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
     </div>
     <div ng-if="!$ctrl.fixSendNewsletter.loading">
         <fix-send-newsletter-item ng-repeat="contact in $ctrl.fixSendNewsletter.data" ng-if="!contact.hidden" contact="contact"></fix-send-newsletter-item>

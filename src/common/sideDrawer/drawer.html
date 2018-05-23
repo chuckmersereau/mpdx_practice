@@ -1,0 +1,9 @@
+<h3 class="drawer-title">
+    <div class="drawer-title-container">
+        <span class="drawer-title-text">{{$ctrl.title}}</span>
+        <span class="drawer-title-close" ng-click="$ctrl.onClose()" ng-if="$ctrl.onClose">
+            <i class="fal fa-times"></i>
+        </span>
+    </div>
+</h3>
+<ng-transclude></ng-transclude>

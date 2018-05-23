@@ -1,0 +1,14 @@
+coaches-show {
+    .row.users {
+        .col-sm-4:nth-child(3n+0) {
+            padding-left: 2.5px;
+        }
+        .col-sm-4:nth-child(3n+1) {
+            padding-right: 2.5px;
+        }
+        .col-sm-4:nth-child(3n+2) {
+            padding-right: 2.5px;
+            padding-left: 2.5px;
+        }
+    }
+}

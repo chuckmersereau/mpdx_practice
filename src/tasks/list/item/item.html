@@ -1,74 +1,57 @@
-<div class="item" ng-class="{ 'item--selected' : $ctrl.selected }" ng-click="$ctrl.onSelect()">
-    <div class="pull-left">
-        <div class="btn-group">
-            <button class="btn btn-xs btn-default" ng-click="$ctrl.complete(); $event.stopPropagation();" title="{{::'Completed' | translate}}" ng-disabled="::$ctrl.task.completed">
-                <i class="fa" ng-class="$ctrl.task.completed ? 'fa-check-square-o' : 'fa-square-o'" ></i>
-            </button>
-            <button class="btn btn-xs btn-default" ng-click="$ctrl.star(); $event.stopPropagation();" title="{{::'Starred' | translate}}">
-                <i class="fa" ng-class="$ctrl.task.starred ? 'fa-star' : 'fa-star-o'" ></i>
-            </button>
-        </div>
-    </div>
-    <div class="pull-right">
-        <div class="btn-group">
-            <a class="btn btn-xs btn-default" ng-click="$ctrl.toggleComments(); $event.stopPropagation();" title="{{ ::'View Comments' | translate }}">
-                <i class="fa fa-commenting-o"></i>
-                &nbsp;
-                {{ $ctrl.task.comments.length || $ctrl.task.comments_count }}
-            </a>
-            <a class="btn btn-xs btn-danger" ng-click="$ctrl.delete(); $event.stopPropagation();" title="{{ ::'Delete Task' | translate }}">
-                <i class="fa fa-trash-o trash"></i>
-            </a>
-        </div>
-    </div>
-    <div class="item-title">
-        <strong>{{ ::$ctrl.task.activity_type | translate }}</strong>
-        <a ng-click="$ctrl.edit(); $event.stopPropagation();">{{ ::$ctrl.task.subject }}</a>
-        <span ng-if="::$ctrl.task.completed" translate-params-result="::$ctrl.task.result" translate>
+<div class="item"
+     ng-class="{ 'item--selected' : $ctrl.selected }"
+     ng-click="$ctrl.select($event)">
+     <div class="select-box" ng-class="{ 'selected': $ctrl.selected }"></div>
+    <a ng-click="$ctrl.complete(); $event.stopPropagation();"
+       class="complete"
+       title="{{::'Completed' | translate}}"
+       ng-disabled="::$ctrl.task.completed">
+        <i class="far" ng-class="::$ctrl.task.completed ? 'fa-check-circle text-success' : 'fa-circle'" ></i>
+    </a>
+    <div class="content">
+        <a ng-click="$ctrl.edit(); $event.stopPropagation();" class="subject">
+            <strong>{{ ::$ctrl.task.activity_type | translate }}</strong>
+            {{ ::$ctrl.task.subject }}
+        </a>
+        <span ng-if="::$ctrl.task.completed" translate-params-result="::$ctrl.task.result" class="result" translate>
             ({{ result }})
         </span>
+        <span class="contacts">
+            <strong
+                    ng-repeat="activityContact in ::$ctrl.task.activity_contacts | limitTo : 10">
+                <a ng-click="$ctrl.openContacts(); $event.stopPropagation();">
+                    {{ ::activityContact.contact.name }}
+                </a>
+            </strong>
+        </span>
+    </div>
+    <div class="tags">
+        <span class="tag" ng-repeat="tag in $ctrl.task.tag_list">{{ ::tag |limitTo: 15 }}</span>
+    </div>
+    <div class="date">
         <span ng-if="::!$ctrl.task.no_date && $ctrl.task.start_at && !$ctrl.task.completed">
-            {{ ::$ctrl.task.start_at | localizeWithTime }}
+            {{ ::$ctrl.task.start_at | localizeShort }}
         </span>
         <span ng-if="::!$ctrl.task.no_date && $ctrl.task.start_at && $ctrl.task.completed">
-            {{ ::$ctrl.task.completed_at | localizeWithTime }}
-        </span>
-        <span ng-repeat="activityContact in ::$ctrl.task.activity_contacts | limitTo : 5">
-            <a ng-click="$ctrl.toggleContacts(); $event.stopPropagation();">
-                <span ng-if="::$index < 4">{{ ::activityContact.contact.name }}</span>
-                <span ng-if="::$index === 4" translate translate-plural="and {{$count}} others" translate-n="::$ctrl.task.activity_contacts.length - 4">and 1 other</span>
-            </a>
-        </span>
-        <span class="tags">
-            <span class="tag" ng-repeat="tag in $ctrl.task.tag_list">{{ ::tag |limitTo: 20 }}{{ ::tag.length > 20 ? '...' : '' }}</span>
+            {{ ::$ctrl.task.completed_at | localizeShort }}
         </span>
     </div>
-</div>
-<div class="contacts" ng-if="$ctrl.showContacts">
-    <div class="links">
-        <translate>Contacts</translate>
-        <a class="pull-right" ng-click="$ctrl.toggleContacts()">
-            <i class="fa fa-times"></i>
+    <div class="btn-group comments">
+        <a class="btn btn-xs btn-default"
+           ng-click="$ctrl.openComments(); $event.stopPropagation();"
+           title="{{ ::'View Comments' | translate }}">
+            <i class="far fa-comment"></i>
+            &nbsp;
+            {{ $ctrl.task.comments.length || $ctrl.task.comments_count }}
         </a>
     </div>
-    <contacts-list-item ng-repeat="contact in $ctrl.task.contacts track by contact.id" contact="contact"></contacts-list-item>
-</div>
-<div class="comments" ng-if="$ctrl.showComments">
-    <div class="links">
-        <translate>Comments</translate>
-        <a class="pull-right" ng-click="$ctrl.toggleComments()">
-            <i class="fa fa-times"></i>
+    <a ng-click="$ctrl.star(); $event.stopPropagation();" title="{{::'Starred' | translate}}" class="star">
+        <i class="fa-star" ng-class="$ctrl.task.starred ? 'fas ' : 'far'" ></i>
+    </a>
+    <div class="trash">
+        <a ng-click="$ctrl.delete(); $event.stopPropagation();"
+           title="{{ ::'Delete Task' | translate }}">
+            <i class="far fa-trash"></i>
         </a>
     </div>
-    <task-item-comment ng-repeat="comment in $ctrl.task.comments"
-                         comment="comment"
-                         on-comment-remove="$ctrl.commentRemoved(comment.id)"
-                         task-id="$ctrl.task.id">
-    </task-item-comment>
-    <form class="input-group" ng-submit="$ctrl.addComment()">
-      <input type="text" class="form-control" ng-model="$ctrl.comment" required>
-      <span class="input-group-btn">
-          <button type="submit" class="btn btn-primary" translate>Add Comment</button>
-      </span>
-    </form>
 </div>

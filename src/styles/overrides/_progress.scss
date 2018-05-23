@@ -1,0 +1,32 @@
+.progress {
+    height: 30px;
+    border-radius: 30px;
+    background: color-gray(50);
+    box-shadow: none;
+    .progress-bar {
+        padding: 0 5px;
+        font-size: $font-size-md;
+        line-height: 30px;
+        text-overflow: ellipsis;
+        box-shadow: none;
+        overflow: hidden;
+        &.color-0 {
+            background-color: $color-orange-light;
+        }
+        &.color-1 {
+            background-color: $color-orange-dark;
+        }
+        &.color-2 {
+            background-color: $color-gray-cyan;
+        }
+        &.color-3 {
+            background-color: $color-gray-pink;
+        }
+        &.color-4 {
+            background-color: $color-cyan-dark;
+        }
+        &.color-5 {
+            background-color: $color-blue;
+        }
+    }
+}

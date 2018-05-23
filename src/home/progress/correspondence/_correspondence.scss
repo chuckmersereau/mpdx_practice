@@ -1,0 +1,7 @@
+progress-correspondence {
+    .progress-component {
+        > .statistics {
+            grid-template-columns: repeat(4, 1fr) !important;
+        }
+    }
+}

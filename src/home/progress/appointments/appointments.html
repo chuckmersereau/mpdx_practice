@@ -1,14 +1,13 @@
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <i class="fa fa-calendar"></i>
-        <translate>Appointments</translate>
+<div class="progress-component">
+    <div class="header">
+        <i class="far fa-4x fa-calendar"></i>
+        <div class="panel-title" translate>Appointments</div>
     </div>
-    <div class="panel-body statistics">
-        <div class="row">
-            <div class="col-xs-12">
-                <h3>{{$ctrl.accounts.analytics.appointments.completed || 0}}</h3>
-                <strong translate>Completed</strong>
-            </div>
+    <div class="statistics">
+        <div></div>
+        <div>
+            <h3>{{$ctrl.accounts.analytics.appointments.completed || 0}}</h3>
+            <strong translate>Completed</strong>
         </div>
     </div>
 </div>

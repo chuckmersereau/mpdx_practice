@@ -1,0 +1,10 @@
+.collection-selector-modal {
+    .list-group {
+        max-height: 400px;
+        margin-bottom: 0;
+        overflow-y: auto;
+        .list-group-item:first-child {
+            margin-top: 10px;
+        }
+    }
+}

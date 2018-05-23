@@ -1,0 +1,48 @@
+.nav-secondary {
+    display: flex;
+    flex-direction: row;
+    height: 65px;
+    border-bottom: 1px solid $color-menu-border;
+    background: $color-reverse;
+    line-height: 35px;
+    translate {
+        vertical-align: top;
+    }
+    .badge {
+        vertical-align: text-top;
+    }
+    .section {
+        height: 64px;
+        transition: background-color 0.2s ease-out;
+        vertical-align: top;
+        &:first-child {
+            > a.menu-item {
+                padding-left: $container-padding;
+            }
+        }
+        &-spacer {
+            flex-grow: 1;
+        }
+        &.active {
+            > a.menu-item {
+                background-color: color-gray(95);
+            }
+        }
+        > a.menu-item {
+            display: inline-block;
+            padding: $container-padding 10px;
+            color: color-gray(20);
+            font-size: $font-size-md;
+            line-height: 64px - $container-padding * 2;
+            &:hover {
+                background-color: color-gray(95);
+                text-decoration: none;
+                cursor: pointer;
+            }
+            &:focus {
+                outline: none;
+                text-decoration: none;
+            }
+        }
+    }
+}

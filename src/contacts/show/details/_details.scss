@@ -1,0 +1,132 @@
+contact-details {
+    display: block;
+    width: 100%;
+    height: 100%;
+    h3 {
+        margin-top: 0;
+    }
+    h5 {
+        margin-top: 30px;
+        margin-bottom: 5px;
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+    .inline-input {
+        tags-input {
+            .tags {
+                border: 0;
+                border-bottom: 1px solid color-gray(90);
+                border-radius: 0;
+                .input {
+                    padding-left: 0;
+                    font-size: $font-size-sm;
+                }
+            }
+            .autocomplete {
+                border-radius: 0;
+            }
+        }
+    }
+    label {
+        @extend h4;
+        margin-bottom: 3px;
+        color: color-gray(60);
+        font-size: $font-size-xs;
+    }
+    .static-field {
+        display: flex;
+        align-items: center;
+        font-size: $font-size-sm;
+        font-weight: 600;
+        line-height: 21px;
+        .content {
+            flex-grow: 1;
+        }
+    }
+    .financial {
+        .commitment {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-column-gap: 20px;
+        }
+        .donations {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-column-gap: 20px;
+        }
+    }
+    .communication {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-column-gap: 20px;
+        > div.tags {
+            grid-column: 1 / span 2;
+            tags-input {
+                .tags {
+                    padding: 1px;
+                    .tag-item {
+                        margin: 1px 2px 1px 0;
+                    }
+                    .input {
+                        height: 26px;
+                        font-weight: 600;
+                    }
+                }
+            }
+        }
+        .referred-by {
+            .collection-selector {
+                display: flex;
+                collection-selector {
+                    flex-grow: 1;
+                    button.btn {
+                        margin-bottom: 0;
+                        padding: 0 30px 5px 0;
+                        border: 0;
+                        border-bottom: 1px solid color-gray(90);
+                        border-radius: 0;
+                        font-weight: 600;
+                        line-height: 22px;
+                        text-align: left;
+                    }
+                }
+                a {
+                    margin-left: 10px;
+                }
+            }
+        }
+    }
+    .other {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-column-gap: 20px;
+    }
+    .partner-accounts {
+        display: flex;
+        align-items: center;
+        margin: 30px 0 8px;
+        h5 {
+            flex-grow: 1;
+            margin: 0;
+        }
+    }
+    contact-donor-account {
+        .field {
+            margin-bottom: 10px;
+        }
+    }
+    .delete-container {
+        padding-top: 15px;
+        text-align: center;
+    }
+
+}
+contact > div > div.contact-drawer > contact-details .communication {
+    > div {
+        max-width: 194px;
+    }
+    > div.tags {
+        max-width: 408px;
+    }
+}

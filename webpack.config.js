@@ -7,6 +7,7 @@ const assign = require('lodash/fp/assign');
 const concat = require('lodash/fp/concat');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HappyPack = require('happypack');
 let config = require('./webpack.make');
 
 const postcssLoader = {
@@ -27,9 +28,9 @@ config = assign(config, {
         rules: concat(config.module.rules, [
             {
                 enforce: 'pre',
-                test: /\.js$/,
+                test: /\.ts$/,
                 exclude: /node_modules\//,
-                loaders: ['eslint-loader']
+                loaders: ['happypack/loader?id=lint']
             }, {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader', postcssLoader]
@@ -64,9 +65,22 @@ config = assign(config, {
         new CopyWebpackPlugin([
             { from: 'assets' },
             { from: 'src/google144ccea737ed252d.html' }
-        ])
+        ]),
+        new webpack.WatchIgnorePlugin([
+            /\.js$/,
+            /\.d\.ts$/
+        ]),
+        new HappyPack({
+            id: 'lint',
+            loaders: [{
+                loader: 'eslint-loader',
+                options: {
+                    fix: true
+                }
+            }]
+        })
     ]),
-    devtool: 'source-map',
+    devtool: 'eval',
     devServer: {
         contentBase: './public',
         stats: {

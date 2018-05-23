@@ -1,22 +1,16 @@
-<div class="columns columns--fixed">
-    <div class="column column--heading filter--heading">
-        <div class="panel panel-default panel-selected panel__prompt">
-            <div class="panel-body container-fluid">
-                <div class="row">
-                    <div class="col-sm-9">
-                        <h2>
-                            <img src="../../../images/setup/icon_alert_2x.png" class="icon_alert" />
-                            <translate>Setup your notifications here</translate>
-                        </h2>
-                    </div>
-                    <div class="col-sm-3 text-right">
-                        <a ng-click="$ctrl.next()" class="btn btn-primary" translate>Skip Step</a>
-                    </div>
-                </div>
+<div class="panel panel-default panel-selected panel__prompt">
+    <div class="panel-body container-fluid">
+        <div class="row">
+            <div class="col-sm-9">
+                <h2>
+                    <img src="../../../images/setup/icon_alert_2x.png" class="icon-alert" />
+                    <translate>Setup your notifications here</translate>
+                </h2>
+            </div>
+            <div class="col-sm-3 text-right">
+                <a ng-click="$ctrl.next()" class="btn btn-primary" translate>Skip Step</a>
             </div>
         </div>
     </div>
-    <div class="column">
-        <preferences-notifications on-save="$ctrl.onSave()" setup="true"></preferences-notifications>
-    </div>
 </div>
+<preferences-notifications on-save="$ctrl.onSave()" setup="true"></preferences-notifications>

@@ -1,13 +1,9 @@
-<h3 translate>Admin Console</h3>
+<h1 class="heading" translate>Admin Console</h1>
 <div class="panel-group">
     <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabId === 'impersonate_user' }">
         <div class="panel-heading" ng-click="$ctrl.setTab('impersonate_user')">
-            <div class="row">
-                <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabId === 'impersonate_user' }"></i>
-                <div class="col-sm-10">
-                    <span translate>Impersonate User</span>
-                </div>
-            </div>
+            <span translate>Impersonate User</span>
+            <i class="fal fa-chevron-up" ng-class="{ 'fa-rotate-180' : $ctrl.tabId === 'impersonate_user' }"></i>
         </div>
         <div class="panel-animate" ng-show="$ctrl.tabId === 'impersonate_user'">
             <div class="panel-body">
@@ -21,12 +17,8 @@
     </div>
     <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabId === 'reset_account' }">
         <div class="panel-heading" ng-click="$ctrl.setTab('reset_account')">
-            <div class="row">
-                <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabId === 'reset_account' }"></i>
-                <div class="col-sm-10">
-                    <span translate>Reset Account</span>
-                </div>
-            </div>
+            <span translate>Reset Account</span>
+            <i class="fal fa-chevron-up" ng-class="{ 'fa-rotate-180' : $ctrl.tabId === 'reset_account' }"></i>
         </div>
         <div class="panel-animate" ng-show="$ctrl.tabId === 'reset_account'">
             <div class="panel-body">
@@ -40,12 +32,8 @@
     </div>
     <div class="panel panel-default" ng-class="{ 'panel-selected' : $ctrl.tabId === 'offline_organization' }">
         <div class="panel-heading" ng-click="$ctrl.setTab('offline_organization')">
-            <div class="row">
-                <i class="fa fa-chevron-right" ng-class="{ 'fa-rotate-90' : $ctrl.tabId === 'offline_organization' }"></i>
-                <div class="col-sm-10">
-                    <span translate>Add Offline Organization</span>
-                </div>
-            </div>
+            <span translate>Add Offline Organization</span>
+            <i class="fal fa-chevron-up" ng-class="{ 'fa-rotate-180' : $ctrl.tabId === 'offline_organization' }"></i>
         </div>
         <div class="panel-animate" ng-show="$ctrl.tabId === 'offline_organization'">
             <div class="panel-body">

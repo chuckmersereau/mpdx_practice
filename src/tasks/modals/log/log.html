@@ -11,6 +11,7 @@
                 id="action"
                 name="action"
                 ng-options="opt.id as opt.value for opt in $ctrl.serverConstants.data.activity_hashes"
+                ng-change="$ctrl.activityChanged()"
                 ng-model="$ctrl.task.activity_type">
             <option value=""></option>
         </select>
@@ -24,53 +25,45 @@
                places-auto-complete
                ng-model="$ctrl.task.location">
     </div>
-    <div class="row">
+    <div class="row form-group">
         <div class="col-md-6">
-            <div class="form-group">
-                <label for="completed" translate>Completed On</label>
-                <datetimepicker ng-model="$ctrl.task.completed_at" id="completed"></datetimepicker>
-            </div>
+            <label for="completed" translate>Completed On</label>
+            <datetimepicker ng-model="$ctrl.task.completed_at" id="completed"></datetimepicker>
         </div>
         <div class="col-md-6">
-            <div class="form-group">
-                <label translate>Contacts</label>
-                <contacts-selector ng-model="$ctrl.contactsList" class="scrollable-tags"></contacts-selector>
-            </div>
+            <label translate>Contacts</label>
+            <contacts-selector ng-model="$ctrl.contactsList" class="scrollable-tags"></contacts-selector>
         </div>
     </div>
-    <div>
+    <div class="form-group">
         <label translate>Tags</label>
         <tag-selector ng-model="$ctrl.task.tag_list" tag-list="$ctrl.tasksTags.data" class="scrollable-tags"></tag-selector>
     </div>
-    <div class="row">
+    <div class="row form-group">
         <div class="col-md-6">
-            <div class="form-group">
-                <label for="result"><translate>Result</translate> <span class="text-danger">*</span></label>
-                <select chosen
-                        required
-                        data-placeholder-text-single="'Select an Option' | translate"
-                        class="form-control"
-                        id="result"
-                        ng-options="opt for opt in $ctrl.serverConstants.data.results[$ctrl.task.activity_type.toLowerCase()] || $ctrl.serverConstants.data.results['default']"
-                        ng-model="$ctrl.task.result">
-                    <option value=""></option>
-                </select>
-            </div>
+            <label for="result"><translate>Result</translate> <span class="text-danger">*</span></label>
+            <select chosen
+                    required
+                    data-placeholder-text-single="'Select an Option' | translate"
+                    class="form-control"
+                    id="result"
+                    ng-options="opt for opt in $ctrl.serverConstants.data.results[$ctrl.task.activity_type.toLowerCase()] || $ctrl.serverConstants.data.results['default']"
+                    ng-model="$ctrl.task.result">
+                <option value=""></option>
+            </select>
         </div>
         <div class="col-md-6">
-            <div class="form-group">
-                <label for="nextActions" translate>Next Action</label>
-                <select chosen
-                        ng-disabled="!$ctrl.serverConstants.data.next_actions[ $ctrl.task.activity_type.toLowerCase() ]"
-                        data-placeholder-text-single="'Select an Option' | translate"
-                        class="form-control"
-                        id="nextActions"
-                        ng-options="opt for opt in $ctrl.serverConstants.data.next_actions[ $ctrl.task.activity_type.toLowerCase() ]"
-                        ng-model="$ctrl.task.next_action"
-                        allow-single-deselect="true">
-                    <option value=""></option>
-                </select>
-            </div>
+            <label for="nextActions" translate>Next Action</label>
+            <select chosen
+                    ng-disabled="!$ctrl.serverConstants.data.next_actions[ $ctrl.task.activity_type.toLowerCase() ]"
+                    data-placeholder-text-single="'Select an Option' | translate"
+                    class="form-control"
+                    id="nextActions"
+                    ng-options="opt for opt in $ctrl.serverConstants.data.next_actions[ $ctrl.task.activity_type.toLowerCase() ]"
+                    ng-model="$ctrl.task.next_action"
+                    allow-single-deselect="true">
+                <option value=""></option>
+            </select>
         </div>
     </div>
     <div class="form-group" ng-if="$ctrl.showPartnerStatus()">

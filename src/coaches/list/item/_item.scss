@@ -1,0 +1,28 @@
+coaches-list-item {
+    .progress {
+        position: relative;
+        height: 24px;
+        border-radius: 0;
+        background: color-gray(35);
+        .progress-bar {
+            position: absolute;
+            left: 0;
+            box-shadow: none;
+            &--light {
+                background: $color-progress;
+            }
+            &--dark {
+                background: $color-progress-dark;
+            }
+        }
+        .progress-text {
+            position: absolute;
+            right: 0;
+            margin-right: 6px;
+            color: $color-white;
+            font-size: $font-size-sm;
+            line-height: 24px;
+            text-align: right;
+        }
+    }
+}

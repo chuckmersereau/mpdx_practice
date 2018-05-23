@@ -1,0 +1,11 @@
+@import 'item/item';
+appeals-list {
+    > .heading {
+        margin: 0;
+        padding: 10px $container-padding;
+        border-bottom: 1px solid $color-border;
+    }
+    > .blankslate {
+        margin: 10px $container-padding;
+    }
+}

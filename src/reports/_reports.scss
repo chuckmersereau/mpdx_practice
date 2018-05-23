@@ -1,0 +1,112 @@
+@import 'contributions/contributions';
+@import 'donations/donations';
+reports {
+    display: grid;
+    height: 100%;
+    grid-template-rows: 65px 1fr;
+    > div.menu {
+        grid-column: 1;
+        grid-row: 1;
+    }
+    > div.content {
+        padding: 10px $container-padding;
+        grid-column: 1;
+        grid-row: 2;
+        overflow-y: auto;
+    }
+    .nav-secondary.menu {
+        transition: background-color 0.2s ease-out;
+        &.selected {
+            background-color: $color-nav-selected;
+            .section {
+                > a.menu-item {
+                    transition: color 0.2s ease-out;
+                    color: $color-white;
+                    &:hover {
+                        background-color: $color-nav-selected-dark;
+                    }
+                }
+                &.active {
+                    > a.menu-item {
+                        background-color: $color-nav-selected-dark;
+                    }
+                }
+            }
+        }
+        .section {
+            &-field {
+                height: 35px;
+                margin-top: -2px;
+                padding: $container-padding 10px;
+                color: $color-white;
+                font-size: $font-size-sm;
+                .chosen-choices {
+                    width: 250px;
+                    max-height: 34px;
+                    transition: max-height 0.2s;
+                    overflow-y: auto;
+                }
+                .chosen-container-active {
+                    .chosen-choices {
+                        max-height: 250px;
+                    }
+                }
+            }
+            &-selector {
+                padding: $container-padding 10px;
+                color: $color-white;
+                > a {
+                    color: $color-white;
+                }
+            }
+        }
+    }
+    .reports {
+        h2 {
+            margin-top: 0;
+        }
+        .heading {
+            display: flex;
+            width: 100%;
+            margin-bottom: 10px;
+            .spacer {
+                flex-grow: 1;
+            }
+        }
+        .panel {
+            margin-bottom: 29px;
+            .panel-heading {
+                background: $color-white;
+            }
+            .panel-body {
+                padding: 0;
+                .table {
+                    margin-bottom: 0;
+                    font-size: $font-size-sm;
+                    tr {
+                        th:first-child,
+                        td:first-child {
+                            padding-left: 15px;
+                        }
+                        th:last-child,
+                        td:last-child {
+                            padding-right: 15px;
+                        }
+                    }
+                }
+            }
+        }
+        .year-header-row {
+            th {
+                font-size: 1.3em;
+                text-align: center;
+                > div {
+                    border-left: 1px solid color-gray(80);
+                }
+            }
+            th:first-child {
+                text-align: left;
+            }
+        }
+    }
+}

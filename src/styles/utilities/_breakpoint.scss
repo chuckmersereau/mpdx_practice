@@ -1,0 +1,29 @@
+// Breakpoints
+// Breakpoint widths
+$width-xs: 0;
+$width-sm: 768px;
+$width-md: 992px;
+$width-lg: 1200px;
+$width-xl: 3840px;
+$breakpoints: (
+    // Small screen / phone
+    sm: $width-sm,
+    // Medium screen / tablet
+    md: $width-md,
+    // Large screen / desktop (980 + (12 * 2)) <= container + gutters
+    lg: $width-lg,
+    // Extra large screen / wide desktop
+    xl: $width-xl
+) !default;
+// Responsive media queries
+@mixin breakpoint($breakpoint) {
+    // Retrieves the value from the key
+    $value: map-get($breakpoints, $breakpoint);
+    // If the key exists in the map
+    @if $value != null {
+        // Prints a media query based on the value
+        @media (min-width: $value) {
+            @content;
+        }
+    }
+}

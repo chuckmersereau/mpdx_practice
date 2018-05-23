@@ -2,9 +2,9 @@ const gulp = require('gulp');
 const gettext = require('gulp-angular-gettext');
 
 gulp.task('extract', function() {
-    return gulp.src(['src/**/*.html', 'src/**/*.js'])
+    return gulp.src(['src/**/*.html', 'src/**/*.ts'])
         .pipe(gettext.extract('mpdx.pot', {
-            // options to pass to angular-gettext-tools...
+            ignore: 'src/**/*.test.ts'
         }))
         .pipe(gulp.dest('src/locale'));
 });

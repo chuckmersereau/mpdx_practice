@@ -1,44 +1,41 @@
-<div block-ui="fix-phone-numbers">
-    <h1 translate>Fix Phone Numbers</h1>
-    <div class="blankslate blankslate-spacious" ng-if="!$ctrl.fixPhoneNumbers.meta.pagination.total_count && !$ctrl.fixPhoneNumbers.loading">
-        <i class="fa fa-phone-square blankslate-icon"></i>
-        <h3 translate>No people with phone numbers need attention</h3>
-        <p translate>People with new phone numbers or multiple primary phone numbers will appear here.</p>
-        <a class="btn btn-default" ui-sref="tools" translate>Back to Tools</a>
-    </div>
-    <div ng-if="$ctrl.fixPhoneNumbers.meta.pagination.total_count">
-        <p>
-            <strong translate translate-params-count="$ctrl.fixPhoneNumbers.meta.pagination.total_count">You have {{count}} phone numbers to confirm.</strong>
-            <br>
-            <translate>Choose below which phone numbers will be set as primary.</translate>
-        </p>
-        <div class="bulk">
-            &nbsp;<translate>Default Primary Source</translate>&nbsp;
-            <select chosen
-                    disable-search="true"
-                    allow-single-deselect="true"
-                    class="form-control"
-                    ng-options="opt for opt in $ctrl.fixPhoneNumbers.sources"
-                    ng-model="$ctrl.source">
-                <option value=""></option>
-            </select>
+<h1 class="heading" translate>Fix Phone Numbers</h1>
+<div class="blankslate blankslate-spacious" ng-if="!$ctrl.fixPhoneNumbers.meta.pagination.total_count && !$ctrl.fixPhoneNumbers.loading">
+    <i class="fas fa-phone-square blankslate-icon"></i>
+    <h3 translate>No people with phone numbers need attention</h3>
+    <p translate>People with new phone numbers or multiple primary phone numbers will appear here.</p>
+</div>
+<div ng-if="$ctrl.fixPhoneNumbers.meta.pagination.total_count">
+    <p>
+        <strong translate translate-params-count="$ctrl.fixPhoneNumbers.meta.pagination.total_count">You have {{count}} phone numbers to confirm.</strong>
+        <br>
+        <translate>Choose below which phone numbers will be set as primary.</translate>
+    </p>
+    <div class="bulk">
+        &nbsp;<translate>Default Primary Source</translate>&nbsp;
+        <select chosen
+                disable-search="true"
+                allow-single-deselect="true"
+                class="form-control"
+                ng-options="opt for opt in $ctrl.fixPhoneNumbers.sources"
+                ng-model="$ctrl.source">
+            <option value=""></option>
+        </select>
 
-            <button class="btn btn-gray" ng-click="$ctrl.save()" ng-disabled="!$ctrl.source">
-                <i class="fa fa-check-circle"></i>
-                <translate translate-params-source="$ctrl.source"
-                           translate-params-count="$ctrl.fixPhoneNumbers.data.length">Confirm {{count}} as {{source}}</translate>
-            </button>
-        </div>
-        <div class="blankslate blankslate-spacious" ng-if="$ctrl.fixPhoneNumbers.loading">
-          <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
-        </div>
-        <div ng-if="!$ctrl.fixPhoneNumbers.loading">
-            <fix-phone-numbers-item ng-repeat="person in $ctrl.fixPhoneNumbers.data" person="person"></fix-phone-numbers-item>
-        </div>
-        <pagination ng-if="$ctrl.fixPhoneNumbers.meta.pagination.total_count > 0"
-                    meta="$ctrl.fixPhoneNumbers.meta.pagination"
-                    on-change="$ctrl.load(page)"
-                    class="text-center">
-        </pagination>
+        <button class="btn btn-gray" ng-click="$ctrl.save()" ng-disabled="!$ctrl.source">
+            <i class="fas fa-check-circle"></i>
+            <translate translate-params-source="$ctrl.source"
+                       translate-params-count="$ctrl.fixPhoneNumbers.data.length">Confirm {{count}} as {{source}}</translate>
+        </button>
     </div>
+    <div class="blankslate blankslate-spacious" ng-if="$ctrl.fixPhoneNumbers.loading">
+      <i class="far fa-circle-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
+    </div>
+    <div ng-if="!$ctrl.fixPhoneNumbers.loading">
+        <fix-phone-numbers-item ng-repeat="person in $ctrl.fixPhoneNumbers.data" person="person"></fix-phone-numbers-item>
+    </div>
+    <pagination ng-if="$ctrl.fixPhoneNumbers.meta.pagination.total_count > 0"
+                meta="$ctrl.fixPhoneNumbers.meta.pagination"
+                on-change="$ctrl.load(page)"
+                class="text-center">
+    </pagination>
 </div>

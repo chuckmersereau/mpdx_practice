@@ -1,0 +1,169 @@
+.bootstrap-tagsinput {
+    display: inline-block;
+    width: 80%;
+    max-width: 100%;
+    margin-bottom: 10px;
+    padding: 4px 6px;
+    border: 1px solid color-gray(80);
+    border-radius: 4px;
+    background-color: $color-white;
+    color: color-gray(30);
+    line-height: 22px;
+    box-shadow: inset 0 1px 1px $color-black-alpha-10;
+    cursor: text;
+    vertical-align: middle;
+}
+.bootstrap-tagsinput input {
+    width: auto !important;
+    min-width: 7em;
+    max-width: inherit;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    box-shadow: none;
+}
+.tag [data-role='remove'],
+.tag_remove {
+    margin-left: 2px;
+    color: $color-white;
+    cursor: pointer;
+    &::after {
+        padding: 0;
+        font-family: 'Font Awesome 5 Pro';
+        content: '\f00d';
+    }
+    &:hover:active,
+    &::after {
+        transition: opacity 0.2s ease-out;
+        text-decoration: none;
+        opacity: 0.35;
+    }
+    &:hover::after,
+    &:hover {
+        color: $color-reverse;
+        text-decoration: none;
+        opacity: 1;
+    }
+}
+.bootstrap-tagsinput,
+.tags {
+    line-height: 1.3em;
+    .tag {
+        display: inline-block;
+        height: auto;
+        margin-top: 3px;
+        margin-right: 3px;
+        padding: 2px 5px;
+        transition: background-color 0.2s ease-out;
+        border: 0;
+        border-radius: 2px;
+        background: $color-primary;
+        color: $color-reverse;
+        font-size: $font-size-xs;
+        font-weight: lighter;
+        line-height: 20px;
+        word-break: break-all;
+        user-select: none;
+        &.reverse {
+            background-color: $color-filter-reverse-dark;
+        }
+        > span.tag-text {
+            display: inline-block;
+            max-width: 145px;
+            height: 15px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            > span.title {
+                font-weight: normal;
+            }
+        }
+    }
+}
+tags-input {
+    &.ng-invalid .tags {
+        border-color: $color-red;
+        box-shadow: none;
+    }
+    .tags {
+        min-height: 34px;
+        padding: 1px 6px;
+        box-shadow: none;
+        &.focused {
+            border-color: $color-blue-deep-alpha-80;
+            box-shadow: none;
+        }
+        input.input {
+            height: 30px;
+            margin: 0 2px;
+            font-family: $font-primary;
+            font-size: $font-size-sm;
+        }
+        .tag-item {
+            height: 24px;
+            margin: 3px 2px 3px 0;
+            padding: 0 2px 0 5px;
+            border: 0;
+            border-radius: 2px;
+            background-color: $color-primary;
+            font-family: $font-primary;
+            font-size: $font-size-xs;
+            line-height: 23px;
+            span {
+                margin-right: 2px;
+            }
+            .remove-button {
+                position: relative;
+                margin: 0;
+                padding: 0 0 0 5px;
+                line-height: 15px;
+                visibility: hidden;
+                &::after {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    transition: opacity 0.2s ease-out;
+                    color: $color-white;
+                    font-family: 'Font Awesome 5 Pro';
+                    font-size: $font-size-xs;
+                    font-weight: 100;
+                    text-decoration: none;
+                    content: '\F00D';
+                    opacity: 0.35;
+                    visibility: visible;
+                }
+                &:hover::after {
+                    color: $color-reverse;
+                    text-decoration: none;
+                    opacity: 1;
+                }
+            }
+            &.selected {
+                border: 0;
+            }
+        }
+    }
+    .autocomplete {
+        border-color: $color-blue-deep-alpha-80;
+        box-shadow: none;
+        .suggestion-item {
+            margin: 0 4px;
+            padding: 5px 6px;
+            font-family: $font-primary;
+            font-size: $font-size-sm;
+            &.selected {
+                background: $color-blue-light;
+                color: $color-white;
+                em {
+                    background-color: $color-blue-light;
+                    color: $color-white;
+                }
+            }
+            em {
+                color: $color-black;
+                font-family: $font-primary;
+                font-size: $font-size-sm;
+            }
+        }
+    }
+}
