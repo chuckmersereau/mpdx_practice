@@ -36,7 +36,7 @@
                 </div>
                 {{account.email}}
             </div>
-            <div class="panel-body" ng-if="account.token_failure">
+            <div class="panel-body" ng-if="account.token_expired">
                 <p translate>
                     The link between MPDX and your Google account stopped working.
                     Click "Refresh Google Account" to re-enable it. After that,

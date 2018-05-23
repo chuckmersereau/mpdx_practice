@@ -36,6 +36,12 @@ then
         echo '-- merge source & onesky pot files --'
         msgcat src/locale/mpdx-onesky.pot src/locale/mpdx.pot -o src/locale/mpdx-merged.pot
 
+        echo '-- download mpdx.pot from onesky --'
+        node onesky/downloadPotFile
+
+        echo '-- merge source & onesky pot files --'
+        msgcat src/locale/mpdx-onesky.pot src/locale/mpdx.pot -o src/locale/mpdx-merged.pot
+
         echo '-- upload mpdx.pot to onesky --'
         node onesky/upload
 

@@ -27,7 +27,7 @@ export class GoogleService {
         }).then((data) => {
             /* istanbul ignore next */
             this.$log.debug('user/google_accounts', data);
-            this.failure = isObject(find({ token_failure: true }, data));
+            this.failure = isObject(find({ token_expired: true }, data));
             this.data = data;
         });
     }
