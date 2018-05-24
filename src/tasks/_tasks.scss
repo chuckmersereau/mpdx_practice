@@ -6,13 +6,19 @@ tasks {
     display: grid;
     height: 100%;
     overflow: hidden;
-    grid-template-columns: 250px auto;
+    grid-template-columns: auto 1fr;
     grid-template-rows: 100%;
     > tasks-filter {
         width: 250px;
         overflow-y: auto;
         grid-column: 1;
         grid-row: 1;
+        &.hidden-sm,
+        &.hidden-xs {
+            @media (max-width: $screen-md) {
+                width: 0;
+            }
+        }
     }
     > tasks-list {
         width: 100%;

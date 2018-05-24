@@ -2,6 +2,7 @@
 @import 'drawer/drawer';
 @import 'item/item';
 $search-bar-width: 275px;
+$drawer-menu-breakpoint: 1400px;
 tasks-list {
     @extend .lists;
     display: grid;
@@ -11,13 +12,18 @@ tasks-list {
     grid-template-columns: 1fr auto;
     > div.menu {
         @extend .lists.item-list-menu;
+        max-height: 153px;
+        grid-row-gap: 5px;
         grid-row: 1;
         grid-column: 1;
         grid-template-columns: 1fr auto $search-bar-width;
         grid-column-gap: 10px;
+        @media (max-width: $drawer-menu-breakpoint) {
+            grid-template-rows: repeat(2, 1fr);
+            grid-template-columns: 1fr auto;
+        }
         @media (max-width: $contact-menu-breakpoint) {
-            grid-template-rows: 1fr 1fr;
-            grid-row-gap: 5px;
+            grid-template-rows: repeat(3, 1fr);
         }
         > .selected-count {
             display: grid;
@@ -26,9 +32,13 @@ tasks-list {
             grid-template-columns: auto 1fr;
             grid-template-rows: 1fr 0; // 0 row for odd chrome display
             grid-column-gap: 15px;
-            @media (max-width: $contact-menu-breakpoint) {
+            @media (max-width: $drawer-menu-breakpoint) {
                 grid-column: 1;
                 grid-row: 2;
+            }
+            @media (max-width: $contact-menu-breakpoint) {
+                grid-column: 1 / span 3;
+                grid-row: 3;
             }
             .dropdown {
                 grid-column: 1;
@@ -44,10 +54,12 @@ tasks-list {
         > .search-bar {
             @extend .lists.item-list-menu.search-bar;
             width: $search-bar-width;
+            height: 39px;
             grid-column: 3;
-            @media (max-width: $contact-menu-breakpoint) {
+            @media (max-width: $drawer-menu-breakpoint) {
                 width: 100%;
-                grid-column: 1 / span 3;
+                grid-column: 1 / span 2;
+                grid-row: 1;
             }
             .input-group-addon {
                 padding-right: 0;
@@ -60,15 +72,40 @@ tasks-list {
         > div.menu-buttons {
             @extend .lists.item-list-menu.menu-buttons;
             display: grid;
+            min-width: 305px;
+            height: 39px;
+            padding: 0;
             grid-template-columns: 1fr auto;
+            @media (max-width: $drawer-menu-breakpoint) {
+                min-width: inherit;
+                grid-column: 2;
+                grid-row: 2;
+            }
             @media (max-width: $contact-menu-breakpoint) {
                 width: 100%;
-                grid-column: 2 / span 3;
+                grid-column: 1 / span 3;
                 grid-row: 2;
             }
             .show-small {
                 @media (min-width: $contact-menu-breakpoint) {
                     display: none;
+                }
+            }
+            .btn-group {
+                white-space: nowrap;
+            }
+        }
+        &.drawer-open {
+            @media (max-width: $drawer-menu-breakpoint) {
+                grid-template-rows: repeat(3, 1fr);
+                > div.menu-buttons {
+                    width: 100%;
+                    grid-column: 1 / span 3;
+                    grid-row: 2;
+                }
+                > div.selected-count {
+                    grid-column: 1 / span 3;
+                    grid-row: 3;
                 }
             }
         }

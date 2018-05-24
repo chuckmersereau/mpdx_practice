@@ -9,6 +9,7 @@
         position: relative;
         top: auto;
         left: auto;
+        width: 600px;
         margin: 0 auto;
         transform: none;
         .modal-content {
@@ -226,8 +227,8 @@
     transform: translate3d(0, 0, 0);
 }
 .modal-open .modal {
-    overflow-x: hidden;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 .modal-dialog {
     position: relative;

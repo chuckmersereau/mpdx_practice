@@ -1,4 +1,5 @@
 $side-drawer-width: 540px;
+$side-drawer-title-height: 63px;
 side-drawer {
     display: flex;
     flex-direction: column;
@@ -9,19 +10,24 @@ side-drawer {
     border: 1px solid $color-border;
     background: $color-white;
     z-index: 1000;
+    @media (max-width: 1280px) {
+        width: inherit;
+    }
     .drawer-title {
         width: 100%;
-        height: 63px;
+        height: $side-drawer-title-height;
         margin: 0;
         border-bottom: 1px $color-border solid;
-        line-height: 63px;
+        line-height: $side-drawer-title-height;
+        overflow: hidden;
         &-container {
-            display: flex;
-            align-items: center;
+            display: grid;
+            overflow: hidden;
+            grid-template-columns: 1fr auto;
         }
         &-text {
-            flex-grow: 1;
             padding-left: $container-padding;
+            text-overflow: ellipsis;
         }
         &-close {
             width: 60px;
