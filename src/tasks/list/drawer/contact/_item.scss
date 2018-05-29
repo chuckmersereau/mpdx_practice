@@ -35,6 +35,9 @@ task-list-contact {
                 margin-bottom: 10px;
                 font-size: $font-size-sm;
                 font-weight: bold;
+                .street {
+                    white-space: pre;
+                }
             }
         }
         .person,

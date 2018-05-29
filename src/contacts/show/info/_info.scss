@@ -4,8 +4,8 @@ contact-info {
     font-weight: 600;
     > div.header {
         display: grid;
-        grid-template-columns: 38px 1fr auto;
         grid-gap: 10px;
+        grid-template-columns: 38px 1fr auto;
         avatar {
             grid-column: 1;
             &,
@@ -30,9 +30,9 @@ contact-info {
     }
     > div.content {
         display: grid;
-        grid-gap: 10px;
-        grid-template-columns: repeat(3, 1fr) 210px;
         grid-template-rows: repeat(3, 50px);
+        grid-template-columns: repeat(3, 1fr) 210px;
+        grid-gap: 10px;
         > div {
             @extend .inline-input;
         }
@@ -43,14 +43,14 @@ contact-info {
             font-size: $font-size-xs;
         }
         > div.person {
-            grid-column: 1 / span 3;
             grid-row: 1;
+            grid-column: 1 / span 3;
         }
         > div.address {
             color: color-gray(35);
             font-size: $font-size-sm;
-            grid-column: 4;
             grid-row: 1 / span 2;
+            grid-column: 4;
             label {
                 margin-bottom: 6px;
             }
@@ -66,9 +66,12 @@ contact-info {
                 flex-grow: 0;
                 line-height: $font-size-sm * 1.8;
                 h3 {
+                    display: block;
+                    max-height: 45px;
                     margin-bottom: 3px;
                     font-size: $font-size-sm;
                     font-weight: 600;
+                    overflow: hidden;
                 }
                 .source {
                     display: none;

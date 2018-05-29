@@ -22,7 +22,7 @@
         <address class="address"
                  ng-repeat="address in ::$ctrl.contact.addresses track by address.id"
                  ng-if="::address.primary_mailing_address">
-            <span ng-if="::address.street">{{::address.street}}</span>
+            <div ng-if="::address.street" class="street">{{::address.street}}</div>
             <span ng-if="::address.city">{{::address.city}},</span>
             {{::address.state}}
             {{::address.postal_code}}
