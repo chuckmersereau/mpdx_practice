@@ -3,10 +3,9 @@ $search-bar-width: 275px;
 contacts-list {
     @extend .lists;
     display: grid;
-    height: 100%;
+    height: calc(100vh - 130px);
     overflow: hidden;
     grid-template-rows: auto auto 1fr;
-    grid-template-columns: 1fr auto;
     > div.menu {
         @extend .lists.item-list-menu;
         grid-row: 1;
