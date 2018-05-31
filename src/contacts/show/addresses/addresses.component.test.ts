@@ -26,6 +26,7 @@ describe('contacts.show.addresses.component', () => {
                     { id: 432, primary_mailing_address: true }
                 ]
             };
+            spyOn(contacts, 'save').and.callFake(() => q.resolve());
         });
 
         it('should confirm with a translated message', () => {
@@ -35,7 +36,6 @@ describe('contacts.show.addresses.component', () => {
         });
 
         it('should save', (done) => {
-            spyOn(contacts, 'save').and.callFake(() => q.resolve());
             const successMessage = 'Changes saved successfully.';
             const errorMessage = 'Unable to save changes.';
             $ctrl.onAddressPrimary(321).then(() => {
@@ -48,6 +48,15 @@ describe('contacts.show.addresses.component', () => {
                         { id: 432, primary_mailing_address: false }
                     ]
                 }, successMessage, errorMessage);
+                done();
+            });
+            rootScope.$digest();
+        });
+
+        it('should set the primary in current contact for view state', (done) => {
+            $ctrl.onAddressPrimary(321).then(() => {
+                expect(contacts.current.addresses[0].primary_mailing_address).toBeTruthy();
+                expect(contacts.current.addresses[1].primary_mailing_address).toBeFalsy();
                 done();
             });
             rootScope.$digest();

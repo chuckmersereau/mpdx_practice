@@ -1,4 +1,4 @@
-import { eq, map } from 'lodash/fp';
+import { assign, eq, map } from 'lodash/fp';
 import contacts, { ContactsService } from '../../contacts.service';
 import modal, { ModalService } from '../../../common/modal/modal.service';
 
@@ -9,7 +9,7 @@ class AddressesController {
         private contacts: ContactsService,
         private modal: ModalService
     ) {}
-    onAddressPrimary(addressId) {
+    onAddressPrimary(addressId): ng.IPromise<void> {
         /* istanbul ignore next */
         this.$log.debug('change primary: ', addressId);
         const msg = this.gettextCatalog.getString(
@@ -27,7 +27,11 @@ class AddressesController {
                 { id: this.contacts.current.id, addresses: addressPatch },
                 successMessage,
                 errorMessage
-            );
+            ).then(() => {
+                this.contacts.current.addresses = map((address) => assign(address, {
+                    primary_mailing_address: eq(address.id, addressId)
+                }), this.contacts.current.addresses);
+            });
         });
     }
 }

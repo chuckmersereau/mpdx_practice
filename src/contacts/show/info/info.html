@@ -37,7 +37,7 @@
     </div>
     <div class="address">
         <label translate>Primary Address</label><br/>
-        <contact-address ng-repeat="address in ::$ctrl.contact.addresses track by address.id"
+        <contact-address ng-repeat="address in $ctrl.contact.addresses track by address.id"
                          ng-if="address.primary_mailing_address"
                          address="address"
                          contact="$ctrl.contacts.current"></contact-address>
