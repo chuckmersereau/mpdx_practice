@@ -1,5 +1,6 @@
 import 'angular-gettext';
 import {
+    assign,
     concat,
     defaultTo,
     includes,
@@ -257,12 +258,13 @@ class ListController {
             return this.data;
         });
     }
-    sortPeoplePrimary(data) {
-        return map((contact) => {
-            // put primary on top
-            contact.people = sortBy((person) => person.id !== contact.primary_person.id, contact.people);
-            return contact;
-        }, data);
+    private sortPeoplePrimary(data): any[] {
+        // put primary on top
+        const notPrimary = (contact, person) => contact.primary_person && person.id !== contact.primary_person.id;
+        const sortNotPrimary = (contact) => sortBy((person) => notPrimary(contact, person), contact.people);
+        return map((contact) => assign(contact, {
+            people: sortNotPrimary(contact)
+        }), data);
     }
     getSelectedContacts() {
         if (this.contacts.selectedContacts.length > this.data.length) {

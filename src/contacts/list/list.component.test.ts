@@ -348,7 +348,7 @@ describe('contacts.list.component', () => {
             },
             overrideGetAsPost: true
         };
-        let contact = { id: 1, name: 'a', pledge_amount: null, pledge_frequency: null };
+        let contact = { id: 1, name: 'a', pledge_amount: null, pledge_frequency: null, people: [] };
         let result: any = [contact];
         result.meta = {
             to: 1,

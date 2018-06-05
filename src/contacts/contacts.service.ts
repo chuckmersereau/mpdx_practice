@@ -322,13 +322,12 @@ export class ContactsService {
         });
     }
     fixPledgeAmountAndFrequencies(data: any): any[] {
-        return map((contact) => {
-            contact.pledge_amount = isNil(contact.pledge_amount) ? null : parseFloat(contact.pledge_amount);
-            contact.pledge_frequency = isNil(contact.pledge_frequency)
+        return map((contact) => assign(contact, {
+            pledge_amount: isNil(contact.pledge_amount) ? null : parseFloat(contact.pledge_amount),
+            pledge_frequency: isNil(contact.pledge_frequency)
                 ? null
-                : this.serverConstants.getPledgeFrequencyValue(contact.pledge_frequency);
-            return contact;
-        }, angular.copy(data));
+                : this.serverConstants.getPledgeFrequencyValue(contact.pledge_frequency)
+        }), angular.copy(data));
     }
     getEmails(errorMessage: string): ng.IPromise<any> {
         return this.api.get('contacts', {
