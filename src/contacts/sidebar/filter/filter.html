@@ -1,11 +1,17 @@
 <div class="filter">
     <div ng-class="{ 'open': $ctrl.contactFilter.isResettable() }" class="resettable">
-        <a ng-click="$ctrl.resetFiltersAndTags()" class="btn btn-primary btn-xs btn-block fade-in"
-           analytics-on analytics-event="Reset Filters" analytics-category="Contacts Events" analytics-label="Filter">
+        <a ng-click="$ctrl.resetFiltersAndTags()"
+           class="btn btn-primary btn-xs btn-block fade-in"
+           analytics-on analytics-event="Reset Filters"
+           analytics-category="Contacts Events"
+           analytics-label="Filter">
             <i class="fas fa-undo"></i> <span translate>Reset Filters</span>
         </a>
-        <a ng-click="$ctrl.openSaveModal()" class="btn btn-primary btn-xs btn-block"
-           analytics-on analytics-event="Save Filter" analytics-category="Contacts Events" analytics-label="Filter">
+        <a ng-click="$ctrl.openSaveModal()"
+           class="btn btn-primary btn-xs btn-block"
+           analytics-on analytics-event="Save Filter"
+           analytics-category="Contacts Events"
+           analytics-label="Filter">
             <i class="fas fa-save"></i> <span translate>Save Filters</span>
         </a>
     </div>
@@ -23,32 +29,40 @@
                     <i class="fal fa-exchange" aria-hidden="true"></i>
                     <span translate>to look up all contacts who do not have that filter.</span>
                 </div>
-                <ul class="filter--filtergroup_filters list-unstyled" ng-model="$ctrl.activeFilters" data-allow-multiple="true" bs-collapse>
+                <ul class="filter--filtergroup_filters list-unstyled"
+                    ng-model="$ctrl.activeFilters"
+                    data-allow-multiple="true"
+                    bs-collapse>
                     <li class="filter_set" ng-repeat="filter in $ctrl.contactFilter.data | orderBy: 'priority'">
                         <label id="filter_{{::filter.name}}" class="filter_title" bs-collapse-toggle="{{::$index}}">
                             <span>{{::filter.title}}</span>
                             <i ng-if="::filter.type === 'multiselect'"
                                ng-click="$ctrl.contactFilter.invertMultiselect(filter); $event.stopPropagation()"
                                title="{{ ::'Reverse Filter' | translate }}"
-                               class="reverse-filter fal fa-exchange" ng-class="{ 'reverse fa-rotate-180': filter.reverse }"></i>
-                            <i class="fal fa-chevron-down" ng-class="{ 'fa-rotate-180': $ctrl.activeFilters.indexOf($index) === -1 }"></i>
+                               class="reverse-filter fal fa-exchange"
+                               ng-class="{ 'reverse fa-rotate-180': filter.reverse }"></i>
+                            <i class="fal fa-chevron-down"
+                               ng-class="{ 'fa-rotate-180': $ctrl.activeFilters.indexOf($index) === -1 }"></i>
                         </label>
                         <div class="filter_set_inner" bs-collapse-target="{{::$index}}">
-                            <div class="filter_container" ng-if="::filter.type == 'container'" ng-repeat="child in ::filter.children | orderBy: 'priority'">
+                            <div class="filter_container"
+                                 ng-if="::filter.type == 'container'"
+                                 ng-repeat="child in ::filter.children | orderBy: 'priority'">
                                 <div class="filter_multiselect"
                                      ng-if="::child.type == 'multiselect'"
                                      ng-class="{ reverse: child.reverse }">
-                                    <label for="multiselect">
+                                    <label for="multiselect_{{::child.title}}">
                                         {{::child.title}}
                                         <a class="filter_invert_multiselect reverse-filter pull-right"
                                            ng-click="$ctrl.contactFilter.invertMultiselect(child); $event.stopPropagation()"
                                            ng-class="{ reverse: child.reverse }"
                                            title="{{ ::'Reverse Filter' | translate }}">
-                                            <i class="fal fa-exchange" ng-class="{ 'reverse fa-rotate-180': child.reverse }"></i>
+                                            <i class="fal fa-exchange"
+                                               ng-class="{ 'reverse fa-rotate-180': child.reverse }"></i>
                                         </a>
                                     </label>
                                     <select chosen
-                                            id="multiselect"
+                                            id="multiselect_{{::child.title}}"
                                             class="form-control"
                                             ng-options="item.id as item.name for item in ::child.options"
                                             ng-model="$ctrl.contactFilter.params[child.name]"
@@ -56,8 +70,9 @@
                                     </select>
                                 </div>
                                 <div class="filter_radio" ng-if="::child.type == 'radio'">
-                                    {{::child.title}}
+                                    <label for="radio_{{::child.title}}">{{::child.title}}</label>
                                     <select chosen
+                                            id="radio_{{::child.title}}"
                                             name="{{::child.name}}"
                                             ng-options="item.id as item.name for item in ::child.options"
                                             ng-model="$ctrl.contactFilter.params[child.name]"
