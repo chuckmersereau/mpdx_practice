@@ -103,10 +103,15 @@
             </div>
             <div class="spacer"></div>
             <div class="dropdown" ng-show="$ctrl.selectedContactIds.length > 0">
-                <a class="btn btn-default dropdown-toggle" bs-dropdown type="button" data-toggle="dropdown" aria-expanded="true">
-                    <span  translate>Actions</span> <span class="caret"></span>
+                <a class="btn btn-default dropdown-toggle"
+                   bs-dropdown
+                   data-placement="bottom-right"
+                   type="button"
+                   data-toggle="dropdown"
+                   aria-expanded="true">
+                    <span translate>Actions</span> <span class="caret"></span>
                 </a>
-                <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="action-drop">
+                <ul class="dropdown-menu" role="menu" aria-labelledby="action-drop">
                     <li><a ng-click="$ctrl.contacts.openAddTagModal($ctrl.selectedContactIds)" translate>Add Tag</a></li>
                     <li class="divider"></li>
                     <li><a ng-click="$ctrl.tasks.addModal({ contactsList: $ctrl.selectedContactIds })" translate>Add Task</a></li>
