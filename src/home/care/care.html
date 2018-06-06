@@ -3,8 +3,11 @@
         <i class="far fa-people-carry"></i>
         <div class="panel-title" translate>Care</div>
         <div class="spacer"></div>
-        <button class="btn btn-default" bs-dropdown translate>Actions <i class="far fa-caret-down"></i></button>
-        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+        <button class="btn btn-default"
+                bs-dropdown
+                data-placement="bottom-right"
+                translate>Actions <i class="far fa-caret-down"></i></button>
+        <ul class="dropdown-menu" role="menu">
             <li><a href="javascript:;" ng-click="$ctrl.addNewsletter()" translate>Log Newsletter</a></li>
             <li><a href="javascript:;" ng-click="$ctrl.exportEmail()" translate>Export Email</a></li>
             <li><a href="javascript:;" ng-click="$ctrl.exportPhysical()" translate>Export Physical</a></li>
