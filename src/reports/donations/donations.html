@@ -71,7 +71,9 @@
             <td ng-if="::$ctrl.inContact">{{ donation.donor_account.account_number }}</td>
             <td class="date">{{ donation.donation_date | date: $ctrl.locale.dateTimeFormat }}</td>
             <td ng-if="::!$ctrl.inContact">
-                <a ui-sref="contacts.show({ contactId: donation.contact.id })">{{ $ctrl.donations.displayName(donation) }}</a>
+                <a ui-sref="contacts.show({ contactId: donation.contact.id })">
+                    {{ $ctrl.donations.displayName(donation) }}
+                </a>
             </td>
             <td class="text-right text-nowrap"
                 data-title="{{ donation.amount | currency: donation.currency_symbol : 0 }}"
@@ -83,7 +85,11 @@
             <td>{{ donation.designation_account.display_name }}</td>
             <td>{{ donation.payment_method }}</td>
             <td>{{ donation.appeal.name }}</td>
-            <td class="text-right"><a ng-click="$ctrl.donations.openDonationModal(donation)"><i class="far fa-pencil-square"></i></a></td>
+            <td class="text-right">
+                <a ng-click="$ctrl.donations.openDonationModal(donation)" title="{{ 'Edit' | translate }}">
+                    <i class="far fa-pen-square"></i>
+                </a>
+            </td>
         </tr>
     </tbody>
     <tfoot>
@@ -100,7 +106,9 @@
         </tr>
     </tfoot>
 </table>
-<div class="blankslate" ng-class="{ 'blankslate-spacious' : !$ctrl.inContact }" ng-if="$ctrl.data.length === 0 && !$ctrl.loading">
+<div class="blankslate"
+     ng-class="{ 'blankslate-spacious' : !$ctrl.inContact }"
+     ng-if="$ctrl.data.length === 0 && !$ctrl.loading">
     <i class="fas fa-money-bill-alt blankslate-icon"></i>
     <div ng-if="::$ctrl.inContact">
         <h3 translate>No donations received for this contact</h3>
