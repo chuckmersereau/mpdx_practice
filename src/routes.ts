@@ -95,7 +95,7 @@ export default class Routes {
                     return true;
                 },
                 tag: /* @ngInject*/ (contactsTags, $stateParams) => {
-                    if ($stateParams.page === 1 || !contactsTags.data) {
+                    if ($stateParams.page === 1 || contactsTags.data.length === 0) {
                         return contactsTags.load();
                     }
                     return true;
