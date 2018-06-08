@@ -1,5 +1,5 @@
 import * as uuid from 'uuid/v1';
-import { assign, concat, defaultTo, get, map, round, sumBy } from 'lodash/fp';
+import { assign, concat, defaultTo, eq, get, map, round, sumBy } from 'lodash/fp';
 import { StateService } from '@uirouter/core';
 import api, { ApiService } from '../../../common/api/api.service';
 import contacts, { ContactsService } from '../../contacts.service';
@@ -188,17 +188,19 @@ class ContactDetailsController {
         this.onSave();
     }
     remove(): ng.IPromise<void> {
-        const msg = this.gettextCatalog.getString(
-            'Are you sure you wish to permanently delete {{name}}?',
-            { name: this.contacts.current.name }
-        );
-        return this.modal.confirm(msg).then(() => {
-            return this.api.delete({
-                url: `contacts/${this.contacts.current.id}`,
-                type: 'contact'
-            }).then(() => {
-                this.$state.go('contacts');
-            });
+        const cantDelete = this.contact.lifetime_donations > 0;
+        return cantDelete ? this.cantDeleteModal() : this.openDeleteModal();
+    }
+    private openDeleteModal(): ng.IPromise<void> {
+        return this.modal.open({
+            template: require('./removeContact/modal.html'),
+            controller: 'removeContactModalController'
+        });
+    }
+    private cantDeleteModal(): ng.IPromise<void> {
+        return this.modal.open({
+            template: require('./removeContact/hide.html'),
+            controller: 'removeContactModalController'
         });
     }
 }

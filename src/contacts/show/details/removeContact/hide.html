@@ -1,0 +1,15 @@
+<modal title="{{'Cannot Remove Contact' | translate}}"  hide-footer="true" cancel="$hide()">
+    <div translate>
+        We're sorry, but since this partner is a donor, they cannot be deleted.
+        If you would like them removed from your account, you will need to talk to your organization's Donation Services.
+        If you would no longer like to see them, we suggest hiding this contact.
+    </div>
+    <div class="modal-footer">
+        <button type="button"
+                class="btn btn-default"
+                ng-click="$ctrl.hideContact()">Hide Contact</button>
+        <button type="button"
+                class="btn btn-primary"
+                ng-click="$hide()">Cancel</button>
+    </div>
+</modal>

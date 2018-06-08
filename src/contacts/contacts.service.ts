@@ -226,7 +226,9 @@ export class ContactsService {
                 id: contact.id,
                 status: 'Never Ask'
             }).then(() => {
+                contact.status = 'Never Ask';
                 this.$rootScope.$emit('contactHidden', contact.id);
+                return contact;
             });
         });
     }

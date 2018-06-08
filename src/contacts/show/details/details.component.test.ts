@@ -238,44 +238,52 @@ describe('contacts.show.details.component', () => {
 
     describe('remove', () => {
         beforeEach(() => {
+            spyOn($ctrl, 'openDeleteModal').and.callFake(() => q.resolve());
+            spyOn($ctrl, 'cantDeleteModal').and.callFake(() => q.resolve());
+        });
+
+        it('should call openDeleteModal', () => {
+            $ctrl.contact.lifetime_donations = '0';
+            $ctrl.remove();
+            expect($ctrl.openDeleteModal).toHaveBeenCalledWith();
+        });
+
+        it('should call cantDeleteModal', () => {
+            $ctrl.contact.lifetime_donations = '1';
+            $ctrl.remove();
+            expect($ctrl.cantDeleteModal).toHaveBeenCalledWith();
+        });
+    });
+
+    describe('openDeleteModal', () => {
+        beforeEach(() => {
             contacts.current = {
                 id: 'contact_id',
                 name: 'joe'
             };
-            spyOn(modal, 'confirm').and.callFake(() => q.resolve());
-            spyOn(api, 'delete').and.callFake(() => q.resolve());
-            spyOn(state, 'go').and.callFake(() => {});
+            spyOn(modal, 'open').and.callFake(() => q.resolve());
         });
 
-        it('should translate the confirm message', () => {
-            $ctrl.remove();
-            expect(gettextCatalog.getString).toHaveBeenCalledWith(
-                'Are you sure you wish to permanently delete {{name}}?',
-                { name: 'joe' });
-        });
-
-        it('should display confirmation modal', () => {
-            $ctrl.remove();
-            expect(modal.confirm).toHaveBeenCalledWith('Are you sure you wish to permanently delete joe?');
-        });
-
-        it('should delete the contact', (done) => {
-            $ctrl.remove().then(() => {
-                expect(api.delete).toHaveBeenCalledWith({
-                    url: 'contacts/contact_id',
-                    type: 'contact'
-                });
-                done();
+        it('should open a modal', () => {
+            $ctrl.openDeleteModal();
+            expect(modal.open).toHaveBeenCalledWith({
+                template: require('./removeContact/modal.html'),
+                controller: 'removeContactModalController'
             });
-            scope.$digest();
+        });
+    });
+
+    describe('cantDeleteModal', () => {
+        beforeEach(() => {
+            spyOn(modal, 'open').and.callFake(() => q.resolve());
         });
 
-        it('should return to the contact list', (done) => {
-            $ctrl.remove().then(() => {
-                expect(state.go).toHaveBeenCalledWith('contacts');
-                done();
+        it('should open a modal', () => {
+            $ctrl.cantDeleteModal();
+            expect(modal.open).toHaveBeenCalledWith({
+                template: require('./removeContact/hide.html'),
+                controller: 'removeContactModalController'
             });
-            scope.$digest();
         });
     });
 });

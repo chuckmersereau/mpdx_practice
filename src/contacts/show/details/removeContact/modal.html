@@ -1,0 +1,18 @@
+<modal title="{{'Delete Contact' | translate}}"  hide-footer="true" cancel="$hide()">
+    <div translate>
+        Are you sure you want to permanently delete this contact?
+        Doing so will permanently delete this contacts information, as well as task history. This cannot be undone.
+        If you wish to keep this information, you can try hiding this contact instead.
+    </div>
+    <div class="modal-footer">
+        <button type="button"
+                class="btn btn-default"
+                ng-click="$hide()">Cancel</button>
+        <button type="button"
+                class="btn btn-default"
+                ng-click="$ctrl.hideContact()">Hide Contact</button>
+        <button type="button"
+                class="btn btn-danger"
+                ng-click="$ctrl.removeContact()">Delete</button>
+    </div>
+</modal>

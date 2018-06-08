@@ -7,10 +7,13 @@ const params = { a: 'b' };
 const tags = [{ name: 'a' }, { name: 'b' }];
 
 describe('contacts.service', () => {
-    let api, contacts, contactFilter, contactsTags, rootScope, modal, serverConstants, q;
+    let api, contacts, contactFilter, contactsTags, rootScope, modal, serverConstants, q, gettextCatalog;
     beforeEach(() => {
         angular.mock.module(service);
-        inject(($rootScope, _api_, _contacts_, _contactFilter_, _contactsTags_, _modal_, _serverConstants_, $q) => {
+        inject((
+            $rootScope, _api_, _contacts_, _contactFilter_, _contactsTags_, _modal_, _serverConstants_, $q,
+            _gettextCatalog_
+        ) => {
             rootScope = $rootScope;
             api = _api_;
             contacts = _contacts_;
@@ -20,9 +23,11 @@ describe('contacts.service', () => {
             serverConstants = _serverConstants_;
             q = $q;
             api.account_list_id = accountListId;
+            gettextCatalog = _gettextCatalog_;
         });
         spyOn(api, 'put').and.callFake((data) => q.resolve(data));
         spyOn(rootScope, '$emit').and.callThrough();
+        spyOn(gettextCatalog, 'getString').and.callThrough();
     });
 
     describe('constructor', () => {
@@ -375,6 +380,52 @@ describe('contacts.service', () => {
         it('should emit a complete event', (done) => {
             contacts.addBulk(contacts).then(() => {
                 expect(rootScope.$emit).toHaveBeenCalledWith('contactCreated');
+                done();
+            });
+            rootScope.$digest();
+        });
+    });
+
+    describe('hideContact', () => {
+        const contact: any = { id: 'contact_id', prop: 'junk' };
+        const msg: string = 'Are you sure you wish to hide the selected contact? Hiding a contact in MPDX actually sets the contact status to "Never Ask".';
+        const status: string = 'Never Ask';
+        beforeEach(() => {
+            spyOn(modal, 'confirm').and.callFake(() => q.resolve());
+            spyOn(contacts, 'save').and.callFake(() => q.resolve());
+        });
+
+        it('should translate a message', () => {
+            contacts.hideContact(contact);
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(msg);
+            rootScope.$digest();
+        });
+
+        it('should open a confirmation modal', () => {
+            contacts.hideContact(contact);
+            expect(modal.confirm).toHaveBeenCalledWith(msg);
+            rootScope.$digest();
+        });
+
+        it('should call save', (done) => {
+            contacts.hideContact(contact).then(() => {
+                expect(contacts.save).toHaveBeenCalledWith({ id: contact.id, status: status });
+                done();
+            });
+            rootScope.$digest();
+        });
+
+        it('should set the return contact status', (done) => {
+            contacts.hideContact(contact).then(() => {
+                expect(contact.status).toEqual(status);
+                done();
+            });
+            rootScope.$digest();
+        });
+
+        it('should emit change', (done) => {
+            contacts.hideContact(contact).then(() => {
+                expect(rootScope.$emit).toHaveBeenCalledWith('contactHidden', contact.id);
                 done();
             });
             rootScope.$digest();
