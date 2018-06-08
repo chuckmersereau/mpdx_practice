@@ -19,8 +19,13 @@ function localeFilterShort() {
     return (val) => moment(val).format('MMM D');
 }
 
+function localeFilterShortWYear() {
+    return (val) => moment(val).format('MMM D YYYY');
+}
+
 export default angular.module('mpdx.common.locale.filter', [locale])
     .filter('localize', localeFilter)
     .filter('localizeWithTime', localeFilterWithTime)
     .filter('localizeShort', localeFilterShort)
+    .filter('localizeShortWYear', localeFilterShortWYear)
     .name;

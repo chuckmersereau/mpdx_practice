@@ -25,4 +25,8 @@ describe('The test filter', () => {
     it('output a formatted date', () => {
         expect($filter('localizeShort')(date)).toEqual(moment(date).format('MMM D'));
     });
+
+    it('output a formatted date', () => {
+        expect($filter('localizeShortWYear')(date)).toEqual(moment(date).format('MMM D YYYY'));
+    });
 });

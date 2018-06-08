@@ -33,7 +33,7 @@
             {{ ::$ctrl.task.start_at | localizeShort }}
         </span>
         <span ng-if="::!$ctrl.task.no_date && $ctrl.task.start_at && $ctrl.task.completed">
-            {{ ::$ctrl.task.completed_at | localizeShort }}
+            {{ ::$ctrl.task.completed_at | localizeShortWYear }}
         </span>
     </div>
     <div class="btn-group comments">
