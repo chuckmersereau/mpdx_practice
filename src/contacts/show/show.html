@@ -44,6 +44,6 @@
                         ng-if="$ctrl.contacts.activeDrawer === 'people'"></contact-people>
         <contact-notes ng-if="$ctrl.contacts.activeDrawer === 'notes'"></contact-notes>
         <contact-referrals ng-if="$ctrl.contacts.activeDrawer === 'referrals'"></contact-referrals>
-        <contact-tasks ng-if="$ctrl.contacts.activeDrawer === 'tasks'"></contact-tasks>
+        <contact-tasks ng-if="$ctrl.contacts.activeDrawer === 'tasks'" in-drawer="true"></contact-tasks>
     </div>
 </div>

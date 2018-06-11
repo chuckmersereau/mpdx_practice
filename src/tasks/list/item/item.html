@@ -17,16 +17,19 @@
             ({{ result }})
         </span>
         <span class="contacts">
-            <strong
-                    ng-repeat="activityContact in ::$ctrl.task.activity_contacts | limitTo : 10">
-                <a ng-click="$ctrl.openContacts(); $event.stopPropagation();">
+            <strong ng-repeat="activityContact in ::$ctrl.task.activity_contacts | limitTo : 10">
+                <a ng-click="$ctrl.openContacts(); $event.stopPropagation();" ng-if="!$ctrl.contact">
                     {{ ::activityContact.contact.name }}
                 </a>
+            </strong>
+            <strong ng-repeat="activityContact in ::$ctrl.task.activity_contacts | limitTo : 10"
+                    ng-if="$ctrl.contact && !$ctrl.inDrawer">
+                    {{ ::activityContact.contact.name }}
             </strong>
         </span>
     </div>
     <div class="tags">
-        <span class="tag" ng-repeat="tag in $ctrl.task.tag_list">{{ ::tag |limitTo: 15 }}</span>
+        <span class="tag" ng-repeat="tag in $ctrl.task.tag_list" ng-if="!$ctrl.inDrawer">{{ ::tag |limitTo: 15 }}</span>
     </div>
     <div class="date">
         <span ng-if="::!$ctrl.task.no_date && $ctrl.task.start_at && !$ctrl.task.completed">
@@ -39,7 +42,7 @@
     <div class="btn-group comments">
         <a class="btn btn-xs btn-default"
            ng-click="$ctrl.openComments(); $event.stopPropagation();"
-           title="{{ ::'View Comments' | translate }}">
+           title="{{ ::'View Comments' | translate }}" ng-if="!$ctrl.inDrawer">
             <i class="far fa-comment"></i>
             &nbsp;
             {{ $ctrl.task.comments.length || $ctrl.task.comments_count }}

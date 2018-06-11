@@ -7,7 +7,6 @@ import {
     each,
     find,
     findIndex,
-    findLastIndex,
     get,
     includes,
     map,
@@ -15,7 +14,6 @@ import {
     pullAllBy,
     reduce,
     reject,
-    sortBy,
     union
 } from 'lodash/fp';
 import alerts, { AlertsService } from '../../common/alerts/alerts.service';
@@ -385,7 +383,8 @@ const TaskList = {
     controller: ListController,
     template: require('./list.html'),
     bindings: {
-        contact: '<'
+        contact: '<',
+        inDrawer: '<'
     }
 };
 

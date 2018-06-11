@@ -60,6 +60,7 @@ const Drawer = {
     template: require('./drawer.html'),
     controller: DrawerController,
     bindings: {
+        contact: '<',
         view: '<',
         task: '<'
     }

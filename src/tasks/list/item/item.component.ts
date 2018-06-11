@@ -90,6 +90,8 @@ const Item = {
     controller: ItemController,
     template: require('./item.html'),
     bindings: {
+        contact: '<',
+        inDrawer: '<',
         onOpen: '&',
         onMultiSelect: '&',
         onSelect: '&',

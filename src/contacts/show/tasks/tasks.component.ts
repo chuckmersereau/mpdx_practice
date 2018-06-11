@@ -15,7 +15,10 @@ class ContactTasksController {
 
 const Tasks = {
     controller: ContactTasksController,
-    template: require('./tasks.html')
+    template: require('./tasks.html'),
+    bindings: {
+        inDrawer: '<'
+    }
 };
 
 export default angular.module('mpdx.contacts.show.tasks.component', [

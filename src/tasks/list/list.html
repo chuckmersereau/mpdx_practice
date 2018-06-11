@@ -114,10 +114,12 @@
                <ul class="task-category-list list-group" role="tabpanel" bs-collapse-target>
                     <li class="list-group-item" ng-repeat="task in tasks">
                         <tasks-list-item task="task"
+                            contact="$ctrl.contact"
                             selected="$ctrl.isSelected(task.id)"
                             on-select="$ctrl.select(task.id)"
                             on-multi-select="$ctrl.multiSelect(task.id)"
                             on-open="$ctrl.onOpen(task, $action)"
+                            in-drawer="$ctrl.inDrawer"
                             ng-class="{ 'selected': $ctrl.selectedTask.id === task.id }"></tasks-list-item>
                     </li>
                 </ul>
@@ -152,5 +154,5 @@
     </div>
 </div>
 <side-drawer ng-if="$ctrl.selectedTask" on-close="$ctrl.onClose()" title="{{ $ctrl.selectedTask.activity_type | translate }} {{$ctrl.selectedTask.subject}}" class="slide-left">
-    <task-item-drawer view="$ctrl.drawerView" task="$ctrl.selectedTask"></task-item-drawer>
+    <task-item-drawer view="$ctrl.drawerView" task="$ctrl.selectedTask" contact="$ctrl.contact"></task-item-drawer>
 </side-drawer>
