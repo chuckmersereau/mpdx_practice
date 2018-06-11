@@ -41,29 +41,43 @@
                       tag-list="$ctrl.tasksTags.data"
                       class="scrollable-tags"></tag-selector>
     </div>
-    <div class="row">
+    <div class="row" ng-class="{ 'text-muted': !$ctrl.task.start_at }">
         <div class="col-md-2"><span class="no-wrap" translate>Notify me</span></div>
         <div class="col-md-2">
             <input type="number"
                    class="form-control"
                    ng-model="$ctrl.task.notification_time_before"
                    id="notification_type"
+                   ng-disabled="!$ctrl.task.start_at"
                    ng-required="$ctrl.task.notification_type"
                    min="0">
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <select chosen
                     ng-model="$ctrl.task.notification_time_unit"
                     disable-search="true"
+                    ng-disabled="!$ctrl.task.start_at"
                     ng-required="$ctrl.task.notification_type">
                 <option value="minutes">Minutes</option>
                 <option value="hours">Hours</option>
             </select>
         </div>
-        <div class="col-md-5 text-muted" translate>
-            If blank, you will not be notified
+        <div class="col-md-3" translate>before Due Date & Time on</div>
+        <div class="col-md-3">
+            <select chosen
+                    ng-disabled="!$ctrl.task.start_at || $ctrl.task.notification_time_before === null"
+                    disable-search="true"
+                    ng-model="$ctrl.task.notification_type">
+                <option value="" ng-if="!$ctrl.task.start_at || $ctrl.task.notification_time_before == null" translate>None</option>
+                <option value="email" translate>Email</option>
+                <option value="mobile" translate>Mobile</option>
+                <option value="both" translate>Both</option>
+            </select>
         </div>
     </div>
+    <small class="text-danger" ng-if="$ctrl.task.notification_type === 'mobile' || $ctrl.task.notification_type === 'both'" translate>
+        Note: For MPDX to notify you on mobile, you will need to sync your app after creating this task. Simply open the app to sync.
+    </small>
     <div class="form-group">
         <label for="comment" translate>Comment</label>
         <textarea msd-elastic
