@@ -25,6 +25,42 @@ describe('tasks.modals.add.controller', () => {
         });
     });
 
+    describe('constructor', () => {
+        it('should handle start_at removing a value', () => {
+            $ctrl.task.start_at = '2018-02-28T15:25:47Z';
+            scope.$digest();
+            $ctrl.task.start_at = null;
+            scope.$digest();
+            expect($ctrl.task.notification_time_before).toEqual(null);
+            expect($ctrl.task.notification_type).toEqual(null);
+        });
+
+        it('should handle notification_time_before adding a value', () => {
+            $ctrl.task.notification_time_before = null;
+            scope.$digest();
+            $ctrl.task.notification_time_before = 1;
+            scope.$digest();
+            expect($ctrl.task.notification_type).toEqual('both');
+        });
+
+        it('should handle notification_time_before removing a value', () => {
+            $ctrl.task.notification_time_before = 1;
+            scope.$digest();
+            $ctrl.task.notification_time_before = null;
+            scope.$digest();
+            expect($ctrl.task.notification_type).toEqual(null);
+        });
+
+        it('should call watchers on destroy', () => {
+            spyOn($ctrl, 'watcher').and.callFake(() => {});
+            spyOn($ctrl, 'watcher2').and.callFake(() => {});
+            scope.$emit('$destroy');
+            scope.$digest();
+            expect($ctrl.watcher).toHaveBeenCalledWith();
+            expect($ctrl.watcher2).toHaveBeenCalledWith();
+        });
+    });
+
     describe('save', () => {
         beforeEach(() => {
             spyOn(tasks, 'create').and.callFake(() => q.resolve({}));

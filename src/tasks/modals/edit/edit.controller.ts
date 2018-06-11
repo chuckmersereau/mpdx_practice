@@ -8,6 +8,8 @@ import tasksTags, { TasksTagsService } from '../../filter/tags/tags.service';
 class EditTaskController {
     task: any;
     taskInitialState: any;
+    watcher: () => void;
+    watcher2: () => void;
     constructor(
         private $log: ng.ILogService,
         private $scope: mgcrea.ngStrap.modal.IModalScope,
@@ -24,11 +26,31 @@ class EditTaskController {
 
         this.task = angular.copy(task);
         this.taskInitialState = angular.copy(task);
+
+        this.watcher = $scope.$watch('$ctrl.task.start_at', (newVal, oldVal) => {
+            const isOld = isNilOrEmpty(newVal) && !isNilOrEmpty(oldVal);
+            this.task.notification_time_before = isOld ? null : this.task.notification_time_before;
+            this.task.notification_type = isOld ? null : this.task.notification_type;
+        });
+
+        this.watcher2 = $scope.$watch('$ctrl.task.notification_time_before', (newVal, oldVal) => {
+            const isNew = !isNilOrEmpty(newVal) && isNilOrEmpty(oldVal);
+            const isOld = isNilOrEmpty(newVal) && !isNilOrEmpty(oldVal);
+            this.task.notification_type = isNew
+                ? 'both'
+                : isOld
+                    ? null
+                    : this.task.notification_type;
+        });
+
+        $scope.$on('$destroy', () => {
+            this.watcher();
+            this.watcher2();
+        });
     }
     save() {
         this.handleActivityContacts();
         this.handleDates();
-        this.task.notification_type = isNilOrEmpty(this.task.notification_time_before) ? null : 'email';
 
         let patch = createPatch(this.taskInitialState, this.task);
         /* istanbul ignore next */
