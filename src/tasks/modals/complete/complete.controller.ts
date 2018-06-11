@@ -47,7 +47,7 @@ class CompleteTaskController {
             : this.$q.resolve(false);
     }
     handleFollowUp() {
-        return this.task.next_action
+        return this.task.next_action && this.task.next_action !== 'None'
             ? this.tasks.addModal({
                 activityType: this.task.next_action,
                 comments: (union(defaultTo([], this.task.comments), defaultTo([], this.comment)) as any),

@@ -70,6 +70,15 @@ describe('tasks.modals.complete.controller', () => {
             });
             rootScope.$apply();
         });
+
+        it('shouldn\'t open next automation task if None', (done) => {
+            $ctrl.task.next_action = 'None';
+            $ctrl.save().then(() => {
+                expect(tasks.addModal).not.toHaveBeenCalled();
+                done();
+            });
+            rootScope.$apply();
+        });
     });
 
     describe('showPartnerStatus', () => {
