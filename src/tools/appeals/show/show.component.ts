@@ -302,40 +302,24 @@ class AppealController {
     onContactSelected(
         contact: any,
         successMessage: string = this.gettext('Contact successfully added to appeal'),
-        errorMessage: string = this.gettext('Unable to add contact to appeal'),
-        override: boolean = false
+        errorMessage: string = this.gettext('Unable to add contact to appeal')
     ): ng.IPromise<any> {
-        const data = {
-            id: uuid(),
-            appeal: {
-                id: this.appeal.id
-            },
-            contact: {
-                id: contact.id
-            },
-            force_list_deletion: override
-        };
         return this.api.post({
             url: `appeals/${this.appeal.id}/appeal_contacts`,
-            data: data,
+            data: {
+                id: uuid(),
+                appeal: {
+                    id: this.appeal.id
+                },
+                contact: {
+                    id: contact.id
+                }
+            },
             type: 'appeal_contacts',
-            overridePromise: true
+            successMessage: successMessage,
+            errorMessage: errorMessage
         }).then(() => {
-            this.alerts.addAlert(this.gettext(successMessage));
             this.getContactsNotGiven();
-            if (override) {
-                this.getExcludedContacts();
-            }
-        }).catch((ex) => {
-            if (ex.status === 400) {
-                ex.status = 200; // needed to avoid infinite loop in tests
-                const message = this.gettext('This contact has been previously excluded from this appeal. Are you certain you wish to add them?');
-                return this.modal.confirm(message).then(() => {
-                    this.onContactSelected(contact, successMessage, errorMessage, true);
-                });
-            } else {
-                this.alerts.addAlert(this.gettext(errorMessage), 'danger');
-            }
         });
     }
     removeContact(contact: any): ng.IPromise<void> {
@@ -356,7 +340,7 @@ class AppealController {
             });
         });
     }
-    private removeExcludedContact(id: string): ng.IPromise<any> {
+    removeExcludedContact(id: string): ng.IPromise<any> {
         return this.api.delete(`appeals/${this.appeal.id}/excluded_appeal_contacts/${id}`);
     }
     selectAll(): void {
@@ -373,7 +357,7 @@ class AppealController {
     deselectAll(): void {
         this.selectedContactIds = [];
     }
-    private selectAllPledges(status: string): ng.IPromise<void> {
+    selectAllPledges(status: string): ng.IPromise<void> {
         return this.api.get(`account_lists/${this.api.account_list_id}/pledges`, {
             include: 'contact',
             per_page: 10000,
@@ -396,7 +380,7 @@ class AppealController {
             this.selectedContactIds = contactIds;
         });
     }
-    private selectAllNotGiven(): ng.IPromise<void> {
+    selectAllNotGiven(): ng.IPromise<void> {
         return this.api.get(`appeals/${this.appeal.id}/appeal_contacts`, {
             per_page: 10000,
             include: 'contact',
@@ -431,7 +415,7 @@ class AppealController {
             )
         );
     }
-    private refreshLists(status: string = null): ng.IPromise<void> {
+    refreshLists(status: string = null): ng.IPromise<void> {
         this.getContactsNotGiven();
         switch (status) {
             case 'processed':
@@ -449,7 +433,7 @@ class AppealController {
         }
         return this.reloadAppeal();
     }
-    private refreshAllStatuses(): ng.IPromise<any> {
+    refreshAllStatuses(): ng.IPromise<any> {
         return this.$q.all([
             this.getPledgesProcessed(),
             this.getPledgesNotProcessed(),
@@ -469,18 +453,18 @@ class AppealController {
         const result = this.cantExportToMailChimp();
         return result ? alert(result as string) : this.doExportToMailChimp();
     }
-    private cantExportToMailChimp(): boolean | string {
+    cantExportToMailChimp(): boolean | string {
         return defaultTo(this.isSelectedPrimary(), this.isMailChimpListUndefined());
     }
-    private isMailChimpListUndefined(): string | null {
+    isMailChimpListUndefined(): string | null {
         const message = 'No primary Mailchimp list defined. Please select a list in preferences.';
         return isNilOrEmpty(get('primary_list_id', this.mailchimp.data)) ? message : null;
     }
-    private isSelectedPrimary(): boolean | string {
+    isSelectedPrimary(): boolean | string {
         const message = 'Please select a list other than your primary Mailchimp list.';
         return get('primary_list_id', this.mailchimp.data) === this.mailchimpListId ? message : false;
     }
-    private doExportToMailChimp(): ng.IPromise<any> {
+    doExportToMailChimp(): ng.IPromise<any> {
         const successMessage = this.gettext('Contact(s) successfully exported to Mailchimp');
         const errorMessage = this.gettext('Unable to add export contact(s) to Mailchimp');
         return this.api.post({
@@ -536,7 +520,7 @@ class AppealController {
             this.blockUIExcluded.reset();
         });
     }
-    private reloadAppeal(): ng.IPromise<void> {
+    reloadAppeal(): ng.IPromise<void> {
         return this.appealsShow.getAppeal(this.appeal.id).then((data) => {
             this.appeal = data;
         });

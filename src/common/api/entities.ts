@@ -59,7 +59,7 @@ export class EntityAttributes {
             },
             appeal_contacts: {
                 attributes: [
-                    'appeal', 'contact', 'force_list_deletion'
+                    'appeal', 'contact'
                 ],
                 appeal: { ref: 'id' },
                 contact: { ref: 'id' }
