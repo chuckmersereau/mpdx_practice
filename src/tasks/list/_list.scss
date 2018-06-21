@@ -72,7 +72,6 @@ tasks-list {
         > div.menu-buttons {
             @extend .lists.item-list-menu.menu-buttons;
             display: grid;
-            min-width: 305px;
             height: 39px;
             padding: 0;
             grid-template-columns: 1fr auto;
