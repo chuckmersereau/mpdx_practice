@@ -1,6 +1,6 @@
 import 'angular-gettext';
+import { assign, defaultTo, find } from 'lodash/fp';
 import { convertTags } from '../../fp/tags';
-import { defaultTo, find } from 'lodash/fp';
 import api, { ApiService } from '../../api/api.service';
 import modal, { ModalService } from '../../modal/modal.service';
 import replaceAll from '../../fp/replaceAll';
@@ -80,9 +80,12 @@ class Save {
         }).then(() => this.afterSave(option.key, data));
     }
     private afterSave(key: string, data: any): void {
-        let option: any = defaultTo({}, find({ key: key }, this.users.currentOptions));
-        option.value = data;
-        this.users.currentOptions[key] = option;
+        const foundOption = find({ key: key }, this.users.currentOptions);
+        const option = defaultTo({}, foundOption);
+        this.users.currentOptions[key] = assign(option, {
+            key: key,
+            value: data
+        });
     }
 }
 
