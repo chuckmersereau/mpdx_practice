@@ -41,6 +41,10 @@
                 color: $color-white !important;
             }
         }
+        // fix for multi-select placeholder cutoff
+        > li.search-field:first-of-type .chosen-search-input {
+            width: 100% !important;
+        }
         > li.search-choice {
             margin: 3px 0 0 3px;
             transition: background-color 0.2s ease-out;
