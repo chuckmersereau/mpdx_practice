@@ -60,7 +60,8 @@ export class FixCommitmentInfoService {
                 pledge_amount: parseFloat(defaultTo(contact.pledge_amount, contact.suggested_changes.pledge_amount)),
                 pledge_currency: defaultTo(contact.pledge_currency, contact.suggested_changes.pledge_currency),
                 status: defaultTo(contact.status, contact.suggested_changes.status),
-                pledge_frequency: defaultTo(contact.pledge_frequency, contact.suggested_changes.pledge_frequency)
+                pledge_frequency: defaultTo(contact.pledge_frequency,
+                    parseInt(contact.suggested_changes.pledge_frequency))
             }));
         }, [], data);
     }

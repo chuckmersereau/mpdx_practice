@@ -9,7 +9,7 @@ let apiData: any = [{
     suggested_changes: {
         pledge_amount: '50.0',
         pledge_currency: 'USD',
-        pledge_frequency: 2,
+        pledge_frequency: '2',
         status: 'Partner - Financial'
     }
 }];
@@ -222,7 +222,7 @@ describe('tools.fix.commitmentInfo.service', () => {
             expect(data[0].original_status).toEqual(apiData[0].status);
             expect(data[0].pledge_amount).toEqual(50.0);
             expect(data[0].pledge_currency).toEqual(apiData[0].suggested_changes.pledge_currency);
-            expect(data[0].pledge_frequency).toEqual(apiData[0].suggested_changes.pledge_frequency);
+            expect(data[0].pledge_frequency).toEqual(parseInt(apiData[0].suggested_changes.pledge_frequency));
             expect(data[0].status).toEqual(apiData[0].suggested_changes.status);
         });
     });
