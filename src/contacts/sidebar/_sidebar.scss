@@ -2,6 +2,7 @@
 @import 'filter/tags/tags';
 @import 'list/list';
 contacts-sidebar {
+    height: calc(100vh - 130px); // calc needed for safari
     padding: $container-padding 0;
     background-color: $color-filter-bar;
     overflow-y: auto;

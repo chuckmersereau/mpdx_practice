@@ -114,20 +114,21 @@
             <a ng-click="$ctrl.contacts.openNewContactModal()" class="btn btn-primary" translate>Add New Contact</a>
         </div>
     </div>
-    <div ng-if="$ctrl.data.length > 0 || $ctrl.loading">
-        <contacts-list-item ng-repeat="contact in $ctrl.data track by contact.id"
-                            contact="contact"
-                            id="contact_{{::contact.id}}"
-                            data-hook="contact"
-                            selected="$ctrl.allSelected || $ctrl.contacts.isSelected(contact.id)"
-                            ng-class="{ selected: $ctrl.allSelected || $ctrl.contacts.isSelected(contact.id) }"></contacts-list-item>
-        <div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
-          <i class="far fa-circle-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
-        </div>
-        <pagination meta="$ctrl.meta.pagination"
-                    on-change="$ctrl.pageChange(page)"
-                    hide-count="true"
-                    class="text-center">
-        </pagination>
+    <ul class="list-group" ng-if="$ctrl.data.length > 0 || $ctrl.loading">
+        <li class="list-group-item" ng-repeat="contact in $ctrl.data track by contact.id">
+            <contacts-list-item contact="contact"
+                id="contact_{{::contact.id}}"
+                data-hook="contact"
+                selected="$ctrl.allSelected || $ctrl.contacts.isSelected(contact.id)"
+                ng-class="{ selected: $ctrl.allSelected || $ctrl.contacts.isSelected(contact.id) }"></contacts-list-item>
+        </li>
+    </ul>
+    <pagination meta="$ctrl.meta.pagination"
+                on-change="$ctrl.pageChange(page)"
+                hide-count="true"
+                class="text-center">
+    </pagination>
+    <div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
+        <i class="far fa-circle-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
     </div>
 </div>

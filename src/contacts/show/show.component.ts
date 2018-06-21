@@ -32,7 +32,6 @@ class ContactController {
         private $state: StateService,
         private $stateParams: StateParams,
         private $transitions: TransitionService,
-        private $anchorScroll: ng.IAnchorScrollService,
         blockUI: IBlockUIService,
         private gettextCatalog: ng.gettext.gettextCatalog,
         help: HelpService,

@@ -9,6 +9,7 @@ body {
     color: $color-text;
     font-family: $font-primary;
     font-size: $font-size-md;
+    overflow: hidden; // needed for safari
     a {
         cursor: pointer;
     }

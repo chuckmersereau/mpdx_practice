@@ -7,7 +7,7 @@ contacts {
     display: grid;
     height: 100%;
     overflow: hidden;
-    grid-template-columns: 250px $contact-viewport-width;
+    grid-template-columns: $contact-sidebar-width $contact-viewport-width;
     @media (max-width: $contact-menu-breakpoint) {
         grid-template-columns: 1fr;
     }

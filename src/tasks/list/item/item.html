@@ -1,7 +1,7 @@
 <div class="item"
      ng-class="{ 'item--selected' : $ctrl.selected }"
      ng-click="$ctrl.select($event)">
-     <div class="select-box" ng-class="{ 'selected': $ctrl.selected }"></div>
+     <div class="select-box icon-fixed-width" ng-class="{ 'selected': $ctrl.selected }"></div>
     <a ng-click="$ctrl.complete(); $event.stopPropagation();"
        class="complete"
        title="{{::'Completed' | translate}}"
