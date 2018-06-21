@@ -12,7 +12,9 @@ class FilterController {
     activeFilters: any[];
     dateRangeLocale: any;
     selectedSort: string;
+    watcher2: () => void;
     constructor(
+        private $rootScope: ng.IRootScopeService,
         private $scope: ng.IScope,
         private filters: FiltersService,
         private gettextCatalog: ng.gettext.gettextCatalog,
@@ -29,6 +31,14 @@ class FilterController {
 
         this.selectedSort = 'all';
         this.activeFilters = [];
+    }
+    $onInit() {
+        this.watcher2 = this.$rootScope.$on('accountListUpdated', () => {
+            this.selectedSort = 'all';
+        });
+    }
+    $onDestroy() {
+        this.watcher2();
     }
     useSavedFilter(name) {
         const option = this.users.getCurrentOptionValue(`saved_tasks_filter_${name}`);

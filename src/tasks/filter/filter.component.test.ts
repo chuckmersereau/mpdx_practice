@@ -42,6 +42,29 @@ describe('tasks.filter.component', () => {
         });
     });
 
+    describe('$onInit', () => {
+        afterEach(() => {
+            $ctrl.$onDestroy();
+        });
+
+        it('should reset selectedSort on accountList change', () => {
+            $ctrl.$onInit();
+            $ctrl.selectedSort = 'a';
+            rootScope.$emit('accountListUpdated');
+            rootScope.$digest();
+            expect($ctrl.selectedSort).toEqual('all');
+        });
+    });
+
+    describe('$onDestroy', () => {
+        it('should destroy watcher', () => {
+            $ctrl.$onInit();
+            spyOn($ctrl, 'watcher2').and.callThrough();
+            $ctrl.$onDestroy();
+            expect($ctrl.watcher2).toHaveBeenCalledWith();
+        });
+    });
+
     describe('useSavedFilter', () => {
         beforeEach(() => {
             users.currentOptions = options;
