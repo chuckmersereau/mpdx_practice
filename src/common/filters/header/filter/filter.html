@@ -8,7 +8,7 @@
     </div>
     <div class="filters-header__filter__option"
          ng-if="::$ctrl.isArray($ctrl.filterParams[$ctrl.filter.name]) && value !== ''"
-         ng-repeat="value in $ctrl.filterParams[$ctrl.filter.name]">
+         ng-repeat="value in $ctrl.filterParams[$ctrl.filter.name] track by $index">
         <span class="filters-header__filter__option__value">{{ ::$ctrl.getOption($ctrl.filter, value) }}</span>
     </div>
     <div class="filters-header__filter__option" ng-if="::!$ctrl.isArray($ctrl.filterParams[$ctrl.filter.name])">
