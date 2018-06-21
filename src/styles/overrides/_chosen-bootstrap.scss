@@ -160,6 +160,9 @@ $chosen-sprite: '../node_modules/chosen-js/chosen-sprite.png';
                 background: url($chosen-sprite) no-repeat 0 7px;
             }
         }
+        input.chosen-focus-input {
+            display: none; // odd side effect of unknown origin
+        }
     }
     .chosen-single.chosen-disabled {
         .chosen-single {
