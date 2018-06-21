@@ -87,6 +87,9 @@ menu {
                     }
                 }
             }
+            .dropdown-menu {
+                z-index: 1001;
+            }
         }
     }
     > div.menu {
