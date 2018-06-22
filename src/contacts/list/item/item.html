@@ -65,7 +65,8 @@
         </a>
     </div>
     <div class="contact-details-3">
-        <div ng-class="{'text-danger': $ctrl.hasSendNewsletterError()}" ng-if="::$ctrl.contact.send_newsletter">
+        <div ng-class="{'text-danger': $ctrl.hasSendNewsletterError()}"
+             ng-if="::($ctrl.contact.send_newsletter && $ctrl.contact.send_newsletter !== 'None')">
             <translate>Newsletter</translate> -
             <translate ng-if="::$ctrl.contact.send_newsletter == 'Both'">Both</translate>
             <translate ng-if="::$ctrl.contact.send_newsletter == 'Physical'">Physical</translate>
