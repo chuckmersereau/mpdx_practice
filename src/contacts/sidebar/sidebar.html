@@ -1,32 +1,42 @@
-<filters-header filters="$ctrl.contactFilter.data"
-                filter-default-params="$ctrl.contactFilter.default_params"
-                filter-params="$ctrl.contactFilter.params"
-                selected-tags="$ctrl.contactsTags.selectedTags"
-                rejected-tags="$ctrl.contactsTags.rejectedTags"
-                invert-filter="$ctrl.contactFilter.invertMultiselect($filter)"
-                display-filters="$ctrl.contactFilter.isResettable()"
-                remove-filter="$ctrl.contactFilter.removeFilter($filter)"
-                reject-tag="$ctrl.contactsTags.rejectTag($tag)"
-                remove-selected-tag="$ctrl.contactsTags.removeFromSelected($tag)"
-                select-tag="$ctrl.contactsTags.selectTag($tag)"
-                remove-rejected-tag="$ctrl.contactsTags.removeFromRejected($tag)">
-</filters-header>
-<contacts-filter ng-if="!$ctrl.session.isInState('contacts.show')"></contacts-filter>
-<div class="contact-drawer" ng-if="$ctrl.session.isInState('contacts.show')" role="complementary">
-    <div class="edit-filters">
-        <div class="btn-group btn-group-justified" role="group">
-          <button type="button" class="btn btn-reverse" ng-click="$ctrl.showFilters = false" ng-class="{'active':!$ctrl.showFilters}">
-              <i class="fas fa-users"></i> <span translate>Contacts</span>
-          </button>
-          <button type="button" class="btn btn-reverse" ng-click="$ctrl.showFilters = true" ng-class="{'active': $ctrl.showFilters}">
-              <i class="fas fa-filter"></i> <span translate>Filters</span>
-          </button>
+<div class="minimized-sidebar"
+     ng-click="$ctrl.session.showFiltersOnMobile = true"
+     ng-if="!$ctrl.session.showFiltersOnMobile">
+    <i class="fal fa-chevron-double-right"></i>
+</div>
+<div class="maximized-sidebar">
+    <filters-header filters="$ctrl.contactFilter.data"
+                    filter-default-params="$ctrl.contactFilter.default_params"
+                    filter-params="$ctrl.contactFilter.params"
+                    selected-tags="$ctrl.contactsTags.selectedTags"
+                    rejected-tags="$ctrl.contactsTags.rejectedTags"
+                    invert-filter="$ctrl.contactFilter.invertMultiselect($filter)"
+                    display-filters="$ctrl.contactFilter.isResettable()"
+                    remove-filter="$ctrl.contactFilter.removeFilter($filter)"
+                    reject-tag="$ctrl.contactsTags.rejectTag($tag)"
+                    remove-selected-tag="$ctrl.contactsTags.removeFromSelected($tag)"
+                    select-tag="$ctrl.contactsTags.selectTag($tag)"
+                    remove-rejected-tag="$ctrl.contactsTags.removeFromRejected($tag)">
+    </filters-header>
+    <contacts-filter ng-if="!$ctrl.session.isInState('contacts.show')"></contacts-filter>
+    <div class="contact-drawer" ng-if="$ctrl.session.isInState('contacts.show')" role="complementary">
+        <div class="edit-filters">
+            <div class="btn-group btn-group-justified" role="group">
+              <button type="button" class="btn btn-reverse" ng-click="$ctrl.showFilters = false" ng-class="{'active':!$ctrl.showFilters}">
+                  <i class="fas fa-users"></i> <span translate>Contacts</span>
+              </button>
+              <button type="button" class="btn btn-reverse" ng-click="$ctrl.showFilters = true" ng-class="{'active': $ctrl.showFilters}">
+                  <i class="fas fa-filter"></i> <span translate>Filters</span>
+              </button>
+            </div>
+            <div class="filter-collapse" ng-click="$ctrl.session.showFiltersOnMobile = false">
+                <i class="fal fa-chevron-double-left"></i>
+            </div>
         </div>
-    </div>
-    <div class="list" ng-show="$ctrl.showFilters">
-        <contacts-filter></contacts-filter>
-    </div>
-    <div class="list" ng-show="!$ctrl.showFilters">
-        <contacts-sidebar-list selected="$ctrl.selected"></contacts-sidebar-list>
+        <div class="list" ng-show="$ctrl.showFilters">
+            <contacts-filter></contacts-filter>
+        </div>
+        <div class="list" ng-show="!$ctrl.showFilters">
+            <contacts-sidebar-list selected="$ctrl.selected"></contacts-sidebar-list>
+        </div>
     </div>
 </div>

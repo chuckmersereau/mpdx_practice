@@ -6,22 +6,23 @@
 @import 'referrals/referrals';
 @import 'tasks/tasks';
 contact {
-    $contact-drawer-width: 460px;
     $hide-drawer-width: 1386px;
+    $contact-drawer-width: 460px;
+    $chart-padding: 30px;
     display: block;
     height: 100%;
     > div.contact-show {
         display: grid;
         height: 100%;
         background-color: $color-blue-deep-alpha-10;
-        grid-template-columns: 1fr 0;
-        grid-column-gap: 0;
-        overflow-x: hidden;
         overflow-y: auto;
+        overflow-x: hidden;
+        grid-column-gap: 0;
+        grid-template-columns: 1fr 0;
         > div.contact-content {
             display: grid;
-            grid-template-rows: auto 1fr;
             grid-column: 1;
+            grid-template-rows: auto 1fr;
             > contact-info {
                 width: 100%;
                 grid-row: 1;
@@ -38,8 +39,8 @@ contact {
             }
             .contact-tabs {
                 display: grid;
-                grid-row: 2;
                 grid-template-rows: 40px 1fr;
+                grid-row: 2;
                 div.active-drawer {
                     @media(min-width: $hide-drawer-width) {
                         display: none;
@@ -61,24 +62,46 @@ contact {
             }
         }
         > .contact-content,
-        > .contact-content > contact-info {
+        > .contact-content > contact-info,
+        > .contact-content > .contact-tabs {
+            $inside-width: calc(100vw - #{$contact-small-sidebar-width});
             @media (max-width: $contact-menu-breakpoint) {
-                width: 100%;
+                width: $inside-width;
+            }
+            donations-chart { // chartjs workaround
+                padding-right: 10px;
+                @media(max-width: $hide-drawer-width) {
+                    width: calc(#{$contact-viewport-width} - #{$chart-padding}) !important;
+                }
+                @media (max-width: $contact-menu-breakpoint) {
+                    width: calc(#{$inside-width} - #{$chart-padding}) !important;
+                    padding-right: 10px;
+                }
             }
         }
         &.drawer {
-            grid-template-columns: auto $contact-drawer-width;
+            $show-drawer-width: calc(#{$contact-viewport-width} - #{$contact-drawer-width});
             @media(max-width: $hide-drawer-width) {
                 grid-template-columns: 1fr 0;
             }
+            grid-template-columns: auto $contact-drawer-width;
             > .contact-content,
-            > .contact-content > contact-info {
-                width: calc(#{$contact-viewport-width} - #{$contact-drawer-width});
+            > .contact-content > contact-info,
+            > .contact-content > .contact-tabs {
+                @media(min-width: $hide-drawer-width) {
+                    width: $show-drawer-width;
+                }
                 @media(max-width: $hide-drawer-width) {
                     width: $contact-viewport-width;
                 }
-                @media (max-width: $contact-menu-breakpoint) {
-                    width: 100vw;
+                @media(max-width: $contact-menu-breakpoint) {
+                    width: calc(100vw - #{$contact-small-sidebar-width});
+                }
+            }
+            donations-chart { // chartjs workaround
+                padding-right: 0;
+                @media (min-width: $hide-drawer-width) {
+                    width: calc(#{$show-drawer-width} - #{$chart-padding}) !important;
                 }
             }
         }
@@ -134,8 +157,8 @@ contact {
             }
             > .contact-drawer-content {
                 padding: $container-padding;
-                overflow-x: hidden;
                 overflow-y: auto;
+                overflow-x: hidden;
                 tasks-list {
                     .menu {
                         display: none;

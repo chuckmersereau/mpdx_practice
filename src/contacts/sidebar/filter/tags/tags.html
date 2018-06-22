@@ -1,4 +1,4 @@
-<div bs-collapse ng-model="isCollapsed" ng-init="isCollapsed = false" bs-collapse>
+<div bs-collapse ng-model="isCollapsed" ng-init="isCollapsed = false">
     <div class="filter--filtergroup_title" bs-collapse-toggle>
         <i class="fas fa-tags"></i>
         <div translate>Tags</div>
@@ -13,6 +13,11 @@
           </li>
         </ul>
         <i class="fal fa-chevron-down" ng-class="{ 'fa-rotate-180': isCollapsed }"></i>
+        <div class="filter-collapse"
+             ng-if="!$ctrl.session.isInState('contacts.show')"
+             ng-click="$ctrl.session.showFiltersOnMobile = false">
+            <i class="fal fa-chevron-double-left"></i>
+        </div>
     </div>
     <div bs-collapse-target>
         <div class="filter_hint" translate>Click a tag twice to look up all contacts who do not have that tag.</div>

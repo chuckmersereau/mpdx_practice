@@ -219,7 +219,7 @@ class ListController {
         });
     }
     /* eslint-disable complexity */
-    process(task) {
+    private process(task) {
         const startAt = moment(task.start_at);
         if (task.completed) {
             task.category = 'completed';
@@ -235,7 +235,7 @@ class ListController {
         return task;
     }
     /* eslint-enable */
-    getTotalCount() { // only used when search is empty
+    private getTotalCount() { // only used when search is empty
         return this.api.get('tasks', {
             filter: {
                 account_list_id: this.api.account_list_id
@@ -360,6 +360,7 @@ class ListController {
     onOpen(task, action) {
         this.selectedTask = angular.copy(task);
         this.drawerView = action;
+        this.$rootScope.$emit('taskDrawerOpened');
     }
     onClose() {
         this.selectedTask = null;

@@ -34,12 +34,6 @@
     </div>
     <div class="menu-buttons">
         <div class="btn-group">
-            <a class="btn btn-default visible-sm visible-xs"
-               ng-class="{ 'btn-reverse' : $ctrl.session.showFiltersOnMobile }"
-               ng-click="$ctrl.session.showFiltersOnMobile = !$ctrl.session.showFiltersOnMobile">
-                <i class="fas fa-sliders"></i>
-                <translate>Filters</translate>
-            </a>
             <div class="btn-group" ng-show="$ctrl.selected.length > 0">
                 <div class="dropdown">
                     <a class="btn btn-default dropdown-toggle"

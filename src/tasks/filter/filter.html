@@ -36,6 +36,11 @@
             <option translate value="starred">Starred</option>
             <option translate value="completed">Completed</option>
         </select>
+        <div class="filter-collapse"
+             ng-if="!$ctrl.session.isInState('contacts.show')"
+             ng-click="$ctrl.session.showFiltersOnMobile = false">
+            <i class="fal fa-chevron-double-left"></i>
+        </div>
     </div>
     <tasks-tags class="filter--filtergroup"></tasks-tags>
     <div class="filter--filtergroup" bs-collapse ng-model="isCollapsed" ng-init="isCollapsed = false">

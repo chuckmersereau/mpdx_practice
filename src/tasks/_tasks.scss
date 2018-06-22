@@ -6,24 +6,34 @@ tasks {
     display: grid;
     height: 100%;
     overflow: hidden;
-    grid-template-columns: auto 1fr;
     grid-template-rows: 100%;
+    grid-template-columns: auto auto 1fr;
+    > .minimized-sidebar {
+        width: 20px;
+        padding-top: 15px;
+        background-color: $color-filter-bar;
+        color: $color-white;
+        text-align: center;
+        cursor: pointer;
+        grid-column: 1;
+        @media(min-width: $screen-md) {
+            display: none;
+            width: 0;
+        }
+    }
     > tasks-filter {
         width: 250px;
+        grid-column: 2;
         overflow-y: auto;
-        grid-column: 1;
-        grid-row: 1;
-        &.hidden-sm,
-        &.hidden-xs {
+        &.hide-small {
             @media (max-width: $screen-md) {
-                width: 0;
+                display: none;
             }
         }
     }
     > tasks-list {
         width: 100%;
         overflow: hidden;
-        grid-column: 2;
-        grid-row: 1;
+        grid-column: 3;
     }
 }

@@ -83,6 +83,14 @@ describe('contacts.show.component', () => {
                 );
             });
         });
+
+        it('should hide drawer on task drawer open', () => {
+            spyOn($ctrl, 'setActiveDrawer').and.callFake(() => {});
+            $ctrl.$onInit();
+            scope.$emit('taskDrawerOpened');
+            scope.$digest();
+            expect($ctrl.setActiveDrawer).toHaveBeenCalledWith(null);
+        });
     });
 
     describe('$onChanges', () => {
@@ -97,14 +105,17 @@ describe('contacts.show.component', () => {
             $ctrl.watcher = () => {};
             $ctrl.watcher2 = () => {};
             $ctrl.watcher3 = () => {};
+            $ctrl.watcher4 = () => {};
             spyOn(state, 'go').and.callFake(() => {});
             spyOn($ctrl, 'watcher').and.callFake(() => {});
             spyOn($ctrl, 'watcher2').and.callFake(() => {});
             spyOn($ctrl, 'watcher3').and.callFake(() => {});
+            spyOn($ctrl, 'watcher4').and.callFake(() => {});
             $ctrl.$onDestroy();
             expect($ctrl.watcher).toHaveBeenCalled();
             expect($ctrl.watcher2).toHaveBeenCalled();
             expect($ctrl.watcher3).toHaveBeenCalled();
+            expect($ctrl.watcher4).toHaveBeenCalled();
             scope.$emit('accountListUpdated');
             scope.$digest();
             expect(state.go).not.toHaveBeenCalled();

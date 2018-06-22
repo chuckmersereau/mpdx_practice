@@ -3,6 +3,18 @@ tasks-filter {
     padding: 15px 0;
     background-color: $color-filter-bar;
     > .filter > .title {
+        display: grid;
         margin-bottom: 10px;
+        grid-template-columns: 1fr auto;
+        .filter-collapse {
+            flex-grow: 0;
+            width: 20px;
+            color: $color-white;
+            text-align: right;
+            cursor: pointer;
+            @media(min-width: $contact-menu-breakpoint) {
+                display: none;
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 import { includes, reject } from 'lodash/fp';
 import api, { ApiService } from '../../../../common/api/api.service';
 import contactsTags, { ContactsTagsService } from './tags.service';
+import session, { SessionService } from '../../../../common/session/session.service';
 
 class TagsController {
     hideTags: boolean;
@@ -8,7 +9,8 @@ class TagsController {
         private $log: ng.ILogService,
         private $rootScope: ng.IRootScopeService,
         private api: ApiService,
-        private contactsTags: ContactsTagsService
+        private contactsTags: ContactsTagsService,
+        private session: SessionService
     ) {
         this.hideTags = true;
     }
@@ -63,5 +65,5 @@ const Tags = {
 };
 
 export default angular.module('mpdx.contacts.filter.tags.component', [
-    api, contactsTags
+    api, contactsTags, session
 ]).component('contactsTags', Tags).name;

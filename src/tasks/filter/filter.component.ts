@@ -5,6 +5,7 @@ import { TasksTagsService } from './tags/tags.service';
 import { UsersService } from '../../common/users/users.service';
 import filters, { FiltersService } from '../../common/filters/filters.service';
 import modal, { ModalService } from '../../common/modal/modal.service';
+import session, { SessionService } from '../../common/session/session.service';
 import tasks, { TasksService } from '../tasks.service';
 import tasksFilter, { TasksFilterService } from './filter.service';
 
@@ -19,6 +20,7 @@ class FilterController {
         private filters: FiltersService,
         private gettextCatalog: ng.gettext.gettextCatalog,
         private modal: ModalService,
+        private session: SessionService,
         private tasksFilter: TasksFilterService,
         private tasksTags: TasksTagsService,
         private tasks: TasksService,
@@ -79,5 +81,5 @@ const Filter = {
 
 export default angular.module('mpdx.tasks.filter.component', [
     'gettext',
-    filters, modal, tasks, tasksFilter
+    filters, modal, session, tasks, tasksFilter
 ]).component('tasksFilter', Filter).name;

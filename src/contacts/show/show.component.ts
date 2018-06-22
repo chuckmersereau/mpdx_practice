@@ -26,6 +26,7 @@ class ContactController {
     watcher: () => void;
     watcher2: () => void;
     watcher3: Function;
+    watcher4: () => void;
     constructor(
         private $log: ng.ILogService,
         private $rootScope: ICustomRootScope,
@@ -135,6 +136,10 @@ class ContactController {
         this.watcher3 = this.$transitions.onStart({ to: 'contacts.show.*' }, (transition) => {
             this.setActiveTab(transition);
         });
+
+        this.watcher4 = this.$rootScope.$on('taskDrawerOpened', () => {
+            this.setActiveDrawer(null);
+        });
     }
     $onChanges() {
         this.$log.debug('selected contact: ', this.contacts.current);
@@ -144,6 +149,7 @@ class ContactController {
         this.watcher();
         this.watcher2();
         this.watcher3();
+        this.watcher4();
     }
     save() {
         const source = angular.copy(this.contacts.current); // to avoid onChanges changes

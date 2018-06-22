@@ -6,13 +6,15 @@ contacts-sidebar {
     padding: $container-padding 0;
     background-color: $color-filter-bar;
     overflow-y: auto;
-    > div.contact-drawer {
+    .contact-drawer {
         display: grid;
         grid-template-rows: auto 1fr;
         > div.edit-filters {
+            display: grid;
             padding: 0 $container-padding 10px;
             color: $color-white;
             line-height: 29px;
+            grid-template-columns: 1fr 20px;
             grid-row: 1 / 1;
             .btn-group-justified {
                 display: flex;
@@ -27,14 +29,37 @@ contacts-sidebar {
                     background-color: $color-sidebar-bg;
                 }
             }
+            @media(min-width: $contact-menu-breakpoint) {
+                grid-template-columns: 1fr;
+            }
         }
         > div.list {
             grid-row: 2 / 2;
         }
     }
-    &.hide-small {
-        @media (max-width: $contact-menu-breakpoint) {
+    .filter-collapse {
+        flex-grow: 0;
+        width: 20px;
+        color: $color-white;
+        text-align: right;
+        cursor: pointer;
+        @media(min-width: $contact-menu-breakpoint) {
             display: none;
+        }
+    }
+    > .minimized-sidebar {
+        color: $color-white;
+        text-align: center;
+        cursor: pointer;
+        @media(min-width: $contact-menu-breakpoint) {
+            display: none;
+        }
+    }
+    &.hide-small {
+        > .maximized-sidebar {
+            @media (max-width: $contact-menu-breakpoint) {
+                display: none;
+            }
         }
     }
 }

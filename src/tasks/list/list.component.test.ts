@@ -671,4 +671,27 @@ describe('tasks.list.component', () => {
             });
         });
     });
+
+    describe('onOpen', () => {
+        const task = { id: 1 };
+        beforeEach(() => {
+            spyOn(rootScope, '$emit').and.callFake(() => {});
+        });
+
+        it('should set selectedTask to copy of task', () => {
+            $ctrl.onOpen(task, 'comment');
+            expect($ctrl.selectedTask).toEqual(task);
+            expect($ctrl.selectedTask === task).toBeFalsy();
+        });
+
+        it('should set drawerView to action', () => {
+            $ctrl.onOpen(task, 'comment');
+            expect($ctrl.drawerView).toEqual('comment');
+        });
+
+        it('should emit taskDrawerOpened', () => {
+            $ctrl.onOpen(task, 'comment');
+            expect(rootScope.$emit).toHaveBeenCalledWith('taskDrawerOpened');
+        });
+    });
 });
