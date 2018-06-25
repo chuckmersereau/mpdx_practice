@@ -17,6 +17,8 @@ env:
     matrix:
       - RUN_LINT=true RUN_TEST=true
       - RUN_BUILD=true
+before_deploy:
+  - pip install --user awscli
 deploy:
 - provider: script
   script: ~/.local/bin/aws s3 sync public s3://cru-mpdx-web-stage --region us-east-1 --acl public-read --exclude '*.html' --cache-control 'public, max-age=31536000' --delete
