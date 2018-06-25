@@ -235,14 +235,20 @@ describe('tools.appeals.show.component', () => {
     });
 
     describe('onContactSelected', () => {
+        const successMessage = 'Contact successfully added to appeal';
+        const errorMessage = 'Unable to add contact to appeal';
+        let ex = {
+            status: 500
+        };
         beforeEach(() => {
             $ctrl.appeal = { id: 123 };
+            spyOn($ctrl, 'getContactsNotGiven').and.callFake(() => q.resolve());
+            spyOn($ctrl, 'getExcludedContacts').and.callFake(() => q.resolve());
+            spyOn(modal, 'confirm').and.callFake(() => q.resolve());
         });
 
         it('should add the contact to the appeal', () => {
             spyOn(api, 'post').and.callFake(() => q.resolve());
-            const successMessage = 'Contact successfully added to appeal';
-            const errorMessage = 'Unable to add contact to appeal';
             $ctrl.onContactSelected({ id: 1 });
             expect(api.post).toHaveBeenCalledWith({
                 url: 'appeals/123/appeal_contacts',
@@ -253,14 +259,85 @@ describe('tools.appeals.show.component', () => {
                     },
                     contact: {
                         id: 1
-                    }
+                    },
+                    force_list_deletion: false
                 },
                 type: 'appeal_contacts',
-                successMessage: successMessage,
-                errorMessage: errorMessage
+                overridePromise: true
             });
             expect($ctrl.gettext).toHaveBeenCalledWith(successMessage);
             expect($ctrl.gettext).toHaveBeenCalledWith(errorMessage);
+        });
+
+        it('should alert a success message', (done) => {
+            spyOn(api, 'post').and.callFake(() => q.resolve());
+            $ctrl.onContactSelected({ id: 1 }).then(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith(successMessage);
+                done();
+            });
+            scope.$digest();
+        });
+
+        it('should only call getContactsNotGiven', (done) => {
+            spyOn(api, 'post').and.callFake(() => q.resolve());
+            $ctrl.onContactSelected({ id: 1 }).then(() => {
+                expect($ctrl.getContactsNotGiven).toHaveBeenCalledWith();
+                expect($ctrl.getExcludedContacts).not.toHaveBeenCalled();
+                done();
+            });
+            scope.$digest();
+        });
+
+        it('should call getExcludedContacts on override', (done) => {
+            spyOn(api, 'post').and.callFake(() => q.resolve());
+            $ctrl.onContactSelected({ id: 1 }, successMessage, errorMessage, true).then(() => {
+                expect($ctrl.getExcludedContacts).toHaveBeenCalledWith();
+                done();
+            });
+            scope.$digest();
+        });
+
+        it('should alert error message on generic failure', (done) => {
+            spyOn(api, 'post').and.returnValues(q.reject(ex), q.resolve());
+            $ctrl.onContactSelected({ id: 1 }, successMessage, errorMessage).then(() => {
+                expect(alerts.addAlert).toHaveBeenCalledWith(errorMessage, 'danger');
+                done();
+            });
+            scope.$digest();
+        });
+
+        it('should open a confirm modal if contact was excluded', (done) => {
+            ex.status = 400;
+            spyOn(api, 'post').and.returnValues(q.reject(ex), q.resolve());
+            $ctrl.onContactSelected({ id: 1 }, successMessage, errorMessage).then(() => {
+                expect(modal.confirm).toHaveBeenCalledWith('This contact has been previously excluded from this appeal. Are you certain you wish to add them?');
+                done();
+            });
+            scope.$digest();
+        });
+
+        it('should re-call with override if confirmed excluded', (done) => {
+            ex.status = 400;
+            spyOn(api, 'post').and.returnValues(q.reject(ex), q.resolve());
+            $ctrl.onContactSelected({ id: 1 }, successMessage, errorMessage).then(() => {
+                expect(api.post).toHaveBeenCalledWith({
+                    url: 'appeals/123/appeal_contacts',
+                    data: {
+                        id: jasmine.any(String),
+                        appeal: {
+                            id: 123
+                        },
+                        contact: {
+                            id: 1
+                        },
+                        force_list_deletion: true
+                    },
+                    type: 'appeal_contacts',
+                    overridePromise: true
+                });
+                done();
+            });
+            scope.$digest();
         });
     });
 
