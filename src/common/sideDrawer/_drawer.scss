@@ -1,8 +1,7 @@
-$side-drawer-width: 540px;
+$side-drawer-width: 450px;
 $side-drawer-title-height: 63px;
 side-drawer {
-    display: flex;
-    flex-direction: column;
+    display: grid;
     width: $side-drawer-width;
     margin-top: 0;
     margin-right: 0;
@@ -10,6 +9,7 @@ side-drawer {
     border: 1px solid $color-border;
     background: $color-white;
     z-index: 1000;
+    grid-template-rows: $side-drawer-title-height 1fr;
     @media (max-width: 1280px) {
         width: inherit;
     }
@@ -20,6 +20,7 @@ side-drawer {
         border-bottom: 1px $color-border solid;
         line-height: $side-drawer-title-height;
         overflow: hidden;
+        grid-row: 1;
         &-container {
             display: grid;
             overflow: hidden;
@@ -43,7 +44,7 @@ side-drawer {
     }
     ng-transclude {
         position: relative;
-        flex-grow: 1;
-        overflow: auto;
+        overflow: hidden;
+        grid-row: 2;
     }
 }

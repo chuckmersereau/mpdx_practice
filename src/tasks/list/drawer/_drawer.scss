@@ -2,8 +2,13 @@
 @import 'contact/item';
 $task-drawer-width: $side-drawer-width - 2px;
 task-item-drawer {
+    display: grid;
+    width: 450px;
+    height: 100%;
+    grid-template-rows: auto 1fr auto;
     > .heading {
         padding-top: 8px;
+        background-color: $color-white;
         > .horizontal-tab-sortable {
             .sortable-row >.as-sortable-item > .as-sortable-item-handle {
                 cursor: pointer;
@@ -11,19 +16,16 @@ task-item-drawer {
         }
     }
     > .content {
+        overflow-y: auto;
         > .contacts {
             padding: $container-padding;
         }
     }
     > .comment-form {
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        padding: 5px 120px 5px 10px;
+        padding: 5px 10px;
         background-color: color-gray(90);
-        &.in-contact {
-            bottom: inherit;
+        textarea.form-control {
+            width: 380px !important;
         }
     }
 }

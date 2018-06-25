@@ -1,28 +1,29 @@
 task-list-contact {
     $avatar-size: 26px;
     display: grid;
-    grid-template-columns: $avatar-size 1fr;
-    grid-gap: 10px;
     & + & { //all except first
         border-top: 1px solid $color-bg;
     }
-    avatar {
-        grid-column: 1;
-        &,
-        .avatar,
-        .avatar img {
-            width: $avatar-size;
-            height: $avatar-size;
-        }
-    }
     .heading {
+        display: grid;
+        align-items: end;
         margin-top: 2px;
         font-weight: bold;
+        grid-column-gap: 10px;
+        grid-template-columns: $avatar-size 1fr;
+        avatar {
+            grid-column: 1;
+            &,
+            .avatar,
+            .avatar img {
+                width: $avatar-size;
+                height: $avatar-size;
+            }
+        }
     }
     .details {
         display: flex;
         flex-direction: column;
-        grid-column: 2;
         label {
             @extend .h4;
             display: block;

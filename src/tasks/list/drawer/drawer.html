@@ -29,19 +29,15 @@
         </task-item-comment>
     </div>
 </div>
-<form class="comment-form am-fade" ng-submit="$ctrl.addComment()"
+<form class="comment-form form-inline am-fade"
+      ng-submit="$ctrl.addComment()"
       ng-if="$ctrl.view === 'comments' && $ctrl.loaded"
-      ng-class="{ 'in-contact': $ctrl.contact }"
       novalidate>
-    <div class="input-group">
-      <span class="input-group-addon">
-          <i class="far fa-comment"></i>
-      </span>
-
-      <input type="text"
-             class="form-control"
-             ng-model="$ctrl.comment"
-             placeholder="{{ 'Add a comment' | translate }}"
-             required>
-    </div>
+    <button class="btn btn-primary" title="{{ 'Save' | translate }}"><i class="fas fa-save"></i></button>
+  <textarea msd-elastic
+            rows="1"
+            class="form-control"
+            ng-model="$ctrl.comment"
+            placeholder="{{ 'Add a comment' | translate }}"
+            required></textarea>
 </form>

@@ -11,8 +11,12 @@ task-item-comment {
         display: grid;
         grid-template-columns: auto 60px;
         div.comment-body {
+            max-width: 320px;
+            text-overflow: ellipsis;
+            white-space: pre;
             grid-column: 1;
             grid-row: 1;
+            overflow-x: hidden;
         }
         div.comment-foot {
             font-size: $font-size-sm;
