@@ -5,7 +5,6 @@ script:
 - bin/run_build.sh
 - bin/run_test.sh
 - bin/run_lint.sh
-after_deploy: aws/set_s3_max_age.sh
 before_install:
   - yarn global add gulp codecov sass-lint
 branches:
