@@ -17,43 +17,42 @@ env:
     matrix:
       - RUN_LINT=true RUN_TEST=true
       - RUN_BUILD=true
+before_deploy:
+  - pip install --user awscli
 deploy:
-- provider: s3
-  access_key_id: AKIAJTJ4YT7JED4DZJIA
-  secret_access_key:
-    secure: "xAkFocsfQW5S93CJtIjA9cLalq/xdhpjQcigN3ZhgwGaPNNGQ3j1CMCXXw7BWdNieQARgXEIYwEJThj7wB00f7MSTB5tl8uoyHeGtZgfE3oQ9wJ0k276LtekajFWLx9TWlmPqFRdWcLKH0dbZUqGxKYyE7AX6BfST0u0MLktTApAI2q/Sjg5lMiqsTC9zFm+sfftCWbPNbfakskMeMhEfczb4eNIgy9n7+umpmfJxT2N8hOi4+3v4jghjq0WaWJuZLgVJjXBvMCHj3fxAkuS3fdkPG0owwuY9PSfViJBimmA2lFd0x0HWeAp7D583ds/FdKK5/6MgwvaCeN4l+WahBkdw1zJnX47tYr9rln8JdWaXWewmUS+/kC4kfGmLSR096aaYnJdgAawMfrFP34BHmUjfgbVoXZ+QsY8zDmJwb83MDdhPRTp4mejSRjfawBdWBAGdjopRgJ8tFs3FKKnSoQC+RgyeDhqWjoCTHEYZB7kyjtn9WXKVxMpHKN0GOkWpS8mxFVAn1scgHHbaP8sL7RbFV8h/qnHuPQGTh0lGzjx200Y4nMcdaDVJuZoNRM6JNW0PCJTJTJ3idTsVuMnfPKHitr6f96NW+g382GsVHTnWYyQm093r3SKanBJwN3X3Oe4BmMvNXVkzljDpJWKjvtx154D/escWteeGOxRb/0="
-  bucket: cru-mpdx-web-prod
+- provider: script
+  script: ~/.local/bin/aws s3 sync public s3://cru-mpdx-web-stage --region us-east-1 --acl public-read --exclude '*.html' --cache-control 'public, max-age=31536000' --delete
   skip_cleanup: true
-  local_dir: public
-  acl: public_read
-  cache_control: "max-age=31536000,public"
   on:
-    repo: CruGlobal/mpdx_web
+    branch: staging
+    condition: '"$RUN_BUILD" = "true"'
+- provider: script
+  script: ~/.local/bin/aws s3 sync public s3://cru-mpdx-web-stage --region us-east-1 --acl public-read --include '*.html' --cache-control 'public, no-cache' --delete
+  skip_cleanup: true
+  on:
+    branch: staging
+    condition: '"$RUN_BUILD" = "true"'
+- provider: script
+  script: ~/.local/bin/aws s3 sync public s3://cru-mpdx-web-prod --region us-east-1 --acl public-read --exclude '*.html' --cache-control 'public, max-age=31536000'
+  skip_cleanup: true
+  on:
     branch: master
     condition: '"$RUN_BUILD" = "true"'
-- provider: s3
-  access_key_id: AKIAINTBHNVXDMJEZ7UQ
-  secret_access_key:
-    secure: "h+UvsVaLtZz4fnwKFwpFnDVScs+4hdUvnQvE3yWox1pHaBnJyQ9Qh7V2lnsgKTTXaJfFrt8LYwpZPNCak+J1ql/mefpXmacIfV7yBKjrBpRvnKbGF6hd8wZCQ//QxfHEyQNwie6H6+TuSISpcvaOmz2ofI2p5lm2CUObF6ggd3mSYBRAi3gzzQSELuJx5D9ZyXu/YROPknKo/CiFQVPHxJPPun97nH4hXkzmGzY6s1lyJ4ylLxA8MBObIUPYm0H4yMVI6RTpPbd4KN/VkDSNBbXvuYRMOvQOs5I4QldrD0NBmP4jGWRgVTsvo6Bniapaau4VeHZOwUbEk+AWfBHFu2Q43hjxJi63K1pYKcDHCkH1lpbaLM5t5tnm9M4xglxikCIAAagw7/4pJmATj8eTEb5TUxIQYxNOu9EpFZjPwe5r+Su4Z4xk7LPDRAppmN5hOyGs2AnzodCqllUaUvrhBpy1zVosLe1aDv1X8GncxbhfIYJRL75n/PmKqsyTGQBGV+q0qwqq4MmSrDealJszmQ2j6QwpRV+UFGfNXNlMaFmwJPUEkSNaI9kMWNm0M/iBp7vQUj+5+6cMrRmj4Tcrz9BFz8WPTMZgyPrCaroxO+diYX1so8bMheEsC597ROg+brK3cmghhaEMxgsFZ86kO9gu/NdlZi4QNavYOjTWmsI="
-  bucket: cru-mpdx-web-next
+- provider: script
+  script: ~/.local/bin/aws s3 sync public s3://cru-mpdx-web-prod --region us-east-1 --acl public-read --include '*.html' --cache-control 'public, no-cache'
   skip_cleanup: true
-  local_dir: public
-  acl: public_read
-  cache_control: "max-age=31536000,public"
   on:
-    repo: CruGlobal/mpdx_web
+    branch: master
+    condition: '"$RUN_BUILD" = "true"'
+- provider: script
+  script: ~/.local/bin/aws s3 sync public s3://cru-mpdx-web-next --region us-east-1 --acl public-read --exclude '*.html' --cache-control 'public, max-age=31536000'
+  skip_cleanup: true
+  on:
     branch: next
     condition: '"$RUN_BUILD" = "true"'
-- provider: s3
-  access_key_id: AKIAJCDUBSRAJGJTF5AA
-  secret_access_key:
-    secure: "azelo7ICvOTaCf7isSReHp1TA6yTdy67YyH2pcyxYZMo8hoUgwTgromWgY8PfHl5lfIbXoupbvsAgMiROW5vG6A7AJuf7UeNP9tU7KBhzYEm3wKtWAQYqA+cp/66ZzE1CuWQF1ExfWkS0gekQ1/Ye0xF7p7CpNGt8Mw4rSzZllfvBnuJq0Tzw8eJ4GBgidY1evlEghK5mR6QnvVttScxzDeXEMJucaQeg3YUr4kkiQsmy9YmYiyqK2E0a+dj/SYEy0ufECQKngk3HRzE5GEkaZuo0T0/nlCgbEW7ML0HX7PizGhdwCvuYDqe7DUVFj994mWOxqKuEDVGDp+oenqJIctEUvrS3JWa9KQyqxR/sj1Sla1kx77NRXD3OVPT7dxJctmQbEwBCnwX7vShyhR7yGpfp174QFwoLsUrV/IFdJO+KzgA80LaGB6VHS4kP/FA3VjdlipJPsydJ5vY23yCZZYw7QXLJ3BuAp46cS2aAnfj82MHDETspCY2AaVJ5QnbDusdiKX45OlwHwyISIhqk/5vM5B33fK9nOlv86aDPGF4S31+BG7fUJ0ImKmDAwDM7uAAz6kaFDu2gvM7kn9LO4r9SQK47/E+unmTfcS42Azhdj5Af6GrzLEub+Xfibh0/IDXgeHlEGGN4cvYlgl2ZR2KM1HbMSkxOPGImnYhN9Y="
-  bucket: cru-mpdx-web-stage
+- provider: script
+  script: ~/.local/bin/aws s3 sync public s3://cru-mpdx-web-next --region us-east-1 --acl public-read --include '*.html' --cache-control 'public, no-cache'
   skip_cleanup: true
-  local_dir: public
-  acl: public_read
-  cache_control: "max-age=31536000,public"
   on:
-    repo: CruGlobal/mpdx_web
-    branch: staging
+    branch: next
     condition: '"$RUN_BUILD" = "true"'
