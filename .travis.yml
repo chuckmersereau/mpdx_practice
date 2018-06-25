@@ -19,37 +19,37 @@ env:
       - RUN_BUILD=true
 deploy:
 - provider: script
-  script: ~/.local/bin/aws s3 sync dist s3://cru-mpdx-web-stage --region us-east-1 --acl public-read --exclude '*.html' --cache-control 'public, max-age=31536000' --delete
+  script: ~/.local/bin/aws s3 sync public s3://cru-mpdx-web-stage --region us-east-1 --acl public-read --exclude '*.html' --cache-control 'public, max-age=31536000' --delete
   skip_cleanup: true
   on:
     branch: staging
     condition: '"$RUN_BUILD" = "true"'
 - provider: script
-  script: ~/.local/bin/aws s3 sync dist s3://cru-mpdx-web-stage --region us-east-1 --acl public-read --include '*.html' --cache-control 'public, no-cache' --delete
+  script: ~/.local/bin/aws s3 sync public s3://cru-mpdx-web-stage --region us-east-1 --acl public-read --include '*.html' --cache-control 'public, no-cache' --delete
   skip_cleanup: true
   on:
     branch: staging
     condition: '"$RUN_BUILD" = "true"'
 - provider: script
-  script: ~/.local/bin/aws s3 sync dist s3://cru-mpdx-web-prod --region us-east-1 --acl public-read --exclude '*.html' --cache-control 'public, max-age=31536000'
+  script: ~/.local/bin/aws s3 sync public s3://cru-mpdx-web-prod --region us-east-1 --acl public-read --exclude '*.html' --cache-control 'public, max-age=31536000'
   skip_cleanup: true
   on:
     branch: master
     condition: '"$RUN_BUILD" = "true"'
 - provider: script
-  script: ~/.local/bin/aws s3 sync dist s3://cru-mpdx-web-prod --region us-east-1 --acl public-read --include '*.html' --cache-control 'public, no-cache'
+  script: ~/.local/bin/aws s3 sync public s3://cru-mpdx-web-prod --region us-east-1 --acl public-read --include '*.html' --cache-control 'public, no-cache'
   skip_cleanup: true
   on:
     branch: master
     condition: '"$RUN_BUILD" = "true"'
 - provider: script
-  script: ~/.local/bin/aws s3 sync dist s3://cru-mpdx-web-next --region us-east-1 --acl public-read --exclude '*.html' --cache-control 'public, max-age=31536000'
+  script: ~/.local/bin/aws s3 sync public s3://cru-mpdx-web-next --region us-east-1 --acl public-read --exclude '*.html' --cache-control 'public, max-age=31536000'
   skip_cleanup: true
   on:
     branch: next
     condition: '"$RUN_BUILD" = "true"'
 - provider: script
-  script: ~/.local/bin/aws s3 sync dist s3://cru-mpdx-web-next --region us-east-1 --acl public-read --include '*.html' --cache-control 'public, no-cache'
+  script: ~/.local/bin/aws s3 sync public s3://cru-mpdx-web-next --region us-east-1 --acl public-read --include '*.html' --cache-control 'public, no-cache'
   skip_cleanup: true
   on:
     branch: next
