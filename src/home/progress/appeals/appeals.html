@@ -5,24 +5,24 @@
             <div class="panel-title" translate>Primary Appeal</div>
         </a>
     </div>
-    <div class="progress-panel">
-        <div class="panel-row" ng-if="$ctrl.appeal">
-            <div class="item">
+    <div class="statistics">
+        <div class="item" ng-if="$ctrl.appeal">
+            <h3>{{:: $ctrl.appeal.pledges_amount_processed }} / {{$ctrl.appeal.amount}}</h3>
+            <strong>
                 <a ui-sref="tools.appeals.show({ appealId: $ctrl.appeal.id })">
                     {{$ctrl.appeal.name}}
                 </a>
-            </div>
-            <div class="item">
-                {{:: $ctrl.appeal.pledges_amount_processed }} / {{$ctrl.appeal.amount}}
-            </div>
+            </strong>
         </div>
-        <appeals-progressbar appeal="$ctrl.appeal"></appeals-progressbar>
-        <div ng-if="!$ctrl.appeal">
+        <div class="item" ng-if="!$ctrl.appeal">
             <collection-selector item-name="{{ 'Primary Appeal' | translate }}"
                                  display-text="$ctrl.accounts.current.primary_appeal.name"
                                  search="$ctrl.appeals.appealSearch(text)"
                                  select="$ctrl.appeals.setPrimaryAppeal(item)">
             </collection-selector>
         </div>
+    </div>
+    <div class="panel-footer statistics">
+        <appeals-progressbar appeal="$ctrl.appeal"></appeals-progressbar>
     </div>
 </div>

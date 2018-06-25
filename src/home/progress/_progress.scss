@@ -68,8 +68,9 @@ home-progress {
                     display: grid;
                     height: 100%;
                     font-size: $font-size-sm;
-                    grid-template-rows: 1fr auto;
+                    grid-template-rows: 142px auto;
                     > .header {
+                        height: 142px;
                         padding-top: 30px;
                         padding-bottom: 10px;
                         text-align: center;
@@ -84,6 +85,7 @@ home-progress {
                     }
                     > .statistics {
                         display: grid;
+                        height: 72px;
                         padding: 10px 0;
                         text-align: center;
                         white-space: nowrap;
