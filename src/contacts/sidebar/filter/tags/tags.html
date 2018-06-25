@@ -1,8 +1,8 @@
-<div bs-collapse ng-model="isCollapsed" ng-init="isCollapsed = false">
+<div bs-collapse ng-model="$ctrl.isCollapsed">
     <div class="filter--filtergroup_title" bs-collapse-toggle>
         <i class="fas fa-tags"></i>
         <div translate>Tags</div>
-        <ul class="nav nav-pills fade-in" ng-if="!isCollapsed">
+        <ul class="nav nav-pills fade-in" ng-if="!$ctrl.isCollapsed">
           <li ng-class="{ 'active': $ctrl.contactsTags.anyTags }">
             <a ng-click="$ctrl.changeAny(true); $event.stopPropagation()"
                title="{{::'Look up contacts with Any of the tags selected (a or b or c).' | translate }}" translate>Any</a>
@@ -12,7 +12,7 @@
                title="{{ ::'Look up contacts with ALL of the tags selected (a and b and c).' | translate }}" translate>All</a>
           </li>
         </ul>
-        <i class="fal fa-chevron-down" ng-class="{ 'fa-rotate-180': isCollapsed }"></i>
+        <i class="fal fa-chevron-down" ng-class="{ 'fa-rotate-180': $ctrl.isCollapsed }"></i>
         <div class="filter-collapse"
              ng-if="!$ctrl.session.isInState('contacts.show')"
              ng-click="$ctrl.session.showFiltersOnMobile = false">

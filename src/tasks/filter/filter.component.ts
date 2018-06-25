@@ -1,5 +1,5 @@
 import 'angular-gettext';
-import { assign } from 'lodash/fp';
+import { assign, isNil } from 'lodash/fp';
 import { stringToNameObjectArray } from '../../common/fp/tags';
 import { TasksTagsService } from './tags/tags.service';
 import { UsersService } from '../../common/users/users.service';
@@ -12,7 +12,9 @@ import tasksFilter, { TasksFilterService } from './filter.service';
 class FilterController {
     activeFilters: any[];
     dateRangeLocale: any;
+    isCollapsed: boolean;
     selectedSort: string;
+    watcher: () => void;
     watcher2: () => void;
     constructor(
         private $rootScope: ng.IRootScopeService,
@@ -35,11 +37,18 @@ class FilterController {
         this.activeFilters = [];
     }
     $onInit() {
+        this.isCollapsed = this.users.getCurrentOptionValue('tasks_filters_collapse');
+        this.watcher = this.$scope.$watch('$ctrl.isCollapsed', (newVal) => {
+            if (!isNil(newVal)) {
+                this.users.saveOption('tasks_filters_collapse', this.isCollapsed);
+            }
+        });
         this.watcher2 = this.$rootScope.$on('accountListUpdated', () => {
             this.selectedSort = 'all';
         });
     }
     $onDestroy() {
+        this.watcher();
         this.watcher2();
     }
     useSavedFilter(name) {

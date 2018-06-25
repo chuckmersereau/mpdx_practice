@@ -41,6 +41,38 @@ describe('contacts.filter.component', () => {
         });
     });
 
+    describe('$onInit', () => {
+        beforeEach(() => {
+            spyOn(users, 'getCurrentOptionValue').and.callFake(() => true);
+            spyOn(users, 'saveOption').and.callFake(() => q.resolve());
+        });
+
+        afterEach(() => {
+            $ctrl.$onDestroy();
+        });
+
+        it('should set isCollapsed', () => {
+            $ctrl.$onInit();
+            expect($ctrl.isCollapsed).toBeTruthy();
+        });
+
+        it('should handle isCollapsed changing', () => {
+            $ctrl.$onInit();
+            $ctrl.isCollapsed = false;
+            rootScope.$digest();
+            expect(users.saveOption).toHaveBeenCalledWith('contact_filters_collapse', false);
+        });
+    });
+
+    describe('$onDestroy', () => {
+        it('should clear watchers', () => {
+            $ctrl.$onInit();
+            spyOn($ctrl, 'watcher').and.callFake(() => {});
+            $ctrl.$onDestroy();
+            expect($ctrl.watcher).toHaveBeenCalledWith();
+        });
+    });
+
     describe('useSavedFilter', () => {
         beforeEach(() => {
             users.currentOptions = options;

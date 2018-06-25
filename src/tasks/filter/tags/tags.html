@@ -1,8 +1,8 @@
-<div ng-model="isCollapsed" ng-init="isCollapsed = false" bs-collapse>
+<div ng-model="$ctrl.isCollapsed" bs-collapse>
     <div class="filter--filtergroup_title" bs-collapse-toggle>
         <i class="fas fa-tags"></i>
         <div translate>Tags</div>
-        <ul class="nav nav-pills pull-right fade-in" ng-if="!isCollapsed">
+        <ul class="nav nav-pills pull-right fade-in" ng-if="!$ctrl.isCollapsed">
             <li ng-class="{ 'active': $ctrl.tasksTags.anyTags }">
                 <a ng-click="$ctrl.tasksTags.anyTags = true; $event.stopPropagation()" title="{{ ::'Look up tasks with Any of the tags selected (a or b or c).' | translate }}"
                    translate>Any</a>
@@ -12,7 +12,7 @@
                    title="{{ ::'Look up tasks with ALL of the tags selected (a and b and c).' | translate }}" translate>All</a>
             </li>
         </ul>
-        <i class="fal fa-chevron-down" ng-class="{ 'fa-rotate-180': isCollapsed }"></i>
+        <i class="fal fa-chevron-down" ng-class="{ 'fa-rotate-180': $ctrl.isCollapsed }"></i>
     </div>
     <div bs-collapse-target>
         <div class="filter_hint" translate>Click a tag twice to look up all tasks that do not have that tag.</div>

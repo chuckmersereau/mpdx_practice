@@ -1,18 +1,21 @@
 import 'angular-gettext';
-import { defaultTo, filter, get, map, pull, replace, startsWith, union } from 'lodash/fp';
+import { defaultTo, filter, get, isNil, map, pull, replace, startsWith, union } from 'lodash/fp';
 import api, { ApiService } from '../../api/api.service';
 import modal, { ModalService } from '../../modal/modal.service';
 import replaceAll from '../../fp/replaceAll';
 import users, { UsersService } from '../../users/users.service';
 
 class SavedController {
+    isCollapsed: boolean;
     protected savedFilterNames: string[];
     private start: string;
     private type: string;
     private watcher: () => void;
     private watcher2: () => void;
+    private watcher3: () => void;
     constructor(
         private $rootScope: ng.IRootScopeService,
+        private $scope: ng.IScope,
         private gettextCatalog: ng.gettext.gettextCatalog,
         private api: ApiService,
         private modal: ModalService,
@@ -21,6 +24,8 @@ class SavedController {
     $onInit() {
         this.start = `saved_${this.type}_filter_`;
         this.getSavedFilters();
+        const collapseOption = `${this.start}collapse`;
+        this.isCollapsed = this.users.getCurrentOptionValue(collapseOption);
 
         this.watcher = this.$rootScope.$on('savedFilterAdded', (e, key) => {
             if (startsWith(this.start, key)) {
@@ -30,10 +35,16 @@ class SavedController {
         this.watcher2 = this.$rootScope.$on('accountListUpdated', () => {
             this.getSavedFilters();
         });
+        this.watcher3 = this.$scope.$watch('$ctrl.isCollapsed', (newVal) => {
+            if (!isNil(newVal)) {
+                this.users.saveOption(collapseOption, this.isCollapsed);
+            }
+        });
     }
     $onDestroy() {
         this.watcher();
         this.watcher2();
+        this.watcher3();
     }
     getSavedFilters() {
         const optionsForAccountList = filter((option) => {

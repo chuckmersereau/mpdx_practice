@@ -66,58 +66,14 @@ describe('common.pagination.dropdown.component', () => {
 
     describe('saveOption', () => {
         beforeEach(() => {
-            spyOn($ctrl, 'saveExisting').and.callFake(() => {});
-            spyOn(users, 'createOption').and.callFake(() => {});
+            spyOn(users, 'saveOption').and.callFake(() => {});
             $ctrl.userOption = 'contacts';
         });
 
-        it('should call saveExisting', () => {
+        it('should call saveOption', () => {
             users.currentOptions = {};
             $ctrl.change(param);
-            expect(users.createOption).toHaveBeenCalledWith('page_size_contacts', param.size);
-        });
-
-        it('should call saveExisting', () => {
-            users.currentOptions = {
-                page_size_contacts: option
-            };
-            $ctrl.change(param);
-            expect($ctrl.saveExisting).toHaveBeenCalledWith(option, param.size);
-        });
-    });
-
-    describe('saveOption', () => {
-        beforeEach(() => {
-            spyOn($ctrl, 'saveExisting').and.callFake(() => {});
-            spyOn(users, 'createOption').and.callFake(() => {});
-            $ctrl.userOption = 'contacts';
-        });
-
-        it('should call saveExisting', () => {
-            users.currentOptions = {};
-            $ctrl.change(param);
-            expect(users.createOption).toHaveBeenCalledWith('page_size_contacts', param.size);
-        });
-
-        it('should call saveExisting', () => {
-            users.currentOptions = {
-                page_size_contacts: option
-            };
-            $ctrl.change(param);
-            expect($ctrl.saveExisting).toHaveBeenCalledWith(option, param.size);
-        });
-    });
-
-    describe('saveExisting', () => {
-        beforeEach(() => {
-            spyOn(users, 'setOption').and.callFake(() => {});
-            $ctrl.userOption = 'contacts';
-        });
-
-        it('should call saveExisting', () => {
-            users.currentOptions = {};
-            $ctrl.saveExisting(option);
-            expect(users.setOption).toHaveBeenCalledWith(option);
+            expect(users.saveOption).toHaveBeenCalledWith('page_size_contacts', param.size);
         });
     });
 });

@@ -137,8 +137,18 @@ export class UsersService {
     private mapOptions(options: any): any {
         return keyBy('key', options);
     }
+    saveOption(key: string, value: any): ng.IPromise<any> {
+        const option = get(key, this.currentOptions);
+        return option === undefined
+            ? this.createOption(key, value)
+            : this.setOption(option, value);
+    }
     createOption(key: string, value: any): ng.IPromise<any> {
-        return this.api.post({ url: 'user/options', data: { key: key, value: value }, type: 'user_options' }).then((data) => {
+        return this.api.post({
+            url: 'user/options',
+            data: { key: key, value: value },
+            type: 'user_options'
+        }).then((data) => {
             this.currentOptions[key] = data;
             return data;
         }); // use jsonapi key here since it doesn't match endpoint
@@ -157,7 +167,8 @@ export class UsersService {
     getOption(key: string): ng.IPromise<any> {
         return this.api.get(`user/options/${key}`);
     }
-    setOption(option: any): ng.IPromise<any> {
+    setOption(option: any, value?: any): ng.IPromise<any> {
+        option.value = defaultTo(option.value, value);
         return this.api.put({ url: `user/options/${option.key}`, data: option, type: 'user_options' }).then((data) => {
             if (option && option.key) {
                 this.currentOptions[option.key] = data;

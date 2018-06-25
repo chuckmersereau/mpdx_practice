@@ -345,4 +345,23 @@ describe('common.users.service', () => {
             rootScope.$digest();
         });
     });
+
+    describe('saveOption', () => {
+        beforeEach(() => {
+            spyOn(users, 'createOption').and.callFake(() => q.resolve());
+            spyOn(users, 'setOption').and.callFake(() => q.resolve());
+        });
+
+        it('should call create', () => {
+            users.saveOption('new', 'a');
+            expect(users.createOption).toHaveBeenCalledWith('new', 'a');
+        });
+
+        it('should call set', () => {
+            const option = { value: 'b' };
+            users.currentOptions = { existing: option };
+            users.saveOption('existing', 'a');
+            expect(users.setOption).toHaveBeenCalledWith(option, 'a');
+        });
+    });
 });

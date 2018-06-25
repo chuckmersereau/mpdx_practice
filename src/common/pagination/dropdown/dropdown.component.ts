@@ -1,4 +1,3 @@
-import { get } from 'lodash/fp';
 import users, { UsersService } from '../../users/users.service';
 
 class DropdownController {
@@ -21,14 +20,7 @@ class DropdownController {
     }
     saveOption(size) {
         const key = `page_size_${this.userOption}`;
-        const option = get(key, this.users.currentOptions);
-        return option
-            ? this.saveExisting(option, size)
-            : this.users.createOption(key, size);
-    }
-    saveExisting(option, val) {
-        option.value = val;
-        return this.users.setOption(option);
+        this.users.saveOption(key, size);
     }
 }
 

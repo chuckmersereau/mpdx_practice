@@ -1,4 +1,4 @@
-import { assign } from 'lodash/fp';
+import { assign, isNil } from 'lodash/fp';
 import { FiltersService } from '../../../common/filters/filters.service';
 import { StateParams } from '@uirouter/core';
 import { stringToNameObjectArray } from '../../../common/fp/tags';
@@ -11,7 +11,10 @@ import users, { UsersService } from '../../../common/users/users.service';
 class FilterController {
     activeFilters: any[];
     dateRangeLocale: any;
+    isCollapsed: boolean;
+    watcher: () => void;
     constructor(
+        private $scope: ng.IScope,
         private $stateParams: StateParams,
         private gettextCatalog: ng.gettext.gettextCatalog,
         private contactFilter: ContactFilterService,
@@ -31,6 +34,17 @@ class FilterController {
         }
 
         this.activeFilters = [];
+    }
+    $onInit() {
+        this.isCollapsed = this.users.getCurrentOptionValue('contact_filters_collapse');
+        this.watcher = this.$scope.$watch('$ctrl.isCollapsed', (newVal) => {
+            if (!isNil(newVal)) {
+                this.users.saveOption('contact_filters_collapse', this.isCollapsed);
+            }
+        });
+    }
+    $onDestroy() {
+        this.watcher();
     }
     resetFiltersAndTags() {
         if (this.contactsTags.isResettable()) {

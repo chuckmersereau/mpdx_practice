@@ -40,6 +40,8 @@ describe('common.filters.saved.component', () => {
         beforeEach(() => {
             $ctrl.savedFilterNames = ['a'];
             spyOn($ctrl, 'getSavedFilters').and.callFake(() => {});
+            spyOn(users, 'getCurrentOptionValue').and.callFake(() => true);
+            spyOn(users, 'saveOption').and.callFake(() => q.resolve());
         });
 
         afterEach(() => {
@@ -69,6 +71,18 @@ describe('common.filters.saved.component', () => {
             rootScope.$digest();
             expect($ctrl.getSavedFilters).toHaveBeenCalledWith();
         });
+
+        it('should set isCollapsed', () => {
+            $ctrl.$onInit();
+            expect($ctrl.isCollapsed).toBeTruthy();
+        });
+
+        it('should handle isCollapsed changing', () => {
+            $ctrl.$onInit();
+            $ctrl.isCollapsed = false;
+            rootScope.$digest();
+            expect(users.saveOption).toHaveBeenCalledWith('saved_tasks_filter_collapse', false);
+        });
     });
 
     describe('$onDestroy', () => {
@@ -76,9 +90,11 @@ describe('common.filters.saved.component', () => {
             $ctrl.$onInit();
             spyOn($ctrl, 'watcher').and.callFake(() => {});
             spyOn($ctrl, 'watcher2').and.callFake(() => {});
+            spyOn($ctrl, 'watcher3').and.callFake(() => {});
             $ctrl.$onDestroy();
             expect($ctrl.watcher).toHaveBeenCalledWith();
             expect($ctrl.watcher2).toHaveBeenCalledWith();
+            expect($ctrl.watcher3).toHaveBeenCalledWith();
         });
     });
 

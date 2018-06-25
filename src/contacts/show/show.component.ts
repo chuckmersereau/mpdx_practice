@@ -129,6 +129,7 @@ class ContactController {
         this.watcher = this.$rootScope.$on('accountListUpdated', () => {
             this.$state.go('contacts');
         });
+
         this.watcher2 = this.$rootScope.$on('changePrimaryPerson', (e, personId) => {
             this.onPrimary(personId);
         });

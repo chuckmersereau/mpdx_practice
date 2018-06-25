@@ -1,23 +1,39 @@
-import { includes, reject } from 'lodash/fp';
+import { includes, isNil, reject } from 'lodash/fp';
 import api, { ApiService } from '../../../../common/api/api.service';
 import contactsTags, { ContactsTagsService } from './tags.service';
 import session, { SessionService } from '../../../../common/session/session.service';
+import users, { UsersService } from '../../../../common/users/users.service';
 
 class TagsController {
     hideTags: boolean;
+    isCollapsed: boolean;
+    watcher: () => void;
+    watcher2: () => void;
     constructor(
         private $log: ng.ILogService,
+        private $scope: ng.IScope,
         private $rootScope: ng.IRootScopeService,
         private api: ApiService,
         private contactsTags: ContactsTagsService,
-        private session: SessionService
+        private session: SessionService,
+        private users: UsersService
     ) {
         this.hideTags = true;
     }
     $onInit() {
-        this.$rootScope.$on('accountListUpdated', () => {
+        this.isCollapsed = this.users.getCurrentOptionValue('contact_tags_collapse');
+        this.watcher = this.$rootScope.$on('accountListUpdated', () => {
             this.contactsTags.load();
         });
+        this.watcher2 = this.$scope.$watch('$ctrl.isCollapsed', (newVal) => {
+            if (!isNil(newVal)) {
+                this.users.saveOption('contact_tags_collapse', this.isCollapsed);
+            }
+        });
+    }
+    $onDestroy() {
+        this.watcher();
+        this.watcher2();
     }
     changeAny(val) {
         this.contactsTags.anyTags = val;
@@ -65,5 +81,5 @@ const Tags = {
 };
 
 export default angular.module('mpdx.contacts.filter.tags.component', [
-    api, contactsTags, session
+    api, contactsTags, session, users
 ]).component('contactsTags', Tags).name;

@@ -43,8 +43,25 @@ describe('tasks.filter.component', () => {
     });
 
     describe('$onInit', () => {
+        beforeEach(() => {
+            spyOn(users, 'getCurrentOptionValue').and.callFake(() => true);
+            spyOn(users, 'saveOption').and.callFake(() => q.resolve());
+        });
+
         afterEach(() => {
             $ctrl.$onDestroy();
+        });
+
+        it('should set isCollapsed', () => {
+            $ctrl.$onInit();
+            expect($ctrl.isCollapsed).toBeTruthy();
+        });
+
+        it('should handle isCollapsed changing', () => {
+            $ctrl.$onInit();
+            $ctrl.isCollapsed = false;
+            rootScope.$digest();
+            expect(users.saveOption).toHaveBeenCalledWith('tasks_filters_collapse', false);
         });
 
         it('should reset selectedSort on accountList change', () => {
@@ -57,10 +74,12 @@ describe('tasks.filter.component', () => {
     });
 
     describe('$onDestroy', () => {
-        it('should destroy watcher', () => {
+        it('should clear watchers', () => {
             $ctrl.$onInit();
-            spyOn($ctrl, 'watcher2').and.callThrough();
+            spyOn($ctrl, 'watcher').and.callFake(() => {});
+            spyOn($ctrl, 'watcher2').and.callFake(() => {});
             $ctrl.$onDestroy();
+            expect($ctrl.watcher).toHaveBeenCalledWith();
             expect($ctrl.watcher2).toHaveBeenCalledWith();
         });
     });

@@ -1,15 +1,16 @@
 import component from './tags.component';
 
 describe('contacts.filter.tags.component', () => {
-    let rootScope, scope, contactsTags, $ctrl, api, q;
+    let rootScope, scope, contactsTags, $ctrl, api, q, users;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _contactsTags_, _api_, $q) => {
+        inject(($componentController, $rootScope, _contactsTags_, _api_, $q, _users_) => {
             rootScope = $rootScope;
             scope = $rootScope.$new();
             api = _api_;
             contactsTags = _contactsTags_;
             q = $q;
+            users = _users_;
             $ctrl = $componentController('contactsTags', { $scope: scope }, {});
         });
     });
@@ -20,13 +21,45 @@ describe('contacts.filter.tags.component', () => {
         });
     });
 
-    describe('events', () => {
-        it('should handle account list change', () => {
+    describe('$onInit', () => {
+        beforeEach(() => {
+            spyOn(users, 'getCurrentOptionValue').and.callFake(() => true);
+            spyOn(users, 'saveOption').and.callFake(() => q.resolve());
             spyOn(contactsTags, 'load').and.callFake(() => {});
+        });
+
+        afterEach(() => {
+            $ctrl.$onDestroy();
+        });
+
+        it('should set isCollapsed', () => {
+            $ctrl.$onInit();
+            expect($ctrl.isCollapsed).toBeTruthy();
+        });
+
+        it('should handle isCollapsed changing', () => {
+            $ctrl.$onInit();
+            $ctrl.isCollapsed = false;
+            rootScope.$digest();
+            expect(users.saveOption).toHaveBeenCalledWith('contact_tags_collapse', false);
+        });
+
+        it('should handle account list change', () => {
             $ctrl.$onInit();
             rootScope.$emit('accountListUpdated');
             rootScope.$digest();
             expect(contactsTags.load).toHaveBeenCalled();
+        });
+    });
+
+    describe('$onDestroy', () => {
+        it('should clear watchers', () => {
+            $ctrl.$onInit();
+            spyOn($ctrl, 'watcher').and.callFake(() => {});
+            spyOn($ctrl, 'watcher2').and.callFake(() => {});
+            $ctrl.$onDestroy();
+            expect($ctrl.watcher).toHaveBeenCalledWith();
+            expect($ctrl.watcher2).toHaveBeenCalledWith();
         });
     });
 
