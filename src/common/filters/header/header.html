@@ -11,14 +11,12 @@
     <div class="filters-header__content" bs-collapse-target>
         <div ng-repeat="filter in $ctrl.filters track by $index">
             <filters-header-filter filter="filter"
-                                   filter-default-params="$ctrl.filterDefaultParams"
                                    filter-params="$ctrl.filterParams"
                                    invert="$ctrl.invert($filter)"
                                    remove="$ctrl.remove($filter)"
                                    ng-if="$ctrl.filterInUse(filter)"></filters-header-filter>
             <div ng-repeat="filter in filter.children track by $index">
                 <filters-header-filter filter="filter"
-                                       filter-default-params="$ctrl.filterDefaultParams"
                                        filter-params="$ctrl.filterParams"
                                        invert="$ctrl.invert($filter)"
                                        remove="$ctrl.remove($filter)"

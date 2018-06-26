@@ -1,10 +1,19 @@
-import { find, get, isArray } from 'lodash/fp';
+import { compact, concat, find, get, isArray, reduce } from 'lodash/fp';
 
 class FilterController {
-    isArray(obj: any): boolean {
-        return isArray(obj);
+    filter: any;
+    filterParams: any;
+    filters: string[];
+    $onChanges() {
+        this.filters = compact(
+            isArray(this.filterParams[this.filter.name])
+                ? reduce((result, value) => {
+                    const display = this.getOption(this.filter, value);
+                    return display ? concat(result, display) : result;
+                }, [], this.filterParams[this.filter.name])
+                : [this.getOption(this.filter, this.filterParams[this.filter.name])]);
     }
-    getOption(filter: any, id: string): string {
+    private getOption(filter: any, id: string): string {
         return get('name', find({ id: id }, filter.options));
     }
 }
@@ -15,7 +24,6 @@ const filter: ng.IComponentOptions = {
     bindings: {
         filter: '<',
         filterParams: '<',
-        filterDefaultParams: '<',
         invert: '&',
         remove: '&'
     }

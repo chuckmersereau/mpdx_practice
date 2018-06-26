@@ -16,6 +16,38 @@ describe('common.filters.header.filter.component', () => {
         });
     });
 
+    describe('$onChanges', () => {
+        it('should handle an array of filters', () => {
+            $ctrl.filterParams = {
+                status: ['a', 'b']
+            };
+            $ctrl.filter = {
+                name: 'status',
+                options: [
+                    { id: 'a', name: 'aa' },
+                    { id: 'b', name: 'bb' }
+                ]
+            };
+            $ctrl.$onChanges();
+            expect($ctrl.filters).toEqual(['aa', 'bb']);
+        });
+
+        it('should handle a single filter', () => {
+            $ctrl.filterParams = {
+                status: 'a'
+            };
+            $ctrl.filter = {
+                name: 'status',
+                options: [
+                    { id: 'a', name: 'aa' },
+                    { id: 'b', name: 'bb' }
+                ]
+            };
+            $ctrl.$onChanges();
+            expect($ctrl.filters).toEqual(['aa']);
+        });
+    });
+
     describe('getOption', () => {
         const filter = {
             options: [
@@ -29,16 +61,6 @@ describe('common.filters.header.filter.component', () => {
 
         it('should handle null', () => {
             expect($ctrl.getOption({}, 1)).toBeUndefined();
-        });
-    });
-
-    describe('isArray', () => {
-        it('should catch an array', () => {
-            expect($ctrl.isArray([])).toBeTruthy();
-        });
-
-        it('should catch an object', () => {
-            expect($ctrl.isArray({})).toBeFalsy();
         });
     });
 });

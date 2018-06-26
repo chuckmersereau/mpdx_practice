@@ -1,4 +1,4 @@
-<div class="filters-header__filter">
+<div class="filters-header__filter" ng-if="$ctrl.filters.length > 0">
     <div class="filters-header__filter__title">
         <i ng-click="$ctrl.remove({ $filter: $ctrl.filter })" class="fal fa-times"></i>
         <span class="filters-header__filter__title__value">{{ ::$ctrl.filter.title }}</span>
@@ -7,13 +7,7 @@
            class="filters-header__filter__reversable fal fa-exchange"></i>
     </div>
     <div class="filters-header__filter__option"
-         ng-if="::$ctrl.isArray($ctrl.filterParams[$ctrl.filter.name]) && value !== ''"
-         ng-repeat="value in $ctrl.filterParams[$ctrl.filter.name] track by $index">
-        <span class="filters-header__filter__option__value">{{ ::$ctrl.getOption($ctrl.filter, value) }}</span>
-    </div>
-    <div class="filters-header__filter__option" ng-if="::!$ctrl.isArray($ctrl.filterParams[$ctrl.filter.name])">
-        <span class="filters-header__filter__option__value">
-            {{ ::$ctrl.getOption($ctrl.filter, $ctrl.filterParams[$ctrl.filter.name]) }}
-        </span>
+         ng-repeat="value in $ctrl.filters track by $index">
+        <span class="filters-header__filter__option__value">{{value}}</span>
     </div>
 </div>
