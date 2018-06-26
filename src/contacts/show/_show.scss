@@ -41,7 +41,7 @@ contact {
                 display: grid;
                 grid-template-rows: 40px 1fr;
                 grid-row: 2;
-                div.active-drawer {
+                .active-drawer {
                     @media(min-width: $hide-drawer-width) {
                         display: none;
                     }
@@ -76,6 +76,9 @@ contact {
                 @media (max-width: $contact-menu-breakpoint) {
                     width: calc(#{$inside-width} - #{$chart-padding}) !important;
                     padding-right: 10px;
+                }
+                canvas.chart {
+                    width: 100% !important;
                 }
             }
         }
