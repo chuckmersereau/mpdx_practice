@@ -1,11 +1,13 @@
+import { isNil } from 'lodash/fp';
 import config from 'config';
 
 class menuController {
     constructor(
-        $rootScope, $window,
+        $location, $rootScope, $window,
         $state,
         contacts, donations, help, session, tasks, tools, users
     ) {
+        this.$location = $location;
         this.$rootScope = $rootScope;
         this.$window = $window;
         this.$state = $state;
@@ -19,6 +21,15 @@ class menuController {
         this.sidekiqUrl = `${config.oAuthUrl}sidekiq?access_token=${this.$window.localStorage.getItem('token')}`;
     }
     $onInit() {
+        const disableNext = this.$location.search().disableNext;
+        if (disableNext) {
+            this.$window.localStorage.removeItem('useNext');
+        }
+        const useNext = this.$window.localStorage.getItem('useNext');
+        if (useNext === 'true') {
+            this.$window.location.href = 'https://next.mpdx.org';
+        }
+        this.session.hasNews = isNil(useNext);
         this.$rootScope.$on('accountListUpdated', () => {
             this.tools.getAnalytics(true);
         });
@@ -26,6 +37,10 @@ class menuController {
         if (!this.setup) {
             this.tools.getAnalytics();
         }
+    }
+    gotoNext() {
+        this.$window.localStorage.setItem('useNext', true);
+        this.$window.location.href = 'https://next.mpdx.org';
     }
 }
 

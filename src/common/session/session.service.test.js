@@ -16,6 +16,7 @@ describe('common.session.service', () => {
             expect(session.navSetup).toBeFalsy();
             expect(session.navImpersonation).toBeFalsy();
             expect(session.showFiltersOnMobile).toBeFalsy();
+            expect(session.hasNews).toBeFalsy();
         });
     });
 

@@ -3,6 +3,7 @@ class Session {
         $state
     ) {
         this.$state = $state;
+        this.hasNews = false;
         this.navSecondary = false;
         this.navSetup = false;
         this.navImpersonation = false;
