@@ -194,7 +194,7 @@ describe('contacts.show.details.component', () => {
     describe('removeReferrer', () => {
         beforeEach(() => {
             $ctrl.contact.contact_referrals_to_me = [{ id: 1 }];
-            spyOn($ctrl, 'onSave').and.callFake(() => q.resolve());
+            spyOn(contacts, 'saveCurrent').and.callFake(() => q.resolve());
         });
 
         it('should set the referrer to _destroy', () => {
@@ -204,7 +204,7 @@ describe('contacts.show.details.component', () => {
 
         it('should call onSave', () => {
             $ctrl.removeReferrer();
-            expect($ctrl.onSave).toHaveBeenCalledWith();
+            expect(contacts.saveCurrent).toHaveBeenCalledWith();
         });
 
         it('should reset the component referrer view data', (done) => {
@@ -222,7 +222,7 @@ describe('contacts.show.details.component', () => {
     describe('removeNextAsk', () => {
         beforeEach(() => {
             contacts.current = { next_ask: '2000-8-10' };
-            spyOn($ctrl, 'onSave').and.callFake(() => {});
+            spyOn(contacts, 'saveCurrent').and.callFake(() => {});
         });
 
         it('should nullify next ask', () => {
@@ -232,7 +232,7 @@ describe('contacts.show.details.component', () => {
 
         it('should save', () => {
             $ctrl.removeNextAsk();
-            expect($ctrl.onSave).toHaveBeenCalledWith();
+            expect(contacts.saveCurrent).toHaveBeenCalledWith();
         });
     });
 

@@ -124,14 +124,14 @@ describe('contacts.show.component', () => {
 
     describe('onPrimary', () => {
         beforeEach(() => {
-            spyOn($ctrl, 'save').and.callFake(() => {});
+            spyOn(contacts, 'saveCurrent').and.callFake(() => {});
         });
 
         it('should return if personId isn\'t set', () => {
             const initialValue = angular.copy(contacts.current.primary_person);
             $ctrl.onPrimary();
             expect(contacts.current.primary_person).toEqual(initialValue);
-            expect($ctrl.save).not.toHaveBeenCalled();
+            expect(contacts.saveCurrent).not.toHaveBeenCalled();
         });
 
         it('should return if personId is already the same value', () => {
@@ -139,64 +139,14 @@ describe('contacts.show.component', () => {
             const initialValue = angular.copy(contacts.current.primary_person);
             $ctrl.onPrimary(1);
             expect(contacts.current.primary_person).toEqual(initialValue);
-            expect($ctrl.save).not.toHaveBeenCalled();
+            expect(contacts.saveCurrent).not.toHaveBeenCalled();
         });
 
         it('should set the primary person', () => {
             contacts.current = { id: 1 };
             $ctrl.onPrimary(1);
-            expect($ctrl.save).toHaveBeenCalled();
+            expect(contacts.saveCurrent).toHaveBeenCalled();
             expect(contacts.current.primary_person.id).toEqual(1);
-        });
-    });
-
-    describe('save', () => {
-        beforeEach(() => {
-            contacts.current = { id: 1, name: 'a' };
-            contacts.initialState = { id: 1 };
-            spyOn(rootScope, '$emit').and.callFake(() => q.resolve());
-            spyOn(contactsTags, 'addTag').and.callFake(() => {});
-        });
-
-        it('should call save', () => {
-            spyOn(contacts, 'save').and.callFake(() => q.resolve());
-            $ctrl.save();
-            const errorMessage = 'Unable to save changes.';
-            const successMessage = 'Changes saved successfully.';
-            expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
-            expect(gettextCatalog.getString).toHaveBeenCalledWith(successMessage);
-            expect(contacts.save).toHaveBeenCalledWith({ id: 1, name: 'a' }, successMessage, errorMessage);
-        });
-
-        it('shouldn\'t broadcast if tag_list is unchanged', (done) => {
-            spyOn(contacts, 'save').and.callFake(() => q.resolve());
-            $ctrl.save().then(() => {
-                expect(rootScope.$emit).not.toHaveBeenCalled();
-                done();
-            });
-            rootScope.$digest();
-        });
-
-        it('should broadcast if tag_list changed', (done) => {
-            contacts.current = assign(contacts.current, { tag_list: 'a,b' });
-            spyOn(contacts, 'save').and.callFake(() => q.resolve());
-            $ctrl.save().then(() => {
-                expect(rootScope.$emit).toHaveBeenCalledWith('contactTagsAdded', { tags: ['a', 'b'] });
-                expect(contactsTags.addTag).toHaveBeenCalledWith({ tags: ['a', 'b'] });
-                done();
-            });
-            rootScope.$digest();
-        });
-
-        it('should update initialState', (done) => {
-            contacts.initialState.no_gift_aid = false;
-            contacts.current.no_gift_aid = true;
-            spyOn(contacts, 'save').and.callFake(() => q.resolve());
-            $ctrl.save().then(() => {
-                expect(contacts.initialState.no_gift_aid).toEqual(true);
-                done();
-            });
-            rootScope.$digest();
         });
     });
 

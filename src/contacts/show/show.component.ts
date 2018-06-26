@@ -1,11 +1,10 @@
 import 'angular-block-ui';
 import 'angular-gettext';
-import { assign, concat, eq, find, forEachRight, get, has, isNil, map, reject, set } from 'lodash/fp';
+import { concat, eq, find, forEachRight, get, has, isNil, map, reject, set } from 'lodash/fp';
 import { ContactsTagsService } from '../sidebar/filter/tags/tags.service';
 import { StateParams, StateService } from '@uirouter/core';
 import contactFilter, { ContactFilterService } from '../sidebar/filter/filter.service';
 import contacts, { ContactsService } from '../contacts.service';
-import createPatch from '../../common/fp/createPatch';
 import help, { HelpService } from '../../common/help/help.service';
 import joinComma from '../../common/fp/joinComma';
 import modal, { ModalService } from '../../common/modal/modal.service';
@@ -152,32 +151,13 @@ class ContactController {
         this.watcher3();
         this.watcher4();
     }
-    save() {
-        const source = angular.copy(this.contacts.current); // to avoid onChanges changes
-        const target = angular.copy(this.contacts.initialState); // to avoid onChanges changes
-        const patch = createPatch(target, source);
-        this.$log.debug('contact patch', patch);
-        const errorMessage = this.gettextCatalog.getString('Unable to save changes.');
-        const successMessage = this.gettextCatalog.getString('Changes saved successfully.');
-
-        return this.contacts.save(patch, successMessage, errorMessage).then(() => {
-            if (patch.tag_list) {
-                const tags = patch.tag_list.split(',');
-                this.$rootScope.$emit('contactTagsAdded', { tags: tags });
-                this.contactsTags.addTag({ tags: tags });
-            }
-            if (patch.id === this.contacts.initialState.id) {
-                this.contacts.initialState = assign(this.contacts.initialState, patch);
-            }
-        });
-    }
     onPrimary(personId) {
         if (eq(get('primary_person.id', this.contacts.current), personId) || isNil(personId)) {
             return;
         }
         this.$log.debug('change primary: ', personId);
         this.contacts.current = set('primary_person.id', personId, this.contacts.current);
-        this.save();
+        this.contacts.saveCurrent();
     }
     setActiveTab(transition: Transition) {
         const tab = transition.to().name.replace('contacts.show.', '');

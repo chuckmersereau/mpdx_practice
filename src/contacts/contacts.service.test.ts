@@ -431,4 +431,53 @@ describe('contacts.service', () => {
             rootScope.$digest();
         });
     });
+
+    describe('saveCurrent', () => {
+        beforeEach(() => {
+            contacts.current = { id: 1, name: 'a' };
+            contacts.initialState = { id: 1 };
+            spyOn(contactsTags, 'addTag').and.callFake(() => {});
+        });
+
+        it('should call save', () => {
+            spyOn(contacts, 'save').and.callFake(() => q.resolve());
+            contacts.saveCurrent();
+            const errorMessage = 'Unable to save changes.';
+            const successMessage = 'Changes saved successfully.';
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(errorMessage);
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(successMessage);
+            expect(contacts.save).toHaveBeenCalledWith({ id: 1, name: 'a' }, successMessage, errorMessage);
+        });
+
+        it('shouldn\'t broadcast if tag_list is unchanged', (done) => {
+            spyOn(contacts, 'save').and.callFake(() => q.resolve());
+            contacts.saveCurrent().then(() => {
+                expect(rootScope.$emit).not.toHaveBeenCalled();
+                done();
+            });
+            rootScope.$digest();
+        });
+
+        it('should broadcast if tag_list changed', (done) => {
+            contacts.current = assign(contacts.current, { tag_list: 'a,b' });
+            spyOn(contacts, 'save').and.callFake(() => q.resolve());
+            contacts.saveCurrent().then(() => {
+                expect(rootScope.$emit).toHaveBeenCalledWith('contactTagsAdded', { tags: ['a', 'b'] });
+                expect(contactsTags.addTag).toHaveBeenCalledWith({ tags: ['a', 'b'] });
+                done();
+            });
+            rootScope.$digest();
+        });
+
+        it('should update initialState', (done) => {
+            contacts.initialState.no_gift_aid = false;
+            contacts.current.no_gift_aid = true;
+            spyOn(contacts, 'save').and.callFake(() => q.resolve());
+            contacts.saveCurrent().then(() => {
+                expect(contacts.initialState.no_gift_aid).toEqual(true);
+                done();
+            });
+            rootScope.$digest();
+        });
+    });
 });

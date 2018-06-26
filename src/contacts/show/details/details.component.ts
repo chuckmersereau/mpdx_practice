@@ -16,7 +16,6 @@ class ContactDetailsController {
     languages: any[];
     last_donation: any;
     lifetime_donations: number;
-    onSave: any;
     referrer: any;
     referrerName: string;
     translations: any;
@@ -96,12 +95,12 @@ class ContactDetailsController {
         } else if (!this.referrer && get(this.contact, 'contacts_that_referred_me[0].id')) {
             return this.addReferrer();
         } else {
-            return this.onSave();
+            return this.contacts.saveCurrent();
         }
     }
     addReferrer() {
         this.contact.contact_referrals_to_me = this.destroyReferrals(this.contact.contact_referrals_to_me);
-        return this.onSave().then(() => {
+        return this.contacts.saveCurrent().then(() => {
             this.contact.contacts_that_referred_me = [];
         });
     }
@@ -178,14 +177,14 @@ class ContactDetailsController {
     }
     removeReferrer() {
         this.contact.contact_referrals_to_me[0]._destroy = 1;
-        return this.onSave().then(() => {
+        return this.contacts.saveCurrent().then(() => {
             this.referrer = null;
             this.referrerName = null;
         });
     }
     removeNextAsk() {
         this.contacts.current.next_ask = null;
-        this.onSave();
+        this.contacts.saveCurrent();
     }
     remove(): ng.IPromise<void> {
         const cantDelete = this.contact.lifetime_donations > 0;
@@ -209,8 +208,7 @@ const Details = {
     template: require('./details.html'),
     bindings: {
         donorAccounts: '<', // for change detection
-        contact: '=',
-        onSave: '&'
+        contact: '='
     }
 };
 

@@ -243,7 +243,7 @@
 <contact-donor-account ng-repeat="donorAccount in $ctrl.contact.donor_accounts"
                        contact="$ctrl.contact"
                        donor-account="donorAccount"
-                       on-save="$ctrl.onSave()"></contact-donor-account>
+                       on-save="$ctrl.contacts.saveCurrent()"></contact-donor-account>
 <div class="blankslate ng-scope" ng-if="$ctrl.contact.donor_accounts.length === 0">
     <i class="fas fa-money-bill-alt blankslate-icon"></i>
     <h3 translate="">No partner accounts added to this contact</h3>

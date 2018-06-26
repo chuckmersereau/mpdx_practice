@@ -1,6 +1,6 @@
 <div block-ui="contactShow" class="contact-show" ng-class="{'drawer': $ctrl.contacts.activeDrawer}">
     <div class="contact-content">
-        <contact-info contact="$ctrl.contacts.current" on-save="$ctrl.save()"></contact-info>
+        <contact-info contact="$ctrl.contacts.current" on-save="$ctrl.contacts.saveCurrent()"></contact-info>
         <div class="contact-tabs">
             <div class="horizontal-tab-sortable">
                 <div class="sortable-row" as-sortable="$ctrl.sortableOptions" data-ng-model="$ctrl.tabsLabels">
@@ -40,7 +40,6 @@
             <contact-addresses ng-if="$ctrl.contacts.activeDrawer === 'addresses'"></contact-addresses>
             <contact-details contact="$ctrl.contacts.current"
                              donor-accounts="$ctrl.contacts.current.donor_accounts"
-                             on-save="$ctrl.save()"
                              ng-if="$ctrl.contacts.activeDrawer === 'details'">
             </contact-details>
             <contact-people contact="$ctrl.contacts.current"

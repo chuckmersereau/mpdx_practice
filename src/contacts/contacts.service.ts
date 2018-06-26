@@ -21,6 +21,7 @@ import { convertTags } from '../common/fp/tags';
 import api, { ApiService } from '../common/api/api.service';
 import contactFilter, { ContactFilterService } from './sidebar/filter/filter.service';
 import contactsTags, { ContactsTagsService } from './sidebar/filter/tags/tags.service';
+import createPatch from '../common/fp/createPatch';
 import emptyToNull from '../common/fp/emptyToNull';
 import flattenCompactAndJoin from '../common/fp/flattenCompactAndJoin';
 import joinComma from '../common/fp/joinComma';
@@ -162,6 +163,25 @@ export class ContactsService {
                 this.$rootScope.$emit('contactCreated');
             }
             return data;
+        });
+    }
+    saveCurrent() {
+        const source = angular.copy(this.current); // to avoid onChanges changes
+        const target = angular.copy(this.initialState); // to avoid onChanges changes
+        const patch = createPatch(target, source);
+        this.$log.debug('contact patch', patch);
+        const errorMessage = this.gettextCatalog.getString('Unable to save changes.');
+        const successMessage = this.gettextCatalog.getString('Changes saved successfully.');
+
+        return this.save(patch, successMessage, errorMessage).then(() => {
+            if (patch.tag_list) {
+                const tags = patch.tag_list.split(',');
+                this.$rootScope.$emit('contactTagsAdded', { tags: tags });
+                this.contactsTags.addTag({ tags: tags });
+            }
+            if (patch.id === this.initialState.id) {
+                this.initialState = assign(this.initialState, patch);
+            }
         });
     }
     create(contact: any): ng.IPromise<any> {
