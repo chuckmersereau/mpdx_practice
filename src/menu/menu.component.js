@@ -23,7 +23,7 @@ class menuController {
     $onInit() {
         const disableNext = this.$location.search().disableNext;
         if (disableNext) {
-            this.$window.localStorage.removeItem('useNext');
+            this.$window.localStorage.setItem('useNext', false);
         }
         const useNext = this.$window.localStorage.getItem('useNext');
         if (useNext === 'true') {
