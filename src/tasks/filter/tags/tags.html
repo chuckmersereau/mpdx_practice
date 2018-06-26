@@ -12,7 +12,7 @@
                    title="{{ ::'Look up tasks with ALL of the tags selected (a and b and c).' | translate }}" translate>All</a>
             </li>
         </ul>
-        <i class="fal fa-chevron-down" ng-class="{ 'fa-rotate-180': $ctrl.isCollapsed }"></i>
+        <i class="fal fa-chevron-up" ng-class="{ 'fa-rotate-180': $ctrl.isCollapsed !== -1 }"></i>
     </div>
     <div bs-collapse-target>
         <div class="filter_hint" translate>Click a tag twice to look up all tasks that do not have that tag.</div>

@@ -48,7 +48,7 @@
             <span class="filter--filtergroup_title" bs-collapse-toggle>
                 <i class="fas fa-filter"></i>
                 <div translate>Filters</div>
-                <i class="fal fa-chevron-down" ng-class="{ 'fa-rotate-180': $ctrl.isCollapsed }"></i>
+                <i class="fal fa-chevron-up" ng-class="{ 'fa-rotate-180': $ctrl.isCollapsed !== -1 }"></i>
             </span>
             <div bs-collapse-target class="collapse-target">
                 <div class="filter_hint">

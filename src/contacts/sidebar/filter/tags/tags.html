@@ -12,7 +12,7 @@
                title="{{ ::'Look up contacts with ALL of the tags selected (a and b and c).' | translate }}" translate>All</a>
           </li>
         </ul>
-        <i class="fal fa-chevron-down" ng-class="{ 'fa-rotate-180': $ctrl.isCollapsed }"></i>
+        <i class="fal fa-chevron-up" ng-class="{ 'fa-rotate-180': $ctrl.isCollapsed !== -1 }"></i>
         <div class="filter-collapse"
              ng-if="!$ctrl.session.isInState('contacts.show')"
              ng-click="$ctrl.session.showFiltersOnMobile = false">

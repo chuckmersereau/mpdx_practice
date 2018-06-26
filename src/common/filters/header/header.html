@@ -6,7 +6,7 @@
               translate-plural="{{$count}} filters applied">
         1 filter applied
         </span>
-        <i class="fal fa-chevron-down" ng-class="{ 'fa-rotate-180': $ctrl.isCollapsed }"></i>
+        <i class="fal fa-chevron-up" ng-class="{ 'fa-rotate-180': $ctrl.isCollapsed !== -1 }"></i>
     </div>
     <div class="filters-header__content" bs-collapse-target>
         <div ng-repeat="filter in $ctrl.filters track by $index">
