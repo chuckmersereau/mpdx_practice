@@ -117,7 +117,9 @@ export class UsersService {
         if (this.currentOptions && !reset) {
             return this.$q.resolve();
         }
-        return this.api.get('user/options').then((data) => {
+        return this.api.get('user/options', {
+            per_page: 10000
+        }).then((data) => {
             this.currentOptions = this.mapOptions(data);
             /* istanbul ignore next */
             this.$log.debug('user/options', this.currentOptions);

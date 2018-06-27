@@ -364,4 +364,14 @@ describe('common.users.service', () => {
             expect(users.setOption).toHaveBeenCalledWith(option, 'a');
         });
     });
+
+    describe('getOptions', () => {
+        it('should get from api', () => {
+            spyOn(api, 'get').and.callFake(() => q.resolve());
+            users.getOptions(true);
+            expect(api.get).toHaveBeenCalledWith('user/options', {
+                per_page: 10000
+            });
+        });
+    });
 });
