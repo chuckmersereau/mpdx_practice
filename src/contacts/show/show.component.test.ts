@@ -150,50 +150,6 @@ describe('contacts.show.component', () => {
         });
     });
 
-    describe('showRecommendationTab', () => {
-        beforeEach(() => {
-            users.current = {
-                preferences: {
-                    admin: false
-                }
-            };
-        });
-
-        it('should return false', () => {
-            expect($ctrl.showRecommendationTab()).toBeFalsy();
-        });
-
-        describe('user has Cru - USA organization', () => {
-            beforeEach(() => {
-                users.organizationAccounts = [
-                    {
-                        organization: {
-                            name: 'Cru - USA'
-                        }
-                    }
-                ];
-            });
-
-            it('should return false', () => {
-                expect($ctrl.showRecommendationTab()).toBeFalsy();
-            });
-
-            describe('user is admin', () => {
-                beforeEach(() => {
-                    users.current = {
-                        preferences: {
-                            admin: true
-                        }
-                    };
-                });
-
-                it('should return true', () => {
-                    expect($ctrl.showRecommendationTab()).toEqual(true);
-                });
-            });
-        });
-    });
-
     describe('setActiveTab', () => {
         const transition = {
             to: () => {

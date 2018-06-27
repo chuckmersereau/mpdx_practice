@@ -61,12 +61,6 @@ class ContactController {
             { key: 'notes', value: gettextCatalog.getString('Notes'), drawerable: true }
         ];
 
-        if (this.showRecommendationTab()) {
-            tabsLabels.push(
-                { key: 'recommendation', value: gettextCatalog.getString('Recommendations') }
-            );
-        }
-
         if (has('currentOptions.contact_tabs_sort', users)) {
             forEachRight((tab) => {
                 const label = find({ key: tab }, tabsLabels);
@@ -171,12 +165,6 @@ class ContactController {
         if (tab === this.contacts.activeTab) {
             this.$state.go('contacts.show.donations');
         }
-    }
-    showRecommendationTab() {
-        return find((organizationAccount) => {
-            return organizationAccount.organization.name === 'Cru - USA';
-        }, this.users.organizationAccounts)
-            && this.users.current.preferences.admin;
     }
 }
 
