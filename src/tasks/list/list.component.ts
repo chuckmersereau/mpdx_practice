@@ -49,14 +49,15 @@ class ListController {
     selected: string[];
     selectedTask: any;
     totalTaskCount: number;
-    watcher: any;
-    watcher2: any;
-    watcher3: any;
-    watcher4: any;
-    watcher5: any;
-    watcher6: any;
-    watcher7: any;
-    watcher8: any;
+    watcher: () => void;
+    watcher2: () => void;
+    watcher3: () => void;
+    watcher4: () => void;
+    watcher5: () => void;
+    watcher6: () => void;
+    watcher7: () => void;
+    watcher8: () => void;
+    watcher9: () => void;
     constructor(
         private $log: ng.ILogService,
         private $q: ng.IQService,
@@ -136,6 +137,12 @@ class ListController {
             existingTask.comments = map('id', task.comments);
         });
 
+        this.watcher9 = this.$rootScope.$on('taskCompleted', (e, taskId) => {
+            if (taskId === this.selectedTask.id) {
+                this.selectedTask = null;
+            }
+        });
+
         this.load();
     }
     $onDestroy() {
@@ -147,6 +154,7 @@ class ListController {
         this.watcher6();
         this.watcher7();
         this.watcher8();
+        this.watcher9();
     }
     $onChanges() {
         this.reset();
@@ -319,6 +327,7 @@ class ListController {
                     task.completed = true;
                     task.category = 'completed';
                 }
+                this.$rootScope.$emit('taskCompleted', selectedTask.id);
             }, tasks);
         });
     }

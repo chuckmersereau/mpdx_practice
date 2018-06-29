@@ -266,6 +266,22 @@ describe('tasks.list.component', () => {
                 expect($ctrl.selectedTask).toEqual(null);
             });
         });
+
+        describe('taskCompleted', () => {
+            it('should close task drawer', () => {
+                $ctrl.selectedTask = { id: 1 };
+                rootScope.$emit('taskCompleted', 1);
+                rootScope.$digest();
+                expect($ctrl.selectedTask).toEqual(null);
+            });
+
+            it('shouldn\'t close task drawer', () => {
+                $ctrl.selectedTask = { id: 2 };
+                rootScope.$emit('taskCompleted', 1);
+                rootScope.$digest();
+                expect($ctrl.selectedTask.id).toEqual(2);
+            });
+        });
     });
 
     describe('$onDestroy', () => {
@@ -281,6 +297,8 @@ describe('tasks.list.component', () => {
             spyOn($ctrl, 'watcher5').and.callFake(() => {});
             spyOn($ctrl, 'watcher6').and.callFake(() => {});
             spyOn($ctrl, 'watcher7').and.callFake(() => {});
+            spyOn($ctrl, 'watcher8').and.callFake(() => {});
+            spyOn($ctrl, 'watcher9').and.callFake(() => {});
             $ctrl.$onDestroy();
             expect($ctrl.watcher).toHaveBeenCalledWith();
             expect($ctrl.watcher2).toHaveBeenCalledWith();
@@ -289,6 +307,8 @@ describe('tasks.list.component', () => {
             expect($ctrl.watcher5).toHaveBeenCalledWith();
             expect($ctrl.watcher6).toHaveBeenCalledWith();
             expect($ctrl.watcher7).toHaveBeenCalledWith();
+            expect($ctrl.watcher8).toHaveBeenCalledWith();
+            expect($ctrl.watcher9).toHaveBeenCalledWith();
         });
     });
 
@@ -553,8 +573,12 @@ describe('tasks.list.component', () => {
     });
 
     describe('bulkComplete', () => {
-        it('should call api', (done) => {
+        beforeEach(() => {
             spyOn(api, 'put').and.callFake(() => q.resolve());
+            spyOn(rootScope, '$emit').and.callFake(() => {});
+        });
+
+        it('should call api', (done) => {
             $ctrl.data = [{ id: 1 }, { id: 2 }];
             $ctrl.selected = selected;
             $ctrl.bulkComplete().then(() => {
@@ -566,6 +590,16 @@ describe('tasks.list.component', () => {
                     { id: 1, completed: true, category: 'completed' },
                     { id: 2, completed: true, category: 'completed' }
                 ]);
+                done();
+            });
+            scope.$digest();
+        });
+
+        it('should emit', (done) => {
+            $ctrl.data = [{ id: 1 }, { id: 2 }];
+            $ctrl.selected = selected;
+            $ctrl.bulkComplete().then(() => {
+                expect(rootScope.$emit).toHaveBeenCalledWith('taskCompleted', 1);
                 done();
             });
             scope.$digest();

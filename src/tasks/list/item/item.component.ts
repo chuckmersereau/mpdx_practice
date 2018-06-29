@@ -47,7 +47,7 @@ class ItemController {
     openComments() {
         this.onOpen({ $action: 'comments' });
     }
-    complete() {
+    complete(): ng.IPromise<void> {
         return this.modal.open({
             template: require('../../modals/complete/complete.html'),
             controller: 'completeTaskController',
@@ -55,6 +55,13 @@ class ItemController {
                 task: () => this.tasks.load(this.task.id),
                 0: () => this.serverConstants.load(['next_actions', 'results', 'status_hashes'])
             }
+        }).then(() => {
+            // check task for completed status. workaround angularstrap not having a return value
+            return this.tasks.load(this.task.id).then((data) => {
+                if (data.completed) {
+                    this.$rootScope.$emit('taskCompleted', this.task.id);
+                }
+            });
         });
     }
     star() {

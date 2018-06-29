@@ -77,10 +77,15 @@ describe('tasks.list.item.component', () => {
     });
 
     describe('complete', () => {
+        const returnTask = { id: 1, completed: true };
+        beforeEach(() => {
+            spyOn(serverConstants, 'load').and.callFake(() => q.resolve());
+            spyOn(rootScope, '$emit').and.callFake(() => {});
+        });
+
         it('should open the complete modal', () => {
             spyOn(modal, 'open').and.callThrough();
-            spyOn(serverConstants, 'load').and.callFake(() => q.resolve());
-            spyOn(tasks, 'load').and.callFake(() => q.resolve());
+            spyOn(tasks, 'load').and.callFake(() => q.resolve(returnTask));
             $ctrl.task = { id: 1 };
             $ctrl.complete();
             expect(modal.open).toHaveBeenCalledWith({
@@ -90,6 +95,39 @@ describe('tasks.list.item.component', () => {
             });
             expect(tasks.load).toHaveBeenCalledWith(1);
             expect(serverConstants.load).toHaveBeenCalledWith(['next_actions', 'results', 'status_hashes']);
+        });
+
+        it('should re-load the task after modal close', (done) => {
+            spyOn(modal, 'open').and.callFake(() => q.resolve());
+            spyOn(tasks, 'load').and.callFake(() => q.resolve(returnTask));
+            $ctrl.task = { id: 1 };
+            $ctrl.complete().then(() => {
+                expect(tasks.load).toHaveBeenCalledWith(1);
+                done();
+            });
+            scope.$digest();
+        });
+
+        it('should emit if task was closed', (done) => {
+            spyOn(modal, 'open').and.callFake(() => q.resolve());
+            spyOn(tasks, 'load').and.callFake(() => q.resolve(returnTask));
+            $ctrl.task = { id: 1 };
+            $ctrl.complete().then(() => {
+                expect(rootScope.$emit).toHaveBeenCalledWith('taskCompleted', 1);
+                done();
+            });
+            scope.$digest();
+        });
+
+        it('shouldn\'t emit if task wasn\'t complete', (done) => {
+            spyOn(tasks, 'load').and.callFake(() => q.resolve({ id: 1 }));
+            spyOn(modal, 'open').and.callFake(() => q.resolve());
+            $ctrl.task = { id: 1 };
+            $ctrl.complete().then(() => {
+                expect(rootScope.$emit).not.toHaveBeenCalled();
+                done();
+            });
+            scope.$digest();
         });
     });
 
