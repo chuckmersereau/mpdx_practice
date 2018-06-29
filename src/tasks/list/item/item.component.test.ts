@@ -179,4 +179,24 @@ describe('tasks.list.item.component', () => {
             expect($ctrl.onMultiSelect).toHaveBeenCalledWith();
         });
     });
+
+    describe('getTranslatedActivity', () => {
+        it('should get server translation', () => {
+            serverConstants.data = {
+                activity_hashes: [
+                    { id: 'active', value: 'Active' }
+                ]
+            };
+            expect($ctrl.getTranslatedActivity('active')).toEqual('Active');
+        });
+
+        it('should return value if no constant', () => {
+            serverConstants.data = {
+                activity_hashes: [
+                    { id: 'active', value: 'Active' }
+                ]
+            };
+            expect($ctrl.getTranslatedActivity('status')).toEqual('status');
+        });
+    });
 });

@@ -1,5 +1,5 @@
 import { ApiService } from '../../../common/api/api.service';
-import { contains, includes, pull, union } from 'lodash/fp';
+import { contains, find, get, includes, pull, union } from 'lodash/fp';
 import { ModalService } from '../../../common/modal/modal.service';
 import { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
 import { UsersService } from '../../../common/users/users.service';
@@ -90,6 +90,10 @@ class ItemController {
         } else {
             this.onSelect();
         }
+    }
+    getTranslatedActivity(value): string {
+        const activity = find({ id: value }, this.serverConstants.data.activity_hashes);
+        return activity ? get('value', activity) : value;
     }
 }
 

@@ -377,7 +377,8 @@ export default class Routes {
                 },
                 tag: /* @ngInject*/ (tasksTags) => tasksTags.load(),
                 0: /* @ngInject*/ (serverConstants) => serverConstants.load(['assignable_send_newsletter_hashes',
-                    'pledge_frequency_hashes', 'pledge_currencies', 'pledge_frequency_hashes', 'status_hashes'])
+                    'activity_hashes', 'pledge_frequency_hashes', 'pledge_currencies', 'pledge_frequency_hashes',
+                    'status_hashes'])
             }
         }).state({
             name: 'tools',

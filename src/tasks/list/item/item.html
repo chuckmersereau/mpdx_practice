@@ -10,7 +10,7 @@
     </a>
     <div class="content">
         <a ng-click="$ctrl.edit(); $event.stopPropagation();" class="subject">
-            <strong>{{ ::$ctrl.task.activity_type | translate }}</strong>
+            <strong>{{ ::$ctrl.getTranslatedActivity($ctrl.task.activity_type) }}</strong>
             {{ ::$ctrl.task.subject }}
         </a>
         <span ng-if="::$ctrl.task.completed" translate-params-result="::$ctrl.task.result" class="result" translate>
