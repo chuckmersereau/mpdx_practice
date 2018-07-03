@@ -542,11 +542,6 @@ describe('reports.donations.component', () => {
 
         it('should get currency symbol', () => {
             const result = $ctrl.mutateDataForSorts(data);
-            expect(result[0].currency_symbol).toEqual('tUSD');
-        });
-
-        it('should get currency symbol', () => {
-            const result = $ctrl.mutateDataForSorts(data);
             expect(result[0].converted_symbol).toEqual('tAUD');
         });
     });

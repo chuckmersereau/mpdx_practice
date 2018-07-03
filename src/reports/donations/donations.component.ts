@@ -148,7 +148,6 @@ class DonationsController {
     mutateDataForSorts(data) {
         return map((donation) => {
             donation.converted_amount = toNumber(donation.converted_amount);
-            donation.currency_symbol = this.serverConstants.getPledgeCurrencySymbol(donation.currency);
             donation.converted_symbol = this.serverConstants.getPledgeCurrencySymbol(donation.converted_currency);
             return donation;
         }, data);

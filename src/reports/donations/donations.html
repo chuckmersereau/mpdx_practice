@@ -76,7 +76,7 @@
                 </a>
             </td>
             <td class="text-right text-nowrap"
-                data-title="{{ donation.amount | currency: donation.currency_symbol : 0 }}"
+                data-title="{{ donation.amount | currency: '' : 0 }} {{donation.currency}}"
                 data-container="body"
                 data-placement="right"
                 bs-tooltip>
