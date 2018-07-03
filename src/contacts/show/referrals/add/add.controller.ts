@@ -1,13 +1,17 @@
 import * as uuid from 'uuid/v1';
-import { ApiService } from '../../../../common/api/api.service';
-import { ContactsService } from '../../../contacts.service';
 import { reduce } from 'lodash/fp';
+import { StateParams, StateService } from '@uirouter/core';
+import api, { ApiService } from '../../../../common/api/api.service';
+import contacts, { ContactsService } from '../../../contacts.service';
+import uiRouter from '@uirouter/angularjs';
 
 class AddReferralsModalController {
     models: any;
     constructor(
         private $q: ng.IQService,
         private $scope: mgcrea.ngStrap.modal.IModalScope,
+        private $state: StateService,
+        private $stateParams: StateParams,
         private api: ApiService,
         private contacts: ContactsService,
         private contact: any
@@ -57,10 +61,13 @@ class AddReferralsModalController {
         }
         return this.contacts.addReferrals(this.contact, contacts).then((data) => {
             this.$scope.$hide();
+            this.$state.go('contacts', { filters: { referrer: this.$stateParams.contactId } });
             return data;
         });
     }
 }
 
-export default angular.module('mpdx.contacts.show.referrals.add.controller', [])
-    .controller('addReferralsModalController', AddReferralsModalController).name;
+export default angular.module('mpdx.contacts.show.referrals.add.controller', [
+    uiRouter,
+    api, contacts
+]).controller('addReferralsModalController', AddReferralsModalController).name;

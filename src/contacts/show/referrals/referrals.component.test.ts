@@ -1,22 +1,17 @@
 import component from './referrals.component';
 
 describe('contacts.show.referrals.component', () => {
-    let $ctrl, scope, state, stateParams, contacts, q;
+    let $ctrl, scope, contacts, q;
 
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, $state, $stateParams, _contacts_, $q) => {
+        inject(($componentController, $rootScope, _contacts_, $q) => {
             scope = $rootScope.$new();
             contacts = _contacts_;
-            state = $state;
-            stateParams = $stateParams;
             q = $q;
             $ctrl = $componentController('contactReferrals', { $scope: scope }, {});
         });
     });
-
-    function loadController() {
-    }
 
     describe('$onInit', () => {
         it('should get referrals', (done) => {
@@ -40,22 +35,6 @@ describe('contacts.show.referrals.component', () => {
         it('should call contacts.openAddReferralsModal', () => {
             $ctrl.openAddReferralsModal();
             expect(contacts.openAddReferralsModal).toHaveBeenCalled();
-        });
-
-        it('should return a promise', () => {
-            expect($ctrl.openAddReferralsModal()).toEqual(jasmine.any(q));
-        });
-
-        describe('promise successful', () => {
-            it('should call $state.go', (done) => {
-                spyOn(state, 'go').and.returnValue('');
-                stateParams.contactId = '123';
-                $ctrl.openAddReferralsModal().then(() => {
-                    expect(state.go).toHaveBeenCalledWith('contacts', { filters: { referrer: '123' } });
-                    done();
-                });
-                scope.$digest();
-            });
         });
     });
 });
