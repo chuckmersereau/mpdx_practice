@@ -188,7 +188,7 @@ describe('contacts.show.address.modal.controller', () => {
             event.key = '1';
             $ctrl.streetKeyUp(event);
             expect($ctrl.autocompleteService.getPlacePredictions)
-                .toHaveBeenCalledWith({ input: '1' }, jasmine.any(Function));
+                .toHaveBeenCalledWith({ input: '1', sessionToken: null }, jasmine.any(Function));
         });
         // callback test?
         xit('should set address results', (done) => {

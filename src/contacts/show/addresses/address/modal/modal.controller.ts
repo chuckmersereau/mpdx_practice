@@ -26,6 +26,7 @@ class AddressModalController {
     modalTitle: string;
     place: any;
     placesService: any;
+    sessionToken: string;
     constructor(
         private $log: ng.ILogService,
         private $scope: mgcrea.ngStrap.modal.IModalScope,
@@ -43,7 +44,9 @@ class AddressModalController {
         this.place = null;
         this.addressInitialState = angular.copy(address);
         // null is for unit tests
-        this.autocompleteService = config.env === 'test' ? null : new $window.google.maps.places.AutocompleteService();
+        const isTestEnv = config.env === 'test';
+        this.autocompleteService = isTestEnv ? null : new $window.google.maps.places.AutocompleteService();
+        this.sessionToken = isTestEnv ? null : new $window.google.maps.places.AutocompleteSessionToken();
         this.modalTitle = this.setTitle(this.address, this.contact);
 
         if (this.address) {
@@ -121,7 +124,10 @@ class AddressModalController {
         if (event.key === 'Escape') {
             this.addressResults = null;
         } else if (event.key !== 'Enter' && noReturn) {
-            this.autocompleteService.getPlacePredictions({ input: event.currentTarget.value }, (results) => {
+            this.autocompleteService.getPlacePredictions({
+                input: event.currentTarget.value,
+                sessionToken: this.sessionToken
+            }, (results) => {
                 this.addressResults = results;
                 this.$log.debug('address query results', this.addressResults);
             });
@@ -148,8 +154,12 @@ class AddressModalController {
     reqUpdateEmailBodyRequest() {
         if (this.address.source === 'Siebel') {
             const donorAccount = this.address.source_donor_account;
-            const donorName = donorAccount ? this.contact.name + ' (donor #' + donorAccount.account_number + ')' : this.contact.name;
-            const previousAddress = this.address.street ? `, previously located at:%0D%0A${this.address.street}%0D%0A${this.address.city}, ${this.address.state} ${this.address.postal_code},%0D%0A` : ' ';
+            const donorName = donorAccount
+                ? this.contact.name + ' (donor #' + donorAccount.account_number + ')'
+                : this.contact.name;
+            const previousAddress = this.address.street
+                ? `, previously located at:%0D%0A${this.address.street}%0D%0A${this.address.city}, ${this.address.state} ${this.address.postal_code},%0D%0A`
+                : ' ';
             return `Dear Donation Services,%0D%0A%0D%0AOne of my donors, ${donorName}${previousAddress}has a new current address.%0D%0APlease update their address to:%0D%0AREPLACE WITH NEW STREET%0D%0AREPLACE WITH NEW CITY, STATE, ZIP%0D%0A%0D%0AThanks,%0D%0A${this.users.current.first_name}`;
         }
 
