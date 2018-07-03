@@ -12,8 +12,7 @@ task-item-comment {
         grid-template-columns: auto 60px;
         div.comment-body {
             max-width: 320px;
-            text-overflow: ellipsis;
-            white-space: pre;
+            white-space: pre-wrap;
             grid-column: 1;
             grid-row: 1;
             overflow-x: hidden;
