@@ -319,15 +319,6 @@ export class ContactsService {
             controller: 'contactNewModalController'
         });
     }
-    openMapContactsModal(selectedContacts: any[]): ng.IPromise<any> {
-        return this.modal.open({
-            template: require('./list/map/map.html'),
-            controller: 'mapContactsController',
-            locals: {
-                selectedContacts: selectedContacts
-            }
-        });
-    }
     openMultipleAddModal(): ng.IPromise<any> {
         return this.modal.open({
             template: require('./multiple/multiple.html'),

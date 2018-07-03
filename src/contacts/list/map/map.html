@@ -1,4 +1,4 @@
-<modal class="modal-map" title="{{'Map Contacts' | translate}}" cancel="$hide()" hide-footer="true">
+<modal class="modal-map" title="{{'Map Contacts' | translate}}" cancel="$hide()" hide-footer="true" size="xl">
     <div class="panel panel-default" ng-repeat="(k, status) in $ctrl.statuses" ng-class="{ 'panel-selected' : $ctrl.tabSelected(status.name)}" ng-if="status.markers.length > 0">
         <div class="panel-heading" ng-click="$ctrl.setTab(status.name)">
             <img src="{{status.imageUrl}}">
