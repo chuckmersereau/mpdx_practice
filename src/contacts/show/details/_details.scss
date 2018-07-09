@@ -47,19 +47,19 @@ contact-details {
     .financial {
         .commitment {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
             grid-column-gap: 20px;
+            grid-template-columns: repeat(2, 1fr);
         }
         .donations {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
             grid-column-gap: 20px;
+            grid-template-columns: repeat(2, 1fr);
         }
     }
     .communication {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
         grid-column-gap: 20px;
+        grid-template-columns: repeat(2, 1fr);
         > div.tags {
             grid-column: 1 / span 2;
             tags-input {
@@ -82,13 +82,19 @@ contact-details {
                     flex-grow: 1;
                     button.btn {
                         margin-bottom: 0;
-                        padding: 0 30px 5px 0;
+                        padding: 0 0 5px;
                         border: 0;
                         border-bottom: 1px solid color-gray(90);
                         border-radius: 0;
                         font-weight: 600;
                         line-height: 22px;
                         text-align: left;
+                    }
+                    span {
+                        display: block;
+                        max-width: 155px;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
                     }
                 }
                 a {
@@ -99,8 +105,8 @@ contact-details {
     }
     .other {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
         grid-column-gap: 20px;
+        grid-template-columns: repeat(2, 1fr);
     }
     .partner-accounts {
         display: flex;
