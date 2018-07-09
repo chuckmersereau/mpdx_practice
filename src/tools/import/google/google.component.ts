@@ -29,7 +29,7 @@ class ImportGoogleController {
         this.selected_account = null;
         this.import = {
             source: 'google',
-            import_by_group: 'false',
+            import_by_group: 'true',
             override: 'false',
             tag_list: [],
             in_preview: false
@@ -47,9 +47,7 @@ class ImportGoogleController {
         }
     }
     save() {
-        this.blockUI.start();
-        const errorMessage = this.gettextCatalog.getString('Unable to save changes.');
-        return this.apiSave(this.import, errorMessage).then(() => {
+        return this.saveOrConfirm().then(() => {
             this.blockUI.reset();
             const message = this.gettextCatalog.getString('Your Google import has started and your contacts will be in MPDX shortly. We will email you when your import is complete.');
             this.$state.go('tools');
@@ -59,7 +57,18 @@ class ImportGoogleController {
             throw err;
         });
     }
+    private saveOrConfirm(): ng.IPromise<any> {
+        const errorMessage = this.gettextCatalog.getString('Unable to save changes.');
+        return this.import.import_by_group === 'true'
+            ? this.apiSave(this.import, errorMessage)
+            : this.confirmThenSave(errorMessage);
+    }
+    private confirmThenSave(errorMessage): ng.IPromise<any> {
+        const importAllMessage = this.gettextCatalog.getString('Are you sure you want to import all contacts? This may import many contacts that you do not wish to have in MPDX. Many users find it more helpful to use the "Only import contacts from certain groups" option.');
+        return this.modal.confirm(importAllMessage).then(() => this.apiSave(this.import, errorMessage));
+    }
     apiSave(data, errorMessage) {
+        this.blockUI.start();
         let transformedData = angular.copy(data);
 
         transformedData.tag_list = joinComma(transformedData.tag_list);

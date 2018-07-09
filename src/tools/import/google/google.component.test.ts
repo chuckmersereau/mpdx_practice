@@ -38,7 +38,7 @@ describe('tools.import.google.component', () => {
             expect($ctrl.selected_account).toBeNull();
             expect($ctrl.import).toEqual({
                 source: 'google',
-                import_by_group: 'false',
+                import_by_group: 'true',
                 override: 'false',
                 tag_list: [],
                 in_preview: false
@@ -74,6 +74,37 @@ describe('tools.import.google.component', () => {
         });
     });
 
+    describe('saveOrConfirm', () => {
+        it('should call confirmThenSave if import_by_group is false', () => {
+            spyOn($ctrl, 'confirmThenSave').and.callFake(() => {});
+            $ctrl.import.import_by_group = 'false';
+            $ctrl.saveOrConfirm();
+            expect($ctrl.confirmThenSave).toHaveBeenCalledWith('Unable to save changes.');
+        });
+    });
+
+    describe('confirmThenSave', () => {
+        beforeEach(() => {
+            spyOn(modal, 'confirm').and.returnValue(q.resolve());
+            spyOn($ctrl, 'apiSave').and.returnValue(q.resolve());
+        });
+
+        it('should open a confirm modal', () => {
+            const msg = 'Are you sure you want to import all contacts? This may import many contacts that you do not wish to have in MPDX. Many users find it more helpful to use the "Only import contacts from certain groups" option.';
+            $ctrl.confirmThenSave();
+            expect(gettextCatalog.getString).toHaveBeenCalledWith(msg);
+            expect(modal.confirm).toHaveBeenCalledWith(msg);
+        });
+
+        it('should call apiSave', (done) => {
+            $ctrl.confirmThenSave('a').then(() => {
+                expect($ctrl.apiSave).toHaveBeenCalledWith($ctrl.import, 'a');
+                done();
+            });
+            scope.$digest();
+        });
+    });
+
     describe('save', () => {
         let spy;
 
@@ -85,7 +116,7 @@ describe('tools.import.google.component', () => {
             $ctrl.save();
             expect($ctrl.apiSave).toHaveBeenCalledWith({
                 source: 'google',
-                import_by_group: 'false',
+                import_by_group: 'true',
                 override: 'false',
                 tag_list: [],
                 in_preview: false
@@ -93,11 +124,6 @@ describe('tools.import.google.component', () => {
             expect(gettextCatalog.getString).toHaveBeenCalledWith(
                 'Unable to save changes.'
             );
-        });
-
-        it('should start blockUI', () => {
-            $ctrl.save();
-            expect($ctrl.blockUI.start).toHaveBeenCalled();
         });
 
         describe('promise successful', () => {
@@ -240,6 +266,11 @@ describe('tools.import.google.component', () => {
                 type: 'imports',
                 errorMessage: 'a'
             });
+        });
+
+        it('should start blockUI', () => {
+            $ctrl.apiSave(data, 'a');
+            expect($ctrl.blockUI.start).toHaveBeenCalled();
         });
     });
 });
