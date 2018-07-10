@@ -5,7 +5,7 @@
         <div class="country">{{$ctrl.address.country}}</div>
         <div class="source"
              translate-params-source="$ctrl.address.source | sourceToStr"
-             translate-params-date="$ctrl.address.updated_at | localize"
+             translate-params-date="$ctrl.address.created_at | localize"
              translate>
             Source: {{source}} ({{date}})
         </div>
