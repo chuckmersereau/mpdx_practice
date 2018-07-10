@@ -149,15 +149,15 @@ class ChartController {
                     }],
                     drawTime: 'beforeDatasetsDraw'
                 },
-                onClick: (event, legendItem) => this.onClick(event, legendItem),
-                tooltips: {
-                    callbacks: {
-                        label: (tooltipItem, data) => this.generateTooltip(tooltipItem, data)
-                    }
-                }
+                onClick: (event, legendItem) => this.onClick(event, legendItem)
             };
 
             if (!this.inContact) {
+                this.options.tooltips = {
+                    callbacks: {
+                        label: (tooltipItem, data) => this.generateTooltip(tooltipItem, data)
+                    }
+                };
                 this.options.annotation.annotations = this.options.annotation.annotations.concat([{
                     type: 'line',
                     mode: 'horizontal',

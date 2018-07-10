@@ -499,12 +499,7 @@ describe('reports.donations.chart.component', () => {
                                 }],
                                 drawTime: 'beforeDatasetsDraw'
                             },
-                            onClick: jasmine.any(Function),
-                            tooltips: {
-                                callbacks: {
-                                    label: jasmine.any(Function)
-                                }
-                            }
+                            onClick: jasmine.any(Function)
                         });
                         done();
                     });
