@@ -1,10 +1,14 @@
-import { assign, each } from 'lodash/fp';
+import { each } from 'lodash/fp';
 import component from './show.component';
 
 describe('contacts.show.component', () => {
-    let $ctrl, gettextCatalog, rootScope, scope,
+    let $ctrl, gettextCatalog, rootScope, scope, componentController,
         api, contacts, contactsTags, users,
         state, transitions, q;
+
+    function loadController() {
+        $ctrl = componentController('contact', { $scope: scope }, {});
+    }
 
     beforeEach(() => {
         angular.mock.module(component);
@@ -24,12 +28,23 @@ describe('contacts.show.component', () => {
             q = $q;
             api.account_list_id = 1234;
             contacts.current = { id: 1, name: 'a b' };
-            $ctrl = $componentController('contact', { $scope: scope }, {});
+            componentController = $componentController;
+            loadController();
         });
         spyOn(gettextCatalog, 'getString').and.callFake((data) => data);
     });
 
     describe('constructor', () => {
+        it('should set active tab to default', () => {
+            expect(contacts.activeTab).toEqual('donations');
+        });
+
+        it('should set active tab to state', () => {
+            state.$current.name = 'contacts.details.detail';
+            loadController();
+            expect(contacts.activeTab).toEqual('detail');
+        });
+
         it('should set tab data', () => {
             expect($ctrl.tabsLabels).toEqual(jasmine.any(Array));
             each((tab) => {
@@ -37,6 +52,14 @@ describe('contacts.show.component', () => {
                 expect(tab.value).toEqual(jasmine.any(String));
                 expect([jasmine.any(Boolean), undefined]).toContain(tab.drawerable);
             }, $ctrl.tabsLabels);
+        });
+
+        it('should handle custom tab order', () => {
+            users.currentOptions = { contact_tabs_sort: { value: 'notes,addresses' } };
+            loadController();
+            expect($ctrl.tabsLabels[0].key).toEqual('notes');
+            expect($ctrl.tabsLabels[1].key).toEqual('addresses');
+            expect($ctrl.tabsLabels[2].key).toEqual('details');
         });
     });
 

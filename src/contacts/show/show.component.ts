@@ -1,7 +1,8 @@
 import 'angular-block-ui';
 import 'angular-gettext';
-import { concat, eq, find, forEachRight, get, has, isNil, map, reject, set } from 'lodash/fp';
+import { concat, defaultTo, eq, find, get, has, isNil, map, reduce, set, unionBy } from 'lodash/fp';
 import { ContactsTagsService } from '../sidebar/filter/tags/tags.service';
+import { split } from '../../common/fp/strings';
 import { StateParams, StateService } from '@uirouter/core';
 import contactFilter, { ContactFilterService } from '../sidebar/filter/filter.service';
 import contacts, { ContactsService } from '../contacts.service';
@@ -43,6 +44,8 @@ class ContactController {
         private session: SessionService,
         private users: UsersService
     ) {
+        const activeTab = get('[2]', split('.', $state.$current.name));
+        contacts.activeTab = defaultTo('donations', activeTab);
         this.blockUI = blockUI.instances.get('contactShow');
 
         if ($stateParams['personId']) {
@@ -62,13 +65,11 @@ class ContactController {
         ];
 
         if (has('currentOptions.contact_tabs_sort', users)) {
-            forEachRight((tab) => {
-                const label = find({ key: tab }, tabsLabels);
-                if (label) {
-                    tabsLabels = reject({ key: tab }, tabsLabels);
-                    tabsLabels = concat(label, tabsLabels);
-                }
-            }, users.currentOptions.contact_tabs_sort.value.split(','));
+            const newLabels = reduce((result, value) => {
+                const label = find({ key: value }, tabsLabels);
+                return label ? concat(result, label) : result;
+            }, [], split(',', users.currentOptions.contact_tabs_sort.value));
+            tabsLabels = unionBy('key', newLabels, tabsLabels);
         }
 
         this.tabsLabels = tabsLabels;
@@ -79,12 +80,8 @@ class ContactController {
             accept: (sourceItemHandleScope, destSortableScope) =>
                 sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id,
             orderChanged: (event) => {
-                let newIndex = event.dest.index;
+                const newIndex = event.dest.index;
                 this.contacts.activeTab = this.tabsLabels[newIndex]['key'];
-
-                if (newIndex >= this.tabsLabels.length) {
-                    newIndex = this.tabsLabels.length - 1;
-                }
 
                 const contactTabsSort = {
                     key: 'contact_tabs_sort',

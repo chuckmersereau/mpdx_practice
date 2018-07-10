@@ -7,7 +7,10 @@
                     <div ng-repeat="item in $ctrl.tabsLabels"
                          as-sortable-item
                          class="as-sortable-item"
-                         ng-class="{'active-item': $ctrl.contacts.activeTab === item.key, 'active-drawer': $ctrl.contacts.activeDrawer === item.key}">
+                         ng-class="{
+                            'active-item': $ctrl.contacts.activeTab === item.key,
+                            'active-drawer': $ctrl.contacts.activeDrawer === item.key
+                         }">
                         <span as-sortable-item-handle>
                             <a ui-sref="contacts.show.{{item.key}}">{{ item.value | translate }}</a>
                             <a ng-click="$ctrl.setActiveDrawer(item.key); $event.stopPropagation()"
