@@ -17,7 +17,8 @@ import {
     sortBy,
     sumBy,
     times,
-    toInteger
+    toInteger,
+    toLower
 } from 'lodash/fp';
 import api, { ApiService } from '../../common/api/api.service';
 import designationAccounts, { DesignationAccountsService } from '../../common/designationAccounts/designationAccounts.service';
@@ -50,7 +51,7 @@ class ContributionsController {
         this.sort = 'contact.contact_name';
         this.sortReverse = false;
     }
-    $onInit() {
+    $onInit(): void {
         this.watcher = this.$rootScope.$on('accountListUpdated', () => {
             this.load();
         });
@@ -73,14 +74,15 @@ class ContributionsController {
         this.type = defaultTo('salary', this.type);
         this.load();
     }
-    $onDestroy() {
+    $onDestroy(): void {
         this.watcher();
         this.watcher2();
     }
-    load() {
+    private load(): ng.IPromise<void> {
         this.loading = true;
-        const endpoint
-            = this.type === 'salary' ? 'reports/salary_currency_donations' : 'reports/donor_currency_donations';
+        const endpoint = this.type === 'salary'
+            ? 'reports/salary_currency_donations'
+            : 'reports/donor_currency_donations';
         let params: any = {
             filter: { account_list_id: this.api.account_list_id }
         };
@@ -94,23 +96,23 @@ class ContributionsController {
                 years: this.buildYears(data.months),
                 months: data.months,
                 total: sumBy((currency) => parseFloat(currency.totals.year_converted), currencies),
-                salaryCurrency: this.serverConstants.data.pledge_currencies[data.salary_currency.toLowerCase()]
+                salaryCurrency: this.getCurrency(data.salary_currency)
             };
             this.$log.debug('parsed report data', this.data);
             this.loading = false;
         });
     }
-    buildYears(months) {
+    private buildYears(months): any {
         return reduce((result, value) => {
             const year = value.substring(0, 4);
             result[year] = defaultTo(0, result[year]) + 1;
             return result;
         }, {}, months);
     }
-    getSortedCurrencies(type, data) {
+    private getSortedCurrencies(type, data): any[] {
         return sortBy((c) => parseFloat(`-${c.totals.year_converted}`), this.getCurrencies(type, data));
     }
-    getCurrencies(type, data) {
+    private getCurrencies(type, data): any[] {
         return reduceObject((result, value, key) => {
             const donors = this.getDonors(data, type, value.donation_infos);
             const totals = this.getDonorTotals(value, donors, data.months);
@@ -121,7 +123,7 @@ class ContributionsController {
             return concat(result, currency);
         }, [], data.currency_groups);
     }
-    getDonorTotals(value, donors, months) {
+    private getDonorTotals(value, donors, months): any {
         const sumConvertedMonths
             = (column, donors) => sumBy((donor: any) => donor.monthlyDonations[column].convertedTotal, donors);
         const sumMonths
@@ -137,7 +139,7 @@ class ContributionsController {
             maximum: sumMaxes(donors)
         });
     }
-    getDonors(data, type, info) {
+    private getDonors(data, type, info): any {
         return sortBy('contact.contact_name',
             map((donor) => {
                 return {
@@ -151,19 +153,26 @@ class ContributionsController {
             }, reject((donor) => isNil(donor.total), info))
         );
     }
-    getContact(donor, data) {
+    private getContact(donor, data): any {
         let contact: any = find({ 'contact_id': donor.contact_id }, data.donor_infos);
         if (contact) {
             const frequencyValue = parseFloat(contact.pledge_frequency);
             const frequency = this.serverConstants.getPledgeFrequency(frequencyValue);
+            const currency = this.getCurrency(contact.pledge_currency);
             contact.pledge_amount = toInteger(contact.pledge_amount);
+            contact.pledge_currency_symbol = get('symbol', currency);
             if (frequency) {
                 contact.pledge_frequency = get('value', frequency);
             }
         }
         return contact;
     }
-    getMonthlyDonations(type, donor) {
+    private getCurrency(currencySymbol: string): string | undefined {
+        return currencySymbol
+            ? get(toLower(currencySymbol), this.serverConstants.data.pledge_currencies)
+            : undefined;
+    }
+    private getMonthlyDonations(type, donor): any {
         return map((monthlyDonation) => {
             const convertedTotal = sumBy((amt: any) => round(amt.converted_amount), monthlyDonation.donations);
             const total = toInteger(sumBy((donation: any) => parseFloat(donation.amount), monthlyDonation.donations));
@@ -181,10 +190,10 @@ class ContributionsController {
     moment(str) {
         return moment(str);
     }
-    toCSV() {
+    toCSV(): any[] {
         return this.toCSVAfterServerConstants(this.data);
     }
-    toCSVAfterServerConstants(contributions) {
+    private toCSVAfterServerConstants(contributions): any[] {
         if (!contributions || !contributions.currencies || !contributions.months) {
             return [];
         }
@@ -241,7 +250,7 @@ class ContributionsController {
             return concat(concat(combinedHeaders, donorRows), [totals]);
         }, contributions.currencies);
     }
-    changeSort(field) {
+    changeSort(field): void {
         if (this.sort === field) {
             this.sortReverse = !this.sortReverse;
             return;

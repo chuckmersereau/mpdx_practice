@@ -147,9 +147,9 @@
                                 </td>
                                 <td ng-if="$ctrl.expanded">
                                     <span ng-if="::donor.contact.pledge_amount > 0">
-                                        {{::currency.symbol}}
+                                        {{::donor.contact.pledge_currency_symbol }}
                                         {{::donor.contact.pledge_amount | number : 0}}
-                                        {{::currency.code}}
+                                        {{::donor.contact.pledge_currency }}
                                         {{::donor.contact.pledge_frequency}}
                                     </span>
                                 </td>

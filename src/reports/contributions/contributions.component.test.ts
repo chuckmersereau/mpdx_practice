@@ -417,7 +417,9 @@ describe('reports.contributions.component', () => {
     });
 
     describe('getDonors', () => {
-        const data = { donor_infos: [{ contact_id: 2, contact_name: 'a, b' }, { contact_id: 1, contact_name: 'b, c' }] };
+        const data = {
+            donor_infos: [{ contact_id: 2, contact_name: 'a, b' }, { contact_id: 1, contact_name: 'b, c' }]
+        };
         const info = [
             { contact_id: 1, total: 1, average: 2, maximum: 3, minimum: 0 },
             { contact_id: 2, total: 2, average: 3, maximum: 4, minimum: 1 },
@@ -426,12 +428,18 @@ describe('reports.contributions.component', () => {
 
         beforeEach(() => {
             spyOn($ctrl, 'getMonthlyDonations').and.callFake(() => ['a']);
+            spyOn($ctrl, 'getCurrency').and.callFake(() => ({ symbol: '$' }));
         });
 
         it('should create a sorted array of donors', () => {
             expect($ctrl.getDonors(data, 'salary', info)).toEqual([
                 {
-                    contact: { contact_id: 2, contact_name: 'a, b', pledge_amount: 0 },
+                    contact: {
+                        contact_id: 2,
+                        contact_name: 'a, b',
+                        pledge_amount: 0,
+                        pledge_currency_symbol: '$'
+                    },
                     total: 2,
                     average: 3,
                     maximum: 4,
@@ -439,7 +447,11 @@ describe('reports.contributions.component', () => {
                     monthlyDonations: ['a']
                 },
                 {
-                    contact: { contact_id: 1, contact_name: 'b, c', pledge_amount: 0 },
+                    contact: { contact_id: 1,
+                        contact_name: 'b, c',
+                        pledge_amount: 0,
+                        pledge_currency_symbol: '$'
+                    },
                     total: 1,
                     average: 2,
                     maximum: 3,
@@ -647,6 +659,26 @@ describe('reports.contributions.component', () => {
             $ctrl.changeSort('a');
             expect($ctrl.sort).toEqual('a');
             expect($ctrl.sortReverse).toBeFalsy();
+        });
+    });
+
+    describe('getCurrency', () => {
+        it('should return the currency requested', () => {
+            serverConstants.data = {
+                pledge_currencies: {
+                    nzd: {
+                        code: 'NZD',
+                        code_symbol_string: 'NZD ($)',
+                        name: 'New Zealand dollar',
+                        symbol: '$'
+                    }
+                }
+            };
+            expect($ctrl.getCurrency('NZD')).toEqual(serverConstants.data.pledge_currencies.nzd);
+        });
+
+        it('should handle null', () => {
+            expect($ctrl.getCurrency()).toEqual(undefined);
         });
     });
 });
