@@ -24,7 +24,7 @@
                     <translate>Save</translate>
                     <i class="fas fa-circle-o-notch fa-spin fa-fw" ng-if="$ctrl.saving"></i>
                 </button>
-                <button type="button" class="btn btn-link" ng-click="$ctrl.showSettings = false" translate>Cancel</button>
+                <button type="button" class="btn btn-link" ng-click="$ctrl.disconnect()" translate>Cancel</button>
             </div>
         </div>
         <div ng-if="!$ctrl.mailchimp.data.lists_present">
