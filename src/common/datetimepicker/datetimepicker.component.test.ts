@@ -23,6 +23,12 @@ describe('common.datetimepicker.component', () => {
         });
     });
 
+    describe('constructor', () => {
+        it('should check to see if the browser is safari', () => {
+            expect($ctrl.isSafari).toBeFalsy();
+        });
+    });
+
     describe('init', () => {
         it('should set the model to moment of the ngModel param', () => {
             $ctrl.init();
@@ -160,11 +166,13 @@ describe('common.datetimepicker.component', () => {
 
         it('should set the time', () => {
             $ctrl.onSelectTime('a');
+            $ctrl.$timeout.flush();
             expect($ctrl.time).toEqual('a');
         });
 
         it('should focus time input', () => {
             $ctrl.onSelectTime('a');
+            $ctrl.$timeout.flush();
             expect($ctrl.focusTimeInputElement).toHaveBeenCalledWith();
         });
     });
@@ -208,7 +216,24 @@ describe('common.datetimepicker.component', () => {
         it('should show dropdown', () => {
             const ddEvent = { relatedTarget: {} };
             $ctrl.onTimeBlur(ddEvent);
+            $ctrl.$timeout.flush();
             expect($ctrl.showDropdown).toBeFalsy();
+        });
+
+        it('should wait 250ms on safari', () => {
+            spyOn($ctrl, '$timeout').and.returnValue('');
+            const event = { relatedTarget: { id: 'time_123_0' } };
+            $ctrl.isSafari = true;
+            $ctrl.onTimeBlur(event);
+            expect($ctrl.$timeout).toHaveBeenCalledWith(jasmine.any(Function), 250);
+        });
+
+        it('shouldn\'t wait on other browsers', () => {
+            spyOn($ctrl, '$timeout').and.returnValue('');
+            const event = { relatedTarget: { id: 'time_123_0' } };
+            $ctrl.isSafari = false;
+            $ctrl.onTimeBlur(event);
+            expect($ctrl.$timeout).toHaveBeenCalledWith(jasmine.any(Function), 0);
         });
     });
 

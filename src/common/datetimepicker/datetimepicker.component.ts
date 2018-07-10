@@ -1,3 +1,4 @@
+import * as bowser from 'bowser';
 import * as moment from 'moment';
 import { defaultTo, get, isNil, startsWith, times } from 'lodash/fp';
 import locale, { LocaleService } from '../locale/locale.service';
@@ -7,6 +8,7 @@ class DatetimepickerController {
     dateWatcher: any;
     focusedTime: string;
     hourStep: number;
+    isSafari: boolean;
     minuteStep: number;
     model: any;
     ngModel: any;
@@ -16,8 +18,11 @@ class DatetimepickerController {
     timeWatcher: any;
     constructor(
         private $scope: ng.IScope,
+        private $timeout: ng.ITimeoutService,
         private locale: LocaleService
-    ) {}
+    ) {
+        this.isSafari = bowser.name === 'Safari';
+    }
     $onInit() {
         if (!this.hourStep) {
             this.hourStep = 1;
@@ -78,9 +83,12 @@ class DatetimepickerController {
         }
     }
     onTimeBlur(event) {
-        if (!startsWith('time_', get('id', event.relatedTarget))) {
-            this.showDropdown = false;
-        }
+        const timeoutLength = this.isSafari ? 250 : 0;
+        this.$timeout(() => { // safari kills threads on blur
+            if (!startsWith('time_', get('id', event.relatedTarget))) {
+                this.showDropdown = false;
+            }
+        }, timeoutLength);
     }
     onTimeFocus(event) {
         this.onFocus();
@@ -133,7 +141,9 @@ class DatetimepickerController {
     }
     onSelectTime(localTime = null) {
         this.time = defaultTo(this.focusedTime, localTime);
-        this.focusTimeInputElement();
+        this.$timeout(() => {
+            this.focusTimeInputElement();
+        });
     }
     focusTimeInputElement() {
         this.showDropdown = false;
