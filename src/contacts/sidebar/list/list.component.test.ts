@@ -109,6 +109,7 @@ describe('contacts.sidebar.list.component', () => {
 
         it('should switch selected contact', () => {
             const id = 234;
+            state.$current.name = 'contacts.show';
             $ctrl.switchContact(id);
             expect($ctrl.selected).toEqual(id);
             expect(state.go).toHaveBeenCalledWith('contacts.show', { contactId: id });
