@@ -9,43 +9,44 @@ contacts-list {
     grid-template-rows: auto auto 1fr;
     > div.menu {
         @extend .lists.item-list-menu;
-        grid-row: 1;
-        grid-column: 1;
-        grid-template-columns: 1fr auto $search-bar-width;
         grid-column-gap: 10px;
+        grid-template-columns: 1fr auto $search-bar-width;
+        grid-column: 1;
+        grid-row: 1;
         @media (max-width: $contact-menu-breakpoint) {
-            grid-template-rows: 1fr 1fr;
             grid-row-gap: 5px;
+            grid-template-columns: 1fr auto;
+            grid-template-rows: 1fr 1fr;
         }
         > .selected-count {
             display: grid;
             color: $color-white;
-            grid-column: 1;
-            grid-template-columns: auto 1fr;
-            grid-template-rows: 1fr 0; // 0 row for odd chrome display
             grid-column-gap: 15px;
+            grid-template-rows: 1fr 0;
+            grid-template-columns: auto 1fr; // 0 row for odd chrome display
+            grid-column: 1;
             @media (max-width: $contact-menu-breakpoint) {
-                grid-column: 1;
                 grid-row: 2;
+                grid-column: 1;
             }
             .dropdown {
-                grid-column: 1;
                 grid-row: 1;
+                grid-column: 1;
             }
             .count {
                 font-size: $font-size-sm;
                 line-height: 33px;
-                grid-column: 2;
+                white-space: nowrap;
                 grid-row: 1;
+                grid-column: 2;
             }
         }
         > .search-bar {
             @extend .lists.item-list-menu.search-bar;
             width: $search-bar-width;
-            grid-column: 3;
             @media (max-width: $contact-menu-breakpoint) {
                 width: 100%;
-                grid-column: 1 / span 3;
+                grid-column: 1 / span 2;
             }
             .input-group-addon {
                 padding-right: 0;
@@ -61,8 +62,8 @@ contacts-list {
             grid-template-columns: 1fr auto;
             @media (max-width: $contact-menu-breakpoint) {
                 width: 100%;
-                grid-column: 2 / span 3;
                 grid-row: 2;
+                grid-column: 2;
             }
             .show-small {
                 @media (min-width: $contact-menu-breakpoint) {
@@ -73,13 +74,13 @@ contacts-list {
     }
     > div.sub-menu {
         @extend .lists.item-list-sub-menu;
-        grid-column: 1;
         grid-row: 2;
+        grid-column: 1;
     }
     > div.content {
         @extend .lists.content;
-        grid-column: 1;
         grid-row: 3;
+        grid-column: 1;
         .list-group-item {
             padding: 0;
         }

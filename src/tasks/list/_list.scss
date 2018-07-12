@@ -2,64 +2,59 @@
 @import 'drawer/drawer';
 @import 'item/item';
 $search-bar-width: 275px;
+$task-menu-breakpoint: 1000px;
 $drawer-menu-breakpoint: 1400px;
 tasks-list {
     @extend .lists;
     display: grid;
     height: 100%;
     overflow: hidden;
-    grid-template-rows: auto auto 1fr;
     grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto 1fr;
     > div.menu {
         @extend .lists.item-list-menu;
-        max-height: 153px;
-        grid-row-gap: 5px;
-        grid-row: 1;
-        grid-column: 1;
-        grid-template-columns: 1fr auto $search-bar-width;
+        min-width: 465px;
+        max-height: 153px; // sanity width
         grid-column-gap: 10px;
-        @media (max-width: $drawer-menu-breakpoint) {
+        grid-template-columns: 1fr auto $search-bar-width;
+        grid-column: 1;
+        grid-row: 1;
+        grid-row-gap: 5px;
+        @media (max-width: $task-menu-breakpoint) {
             grid-template-rows: repeat(2, 1fr);
-            grid-template-columns: 1fr auto;
-        }
-        @media (max-width: $contact-menu-breakpoint) {
-            grid-template-rows: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
         }
         > .selected-count {
             display: grid;
             color: $color-white;
-            grid-column: 1;
-            grid-template-columns: auto 1fr;
-            grid-template-rows: 1fr 0; // 0 row for odd chrome display
             grid-column-gap: 15px;
-            @media (max-width: $drawer-menu-breakpoint) {
-                grid-column: 1;
+            grid-template-rows: 1fr 0;
+            grid-template-columns: auto 1fr; // 0 row for odd chrome display
+            grid-column: 1;
+            @media (max-width: $task-menu-breakpoint) {
                 grid-row: 2;
-            }
-            @media (max-width: $contact-menu-breakpoint) {
-                grid-column: 1 / span 3;
-                grid-row: 3;
+                grid-column: 1;
             }
             .dropdown {
-                grid-column: 1;
                 grid-row: 1;
+                grid-column: 1;
             }
             .count {
                 font-size: $font-size-sm;
                 line-height: 33px;
-                grid-column: 2;
+                white-space: nowrap;
                 grid-row: 1;
+                grid-column: 2;
             }
         }
         > .search-bar {
             @extend .lists.item-list-menu.search-bar;
             width: $search-bar-width;
             height: 39px;
-            grid-column: 3;
-            @media (max-width: $drawer-menu-breakpoint) {
+            @media (max-width: $task-menu-breakpoint) {
                 width: 100%;
-                grid-column: 1 / span 2;
                 grid-row: 1;
+                grid-column: 1 / span 2;
             }
             .input-group-addon {
                 padding-right: 0;
@@ -72,47 +67,71 @@ tasks-list {
         > div.menu-buttons {
             @extend .lists.item-list-menu.menu-buttons;
             display: grid;
+            min-width: 240px;
             height: 39px;
             padding: 0;
             grid-template-columns: 1fr auto;
-            @media (max-width: $drawer-menu-breakpoint) {
-                min-width: inherit;
-                grid-column: 2;
-                grid-row: 2;
-            }
-            @media (max-width: $contact-menu-breakpoint) {
+            @media (max-width: $task-menu-breakpoint) {
                 width: 100%;
-                grid-column: 1 / span 3;
                 grid-row: 2;
+                grid-column: 2;
             }
             .show-small {
-                @media (min-width: $contact-menu-breakpoint) {
+                @media (min-width: $task-menu-breakpoint) {
                     display: none;
                 }
             }
             .btn-group {
                 white-space: nowrap;
             }
+            .dropdown-menu {
+                @media (max-width: $task-menu-breakpoint) {
+                    left: auto !important;
+                }
+            }
         }
         &.drawer-open {
+            $task-drawer-menu-breakpoint: 1200px; // sanity width
+            min-width: 280px;
             @media (max-width: $drawer-menu-breakpoint) {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(2, 1fr);
+                > div.menu-buttons {
+                    grid-row: 2;
+                    grid-column: 2;
+                }
+                > div.selected-count {
+                    grid-row: 2;
+                }
+                > .search-bar {
+                    width: 100%;
+                    grid-column: 1 / span 2;
+                }
+            }
+            @media (max-width: $task-drawer-menu-breakpoint) {
+                grid-template-columns: 1fr;
                 grid-template-rows: repeat(3, 1fr);
                 > div.menu-buttons {
                     width: 100%;
-                    grid-column: 1 / span 3;
+                    justify-items: start;
                     grid-row: 2;
+                    grid-column: 1 / span 3;
                 }
                 > div.selected-count {
-                    grid-column: 1 / span 3;
                     grid-row: 3;
+                    grid-column: 1 / span 3;
+                }
+                > .search-bar {
+                    width: 100%;
+                    grid-column: 1 / span 2;
                 }
             }
         }
     }
     > div.sub-menu {
         @extend .lists.item-list-sub-menu;
-        grid-column: 1;
         grid-row: 2;
+        grid-column: 1;
         > div.sub-line-1 {
             display: grid;
             line-height: 34px;
@@ -121,16 +140,16 @@ tasks-list {
     }
     > div.content {
         @extend .lists.content;
-        grid-column: 1;
         grid-row: 3;
+        grid-column: 1;
         .tasks-lists-add {
             padding: 10px 15px;
             border-bottom: 2px solid $color-border;
         }
     }
     > side-drawer {
-        grid-column: 2;
         grid-row: 1 / span 3;
+        grid-column: 2;
     }
     .task-category {
         &-title {
