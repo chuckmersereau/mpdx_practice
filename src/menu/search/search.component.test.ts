@@ -2,13 +2,13 @@ import { findIndex } from 'lodash/fp';
 import component from './search.component';
 
 describe('menu.search.component', () => {
-    let $ctrl, state, scope, contactFilter, contacts, timeout, q;
+    let $ctrl, state, scope, contactFilter, api, timeout, q;
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, $state, _contactFilter_, _contacts_, $timeout, $q) => {
+        inject(($componentController, $rootScope, $state, _contactFilter_, _api_, $timeout, $q) => {
             scope = $rootScope.$new();
             contactFilter = _contactFilter_;
-            contacts = _contacts_;
+            api = _api_;
             state = $state;
             timeout = $timeout;
             q = $q;
@@ -85,7 +85,7 @@ describe('menu.search.component', () => {
 
     describe('search', () => {
         beforeEach(() => {
-            spyOn(contacts, 'search').and.callFake(() => q.resolve([{}]));
+            spyOn(api, 'get').and.callFake(() => q.resolve([{}]));
         });
 
         it('should return promise', () => {
@@ -95,7 +95,21 @@ describe('menu.search.component', () => {
         it('should call contacts.search', () => {
             $ctrl.searchParams = 'test';
             $ctrl.search();
-            expect(contacts.search).toHaveBeenCalledWith('test');
+            expect(api.get).toHaveBeenCalledWith({
+                url: 'contacts',
+                data: {
+                    filter: {
+                        account_list_id: api.account_list_id,
+                        status: 'active,hidden,null',
+                        wildcard_search: 'test'
+                    },
+                    fields: {
+                        contacts: 'name'
+                    },
+                    per_page: 6,
+                    sort: 'name'
+                }
+            });
         });
 
         describe('promise successful', () => {

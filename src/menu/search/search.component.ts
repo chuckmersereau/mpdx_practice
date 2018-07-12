@@ -1,7 +1,7 @@
 import { find, findIndex } from 'lodash/fp';
 import { StateService } from '@uirouter/core';
+import api, { ApiService } from '../../common/api/api.service';
 import contactFilter, { ContactFilterService } from '../../contacts/sidebar/filter/filter.service';
-import contacts, { ContactsService } from '../../contacts/contacts.service';
 import uiRouter from '@uirouter/angularjs';
 
 class ContactsSearchController {
@@ -11,7 +11,7 @@ class ContactsSearchController {
     constructor(
         private $state: StateService,
         private $timeout: ng.ITimeoutService,
-        private contacts: ContactsService,
+        private api: ApiService,
         private contactFilter: ContactFilterService
     ) {
         this.searchParams = '';
@@ -39,7 +39,21 @@ class ContactsSearchController {
         }
     }
     search() {
-        return this.contacts.search(this.searchParams).then((data) => {
+        return this.api.get({
+            url: 'contacts',
+            data: {
+                filter: {
+                    account_list_id: this.api.account_list_id,
+                    status: 'active,hidden,null',
+                    wildcard_search: this.searchParams
+                },
+                fields: {
+                    contacts: 'name'
+                },
+                per_page: 6,
+                sort: 'name'
+            }
+        }).then((data) => {
             this.contactList = data;
         });
     }
@@ -85,5 +99,5 @@ const Search = {
 
 export default angular.module('mpdx.menu.search.component', [
     uiRouter,
-    contacts, contactFilter
+    api, contactFilter
 ]).component('menuSearch', Search).name;
