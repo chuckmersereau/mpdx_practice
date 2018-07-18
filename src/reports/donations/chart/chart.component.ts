@@ -98,7 +98,6 @@ class ChartController {
             this.data = this.mutateData(data);
             this.unConvertedData = this.mutateUnconverted(data);
             this.donations.chartData = data;
-            this.$rootScope.$emit('chartDataUpdated');
             if (this.inContact) {
                 this.labels = map((month) => moment(month, 'YYYY-MM-DD').format('MMM'), takeRight(12, data.months_to_dates));
                 this.series = [this.gettextCatalog.getString('Last Year'), this.gettextCatalog.getString('This Year')];

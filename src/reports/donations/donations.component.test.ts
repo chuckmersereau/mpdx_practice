@@ -64,6 +64,7 @@ describe('reports.donations.component', () => {
             expect($ctrl.totalContactCount).toEqual(0);
             expect($ctrl.sort).toEqual('donation_date');
             expect($ctrl.sortReverse).toBeTruthy();
+            expect($ctrl.totals).toEqual({});
         });
 
         it('should call $ctrl.load on accountListUpdated', () => {
@@ -84,7 +85,6 @@ describe('reports.donations.component', () => {
         result.meta = meta;
 
         beforeEach(() => {
-            spyOn($ctrl, 'calculateTotals').and.callFake(() => {});
             spyOn($ctrl, 'load').and.callFake(() => {});
         });
 
@@ -117,7 +117,6 @@ describe('reports.donations.component', () => {
             $ctrl.$onInit();
             expect($ctrl.watcher).toBeDefined();
             expect($ctrl.watcher2).toBeDefined();
-            expect($ctrl.watcher3).toBeDefined();
         });
 
         it('should handle donation additions', () => {
@@ -159,24 +158,6 @@ describe('reports.donations.component', () => {
             rootScope.$emit('donationRemoved', { id: 1 });
             rootScope.$digest();
             expect($ctrl.load).toHaveBeenCalledWith();
-        });
-
-        it('should handle chart data', () => {
-            donations.chartData = {
-                months_to_dates: ['a', 'b']
-            };
-            $ctrl.$onInit();
-            rootScope.$emit('chartDataUpdated');
-            expect($ctrl.calculateTotals).toHaveBeenCalledWith();
-        });
-
-        it('should handle chart data', () => {
-            donations.chartData = {
-                months_to_dates: ['a', 'b']
-            };
-            $ctrl.$onInit();
-            rootScope.$emit('chartDataUpdated');
-            expect($ctrl.totalsPosition).toEqual(1);
         });
     });
 
@@ -332,6 +313,7 @@ describe('reports.donations.component', () => {
         beforeEach(() => {
             $ctrl.nextMonth = moment().startOf('month').add(1, 'month');
             spyOn($ctrl, 'load').and.callFake(() => q.resolve());
+            $ctrl.totals = { usd: 'a' };
         });
 
         it('should set startDate to nextMonth', () => {
@@ -343,12 +325,18 @@ describe('reports.donations.component', () => {
             $ctrl.gotoNextMonth();
             expect($ctrl.load).toHaveBeenCalledWith();
         });
+
+        it('should set totals to fresh object', () => {
+            $ctrl.gotoNextMonth();
+            expect($ctrl.totals).toEqual({});
+        });
     });
 
     describe('gotoPrevMonth', () => {
         beforeEach(() => {
             $ctrl.previousMonth = moment().startOf('month').subtract(1, 'month');
             spyOn($ctrl, 'load').and.callFake(() => q.resolve());
+            $ctrl.totals = { usd: 'a' };
         });
 
         it('should set startDate to previousMonth', () => {
@@ -359,6 +347,11 @@ describe('reports.donations.component', () => {
         it('should call $ctrl.load', () => {
             $ctrl.gotoPrevMonth();
             expect($ctrl.load).toHaveBeenCalledWith();
+        });
+
+        it('should set totals to fresh object', () => {
+            $ctrl.gotoNextMonth();
+            expect($ctrl.totals).toEqual({});
         });
     });
 
@@ -565,27 +558,12 @@ describe('reports.donations.component', () => {
         });
     });
 
-    describe('calculateTotals', () => {
-        beforeEach(() => {
-            donations.chartData = {
-                totals: [{
-                    currency: 'USD',
-                    total_amount: '135',
-                    month_totals: [{ amount: '1' }, { amount: '2' }]
-                }]
-            };
-        });
-
+    describe('sumCurrency', () => {
         it('should set the month total', () => {
-            $ctrl.totalsPosition = 1;
-            $ctrl.calculateTotals();
-            expect($ctrl.totals['USD']).toEqual('2');
-        });
-
-        it('should set the period total', () => {
-            $ctrl.inContact = true;
-            $ctrl.calculateTotals();
-            expect($ctrl.totals['USD']).toEqual('135');
+            $ctrl.sumCurrency('USD', '2');
+            expect($ctrl.totals['USD']).toEqual(2);
+            $ctrl.sumCurrency('USD', 2);
+            expect($ctrl.totals['USD']).toEqual(4);
         });
     });
 });

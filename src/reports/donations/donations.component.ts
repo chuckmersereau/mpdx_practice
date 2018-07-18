@@ -5,7 +5,6 @@ import {
     findIndex,
     map,
     pullAllBy,
-    reduce,
     toNumber
 } from 'lodash/fp';
 import { StateParams } from '@uirouter/core';
@@ -35,10 +34,8 @@ class DonationsController {
     startDate: moment.Moment;
     totals: any;
     totalContactCount: number;
-    totalsPosition: number;
     watcher: () => void;
     watcher2: () => void;
-    watcher3: () => void;
     watcher4: () => void;
     watcher5: () => void;
     constructor(
@@ -63,6 +60,7 @@ class DonationsController {
         this.totalContactCount = 0;
         this.sort = 'donation_date';
         this.sortReverse = true;
+        this.totals = {};
 
         this.watcher5 = $rootScope.$on('accountListUpdated', () => {
             this.load();
@@ -85,11 +83,6 @@ class DonationsController {
             this.load();
         });
 
-        this.watcher3 = this.$rootScope.$on('chartDataUpdated', () => {
-            this.totalsPosition = this.donations.chartData.months_to_dates.length - 1;
-            this.calculateTotals();
-        });
-
         this.watcher4 = this.$rootScope.$on('designationAccountSelectorChanged', () => {
             this.load();
         });
@@ -102,7 +95,6 @@ class DonationsController {
     $onDestroy() {
         this.watcher();
         this.watcher2();
-        this.watcher3();
         this.watcher4();
         this.watcher5();
     }
@@ -152,16 +144,6 @@ class DonationsController {
             return donation;
         }, data);
     }
-    calculateTotals() {
-        const totalIfInContact = (donation) => this.inContact
-            ? donation.total_amount
-            : donation.month_totals[this.totalsPosition].amount;
-        const mergeResult = (result, donation) => assign(result, {
-            [donation.currency]: totalIfInContact(donation)
-        });
-        const reduceResults = reduce(mergeResult, {});
-        this.totals = reduceResults(this.donations.chartData.totals);
-    }
     setMonths() {
         this.previousMonth = moment(this.startDate).subtract(1, 'month');
         this.nextMonth = moment(this.startDate).add(1, 'month');
@@ -170,17 +152,13 @@ class DonationsController {
     }
     gotoNextMonth() {
         this.startDate = this.nextMonth;
-        this.totalsPosition++;
-        this.load().then(() => {
-            this.calculateTotals();
-        });
+        this.totals = {};
+        this.load();
     }
     gotoPrevMonth() {
         this.startDate = this.previousMonth;
-        this.totalsPosition--;
-        this.load().then(() => {
-            this.calculateTotals();
-        });
+        this.totals = {};
+        this.load();
     }
     getDonations({
         startDate = null, endDate = null, donorAccountId = null, designationAccountId = null
@@ -217,6 +195,9 @@ class DonationsController {
         }
         this.sort = field;
         this.sortReverse = false;
+    }
+    sumCurrency(currency, amount): void {
+        this.totals[currency] = defaultTo(0, this.totals[currency]) + toNumber(amount);
     }
 }
 

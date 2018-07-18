@@ -67,7 +67,8 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="donation in $ctrl.data | orderBy: $ctrl.sort : $ctrl.sortReverse">
+        <tr ng-repeat="donation in $ctrl.data | orderBy: $ctrl.sort : $ctrl.sortReverse"
+            ng-init="$ctrl.sumCurrency(donation.currency, donation.amount)">
             <td ng-if="::$ctrl.inContact">{{ donation.donor_account.account_number }}</td>
             <td class="date">{{ donation.donation_date | date: $ctrl.locale.dateTimeFormat }}</td>
             <td ng-if="::!$ctrl.inContact">
@@ -93,13 +94,13 @@
         </tr>
     </tbody>
     <tfoot>
-        <tr ng-repeat="(currency, total) in $ctrl.totals" ng-if="total > 0">
+        <tr ng-repeat="(currency, total) in $ctrl.totals">
             <td colspan="2" class="text-right">
                 <strong translate-params-currency="currency" translate-params-count="total.count" translate>
                     Total {{currency}} Donations:
                 </strong>
             </td>
-            <td class="text-right">
+            <td class="text-right total">
                 {{ total | currency:'':0 }} {{currency}}
             </td>
             <td colspan="4"></td>

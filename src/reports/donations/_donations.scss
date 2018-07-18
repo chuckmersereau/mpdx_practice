@@ -17,4 +17,9 @@ donations {
             margin: 0;
         }
     }
+    tfoot {
+        .total {
+            white-space: nowrap;
+        }
+    }
 }
