@@ -9,6 +9,7 @@
     "sass-lint": "sass-lint -v",
     "sass-lint-fix": "sass-lint-auto-fix -c .sass-lint.yml",
     "start": "webpack-dev-server --progress --config webpack.config.js --hot --inline",
+    "start:local": "cross-env NODE_ENV=local webpack-dev-server --progress --config webpack.config.js --hot --inline",
     "test": "cross-env NODE_ENV=test karma start",
     "test:live": "cross-env NODE_ENV=test karma start --auto-watch --no-single-run",
     "report-coverage": "codecov"
