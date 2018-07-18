@@ -73,22 +73,25 @@
 <h5 translate>Communications</h5>
 <div class="communication">
     <div>
-        <label translate>Envelope Name Line</label>
-        <div class="inline-input">
-            <input type="text" ng-model="$ctrl.contact.envelope_greeting"
-                   placeholder="{{ 'Mr. J Smith' | translate }}"
-                   ng-change="$ctrl.save()"
-                   ng-model-options="{ debounce: 1000 }">
-        </div>
+        <label for="envelope" translate>Envelope Name Line</label>
+            <textarea id="envelope"
+                msd-elastic
+                class="form-control"
+                rows="2"
+                ng-model="$ctrl.contact.envelope_greeting"
+                placeholder="{{ 'Mr. J Smith' | translate }}"
+                ng-change="$ctrl.save()"
+                ng-model-options="{ debounce: 1000 }"></textarea>
     </div>
     <div>
-        <label translate>Greeting (used in export)</label>
-        <div class="inline-input">
-            <input type="text"
-                   ng-model="$ctrl.contact.greeting"
-                   ng-change="$ctrl.save()"
-                   ng-model-options="{ debounce: 1000 }">
-        </div>
+        <label for="greeting" translate>Greeting (used in export)</label>
+            <textarea id="greeting"
+                msd-elastic
+                class="form-control"
+                rows="2"
+                ng-model="$ctrl.contact.greeting"
+                ng-change="$ctrl.save()"
+                ng-model-options="{ debounce: 1000 }"></textarea>
     </div>
     <div class="referred-by">
         <label translate>Referred By</label>
