@@ -8,7 +8,7 @@
             <a ui-sref="contacts.show({ contactId: contact.id })">{{person.first_name}} {{person.last_name}}</a>
             <facebook-link facebook-account="person.facebook_accounts[0]" ng-if="person.facebook_accounts[0]"></facebook-link>
             <twitter-link twitter-account="person.twitter_accounts[0]" ng-if="person.twitter_accounts[0]"></twitter-link>
-            <email-link ng-repeat="email in person.email_addresses" ng-if="email.primary" email-address="email"></email-link>
+            <email-link ng-repeat="email in person.email_addresses" ng-if="email.primary" email-address="email.email"></email-link>
         </span>
     </li>
     <li ng-if="$ctrl.anniversaries_this_week.length > $ctrl.limit">

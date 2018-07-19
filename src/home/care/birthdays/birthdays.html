@@ -7,7 +7,7 @@
         </a>
         <facebook-link facebook-account="person.facebook_accounts[0]" ng-if="person.facebook_accounts.length"></facebook-link>
         <twitter-link twitter-account="person.twitter_accounts[0]" ng-if="person.twitter_accounts.length"></twitter-link>
-        <email-link ng-repeat="email in person.email_addresses" ng-if="email.primary" email-address="email"></email-link>
+        <email-link ng-repeat="email in person.email_addresses" ng-if="email.primary" email-address="email.email"></email-link>
     </li>
     <li ng-if="$ctrl.birthdays_this_week.length > $ctrl.limit">
         <a ng-click="$ctrl.limit = $ctrl.birthdays_this_week.length">
