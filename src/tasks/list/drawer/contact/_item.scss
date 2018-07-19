@@ -52,6 +52,7 @@ task-list-contact {
                 span {
                     font-size: $font-size-sm;
                     font-weight: bold;
+                    white-space: nowrap;
                 }
             }
         }

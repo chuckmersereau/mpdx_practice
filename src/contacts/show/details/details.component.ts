@@ -61,9 +61,7 @@ class ContactDetailsController {
         });
     }
     $onChanges() {
-        this.last_donation = this.contact.last_donation ? round(this.contact.last_donation.amount) : this.gettextCatalog.getString('Never');
         this.giving_method = defaultTo(this.gettextCatalog.getString('None'), get('last_donation.payment_method', this.contact));
-        this.lifetime_donations = round(defaultTo(0, this.contact.lifetime_donations));
 
         if (!this.referrer) {
             this.referrer = get('contacts_that_referred_me[0].id', this.contact);

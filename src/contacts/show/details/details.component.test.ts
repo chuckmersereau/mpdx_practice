@@ -87,19 +87,6 @@ describe('contacts.show.details.component', () => {
             expect($ctrl.getName).toHaveBeenCalledWith($ctrl.referrer);
         });
 
-        it('should get the rounded last donation amount', () => {
-            $ctrl.contact.last_donation = { amount: 1.23 };
-            $ctrl.$onChanges();
-            expect($ctrl.last_donation).toEqual(1);
-        });
-
-        it('should set the last donation amount to translated Never if null', () => {
-            $ctrl.contact.last_donation = null;
-            $ctrl.$onChanges();
-            expect($ctrl.last_donation).toEqual('Never');
-            expect(gettextCatalog.getString).toHaveBeenCalledWith('Never');
-        });
-
         it('should get the giving method', () => {
             $ctrl.contact.last_donation = { payment_method: 'EFT' };
             $ctrl.$onChanges();
@@ -111,18 +98,6 @@ describe('contacts.show.details.component', () => {
             $ctrl.$onChanges();
             expect($ctrl.giving_method).toEqual('None');
             expect(gettextCatalog.getString).toHaveBeenCalledWith('None');
-        });
-
-        it('should get the lifetime donations', () => {
-            $ctrl.contact.lifetime_donations = 1.23;
-            $ctrl.$onChanges();
-            expect($ctrl.lifetime_donations).toEqual(1);
-        });
-
-        it('should set the lifetime donations to 0 if null', () => {
-            $ctrl.contact.lifetime_donations = null;
-            $ctrl.$onChanges();
-            expect($ctrl.lifetime_donations).toEqual(0);
         });
     });
 

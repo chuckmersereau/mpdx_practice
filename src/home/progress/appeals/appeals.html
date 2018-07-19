@@ -7,7 +7,10 @@
     </div>
     <div class="statistics">
         <div class="item" ng-if="$ctrl.appeal">
-            <h3>{{:: $ctrl.appeal.pledges_amount_processed }} / {{$ctrl.appeal.amount}}</h3>
+            <h3>
+                {{:: $ctrl.appeal.pledges_amount_processed | currency : '' }} /
+                {{$ctrl.appeal.amount | currency : ''}}
+            </h3>
             <strong>
                 <a ui-sref="tools.appeals.show({ appealId: $ctrl.appeal.id })">
                     {{$ctrl.appeal.name}}

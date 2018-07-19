@@ -158,7 +158,7 @@
                     <span translate>Monthly Goal</span>
                 </div>
                 <div class="col-sm-6 pref-current">
-                    {{$ctrl.accounts.current.monthly_goal}}
+                    {{$ctrl.accounts.current.monthly_goal | currency : ''}}
                 </div>
                 <div class="col-sm-2 text-right">
                     <i class="fal fa-chevron-up" ng-class="{ 'fa-rotate-180' : $ctrl.tabSelected('monthly_goal') }"></i>

@@ -130,7 +130,7 @@
                 </div>
                 <div class="spacer"></div>
                 <h2>
-                    {{:: $ctrl.currency.symbol}}{{:: $ctrl.appeal.pledges_amount_processed }} /
+                    {{:: $ctrl.currency.symbol}}{{:: $ctrl.appeal.pledges_amount_processed | currency : '' }} /
                     {{:: $ctrl.currency.symbol}}
                 </h2>
                 <div class="inline-input header amount">

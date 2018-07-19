@@ -18,9 +18,6 @@ describe('menu.balances.component', () => {
         });
     });
 
-    function loadController() {
-    }
-
     describe('$onInit', () => {
         beforeEach(() => {
             spyOn($ctrl, 'init').and.callFake(() => q.resolve());
@@ -99,7 +96,8 @@ describe('menu.balances.component', () => {
             spyOn(api, 'get').and.callFake(() => q.resolve(goals));
             accounts.current = {
                 total_pledges: 5,
-                monthly_goal: 25
+                monthly_goal: 25,
+                default_currency: 'USD'
             };
         });
 
@@ -121,13 +119,13 @@ describe('menu.balances.component', () => {
         });
 
         it('should set title', (done) => {
-            spyOn(gettextCatalog, 'getString').and.callFake(() => 'a');
+            spyOn(gettextCatalog, 'getString').and.callThrough();
             $ctrl.getGoals().then(() => {
                 expect(gettextCatalog.getString).toHaveBeenCalledWith(
-                    '{{received}} received/{{pledged}} committed of goal: {{goal}}. Click to see outstanding financial partners.',
-                    { pledged: 5, received: 10, goal: 25 }
+                    '{{received}} USD received/{{pledged}} USD committed of goal: {{goal}} USD. Click to see outstanding financial partners.',
+                    { pledged: '5.00', received: '10.00', goal: '25.00' }
                 );
-                expect($ctrl.title).toEqual('a');
+                expect($ctrl.title).toEqual('10.00 USD received/5.00 USD committed of goal: 25.00 USD. Click to see outstanding financial partners.');
                 done();
             });
             scope.$digest();

@@ -3,7 +3,7 @@
         <div ng-if="::$ctrl.recommendation.suggested_pledge_amount" class="field">
             <h4 class="attribute-header" translate>Recommended Monthly Commitment Amount</h4>
             <div class="inline-input disabled">
-                <input type="text" value="{{::$ctrl.recommendation.suggested_pledge_amount | currency}}" readonly />
+                <input type="text" value="{{::$ctrl.recommendation.suggested_pledge_amount | currency: ''}}" readonly />
                 <a class="tip">
                     <i class="fas fa-lock"></i>
                 </a>
@@ -12,7 +12,7 @@
         <div ng-if="::$ctrl.recommendation.suggested_special_amount" class="field">
             <h4 class="attribute-header" translate>Recommended Special Commitment Amount</h4>
             <div class="inline-input disabled">
-                <input type="text" value="{{::$ctrl.recommendation.suggested_special_amount | currency}}" readonly />
+                <input type="text" value="{{::$ctrl.recommendation.suggested_special_amount | currency: ''}}" readonly />
                 <a class="tip">
                     <i class="fas fa-lock"></i>
                 </a>

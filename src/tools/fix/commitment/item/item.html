@@ -8,7 +8,7 @@
                         <a ng-href="/contacts/{{$ctrl.contact.id}}" target="_blank"><h4 class="name">{{ $ctrl.contact.name }}</h4></a>
                         <translate ng-if="$ctrl.contact.original_pledge_amount || $ctrl.contact.original_pledge_currency || $ctrl.contact.original_pledge_frequency || $ctrl.contact.original_status">Current:</translate>
                         {{ $ctrl.contact.original_status }}
-                        {{ $ctrl.contact.original_pledge_amount | number }} {{ $ctrl.contact.original_pledge_currency }}
+                        {{ $ctrl.contact.original_pledge_amount | currency : '' }} {{ $ctrl.contact.original_pledge_currency }}
                         {{ $ctrl.contact.original_pledge_frequency }}
                     </div>
                     <div class="col-xs-7">
@@ -74,7 +74,7 @@
                         <tbody>
                             <tr>
                                 <td ng-repeat="donation in $ctrl.contact.last_six_donations">
-                                    {{donation.currency}}{{donation.amount | number : 0}}
+                                    {{donation.amount | currency : ''}} {{donation.currency}}
                                 </td>
                             </tr>
                         </tbody>

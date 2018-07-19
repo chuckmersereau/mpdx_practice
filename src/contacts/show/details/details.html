@@ -35,7 +35,10 @@
         <div>
             <label translate>Last Donation</label>
             <div class="static-field">
-                <div class="content">{{$ctrl.last_donation}}</div>
+                <div class="content">
+                    {{$ctrl.contact.last_donation.amount | currency : ''}}
+                    {{$ctrl.contact.last_donation.currency}}
+                </div>
             </div>
         </div>
         <div>
@@ -49,7 +52,7 @@
         <div>
             <label translate>Lifetime Donations</label>
             <div class="static-field">
-                <div class="content">{{$ctrl.lifetime_donations}}</div>
+                <div class="content">{{$ctrl.contact.lifetime_donations | currency : ''}}</div>
             </div>
         </div>
         <div ng-if="$ctrl.showGiftAid()">

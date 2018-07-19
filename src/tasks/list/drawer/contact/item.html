@@ -65,14 +65,15 @@
         <div>
             <label translate>Last Donation</label>
             <span ng-if="$ctrl.contact.last_donation">
-                {{$ctrl.contact.last_donation.amount | currency: $ctrl.currency.symbol}} ({{$ctrl.contact.last_donation.donation_date | localize}})
+                {{$ctrl.contact.last_donation.amount | currency: ''}} {{$ctrl.contact.last_donation.currency}}
+                ({{$ctrl.contact.last_donation.donation_date | localize}})
             </span>
         </div>
     </div>
     <div class="commitment">
         <div>
             <label translate>Commitment</label>
-            <span>{{ $ctrl.contact.pledge_amount | currency: $ctrl.contact.pledge_currency_symbol }}</span>
+            <span>{{ $ctrl.contact.pledge_amount | currency: '' }} {{ $ctrl.contact.pledge_currency }}</span>
         </div>
         <div>
             <label translate>Freqency</label>

@@ -3,7 +3,7 @@
           role="progressbar"
           aria-valuenow="{{$ctrl.appeal.pledges_amount_processed}}"
           ng-if="$ctrl.appeal.pledges_amount_processed > 0"
-          title="{{$ctrl.appeal.pledges_amount_processed}}"
+          title="{{$ctrl.appeal.pledges_amount_processed | currency : ''}}"
           style="width: {{$ctrl.givenWidth}}%; min-width: 10%; max-width: 100%;">
         <span translate>Given</span>
     </span>
@@ -11,7 +11,7 @@
           role="progressbar"
           aria-valuenow="{{$ctrl.appeal.pledges_amount_received_not_processed}}"
           ng-if="$ctrl.appeal.pledges_amount_received_not_processed > 0"
-          title="{{$ctrl.appeal.pledges_amount_received_not_processed}}"
+          title="{{$ctrl.appeal.pledges_amount_received_not_processed | currency : ''}}"
           style="width: {{$ctrl.receivedWidth}}%; max-width: 100%;">
         <span translate>Received</span>
     </span>
@@ -19,7 +19,7 @@
           role="progressbar"
           aria-valuenow="{{$ctrl.appeal.pledges_amount_not_received_not_processed }}"
           ng-if="$ctrl.appeal.pledges_amount_not_received_not_processed > 0"
-          title="{{$ctrl.appeal.pledges_amount_not_received_not_processed}}"
+          title="{{$ctrl.appeal.pledges_amount_not_received_not_processed | currency : ''}}"
           style="width: {{$ctrl.committedWidth}}%; max-width: 100%;">
         <span translate>Committed</span>
     </span>

@@ -3,18 +3,18 @@
         <span ng-if="!$ctrl.contact">
             <span class="pledges-color">
                 <translate>Commitments</translate>:
-                {{$ctrl.chartData.pledges || 0}}
+                {{$ctrl.chartData.pledges || 0 | number : 0 }}
             </span>
             |
             <span class="montly-goal-color">
                 <translate>Monthly Goal</translate>:
-                {{$ctrl.chartData.monthly_goal || 0}}
+                {{$ctrl.chartData.monthly_goal || 0 | currency : ''}} {{ $ctrl.accounts.current.default_currency }}
             </span>
             |
         </span>
         <span class="montly-average-color">
             <translate>Monthly Average:</translate>
-            {{$ctrl.chartData.monthly_average || 0}}
+            {{$ctrl.chartData.monthly_average || 0 | currency : ''}} {{ $ctrl.accounts.current.default_currency }}
         </span>
     </div>
     <div class="panel-body">

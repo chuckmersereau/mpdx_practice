@@ -116,10 +116,10 @@ describe('tools.appeals.show.component', () => {
             scope.$digest();
         });
 
-        it('should append to the appeal', () => {
+        it('should copy the appeal', () => {
             $ctrl.$onInit();
-            expect($ctrl.appeal.amount).toEqual('100.00');
-            expect($ctrl.appeal.donations).toEqual([]);
+            expect($ctrl.appeal).toEqual($ctrl.data);
+            expect($ctrl.appeal === $ctrl.data).toBeFalsy();
             $ctrl.$onDestroy();
         });
 

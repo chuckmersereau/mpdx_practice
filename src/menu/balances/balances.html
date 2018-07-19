@@ -1,17 +1,24 @@
 <div class="section">
     <div class="navbar-quick hidden-sm hidden-xs">
         <small>
-            <a class="text-muted" ui-sref="reports.balances" ng-if="$ctrl.balance !== 0" data-title="{{::'May take a few days to update' | translate}}" data-placement="bottom" bs-tooltip>
+            <a class="text-muted"
+               ui-sref="reports.balances"
+               ng-if="$ctrl.balance !== 0"
+               data-title="{{::'May take a few days to update' | translate}}"
+               data-placement="bottom"
+               bs-tooltip>
                 <translate>Balance:</translate>
-                {{$ctrl.balance}} {{$ctrl.accounts.current.default_currency}}
+                {{$ctrl.balance | currency : ''}} {{$ctrl.accounts.current.default_currency}}
             </a>
         </small>
     </div>
 </div>
 <div class="section" ng-if="$ctrl.accounts.current.monthly_goal && $ctrl.accounts.current.monthly_goal > 0">
-    <a class="mpd-progress-bar" ui-sref="contacts({ filters: {status: 'Partner - Financial', pledge_received: 'false' } })"
+    <a class="mpd-progress-bar"
+       ui-sref="contacts({ filters: {status: 'Partner - Financial', pledge_received: 'false' } })"
        data-title="{{ $ctrl.title }}"
-       bs-tooltip="tooltip" data-placement="bottom">
+       bs-tooltip="tooltip"
+       data-placement="bottom">
         <div class="bar bar-pledged" ng-style="{ width: $ctrl.goals.pledged_percent + '%' }"></div>
         <div class="bar bar-received" ng-style="{ width: $ctrl.goals.in_hand_percent + '%' }"></div>
         <span class="value" ng-class="{ right: $ctrl.goals.in_hand_percent < 60 }">

@@ -108,10 +108,7 @@ class AppealController {
         this.$log.debug('appeal', this.data);
         this.dataInitialState = angular.copy(this.data);
         this.currency = this.getCurrencyFromCode(this.data.total_currency);
-        this.appeal = assign(this.data, {
-            amount: fixed(2, defaultTo(0, this.data.amount)),
-            pledges_amount_processed: fixed(2, defaultTo(0, this.data.pledges_amount_processed))
-        });
+        this.appeal = angular.copy(this.data);
         this.$rootScope.pageTitle = `${this.gettext('Appeal')} | ${this.appeal.name}`;
 
         this.disableAccountListEvent = this.$rootScope.$on('accountListUpdated', () => {

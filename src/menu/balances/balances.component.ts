@@ -9,6 +9,7 @@ class BalancesController {
     goals: any;
     title: string;
     constructor(
+        private $filter: ng.IFilterService,
         private $log: ng.ILogService,
         private $rootScope: ng.IRootScopeService,
         private gettextCatalog: ng.gettext.gettextCatalog,
@@ -42,11 +43,12 @@ class BalancesController {
             /* istanbul ignore next */
             this.$log.debug('reports/goal_progress', data);
             this.goals = data;
+            const currency = this.accounts.current.default_currency;
             this.title = this.gettextCatalog.getString(
-                '{{received}} received/{{pledged}} committed of goal: {{goal}}. Click to see outstanding financial partners.', {
-                    pledged: this.accounts.current.total_pledges,
-                    received: this.goals.received_pledges,
-                    goal: this.accounts.current.monthly_goal
+                `{{received}} ${currency} received/{{pledged}} ${currency} committed of goal: {{goal}} ${currency}. Click to see outstanding financial partners.`, {
+                    pledged: this.$filter('currency')(this.accounts.current.total_pledges, '', 2),
+                    received: this.$filter('currency')(this.goals.received_pledges, '', 2),
+                    goal: this.$filter('currency')(this.accounts.current.monthly_goal, '', 2)
                 }
             );
         });
