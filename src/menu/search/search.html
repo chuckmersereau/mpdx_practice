@@ -16,7 +16,7 @@
                    ng-blur="$ctrl.reset()"
                    ng-keyup="$ctrl.keyup($event)">
         </div>
-        <div class="dropdown-content" ng-if="$ctrl.searchParams != '' && $ctrl.contactList.length > 0">
+        <div class="dropdown-content" ng-if="$ctrl.searchParams != '' && $ctrl.contactList.length > 0  && !$ctrl.loading">
             <a ng-repeat="contact in $ctrl.contactList track by contact.id"
                ng-click="$ctrl.go(contact.id)"
                ng-if="$ctrl.searchParams !== ''"
@@ -31,8 +31,14 @@
                 And {{count}} more
             </a>
         </div>
-        <div class="dropdown-content" ng-if="$ctrl.searchParams != '' && $ctrl.contactList.length === 0">
+        <div class="dropdown-content" ng-if="$ctrl.searchParams != '' && $ctrl.contactList.length === 0 && !$ctrl.loading">
             <a translate>No results</a>
+        </div>
+        <div class="dropdown-content" ng-if="$ctrl.searchParams != '' && $ctrl.loading">
+            <a class="loading-spinner">
+                <i class="far fa-circle-notch fa-spin fa-fw"></i>
+                <span class="sr-only" translate>Loading</span>
+            </a>
         </div>
     </div>
 </form>

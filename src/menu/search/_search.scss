@@ -43,6 +43,9 @@ menu-search {
                         color: $color-white;
                     }
                 }
+                > .loading-spinner {
+                    color: $color-primary;
+                }
             }
         }
     }

@@ -92,6 +92,11 @@ describe('menu.search.component', () => {
             expect($ctrl.search()).toEqual(jasmine.any(q));
         });
 
+        it('should set loading to true', () => {
+            $ctrl.search();
+            expect($ctrl.loading).toEqual(true);
+        });
+
         it('should call contacts.search', () => {
             $ctrl.searchParams = 'test';
             $ctrl.search();
@@ -115,6 +120,14 @@ describe('menu.search.component', () => {
         describe('promise successful', () => {
             it('should save data to contactList', (done) => {
                 $ctrl.search().then(() => {
+                    done();
+                });
+                scope.$digest();
+            });
+
+            it('should set loading to false', (done) => {
+                $ctrl.search().then(() => {
+                    expect($ctrl.loading).toEqual(false);
                     done();
                 });
                 scope.$digest();

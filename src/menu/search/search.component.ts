@@ -8,6 +8,7 @@ class ContactsSearchController {
     contactList: any;
     moreActive: boolean;
     searchParams: string;
+    loading: boolean;
     constructor(
         private $state: StateService,
         private $timeout: ng.ITimeoutService,
@@ -16,6 +17,7 @@ class ContactsSearchController {
     ) {
         this.searchParams = '';
         this.contactList = [];
+        this.loading = false;
         this.moreActive = false;
     }
     reset() {
@@ -39,6 +41,7 @@ class ContactsSearchController {
         }
     }
     search() {
+        this.loading = true;
         return this.api.get({
             url: 'contacts',
             data: {
@@ -55,6 +58,9 @@ class ContactsSearchController {
             }
         }).then((data) => {
             this.contactList = data;
+            this.loading = false;
+        }).catch(() => {
+            this.loading = false;
         });
     }
     keyup(event) {
