@@ -13,7 +13,7 @@ contact {
     height: 100%;
     > div.contact-show {
         display: grid;
-        height: calc(100vh - 130px); // calc needed for safari
+        height: $full-container-height;
         background-color: $color-blue-deep-alpha-10;
         overflow-y: auto;
         overflow-x: hidden;

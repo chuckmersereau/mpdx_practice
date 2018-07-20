@@ -117,5 +117,6 @@ $content-padding-right: 10px;
 $contact-menu-breakpoint: 1000px;
 $menu-breakpoint: 800px;
 $breakpoint-tablet: 768px;
+$full-container-height: calc(100vh - 130px); //workaround for safari jumping containers
 
 $modal-zindex: 1050;

@@ -4,7 +4,7 @@ $search-bar-width: 275px;
 contacts-list {
     @extend .lists;
     display: grid;
-    height: calc(100vh - 130px); // calc needed for safari
+    height: $full-container-height;
     overflow: hidden;
     grid-template-rows: auto auto 1fr;
     > div.menu {

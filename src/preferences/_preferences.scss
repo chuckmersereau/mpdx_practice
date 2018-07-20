@@ -15,7 +15,7 @@ preferences {
         grid-column: 1;
     }
     > ui-view {
-        height: calc(100vh - 130px);
+        height: $full-container-height;
         padding: 10px $container-padding 60px;
         grid-column: 2;
         grid-row: 1;

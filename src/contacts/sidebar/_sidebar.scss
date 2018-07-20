@@ -3,7 +3,7 @@
 @import 'list/list';
 contacts-sidebar {
     display: grid;
-    height: calc(100vh - 130px); // calc needed for safari
+    height: $full-container-height;
     background-color: $color-filter-bar;
     grid-template-columns: $sidebar-collapse-width auto;
     > .filter-collapse {
