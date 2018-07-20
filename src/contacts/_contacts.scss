@@ -1,6 +1,4 @@
-$contact-small-sidebar-width: 20px;
-$contact-sidebar-width: 250px;
-$contact-viewport-width: calc(100vw - #{$contact-sidebar-width});
+$contact-viewport-width: calc(100vw - #{$sidebar-width});
 @import 'sidebar/sidebar';
 @import 'list/list';
 @import 'show/show';
@@ -8,18 +6,9 @@ contacts {
     display: grid;
     height: 100%;
     overflow: hidden;
-    grid-template-columns: $contact-sidebar-width $contact-viewport-width;
-    @media (max-width: $contact-menu-breakpoint) {
-        grid-template-columns: auto 1fr;
-    }
+    grid-template-columns: auto 1fr;
     > contacts-sidebar {
-        width: $contact-sidebar-width;
         grid-column: 1;
-        &.hide-small {
-            @media (max-width: $contact-menu-breakpoint) {
-                width: $contact-small-sidebar-width;
-            }
-        }
     }
     > ui-view {
         width: 100%;

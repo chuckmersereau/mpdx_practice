@@ -5,14 +5,14 @@ export class SessionService {
     navImpersonation: boolean;
     navSecondary: boolean;
     navSetup: boolean;
-    showFiltersOnMobile: boolean;
+    showFilters: boolean;
     constructor(
         private $state: StateService
     ) {
         this.navSecondary = false;
         this.navSetup = false;
         this.navImpersonation = false;
-        this.showFiltersOnMobile = false;
+        this.showFilters = true;
     }
     isInState(match: string): boolean {
         return this.$state.$current.name.indexOf(match) === 0;

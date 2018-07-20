@@ -13,10 +13,58 @@ contacts-list {
         grid-template-columns: 1fr auto $search-bar-width;
         grid-column: 1;
         grid-row: 1;
-        @media (max-width: $contact-menu-breakpoint) {
-            grid-row-gap: 5px;
-            grid-template-columns: 1fr auto;
-            grid-template-rows: 1fr 1fr;
+        &.filters-expanded {
+            min-width: 425px; // sanity width
+            @media (max-width: $contact-menu-breakpoint) {
+                grid-template-columns: 1fr auto;
+                grid-template-rows: 1fr 1fr;
+                grid-row-gap: 5px;
+                > .selected-count {
+                    grid-row: 2;
+                    grid-column: 1;
+                }
+                > .search-bar {
+                    width: 100%;
+                    grid-column: 1 / span 2;
+                }
+                > div.menu-buttons {
+                    width: 100%;
+                    grid-row: 2;
+                    grid-column: 2;
+                }
+            }
+            > div.menu-buttons .show-small {
+                @media (min-width: $contact-menu-breakpoint) {
+                    display: none;
+                }
+            }
+        }
+        &.filters-collapsed {
+            $breakpoint: 810px; // calculation wraps early - slightly more than $contact-menu-breakpoint - $sidebar-width + $sidebar-collapse-width
+            min-width: 510px; // sanity width
+            @media (max-width: $breakpoint) {
+                grid-template-columns: 1fr auto;
+                grid-template-rows: 1fr 1fr;
+                grid-row-gap: 5px;
+                > .selected-count {
+                    grid-row: 2;
+                    grid-column: 1;
+                }
+                > .search-bar {
+                    width: 100%;
+                    grid-column: 1 / span 2;
+                }
+                > div.menu-buttons {
+                    width: 100%;
+                    grid-row: 2;
+                    grid-column: 2;
+                }
+            }
+            > div.menu-buttons .show-small {
+                @media (min-width: $breakpoint) {
+                    display: none;
+                }
+            }
         }
         > .selected-count {
             display: grid;
@@ -25,10 +73,6 @@ contacts-list {
             grid-template-rows: 1fr 0;
             grid-template-columns: auto 1fr; // 0 row for odd chrome display
             grid-column: 1;
-            @media (max-width: $contact-menu-breakpoint) {
-                grid-row: 2;
-                grid-column: 1;
-            }
             .dropdown {
                 grid-row: 1;
                 grid-column: 1;
@@ -44,10 +88,6 @@ contacts-list {
         > .search-bar {
             @extend .lists.item-list-menu.search-bar;
             width: $search-bar-width;
-            @media (max-width: $contact-menu-breakpoint) {
-                width: 100%;
-                grid-column: 1 / span 2;
-            }
             .input-group-addon {
                 padding-right: 0;
                 background-color: $color-white;
@@ -60,16 +100,6 @@ contacts-list {
             @extend .lists.item-list-menu.menu-buttons;
             display: grid;
             grid-template-columns: 1fr auto;
-            @media (max-width: $contact-menu-breakpoint) {
-                width: 100%;
-                grid-row: 2;
-                grid-column: 2;
-            }
-            .show-small {
-                @media (min-width: $contact-menu-breakpoint) {
-                    display: none;
-                }
-            }
         }
     }
     > div.sub-menu {

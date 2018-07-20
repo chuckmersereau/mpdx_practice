@@ -1,4 +1,10 @@
-<div block-ui="contactShow" class="contact-show" ng-class="{'drawer': $ctrl.contacts.activeDrawer}">
+<div block-ui="contactShow"
+     class="contact-show"
+     ng-class="{
+                    'drawer': $ctrl.contacts.activeDrawer,
+                    'filters-collapsed': !$ctrl.session.showFilters,
+                    'filters-expanded': $ctrl.session.showFilters
+               }">
     <div class="contact-content">
         <contact-info contact="$ctrl.contacts.current" on-save="$ctrl.contacts.saveCurrent()"></contact-info>
         <div class="contact-tabs">

@@ -2,63 +2,61 @@
 @import 'filter/tags/tags';
 @import 'list/list';
 contacts-sidebar {
+    display: grid;
     height: calc(100vh - 130px); // calc needed for safari
-    padding: $container-padding 0;
     background-color: $color-filter-bar;
-    overflow-y: auto;
-    .contact-drawer {
-        display: grid;
-        grid-template-rows: auto 1fr;
-        > div.edit-filters {
+    grid-template-columns: $sidebar-collapse-width auto;
+    > .filter-collapse {
+        border-right: 1px solid $color-gray-blue;
+        color: $color-white;
+        cursor: pointer;
+        grid-column: 1;
+        i {
+            position: relative;
+            top: 50%;
+            margin-left: 3px;
+            transition: transform 0.2s ease-out;
+        }
+    }
+    > .content {
+        width: $sidebar-width;
+        padding: $container-padding 0;
+        opacity: 1;
+        overflow-y: auto;
+        grid-column: 2;
+        &.ng-hide {
+            width: 0;
+            opacity: 0;
+        }
+        &.ng-hide-add {
+            transition: opacity 0.2s ease-out, width 0.5s ease-out 0.4s;
+        }
+        &.ng-hide-remove {
+            transition: width 0.5s ease-out, opacity 0.2s ease-out 0.7s;
+        }
+        .contact-drawer {
             display: grid;
-            padding: 0 $container-padding 10px;
-            color: $color-white;
-            line-height: 29px;
-            grid-template-columns: 1fr 20px;
-            grid-row: 1 / 1;
-            .btn-group-justified {
-                display: flex;
-                button.btn {
-                    flex-grow: 1;
-                    transition: background-color 0.2s ease-out;
-                }
-                button.btn:focus {
-                    outline: none;
-                }
-                button.btn.active {
-                    background-color: $color-sidebar-bg;
+            grid-template-rows: auto 1fr;
+            > div.edit-filters {
+                padding: 0 $container-padding 10px;
+                color: $color-white;
+                line-height: 29px;
+                .btn-group-justified {
+                    display: flex;
+                    button.btn {
+                        flex-grow: 1;
+                        transition: background-color 0.2s ease-out;
+                    }
+                    button.btn:focus {
+                        outline: none;
+                    }
+                    button.btn.active {
+                        background-color: $color-sidebar-bg;
+                    }
                 }
             }
-            @media(min-width: $contact-menu-breakpoint) {
-                grid-template-columns: 1fr;
-            }
-        }
-        > div.list {
-            grid-row: 2 / 2;
-        }
-    }
-    .filter-collapse {
-        flex-grow: 0;
-        width: 20px;
-        color: $color-white;
-        text-align: right;
-        cursor: pointer;
-        @media(min-width: $contact-menu-breakpoint) {
-            display: none;
-        }
-    }
-    > .minimized-sidebar {
-        color: $color-white;
-        text-align: center;
-        cursor: pointer;
-        @media(min-width: $contact-menu-breakpoint) {
-            display: none;
-        }
-    }
-    &.hide-small {
-        > .maximized-sidebar {
-            @media (max-width: $contact-menu-breakpoint) {
-                display: none;
+            > div.list {
+                grid-row: 2 / 2;
             }
         }
     }

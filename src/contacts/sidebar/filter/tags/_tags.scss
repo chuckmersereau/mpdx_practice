@@ -4,6 +4,9 @@ contacts-tags {
     }
     .filter--filtergroup_title {
         padding-top: 0;
+        .fa-chevron-up {
+            margin-right: 5px;
+        }
     }
     .show-all-tags {
         display: flex;

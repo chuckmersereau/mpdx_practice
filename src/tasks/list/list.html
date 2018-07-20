@@ -1,5 +1,10 @@
 <div class="menu"
-     ng-class="{ selected: $ctrl.selected.length > 0, 'drawer-open': $ctrl.selectedTask }">
+     ng-class="{
+                    selected: $ctrl.selected.length > 0,
+                    'drawer-open': $ctrl.selectedTask,
+                    'filters-expanded': $ctrl.session.showFilters,
+                    'filters-collapsed': !$ctrl.session.showFilters
+               }">
     <div class="selected-count">
         <div class="dropdown">
             <button class="btn btn-default dropdown-toggle"

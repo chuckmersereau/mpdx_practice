@@ -41,16 +41,8 @@ contact {
                 display: grid;
                 grid-template-rows: 40px 1fr;
                 grid-row: 2;
-                .active-drawer {
-                    @media(min-width: $hide-drawer-width) {
-                        display: none;
-                    }
-                }
                 .expand-link {
                     cursor: pointer;
-                    @media(max-width: $hide-drawer-width) {
-                        display: none;
-                    }
                 }
                 .tabs-info a {
                     color: color-gray(30);
@@ -61,32 +53,55 @@ contact {
                 }
             }
         }
-        > .contact-content,
-        > .contact-content > contact-info,
-        > .contact-content > .contact-tabs {
-            $inside-width: calc(100vw - #{$contact-small-sidebar-width});
-            @media (max-width: $contact-menu-breakpoint) {
-                width: $inside-width;
+        > .contact-content > .contact-tabs  donations-chart { // chartjs workaround
+            padding-right: 10px;
+            @media(max-width: $hide-drawer-width) {
+                width: calc(#{$contact-viewport-width} - #{$chart-padding}) !important;
             }
-            donations-chart { // chartjs workaround
-                padding-right: 10px;
-                @media(max-width: $hide-drawer-width) {
-                    width: calc(#{$contact-viewport-width} - #{$chart-padding}) !important;
+            canvas.chart {
+                width: 100% !important;
+            }
+        }
+        &.filters-expanded {
+            .contact-tabs {
+                .active-drawer {
+                    @media(min-width: $hide-drawer-width) {
+                        display: none;
+                    }
                 }
-                @media (max-width: $contact-menu-breakpoint) {
+                .expand-link {
+                    @media(max-width: $hide-drawer-width) {
+                        display: none;
+                    }
+                }
+            }
+        }
+        &.filters-collapsed {
+            .contact-tabs {
+                .active-drawer {
+                    @media(min-width: $hide-drawer-width - $sidebar-width + $sidebar-collapse-width) {
+                        display: none;
+                    }
+                }
+                .expand-link {
+                    @media(max-width: $hide-drawer-width - $sidebar-width + $sidebar-collapse-width) {
+                        display: none;
+                    }
+                }
+            }
+            > .contact-content,
+            > .contact-content > contact-info,
+            > .contact-content > .contact-tabs {
+                $inside-width: calc(100vw - #{$sidebar-collapse-width});
+                width: $inside-width;
+                donations-chart { // chartjs workaround
                     width: calc(#{$inside-width} - #{$chart-padding}) !important;
                     padding-right: 10px;
-                }
-                canvas.chart {
-                    width: 100% !important;
                 }
             }
         }
         &.drawer {
             $show-drawer-width: calc(#{$contact-viewport-width} - #{$contact-drawer-width});
-            @media(max-width: $hide-drawer-width) {
-                grid-template-columns: 1fr 0;
-            }
             grid-template-columns: auto $contact-drawer-width;
             > .contact-content,
             > .contact-content > contact-info,
@@ -97,14 +112,39 @@ contact {
                 @media(max-width: $hide-drawer-width) {
                     width: $contact-viewport-width;
                 }
-                @media(max-width: $contact-menu-breakpoint) {
-                    width: calc(100vw - #{$contact-small-sidebar-width});
-                }
             }
             donations-chart { // chartjs workaround
                 padding-right: 0;
                 @media (min-width: $hide-drawer-width) {
                     width: calc(#{$show-drawer-width} - #{$chart-padding}) !important;
+                }
+            }
+            &.filters-expanded {
+                @media(max-width: $hide-drawer-width) {
+                    grid-template-columns: 1fr 0;
+                }
+                > div.contact-drawer > .contact-drawer-content {
+                    @media(max-width: $hide-drawer-width) {
+                        display: none;
+                    }
+                }
+            }
+            &.filters-collapsed {
+                @media(max-width: $hide-drawer-width - $sidebar-width + $sidebar-collapse-width) {
+                    grid-template-columns: 1fr 0;
+                }
+                > .contact-content,
+                > .contact-content > contact-info,
+                > .contact-content > .contact-tabs {
+                    width: calc(100vw - #{$sidebar-collapse-width + $contact-drawer-width});
+                }
+                > div.contact-drawer > .contact-drawer-content {
+                    @media(max-width: $hide-drawer-width - $sidebar-width + $sidebar-collapse-width) {
+                        display: none;
+                    }
+                }
+                > .contact-content > .contact-tabs  donations-chart { // chartjs workaround
+                    width: calc(100vw - #{$contact-drawer-width + $sidebar-collapse-width + $chart-padding}) !important;
                 }
             }
         }
@@ -166,9 +206,6 @@ contact {
                     .menu {
                         display: none;
                     }
-                }
-                @media(max-width: $hide-drawer-width) {
-                    display: none;
                 }
                 > * {
                     @extend .am-fade-and-scale;

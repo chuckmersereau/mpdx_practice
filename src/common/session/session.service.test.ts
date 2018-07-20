@@ -15,7 +15,7 @@ describe('common.session.service', () => {
             expect(session.navSecondary).toBeFalsy();
             expect(session.navSetup).toBeFalsy();
             expect(session.navImpersonation).toBeFalsy();
-            expect(session.showFiltersOnMobile).toBeFalsy();
+            expect(session.showFilters).toBeTruthy();
         });
     });
 

@@ -13,16 +13,71 @@ tasks-list {
     grid-template-rows: auto auto 1fr;
     > div.menu {
         @extend .lists.item-list-menu;
-        min-width: 465px;
+
         max-height: 153px; // sanity width
         grid-column-gap: 10px;
         grid-template-columns: 1fr auto $search-bar-width;
         grid-column: 1;
         grid-row: 1;
         grid-row-gap: 5px;
-        @media (max-width: $task-menu-breakpoint) {
-            grid-template-rows: repeat(2, 1fr);
-            grid-template-columns: repeat(2, 1fr);
+        &.filters-expanded {
+            min-width: 465px; //sanity width
+            @media (max-width: $task-menu-breakpoint) {
+                grid-template-rows: repeat(2, 1fr);
+                grid-template-columns: repeat(2, 1fr);
+                > .selected-count {
+                    grid-row: 2;
+                    grid-column: 1;
+                }
+                > .search-bar {
+                    width: 100%;
+                    grid-row: 1;
+                    grid-column: 1 / span 2;
+                }
+                > div.menu-buttons {
+                    width: 100%;
+                    grid-row: 2;
+                    grid-column: 2;
+                    .dropdown-menu {
+                        left: auto !important;
+                    }
+                }
+            }
+            @media (min-width: $task-menu-breakpoint) {
+                > div.menu-buttons .show-small {
+                    display: none;
+                }
+            }
+        }
+        &.filters-collapsed {
+            min-width: 510px; //sanity width
+            $breakpoint: 810px; // calculation wraps early - slightly more than $task-menu-breakpoint - $sidebar-width - $sidebar-collapse-width
+            @media (max-width: $breakpoint) {
+                grid-template-rows: repeat(2, 1fr);
+                grid-template-columns: repeat(2, 1fr);
+                > .selected-count {
+                    grid-row: 2;
+                    grid-column: 1;
+                }
+                > .search-bar {
+                    width: 100%;
+                    grid-row: 1;
+                    grid-column: 1 / span 2;
+                }
+                > div.menu-buttons {
+                    width: 100%;
+                    grid-row: 2;
+                    grid-column: 2;
+                    .dropdown-menu {
+                        left: auto !important;
+                    }
+                }
+            }
+            @media (min-width: $breakpoint) {
+                > div.menu-buttons .show-small {
+                    display: none;
+                }
+            }
         }
         > .selected-count {
             display: grid;
@@ -31,10 +86,6 @@ tasks-list {
             grid-template-rows: 1fr 0;
             grid-template-columns: auto 1fr; // 0 row for odd chrome display
             grid-column: 1;
-            @media (max-width: $task-menu-breakpoint) {
-                grid-row: 2;
-                grid-column: 1;
-            }
             .dropdown {
                 grid-row: 1;
                 grid-column: 1;
@@ -51,11 +102,6 @@ tasks-list {
             @extend .lists.item-list-menu.search-bar;
             width: $search-bar-width;
             height: 39px;
-            @media (max-width: $task-menu-breakpoint) {
-                width: 100%;
-                grid-row: 1;
-                grid-column: 1 / span 2;
-            }
             .input-group-addon {
                 padding-right: 0;
                 background-color: $color-white;
@@ -71,23 +117,8 @@ tasks-list {
             height: 39px;
             padding: 0;
             grid-template-columns: 1fr auto;
-            @media (max-width: $task-menu-breakpoint) {
-                width: 100%;
-                grid-row: 2;
-                grid-column: 2;
-            }
-            .show-small {
-                @media (min-width: $task-menu-breakpoint) {
-                    display: none;
-                }
-            }
             .btn-group {
                 white-space: nowrap;
-            }
-            .dropdown-menu {
-                @media (max-width: $task-menu-breakpoint) {
-                    left: auto !important;
-                }
             }
         }
         &.drawer-open {

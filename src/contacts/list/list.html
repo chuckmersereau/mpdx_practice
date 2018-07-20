@@ -1,4 +1,9 @@
-<div class="menu" ng-class="{ selected: $ctrl.contacts.selectedContacts.length > 0 }">
+<div class="menu"
+     ng-class="{
+                   selected: $ctrl.contacts.selectedContacts.length > 0,
+                   'filters-collapsed': !$ctrl.session.showFilters,
+                   'filters-expanded': $ctrl.session.showFilters
+               }">
     <div class="selected-count">
         <div class="dropdown">
             <button class="btn btn-default dropdown-toggle"

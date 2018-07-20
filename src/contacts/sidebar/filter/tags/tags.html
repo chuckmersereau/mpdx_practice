@@ -13,11 +13,6 @@
           </li>
         </ul>
         <i class="fal fa-chevron-up" ng-class="{ 'fa-rotate-180': $ctrl.isCollapsed !== -1 }"></i>
-        <div class="filter-collapse"
-             ng-if="!$ctrl.session.isInState('contacts.show')"
-             ng-click="$ctrl.session.showFiltersOnMobile = false">
-            <i class="fal fa-chevron-double-left"></i>
-        </div>
     </div>
     <div bs-collapse-target>
         <div class="filter_hint" translate>Click a tag twice to look up all contacts who do not have that tag.</div>

@@ -1,20 +1,39 @@
 @import 'tags/tags';
 tasks-filter {
-    padding: 15px 0;
+    display: grid;
+    height: calc(100vh - 130px); // calc needed for safari
     background-color: $color-filter-bar;
-    > .filter > .title {
-        display: grid;
-        margin-bottom: 10px;
-        grid-template-columns: 1fr auto;
-        .filter-collapse {
-            flex-grow: 0;
-            width: 20px;
-            color: $color-white;
-            text-align: right;
-            cursor: pointer;
-            @media(min-width: $contact-menu-breakpoint) {
-                display: none;
-            }
+    grid-template-columns: $sidebar-collapse-width auto;
+    > .filter-collapse {
+        border-right: 1px solid $color-gray-blue;
+        color: $color-white;
+        cursor: pointer;
+        grid-column: 1;
+        i {
+            position: relative;
+            top: 50%;
+            margin-left: 3px;
+            transition: transform 0.2s ease-out;
+        }
+    }
+    .content {
+        width: $sidebar-width;
+        padding: $container-padding 0;
+        opacity: 1;
+        overflow-y: auto;
+        grid-column: 2;
+        &.ng-hide {
+            width: 0;
+            opacity: 0;
+        }
+        &.ng-hide-add {
+            transition: opacity 0.2s ease-out, width 0.5s ease-out 0.4s;
+        }
+        &.ng-hide-remove {
+            transition: width 0.5s ease-out, opacity 0.2s ease-out 0.7s;
+        }
+        .title {
+            margin-bottom: 10px;
         }
     }
 }
