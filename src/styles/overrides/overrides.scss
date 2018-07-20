@@ -6,3 +6,8 @@
 @import 'panel';
 @import 'popover';
 @import 'progress';
+//google places auto-complete
+.pac-container {
+    // ensure it is over the modal z-index
+    z-index: $modal-zindex + 1;
+}

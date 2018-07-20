@@ -176,7 +176,7 @@
     left: 0;
     outline: 0;
     overflow: hidden;
-    z-index: 1050;
+    z-index: $modal-zindex;
     .modal-dialog {
         .modal-content {
             border-radius: 0;
