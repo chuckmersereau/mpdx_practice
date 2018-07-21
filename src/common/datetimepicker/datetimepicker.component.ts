@@ -85,7 +85,10 @@ class DatetimepickerController {
     onTimeBlur(event) {
         const timeoutLength = this.isSafari ? 250 : 0;
         this.$timeout(() => { // safari kills threads on blur
-            if (!startsWith('time_', get('id', event.relatedTarget))) {
+            if (
+                !startsWith('time_', get('id', event.relatedTarget))
+                && !startsWith('tp_', get('id', event.target))
+            ) {
                 this.showDropdown = false;
             }
         }, timeoutLength);
@@ -143,6 +146,7 @@ class DatetimepickerController {
         this.time = defaultTo(this.focusedTime, localTime);
         this.$timeout(() => {
             this.focusTimeInputElement();
+            this.showDropdown = false; // safari scrollbar workaround
         });
     }
     focusTimeInputElement() {

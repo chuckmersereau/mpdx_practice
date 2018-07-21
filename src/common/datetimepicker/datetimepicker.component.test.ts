@@ -175,6 +175,13 @@ describe('common.datetimepicker.component', () => {
             $ctrl.$timeout.flush();
             expect($ctrl.focusTimeInputElement).toHaveBeenCalledWith();
         });
+
+        xit('should clear dropdown to workaround safari scrollbars', () => {
+            $ctrl.showDropdown = true;
+            $ctrl.onSelectTime();
+            $ctrl.$timeout.flush();
+            expect($ctrl.showDropdown).toBeFalsy();
+        });
     });
 
     describe('onTimeFocus', () => {
@@ -209,6 +216,12 @@ describe('common.datetimepicker.component', () => {
 
         it('shouldn\'t show dropdown on menu item', () => {
             const event = { relatedTarget: { id: 'time_123_0' } };
+            $ctrl.onTimeBlur(event);
+            expect($ctrl.showDropdown).toBeTruthy();
+        });
+
+        it('should show dropdown on time item', () => {
+            const event = { relatedTarget: { id: 'tp_123_0' } };
             $ctrl.onTimeBlur(event);
             expect($ctrl.showDropdown).toBeTruthy();
         });
