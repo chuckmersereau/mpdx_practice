@@ -1,7 +1,7 @@
 <div class="filter-collapse" ng-click="$ctrl.session.showFilters = !$ctrl.session.showFilters">
     <i class="fal fa-chevron-double-left" ng-class="{ 'fa-rotate-180': !$ctrl.session.showFilters }"></i>
 </div>
-<div class="content" ng-show="$ctrl.session.showFilters">
+<div class="content" ng-show="$ctrl.session.showFilters" id="contactSidebarListParent">
     <filters-header filters="$ctrl.contactFilter.data"
                     filter-default-params="$ctrl.contactFilter.default_params"
                     filter-params="$ctrl.contactFilter.params"
