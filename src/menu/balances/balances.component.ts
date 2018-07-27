@@ -8,6 +8,7 @@ class BalancesController {
     balance: number;
     goals: any;
     title: string;
+    watcher: () => void;
     constructor(
         private $filter: ng.IFilterService,
         private $log: ng.ILogService,
@@ -19,22 +20,27 @@ class BalancesController {
     ) {}
     $onInit() {
         this.init();
-        this.$rootScope.$on('accountListUpdated', () => {
+        this.watcher = this.$rootScope.$on('accountListUpdated', () => {
             this.init();
         });
     }
-    init() {
+    $onDestroy() {
+        this.watcher();
+    }
+    init(): void {
+        this.balance = 0;
+        this.goals = undefined;
         this.getGoals();
         this.getDesignationAccounts();
     }
-    getDesignationAccounts() {
+    getDesignationAccounts(): ng.IPromise<void> {
         return this.designationAccounts.load(true).then(() => {
-            this.balance = reduce((sum, designation) =>
-                sum + toInteger(designation.active ? designation.converted_balance : 0)
+            this.balance = reduce((result, designation) =>
+                result + toInteger(designation.active ? designation.converted_balance : 0)
                 , 0, this.designationAccounts.data);
         });
     }
-    getGoals() {
+    getGoals(): ng.IPromise<void> {
         return this.api.get('reports/goal_progress', {
             filter: {
                 account_list_id: this.api.account_list_id

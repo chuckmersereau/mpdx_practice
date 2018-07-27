@@ -36,6 +36,15 @@ describe('menu.balances.component', () => {
         });
     });
 
+    describe('$onDestroy', () => {
+        it('should kill the watcher', () => {
+            $ctrl.$onInit();
+            spyOn($ctrl, 'watcher').and.callThrough();
+            $ctrl.$onDestroy();
+            expect($ctrl.watcher).toHaveBeenCalledWith();
+        });
+    });
+
     describe('init', () => {
         beforeEach(() => {
             spyOn($ctrl, 'getDesignationAccounts').and.callFake(() => q.resolve());
@@ -50,6 +59,16 @@ describe('menu.balances.component', () => {
         it('should get goals', () => {
             $ctrl.init();
             expect($ctrl.getGoals).toHaveBeenCalledWith();
+        });
+
+        it('should zero out balance', () => {
+            $ctrl.init();
+            expect($ctrl.balance).toEqual(0);
+        });
+
+        it('should zero out goals', () => {
+            $ctrl.init();
+            expect($ctrl.goals).toBeUndefined();
         });
     });
 
