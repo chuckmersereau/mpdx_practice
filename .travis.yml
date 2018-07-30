@@ -10,7 +10,6 @@ before_install:
 branches:
   only:
   - master
-  - next
   - staging
 env:
     matrix:
@@ -42,16 +41,4 @@ deploy:
   skip_cleanup: true
   on:
     branch: master
-    condition: '"$RUN_BUILD" = "true"'
-- provider: script
-  script: ~/.local/bin/aws s3 sync public s3://cru-mpdx-web-next --region us-east-1 --acl public-read --exclude '*.html' --cache-control 'public, max-age=31536000'
-  skip_cleanup: true
-  on:
-    branch: next
-    condition: '"$RUN_BUILD" = "true"'
-- provider: script
-  script: ~/.local/bin/aws s3 sync public s3://cru-mpdx-web-next --region us-east-1 --acl public-read --include '*.html' --cache-control 'public, no-cache'
-  skip_cleanup: true
-  on:
-    branch: next
     condition: '"$RUN_BUILD" = "true"'
