@@ -92,22 +92,6 @@ export class ContactsService {
             return data[0];
         });
     }
-    getReferrals(id: string): ng.IPromise<any> {
-        return this.api.get({
-            url: `contacts/${id}`,
-            data: {
-                include: 'contacts_referred_by_me',
-                fields: {
-                    contacts: 'contacts_referred_by_me,name,created_at'
-                }
-            }
-        }).then((data: any) => {
-            data = data.contacts_referred_by_me;
-            /* istanbul ignore next */
-            this.$log.debug('referrals by contact', id, data);
-            return data;
-        });
-    }
     getPrimaryPerson(id: string): ng.IPromise<any> {
         return this.api.get({
             url: `contacts/${id}`,
