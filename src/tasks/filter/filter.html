@@ -88,6 +88,7 @@
                                         <select chosen
                                                 class="form-control"
                                                 ng-options="item.id as item.name for item in ::child.options"
+                                                data-placeholder-text-multiple="'Select Some Options' | translate"
                                                 ng-model="$ctrl.tasksFilter.params[child.name]"
                                                 ng-change="$ctrl.tasksFilter.change(child)"
                                                 multiple></select>
@@ -96,6 +97,7 @@
                                         {{::child.title}}
                                         <select chosen
                                                 class="form-control"
+                                                data-placeholder-text-single="'Select an Option' | translate"
                                                 ng-model="$ctrl.tasksFilter.params[child.name]"
                                                 ng-options="itemd.id as item.name for item in ::child.options"
                                                 ng-change="$ctrl.tasksFilter.change(child)"></select>
@@ -145,6 +147,7 @@
                                      ng-class="{ reverse: filter.reverse }">
                                     <select chosen
                                             class="form-control"
+                                            data-placeholder-text-multiple="'Select Some Options' | translate"
                                             ng-options="item.id as item.name for item in ::filter.options"
                                             ng-model="$ctrl.tasksFilter.params[filter.name]"
                                             ng-change="$ctrl.tasksFilter.change(filter)" multiple></select>
@@ -152,6 +155,7 @@
                                 <div class="filter_container filter_radio" ng-if="::filter.type == 'radio'">
                                     <select chosen
                                             class="form-control"
+                                            data-placeholder-text-single="'Select an Option' | translate"
                                             ng-model="$ctrl.tasksFilter.params[filter.name]"
                                             ng-options="item.id as item.name for item in ::filter.options"
                                             ng-change="$ctrl.tasksFilter.change(filter)"></select>

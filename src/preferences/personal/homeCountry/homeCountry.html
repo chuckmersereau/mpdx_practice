@@ -1,7 +1,10 @@
 <div class="form-group">
     <label for="homeCountry" translate>Home Country</label>
     <p class="text-muted" translate>This should be the place you are living and sending out physical communications from. This will be used in exports for mailing address information.</p>
-    <select id="homeCountry" class="country_select form-control" ng-model="$ctrl.accounts.current.home_country" chosen>
+    <select id="homeCountry"
+            class="country_select form-control"
+            ng-model="$ctrl.accounts.current.home_country"
+            chosen>
         <option value="None">None</option>
         <option value="" disabled="disabled">-------------</option>
         <option data-alternative-spellings="AF افغانستان" value="Afghanistan">Afghanistan</option>

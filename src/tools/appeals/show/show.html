@@ -63,6 +63,7 @@
                 id="primaryListId"
                 ng-model="$ctrl.mailchimpListId"
                 class="form-control"
+                data-placeholder-text-single="'Select an Option' | translate"
                 ng-options="option.id as option.name for option in $ctrl.mailchimp.data.lists_available_for_newsletters"
                 chosen>
         </select>

@@ -64,6 +64,7 @@
                                     <select chosen
                                             id="multiselect_{{::child.title}}"
                                             class="form-control"
+                                            data-placeholder-text-multiple="'Select Some Options' | translate"
                                             ng-options="item.id as item.name for item in ::child.options"
                                             ng-model="$ctrl.contactFilter.params[child.name]"
                                             ng-change="$ctrl.contactFilter.change(child)" multiple>
@@ -74,6 +75,7 @@
                                     <select chosen
                                             id="radio_{{::child.title}}"
                                             name="{{::child.name}}"
+                                            data-placeholder-text-single="'Select an Option' | translate"
                                             ng-options="item.id as item.name for item in ::child.options"
                                             ng-model="$ctrl.contactFilter.params[child.name]"
                                             ng-change="$ctrl.contactFilter.change(child)"></select>
@@ -124,6 +126,7 @@
                                  ng-class="{ reverse: filter.reverse }">
                                 <select chosen
                                         class="form-control"
+                                        data-placeholder-text-multiple="'Select Some Options' | translate"
                                         ng-options="item.id as item.name for item in ::filter.options"
                                         ng-model="$ctrl.contactFilter.params[filter.name]"
                                         ng-change="$ctrl.contactFilter.change(filter)"
@@ -132,6 +135,7 @@
                             <div class="filter_container filter_radio" ng-if="::filter.type == 'radio'">
                                 <select chosen
                                         name="{{::filter.name}}"
+                                        data-placeholder-text-single="'Select an Option' | translate"
                                         ng-options="item.id as item.name for item in ::filter.options"
                                         ng-model="$ctrl.contactFilter.params[filter.name]"
                                         ng-change="$ctrl.contactFilter.change(filter)"></select>

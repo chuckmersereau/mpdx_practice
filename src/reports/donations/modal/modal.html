@@ -19,8 +19,8 @@
                             ng-options="pc.code as (pc.name + ' - ' + pc.code_symbol_string) for pc in $ctrl.serverConstants.data.pledge_currencies"
                             id="currency"
                             class="form-control"
-                            required
-                            >
+                            data-placeholder-text-single="'Select an Option' | translate"
+                            required>
                         <option value=""></option>
                         <option ng-repeat="currency in $ctrl.serverConstants.data.pledge_currencies | toArray" value="{{::currency.code}}">{{::currency.name}} ({{::currency.symbol}})</option>
                     </select>

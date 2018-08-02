@@ -6,6 +6,7 @@
             on-tag-removing="$ctrl.removeTag($tag)"
             on-tag-removed="$ctrl.onTagRemoved({$tag: $tag})"
             replace-spaces-with-dashes="false"
+            placeholder="{{ 'Add a tag' | translate}}"
             max-length="255">
     <auto-complete source="$ctrl.filterTags($query)" min-length="0" select-first-match="false"></auto-complete>
 </tags-input>

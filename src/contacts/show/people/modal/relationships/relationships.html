@@ -9,7 +9,10 @@
         </collection-selector>
     </div>
     <div class="col-sm-4">
-        <select chosen class="form-control" ng-model="$ctrl.familyRelationship.relationship" data-placeholder="{{ ::'Select an Option *' | translate }}"
+        <select chosen
+                class="form-control"
+                ng-model="$ctrl.familyRelationship.relationship"
+                data-placeholder-text-single="'Select an Option' | translate"
                 disable-search="true">
             <option translate>Husband</option>
             <option translate>Son</option>

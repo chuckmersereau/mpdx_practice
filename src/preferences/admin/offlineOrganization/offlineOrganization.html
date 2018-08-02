@@ -14,7 +14,12 @@
     </div>
     <div class="form-group">
         <label for="country" translate>Default Country</label>
-        <select name="country" class="country_select form-control" ng-model="$ctrl.offlineOrganization.country" required chosen>
+        <select name="country"
+                class="country_select form-control"
+                ng-model="$ctrl.offlineOrganization.country"
+                data-placeholder-text-single="'Select an Option' | translate"
+                required
+                chosen>
             <option data-alternative-spellings="AF افغانستان" value="Afghanistan">Afghanistan</option>
             <option data-alternative-spellings="AX Aaland Aland" data-relevancy-booster="0.5" value="Åland Islands">Åland Islands</option>
             <option data-alternative-spellings="AL" value="Albania">Albania</option>

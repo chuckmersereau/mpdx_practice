@@ -1,6 +1,11 @@
 <div class="form-group">
     <label for="timeZone" translate>Time Zone</label>
     <p class="text-muted" translate>The timezone will be used in setting tasks, appointments, completion dates, etc. Please make sure it matches the one your computer is set to.</p>
-    <select chosen ng-model="$ctrl.users.current.preferences.time_zone" class="form-control" id="timeZone" ng-options="timeZone.key as timeZone.value for timeZone in $ctrl.timeZone.data">
+    <select chosen
+            ng-model="$ctrl.users.current.preferences.time_zone"
+            class="form-control"
+            id="timeZone"
+            data-placeholder-text-single="'Select an Option' | translate"
+            ng-options="timeZone.key as timeZone.value for timeZone in $ctrl.timeZone.data">
     </select>
 </div>

@@ -1,12 +1,20 @@
 <div class="form-group" ng-if="!$ctrl.listOnly">
     <label for="locale" translate>Locale</label>
     <p class="text-muted" translate>The locale determines how numbers, dates and other information are formatted in MPDX.</p>
-    <select chosen class="form-control" ng-model="$ctrl.users.current.preferences.locale_display" id="locale" ng-change="$ctrl.setLocale()"
+    <select chosen
+            class="form-control"
+            ng-model="$ctrl.users.current.preferences.locale_display"
+            id="locale"
+            ng-change="$ctrl.setLocale()"
             ng-options="option.alias as option.value for option in $ctrl.languages">
         <option value=""></option>
     </select>
 </div>
-<select chosen class="form-control" ng-model="$ctrl.users.current.preferences.locale_display" ng-change="$ctrl.setLocale()"  ng-if="$ctrl.listOnly"
+<select chosen
+        class="form-control"
+        ng-model="$ctrl.users.current.preferences.locale_display"
+        ng-change="$ctrl.setLocale()"
+        ng-if="$ctrl.listOnly"
         ng-options="option.alias as option.value for option in $ctrl.languages">
     <option value=""></option>
 </select>

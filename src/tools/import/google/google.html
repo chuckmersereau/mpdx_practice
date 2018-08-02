@@ -6,12 +6,17 @@
           <i class="fab fa-google blankslate-icon"></i>
           <h3 translate>You haven't connected a Google account yet</h3>
           <p translate>Add a Google account then try to import from Google.</p>
-          <a class="btn btn-default" ui-sref="preferences.integrations({selectedTab: 'google'})" translate>Connect Google Account</a>
+          <a class="btn btn-default"
+             ui-sref="preferences.integrations({selectedTab: 'google'})"
+             translate>Connect Google Account</a>
         </div>
     </div>
     <div ng-show="$ctrl.google.data.length > 1">
         <label translate>Account to Import From</label>
-        <select ng-options="account as account.email for account in $ctrl.google.data" ng-model="$ctrl.selectedAccount" ng-change="$ctrl.updateAccount()" chosen>
+        <select chosen
+                ng-options="account as account.email for account in $ctrl.google.data"
+                ng-model="$ctrl.selectedAccount"
+                ng-change="$ctrl.updateAccount()">
             <option style="display:none" value="" translate>Select an Account</option>
         </select>
         <br>
@@ -20,7 +25,9 @@
     <div ng-if="$ctrl.selectedAccount">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <a ui-sref="preferences.integrations({selectedTab: 'google'})" class="btn btn-default btn-xs pull-right" translate>Connect Another Google Account</a>
+                <a ui-sref="preferences.integrations({selectedTab: 'google'})"
+                   class="btn btn-default btn-xs pull-right"
+                   translate>Connect Another Google Account</a>
                 <span translate>Importing From</span> <strong>{{$ctrl.selectedAccount.email}}</strong>
             </div>
             <div class="panel-body">
@@ -49,12 +56,16 @@
                             <tr ng-repeat="group in $ctrl.selectedAccount.contact_groups">
                                 <td class="google_import_group">
                                     <label class="field radiocheck google_import_group">
-                                        <input class="import_by_group" type="checkbox" checklist-value="group.id" checklist-model="$ctrl.import.groups">
+                                        <input class="import_by_group"
+                                               type="checkbox"
+                                               checklist-value="group.id"
+                                               checklist-model="$ctrl.import.groups">
                                         {{group.title}}
                                     </label>
                                 </td>
                                 <td class="google_import_tags">
-                                    <tag-selector ng-model="$ctrl.import.group_tags[group.id]" tag-list="$ctrl.contactsTags.data"></tag-selector>
+                                    <tag-selector ng-model="$ctrl.import.group_tags[group.id]"
+                                                  tag-list="$ctrl.contactsTags.data"></tag-selector>
                                 </td>
                             </tr>
                             </tbody>

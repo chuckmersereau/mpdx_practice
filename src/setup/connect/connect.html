@@ -37,6 +37,7 @@
                                 ng-model="$ctrl.selectedKey"
                                 ng-change="$ctrl.select()"
                                 id="organization"
+                                data-placeholder-text-single="'Select an Option' | translate"
                                 ng-options="key as value.name for (key, value) in $ctrl.serverConstants.data.organizations_attributes track by key">
                             <option value=""></option>
                         </select>

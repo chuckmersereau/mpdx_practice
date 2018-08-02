@@ -51,6 +51,7 @@
                 <select chosen
                         multiple
                         ng-model="$ctrl.statuses"
+                        data-placeholder-text-multiple="'Select Some Options' | translate"
                         ng-options="opt.id as opt.name for opt in $ctrl.statusFilter.options">
                     <option value=""></option>
                 </select>
@@ -61,6 +62,7 @@
                 <select chosen
                         multiple
                         ng-model="$ctrl.tags"
+                        data-placeholder-text-multiple="'Select Some Options' | translate"
                         ng-options="tag.name as tag.name for tag in $ctrl.contactsTags.data">
                     <option value=""></option>
                 </select>
@@ -69,6 +71,7 @@
                 <label translate>Do not add contacts who:</label>
                 <select chosen
                         multiple
+                        data-placeholder-text-multiple="'Select Some Options' | translate"
                         ng-model="$ctrl.excludes">
                     <option value=""></option>
                     <option value="specialGift3months" translate>May have given a special gift in the last 3 months</option>

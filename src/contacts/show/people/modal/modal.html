@@ -1,4 +1,9 @@
-<modal size="md" title="{{$ctrl.modalTitle}}" cancel="$hide()" save="$ctrl.save()" delete="$ctrl.delete()" show-delete="$ctrl.person.id && $ctrl.contact.id">
+<modal size="md"
+       title="{{$ctrl.modalTitle}}"
+       cancel="$hide()"
+       save="$ctrl.save()"
+       delete="$ctrl.delete()"
+       show-delete="$ctrl.person.id && $ctrl.contact.id">
     <div class="row modal-panel-container">
         <div class="row">
             <div class="col-md-12">
@@ -14,12 +19,27 @@
                                        bs-options="title for title in $ctrl.titles">
                             </div>
                             <div class="col-md-4">
-                                <label for="first_name"><translate>First Name</translate> <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" id="first_name" ng-model="$ctrl.person.first_name" autofocus required>
+                                <label for="first_name">
+                                    <translate>First Name</translate>
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input class="form-control"
+                                       type="text"
+                                       id="first_name"
+                                       ng-model="$ctrl.person.first_name"
+                                       autofocus
+                                       required>
                             </div>
                             <div class="col-md-4">
-                                <label for="last_name"><translate>Last Name</translate> <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" id="last_name" ng-model="$ctrl.person.last_name" required>
+                                <label for="last_name">
+                                    <translate>Last Name</translate>
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input class="form-control"
+                                       type="text"
+                                       id="last_name"
+                                       ng-model="$ctrl.person.last_name"
+                                       required>
                             </div>
                             <div class="col-md-2">
                                 <label for="suffix" translate>Suffix</label>
@@ -86,14 +106,22 @@
                                         <span translate>No Email Addresses.</span>
                                         <a ng-click="$ctrl.addEmailAddress()" translate>Add one.</a>
                                     </div>
-                                    <div ng-repeat="email in $ctrl.person.email_addresses track by email.id" name="email_addresses">
-                                        <contact-email-address email="email" on-remove="$ctrl.remove('email_addresses', $index)" on-primary="$ctrl.changePrimary('email_addresses', email.id)" on-historic="$ctrl.changeHistoric(email)"></contact-email-address>
+                                    <div ng-repeat="email in $ctrl.person.email_addresses track by email.id"
+                                         name="email_addresses">
+                                        <contact-email-address email="email"
+                                                               on-remove="$ctrl.remove('email_addresses', $index)"
+                                                               on-primary="$ctrl.changePrimary('email_addresses', email.id)"
+                                                               on-historic="$ctrl.changeHistoric(email)">
+                                        </contact-email-address>
                                     </div>
                                     <a type="button" class="btn btn-default btn-xs" ng-click="$ctrl.addEmailAddress()">
                                         <i class="fas fa-plus-circle"></i> <translate>Add Email</translate>
                                     </a>
                                     <label class="checkbox-label pull-right" for="optout_enewsletter" ng-if="::!$ctrl.userProfile">
-                                        <input class="form-control" type="checkbox" id="optout_enewsletter" ng-model="$ctrl.person.optout_enewsletter" />
+                                        <input class="form-control"
+                                               type="checkbox"
+                                               id="optout_enewsletter"
+                                               ng-model="$ctrl.person.optout_enewsletter" />
                                         &nbsp;
                                         <translate>Opt-out of Email Newsletter</translate>
                                     </label>
@@ -107,11 +135,20 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="legal_first_name" translate>Legal First Name</label>
-                                    <input class="form-control" type="text" id="legal_first_name" ng-model="$ctrl.person.legal_first_name">
+                                    <input class="form-control"
+                                           type="text"
+                                           id="legal_first_name"
+                                           ng-model="$ctrl.person.legal_first_name">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="gender" translate>Gender</label>
-                                    <select chosen id="gender" name="gender" ng-model="$ctrl.person.gender" disable-search="true" allow-single-deselect="true" chosen>
+                                    <select chosen
+                                            id="gender"
+                                            name="gender"
+                                            ng-model="$ctrl.person.gender"
+                                            disable-search="true"
+                                            data-placeholder-text-single="'Select an Option' | translate"
+                                            allow-single-deselect="true">
                                         <option value=""></option>
                                         <option value="male" translate>Male</option>
                                         <option value="female" translate>Female</option>
@@ -140,7 +177,10 @@
                                 <div class="col-md-12">
                                     <div><label class="block">&nbsp;</label></div>
                                     <label class="checkbox-label" for="deceased">
-                                        <input class="form-control" type="checkbox" id="deceased" ng-model="$ctrl.person.deceased" />
+                                        <input class="form-control"
+                                               type="checkbox"
+                                               id="deceased"
+                                               ng-model="$ctrl.person.deceased" />
                                         &nbsp;
                                         <translate>Deceased</translate>
                                     </label>
@@ -159,34 +199,44 @@
                                     <label translate>Type</label>
                                 </div>
                             </div>
-                            <div ng-if="$ctrl.person.facebook_accounts.length === 0 && $ctrl.person.twitter_accounts.length === 0 && $ctrl.person.linkedin_accounts.length === 0 && $ctrl.person.websites.length === 0" class="empty-association" translate>
+                            <div ng-if="$ctrl.person.facebook_accounts.length === 0 && $ctrl.person.twitter_accounts.length === 0 && $ctrl.person.linkedin_accounts.length === 0 && $ctrl.person.websites.length === 0"
+                                 class="empty-association"
+                                 translate>
                                 No Social Connections.
                             </div>
                             <div class="row" ng-if="$ctrl.person.facebook_accounts.length > 0">
                                 <div class="col-md-12">
                                     <div ng-repeat="fb in $ctrl.person.facebook_accounts track by fb.id" name="facebook">
-                                        <people-facebook facebook-account="fb" on-remove="$ctrl.remove('facebook_accounts', $index)"></people-facebook>
+                                        <people-facebook facebook-account="fb"
+                                                         on-remove="$ctrl.remove('facebook_accounts', $index)">
+                                        </people-facebook>
                                     </div>
                                 </div>
                             </div>
                             <div class="row" ng-if="$ctrl.person.twitter_accounts.length > 0">
                                 <div class="col-md-12">
                                     <div ng-repeat="twit in $ctrl.person.twitter_accounts track by twit.id" name="twitter">
-                                        <people-twitter twitter-account="twit" on-remove="$ctrl.remove('twitter_accounts', $index)"></people-twitter>
+                                        <people-twitter twitter-account="twit"
+                                                        on-remove="$ctrl.remove('twitter_accounts', $index)">
+                                        </people-twitter>
                                     </div>
                                 </div>
                             </div>
                             <div class="row" ng-if="$ctrl.person.linkedin_accounts.length > 0">
                                 <div class="col-md-12">
                                     <div ng-repeat="li in $ctrl.person.linkedin_accounts track by li.id" name="linkedin">
-                                        <people-linkedin linkedin-account="li" on-remove="$ctrl.remove('linkedin_accounts', $index)"></people-linkedin>
+                                        <people-linkedin linkedin-account="li"
+                                                         on-remove="$ctrl.remove('linkedin_accounts', $index)">
+                                        </people-linkedin>
                                     </div>
                                 </div>
                             </div>
                             <div class="row" ng-if="$ctrl.person.websites.length > 0">
                                 <div class="col-md-12">
                                     <div ng-repeat="website in $ctrl.person.websites track by website.id" name="website">
-                                        <people-website website="website" on-remove="$ctrl.remove('websites', $index)"></people-website>
+                                        <people-website website="website"
+                                                        on-remove="$ctrl.remove('websites', $index)">
+                                        </people-website>
                                     </div>
                                 </div>
                             </div>
@@ -215,15 +265,24 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <label translate>Occupation</label>
-                                    <input class="form-control" type="text" name="occupation" ng-model="$ctrl.person.occupation" />
+                                    <input class="form-control"
+                                           type="text"
+                                           name="occupation"
+                                           ng-model="$ctrl.person.occupation" />
                                 </div>
                                 <div class="col-md-4">
                                     <label translate>Employer</label>
-                                    <input class="form-control" type="text" name="employer" ng-model="$ctrl.person.employer" />
+                                    <input class="form-control"
+                                           type="text"
+                                           name="employer"
+                                           ng-model="$ctrl.person.employer" />
                                 </div>
                                 <div class="col-md-4">
                                     <label translate>Relationship Status</label>
-                                    <select chosen name="marital_status" data-placeholder-text-single="'Select an Option' | translate" ng-model="$ctrl.person.marital_status">
+                                    <select chosen
+                                            name="marital_status"
+                                            data-placeholder-text-single="'Select an Option' | translate"
+                                            ng-model="$ctrl.person.marital_status">
                                         <option value=""></option>
                                         <option value="Single" translate>Single</option>
                                         <option value="Engaged" translate>Engaged</option>
@@ -244,14 +303,23 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div ng-if="$ctrl.person.family_relationships.length === 0" class="empty-association">
+                                    <div ng-if="$ctrl.person.family_relationships.length === 0"
+                                         class="empty-association">
                                         <span translate>No Relationships.</span>
                                         <a ng-click="$ctrl.addFamilyRelationship()" translate>Add one.</a>
                                     </div>
-                                    <div ng-repeat="familyRelationship in $ctrl.person.family_relationships track by familyRelationship.id" name="family_relationships">
-                                        <contact-family-relationship person="$ctrl.person" family-relationship="familyRelationship" on-remove="$ctrl.remove('family_relationships', $index)" contact="$ctrl.contact" people-for-relationship="$ctrl.peopleForRelationship"></contact-family-relationship>
+                                    <div ng-repeat="familyRelationship in $ctrl.person.family_relationships track by familyRelationship.id"
+                                         name="family_relationships">
+                                        <contact-family-relationship person="$ctrl.person"
+                                                                     family-relationship="familyRelationship"
+                                                                     on-remove="$ctrl.remove('family_relationships', $index)"
+                                                                     contact="$ctrl.contact"
+                                                                     people-for-relationship="$ctrl.peopleForRelationship">
+                                        </contact-family-relationship>
                                     </div>
-                                    <a type="button" class="btn btn-default btn-xs" ng-click="$ctrl.addFamilyRelationship()">
+                                    <a type="button"
+                                       class="btn btn-default btn-xs"
+                                       ng-click="$ctrl.addFamilyRelationship()">
                                         <i class="fas fa-plus-circle"></i> <translate>Add Relationship</translate>
                                     </a>
                                 </div>

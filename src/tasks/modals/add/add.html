@@ -10,6 +10,7 @@
                     class="form-control"
                     id="action"
                     name="action"
+                    data-placeholder-text-single="'Select an Option' | translate"
                     ng-options="opt.id as opt.value for opt in $ctrl.serverConstants.data.activity_hashes"
                     ng-model="$ctrl.task.activity_type">
                 <option value=""></option>
