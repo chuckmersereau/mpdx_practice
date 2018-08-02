@@ -11,7 +11,7 @@
     <div class="content">
         <a ng-click="$ctrl.edit(); $event.stopPropagation();" class="subject">
             <strong>{{ ::$ctrl.getTranslatedActivity($ctrl.task.activity_type) }}</strong>
-            {{ ::$ctrl.task.subject }}
+            <span ng-if="::!$ctrl.task.subject_hidden">{{ ::$ctrl.task.subject }}</span>
         </a>
         <span ng-if="::$ctrl.task.completed" translate-params-result="::$ctrl.task.result" class="result" translate>
             ({{ result }})

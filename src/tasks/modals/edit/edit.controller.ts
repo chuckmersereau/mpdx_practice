@@ -47,10 +47,13 @@ class EditTaskController {
             this.watcher();
             this.watcher2();
         });
+
+        this.task.subject = this.task.subject_hidden ? null : this.task.subject;
     }
     save() {
         this.handleActivityContacts();
         this.handleDates();
+        this.handleHiddenSubjects();
 
         let patch = createPatch(this.taskInitialState, this.task);
         /* istanbul ignore next */
@@ -60,7 +63,7 @@ class EditTaskController {
             this.$scope.$hide();
         });
     }
-    handleActivityContacts() {
+    private handleActivityContacts(): void {
         this.task.activity_contacts = map((activity) => {
             if (!find({ id: activity.contact.id }, this.task.contacts)) {
                 activity._destroy = 1;
@@ -71,16 +74,20 @@ class EditTaskController {
             return find((a) => a.contact.id === value.id, this.task.activity_contacts) ? result : concat(result, value);
         }, [], this.task.contacts);
     }
-    handleDates() {
+    private handleDates(): void {
         this.task.start_at = this.isoDateOrNull(this.task.start_at);
         this.task.completed_at = this.isoDateOrNull(this.task.completed_at);
     }
-    isoDateOrNull(val) {
+    private isoDateOrNull(val): boolean {
         return this.isIsoDate(val) ? val : null;
     }
-    isIsoDate(s) {
+    private isIsoDate(s): boolean {
         const isoDateRegExp = new RegExp(/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))/);
         return isoDateRegExp.test(s);
+    }
+    private handleHiddenSubjects(): void {
+        this.task.subject_hidden = isNilOrEmpty(this.task.subject);
+        this.task.subject = this.task.subject_hidden ? this.taskInitialState.subject : this.task.subject;
     }
     delete() {
         return this.tasks.delete(

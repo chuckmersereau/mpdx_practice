@@ -19,7 +19,7 @@ describe('tasks.modals.edit.controller', () => {
 
     describe('constructor', () => {
         it('should clone the task', () => {
-            expect(isEqual($ctrl.task, { })).toBeTruthy();
+            expect(isEqual($ctrl.task, { subject: undefined })).toBeTruthy();
         });
 
         it('should handle start_at removing a value', () => {
@@ -75,7 +75,8 @@ describe('tasks.modals.edit.controller', () => {
             expect(tasks.save).toHaveBeenCalledWith({
                 activity_contacts: [],
                 change: '789',
-                contacts: []
+                contacts: [],
+                subject_hidden: true
             });
         });
 
@@ -171,6 +172,45 @@ describe('tasks.modals.edit.controller', () => {
 
         it('should handle false', () => {
             expect($ctrl.isIsoDate('a')).toBeFalsy();
+        });
+    });
+
+    describe('handleHiddenSubjects', () => {
+        beforeEach(() => {
+            $ctrl.task = {
+                subject: 'a',
+                subject_hidden: false
+            };
+            $ctrl.taskInitialState = angular.copy($ctrl.task);
+        });
+
+        it('should set hidden subject to false', () => {
+            $ctrl.handleHiddenSubjects();
+            expect($ctrl.task.subject_hidden).toBeFalsy();
+        });
+
+        it('should set hidden subject to true', () => {
+            $ctrl.task.subject = '';
+            $ctrl.handleHiddenSubjects();
+            expect($ctrl.task.subject_hidden).toBeTruthy();
+        });
+
+        it('should set hidden subject to true', () => {
+            $ctrl.task.subject = null;
+            $ctrl.handleHiddenSubjects();
+            expect($ctrl.task.subject_hidden).toBeTruthy();
+        });
+
+        it('should keep the subject', () => {
+            $ctrl.handleHiddenSubjects();
+            expect($ctrl.task.subject).toEqual('a');
+        });
+
+        it('should revert the subject', () => {
+            $ctrl.task.subject = '';
+            $ctrl.task.subject_hidden = true;
+            $ctrl.handleHiddenSubjects();
+            expect($ctrl.task.subject).toEqual('a');
         });
     });
 });

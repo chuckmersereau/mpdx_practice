@@ -201,7 +201,7 @@ class ListController {
                     contact: 'name',
                     tasks: 'activity_contacts,activity_type,completed,completed_at,no_date,contacts,starred,start_at,'
                     + 'subject,tag_list,comments_count,location,result,notification_type,notification_time_before,'
-                    + 'notification_time_unit'
+                    + 'notification_time_unit,subject_hidden'
                 }
             },
             deSerializationOptions: relationshipId('comments'), // for comment count
