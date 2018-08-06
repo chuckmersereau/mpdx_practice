@@ -37,7 +37,7 @@ class AnniversariesController {
                 + 'anniversaries_this_week.people.email_addresses,',
                 fields: {
                     contact_analytics: 'anniversaries_this_week',
-                    contacts: 'people',
+                    contacts: 'name,people',
                     people: 'anniversary_day,anniversary_month,anniversary_year,facebook_accounts,first_name,last_name,twitter_accounts,email_addresses,parent_contact',
                     email_addresses: 'email,primary',
                     facebook_accounts: 'username',
