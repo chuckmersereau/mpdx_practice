@@ -1,5 +1,7 @@
 @import 'person/person';
 contact-people {
+    display: block;
+    padding-bottom: $beacon-padding;
     > .actions {
         margin-bottom: 10px;
         text-align: right;

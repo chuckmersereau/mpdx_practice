@@ -2,6 +2,7 @@
 donations {
     display: flex;
     flex-direction: column;
+    padding-bottom: $beacon-padding;
     > * {
         margin-top: 0;
         margin-bottom: 10px;

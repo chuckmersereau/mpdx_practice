@@ -1,5 +1,7 @@
+@import 'balances/balances';
 @import 'contributions/contributions';
 @import 'donations/donations';
+@import 'monthly/monthly';
 reports {
     display: grid;
     height: 100%;

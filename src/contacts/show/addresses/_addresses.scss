@@ -1,5 +1,7 @@
 @import 'address/address';
 contact-addresses {
+    display: block;
+    padding-bottom: $beacon-padding;
     > .actions {
         margin-bottom: 10px;
         text-align: right;

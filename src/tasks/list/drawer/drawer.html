@@ -33,6 +33,7 @@
       ng-submit="$ctrl.addComment()"
       ng-if="$ctrl.view === 'comments' && $ctrl.loaded"
       novalidate>
+    <div>
     <button class="btn btn-primary" title="{{ 'Save' | translate }}"><i class="fas fa-save"></i></button>
   <textarea msd-elastic
             rows="1"
@@ -40,4 +41,5 @@
             ng-model="$ctrl.comment"
             placeholder="{{ 'Add a comment' | translate }}"
             required></textarea>
+    </div>
 </form>
