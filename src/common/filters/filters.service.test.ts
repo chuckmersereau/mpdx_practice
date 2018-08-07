@@ -57,4 +57,40 @@ describe('contacts.sidebar.filter.service', () => {
             expect(filters.fromStrings(params, filterArr).activity_type).toEqual('Call');
         });
     });
+
+    describe('makeDefaultParams', () => {
+        beforeEach(() => {
+            spyOn(filters, 'splitToArr').and.returnValue('split');
+        });
+
+        it('should map to default params', () => {
+            const data = [{
+                default_selection: '123',
+                name: 'a',
+                parent: null
+            }];
+            expect(filters.makeDefaultParams(data)).toEqual({ a: 'split' });
+        });
+    });
+
+    describe('mutateData', () => {
+        beforeEach(() => {
+            spyOn(filters, 'splitToArr').and.returnValue('split');
+        });
+
+        it('should split default selection', () => {
+            const data = [{
+                default_selection: '123',
+                title: 'a',
+                parent: null
+            }];
+            expect(filters.mutateData(data)).toEqual([{ default_selection: 'split', title: 'a', parent: null }]);
+        });
+    });
+
+    describe('splitToArr', () => {
+        it('should split a comma delimited list', () => {
+            expect(filters.splitToArr('a, b,c')).toEqual(['a', 'b', 'c']);
+        });
+    });
 });

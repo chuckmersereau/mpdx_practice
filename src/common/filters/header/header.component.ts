@@ -1,4 +1,4 @@
-import { isEqual, sumBy } from 'lodash/fp';
+import { has, isEqual, sumBy } from 'lodash/fp';
 
 class HeaderController {
     displayFilters: () => boolean;
@@ -36,7 +36,7 @@ class HeaderController {
     filterInUse(filter: any): boolean {
         return filter.reverse || (
             filter.type !== 'container'
-            && this.filterParams[filter.name].length > 0
+            && (has(filter.name, this.filterParams) && this.filterParams[filter.name].length > 0)
             && !isEqual(this.filterParams[filter.name], this.filterDefaultParams[filter.name])
         );
     }

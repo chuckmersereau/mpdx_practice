@@ -16,6 +16,7 @@ import {
 import { split } from '../fp/strings';
 import api, { ApiService } from '../api/api.service';
 import reduceObject from '../fp/reduceObject';
+import replaceAll from '../fp/replaceAll';
 
 export class FiltersService {
     constructor(
@@ -59,19 +60,19 @@ export class FiltersService {
     }
     private makeDefaultParams(data: any): any {
         return reduce((result, filter) => {
-            if (filter.multiple && !isArray(filter.default_selection)) {
-                result[filter.name] = [filter.default_selection];
-            } else {
-                result[filter.name] = filter.default_selection;
-            }
+            const defaultSelection = this.splitToArr(filter.default_selection);
+            result[filter.name] = filter.multiple && !isArray(defaultSelection)
+                ? [defaultSelection]
+                : defaultSelection;
             return result;
         }, {}, data);
     }
     private mutateData(data: any): any[] {
         return reduce((result, filter) => {
+            filter.default_selection = this.splitToArr(filter.default_selection);
             if (filter.parent !== null) {
-                let parentIndex = findIndex(
-                    (parent) => parent.title === filter.parent && parent.type === 'container'
+                let parentIndex = findIndex((parent) =>
+                    parent.title === filter.parent && parent.type === 'container'
                     , result);
                 if (parentIndex === -1) {
                     const parentObj = {
@@ -89,6 +90,10 @@ export class FiltersService {
             }
             return result;
         }, [], data);
+    }
+    private splitToArr(selection: string): string[] {
+        const defaultSpaceless = replaceAll(', ', ',', selection);
+        return split(',', defaultSpaceless);
     }
     reset({ defaultParams, params, onChange }: { defaultParams: any, params: any, onChange: any }): any {
         params = angular.copy(defaultParams);
