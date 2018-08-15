@@ -1,4 +1,4 @@
-import { contains, defaultTo, isEmpty, map, union } from 'lodash/fp';
+import { contains, defaultTo, get, isEmpty, map, toLower, union } from 'lodash/fp';
 import contacts, { ContactsService } from '../../../contacts/contacts.service';
 import createPatch from '../../../common/fp/createPatch';
 import serverConstants, { ServerConstantsService } from '../../../common/serverConstants/serverConstants.service';
@@ -23,6 +23,8 @@ class CompleteTaskController {
         $log.debug('task to complete', this.task);
         this.taskInitialState = angular.copy(task);
         this.task.completed = true;
+        const activityType = toLower(get('activity_type', this.task));
+        this.task.result = get('[0]', this.serverConstants.data.results[activityType]);
     }
     save() {
         return this.getPromise().then(() => {

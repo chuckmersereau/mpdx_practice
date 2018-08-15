@@ -1,18 +1,24 @@
 import { assign, each } from 'lodash/fp';
 import complete from './complete.controller';
 
-const defaultTask = { id: 1, contacts: [{ id: 1 }] };
+const defaultTask = { id: 1, contacts: [{ id: 1 }], activity_type: 'Call' };
 
 describe('tasks.modals.complete.controller', () => {
-    let $ctrl, contacts, tasks, scope, rootScope, q;
+    let $ctrl, contacts, tasks, scope, rootScope, q, serverConstants;
     beforeEach(() => {
         angular.mock.module(complete);
-        inject(($controller, $q, $rootScope, _contacts_, _tasks_) => {
+        inject(($controller, $q, $rootScope, _contacts_, _tasks_, _serverConstants_) => {
             q = $q;
             rootScope = $rootScope;
             scope = $rootScope.$new();
             contacts = _contacts_;
             tasks = _tasks_;
+            serverConstants = _serverConstants_;
+            serverConstants.data = {
+                results: {
+                    call: ['a', 'b']
+                }
+            };
             $ctrl = $controller('completeTaskController as $ctrl', {
                 $scope: scope,
                 task: defaultTask
@@ -28,8 +34,12 @@ describe('tasks.modals.complete.controller', () => {
 
     describe('constructor', () => {
         it('should clone the task and set the new task model to complete', () => {
-            expect($ctrl.task).toEqual(assign(defaultTask, { completed: true }));
+            expect($ctrl.task).toEqual(assign(defaultTask, { completed: true, result: 'a' }));
             expect($ctrl.task !== $ctrl.taskInitialState).toBeTruthy();
+        });
+
+        it('should set a default result', () => {
+            expect($ctrl.task.result).toEqual('a');
         });
     });
 
@@ -102,7 +112,7 @@ describe('tasks.modals.complete.controller', () => {
         });
 
         it('should be false without a task activity_type', () => {
-            $ctrl.task = defaultTask;
+            $ctrl.task.activity_type = null;
             expect($ctrl.showPartnerStatus()).toBeFalsy();
         });
 
