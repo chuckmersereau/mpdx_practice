@@ -90,8 +90,8 @@ describe('contacts.service', () => {
                                   + 'tag_list,timezone,website,addresses,contact_referrals_by_me,contact_referrals_to_me,'
                                   + 'contacts_that_referred_me,donor_accounts,primary_person,no_gift_aid,timezone',
                         addresses: 'city,country,created_at,end_date,geo,historic,location,metro_area,postal_code,'
-                                   + 'primary_mailing_address,region,remote_id,seasonal,source,start_date,state,street,'
-                                   + 'updated_at,updated_in_db_at,valid_values',
+                                   + 'primary_mailing_address,region,remote_id,seasonal,source,source_donor_account,'
+                                   + 'start_date,state,street,updated_at,updated_in_db_at,valid_values',
                         donor_accounts: 'account_number'
                     }
                 },

@@ -155,12 +155,12 @@ class AddressModalController {
         if (this.address.source === 'Siebel') {
             const donorAccount = this.address.source_donor_account;
             const donorName = donorAccount
-                ? this.contact.name + ' (donor #' + donorAccount.account_number + ')'
+                ? this.contact.name + ' (ministry partner #' + donorAccount.account_number + ')'
                 : this.contact.name;
             const previousAddress = this.address.street
                 ? `, previously located at:%0D%0A${this.address.street}%0D%0A${this.address.city}, ${this.address.state} ${this.address.postal_code},%0D%0A`
                 : ' ';
-            return `Dear Donation Services,%0D%0A%0D%0AOne of my donors, ${donorName}${previousAddress}has a new current address.%0D%0APlease update their address to:%0D%0AREPLACE WITH NEW STREET%0D%0AREPLACE WITH NEW CITY, STATE, ZIP%0D%0A%0D%0AThanks,%0D%0A${this.users.current.first_name}`;
+            return `Dear Donation Services,%0D%0A%0D%0AOne of my ministry partners, ${donorName}${previousAddress}has a new current address.%0D%0APlease update their address to:%0D%0AREPLACE WITH NEW STREET%0D%0AREPLACE WITH NEW CITY, STATE, ZIP%0D%0A%0D%0AThanks,%0D%0A${this.users.current.first_name}`;
         }
 
         return '';

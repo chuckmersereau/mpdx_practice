@@ -216,13 +216,13 @@ describe('contacts.show.address.modal.controller', () => {
         it('should handle a donor account', () => {
             $ctrl.address.source = 'Siebel';
             $ctrl.address.source_donor_account = { account_number: 123 };
-            expect($ctrl.reqUpdateEmailBodyRequest()).toEqual('Dear Donation Services,%0D%0A%0D%0AOne of my donors, a (donor #123) has a new current address.%0D%0APlease update their address to:%0D%0AREPLACE WITH NEW STREET%0D%0AREPLACE WITH NEW CITY, STATE, ZIP%0D%0A%0D%0AThanks,%0D%0ATom');
+            expect($ctrl.reqUpdateEmailBodyRequest()).toEqual('Dear Donation Services,%0D%0A%0D%0AOne of my ministry partners, a (ministry partner #123) has a new current address.%0D%0APlease update their address to:%0D%0AREPLACE WITH NEW STREET%0D%0AREPLACE WITH NEW CITY, STATE, ZIP%0D%0A%0D%0AThanks,%0D%0ATom');
         });
 
         it('should handle no donor account', () => {
             $ctrl.address.source = 'Siebel';
             $ctrl.address.source_donor_account = undefined;
-            expect($ctrl.reqUpdateEmailBodyRequest()).toEqual('Dear Donation Services,%0D%0A%0D%0AOne of my donors, a has a new current address.%0D%0APlease update their address to:%0D%0AREPLACE WITH NEW STREET%0D%0AREPLACE WITH NEW CITY, STATE, ZIP%0D%0A%0D%0AThanks,%0D%0ATom');
+            expect($ctrl.reqUpdateEmailBodyRequest()).toEqual('Dear Donation Services,%0D%0A%0D%0AOne of my ministry partners, a has a new current address.%0D%0APlease update their address to:%0D%0AREPLACE WITH NEW STREET%0D%0AREPLACE WITH NEW CITY, STATE, ZIP%0D%0A%0D%0AThanks,%0D%0ATom');
         });
 
         it('should prior address', () => {
@@ -232,7 +232,7 @@ describe('contacts.show.address.modal.controller', () => {
             $ctrl.address.state = 'state';
             $ctrl.address.postal_code = 'postal_code';
             $ctrl.address.source_donor_account = undefined;
-            expect($ctrl.reqUpdateEmailBodyRequest()).toEqual('Dear Donation Services,%0D%0A%0D%0AOne of my donors, a, previously located at:%0D%0Astreet%0D%0Acity, state postal_code,%0D%0Ahas a new current address.%0D%0APlease update their address to:%0D%0AREPLACE WITH NEW STREET%0D%0AREPLACE WITH NEW CITY, STATE, ZIP%0D%0A%0D%0AThanks,%0D%0ATom');
+            expect($ctrl.reqUpdateEmailBodyRequest()).toEqual('Dear Donation Services,%0D%0A%0D%0AOne of my ministry partners, a, previously located at:%0D%0Astreet%0D%0Acity, state postal_code,%0D%0Ahas a new current address.%0D%0APlease update their address to:%0D%0AREPLACE WITH NEW STREET%0D%0AREPLACE WITH NEW CITY, STATE, ZIP%0D%0A%0D%0AThanks,%0D%0ATom');
         });
     });
 });
