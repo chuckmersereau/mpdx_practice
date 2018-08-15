@@ -67,6 +67,7 @@ describe('contacts.show.personModal.family.component', () => {
                         people: 'first_name,last_name'
                     },
                     filter: {
+                        account_list_id: api.account_list_id,
                         wildcard_search: 'abc'
                     },
                     per_page: 10000

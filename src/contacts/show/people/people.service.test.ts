@@ -135,4 +135,19 @@ describe('contacts.service', () => {
             });
         });
     });
+
+    describe('listAll', () => {
+        it('should list all people', () => {
+            people.listAll();
+            expect(api.get).toHaveBeenCalledWith('contacts/people', {
+                filter: {
+                    account_list_id: api.account_list_id
+                },
+                fields: {
+                    people: 'first_name,last_name'
+                },
+                per_page: 10000
+            });
+        });
+    });
 });

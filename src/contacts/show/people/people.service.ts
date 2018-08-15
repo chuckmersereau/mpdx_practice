@@ -39,6 +39,9 @@ export class PeopleService {
             return this.$q.resolve(this.data);
         }
         return this.api.get('contacts/people', {
+            filter: {
+                account_list_id: this.api.account_list_id
+            },
             fields: {
                 people: 'first_name,last_name'
             },

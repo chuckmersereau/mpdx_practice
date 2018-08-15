@@ -26,6 +26,7 @@ class ContactFamilyRelationshipController {
                 people: 'first_name,last_name'
             },
             filter: {
+                account_list_id: this.api.account_list_id,
                 wildcard_search: text
             },
             per_page: 10000
