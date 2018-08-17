@@ -8,7 +8,7 @@
     <div ng-repeat="account in $ctrl.users.organizationAccounts track by account.id" class="panel panel-default panel-default--no-animate">
         <div class="panel-heading">
             <div><strong>{{account.organization.name}}</strong> {{account.username}}</div>
-            <a class="btn btn-default btn-xs" ng-click="$ctrl.editAccount(account)" ng-if="['DataServer', 'DataServerPtc', 'DataServerNavigators'].includes($ctrl.serverConstants.data.organizations_attributes[account.organization.id].api_class) && !account.organization.oauth">
+            <a class="btn btn-default btn-xs" ng-click="$ctrl.editAccount(account)" ng-if="['DataServer', 'DataServerPtc', 'DataServerNavigators', 'DataServerStumo'].includes($ctrl.serverConstants.data.organizations_attributes[account.organization.id].api_class) && !account.organization.oauth">
                 <i class="fas fa-pencil"></i>
                 <translate>Edit</translate>
             </a>
@@ -79,7 +79,7 @@
                     <p translate>This organization requires you to log into MPDX with your ministry email address to access it.</p>
                     <p translate><a href="/logout" translate>Click here to log out of MPDX and The Key</a> so you can log back in with the Key account that is associated with your ministry email address.</p>
                 </div>
-                <div ng-if="['DataServer', 'DataServerPtc', 'DataServerNavigators'].includes($ctrl.selected.api_class) && !$ctrl.selected.oauth">
+                <div ng-if="['DataServer', 'DataServerPtc', 'DataServerNavigators', 'DataServerStumo'].includes($ctrl.selected.api_class) && !$ctrl.selected.oauth">
                     <div class="form-group">
                         <label translate>Username</label>
                         <input class="form-control" ng-disabled="$ctrl.saving" ng-model="$ctrl.username" required>

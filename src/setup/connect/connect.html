@@ -50,7 +50,7 @@
                             <p translate>First you need to <a href="https://thekey.me/cas/logout" target="_blank" translate>click here to log out of your personal Key account</a></p>
                             <p translate>Next, <a href="/logout" translate>click here to log out of MPDX</a> so you can log back in with your offical key account.</p>
                         </div>
-                        <div class="row" ng-if="['DataServer', 'DataServerPtc', 'DataServerNavigators'].includes($ctrl.selected.api_class) && !$ctrl.selected.oauth">
+                        <div class="row" ng-if="['DataServer', 'DataServerPtc', 'DataServerNavigators', 'DataServerStumo'].includes($ctrl.selected.api_class) && !$ctrl.selected.oauth">
                             <div class="col-xs-6">
                                 <label for="username" translate>Username</label>
                                 <input type="text" class="form-control" id="username" ng-model="$ctrl.username" required>
