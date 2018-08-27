@@ -47,6 +47,15 @@ describe('common.designationAccounts.service', () => {
             rootScope.$digest();
         });
 
+        it('should set call updateBalance', (done) => {
+            spyOn(designationAccounts, 'updateBalance');
+            designationAccounts.load().then(() => {
+                expect(designationAccounts.updateBalance).toHaveBeenCalled();
+                done();
+            });
+            rootScope.$digest();
+        });
+
         it('should set data', (done) => {
             expect(designationAccounts.data).toEqual([]);
             designationAccounts.load().then(() => {
@@ -88,6 +97,31 @@ describe('common.designationAccounts.service', () => {
         });
     });
 
+    describe('save', () => {
+        let designationAccount = { id: '123', active: true };
+        beforeEach(() => {
+            spyOn(api, 'put').and.callFake(() => q.resolve(designationAccount));
+        });
+
+        it('should update data', (done) => {
+            designationAccounts.data = [{ id: '123', active: false }, { id: '456' }];
+            designationAccounts.save(designationAccount).then(() => {
+                expect(designationAccounts.data[0]['active']).toEqual(true);
+                done();
+            });
+            rootScope.$digest();
+        });
+
+        it('should set call updateBalance', (done) => {
+            spyOn(designationAccounts, 'updateBalance');
+            designationAccounts.save(designationAccount).then(() => {
+                expect(designationAccounts.updateBalance).toHaveBeenCalled();
+                done();
+            });
+            rootScope.$digest();
+        });
+    });
+
     describe('search', () => {
         const keywords = 'my keywords';
         beforeEach(() => {
@@ -112,6 +146,62 @@ describe('common.designationAccounts.service', () => {
                     per_page: 6
                 }
             );
+        });
+    });
+
+    describe('updateBalance', () => {
+        it('should set converted_total to 0', () => {
+            designationAccounts.data = [];
+            designationAccounts.updateBalance();
+            expect(designationAccounts.balance).toEqual(0);
+        });
+
+        describe('active designations', () => {
+            beforeEach(() => {
+                designationAccounts.data = [
+                    { active: true, converted_balance: 1 },
+                    { active: true, converted_balance: 10 },
+                    { active: true, converted_balance: 100 }
+                ];
+            });
+
+            it('should set converted_total to total of active accounts', () => {
+                designationAccounts.updateBalance();
+                expect(designationAccounts.balance).toEqual(111);
+            });
+        });
+
+        describe('inactive designations', () => {
+            beforeEach(() => {
+                designationAccounts.data = [
+                    { active: false, converted_balance: 1 },
+                    { active: false, converted_balance: 10 },
+                    { active: false, converted_balance: 100 }
+                ];
+            });
+
+            it('should set converted_total to total of active accounts', () => {
+                designationAccounts.updateBalance();
+                expect(designationAccounts.balance).toEqual(0);
+            });
+        });
+
+        describe('active and inactive designations', () => {
+            beforeEach(() => {
+                designationAccounts.data = [
+                    { active: true, converted_balance: 1 },
+                    { active: false, converted_balance: 1 },
+                    { active: true, converted_balance: 10 },
+                    { active: false, converted_balance: 10 },
+                    { active: true, converted_balance: 100 },
+                    { active: false, converted_balance: 100 }
+                ];
+            });
+
+            it('should set converted_total to total of active accounts', () => {
+                designationAccounts.updateBalance();
+                expect(designationAccounts.balance).toEqual(111);
+            });
         });
     });
 

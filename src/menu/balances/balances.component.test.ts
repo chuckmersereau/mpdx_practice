@@ -61,11 +61,6 @@ describe('menu.balances.component', () => {
             expect($ctrl.getGoals).toHaveBeenCalledWith();
         });
 
-        it('should zero out balance', () => {
-            $ctrl.init();
-            expect($ctrl.balance).toEqual(0);
-        });
-
         it('should zero out goals', () => {
             $ctrl.init();
             expect($ctrl.goals).toBeUndefined();
@@ -80,30 +75,6 @@ describe('menu.balances.component', () => {
         it('should load fresh designationAccounts', () => {
             $ctrl.getDesignationAccounts();
             expect(designationAccounts.load).toHaveBeenCalledWith(true);
-        });
-
-        it('should get balance', (done) => {
-            designationAccounts.data = [
-                { active: true, converted_balance: 5 },
-                { active: true, converted_balance: 5 }
-            ];
-            $ctrl.getDesignationAccounts().then(() => {
-                expect($ctrl.balance).toEqual(10);
-                done();
-            });
-            scope.$digest();
-        });
-
-        it('should handle inactive', (done) => {
-            designationAccounts.data = [
-                { active: false, converted_balance: 5 },
-                { active: true, converted_balance: 5 }
-            ];
-            $ctrl.getDesignationAccounts().then(() => {
-                expect($ctrl.balance).toEqual(5);
-                done();
-            });
-            scope.$digest();
         });
     });
 

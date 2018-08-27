@@ -5,11 +5,10 @@ describe('reports.balances.component', () => {
 
     beforeEach(() => {
         angular.mock.module(component);
-        inject(($componentController, $rootScope, _designationAccounts_, $q) => {
+        inject(($componentController, $rootScope, _designationAccounts_, _accounts_, $q) => {
             rootScope = $rootScope;
             q = $q;
             scope = $rootScope.$new();
-
             designationAccounts = _designationAccounts_;
             spyOn(rootScope, '$on').and.callThrough();
             $ctrl = $componentController('balances', { $scope: scope }, { view: null });
@@ -68,93 +67,28 @@ describe('reports.balances.component', () => {
                 });
                 scope.$digest();
             });
-
-            it('should call updateTotal', (done) => {
-                spyOn($ctrl, 'updateTotal').and.returnValue(0);
-                $ctrl.load().then(() => {
-                    expect($ctrl.updateTotal).toHaveBeenCalled();
-                    done();
-                });
-                scope.$digest();
-            });
         });
     });
 
     describe('onToggle', () => {
-        let designation = { active: true };
+        let designationAccount = { active: true };
 
         it('should set active designation to inactive', () => {
-            designation.active = true;
-            $ctrl.onToggle(designation);
-            expect(designation.active).toEqual(false);
+            designationAccount.active = true;
+            $ctrl.onToggle(designationAccount);
+            expect(designationAccount.active).toEqual(false);
         });
 
         it('should set inactive designation to active', () => {
-            designation.active = false;
-            $ctrl.onToggle(designation);
-            expect(designation.active).toEqual(true);
+            designationAccount.active = false;
+            $ctrl.onToggle(designationAccount);
+            expect(designationAccount.active).toEqual(true);
         });
 
-        it('should call updateTotal', () => {
-            spyOn($ctrl, 'updateTotal').and.returnValue(0);
-            $ctrl.onToggle(designation);
-            expect($ctrl.updateTotal).toHaveBeenCalled();
-        });
-    });
-
-    describe('updateTotal', () => {
-        it('should set converted_total to 0', () => {
-            designationAccounts.data = [];
-            $ctrl.updateTotal();
-            expect($ctrl.converted_total).toEqual(0);
-        });
-
-        describe('active designations', () => {
-            beforeEach(() => {
-                designationAccounts.data = [
-                    { active: true, converted_balance: 1 },
-                    { active: true, converted_balance: 10 },
-                    { active: true, converted_balance: 100 }
-                ];
-            });
-
-            it('should set converted_total to total of active accounts', () => {
-                $ctrl.updateTotal();
-                expect($ctrl.converted_total).toEqual(111);
-            });
-        });
-
-        describe('inactive designations', () => {
-            beforeEach(() => {
-                designationAccounts.data = [
-                    { active: false, converted_balance: 1 },
-                    { active: false, converted_balance: 10 },
-                    { active: false, converted_balance: 100 }
-                ];
-            });
-
-            it('should set converted_total to total of active accounts', () => {
-                $ctrl.updateTotal();
-                expect($ctrl.converted_total).toEqual(0);
-            });
-        });
-
-        describe('active and inactive designations', () => {
-            beforeEach(() => {
-                designationAccounts.data = [
-                    { active: true, converted_balance: 1 },
-                    { active: false, converted_balance: 1 },
-                    { active: true, converted_balance: 10 },
-                    { active: false, converted_balance: 10 },
-                    { active: true, converted_balance: 100 },
-                    { active: false, converted_balance: 100 }
-                ];
-            });
-
-            it('should set converted_total to total of active accounts', () => {
-                $ctrl.updateTotal();
-                expect($ctrl.converted_total).toEqual(111);
-            });
-        });
+        it('should call designationAccounts.save', () => {
+            spyOn(designationAccounts, 'save');
+            $ctrl.onToggle(designationAccount);
+            expect(designationAccounts.save).toHaveBeenCalledWith(designationAccount);
+        })
     });
 });

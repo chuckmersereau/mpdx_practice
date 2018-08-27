@@ -5,7 +5,6 @@ import api, { ApiService } from '../../common/api/api.service';
 import designationAccounts, { DesignationAccountsService } from '../../common/designationAccounts/designationAccounts.service';
 
 class BalancesController {
-    balance: number;
     goals: any;
     title: string;
     watcher: () => void;
@@ -28,17 +27,12 @@ class BalancesController {
         this.watcher();
     }
     init(): void {
-        this.balance = 0;
         this.goals = undefined;
         this.getGoals();
         this.getDesignationAccounts();
     }
     getDesignationAccounts(): ng.IPromise<void> {
-        return this.designationAccounts.load(true).then(() => {
-            this.balance = reduce((result, designation) =>
-                result + toInteger(designation.active ? designation.converted_balance : 0)
-                , 0, this.designationAccounts.data);
-        });
+        return this.designationAccounts.load(true);
     }
     getGoals(): ng.IPromise<void> {
         return this.api.get('reports/goal_progress', {

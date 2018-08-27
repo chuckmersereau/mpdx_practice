@@ -15,10 +15,8 @@
         <h4 class="panel-title">
             <translate>Balances by Organization</translate>
             <span class="pull-right">
-                <span translate>Converted Report Total</span>:
-                {{$ctrl.total_currency_symbol}}
-                {{$ctrl.converted_total | number : 0}}
-                {{$ctrl.total_currency}}
+                <span translate>Balance:</span>
+                {{$ctrl.designationAccounts.balance | number: 0}} {{$ctrl.accounts.current.default_currency}}
             </span>
         </h4>
     </div>
@@ -32,7 +30,7 @@
                 <th class="col-md-1 text-right" translate>Balance</th>
                 <th class="col-md-1 text-right" translate>Exchange Rate</th>
                 <th class="col-md-2 text-right" translate>Converted Balance</th>
-                <th class="col-md-2 text-right" translate>Include in Report</th>
+                <th class="col-md-2 text-right" translate>Include in Total</th>
             </tr>
             </thead>
             <tbody>
@@ -41,21 +39,18 @@
                 <td>{{::designation.designation_number}}</td>
                 <td>{{::designation.balance_updated_at | localize}}</td>
                 <td class="text-right">
-                    {{::designation.currency_symbol}}
                     {{::designation.balance || 0  | number : 0}}
                     {{::designation.currency}}
                 </td>
                 <td class="text-right">
+                    1 {{::designation.currency}}
+                    =
                     {{::designation.exchange_rate | number : 2}}
-                    {{::$ctrl.total_currency_symbol}}
-                    /
-                    {{::designation.currency_symbol}}
-                    {{::designation.currency}}
+                    {{::$ctrl.accounts.current.default_currency}}
                 </td>
                 <td class="text-right">
-                    {{::$ctrl.total_currency_symbol}}
                     {{::designation.converted_balance | number : 0}}
-                    {{::$ctrl.total_currency}}
+                    {{::$ctrl.accounts.current.default_currency}}
                 </td>
                 <td class="text-right">
                     <fa-checkbox checked="designation.active" on-toggle="$ctrl.onToggle(designation)"></fa-checkbox>

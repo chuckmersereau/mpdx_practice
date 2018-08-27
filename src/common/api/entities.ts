@@ -130,6 +130,11 @@ export class EntityAttributes {
                 },
                 typeForAttribute: contactsTypeForAttribute
             },
+            designation_accounts: {
+                attributes: [
+                    'active'
+                ]
+            },
             donations: {
                 attributes: [
                     'amount', 'appeal', 'appeal_amount', 'channel', 'created_at', 'designation_account',

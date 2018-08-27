@@ -3,12 +3,12 @@
         <small>
             <a class="text-muted"
                ui-sref="reports.balances"
-               ng-if="$ctrl.balance !== 0"
+               ng-if="$ctrl.designationAccounts.balance !== 0"
                data-title="{{::'May take a few days to update' | translate}}"
                data-placement="bottom"
                bs-tooltip>
                 <translate>Balance:</translate>
-                {{$ctrl.balance | currency : ''}} {{$ctrl.accounts.current.default_currency}}
+                {{$ctrl.designationAccounts.balance | number: 0}} {{$ctrl.accounts.current.default_currency}}
             </a>
         </small>
     </div>
