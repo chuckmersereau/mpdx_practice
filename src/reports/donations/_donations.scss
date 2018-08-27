@@ -2,25 +2,35 @@
 donations {
     display: flex;
     flex-direction: column;
-    padding-bottom: $beacon-padding;
-    > * {
-        margin-top: 0;
-        margin-bottom: 10px;
-    }
     h4 {
         margin: 0;
     }
-    .heading {
-        display: flex;
-        align-items: center;
-        h2 {
-            flex-grow: 1;
-            margin: 0;
+    .table {
+        tfoot {
+            .total {
+                white-space: nowrap;
+            }
+        }
+        > thead:first-child > tr:first-child > th {
+            border-top: 2px solid color-gray(90);
+            border-bottom: 2px solid color-gray(90);
+        }
+        &.in-contact > thead:first-child > tr:first-child > th {
+            border-top: 0;
         }
     }
-    tfoot {
-        .total {
-            white-space: nowrap;
+    .nav {
+        display: flex;
+        align-items: center;
+        padding: 10px 0;
+        h4 {
+            flex-grow: 1;
+            font-weight: 600;
+        }
+    }
+    > donations-chart {
+        > .panel {
+            margin-bottom: 0 !important;
         }
     }
 }

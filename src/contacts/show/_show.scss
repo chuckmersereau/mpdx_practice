@@ -54,8 +54,11 @@ contact {
                 }
             }
         }
-        > .contact-content > .contact-tabs  donations-chart { // chartjs workaround
+        > .contact-content > .contact-tabs donations-chart { // chartjs workaround
             padding-right: 10px;
+            .blankslate {
+                margin-right: -10px;
+            }
             @media(max-width: $hide-drawer-width) {
                 width: calc(#{$contact-viewport-width} - #{$chart-padding}) !important;
             }
