@@ -31,7 +31,7 @@ export class FiltersService {
         ng.IPromise<any> {
         return data
             ? this.returnOriginalAsPromise(data, params, defaultParams)
-            : this.getDataFromApi(data, defaultParams, params, url);
+            : this.getDataFromApi(url, params);
     }
     private returnOriginalAsPromise(data: any, params: any, defaultParams: any): ng.IPromise<any> {
         return this.$q.resolve({
@@ -40,30 +40,31 @@ export class FiltersService {
             defaultParams: defaultParams
         });
     }
-    private getDataFromApi(data: any, defaultParams: any, params: any, url: string): ng.IPromise<any> {
+    private getDataFromApi(url: string, params: any): ng.IPromise<any> {
         return this.api.get(url, {
             filter: { account_list_id: this.api.account_list_id }
         }).then((response) => {
-            data = defaultTo([], response);
-            data = sortBy((filter) => toInteger(filter.id), data);
+            const data = sortBy((filter) => toInteger(filter.id), defaultTo([], response));
+            const defaultParams = this.makeDefaultParams(data);
             /* istanbul ignore next */
             this.$log.debug(url, data);
-            defaultParams = this.makeDefaultParams(data);
-            data = this.mutateData(data);
-            params = assign(defaultParams, params);
             return {
-                data: data,
-                params: params,
+                data: this.mutateData(data),
+                params: assign(angular.copy(defaultParams), params),
                 defaultParams: defaultParams
             };
         });
     }
     private makeDefaultParams(data: any): any {
         return reduce((result, filter) => {
-            const defaultSelection = this.splitToArr(filter.default_selection);
-            result[filter.name] = filter.multiple && !isArray(defaultSelection)
-                ? [defaultSelection]
-                : defaultSelection;
+            if (filter.type === 'text') {
+                result[filter.name] = reduce((result, option) => {
+                    result[option.id] = '';
+                    return result;
+                }, {}, filter.options);
+            } else {
+                result[filter.name] = this.splitToArr(filter.default_selection);
+            }
             return result;
         }, {}, data);
     }

@@ -1,11 +1,15 @@
+import { assign, reduce, sortBy, toInteger } from 'lodash/fp';
 import service from './filters.service';
 
 describe('contacts.sidebar.filter.service', () => {
-    let filters, rootScope;
+    let api, filters, q, rootScope;
+
     beforeEach(() => {
         angular.mock.module(service);
-        inject((_filters_, $rootScope) => {
+        inject((_api_, _filters_, $q, $rootScope) => {
+            api = _api_;
             filters = _filters_;
+            q = $q;
             rootScope = $rootScope;
         });
     });
@@ -29,7 +33,7 @@ describe('contacts.sidebar.filter.service', () => {
 
         it('should get data from api', () => {
             expect(filters.load({})).toEqual('b');
-            expect(filters.getDataFromApi).toHaveBeenCalledWith(undefined, undefined, undefined, undefined);
+            expect(filters.getDataFromApi).toHaveBeenCalledWith(undefined, undefined);
         });
     });
 
@@ -41,6 +45,113 @@ describe('contacts.sidebar.filter.service', () => {
             });
             rootScope.$digest();
         });
+    });
+
+    describe('getDataFromApi', () => {
+        let spy;
+        beforeEach(() => {
+            spy = spyOn(api, 'get').and.callFake(() => q.resolve());
+        });
+
+        it('should call the api', () => {
+            filters.getDataFromApi('contacts');
+            expect(api.get).toHaveBeenCalledWith('contacts', { filter: { account_list_id: null } });
+        });
+
+        it('should handle case where api returns null', (done) => {
+            filters.getDataFromApi('contacts').then((response) => {
+                expect(response).toEqual({ data: [], params: {}, defaultParams: {} });
+                done();
+            });
+            rootScope.$digest();
+        });
+
+        describe('api returns data', () => {
+            const data = [
+                {
+                    "name": "address_historic",
+                    "type": "single_checkbox",
+                    "default_selection": false,
+                    "id": "2"
+                }, {
+                    "name": "appeal",
+                    "type": "multiselect",
+                    "default_selection": "no_appeal, all_appeals",
+                    "id": "4"
+                }, {
+                    "name": "status",
+                    "type": "multiselect",
+                    "default_selection": "active, null",
+                    "multiple": true,
+                    "id": "3"
+                }, {
+                    "name": "donation_amount_range",
+                    "type": "text",
+                    "default_selection": "",
+                    "options": [{ "id":"min" }, { "id":"max" }],
+                    "id": "1"
+                }
+            ]
+
+            beforeEach(() => {
+                spy.and.callFake(() => q.resolve(data));
+            });
+
+            it('should mutate data', (done) => {
+                spyOn(filters, 'mutateData');
+                filters.getDataFromApi('contacts').then((response) => {
+                    expect(filters.mutateData).toHaveBeenCalledWith(sortBy((filter) => toInteger(filter.id), data));
+                    done();
+                });
+                rootScope.$digest();
+            });
+
+            it('should sort filters by id', (done) => {
+                filters.getDataFromApi('contacts').then((response) => {
+                    expect(reduce((result, filter) => {
+                        result.push(filter.id);
+                        return result;
+                    }, [], response.data[0].children)).toEqual(['1', '2', '3', '4']);
+                    done();
+                });
+                rootScope.$digest();
+            });
+
+            it('should set defaultParams', (done) => {
+                filters.getDataFromApi('contacts').then((response) => {
+                    expect(response.defaultParams).toEqual({
+                        donation_amount_range: { min: '', max: '' },
+                        address_historic: ['false'],
+                        status: ['active', 'null'],
+                        appeal: ['no_appeal', 'all_appeals']
+                    });
+                    done();
+                });
+                rootScope.$digest();
+            });
+
+            it('should set params as copy of defaultParams', (done) => {
+                filters.getDataFromApi('contacts').then((response) => {
+                    expect(response.params.donation_amount_range).not.toBe(
+                        response.defaultParams.donation_amount_range
+                    );
+                    expect(response.params).toEqual(response.defaultParams)
+                    done();
+                });
+                rootScope.$digest();
+            });
+
+            it('should set params from defaultParams allowing argument params to override', (done) => {
+                filters.getDataFromApi('contacts', { donation_amount_range: '' }).then((response) => {
+                    expect(response.params).toEqual(
+                        assign(response.defaultParams, { donation_amount_range: '' })
+                    );
+                    done();
+                });
+                rootScope.$digest();
+            });
+
+        })
     });
 
     describe('fromStrings', () => {
