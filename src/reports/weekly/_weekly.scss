@@ -1,0 +1,37 @@
+.weekly {
+  padding-left: 10%;
+  padding-right: 10%;
+}
+.weekly table {
+  z-index: 1;
+}
+
+.weekly td {
+  width: 33%;
+}
+
+.weekly td input {
+  width: 80%;
+  height: 2.2em;
+}
+
+.weekly .btn-group {
+  width: 100%;
+  margin-top:.5em;
+}
+
+.question {
+  text-align: right;
+}
+
+.dropdown {
+  float: right;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.btn-fill {
+  float:right;
+  margin-left: auto;
+  margin-right: 0;
+}

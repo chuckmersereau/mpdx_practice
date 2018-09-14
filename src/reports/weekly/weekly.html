@@ -1,0 +1,67 @@
+<div class="weekly">
+  <div class="btn-group">
+    <button ng-if="$ctrl.new && $ctrl.state !== 'New Report'" ng-click="$ctrl.changeState('Continue')">Continue Report</button>
+    <button ng-if="$ctrl.state !== 'New Report'"ng-click="$ctrl.changeState('New Report')">New Report</button>
+    <button ng-if="$ctrl.recents && $ctrl.state == 'View Recent'" bs-dropdown class="dropdown">
+        <translate>{{$ctrl.displayReport[0].answer | date: 'short'}}</translate><i class="fas fa-caret-down"></i>
+    </button>
+    <button ng-if="$ctrl.state == 'New Report'" ng-click="$ctrl.changeState('View Recent')">View Recent</button>
+    <button ng-if="$ctrl.state == 'New Report'" ng-click="$ctrl.toggleComparison()">Toggle Comparison</button>
+    <ul class="dropdown-menu dropdown-menu-right">
+        <li ng-repeat="report in $ctrl.reports" role="presentation">
+          <a ng-click="$ctrl.changeDisplayReport(report)" translate>{{report[0].answer | date: 'short'}}</a>
+        </li>
+    </ul>
+  </div>
+  <div ng-if='$ctrl.state == "Empty"'>
+    <div class="blankslate blankslate-spacious">
+        <i class="fas fa-money blankslate-icon"></i>
+        <h3 translate>No reports to show</h3>
+        <p translate>Your most recent report will show here.</p>
+    </div>
+  </div>
+  <div ng-if="$ctrl.state == 'View Recent'">
+    <table class="table table-striped">
+      <tbody>
+        <thead>
+          <th colspan='2'><h4 style="text-align:center;">Most recent report</h4></th>
+        </thead>
+        <tr ng-repeat="entry in $ctrl.questions">
+          <td>{{entry.question}}</td>
+          <td ng-if="entry.id == 1">{{$ctrl.displayReport[entry.id-1].answer | date: 'short'}}</td>
+          <td ng-if="entry.id !== 1">{{$ctrl.displayReport[entry.id-1].answer}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div ng-if="$ctrl.state == 'New Report'">
+    <table class="table table-striped">
+      <tbody>
+        <thead>
+          <th ng-if="$ctrl.comparison"></th>
+          <th ng-if="$ctrl.comparison"><h4>Most recent report</h4></th>
+          <th ng-if="$ctrl.comparison"><h4>New report</h4></th>
+          <th ng-if="!$ctrl.comparison" colspan="2"><h4 style="text-align:center;">New Report</h4></th>
+        <tr ng-repeat="entry in $ctrl.questions">
+          <td class="question">{{entry.question}}</td>
+          <td ng-if="$ctrl.comparison && entry.id == 1">{{$ctrl.recentReport[entry.id-1].answer | date:'short'}}</td>
+          <td ng-if="$ctrl.comparison && entry.id !== 1">
+            {{$ctrl.recentReport[entry.id-1].answer}}
+            <button class='btn-fill' ng-click="$ctrl.fillAnswer(entry.id-1)"><i class="fas fa-arrow-right"></i></button>
+          </td>
+          <td ng-if="entry.id == 1">
+            <input class="form-control" type="text" value="{{$ctrl.newReport[entry.id-1].answer | date: 'short'}}" disabled></input>
+          </td>
+          <td ng-if="entry.id !== 1">
+            <input class="form-control" type="text" ng-model="$ctrl.newReport[entry.id-1].answer"></input>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <divclass="btn-group">
+    <button ng-if="!$ctrl.new" ng-click="$ctrl.changeState('New Report')">New Report</button>
+    <button ng-if="$ctrl.state == 'New Report'" ng-click="$ctrl.onSubmit()">Submit</button>
+    <button ng-if="$ctrl.state == 'New Report'" ng-click="$ctrl.onClear()">Clear</button>
+  </div>
+</div>
