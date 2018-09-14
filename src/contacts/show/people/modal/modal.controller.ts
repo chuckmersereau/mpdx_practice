@@ -68,6 +68,7 @@ class PersonModalController {
             const patch = createPatch(this.personInitialState, this.person);
             /* istanbul ignore next */
             this.$log.debug('person patch', patch);
+            console.log(patch);
             return this.people.save(patch, successMessage, errorMessage).then(() => {
                 /* istanbul ignore next */
                 this.$log.debug('person saved:', this.person);

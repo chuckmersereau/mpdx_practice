@@ -7,7 +7,7 @@ import test from './test';
 
 declare const NODE_ENV: any;
 
-const configEnv = NODE_ENV || 'development';
+const configEnv = NODE_ENV || 'local';
 
 const envs = {
     development: development,

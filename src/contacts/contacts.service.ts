@@ -63,7 +63,7 @@ export class ContactsService {
                               + 'pledge_amount,pledge_currency,pledge_currency_symbol,pledge_frequency,pledge_received,'
                               + 'pledge_start_date,send_newsletter,square_avatar,status,status_valid,suggested_changes,'
                               + 'tag_list,timezone,website,addresses,contact_referrals_by_me,contact_referrals_to_me,'
-                              + 'contacts_that_referred_me,donor_accounts,primary_person,no_gift_aid,timezone',
+                              + 'contacts_that_referred_me,donor_accounts,primary_person,no_gift_aid,timezone,age',
                     addresses: 'city,country,created_at,end_date,geo,historic,location,metro_area,postal_code,'
                                + 'primary_mailing_address,region,remote_id,seasonal,source,source_donor_account,'
                                + 'start_date,state,street,updated_at,updated_in_db_at,valid_values',

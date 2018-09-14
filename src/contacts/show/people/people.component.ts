@@ -40,6 +40,7 @@ class ContactPeopleController {
 
         this.watcher2 = this.$rootScope.$on('personCreated', (event, personId) => {
             this.people.get(personId).then((person) => {
+                console.log(person);
                 this.data.push(person);
             });
         });
