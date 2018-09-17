@@ -86,7 +86,6 @@ export class ApiService {
         ({ headers, method, doSerialization, data } = this.handleOverride(
             overrideGetAsPost, headers, method, doSerialization, type, url, data
         ));
-
         params = autoParams ? this.assignParams(method, params, data) : params;
 
         headers = assign(headers, {
@@ -116,11 +115,14 @@ export class ApiService {
         };
 
         const deferred = this.$q.defer();
+        // console.log('API SERVICE / REQUEST:', request);
         this.$http(request).then((response) => {
             if (successMessage) {
                 this.alerts.addAlert(successMessage);
             }
+            // console.log(response.data);
             deferred.resolve(response.data);
+            // console.log(deferred);
         }).catch((ex) => {
             this.callFailed(ex, request, deferred, errorMessage, overridePromise);
         });
@@ -198,6 +200,7 @@ export class ApiService {
     }
     put(...params) {
         const newParams: IApiCallParams = assign(this.handleParamsAsOther(params), { method: 'put' });
+        console.log('API SERVICE / PUT:', newParams);
         return this.call(newParams);
     }
     delete(...params) {
@@ -224,6 +227,7 @@ export class ApiService {
             type = this.getType(type, url, method);
             params = this.getParams(params, type, doSerialization);
         }
+        console.log('API / TRANSFORM REQUEST:', data);
         return doSerialization
             ? this.serializeData(data, type, params, method)
             : angular.toJson(data);
@@ -307,6 +311,7 @@ export class ApiService {
     }
     private serialize(key: string, params: any, item: any, method: string): any {
         let serialized = new japi.Serializer(key, params).serialize(item);
+        console.log('serializer:', serialized);
         serialized = this.removeIdIfUndefined(serialized, method);
         serialized = this.enablePutOverwrite(serialized, method);
         return serialized;

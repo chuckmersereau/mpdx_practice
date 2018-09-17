@@ -210,7 +210,7 @@ export class EntityAttributes {
                     'middle_name', 'access_token', 'profession', 'deceased', 'subscribed_to_updates',
                     'optout_enewsletter', 'occupation', 'employer', 'not_duplicated_with', 'phone_numbers',
                     'email_addresses', 'facebook_accounts', 'family_relationships', 'linkedin_accounts',
-                    'twitter_accounts', 'websites', 'winner_id', 'loser_id'
+                    'twitter_accounts', 'websites', 'winner_id', 'loser_id', 'age'
                 ],
                 email_addresses: {
                     ref: 'id',

@@ -43,6 +43,8 @@ class PersonModalController {
     activate() {
         if (has('id', this.person)) {
             this.personInitialState = angular.copy(this.person);
+            console.log('IS:', this.personInitialState);
+            console.log('person:', this.person);
             if (this.userProfile) {
                 this.modalTitle = this.gettextCatalog.getString('Edit My Profile');
             } else {
@@ -68,7 +70,7 @@ class PersonModalController {
             const patch = createPatch(this.personInitialState, this.person);
             /* istanbul ignore next */
             this.$log.debug('person patch', patch);
-            console.log(patch);
+            console.log('MODAL CONTROLLER / SAVE:', patch);
             return this.people.save(patch, successMessage, errorMessage).then(() => {
                 /* istanbul ignore next */
                 this.$log.debug('person saved:', this.person);
