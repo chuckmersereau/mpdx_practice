@@ -2,9 +2,6 @@
   padding-left: 10%;
   padding-right: 10%;
 }
-.weekly table {
-  z-index: 1;
-}
 
 .weekly td {
   width: 33%;
@@ -18,16 +15,25 @@
 .weekly .btn-group {
   width: 100%;
   margin-top:.5em;
+  margin-bottom: .25em;
 }
 
 .question {
   text-align: right;
 }
 
-.dropdown {
+.report-list {
   float: right;
-  margin-left: auto;
-  margin-right: 0;
+  position: relative;
+}
+
+.report-list .dropdown {
+  float: left;
+}
+
+.report-list ul {
+  position: absolute;
+  width: 0%
 }
 
 .btn-fill {

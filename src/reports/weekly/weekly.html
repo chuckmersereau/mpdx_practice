@@ -2,16 +2,18 @@
   <div class="btn-group">
     <button ng-if="$ctrl.new && $ctrl.state !== 'New Report'" ng-click="$ctrl.changeState('Continue')">Continue Report</button>
     <button ng-if="$ctrl.state !== 'New Report'"ng-click="$ctrl.changeState('New Report')">New Report</button>
-    <button ng-if="$ctrl.recents && $ctrl.state == 'View Recent'" bs-dropdown class="dropdown">
-        <translate>{{$ctrl.displayReport[0].answer | date: 'short'}}</translate><i class="fas fa-caret-down"></i>
-    </button>
     <button ng-if="$ctrl.state == 'New Report'" ng-click="$ctrl.changeState('View Recent')">View Recent</button>
     <button ng-if="$ctrl.state == 'New Report'" ng-click="$ctrl.toggleComparison()">Toggle Comparison</button>
-    <ul class="dropdown-menu dropdown-menu-right">
-        <li ng-repeat="report in $ctrl.reports" role="presentation">
+    <div ng-if="$ctrl.reportsTab" class="report-list">
+      <button class="dropdown" bs-dropdown>
+          <translate>{{$ctrl.displayReport[0].answer | date: 'short'}}</translate> <i class="fas fa-caret-down"></i>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-right" role="menu">
+        <li ng-repeat="report in $ctrl.reports" role "presentation">
           <a ng-click="$ctrl.changeDisplayReport(report)" translate>{{report[0].answer | date: 'short'}}</a>
         </li>
-    </ul>
+      </ul>
+    </div>
   </div>
   <div ng-if='$ctrl.state == "Empty"'>
     <div class="blankslate blankslate-spacious">
@@ -29,7 +31,7 @@
         <tr ng-repeat="entry in $ctrl.questions">
           <td>{{entry.question}}</td>
           <td ng-if="entry.id == 1">{{$ctrl.displayReport[entry.id-1].answer | date: 'short'}}</td>
-          <td ng-if="entry.id !== 1">{{$ctrl.displayReport[entry.id-1].answer}}</td>
+          <td ng-if="entry.id !== 1">{{$ctrl.showAnswer($ctrl.displayReport[entry.id-1].answer)}}</td>
         </tr>
       </tbody>
     </table>
@@ -46,7 +48,7 @@
           <td class="question">{{entry.question}}</td>
           <td ng-if="$ctrl.comparison && entry.id == 1">{{$ctrl.recentReport[entry.id-1].answer | date:'short'}}</td>
           <td ng-if="$ctrl.comparison && entry.id !== 1">
-            {{$ctrl.recentReport[entry.id-1].answer}}
+            {{$ctrl.showAnswer($ctrl.recentReport[entry.id-1].answer)}}
             <button class='btn-fill' ng-click="$ctrl.fillAnswer(entry.id-1)"><i class="fas fa-arrow-right"></i></button>
           </td>
           <td ng-if="entry.id == 1">

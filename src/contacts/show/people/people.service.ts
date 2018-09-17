@@ -79,7 +79,6 @@ export class PeopleService {
         });
     }
     save(person, successMessage?, errorMessage?) {
-        console.log('PEOPLE SERVICE / SAVE:', person);
         return this.api.put({
             url: `contacts/people/${person.id}`,
             data: person,
