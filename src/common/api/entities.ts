@@ -289,14 +289,7 @@ export class EntityAttributes {
                 attributes: ['key', 'value']
             },
             weekly_report: {
-                attributes: ['questions', 'responses', 'report_id', 'user_id'],
-                questions: {
-                    attributes: ['question_id', 'question']
-                },
-                reports: {
-                    ref: 'id',
-                    attributes: ['report_id']
-                },
+                attributes: ['responses', 'report_id', 'user_id'],
                 responses: {
                     attributes: ['report_id', 'question_id', 'response']
                 }

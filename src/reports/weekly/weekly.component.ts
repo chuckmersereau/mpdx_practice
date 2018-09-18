@@ -49,10 +49,17 @@ class WeeklyController {
       this.newReport = [];
       this.displayReport = [];
       this.questions = [];
+  }
+  $onInit() {
+      console.log('INITIALIZING WEEKLY');
+      this.load();
+  }
+  private load() {
+      this.weekly.load().then((data) => {
+          console.log(data);
+      });
 
-      this.$log.debug('checking it out');
-
-      this.makeFakeReport();
+      // this.makeFakeReport();
       if (this.reports.length === 0) {
           this.changeState('Empty');
       } else {
@@ -61,13 +68,6 @@ class WeeklyController {
       for (let i = 0; i < DATA.length; i++) {
           this.questions.push({ id: DATA[i].id, question: DATA[i].question });
       }
-  }
-  $onInit() {
-      console.log('INITIALIZING WEEKLY');
-      this.load();
-  }
-  private load() {
-      return this.weekly.load();
   }
   private makeFakeReport(): void {
       let report1 = [];
