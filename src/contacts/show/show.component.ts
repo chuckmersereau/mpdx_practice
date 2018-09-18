@@ -163,6 +163,13 @@ class ContactController {
             this.$state.go('contacts.show.donations');
         }
     }
+    onConsoleLog(): void {
+        this.people.get(this.contacts.current.primary_person.id)
+            .then((person) => {
+                console.log(this.contacts.current);
+                console.log(person);
+            });
+    }
 }
 
 const Show = {

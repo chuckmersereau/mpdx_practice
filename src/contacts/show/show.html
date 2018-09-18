@@ -5,6 +5,9 @@
                     'filters-collapsed': !$ctrl.session.showFilters,
                     'filters-expanded': $ctrl.session.showFilters
                }">
+    <div>
+      <button ng-click="$ctrl.onConsoleLog()">Console log the person</button>
+    </div>
     <div class="contact-content">
         <contact-info contact="$ctrl.contacts.current" on-save="$ctrl.contacts.saveCurrent()"></contact-info>
         <div class="contact-tabs">
