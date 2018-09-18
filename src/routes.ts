@@ -228,6 +228,11 @@ export default class Routes {
                 0: /* @ngInject*/ (serverConstants) => serverConstants.load(['pledge_currencies', 'pledge_frequency_hashes'])
             }
         }).state({
+            name: 'reports.weekly',
+            title: gettext('Reports - Weekly'),
+            url: '/weekly',
+            component: 'weekly'
+        }).state({
             name: 'preferences',
             title: gettext('Preferences'),
             url: '/preferences',

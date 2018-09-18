@@ -1,0 +1,43 @@
+.weekly {
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+.weekly td {
+  width: 33%;
+}
+
+.weekly td input {
+  width: 80%;
+  height: 2.2em;
+}
+
+.weekly .btn-group {
+  width: 100%;
+  margin-top:.5em;
+  margin-bottom: .25em;
+}
+
+.question {
+  text-align: right;
+}
+
+.report-list {
+  float: right;
+  position: relative;
+}
+
+.report-list .dropdown {
+  float: left;
+}
+
+.report-list ul {
+  position: absolute;
+  width: 0%
+}
+
+.btn-fill {
+  float:right;
+  margin-left: auto;
+  margin-right: 0;
+}

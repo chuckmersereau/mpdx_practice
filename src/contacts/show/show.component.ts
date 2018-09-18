@@ -42,7 +42,7 @@ class ContactController {
         private modal: ModalService,
         private people: PeopleService,
         private session: SessionService,
-        private users: UsersService
+        private users: UsersService,
     ) {
         const activeTab = get('[2]', split('.', $state.$current.name));
         contacts.activeTab = defaultTo('donations', activeTab);

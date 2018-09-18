@@ -86,7 +86,6 @@ export class ApiService {
         ({ headers, method, doSerialization, data } = this.handleOverride(
             overrideGetAsPost, headers, method, doSerialization, type, url, data
         ));
-
         params = autoParams ? this.assignParams(method, params, data) : params;
 
         headers = assign(headers, {
