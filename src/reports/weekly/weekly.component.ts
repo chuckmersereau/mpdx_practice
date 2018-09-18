@@ -1,4 +1,6 @@
 import { DATA, Entry } from '../entry.ts';
+import api, { ApiService } from '../../common/api/api.service';
+import weekly, { WeeklyService } from './weekly.service';
 
 class WeeklyController {
   recents: boolean=false;
@@ -13,6 +15,8 @@ class WeeklyController {
   comparison: boolean= false;
   constructor(
     private $log: ng.ILogService,
+    private api: ApiService,
+    private weekly: WeeklyService,
   ) {
       this.reports = [];
       this.recentReport = [];
@@ -31,6 +35,12 @@ class WeeklyController {
       for (let i = 0; i < DATA.length; i++) {
           this.questions.push({ id: DATA[i].id, question: DATA[i].question });
       }
+  }
+  $onInit() {
+      this.load();
+  }
+  private load() {
+      return this.api.get();
   }
   private makeFakeReport(): void {
       let report1 = [];
