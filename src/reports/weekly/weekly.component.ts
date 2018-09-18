@@ -1,5 +1,22 @@
+import * as moment from 'moment';
+import {
+    assign,
+    defaultTo,
+    findIndex,
+    map,
+    pullAllBy,
+    toNumber
+} from 'lodash/fp';
 import { DATA, Entry } from '../entry.ts';
+import { StateParams } from '@uirouter/core';
 import api, { ApiService } from '../../common/api/api.service';
+import contacts, { ContactsService } from '../../contacts/contacts.service';
+import designationAccounts, { DesignationAccountsService } from '../../common/designationAccounts/designationAccounts.service';
+import donations, { DonationsService } from './donations.service';
+import joinComma from '../../common/fp/joinComma';
+import locale, { LocaleService } from '../../common/locale/locale.service';
+import serverConstants, { ServerConstantsService } from '../../common/serverConstants/serverConstants.service';
+import uiRouter from '@uirouter/angularjs';
 import weekly, { WeeklyService } from './weekly.service';
 
 class WeeklyController {
@@ -17,6 +34,15 @@ class WeeklyController {
     private $log: ng.ILogService,
     private api: ApiService,
     private weekly: WeeklyService,
+
+    private $q: ng.IQService,
+    private $rootScope: ng.IRootScopeService,
+    private $stateParams: StateParams,
+    private contacts: ContactsService,
+    private designationAccounts: DesignationAccountsService,
+    private donations: DonationsService,
+    private locale: LocaleService,
+    private serverConstants: ServerConstantsService
   ) {
       this.reports = [];
       this.recentReport = [];
@@ -37,10 +63,11 @@ class WeeklyController {
       }
   }
   $onInit() {
+      console.log('INITIALIZING WEEKLY');
       this.load();
   }
   private load() {
-      return this.api.get();
+      return this.weekly.load();
   }
   private makeFakeReport(): void {
       let report1 = [];
@@ -122,5 +149,6 @@ const Weekly = {
     template: require('./weekly.html')
 };
 
-export default angular.module('mpdx.reports.weekly.component', [])
-    .component('weekly', Weekly).name;
+export default angular.module('mpdx.reports.weekly.component', [
+    weekly
+]).component('weekly', Weekly).name;
