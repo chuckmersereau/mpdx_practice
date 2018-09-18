@@ -14,7 +14,7 @@ export class WeeklyService {
     load(): ngIpromise<any> {
         let params: any = {
             fields: {
-                pledge_contact: '',
+                questions: '',
                 contacts: 'name',
                 designation_account: 'display_name,designation_number',
                 donor_account: 'display_name,account_number',
@@ -25,7 +25,10 @@ export class WeeklyService {
             include: 'designation_account,donor_account,contact,appeal,pledge,pledge.contact',
             sort: '-donation_date'
         };
-        return this.api.get('reports/weeklies').then((data) => {
+
+        let include = 'questions';
+
+        return this.api.get('reports/weeklies', { include: include }).then((data) => {
             console.log(data);
             return data;
         });
