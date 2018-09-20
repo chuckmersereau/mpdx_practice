@@ -22,14 +22,14 @@ import weekly, { WeeklyService } from './weekly.service';
 class WeeklyController {
   recents: boolean=false;
   new: boolean=false;
-  reports: any;
   reportsTab: boolean=false;
+  comparison: boolean= false;
+  reports: any;
   recentReport: any;
   newReport: any;
   displayReport: any;
   questions: any;
   state: string;
-  comparison: boolean= false;
   constructor(
     private $log: ng.ILogService,
     private api: ApiService,
@@ -55,19 +55,22 @@ class WeeklyController {
       this.load();
   }
   private load() {
-      this.weekly.load().then((data) => {
+      this.weekly.loadQuestions().then((data) => {
           console.log(data);
+          // this.makeFakeReport();
+          if (this.reports.length === 0) {
+              this.changeState('Empty');
+          } else {
+              this.changeState('View Recent');
+          }
+          for (let i = 0; i < data.length; i++) {
+              this.questions.push({ id: data[i].question_id, question: data[i].question });
+          }
       });
-
-      // this.makeFakeReport();
-      if (this.reports.length === 0) {
-          this.changeState('Empty');
-      } else {
-          this.changeState('View Recent');
-      }
-      for (let i = 0; i < DATA.length; i++) {
-          this.questions.push({ id: DATA[i].id, question: DATA[i].question });
-      }
+      // this.weekly.loadReports().then((data) => {
+      //     console.log(data);
+      //     this.recents;
+      // });
   }
   private makeFakeReport(): void {
       let report1 = [];

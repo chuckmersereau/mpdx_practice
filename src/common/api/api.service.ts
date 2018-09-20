@@ -188,7 +188,7 @@ export class ApiService {
         return this.isPutOrDelete(method) || (method === 'post' && !overrideGetAsPost);
     }
     get(...params) {
-        console.log('API / GET / params:', params);
+        // console.log('API / GET / params:', params);
         const newParams: IApiCallParams = assign(this.handleParamsAsOther(params), { method: 'get' });
         console.log('API / GET / newParams:', newParams);
         return this.call(newParams);
