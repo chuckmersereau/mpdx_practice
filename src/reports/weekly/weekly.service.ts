@@ -33,11 +33,11 @@ export class WeeklyService {
             return data;
         });
     }
-    // loadReports(): ngIpromise<any> {
-    //   return this.api.get('reports/weeklies').then((data) => {
-    //     return data;
-    //   })
-    // }
+    loadReports(): ngIpromise<any> {
+        return this.api.get('reports/weeklies').then((data) => {
+            return data;
+        });
+    }
 }
 
 export default angular.module('mpdx.reports.weekly.service', [
