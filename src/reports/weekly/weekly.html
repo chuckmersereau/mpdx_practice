@@ -30,7 +30,7 @@
         </thead>
         <tr>
           <td>Created at</td>
-          <td>{{$ctrl.displayReport[0].answer | date: 'short'}}
+          <td>{{$ctrl.displayReport[0].answer | date: 'short'}}</td>
         <tr ng-repeat="entry in $ctrl.questions">
           <td>{{entry.question}}</td>
           <td>{{$ctrl.showAnswer($ctrl.getAnswer(entry.id))}}</td>
@@ -50,10 +50,10 @@
           <td class="question">{{entry.question}}</td>
           <td ng-if="$ctrl.comparison">
             {{$ctrl.showAnswer($ctrl.getAnswer(entry.id))}}
-            <button class='btn-fill' ng-click="$ctrl.fillAnswer(entry.id)"><i class="fas fa-arrow-right"></i></button>
+            <button class='btn-fill' ng-click="$ctrl.fillAnswer(entry.ndx)"><i class="fas fa-arrow-right"></i></button>
           </td>
           <td>
-            <input class="form-control" type="text" ng-model="$ctrl.newReport[entry.ndx-1].answer"></input>
+            <input class="form-control" type="text" ng-model="$ctrl.newReport[entry.ndx].answer"></input>
           </td>
         </tr>
       </tbody>
@@ -65,3 +65,14 @@
     <button ng-if="$ctrl.state == 'New Report'" ng-click="$ctrl.onClear()">Clear</button>
   </div>
 </div>
+<div>
+  <div>recents: {{$ctrl.recents}}</div>
+  <div>new: {{$ctrl.new}}</div>
+  <div>reportsTab: {{$ctrl.reportsTab}}</div>
+  <div>comparison: {{$ctrl.comparison}}</div>
+  <div>reports:  {{$ctrl.reports}}</div>
+  <div>recentReport:  {{$ctrl.recentReport}}</div>
+  <div>newReport:  {{$ctrl.newReport}}</div>
+  <div>displayReport:  {{$ctrl.displayReport}}</div>
+  <div>questions:  {{$ctrl.questions}}</div>
+  <div>state: {{$ctrl.state}}</div>
