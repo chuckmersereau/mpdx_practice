@@ -49,6 +49,7 @@ class WeeklyController {
       this.newReport = [];
       this.displayReport = [];
       this.questions = [];
+      this.changeState('Empty');
   }
   $onInit() {
       console.log('INITIALIZING WEEKLY');
@@ -57,38 +58,32 @@ class WeeklyController {
   private load() {
       this.weekly.loadQuestions().then((data) => {
           console.log(data);
-          // this.makeFakeReport();
-          if (this.reports.length === 0) {
-              this.changeState('Empty');
-          } else {
-              this.changeState('View Recent');
-          }
           for (let i = 0; i < data.length; i++) {
-              this.questions.push({ id: data[i].question_id, question: data[i].question });
+              this.questions.push({ ndx: i, id: data[i].question_id, question: data[i].question });
           }
       });
-      // this.weekly.loadReports().then((data) => {
-      //     console.log(data);
-      //     this.recents;
-      // });
-  }
-  private makeFakeReport(): void {
-      let report1 = [];
-      let report2 = [];
-      report1.push({ id: DATA[0].id, answer: new Date(DATA[0].answer) });
-      report2.push({ id: DATA[0].id, answer: new Date() });
-      for (let i = 1; i < DATA.length; i++) {
-          report2.push({ id: DATA[i].id, answer: DATA[i].answer });
-          let answer: any;
-          if (parseInt(DATA[i].answer)) {
-              answer = parseInt(DATA[i].answer) / 2;
-          } else {
-              answer = DATA[i].answer;
+      this.weekly.loadReports().then((data) => {
+          console.log(data);
+          if (data) {
+              this.reports = data;
+              this.recents = true;
           }
-          report1.push({ id: DATA[i].id, answer: answer });
+      });
+      // if (this.recents) {
+      //     this.weekly.loadReport(this.reports[0]).then((data) => {
+      //         console.log(data);
+      //         this.fillReport(data);
+      //         this.changeState('View Recent');
+      //     });
+      // }
+  }
+  private fillReport(data: any): void {
+      let report = [];
+      report.push({ id: 0, answer: new Date(data.created_at) });
+      for (let i = 0; i < data.length; i++) {
+          report.push({ id: data[i].question_id, answer: data[i].answer });
       }
-      this.logReport(report1);
-      this.logReport(report2);
+      this.logReport(report);
   }
   private changeState(state: string): void {
       this.state = state;
@@ -108,7 +103,6 @@ class WeeklyController {
       for (let i = 0; i < this.questions.length; i++) {
           this.newReport.push({ id: this.questions[i].id, answer: '' });
       }
-      this.newReport[0].answer = new Date();
       this.new = true;
   }
   private onSubmit(): void {
@@ -116,6 +110,12 @@ class WeeklyController {
       this.newReport = [];
       this.new = false;
       this.changeState('View Recent');
+  }
+  private logReport(report: any): void {
+      this.recentReport = report;
+      this.displayReport = this.recentReport;
+      this.recents = true;
+      this.reports.push(this.recentReport);
   }
   private onClear(): void {
       for (let i = 1; i < this.newReport.length; i++) {
@@ -135,11 +135,12 @@ class WeeklyController {
   private fillAnswer(i: number): void {
       this.newReport[i].answer = this.recentReport[i].answer;
   }
-  private logReport(report: any): void {
-      this.recentReport = report;
-      this.displayReport = this.recentReport;
-      this.recents = true;
-      this.reports.push(this.recentReport);
+  private getAnswer(id: number): any {
+      for (let i = 0; i < this.displayReport.length; i++) {
+          if (this.displayReport[i].id === id) {
+              return this.displayReport[i];
+          }
+      }
   }
   private showAnswer(answer: any): any {
       return answer === '' ? '-' : answer;
