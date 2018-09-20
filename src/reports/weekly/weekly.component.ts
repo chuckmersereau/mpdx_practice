@@ -57,15 +57,14 @@ class WeeklyController {
   private load() {
       this.weekly.loadQuestions().then((data) => {
           console.log(data);
-          this.questions.push({ id: 100, question: data });
           // this.makeFakeReport();
           if (this.reports.length === 0) {
               this.changeState('Empty');
           } else {
               this.changeState('View Recent');
           }
-          for (let i = 0; i < DATA.length; i++) {
-              this.questions.push({ id: DATA[i].id, question: DATA[i].question });
+          for (let i = 0; i < data.length; i++) {
+              this.questions.push({ id: data[i].question_id, question: data[i].question });
           }
       });
       // this.weekly.loadReports().then((data) => {

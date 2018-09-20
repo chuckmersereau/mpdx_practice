@@ -11,7 +11,7 @@ export class WeeklyService {
         private api: ApiService,
         private serverConstants: ServerConstantsService
     ) {}
-    load(): ngIpromise<any> {
+    loadQuestions(): ngIpromise<any> {
         let params: any = {
             fields: {
                 questions: '',
@@ -29,10 +29,15 @@ export class WeeklyService {
         let include = 'questions';
 
         // return this.api.get('reports/weeklies', { include: include }).then((data) => {
-        return this.api.get('reports/weeklies').then((data) => {
+        return this.api.get('reports/questions').then((data) => {
             return data;
         });
     }
+    // loadReports(): ngIpromise<any> {
+    //   return this.api.get('reports/weeklies').then((data) => {
+    //     return data;
+    //   })
+    // }
 }
 
 export default angular.module('mpdx.reports.weekly.service', [
