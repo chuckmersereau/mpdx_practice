@@ -29,7 +29,7 @@ export class WeeklyService {
         let include = 'questions';
 
         // return this.api.get('reports/weeklies', { include: include }).then((data) => {
-        return this.api.get('reports/weeklies').then((data) => {
+        return this.api.get('reports/questions').then((data) => {
             return data;
         });
     }
