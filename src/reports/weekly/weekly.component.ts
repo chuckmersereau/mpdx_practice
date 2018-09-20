@@ -69,13 +69,13 @@ class WeeklyController {
               this.recents = true;
           }
       });
-      // if (this.recents) {
-      //     this.weekly.loadReport(this.reports[0]).then((data) => {
-      //         console.log(data);
-      //         this.fillReport(data);
-      //         this.changeState('View Recent');
-      //     });
-      // }
+      if (this.recents) {
+          this.weekly.loadReport(this.reports[0]).then((data) => {
+              console.log(data);
+              this.fillReport(data);
+              this.changeState('View Recent');
+          });
+      }
   }
   private fillReport(data: any): void {
       let report = [];
