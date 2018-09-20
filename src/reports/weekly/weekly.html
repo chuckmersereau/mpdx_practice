@@ -1,9 +1,9 @@
 <div class="weekly">
   <div class="btn-group">
     <button ng-if="$ctrl.new && $ctrl.state !== 'New Report'" ng-click="$ctrl.changeState('Continue')">Continue Report</button>
-    <button ng-if="$ctrl.state !== 'New Report'"ng-click="$ctrl.changeState('New Report')">New Report</button>
-    <button ng-if="$ctrl.state == 'New Report'" ng-click="$ctrl.changeState('View Recent')">View Recent</button>
-    <button ng-if="$ctrl.state == 'New Report'" ng-click="$ctrl.toggleComparison()">Toggle Comparison</button>
+    <button ng-if="$ctrl.state !== 'New Report' && $ctrl.state !== 'Empty'"ng-click="$ctrl.changeState('New Report')">New Report</button>
+    <button ng-if="$ctrl.recents && $ctrl.state == 'New Report'" ng-click="$ctrl.changeState('View Recent')">View Recent</button>
+    <button ng-if="$ctrl.recents && $ctrl.state == 'New Report'" ng-click="$ctrl.toggleComparison()">Toggle Comparison</button>
     <div ng-if="$ctrl.reportsTab" class="report-list">
       <button class="dropdown" bs-dropdown>
           <translate>{{$ctrl.displayReport[0].answer | date: 'short'}}</translate> <i class="fas fa-caret-down"></i>
