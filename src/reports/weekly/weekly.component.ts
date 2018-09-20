@@ -67,10 +67,9 @@ class WeeklyController {
               this.questions.push({ id: data[i].question_id, question: data[i].question });
           }
       });
-      // this.weekly.loadReports().then((data) => {
-      //     console.log(data);
-      //     this.recents;
-      // });
+      this.weekly.loadReports().then((data) => {
+          console.log(data);
+      });
   }
   private makeFakeReport(): void {
       let report1 = [];
