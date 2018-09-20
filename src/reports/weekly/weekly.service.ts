@@ -38,6 +38,11 @@ export class WeeklyService {
             return data;
         });
     }
+    loadReport(reportId: number): ngIpromise<any> {
+        return this.api.get(`reports/weeklies/${reportID}`).then((data) => {
+            return data;
+        });
+    }
 }
 
 export default angular.module('mpdx.reports.weekly.service', [
