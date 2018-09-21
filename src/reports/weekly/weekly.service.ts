@@ -39,7 +39,8 @@ export class WeeklyService {
         });
     }
     loadReport(reportId: number): ngIpromise<any> {
-        return this.api.get(`reports/weeklies/${reportID}`).then((data) => {
+        console.log('getting report of id:', reportId);
+        return this.api.get(`reports/weeklies/09c5336c-5a32-4453-8eef-d7057d0cf4f2?session_id=${reportId}`).then((data) => {
             return data;
         });
     }

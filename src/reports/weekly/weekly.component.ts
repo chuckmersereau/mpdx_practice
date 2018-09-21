@@ -57,25 +57,23 @@ class WeeklyController {
   }
   private load() {
       this.weekly.loadQuestions().then((data) => {
-          console.log(data);
+          console.log('Questions:', data);
           for (let i = 0; i < data.length; i++) {
               this.questions.push({ ndx: i, id: data[i].question_id, question: data[i].question });
           }
-      });
-      this.weekly.loadReports().then((data) => {
-          console.log(data);
-          if (data) {
-              this.reports = data;
-              this.recents = true;
-          }
-      });
-      if (this.recents) {
-          this.weekly.loadReport(this.reports[0]).then((data) => {
-              console.log(data);
-              this.fillReport(data);
-              this.changeState('View Recent');
+          this.weekly.loadReports().then((data) => {
+              console.log('Reports:', data);
+              if (data) {
+                  this.reports = data;
+                  this.recents = true;
+                  this.weekly.loadReport(this.reports[0]).then((data) => {
+                      console.log('Single Report:', data);
+                      this.fillReport(data);
+                      this.changeState('View Recent');
+                  });
+              }
           });
-      }
+      });
   }
   private fillReport(data: any): void {
       let report = [];
@@ -118,7 +116,7 @@ class WeeklyController {
       this.reports.push(this.recentReport);
   }
   private onClear(): void {
-      for (let i = 1; i < this.newReport.length; i++) {
+      for (let i = 0; i < this.newReport.length; i++) {
           this.newReport[i].answer = '';
       }
   }
@@ -138,7 +136,7 @@ class WeeklyController {
   private getAnswer(id: number): any {
       for (let i = 0; i < this.displayReport.length; i++) {
           if (this.displayReport[i].id === id) {
-              return this.displayReport[i];
+              return this.displayReport[i].answer;
           }
       }
   }
