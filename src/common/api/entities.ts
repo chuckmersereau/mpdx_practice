@@ -289,9 +289,9 @@ export class EntityAttributes {
                 attributes: ['key', 'value']
             },
             weekly_report: {
-                attributes: ['responses', 'report_id', 'user_id'],
-                responses: {
-                    attributes: ['report_id', 'question_id', 'response']
+                attributes: ['answers', 'user_id'],
+                answers: {
+                    attributes: ['question_id', 'answer']
                 }
             },
             mail_chimp_account: {
