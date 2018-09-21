@@ -45,9 +45,12 @@ class WeeklyController {
     private serverConstants: ServerConstantsService
   ) {
       this.reports = [];
-      this.recentReport = [];
+      this.displayReport = this.recentReport = {
+          id: null,
+          created_at: null,
+          responses: []
+      };
       this.newReport = [];
-      this.displayReport = [];
       this.questions = [];
       this.changeState('Empty');
   }
@@ -68,20 +71,23 @@ class WeeklyController {
                   this.recents = true;
                   this.weekly.loadReport(this.reports[0]).then((data) => {
                       console.log('Single Report:', data);
-                      this.fillReport(data);
+                      this.recentReport.id = this.reports[0];
+                      this.fillReport(DATA);
+                      this.displayReport = this.recentReport;
+                      console.log('RECENT REPORT:', this.recentReport);
                       this.changeState('View Recent');
                   });
               }
           });
       });
   }
-  private fillReport(data: any): void {
+  private fillReport(data: any): any {
+      this.recentReport.created_at = new Date(DATA.created_at);
       let report = [];
-      report.push({ id: 0, answer: new Date(data.created_at) });
-      for (let i = 0; i < data.length; i++) {
-          report.push({ id: data[i].question_id, answer: data[i].answer });
+      for (let i = 0; i < DATA.data.length; i++) {
+          report.push({ id: DATA.data[i].question_id, answer: DATA.data[i].answer });
       }
-      // this.logReport(report);
+      this.recentReport.responses = report;
   }
   private changeState(state: string): void {
       this.state = state;
@@ -134,9 +140,9 @@ class WeeklyController {
       this.newReport[i].answer = this.recentReport[i].answer;
   }
   private getAnswer(id: number): any {
-      for (let i = 0; i < this.displayReport.length; i++) {
-          if (this.displayReport[i].id === id) {
-              return this.displayReport[i].answer;
+      for (let i = 0; i < this.displayReport.responses.length; i++) {
+          if (this.displayReport.responses[i].id === id) {
+              return this.displayReport.responses[i].answer;
           }
       }
   }

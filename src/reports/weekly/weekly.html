@@ -30,7 +30,7 @@
         </thead>
         <tr>
           <td>Created at</td>
-          <td>{{$ctrl.displayReport[0].answer | date: 'short'}}</td>
+          <td>{{$ctrl.displayReport.created_at | date: 'short'}}</td>
         <tr ng-repeat="entry in $ctrl.questions">
           <td>{{entry.question}}</td>
           <td>{{$ctrl.showAnswer($ctrl.getAnswer(entry.id))}}</td>
