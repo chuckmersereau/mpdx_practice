@@ -81,7 +81,7 @@ class WeeklyController {
       for (let i = 0; i < data.length; i++) {
           report.push({ id: data[i].question_id, answer: data[i].answer });
       }
-      this.logReport(report);
+      // this.logReport(report);
   }
   private changeState(state: string): void {
       this.state = state;

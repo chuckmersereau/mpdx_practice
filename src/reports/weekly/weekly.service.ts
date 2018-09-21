@@ -12,35 +12,32 @@ export class WeeklyService {
         private serverConstants: ServerConstantsService
     ) {}
     loadQuestions(): ngIpromise<any> {
-        let params: any = {
-            fields: {
-                questions: '',
-                contacts: 'name',
-                designation_account: 'display_name,designation_number',
-                donor_account: 'display_name,account_number',
-                appeal: 'name',
-                pledge: 'contact'
-            },
-            filter: {},
-            include: 'designation_account,donor_account,contact,appeal,pledge,pledge.contact',
-            sort: '-donation_date'
-        };
-
-        let include = 'questions';
+        let params: any = {};
+        let successMessage = 'Got dem questions';
+        let errorMessage = 'Shoot, couldn\'t get the questions';
 
         // return this.api.get('reports/weeklies', { include: include }).then((data) => {
-        return this.api.get('reports/questions').then((data) => {
+        return this.api.get('reports/questions', params, successMessage, errorMessage).then((data) => {
             return data;
         });
     }
     loadReports(): ngIpromise<any> {
-        return this.api.get('reports/weeklies').then((data) => {
+        let params: any = {};
+        let successMessage = 'I found out if there are reports. There may be some, there may be none.';
+        let errorMessage = 'Master, I have failed you.';
+        return this.api.get('reports/weeklies', params, successMessage, errorMessage).then((data) => {
+            // console.log('WEEKLY / LOADREPORTS / data', data);
             return data;
         });
     }
     loadReport(reportId: number): ngIpromise<any> {
-        console.log('getting report of id:', reportId);
-        return this.api.get(`reports/weeklies/09c5336c-5a32-4453-8eef-d7057d0cf4f2?session_id=${reportId}`).then((data) => {
+        console.log('Getting Report of ID:', reportId);
+        let params: any = {
+            session_id: reportId
+        };
+        let successMessage = 'WE DID IT!';
+        let errorMessage = 'Keep trying bucko';
+        return this.api.get('reports/weeklies', params, successMessage, errorMessage).then((data) => {
             return data;
         });
     }
