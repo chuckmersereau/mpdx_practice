@@ -33,11 +33,11 @@ export class WeeklyService {
     loadReport(reportId: number): ngIpromise<any> {
         console.log('Getting Report of ID:', reportId);
         let params: any = {
-            session_id: reportId
+            session_id: report.session_id// reportId
         };
         let successMessage = 'WE DID IT!';
         let errorMessage = 'Keep trying bucko';
-        return this.api.get('reports/weeklies', params, successMessage, errorMessage).then((data) => {
+        return this.api.get('reports/weeklies/e2910e3e-03bb-41e8-bfaa-71f624c7d142', params, successMessage, errorMessage).then((data) => {
             return data;
         });
     }
