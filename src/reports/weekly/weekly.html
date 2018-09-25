@@ -6,23 +6,23 @@
     <button ng-if="$ctrl.recents && $ctrl.state == 'New Report'" ng-click="$ctrl.toggleComparison()">Toggle Comparison</button>
     <div ng-if="$ctrl.reportsTab" class="report-list">
       <button class="dropdown" bs-dropdown>
-          <translate>{{$ctrl.displayReport[0].answer | date: 'short'}}</translate> <i class="fas fa-caret-down"></i>
+          <translate>{{$ctrl.displayReport.created_at | date: 'short'}}</translate> <i class="fas fa-caret-down"></i>
       </button>
       <ul class="dropdown-menu dropdown-menu-right" role="menu">
         <li ng-repeat="report in $ctrl.reports" role "presentation">
-          <a ng-click="$ctrl.changeDisplayReport(report)" translate>{{report[0].answer | date: 'short'}}</a>
+          <a ng-click="$ctrl.changeDisplayReport(report)" translate>{{report.created_at | date: 'short'}}</a>
         </li>
       </ul>
     </div>
   </div>
-  <div ng-if='$ctrl.state == "Empty"'>
+  <div ng-if='$ctrl.state == "Empty"'>   <!-- START OF NEW STATE -->
     <div class="blankslate blankslate-spacious">
         <i class="fas fa-money blankslate-icon"></i>
         <h3 translate>No reports to show</h3>
         <p translate>Your most recent report will show here.</p>
     </div>
   </div>
-  <div ng-if="$ctrl.state == 'View Recent'">
+  <div ng-if="$ctrl.state == 'View Recent'">   <!-- START OF NEW STATE -->
     <table class="table table-striped">
       <tbody>
         <thead>
@@ -30,15 +30,15 @@
         </thead>
         <tr>
           <td>Created at</td>
-          <td>{{$ctrl.displayReport[0].answer | date: 'short'}}</td>
+          <td>{{$ctrl.displayReport.created_at | date: 'short'}}</td>
         <tr ng-repeat="entry in $ctrl.questions">
           <td>{{entry.question}}</td>
-          <td>{{$ctrl.showAnswer($ctrl.getAnswer(entry.id))}}</td>
+          <td>{{$ctrl.showAnswer($ctrl.getAnswer(entry.qid))}}</td>
         </tr>
       </tbody>
     </table>
   </div>
-  <div ng-if="$ctrl.state == 'New Report'">
+  <div ng-if="$ctrl.state == 'New Report'">   <!-- START OF NEW STATE -->
     <table class="table table-striped">
       <tbody>
         <thead>
@@ -49,8 +49,8 @@
         <tr ng-repeat="entry in $ctrl.questions">
           <td class="question">{{entry.question}}</td>
           <td ng-if="$ctrl.comparison">
-            {{$ctrl.showAnswer($ctrl.getAnswer(entry.id))}}
-            <button class='btn-fill' ng-click="$ctrl.fillAnswer(entry.ndx)"><i class="fas fa-arrow-right"></i></button>
+            {{$ctrl.showAnswer($ctrl.getAnswer(entry.qid))}}
+            <button class='btn-fill' ng-click="$ctrl.fillAnswer(entry.qid)"><i class="fas fa-arrow-right"></i></button>
           </td>
           <td>
             <input class="form-control" type="text" ng-model="$ctrl.newReport[entry.ndx].answer"></input>
@@ -65,14 +65,36 @@
     <button ng-if="$ctrl.state == 'New Report'" ng-click="$ctrl.onClear()">Clear</button>
   </div>
 </div>
-<div>
-  <div>recents: {{$ctrl.recents}}</div>
+<div class='dev'>
   <div>new: {{$ctrl.new}}</div>
-  <div>reportsTab: {{$ctrl.reportsTab}}</div>
   <div>comparison: {{$ctrl.comparison}}</div>
-  <div>reports:  {{$ctrl.reports}}</div>
-  <div>recentReport:  {{$ctrl.recentReport}}</div>
+  <div>newId: {{$ctrl.newId}}</div>
   <div>newReport:  {{$ctrl.newReport}}</div>
-  <div>displayReport:  {{$ctrl.displayReport}}</div>
+  <div>recents: {{$ctrl.recents}}</div>
+  <div>reportsTab: {{$ctrl.reportsTab}}</div>
+  <div>reports:
+    <div ng-repeat="entry in $ctrl.reports">
+      uuid: {{entry.uuid}} ___ id: {{entry.id}} ___ created_at: {{entry.created_at}}
+    </div>
+  </div>
+  <div>recentReport:
+    <div>
+      id: {{$ctrl.recentReport.id}} ___
+      created_at: {{$ctrl.recentReport.created_at}}
+    </div>
+    <div ng-repeat="entry in $ctrl.recentReport.responses">
+      qid: {{entry.qid}} ___ reponse: {{entry.answer}}
+    </div>
+  </div>
+  <div>displayReport:
+    <div>
+      id: {{$ctrl.displayReport.id}} ___
+      created_at: {{$ctrl.displayReport.created_at}}
+    </div>
+    <div ng-repeat="entry in $ctrl.displayReport.responses">
+      qid: {{entry.qid}} ___ reponse: {{entry.answer}}
+    </div>
+  </div>
   <div>questions:  {{$ctrl.questions}}</div>
   <div>state: {{$ctrl.state}}</div>
+</div>
