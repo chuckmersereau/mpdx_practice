@@ -44,11 +44,12 @@ class WeeklyController {
                   this.newId = data[1].session_id + 1;
                   this.addReports(data);
                   this.recents = true;
+                  let newestReport = this.reports[this.reports.length - 1];
 
-                  this.weekly.loadReport(this.reports[1].id).then((data) => {
+                  this.weekly.loadReport(newestReport.id).then((data) => {
                       console.log('WEEKLY / LOADREPORT / data:', data);
-                      this.recentReport.id = this.reports[1].id;
-                      this.recentReport.created_at = this.reports[1].created_at;
+                      this.recentReport.id = newestReport.id;
+                      this.recentReport.created_at = newestReport.created_at;
                       this.recentReport.responses = this.fillReport(data);
                       this.displayReport = this.recentReport;
                       console.log('RECENT REPORT:', this.recentReport);
@@ -94,10 +95,13 @@ class WeeklyController {
   private logReport(report: any): void {
       report = { reportId: this.newId, created_at: new Date(), responses: report };
       this.newId++;
+      this.weekly.saveReport(report).then((data) => {
+          console.log(data);
+      });
       this.recentReport = report;
       this.displayReport = this.recentReport;
       this.recents = true;
-      this.reports.push({ uuid: 55, reportId: report.reportId, created_at: report.created_at });
+      this.addReports([{ uuid: 55, reportId: report.reportId, created_at: report.created_at }]);
   }
   private onClear(): void {
       for (let i = 0; i < this.newReport.length; i++) {
@@ -152,6 +156,9 @@ class WeeklyController {
           let entry = data[i];
           this.reports.push({ uuid: entry.id, id: entry.session_id, created_at: entry.created_at });
       }
+      this.reports = this.reports.sort(function(a, b) {
+          return new Date(a.created_at) - new Date(b.created_at);
+      });
       console.log('this.reports:', this.reports);
   }
 }

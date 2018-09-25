@@ -27,6 +27,15 @@ export class WeeklyService {
             return data;
         });
     }
+    saveReport(report: any): ngIpromise<any> {
+        let params: any = {
+
+        };
+        return this.api.post('reports/bulk').then((data) => {
+            console.log(data);
+            return data;
+        });
+    }
 }
 
 export default angular.module('mpdx.reports.weekly.service', []).service('weekly', WeeklyService).name;

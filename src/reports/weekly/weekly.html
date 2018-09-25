@@ -9,7 +9,7 @@
           <translate>{{$ctrl.displayReport.created_at | date: 'short'}}</translate> <i class="fas fa-caret-down"></i>
       </button>
       <ul class="dropdown-menu dropdown-menu-right" role="menu">
-        <li ng-repeat="report in $ctrl.reports" role "presentation">
+        <li ng-repeat="report in $ctrl.reports.slice().reverse()" role "presentation">
           <a ng-click="$ctrl.changeDisplayReport(report)" translate>{{report.created_at | date: 'short'}}</a>
         </li>
       </ul>
