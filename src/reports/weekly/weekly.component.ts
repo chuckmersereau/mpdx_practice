@@ -1,22 +1,4 @@
-import * as moment from 'moment';
-import {
-    assign,
-    defaultTo,
-    findIndex,
-    map,
-    pullAllBy,
-    toNumber
-} from 'lodash/fp';
-import { DATA, Entry } from '../entry.ts';
-import { StateParams } from '@uirouter/core';
-import api, { ApiService } from '../../common/api/api.service';
-import contacts, { ContactsService } from '../../contacts/contacts.service';
-import designationAccounts, { DesignationAccountsService } from '../../common/designationAccounts/designationAccounts.service';
-import donations, { DonationsService } from './donations.service';
-import joinComma from '../../common/fp/joinComma';
-import locale, { LocaleService } from '../../common/locale/locale.service';
-import serverConstants, { ServerConstantsService } from '../../common/serverConstants/serverConstants.service';
-import uiRouter from '@uirouter/angularjs';
+import { DATA } from '../DATA.ts';
 import weekly, { WeeklyService } from './weekly.service';
 
 class WeeklyController {
@@ -30,19 +12,10 @@ class WeeklyController {
   displayReport: any;
   questions: any;
   state: string;
+  newId: any;
   constructor(
-    private $log: ng.ILogService,
-    private api: ApiService,
     private weekly: WeeklyService,
-
-    private $q: ng.IQService,
     private $rootScope: ng.IRootScopeService,
-    private $stateParams: StateParams,
-    private contacts: ContactsService,
-    private designationAccounts: DesignationAccountsService,
-    private donations: DonationsService,
-    private locale: LocaleService,
-    private serverConstants: ServerConstantsService
   ) {
       this.reports = [];
       this.displayReport = this.recentReport = {
@@ -60,19 +33,23 @@ class WeeklyController {
   }
   private load() {
       this.weekly.loadQuestions().then((data) => {
-          console.log('Questions:', data);
+          console.log('WEEKLY / LOADQUESTIONS / data:', data);
           for (let i = 0; i < data.length; i++) {
-              this.questions.push({ ndx: i, id: data[i].question_id, question: data[i].question });
+              this.questions.push({ ndx: i, qid: data[i].question_id, question: data[i].question });
           }
+
           this.weekly.loadReports().then((data) => {
-              console.log('Reports:', data);
+              console.log('WEEKLY / LOADREPORTS / data:', data);
               if (data) {
-                  this.reports = data;
+                  this.newId = data[1].session_id + 1;
+                  this.addReports(data);
                   this.recents = true;
-                  this.weekly.loadReport(this.reports[0]).then((data) => {
-                      console.log('Single Report:', data);
-                      this.recentReport.id = this.reports[0];
-                      this.fillReport(DATA);
+
+                  this.weekly.loadReport(this.reports[1].id).then((data) => {
+                      console.log('WEEKLY / LOADREPORT / data:', data);
+                      this.recentReport.id = this.reports[1].id;
+                      this.recentReport.created_at = this.reports[1].created_at;
+                      this.recentReport.responses = this.fillReport(data);
                       this.displayReport = this.recentReport;
                       console.log('RECENT REPORT:', this.recentReport);
                       this.changeState('View Recent');
@@ -82,12 +59,11 @@ class WeeklyController {
       });
   }
   private fillReport(data: any): any {
-      this.recentReport.created_at = new Date(DATA.created_at);
       let report = [];
-      for (let i = 0; i < DATA.data.length; i++) {
-          report.push({ id: DATA.data[i].question_id, answer: DATA.data[i].answer });
+      for (let i = 0; i < data.length; i++) {
+          report.push({ qid: data[i].question_id, answer: data[i].answer });
       }
-      this.recentReport.responses = report;
+      return report;
   }
   private changeState(state: string): void {
       this.state = state;
@@ -105,7 +81,7 @@ class WeeklyController {
   private startNewReport(): void {
       this.newReport = [];
       for (let i = 0; i < this.questions.length; i++) {
-          this.newReport.push({ id: this.questions[i].id, answer: '' });
+          this.newReport.push({ qid: this.questions[i].qid, answer: '' });
       }
       this.new = true;
   }
@@ -116,10 +92,12 @@ class WeeklyController {
       this.changeState('View Recent');
   }
   private logReport(report: any): void {
+      report = { reportId: this.newId, created_at: new Date(), responses: report };
+      this.newId++;
       this.recentReport = report;
       this.displayReport = this.recentReport;
       this.recents = true;
-      this.reports.push(this.recentReport);
+      this.reports.push({ uuid: 55, reportId: report.reportId, created_at: report.created_at });
   }
   private onClear(): void {
       for (let i = 0; i < this.newReport.length; i++) {
@@ -127,27 +105,54 @@ class WeeklyController {
       }
   }
   private toggleComparison(): void {
-      if (this.comparison) {
-          this.comparison = false;
-      } else {
-          this.comparison = true;
-      }
+      this.comparison = !this.comparison;
   }
   private changeDisplayReport(report: any): void {
-      this.displayReport = report;
+      let id = report.id;
+      this.weekly.loadReport(id).then((data) => {
+          console.log('WEEKLY / CHANGE REPORT / data:', data);
+          this.displayReport = { id: report.id, created_at: report.created_at, responses: this.fillReport(data) };
+      });
   }
-  private fillAnswer(i: number): void {
-      this.newReport[i].answer = this.recentReport[i].answer;
-  }
-  private getAnswer(id: number): any {
-      for (let i = 0; i < this.displayReport.responses.length; i++) {
-          if (this.displayReport.responses[i].id === id) {
-              return this.displayReport.responses[i].answer;
+  private fillAnswer(id: any): void {
+      let answer = '';
+      for (let i = 0; i < this.recentReport.responses.length; i++) {
+          if (this.recentReport.responses[i].qid === id) {
+              answer = this.recentReport.responses[i].answer;
+              break;
+          }
+      }
+      for (let i = 0; i < this.newReport.length; i++) {
+          if (this.newReport[i].qid === id) {
+              this.newReport[i].answer = answer;
+              break;
           }
       }
   }
+  private getAnswer(id: any): any {
+      let answer = '';
+      let report: any;
+      if (this.state === 'View Recent') {
+          report = this.displayReport;
+      } else {
+          report = this.recentReport;
+      }
+      for (let i = 0; i < report.responses.length; i++) {
+          if (report.responses[i].qid === id) {
+              answer = report.responses[i].answer;
+          }
+      }
+      return answer;
+  }
   private showAnswer(answer: any): any {
       return answer === '' ? '-' : answer;
+  }
+  private addReports(data: any): void{
+      for (let i = 0; i < data.length; i++) {
+          let entry = data[i];
+          this.reports.push({ uuid: entry.id, id: entry.session_id, created_at: entry.created_at });
+      }
+      console.log('this.reports:', this.reports);
   }
 }
 
