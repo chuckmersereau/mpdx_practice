@@ -32,27 +32,26 @@ class WeeklyController {
       this.load();
   }
   private load() {
+      console.log('LOADING QUESTIONS');
       this.weekly.loadQuestions().then((data) => {
-          console.log('WEEKLY / LOADQUESTIONS / data:', data);
           for (let i = 0; i < data.length; i++) {
               this.questions.push({ ndx: i, qid: data[i].question_id, question: data[i].question });
           }
 
+          console.log('LOADING REPORTS');
           this.weekly.loadReports().then((data) => {
-              console.log('WEEKLY / LOADREPORTS / data:', data);
               if (data) {
-                  this.newId = data[1].session_id + 1;
+                  this.newId = data[data.length - 1].session_id + 1;
                   this.addReports(data);
                   this.recents = true;
                   let newestReport = this.reports[this.reports.length - 1];
 
+                  console.log('LOADING SINGLE REPORT');
                   this.weekly.loadReport(newestReport.id).then((data) => {
-                      console.log('WEEKLY / LOADREPORT / data:', data);
                       this.recentReport.id = newestReport.id;
                       this.recentReport.created_at = newestReport.created_at;
                       this.recentReport.responses = this.fillReport(data);
                       this.displayReport = this.recentReport;
-                      console.log('RECENT REPORT:', this.recentReport);
                       this.changeState('View Recent');
                   });
               }
@@ -93,15 +92,17 @@ class WeeklyController {
       this.changeState('View Recent');
   }
   private logReport(report: any): void {
-      report = { reportId: this.newId, created_at: new Date(), responses: report };
-      this.newId++;
-      this.weekly.saveReport(report).then((data) => {
+      console.log('logreport: ', report);
+      console.log('SAVING RESPONSES');
+      this.weekly.saveReport(this.newId, report).then((data) => {
           console.log(data);
       });
+      report = { id: this.newId, created_at: new Date(), responses: report };
+      this.newId++;
       this.recentReport = report;
       this.displayReport = this.recentReport;
       this.recents = true;
-      this.addReports([{ uuid: 55, reportId: report.reportId, created_at: report.created_at }]);
+      this.addReports([{ id: 55, session_id: report.id, created_at: report.created_at }]);
   }
   private onClear(): void {
       for (let i = 0; i < this.newReport.length; i++) {
@@ -159,7 +160,6 @@ class WeeklyController {
       this.reports = this.reports.sort(function(a, b) {
           return new Date(a.created_at) - new Date(b.created_at);
       });
-      console.log('this.reports:', this.reports);
   }
 }
 
