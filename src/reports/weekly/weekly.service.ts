@@ -19,7 +19,6 @@ export class WeeklyService {
         });
     }
     loadReport(reportId: any): ngIpromise<any> {
-        console.log('Getting Report of ID:', reportId);
         let params: any = {
             session_id: reportId
         };
@@ -27,12 +26,21 @@ export class WeeklyService {
             return data;
         });
     }
-    saveReport(report: any): ngIpromise<any> {
-        let params: any = {
-
+    saveReport(id: number, report: any): ngIpromise<any> {
+        for (let i = 0; i < report.length; i++) {
+            report[i] = { session_id: id, question_id: report[i].qid, answer: report[i].answer };
+        }
+        let params = {
+            url: 'reports/bulk',
+            data: report,
+            type: 'weeklies',
+            fields: {
+                weeklies: []
+            }
         };
-        return this.api.post('reports/bulk').then((data) => {
-            console.log(data);
+        console.log('WEEKLY SERVICE / SAVE / report: ', report);
+        return this.api.post(params).then((data) => {
+            console.log('WEEKLY SERVICE / SAVE / return data: ', data);
             return data;
         });
     }

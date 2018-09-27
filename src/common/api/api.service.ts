@@ -95,7 +95,7 @@ export class ApiService {
             // override the browsers language with the one from current user
             'Accept-Language': this.language
         });
-
+        console.log('API / CALL / data: ', data);
         const request = {
             method: method,
             url: startsWith(this.apiUrl, url) ? url : this.apiUrl + url,
@@ -195,6 +195,7 @@ export class ApiService {
     }
     post(...params) {
         const newParams: IApiCallParams = assign(this.handleParamsAsOther(params), { method: 'post' });
+        console.log('API / POST / newParams: ', newParams);
         return this.call(newParams);
     }
     put(...params) {
@@ -225,9 +226,12 @@ export class ApiService {
             type = this.getType(type, url, method);
             params = this.getParams(params, type, doSerialization);
         }
-        return doSerialization
+        console.log('API / TRANSFORM REQUEST / doSerialization: ', doSerialization);
+        let value: any = doSerialization
             ? this.serializeData(data, type, params, method)
             : angular.toJson(data);
+        console.log('API / TRANSFORM REQUEST / value: ', value);
+        return value;
     }
     private getType(type: string, url: string, method: string): string {
         const arr = url.split('/');
@@ -244,6 +248,7 @@ export class ApiService {
         return doSerialization ? assign(params, defaultTo({}, this.entityAttributes[type])) : params;
     }
     private serializeData(data: any, type: string, params: any, method: string): string {
+        console.log('IS ARRAY?', isArray(data));
         return isArray(data)
             ? angular.toJson({
                 data: map((item) => this.serialize(type, params, item, method), data)
@@ -307,9 +312,13 @@ export class ApiService {
         return method === 'post' && serialized.data.id === 'undefined' ? omit(['data.id'], serialized) : serialized;
     }
     private serialize(key: string, params: any, item: any, method: string): any {
+        console.log('API / SERIALIZE : ', 'key:', key, 'params:', params, 'item:', item, 'method:', method);
         let serialized = new japi.Serializer(key, params).serialize(item);
+        console.log('API / SERIALIZE / serialized after japi:', serialized);
         serialized = this.removeIdIfUndefined(serialized, method);
+        console.log('API / SERIALIZE / serialized after remove id:', serialized);
         serialized = this.enablePutOverwrite(serialized, method);
+        console.log('API / SERIALIZE / serialized after enable put:', serialized);
         return serialized;
     }
     private enablePutOverwrite(serialized: any, method: string): any {
