@@ -30,29 +30,15 @@ export class WeeklyService {
     saveReport(id: number, report: any): ngIpromise<any> {
         for (let i = 0; i < report.length; i++) {
             report[i] = {
-                // data: {
                 id: uuid(),
                 type: 'weeklies',
-                // session_id: id,
-                qid: report[i].qid,
+                question: {
+                    id: report[i].qid
+                },
+                session: {
+                    id: id
+                },
                 answer: report[i].answer
-                // relationships: {
-                //     // question_id: report[i].qid,
-                //     // session_id: id
-                //     question: {
-                //         data: [{
-                //             question_id: report[i].qid,
-                //             type: 'question'
-                //         }]
-                //     },
-                //     session: {
-                //         data: [{
-                //             session_id: id,
-                //             type: 'session'
-                //         }]
-                //     }
-                // }
-                // }
             };
         }
         let params = {

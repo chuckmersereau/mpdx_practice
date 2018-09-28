@@ -227,7 +227,7 @@ export class ApiService {
             params = this.getParams(params, type, doSerialization);
         }
         console.log('API / TRANSFORM REQUEST / type and parms', type, params);
-        console.log('API / TRANSFORM REQUEST / doSerialization: ', doSerialization);
+        // console.log('API / TRANSFORM REQUEST / doSerialization: ', doSerialization);
         let value: any = doSerialization
             ? this.serializeData(data, type, params, method)
             : angular.toJson(data);
@@ -249,7 +249,7 @@ export class ApiService {
         return doSerialization ? assign(params, defaultTo({}, this.entityAttributes[type])) : params;
     }
     private serializeData(data: any, type: string, params: any, method: string): string {
-        console.log('IS ARRAY?', isArray(data));
+        // console.log('IS ARRAY?', isArray(data));
         return isArray(data)
             ? angular.toJson({
                 data: map((item) => this.serialize(type, params, item, method), data)
@@ -317,9 +317,9 @@ export class ApiService {
         let serialized = new japi.Serializer(key, params).serialize(item);
         console.log('API / SERIALIZE / serialized after japi:', serialized);
         serialized = this.removeIdIfUndefined(serialized, method);
-        console.log('API / SERIALIZE / serialized after remove id:', serialized);
+        // console.log('API / SERIALIZE / serialized after remove id:', serialized);
         serialized = this.enablePutOverwrite(serialized, method);
-        console.log('API / SERIALIZE / serialized after enable put:', serialized);
+        // console.log('API / SERIALIZE / serialized after enable put:', serialized);
         return serialized;
     }
     private enablePutOverwrite(serialized: any, method: string): any {

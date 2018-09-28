@@ -297,12 +297,9 @@ export class EntityAttributes {
                 attributes: ['key', 'value']
             },
             weeklies: {
-                attributes: [
-                    'answer', 'relationships', 'question', 'qid',
-                    'session', 'session_id'
-                ],
-                question: 'question_id',
-                session: 'session_id'
+                attributes: ['answer', 'question', 'session'],
+                question: { ref: 'id' },
+                session: { ref: 'id' }
             },
             mail_chimp_account: {
                 attributes: ['api_key', 'primary_list_id', 'auto_log_campaigns']
