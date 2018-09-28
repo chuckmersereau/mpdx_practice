@@ -1,3 +1,4 @@
+import * as uuid from 'uuid/v1';
 import alerts, { AlertsService } from '../../common/alerts/alerts.service';
 import api, { ApiService } from '../../common/api/api.service';
 
@@ -28,15 +29,28 @@ export class WeeklyService {
     }
     saveReport(id: number, report: any): ngIpromise<any> {
         for (let i = 0; i < report.length; i++) {
-            report[i] = { session_id: id, question_id: report[i].qid, answer: report[i].answer };
+            report[i] = {
+                id: uuid(),
+                type: 'weeklies',
+                // session_id: id,
+                // question_id: report[i].qid,
+                answer: report[i].answer,
+                relationships: {
+                    question: {
+                        question_id: report[i].qid,
+                        type: 'question'
+                    },
+                    session: {
+                        session_id: id,
+                        type: 'session'
+                    }
+                }
+            };
         }
         let params = {
             url: 'reports/bulk',
             data: report,
-            type: 'weeklies',
-            fields: {
-                weeklies: []
-            }
+            type: 'weeklies'
         };
         console.log('WEEKLY SERVICE / SAVE / report: ', report);
         return this.api.post(params).then((data) => {

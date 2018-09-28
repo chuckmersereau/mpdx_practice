@@ -248,6 +248,9 @@ export class EntityAttributes {
                 },
                 typeForAttribute: peopleTypeForAttribute
             },
+            question: {
+                attributes: ['question_id', 'question']
+            },
             resets: {
                 attributes: ['resetted_user_email', 'reason', 'account_list_name']
             },
@@ -289,7 +292,13 @@ export class EntityAttributes {
                 attributes: ['key', 'value']
             },
             weeklies: {
-                attributes: ['session_id', 'question_id', 'answer']
+                attributes: [
+                    'answer', 'relationships', 'question', 'question_id',
+                    'session', 'session_id'
+                ],
+                ref: 'id',
+                question: 'question_id',
+                session: 'session_id'
             },
             mail_chimp_account: {
                 attributes: ['api_key', 'primary_list_id', 'auto_log_campaigns']

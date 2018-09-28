@@ -226,6 +226,7 @@ export class ApiService {
             type = this.getType(type, url, method);
             params = this.getParams(params, type, doSerialization);
         }
+        console.log('API / TRANSFORM REQUEST / type and parms', type, params);
         console.log('API / TRANSFORM REQUEST / doSerialization: ', doSerialization);
         let value: any = doSerialization
             ? this.serializeData(data, type, params, method)
