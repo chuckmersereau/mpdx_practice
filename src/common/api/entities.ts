@@ -293,10 +293,9 @@ export class EntityAttributes {
             },
             weeklies: {
                 attributes: [
-                    'answer', 'relationships', 'question', 'question_id',
+                    'answer', 'relationships', 'question', 'qid',
                     'session', 'session_id'
                 ],
-                ref: 'id',
                 question: 'question_id',
                 session: 'session_id'
             },
