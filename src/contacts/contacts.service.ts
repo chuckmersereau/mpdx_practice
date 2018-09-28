@@ -177,6 +177,7 @@ export class ContactsService {
         });
     }
     addBulk(contacts: any[]): ng.IPromise<any> {
+        console.log('CONTACT SERVICE / contacts: ', contacts);
         return this.api.post({
             url: 'contacts/bulk',
             data: contacts,
