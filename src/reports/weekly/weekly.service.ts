@@ -36,9 +36,7 @@ export class WeeklyService {
     saveReport(id: number, report: any): ngIpromise<any> {
         return this.api.get('user').then((user) => {
             let params = {
-                user: {
-                    id: user.id
-                }
+                user: user.id
             };
             return this.api.post('reports/sessions', params).then((data) => {
                 console.log(data);

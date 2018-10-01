@@ -35,7 +35,7 @@ class WeeklyController {
       console.log('LOADING QUESTIONS');
       this.weekly.loadQuestions().then((data) => {
           for (let i = 0; i < data.length; i++) {
-              this.questions.push({ ndx: i, qid: data[i].question_id, question: data[i].question });
+              this.questions.push({ qid: data[i].id, question: data[i].question });
           }
 
           console.log('LOADING REPORTS');
@@ -49,6 +49,7 @@ class WeeklyController {
                   console.log('LOADING SINGLE REPORT');
                   this.weekly.loadReport(newestReport.id).then((data) => {
                       console.log('COMPONENT / LOAD FIRST REPORT / return data', data);
+                      console.log(data);
                       this.recentReport.id = newestReport.id;
                       this.recentReport.created_at = newestReport.created_at;
                       this.recentReport.responses = this.fillReport(data);
@@ -146,7 +147,7 @@ class WeeklyController {
           report = this.recentReport;
       }
       for (let i = 0; i < report.responses.length; i++) {
-          if (report.responses[i].qid === id) {
+          if (parseInt(report.responses[i].qid) === parseInt(id)) {
               answer = report.responses[i].answer;
           }
       }
@@ -163,6 +164,15 @@ class WeeklyController {
       this.reports = this.reports.sort(function(a, b) {
           return new Date(a.created_at) - new Date(b.created_at);
       });
+  }
+  private getModel(qid: any): any {
+      let entry = '';
+      for (let i = 0; i < this.newReport.length; i++) {
+          if (parseInt(this.newReport[i].qid) === parseInt(qid)) {
+              entry = this.newReport[i];
+          }
+      }
+      return entry;
   }
 }
 

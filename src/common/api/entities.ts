@@ -260,8 +260,7 @@ export class EntityAttributes {
                 attributes: ['resetted_user_email', 'reason', 'account_list_name']
             },
             sessions: {
-                attributes: ['sid', 'user'],
-                user: { ref: 'id' }
+                attributes: ['sid', 'user']
             },
             tasks: {
                 attributes: [

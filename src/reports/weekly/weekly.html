@@ -53,7 +53,7 @@
             <button class='btn-fill' ng-click="$ctrl.fillAnswer(entry.qid)"><i class="fas fa-arrow-right"></i></button>
           </td>
           <td>
-            <input class="form-control" type="text" ng-model="$ctrl.newReport[entry.ndx].answer"></input>
+            <input class="form-control" type="text" ng-model="$ctrl.getModel(entry.qid).answer"></input>
           </td>
         </tr>
       </tbody>
@@ -65,6 +65,9 @@
     <button ng-if="$ctrl.state == 'New Report'" ng-click="$ctrl.onClear()">Clear</button>
   </div>
 </div>
+
+
+
 <!-- <div class='dev'>
   <div>new: {{$ctrl.new}}</div>
   <div>comparison: {{$ctrl.comparison}}</div>
