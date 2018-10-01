@@ -59,10 +59,13 @@ class WeeklyController {
       });
   }
   private fillReport(data: any): any {
+      console.log('filling report');
       let report = [];
       for (let i = 0; i < data.length; i++) {
+          console.log('rendering entry');
           report.push({ qid: data[i].question_id, answer: data[i].answer });
       }
+      console.log('report filled');
       return report;
   }
   private changeState(state: string): void {
@@ -86,23 +89,26 @@ class WeeklyController {
       this.new = true;
   }
   private onSubmit(): void {
-      this.logReport(this.newReport);
-      this.newReport = [];
-      this.new = false;
-      this.changeState('View Recent');
+      this.logReport(this.newReport).then((data) => {
+          this.newReport = [];
+          this.new = false;
+          this.changeState('View Recent');
+      });
   }
   private logReport(report: any): void {
       console.log('logreport: ', report);
       console.log('SAVING RESPONSES');
-      this.weekly.saveReport(this.newId, report).then((data) => {
-          console.log(data);
+      return this.weekly.saveReport(this.newId, report).then((data) => {
+          return this.weekly.loadReport(this.newId).then((data) => {
+              report = { id: data[0].sid, created_at: data[0].created_at, responses: this.fillReport(data) };
+              this.newId++;
+              this.recentReport = report;
+              this.displayReport = this.recentReport;
+              this.recents = true;
+              this.addReports([data[0]]);
+              return report;
+          });
       });
-      report = { id: this.newId, created_at: new Date(), responses: report };
-      this.newId++;
-      this.recentReport = report;
-      this.displayReport = this.recentReport;
-      this.recents = true;
-      this.addReports([{ id: 55, sid: report.id, created_at: report.created_at }]);
   }
   private onClear(): void {
       for (let i = 0; i < this.newReport.length; i++) {
@@ -116,7 +122,7 @@ class WeeklyController {
       let id = report.id;
       this.weekly.loadReport(id).then((data) => {
           console.log('WEEKLY / CHANGE REPORT / data:', data);
-          this.displayReport = { id: report.id, created_at: report.created_at, responses: this.fillReport(data) };
+          this.displayReport = { id: id, created_at: report.created_at, responses: this.fillReport(data) };
       });
   }
   private fillAnswer(id: any): void {
