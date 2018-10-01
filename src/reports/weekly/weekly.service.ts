@@ -34,25 +34,35 @@ export class WeeklyService {
         });
     }
     saveReport(id: number, report: any): ngIpromise<any> {
-        for (let i = 0; i < report.length; i++) {
-            report[i] = {
-                id: uuid(),
-                sid: id,
-                question: {
-                    id: report[i].qid
-                },
-                answer: report[i].answer
+        return this.api.get('user').then((user) => {
+            let params = {
+                user: {
+                    id: user.id
+                }
             };
-        }
-        let params = {
-            url: 'reports/bulk',
-            data: report,
-            type: 'weeklies',
-            doDeSerialization: false
-        };
-        return this.api.post(params).then((data) => {
-            console.log('WEEKLY SERVICE / SAVE / return data: ', data);
-            return data;
+            return this.api.post('reports/sessions', params).then((data) => {
+                console.log(data);
+                for (let i = 0; i < report.length; i++) {
+                    report[i] = {
+                        id: uuid(),
+                        sid: data.sid,
+                        question: {
+                            id: report[i].qid
+                        },
+                        answer: report[i].answer
+                    };
+                }
+                let params = {
+                    url: 'reports/bulk',
+                    data: report,
+                    type: 'weeklies',
+                    doDeSerialization: false
+                };
+                return this.api.post(params).then((data) => {
+                    console.log('WEEKLY SERVICE / SAVE / return data: ', data);
+                    return data;
+                });
+            });
         });
     }
 }

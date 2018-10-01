@@ -259,6 +259,10 @@ export class EntityAttributes {
             resets: {
                 attributes: ['resetted_user_email', 'reason', 'account_list_name']
             },
+            sessions: {
+                attributes: ['sid', 'user'],
+                user: { ref: 'id' }
+            },
             tasks: {
                 attributes: [
                     'account_list', 'activity_contacts', 'activity_type', 'comments', 'completed', 'completed_at',
