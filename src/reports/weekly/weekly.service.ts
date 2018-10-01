@@ -31,7 +31,6 @@ export class WeeklyService {
         for (let i = 0; i < report.length; i++) {
             report[i] = {
                 id: uuid(),
-                type: 'weeklies',
                 sid: id,
                 question: {
                     id: report[i].qid
@@ -42,9 +41,9 @@ export class WeeklyService {
         let params = {
             url: 'reports/bulk',
             data: report,
-            type: 'weeklies'
+            type: 'weeklies',
+            doDeSerialization: false
         };
-        console.log('WEEKLY SERVICE / SAVE / report: ', report);
         return this.api.post(params).then((data) => {
             console.log('WEEKLY SERVICE / SAVE / return data: ', data);
             return data;
