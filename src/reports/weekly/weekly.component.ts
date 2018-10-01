@@ -96,7 +96,9 @@ class WeeklyController {
   private logReport(report: any): void {
       console.log('SAVING RESPONSES');
       return this.weekly.saveReport(this.newId, report).then((data) => {
-          console.log('COMPONENT / SAVE / return data', data);
+          for (let i = 0; i < data.length; i++) {
+              data[i] = data[i].data.attributes;
+          }
           report = { id: data[0].sid, created_at: data[0].created_at, responses: this.fillReport(data) };
           this.newId++;
           this.recentReport = report;
@@ -104,15 +106,6 @@ class WeeklyController {
           this.recents = true;
           this.addReports([data[0]]);
           return report;
-          // return this.weekly.loadReport(this.newId).then((data) => {
-          //     report = { id: data[0].sid, created_at: data[0].created_at, responses: this.fillReport(data) };
-          //     this.newId++;
-          //     this.recentReport = report;
-          //     this.displayReport = this.recentReport;
-          //     this.recents = true;
-          //     this.addReports([data[0]]);
-          //     return report;
-          // });
       });
   }
   private onClear(): void {

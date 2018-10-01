@@ -14,9 +14,15 @@ export class WeeklyService {
         });
     }
     loadReports(): ngIpromise<any> {
-        let params: any = {};
-        return this.api.get('reports/weeklies', params).then((data) => {
-            return data;
+        return this.api.get('user').then((user) => {
+            console.log(user);
+            let params = {
+                user: user.id
+            };
+            return this.api.get(`reports/sessions/${user.id}`).then((data) => {
+                console.log(data);
+                return data;
+            });
         });
     }
     loadReport(reportId: any): ngIpromise<any> {
