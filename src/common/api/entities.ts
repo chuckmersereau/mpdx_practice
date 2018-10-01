@@ -292,7 +292,7 @@ export class EntityAttributes {
                 attributes: ['key', 'value']
             },
             weeklies: {
-                attributes: ['answer', 'question', 'session'],
+                attributes: ['answer', 'question', 'session', 'sid'],
                 question: { ref: 'id' },
                 session: { ref: 'id' }
             },

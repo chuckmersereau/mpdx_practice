@@ -32,11 +32,9 @@ export class WeeklyService {
             report[i] = {
                 id: uuid(),
                 type: 'weeklies',
+                sid: id,
                 question: {
                     id: report[i].qid
-                },
-                session: {
-                    id: id
                 },
                 answer: report[i].answer
             };
