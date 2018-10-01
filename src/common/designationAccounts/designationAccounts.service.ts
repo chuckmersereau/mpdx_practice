@@ -1,7 +1,8 @@
-import { concat, find, reduce } from 'lodash/fp';
+import { assign, concat, find, map, reduce, toInteger } from 'lodash/fp';
 import api, { ApiService } from '../api/api.service';
 
 export class DesignationAccountsService {
+    balance: number;
     data: any;
     list: any;
     organizations: any;
@@ -13,6 +14,7 @@ export class DesignationAccountsService {
         private api: ApiService
     ) {
         this.data = [];
+        this.balance = 0;
         this.list = [];
         this.organizations = [];
         this.selected = [];
@@ -34,7 +36,21 @@ export class DesignationAccountsService {
                 return result;
             }, [], data);
             this.$log.debug('designation organizations', this.organizations);
+            this.updateBalance();
             return this.data;
+        });
+    }
+    save(designationAccount: any): ng.IPromise<any> {
+        return this.api.put({
+            url: `account_lists/${this.api.account_list_id}/designation_accounts/${designationAccount.id}`,
+            data: designationAccount,
+            type: 'designation_accounts'
+        }).then((data) => {
+            this.data = map((designationAccount) => {
+                return data.id === designationAccount.id ? assign(designationAccount, data) : designationAccount;
+            }, this.data);
+            this.updateBalance();
+            return data;
         });
     }
     search(keywords: string): ng.IPromise<any> {
@@ -47,6 +63,11 @@ export class DesignationAccountsService {
             },
             per_page: 6
         });
+    }
+    updateBalance(): void {
+        this.balance = reduce((result, designationAccount) =>
+            result + toInteger(designationAccount.active ? designationAccount.converted_balance : 0)
+            , 0, this.data);
     }
     resetSelected(): void {
         this.selected = [];

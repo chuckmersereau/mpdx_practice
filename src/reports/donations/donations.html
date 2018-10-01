@@ -1,7 +1,10 @@
-<donations-chart in-contact="::$ctrl.inContact"></donations-chart>
 <div class="heading" ng-if="::!$ctrl.inContact">
     <h2 translate>Donations</h2>
-    <div>
+</div>
+<donations-chart in-contact="::$ctrl.inContact"></donations-chart>
+<div class="nav" ng-if="::!$ctrl.inContact">
+    <h4>{{$ctrl.startDate.format('MMMM YYYY')}}</h4>
+    <div class="btn-group">
         <button ng-click="$ctrl.gotoPrevMonth()" class="btn btn-default">
             <i class="fas fa-angle-left"></i>
             <translate>Previous Month</translate>
@@ -12,11 +15,8 @@
         </button>
     </div>
 </div>
-<table class="table table-striped" ng-if="$ctrl.data.length > 0">
+<table class="table table-striped" ng-class="{ 'in-contact' : $ctrl.inContact }" ng-if="$ctrl.data.length > 0">
     <thead>
-        <tr ng-if="::!$ctrl.inContact">
-            <th colspan="8"><h4>{{$ctrl.startDate.format('MMMM YYYY')}}</h4></th>
-        </tr>
         <tr>
             <th ng-if="::$ctrl.inContact"
                 ng-click="$ctrl.changeSort('donor_account.account_number')"

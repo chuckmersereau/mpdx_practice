@@ -124,6 +124,12 @@ describe('EntityAttributes', () => {
         });
     });
 
+    it('should define designation_accounts', () => {
+        expect(attributes.designation_accounts).toEqual({
+            attributes: ['active']
+        });
+    });
+
     it('should define donations', () => {
         expect(attributes.donations).toEqual({
             attributes: [

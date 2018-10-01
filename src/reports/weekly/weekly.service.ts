@@ -21,7 +21,7 @@ export class WeeklyService {
     }
     loadReport(reportId: any): ngIpromise<any> {
         let params: any = {
-            session_id: reportId
+            session_id: reportId// reportId
         };
         return this.api.get('reports/weeklies/133fec79-4586-4e6a-a652-c10e1a799af4', params).then((data) => {
             return data;

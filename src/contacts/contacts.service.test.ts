@@ -347,18 +347,6 @@ describe('contacts.service', () => {
         });
     });
 
-    describe('mapEmails', () => {
-        const data = [
-            { people: [{ optout_enewsletter: true, email_addresses: [{ primary: true, email: 'a' }] }] },
-            { people: [{ email_addresses: [{ email: 'b' }] }] },
-            { people: [{ deceased: true, email_addresses: [{ primary: true, email: 'b' }] }] },
-            { people: [{ email_addresses: [{ email: 'c' }, { email: 'd', primary: true }] }] }
-        ];
-        it('should map primary emails from contacts', () => {
-            expect(contacts.mapEmails(data)).toEqual('d');
-        });
-    });
-
     describe('addBulk', () => {
         const contactArr = [{ id: 1 }, { id: 2 }];
         beforeEach(() => {
@@ -478,6 +466,28 @@ describe('contacts.service', () => {
                 done();
             });
             rootScope.$digest();
+        });
+    });
+
+    describe('findChangedFilters', () => {
+        const defaultParams = { a: '1', b: '2', c: ['active'], d: ['null'], e: { a: '' }, f: { a: '' } };
+        const params = { a: '2', b: ['null'], c: { text: 'space' } };
+        const difference = { a: '2', b: ['null'], c: { text: 'space' } };
+
+        it('should find changed filters', () => {
+            expect(contacts.findChangedFilters(defaultParams, params)).toEqual(difference);
+        });
+    });
+
+    describe('mapEmails', () => {
+        const data = [
+            { people: [{ optout_enewsletter: true, email_addresses: [{ primary: true, email: 'a' }] }] },
+            { people: [{ email_addresses: [{ email: 'b' }] }] },
+            { people: [{ deceased: true, email_addresses: [{ primary: true, email: 'b' }] }] },
+            { people: [{ email_addresses: [{ email: 'c' }, { email: 'd', primary: true }] }] }
+        ];
+        it('should map primary emails from contacts', () => {
+            expect(contacts.mapEmails(data)).toEqual('d');
         });
     });
 });

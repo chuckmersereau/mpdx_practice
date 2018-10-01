@@ -10,12 +10,6 @@ reports {
         grid-column: 1;
         grid-row: 1;
     }
-    > div.content {
-        padding: 10px $container-padding;
-        grid-column: 1;
-        grid-row: 2;
-        overflow-y: auto;
-    }
     .nav-secondary.menu {
         transition: background-color 0.2s ease-out;
         &.selected {
@@ -63,14 +57,25 @@ reports {
             }
         }
     }
-    .reports {
+    > div.content {
+        padding: 0 $container-padding;
+        padding-bottom: $beacon-padding;
+        grid-column: 1;
+        grid-row: 2;
+        overflow-y: auto;
         h2 {
             margin-top: 0;
         }
         .heading {
             display: flex;
-            width: 100%;
-            margin-bottom: 10px;
+            align-items: center;
+            padding: 10px 0;
+            font-size: $font-size-lg;
+            h2 {
+                flex-grow: 1;
+                margin: 0;
+                line-height: 39px;
+            }
             .spacer {
                 flex-grow: 1;
             }

@@ -1,67 +1,62 @@
-<div class="reports">
+<div class="heading">
     <h2 translate>Balances</h2>
-    <div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
-      <i class="far fa-circle-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
+</div>
+<div class="blankslate blankslate-spacious" ng-if="$ctrl.loading">
+    <i class="far fa-circle-notch fa-spin fa-3x fa-fw blankslate-icon blankslate-loading"></i>
+</div>
+<div class="blankslate blankslate-spacious" ng-if="!$ctrl.loading && $ctrl.designationAccounts.data.length === 0">
+    <i class="far fa-handshake blankslate-icon"></i>
+    <h3 translate>You have no designation accounts with balances</h3>
+    <p translate>You can setup an organization account to import your designation accounts.</p>
+    <a ui-sref="preferences.integrations" class="btn btn-default" translate>Connect Services</a>
+</div>
+<div class="panel panel-default" ng-if="!$ctrl.loading && $ctrl.designationAccounts.data.length > 0">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <translate>Balances by Organization</translate>
+            <span class="pull-right">
+                <span translate>Balance:</span>
+                {{$ctrl.designationAccounts.balance | number: 0}} {{$ctrl.accounts.current.default_currency}}
+            </span>
+        </h4>
     </div>
-    <div class="blankslate blankslate-spacious" ng-if="!$ctrl.loading && $ctrl.designationAccounts.data.length === 0">
-        <i class="far fa-handshake blankslate-icon"></i>
-        <h3 translate>You have no designation accounts with balances</h3>
-        <p translate>You can setup an organization account to import your designation accounts.</p>
-        <a ui-sref="preferences.integrations" class="btn btn-default" translate>Connect Services</a>
-    </div>
-    <div class="panel panel-default" ng-if="!$ctrl.loading && $ctrl.designationAccounts.data.length > 0">
-        <div class="panel-heading">
-            <h4 class="panel-title">
-                <translate>Balances by Organization</translate>
-                <span class="pull-right">
-                    <span translate>Converted Report Total</span>:
-                    {{$ctrl.total_currency_symbol}}
-                    {{$ctrl.converted_total | number : 0}}
-                    {{$ctrl.total_currency}}
-                </span>
-            </h4>
-        </div>
-        <div class="panel-body" ng-if="$ctrl.designationAccounts.data">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th class="col-md-2" translate>Organization</th>
-                    <th class="col-md-1" translate>Designation</th>
-                    <th class="col-md-1" translate>Last Synced</th>
-                    <th class="col-md-1 text-right" translate>Balance</th>
-                    <th class="col-md-1 text-right" translate>Exchange Rate</th>
-                    <th class="col-md-2 text-right" translate>Converted Balance</th>
-                    <th class="col-md-2 text-right" translate>Include in Report</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="designation in $ctrl.designationAccounts.data track by designation.id">
-                    <td>{{::designation.organization_name}}</td>
-                    <td>{{::designation.designation_number}}</td>
-                    <td>{{::designation.balance_updated_at | localize}}</td>
-                    <td class="text-right">
-                        {{::designation.currency_symbol}}
-                        {{::designation.balance || 0  | number : 0}}
-                        {{::designation.currency}}
-                    </td>
-                    <td class="text-right">
-                        {{::designation.exchange_rate | number : 2}}
-                        {{::$ctrl.total_currency_symbol}}
-                        /
-                        {{::designation.currency_symbol}}
-                        {{::designation.currency}}
-                    </td>
-                    <td class="text-right">
-                        {{::$ctrl.total_currency_symbol}}
-                        {{::designation.converted_balance | number : 0}}
-                        {{::$ctrl.total_currency}}
-                    </td>
-                    <td class="text-right">
-                        <fa-checkbox checked="designation.active" on-toggle="$ctrl.onToggle(designation)"></fa-checkbox>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+    <div class="panel-body" ng-if="$ctrl.designationAccounts.data">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th class="col-md-2" translate>Organization</th>
+                <th class="col-md-1" translate>Designation</th>
+                <th class="col-md-1" translate>Last Synced</th>
+                <th class="col-md-1 text-right" translate>Balance</th>
+                <th class="col-md-1 text-right" translate>Exchange Rate</th>
+                <th class="col-md-2 text-right" translate>Converted Balance</th>
+                <th class="col-md-2 text-right" translate>Include in Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="designation in $ctrl.designationAccounts.data track by designation.id">
+                <td>{{::designation.organization_name}}</td>
+                <td>{{::designation.designation_number}}</td>
+                <td>{{::designation.balance_updated_at | localize}}</td>
+                <td class="text-right">
+                    {{::designation.balance || 0  | number : 0}}
+                    {{::designation.currency}}
+                </td>
+                <td class="text-right">
+                    1 {{::designation.currency}}
+                    =
+                    {{::designation.exchange_rate | number : 2}}
+                    {{::$ctrl.accounts.current.default_currency}}
+                </td>
+                <td class="text-right">
+                    {{::designation.converted_balance | number : 0}}
+                    {{::$ctrl.accounts.current.default_currency}}
+                </td>
+                <td class="text-right">
+                    <fa-checkbox checked="designation.active" on-toggle="$ctrl.onToggle(designation)"></fa-checkbox>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>

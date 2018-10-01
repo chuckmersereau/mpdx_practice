@@ -11,6 +11,7 @@ import {
     isEqual,
     isFunction,
     isNil,
+    isObject,
     map,
     omitBy,
     pull,
@@ -196,21 +197,6 @@ export class ContactsService {
             this.$rootScope.$emit('contactCreated');
         });
     }
-    private findChangedFilters(defaultParams: any, params: any): any {
-        return reduceObject((result, filter, key) => {
-            if (has(key, this.contactFilter.params)) {
-                const currentDefault = defaultParams[key];
-                if (isArray(filter)) {
-                    if (!isEqual(currentDefault, filter)) {
-                        result[key] = filter;
-                    }
-                } else if (filter !== currentDefault) {
-                    result[key] = filter;
-                }
-            }
-            return result;
-        }, {}, params);
-    }
     isSelected(contactId: string): boolean {
         return includes(contactId, this.selectedContacts);
     }
@@ -345,9 +331,6 @@ export class ContactsService {
             return this.mapEmails(data);
         });
     }
-    private mapEmails(data: any): any {
-        return flattenCompactAndJoin((contact) => this.getEmailsFromPeople(contact.people), data);
-    }
     getEmailsFromPeople(data: any): any {
         const getEmail = get('email');
         const findPrimary = find({ primary: true });
@@ -355,6 +338,22 @@ export class ContactsService {
         return map((person) => {
             return person.deceased || person.optout_enewsletter ? null : getEmailFromPrimary(person.email_addresses);
         }, data);
+    }
+    private findChangedFilters(defaultParams: any, params: any): any {
+        return reduceObject((result, filter, key) => {
+            const currentDefault = defaultParams[key];
+            if (isArray(filter) || isObject(filter)) {
+                if (!isEqual(currentDefault, filter)) {
+                    result[key] = filter;
+                }
+            } else if (filter !== currentDefault) {
+                result[key] = filter;
+            }
+            return result;
+        }, {}, params);
+    }
+    private mapEmails(data: any): any {
+        return flattenCompactAndJoin((contact) => this.getEmailsFromPeople(contact.people), data);
     }
 }
 

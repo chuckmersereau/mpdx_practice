@@ -22,12 +22,13 @@ export class PeopleService {
         private modal: ModalService
     ) {
         this.includes = 'email_addresses,facebook_accounts,family_relationships,family_relationships.related_person,'
-            + 'linkedin_accounts,master_person,phone_numbers,twitter_accounts,websites';
+            + 'linkedin_accounts,master_person,phone_numbers,twitter_accounts,websites,age';
         this.data = [];
     }
     get(personId) {
         return this.api.get(`contacts/people/${personId}`, { include: this.includes }).then((data) => {
             this.$log.debug(`contacts/people/${personId}`, data);
+            console.log(data);
             return data;
         });
     }
