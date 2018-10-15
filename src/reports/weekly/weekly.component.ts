@@ -96,7 +96,7 @@ class WeeklyController {
   }
   private logReport(report: any): void {
       console.log('SAVING RESPONSES');
-      return this.weekly.saveReport(this.newId, report).then((data) => {
+      return this.weekly.saveReport(report).then((data) => {
           for (let i = 0; i < data.length; i++) {
               data[i] = data[i].data.attributes;
           }
@@ -126,13 +126,13 @@ class WeeklyController {
   private fillAnswer(id: any): void {
       let answer = '';
       for (let i = 0; i < this.recentReport.responses.length; i++) {
-          if (this.recentReport.responses[i].qid === id) {
+          if (parseInt(this.recentReport.responses[i].qid) === parseInt(id)) {
               answer = this.recentReport.responses[i].answer;
               break;
           }
       }
       for (let i = 0; i < this.newReport.length; i++) {
-          if (this.newReport[i].qid === id) {
+          if (parseInt(this.newReport[i].qid) === parseInt(id)) {
               this.newReport[i].answer = answer;
               break;
           }

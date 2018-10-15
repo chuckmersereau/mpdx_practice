@@ -33,7 +33,7 @@ export class WeeklyService {
             return data;
         });
     }
-    saveReport(id: number, report: any): ngIpromise<any> {
+    saveReport(report: any): ngIpromise<any> {
         return this.api.get('user').then((user) => {
             let params = {
                 user: user.id
