@@ -12,7 +12,6 @@ class WeeklyController {
   displayReport: any;
   questions: any;
   state: string;
-  newId: any;
   constructor(
     private weekly: WeeklyService,
     private $rootScope: ng.IRootScopeService,
@@ -41,7 +40,6 @@ class WeeklyController {
           console.log('LOADING REPORTS');
           this.weekly.loadReports().then((data) => {
               if (data) {
-                  this.newId = data[data.length - 1].sid + 1;
                   this.addReports(data);
                   this.recents = true;
                   let newestReport = this.reports[this.reports.length - 1];
@@ -101,7 +99,6 @@ class WeeklyController {
               data[i] = data[i].data.attributes;
           }
           report = { id: data[0].sid, created_at: data[0].created_at, responses: this.fillReport(data) };
-          this.newId++;
           this.recentReport = report;
           this.displayReport = this.recentReport;
           this.recents = true;
